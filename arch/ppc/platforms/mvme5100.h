@@ -73,18 +73,17 @@ macro_line|#else
 DECL|macro|MVME5100_SERIAL_IRQ
 mdefine_line|#define MVME5100_SERIAL_IRQ&t;&t;1
 macro_line|#endif
-DECL|macro|MVME5100_WINBOND_DEVFN
-mdefine_line|#define MVME5100_WINBOND_DEVFN&t;&t;0x58
-DECL|macro|MVME5100_WINBOND_VIDDID
-mdefine_line|#define MVME5100_WINBOND_VIDDID&t;&t;0x056510ad
-r_extern
-r_void
-id|mvme5100_setup_bridge
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+DECL|macro|RS_TABLE_SIZE
+mdefine_line|#define RS_TABLE_SIZE  4
+DECL|macro|BASE_BAUD
+mdefine_line|#define BASE_BAUD ( MVME5100_BASE_BAUD / 16 )
+DECL|macro|STD_COM_FLAGS
+mdefine_line|#define STD_COM_FLAGS ASYNC_BOOT_AUTOCONF
+multiline_comment|/* All UART IRQ&squot;s are wire-OR&squot;d to one MPIC IRQ */
+DECL|macro|STD_SERIAL_PORT_DFNS
+mdefine_line|#define STD_SERIAL_PORT_DFNS &bslash;&n;        { 0, BASE_BAUD, MVME5100_SERIAL_1, &bslash;&n;&t;&t;MVME5100_SERIAL_IRQ, &bslash;&n;&t;&t;STD_COM_FLAGS, /* ttyS0 */ &bslash;&n;&t;&t;iomem_base: (unsigned char *)MVME5100_SERIAL_1,&t;&t;&bslash;&n;&t;&t;iomem_reg_shift: 4,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM },&t;&t;&t;&t;&bslash;&n;        { 0, BASE_BAUD, MVME5100_SERIAL_2, &bslash;&n;&t;&t;MVME5100_SERIAL_IRQ, &bslash;&n;&t;&t;STD_COM_FLAGS, /* ttyS1 */ &bslash;&n;&t;&t;iomem_base: (unsigned char *)MVME5100_SERIAL_2,&t;&t;&bslash;&n;&t;&t;iomem_reg_shift: 4,&t;&t;&t;&t;&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM },
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS &bslash;&n;        STD_SERIAL_PORT_DFNS
 macro_line|#endif /* __ASM_MVME5100_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

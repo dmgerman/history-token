@@ -1,101 +1,546 @@
-multiline_comment|/*&n; * arch/ppc/platforms/mvme5100_setup.c&n; *&n; * Board setup routines for the Motorola MVME5100.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/mvme5100.c&n; *&n; * Board setup routines for the Motorola MVME5100.&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001-2004 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
-macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
-macro_line|#include &lt;platforms/mvme5100.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/pplus.h&gt;
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
+macro_line|#include &lt;asm/hawk.h&gt;
+macro_line|#include &lt;platforms/pplus.h&gt;
+macro_line|#include &lt;platforms/mvme5100.h&gt;
 DECL|variable|__initdata
 r_static
 id|u_char
 id|mvme5100_openpic_initsenses
 (braket
+l_int|16
 )braket
 id|__initdata
 op_assign
 (brace
-l_int|0
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_POSITIVE
+)paren
 comma
-multiline_comment|/* 16: i8259 cascade (active high) */
-l_int|1
+multiline_comment|/* i8259 cascade */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 17: TL16C550 UART 1,2 */
-l_int|1
+multiline_comment|/* TL16C550 UART 1,2 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 18: Enet 1 (front panel or P2) */
-l_int|1
+multiline_comment|/* Enet1 front panel or P2 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 19: Hawk Watchdog 1,2 */
-l_int|1
+multiline_comment|/* Hawk Watchdog 1,2 */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 20: DS1621 thermal alarm */
-l_int|1
+multiline_comment|/* DS1621 thermal alarm */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 21: Universe II LINT0# */
-l_int|1
+multiline_comment|/* Universe II LINT0# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 22: Universe II LINT1# */
-l_int|1
+multiline_comment|/* Universe II LINT1# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 23: Universe II LINT2# */
-l_int|1
+multiline_comment|/* Universe II LINT2# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 24: Universe II LINT3# */
-l_int|1
+multiline_comment|/* Universe II LINT3# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 25: PMC1 INTA#, PMC2 INTB# */
-l_int|1
+multiline_comment|/* PMC1 INTA#, PMC2 INTB# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 26: PMC1 INTB#, PMC2 INTC# */
-l_int|1
+multiline_comment|/* PMC1 INTB#, PMC2 INTC# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 27: PMC1 INTC#, PMC2 INTD# */
-l_int|1
+multiline_comment|/* PMC1 INTC#, PMC2 INTD# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 28: PMC1 INTD#, PMC2 INTA# */
-l_int|1
+multiline_comment|/* PMC1 INTD#, PMC2 INTA# */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 29: Enet 2 (front panel) */
-l_int|1
+multiline_comment|/* Enet 2 (front panel) */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 30: Abort Switch */
-l_int|1
+multiline_comment|/* Abort Switch */
+(paren
+id|IRQ_SENSE_LEVEL
+op_or
+id|IRQ_POLARITY_NEGATIVE
+)paren
 comma
-multiline_comment|/* 31: RTC Alarm */
+multiline_comment|/* RTC Alarm */
 )brace
 suffix:semicolon
+r_static
+r_inline
+r_int
+DECL|function|mvme5100_map_irq
+id|mvme5100_map_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+r_char
+id|idsel
+comma
+r_int
+r_char
+id|pin
+)paren
+(brace
+r_int
+id|irq
+suffix:semicolon
+r_static
+r_char
+id|pci_irq_table
+(braket
+)braket
+(braket
+l_int|4
+)braket
+op_assign
+multiline_comment|/*&n;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t; * &t;   A   B   C   D&n;&t; */
+(brace
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 11 - Winbond */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 12 - unused */
+(brace
+l_int|21
+comma
+l_int|22
+comma
+l_int|23
+comma
+l_int|24
+)brace
+comma
+multiline_comment|/* IDSEL 13 - Universe II */
+(brace
+l_int|18
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 14 - Enet 1 */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 15 - unused */
+(brace
+l_int|25
+comma
+l_int|26
+comma
+l_int|27
+comma
+l_int|28
+)brace
+comma
+multiline_comment|/* IDSEL 16 - PMC Slot 1 */
+(brace
+l_int|28
+comma
+l_int|25
+comma
+l_int|26
+comma
+l_int|27
+)brace
+comma
+multiline_comment|/* IDSEL 17 - PMC Slot 2 */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 18 - unused */
+(brace
+l_int|29
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 19 - Enet 2 */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* IDSEL 20 - PMCSPAN */
+)brace
+suffix:semicolon
+r_const
+r_int
+id|min_idsel
+op_assign
+l_int|11
+comma
+id|max_idsel
+op_assign
+l_int|20
+comma
+id|irqs_per_slot
+op_assign
+l_int|4
+suffix:semicolon
+id|irq
+op_assign
+id|PCI_IRQ_TABLE_LOOKUP
+suffix:semicolon
+multiline_comment|/* If lookup is zero, always return 0 */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_else
+macro_line|#ifdef CONFIG_MVME5100_IPMC761_PRESENT
+multiline_comment|/* If IPMC761 present, return table value */
+r_return
+id|irq
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* If IPMC761 not present, we don&squot;t have an i8259 so adjust */
+r_return
+(paren
+id|irq
+op_minus
+id|NUM_8259_INTERRUPTS
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_static
+r_void
+DECL|function|mvme5100_pcibios_fixup_resources
+id|mvme5100_pcibios_fixup_resources
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_MOTOROLA
+)paren
+op_logical_and
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_MOTOROLA_HAWK
+)paren
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|DEVICE_COUNT_RESOURCE
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|dev-&gt;resource
+(braket
+id|i
+)braket
+dot
+id|start
+op_assign
+l_int|0
+suffix:semicolon
+id|dev-&gt;resource
+(braket
+id|i
+)braket
+dot
+id|end
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_static
+r_void
+id|__init
+DECL|function|mvme5100_setup_bridge
+id|mvme5100_setup_bridge
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|pci_controller
+op_star
+id|hose
+suffix:semicolon
+id|hose
+op_assign
+id|pcibios_alloc_controller
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hose
+)paren
+r_return
+suffix:semicolon
+id|hose-&gt;first_busno
+op_assign
+l_int|0
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+l_int|0xff
+suffix:semicolon
+id|hose-&gt;pci_mem_offset
+op_assign
+id|MVME5100_PCI_MEM_OFFSET
+suffix:semicolon
+id|pci_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;io_resource
+comma
+id|MVME5100_PCI_LOWER_IO
+comma
+id|MVME5100_PCI_UPPER_IO
+comma
+id|IORESOURCE_IO
+comma
+l_string|&quot;PCI host bridge&quot;
+)paren
+suffix:semicolon
+id|pci_init_resource
+c_func
+(paren
+op_amp
+id|hose-&gt;mem_resources
+(braket
+l_int|0
+)braket
+comma
+id|MVME5100_PCI_LOWER_MEM
+comma
+id|MVME5100_PCI_UPPER_MEM
+comma
+id|IORESOURCE_MEM
+comma
+l_string|&quot;PCI host bridge&quot;
+)paren
+suffix:semicolon
+id|hose-&gt;io_space.start
+op_assign
+id|MVME5100_PCI_LOWER_IO
+suffix:semicolon
+id|hose-&gt;io_space.end
+op_assign
+id|MVME5100_PCI_UPPER_IO
+suffix:semicolon
+id|hose-&gt;mem_space.start
+op_assign
+id|MVME5100_PCI_LOWER_MEM
+suffix:semicolon
+id|hose-&gt;mem_space.end
+op_assign
+id|MVME5100_PCI_UPPER_MEM
+suffix:semicolon
+id|hose-&gt;io_base_virt
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|MVME5100_ISA_IO_BASE
+suffix:semicolon
+multiline_comment|/* Use indirect method of Hawk */
+id|setup_indirect_pci
+c_func
+(paren
+id|hose
+comma
+id|MVME5100_PCI_CONFIG_ADDR
+comma
+id|MVME5100_PCI_CONFIG_DATA
+)paren
+suffix:semicolon
+id|hose-&gt;last_busno
+op_assign
+id|pciauto_bus_scan
+c_func
+(paren
+id|hose
+comma
+id|hose-&gt;first_busno
+)paren
+suffix:semicolon
+id|ppc_md.pcibios_fixup_resources
+op_assign
+id|mvme5100_pcibios_fixup_resources
+suffix:semicolon
+id|ppc_md.pci_swizzle
+op_assign
+id|common_swizzle
+suffix:semicolon
+id|ppc_md.pci_map_irq
+op_assign
+id|mvme5100_map_irq
+suffix:semicolon
+)brace
 r_static
 r_void
 id|__init
@@ -179,7 +624,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Find and map our OpenPIC */
-id|pplus_mpic_init
+id|hawk_mpic_init
 c_func
 (paren
 id|MVME5100_PCI_MEM_OFFSET
@@ -326,18 +771,23 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|openpic_set_sources
+c_func
+(paren
+l_int|0
+comma
+l_int|16
+comma
+id|OpenPIC_Addr
+op_plus
+l_int|0x10000
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MVME5100_IPMC761_PRESENT
 id|openpic_init
 c_func
 (paren
-l_int|1
-comma
 id|NUM_8259_INTERRUPTS
-comma
-l_int|NULL
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|openpic_hookup_cascade
@@ -351,6 +801,7 @@ op_amp
 id|i8259_irq
 )paren
 suffix:semicolon
+multiline_comment|/* Map i8259 interrupts. */
 r_for
 c_loop
 (paren
@@ -365,7 +816,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|irq_desc
 (braket
 id|i
@@ -376,7 +826,6 @@ op_assign
 op_amp
 id|i8259_pic
 suffix:semicolon
-)brace
 id|i8259_init
 c_func
 (paren
@@ -387,14 +836,7 @@ macro_line|#else
 id|openpic_init
 c_func
 (paren
-l_int|1
-comma
 l_int|0
-comma
-l_int|NULL
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -427,48 +869,31 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|bat3u
-comma
-id|bat3l
-suffix:semicolon
-r_static
-r_int
-id|mapping_set
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mapping_set
-)paren
-(brace
-id|__asm__
-id|__volatile__
+id|mb
 c_func
 (paren
-l_string|&quot; lis %0,0xf000&bslash;n &bslash;&n;&t;&t;  ori %1,%0,0x002a&bslash;n &bslash;&n;&t;&t;  ori %0,%0,0x1ffe&bslash;n &bslash;&n;&t;&t;  mtspr 0x21e,%0&bslash;n &bslash;&n;&t;&t;  mtspr 0x21f,%1&bslash;n &bslash;&n;&t;&t;  isync&bslash;n &bslash;&n;&t;&t;  sync &quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|bat3u
 )paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|DBAT1U
 comma
-l_string|&quot;=r&quot;
+l_int|0xf0001ffe
+)paren
+suffix:semicolon
+id|mtspr
+c_func
 (paren
-id|bat3l
-)paren
+id|DBAT1L
+comma
+l_int|0xf000002a
 )paren
 suffix:semicolon
-id|mapping_set
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_return
+id|mb
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -482,13 +907,8 @@ c_func
 r_void
 )paren
 (brace
-id|mvme5100_set_bat
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-id|pplus_get_mem_size
+id|hawk_get_mem_size
 c_func
 (paren
 id|MVME5100_HAWK_SMC_BASE
@@ -707,6 +1127,11 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|mvme5100_set_bat
+c_func
+(paren
+)paren
+suffix:semicolon
 id|isa_io_base
 op_assign
 id|MVME5100_ISA_IO_BASE
@@ -796,10 +1221,6 @@ suffix:semicolon
 id|ppc_md.nvram_write_val
 op_assign
 id|todc_m48txx_write_val
-suffix:semicolon
-id|ppc_md.progress
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 eof
