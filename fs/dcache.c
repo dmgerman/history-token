@@ -4230,6 +4230,13 @@ id|dentry
 )paren
 (brace
 multiline_comment|/* Global root? */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4237,9 +4244,18 @@ id|vfsmnt-&gt;mnt_parent
 op_eq
 id|vfsmnt
 )paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
+suffix:semicolon
 r_goto
 id|global_root
 suffix:semicolon
+)brace
 id|dentry
 op_assign
 id|vfsmnt-&gt;mnt_mountpoint
@@ -4247,6 +4263,13 @@ suffix:semicolon
 id|vfsmnt
 op_assign
 id|vfsmnt-&gt;mnt_parent
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|vfsmount_lock
+)paren
 suffix:semicolon
 r_continue
 suffix:semicolon
