@@ -662,12 +662,16 @@ r_int
 r_int
 id|max_host_blocked
 suffix:semicolon
-multiline_comment|/* &n;     * Support for driverfs filesystem&n;     */
+multiline_comment|/* &n;     * Support for sysfs&n;     */
 DECL|member|host_gendev
 r_struct
 id|device
-op_star
 id|host_gendev
+suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
 suffix:semicolon
 multiline_comment|/*&n;     * We should ensure that this is aligned, both for better performance&n;     * and also because some compilers (m68k) don&squot;t automatically force&n;     * alignment to a long boundary.&n;     */
 DECL|member|hostdata
@@ -694,8 +698,10 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|to_scsi_host
-mdefine_line|#define&t;to_scsi_host(d)&t;d-&gt;driver_data&t;/* Major logical breakage, but we compile again... */
+DECL|macro|dev_to_shost
+mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, host_gendev)
+DECL|macro|class_to_shost
+mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, class_dev)
 multiline_comment|/*&n; * These two functions are used to allocate and free a pseudo device&n; * which will connect to the host adapter itself rather than any&n; * physical device.  You must deallocate when you are done with the&n; * thing.  This physical pseudo-device isn&squot;t real and won&squot;t be available&n; * from any high-level drivers.&n; */
 r_extern
 r_void
@@ -789,7 +795,7 @@ op_star
 id|dev
 )paren
 (brace
-id|shost-&gt;host_gendev
+id|shost-&gt;host_gendev.parent
 op_assign
 id|dev
 suffix:semicolon
@@ -810,7 +816,7 @@ id|shost
 )paren
 (brace
 r_return
-id|shost-&gt;host_gendev
+id|shost-&gt;host_gendev.parent
 suffix:semicolon
 )brace
 DECL|struct|Scsi_Device_Template
@@ -1080,6 +1086,40 @@ c_func
 (paren
 r_struct
 id|Scsi_Device_Template
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_sysfs_add_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_sysfs_remove_host
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_free_sdev
+c_func
+(paren
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
