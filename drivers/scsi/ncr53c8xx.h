@@ -2,17 +2,6 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef NCR53C8XX_H
 DECL|macro|NCR53C8XX_H
 mdefine_line|#define NCR53C8XX_H
-multiline_comment|/*&n;**&t;Define the BSD style u_int32 and u_int64 type.&n;**&t;Are in fact u_int32_t and u_int64_t :-)&n;*/
-DECL|typedef|u_int32
-r_typedef
-id|u32
-id|u_int32
-suffix:semicolon
-DECL|typedef|u_int64
-r_typedef
-id|u64
-id|u_int64
-suffix:semicolon
 DECL|typedef|vm_offset_t
 r_typedef
 id|u_long
@@ -112,8 +101,9 @@ DECL|typedef|ncr_nvram
 id|ncr_nvram
 suffix:semicolon
 multiline_comment|/*==========================================================&n;**&n;**&t;Structure used by detection routine to save data on &n;**&t;each detected board for attach.&n;**&n;**==========================================================&n;*/
-r_typedef
+DECL|struct|ncr_device
 r_struct
+id|ncr_device
 (brace
 DECL|member|dev
 r_struct
@@ -152,9 +142,7 @@ DECL|member|attach_done
 r_int
 id|attach_done
 suffix:semicolon
-DECL|typedef|ncr_device
 )brace
-id|ncr_device
 suffix:semicolon
 r_extern
 r_struct
@@ -169,6 +157,7 @@ comma
 r_int
 id|unit
 comma
+r_struct
 id|ncr_device
 op_star
 id|device

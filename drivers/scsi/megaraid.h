@@ -1,7 +1,6 @@
 macro_line|#ifndef __MEGARAID_H__
 DECL|macro|__MEGARAID_H__
 mdefine_line|#define __MEGARAID_H__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|MEGARAID_VERSION
 mdefine_line|#define MEGARAID_VERSION&t;&bslash;&n;&t;&quot;v2.00.3 (Release Date: Wed Feb 19 08:51:30 EST 2003)&bslash;n&quot;

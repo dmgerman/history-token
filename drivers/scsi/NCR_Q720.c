@@ -280,6 +280,7 @@ id|__u32
 id|vaddr
 )paren
 (brace
+r_struct
 id|ncr_device
 id|device
 suffix:semicolon
@@ -380,6 +381,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|ncr_device
 )paren
 )paren
@@ -782,6 +784,12 @@ comma
 id|io_base
 comma
 id|i
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
 )paren
 suffix:semicolon
 r_return

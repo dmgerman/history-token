@@ -6,57 +6,28 @@ mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
-macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/dma-mapping.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#endif
-macro_line|#ifndef&t;__init
-DECL|macro|__init
-mdefine_line|#define&t;__init
-macro_line|#endif
-macro_line|#ifndef&t;__initdata
-DECL|macro|__initdata
-mdefine_line|#define&t;__initdata
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
-macro_line|#include &lt;linux/bios32.h&gt;
-macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n;**&t;Define BITS_PER_LONG for earlier linux versions.&n;*/
-macro_line|#ifndef&t;BITS_PER_LONG
-macro_line|#if (~0UL) == 0xffffffffUL
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;32
-macro_line|#else
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;64
-macro_line|#endif
-macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
 multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
@@ -160,13 +131,13 @@ multiline_comment|/*&n;**&t;Choose appropriate type for tag bitmap.&n;*/
 macro_line|#if&t;MAX_TAGS &gt; 32
 DECL|typedef|tagmap_t
 r_typedef
-id|u_int64
+id|u64
 id|tagmap_t
 suffix:semicolon
 macro_line|#else
 DECL|typedef|tagmap_t
 r_typedef
-id|u_int32
+id|u32
 id|tagmap_t
 suffix:semicolon
 macro_line|#endif
@@ -223,24 +194,6 @@ macro_line|#endif
 multiline_comment|/*&n;**&t;other&n;*/
 DECL|macro|NCR_SNOOP_TIMEOUT
 mdefine_line|#define NCR_SNOOP_TIMEOUT (1000000)
-multiline_comment|/*&n;**&t;Head of list of NCR boards&n;**&n;**&t;For kernel version &lt; 1.3.70, host is retrieved by its irq level.&n;**&t;For later kernels, the internal host control block address &n;**&t;(struct ncb) is used as device id parameter of the irq stuff.&n;*/
-DECL|variable|first_host
-r_static
-r_struct
-id|Scsi_Host
-op_star
-id|first_host
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|the_template
-r_static
-id|Scsi_Host_Template
-op_star
-id|the_template
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;**&t;Other definitions&n;*/
 DECL|macro|ScsiResult
 mdefine_line|#define ScsiResult(host_code, scsi_code) (((host_code) &lt;&lt; 16) + ((scsi_code) &amp; 0x7f))
@@ -751,12 +704,12 @@ suffix:semicolon
 multiline_comment|/* Jump table bus address&t;*/
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Jump table used by the script processor to directly jump &n;&t;**&t;to the CCB corresponding to the reselected nexus.&n;&t;**&t;Address is allocated on 256 bytes boundary in order to &n;&t;**&t;allow 8 bit calculation of the tag jump entry for up to &n;&t;**&t;64 possible tags.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|jump_ccb_0
-id|u_int32
+id|u32
 id|jump_ccb_0
 suffix:semicolon
 multiline_comment|/* Default table if no tags&t;*/
 DECL|member|jump_ccb
-id|u_int32
+id|u32
 op_star
 id|jump_ccb
 suffix:semicolon
@@ -914,24 +867,24 @@ id|head
 (brace
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Saved data pointer.&n;&t;**&t;Points to the position in the script responsible for the&n;&t;**&t;actual transfer transfer of data.&n;&t;**&t;It&squot;s written after reception of a SAVE_DATA_POINTER message.&n;&t;**&t;The goalpointer points after the last transfer command.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|savep
-id|u_int32
+id|u32
 id|savep
 suffix:semicolon
 DECL|member|lastp
-id|u_int32
+id|u32
 id|lastp
 suffix:semicolon
 DECL|member|goalp
-id|u_int32
+id|u32
 id|goalp
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Alternate data pointer.&n;&t;**&t;They are copied back to savep/lastp/goalp by the SCRIPTS &n;&t;**&t;when the direction is unknown and the device claims data out.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|wlastp
-id|u_int32
+id|u32
 id|wlastp
 suffix:semicolon
 DECL|member|wgoalp
-id|u_int32
+id|u32
 id|wgoalp
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;The virtual address of the ccb containing this header.&n;&t;**----------------------------------------------------------------&n;&t;*/
@@ -1173,7 +1126,7 @@ id|link_ccbq
 suffix:semicolon
 multiline_comment|/* Link to unit CCB queue&t;*/
 DECL|member|startp
-id|u_int32
+id|u32
 id|startp
 suffix:semicolon
 multiline_comment|/* Initial data pointer&t;&t;*/
@@ -1212,13 +1165,11 @@ id|done_list
 suffix:semicolon
 multiline_comment|/* Commands waiting for done()  */
 multiline_comment|/* callback to be invoked.      */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
 suffix:semicolon
 multiline_comment|/* Lock for SMP threading       */
-macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;Chip and controller indentification.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|unit
 r_int
@@ -1383,7 +1334,9 @@ suffix:semicolon
 multiline_comment|/*  bus addresses.&t;&t;*/
 multiline_comment|/*----------------------------------------------------------------&n;&t;**&t;General controller parameters and configuration.&n;&t;**----------------------------------------------------------------&n;&t;*/
 DECL|member|dev
-id|device_t
+r_struct
+id|device
+op_star
 id|dev
 suffix:semicolon
 DECL|member|device_id
@@ -1533,7 +1486,7 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* Buffer for MESSAGE IN&t;*/
 DECL|member|lastmsg
-id|u_int32
+id|u32
 id|lastmsg
 suffix:semicolon
 multiline_comment|/* Last SCSI message sent&t;*/
@@ -9177,6 +9130,7 @@ comma
 r_int
 id|unit
 comma
+r_struct
 id|ncr_device
 op_star
 id|device
@@ -9270,14 +9224,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ncr53c%s-%d: rev 0x%x on pci bus %d device %d function %d &quot;
-macro_line|#ifdef __sparc__
-l_string|&quot;irq %s&bslash;n&quot;
+l_string|&quot;ncr53c%s-%d: rev 0x%x on bus %d device %d function %d irq %d&bslash;n&quot;
 comma
-macro_line|#else
-l_string|&quot;irq %d&bslash;n&quot;
-comma
-macro_line|#endif
 id|device-&gt;chip.name
 comma
 id|unit
@@ -9298,19 +9246,9 @@ id|device-&gt;slot.device_fn
 op_amp
 l_int|7
 comma
-macro_line|#ifdef __sparc__
-id|__irq_itoa
-c_func
-(paren
-id|device-&gt;slot.irq
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|device-&gt;slot.irq
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;**&t;Allocate host_data structure&n;&t;*/
 r_if
 c_cond
@@ -9599,14 +9537,15 @@ suffix:semicolon
 r_else
 id|np-&gt;vaddr
 op_assign
-id|remap_pci_mem
+(paren
+r_int
+r_int
+)paren
+id|ioremap
 c_func
 (paren
 id|device-&gt;slot.base_c
 comma
-(paren
-id|u_long
-)paren
 l_int|128
 )paren
 suffix:semicolon
@@ -9809,7 +9748,6 @@ op_assign
 id|SCSI_NCR_MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -9818,16 +9756,6 @@ r_int
 )paren
 id|np-&gt;reg
 suffix:semicolon
-macro_line|#else
-id|instance-&gt;base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|np-&gt;reg
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 id|instance-&gt;irq
 op_assign
@@ -10129,7 +10057,7 @@ comma
 l_int|100
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;**&t;Now check the cache handling of the pci chipset.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Now check the cache handling of the chipset.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -10273,23 +10201,6 @@ op_assign
 id|M_SIMPLE_TAG
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;**  Done.&n;&t;*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|the_template
-)paren
-(brace
-id|the_template
-op_assign
-id|instance-&gt;hostt
-suffix:semicolon
-id|first_host
-op_assign
-id|instance
-suffix:semicolon
-)brace
 id|NCR_UNLOCK_NCB
 c_func
 (paren
@@ -11407,7 +11318,7 @@ suffix:semicolon
 r_int
 id|direction
 suffix:semicolon
-id|u_int32
+id|u32
 id|lastp
 comma
 id|goalp
@@ -12901,7 +12812,7 @@ r_int
 id|settle_delay
 )paren
 (brace
-id|u_int32
+id|u32
 id|term
 suffix:semicolon
 r_int
@@ -17955,7 +17866,7 @@ id|u_char
 id|dstat
 )paren
 (brace
-id|u_int32
+id|u32
 id|dsp
 suffix:semicolon
 r_int
@@ -19085,7 +18996,7 @@ id|INB
 id|HS_PRT
 )paren
 suffix:semicolon
-id|u_int32
+id|u32
 id|dbc
 op_assign
 id|INL
@@ -19113,7 +19024,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|u_int32
+id|u32
 id|jmp
 suffix:semicolon
 id|printk
@@ -19293,34 +19204,34 @@ id|ncb_p
 id|np
 )paren
 (brace
-id|u_int32
+id|u32
 id|dbc
 suffix:semicolon
-id|u_int32
+id|u32
 id|rest
 suffix:semicolon
-id|u_int32
+id|u32
 id|dsp
 suffix:semicolon
-id|u_int32
+id|u32
 id|dsa
 suffix:semicolon
-id|u_int32
+id|u32
 id|nxtdsp
 suffix:semicolon
-id|u_int32
+id|u32
 id|newtmp
 suffix:semicolon
-id|u_int32
+id|u32
 op_star
 id|vdsp
 suffix:semicolon
-id|u_int32
+id|u32
 id|oadr
 comma
 id|olen
 suffix:semicolon
-id|u_int32
+id|u32
 op_star
 id|tblp
 suffix:semicolon
@@ -19710,7 +19621,7 @@ id|script
 id|vdsp
 op_assign
 (paren
-id|u_int32
+id|u32
 op_star
 )paren
 (paren
@@ -19756,7 +19667,7 @@ id|scripth
 id|vdsp
 op_assign
 (paren
-id|u_int32
+id|u32
 op_star
 )paren
 (paren
@@ -19947,7 +19858,7 @@ multiline_comment|/* Table indirect */
 id|tblp
 op_assign
 (paren
-id|u_int32
+id|u32
 op_star
 )paren
 (paren
@@ -19989,7 +19900,7 @@ r_else
 id|tblp
 op_assign
 (paren
-id|u_int32
+id|u32
 op_star
 )paren
 l_int|0
@@ -20615,7 +20526,7 @@ id|busy_cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|u_int32
+id|u32
 id|startp
 suffix:semicolon
 id|u_char
@@ -24824,7 +24735,7 @@ r_return
 id|segment
 suffix:semicolon
 )brace
-multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Test the pci bus snoop logic :-(&n;**&n;**&t;Has to be called with interrupts disabled.&n;**&n;**&n;**==========================================================&n;*/
+multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Test the bus snoop logic :-(&n;**&n;**&t;Has to be called with interrupts disabled.&n;**&n;**&n;**==========================================================&n;*/
 macro_line|#ifndef SCSI_NCR_IOMAPPED
 DECL|function|ncr_regtest
 r_static
@@ -24840,7 +24751,7 @@ id|np
 (brace
 r_register
 r_volatile
-id|u_int32
+id|u32
 id|data
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;ncr registers may NOT be cached.&n;&t;**&t;write 0xffffffff to a read only register area,&n;&t;**&t;and try to read it back.&n;&t;*/
@@ -24935,7 +24846,7 @@ op_star
 id|np
 )paren
 (brace
-id|u_int32
+id|u32
 id|ncr_rd
 comma
 id|ncr_wr
@@ -28530,14 +28441,8 @@ c_func
 op_amp
 id|info
 comma
-l_string|&quot;  On PCI bus %d, device %d, function %d, &quot;
-macro_line|#ifdef __sparc__
-l_string|&quot;IRQ %s&bslash;n&quot;
+l_string|&quot;  On PCI bus %d, device %d, function %d, IRQ %d&bslash;n&quot;
 comma
-macro_line|#else
-l_string|&quot;IRQ %d&bslash;n&quot;
-comma
-macro_line|#endif
 id|np-&gt;bus
 comma
 (paren
@@ -28552,22 +28457,12 @@ id|np-&gt;device_fn
 op_amp
 l_int|7
 comma
-macro_line|#ifdef __sparc__
-id|__irq_itoa
-c_func
-(paren
-id|np-&gt;irq
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 (paren
 r_int
 )paren
 id|np-&gt;irq
 )paren
 suffix:semicolon
-macro_line|#endif
 id|copy_info
 c_func
 (paren
@@ -28760,31 +28655,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*=========================================================================&n;**&t;End of proc file system stuff&n;**=========================================================================&n;*/
 macro_line|#endif
-multiline_comment|/*==========================================================&n;**&n;**&t;/proc directory entry.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
-DECL|variable|proc_scsi_ncr53c8xx
-r_static
-r_struct
-id|proc_dir_entry
-id|proc_scsi_ncr53c8xx
-op_assign
-(brace
-id|PROC_SCSI_NCR53C8XX
-comma
-l_int|9
-comma
-id|NAME53C8XX
-comma
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-l_int|2
-)brace
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;Boot command line.&n;**&n;**==========================================================&n;*/
 macro_line|#ifdef&t;MODULE
 DECL|variable|ncr53c8xx
@@ -28795,7 +28665,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-macro_line|# if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_PARM
 c_func
 (paren
@@ -28804,7 +28673,6 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-macro_line|# endif
 macro_line|#endif
 DECL|function|ncr53c8xx_setup
 r_int
@@ -28825,7 +28693,6 @@ id|str
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -28836,92 +28703,6 @@ id|ncr53c8xx_setup
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-multiline_comment|/*===================================================================&n;**&n;**   SYM53C8XX supported device list&n;**&n;**===================================================================&n;*/
-DECL|variable|__initdata
-r_static
-id|u_short
-id|ncr_chip_ids
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-id|PSEUDO_720_ID
-comma
-id|PCI_DEVICE_ID_NCR_53C810
-comma
-id|PCI_DEVICE_ID_NCR_53C815
-comma
-id|PCI_DEVICE_ID_NCR_53C820
-comma
-id|PCI_DEVICE_ID_NCR_53C825
-comma
-id|PCI_DEVICE_ID_NCR_53C860
-comma
-id|PCI_DEVICE_ID_NCR_53C875
-comma
-id|PCI_DEVICE_ID_NCR_53C875J
-comma
-id|PCI_DEVICE_ID_NCR_53C885
-comma
-id|PCI_DEVICE_ID_NCR_53C895
-comma
-id|PCI_DEVICE_ID_NCR_53C896
-comma
-id|PCI_DEVICE_ID_NCR_53C895A
-comma
-id|PCI_DEVICE_ID_NCR_53C1510D
-)brace
-suffix:semicolon
-multiline_comment|/*==========================================================&n;**&n;**&t;Chip detection entry point.&n;**&n;**==========================================================&n;*/
-DECL|function|ncr53c8xx_detect
-r_int
-id|__init
-id|ncr53c8xx_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-)paren
-(brace
-macro_line|#if&t;defined(SCSI_NCR_BOOT_COMMAND_LINE_SUPPORT) &amp;&amp; defined(MODULE)
-r_if
-c_cond
-(paren
-id|ncr53c8xx
-)paren
-id|ncr53c8xx_setup
-c_func
-(paren
-id|ncr53c8xx
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|sym53c8xx__detect
-c_func
-(paren
-id|tpnt
-comma
-id|ncr_chip_ids
-comma
-r_sizeof
-(paren
-id|ncr_chip_ids
-)paren
-op_div
-r_sizeof
-(paren
-id|ncr_chip_ids
-(braket
-l_int|0
-)braket
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*==========================================================&n;**&n;**   Entry point for info() function&n;**&n;**==========================================================&n;*/
 DECL|function|ncr53c8xx_info
 r_const
