@@ -687,7 +687,7 @@ op_star
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Fault a userspace page into pagetables.  Return non-zero on a fault.&n; *&n; * FIXME: this assumes that two userspace pages are always sufficient.  That&squot;s&n; * not true if PAGE_CACHE_SIZE &gt; PAGE_SIZE.&n; */
+multiline_comment|/*&n; * Fault a userspace page into pagetables.  Return non-zero on a fault.&n; *&n; * This assumes that two userspace pages are always sufficient.  That&squot;s&n; * not true if PAGE_CACHE_SIZE &gt; PAGE_SIZE.&n; */
 DECL|function|fault_in_pages_writeable
 r_static
 r_inline
