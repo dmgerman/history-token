@@ -1738,8 +1738,9 @@ id|notifier_block
 id|led_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|led_halt
 comma
 )brace
