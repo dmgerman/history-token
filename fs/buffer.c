@@ -1851,28 +1851,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * swap page handling is a bit hacky.  A standalone completion handler&n;&t; * for swapout pages would fix that up.  swapin can use this function.&n;&t; */
-r_if
-c_cond
-(paren
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
-op_logical_and
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-)paren
-id|end_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|unlock_page
 c_func
 (paren
@@ -1895,7 +1873,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Completion handler for block_write_full_page() - pages which are unlocked&n; * during I/O, and which have PageWriteback cleared upon I/O completion.&n; */
+multiline_comment|/*&n; * Completion handler for block_write_full_page() and for brw_page() - pages&n; * which are unlocked during I/O, and which have PageWriteback cleared&n; * upon I/O completion.&n; */
 DECL|function|end_buffer_async_write
 r_static
 r_void
@@ -8530,7 +8508,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to throttle processes which reuse their swapcache pages while&n; * they are under writeout, and to ensure that there is no I/O going on&n; * when the page has been successfully locked.  Functions such as&n; * free_swap_and_cache() need to guarantee that there is no I/O in progress&n; * because they will be freeing up swap blocks, which may then be reused.&n; *&n; * Swap pages are also marked PageWriteback when they are being written&n; * so that memory allocators will throttle on them.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page
@@ -8654,14 +8632,22 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|mark_buffer_async_write
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Swap pages are locked during writeout, so use&n;&t;&t; * buffer_async_read in strange ways.&n;&t;&t; */
+r_else
+(brace
 id|mark_buffer_async_read
 c_func
 (paren
 id|bh
 )paren
 suffix:semicolon
+)brace
 id|bh
 op_assign
 id|bh-&gt;b_this_page
@@ -8694,6 +8680,12 @@ id|page
 )paren
 suffix:semicolon
 id|SetPageWriteback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|unlock_page
 c_func
 (paren
 id|page
