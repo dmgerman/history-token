@@ -8230,6 +8230,17 @@ op_amp
 id|statbuf-&gt;st_rdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|stat-&gt;size
+OG
+id|MAX_NON_LFS
+)paren
+r_return
+op_minus
+id|EOVERFLOW
+suffix:semicolon
 id|err
 op_or_assign
 id|put_user
