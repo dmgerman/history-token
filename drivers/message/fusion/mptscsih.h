@@ -10,7 +10,7 @@ multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 multiline_comment|/*&n; *&t;SCSI Public stuff...&n; */
 multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
 DECL|macro|MPT_FC_CAN_QUEUE
-mdefine_line|#define MPT_FC_CAN_QUEUE&t;63
+mdefine_line|#define MPT_FC_CAN_QUEUE&t;127
 macro_line|#if defined MPT_SCSI_USE_NEW_EH
 DECL|macro|MPT_SCSI_CAN_QUEUE
 mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;127
@@ -76,49 +76,11 @@ multiline_comment|/*&n; *&t;Various bits and pieces broke within the lk-2.4.0-te
 multiline_comment|/*&n; *&t;Conditionalizing with &quot;#ifdef MODULE/#endif&quot; around:&n; *&t;&t;static Scsi_Host_Template driver_template = XX;&n; *&t;&t;#include &lt;../../scsi/scsi_module.c&gt;&n; *&t;lines was REMOVED @ lk-2.4.0-test9&n; *&t;Issue discovered 20001213 by: sshirron&n; */
 DECL|macro|MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
 mdefine_line|#define MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS&t;&t;&t;1
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,4,0)
-macro_line|#&t;if LINUX_VERSION_CODE == KERNEL_VERSION(2,4,0)
-multiline_comment|/*&n;&t;&t; *&t;Super HACK!  -by sralston:-(&n;&t;&t; *&t;(good grief; heaven help me!)&n;&t;&t; */
-macro_line|#&t;&t;include &lt;linux/capability.h&gt;
-macro_line|#&t;&t;if !defined(CAP_LEASE) &amp;&amp; !defined(MODULE)
-DECL|macro|MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
-macro_line|#&t;&t;&t;undef MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
-macro_line|#&t;&t;endif
-macro_line|#&t;else
-macro_line|#&t;&t;ifndef MODULE
-DECL|macro|MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
-macro_line|#&t;&t;&t;undef MPT_SCSIHOST_NEED_ENTRY_EXIT_HOOKUPS
-macro_line|#&t;&t;endif
-macro_line|#&t;endif
-macro_line|#endif
 multiline_comment|/*&n; *&t;tq_scheduler disappeared @ lk-2.4.0-test12&n; *&t;(right when &lt;linux/sched.h&gt; newly defined TQ_ACTIVE)&n; *&t;tq_struct reworked in 2.5.41. Include workqueue.h.&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 macro_line|#&t;include &lt;linux/sched.h&gt;
 macro_line|#&t;include &lt;linux/workqueue.h&gt;
 DECL|macro|SCHEDULE_TASK
 mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;if (schedule_work(x) == 0) {&t;&bslash;&n;&t;&t;/*MOD_DEC_USE_COUNT*/;&t;&bslash;&n;&t;}
-macro_line|#else
-DECL|macro|HAVE_TQ_SCHED
-mdefine_line|#define HAVE_TQ_SCHED&t;1
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-macro_line|#&t;include &lt;linux/sched.h&gt;
-macro_line|#&t;ifdef TQ_ACTIVE
-DECL|macro|HAVE_TQ_SCHED
-macro_line|#&t;&t;undef HAVE_TQ_SCHED
-macro_line|#&t;endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,40)
-DECL|macro|HAVE_TQ_SCHED
-macro_line|#&t;&t;undef HAVE_TQ_SCHED
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifdef HAVE_TQ_SCHED
-DECL|macro|SCHEDULE_TASK
-mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;(x)-&gt;next = NULL;&t;&t;&bslash;&n;&t;queue_task(x, &amp;tq_scheduler)
-macro_line|#else
-DECL|macro|SCHEDULE_TASK
-mdefine_line|#define SCHEDULE_TASK(x)&t;&t;&bslash;&n;&t;/*MOD_INC_USE_COUNT*/;&t;&t;&bslash;&n;&t;if (schedule_task(x) == 0) {&t;&bslash;&n;&t;&t;/*MOD_DEC_USE_COUNT*/;&t;&bslash;&n;&t;}
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|macro|x_scsi_detect
 mdefine_line|#define x_scsi_detect&t;&t;mptscsih_detect
@@ -144,13 +106,12 @@ DECL|macro|x_scsi_old_abort
 mdefine_line|#define x_scsi_old_abort&t;mptscsih_old_abort
 DECL|macro|x_scsi_old_reset
 mdefine_line|#define x_scsi_old_reset&t;mptscsih_old_reset
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
+DECL|macro|x_scsi_slave_alloc
+mdefine_line|#define x_scsi_slave_alloc&t;mptscsih_slave_alloc
 DECL|macro|x_scsi_slave_configure
 mdefine_line|#define x_scsi_slave_configure&t;mptscsih_slave_configure
-macro_line|#else
-DECL|macro|x_scsi_select_queue_depths
-mdefine_line|#define x_scsi_select_queue_depths&t;mptscsih_select_queue_depths
-macro_line|#endif
+DECL|macro|x_scsi_slave_destroy
+mdefine_line|#define x_scsi_slave_destroy&t;mptscsih_slave_destroy
 DECL|macro|x_scsi_proc_info
 mdefine_line|#define x_scsi_proc_info&t;mptscsih_proc_info
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -206,7 +167,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
 r_extern
 r_int
 id|x_scsi_abort
@@ -243,30 +203,6 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-r_extern
-r_int
-id|x_scsi_old_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|x_scsi_old_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,45)
 r_extern
 r_int
 id|x_scsi_bios_param
@@ -290,39 +226,6 @@ op_star
 id|ip
 )paren
 suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
-r_extern
-r_int
-id|x_scsi_bios_param
-c_func
-(paren
-id|Disk
-op_star
-comma
-r_struct
-id|block_device
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-r_extern
-r_int
-id|x_scsi_bios_param
-c_func
-(paren
-id|Disk
-op_star
-comma
-id|kdev_t
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|x_scsi_taskmgmt_bh
@@ -332,7 +235,15 @@ r_void
 op_star
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
+r_extern
+r_int
+id|x_scsi_slave_alloc
+c_func
+(paren
+id|Scsi_Device
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|x_scsi_slave_configure
@@ -342,21 +253,15 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
 r_extern
 r_void
-id|x_scsi_select_queue_depths
+id|x_scsi_slave_destroy
 c_func
 (paren
-r_struct
-id|Scsi_Host
-op_star
-comma
 id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|x_scsi_proc_info
@@ -378,25 +283,10 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
 DECL|macro|PROC_SCSI_DECL
-mdefine_line|#define PROC_SCSI_DECL
-macro_line|#else
-DECL|macro|PROC_SCSI_DECL
-mdefine_line|#define PROC_SCSI_DECL  proc_name: &quot;mptscsih&quot;,
-macro_line|#endif
-macro_line|#ifdef MPT_SCSI_USE_NEW_EH
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,52)
+mdefine_line|#define PROC_SCSI_DECL  .proc_name = &quot;mptscsih&quot;,
 DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.slave_configure&t;&t;= x_scsi_slave_configure,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= x_scsi_host_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.max_sectors&t;&t;&t;= MPT_SCSI_MAX_SECTORS,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;}
-macro_line|#else  /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1) */
-DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.next&t;&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.use_new_eh_code&t;&t;= 1&t;&t;&t;&bslash;&n;}
-macro_line|#endif /* LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,1) */
-macro_line|#else /* MPT_SCSI_USE_NEW_EH */
-DECL|macro|MPT_SCSIHOST
-mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.next&t;&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.abort&t;&t;&t;&t;= x_scsi_old_abort,&t;&bslash;&n;&t;.reset&t;&t;&t;&t;= x_scsi_old_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING&t;&bslash;&n;}
-macro_line|#endif  /* MPT_SCSI_USE_NEW_EH */
+mdefine_line|#define MPT_SCSIHOST {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PROC_SCSI_DECL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= x_scsi_proc_info,&t;&bslash;&n;&t;.name&t;&t;&t;&t;= &quot;MPT SCSI Host&quot;,&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= x_scsi_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= x_scsi_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= x_scsi_info,&t;&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= x_scsi_queuecommand,&t;&bslash;&n;&t;.slave_alloc&t;&t;&t;= x_scsi_slave_alloc,&t;&bslash;&n;&t;.slave_configure&t;&t;= x_scsi_slave_configure,&t;&bslash;&n;&t;.slave_destroy&t;&t;&t;= x_scsi_slave_destroy,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= x_scsi_abort,&t;&t;&bslash;&n;&t;.eh_device_reset_handler&t;= x_scsi_dev_reset,&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= x_scsi_bus_reset,&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= x_scsi_host_reset,&t;&bslash;&n;&t;.bios_param&t;&t;&t;= x_scsi_bios_param,&t;&bslash;&n;&t;.can_queue&t;&t;&t;= MPT_SCSI_CAN_QUEUE,&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= MPT_SCSI_SG_DEPTH,&t;&bslash;&n;&t;.max_sectors&t;&t;&t;= MPT_SCSI_MAX_SECTORS,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= MPT_SCSI_CMD_PER_LUN,&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;}
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*  include/scsi/scsi.h may not be quite complete...  */
 macro_line|#ifndef RESERVE_10

@@ -1,11 +1,16 @@
-multiline_comment|/* &n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2002 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n; * Motion Eye video4linux driver for Sony Vaio PictureBook&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; * &n; * Some parts borrowed from various video4linux drivers, especially&n; * bttv-driver.c and zoran.c, see original files for credits.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef _MEYE_PRIV_H_
 DECL|macro|_MEYE_PRIV_H_
 mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;5
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;6
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/sonypi.h&gt;
+macro_line|#include &lt;linux/meye.h&gt;
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
@@ -530,6 +535,21 @@ id|meye_params
 id|params
 suffix:semicolon
 multiline_comment|/* additional parameters */
+macro_line|#ifdef CONFIG_PM
+DECL|member|pm_state
+id|u32
+id|pm_state
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* PCI configuration space */
+DECL|member|pm_mchip_mode
+id|u8
+id|pm_mchip_mode
+suffix:semicolon
+multiline_comment|/* old mchip mode */
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -31,6 +31,10 @@ DECL|macro|my_VERSION
 mdefine_line|#define my_VERSION&t;MPT_LINUX_VERSION_COMMON
 DECL|macro|MYNAM
 mdefine_line|#define MYNAM&t;&t;&quot;mptctl&quot;
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,62)
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+macro_line|#endif
 DECL|variable|MODULEAUTHOR
 id|MODULE_AUTHOR
 c_func
@@ -196,6 +200,10 @@ c_func
 r_int
 r_int
 id|arg
+comma
+r_int
+r_int
+id|cmd
 )paren
 suffix:semicolon
 r_static
@@ -2190,15 +2198,13 @@ id|iocp-&gt;name
 )paren
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|cmd
-)paren
-(brace
-r_case
+op_eq
 id|MPTFWDOWNLOAD
-suffix:colon
+)paren
 id|ret
 op_assign
 id|mptctl_fw_download
@@ -2207,11 +2213,14 @@ c_func
 id|arg
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+r_else
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
 id|MPTCOMMAND
-suffix:colon
+)paren
 id|ret
 op_assign
 id|mptctl_mpt_command
@@ -2220,11 +2229,14 @@ c_func
 id|arg
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+r_else
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
 id|MPTHARDRESET
-suffix:colon
+)paren
 id|ret
 op_assign
 id|mptctl_do_reset
@@ -2233,24 +2245,46 @@ c_func
 id|arg
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|cmd
+op_amp
+op_complement
+id|IOCSIZE_MASK
+)paren
+op_eq
+(paren
 id|HP_GETHOSTINFO
-suffix:colon
+op_amp
+op_complement
+id|IOCSIZE_MASK
+)paren
+)paren
 id|ret
 op_assign
 id|mptctl_hp_hostinfo
 c_func
 (paren
 id|arg
+comma
+id|_IOC_SIZE
+c_func
+(paren
+id|cmd
+)paren
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+r_else
+r_if
+c_cond
+(paren
+id|cmd
+op_eq
 id|HP_GETTARGETINFO
-suffix:colon
+)paren
 id|ret
 op_assign
 id|mptctl_hp_targetinfo
@@ -2259,16 +2293,12 @@ c_func
 id|arg
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
+r_else
 id|ret
 op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|up
 c_func
 (paren
@@ -4429,6 +4459,23 @@ l_string|&quot;: mptctl_getiocinfo called.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Add of PCI INFO results in unaligned access for&n;&t; * IA64 and Sparc. Reset long to int. Return no PCI&n;&t; * data for obsolete format.&n;&t; */
+r_if
+c_cond
+(paren
+id|data_size
+op_eq
+r_sizeof
+(paren
+r_struct
+id|mpt_ioctl_iocinfo_rev0
+)paren
+)paren
+id|cim_rev
+op_assign
+l_int|0
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -4454,20 +4501,17 @@ op_eq
 r_sizeof
 (paren
 r_struct
-id|mpt_ioctl_iocinfo
+id|mpt_ioctl_iocinfo_rev0
 )paren
-op_minus
-r_sizeof
-(paren
-r_struct
-id|mpt_ioctl_pci_info
-)paren
+op_plus
+l_int|12
 )paren
 )paren
 id|cim_rev
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* obsolete */
 r_else
 r_return
 op_minus
@@ -5233,10 +5277,8 @@ id|maxWordsLeft
 op_le
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -6511,7 +6553,7 @@ op_member_access_from_pointer
 id|size
 suffix:semicolon
 )brace
-multiline_comment|/* Free the old FW image &n;&t; */
+multiline_comment|/* Free the old FW image&n;&t; */
 r_if
 c_cond
 (paren
@@ -7187,6 +7229,9 @@ suffix:colon
 r_case
 id|MPI_FUNCTION_FW_DOWNLOAD
 suffix:colon
+r_case
+id|MPI_FUNCTION_FC_PRIMITIVE_SEND
+suffix:colon
 r_break
 suffix:semicolon
 r_case
@@ -7824,7 +7869,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/*&n;&t;&t; * MPI_FUNCTION_PORT_ENABLE&n;&t;&t; * MPI_FUNCTION_TARGET_CMD_BUFFER_POST&n;&t;&t; * MPI_FUNCTION_TARGET_ASSIST&n;&t;&t; * MPI_FUNCTION_TARGET_STATUS_SEND&n;&t;&t; * MPI_FUNCTION_TARGET_MODE_ABORT&n;&t;&t; * MPI_FUNCTION_IOC_MESSAGE_UNIT_RESET&n;&t;&t; * MPI_FUNCTION_IO_UNIT_RESET&n;&t;&t; * MPI_FUNCTION_HANDSHAKE&n;&t;&t; * MPI_FUNCTION_REPLY_FRAME_REMOVAL&n;&t;&t; * MPI_FUNCTION_EVENT_NOTIFICATION&n;&t;&t; *  (driver handles event notification)&n;&t;&t; * MPI_FUNCTION_EVENT_ACK&n;&t;&t; */
-multiline_comment|/*  What to do with these???  CHECK ME!!!&n;&t;&t;&t;MPI_FUNCTION_FC_LINK_SRVC_BUF_POST&n;&t;&t;&t;MPI_FUNCTION_FC_LINK_SRVC_RSP&n;&t;&t;&t;MPI_FUNCTION_FC_ABORT&n;&t;&t;&t;MPI_FUNCTION_FC_PRIMITIVE_SEND&n;&t;&t;&t;MPI_FUNCTION_LAN_SEND&n;&t;&t;&t;MPI_FUNCTION_LAN_RECEIVE&n;&t;&t; &t;MPI_FUNCTION_LAN_RESET&n;&t;&t;*/
+multiline_comment|/*  What to do with these???  CHECK ME!!!&n;&t;&t;&t;MPI_FUNCTION_FC_LINK_SRVC_BUF_POST&n;&t;&t;&t;MPI_FUNCTION_FC_LINK_SRVC_RSP&n;&t;&t;&t;MPI_FUNCTION_FC_ABORT&n;&t;&t;&t;MPI_FUNCTION_LAN_SEND&n;&t;&t;&t;MPI_FUNCTION_LAN_RECEIVE&n;&t;&t; &t;MPI_FUNCTION_LAN_RESET&n;&t;&t;*/
 id|printk
 c_func
 (paren
@@ -8827,6 +8872,10 @@ c_func
 r_int
 r_int
 id|arg
+comma
+r_int
+r_int
+id|data_size
 )paren
 (brace
 id|hp_host_info_t
@@ -8869,6 +8918,8 @@ id|iocnum
 suffix:semicolon
 r_int
 id|rc
+comma
+id|cim_rev
 suffix:semicolon
 id|dctlprintk
 c_func
@@ -8877,6 +8928,46 @@ c_func
 l_string|&quot;: mptctl_hp_hostinfo called.&bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Reset long to int. Should affect IA64 and SPARC only&n;&t; */
+r_if
+c_cond
+(paren
+id|data_size
+op_eq
+r_sizeof
+(paren
+id|hp_host_info_t
+)paren
+)paren
+id|cim_rev
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|data_size
+op_eq
+(paren
+r_sizeof
+(paren
+id|hp_host_info_t
+)paren
+op_plus
+l_int|12
+)paren
+)paren
+id|cim_rev
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* obsolete */
+r_else
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -9002,7 +9093,7 @@ id|karg.bus
 op_assign
 id|pdev-&gt;bus-&gt;number
 suffix:semicolon
-multiline_comment|/* Save the SCSI host no. if&n;&t; * SCSI driver loaded &n;&t; */
+multiline_comment|/* Save the SCSI host no. if&n;&t; * SCSI driver loaded&n;&t; */
 r_if
 c_cond
 (paren
@@ -9479,6 +9570,12 @@ r_if
 c_cond
 (paren
 id|hd
+op_logical_and
+(paren
+id|cim_rev
+op_eq
+l_int|1
+)paren
 )paren
 (brace
 id|karg.hard_resets
@@ -10256,7 +10353,7 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,51)
 DECL|macro|owner_THIS_MODULE
-mdefine_line|#define&t;owner_THIS_MODULE  owner:&t;&t;THIS_MODULE,
+mdefine_line|#define&t;owner_THIS_MODULE  .owner = THIS_MODULE,
 macro_line|#else
 DECL|macro|owner_THIS_MODULE
 mdefine_line|#define&t;owner_THIS_MODULE
@@ -11109,6 +11206,27 @@ op_assign
 id|register_ioctl32_conversion
 c_func
 (paren
+id|MPTIOCINFO1
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|where
+op_logical_and
+id|err
+)paren
+r_goto
+id|out_fail
+suffix:semicolon
+id|err
+op_assign
+id|register_ioctl32_conversion
+c_func
+(paren
 id|MPTTARGETINFO
 comma
 l_int|NULL
@@ -11469,6 +11587,12 @@ id|unregister_ioctl32_conversion
 c_func
 (paren
 id|MPTIOCINFO
+)paren
+suffix:semicolon
+id|unregister_ioctl32_conversion
+c_func
+(paren
+id|MPTIOCINFO1
 )paren
 suffix:semicolon
 id|unregister_ioctl32_conversion

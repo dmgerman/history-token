@@ -32,7 +32,6 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|function|enter_lazy_tlb
 r_static
 r_inline
@@ -54,6 +53,7 @@ r_int
 id|cpu
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -75,31 +75,8 @@ id|state
 op_assign
 id|TLBSTATE_LAZY
 suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|enter_lazy_tlb
-r_static
-r_inline
-r_void
-id|enter_lazy_tlb
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_int
-id|cpu
-)paren
-(brace
-)brace
 macro_line|#endif
+)brace
 DECL|function|switch_mm
 r_static
 r_inline
