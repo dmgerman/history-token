@@ -3017,7 +3017,7 @@ c_func
 op_amp
 id|tsk-&gt;usage
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return

@@ -9,27 +9,6 @@ r_struct
 id|ia64_machine_vector
 id|ia64_mv
 suffix:semicolon
-multiline_comment|/*&n; * Most platforms use this routine for mapping page frame addresses into a memory map&n; * index.&n; *&n; * Note: we can&squot;t use __pa() because map_nr_dense(X) MUST map to something &gt;= max_mapnr if&n; * X is outside the identity mapped kernel space.&n; */
-r_int
-r_int
-DECL|function|map_nr_dense
-id|map_nr_dense
-(paren
-r_int
-r_int
-id|addr
-)paren
-(brace
-r_return
-(paren
-id|addr
-op_minus
-id|PAGE_OFFSET
-)paren
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-)brace
 r_static
 r_struct
 id|ia64_machine_vector

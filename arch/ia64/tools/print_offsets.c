@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
+multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * print_offsets.awk).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm-ia64/processor.h&gt;
@@ -1535,6 +1535,55 @@ comma
 l_string|&quot;IA64_CLONE_VM&quot;
 comma
 id|CLONE_VM
+)brace
+comma
+multiline_comment|/* used by fsys_gettimeofday in arch/ia64/kernel/fsys.S */
+(brace
+l_string|&quot;IA64_CPUINFO_ITM_DELTA_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|itm_delta
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPUINFO_ITM_NEXT_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|itm_next
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPUINFO_NSEC_PER_CYC_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|nsec_per_cyc
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_TIMESPEC_TV_NSEC_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|timespec
+comma
+id|tv_nsec
+)paren
 )brace
 comma
 )brace

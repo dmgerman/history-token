@@ -3,6 +3,7 @@ DECL|macro|_LINUX_LIST_H
 mdefine_line|#define _LINUX_LIST_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/prefetch.h&gt;
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Simple doubly linked list implementation.&n; *&n; * Some of the internal functions (&quot;__xxx&quot;) are useful when&n; * manipulating whole lists rather than single entries, as&n; * sometimes we already know the next/prev entries and we can&n; * generate better code by using them directly rather than&n; * using the generic single-entry routines.&n; */
 DECL|struct|list_head

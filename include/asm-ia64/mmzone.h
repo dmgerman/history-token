@@ -29,7 +29,7 @@ mdefine_line|#define node_localnr(pfn, nid)&t;((pfn) - NODE_DATA(nid)-&gt;node_s
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(struct page *)(node_mem_map(pfn_to_nid(pfn)) + node_localnr(pfn, pfn_to_nid(pfn)))
 DECL|macro|pfn_to_nid
-mdefine_line|#define pfn_to_nid(pfn)&t;&t; local_node_data-&gt;node_id_map[(pfn &lt;&lt; PAGE_SHIFT) &gt;&gt; DIG_BANKSHIFT]
+mdefine_line|#define pfn_to_nid(pfn)&t;&t; local_node_data-&gt;node_id_map[(pfn &lt;&lt; PAGE_SHIFT) &gt;&gt; BANKSHIFT]
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;(long)((page - page_zone(page)-&gt;zone_mem_map) + page_zone(page)-&gt;zone_start_pfn)
 multiline_comment|/*&n; * pfn_valid should be made as fast as possible, and the current definition&n; * is valid for machines that are NUMA, but still contiguous, which is what&n; * is currently supported. A more generalised, but slower definition would&n; * be something like this - mbligh:&n; * ( pfn_to_pgdat(pfn) &amp;&amp; (pfn &lt; node_end_pfn(pfn_to_nid(pfn))) )&n; */
@@ -52,19 +52,19 @@ multiline_comment|/*&n; * Bank definitions.&n; * Configurable settings for DIG: 
 DECL|macro|NR_BANKS_PER_NODE
 mdefine_line|#define NR_BANKS_PER_NODE&t;32
 macro_line|#if defined(CONFIG_IA64_NODESIZE_16GB)
-DECL|macro|DIG_BANKSHIFT
-macro_line|# define DIG_BANKSHIFT&t;&t;29
+DECL|macro|BANKSHIFT
+macro_line|# define BANKSHIFT&t;&t;29
 macro_line|#elif defined(CONFIG_IA64_NODESIZE_64GB)
-DECL|macro|DIG_BANKSHIFT
-macro_line|# define DIG_BANKSHIFT&t;&t;31
+DECL|macro|BANKSHIFT
+macro_line|# define BANKSHIFT&t;&t;31
 macro_line|#elif defined(CONFIG_IA64_NODESIZE_256GB)
-DECL|macro|DIG_BANKSHIFT
-macro_line|# define DIG_BANKSHIFT&t;&t;33
+DECL|macro|BANKSHIFT
+macro_line|# define BANKSHIFT&t;&t;33
 macro_line|#else
 macro_line|# error Unsupported bank and nodesize!
 macro_line|#endif
 DECL|macro|BANKSIZE
-mdefine_line|#define BANKSIZE&t;&t;(1UL &lt;&lt; DIG_BANKSHIFT)
+mdefine_line|#define BANKSIZE&t;&t;(1UL &lt;&lt; BANKSHIFT)
 DECL|macro|BANK_OFFSET
 mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
 DECL|macro|NR_BANKS
@@ -74,7 +74,32 @@ DECL|macro|VALID_MEM_KADDR
 mdefine_line|#define VALID_MEM_KADDR(kaddr)&t;1
 multiline_comment|/*&n; * Given a nodeid &amp; a bank number, find the address of the mem_map&n; * entry for the first page of the bank.&n; */
 DECL|macro|BANK_MEM_MAP_INDEX
-mdefine_line|#define BANK_MEM_MAP_INDEX(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr) &amp; (MAX_PHYS_MEMORY-1)) &gt;&gt; DIG_BANKSHIFT)
+mdefine_line|#define BANK_MEM_MAP_INDEX(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr) &amp; (MAX_PHYS_MEMORY-1)) &gt;&gt; BANKSHIFT)
+macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
+multiline_comment|/*&n; * SGI SN2 discontig definitions&n; */
+DECL|macro|MAX_PHYSNODE_ID
+mdefine_line|#define MAX_PHYSNODE_ID&t;2048&t;/* 2048 node ids (also called nasid) */
+DECL|macro|NR_NODES
+mdefine_line|#define NR_NODES&t;128&t;/* Maximum number of nodes in SSI */
+DECL|macro|MAX_PHYS_MEMORY
+mdefine_line|#define MAX_PHYS_MEMORY&t;(1UL &lt;&lt; 49)
+DECL|macro|BANKSHIFT
+mdefine_line|#define BANKSHIFT&t;&t;38
+DECL|macro|NR_BANKS_PER_NODE
+mdefine_line|#define NR_BANKS_PER_NODE&t;4
+DECL|macro|SN2_NODE_SIZE
+mdefine_line|#define SN2_NODE_SIZE&t;&t;(64UL*1024*1024*1024)&t;/* 64GB per node */
+DECL|macro|BANKSIZE
+mdefine_line|#define BANKSIZE&t;&t;(SN2_NODE_SIZE/NR_BANKS_PER_NODE)
+DECL|macro|BANK_OFFSET
+mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
+DECL|macro|NR_BANKS
+mdefine_line|#define NR_BANKS&t;&t;(NR_BANKS_PER_NODE * NR_NODES)
+DECL|macro|VALID_MEM_KADDR
+mdefine_line|#define VALID_MEM_KADDR(kaddr)&t;1
+multiline_comment|/*&n; * Given a nodeid &amp; a bank number, find the address of the mem_map&n; * entry for the first page of the bank.&n; */
+DECL|macro|BANK_MEM_MAP_INDEX
+mdefine_line|#define BANK_MEM_MAP_INDEX(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr) &amp; (MAX_PHYS_MEMORY-1)) &gt;&gt; BANKSHIFT)
 macro_line|#endif /* CONFIG_IA64_DIG */
 macro_line|#endif /* _ASM_IA64_MMZONE_H */
 eof
