@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *  USB ATI Remote support&n; *&n; *  Version 2.2.0 Copyright (c) 2004 Torrey Hoffman &lt;thoffman@arnor.net&gt;&n; *  Version 2.1.1 Copyright (c) 2002 Vladimir Dergachev&n; *&n; *  This 2.2.0 version is a rewrite / cleanup of the 2.1.1 driver, including&n; *  porting to the 2.6 kernel interfaces, along with other modification &n; *  to better match the style of the existing usb/input drivers.  However, the&n; *  protocol and hardware handling is essentially unchanged from 2.1.1.&n; *  &n; *  The 2.1.1 driver was derived from the usbati_remote and usbkbd drivers by &n; *  Vojtech Pavlik.&n; *&n; *  Changes:&n; *&n; *  Feb 2004: Torrey Hoffman &lt;thoffman@arnor.net&gt;&n; *            Version 2.2.0&n; *&n; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &n; *&n; * Hardware &amp; software notes&n; *&n; * These remote controls are distributed by ATI as part of their &n; * &quot;All-In-Wonder&quot; video card packages.  The receiver self-identifies as a &n; * &quot;USB Receiver&quot; with manufacturer &quot;X10 Wireless Technology Inc&quot;.&n; *&n; * It is possible to use multiple receivers and remotes on multiple computers &n; * simultaneously by configuring them to use specific channels.&n; * &n; * The RF protocol used by the remote supports 16 distinct channels, 1 to 16.  &n; * Actually, it may even support more, at least in some revisions of the &n; * hardware.&n; *&n; * Each remote can be configured to transmit on one channel as follows:&n; *   - Press and hold the &quot;hand icon&quot; button.  &n; *   - When the red LED starts to blink, let go of the &quot;hand icon&quot; button. &n; *   - When it stops blinking, input the channel code as two digits, from 01 &n; *     to 16, and press the hand icon again.&n; * &n; * The timing can be a little tricky.  Try loading the module with debug=1&n; * to have the kernel print out messages about the remote control number&n; * and mask.  Note: debugging prints remote numbers as zero-based hexadecimal.&n; *&n; * The driver has a &quot;channel_mask&quot; parameter. This bitmask specifies which&n; * channels will be ignored by the module.  To mask out channels, just add &n; * all the 2^channel_number values together.&n; *&n; * For instance, set channel_mask = 2^4 = 16 (binary 10000) to make ati_remote&n; * ignore signals coming from remote controls transmitting on channel 4, but &n; * accept all other channels.&n; *&n; * Or, set channel_mask = 65533, (0xFFFD), and all channels except 1 will be &n; * ignored.&n; *&n; * The default is 0 (respond to all channels). Bit 0 and bits 17-32 of this &n; * parameter are unused.&n; *&n; */
+multiline_comment|/* &n; *  USB ATI Remote support&n; *&n; *  Version 2.2.0 Copyright (c) 2004 Torrey Hoffman &lt;thoffman@arnor.net&gt;&n; *  Version 2.1.1 Copyright (c) 2002 Vladimir Dergachev&n; *&n; *  This 2.2.0 version is a rewrite / cleanup of the 2.1.1 driver, including&n; *  porting to the 2.6 kernel interfaces, along with other modification &n; *  to better match the style of the existing usb/input drivers.  However, the&n; *  protocol and hardware handling is essentially unchanged from 2.1.1.&n; *  &n; *  The 2.1.1 driver was derived from the usbati_remote and usbkbd drivers by &n; *  Vojtech Pavlik.&n; *&n; *  Changes:&n; *&n; *  Feb 2004: Torrey Hoffman &lt;thoffman@arnor.net&gt;&n; *            Version 2.2.0&n; *  Jun 2004: Torrey Hoffman &lt;thoffman@arnor.net&gt;&n; *            Version 2.2.1&n; *            Added key repeat support contributed by:&n; *                Vincent Vanackere &lt;vanackere@lif.univ-mrs.fr&gt;&n; *            Added support for the &quot;Lola&quot; remote contributed by:&n; *                Seth Cohn &lt;sethcohn@yahoo.com&gt;&n; *&n; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * &n; *&n; * Hardware &amp; software notes&n; *&n; * These remote controls are distributed by ATI as part of their &n; * &quot;All-In-Wonder&quot; video card packages.  The receiver self-identifies as a &n; * &quot;USB Receiver&quot; with manufacturer &quot;X10 Wireless Technology Inc&quot;.&n; *&n; * The &quot;Lola&quot; remote is available from X10.  See: &n; *    http://www.x10.com/products/lola_sg1.htm&n; * The Lola is similar to the ATI remote but has no mouse support, and slightly&n; * different keys.&n; *&n; * It is possible to use multiple receivers and remotes on multiple computers &n; * simultaneously by configuring them to use specific channels.&n; * &n; * The RF protocol used by the remote supports 16 distinct channels, 1 to 16.  &n; * Actually, it may even support more, at least in some revisions of the &n; * hardware.&n; *&n; * Each remote can be configured to transmit on one channel as follows:&n; *   - Press and hold the &quot;hand icon&quot; button.  &n; *   - When the red LED starts to blink, let go of the &quot;hand icon&quot; button. &n; *   - When it stops blinking, input the channel code as two digits, from 01 &n; *     to 16, and press the hand icon again.&n; * &n; * The timing can be a little tricky.  Try loading the module with debug=1&n; * to have the kernel print out messages about the remote control number&n; * and mask.  Note: debugging prints remote numbers as zero-based hexadecimal.&n; *&n; * The driver has a &quot;channel_mask&quot; parameter. This bitmask specifies which&n; * channels will be ignored by the module.  To mask out channels, just add &n; * all the 2^channel_number values together.&n; *&n; * For instance, set channel_mask = 2^4 = 16 (binary 10000) to make ati_remote&n; * ignore signals coming from remote controls transmitting on channel 4, but &n; * accept all other channels.&n; *&n; * Or, set channel_mask = 65533, (0xFFFD), and all channels except 1 will be &n; * ignored.&n; *&n; * The default is 0 (respond to all channels). Bit 0 and bits 17-32 of this &n; * parameter are unused.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -13,8 +13,10 @@ DECL|macro|ATI_REMOTE_VENDOR_ID
 mdefine_line|#define ATI_REMOTE_VENDOR_ID &t;0x0bc7
 DECL|macro|ATI_REMOTE_PRODUCT_ID
 mdefine_line|#define ATI_REMOTE_PRODUCT_ID &t;0x004
+DECL|macro|LOLA_REMOTE_PRODUCT_ID
+mdefine_line|#define LOLA_REMOTE_PRODUCT_ID &t;0x002
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &t;        &quot;2.2.0&quot;
+mdefine_line|#define DRIVER_VERSION &t;        &quot;2.2.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR           &quot;Torrey Hoffman &lt;thoffman@arnor.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -98,6 +100,16 @@ c_func
 id|ATI_REMOTE_VENDOR_ID
 comma
 id|ATI_REMOTE_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ATI_REMOTE_VENDOR_ID
+comma
+id|LOLA_REMOTE_PRODUCT_ID
 )paren
 )brace
 comma
@@ -188,9 +200,9 @@ comma
 l_int|20
 )brace
 suffix:semicolon
-multiline_comment|/* Duplicate event filtering time. &n; * Sequential, identical KIND_FILTERED inputs with less than&n; * FILTER_TIME jiffies between them are dropped.  &n; * (HZ &gt;&gt; 4) == 1/16th of a second and works well for me.&n; */
+multiline_comment|/* Duplicate event filtering time. &n; * Sequential, identical KIND_FILTERED inputs with less than&n; * FILTER_TIME jiffies between them are considered as repeat&n; * events. The hardware generates 5 events for the first keypress&n; * and we have to take this into account for an accurate repeat&n; * behaviour.&n; * (HZ / 20) == 50 ms and works well for me.&n; */
 DECL|macro|FILTER_TIME
-mdefine_line|#define FILTER_TIME (HZ &gt;&gt; 4)
+mdefine_line|#define FILTER_TIME (HZ / 20)
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -293,6 +305,11 @@ r_int
 id|acc_jiffies
 suffix:semicolon
 multiline_comment|/* handle acceleration */
+DECL|member|repeat_count
+r_int
+r_int
+id|repeat_count
+suffix:semicolon
 DECL|member|name
 r_char
 id|name
@@ -1202,6 +1219,96 @@ l_int|1
 )brace
 comma
 multiline_comment|/* (&squot;&squot;) */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xf0
+comma
+l_int|0x2b
+comma
+id|EV_KEY
+comma
+id|KEY_PREVIOUS
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* (&lt;-) */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xef
+comma
+l_int|0x2a
+comma
+id|EV_KEY
+comma
+id|KEY_NEXT
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* (&gt;+) */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xf2
+comma
+l_int|0x2D
+comma
+id|EV_KEY
+comma
+id|KEY_INFO
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* PLAYING */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xf3
+comma
+l_int|0x2E
+comma
+id|EV_KEY
+comma
+id|KEY_HOME
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* TOP */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xf4
+comma
+l_int|0x2F
+comma
+id|EV_KEY
+comma
+id|KEY_END
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* END */
+(brace
+id|KIND_FILTERED
+comma
+l_int|0xf5
+comma
+l_int|0x30
+comma
+id|EV_KEY
+comma
+id|KEY_SELECT
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* SELECT */
 (brace
 id|KIND_END
 comma
@@ -2426,13 +2533,58 @@ id|jiffies
 )paren
 )paren
 (brace
+id|ati_remote-&gt;repeat_count
+op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ati_remote-&gt;repeat_count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|ati_remote-&gt;old_data
+(braket
+l_int|0
+)braket
+op_assign
+id|data
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|ati_remote-&gt;old_data
+(braket
+l_int|1
+)braket
+op_assign
+id|data
+(braket
+l_int|2
+)braket
+suffix:semicolon
 id|ati_remote-&gt;old_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ati_remote-&gt;repeat_count
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+id|ati_remote-&gt;repeat_count
+OL
+l_int|5
+)paren
+)paren
 r_return
 suffix:semicolon
-)brace
 id|input_regs
 c_func
 (paren
@@ -2490,30 +2642,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|ati_remote-&gt;old_data
-(braket
-l_int|0
-)braket
-op_assign
-id|data
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|ati_remote-&gt;old_data
-(braket
-l_int|1
-)braket
-op_assign
-id|data
-(braket
-l_int|2
-)braket
-suffix:semicolon
-id|ati_remote-&gt;old_jiffies
-op_assign
-id|jiffies
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3589,17 +3717,23 @@ id|ATI_REMOTE_VENDOR_ID
 )paren
 op_logical_or
 (paren
+(paren
 id|udev-&gt;descriptor.idProduct
 op_ne
 id|ATI_REMOTE_PRODUCT_ID
 )paren
+op_logical_and
+(paren
+id|udev-&gt;descriptor.idProduct
+op_ne
+id|LOLA_REMOTE_PRODUCT_ID
 )paren
-(brace
+)paren
+)paren
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 multiline_comment|/* Allocate and clear an ati_remote struct */
 r_if
 c_cond
