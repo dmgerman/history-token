@@ -236,6 +236,11 @@ id|machine_is_h1940
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_smdk2410
+c_func
+(paren
+)paren
 )paren
 (brace
 id|timer_ticks_usec
