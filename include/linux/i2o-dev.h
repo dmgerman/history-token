@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * I2O user space accessible structures/APIs&n; * &n; * (c) Copyright 1999, 2000 Red Hat Software&n; *&n; * This program is free software; you can redistribute it and/or &n; * modify it under the terms of the GNU General Public License &n; * as published by the Free Software Foundation; either version &n; * 2 of the License, or (at your option) any later version.  &n; * &n; *************************************************************************&n; *&n; * This header file defines the I2O APIs that are available to both&n; * the kernel and user level applications.  Kernel specific structures&n; * are defined in i2o_osm. OSMs should include _only_ i2o_osm.h which&n; * automatically includs this file.&n; *&n; */
+multiline_comment|/*&n; * I2O user space accessible structures/APIs&n; *&n; * (c) Copyright 1999, 2000 Red Hat Software&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; *************************************************************************&n; *&n; * This header file defines the I2O APIs that are available to both&n; * the kernel and user level applications.  Kernel specific structures&n; * are defined in i2o_osm. OSMs should include _only_ i2o_osm.h which&n; * automatically includs this file.&n; *&n; */
 macro_line|#ifndef _I2O_DEV_H
 DECL|macro|_I2O_DEV_H
 mdefine_line|#define _I2O_DEV_H
 multiline_comment|/* How many controllers are we allowing */
 DECL|macro|MAX_I2O_CONTROLLERS
 mdefine_line|#define MAX_I2O_CONTROLLERS&t;32
-macro_line|#include &lt;linux/ioctl.h&gt;
+singleline_comment|//#include &lt;linux/ioctl.h&gt;
 multiline_comment|/*&n; * I2O Control IOCTLs and structures&n; */
 DECL|macro|I2O_MAGIC_NUMBER
 mdefine_line|#define I2O_MAGIC_NUMBER&t;&squot;i&squot;
@@ -35,6 +35,25 @@ DECL|macro|I2OEVTGET
 mdefine_line|#define I2OEVTGET&t;&t;_IOR(I2O_MAGIC_NUMBER,11,struct i2o_evt_info)
 DECL|macro|I2OPASSTHRU
 mdefine_line|#define I2OPASSTHRU&t;&t;_IOR(I2O_MAGIC_NUMBER,12,struct i2o_cmd_passthru)
+DECL|macro|I2OPASSTHRU32
+mdefine_line|#define I2OPASSTHRU32&t;&t;_IOR(I2O_MAGIC_NUMBER,12,struct i2o_cmd_passthru32)
+DECL|struct|i2o_cmd_passthru32
+r_struct
+id|i2o_cmd_passthru32
+(brace
+DECL|member|iop
+r_int
+r_int
+id|iop
+suffix:semicolon
+multiline_comment|/* IOP unit number */
+DECL|member|msg
+id|u32
+id|msg
+suffix:semicolon
+multiline_comment|/* message */
+)brace
+suffix:semicolon
 DECL|struct|i2o_cmd_passthru
 r_struct
 id|i2o_cmd_passthru
@@ -976,10 +995,12 @@ DECL|macro|I2O_CLASS_PEER_TRANSPORT_AGENT
 mdefine_line|#define I2O_CLASS_PEER_TRANSPORT_AGENT&t;&t;0x090
 DECL|macro|I2O_CLASS_PEER_TRANSPORT
 mdefine_line|#define I2O_CLASS_PEER_TRANSPORT&t;&t;0x091
-multiline_comment|/* &n; *  Rest of 0x092 - 0x09f reserved for peer-to-peer classes&n; */
+DECL|macro|I2O_CLASS_END
+mdefine_line|#define&t;I2O_CLASS_END&t;&t;&t;&t;0xfff
+multiline_comment|/*&n; *  Rest of 0x092 - 0x09f reserved for peer-to-peer classes&n; */
 DECL|macro|I2O_CLASS_MATCH_ANYCLASS
 mdefine_line|#define I2O_CLASS_MATCH_ANYCLASS&t;&t;0xffffffff
-multiline_comment|/* &n; *  Subclasses&n; */
+multiline_comment|/*&n; *  Subclasses&n; */
 DECL|macro|I2O_SUBCLASS_i960
 mdefine_line|#define I2O_SUBCLASS_i960&t;&t;&t;0x001
 DECL|macro|I2O_SUBCLASS_HDM
@@ -1007,7 +1028,7 @@ DECL|macro|I2O_PARAMS_ROW_DELETE
 mdefine_line|#define I2O_PARAMS_ROW_DELETE&t;&t;&t;0x0009
 DECL|macro|I2O_PARAMS_TABLE_CLEAR
 mdefine_line|#define I2O_PARAMS_TABLE_CLEAR&t;&t;&t;0x000A
-multiline_comment|/*&n; * I2O serial number conventions / formats &n; * (circa v1.5)&n; */
+multiline_comment|/*&n; * I2O serial number conventions / formats&n; * (circa v1.5)&n; */
 DECL|macro|I2O_SNFORMAT_UNKNOWN
 mdefine_line|#define I2O_SNFORMAT_UNKNOWN&t;&t;&t;0
 DECL|macro|I2O_SNFORMAT_BINARY
@@ -1020,7 +1041,7 @@ DECL|macro|I2O_SNFORMAT_LAN48_MAC
 mdefine_line|#define I2O_SNFORMAT_LAN48_MAC&t;&t;&t;4
 DECL|macro|I2O_SNFORMAT_WAN
 mdefine_line|#define I2O_SNFORMAT_WAN&t;&t;&t;5
-multiline_comment|/* &n; * Plus new in v2.0 (Yellowstone pdf doc)&n; */
+multiline_comment|/*&n; * Plus new in v2.0 (Yellowstone pdf doc)&n; */
 DECL|macro|I2O_SNFORMAT_LAN64_MAC
 mdefine_line|#define I2O_SNFORMAT_LAN64_MAC&t;&t;&t;6
 DECL|macro|I2O_SNFORMAT_DDM
@@ -1031,7 +1052,7 @@ DECL|macro|I2O_SNFORMAT_IEEE_REG128
 mdefine_line|#define I2O_SNFORMAT_IEEE_REG128&t;&t;9
 DECL|macro|I2O_SNFORMAT_UNKNOWN2
 mdefine_line|#define I2O_SNFORMAT_UNKNOWN2&t;&t;&t;0xff
-multiline_comment|/*&n; *&t;I2O Get Status State values &n; */
+multiline_comment|/*&n; *&t;I2O Get Status State values&n; */
 DECL|macro|ADAPTER_STATE_INITIALIZING
 mdefine_line|#define ADAPTER_STATE_INITIALIZING&t;&t;0x01
 DECL|macro|ADAPTER_STATE_RESET
