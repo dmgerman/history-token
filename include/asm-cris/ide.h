@@ -440,10 +440,8 @@ id|reg
 )paren
 suffix:semicolon
 multiline_comment|/* this tells ide.h not to define the standard macros */
-DECL|macro|HAVE_ARCH_OUT_BYTE
-mdefine_line|#define HAVE_ARCH_OUT_BYTE
-DECL|macro|HAVE_ARCH_IN_BYTE
-mdefine_line|#define HAVE_ARCH_IN_BYTE
+DECL|macro|HAVE_ARCH_IN_OUT
+mdefine_line|#define HAVE_ARCH_IN_OUT&t;1
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMCRIS_IDE_H */
 eof

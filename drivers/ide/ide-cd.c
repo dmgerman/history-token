@@ -5230,6 +5230,8 @@ r_return
 id|startstop
 suffix:semicolon
 )brace
+DECL|macro|IDE_LARGE_SEEK
+mdefine_line|#define IDE_LARGE_SEEK(b1,b2,t)&t;(((b1) &gt; (b2) + (t)) || ((b2) &gt; (b1) + (t)))
 multiline_comment|/****************************************************************************&n; * cdrom driver request routine.&n; */
 r_static
 id|ide_startstop_t

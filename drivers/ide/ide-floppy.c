@@ -3829,7 +3829,7 @@ id|pc-&gt;buffer
 suffix:semicolon
 id|bcount.all
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|pc-&gt;request_transfer

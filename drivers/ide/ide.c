@@ -1,9 +1,6 @@
-multiline_comment|/*&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; */
-multiline_comment|/*&n; *  Mostly written by Mark Lord  &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to MAX_HWIFS IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary:    ide0, port 0x1f0; major=3;  hda is minor=0; hdb is minor=64&n; * Secondary:  ide1, port 0x170; major=22; hdc is minor=0; hdd is minor=64&n; * Tertiary:   ide2, port 0x???; major=33; hde is minor=0; hdf is minor=64&n; * Quaternary: ide3, port 0x???; major=34; hdg is minor=0; hdh is minor=64&n; * ...&n; *&n; *  From hd.c:&n; *  |&n; *  | It traverses the request-list, using interrupts to jump between functions.&n; *  | As nearly all functions can be called within interrupts, we may not sleep.&n; *  | Special care is recommended.  Have Fun!&n; *  |&n; *  | modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *  |&n; *  | Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  | in the early extended-partition checks and added DM partitions.&n; *  |&n; *  | Early work on error handling by Mika Liljeberg (liljeber@cs.Helsinki.FI).&n; *  |&n; *  | IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  | and general streamlining by Mark Lord (mlord@pobox.com).&n; *&n; *  October, 1994 -- Complete line-by-line overhaul for linux 1.1.x, by:&n; *&n; *&t;Mark Lord&t;(mlord@pobox.com)&t;&t;(IDE Perf.Pkg)&n; *&t;Delman Lee&t;(delman@ieee.org)&t;&t;(&quot;Mr. atdisk2&quot;)&n; *&t;Scott Snyder&t;(snyder@fnald0.fnal.gov)&t;(ATAPI IDE cd-rom)&n; *&n; *  This was a rewrite of just about everything from hd.c, though some original&n; *  code is still sprinkled about.  Think of it as a major evolution, with&n; *  inspiration from lots of linux users, esp.  hamish@zot.apana.org.au&n; *&n; *  Version 1.0 ALPHA&t;initial code, primary i/f working okay&n; *  Version 1.3 BETA&t;dual i/f on shared irq tested &amp; working!&n; *  Version 1.4 BETA&t;added auto probing for irq(s)&n; *  Version 1.5 BETA&t;added ALPHA (untested) support for IDE cd-roms,&n; *  ...&n; * Version 5.50&t;&t;allow values as small as 20 for idebus=&n; * Version 5.51&t;&t;force non io_32bit in drive_cmd_intr()&n; *&t;&t;&t;change delay_10ms() to delay_50ms() to fix problems&n; * Version 5.52&t;&t;fix incorrect invalidation of removable devices&n; *&t;&t;&t;add &quot;hdx=slow&quot; command line option&n; * Version 5.60&t;&t;start to modularize the driver; the disk and ATAPI&n; *&t;&t;&t; drivers can be compiled as loadable modules.&n; *&t;&t;&t;move IDE probe code to ide-probe.c&n; *&t;&t;&t;move IDE disk code to ide-disk.c&n; *&t;&t;&t;add support for generic IDE device subdrivers&n; *&t;&t;&t;add m68k code from Geert Uytterhoeven&n; *&t;&t;&t;probe all interfaces by default&n; *&t;&t;&t;add ioctl to (re)probe an interface&n; * Version 6.00&t;&t;use per device request queues&n; *&t;&t;&t;attempt to optimize shared hwgroup performance&n; *&t;&t;&t;add ioctl to manually adjust bandwidth algorithms&n; *&t;&t;&t;add kerneld support for the probe module&n; *&t;&t;&t;fix bug in ide_error()&n; *&t;&t;&t;fix bug in the first ide_get_lock() call for Atari&n; *&t;&t;&t;don&squot;t flush leftover data for ATAPI devices&n; * Version 6.01&t;&t;clear hwgroup-&gt;active while the hwgroup sleeps&n; *&t;&t;&t;support HDIO_GETGEO for floppies&n; * Version 6.02&t;&t;fix ide_ack_intr() call&n; *&t;&t;&t;check partition table on floppies&n; * Version 6.03&t;&t;handle bad status bit sequencing in ide_wait_stat()&n; * Version 6.10&t;&t;deleted old entries from this list of updates&n; *&t;&t;&t;replaced triton.c with ide-dma.c generic PCI DMA&n; *&t;&t;&t;added support for BIOS-enabled UltraDMA&n; *&t;&t;&t;rename all &quot;promise&quot; things to &quot;pdc4030&quot;&n; *&t;&t;&t;fix EZ-DRIVE handling on small disks&n; * Version 6.11&t;&t;fix probe error in ide_scan_devices()&n; *&t;&t;&t;fix ancient &quot;jiffies&quot; polling bugs&n; *&t;&t;&t;mask all hwgroup interrupts on each irq entry&n; * Version 6.12&t;&t;integrate ioctl and proc interfaces&n; *&t;&t;&t;fix parsing of &quot;idex=&quot; command line parameter&n; * Version 6.13&t;&t;add support for ide4/ide5 courtesy rjones@orchestream.com&n; * Version 6.14&t;&t;fixed IRQ sharing among PCI devices&n; * Version 6.15&t;&t;added SMP awareness to IDE drivers&n; * Version 6.16&t;&t;fixed various bugs; even more SMP friendly&n; * Version 6.17&t;&t;fix for newest EZ-Drive problem&n; * Version 6.18&t;&t;default unpartitioned-disk translation now &quot;BIOS LBA&quot;&n; * Version 6.19&t;&t;Re-design for a UNIFORM driver for all platforms,&n; *&t;&t;&t;  model based on suggestions from Russell King and&n; *&t;&t;&t;  Geert Uytterhoeven&n; *&t;&t;&t;Promise DC4030VL now supported.&n; *&t;&t;&t;add support for ide6/ide7&n; *&t;&t;&t;delay_50ms() changed to ide_delay_50ms() and exported.&n; * Version 6.20&t;&t;Added/Fixed Generic ATA-66 support and hwif detection.&n; *&t;&t;&t;Added hdx=flash to allow for second flash disk&n; *&t;&t;&t;  detection w/o the hang loop.&n; *&t;&t;&t;Added support for ide8/ide9&n; *&t;&t;&t;Added idex=ata66 for the quirky chipsets that are&n; *&t;&t;&t;  ATA-66 compliant, but have yet to determine a method&n; *&t;&t;&t;  of verification of the 80c cable presence.&n; *&t;&t;&t;  Specifically Promise&squot;s PDC20262 chipset.&n; * Version 6.21&t;&t;Fixing/Fixed SMP spinlock issue with insight from an old&n; *&t;&t;&t;  hat that clarified original low level driver design.&n; * Version 6.30&t;&t;Added SMP support; fixed multmode issues.  -ml&n; * Version 6.31&t;&t;Debug Share INTR&squot;s and request queue streaming&n; *&t;&t;&t;Native ATA-100 support&n; *&t;&t;&t;Prep for Cascades Project&n; * Version 6.32&t;&t;4GB highmem support for DMA, and mapping of those for&n; *&t;&t;&t;PIO transfer (Jens Axboe)&n; *&n; *  Some additional driver compile-time options are in ./include/linux/ide.h&n; */
+multiline_comment|/*&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; *&n; *  Mostly written by Mark Lord  &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to MAX_HWIFS IDE interfaces, on one or more IRQs (usually 14 &amp; 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary:    ide0, port 0x1f0; major=3;  hda is minor=0; hdb is minor=64&n; * Secondary:  ide1, port 0x170; major=22; hdc is minor=0; hdd is minor=64&n; * Tertiary:   ide2, port 0x???; major=33; hde is minor=0; hdf is minor=64&n; * Quaternary: ide3, port 0x???; major=34; hdg is minor=0; hdh is minor=64&n; * ...&n; *&n; *  From hd.c:&n; *  |&n; *  | It traverses the request-list, using interrupts to jump between functions.&n; *  | As nearly all functions can be called within interrupts, we may not sleep.&n; *  | Special care is recommended.  Have Fun!&n; *  |&n; *  | modified by Drew Eckhardt to check nr of hd&squot;s from the CMOS.&n; *  |&n; *  | Thanks to Branko Lankester, lankeste@fwi.uva.nl, who found a bug&n; *  | in the early extended-partition checks and added DM partitions.&n; *  |&n; *  | Early work on error handling by Mika Liljeberg (liljeber@cs.Helsinki.FI).&n; *  |&n; *  | IRQ-unmask, drive-id, multiple-mode, support for &quot;&gt;16 heads&quot;,&n; *  | and general streamlining by Mark Lord (mlord@pobox.com).&n; *&n; *  October, 1994 -- Complete line-by-line overhaul for linux 1.1.x, by:&n; *&n; *&t;Mark Lord&t;(mlord@pobox.com)&t;&t;(IDE Perf.Pkg)&n; *&t;Delman Lee&t;(delman@ieee.org)&t;&t;(&quot;Mr. atdisk2&quot;)&n; *&t;Scott Snyder&t;(snyder@fnald0.fnal.gov)&t;(ATAPI IDE cd-rom)&n; *&n; *  This was a rewrite of just about everything from hd.c, though some original&n; *  code is still sprinkled about.  Think of it as a major evolution, with&n; *  inspiration from lots of linux users, esp.  hamish@zot.apana.org.au&n; *&n; *  Version 1.0 ALPHA&t;initial code, primary i/f working okay&n; *  Version 1.3 BETA&t;dual i/f on shared irq tested &amp; working!&n; *  Version 1.4 BETA&t;added auto probing for irq(s)&n; *  Version 1.5 BETA&t;added ALPHA (untested) support for IDE cd-roms,&n; *  ...&n; * Version 5.50&t;&t;allow values as small as 20 for idebus=&n; * Version 5.51&t;&t;force non io_32bit in drive_cmd_intr()&n; *&t;&t;&t;change delay_10ms() to delay_50ms() to fix problems&n; * Version 5.52&t;&t;fix incorrect invalidation of removable devices&n; *&t;&t;&t;add &quot;hdx=slow&quot; command line option&n; * Version 5.60&t;&t;start to modularize the driver; the disk and ATAPI&n; *&t;&t;&t; drivers can be compiled as loadable modules.&n; *&t;&t;&t;move IDE probe code to ide-probe.c&n; *&t;&t;&t;move IDE disk code to ide-disk.c&n; *&t;&t;&t;add support for generic IDE device subdrivers&n; *&t;&t;&t;add m68k code from Geert Uytterhoeven&n; *&t;&t;&t;probe all interfaces by default&n; *&t;&t;&t;add ioctl to (re)probe an interface&n; * Version 6.00&t;&t;use per device request queues&n; *&t;&t;&t;attempt to optimize shared hwgroup performance&n; *&t;&t;&t;add ioctl to manually adjust bandwidth algorithms&n; *&t;&t;&t;add kerneld support for the probe module&n; *&t;&t;&t;fix bug in ide_error()&n; *&t;&t;&t;fix bug in the first ide_get_lock() call for Atari&n; *&t;&t;&t;don&squot;t flush leftover data for ATAPI devices&n; * Version 6.01&t;&t;clear hwgroup-&gt;active while the hwgroup sleeps&n; *&t;&t;&t;support HDIO_GETGEO for floppies&n; * Version 6.02&t;&t;fix ide_ack_intr() call&n; *&t;&t;&t;check partition table on floppies&n; * Version 6.03&t;&t;handle bad status bit sequencing in ide_wait_stat()&n; * Version 6.10&t;&t;deleted old entries from this list of updates&n; *&t;&t;&t;replaced triton.c with ide-dma.c generic PCI DMA&n; *&t;&t;&t;added support for BIOS-enabled UltraDMA&n; *&t;&t;&t;rename all &quot;promise&quot; things to &quot;pdc4030&quot;&n; *&t;&t;&t;fix EZ-DRIVE handling on small disks&n; * Version 6.11&t;&t;fix probe error in ide_scan_devices()&n; *&t;&t;&t;fix ancient &quot;jiffies&quot; polling bugs&n; *&t;&t;&t;mask all hwgroup interrupts on each irq entry&n; * Version 6.12&t;&t;integrate ioctl and proc interfaces&n; *&t;&t;&t;fix parsing of &quot;idex=&quot; command line parameter&n; * Version 6.13&t;&t;add support for ide4/ide5 courtesy rjones@orchestream.com&n; * Version 6.14&t;&t;fixed IRQ sharing among PCI devices&n; * Version 6.15&t;&t;added SMP awareness to IDE drivers&n; * Version 6.16&t;&t;fixed various bugs; even more SMP friendly&n; * Version 6.17&t;&t;fix for newest EZ-Drive problem&n; * Version 6.18&t;&t;default unpartitioned-disk translation now &quot;BIOS LBA&quot;&n; * Version 6.19&t;&t;Re-design for a UNIFORM driver for all platforms,&n; *&t;&t;&t;  model based on suggestions from Russell King and&n; *&t;&t;&t;  Geert Uytterhoeven&n; *&t;&t;&t;Promise DC4030VL now supported.&n; *&t;&t;&t;add support for ide6/ide7&n; *&t;&t;&t;delay_50ms() changed to ide_delay_50ms() and exported.&n; * Version 6.20&t;&t;Added/Fixed Generic ATA-66 support and hwif detection.&n; *&t;&t;&t;Added hdx=flash to allow for second flash disk&n; *&t;&t;&t;  detection w/o the hang loop.&n; *&t;&t;&t;Added support for ide8/ide9&n; *&t;&t;&t;Added idex=ata66 for the quirky chipsets that are&n; *&t;&t;&t;  ATA-66 compliant, but have yet to determine a method&n; *&t;&t;&t;  of verification of the 80c cable presence.&n; *&t;&t;&t;  Specifically Promise&squot;s PDC20262 chipset.&n; * Version 6.21&t;&t;Fixing/Fixed SMP spinlock issue with insight from an old&n; *&t;&t;&t;  hat that clarified original low level driver design.&n; * Version 6.30&t;&t;Added SMP support; fixed multmode issues.  -ml&n; * Version 6.31&t;&t;Debug Share INTR&squot;s and request queue streaming&n; *&t;&t;&t;Native ATA-100 support&n; *&t;&t;&t;Prep for Cascades Project&n; * Version 6.32&t;&t;4GB highmem support for DMA, and mapping of those for&n; *&t;&t;&t;PIO transfer (Jens Axboe)&n; *&n; *  Some additional driver compile-time options are in ./include/linux/ide.h&n; */
 DECL|macro|VERSION
 mdefine_line|#define&t;VERSION&t;&quot;7.0.0&quot;
-DECL|macro|REALLY_SLOW_IO
-macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -18,8 +15,8 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifndef MODULE
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#endif /* MODULE */
+macro_line|# include &lt;linux/init.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -35,7 +32,138 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
-multiline_comment|/* Constant tables for PIO mode programming:&n; */
+multiline_comment|/*&n; * Those will be moved into separate header files eventually.&n; */
+macro_line|#ifdef CONFIG_BLK_DEV_RZ1000
+r_extern
+r_void
+id|ide_probe_for_rz100x
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_IDE
+r_extern
+r_void
+id|init_e100_ide
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_CMD640
+r_extern
+r_void
+id|ide_probe_for_cmd640x
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+r_extern
+r_int
+id|ide_probe_for_pdc4030
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
+r_extern
+r_void
+id|pmac_ide_probe
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_ICSIDE
+r_extern
+r_void
+id|icside_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_RAPIDE
+r_extern
+r_void
+id|rapide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_GAYLE
+r_extern
+r_void
+id|gayle_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_FALCON_IDE
+r_extern
+r_void
+id|falconide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_MAC_IDE
+r_extern
+r_void
+id|macide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_Q40IDE
+r_extern
+r_void
+id|q40ide_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_BUDDHA
+r_extern
+r_void
+id|buddha_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BLK_DEV_ISAPNP) &amp;&amp; defined(CONFIG_ISAPNP)
+r_extern
+r_void
+id|pnpide_init
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * Constant tables for PIO mode programming:&n; */
 DECL|variable|ide_pio_timings
 r_const
 id|ide_pio_timings_t
@@ -343,8 +471,7 @@ comma
 l_int|1
 )brace
 comma
-multiline_comment|/* reports 3, should be 1 or 2 (depending on */
-multiline_comment|/* drive) according to Seagates FIND-ATA program */
+multiline_comment|/* reports 3, should be 1 or 2 (depending on&n;&t;&t;&t;&t; * drive) according to Seagates FIND-ATA program */
 (brace
 l_string|&quot;QUANTUM ELS127A&quot;
 comma
@@ -451,7 +578,7 @@ r_int
 id|initializing
 suffix:semicolon
 multiline_comment|/* set while initializing built-in drivers */
-multiline_comment|/*&n; * protects global structures etc, we want to split this into per-hwgroup&n; * instead.&n; */
+multiline_comment|/*&n; * Protects access to global structures etc.&n; */
 DECL|variable|__cacheline_aligned
 id|spinlock_t
 id|ide_lock
@@ -466,15 +593,15 @@ r_int
 id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
-multiline_comment|/*&n; * ide_lock is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
+multiline_comment|/*&n; * This is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
 DECL|variable|ide_intr_lock
 r_static
 r_int
 id|ide_intr_lock
 suffix:semicolon
-macro_line|#endif /* __mc68000__ || CONFIG_APUS */
+macro_line|#endif
 DECL|variable|noautodma
 r_int
 id|noautodma
@@ -883,7 +1010,7 @@ id|pio_mode
 suffix:semicolon
 )brace
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
-multiline_comment|/*&n; * For really screwy hardware (hey, at least it *can* be used with Linux)&n; * we can enforce a minimum delay time between successive operations.&n; */
+multiline_comment|/*&n; * For really screwed hardware (hey, at least it *can* be used with Linux)&n; * we can enforce a minimum delay time between successive operations.&n; */
 DECL|function|read_timer
 r_static
 r_int
@@ -1297,7 +1424,7 @@ id|magic_cookie
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialise all interface structures */
+multiline_comment|/* Initialize all interface structures */
 r_for
 c_loop
 (paren
@@ -1329,7 +1456,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate config bits.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD) devices,&n; * so in linux 2.3.x we should change this to just treat all PCMCIA drives this way,&n; * and get rid of the model-name tests below (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
+multiline_comment|/*&n; * CompactFlash cards and their relatives pretend to be removable hard disks, except:&n; *&t;(1) they never have a slave unit, and&n; *&t;(2) they don&squot;t have a door lock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate config bits.&n; *&n; * FIXME FIXME: Yes this is for certain applicable for all of them as time has shown.&n; *&n; * FIXME: This treatment is probably applicable for *all* PCMCIA (PC CARD) devices,&n; * so in linux 2.3.x we should change this to just treat all PCMCIA drives this way,&n; * and get rid of the model-name tests below (too big of an interface change for 2.2.x).&n; * At that time, we might also consider parameterizing the timeouts and retries,&n; * since these are MUCH faster than mechanical drives.&t;-M.Lord&n; */
 DECL|function|drive_is_flashcard
 r_int
 id|drive_is_flashcard
@@ -2205,7 +2332,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* needed below */
-multiline_comment|/*&n; * atapi_reset_pollfunc() gets invoked to poll the interface for completion every 50ms&n; * during an atapi drive reset operation. If the drive has not yet responded,&n; * and we have not yet hit our maximum waiting time, then the timer is restarted&n; * for another 50ms.&n; */
+multiline_comment|/*&n; * ATAPI_reset_pollfunc() gets invoked to poll the interface for completion every 50ms&n; * during an ATAPI drive reset operation. If the drive has not yet responded,&n; * and we have not yet hit our maximum waiting time, then the timer is restarted&n; * for another 50ms.&n; */
 DECL|function|atapi_reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -2596,7 +2723,7 @@ c_func
 l_string|&quot;failed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* FANCY_STATUS_DUMPS */
+macro_line|#endif
 )brace
 )brace
 id|hwgroup-&gt;poll_timeout
@@ -2608,7 +2735,7 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_reset1() attempts to recover a confused drive by resetting it.&n; * Unfortunately, resetting a disk drive actually resets all devices on&n; * the same interface, so it can really be thought of as resetting the&n; * interface rather than resetting the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let&n; * us know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to complete,&n; * (up to 30 seconds worstcase).  So, instead of busy-waiting here for it,&n; * we set a timer to poll at 50ms intervals.&n; */
+multiline_comment|/*&n; * do_reset1() attempts to recover a confused drive by resetting it.&n; * Unfortunately, resetting a disk drive actually resets all devices on&n; * the same interface, so it can really be thought of as resetting the&n; * interface rather than resetting the drive.&n; *&n; * ATAPI devices have their own reset mechanism which allows them to be&n; * individually reset without clobbering other devices on the same interface.&n; *&n; * Unfortunately, the IDE interface does not generate an interrupt to let&n; * us know when the reset operation has finished, so we must poll for this.&n; * Equally poor, though, is the fact that this may a very long time to complete,&n; * (up to 30 seconds worst case).  So, instead of busy-waiting here for it,&n; * we set a timer to poll at 50ms intervals.&n; */
 DECL|function|do_reset1
 r_static
 id|ide_startstop_t
@@ -2868,7 +2995,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* OK_TO_RESET_CONTROLLER */
+macro_line|#endif
 id|__restore_flags
 (paren
 id|flags
@@ -4177,26 +4304,6 @@ id|rq-&gt;errors
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|rq-&gt;flags
-op_amp
-id|REQ_DRIVE_TASKFILE
-)paren
-id|ide_end_taskfile
-c_func
-(paren
-id|drive
-comma
-id|stat
-comma
-id|err
-)paren
-suffix:semicolon
-r_else
-macro_line|#endif
 id|ide_end_drive_cmd
 c_func
 (paren
@@ -4991,185 +5098,6 @@ id|args
 r_goto
 id|args_error
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASK_IOCTL_DEBUG
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: &quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-singleline_comment|//&t;printk(&quot;TF.0=x%02x &quot;, args-&gt;tfRegister[IDE_DATA_OFFSET]);
-id|printk
-c_func
-(paren
-l_string|&quot;TF.1=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_FEATURE_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.2=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_NSECTOR_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.3=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.4=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_LCYL_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.5=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_HCYL_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.6=x%02x &quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_SELECT_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;TF.7=x%02x&bslash;n&quot;
-comma
-id|args-&gt;tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: &quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-singleline_comment|//&t;printk(&quot;HTF.0=x%02x &quot;, args-&gt;hobRegister[IDE_DATA_OFFSET_HOB]);
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.1=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_FEATURE_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.2=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_NSECTOR_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.3=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_SECTOR_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.4=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_LCYL_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.5=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_HCYL_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.6=x%02x &quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_SELECT_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;HTF.7=x%02x&bslash;n&quot;
-comma
-id|args-&gt;hobRegister
-(braket
-id|IDE_CONTROL_OFFSET_HOB
-)braket
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_IDE_TASK_IOCTL_DEBUG */
-singleline_comment|//&t;&t;if (args-&gt;tf_out_flags.all == 0) {
 id|do_taskfile
 c_func
 (paren
@@ -5194,9 +5122,6 @@ comma
 id|args-&gt;handler
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;} else {
-singleline_comment|//&t;&t;&t;&t;return flagged_taskfile(drive, args);
-singleline_comment|//&t;&t;}
 r_if
 c_cond
 (paren
@@ -6391,7 +6316,7 @@ c_func
 (paren
 id|best
 comma
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|t
@@ -6430,6 +6355,7 @@ DECL|function|ide_do_request
 r_static
 r_void
 id|ide_do_request
+c_func
 (paren
 id|ide_hwgroup_t
 op_star
@@ -6675,12 +6601,35 @@ id|IDE_CONTROL_OFFSET
 )paren
 (brace
 multiline_comment|/* set nIEN for previous hwif */
-id|SELECT_INTERRUPT
+r_if
+c_cond
+(paren
+id|hwif-&gt;intrproc
+)paren
+id|hwif
+op_member_access_from_pointer
+id|intrproc
 c_func
 (paren
-id|hwif
-comma
 id|drive
+)paren
+suffix:semicolon
+r_else
+id|OUT_BYTE
+c_func
+(paren
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|ctl
+op_or
+l_int|2
+comma
+id|hwif-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -6806,7 +6755,7 @@ id|hwgroup-&gt;flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * ide_get_queue() returns the queue which corresponds to a given device.&n; */
+multiline_comment|/*&n; * Returns the queue which corresponds to a given device.&n; */
 DECL|function|ide_get_queue
 id|request_queue_t
 op_star
@@ -6871,7 +6820,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * un-busy the hwgroup etc, and clear any pending DMA status. we want to&n; * retry the current request in pio mode instead of risking tossing it&n; * all away&n; */
+multiline_comment|/*&n; * un-busy the hwgroup etc, and clear any pending DMA status. we want to&n; * retry the current request in PIO mode instead of risking tossing it&n; * all away&n; */
 DECL|function|ide_dma_timeout_retry
 r_void
 id|ide_dma_timeout_retry
@@ -8425,10 +8374,11 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Look again for all drives in the system on all interfaces.  This is used&n; * after a new driver cathegory has been loaded as module.&n; */
+multiline_comment|/*&n; * Look again for all drives in the system on all interfaces.  This is used&n; * after a new driver category has been loaded as module.&n; */
 DECL|function|revalidate_drives
 r_void
 id|revalidate_drives
+c_func
 (paren
 r_void
 )paren
@@ -8443,7 +8393,8 @@ id|drive
 suffix:semicolon
 r_int
 id|index
-comma
+suffix:semicolon
+r_int
 id|unit
 suffix:semicolon
 r_for
@@ -8535,6 +8486,7 @@ DECL|function|ide_probe_module
 r_static
 r_void
 id|ide_probe_module
+c_func
 (paren
 r_void
 )paren
@@ -8605,6 +8557,7 @@ DECL|function|ide_open
 r_static
 r_int
 id|ide_open
+c_func
 (paren
 r_struct
 id|inode
@@ -8662,6 +8615,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_char
+op_star
+id|module
+op_assign
+l_int|NULL
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8671,67 +8630,66 @@ id|drive-&gt;type
 r_case
 id|ATA_DISK
 suffix:colon
-id|request_module
-c_func
-(paren
+id|module
+op_assign
 l_string|&quot;ide-disk&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|ATA_ROM
 suffix:colon
-id|request_module
-c_func
-(paren
+id|module
+op_assign
 l_string|&quot;ide-cd&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|ATA_TAPE
 suffix:colon
-id|request_module
-c_func
-(paren
+id|module
+op_assign
 l_string|&quot;ide-tape&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|ATA_FLOPPY
 suffix:colon
-id|request_module
-c_func
-(paren
+id|module
+op_assign
 l_string|&quot;ide-floppy&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDESCSI) &amp;&amp; defined(CONFIG_SCSI)
 r_case
 id|ATA_SCSI
 suffix:colon
-id|request_module
-c_func
-(paren
+id|module
+op_assign
 l_string|&quot;ide-scsi&quot;
-)paren
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
-multiline_comment|/* nothing to be done about it */
+multiline_comment|/* nothing we can do about it */
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|module
+)paren
+id|request_module
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_KMOD */
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -8792,7 +8750,9 @@ id|ENODEV
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: driver not present&bslash;n&quot;
 comma
 id|drive-&gt;name
@@ -9143,7 +9103,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif /* (CONFIG_AMIGA) || (CONFIG_MAC) */
+macro_line|#endif
 )brace
 DECL|function|ide_unregister
 r_void
@@ -9328,14 +9288,12 @@ m_abort
 suffix:semicolon
 )brace
 r_else
-(brace
 id|ide_unregister_subdriver
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|hwif-&gt;present
@@ -9793,6 +9751,7 @@ op_star
 id|hwif
 suffix:semicolon
 id|init_hwif_data
+c_func
 (paren
 id|index
 )paren
@@ -9875,7 +9834,7 @@ id|hwif-&gt;irq
 op_assign
 id|old_hwif.irq
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECS */
+macro_line|#endif
 id|hwif-&gt;major
 op_assign
 id|old_hwif.major
@@ -9897,7 +9856,7 @@ id|hwif-&gt;pci_dev
 op_assign
 id|old_hwif.pci_dev
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
+macro_line|#endif
 id|hwif-&gt;straight8
 op_assign
 id|old_hwif.straight8
@@ -10050,6 +10009,7 @@ multiline_comment|/*&n; * Register an IDE interface, specifing exactly the regis
 DECL|function|ide_register_hw
 r_int
 id|ide_register_hw
+c_func
 (paren
 id|hw_regs_t
 op_star
@@ -10312,6 +10272,7 @@ multiline_comment|/*&n; * Compatability function with existing drivers.  If you 
 DECL|function|ide_register
 r_int
 id|ide_register
+c_func
 (paren
 r_int
 id|arg1
@@ -10989,7 +10950,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * FIXME:  This should be changed to enqueue a special request&n; * to the driver to change settings, and then wait on a sema for completion.&n; * The current scheme of polling is kludgey, though safe enough.&n; */
+multiline_comment|/*&n; * FIXME:  This should be changed to enqueue a special request&n; * to the driver to change settings, and then wait on a semaphore for completion.&n; * The current scheme of polling is kludgey, though safe enough.&n; */
 DECL|function|ide_write_setting
 r_int
 id|ide_write_setting
@@ -12537,89 +12498,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDE_TASK_IOCTL
-r_case
-id|HDIO_DRIVE_TASKFILE
-suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-op_logical_or
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_RAWIO
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|drive-&gt;type
-)paren
-(brace
-r_case
-id|ATA_DISK
-suffix:colon
-r_return
-id|ide_taskfile_ioctl
-c_func
-(paren
-id|drive
-comma
-id|inode
-comma
-id|file
-comma
-id|cmd
-comma
-id|arg
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PKT_TASK_IOCTL
-r_case
-id|ATA_CDROM
-suffix:colon
-r_case
-id|ATA_TAPE
-suffix:colon
-r_case
-id|ATA_FLOPPY
-suffix:colon
-r_return
-id|pkt_taskfile_ioctl
-c_func
-(paren
-id|drive
-comma
-id|inode
-comma
-id|file
-comma
-id|cmd
-comma
-id|arg
-)paren
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENOMSG
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_IDE_TASK_IOCTL */
 r_case
 id|HDIO_DRIVE_CMD
 suffix:colon
@@ -12962,9 +12840,6 @@ comma
 id|hwgroup-&gt;handler
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
 id|hwgroup
 op_member_access_from_pointer
 id|handler
@@ -12973,8 +12848,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;&t;hwgroup-&gt;handler = NULL;
-singleline_comment|//&t;&t;&t;&t;hwgroup-&gt;expiry&t;= NULL;
 id|hwgroup-&gt;timer.expires
 op_assign
 id|jiffies
@@ -13000,9 +12873,6 @@ id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
-(paren
-r_void
-)paren
 id|ide_do_reset
 c_func
 (paren
@@ -13014,8 +12884,6 @@ c_cond
 (paren
 id|drive-&gt;suspend_reset
 )paren
-(brace
-multiline_comment|/*&n; *&t;&t;&t;&t;APM WAKE UP todo !!&n; *&t;&t;&t;&t;int nogoodpower = 1;&n; *&t;&t;&t;&t;while(nogoodpower) {&n; *&t;&t;&t;&t;&t;check_power1() or check_power2()&n; *&t;&t;&t;&t;&t;nogoodpower = 0;&n; *&t;&t;&t;&t;} &n; *&t;&t;&t;&t;HWIF(drive)-&gt;multiproc(drive);&n; */
 r_return
 id|ide_revalidate_disk
 c_func
@@ -13023,7 +12891,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -13801,7 +13668,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* zero = nothing matched */
 )brace
-multiline_comment|/*&n; * ide_setup() gets called VERY EARLY during initialization,&n; * to handle kernel &quot;command line&quot; strings beginning with &quot;hdx=&quot;&n; * or &quot;ide&quot;.  Here is the complete set currently supported:&n; *&n; * &quot;hdx=&quot;  is recognized for all &quot;x&quot; from &quot;a&quot; to &quot;h&quot;, such as &quot;hdc&quot;.&n; * &quot;idex=&quot; is recognized for all &quot;x&quot; from &quot;0&quot; to &quot;3&quot;, such as &quot;ide1&quot;.&n; *&n; * &quot;hdx=noprobe&quot;&t;: drive may be present, but do not probe for it&n; * &quot;hdx=none&quot;&t;&t;: drive is NOT present, ignore cmos and do not probe&n; * &quot;hdx=nowerr&quot;&t;&t;: ignore the WRERR_STAT bit on this drive&n; * &quot;hdx=cdrom&quot;&t;&t;: drive is present, and is a cdrom drive&n; * &quot;hdx=cyl,head,sect&quot;&t;: disk drive is present, with specified geometry&n; * &quot;hdx=noremap&quot;&t;: do not remap 0-&gt;1 even though EZD was detected&n; * &quot;hdx=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;if possible for this drive only.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; *&n; * &quot;hdx=slow&quot;&t;&t;: insert a huge pause after each access to the data&n; *&t;&t;&t;&t;port. Should be used only as a last resort.&n; *&n; * &quot;hdx=swapdata&quot;&t;: when the drive is a disk, byte swap all data&n; * &quot;hdx=bswap&quot;&t;&t;: same as above..........&n; * &quot;hdxlun=xx&quot;          : set the drive last logical unit.&n; * &quot;hdx=flash&quot;&t;&t;: allows for more than one ata_flash disk to be&n; *&t;&t;&t;&t;registered. In most cases, only one device&n; *&t;&t;&t;&t;will be present.&n; * &quot;hdx=scsi&quot;&t;&t;: the return of the ide-scsi flag, this is useful for&n; *&t;&t;&t;&t;allowwing ide-floppy, ide-tape, and ide-cdrom|writers&n; *&t;&t;&t;&t;to use ide-scsi emulation on a device specific option.&n; * &quot;idebus=xx&quot;&t;&t;: inform IDE driver of VESA/PCI bus speed in MHz,&n; *&t;&t;&t;&t;where &quot;xx&quot; is between 20 and 66 inclusive,&n; *&t;&t;&t;&t;used when tuning chipset PIO modes.&n; *&t;&t;&t;&t;For PCI bus, 25 is correct for a P75 system,&n; *&t;&t;&t;&t;30 is correct for P90,P120,P180 systems,&n; *&t;&t;&t;&t;and 33 is used for P100,P133,P166 systems.&n; *&t;&t;&t;&t;If in doubt, use idebus=33 for PCI.&n; *&t;&t;&t;&t;As for VLB, it is safest to not specify it.&n; *&n; * &quot;idex=noprobe&quot;&t;: do not attempt to access/use this interface&n; * &quot;idex=base&quot;&t;&t;: probe for an interface at the addr specified,&n; *&t;&t;&t;&t;where &quot;base&quot; is usually 0x1f0 or 0x170&n; *&t;&t;&t;&t;and &quot;ctl&quot; is assumed to be &quot;base&quot;+0x206&n; * &quot;idex=base,ctl&quot;&t;: specify both base and ctl&n; * &quot;idex=base,ctl,irq&quot;&t;: specify base, ctl, and irq number&n; * &quot;idex=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;for all drives on this interface.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;idex=noautotune&quot;&t;: driver will NOT attempt to tune interface speed&n; *&t;&t;&t;&t;This is the default for most chipsets,&n; *&t;&t;&t;&t;except the cmd640.&n; * &quot;idex=serialize&quot;&t;: do not overlap operations on idex and ide(x^1)&n; * &quot;idex=four&quot;&t;&t;: four drives on idex and ide(x^1) share same ports&n; * &quot;idex=reset&quot;&t;&t;: reset interface before first use&n; * &quot;idex=dma&quot;&t;&t;: enable DMA by default on both drives if possible&n; * &quot;idex=ata66&quot;&t;&t;: informs the interface that it has an 80c cable&n; *&t;&t;&t;&t;for chipsets that are ATA-66 capable, but&n; *&t;&t;&t;&t;the ablity to bit test for detection is&n; *&t;&t;&t;&t;currently unknown.&n; * &quot;ide=reverse&quot;&t;: Formerly called to pci sub-system, but now local.&n; *&n; * The following are valid ONLY on ide0, (except dc4030)&n; * and the defaults for the base,ctl ports must not be altered.&n; *&n; * &quot;ide0=dtc2278&quot;&t;: probe/support DTC2278 interface&n; * &quot;ide0=ht6560b&quot;&t;: probe/support HT6560B interface&n; * &quot;ide0=cmd640_vlb&quot;&t;: *REQUIRED* for VLB cards with the CMD640 chip&n; *&t;&t;&t;  (not for PCI -- automatically detected)&n; * &quot;ide0=qd65xx&quot;&t;: probe/support qd65xx interface&n; * &quot;ide0=ali14xx&quot;&t;: probe/support ali14xx chipsets (ALI M1439, M1443, M1445)&n; * &quot;ide0=umc8672&quot;&t;: probe/support umc8672 chipsets&n; * &quot;idex=dc4030&quot;&t;: probe/support Promise DC4030VL interface&n; * &quot;ide=doubler&quot;&t;: probe/support IDE doublers on Amiga&n; */
+multiline_comment|/*&n; * This gets called VERY EARLY during initialization, to handle kernel &quot;command&n; * line&quot; strings beginning with &quot;hdx=&quot; or &quot;ide&quot;.It gets called even before the&n; * actual module gets initialized.&n; *&n; * Here is the complete set currently supported comand line options:&n; *&n; * &quot;hdx=&quot;  is recognized for all &quot;x&quot; from &quot;a&quot; to &quot;h&quot;, such as &quot;hdc&quot;.&n; * &quot;idex=&quot; is recognized for all &quot;x&quot; from &quot;0&quot; to &quot;3&quot;, such as &quot;ide1&quot;.&n; *&n; * &quot;hdx=noprobe&quot;&t;: drive may be present, but do not probe for it&n; * &quot;hdx=none&quot;&t;&t;: drive is NOT present, ignore cmos and do not probe&n; * &quot;hdx=nowerr&quot;&t;&t;: ignore the WRERR_STAT bit on this drive&n; * &quot;hdx=cdrom&quot;&t;&t;: drive is present, and is a cdrom drive&n; * &quot;hdx=cyl,head,sect&quot;&t;: disk drive is present, with specified geometry&n; * &quot;hdx=noremap&quot;&t;: do not remap 0-&gt;1 even though EZD was detected&n; * &quot;hdx=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;if possible for this drive only.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; *&n; * &quot;hdx=slow&quot;&t;&t;: insert a huge pause after each access to the data&n; *&t;&t;&t;&t;port. Should be used only as a last resort.&n; *&n; * &quot;hdx=swapdata&quot;&t;: when the drive is a disk, byte swap all data&n; * &quot;hdx=bswap&quot;&t;&t;: same as above..........&n; * &quot;hdxlun=xx&quot;          : set the drive last logical unit.&n; * &quot;hdx=flash&quot;&t;&t;: allows for more than one ata_flash disk to be&n; *&t;&t;&t;&t;registered. In most cases, only one device&n; *&t;&t;&t;&t;will be present.&n; * &quot;hdx=scsi&quot;&t;&t;: the return of the ide-scsi flag, this is useful for&n; *&t;&t;&t;&t;allowwing ide-floppy, ide-tape, and ide-cdrom|writers&n; *&t;&t;&t;&t;to use ide-scsi emulation on a device specific option.&n; * &quot;idebus=xx&quot;&t;&t;: inform IDE driver of VESA/PCI bus speed in MHz,&n; *&t;&t;&t;&t;where &quot;xx&quot; is between 20 and 66 inclusive,&n; *&t;&t;&t;&t;used when tuning chipset PIO modes.&n; *&t;&t;&t;&t;For PCI bus, 25 is correct for a P75 system,&n; *&t;&t;&t;&t;30 is correct for P90,P120,P180 systems,&n; *&t;&t;&t;&t;and 33 is used for P100,P133,P166 systems.&n; *&t;&t;&t;&t;If in doubt, use idebus=33 for PCI.&n; *&t;&t;&t;&t;As for VLB, it is safest to not specify it.&n; *&n; * &quot;idex=noprobe&quot;&t;: do not attempt to access/use this interface&n; * &quot;idex=base&quot;&t;&t;: probe for an interface at the address specified,&n; *&t;&t;&t;&t;where &quot;base&quot; is usually 0x1f0 or 0x170&n; *&t;&t;&t;&t;and &quot;ctl&quot; is assumed to be &quot;base&quot;+0x206&n; * &quot;idex=base,ctl&quot;&t;: specify both base and ctl&n; * &quot;idex=base,ctl,irq&quot;&t;: specify base, ctl, and irq number&n; * &quot;idex=autotune&quot;&t;: driver will attempt to tune interface speed&n; *&t;&t;&t;&t;to the fastest PIO mode supported,&n; *&t;&t;&t;&t;for all drives on this interface.&n; *&t;&t;&t;&t;Not fully supported by all chipset types,&n; *&t;&t;&t;&t;and quite likely to cause trouble with&n; *&t;&t;&t;&t;older/odd IDE drives.&n; * &quot;idex=noautotune&quot;&t;: driver will NOT attempt to tune interface speed&n; *&t;&t;&t;&t;This is the default for most chipsets,&n; *&t;&t;&t;&t;except the cmd640.&n; * &quot;idex=serialize&quot;&t;: do not overlap operations on idex and ide(x^1)&n; * &quot;idex=four&quot;&t;&t;: four drives on idex and ide(x^1) share same ports&n; * &quot;idex=reset&quot;&t;&t;: reset interface before first use&n; * &quot;idex=dma&quot;&t;&t;: enable DMA by default on both drives if possible&n; * &quot;idex=ata66&quot;&t;&t;: informs the interface that it has an 80c cable&n; *&t;&t;&t;&t;for chipsets that are ATA-66 capable, but&n; *&t;&t;&t;&t;the ablity to bit test for detection is&n; *&t;&t;&t;&t;currently unknown.&n; * &quot;ide=reverse&quot;&t;: Formerly called to pci sub-system, but now local.&n; *&n; * The following are valid ONLY on ide0, (except dc4030)&n; * and the defaults for the base,ctl ports must not be altered.&n; *&n; * &quot;ide0=dtc2278&quot;&t;: probe/support DTC2278 interface&n; * &quot;ide0=ht6560b&quot;&t;: probe/support HT6560B interface&n; * &quot;ide0=cmd640_vlb&quot;&t;: *REQUIRED* for VLB cards with the CMD640 chip&n; *&t;&t;&t;  (not for PCI -- automatically detected)&n; * &quot;ide0=qd65xx&quot;&t;: probe/support qd65xx interface&n; * &quot;ide0=ali14xx&quot;&t;: probe/support ali14xx chipsets (ALI M1439, M1443, M1445)&n; * &quot;ide0=umc8672&quot;&t;: probe/support umc8672 chipsets&n; * &quot;idex=dc4030&quot;&t;: probe/support Promise DC4030VL interface&n; * &quot;ide=doubler&quot;&t;: probe/support IDE doublers on Amiga&n; */
 DECL|function|ide_setup
 r_int
 id|__init
@@ -13865,30 +13732,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|strncmp
 c_func
 (paren
 id|s
 comma
-l_string|&quot;hd&quot;
+l_string|&quot;hd=&quot;
 comma
-l_int|2
+l_int|3
 )paren
-op_eq
-l_int|0
-op_logical_and
-id|s
-(braket
-l_int|2
-)braket
-op_eq
-l_char|&squot;=&squot;
 )paren
-multiline_comment|/* hd= is for hd.c   */
+multiline_comment|/* hd= is for hd.c driver and not us */
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* driver and not us */
 r_if
 c_cond
 (paren
@@ -13970,7 +13828,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDOUBLER */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -14684,7 +14542,7 @@ l_string|&quot;minus9&quot;
 comma
 l_string|&quot;minus10&quot;
 comma
-l_string|&quot;four&quot;
+l_string|&quot;minus11&quot;
 comma
 l_string|&quot;qd65xx&quot;
 comma
@@ -14992,71 +14850,11 @@ id|done
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_QD65XX */
-macro_line|#ifdef CONFIG_BLK_DEV_4DRIVES
 r_case
 op_minus
 l_int|11
 suffix:colon
-multiline_comment|/* &quot;four&quot; drives on one set of ports */
-(brace
-id|ide_hwif_t
-op_star
-id|mate
-op_assign
-op_amp
-id|ide_hwifs
-(braket
-id|hw
-op_xor
-l_int|1
-)braket
-suffix:semicolon
-id|mate-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|select.all
-op_xor_assign
-l_int|0x20
-suffix:semicolon
-id|mate-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|select.all
-op_xor_assign
-l_int|0x20
-suffix:semicolon
-id|hwif-&gt;chipset
-op_assign
-id|mate-&gt;chipset
-op_assign
-id|ide_4drives
-suffix:semicolon
-id|mate-&gt;irq
-op_assign
-id|hwif-&gt;irq
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|mate-&gt;io_ports
-comma
-id|hwif-&gt;io_ports
-comma
-r_sizeof
-(paren
-id|hwif-&gt;io_ports
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|do_serialize
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_4DRIVES */
+multiline_comment|/* minus11 */
 r_case
 op_minus
 l_int|10
@@ -15364,410 +15162,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * probe_for_hwifs() finds/initializes &quot;known&quot; IDE interfaces&n; */
-DECL|function|probe_for_hwifs
-r_static
-r_void
-id|__init
-id|probe_for_hwifs
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-id|ide_scan_pcibus
-c_func
-(paren
-id|ide_scan_direction
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef CONFIG_BLK_DEV_RZ1000
-(brace
-r_extern
-r_void
-id|ide_probe_for_rz100x
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|ide_probe_for_rz100x
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_RZ1000 */
-macro_line|#endif /* CONFIG_BLK_DEV_IDEPCI */
-)brace
-macro_line|#endif /* CONFIG_PCI */
-macro_line|#ifdef CONFIG_ETRAX_IDE
-(brace
-r_extern
-r_void
-id|init_e100_ide
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|init_e100_ide
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ETRAX_IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_CMD640
-(brace
-r_extern
-r_void
-id|ide_probe_for_cmd640x
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|ide_probe_for_cmd640x
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-(brace
-r_extern
-r_int
-id|ide_probe_for_pdc4030
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|ide_probe_for_pdc4030
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
-(brace
-r_extern
-r_void
-id|pmac_ide_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|pmac_ide_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDE_PMAC */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_ICSIDE
-(brace
-r_extern
-r_void
-id|icside_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|icside_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDE_ICSIDE */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_RAPIDE
-(brace
-r_extern
-r_void
-id|rapide_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|rapide_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDE_RAPIDE */
-macro_line|#ifdef CONFIG_BLK_DEV_GAYLE
-(brace
-r_extern
-r_void
-id|gayle_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|gayle_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_GAYLE */
-macro_line|#ifdef CONFIG_BLK_DEV_FALCON_IDE
-(brace
-r_extern
-r_void
-id|falconide_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|falconide_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_FALCON_IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_MAC_IDE
-(brace
-r_extern
-r_void
-id|macide_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|macide_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_MAC_IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_Q40IDE
-(brace
-r_extern
-r_void
-id|q40ide_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|q40ide_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_Q40IDE */
-macro_line|#ifdef CONFIG_BLK_DEV_BUDDHA
-(brace
-r_extern
-r_void
-id|buddha_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-id|buddha_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_BUDDHA */
-macro_line|#if defined(CONFIG_BLK_DEV_ISAPNP) &amp;&amp; defined(CONFIG_ISAPNP)
-(brace
-r_extern
-r_void
-id|pnpide_init
-c_func
-(paren
-r_int
-id|enable
-)paren
-suffix:semicolon
-id|pnpide_init
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_ISAPNP */
-)brace
-DECL|function|ide_init_builtin_drivers
-r_void
-id|__init
-id|ide_init_builtin_drivers
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; * Probe for special PCI and other &quot;known&quot; interface chipsets&n;&t; */
-id|probe_for_hwifs
-(paren
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULES)
-macro_line|# if defined(__mc68000__) || defined(CONFIG_APUS)
-r_if
-c_cond
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
-)paren
-(brace
-id|ide_get_lock
-c_func
-(paren
-op_amp
-id|ide_intr_lock
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only */
-id|disable_irq
-c_func
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* disable_irq_nosync ?? */
-singleline_comment|//&t;&t;disable_irq_nosync(ide_hwifs[0].irq);
-)brace
-macro_line|# endif
-id|ideprobe_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|# if defined(__mc68000__) || defined(CONFIG_APUS)
-r_if
-c_cond
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
-)paren
-(brace
-id|enable_irq
-c_func
-(paren
-id|ide_hwifs
-(braket
-l_int|0
-)braket
-dot
-id|irq
-)paren
-suffix:semicolon
-id|ide_release_lock
-c_func
-(paren
-op_amp
-id|ide_intr_lock
-)paren
-suffix:semicolon
-multiline_comment|/* for atari only */
-)brace
-macro_line|# endif
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_ide_create
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Initialize all device type driver modules.&n;&t; */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
-id|idedisk_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-id|ide_cdrom_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-id|idetape_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-id|idefloppy_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-macro_line|#ifdef CONFIG_SCSI
-id|idescsi_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#warning ide scsi-emulation selected but no SCSI-subsystem in kernel
-macro_line|#endif
-macro_line|#endif
-)brace
 multiline_comment|/* This is the default end request function as well */
 DECL|function|ide_end_request
 r_int
@@ -15794,7 +15188,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Lookup IDE devices, which requested a particular deriver&n; */
+multiline_comment|/*&n; * Lookup IDE devices, which requested a particular driver&n; */
 DECL|function|ide_scan_devices
 id|ide_drive_t
 op_star
@@ -16932,11 +16326,252 @@ id|initializing
 op_assign
 l_int|1
 suffix:semicolon
-id|ide_init_builtin_drivers
+multiline_comment|/*&n;&t; * Detect and initialize &quot;known&quot; IDE host chip types.&n;&t; */
+macro_line|#ifdef CONFIG_PCI
+r_if
+c_cond
+(paren
+id|pci_present
+c_func
+(paren
+)paren
+)paren
+(brace
+macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
+id|ide_scan_pcibus
+c_func
+(paren
+id|ide_scan_direction
+)paren
+suffix:semicolon
+macro_line|# else
+macro_line|#  ifdef CONFIG_BLK_DEV_RZ1000
+id|ide_probe_for_rz100x
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#  endif
+macro_line|# endif
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_IDE
+id|init_e100_ide
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_CMD640
+id|ide_probe_for_cmd640x
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+id|ide_probe_for_pdc4030
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC
+id|pmac_ide_probe
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_ICSIDE
+id|icside_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_RAPIDE
+id|rapide_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_GAYLE
+id|gayle_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_FALCON_IDE
+id|falconide_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_MAC_IDE
+id|macide_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_Q40IDE
+id|q40ide_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_BUDDHA
+id|buddha_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BLK_DEV_ISAPNP) &amp;&amp; defined(CONFIG_ISAPNP)
+id|pnpide_init
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULES)
+macro_line|# if defined(__mc68000__) || defined(CONFIG_APUS)
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+(brace
+id|ide_get_lock
+c_func
+(paren
+op_amp
+id|ide_intr_lock
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only */
+id|disable_irq
+c_func
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|irq
+)paren
+suffix:semicolon
+multiline_comment|/* disable_irq_nosync ?? */
+singleline_comment|//&t;&t;disable_irq_nosync(ide_hwifs[0].irq);
+)brace
+macro_line|# endif
+id|ideprobe_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# if defined(__mc68000__) || defined(CONFIG_APUS)
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+(brace
+id|enable_irq
+c_func
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|irq
+)paren
+suffix:semicolon
+id|ide_release_lock
+c_func
+(paren
+op_amp
+id|ide_intr_lock
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only */
+)brace
+macro_line|# endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+id|proc_ide_create
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t; * Initialize all device type driver modules.&n;&t; */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
+id|idedisk_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDECD
+id|ide_cdrom_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
+id|idetape_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
+id|idefloppy_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
+macro_line|# ifdef CONFIG_SCSI
+id|idescsi_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|# else
+macro_line|#warning ATA SCSI emulation selected but no SCSI-subsystem in kernel
+macro_line|# endif
+macro_line|#endif
 id|initializing
 op_assign
 l_int|0
