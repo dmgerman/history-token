@@ -120,8 +120,20 @@ DECL|macro|MSR_K6_PFIR
 mdefine_line|#define MSR_K6_PFIR&t;&t;&t;0xC0000088
 DECL|macro|MSR_K7_EVNTSEL0
 mdefine_line|#define MSR_K7_EVNTSEL0&t;&t;&t;0xC0010000
+DECL|macro|MSR_K7_EVNTSEL1
+mdefine_line|#define MSR_K7_EVNTSEL1&t;&t;&t;0xC0010001
+DECL|macro|MSR_K7_EVNTSEL2
+mdefine_line|#define MSR_K7_EVNTSEL2&t;&t;&t;0xC0010002
+DECL|macro|MSR_K7_EVNTSEL3
+mdefine_line|#define MSR_K7_EVNTSEL3&t;&t;&t;0xC0010003
 DECL|macro|MSR_K7_PERFCTR0
 mdefine_line|#define MSR_K7_PERFCTR0&t;&t;&t;0xC0010004
+DECL|macro|MSR_K7_PERFCTR1
+mdefine_line|#define MSR_K7_PERFCTR1&t;&t;&t;0xC0010005
+DECL|macro|MSR_K7_PERFCTR2
+mdefine_line|#define MSR_K7_PERFCTR2&t;&t;&t;0xC0010006
+DECL|macro|MSR_K7_PERFCTR3
+mdefine_line|#define MSR_K7_PERFCTR3&t;&t;&t;0xC0010007
 DECL|macro|MSR_K7_HWCR
 mdefine_line|#define MSR_K7_HWCR&t;&t;&t;0xC0010015
 DECL|macro|MSR_K7_FID_VID_CTL
