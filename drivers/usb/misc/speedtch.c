@@ -1201,11 +1201,6 @@ OL
 id|pdu_length
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ctx-&gt;vcc-&gt;stats
-)paren
 id|atomic_inc
 (paren
 op_amp
@@ -1273,11 +1268,6 @@ id|dbg
 l_string|&quot;udsl_decode_aal5: crc check failed!&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctx-&gt;vcc-&gt;stats
-)paren
 id|atomic_inc
 (paren
 op_amp
@@ -1297,11 +1287,6 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/* update stats */
-r_if
-c_cond
-(paren
-id|ctx-&gt;vcc-&gt;stats
-)paren
 id|atomic_inc
 (paren
 op_amp
@@ -3136,11 +3121,6 @@ id|instance-&gt;current_skb
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vcc-&gt;stats
-)paren
 id|atomic_inc
 (paren
 op_amp
