@@ -1786,6 +1786,13 @@ op_star
 id|d
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_force
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1800,6 +1807,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1817,6 +1825,13 @@ op_star
 id|d
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_force
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -1831,6 +1846,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
