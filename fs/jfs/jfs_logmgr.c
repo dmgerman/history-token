@@ -2838,10 +2838,6 @@ id|log-&gt;flag
 op_assign
 id|JFS_INLINELOG
 suffix:semicolon
-id|log-&gt;dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 id|log-&gt;base
 op_assign
 id|addressPXD
@@ -2982,16 +2978,6 @@ op_assign
 id|sb
 suffix:semicolon
 multiline_comment|/* This should be a list */
-id|log-&gt;dev
-op_assign
-id|JFS_SBI
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|logdev
-suffix:semicolon
 id|log-&gt;bdev
 op_assign
 id|bdev
@@ -3708,11 +3694,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
-id|log-&gt;dev
-)paren
+id|log-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
 id|lbmDirectWrite
@@ -5102,7 +5084,11 @@ l_int|9
 suffix:semicolon
 id|bio-&gt;bi_dev
 op_assign
-id|log-&gt;dev
+id|to_kdev_t
+c_func
+(paren
+id|log-&gt;bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|bio-&gt;bi_io_vec
 (braket
@@ -5512,7 +5498,11 @@ l_int|9
 suffix:semicolon
 id|bio-&gt;bi_dev
 op_assign
-id|log-&gt;dev
+id|to_kdev_t
+c_func
+(paren
+id|log-&gt;bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|bio-&gt;bi_io_vec
 (braket
