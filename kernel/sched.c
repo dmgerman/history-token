@@ -4886,14 +4886,7 @@ id|current
 )paren
 )paren
 (brace
-id|list_del
-c_func
-(paren
-op_amp
-id|current-&gt;run_list
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 c_func
 (paren
 op_amp
