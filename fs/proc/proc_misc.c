@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2724,6 +2725,86 @@ id|write_profile
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+multiline_comment|/*&n; * writing &squot;C&squot; to /proc/sysrq-trigger is like sysrq-C&n; */
+DECL|function|write_sysrq_trigger
+r_static
+id|ssize_t
+id|write_sysrq_trigger
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|count
+)paren
+(brace
+r_char
+id|c
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|c
+comma
+id|buf
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|handle_sysrq
+c_func
+(paren
+id|c
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+r_return
+id|count
+suffix:semicolon
+)brace
+DECL|variable|proc_sysrq_trigger_operations
+r_static
+r_struct
+id|file_operations
+id|proc_sysrq_trigger_operations
+op_assign
+(brace
+dot
+id|write
+op_assign
+id|write_sysrq_trigger
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|variable|proc_root_kcore
 r_struct
 id|proc_dir_entry
@@ -3145,6 +3226,30 @@ r_int
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+id|entry
+op_assign
+id|create_proc_entry
+c_func
+(paren
+l_string|&quot;sysrq-trigger&quot;
+comma
+id|S_IWUSR
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+id|entry-&gt;proc_fops
+op_assign
+op_amp
+id|proc_sysrq_trigger_operations
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC32
 (brace
 r_extern

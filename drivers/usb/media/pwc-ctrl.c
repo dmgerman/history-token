@@ -166,7 +166,7 @@ op_assign
 macro_line|#include &quot;pwc_nala.h&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* This tables contains entries for the 675/680/690 (Timon) camera, with&n;   4 different qualities (no compression, low, medium, high).&n;   It lists the bandwidth requirements for said mode by its alternate interface &n;   number. An alternate of 0 means that the mode is unavailable.&n;   &n;   There are 6 * 4 * 4 entries: &n;     6 different resolutions subqcif, qsif, qcif, sif, cif, vga&n;     6 framerates: 5, 10, 15, 20, 25, 30&n;     4 compression modi: none, low, medium, high&n;     &n;   When an uncompressed mode is not available, the next available compressed mode &n;   will be choosen (unless the decompressor is absent). Sometimes there are only&n;   1 or 2 compressed modes available; in that case entries are duplicated.&n;*/
+multiline_comment|/* This tables contains entries for the 675/680/690 (Timon) camera, with&n;   4 different qualities (no compression, low, medium, high).&n;   It lists the bandwidth requirements for said mode by its alternate interface &n;   number. An alternate of 0 means that the mode is unavailable.&n;   &n;   There are 6 * 4 * 4 entries: &n;     6 different resolutions subqcif, qsif, qcif, sif, cif, vga&n;     6 framerates: 5, 10, 15, 20, 25, 30&n;     4 compression modi: none, low, medium, high&n;     &n;   When an uncompressed mode is not available, the next available compressed mode &n;   will be chosen (unless the decompressor is absent). Sometimes there are only&n;   1 or 2 compressed modes available; in that case entries are duplicated.&n;*/
 DECL|struct|Timon_table_entry
 r_struct
 id|Timon_table_entry

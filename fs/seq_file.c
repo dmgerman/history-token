@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/fs/seq_file.c&n; *&n; * helper functions for making syntetic files from sequences of records.&n; * initial implementation -- AV, Oct 2001.&n; */
+multiline_comment|/*&n; * linux/fs/seq_file.c&n; *&n; * helper functions for making synthetic files from sequences of records.&n; * initial implementation -- AV, Oct 2001.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -974,7 +974,7 @@ c_cond
 id|retval
 )paren
 (brace
-multiline_comment|/* with extreme perjudice... */
+multiline_comment|/* with extreme prejudice... */
 id|file-&gt;f_pos
 op_assign
 l_int|0

@@ -68,7 +68,7 @@ DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE&t;(2 * TASK_SIZE / 3)
 multiline_comment|/* When the program starts, a1 contains a pointer to a function to be &n;   registered with atexit, as per the SVR4 ABI.  A value of 0 means we &n;   have no such handler.  */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;(_r)-&gt;ARM_r0 = 0
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;(_r)-&gt;ARM_r0 = 0
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports. */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(elf_hwcap)

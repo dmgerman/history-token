@@ -1204,7 +1204,7 @@ op_assign
 id|simple_payload_callback
 suffix:semicolon
 )brace
-multiline_comment|/* Now we find out which direction data is to be transfered in */
+multiline_comment|/* Now we find out which direction data is to be transferred in */
 id|hpusbscsi-&gt;current_data_pipe
 op_assign
 id|DIRECTION_IS_IN
@@ -1625,7 +1625,7 @@ id|CHECK_CONDITION
 op_lshift
 l_int|1
 )paren
-multiline_comment|/* we do a callback to the scsi layer if and only if all data has been transfered */
+multiline_comment|/* we do a callback to the scsi layer if and only if all data has been transferred */
 id|hpusbscsi
 op_member_access_from_pointer
 id|scallback

@@ -1830,11 +1830,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sdev
-op_ne
-l_int|NULL
 )paren
-(brace
+r_goto
+id|out
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -1844,7 +1845,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|Scsi_Device
+op_star
+id|sdev
 )paren
 )paren
 suffix:semicolon
@@ -1908,13 +1910,13 @@ op_amp
 id|sdev-&gt;list_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Some low level driver could use device-&gt;type&n;&t;&t; */
+multiline_comment|/*&n;&t; * Some low level driver could use device-&gt;type&n;&t; */
 id|sdev-&gt;type
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Assume that the device will have handshaking problems,&n;&t;&t; * and then fix this field later if it turns out it&n;&t;&t; * doesn&squot;t&n;&t;&t; */
+multiline_comment|/*&n;&t; * Assume that the device will have handshaking problems,&n;&t; * and then fix this field later if it turns out it&n;&t; * doesn&squot;t&n;&t; */
 id|sdev-&gt;borken
 op_assign
 l_int|1
@@ -1946,7 +1948,7 @@ op_logical_neg
 id|sdev-&gt;request_queue
 )paren
 r_goto
-id|out_bail
+id|out_free_dev
 suffix:semicolon
 )brace
 r_else
@@ -1988,6 +1990,7 @@ c_cond
 (paren
 id|shost-&gt;hostt-&gt;slave_alloc
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1999,12 +2002,11 @@ c_func
 id|sdev
 )paren
 )paren
-(brace
 r_goto
-id|out_bail
+id|out_free_queue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If there are any same target siblings, add this to the&n;&t;&t; * sibling list&n;&t;&t; */
+multiline_comment|/*&n;&t; * If there are any same target siblings, add this to the&n;&t; * sibling list&n;&t; */
 id|list_for_each_entry
 c_func
 (paren
@@ -2046,20 +2048,18 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * If there wasn&squot;t another lun already configured at this&n;&t;&t; * target, then default this device to SCSI_2 until we&n;&t;&t; * know better&n;&t;&t; */
+multiline_comment|/*&n;&t; * If there wasn&squot;t another lun already configured at this&n;&t; * target, then default this device to SCSI_2 until we&n;&t; * know better&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|sdev-&gt;scsi_level
 )paren
-(brace
 id|sdev-&gt;scsi_level
 op_assign
 id|SCSI_2
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Add it to the end of the shost-&gt;my_devices list.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Add it to the end of the shost-&gt;my_devices list.&n;&t; */
 id|list_add_tail
 c_func
 (paren
@@ -2071,21 +2071,10 @@ id|shost-&gt;my_devices
 )paren
 suffix:semicolon
 r_return
-(paren
 id|sdev
-)paren
 suffix:semicolon
-)brace
-id|out_bail
+id|out_free_queue
 suffix:colon
-id|printk
-c_func
-(paren
-id|ALLOC_FAILURE_MSG
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2116,10 +2105,22 @@ c_func
 id|sdev-&gt;request_queue
 )paren
 suffix:semicolon
+id|out_free_dev
+suffix:colon
 id|kfree
 c_func
 (paren
 id|sdev
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|printk
+c_func
+(paren
+id|ALLOC_FAILURE_MSG
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

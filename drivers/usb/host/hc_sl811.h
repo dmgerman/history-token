@@ -607,7 +607,7 @@ DECL|macro|SL11H_CTL1MASK_CLK12
 mdefine_line|#define SL11H_CTL1MASK_CLK12&t;0x80
 DECL|macro|SL11H_CTL1VAL_RESET
 mdefine_line|#define SL11H_CTL1VAL_RESET&t;8
-multiline_comment|/* Interrut enable (addr 6) and interrupt status register bits (addr 0xD) */
+multiline_comment|/* Interrupt enable (addr 6) and interrupt status register bits (addr 0xD) */
 DECL|macro|SL11H_INTMASK_XFERDONE
 mdefine_line|#define SL11H_INTMASK_XFERDONE&t;1
 DECL|macro|SL11H_INTMASK_SOFINTR

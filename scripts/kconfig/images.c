@@ -666,4 +666,86 @@ comma
 l_string|&quot;            &quot;
 )brace
 suffix:semicolon
+DECL|variable|xpm_menuback
+r_static
+r_const
+r_char
+op_star
+id|xpm_menuback
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;12 12 2 1&quot;
+comma
+l_string|&quot;  c white&quot;
+comma
+l_string|&quot;. c black&quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot; .......... &quot;
+comma
+l_string|&quot; .        . &quot;
+comma
+l_string|&quot; .     .. . &quot;
+comma
+l_string|&quot; .   .... . &quot;
+comma
+l_string|&quot; . ...... . &quot;
+comma
+l_string|&quot; . ...... . &quot;
+comma
+l_string|&quot; .   .... . &quot;
+comma
+l_string|&quot; .     .. . &quot;
+comma
+l_string|&quot; .        . &quot;
+comma
+l_string|&quot; .......... &quot;
+comma
+l_string|&quot;            &quot;
+)brace
+suffix:semicolon
+DECL|variable|xpm_void
+r_static
+r_const
+r_char
+op_star
+id|xpm_void
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;12 12 2 1&quot;
+comma
+l_string|&quot;  c white&quot;
+comma
+l_string|&quot;. c black&quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+comma
+l_string|&quot;            &quot;
+)brace
+suffix:semicolon
 eof

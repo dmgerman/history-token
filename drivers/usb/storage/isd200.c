@@ -1901,7 +1901,7 @@ id|CFG_CAPABILITY_SRST
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**************************************************************************&n; * isd200_write_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Write the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_write_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Write the ISD200 Configuration data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_write_config
 r_int
 id|isd200_write_config
@@ -2028,7 +2028,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_read_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Reads the ISD200 Configuraton data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
+multiline_comment|/**************************************************************************&n; * isd200_read_config&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Reads the ISD200 Configuration data&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_read_config
 r_int
 id|isd200_read_config
@@ -2981,7 +2981,7 @@ id|DF_ATA_DEVICE
 )paren
 (brace
 multiline_comment|/* this must be an ATA device */
-multiline_comment|/* perform an ATA Commmand Identify */
+multiline_comment|/* perform an ATA Command Identify */
 id|transferStatus
 op_assign
 id|isd200_action

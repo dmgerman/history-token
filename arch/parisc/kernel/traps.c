@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;asm/assembly.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -779,6 +780,31 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
+id|stack
+op_assign
+(paren
+r_int
+op_star
+)paren
+(paren
+(paren
+r_int
+)paren
+(paren
+id|stack
+op_plus
+l_int|32
+)paren
+op_amp
+op_complement
+(paren
+id|FRAME_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Align */
 id|printk
 c_func
 (paren
@@ -789,15 +815,28 @@ r_while
 c_loop
 (paren
 id|stack
-op_ge
+OG
 id|startstack
 )paren
 (brace
+id|stack
+op_sub_assign
+l_int|16
+suffix:semicolon
+multiline_comment|/* Stack frames are a multiple of 16 words */
 id|addr
 op_assign
-op_star
 id|stack
-op_decrement
+(braket
+l_int|16
+op_minus
+id|RP_OFFSET
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+)braket
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the address is either in the text segment of the&n;&t;&t; * kernel, or in the region which contains vmalloc&squot;ed&n;&t;&t; * memory, it *may* be the address of a calling&n;&t;&t; * routine; if so, print it so that someone tracing&n;&t;&t; * down the cause of the crash will be able to figure&n;&t;&t; * out the call path that was taken.&n;&t;&t; */
 r_if

@@ -47,7 +47,7 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_386
 multiline_comment|/* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program starts %edx&n;   contains a pointer to a function which might be registered using `atexit&squot;.&n;   This provides a mean for the dynamic linker to call DT_FINI functions for&n;   shared libraries that have been loaded before the code runs.&n;&n;   A value of 0 tells we have no such handler. &n;&n;   We might as well make sure everything else is cleared too (except for %esp),&n;   just to make things more deterministic.&n; */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;_r-&gt;ebx = 0; _r-&gt;ecx = 0; _r-&gt;edx = 0; &bslash;&n;&t;_r-&gt;esi = 0; _r-&gt;edi = 0; _r-&gt;ebp = 0; &bslash;&n;&t;_r-&gt;eax = 0; &bslash;&n;} while (0)
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;do { &bslash;&n;&t;_r-&gt;ebx = 0; _r-&gt;ecx = 0; _r-&gt;edx = 0; &bslash;&n;&t;_r-&gt;esi = 0; _r-&gt;edi = 0; _r-&gt;ebp = 0; &bslash;&n;&t;_r-&gt;eax = 0; &bslash;&n;} while (0)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE

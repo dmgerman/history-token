@@ -153,5 +153,7 @@ r_int
 id|write_combine
 )paren
 suffix:semicolon
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* _ASM_IA64_PCI_H */
 eof

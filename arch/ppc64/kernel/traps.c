@@ -158,6 +158,10 @@ r_int
 id|err
 )paren
 (brace
+r_static
+r_int
+id|die_counter
+suffix:semicolon
 id|console_verbose
 c_func
 (paren
@@ -179,11 +183,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Oops: %s, sig: %ld&bslash;n&quot;
+l_string|&quot;Oops: %s, sig: %ld [#%d]&bslash;n&quot;
 comma
 id|str
 comma
 id|err
+comma
+op_increment
+id|die_counter
 )paren
 suffix:semicolon
 id|show_regs

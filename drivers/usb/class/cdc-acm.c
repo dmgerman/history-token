@@ -117,7 +117,7 @@ id|usb_device
 op_star
 id|dev
 suffix:semicolon
-multiline_comment|/* the coresponding usb device */
+multiline_comment|/* the corresponding usb device */
 DECL|member|iface
 r_struct
 id|usb_interface
@@ -131,7 +131,7 @@ id|tty_struct
 op_star
 id|tty
 suffix:semicolon
-multiline_comment|/* the coresponding tty */
+multiline_comment|/* the corresponding tty */
 DECL|member|ctrlurb
 DECL|member|readurb
 DECL|member|writeurb

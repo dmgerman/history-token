@@ -215,6 +215,13 @@ r_int
 id|dirty_expire_centisecs
 suffix:semicolon
 r_void
+id|page_writeback_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
 id|balance_dirty_pages
 c_func
 (paren

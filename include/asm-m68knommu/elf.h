@@ -39,7 +39,7 @@ DECL|macro|ELF_ARCH
 mdefine_line|#define ELF_ARCH&t;EM_68K
 multiline_comment|/* For SVR4/m68k the function pointer to be registered with `atexit&squot; is&n;   passed in %a1.  Although my copy of the ABI has no such statement, it&n;   is actually used on ASV.  */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)&t;_r-&gt;a1 = 0
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;_r-&gt;a1 = 0
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 macro_line|#ifndef CONFIG_SUN3

@@ -906,11 +906,6 @@ id|inode-&gt;i_nlink
 singleline_comment|// possibly free block
 r_return
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|bh
 op_assign
 id|affs_bread
@@ -938,11 +933,6 @@ comma
 l_string|&quot;Cannot read block %lu&quot;
 comma
 id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -1169,9 +1159,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|affs_free_prealloc
 c_func
 (paren
+id|inode
 )paren
 suffix:semicolon
 )brace
@@ -1200,11 +1191,6 @@ id|dentry-&gt;d_inode
 suffix:semicolon
 r_int
 id|error
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|pr_debug
 c_func
@@ -1355,11 +1341,6 @@ id|inode
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -1385,11 +1366,6 @@ comma
 id|inode-&gt;i_nlink
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|affs_free_prealloc
 c_func
 (paren
@@ -1409,6 +1385,13 @@ op_eq
 l_int|1
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1428,14 +1411,14 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-singleline_comment|//if (inode-&gt;i_nlink)
-singleline_comment|//&t;affs_clear_inode(inode);
-)brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|inode-&gt;i_sem
 )paren
 suffix:semicolon
+)brace
 )brace
 r_void
 DECL|function|affs_delete_inode
@@ -1483,22 +1466,12 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|affs_free_block
 c_func
 (paren
 id|inode-&gt;i_sb
 comma
 id|inode-&gt;i_ino
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

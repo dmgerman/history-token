@@ -1200,6 +1200,16 @@ id|total_lowmem
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
+id|max_pfn
+op_assign
+(paren
+id|PPC_MEMSTART
+op_plus
+id|total_memory
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 id|boot_mapsize
 op_assign
 id|init_bootmem_node

@@ -1830,6 +1830,12 @@ id|start_data
 comma
 id|end_data
 suffix:semicolon
+r_int
+r_int
+id|reloc_func_desc
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|elfhdr
 id|elf_ex
@@ -2843,6 +2849,10 @@ id|load_addr
 op_add_assign
 id|load_bias
 suffix:semicolon
+id|reloc_func_desc
+op_assign
+id|load_addr
+suffix:semicolon
 )brace
 )brace
 id|k
@@ -3062,6 +3072,10 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|reloc_func_desc
+op_assign
+id|interp_load_addr
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -3227,11 +3241,13 @@ id|current-&gt;mm-&gt;mmap_sem
 suffix:semicolon
 )brace
 macro_line|#ifdef ELF_PLAT_INIT
-multiline_comment|/*&n;&t; * The ABI may specify that certain registers be set up in special&n;&t; * ways (on i386 %edx is the address of a DT_FINI function, for&n;&t; * example.  This macro performs whatever initialization to&n;&t; * the regs structure is required.&n;&t; */
+multiline_comment|/*&n;&t; * The ABI may specify that certain registers be set up in special&n;&t; * ways (on i386 %edx is the address of a DT_FINI function, for&n;&t; * example.  In addition, it may also specify (eg, PowerPC64 ELF)&n;&t; * that the e_entry field is the address of the function descriptor&n;&t; * for the startup routine, rather than the address of the startup&n;&t; * routine itself.  This macro performs whatever initialization to&n;&t; * the regs structure is required as well as any relocations to the&n;&t; * function descriptor entries when executing dynamically links apps.&n;&t; */
 id|ELF_PLAT_INIT
 c_func
 (paren
 id|regs
+comma
+id|reloc_func_desc
 )paren
 suffix:semicolon
 macro_line|#endif

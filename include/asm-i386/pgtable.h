@@ -698,17 +698,19 @@ mdefine_line|#define pmd_page(pmd) (pfn_to_page(pmd_val(pmd) &gt;&gt; PAGE_SHIFT
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|pmd_large
 mdefine_line|#define pmd_large(pmd) &bslash;&n;&t;((pmd_val(pmd) &amp; (_PAGE_PSE|_PAGE_PRESENT)) == (_PAGE_PSE|_PAGE_PRESENT))
-multiline_comment|/* to find an entry in a page-table-directory. */
+multiline_comment|/*&n; * the pgd page can be thought of an array like this: pgd_t[PTRS_PER_PGD]&n; *&n; * this macro returns the index of the entry in the pgd page which would&n; * control the given virtual address&n; */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) (((address) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
+multiline_comment|/*&n; * pgd_offset() returns a (pgd_t *)&n; * pgd_index() is used get the offset into the pgd page&squot;s array of pgd_t&squot;s;&n; */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
-multiline_comment|/* to find an entry in a kernel page-table-directory */
+multiline_comment|/*&n; * a shortcut which implies the use of the kernel&squot;s pgd, instead&n; * of a process&squot;s&n; */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
+multiline_comment|/*&n; * the pmd page can be thought of an array like this: pmd_t[PTRS_PER_PMD]&n; *&n; * this macro returns the index of the entry in the pmd page which would&n; * control the given virtual address&n; */
 DECL|macro|pmd_index
 mdefine_line|#define pmd_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
-multiline_comment|/* Find an entry in the third-level page table.. */
+multiline_comment|/*&n; * the pte page can be thought of an array like this: pte_t[PTRS_PER_PTE]&n; *&n; * this macro returns the index of the entry in the pte page which would&n; * control the given virtual address&n; */
 DECL|macro|pte_index
 mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel

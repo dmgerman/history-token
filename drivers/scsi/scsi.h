@@ -1988,13 +1988,6 @@ r_volatile
 r_char
 id|internal_timeout
 suffix:semicolon
-DECL|member|bh_next
-r_struct
-id|scsi_cmnd
-op_star
-id|bh_next
-suffix:semicolon
-multiline_comment|/* To enumerate the commands waiting &n;&t;&t;&t;&t;&t;   to be processed. */
 DECL|member|cmd_len
 r_int
 r_char

@@ -12,8 +12,8 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;bttv.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
-macro_line|#include &quot;id.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 id|MODULE_PARM
 c_func
 (paren
@@ -1374,7 +1374,7 @@ l_int|606
 suffix:semicolon
 id|va-&gt;volume
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|left
@@ -1387,7 +1387,7 @@ op_assign
 (paren
 l_int|32768
 op_star
-id|MIN
+id|min
 c_func
 (paren
 id|left
@@ -1477,7 +1477,7 @@ suffix:semicolon
 id|left
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 l_int|65536
@@ -1495,11 +1495,14 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 id|va-&gt;balance
 comma
+(paren
+id|__u16
+)paren
 l_int|32768
 )paren
 op_star

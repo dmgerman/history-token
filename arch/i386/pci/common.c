@@ -363,23 +363,6 @@ id|ln-&gt;next
 suffix:semicolon
 )brace
 )brace
-r_void
-id|__devinit
-DECL|function|pcibios_fixup_pbus_ranges
-id|pcibios_fixup_pbus_ranges
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-comma
-r_struct
-id|pbus_set_ranges_data
-op_star
-id|ranges
-)paren
-(brace
-)brace
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
 DECL|function|pcibios_fixup_bus
 r_void

@@ -4546,6 +4546,17 @@ r_struct
 id|module
 op_star
 id|owner
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ops
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|owner
 op_assign
 id|ops-&gt;owner
 suffix:semicolon

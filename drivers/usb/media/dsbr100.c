@@ -1,4 +1,4 @@
-multiline_comment|/* A driver for the D-Link DSB-R100 USB radio.  The R100 plugs&n; into both the USB and an analog audio input, so this thing&n; only deals with initialisation and frequency setting, the&n; audio data has to be handled by a sound driver.&n;&n; Major issue: I can&squot;t find out where the device reports the signal&n; strength, and indeed the windows software appearantly just looks&n; at the stereo indicator as well.  So, scanning will only find&n; stereo stations.  Sad, but I can&squot;t help it.&n;&n; Also, the windows program sends oodles of messages over to the&n; device, and I couldn&squot;t figure out their meaning.  My suspicion&n; is that they don&squot;t have any:-)&n;&n; You might find some interesting stuff about this module at&n; http://unimut.fsk.uni-heidelberg.de/unimut/demi/dsbr&n;&n; Copyright (c) 2000 Markus Demleitner &lt;msdemlei@tucana.harvard.edu&gt;&n;&n; This program is free software; you can redistribute it and/or modify&n; it under the terms of the GNU General Public License as published by&n; the Free Software Foundation; either version 2 of the License, or&n; (at your option) any later version.&n;&n; This program is distributed in the hope that it will be useful,&n; but WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; GNU General Public License for more details.&n;&n; You should have received a copy of the GNU General Public License&n; along with this program; if not, write to the Free Software&n; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n;&n; History:&n;&n; Version 0.24:&n; &t;Markus: Hope I got these silly VIDEO_TUNER_LOW issues finally&n;&t;right.  Some minor cleanup, improved standalone compilation&n;&n; Version 0.23:&n; &t;Markus: Sign extension bug fixed by declaring transfer_buffer unsigned&n;&n; Version 0.22:&n; &t;Markus: Some (brown bag) cleanup in what VIDIOCSTUNER returns, &n;&t;thanks to Mike Cox for pointing the problem out.&n;&n; Version 0.21:&n; &t;Markus: Minor cleanup, warnings if something goes wrong, lame attempt&n;&t;to adhere to Documentation/CodingStyle&n;&n; Version 0.2: &n; &t;Brad Hards &lt;bradh@dynamite.com.au&gt;: Fixes to make it work as non-module&n;&t;Markus: Copyright clarification&n;&n; Version 0.01: Markus: initial release&n;&n;*/
+multiline_comment|/* A driver for the D-Link DSB-R100 USB radio.  The R100 plugs&n; into both the USB and an analog audio input, so this thing&n; only deals with initialisation and frequency setting, the&n; audio data has to be handled by a sound driver.&n;&n; Major issue: I can&squot;t find out where the device reports the signal&n; strength, and indeed the windows software appearantly just looks&n; at the stereo indicator as well.  So, scanning will only find&n; stereo stations.  Sad, but I can&squot;t help it.&n;&n; Also, the windows program sends oodles of messages over to the&n; device, and I couldn&squot;t figure out their meaning.  My suspicion&n; is that they don&squot;t have any:-)&n;&n; You might find some interesting stuff about this module at&n; http://unimut.fsk.uni-heidelberg.de/unimut/demi/dsbr&n;&n; Copyright (c) 2000 Markus Demleitner &lt;msdemlei@tucana.harvard.edu&gt;&n;&n; This program is free software; you can redistribute it and/or modify&n; it under the terms of the GNU General Public License as published by&n; the Free Software Foundation; either version 2 of the License, or&n; (at your option) any later version.&n;&n; This program is distributed in the hope that it will be useful,&n; but WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; GNU General Public License for more details.&n;&n; You should have received a copy of the GNU General Public License&n; along with this program; if not, write to the Free Software&n; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n;&n; History:&n;&n; Version 0.30:&n; &t;Markus: Updates for 2.5.x kernel and more ISO compiant source&n;&n; Version 0.25:&n;        PSL and Markus: Cleanup, radio now doesn&squot;t stop on device close&n;&n; Version 0.24:&n; &t;Markus: Hope I got these silly VIDEO_TUNER_LOW issues finally&n;&t;right.  Some minor cleanup, improved standalone compilation&n;&n; Version 0.23:&n; &t;Markus: Sign extension bug fixed by declaring transfer_buffer unsigned&n;&n; Version 0.22:&n; &t;Markus: Some (brown bag) cleanup in what VIDIOCSTUNER returns, &n;&t;thanks to Mike Cox for pointing the problem out.&n;&n; Version 0.21:&n; &t;Markus: Minor cleanup, warnings if something goes wrong, lame attempt&n;&t;to adhere to Documentation/CodingStyle&n;&n; Version 0.2: &n; &t;Brad Hards &lt;bradh@dynamite.com.au&gt;: Fixes to make it work as non-module&n;&t;Markus: Copyright clarification&n;&n; Version 0.01: Markus: initial release&n;&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,17 +9,24 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.24&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.25&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Markus Demleitner &lt;msdemlei@tucana.harvard.edu&gt;&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;D-Link DSB-R100 USB radio driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;D-Link DSB-R100 USB FM radio driver&quot;
 DECL|macro|DSB100_VENDOR
 mdefine_line|#define DSB100_VENDOR 0x04b4
 DECL|macro|DSB100_PRODUCT
 mdefine_line|#define DSB100_PRODUCT 0x1002
 DECL|macro|TB_LEN
 mdefine_line|#define TB_LEN 16
+multiline_comment|/* Frequency limits in MHz -- these are European values.  For Japanese&n;devices, that would be 76 and 91.  */
+DECL|macro|FREQ_MIN
+mdefine_line|#define FREQ_MIN  87.5
+DECL|macro|FREQ_MAX
+mdefine_line|#define FREQ_MAX 108.0
+DECL|macro|FREQ_MUL
+mdefine_line|#define FREQ_MUL 16000
 r_static
 r_int
 id|usb_dsbr100_probe
@@ -198,7 +205,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;D-Link DSB R-100 USB radio&quot;
+l_string|&quot;D-Link DSB-R 100&quot;
 comma
 dot
 id|type
@@ -743,7 +750,9 @@ id|intf
 suffix:semicolon
 id|radio-&gt;curfreq
 op_assign
-l_int|1454000
+id|FREQ_MIN
+op_star
+id|FREQ_MUL
 suffix:semicolon
 id|usb_set_intfdata
 (paren
@@ -926,7 +935,7 @@ c_func
 (paren
 id|v-&gt;name
 comma
-l_string|&quot;D-Link R-100 USB Radio&quot;
+l_string|&quot;D-Link R-100 USB FM Radio&quot;
 )paren
 suffix:semicolon
 r_return
@@ -964,15 +973,15 @@ suffix:semicolon
 )brace
 id|v-&gt;rangelow
 op_assign
-l_int|87
+id|FREQ_MIN
 op_star
-l_int|16000
+id|FREQ_MUL
 suffix:semicolon
 id|v-&gt;rangehigh
 op_assign
-l_int|108
+id|FREQ_MAX
 op_star
-l_int|16000
+id|FREQ_MUL
 suffix:semicolon
 id|v-&gt;flags
 op_assign
@@ -1099,7 +1108,7 @@ l_int|1
 id|warn
 c_func
 (paren
-l_string|&quot;set frequency failed&quot;
+l_string|&quot;Set frequency failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1175,12 +1184,10 @@ c_cond
 (paren
 id|v-&gt;audio
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1204,7 +1211,7 @@ l_int|1
 id|warn
 c_func
 (paren
-l_string|&quot;radio did not respond properly&quot;
+l_string|&quot;Radio did not respond properly&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1224,7 +1231,7 @@ l_int|1
 id|warn
 c_func
 (paren
-l_string|&quot;radio did not respond properly&quot;
+l_string|&quot;Radio did not respond properly&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1324,7 +1331,7 @@ id|radio
 id|warn
 c_func
 (paren
-l_string|&quot;radio not initialised&quot;
+l_string|&quot;Radio not initialised&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1341,7 +1348,7 @@ id|users
 id|warn
 c_func
 (paren
-l_string|&quot;radio in use&quot;
+l_string|&quot;Radio in use&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1366,7 +1373,7 @@ l_int|0
 id|warn
 c_func
 (paren
-l_string|&quot;radio did not start up properly&quot;
+l_string|&quot;Radio did not start up properly&quot;
 )paren
 suffix:semicolon
 id|dsbr100_setfreq
@@ -1428,12 +1435,6 @@ suffix:semicolon
 id|users
 op_decrement
 suffix:semicolon
-id|dsbr100_stop
-c_func
-(paren
-id|radio
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1480,7 +1481,7 @@ l_int|1
 id|warn
 c_func
 (paren
-l_string|&quot;couldn&squot;t register video device&quot;
+l_string|&quot;Couldn&squot;t register video device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1574,5 +1575,4 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;vi: ts=8&n;Sigh.  Of course, I am one of the ts=2 heretics, but Linus&squot; wish is&n;my command.&n;*/
 eof

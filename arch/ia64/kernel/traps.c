@@ -346,6 +346,10 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+r_static
+r_int
+id|die_counter
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -399,7 +403,7 @@ l_int|3
 id|printk
 c_func
 (paren
-l_string|&quot;%s[%d]: %s %ld&bslash;n&quot;
+l_string|&quot;%s[%d]: %s %ld [%d]&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -408,6 +412,9 @@ comma
 id|str
 comma
 id|err
+comma
+op_increment
+id|die_counter
 )paren
 suffix:semicolon
 id|show_regs

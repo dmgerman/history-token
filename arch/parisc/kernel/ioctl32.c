@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.6 2002/10/21 16:13:22 varenet Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.5 2002/10/18 00:21:43 varenet Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &quot;sys32.h&quot;
@@ -56,6 +56,8 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|macro|__KERNEL__
 mdefine_line|#define __KERNEL__
 macro_line|#include &lt;scsi/sg.h&gt;
+macro_line|#include &lt;linux/raid/md_u.h&gt;
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/perf.h&gt;
@@ -17685,6 +17687,106 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* Fix sizeof(sizeof()) breakage */
+DECL|macro|BLKBSZGET_32
+mdefine_line|#define BLKBSZGET_32&t;_IOR(0x12,112,int)
+DECL|macro|BLKBSZSET_32
+mdefine_line|#define BLKBSZSET_32&t;_IOW(0x12,113,int)
+DECL|macro|BLKGETSIZE64_32
+mdefine_line|#define BLKGETSIZE64_32&t;_IOR(0x12,114,int)
+DECL|function|do_blkbszget
+r_static
+r_int
+id|do_blkbszget
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_return
+id|sys_ioctl
+c_func
+(paren
+id|fd
+comma
+id|BLKBSZGET
+comma
+id|arg
+)paren
+suffix:semicolon
+)brace
+DECL|function|do_blkbszset
+r_static
+r_int
+id|do_blkbszset
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_return
+id|sys_ioctl
+c_func
+(paren
+id|fd
+comma
+id|BLKBSZSET
+comma
+id|arg
+)paren
+suffix:semicolon
+)brace
+DECL|function|do_blkgetsize64
+r_static
+r_int
+id|do_blkgetsize64
+c_func
+(paren
+r_int
+r_int
+id|fd
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+(brace
+r_return
+id|sys_ioctl
+c_func
+(paren
+id|fd
+comma
+id|BLKGETSIZE64
+comma
+id|arg
+)paren
+suffix:semicolon
+)brace
 DECL|function|ioc_settimeout
 r_static
 r_int
@@ -18451,16 +18553,6 @@ c_func
 (paren
 id|BLKSECTSET
 )paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|BLKSSZGET
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|BLKBSZGET
-)paren
 multiline_comment|/* RAID */
 id|COMPATIBLE_IOCTL
 c_func
@@ -18481,6 +18573,11 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|PRINT_RAID_DEBUG
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|RAID_AUTORUN
 )paren
 id|COMPATIBLE_IOCTL
 c_func
@@ -18535,6 +18632,11 @@ id|SET_DISK_FAULTY
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|HOT_GENERATE_ERROR
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|RUN_ARRAY
 )paren
 id|COMPATIBLE_IOCTL
@@ -18556,6 +18658,62 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|RESTART_ARRAY_RW
+)paren
+multiline_comment|/* DM */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_VERSION
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_REMOVE_ALL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_CREATE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_REMOVE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_RELOAD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_SUSPEND
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_RENAME
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_DEPS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_STATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_TARGET_STATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_TARGET_WAIT
 )paren
 multiline_comment|/* Big K */
 id|COMPATIBLE_IOCTL
@@ -21350,6 +21508,29 @@ c_func
 id|BLKPG
 comma
 id|blkpg_ioctl_trans
+)paren
+multiline_comment|/* take care of sizeof(sizeof()) breakage */
+multiline_comment|/* block stuff */
+id|HANDLE_IOCTL
+c_func
+(paren
+id|BLKBSZGET_32
+comma
+id|do_blkbszget
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|BLKBSZSET_32
+comma
+id|do_blkbszset
+)paren
+id|HANDLE_IOCTL
+c_func
+(paren
+id|BLKGETSIZE64_32
+comma
+id|do_blkgetsize64
 )paren
 id|HANDLE_IOCTL
 c_func

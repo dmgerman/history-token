@@ -4867,7 +4867,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/** Utility to find a class-specfic interface descriptor.&n; *  dsubtype is a descriptor subtype&n; *  Called by parseDescriptor();&n; **/
+multiline_comment|/** Utility to find a class-specific interface descriptor.&n; *  dsubtype is a descriptor subtype&n; *  Called by parseDescriptor();&n; **/
 DECL|function|find_csinterface_descriptor
 r_static
 r_void

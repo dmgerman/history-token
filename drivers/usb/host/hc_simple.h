@@ -96,13 +96,13 @@ DECL|member|interval
 r_int
 id|interval
 suffix:semicolon
-multiline_comment|/* intervall of roothub interrupt transfers */
+multiline_comment|/* interval of roothub interrupt transfers */
 DECL|member|rh_int_timer
 r_struct
 id|timer_list
 id|rh_int_timer
 suffix:semicolon
-multiline_comment|/* intervall timer for rh interrupt EP */
+multiline_comment|/* interval timer for rh interrupt EP */
 )brace
 suffix:semicolon
 macro_line|#if 1

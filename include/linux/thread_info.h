@@ -22,6 +22,7 @@ suffix:semicolon
 DECL|member|arg0
 DECL|member|arg1
 DECL|member|arg2
+DECL|member|arg3
 r_int
 r_int
 id|arg0
@@ -29,6 +30,8 @@ comma
 id|arg1
 comma
 id|arg2
+comma
+id|arg3
 suffix:semicolon
 )brace
 suffix:semicolon

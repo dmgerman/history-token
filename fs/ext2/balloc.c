@@ -1749,9 +1749,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bit
-op_ge
-id|sbi-&gt;s_groups_count
+op_logical_neg
+id|group_alloc
 )paren
 (brace
 op_star

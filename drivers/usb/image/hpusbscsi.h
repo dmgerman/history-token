@@ -422,7 +422,7 @@ multiline_comment|/* defines for internal driver state */
 DECL|macro|HP_STATE_FREE
 mdefine_line|#define HP_STATE_FREE                 0  /*ready for next request */
 DECL|macro|HP_STATE_BEGINNING
-mdefine_line|#define HP_STATE_BEGINNING      1  /*command being transfered */
+mdefine_line|#define HP_STATE_BEGINNING      1  /*command being transferred */
 DECL|macro|HP_STATE_WORKING
 mdefine_line|#define HP_STATE_WORKING         2  /* data transfer stage */
 DECL|macro|HP_STATE_ERROR

@@ -575,7 +575,7 @@ l_int|2
 (brace
 id|printk
 (paren
-l_string|&quot; nothing.&bslash;n&quot;
+l_string|&quot;nothing.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -603,16 +603,15 @@ id|pst
 )paren
 (brace
 r_int
+r_int
 id|j
+comma
+id|speed
 suffix:semicolon
 id|u8
 id|fid
 comma
 id|vid
-suffix:semicolon
-r_int
-r_int
-id|speed
 suffix:semicolon
 id|powernow_table
 op_assign
@@ -1064,6 +1063,7 @@ id|CPUFREQ_POSTCHANGE
 suffix:semicolon
 )brace
 DECL|function|powernow_decode_bios
+r_static
 r_int
 id|powernow_decode_bios
 (paren

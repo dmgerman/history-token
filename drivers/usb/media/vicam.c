@@ -5087,7 +5087,7 @@ c_cond
 id|ioctlnr
 )paren
 (brace
-multiline_comment|/* query capabilites */
+multiline_comment|/* query capabilities */
 r_case
 id|VIDIOCGCAP
 suffix:colon

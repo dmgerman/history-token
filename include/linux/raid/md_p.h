@@ -378,5 +378,182 @@ op_or
 id|sb-&gt;events_lo
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The version-1 superblock :&n; * All numeric fields are little-endian.&n; *&n; * total size: 256 bytes plus 2 per device.&n; *  1K allows 384 devices.&n; */
+DECL|struct|mdp_superblock_1
+r_struct
+id|mdp_superblock_1
+(brace
+multiline_comment|/* constant array information - 128 bytes */
+DECL|member|magic
+id|__u32
+id|magic
+suffix:semicolon
+multiline_comment|/* MD_SB_MAGIC: 0xa92b4efc - little endian */
+DECL|member|major_version
+id|__u32
+id|major_version
+suffix:semicolon
+multiline_comment|/* 1 */
+DECL|member|feature_map
+id|__u32
+id|feature_map
+suffix:semicolon
+multiline_comment|/* 0 for now */
+DECL|member|pad0
+id|__u32
+id|pad0
+suffix:semicolon
+multiline_comment|/* always set to 0 when writing */
+DECL|member|set_uuid
+id|__u8
+id|set_uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* user-space generated. */
+DECL|member|set_name
+r_char
+id|set_name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* set and interpreted by user-space */
+DECL|member|ctime
+id|__u64
+id|ctime
+suffix:semicolon
+multiline_comment|/* lo 40 bits are seconds, top 24 are microseconds or 0*/
+DECL|member|level
+id|__u32
+id|level
+suffix:semicolon
+multiline_comment|/* -4 (multipath), -1 (linear), 0,1,4,5 */
+DECL|member|layout
+id|__u32
+id|layout
+suffix:semicolon
+multiline_comment|/* only for raid5 currently */
+DECL|member|size
+id|__u64
+id|size
+suffix:semicolon
+multiline_comment|/* used size of component devices, in 512byte sectors */
+DECL|member|chunksize
+id|__u32
+id|chunksize
+suffix:semicolon
+multiline_comment|/* in 512byte sectors */
+DECL|member|raid_disks
+id|__u32
+id|raid_disks
+suffix:semicolon
+DECL|member|pad1
+id|__u8
+id|pad1
+(braket
+l_int|128
+op_minus
+l_int|92
+)braket
+suffix:semicolon
+multiline_comment|/* set to 0 when written */
+multiline_comment|/* constant this-device information - 64 bytes */
+DECL|member|data_offset
+id|__u64
+id|data_offset
+suffix:semicolon
+multiline_comment|/* sector start of data, often 0 */
+DECL|member|data_size
+id|__u64
+id|data_size
+suffix:semicolon
+multiline_comment|/* sectors in this device that can be used for data */
+DECL|member|super_offset
+id|__u64
+id|super_offset
+suffix:semicolon
+multiline_comment|/* sector start of this superblock */
+DECL|member|recovery_offset
+id|__u64
+id|recovery_offset
+suffix:semicolon
+multiline_comment|/* sectors before this offset (from data_offset) have been recovered */
+DECL|member|dev_number
+id|__u32
+id|dev_number
+suffix:semicolon
+multiline_comment|/* permanent identifier of this  device - not role in raid */
+DECL|member|cnt_corrected_read
+id|__u32
+id|cnt_corrected_read
+suffix:semicolon
+multiline_comment|/* number of read errors that were corrected by re-writing */
+DECL|member|device_uuid
+id|__u8
+id|device_uuid
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* user-space setable, ignored by kernel */
+DECL|member|pad2
+id|__u8
+id|pad2
+(braket
+l_int|64
+op_minus
+l_int|56
+)braket
+suffix:semicolon
+multiline_comment|/* set to 0 when writing */
+multiline_comment|/* array state information - 64 bytes */
+DECL|member|utime
+id|__u64
+id|utime
+suffix:semicolon
+multiline_comment|/* 40 bits second, 24 btes microseconds */
+DECL|member|events
+id|__u64
+id|events
+suffix:semicolon
+multiline_comment|/* incremented when superblock updated */
+DECL|member|resync_offset
+id|__u64
+id|resync_offset
+suffix:semicolon
+multiline_comment|/* data before this offset (from data_offset) known to be in sync */
+DECL|member|sb_csum
+id|__u32
+id|sb_csum
+suffix:semicolon
+multiline_comment|/* checksum upto devs[max_dev] */
+DECL|member|max_dev
+id|__u32
+id|max_dev
+suffix:semicolon
+multiline_comment|/* size of devs[] array to consider */
+DECL|member|pad3
+id|__u8
+id|pad3
+(braket
+l_int|64
+op_minus
+l_int|40
+)braket
+suffix:semicolon
+multiline_comment|/* set to 0 when writing */
+multiline_comment|/* device state information. Indexed by dev_number.&n;&t; * 2 bytes per device&n;&t; * Note there are no per-device state flags. State information is rolled&n;&t; * into the &squot;roles&squot; value.  If a device is spare or faulty, then it doesn&squot;t&n;&t; * have a meaningful role.&n;&t; */
+DECL|member|dev_roles
+id|__u16
+id|dev_roles
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* role in array, or 0xffff for a spare, or 0xfffe for faulty */
+)brace
+suffix:semicolon
 macro_line|#endif 
 eof

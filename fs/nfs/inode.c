@@ -5403,6 +5403,12 @@ c_func
 l_string|&quot;nfs_get_sb: invalid root filehandle&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func

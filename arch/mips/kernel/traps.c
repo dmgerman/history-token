@@ -723,6 +723,10 @@ r_int
 id|line
 )paren
 (brace
+r_static
+r_int
+id|die_counter
+suffix:semicolon
 id|console_verbose
 c_func
 (paren
@@ -761,7 +765,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;:&bslash;n&quot;
+l_string|&quot;[#%d]:&bslash;n&quot;
+comma
+op_increment
+id|die_counter
 )paren
 suffix:semicolon
 id|show_regs

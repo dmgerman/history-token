@@ -1366,7 +1366,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Open the directory ...&n;&t; */
 id|error
 op_assign
-id|init_private_file
+id|open_private_file
 c_func
 (paren
 op_amp
@@ -1374,7 +1374,7 @@ id|file
 comma
 id|dentry
 comma
-id|FMODE_READ
+id|O_RDONLY
 )paren
 suffix:semicolon
 r_if
@@ -1477,18 +1477,9 @@ suffix:semicolon
 )brace
 id|out_close
 suffix:colon
-r_if
-c_cond
-(paren
-id|file.f_op-&gt;release
-)paren
-id|file.f_op
-op_member_access_from_pointer
-id|release
+id|close_private_file
 c_func
 (paren
-id|dir
-comma
 op_amp
 id|file
 )paren

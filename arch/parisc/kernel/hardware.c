@@ -737,7 +737,7 @@ comma
 (brace
 id|HPHW_NPROC
 comma
-l_int|0x48
+l_int|0x484
 comma
 l_int|0x4
 comma
@@ -749,7 +749,7 @@ comma
 (brace
 id|HPHW_NPROC
 comma
-l_int|0x48
+l_int|0x485
 comma
 l_int|0x4
 comma

@@ -1233,7 +1233,7 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-multiline_comment|/* This is a announcement of comming bulk_ins. */
+multiline_comment|/* This is a announcement of coming bulk_ins. */
 r_int
 r_int
 id|size

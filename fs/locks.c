@@ -1727,9 +1727,11 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -1784,9 +1786,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_return
 id|result

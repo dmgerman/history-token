@@ -370,8 +370,12 @@ id|bh
 id|pr_debug
 c_func
 (paren
-l_string|&quot;affs_brelse: %ld&bslash;n&quot;
+l_string|&quot;affs_brelse: %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|bh-&gt;b_blocknr
 )paren
 suffix:semicolon

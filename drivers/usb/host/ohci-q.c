@@ -2414,6 +2414,11 @@ r_void
 id|td_done
 (paren
 r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_struct
 id|urb
 op_star
 id|urb
@@ -3385,6 +3390,8 @@ suffix:semicolon
 multiline_comment|/* HC may have partly processed this TD */
 id|td_done
 (paren
+id|ohci
+comma
 id|urb
 comma
 id|td
@@ -3703,6 +3710,8 @@ suffix:semicolon
 multiline_comment|/* update URB&squot;s length and status from TD */
 id|td_done
 (paren
+id|ohci
+comma
 id|urb
 comma
 id|td

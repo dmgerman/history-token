@@ -508,5 +508,7 @@ mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 macro_line|#endif /* __KERNEL__ */
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* _ASM_PCI_H */
 eof

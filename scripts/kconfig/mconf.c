@@ -1365,36 +1365,20 @@ id|prompt
 suffix:semicolon
 )brace
 r_else
-(brace
-r_if
-c_cond
-(paren
-id|menu-&gt;parent
-op_ne
-op_amp
-id|rootmenu
-)paren
 id|cprint1
 c_func
 (paren
-l_string|&quot;   %*c&quot;
+l_string|&quot;   %*c%s  ---&gt;&quot;
 comma
 id|indent
 op_plus
 l_int|1
 comma
 l_char|&squot; &squot;
-)paren
-suffix:semicolon
-id|cprint1
-c_func
-(paren
-l_string|&quot;%s  ---&gt;&quot;
 comma
 id|prompt
 )paren
 suffix:semicolon
-)brace
 id|cprint_done
 c_func
 (paren
@@ -1748,6 +1732,44 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|menu
+op_eq
+id|current_menu
+)paren
+(brace
+id|cprint
+c_func
+(paren
+l_string|&quot;:%p&quot;
+comma
+id|menu
+)paren
+suffix:semicolon
+id|cprint
+c_func
+(paren
+l_string|&quot;---%*c%s&quot;
+comma
+id|indent
+op_plus
+l_int|1
+comma
+l_char|&squot; &squot;
+comma
+id|menu_get_prompt
+c_func
+(paren
+id|menu
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|conf_childs
+suffix:semicolon
+)brace
 id|child_count
 op_increment
 suffix:semicolon
@@ -1987,6 +2009,28 @@ suffix:colon
 l_string|&quot; (NEW)&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|menu-&gt;prompt-&gt;type
+op_eq
+id|P_MENU
+)paren
+(brace
+id|cprint1
+c_func
+(paren
+l_string|&quot;  ---&gt;&quot;
+)paren
+suffix:semicolon
+id|cprint_done
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|cprint_done
 c_func
 (paren
@@ -2206,7 +2250,7 @@ suffix:semicolon
 id|cprint
 c_func
 (paren
-l_string|&quot;Load an Alternate Configuration File&quot;
+l_string|&quot;    Load an Alternate Configuration File&quot;
 )paren
 suffix:semicolon
 id|cprint
@@ -2218,7 +2262,7 @@ suffix:semicolon
 id|cprint
 c_func
 (paren
-l_string|&quot;Save Configuration to an Alternate File&quot;
+l_string|&quot;    Save Configuration to an Alternate File&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2418,6 +2462,20 @@ op_eq
 id|yes
 )paren
 id|conf_choice
+c_func
+(paren
+id|submenu
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|submenu-&gt;prompt-&gt;type
+op_eq
+id|P_MENU
+)paren
+id|conf
 c_func
 (paren
 id|submenu

@@ -1816,7 +1816,7 @@ comma
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Bypass flip-buffers, and feed the ldisc directly&n;&t;&t;&t; * due to our potentally large buffer size.  Since we&n;&t;&t;&t; * used to set low_latency, this is exactly what the&n;&t;&t;&t; * tty layer did anyway :)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Bypass flip-buffers, and feed the ldisc directly&n;&t;&t;&t; * due to our potentially large buffer size.  Since we&n;&t;&t;&t; * used to set low_latency, this is exactly what the&n;&t;&t;&t; * tty layer did anyway :)&n;&t;&t;&t; */
 id|tty
 op_assign
 id|port-&gt;tty
@@ -2049,7 +2049,7 @@ id|port-&gt;tty
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * FIXME, we should compare the baud request against the&n;&t;&t; * capability stated in the IR header that we got in the&n;&t;&t; * startup funtion.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * FIXME, we should compare the baud request against the&n;&t;&t; * capability stated in the IR header that we got in the&n;&t;&t; * startup function.&n;&t;&t; */
 r_switch
 c_cond
 (paren

@@ -756,5 +756,7 @@ multiline_comment|/* Tell drivers/pci/proc.c that we have pci_mmap_page_range() 
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP&t;1
 macro_line|#endif&t;/* __KERNEL__ */
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __PPC_PCI_H */
 eof

@@ -1294,7 +1294,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * cpufreq_gx_init:&n; *   MediaGX/Geode GX initilize cpufreq driver&n; */
+multiline_comment|/* &n; * cpufreq_gx_init:&n; *   MediaGX/Geode GX initialize cpufreq driver&n; */
 DECL|variable|gx_suspmod_driver
 r_static
 r_struct

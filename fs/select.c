@@ -966,9 +966,11 @@ id|__timeout
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|poll_freewait
 c_func
@@ -1906,9 +1908,11 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|__set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 r_return
 id|count

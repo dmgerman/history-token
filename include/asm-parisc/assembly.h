@@ -2,7 +2,35 @@ multiline_comment|/*&n; * Copyright (C) 1999 Hewlett-Packard (Frank Rowand)&n; *
 macro_line|#ifndef _PARISC_ASSEMBLY_H
 DECL|macro|_PARISC_ASSEMBLY_H
 mdefine_line|#define _PARISC_ASSEMBLY_H
-macro_line|#if defined(__LP64__) &amp;&amp; defined(__ASSEMBLY__)
+macro_line|#ifdef __LP64__
+DECL|macro|LDREG
+mdefine_line|#define LDREG&t;ldd
+DECL|macro|STREG
+mdefine_line|#define STREG&t;std
+DECL|macro|LDREGM
+mdefine_line|#define LDREGM&t;ldd,mb
+DECL|macro|STREGM
+mdefine_line|#define STREGM&t;std,ma
+DECL|macro|RP_OFFSET
+mdefine_line|#define RP_OFFSET&t;16
+DECL|macro|FRAME_SIZE
+mdefine_line|#define FRAME_SIZE&t;128
+macro_line|#else
+DECL|macro|LDREG
+mdefine_line|#define LDREG&t;ldw
+DECL|macro|STREG
+mdefine_line|#define STREG&t;stw
+DECL|macro|LDREGM
+mdefine_line|#define LDREGM&t;ldwm
+DECL|macro|STREGM
+mdefine_line|#define STREGM&t;stwm
+DECL|macro|RP_OFFSET
+mdefine_line|#define RP_OFFSET&t;20
+DECL|macro|FRAME_SIZE
+mdefine_line|#define FRAME_SIZE&t;64
+macro_line|#endif
+macro_line|#ifdef __ASSEMBLY__
+macro_line|#ifdef __LP64__
 multiline_comment|/* the 64-bit pa gnu assembler unfortunately defaults to .level 1.1 or 2.0 so&n; * work around that for now... */
 dot
 id|level
@@ -312,27 +340,6 @@ comma
 id|reg
 dot
 id|endm
-macro_line|#ifdef __LP64__
-DECL|macro|LDREG
-mdefine_line|#define LDREG&t;ldd
-DECL|macro|STREG
-mdefine_line|#define STREG&t;std
-DECL|macro|LDREGM
-mdefine_line|#define LDREGM&t;ldd,mb
-DECL|macro|STREGM
-mdefine_line|#define STREGM&t;std,ma
-DECL|macro|RP_OFFSET
-mdefine_line|#define RP_OFFSET&t;16
-DECL|macro|FRAME_SIZE
-mdefine_line|#define FRAME_SIZE&t;128
-macro_line|#else
-mdefine_line|#define LDREG&t;ldw
-mdefine_line|#define STREG&t;stw
-mdefine_line|#define LDREGM&t;ldwm
-mdefine_line|#define STREGM&t;stwm
-mdefine_line|#define RP_OFFSET&t;20
-mdefine_line|#define FRAME_SIZE&t;64
-macro_line|#endif
 dot
 id|macro
 id|loadgp
@@ -2936,5 +2943,6 @@ id|regs
 )paren
 dot
 id|endm
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif
 eof

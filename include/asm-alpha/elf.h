@@ -53,7 +53,7 @@ DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE&t;&t;(TASK_UNMAPPED_BASE + 0x1000000)
 multiline_comment|/* $0 is set by ld.so to a pointer to a function which might be &n;   registered using atexit.  This provides a mean for the dynamic&n;   linker to call DT_FINI functions for shared libraries that have&n;   been loaded before the code runs.&n;&n;   So that we can use the same startup file with static executables,&n;   we start programs with a value of 0 to indicate that there is no&n;   such function.  */
 DECL|macro|ELF_PLAT_INIT
-mdefine_line|#define ELF_PLAT_INIT(_r)       _r-&gt;r0 = 0
+mdefine_line|#define ELF_PLAT_INIT(_r, load_addr)&t;_r-&gt;r0 = 0
 multiline_comment|/* The registers are layed out in pt_regs for PAL and syscall&n;   convenience.  Re-order them for the linear elf_gregset_t.  */
 r_extern
 r_void

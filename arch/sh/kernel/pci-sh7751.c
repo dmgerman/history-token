@@ -1080,25 +1080,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-DECL|function|pcibios_fixup_pbus_ranges
-r_void
-id|__devinit
-id|pcibios_fixup_pbus_ranges
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|b
-comma
-r_struct
-id|pbus_set_ranges_data
-op_star
-id|range
-)paren
-(brace
-multiline_comment|/* No fixups needed */
-)brace
 multiline_comment|/*&n; *  Called after each bus is probed, but before its children&n; *  are examined.&n; */
 DECL|function|pcibios_fixup_bus
 r_void

@@ -5988,6 +5988,19 @@ id|j_header_bh
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* j_header_bh is on the journal dev, make sure not to release the journal&n;   * dev until we brelse j_header_bh&n;   */
+id|release_journal_dev
+c_func
+(paren
+id|p_s_sb
+comma
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+)paren
+suffix:semicolon
 id|vfree
 c_func
 (paren
@@ -6135,18 +6148,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|release_journal_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|SB_JOURNAL
-c_func
-(paren
-id|p_s_sb
-)paren
-)paren
-suffix:semicolon
 id|free_journal_ram
 c_func
 (paren
@@ -9437,7 +9438,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t; * journal block device was taken via filp_open&n;&t; */
 id|result
 op_assign
 id|filp_close
@@ -9474,7 +9474,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*&n;&t; * journal block device was taken via bdget and blkdev_get&n;&t; */
 id|result
 op_assign
 id|blkdev_put
@@ -9505,7 +9504,7 @@ l_int|0
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;sh-457: release_journal_dev: Cannot release journal device: %i&quot;
+l_string|&quot;sh-457: release_journal_dev: Cannot release journal device: %i&bslash;n&quot;
 comma
 id|result
 )paren
@@ -9543,6 +9542,13 @@ suffix:semicolon
 id|dev_t
 id|jdev
 suffix:semicolon
+r_int
+id|blkdev_mode
+op_assign
+id|FMODE_READ
+op_or
+id|FMODE_WRITE
+suffix:semicolon
 id|result
 op_assign
 l_int|0
@@ -9575,6 +9581,19 @@ id|super
 )paren
 suffix:colon
 id|super-&gt;s_dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bdev_read_only
+c_func
+(paren
+id|super-&gt;s_bdev
+)paren
+)paren
+id|blkdev_mode
+op_assign
+id|FMODE_READ
 suffix:semicolon
 multiline_comment|/* there is no &quot;jdev&quot; option and journal is on separate device */
 r_if
@@ -9619,9 +9638,7 @@ id|journal
 op_member_access_from_pointer
 id|j_dev_bd
 comma
-id|FMODE_READ
-op_or
-id|FMODE_WRITE
+id|blkdev_mode
 comma
 l_int|0
 comma
@@ -9746,7 +9763,7 @@ id|i_mode
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: &squot;%s&squot; is not a block device&quot;
+l_string|&quot;journal_init_dev: &squot;%s&squot; is not a block device&bslash;n&quot;
 comma
 id|jdev_name
 )paren
@@ -9771,7 +9788,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: bdev uninitialized for &squot;%s&squot;&quot;
+l_string|&quot;journal_init_dev: bdev uninitialized for &squot;%s&squot;&bslash;n&quot;
 comma
 id|jdev_name
 )paren
@@ -9824,7 +9841,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: Cannot open &squot;%s&squot;: %i&quot;
+l_string|&quot;journal_init_dev: Cannot open &squot;%s&squot;: %i&bslash;n&quot;
 comma
 id|jdev_name
 comma
@@ -9852,7 +9869,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;journal_init_dev: journal device: %s&quot;
+l_string|&quot;journal_init_dev: journal device: %s&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -10007,6 +10024,57 @@ id|reiserfs_journal
 )paren
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_bitmap_nodes
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+(paren
+op_amp
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_prealloc_list
+)paren
+suffix:semicolon
+id|reiserfs_allocate_list_bitmaps
+c_func
+(paren
+id|p_s_sb
+comma
+id|SB_JOURNAL
+c_func
+(paren
+id|p_s_sb
+)paren
+op_member_access_from_pointer
+id|j_list_bitmap
+comma
+id|SB_BMAP_NR
+c_func
+(paren
+id|p_s_sb
+)paren
+)paren
+suffix:semicolon
+id|allocate_bitmap_nodes
+c_func
+(paren
+id|p_s_sb
+)paren
+suffix:semicolon
 multiline_comment|/* reserved for journal area support */
 id|SB_JOURNAL_1st_RESERVED_BLOCK
 c_func
@@ -10059,8 +10127,8 @@ c_func
 l_string|&quot;sh-462: unable to initialize jornal device&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|free_and_return
 suffix:semicolon
 )brace
 id|rs
@@ -10105,16 +10173,8 @@ c_func
 l_string|&quot;sh-459: unable to read  journal header&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_journal_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|journal
-)paren
-suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|free_and_return
 suffix:semicolon
 )brace
 id|jh
@@ -10186,16 +10246,8 @@ id|brelse
 id|bhjh
 )paren
 suffix:semicolon
-id|release_journal_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|journal
-)paren
-suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|free_and_return
 suffix:semicolon
 )brace
 id|SB_JOURNAL_TRANS_MAX
@@ -10629,19 +10681,6 @@ c_func
 id|p_s_sb
 )paren
 op_member_access_from_pointer
-id|j_bitmap_nodes
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|SB_JOURNAL
-c_func
-(paren
-id|p_s_sb
-)paren
-op_member_access_from_pointer
 id|j_dirty_buffers
 )paren
 suffix:semicolon
@@ -10656,32 +10695,6 @@ id|p_s_sb
 )paren
 op_member_access_from_pointer
 id|j_dirty_buffers_lock
-)paren
-suffix:semicolon
-id|reiserfs_allocate_list_bitmaps
-c_func
-(paren
-id|p_s_sb
-comma
-id|SB_JOURNAL
-c_func
-(paren
-id|p_s_sb
-)paren
-op_member_access_from_pointer
-id|j_list_bitmap
-comma
-id|SB_BMAP_NR
-c_func
-(paren
-id|p_s_sb
-)paren
-)paren
-suffix:semicolon
-id|allocate_bitmap_nodes
-c_func
-(paren
-id|p_s_sb
 )paren
 suffix:semicolon
 id|SB_JOURNAL
@@ -10989,16 +11002,8 @@ c_func
 l_string|&quot;journal-2005, get_list_bitmap failed for journal list 0&bslash;n&quot;
 )paren
 suffix:semicolon
-id|release_journal_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|journal
-)paren
-suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|free_and_return
 suffix:semicolon
 )brace
 r_if
@@ -11019,22 +11024,8 @@ c_func
 l_string|&quot;Replay Failure, unable to mount&bslash;n&quot;
 )paren
 suffix:semicolon
-id|free_journal_ram
-c_func
-(paren
-id|p_s_sb
-)paren
-suffix:semicolon
-id|release_journal_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|journal
-)paren
-suffix:semicolon
-r_return
-l_int|1
+r_goto
+id|free_and_return
 suffix:semicolon
 )brace
 id|SB_JOURNAL_LIST_INDEX
@@ -11046,18 +11037,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* once the read is done, we can set this&n;                                         where it belongs */
-id|INIT_LIST_HEAD
-(paren
-op_amp
-id|SB_JOURNAL
-c_func
-(paren
-id|p_s_sb
-)paren
-op_member_access_from_pointer
-id|j_prealloc_list
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11089,6 +11068,17 @@ l_string|&quot;reiserfs&quot;
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|free_and_return
+suffix:colon
+id|free_journal_ram
+c_func
+(paren
+id|p_s_sb
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** test for a polite end of the current transaction.  Used by file_write, and should&n;** be used by delete to make sure they don&squot;t write more than can fit inside a single&n;** transaction&n;*/

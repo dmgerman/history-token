@@ -605,7 +605,7 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 multiline_comment|/*Start reading from the device*/
-multiline_comment|/* TODO: Look at possibility of submitting mulitple URBs to device to&n;&t; *       enhance buffering.  Win trace shows 16 initial read URBs.&n;&t; */
+multiline_comment|/* TODO: Look at possibility of submitting multiple URBs to device to&n;&t; *       enhance buffering.  Win trace shows 16 initial read URBs.&n;&t; */
 id|port-&gt;read_urb-&gt;dev
 op_assign
 id|port-&gt;serial-&gt;dev

@@ -240,7 +240,7 @@ DECL|macro|HID_QUIRK_HIDDEV
 mdefine_line|#define HID_QUIRK_HIDDEV&t;0x10
 DECL|macro|HID_QUIRK_BADPAD
 mdefine_line|#define HID_QUIRK_BADPAD        0x20
-multiline_comment|/*&n; * This is the global enviroment of the parser. This information is&n; * persistent for main-items. The global enviroment can be saved and&n; * restored with PUSH/POP statements.&n; */
+multiline_comment|/*&n; * This is the global environment of the parser. This information is&n; * persistent for main-items. The global environment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
 id|hid_global
@@ -287,7 +287,7 @@ id|report_count
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * This is the local enviroment. It is resistent up the next main-item.&n; */
+multiline_comment|/*&n; * This is the local environment. It is persistent up the next main-item.&n; */
 DECL|macro|HID_MAX_DESCRIPTOR_SIZE
 mdefine_line|#define HID_MAX_DESCRIPTOR_SIZE&t;&t;4096
 DECL|macro|HID_MAX_USAGES

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ROOT_NFS
 macro_line|#include &lt;linux/nfs_fs.h&gt;
@@ -2396,6 +2397,27 @@ r_int
 id|op
 )paren
 (brace
+r_int
+id|error
+suffix:semicolon
+id|error
+op_assign
+id|security_sysctl
+c_func
+(paren
+id|table
+comma
+id|op
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
+suffix:semicolon
 r_return
 id|test_perm
 c_func

@@ -365,5 +365,7 @@ multiline_comment|/* The PCI address space does equal the physical memory&n; * a
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)
 macro_line|#endif&t;/* __KERNEL__ */
+multiline_comment|/* generic pci stuff */
+macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#endif /* __PPC64_PCI_H */
 eof

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2093,4 +2094,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+DECL|variable|is_unsafe_smbus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|is_unsafe_smbus
+)paren
+suffix:semicolon
 eof

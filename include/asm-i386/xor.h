@@ -12,6 +12,7 @@ DECL|macro|XO3
 mdefine_line|#define XO3(x,y)&t;&quot;       pxor   8*(&quot;#x&quot;)(%4), %%mm&quot;#y&quot;   ;&bslash;n&quot;
 DECL|macro|XO4
 mdefine_line|#define XO4(x,y)&t;&quot;       pxor   8*(&quot;#x&quot;)(%5), %%mm&quot;#y&quot;   ;&bslash;n&quot;
+macro_line|#include &lt;asm/i387.h&gt;
 r_static
 r_void
 DECL|function|xor_pII_mmx_2
