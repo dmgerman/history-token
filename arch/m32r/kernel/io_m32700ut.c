@@ -122,7 +122,7 @@ id|NONCACHE_OFFSET
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 DECL|function|__port2addr_ata
 r_static
 id|__inline__
@@ -534,7 +534,7 @@ id|port
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_else
 r_if
 c_cond
@@ -662,7 +662,7 @@ id|port
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_else
 r_if
 c_cond
@@ -895,7 +895,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1039,7 +1039,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1253,7 +1253,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1380,7 +1380,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1604,7 +1604,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1736,7 +1736,7 @@ id|port
 )paren
 suffix:semicolon
 r_else
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_if
 c_cond
 (paren
@@ -1939,7 +1939,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 r_else
 r_if
 c_cond
@@ -2193,7 +2193,7 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 )brace
 r_else
 r_if
@@ -2400,7 +2400,7 @@ comma
 id|portp
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 )brace
 r_else
 r_if
@@ -2599,7 +2599,7 @@ id|buf
 op_increment
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_IDE)
+macro_line|#if defined(CONFIG_IDE) &amp;&amp; !defined(CONFIG_M32R_CFC)
 )brace
 r_else
 r_if
