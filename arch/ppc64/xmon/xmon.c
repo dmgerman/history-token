@@ -897,6 +897,15 @@ c_func
 l_string|&quot;set-indicator&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|args.token
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+r_return
+suffix:semicolon
 id|args.nargs
 op_assign
 l_int|3
@@ -937,10 +946,6 @@ suffix:semicolon
 id|enter_rtas
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|__pa
 c_func
 (paren
@@ -1238,7 +1243,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;cpu 0x%s: Exception %lx %s in xmon, &quot;
+l_string|&quot;cpu 0x%x: Exception %lx %s in xmon, &quot;
 l_string|&quot;returning to main loop&bslash;n&quot;
 comma
 id|cpu
@@ -6644,18 +6649,6 @@ multiline_comment|/* Look for &quot;regshere&quot; marker to see if this is&n;&t
 r_if
 c_cond
 (paren
-id|newsp
-op_minus
-id|sp
-op_eq
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-op_plus
-l_int|400
-op_logical_and
 id|mread
 c_func
 (paren
@@ -6675,7 +6668,7 @@ r_int
 op_logical_and
 id|marker
 op_eq
-l_int|0x7265677368657265
+l_int|0x7265677368657265ul
 )paren
 (brace
 r_if
@@ -6763,36 +6756,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|newsp
-OL
-id|sp
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;Stack chain goes %s: %.16lx&bslash;n&quot;
-comma
-(paren
-id|newsp
-OL
-id|KERNELBASE
-ques
-c_cond
-l_string|&quot;into userspace&quot;
-suffix:colon
-l_string|&quot;backwards&quot;
-)paren
-comma
-id|newsp
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|sp
 op_assign
 id|newsp
@@ -12566,7 +12529,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;slb_size
+id|SLB_NUM_ENTRIES
 suffix:semicolon
 id|i
 op_increment

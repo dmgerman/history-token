@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#include &quot;libata.h&quot;
 DECL|typedef|ata_xlat_func_t
@@ -3580,6 +3580,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* no-op&squot;s, complete with success */
+r_case
+id|SYNCHRONIZE_CACHE
+suffix:colon
+multiline_comment|/* FIXME: temporary */
 r_case
 id|REZERO_UNIT
 suffix:colon

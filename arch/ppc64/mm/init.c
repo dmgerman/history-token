@@ -1609,7 +1609,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s() cannot unmap nonexistant range 0x%lx&bslash;n&quot;
+l_string|&quot;%s() cannot unmap nonexistent range 0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

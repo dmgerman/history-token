@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: serial.c,v 1.17 2003/07/04 08:27:37 starvik Exp $&n; *&n; * Serial port driver for the ETRAX 100LX chip&n; *&n; *    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003  Axis Communications AB&n; *&n; *    Many, many authors. Based once upon a time on serial.c for 16x50.&n; *&n; * $Log: serial.c,v $&n; * Revision 1.17  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.16  2003/06/13 10:05:19  johana&n; * Help the user to avoid trouble by:&n; * Forcing mixed mode for status/control lines if not all pins are used.&n; *&n; * Revision 1.15  2003/06/13 09:43:01  johana&n; * Merged in the following changes from os/linux/arch/cris/drivers/serial.c&n; * + some minor changes to reduce diff.&n; *&n; * Revision 1.49  2003/05/30 11:31:54  johana&n; * Merged in change-branch--serial9bit that adds CMSPAR support for sticky&n; * parity (mark/space)&n; *&n; * Revision 1.48  2003/05/30 11:03:57  johana&n; * Implemented rs_send_xchar() by disabling the DMA and writing manually.&n; * Added e100_disable_txdma_channel() and e100_enable_txdma_channel().&n; * Fixed rs_throttle() and rs_unthrottle() to properly call rs_send_xchar&n; * instead of setting info-&gt;x_char and check the CRTSCTS flag before&n; * controlling the rts pin.&n; *&n; * Revision 1.14  2003/04/09 08:12:44  pkj&n; * Corrected typo changes made upstream.&n; *&n; * Revision 1.13  2003/04/09 05:20:47  starvik&n; * Merge of Linux 2.5.67&n; *&n; * Revision 1.11  2003/01/22 06:48:37  starvik&n; * Fixed warnings issued by GCC 3.2.1&n; *&n; * Revision 1.9  2002/12/13 09:07:47  starvik&n; * Alert user that RX_TIMEOUT_TICKS==0 doesn&squot;t work&n; *&n; * Revision 1.8  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.7  2002/12/06 07:13:57  starvik&n; * Corrected work queue stuff&n; * Removed CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST&n; *&n; * Revision 1.6  2002/11/21 07:17:46  starvik&n; * Change static inline to extern inline where otherwise outlined with gcc-3.2&n; *&n; * Revision 1.5  2002/11/14 15:59:49  starvik&n; * Linux 2.5 port of the latest serial driver from 2.4. The work queue stuff&n; * probably doesn&squot;t work yet.&n; *&n; * Revision 1.42  2002/11/05 09:08:47  johana&n; * Better implementation of rs_stop() and rs_start() that uses the XOFF&n; * register to start/stop transmission.&n; * change_speed() also initilises XOFF register correctly so that&n; * auto_xoff is enabled when IXON flag is set by user.&n; * This gives fast XOFF response times.&n; *&n; * Revision 1.41  2002/11/04 18:40:57  johana&n; * Implemented rs_stop() and rs_start().&n; * Simple tests using hwtestserial indicates that this should be enough&n; * to make it work.&n; *&n; * Revision 1.40  2002/10/14 05:33:18  starvik&n; * RS-485 uses fast timers even if SERIAL_FAST_TIMER is disabled&n; *&n; * Revision 1.39  2002/09/30 21:00:57  johana&n; * Support for CONFIG_ETRAX_SERx_DTR_RI_DSR_CD_MIXED where the status and&n; * control pins can be mixed between PA and PB.&n; * If no serial port uses MIXED old solution is used&n; * (saves a few bytes and cycles).&n; * control_pins struct uses masks instead of bit numbers.&n; * Corrected dummy values and polarity in line_info() so&n; * /proc/tty/driver/serial is now correct.&n; * (the E100_xxx_GET() macros is really active low - perhaps not obvious)&n; *&n; * Revision 1.38  2002/08/23 11:01:36  starvik&n; * Check that serial port is enabled in all interrupt handlers to avoid&n; * restarts of DMA channels not assigned to serial ports&n; *&n; * Revision 1.37  2002/08/13 13:02:37  bjornw&n; * Removed some warnings because of unused code&n; *&n; * Revision 1.36  2002/08/08 12:50:01  starvik&n; * Serial interrupt is shared with synchronous serial port driver&n; *&n; * Revision 1.35  2002/06/03 10:40:49  starvik&n; * Increased RS-485 RTS toggle timer to 2 characters&n; *&n; * Revision 1.34  2002/05/28 18:59:36  johana&n; * Whitespace and comment fixing to be more like etrax100ser.c 1.71.&n; *&n; * Revision 1.33  2002/05/28 17:55:43  johana&n; * RS-485 uses FAST_TIMER if enabled, and starts a short (one char time)&n; * timer from tranismit_chars (interrupt context).&n; * The timer toggles RTS in interrupt context when expired giving minimum&n; * latencies.&n; *&n; * Revision 1.32  2002/05/22 13:58:00  johana&n; * Renamed rs_write() to raw_write() and made it inline.&n; * New rs_write() handles RS-485 if configured and enabled&n; * (moved code from e100_write_rs485()).&n; * RS-485 ioctl&squot;s uses copy_from_user() instead of verify_area().&n; *&n; * Revision 1.31  2002/04/22 11:20:03  johana&n; * Updated copyright years.&n; *&n; * Revision 1.30  2002/04/22 09:39:12  johana&n; * RS-485 support compiles.&n; *&n; * Revision 1.29  2002/01/14 16:10:01  pkj&n; * Allocate the receive buffers dynamically. The static 4kB buffer was&n; * too small for the peaks. This means that we can get rid of the extra&n; * buffer and the copying to it. It also means we require less memory&n; * under normal operations, but can use more when needed (there is a&n; * cap at 64kB for safety reasons). If there is no memory available&n; * we panic(), and die a horrible death...&n; *&n; * Revision 1.28  2001/12/18 15:04:53  johana&n; * Cleaned up write_rs485() - now it works correctly without padding extra&n; * char.&n; * Added sane default initialisation of rs485.&n; * Added #ifdef around dummy variables.&n; *&n; * Revision 1.27  2001/11/29 17:00:41  pkj&n; * 2kB seems to be too small a buffer when using 921600 bps,&n; * so increase it to 4kB (this was already done for the elinux&n; * version of the serial driver).&n; *&n; * Revision 1.26  2001/11/19 14:20:41  pkj&n; * Minor changes to comments and unused code.&n; *&n; * Revision 1.25  2001/11/12 20:03:43  pkj&n; * Fixed compiler warnings.&n; *&n; * Revision 1.24  2001/11/12 15:10:05  pkj&n; * Total redesign of the receiving part of the serial driver.&n; * Uses eight chained descriptors to write to a 4kB buffer.&n; * This data is then serialised into a 2kB buffer. From there it&n; * is copied into the TTY&squot;s flip buffers when they become available.&n; * A lot of copying, and the sizes of the buffers might need to be&n; * tweaked, but all in all it should work better than the previous&n; * version, without the need to modify the TTY code in any way.&n; * Also note that erroneous bytes are now correctly marked in the&n; * flag buffers (instead of always marking the first byte).&n; *&n; * Revision 1.23  2001/10/30 17:53:26  pkj&n; * * Set info-&gt;uses_dma to 0 when a port is closed.&n; * * Mark the timer1 interrupt as a fast one (SA_INTERRUPT).&n; * * Call start_flush_timer() in start_receive() if&n; *   CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST is defined.&n; *&n; * Revision 1.22  2001/10/30 17:44:03  pkj&n; * Use %lu for received and transmitted counters in line_info().&n; *&n; * Revision 1.21  2001/10/30 17:40:34  pkj&n; * Clean-up. The only change to functionality is that&n; * CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS(=5) is used instead of&n; * MAX_FLUSH_TIME(=8).&n; *&n; * Revision 1.20  2001/10/30 15:24:49  johana&n; * Added char_time stuff from 2.0 driver.&n; *&n; * Revision 1.19  2001/10/30 15:23:03  johana&n; * Merged with 1.13.2 branch + fixed indentation&n; * and changed CONFIG_ETRAX100_XYS to CONFIG_ETRAX_XYZ&n; *&n; * Revision 1.18  2001/09/24 09:27:22  pkj&n; * Completed ext_baud_table[] in cflag_to_baud() and cflag_to_etrax_baud().&n; *&n; * Revision 1.17  2001/08/24 11:32:49  ronny&n; * More fixes for the CONFIG_ETRAX_SERIAL_PORT0 define.&n; *&n; * Revision 1.16  2001/08/24 07:56:22  ronny&n; * Added config ifdefs around ser0 irq requests.&n; *&n; * Revision 1.15  2001/08/16 09:10:31  bjarne&n; * serial.c - corrected the initialization of rs_table, the wrong defines&n; *            where used.&n; *            Corrected a test in timed_flush_handler.&n; *            Changed configured to enabled.&n; * serial.h - Changed configured to enabled.&n; *&n; * Revision 1.14  2001/08/15 07:31:23  bjarne&n; * Introduced two new members to the e100_serial struct.&n; * configured - Will be set to 1 if the port has been configured in .config&n; * uses_dma   - Should be set to 1 if the port uses DMA. Currently it is set &n; *              to 1&n; *              when a port is opened. This is used to limit the DMA interrupt&n; *              routines to only manipulate DMA channels actually used by the&n; *              serial driver.&n; *&n; * Revision 1.13.2.2  2001/10/17 13:57:13  starvik&n; * Receiver was broken by the break fixes&n; *&n; * Revision 1.13.2.1  2001/07/20 13:57:39  ronny&n; * Merge with new stuff from etrax100ser.c. Works but haven&squot;t checked stuff&n; * like break handling.&n; *&n; * Revision 1.13  2001/05/09 12:40:31  johana&n; * Use DMA_NBR and IRQ_NBR defines from dma.h and irq.h&n; *&n; * Revision 1.12  2001/04/19 12:23:07  bjornw&n; * CONFIG_RS485 -&gt; CONFIG_ETRAX_RS485&n; *&n; * Revision 1.11  2001/04/05 14:29:48  markusl&n; * Updated according to review remarks i.e.&n; * -Use correct types in port structure to avoid compiler warnings&n; * -Try to use IO_* macros whenever possible&n; * -Open should never return -EBUSY&n; *&n; * Revision 1.10  2001/03/05 13:14:07  bjornw&n; * Another spelling fix&n; *&n; * Revision 1.9  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.8  2001/01/23 14:56:35  markusl&n; * Made use of ser1 optional&n; * Needed by USB&n; *&n; * Revision 1.7  2001/01/19 16:14:48  perf&n; * Added kernel options for serial ports 234.&n; * Changed option names from CONFIG_ETRAX100_XYZ to CONFIG_ETRAX_XYZ.&n; *&n; * Revision 1.6  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.5  2000/11/21 16:43:37  bjornw&n; * Fixed so it compiles under CONFIG_SVINTO_SIM&n; *&n; * Revision 1.4  2000/11/15 17:34:12  bjornw&n; * Added a timeout timer for flushing input channels. The interrupt-based&n; * fast flush system should be easy to merge with this later (works the same&n; * way, only with an irq instead of a system timer_list)&n; *&n; * Revision 1.3  2000/11/13 17:19:57  bjornw&n; * * Incredibly, this almost complete rewrite of serial.c worked (at least&n; *   for output) the first time.&n; *&n; *   Items worth noticing:&n; *&n; *      No Etrax100 port 1 workarounds (does only compile on 2.4 anyway now)&n; *      RS485 is not ported (why can&squot;t it be done in userspace as on x86 ?)&n; *      Statistics done through async_icount - if any more stats are needed,&n; *      that&squot;s the place to put them or in an arch-dep version of it.&n; *      timeout_interrupt and the other fast timeout stuff not ported yet&n; *      There be dragons in this 3k+ line driver&n; *&n; * Revision 1.2  2000/11/10 16:50:28  bjornw&n; * First shot at a 2.4 port, does not compile totally yet&n; *&n; * Revision 1.1  2000/11/10 16:47:32  bjornw&n; * Added verbatim copy of rev 1.49 etrax100ser.c from elinux&n; *&n; * Revision 1.49  2000/10/30 15:47:14  tobiasa&n; * Changed version number.&n; *&n; * Revision 1.48  2000/10/25 11:02:43  johana&n; * Changed %ul to %lu in printf&squot;s&n; *&n; * Revision 1.47  2000/10/18 15:06:53  pkj&n; * Compile correctly with CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST and&n; * CONFIG_ETRAX_SERIAL_PROC_ENTRY together.&n; * Some clean-up of the /proc/serial file.&n; *&n; * Revision 1.46  2000/10/16 12:59:40  johana&n; * Added CONFIG_ETRAX_SERIAL_PROC_ENTRY for statistics and debug info.&n; *&n; * Revision 1.45  2000/10/13 17:10:59  pkj&n; * Do not flush DMAs while flipping TTY buffers.&n; *&n; * Revision 1.44  2000/10/13 16:34:29  pkj&n; * Added a delay in ser_interrupt() for 2.3ms when an error is detected.&n; * We do not know why this delay is required yet, but without it the&n; * irmaflash program does not work (this was the program that needed&n; * the ser_interrupt() to be needed in the first place). This should not&n; * affect normal use of the serial ports.&n; *&n; * Revision 1.43  2000/10/13 16:30:44  pkj&n; * New version of the fast flush of serial buffers code. This time&n; * it is localized to the serial driver and uses a fast timer to&n; * do the work.&n; *&n; * Revision 1.42  2000/10/13 14:54:26  bennyo&n; * Fix for switching RTS when using rs485&n; *&n; * Revision 1.41  2000/10/12 11:43:44  pkj&n; * Cleaned up a number of comments.&n; *&n; * Revision 1.40  2000/10/10 11:58:39  johana&n; * Made RS485 support generic for all ports.&n; * Toggle rts in interrupt if no delay wanted.&n; * WARNING: No true transmitter empty check??&n; * Set d_wait bit when sending data so interrupt is delayed until&n; * fifo flushed. (Fix tcdrain() problem)&n; *&n; * Revision 1.39  2000/10/04 16:08:02  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed CONFIG_FLUSH_DMA_FAST hacks&n; * * Indentation fix&n; *&n; * Revision 1.38  2000/10/02 12:27:10  mattias&n; * * added variable used when using fast flush on serial dma.&n; *   (CONFIG_FLUSH_DMA_FAST)&n; *&n; * Revision 1.37  2000/09/27 09:44:24  pkj&n; * Uncomment definition of SERIAL_HANDLE_EARLY_ERRORS.&n; *&n; * Revision 1.36  2000/09/20 13:12:52  johana&n; * Support for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS:&n; *   Number of timer ticks between flush of receive fifo (1 tick = 10ms).&n; *   Try 0-3 for low latency applications. Approx 5 for high load&n; *   applications (e.g. PPP). Maybe this should be more adaptive some day...&n; *&n; * Revision 1.35  2000/09/20 10:36:08  johana&n; * Typo in get_lsr_info()&n; *&n; * Revision 1.34  2000/09/20 10:29:59  johana&n; * Let rs_chars_in_buffer() check fifo content as well.&n; * get_lsr_info() might work now (not tested).&n; * Easier to change the port to debug.&n; *&n; * Revision 1.33  2000/09/13 07:52:11  torbjore&n; * Support RS485&n; *&n; * Revision 1.32  2000/08/31 14:45:37  bjornw&n; * After sending a break we need to reset the transmit DMA channel&n; *&n; * Revision 1.31  2000/06/21 12:13:29  johana&n; * Fixed wait for all chars sent when closing port.&n; * (Used to always take 1 second!)&n; * Added shadows for directions of status/ctrl signals.&n; *&n; * Revision 1.30  2000/05/29 16:27:55  bjornw&n; * Simulator ifdef moved a bit&n; *&n; * Revision 1.29  2000/05/09 09:40:30  mattias&n; * * Added description of dma registers used in timeout_interrupt&n; * * Removed old code&n; *&n; * Revision 1.28  2000/05/08 16:38:58  mattias&n; * * Bugfix for flushing fifo in timeout_interrupt&n; *   Problem occurs when bluetooth stack waits for a small number of bytes&n; *   containing an event acknowledging free buffers in bluetooth HW&n; *   As before, data was stuck in fifo until more data came on uart and&n; *   flushed it up to the stack.&n; *&n; * Revision 1.27  2000/05/02 09:52:28  jonasd&n; * Added fix for peculiar etrax behaviour when eop is forced on an empty&n; * fifo. This is used when flashing the IRMA chip. Disabled by default.&n; *&n; * Revision 1.26  2000/03/29 15:32:02  bjornw&n; * 2.0.34 updates&n; *&n; * Revision 1.25  2000/02/16 16:59:36  bjornw&n; * * Receive DMA directly into the flip-buffer, eliminating an intermediary&n; *   receive buffer and a memcpy. Will avoid some overruns.&n; * * Error message on debug port if an overrun or flip buffer overrun occurs.&n; * * Just use the first byte in the flag flip buffer for errors.&n; * * Check for timeout on the serial ports only each 5/100 s, not 1/100.&n; *&n; * Revision 1.24  2000/02/09 18:02:28  bjornw&n; * * Clear serial errors (overrun, framing, parity) correctly. Before, the&n; *   receiver would get stuck if an error occurred and we did not restart&n; *   the input DMA.&n; * * Cosmetics (indentation, some code made into inlines)&n; * * Some more debug options&n; * * Actually shut down the serial port (DMA irq, DMA reset, receiver stop)&n; *   when the last open is closed. Corresponding fixes in startup().&n; * * rs_close() &quot;tx FIFO wait&quot; code moved into right place, bug &amp; -&gt; &amp;&amp; fixed&n; *   and make a special case out of port 1 (R_DMA_CHx_STATUS is broken for that)&n; * * e100_disable_rx/enable_rx just disables/enables the receiver, not RTS&n; *&n; * Revision 1.23  2000/01/24 17:46:19  johana&n; * Wait for flush of DMA/FIFO when closing port.&n; *&n; * Revision 1.22  2000/01/20 18:10:23  johana&n; * Added TIOCMGET ioctl to return modem status.&n; * Implemented modem status/control that works with the extra signals&n; * (DTR, DSR, RI,CD) as well.&n; * 3 different modes supported:&n; * ser0 on PB (Bundy), ser1 on PB (Lisa) and ser2 on PA (Bundy)&n; * Fixed DEF_TX value that caused the serial transmitter pin (txd) to go to 0 when&n; * closing the last filehandle, NASTY!.&n; * Added break generation, not tested though!&n; * Use SA_SHIRQ when request_irq() for ser2 and ser3 (shared with) par0 and par1.&n; * You can&squot;t use them at the same time (yet..), but you can hopefully switch&n; * between ser2/par0, ser3/par1 with the same kernel config.&n; * Replaced some magic constants with defines&n; *&n; *&n; */
+multiline_comment|/* $Id: serial.c,v 1.20 2004/05/24 12:00:20 starvik Exp $&n; *&n; * Serial port driver for the ETRAX 100LX chip&n; *&n; *    Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003  Axis Communications AB&n; *&n; *    Many, many authors. Based once upon a time on serial.c for 16x50.&n; *&n; * $Log: serial.c,v $&n; * Revision 1.20  2004/05/24 12:00:20  starvik&n; * Big merge of stuff from Linux 2.4 (e.g. manual mode for the serial port).&n; *&n; * Revision 1.19  2004/05/17 13:12:15  starvik&n; * Kernel console hook&n; * Big merge from Linux 2.4 still pending.&n; *&n; * Revision 1.18  2003/10/28 07:18:30  starvik&n; * Compiles with debug info&n; *&n; * Revision 1.17  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.16  2003/06/13 10:05:19  johana&n; * Help the user to avoid trouble by:&n; * Forcing mixed mode for status/control lines if not all pins are used.&n; *&n; * Revision 1.15  2003/06/13 09:43:01  johana&n; * Merged in the following changes from os/linux/arch/cris/drivers/serial.c&n; * + some minor changes to reduce diff.&n; *&n; * Revision 1.49  2003/05/30 11:31:54  johana&n; * Merged in change-branch--serial9bit that adds CMSPAR support for sticky&n; * parity (mark/space)&n; *&n; * Revision 1.48  2003/05/30 11:03:57  johana&n; * Implemented rs_send_xchar() by disabling the DMA and writing manually.&n; * Added e100_disable_txdma_channel() and e100_enable_txdma_channel().&n; * Fixed rs_throttle() and rs_unthrottle() to properly call rs_send_xchar&n; * instead of setting info-&gt;x_char and check the CRTSCTS flag before&n; * controlling the rts pin.&n; *&n; * Revision 1.14  2003/04/09 08:12:44  pkj&n; * Corrected typo changes made upstream.&n; *&n; * Revision 1.13  2003/04/09 05:20:47  starvik&n; * Merge of Linux 2.5.67&n; *&n; * Revision 1.11  2003/01/22 06:48:37  starvik&n; * Fixed warnings issued by GCC 3.2.1&n; *&n; * Revision 1.9  2002/12/13 09:07:47  starvik&n; * Alert user that RX_TIMEOUT_TICKS==0 doesn&squot;t work&n; *&n; * Revision 1.8  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.7  2002/12/06 07:13:57  starvik&n; * Corrected work queue stuff&n; * Removed CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST&n; *&n; * Revision 1.6  2002/11/21 07:17:46  starvik&n; * Change static inline to extern inline where otherwise outlined with gcc-3.2&n; *&n; * Revision 1.5  2002/11/14 15:59:49  starvik&n; * Linux 2.5 port of the latest serial driver from 2.4. The work queue stuff&n; * probably doesn&squot;t work yet.&n; *&n; * Revision 1.42  2002/11/05 09:08:47  johana&n; * Better implementation of rs_stop() and rs_start() that uses the XOFF&n; * register to start/stop transmission.&n; * change_speed() also initilises XOFF register correctly so that&n; * auto_xoff is enabled when IXON flag is set by user.&n; * This gives fast XOFF response times.&n; *&n; * Revision 1.41  2002/11/04 18:40:57  johana&n; * Implemented rs_stop() and rs_start().&n; * Simple tests using hwtestserial indicates that this should be enough&n; * to make it work.&n; *&n; * Revision 1.40  2002/10/14 05:33:18  starvik&n; * RS-485 uses fast timers even if SERIAL_FAST_TIMER is disabled&n; *&n; * Revision 1.39  2002/09/30 21:00:57  johana&n; * Support for CONFIG_ETRAX_SERx_DTR_RI_DSR_CD_MIXED where the status and&n; * control pins can be mixed between PA and PB.&n; * If no serial port uses MIXED old solution is used&n; * (saves a few bytes and cycles).&n; * control_pins struct uses masks instead of bit numbers.&n; * Corrected dummy values and polarity in line_info() so&n; * /proc/tty/driver/serial is now correct.&n; * (the E100_xxx_GET() macros is really active low - perhaps not obvious)&n; *&n; * Revision 1.38  2002/08/23 11:01:36  starvik&n; * Check that serial port is enabled in all interrupt handlers to avoid&n; * restarts of DMA channels not assigned to serial ports&n; *&n; * Revision 1.37  2002/08/13 13:02:37  bjornw&n; * Removed some warnings because of unused code&n; *&n; * Revision 1.36  2002/08/08 12:50:01  starvik&n; * Serial interrupt is shared with synchronous serial port driver&n; *&n; * Revision 1.35  2002/06/03 10:40:49  starvik&n; * Increased RS-485 RTS toggle timer to 2 characters&n; *&n; * Revision 1.34  2002/05/28 18:59:36  johana&n; * Whitespace and comment fixing to be more like etrax100ser.c 1.71.&n; *&n; * Revision 1.33  2002/05/28 17:55:43  johana&n; * RS-485 uses FAST_TIMER if enabled, and starts a short (one char time)&n; * timer from tranismit_chars (interrupt context).&n; * The timer toggles RTS in interrupt context when expired giving minimum&n; * latencies.&n; *&n; * Revision 1.32  2002/05/22 13:58:00  johana&n; * Renamed rs_write() to raw_write() and made it inline.&n; * New rs_write() handles RS-485 if configured and enabled&n; * (moved code from e100_write_rs485()).&n; * RS-485 ioctl&squot;s uses copy_from_user() instead of verify_area().&n; *&n; * Revision 1.31  2002/04/22 11:20:03  johana&n; * Updated copyright years.&n; *&n; * Revision 1.30  2002/04/22 09:39:12  johana&n; * RS-485 support compiles.&n; *&n; * Revision 1.29  2002/01/14 16:10:01  pkj&n; * Allocate the receive buffers dynamically. The static 4kB buffer was&n; * too small for the peaks. This means that we can get rid of the extra&n; * buffer and the copying to it. It also means we require less memory&n; * under normal operations, but can use more when needed (there is a&n; * cap at 64kB for safety reasons). If there is no memory available&n; * we panic(), and die a horrible death...&n; *&n; * Revision 1.28  2001/12/18 15:04:53  johana&n; * Cleaned up write_rs485() - now it works correctly without padding extra&n; * char.&n; * Added sane default initialisation of rs485.&n; * Added #ifdef around dummy variables.&n; *&n; * Revision 1.27  2001/11/29 17:00:41  pkj&n; * 2kB seems to be too small a buffer when using 921600 bps,&n; * so increase it to 4kB (this was already done for the elinux&n; * version of the serial driver).&n; *&n; * Revision 1.26  2001/11/19 14:20:41  pkj&n; * Minor changes to comments and unused code.&n; *&n; * Revision 1.25  2001/11/12 20:03:43  pkj&n; * Fixed compiler warnings.&n; *&n; * Revision 1.24  2001/11/12 15:10:05  pkj&n; * Total redesign of the receiving part of the serial driver.&n; * Uses eight chained descriptors to write to a 4kB buffer.&n; * This data is then serialised into a 2kB buffer. From there it&n; * is copied into the TTY&squot;s flip buffers when they become available.&n; * A lot of copying, and the sizes of the buffers might need to be&n; * tweaked, but all in all it should work better than the previous&n; * version, without the need to modify the TTY code in any way.&n; * Also note that erroneous bytes are now correctly marked in the&n; * flag buffers (instead of always marking the first byte).&n; *&n; * Revision 1.23  2001/10/30 17:53:26  pkj&n; * * Set info-&gt;uses_dma to 0 when a port is closed.&n; * * Mark the timer1 interrupt as a fast one (SA_INTERRUPT).&n; * * Call start_flush_timer() in start_receive() if&n; *   CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST is defined.&n; *&n; * Revision 1.22  2001/10/30 17:44:03  pkj&n; * Use %lu for received and transmitted counters in line_info().&n; *&n; * Revision 1.21  2001/10/30 17:40:34  pkj&n; * Clean-up. The only change to functionality is that&n; * CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS(=5) is used instead of&n; * MAX_FLUSH_TIME(=8).&n; *&n; * Revision 1.20  2001/10/30 15:24:49  johana&n; * Added char_time stuff from 2.0 driver.&n; *&n; * Revision 1.19  2001/10/30 15:23:03  johana&n; * Merged with 1.13.2 branch + fixed indentation&n; * and changed CONFIG_ETRAX100_XYS to CONFIG_ETRAX_XYZ&n; *&n; * Revision 1.18  2001/09/24 09:27:22  pkj&n; * Completed ext_baud_table[] in cflag_to_baud() and cflag_to_etrax_baud().&n; *&n; * Revision 1.17  2001/08/24 11:32:49  ronny&n; * More fixes for the CONFIG_ETRAX_SERIAL_PORT0 define.&n; *&n; * Revision 1.16  2001/08/24 07:56:22  ronny&n; * Added config ifdefs around ser0 irq requests.&n; *&n; * Revision 1.15  2001/08/16 09:10:31  bjarne&n; * serial.c - corrected the initialization of rs_table, the wrong defines&n; *            where used.&n; *            Corrected a test in timed_flush_handler.&n; *            Changed configured to enabled.&n; * serial.h - Changed configured to enabled.&n; *&n; * Revision 1.14  2001/08/15 07:31:23  bjarne&n; * Introduced two new members to the e100_serial struct.&n; * configured - Will be set to 1 if the port has been configured in .config&n; * uses_dma   - Should be set to 1 if the port uses DMA. Currently it is set &n; *              to 1&n; *              when a port is opened. This is used to limit the DMA interrupt&n; *              routines to only manipulate DMA channels actually used by the&n; *              serial driver.&n; *&n; * Revision 1.13.2.2  2001/10/17 13:57:13  starvik&n; * Receiver was broken by the break fixes&n; *&n; * Revision 1.13.2.1  2001/07/20 13:57:39  ronny&n; * Merge with new stuff from etrax100ser.c. Works but haven&squot;t checked stuff&n; * like break handling.&n; *&n; * Revision 1.13  2001/05/09 12:40:31  johana&n; * Use DMA_NBR and IRQ_NBR defines from dma.h and irq.h&n; *&n; * Revision 1.12  2001/04/19 12:23:07  bjornw&n; * CONFIG_RS485 -&gt; CONFIG_ETRAX_RS485&n; *&n; * Revision 1.11  2001/04/05 14:29:48  markusl&n; * Updated according to review remarks i.e.&n; * -Use correct types in port structure to avoid compiler warnings&n; * -Try to use IO_* macros whenever possible&n; * -Open should never return -EBUSY&n; *&n; * Revision 1.10  2001/03/05 13:14:07  bjornw&n; * Another spelling fix&n; *&n; * Revision 1.9  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.8  2001/01/23 14:56:35  markusl&n; * Made use of ser1 optional&n; * Needed by USB&n; *&n; * Revision 1.7  2001/01/19 16:14:48  perf&n; * Added kernel options for serial ports 234.&n; * Changed option names from CONFIG_ETRAX100_XYZ to CONFIG_ETRAX_XYZ.&n; *&n; * Revision 1.6  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.5  2000/11/21 16:43:37  bjornw&n; * Fixed so it compiles under CONFIG_SVINTO_SIM&n; *&n; * Revision 1.4  2000/11/15 17:34:12  bjornw&n; * Added a timeout timer for flushing input channels. The interrupt-based&n; * fast flush system should be easy to merge with this later (works the same&n; * way, only with an irq instead of a system timer_list)&n; *&n; * Revision 1.3  2000/11/13 17:19:57  bjornw&n; * * Incredibly, this almost complete rewrite of serial.c worked (at least&n; *   for output) the first time.&n; *&n; *   Items worth noticing:&n; *&n; *      No Etrax100 port 1 workarounds (does only compile on 2.4 anyway now)&n; *      RS485 is not ported (why can&squot;t it be done in userspace as on x86 ?)&n; *      Statistics done through async_icount - if any more stats are needed,&n; *      that&squot;s the place to put them or in an arch-dep version of it.&n; *      timeout_interrupt and the other fast timeout stuff not ported yet&n; *      There be dragons in this 3k+ line driver&n; *&n; * Revision 1.2  2000/11/10 16:50:28  bjornw&n; * First shot at a 2.4 port, does not compile totally yet&n; *&n; * Revision 1.1  2000/11/10 16:47:32  bjornw&n; * Added verbatim copy of rev 1.49 etrax100ser.c from elinux&n; *&n; * Revision 1.49  2000/10/30 15:47:14  tobiasa&n; * Changed version number.&n; *&n; * Revision 1.48  2000/10/25 11:02:43  johana&n; * Changed %ul to %lu in printf&squot;s&n; *&n; * Revision 1.47  2000/10/18 15:06:53  pkj&n; * Compile correctly with CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST and&n; * CONFIG_ETRAX_SERIAL_PROC_ENTRY together.&n; * Some clean-up of the /proc/serial file.&n; *&n; * Revision 1.46  2000/10/16 12:59:40  johana&n; * Added CONFIG_ETRAX_SERIAL_PROC_ENTRY for statistics and debug info.&n; *&n; * Revision 1.45  2000/10/13 17:10:59  pkj&n; * Do not flush DMAs while flipping TTY buffers.&n; *&n; * Revision 1.44  2000/10/13 16:34:29  pkj&n; * Added a delay in ser_interrupt() for 2.3ms when an error is detected.&n; * We do not know why this delay is required yet, but without it the&n; * irmaflash program does not work (this was the program that needed&n; * the ser_interrupt() to be needed in the first place). This should not&n; * affect normal use of the serial ports.&n; *&n; * Revision 1.43  2000/10/13 16:30:44  pkj&n; * New version of the fast flush of serial buffers code. This time&n; * it is localized to the serial driver and uses a fast timer to&n; * do the work.&n; *&n; * Revision 1.42  2000/10/13 14:54:26  bennyo&n; * Fix for switching RTS when using rs485&n; *&n; * Revision 1.41  2000/10/12 11:43:44  pkj&n; * Cleaned up a number of comments.&n; *&n; * Revision 1.40  2000/10/10 11:58:39  johana&n; * Made RS485 support generic for all ports.&n; * Toggle rts in interrupt if no delay wanted.&n; * WARNING: No true transmitter empty check??&n; * Set d_wait bit when sending data so interrupt is delayed until&n; * fifo flushed. (Fix tcdrain() problem)&n; *&n; * Revision 1.39  2000/10/04 16:08:02  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed CONFIG_FLUSH_DMA_FAST hacks&n; * * Indentation fix&n; *&n; * Revision 1.38  2000/10/02 12:27:10  mattias&n; * * added variable used when using fast flush on serial dma.&n; *   (CONFIG_FLUSH_DMA_FAST)&n; *&n; * Revision 1.37  2000/09/27 09:44:24  pkj&n; * Uncomment definition of SERIAL_HANDLE_EARLY_ERRORS.&n; *&n; * Revision 1.36  2000/09/20 13:12:52  johana&n; * Support for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS:&n; *   Number of timer ticks between flush of receive fifo (1 tick = 10ms).&n; *   Try 0-3 for low latency applications. Approx 5 for high load&n; *   applications (e.g. PPP). Maybe this should be more adaptive some day...&n; *&n; * Revision 1.35  2000/09/20 10:36:08  johana&n; * Typo in get_lsr_info()&n; *&n; * Revision 1.34  2000/09/20 10:29:59  johana&n; * Let rs_chars_in_buffer() check fifo content as well.&n; * get_lsr_info() might work now (not tested).&n; * Easier to change the port to debug.&n; *&n; * Revision 1.33  2000/09/13 07:52:11  torbjore&n; * Support RS485&n; *&n; * Revision 1.32  2000/08/31 14:45:37  bjornw&n; * After sending a break we need to reset the transmit DMA channel&n; *&n; * Revision 1.31  2000/06/21 12:13:29  johana&n; * Fixed wait for all chars sent when closing port.&n; * (Used to always take 1 second!)&n; * Added shadows for directions of status/ctrl signals.&n; *&n; * Revision 1.30  2000/05/29 16:27:55  bjornw&n; * Simulator ifdef moved a bit&n; *&n; * Revision 1.29  2000/05/09 09:40:30  mattias&n; * * Added description of dma registers used in timeout_interrupt&n; * * Removed old code&n; *&n; * Revision 1.28  2000/05/08 16:38:58  mattias&n; * * Bugfix for flushing fifo in timeout_interrupt&n; *   Problem occurs when bluetooth stack waits for a small number of bytes&n; *   containing an event acknowledging free buffers in bluetooth HW&n; *   As before, data was stuck in fifo until more data came on uart and&n; *   flushed it up to the stack.&n; *&n; * Revision 1.27  2000/05/02 09:52:28  jonasd&n; * Added fix for peculiar etrax behaviour when eop is forced on an empty&n; * fifo. This is used when flashing the IRMA chip. Disabled by default.&n; *&n; * Revision 1.26  2000/03/29 15:32:02  bjornw&n; * 2.0.34 updates&n; *&n; * Revision 1.25  2000/02/16 16:59:36  bjornw&n; * * Receive DMA directly into the flip-buffer, eliminating an intermediary&n; *   receive buffer and a memcpy. Will avoid some overruns.&n; * * Error message on debug port if an overrun or flip buffer overrun occurs.&n; * * Just use the first byte in the flag flip buffer for errors.&n; * * Check for timeout on the serial ports only each 5/100 s, not 1/100.&n; *&n; * Revision 1.24  2000/02/09 18:02:28  bjornw&n; * * Clear serial errors (overrun, framing, parity) correctly. Before, the&n; *   receiver would get stuck if an error occurred and we did not restart&n; *   the input DMA.&n; * * Cosmetics (indentation, some code made into inlines)&n; * * Some more debug options&n; * * Actually shut down the serial port (DMA irq, DMA reset, receiver stop)&n; *   when the last open is closed. Corresponding fixes in startup().&n; * * rs_close() &quot;tx FIFO wait&quot; code moved into right place, bug &amp; -&gt; &amp;&amp; fixed&n; *   and make a special case out of port 1 (R_DMA_CHx_STATUS is broken for that)&n; * * e100_disable_rx/enable_rx just disables/enables the receiver, not RTS&n; *&n; * Revision 1.23  2000/01/24 17:46:19  johana&n; * Wait for flush of DMA/FIFO when closing port.&n; *&n; * Revision 1.22  2000/01/20 18:10:23  johana&n; * Added TIOCMGET ioctl to return modem status.&n; * Implemented modem status/control that works with the extra signals&n; * (DTR, DSR, RI,CD) as well.&n; * 3 different modes supported:&n; * ser0 on PB (Bundy), ser1 on PB (Lisa) and ser2 on PA (Bundy)&n; * Fixed DEF_TX value that caused the serial transmitter pin (txd) to go to 0 when&n; * closing the last filehandle, NASTY!.&n; * Added break generation, not tested though!&n; * Use SA_SHIRQ when request_irq() for ser2 and ser3 (shared with) par0 and par1.&n; * You can&squot;t use them at the same time (yet..), but you can hopefully switch&n; * between ser2/par0, ser3/par1 with the same kernel config.&n; * Replaced some magic constants with defines&n; *&n; *&n; */
 DECL|variable|serial_version
 r_static
 r_char
 op_star
 id|serial_version
 op_assign
-l_string|&quot;$Revision: 1.17 $&quot;
+l_string|&quot;$Revision: 1.20 $&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -45,6 +45,9 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS) &amp;&amp; &bslash;&n;           (CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS == 0)
 macro_line|#error &quot;RX_TIMEOUT_TICKS == 0 not allowed, use 1&quot;
 macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PA) &amp;&amp; defined(CONFIG_ETRAX_RS485_ON_PORT_G)
+macro_line|#error &quot;Disable either CONFIG_ETRAX_RS485_ON_PA or CONFIG_ETRAX_RS485_ON_PORT_G&quot;
+macro_line|#endif
 multiline_comment|/*&n; * All of the compatibilty code so we can compile serial.c against&n; * older kernels is hidden in serial_compat.h&n; */
 macro_line|#if defined(LOCAL_HEADERS)
 macro_line|#include &quot;serial_compat.h&quot;
@@ -71,25 +74,177 @@ singleline_comment|//#define SERIAL_DEBUG_FLOW
 singleline_comment|//#define SERIAL_DEBUG_DATA
 singleline_comment|//#define SERIAL_DEBUG_THROTTLE
 singleline_comment|//#define SERIAL_DEBUG_IO  /* Debug for Extra control and status pins */
-DECL|macro|SERIAL_DEBUG_LINE
-mdefine_line|#define SERIAL_DEBUG_LINE 0 /* What serport we want to debug */
+singleline_comment|//#define SERIAL_DEBUG_LINE 0 /* What serport we want to debug */
 multiline_comment|/* Enable this to use serial interrupts to handle when you&n;   expect the first received event on the serial port to&n;   be an error, break or similar. Used to be able to flash IRMA&n;   from eLinux */
 DECL|macro|SERIAL_HANDLE_EARLY_ERRORS
 mdefine_line|#define SERIAL_HANDLE_EARLY_ERRORS
-DECL|macro|TTY_THROTTLE_LIMIT
-mdefine_line|#define TTY_THROTTLE_LIMIT (TTY_FLIPBUF_SIZE/10)
+multiline_comment|/* Defined and used in n_tty.c, but we need it here as well */
+DECL|macro|TTY_THRESHOLD_THROTTLE
+mdefine_line|#define TTY_THRESHOLD_THROTTLE 128
+multiline_comment|/* Due to buffersizes and threshold values, our SERIAL_DESCR_BUF_SIZE&n; * must not be to high or flow control won&squot;t work if we leave it to the tty&n; * layer so we have our own throttling in flush_to_flip&n; * TTY_FLIPBUF_SIZE=512,&n; * TTY_THRESHOLD_THROTTLE/UNTHROTTLE=128&n; * BUF_SIZE can&squot;t be &gt; 128&n; */
+multiline_comment|/* Currently 16 descriptors x 128 bytes = 2048 bytes */
 DECL|macro|SERIAL_DESCR_BUF_SIZE
 mdefine_line|#define SERIAL_DESCR_BUF_SIZE 256
+DECL|macro|SERIAL_PRESCALE_BASE
+mdefine_line|#define SERIAL_PRESCALE_BASE 3125000 /* 3.125MHz */
+DECL|macro|DEF_BAUD_BASE
+mdefine_line|#define DEF_BAUD_BASE SERIAL_PRESCALE_BASE
+multiline_comment|/* We don&squot;t want to load the system with massive fast timer interrupt&n; * on high baudrates so limit it to 250 us (4kHz) */
+DECL|macro|MIN_FLUSH_TIME_USEC
+mdefine_line|#define MIN_FLUSH_TIME_USEC 250
 multiline_comment|/* Add an x here to log a lot of timer stuff */
 DECL|macro|TIMERD
 mdefine_line|#define TIMERD(x)
+multiline_comment|/* Debug details of interrupt handling */
+DECL|macro|DINTR1
+mdefine_line|#define DINTR1(x)  /* irq on/off, errors */
+DECL|macro|DINTR2
+mdefine_line|#define DINTR2(x)    /* tx and rx */
+multiline_comment|/* Debug flip buffer stuff */
+DECL|macro|DFLIP
+mdefine_line|#define DFLIP(x)
+multiline_comment|/* Debug flow control and overview of data flow */
+DECL|macro|DFLOW
+mdefine_line|#define DFLOW(x)
+DECL|macro|DBAUD
+mdefine_line|#define DBAUD(x)
+DECL|macro|DLOG_INT_TRIG
+mdefine_line|#define DLOG_INT_TRIG(x)
+singleline_comment|//#define DEBUG_LOG_INCLUDED
+macro_line|#ifndef DEBUG_LOG_INCLUDED
 DECL|macro|DEBUG_LOG
 mdefine_line|#define DEBUG_LOG(line, string, value)
+macro_line|#else
+DECL|struct|debug_log_info
+r_struct
+id|debug_log_info
+(brace
+DECL|member|time
+r_int
+r_int
+id|time
+suffix:semicolon
+DECL|member|timer_data
+r_int
+r_int
+id|timer_data
+suffix:semicolon
+singleline_comment|//  int line;
+DECL|member|string
+r_const
+r_char
+op_star
+id|string
+suffix:semicolon
+DECL|member|value
+r_int
+id|value
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|DEBUG_LOG_SIZE
+mdefine_line|#define DEBUG_LOG_SIZE 4096
+DECL|variable|debug_log
+r_struct
+id|debug_log_info
+id|debug_log
+(braket
+id|DEBUG_LOG_SIZE
+)braket
+suffix:semicolon
+DECL|variable|debug_log_pos
+r_int
+id|debug_log_pos
+op_assign
+l_int|0
+suffix:semicolon
+DECL|macro|DEBUG_LOG
+mdefine_line|#define DEBUG_LOG(_line, _string, _value) do { &bslash;&n;  if ((_line) == SERIAL_DEBUG_LINE) {&bslash;&n;    debug_log_func(_line, _string, _value); &bslash;&n;  }&bslash;&n;}while(0)
+DECL|function|debug_log_func
+r_void
+id|debug_log_func
+c_func
+(paren
+r_int
+id|line
+comma
+r_const
+r_char
+op_star
+id|string
+comma
+r_int
+id|value
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug_log_pos
+OL
+id|DEBUG_LOG_SIZE
+)paren
+(brace
+id|debug_log
+(braket
+id|debug_log_pos
+)braket
+dot
+id|time
+op_assign
+id|jiffies
+suffix:semicolon
+id|debug_log
+(braket
+id|debug_log_pos
+)braket
+dot
+id|timer_data
+op_assign
+op_star
+id|R_TIMER_DATA
+suffix:semicolon
+singleline_comment|//    debug_log[debug_log_pos].line = line;
+id|debug_log
+(braket
+id|debug_log_pos
+)braket
+dot
+id|string
+op_assign
+id|string
+suffix:semicolon
+id|debug_log
+(braket
+id|debug_log_pos
+)braket
+dot
+id|value
+op_assign
+id|value
+suffix:semicolon
+id|debug_log_pos
+op_increment
+suffix:semicolon
+)brace
+multiline_comment|/*printk(string, value);*/
+)brace
+macro_line|#endif
 macro_line|#ifndef CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS
 multiline_comment|/* Default number of timer ticks before flushing rx fifo &n; * When using &quot;little data, low latency applications: use 0&n; * When using &quot;much data applications (PPP)&quot; use ~5&n; */
 DECL|macro|CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS
 mdefine_line|#define CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS 5 
 macro_line|#endif
+r_int
+r_int
+id|timer_data_to_ns
+c_func
+(paren
+r_int
+r_int
+id|timer_data
+)paren
+suffix:semicolon
 r_static
 r_void
 id|change_speed
@@ -99,6 +254,17 @@ r_struct
 id|e100_serial
 op_star
 id|info
+)paren
+suffix:semicolon
+r_static
+r_void
+id|rs_throttle
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
 )paren
 suffix:semicolon
 r_static
@@ -138,10 +304,10 @@ r_int
 id|count
 )paren
 suffix:semicolon
-r_static
-r_inline
+r_extern
+id|_INLINE_
 r_int
-id|raw_write
+id|rs_raw_write
 c_func
 (paren
 r_struct
@@ -204,7 +370,7 @@ id|value
 )paren
 suffix:semicolon
 DECL|macro|DEF_BAUD
-mdefine_line|#define DEF_BAUD 0x99   /* 115.2 kbit/s */
+mdefine_line|#define DEF_BAUD 115200   /* 115.2 kbit/s */
 DECL|macro|STD_FLAGS
 mdefine_line|#define STD_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 DECL|macro|DEF_RX
@@ -215,6 +381,8 @@ mdefine_line|#define DEF_TX 0x80  /* or SERIAL_CTRL_B */
 multiline_comment|/* offsets from R_SERIALx_CTRL */
 DECL|macro|REG_DATA
 mdefine_line|#define REG_DATA 0
+DECL|macro|REG_DATA_STATUS32
+mdefine_line|#define REG_DATA_STATUS32 0 /* this is the 32 bit register R_SERIALx_READ */
 DECL|macro|REG_TR_DATA
 mdefine_line|#define REG_TR_DATA 0
 DECL|macro|REG_STATUS
@@ -250,6 +418,95 @@ mdefine_line|#define ERRCODE_INSERT_BREAK (ERRCODE_INSERT | TTY_BREAK)
 DECL|macro|FORCE_EOP
 mdefine_line|#define FORCE_EOP(info)  *R_SET_EOP = 1U &lt;&lt; info-&gt;iseteop;
 multiline_comment|/*&n; * General note regarding the use of IO_* macros in this file: &n; *&n; * We will use the bits defined for DMA channel 6 when using various&n; * IO_* macros (e.g. IO_STATE, IO_MASK, IO_EXTRACT) and _assume_ they are&n; * the same for all channels (which of course they are).&n; *&n; * We will also use the bits defined for serial port 0 when writing commands&n; * to the different ports, as these bits too are the same for all ports.&n; */
+multiline_comment|/* Mask for the irqs possibly enabled in R_IRQ_MASK1_RD etc. */
+DECL|variable|e100_ser_int_mask
+r_static
+r_const
+r_int
+r_int
+id|e100_ser_int_mask
+op_assign
+l_int|0
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser0_data
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser0_ready
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser1_data
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser1_ready
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser2_data
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser2_ready
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser3_data
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser3_ready
+)paren
+macro_line|#endif
+suffix:semicolon
+DECL|variable|r_alt_ser_baudrate_shadow
+r_int
+r_int
+id|r_alt_ser_baudrate_shadow
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* this is the data for the four serial ports in the etrax100 */
 multiline_comment|/*  DMA2(ser2), DMA4(ser3), DMA6(ser0) or DMA8(ser1) */
 multiline_comment|/* R_DMA_CHx_CLR_INTR, R_DMA_CHx_FIRST, R_DMA_CHx_CMD */
@@ -263,8 +520,14 @@ id|rs_table
 op_assign
 (brace
 (brace
+dot
+id|baud
+op_assign
 id|DEF_BAUD
 comma
+dot
+id|port
+op_assign
 (paren
 r_int
 r_char
@@ -272,46 +535,119 @@ op_star
 )paren
 id|R_SERIAL0_CTRL
 comma
+dot
+id|irq
+op_assign
 l_int|1U
 op_lshift
 l_int|12
 comma
 multiline_comment|/* uses DMA 6 and 7 */
+dot
+id|oclrintradr
+op_assign
 id|R_DMA_CH6_CLR_INTR
 comma
+dot
+id|ofirstadr
+op_assign
 id|R_DMA_CH6_FIRST
 comma
+dot
+id|ocmdadr
+op_assign
 id|R_DMA_CH6_CMD
 comma
+dot
+id|ostatusadr
+op_assign
 id|R_DMA_CH6_STATUS
 comma
-id|R_DMA_CH6_HWSW
-comma
-id|R_DMA_CH6_DESCR
-comma
+dot
+id|iclrintradr
+op_assign
 id|R_DMA_CH7_CLR_INTR
 comma
+dot
+id|ifirstadr
+op_assign
 id|R_DMA_CH7_FIRST
 comma
+dot
+id|icmdadr
+op_assign
 id|R_DMA_CH7_CMD
 comma
-id|R_DMA_CH7_STATUS
-comma
-id|R_DMA_CH7_HWSW
-comma
+dot
+id|idescradr
+op_assign
 id|R_DMA_CH7_DESCR
 comma
+dot
+id|flags
+op_assign
 id|STD_FLAGS
 comma
+dot
+id|rx_ctrl
+op_assign
 id|DEF_RX
 comma
+dot
+id|tx_ctrl
+op_assign
 id|DEF_TX
 comma
+dot
+id|iseteop
+op_assign
 l_int|2
 comma
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0
+dot
+id|enabled
+op_assign
 l_int|1
+comma
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0_DMA6_OUT
+dot
+id|dma_out_enabled
+op_assign
+l_int|1
+comma
 macro_line|#else
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0_DMA7_IN
+dot
+id|dma_in_enabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|dma_in_enabled
+op_assign
+l_int|0
+macro_line|#endif
+macro_line|#else
+dot
+id|enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_in_enabled
+op_assign
 l_int|0
 macro_line|#endif
 )brace
@@ -319,8 +655,14 @@ comma
 multiline_comment|/* ttyS0 */
 macro_line|#ifndef CONFIG_SVINTO_SIM
 (brace
+dot
+id|baud
+op_assign
 id|DEF_BAUD
 comma
+dot
+id|port
+op_assign
 (paren
 r_int
 r_char
@@ -328,54 +670,133 @@ op_star
 )paren
 id|R_SERIAL1_CTRL
 comma
+dot
+id|irq
+op_assign
 l_int|1U
 op_lshift
 l_int|16
 comma
 multiline_comment|/* uses DMA 8 and 9 */
+dot
+id|oclrintradr
+op_assign
 id|R_DMA_CH8_CLR_INTR
 comma
+dot
+id|ofirstadr
+op_assign
 id|R_DMA_CH8_FIRST
 comma
+dot
+id|ocmdadr
+op_assign
 id|R_DMA_CH8_CMD
 comma
+dot
+id|ostatusadr
+op_assign
 id|R_DMA_CH8_STATUS
 comma
-id|R_DMA_CH8_HWSW
-comma
-id|R_DMA_CH8_DESCR
-comma
+dot
+id|iclrintradr
+op_assign
 id|R_DMA_CH9_CLR_INTR
 comma
+dot
+id|ifirstadr
+op_assign
 id|R_DMA_CH9_FIRST
 comma
+dot
+id|icmdadr
+op_assign
 id|R_DMA_CH9_CMD
 comma
-id|R_DMA_CH9_STATUS
-comma
-id|R_DMA_CH9_HWSW
-comma
+dot
+id|idescradr
+op_assign
 id|R_DMA_CH9_DESCR
 comma
+dot
+id|flags
+op_assign
 id|STD_FLAGS
 comma
+dot
+id|rx_ctrl
+op_assign
 id|DEF_RX
 comma
+dot
+id|tx_ctrl
+op_assign
 id|DEF_TX
 comma
+dot
+id|iseteop
+op_assign
 l_int|3
 comma
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
+dot
+id|enabled
+op_assign
 l_int|1
+comma
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1_DMA8_OUT
+dot
+id|dma_out_enabled
+op_assign
+l_int|1
+comma
 macro_line|#else
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1_DMA9_IN
+dot
+id|dma_in_enabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|dma_in_enabled
+op_assign
+l_int|0
+macro_line|#endif
+macro_line|#else
+dot
+id|enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_in_enabled
+op_assign
 l_int|0
 macro_line|#endif
 )brace
 comma
 multiline_comment|/* ttyS1 */
 (brace
+dot
+id|baud
+op_assign
 id|DEF_BAUD
 comma
+dot
+id|port
+op_assign
 (paren
 r_int
 r_char
@@ -383,54 +804,133 @@ op_star
 )paren
 id|R_SERIAL2_CTRL
 comma
+dot
+id|irq
+op_assign
 l_int|1U
 op_lshift
 l_int|4
 comma
 multiline_comment|/* uses DMA 2 and 3 */
+dot
+id|oclrintradr
+op_assign
 id|R_DMA_CH2_CLR_INTR
 comma
+dot
+id|ofirstadr
+op_assign
 id|R_DMA_CH2_FIRST
 comma
+dot
+id|ocmdadr
+op_assign
 id|R_DMA_CH2_CMD
 comma
+dot
+id|ostatusadr
+op_assign
 id|R_DMA_CH2_STATUS
 comma
-id|R_DMA_CH2_HWSW
-comma
-id|R_DMA_CH2_DESCR
-comma
+dot
+id|iclrintradr
+op_assign
 id|R_DMA_CH3_CLR_INTR
 comma
+dot
+id|ifirstadr
+op_assign
 id|R_DMA_CH3_FIRST
 comma
+dot
+id|icmdadr
+op_assign
 id|R_DMA_CH3_CMD
 comma
-id|R_DMA_CH3_STATUS
-comma
-id|R_DMA_CH3_HWSW
-comma
+dot
+id|idescradr
+op_assign
 id|R_DMA_CH3_DESCR
 comma
+dot
+id|flags
+op_assign
 id|STD_FLAGS
 comma
+dot
+id|rx_ctrl
+op_assign
 id|DEF_RX
 comma
+dot
+id|tx_ctrl
+op_assign
 id|DEF_TX
 comma
+dot
+id|iseteop
+op_assign
 l_int|0
 comma
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
+dot
+id|enabled
+op_assign
 l_int|1
+comma
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2_DMA2_OUT
+dot
+id|dma_out_enabled
+op_assign
+l_int|1
+comma
 macro_line|#else
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2_DMA3_IN
+dot
+id|dma_in_enabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|dma_in_enabled
+op_assign
+l_int|0
+macro_line|#endif
+macro_line|#else
+dot
+id|enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_in_enabled
+op_assign
 l_int|0
 macro_line|#endif
 )brace
 comma
 multiline_comment|/* ttyS2 */
 (brace
+dot
+id|baud
+op_assign
 id|DEF_BAUD
 comma
+dot
+id|port
+op_assign
 (paren
 r_int
 r_char
@@ -438,46 +938,119 @@ op_star
 )paren
 id|R_SERIAL3_CTRL
 comma
+dot
+id|irq
+op_assign
 l_int|1U
 op_lshift
 l_int|8
 comma
 multiline_comment|/* uses DMA 4 and 5 */
+dot
+id|oclrintradr
+op_assign
 id|R_DMA_CH4_CLR_INTR
 comma
+dot
+id|ofirstadr
+op_assign
 id|R_DMA_CH4_FIRST
 comma
+dot
+id|ocmdadr
+op_assign
 id|R_DMA_CH4_CMD
 comma
+dot
+id|ostatusadr
+op_assign
 id|R_DMA_CH4_STATUS
 comma
-id|R_DMA_CH4_HWSW
-comma
-id|R_DMA_CH4_DESCR
-comma
+dot
+id|iclrintradr
+op_assign
 id|R_DMA_CH5_CLR_INTR
 comma
+dot
+id|ifirstadr
+op_assign
 id|R_DMA_CH5_FIRST
 comma
+dot
+id|icmdadr
+op_assign
 id|R_DMA_CH5_CMD
 comma
-id|R_DMA_CH5_STATUS
-comma
-id|R_DMA_CH5_HWSW
-comma
+dot
+id|idescradr
+op_assign
 id|R_DMA_CH5_DESCR
 comma
+dot
+id|flags
+op_assign
 id|STD_FLAGS
 comma
+dot
+id|rx_ctrl
+op_assign
 id|DEF_RX
 comma
+dot
+id|tx_ctrl
+op_assign
 id|DEF_TX
 comma
+dot
+id|iseteop
+op_assign
 l_int|1
 comma
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
+dot
+id|enabled
+op_assign
 l_int|1
+comma
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3_DMA4_OUT
+dot
+id|dma_out_enabled
+op_assign
+l_int|1
+comma
 macro_line|#else
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3_DMA5_IN
+dot
+id|dma_in_enabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|dma_in_enabled
+op_assign
+l_int|0
+macro_line|#endif
+macro_line|#else
+dot
+id|enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_out_enabled
+op_assign
+l_int|0
+comma
+dot
+id|dma_in_enabled
+op_assign
 l_int|0
 macro_line|#endif
 )brace
@@ -485,10 +1058,26 @@ multiline_comment|/* ttyS3 */
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS (sizeof(rs_table)/sizeof(struct e100_serial))
+r_static
+r_struct
+id|termios
+op_star
+id|serial_termios
+(braket
+id|NR_PORTS
+)braket
+suffix:semicolon
+r_static
+r_struct
+id|termios
+op_star
+id|serial_termios_locked
+(braket
+id|NR_PORTS
+)braket
+suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_FAST_TIMER
-DECL|variable|fast_timers
 r_static
 r_struct
 id|fast_timer
@@ -499,64 +1088,50 @@ id|NR_PORTS
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PROC_ENTRY
-DECL|macro|PROCSTAT
 mdefine_line|#define PROCSTAT(x) x
-DECL|struct|ser_statistics_type
 r_struct
 id|ser_statistics_type
 (brace
-DECL|member|overrun_cnt
 r_int
 id|overrun_cnt
 suffix:semicolon
-DECL|member|early_errors_cnt
 r_int
 id|early_errors_cnt
 suffix:semicolon
-DECL|member|ser_ints_ok_cnt
 r_int
 id|ser_ints_ok_cnt
 suffix:semicolon
-DECL|member|errors_cnt
 r_int
 id|errors_cnt
 suffix:semicolon
-DECL|member|processing_flip
 r_int
 r_int
 r_int
 id|processing_flip
 suffix:semicolon
-DECL|member|processing_flip_still_room
 r_int
 r_int
 id|processing_flip_still_room
 suffix:semicolon
-DECL|member|timeout_flush_cnt
 r_int
 r_int
 r_int
 id|timeout_flush_cnt
 suffix:semicolon
-DECL|member|rx_dma_ints
 r_int
 id|rx_dma_ints
 suffix:semicolon
-DECL|member|tx_dma_ints
 r_int
 id|tx_dma_ints
 suffix:semicolon
-DECL|member|rx_tot
 r_int
 id|rx_tot
 suffix:semicolon
-DECL|member|tx_tot
 r_int
 id|tx_tot
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|ser_stat
 r_static
 r_struct
 id|ser_statistics_type
@@ -566,13 +1141,11 @@ id|NR_PORTS
 )braket
 suffix:semicolon
 macro_line|#else
-DECL|macro|PROCSTAT
 mdefine_line|#define PROCSTAT(x)
 macro_line|#endif /* CONFIG_ETRAX_SERIAL_PROC_ENTRY */
 multiline_comment|/* RS-485 */
 macro_line|#if defined(CONFIG_ETRAX_RS485)
 macro_line|#ifdef CONFIG_ETRAX_FAST_TIMER
-DECL|variable|fast_timers_rs485
 r_static
 r_struct
 id|fast_timer
@@ -583,7 +1156,6 @@ id|NR_PORTS
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PA)
-DECL|variable|rs485_pa_bit
 r_static
 r_int
 id|rs485_pa_bit
@@ -591,23 +1163,23 @@ op_assign
 id|CONFIG_ETRAX_RS485_ON_PA_BIT
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PORT_G)
+r_static
+r_int
+id|rs485_port_g_bit
+op_assign
+id|CONFIG_ETRAX_RS485_ON_PORT_G_BIT
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Info and macros needed for each ports extra control/status signals. */
-DECL|macro|E100_STRUCT_PORT
 mdefine_line|#define E100_STRUCT_PORT(line, pinname) &bslash;&n; ((CONFIG_ETRAX_SER##line##_##pinname##_ON_PA_BIT &gt;= 0)? &bslash;&n;&t;&t;(R_PORT_PA_DATA): ( &bslash;&n; (CONFIG_ETRAX_SER##line##_##pinname##_ON_PB_BIT &gt;= 0)? &bslash;&n;&t;&t;(R_PORT_PB_DATA):&amp;dummy_ser[line]))
-DECL|macro|E100_STRUCT_SHADOW
 mdefine_line|#define E100_STRUCT_SHADOW(line, pinname) &bslash;&n; ((CONFIG_ETRAX_SER##line##_##pinname##_ON_PA_BIT &gt;= 0)? &bslash;&n;&t;&t;(&amp;port_pa_data_shadow): ( &bslash;&n; (CONFIG_ETRAX_SER##line##_##pinname##_ON_PB_BIT &gt;= 0)? &bslash;&n;&t;&t;(&amp;port_pb_data_shadow):&amp;dummy_ser[line]))
-DECL|macro|E100_STRUCT_MASK
 mdefine_line|#define E100_STRUCT_MASK(line, pinname) &bslash;&n; ((CONFIG_ETRAX_SER##line##_##pinname##_ON_PA_BIT &gt;= 0)? &bslash;&n;&t;&t;(1&lt;&lt;CONFIG_ETRAX_SER##line##_##pinname##_ON_PA_BIT): ( &bslash;&n; (CONFIG_ETRAX_SER##line##_##pinname##_ON_PB_BIT &gt;= 0)? &bslash;&n;&t;&t;(1&lt;&lt;CONFIG_ETRAX_SER##line##_##pinname##_ON_PB_BIT):DUMMY_##pinname##_MASK))
-DECL|macro|DUMMY_DTR_MASK
 mdefine_line|#define DUMMY_DTR_MASK 1
-DECL|macro|DUMMY_RI_MASK
 mdefine_line|#define DUMMY_RI_MASK  2
-DECL|macro|DUMMY_DSR_MASK
 mdefine_line|#define DUMMY_DSR_MASK 4
-DECL|macro|DUMMY_CD_MASK
 mdefine_line|#define DUMMY_CD_MASK  8
-DECL|variable|dummy_ser
 r_static
 r_int
 r_char
@@ -628,324 +1200,268 @@ l_int|0xFF
 suffix:semicolon
 multiline_comment|/* If not all status pins are used or disabled, use mixed mode */
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0
-DECL|macro|SER0_PA_BITSUM
 mdefine_line|#define SER0_PA_BITSUM (CONFIG_ETRAX_SER0_DTR_ON_PA_BIT+CONFIG_ETRAX_SER0_RI_ON_PA_BIT+CONFIG_ETRAX_SER0_DSR_ON_PA_BIT+CONFIG_ETRAX_SER0_CD_ON_PA_BIT)
 macro_line|#if SER0_PA_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER0_DTR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER0_RI_ON_PA_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER0_DSR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER0_CD_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
-DECL|macro|SER0_PB_BITSUM
 mdefine_line|#define SER0_PB_BITSUM (CONFIG_ETRAX_SER0_DTR_ON_PB_BIT+CONFIG_ETRAX_SER0_RI_ON_PB_BIT+CONFIG_ETRAX_SER0_DSR_ON_PB_BIT+CONFIG_ETRAX_SER0_CD_ON_PB_BIT)
 macro_line|#if SER0_PB_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER0_DTR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER0_RI_ON_PB_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER0_DSR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER0_CD_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
 macro_line|#endif /* PORT0 */
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
-DECL|macro|SER1_PA_BITSUM
 mdefine_line|#define SER1_PA_BITSUM (CONFIG_ETRAX_SER1_DTR_ON_PA_BIT+CONFIG_ETRAX_SER1_RI_ON_PA_BIT+CONFIG_ETRAX_SER1_DSR_ON_PA_BIT+CONFIG_ETRAX_SER1_CD_ON_PA_BIT)
 macro_line|#if SER1_PA_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER1_DTR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER1_RI_ON_PA_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER1_DSR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER1_CD_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
-DECL|macro|SER0_PB_BITSUM
-mdefine_line|#define SER0_PB_BITSUM (CONFIG_ETRAX_SER1_DTR_ON_PB_BIT+CONFIG_ETRAX_SER1_RI_ON_PB_BIT+CONFIG_ETRAX_SER1_DSR_ON_PB_BIT+CONFIG_ETRAX_SER1_CD_ON_PB_BIT)
+mdefine_line|#define SER1_PB_BITSUM (CONFIG_ETRAX_SER1_DTR_ON_PB_BIT+CONFIG_ETRAX_SER1_RI_ON_PB_BIT+CONFIG_ETRAX_SER1_DSR_ON_PB_BIT+CONFIG_ETRAX_SER1_CD_ON_PB_BIT)
 macro_line|#if SER1_PB_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER1_DTR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER1_RI_ON_PB_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER1_DSR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER1_CD_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
 macro_line|#endif /* PORT1 */
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
-DECL|macro|SER2_PA_BITSUM
 mdefine_line|#define SER2_PA_BITSUM (CONFIG_ETRAX_SER2_DTR_ON_PA_BIT+CONFIG_ETRAX_SER2_RI_ON_PA_BIT+CONFIG_ETRAX_SER2_DSR_ON_PA_BIT+CONFIG_ETRAX_SER2_CD_ON_PA_BIT)
 macro_line|#if SER2_PA_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER2_DTR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER2_RI_ON_PA_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER2_DSR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER2_CD_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
-DECL|macro|SER2_PB_BITSUM
 mdefine_line|#define SER2_PB_BITSUM (CONFIG_ETRAX_SER2_DTR_ON_PB_BIT+CONFIG_ETRAX_SER2_RI_ON_PB_BIT+CONFIG_ETRAX_SER2_DSR_ON_PB_BIT+CONFIG_ETRAX_SER2_CD_ON_PB_BIT)
 macro_line|#if SER2_PB_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER2_DTR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER2_RI_ON_PB_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER2_DSR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER2_CD_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
 macro_line|#endif /* PORT2 */
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
-DECL|macro|SER3_PA_BITSUM
 mdefine_line|#define SER3_PA_BITSUM (CONFIG_ETRAX_SER3_DTR_ON_PA_BIT+CONFIG_ETRAX_SER3_RI_ON_PA_BIT+CONFIG_ETRAX_SER3_DSR_ON_PA_BIT+CONFIG_ETRAX_SER3_CD_ON_PA_BIT)
 macro_line|#if SER3_PA_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER3_DTR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER3_RI_ON_PA_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER3_DSR_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER3_CD_ON_PA_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
-DECL|macro|SER3_PB_BITSUM
 mdefine_line|#define SER3_PB_BITSUM (CONFIG_ETRAX_SER3_DTR_ON_PB_BIT+CONFIG_ETRAX_SER3_RI_ON_PB_BIT+CONFIG_ETRAX_SER3_DSR_ON_PB_BIT+CONFIG_ETRAX_SER3_CD_ON_PB_BIT)
 macro_line|#if SER3_PB_BITSUM != -4
 macro_line|#  if CONFIG_ETRAX_SER3_DTR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#   endif
 macro_line|# if CONFIG_ETRAX_SER3_RI_ON_PB_BIT == -1
 macro_line|#   ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#     define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#   endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER3_DSR_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#  if CONFIG_ETRAX_SER3_CD_ON_PB_BIT == -1
 macro_line|#    ifndef CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
-DECL|macro|CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED
 macro_line|#      define CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED 1
 macro_line|#    endif
 macro_line|#  endif
 macro_line|#endif
 macro_line|#endif /* PORT3 */
 macro_line|#if defined(CONFIG_ETRAX_SER0_DTR_RI_DSR_CD_MIXED) || &bslash;&n;    defined(CONFIG_ETRAX_SER1_DTR_RI_DSR_CD_MIXED) || &bslash;&n;    defined(CONFIG_ETRAX_SER2_DTR_RI_DSR_CD_MIXED) || &bslash;&n;    defined(CONFIG_ETRAX_SER3_DTR_RI_DSR_CD_MIXED)
-DECL|macro|CONFIG_ETRAX_SERX_DTR_RI_DSR_CD_MIXED
 mdefine_line|#define CONFIG_ETRAX_SERX_DTR_RI_DSR_CD_MIXED
 macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_SERX_DTR_RI_DSR_CD_MIXED
 multiline_comment|/* The pins can be mixed on PA and PB */
-DECL|macro|CONTROL_PINS_PORT_NOT_USED
 mdefine_line|#define CONTROL_PINS_PORT_NOT_USED(line) &bslash;&n;  &amp;dummy_ser[line], &amp;dummy_ser[line], &bslash;&n;  &amp;dummy_ser[line], &amp;dummy_ser[line], &bslash;&n;  &amp;dummy_ser[line], &amp;dummy_ser[line], &bslash;&n;  &amp;dummy_ser[line], &amp;dummy_ser[line], &bslash;&n;  DUMMY_DTR_MASK, DUMMY_RI_MASK, DUMMY_DSR_MASK, DUMMY_CD_MASK
-DECL|struct|control_pins
 r_struct
 id|control_pins
 (brace
-DECL|member|dtr_port
 r_volatile
 r_int
 r_char
 op_star
 id|dtr_port
 suffix:semicolon
-DECL|member|dtr_shadow
 r_int
 r_char
 op_star
 id|dtr_shadow
 suffix:semicolon
-DECL|member|ri_port
 r_volatile
 r_int
 r_char
 op_star
 id|ri_port
 suffix:semicolon
-DECL|member|ri_shadow
 r_int
 r_char
 op_star
 id|ri_shadow
 suffix:semicolon
-DECL|member|dsr_port
 r_volatile
 r_int
 r_char
 op_star
 id|dsr_port
 suffix:semicolon
-DECL|member|dsr_shadow
 r_int
 r_char
 op_star
 id|dsr_shadow
 suffix:semicolon
-DECL|member|cd_port
 r_volatile
 r_int
 r_char
 op_star
 id|cd_port
 suffix:semicolon
-DECL|member|cd_shadow
 r_int
 r_char
 op_star
 id|cd_shadow
 suffix:semicolon
-DECL|member|dtr_mask
 r_int
 r_char
 id|dtr_mask
 suffix:semicolon
-DECL|member|ri_mask
 r_int
 r_char
 id|ri_mask
 suffix:semicolon
-DECL|member|dsr_mask
 r_int
 r_char
 id|dsr_mask
 suffix:semicolon
-DECL|member|cd_mask
 r_int
 r_char
 id|cd_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|e100_modem_pins
 r_static
 r_const
 r_struct
@@ -1387,64 +1903,47 @@ macro_line|#endif&t;&t;
 suffix:semicolon
 macro_line|#else  /* CONFIG_ETRAX_SERX_DTR_RI_DSR_CD_MIXED */
 multiline_comment|/* All pins are on either PA or PB for each serial port */
-DECL|macro|CONTROL_PINS_PORT_NOT_USED
 mdefine_line|#define CONTROL_PINS_PORT_NOT_USED(line) &bslash;&n;  &amp;dummy_ser[line], &amp;dummy_ser[line], &bslash;&n;  DUMMY_DTR_MASK, DUMMY_RI_MASK, DUMMY_DSR_MASK, DUMMY_CD_MASK
-DECL|struct|control_pins
 r_struct
 id|control_pins
 (brace
-DECL|member|port
 r_volatile
 r_int
 r_char
 op_star
 id|port
 suffix:semicolon
-DECL|member|shadow
 r_int
 r_char
 op_star
 id|shadow
 suffix:semicolon
-DECL|member|dtr_mask
 r_int
 r_char
 id|dtr_mask
 suffix:semicolon
-DECL|member|ri_mask
 r_int
 r_char
 id|ri_mask
 suffix:semicolon
-DECL|member|dsr_mask
 r_int
 r_char
 id|dsr_mask
 suffix:semicolon
-DECL|member|cd_mask
 r_int
 r_char
 id|cd_mask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|dtr_port
 mdefine_line|#define dtr_port port
-DECL|macro|dtr_shadow
 mdefine_line|#define dtr_shadow shadow
-DECL|macro|ri_port
 mdefine_line|#define ri_port port
-DECL|macro|ri_shadow
 mdefine_line|#define ri_shadow shadow
-DECL|macro|dsr_port
 mdefine_line|#define dsr_port port
-DECL|macro|dsr_shadow
 mdefine_line|#define dsr_shadow shadow
-DECL|macro|cd_port
 mdefine_line|#define cd_port port
-DECL|macro|cd_shadow
 mdefine_line|#define cd_shadow shadow
-DECL|variable|e100_modem_pins
 r_static
 r_const
 r_struct
@@ -1693,40 +2192,22 @@ macro_line|#endif&t;&t;
 )brace
 suffix:semicolon
 macro_line|#endif /* !CONFIG_ETRAX_SERX_DTR_RI_DSR_CD_MIXED */
-macro_line|#if defined(CONFIG_ETRAX_RS485) &amp;&amp; defined(CONFIG_ETRAX_RS485_ON_PA)
-DECL|variable|rs485_pa_port
-r_int
-r_char
-id|rs485_pa_port
-op_assign
-id|CONFIG_ETRAX_RS485_ON_PA_BIT
-suffix:semicolon
-macro_line|#endif
-DECL|macro|E100_RTS_MASK
 mdefine_line|#define E100_RTS_MASK 0x20
-DECL|macro|E100_CTS_MASK
 mdefine_line|#define E100_CTS_MASK 0x40
 multiline_comment|/* All serial port signals are active low:&n; * active   = 0 -&gt; 3.3V to RS-232 driver -&gt; -12V on RS-232 level&n; * inactive = 1 -&gt; 0V   to RS-232 driver -&gt; +12V on RS-232 level&n; *&n; * These macros returns the pin value: 0=0V, &gt;=1 = 3.3V on ETRAX chip&n; */
 multiline_comment|/* Output */
-DECL|macro|E100_RTS_GET
 mdefine_line|#define E100_RTS_GET(info) ((info)-&gt;rx_ctrl &amp; E100_RTS_MASK)
 multiline_comment|/* Input */
-DECL|macro|E100_CTS_GET
 mdefine_line|#define E100_CTS_GET(info) ((info)-&gt;port[REG_STATUS] &amp; E100_CTS_MASK)
 multiline_comment|/* These are typically PA or PB and 0 means 0V, 1 means 3.3V */
 multiline_comment|/* Is an output */
-DECL|macro|E100_DTR_GET
 mdefine_line|#define E100_DTR_GET(info) ((*e100_modem_pins[(info)-&gt;line].dtr_shadow) &amp; e100_modem_pins[(info)-&gt;line].dtr_mask)
 multiline_comment|/* Normally inputs */
-DECL|macro|E100_RI_GET
 mdefine_line|#define E100_RI_GET(info) ((*e100_modem_pins[(info)-&gt;line].ri_port) &amp; e100_modem_pins[(info)-&gt;line].ri_mask)
-DECL|macro|E100_CD_GET
 mdefine_line|#define E100_CD_GET(info) ((*e100_modem_pins[(info)-&gt;line].cd_port) &amp; e100_modem_pins[(info)-&gt;line].cd_mask)
 multiline_comment|/* Input */
-DECL|macro|E100_DSR_GET
 mdefine_line|#define E100_DSR_GET(info) ((*e100_modem_pins[(info)-&gt;line].dsr_port) &amp; e100_modem_pins[(info)-&gt;line].dsr_mask)
 multiline_comment|/*&n; * tmp_buf is used as a temporary buffer by serial_write.  We need to&n; * lock it in case the memcpy_fromfs blocks while swapping in a page,&n; * and some other program tries to do a serial write at the same time.&n; * Since the lock will only come under contention when the system is&n; * swapping and available memory is low, it makes sense to share one&n; * buffer across all the serial ports, since it significantly saves&n; * memory if large numbers of serial ports are open.&n; */
-DECL|variable|tmp_buf
 r_static
 r_int
 r_char
@@ -1742,7 +2223,6 @@ id|tmp_buf_sem
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|variable|tmp_buf_sem
 r_static
 r_struct
 id|semaphore
@@ -1752,7 +2232,6 @@ id|MUTEX
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Calculate the chartime depending on baudrate, numbor of bits etc. */
-DECL|function|update_char_time
 r_static
 r_void
 id|update_char_time
@@ -1831,11 +2310,27 @@ id|info-&gt;baud
 op_plus
 l_int|1
 suffix:semicolon
+id|info-&gt;flush_time_usec
+op_assign
+l_int|4
+op_star
+id|info-&gt;char_time_usec
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;flush_time_usec
+OL
+id|MIN_FLUSH_TIME_USEC
+)paren
+id|info-&gt;flush_time_usec
+op_assign
+id|MIN_FLUSH_TIME_USEC
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function maps from the Bxxxx defines in asm/termbits.h into real&n; * baud rates.&n; */
 r_static
 r_int
-DECL|function|cflag_to_baud
 id|cflag_to_baud
 c_func
 (paren
@@ -1958,7 +2453,6 @@ multiline_comment|/* and this maps to an etrax100 hardware baud constant */
 r_static
 r_int
 r_char
-DECL|function|cflag_to_etrax_baud
 id|cflag_to_etrax_baud
 c_func
 (paren
@@ -2138,7 +2632,6 @@ multiline_comment|/* It is complicated by the fact that RTS is a serial port reg
 r_static
 r_inline
 r_void
-DECL|function|e100_dtr
 id|e100_dtr
 c_func
 (paren
@@ -2297,7 +2790,6 @@ multiline_comment|/* set = 0 means 3.3V on the pin, bitvalue: 0=active, 1=inacti
 r_static
 r_inline
 r_void
-DECL|function|e100_rts
 id|e100_rts
 c_func
 (paren
@@ -2311,6 +2803,21 @@ id|set
 )paren
 (brace
 macro_line|#ifndef CONFIG_SVINTO_SIM
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 id|info-&gt;rx_ctrl
 op_and_assign
 op_complement
@@ -2335,6 +2842,12 @@ id|REG_REC_CTRL
 op_assign
 id|info-&gt;rx_ctrl
 suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_IO  
 id|printk
 c_func
@@ -2353,7 +2866,6 @@ multiline_comment|/* If this behaves as a modem, RI and CD is an output */
 r_static
 r_inline
 r_void
-DECL|function|e100_ri_out
 id|e100_ri_out
 c_func
 (paren
@@ -2451,7 +2963,6 @@ macro_line|#endif
 r_static
 r_inline
 r_void
-DECL|function|e100_cd_out
 id|e100_cd_out
 c_func
 (paren
@@ -2549,7 +3060,6 @@ macro_line|#endif
 r_static
 r_inline
 r_void
-DECL|function|e100_disable_rx
 id|e100_disable_rx
 c_func
 (paren
@@ -2584,7 +3094,6 @@ macro_line|#endif
 r_static
 r_inline
 r_void
-DECL|function|e100_enable_rx
 id|e100_enable_rx
 c_func
 (paren
@@ -2619,7 +3128,6 @@ multiline_comment|/* the rx DMA uses both the dma_descr and the dma_eop interrup
 r_static
 r_inline
 r_void
-DECL|function|e100_disable_rxdma_irq
 id|e100_disable_rxdma_irq
 c_func
 (paren
@@ -2639,6 +3147,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ disable_rxdma_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK2_CLR
 op_assign
@@ -2658,7 +3180,6 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|e100_enable_rxdma_irq
 id|e100_enable_rxdma_irq
 c_func
 (paren
@@ -2678,6 +3199,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ enable_rxdma_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK2_SET
 op_assign
@@ -2696,9 +3231,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* the tx DMA uses only dma_descr interrupt */
 r_static
-r_inline
+id|_INLINE_
 r_void
-DECL|function|e100_disable_txdma_irq
 id|e100_disable_txdma_irq
 c_func
 (paren
@@ -2718,6 +3252,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ disable_txdma_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK2_CLR
 op_assign
@@ -2725,9 +3273,8 @@ id|info-&gt;irq
 suffix:semicolon
 )brace
 r_static
-r_inline
+id|_INLINE_
 r_void
-DECL|function|e100_enable_txdma_irq
 id|e100_enable_txdma_irq
 c_func
 (paren
@@ -2747,6 +3294,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ enable_txdma_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK2_SET
 op_assign
@@ -2754,9 +3315,8 @@ id|info-&gt;irq
 suffix:semicolon
 )brace
 r_static
-r_inline
+id|_INLINE_
 r_void
-DECL|function|e100_disable_txdma_channel
 id|e100_disable_txdma_channel
 c_func
 (paren
@@ -2782,12 +3342,52 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;disable_txdma_channel %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|info-&gt;line
 op_eq
 l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma6
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma6
+comma
+id|serial0
+)paren
 )paren
 (brace
 id|genconfig_shadow
@@ -2814,6 +3414,7 @@ id|unused
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 r_if
 c_cond
@@ -2821,6 +3422,32 @@ c_cond
 id|info-&gt;line
 op_eq
 l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma8
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma8
+comma
+id|serial1
+)paren
 )paren
 (brace
 id|genconfig_shadow
@@ -2847,6 +3474,7 @@ id|usb
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 r_if
 c_cond
@@ -2854,6 +3482,32 @@ c_cond
 id|info-&gt;line
 op_eq
 l_int|2
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma2
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma2
+comma
+id|serial2
+)paren
 )paren
 (brace
 id|genconfig_shadow
@@ -2880,6 +3534,7 @@ id|par0
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 r_if
 c_cond
@@ -2887,6 +3542,32 @@ c_cond
 id|info-&gt;line
 op_eq
 l_int|3
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma4
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma4
+comma
+id|serial3
+)paren
 )paren
 (brace
 id|genconfig_shadow
@@ -2913,6 +3594,7 @@ id|par1
 )paren
 suffix:semicolon
 )brace
+)brace
 op_star
 id|R_GEN_CONFIG
 op_assign
@@ -2926,9 +3608,8 @@ id|flags
 suffix:semicolon
 )brace
 r_static
-r_inline
+id|_INLINE_
 r_void
-DECL|function|e100_enable_txdma_channel
 id|e100_enable_txdma_channel
 c_func
 (paren
@@ -2951,6 +3632,20 @@ suffix:semicolon
 id|cli
 c_func
 (paren
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;enable_txdma_channel %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Enable output DMA channel for the serial port in question */
@@ -3097,12 +3792,461 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_static
+id|_INLINE_
+r_void
+id|e100_disable_rxdma_channel
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Disable input DMA channel for the serial port in question&n;&t; * ( set to something other then serialX)&n;&t; */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+comma
+id|serial0
+)paren
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+comma
+id|unused
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+comma
+id|serial1
+)paren
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+comma
+id|usb
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|2
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+comma
+id|serial2
+)paren
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+comma
+id|par0
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|3
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|genconfig_shadow
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+)paren
+)paren
+op_eq
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+comma
+id|serial3
+)paren
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+comma
+id|par1
+)paren
+suffix:semicolon
+)brace
+)brace
+op_star
+id|R_GEN_CONFIG
+op_assign
+id|genconfig_shadow
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_static
+id|_INLINE_
+r_void
+id|e100_enable_rxdma_channel
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Enable input DMA channel for the serial port in question */
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|0
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma7
+comma
+id|serial0
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|1
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma9
+comma
+id|serial1
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|2
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma3
+comma
+id|serial2
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|info-&gt;line
+op_eq
+l_int|3
+)paren
+(brace
+id|genconfig_shadow
+op_and_assign
+op_complement
+id|IO_MASK
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+)paren
+suffix:semicolon
+id|genconfig_shadow
+op_or_assign
+id|IO_STATE
+c_func
+(paren
+id|R_GEN_CONFIG
+comma
+id|dma5
+comma
+id|serial3
+)paren
+suffix:semicolon
+)brace
+op_star
+id|R_GEN_CONFIG
+op_assign
+id|genconfig_shadow
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
 multiline_comment|/* in order to detect and fix errors on the first byte&n;   we have to use the serial interrupts as well. */
 r_static
 r_inline
 r_void
-DECL|function|e100_disable_serial_data_irq
 id|e100_disable_serial_data_irq
 c_func
 (paren
@@ -3122,6 +4266,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ disable data_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK1_CLR
 op_assign
@@ -3141,7 +4299,6 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|e100_enable_serial_data_irq
 id|e100_enable_serial_data_irq
 c_func
 (paren
@@ -3187,6 +4344,20 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ enable data_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 op_star
 id|R_IRQ_MASK1_SET
 op_assign
@@ -3204,11 +4375,210 @@ id|info-&gt;line
 suffix:semicolon
 )brace
 macro_line|#endif
+r_static
+r_inline
+r_void
+id|e100_disable_serial_tx_ready_irq
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+macro_line|#ifdef SERIAL_DEBUG_INTR
+id|printk
+c_func
+(paren
+l_string|&quot;ser_tx_irq(%d): 0&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+suffix:semicolon
+macro_line|#endif
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ disable ready_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
+op_star
+id|R_IRQ_MASK1_CLR
+op_assign
+(paren
+l_int|1U
+op_lshift
+(paren
+l_int|8
+op_plus
+l_int|1
+op_plus
+l_int|2
+op_star
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+id|e100_enable_serial_tx_ready_irq
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+macro_line|#ifdef SERIAL_DEBUG_INTR
+id|printk
+c_func
+(paren
+l_string|&quot;ser_tx_irq(%d): 1&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;**** %d = %d&bslash;n&quot;
+comma
+(paren
+l_int|8
+op_plus
+l_int|1
+op_plus
+l_int|2
+op_star
+id|info-&gt;line
+)paren
+comma
+(paren
+l_int|1U
+op_lshift
+(paren
+l_int|8
+op_plus
+l_int|1
+op_plus
+l_int|2
+op_star
+id|info-&gt;line
+)paren
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|DINTR2
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;IRQ enable ready_irq %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
+op_star
+id|R_IRQ_MASK1_SET
+op_assign
+(paren
+l_int|1U
+op_lshift
+(paren
+l_int|8
+op_plus
+l_int|1
+op_plus
+l_int|2
+op_star
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+id|e100_enable_rx_irq
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
+id|e100_enable_rxdma_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_else
+id|e100_enable_serial_data_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+id|e100_disable_rx_irq
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
+id|e100_disable_rxdma_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_else
+id|e100_disable_serial_data_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_ETRAX_RS485)
 multiline_comment|/* Enable RS-485 mode on selected port. This is UGLY. */
 r_static
 r_int
-DECL|function|e100_enable_rs485
 id|e100_enable_rs485
 c_func
 (paren
@@ -3248,6 +4618,46 @@ id|rs485_pa_bit
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PORT_G)
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|rs485_port_g_bit
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_LTC1387)
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|CONFIG_ETRAX_RS485_LTC1387_DXEN_PORT_G_BIT
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|CONFIG_ETRAX_RS485_LTC1387_RXEN_PORT_G_BIT
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 id|info-&gt;rs485.rts_on_send
 op_assign
 l_int|0x01
@@ -3260,6 +4670,18 @@ l_int|0x01
 op_amp
 id|r-&gt;rts_after_sent
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|r-&gt;delay_rts_before_send
+op_ge
+l_int|1000
+)paren
+id|info-&gt;rs485.delay_rts_before_send
+op_assign
+l_int|1000
+suffix:semicolon
+r_else
 id|info-&gt;rs485.delay_rts_before_send
 op_assign
 id|r-&gt;delay_rts_before_send
@@ -3275,7 +4697,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|e100_write_rs485
 id|e100_write_rs485
 c_func
 (paren
@@ -3344,7 +4765,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ETRAX_FAST_TIMER
 multiline_comment|/* Timer function to toggle RTS when using FAST_TIMER */
-DECL|function|rs485_toggle_rts_timer_function
 r_static
 r_void
 id|rs485_toggle_rts_timer_function
@@ -3391,7 +4811,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|e100_enable_rxdma_irq
+id|e100_enable_rx_irq
 c_func
 (paren
 id|info
@@ -3404,7 +4824,6 @@ macro_line|#endif /* CONFIG_ETRAX_RS485 */
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_stop() and rs_start()&n; *&n; * This routines are called before setting or resetting tty-&gt;stopped.&n; * They enable or disable transmitter using the XOFF registers, as necessary.&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
-DECL|function|rs_stop
 id|rs_stop
 c_func
 (paren
@@ -3449,6 +4868,28 @@ suffix:semicolon
 id|cli
 c_func
 (paren
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;XOFF rs_stop xmit %i&bslash;n&quot;
+comma
+id|CIRC_CNT
+c_func
+(paren
+id|info-&gt;xmit.head
+comma
+id|info-&gt;xmit.tail
+comma
+id|SERIAL_XMIT_SIZE
+)paren
+)paren
 )paren
 suffix:semicolon
 id|xoff
@@ -3526,7 +4967,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|rs_start
 id|rs_start
 c_func
 (paren
@@ -3571,6 +5011,28 @@ suffix:semicolon
 id|cli
 c_func
 (paren
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;XOFF rs_start xmit %i&bslash;n&quot;
+comma
+id|CIRC_CNT
+c_func
+(paren
+id|info-&gt;xmit.head
+comma
+id|info-&gt;xmit.tail
+comma
+id|SERIAL_XMIT_SIZE
+)paren
+)paren
 )paren
 suffix:semicolon
 id|xoff
@@ -3638,6 +5100,24 @@ id|REG_XOFF
 op_assign
 id|xoff
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;uses_dma_out
+op_logical_and
+id|info-&gt;xmit.head
+op_ne
+id|info-&gt;xmit.tail
+op_logical_and
+id|info-&gt;xmit.buf
+)paren
+id|e100_enable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -3651,7 +5131,6 @@ multiline_comment|/*&n; * This routine is used by the interrupt handler to sched
 r_static
 id|_INLINE_
 r_void
-DECL|function|rs_sched_event
 id|rs_sched_event
 c_func
 (paren
@@ -3664,6 +5143,19 @@ r_int
 id|event
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|info-&gt;event
+op_amp
+(paren
+l_int|1
+op_lshift
+id|event
+)paren
+)paren
+r_return
+suffix:semicolon
 id|info-&gt;event
 op_or_assign
 l_int|1
@@ -3681,8 +5173,7 @@ suffix:semicolon
 multiline_comment|/* The output DMA channel is free - use it to send as many chars as possible&n; * NOTES:&n; *   We don&squot;t pay attention to info-&gt;x_char, which means if the TTY wants to&n; *   use XON/XOFF it will set info-&gt;x_char but we won&squot;t send any X char!&n; * &n; *   To implement this, we&squot;d just start a DMA send of 1 byte pointing at a&n; *   buffer containing the X char, and skip updating xmit. We&squot;d also have to&n; *   check if the last sent char was the X char when we enter this function&n; *   the next time, to avoid updating xmit with the sent X value.&n; */
 r_static
 r_void
-DECL|function|transmit_chars
-id|transmit_chars
+id|transmit_chars_dma
 c_func
 (paren
 r_struct
@@ -3703,7 +5194,7 @@ op_star
 id|descr
 suffix:semicolon
 macro_line|#ifdef CONFIG_SVINTO_SIM
-multiline_comment|/* This will output too little if tail is not 0 always since&n;&t; * we don&squot;t reloop to send the other part. Anyway this SHOULD be a&n;&t; * no-op - transmit_chars would never really be called during sim&n;&t; * since rs_write does not write into the xmit buffer then.&n;&t; */
+multiline_comment|/* This will output too little if tail is not 0 always since&n;&t; * we don&squot;t reloop to send the other part. Anyway this SHOULD be a&n;&t; * no-op - transmit_chars_dma would never really be called during sim&n;&t; * since rs_write does not write into the xmit buffer then.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3712,7 +5203,7 @@ id|info-&gt;xmit.tail
 id|printk
 c_func
 (paren
-l_string|&quot;Error in serial.c:transmit_chars(), tail!=0&bslash;n&quot;
+l_string|&quot;Error in serial.c:transmit_chars-dma(), tail!=0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3805,7 +5296,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Achtung: transmit_chars with !tr_running&bslash;n&quot;
+l_string|&quot;Achtung: transmit_chars_dma with !tr_running&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3839,6 +5330,20 @@ multiline_comment|/* otherwise we find the amount of data sent here */
 id|sentl
 op_assign
 id|descr-&gt;hw_len
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;TX %i done&bslash;n&quot;
+comma
+id|sentl
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* update stats */
 id|info-&gt;icount.tx
@@ -3897,6 +5402,22 @@ comma
 id|SERIAL_XMIT_SIZE
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t send all in one DMA transfer - divide it so we wake up&n;&t; * application before all is sent&n;&t; */
+r_if
+c_cond
+(paren
+id|c
+op_ge
+l_int|4
+op_star
+id|WAKEUP_CHARS
+)paren
+id|c
+op_assign
+id|c
+op_div
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3949,6 +5470,20 @@ suffix:semicolon
 )brace
 multiline_comment|/* ok we can schedule a dma send of c chars starting at info-&gt;xmit.tail */
 multiline_comment|/* set up the descriptor correctly for output */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;TX %i&bslash;n&quot;
+comma
+id|c
+)paren
+)paren
+suffix:semicolon
 id|descr-&gt;ctrl
 op_assign
 id|d_int
@@ -3989,15 +5524,21 @@ multiline_comment|/* write to R_DMAx_FIRST */
 op_star
 id|info-&gt;ocmdadr
 op_assign
-l_int|1
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+id|start
+)paren
 suffix:semicolon
-multiline_comment|/* dma command start -&gt; R_DMAx_CMD */
 multiline_comment|/* DMA is now running (hopefully) */
 )brace
-multiline_comment|/* transmit_chars */
+multiline_comment|/* transmit_chars_dma */
 r_static
 r_void
-DECL|function|start_transmit
 id|start_transmit
 c_func
 (paren
@@ -4038,7 +5579,19 @@ id|info-&gt;tr_running
 op_assign
 l_int|1
 suffix:semicolon
-id|transmit_chars
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_out
+)paren
+id|transmit_chars_dma
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_else
+id|e100_enable_serial_tx_ready_irq
 c_func
 (paren
 id|info
@@ -4047,14 +5600,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* start_transmit */
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_FAST_TIMER
-DECL|variable|serial_fast_timer_started
 r_static
 r_int
 id|serial_fast_timer_started
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|serial_fast_timer_expired
 r_static
 r_int
 id|serial_fast_timer_expired
@@ -4071,17 +5622,16 @@ r_int
 id|data
 )paren
 suffix:semicolon
-DECL|macro|START_FLUSH_FAST_TIMER
-mdefine_line|#define START_FLUSH_FAST_TIMER(info, string) {&bslash;&n;  unsigned long timer_flags; &bslash;&n;  save_flags(timer_flags); &bslash;&n;  cli(); &bslash;&n;  if (fast_timers[info-&gt;line].function == NULL) { &bslash;&n;    serial_fast_timer_started++; &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;start_timer %i &quot;, info-&gt;line)); &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;num started: %i&bslash;n&quot;, serial_fast_timer_started)); &bslash;&n;    start_one_shot_timer(&amp;fast_timers[info-&gt;line], &bslash;&n;                         flush_timeout_function, &bslash;&n;                         (unsigned long)info, &bslash;&n;                         info-&gt;char_time_usec*4, &bslash;&n;                         string); &bslash;&n;  } &bslash;&n;  else { &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;timer %i already running&bslash;n&quot;, info-&gt;line)); &bslash;&n;  } &bslash;&n;  restore_flags(timer_flags); &bslash;&n;}
+mdefine_line|#define START_FLUSH_FAST_TIMER_TIME(info, string, usec) {&bslash;&n;  unsigned long timer_flags; &bslash;&n;  save_flags(timer_flags); &bslash;&n;  cli(); &bslash;&n;  if (fast_timers[info-&gt;line].function == NULL) { &bslash;&n;    serial_fast_timer_started++; &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;start_timer %i &quot;, info-&gt;line)); &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;num started: %i&bslash;n&quot;, serial_fast_timer_started)); &bslash;&n;    start_one_shot_timer(&amp;fast_timers[info-&gt;line], &bslash;&n;                         flush_timeout_function, &bslash;&n;                         (unsigned long)info, &bslash;&n;                         (usec), &bslash;&n;                         string); &bslash;&n;  } &bslash;&n;  else { &bslash;&n;    TIMERD(DEBUG_LOG(info-&gt;line, &quot;timer %i already running&bslash;n&quot;, info-&gt;line)); &bslash;&n;  } &bslash;&n;  restore_flags(timer_flags); &bslash;&n;}
+mdefine_line|#define START_FLUSH_FAST_TIMER(info, string) START_FLUSH_FAST_TIMER_TIME(info, string, info-&gt;flush_time_usec)
 macro_line|#else
-DECL|macro|START_FLUSH_FAST_TIMER
+mdefine_line|#define START_FLUSH_FAST_TIMER_TIME(info, string, usec)
 mdefine_line|#define START_FLUSH_FAST_TIMER(info, string)
 macro_line|#endif
 r_static
 r_struct
 id|etrax_recv_buffer
 op_star
-DECL|function|alloc_recv_buffer
 id|alloc_recv_buffer
 c_func
 (paren
@@ -4136,7 +5686,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|append_recv_buffer
 id|append_recv_buffer
 c_func
 (paren
@@ -4209,7 +5758,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|add_char_and_flag
 id|add_char_and_flag
 c_func
 (paren
@@ -4232,6 +5780,12 @@ id|etrax_recv_buffer
 op_star
 id|buffer
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -4275,6 +5829,39 @@ suffix:semicolon
 id|info-&gt;icount.rx
 op_increment
 suffix:semicolon
+)brace
+r_else
+(brace
+r_struct
+id|tty_struct
+op_star
+id|tty
+op_assign
+id|info-&gt;tty
+suffix:semicolon
+op_star
+id|tty-&gt;flip.char_buf_ptr
+op_assign
+id|data
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+id|flag
+suffix:semicolon
+id|tty-&gt;flip.flag_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.char_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.count
+op_increment
+suffix:semicolon
+id|info-&gt;icount.rx
+op_increment
+suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -4283,7 +5870,6 @@ r_extern
 id|_INLINE_
 r_int
 r_int
-DECL|function|handle_descr_data
 id|handle_descr_data
 c_func
 (paren
@@ -4407,7 +5993,6 @@ r_static
 id|_INLINE_
 r_int
 r_int
-DECL|function|handle_all_descr_data
 id|handle_all_descr_data
 c_func
 (paren
@@ -4503,14 +6088,75 @@ id|descr-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
+id|DFLOW
+c_func
+(paren
 id|DEBUG_LOG
 c_func
 (paren
 id|info-&gt;line
 comma
-l_string|&quot;recvl %lu&bslash;n&quot;
+l_string|&quot;RX %lu&bslash;n&quot;
 comma
 id|recvl
+)paren
+suffix:semicolon
+r_if
+(paren
+id|info-&gt;tty-&gt;stopped
+)paren
+(brace
+r_int
+r_char
+op_star
+id|buf
+op_assign
+id|phys_to_virt
+c_func
+(paren
+id|descr-&gt;buf
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rx 0x%02X&bslash;n&quot;
+comma
+id|buf
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rx 0x%02X&bslash;n&quot;
+comma
+id|buf
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rx 0x%02X&bslash;n&quot;
+comma
+id|buf
+(braket
+l_int|2
+)braket
+)paren
+suffix:semicolon
+)brace
 )paren
 suffix:semicolon
 multiline_comment|/* update stats */
@@ -4538,8 +6184,7 @@ suffix:semicolon
 r_static
 id|_INLINE_
 r_void
-DECL|function|receive_chars
-id|receive_chars
+id|receive_chars_dma
 c_func
 (paren
 r_struct
@@ -4600,6 +6245,11 @@ multiline_comment|/* Something wrong... */
 r_return
 suffix:semicolon
 macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
 id|e100_enable_serial_data_irq
 c_func
 (paren
@@ -4638,6 +6288,35 @@ id|info-&gt;port
 id|REG_STATUS
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rstat
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_STATUS
+comma
+id|xoff_detect
+)paren
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;XOFF detect stat %x&bslash;n&quot;
+comma
+id|rstat
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4768,7 +6447,6 @@ suffix:semicolon
 r_static
 id|_INLINE_
 r_int
-DECL|function|start_recv_dma
 id|start_recv_dma
 c_func
 (paren
@@ -4959,7 +6637,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|start_receive
 id|start_receive
 c_func
 (paren
@@ -4974,6 +6651,16 @@ multiline_comment|/* No receive in the simulator.  Will probably be when the res
 r_return
 suffix:semicolon
 macro_line|#endif
+id|info-&gt;tty-&gt;flip.count
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
+(brace
 multiline_comment|/* reset the input dma channel to be sure it works */
 op_star
 id|info-&gt;icmdadr
@@ -5013,10 +6700,6 @@ id|reset
 )paren
 )paren
 suffix:semicolon
-id|info-&gt;tty-&gt;flip.count
-op_assign
-l_int|0
-suffix:semicolon
 id|start_recv_dma
 c_func
 (paren
@@ -5024,10 +6707,10 @@ id|info
 )paren
 suffix:semicolon
 )brace
+)brace
 r_static
 id|_INLINE_
 r_void
-DECL|function|status_handle
 id|status_handle
 c_func
 (paren
@@ -5046,7 +6729,6 @@ multiline_comment|/* the bits in the MASK2 register are laid out like this:&n;  
 multiline_comment|/* dma output channel interrupt handler&n;   this interrupt is called from DMA2(ser2), DMA4(ser3), DMA6(ser0) or&n;   DMA8(ser1) when they have finished a descriptor with the intr flag set.&n;*/
 r_static
 id|irqreturn_t
-DECL|function|tr_interrupt
 id|tr_interrupt
 c_func
 (paren
@@ -5142,7 +6824,7 @@ op_logical_neg
 id|info-&gt;enabled
 op_logical_or
 op_logical_neg
-id|info-&gt;uses_dma
+id|info-&gt;uses_dma_out
 )paren
 r_continue
 suffix:semicolon
@@ -5160,6 +6842,9 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* we can send a new dma bunch. make it so. */
+id|DINTR2
+c_func
+(paren
 id|DEBUG_LOG
 c_func
 (paren
@@ -5168,6 +6853,7 @@ comma
 l_string|&quot;tr_interrupt %i&bslash;n&quot;
 comma
 id|i
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Read jiffies_usec first, &n;&t;&t;&t; * we want this time to be as late as possible&n;&t;&t;&t; */
@@ -5194,7 +6880,7 @@ id|info-&gt;last_tx_active
 op_assign
 id|jiffies
 suffix:semicolon
-id|transmit_chars
+id|transmit_chars_dma
 c_func
 (paren
 id|info
@@ -5211,10 +6897,10 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* tr_interrupt */
 multiline_comment|/* dma input channel interrupt handler */
 r_static
 id|irqreturn_t
-DECL|function|rec_interrupt
 id|rec_interrupt
 c_func
 (paren
@@ -5272,6 +6958,7 @@ id|s
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* find out the line that caused this irq and get it from rs_table */
@@ -5309,7 +6996,7 @@ op_logical_neg
 id|info-&gt;enabled
 op_logical_or
 op_logical_neg
-id|info-&gt;uses_dma
+id|info-&gt;uses_dma_in
 )paren
 r_continue
 suffix:semicolon
@@ -5339,7 +7026,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* we have received something */
-id|receive_chars
+id|receive_chars_dma
 c_func
 (paren
 id|info
@@ -5356,10 +7043,10 @@ id|handled
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* rec_interrupt */
 r_static
 id|_INLINE_
 r_int
-DECL|function|force_eop_if_needed
 id|force_eop_if_needed
 c_func
 (paren
@@ -5487,6 +7174,9 @@ id|timeout_flush_cnt
 op_increment
 )paren
 suffix:semicolon
+id|TIMERD
+c_func
+(paren
 id|DEBUG_LOG
 c_func
 (paren
@@ -5495,6 +7185,7 @@ comma
 l_string|&quot;timeout EOP %i&bslash;n&quot;
 comma
 id|info-&gt;line
+)paren
 )paren
 suffix:semicolon
 id|FORCE_EOP
@@ -5508,10 +7199,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_static
+r_extern
 id|_INLINE_
 r_void
-DECL|function|flush_to_flip_buffer
 id|flush_to_flip_buffer
 c_func
 (paren
@@ -5538,6 +7228,9 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|max_flip_size
 suffix:semicolon
 r_if
 c_cond
@@ -5582,6 +7275,146 @@ id|length
 op_assign
 id|tty-&gt;flip.count
 suffix:semicolon
+multiline_comment|/* Don&squot;t flip more than the ldisc has room for.&n;&t; * The return value from ldisc.receive_room(tty) - might not be up to&n;&t; * date, the previous flip of up to TTY_FLIPBUF_SIZE might be on the&n;&t; * processed and not accounted for yet.&n;&t; * Since we use DMA, 1 SERIAL_DESCR_BUF_SIZE could be on the way.&n;&t; * Lets buffer data here and let flow control take care of it.&n;&t; * Since we normally flip large chunks, the ldisc don&squot;t react&n;&t; * with throttle until too late if we flip to much.&n;&t; */
+id|max_flip_size
+op_assign
+id|tty-&gt;ldisc
+dot
+id|receive_room
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_flip_size
+OL
+l_int|0
+)paren
+id|max_flip_size
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|max_flip_size
+op_le
+(paren
+id|TTY_FLIPBUF_SIZE
+op_plus
+multiline_comment|/* Maybe not accounted for */
+id|length
+op_plus
+id|info-&gt;recv_cnt
+op_plus
+multiline_comment|/* We have this queued */
+l_int|2
+op_star
+id|SERIAL_DESCR_BUF_SIZE
+op_plus
+multiline_comment|/* This could be on the way */
+id|TTY_THRESHOLD_THROTTLE
+)paren
+)paren
+(brace
+multiline_comment|/* Some slack */
+multiline_comment|/* check TTY_THROTTLED first so it indicates our state */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|TTY_THROTTLED
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;flush_to_flip throttles room %lu&bslash;n&quot;
+comma
+id|max_flip_size
+)paren
+)paren
+suffix:semicolon
+id|rs_throttle
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+macro_line|#if 0
+r_else
+r_if
+c_cond
+(paren
+id|max_flip_size
+op_le
+(paren
+id|TTY_FLIPBUF_SIZE
+op_plus
+multiline_comment|/* Maybe not accounted for */
+id|length
+op_plus
+id|info-&gt;recv_cnt
+op_plus
+multiline_comment|/* We have this queued */
+id|SERIAL_DESCR_BUF_SIZE
+op_plus
+multiline_comment|/* This could be on the way */
+id|TTY_THRESHOLD_THROTTLE
+)paren
+)paren
+(brace
+multiline_comment|/* Some slack */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;flush_to_flip throttles again! %lu&bslash;n&quot;
+comma
+id|max_flip_size
+)paren
+)paren
+suffix:semicolon
+id|rs_throttle
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+r_if
+c_cond
+(paren
+id|max_flip_size
+OG
+id|TTY_FLIPBUF_SIZE
+)paren
+id|max_flip_size
+op_assign
+id|TTY_FLIPBUF_SIZE
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5593,7 +7426,7 @@ id|info-&gt;first_recv_buffer
 op_logical_and
 id|length
 OL
-id|TTY_FLIPBUF_SIZE
+id|max_flip_size
 )paren
 (brace
 r_int
@@ -5609,11 +7442,11 @@ id|length
 op_plus
 id|count
 OG
-id|TTY_FLIPBUF_SIZE
+id|max_flip_size
 )paren
 id|count
 op_assign
-id|TTY_FLIPBUF_SIZE
+id|max_flip_size
 op_minus
 id|length
 suffix:semicolon
@@ -5655,6 +7488,20 @@ suffix:semicolon
 id|info-&gt;recv_cnt
 op_sub_assign
 id|count
+suffix:semicolon
+id|DFLIP
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;flip: %i&bslash;n&quot;
+comma
+id|length
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5713,10 +7560,144 @@ id|tty-&gt;flip.count
 op_assign
 id|length
 suffix:semicolon
+id|DFLIP
+c_func
+(paren
+r_if
+(paren
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+OG
+l_int|3500
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ldisc %lu&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;flip.count %lu&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+suffix:semicolon
+)brace
+)paren
+suffix:semicolon
 id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|DFLIP
+c_func
+(paren
+r_if
+(paren
+l_int|1
+)paren
+(brace
+r_if
+(paren
+id|test_bit
+c_func
+(paren
+id|TTY_DONT_FLIP
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;*** TTY_DONT_FLIP set flip.count %i ***&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;*** recv_cnt %i&bslash;n&quot;
+comma
+id|info-&gt;recv_cnt
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+)brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;*** rxtot %i&bslash;n&quot;
+comma
+id|info-&gt;icount.rx
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ldisc %lu&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+)paren
+suffix:semicolon
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;room  %lu&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|receive_room
+c_func
+(paren
+id|tty
+)paren
+)paren
+suffix:semicolon
+)brace
 )paren
 suffix:semicolon
 multiline_comment|/* this includes a check for low-latency */
@@ -5730,7 +7711,6 @@ suffix:semicolon
 r_static
 id|_INLINE_
 r_void
-DECL|function|check_flush_timeout
 id|check_flush_timeout
 c_func
 (paren
@@ -5740,34 +7720,38 @@ op_star
 id|info
 )paren
 (brace
-id|force_eop_if_needed
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
+multiline_comment|/* Flip what we&squot;ve got (if we can) */
 id|flush_to_flip_buffer
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* We might need to flip later, but not to fast&n;&t; * since the system is busy processing input... */
 r_if
 c_cond
 (paren
 id|info-&gt;first_recv_buffer
 )paren
-id|START_FLUSH_FAST_TIMER
+id|START_FLUSH_FAST_TIMER_TIME
 c_func
 (paren
 id|info
 comma
 l_string|&quot;flip&quot;
+comma
+l_int|2000
+)paren
+suffix:semicolon
+multiline_comment|/* Force eop last, since data might have come while we&squot;re processing&n;&t; * and if we started the slow timer above, we won&squot;t start a fast&n;&t; * below.&n;&t; */
+id|force_eop_if_needed
+c_func
+(paren
+id|info
 )paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_FAST_TIMER
-DECL|function|flush_timeout_function
 r_static
 r_void
 id|flush_timeout_function
@@ -5839,7 +7823,6 @@ suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* dma fifo/buffer timeout handler&n;   forces an end-of-packet for the dma input channel if no chars &n;   have been received for CONFIG_ETRAX_SERIAL_RX_TIMEOUT_TICKS/100 s.&n;*/
-DECL|variable|flush_timer
 r_static
 r_struct
 id|timer_list
@@ -5847,7 +7830,6 @@ id|flush_timer
 suffix:semicolon
 r_static
 r_void
-DECL|function|timed_flush_handler
 id|timed_flush_handler
 c_func
 (paren
@@ -5892,7 +7874,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;uses_dma
+id|info-&gt;uses_dma_in
 )paren
 id|check_flush_timeout
 c_func
@@ -5918,11 +7900,715 @@ macro_line|#endif
 macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
 multiline_comment|/* If there is an error (ie break) when the DMA is running and&n; * there are no bytes in the fifo the DMA is stopped and we get no&n; * eop interrupt. Thus we have to monitor the first bytes on a DMA&n; * transfer, and if it is without error we can turn the serial&n; * interrupts off.&n; */
 multiline_comment|/*&n;BREAK handling on ETRAX 100:&n;ETRAX will generate interrupt although there is no stop bit between the&n;characters.&n;&n;Depending on how long the break sequence is, the end of the breaksequence&n;will look differently:&n;| indicates start/end of a character.&n;&n;B= Break character (0x00) with framing error.&n;E= Error byte with parity error received after B characters.&n;F= &quot;Faked&quot; valid byte received immediately after B characters.&n;V= Valid byte&n;&n;1.&n;    B          BL         ___________________________ V&n;.._|__________|__________|                           |valid data |&n;&n;Multiple frame errors with data == 0x00 (B),&n;the timing matches up &quot;perfectly&quot; so no extra ending char is detected.&n;The RXD pin is 1 in the last interrupt, in that case&n;we set info-&gt;errorcode = ERRCODE_INSERT_BREAK, but we can&squot;t really&n;know if another byte will come and this really is case 2. below &n;(e.g F=0xFF or 0xFE)&n;If RXD pin is 0 we can expect another character (see 2. below).&n;&n;&n;2.&n;&n;    B          B          E or F__________________..__ V&n;.._|__________|__________|______    |                 |valid data&n;                          &quot;valid&quot; or &n;                          parity error&n;&n;Multiple frame errors with data == 0x00 (B),&n;but the part of the break trigs is interpreted as a start bit (and possibly&n;some 0 bits followed by a number of 1 bits and a stop bit).&n;Depending on parity settings etc. this last character can be either&n;a fake &quot;valid&quot; char (F) or have a parity error (E).&n;&n;If the character is valid it will be put in the buffer,&n;we set info-&gt;errorcode = ERRCODE_SET_BREAK so the receive interrupt&n;will set the flags so the tty will handle it,&n;if it&squot;s an error byte it will not be put in the buffer&n;and we set info-&gt;errorcode = ERRCODE_INSERT_BREAK.&n;&n;To distinguish a V byte in 1. from an F byte in 2. we keep a timestamp&n;of the last faulty char (B) and compares it with the current time:&n;If the time elapsed time is less then 2*char_time_usec we will assume&n;it&squot;s a faked F char and not a Valid char and set &n;info-&gt;errorcode = ERRCODE_SET_BREAK. &n;&n;Flaws in the above solution:&n;~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n;We use the timer to distinguish a F character from a V character,&n;if a V character is to close after the break we might make the wrong decision.&n;&n;TODO: The break will be delayed until an F or V character is received.&n;&n;*/
-DECL|function|handle_ser_interrupt
 r_extern
-id|irqreturn_t
 id|_INLINE_
-id|handle_ser_interrupt
+r_struct
+id|e100_serial
+op_star
+id|handle_ser_rx_interrupt_no_dma
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_int
+r_int
+id|data_read
+suffix:semicolon
+r_struct
+id|tty_struct
+op_star
+id|tty
+op_assign
+id|info-&gt;tty
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tty
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;!NO TTY!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|info
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+op_minus
+id|TTY_THRESHOLD_THROTTLE
+)paren
+(brace
+multiline_comment|/* check TTY_THROTTLED first so it indicates our state */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|TTY_THROTTLED
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rs_throttle flip.count: %i&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+)paren
+suffix:semicolon
+id|rs_throttle
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;force FLIP! %i&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+suffix:semicolon
+id|tty-&gt;flip.work
+dot
+id|func
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|tty
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;FLIP FULL! %i&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+suffix:semicolon
+r_return
+id|info
+suffix:semicolon
+multiline_comment|/* if TTY_DONT_FLIP is set */
+)brace
+)brace
+multiline_comment|/* Read data and status at the same time */
+id|data_read
+op_assign
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|info-&gt;port
+(braket
+id|REG_DATA_STATUS32
+)braket
+)paren
+suffix:semicolon
+id|more_data
+suffix:colon
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|xoff_detect
+)paren
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;XOFF detect&bslash;n&quot;
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+)brace
+id|DINTR2
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx   %c&bslash;n&quot;
+comma
+id|IO_EXTRACT
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_in
+comma
+id|data_read
+)paren
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+(paren
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|framing_err
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|par_err
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|overrun
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* An error */
+id|info-&gt;last_rx_active_usec
+op_assign
+id|GET_JIFFIES_USEC
+c_func
+(paren
+)paren
+suffix:semicolon
+id|info-&gt;last_rx_active
+op_assign
+id|jiffies
+suffix:semicolon
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx err stat_data %04X&bslash;n&quot;
+comma
+id|data_read
+)paren
+)paren
+suffix:semicolon
+id|DLOG_INT_TRIG
+c_func
+(paren
+r_if
+(paren
+op_logical_neg
+id|log_int_trig1_pos
+)paren
+(brace
+id|log_int_trig1_pos
+op_assign
+id|log_int_pos
+suffix:semicolon
+id|log_int
+c_func
+(paren
+id|rdpc
+c_func
+(paren
+)paren
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_in
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+op_logical_and
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|framing_err
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* Most likely a break, but we get interrupts over and&n;&t;&t;&t; * over again.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;break_detected_cnt
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;#BRK start&bslash;n&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|rxd
+)paren
+)paren
+(brace
+multiline_comment|/* The RX pin is high now, so the break&n;&t;&t;&t;&t; * must be over, but....&n;&t;&t;&t;&t; * we can&squot;t really know if we will get another&n;&t;&t;&t;&t; * last byte ending the break or not.&n;&t;&t;&t;&t; * And we don&squot;t know if the byte (if any) will&n;&t;&t;&t;&t; * have an error or look valid.&n;&t;&t;&t;&t; */
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;# BL BRK&bslash;n&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|info-&gt;errorcode
+op_assign
+id|ERRCODE_INSERT_BREAK
+suffix:semicolon
+)brace
+id|info-&gt;break_detected_cnt
+op_increment
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* The error does not look like a break, but could be&n;&t;&t;&t; * the end of one&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|info-&gt;break_detected_cnt
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;EBRK %i&bslash;n&quot;
+comma
+id|info-&gt;break_detected_cnt
+)paren
+suffix:semicolon
+id|info-&gt;errorcode
+op_assign
+id|ERRCODE_INSERT_BREAK
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|info-&gt;errorcode
+op_eq
+id|ERRCODE_INSERT_BREAK
+)paren
+(brace
+id|info-&gt;icount.brk
+op_increment
+suffix:semicolon
+op_star
+id|tty-&gt;flip.char_buf_ptr
+op_assign
+l_int|0
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+id|TTY_BREAK
+suffix:semicolon
+id|tty-&gt;flip.flag_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.char_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.count
+op_increment
+suffix:semicolon
+id|info-&gt;icount.rx
+op_increment
+suffix:semicolon
+)brace
+op_star
+id|tty-&gt;flip.char_buf_ptr
+op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_in
+comma
+id|data_read
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|par_err
+)paren
+)paren
+(brace
+id|info-&gt;icount.parity
+op_increment
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+id|TTY_PARITY
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|overrun
+)paren
+)paren
+(brace
+id|info-&gt;icount.overrun
+op_increment
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+id|TTY_OVERRUN
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|framing_err
+)paren
+)paren
+(brace
+id|info-&gt;icount.frame
+op_increment
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+id|TTY_FRAME
+suffix:semicolon
+)brace
+id|info-&gt;errorcode
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|info-&gt;break_detected_cnt
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_avail
+)paren
+)paren
+(brace
+multiline_comment|/* No error */
+id|DLOG_INT_TRIG
+c_func
+(paren
+r_if
+(paren
+op_logical_neg
+id|log_int_trig1_pos
+)paren
+(brace
+r_if
+(paren
+id|log_int_pos
+op_ge
+id|log_int_size
+)paren
+(brace
+id|log_int_pos
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|log_int_trig0_pos
+op_assign
+id|log_int_pos
+suffix:semicolon
+id|log_int
+c_func
+(paren
+id|rdpc
+c_func
+(paren
+)paren
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)paren
+suffix:semicolon
+op_star
+id|tty-&gt;flip.char_buf_ptr
+op_assign
+id|IO_EXTRACT
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_in
+comma
+id|data_read
+)paren
+suffix:semicolon
+op_star
+id|tty-&gt;flip.flag_buf_ptr
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx int but no data_avail  %08lX&bslash;n&quot;
+comma
+id|data_read
+)paren
+suffix:semicolon
+)brace
+id|tty-&gt;flip.flag_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.char_buf_ptr
+op_increment
+suffix:semicolon
+id|tty-&gt;flip.count
+op_increment
+suffix:semicolon
+id|info-&gt;icount.rx
+op_increment
+suffix:semicolon
+id|data_read
+op_assign
+op_star
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|info-&gt;port
+(braket
+id|REG_DATA_STATUS32
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|data_read
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_avail
+)paren
+)paren
+(brace
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx   %c in loop&bslash;n&quot;
+comma
+id|IO_EXTRACT
+c_func
+(paren
+id|R_SERIAL0_READ
+comma
+id|data_in
+comma
+id|data_read
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|more_data
+suffix:semicolon
+)brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|info-&gt;tty
+)paren
+suffix:semicolon
+r_return
+id|info
+suffix:semicolon
+)brace
+r_extern
+id|_INLINE_
+r_struct
+id|e100_serial
+op_star
+id|handle_ser_rx_interrupt
 c_func
 (paren
 r_struct
@@ -5934,11 +8620,6 @@ id|info
 r_int
 r_char
 id|rstat
-op_assign
-id|info-&gt;port
-(braket
-id|REG_STATUS
-)braket
 suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_INTR
 id|printk
@@ -5951,6 +8632,58 @@ id|i
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&t;DEBUG_LOG(info-&gt;line, &quot;ser_interrupt stat %03X&bslash;n&quot;, rstat | (i &lt;&lt; 8)); */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;uses_dma_in
+)paren
+(brace
+r_return
+id|handle_ser_rx_interrupt_no_dma
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* DMA is used */
+id|rstat
+op_assign
+id|info-&gt;port
+(braket
+id|REG_STATUS
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rstat
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_STATUS
+comma
+id|xoff_detect
+)paren
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;XOFF detect&bslash;n&quot;
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5981,6 +8714,34 @@ id|info-&gt;port
 (braket
 id|REG_DATA
 )braket
+suffix:semicolon
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx!  %c&bslash;n&quot;
+comma
+id|data
+)paren
+)paren
+suffix:semicolon
+id|DINTR1
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx err stat %02X&bslash;n&quot;
+comma
+id|rstat
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6075,6 +8836,10 @@ id|info-&gt;errorcode
 op_eq
 id|ERRCODE_INSERT_BREAK
 )paren
+(brace
+id|info-&gt;icount.brk
+op_increment
+suffix:semicolon
 id|add_char_and_flag
 c_func
 (paren
@@ -6085,6 +8850,7 @@ comma
 id|TTY_BREAK
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6092,6 +8858,10 @@ id|rstat
 op_amp
 id|SER_PAR_ERR_MASK
 )paren
+(brace
+id|info-&gt;icount.parity
+op_increment
+suffix:semicolon
 id|add_char_and_flag
 c_func
 (paren
@@ -6102,6 +8872,7 @@ comma
 id|TTY_PARITY
 )paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -6110,6 +8881,10 @@ id|rstat
 op_amp
 id|SER_OVERRUN_MASK
 )paren
+(brace
+id|info-&gt;icount.overrun
+op_increment
+suffix:semicolon
 id|add_char_and_flag
 c_func
 (paren
@@ -6120,6 +8895,7 @@ comma
 id|TTY_OVERRUN
 )paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -6128,6 +8904,10 @@ id|rstat
 op_amp
 id|SER_FRAMING_ERR_MASK
 )paren
+(brace
+id|info-&gt;icount.frame
+op_increment
+suffix:semicolon
 id|add_char_and_flag
 c_func
 (paren
@@ -6138,6 +8918,7 @@ comma
 id|TTY_FRAME
 )paren
 suffix:semicolon
+)brace
 id|info-&gt;errorcode
 op_assign
 l_int|0
@@ -6245,7 +9026,7 @@ comma
 id|info-&gt;line
 )paren
 suffix:semicolon
-multiline_comment|/* Report as BREAK (error) and let&n;&t;&t;&t;&t; * receive_chars() handle it&n;&t;&t;&t;&t; */
+multiline_comment|/* Report as BREAK (error) and let&n;&t;&t;&t;&t; * receive_chars_dma() handle it&n;&t;&t;&t;&t; */
 id|info-&gt;errorcode
 op_assign
 id|ERRCODE_SET_BREAK
@@ -6289,6 +9070,20 @@ c_func
 id|info
 )paren
 suffix:semicolon
+id|DINTR2
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ser_rx OK %d&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 id|info-&gt;break_detected_cnt
 op_assign
 l_int|0
@@ -6303,16 +9098,6 @@ id|info-&gt;line
 dot
 id|ser_ints_ok_cnt
 op_increment
-)paren
-suffix:semicolon
-id|DEBUG_LOG
-c_func
-(paren
-id|info-&gt;line
-comma
-l_string|&quot;ser_int OK %d&bslash;n&quot;
-comma
-id|info-&gt;line
 )paren
 suffix:semicolon
 )brace
@@ -6339,13 +9124,458 @@ l_string|&quot;ser_int&quot;
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|info
 suffix:semicolon
 )brace
-multiline_comment|/* handle_ser_interrupt */
+multiline_comment|/* handle_ser_rx_interrupt */
+r_extern
+id|_INLINE_
+r_void
+id|handle_ser_tx_interrupt
+c_func
+(paren
+r_struct
+id|e100_serial
+op_star
+id|info
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;x_char
+)paren
+(brace
+r_int
+r_char
+id|rstat
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;tx_int: xchar 0x%02X&bslash;n&quot;
+comma
+id|info-&gt;x_char
+)paren
+)paren
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rstat
+op_assign
+id|info-&gt;port
+(braket
+id|REG_STATUS
+)braket
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;stat %x&bslash;n&quot;
+comma
+id|rstat
+)paren
+)paren
+suffix:semicolon
+id|info-&gt;port
+(braket
+id|REG_TR_DATA
+)braket
+op_assign
+id|info-&gt;x_char
+suffix:semicolon
+id|info-&gt;icount.tx
+op_increment
+suffix:semicolon
+id|info-&gt;x_char
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* We must enable since it is disabled in ser_interrupt */
+id|e100_enable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_out
+)paren
+(brace
+r_int
+r_char
+id|rstat
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* We only use normal tx interrupt when sending x_char */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;tx_int: xchar sent&bslash;n&quot;
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|rstat
+op_assign
+id|info-&gt;port
+(braket
+id|REG_STATUS
+)braket
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;stat %x&bslash;n&quot;
+comma
+id|rstat
+)paren
+)paren
+suffix:semicolon
+id|e100_disable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;tty-&gt;stopped
+)paren
+id|rs_stop
+c_func
+(paren
+id|info-&gt;tty
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the DMA channel and tell it to continue */
+id|e100_enable_txdma_channel
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+multiline_comment|/* Wait 12 cycles before doing the DMA command */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|6
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+)paren
+(brace
+id|nop
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+op_star
+id|info-&gt;ocmdadr
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+r_continue
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Normal char-by-char interrupt */
+r_if
+c_cond
+(paren
+id|info-&gt;xmit.head
+op_eq
+id|info-&gt;xmit.tail
+op_logical_or
+id|info-&gt;tty-&gt;stopped
+op_logical_or
+id|info-&gt;tty-&gt;hw_stopped
+)paren
+(brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;tx_int: stopped %i&bslash;n&quot;
+comma
+id|info-&gt;tty-&gt;stopped
+)paren
+)paren
+suffix:semicolon
+id|e100_disable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|info-&gt;tr_running
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|DINTR2
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;tx_int %c&bslash;n&quot;
+comma
+id|info-&gt;xmit.buf
+(braket
+id|info-&gt;xmit.tail
+)braket
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Send a byte, rs485 timing is critical so turn of ints */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|info-&gt;port
+(braket
+id|REG_TR_DATA
+)braket
+op_assign
+id|info-&gt;xmit.buf
+(braket
+id|info-&gt;xmit.tail
+)braket
+suffix:semicolon
+id|info-&gt;xmit.tail
+op_assign
+(paren
+id|info-&gt;xmit.tail
+op_plus
+l_int|1
+)paren
+op_amp
+(paren
+id|SERIAL_XMIT_SIZE
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|info-&gt;icount.tx
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;xmit.head
+op_eq
+id|info-&gt;xmit.tail
+)paren
+(brace
+macro_line|#if defined(CONFIG_ETRAX_RS485) &amp;&amp; defined(CONFIG_ETRAX_FAST_TIMER)
+r_if
+c_cond
+(paren
+id|info-&gt;rs485.enabled
+)paren
+(brace
+multiline_comment|/* Set a short timer to toggle RTS */
+id|start_one_shot_timer
+c_func
+(paren
+op_amp
+id|fast_timers_rs485
+(braket
+id|info-&gt;line
+)braket
+comma
+id|rs485_toggle_rts_timer_function
+comma
+(paren
+r_int
+r_int
+)paren
+id|info
+comma
+id|info-&gt;char_time_usec
+op_star
+l_int|2
+comma
+l_string|&quot;RS-485&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* RS485 */
+id|info-&gt;last_tx_active_usec
+op_assign
+id|GET_JIFFIES_USEC
+c_func
+(paren
+)paren
+suffix:semicolon
+id|info-&gt;last_tx_active
+op_assign
+id|jiffies
+suffix:semicolon
+id|e100_disable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|info-&gt;tr_running
+op_assign
+l_int|0
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;tx_int: stop2&bslash;n&quot;
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* We must enable since it is disabled in ser_interrupt */
+id|e100_enable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|CIRC_CNT
+c_func
+(paren
+id|info-&gt;xmit.head
+comma
+id|info-&gt;xmit.tail
+comma
+id|SERIAL_XMIT_SIZE
+)paren
+OL
+id|WAKEUP_CHARS
+)paren
+id|rs_sched_event
+c_func
+(paren
+id|info
+comma
+id|RS_EVENT_WRITE_WAKEUP
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* handle_ser_tx_interrupt */
+multiline_comment|/* result of time measurements:&n; * RX duration 54-60 us when doing something, otherwise 6-9 us&n; * ser_int duration: just sending: 8-15 us normally, up to 73 us&n; */
 r_static
 id|irqreturn_t
-DECL|function|ser_interrupt
 id|ser_interrupt
 c_func
 (paren
@@ -6362,6 +9592,13 @@ op_star
 id|regs
 )paren
 (brace
+r_static
+r_volatile
+r_int
+id|tx_started
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|e100_serial
 op_star
@@ -6371,9 +9608,67 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|irq_mask1_rd
+suffix:semicolon
+r_int
+r_int
+id|data_mask
+op_assign
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|8
+op_plus
+l_int|2
+op_star
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* ser0 data_avail */
+r_int
 id|handled
 op_assign
 l_int|0
+suffix:semicolon
+r_static
+r_volatile
+r_int
+r_int
+id|reentered_ready_mask
+op_assign
+l_int|0
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|irq_mask1_rd
+op_assign
+op_star
+id|R_IRQ_MASK1_RD
+suffix:semicolon
+multiline_comment|/* First handle all rx interrupts with ints disabled */
+id|info
+op_assign
+id|rs_table
+suffix:semicolon
+id|irq_mask1_rd
+op_and_assign
+id|e100_ser_int_mask
 suffix:semicolon
 r_for
 c_loop
@@ -6390,55 +9685,290 @@ id|i
 op_increment
 )paren
 (brace
-id|info
-op_assign
-id|rs_table
-op_plus
-id|i
-suffix:semicolon
+multiline_comment|/* Which line caused the data irq? */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|info-&gt;enabled
-op_logical_or
-op_logical_neg
-id|info-&gt;uses_dma
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* Which line caused the irq? */
-r_if
-c_cond
-(paren
-op_star
-id|R_IRQ_MASK1_RD
+id|irq_mask1_rd
 op_amp
-(paren
-l_int|1U
-op_lshift
-(paren
-l_int|8
-op_plus
-l_int|2
-op_star
-id|info-&gt;line
-)paren
-)paren
+id|data_mask
 )paren
 (brace
 id|handled
 op_assign
 l_int|1
 suffix:semicolon
-id|handle_ser_interrupt
+id|handle_ser_rx_interrupt
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
 )brace
+id|info
+op_add_assign
+l_int|1
+suffix:semicolon
+id|data_mask
+op_lshift_assign
+l_int|2
+suffix:semicolon
 )brace
+multiline_comment|/* Handle tx interrupts with interrupts enabled so we&n;&t; * can take care of new data interrupts while transmitting&n;&t; * We protect the tx part with the tx_started flag.&n;&t; * We disable the tr_ready interrupts we are about to handle and&n;&t; * unblock the serial interrupt so new serial interrupts may come.&n;&t; *&n;&t; * If we get a new interrupt:&n;&t; *  - it migth be due to synchronous serial ports.&n;&t; *  - serial irq will be blocked by general irq handler.&n;&t; *  - async data will be handled above (sync will be ignored).&n;&t; *  - tx_started flag will prevent us from trying to send again and&n;&t; *    we will exit fast - no need to unblock serial irq.&n;&t; *  - Next (sync) serial interrupt handler will be runned with&n;&t; *    disabled interrupt due to restore_flags() at end of function,&n;&t; *    so sync handler will not be preempted or reentered.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tx_started
+)paren
+(brace
+r_int
+r_int
+id|ready_mask
+suffix:semicolon
+r_int
+r_int
+id|tx_started
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Only the tr_ready interrupts left */
+id|irq_mask1_rd
+op_and_assign
+(paren
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser0_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser1_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser2_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser3_ready
+)paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|irq_mask1_rd
+)paren
+(brace
+multiline_comment|/* Disable those we are about to handle */
+op_star
+id|R_IRQ_MASK1_CLR
+op_assign
+id|irq_mask1_rd
+suffix:semicolon
+multiline_comment|/* Unblock the serial interrupt */
+op_star
+id|R_VECT_MASK_SET
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_VECT_MASK_SET
+comma
+id|serial
+comma
+id|set
+)paren
+suffix:semicolon
+id|sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ready_mask
+op_assign
+(paren
+l_int|1
+op_lshift
+(paren
+l_int|8
+op_plus
+l_int|1
+op_plus
+l_int|2
+op_star
+l_int|0
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* ser0 tr_ready */
+id|info
+op_assign
+id|rs_table
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_PORTS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* Which line caused the ready irq? */
+r_if
+c_cond
+(paren
+id|irq_mask1_rd
+op_amp
+id|ready_mask
+)paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
+id|handle_ser_tx_interrupt
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+id|info
+op_add_assign
+l_int|1
+suffix:semicolon
+id|ready_mask
+op_lshift_assign
+l_int|2
+suffix:semicolon
+)brace
+multiline_comment|/* handle_ser_tx_interrupt enables tr_ready interrupts */
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Handle reentered TX interrupt */
+id|irq_mask1_rd
+op_assign
+id|reentered_ready_mask
+suffix:semicolon
+)brace
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|tx_started
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+r_int
+id|ready_mask
+suffix:semicolon
+id|ready_mask
+op_assign
+id|irq_mask1_rd
+op_amp
+(paren
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser0_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser1_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser2_ready
+)paren
+op_or
+id|IO_MASK
+c_func
+(paren
+id|R_IRQ_MASK1_RD
+comma
+id|ser3_ready
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ready_mask
+)paren
+(brace
+id|reentered_ready_mask
+op_or_assign
+id|ready_mask
+suffix:semicolon
+multiline_comment|/* Disable those we are about to handle */
+op_star
+id|R_IRQ_MASK1_CLR
+op_assign
+id|ready_mask
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|SERIAL_DEBUG_LINE
+comma
+l_string|&quot;ser_int reentered with TX %X&bslash;n&quot;
+comma
+id|ready_mask
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|IRQ_RETVAL
 c_func
@@ -6453,7 +9983,6 @@ multiline_comment|/*&n; * ------------------------------------------------------
 multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * rs_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using rs_sched_event(), and they get done here.&n; */
 r_static
 r_void
-DECL|function|do_softint
 id|do_softint
 c_func
 (paren
@@ -6537,7 +10066,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|startup
 id|startup
 c_func
 (paren
@@ -6637,13 +10165,11 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;starting up ttyS%d (xmit_buf 0x%p, recv_buf 0x%p)...&bslash;n&quot;
+l_string|&quot;starting up ttyS%d (xmit_buf 0x%p)...&bslash;n&quot;
 comma
 id|info-&gt;line
 comma
 id|info-&gt;xmit.buf
-comma
-id|info-&gt;recv.buf
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6714,25 +10240,24 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them&n;&t; * (they will be reenabled in change_speed())&n;&t; */
 multiline_comment|/*&n;&t; * Reset the DMA channels and make sure their interrupts are cleared&n;&t; */
-id|info-&gt;uses_dma
+r_if
+c_cond
+(paren
+id|info-&gt;dma_in_enabled
+)paren
+(brace
+id|info-&gt;uses_dma_in
 op_assign
 l_int|1
 suffix:semicolon
-op_star
-id|info-&gt;icmdadr
-op_assign
-id|IO_STATE
+id|e100_enable_rxdma_channel
 c_func
 (paren
-id|R_DMA_CH6_CMD
-comma
-id|cmd
-comma
-id|reset
+id|info
 )paren
 suffix:semicolon
 op_star
-id|info-&gt;ocmdadr
+id|info-&gt;icmdadr
 op_assign
 id|IO_STATE
 c_func
@@ -6770,6 +10295,69 @@ id|reset
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure the irqs are cleared */
+op_star
+id|info-&gt;iclrintradr
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CLR_INTR
+comma
+id|clr_descr
+comma
+r_do
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CLR_INTR
+comma
+id|clr_eop
+comma
+r_do
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|e100_disable_rxdma_channel
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|info-&gt;dma_out_enabled
+)paren
+(brace
+id|info-&gt;uses_dma_out
+op_assign
+l_int|1
+suffix:semicolon
+id|e100_enable_txdma_channel
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+op_star
+id|info-&gt;ocmdadr
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+id|reset
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -6797,29 +10385,6 @@ id|reset
 suffix:semicolon
 multiline_comment|/* Make sure the irqs are cleared */
 op_star
-id|info-&gt;iclrintradr
-op_assign
-id|IO_STATE
-c_func
-(paren
-id|R_DMA_CH6_CLR_INTR
-comma
-id|clr_descr
-comma
-r_do
-)paren
-op_or
-id|IO_STATE
-c_func
-(paren
-id|R_DMA_CH6_CLR_INTR
-comma
-id|clr_eop
-comma
-r_do
-)paren
-suffix:semicolon
-op_star
 id|info-&gt;oclrintradr
 op_assign
 id|IO_STATE
@@ -6842,6 +10407,16 @@ comma
 r_do
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|e100_disable_txdma_channel
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6922,13 +10497,18 @@ id|REG_DATA
 )braket
 suffix:semicolon
 multiline_comment|/* enable the interrupts */
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_out
+)paren
 id|e100_enable_txdma_irq
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
-id|e100_enable_rxdma_irq
+id|e100_enable_rx_irq
 c_func
 (paren
 id|info
@@ -6994,7 +10574,6 @@ suffix:semicolon
 multiline_comment|/*&n; * This routine will shutdown a serial port; interrupts are disabled, and&n; * DTR is dropped if the hangup on close termio flag is on.&n; */
 r_static
 r_void
-DECL|function|shutdown
 id|shutdown
 c_func
 (paren
@@ -7025,6 +10604,20 @@ id|i
 suffix:semicolon
 macro_line|#ifndef CONFIG_SVINTO_SIM&t;
 multiline_comment|/* shut down the transmitter and receiver */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;shutdown %i&bslash;n&quot;
+comma
+id|info-&gt;line
+)paren
+)paren
+suffix:semicolon
 id|e100_disable_rx
 c_func
 (paren
@@ -7043,23 +10636,19 @@ op_complement
 l_int|0x40
 )paren
 suffix:semicolon
+multiline_comment|/* disable interrupts, reset dma channels */
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_in
+)paren
+(brace
 id|e100_disable_rxdma_irq
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
-id|e100_disable_txdma_irq
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
-id|info-&gt;tr_running
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* reset both dma channels */
 op_star
 id|info-&gt;icmdadr
 op_assign
@@ -7072,6 +10661,36 @@ id|cmd
 comma
 id|reset
 )paren
+suffix:semicolon
+id|info-&gt;uses_dma_in
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|e100_disable_serial_data_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_out
+)paren
+(brace
+id|e100_disable_txdma_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|info-&gt;tr_running
+op_assign
+l_int|0
 suffix:semicolon
 op_star
 id|info-&gt;ocmdadr
@@ -7086,10 +10705,24 @@ comma
 id|reset
 )paren
 suffix:semicolon
-id|info-&gt;uses_dma
+id|info-&gt;uses_dma_out
 op_assign
 l_int|0
 suffix:semicolon
+)brace
+r_else
+(brace
+id|e100_disable_serial_tx_ready_irq
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|info-&gt;tr_running
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_SVINTO_SIM */
 r_if
 c_cond
@@ -7267,7 +10900,6 @@ suffix:semicolon
 multiline_comment|/* change baud rate and other assorted parameters */
 r_static
 r_void
-DECL|function|change_speed
 id|change_speed
 c_func
 (paren
@@ -7284,6 +10916,10 @@ suffix:semicolon
 r_int
 r_int
 id|xoff
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 multiline_comment|/* first some safety checks */
 r_if
@@ -7311,6 +10947,320 @@ id|info-&gt;tty-&gt;termios-&gt;c_cflag
 suffix:semicolon
 multiline_comment|/* possibly, the tx/rx should be disabled first to do this safely */
 multiline_comment|/* change baud-rate and write it to the hardware */
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;flags
+op_amp
+id|ASYNC_SPD_MASK
+)paren
+op_eq
+id|ASYNC_SPD_CUST
+)paren
+(brace
+multiline_comment|/* Special baudrate */
+id|u32
+id|mask
+op_assign
+l_int|0xFF
+op_lshift
+(paren
+id|info-&gt;line
+op_star
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* Each port has 8 bits */
+r_int
+r_int
+id|alt_source
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_rec
+comma
+id|normal
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_tr
+comma
+id|normal
+)paren
+suffix:semicolon
+multiline_comment|/* R_ALT_SER_BAUDRATE selects the source */
+id|DBAUD
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Custom baudrate: baud_base/divisor %lu/%i&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|info-&gt;baud_base
+comma
+id|info-&gt;custom_divisor
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;baud_base
+op_eq
+id|SERIAL_PRESCALE_BASE
+)paren
+(brace
+multiline_comment|/* 0, 2-65535 (0=65536) */
+id|u16
+id|divisor
+op_assign
+id|info-&gt;custom_divisor
+suffix:semicolon
+multiline_comment|/* R_SERIAL_PRESCALE (upper 16 bits of R_CLOCK_PRESCALE) */
+multiline_comment|/* baudrate is 3.125MHz/custom_divisor */
+id|alt_source
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_rec
+comma
+id|prescale
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_tr
+comma
+id|prescale
+)paren
+suffix:semicolon
+id|alt_source
+op_assign
+l_int|0x11
+suffix:semicolon
+id|DBAUD
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;Writing SERIAL_PRESCALE: divisor %i&bslash;n&quot;
+comma
+id|divisor
+)paren
+)paren
+suffix:semicolon
+op_star
+id|R_SERIAL_PRESCALE
+op_assign
+id|divisor
+suffix:semicolon
+id|info-&gt;baud
+op_assign
+id|SERIAL_PRESCALE_BASE
+op_div
+id|divisor
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_ETRAX_EXTERN_PB6CLK_ENABLED
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;baud_base
+op_eq
+id|CONFIG_ETRAX_EXTERN_PB6CLK_FREQ
+op_div
+l_int|8
+op_logical_and
+id|info-&gt;custom_divisor
+op_eq
+l_int|1
+)paren
+op_logical_or
+(paren
+id|info-&gt;baud_base
+op_eq
+id|CONFIG_ETRAX_EXTERN_PB6CLK_FREQ
+op_logical_and
+id|info-&gt;custom_divisor
+op_eq
+l_int|8
+)paren
+)paren
+(brace
+multiline_comment|/* ext_clk selected */
+id|alt_source
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_rec
+comma
+r_extern
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_tr
+comma
+r_extern
+)paren
+suffix:semicolon
+id|DBAUD
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;using external baudrate: %lu&bslash;n&quot;
+comma
+id|CONFIG_ETRAX_EXTERN_PB6CLK_FREQ
+op_div
+l_int|8
+)paren
+)paren
+suffix:semicolon
+id|info-&gt;baud
+op_assign
+id|CONFIG_ETRAX_EXTERN_PB6CLK_FREQ
+op_div
+l_int|8
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+r_else
+(brace
+multiline_comment|/* Bad baudbase, we don&squot;t support using timer0&n;&t;&t;&t; * for baudrate.&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Bad baud_base/custom_divisor: %lu/%i&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|info-&gt;baud_base
+comma
+id|info-&gt;custom_divisor
+)paren
+suffix:semicolon
+)brace
+id|r_alt_ser_baudrate_shadow
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+id|r_alt_ser_baudrate_shadow
+op_or_assign
+(paren
+id|alt_source
+op_lshift
+(paren
+id|info-&gt;line
+op_star
+l_int|8
+)paren
+)paren
+suffix:semicolon
+op_star
+id|R_ALT_SER_BAUDRATE
+op_assign
+id|r_alt_ser_baudrate_shadow
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Normal baudrate */
+multiline_comment|/* Make sure we use normal baudrate */
+id|u32
+id|mask
+op_assign
+l_int|0xFF
+op_lshift
+(paren
+id|info-&gt;line
+op_star
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* Each port has 8 bits */
+r_int
+r_int
+id|alt_source
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_rec
+comma
+id|normal
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_ALT_SER_BAUDRATE
+comma
+id|ser0_tr
+comma
+id|normal
+)paren
+suffix:semicolon
+id|r_alt_ser_baudrate_shadow
+op_and_assign
+op_complement
+id|mask
+suffix:semicolon
+id|r_alt_ser_baudrate_shadow
+op_or_assign
+(paren
+id|alt_source
+op_lshift
+(paren
+id|info-&gt;line
+op_star
+l_int|8
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_SVINTO_SIM
+op_star
+id|R_ALT_SER_BAUDRATE
+op_assign
+id|r_alt_ser_baudrate_shadow
+suffix:semicolon
+macro_line|#endif /* CONFIG_SVINTO_SIM */
 id|info-&gt;baud
 op_assign
 id|cflag_to_baud
@@ -7331,7 +11281,21 @@ c_func
 id|cflag
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_SVINTO_SIM */
+)brace
+macro_line|#ifndef CONFIG_SVINTO_SIM
 multiline_comment|/* start with default settings and then fill in changes */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* 8 bit, no/even parity */
 id|info-&gt;rx_ctrl
 op_and_assign
@@ -7510,7 +11474,7 @@ op_amp
 id|CMSPAR
 )paren
 (brace
-multiline_comment|/* enable stick parity */
+multiline_comment|/* enable stick parity, PARODD mean Mark which matches ETRAX */
 id|info-&gt;tx_ctrl
 op_or_assign
 id|IO_STATE
@@ -7535,18 +11499,16 @@ comma
 id|stick
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
-(paren
-op_logical_neg
 (paren
 id|cflag
 op_amp
 id|PARODD
 )paren
-)paren
 (brace
-multiline_comment|/* set mark parity */
+multiline_comment|/* set odd parity (or Mark if CMSPAR) */
 id|info-&gt;tx_ctrl
 op_or_assign
 id|IO_STATE
@@ -7571,44 +11533,6 @@ comma
 id|odd
 )paren
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|cflag
-op_amp
-id|PARODD
-)paren
-(brace
-multiline_comment|/* set odd parity */
-id|info-&gt;tx_ctrl
-op_or_assign
-id|IO_STATE
-c_func
-(paren
-id|R_SERIAL0_TR_CTRL
-comma
-id|tr_par
-comma
-id|odd
-)paren
-suffix:semicolon
-id|info-&gt;rx_ctrl
-op_or_assign
-id|IO_STATE
-c_func
-(paren
-id|R_SERIAL0_REC_CTRL
-comma
-id|rec_par
-comma
-id|odd
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -7619,6 +11543,20 @@ id|CRTSCTS
 )paren
 (brace
 multiline_comment|/* enable automatic CTS handling */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;FLOW auto_cts enabled&bslash;n&quot;
+comma
+l_int|0
+)paren
+)paren
+suffix:semicolon
 id|info-&gt;tx_ctrl
 op_or_assign
 id|IO_STATE
@@ -7708,6 +11646,24 @@ op_amp
 id|IXON
 )paren
 (brace
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;FLOW XOFF enabled 0x%02X&bslash;n&quot;
+comma
+id|STOP_CHAR
+c_func
+(paren
+id|info-&gt;tty
+)paren
+)paren
+)paren
+suffix:semicolon
 id|xoff
 op_or_assign
 id|IO_STATE
@@ -7737,6 +11693,12 @@ id|REG_XOFF
 op_assign
 id|xoff
 suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif /* !CONFIG_SVINTO_SIM */
 id|update_char_time
 c_func
@@ -7749,7 +11711,6 @@ multiline_comment|/* change_speed */
 multiline_comment|/* start transmitting chars NOW */
 r_static
 r_void
-DECL|function|rs_flush_chars
 id|rs_flush_chars
 c_func
 (paren
@@ -7827,10 +11788,9 @@ id|flags
 suffix:semicolon
 )brace
 r_extern
-r_inline
+id|_INLINE_
 r_int
-DECL|function|raw_write
-id|raw_write
+id|rs_raw_write
 c_func
 (paren
 r_struct
@@ -7901,7 +11861,7 @@ id|SERIAL_DEBUG_LINE
 id|printk
 c_func
 (paren
-l_string|&quot;raw_write (%d), status %d&bslash;n&quot;
+l_string|&quot;rs_raw_write (%d), status %d&bslash;n&quot;
 comma
 id|count
 comma
@@ -7930,6 +11890,40 @@ id|save_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;write count %i &quot;
+comma
+id|count
+)paren
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;ldisc %i&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* the cli/restore_flags pairs below are needed because the&n;&t; * DMA interrupt handler moves the info-&gt;xmit values. the memcpy&n;&t; * needs to be in the critical region unfortunately, because we&n;&t; * need to read xmit values, memcpy, write xmit values in one&n;&t; * atomic operation... this could perhaps be avoided by more clever&n;&t; * design.&n;&t; */
@@ -8195,6 +12189,20 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/* enable transmitter if not running, unless the tty is stopped&n;&t; * this does not need IRQ protection since if tr_running == 0&n;&t; * the IRQ&squot;s are not running anyway for this port.&n;&t; */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;write ret %i&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8223,10 +12231,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* raw_write() */
+multiline_comment|/* raw_raw_write() */
 r_static
 r_int
-DECL|function|rs_write
 id|rs_write
 c_func
 (paren
@@ -8305,7 +12312,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|e100_disable_rxdma_irq
+id|e100_enable_rx_irq
 c_func
 (paren
 id|info
@@ -8343,7 +12350,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_ETRAX_RS485 */
 id|count
 op_assign
-id|raw_write
+id|rs_raw_write
 c_func
 (paren
 id|tty
@@ -8443,7 +12450,6 @@ multiline_comment|/* rs_write */
 multiline_comment|/* how much space is available in the xmit buffer? */
 r_static
 r_int
-DECL|function|rs_write_room
 id|rs_write_room
 c_func
 (paren
@@ -8480,7 +12486,6 @@ suffix:semicolon
 multiline_comment|/* How many chars are in the xmit buffer?&n; * This does not include any chars in the transmitter FIFO.&n; * Use wait_until_sent for waiting for FIFO drain.&n; */
 r_static
 r_int
-DECL|function|rs_chars_in_buffer
 id|rs_chars_in_buffer
 c_func
 (paren
@@ -8517,7 +12522,6 @@ suffix:semicolon
 multiline_comment|/* discard everything in the xmit buffer */
 r_static
 r_void
-DECL|function|rs_flush_buffer
 id|rs_flush_buffer
 c_func
 (paren
@@ -8596,8 +12600,7 @@ id|tty
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function is used to send a high-priority XON/XOFF character to&n; * the device&n; *&n; * Since we use DMA we don&squot;t check for info-&gt;x_char in transmit_chars,&n; * just disable DMA channel and write the character when possible.&n; */
-DECL|function|rs_send_xchar
+multiline_comment|/*&n; * This function is used to send a high-priority XON/XOFF character to&n; * the device&n; *&n; * Since we use DMA we don&squot;t check for info-&gt;x_char in transmit_chars_dma(),&n; * but we do it in handle_ser_tx_interrupt().&n; * We disable DMA channel and enable tx ready interrupt and write the&n; * character when possible.&n; */
 r_static
 r_void
 id|rs_send_xchar
@@ -8624,53 +12627,120 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;uses_dma_out
+)paren
+(brace
+multiline_comment|/* Put the DMA on hold and disable the channel */
+op_star
+id|info-&gt;ocmdadr
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+id|hold
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|IO_EXTRACT
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+op_star
+id|info-&gt;ocmdadr
+)paren
+op_ne
+id|IO_STATE_VALUE
+c_func
+(paren
+id|R_DMA_CH6_CMD
+comma
+id|cmd
+comma
+id|hold
+)paren
+)paren
+suffix:semicolon
 id|e100_disable_txdma_channel
 c_func
 (paren
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for tr_ready */
-r_while
-c_loop
+)brace
+multiline_comment|/* Must make sure transmitter is not stopped before we can transmit */
+r_if
+c_cond
 (paren
-op_logical_neg
-(paren
-id|info-&gt;port
-(braket
-id|REG_STATUS
-)braket
-op_amp
-id|IO_MASK
+id|tty-&gt;stopped
+)paren
+id|rs_start
 c_func
 (paren
-id|R_SERIAL0_STATUS
-comma
-id|tr_ready
+id|tty
 )paren
-)paren
-)paren
-multiline_comment|/* wait */
 suffix:semicolon
-multiline_comment|/* Write the XON/XOFF char */
-id|info-&gt;port
-(braket
-id|REG_TR_DATA
-)braket
+multiline_comment|/* Enable manual transmit interrupt and send from there */
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rs_send_xchar 0x%02X&bslash;n&quot;
+comma
+id|ch
+)paren
+)paren
+suffix:semicolon
+id|info-&gt;x_char
 op_assign
 id|ch
 suffix:semicolon
-id|e100_enable_txdma_channel
+id|e100_enable_serial_tx_ready_irq
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_throttle()&n; * &n; * This routine is called by the upper-layer tty layer to signal that&n; * incoming characters should be throttled.&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
-DECL|function|rs_throttle
 id|rs_throttle
 c_func
 (paren
@@ -8692,10 +12762,6 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_THROTTLE
 r_char
 id|buf
@@ -8706,9 +12772,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;throttle %s: %d....&bslash;n&quot;
+l_string|&quot;throttle %s: %lu....&bslash;n&quot;
 comma
-id|_tty_name
+id|tty_name
 c_func
 (paren
 id|tty
@@ -8716,6 +12782,10 @@ comma
 id|buf
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|tty-&gt;ldisc
 dot
 id|chars_in_buffer
@@ -8726,6 +12796,26 @@ id|tty
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rs_throttle %lu&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Do RTS before XOFF since XOFF might take some time */
 r_if
 c_cond
@@ -8735,30 +12825,13 @@ op_amp
 id|CRTSCTS
 )paren
 (brace
-multiline_comment|/* Turn off RTS line (do this atomic) */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Turn off RTS line */
 id|e100_rts
 c_func
 (paren
 id|info
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -8786,7 +12859,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|rs_unthrottle
 id|rs_unthrottle
 c_func
 (paren
@@ -8808,10 +12880,6 @@ op_star
 )paren
 id|tty-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifdef SERIAL_DEBUG_THROTTLE
 r_char
 id|buf
@@ -8822,9 +12890,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;unthrottle %s: %d....&bslash;n&quot;
+l_string|&quot;unthrottle %s: %lu....&bslash;n&quot;
 comma
-id|_tty_name
+id|tty_name
 c_func
 (paren
 id|tty
@@ -8832,6 +12900,10 @@ comma
 id|buf
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|tty-&gt;ldisc
 dot
 id|chars_in_buffer
@@ -8842,6 +12914,40 @@ id|tty
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rs_unthrottle ldisc %d&bslash;n&quot;
+comma
+id|tty-&gt;ldisc
+dot
+id|chars_in_buffer
+c_func
+(paren
+id|tty
+)paren
+)paren
+)paren
+suffix:semicolon
+id|DFLOW
+c_func
+(paren
+id|DEBUG_LOG
+c_func
+(paren
+id|info-&gt;line
+comma
+l_string|&quot;rs_unthrottle flip.count: %i&bslash;n&quot;
+comma
+id|tty-&gt;flip.count
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Do RTS before XOFF since XOFF might take some time */
 r_if
 c_cond
@@ -8851,30 +12957,13 @@ op_amp
 id|CRTSCTS
 )paren
 (brace
-multiline_comment|/* Assert RTS line (do this atomic) */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Assert RTS line  */
 id|e100_rts
 c_func
 (paren
 id|info
 comma
 l_int|1
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -8915,7 +13004,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_ioctl() and friends&n; * ------------------------------------------------------------&n; */
 r_static
 r_int
-DECL|function|get_serial_info
 id|get_serial_info
 c_func
 (paren
@@ -8982,6 +13070,10 @@ id|tmp.flags
 op_assign
 id|info-&gt;flags
 suffix:semicolon
+id|tmp.baud_base
+op_assign
+id|info-&gt;baud_base
+suffix:semicolon
 id|tmp.close_delay
 op_assign
 id|info-&gt;close_delay
@@ -8989,6 +13081,10 @@ suffix:semicolon
 id|tmp.closing_wait
 op_assign
 id|info-&gt;closing_wait
+suffix:semicolon
+id|tmp.custom_divisor
+op_assign
+id|info-&gt;custom_divisor
 suffix:semicolon
 r_if
 c_cond
@@ -9018,7 +13114,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|set_serial_info
 id|set_serial_info
 c_func
 (paren
@@ -9151,6 +13246,10 @@ op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/*&n;&t; * OK, past this point, all the error checking has been done.&n;&t; * At this point, we start making changes.....&n;&t; */
+id|info-&gt;baud_base
+op_assign
+id|new_serial.baud_base
+suffix:semicolon
 id|info-&gt;flags
 op_assign
 (paren
@@ -9167,6 +13266,10 @@ op_amp
 id|ASYNC_FLAGS
 )paren
 )paren
+suffix:semicolon
+id|info-&gt;custom_divisor
+op_assign
+id|new_serial.custom_divisor
 suffix:semicolon
 id|info-&gt;type
 op_assign
@@ -9226,7 +13329,6 @@ suffix:semicolon
 multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; * &t;    is emptied.  On bus types like RS485, the transmitter must&n; * &t;    release the bus after transmitting. This must be done when&n; * &t;    the transmit shift register is empty, not be done when the&n; * &t;    transmit holding register is empty.  This functionality&n; * &t;    allows an RS485 driver to be written in user space. &n; */
 r_static
 r_int
-DECL|function|get_lsr_info
 id|get_lsr_info
 c_func
 (paren
@@ -9327,15 +13429,12 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef SERIAL_DEBUG_IO 
-DECL|struct|state_str
 r_struct
 id|state_str
 (brace
-DECL|member|state
 r_int
 id|state
 suffix:semicolon
-DECL|member|str
 r_const
 r_char
 op_star
@@ -9343,7 +13442,6 @@ id|str
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|control_state_str
 r_const
 r_struct
 id|state_str
@@ -9407,7 +13505,6 @@ l_int|NULL
 )brace
 )brace
 suffix:semicolon
-DECL|function|get_control_state_str
 r_char
 op_star
 id|get_control_state_str
@@ -9504,7 +13601,6 @@ suffix:semicolon
 macro_line|#endif
 r_static
 r_int
-DECL|function|get_modem_info
 id|get_modem_info
 c_func
 (paren
@@ -9717,7 +13813,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|set_modem_info
 id|set_modem_info
 c_func
 (paren
@@ -9974,7 +14069,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|rs_break
 id|rs_break
 c_func
 (paren
@@ -10066,7 +14160,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|rs_ioctl
 id|rs_ioctl
 c_func
 (paren
@@ -10397,7 +14490,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|rs_set_termios
 id|rs_set_termios
 c_func
 (paren
@@ -10439,6 +14531,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Handle turning off CRTSCTS */
 r_if
 c_cond
 (paren
@@ -10468,10 +14561,171 @@ id|tty
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* In debugport.c - register a console write function that uses the normal&n; * serial driver&n; */
+r_typedef
+r_int
+(paren
+op_star
+id|debugport_write_function
+)paren
+(paren
+r_int
+id|i
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+id|debugport_write_function
+id|debug_write_function
+suffix:semicolon
+r_static
+r_int
+id|rs_debug_write_function
+c_func
+(paren
+r_int
+id|i
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_int
+id|cnt
+suffix:semicolon
+r_struct
+id|tty_struct
+op_star
+id|tty
+suffix:semicolon
+r_static
+r_int
+id|recurse_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|tty
+op_assign
+id|rs_table
+(braket
+id|i
+)braket
+dot
+id|tty
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tty
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|recurse_cnt
+OG
+l_int|5
+)paren
+multiline_comment|/* We skip this debug output */
+r_return
+l_int|1
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|recurse_cnt
+op_increment
+suffix:semicolon
+r_do
+(brace
+id|cnt
+op_assign
+id|rs_write
+c_func
+(paren
+id|tty
+comma
+l_int|0
+comma
+id|buf
+comma
+id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cnt
+op_ge
+l_int|0
+)paren
+(brace
+id|buf
+op_add_assign
+id|cnt
+suffix:semicolon
+id|len
+op_sub_assign
+id|cnt
+suffix:semicolon
+)brace
+r_else
+id|len
+op_assign
+id|cnt
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|len
+OG
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+id|recurse_cnt
+op_decrement
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_close()&n; * &n; * This routine is called when the serial port gets closed.  First, we&n; * wait for the last remaining data to be sent.  Then, we unlink its&n; * S structure from the interrupt chain if necessary, and we free&n; * that IRQ if nothing is left in the chain.&n; * ------------------------------------------------------------&n; */
 r_static
 r_void
-DECL|function|rs_close
 id|rs_close
 c_func
 (paren
@@ -10631,6 +14885,19 @@ id|info-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
+multiline_comment|/*&n;&t; * Save the termios structure, since this port may have&n;&t; * separate termios for callout and dialin.&n;&t; */
+r_if
+c_cond
+(paren
+id|info-&gt;flags
+op_amp
+id|ASYNC_NORMAL_ACTIVE
+)paren
+id|info-&gt;normal_termios
+op_assign
+op_star
+id|tty-&gt;termios
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
@@ -10667,7 +14934,7 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|e100_disable_rxdma_irq
+id|e100_disable_rx_irq
 c_func
 (paren
 id|info
@@ -10817,11 +15084,50 @@ id|rs485_pa_bit
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_ON_PORT_G)
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|rs485_port_g_bit
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_ETRAX_RS485_LTC1387)
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|CONFIG_ETRAX_RS485_LTC1387_DXEN_PORT_G_BIT
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|REG_SHADOW_SET
+c_func
+(paren
+id|R_PORT_G_DATA
+comma
+id|port_g_data_shadow
+comma
+id|CONFIG_ETRAX_RS485_LTC1387_RXEN_PORT_G_BIT
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * rs_wait_until_sent() --- wait until the transmitter is empty&n; */
-DECL|function|rs_wait_until_sent
 r_static
 r_void
 id|rs_wait_until_sent
@@ -10995,7 +15301,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * rs_hangup() --- called by tty_hangup() when a hangup is signaled.&n; */
 r_void
-DECL|function|rs_hangup
 id|rs_hangup
 c_func
 (paren
@@ -11057,7 +15362,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_open() and friends&n; * ------------------------------------------------------------&n; */
 r_static
 r_int
-DECL|function|block_til_ready
 id|block_til_ready
 c_func
 (paren
@@ -11192,10 +15496,12 @@ id|tty-&gt;termios-&gt;c_cflag
 op_amp
 id|CLOCAL
 )paren
+(brace
 id|do_clocal
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Block waiting for the carrier detect and the line to become&n;&t; * free (i.e., not in use by the callout).  While we are in&n;&t; * this loop, info-&gt;count is dropped by one, so that&n;&t; * rs_close() knows when to free things.  We restore it upon&n;&t; * exit, either normal or abnormal.&n;&t; */
 id|retval
 op_assign
@@ -11462,7 +15768,6 @@ suffix:semicolon
 multiline_comment|/*&n; * This routine is called whenever a serial port is opened. &n; * It performs the serial-specific initialization for the tty structure.&n; */
 r_static
 r_int
-DECL|function|rs_open
 id|rs_open
 c_func
 (paren
@@ -11720,6 +16025,34 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|info-&gt;count
+op_eq
+l_int|1
+)paren
+op_logical_and
+(paren
+id|info-&gt;flags
+op_amp
+id|ASYNC_SPLIT_TERMIOS
+)paren
+)paren
+(brace
+op_star
+id|tty-&gt;termios
+op_assign
+id|info-&gt;normal_termios
+suffix:semicolon
+id|change_speed
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
@@ -11730,14 +16063,38 @@ id|info-&gt;line
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DLOG_INT_TRIG
+c_func
+(paren
+id|log_int_pos
+op_assign
+l_int|0
+)paren
+suffix:semicolon
+id|DFLIP
+c_func
+(paren
+r_if
+(paren
+id|info-&gt;line
+op_eq
+id|SERIAL_DEBUG_LINE
+)paren
+(brace
+id|info-&gt;icount.rx
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * /proc fs routines....&n; */
-DECL|function|line_info
 r_extern
-r_inline
+id|_INLINE_
 r_int
 id|line_info
 c_func
@@ -11760,6 +16117,10 @@ l_int|30
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+r_int
+r_int
+id|tmp
 suffix:semicolon
 id|ret
 op_assign
@@ -11970,6 +16331,49 @@ r_int
 id|info-&gt;icount.rx
 )paren
 suffix:semicolon
+id|tmp
+op_assign
+id|CIRC_CNT
+c_func
+(paren
+id|info-&gt;xmit.head
+comma
+id|info-&gt;xmit.tail
+comma
+id|SERIAL_XMIT_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+)paren
+(brace
+id|ret
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|ret
+comma
+l_string|&quot; tx_pend:%lu/%lu&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|tmp
+comma
+(paren
+r_int
+r_int
+)paren
+id|SERIAL_XMIT_SIZE
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_add_assign
 id|sprintf
@@ -11994,6 +16398,95 @@ r_int
 id|info-&gt;max_recv_cnt
 )paren
 suffix:semicolon
+macro_line|#if 1
+r_if
+c_cond
+(paren
+id|info-&gt;tty
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|info-&gt;tty-&gt;stopped
+)paren
+id|ret
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|ret
+comma
+l_string|&quot; stopped:%i&quot;
+comma
+(paren
+r_int
+)paren
+id|info-&gt;tty-&gt;stopped
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;tty-&gt;hw_stopped
+)paren
+id|ret
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|ret
+comma
+l_string|&quot; hw_stopped:%i&quot;
+comma
+(paren
+r_int
+)paren
+id|info-&gt;tty-&gt;hw_stopped
+)paren
+suffix:semicolon
+)brace
+(brace
+r_int
+r_char
+id|rstat
+op_assign
+id|info-&gt;port
+(braket
+id|REG_STATUS
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rstat
+op_amp
+id|IO_MASK
+c_func
+(paren
+id|R_SERIAL0_STATUS
+comma
+id|xoff_detect
+)paren
+)paren
+id|ret
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|ret
+comma
+l_string|&quot; xoff_detect:1&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12107,7 +16600,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|rs_read_proc
 r_int
 id|rs_read_proc
 c_func
@@ -12248,6 +16740,137 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef DEBUG_LOG_INCLUDED
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|debug_log_pos
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;%-4i %lu.%lu &quot;
+comma
+id|i
+comma
+id|debug_log
+(braket
+id|i
+)braket
+dot
+id|time
+comma
+id|timer_data_to_ns
+c_func
+(paren
+id|debug_log
+(braket
+id|i
+)braket
+dot
+id|timer_data
+)paren
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+id|debug_log
+(braket
+id|i
+)braket
+dot
+id|string
+comma
+id|debug_log
+(braket
+id|i
+)braket
+dot
+id|value
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_plus
+id|begin
+OG
+id|off
+op_plus
+id|count
+)paren
+r_goto
+id|done
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_plus
+id|begin
+OL
+id|off
+)paren
+(brace
+id|begin
+op_add_assign
+id|len
+suffix:semicolon
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;debug_log %i/%i  %li bytes&bslash;n&quot;
+comma
+id|i
+comma
+id|DEBUG_LOG_SIZE
+comma
+id|begin
+op_plus
+id|len
+)paren
+suffix:semicolon
+id|debug_log_pos
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 op_star
 id|eof
 op_assign
@@ -12304,7 +16927,6 @@ suffix:semicolon
 multiline_comment|/* Finally, routines used to initialize the serial driver. */
 r_static
 r_void
-DECL|function|show_serial_version
 id|show_serial_version
 c_func
 (paren
@@ -12315,7 +16937,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ETRAX 100LX serial-driver %s, (c) 2000-2003 Axis Communications AB&bslash;r&bslash;n&quot;
+l_string|&quot;ETRAX 100LX serial-driver %s, (c) 2000-2004 Axis Communications AB&bslash;r&bslash;n&quot;
 comma
 op_amp
 id|serial_version
@@ -12327,7 +16949,6 @@ suffix:semicolon
 multiline_comment|/* &quot;$Revision: x.yy&quot; */
 )brace
 multiline_comment|/* rs_init inits the driver at boot (using the module_init chain) */
-DECL|variable|rs_ops
 r_static
 r_struct
 id|tty_operations
@@ -12429,7 +17050,6 @@ suffix:semicolon
 r_static
 r_int
 id|__init
-DECL|function|rs_init
 id|rs_init
 c_func
 (paren
@@ -12543,6 +17163,14 @@ id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
+id|driver-&gt;termios
+op_assign
+id|serial_termios
+suffix:semicolon
+id|driver-&gt;termios_locked
+op_assign
+id|serial_termios_locked
+suffix:semicolon
 id|tty_set_operations
 c_func
 (paren
@@ -12551,6 +17179,10 @@ comma
 op_amp
 id|rs_ops
 )paren
+suffix:semicolon
+id|serial_driver
+op_assign
+id|driver
 suffix:semicolon
 r_if
 c_cond
@@ -12566,10 +17198,6 @@ c_func
 (paren
 l_string|&quot;Couldn&squot;t register serial driver&bslash;n&quot;
 )paren
-suffix:semicolon
-id|serial_driver
-op_assign
-id|driver
 suffix:semicolon
 multiline_comment|/* do some initializing for the separate ports */
 r_for
@@ -12594,7 +17222,11 @@ id|info
 op_increment
 )paren
 (brace
-id|info-&gt;uses_dma
+id|info-&gt;uses_dma_in
+op_assign
+l_int|0
+suffix:semicolon
+id|info-&gt;uses_dma_out
 op_assign
 l_int|0
 suffix:semicolon
@@ -12615,6 +17247,14 @@ op_assign
 l_int|0
 suffix:semicolon
 id|info-&gt;forced_eop
+op_assign
+l_int|0
+suffix:semicolon
+id|info-&gt;baud_base
+op_assign
+id|DEF_BAUD_BASE
+suffix:semicolon
+id|info-&gt;custom_divisor
 op_assign
 l_int|0
 suffix:semicolon
@@ -12651,6 +17291,10 @@ suffix:semicolon
 id|info-&gt;blocked_open
 op_assign
 l_int|0
+suffix:semicolon
+id|info-&gt;normal_termios
+op_assign
+id|driver-&gt;init_termios
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -12791,55 +17435,6 @@ macro_line|#endif
 macro_line|#ifndef CONFIG_SVINTO_SIM
 multiline_comment|/* Not needed in simulator.  May only complicate stuff. */
 multiline_comment|/* hook the irq&squot;s for DMA channel 6 and 7, serial output and input, and some more... */
-macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|SER0_DMA_TX_IRQ_NBR
-comma
-id|tr_interrupt
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;serial 0 dma tr&quot;
-comma
-l_int|NULL
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;irq22&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|SER0_DMA_RX_IRQ_NBR
-comma
-id|rec_interrupt
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;serial 0 dma rec&quot;
-comma
-l_int|NULL
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;irq23&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef SERIAL_HANDLE_EARLY_ERRORS
 r_if
 c_cond
 (paren
@@ -12865,8 +17460,60 @@ c_func
 l_string|&quot;irq8&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0_DMA6_OUT
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|SER0_DMA_TX_IRQ_NBR
+comma
+id|tr_interrupt
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;serial 0 dma tr&quot;
+comma
+l_int|NULL
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;irq22&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT0_DMA7_IN
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|SER0_DMA_RX_IRQ_NBR
+comma
+id|rec_interrupt
+comma
+id|SA_INTERRUPT
+comma
+l_string|&quot;serial 0 dma rec&quot;
+comma
+l_int|NULL
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;irq23&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1_DMA8_OUT
 r_if
 c_cond
 (paren
@@ -12890,6 +17537,8 @@ c_func
 l_string|&quot;irq24&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT1_DMA9_IN
 r_if
 c_cond
 (paren
@@ -12914,8 +17563,10 @@ l_string|&quot;irq25&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2
 multiline_comment|/* DMA Shared with par0 (and SCSI0 and ATA) */
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2_DMA2_OUT
 r_if
 c_cond
 (paren
@@ -12927,6 +17578,8 @@ comma
 id|tr_interrupt
 comma
 id|SA_SHIRQ
+op_or
+id|SA_INTERRUPT
 comma
 l_string|&quot;serial 2 dma tr&quot;
 comma
@@ -12939,6 +17592,8 @@ c_func
 l_string|&quot;irq18&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT2_DMA3_IN
 r_if
 c_cond
 (paren
@@ -12950,6 +17605,8 @@ comma
 id|rec_interrupt
 comma
 id|SA_SHIRQ
+op_or
+id|SA_INTERRUPT
 comma
 l_string|&quot;serial 2 dma rec&quot;
 comma
@@ -12963,8 +17620,10 @@ l_string|&quot;irq19&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3
 multiline_comment|/* DMA Shared with par1 (and SCSI1 and Extern DMA 0) */
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3_DMA4_OUT
 r_if
 c_cond
 (paren
@@ -12976,6 +17635,8 @@ comma
 id|tr_interrupt
 comma
 id|SA_SHIRQ
+op_or
+id|SA_INTERRUPT
 comma
 l_string|&quot;serial 3 dma tr&quot;
 comma
@@ -12988,6 +17649,8 @@ c_func
 l_string|&quot;irq20&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_PORT3_DMA5_IN
 r_if
 c_cond
 (paren
@@ -12999,6 +17662,8 @@ comma
 id|rec_interrupt
 comma
 id|SA_SHIRQ
+op_or
+id|SA_INTERRUPT
 comma
 l_string|&quot;serial 3 dma rec&quot;
 comma
@@ -13012,13 +17677,47 @@ l_string|&quot;irq21&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_SERIAL_FLUSH_DMA_FAST
+r_if
+c_cond
+(paren
+id|request_irq
+c_func
+(paren
+id|TIMER1_IRQ_NBR
+comma
+id|timeout_interrupt
+comma
+id|SA_SHIRQ
+op_or
+id|SA_INTERRUPT
+comma
+l_string|&quot;fast serial dma timeout&quot;
+comma
+l_int|NULL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;err: timer1 irq&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif /* CONFIG_SVINTO_SIM */
+id|debug_write_function
+op_assign
+id|rs_debug_write_function
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this makes sure that rs_init is called during kernel boot */
-DECL|variable|rs_init
 id|module_init
 c_func
 (paren
@@ -13027,7 +17726,6 @@ id|rs_init
 suffix:semicolon
 multiline_comment|/*&n; * register_serial and unregister_serial allows for serial ports to be&n; * configured at run-time, to support PCMCIA modems.&n; */
 r_int
-DECL|function|register_serial
 id|register_serial
 c_func
 (paren
@@ -13042,7 +17740,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|unregister_serial
 r_void
 id|unregister_serial
 c_func

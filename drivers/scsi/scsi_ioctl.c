@@ -44,6 +44,7 @@ op_star
 id|host
 comma
 r_void
+id|__user
 op_star
 id|buffer
 )paren
@@ -83,6 +84,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|buffer
@@ -568,6 +570,7 @@ id|sdev
 comma
 r_struct
 id|scsi_ioctl_command
+id|__user
 op_star
 id|sic
 )paren
@@ -584,6 +587,7 @@ id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|cmd_in
 suffix:semicolon
@@ -1171,6 +1175,7 @@ op_star
 id|sdev
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -1232,6 +1237,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -1342,6 +1348,7 @@ op_amp
 (paren
 r_struct
 id|scsi_idlun
+id|__user
 op_star
 )paren
 id|arg
@@ -1360,6 +1367,7 @@ op_amp
 (paren
 r_struct
 id|scsi_idlun
+id|__user
 op_star
 )paren
 id|arg
@@ -1382,6 +1390,7 @@ id|sdev-&gt;host-&gt;host_no
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -1429,11 +1438,6 @@ c_func
 (paren
 id|sdev
 comma
-(paren
-r_struct
-id|scsi_ioctl_command
-op_star
-)paren
 id|arg
 )paren
 suffix:semicolon

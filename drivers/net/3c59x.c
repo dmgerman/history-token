@@ -979,8 +979,6 @@ op_or
 id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
-op_or
-id|EXTRA_PREAMBLE
 comma
 l_int|128
 comma
@@ -15003,13 +15001,11 @@ id|mii_ioctl_data
 op_star
 id|data
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|rq
 )paren
-op_amp
-id|rq-&gt;ifr_data
 suffix:semicolon
 r_int
 id|phy

@@ -210,6 +210,7 @@ op_star
 id|regs
 comma
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -350,11 +351,13 @@ comma
 r_const
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -550,10 +553,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -591,6 +596,7 @@ op_star
 id|regs
 comma
 id|_sigregs
+id|__user
 op_star
 id|sregs
 )paren
@@ -721,6 +727,7 @@ op_star
 id|regs
 comma
 id|_sigregs
+id|__user
 op_star
 id|sregs
 )paren
@@ -878,11 +885,13 @@ id|regs
 )paren
 (brace
 id|sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 id|sigframe
+id|__user
 op_star
 )paren
 id|regs-&gt;gprs
@@ -1012,11 +1021,13 @@ id|regs
 )paren
 (brace
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 id|rt_sigframe
+id|__user
 op_star
 )paren
 id|regs-&gt;gprs
@@ -1156,6 +1167,7 @@ multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -1247,6 +1259,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1334,7 +1347,10 @@ id|regs
 )paren
 (brace
 id|sigframe
+id|__user
 op_star
+id|frame
+suffix:semicolon
 id|frame
 op_assign
 id|get_sigframe
@@ -1469,6 +1485,7 @@ id|__NR_sigreturn
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 (paren
@@ -1494,6 +1511,7 @@ l_int|15
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|frame
@@ -1620,7 +1638,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|rt_sigframe
+id|__user
 op_star
+id|frame
+suffix:semicolon
 id|frame
 op_assign
 id|get_sigframe
@@ -1823,6 +1844,7 @@ id|__NR_rt_sigreturn
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 (paren
@@ -1845,6 +1867,7 @@ l_int|15
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|frame

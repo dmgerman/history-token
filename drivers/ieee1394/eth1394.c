@@ -49,7 +49,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1198 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1224 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -510,6 +510,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -7607,10 +7608,6 @@ c_func
 (paren
 id|dev
 comma
-(paren
-r_void
-op_star
-)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
@@ -7649,6 +7646,7 @@ op_star
 id|dev
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -7666,6 +7664,7 @@ id|ethcmd
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|useraddr
@@ -7704,7 +7703,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 1198 $&quot;
+l_string|&quot;$Rev: 1224 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */

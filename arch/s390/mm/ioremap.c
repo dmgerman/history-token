@@ -628,7 +628,6 @@ id|addr
 OG
 id|high_memory
 )paren
-r_return
 id|vfree
 c_func
 (paren

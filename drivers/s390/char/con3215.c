@@ -4085,6 +4085,13 @@ c_func
 (paren
 id|raw-&gt;ubuffer
 comma
+(paren
+r_const
+r_int
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|length

@@ -45,6 +45,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -3443,6 +3444,7 @@ op_star
 id|header
 comma
 id|UINT16
+id|__user
 op_star
 id|dataptr
 comma
@@ -3458,6 +3460,7 @@ id|UINT32
 id|length
 suffix:semicolon
 id|UINT16
+id|__user
 op_star
 id|data_end
 op_assign
@@ -3516,7 +3519,7 @@ id|DPRINT
 id|WF_DEBUG_LOAD_PATCH
 comma
 l_string|&quot;sample %sdownload for slot %d, &quot;
-l_string|&quot;type %d, %d bytes from 0x%x&bslash;n&quot;
+l_string|&quot;type %d, %d bytes from %p&bslash;n&quot;
 comma
 id|header-&gt;size
 ques
@@ -3531,9 +3534,6 @@ id|header-&gt;subkey
 comma
 id|header-&gt;size
 comma
-(paren
-r_int
-)paren
 id|header-&gt;dataptr
 )paren
 suffix:semicolon
@@ -5291,6 +5291,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -5921,6 +5922,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -6004,6 +6006,7 @@ id|wavefront_load_patch
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|addr
 )paren
@@ -6088,6 +6091,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|header.hdrptr
@@ -6122,19 +6126,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 op_amp
 id|header.hdr.s
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|header.hdrptr
 comma
 r_sizeof
@@ -6163,19 +6157,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 op_amp
 id|header.hdr.a
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|header.hdrptr
 comma
 r_sizeof
@@ -6204,19 +6188,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 op_amp
 id|header.hdr.d
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|header.hdrptr
 comma
 r_sizeof
@@ -6245,19 +6219,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 op_amp
 id|header.hdr.p
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|header.hdrptr
 comma
 r_sizeof
@@ -6286,19 +6250,9 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_int
-r_char
-op_star
-)paren
 op_amp
 id|header.hdr.pr
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
 id|header.hdrptr
 comma
 r_sizeof
@@ -7093,6 +7047,7 @@ id|wc
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -7132,6 +7087,7 @@ id|copy_to_user
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -7162,6 +7118,7 @@ id|wavefront_load_patch
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -7307,7 +7264,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -7332,17 +7291,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-op_amp
-(paren
-(paren
-r_char
-op_star
-)paren
 id|arg
-)paren
-(braket
-l_int|0
-)braket
 comma
 op_amp
 id|wavefront_info
@@ -7508,6 +7457,7 @@ id|format
 comma
 r_const
 r_char
+id|__user
 op_star
 id|addr
 comma
@@ -10507,6 +10457,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|r-&gt;data

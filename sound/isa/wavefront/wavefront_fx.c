@@ -586,8 +586,8 @@ op_amp
 id|r
 comma
 (paren
-r_int
-r_char
+r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -716,6 +716,7 @@ comma
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|r.data

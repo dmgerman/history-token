@@ -576,6 +576,8 @@ DECL|macro|__ARCH_WANT_SYS_ALARM
 mdefine_line|#define __ARCH_WANT_SYS_ALARM
 DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
 mdefine_line|#define __ARCH_WANT_SYS_GETHOSTNAME
+DECL|macro|__ARCH_WANT_SYS_PAUSE
+mdefine_line|#define __ARCH_WANT_SYS_PAUSE
 DECL|macro|__ARCH_WANT_SYS_TIME
 mdefine_line|#define __ARCH_WANT_SYS_TIME
 DECL|macro|__ARCH_WANT_SYS_UTIME
@@ -598,6 +600,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/compiler.h&gt;

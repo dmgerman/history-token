@@ -3531,7 +3531,6 @@ suffix:semicolon
 DECL|function|mp_find_ioapic
 r_static
 r_int
-id|__init
 id|mp_find_ioapic
 (paren
 r_int

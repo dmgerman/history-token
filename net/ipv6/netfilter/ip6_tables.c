@@ -63,14 +63,6 @@ mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
 DECL|macro|SMP_ALIGN
 mdefine_line|#define SMP_ALIGN(x) (((x) + SMP_CACHE_BYTES-1) &amp; ~(SMP_CACHE_BYTES-1))
-multiline_comment|/* Mutex protects lists (only traversed in user context). */
-r_static
-id|DECLARE_MUTEX
-c_func
-(paren
-id|ip6t_mutex
-)paren
-suffix:semicolon
 multiline_comment|/* Must have mutex */
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) IP_NF_ASSERT(down_trylock(&amp;ip6t_mutex) != 0)
@@ -2092,8 +2084,8 @@ r_inline
 r_struct
 id|ip6t_table
 op_star
-DECL|function|find_table_lock
-id|find_table_lock
+DECL|function|ip6t_find_table_lock
+id|ip6t_find_table_lock
 c_func
 (paren
 r_const
@@ -2169,13 +2161,11 @@ id|mutex
 )paren
 suffix:semicolon
 )brace
-r_static
-r_inline
 r_struct
 id|ip6t_target
 op_star
-DECL|function|find_target_lock
-id|find_target_lock
+DECL|function|ip6t_find_target_lock
+id|ip6t_find_target_lock
 c_func
 (paren
 r_const
@@ -3135,7 +3125,7 @@ id|e
 suffix:semicolon
 id|target
 op_assign
-id|find_target_lock
+id|ip6t_find_target_lock
 c_func
 (paren
 id|t-&gt;u.user.name
@@ -4308,6 +4298,7 @@ op_star
 id|table
 comma
 r_void
+id|__user
 op_star
 id|userptr
 )paren
@@ -4687,6 +4678,7 @@ id|entries
 comma
 r_struct
 id|ip6t_get_entries
+id|__user
 op_star
 id|uptr
 )paren
@@ -4701,7 +4693,7 @@ id|t
 suffix:semicolon
 id|t
 op_assign
-id|find_table_lock
+id|ip6t_find_table_lock
 c_func
 (paren
 id|entries-&gt;name
@@ -4808,6 +4800,7 @@ id|do_replace
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5030,7 +5023,7 @@ l_string|&quot;ip_tables: Translated table&bslash;n&quot;
 suffix:semicolon
 id|t
 op_assign
-id|find_table_lock
+id|ip6t_find_table_lock
 c_func
 (paren
 id|tmp.name
@@ -5407,6 +5400,7 @@ id|do_add_counters
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5524,7 +5518,7 @@ suffix:semicolon
 )brace
 id|t
 op_assign
-id|find_table_lock
+id|ip6t_find_table_lock
 c_func
 (paren
 id|tmp.name
@@ -5643,6 +5637,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5739,6 +5734,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -5859,7 +5855,7 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|t
 op_assign
-id|find_table_lock
+id|ip6t_find_table_lock
 c_func
 (paren
 id|name
@@ -8784,6 +8780,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip6t_do_table
+)paren
+suffix:semicolon
+DECL|variable|ip6t_find_target_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip6t_find_target_lock
 )paren
 suffix:semicolon
 DECL|variable|ip6t_register_match

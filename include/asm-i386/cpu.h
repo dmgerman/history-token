@@ -56,16 +56,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|node_online
 c_func
 (paren
 id|node
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
 id|parent
 op_assign
 op_amp

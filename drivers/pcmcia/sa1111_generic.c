@@ -679,8 +679,7 @@ macro_line|#ifdef CONFIG_ARCH_LUBBOCK
 id|pcmcia_lubbock_init
 c_func
 (paren
-op_amp
-id|dev-&gt;dev
+id|dev
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -81,7 +81,6 @@ id|u32
 id|count
 )paren
 (brace
-r_return
 id|insw
 c_func
 (paren
@@ -3666,9 +3665,10 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -3714,9 +3714,10 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* drive timed-out */
 )brace
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* give drive a breather */
@@ -3735,9 +3736,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* wait for IRQ and DRQ_STAT */
@@ -3936,7 +3938,7 @@ id|u8
 id|stat
 suffix:semicolon
 singleline_comment|//&t;while (HWGROUP(drive)-&gt;busy)
-singleline_comment|//&t;&t;ide_delay_50ms();
+singleline_comment|//&t;&t;msleep(50);
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond

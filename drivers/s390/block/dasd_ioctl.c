@@ -528,6 +528,7 @@ id|ver
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -1227,6 +1228,7 @@ id|fdata
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|args
@@ -1398,6 +1400,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -1809,6 +1812,7 @@ c_func
 (paren
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -1923,6 +1927,7 @@ id|intval
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|args
@@ -2089,6 +2094,7 @@ c_func
 (paren
 r_struct
 id|hd_geometry
+id|__user
 op_star
 )paren
 id|args

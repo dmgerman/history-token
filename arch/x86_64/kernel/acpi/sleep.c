@@ -215,15 +215,6 @@ id|KERN_CRIT
 l_string|&quot;ACPI: Wakeup code way too big, will crash on attempt to suspend&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;ACPI: have wakeup address 0x%8.8lx&bslash;n&quot;
-comma
-id|acpi_wakeup_address
-)paren
-suffix:semicolon
 )brace
 DECL|function|acpi_sleep_setup
 r_static

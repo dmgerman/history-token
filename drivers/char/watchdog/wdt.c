@@ -1869,9 +1869,9 @@ op_amp
 id|temp_miscdev
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_WDT_501 */
 id|outrbt
 suffix:colon
+macro_line|#endif /* CONFIG_WDT_501 */
 id|unregister_reboot_notifier
 c_func
 (paren

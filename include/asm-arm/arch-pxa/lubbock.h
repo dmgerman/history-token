@@ -37,4 +37,20 @@ DECL|macro|LUB_IRQ_SET_CLR
 mdefine_line|#define LUB_IRQ_SET_CLR&t;&t;__LUB_REG(LUBBOCK_FPGA_PHYS + 0x0d0)
 DECL|macro|LUB_GP
 mdefine_line|#define LUB_GP&t;&t;&t;__LUB_REG(LUBBOCK_FPGA_PHYS + 0x100)
+macro_line|#ifndef __ASSEMBLY__
+r_extern
+r_void
+id|lubbock_set_misc_wr
+c_func
+(paren
+r_int
+r_int
+id|mask
+comma
+r_int
+r_int
+id|set
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

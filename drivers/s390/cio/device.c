@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.117 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.120 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -645,6 +645,31 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
+id|slow_path_wq
+op_assign
+id|create_singlethread_workqueue
+c_func
+(paren
+l_string|&quot;kslowcrw&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|slow_path_wq
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+multiline_comment|/* FIXME: better errno ? */
+r_goto
+id|out_err
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -724,6 +749,17 @@ id|destroy_workqueue
 c_func
 (paren
 id|ccw_device_notify_work
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slow_path_wq
+)paren
+id|destroy_workqueue
+c_func
+(paren
+id|slow_path_wq
 )paren
 suffix:semicolon
 r_return
@@ -2421,7 +2457,7 @@ id|cdev-&gt;dev.bus_id
 comma
 id|sibling-&gt;dev.bus_id
 comma
-l_int|4
+id|BUS_ID_SIZE
 )paren
 )paren
 )paren
@@ -2933,18 +2969,6 @@ c_func
 id|cdev-&gt;dev.parent
 )paren
 suffix:semicolon
-multiline_comment|/* Check if device is registered. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|sch-&gt;dev.node
-)paren
-)paren
 id|device_unregister
 c_func
 (paren
@@ -3079,7 +3103,7 @@ suffix:semicolon
 id|queue_work
 c_func
 (paren
-id|ccw_device_work
+id|slow_path_wq
 comma
 op_amp
 id|cdev

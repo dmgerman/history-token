@@ -544,12 +544,55 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
-DECL|macro|activate_mm
-mdefine_line|#define activate_mm(active_mm, mm) &bslash;&n;&t;switch_mm(active_mm, mm, current);
+DECL|function|activate_mm
+r_static
+r_inline
+r_void
+id|activate_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|prev
+comma
+r_struct
+id|mm_struct
+op_star
+id|next
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|switch_mm
+c_func
+(paren
+id|prev
+comma
+id|next
+comma
+id|current
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 DECL|macro|VSID_RANDOMIZER
-mdefine_line|#define VSID_RANDOMIZER 42470972311
+mdefine_line|#define VSID_RANDOMIZER 42470972311UL
 DECL|macro|VSID_MASK
-mdefine_line|#define VSID_MASK&t;0xfffffffff
+mdefine_line|#define VSID_MASK&t;0xfffffffffUL
 multiline_comment|/* This is only valid for kernel (including vmalloc, imalloc and bolted) EA&squot;s&n; */
 r_static
 r_inline
@@ -602,13 +645,8 @@ id|VSID_RANDOMIZER
 op_amp
 id|VSID_MASK
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_HTABSTRESS
-)paren
-(brace
-multiline_comment|/* For debug, this path creates a very poor vsid distribuition.&n;&t;&t; * A user program can access virtual addresses in the form&n;&t;&t; * 0x0yyyyxxxx000 where yyyy = xxxx to cause multiple mappings&n;&t;&t; * to hash to the same page table group.&n;&t;&t; */
+macro_line|#ifdef HTABSTRESS
+multiline_comment|/* For debug, this path creates a very poor vsid distribuition.&n;&t; * A user program can access virtual addresses in the form&n;&t; * 0x0yyyyxxxx000 where yyyy = xxxx to cause multiple mappings&n;&t; * to hash to the same page table group.&n;&t; */
 id|ordinal
 op_assign
 (paren
@@ -633,7 +671,7 @@ id|ordinal
 op_amp
 id|VSID_MASK
 suffix:semicolon
-)brace
+macro_line|#endif /* HTABSTRESS */
 r_return
 id|vsid
 suffix:semicolon
@@ -690,12 +728,7 @@ id|VSID_RANDOMIZER
 op_amp
 id|VSID_MASK
 suffix:semicolon
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_HTABSTRESS
-)paren
-(brace
+macro_line|#ifdef HTABSTRESS
 multiline_comment|/* See comment above. */
 id|ordinal
 op_assign
@@ -721,7 +754,7 @@ id|ordinal
 op_amp
 id|VSID_MASK
 suffix:semicolon
-)brace
+macro_line|#endif /* HTABSTRESS */
 r_return
 id|vsid
 suffix:semicolon

@@ -828,6 +828,8 @@ id|hiddev
 id|hiddev_table
 (braket
 id|hiddev-&gt;hid-&gt;minor
+op_minus
+id|HIDDEV_MINOR_BASE
 )braket
 op_assign
 l_int|NULL
@@ -2719,6 +2721,7 @@ id|arg
 comma
 r_sizeof
 (paren
+op_star
 id|uref_multi
 )paren
 )paren

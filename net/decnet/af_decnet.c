@@ -121,6 +121,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -148,10 +149,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 comma
@@ -5277,6 +5280,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5359,6 +5363,7 @@ id|amount
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5453,6 +5458,7 @@ id|amount
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5471,6 +5477,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -5721,6 +5728,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -5790,6 +5798,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -6549,10 +6558,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -6619,10 +6630,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 comma
@@ -8498,6 +8511,8 @@ op_or
 id|MSG_NOSIGNAL
 op_or
 id|MSG_MORE
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_return

@@ -10,7 +10,8 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;slc90e66.h&quot;
+DECL|macro|DISPLAY_SLC90E66_TIMINGS
+mdefine_line|#define DISPLAY_SLC90E66_TIMINGS
 macro_line|#if defined(DISPLAY_SLC90E66_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -2097,6 +2098,66 @@ id|hwif-&gt;autodma
 suffix:semicolon
 macro_line|#endif /* !CONFIG_BLK_DEV_IDEDMA */
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|slc90e66_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SLC90E66&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_slc90e66
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_slc90e66
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x41
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+comma
+(brace
+l_int|0x43
+comma
+l_int|0x80
+comma
+l_int|0x80
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 DECL|function|slc90e66_init_one
 r_static
 r_int
@@ -2116,34 +2177,13 @@ op_star
 id|id
 )paren
 (brace
-id|ide_pci_device_t
-op_star
-id|d
-op_assign
-op_amp
-id|slc90e66_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;device
-op_ne
-id|d-&gt;device
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren
 id|dev
 comma
-id|d
+op_amp
+id|slc90e66_chipset
 )paren
 suffix:semicolon
 r_return

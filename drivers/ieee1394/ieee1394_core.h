@@ -267,7 +267,6 @@ id|packet
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Generation counter for the complete 1394 subsystem.  Generation gets&n; * incremented on every change in the subsystem (e.g. bus reset).&n; *&n; * Use the functions, not the variable.&n; */
-macro_line|#include &lt;asm/atomic.h&gt;
 DECL|function|get_hpsb_generation
 r_static
 r_inline

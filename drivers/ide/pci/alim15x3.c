@@ -9,7 +9,8 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;alim15x3.h&quot;
+DECL|macro|DISPLAY_ALI_TIMINGS
+mdefine_line|#define DISPLAY_ALI_TIMINGS
 multiline_comment|/*&n; *&t;ALi devices are not plug in. Otherwise these static values would&n; *&t;need to go. They ought to go away anyway&n; */
 DECL|variable|m5229_revision
 r_static
@@ -3557,6 +3558,50 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|ali15x3_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;ALI15X3&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_ali15x3
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_ali15x3
+comma
+dot
+id|init_dma
+op_assign
+id|init_dma_ali15x3
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 multiline_comment|/**&n; *&t;alim15x3_init_one&t;-&t;set up an ALi15x3 IDE controller&n; *&t;@dev: PCI device to set up&n; *&n; *&t;Perform the actual set up for an ALi15x3 that has been found by the&n; *&t;hot plug layer.&n; */
 DECL|function|alim15x3_init_one
 r_static
@@ -3582,10 +3627,7 @@ op_star
 id|d
 op_assign
 op_amp
-id|ali15x3_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
+id|ali15x3_chipset
 suffix:semicolon
 r_if
 c_cond

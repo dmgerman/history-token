@@ -120,16 +120,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20268
-comma
-dot
 id|name
 op_assign
 l_string|&quot;PDC20268&quot;
@@ -169,16 +159,6 @@ comma
 (brace
 multiline_comment|/* 1 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20269
-comma
-dot
 id|name
 op_assign
 l_string|&quot;PDC20269&quot;
@@ -217,16 +197,6 @@ comma
 comma
 (brace
 multiline_comment|/* 2 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20270
-comma
 dot
 id|name
 op_assign
@@ -290,16 +260,6 @@ comma
 (brace
 multiline_comment|/* 3 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20271
-comma
-dot
 id|name
 op_assign
 l_string|&quot;PDC20271&quot;
@@ -339,16 +299,6 @@ comma
 (brace
 multiline_comment|/* 4 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20275
-comma
-dot
 id|name
 op_assign
 l_string|&quot;PDC20275&quot;
@@ -387,16 +337,6 @@ comma
 comma
 (brace
 multiline_comment|/* 5 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20276
-comma
 dot
 id|name
 op_assign
@@ -459,16 +399,6 @@ comma
 comma
 (brace
 multiline_comment|/* 6 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_PROMISE
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_PROMISE_20277
-comma
 dot
 id|name
 op_assign

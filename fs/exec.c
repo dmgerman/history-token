@@ -4119,7 +4119,7 @@ id|bprm-&gt;sh_bang
 op_assign
 id|eh-&gt;ah.entry
 OL
-l_int|0x100000000
+l_int|0x100000000UL
 suffix:semicolon
 id|bprm-&gt;file
 op_assign
@@ -4503,11 +4503,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|sched_balance_exec
-c_func
-(paren
-)paren
-suffix:semicolon
 id|file
 op_assign
 id|open_exec
@@ -4535,6 +4530,11 @@ id|file
 )paren
 r_return
 id|retval
+suffix:semicolon
+id|sched_balance_exec
+c_func
+(paren
+)paren
 suffix:semicolon
 id|bprm.p
 op_assign

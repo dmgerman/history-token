@@ -3527,6 +3527,7 @@ op_star
 id|netdev
 comma
 r_void
+id|__user
 op_star
 id|uaddr
 )paren
@@ -3552,6 +3553,7 @@ id|cmd
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|uaddr
@@ -3949,7 +3951,7 @@ id|u16
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 id|res
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fasttimer.h,v 1.2 2002/12/11 13:03:43 starvik Exp $&n; * linux/include/asm-cris/fasttimer.h&n; *&n; * Fast timers for ETRAX100LX&n; * This may be useful in other OS than Linux so use 2 space indentation...&n; * Copyright (C) 2000, 2002 Axis Communications AB&n; */
+multiline_comment|/* $Id: fasttimer.h,v 1.3 2004/05/14 10:19:19 starvik Exp $&n; * linux/include/asm-cris/fasttimer.h&n; *&n; * Fast timers for ETRAX100LX&n; * This may be useful in other OS than Linux so use 2 space indentation...&n; * Copyright (C) 2000, 2002 Axis Communications AB&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt; /* struct timeval */
 macro_line|#include &lt;linux/timex.h&gt;
@@ -62,6 +62,12 @@ op_star
 id|name
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|fast_timer
+op_star
+id|fast_timer_list
 suffix:semicolon
 r_void
 id|start_one_shot_timer

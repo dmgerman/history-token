@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/scx200.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -834,7 +835,7 @@ id|NAME
 l_string|&quot;: NatSemi SCx200 Watchdog Driver&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* First check that this really is a NatSemi SCx200 CPU */
+multiline_comment|/*&n;&t; * First check that this really is a NatSemi SCx200 CPU or a Geode&n;&t; * SC1100 processor&n;&t; */
 r_if
 c_cond
 (paren
@@ -845,6 +846,20 @@ c_func
 id|PCI_VENDOR_ID_NS
 comma
 id|PCI_DEVICE_ID_NS_SCx200_BRIDGE
+comma
+l_int|NULL
+)paren
+)paren
+op_eq
+l_int|NULL
+op_logical_and
+(paren
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_SC1100_BRIDGE
 comma
 l_int|NULL
 )paren

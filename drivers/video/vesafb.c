@@ -956,12 +956,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|strcmp
+id|strncmp
 c_func
 (paren
 id|this_opt
 comma
-l_string|&quot;vram&quot;
+l_string|&quot;vram:&quot;
+comma
+l_int|5
 )paren
 )paren
 id|vram

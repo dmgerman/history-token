@@ -309,7 +309,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Servers: &bslash;n&quot;
+l_string|&quot;Servers:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buf
@@ -359,7 +359,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP session status: %d&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP status: %d&quot;
 comma
 id|i
 comma
@@ -402,7 +402,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n&bslash;tLocal Users To Same Server: %d SecMode: 0x%x&quot;
+l_string|&quot;&bslash;n&bslash;tLocal Users To Server: %d SecMode: 0x%x Req Active: %d&quot;
 comma
 id|atomic_read
 c_func
@@ -412,6 +412,13 @@ id|ses-&gt;server-&gt;socketUseCount
 )paren
 comma
 id|ses-&gt;server-&gt;secMode
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ses-&gt;server-&gt;inFlight
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* length = sprintf(buf, &quot;&bslash;nMIDs: &bslash;n&quot;);&n;&t;&t;&t;buf += length;&n;&n;&t;&t;&t;spin_lock(&amp;GlobalMid_Lock);&n;&t;&t;&t;list_for_each(tmp1, &amp;ses-&gt;server-&gt;pending_mid_q) {&n;&t;&t;&t;&t;mid_entry = list_entry(tmp1, struct&n;&t;&t;&t;&t;&t;mid_q_entry,&n;&t;&t;&t;&t;&t;qhead);&n;&t;&t;&t;&t;if(mid_entry) {&n;&t;&t;&t;&t;&t;length = sprintf(buf,&quot;State: %d com: %d pid: %d tsk: %p&bslash;n&quot;,mid_entry-&gt;midState,mid_entry-&gt;command,mid_entry-&gt;pid,mid_entry-&gt;tsk);&n;&t;&t;&t;&t;&t;buf += length;&n;&t;&t;&t;&t;}&n;&t;&t;&t;}&n;&t;&t;&t;spin_unlock(&amp;GlobalMid_Lock); */
@@ -442,7 +449,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;nShares: &bslash;n&quot;
+l_string|&quot;&bslash;nShares:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buf
@@ -492,7 +499,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) %s Uses: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentMax: %d Status: %d&quot;
+l_string|&quot;&bslash;n%d) %s Uses: %d Type: %s Characteristics: 0x%x Attributes: 0x%x&bslash;nPathComponentMax: %d Status: %d&quot;
 comma
 id|i
 comma
@@ -590,6 +597,10 @@ comma
 l_string|&quot;&bslash;tDISCONNECTED &quot;
 )paren
 suffix:semicolon
+id|length
+op_add_assign
+l_int|14
+suffix:semicolon
 )brace
 )brace
 id|read_unlock
@@ -677,6 +688,7 @@ r_return
 id|length
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
 r_int
 DECL|function|cifs_stats_read
 id|cifs_stats_read
@@ -708,6 +720,18 @@ id|data
 (brace
 r_int
 id|item_length
+comma
+id|i
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|tmp
+suffix:semicolon
+r_struct
+id|cifsTconInfo
+op_star
+id|tcon
 suffix:semicolon
 id|length
 op_assign
@@ -716,7 +740,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Currently Allocated structures&bslash;nCIFS Sessions: %d&bslash;n&quot;
+l_string|&quot;Resources in use&bslash;nCIFS Session: %d&bslash;n&quot;
 comma
 id|sesInfoAllocCount.counter
 )paren
@@ -732,7 +756,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Shares (unique mount targets): %d&bslash;n&quot;
+l_string|&quot;Share (unique mount targets): %d&bslash;n&quot;
 comma
 id|tconInfoAllocCount.counter
 )paren
@@ -752,7 +776,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Allocated SMB Request and Response Buffers: %d&bslash;n&quot;
+l_string|&quot;SMB Request/Response Buffer: %d&bslash;n&quot;
 comma
 id|bufAllocCount.counter
 )paren
@@ -772,7 +796,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;Active Operations (MIDs in use): %d&bslash;n&quot;
+l_string|&quot;Operations (MIDs): %d&bslash;n&quot;
 comma
 id|midCount.counter
 )paren
@@ -792,7 +816,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%d sessions and %d shares reconnected after failure&bslash;n&quot;
+l_string|&quot;&bslash;n%d session %d share reconnects&bslash;n&quot;
 comma
 id|tcpSesReconnectCount.counter
 comma
@@ -803,10 +827,240 @@ id|length
 op_add_assign
 id|item_length
 suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|tmp
+comma
+op_amp
+id|GlobalTreeConnectionList
+)paren
+(brace
+id|i
+op_increment
+suffix:semicolon
+id|tcon
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|cifsTconInfo
+comma
+id|cifsConnectionList
+)paren
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;n%d) %s&quot;
+comma
+id|i
+comma
+id|tcon-&gt;treeName
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcon-&gt;tidStatus
+op_eq
+id|CifsNeedReconnect
+)paren
+(brace
+id|buf
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;tDISCONNECTED &quot;
+)paren
+suffix:semicolon
+id|length
+op_add_assign
+l_int|14
+suffix:semicolon
+)brace
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nSMBs: %d Oplock Breaks: %d&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_smbs_sent
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_oplock_brks
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nReads: %d Bytes %lld&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_reads
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+(paren
+id|tcon-&gt;bytes_read
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nWrites: %d Bytes: %lld&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_writes
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+(paren
+id|tcon-&gt;bytes_written
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|item_length
+op_assign
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;nOpens: %d Deletes: %d&bslash;nMkdirs: %d Rmdirs: %d&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_opens
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_deletes
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_mkdirs
+)paren
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_rmdirs
+)paren
+)paren
+suffix:semicolon
+id|buf
+op_add_assign
+id|item_length
+suffix:semicolon
+id|length
+op_add_assign
+id|item_length
+suffix:semicolon
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|GlobalSMBSeslock
+)paren
+suffix:semicolon
 r_return
 id|length
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|proc_fs_cifs
 r_struct
 id|proc_dir_entry
@@ -981,6 +1235,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_STATS
 id|create_proc_read_entry
 c_func
 (paren
@@ -995,6 +1250,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pde
 op_assign
 id|create_proc_read_entry
@@ -1295,6 +1551,7 @@ comma
 id|proc_fs_cifs
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_STATS
 id|remove_proc_entry
 c_func
 (paren
@@ -1303,6 +1560,7 @@ comma
 id|proc_fs_cifs
 )paren
 suffix:semicolon
+macro_line|#endif
 id|remove_proc_entry
 c_func
 (paren
@@ -1477,6 +1735,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1657,6 +1916,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1838,6 +2098,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2019,6 +2280,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2199,6 +2461,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2379,6 +2642,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2559,6 +2823,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2739,6 +3004,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2919,6 +3185,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -3099,6 +3366,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma

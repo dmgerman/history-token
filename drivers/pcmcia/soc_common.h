@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_ARCH_PCMCIA
 DECL|macro|_ASM_ARCH_PCMCIA
 mdefine_line|#define _ASM_ARCH_PCMCIA
 multiline_comment|/* include the world */
+macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -316,6 +317,28 @@ r_char
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ
+multiline_comment|/*&n;&t; * CPUFREQ support.&n;&t; */
+DECL|member|frequency_change
+r_int
+(paren
+op_star
+id|frequency_change
+)paren
+(paren
+r_struct
+id|soc_pcmcia_socket
+op_star
+comma
+r_int
+r_int
+comma
+r_struct
+id|cpufreq_freqs
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|pcmcia_irqs
@@ -335,6 +358,27 @@ r_const
 r_char
 op_star
 id|str
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|soc_pcmcia_timing
+r_struct
+id|soc_pcmcia_timing
+(brace
+DECL|member|io
+r_int
+r_int
+id|io
+suffix:semicolon
+DECL|member|mem
+r_int
+r_int
+id|mem
+suffix:semicolon
+DECL|member|attr
+r_int
+r_int
+id|attr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -412,6 +456,20 @@ id|irqs
 comma
 r_int
 id|nr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|soc_common_pcmcia_get_timing
+c_func
+(paren
+r_struct
+id|soc_pcmcia_socket
+op_star
+comma
+r_struct
+id|soc_pcmcia_timing
+op_star
 )paren
 suffix:semicolon
 r_extern

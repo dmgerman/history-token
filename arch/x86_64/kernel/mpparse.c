@@ -2272,6 +2272,11 @@ id|intel_mp_floating
 op_star
 id|mpf
 suffix:semicolon
+r_static
+r_int
+id|printed
+id|__initdata
+suffix:semicolon
 id|Dprintk
 c_func
 (paren
@@ -2406,6 +2411,13 @@ op_sub_assign
 l_int|16
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|printed
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2413,6 +2425,11 @@ id|KERN_INFO
 l_string|&quot;No mptable found.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|printed
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2734,7 +2751,6 @@ suffix:semicolon
 DECL|function|mp_find_ioapic
 r_static
 r_int
-id|__init
 id|mp_find_ioapic
 (paren
 r_int

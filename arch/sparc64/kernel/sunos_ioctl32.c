@@ -18,9 +18,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/kbio.h&gt;
-multiline_comment|/* Use this to get at 32-bit user passed pointers. */
-DECL|macro|A
-mdefine_line|#define A(__x)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __ret;&t;&t;&bslash;&n;&t;__asm__ (&quot;srl&t;%0, 0, %0&quot;&t;&bslash;&n;&t;&t; : &quot;=r&quot; (__ret)&t;&t;&bslash;&n;&t;&t; : &quot;0&quot; (__x));&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|SUNOS_NR_OPEN
 mdefine_line|#define SUNOS_NR_OPEN&t;256
 DECL|struct|rtentry32
@@ -318,9 +315,11 @@ c_func
 )paren
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|p
-comma
+suffix:semicolon
+r_int
 id|ntty
 op_assign
 id|N_TTY
@@ -332,13 +331,14 @@ id|p
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
-c_func
 (paren
-id|arg
+r_int
+r_int
 )paren
+id|arg
 suffix:semicolon
 id|ret
 op_assign
@@ -1361,6 +1361,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1372,13 +1373,14 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
-c_func
 (paren
-id|arg
+r_int
+r_int
 )paren
+id|arg
 suffix:semicolon
 id|ret
 op_assign
@@ -1480,6 +1482,7 @@ id|oldval
 comma
 id|newval
 comma
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -1491,13 +1494,14 @@ id|ptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
-c_func
 (paren
-id|arg
+r_int
+r_int
 )paren
+id|arg
 suffix:semicolon
 id|ret
 op_assign

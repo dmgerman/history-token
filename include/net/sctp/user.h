@@ -965,6 +965,7 @@ suffix:semicolon
 DECL|member|addrs
 r_struct
 id|sockaddr
+id|__user
 op_star
 id|addrs
 suffix:semicolon

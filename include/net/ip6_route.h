@@ -117,6 +117,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -288,6 +289,7 @@ id|output
 (paren
 r_struct
 id|sk_buff
+op_star
 op_star
 )paren
 )paren

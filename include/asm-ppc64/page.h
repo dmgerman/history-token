@@ -3,16 +3,20 @@ DECL|macro|_PPC64_PAGE_H
 mdefine_line|#define _PPC64_PAGE_H
 multiline_comment|/*&n; * Copyright (C) 2001 PPC64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef __ASSEMBLY__
+DECL|macro|ASM_CONST
+mdefine_line|#define ASM_CONST(x) x
+macro_line|#else
+DECL|macro|__ASM_CONST
+mdefine_line|#define __ASM_CONST(x) x##UL
+DECL|macro|ASM_CONST
+mdefine_line|#define ASM_CONST(x) __ASM_CONST(x)
+macro_line|#endif
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
-macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PAGE_SIZE
-macro_line|# define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
-macro_line|#else
-DECL|macro|PAGE_SIZE
-macro_line|# define PAGE_SIZE&t;(1 &lt;&lt; PAGE_SHIFT)
-macro_line|#endif
+mdefine_line|#define PAGE_SIZE&t;(ASM_CONST(1) &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PAGE_OFFSET_MASK
@@ -20,7 +24,7 @@ mdefine_line|#define PAGE_OFFSET_MASK (PAGE_SIZE-1)
 DECL|macro|SID_SHIFT
 mdefine_line|#define SID_SHIFT       28
 DECL|macro|SID_MASK
-mdefine_line|#define SID_MASK        0xfffffffff
+mdefine_line|#define SID_MASK        0xfffffffffUL
 DECL|macro|GET_ESID
 mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
@@ -400,15 +404,15 @@ multiline_comment|/*       KERNELBASE is defined for performance reasons. */
 multiline_comment|/*       When KERNELBASE moves, those macros may have   */
 multiline_comment|/*             to change!                               */
 DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET     0xC000000000000000
+mdefine_line|#define PAGE_OFFSET     ASM_CONST(0xC000000000000000)
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE      PAGE_OFFSET
 DECL|macro|VMALLOCBASE
-mdefine_line|#define VMALLOCBASE     0xD000000000000000
+mdefine_line|#define VMALLOCBASE     0xD000000000000000UL
 DECL|macro|IOREGIONBASE
-mdefine_line|#define IOREGIONBASE    0xE000000000000000
+mdefine_line|#define IOREGIONBASE    0xE000000000000000UL
 DECL|macro|EEHREGIONBASE
-mdefine_line|#define EEHREGIONBASE   0xA000000000000000
+mdefine_line|#define EEHREGIONBASE   0xA000000000000000UL
 DECL|macro|IO_REGION_ID
 mdefine_line|#define IO_REGION_ID       (IOREGIONBASE&gt;&gt;REGION_SHIFT)
 DECL|macro|EEH_REGION_ID

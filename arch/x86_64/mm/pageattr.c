@@ -467,11 +467,6 @@ r_void
 id|revert_page
 c_func
 (paren
-r_struct
-id|page
-op_star
-id|kpte_page
-comma
 r_int
 r_int
 id|address
@@ -818,8 +813,6 @@ suffix:semicolon
 id|revert_page
 c_func
 (paren
-id|kpte_page
-comma
 id|address
 comma
 id|ref_prot
@@ -920,9 +913,12 @@ id|err
 r_break
 suffix:semicolon
 multiline_comment|/* Handle kernel mapping too which aliases part of the&n;&t;&t; * lowmem */
+multiline_comment|/* Disabled right now. Fixme */
 r_if
 c_cond
 (paren
+l_int|0
+op_logical_and
 id|page_to_phys
 c_func
 (paren

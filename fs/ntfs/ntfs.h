@@ -84,6 +84,11 @@ suffix:semicolon
 r_extern
 r_struct
 id|address_space_operations
+id|ntfs_mst_aops
+suffix:semicolon
+r_extern
+r_struct
+id|address_space_operations
 id|ntfs_mft_aops
 suffix:semicolon
 r_extern

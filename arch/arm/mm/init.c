@@ -839,6 +839,16 @@ dot
 id|bootmap_pages
 suffix:semicolon
 )brace
+id|high_memory
+op_assign
+id|__va
+c_func
+(paren
+id|memend_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * This doesn&squot;t seem to be used by the Linux memory&n;&t; * manager any more.  If we can get rid of it, we&n;&t; * also get rid of some of the stuff above as well.&n;&t; */
 id|max_low_pfn
 op_assign
@@ -859,12 +869,6 @@ c_func
 (paren
 id|PHYS_OFFSET
 )paren
-suffix:semicolon
-id|mi-&gt;end
-op_assign
-id|memend_pfn
-op_lshift
-id|PAGE_SHIFT
 suffix:semicolon
 r_return
 id|bootmem_pages
@@ -1036,6 +1040,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+r_int
+r_int
+id|res_size
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Register the kernel text and data with bootmem.&n;&t; * Note that this can only be in node 0.&n;&t; */
 id|reserve_bootmem_node
 c_func
@@ -1093,7 +1103,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Hmm... This should go elsewhere, but we really really&n;&t; * need to stop things allocating the low memory; we need&n;&t; * a better implementation of GFP_DMA which does not assume&n;&t; * that DMA-able memory starts at zero.&n;&t; */
+multiline_comment|/*&n;&t; * Hmm... This should go elsewhere, but we really really need to&n;&t; * stop things allocating the low memory; ideally we need a better&n;&t; * implementation of GFP_DMA which does not assume that DMA-able&n;&t; * memory starts at zero.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1101,45 +1111,23 @@ id|machine_is_integrator
 c_func
 (paren
 )paren
-)paren
-id|reserve_bootmem_node
+op_logical_or
+id|machine_is_cintegrator
 c_func
 (paren
-id|pgdat
-comma
-l_int|0
-comma
+)paren
+)paren
+id|res_size
+op_assign
 id|__pa
 c_func
 (paren
 id|swapper_pg_dir
 )paren
-)paren
+op_minus
+id|PHYS_OFFSET
 suffix:semicolon
-multiline_comment|/*&n;&t; * These should likewise go elsewhere.  They pre-reserve&n;&t; * the screen memory region at the start of main system&n;&t; * memory.&n;&t; */
-r_if
-c_cond
-(paren
-id|machine_is_archimedes
-c_func
-(paren
-)paren
-op_logical_or
-id|machine_is_a5k
-c_func
-(paren
-)paren
-)paren
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-l_int|0x02000000
-comma
-l_int|0x00080000
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * These should likewise go elsewhere.  They pre-reserve the&n;&t; * screen memory region at the start of main system memory.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1148,15 +1136,9 @@ c_func
 (paren
 )paren
 )paren
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-l_int|0xc0000000
-comma
+id|res_size
+op_assign
 l_int|0x00020000
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1166,25 +1148,14 @@ c_func
 (paren
 )paren
 )paren
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-id|PHYS_OFFSET
-comma
+id|res_size
+op_assign
 l_int|0x00014000
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SA1111
-multiline_comment|/*&n;&t; * Because of the SA1111 DMA bug, we want to preserve&n;&t; * our precious DMA-able memory...&n;&t; */
-id|reserve_bootmem_node
-c_func
-(paren
-id|pgdat
-comma
-id|PHYS_OFFSET
-comma
+multiline_comment|/*&n;&t; * Because of the SA1111 DMA bug, we want to preserve our&n;&t; * precious DMA-able memory...&n;&t; */
+id|res_size
+op_assign
 id|__pa
 c_func
 (paren
@@ -1192,9 +1163,23 @@ id|swapper_pg_dir
 )paren
 op_minus
 id|PHYS_OFFSET
-)paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|res_size
+)paren
+id|reserve_bootmem_node
+c_func
+(paren
+id|pgdat
+comma
+id|PHYS_OFFSET
+comma
+id|res_size
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Register all available RAM in this node with the bootmem allocator.&n; */
 DECL|function|free_bootmem_node_bank
@@ -1942,18 +1927,6 @@ op_minus
 op_amp
 id|__init_begin
 suffix:semicolon
-id|high_memory
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|meminfo.end
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 id|max_mapnr
 op_assign
@@ -2179,6 +2152,12 @@ c_cond
 (paren
 op_logical_neg
 id|machine_is_integrator
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|machine_is_cintegrator
 c_func
 (paren
 )paren

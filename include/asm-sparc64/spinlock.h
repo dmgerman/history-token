@@ -135,6 +135,20 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|_raw_spin_lock_flags
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
 macro_line|#else /* !(CONFIG_DEBUG_SPINLOCK) */
 r_typedef
 r_struct
@@ -201,9 +215,9 @@ DECL|macro|_raw_spin_lock
 mdefine_line|#define _raw_spin_lock(lock)&t;_do_spin_lock(lock, &quot;spin_lock&quot;)
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock)&t;_do_spin_unlock(lock)
-macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 DECL|macro|_raw_spin_lock_flags
 mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 multiline_comment|/* Multi-reader locks, these are much saner than the 32-bit Sparc ones... */
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|typedef|rwlock_t
@@ -360,6 +374,20 @@ op_star
 id|rw
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|_do_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+comma
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
 DECL|macro|_raw_read_lock
 mdefine_line|#define _raw_read_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_read_lock(lock, &quot;read_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_read_unlock
@@ -368,6 +396,8 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_lock(lock, &quot;write_lock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
+DECL|macro|_raw_write_trylock
+mdefine_line|#define _raw_write_trylock(lock) &bslash;&n;({&t;unsigned long flags; &bslash;&n;&t;int val; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;val = _do_write_trylock(lock, &quot;write_trylock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;val; &bslash;&n;})
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SPINLOCK_H) */

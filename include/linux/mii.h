@@ -3,6 +3,7 @@ macro_line|#ifndef __LINUX_MII_H__
 DECL|macro|__LINUX_MII_H__
 mdefine_line|#define __LINUX_MII_H__
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/if.h&gt;
 multiline_comment|/* Generic MII registers. */
 DECL|macro|MII_BMCR
 mdefine_line|#define MII_BMCR            0x00        /* Basic mode control register */
@@ -377,6 +378,31 @@ id|val_out
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|if_mii
+r_static
+r_inline
+r_struct
+id|mii_ioctl_data
+op_star
+id|if_mii
+c_func
+(paren
+r_struct
+id|ifreq
+op_star
+id|rq
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|mii_ioctl_data
+op_star
+)paren
+op_amp
+id|rq-&gt;ifr_ifru
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * mii_nway_result&n; * @negotiated: value of MII ANAR and&squot;d with ANLPAR&n; *&n; * Given a set of MII abilities, check each bit and returns the&n; * currently supported media, in the priority order defined by&n; * IEEE 802.3u.  We use LPA_xxx constants but note this is not the&n; * value of LPA solely, as described above.&n; *&n; * The one exception to IEEE 802.3u is that 100baseT4 is placed&n; * between 100T-full and 100T-half.  If your phy does not support&n; * 100T4 this is fine.  If your phy places 100T4 elsewhere in the&n; * priority order, you will need to roll your own function.&n; */
 DECL|function|mii_nway_result
 r_static

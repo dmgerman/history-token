@@ -172,6 +172,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -191,6 +192,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -209,6 +211,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -1228,6 +1231,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1269,6 +1273,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2545,6 +2550,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2709,6 +2715,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2727,6 +2734,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2950,6 +2958,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3060,6 +3069,7 @@ comma
 r_const
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|buf
@@ -3080,6 +3090,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6088,8 +6099,9 @@ op_star
 id|tty
 comma
 r_char
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 r_char
@@ -6127,7 +6139,7 @@ c_func
 (paren
 id|ch
 comma
-id|arg
+id|p
 )paren
 )paren
 r_return
@@ -6167,6 +6179,7 @@ id|tty
 comma
 r_struct
 id|winsize
+id|__user
 op_star
 id|arg
 )paren
@@ -6215,6 +6228,7 @@ id|real_tty
 comma
 r_struct
 id|winsize
+id|__user
 op_star
 id|arg
 )paren
@@ -6507,8 +6521,9 @@ op_star
 id|file
 comma
 r_int
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 r_int
@@ -6522,7 +6537,7 @@ c_func
 (paren
 id|nonblock
 comma
-id|arg
+id|p
 )paren
 )paren
 r_return
@@ -6721,8 +6736,9 @@ op_star
 id|real_tty
 comma
 id|pid_t
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 multiline_comment|/*&n;&t; * (tty == real_tty) is a cheap way of&n;&t; * testing if the tty is NOT a master pty.&n;&t; */
@@ -6747,7 +6763,7 @@ c_func
 (paren
 id|real_tty-&gt;pgrp
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -6768,8 +6784,9 @@ op_star
 id|real_tty
 comma
 id|pid_t
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 id|pid_t
@@ -6834,11 +6851,7 @@ c_func
 (paren
 id|pgrp
 comma
-(paren
-id|pid_t
-op_star
-)paren
-id|arg
+id|p
 )paren
 )paren
 r_return
@@ -6896,8 +6909,9 @@ op_star
 id|real_tty
 comma
 id|pid_t
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 multiline_comment|/*&n;&t; * (tty == real_tty) is a cheap way of&n;&t; * testing if the tty is NOT a master pty.&n;&t;*/
@@ -6933,7 +6947,7 @@ c_func
 (paren
 id|real_tty-&gt;session
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -6949,8 +6963,9 @@ op_star
 id|tty
 comma
 r_int
+id|__user
 op_star
-id|arg
+id|p
 )paren
 (brace
 r_int
@@ -6964,7 +6979,7 @@ c_func
 (paren
 id|ldisc
 comma
-id|arg
+id|p
 )paren
 )paren
 r_return
@@ -7073,8 +7088,9 @@ op_star
 id|file
 comma
 r_int
-r_int
-id|arg
+id|__user
+op_star
+id|p
 )paren
 (brace
 r_int
@@ -7115,11 +7131,7 @@ c_func
 (paren
 id|retval
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 )brace
@@ -7148,8 +7160,9 @@ r_int
 id|cmd
 comma
 r_int
-r_int
-id|arg
+id|__user
+op_star
+id|p
 )paren
 (brace
 r_int
@@ -7179,12 +7192,7 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_if
@@ -7317,6 +7325,18 @@ id|tty
 comma
 op_star
 id|real_tty
+suffix:semicolon
+r_void
+id|__user
+op_star
+id|p
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_int
 id|retval
@@ -7546,11 +7566,7 @@ c_func
 (paren
 id|tty
 comma
-(paren
-r_char
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7562,12 +7578,7 @@ c_func
 (paren
 id|tty
 comma
-(paren
-r_struct
-id|winsize
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7581,12 +7592,7 @@ id|tty
 comma
 id|real_tty
 comma
-(paren
-r_struct
-id|winsize
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7616,11 +7622,7 @@ c_func
 (paren
 id|file
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7720,11 +7722,7 @@ id|tty
 comma
 id|real_tty
 comma
-(paren
-id|pid_t
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7738,11 +7736,7 @@ id|tty
 comma
 id|real_tty
 comma
-(paren
-id|pid_t
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7756,11 +7750,7 @@ id|tty
 comma
 id|real_tty
 comma
-(paren
-id|pid_t
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7774,9 +7764,10 @@ id|tty-&gt;ldisc.num
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7788,11 +7779,7 @@ c_func
 (paren
 id|tty
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_VT
@@ -7907,7 +7894,7 @@ id|tty
 comma
 id|file
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -7929,7 +7916,7 @@ id|file
 comma
 id|cmd
 comma
-id|arg
+id|p
 )paren
 suffix:semicolon
 )brace

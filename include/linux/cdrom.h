@@ -373,6 +373,7 @@ suffix:semicolon
 multiline_comment|/* number of 2352-byte-frames to read at once */
 DECL|member|buf
 id|__u8
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -459,6 +460,7 @@ suffix:semicolon
 DECL|member|buffer
 r_int
 r_char
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -474,6 +476,7 @@ suffix:semicolon
 DECL|member|sense
 r_struct
 id|request_sense
+id|__user
 op_star
 id|sense
 suffix:semicolon
@@ -492,12 +495,14 @@ id|timeout
 suffix:semicolon
 DECL|member|reserved
 r_void
+id|__user
 op_star
 id|reserved
 (braket
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* unused, actually */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * A CD-ROM physical sector size is 2048, 2052, 2056, 2324, 2332, 2336, &n; * 2340, or 2352 bytes long.  &n;&n;*         Sector types of the standard CD-ROM data formats:&n; *&n; * format   sector type               user data size (bytes)&n; * -----------------------------------------------------------------------------&n; *   1     (Red Book)    CD-DA          2352    (CD_FRAMESIZE_RAW)&n; *   2     (Yellow Book) Mode1 Form1    2048    (CD_FRAMESIZE)&n; *   3     (Yellow Book) Mode1 Form2    2336    (CD_FRAMESIZE_RAW0)&n; *   4     (Green Book)  Mode2 Form1    2048    (CD_FRAMESIZE)&n; *   5     (Green Book)  Mode2 Form2    2328    (2324+4 spare bytes)&n; *&n; *&n; *       The layout of the standard CD-ROM data formats:&n; * -----------------------------------------------------------------------------&n; * - audio (red):                  | audio_sample_bytes |&n; *                                 |        2352        |&n; *&n; * - data (yellow, mode1):         | sync - head - data - EDC - zero - ECC |&n; *                                 |  12  -   4  - 2048 -  4  -   8  - 276 |&n; *&n; * - data (yellow, mode2):         | sync - head - data |&n; *                                 |  12  -   4  - 2336 |&n; *&n; * - XA data (green, mode2 form1): | sync - head - sub - data - EDC - ECC |&n; *                                 |  12  -   4  -  8  - 2048 -  4  - 276 |&n; *&n; * - XA data (green, mode2 form2): | sync - head - sub - data - Spare |&n; *                                 |  12  -   4  -  8  - 2324 -  4    |&n; *&n; */
@@ -2148,6 +2153,62 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* not really needed, later.. */
 macro_line|#include &lt;linux/device.h&gt;
+DECL|struct|packet_command
+r_struct
+id|packet_command
+(brace
+DECL|member|cmd
+r_int
+r_char
+id|cmd
+(braket
+id|CDROM_PACKET_SIZE
+)braket
+suffix:semicolon
+DECL|member|buffer
+r_int
+r_char
+op_star
+id|buffer
+suffix:semicolon
+DECL|member|buflen
+r_int
+r_int
+id|buflen
+suffix:semicolon
+DECL|member|stat
+r_int
+id|stat
+suffix:semicolon
+DECL|member|sense
+r_struct
+id|request_sense
+op_star
+id|sense
+suffix:semicolon
+DECL|member|data_direction
+r_int
+r_char
+id|data_direction
+suffix:semicolon
+DECL|member|quiet
+r_int
+id|quiet
+suffix:semicolon
+DECL|member|timeout
+r_int
+id|timeout
+suffix:semicolon
+DECL|member|reserved
+r_void
+op_star
+id|reserved
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * _OLD will use PIO transfer on atapi devices, _BPC_* will use DMA&n; */
 DECL|macro|CDDA_OLD
 mdefine_line|#define CDDA_OLD&t;&t;0&t;/* old style */
@@ -2500,7 +2561,7 @@ id|cdrom_device_info
 op_star
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 )paren
 suffix:semicolon
@@ -2664,7 +2725,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 )paren
@@ -2680,7 +2741,7 @@ op_star
 id|cdi
 comma
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma
@@ -2697,7 +2758,7 @@ id|init_cdrom_command
 c_func
 (paren
 r_struct
-id|cdrom_generic_command
+id|packet_command
 op_star
 id|cgc
 comma

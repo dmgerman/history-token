@@ -122,7 +122,7 @@ id|DECLARE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|ipstats_mib
 comma
 id|ipv6_statistics
 )paren
@@ -455,6 +455,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1161,18 +1162,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ip6_output2
-c_func
-(paren
-r_struct
-id|sk_buff
 op_star
-id|skb
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -1371,6 +1362,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1395,10 +1387,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

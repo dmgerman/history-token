@@ -145,8 +145,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n; * Receive ring size &n; * Warning: 64K ring has hardware issues and may lock up.&n; */
+macro_line|#if defined(CONFIG_SH_DREAMCAST)
+DECL|macro|RX_BUF_IDX
+mdefine_line|#define RX_BUF_IDX&t;1&t;/* 16K ring */
+macro_line|#else
 DECL|macro|RX_BUF_IDX
 mdefine_line|#define RX_BUF_IDX&t;2&t;/* 32K ring */
+macro_line|#endif
 DECL|macro|RX_BUF_LEN
 mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_IDX)
 DECL|macro|RX_BUF_PAD
@@ -10556,19 +10561,6 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-r_struct
-id|mii_ioctl_data
-op_star
-id|data
-op_assign
-(paren
-r_struct
-id|mii_ioctl_data
-op_star
-)paren
-op_amp
-id|rq-&gt;ifr_data
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -10601,7 +10593,11 @@ c_func
 op_amp
 id|np-&gt;mii
 comma
-id|data
+id|if_mii
+c_func
+(paren
+id|rq
+)paren
 comma
 id|cmd
 comma

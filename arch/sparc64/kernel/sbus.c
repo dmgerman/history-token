@@ -3680,27 +3680,27 @@ mdefine_line|#define SYSIO_UE_AFSR&t;0x0030UL
 DECL|macro|SYSIO_UE_AFAR
 mdefine_line|#define SYSIO_UE_AFAR&t;0x0038UL
 DECL|macro|SYSIO_UEAFSR_PPIO
-mdefine_line|#define  SYSIO_UEAFSR_PPIO&t;0x8000000000000000 /* Primary PIO is cause         */
+mdefine_line|#define  SYSIO_UEAFSR_PPIO  0x8000000000000000UL /* Primary PIO cause         */
 DECL|macro|SYSIO_UEAFSR_PDRD
-mdefine_line|#define  SYSIO_UEAFSR_PDRD&t;0x4000000000000000 /* Primary DVMA read is cause   */
+mdefine_line|#define  SYSIO_UEAFSR_PDRD  0x4000000000000000UL /* Primary DVMA read cause   */
 DECL|macro|SYSIO_UEAFSR_PDWR
-mdefine_line|#define  SYSIO_UEAFSR_PDWR&t;0x2000000000000000 /* Primary DVMA write is cause  */
+mdefine_line|#define  SYSIO_UEAFSR_PDWR  0x2000000000000000UL /* Primary DVMA write cause  */
 DECL|macro|SYSIO_UEAFSR_SPIO
-mdefine_line|#define  SYSIO_UEAFSR_SPIO&t;0x1000000000000000 /* Secondary PIO is cause       */
+mdefine_line|#define  SYSIO_UEAFSR_SPIO  0x1000000000000000UL /* Secondary PIO is cause    */
 DECL|macro|SYSIO_UEAFSR_SDRD
-mdefine_line|#define  SYSIO_UEAFSR_SDRD&t;0x0800000000000000 /* Secondary DVMA read is cause */
+mdefine_line|#define  SYSIO_UEAFSR_SDRD  0x0800000000000000UL /* Secondary DVMA read cause */
 DECL|macro|SYSIO_UEAFSR_SDWR
-mdefine_line|#define  SYSIO_UEAFSR_SDWR&t;0x0400000000000000 /* Secondary DVMA write is cause*/
+mdefine_line|#define  SYSIO_UEAFSR_SDWR  0x0400000000000000UL /* Secondary DVMA write cause*/
 DECL|macro|SYSIO_UEAFSR_RESV1
-mdefine_line|#define  SYSIO_UEAFSR_RESV1&t;0x03ff000000000000 /* Reserved                     */
+mdefine_line|#define  SYSIO_UEAFSR_RESV1 0x03ff000000000000UL /* Reserved                  */
 DECL|macro|SYSIO_UEAFSR_DOFF
-mdefine_line|#define  SYSIO_UEAFSR_DOFF&t;0x0000e00000000000 /* Doubleword Offset            */
+mdefine_line|#define  SYSIO_UEAFSR_DOFF  0x0000e00000000000UL /* Doubleword Offset         */
 DECL|macro|SYSIO_UEAFSR_SIZE
-mdefine_line|#define  SYSIO_UEAFSR_SIZE&t;0x00001c0000000000 /* Bad transfer size is 2**SIZE */
+mdefine_line|#define  SYSIO_UEAFSR_SIZE  0x00001c0000000000UL /* Bad transfer size 2^SIZE  */
 DECL|macro|SYSIO_UEAFSR_MID
-mdefine_line|#define  SYSIO_UEAFSR_MID&t;0x000003e000000000 /* UPA MID causing the fault    */
+mdefine_line|#define  SYSIO_UEAFSR_MID   0x000003e000000000UL /* UPA MID causing the fault */
 DECL|macro|SYSIO_UEAFSR_RESV2
-mdefine_line|#define  SYSIO_UEAFSR_RESV2&t;0x0000001fffffffff /* Reserved                     */
+mdefine_line|#define  SYSIO_UEAFSR_RESV2 0x0000001fffffffffUL /* Reserved                  */
 DECL|function|sysio_ue_handler
 r_static
 id|irqreturn_t
@@ -3996,29 +3996,29 @@ mdefine_line|#define SYSIO_CE_AFSR&t;0x0040UL
 DECL|macro|SYSIO_CE_AFAR
 mdefine_line|#define SYSIO_CE_AFAR&t;0x0048UL
 DECL|macro|SYSIO_CEAFSR_PPIO
-mdefine_line|#define  SYSIO_CEAFSR_PPIO&t;0x8000000000000000 /* Primary PIO is cause         */
+mdefine_line|#define  SYSIO_CEAFSR_PPIO  0x8000000000000000UL /* Primary PIO cause         */
 DECL|macro|SYSIO_CEAFSR_PDRD
-mdefine_line|#define  SYSIO_CEAFSR_PDRD&t;0x4000000000000000 /* Primary DVMA read is cause   */
+mdefine_line|#define  SYSIO_CEAFSR_PDRD  0x4000000000000000UL /* Primary DVMA read cause   */
 DECL|macro|SYSIO_CEAFSR_PDWR
-mdefine_line|#define  SYSIO_CEAFSR_PDWR&t;0x2000000000000000 /* Primary DVMA write is cause  */
+mdefine_line|#define  SYSIO_CEAFSR_PDWR  0x2000000000000000UL /* Primary DVMA write cause  */
 DECL|macro|SYSIO_CEAFSR_SPIO
-mdefine_line|#define  SYSIO_CEAFSR_SPIO&t;0x1000000000000000 /* Secondary PIO is cause       */
+mdefine_line|#define  SYSIO_CEAFSR_SPIO  0x1000000000000000UL /* Secondary PIO cause       */
 DECL|macro|SYSIO_CEAFSR_SDRD
-mdefine_line|#define  SYSIO_CEAFSR_SDRD&t;0x0800000000000000 /* Secondary DVMA read is cause */
+mdefine_line|#define  SYSIO_CEAFSR_SDRD  0x0800000000000000UL /* Secondary DVMA read cause */
 DECL|macro|SYSIO_CEAFSR_SDWR
-mdefine_line|#define  SYSIO_CEAFSR_SDWR&t;0x0400000000000000 /* Secondary DVMA write is cause*/
+mdefine_line|#define  SYSIO_CEAFSR_SDWR  0x0400000000000000UL /* Secondary DVMA write cause*/
 DECL|macro|SYSIO_CEAFSR_RESV1
-mdefine_line|#define  SYSIO_CEAFSR_RESV1&t;0x0300000000000000 /* Reserved                     */
+mdefine_line|#define  SYSIO_CEAFSR_RESV1 0x0300000000000000UL /* Reserved                  */
 DECL|macro|SYSIO_CEAFSR_ESYND
-mdefine_line|#define  SYSIO_CEAFSR_ESYND&t;0x00ff000000000000 /* Syndrome Bits                */
+mdefine_line|#define  SYSIO_CEAFSR_ESYND 0x00ff000000000000UL /* Syndrome Bits             */
 DECL|macro|SYSIO_CEAFSR_DOFF
-mdefine_line|#define  SYSIO_CEAFSR_DOFF&t;0x0000e00000000000 /* Double Offset                */
+mdefine_line|#define  SYSIO_CEAFSR_DOFF  0x0000e00000000000UL /* Double Offset             */
 DECL|macro|SYSIO_CEAFSR_SIZE
-mdefine_line|#define  SYSIO_CEAFSR_SIZE&t;0x00001c0000000000 /* Bad transfer size is 2**SIZE */
+mdefine_line|#define  SYSIO_CEAFSR_SIZE  0x00001c0000000000UL /* Bad transfer size 2^SIZE  */
 DECL|macro|SYSIO_CEAFSR_MID
-mdefine_line|#define  SYSIO_CEAFSR_MID&t;0x000003e000000000 /* UPA MID causing the fault    */
+mdefine_line|#define  SYSIO_CEAFSR_MID   0x000003e000000000UL /* UPA MID causing the fault */
 DECL|macro|SYSIO_CEAFSR_RESV2
-mdefine_line|#define  SYSIO_CEAFSR_RESV2&t;0x0000001fffffffff /* Reserved                     */
+mdefine_line|#define  SYSIO_CEAFSR_RESV2 0x0000001fffffffffUL /* Reserved                  */
 DECL|function|sysio_ce_handler
 r_static
 id|irqreturn_t
@@ -4322,29 +4322,29 @@ mdefine_line|#define SYSIO_SBUS_AFSR&t;&t;0x2010UL
 DECL|macro|SYSIO_SBUS_AFAR
 mdefine_line|#define SYSIO_SBUS_AFAR&t;&t;0x2018UL
 DECL|macro|SYSIO_SBAFSR_PLE
-mdefine_line|#define  SYSIO_SBAFSR_PLE&t;0x8000000000000000 /* Primary Late PIO Error       */
+mdefine_line|#define  SYSIO_SBAFSR_PLE   0x8000000000000000UL /* Primary Late PIO Error    */
 DECL|macro|SYSIO_SBAFSR_PTO
-mdefine_line|#define  SYSIO_SBAFSR_PTO&t;0x4000000000000000 /* Primary SBUS Timeout         */
+mdefine_line|#define  SYSIO_SBAFSR_PTO   0x4000000000000000UL /* Primary SBUS Timeout      */
 DECL|macro|SYSIO_SBAFSR_PBERR
-mdefine_line|#define  SYSIO_SBAFSR_PBERR&t;0x2000000000000000 /* Primary SBUS Error ACK       */
+mdefine_line|#define  SYSIO_SBAFSR_PBERR 0x2000000000000000UL /* Primary SBUS Error ACK    */
 DECL|macro|SYSIO_SBAFSR_SLE
-mdefine_line|#define  SYSIO_SBAFSR_SLE&t;0x1000000000000000 /* Secondary Late PIO Error     */
+mdefine_line|#define  SYSIO_SBAFSR_SLE   0x1000000000000000UL /* Secondary Late PIO Error  */
 DECL|macro|SYSIO_SBAFSR_STO
-mdefine_line|#define  SYSIO_SBAFSR_STO&t;0x0800000000000000 /* Secondary SBUS Timeout       */
+mdefine_line|#define  SYSIO_SBAFSR_STO   0x0800000000000000UL /* Secondary SBUS Timeout    */
 DECL|macro|SYSIO_SBAFSR_SBERR
-mdefine_line|#define  SYSIO_SBAFSR_SBERR&t;0x0400000000000000 /* Secondary SBUS Error ACK     */
+mdefine_line|#define  SYSIO_SBAFSR_SBERR 0x0400000000000000UL /* Secondary SBUS Error ACK  */
 DECL|macro|SYSIO_SBAFSR_RESV1
-mdefine_line|#define  SYSIO_SBAFSR_RESV1&t;0x03ff000000000000 /* Reserved                     */
+mdefine_line|#define  SYSIO_SBAFSR_RESV1 0x03ff000000000000UL /* Reserved                  */
 DECL|macro|SYSIO_SBAFSR_RD
-mdefine_line|#define  SYSIO_SBAFSR_RD&t;0x0000800000000000 /* Primary was late PIO read    */
+mdefine_line|#define  SYSIO_SBAFSR_RD    0x0000800000000000UL /* Primary was late PIO read */
 DECL|macro|SYSIO_SBAFSR_RESV2
-mdefine_line|#define  SYSIO_SBAFSR_RESV2&t;0x0000600000000000 /* Reserved                     */
+mdefine_line|#define  SYSIO_SBAFSR_RESV2 0x0000600000000000UL /* Reserved                  */
 DECL|macro|SYSIO_SBAFSR_SIZE
-mdefine_line|#define  SYSIO_SBAFSR_SIZE&t;0x00001c0000000000 /* Size of transfer             */
+mdefine_line|#define  SYSIO_SBAFSR_SIZE  0x00001c0000000000UL /* Size of transfer          */
 DECL|macro|SYSIO_SBAFSR_MID
-mdefine_line|#define  SYSIO_SBAFSR_MID&t;0x000003e000000000 /* MID causing the error        */
+mdefine_line|#define  SYSIO_SBAFSR_MID   0x000003e000000000UL /* MID causing the error     */
 DECL|macro|SYSIO_SBAFSR_RESV3
-mdefine_line|#define  SYSIO_SBAFSR_RESV3&t;0x0000001fffffffff /* Reserved                     */
+mdefine_line|#define  SYSIO_SBAFSR_RESV3 0x0000001fffffffffUL /* Reserved                  */
 DECL|function|sysio_sbus_error_handler
 r_static
 id|irqreturn_t
@@ -4641,11 +4641,11 @@ suffix:semicolon
 DECL|macro|ECC_CONTROL
 mdefine_line|#define ECC_CONTROL&t;0x0020UL
 DECL|macro|SYSIO_ECNTRL_ECCEN
-mdefine_line|#define  SYSIO_ECNTRL_ECCEN&t;0x8000000000000000 /* Enable ECC Checking          */
+mdefine_line|#define  SYSIO_ECNTRL_ECCEN&t;0x8000000000000000UL /* Enable ECC Checking   */
 DECL|macro|SYSIO_ECNTRL_UEEN
-mdefine_line|#define  SYSIO_ECNTRL_UEEN&t;0x4000000000000000 /* Enable UE Interrupts         */
+mdefine_line|#define  SYSIO_ECNTRL_UEEN&t;0x4000000000000000UL /* Enable UE Interrupts  */
 DECL|macro|SYSIO_ECNTRL_CEEN
-mdefine_line|#define  SYSIO_ECNTRL_CEEN&t;0x2000000000000000 /* Enable CE Interrupts         */
+mdefine_line|#define  SYSIO_ECNTRL_CEEN&t;0x2000000000000000UL /* Enable CE Interrupts  */
 DECL|macro|SYSIO_UE_INO
 mdefine_line|#define SYSIO_UE_INO&t;&t;0x34
 DECL|macro|SYSIO_CE_INO

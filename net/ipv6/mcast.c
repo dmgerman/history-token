@@ -2394,10 +2394,12 @@ id|gsf
 comma
 r_struct
 id|group_filter
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -2624,10 +2626,6 @@ op_logical_or
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|optval
 comma
 id|gsf
@@ -2710,10 +2708,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 op_amp
 id|optval-&gt;gf_slist
 (braket
@@ -6349,7 +6343,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|payload_len
@@ -6445,7 +6439,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutMcastPkts
+id|OutMcastPkts
 )paren
 suffix:semicolon
 )brace
@@ -6453,7 +6447,7 @@ r_else
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_if
@@ -7980,7 +7974,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|snd_addr
@@ -8073,7 +8067,7 @@ l_int|NULL
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -8374,7 +8368,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutMcastPkts
+id|OutMcastPkts
 )paren
 suffix:semicolon
 )brace
@@ -8382,7 +8376,7 @@ r_else
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_if
@@ -8409,7 +8403,7 @@ suffix:colon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 id|kfree_skb

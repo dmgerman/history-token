@@ -51,7 +51,6 @@ op_assign
 id|ASN_FIRST_VERSION
 suffix:semicolon
 macro_line|#endif
-r_extern
 r_void
 DECL|function|__load_new_mm_context
 id|__load_new_mm_context

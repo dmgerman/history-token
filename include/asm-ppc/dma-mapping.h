@@ -3,13 +3,103 @@ macro_line|#ifndef __ASM_PPC_DMA_MAPPING_H
 DECL|macro|__ASM_PPC_DMA_MAPPING_H
 mdefine_line|#define __ASM_PPC_DMA_MAPPING_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* we implement the API below in terms of the existing PCI one,&n; * so include it */
-macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/* need struct page definitions */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+multiline_comment|/*&n; * DMA-consistent mapping functions for PowerPCs that don&squot;t support&n; * cache snooping.  These allocate/free a region of uncached mapped&n; * memory space for use with DMA devices.  Alternatively, you could&n; * allocate the space &quot;normally&quot; and use the cache management functions&n; * to ensure it is consistent.&n; */
+r_extern
+r_void
+op_star
+id|__dma_alloc_coherent
+c_func
+(paren
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|handle
+comma
+r_int
+id|gfp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__dma_free_coherent
+c_func
+(paren
+r_int
+id|size
+comma
+r_void
+op_star
+id|vaddr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__dma_sync
+c_func
+(paren
+r_void
+op_star
+id|vaddr
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__dma_sync_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|offset
+comma
+r_int
+id|size
+comma
+r_int
+id|direction
+)paren
+suffix:semicolon
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(_start,_size) &bslash;&n;&t;invalidate_dcache_range(_start, (_start + _size))
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(_start,_size) &bslash;&n;&t;clean_dcache_range(_start, (_start + _size))
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(_start,_size) &bslash;&n;&t;flush_dcache_range(_start, (_start + _size))
+macro_line|#else /* ! CONFIG_NOT_COHERENT_CACHE */
+multiline_comment|/*&n; * Cache coherent cores.&n; */
+DECL|macro|dma_cache_inv
+mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
+DECL|macro|dma_cache_wback
+mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
+DECL|macro|dma_cache_wback_inv
+mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
+DECL|macro|__dma_alloc_coherent
+mdefine_line|#define __dma_alloc_coherent(gfp, size, handle)&t;NULL
+DECL|macro|__dma_free_coherent
+mdefine_line|#define __dma_free_coherent(size, addr)&t;&t;do { } while (0)
+DECL|macro|__dma_sync
+mdefine_line|#define __dma_sync(addr, size, rw)&t;&t;do { } while (0)
+DECL|macro|__dma_sync_page
+mdefine_line|#define __dma_sync_page(pg, off, sz, rw)&t;do { } while (0)
+macro_line|#endif /* ! CONFIG_NOT_COHERENT_CACHE */
 DECL|macro|dma_supported
 mdefine_line|#define dma_supported(dev, mask)&t;(1)
 DECL|function|dma_set_mask
@@ -77,47 +167,101 @@ op_star
 id|dma_handle
 comma
 r_int
-id|flag
+id|gfp
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+r_return
+id|__dma_alloc_coherent
+c_func
+(paren
+id|size
+comma
+id|dma_handle
+comma
+id|gfp
+)paren
+suffix:semicolon
+macro_line|#else
+r_void
+op_star
+id|ret
+suffix:semicolon
+multiline_comment|/* ignore region specifiers */
+id|gfp
+op_and_assign
+op_complement
+(paren
+id|__GFP_DMA
+op_or
+id|__GFP_HIGHMEM
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|dev
-op_logical_and
-id|dev-&gt;bus
 op_eq
-op_amp
-id|pci_bus_type
+l_int|NULL
+op_logical_or
+id|dev-&gt;coherent_dma_mask
+OL
+l_int|0xffffffff
 )paren
-r_return
-id|pci_alloc_consistent
+id|gfp
+op_or_assign
+id|GFP_DMA
+suffix:semicolon
+id|ret
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|__get_free_pages
 c_func
 (paren
-id|to_pci_dev
+id|gfp
+comma
+id|get_order
 c_func
 (paren
-id|dev
+id|size
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|NULL
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|ret
+comma
+l_int|0
 comma
 id|size
-comma
-id|dma_handle
 )paren
+suffix:semicolon
+op_star
+id|dma_handle
+op_assign
+id|virt_to_bus
+c_func
+(paren
+id|ret
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 macro_line|#endif
-r_return
-id|consistent_alloc
-c_func
-(paren
-id|flag
-comma
-id|size
-comma
-id|dma_handle
-)paren
-suffix:semicolon
 )brace
 r_static
 r_inline
@@ -142,44 +286,33 @@ id|dma_addr_t
 id|dma_handle
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|dev
-op_logical_and
-id|dev-&gt;bus
-op_eq
-op_amp
-id|pci_bus_type
-)paren
-(brace
-id|pci_free_consistent
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+id|__dma_free_coherent
 c_func
 (paren
-id|to_pci_dev
-c_func
-(paren
-id|dev
-)paren
-comma
 id|size
 comma
 id|vaddr
-comma
-id|dma_handle
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
-id|consistent_free
+macro_line|#else
+id|free_pages
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|vaddr
+comma
+id|get_order
+c_func
+(paren
+id|size
+)paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_static
 r_inline
@@ -213,7 +346,7 @@ op_eq
 id|DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync
+id|__dma_sync
 c_func
 (paren
 id|ptr
@@ -271,7 +404,7 @@ op_eq
 id|DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync_page
+id|__dma_sync_page
 c_func
 (paren
 id|page
@@ -299,7 +432,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* We do nothing. */
 DECL|macro|dma_unmap_page
-mdefine_line|#define dma_unmap_page(dev, addr, size, dir)&t;do { } while (0)
+mdefine_line|#define dma_unmap_page(dev, handle, size, dir)&t;do { } while (0)
 r_static
 r_inline
 r_int
@@ -361,7 +494,7 @@ op_logical_neg
 id|sg-&gt;page
 )paren
 suffix:semicolon
-id|consistent_sync_page
+id|__dma_sync_page
 c_func
 (paren
 id|sg-&gt;page
@@ -422,7 +555,7 @@ op_eq
 id|DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync
+id|__dma_sync
 c_func
 (paren
 id|bus_to_virt
@@ -468,7 +601,7 @@ op_eq
 id|DMA_NONE
 )paren
 suffix:semicolon
-id|consistent_sync
+id|__dma_sync
 c_func
 (paren
 id|bus_to_virt
@@ -501,7 +634,7 @@ op_star
 id|sg
 comma
 r_int
-id|nelems
+id|nents
 comma
 r_enum
 id|dma_data_direction
@@ -528,7 +661,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nelems
+id|nents
 suffix:semicolon
 id|i
 op_increment
@@ -536,7 +669,7 @@ comma
 id|sg
 op_increment
 )paren
-id|consistent_sync_page
+id|__dma_sync_page
 c_func
 (paren
 id|sg-&gt;page
@@ -567,7 +700,7 @@ op_star
 id|sg
 comma
 r_int
-id|nelems
+id|nents
 comma
 r_enum
 id|dma_data_direction
@@ -594,7 +727,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nelems
+id|nents
 suffix:semicolon
 id|i
 op_increment
@@ -602,7 +735,7 @@ comma
 id|sg
 op_increment
 )paren
-id|consistent_sync_page
+id|__dma_sync_page
 c_func
 (paren
 id|sg-&gt;page
@@ -615,13 +748,17 @@ id|direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now for the API extensions over the pci_ one */
 DECL|macro|dma_alloc_noncoherent
 mdefine_line|#define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
 DECL|macro|dma_free_noncoherent
 mdefine_line|#define dma_free_noncoherent(d, s, v, h) dma_free_coherent(d, s, v, h)
+macro_line|#ifdef CONFIG_NOT_COHERENT_CACHE
+DECL|macro|dma_is_consistent
+mdefine_line|#define dma_is_consistent(d)&t;(0)
+macro_line|#else
 DECL|macro|dma_is_consistent
 mdefine_line|#define dma_is_consistent(d)&t;(1)
+macro_line|#endif
 DECL|function|dma_get_cache_alignment
 r_static
 r_inline
@@ -664,7 +801,7 @@ id|dma_data_direction
 id|direction
 )paren
 (brace
-multiline_comment|/* just sync everything, that&squot;s all the pci API can do */
+multiline_comment|/* just sync everything for now */
 id|dma_sync_single_for_cpu
 c_func
 (paren
@@ -707,7 +844,7 @@ id|dma_data_direction
 id|direction
 )paren
 (brace
-multiline_comment|/* just sync everything, that&squot;s all the pci API can do */
+multiline_comment|/* just sync everything for now */
 id|dma_sync_single_for_device
 c_func
 (paren
@@ -742,7 +879,7 @@ id|dma_data_direction
 id|direction
 )paren
 (brace
-id|consistent_sync
+id|__dma_sync
 c_func
 (paren
 id|vaddr

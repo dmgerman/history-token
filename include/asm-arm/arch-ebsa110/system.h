@@ -28,7 +28,11 @@ multiline_comment|/* disable clock switching */
 id|asm
 r_volatile
 (paren
-l_string|&quot;mcr%? p15, 0, ip, c15, c2, 2&quot;
+l_string|&quot;mcr p15, 0, ip, c15, c2, 2&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* wait for an interrupt to occur */
@@ -44,7 +48,11 @@ multiline_comment|/* enable clock switching */
 id|asm
 r_volatile
 (paren
-l_string|&quot;mcr%? p15, 0, ip, c15, c1, 2&quot;
+l_string|&quot;mcr p15, 0, ip, c15, c1, 2&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace

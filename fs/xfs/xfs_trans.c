@@ -2779,8 +2779,8 @@ id|tp-&gt;t_logcb.cb_arg
 op_assign
 id|tp
 suffix:semicolon
-multiline_comment|/* We need to pass the iclog buffer which was used for the&n;&t; * transaction commit record into this function, and attach&n;&t; * the callback to it. The callback must be attached before&n;&t; * the items are unlocked to avoid racing with other threads&n;&t; * waiting for an item to unlock.&n;&t; */
-id|error
+multiline_comment|/*&n;&t; * We need to pass the iclog buffer which was used for the&n;&t; * transaction commit record into this function, and attach&n;&t; * the callback to it. The callback must be attached before&n;&t; * the items are unlocked to avoid racing with other threads&n;&t; * waiting for an item to unlock.&n;&t; */
+id|shutdown
 op_assign
 id|xfs_log_notify
 c_func
@@ -2795,7 +2795,7 @@ id|tp-&gt;t_logcb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* mark this thread as no longer being in a transaction */
+multiline_comment|/*&n;&t; * Mark this thread as no longer being in a transaction&n;&t; */
 id|PFLAGS_RESTORE_FSTRANS
 c_func
 (paren
@@ -2810,6 +2810,20 @@ c_func
 id|tp
 comma
 id|commit_lsn
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we detected a log error earlier, finish committing&n;&t; * the transaction now (unpin log items, etc).&n;&t; *&n;&t; * Order is critical here, to avoid using the transaction&n;&t; * pointer after its been freed (by xfs_trans_committed&n;&t; * either here now, or as a callback).  We cannot do this&n;&t; * step inside xfs_log_notify as was done earlier because&n;&t; * of this issue.&n;&t; */
+r_if
+c_cond
+(paren
+id|shutdown
+)paren
+id|xfs_trans_committed
+c_func
+(paren
+id|tp
+comma
+id|XFS_LI_ABORTED
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now that the xfs_trans_committed callback has been attached,&n;&t; * and the items are released we can finally allow the iclog to&n;&t; * go to disk.&n;&t; */
@@ -3854,21 +3868,6 @@ id|lip-&gt;li_flags
 op_or_assign
 id|XFS_LI_ABORTED
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lidp-&gt;lid_flags
-op_amp
-id|XFS_LID_SYNC_UNLOCK
-)paren
-(brace
-id|IOP_UNLOCK
-c_func
-(paren
-id|lip
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * Send in the ABORTED flag to the COMMITTED routine&n;&t;&t; * so that it knows whether the transaction was aborted&n;&t;&t; * or not.&n;&t;&t; */
 id|item_lsn
 op_assign

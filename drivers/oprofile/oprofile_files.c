@@ -38,6 +38,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -53,10 +54,6 @@ r_return
 id|oprofilefs_ulong_to_user
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 r_sizeof
 (paren
 r_void
@@ -97,6 +94,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -148,6 +146,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -186,6 +185,7 @@ id|file
 comma
 r_char
 r_const
+id|__user
 op_star
 id|buf
 comma
@@ -297,6 +297,7 @@ id|file
 comma
 r_char
 r_const
+id|__user
 op_star
 id|buf
 comma

@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|WD_VER
-mdefine_line|#define WD_VER                  &quot;1.16 (03/27/2004)&quot;
+mdefine_line|#define WD_VER                  &quot;1.16 (06/12/2004)&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;&quot;pcwd: &quot;
 multiline_comment|/*&n; * It should be noted that PCWD_REVISION_B was removed because A and B&n; * are essentially the same types of card, with the exception that B&n; * has temperature reporting.  Since I didn&squot;t receive a Rev.B card,&n; * the Rev.B card is not supported.  (It&squot;s a good thing too, as they&n; * are no longer in production.)&n; */
@@ -832,7 +832,7 @@ suffix:semicolon
 )brace
 DECL|function|pcwd_keepalive
 r_static
-r_void
+r_int
 id|pcwd_keepalive
 c_func
 (paren
@@ -849,6 +849,9 @@ id|heartbeat
 op_star
 id|HZ
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|pcwd_set_heartbeat
@@ -1217,6 +1220,18 @@ suffix:semicolon
 r_int
 id|new_heartbeat
 suffix:semicolon
+r_int
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_int
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
@@ -1269,11 +1284,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|ident
@@ -1309,11 +1320,7 @@ c_func
 (paren
 id|status
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -1325,11 +1332,7 @@ c_func
 (paren
 id|initial_status
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -1355,11 +1358,7 @@ c_func
 (paren
 id|temperature
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -1382,11 +1381,7 @@ c_func
 op_amp
 id|rv
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -1470,11 +1465,7 @@ c_func
 (paren
 id|new_heartbeat
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 )paren
 r_return
@@ -1509,11 +1500,7 @@ c_func
 (paren
 id|heartbeat
 comma
-(paren
-r_int
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 )brace
@@ -1534,6 +1521,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1734,13 +1722,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|open_allowed
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1762,6 +1743,13 @@ id|expect_close
 op_assign
 l_int|0
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|open_allowed
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1779,6 +1767,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

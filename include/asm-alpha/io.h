@@ -9,10 +9,10 @@ mdefine_line|#define SLOW_DOWN_IO&t;do { } while (0)
 multiline_comment|/*&n; * Virtual -&gt; physical identity mapping starts at this offset&n; */
 macro_line|#ifdef USE_48_BIT_KSEG
 DECL|macro|IDENT_ADDR
-mdefine_line|#define IDENT_ADDR     0xffff800000000000
+mdefine_line|#define IDENT_ADDR     0xffff800000000000UL
 macro_line|#else
 DECL|macro|IDENT_ADDR
-mdefine_line|#define IDENT_ADDR     0xfffffc0000000000
+mdefine_line|#define IDENT_ADDR     0xfffffc0000000000UL
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;

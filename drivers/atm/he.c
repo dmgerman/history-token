@@ -142,6 +142,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -13002,6 +13003,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -13062,11 +13064,6 @@ c_func
 op_amp
 id|reg
 comma
-(paren
-r_struct
-id|he_ioctl_reg
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -13187,11 +13184,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_struct
-id|he_ioctl_reg
-op_star
-)paren
 id|arg
 comma
 op_amp

@@ -1535,6 +1535,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 multiline_comment|/* mmap &amp; mmap2 take 6 arguments */
 DECL|macro|_syscall6

@@ -1405,7 +1405,11 @@ c_cond
 id|msg-&gt;msg_flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_return
 op_minus
@@ -5811,6 +5815,7 @@ comma
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 id|arg
@@ -6046,6 +6051,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

@@ -56,8 +56,9 @@ id|dev
 comma
 r_struct
 id|sockaddr_atmsvc
+id|__user
 op_star
-id|u_buf
+id|buf
 comma
 r_int
 id|size

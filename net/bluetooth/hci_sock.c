@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * Bluetooth HCI socket layer.&n; *&n; * $Id: hci_sock.c,v 1.4 2002/04/18 22:26:14 maxk Exp $&n; */
+multiline_comment|/* Bluetooth HCI sockets. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -26,7 +26,7 @@ macro_line|#ifndef CONFIG_BT_HCI_SOCK_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 multiline_comment|/* ----- HCI socket interface ----- */
 DECL|function|hci_test_bit
@@ -655,6 +655,11 @@ c_func
 (paren
 id|hdev
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon
@@ -713,6 +718,18 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -739,7 +756,7 @@ r_return
 id|hci_get_dev_list
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -749,7 +766,7 @@ r_return
 id|hci_get_dev_info
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -759,7 +776,7 @@ r_return
 id|hci_get_conn_list
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -902,7 +919,7 @@ c_func
 (paren
 id|cmd
 comma
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -912,7 +929,7 @@ r_return
 id|hci_inquiry
 c_func
 (paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_default
@@ -1907,6 +1924,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1976,6 +1994,7 @@ id|opt
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -2032,6 +2051,7 @@ id|opt
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -2260,10 +2280,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren

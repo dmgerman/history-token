@@ -15,7 +15,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;cs5530.h&quot;
+DECL|macro|DISPLAY_CS5530_TIMINGS
+mdefine_line|#define DISPLAY_CS5530_TIMINGS
 macro_line|#if defined(DISPLAY_CS5530_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1476,6 +1477,50 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|cs5530_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;CS5530&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_cs5530
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_cs5530
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+dot
+id|flags
+op_assign
+id|IDEPCI_FLAG_FORCE_MASTER
+comma
+)brace
+suffix:semicolon
 DECL|function|cs5530_init_one
 r_static
 r_int
@@ -1495,34 +1540,13 @@ op_star
 id|id
 )paren
 (brace
-id|ide_pci_device_t
-op_star
-id|d
-op_assign
-op_amp
-id|cs5530_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;device
-op_ne
-id|d-&gt;device
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren
 id|dev
 comma
-id|d
+op_amp
+id|cs5530_chipset
 )paren
 suffix:semicolon
 r_return

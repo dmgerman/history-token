@@ -501,8 +501,16 @@ id|ctl_addr
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm/ide.h&gt;
-multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; *&n; * m68k, m68knommu (broken) and i386-pc9800 (broken)&n; * still have their own versions.&n; */
-macro_line|#ifndef CONFIG_M68K
+multiline_comment|/* needed on alpha, x86/x86_64, ia64, mips, ppc32 and sh */
+macro_line|#ifndef IDE_ARCH_OBSOLETE_DEFAULTS
+DECL|macro|ide_default_io_base
+macro_line|# define ide_default_io_base(index)&t;(0)
+DECL|macro|ide_default_irq
+macro_line|# define ide_default_irq(base)&t;&t;(0)
+DECL|macro|ide_init_default_irq
+macro_line|# define ide_init_default_irq(base)&t;(0)
+macro_line|#endif
+multiline_comment|/*&n; * ide_init_hwif_ports() is OBSOLETE and will be removed in 2.7 series.&n; * New ports shouldn&squot;t define IDE_ARCH_OBSOLETE_INIT in &lt;asm/ide.h&gt;.&n; */
 macro_line|#ifdef IDE_ARCH_OBSOLETE_INIT
 DECL|function|ide_init_hwif_ports
 r_static
@@ -599,10 +607,48 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#else
-DECL|macro|ide_init_hwif_ports
-macro_line|# define ide_init_hwif_ports(hw, io, ctl, irq)&t;do {} while (0)
+DECL|function|ide_init_hwif_ports
+r_static
+r_inline
+r_void
+id|ide_init_hwif_ports
+c_func
+(paren
+id|hw_regs_t
+op_star
+id|hw
+comma
+r_int
+r_int
+id|io_addr
+comma
+r_int
+r_int
+id|ctl_addr
+comma
+r_int
+op_star
+id|irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|io_addr
+op_logical_or
+id|ctl_addr
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: must not be called&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* IDE_ARCH_OBSOLETE_INIT */
-macro_line|#endif /* !M68K */
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifndef IDE_ARCH_ACK_INTR
 DECL|macro|ide_ack_intr
@@ -1482,10 +1528,6 @@ DECL|enumerator|ide_started
 id|ide_started
 comma
 multiline_comment|/* a drive operation was started, handler was set */
-DECL|enumerator|ide_released
-id|ide_released
-comma
-multiline_comment|/* as ide_started, but bus also released */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
@@ -1635,11 +1677,6 @@ id|u8
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
-DECL|member|using_tcq
-id|u8
-id|using_tcq
-suffix:semicolon
-multiline_comment|/* disk is using queueing */
 DECL|member|retry_pio
 id|u8
 id|retry_pio
@@ -1801,6 +1838,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=doing PIO over DMA 0=doing normal DMA */
+DECL|member|stroke
+r_int
+id|stroke
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* from:  hdx=stroke */
 DECL|member|addressing
 r_int
 id|addressing
@@ -1921,11 +1965,6 @@ id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
-DECL|member|queue_depth
-id|u8
-id|queue_depth
-suffix:semicolon
-multiline_comment|/* max queue depth */
 DECL|member|bios_cyl
 r_int
 r_int
@@ -3592,20 +3631,6 @@ id|set
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ide_remove_setting
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-r_extern
 id|ide_settings_t
 op_star
 id|ide_find_setting_by_name
@@ -3710,18 +3735,6 @@ id|proc_ide_destroy
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|destroy_proc_ide_device
-c_func
-(paren
-id|ide_hwif_t
-op_star
-comma
-id|ide_drive_t
-op_star
 )paren
 suffix:semicolon
 r_extern
@@ -4401,6 +4414,15 @@ comma
 id|u8
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|try_to_flush_leftover_data
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; * Use for implementing commands in kernel&n; *&n; *  (ide_drive_t *drive, u8 cmd, u8 nsect, u8 feature, u8 sectors, u8 *buf)&n; */
 r_extern
 r_int
@@ -5010,14 +5032,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|ide_delay_50ms
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|system_bus_clock
 c_func
@@ -5429,19 +5443,43 @@ DECL|typedef|ide_pci_enablebit_t
 )brace
 id|ide_pci_enablebit_t
 suffix:semicolon
+r_enum
+(brace
+multiline_comment|/* Uses ISA control ports not PCI ones. */
+DECL|enumerator|IDEPCI_FLAG_ISA_PORTS
+id|IDEPCI_FLAG_ISA_PORTS
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+DECL|enumerator|IDEPCI_FLAG_FORCE_MASTER
+id|IDEPCI_FLAG_FORCE_MASTER
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+DECL|enumerator|IDEPCI_FLAG_FORCE_PDC
+id|IDEPCI_FLAG_FORCE_PDC
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+)brace
+suffix:semicolon
 DECL|struct|ide_pci_device_s
 r_typedef
 r_struct
 id|ide_pci_device_s
 (brace
-DECL|member|vendor
-id|u16
-id|vendor
-suffix:semicolon
-DECL|member|device
-id|u16
-id|device
-suffix:semicolon
 DECL|member|name
 r_char
 op_star
@@ -5565,11 +5603,10 @@ id|ide_pci_device_s
 op_star
 id|next
 suffix:semicolon
-DECL|member|isa_ports
+DECL|member|flags
 id|u8
-id|isa_ports
+id|flags
 suffix:semicolon
-multiline_comment|/* Uses ISA control ports not PCI ones */
 DECL|typedef|ide_pci_device_t
 )brace
 id|ide_pci_device_t
@@ -5847,58 +5884,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-r_extern
-r_int
-id|__ide_dma_queued_on
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|__ide_dma_queued_off
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_read
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_write
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|__ide_dma_queued_start
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#else
 DECL|function|__ide_dma_off
 r_static
@@ -6190,71 +6175,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Structure locking:&n; *&n; * ide_cfg_sem and ide_lock together protect changes to&n; * ide_hwif_t-&gt;{next,hwgroup}&n; * ide_drive_t-&gt;next&n; *&n; * ide_hwgroup_t-&gt;busy: ide_lock&n; * ide_hwgroup_t-&gt;hwif: ide_lock&n; * ide_hwif_t-&gt;mate: constant, no locking&n; * ide_drive_t-&gt;hwif: constant, no locking&n; */
 DECL|macro|local_irq_set
 mdefine_line|#define local_irq_set(flags)&t;do { local_save_flags((flags)); local_irq_enable(); } while (0)
-DECL|macro|IDE_MAX_TAG
-mdefine_line|#define IDE_MAX_TAG&t;32
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-DECL|function|ata_pending_commands
-r_static
-r_inline
-r_int
-id|ata_pending_commands
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|drive-&gt;using_tcq
-)paren
-r_return
-id|blk_queue_tag_depth
-c_func
-(paren
-id|drive-&gt;queue
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|ata_can_queue
-r_static
-r_inline
-r_int
-id|ata_can_queue
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|drive-&gt;using_tcq
-)paren
-r_return
-id|blk_queue_tag_queue
-c_func
-(paren
-id|drive-&gt;queue
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|ata_pending_commands
-mdefine_line|#define ata_pending_commands(drive)&t;(0)
-DECL|macro|ata_can_queue
-mdefine_line|#define ata_can_queue(drive)&t;&t;(1)
-macro_line|#endif
 r_extern
 r_struct
 id|bus_type

@@ -120,6 +120,7 @@ c_func
 id|bh
 )paren
 )paren
+(brace
 id|memset
 c_func
 (paren
@@ -130,6 +131,14 @@ comma
 id|bh-&gt;b_size
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * akpm: I&squot;m totally undecided about this.  The&n;&t;&t;&t;&t; * buffer has just been magically brought &quot;up to&n;&t;&t;&t;&t; * date&quot;, but nobody should want to be reading&n;&t;&t;&t;&t; * it anyway, because it hasn&squot;t been used for&n;&t;&t;&t;&t; * anything yet.  It is still in a &quot;not read&n;&t;&t;&t;&t; * from disk yet&quot; state.&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; * But non-uptodate buffers against an uptodate&n;&t;&t;&t;&t; * page are against the rules.  So do it anyway.&n;&t;&t;&t;&t; */
+id|set_buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+)brace
 )brace
 r_while
 c_loop

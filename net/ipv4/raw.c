@@ -1168,7 +1168,7 @@ suffix:colon
 id|IP_INC_STATS
 c_func
 (paren
-id|IpOutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return
@@ -2318,6 +2318,7 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -2384,10 +2385,12 @@ op_star
 id|sk
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -2512,6 +2515,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -2602,10 +2606,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -2722,6 +2728,7 @@ id|amount
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2784,6 +2791,7 @@ id|amount
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2801,6 +2809,11 @@ id|sk
 comma
 id|cmd
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|arg
 )paren
 suffix:semicolon

@@ -1890,6 +1890,7 @@ op_star
 id|dev
 comma
 r_char
+id|__user
 op_star
 id|bufptr
 comma
@@ -2397,6 +2398,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -3684,16 +3686,18 @@ id|master
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|sk_buff
-op_star
+r_int
 id|skb_checksum_help
 c_func
 (paren
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
+comma
+r_int
+id|inward
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE

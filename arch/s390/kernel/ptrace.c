@@ -289,11 +289,14 @@ op_star
 (paren
 id|addr_t
 )paren
+op_amp
 id|__KSTK_PTREGS
 c_func
 (paren
 id|child
 )paren
+op_member_access_from_pointer
+id|psw
 op_plus
 id|addr
 )paren
@@ -491,6 +494,7 @@ id|tmp
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|data
@@ -628,11 +632,14 @@ op_star
 (paren
 id|addr_t
 )paren
+op_amp
 id|__KSTK_PTREGS
 c_func
 (paren
 id|child
 )paren
+op_member_access_from_pointer
+id|psw
 op_plus
 id|addr
 )paren
@@ -929,6 +936,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -1030,6 +1038,7 @@ id|parea
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -1097,6 +1106,7 @@ id|tmp
 comma
 (paren
 id|addr_t
+id|__user
 op_star
 )paren
 id|data
@@ -1338,11 +1348,14 @@ op_star
 (paren
 id|addr_t
 )paren
+op_amp
 id|__KSTK_PTREGS
 c_func
 (paren
 id|child
 )paren
+op_member_access_from_pointer
+id|psw
 op_plus
 id|addr
 op_star
@@ -1609,6 +1622,7 @@ id|tmp
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|data
@@ -1798,11 +1812,14 @@ op_star
 (paren
 id|addr_t
 )paren
+op_amp
 id|__KSTK_PTREGS
 c_func
 (paren
 id|child
 )paren
+op_member_access_from_pointer
+id|psw
 op_plus
 id|addr
 op_star
@@ -2183,6 +2200,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|data
@@ -2283,6 +2301,7 @@ id|parea
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|addr
@@ -2350,6 +2369,7 @@ id|tmp
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|data

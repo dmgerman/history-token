@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Simple NUMA memory policy for the Linux kernel.&n; *&n
 multiline_comment|/* Notebook:&n;   fix mmap readahead to honour policy and enable policy for any page cache&n;   object&n;   statistics for bigpages&n;   global policy for page cache? currently it uses process policy. Requires&n;   first item above.&n;   handle mremap for shared memory (currently ignored for the policy)&n;   grows down?&n;   make bind policy root only? It can trigger oom much faster and the&n;   kernel is not always grateful with that.&n;   could replace all the switch()es with a mempolicy_ops structure.&n;*/
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -238,6 +239,7 @@ id|nodes
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -1442,6 +1444,7 @@ id|mode
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -1723,6 +1726,7 @@ id|mode
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2059,17 +2063,20 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
-id|user_mask
+id|mask
 comma
 r_int
 r_int
 id|maxnode
 comma
-r_int
-r_int
+r_void
 op_star
 id|nodes
+comma
+r_int
+id|nbytes
 )paren
 (brace
 r_int
@@ -2093,10 +2100,7 @@ c_cond
 (paren
 id|copy
 OG
-r_sizeof
-(paren
-id|nodes
-)paren
+id|nbytes
 )paren
 (brace
 r_if
@@ -2118,21 +2122,16 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
-id|user_mask
+id|mask
 op_plus
-r_sizeof
-(paren
-id|nodes
-)paren
+id|nbytes
 comma
 id|copy
 op_minus
-r_sizeof
-(paren
-id|nodes
-)paren
+id|nbytes
 )paren
 )paren
 r_return
@@ -2141,17 +2140,14 @@ id|EFAULT
 suffix:semicolon
 id|copy
 op_assign
-r_sizeof
-(paren
-id|nodes
-)paren
+id|nbytes
 suffix:semicolon
 )brace
 r_return
 id|copy_to_user
 c_func
 (paren
-id|user_mask
+id|mask
 comma
 id|nodes
 comma
@@ -2173,11 +2169,13 @@ id|sys_get_mempolicy
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|policy
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2482,6 +2480,11 @@ comma
 id|maxnode
 comma
 id|nodes
+comma
+r_sizeof
+(paren
+id|nodes
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2512,10 +2515,12 @@ id|compat_get_mempolicy
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|policy
 comma
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2534,6 +2539,7 @@ id|err
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|nm
 op_assign
@@ -3594,7 +3600,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Slow path of a mpol destructor. */
 DECL|function|__mpol_free
-r_extern
 r_void
 id|__mpol_free
 c_func

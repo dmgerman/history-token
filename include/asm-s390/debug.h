@@ -301,6 +301,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buf
 comma
@@ -1075,32 +1076,6 @@ DECL|macro|PRINT_ERR
 mdefine_line|#define PRINT_ERR(x...) printk ( KERN_DEBUG PRINTK_HEADER x )
 DECL|macro|PRINT_FATAL
 mdefine_line|#define PRINT_FATAL(x...) printk ( KERN_DEBUG PRINTK_HEADER x )
-macro_line|#endif&t;&t;&t;&t;/* DASD_DEBUG */
-macro_line|#if DASD_DEBUG &gt; 4
-DECL|macro|INTERNAL_ERROR
-mdefine_line|#define INTERNAL_ERROR(x...) PRINT_FATAL ( INTERNAL_ERRMSG ( x ) )
-macro_line|#elif DASD_DEBUG &gt; 2
-DECL|macro|INTERNAL_ERROR
-mdefine_line|#define INTERNAL_ERROR(x...) PRINT_ERR ( INTERNAL_ERRMSG ( x ) )
-macro_line|#elif DASD_DEBUG &gt; 0
-DECL|macro|INTERNAL_ERROR
-mdefine_line|#define INTERNAL_ERROR(x...) PRINT_WARN ( INTERNAL_ERRMSG ( x ) )
-macro_line|#else
-DECL|macro|INTERNAL_ERROR
-mdefine_line|#define INTERNAL_ERROR(x...)
-macro_line|#endif&t;&t;&t;&t;/* DASD_DEBUG */
-macro_line|#if DASD_DEBUG &gt; 5
-DECL|macro|INTERNAL_CHECK
-mdefine_line|#define INTERNAL_CHECK(x...) PRINT_FATAL ( INTERNAL_CHKMSG ( x ) )
-macro_line|#elif DASD_DEBUG &gt; 3
-DECL|macro|INTERNAL_CHECK
-mdefine_line|#define INTERNAL_CHECK(x...) PRINT_ERR ( INTERNAL_CHKMSG ( x ) )
-macro_line|#elif DASD_DEBUG &gt; 1
-DECL|macro|INTERNAL_CHECK
-mdefine_line|#define INTERNAL_CHECK(x...) PRINT_WARN ( INTERNAL_CHKMSG ( x ) )
-macro_line|#else
-DECL|macro|INTERNAL_CHECK
-mdefine_line|#define INTERNAL_CHECK(x...)
 macro_line|#endif&t;&t;&t;&t;/* DASD_DEBUG */
 DECL|macro|DEBUG_MALLOC
 macro_line|#undef DEBUG_MALLOC

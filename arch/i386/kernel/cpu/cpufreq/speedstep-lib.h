@@ -69,10 +69,6 @@ id|set_state
 r_int
 r_int
 id|state
-comma
-r_int
-r_int
-id|notify
 )paren
 )paren
 suffix:semicolon

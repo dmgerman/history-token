@@ -2615,6 +2615,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2868,6 +2869,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3594,6 +3596,7 @@ op_star
 id|mnt
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -3741,6 +3744,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -5803,6 +5807,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6009,6 +6014,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

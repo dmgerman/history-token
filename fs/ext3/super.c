@@ -7343,6 +7343,9 @@ c_func
 id|journal_inode
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 id|journal-&gt;j_private
 op_assign
@@ -8415,9 +8418,10 @@ op_star
 id|es
 )paren
 (brace
-id|journal_flush
-c_func
-(paren
+id|journal_t
+op_star
+id|journal
+op_assign
 id|EXT3_SB
 c_func
 (paren
@@ -8425,6 +8429,17 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|s_journal
+suffix:semicolon
+id|journal_lock_updates
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
+id|journal_flush
+c_func
+(paren
+id|journal
 )paren
 suffix:semicolon
 r_if
@@ -8466,6 +8481,12 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|journal_unlock_updates
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * If we are mounting (or read-write remounting) a filesystem whose journal&n; * has recorded an error from a previous lifetime, move that error to the&n; * main filesystem now.&n; */
 DECL|function|ext3_clear_journal_err

@@ -576,6 +576,7 @@ id|insn
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|pc
@@ -1846,6 +1847,7 @@ id|TIF_32BIT
 (brace
 r_struct
 id|reg_window32
+id|__user
 op_star
 id|win32
 suffix:semicolon
@@ -1858,6 +1860,7 @@ op_assign
 (paren
 r_struct
 id|reg_window32
+id|__user
 op_star
 )paren
 (paren
@@ -1895,6 +1898,7 @@ r_else
 (brace
 r_struct
 id|reg_window
+id|__user
 op_star
 id|win
 suffix:semicolon
@@ -1907,6 +1911,7 @@ op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 (paren

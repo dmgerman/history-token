@@ -520,6 +520,14 @@ DECL|struct|pt_regs
 r_struct
 id|pt_regs
 (brace
+DECL|member|args
+r_int
+r_int
+id|args
+(braket
+l_int|1
+)braket
+suffix:semicolon
 DECL|member|psw
 id|psw_t
 id|psw

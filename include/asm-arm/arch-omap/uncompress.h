@@ -2,7 +2,6 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/uncompress.h&n; *&n; *
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/serial.h&gt;
 DECL|macro|UART_OMAP_MDR1
@@ -10,7 +9,7 @@ mdefine_line|#define UART_OMAP_MDR1&t;&t;0x08&t;/* mode definition register */
 DECL|macro|check_port
 mdefine_line|#define check_port(base, shift) ((base[UART_OMAP_MDR1 &lt;&lt; shift] &amp; 7) == 0)
 DECL|macro|omap_get_id
-mdefine_line|#define omap_get_id() ((*(volatile unsigned int *)(0xfffed404)) &gt;&gt; 12) &amp; 0xffff
+mdefine_line|#define omap_get_id() ((*(volatile unsigned int *)(0xfffed404)) &gt;&gt; 12) &amp; ID_MASK
 r_static
 r_void
 DECL|function|puts

@@ -38,16 +38,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_OPTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_OPTI_82C621
-comma
-dot
 id|name
 op_assign
 l_string|&quot;OPTI621&quot;
@@ -102,16 +92,6 @@ comma
 comma
 (brace
 multiline_comment|/* 1 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_OPTI
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_OPTI_82C825
-comma
 dot
 id|name
 op_assign

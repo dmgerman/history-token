@@ -269,9 +269,7 @@ r_int
 id|pgrotated
 suffix:semicolon
 multiline_comment|/* pages rotated to tail of the LRU */
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 id|DECLARE_PER_CPU
 c_func
@@ -304,6 +302,18 @@ op_star
 id|ret
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|__read_page_state
+c_func
+(paren
+r_int
+id|offset
+)paren
+suffix:semicolon
+DECL|macro|read_page_state
+mdefine_line|#define read_page_state(member) &bslash;&n;&t;__read_page_state(offsetof(struct page_state, member))
 DECL|macro|mod_page_state
 mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_cpu_var(page_states).member += (delta);&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|inc_page_state

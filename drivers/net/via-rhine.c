@@ -1,11 +1,11 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;Current Maintainer: Roger Luethi &lt;rl@hellgate.ch&gt;&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I.&n;&t;It also works with the Rhine-II (6102) and Rhine-III (6105/6105L/6105LOM&n;&t;and management NIC 6105M).&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n; &t;(Roger Luethi)&n; &t;- show confused chip where to continue after Tx error&n; &t;- location of collision counter is chip specific&n; &t;- allow selecting backoff algorithm (module parameter)&n;&n;&t;LK1.1.15 (jgarzik):&n;&t;- Use new MII lib helper generic_mii_ioctl&n;&n;&t;LK1.1.16 (Roger Luethi)&n;&t;- Etherleak fix&n;&t;- Handle Tx buffer underrun&n;&t;- Fix bugs in full duplex handling&n;&t;- New reset code uses &quot;force reset&quot; cmd on Rhine-II&n;&t;- Various clean ups&n;&n;&t;LK1.1.17 (Roger Luethi)&n;&t;- Fix race in via_rhine_start_tx()&n;&t;- On errors, wait for Tx engine to turn off before scavenging&n;&t;- Handle Tx descriptor write-back race on Rhine-II&n;&t;- Force flushing for PCI posted writes&n;&t;- More reset code changes&n;&n;&t;LK1.1.18 (Roger Luethi)&n;&t;- No filtering multicast in promisc mode (Edward Peng)&n;&t;- Fix for Rhine-I Tx timeouts&n;&n;&t;LK1.1.19 (Roger Luethi)&n;&t;- Increase Tx threshold for unspecified errors&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;Current Maintainer: Roger Luethi &lt;rl@hellgate.ch&gt;&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I.&n;&t;It also works with the Rhine-II (6102) and Rhine-III (6105/6105L/6105LOM&n;&t;and management NIC 6105M).&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;LK1.1.14 (Ivan G.):&n;&t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n;&t;(Roger Luethi)&n;&t;- show confused chip where to continue after Tx error&n;&t;- location of collision counter is chip specific&n;&t;- allow selecting backoff algorithm (module parameter)&n;&n;&t;LK1.1.15 (jgarzik):&n;&t;- Use new MII lib helper generic_mii_ioctl&n;&n;&t;LK1.1.16 (Roger Luethi)&n;&t;- Etherleak fix&n;&t;- Handle Tx buffer underrun&n;&t;- Fix bugs in full duplex handling&n;&t;- New reset code uses &quot;force reset&quot; cmd on Rhine-II&n;&t;- Various clean ups&n;&n;&t;LK1.1.17 (Roger Luethi)&n;&t;- Fix race in via_rhine_start_tx()&n;&t;- On errors, wait for Tx engine to turn off before scavenging&n;&t;- Handle Tx descriptor write-back race on Rhine-II&n;&t;- Force flushing for PCI posted writes&n;&t;- More reset code changes&n;&n;&t;LK1.1.18 (Roger Luethi)&n;&t;- No filtering multicast in promisc mode (Edward Peng)&n;&t;- Fix for Rhine-I Tx timeouts&n;&n;&t;LK1.1.19 (Roger Luethi)&n;&t;- Increase Tx threshold for unspecified errors&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.19-2.5&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.20-2.6&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;July-12-2003&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;May-23-2004&quot;
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -36,7 +36,7 @@ id|backoff
 suffix:semicolon
 multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotiation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
 DECL|macro|MAX_UNITS
-mdefine_line|#define MAX_UNITS 8&t;&t;/* More are supported, limit only on options */
+mdefine_line|#define MAX_UNITS&t;8&t;/* More are supported, limit only on options */
 DECL|variable|options
 r_static
 r_int
@@ -105,7 +105,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n;   The Rhine has a 64 element 8390-like hash table.  */
+multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n;   The Rhine has a 64 element 8390-like hash table. */
 DECL|variable|multicast_filter_limit
 r_static
 r_const
@@ -119,15 +119,15 @@ multiline_comment|/* Keep the ring sizes a power of two for compile efficiency.&
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;16
 DECL|macro|TX_QUEUE_LEN
-mdefine_line|#define TX_QUEUE_LEN&t;10&t;&t;/* Limit ring entries actually used.  */
+mdefine_line|#define TX_QUEUE_LEN&t;10&t;/* Limit ring entries actually used. */
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;16
 multiline_comment|/* Operational parameters that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
-mdefine_line|#define TX_TIMEOUT  (2*HZ)
+mdefine_line|#define TX_TIMEOUT&t;(2*HZ)
 DECL|macro|PKT_BUF_SZ
-mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
+mdefine_line|#define PKT_BUF_SZ&t;1536&t;/* Size of each temporary Rx buffer.*/
 macro_line|#if !defined(__OPTIMIZE__)  ||  !defined(__KERNEL__)
 macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
@@ -150,7 +150,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
+macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -168,11 +168,9 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;.c:v1.10-LK&quot;
 id|DRV_VERSION
-l_string|&quot;  &quot;
+l_string|&quot; &quot;
 id|DRV_RELDATE
-l_string|&quot;  Written by Donald Becker&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;  http://www.scyld.com/network/via-rhine.html&bslash;n&quot;
+l_string|&quot; Written by Donald Becker&bslash;n&quot;
 suffix:semicolon
 DECL|variable|shortname
 r_static
@@ -183,13 +181,11 @@ id|shortname
 op_assign
 id|DRV_NAME
 suffix:semicolon
-multiline_comment|/* This driver was written to use PCI memory space, however most versions&n;   of the Rhine only work correctly with I/O space accesses. */
+multiline_comment|/* This driver was written to use PCI memory space. Some early versions&n;   of the Rhine may only work correctly with I/O space accesses. */
 macro_line|#ifdef CONFIG_VIA_RHINE_MMIO
-DECL|macro|USE_MEM
-mdefine_line|#define USE_MEM
+DECL|macro|USE_MMIO
+mdefine_line|#define USE_MMIO
 macro_line|#else
-DECL|macro|USE_IO
-mdefine_line|#define USE_IO
 DECL|macro|readb
 macro_line|#undef readb
 DECL|macro|readw
@@ -341,8 +337,8 @@ comma
 l_string|&quot;VIA Rhine full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78. For most of these settings, this driver assumes that they are&n;correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of via_rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing.  Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which&n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the&n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
-multiline_comment|/* This table drives the PCI probe routines.  It&squot;s mostly boilerplate in all&n;   of the drivers, and will likely be provided by some future kernel.&n;   Note the matching code -- the first table entry matchs all 56** cards but&n;   second only the 1234 card.&n;*/
+multiline_comment|/*&n;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78. For most of these settings, this driver assumes that they are&n;correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list. The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers. When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack. Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames. New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets. When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine. Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing. Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control. One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which&n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the&n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring. After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
+multiline_comment|/* This table drives the PCI probe routines. It&squot;s mostly boilerplate in all&n;   of the drivers, and will likely be provided by some future kernel.&n;   Note the matching code -- the first table entry matchs all 56** cards but&n;   second only the 1234 card.&n;*/
 DECL|enum|pci_flags_bit
 r_enum
 id|pci_flags_bit
@@ -392,9 +388,9 @@ l_int|3
 comma
 )brace
 suffix:semicolon
-DECL|enum|via_rhine_chips
+DECL|enum|rhine_chips
 r_enum
-id|via_rhine_chips
+id|rhine_chips
 (brace
 DECL|enumerator|VT86C100A
 id|VT86C100A
@@ -411,9 +407,9 @@ DECL|enumerator|VT6105M
 id|VT6105M
 )brace
 suffix:semicolon
-DECL|struct|via_rhine_chip_info
+DECL|struct|rhine_chip_info
 r_struct
-id|via_rhine_chip_info
+id|rhine_chip_info
 (brace
 DECL|member|name
 r_const
@@ -466,7 +462,7 @@ l_int|0x20
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_MEM | PCI_USES_MASTER | PCI_ADDR1)
 macro_line|#else
@@ -476,12 +472,12 @@ macro_line|#endif
 multiline_comment|/* Beware of PCI posted writes */
 DECL|macro|IOSYNC
 mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
-multiline_comment|/* directly indexed by enum via_rhine_chips, above */
+multiline_comment|/* directly indexed by enum rhine_chips, above */
 DECL|variable|__devinitdata
 r_static
 r_struct
-id|via_rhine_chip_info
-id|via_rhine_chip_info
+id|rhine_chip_info
+id|rhine_chip_info
 (braket
 )braket
 id|__devinitdata
@@ -539,11 +535,11 @@ id|HasWOL
 comma
 )brace
 suffix:semicolon
-DECL|variable|via_rhine_pci_tbl
+DECL|variable|rhine_pci_tbl
 r_static
 r_struct
 id|pci_device_id
-id|via_rhine_pci_tbl
+id|rhine_pci_tbl
 (braket
 )braket
 op_assign
@@ -625,7 +621,7 @@ c_func
 (paren
 id|pci
 comma
-id|via_rhine_pci_tbl
+id|rhine_pci_tbl
 )paren
 suffix:semicolon
 multiline_comment|/* Offsets to the device registers. */
@@ -811,7 +807,7 @@ op_assign
 l_int|0x08
 )brace
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 multiline_comment|/* Registers we check that mmio and reg are the same. */
 DECL|variable|mmio_verify_registers
 r_int
@@ -990,7 +986,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Initial value for tx_desc.desc_length, Buffer size goes to bits 0-10 */
 DECL|macro|TXDESC
-mdefine_line|#define TXDESC 0x00e08000
+mdefine_line|#define TXDESC&t;&t;0x00e08000
 DECL|enum|rx_status_bits
 r_enum
 id|rx_status_bits
@@ -1091,9 +1087,9 @@ comma
 suffix:semicolon
 DECL|macro|MAX_MII_CNT
 mdefine_line|#define MAX_MII_CNT&t;4
-DECL|struct|netdev_private
+DECL|struct|rhine_private
 r_struct
-id|netdev_private
+id|rhine_private
 (brace
 multiline_comment|/* Descriptor rings */
 DECL|member|rx_ring
@@ -1316,7 +1312,7 @@ id|value
 suffix:semicolon
 r_static
 r_int
-id|via_rhine_open
+id|rhine_open
 c_func
 (paren
 r_struct
@@ -1327,7 +1323,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_check_duplex
+id|rhine_check_duplex
 c_func
 (paren
 r_struct
@@ -1338,7 +1334,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_timer
+id|rhine_timer
 c_func
 (paren
 r_int
@@ -1348,7 +1344,7 @@ id|data
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_tx_timeout
+id|rhine_tx_timeout
 c_func
 (paren
 r_struct
@@ -1359,7 +1355,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|via_rhine_start_tx
+id|rhine_start_tx
 c_func
 (paren
 r_struct
@@ -1375,7 +1371,7 @@ id|dev
 suffix:semicolon
 r_static
 id|irqreturn_t
-id|via_rhine_interrupt
+id|rhine_interrupt
 c_func
 (paren
 r_int
@@ -1393,7 +1389,7 @@ id|regs
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_tx
+id|rhine_tx
 c_func
 (paren
 r_struct
@@ -1404,7 +1400,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_rx
+id|rhine_rx
 c_func
 (paren
 r_struct
@@ -1415,7 +1411,7 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_error
+id|rhine_error
 c_func
 (paren
 r_struct
@@ -1429,7 +1425,7 @@ id|intr_status
 suffix:semicolon
 r_static
 r_void
-id|via_rhine_set_rx_mode
+id|rhine_set_rx_mode
 c_func
 (paren
 r_struct
@@ -1442,7 +1438,7 @@ r_static
 r_struct
 id|net_device_stats
 op_star
-id|via_rhine_get_stats
+id|rhine_get_stats
 c_func
 (paren
 r_struct
@@ -1478,7 +1474,7 @@ id|netdev_ethtool_ops
 suffix:semicolon
 r_static
 r_int
-id|via_rhine_close
+id|rhine_close
 c_func
 (paren
 r_struct
@@ -1506,11 +1502,15 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|u32
 id|intr_status
@@ -1529,7 +1529,7 @@ multiline_comment|/* On Rhine-II, Bit 3 indicates Tx descriptor write-back race.
 r_if
 c_cond
 (paren
-id|np-&gt;chip_id
+id|rp-&gt;chip_id
 op_eq
 id|VT6102
 )paren
@@ -1673,7 +1673,7 @@ l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 DECL|function|enable_mmio
 r_static
 r_void
@@ -1809,10 +1809,10 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
-DECL|function|via_rhine_poll
+DECL|function|rhine_poll
 r_static
 r_void
-id|via_rhine_poll
+id|rhine_poll
 c_func
 (paren
 r_struct
@@ -1827,7 +1827,7 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|via_rhine_interrupt
+id|rhine_interrupt
 c_func
 (paren
 id|dev-&gt;irq
@@ -1849,11 +1849,12 @@ id|dev-&gt;irq
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|via_rhine_init_one
+DECL|function|rhine_init_one
 r_static
 r_int
 id|__devinit
-id|via_rhine_init_one
+id|rhine_init_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -1873,9 +1874,9 @@ op_star
 id|dev
 suffix:semicolon
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 suffix:semicolon
 r_int
 id|i
@@ -1909,7 +1910,7 @@ suffix:semicolon
 r_int
 id|pci_flags
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 r_int
 id|ioaddr0
 suffix:semicolon
@@ -1953,7 +1954,7 @@ l_int|0
 suffix:semicolon
 id|io_size
 op_assign
-id|via_rhine_chip_info
+id|rhine_chip_info
 (braket
 id|chip_id
 )braket
@@ -1962,7 +1963,7 @@ id|io_size
 suffix:semicolon
 id|pci_flags
 op_assign
-id|via_rhine_chip_info
+id|rhine_chip_info
 (braket
 id|chip_id
 )braket
@@ -1973,6 +1974,7 @@ r_if
 c_cond
 (paren
 id|pci_enable_device
+c_func
 (paren
 id|pdev
 )paren
@@ -1997,7 +1999,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;32-bit PCI DMA addresses not supported by the card!?&bslash;n&quot;
+l_string|&quot;32-bit PCI DMA addresses not supported by &quot;
+l_string|&quot;the card!?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2010,6 +2013,7 @@ c_cond
 (paren
 (paren
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -2021,6 +2025,7 @@ id|io_size
 op_logical_or
 (paren
 id|pci_resource_len
+c_func
 (paren
 id|pdev
 comma
@@ -2032,6 +2037,7 @@ id|io_size
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Insufficient PCI resources, aborting&bslash;n&quot;
@@ -2044,6 +2050,7 @@ suffix:semicolon
 id|ioaddr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -2053,6 +2060,7 @@ suffix:semicolon
 id|memaddr
 op_assign
 id|pci_resource_start
+c_func
 (paren
 id|pdev
 comma
@@ -2067,6 +2075,7 @@ op_amp
 id|PCI_USES_MASTER
 )paren
 id|pci_set_master
+c_func
 (paren
 id|pdev
 )paren
@@ -2079,7 +2088,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|np
+id|rp
 )paren
 )paren
 suffix:semicolon
@@ -2092,6 +2101,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;init_ethernet failed for card #%d&bslash;n&quot;
@@ -2132,7 +2142,7 @@ id|shortname
 r_goto
 id|err_out_free_netdev
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|ioaddr0
 op_assign
 id|ioaddr
@@ -2151,6 +2161,7 @@ op_assign
 r_int
 )paren
 id|ioremap
+c_func
 (paren
 id|memaddr
 comma
@@ -2165,9 +2176,11 @@ id|ioaddr
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ioremap failed for device %s, region 0x%X @ 0x%lX&bslash;n&quot;
+l_string|&quot;ioremap failed for device %s, region 0x%X &quot;
+l_string|&quot;@ 0x%lX&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -2240,9 +2253,11 @@ id|b
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
-l_string|&quot;MMIO do not match PIO [%02x] (%02x != %02x)&bslash;n&quot;
+l_string|&quot;MMIO do not match PIO [%02x] &quot;
+l_string|&quot;(%02x != %02x)&bslash;n&quot;
 comma
 id|reg
 comma
@@ -2256,12 +2271,12 @@ id|err_out_unmap
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* USE_MMIO */
 multiline_comment|/* D-Link provided reset code (with comment additions) */
 r_if
 c_cond
 (paren
-id|via_rhine_chip_info
+id|rhine_chip_info
 (braket
 id|chip_id
 )braket
@@ -2363,14 +2378,7 @@ id|shortname
 )paren
 suffix:semicolon
 multiline_comment|/* Reload the station address from the EEPROM. */
-macro_line|#ifdef USE_IO
-id|reload_eeprom
-c_func
-(paren
-id|ioaddr
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef USE_MMIO
 id|reload_eeprom
 c_func
 (paren
@@ -2384,6 +2392,13 @@ c_func
 id|ioaddr0
 comma
 id|chip_id
+)paren
+suffix:semicolon
+macro_line|#else
+id|reload_eeprom
+c_func
+(paren
+id|ioaddr
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2448,7 +2463,7 @@ op_eq
 id|VT6102
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * for 3065D, EEPROM reloaded will cause bit 0 in MAC_REG_CFGA&n;&t;&t; * turned on.  it makes MAC receive magic packet&n;&t;&t; * automatically. So, we turn it off. (D-Link)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * for 3065D, EEPROM reloaded will cause bit 0 in MAC_REG_CFGA&n;&t;&t; * turned on. it makes MAC receive magic packet&n;&t;&t; * automatically. So, we turn it off. (D-Link)&n;&t;&t; */
 id|writeb
 c_func
 (paren
@@ -2500,50 +2515,55 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
-suffix:semicolon
-id|spin_lock_init
+id|netdev_priv
+c_func
 (paren
-op_amp
-id|np-&gt;lock
+id|dev
 )paren
 suffix:semicolon
-id|np-&gt;chip_id
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|rp-&gt;lock
+)paren
+suffix:semicolon
+id|rp-&gt;chip_id
 op_assign
 id|chip_id
 suffix:semicolon
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_assign
-id|via_rhine_chip_info
+id|rhine_chip_info
 (braket
 id|chip_id
 )braket
 dot
 id|drv_flags
 suffix:semicolon
-id|np-&gt;pdev
+id|rp-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-id|np-&gt;mii_if.dev
+id|rp-&gt;mii_if.dev
 op_assign
 id|dev
 suffix:semicolon
-id|np-&gt;mii_if.mdio_read
+id|rp-&gt;mii_if.mdio_read
 op_assign
 id|mdio_read
 suffix:semicolon
-id|np-&gt;mii_if.mdio_write
+id|rp-&gt;mii_if.mdio_write
 op_assign
 id|mdio_write
 suffix:semicolon
-id|np-&gt;mii_if.phy_id_mask
+id|rp-&gt;mii_if.phy_id_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
-id|np-&gt;mii_if.reg_num_mask
+id|rp-&gt;mii_if.reg_num_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
@@ -2559,23 +2579,23 @@ suffix:semicolon
 multiline_comment|/* The chip-specific entries in the device structure. */
 id|dev-&gt;open
 op_assign
-id|via_rhine_open
+id|rhine_open
 suffix:semicolon
 id|dev-&gt;hard_start_xmit
 op_assign
-id|via_rhine_start_tx
+id|rhine_start_tx
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
-id|via_rhine_close
+id|rhine_close
 suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
-id|via_rhine_get_stats
+id|rhine_get_stats
 suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
-id|via_rhine_set_rx_mode
+id|rhine_set_rx_mode
 suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
@@ -2588,7 +2608,7 @@ id|netdev_ethtool_ops
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
-id|via_rhine_tx_timeout
+id|rhine_tx_timeout
 suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
@@ -2597,13 +2617,13 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 id|dev-&gt;poll_controller
 op_assign
-id|via_rhine_poll
+id|rhine_poll
 suffix:semicolon
 macro_line|#endif
 r_if
 c_cond
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|ReqTxAlign
 )paren
@@ -2646,11 +2666,11 @@ id|option
 op_amp
 l_int|0x220
 )paren
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|1
 suffix:semicolon
-id|np-&gt;default_port
+id|rp-&gt;default_port
 op_assign
 id|option
 op_amp
@@ -2664,27 +2684,27 @@ id|card_idx
 template_param
 l_int|0
 )paren
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Set to forced full duplex, autonegotiation&quot;
-l_string|&quot; disabled.&bslash;n&quot;
+l_string|&quot;%s: Set to forced full duplex, &quot;
+l_string|&quot;autonegotiation disabled.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|np-&gt;mii_if.force_media
+id|rp-&gt;mii_if.force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -2697,7 +2717,7 @@ l_string|&quot;%s: %s at 0x%lx, &quot;
 comma
 id|dev-&gt;name
 comma
-id|via_rhine_chip_info
+id|rhine_chip_info
 (braket
 id|chip_id
 )braket
@@ -2765,7 +2785,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|CanHaveMII
 )paren
@@ -2777,7 +2797,7 @@ id|phy_idx
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -2829,7 +2849,7 @@ op_ne
 l_int|0x0000
 )paren
 (brace
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 id|phy_idx
 op_increment
@@ -2837,7 +2857,7 @@ op_increment
 op_assign
 id|phy
 suffix:semicolon
-id|np-&gt;mii_if.advertising
+id|rp-&gt;mii_if.advertising
 op_assign
 id|mdio_read
 c_func
@@ -2853,8 +2873,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: MII PHY found at address %d, status &quot;
-l_string|&quot;0x%4.4x advertising %4.4x Link %4.4x.&bslash;n&quot;
+l_string|&quot;%s: MII PHY found at address &quot;
+l_string|&quot;%d, status 0x%4.4x advertising %4.4x &quot;
+l_string|&quot;Link %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2862,7 +2883,7 @@ id|phy
 comma
 id|mii_status
 comma
-id|np-&gt;mii_if.advertising
+id|rp-&gt;mii_if.advertising
 comma
 id|mdio_read
 c_func
@@ -2900,13 +2921,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|np-&gt;mii_cnt
+id|rp-&gt;mii_cnt
 op_assign
 id|phy_idx
 suffix:semicolon
-id|np-&gt;mii_if.phy_id
+id|rp-&gt;mii_if.phy_id
 op_assign
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -2928,11 +2949,11 @@ id|option
 op_amp
 l_int|0x220
 )paren
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|1
 suffix:semicolon
-id|np-&gt;default_port
+id|rp-&gt;default_port
 op_assign
 id|option
 op_amp
@@ -2941,18 +2962,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;default_port
+id|option
 op_amp
 l_int|0x330
 )paren
 (brace
 multiline_comment|/* FIXME: shouldn&squot;t someone check this variable? */
-multiline_comment|/* np-&gt;medialock = 1; */
+multiline_comment|/* rp-&gt;medialock = 1; */
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;  Forcing %dMbs %s-duplex operation.&bslash;n&quot;
+l_string|&quot; Forcing %dMbs %s-duplex &quot;
+l_string|&quot;operation.&bslash;n&quot;
 comma
 (paren
 id|option
@@ -2980,14 +3002,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_cnt
+id|rp-&gt;mii_cnt
 )paren
 id|mdio_write
 c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -3030,7 +3052,7 @@ l_int|0
 suffix:semicolon
 id|err_out_unmap
 suffix:colon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|iounmap
 c_func
 (paren
@@ -3053,6 +3075,7 @@ suffix:semicolon
 id|err_out_free_netdev
 suffix:colon
 id|free_netdev
+c_func
 (paren
 id|dev
 )paren
@@ -3077,11 +3100,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -3095,7 +3122,7 @@ op_assign
 id|pci_alloc_consistent
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|RX_RING_SIZE
 op_star
@@ -3139,30 +3166,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|ReqTxAlign
 )paren
 (brace
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 op_assign
 id|pci_alloc_consistent
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|PKT_BUF_SZ
 op_star
 id|TX_RING_SIZE
 comma
 op_amp
-id|np-&gt;tx_bufs_dma
+id|rp-&gt;tx_bufs_dma
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 op_eq
 l_int|NULL
 )paren
@@ -3170,7 +3197,7 @@ l_int|NULL
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|RX_RING_SIZE
 op_star
@@ -3199,11 +3226,11 @@ id|ENOMEM
 suffix:semicolon
 )brace
 )brace
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 op_assign
 id|ring
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 op_assign
 id|ring
 op_plus
@@ -3215,11 +3242,11 @@ r_struct
 id|rx_desc
 )paren
 suffix:semicolon
-id|np-&gt;rx_ring_dma
+id|rp-&gt;rx_ring_dma
 op_assign
 id|ring_dma
 suffix:semicolon
-id|np-&gt;tx_ring_dma
+id|rp-&gt;tx_ring_dma
 op_assign
 id|ring_dma
 op_plus
@@ -3247,16 +3274,20 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|RX_RING_SIZE
 op_star
@@ -3274,35 +3305,35 @@ r_struct
 id|tx_desc
 )paren
 comma
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 comma
-id|np-&gt;rx_ring_dma
+id|rp-&gt;rx_ring_dma
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 op_assign
 l_int|NULL
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 )paren
 id|pci_free_consistent
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|PKT_BUF_SZ
 op_star
 id|TX_RING_SIZE
 comma
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 comma
-id|np-&gt;tx_bufs_dma
+id|rp-&gt;tx_bufs_dma
 )paren
 suffix:semicolon
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3320,11 +3351,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dma_addr_t
 id|next
@@ -3332,13 +3367,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 op_assign
-id|np-&gt;cur_rx
+id|rp-&gt;cur_rx
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 op_assign
 (paren
 id|dev-&gt;mtu
@@ -3353,17 +3388,17 @@ op_plus
 l_int|32
 )paren
 suffix:semicolon
-id|np-&gt;rx_head_desc
+id|rp-&gt;rx_head_desc
 op_assign
 op_amp
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 l_int|0
 )braket
 suffix:semicolon
 id|next
 op_assign
-id|np-&gt;rx_ring_dma
+id|rp-&gt;rx_ring_dma
 suffix:semicolon
 multiline_comment|/* Init the ring entries */
 r_for
@@ -3381,7 +3416,7 @@ id|i
 op_increment
 )paren
 (brace
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3390,7 +3425,7 @@ id|rx_status
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3400,7 +3435,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 )paren
 suffix:semicolon
 id|next
@@ -3411,7 +3446,7 @@ r_struct
 id|rx_desc
 )paren
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3424,7 +3459,7 @@ c_func
 id|next
 )paren
 suffix:semicolon
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|i
 )braket
@@ -3433,7 +3468,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Mark the last entry as wrapping the ring. */
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 op_minus
@@ -3445,7 +3480,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;rx_ring_dma
+id|rp-&gt;rx_ring_dma
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the Rx buffers.  Handle allocation failure gracefully. */
@@ -3472,10 +3507,10 @@ op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 )paren
 suffix:semicolon
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|i
 )braket
@@ -3496,7 +3531,7 @@ op_assign
 id|dev
 suffix:semicolon
 multiline_comment|/* Mark as being used by this device. */
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|i
 )braket
@@ -3504,16 +3539,16 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|skb-&gt;tail
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3523,13 +3558,13 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3543,7 +3578,7 @@ id|DescOwn
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 op_assign
 (paren
 r_int
@@ -3569,11 +3604,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -3594,7 +3633,7 @@ id|i
 op_increment
 )paren
 (brace
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3603,7 +3642,7 @@ id|rx_status
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|i
 )braket
@@ -3620,7 +3659,7 @@ multiline_comment|/* An invalid address. */
 r_if
 c_cond
 (paren
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|i
 )braket
@@ -3629,14 +3668,14 @@ id|i
 id|pci_unmap_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|i
 )braket
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -3644,14 +3683,14 @@ suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|i
 )braket
@@ -3673,11 +3712,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dma_addr_t
 id|next
@@ -3685,15 +3728,15 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 op_assign
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_assign
 l_int|0
 suffix:semicolon
 id|next
 op_assign
-id|np-&gt;tx_ring_dma
+id|rp-&gt;tx_ring_dma
 suffix:semicolon
 r_for
 c_loop
@@ -3710,14 +3753,14 @@ id|i
 op_increment
 )paren
 (brace
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|i
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3726,7 +3769,7 @@ id|tx_status
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3747,7 +3790,7 @@ r_struct
 id|tx_desc
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3760,13 +3803,13 @@ c_func
 id|next
 )paren
 suffix:semicolon
-id|np-&gt;tx_buf
+id|rp-&gt;tx_buf
 (braket
 id|i
 )braket
 op_assign
 op_amp
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 (braket
 id|i
 op_star
@@ -3774,7 +3817,7 @@ id|PKT_BUF_SZ
 )braket
 suffix:semicolon
 )brace
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 op_minus
@@ -3786,7 +3829,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;tx_ring_dma
+id|rp-&gt;tx_ring_dma
 )paren
 suffix:semicolon
 )brace
@@ -3803,11 +3846,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|i
@@ -3827,7 +3874,7 @@ id|i
 op_increment
 )paren
 (brace
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3836,7 +3883,7 @@ id|tx_status
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3849,7 +3896,7 @@ c_func
 id|TXDESC
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|i
 )braket
@@ -3866,7 +3913,7 @@ multiline_comment|/* An invalid address. */
 r_if
 c_cond
 (paren
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|i
 )braket
@@ -3875,7 +3922,7 @@ id|i
 r_if
 c_cond
 (paren
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|i
 )braket
@@ -3884,14 +3931,14 @@ id|i
 id|pci_unmap_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|i
 )braket
 comma
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|i
 )braket
@@ -3905,21 +3952,21 @@ suffix:semicolon
 id|dev_kfree_skb
 c_func
 (paren
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|i
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;tx_buf
+id|rp-&gt;tx_buf
 (braket
 id|i
 )braket
@@ -3941,11 +3988,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4007,16 +4058,16 @@ op_plus
 id|TxConfig
 )paren
 suffix:semicolon
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 op_assign
 l_int|0x20
 suffix:semicolon
-id|np-&gt;rx_thresh
+id|rp-&gt;rx_thresh
 op_assign
 l_int|0x60
 suffix:semicolon
-multiline_comment|/* Written in via_rhine_set_rx_mode(). */
-id|np-&gt;mii_if.full_duplex
+multiline_comment|/* Written in rhine_set_rx_mode(). */
+id|rp-&gt;mii_if.full_duplex
 op_assign
 l_int|0
 suffix:semicolon
@@ -4029,12 +4080,12 @@ l_int|0
 )paren
 id|dev-&gt;if_port
 op_assign
-id|np-&gt;default_port
+id|rp-&gt;default_port
 suffix:semicolon
 id|writel
 c_func
 (paren
-id|np-&gt;rx_ring_dma
+id|rp-&gt;rx_ring_dma
 comma
 id|ioaddr
 op_plus
@@ -4044,14 +4095,14 @@ suffix:semicolon
 id|writel
 c_func
 (paren
-id|np-&gt;tx_ring_dma
+id|rp-&gt;tx_ring_dma
 comma
 id|ioaddr
 op_plus
 id|TxRingPtr
 )paren
 suffix:semicolon
-id|via_rhine_set_rx_mode
+id|rhine_set_rx_mode
 c_func
 (paren
 id|dev
@@ -4092,7 +4143,7 @@ op_plus
 id|IntrEnable
 )paren
 suffix:semicolon
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 op_assign
 id|CmdStart
 op_or
@@ -4105,29 +4156,29 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.force_media
+id|rp-&gt;mii_if.force_media
 )paren
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 op_or_assign
 id|CmdFDuplex
 suffix:semicolon
 id|writew
 c_func
 (paren
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 comma
 id|ioaddr
 op_plus
 id|ChipCmd
 )paren
 suffix:semicolon
-id|via_rhine_check_duplex
+id|rhine_check_duplex
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* The LED outputs of various MII xcvrs should be configured.  */
+multiline_comment|/* The LED outputs of various MII xcvrs should be configured. */
 multiline_comment|/* For NS or Mison phys, turn on bit 1 in register 0x17 */
 multiline_comment|/* For ESI phys, turn on bit 7 in register 0x17. */
 id|mdio_write
@@ -4135,7 +4186,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4147,7 +4198,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4156,7 +4207,7 @@ l_int|0x17
 )paren
 op_or
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|HasESIPhy
 )paren
@@ -4317,11 +4368,15 @@ id|value
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4338,7 +4393,7 @@ c_cond
 (paren
 id|phy_id
 op_eq
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4362,12 +4417,12 @@ op_amp
 l_int|0x9000
 )paren
 multiline_comment|/* Autonegotiation. */
-id|np-&gt;mii_if.force_media
+id|rp-&gt;mii_if.force_media
 op_assign
 l_int|0
 suffix:semicolon
 r_else
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_assign
 (paren
 id|value
@@ -4385,7 +4440,7 @@ suffix:semicolon
 r_case
 id|MII_ADVERTISE
 suffix:colon
-id|np-&gt;mii_if.advertising
+id|rp-&gt;mii_if.advertising
 op_assign
 id|value
 suffix:semicolon
@@ -4467,10 +4522,10 @@ id|MIICmd
 suffix:semicolon
 multiline_comment|/* Trigger write. */
 )brace
-DECL|function|via_rhine_open
+DECL|function|rhine_open
 r_static
 r_int
-id|via_rhine_open
+id|rhine_open
 c_func
 (paren
 r_struct
@@ -4480,11 +4535,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4510,10 +4569,10 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|np-&gt;pdev-&gt;irq
+id|rp-&gt;pdev-&gt;irq
 comma
 op_amp
-id|via_rhine_interrupt
+id|rhine_interrupt
 comma
 id|SA_SHIRQ
 comma
@@ -4541,11 +4600,11 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: via_rhine_open() irq %d.&bslash;n&quot;
+l_string|&quot;%s: rhine_open() irq %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;pdev-&gt;irq
+id|rp-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|i
@@ -4581,7 +4640,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;chip_id
+id|rp-&gt;chip_id
 comma
 id|dev-&gt;name
 )paren
@@ -4603,7 +4662,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Done via_rhine_open(), status %4.4x &quot;
+l_string|&quot;%s: Done rhine_open(), status %4.4x &quot;
 l_string|&quot;MII status: %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4621,7 +4680,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4641,10 +4700,10 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|np-&gt;timer
+id|rp-&gt;timer
 )paren
 suffix:semicolon
-id|np-&gt;timer.expires
+id|rp-&gt;timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -4654,7 +4713,7 @@ id|HZ
 op_div
 l_int|100
 suffix:semicolon
-id|np-&gt;timer.data
+id|rp-&gt;timer.data
 op_assign
 (paren
 r_int
@@ -4662,27 +4721,27 @@ r_int
 )paren
 id|dev
 suffix:semicolon
-id|np-&gt;timer.function
+id|rp-&gt;timer.function
 op_assign
 op_amp
-id|via_rhine_timer
+id|rhine_timer
 suffix:semicolon
 multiline_comment|/* timer handler */
 id|add_timer
 c_func
 (paren
 op_amp
-id|np-&gt;timer
+id|rp-&gt;timer
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|via_rhine_check_duplex
+DECL|function|rhine_check_duplex
 r_static
 r_void
-id|via_rhine_check_duplex
+id|rhine_check_duplex
 c_func
 (paren
 r_struct
@@ -4692,11 +4751,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4711,7 +4774,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4724,7 +4787,7 @@ id|negotiated
 op_assign
 id|mii_lpa
 op_amp
-id|np-&gt;mii_if.advertising
+id|rp-&gt;mii_if.advertising
 suffix:semicolon
 r_int
 id|duplex
@@ -4732,7 +4795,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.force_media
+id|rp-&gt;mii_if.force_media
 op_logical_or
 id|mii_lpa
 op_eq
@@ -4759,12 +4822,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_ne
 id|duplex
 )paren
 (brace
-id|np-&gt;mii_if.full_duplex
+id|rp-&gt;mii_if.full_duplex
 op_assign
 id|duplex
 suffix:semicolon
@@ -4777,8 +4840,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Setting %s-duplex based on MII #%d link&quot;
-l_string|&quot; partner capability of %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Setting %s-duplex based on &quot;
+l_string|&quot;MII #%d link partner capability of %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4789,7 +4852,7 @@ l_string|&quot;full&quot;
 suffix:colon
 l_string|&quot;half&quot;
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4802,12 +4865,12 @@ c_cond
 (paren
 id|duplex
 )paren
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 op_or_assign
 id|CmdFDuplex
 suffix:semicolon
 r_else
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 op_and_assign
 op_complement
 id|CmdFDuplex
@@ -4815,7 +4878,7 @@ suffix:semicolon
 id|writew
 c_func
 (paren
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 comma
 id|ioaddr
 op_plus
@@ -4824,10 +4887,10 @@ id|ChipCmd
 suffix:semicolon
 )brace
 )brace
-DECL|function|via_rhine_timer
+DECL|function|rhine_timer
 r_static
 r_void
-id|via_rhine_timer
+id|rhine_timer
 c_func
 (paren
 r_int
@@ -4848,11 +4911,15 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -4898,10 +4965,10 @@ suffix:semicolon
 id|spin_lock_irq
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
-id|via_rhine_check_duplex
+id|rhine_check_duplex
 c_func
 (paren
 id|dev
@@ -4915,7 +4982,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -4933,7 +5000,7 @@ id|BMSR_LSTATUS
 )paren
 op_ne
 (paren
-id|np-&gt;mii_status
+id|rp-&gt;mii_status
 op_amp
 id|BMSR_LSTATUS
 )paren
@@ -4960,17 +5027,18 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;mii_status
+id|rp-&gt;mii_status
 op_assign
 id|mii_status
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
-id|np-&gt;timer.expires
+id|rp-&gt;timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -4980,14 +5048,15 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|np-&gt;timer
+id|rp-&gt;timer
 )paren
 suffix:semicolon
 )brace
-DECL|function|via_rhine_tx_timeout
+DECL|function|rhine_tx_timeout
 r_static
 r_void
-id|via_rhine_tx_timeout
+id|rhine_tx_timeout
+c_func
 (paren
 r_struct
 id|net_device
@@ -4996,11 +5065,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -5008,6 +5081,7 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Transmit timed out, status %4.4x, PHY status &quot;
@@ -5016,6 +5090,7 @@ comma
 id|dev-&gt;name
 comma
 id|readw
+c_func
 (paren
 id|ioaddr
 op_plus
@@ -5023,10 +5098,11 @@ id|IntrStatus
 )paren
 comma
 id|mdio_read
+c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -5043,14 +5119,14 @@ multiline_comment|/* protect against concurrent rx interrupts */
 id|disable_irq
 c_func
 (paren
-id|np-&gt;pdev-&gt;irq
+id|rp-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|spin_lock
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the chip. */
@@ -5095,7 +5171,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;chip_id
+id|rp-&gt;chip_id
 comma
 id|dev-&gt;name
 )paren
@@ -5110,20 +5186,20 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|enable_irq
 c_func
 (paren
-id|np-&gt;pdev-&gt;irq
+id|rp-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-id|np-&gt;stats.tx_errors
+id|rp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 id|netif_wake_queue
@@ -5133,10 +5209,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|via_rhine_start_tx
+DECL|function|rhine_start_tx
 r_static
 r_int
-id|via_rhine_start_tx
+id|rhine_start_tx
 c_func
 (paren
 r_struct
@@ -5151,11 +5227,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|entry
@@ -5167,7 +5247,7 @@ multiline_comment|/* Caution: the write order is important here, set the field&n
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|entry
 op_assign
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
@@ -5200,7 +5280,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
@@ -5211,7 +5291,7 @@ r_if
 c_cond
 (paren
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|ReqTxAlign
 )paren
@@ -5258,14 +5338,14 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
 op_assign
 l_int|NULL
 suffix:semicolon
-id|np-&gt;stats.tx_dropped
+id|rp-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon
 r_return
@@ -5277,20 +5357,20 @@ c_func
 (paren
 id|skb
 comma
-id|np-&gt;tx_buf
+id|rp-&gt;tx_buf
 (braket
 id|entry
 )braket
 )paren
 suffix:semicolon
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|entry
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -5300,22 +5380,22 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;tx_bufs_dma
+id|rp-&gt;tx_bufs_dma
 op_plus
 (paren
-id|np-&gt;tx_buf
+id|rp-&gt;tx_buf
 (braket
 id|entry
 )braket
 op_minus
-id|np-&gt;tx_bufs
+id|rp-&gt;tx_bufs
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|entry
 )braket
@@ -5323,7 +5403,7 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|skb-&gt;data
 comma
@@ -5332,7 +5412,7 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -5342,14 +5422,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|entry
 )braket
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -5375,9 +5455,10 @@ id|ETH_ZLEN
 suffix:semicolon
 multiline_comment|/* lock eth irq */
 id|spin_lock_irq
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|wmb
@@ -5385,7 +5466,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -5403,7 +5484,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_increment
 suffix:semicolon
 multiline_comment|/* Non-x86 Todo: explicitly flush cache lines here. */
@@ -5433,7 +5514,7 @@ c_func
 (paren
 id|CmdTxDemand
 op_or
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 comma
 id|dev-&gt;base_addr
 op_plus
@@ -5446,9 +5527,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_eq
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 op_plus
 id|TX_QUEUE_LEN
 )paren
@@ -5463,9 +5544,10 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|spin_unlock_irq
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -5484,7 +5566,7 @@ l_string|&quot;%s: Transmit frame #%d queued in slot %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_minus
 l_int|1
 comma
@@ -5497,10 +5579,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
-DECL|function|via_rhine_interrupt
+DECL|function|rhine_interrupt
 r_static
 id|irqreturn_t
-id|via_rhine_interrupt
+id|rhine_interrupt
 c_func
 (paren
 r_int
@@ -5630,7 +5712,7 @@ op_or
 id|IntrRxNoBuf
 )paren
 )paren
-id|via_rhine_rx
+id|rhine_rx
 c_func
 (paren
 id|dev
@@ -5700,14 +5782,15 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: via_rhine_interrupt() &quot;
-l_string|&quot;Tx engine still on.&bslash;n&quot;
+l_string|&quot;%s: &quot;
+l_string|&quot;rhine_interrupt() Tx engine&quot;
+l_string|&quot;still on.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|via_rhine_tx
+id|rhine_tx
 c_func
 (paren
 id|dev
@@ -5736,7 +5819,7 @@ op_or
 id|IntrTxDescRace
 )paren
 )paren
-id|via_rhine_error
+id|rhine_error
 c_func
 (paren
 id|dev
@@ -5802,10 +5885,10 @@ id|handled
 suffix:semicolon
 )brace
 multiline_comment|/* This routine is logically part of the interrupt handler, but isolated&n;   for clarity. */
-DECL|function|via_rhine_tx
+DECL|function|rhine_tx
 r_static
 r_void
-id|via_rhine_tx
+id|rhine_tx
 c_func
 (paren
 r_struct
@@ -5815,11 +5898,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|txstatus
@@ -5828,23 +5915,24 @@ l_int|0
 comma
 id|entry
 op_assign
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* find and cleanup dirty tx descriptors */
 r_while
 c_loop
 (paren
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 op_ne
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 )paren
 (brace
 id|txstatus
@@ -5852,7 +5940,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -5906,14 +5994,15 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Transmit error, Tx status %8.8x.&bslash;n&quot;
+l_string|&quot;%s: Transmit error, &quot;
+l_string|&quot;Tx status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|txstatus
 )paren
 suffix:semicolon
-id|np-&gt;stats.tx_errors
+id|rp-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
 r_if
@@ -5923,7 +6012,7 @@ id|txstatus
 op_amp
 l_int|0x0400
 )paren
-id|np-&gt;stats.tx_carrier_errors
+id|rp-&gt;stats.tx_carrier_errors
 op_increment
 suffix:semicolon
 r_if
@@ -5933,7 +6022,7 @@ id|txstatus
 op_amp
 l_int|0x0200
 )paren
-id|np-&gt;stats.tx_window_errors
+id|rp-&gt;stats.tx_window_errors
 op_increment
 suffix:semicolon
 r_if
@@ -5943,7 +6032,7 @@ id|txstatus
 op_amp
 l_int|0x0100
 )paren
-id|np-&gt;stats.tx_aborted_errors
+id|rp-&gt;stats.tx_aborted_errors
 op_increment
 suffix:semicolon
 r_if
@@ -5953,7 +6042,7 @@ id|txstatus
 op_amp
 l_int|0x0080
 )paren
-id|np-&gt;stats.tx_heartbeat_errors
+id|rp-&gt;stats.tx_heartbeat_errors
 op_increment
 suffix:semicolon
 r_if
@@ -5961,7 +6050,7 @@ c_cond
 (paren
 (paren
 (paren
-id|np-&gt;chip_id
+id|rp-&gt;chip_id
 op_eq
 id|VT86C100A
 )paren
@@ -5984,10 +6073,10 @@ l_int|0x1000
 )paren
 )paren
 (brace
-id|np-&gt;stats.tx_fifo_errors
+id|rp-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
-id|np-&gt;tx_ring
+id|rp-&gt;tx_ring
 (braket
 id|entry
 )braket
@@ -6011,11 +6100,11 @@ r_else
 r_if
 c_cond
 (paren
-id|np-&gt;chip_id
+id|rp-&gt;chip_id
 op_eq
 id|VT86C100A
 )paren
-id|np-&gt;stats.collisions
+id|rp-&gt;stats.collisions
 op_add_assign
 (paren
 id|txstatus
@@ -6026,7 +6115,7 @@ op_amp
 l_int|0x0F
 suffix:semicolon
 r_else
-id|np-&gt;stats.collisions
+id|rp-&gt;stats.collisions
 op_add_assign
 id|txstatus
 op_amp
@@ -6058,16 +6147,16 @@ op_amp
 l_int|0xF
 )paren
 suffix:semicolon
-id|np-&gt;stats.tx_bytes
+id|rp-&gt;stats.tx_bytes
 op_add_assign
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
 op_member_access_from_pointer
 id|len
 suffix:semicolon
-id|np-&gt;stats.tx_packets
+id|rp-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
 )brace
@@ -6075,7 +6164,7 @@ multiline_comment|/* Free the original skb. */
 r_if
 c_cond
 (paren
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|entry
 )braket
@@ -6084,14 +6173,14 @@ id|entry
 id|pci_unmap_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;tx_skbuff_dma
+id|rp-&gt;tx_skbuff_dma
 (braket
 id|entry
 )braket
 comma
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
@@ -6105,13 +6194,13 @@ suffix:semicolon
 id|dev_kfree_skb_irq
 c_func
 (paren
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
 )paren
 suffix:semicolon
-id|np-&gt;tx_skbuff
+id|rp-&gt;tx_skbuff
 (braket
 id|entry
 )braket
@@ -6122,7 +6211,7 @@ id|entry
 op_assign
 (paren
 op_increment
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 )paren
 op_mod
 id|TX_RING_SIZE
@@ -6132,9 +6221,9 @@ r_if
 c_cond
 (paren
 (paren
-id|np-&gt;cur_tx
+id|rp-&gt;cur_tx
 op_minus
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 )paren
 OL
 id|TX_QUEUE_LEN
@@ -6142,22 +6231,24 @@ op_minus
 l_int|4
 )paren
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* This routine is logically part of the interrupt handler, but isolated&n;   for clarity and better register allocation. */
-DECL|function|via_rhine_rx
+DECL|function|rhine_rx
 r_static
 r_void
-id|via_rhine_rx
+id|rhine_rx
 c_func
 (paren
 r_struct
@@ -6167,27 +6258,31 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|entry
 op_assign
-id|np-&gt;cur_rx
+id|rp-&gt;cur_rx
 op_mod
 id|RX_RING_SIZE
 suffix:semicolon
 r_int
 id|boguscnt
 op_assign
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 op_plus
 id|RX_RING_SIZE
 op_minus
-id|np-&gt;cur_rx
+id|rp-&gt;cur_rx
 suffix:semicolon
 r_if
 c_cond
@@ -6201,7 +6296,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: via_rhine_rx(), entry %d status %8.8x.&bslash;n&quot;
+l_string|&quot;%s: rhine_rx(), entry %d status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6210,7 +6305,7 @@ comma
 id|le32_to_cpu
 c_func
 (paren
-id|np-&gt;rx_head_desc-&gt;rx_status
+id|rp-&gt;rx_head_desc-&gt;rx_status
 )paren
 )paren
 suffix:semicolon
@@ -6221,7 +6316,7 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|np-&gt;rx_head_desc-&gt;rx_status
+id|rp-&gt;rx_head_desc-&gt;rx_status
 op_amp
 id|cpu_to_le32
 c_func
@@ -6236,7 +6331,7 @@ id|rx_desc
 op_star
 id|desc
 op_assign
-id|np-&gt;rx_head_desc
+id|rp-&gt;rx_head_desc
 suffix:semicolon
 id|u32
 id|desc_status
@@ -6265,7 +6360,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  via_rhine_rx() status is %8.8x.&bslash;n&quot;
+l_string|&quot; rhine_rx() status is %8.8x.&bslash;n&quot;
 comma
 id|desc_status
 )paren
@@ -6312,8 +6407,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Oversized Ethernet frame spanned &quot;
-l_string|&quot;multiple buffers, entry %#x length %d status %8.8x!&bslash;n&quot;
+l_string|&quot;%s: Oversized Ethernet &quot;
+l_string|&quot;frame spanned multiple buffers, entry &quot;
+l_string|&quot;%#x length %d status %8.8x!&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6328,20 +6424,21 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Oversized Ethernet frame %p vs %p.&bslash;n&quot;
+l_string|&quot;%s: Oversized Ethernet &quot;
+l_string|&quot;frame %p vs %p.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;rx_head_desc
+id|rp-&gt;rx_head_desc
 comma
 op_amp
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|entry
 )braket
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_length_errors
+id|rp-&gt;stats.rx_length_errors
 op_increment
 suffix:semicolon
 )brace
@@ -6366,12 +6463,13 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;  via_rhine_rx() Rx error was %8.8x.&bslash;n&quot;
+l_string|&quot; rhine_rx() Rx &quot;
+l_string|&quot;error was %8.8x.&bslash;n&quot;
 comma
 id|desc_status
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_errors
+id|rp-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
 r_if
@@ -6381,7 +6479,7 @@ id|desc_status
 op_amp
 l_int|0x0030
 )paren
-id|np-&gt;stats.rx_length_errors
+id|rp-&gt;stats.rx_length_errors
 op_increment
 suffix:semicolon
 r_if
@@ -6391,7 +6489,7 @@ id|desc_status
 op_amp
 l_int|0x0048
 )paren
-id|np-&gt;stats.rx_fifo_errors
+id|rp-&gt;stats.rx_fifo_errors
 op_increment
 suffix:semicolon
 r_if
@@ -6401,7 +6499,7 @@ id|desc_status
 op_amp
 l_int|0x0004
 )paren
-id|np-&gt;stats.rx_frame_errors
+id|rp-&gt;stats.rx_frame_errors
 op_increment
 suffix:semicolon
 r_if
@@ -6414,18 +6512,20 @@ l_int|0x0002
 (brace
 multiline_comment|/* this can also be updated outside the interrupt handler */
 id|spin_lock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_crc_errors
+id|rp-&gt;stats.rx_crc_errors
 op_increment
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -6446,7 +6546,7 @@ id|data_size
 op_minus
 l_int|4
 suffix:semicolon
-multiline_comment|/* Check if the packet is long enough to accept without copying&n;&t;&t;&t;   to a minimally-sized skbuff. */
+multiline_comment|/* Check if the packet is long enough to accept without&n;&t;&t;&t;   copying to a minimally-sized skbuff. */
 r_if
 c_cond
 (paren
@@ -6485,26 +6585,26 @@ multiline_comment|/* 16 byte align the IP header */
 id|pci_dma_sync_single_for_cpu
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|entry
 )braket
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-multiline_comment|/* *_IP_COPYSUM isn&squot;t defined anywhere and eth_copy_and_sum&n;&t;&t;&t;&t;   is memcpy for all archs so this is kind of pointless right&n;&t;&t;&t;&t;   now ... or? */
-macro_line|#if HAS_IP_COPYSUM                     /* Call copy + cksum if available. */
+multiline_comment|/* *_IP_COPYSUM isn&squot;t defined anywhere and&n;&t;&t;&t;&t;   eth_copy_and_sum is memcpy for all archs so&n;&t;&t;&t;&t;   this is kind of pointless right now&n;&t;&t;&t;&t;   ... or? */
+macro_line|#if HAS_IP_COPYSUM&t;&t;/* Call copy + cksum if available. */
 id|eth_copy_and_sum
 c_func
 (paren
 id|skb
 comma
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6536,7 +6636,7 @@ comma
 id|pkt_len
 )paren
 comma
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6550,14 +6650,14 @@ macro_line|#endif
 id|pci_dma_sync_single_for_device
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|entry
 )braket
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6567,7 +6667,7 @@ r_else
 (brace
 id|skb
 op_assign
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6584,7 +6684,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Inconsistent Rx descriptor chain.&bslash;n&quot;
+l_string|&quot;%s: Inconsistent Rx &quot;
+l_string|&quot;descriptor chain.&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -6592,7 +6693,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6610,14 +6711,14 @@ suffix:semicolon
 id|pci_unmap_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|entry
 )braket
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
@@ -6643,11 +6744,11 @@ id|dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
-id|np-&gt;stats.rx_bytes
+id|rp-&gt;stats.rx_bytes
 op_add_assign
 id|pkt_len
 suffix:semicolon
-id|np-&gt;stats.rx_packets
+id|rp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 )brace
@@ -6655,15 +6756,15 @@ id|entry
 op_assign
 (paren
 op_increment
-id|np-&gt;cur_rx
+id|rp-&gt;cur_rx
 )paren
 op_mod
 id|RX_RING_SIZE
 suffix:semicolon
-id|np-&gt;rx_head_desc
+id|rp-&gt;rx_head_desc
 op_assign
 op_amp
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|entry
 )braket
@@ -6674,13 +6775,13 @@ r_for
 c_loop
 (paren
 suffix:semicolon
-id|np-&gt;cur_rx
+id|rp-&gt;cur_rx
 op_minus
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 OG
 l_int|0
 suffix:semicolon
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 op_increment
 )paren
 (brace
@@ -6691,14 +6792,14 @@ id|skb
 suffix:semicolon
 id|entry
 op_assign
-id|np-&gt;dirty_rx
+id|rp-&gt;dirty_rx
 op_mod
 id|RX_RING_SIZE
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6711,10 +6812,10 @@ op_assign
 id|dev_alloc_skb
 c_func
 (paren
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 )paren
 suffix:semicolon
-id|np-&gt;rx_skbuff
+id|rp-&gt;rx_skbuff
 (braket
 id|entry
 )braket
@@ -6736,7 +6837,7 @@ op_assign
 id|dev
 suffix:semicolon
 multiline_comment|/* Mark as being used by this device. */
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|entry
 )braket
@@ -6744,16 +6845,16 @@ op_assign
 id|pci_map_single
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 comma
 id|skb-&gt;tail
 comma
-id|np-&gt;rx_buf_sz
+id|rp-&gt;rx_buf_sz
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|entry
 )braket
@@ -6763,14 +6864,14 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|np-&gt;rx_skbuff_dma
+id|rp-&gt;rx_skbuff_dma
 (braket
 id|entry
 )braket
 )paren
 suffix:semicolon
 )brace
-id|np-&gt;rx_ring
+id|rp-&gt;rx_ring
 (braket
 id|entry
 )braket
@@ -6806,7 +6907,7 @@ id|ChipCmd
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Clears the &quot;tally counters&quot; for CRC errors and missed frames(?).&n;   It has been reported that some chips need a write of 0 to clear&n;   these, for others the counters are set to 1 when written to and&n;   instead cleared when read. So we clear them both ways ... */
+multiline_comment|/*&n; * Clears the &quot;tally counters&quot; for CRC errors and missed frames(?).&n; * It has been reported that some chips need a write of 0 to clear&n; * these, for others the counters are set to 1 when written to and&n; * instead cleared when read. So we clear them both ways ...&n; */
 DECL|function|clear_tally_counters
 r_static
 r_inline
@@ -6846,10 +6947,10 @@ id|RxMissed
 )paren
 suffix:semicolon
 )brace
-DECL|function|via_rhine_restart_tx
+DECL|function|rhine_restart_tx
 r_static
 r_void
-id|via_rhine_restart_tx
+id|rhine_restart_tx
 c_func
 (paren
 r_struct
@@ -6859,11 +6960,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -6873,7 +6978,7 @@ suffix:semicolon
 r_int
 id|entry
 op_assign
-id|np-&gt;dirty_tx
+id|rp-&gt;dirty_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
@@ -6905,7 +7010,7 @@ multiline_comment|/* We know better than the chip where it should continue. */
 id|writel
 c_func
 (paren
-id|np-&gt;tx_ring_dma
+id|rp-&gt;tx_ring_dma
 op_plus
 id|entry
 op_star
@@ -6925,7 +7030,7 @@ c_func
 (paren
 id|CmdTxDemand
 op_or
-id|np-&gt;chip_cmd
+id|rp-&gt;chip_cmd
 comma
 id|ioaddr
 op_plus
@@ -6949,7 +7054,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: via_rhine_restart_tx() &quot;
+l_string|&quot;%s: rhine_restart_tx() &quot;
 l_string|&quot;Another error occured %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6959,10 +7064,10 @@ id|intr_status
 suffix:semicolon
 )brace
 )brace
-DECL|function|via_rhine_error
+DECL|function|rhine_error
 r_static
 r_void
-id|via_rhine_error
+id|rhine_error
 c_func
 (paren
 r_struct
@@ -6975,11 +7080,15 @@ id|intr_status
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -6987,9 +7096,10 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -7020,7 +7130,7 @@ multiline_comment|/* Link failed, restart autonegotiation. */
 r_if
 c_cond
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|HasDavicomPhy
 )paren
@@ -7029,7 +7139,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -7041,7 +7151,7 @@ l_int|0x3300
 suffix:semicolon
 )brace
 r_else
-id|via_rhine_check_duplex
+id|rhine_check_duplex
 c_func
 (paren
 id|dev
@@ -7056,8 +7166,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: MII status changed: Autonegotiation &quot;
-l_string|&quot;advertising %4.4x  partner %4.4x.&bslash;n&quot;
+l_string|&quot;%s: MII status changed: &quot;
+l_string|&quot;Autonegotiation advertising %4.4x partner &quot;
+l_string|&quot;%4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7066,7 +7177,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -7079,7 +7190,7 @@ c_func
 (paren
 id|dev
 comma
-id|np-&gt;phys
+id|rp-&gt;phys
 (braket
 l_int|0
 )braket
@@ -7097,7 +7208,7 @@ op_amp
 id|IntrStatsMax
 )paren
 (brace
-id|np-&gt;stats.rx_crc_errors
+id|rp-&gt;stats.rx_crc_errors
 op_add_assign
 id|readw
 c_func
@@ -7107,7 +7218,7 @@ op_plus
 id|RxCRCErrs
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_missed_errors
+id|rp-&gt;stats.rx_missed_errors
 op_add_assign
 id|readw
 c_func
@@ -7162,14 +7273,14 @@ id|IntrTxUnderrun
 r_if
 c_cond
 (paren
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 OL
 l_int|0xE0
 )paren
 id|writeb
 c_func
 (paren
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 op_add_assign
 l_int|0x20
 comma
@@ -7194,7 +7305,7 @@ l_string|&quot;threshold now %2.2x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 )paren
 suffix:semicolon
 )brace
@@ -7232,7 +7343,9 @@ op_amp
 id|IntrTxError
 )paren
 op_logical_and
-op_complement
+(paren
+id|intr_status
+op_amp
 (paren
 id|IntrTxAborted
 op_or
@@ -7241,11 +7354,14 @@ op_or
 id|IntrTxDescRace
 )paren
 )paren
+op_eq
+l_int|0
+)paren
 (brace
 r_if
 c_cond
 (paren
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 OL
 l_int|0xE0
 )paren
@@ -7253,7 +7369,7 @@ l_int|0xE0
 id|writeb
 c_func
 (paren
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 op_add_assign
 l_int|0x20
 comma
@@ -7279,7 +7395,7 @@ l_string|&quot;threshold now %2.2x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 )paren
 suffix:semicolon
 )brace
@@ -7298,7 +7414,7 @@ op_or
 id|IntrTxError
 )paren
 )paren
-id|via_rhine_restart_tx
+id|rhine_restart_tx
 c_func
 (paren
 id|dev
@@ -7338,7 +7454,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Something Wicked happened! %8.8x.&bslash;n&quot;
+l_string|&quot;%s: Something Wicked happened! &quot;
+l_string|&quot;%8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7347,18 +7464,19 @@ id|intr_status
 suffix:semicolon
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|via_rhine_get_stats
+DECL|function|rhine_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-id|via_rhine_get_stats
+id|rhine_get_stats
 c_func
 (paren
 r_struct
@@ -7368,11 +7486,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7387,12 +7509,12 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_crc_errors
+id|rp-&gt;stats.rx_crc_errors
 op_add_assign
 id|readw
 c_func
@@ -7402,7 +7524,7 @@ op_plus
 id|RxCRCErrs
 )paren
 suffix:semicolon
-id|np-&gt;stats.rx_missed_errors
+id|rp-&gt;stats.rx_missed_errors
 op_add_assign
 id|readw
 c_func
@@ -7422,20 +7544,20 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 comma
 id|flags
 )paren
 suffix:semicolon
 r_return
 op_amp
-id|np-&gt;stats
+id|rp-&gt;stats
 suffix:semicolon
 )brace
-DECL|function|via_rhine_set_rx_mode
+DECL|function|rhine_set_rx_mode
 r_static
 r_void
-id|via_rhine_set_rx_mode
+id|rhine_set_rx_mode
 c_func
 (paren
 r_struct
@@ -7445,11 +7567,15 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ioaddr
@@ -7669,7 +7795,7 @@ suffix:semicolon
 id|writeb
 c_func
 (paren
-id|np-&gt;rx_thresh
+id|rp-&gt;rx_thresh
 op_or
 id|rx_mode
 comma
@@ -7683,6 +7809,7 @@ DECL|function|netdev_get_drvinfo
 r_static
 r_void
 id|netdev_get_drvinfo
+c_func
 (paren
 r_struct
 id|net_device
@@ -7696,13 +7823,18 @@ id|info
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;driver
 comma
@@ -7710,6 +7842,7 @@ id|DRV_NAME
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;version
 comma
@@ -7717,13 +7850,14 @@ id|DRV_VERSION
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info-&gt;bus_info
 comma
 id|pci_name
 c_func
 (paren
-id|np-&gt;pdev
+id|rp-&gt;pdev
 )paren
 )paren
 suffix:semicolon
@@ -7746,11 +7880,15 @@ id|cmd
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|rc
@@ -7760,7 +7898,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|CanHaveMII
 )paren
@@ -7773,7 +7911,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|rc
@@ -7782,7 +7920,7 @@ id|mii_ethtool_gset
 c_func
 (paren
 op_amp
-id|np-&gt;mii_if
+id|rp-&gt;mii_if
 comma
 id|cmd
 )paren
@@ -7791,7 +7929,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -7816,11 +7954,15 @@ id|cmd
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|rc
@@ -7830,7 +7972,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|CanHaveMII
 )paren
@@ -7843,7 +7985,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|rc
@@ -7852,7 +7994,7 @@ id|mii_ethtool_sset
 c_func
 (paren
 op_amp
-id|np-&gt;mii_if
+id|rp-&gt;mii_if
 comma
 id|cmd
 )paren
@@ -7861,7 +8003,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -7881,18 +8023,22 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|CanHaveMII
 )paren
@@ -7906,7 +8052,7 @@ id|mii_nway_restart
 c_func
 (paren
 op_amp
-id|np-&gt;mii_if
+id|rp-&gt;mii_if
 )paren
 suffix:semicolon
 )brace
@@ -7923,18 +8069,22 @@ id|dev
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 (paren
-id|np-&gt;drv_flags
+id|rp-&gt;drv_flags
 op_amp
 id|CanHaveMII
 )paren
@@ -7948,7 +8098,7 @@ id|mii_link_ok
 c_func
 (paren
 op_amp
-id|np-&gt;mii_if
+id|rp-&gt;mii_if
 )paren
 suffix:semicolon
 )brace
@@ -8063,24 +8213,15 @@ id|cmd
 )paren
 (brace
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
-suffix:semicolon
-r_struct
-id|mii_ioctl_data
-op_star
-id|data
-op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|dev
 )paren
-op_amp
-id|rq-&gt;ifr_data
 suffix:semicolon
 r_int
 id|rc
@@ -8103,7 +8244,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|rc
@@ -8112,9 +8253,13 @@ id|generic_mii_ioctl
 c_func
 (paren
 op_amp
-id|np-&gt;mii_if
+id|rp-&gt;mii_if
 comma
-id|data
+id|if_mii
+c_func
+(paren
+id|rq
+)paren
 comma
 id|cmd
 comma
@@ -8125,17 +8270,17 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|via_rhine_close
+DECL|function|rhine_close
 r_static
 r_int
-id|via_rhine_close
+id|rhine_close
 c_func
 (paren
 r_struct
@@ -8150,24 +8295,28 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_struct
-id|netdev_private
+id|rhine_private
 op_star
-id|np
+id|rp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|del_timer_sync
 c_func
 (paren
 op_amp
-id|np-&gt;timer
+id|rp-&gt;timer
 )paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -8187,7 +8336,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Shutting down ethercard, status was %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Shutting down ethercard, &quot;
+l_string|&quot;status was %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -8204,7 +8354,7 @@ multiline_comment|/* Switch to loopback mode to avoid hardware races. */
 id|writeb
 c_func
 (paren
-id|np-&gt;tx_thresh
+id|rp-&gt;tx_thresh
 op_or
 l_int|0x02
 comma
@@ -8239,13 +8389,13 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|np-&gt;lock
+id|rp-&gt;lock
 )paren
 suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|np-&gt;pdev-&gt;irq
+id|rp-&gt;pdev-&gt;irq
 comma
 id|dev
 )paren
@@ -8272,11 +8422,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|via_rhine_remove_one
+DECL|function|rhine_remove_one
 r_static
 r_void
 id|__devexit
-id|via_rhine_remove_one
+id|rhine_remove_one
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -8307,7 +8458,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-macro_line|#ifdef USE_MEM
+macro_line|#ifdef USE_MMIO
 id|iounmap
 c_func
 (paren
@@ -8342,11 +8493,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|via_rhine_driver
+DECL|variable|rhine_driver
 r_static
 r_struct
 id|pci_driver
-id|via_rhine_driver
+id|rhine_driver
 op_assign
 (brace
 dot
@@ -8357,12 +8508,12 @@ comma
 dot
 id|id_table
 op_assign
-id|via_rhine_pci_tbl
+id|rhine_pci_tbl
 comma
 dot
 id|probe
 op_assign
-id|via_rhine_init_one
+id|rhine_init_one
 comma
 dot
 id|remove
@@ -8370,16 +8521,17 @@ op_assign
 id|__devexit_p
 c_func
 (paren
-id|via_rhine_remove_one
+id|rhine_remove_one
 )paren
 comma
 )brace
 suffix:semicolon
-DECL|function|via_rhine_init
+DECL|function|rhine_init
 r_static
 r_int
 id|__init
-id|via_rhine_init
+id|rhine_init
+c_func
 (paren
 r_void
 )paren
@@ -8395,41 +8547,43 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|pci_module_init
+c_func
 (paren
 op_amp
-id|via_rhine_driver
+id|rhine_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|via_rhine_cleanup
+DECL|function|rhine_cleanup
 r_static
 r_void
 id|__exit
-id|via_rhine_cleanup
+id|rhine_cleanup
+c_func
 (paren
 r_void
 )paren
 (brace
 id|pci_unregister_driver
+c_func
 (paren
 op_amp
-id|via_rhine_driver
+id|rhine_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|via_rhine_init
+DECL|variable|rhine_init
 id|module_init
 c_func
 (paren
-id|via_rhine_init
+id|rhine_init
 )paren
 suffix:semicolon
-DECL|variable|via_rhine_cleanup
+DECL|variable|rhine_cleanup
 id|module_exit
 c_func
 (paren
-id|via_rhine_cleanup
+id|rhine_cleanup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -c via-rhine.c `[ -f /usr/include/linux/modversions.h ] &amp;&amp; echo -DMODVERSIONS`&quot;&n; *  c-indent-level: 4&n; *  c-basic-offset: 4&n; *  tab-width: 4&n; * End:&n; */
 eof

@@ -126,16 +126,6 @@ op_assign
 (brace
 multiline_comment|/* 0 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CMD_643
-comma
-dot
 id|name
 op_assign
 l_string|&quot;CMD643&quot;
@@ -169,16 +159,6 @@ comma
 comma
 (brace
 multiline_comment|/* 1 */
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CMD_646
-comma
 dot
 id|name
 op_assign
@@ -235,16 +215,6 @@ comma
 (brace
 multiline_comment|/* 2 */
 dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CMD_648
-comma
-dot
 id|name
 op_assign
 l_string|&quot;CMD648&quot;
@@ -277,16 +247,6 @@ comma
 )brace
 comma
 (brace
-dot
-id|vendor
-op_assign
-id|PCI_VENDOR_ID_CMD
-comma
-dot
-id|device
-op_assign
-id|PCI_DEVICE_ID_CMD_649
-comma
 dot
 id|name
 op_assign

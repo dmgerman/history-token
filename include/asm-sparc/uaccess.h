@@ -118,9 +118,9 @@ r_void
 suffix:semicolon
 multiline_comment|/* Uh, these should become the main single-value transfer routines..&n; * They automatically use the right size if we just have the right&n; * pointer type..&n; *&n; * This gets kind of ugly. We want to return _two_ values in &quot;get_user()&quot;&n; * and yet we don&squot;t want to do any pointers, because that is too much&n; * of a performance impact. Thus we have a few rather ugly macros here,&n; * and hide all the ugliness from the user.&n; */
 DECL|macro|put_user
-mdefine_line|#define put_user(x,ptr) ({ &bslash;&n;unsigned long __pu_addr = (unsigned long)(ptr); &bslash;&n;__put_user_check((__typeof__(*(ptr)))(x),__pu_addr,sizeof(*(ptr))); })
+mdefine_line|#define put_user(x,ptr) ({ &bslash;&n;unsigned long __pu_addr = (unsigned long)(ptr); &bslash;&n;__chk_user_ptr(ptr); &bslash;&n;__put_user_check((__typeof__(*(ptr)))(x),__pu_addr,sizeof(*(ptr))); })
 DECL|macro|get_user
-mdefine_line|#define get_user(x,ptr) ({ &bslash;&n;unsigned long __gu_addr = (unsigned long)(ptr); &bslash;&n;__get_user_check((x),__gu_addr,sizeof(*(ptr)),__typeof__(*(ptr))); })
+mdefine_line|#define get_user(x,ptr) ({ &bslash;&n;unsigned long __gu_addr = (unsigned long)(ptr); &bslash;&n;__chk_user_ptr(ptr); &bslash;&n;__get_user_check((x),__gu_addr,sizeof(*(ptr)),__typeof__(*(ptr))); })
 multiline_comment|/*&n; * The &quot;__xxx&quot; versions do not do address space checking, useful when&n; * doing multiple accesses to the same area (the user has to do the&n; * checks by hand with &quot;access_ok()&quot;)&n; */
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr) __put_user_nocheck((__typeof__(*(ptr)))(x),(ptr),sizeof(*(ptr)))
@@ -189,11 +189,13 @@ id|__copy_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -246,12 +248,13 @@ r_return
 id|__copy_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|to
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|from
 comma
 id|n
@@ -289,12 +292,13 @@ r_return
 id|__copy_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|to
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|from
 comma
 id|n
@@ -345,12 +349,13 @@ r_return
 id|__copy_user
 c_func
 (paren
-id|to
-comma
 (paren
 r_void
+id|__user
 op_star
 )paren
+id|to
+comma
 id|from
 comma
 id|n
@@ -388,12 +393,13 @@ r_return
 id|__copy_user
 c_func
 (paren
-id|to
-comma
 (paren
 r_void
+id|__user
 op_star
 )paren
+id|to
+comma
 id|from
 comma
 id|n

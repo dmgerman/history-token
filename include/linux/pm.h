@@ -609,6 +609,10 @@ id|u32
 id|power_state
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_PM
+DECL|member|prev_state
+id|u32
+id|prev_state
+suffix:semicolon
 DECL|member|saved_state
 id|u8
 op_star

@@ -325,7 +325,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* macros and functions exported to the protocol modules */
 DECL|macro|delay_p
-mdefine_line|#define delay_p&t;&t;&t;(pi-&gt;delay?udelay(pi-&gt;delay):0)
+mdefine_line|#define delay_p&t;&t;&t;(pi-&gt;delay?udelay(pi-&gt;delay):(void)0)
 DECL|macro|out_p
 mdefine_line|#define out_p(offs,byte)&t;outb(byte,pi-&gt;port+offs); delay_p;
 DECL|macro|in_p

@@ -67,12 +67,11 @@ id|machine_flags
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+(brace
 DECL|member|addr
 DECL|member|size
 DECL|member|type
-DECL|variable|memory_chunk
-r_struct
-(brace
 r_int
 r_int
 id|addr
@@ -81,10 +80,11 @@ id|size
 comma
 id|type
 suffix:semicolon
+DECL|variable|memory_chunk
 )brace
 id|memory_chunk
 (braket
-l_int|16
+id|MEMORY_CHUNKS
 )braket
 op_assign
 (brace

@@ -1,5 +1,6 @@
-multiline_comment|/* $Id: traps.c,v 1.7 2003/07/04 08:27:52 starvik Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000-2002 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *  &t;       Hans-Peter Nilsson&n; *&n; */
+multiline_comment|/* $Id: traps.c,v 1.9 2004/05/11 12:28:26 starvik Exp $&n; *&n; *  linux/arch/cris/traps.c&n; *&n; *  Here we handle the break vectors not used by the system call &n; *  mechanism, as well as some general stack/register dumping &n; *  things.&n; * &n; *  Copyright (C) 2000-2002 Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen&n; *  &t;       Hans-Peter Nilsson&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|kstack_depth_to_print

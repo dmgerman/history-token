@@ -1077,7 +1077,9 @@ comma
 id|SNDCTL_DSP_SETFMT
 comma
 (paren
-id|caddr_t
+r_void
+id|__user
+op_star
 )paren
 op_amp
 id|bits
@@ -1138,7 +1140,9 @@ comma
 id|SNDCTL_DSP_SPEED
 comma
 (paren
-id|caddr_t
+r_void
+id|__user
+op_star
 )paren
 op_amp
 id|speed
@@ -1204,7 +1208,9 @@ comma
 id|SNDCTL_DSP_CHANNELS
 comma
 (paren
-id|caddr_t
+r_void
+id|__user
+op_star
 )paren
 op_amp
 id|c

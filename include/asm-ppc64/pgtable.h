@@ -45,7 +45,7 @@ DECL|macro|EADDR_SIZE
 mdefine_line|#define EADDR_SIZE (PTE_INDEX_SIZE + PMD_INDEX_SIZE + &bslash;&n;                    PGD_INDEX_SIZE + PAGE_SHIFT) 
 multiline_comment|/*&n; * Define the address range of the vmalloc VM area.&n; */
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START (0xD000000000000000)
+mdefine_line|#define VMALLOC_START (0xD000000000000000ul)
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */
@@ -54,9 +54,9 @@ mdefine_line|#define IMALLOC_START     (ioremap_bot)
 DECL|macro|IMALLOC_VMADDR
 mdefine_line|#define IMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|PHBS_IO_BASE
-mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000)&t;/* Reserve 2 gigs for PHBs */
+mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000ul)&t;/* Reserve 2 gigs for PHBs */
 DECL|macro|IMALLOC_BASE
-mdefine_line|#define IMALLOC_BASE      (0xE000000080000000)  
+mdefine_line|#define IMALLOC_BASE      (0xE000000080000000ul)  
 DECL|macro|IMALLOC_END
 mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */
@@ -786,7 +786,7 @@ r_return
 id|old
 suffix:semicolon
 )brace
-multiline_comment|/* PTE updating functions */
+multiline_comment|/* PTE updating functions, this function puts the PTE in the&n; * batch, doesn&squot;t actually triggers the hash flush immediately,&n; * you need to call flush_tlb_pending() to do that.&n; */
 r_extern
 r_void
 id|hpte_update
@@ -876,7 +876,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX generic code doesn&squot;t flush */
 )brace
 r_return
 (paren
@@ -1151,12 +1150,19 @@ op_star
 id|ptep
 )paren
 )paren
+(brace
 id|pte_clear
 c_func
 (paren
 id|ptep
 )paren
 suffix:semicolon
+id|flush_tlb_pending
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 op_star
 id|ptep
 op_assign
@@ -1174,6 +1180,99 @@ op_complement
 id|_PAGE_HPTEFLAGS
 suffix:semicolon
 )brace
+multiline_comment|/* Set the dirty and/or accessed bits atomically in a linux PTE, this&n; * function doesn&squot;t need to flush the hash entry&n; */
+DECL|macro|__HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+DECL|function|__ptep_set_access_flags
+r_static
+r_inline
+r_void
+id|__ptep_set_access_flags
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+comma
+id|pte_t
+id|entry
+comma
+r_int
+id|dirty
+)paren
+(brace
+r_int
+r_int
+id|bits
+op_assign
+id|pte_val
+c_func
+(paren
+id|entry
+)paren
+op_amp
+(paren
+id|_PAGE_DIRTY
+op_or
+id|_PAGE_ACCESSED
+op_or
+id|_PAGE_RW
+)paren
+suffix:semicolon
+r_int
+r_int
+id|old
+comma
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;1:&t;ldarx&t;%0,0,%4&bslash;n&bslash;&n;&t;&t;andi.&t;%1,%0,%6&bslash;n&bslash;&n;&t;&t;bne-&t;1b &bslash;n&bslash;&n;&t;&t;or&t;%0,%3,%0&bslash;n&bslash;&n;&t;&t;stdcx.&t;%0,0,%4&bslash;n&bslash;&n;&t;&t;bne-&t;1b&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|ptep
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|bits
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|ptep
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|ptep
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|_PAGE_BUSY
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|macro|ptep_set_access_flags
+mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, __dirty) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;&t;__ptep_set_access_flags(__ptep, __entry, __dirty);&t;   &bslash;&n;&t;&t;flush_tlb_page_nohash(__vma, __address);&t;       &t;   &bslash;&n;&t;} while(0)
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))

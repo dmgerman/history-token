@@ -660,6 +660,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 r_int
 r_int
 id|sys_mmap
@@ -832,6 +834,7 @@ id|sys_pipe
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|fildes
 )paren

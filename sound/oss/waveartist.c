@@ -402,7 +402,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_int
+id|__user
+op_star
 id|arg
 )paren
 suffix:semicolon
@@ -2014,7 +2016,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4786,7 +4790,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4902,6 +4908,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5080,6 +5087,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -7345,7 +7353,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_int
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -7395,10 +7405,6 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren
@@ -7532,10 +7538,6 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren
@@ -7618,10 +7620,6 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren
@@ -7959,10 +7957,6 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 ques
@@ -8030,10 +8024,6 @@ c_func
 (paren
 id|val
 comma
-(paren
-r_int
-op_star
-)paren
 id|arg
 )paren
 )paren

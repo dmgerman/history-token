@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
-macro_line|#include &lt;asm/pgtsrmmu.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/* declarations for highmem.c */
 r_extern
 r_int
@@ -45,7 +45,7 @@ mdefine_line|#define LAST_PKMAP 1024
 DECL|macro|PKMAP_SIZE
 mdefine_line|#define PKMAP_SIZE (LAST_PKMAP &lt;&lt; PAGE_SHIFT)
 DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE SRMMU_PMD_ALIGN_SOFT(SRMMU_NOCACHE_VADDR + (SRMMU_MAX_NOCACHE_PAGES &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define PKMAP_BASE PMD_ALIGN(SRMMU_NOCACHE_VADDR + (SRMMU_MAX_NOCACHE_PAGES &lt;&lt; PAGE_SHIFT))
 DECL|macro|LAST_PKMAP_MASK
 mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP - 1)
 DECL|macro|PKMAP_NR

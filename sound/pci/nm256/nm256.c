@@ -891,6 +891,10 @@ macro_line|#ifndef PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
 DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO 0x8006
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
+DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO 0x8016
+macro_line|#endif
 DECL|variable|snd_nm256_ids
 r_static
 r_struct
@@ -920,6 +924,22 @@ comma
 id|PCI_VENDOR_ID_NEOMAGIC
 comma
 id|PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NEOMAGIC
+comma
+id|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
 comma
 id|PCI_ANY_ID
 comma
@@ -2705,6 +2725,7 @@ id|snd_pcm_uframes_t
 id|pos
 comma
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -6487,6 +6508,19 @@ c_func
 id|card-&gt;driver
 comma
 l_string|&quot;NM256ZX&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
+suffix:colon
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+l_string|&quot;NM256XL+&quot;
 )paren
 suffix:semicolon
 r_break

@@ -13048,6 +13048,7 @@ id|fd_copyout
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|param
 comma
@@ -13087,6 +13088,7 @@ id|fd_copyin
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|param
 comma
@@ -13118,9 +13120,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|_COPYOUT
-mdefine_line|#define _COPYOUT(x) (copy_to_user((void *)param, &amp;(x), sizeof(x)) ? -EFAULT : 0)
+mdefine_line|#define _COPYOUT(x) (copy_to_user((void __user *)param, &amp;(x), sizeof(x)) ? -EFAULT : 0)
 DECL|macro|_COPYIN
-mdefine_line|#define _COPYIN(x) (copy_from_user(&amp;(x), (void *)param, sizeof(x)) ? -EFAULT : 0)
+mdefine_line|#define _COPYIN(x) (copy_from_user(&amp;(x), (void __user *)param, sizeof(x)) ? -EFAULT : 0)
 DECL|macro|COPYOUT
 mdefine_line|#define COPYOUT(x) ECALL(_COPYOUT(x))
 DECL|macro|COPYIN
@@ -13446,6 +13448,7 @@ r_int
 id|cmd
 comma
 r_char
+id|__user
 op_star
 id|param
 comma
@@ -13614,6 +13617,7 @@ r_int
 id|cmd
 comma
 r_char
+id|__user
 op_star
 id|param
 comma
@@ -13860,6 +13864,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|param
 )paren
@@ -15063,6 +15068,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|param
@@ -15552,6 +15558,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|param
@@ -15614,6 +15621,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|param
@@ -19035,7 +19043,7 @@ op_assign
 id|TOMINOR
 c_func
 (paren
-id|i
+id|dr
 )paren
 suffix:semicolon
 id|disks

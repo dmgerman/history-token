@@ -95,6 +95,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -255,10 +256,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -308,6 +311,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -331,11 +335,13 @@ id|handler
 multiline_comment|/* When CONFIG_ALTIVEC is set, we _always_ setup v_regs even if the&n;&t; * process never used altivec yet (MSR_VEC is zero in pt_regs of&n;&t; * the context). This is very important because we must ensure we&n;&t; * don&squot;t lose the VRSAVE content that may have been set prior to&n;&t; * the process doing its first vector operation&n;&t; * Userland shall check AT_HWCAP to know wether it can rely on the&n;&t; * v_regs pointer or not&n;&t; */
 macro_line|#ifdef CONFIG_ALTIVEC
 id|elf_vrreg_t
+id|__user
 op_star
 id|v_regs
 op_assign
 (paren
 id|elf_vrreg_t
+id|__user
 op_star
 )paren
 (paren
@@ -441,6 +447,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -570,12 +577,14 @@ id|sig
 comma
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 )paren
 (brace
 macro_line|#ifdef CONFIG_ALTIVEC
 id|elf_vrreg_t
+id|__user
 op_star
 id|v_regs
 suffix:semicolon
@@ -817,6 +826,7 @@ id|current-&gt;thread.vrsave
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 op_amp
@@ -855,6 +865,7 @@ DECL|function|get_sigframe
 r_static
 r_inline
 r_void
+id|__user
 op_star
 id|get_sigframe
 c_func
@@ -918,6 +929,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -945,6 +957,7 @@ id|syscall
 comma
 r_int
 r_int
+id|__user
 op_star
 id|tramp
 )paren
@@ -1275,6 +1288,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|new_ctx
@@ -1287,6 +1301,7 @@ id|tmp
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 (paren
@@ -1399,12 +1414,14 @@ id|regs
 (brace
 r_struct
 id|ucontext
+id|__user
 op_star
 id|uc
 op_assign
 (paren
 r_struct
 id|ucontext
+id|__user
 op_star
 )paren
 id|regs-&gt;gpr
@@ -1564,11 +1581,13 @@ id|regs
 (brace
 multiline_comment|/* Handler is *really* a pointer to the function descriptor for&n;&t; * the signal routine.  The first entry in the function&n;&t; * descriptor is the entry address of signal and the second&n;&t; * entry is the TOC value we need to use.&n;&t; */
 id|func_descr_t
+id|__user
 op_star
 id|funct_desc_ptr
 suffix:semicolon
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -1798,6 +1817,7 @@ id|funct_desc_ptr
 op_assign
 (paren
 id|func_descr_t
+id|__user
 op_star
 )paren
 id|ka-&gt;sa.sa_handler
@@ -1823,6 +1843,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newsp
@@ -1905,6 +1926,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1924,6 +1946,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp

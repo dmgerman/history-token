@@ -4051,6 +4051,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -4148,6 +4149,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -4250,6 +4252,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -4347,6 +4350,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma

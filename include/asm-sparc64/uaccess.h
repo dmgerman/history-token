@@ -103,9 +103,9 @@ r_void
 suffix:semicolon
 multiline_comment|/* Uh, these should become the main single-value transfer routines..&n; * They automatically use the right size if we just have the right&n; * pointer type..&n; *&n; * This gets kind of ugly. We want to return _two_ values in &quot;get_user()&quot;&n; * and yet we don&squot;t want to do any pointers, because that is too much&n; * of a performance impact. Thus we have a few rather ugly macros here,&n; * and hide all the ugliness from the user.&n; */
 DECL|macro|put_user
-mdefine_line|#define put_user(x,ptr) ({ &bslash;&n;unsigned long __pu_addr = (unsigned long)(ptr); &bslash;&n;__put_user_nocheck((__typeof__(*(ptr)))(x),__pu_addr,sizeof(*(ptr))); })
+mdefine_line|#define put_user(x,ptr) ({ &bslash;&n;unsigned long __pu_addr = (unsigned long)(ptr); &bslash;&n;__chk_user_ptr(ptr); &bslash;&n;__put_user_nocheck((__typeof__(*(ptr)))(x),__pu_addr,sizeof(*(ptr))); })
 DECL|macro|get_user
-mdefine_line|#define get_user(x,ptr) ({ &bslash;&n;unsigned long __gu_addr = (unsigned long)(ptr); &bslash;&n;__get_user_nocheck((x),__gu_addr,sizeof(*(ptr)),__typeof__(*(ptr))); })
+mdefine_line|#define get_user(x,ptr) ({ &bslash;&n;unsigned long __gu_addr = (unsigned long)(ptr); &bslash;&n;__chk_user_ptr(ptr); &bslash;&n;__get_user_nocheck((x),__gu_addr,sizeof(*(ptr)),__typeof__(*(ptr))); })
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x,ptr) put_user(x,ptr)
 DECL|macro|__get_user
@@ -133,7 +133,7 @@ mdefine_line|#define __put_user_nocheck_ret(data,addr,size,retval) ({ &bslash;&n
 DECL|macro|__put_user_asm
 mdefine_line|#define __put_user_asm(x,size,addr,ret)&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;/* Put user asm, inline. */&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;1:&bslash;t&quot;&t;&quot;st&quot;#size &quot;a %1, [%2] %%asi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;clr&t;%0&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;2:&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section .fixup,#alloc,#execinstr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;3:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;b&t;2b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot; mov&t;%3, %0&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.word&t;1b, 3b&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       : &quot;=r&quot; (ret) : &quot;r&quot; (x), &quot;r&quot; (__m(addr)),&t;&t;&t;&t;&bslash;&n;&t; &quot;i&quot; (-EFAULT))
 DECL|macro|__put_user_asm_ret
-mdefine_line|#define __put_user_asm_ret(x,size,addr,ret,foo)&t;&t;&t;&t;&bslash;&n;if (__builtin_constant_p(ret) &amp;&amp; ret == -EFAULT)&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;/* Put user asm ret, inline. */&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;1:&bslash;t&quot;&t;&quot;st&quot;#size &quot;a %1, [%2] %%asi&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.word&t;1b, __ret_efault&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       : &quot;=r&quot; (foo) : &quot;r&quot; (x), &quot;r&quot; (__m(addr)));&t;&t;&t;&bslash;&n;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;/* Put user asm ret, inline. */&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;1:&bslash;t&quot;&t;&quot;st&quot;#size &quot;a %1, [%2] %%asi&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section .fixup,#alloc,#execinstr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;3:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ret&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot; restore %%g0, %3, %%o0&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.word&t;1b, 3b&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       : &quot;=r&quot; (foo) : &quot;r&quot; (x), &quot;r&quot; (__m(addr)),&t;&t;&t;&t;&bslash;&n;         &quot;i&quot; (ret))
+mdefine_line|#define __put_user_asm_ret(x,size,addr,ret,foo)&t;&t;&t;&t;&bslash;&n;if (__builtin_constant_p(ret) &amp;&amp; ret == -EFAULT)&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;/* Put user asm ret, inline. */&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;1:&bslash;t&quot;&t;&quot;st&quot;#size &quot;a %1, [%2] %%asi&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.word&t;1b, __ret_efault&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       : &quot;=r&quot; (foo) : &quot;r&quot; (x), &quot;r&quot; (__m(addr)));&t;&t;&t;&bslash;&n;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;/* Put user asm ret, inline. */&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;1:&bslash;t&quot;&t;&quot;st&quot;#size &quot;a %1, [%2] %%asi&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section .fixup,#alloc,#execinstr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;3:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ret&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot; restore %%g0, %3, %%o0&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;.align&t;4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.word&t;1b, 3b&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;       : &quot;=r&quot; (foo) : &quot;r&quot; (x), &quot;r&quot; (__m(addr)),&t;&t;&t;&t;&bslash;&n;         &quot;i&quot; (ret))
 r_extern
 r_int
 id|__put_user_bad
@@ -235,6 +235,7 @@ id|__bzero_noasi
 c_func
 (paren
 r_void
+id|__user
 op_star
 comma
 r_int
@@ -263,10 +264,6 @@ r_return
 id|__bzero_noasi
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|addr
 comma
 id|size

@@ -818,7 +818,11 @@ c_cond
 id|msg-&gt;msg_flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_return
 op_minus
@@ -1374,6 +1378,7 @@ r_struct
 id|aunhdr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX: that is b0rken.  We can&squot;t mix userland and kernel pointers&n;&t; * in iovec, since on a lot of platforms copy_from_user() will&n;&t; * *not* work with the kernel and userland ones at the same time,&n;&t; * regardless of what we do with set_fs().  And we are talking about&n;&t; * econet-over-ethernet here, so &quot;it&squot;s only ARM anyway&quot; doesn&squot;t&n;&t; * apply.  Any suggestions on fixing that code?&t;&t;-- AV&n;&t; */
 id|iov
 (braket
 l_int|0
@@ -1413,6 +1418,7 @@ op_increment
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|base
 op_assign
@@ -2138,6 +2144,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -2464,6 +2471,18 @@ id|sk
 op_assign
 id|sock-&gt;sk
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2479,12 +2498,7 @@ c_func
 (paren
 id|sk
 comma
-(paren
-r_struct
-id|timeval
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_case
@@ -2501,11 +2515,7 @@ id|sock
 comma
 id|cmd
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 r_break
@@ -2518,11 +2528,7 @@ c_func
 (paren
 id|cmd
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 )paren
 suffix:semicolon
 )brace

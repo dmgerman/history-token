@@ -374,10 +374,35 @@ r_void
 )paren
 (brace
 id|CPLD_CONTROL
-op_assign
-l_int|0x0
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|6
+)paren
 suffix:semicolon
-multiline_comment|/* Enable LAN (Disable LCD) */
+multiline_comment|/* Mask USB1 connection IRQ */
+id|CPLD_CONTROL
+op_and_assign
+op_complement
+(paren
+l_int|0
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+multiline_comment|/* Disable LCD */
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+multiline_comment|/* Enable WLAN */
+)paren
+suffix:semicolon
 id|platform_add_devices
 (paren
 id|lpd7a40x_devs
@@ -615,7 +640,7 @@ id|cpld_version
 op_assign
 l_int|0x34
 suffix:semicolon
-multiline_comment|/* Override, for now */
+multiline_comment|/* Coerce LPD7A404 to RevB */
 macro_line|#endif
 multiline_comment|/* First, configure user controlled GPIOF interrupts  */
 id|GPIO_PFDD
@@ -648,7 +673,7 @@ multiline_comment|/* Enable PF0, PF1, PF2, and PF3 IRQs */
 multiline_comment|/* Then, configure CPLD interrupt */
 id|CPLD_INTERRUPTS
 op_assign
-l_int|0x0c
+l_int|0x9c
 suffix:semicolon
 multiline_comment|/* Disable all CPLD interrupts */
 id|GPIO_PFDD

@@ -3721,7 +3721,7 @@ id|devc-&gt;model
 op_eq
 id|MDL_ESS
 )paren
-r_return
+(brace
 id|ess_setmixer
 (paren
 id|devc
@@ -3731,6 +3731,9 @@ comma
 id|value
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren

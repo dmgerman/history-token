@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright 2001-2003 SuSE Labs.&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD Opteron/Athlon64 on-CPU northbridge.&n; * It also includes support for the AMD 8151 AGP bridge,&n; * although it doesn&squot;t actually do much, as all the real&n; * work is done in the northbridge(s).&n; */
+multiline_comment|/*&n; * Copyright 2001-2003 SuSE Labs.&n; * Distributed under the GNU public license, v2.&n; *&n; * This is a GART driver for the AMD Opteron/Athlon64 on-CPU northbridge.&n; * It also includes support for the AMD 8151 AGP bridge,&n; * although it doesn&squot;t actually do much, as all the real&n; * work is done in the northbridge(s).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1244,7 +1244,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Request the Aperture. This catches cases when someone else&n;&t;   already put a mapping in there - happens with some very broken BIOS &n;&n;&t;   Maybe better to use pci_assign_resource/pci_enable_device instead trusting&n;&t;   the bridges? */
+multiline_comment|/* Request the Aperture. This catches cases when someone else&n;&t;   already put a mapping in there - happens with some very broken BIOS&n;&n;&t;   Maybe better to use pci_assign_resource/pci_enable_device instead&n;&t;   trusting the bridges? */
 r_if
 c_cond
 (paren
@@ -1283,7 +1283,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * W*s centric BIOS sometimes only set up the aperture in the AGP&n; * bridge, not the northbridge. On AMD64 this is handled early &n; * in aperture.c, but when GART_IOMMU is not enabled or we run&n; * on a 32bit kernel this needs to be redone. &n; * Unfortunately it is impossible to fix the aperture here because it&squot;s too late&n; * to allocate that much memory. But at least error out cleanly instead of&n; * crashing.&n; */
+multiline_comment|/*&n; * W*s centric BIOS sometimes only set up the aperture in the AGP&n; * bridge, not the northbridge. On AMD64 this is handled early&n; * in aperture.c, but when GART_IOMMU is not enabled or we run&n; * on a 32bit kernel this needs to be redone.&n; * Unfortunately it is impossible to fix the aperture here because it&squot;s too late&n; * to allocate that much memory. But at least error out cleanly instead of&n; * crashing.&n; */
 DECL|function|fix_northbridge
 r_static
 id|__devinit
@@ -1652,7 +1652,7 @@ id|PFX
 l_string|&quot;No usable aperture found.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef __x86_64__ 
+macro_line|#ifdef __x86_64__
 multiline_comment|/* should port this to i386 */
 id|printk
 c_func
@@ -1662,7 +1662,7 @@ id|PFX
 l_string|&quot;Consider rebooting with iommu=memaper=2 to get a good aperture.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 r_return
 op_minus
 l_int|1
@@ -2710,6 +2710,45 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
+multiline_comment|/* SIS 755 */
+(brace
+dot
+r_class
+op_assign
+(paren
+id|PCI_CLASS_BRIDGE_HOST
+op_lshift
+l_int|8
+)paren
+comma
+dot
+id|class_mask
+op_assign
+op_complement
+l_int|0
+comma
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_SI
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_SI_755
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
+comma
+)brace
+comma
 (brace
 )brace
 )brace
@@ -2811,7 +2850,7 @@ id|PFX
 l_string|&quot;No supported AGP bridge found.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE&t;&t;&t;
+macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
@@ -2829,7 +2868,7 @@ id|PFX
 l_string|&quot;You can boot with agp=try_unsupported&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;
+macro_line|#endif
 r_return
 op_minus
 id|ENODEV

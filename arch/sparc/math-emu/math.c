@@ -241,6 +241,7 @@ id|insn
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -333,7 +334,6 @@ c_cond
 (paren
 id|retcode
 )paren
-(brace
 id|fpt-&gt;thread.fsr
 op_and_assign
 op_complement
@@ -343,7 +343,6 @@ op_or
 id|FSR_CEXC_MASK
 )paren
 suffix:semicolon
-)brace
 r_else
 id|fpt-&gt;thread.fsr
 op_and_assign
@@ -447,12 +446,10 @@ id|eflag
 op_amp
 id|FP_EX_INVALID
 )paren
-(brace
 id|eflag
 op_assign
 id|FP_EX_INVALID
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -461,12 +458,10 @@ id|eflag
 op_amp
 id|FP_EX_OVERFLOW
 )paren
-(brace
 id|eflag
 op_assign
 id|FP_EX_OVERFLOW
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -475,12 +470,10 @@ id|eflag
 op_amp
 id|FP_EX_UNDERFLOW
 )paren
-(brace
 id|eflag
 op_assign
 id|FP_EX_UNDERFLOW
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -489,12 +482,10 @@ id|eflag
 op_amp
 id|FP_EX_DIVZERO
 )paren
-(brace
 id|eflag
 op_assign
 id|FP_EX_DIVZERO
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -503,12 +494,10 @@ id|eflag
 op_amp
 id|FP_EX_INEXACT
 )paren
-(brace
 id|eflag
 op_assign
 id|FP_EX_INEXACT
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Set CEXC, here is the rule:&n;&t; *&n;&t; *    In general all FPU ops will set one and only one&n;&t; *    bit in the CEXC field, this is always the case&n;&t; *    when the IEEE exception trap is enabled in TEM.&n;&t; */
@@ -538,7 +527,6 @@ id|would_trap
 op_eq
 l_int|0
 )paren
-(brace
 id|fsr
 op_or_assign
 (paren
@@ -550,7 +538,6 @@ op_lshift
 id|FSR_AEXC_SHIFT
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If trapping, indicate fault trap type IEEE. */
 r_if
 c_cond
@@ -559,7 +546,6 @@ id|would_trap
 op_ne
 l_int|0
 )paren
-(brace
 id|fsr
 op_or_assign
 (paren
@@ -568,7 +554,6 @@ op_lshift
 l_int|14
 )paren
 suffix:semicolon
-)brace
 op_star
 id|pfsr
 op_assign
@@ -2754,11 +2739,9 @@ id|_fex
 op_eq
 l_int|0
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* success! */
 r_return
 id|record_exception

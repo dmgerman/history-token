@@ -2267,6 +2267,10 @@ DECL|typedef|CREATE_DIRECTORY_RSP
 )brace
 id|CREATE_DIRECTORY_RSP
 suffix:semicolon
+multiline_comment|/***************************************************/
+multiline_comment|/* NT Transact structure defintions follow         */
+multiline_comment|/* Currently only ioctl and notify are implemented */
+multiline_comment|/***************************************************/
 DECL|struct|smb_com_transaction_ioctl_req
 r_typedef
 r_struct
@@ -2519,29 +2523,85 @@ id|__u8
 id|WatchTree
 suffix:semicolon
 multiline_comment|/* 1 = Monitor subdirectories */
+DECL|member|Reserved2
+id|__u8
+id|Reserved2
+suffix:semicolon
 DECL|member|ByteCount
 id|__u16
 id|ByteCount
 suffix:semicolon
-DECL|member|Pad
-id|__u8
-id|Pad
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|Data
-id|__u8
-id|Data
-(braket
-l_int|1
-)braket
-suffix:semicolon
+multiline_comment|/* __u8 Pad[3];*/
+multiline_comment|/*&t;__u8 Data[1];*/
 DECL|typedef|TRANSACT_CHANGE_NOTIFY_REQ
 )brace
 id|TRANSACT_CHANGE_NOTIFY_REQ
 suffix:semicolon
-multiline_comment|/* Completion Filter flags */
+DECL|struct|smb_com_transaction_change_notify_rsp
+r_typedef
+r_struct
+id|smb_com_transaction_change_notify_rsp
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 18 */
+DECL|member|Reserved
+id|__u8
+id|Reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|TotalParameterCount
+id|__u32
+id|TotalParameterCount
+suffix:semicolon
+DECL|member|TotalDataCount
+id|__u32
+id|TotalDataCount
+suffix:semicolon
+DECL|member|ParameterCount
+id|__u32
+id|ParameterCount
+suffix:semicolon
+DECL|member|ParameterOffset
+id|__u32
+id|ParameterOffset
+suffix:semicolon
+DECL|member|ParameterDisplacement
+id|__u32
+id|ParameterDisplacement
+suffix:semicolon
+DECL|member|DataCount
+id|__u32
+id|DataCount
+suffix:semicolon
+DECL|member|DataOffset
+id|__u32
+id|DataOffset
+suffix:semicolon
+DECL|member|DataDisplacement
+id|__u32
+id|DataDisplacement
+suffix:semicolon
+DECL|member|SetupCount
+id|__u8
+id|SetupCount
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+multiline_comment|/* __u8 Pad[3]; */
+DECL|typedef|TRANSACT_CHANGE_NOTIFY_RSP
+)brace
+id|TRANSACT_CHANGE_NOTIFY_RSP
+suffix:semicolon
+multiline_comment|/* Completion Filter flags for Notify */
 DECL|macro|FILE_NOTIFY_CHANGE_FILE_NAME
 mdefine_line|#define FILE_NOTIFY_CHANGE_FILE_NAME    0x00000001
 DECL|macro|FILE_NOTIFY_CHANGE_DIR_NAME
@@ -2859,12 +2919,18 @@ suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
 mdefine_line|#define SMB_INFO_STANDARD                   1
+DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
+mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST        3
+DECL|macro|SMB_INFO_QUERY_ALL_EAS
+mdefine_line|#define SMB_INFO_QUERY_ALL_EAS              4
 DECL|macro|SMB_INFO_IS_NAME_VALID
 mdefine_line|#define SMB_INFO_IS_NAME_VALID              6
 DECL|macro|SMB_QUERY_FILE_BASIC_INFO
 mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO       0x101
 DECL|macro|SMB_QUERY_FILE_STANDARD_INFO
 mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO    0x102
+DECL|macro|SMB_QUERY_FILE_EA_INFO
+mdefine_line|#define SMB_QUERY_FILE_EA_INFO          0x103
 DECL|macro|SMB_QUERY_FILE_NAME_INFO
 mdefine_line|#define SMB_QUERY_FILE_NAME_INFO        0x104
 DECL|macro|SMB_QUERY_FILE_ALLOCATION_INFO
@@ -5033,20 +5099,18 @@ DECL|struct|fea
 r_struct
 id|fea
 (brace
-DECL|member|fEA
+DECL|member|EA_flags
 r_int
 r_char
-id|fEA
+id|EA_flags
 suffix:semicolon
-DECL|member|cbName
-r_int
-r_char
-id|cbName
+DECL|member|name_len
+id|__u8
+id|name_len
 suffix:semicolon
-DECL|member|cbValue
-r_int
-r_int
-id|cbValue
+DECL|member|value_len
+id|__u16
+id|value_len
 suffix:semicolon
 DECL|member|szName
 r_char
@@ -5055,6 +5119,7 @@ id|szName
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* optionally followed by value */
 )brace
 suffix:semicolon
 multiline_comment|/* flags for _FEA.fEA */
@@ -5064,10 +5129,9 @@ DECL|struct|fealist
 r_struct
 id|fealist
 (brace
-DECL|member|cbList
-r_int
-r_int
-id|cbList
+DECL|member|list_len
+id|__u32
+id|list_len
 suffix:semicolon
 DECL|member|list
 r_struct
@@ -5108,6 +5172,9 @@ id|data_blob
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_POSIX
+multiline_comment|/* &n;&t;For better POSIX semantics from Linux client, (even better&n;&t;than the existing CIFS Unix Extensions) we need updated PDUs for:&n;&t;&n;&t;1) PosixCreateX - to set and return the mode, inode#, device info and&n;&t;perhaps add a CreateDevice - to create Pipes and other special .inodes&n;&t;Also note POSIX open flags&n;&t;2) Close - to return the last write time to do cache across close more safely&n;&t;3) PosixQFSInfo - to return statfs info&n;&t;4) FindFirst return unique inode number - what about resume key, two forms short (matches readdir) and full (enough info to cache inodes)&n;&t;5) Mkdir - set mode&n;&t;&n;&t;And under consideration: &n;&t;6) FindClose2 (return nanosecond timestamp ??)&n;&t;7) Use nanosecond timestamps throughout all time fields if &n;&t;   corresponding attribute flag is set&n;&t;8) sendfile - handle based copy&n;&t;9) Direct i/o&n;&t;10) &quot;POSIX ACL&quot; support&n;&t;11) Misc fcntls?&n;&t;&n;&t;what about fixing 64 bit alignment&n;&t;&n;&t;There are also various legacy SMB/CIFS requests used as is&n;&t;&n;&t;From existing Lanman and NTLM dialects:&n;&t;--------------------------------------&n;&t;NEGOTIATE&n;&t;SESSION_SETUP_ANDX (BB which?)&n;&t;TREE_CONNECT_ANDX (BB which wct?)&n;&t;TREE_DISCONNECT (BB add volume timestamp on response)&n;&t;LOGOFF_ANDX&n;&t;DELETE (note delete open file behavior)&n;&t;DELETE_DIRECTORY&n;&t;READ_AND_X&n;&t;WRITE_AND_X&n;&t;LOCKING_AND_X (note posix lock semantics)&n;&t;RENAME (note rename across dirs and open file rename posix behaviors)&n;&t;NT_RENAME (for hardlinks) Is this good enough for all features?&n;&t;FIND_CLOSE2&n;&t;TRANSACTION2 (18 cases)&n;&t;&t;SMB_SET_FILE_END_OF_FILE_INFO2 SMB_SET_PATH_END_OF_FILE_INFO2&n;&t;&t;(BB verify that never need to set allocation size)&n;&t;&t;SMB_SET_FILE_BASIC_INFO2 (setting times - BB can it be done via Unix ext?)&n;&t;&n;&t;COPY (note support for copy across directories) - FUTURE, OPTIONAL&n;&t;setting/getting OS/2 EAs - FUTURE (BB can this handle&n;&t;        setting Linux xattrs perfectly)         - OPTIONAL&n;    dnotify                                         - FUTURE, OPTIONAL&n;    quota                                           - FUTURE, OPTIONAL&n;&t;&t;&t;&n;&t;Note that various requests implemented for NT interop such as &n;&t;&t;NT_TRANSACT (IOCTL) QueryReparseInfo&n;&t;are unneeded to servers compliant with the CIFS POSIX extensions&n;&t;&n;&t;From CIFS Unix Extensions:&n;&t;-------------------------&n;&t;T2 SET_PATH_INFO (SMB_SET_FILE_UNIX_LINK) for symlinks&n;&t;T2 SET_PATH_INFO (SMB_SET_FILE_BASIC_INFO2)&n;&t;T2 QUERY_PATH_INFO (SMB_QUERY_FILE_UNIX_LINK)&n;&t;T2 QUERY_PATH_INFO (SMB_QUERY_FILE_UNIX_BASIC) - BB check for missing inode fields&n;&t;&t;&t;&t;&t;Actually need QUERY_FILE_UNIX_INFO since has inode num&n;&t;&t;&t;&t;&t;BB what about a) blksize/blkbits/blocks&n;&t;&t;&t;&t;&t;&t;&t;&t;  b) i_version&n;&t;&t;&t;&t;&t;&t;&t;&t;  c) i_rdev&n;&t;&t;&t;&t;&t;&t;&t;&t;  d) notify mask?&n;&t;&t;&t;&t;&t;&t;&t;&t;  e) generation&n;&t;&t;&t;&t;&t;&t;&t;&t;  f) size_seqcount&n;&t;T2 FIND_FIRST/FIND_NEXT FIND_FILE_UNIX&n;&t;TRANS2_GET_DFS_REFERRAL&t;&t;&t;&t;  - OPTIONAL but recommended&n;&t;T2_QFS_INFO QueryDevice/AttributeInfo - OPTIONAL&n;&t;&n;&t;&n; */
+macro_line|#endif 
 macro_line|#pragma pack()&t;&t;&t;/* resume default structure packing */
 macro_line|#endif&t;&t;&t;&t;/* _CIFSPDU_H */
 eof

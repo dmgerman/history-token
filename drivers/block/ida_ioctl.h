@@ -70,6 +70,7 @@ r_struct
 (brace
 DECL|member|addr
 r_void
+id|__user
 op_star
 id|addr
 suffix:semicolon

@@ -1203,12 +1203,18 @@ op_amp
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Delete us from our own list to prevent corruption later */
-id|list_del
+multiline_comment|/* Make sure don&squot;t leave any orphaned expectations lying around */
+r_if
+c_cond
+(paren
+id|ct-&gt;expecting
+)paren
+id|remove_expectations
 c_func
 (paren
-op_amp
-id|ct-&gt;sibling_list
+id|ct
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Delete our master expectation */
@@ -4041,6 +4047,7 @@ DECL|function|ip_conntrack_expect_alloc
 id|ip_conntrack_expect_alloc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -4960,21 +4967,19 @@ c_cond
 (paren
 op_logical_neg
 id|conntrack-&gt;master
-)paren
-id|conntrack-&gt;helper
-op_assign
-id|LIST_FIND
+op_logical_and
+id|list_empty
 c_func
 (paren
 op_amp
-id|helpers
-comma
-id|helper_cmp
-comma
-r_struct
-id|ip_conntrack_helper
-op_star
-comma
+id|conntrack-&gt;sibling_list
+)paren
+)paren
+id|conntrack-&gt;helper
+op_assign
+id|ip_ct_find_helper
+c_func
+(paren
 id|newreply
 )paren
 suffix:semicolon
@@ -5714,6 +5719,7 @@ r_int
 id|optval
 comma
 r_void
+id|__user
 op_star
 id|user
 comma

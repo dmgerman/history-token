@@ -719,10 +719,6 @@ r_int
 r_int
 op_star
 id|mapcount
-comma
-r_int
-op_star
-id|failed
 )paren
 (brace
 r_struct
@@ -794,18 +790,9 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * For debug we&squot;re currently warning if not all found,&n;&t;&t; * but in this case that&squot;s expected: suppress warning.&n;&t;&t; */
-(paren
-op_star
-id|failed
-)paren
-op_increment
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|pgd
 op_assign
 id|pgd_offset
@@ -979,11 +966,6 @@ id|referenced
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|failed
-op_assign
-l_int|0
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1024,9 +1006,6 @@ id|vma
 comma
 op_amp
 id|mapcount
-comma
-op_amp
-id|failed
 )paren
 suffix:semicolon
 r_if
@@ -1035,19 +1014,9 @@ c_cond
 op_logical_neg
 id|mapcount
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|failed
-)paren
-suffix:semicolon
-id|out
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -1110,11 +1079,6 @@ id|iter
 suffix:semicolon
 r_int
 id|referenced
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|failed
 op_assign
 l_int|0
 suffix:semicolon
@@ -1181,8 +1145,7 @@ id|VM_MAYSHARE
 id|referenced
 op_increment
 suffix:semicolon
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
 id|referenced
@@ -1196,9 +1159,6 @@ id|vma
 comma
 op_amp
 id|mapcount
-comma
-op_amp
-id|failed
 )paren
 suffix:semicolon
 r_if
@@ -1207,29 +1167,9 @@ c_cond
 op_logical_neg
 id|mapcount
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|list_empty
-c_func
-(paren
-op_amp
-id|mapping-&gt;i_mmap_nonlinear
-)paren
-)paren
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|failed
-)paren
-suffix:semicolon
-id|out
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -1865,6 +1805,35 @@ r_goto
 id|out_unmap
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Don&squot;t pull an anonymous page out from under get_user_pages.&n;&t; * GUP carefully breaks COW and raises page count (while holding&n;&t; * page_table_lock, as we have here) to make sure that the page&n;&t; * cannot be freed.  If we unmap that page here, a user write&n;&t; * access to the virtual address will bring back the page, but&n;&t; * its raised count will (ironically) be taken to mean it&squot;s not&n;&t; * an exclusive swap page, do_wp_page will replace it by a copy&n;&t; * page, and the user never get to see the data GUP was holding&n;&t; * the original page for.&n;&t; */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+op_logical_and
+id|page_count
+c_func
+(paren
+id|page
+)paren
+op_ne
+id|page-&gt;mapcount
+op_plus
+l_int|2
+)paren
+(brace
+id|ret
+op_assign
+id|SWAP_FAIL
+suffix:semicolon
+r_goto
+id|out_unmap
+suffix:semicolon
+)brace
 multiline_comment|/* Nuke the page table entry. */
 id|flush_cache_page
 c_func
@@ -2010,13 +1979,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * objrmap doesn&squot;t work for nonlinear VMAs because the assumption that&n; * offset-into-file correlates with offset-into-virtual-addresses does not hold.&n; * Consequently, given a particular page and its -&gt;index, we cannot locate the&n; * ptes which are mapping that page without an exhaustive linear search.&n; *&n; * So what this code does is a mini &quot;virtual scan&quot; of each nonlinear VMA which&n; * maps the file to which the target page belongs.  The -&gt;vm_private_data field&n; * holds the current cursor into that scan.  Successive searches will circulate&n; * around the vma&squot;s virtual address space.&n; *&n; * So as more replacement pressure is applied to the pages in a nonlinear VMA,&n; * more scanning pressure is placed against them as well.   Eventually pages&n; * will become fully unmapped and are eligible for eviction.&n; *&n; * For very sparsely populated VMAs this is a little inefficient - chances are&n; * there there won&squot;t be many ptes located within the scan cluster.  In this case&n; * maybe we could scan further - to the end of the pte page, perhaps.&n; */
 DECL|macro|CLUSTER_SIZE
-mdefine_line|#define CLUSTER_SIZE&t;(32 * PAGE_SIZE)
-macro_line|#if     CLUSTER_SIZE  &gt;&t;PMD_SIZE
-DECL|macro|CLUSTER_SIZE
-macro_line|#undef  CLUSTER_SIZE
-DECL|macro|CLUSTER_SIZE
-mdefine_line|#define CLUSTER_SIZE&t;PMD_SIZE
-macro_line|#endif
+mdefine_line|#define CLUSTER_SIZE&t;min(32*PAGE_SIZE, PMD_SIZE)
 DECL|macro|CLUSTER_MASK
 mdefine_line|#define CLUSTER_MASK&t;(~(CLUSTER_SIZE - 1))
 DECL|function|try_to_unmap_cluster

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/hardware.h&n; *&n; *  
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * We requires absolute addresses.&n; */
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE&t;&t;0
@@ -15,7 +14,7 @@ multiline_comment|/*&n; * Intel PXA2xx internal register mapping:&n; *&n; * 0x40
 DECL|macro|io_p2v
 mdefine_line|#define io_p2v(x) (0xf2000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x1c000000) &gt;&gt; 1))
 DECL|macro|io_v2p
-mdefine_line|#define io_v2p(x) (0x40000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x0e000000) &lt;&lt; 1))
+mdefine_line|#define io_v2p(x) (0x3c000000 + ((x) &amp; 0x01ffffff) + (((x) &amp; 0x0e000000) &lt;&lt; 1))
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if 0
 macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))
@@ -65,20 +64,25 @@ r_int
 id|gpio_mode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * return current lclk frequency in units of 10kHz&n; */
+multiline_comment|/*&n; * return current memory and LCD clock frequency in units of 10kHz&n; */
 r_extern
 r_int
 r_int
-id|get_lclk_frequency_10khz
+id|get_memclk_frequency_10khz
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|get_lcdclk_frequency_10khz
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Implementation specifics&n; */
-macro_line|#include &quot;lubbock.h&quot;
-macro_line|#include &quot;mainstone.h&quot;
-macro_line|#include &quot;idp.h&quot;
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof

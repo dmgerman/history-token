@@ -186,6 +186,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|cmap
 )paren
@@ -196,6 +197,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|cmap
 )paren
@@ -274,6 +276,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|table
 )paren
@@ -284,6 +287,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|table
 )paren
@@ -294,6 +298,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|table
 )paren
@@ -304,6 +309,7 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
 id|table
 )paren
@@ -333,6 +339,7 @@ id|ct
 comma
 r_struct
 id|unipair
+id|__user
 op_star
 id|list
 )paren
@@ -348,11 +355,13 @@ id|ushort
 id|ct
 comma
 id|ushort
+id|__user
 op_star
 id|uct
 comma
 r_struct
 id|unipair
+id|__user
 op_star
 id|list
 )paren

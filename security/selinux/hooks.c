@@ -5444,7 +5444,6 @@ id|error
 )paren
 r_return
 suffix:semicolon
-r_return
 id|secondary_ops
 op_member_access_from_pointer
 id|capset_set
@@ -14794,7 +14793,6 @@ op_star
 id|msg
 )paren
 (brace
-r_return
 id|msg_msg_free_security
 c_func
 (paren
@@ -15734,6 +15732,7 @@ op_star
 id|shp
 comma
 r_char
+id|__user
 op_star
 id|shmaddr
 comma

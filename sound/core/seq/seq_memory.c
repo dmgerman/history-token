@@ -153,6 +153,7 @@ l_int|32
 )braket
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|curptr
 op_assign

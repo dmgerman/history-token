@@ -266,6 +266,7 @@ op_member_access_from_pointer
 id|output
 c_func
 (paren
+op_amp
 id|skb
 )paren
 suffix:semicolon
@@ -3002,6 +3003,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma

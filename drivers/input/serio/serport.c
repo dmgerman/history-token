@@ -121,22 +121,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|serport_serio_open
-r_static
-r_int
-id|serport_serio_open
-c_func
-(paren
-r_struct
-id|serio
-op_star
-id|serio
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|serport_serio_close
 r_static
 r_void
@@ -288,10 +272,6 @@ id|serport-&gt;serio.write
 op_assign
 id|serport_serio_write
 suffix:semicolon
-id|serport-&gt;serio.open
-op_assign
-id|serport_serio_open
-suffix:semicolon
 id|serport-&gt;serio.close
 op_assign
 id|serport_serio_close
@@ -432,7 +412,7 @@ r_return
 l_int|256
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * serport_ldisc_read() just waits indefinitely if everything goes well. &n; * However, when the serio driver closes the serio port, it finishes,&n; * returning 0 characters.&n; */
+multiline_comment|/*&n; * serport_ldisc_read() just waits indefinitely if everything goes well.&n; * However, when the serio driver closes the serio port, it finishes,&n; * returning 0 characters.&n; */
 DECL|function|serport_ldisc_read
 r_static
 id|ssize_t
@@ -451,6 +431,7 @@ id|file
 comma
 r_int
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -597,6 +578,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

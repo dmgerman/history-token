@@ -922,8 +922,6 @@ suffix:semicolon
 r_int
 r_int
 id|charge
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|mempolicy
@@ -1049,6 +1047,10 @@ id|VM_DONTCOPY
 r_continue
 suffix:semicolon
 )brace
+id|charge
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1082,7 +1084,7 @@ r_goto
 id|fail_nomem
 suffix:semicolon
 id|charge
-op_add_assign
+op_assign
 id|len
 suffix:semicolon
 )brace
@@ -1332,7 +1334,7 @@ c_cond
 id|retval
 )paren
 r_goto
-id|fail
+id|out
 suffix:semicolon
 )brace
 id|retval
@@ -1374,8 +1376,6 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|fail
-suffix:colon
 id|vm_unacct_memory
 c_func
 (paren
@@ -1889,6 +1889,8 @@ comma
 l_int|NULL
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

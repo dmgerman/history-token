@@ -284,6 +284,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|elf_bss
@@ -296,14 +297,14 @@ suffix:semicolon
 multiline_comment|/* Let&squot;s use some macros to make this stack manipulation a litle clearer */
 macro_line|#ifdef CONFIG_STACK_GROWSUP
 DECL|macro|STACK_ADD
-mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) + (items))
+mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t __user *)(sp) + (items))
 DECL|macro|STACK_ROUND
 mdefine_line|#define STACK_ROUND(sp, items) &bslash;&n;&t;((15 + (unsigned long) ((sp) + (items))) &amp;~ 15UL)
 DECL|macro|STACK_ALLOC
-mdefine_line|#define STACK_ALLOC(sp, len) ({ elf_addr_t *old_sp = (elf_addr_t *)sp; sp += len; old_sp; })
+mdefine_line|#define STACK_ALLOC(sp, len) ({ elf_addr_t __user *old_sp = (elf_addr_t __user *)sp; sp += len; old_sp; })
 macro_line|#else
 DECL|macro|STACK_ADD
-mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t *)(sp) - (items))
+mdefine_line|#define STACK_ADD(sp, items) ((elf_addr_t __user *)(sp) - (items))
 DECL|macro|STACK_ROUND
 mdefine_line|#define STACK_ROUND(sp, items) &bslash;&n;&t;(((unsigned long) (sp - items)) &amp;~ 15UL)
 DECL|macro|STACK_ALLOC
@@ -354,16 +355,22 @@ op_assign
 id|bprm-&gt;envc
 suffix:semicolon
 id|elf_addr_t
+id|__user
 op_star
 id|argv
-comma
+suffix:semicolon
+id|elf_addr_t
+id|__user
 op_star
 id|envp
 suffix:semicolon
 id|elf_addr_t
+id|__user
 op_star
 id|sp
-comma
+suffix:semicolon
+id|elf_addr_t
+id|__user
 op_star
 id|u_platform
 suffix:semicolon
@@ -445,6 +452,7 @@ id|u_platform
 op_assign
 (paren
 id|elf_addr_t
+id|__user
 op_star
 )paren
 id|STACK_ALLOC
@@ -731,6 +739,7 @@ id|sp
 op_assign
 (paren
 id|elf_addr_t
+id|__user
 op_star
 )paren
 id|bprm-&gt;p
@@ -753,6 +762,7 @@ id|sp
 op_assign
 (paren
 id|elf_addr_t
+id|__user
 op_star
 )paren
 id|bprm-&gt;p
@@ -870,6 +880,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|p
@@ -943,6 +954,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|p
@@ -988,6 +1000,7 @@ id|sp
 op_assign
 (paren
 id|elf_addr_t
+id|__user
 op_star
 )paren
 id|envp
@@ -1670,6 +1683,7 @@ op_complement
 l_int|0UL
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -1718,6 +1732,7 @@ id|addr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 l_int|0
@@ -1743,6 +1758,7 @@ id|addr
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|N_TXTADDR
@@ -2982,6 +2998,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|elf_bss
@@ -4906,6 +4923,7 @@ comma
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 id|mm-&gt;arg_start

@@ -392,6 +392,7 @@ id|regs
 (brace
 r_struct
 id|reg_window
+id|__user
 op_star
 id|win
 suffix:semicolon
@@ -406,7 +407,6 @@ id|reg
 OL
 l_int|16
 )paren
-(brace
 r_return
 (paren
 op_logical_neg
@@ -421,13 +421,13 @@ id|reg
 )braket
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Ho hum, the slightly complicated case. */
 id|win
 op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -539,7 +539,6 @@ suffix:semicolon
 )brace
 DECL|function|compute_effective_address
 r_static
-r_inline
 r_int
 r_int
 id|compute_effective_address
@@ -657,8 +656,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|safe_compute_effective_address
-r_static
-r_inline
 r_int
 r_int
 id|safe_compute_effective_address
@@ -1416,14 +1413,12 @@ id|regs-&gt;npc
 op_amp
 l_int|3
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* Must verify_area() in all the necessary places. */
 DECL|macro|WINREG_ADDR
-mdefine_line|#define WINREG_ADDR(regnum) ((void *)(((unsigned long *)regs-&gt;u_regs[UREG_FP])+(regnum)))
+mdefine_line|#define WINREG_ADDR(regnum) &bslash;&n;&t;((void __user *)(((unsigned long *)regs-&gt;u_regs[UREG_FP])+(regnum)))
 id|retval
 op_assign
 l_int|0
@@ -1469,11 +1464,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_return
 id|retval
 suffix:semicolon
-)brace
 )brace
 id|reg
 op_assign
@@ -1516,11 +1509,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_return
 id|retval
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1572,11 +1563,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
 r_return
 id|retval
 suffix:semicolon
-)brace
 )brace
 )brace
 r_return

@@ -2508,6 +2508,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|arg
 )paren
@@ -2532,10 +2533,6 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|E_TABSZ
@@ -2604,6 +2601,7 @@ c_func
 (paren
 r_int
 r_char
+id|__user
 op_star
 id|arg
 )paren
@@ -2630,10 +2628,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|E_TABSZ
@@ -2711,6 +2705,7 @@ id|con_set_trans_new
 c_func
 (paren
 id|ushort
+id|__user
 op_star
 id|arg
 )paren
@@ -2735,10 +2730,6 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|E_TABSZ
@@ -2810,6 +2801,7 @@ id|con_get_trans_new
 c_func
 (paren
 id|ushort
+id|__user
 op_star
 id|arg
 )paren
@@ -2834,10 +2826,6 @@ c_func
 (paren
 id|VERIFY_WRITE
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 id|E_TABSZ
@@ -3767,6 +3755,7 @@ id|ct
 comma
 r_struct
 id|unipair
+id|__user
 op_star
 id|list
 )paren
@@ -4506,11 +4495,13 @@ id|ushort
 id|ct
 comma
 id|ushort
+id|__user
 op_star
 id|uct
 comma
 r_struct
 id|unipair
+id|__user
 op_star
 id|list
 )paren

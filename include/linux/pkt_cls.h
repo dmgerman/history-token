@@ -64,12 +64,15 @@ id|TCA_POLICE_AVRATE
 comma
 DECL|enumerator|TCA_POLICE_RESULT
 id|TCA_POLICE_RESULT
+comma
 DECL|macro|TCA_POLICE_RESULT
 mdefine_line|#define TCA_POLICE_RESULT TCA_POLICE_RESULT
+DECL|enumerator|__TCA_POLICE_MAX
+id|__TCA_POLICE_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_POLICE_MAX
-mdefine_line|#define TCA_POLICE_MAX TCA_POLICE_RESULT
+mdefine_line|#define TCA_POLICE_MAX (__TCA_POLICE_MAX - 1)
 multiline_comment|/* U32 filters */
 DECL|macro|TC_U32_HTID
 mdefine_line|#define TC_U32_HTID(h) ((h)&amp;0xFFF00000)
@@ -108,10 +111,12 @@ comma
 DECL|enumerator|TCA_U32_POLICE
 id|TCA_U32_POLICE
 comma
+DECL|enumerator|__TCA_U32_MAX
+id|__TCA_U32_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_U32_MAX
-mdefine_line|#define TCA_U32_MAX TCA_U32_POLICE
+mdefine_line|#define TCA_U32_MAX (__TCA_U32_MAX - 1)
 DECL|struct|tc_u32_key
 r_struct
 id|tc_u32_key
@@ -215,10 +220,12 @@ comma
 DECL|enumerator|TCA_RSVP_POLICE
 id|TCA_RSVP_POLICE
 comma
+DECL|enumerator|__TCA_RSVP_MAX
+id|__TCA_RSVP_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_RSVP_MAX
-mdefine_line|#define TCA_RSVP_MAX TCA_RSVP_POLICE
+mdefine_line|#define TCA_RSVP_MAX (__TCA_RSVP_MAX - 1)
 DECL|struct|tc_rsvp_gpi
 r_struct
 id|tc_rsvp_gpi
@@ -286,10 +293,12 @@ comma
 DECL|enumerator|TCA_ROUTE4_POLICE
 id|TCA_ROUTE4_POLICE
 comma
+DECL|enumerator|__TCA_ROUTE4_MAX
+id|__TCA_ROUTE4_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_ROUTE4_MAX
-mdefine_line|#define TCA_ROUTE4_MAX TCA_ROUTE4_POLICE
+mdefine_line|#define TCA_ROUTE4_MAX (__TCA_ROUTE4_MAX - 1)
 multiline_comment|/* FW filter */
 r_enum
 (brace
@@ -302,10 +311,12 @@ comma
 DECL|enumerator|TCA_FW_POLICE
 id|TCA_FW_POLICE
 comma
+DECL|enumerator|__TCA_FW_MAX
+id|__TCA_FW_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_FW_MAX
-mdefine_line|#define TCA_FW_MAX TCA_FW_POLICE
+mdefine_line|#define TCA_FW_MAX (__TCA_FW_MAX - 1)
 multiline_comment|/* TC index filter */
 r_enum
 (brace
@@ -330,9 +341,11 @@ comma
 DECL|enumerator|TCA_TCINDEX_POLICE
 id|TCA_TCINDEX_POLICE
 comma
+DECL|enumerator|__TCA_TCINDEX_MAX
+id|__TCA_TCINDEX_MAX
 )brace
 suffix:semicolon
 DECL|macro|TCA_TCINDEX_MAX
-mdefine_line|#define TCA_TCINDEX_MAX        TCA_TCINDEX_POLICE
+mdefine_line|#define TCA_TCINDEX_MAX        (__TCA_TCINDEX_MAX - 1)
 macro_line|#endif
 eof

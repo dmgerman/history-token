@@ -5307,6 +5307,8 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Nobody uses this, but we try. */
+id|x-&gt;sel.family
+op_assign
 id|pfkey_sadb_addr2xfrm_addr
 c_func
 (paren
@@ -10230,6 +10232,8 @@ op_minus
 l_int|1
 )braket
 comma
+id|sel.family
+op_assign
 id|pfkey_sadb_addr2xfrm_addr
 c_func
 (paren
@@ -14310,6 +14314,8 @@ op_or
 id|MSG_DONTWAIT
 op_or
 id|MSG_TRUNC
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_goto

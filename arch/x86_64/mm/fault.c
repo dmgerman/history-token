@@ -803,17 +803,20 @@ multiline_comment|/* Warn for strace, but not for gdb */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|test_ti_thread_flag
+c_func
+(paren
+id|tsk-&gt;thread_info
+comma
+id|TIF_SYSCALL_TRACE
+)paren
+op_logical_and
 (paren
 id|tsk-&gt;ptrace
 op_amp
-(paren
 id|PT_PTRACED
-op_or
-id|PT_TRACESYSGOOD
 )paren
-)paren
-op_eq
-id|PT_PTRACED
 )paren
 r_return
 l_int|0
@@ -1419,7 +1422,6 @@ c_cond
 (paren
 id|exception_trace
 op_logical_and
-op_logical_neg
 id|unhandled_signal
 c_func
 (paren
@@ -1582,6 +1584,7 @@ id|printk
 c_func
 (paren
 l_string|&quot; at %016lx RIP: &bslash;n&quot;
+id|KERN_ALERT
 comma
 id|address
 )paren
@@ -1590,6 +1593,12 @@ id|printk_address
 c_func
 (paren
 id|regs-&gt;rip
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_pagetable

@@ -133,7 +133,11 @@ op_logical_neg
 (paren
 id|cur_cpu_spec-&gt;cpu_features
 op_amp
+id|ASM_CONST
+c_func
+(paren
 id|CPU_FTR_COHERENT_ICACHE
+)paren
 )paren
 )paren
 id|__flush_icache_range

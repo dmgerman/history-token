@@ -2242,6 +2242,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2705,6 +2706,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3141,6 +3143,7 @@ id|len
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -4010,21 +4013,17 @@ id|detail-&gt;last_warn
 op_assign
 id|detail-&gt;last_close
 suffix:semicolon
-id|printk
+r_if
+c_cond
+(paren
+id|detail-&gt;warn_no_listener
+)paren
+id|detail
+op_member_access_from_pointer
+id|warn_no_listener
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;nfsd: nobody listening for %s upcall;&quot;
-l_string|&quot; has some daemon %s?&bslash;n&quot;
-comma
-id|detail-&gt;name
-comma
-id|detail-&gt;last_close
-ques
-c_cond
-l_string|&quot;died&quot;
-suffix:colon
-l_string|&quot;not been started&quot;
+id|detail
 )paren
 suffix:semicolon
 )brace
@@ -5390,6 +5389,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5522,6 +5522,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

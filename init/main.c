@@ -548,9 +548,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|loops_per_jiffy
 op_lshift_assign
 l_int|1
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* wait for &quot;start of&quot; clock tick */
@@ -1650,12 +1654,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;POSIX conformance testing by UNIFIX&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t; *&t;We count on the initial thread going ok &n;&t; *&t;Like idlers init is an unlocked kernel thread, which will&n;&t; *&t;make syscalls (and thus be locked).&n;&t; */
 id|init_idle
 c_func
@@ -2099,6 +2097,12 @@ c_cond
 id|sys_access
 c_func
 (paren
+(paren
+r_const
+r_char
+id|__user
+op_star
+)paren
 l_string|&quot;/init&quot;
 comma
 l_int|0
@@ -2137,6 +2141,12 @@ c_cond
 id|sys_open
 c_func
 (paren
+(paren
+r_const
+r_char
+id|__user
+op_star
+)paren
 l_string|&quot;/dev/console&quot;
 comma
 id|O_RDWR

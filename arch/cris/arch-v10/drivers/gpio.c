@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gpio.c,v 1.8 2003/07/04 08:27:37 starvik Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001, 2002 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions, write, port G)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.8  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.7  2003/01/10 07:44:07  starvik&n; * init_ioremap is now called by kernel before drivers are initialized&n; *&n; * Revision 1.6  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.5  2002/11/20 11:56:11  starvik&n; * Merge of Linux 2.5.48&n; *&n; * Revision 1.4  2002/11/18 10:10:05  starvik&n; * Linux 2.5 port of latest gpio.c from Linux 2.4&n; *&n; * Revision 1.20  2002/10/16 21:16:24  johana&n; * Added support for PA high level interrupt.&n; * That gives 2ms response time with iodtest for high levels and 2-12 ms&n; * response time on low levels if the check is not made in&n; * process.c:cpu_idle() as well.&n; *&n; * Revision 1.19  2002/10/14 18:27:33  johana&n; * Implemented alarm handling so select() now works.&n; * Latency is around 6-9 ms with a etrax_gpio_wake_up_check() in&n; * cpu_idle().&n; * Otherwise I get 15-18 ms (same as doing the poll in userspace -&n; * but less overhead).&n; * TODO? Perhaps we should add the check in IMMEDIATE_BH (or whatever it&n; * is in 2.4) as well?&n; * TODO? Perhaps call request_irq()/free_irq() only when needed?&n; * Increased version to 2.5&n; *&n; * Revision 1.18  2002/10/11 15:02:00  johana&n; * Mask inverted 8 bit value in setget_input().&n; *&n; * Revision 1.17  2002/06/17 15:53:01  johana&n; * Added IO_READ_INBITS, IO_READ_OUTBITS, IO_SETGET_INPUT and IO_SETGET_OUTPUT&n; * that take a pointer as argument and thus can handle 32 bit ports (G)&n; * correctly.&n; * These should be used instead of IO_READBITS, IO_SETINPUT and IO_SETOUTPUT.&n; * (especially if Port G bit 31 is used)&n; *&n; * Revision 1.16  2002/06/17 09:59:51  johana&n; * Returning 32 bit values in the ioctl return value doesn&squot;t work if bit&n; * 31 is set (could happen for port G), so mask it of with 0x7FFFFFFF.&n; * A new set of ioctl&squot;s will be added.&n; *&n; * Revision 1.15  2002/05/06 13:19:13  johana&n; * IO_SETINPUT returns mask with bit set = inputs for PA and PB as well.&n; *&n; * Revision 1.14  2002/04/12 12:01:53  johana&n; * Use global r_port_g_data_shadow.&n; * Moved gpio_init_port_g() closer to gpio_init() and marked it __init.&n; *&n; * Revision 1.13  2002/04/10 12:03:55  johana&n; * Added support for port G /dev/gpiog (minor 3).&n; * Changed indentation on switch cases.&n; * Fixed other spaces to tabs.&n; *&n; * Revision 1.12  2001/11/12 19:42:15  pkj&n; * * Corrected return values from gpio_leds_ioctl().&n; * * Fixed compiler warnings.&n; *&n; * Revision 1.11  2001/10/30 14:39:12  johana&n; * Added D() around gpio_write printk.&n; *&n; * Revision 1.10  2001/10/25 10:24:42  johana&n; * Added IO_CFG_WRITE_MODE ioctl and write method that can do fast&n; * bittoggling in the kernel. (This speeds up programming an FPGA with 450kB&n; * from ~60 seconds to 4 seconds).&n; * Added save_flags/cli/restore_flags in ioctl.&n; *&n; * Revision 1.9  2001/05/04 14:16:07  matsfg&n; * Corrected spelling error&n; *&n; * Revision 1.8  2001/04/27 13:55:26  matsfg&n; * Moved initioremap.&n; * Turns off all LEDS on init.&n; * Added support for shutdown and powerbutton.&n; *&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
+multiline_comment|/* $Id: gpio.c,v 1.11 2004/05/14 07:58:03 starvik Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001, 2002 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions, write, port G)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.11  2004/05/14 07:58:03  starvik&n; * Merge of changes from 2.4&n; *&n; * Revision 1.9  2003/09/11 07:29:48  starvik&n; * Merge of Linux 2.6.0-test5&n; *&n; * Revision 1.8  2003/07/04 08:27:37  starvik&n; * Merge of Linux 2.5.74&n; *&n; * Revision 1.7  2003/01/10 07:44:07  starvik&n; * init_ioremap is now called by kernel before drivers are initialized&n; *&n; * Revision 1.6  2002/12/11 13:13:57  starvik&n; * Added arch/ to v10 specific includes&n; * Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n; *&n; * Revision 1.5  2002/11/20 11:56:11  starvik&n; * Merge of Linux 2.5.48&n; *&n; * Revision 1.4  2002/11/18 10:10:05  starvik&n; * Linux 2.5 port of latest gpio.c from Linux 2.4&n; *&n; * Revision 1.20  2002/10/16 21:16:24  johana&n; * Added support for PA high level interrupt.&n; * That gives 2ms response time with iodtest for high levels and 2-12 ms&n; * response time on low levels if the check is not made in&n; * process.c:cpu_idle() as well.&n; *&n; * Revision 1.19  2002/10/14 18:27:33  johana&n; * Implemented alarm handling so select() now works.&n; * Latency is around 6-9 ms with a etrax_gpio_wake_up_check() in&n; * cpu_idle().&n; * Otherwise I get 15-18 ms (same as doing the poll in userspace -&n; * but less overhead).&n; * TODO? Perhaps we should add the check in IMMEDIATE_BH (or whatever it&n; * is in 2.4) as well?&n; * TODO? Perhaps call request_irq()/free_irq() only when needed?&n; * Increased version to 2.5&n; *&n; * Revision 1.18  2002/10/11 15:02:00  johana&n; * Mask inverted 8 bit value in setget_input().&n; *&n; * Revision 1.17  2002/06/17 15:53:01  johana&n; * Added IO_READ_INBITS, IO_READ_OUTBITS, IO_SETGET_INPUT and IO_SETGET_OUTPUT&n; * that take a pointer as argument and thus can handle 32 bit ports (G)&n; * correctly.&n; * These should be used instead of IO_READBITS, IO_SETINPUT and IO_SETOUTPUT.&n; * (especially if Port G bit 31 is used)&n; *&n; * Revision 1.16  2002/06/17 09:59:51  johana&n; * Returning 32 bit values in the ioctl return value doesn&squot;t work if bit&n; * 31 is set (could happen for port G), so mask it of with 0x7FFFFFFF.&n; * A new set of ioctl&squot;s will be added.&n; *&n; * Revision 1.15  2002/05/06 13:19:13  johana&n; * IO_SETINPUT returns mask with bit set = inputs for PA and PB as well.&n; *&n; * Revision 1.14  2002/04/12 12:01:53  johana&n; * Use global r_port_g_data_shadow.&n; * Moved gpio_init_port_g() closer to gpio_init() and marked it __init.&n; *&n; * Revision 1.13  2002/04/10 12:03:55  johana&n; * Added support for port G /dev/gpiog (minor 3).&n; * Changed indentation on switch cases.&n; * Fixed other spaces to tabs.&n; *&n; * Revision 1.12  2001/11/12 19:42:15  pkj&n; * * Corrected return values from gpio_leds_ioctl().&n; * * Fixed compiler warnings.&n; *&n; * Revision 1.11  2001/10/30 14:39:12  johana&n; * Added D() around gpio_write printk.&n; *&n; * Revision 1.10  2001/10/25 10:24:42  johana&n; * Added IO_CFG_WRITE_MODE ioctl and write method that can do fast&n; * bittoggling in the kernel. (This speeds up programming an FPGA with 450kB&n; * from ~60 seconds to 4 seconds).&n; * Added save_flags/cli/restore_flags in ioctl.&n; *&n; * Revision 1.9  2001/05/04 14:16:07  matsfg&n; * Corrected spelling error&n; *&n; * Revision 1.8  2001/04/27 13:55:26  matsfg&n; * Moved initioremap.&n; * Turns off all LEDS on init.&n; * Added support for shutdown and powerbutton.&n; *&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -249,6 +249,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Set if someone uses alarm */
+DECL|variable|gpio_pa_irq_enabled_mask
+r_static
+r_int
+r_int
+id|gpio_pa_irq_enabled_mask
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Port A and B use 8 bit access, but Port G is 32 bit */
 DECL|macro|NUM_PORTS
 mdefine_line|#define NUM_PORTS (GPIO_MINOR_B+1)
@@ -460,6 +468,10 @@ id|GPIO_MINOR_A
 (brace
 r_int
 r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
 id|tmp
 suffix:semicolon
 id|data
@@ -477,13 +489,38 @@ id|priv-&gt;highalarm
 op_amp
 l_int|0xFF
 suffix:semicolon
-op_star
-id|R_IRQ_MASK1_SET
+id|tmp
 op_assign
 (paren
 id|tmp
 op_lshift
 id|R_IRQ_MASK1_SET__pa0__BITNR
+)paren
+suffix:semicolon
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|gpio_pa_irq_enabled_mask
+op_or_assign
+id|tmp
+suffix:semicolon
+op_star
+id|R_IRQ_MASK1_SET
+op_assign
+id|tmp
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -737,22 +774,23 @@ op_assign
 (paren
 op_star
 id|R_IRQ_READ1
-op_rshift
-id|R_IRQ_READ1__pa0__BITNR
 )paren
-op_amp
-l_int|0xFF
+suffix:semicolon
+multiline_comment|/* Find those that we have enabled */
+id|tmp
+op_and_assign
+id|gpio_pa_irq_enabled_mask
 suffix:semicolon
 multiline_comment|/* Clear them.. */
-multiline_comment|/* NOTE: Maybe we need to be more careful here if some other&n;&t; * driver uses PA interrupt as well?&n;&t; */
 op_star
 id|R_IRQ_MASK1_CLR
 op_assign
-(paren
 id|tmp
-op_lshift
-id|R_IRQ_MASK1_CLR__pa0__BITNR
-)paren
+suffix:semicolon
+id|gpio_pa_irq_enabled_mask
+op_and_assign
+op_complement
+id|tmp
 suffix:semicolon
 r_if
 c_cond
@@ -1127,10 +1165,10 @@ suffix:semicolon
 r_int
 id|p
 op_assign
-id|iminor
+id|MINOR
 c_func
 (paren
-id|inode
+id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 r_if
@@ -1504,6 +1542,17 @@ id|GPIO_MINOR_G
 )paren
 (brace
 multiline_comment|/* We must fiddle with R_GEN_CONFIG to change dir */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1677,9 +1726,13 @@ l_int|24
 )paren
 suffix:semicolon
 )brace
+id|D
+c_func
+(paren
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;gpio: SETINPUT on port G set &quot;
 l_string|&quot;genconfig to 0x%08lX &quot;
 l_string|&quot;in_bits: 0x%08lX &quot;
@@ -1695,6 +1748,7 @@ id|dir_g_in_bits
 comma
 id|dir_g_out_bits
 )paren
+)paren
 suffix:semicolon
 op_star
 id|R_GEN_CONFIG
@@ -1703,6 +1757,12 @@ id|genconfig_shadow
 suffix:semicolon
 multiline_comment|/* Must be a &gt;120 ns delay before writing this again */
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|dir_g_in_bits
 suffix:semicolon
@@ -1791,6 +1851,17 @@ id|GPIO_MINOR_G
 )paren
 (brace
 multiline_comment|/* We must fiddle with R_GEN_CONFIG to change dir */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|cli
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1956,9 +2027,13 @@ l_int|24
 )paren
 suffix:semicolon
 )brace
+id|D
+c_func
+(paren
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;gpio: SETOUTPUT on port G set &quot;
 l_string|&quot;genconfig to 0x%08lX &quot;
 l_string|&quot;in_bits: 0x%08lX &quot;
@@ -1974,6 +2049,7 @@ id|dir_g_in_bits
 comma
 id|dir_g_out_bits
 )paren
+)paren
 suffix:semicolon
 op_star
 id|R_GEN_CONFIG
@@ -1982,6 +2058,12 @@ id|genconfig_shadow
 suffix:semicolon
 multiline_comment|/* Must be a &gt;120 ns delay before writing this again */
 )brace
+id|restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|dir_g_out_bits
 op_amp
@@ -2309,6 +2391,53 @@ op_and_assign
 op_complement
 id|arg
 suffix:semicolon
+(brace
+multiline_comment|/* Must update gpio_some_alarms */
+r_struct
+id|gpio_private
+op_star
+id|p
+op_assign
+id|alarmlist
+suffix:semicolon
+r_int
+id|some_alarms
+suffix:semicolon
+id|some_alarms
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|p
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|p-&gt;highalarm
+op_or
+id|p-&gt;lowalarm
+)paren
+(brace
+id|some_alarms
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|p
+op_assign
+id|p-&gt;next
+suffix:semicolon
+)brace
+id|gpio_some_alarms
+op_assign
+id|some_alarms
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -3603,6 +3732,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;GPIO port G: in_bits: 0x%08lX out_bits: 0x%08lX val: %08lX&bslash;n&quot;
 comma
 id|dir_g_in_bits
@@ -3620,6 +3750,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;GPIO port G: dir: %08lX changeable: %08lX&bslash;n&quot;
 comma
 id|dir_g_shadow
@@ -3739,6 +3870,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ETRAX 100LX GPIO driver v2.5, (c) 2001, 2002 Axis Communications AB&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3766,6 +3898,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;err: timer0 irq for gpio&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3793,6 +3926,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;err: PA irq for gpio&bslash;n&quot;
 )paren
 suffix:semicolon

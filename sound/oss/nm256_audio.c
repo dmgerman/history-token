@@ -104,6 +104,8 @@ DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256AV_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256AV_AUDIO 0x8005
 DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
 mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO 0x8006
+DECL|macro|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
+mdefine_line|#define PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO 0x8016
 multiline_comment|/* List of cards.  */
 DECL|variable|nmcard_list
 r_static
@@ -3351,7 +3353,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4731,6 +4735,24 @@ comma
 l_string|&quot;256ZX&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcidev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
+)paren
+r_return
+id|nm256_install
+c_func
+(paren
+id|pcidev
+comma
+id|REV_NM256ZX
+comma
+l_string|&quot;256XL+&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -5242,7 +5264,9 @@ r_int
 r_int
 id|cmd
 comma
-id|caddr_t
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -5315,6 +5339,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5422,6 +5447,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5485,6 +5511,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5584,6 +5611,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -5692,6 +5720,7 @@ id|ret
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -6179,6 +6208,20 @@ comma
 id|PCI_VENDOR_ID_NEOMAGIC
 comma
 id|PCI_DEVICE_ID_NEOMAGIC_NM256ZX_AUDIO
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_NEOMAGIC
+comma
+id|PCI_DEVICE_ID_NEOMAGIC_NM256XL_PLUS_AUDIO
 comma
 id|PCI_ANY_ID
 comma

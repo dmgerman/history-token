@@ -222,7 +222,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -233,7 +234,8 @@ c_func
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 r_extern
@@ -584,7 +586,7 @@ id|DECLARE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ip_mib
+id|ipstats_mib
 comma
 id|ip_statistics
 )paren
@@ -1323,6 +1325,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -1347,10 +1350,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -1478,6 +1483,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1495,6 +1501,7 @@ op_star
 id|table
 comma
 r_int
+id|__user
 op_star
 id|name
 comma
@@ -1502,14 +1509,17 @@ r_int
 id|nlen
 comma
 r_void
+id|__user
 op_star
 id|oldval
 comma
 r_int
+id|__user
 op_star
 id|oldlenp
 comma
 r_void
+id|__user
 op_star
 id|newval
 comma

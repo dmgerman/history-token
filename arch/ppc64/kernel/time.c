@@ -1293,6 +1293,7 @@ id|ppc64_sys32_stime
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tptr
 )paren
@@ -1359,6 +1360,7 @@ id|ppc64_sys_stime
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|tptr
 )paren

@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;trm290.h&quot;
 DECL|function|trm290_prepare_drive
 r_static
 r_void
@@ -802,8 +801,9 @@ macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|init_hwif_trm290
 r_void
-id|__init
+id|__devinit
 id|init_hwif_trm290
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -1264,6 +1264,40 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|trm290_chipset
+id|__devinitdata
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;TRM290&quot;
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_trm290
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|NOAUTODMA
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+)brace
+suffix:semicolon
 DECL|function|trm290_init_one
 r_static
 r_int
@@ -1283,34 +1317,13 @@ op_star
 id|id
 )paren
 (brace
-id|ide_pci_device_t
-op_star
-id|d
-op_assign
-op_amp
-id|trm290_chipsets
-(braket
-id|id-&gt;driver_data
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;device
-op_ne
-id|d-&gt;device
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ide_setup_pci_device
 c_func
 (paren
 id|dev
 comma
-id|d
+op_amp
+id|trm290_chipset
 )paren
 suffix:semicolon
 r_return

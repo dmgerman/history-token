@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.34 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.36 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,6 +26,11 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+DECL|variable|dasd_diag_discipline
+r_struct
+id|dasd_discipline
+id|dasd_diag_discipline
 suffix:semicolon
 DECL|struct|dasd_diag_private
 r_struct
@@ -1255,13 +1260,6 @@ l_int|0
 )braket
 op_eq
 l_int|0xc3d4e2f1
-op_logical_and
-id|label
-(braket
-l_int|13
-)braket
-op_ne
-l_int|0
 )paren
 (brace
 id|device-&gt;blocks
@@ -2157,6 +2155,11 @@ comma
 id|dasd_ext_handler
 )paren
 suffix:semicolon
+id|dasd_diag_discipline_pointer
+op_assign
+op_amp
+id|dasd_diag_discipline
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2206,6 +2209,10 @@ l_int|0
 comma
 l_int|9
 )paren
+suffix:semicolon
+id|dasd_diag_discipline_pointer
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|dasd_diag_init

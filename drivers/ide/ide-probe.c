@@ -755,35 +755,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize queue depth settings */
-id|drive-&gt;queue_depth
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-id|drive-&gt;queue_depth
-op_assign
-id|CONFIG_BLK_DEV_IDE_TCQ_DEPTH
-suffix:semicolon
-macro_line|#else
-id|drive-&gt;queue_depth
-op_assign
-id|drive-&gt;id-&gt;queue_depth
-op_plus
-l_int|1
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|drive-&gt;queue_depth
-template_param
-id|IDE_MAX_TAG
-)paren
-id|drive-&gt;queue_depth
-op_assign
-id|IDE_MAX_TAG
-suffix:semicolon
 r_return
 suffix:semicolon
 id|err_misc
@@ -845,18 +816,19 @@ id|a
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* take a deep breath */
+id|msleep
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|IDE_CONTROL_REG
 )paren
 (brace
-multiline_comment|/* take a deep breath */
-id|ide_delay_50ms
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 id|hwif
@@ -920,17 +892,10 @@ suffix:semicolon
 )brace
 )brace
 r_else
-(brace
-id|ide_delay_50ms
-c_func
-(paren
-)paren
-suffix:semicolon
 id|hd_status
 op_assign
 id|IDE_STATUS_REG
 suffix:semicolon
-)brace
 multiline_comment|/* set features register for atapi&n;&t; * identify command to be sure of reply&n;&t; */
 r_if
 c_cond
@@ -1030,9 +995,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* give drive a breather */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1053,9 +1019,10 @@ id|BUSY_STAT
 )paren
 suffix:semicolon
 multiline_comment|/* wait for IRQ and DRQ_STAT */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1425,9 +1392,10 @@ l_string|&quot;ATAPI&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* needed for some systems&n;&t; * (e.g. crw9624 as drive0 with disk as slave)&n;&t; */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|SELECT_DRIVE
@@ -1436,9 +1404,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -1478,9 +1447,10 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* allow BUSY_STAT to assert &amp; clear */
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1615,9 +1585,10 @@ id|IDE_STATUS_REG
 )paren
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1630,9 +1601,10 @@ comma
 id|IDE_SELECT_REG
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1676,9 +1648,10 @@ op_plus
 id|WAIT_WORSTCASE
 )paren
 )paren
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|rc
@@ -1755,9 +1728,10 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* ensure drive irq is clear */
@@ -1818,9 +1792,10 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|hwif
@@ -1862,9 +1837,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 )brace
@@ -1884,9 +1860,10 @@ op_amp
 id|BUSY_STAT
 )paren
 suffix:semicolon
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 r_if
@@ -2292,7 +2269,6 @@ id|hwif-&gt;gendev
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//EXPORT_SYMBOL(hwif_register);
 macro_line|#ifdef CONFIG_PPC
 DECL|function|wait_hwif_ready
 r_static
@@ -2448,8 +2424,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * This routine only knows how to look for drive units 0 and 1&n; * on an interface, so any setting of MAX_DRIVES &gt; 2 won&squot;t work here.&n; */
 DECL|function|probe_hwif
+r_static
 r_void
 id|probe_hwif
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -2776,9 +2754,10 @@ id|IDE_CONTROL_OFFSET
 suffix:semicolon
 r_do
 (brace
-id|ide_delay_50ms
+id|msleep
 c_func
 (paren
+l_int|50
 )paren
 suffix:semicolon
 id|stat
@@ -2873,11 +2852,6 @@ id|hwif-&gt;drives
 id|unit
 )braket
 suffix:semicolon
-r_int
-id|enable_dma
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2906,19 +2880,6 @@ comma
 l_int|255
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
-r_if
-c_cond
-(paren
-id|drive-&gt;media
-op_ne
-id|ide_disk
-)paren
-id|enable_dma
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t; * MAJOR HACK BARF :-/&n;&t;&t;&t; *&n;&t;&t;&t; * FIXME: chipsets own this cruft!&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t; * Move here to prevent module loading clashing.&n;&t;&t;&t; */
 singleline_comment|//&t;&t;drive-&gt;autodma = hwif-&gt;autodma;
@@ -2953,11 +2914,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
 r_if
 c_cond
 (paren
-id|enable_dma
+id|drive-&gt;media
+op_eq
+id|ide_disk
 )paren
+macro_line|#endif
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_check
@@ -2970,15 +2935,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|variable|probe_hwif
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|probe_hwif
-)paren
-suffix:semicolon
+r_static
 r_int
 id|hwif_init
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3072,8 +3032,10 @@ suffix:semicolon
 macro_line|#if MAX_HWIFS &gt; 1
 multiline_comment|/*&n; * save_match() is used to simplify logic in init_irq() below.&n; *&n; * A loophole here is that we may not know about a particular&n; * hwif&squot;s irq until after that hwif is actually probed/initialized..&n; * This could be a problem for the case where an hwif is on a&n; * dual interface that requires serialization (eg. cmd640) and another&n; * hwif using one of the same irqs is initialized beforehand.&n; *&n; * This routine detects and reports such situations, but does not fix them.&n; */
 DECL|function|save_match
+r_static
 r_void
 id|save_match
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -3152,13 +3114,6 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-DECL|variable|save_match
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|save_match
-)paren
-suffix:semicolon
 macro_line|#endif /* MAX_HWIFS &gt; 1 */
 multiline_comment|/*&n; * init request queue&n; */
 DECL|function|ide_init_queue
@@ -4614,16 +4569,11 @@ id|hwif
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_gendisk
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_gendisk
-)paren
-suffix:semicolon
 DECL|function|hwif_init
+r_static
 r_int
 id|hwif_init
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4915,13 +4865,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|hwif_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hwif_init
-)paren
-suffix:semicolon
 DECL|function|ideprobe_init
 r_int
 id|ideprobe_init

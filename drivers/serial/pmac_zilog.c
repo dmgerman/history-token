@@ -1938,6 +1938,8 @@ id|r3
 op_amp
 id|CHBRxIP
 )paren
+id|tty
+op_assign
 id|pmz_receive_chars
 c_func
 (paren

@@ -1896,10 +1896,26 @@ id|param
 op_eq
 l_int|0x5b
 )paren
+(brace
+multiline_comment|/*&n; * Do another loop test with the 0x5a value. Doing anything else upsets&n; * Profusion/ServerWorks OSB4 chipsets.&n; */
+id|param
+op_assign
+l_int|0x5a
+suffix:semicolon
+id|i8042_command
+c_func
+(paren
+op_amp
+id|param
+comma
+id|I8042_CMD_AUX_LOOP
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2046,13 +2062,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Workaround for broken chips which seem to support MUX, but in reality don&squot;t. */
-multiline_comment|/* They all report version 12.10 */
+multiline_comment|/* They all report version 10.12 */
 r_if
 c_cond
 (paren
 id|mux_version
 op_eq
-l_int|0xCA
+l_int|0xAC
 )paren
 r_return
 op_minus
@@ -3585,13 +3601,6 @@ id|kbc_sysclass
 )paren
 suffix:semicolon
 )brace
-id|del_timer_sync
-c_func
-(paren
-op_amp
-id|i8042_timer
-)paren
-suffix:semicolon
 id|i8042_controller_cleanup
 c_func
 (paren
@@ -3651,6 +3660,13 @@ c_func
 id|i8042_mux_port
 op_plus
 id|i
+)paren
+suffix:semicolon
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|i8042_timer
 )paren
 suffix:semicolon
 id|i8042_platform_exit

@@ -7843,7 +7843,7 @@ id|pid
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  sys_tkill - send signal to one specific thread&n; *  @tgid: the thread group ID of the thread&n; *  @pid: the PID of the thread&n; *  @sig: signal to be sent&n; *&n; *  This syscall also checks the tgid and returns -ESRCH even if the PID&n; *  exists but it&squot;s not belonging to the target process anymore. This&n; *  method solves the problem of threads exiting and PIDs getting reused.&n; */
+multiline_comment|/**&n; *  sys_tgkill - send signal to one specific thread&n; *  @tgid: the thread group ID of the thread&n; *  @pid: the PID of the thread&n; *  @sig: signal to be sent&n; *&n; *  This syscall also checks the tgid and returns -ESRCH even if the PID&n; *  exists but it&squot;s not belonging to the target process anymore. This&n; *  method solves the problem of threads exiting and PIDs getting reused.&n; */
 DECL|function|sys_tgkill
 id|asmlinkage
 r_int
@@ -9041,7 +9041,8 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#ifndef __sparc__
+macro_line|#endif /* __ARCH_WANT_SYS_SIGPROCMASK */
+macro_line|#ifdef __ARCH_WANT_SYS_RT_SIGACTION
 id|asmlinkage
 r_int
 DECL|function|sys_rt_sigaction
@@ -9183,8 +9184,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* __sparc__ */
-macro_line|#endif
+macro_line|#endif /* __ARCH_WANT_SYS_RT_SIGACTION */
 macro_line|#ifdef __ARCH_WANT_SYS_SGETMASK
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage

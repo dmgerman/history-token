@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -511,6 +512,19 @@ comma
 id|end
 )paren
 suffix:semicolon
+multiline_comment|/* For hugepages we can&squot;t go walking the page table normally,&n;&t; * but that&squot;s ok, hugetlbfs is memory based, so we don&squot;t need&n;&t; * to do anything more on an msync() */
+r_if
+c_cond
+(paren
+id|is_vm_hugetlb_page
+c_func
+(paren
+id|vma
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -580,6 +594,8 @@ comma
 id|end
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|spin_unlock
 c_func
 (paren

@@ -748,6 +748,11 @@ c_func
 (paren
 id|sys_set_mempolicy
 )paren
+id|cond_syscall
+c_func
+(paren
+id|compat_get_mempolicy
+)paren
 multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
 c_func
@@ -3068,14 +3073,17 @@ id|sys_getresuid
 c_func
 (paren
 id|uid_t
+id|__user
 op_star
 id|ruid
 comma
 id|uid_t
+id|__user
 op_star
 id|euid
 comma
 id|uid_t
+id|__user
 op_star
 id|suid
 )paren
@@ -3365,14 +3373,17 @@ id|sys_getresgid
 c_func
 (paren
 id|gid_t
+id|__user
 op_star
 id|rgid
 comma
 id|gid_t
+id|__user
 op_star
 id|egid
 comma
 id|gid_t
+id|__user
 op_star
 id|sgid
 )paren
@@ -5135,6 +5146,12 @@ c_func
 id|group_info
 )paren
 suffix:semicolon
+id|task_lock
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
 id|old_info
 op_assign
 id|current-&gt;group_info
@@ -5142,6 +5159,12 @@ suffix:semicolon
 id|current-&gt;group_info
 op_assign
 id|group_info
+suffix:semicolon
+id|task_unlock
+c_func
+(paren
+id|current
+)paren
 suffix:semicolon
 id|put_group_info
 c_func
@@ -5192,6 +5215,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+multiline_comment|/* no need to grab task_lock here; it cannot change */
 id|get_group_info
 c_func
 (paren

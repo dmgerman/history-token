@@ -675,7 +675,8 @@ id|output
 r_struct
 id|sk_buff
 op_star
-id|skb
+op_star
+id|pskb
 )paren
 suffix:semicolon
 multiline_comment|/* Estimate maximal size of result of transformation of a dgram */
@@ -3893,6 +3894,7 @@ r_int
 id|optname
 comma
 id|u8
+id|__user
 op_star
 id|optval
 comma
@@ -3938,6 +3940,7 @@ r_int
 id|optname
 comma
 id|u8
+id|__user
 op_star
 id|optval
 comma

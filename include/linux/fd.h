@@ -640,6 +640,7 @@ DECL|macro|FD_RAW_HARDFAILURE
 mdefine_line|#define FD_RAW_HARDFAILURE 0x20000 /* fdc had to be reset, or timed out */
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon

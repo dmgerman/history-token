@@ -5295,6 +5295,7 @@ op_star
 id|net
 comma
 r_void
+id|__user
 op_star
 id|useraddr
 )paren
@@ -5323,6 +5324,7 @@ id|cmd
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|useraddr
@@ -5508,13 +5510,10 @@ id|SIOCETHTOOL
 suffix:colon
 r_return
 id|eth_ethtool_ioctl
+c_func
 (paren
 id|net
 comma
-(paren
-r_void
-op_star
-)paren
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon

@@ -513,6 +513,21 @@ id|pm_idle
 op_assign
 id|poll_idle
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_SMP
+r_if
+c_cond
+(paren
+id|smp_num_siblings
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING: polling idle and HT enabled, performance may degrade.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if

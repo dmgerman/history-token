@@ -2850,6 +2850,7 @@ comma
 id|percpu_counter_read
 c_func
 (paren
+op_amp
 id|EXT2_SB
 c_func
 (paren
@@ -3195,6 +3196,7 @@ c_cond
 id|percpu_counter_read
 c_func
 (paren
+op_amp
 id|EXT2_SB
 c_func
 (paren

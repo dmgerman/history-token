@@ -1,10 +1,11 @@
-multiline_comment|/*  $Header: /var/lib/cvs/prism54-ng/ksrc/islpci_dev.h,v 1.53 2004/02/28 03:06:07 mcgrof Exp $&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc. &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2003 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; *  &n; *  Copyright (C) 2002 Intersil Americas Inc. &n; *  Copyright (C) 2003 Herbert Valerio Riedel &lt;hvr@gnu.org&gt;&n; *  Copyright (C) 2003 Luis R. Rodriguez &lt;mcgrof@ruslug.rutgers.edu&gt;&n; *  Copyright (C) 2003 Aurelien Alleaume &lt;slts@free.fr&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#ifndef _ISLPCI_DEV_H
 DECL|macro|_ISLPCI_DEV_H
 mdefine_line|#define _ISLPCI_DEV_H
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &lt;net/iw_handler.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,41)
 macro_line|# include &lt;linux/workqueue.h&gt;
@@ -254,6 +255,17 @@ r_struct
 id|iw_statistics
 id|iwstatistics
 suffix:semicolon
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
+multiline_comment|/* iwspy support */
+DECL|member|monitor_type
+r_int
+id|monitor_type
+suffix:semicolon
+multiline_comment|/* ARPHRD_IEEE80211 or ARPHRD_IEEE80211_PRISM */
 DECL|member|acl
 r_struct
 id|islpci_acl
@@ -454,6 +466,15 @@ DECL|member|wpa_sem
 r_struct
 id|semaphore
 id|wpa_sem
+suffix:semicolon
+DECL|member|reset_task
+r_struct
+id|work_struct
+id|reset_task
+suffix:semicolon
+DECL|member|reset_task_pending
+r_int
+id|reset_task_pending
 suffix:semicolon
 DECL|typedef|islpci_private
 )brace

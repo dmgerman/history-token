@@ -931,7 +931,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|omap_bus_init
-id|module_init
+id|postcore_initcall
 c_func
 (paren
 id|omap_bus_init

@@ -43,10 +43,6 @@ DECL|macro|dma_map_sg
 mdefine_line|#define dma_map_sg(d,s,n,dir) sbus_map_sg(d,s,n,dir)
 DECL|macro|dma_unmap_sg
 mdefine_line|#define dma_unmap_sg(d,s,n,dir) sbus_unmap_sg(d,s,n,dir)
-DECL|macro|scsi_to_fc_dma_dir
-mdefine_line|#define scsi_to_fc_dma_dir(dir)&t;scsi_to_sbus_dma_dir(dir)
-DECL|macro|FC_DMA_BIDIRECTIONAL
-mdefine_line|#define FC_DMA_BIDIRECTIONAL&t;SBUS_DMA_BIDIRECTIONAL
 macro_line|#else
 DECL|macro|dma_alloc_consistent
 mdefine_line|#define dma_alloc_consistent(d,s,p) pci_alloc_consistent(d,s,p)
@@ -60,10 +56,6 @@ DECL|macro|dma_map_sg
 mdefine_line|#define dma_map_sg(d,s,n,dir) pci_map_sg(d,s,n,dir)
 DECL|macro|dma_unmap_sg
 mdefine_line|#define dma_unmap_sg(d,s,n,dir) pci_unmap_sg(d,s,n,dir)
-DECL|macro|scsi_to_fc_dma_dir
-mdefine_line|#define scsi_to_fc_dma_dir(dir)&t;scsi_to_pci_dma_dir(dir)
-DECL|macro|FC_DMA_BIDIRECTIONAL
-mdefine_line|#define FC_DMA_BIDIRECTIONAL&t;PCI_DMA_BIDIRECTIONAL
 macro_line|#endif&t;&t;&t;&t;&t;&t;&t;       
 DECL|macro|FCP_CMND
 mdefine_line|#define FCP_CMND(SCpnt) ((fcp_cmnd *)&amp;(SCpnt-&gt;SCp))
@@ -480,7 +472,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|plogi-&gt;code
@@ -636,7 +628,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fcmd-&gt;rsp
@@ -764,7 +756,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if
@@ -929,7 +921,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|printk
@@ -1056,7 +1048,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|p
@@ -1404,7 +1396,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fch
@@ -1517,7 +1509,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fcmd-&gt;rsp
@@ -2243,11 +2235,7 @@ id|SCpnt-&gt;buffer
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_fc_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_else
@@ -2260,11 +2248,7 @@ id|fcmd-&gt;data
 comma
 id|SCpnt-&gt;request_bufflen
 comma
-id|scsi_to_fc_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3181,7 +3165,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fcmd-&gt;proto
@@ -3330,7 +3314,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if
@@ -3424,7 +3408,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fch
@@ -3518,7 +3502,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fcmd-&gt;rsp
@@ -3691,7 +3675,7 @@ r_sizeof
 id|logi
 )paren
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_break
@@ -4552,11 +4536,7 @@ id|SCpnt-&gt;request_buffer
 comma
 id|SCpnt-&gt;request_bufflen
 comma
-id|scsi_to_fc_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4598,11 +4578,7 @@ id|sg
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_fc_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5795,7 +5771,7 @@ l_int|2
 op_star
 id|len
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|fcmd-&gt;rsp
@@ -6007,7 +5983,7 @@ l_int|2
 op_star
 id|len
 comma
-id|FC_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_return

@@ -607,6 +607,14 @@ DECL|member|tcpi_reordering
 id|__u32
 id|tcpi_reordering
 suffix:semicolon
+DECL|member|tcpi_rcv_rtt
+id|__u32
+id|tcpi_rcv_rtt
+suffix:semicolon
+DECL|member|tcpi_rcv_space
+id|__u32
+id|tcpi_rcv_space
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -1186,7 +1194,7 @@ id|__u32
 id|snd_up
 suffix:semicolon
 multiline_comment|/* Urgent pointer&t;&t;*/
-multiline_comment|/* The syn_wait_lock is necessary only to avoid tcp_get_info having&n;&t; * to grab the main lock sock while browsing the listening hash&n;&t; * (otherwise it&squot;s deadlock prone).&n;&t; * This lock is acquired in read mode only from tcp_get_info() and&n;&t; * it&squot;s acquired in write mode _only_ from code that is actively&n;&t; * changing the syn_wait_queue. All readers that are holding&n;&t; * the master sock lock don&squot;t need to grab this lock in read mode&n;&t; * too as the syn_wait_queue writes are always protected from&n;&t; * the main sock lock.&n;&t; */
+multiline_comment|/* The syn_wait_lock is necessary only to avoid proc interface having&n;&t; * to grab the main lock sock while browsing the listening hash&n;&t; * (otherwise it&squot;s deadlock prone).&n;&t; * This lock is acquired in read mode only from listening_get_next()&n;&t; * and it&squot;s acquired in write mode _only_ from code that is actively&n;&t; * changing the syn_wait_queue. All readers that are holding&n;&t; * the master sock lock don&squot;t need to grab this lock in read mode&n;&t; * too as the syn_wait_queue writes are always protected from&n;&t; * the main sock lock.&n;&t; */
 DECL|member|syn_wait_lock
 id|rwlock_t
 id|syn_wait_lock
@@ -1235,6 +1243,44 @@ DECL|member|last_synq_overflow
 r_int
 r_int
 id|last_synq_overflow
+suffix:semicolon
+multiline_comment|/* Receiver side RTT estimation */
+r_struct
+(brace
+DECL|member|rtt
+id|__u32
+id|rtt
+suffix:semicolon
+DECL|member|seq
+id|__u32
+id|seq
+suffix:semicolon
+DECL|member|time
+id|__u32
+id|time
+suffix:semicolon
+DECL|member|rcv_rtt_est
+)brace
+id|rcv_rtt_est
+suffix:semicolon
+multiline_comment|/* Receiver queue space */
+r_struct
+(brace
+DECL|member|space
+r_int
+id|space
+suffix:semicolon
+DECL|member|seq
+id|__u32
+id|seq
+suffix:semicolon
+DECL|member|time
+id|__u32
+id|time
+suffix:semicolon
+DECL|member|rcvq_space
+)brace
+id|rcvq_space
 suffix:semicolon
 multiline_comment|/* TCP Westwood structure */
 r_struct

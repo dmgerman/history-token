@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1623,16 +1622,6 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
-id|CKEN
-op_or_assign
-id|up-&gt;cken
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reenabled in set_termios())&n;&t; */
 id|serial_out
 c_func
@@ -1951,11 +1940,6 @@ id|UART_FCR
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|CKEN
-op_and_assign
-op_complement
-id|up-&gt;cken
 suffix:semicolon
 )brace
 r_static
@@ -2407,6 +2391,18 @@ r_int
 id|oldstate
 )paren
 (brace
+r_struct
+id|uart_pxa_port
+op_star
+id|up
+op_assign
+(paren
+r_struct
+id|uart_pxa_port
+op_star
+)paren
+id|port
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2414,10 +2410,25 @@ id|state
 )paren
 (brace
 multiline_comment|/* sleep */
+id|CKEN
+op_and_assign
+op_complement
+id|up-&gt;cken
+suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* wake */
+id|CKEN
+op_or_assign
+id|up-&gt;cken
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|serial_pxa_release_port
@@ -3124,7 +3135,7 @@ comma
 dot
 id|iotype
 op_assign
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 comma
 dot
 id|membase
@@ -3161,11 +3172,6 @@ dot
 id|fifosize
 op_assign
 l_int|64
-comma
-dot
-id|flags
-op_assign
-id|ASYNC_SKIP_TEST
 comma
 dot
 id|ops
@@ -3206,7 +3212,7 @@ comma
 dot
 id|iotype
 op_assign
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 comma
 dot
 id|membase
@@ -3243,11 +3249,6 @@ dot
 id|fifosize
 op_assign
 l_int|64
-comma
-dot
-id|flags
-op_assign
-id|ASYNC_SKIP_TEST
 comma
 dot
 id|ops
@@ -3288,7 +3289,7 @@ comma
 dot
 id|iotype
 op_assign
-id|SERIAL_IO_MEM
+id|UPIO_MEM
 comma
 dot
 id|membase
@@ -3325,11 +3326,6 @@ dot
 id|fifosize
 op_assign
 l_int|64
-comma
-dot
-id|flags
-op_assign
-id|ASYNC_SKIP_TEST
 comma
 dot
 id|ops
@@ -3479,6 +3475,42 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|serial_pxa_ports
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|uart_remove_one_port
+c_func
+(paren
+op_amp
+id|serial_pxa_reg
+comma
+op_amp
+id|serial_pxa_ports
+(braket
+id|i
+)braket
+dot
+id|port
+)paren
+suffix:semicolon
 id|uart_unregister_driver
 c_func
 (paren

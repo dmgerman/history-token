@@ -1,5 +1,5 @@
-multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : i2c.c&n;*!&n;*! DESCRIPTION: implements an interface for IIC/I2C, both directly from other&n;*!              kernel modules (i2c_writereg/readreg) and from userspace using&n;*!              ioctl()&squot;s&n;*!&n;*! Nov 30 1998  Torbjorn Eliasson  Initial version.&n;*!              Bjorn Wesen        Elinux kernel version.&n;*! Jan 14 2000  Johan Adolfsson    Fixed PB shadow register stuff - &n;*!                                 don&squot;t use PB_I2C if DS1302 uses same bits,&n;*!                                 use PB.&n;*! $Log: i2c.c,v $&n;*! Revision 1.4  2002/12/11 13:13:57  starvik&n;*! Added arch/ to v10 specific includes&n;*! Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n;*!&n;*! Revision 1.3  2002/11/20 11:56:11  starvik&n;*! Merge of Linux 2.5.48&n;*!&n;*! Revision 1.2  2002/11/18 13:16:06  starvik&n;*! Linux 2.5 port of latest 2.4 drivers&n;*!&n;*! Revision 1.9  2002/10/31 15:32:26  starvik&n;*! Update Port B register and shadow even when running with hardware support&n;*!   to avoid glitches when reading bits&n;*! Never set direction to out in i2c_inbyte&n;*! Removed incorrect clock togling at end of i2c_inbyte&n;*!&n;*! Revision 1.8  2002/08/13 06:31:53  starvik&n;*! Made SDA and SCL line configurable&n;*! Modified i2c_inbyte to work with PCF8563&n;*!&n;*! Revision 1.7  2001/04/04 13:11:36  markusl&n;*! Updated according to review remarks&n;*!&n;*! Revision 1.6  2001/03/19 12:43:00  markusl&n;*! Made some symbols unstatic (used by the eeprom driver)&n;*!&n;*! Revision 1.5  2001/02/27 13:52:48  bjornw&n;*! malloc.h -&gt; slab.h&n;*!&n;*! Revision 1.4  2001/02/15 07:17:40  starvik&n;*! Corrected usage if port_pb_i2c_shadow&n;*!&n;*! Revision 1.3  2001/01/26 17:55:13  bjornw&n;*! * Made I2C_USES_PB_NOT_PB_I2C a CONFIG option instead of assigning it&n;*!   magically. Config.in needs to set it for the options that need it, like&n;*!   Dallas 1302 support. Actually, it should be default since it screws up&n;*!   the PB bits even if you don&squot;t use I2C..&n;*! * Include linux/config.h to get the above&n;*!&n;*! Revision 1.2  2001/01/18 15:49:30  bjornw&n;*! 2.4 port of I2C including some cleanups (untested of course)&n;*!&n;*! Revision 1.1  2001/01/18 15:35:25  bjornw&n;*! Verbatim copy of the Etrax i2c driver, 2.0 elinux version&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999-2002 Axis Communications AB, LUND, SWEDEN&n;*!&n;*!***************************************************************************/
-multiline_comment|/* $Id: i2c.c,v 1.4 2002/12/11 13:13:57 starvik Exp $ */
+multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : i2c.c&n;*!&n;*! DESCRIPTION: implements an interface for IIC/I2C, both directly from other&n;*!              kernel modules (i2c_writereg/readreg) and from userspace using&n;*!              ioctl()&squot;s&n;*!&n;*! Nov 30 1998  Torbjorn Eliasson  Initial version.&n;*!              Bjorn Wesen        Elinux kernel version.&n;*! Jan 14 2000  Johan Adolfsson    Fixed PB shadow register stuff - &n;*!                                 don&squot;t use PB_I2C if DS1302 uses same bits,&n;*!                                 use PB.&n;*! $Log: i2c.c,v $&n;*! Revision 1.7  2004/05/28 09:26:59  starvik&n;*! Modified I2C initialization to work in 2.6.&n;*!&n;*! Revision 1.6  2004/05/14 07:58:03  starvik&n;*! Merge of changes from 2.4&n;*!&n;*! Revision 1.4  2002/12/11 13:13:57  starvik&n;*! Added arch/ to v10 specific includes&n;*! Added fix from Linux 2.4 in serial.c (flush_to_flip_buffer)&n;*!&n;*! Revision 1.3  2002/11/20 11:56:11  starvik&n;*! Merge of Linux 2.5.48&n;*!&n;*! Revision 1.2  2002/11/18 13:16:06  starvik&n;*! Linux 2.5 port of latest 2.4 drivers&n;*!&n;*! Revision 1.9  2002/10/31 15:32:26  starvik&n;*! Update Port B register and shadow even when running with hardware support&n;*!   to avoid glitches when reading bits&n;*! Never set direction to out in i2c_inbyte&n;*! Removed incorrect clock togling at end of i2c_inbyte&n;*!&n;*! Revision 1.8  2002/08/13 06:31:53  starvik&n;*! Made SDA and SCL line configurable&n;*! Modified i2c_inbyte to work with PCF8563&n;*!&n;*! Revision 1.7  2001/04/04 13:11:36  markusl&n;*! Updated according to review remarks&n;*!&n;*! Revision 1.6  2001/03/19 12:43:00  markusl&n;*! Made some symbols unstatic (used by the eeprom driver)&n;*!&n;*! Revision 1.5  2001/02/27 13:52:48  bjornw&n;*! malloc.h -&gt; slab.h&n;*!&n;*! Revision 1.4  2001/02/15 07:17:40  starvik&n;*! Corrected usage if port_pb_i2c_shadow&n;*!&n;*! Revision 1.3  2001/01/26 17:55:13  bjornw&n;*! * Made I2C_USES_PB_NOT_PB_I2C a CONFIG option instead of assigning it&n;*!   magically. Config.in needs to set it for the options that need it, like&n;*!   Dallas 1302 support. Actually, it should be default since it screws up&n;*!   the PB bits even if you don&squot;t use I2C..&n;*! * Include linux/config.h to get the above&n;*!&n;*! Revision 1.2  2001/01/18 15:49:30  bjornw&n;*! 2.4 port of I2C including some cleanups (untested of course)&n;*!&n;*! Revision 1.1  2001/01/18 15:35:25  bjornw&n;*! Verbatim copy of the Etrax i2c driver, 2.0 elinux version&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999-2002 Axis Communications AB, LUND, SWEDEN&n;*!&n;*!***************************************************************************/
+multiline_comment|/* $Id: i2c.c,v 1.7 2004/05/28 09:26:59 starvik Exp $ */
 multiline_comment|/****************** INCLUDE FILES SECTION ***********************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -525,6 +525,13 @@ c_func
 id|CLOCK_HIGH_TIME
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * we leave the clock low, getbyte is usually followed&n;&t; * by sendack/nack, they assume the clock to be low&n;&t; */
+id|i2c_clk
+c_func
+(paren
+id|I2C_CLOCK_LOW
+)paren
+suffix:semicolon
 r_return
 id|aBitByte
 suffix:semicolon
@@ -671,6 +678,13 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * our clock is high now, make sure data is low&n;&t; * before we enable our output. If we keep data high&n;&t; * and enable output, we would generate a stop condition.&n;&t; */
+id|i2c_data
+c_func
+(paren
+id|I2C_DATA_LOW
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * end clock pulse&n;&t; */
 id|i2c_enable
 c_func
@@ -789,6 +803,73 @@ id|i2c_data
 c_func
 (paren
 id|I2C_DATA_HIGH
+)paren
+suffix:semicolon
+id|i2c_delay
+c_func
+(paren
+id|CLOCK_LOW_TIME
+)paren
+suffix:semicolon
+id|i2c_dir_in
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*#---------------------------------------------------------------------------&n;*#&n;*# FUNCTION NAME: i2c_sendnack&n;*#&n;*# DESCRIPTION  : Sends NACK on received data&n;*#&n;*#--------------------------------------------------------------------------*/
+r_void
+DECL|function|i2c_sendnack
+id|i2c_sendnack
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * enable output&n;&t; */
+id|i2c_delay
+c_func
+(paren
+id|CLOCK_LOW_TIME
+)paren
+suffix:semicolon
+id|i2c_dir_out
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * set data high&n;&t; */
+id|i2c_data
+c_func
+(paren
+id|I2C_DATA_HIGH
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * generate clock pulse&n;&t; */
+id|i2c_delay
+c_func
+(paren
+id|CLOCK_HIGH_TIME
+op_div
+l_int|6
+)paren
+suffix:semicolon
+id|i2c_clk
+c_func
+(paren
+id|I2C_CLOCK_HIGH
+)paren
+suffix:semicolon
+id|i2c_delay
+c_func
+(paren
+id|CLOCK_HIGH_TIME
+)paren
+suffix:semicolon
+id|i2c_clk
+c_func
+(paren
+id|I2C_CLOCK_LOW
 )paren
 suffix:semicolon
 id|i2c_delay
@@ -1127,7 +1208,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * send Ack&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * last received byte needs to be nacked&n;&t;&t; * instead of acked&n;&t;&t; */
 id|i2c_sendack
 c_func
 (paren
@@ -1417,7 +1498,6 @@ id|i2c_release
 comma
 )brace
 suffix:semicolon
-r_static
 r_int
 id|__init
 DECL|function|i2c_init
@@ -1427,9 +1507,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|res
-suffix:semicolon
 multiline_comment|/* Setup and enable the Port B I2C interface */
 macro_line|#ifndef CONFIG_ETRAX_I2C_USES_PB_NOT_PB_I2C
 op_star
@@ -1527,7 +1604,28 @@ id|output
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* register char device */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_int
+id|__init
+DECL|function|i2c_register
+id|i2c_register
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|res
+suffix:semicolon
+id|i2c_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|register_chrdev
@@ -1563,6 +1661,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;I2C driver v2.2, (c) 1999-2001 Axis Communications AB&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1570,12 +1669,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* this makes sure that i2c_init is called during boot */
-DECL|variable|i2c_init
+multiline_comment|/* this makes sure that i2c_register is called during boot */
+DECL|variable|i2c_register
 id|module_init
 c_func
 (paren
-id|i2c_init
+id|i2c_register
 )paren
 suffix:semicolon
 multiline_comment|/****************** END OF FILE i2c.c ********************************/

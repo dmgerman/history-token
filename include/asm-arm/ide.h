@@ -11,11 +11,6 @@ macro_line|#endif
 macro_line|#if defined(CONFIG_ARCH_LH7A40X) || defined(CONFIG_ARCH_SA1100)
 macro_line|# include &lt;asm/arch/ide.h&gt;&t;/* obsolete + broken */
 macro_line|#endif
-multiline_comment|/*&n; * We always use the new IDE port registering,&n; * so these are fixed here.&n; */
-DECL|macro|ide_default_io_base
-mdefine_line|#define ide_default_io_base(i)&t;&t;(0)
-DECL|macro|ide_default_irq
-mdefine_line|#define ide_default_irq(b)&t;&t;(0)
 macro_line|#if !defined(CONFIG_ARCH_L7200) &amp;&amp; !defined(CONFIG_ARCH_LH7A40X)
 DECL|macro|IDE_ARCH_OBSOLETE_INIT
 macro_line|# define IDE_ARCH_OBSOLETE_INIT
@@ -27,8 +22,6 @@ DECL|macro|ide_default_io_ctl
 macro_line|#  define ide_default_io_ctl(base)&t;(0)
 macro_line|# endif
 macro_line|#endif /* !ARCH_L7200 &amp;&amp; !ARCH_LH7A40X */
-DECL|macro|ide_init_default_irq
-mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|__ide_mm_insw
 mdefine_line|#define __ide_mm_insw(port,addr,len)&t;readsw(port,addr,len)
 DECL|macro|__ide_mm_insl

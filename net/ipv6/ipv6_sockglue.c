@@ -30,7 +30,7 @@ id|DEFINE_SNMP_STAT
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|ipstats_mib
 comma
 id|ipv6_statistics
 )paren
@@ -376,10 +376,12 @@ id|gsf
 comma
 r_struct
 id|group_filter
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -401,6 +403,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -492,6 +495,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|optval
@@ -2222,10 +2226,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -2411,6 +2417,7 @@ comma
 (paren
 r_struct
 id|group_filter
+id|__user
 op_star
 )paren
 id|optval

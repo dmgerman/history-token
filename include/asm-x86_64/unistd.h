@@ -2159,7 +2159,7 @@ c_func
 (paren
 id|__NR_mbind
 comma
-id|sys_ni_syscall
+id|sys_mbind
 )paren
 DECL|macro|__NR_set_mempolicy
 mdefine_line|#define __NR_set_mempolicy &t;238
@@ -2168,7 +2168,7 @@ c_func
 (paren
 id|__NR_set_mempolicy
 comma
-id|sys_ni_syscall
+id|sys_set_mempolicy
 )paren
 DECL|macro|__NR_get_mempolicy
 mdefine_line|#define __NR_get_mempolicy &t;239
@@ -2177,7 +2177,7 @@ c_func
 (paren
 id|__NR_get_mempolicy
 comma
-id|sys_ni_syscall
+id|sys_get_mempolicy
 )paren
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open &t;&t;240
@@ -2289,6 +2289,8 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 mdefine_line|#define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 mdefine_line|#define __ARCH_WANT_SYS_SIGPROCMASK
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#ifndef __KERNEL_SYSCALLS__
 DECL|macro|__syscall
