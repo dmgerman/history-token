@@ -7,6 +7,7 @@ c_func
 (paren
 r_volatile
 r_uint16
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -20,6 +21,7 @@ c_func
 (paren
 r_volatile
 r_uint16
+id|__iomem
 op_star
 id|addr
 )paren
@@ -301,8 +303,11 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
+op_assign
+id|ha-&gt;iobase
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -312,10 +317,6 @@ id|ha-&gt;hardware_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|reg
-op_assign
-id|ha-&gt;iobase
 suffix:semicolon
 id|ha-&gt;interrupts_on
 op_assign
@@ -369,8 +370,11 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
+op_assign
+id|ha-&gt;iobase
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -380,10 +384,6 @@ id|ha-&gt;hardware_lock
 comma
 id|flags
 )paren
-suffix:semicolon
-id|reg
-op_assign
-id|ha-&gt;iobase
 suffix:semicolon
 id|ha-&gt;interrupts_on
 op_assign

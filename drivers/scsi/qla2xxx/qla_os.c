@@ -3384,18 +3384,6 @@ op_logical_and
 id|ha-&gt;flags.online
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|device_reg_t
-op_star
-id|reg
-suffix:semicolon
-id|reg
-op_assign
-id|ha-&gt;iobase
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3404,6 +3392,10 @@ op_ne
 id|RESPONSE_PROCESSED
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -6796,7 +6788,7 @@ id|ha-&gt;pio_length
 op_assign
 id|pio_len
 suffix:semicolon
-id|ha-&gt;mmio_address
+id|ha-&gt;iobase
 op_assign
 id|ioremap
 c_func
@@ -6810,7 +6802,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ha-&gt;mmio_address
+id|ha-&gt;iobase
 )paren
 (brace
 id|qla_printk
@@ -6829,18 +6821,6 @@ r_goto
 id|iospace_error_exit
 suffix:semicolon
 )brace
-id|ha-&gt;mmio_length
-op_assign
-id|mmio_len
-suffix:semicolon
-id|ha-&gt;iobase
-op_assign
-(paren
-id|device_reg_t
-op_star
-)paren
-id|ha-&gt;mmio_address
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -6876,6 +6856,7 @@ r_int
 id|ret
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -8133,6 +8114,17 @@ id|ha
 )paren
 suffix:semicolon
 multiline_comment|/* release io space registers  */
+r_if
+c_cond
+(paren
+id|ha-&gt;iobase
+)paren
+id|iounmap
+c_func
+(paren
+id|ha-&gt;iobase
+)paren
+suffix:semicolon
 id|pci_release_regions
 c_func
 (paren
@@ -8145,19 +8137,6 @@ c_func
 id|ha-&gt;pdev
 )paren
 suffix:semicolon
-macro_line|#if MEMORY_MAPPED_IO
-r_if
-c_cond
-(paren
-id|ha-&gt;mmio_address
-)paren
-id|iounmap
-c_func
-(paren
-id|ha-&gt;mmio_address
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * The following support functions are adopted to handle&n; * the re-entrant qla2x00_proc_info correctly.&n; */
 r_static

@@ -129,6 +129,7 @@ op_star
 id|ha
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -506,6 +507,7 @@ op_star
 id|ha
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -980,10 +982,12 @@ r_uint16
 id|cnt
 suffix:semicolon
 r_uint16
+id|__iomem
 op_star
 id|wptr
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -1005,6 +1009,7 @@ id|wptr
 op_assign
 (paren
 r_uint16
+id|__iomem
 op_star
 )paren
 id|MAILBOX_REG
@@ -1049,6 +1054,7 @@ id|wptr
 op_assign
 (paren
 r_uint16
+id|__iomem
 op_star
 )paren
 id|MAILBOX_REG
@@ -1201,6 +1207,7 @@ l_int|5
 )braket
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -3598,6 +3605,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign

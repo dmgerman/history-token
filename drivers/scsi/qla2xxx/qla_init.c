@@ -1470,6 +1470,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -2209,6 +2210,7 @@ r_int
 id|rval
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -3766,6 +3768,7 @@ r_int
 id|cnt
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -4849,6 +4852,7 @@ op_star
 id|ha-&gt;request_ring
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -16368,8 +16372,11 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
+op_assign
+id|ha-&gt;iobase
 suffix:semicolon
 r_int
 r_int
@@ -16738,6 +16745,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign

@@ -85,6 +85,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -117,7 +118,9 @@ suffix:semicolon
 r_uint16
 op_star
 id|iptr
-comma
+suffix:semicolon
+r_uint16
+id|__iomem
 op_star
 id|optr
 suffix:semicolon
@@ -254,6 +257,7 @@ id|optr
 op_assign
 (paren
 r_uint16
+id|__iomem
 op_star
 )paren
 id|MAILBOX_REG
@@ -313,6 +317,7 @@ id|optr
 op_assign
 (paren
 r_uint16
+id|__iomem
 op_star
 )paren
 id|MAILBOX_REG
@@ -763,6 +768,10 @@ c_cond
 id|ha-&gt;flags.mbox_int
 )paren
 (brace
+r_uint16
+op_star
+id|iptr2
+suffix:semicolon
 id|DEBUG3_11
 c_func
 (paren
@@ -809,7 +818,7 @@ id|QLA_FUNCTION_FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* Load return mailbox registers. */
-id|optr
+id|iptr2
 op_assign
 id|mcp-&gt;mb
 suffix:semicolon
@@ -852,7 +861,7 @@ op_amp
 id|BIT_0
 )paren
 op_star
-id|optr
+id|iptr2
 op_assign
 op_star
 id|iptr
@@ -861,7 +870,7 @@ id|mboxes
 op_rshift_assign
 l_int|1
 suffix:semicolon
-id|optr
+id|iptr2
 op_increment
 suffix:semicolon
 id|iptr

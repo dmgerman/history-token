@@ -49,9 +49,8 @@ r_uint16
 id|data
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
-id|reg
-suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
@@ -211,9 +210,8 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
-id|reg
-suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
@@ -334,6 +332,7 @@ r_uint32
 id|nv_cmd
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -672,6 +671,7 @@ r_uint8
 id|cnt
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -854,6 +854,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -897,6 +898,7 @@ id|data
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign

@@ -1065,6 +1065,7 @@ r_uint16
 id|tot_dsds
 suffix:semicolon
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 suffix:semicolon
@@ -1087,13 +1088,13 @@ id|ha
 op_assign
 id|fclun-&gt;fcport-&gt;ha
 suffix:semicolon
-id|cmd
-op_assign
-id|sp-&gt;cmd
-suffix:semicolon
 id|reg
 op_assign
 id|ha-&gt;iobase
+suffix:semicolon
+id|cmd
+op_assign
+id|sp-&gt;cmd
 suffix:semicolon
 multiline_comment|/* Send marker if required */
 r_if
@@ -1904,6 +1905,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -2143,6 +2145,7 @@ id|sp
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
@@ -2496,6 +2499,7 @@ id|ha
 )paren
 (brace
 id|device_reg_t
+id|__iomem
 op_star
 id|reg
 op_assign
