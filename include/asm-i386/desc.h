@@ -3,6 +3,8 @@ DECL|macro|__ARCH_DESC_H
 mdefine_line|#define __ARCH_DESC_H
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
+DECL|macro|CPU_16BIT_STACK_SIZE
+mdefine_line|#define CPU_16BIT_STACK_SIZE 1024
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -25,6 +27,18 @@ comma
 id|cpu_gdt_table
 (braket
 id|GDT_ENTRIES
+)braket
+)paren
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_int
+r_char
+comma
+id|cpu_16bit_stack
+(braket
+id|CPU_16BIT_STACK_SIZE
 )braket
 )paren
 suffix:semicolon
