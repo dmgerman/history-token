@@ -3719,7 +3719,7 @@ id|np-&gt;bcrvalue
 op_assign
 l_int|0x10
 suffix:semicolon
-id|np-&gt;cralue
+id|np-&gt;crvalue
 op_assign
 l_int|0xe00
 suffix:semicolon
