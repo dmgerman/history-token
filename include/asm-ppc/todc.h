@@ -43,6 +43,16 @@ DECL|member|as0_bits
 r_int
 id|as0_bits
 suffix:semicolon
+DECL|member|nvram_size
+r_int
+id|nvram_size
+suffix:semicolon
+multiline_comment|/* Size of NVRAM on chip */
+DECL|member|sw_flags
+r_int
+id|sw_flags
+suffix:semicolon
+multiline_comment|/* Software control flags */
 multiline_comment|/* Following are the register offsets for the particular chip */
 DECL|member|year
 r_int
@@ -112,6 +122,15 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some RTC chips have their NVRAM buried behind a addr/data pair of&n;&t; * regs on the first level/clock registers.  The following fields&n;&t; * are the addresses for those addr/data regs.&n;&t; */
+DECL|member|nvram_addr_reg
+r_int
+id|nvram_addr_reg
+suffix:semicolon
+DECL|member|nvram_data_reg
+r_int
+id|nvram_data_reg
+suffix:semicolon
 DECL|typedef|todc_info_t
 )brace
 id|todc_info_t
@@ -139,8 +158,10 @@ DECL|macro|TODC_TYPE_PC97307
 mdefine_line|#define TODC_TYPE_PC97307&t;&t;10&t;/* PC97307 internal RTC */
 DECL|macro|TODC_TYPE_DS1557
 mdefine_line|#define TODC_TYPE_DS1557&t;&t;11&t;/* Dallas DS1557 RTC */
+DECL|macro|TODC_TYPE_DS17285
+mdefine_line|#define TODC_TYPE_DS17285&t;&t;12&t;/* Dallas DS17285 RTC */
 DECL|macro|TODC_TYPE_MC146818
-mdefine_line|#define&t;TODC_TYPE_MC146818&t;&t;100&t;/* Leave room for more m48txx&squot;s */
+mdefine_line|#define&t;TODC_TYPE_MC146818&t;&t;100&t;/* Leave room for m48txx&squot;s */
 multiline_comment|/*&n; * Bit to clear/set to enable reads/writes to the chip&n; */
 DECL|macro|TODC_MK48TXX_CNTL_A_R
 mdefine_line|#define&t;TODC_MK48TXX_CNTL_A_R&t;&t;0x40
@@ -150,7 +171,14 @@ DECL|macro|TODC_MK48TXX_DAY_CB
 mdefine_line|#define&t;TODC_MK48TXX_DAY_CB&t;&t;0x80
 DECL|macro|TODC_DS1501_CNTL_B_TE
 mdefine_line|#define&t;TODC_DS1501_CNTL_B_TE&t;&t;0x80
-multiline_comment|/*&n; * Define the values for the various RTC&squot;s that should to into the todc_info&n; * table.&n; */
+multiline_comment|/*&n; * Define flag bits used by todc routines.&n; */
+DECL|macro|TODC_FLAG_2_LEVEL_NVRAM
+mdefine_line|#define&t;TODC_FLAG_2_LEVEL_NVRAM&t;&t;0x00000001
+multiline_comment|/*&n; * Define the values for the various RTC&squot;s that should to into the todc_info&n; * table.&n; * Note: The XXX_NVRAM_SIZE, XXX_NVRAM_ADDR_REG, and XXX_NVRAM_DATA_REG only&n; * matter if XXX_SW_FLAGS has TODC_FLAG_2_LEVEL_NVRAM set.&n; */
+DECL|macro|TODC_TYPE_MK48T35_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_MK48T35_NVRAM_SIZE&t;&t;0x7ff8
+DECL|macro|TODC_TYPE_MK48T35_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_MK48T35_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_MK48T35_YEAR
 mdefine_line|#define&t;TODC_TYPE_MK48T35_YEAR&t;&t;&t;0x7fff
 DECL|macro|TODC_TYPE_MK48T35_MONTH
@@ -185,6 +213,14 @@ DECL|macro|TODC_TYPE_MK48T35_CENTURY
 mdefine_line|#define&t;TODC_TYPE_MK48T35_CENTURY&t;&t;0x0000
 DECL|macro|TODC_TYPE_MK48T35_FLAGS
 mdefine_line|#define&t;TODC_TYPE_MK48T35_FLAGS&t;&t;&t;0x0000
+DECL|macro|TODC_TYPE_MK48T35_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T35_NVRAM_ADDR_REG&t;0
+DECL|macro|TODC_TYPE_MK48T35_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T35_NVRAM_DATA_REG&t;0
+DECL|macro|TODC_TYPE_MK48T37_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_MK48T37_NVRAM_SIZE&t;&t;0x7ff0
+DECL|macro|TODC_TYPE_MK48T37_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_MK48T37_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_MK48T37_YEAR
 mdefine_line|#define&t;TODC_TYPE_MK48T37_YEAR&t;&t;&t;0x7fff
 DECL|macro|TODC_TYPE_MK48T37_MONTH
@@ -219,6 +255,14 @@ DECL|macro|TODC_TYPE_MK48T37_CENTURY
 mdefine_line|#define&t;TODC_TYPE_MK48T37_CENTURY&t;&t;0x7ff1
 DECL|macro|TODC_TYPE_MK48T37_FLAGS
 mdefine_line|#define&t;TODC_TYPE_MK48T37_FLAGS&t;&t;&t;0x7ff0
+DECL|macro|TODC_TYPE_MK48T37_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T37_NVRAM_ADDR_REG&t;0
+DECL|macro|TODC_TYPE_MK48T37_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T37_NVRAM_DATA_REG&t;0
+DECL|macro|TODC_TYPE_MK48T59_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_MK48T59_NVRAM_SIZE&t;&t;0x1ff0
+DECL|macro|TODC_TYPE_MK48T59_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_MK48T59_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_MK48T59_YEAR
 mdefine_line|#define&t;TODC_TYPE_MK48T59_YEAR&t;&t;&t;0x1fff
 DECL|macro|TODC_TYPE_MK48T59_MONTH
@@ -253,40 +297,56 @@ DECL|macro|TODC_TYPE_MK48T59_CENTURY
 mdefine_line|#define&t;TODC_TYPE_MK48T59_CENTURY&t;&t;0x1fff
 DECL|macro|TODC_TYPE_MK48T59_FLAGS
 mdefine_line|#define&t;TODC_TYPE_MK48T59_FLAGS&t;&t;&t;0x1fff
+DECL|macro|TODC_TYPE_MK48T59_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T59_NVRAM_ADDR_REG&t;0
+DECL|macro|TODC_TYPE_MK48T59_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_MK48T59_NVRAM_DATA_REG&t;0
+DECL|macro|TODC_TYPE_DS1501_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1501_NVRAM_SIZE&t;0x100
+DECL|macro|TODC_TYPE_DS1501_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1501_SW_FLAGS&t;TODC_FLAG_2_LEVEL_NVRAM
 DECL|macro|TODC_TYPE_DS1501_YEAR
-mdefine_line|#define&t;TODC_TYPE_DS1501_YEAR&t;&t;&t;0x06
+mdefine_line|#define&t;TODC_TYPE_DS1501_YEAR&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x06)
 DECL|macro|TODC_TYPE_DS1501_MONTH
-mdefine_line|#define&t;TODC_TYPE_DS1501_MONTH&t;&t;&t;0x05
+mdefine_line|#define&t;TODC_TYPE_DS1501_MONTH&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x05)
 DECL|macro|TODC_TYPE_DS1501_DOM
-mdefine_line|#define&t;TODC_TYPE_DS1501_DOM&t;&t;&t;0x04&t;/* Day of Month */
+mdefine_line|#define&t;TODC_TYPE_DS1501_DOM&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x04)
 DECL|macro|TODC_TYPE_DS1501_DOW
-mdefine_line|#define&t;TODC_TYPE_DS1501_DOW&t;&t;&t;0x03&t;/* Day of Week */
+mdefine_line|#define&t;TODC_TYPE_DS1501_DOW&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x03)
 DECL|macro|TODC_TYPE_DS1501_HOURS
-mdefine_line|#define&t;TODC_TYPE_DS1501_HOURS&t;&t;&t;0x02
+mdefine_line|#define&t;TODC_TYPE_DS1501_HOURS&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x02)
 DECL|macro|TODC_TYPE_DS1501_MINUTES
-mdefine_line|#define&t;TODC_TYPE_DS1501_MINUTES&t;&t;0x01
+mdefine_line|#define&t;TODC_TYPE_DS1501_MINUTES&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x01)
 DECL|macro|TODC_TYPE_DS1501_SECONDS
-mdefine_line|#define&t;TODC_TYPE_DS1501_SECONDS&t;&t;0x00
+mdefine_line|#define&t;TODC_TYPE_DS1501_SECONDS&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x00)
 DECL|macro|TODC_TYPE_DS1501_CNTL_B
-mdefine_line|#define&t;TODC_TYPE_DS1501_CNTL_B&t;&t;&t;0x0f
+mdefine_line|#define&t;TODC_TYPE_DS1501_CNTL_B&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x0f)
 DECL|macro|TODC_TYPE_DS1501_CNTL_A
-mdefine_line|#define&t;TODC_TYPE_DS1501_CNTL_A&t;&t;&t;0x0f
+mdefine_line|#define&t;TODC_TYPE_DS1501_CNTL_A&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x0f)
 DECL|macro|TODC_TYPE_DS1501_WATCHDOG
-mdefine_line|#define&t;TODC_TYPE_DS1501_WATCHDOG&t;&t;0xff
+mdefine_line|#define&t;TODC_TYPE_DS1501_WATCHDOG&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0xff)
 DECL|macro|TODC_TYPE_DS1501_INTERRUPTS
-mdefine_line|#define&t;TODC_TYPE_DS1501_INTERRUPTS&t;&t;0xff
+mdefine_line|#define&t;TODC_TYPE_DS1501_INTERRUPTS&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0xff)
 DECL|macro|TODC_TYPE_DS1501_ALARM_DATE
-mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_DATE&t;&t;0x0b
+mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_DATE&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x0b)
 DECL|macro|TODC_TYPE_DS1501_ALARM_HOUR
-mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_HOUR&t;&t;0x0a
+mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_HOUR&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x0a)
 DECL|macro|TODC_TYPE_DS1501_ALARM_MINUTES
-mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_MINUTES&t;&t;0x09
+mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_MINUTES&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x09)
 DECL|macro|TODC_TYPE_DS1501_ALARM_SECONDS
-mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_SECONDS&t;&t;0x08
+mdefine_line|#define&t;TODC_TYPE_DS1501_ALARM_SECONDS&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x08)
 DECL|macro|TODC_TYPE_DS1501_CENTURY
-mdefine_line|#define&t;TODC_TYPE_DS1501_CENTURY&t;&t;0x07
+mdefine_line|#define&t;TODC_TYPE_DS1501_CENTURY&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0x07)
 DECL|macro|TODC_TYPE_DS1501_FLAGS
-mdefine_line|#define&t;TODC_TYPE_DS1501_FLAGS&t;&t;&t;0xff
+mdefine_line|#define&t;TODC_TYPE_DS1501_FLAGS&t;&t;(TODC_TYPE_DS1501_NVRAM_SIZE + 0xff)
+DECL|macro|TODC_TYPE_DS1501_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1501_NVRAM_ADDR_REG&t;0x10
+DECL|macro|TODC_TYPE_DS1501_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1501_NVRAM_DATA_REG&t;0x13
+DECL|macro|TODC_TYPE_DS1557_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1557_NVRAM_SIZE&t;&t;0x7fff0
+DECL|macro|TODC_TYPE_DS1557_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1557_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1557_YEAR
 mdefine_line|#define&t;TODC_TYPE_DS1557_YEAR&t;&t;&t;0x7ffff
 DECL|macro|TODC_TYPE_DS1557_MONTH
@@ -321,6 +381,14 @@ DECL|macro|TODC_TYPE_DS1557_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1557_CENTURY&t;&t;0x7fff8
 DECL|macro|TODC_TYPE_DS1557_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1557_FLAGS&t;&t;&t;0x7fff0
+DECL|macro|TODC_TYPE_DS1557_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1557_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1557_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1557_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1643_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1643_NVRAM_SIZE&t;&t;0x1ff8
+DECL|macro|TODC_TYPE_DS1643_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1643_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1643_YEAR
 mdefine_line|#define&t;TODC_TYPE_DS1643_YEAR&t;&t;&t;0x1fff
 DECL|macro|TODC_TYPE_DS1643_MONTH
@@ -355,6 +423,14 @@ DECL|macro|TODC_TYPE_DS1643_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1643_CENTURY&t;&t;0x1ff8
 DECL|macro|TODC_TYPE_DS1643_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1643_FLAGS&t;&t;&t;0x1fff
+DECL|macro|TODC_TYPE_DS1643_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1643_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1643_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1643_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1693_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1693_NVRAM_SIZE&t;&t;0 /* Not handled yet */
+DECL|macro|TODC_TYPE_DS1693_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1693_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1693_YEAR
 mdefine_line|#define&t;TODC_TYPE_DS1693_YEAR&t;&t;&t;0x09
 DECL|macro|TODC_TYPE_DS1693_MONTH
@@ -389,6 +465,14 @@ DECL|macro|TODC_TYPE_DS1693_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1693_CENTURY&t;&t;0x48
 DECL|macro|TODC_TYPE_DS1693_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1693_FLAGS&t;&t;&t;0xff
+DECL|macro|TODC_TYPE_DS1693_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1693_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1693_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1693_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1743_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1743_NVRAM_SIZE&t;&t;0x1ff8
+DECL|macro|TODC_TYPE_DS1743_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1743_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1743_YEAR
 mdefine_line|#define&t;TODC_TYPE_DS1743_YEAR&t;&t;&t;0x1fff
 DECL|macro|TODC_TYPE_DS1743_MONTH
@@ -423,6 +507,14 @@ DECL|macro|TODC_TYPE_DS1743_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1743_CENTURY&t;&t;0x1ff8
 DECL|macro|TODC_TYPE_DS1743_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1743_FLAGS&t;&t;&t;0x1fff
+DECL|macro|TODC_TYPE_DS1743_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1743_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1743_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1743_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1746_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1746_NVRAM_SIZE&t;&t;0x1fff8
+DECL|macro|TODC_TYPE_DS1746_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1746_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1746_YEAR
 mdefine_line|#define&t;TODC_TYPE_DS1746_YEAR&t;&t;&t;0x1ffff
 DECL|macro|TODC_TYPE_DS1746_MONTH
@@ -457,24 +549,32 @@ DECL|macro|TODC_TYPE_DS1746_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1746_CENTURY&t;&t;0x00000
 DECL|macro|TODC_TYPE_DS1746_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1746_FLAGS&t;&t;&t;0x00000
+DECL|macro|TODC_TYPE_DS1746_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1746_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1746_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1746_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1747_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_DS1747_NVRAM_SIZE&t;&t;0x7fff8
+DECL|macro|TODC_TYPE_DS1747_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_DS1747_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_DS1747_YEAR
-mdefine_line|#define&t;TODC_TYPE_DS1747_YEAR&t;&t;&t;0x1ffff
+mdefine_line|#define&t;TODC_TYPE_DS1747_YEAR&t;&t;&t;0x7ffff
 DECL|macro|TODC_TYPE_DS1747_MONTH
-mdefine_line|#define&t;TODC_TYPE_DS1747_MONTH&t;&t;&t;0x1fffe
+mdefine_line|#define&t;TODC_TYPE_DS1747_MONTH&t;&t;&t;0x7fffe
 DECL|macro|TODC_TYPE_DS1747_DOM
-mdefine_line|#define&t;TODC_TYPE_DS1747_DOM&t;&t;&t;0x1fffd&t;/* Day of Month */
+mdefine_line|#define&t;TODC_TYPE_DS1747_DOM&t;&t;&t;0x7fffd&t;/* Day of Month */
 DECL|macro|TODC_TYPE_DS1747_DOW
-mdefine_line|#define&t;TODC_TYPE_DS1747_DOW&t;&t;&t;0x1fffc&t;/* Day of Week */
+mdefine_line|#define&t;TODC_TYPE_DS1747_DOW&t;&t;&t;0x7fffc&t;/* Day of Week */
 DECL|macro|TODC_TYPE_DS1747_HOURS
-mdefine_line|#define&t;TODC_TYPE_DS1747_HOURS&t;&t;&t;0x1fffb
+mdefine_line|#define&t;TODC_TYPE_DS1747_HOURS&t;&t;&t;0x7fffb
 DECL|macro|TODC_TYPE_DS1747_MINUTES
-mdefine_line|#define&t;TODC_TYPE_DS1747_MINUTES&t;&t;0x1fffa
+mdefine_line|#define&t;TODC_TYPE_DS1747_MINUTES&t;&t;0x7fffa
 DECL|macro|TODC_TYPE_DS1747_SECONDS
-mdefine_line|#define&t;TODC_TYPE_DS1747_SECONDS&t;&t;0x1fff9
+mdefine_line|#define&t;TODC_TYPE_DS1747_SECONDS&t;&t;0x7fff9
 DECL|macro|TODC_TYPE_DS1747_CNTL_B
-mdefine_line|#define&t;TODC_TYPE_DS1747_CNTL_B&t;&t;&t;0x1fff9
+mdefine_line|#define&t;TODC_TYPE_DS1747_CNTL_B&t;&t;&t;0x7fff9
 DECL|macro|TODC_TYPE_DS1747_CNTL_A
-mdefine_line|#define&t;TODC_TYPE_DS1747_CNTL_A&t;&t;&t;0x1fff8&t;/* control_a R/W regs */
+mdefine_line|#define&t;TODC_TYPE_DS1747_CNTL_A&t;&t;&t;0x7fff8&t;/* control_a R/W regs */
 DECL|macro|TODC_TYPE_DS1747_WATCHDOG
 mdefine_line|#define&t;TODC_TYPE_DS1747_WATCHDOG&t;&t;0x00000
 DECL|macro|TODC_TYPE_DS1747_INTERRUPTS
@@ -491,6 +591,60 @@ DECL|macro|TODC_TYPE_DS1747_CENTURY
 mdefine_line|#define&t;TODC_TYPE_DS1747_CENTURY&t;&t;0x00000
 DECL|macro|TODC_TYPE_DS1747_FLAGS
 mdefine_line|#define&t;TODC_TYPE_DS1747_FLAGS&t;&t;&t;0x00000
+DECL|macro|TODC_TYPE_DS1747_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_DS1747_NVRAM_ADDR_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS1747_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_DS1747_NVRAM_DATA_REG&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_NVRAM_SIZE
+mdefine_line|#define TODC_TYPE_DS17285_NVRAM_SIZE&t;&t;(0x1000-0x80)    /* 4Kx8 NVRAM (minus RTC regs) */
+DECL|macro|TODC_TYPE_DS17285_SW_FLAGS
+mdefine_line|#define TODC_TYPE_DS17285_SW_FLAGS&t;&t;TODC_FLAG_2_LEVEL_NVRAM
+DECL|macro|TODC_TYPE_DS17285_SECONDS
+mdefine_line|#define TODC_TYPE_DS17285_SECONDS&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x00)
+DECL|macro|TODC_TYPE_DS17285_ALARM_SECONDS
+mdefine_line|#define TODC_TYPE_DS17285_ALARM_SECONDS&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x01)
+DECL|macro|TODC_TYPE_DS17285_MINUTES
+mdefine_line|#define TODC_TYPE_DS17285_MINUTES&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x02)
+DECL|macro|TODC_TYPE_DS17285_ALARM_MINUTES
+mdefine_line|#define TODC_TYPE_DS17285_ALARM_MINUTES&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x03)
+DECL|macro|TODC_TYPE_DS17285_HOURS
+mdefine_line|#define TODC_TYPE_DS17285_HOURS&t;&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x04)
+DECL|macro|TODC_TYPE_DS17285_ALARM_HOUR
+mdefine_line|#define TODC_TYPE_DS17285_ALARM_HOUR&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x05)
+DECL|macro|TODC_TYPE_DS17285_DOW
+mdefine_line|#define TODC_TYPE_DS17285_DOW&t;&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x06)
+DECL|macro|TODC_TYPE_DS17285_DOM
+mdefine_line|#define TODC_TYPE_DS17285_DOM&t;&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x07)
+DECL|macro|TODC_TYPE_DS17285_MONTH
+mdefine_line|#define TODC_TYPE_DS17285_MONTH&t;&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x08)
+DECL|macro|TODC_TYPE_DS17285_YEAR
+mdefine_line|#define TODC_TYPE_DS17285_YEAR&t;&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x09)
+DECL|macro|TODC_TYPE_DS17285_CNTL_A
+mdefine_line|#define TODC_TYPE_DS17285_CNTL_A&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x0A)
+DECL|macro|TODC_TYPE_DS17285_CNTL_B
+mdefine_line|#define TODC_TYPE_DS17285_CNTL_B&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x0B)
+DECL|macro|TODC_TYPE_DS17285_CNTL_C
+mdefine_line|#define TODC_TYPE_DS17285_CNTL_C&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x0C)
+DECL|macro|TODC_TYPE_DS17285_CNTL_D
+mdefine_line|#define TODC_TYPE_DS17285_CNTL_D&t;&t;(TODC_TYPE_DS17285_NVRAM_SIZE + 0x0D)
+DECL|macro|TODC_TYPE_DS17285_WATCHDOG
+mdefine_line|#define TODC_TYPE_DS17285_WATCHDOG&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_INTERRUPTS
+mdefine_line|#define TODC_TYPE_DS17285_INTERRUPTS&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_ALARM_DATE
+mdefine_line|#define TODC_TYPE_DS17285_ALARM_DATE&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_CENTURY
+mdefine_line|#define TODC_TYPE_DS17285_CENTURY&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_FLAGS
+mdefine_line|#define TODC_TYPE_DS17285_FLAGS&t;&t;&t;0
+DECL|macro|TODC_TYPE_DS17285_NVRAM_ADDR_REG
+mdefine_line|#define TODC_TYPE_DS17285_NVRAM_ADDR_REG&t;0x50
+DECL|macro|TODC_TYPE_DS17285_NVRAM_DATA_REG
+mdefine_line|#define TODC_TYPE_DS17285_NVRAM_DATA_REG&t;0x53
+DECL|macro|TODC_TYPE_MC146818_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_MC146818_NVRAM_SIZE&t;&t;0&t;/* XXXX */
+DECL|macro|TODC_TYPE_MC146818_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_MC146818_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_MC146818_YEAR
 mdefine_line|#define&t;TODC_TYPE_MC146818_YEAR&t;&t;&t;0x09
 DECL|macro|TODC_TYPE_MC146818_MONTH
@@ -525,6 +679,14 @@ DECL|macro|TODC_TYPE_MC146818_CENTURY
 mdefine_line|#define&t;TODC_TYPE_MC146818_CENTURY&t;&t;0xff
 DECL|macro|TODC_TYPE_MC146818_FLAGS
 mdefine_line|#define&t;TODC_TYPE_MC146818_FLAGS&t;&t;0xff
+DECL|macro|TODC_TYPE_MC146818_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_MC146818_NVRAM_ADDR_REG&t;0
+DECL|macro|TODC_TYPE_MC146818_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_MC146818_NVRAM_DATA_REG&t;0
+DECL|macro|TODC_TYPE_PC97307_NVRAM_SIZE
+mdefine_line|#define&t;TODC_TYPE_PC97307_NVRAM_SIZE&t;&t;0&t;/* No NVRAM? */
+DECL|macro|TODC_TYPE_PC97307_SW_FLAGS
+mdefine_line|#define&t;TODC_TYPE_PC97307_SW_FLAGS&t;&t;0
 DECL|macro|TODC_TYPE_PC97307_YEAR
 mdefine_line|#define&t;TODC_TYPE_PC97307_YEAR&t;&t;&t;0x09
 DECL|macro|TODC_TYPE_PC97307_MONTH
@@ -559,11 +721,15 @@ DECL|macro|TODC_TYPE_PC97307_CENTURY
 mdefine_line|#define&t;TODC_TYPE_PC97307_CENTURY&t;&t;0xff
 DECL|macro|TODC_TYPE_PC97307_FLAGS
 mdefine_line|#define&t;TODC_TYPE_PC97307_FLAGS&t;&t;&t;0xff
+DECL|macro|TODC_TYPE_PC97307_NVRAM_ADDR_REG
+mdefine_line|#define&t;TODC_TYPE_PC97307_NVRAM_ADDR_REG&t;0
+DECL|macro|TODC_TYPE_PC97307_NVRAM_DATA_REG
+mdefine_line|#define&t;TODC_TYPE_PC97307_NVRAM_DATA_REG&t;0
 multiline_comment|/*&n; * Define macros to allocate and init the todc_info_t table that will&n; * be used by the todc_time.c routines.&n; */
 DECL|macro|TODC_ALLOC
 mdefine_line|#define&t;TODC_ALLOC()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static todc_info_t todc_info_alloc;&t;&t;&t;&t;&bslash;&n;&t;todc_info_t *todc_info = &amp;todc_info_alloc;
 DECL|macro|TODC_INIT
-mdefine_line|#define&t;TODC_INIT(clock_type, as0, as1, data, bits) {&t;&t;&t;&bslash;&n;&t;todc_info-&gt;rtc_type = clock_type;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as0  = (unsigned int)(as0);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as1  = (unsigned int)(as1);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_data = (unsigned int)(data);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;as0_bits = (bits);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;year          = clock_type ##_YEAR;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;month         = clock_type ##_MONTH;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_month  = clock_type ##_DOM;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_week   = clock_type ##_DOW;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;hours         = clock_type ##_HOURS;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;minutes       = clock_type ##_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;seconds       = clock_type ##_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;control_b     = clock_type ##_CNTL_B;&t;&t;&bslash;&n;&t;todc_info-&gt;control_a     = clock_type ##_CNTL_A;&t;&t;&bslash;&n;&t;todc_info-&gt;watchdog      = clock_type ##_WATCHDOG;&t;&t;&bslash;&n;&t;todc_info-&gt;interrupts    = clock_type ##_INTERRUPTS;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_date    = clock_type ##_ALARM_DATE;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_hour    = clock_type ##_ALARM_HOUR;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_minutes = clock_type ##_ALARM_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_seconds = clock_type ##_ALARM_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;century       = clock_type ##_CENTURY;&t;&t;&bslash;&n;&t;todc_info-&gt;flags         = clock_type ##_FLAGS;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define&t;TODC_INIT(clock_type, as0, as1, data, bits) {&t;&t;&t;&bslash;&n;&t;todc_info-&gt;rtc_type = clock_type;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as0  = (unsigned int)(as0);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as1  = (unsigned int)(as1);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_data = (unsigned int)(data);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;as0_bits = (bits);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_size     = clock_type ##_NVRAM_SIZE;&t;&t;&bslash;&n;&t;todc_info-&gt;sw_flags       = clock_type ##_SW_FLAGS;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;year           = clock_type ##_YEAR;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;month          = clock_type ##_MONTH;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_month   = clock_type ##_DOM;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_week    = clock_type ##_DOW;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;hours          = clock_type ##_HOURS;&t;&t;&bslash;&n;&t;todc_info-&gt;minutes        = clock_type ##_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;seconds        = clock_type ##_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;control_b      = clock_type ##_CNTL_B;&t;&t;&bslash;&n;&t;todc_info-&gt;control_a      = clock_type ##_CNTL_A;&t;&t;&bslash;&n;&t;todc_info-&gt;watchdog       = clock_type ##_WATCHDOG;&t;&t;&bslash;&n;&t;todc_info-&gt;interrupts     = clock_type ##_INTERRUPTS;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_date     = clock_type ##_ALARM_DATE;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_hour     = clock_type ##_ALARM_HOUR;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_minutes  = clock_type ##_ALARM_MINUTES;&t;&bslash;&n;&t;todc_info-&gt;alarm_seconds  = clock_type ##_ALARM_SECONDS;&t;&bslash;&n;&t;todc_info-&gt;century        = clock_type ##_CENTURY;&t;&t;&bslash;&n;&t;todc_info-&gt;flags          = clock_type ##_FLAGS;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_addr_reg = clock_type ##_NVRAM_ADDR_REG;&t;&bslash;&n;&t;todc_info-&gt;nvram_data_reg = clock_type ##_NVRAM_DATA_REG;&t;&bslash;&n;}
 r_extern
 id|todc_info_t
 op_star
