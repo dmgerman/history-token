@@ -8181,7 +8181,7 @@ l_int|NULL
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* I removed check for oif == dev_out-&gt;oif here.&n;&t;&t;   It was wrong by three reasons:&n;&t;&t;   1. ip_dev_find(saddr) can return wrong iface, if saddr is&n;&t;&t;      assigned to multiple interfaces.&n;&t;&t;   2. Moreover, we are allowed to send packets with saddr&n;&t;&t;      of another iface. --ANK&n;&t;&t; */
+multiline_comment|/* I removed check for oif == dev_out-&gt;oif here.&n;&t;&t;   It was wrong for two reasons:&n;&t;&t;   1. ip_dev_find(saddr) can return wrong iface, if saddr is&n;&t;&t;      assigned to multiple interfaces.&n;&t;&t;   2. Moreover, we are allowed to send packets with saddr&n;&t;&t;      of another iface. --ANK&n;&t;&t; */
 r_if
 c_cond
 (paren
