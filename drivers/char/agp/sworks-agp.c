@@ -1020,9 +1020,6 @@ suffix:semicolon
 id|u8
 id|enable_reg
 suffix:semicolon
-id|u32
-id|cap_id
-suffix:semicolon
 id|u16
 id|cap_reg
 suffix:semicolon
