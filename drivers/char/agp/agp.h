@@ -1077,7 +1077,7 @@ mdefine_line|#define AGPCTRL_GTLBEN&t;&t;(1&lt;&lt;7)
 DECL|macro|AGP2_RESERVED_MASK
 mdefine_line|#define AGP2_RESERVED_MASK 0x00fffcc8
 DECL|macro|AGP3_RESERVED_MASK
-mdefine_line|#define AGP3_RESERVED_MASK 0x00ff00cc
+mdefine_line|#define AGP3_RESERVED_MASK 0x00ff00c4
 DECL|macro|AGP_ERRATA_FASTWRITES
 mdefine_line|#define AGP_ERRATA_FASTWRITES 1&lt;&lt;0
 DECL|macro|AGP_ERRATA_SBA
