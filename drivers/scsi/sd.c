@@ -295,7 +295,7 @@ id|i
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|NODEV
 suffix:semicolon
 )brace
 macro_line|#endif
