@@ -6672,6 +6672,10 @@ multiline_comment|/* ????????? DO WE NEED TO WRITE ANYTHING INTO THE PCI CONFIG 
 r_else
 (brace
 multiline_comment|/* This is Memory */
+id|start_address
+op_and_assign
+id|PCI_BASE_ADDRESS_MEM_MASK
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6681,10 +6685,6 @@ id|PCI_BASE_ADDRESS_MEM_PREFETCH
 )paren
 (brace
 multiline_comment|/* pfmem */
-id|start_address
-op_and_assign
-id|PCI_BASE_ADDRESS_MEM_MASK
-suffix:semicolon
 id|debug
 (paren
 l_string|&quot;start address of pfmem is %x&bslash;n&quot;
@@ -6737,28 +6737,10 @@ id|ibmphp_remove_resource
 id|pfmem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp_address
-op_amp
-id|PCI_BASE_ADDRESS_MEM_TYPE_64
-)paren
-(brace
-multiline_comment|/* takes up another dword */
-id|count
-op_add_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
 multiline_comment|/* regular memory */
-id|start_address
-op_and_assign
-id|PCI_BASE_ADDRESS_MEM_MASK
-suffix:semicolon
 id|debug
 (paren
 l_string|&quot;start address of mem is %x&bslash;n&quot;
@@ -6811,6 +6793,7 @@ id|ibmphp_remove_resource
 id|mem
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6824,7 +6807,6 @@ id|count
 op_add_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* end of mem */
@@ -7221,6 +7203,10 @@ multiline_comment|/* ????????? DO WE NEED TO WRITE ANYTHING INTO THE PCI CONFIG 
 r_else
 (brace
 multiline_comment|/* This is Memory */
+id|start_address
+op_and_assign
+id|PCI_BASE_ADDRESS_MEM_MASK
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7230,10 +7216,6 @@ id|PCI_BASE_ADDRESS_MEM_PREFETCH
 )paren
 (brace
 multiline_comment|/* pfmem */
-id|start_address
-op_and_assign
-id|PCI_BASE_ADDRESS_MEM_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7279,28 +7261,10 @@ id|ibmphp_remove_resource
 id|pfmem
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp_address
-op_amp
-id|PCI_BASE_ADDRESS_MEM_TYPE_64
-)paren
-(brace
-multiline_comment|/* takes up another dword */
-id|count
-op_add_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
 multiline_comment|/* regular memory */
-id|start_address
-op_and_assign
-id|PCI_BASE_ADDRESS_MEM_MASK
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7346,6 +7310,7 @@ id|ibmphp_remove_resource
 id|mem
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7359,7 +7324,6 @@ id|count
 op_add_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* end of mem */
