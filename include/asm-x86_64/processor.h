@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmsegment.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 DECL|macro|TF_MASK
 mdefine_line|#define TF_MASK&t;&t;0x00000100
 DECL|macro|IF_MASK
@@ -343,8 +344,10 @@ multiline_comment|/*&n; * User space process size: 512GB - 1GB (default).&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
+DECL|macro|IA32_PAGE_OFFSET
+mdefine_line|#define IA32_PAGE_OFFSET ((current-&gt;personality &amp; ADDR_LIMIT_3GB) ? 0xc0000000 : 0xFFFFe000)
 DECL|macro|TASK_UNMAPPED_32
-mdefine_line|#define TASK_UNMAPPED_32 0xa0000000
+mdefine_line|#define TASK_UNMAPPED_32 (IA32_PAGE_OFFSET / 3)
 DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE

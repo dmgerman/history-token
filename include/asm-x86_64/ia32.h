@@ -513,8 +513,6 @@ l_int|6
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|IA32_PAGE_OFFSET
-mdefine_line|#define IA32_PAGE_OFFSET 0xffffe000
 DECL|macro|IA32_STACK_TOP
 mdefine_line|#define IA32_STACK_TOP IA32_PAGE_OFFSET
 macro_line|#ifdef __KERNEL__
