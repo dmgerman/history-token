@@ -3337,13 +3337,15 @@ suffix:semicolon
 r_struct
 id|usb_interface
 op_star
+op_star
 id|new_interfaces
-(braket
-id|USB_MAXINTERFACES
-)braket
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|n
+comma
+id|nintf
 suffix:semicolon
 multiline_comment|/* dev-&gt;serialize guards all config changes */
 r_for
@@ -3424,6 +3426,8 @@ suffix:semicolon
 multiline_comment|/* Allocate memory for new interfaces before doing anything else,&n;&t; * so that if we run out then nothing will have changed. */
 id|n
 op_assign
+id|nintf
+op_assign
 l_int|0
 suffix:semicolon
 r_if
@@ -3432,13 +3436,54 @@ c_cond
 id|cp
 )paren
 (brace
+id|nintf
+op_assign
+id|cp-&gt;desc.bNumInterfaces
+suffix:semicolon
+id|new_interfaces
+op_assign
+id|kmalloc
+c_func
+(paren
+id|nintf
+op_star
+r_sizeof
+(paren
+op_star
+id|new_interfaces
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_interfaces
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;Out of memory&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
 suffix:semicolon
 id|n
 OL
-id|cp-&gt;desc.bNumInterfaces
+id|nintf
 suffix:semicolon
 op_increment
 id|n
@@ -3502,6 +3547,12 @@ id|new_interfaces
 (braket
 id|n
 )braket
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|new_interfaces
 )paren
 suffix:semicolon
 r_return
@@ -3588,7 +3639,7 @@ id|dev-&gt;state
 op_assign
 id|USB_STATE_CONFIGURED
 suffix:semicolon
-multiline_comment|/* re-initialize hc/hcd/usbcore interface/endpoint state.&n;&t;&t; * this triggers binding of drivers to interfaces; and&n;&t;&t; * maybe probe() calls will choose different altsettings.&n;&t;&t; */
+multiline_comment|/* Initialize the new interface structures and the&n;&t;&t; * hc/hcd/usbcore interface/endpoint state.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -3598,7 +3649,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|cp-&gt;desc.bNumInterfaces
+id|nintf
 suffix:semicolon
 op_increment
 id|i
@@ -3752,7 +3803,13 @@ id|alt-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now that all interfaces are setup, probe() calls&n;&t;&t; * may claim() any interface that&squot;s not yet bound.&n;&t;&t; * Many class drivers need that: CDC, audio, video, etc.&n;&t;&t; */
+id|kfree
+c_func
+(paren
+id|new_interfaces
+)paren
+suffix:semicolon
+multiline_comment|/* Now that all the interfaces are set up, register them&n;&t;&t; * to trigger binding of drivers to interfaces.  probe()&n;&t;&t; * routines may install different altsettings and may&n;&t;&t; * claim() any interfaces not yet bound.  Many class drivers&n;&t;&t; * need that: CDC, audio, video, etc.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -3762,7 +3819,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|cp-&gt;desc.bNumInterfaces
+id|nintf
 suffix:semicolon
 op_increment
 id|i
