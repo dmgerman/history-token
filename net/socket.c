@@ -1030,7 +1030,6 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Obtains the first available file descriptor and sets it up for use.&n; *&n; *&t;This functions creates file structure and maps it to fd space&n; *&t;of current process. On success it returns file descriptor&n; *&t;and file struct implicitly stored in sock-&gt;file.&n; *&t;Note that another thread may close file descriptor before we return&n; *&t;from this function. We use the fact that now we do not refer&n; *&t;to socket after mapping. If one day we will need it, this&n; *&t;function will inincrement ref. count on file by 1.&n; *&n; *&t;In any case returned fd MAY BE not valid!&n; *&t;This race condition is inavoidable&n; *&t;with shared fd spaces, we cannot solve is inside kernel,&n; *&t;but we take care of internal coherence yet.&n; */
 DECL|function|sock_map_fd
-r_static
 r_int
 id|sock_map_fd
 c_func

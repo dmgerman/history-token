@@ -728,6 +728,17 @@ id|size
 suffix:semicolon
 r_extern
 r_int
+id|sock_map_fd
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|net_ratelimit
 c_func
 (paren
