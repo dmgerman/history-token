@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* RTAS tokens */
@@ -3236,7 +3236,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|create_tce_tables
+id|iommu_setup_pSeries
 c_func
 (paren
 )paren

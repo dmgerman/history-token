@@ -234,6 +234,38 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+DECL|member|pci_dma_supported
+r_int
+(paren
+op_star
+id|pci_dma_supported
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|u64
+id|mask
+)paren
+suffix:semicolon
+DECL|member|pci_dac_dma_supported
+r_int
+(paren
+op_star
+id|pci_dac_dma_supported
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|u64
+id|mask
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -535,7 +567,7 @@ id|PCI_DMA_NONE
 suffix:semicolon
 multiline_comment|/* nothing to do */
 )brace
-multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
+multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; * We default to supporting only 32 bits DMA unless we have&n; * an explicit override of this function in pci_dma_ops for&n; * the platform&n; */
 DECL|function|pci_dma_supported
 r_static
 r_inline
@@ -552,8 +584,65 @@ id|u64
 id|mask
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pci_dma_ops.pci_dma_supported
+)paren
 r_return
-l_int|1
+id|pci_dma_ops
+dot
+id|pci_dma_supported
+c_func
+(paren
+id|hwdev
+comma
+id|mask
+)paren
+suffix:semicolon
+r_return
+(paren
+id|mask
+OL
+l_int|0x100000000ull
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* For DAC DMA, we currently don&squot;t support it by default, but&n; * we let the platform override this&n; */
+DECL|function|pci_dac_dma_supported
+r_static
+r_inline
+r_int
+id|pci_dac_dma_supported
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|hwdev
+comma
+id|u64
+id|mask
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci_dma_ops.pci_dac_dma_supported
+)paren
+r_return
+id|pci_dma_ops
+dot
+id|pci_dac_dma_supported
+c_func
+(paren
+id|hwdev
+comma
+id|mask
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_extern
@@ -629,8 +718,6 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
-DECL|macro|pci_dac_dma_supported
-mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(0)
 multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
 DECL|macro|PCI_DMA_BUS_IS_PHYS
 mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(0)

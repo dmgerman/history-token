@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallSm.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
@@ -35,7 +35,7 @@ id|iSeries_Base_Io_Memory
 suffix:semicolon
 r_extern
 r_struct
-id|TceTable
+id|iommu_table
 op_star
 id|tceTables
 (braket
@@ -916,13 +916,9 @@ comma
 id|Buffer
 )paren
 suffix:semicolon
-id|create_pci_bus_tce_table
+id|iommu_devnode_init
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|node
 )paren
 suffix:semicolon
