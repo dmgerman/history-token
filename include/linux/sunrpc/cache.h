@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SUNRPC_CACHE_H_
 mdefine_line|#define _LINUX_SUNRPC_CACHE_H_
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 multiline_comment|/*&n; * Each cache requires:&n; *  - A &squot;struct cache_detail&squot; which contains information specific to the cache&n; *    for common code to use.&n; *  - An item structure that must contain a &quot;struct cache_head&quot;&n; *  - A lookup function defined using DefineCacheLookup&n; *  - A &squot;put&squot; function that can release a cache item. It will only&n; *    be called after cache_put has succeed, so there are guarantee&n; *    to be no references.&n; *  - A function to calculate a hash of an item&squot;s key.&n; *&n; * as well as assorted code fragments (e.g. compare keys) and numbers&n; * (e.g. hash size, goal_age, etc).&n; *&n; * Each cache must be registered so that it can be cleaned regularly.&n; * When the cache is unregistered, it is flushed completely.&n; *&n; * Entries have a ref count and a &squot;hashed&squot; flag which counts the existance&n; * in the hash table.&n; * We only expire entries when refcount is zero.&n; * Existance in the cache is not measured in refcount but rather in&n; * CACHE_HASHED flag.&n; */
 multiline_comment|/* Every cache item has a common header that is used&n; * for expiring and refreshing entries.&n; * &n; */
 DECL|struct|cache_head
@@ -93,6 +94,25 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* request and update functions for interaction with userspace&n;&t; * will go here&n;&t; */
+DECL|member|cache_parse
+r_int
+(paren
+op_star
+id|cache_parse
+)paren
+(paren
+r_struct
+id|cache_detail
+op_star
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
 multiline_comment|/* fields below this comment are for internal use&n;&t; * and should not be touched by cache owners&n;&t; */
 DECL|member|flush_time
 id|time_t
@@ -111,6 +131,18 @@ suffix:semicolon
 DECL|member|entries
 r_int
 id|entries
+suffix:semicolon
+multiline_comment|/* fields for communication over channel */
+DECL|member|queue
+r_struct
+id|list_head
+id|queue
+suffix:semicolon
+DECL|member|proc_ent
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_ent
 suffix:semicolon
 )brace
 suffix:semicolon

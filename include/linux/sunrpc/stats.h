@@ -217,6 +217,12 @@ id|svc_program
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_net_rpc
+suffix:semicolon
 macro_line|#else
 DECL|function|svc_proc_unregister
 r_static

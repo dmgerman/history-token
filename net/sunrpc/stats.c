@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|RPCDBG_FACILITY
 mdefine_line|#define RPCDBG_FACILITY&t;RPCDBG_MISC
 DECL|variable|proc_net_rpc
-r_static
 r_struct
 id|proc_dir_entry
 op_star
