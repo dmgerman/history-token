@@ -2404,6 +2404,12 @@ l_int|NULL
 )paren
 r_continue
 suffix:semicolon
+multiline_comment|/* setup proper ancestral information */
+id|hwif-&gt;gendev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren
