@@ -1009,6 +1009,8 @@ l_int|640
 comma
 l_int|480
 comma
+id|VGA_CLK
+comma
 l_int|38
 comma
 l_int|33
@@ -1410,6 +1412,10 @@ r_char
 op_star
 )paren
 id|fix.smem_start
+suffix:semicolon
+id|display-&gt;scrollmode
+op_assign
+id|SCROLL_YREDRAW
 suffix:semicolon
 id|display-&gt;visual
 op_assign
@@ -2522,10 +2528,10 @@ op_or
 (paren
 id|green
 op_amp
-l_int|0xf800
+l_int|0xfc00
 )paren
 op_rshift
-l_int|6
+l_int|5
 )paren
 op_or
 (paren
@@ -4559,7 +4565,7 @@ l_int|NULL
 comma
 id|cable_type
 comma
-l_int|6
+l_int|3
 )paren
 comma
 (paren
@@ -4575,7 +4581,7 @@ l_int|NULL
 comma
 id|video_output
 comma
-l_int|6
+l_int|3
 )paren
 )paren
 suffix:semicolon
@@ -4958,7 +4964,7 @@ id|cable_arg
 comma
 l_int|0
 comma
-l_int|6
+l_int|3
 )paren
 suffix:semicolon
 r_if
@@ -4978,7 +4984,7 @@ id|output_arg
 comma
 l_int|0
 comma
-l_int|6
+l_int|3
 )paren
 suffix:semicolon
 r_return

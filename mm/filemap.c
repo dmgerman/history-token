@@ -6070,12 +6070,28 @@ r_int
 id|size
 comma
 id|pgoff
+comma
+id|endoff
 suffix:semicolon
 id|pgoff
 op_assign
 (paren
 (paren
 id|address
+op_minus
+id|area-&gt;vm_start
+)paren
+op_rshift
+id|PAGE_CACHE_SHIFT
+)paren
+op_plus
+id|area-&gt;vm_pgoff
+suffix:semicolon
+id|endoff
+op_assign
+(paren
+(paren
+id|area-&gt;vm_end
 op_minus
 id|area-&gt;vm_start
 )paren
@@ -6117,6 +6133,18 @@ id|current-&gt;mm
 )paren
 r_return
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* The &quot;size&quot; of the file, as far as mmap is concerned, isn&squot;t bigger than the mapping */
+r_if
+c_cond
+(paren
+id|size
+OG
+id|endoff
+)paren
+id|size
+op_assign
+id|endoff
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do we have something in the page cache already?&n;&t; */
 id|hash
@@ -9032,7 +9060,7 @@ op_star
 id|as
 op_assign
 op_amp
-id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_data
+id|vma-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
 r_struct
 id|page

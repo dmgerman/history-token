@@ -1753,12 +1753,14 @@ id|VERIFY_WRITE
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|arg
 comma
 r_sizeof
 (paren
+r_int
 r_int
 )paren
 )paren
@@ -1784,6 +1786,7 @@ dot
 id|nr_sects
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

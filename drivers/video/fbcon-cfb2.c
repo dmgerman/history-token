@@ -786,10 +786,18 @@ id|xx
 op_star
 l_int|2
 suffix:semicolon
+id|c
+op_assign
+id|scr_readw
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
 id|fgx
 op_assign
 l_int|3
-multiline_comment|/*attr_fgcol(p,scr_readw(s))*/
+multiline_comment|/*attr_fgcol(p, c)*/
 suffix:semicolon
 id|bgx
 op_assign
@@ -798,11 +806,7 @@ c_func
 (paren
 id|p
 comma
-id|scr_readw
-c_func
-(paren
-id|s
-)paren
+id|c
 )paren
 suffix:semicolon
 id|fgx

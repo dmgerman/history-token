@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh3.c,v 1.5 2001/08/24 15:31:41 dwmw2 Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: cache-sh3.c,v 1.6 2001/09/10 08:59:59 dwmw2 Exp $&n; *&n; *  linux/arch/sh/mm/cache-sh3.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -14,12 +14,20 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 DECL|macro|CCR
 mdefine_line|#define CCR&t;&t;0xffffffec&t;/* Address of Cache Control Register */
+DECL|macro|CCR_CACHE_CE
+mdefine_line|#define CCR_CACHE_CE&t;0x01&t;/* Cache Enable */
+DECL|macro|CCR_CACHE_WT
+mdefine_line|#define CCR_CACHE_WT&t;0x02&t;/* Write-Through (for P0,U0,P3) (else writeback) */
+DECL|macro|CCR_CACHE_CB
+mdefine_line|#define CCR_CACHE_CB&t;0x04&t;/* Write-Back (for P1) (else writethrough) */
+DECL|macro|CCR_CACHE_CF
+mdefine_line|#define CCR_CACHE_CF&t;0x08&t;/* Cache Flush */
+DECL|macro|CCR_CACHE_RA
+mdefine_line|#define CCR_CACHE_RA&t;0x20&t;/* RAM mode */
 DECL|macro|CCR_CACHE_VAL
-mdefine_line|#define CCR_CACHE_VAL&t;0x00000005&t;/* 8k-byte cache, P1-wb, enable */
+mdefine_line|#define CCR_CACHE_VAL&t;(CCR_CACHE_CB|CCR_CACHE_CE)&t;/* 8k-byte cache, P1-wb, enable */
 DECL|macro|CCR_CACHE_INIT
-mdefine_line|#define CCR_CACHE_INIT&t;0x0000000d&t;/* 8k-byte cache, CF, P1-wb, enable */
-DECL|macro|CCR_CACHE_ENABLE
-mdefine_line|#define CCR_CACHE_ENABLE&t; 1
+mdefine_line|#define CCR_CACHE_INIT&t;(CCR_CACHE_CF|CCR_CACHE_VAL)&t;/* 8k-byte cache, CF, P1-wb, enable */
 DECL|macro|CACHE_OC_ADDRESS_ARRAY
 mdefine_line|#define CACHE_OC_ADDRESS_ARRAY 0xf0000000
 DECL|macro|CACHE_VALID
@@ -442,7 +450,7 @@ c_cond
 (paren
 id|ccr
 op_amp
-id|CCR_CACHE_ENABLE
+id|CCR_CACHE_CE
 )paren
 multiline_comment|/*&n;&t;&t; * XXX: Should check RA here. &n;&t;&t; * If RA was 1, we only need to flush the half of the caches.&n;&t;&t; */
 id|cache_wback_all

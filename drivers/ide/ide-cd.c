@@ -8758,14 +8758,9 @@ id|sense.asc
 op_eq
 l_int|0x3a
 op_logical_and
-(paren
-op_logical_neg
-id|sense.ascq
-op_logical_or
 id|sense.ascq
 op_eq
 l_int|1
-)paren
 )paren
 r_return
 id|CDS_NO_DISC
@@ -12128,6 +12123,12 @@ id|module_exit
 c_func
 (paren
 id|ide_cdrom_exit
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io_se.c,v 1.5 2000/06/08 05:50:10 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/io_se.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * I/O routine for Hitachi SolutionEngine.&n; *&n; */
+multiline_comment|/* $Id: io_se.c,v 1.12 2001/08/11 01:23:28 jzs Exp $&n; *&n; * linux/arch/sh/kernel/io_se.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * I/O routine for Hitachi SolutionEngine.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

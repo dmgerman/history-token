@@ -199,6 +199,7 @@ l_int|0
 suffix:semicolon
 DECL|variable|xpram_sizes
 r_int
+r_int
 id|xpram_sizes
 (braket
 id|XPRAM_MAX_DEVS
@@ -1748,6 +1749,7 @@ op_div
 id|XPRAM_SOFTSECT
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

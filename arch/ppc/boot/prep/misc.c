@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.18 07/30/01 17:19:40 trini&n; *&n; * arch/ppc/boot/prep/misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.20 09/24/01 18:42:54 trini&n; *&n; * arch/ppc/boot/prep/misc.c&n; *&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -88,6 +88,15 @@ comma
 id|initrd_end
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* These values must be variables.  If not, the compiler optimizer&n; * will remove some code, causing the size of the code to vary&n; * when these values are zero.  This is bad because we first&n; * compile with these zero to determine the size and offsets&n; * in an image, than compile again with these set to the proper&n; * discovered value.&n; */
+DECL|variable|initrd_offset
+DECL|variable|initrd_size
+r_int
+r_int
+id|initrd_offset
+comma
+id|initrd_size
 suffix:semicolon
 DECL|variable|zimage_start
 r_char
@@ -1311,10 +1320,18 @@ id|zimage_size
 op_assign
 id|ZIMAGE_SIZE
 suffix:semicolon
+id|initrd_offset
+op_assign
+id|INITRD_OFFSET
+suffix:semicolon
+id|initrd_size
+op_assign
+id|INITRD_SIZE
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|INITRD_OFFSET
+id|initrd_offset
 )paren
 id|initrd_start
 op_assign
@@ -1322,7 +1339,7 @@ id|load_addr
 op_minus
 l_int|0x10000
 op_plus
-id|INITRD_OFFSET
+id|initrd_offset
 suffix:semicolon
 r_else
 id|initrd_start
@@ -1331,7 +1348,7 @@ l_int|0
 suffix:semicolon
 id|initrd_end
 op_assign
-id|INITRD_SIZE
+id|initrd_size
 op_plus
 id|initrd_start
 suffix:semicolon
@@ -1549,7 +1566,7 @@ op_star
 )paren
 id|initrd_start
 comma
-id|INITRD_SIZE
+id|initrd_size
 )paren
 suffix:semicolon
 id|initrd_start
@@ -1564,7 +1581,7 @@ id|initrd_end
 op_assign
 id|initrd_start
 op_plus
-id|INITRD_SIZE
+id|initrd_size
 suffix:semicolon
 id|puts
 c_func

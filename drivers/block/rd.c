@@ -1321,6 +1321,7 @@ l_int|1
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|arg

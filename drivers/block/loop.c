@@ -36,6 +36,7 @@ suffix:semicolon
 DECL|variable|loop_sizes
 r_static
 r_int
+r_int
 op_star
 id|loop_sizes
 suffix:semicolon
@@ -357,6 +358,7 @@ DECL|macro|MAX_DISK_SIZE
 mdefine_line|#define MAX_DISK_SIZE 1024*1024*1024
 DECL|function|compute_loop_size
 r_static
+r_int
 r_int
 id|compute_loop_size
 c_func
@@ -3813,6 +3815,7 @@ l_int|1
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|arg
@@ -4539,6 +4542,7 @@ op_star
 r_sizeof
 (paren
 r_int
+r_int
 )paren
 comma
 id|GFP_KERNEL
@@ -4673,6 +4677,7 @@ id|max_loop
 op_star
 r_sizeof
 (paren
+r_int
 r_int
 )paren
 )paren

@@ -3030,6 +3030,13 @@ op_logical_neg
 id|dev
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sb_lock
+)paren
+suffix:semicolon
 id|put_super
 c_func
 (paren

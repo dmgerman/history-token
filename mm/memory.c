@@ -4725,11 +4725,6 @@ op_logical_neg
 id|page
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|swapin_readahead
 c_func
 (paren
@@ -4742,11 +4737,6 @@ id|read_swap_cache_async
 c_func
 (paren
 id|entry
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if

@@ -803,7 +803,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The swap entry has been read in advance, and we return 1 to indicate&n; * that the page has been used or is no longer needed.&n; *&n; * Always set the resulting pte to be nowrite (the same as COW pages&n; * after one process has exited).  We don&squot;t know just how many PTEs will&n; * share this swap entry, so be cautious and let do_wp_page work out&n; * what to do if a write is requested later.&n; */
-multiline_comment|/* BKL, mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
+multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pte
 r_static
 r_inline
@@ -913,7 +913,7 @@ op_increment
 id|vma-&gt;vm_mm-&gt;rss
 suffix:semicolon
 )brace
-multiline_comment|/* BKL, mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
+multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pmd
 r_static
 r_inline
@@ -1077,7 +1077,7 @@ id|end
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* BKL, mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
+multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_pgd
 r_static
 r_inline
@@ -1259,7 +1259,7 @@ id|end
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* BKL, mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
+multiline_comment|/* mmlist_lock and vma-&gt;vm_mm-&gt;page_table_lock are held */
 DECL|function|unuse_vma
 r_static
 r_void
@@ -1676,7 +1676,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Don&squot;t hold on to start_mm if it looks like exiting.&n;&t;&t; * Can mmput ever block? if so, then we cannot risk&n;&t;&t; * it between deleting the page from the swap cache,&n;&t;&t; * and completing the search through mms (and cannot&n;&t;&t; * use it to avoid the long hold on mmlist_lock there).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Don&squot;t hold on to start_mm if it looks like exiting.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1709,41 +1709,14 @@ id|init_mm.mm_users
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Wait for and lock page.  Remove it from swap cache&n;&t;&t; * so try_to_swap_out won&squot;t bump swap count.  Mark dirty&n;&t;&t; * so try_to_swap_out will preserve it without us having&n;&t;&t; * to mark any present ptes as dirty: so we can skip&n;&t;&t; * searching processes once swap count has all gone.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait for and lock page.  When do_swap_page races with&n;&t;&t; * try_to_unuse, do_swap_page can handle the fault much&n;&t;&t; * faster than try_to_unuse can locate the entry.  This&n;&t;&t; * apparently redundant &quot;wait_on_page&quot; lets try_to_unuse&n;&t;&t; * defer to do_swap_page in such a case - in some tests,&n;&t;&t; * do_swap_page and try_to_unuse repeatedly compete.&n;&t;&t; */
+id|wait_on_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|lock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
-)paren
-id|delete_from_swap_cache
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|SetPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|flush_page_to_ram
 c_func
 (paren
 id|page
@@ -1759,8 +1732,16 @@ r_if
 c_cond
 (paren
 id|swcount
+OG
+l_int|1
 )paren
 (brace
+id|flush_page_to_ram
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1794,6 +1775,8 @@ c_cond
 (paren
 op_star
 id|swap_map
+OG
+l_int|1
 )paren
 (brace
 r_int
@@ -1838,6 +1821,8 @@ c_loop
 (paren
 op_star
 id|swap_map
+OG
+l_int|1
 op_logical_and
 (paren
 id|p
@@ -1946,12 +1931,6 @@ op_assign
 id|new_start_mm
 suffix:semicolon
 )brace
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * How could swap count reach 0x7fff when the maximum&n;&t;&t; * pid is 0x7fff, and there&squot;s no way to repeat a swap&n;&t;&t; * page within an mm (except in shmem, where it&squot;s the&n;&t;&t; * shared object which takes the reference count)?&n;&t;&t; * We believe SWAP_MAP_MAX cannot occur in Linux 2.4.&n;&t;&t; *&n;&t;&t; * If that&squot;s wrong, then we should worry more about&n;&t;&t; * exit_mmap() and do_munmap() cases described above:&n;&t;&t; * we might be resetting SWAP_MAP_MAX too early here.&n;&t;&t; * We know &quot;Undead&quot;s can happen, they&squot;re okay, so don&squot;t&n;&t;&t; * report them; but do report if we reset SWAP_MAP_MAX.&n;&t;&t; */
 r_if
 c_cond
@@ -1979,7 +1958,7 @@ suffix:semicolon
 op_star
 id|swap_map
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|swap_device_unlock
 c_func
@@ -1997,6 +1976,97 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * If a reference remains (rare), we would like to leave&n;&t;&t; * the page in the swap cache; but try_to_swap_out could&n;&t;&t; * then re-duplicate the entry once we drop page lock,&n;&t;&t; * so we might loop indefinitely; also, that page could&n;&t;&t; * not be swapped out to other storage meanwhile.  So:&n;&t;&t; * delete from cache even if there&squot;s another reference,&n;&t;&t; * after ensuring that the data has been saved to disk -&n;&t;&t; * since if the reference remains (rarer), it will be&n;&t;&t; * read from disk into another page.  Splitting into two&n;&t;&t; * pages would be incorrect if swap supported &quot;shared&n;&t;&t; * private&quot; pages, but they are handled by tmpfs files.&n;&t;&t; * Note shmem_unuse already deleted its from swap cache.&n;&t;&t; */
+id|swcount
+op_assign
+op_star
+id|swap_map
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|swcount
+OG
+l_int|0
+)paren
+op_ne
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|swcount
+OG
+l_int|1
+)paren
+op_logical_and
+id|PageDirty
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|rw_swap_page
+c_func
+(paren
+id|WRITE
+comma
+id|page
+)paren
+suffix:semicolon
+id|lock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+id|delete_from_swap_cache
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * So we could skip searching mms once swap count went&n;&t;&t; * to 1, we did not mark any present ptes as dirty: must&n;&t;&t; * mark page dirty so try_to_swap_out will preserve it.&n;&t;&t; */
+id|SetPageDirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|UnlockPage
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.  Interruptible check on&n;&t;&t; * signal_pending() would be nice, but changes the spec?&n;&t;&t; */
 r_if
 c_cond
@@ -2008,19 +2078,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 id|mmput
 c_func
@@ -2268,12 +2325,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|try_to_unuse
 c_func
 (paren
 id|type
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

@@ -6318,6 +6318,7 @@ id|dtp-&gt;blocks
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|param

@@ -261,7 +261,7 @@ r_int
 id|bi_baudrate
 suffix:semicolon
 multiline_comment|/* Console Baudrate&t;&t;&t;*/
-macro_line|#if defined(CONFIG_PPC405)
+macro_line|#if defined(CONFIG_405GP)
 DECL|member|bi_s_version
 r_int
 r_char

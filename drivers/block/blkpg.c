@@ -928,12 +928,12 @@ c_cond
 op_logical_neg
 id|g
 )paren
-id|longval
+id|ulongval
 op_assign
 l_int|0
 suffix:semicolon
 r_else
-id|longval
+id|ulongval
 op_assign
 id|g-&gt;part
 (braket
@@ -950,9 +950,10 @@ r_return
 id|put_user
 c_func
 (paren
-id|longval
+id|ulongval
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

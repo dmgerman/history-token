@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: uaccess.h,v 1.12 2001/07/27 06:09:47 gniibe Exp $&n; *&n; * User space memory access functions&n; *&n; * Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on:&n; *     MIPS implementation version 1.15 by&n; *              Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; *     and i386 version.&n; */
+multiline_comment|/* $Id: uaccess.h,v 1.13 2001/10/01 02:22:01 gniibe Exp $&n; *&n; * User space memory access functions&n; *&n; * Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on:&n; *     MIPS implementation version 1.15 by&n; *              Copyright (C) 1996, 1997, 1998 by Ralf Baechle&n; *     and i386 version.&n; */
 macro_line|#ifndef __ASM_SH_UACCESS_H
 DECL|macro|__ASM_SH_UACCESS_H
 mdefine_line|#define __ASM_SH_UACCESS_H
@@ -111,11 +111,89 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|__put_user_nocheck
-mdefine_line|#define __put_user_nocheck(x,ptr,size) ({ &bslash;&n;long __pu_err; &bslash;&n;__typeof__(*(ptr)) __pu_val; &bslash;&n;long __pu_addr; &bslash;&n;__pu_val = (x); &bslash;&n;__pu_addr = (long) (ptr); &bslash;&n;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err)); &bslash;&n;switch (size) { &bslash;&n;case 1: __put_user_asm(&quot;b&quot;); break; &bslash;&n;case 2: __put_user_asm(&quot;w&quot;); break; &bslash;&n;case 4: __put_user_asm(&quot;l&quot;); break; &bslash;&n;default: __put_user_unknown(); break; &bslash;&n;} __pu_err; })
+mdefine_line|#define __put_user_nocheck(x,ptr,size) ({ &bslash;&n;long __pu_err; &bslash;&n;__typeof__(*(ptr)) __pu_val; &bslash;&n;long __pu_addr; &bslash;&n;__pu_val = (x); &bslash;&n;__pu_addr = (long) (ptr); &bslash;&n;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err)); &bslash;&n;switch (size) { &bslash;&n;case 1: __put_user_asm(&quot;b&quot;); break; &bslash;&n;case 2: __put_user_asm(&quot;w&quot;); break; &bslash;&n;case 4: __put_user_asm(&quot;l&quot;); break; &bslash;&n;case 8: __put_user_u64(__pu_val,__pu_addr,__pu_err); break; &bslash;&n;default: __put_user_unknown(); break; &bslash;&n;} __pu_err; })
 DECL|macro|__put_user_check
-mdefine_line|#define __put_user_check(x,ptr,size) ({ &bslash;&n;long __pu_err; &bslash;&n;__typeof__(*(ptr)) __pu_val; &bslash;&n;long __pu_addr; &bslash;&n;__pu_val = (x); &bslash;&n;__pu_addr = (long) (ptr); &bslash;&n;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err)); &bslash;&n;if (__access_ok(__pu_addr,size)) { &bslash;&n;switch (size) { &bslash;&n;case 1: __put_user_asm(&quot;b&quot;); break; &bslash;&n;case 2: __put_user_asm(&quot;w&quot;); break; &bslash;&n;case 4: __put_user_asm(&quot;l&quot;); break; &bslash;&n;default: __put_user_unknown(); break; &bslash;&n;} } __pu_err; })
+mdefine_line|#define __put_user_check(x,ptr,size) ({ &bslash;&n;long __pu_err; &bslash;&n;__typeof__(*(ptr)) __pu_val; &bslash;&n;long __pu_addr; &bslash;&n;__pu_val = (x); &bslash;&n;__pu_addr = (long) (ptr); &bslash;&n;__asm__(&quot;&quot;:&quot;=r&quot; (__pu_err)); &bslash;&n;if (__access_ok(__pu_addr,size)) { &bslash;&n;switch (size) { &bslash;&n;case 1: __put_user_asm(&quot;b&quot;); break; &bslash;&n;case 2: __put_user_asm(&quot;w&quot;); break; &bslash;&n;case 4: __put_user_asm(&quot;l&quot;); break; &bslash;&n;case 8: __put_user_u64(__pu_val,__pu_addr,__pu_err); break; &bslash;&n;default: __put_user_unknown(); break; &bslash;&n;} } __pu_err; })
 DECL|macro|__put_user_asm
 mdefine_line|#define __put_user_asm(insn) &bslash;&n;({ &bslash;&n;__asm__ __volatile__( &bslash;&n;&t;&quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov.&quot; insn &quot;&t;%1, %2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov&t;#0, %0&bslash;n&quot; &bslash;&n;&t;&quot;2:&bslash;n&quot; &bslash;&n;&t;&quot;.section&t;.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot; &bslash;&n;&t;&quot;3:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov.l&t;4f, %0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp&t;@%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov&t;%3, %0&bslash;n&quot; &bslash;&n;&t;&quot;4:&t;.long&t;2b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.previous&bslash;n&quot; &bslash;&n;&t;&quot;.section&t;__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.long&t;1b, 3b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.previous&quot; &bslash;&n;&t;:&quot;=&amp;r&quot; (__pu_err) &bslash;&n;&t;:&quot;r&quot; (__pu_val), &quot;m&quot; (__m(__pu_addr)), &quot;i&quot; (-EFAULT) &bslash;&n;        :&quot;memory&quot;); })
+macro_line|#if defined(__LITTLE_ENDIAN__)
+DECL|macro|__put_user_u64
+mdefine_line|#define __put_user_u64(val,addr,retval) &bslash;&n;({ &bslash;&n;__asm__ __volatile__( &bslash;&n;&t;&quot;1:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov.l&t;%R1,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov.l&t;%S1,%T2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov&t;#0,%0&bslash;n&quot; &bslash;&n;&t;&quot;2:&bslash;n&quot; &bslash;&n;&t;&quot;.section&t;.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot; &bslash;&n;&t;&quot;3:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;mov.l&t;4f,%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;jmp&t;@%0&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot; mov&t;%3,%0&bslash;n&quot; &bslash;&n;&t;&quot;4:&t;.long&t;2b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.previous&bslash;n&quot; &bslash;&n;&t;&quot;.section&t;__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.long&t;1b, 3b&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;.previous&quot; &bslash;&n;&t;: &quot;=r&quot; (retval) &bslash;&n;&t;: &quot;r&quot; (val), &quot;m&quot; (__m(addr)), &quot;i&quot; (-EFAULT) &bslash;&n;        : &quot;memory&quot;); })
+macro_line|#else
+(paren
+(brace
+"&bslash;"
+id|__asm__
+id|__volatile__
+c_func
+(paren
+"&bslash;"
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;mov.l&t;%S1,%2&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;mov.l&t;%R1,%T2&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;mov&t;#0,%0&bslash;n&quot;
+"&bslash;"
+l_string|&quot;2:&bslash;n&quot;
+"&bslash;"
+l_string|&quot;.section&t;.fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+"&bslash;"
+l_string|&quot;3:&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;nop&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;mov.l&t;4f,%0&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;jmp&t;@%0&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot; mov&t;%3,%0&bslash;n&quot;
+"&bslash;"
+l_string|&quot;4:&t;.long&t;2b&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;.previous&bslash;n&quot;
+"&bslash;"
+l_string|&quot;.section&t;__ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;.long&t;1b, 3b&bslash;n&bslash;t&quot;
+"&bslash;"
+l_string|&quot;.previous&quot;
+"&bslash;"
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|retval
+)paren
+"&bslash;"
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|__m
+c_func
+(paren
+id|addr
+)paren
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+op_minus
+id|EFAULT
+)paren
+"&bslash;"
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+)brace
+)paren
+macro_line|#endif
 r_extern
 r_void
 id|__put_user_unknown

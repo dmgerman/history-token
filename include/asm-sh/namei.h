@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: namei.h,v 1.1 1999/09/18 17:30:11 gniibe Exp $&n; * linux/include/asm-sh/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
+multiline_comment|/* $Id: namei.h,v 1.3 2000/07/04 06:24:49 gniibe Exp $&n; * linux/include/asm-sh/namei.h&n; *&n; * Included from linux/fs/namei.c&n; */
 macro_line|#ifndef __ASM_SH_NAMEI_H
 DECL|macro|__ASM_SH_NAMEI_H
 mdefine_line|#define __ASM_SH_NAMEI_H

@@ -2175,7 +2175,7 @@ c_cond
 op_logical_neg
 id|vga_is_gfx
 )paren
-id|scr_memcpyw_to
+id|scr_memcpyw
 c_func
 (paren
 (paren
@@ -4672,7 +4672,7 @@ c_cond
 op_logical_neg
 id|vga_is_gfx
 )paren
-id|scr_memcpyw_from
+id|scr_memcpyw
 c_func
 (paren
 (paren

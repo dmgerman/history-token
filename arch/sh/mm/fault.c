@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.48 2001/08/09 00:27:04 gniibe Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: fault.c,v 1.49 2001/10/06 19:46:00 lethal Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -432,6 +432,8 @@ id|bad_area
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
+id|survive
+suffix:colon
 r_switch
 c_cond
 (paren
@@ -714,6 +716,34 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;pid
+op_eq
+l_int|1
+)paren
+(brace
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
+r_goto
+id|survive
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren

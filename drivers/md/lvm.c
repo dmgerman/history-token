@@ -2886,6 +2886,7 @@ id|lv_ptr-&gt;lv_size
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|arg

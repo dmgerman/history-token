@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: io_hd64461.c,v 1.1 2000/06/10 21:45:18 yaegashi Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Typical I/O routines for HD64461 system.&n; */
+multiline_comment|/*&n; *&t;$Id: io_hd64461.c,v 1.6 2000/11/16 23:28:44 yaegashi Exp $&n; *&t;Copyright (C) 2000 YAEGASHI Takeshi&n; *&t;Typical I/O routines for HD64461 system.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64461.h&gt;

@@ -8531,6 +8531,7 @@ suffix:colon
 (brace
 multiline_comment|/* Return device size */
 r_int
+r_int
 id|blocks
 op_assign
 id|major_info-&gt;gendisk.sizes
@@ -8551,6 +8552,7 @@ c_func
 id|blocks
 comma
 (paren
+r_int
 r_int
 op_star
 )paren

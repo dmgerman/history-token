@@ -4481,6 +4481,7 @@ id|nr_sects
 comma
 (paren
 r_int
+r_int
 op_star
 )paren
 id|arg

@@ -1652,6 +1652,8 @@ id|th-&gt;t_super
 multiline_comment|/* this is a very simple first attempt at preventing too much grouping&n;    ** around the border value.  Since k_dir_id is never larger than the&n;    ** highest allocated oid, it is far from perfect, and files will tend&n;    ** to be grouped towards the start of the border&n;    */
 id|border
 op_assign
+id|le32_to_cpu
+c_func
 (paren
 id|INODE_PKEY
 c_func
@@ -1691,6 +1693,9 @@ id|th-&gt;t_super
 (brace
 id|hash_in
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 (paren
 id|INODE_PKEY
 c_func
@@ -1700,6 +1705,7 @@ id|p_s_inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
+)paren
 suffix:semicolon
 multiline_comment|/* I wonder if the CPU cost of the&n;                                   hash will obscure the layout&n;                                   effect? Of course, whether that&n;                                   effect is good or bad we don&squot;t&n;                                   know.... :-) */
 id|hash_out

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.36 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.38 09/15/01 09:13:52 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * Support for PReP (Motorola MTX/MVME)&n; * by Troy Benjegerdes (hozer@drgw.net)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -2998,7 +2998,7 @@ c_func
 (paren
 l_int|0x80000000
 comma
-l_int|0x80000000
+id|PREP_ISA_IO_BASE
 comma
 l_int|0x10000000
 comma
@@ -3010,7 +3010,7 @@ c_func
 (paren
 l_int|0xf0000000
 comma
-l_int|0xc0000000
+id|PREP_ISA_MEM_BASE
 comma
 l_int|0x08000000
 comma

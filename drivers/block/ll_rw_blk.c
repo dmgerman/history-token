@@ -267,14 +267,14 @@ comma
 r_struct
 id|request
 comma
-id|table
+id|queue
 )paren
 suffix:semicolon
 id|list_del
 c_func
 (paren
 op_amp
-id|rq-&gt;table
+id|rq-&gt;queue
 )paren
 suffix:semicolon
 id|kmem_cache_free
@@ -908,7 +908,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|rq-&gt;table
+id|rq-&gt;queue
 comma
 op_amp
 id|q-&gt;request_freelist
@@ -1038,7 +1038,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|blkdev_free_rq
-mdefine_line|#define blkdev_free_rq(list) list_entry((list)-&gt;next, struct request, table);
+mdefine_line|#define blkdev_free_rq(list) list_entry((list)-&gt;next, struct request, queue);
 multiline_comment|/*&n; * Get a free request. io_request_lock must be held and interrupts&n; * disabled on the way in.&n; */
 DECL|function|get_request
 r_static
@@ -1095,7 +1095,7 @@ id|list_del
 c_func
 (paren
 op_amp
-id|rq-&gt;table
+id|rq-&gt;queue
 )paren
 suffix:semicolon
 id|rq-&gt;rq_status
@@ -1776,7 +1776,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|req-&gt;table
+id|req-&gt;queue
 comma
 op_amp
 id|q-&gt;pending_freelist

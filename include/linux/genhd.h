@@ -189,9 +189,11 @@ id|hd_struct
 (brace
 DECL|member|start_sect
 r_int
+r_int
 id|start_sect
 suffix:semicolon
 DECL|member|nr_sects
+r_int
 r_int
 id|nr_sects
 suffix:semicolon

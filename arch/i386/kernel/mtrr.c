@@ -8409,23 +8409,13 @@ suffix:semicolon
 r_case
 id|X86_VENDOR_CENTAUR
 suffix:colon
-multiline_comment|/* Cyrix III has Intel style MTRRs, but doesn&squot;t support PAE */
+multiline_comment|/* VIA Cyrix family have Intel style MTRRs, but don&squot;t support PAE */
 r_if
 c_cond
 (paren
 id|boot_cpu_data.x86
 op_eq
 l_int|6
-op_logical_and
-(paren
-id|boot_cpu_data.x86_model
-op_eq
-l_int|6
-op_logical_or
-id|boot_cpu_data.x86_model
-op_eq
-l_int|7
-)paren
 )paren
 (brace
 id|size_or_mask

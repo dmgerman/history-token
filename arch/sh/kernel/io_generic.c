@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io_generic.c,v 1.3 2000/05/07 23:31:58 gniibe Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
+multiline_comment|/* $Id: io_generic.c,v 1.12 2000/11/14 16:45:11 sugioka Exp $&n; *&n; * linux/arch/sh/kernel/io_generic.c&n; *&n; * Copyright (C) 2000  Niibe Yutaka&n; *&n; * Generic I/O routine. These can be used where a machine specific version&n; * is not required.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

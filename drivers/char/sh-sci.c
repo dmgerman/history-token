@@ -5158,8 +5158,6 @@ id|banner
 (braket
 )braket
 id|__initdata
-(braket
-)braket
 op_assign
 id|KERN_INFO
 l_string|&quot;SuperH SCI(F) driver initialized&bslash;n&quot;

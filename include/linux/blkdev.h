@@ -38,11 +38,6 @@ DECL|member|elevator_sequence
 r_int
 id|elevator_sequence
 suffix:semicolon
-DECL|member|table
-r_struct
-id|list_head
-id|table
-suffix:semicolon
 DECL|member|rq_status
 r_volatile
 r_int

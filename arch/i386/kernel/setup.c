@@ -6310,9 +6310,9 @@ l_int|6
 dot
 dot
 dot
-l_int|7
+l_int|8
 suffix:colon
-multiline_comment|/* Cyrix III or C3 */
+multiline_comment|/* Cyrix III family */
 id|rdmsr
 (paren
 id|MSR_VIA_FCR

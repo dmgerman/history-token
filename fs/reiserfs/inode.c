@@ -3586,12 +3586,15 @@ id|sd
 suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
+id|le32_to_cpu
+(paren
 id|INODE_PKEY
 (paren
 id|inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
+)paren
 suffix:semicolon
 id|blocks
 op_assign
@@ -3774,12 +3777,15 @@ id|i_mode
 (brace
 id|inode-&gt;i_generation
 op_assign
+id|le32_to_cpu
+(paren
 id|INODE_PKEY
 (paren
 id|inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -6194,12 +6200,15 @@ id|sb
 multiline_comment|/* not a perfect generation count, as object ids can be reused, but this&n;      ** is as good as reiserfs can do right now.&n;      ** note that the private part of inode isn&squot;t filled in yet, we have&n;      ** to use the directory.&n;      */
 id|inode-&gt;i_generation
 op_assign
+id|le32_to_cpu
+(paren
 id|INODE_PKEY
 (paren
 id|dir
 )paren
 op_member_access_from_pointer
 id|k_objectid
+)paren
 suffix:semicolon
 r_else
 macro_line|#if defined( USE_INODE_GENERATION_COUNTER )

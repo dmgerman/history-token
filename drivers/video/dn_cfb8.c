@@ -2510,9 +2510,12 @@ op_decrement
 (brace
 id|c
 op_assign
-op_star
+id|scr_readw
+c_func
+(paren
 id|s
 op_increment
+)paren
 suffix:semicolon
 id|dest
 op_assign

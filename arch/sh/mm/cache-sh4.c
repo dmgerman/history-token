@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cache-sh4.c,v 1.15 2001/08/10 14:13:13 gniibe Exp $&n; *&n; *  linux/arch/sh/mm/cache.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
+multiline_comment|/* $Id: cache-sh4.c,v 1.16 2001/09/10 11:06:35 dwmw2 Exp $&n; *&n; *  linux/arch/sh/mm/cache.c&n; *&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -15,12 +15,31 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 DECL|macro|CCR
 mdefine_line|#define CCR&t;&t; 0xff00001c&t;/* Address of Cache Control Register */
+DECL|macro|CCR_CACHE_OCE
+mdefine_line|#define CCR_CACHE_OCE&t;0x0001&t;/* Operand Cache Enable */
+DECL|macro|CCR_CACHE_WT
+mdefine_line|#define CCR_CACHE_WT&t;0x0002&t;/* Write-Through (for P0,U0,P3) (else writeback)*/
+DECL|macro|CCR_CACHE_CB
+mdefine_line|#define CCR_CACHE_CB&t;0x0004&t;/* Copy-Back (for P1) (else writethrough) */
+DECL|macro|CCR_CACHE_OCI
+mdefine_line|#define CCR_CACHE_OCI&t;0x0008&t;/* OC Invalidate */
+DECL|macro|CCR_CACHE_ORA
+mdefine_line|#define CCR_CACHE_ORA&t;0x0020&t;/* OC RAM Mode */
+DECL|macro|CCR_CACHE_OIX
+mdefine_line|#define CCR_CACHE_OIX&t;0x0080&t;/* OC Index Enable */
+DECL|macro|CCR_CACHE_ICE
+mdefine_line|#define CCR_CACHE_ICE&t;0x0100&t;/* Instruction Cache Enable */
+DECL|macro|CCR_CACHE_ICI
+mdefine_line|#define CCR_CACHE_ICI&t;0x0800&t;/* IC Invalidate */
+DECL|macro|CCR_CACHE_IIX
+mdefine_line|#define CCR_CACHE_IIX&t;0x8000&t;/* IC Index Enable */
+multiline_comment|/* Default CCR setup: 8k+16k-byte cache,P1-wb,enable */
 DECL|macro|CCR_CACHE_VAL
-mdefine_line|#define CCR_CACHE_VAL&t; 0x00000105&t;/* 8k+16k-byte cache,P1-wb,enable */
+mdefine_line|#define CCR_CACHE_VAL&t;(CCR_CACHE_ICE|CCR_CACHE_CB|CCR_CACHE_OCE)
 DECL|macro|CCR_CACHE_INIT
-mdefine_line|#define CCR_CACHE_INIT&t; 0x0000090d&t;/* ICI,ICE(8k), OCI,P1-wb,OCE(16k) */
+mdefine_line|#define CCR_CACHE_INIT&t;(CCR_CACHE_VAL|CCR_CACHE_OCI|CCR_CACHE_ICI)
 DECL|macro|CCR_CACHE_ENABLE
-mdefine_line|#define CCR_CACHE_ENABLE 0x00000101
+mdefine_line|#define CCR_CACHE_ENABLE (CCR_CACHE_OCE|CCR_CACHE_ICE)
 DECL|macro|CACHE_IC_ADDRESS_ARRAY
 mdefine_line|#define CACHE_IC_ADDRESS_ARRAY 0xf0000000
 DECL|macro|CACHE_OC_ADDRESS_ARRAY

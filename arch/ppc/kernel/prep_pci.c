@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.26 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.31 10/05/01 17:48:18 trini&n; */
 multiline_comment|/*&n; * PReP pci functions.&n; * Originally by Gary Thomas&n; * rewritten and updated by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * The motherboard routes/maps will disappear shortly. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -22,6 +22,7 @@ mdefine_line|#define MAX_DEVNR 22
 multiline_comment|/* Which PCI interrupt line does a given device [slot] use? */
 multiline_comment|/* Note: This really should be two dimensional based in slot/pin used */
 DECL|variable|Motherboard_map
+r_static
 r_int
 r_char
 op_star
@@ -35,12 +36,14 @@ id|Motherboard_map_name
 suffix:semicolon
 multiline_comment|/* How is the 82378 PIRQ mapping setup? */
 DECL|variable|Motherboard_routes
+r_static
 r_int
 r_char
 op_star
 id|Motherboard_routes
 suffix:semicolon
 DECL|variable|Motherboard_non0
+r_static
 r_void
 (paren
 op_star
@@ -52,6 +55,7 @@ id|pci_dev
 op_star
 )paren
 suffix:semicolon
+r_static
 r_void
 id|Powerplus_Map_Non0
 c_func
@@ -1303,7 +1307,7 @@ multiline_comment|/* Line 0 - unused */
 l_int|13
 comma
 multiline_comment|/* Line 1 */
-l_int|10
+l_int|15
 comma
 multiline_comment|/* Line 2 */
 l_int|15
@@ -1314,7 +1318,7 @@ comma
 multiline_comment|/* Line 4 */
 )brace
 suffix:semicolon
-multiline_comment|/* IBM Nobis and 850 */
+multiline_comment|/* IBM Nobis and Thinkpad 850 */
 DECL|variable|__prepdata
 r_static
 r_char
@@ -1486,10 +1490,11 @@ multiline_comment|/* INT A-D */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * For standard PowerPlus boards, bus 0 PCI INTs A-D are routed to&n; * OpenPIC inputs 9-12.  PCI INTs A-D from the on board P2P bridge&n; * are routed to OpenPIC inputs 5-8.  These values are offset by&n; * 16 in the table to reflect the Linux kernel interrupt value.&n; */
-DECL|variable|Powerplus_pci_IRQ_list
+DECL|variable|__prepdata
 r_struct
 id|powerplus_irq_list
 id|Powerplus_pci_IRQ_list
+id|__prepdata
 op_assign
 (brace
 (brace
@@ -1514,10 +1519,11 @@ l_int|24
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * For the MCP750 (system slot board), cPCI INTs A-D are routed to&n; * OpenPIC inputs 8-11 and the PMC INTs A-D are routed to OpenPIC&n; * input 3.  On a hot swap MCP750, the companion card PCI INTs A-D&n; * are routed to OpenPIC inputs 12-15. These values are offset by&n; * 16 in the table to reflect the Linux kernel interrupt value.&n; */
-DECL|variable|Mesquite_pci_IRQ_list
+DECL|variable|__prepdata
 r_struct
 id|powerplus_irq_list
 id|Mesquite_pci_IRQ_list
+id|__prepdata
 op_assign
 (brace
 (brace
@@ -1542,7 +1548,7 @@ l_int|31
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This table represents the standard PCI swizzle defined in the&n; * PCI bus specification.&n; */
-DECL|variable|prep_pci_intpins
+DECL|variable|__prepdata
 r_static
 r_int
 r_char
@@ -1553,6 +1559,7 @@ l_int|4
 (braket
 l_int|4
 )braket
+id|__prepdata
 op_assign
 (brace
 (brace
@@ -1603,10 +1610,6 @@ multiline_comment|/* Buses 3, 7, 11 ... */
 suffix:semicolon
 multiline_comment|/* We have to turn on LEVEL mode for changed IRQ&squot;s */
 multiline_comment|/* All PCI IRQ&squot;s need to be level mode, so this should be something&n; * other than hard-coded as well... IRQ&squot;s are individually mappable&n; * to either edge or level.&n; */
-DECL|macro|CAROLINA_IRQ_EDGE_MASK_LO
-mdefine_line|#define CAROLINA_IRQ_EDGE_MASK_LO   0x00  /* IRQ&squot;s 0-7  */
-DECL|macro|CAROLINA_IRQ_EDGE_MASK_HI
-mdefine_line|#define CAROLINA_IRQ_EDGE_MASK_HI   0xA4  /* IRQ&squot;s 8-15 [10,13,15] */
 multiline_comment|/*&n; * 8259 edge/level control definitions&n; */
 DECL|macro|ISA8259_M_ELCR
 mdefine_line|#define ISA8259_M_ELCR 0x4d0
@@ -1830,9 +1833,9 @@ DECL|variable|mot_multi
 r_int
 id|mot_multi
 suffix:semicolon
-DECL|function|raven_init
 r_int
 id|__init
+DECL|function|raven_init
 id|raven_init
 c_func
 (paren
@@ -2146,11 +2149,12 @@ r_char
 id|secondary_bridge_devfn
 suffix:semicolon
 multiline_comment|/* devfn of secondary bus transparent bridge */
-DECL|variable|mot_info
+DECL|variable|__prepdata
 )brace
 id|mot_info
 (braket
 )braket
+id|__prepdata
 op_assign
 (brace
 (brace
@@ -2694,8 +2698,9 @@ l_int|0x00
 )brace
 )brace
 suffix:semicolon
-DECL|function|ibm_prep_init
 r_void
+id|__init
+DECL|function|ibm_prep_init
 id|ibm_prep_init
 c_func
 (paren
@@ -2815,7 +2820,6 @@ id|mpic
 op_ne
 l_int|NULL
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -2824,10 +2828,11 @@ comma
 id|mpic
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
+r_static
 r_void
+id|__init
 DECL|function|ibm43p_pci_map_non0
 id|ibm43p_pci_map_non0
 c_func
@@ -2927,9 +2932,9 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|prep_route_pci_interrupts
 r_void
 id|__init
+DECL|function|prep_route_pci_interrupts
 id|prep_route_pci_interrupts
 c_func
 (paren
@@ -3282,7 +3287,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|irq_mode
 op_or_assign
 (paren
@@ -3294,7 +3298,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 id|outb
 c_func
 (paren
@@ -3332,29 +3335,32 @@ id|_PREP_IBM
 (brace
 r_int
 r_char
-id|pl_id
+id|planar_id
+op_assign
+id|inb
+c_func
+(paren
+l_int|0x0852
+)paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * my carolina is 0xf0&n;&t;&t; * 6015 has 0xfc&n;&t;&t; * -- Cort&n;&t;&t; */
+r_int
+r_char
+id|irq_edge_mask_lo
+comma
+id|irq_edge_mask_hi
+suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;IBM ID: %08x&bslash;n&quot;
 comma
-id|inb
-c_func
-(paren
-l_int|0x0852
-)paren
+id|planar_id
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|inb
-c_func
-(paren
-l_int|0x0852
-)paren
+id|planar_id
 )paren
 (brace
 r_case
@@ -3362,7 +3368,7 @@ l_int|0xff
 suffix:colon
 id|Motherboard_map_name
 op_assign
-l_string|&quot;IBM 850/860 Portable&quot;
+l_string|&quot;IBM Thinkpad 850/860&quot;
 suffix:semicolon
 id|Motherboard_map
 op_assign
@@ -3372,6 +3378,16 @@ id|Motherboard_routes
 op_assign
 id|Nobis_pci_IRQ_routes
 suffix:semicolon
+id|irq_edge_mask_lo
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* irq&squot;s 0-7 all edge-triggered */
+id|irq_edge_mask_hi
+op_assign
+l_int|0xA0
+suffix:semicolon
+multiline_comment|/* irq&squot;s 13, 15 level-triggered */
 r_break
 suffix:semicolon
 r_case
@@ -3379,7 +3395,7 @@ l_int|0xfc
 suffix:colon
 id|Motherboard_map_name
 op_assign
-l_string|&quot;IBM 6015&quot;
+l_string|&quot;IBM 6015/7020 (Sandalfoot/Sandalbow)&quot;
 suffix:semicolon
 id|Motherboard_map
 op_assign
@@ -3389,6 +3405,16 @@ id|Motherboard_routes
 op_assign
 id|ibm6015_pci_IRQ_routes
 suffix:semicolon
+id|irq_edge_mask_lo
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* irq&squot;s 0-7 all edge-triggered */
+id|irq_edge_mask_hi
+op_assign
+l_int|0xA0
+suffix:semicolon
+multiline_comment|/* irq&squot;s 13, 15 level-triggered */
 r_break
 suffix:semicolon
 r_case
@@ -3396,7 +3422,7 @@ l_int|0xd5
 suffix:colon
 id|Motherboard_map_name
 op_assign
-l_string|&quot;IBM 43p/140&quot;
+l_string|&quot;IBM 43P-140 (Tiger1)&quot;
 suffix:semicolon
 id|Motherboard_map
 op_assign
@@ -3410,13 +3436,58 @@ id|Motherboard_non0
 op_assign
 id|ibm43p_pci_map_non0
 suffix:semicolon
+id|irq_edge_mask_lo
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* irq&squot;s 0-7 all edge-triggered */
+id|irq_edge_mask_hi
+op_assign
+l_int|0xA0
+suffix:semicolon
+multiline_comment|/* irq&squot;s 13, 15 level-triggered */
 r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Unknown IBM motherboard! Defaulting to Carolina.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_case
+l_int|0xf0
+suffix:colon
+multiline_comment|/* PowerSeries 830/850 */
+r_case
+l_int|0xf1
+suffix:colon
+multiline_comment|/* PowerSeries 830/850 */
+r_case
+l_int|0xf2
+suffix:colon
+multiline_comment|/* PowerSeries 830/850 */
+r_case
+l_int|0xf4
+suffix:colon
+multiline_comment|/* 7248-43P */
+r_case
+l_int|0xf5
+suffix:colon
+multiline_comment|/* 7248-43P */
+r_case
+l_int|0xf6
+suffix:colon
+multiline_comment|/* 7248-43P */
+r_case
+l_int|0xf7
+suffix:colon
+multiline_comment|/* 7248-43P (missing from Carolina Tech Spec) */
 id|Motherboard_map_name
 op_assign
-l_string|&quot;IBM 8xx (Carolina)&quot;
+l_string|&quot;IBM PS830/PS850/7248 (Carolina)&quot;
 suffix:semicolon
 id|Motherboard_map
 op_assign
@@ -3426,57 +3497,49 @@ id|Motherboard_routes
 op_assign
 id|ibm8xx_pci_IRQ_routes
 suffix:semicolon
+id|irq_edge_mask_lo
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* irq&squot;s 0-7 all edge-triggered */
+id|irq_edge_mask_hi
+op_assign
+l_int|0xA4
+suffix:semicolon
+multiline_comment|/* irq&squot;s 10, 13, 15 level-triggered */
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*printk(&quot;Changing IRQ mode&bslash;n&quot;);*/
-id|pl_id
-op_assign
+id|outb
+c_func
+(paren
 id|inb
 c_func
 (paren
 l_int|0x04d0
 )paren
-suffix:semicolon
-multiline_comment|/*printk(&quot;Low mask is %#0x&bslash;n&quot;, pl_id);*/
-id|outb
-c_func
-(paren
-id|pl_id
 op_or
-id|CAROLINA_IRQ_EDGE_MASK_LO
+id|irq_edge_mask_lo
 comma
 l_int|0x04d0
 )paren
 suffix:semicolon
-id|pl_id
-op_assign
+multiline_comment|/* primary 8259 */
+id|outb
+c_func
+(paren
 id|inb
 c_func
 (paren
 l_int|0x04d1
 )paren
-suffix:semicolon
-multiline_comment|/*printk(&quot;Hi mask is  %#0x&bslash;n&quot;, pl_id);*/
-id|outb
-c_func
-(paren
-id|pl_id
 op_or
-id|CAROLINA_IRQ_EDGE_MASK_HI
+id|irq_edge_mask_hi
 comma
 l_int|0x04d1
 )paren
 suffix:semicolon
-id|pl_id
-op_assign
-id|inb
-c_func
-(paren
-l_int|0x04d1
-)paren
-suffix:semicolon
-multiline_comment|/*printk(&quot;Hi mask now %#0x&bslash;n&quot;, pl_id);*/
+multiline_comment|/* cascaded 8259 */
 )brace
 r_else
 (brace
@@ -3504,7 +3567,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|ibc_pirq
 (braket
 id|i
@@ -3517,7 +3579,6 @@ id|Motherboard_routes
 id|i
 )braket
 suffix:semicolon
-)brace
 multiline_comment|/* Enable PCI interrupts */
 op_star
 id|ibc_pcicon
@@ -3774,7 +3835,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_static
 r_void
+id|__init
 DECL|function|Powerplus_Map_Non0
 id|Powerplus_Map_Non0
 c_func
@@ -4507,14 +4570,19 @@ id|hose-&gt;pci_mem_offset
 op_assign
 id|PREP_ISA_MEM_BASE
 suffix:semicolon
+id|hose-&gt;io_base_phys
+op_assign
+id|PREP_ISA_IO_BASE
+suffix:semicolon
 id|hose-&gt;io_base_virt
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|PREP_ISA_IO_BASE
+l_int|0x80000000
 suffix:semicolon
+multiline_comment|/* see prep_map_io() */
 id|prep_init_resource
 c_func
 (paren
@@ -4645,7 +4713,6 @@ l_int|8
 suffix:semicolon
 )brace
 r_else
-(brace
 id|setup_indirect_pci
 c_func
 (paren
@@ -4657,16 +4724,13 @@ l_int|0x80000cfc
 )paren
 suffix:semicolon
 )brace
-)brace
 r_else
 macro_line|#endif /* CONFIG_PREP_RESIDUAL */
-(brace
 id|hose-&gt;ops
 op_assign
 op_amp
 id|prep_pci_ops
 suffix:semicolon
-)brace
 )brace
 id|ppc_md.pcibios_fixup
 op_assign
