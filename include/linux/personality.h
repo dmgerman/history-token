@@ -37,31 +37,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Sysctl variables related to binary emulation.&n; */
-r_extern
-r_int
-r_int
-id|abi_defhandler_coff
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|abi_defhandler_elf
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|abi_defhandler_lcall7
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|abi_defhandler_libcso
-suffix:semicolon
-r_extern
-r_int
-id|abi_fake_utsname
-suffix:semicolon
 multiline_comment|/*&n; * Flags for bug emulation.&n; *&n; * These occupy the top three bytes.&n; */
 r_enum
 (brace
