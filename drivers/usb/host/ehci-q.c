@@ -1071,7 +1071,7 @@ id|likely
 (paren
 op_logical_neg
 id|stopped
-op_logical_or
+op_logical_and
 id|HCD_IS_RUNNING
 (paren
 id|ehci-&gt;hcd.state
@@ -2565,7 +2565,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE:  if (PIPE_INTERRUPT) { scheduler sets s-mask } */
-multiline_comment|/* init as halted, toggle clear, advance to dummy */
+multiline_comment|/* init as live, toggle clear, advance to dummy */
 id|qh-&gt;qh_state
 op_assign
 id|QH_STATE_IDLE
@@ -2591,13 +2591,6 @@ comma
 id|qh
 comma
 id|qh-&gt;dummy
-)paren
-suffix:semicolon
-id|qh-&gt;hw_token
-op_assign
-id|cpu_to_le32
-(paren
-id|QTD_STS_HALT
 )paren
 suffix:semicolon
 id|usb_settoggle

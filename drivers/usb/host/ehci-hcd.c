@@ -1221,7 +1221,7 @@ op_amp
 id|ehci-&gt;regs-&gt;command
 )paren
 op_amp
-l_int|0xff
+l_int|0x0fff
 suffix:semicolon
 r_if
 c_cond
