@@ -2,6 +2,7 @@ macro_line|#ifndef _MULTIPATH_H
 DECL|macro|_MULTIPATH_H
 mdefine_line|#define _MULTIPATH_H
 macro_line|#include &lt;linux/raid/md.h&gt;
+macro_line|#include &lt;linux/bio.h&gt;
 DECL|struct|multipath_info
 r_struct
 id|multipath_info
@@ -69,12 +70,6 @@ id|mdk_thread_t
 op_star
 id|thread
 suffix:semicolon
-DECL|member|spare
-r_struct
-id|multipath_info
-op_star
-id|spare
-suffix:semicolon
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock
@@ -100,15 +95,6 @@ DECL|struct|multipath_bh
 r_struct
 id|multipath_bh
 (brace
-DECL|member|remaining
-id|atomic_t
-id|remaining
-suffix:semicolon
-multiline_comment|/* &squot;have we finished&squot; count,&n;&t;&t;&t;&t;&t;    * used from IRQ handlers&n;&t;&t;&t;&t;&t;    */
-DECL|member|cmd
-r_int
-id|cmd
-suffix:semicolon
 DECL|member|mddev
 id|mddev_t
 op_star
@@ -123,7 +109,6 @@ suffix:semicolon
 DECL|member|bio
 r_struct
 id|bio
-op_star
 id|bio
 suffix:semicolon
 DECL|member|next_mp
@@ -132,7 +117,7 @@ id|multipath_bh
 op_star
 id|next_mp
 suffix:semicolon
-multiline_comment|/* next for retry or in free list */
+multiline_comment|/* next for retry */
 )brace
 suffix:semicolon
 macro_line|#endif
