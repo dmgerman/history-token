@@ -936,7 +936,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;device_bind_driver - bind a driver to one device.&n; *&t;@dev:&t;device.&n; *&n; *&t;Allow manual attachment of a driver to a deivce.&n; *&t;Caller must have already set @dev-&gt;driver.&n; *&n; *&t;Note that this does not modify the bus reference count&n; *&t;nor take the bus&squot;s rwsem. Please verify those are accounted&n; *&t;for before calling this. (It is ok to call with no other effort&n; *&t;from a driver&squot;s probe() method.)&n; */
+multiline_comment|/**&n; *&t;device_bind_driver - bind a driver to one device.&n; *&t;@dev:&t;device.&n; *&n; *&t;Allow manual attachment of a driver to a device.&n; *&t;Caller must have already set @dev-&gt;driver.&n; *&n; *&t;Note that this does not modify the bus reference count&n; *&t;nor take the bus&squot;s rwsem. Please verify those are accounted&n; *&t;for before calling this. (It is ok to call with no other effort&n; *&t;from a driver&squot;s probe() method.)&n; */
 DECL|function|device_bind_driver
 r_void
 id|device_bind_driver
