@@ -588,11 +588,6 @@ op_assign
 id|udf_destroy_inode
 comma
 dot
-id|read_inode
-op_assign
-id|udf_read_inode
-comma
-dot
 id|write_inode
 op_assign
 id|udf_write_inode
