@@ -15,7 +15,6 @@ l_string|&quot;$Id: super.c,v 1.4 2002/10/12 02:16:19 rread Exp $&quot;
 suffix:semicolon
 DECL|macro|INTERMEZZO_VERSION
 mdefine_line|#define INTERMEZZO_VERSION &quot;$Revision: 1.4 $&quot;
-macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
