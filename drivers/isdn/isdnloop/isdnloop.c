@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdnloop.c,v 1.11.6.6 2001/09/23 22:24:56 kai Exp $&n; *&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isdnloop.c,v 1.11.6.7 2001/11/11 19:54:31 kai Exp $&n; *&n; * ISDN low-level module implementing a dummy loop driver.&n; *&n; * Copyright 1997 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,7 +9,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.6 $&quot;
+l_string|&quot;$Revision: 1.11.6.7 $&quot;
 suffix:semicolon
 DECL|variable|isdnloop_id
 r_static
@@ -7259,6 +7259,11 @@ comma
 id|rev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|isdnloop_id
+)paren
 r_return
 (paren
 id|isdnloop_addcard
@@ -7267,6 +7272,9 @@ c_func
 id|isdnloop_id
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 r_static

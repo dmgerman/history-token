@@ -437,6 +437,64 @@ suffix:semicolon
 multiline_comment|/* data private to the driver */
 )brace
 suffix:semicolon
+DECL|struct|isapnp_driver
+r_struct
+id|isapnp_driver
+(brace
+DECL|member|node
+r_struct
+id|list_head
+id|node
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|id_table
+r_const
+r_struct
+id|isapnp_device_id
+op_star
+id|id_table
+suffix:semicolon
+multiline_comment|/* NULL if wants all devices */
+DECL|member|probe
+r_int
+(paren
+op_star
+id|probe
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_const
+r_struct
+id|isapnp_device_id
+op_star
+id|id
+)paren
+suffix:semicolon
+multiline_comment|/* New device inserted */
+DECL|member|remove
+r_void
+(paren
+op_star
+id|remove
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Device removed (NULL if not a hot-plug capable driver) */
+)brace
+suffix:semicolon
 macro_line|#if defined(CONFIG_ISAPNP) || (defined(CONFIG_ISAPNP_MODULE) &amp;&amp; defined(MODULE))
 DECL|macro|__ISAPNP__
 mdefine_line|#define __ISAPNP__
@@ -764,6 +822,26 @@ DECL|macro|isapnp_for_each_card
 mdefine_line|#define isapnp_for_each_card(card) &bslash;&n;&t;for(card = pci_bus_b(isapnp_cards.next); card != pci_bus_b(&amp;isapnp_cards); card = pci_bus_b(card-&gt;node.next))
 DECL|macro|isapnp_for_each_dev
 mdefine_line|#define isapnp_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(isapnp_devices.next); dev != pci_dev_g(&amp;isapnp_devices); dev = pci_dev_g(dev-&gt;global_list.next))
+r_int
+id|isapnp_register_driver
+c_func
+(paren
+r_struct
+id|isapnp_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+r_void
+id|isapnp_unregister_driver
+c_func
+(paren
+r_struct
+id|isapnp_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_ISAPNP */
 multiline_comment|/* lowlevel configuration */
 DECL|function|isapnp_present
@@ -1154,6 +1232,37 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+DECL|function|isapnp_register_driver
+r_static
+r_inline
+r_int
+id|isapnp_register_driver
+c_func
+(paren
+r_struct
+id|isapnp_driver
+op_star
+id|drv
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|isapnp_unregister_driver
+r_static
+r_inline
+r_void
+id|isapnp_unregister_driver
+c_func
+(paren
+r_struct
+id|isapnp_driver
+op_star
+id|drv
+)paren
+(brace
 )brace
 macro_line|#endif /* CONFIG_ISAPNP */
 macro_line|#endif /* __KERNEL__ */

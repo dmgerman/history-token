@@ -267,11 +267,12 @@ id|usb_hub_descriptor
 op_star
 id|descriptor
 suffix:semicolon
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
+DECL|member|khubd_sem
+r_struct
+id|semaphore
+id|khubd_sem
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* __LINUX_HUB_H */
 eof

@@ -14788,6 +14788,18 @@ l_int|0
 op_assign
 id|val
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;parport_pc: irq specified &quot;
+l_string|&quot;without base address.  Use &squot;io=&squot; &quot;
+l_string|&quot;to specify one&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -14826,6 +14838,18 @@ l_int|0
 )braket
 op_assign
 id|val
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;parport_pc: dma specified &quot;
+l_string|&quot;without base address.  Use &squot;io=&squot; &quot;
+l_string|&quot;to specify one&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 )brace

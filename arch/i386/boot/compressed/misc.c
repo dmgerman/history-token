@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * misc.c&n; * &n; * This is a collection of several routines from gzip-1.0.3 &n; * adapted for Linux.&n; *&n; * malloc by Hannu Savolainen 1993 and Matthias Urlichs 1994&n; * puts by Nick Holloway 1993, better puts by Martin Mares 1995&n; * High loaded stuff by Hans Lermen &amp; Werner Almesberger, Feb. 1996&n; */
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1280,6 +1281,7 @@ id|__KERNEL_DS
 )brace
 suffix:semicolon
 DECL|function|setup_normal_output_buffer
+r_static
 r_void
 id|setup_normal_output_buffer
 c_func
@@ -1367,6 +1369,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|setup_output_buffer_if_we_run_high
+r_static
 r_void
 id|setup_output_buffer_if_we_run_high
 c_func
@@ -1539,6 +1542,7 @@ id|high_buffer_start
 suffix:semicolon
 )brace
 DECL|function|close_output_buffer_if_we_run_high
+r_static
 r_void
 id|close_output_buffer_if_we_run_high
 c_func
@@ -1586,6 +1590,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|decompress_kernel
+id|asmlinkage
 r_int
 id|decompress_kernel
 c_func

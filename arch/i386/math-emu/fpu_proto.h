@@ -410,6 +410,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* fpu_entry.c */
+id|asmlinkage
 r_extern
 r_void
 id|math_emulate

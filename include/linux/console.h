@@ -645,6 +645,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|console_unblank
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* VESA Blanking Levels */
 DECL|macro|VESA_NO_BLANKING
 mdefine_line|#define VESA_NO_BLANKING        0

@@ -94,6 +94,7 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
+id|asmlinkage
 id|NORET_TYPE
 r_void
 id|do_exit

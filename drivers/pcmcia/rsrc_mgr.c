@@ -20,7 +20,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
-macro_line|#include &quot;rsrc_mgr.h&quot;
 multiline_comment|/*====================================================================*/
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 DECL|macro|INT_MODULE_PARM

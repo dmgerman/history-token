@@ -110,6 +110,13 @@ id|level
 (brace
 r_case
 op_minus
+l_int|4
+suffix:colon
+r_return
+id|MULTIPATH
+suffix:semicolon
+r_case
+op_minus
 l_int|3
 suffix:colon
 r_return

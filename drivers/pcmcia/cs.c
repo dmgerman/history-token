@@ -28,32 +28,6 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
-macro_line|#include &quot;rsrc_mgr.h&quot;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;cs.c 1.271 2000/10/02 20:27:49 (David Hinds)&quot;
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|PCI_OPT
 mdefine_line|#define PCI_OPT &quot; [pci]&quot;
@@ -102,6 +76,8 @@ op_assign
 l_string|&quot;options: &quot;
 id|OPTIONS
 suffix:semicolon
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -123,8 +99,6 @@ c_func
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 DECL|macro|INT_MODULE_PARM
 mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 id|INT_MODULE_PARM
@@ -237,6 +211,25 @@ id|do_apm
 comma
 l_int|0
 )paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|variable|version
+r_static
+r_const
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;cs.c 1.279 2001/10/13 00:08:28 (David Hinds)&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*====================================================================*/
@@ -1854,6 +1847,36 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* Should not the socket be forced quiet as well?  e.g. turn off Vcc */
+multiline_comment|/* Without these changes, the socket is left hot, even though card-services */
+multiline_comment|/* realizes that no card is in place. */
+id|s-&gt;socket.flags
+op_and_assign
+op_complement
+id|SS_OUTPUT_ENA
+suffix:semicolon
+id|s-&gt;socket.Vpp
+op_assign
+l_int|0
+suffix:semicolon
+id|s-&gt;socket.Vcc
+op_assign
+l_int|0
+suffix:semicolon
+id|s-&gt;socket.io_irq
+op_assign
+l_int|0
+suffix:semicolon
+id|set_socket
+c_func
+(paren
+id|s
+comma
+op_amp
+id|s-&gt;socket
+)paren
+suffix:semicolon
+multiline_comment|/* */
 macro_line|#ifdef CONFIG_CARDBUS
 id|cb_release_cis_mem
 c_func
@@ -2501,7 +2524,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* unreset_socket */
-multiline_comment|/*======================================================================&n;&n;    The central event handler.  Send_event() sends an event to all&n;    valid clients.  Parse_events() interprets the event bits from&n;    a card status change report.  Do_shotdown() handles the high&n;    priority stuff associated with a card removal.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    The central event handler.  Send_event() sends an event to all&n;    valid clients.  Parse_events() interprets the event bits from&n;    a card status change report.  Do_shutdown() handles the high&n;    priority stuff associated with a card removal.&n;    &n;======================================================================*/
 DECL|function|send_event
 r_static
 r_int
@@ -6839,6 +6862,7 @@ id|s-&gt;socket.flags
 op_assign
 id|SS_OUTPUT_ENA
 suffix:semicolon
+multiline_comment|/* Is this correct? */
 id|s-&gt;socket.Vpp
 op_assign
 l_int|0

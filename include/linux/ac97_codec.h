@@ -621,5 +621,27 @@ r_int
 id|rate
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ac97_save_state
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ac97_restore_state
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+)paren
+suffix:semicolon
 macro_line|#endif /* _AC97_CODEC_H_ */
 eof

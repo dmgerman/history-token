@@ -1262,6 +1262,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 )brace
 DECL|function|schedule_tail
+id|asmlinkage
 r_void
 id|schedule_tail
 c_func

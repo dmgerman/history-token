@@ -3273,14 +3273,18 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;EXT2-fs: corrupt root inode, run e2fsck&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
 r_else
 id|printk
+c_func
 (paren
+id|KERN_ERR
 l_string|&quot;EXT2-fs: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon

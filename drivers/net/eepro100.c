@@ -1473,6 +1473,15 @@ r_int
 id|partner
 suffix:semicolon
 multiline_comment|/* Link partner caps. */
+macro_line|#ifdef CONFIG_PM
+DECL|member|pm_state
+id|u32
+id|pm_state
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* The parameters for a CmdConfigure operation.&n;   There are so many options that it would be difficult to document each bit.&n;   We mostly use the default or recommended settings. */
@@ -10828,10 +10837,30 @@ id|pci_get_drvdata
 id|pdev
 )paren
 suffix:semicolon
+r_struct
+id|speedo_private
+op_star
+id|sp
+op_assign
+(paren
+r_struct
+id|speedo_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+id|pci_save_state
+c_func
+(paren
+id|pdev
+comma
+id|sp-&gt;pm_state
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10905,6 +10934,14 @@ r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+id|pci_restore_state
+c_func
+(paren
+id|pdev
+comma
+id|sp-&gt;pm_state
+)paren
 suffix:semicolon
 r_if
 c_cond

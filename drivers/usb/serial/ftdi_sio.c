@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999 - 2001&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://reality.sgi.com/bryder_wellington/ftdi_sio for upto date testing info&n; *     and extra documentation&n; * &n; * (31/May/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (23/May/2001)   Bill Ryder&n; *     Added runtime debug patch (thanx Tyson D Sawyer).&n; *     Cleaned up comments for 8U232&n; *     Added parity, framing and overrun error handling&n; *     Added receive break handling.&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (18/March/2001) Bill Ryder&n; *     (Not released)&n; *     Added send break handling. (requires kernel patch too)&n; *     Fixed 8U232AM hardware RTS/CTS etc status reporting.&n; *     Added flipbuf fix copied from generic device&n; * &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
+multiline_comment|/*&n; * USB FTDI SIO driver&n; *&n; * &t;Copyright (C) 1999 - 2001&n; * &t;    Greg Kroah-Hartman (greg@kroah.com)&n; *          Bill Ryder (bryder@sgi.com)&n; *&n; * &t;This program is free software; you can redistribute it and/or modify&n; * &t;it under the terms of the GNU General Public License as published by&n; * &t;the Free Software Foundation; either version 2 of the License, or&n; * &t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * See http://ftdi-usb-sio.sourceforge.net for upto date testing info&n; *     and extra documentation&n; * &n; * (04/Nov/2001) Bill Ryder&n; *     Fixed bug in read_bulk_callback where incorrect urb buffer was used.&n; *     cleaned up write offset calculation&n; *     added write_room since default values can be incorrect for sio&n; *     changed write_bulk_callback to use same queue_task as other drivers&n; *       (the previous version caused panics)&n; *     Removed port iteration code since the device only has one I/O port and it &n; *       was wrong anyway.&n; * &n; * (31/May/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (23/May/2001)   Bill Ryder&n; *     Added runtime debug patch (thanx Tyson D Sawyer).&n; *     Cleaned up comments for 8U232&n; *     Added parity, framing and overrun error handling&n; *     Added receive break handling.&n; * &n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *       &n; * (18/March/2001) Bill Ryder&n; *     (Not released)&n; *     Added send break handling. (requires kernel patch too)&n; *     Fixed 8U232AM hardware RTS/CTS etc status reporting.&n; *     Added flipbuf fix copied from generic device&n; * &n; * (12/3/2000) Bill Ryder&n; *     Added support for 8U232AM device.&n; *     Moved PID and VIDs into header file only.&n; *     Turned on low-latency for the tty (device will do high baudrates)&n; *     Added shutdown routine to close files when device removed.&n; *     More debug and error message cleanups.&n; *     &n; *&n; * (11/13/2000) Bill Ryder&n; *     Added spinlock protected open code and close code.&n; *     Multiple opens work (sort of - see webpage mentioned above).&n; *     Cleaned up comments. Removed multiple PID/VID definitions.&n; *     Factorised cts/dtr code&n; *     Made use of __FUNCTION__ in dbg&squot;s&n; *      &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (04/04/2000) Bill Ryder &n; *      Fixed bugs in TCGET/TCSET ioctls (by removing them - they are &n; *        handled elsewhere in the tty io driver chain).&n; *&n; * (03/30/2000) Bill Ryder &n; *      Implemented lots of ioctls&n; * &t;Fixed a race condition in write&n; * &t;Changed some dbg&squot;s to errs&n; *&n; * (03/26/2000) gkh&n; * &t;Split driver up into device specific pieces.&n; *&n; */
 multiline_comment|/* Bill Ryder - bryder@sgi.com - wrote the FTDI_SIO implementation */
 multiline_comment|/* Thanx to FTDI for so kindly providing details of the protocol required */
 multiline_comment|/*   to talk to the device */
@@ -37,7 +37,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;ftdi_sio.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.1.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.2.0&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;, Bill Ryder &lt;bryder@sgi.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -148,6 +148,10 @@ id|__u16
 id|last_set_data_urb_value
 suffix:semicolon
 multiline_comment|/* the last data state set - needed for doing a break */
+DECL|member|write_offset
+r_int
+id|write_offset
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* function prototypes for a FTDI serial converter */
@@ -231,6 +235,16 @@ id|buf
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ftdi_sio_write_room
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
 )paren
 suffix:semicolon
 r_static
@@ -359,6 +373,10 @@ id|write
 suffix:colon
 id|ftdi_sio_write
 comma
+id|write_room
+suffix:colon
+id|ftdi_sio_write_room
+comma
 id|read_bulk_callback
 suffix:colon
 id|ftdi_sio_read_bulk_callback
@@ -442,6 +460,10 @@ comma
 id|write
 suffix:colon
 id|ftdi_sio_write
+comma
+id|write_room
+suffix:colon
+id|ftdi_sio_write_room
 comma
 id|read_bulk_callback
 suffix:colon
@@ -621,18 +643,6 @@ id|ftdi_private
 op_star
 id|priv
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-l_int|0
-)braket
-dot
-id|write_wait
-)paren
-suffix:semicolon
 id|priv
 op_assign
 id|serial-&gt;port
@@ -680,6 +690,10 @@ id|priv-&gt;ftdi_type
 op_assign
 id|sio
 suffix:semicolon
+id|priv-&gt;write_offset
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -701,18 +715,6 @@ r_struct
 id|ftdi_private
 op_star
 id|priv
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|serial-&gt;port
-(braket
-l_int|0
-)braket
-dot
-id|write_wait
-)paren
 suffix:semicolon
 id|priv
 op_assign
@@ -761,6 +763,10 @@ id|priv-&gt;ftdi_type
 op_assign
 id|F8U232AM
 suffix:semicolon
+id|priv-&gt;write_offset
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -783,7 +789,7 @@ id|dbg
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Close ports if they are open */
+multiline_comment|/* stop reads and writes on all ports */
 r_while
 c_loop
 (paren
@@ -813,7 +819,10 @@ r_if
 c_cond
 (paren
 id|serial-&gt;port
-op_member_access_from_pointer
+(braket
+l_int|0
+)braket
+dot
 r_private
 )paren
 (brace
@@ -821,12 +830,18 @@ id|kfree
 c_func
 (paren
 id|serial-&gt;port
-op_member_access_from_pointer
+(braket
+l_int|0
+)braket
+dot
 r_private
 )paren
 suffix:semicolon
 id|serial-&gt;port
-op_member_access_from_pointer
+(braket
+l_int|0
+)braket
+dot
 r_private
 op_assign
 l_int|NULL
@@ -1103,6 +1118,7 @@ id|serial
 op_assign
 id|port-&gt;serial
 suffix:semicolon
+multiline_comment|/* Checked in usbserial.c */
 r_int
 r_int
 id|c_cflag
@@ -1257,6 +1273,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Note change no line is hupcl is off */
 multiline_comment|/* shutdown our bulk reads and writes */
+multiline_comment|/* ***CHECK*** behaviour when there is nothing queued */
 id|usb_unlink_urb
 (paren
 id|port-&gt;write_urb
@@ -1356,21 +1373,21 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
+r_char
+op_star
+id|first_byte
+op_assign
+id|port-&gt;write_urb-&gt;transfer_buffer
+suffix:semicolon
+r_int
+r_char
+id|dbug_byte
+suffix:semicolon
+r_int
 id|data_offset
 suffix:semicolon
 r_int
-id|rc
-suffix:semicolon
-r_int
 id|result
-suffix:semicolon
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -1401,26 +1418,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|priv-&gt;ftdi_type
-op_eq
-id|sio
-)paren
-(brace
 id|data_offset
 op_assign
-l_int|1
+id|priv-&gt;write_offset
 suffix:semicolon
-)brace
-r_else
-(brace
-id|data_offset
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
@@ -1429,38 +1430,8 @@ comma
 id|data_offset
 )paren
 suffix:semicolon
-multiline_comment|/* only do something if we have a bulk out endpoint */
 r_if
 c_cond
-(paren
-id|serial-&gt;num_bulk_out
-)paren
-(brace
-r_int
-r_char
-op_star
-id|first_byte
-op_assign
-id|port-&gt;write_urb-&gt;transfer_buffer
-suffix:semicolon
-multiline_comment|/* Was seeing a race here, got a read callback, then write callback before&n;&t;&t;   hitting interuptible_sleep_on  - so wrapping in a wait_queue */
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|port-&gt;write_wait
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-r_while
-c_loop
 (paren
 id|port-&gt;write_urb-&gt;status
 op_eq
@@ -1469,67 +1440,22 @@ id|EINPROGRESS
 )paren
 (brace
 id|dbg
-c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; write in progress - retrying&quot;
+l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_return
 (paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|port-&gt;write_wait
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|ERESTARTSYS
-suffix:semicolon
-r_goto
-id|err
-suffix:semicolon
-)brace
-id|schedule
-c_func
-(paren
+l_int|0
 )paren
 suffix:semicolon
 )brace
-id|remove_wait_queue
+id|down
 c_func
 (paren
 op_amp
-id|port-&gt;write_wait
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
+id|port-&gt;sem
 )paren
 suffix:semicolon
 id|count
@@ -1549,18 +1475,6 @@ id|port-&gt;bulk_out_size
 suffix:colon
 id|count
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|count
-op_eq
-l_int|0
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Copy in the data to send */
 r_if
 c_cond
@@ -1585,10 +1499,18 @@ op_minus
 id|data_offset
 )paren
 )paren
+(brace
+id|up
+(paren
+op_amp
+id|port-&gt;sem
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -1640,7 +1562,7 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; Bytes: %d, First Byte: 0o%03o&quot;
+l_string|&quot; Bytes: %d, First Byte: 0x%02x&quot;
 comma
 id|count
 comma
@@ -1709,10 +1631,22 @@ comma
 id|result
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|port-&gt;sem
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|up
+(paren
+op_amp
+id|port-&gt;sem
+)paren
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1730,17 +1664,6 @@ id|count
 op_minus
 id|data_offset
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/* no bulk out, so return 0 bytes written */
-r_return
-l_int|0
-suffix:semicolon
-id|err
-suffix:colon
-multiline_comment|/* error exit */
-r_return
-id|rc
 suffix:semicolon
 )brace
 multiline_comment|/* ftdi_sio_write */
@@ -1771,13 +1694,6 @@ r_struct
 id|usb_serial
 op_star
 id|serial
-suffix:semicolon
-r_struct
-id|tty_struct
-op_star
-id|tty
-op_assign
-id|port-&gt;tty
 suffix:semicolon
 id|dbg
 c_func
@@ -1834,46 +1750,84 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|wake_up_interruptible
+id|queue_task
 c_func
 (paren
 op_amp
-id|port-&gt;write_wait
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|tty-&gt;flags
+id|port-&gt;tqueue
+comma
 op_amp
-(paren
-l_int|1
-op_lshift
-id|TTY_DO_WRITE_WAKEUP
-)paren
-)paren
-op_logical_and
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
-(paren
-id|tty
+id|tq_immediate
 )paren
 suffix:semicolon
-id|wake_up_interruptible
+id|mark_bh
 c_func
 (paren
-op_amp
-id|tty-&gt;write_wait
+id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/* ftdi_sio_write_bulk_callback */
+DECL|function|ftdi_sio_write_room
+r_static
+r_int
+id|ftdi_sio_write_room
+c_func
+(paren
+r_struct
+id|usb_serial_port
+op_star
+id|port
+)paren
+(brace
+r_struct
+id|ftdi_private
+op_star
+id|priv
+op_assign
+(paren
+r_struct
+id|ftdi_private
+op_star
+)paren
+id|port
+op_member_access_from_pointer
+r_private
+suffix:semicolon
+r_int
+id|room
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|port-&gt;write_urb-&gt;status
+op_eq
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+multiline_comment|/* There is a race here with the _write routines but it won&squot;t hurt */
+id|room
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|room
+op_assign
+id|port-&gt;bulk_out_size
+op_minus
+id|priv-&gt;write_offset
+suffix:semicolon
+)brace
+r_return
+id|room
+suffix:semicolon
+)brace
+multiline_comment|/* ftdi_sio_write_room */
 DECL|function|ftdi_sio_read_bulk_callback
 r_static
 r_void
@@ -1936,6 +1890,9 @@ id|dbg
 c_func
 (paren
 id|__FUNCTION__
+l_string|&quot; - port %d&quot;
+comma
+id|port-&gt;number
 )paren
 suffix:semicolon
 r_if
@@ -2245,7 +2202,7 @@ multiline_comment|/* Continue trying to always read  */
 id|FILL_BULK_URB
 c_func
 (paren
-id|urb
+id|port-&gt;read_urb
 comma
 id|serial-&gt;dev
 comma
@@ -2257,9 +2214,9 @@ comma
 id|port-&gt;bulk_in_endpointAddress
 )paren
 comma
-id|urb-&gt;transfer_buffer
+id|port-&gt;read_urb-&gt;transfer_buffer
 comma
-id|urb-&gt;transfer_buffer_length
+id|port-&gt;read_urb-&gt;transfer_buffer_length
 comma
 id|ftdi_sio_read_bulk_callback
 comma
@@ -2271,7 +2228,7 @@ op_assign
 id|usb_submit_urb
 c_func
 (paren
-id|urb
+id|port-&gt;read_urb
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n;&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
+multiline_comment|/*&n; * USB IR Dongle driver&n; *&n; *&t;Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * This driver allows a USB IrDA device to be used as a &quot;dumb&quot; serial device.&n; * This can be useful if you do not have access to a full IrDA stack on the&n; * other side of the connection.  If you do have an IrDA stack on both devices,&n; * please use the usb-irda driver, as it contains the proper error checking and&n; * other goodness of a full IrDA stack.&n; *&n; * Portions of this driver were taken from drivers/net/irda/irda-usb.c, which&n; * was written by Roman Weissgaerber &lt;weissg@vienna.at&gt;, Dag Brattli&n; * &lt;dag@brattli.net&gt;, and Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; *&n; * 2001_Nov_08  greg kh&n; *&t;Changed the irda_usb_find_class_desc() function based on comments and&n; *&t;code from Martin Diehl.&n; *&n; * 2001_Nov_01&t;greg kh&n; *&t;Added support for more IrDA USB devices.&n; *&t;Added support for zero packet.  Added buffer override paramater, so&n; *&t;users can transfer larger packets at once if they wish.  Both patches&n; *&t;came from Dag Brattli &lt;dag@obexcode.com&gt;.&n; *&n; * 2001_Oct_07&t;greg kh&n; *&t;initial version released.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,7 +33,7 @@ macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.2&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.3&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -376,7 +376,7 @@ id|desc-&gt;bMaxUnicastList
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irda_usb_find_class_desc(dev, ifnum)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; */
+multiline_comment|/*&n; * Function irda_usb_find_class_desc(dev, ifnum)&n; *&n; *    Returns instance of IrDA class descriptor, or NULL if not found&n; *&n; * The class descriptor is some extra info that IrDA USB devices will&n; * offer to us, describing their IrDA characteristics. We will use that in&n; * irda_usb_init_qos()&n; *&n; * Based on the same function in drivers/net/irda/irda-usb.c&n; */
 DECL|function|irda_usb_find_class_desc
 r_static
 r_struct
@@ -396,19 +396,9 @@ id|ifnum
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
-op_star
-id|interface
-suffix:semicolon
-r_struct
 id|irda_class_desc
 op_star
 id|desc
-suffix:semicolon
-r_struct
-id|irda_class_desc
-op_star
-id|ptr
 suffix:semicolon
 r_int
 id|ret
@@ -453,27 +443,43 @@ id|irda_class_desc
 suffix:semicolon
 id|ret
 op_assign
-id|usb_get_class_descriptor
+id|usb_control_msg
 c_func
 (paren
 id|dev
 comma
-id|ifnum
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|dev
 comma
-id|USB_DT_IRDA
+l_int|0
+)paren
+comma
+id|IU_REQ_GET_CLASS_DESC
+comma
+id|USB_DIR_IN
+op_or
+id|USB_TYPE_CLASS
+op_or
+id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
-(paren
-r_void
-op_star
-)paren
+id|ifnum
+comma
 id|desc
 comma
 r_sizeof
 (paren
-r_struct
-id|irda_class_desc
+op_star
+id|desc
+)paren
+comma
+id|MSECS_TO_JIFFIES
+c_func
+(paren
+l_int|500
 )paren
 )paren
 suffix:semicolon
@@ -490,85 +496,57 @@ r_if
 c_cond
 (paren
 id|ret
+OL
+r_sizeof
+(paren
+op_star
+id|desc
 )paren
+)paren
+(brace
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; - usb_get_class_descriptor failed (0x%x)&quot;
+l_string|&quot; - class descriptor read %s (%d)&quot;
+comma
+(paren
+id|ret
+OL
+l_int|0
+)paren
+ques
+c_cond
+l_string|&quot;failed&quot;
+suffix:colon
+l_string|&quot;too short&quot;
 comma
 id|ret
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we found it? */
+r_goto
+id|error
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|desc-&gt;bDescriptorType
-op_eq
+op_ne
 id|USB_DT_IRDA
 )paren
-r_goto
-m_exit
-suffix:semicolon
+(brace
 id|dbg
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; - parsing extra descriptors...&quot;
+l_string|&quot; - bad class descriptor type&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the class descriptor is interleaved with standard descriptors */
-id|interface
-op_assign
-op_amp
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|ifnum
-)braket
-dot
-id|altsetting
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|ret
-op_assign
-id|usb_get_extra_descriptor
-c_func
-(paren
-id|interface
-comma
-id|USB_DT_IRDA
-comma
-op_amp
-id|ptr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|desc
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error
 suffix:semicolon
 )brace
-op_star
-id|desc
-op_assign
-op_star
-id|ptr
-suffix:semicolon
-m_exit
-suffix:colon
 id|irda_usb_dump_class_desc
 c_func
 (paren
@@ -577,6 +555,17 @@ id|desc
 suffix:semicolon
 r_return
 id|desc
+suffix:semicolon
+id|error
+suffix:colon
+id|kfree
+c_func
+(paren
+id|desc
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ir_startup

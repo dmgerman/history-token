@@ -1,8 +1,8 @@
 macro_line|#ifndef _FS_PT_LDM_H_
 DECL|macro|_FS_PT_LDM_H_
 mdefine_line|#define _FS_PT_LDM_H_
-multiline_comment|/*&n; * $Id: ldm.h,v 1.13 2001/07/23 19:49:49 antona Exp $&n; *&n; * ldm - Part of the Linux-NTFS project.&n; *&n; * Copyright (C) 2001 Richard Russon &lt;ntfs@flatcap.org&gt;&n; * Copyright (C) 2001 Anton Altaparmakov &lt;antona@users.sf.net&gt;&n; *&n; * Documentation is available at http://linux-ntfs.sf.net/ldm&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS source&n; * in the file COPYING); if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;asm/types.h&gt;
+multiline_comment|/*&n; * ldm - Part of the Linux-NTFS project.&n; *&n; * Copyright (C) 2001 Richard Russon &lt;ldm@flatcap.org&gt;&n; * Copyright (C) 2001 Anton Altaparmakov &lt;antona@users.sf.net&gt;&n; *&n; * Documentation is available at http://linux-ntfs.sf.net/ldm&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS source&n; * in the file COPYING); if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
@@ -29,10 +29,14 @@ DECL|macro|VBLK_COMP
 mdefine_line|#define VBLK_COMP&t;&t;0x32&t;&t;/* Component */
 DECL|macro|VBLK_PART
 mdefine_line|#define VBLK_PART&t;&t;0x33&t;&t;/* Partition */
-DECL|macro|VBLK_DISK
-mdefine_line|#define VBLK_DISK&t;&t;0x34&t;&t;/* Disk */
-DECL|macro|VBLK_DGRP
-mdefine_line|#define VBLK_DGRP&t;&t;0x45&t;&t;/* Disk Group */
+DECL|macro|VBLK_DSK1
+mdefine_line|#define VBLK_DSK1&t;&t;0x34&t;&t;/* Disk */
+DECL|macro|VBLK_DSK2
+mdefine_line|#define VBLK_DSK2&t;&t;0x44&t;&t;/* Disk */
+DECL|macro|VBLK_DGR1
+mdefine_line|#define VBLK_DGR1&t;&t;0x35&t;&t;/* Disk Group */
+DECL|macro|VBLK_DGR2
+mdefine_line|#define VBLK_DGR2&t;&t;0x45&t;&t;/* Disk Group */
 DECL|macro|VBLK_VOLU
 mdefine_line|#define VBLK_VOLU&t;&t;0x51&t;&t;/* Volume */
 multiline_comment|/* Other constants. */
@@ -236,6 +240,27 @@ suffix:semicolon
 DECL|member|num_sectors
 id|u64
 id|num_sectors
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ldm_part
+r_struct
+id|ldm_part
+(brace
+DECL|member|part_list
+r_struct
+id|list_head
+id|part_list
+suffix:semicolon
+DECL|member|start
+r_int
+r_int
+id|start
+suffix:semicolon
+DECL|member|size
+r_int
+r_int
+id|size
 suffix:semicolon
 )brace
 suffix:semicolon

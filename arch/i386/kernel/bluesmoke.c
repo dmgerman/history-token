@@ -519,6 +519,7 @@ op_assign
 id|unexpected_machine_check
 suffix:semicolon
 DECL|function|do_machine_check
+id|asmlinkage
 r_void
 id|do_machine_check
 c_func
