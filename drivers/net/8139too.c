@@ -7237,7 +7237,7 @@ id|ioaddr
 id|u8
 id|tmp8
 suffix:semicolon
-macro_line|#ifndef CONFIG_8139_NEW_RX_RESET
+macro_line|#ifdef CONFIG_8139_OLD_RX_RESET
 r_int
 id|tmp_work
 suffix:semicolon
@@ -7329,7 +7329,7 @@ id|tp-&gt;xstats.rx_lost_in_ring
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_8139_NEW_RX_RESET
+macro_line|#ifndef CONFIG_8139_OLD_RX_RESET
 id|tmp8
 op_assign
 id|RTL_R8
