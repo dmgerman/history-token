@@ -69,7 +69,7 @@ id|ACPI_STATE_S4
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;acpi_pm_prepare - Do preliminary suspend work.&n; *&t;@state:&t;&t;suspend state we&squot;re entering.&n; *&n; *&t;Make sure we support the state. If we do, and we need it, set the&n; *&t;firmware waking vector and do arch-specific nastiness to get the &n; *&t;wakeup code to the waking vector. &n; */
+multiline_comment|/**&n; *&t;acpi_pm_prepare - Do preliminary suspend work.&n; *&t;@pm_state:&t;&t;suspend state we&squot;re entering.&n; *&n; *&t;Make sure we support the state. If we do, and we need it, set the&n; *&t;firmware waking vector and do arch-specific nastiness to get the &n; *&t;wakeup code to the waking vector. &n; */
 DECL|function|acpi_pm_prepare
 r_static
 r_int
@@ -77,7 +77,7 @@ id|acpi_pm_prepare
 c_func
 (paren
 id|u32
-id|state
+id|pm_state
 )paren
 (brace
 id|u32
@@ -85,7 +85,7 @@ id|acpi_state
 op_assign
 id|acpi_suspend_states
 (braket
-id|state
+id|pm_state
 )braket
 suffix:semicolon
 r_if
@@ -107,11 +107,11 @@ multiline_comment|/* S4OS is only supported for now via swsusp.. */
 r_if
 c_cond
 (paren
-id|state
+id|pm_state
 op_eq
 id|PM_SUSPEND_MEM
 op_logical_or
-id|state
+id|pm_state
 op_eq
 id|PM_SUSPEND_DISK
 )paren
@@ -151,7 +151,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;acpi_pm_enter - Actually enter a sleep state.&n; *&t;@state:&t;&t;State we&squot;re entering.&n; *&n; *&t;Flush caches and go to sleep. For STR or STD, we have to call &n; *&t;arch-specific assembly, which in turn call acpi_enter_sleep_state().&n; *&t;It&squot;s unfortunate, but it works. Please fix if you&squot;re feeling frisky.&n; */
+multiline_comment|/**&n; *&t;acpi_pm_enter - Actually enter a sleep state.&n; *&t;@pm_state:&t;&t;State we&squot;re entering.&n; *&n; *&t;Flush caches and go to sleep. For STR or STD, we have to call &n; *&t;arch-specific assembly, which in turn call acpi_enter_sleep_state().&n; *&t;It&squot;s unfortunate, but it works. Please fix if you&squot;re feeling frisky.&n; */
 DECL|function|acpi_pm_enter
 r_static
 r_int
@@ -159,7 +159,7 @@ id|acpi_pm_enter
 c_func
 (paren
 id|u32
-id|state
+id|pm_state
 )paren
 (brace
 id|acpi_status
@@ -178,7 +178,7 @@ id|acpi_state
 op_assign
 id|acpi_suspend_states
 (braket
-id|state
+id|pm_state
 )braket
 suffix:semicolon
 id|ACPI_FLUSH_CPU_CACHE
@@ -190,7 +190,7 @@ multiline_comment|/* Do arch specific saving of state. */
 r_if
 c_cond
 (paren
-id|state
+id|pm_state
 OG
 id|PM_SUSPEND_STANDBY
 )paren
@@ -221,7 +221,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|state
+id|pm_state
 )paren
 (brace
 r_case
@@ -302,7 +302,7 @@ multiline_comment|/* restore processor state&n;&t; * We should only be here if w
 r_if
 c_cond
 (paren
-id|state
+id|pm_state
 OG
 id|PM_SUSPEND_STANDBY
 )paren
@@ -325,7 +325,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;acpi_pm_finish - Finish up suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;This is called after we wake back up (or if entering the sleep state&n; *&t;failed). &n; */
+multiline_comment|/**&n; *&t;acpi_pm_finish - Finish up suspend sequence.&n; *&t;@pm_state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;This is called after we wake back up (or if entering the sleep state&n; *&t;failed). &n; */
 DECL|function|acpi_pm_finish
 r_static
 r_int
@@ -333,13 +333,21 @@ id|acpi_pm_finish
 c_func
 (paren
 id|u32
-id|state
+id|pm_state
 )paren
 (brace
+id|u32
+id|acpi_state
+op_assign
+id|acpi_suspend_states
+(braket
+id|pm_state
+)braket
+suffix:semicolon
 id|acpi_leave_sleep_state
 c_func
 (paren
-id|state
+id|acpi_state
 )paren
 suffix:semicolon
 multiline_comment|/* reset firmware waking vector */
