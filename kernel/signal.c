@@ -4107,6 +4107,18 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure legacy kernel users don&squot;t send in bad values&n;&t; * (normal paths check this in check_kill_permission).&n;&t; */
+r_if
+c_cond
+(paren
+id|sig
+template_param
+id|_NSIG
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 multiline_comment|/*&n;&t; * We need the tasklist lock even for the specific&n;&t; * thread case (when we don&squot;t need to follow the group&n;&t; * lists) in order to avoid races with &quot;p-&gt;sighand&quot;&n;&t; * going away or changing from under us.&n;&t; */
 id|read_lock
 c_func
