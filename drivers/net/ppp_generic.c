@@ -1805,6 +1805,7 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPP_FILTER
 DECL|function|get_filter
 r_static
 r_int
@@ -1978,6 +1979,7 @@ r_return
 id|uprog.len
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PPP_FILTER */
 DECL|function|ppp_ioctl
 r_static
 r_int

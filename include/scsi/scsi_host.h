@@ -34,6 +34,21 @@ DECL|macro|DISABLE_CLUSTERING
 mdefine_line|#define DISABLE_CLUSTERING 0
 DECL|macro|ENABLE_CLUSTERING
 mdefine_line|#define ENABLE_CLUSTERING 1
+DECL|enum|scsi_eh_timer_return
+r_enum
+id|scsi_eh_timer_return
+(brace
+DECL|enumerator|EH_NOT_HANDLED
+id|EH_NOT_HANDLED
+comma
+DECL|enumerator|EH_HANDLED
+id|EH_HANDLED
+comma
+DECL|enumerator|EH_RESET_TIMER
+id|EH_RESET_TIMER
+comma
+)brace
+suffix:semicolon
 DECL|struct|scsi_host_template
 r_struct
 id|scsi_host_template
@@ -191,6 +206,20 @@ r_int
 (paren
 op_star
 id|eh_host_reset_handler
+)paren
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is an optional routine to notify the host that the scsi&n;&t; * timer just fired.  The returns tell the timer routine what to&n;&t; * do about this:&n;&t; *&n;&t; * EH_HANDLED:&t;&t;I fixed the error, please complete the command&n;&t; * EH_RESET_TIMER:&t;I need more time, reset the timer and&n;&t; *&t;&t;&t;begin counting again&n;&t; * EH_NOT_HANDLED&t;Begin normal error recovery&n;&t; *&n;&t; * Status: OPTIONAL&n;&t; */
+DECL|member|eh_timed_out
+r_enum
+id|scsi_eh_timer_return
+(paren
+op_star
+id|eh_timed_out
 )paren
 (paren
 r_struct

@@ -604,10 +604,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PV_GPUL
+id|PV_970
 suffix:colon
 r_case
-id|PV_GPULp
+id|PV_970FX
 suffix:colon
 id|model
 op_assign

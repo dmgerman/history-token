@@ -610,6 +610,9 @@ op_amp
 id|inode_unused
 )paren
 suffix:semicolon
+id|inodes_stat.nr_unused
+op_increment
+suffix:semicolon
 )brace
 )brace
 id|wake_up_inode

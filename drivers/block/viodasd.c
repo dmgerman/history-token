@@ -3099,6 +3099,7 @@ l_int|NULL
 comma
 id|probe_disks
 )paren
+suffix:semicolon
 DECL|variable|viodasd_driver
 r_static
 r_struct

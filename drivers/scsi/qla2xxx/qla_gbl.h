@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef __QLA_GBL_H
 DECL|macro|__QLA_GBL_H
 mdefine_line|#define&t;__QLA_GBL_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_extern
 r_void
 id|qla2x00_remove_one
@@ -209,6 +210,10 @@ id|ql2xplogiabsentdevice
 suffix:semicolon
 r_extern
 r_int
+id|ql2xenablezio
+suffix:semicolon
+r_extern
+r_int
 id|ql2xintrdelaytimer
 suffix:semicolon
 r_extern
@@ -234,15 +239,6 @@ op_star
 id|ql2xopts
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_struct
-id|list_head
-id|qla_hostlist
-suffix:semicolon
-r_extern
-id|rwlock_t
-id|qla_hostlist_lock
-suffix:semicolon
 r_extern
 r_char
 op_star
@@ -651,6 +647,9 @@ r_uint16
 op_star
 comma
 r_uint16
+op_star
+comma
+r_uint32
 op_star
 )paren
 suffix:semicolon

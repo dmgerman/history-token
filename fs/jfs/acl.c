@@ -1221,6 +1221,8 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+id|rc
+op_assign
 id|inode_setattr
 c_func
 (paren
@@ -1232,9 +1234,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rc
+op_logical_and
+(paren
 id|iattr-&gt;ia_valid
 op_amp
 id|ATTR_MODE
+)paren
 )paren
 id|rc
 op_assign

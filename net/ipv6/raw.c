@@ -4102,7 +4102,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|sk

@@ -10689,9 +10689,9 @@ id|mask
 comma
 id|result
 comma
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 comma
-id|server-&gt;err
+id|req-&gt;rq_err
 )paren
 suffix:semicolon
 r_break
@@ -11350,7 +11350,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 op_ne
 l_int|0
 )paren
@@ -11953,7 +11953,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 op_ne
 l_int|0
 )paren
@@ -14772,9 +14772,9 @@ l_int|6
 comma
 id|result
 comma
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 comma
-id|server-&gt;err
+id|req-&gt;rq_err
 )paren
 suffix:semicolon
 multiline_comment|/* copy data up to the &bslash;0 or buffer length */
@@ -15007,9 +15007,9 @@ l_int|6
 comma
 id|result
 comma
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 comma
-id|server-&gt;err
+id|req-&gt;rq_err
 )paren
 suffix:semicolon
 id|result
@@ -15225,9 +15225,9 @@ l_int|6
 comma
 id|result
 comma
-id|server-&gt;rcls
+id|req-&gt;rq_rcls
 comma
-id|server-&gt;err
+id|req-&gt;rq_err
 )paren
 suffix:semicolon
 id|result

@@ -36,6 +36,11 @@ id|high_memory
 suffix:semicolon
 r_extern
 r_int
+r_int
+id|vmalloc_earlyreserve
+suffix:semicolon
+r_extern
+r_int
 id|page_cluster
 suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;

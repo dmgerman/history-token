@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2410,6 +2411,96 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
+DECL|function|acer_cpufreq_pst
+r_static
+r_int
+id|__init
+id|acer_cpufreq_pst
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s laptop with broken PST tables in BIOS detected.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;You need to downgrade to 3A21 (09/09/2002), or try a newer BIOS than 3A71 (01/20/2003)&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpufreq scaling has been disabled as a result of this.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some Athlon laptops have really fucked PST tables.&n; * A BIOS update is all that can save them.&n; * Mention this, and disable cpufreq.&n; */
+DECL|variable|powernow_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|powernow_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|callback
+op_assign
+id|acer_cpufreq_pst
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Acer Aspire&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Insyde Software&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_BIOS_VERSION
+comma
+l_string|&quot;3A71&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 DECL|function|powernow_cpu_init
 r_static
 r_int
@@ -2500,10 +2591,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dmi_check_system
+c_func
 (paren
-id|dmi_broken
-op_amp
-id|BROKEN_CPUFREQ
+id|powernow_dmi_table
 )paren
 op_logical_or
 id|acpi_force

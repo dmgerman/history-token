@@ -688,14 +688,14 @@ DECL|macro|PV_SSTAR
 mdefine_line|#define&t;PV_SSTAR&t;0x0037
 DECL|macro|PV_POWER4p
 mdefine_line|#define&t;PV_POWER4p&t;0x0038
-DECL|macro|PV_GPUL
-mdefine_line|#define PV_GPUL&t;&t;0x0039
+DECL|macro|PV_970
+mdefine_line|#define PV_970&t;&t;0x0039
 DECL|macro|PV_POWER5
 mdefine_line|#define&t;PV_POWER5&t;0x003A
 DECL|macro|PV_POWER5p
 mdefine_line|#define PV_POWER5p&t;0x003B
-DECL|macro|PV_GPULp
-mdefine_line|#define PV_GPULp&t;0x003C
+DECL|macro|PV_970FX
+mdefine_line|#define PV_970FX&t;0x003C
 DECL|macro|PV_630
 mdefine_line|#define&t;PV_630        &t;0x0040
 DECL|macro|PV_630p

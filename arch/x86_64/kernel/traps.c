@@ -547,7 +547,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kernel_text_address
+id|__kernel_text_address
 c_func
 (paren
 id|addr
@@ -689,7 +689,7 @@ multiline_comment|/*&n;&t;&t;&t; * If the address is either in the text segment 
 r_if
 c_cond
 (paren
-id|kernel_text_address
+id|__kernel_text_address
 c_func
 (paren
 id|addr
@@ -787,7 +787,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kernel_text_address
+id|__kernel_text_address
 c_func
 (paren
 id|addr

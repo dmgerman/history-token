@@ -576,7 +576,7 @@ c_func
 (paren
 id|area
 comma
-id|PAGE_KERNEL_EXECUTABLE
+id|PAGE_KERNEL_EXEC
 comma
 op_amp
 id|pages

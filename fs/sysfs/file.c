@@ -322,6 +322,9 @@ c_func
 (paren
 id|count
 OG
+(paren
+id|ssize_t
+)paren
 id|PAGE_SIZE
 )paren
 suffix:semicolon

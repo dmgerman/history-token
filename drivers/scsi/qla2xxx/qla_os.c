@@ -1,6 +1,12 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
+macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
+macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_transport_fc.h&gt;
 multiline_comment|/*&n; * Driver version&n; */
 DECL|variable|qla2x00_version_str
 r_char
@@ -49,7 +55,9 @@ id|ql2xmaxqdepth
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -73,7 +81,9 @@ id|ql2xlogintimeout
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -95,7 +105,9 @@ id|qlport_down_retry
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -120,7 +132,9 @@ id|ql2xretrycount
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -143,7 +157,9 @@ id|displayConfig
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -165,7 +181,9 @@ id|ql2xplogiabsentdevice
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -176,6 +194,34 @@ comma
 l_string|&quot;Option to enable PLOGI to devices that are not present after &quot;
 l_string|&quot;a Fabric scan.  This is needed for several broken switches.&quot;
 l_string|&quot;Default is 0 - no PLOGI. 1 - perfom PLOGI.&quot;
+)paren
+suffix:semicolon
+DECL|variable|ql2xenablezio
+r_int
+id|ql2xenablezio
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ql2xenablezio
+comma
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IRUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ql2xenablezio
+comma
+l_string|&quot;Option to enable ZIO:If 1 then enable it otherwise&quot;
+l_string|&quot; use the default set in the NVRAM.&quot;
+l_string|&quot; Default is 0 : disabled&quot;
 )paren
 suffix:semicolon
 DECL|variable|ql2xintrdelaytimer
@@ -191,7 +237,9 @@ id|ql2xintrdelaytimer
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -214,7 +262,9 @@ id|ConfigRequired
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -239,7 +289,9 @@ id|Bind
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -264,7 +316,9 @@ id|ql2xsuspendcount
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -290,7 +344,9 @@ id|ql2xdoinitscan
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -315,7 +371,9 @@ id|ql2xloginretrycount
 comma
 r_int
 comma
-l_int|0
+id|S_IRUGO
+op_or
+id|S_IRUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -381,20 +439,6 @@ dot
 dot
 dot
 )paren
-suffix:semicolon
-multiline_comment|/*&n; * List of host adapters&n; */
-DECL|variable|qla_hostlist
-id|LIST_HEAD
-c_func
-(paren
-id|qla_hostlist
-)paren
-suffix:semicolon
-DECL|variable|qla_hostlist_lock
-id|rwlock_t
-id|qla_hostlist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 r_void
@@ -468,7 +512,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_uint8
+r_int
 id|qla2x00_loop_reset
 c_func
 (paren
@@ -610,14 +654,6 @@ suffix:semicolon
 r_static
 r_void
 id|qla2x00_display_fc_names
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|qla2x00_blink_led
 c_func
 (paren
 id|scsi_qla_host_t
@@ -1730,6 +1766,9 @@ suffix:semicolon
 r_int
 id|reading
 suffix:semicolon
+r_uint32
+id|dump_size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1834,6 +1873,33 @@ id|ha-&gt;fw_dump_reading
 op_assign
 l_int|1
 suffix:semicolon
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_1M
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ha-&gt;fw_memory_size
+OL
+l_int|0x20000
+)paren
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_128K
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|ha-&gt;fw_memory_size
+OL
+l_int|0x80000
+)paren
+id|dump_size
+op_assign
+id|FW_DUMP_SIZE_512K
+suffix:semicolon
 id|ha-&gt;fw_dump_buffer
 op_assign
 (paren
@@ -1843,7 +1909,7 @@ op_star
 id|vmalloc
 c_func
 (paren
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 r_if
@@ -1864,7 +1930,7 @@ comma
 l_string|&quot;Unable to allocate memory for firmware &quot;
 l_string|&quot;dump buffer (%d).&bslash;n&quot;
 comma
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 id|ha-&gt;fw_dump_reading
@@ -1896,7 +1962,7 @@ id|ha-&gt;fw_dump_buffer
 comma
 l_int|0
 comma
-id|FW_DUMP_SIZE
+id|dump_size
 )paren
 suffix:semicolon
 r_if
@@ -3411,8 +3477,10 @@ op_star
 id|cmd
 )paren
 (brace
+DECL|macro|ABORT_POLLING_PERIOD
+mdefine_line|#define ABORT_POLLING_PERIOD&t;HZ
 DECL|macro|ABORT_WAIT_TIME
-mdefine_line|#define ABORT_WAIT_TIME&t;10 /* seconds */
+mdefine_line|#define ABORT_WAIT_TIME&t;&t;((10 * HZ) / (ABORT_POLLING_PERIOD))
 r_int
 id|found
 op_assign
@@ -3426,6 +3494,8 @@ suffix:semicolon
 id|srb_t
 op_star
 id|rp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head
@@ -3436,11 +3506,6 @@ op_star
 id|temp
 suffix:semicolon
 id|u_long
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|u_long
 id|max_wait_time
 op_assign
 id|ABORT_WAIT_TIME
@@ -3448,20 +3513,11 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/* Check on done queue */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|found
-)paren
-(brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -3487,7 +3543,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;* Found command.  Just exit and wait for the&n;&t;&t;&t;&t;* cmd sent to OS.&n;&t;&t;&t; &t;*/
+multiline_comment|/*&n;&t;&t;&t; * Found command. Just exit and wait for the cmd sent&n;&t;&t;&t; * to OS.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -3505,8 +3561,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;%s: found in done &quot;
-l_string|&quot;queue.&bslash;n&quot;
+l_string|&quot;%s: found in done queue.&bslash;n&quot;
 comma
 id|__func__
 )paren
@@ -3516,37 +3571,36 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Checking to see if its returned to OS */
-id|rp
-op_assign
-(paren
-id|srb_t
-op_star
-)paren
-id|CMD_SP
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
+multiline_comment|/* Complete the cmd right away. */
 r_if
 c_cond
 (paren
-id|rp
-op_eq
-l_int|NULL
+id|found
 )paren
 (brace
+id|qla2x00_delete_from_done_queue
+c_func
+(paren
+id|ha
+comma
+id|rp
+)paren
+suffix:semicolon
+id|sp_put
+c_func
+(paren
+id|ha
+comma
+id|rp
+)paren
+suffix:semicolon
 id|done
 op_increment
 suffix:semicolon
@@ -3568,9 +3622,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|2
-op_star
-id|HZ
+id|ABORT_POLLING_PERIOD
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -3594,7 +3646,6 @@ c_cond
 (paren
 id|done
 )paren
-(brace
 id|DEBUG2
 c_func
 (paren
@@ -3610,35 +3661,6 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|found
-)paren
-(brace
-multiline_comment|/* Immediately return command to the mid-layer */
-id|qla2x00_delete_from_done_queue
-c_func
-(paren
-id|ha
-comma
-id|rp
-)paren
-suffix:semicolon
-id|sp_put
-c_func
-(paren
-id|ha
-comma
-id|rp
-)paren
-suffix:semicolon
-id|done
-op_increment
-suffix:semicolon
-)brace
 r_return
 (paren
 id|done
@@ -3646,8 +3668,6 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla2x00_wait_for_hba_online&n; *    Wait till the HBA is online after going through &n; *    &lt;= MAX_RETRIES_OF_ISP_ABORT  or&n; *    finally HBA is disabled ie marked offline&n; *&n; * Input:&n; *     ha - pointer to host adapter structure&n; * &n; * Note:    &n; *    Does context switching-Release SPIN_LOCK&n; *    (if any) before calling this routine.&n; *&n; * Return:&n; *    Success (Adapter is online) : 0&n; *    Failed  (Adapter is offline/disabled) : 1&n; */
-r_static
-r_inline
 r_int
 DECL|function|qla2x00_wait_for_hba_online
 id|qla2x00_wait_for_hba_online
@@ -3707,6 +3727,8 @@ comma
 op_amp
 id|ha-&gt;dpc_flags
 )paren
+op_logical_or
+id|ha-&gt;dpc_active
 )paren
 op_logical_and
 id|time_before
@@ -3735,15 +3757,12 @@ r_if
 c_cond
 (paren
 id|ha-&gt;flags.online
-op_eq
-id|TRUE
 )paren
 id|return_status
 op_assign
 id|QLA_SUCCESS
 suffix:semicolon
 r_else
-multiline_comment|/* Adapter is disabled/offline */
 id|return_status
 op_assign
 id|QLA_FUNCTION_FAILED
@@ -3945,10 +3964,6 @@ comma
 id|t
 comma
 id|l
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* Get the SCSI request ptr */
 id|sp
@@ -4184,7 +4199,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc */
 r_if
 c_cond
 (paren
@@ -4216,9 +4230,7 @@ id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 id|FAILED
-)paren
 suffix:semicolon
 )brace
 id|spin_lock_irq
@@ -4228,13 +4240,11 @@ id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Search done queue */
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4289,13 +4299,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* list_for_each_safe() */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return immediately if the aborted command was already in the done&n;&t; * queue&n;&t; */
@@ -4347,13 +4355,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4433,13 +4439,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Our SP pointer points at the command we want to remove from the&n;&t; * pending queue providing we haven&squot;t already sent it to the adapter.&n;&t; */
@@ -4463,13 +4467,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|vis_ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4555,13 +4557,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* list_for_each_safe() */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|vis_ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4587,13 +4587,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_for
@@ -4676,16 +4674,14 @@ comma
 id|sp
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 id|ha-&gt;host-&gt;host_lock
@@ -4751,13 +4747,11 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Regardless of mailbox command status, go check on&n;&t;&t;&t; * done queue just in case the sp is already done.&n;&t;&t;&t; */
@@ -4765,18 +4759,16 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*End of for loop */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*End of if !found */
-multiline_comment|/*Waiting for our command in done_queue to be returned to OS.*/
+multiline_comment|/* Waiting for our command in done_queue to be returned to OS.*/
 r_if
 c_cond
 (paren
@@ -4865,10 +4857,6 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|srb_t
 op_star
 id|sp
@@ -4898,13 +4886,11 @@ id|cnt
 op_increment
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|sp
@@ -4924,13 +4910,11 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -4965,13 +4949,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5020,10 +5002,6 @@ suffix:semicolon
 id|fc_port_t
 op_star
 id|fcport_to_reset
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|srb_t
 op_star
@@ -5228,13 +5206,11 @@ id|cmd-&gt;state
 )paren
 suffix:semicolon
 multiline_comment|/* Clear commands from the retry queue. */
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -5305,13 +5281,11 @@ id|rp
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -5320,7 +5294,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc */
 r_if
 c_cond
 (paren
@@ -5356,7 +5329,6 @@ r_goto
 id|eh_dev_reset_done
 suffix:semicolon
 )brace
-multiline_comment|/* Blocking call-Does context switching if loop is Not Ready */
 r_if
 c_cond
 (paren
@@ -5605,10 +5577,6 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|srb_t
 op_star
 id|sp
@@ -5638,13 +5606,11 @@ id|cnt
 op_increment
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|sp
@@ -5664,13 +5630,11 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|status
@@ -5695,13 +5659,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5781,7 +5743,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc*/
 r_if
 c_cond
 (paren
@@ -5816,7 +5777,6 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Blocking call-Does context switching if loop is Not Ready */
 r_if
 c_cond
 (paren
@@ -5837,6 +5797,8 @@ c_func
 (paren
 id|ha
 )paren
+op_eq
+id|QLA_SUCCESS
 )paren
 id|rval
 op_assign
@@ -5969,7 +5931,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc*/
 r_if
 c_cond
 (paren
@@ -6138,7 +6099,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;* qla2x00_loop_reset&n;*      Issue loop reset.&n;*&n;* Input:&n;*      ha = adapter block pointer.&n;*&n;* Returns:&n;*      0 = success&n;*/
 r_static
-r_uint8
+r_int
 DECL|function|qla2x00_loop_reset
 id|qla2x00_loop_reset
 c_func
@@ -6148,7 +6109,7 @@ op_star
 id|ha
 )paren
 (brace
-r_uint8
+r_int
 id|status
 op_assign
 id|QLA_SUCCESS
@@ -7693,31 +7654,6 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-multiline_comment|/* Insert new entry into the list of adapters */
-id|write_lock
-c_func
-(paren
-op_amp
-id|qla_hostlist_lock
-)paren
-suffix:semicolon
-id|list_add_tail
-c_func
-(paren
-op_amp
-id|ha-&gt;list
-comma
-op_amp
-id|qla_hostlist
-)paren
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|qla_hostlist_lock
-)paren
-suffix:semicolon
 multiline_comment|/* v2.19.5b6 */
 multiline_comment|/*&n;&t; * Wait around max loop_reset_delay secs for the devices to come&n;&t; * on-line. We don&squot;t want Linux scanning before we are ready.&n;&t; *&n;&t; */
 r_for
@@ -7965,27 +7901,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|write_lock
-c_func
-(paren
-op_amp
-id|qla_hostlist_lock
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|ha-&gt;list
-)paren
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|qla_hostlist_lock
-)paren
-suffix:semicolon
 id|sysfs_remove_bin_file
 c_func
 (paren
@@ -8171,7 +8086,7 @@ id|ha
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Detach interrupts */
 r_if
@@ -8396,7 +8311,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*************************************************************************&n;* qla2x00_proc_info&n;*&n;* Description:&n;*   Return information to handle /proc support for the driver.&n;*&n;* inout : decides the direction of the dataflow and the meaning of the&n;*         variables&n;* buffer: If inout==FALSE data is being written to it else read from it&n;*         (ptr to a page buffer)&n;* *start: If inout==FALSE start of the valid data in the buffer&n;* offset: If inout==FALSE starting offset from the beginning of all&n;*         possible data to return.&n;* length: If inout==FALSE max number of bytes to be written into the buffer&n;*         else number of bytes in &quot;buffer&quot;&n;* Returns:&n;*         &lt; 0:  error. errno value.&n;*         &gt;= 0: sizeof data returned.&n;*************************************************************************/
+multiline_comment|/*************************************************************************&n;* qla2x00_proc_info&n;*&n;* Description:&n;*   Return information to handle /proc support for the driver.&n;*&n;* inout : decides the direction of the dataflow and the meaning of the&n;*         variables&n;* buffer: If inout==0 data is being written to it else read from it&n;*         (ptr to a page buffer)&n;* *start: If inout==0 start of the valid data in the buffer&n;* offset: If inout==0 starting offset from the beginning of all&n;*         possible data to return.&n;* length: If inout==0 max number of bytes to be written into the buffer&n;*         else number of bytes in &quot;buffer&quot;&n;* Returns:&n;*         &lt; 0:  error. errno value.&n;*         &gt;= 0: sizeof data returned.&n;*************************************************************************/
 r_int
 DECL|function|qla2x00_proc_info
 id|qla2x00_proc_info
@@ -8461,9 +8376,6 @@ r_uint8
 op_star
 id|loop_state
 suffix:semicolon
-r_int
-id|found
-suffix:semicolon
 id|scsi_qla_host_t
 op_star
 id|ha
@@ -8493,88 +8405,16 @@ suffix:semicolon
 )paren
 id|ha
 op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Find the host that was specified */
-id|found
-op_assign
-l_int|0
-suffix:semicolon
-id|read_lock
-c_func
 (paren
-op_amp
-id|qla_hostlist_lock
+id|scsi_qla_host_t
+op_star
 )paren
+id|shost-&gt;hostdata
 suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|ha
-comma
-op_amp
-id|qla_hostlist
-comma
-id|list
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ha-&gt;host
-op_eq
-id|shost
-)paren
-(brace
-id|found
-op_increment
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|qla_hostlist_lock
-)paren
-suffix:semicolon
-multiline_comment|/* if host wasn&squot;t found then exit */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|found
-)paren
-(brace
-id|DEBUG2_3
-c_func
-(paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Can&squot;t find adapter for host %p&bslash;n&quot;
-comma
-id|__func__
-comma
-id|shost
-)paren
-suffix:semicolon
-)paren
-r_return
-(paren
-id|retval
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|inout
-op_eq
-id|TRUE
 )paren
 (brace
 multiline_comment|/* Has data been written to the file? */
@@ -12599,6 +12439,22 @@ id|fcport-&gt;flags
 op_amp
 id|FCF_FABRIC_DEVICE
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|fcport-&gt;flags
+op_amp
+id|FCF_TAPE_PRESENT
+)paren
+id|qla2x00_fabric_logout
+c_func
+(paren
+id|ha
+comma
+id|fcport-&gt;loop_id
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|qla2x00_fabric_login
@@ -12612,6 +12468,7 @@ op_amp
 id|next_loopid
 )paren
 suffix:semicolon
+)brace
 r_else
 id|status
 op_assign
@@ -12919,7 +12776,7 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|DEBUG
@@ -12965,7 +12822,7 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|DEBUG
@@ -13249,7 +13106,6 @@ id|ha-&gt;dpc_flags
 )paren
 )paren
 (brace
-multiline_comment|/* 10/15 ha-&gt;flags.reset_active = TRUE; */
 r_do
 (brace
 id|clear_bit
@@ -13290,7 +13146,6 @@ id|ha-&gt;dpc_flags
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 10/15 ha-&gt;flags.reset_active = FALSE; */
 )brace
 )brace
 multiline_comment|/*&n; * This routine will allocate SP from the free queue&n; * input:&n; *        scsi_qla_host_t *&n; * output:&n; *        srb_t * or NULL&n; */
@@ -13324,7 +13179,6 @@ c_cond
 (paren
 id|sp
 )paren
-(brace
 id|atomic_set
 c_func
 (paren
@@ -13334,234 +13188,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|sp-&gt;req_cnt
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_return
 (paren
 id|sp
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**************************************************************************&n; * qla2x00_blink_led&n; *&n; * Description:&n; *   This function sets the colour of the LED while preserving the&n; *   unsued GPIO pins every sec.&n; *&n; * Input:&n; *       ha - Host adapter structure&n; *      &n; * Return:&n; * &t;None&n; *&n; * Context: qla2x00_timer() Interrupt&n; ***************************************************************************/
-r_void
-DECL|function|qla2x00_blink_led
-id|qla2x00_blink_led
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-id|ha
-)paren
-(brace
-r_uint16
-id|gpio_enable
-comma
-id|gpio_data
-comma
-id|led_color
-suffix:semicolon
-r_int
-r_int
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|device_reg_t
-op_star
-id|reg
-op_assign
-id|ha-&gt;iobase
-suffix:semicolon
-multiline_comment|/* Save the Original GPIOE */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-id|gpio_enable
-op_assign
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;gpioe
-)paren
-suffix:semicolon
-id|gpio_data
-op_assign
-id|RD_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;gpiod
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-id|DEBUG2
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s Original data of gpio_enable_reg=0x%x&quot;
-l_string|&quot; gpio_data_reg=0x%x&bslash;n&quot;
-comma
-id|__func__
-comma
-id|gpio_enable
-comma
-id|gpio_data
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ha-&gt;beacon_green_on
-)paren
-(brace
-id|led_color
-op_assign
-id|GPIO_LED_GREEN_ON_AMBER_OFF
-suffix:semicolon
-id|ha-&gt;beacon_green_on
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-id|led_color
-op_assign
-id|GPIO_LED_GREEN_OFF_AMBER_OFF
-suffix:semicolon
-id|ha-&gt;beacon_green_on
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Set the modified gpio_enable values */
-id|gpio_enable
-op_or_assign
-id|GPIO_LED_GREEN_ON_AMBER_OFF
-suffix:semicolon
-id|DEBUG2
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s Before writing enable : gpio_enable_reg=0x%x&quot;
-l_string|&quot; gpio_data_reg=0x%x led_color=0x%x&bslash;n&quot;
-comma
-id|__func__
-comma
-id|gpio_enable
-comma
-id|gpio_data
-comma
-id|led_color
-)paren
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;gpioe
-comma
-id|gpio_enable
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-multiline_comment|/* Clear out the previously set LED colour */
-id|gpio_data
-op_and_assign
-op_complement
-id|GPIO_LED_GREEN_ON_AMBER_OFF
-suffix:semicolon
-multiline_comment|/* Set the new input LED colour to GPIOD */
-id|gpio_data
-op_or_assign
-id|led_color
-suffix:semicolon
-id|DEBUG2
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;%s Before writing data: gpio_enable_reg=0x%x&quot;
-l_string|&quot; gpio_data_reg=0x%x led_color=0x%x&bslash;n&quot;
-comma
-id|__func__
-comma
-id|gpio_enable
-comma
-id|gpio_data
-comma
-id|led_color
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Set the modified gpio_data values */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
-)paren
-suffix:semicolon
-id|WRT_REG_WORD
-c_func
-(paren
-op_amp
-id|reg-&gt;gpiod
-comma
-id|gpio_data
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ha-&gt;hardware_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
 )brace
@@ -13604,6 +13233,13 @@ r_int
 id|start_dpc
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|index
+suffix:semicolon
+id|srb_t
+op_star
+id|sp
 suffix:semicolon
 multiline_comment|/*&n;&t; * We try and restart any request in the retry queue every second.&n;&t; */
 r_if
@@ -13657,32 +13293,6 @@ id|start_dpc
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Check if beacon LED needs to be blinked */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_QLA2100
-c_func
-(paren
-id|ha
-)paren
-op_logical_and
-op_logical_neg
-id|IS_QLA2200
-c_func
-(paren
-id|ha
-)paren
-op_logical_and
-id|ha-&gt;beacon_blink_led
-)paren
-id|qla2x00_blink_led
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Ports - Port down timer.&n;&t; *&n;&t; * Whenever, a port is in the LOST state we start decrementing its port&n;&t; * down timer every second until it reaches zero. Once  it reaches zero&n;&t; * the port it marked DEAD. &n;&t; */
 id|t
 op_assign
@@ -14003,7 +13613,6 @@ op_logical_and
 id|ha-&gt;flags.online
 )paren
 (brace
-multiline_comment|/* dg 10/30 if (atomic_read(&amp;ha-&gt;loop_down_timer) == LOOP_DOWN_TIME) { */
 r_if
 c_cond
 (paren
@@ -14049,6 +13658,79 @@ op_amp
 id|ha-&gt;loop_state
 comma
 id|LOOP_DEAD
+)paren
+suffix:semicolon
+multiline_comment|/* Schedule an ISP abort to return any tape commands. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ha-&gt;hardware_lock
+comma
+id|cpu_flags
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|index
+op_assign
+l_int|1
+suffix:semicolon
+id|index
+OL
+id|MAX_OUTSTANDING_COMMANDS
+suffix:semicolon
+id|index
+op_increment
+)paren
+(brace
+id|sp
+op_assign
+id|ha-&gt;outstanding_cmds
+(braket
+id|index
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sp
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sp-&gt;fclun-&gt;fcport-&gt;flags
+op_amp
+id|FCF_TAPE_PRESENT
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|ISP_ABORT_NEEDED
+comma
+op_amp
+id|ha-&gt;dpc_flags
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ha-&gt;hardware_lock
+comma
+id|cpu_flags
 )paren
 suffix:semicolon
 id|set_bit

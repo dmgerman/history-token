@@ -1,19 +1,19 @@
 multiline_comment|/*&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; 08/23/2000&n; * - get rid of some verify_areas and use __copy*user and __get/put_user&n; *   for the ones that remain&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|NORMAL_RETRIES
 mdefine_line|#define NORMAL_RETRIES&t;&t;&t;5
