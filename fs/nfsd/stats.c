@@ -21,8 +21,9 @@ id|svc_stat
 id|nfsd_svcstats
 op_assign
 (brace
+dot
 id|program
-suffix:colon
+op_assign
 op_amp
 id|nfsd_program
 comma
