@@ -6832,6 +6832,22 @@ id|next
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * At this point we have either done a back merge&n;&t; * or front merge. We need the smaller start_time of&n;&t; * the merged requests to be the current request&n;&t; * for accounting purposes.&n;&t; */
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|req-&gt;start_time
+comma
+id|next-&gt;start_time
+)paren
+)paren
+id|req-&gt;start_time
+op_assign
+id|next-&gt;start_time
+suffix:semicolon
 id|req-&gt;biotail-&gt;bi_next
 op_assign
 id|next-&gt;bio
