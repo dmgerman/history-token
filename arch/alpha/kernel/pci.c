@@ -1072,7 +1072,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|dev-&gt;bus-&gt;self
+id|dev-&gt;bus-&gt;parent
 )paren
 suffix:semicolon
 op_star
@@ -1608,8 +1608,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_else
-multiline_comment|/* FIXME: `else&squot; will be removed when&n;&t;&t;   pci_assign_unassigned_resources() is able to work&n;&t;&t;   correctly with [partially] allocated PCI tree. */
 id|pci_assign_unassigned_resources
 c_func
 (paren

@@ -236,6 +236,7 @@ id|cpuid
 )paren
 (brace
 r_int
+r_int
 id|stop
 op_assign
 id|jiffies
@@ -1176,6 +1177,7 @@ op_star
 id|ipcb
 suffix:semicolon
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|cpu
@@ -1469,6 +1471,7 @@ id|task_struct
 op_star
 id|idle
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon
@@ -2910,6 +2913,7 @@ r_struct
 id|smp_call_struct
 id|data
 suffix:semicolon
+r_int
 r_int
 id|timeout
 suffix:semicolon
