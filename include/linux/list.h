@@ -681,6 +681,7 @@ r_int
 id|hlist_unhashed
 c_func
 (paren
+r_const
 r_struct
 id|hlist_node
 op_star
@@ -699,6 +700,7 @@ r_int
 id|hlist_empty
 c_func
 (paren
+r_const
 r_struct
 id|hlist_head
 op_star
