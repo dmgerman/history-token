@@ -1,8 +1,8 @@
 macro_line|#ifndef _PPC64_CACHEFLUSH_H
 DECL|macro|_PPC64_CACHEFLUSH_H
 mdefine_line|#define _PPC64_CACHEFLUSH_H
-multiline_comment|/* Keep includes the same across arches.  */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/*&n; * No cache flushing is required when address mappings are&n; * changed, because the caches on PowerPCs are physically&n; * addressed.&n; */
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
@@ -31,7 +31,7 @@ id|page
 suffix:semicolon
 r_extern
 r_void
-id|flush_icache_range
+id|__flush_icache_range
 c_func
 (paren
 r_int
@@ -106,5 +106,40 @@ op_star
 id|page_va
 )paren
 suffix:semicolon
+DECL|function|flush_icache_range
+r_static
+r_inline
+r_void
+id|flush_icache_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|stop
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_COHERENT_ICACHE
+)paren
+)paren
+id|__flush_icache_range
+c_func
+(paren
+id|start
+comma
+id|stop
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _PPC64_CACHEFLUSH_H */
 eof

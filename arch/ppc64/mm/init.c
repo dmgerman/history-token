@@ -2898,6 +2898,15 @@ op_star
 id|page
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_COHERENT_ICACHE
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* avoid an atomic op if possible */
 r_if
 c_cond
@@ -2945,6 +2954,15 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_COHERENT_ICACHE
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldnt have to do this, but some versions of glibc&n;&t; * require it (ld.so assumes zero filled pages are icache clean)&n;&t; * - Anton&n;&t; */
 multiline_comment|/* avoid an atomic op if possible */
@@ -3022,6 +3040,15 @@ l_int|0
 r_return
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_COHERENT_ICACHE
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* avoid an atomic op if possible */
 r_if
 c_cond
@@ -3145,6 +3172,13 @@ multiline_comment|/* handle i-cache coherency */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_COHERENT_ICACHE
+)paren
+op_logical_and
 op_logical_neg
 (paren
 id|cur_cpu_spec-&gt;cpu_features
