@@ -246,6 +246,7 @@ id|MAX_DMA_CHANNELS
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Trying to free DMA%d&bslash;n&quot;
 comma
 id|dmanr
@@ -277,6 +278,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Trying to free free DMA%d&bslash;n&quot;
 comma
 id|dmanr
