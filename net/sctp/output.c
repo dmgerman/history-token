@@ -531,8 +531,6 @@ id|chunk-&gt;chunk_hdr-&gt;length
 suffix:semicolon
 r_int
 id|psize
-op_assign
-id|packet-&gt;size
 suffix:semicolon
 r_int
 id|pmtu
@@ -549,6 +547,10 @@ id|packet
 comma
 id|chunk
 )paren
+suffix:semicolon
+id|psize
+op_assign
+id|packet-&gt;size
 suffix:semicolon
 r_if
 c_cond
@@ -692,6 +694,11 @@ id|packet
 comma
 id|chunk
 )paren
+suffix:semicolon
+multiline_comment|/* Disallow SACK bundling after DATA. */
+id|packet-&gt;has_sack
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond

@@ -2897,9 +2897,10 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
+multiline_comment|/* No need to allocate LL here, as this is only a chunk. */
 id|skb
 op_assign
-id|dev_alloc_skb
+id|alloc_skb
 c_func
 (paren
 id|WORD_ROUND
@@ -2912,6 +2913,8 @@ id|sctp_chunkhdr_t
 op_plus
 id|paylen
 )paren
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2941,17 +2944,6 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 suffix:semicolon
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-r_sizeof
-(paren
-id|sctp_chunkhdr_t
-)paren
-)paren
-suffix:semicolon
 id|chunk_hdr-&gt;type
 op_assign
 id|type
@@ -2965,18 +2957,6 @@ op_assign
 id|htons
 c_func
 (paren
-r_sizeof
-(paren
-id|sctp_chunkhdr_t
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Move the data pointer back up to the start of the chunk.  */
-id|skb_push
-c_func
-(paren
-id|skb
-comma
 r_sizeof
 (paren
 id|sctp_chunkhdr_t
