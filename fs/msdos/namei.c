@@ -8,6 +8,7 @@ multiline_comment|/* MS-DOS &quot;device special files&quot; */
 DECL|variable|reserved_names
 r_static
 r_const
+r_int
 r_char
 op_star
 id|reserved_names
@@ -45,6 +46,7 @@ suffix:semicolon
 multiline_comment|/* Characters that are undesirable in an MS-DOS file name */
 DECL|variable|bad_chars
 r_static
+r_int
 r_char
 id|bad_chars
 (braket
@@ -54,6 +56,7 @@ l_string|&quot;*?&lt;&gt;|&bslash;&quot;&quot;
 suffix:semicolon
 DECL|variable|bad_if_strict_pc
 r_static
+r_int
 r_char
 id|bad_if_strict_pc
 (braket
@@ -63,6 +66,7 @@ l_string|&quot;+=,; &quot;
 suffix:semicolon
 DECL|variable|bad_if_strict_atari
 r_static
+r_int
 r_char
 id|bad_if_strict_atari
 (braket
@@ -81,6 +85,7 @@ id|msdos_format_name
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -88,6 +93,7 @@ comma
 r_int
 id|len
 comma
+r_int
 r_char
 op_star
 id|res
@@ -99,11 +105,13 @@ id|opts
 )paren
 multiline_comment|/* name is the proposed name, len is its length, res is&n;&t; * the resulting name, opts-&gt;name_check is either (r)elaxed,&n;&t; * (n)ormal or (s)trict, opts-&gt;dotsOK allows dots at the&n;&t; * beginning of name (for hidden files)&n;&t; */
 (brace
+r_int
 r_char
 op_star
 id|walk
 suffix:semicolon
 r_const
+r_int
 r_char
 op_star
 op_star
@@ -671,6 +679,7 @@ op_star
 id|dir
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -696,16 +705,17 @@ id|i_pos
 )paren
 (brace
 r_int
-id|res
-suffix:semicolon
-r_char
-id|dotsOK
-suffix:semicolon
 r_char
 id|msdos_name
 (braket
 id|MSDOS_NAME
 )braket
+suffix:semicolon
+r_char
+id|dotsOK
+suffix:semicolon
+r_int
+id|res
 suffix:semicolon
 id|dotsOK
 op_assign
@@ -866,13 +876,14 @@ id|options
 )paren
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
 r_char
 id|msdos_name
 (braket
 id|MSDOS_NAME
 )braket
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|error
 op_assign
@@ -948,8 +959,6 @@ id|options
 )paren
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
 r_char
 id|a_msdos_name
 (braket
@@ -960,6 +969,9 @@ id|b_msdos_name
 (braket
 id|MSDOS_NAME
 )braket
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|error
 op_assign
@@ -1271,6 +1283,7 @@ op_star
 id|dir
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -1499,6 +1512,7 @@ id|res
 comma
 id|is_hid
 suffix:semicolon
+r_int
 r_char
 id|msdos_name
 (braket
@@ -1929,6 +1943,7 @@ id|res
 comma
 id|is_hid
 suffix:semicolon
+r_int
 r_char
 id|msdos_name
 (braket
@@ -2394,6 +2409,7 @@ id|inode
 op_star
 id|old_dir
 comma
+r_int
 r_char
 op_star
 id|old_name
@@ -2408,6 +2424,7 @@ id|inode
 op_star
 id|new_dir
 comma
+r_int
 r_char
 op_star
 id|new_name
@@ -2960,6 +2977,7 @@ comma
 id|old_hid
 suffix:semicolon
 multiline_comment|/* if new file and old file are hidden */
+r_int
 r_char
 id|old_msdos_name
 (braket

@@ -58,7 +58,7 @@ mdefine_line|#define CASE_LOWER_EXT  16&t;/* extension is lower case */
 DECL|macro|DELETED_FLAG
 mdefine_line|#define DELETED_FLAG 0xe5 /* marks file as deleted when in name[0] */
 DECL|macro|IS_FREE
-mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETED_FLAG)
+mdefine_line|#define IS_FREE(n) (!*(n) || *(n) == DELETED_FLAG)
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
 multiline_comment|/* valid file mode bits */
@@ -139,7 +139,7 @@ r_struct
 id|fat_boot_sector
 (brace
 DECL|member|ignored
-id|__s8
+id|__u8
 id|ignored
 (braket
 l_int|3
@@ -147,7 +147,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Boot strap short or near jump */
 DECL|member|system_id
-id|__s8
+id|__u8
 id|system_id
 (braket
 l_int|8
@@ -162,9 +162,9 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* bytes per logical sector */
-DECL|member|cluster_size
+DECL|member|sec_per_clus
 id|__u8
-id|cluster_size
+id|sec_per_clus
 suffix:semicolon
 multiline_comment|/* sectors/cluster */
 DECL|member|reserved
@@ -314,7 +314,7 @@ id|msdos_dir_entry
 (brace
 DECL|member|name
 DECL|member|ext
-id|__s8
+id|__u8
 id|name
 (braket
 l_int|8
@@ -770,6 +770,28 @@ id|inode
 suffix:semicolon
 r_extern
 r_int
+id|fat_get_cluster
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_int
+id|cluster
+comma
+r_int
+op_star
+id|fclus
+comma
+r_int
+op_star
+id|dclus
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|fat_free
 c_func
 (paren
@@ -799,6 +821,7 @@ op_star
 id|inode
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
@@ -1419,6 +1442,7 @@ op_star
 id|dir
 comma
 r_const
+r_int
 r_char
 op_star
 id|name
