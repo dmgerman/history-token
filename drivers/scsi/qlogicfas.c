@@ -1,57 +1,5 @@
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/*&n;   Qlogic linux driver - work in progress. No Warranty express or implied.&n;   Use at your own risk.  Support Tort Reform so you won&squot;t have to read all&n;   these silly disclaimers.&n;&n;   Copyright 1994, Tom Zerucha.   &n;   tz@execpc.com&n;   &n;   Additional Code, and much appreciated help by&n;   Michael A. Griffith&n;   grif@cs.ucr.edu&n;&n;   Thanks to Eric Youngdale and Dave Hinds for loadable module and PCMCIA&n;   help respectively, and for suffering through my foolishness during the&n;   debugging process.&n;&n;   Reference Qlogic FAS408 Technical Manual, 53408-510-00A, May 10, 1994&n;   (you can reference it, but it is incomplete and inaccurate in places)&n;&n;   Version 0.46 1/30/97 - kernel 1.2.0+&n;&n;   Functions as standalone, loadable, and PCMCIA driver, the latter from&n;   Dave Hinds&squot; PCMCIA package.&n;   &n;   Cleaned up 26/10/2002 by Alan Cox &lt;alan@redhat.com&gt; as part of the 2.5&n;   SCSI driver cleanup and audit. This driver still needs work on the&n;   following&n;   &t;-&t;Non terminating hardware waits&n;   &t;-&t;Some layering violations with its pcmcia stub&n;&n;   Redistributable under terms of the GNU General Public License&n;&n;   For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n;   is in an open non patent encumbered format. Where cryptographic key signing&n;   forms part of the process of creating an executable the information&n;   including keys needed to generate an equivalently functional executable&n;   are deemed to be part of the source code.&n;&n;*/
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* Configuration */
-multiline_comment|/* Set the following to 2 to use normal interrupt (active high/totempole-&n;   tristate), otherwise use 0 (REQUIRED FOR PCMCIA) for active low, open&n;   drain */
-DECL|macro|QL_INT_ACTIVE_HIGH
-mdefine_line|#define QL_INT_ACTIVE_HIGH 2
-multiline_comment|/* Set the following to max out the speed of the PIO PseudoDMA transfers,&n;   again, 0 tends to be slower, but more stable.  */
-DECL|macro|QL_TURBO_PDMA
-mdefine_line|#define QL_TURBO_PDMA 1
-multiline_comment|/* This should be 1 to enable parity detection */
-DECL|macro|QL_ENABLE_PARITY
-mdefine_line|#define QL_ENABLE_PARITY 1
-multiline_comment|/* This will reset all devices when the driver is initialized (during bootup).&n;   The other linux drivers don&squot;t do this, but the DOS drivers do, and after&n;   using DOS or some kind of crash or lockup this will bring things back&n;   without requiring a cold boot.  It does take some time to recover from a&n;   reset, so it is slower, and I have seen timeouts so that devices weren&squot;t&n;   recognized when this was set. */
-DECL|macro|QL_RESET_AT_START
-mdefine_line|#define QL_RESET_AT_START 0
-multiline_comment|/* crystal frequency in megahertz (for offset 5 and 9)&n;   Please set this for your card.  Most Qlogic cards are 40 Mhz.  The&n;   Control Concepts ISA (not VLB) is 24 Mhz */
-DECL|macro|XTALFREQ
-mdefine_line|#define XTALFREQ&t;40
-multiline_comment|/**********/
-multiline_comment|/* DANGER! modify these at your own risk */
-multiline_comment|/* SLOWCABLE can usually be reset to zero if you have a clean setup and&n;   proper termination.  The rest are for synchronous transfers and other&n;   advanced features if your device can transfer faster than 5Mb/sec.&n;   If you are really curious, email me for a quick howto until I have&n;   something official */
-multiline_comment|/**********/
-multiline_comment|/*****/
-multiline_comment|/* config register 1 (offset 8) options */
-multiline_comment|/* This needs to be set to 1 if your cabling is long or noisy */
-DECL|macro|SLOWCABLE
-mdefine_line|#define SLOWCABLE 1
-multiline_comment|/*****/
-multiline_comment|/* offset 0xc */
-multiline_comment|/* This will set fast (10Mhz) synchronous timing when set to 1&n;   For this to have an effect, FASTCLK must also be 1 */
-DECL|macro|FASTSCSI
-mdefine_line|#define FASTSCSI 0
-multiline_comment|/* This when set to 1 will set a faster sync transfer rate */
-DECL|macro|FASTCLK
-mdefine_line|#define FASTCLK 0&t;/*(XTALFREQ&gt;25?1:0)*/
-multiline_comment|/*****/
-multiline_comment|/* offset 6 */
-multiline_comment|/* This is the sync transfer divisor, XTALFREQ/X will be the maximum&n;   achievable data rate (assuming the rest of the system is capable&n;   and set properly) */
-DECL|macro|SYNCXFRPD
-mdefine_line|#define SYNCXFRPD 5&t;/*(XTALFREQ/5)*/
-multiline_comment|/*****/
-multiline_comment|/* offset 7 */
-multiline_comment|/* This is the count of how many synchronous transfers can take place&n;&t;i.e. how many reqs can occur before an ack is given.&n;&t;The maximum value for this is 15, the upper bits can modify&n;&t;REQ/ACK assertion and deassertion during synchronous transfers&n;&t;If this is 0, the bus will only transfer asynchronously */
-DECL|macro|SYNCOFFST
-mdefine_line|#define SYNCOFFST 0
-multiline_comment|/* for the curious, bits 7&amp;6 control the deassertion delay in 1/2 cycles&n;&t;of the 40Mhz clock. If FASTCLK is 1, specifying 01 (1/2) will&n;&t;cause the deassertion to be early by 1/2 clock.  Bits 5&amp;4 control&n;&t;the assertion delay, also in 1/2 clocks (FASTCLK is ignored here). */
-multiline_comment|/*----------------------------------------------------------------*/
-macro_line|#ifdef PCMCIA
-DECL|macro|QL_INT_ACTIVE_HIGH
-macro_line|#undef QL_INT_ACTIVE_HIGH
-DECL|macro|QL_INT_ACTIVE_HIGH
-mdefine_line|#define QL_INT_ACTIVE_HIGH 0
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;&t;&t;/* to get disk capacity */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -70,9 +18,7 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;qlogicfas.h&quot;
 multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* driver state info, local to driver */
 DECL|variable|qlcfg5
-r_static
 r_int
 id|qlcfg5
 op_assign
@@ -84,21 +30,18 @@ l_int|5
 suffix:semicolon
 multiline_comment|/* 15625/512 */
 DECL|variable|qlcfg6
-r_static
 r_int
 id|qlcfg6
 op_assign
 id|SYNCXFRPD
 suffix:semicolon
 DECL|variable|qlcfg7
-r_static
 r_int
 id|qlcfg7
 op_assign
 id|SYNCOFFST
 suffix:semicolon
 DECL|variable|qlcfg8
-r_static
 r_int
 id|qlcfg8
 op_assign
@@ -115,7 +58,6 @@ l_int|4
 )paren
 suffix:semicolon
 DECL|variable|qlcfg9
-r_static
 r_int
 id|qlcfg9
 op_assign
@@ -130,7 +72,6 @@ l_int|5
 )paren
 suffix:semicolon
 DECL|variable|qlcfgc
-r_static
 r_int
 id|qlcfgc
 op_assign
@@ -175,22 +116,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* The qlogic card uses two register maps - These macros select which one */
-DECL|macro|REG0
-mdefine_line|#define REG0 ( outb( inb( qbase + 0xd ) &amp; 0x7f , qbase + 0xd ), outb( 4 , qbase + 0xd ))
-DECL|macro|REG1
-mdefine_line|#define REG1 ( outb( inb( qbase + 0xd ) | 0x80 , qbase + 0xd ), outb( 0xb4 | QL_INT_ACTIVE_HIGH , qbase + 0xd ))
-multiline_comment|/* following is watchdog timeout in microseconds */
-DECL|macro|WATCHDOG
-mdefine_line|#define WATCHDOG 5000000
-multiline_comment|/*----------------------------------------------------------------*/
-multiline_comment|/* the following will set the monitor border color (useful to find&n;   where something crashed or gets stuck at and as a simple profiler) */
-macro_line|#if 0
-mdefine_line|#define rtrc(i) {inb(0x3da);outb(0x31,0x3c0);outb((i),0x3c0);}
-macro_line|#else
-DECL|macro|rtrc
-mdefine_line|#define rtrc(i) {}
-macro_line|#endif
 multiline_comment|/*----------------------------------------------------------------*/
 multiline_comment|/* local functions */
 multiline_comment|/*----------------------------------------------------------------*/
@@ -2183,7 +2108,6 @@ id|icmd
 suffix:semicolon
 )brace
 DECL|function|do_ql_ihandl
-r_static
 id|irqreturn_t
 id|do_ql_ihandl
 c_func
