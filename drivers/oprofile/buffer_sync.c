@@ -1010,6 +1010,16 @@ id|s
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|oprofile_stats.sample_lost_no_mm
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|release_mm
 r_static

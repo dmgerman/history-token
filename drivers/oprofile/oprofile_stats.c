@@ -77,7 +77,7 @@ id|atomic_set
 c_func
 (paren
 op_amp
-id|oprofile_stats.sample_lost_mmap_sem
+id|oprofile_stats.sample_lost_no_mm
 comma
 l_int|0
 )paren
@@ -259,10 +259,10 @@ id|sb
 comma
 id|dir
 comma
-l_string|&quot;sample_lost_mmap_sem&quot;
+l_string|&quot;sample_lost_no_mm&quot;
 comma
 op_amp
-id|oprofile_stats.sample_lost_mmap_sem
+id|oprofile_stats.sample_lost_no_mm
 )paren
 suffix:semicolon
 id|oprofilefs_create_ro_atomic
