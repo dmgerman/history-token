@@ -81,6 +81,10 @@ l_string|&quot;sha384&quot;
 comma
 l_string|&quot;sha512&quot;
 comma
+l_string|&quot;md4&quot;
+comma
+l_string|&quot;aes&quot;
+comma
 l_int|NULL
 )brace
 suffix:semicolon
