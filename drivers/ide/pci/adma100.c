@@ -16,7 +16,8 @@ op_star
 id|hwif
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|phy_admctl
 op_assign
 id|pci_resource_start
