@@ -2205,24 +2205,6 @@ op_amp
 l_int|0x7f
 )paren
 suffix:semicolon
-id|ves1x93_writereg
-(paren
-id|i2c
-comma
-l_int|0x00
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-id|ves1x93_writereg
-(paren
-id|i2c
-comma
-l_int|0x00
-comma
-l_int|0x01
-)paren
-suffix:semicolon
 multiline_comment|/* ves1993 hates this, will lose lock */
 r_if
 c_cond
