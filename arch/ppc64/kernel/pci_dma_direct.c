@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -145,7 +146,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -174,7 +176,8 @@ comma
 r_int
 id|size
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -198,7 +201,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace
@@ -261,7 +265,8 @@ comma
 r_int
 id|nents
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 (brace

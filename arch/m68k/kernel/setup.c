@@ -61,8 +61,6 @@ macro_line|#endif
 DECL|variable|m68k_is040or060
 r_int
 id|m68k_is040or060
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_int
@@ -76,14 +74,10 @@ suffix:semicolon
 DECL|variable|m68k_num_memory
 r_int
 id|m68k_num_memory
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|m68k_realnum_memory
 r_int
 id|m68k_realnum_memory
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|m68k_memoffset
 r_int
@@ -103,12 +97,6 @@ r_static
 r_struct
 id|mem_info
 id|m68k_ramdisk
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|m68k_command_line
 r_static
@@ -194,8 +182,6 @@ r_struct
 id|pt_regs
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_get_model
 r_void
@@ -208,8 +194,6 @@ r_char
 op_star
 id|model
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_get_hardware_list
 r_int
@@ -222,8 +206,6 @@ r_char
 op_star
 id|buffer
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_get_irq_list
 r_int
@@ -239,8 +221,6 @@ comma
 r_void
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_process_int
 id|irqreturn_t
@@ -255,8 +235,6 @@ r_struct
 id|pt_regs
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* machine dependent timer functions */
 DECL|variable|mach_gettimeoffset
@@ -283,8 +261,6 @@ r_struct
 id|rtc_time
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_set_clock_mmss
 r_int
@@ -296,8 +272,6 @@ id|mach_set_clock_mmss
 r_int
 r_int
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_get_ss
 r_int
@@ -309,8 +283,6 @@ id|mach_get_ss
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_get_rtc_pll
 r_int
@@ -323,8 +295,6 @@ r_struct
 id|rtc_pll_info
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_set_rtc_pll
 r_int
@@ -337,8 +307,6 @@ r_struct
 id|rtc_pll_info
 op_star
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_reset
 r_void
@@ -359,8 +327,6 @@ id|mach_halt
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_power_off
 r_void
@@ -371,8 +337,6 @@ id|mach_power_off
 (paren
 r_void
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_max_dma_address
 r_int
@@ -409,8 +373,6 @@ id|mach_heartbeat
 (paren
 r_int
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|mach_heartbeat
 id|EXPORT_SYMBOL
@@ -430,8 +392,6 @@ id|mach_l2_flush
 (paren
 r_int
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
@@ -448,8 +408,6 @@ comma
 r_int
 r_int
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)

@@ -2842,6 +2842,7 @@ OG
 l_int|0
 )paren
 (brace
+r_static
 r_char
 id|dum
 (braket
@@ -3413,6 +3414,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* We need to throw away a sector. */
+r_static
 r_char
 id|dum
 (braket

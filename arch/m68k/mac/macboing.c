@@ -7,8 +7,6 @@ DECL|variable|mac_asc_inited
 r_static
 r_int
 id|mac_asc_inited
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * dumb triangular wave table&n; */
 DECL|variable|mac_asc_wave_tab
@@ -107,8 +105,6 @@ DECL|variable|mac_bell_duration
 r_static
 r_int
 id|mac_bell_duration
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mac_bell_phase
 r_static
@@ -197,8 +193,6 @@ comma
 r_int
 r_int
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * our timer to start/continue/stop the bell&n; */
 DECL|variable|mac_sound_timer

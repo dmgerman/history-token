@@ -39,7 +39,8 @@ id|qd_write_reg
 id|u8
 id|content
 comma
-id|u8
+r_int
+r_int
 id|reg
 )paren
 (brace
@@ -79,7 +80,8 @@ id|u8
 id|__init
 id|qd_read_reg
 (paren
-id|u8
+r_int
+r_int
 id|reg
 )paren
 (brace

@@ -231,6 +231,7 @@ id|inode-&gt;i_generation
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_QUOTA
 id|memset
 c_func
 (paren
@@ -245,6 +246,7 @@ id|inode-&gt;i_dquot
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|inode-&gt;i_pipe
 op_assign
 l_int|NULL
@@ -462,34 +464,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.clean_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.dirty_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.locked_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|inode-&gt;i_data.io_pages
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|inode-&gt;i_dentry
 )paren
 suffix:semicolon
@@ -509,6 +483,13 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|init_rwsem
+c_func
+(paren
+op_amp
+id|inode-&gt;i_alloc_sem
+)paren
+suffix:semicolon
 id|INIT_RADIX_TREE
 c_func
 (paren
@@ -522,7 +503,7 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.page_lock
+id|inode-&gt;i_data.tree_lock
 )paren
 suffix:semicolon
 id|init_MUTEX
@@ -697,15 +678,7 @@ id|I_LOCK
 )paren
 )paren
 )paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -715,7 +688,6 @@ op_amp
 id|inode_in_use
 )paren
 suffix:semicolon
-)brace
 id|inodes_stat.nr_unused
 op_decrement
 suffix:semicolon
@@ -1059,14 +1031,7 @@ op_amp
 id|inode-&gt;i_hash
 )paren
 suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -3486,15 +3451,7 @@ id|I_LOCK
 )paren
 )paren
 )paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|inode-&gt;i_list
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -3504,7 +3461,6 @@ op_amp
 id|inode_unused
 )paren
 suffix:semicolon
-)brace
 id|inodes_stat.nr_unused
 op_increment
 suffix:semicolon
@@ -4163,16 +4119,7 @@ id|inode_needs_sync
 suffix:semicolon
 multiline_comment|/*&n; *&t;Quota functions that want to walk the inode lists..&n; */
 macro_line|#ifdef CONFIG_QUOTA
-multiline_comment|/* Functions back in dquot.c */
-r_void
-id|put_dquot_list
-c_func
-(paren
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/* Function back in dquot.c */
 r_int
 id|remove_inode_dquot_ref
 c_func
@@ -4200,6 +4147,11 @@ id|sb
 comma
 r_int
 id|type
+comma
+r_struct
+id|list_head
+op_star
+id|tofree_head
 )paren
 (brace
 r_struct
@@ -4211,12 +4163,6 @@ r_struct
 id|list_head
 op_star
 id|act_head
-suffix:semicolon
-id|LIST_HEAD
-c_func
-(paren
-id|tofree_head
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4278,7 +4224,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4325,7 +4270,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4368,7 +4312,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4411,7 +4354,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4421,13 +4363,6 @@ c_func
 (paren
 op_amp
 id|inode_lock
-)paren
-suffix:semicolon
-id|put_dquot_list
-c_func
-(paren
-op_amp
-id|tofree_head
 )paren
 suffix:semicolon
 )brace

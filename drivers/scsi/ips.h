@@ -405,6 +405,10 @@ DECL|macro|IPS_SUBDEVICEID_6M
 mdefine_line|#define IPS_SUBDEVICEID_6M           0x0279
 DECL|macro|IPS_SUBDEVICEID_6I
 mdefine_line|#define IPS_SUBDEVICEID_6I           0x028C
+DECL|macro|IPS_SUBDEVICEID_7k
+mdefine_line|#define IPS_SUBDEVICEID_7k           0x028E
+DECL|macro|IPS_SUBDEVICEID_7M
+mdefine_line|#define IPS_SUBDEVICEID_7M           0x028F
 DECL|macro|IPS_IOCTL_SIZE
 mdefine_line|#define IPS_IOCTL_SIZE               8192
 DECL|macro|IPS_STATUS_SIZE
@@ -531,6 +535,12 @@ DECL|macro|IPS_ADTYPE_SERVERAID6M
 mdefine_line|#define IPS_ADTYPE_SERVERAID6M       0x0E
 DECL|macro|IPS_ADTYPE_SERVERAID6I
 mdefine_line|#define IPS_ADTYPE_SERVERAID6I       0x0F
+DECL|macro|IPS_ADTYPE_SERVERAID7t
+mdefine_line|#define IPS_ADTYPE_SERVERAID7t       0x10
+DECL|macro|IPS_ADTYPE_SERVERAID7k
+mdefine_line|#define IPS_ADTYPE_SERVERAID7k       0x11
+DECL|macro|IPS_ADTYPE_SERVERAID7M
+mdefine_line|#define IPS_ADTYPE_SERVERAID7M       0x12
 multiline_comment|/*&n;    * Adapter Command/Status Packet Definitions&n;    */
 DECL|macro|IPS_SUCCESS
 mdefine_line|#define IPS_SUCCESS                  0x01 /* Successfully completed       */
@@ -3817,21 +3827,23 @@ mdefine_line|#define IPS_VER_MINOR 00
 DECL|macro|IPS_VER_MINOR_STRING
 mdefine_line|#define IPS_VER_MINOR_STRING &quot;00&quot;
 DECL|macro|IPS_VER_BUILD
-mdefine_line|#define IPS_VER_BUILD 00
+mdefine_line|#define IPS_VER_BUILD 15
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;15&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING &quot;7.00.00&quot;
+mdefine_line|#define IPS_VER_STRING &quot;7.00.15&quot;
 DECL|macro|IPS_RELEASE_ID
-mdefine_line|#define IPS_RELEASE_ID 0x00010001
+mdefine_line|#define IPS_RELEASE_ID 0x00020000
 DECL|macro|IPS_BUILD_IDENT
-mdefine_line|#define IPS_BUILD_IDENT 475
+mdefine_line|#define IPS_BUILD_IDENT 625
 DECL|macro|IPS_LEGALCOPYRIGHT_STRING
-mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003. All Rights Reserved.&quot;
+mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2002. All Rights Reserved.&quot;
 DECL|macro|IPS_ADAPTECCOPYRIGHT_STRING
-mdefine_line|#define IPS_ADAPTECCOPYRIGHT_STRING &quot;(c) Copyright Adaptec, Inc. 2002 to present. All Rights Reserved.&quot;
+mdefine_line|#define IPS_ADAPTECCOPYRIGHT_STRING &quot;(c) Copyright Adaptec, Inc. 2002 to 2004. All Rights Reserved.&quot;
+DECL|macro|IPS_DELLCOPYRIGHT_STRING
+mdefine_line|#define IPS_DELLCOPYRIGHT_STRING &quot;(c) Copyright Dell 2004. All Rights Reserved.&quot;
 DECL|macro|IPS_NT_LEGALCOPYRIGHT_STRING
-mdefine_line|#define IPS_NT_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003.&quot;
+mdefine_line|#define IPS_NT_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2002.&quot;
 multiline_comment|/* Version numbers for various adapters */
 DECL|macro|IPS_VER_SERVERAID1
 mdefine_line|#define IPS_VER_SERVERAID1 &quot;2.25.01&quot;
@@ -3842,15 +3854,15 @@ mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
 mdefine_line|#define IPS_VER_SERVERAID3 &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H &quot;6.11.07&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;7.00.15&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;6.11.07&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;7.00.15&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA &quot;6.11.07&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;7.00.15&quot;
 DECL|macro|IPS_VER_MARCO
-mdefine_line|#define IPS_VER_MARCO &quot;6.11.07&quot;
+mdefine_line|#define IPS_VER_MARCO &quot;7.00.15&quot;
 DECL|macro|IPS_VER_SEBRING
-mdefine_line|#define IPS_VER_SEBRING &quot;6.11.07&quot;
+mdefine_line|#define IPS_VER_SEBRING &quot;7.00.15&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
 mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;

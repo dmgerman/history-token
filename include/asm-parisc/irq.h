@@ -338,5 +338,24 @@ r_struct
 id|tasklet_struct
 id|power_tasklet
 suffix:semicolon
+r_struct
+id|irqaction
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* _ASM_PARISC_IRQ_H */
 eof

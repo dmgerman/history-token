@@ -114,8 +114,7 @@ multiline_comment|/*&n; * define inline addr translation functions. Normally onl
 DECL|function|isa_itb
 r_static
 r_inline
-r_int
-r_char
+id|u8
 op_star
 id|isa_itb
 c_func
@@ -136,8 +135,7 @@ id|Q40_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|Q40_ISA_IO_B
@@ -153,8 +151,7 @@ id|GG2_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|GG2_ISA_IO_B
@@ -170,8 +167,7 @@ id|AG_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|AG_ISA_IO_B
@@ -192,8 +188,7 @@ multiline_comment|/* avoid warnings, just in case */
 DECL|function|isa_itw
 r_static
 r_inline
-r_int
-r_int
+id|u16
 op_star
 id|isa_itw
 c_func
@@ -214,8 +209,7 @@ id|Q40_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|Q40_ISA_IO_W
@@ -231,8 +225,7 @@ id|GG2_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|GG2_ISA_IO_W
@@ -248,8 +241,7 @@ id|AG_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|AG_ISA_IO_W
@@ -270,8 +262,7 @@ multiline_comment|/* avoid warnings, just in case */
 DECL|function|isa_mtb
 r_static
 r_inline
-r_int
-r_char
+id|u8
 op_star
 id|isa_mtb
 c_func
@@ -292,8 +283,7 @@ id|Q40_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|Q40_ISA_MEM_B
@@ -309,8 +299,7 @@ id|GG2_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|GG2_ISA_MEM_B
@@ -326,8 +315,7 @@ id|AG_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
@@ -344,8 +332,7 @@ multiline_comment|/* avoid warnings, just in case */
 DECL|function|isa_mtw
 r_static
 r_inline
-r_int
-r_int
+id|u16
 op_star
 id|isa_mtw
 c_func
@@ -366,8 +353,7 @@ id|Q40_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|Q40_ISA_MEM_W
@@ -383,8 +369,7 @@ id|GG2_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|GG2_ISA_MEM_W
@@ -400,8 +385,7 @@ id|AG_ISA
 suffix:colon
 r_return
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
@@ -484,7 +468,7 @@ multiline_comment|/* avoid warnings */
 )brace
 )brace
 DECL|macro|isa_inb_p
-mdefine_line|#define isa_inb_p(p)      ({unsigned char v=isa_inb(p);isa_delay();v;})
+mdefine_line|#define isa_inb_p(p)      ({u8 v=isa_inb(p);isa_delay();v;})
 DECL|macro|isa_outb_p
 mdefine_line|#define isa_outb_p(v,p)   ({isa_outb((v),(p));isa_delay();})
 DECL|macro|isa_insb

@@ -76,8 +76,6 @@ DECL|variable|nubus_active
 r_static
 r_int
 id|nubus_active
-op_assign
-l_int|0
 suffix:semicolon
 r_void
 id|via_debug_dump

@@ -7964,16 +7964,18 @@ id|O_NONBLOCK
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: non-blocking&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: non-blocking&quot;
 )paren
 suffix:semicolon
 r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: blocking&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: blocking&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -547,8 +547,26 @@ DECL|macro|__NR_fadvise64_64
 mdefine_line|#define __NR_fadvise64_64&t;272
 DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;273
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;274
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;275
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;276
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open &t;&t;277
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;(__NR_mq_open+1)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;(__NR_mq_open+2)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;(__NR_mq_open+3)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;(__NR_mq_open+4)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 274
+mdefine_line|#define NR_syscalls 283
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

@@ -143,7 +143,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|RTAS_ERR
+id|RTAS_DEBUG
 l_string|&quot;%d -------- %s begin --------&bslash;n&quot;
 comma
 id|error_log_cnt
@@ -267,7 +267,7 @@ l_int|1
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|buffer
@@ -288,7 +288,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|buffer
@@ -297,7 +297,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|RTAS_ERR
+id|RTAS_DEBUG
 l_string|&quot;%d -------- %s end ----------&bslash;n&quot;
 comma
 id|error_log_cnt
@@ -350,18 +350,18 @@ id|len
 op_add_assign
 id|err-&gt;extended_log_length
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|len
 OG
-id|RTAS_ERROR_LOG_MAX
+id|rtas_error_log_max
 )paren
 id|len
 op_assign
-id|RTAS_ERROR_LOG_MAX
+id|rtas_error_log_max
 suffix:semicolon
-)brace
 r_return
 id|len
 suffix:semicolon
@@ -1215,6 +1215,16 @@ op_assign
 id|RTAS_ERROR_LOG_MAX
 suffix:semicolon
 )brace
+multiline_comment|/* Make room for the sequence number */
+id|rtas_error_log_buffer_max
+op_assign
+id|rtas_error_log_max
+op_plus
+r_sizeof
+(paren
+r_int
+)paren
+suffix:semicolon
 id|of_node_put
 c_func
 (paren
@@ -1576,17 +1586,11 @@ c_func
 l_string|&quot;enabling surveillance&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|enable_surveillance
 c_func
 (paren
 id|surveillance_timeout
 )paren
-)paren
-r_goto
-id|error_vfree
 suffix:semicolon
 id|DEBUG
 c_func
@@ -1710,23 +1714,6 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
-id|error_vfree
-suffix:colon
-r_if
-c_cond
-(paren
-id|rtas_log_buf
-)paren
-id|vfree
-c_func
-(paren
-id|rtas_log_buf
-)paren
-suffix:semicolon
-id|rtas_log_buf
-op_assign
-l_int|NULL
-suffix:semicolon
 id|error
 suffix:colon
 multiline_comment|/* Should delete proc entries */
@@ -1832,16 +1819,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Failed to start RTAS daemon&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Make room for the sequence number */
-id|rtas_error_log_buffer_max
-op_assign
-id|rtas_error_log_max
-op_plus
-r_sizeof
-(paren
-r_int
 )paren
 suffix:semicolon
 r_return

@@ -30,7 +30,7 @@ DECL|macro|_CACHE
 macro_line|#  define _CACHE v4
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
+macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM925T) || defined(CONFIG_CPU_ARM1020)
 DECL|macro|MULTI_CACHE
 macro_line|# define MULTI_CACHE 1
 macro_line|#endif
@@ -454,9 +454,7 @@ mdefine_line|#define flush_icache_range(s,e)&t;&t;__cpuc_coherent_kern_range(s,e
 multiline_comment|/*&n; * Perform necessary cache operations to ensure that the TLB will&n; * see data written in the specified area.&n; */
 DECL|macro|clean_dcache_area
 mdefine_line|#define clean_dcache_area(start,size)&t;cpu_dcache_clean_area(start, size)
-multiline_comment|/*&n; * flush_dcache_page is used when the kernel has written to the page&n; * cache page at virtual address page-&gt;virtual.&n; *&n; * If this page isn&squot;t mapped (ie, page-&gt;mapping = NULL), or it has&n; * userspace mappings (page-&gt;mapping-&gt;i_mmap or page-&gt;mapping-&gt;i_mmap_shared)&n; * then we _must_ always clean + invalidate the dcache entries associated&n; * with the kernel mapping.&n; *&n; * Otherwise we can defer the operation, and clean the cache when we are&n; * about to change to user space.  This is the same method as used on SPARC64.&n; * See update_mmu_cache for the user space part.&n; */
-DECL|macro|mapping_mapped
-mdefine_line|#define mapping_mapped(map)&t;(!list_empty(&amp;(map)-&gt;i_mmap) || &bslash;&n;&t;&t;&t;&t; !list_empty(&amp;(map)-&gt;i_mmap_shared))
+multiline_comment|/*&n; * flush_dcache_page is used when the kernel has written to the page&n; * cache page at virtual address page-&gt;virtual.&n; *&n; * If this page isn&squot;t mapped (ie, page_mapping == NULL), or it might&n; * have userspace mappings, then we _must_ always clean + invalidate&n; * the dcache entries associated with the kernel mapping.&n; *&n; * Otherwise we can defer the operation, and clean the cache when we are&n; * about to change to user space.  This is the same method as used on SPARC64.&n; * See update_mmu_cache for the user space part.&n; */
 r_extern
 r_void
 id|__flush_dcache_page
@@ -483,7 +481,11 @@ id|page
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 op_logical_and
 op_logical_neg
 id|mapping_mapped

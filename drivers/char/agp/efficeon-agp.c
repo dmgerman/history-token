@@ -1240,34 +1240,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* GATT entry: (physical address | 1) */
-DECL|function|efficeon_mask_memory
-r_static
-r_int
-r_int
-id|efficeon_mask_memory
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|type
-)paren
-(brace
-multiline_comment|/* Memory type is ignored */
-r_return
-id|addr
-op_or
-id|agp_bridge-&gt;driver-&gt;masks
-(braket
-l_int|0
-)braket
-dot
-id|mask
-suffix:semicolon
-)brace
 DECL|variable|efficeon_driver
 r_struct
 id|agp_bridge_driver
@@ -1317,7 +1289,7 @@ comma
 dot
 id|mask_memory
 op_assign
-id|efficeon_mask_memory
+id|agp_generic_mask_memory
 comma
 dot
 id|masks

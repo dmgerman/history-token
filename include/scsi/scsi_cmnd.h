@@ -298,7 +298,7 @@ id|request
 suffix:semicolon
 multiline_comment|/* The command we are&n;&t;&t;&t;&t;   &t;   working on */
 DECL|macro|SCSI_SENSE_BUFFERSIZE
-mdefine_line|#define SCSI_SENSE_BUFFERSIZE &t;64
+mdefine_line|#define SCSI_SENSE_BUFFERSIZE &t;96
 DECL|member|sense_buffer
 r_int
 r_char

@@ -183,6 +183,9 @@ r_extern
 id|u64
 id|master_node_bedrock_address
 suffix:semicolon
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+macro_line|#ifdef DEBUG
 r_static
 r_int
 id|sn_debug_printf
@@ -198,9 +201,6 @@ dot
 dot
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
 DECL|macro|DPRINTF
 mdefine_line|#define DPRINTF(x...) sn_debug_printf(x)
 macro_line|#else
@@ -769,6 +769,7 @@ id|count
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef DEBUG
 multiline_comment|/* this is as &quot;close to the metal&quot; as we can get, used when the driver&n; * itself may be broken */
 r_static
 r_int
@@ -842,6 +843,7 @@ r_return
 id|printed_len
 suffix:semicolon
 )brace
+macro_line|#endif /* DEBUG */
 multiline_comment|/*&n; * Interrupt handling routines.&n; */
 r_static
 r_void

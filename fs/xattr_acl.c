@@ -104,7 +104,7 @@ id|ERR_PTR
 c_func
 (paren
 op_minus
-id|EINVAL
+id|EOPNOTSUPP
 )paren
 suffix:semicolon
 id|count

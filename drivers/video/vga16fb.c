@@ -6646,7 +6646,11 @@ op_assign
 id|ioremap
 c_func
 (paren
+id|VGA_MAP_MEM
+c_func
+(paren
 id|VGA_FB_PHYS
+)paren
 comma
 id|VGA_FB_PHYS_LEN
 )paren
@@ -6738,6 +6742,14 @@ suffix:semicolon
 id|vga16fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
+suffix:semicolon
+id|vga16fb.fix.smem_start
+op_assign
+id|VGA_MAP_MEM
+c_func
+(paren
+id|vga16fb.fix.smem_start
+)paren
 suffix:semicolon
 id|i
 op_assign

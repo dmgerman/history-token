@@ -85,8 +85,6 @@ r_struct
 id|vm_struct
 op_star
 id|iolist
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|get_io_area
 r_static

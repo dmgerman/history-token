@@ -186,7 +186,7 @@ comma
 id|NR_NODES
 )paren
 suffix:semicolon
-id|CLEAR_BITMAP
+id|bitmap_zero
 c_func
 (paren
 id|nodes_flushed

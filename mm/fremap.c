@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;

@@ -533,16 +533,12 @@ op_star
 id|bh
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|buffer_mapped
+id|lock_buffer
 c_func
 (paren
 id|bh
 )paren
-)paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -571,15 +567,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|lock_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 multiline_comment|/* Remove the buffer from whatever list it belongs to. We are mostly&n;       interested in removing it from per-sb j_dirty_buffers list, to avoid&n;        BUG() on attempt to write not mapped buffer */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|list_empty
@@ -587,6 +578,9 @@ c_func
 (paren
 op_amp
 id|bh-&gt;b_assoc_buffers
+)paren
+op_logical_or
+id|bh-&gt;b_private
 )paren
 op_logical_and
 id|bh-&gt;b_page
@@ -622,6 +616,12 @@ c_func
 (paren
 op_amp
 id|bh-&gt;b_assoc_buffers
+)paren
+suffix:semicolon
+id|reiserfs_free_jh
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -660,7 +660,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-)brace
 )brace
 r_static
 r_void

@@ -404,6 +404,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|pci_bus_alloc_resource
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_bus_alloc_resource
+)paren
+suffix:semicolon
 DECL|variable|pci_bus_add_devices
 id|EXPORT_SYMBOL
 c_func

@@ -1981,6 +1981,8 @@ id|setup_arg_pages
 c_func
 (paren
 id|bprm
+comma
+id|EXSTACK_DEFAULT
 )paren
 suffix:semicolon
 r_if

@@ -411,15 +411,11 @@ multiline_comment|/* Flag that serial port is already initialized and used */
 DECL|variable|mac_SCC_init_done
 r_int
 id|mac_SCC_init_done
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Can be set somewhere, if a SCC master reset has already be done and should&n; * not be repeated; used by kgdb */
 DECL|variable|mac_SCC_reset_done
 r_int
 id|mac_SCC_reset_done
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|scc_port
 r_static

@@ -34,6 +34,9 @@ r_struct
 id|linux_binprm
 op_star
 id|bprm
+comma
+r_int
+id|executable_stack
 )paren
 (brace
 r_int
@@ -169,6 +172,7 @@ id|mpnt-&gt;vm_end
 op_assign
 id|STACK_TOP
 suffix:semicolon
+multiline_comment|/* executable stack setting would be applied here */
 id|mpnt-&gt;vm_page_prot
 op_assign
 id|PAGE_COPY

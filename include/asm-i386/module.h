@@ -84,7 +84,14 @@ macro_line|#else
 DECL|macro|MODULE_REGPARM
 mdefine_line|#define MODULE_REGPARM &quot;&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_4KSTACKS
+DECL|macro|MODULE_STACKSIZE
+mdefine_line|#define MODULE_STACKSIZE &quot;4KSTACKS &quot;
+macro_line|#else
+DECL|macro|MODULE_STACKSIZE
+mdefine_line|#define MODULE_STACKSIZE &quot;&quot;
+macro_line|#endif
 DECL|macro|MODULE_ARCH_VERMAGIC
-mdefine_line|#define MODULE_ARCH_VERMAGIC MODULE_PROC_FAMILY MODULE_REGPARM
+mdefine_line|#define MODULE_ARCH_VERMAGIC MODULE_PROC_FAMILY MODULE_REGPARM MODULE_STACKSIZE
 macro_line|#endif /* _ASM_I386_MODULE_H */
 eof

@@ -45,6 +45,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s(%d): BUS ERROR TRAP&bslash;n&quot;
 comma
 id|__FILE__

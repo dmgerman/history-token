@@ -52,8 +52,10 @@ r_int
 id|magic
 suffix:semicolon
 DECL|member|addr
+r_volatile
 r_int
-r_int
+r_char
+op_star
 id|addr
 suffix:semicolon
 multiline_comment|/* UART memory address */

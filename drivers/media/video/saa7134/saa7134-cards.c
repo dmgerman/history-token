@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * card-specific stuff.&n; *&n; * (c) 2001-03 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * device driver for philips saa7134 based TV cards&n; * card-specific stuff.&n; *&n; * (c) 2001-04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
@@ -3127,10 +3127,12 @@ id|audio_clock
 op_assign
 l_int|0x00187de7
 comma
+singleline_comment|// probably wrong, the 7133 one is the NTSC version ...
+singleline_comment|// .tuner_type     = TUNER_PHILIPS_FM1236_MK3
 dot
 id|tuner_type
 op_assign
-id|TUNER_PHILIPS_FM1236_MK3
+id|TUNER_LG_NTSC_NEW_TAPC
 comma
 dot
 id|need_tda9887
@@ -3161,6 +3163,42 @@ dot
 id|tv
 op_assign
 l_int|1
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+id|name_comp1
+comma
+dot
+id|vmux
+op_assign
+l_int|4
+comma
+dot
+id|amux
+op_assign
+id|LINE2
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+id|name_svideo
+comma
+dot
+id|vmux
+op_assign
+l_int|6
+comma
+dot
+id|amux
+op_assign
+id|LINE2
 comma
 )brace
 )brace

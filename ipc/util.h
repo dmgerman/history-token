@@ -1,4 +1,7 @@
 multiline_comment|/*&n; * linux/ipc/util.h&n; * Copyright (C) 1999 Christoph Rohland&n; *&n; * ipc helper functions (c) 1999 Manfred Spraul &lt;manfreds@colorfullife.com&gt;&n; */
+macro_line|#ifndef _IPC_UTIL_H
+DECL|macro|_IPC_UTIL_H
+mdefine_line|#define _IPC_UTIL_H
 DECL|macro|USHRT_MAX
 mdefine_line|#define USHRT_MAX 0xffff
 DECL|macro|SEQ_MULTIPLIER
@@ -305,6 +308,53 @@ id|ipc_parse_version
 r_int
 op_star
 id|cmd
+)paren
+suffix:semicolon
+macro_line|#endif
+r_extern
+r_void
+id|free_msg
+c_func
+(paren
+r_struct
+id|msg_msg
+op_star
+id|msg
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|msg_msg
+op_star
+id|load_msg
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|src
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|store_msg
+c_func
+(paren
+r_void
+id|__user
+op_star
+id|dest
+comma
+r_struct
+id|msg_msg
+op_star
+id|msg
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 macro_line|#endif

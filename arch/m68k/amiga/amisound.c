@@ -12,8 +12,6 @@ r_int
 r_int
 op_star
 id|snd_data
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|sine_data
 r_static

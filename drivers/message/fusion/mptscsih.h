@@ -6,11 +6,6 @@ DECL|macro|SCSIHOST_H_INCLUDED
 mdefine_line|#define SCSIHOST_H_INCLUDED
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;SCSI Public stuff...&n; */
-multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
-DECL|macro|MPT_FC_CAN_QUEUE
-mdefine_line|#define MPT_FC_CAN_QUEUE&t;127
-DECL|macro|MPT_SCSI_CAN_QUEUE
-mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;127
 DECL|macro|MPT_SCSI_CMD_PER_DEV_HIGH
 mdefine_line|#define MPT_SCSI_CMD_PER_DEV_HIGH&t;31
 DECL|macro|MPT_SCSI_CMD_PER_DEV_LOW
@@ -19,22 +14,6 @@ DECL|macro|MPT_SCSI_CMD_PER_LUN
 mdefine_line|#define MPT_SCSI_CMD_PER_LUN&t;&t;7
 DECL|macro|MPT_SCSI_MAX_SECTORS
 mdefine_line|#define MPT_SCSI_MAX_SECTORS    8192
-multiline_comment|/*&n; * Set the MAX_SGE value based on user input.&n; */
-macro_line|#ifdef  CONFIG_FUSION_MAX_SGE
-macro_line|#if     CONFIG_FUSION_MAX_SGE  &lt; 16
-DECL|macro|MPT_SCSI_SG_DEPTH
-mdefine_line|#define MPT_SCSI_SG_DEPTH&t;16
-macro_line|#elif   CONFIG_FUSION_MAX_SGE  &gt; 128
-DECL|macro|MPT_SCSI_SG_DEPTH
-mdefine_line|#define MPT_SCSI_SG_DEPTH&t;128
-macro_line|#else
-DECL|macro|MPT_SCSI_SG_DEPTH
-mdefine_line|#define MPT_SCSI_SG_DEPTH&t;CONFIG_FUSION_MAX_SGE
-macro_line|#endif
-macro_line|#else
-DECL|macro|MPT_SCSI_SG_DEPTH
-mdefine_line|#define MPT_SCSI_SG_DEPTH&t;40
-macro_line|#endif
 multiline_comment|/* To disable domain validation, uncomment the&n; * following line. No effect for FC devices.&n; * For SCSI devices, driver will negotiate to&n; * NVRAM settings (if available) or to maximum adapter&n; * capabilities.&n; */
 DECL|macro|MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 mdefine_line|#define MPTSCSIH_ENABLE_DOMAIN_VALIDATION

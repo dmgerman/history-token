@@ -303,8 +303,9 @@ id|i
 id|printk
 c_func
 (paren
+l_string|&quot;%s transmit timeout&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; transmit timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

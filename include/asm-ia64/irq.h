@@ -4,6 +4,8 @@ mdefine_line|#define _ASM_IA64_IRQ_H
 multiline_comment|/*&n; * Copyright (C) 1999-2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 11/24/98&t;S.Eranian &t;updated TIMER_IRQ and irq_canonicalize&n; * 01/20/99&t;S.Eranian&t;added keyboard interrupt&n; * 02/29/00     D.Mosberger&t;moved most things into hw_irq.h&n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;256
+DECL|macro|NR_IRQ_VECTORS
+mdefine_line|#define NR_IRQ_VECTORS&t;NR_IRQS
 r_static
 id|__inline__
 r_int
@@ -67,6 +69,28 @@ id|dest
 comma
 r_int
 id|redir
+)paren
+suffix:semicolon
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* _ASM_IA64_IRQ_H */

@@ -1179,6 +1179,14 @@ op_star
 id|termios
 )paren
 suffix:semicolon
+r_struct
+id|semaphore
+suffix:semicolon
+r_extern
+r_struct
+id|semaphore
+id|tty_sem
+suffix:semicolon
 multiline_comment|/* n_tty.c */
 r_extern
 r_struct

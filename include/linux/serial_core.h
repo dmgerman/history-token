@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/serial_core.h&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: serial_core.h,v 1.49 2002/07/20 18:06:32 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/serial_core.h&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * The type definitions.  These are from Ted Ts&squot;o&squot;s serial.h&n; */
 DECL|macro|PORT_UNKNOWN
 mdefine_line|#define PORT_UNKNOWN&t;0
@@ -84,6 +84,9 @@ DECL|macro|PORT_SCIF
 mdefine_line|#define PORT_SCIF&t;53
 DECL|macro|PORT_IRDA
 mdefine_line|#define PORT_IRDA&t;54
+multiline_comment|/* Samsung S3C2410 SoC and derivatives thereof */
+DECL|macro|PORT_S3C2410
+mdefine_line|#define PORT_S3C2410    55
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -98,6 +101,9 @@ id|uart_info
 suffix:semicolon
 r_struct
 id|serial_struct
+suffix:semicolon
+r_struct
+id|device
 suffix:semicolon
 multiline_comment|/*&n; * This structure describes all the operations that can be&n; * done on the physical hardware.&n; */
 DECL|struct|uart_ops
@@ -567,8 +573,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|macro|UPF_HUP_NOTIFY
-mdefine_line|#define UPF_HUP_NOTIFY&t;&t;(1 &lt;&lt; 0)
 DECL|macro|UPF_FOURPORT
 mdefine_line|#define UPF_FOURPORT&t;&t;(1 &lt;&lt; 1)
 DECL|macro|UPF_SAK
@@ -656,6 +660,13 @@ r_int
 id|mapbase
 suffix:semicolon
 multiline_comment|/* for ioremap */
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
+multiline_comment|/* parent device */
 DECL|member|hub6
 r_int
 r_char

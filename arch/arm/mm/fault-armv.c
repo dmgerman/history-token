@@ -878,7 +878,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -1009,7 +1013,17 @@ suffix:semicolon
 r_int
 r_int
 id|pgoff
+suffix:semicolon
+r_int
+id|aliases
 op_assign
+l_int|0
+suffix:semicolon
+id|pgoff
+op_assign
+id|vma-&gt;vm_pgoff
+op_plus
+(paren
 (paren
 id|addr
 op_minus
@@ -1017,11 +1031,7 @@ id|vma-&gt;vm_start
 )paren
 op_rshift
 id|PAGE_SHIFT
-suffix:semicolon
-r_int
-id|aliases
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have any shared mappings that are in the same mm&n;&t; * space, then we need to handle them specially to maintain&n;&t; * cache coherency.&n;&t; */
 id|list_for_each
@@ -1055,7 +1065,7 @@ comma
 id|shared
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If this VMA is not in our MM, we can ignore it.&n;&t;&t; * Note that we intentionally don&squot;t mask out the VMA&n;&t;&t; * that we are fixing up.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If this VMA is not in our MM, we can ignore it.&n;&t;&t; * Note that we intentionally mask out the VMA&n;&t;&t; * that we are fixing up.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1202,7 +1212,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 r_int

@@ -280,6 +280,11 @@ id|mixer_tab
 op_star
 id|iomap
 suffix:semicolon
+DECL|member|iomap_sz
+r_int
+id|iomap_sz
+suffix:semicolon
+multiline_comment|/* number or records in the iomap table */
 DECL|member|mixer_caps
 DECL|member|recmask
 DECL|member|outmask

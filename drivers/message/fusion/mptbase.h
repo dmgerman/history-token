@@ -28,9 +28,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2004 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.01&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;3.01.03&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.01&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-3.01.03&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -129,6 +129,27 @@ DECL|macro|C0_1030
 mdefine_line|#define C0_1030&t;&t;&t;&t;0x08
 DECL|macro|XL_929
 mdefine_line|#define XL_929&t;&t;&t;&t;0x01
+multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
+DECL|macro|MPT_FC_CAN_QUEUE
+mdefine_line|#define MPT_FC_CAN_QUEUE&t;127
+DECL|macro|MPT_SCSI_CAN_QUEUE
+mdefine_line|#define MPT_SCSI_CAN_QUEUE&t;127
+multiline_comment|/*&n; * Set the MAX_SGE value based on user input.&n; */
+macro_line|#ifdef  CONFIG_FUSION_MAX_SGE
+macro_line|#if     CONFIG_FUSION_MAX_SGE  &lt; 16
+DECL|macro|MPT_SCSI_SG_DEPTH
+mdefine_line|#define MPT_SCSI_SG_DEPTH&t;16
+macro_line|#elif   CONFIG_FUSION_MAX_SGE  &gt; 128
+DECL|macro|MPT_SCSI_SG_DEPTH
+mdefine_line|#define MPT_SCSI_SG_DEPTH&t;128
+macro_line|#else
+DECL|macro|MPT_SCSI_SG_DEPTH
+mdefine_line|#define MPT_SCSI_SG_DEPTH&t;CONFIG_FUSION_MAX_SGE
+macro_line|#endif
+macro_line|#else
+DECL|macro|MPT_SCSI_SG_DEPTH
+mdefine_line|#define MPT_SCSI_SG_DEPTH&t;40
+macro_line|#endif
 macro_line|#ifdef __KERNEL__&t;/* { */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -1394,6 +1415,35 @@ DECL|member|active
 r_int
 id|active
 suffix:semicolon
+DECL|member|fifo_pool
+id|u8
+op_star
+id|fifo_pool
+suffix:semicolon
+multiline_comment|/* dma pool for fifo&squot;s */
+DECL|member|fifo_pool_dma
+id|dma_addr_t
+id|fifo_pool_dma
+suffix:semicolon
+DECL|member|fifo_pool_sz
+r_int
+id|fifo_pool_sz
+suffix:semicolon
+multiline_comment|/* allocated size */
+DECL|member|chain_alloc
+id|u8
+op_star
+id|chain_alloc
+suffix:semicolon
+multiline_comment|/* chain buffer alloc ptr */
+DECL|member|chain_alloc_dma
+id|dma_addr_t
+id|chain_alloc_dma
+suffix:semicolon
+DECL|member|chain_alloc_sz
+r_int
+id|chain_alloc_sz
+suffix:semicolon
 DECL|member|reply_alloc
 id|u8
 op_star
@@ -1500,14 +1550,6 @@ op_star
 id|pcidev
 suffix:semicolon
 multiline_comment|/* struct pci_dev pointer */
-macro_line|#if defined(MPTBASE_MEM_ALLOC_FIFO_FIX)
-DECL|member|pcidev32
-r_struct
-id|pci_dev
-id|pcidev32
-suffix:semicolon
-multiline_comment|/* struct pci_dev pointer */
-macro_line|#endif&t;
 DECL|member|memmap
 id|u8
 op_star
@@ -2943,14 +2985,6 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif&t;&t;/* } __KERNEL__ */
 multiline_comment|/*&n; *  More (public) macros...&n; */
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a, b)   (((a) &lt; (b)) ? (a) : (b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a, b)   (((a) &gt; (b)) ? (a) : (b))
-macro_line|#endif
 macro_line|#ifndef offsetof
 DECL|macro|offsetof
 mdefine_line|#define offsetof(t, m)&t;((size_t) (&amp;((t *)0)-&gt;m))

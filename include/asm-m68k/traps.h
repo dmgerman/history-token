@@ -21,6 +21,10 @@ id|vectors
 )braket
 suffix:semicolon
 macro_line|#endif
+DECL|macro|VEC_RESETSP
+mdefine_line|#define VEC_RESETSP (0)
+DECL|macro|VEC_RESETPC
+mdefine_line|#define VEC_RESETPC (1)
 DECL|macro|VEC_BUSERR
 mdefine_line|#define VEC_BUSERR  (2)
 DECL|macro|VEC_ADDRERR
@@ -41,14 +45,30 @@ DECL|macro|VEC_LINE10
 mdefine_line|#define VEC_LINE10  (10)
 DECL|macro|VEC_LINE11
 mdefine_line|#define VEC_LINE11  (11)
-DECL|macro|VEC_RESV1
-mdefine_line|#define VEC_RESV1   (12)
+DECL|macro|VEC_RESV12
+mdefine_line|#define VEC_RESV12  (12)
 DECL|macro|VEC_COPROC
 mdefine_line|#define VEC_COPROC  (13)
 DECL|macro|VEC_FORMAT
 mdefine_line|#define VEC_FORMAT  (14)
 DECL|macro|VEC_UNINT
 mdefine_line|#define VEC_UNINT   (15)
+DECL|macro|VEC_RESV16
+mdefine_line|#define VEC_RESV16  (16)
+DECL|macro|VEC_RESV17
+mdefine_line|#define VEC_RESV17  (17)
+DECL|macro|VEC_RESV18
+mdefine_line|#define VEC_RESV18  (18)
+DECL|macro|VEC_RESV19
+mdefine_line|#define VEC_RESV19  (19)
+DECL|macro|VEC_RESV20
+mdefine_line|#define VEC_RESV20  (20)
+DECL|macro|VEC_RESV21
+mdefine_line|#define VEC_RESV21  (21)
+DECL|macro|VEC_RESV22
+mdefine_line|#define VEC_RESV22  (22)
+DECL|macro|VEC_RESV23
+mdefine_line|#define VEC_RESV23  (23)
 DECL|macro|VEC_SPUR
 mdefine_line|#define VEC_SPUR    (24)
 DECL|macro|VEC_INT1
@@ -113,10 +133,22 @@ DECL|macro|VEC_FPNAN
 mdefine_line|#define VEC_FPNAN   (54)
 DECL|macro|VEC_FPUNSUP
 mdefine_line|#define VEC_FPUNSUP (55)
+DECL|macro|VEC_MMUCFG
+mdefine_line|#define VEC_MMUCFG  (56)
+DECL|macro|VEC_MMUILL
+mdefine_line|#define VEC_MMUILL  (57)
+DECL|macro|VEC_MMUACC
+mdefine_line|#define VEC_MMUACC  (58)
+DECL|macro|VEC_RESV59
+mdefine_line|#define VEC_RESV59  (59)
 DECL|macro|VEC_UNIMPEA
 mdefine_line|#define&t;VEC_UNIMPEA (60)
 DECL|macro|VEC_UNIMPII
 mdefine_line|#define&t;VEC_UNIMPII (61)
+DECL|macro|VEC_RESV62
+mdefine_line|#define VEC_RESV62  (62)
+DECL|macro|VEC_RESV63
+mdefine_line|#define VEC_RESV63  (63)
 DECL|macro|VEC_USER
 mdefine_line|#define VEC_USER    (64)
 DECL|macro|VECOFF

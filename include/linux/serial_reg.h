@@ -136,6 +136,8 @@ multiline_comment|/*&n; * Sleep mode for ST16650 and TI16750.&n; * Note that for
 DECL|macro|UART_IERX_SLEEP
 mdefine_line|#define UART_IERX_SLEEP  0x10&t;/* Enable sleep mode */
 multiline_comment|/*&n; * These are the definitions for the Modem Control Register&n; */
+DECL|macro|UART_MCR_AFE
+mdefine_line|#define UART_MCR_AFE&t;0x20&t;/* Enable auto-RTS/CTS (TI16C750) */
 DECL|macro|UART_MCR_LOOP
 mdefine_line|#define UART_MCR_LOOP&t;0x10&t;/* Enable loopback test mode */
 DECL|macro|UART_MCR_OUT2

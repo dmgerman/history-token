@@ -30,6 +30,8 @@ DECL|macro|IPMI_GET_BMC_GLOBAL_ENABLES_CMD
 mdefine_line|#define IPMI_GET_BMC_GLOBAL_ENABLES_CMD&t;0x2f
 DECL|macro|IPMI_READ_EVENT_MSG_BUFFER_CMD
 mdefine_line|#define IPMI_READ_EVENT_MSG_BUFFER_CMD&t;0x35
+DECL|macro|IPMI_GET_CHANNEL_INFO_CMD
+mdefine_line|#define IPMI_GET_CHANNEL_INFO_CMD&t;0x42
 DECL|macro|IPMI_NETFN_STORAGE_REQUEST
 mdefine_line|#define IPMI_NETFN_STORAGE_REQUEST&t;&t;0x0a
 DECL|macro|IPMI_NETFN_STORAGE_RESPONSE
@@ -39,9 +41,58 @@ mdefine_line|#define IPMI_ADD_SEL_ENTRY_CMD&t;&t;0x44
 multiline_comment|/* The default slave address */
 DECL|macro|IPMI_BMC_SLAVE_ADDR
 mdefine_line|#define IPMI_BMC_SLAVE_ADDR&t;0x20
+multiline_comment|/* The BT interface on high-end HP systems supports up to 255 bytes in&n; * one transfer.  Its &quot;virtual&quot; BMC supports some commands that are longer&n; * than 128 bytes.  Use the full 256, plus NetFn/LUN, Cmd, cCode, plus&n; * some overhead.  It would be nice to base this on the &quot;BT Capabilities&quot;&n; * but that&squot;s too hard to propogate to the rest of the driver. */
 DECL|macro|IPMI_MAX_MSG_LENGTH
-mdefine_line|#define IPMI_MAX_MSG_LENGTH&t;80
+mdefine_line|#define IPMI_MAX_MSG_LENGTH&t;272&t;/* multiple of 16 */
 DECL|macro|IPMI_CC_NO_ERROR
-mdefine_line|#define IPMI_CC_NO_ERROR&t;0
+mdefine_line|#define IPMI_CC_NO_ERROR&t;&t;0x00
+DECL|macro|IPMI_NODE_BUSY_ERR
+mdefine_line|#define IPMI_NODE_BUSY_ERR&t;&t;0xc0
+DECL|macro|IPMI_ERR_MSG_TRUNCATED
+mdefine_line|#define IPMI_ERR_MSG_TRUNCATED&t;&t;0xc6
+DECL|macro|IPMI_LOST_ARBITRATION_ERR
+mdefine_line|#define IPMI_LOST_ARBITRATION_ERR&t;0x81
+DECL|macro|IPMI_ERR_UNSPECIFIED
+mdefine_line|#define IPMI_ERR_UNSPECIFIED&t;&t;0xff
+DECL|macro|IPMI_CHANNEL_PROTOCOL_IPMB
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_IPMB&t;1
+DECL|macro|IPMI_CHANNEL_PROTOCOL_ICMB
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_ICMB&t;2
+DECL|macro|IPMI_CHANNEL_PROTOCOL_SMBUS
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_SMBUS&t;4
+DECL|macro|IPMI_CHANNEL_PROTOCOL_KCS
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_KCS&t;5
+DECL|macro|IPMI_CHANNEL_PROTOCOL_SMIC
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_SMIC&t;6
+DECL|macro|IPMI_CHANNEL_PROTOCOL_BT10
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_BT10&t;7
+DECL|macro|IPMI_CHANNEL_PROTOCOL_BT15
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_BT15&t;8
+DECL|macro|IPMI_CHANNEL_PROTOCOL_TMODE
+mdefine_line|#define IPMI_CHANNEL_PROTOCOL_TMODE&t;9
+DECL|macro|IPMI_CHANNEL_MEDIUM_IPMB
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_IPMB&t;1
+DECL|macro|IPMI_CHANNEL_MEDIUM_ICMB10
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_ICMB10&t;2
+DECL|macro|IPMI_CHANNEL_MEDIUM_ICMB09
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_ICMB09&t;3
+DECL|macro|IPMI_CHANNEL_MEDIUM_8023LAN
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_8023LAN&t;4
+DECL|macro|IPMI_CHANNEL_MEDIUM_ASYNC
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_ASYNC&t;5
+DECL|macro|IPMI_CHANNEL_MEDIUM_OTHER_LAN
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_OTHER_LAN&t;6
+DECL|macro|IPMI_CHANNEL_MEDIUM_PCI_SMBUS
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_PCI_SMBUS&t;7
+DECL|macro|IPMI_CHANNEL_MEDIUM_SMBUS1
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_SMBUS1&t;8
+DECL|macro|IPMI_CHANNEL_MEDIUM_SMBUS2
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_SMBUS2&t;9
+DECL|macro|IPMI_CHANNEL_MEDIUM_USB1
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_USB1&t;10
+DECL|macro|IPMI_CHANNEL_MEDIUM_USB2
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_USB2&t;11
+DECL|macro|IPMI_CHANNEL_MEDIUM_SYSINTF
+mdefine_line|#define IPMI_CHANNEL_MEDIUM_SYSINTF&t;12
 macro_line|#endif /* __LINUX_IPMI_MSGDEFS_H */
 eof

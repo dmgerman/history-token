@@ -2917,7 +2917,7 @@ r_struct
 id|inode
 op_star
 comma
-r_int
+id|sector_t
 )paren
 suffix:semicolon
 r_extern

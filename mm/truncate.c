@@ -184,7 +184,7 @@ id|page
 suffix:semicolon
 multiline_comment|/* pagecache ref */
 )brace
-multiline_comment|/*&n; * This is for invalidate_inode_pages().  That function can be called at&n; * any time, and is not supposed to throw away dirty pages.  But pages can&n; * be marked dirty at any time too.  So we re-check the dirtiness inside&n; * -&gt;page_lock.  That provides exclusion against the __set_page_dirty&n; * functions.&n; */
+multiline_comment|/*&n; * This is for invalidate_inode_pages().  That function can be called at&n; * any time, and is not supposed to throw away dirty pages.  But pages can&n; * be marked dirty at any time too.  So we re-check the dirtiness inside&n; * -&gt;tree_lock.  That provides exclusion against the __set_page_dirty&n; * functions.&n; */
 r_static
 r_int
 DECL|function|invalidate_complete_page
@@ -233,11 +233,11 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if
@@ -250,11 +250,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_return
@@ -267,11 +267,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|ClearPageUptodate

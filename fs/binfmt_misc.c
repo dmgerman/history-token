@@ -105,13 +105,6 @@ DECL|variable|entries_lock
 r_static
 id|rwlock_t
 id|entries_lock
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon

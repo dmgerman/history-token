@@ -552,5 +552,27 @@ DECL|macro|SUN4M_INT_SBUS
 mdefine_line|#define SUN4M_INT_SBUS(x)&t;(1 &lt;&lt; (x+7))
 DECL|macro|SUN4M_INT_VME
 mdefine_line|#define SUN4M_INT_VME(x)&t;(1 &lt;&lt; (x))
+r_struct
+id|irqaction
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
+r_int
+id|handle_IRQ_event
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+comma
+r_struct
+id|irqaction
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

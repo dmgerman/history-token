@@ -15744,7 +15744,11 @@ comma
 (paren
 r_int
 )paren
-id|scsidp-&gt;online
+id|scsi_device_online
+c_func
+(paren
+id|scsidp
+)paren
 )paren
 suffix:semicolon
 r_else

@@ -2428,17 +2428,12 @@ op_eq
 id|EFI_MEMORY_MAPPED_IO_PORT_SPACE
 )paren
 (brace
-multiline_comment|/* paranoia attribute checking */
 r_if
 c_cond
 (paren
 id|md-&gt;attribute
-op_eq
-(paren
+op_amp
 id|EFI_MEMORY_UC
-op_or
-id|EFI_MEMORY_RUNTIME
-)paren
 )paren
 r_return
 id|md-&gt;phys_addr

@@ -7905,7 +7905,6 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-id|__FUNCTION__
 l_string|&quot;%s: lock status after, ret=%d&bslash;n&quot;
 comma
 id|__FUNCTION__

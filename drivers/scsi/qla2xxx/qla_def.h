@@ -1,4 +1,4 @@
-multiline_comment|/********************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic ISP2x00 device driver for Linux 2.6.x&n;* Copyright (C) 2003 QLogic Corporation&n;* (www.qlogic.com)&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;**&n;******************************************************************************/
+multiline_comment|/********************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic ISP2x00 device driver for Linux 2.6.x&n;* Copyright (C) 2003-2004 QLogic Corporation&n;* (www.qlogic.com)&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;**&n;******************************************************************************/
 macro_line|#ifndef __QLA_DEF_H
 DECL|macro|__QLA_DEF_H
 mdefine_line|#define __QLA_DEF_H
@@ -237,7 +237,7 @@ DECL|macro|MAX_OUTSTANDING_COMMANDS
 mdefine_line|#define MAX_OUTSTANDING_COMMANDS&t;1024
 multiline_comment|/* ISP request and response entry counts (37-65535) */
 DECL|macro|REQUEST_ENTRY_CNT
-mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;1024&t;/* Number of request entries. */
+mdefine_line|#define REQUEST_ENTRY_CNT&t;&t;2048&t;/* Number of request entries. */
 DECL|macro|RESPONSE_ENTRY_CNT_2100
 mdefine_line|#define RESPONSE_ENTRY_CNT_2100&t;&t;64&t;/* Number of response entries.*/
 DECL|macro|RESPONSE_ENTRY_CNT_2300
@@ -381,6 +381,24 @@ r_uint8
 id|err_id
 suffix:semicolon
 multiline_comment|/* error id */
+DECL|macro|SRB_ERR_PORT
+mdefine_line|#define SRB_ERR_PORT&t;1&t;&t;/* Request failed -- &quot;port down&quot; */
+DECL|macro|SRB_ERR_LOOP
+mdefine_line|#define SRB_ERR_LOOP&t;2&t;&t;/* Request failed -- &quot;loop down&quot; */
+DECL|macro|SRB_ERR_DEVICE
+mdefine_line|#define SRB_ERR_DEVICE&t;3&t;&t;/* Request failed -- &quot;device error&quot; */
+DECL|macro|SRB_ERR_OTHER
+mdefine_line|#define SRB_ERR_OTHER&t;4
+multiline_comment|/* Segment/entries counts */
+DECL|member|req_cnt
+r_uint16
+id|req_cnt
+suffix:semicolon
+multiline_comment|/* !0 indicates counts determined */
+DECL|member|tot_dsds
+r_uint16
+id|tot_dsds
+suffix:semicolon
 multiline_comment|/* SRB magic number */
 DECL|member|magic
 r_uint16
@@ -3419,7 +3437,7 @@ id|sw_info_t
 suffix:semicolon
 multiline_comment|/*&n; * Inquiry command structure.&n; */
 DECL|macro|INQ_DATA_SIZE
-mdefine_line|#define INQ_DATA_SIZE&t;8
+mdefine_line|#define INQ_DATA_SIZE&t;36
 multiline_comment|/*&n; * Inquiry mailbox IOCB packet definition.&n; */
 r_typedef
 r_struct
@@ -3570,7 +3588,8 @@ op_star
 id|fcport
 suffix:semicolon
 DECL|member|flags
-r_uint32
+r_int
+r_int
 id|flags
 suffix:semicolon
 DECL|member|port_down_retry_count
@@ -3611,14 +3630,12 @@ DECL|typedef|os_tgt_t
 id|os_tgt_t
 suffix:semicolon
 multiline_comment|/*&n; * SCSI Target Queue flags&n; */
-DECL|macro|TQF_QUEUE_SUSPENDED
-mdefine_line|#define TQF_QUEUE_SUSPENDED&t;BIT_0&t;&t;/* Queue suspended. */
-DECL|macro|TQF_BOOT_DEVICE
-mdefine_line|#define TQF_BOOT_DEVICE&t;&t;BIT_1&t;&t;/* Boot device. */
 DECL|macro|TQF_ONLINE
-mdefine_line|#define TQF_ONLINE&t;&t;BIT_2&t;&t;/* Device online to OS. */
-DECL|macro|TQF_TGT_RST_NEEDED
-mdefine_line|#define TQF_TGT_RST_NEEDED&t;BIT_3
+mdefine_line|#define TQF_ONLINE&t;&t;0&t;&t;/* Device online to OS. */
+DECL|macro|TQF_SUSPENDED
+mdefine_line|#define TQF_SUSPENDED&t;&t;1
+DECL|macro|TQF_RETRY_CMDS
+mdefine_line|#define TQF_RETRY_CMDS&t;&t;2
 multiline_comment|/*&n; * SCSI LUN Queue structure&n; */
 DECL|struct|os_lun
 r_typedef
@@ -3936,6 +3953,18 @@ DECL|macro|FCF_CONFIG
 mdefine_line|#define FCF_CONFIG&t;&t;BIT_15&t;/* Needed? */
 DECL|macro|FCF_RESCAN_NEEDED
 mdefine_line|#define FCF_RESCAN_NEEDED&t;BIT_16
+DECL|macro|FCF_XP_DEVICE
+mdefine_line|#define FCF_XP_DEVICE&t;&t;BIT_17
+DECL|macro|FCF_MSA_DEVICE
+mdefine_line|#define FCF_MSA_DEVICE&t;&t;BIT_18
+DECL|macro|FCF_EVA_DEVICE
+mdefine_line|#define FCF_EVA_DEVICE&t;&t;BIT_19
+DECL|macro|FCF_MSA_PORT_ACTIVE
+mdefine_line|#define FCF_MSA_PORT_ACTIVE&t;BIT_20
+DECL|macro|FCF_FAILBACK_DISABLE
+mdefine_line|#define FCF_FAILBACK_DISABLE&t;BIT_21
+DECL|macro|FCF_FAILOVER_DISABLE
+mdefine_line|#define FCF_FAILOVER_DISABLE&t;BIT_22
 multiline_comment|/* No loop ID flag. */
 DECL|macro|FC_NO_LOOP_ID
 mdefine_line|#define FC_NO_LOOP_ID&t;&t;0x1000
@@ -3976,10 +4005,18 @@ DECL|member|max_path_retries
 r_uint8
 id|max_path_retries
 suffix:semicolon
+DECL|member|flags
+r_uint32
+id|flags
+suffix:semicolon
 DECL|typedef|fc_lun_t
 )brace
 id|fc_lun_t
 suffix:semicolon
+DECL|macro|FLF_VISIBLE_LUN
+mdefine_line|#define&t;FLF_VISIBLE_LUN&t;&t;BIT_0
+DECL|macro|FLF_ACTIVE_LUN
+mdefine_line|#define&t;FLF_ACTIVE_LUN&t;&t;BIT_1
 multiline_comment|/*&n; * FC-CT interface&n; *&n; * NOTE: All structures are big-endian in form.&n; */
 DECL|macro|CT_REJECT_RESPONSE
 mdefine_line|#define CT_REJECT_RESPONSE&t;0x8001
@@ -4983,6 +5020,8 @@ DECL|macro|FCPORT_RESCAN_NEEDED
 mdefine_line|#define FCPORT_RESCAN_NEEDED&t;21      /* IO descriptor processing needed */
 DECL|macro|IODESC_PROCESS_NEEDED
 mdefine_line|#define IODESC_PROCESS_NEEDED&t;22      /* IO descriptor processing needed */
+DECL|macro|IOCTL_ERROR_RECOVERY
+mdefine_line|#define IOCTL_ERROR_RECOVERY&t;23      
 DECL|member|device_flags
 r_uint32
 id|device_flags
@@ -5650,6 +5689,8 @@ id|cfg_flags
 suffix:semicolon
 DECL|macro|CFG_ACTIVE
 mdefine_line|#define&t;CFG_ACTIVE&t;0&t;/* CFG during a failover, event update, or ioctl */
+DECL|macro|CFG_FAILOVER
+mdefine_line|#define&t;CFG_FAILOVER&t;1&t;/* CFG during path change */
 DECL|member|binding_type
 r_uint32
 id|binding_type
@@ -5757,7 +5798,6 @@ r_char
 op_star
 id|model_desc
 suffix:semicolon
-multiline_comment|/* following are new and needed for IOCTL support */
 DECL|member|node_name
 r_uint8
 id|node_name

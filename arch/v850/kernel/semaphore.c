@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * arch/v850/kernel/semaphore.c -- Semaphore support&n; *&n; *  Copyright (C) 1998-2000  IBM Corporation&n; *  Copyright (C) 1999  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file is a copy of the s390 version, arch/s390/kernel/semaphore.c&n; *    Author(s): Martin Schwidefsky&n; * which was derived from the i386 version, linux/arch/i386/kernel/semaphore.c&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is&n; * protected by the semaphore spinlock.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
@@ -32,6 +33,7 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -176,6 +178,7 @@ suffix:semicolon
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

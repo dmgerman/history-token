@@ -1,9 +1,6 @@
 macro_line|#include &lt;asm/contregs.h&gt;
 macro_line|#include &lt;asm/sun3mmu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/movs.h&gt;
-DECL|macro|FC_CONTROL
-mdefine_line|#define FC_CONTROL 3    /* This should go somewhere else... */
 DECL|function|sun3_leds
 r_void
 id|sun3_leds

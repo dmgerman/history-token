@@ -434,6 +434,10 @@ id|name
 id|CPUFREQ_NAME_LEN
 )braket
 suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
 multiline_comment|/* needed by all drivers */
 DECL|member|init
 r_int
@@ -532,6 +536,9 @@ id|attr
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* flags */
+DECL|macro|CPUFREQ_STICKY
+mdefine_line|#define CPUFREQ_STICKY&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;   all -&gt;init() calls failed */
 r_int
 id|cpufreq_register_driver
 c_func

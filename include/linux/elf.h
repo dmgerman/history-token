@@ -95,6 +95,8 @@ DECL|macro|PT_HIPROC
 mdefine_line|#define PT_HIPROC  0x7fffffff
 DECL|macro|PT_GNU_EH_FRAME
 mdefine_line|#define PT_GNU_EH_FRAME&t;&t;0x6474e550
+DECL|macro|PT_GNU_STACK
+mdefine_line|#define PT_GNU_STACK&t;(PT_LOOS + 0x474e551)
 multiline_comment|/* These constants define the different elf file types */
 DECL|macro|ET_NONE
 mdefine_line|#define ET_NONE   0

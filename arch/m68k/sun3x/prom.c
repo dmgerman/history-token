@@ -83,14 +83,6 @@ id|e_vector
 op_star
 id|sun3x_prom_vbr
 suffix:semicolon
-r_extern
-id|e_vector
-id|vectors
-(braket
-l_int|256
-)braket
-suffix:semicolon
-multiline_comment|/* arch/m68k/kernel/traps.c */
 multiline_comment|/* Handle returning to the prom */
 DECL|function|sun3x_halt
 r_void

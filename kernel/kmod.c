@@ -701,8 +701,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|system_running
+id|system_state
+op_ne
+id|SYSTEM_RUNNING
 )paren
 r_return
 op_minus

@@ -114,16 +114,12 @@ r_static
 r_int
 r_int
 id|dvma_allocs
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dvma_frees
 r_static
 r_int
 r_int
 id|dvma_frees
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dvma_alloc_bytes
 r_static
@@ -131,8 +127,6 @@ r_int
 r_int
 r_int
 id|dvma_alloc_bytes
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dvma_free_bytes
 r_static
@@ -140,8 +134,6 @@ r_int
 r_int
 r_int
 id|dvma_free_bytes
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|print_use
 r_static

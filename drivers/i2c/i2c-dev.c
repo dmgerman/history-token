@@ -528,7 +528,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-dev: i2c-%d reading %d bytes.&bslash;n&quot;
+l_string|&quot;i2c-dev: i2c-%d reading %zd bytes.&bslash;n&quot;
 comma
 id|iminor
 c_func
@@ -688,7 +688,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-dev: i2c-%d writing %d bytes.&bslash;n&quot;
+l_string|&quot;i2c-dev: i2c-%d writing %zd bytes.&bslash;n&quot;
 comma
 id|iminor
 c_func

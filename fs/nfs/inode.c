@@ -4681,7 +4681,7 @@ id|data_updates
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * nfs_end_data_update&n; * @inode - pointer to inode&n; * Declare end of the operations that will update file data&n; */
+multiline_comment|/**&n; * nfs_end_data_update&n; * @inode - pointer to inode&n; * Declare end of the operations that will update file data&n; * This will mark the inode as immediately needing revalidation&n; * of its attribute cache.&n; */
 DECL|function|nfs_end_data_update
 r_void
 id|nfs_end_data_update
@@ -4739,6 +4739,70 @@ op_amp
 id|nfsi-&gt;data_updates
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/**&n; * nfs_end_data_update_defer&n; * @inode - pointer to inode&n; * Declare end of the operations that will update file data&n; * This will defer marking the inode as needing revalidation&n; * unless there are no other pending updates.&n; */
+DECL|function|nfs_end_data_update_defer
+r_void
+id|nfs_end_data_update_defer
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_struct
+id|nfs_inode
+op_star
+id|nfsi
+op_assign
+id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|nfsi-&gt;data_updates
+)paren
+)paren
+(brace
+multiline_comment|/* Mark the attribute cache for revalidation */
+id|nfsi-&gt;flags
+op_or_assign
+id|NFS_INO_INVALID_ATTR
+suffix:semicolon
+multiline_comment|/* Directories and symlinks: invalidate page cache too */
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+op_logical_or
+id|S_ISLNK
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+)paren
+id|nfsi-&gt;flags
+op_or_assign
+id|NFS_INO_INVALID_DATA
+suffix:semicolon
+id|nfsi-&gt;cache_change_attribute
+op_increment
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * nfs_refresh_inode - verify consistency of the inode attribute cache&n; * @inode - pointer to inode&n; * @fattr - updated attributes&n; *&n; * Verifies the attribute cache. If we have just changed the attributes,&n; * so that fattr carries weak cache consistency data, then it may&n; * also update the ctime/mtime/change_attribute.&n; */
 DECL|function|nfs_refresh_inode

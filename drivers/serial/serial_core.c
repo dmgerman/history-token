@@ -8259,7 +8259,7 @@ id|drv-&gt;tty_driver
 comma
 id|port-&gt;line
 comma
-l_int|NULL
+id|port-&gt;dev
 )paren
 suffix:semicolon
 id|out

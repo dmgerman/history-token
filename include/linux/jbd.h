@@ -21,6 +21,9 @@ mdefine_line|#define journal_oom_retry 1
 multiline_comment|/*&n; * Define JBD_PARANIOD_IOFAIL to cause a kernel BUG() if ext3 finds&n; * certain classes of error which can occur due to failed IOs.  Under&n; * normal use we want ext3 to continue after such errors, because&n; * hardware _can_ fail, but for debugging purposes when running tests on&n; * known-good hardware we may want to trap these errors.&n; */
 DECL|macro|JBD_PARANOID_IOFAIL
 macro_line|#undef JBD_PARANOID_IOFAIL
+multiline_comment|/*&n; * The default maximum commit age, in seconds.&n; */
+DECL|macro|JBD_DEFAULT_MAX_COMMIT_AGE
+mdefine_line|#define JBD_DEFAULT_MAX_COMMIT_AGE 5
 macro_line|#ifdef CONFIG_JBD_DEBUG
 multiline_comment|/*&n; * Define JBD_EXPENSIVE_CHECKING to enable more expensive internal&n; * consistency checks.  By default we don&squot;t do this unless&n; * CONFIG_JBD_DEBUG is on.&n; */
 DECL|macro|JBD_EXPENSIVE_CHECKING
@@ -419,6 +422,34 @@ id|jbddirty
 id|BUFFER_FNS
 c_func
 (paren
+id|Revoked
+comma
+id|revoked
+)paren
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|Revoked
+comma
+id|revoked
+)paren
+id|BUFFER_FNS
+c_func
+(paren
+id|RevokeValid
+comma
+id|revokevalid
+)paren
+id|TAS_BUFFER_FNS
+c_func
+(paren
+id|RevokeValid
+comma
+id|revokevalid
+)paren
+id|BUFFER_FNS
+c_func
+(paren
 id|Freed
 comma
 id|freed
@@ -755,6 +786,13 @@ r_struct
 id|journal_head
 op_star
 id|t_reserved_list
+suffix:semicolon
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all buffers under writeout during&n;&t; * commit [j_list_lock]&n;&t; */
+DECL|member|t_locked_list
+r_struct
+id|journal_head
+op_star
+id|t_locked_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * Doubly-linked circular list of all metadata buffers owned by this&n;&t; * transaction [j_list_lock]&n;&t; */
 DECL|member|t_buffers
@@ -2140,7 +2178,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* Debugging code only: */
 DECL|macro|jbd_ENOSYS
-mdefine_line|#define jbd_ENOSYS() &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;printk (KERN_ERR &quot;JBD unimplemented function &quot; __FUNCTION__); &bslash;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&t;&t;&t;      &bslash;&n;&t;schedule();&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (1)
+mdefine_line|#define jbd_ENOSYS() &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;           &bslash;&n;&t;printk (KERN_ERR &quot;JBD unimplemented function %s&bslash;n&quot;, __FUNCTION__); &bslash;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&t;&t;&t;           &bslash;&n;&t;schedule();&t;&t;&t;&t;&t;&t;           &bslash;&n;} while (1)
 multiline_comment|/*&n; * is_journal_abort&n; *&n; * Simple test wrapper function to test the JFS_ABORT state flag.  This&n; * bit, when set, indicates that we have had a fatal error somewhere,&n; * either inside the journaling layer or indicated to us by the client&n; * (eg. ext3), and that we and should not commit any further&n; * transactions.  &n; */
 DECL|function|is_journal_aborted
 r_static
@@ -2331,8 +2369,10 @@ DECL|macro|BJ_LogCtl
 mdefine_line|#define BJ_LogCtl&t;6&t;/* Buffer contains log descriptors */
 DECL|macro|BJ_Reserved
 mdefine_line|#define BJ_Reserved&t;7&t;/* Buffer is reserved for access by journal */
+DECL|macro|BJ_Locked
+mdefine_line|#define BJ_Locked&t;8&t;/* Locked for I/O during commit */
 DECL|macro|BJ_Types
-mdefine_line|#define BJ_Types&t;8
+mdefine_line|#define BJ_Types&t;9
 r_extern
 r_int
 id|jbd_blocks_per_page

@@ -884,7 +884,13 @@ id|__KERNEL_CS
 suffix:semicolon
 id|regs.eflags
 op_assign
-l_int|0x286
+id|X86_EFLAGS_IF
+op_or
+id|X86_EFLAGS_SF
+op_or
+id|X86_EFLAGS_PF
+op_or
+l_int|0x2
 suffix:semicolon
 multiline_comment|/* Ok, create the new process.. */
 r_return
@@ -2195,22 +2201,6 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These bracket the sleeping functions..&n; */
-r_extern
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|first_sched
 mdefine_line|#define first_sched&t;((unsigned long) scheduling_functions_start_here)
 DECL|macro|last_sched

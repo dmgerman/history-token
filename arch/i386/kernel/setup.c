@@ -24,8 +24,8 @@ macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
+macro_line|#include &lt;asm/std_resources.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
-macro_line|#include &quot;mach_resources.h&quot;
 multiline_comment|/* This value is set up by the early boot code to point to the value&n;   immediately after the boot time page tables.  It contains a *physical*&n;   address, and must not be in the .bss segment! */
 DECL|variable|__initdata
 r_int
@@ -367,47 +367,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-DECL|function|probe_roms
-r_static
-r_void
-id|__init
-id|probe_roms
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|roms
-op_assign
-l_int|1
-suffix:semicolon
-id|request_resource
-c_func
-(paren
-op_amp
-id|iomem_resource
-comma
-id|rom_resources
-op_plus
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Video ROM is standard at C000:0000 - C7FF:0000, check signature */
-id|probe_video_rom
-c_func
-(paren
-id|roms
-)paren
-suffix:semicolon
-multiline_comment|/* Extension roms */
-id|probe_extension_roms
-c_func
-(paren
-id|roms
-)paren
-suffix:semicolon
-)brace
 DECL|function|limit_regions
 r_static
 r_void
@@ -3778,9 +3737,6 @@ r_int
 r_int
 id|low_mem_size
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3814,29 +3770,9 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* request I/O space for devices used on all i[345]86 PCs */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|STANDARD_IO_RESOURCES
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|request_resource
+id|request_standard_io_resources
 c_func
 (paren
-op_amp
-id|ioport_resource
-comma
-id|standard_io_resources
-op_plus
-id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the PCI layer not to allocate too close to the RAM area.. */

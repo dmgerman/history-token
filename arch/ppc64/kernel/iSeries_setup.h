@@ -2,7 +2,6 @@ multiline_comment|/*&n; *    Copyright (c) 2000 Mike Corrigan &lt;mikejc@us.ibm.
 macro_line|#ifndef&t;__ISERIES_SETUP_H__
 DECL|macro|__ISERIES_SETUP_H__
 mdefine_line|#define&t;__ISERIES_SETUP_H__
-macro_line|#include &lt;linux/irq.h&gt;&t;&t;/* for irq_desc_t */
 r_extern
 r_void
 id|iSeries_init_early
@@ -76,15 +75,6 @@ id|iSeries_init_IRQ
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|iSeries_init_irq_desc
-c_func
-(paren
-id|irq_desc_t
-op_star
 )paren
 suffix:semicolon
 r_extern

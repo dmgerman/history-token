@@ -3,6 +3,8 @@ macro_line|#ifndef __LINUX_IPMI_SMI_H
 DECL|macro|__LINUX_IPMI_SMI_H
 mdefine_line|#define __LINUX_IPMI_SMI_H
 macro_line|#include &lt;linux/ipmi_msgdefs.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/* This files describes the interface for IPMI system management interface&n;   drivers to bind into the IPMI message handler. */
 multiline_comment|/* Structure for the low-level drivers. */
 DECL|typedef|ipmi_smi_t
@@ -12,7 +14,7 @@ id|ipmi_smi
 op_star
 id|ipmi_smi_t
 suffix:semicolon
-multiline_comment|/*&n; * Messages to/from the lower layer.  The smi interface will take one&n; * of these to send. After the send has occurred and a response has&n; * been received, it will report this same data structure back up to&n; * the upper layer.  If an error occurs, it should fill in the&n; * response with an error code in the completion code location. When&n; * asyncronous data is received, one of these is allocated, the&n; * data_size is set to zero and the response holds the data from the&n; * get message or get event command that the interface initiated.&n; * Note that it is the interfaces responsibility to detect&n; * asynchronous data and messages and request them from the&n; * interface.&n; */
+multiline_comment|/*&n; * Messages to/from the lower layer.  The smi interface will take one&n; * of these to send. After the send has occurred and a response has&n; * been received, it will report this same data structure back up to&n; * the upper layer.  If an error occurs, it should fill in the&n; * response with an error code in the completion code location. When&n; * asynchronous data is received, one of these is allocated, the&n; * data_size is set to zero and the response holds the data from the&n; * get message or get event command that the interface initiated.&n; * Note that it is the interfaces responsibility to detect&n; * asynchronous data and messages and request them from the&n; * interface.&n; */
 DECL|struct|ipmi_smi_msg
 r_struct
 id|ipmi_smi_msg
@@ -30,11 +32,6 @@ DECL|member|user_data
 r_void
 op_star
 id|user_data
-suffix:semicolon
-multiline_comment|/* If 0, add to the end of the queue.  If 1, add to the beginning. */
-DECL|member|prio
-r_int
-id|prio
 suffix:semicolon
 DECL|member|data_size
 r_int
@@ -228,5 +225,35 @@ id|msg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Allow the lower layer to add things to the proc filesystem&n;   directory for this interface.  Note that the entry will&n;   automatically be dstroyed when the interface is destroyed. */
+r_int
+id|ipmi_smi_add_proc_entry
+c_func
+(paren
+id|ipmi_smi_t
+id|smi
+comma
+r_char
+op_star
+id|name
+comma
+id|read_proc_t
+op_star
+id|read_proc
+comma
+id|write_proc_t
+op_star
+id|write_proc
+comma
+r_void
+op_star
+id|data
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+suffix:semicolon
 macro_line|#endif /* __LINUX_IPMI_SMI_H */
 eof

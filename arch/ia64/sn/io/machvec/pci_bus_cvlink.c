@@ -3526,9 +3526,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|controller
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cannot allocate PCI controller&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -3543,7 +3555,6 @@ id|pci_controller
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* just allocate some devices and fill in the pci_dev structs */
 r_for
 c_loop
 (paren
@@ -3558,6 +3569,15 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+r_if
+c_cond
+(paren
+id|pci_bus_to_vertex
+c_func
+(paren
+id|i
+)paren
+)paren
 id|pci_scan_bus
 c_func
 (paren
@@ -3569,8 +3589,6 @@ comma
 id|controller
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * actually find devices and fill in hwgraph structs&n;&t; */
 id|done_probing
 op_assign
 l_int|1
@@ -3630,17 +3648,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * set the root start and end so that drivers calling check_region()&n;&t; * won&squot;t see a conflict&n;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN_SIM
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_RUNNING_ON_SIMULATOR
-c_func
-(paren
-)paren
-)paren
-(brace
 id|ioport_resource.start
 op_assign
 l_int|0xc000000000000000
@@ -3649,8 +3656,6 @@ id|ioport_resource.end
 op_assign
 l_int|0xcfffffffffffffff
 suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
 id|iomem_resource.start
 op_assign

@@ -269,46 +269,6 @@ l_int|7
 )paren
 comma
 multiline_comment|/* use COMRESET */
-multiline_comment|/* struct ata_taskfile flags */
-DECL|enumerator|ATA_TFLAG_LBA48
-id|ATA_TFLAG_LBA48
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-comma
-DECL|enumerator|ATA_TFLAG_ISADDR
-id|ATA_TFLAG_ISADDR
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-comma
-multiline_comment|/* enable r/w to nsect/lba regs */
-DECL|enumerator|ATA_TFLAG_DEVICE
-id|ATA_TFLAG_DEVICE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* enable r/w to device reg */
-DECL|enumerator|ATA_QCFLAG_WRITE
-id|ATA_QCFLAG_WRITE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-comma
-multiline_comment|/* read==0, write==1 */
 DECL|enumerator|ATA_QCFLAG_ACTIVE
 id|ATA_QCFLAG_ACTIVE
 op_assign
@@ -853,79 +813,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ata_taskfile
-r_struct
-id|ata_taskfile
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* ATA_TFLAG_xxx */
-DECL|member|protocol
-id|u8
-id|protocol
-suffix:semicolon
-multiline_comment|/* ATA_PROT_xxx */
-DECL|member|ctl
-id|u8
-id|ctl
-suffix:semicolon
-multiline_comment|/* control reg */
-DECL|member|hob_feature
-id|u8
-id|hob_feature
-suffix:semicolon
-multiline_comment|/* additional data */
-DECL|member|hob_nsect
-id|u8
-id|hob_nsect
-suffix:semicolon
-multiline_comment|/* to support LBA48 */
-DECL|member|hob_lbal
-id|u8
-id|hob_lbal
-suffix:semicolon
-DECL|member|hob_lbam
-id|u8
-id|hob_lbam
-suffix:semicolon
-DECL|member|hob_lbah
-id|u8
-id|hob_lbah
-suffix:semicolon
-DECL|member|feature
-id|u8
-id|feature
-suffix:semicolon
-DECL|member|nsect
-id|u8
-id|nsect
-suffix:semicolon
-DECL|member|lbal
-id|u8
-id|lbal
-suffix:semicolon
-DECL|member|lbam
-id|u8
-id|lbam
-suffix:semicolon
-DECL|member|lbah
-id|u8
-id|lbah
-suffix:semicolon
-DECL|member|device
-id|u8
-id|device
-suffix:semicolon
-DECL|member|command
-id|u8
-id|command
-suffix:semicolon
-multiline_comment|/* IO operation */
-)brace
-suffix:semicolon
 DECL|struct|ata_queued_cmd
 r_struct
 id|ata_queued_cmd
@@ -1117,6 +1004,22 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* WARNING: shorter than&n;&t;&t;&t;&t;&t;&t; * ATAPI7 spec size, 40 ASCII&n;&t;&t;&t;&t;&t;&t; * characters&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* cache info about current transfer mode */
+DECL|member|xfer_protocol
+id|u8
+id|xfer_protocol
+suffix:semicolon
+multiline_comment|/* taskfile xfer protocol */
+DECL|member|read_cmd
+id|u8
+id|read_cmd
+suffix:semicolon
+multiline_comment|/* opcode to use on read */
+DECL|member|write_cmd
+id|u8
+id|write_cmd
+suffix:semicolon
+multiline_comment|/* opcode to use on write */
 )brace
 suffix:semicolon
 DECL|struct|ata_engine
@@ -1823,17 +1726,6 @@ id|host
 suffix:semicolon
 r_extern
 r_int
-id|ata_scsi_slave_config
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-)paren
-suffix:semicolon
-r_extern
-r_int
 r_int
 id|ata_host_intr
 c_func
@@ -2103,6 +1995,17 @@ r_int
 id|geom
 (braket
 )braket
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_scsi_slave_config
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
 )paren
 suffix:semicolon
 DECL|function|msecs_to_jiffies

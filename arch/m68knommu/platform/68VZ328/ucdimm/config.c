@@ -330,12 +330,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n68VZ328 DragonBallVZ support (c) 2001 Lineo, Inc.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCdimm serial string [%s]&bslash;n&quot;
 comma
 id|getserialnum
@@ -357,6 +359,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCdimm hwaddr %.2x:%.2x:%.2x:%.2x:%.2x:%.2x&bslash;n&quot;
 comma
 id|p

@@ -462,47 +462,6 @@ id|ATA_REG_IRQ
 op_assign
 id|ATA_REG_NSECT
 comma
-multiline_comment|/* ATA taskfile protocols */
-DECL|enumerator|ATA_PROT_UNKNOWN
-id|ATA_PROT_UNKNOWN
-op_assign
-l_int|0
-comma
-DECL|enumerator|ATA_PROT_NODATA
-id|ATA_PROT_NODATA
-op_assign
-l_int|1
-comma
-DECL|enumerator|ATA_PROT_PIO_READ
-id|ATA_PROT_PIO_READ
-op_assign
-l_int|2
-comma
-DECL|enumerator|ATA_PROT_PIO_WRITE
-id|ATA_PROT_PIO_WRITE
-op_assign
-l_int|3
-comma
-DECL|enumerator|ATA_PROT_DMA_READ
-id|ATA_PROT_DMA_READ
-op_assign
-l_int|4
-comma
-DECL|enumerator|ATA_PROT_DMA_WRITE
-id|ATA_PROT_DMA_WRITE
-op_assign
-l_int|5
-comma
-DECL|enumerator|ATA_PROT_ATAPI
-id|ATA_PROT_ATAPI
-op_assign
-l_int|6
-comma
-DECL|enumerator|ATA_PROT_ATAPI_DMA
-id|ATA_PROT_ATAPI_DMA
-op_assign
-l_int|7
-comma
 multiline_comment|/* ATA device commands */
 DECL|enumerator|ATA_CMD_EDD
 id|ATA_CMD_EDD
@@ -688,6 +647,82 @@ id|SCR_NOTIFICATION
 op_assign
 l_int|4
 comma
+multiline_comment|/* struct ata_taskfile flags */
+DECL|enumerator|ATA_TFLAG_LBA48
+id|ATA_TFLAG_LBA48
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+comma
+multiline_comment|/* enable 48-bit LBA and &quot;HOB&quot; */
+DECL|enumerator|ATA_TFLAG_ISADDR
+id|ATA_TFLAG_ISADDR
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* enable r/w to nsect/lba regs */
+DECL|enumerator|ATA_TFLAG_DEVICE
+id|ATA_TFLAG_DEVICE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+comma
+multiline_comment|/* enable r/w to device reg */
+DECL|enumerator|ATA_TFLAG_WRITE
+id|ATA_TFLAG_WRITE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|3
+)paren
+comma
+multiline_comment|/* data dir: host-&gt;dev==1 (write) */
+)brace
+suffix:semicolon
+DECL|enum|ata_tf_protocols
+r_enum
+id|ata_tf_protocols
+(brace
+multiline_comment|/* ATA taskfile protocols */
+DECL|enumerator|ATA_PROT_UNKNOWN
+id|ATA_PROT_UNKNOWN
+comma
+multiline_comment|/* unknown/invalid */
+DECL|enumerator|ATA_PROT_NODATA
+id|ATA_PROT_NODATA
+comma
+multiline_comment|/* no data */
+DECL|enumerator|ATA_PROT_PIO
+id|ATA_PROT_PIO
+comma
+multiline_comment|/* PIO single sector */
+DECL|enumerator|ATA_PROT_PIO_MULT
+id|ATA_PROT_PIO_MULT
+comma
+multiline_comment|/* PIO multiple sector */
+DECL|enumerator|ATA_PROT_DMA
+id|ATA_PROT_DMA
+comma
+multiline_comment|/* DMA */
+DECL|enumerator|ATA_PROT_ATAPI
+id|ATA_PROT_ATAPI
+comma
+multiline_comment|/* packet command */
+DECL|enumerator|ATA_PROT_ATAPI_DMA
+id|ATA_PROT_ATAPI_DMA
+comma
+multiline_comment|/* packet command with special DMA sauce */
 )brace
 suffix:semicolon
 multiline_comment|/* core structures */
@@ -711,6 +746,79 @@ c_func
 id|packed
 )paren
 )paren
+suffix:semicolon
+DECL|struct|ata_taskfile
+r_struct
+id|ata_taskfile
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* ATA_TFLAG_xxx */
+DECL|member|protocol
+id|u8
+id|protocol
+suffix:semicolon
+multiline_comment|/* ATA_PROT_xxx */
+DECL|member|ctl
+id|u8
+id|ctl
+suffix:semicolon
+multiline_comment|/* control reg */
+DECL|member|hob_feature
+id|u8
+id|hob_feature
+suffix:semicolon
+multiline_comment|/* additional data */
+DECL|member|hob_nsect
+id|u8
+id|hob_nsect
+suffix:semicolon
+multiline_comment|/* to support LBA48 */
+DECL|member|hob_lbal
+id|u8
+id|hob_lbal
+suffix:semicolon
+DECL|member|hob_lbam
+id|u8
+id|hob_lbam
+suffix:semicolon
+DECL|member|hob_lbah
+id|u8
+id|hob_lbah
+suffix:semicolon
+DECL|member|feature
+id|u8
+id|feature
+suffix:semicolon
+DECL|member|nsect
+id|u8
+id|nsect
+suffix:semicolon
+DECL|member|lbal
+id|u8
+id|lbal
+suffix:semicolon
+DECL|member|lbam
+id|u8
+id|lbam
+suffix:semicolon
+DECL|member|lbah
+id|u8
+id|lbah
+suffix:semicolon
+DECL|member|device
+id|u8
+id|device
+suffix:semicolon
+DECL|member|command
+id|u8
+id|command
+suffix:semicolon
+multiline_comment|/* IO operation */
+)brace
 suffix:semicolon
 DECL|macro|ata_id_is_ata
 mdefine_line|#define ata_id_is_ata(dev)&t;(((dev)-&gt;id[0] &amp; (1 &lt;&lt; 15)) == 0)

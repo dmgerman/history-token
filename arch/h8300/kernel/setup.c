@@ -424,6 +424,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;r&bslash;n&bslash;nuClinux &quot;
 id|CPU
 l_string|&quot;&bslash;n&quot;
@@ -432,6 +433,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Target Hardware: %s&bslash;n&quot;
 comma
 id|_target_name
@@ -440,12 +442,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Flat model support (C) 1998,1999 Kenneth Albanowski, D. Jeff Dionne&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;H8/300 series support by Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -453,6 +457,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;KERNEL -&gt; TEXT=0x%06x-0x%06x DATA=0x%06x-0x%06x &quot;
 l_string|&quot;BSS=0x%06x-0x%06x&bslash;n&quot;
 comma
@@ -496,6 +501,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;KERNEL -&gt; ROMFS=0x%06x-0x%06x MEM=0x%06x-0x%06x &quot;
 l_string|&quot;STACK=0x%06x-0x%06x&bslash;n&quot;
 comma
@@ -530,18 +536,6 @@ r_int
 )paren
 op_amp
 id|_ramend
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_BLKMEM
-id|ROOT_DEV
-op_assign
-id|MKDEV
-c_func
-(paren
-id|BLKMEM_MAJOR
-comma
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -613,6 +607,7 @@ id|cmdline_p
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Command line: &squot;%s&squot;&bslash;n&quot;
 comma
 op_star
@@ -681,84 +676,11 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Done setup_arch&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
-DECL|function|get_cpuinfo
-r_int
-id|get_cpuinfo
-c_func
-(paren
-r_char
-op_star
-id|buffer
-)paren
-(brace
-r_char
-op_star
-id|cpu
-suffix:semicolon
-id|u_long
-id|clockfreq
-suffix:semicolon
-id|cpu
-op_assign
-id|CPU
-suffix:semicolon
-id|clockfreq
-op_assign
-id|CONFIG_CPU_CLOCK
-suffix:semicolon
-r_return
-id|sprintf
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;CPU:&bslash;t&bslash;t%s&bslash;n&quot;
-l_string|&quot;Clock:&bslash;t%lu.%1luMHz&bslash;n&quot;
-l_string|&quot;BogoMips:&bslash;t%lu.%02lu&bslash;n&quot;
-l_string|&quot;Calibration:&bslash;t%lu loops&bslash;n&quot;
-comma
-id|cpu
-comma
-id|clockfreq
-op_div
-l_int|100
-comma
-id|clockfreq
-op_mod
-l_int|100
-comma
-(paren
-id|loops_per_jiffy
-op_star
-id|HZ
-)paren
-op_div
-l_int|500000
-comma
-(paren
-(paren
-id|loops_per_jiffy
-op_star
-id|HZ
-)paren
-op_div
-l_int|5000
-)paren
-op_mod
-l_int|100
-comma
-(paren
-id|loops_per_jiffy
-op_star
-id|HZ
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Get CPU information for use by the procfs.&n; */
 DECL|function|show_cpuinfo
@@ -781,12 +703,28 @@ r_char
 op_star
 id|cpu
 suffix:semicolon
+r_int
+id|mode
+suffix:semicolon
 id|u_long
 id|clockfreq
 suffix:semicolon
 id|cpu
 op_assign
 id|CPU
+suffix:semicolon
+id|mode
+op_assign
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+id|MDCR
+op_amp
+l_int|0x07
 suffix:semicolon
 id|clockfreq
 op_assign
@@ -797,12 +735,14 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;CPU:&bslash;t&bslash;t%s&bslash;n&quot;
-l_string|&quot;Clock:&bslash;t%lu.%1luMHz&bslash;n&quot;
+l_string|&quot;CPU:&bslash;t&bslash;t%s (mode:%d)&bslash;n&quot;
+l_string|&quot;Clock:&bslash;t&bslash;t%lu.%1luMHz&bslash;n&quot;
 l_string|&quot;BogoMips:&bslash;t%lu.%02lu&bslash;n&quot;
 l_string|&quot;Calibration:&bslash;t%lu loops&bslash;n&quot;
 comma
 id|cpu
+comma
+id|mode
 comma
 id|clockfreq
 op_div

@@ -337,6 +337,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n68EZ328 DragonBallEZ support (C) 1999 Rt-Control, Inc&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -344,6 +345,7 @@ macro_line|#ifdef CONFIG_UCSIMM
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCsimm serial string [%s]&bslash;n&quot;
 comma
 id|getserialnum
@@ -365,6 +367,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCsimm hwaddr %.2x:%.2x:%.2x:%.2x:%.2x:%.2x&bslash;n&quot;
 comma
 id|p

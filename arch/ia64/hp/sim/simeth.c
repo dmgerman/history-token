@@ -688,9 +688,10 @@ suffix:semicolon
 )brace
 id|dev-&gt;irq
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * attach the interrupt in the simulator, this does enable interrupts&n;&t; * until a netdev_attach() is called&n;&t; */

@@ -632,6 +632,16 @@ id|BLIST_FORCELUN
 )brace
 comma
 (brace
+l_string|&quot;BELKIN&quot;
+comma
+l_string|&quot;USB 2 HS-CF&quot;
+comma
+l_string|&quot;1.95&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+(brace
 l_string|&quot;CANON&quot;
 comma
 l_string|&quot;IPUBJD&quot;
@@ -866,6 +876,16 @@ l_string|&quot;Generic&quot;
 comma
 l_string|&quot;USB Storage-SMC&quot;
 comma
+l_string|&quot;0180&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;Generic&quot;
+comma
+l_string|&quot;USB Storage-SMC&quot;
+comma
 l_string|&quot;0207&quot;
 comma
 id|BLIST_FORCELUN
@@ -1048,6 +1068,16 @@ id|BLIST_SINGLELUN
 )brace
 comma
 (brace
+l_string|&quot;Medion&quot;
+comma
+l_string|&quot;Flash XL  MMC/SD&quot;
+comma
+l_string|&quot;2.6D&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
 l_string|&quot;MegaRAID&quot;
 comma
 l_string|&quot;LD&quot;
@@ -1227,6 +1257,16 @@ comma
 id|BLIST_SPARSELUN
 op_or
 id|BLIST_LARGELUN
+)brace
+comma
+(brace
+l_string|&quot;SMSC&quot;
+comma
+l_string|&quot;USB 2 HS-CF&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_SPARSELUN
 )brace
 comma
 (brace
@@ -1848,7 +1888,7 @@ id|bflags
 suffix:semicolon
 id|bflags
 op_assign
-id|sdev-&gt;host-&gt;hostt-&gt;flags
+id|sdev-&gt;sdev_bflags
 suffix:semicolon
 r_if
 c_cond

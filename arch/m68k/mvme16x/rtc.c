@@ -23,6 +23,7 @@ DECL|macro|BIN2BCD
 mdefine_line|#define BIN2BCD(val) ((((val)/10)&lt;&lt;4) + (val)%10)
 DECL|variable|days_in_mo
 r_static
+r_const
 r_int
 r_char
 id|days_in_mo

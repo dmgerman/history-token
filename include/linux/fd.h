@@ -34,6 +34,8 @@ DECL|macro|FD_STRETCH
 mdefine_line|#define FD_STRETCH 1
 DECL|macro|FD_SWAPSIDES
 mdefine_line|#define FD_SWAPSIDES 2
+DECL|macro|FD_ZEROBASED
+mdefine_line|#define FD_ZEROBASED 4
 DECL|member|gap
 r_int
 r_char

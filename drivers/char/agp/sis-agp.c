@@ -420,22 +420,25 @@ comma
 id|command
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Weird: on 648(fx) and 746(fx) chipsets any rate change in the target&n;&t;&t; * command register triggers a 5ms screwup during which the master&n;&t;&t; * cannot be configured&t;&t; &n;&t;&t; */
 r_if
 c_cond
 (paren
 id|device-&gt;device
 op_eq
 id|PCI_DEVICE_ID_SI_648
+op_logical_or
+id|device-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_746
 )paren
 (brace
-singleline_comment|// weird: on 648 and 648fx chipsets any rate change in the target command register
-singleline_comment|// triggers a 5ms screwup during which the master cannot be configured
 id|printk
 c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;sis 648 agp fix - giving bridge time to recover&bslash;n&quot;
+l_string|&quot;SiS chipset with AGP problems detected. Giving bridge time to recover.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_current_state
@@ -933,29 +936,18 @@ op_eq
 id|PCI_DEVICE_ID_SI_648
 )paren
 (brace
+id|sis_driver.agp_enable
+op_assign
+id|sis_648_enable
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|agp_bridge-&gt;major_version
 op_eq
 l_int|3
-op_logical_and
-id|agp_bridge-&gt;minor_version
-OL
-l_int|5
 )paren
 (brace
-id|sis_driver.agp_enable
-op_assign
-id|sis_648_enable
-suffix:semicolon
-)brace
-r_else
-(brace
-id|sis_driver.agp_enable
-op_assign
-id|sis_648_enable
-suffix:semicolon
 id|sis_driver.aperture_sizes
 op_assign
 id|agp3_generic_sizes
@@ -985,6 +977,20 @@ op_assign
 id|agp3_generic_tlbflush
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|bridge-&gt;dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SI_746
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * We don&squot;t know enough about the 746 to enable it properly.&n;&t;&t; * Though we do know that it needs the &squot;delay&squot; hack to settle&n;&t;&t; * after changing modes.&n;&t;&t; */
+id|sis_driver.agp_enable
+op_assign
+id|sis_648_enable
+suffix:semicolon
 )brace
 )brace
 DECL|function|agp_sis_probe

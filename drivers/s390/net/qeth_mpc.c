@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/s390/net/qeth_mpc.c&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; * Author(s): Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/s390/net/qeth_mpc.c&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; * Author(s): Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; * &t;      Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;asm/cio.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|variable|IDX_ACTIVATE_READ

@@ -1,10 +1,9 @@
 multiline_comment|/*&n; * Definitions for Sun3 custom MMU.&n; */
-macro_line|#include &lt;asm/movs.h&gt;
 macro_line|#ifndef __SUN3_MMU_H__
 DECL|macro|__SUN3_MMU_H__
 mdefine_line|#define __SUN3_MMU_H__
-DECL|macro|FC_CONTROL
-mdefine_line|#define FC_CONTROL 3
+macro_line|#include &lt;asm/movs.h&gt;
+macro_line|#include &lt;asm/sun3-head.h&gt;
 multiline_comment|/* MMU characteristics. */
 DECL|macro|SUN3_SEGMAPS_PER_CONTEXT
 mdefine_line|#define SUN3_SEGMAPS_PER_CONTEXT&t;2048

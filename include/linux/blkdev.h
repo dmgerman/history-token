@@ -713,9 +713,8 @@ r_void
 id|unplug_fn
 )paren
 (paren
-r_void
+id|request_queue_t
 op_star
-id|q
 )paren
 suffix:semicolon
 r_struct
@@ -937,11 +936,6 @@ DECL|member|bounce_gfp
 r_int
 id|bounce_gfp
 suffix:semicolon
-DECL|member|plug_list
-r_struct
-id|list_head
-id|plug_list
-suffix:semicolon
 multiline_comment|/*&n;&t; * various queue flags, see QUEUE_* below&n;&t; */
 DECL|member|queue_flags
 r_int
@@ -1012,6 +1006,11 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
+DECL|member|in_flight
+r_int
+r_int
+id|in_flight
+suffix:semicolon
 multiline_comment|/*&n;&t; * sg stuff&n;&t; */
 DECL|member|sg_timeout
 r_int
@@ -1049,8 +1048,10 @@ DECL|macro|QUEUE_FLAG_DEAD
 mdefine_line|#define QUEUE_FLAG_DEAD&t;&t;5&t;/* queue being torn down */
 DECL|macro|QUEUE_FLAG_REENTER
 mdefine_line|#define QUEUE_FLAG_REENTER&t;6&t;/* Re-entrancy avoidance */
+DECL|macro|QUEUE_FLAG_PLUGGED
+mdefine_line|#define QUEUE_FLAG_PLUGGED&t;7&t;/* queue is plugged */
 DECL|macro|blk_queue_plugged
-mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
+mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_tagged
 mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_stopped
@@ -1061,6 +1062,10 @@ DECL|macro|blk_pc_request
 mdefine_line|#define blk_pc_request(rq)&t;((rq)-&gt;flags &amp; REQ_BLOCK_PC)
 DECL|macro|blk_noretry_request
 mdefine_line|#define blk_noretry_request(rq)&t;((rq)-&gt;flags &amp; REQ_FAILFAST)
+DECL|macro|blk_rq_started
+mdefine_line|#define blk_rq_started(rq)&t;((rq)-&gt;flags &amp; REQ_STARTED)
+DECL|macro|blk_account_rq
+mdefine_line|#define blk_account_rq(rq)&t;(blk_rq_started(rq) &amp;&amp; blk_fs_request(rq))
 DECL|macro|blk_pm_suspend_request
 mdefine_line|#define blk_pm_suspend_request(rq)&t;((rq)-&gt;flags &amp; REQ_PM_SUSPEND)
 DECL|macro|blk_pm_resume_request
@@ -1646,7 +1651,6 @@ c_func
 (paren
 id|request_queue_t
 op_star
-id|q
 )paren
 suffix:semicolon
 r_extern
@@ -1734,6 +1738,60 @@ id|bdev
 (brace
 r_return
 id|bdev-&gt;bd_disk-&gt;queue
+suffix:semicolon
+)brace
+DECL|function|blk_run_backing_dev
+r_static
+r_inline
+r_void
+id|blk_run_backing_dev
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|bdi
+op_logical_and
+id|bdi-&gt;unplug_io_fn
+)paren
+id|bdi
+op_member_access_from_pointer
+id|unplug_io_fn
+c_func
+(paren
+id|bdi
+)paren
+suffix:semicolon
+)brace
+DECL|function|blk_run_address_space
+r_static
+r_inline
+r_void
+id|blk_run_address_space
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mapping
+)paren
+id|blk_run_backing_dev
+c_func
+(paren
+id|mapping-&gt;backing_dev_info
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * end_request() and friends. Must be called with the request queue spinlock&n; * acquired. All functions called within end_request() _must_be_ atomic.&n; *&n; * Several drivers define their own end_request and call&n; * end_that_request_first() and end_that_request_last()&n; * for parts of the original function. This prevents&n; * code duplication in drivers.&n; */
@@ -2063,7 +2121,7 @@ r_void
 id|generic_unplug_device
 c_func
 (paren
-r_void
+id|request_queue_t
 op_star
 )paren
 suffix:semicolon

@@ -3303,7 +3303,7 @@ l_int|0
 r_goto
 id|failed
 suffix:semicolon
-multiline_comment|/* make sure that we don&squot;t have too many active connections.&n;&t; * If we have, something must be dropped.&n;&t; * We randomly choose between newest and oldest (in terms&n;&t; * of recent activity) and drop it.&n;&t; */
+multiline_comment|/* make sure that we don&squot;t have too many active connections.&n;&t; * If we have, something must be dropped.&n;&t; *&n;&t; * There&squot;s no point in trying to do random drop here for&n;&t; * DoS prevention. The NFS clients does 1 reconnect in 15&n;&t; * seconds. An attacker can easily beat that.&n;&t; *&n;&t; * The only somewhat efficient mechanism would be if drop&n;&t; * old connections from the same IP first. But right now&n;&t; * we don&squot;t even record the client IP in svc_sock.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3315,7 +3315,7 @@ op_plus
 l_int|3
 )paren
 op_star
-l_int|5
+l_int|20
 )paren
 (brace
 r_struct
@@ -3347,33 +3347,54 @@ id|serv-&gt;sv_tempsocks
 r_if
 c_cond
 (paren
-id|net_random
+id|net_ratelimit
 c_func
 (paren
 )paren
-op_amp
-l_int|1
 )paren
+(brace
+multiline_comment|/* Try to help the admin */
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: too many open TCP &quot;
+l_string|&quot;sockets, consider increasing the &quot;
+l_string|&quot;number of nfsd threads&bslash;n&quot;
+comma
+id|serv-&gt;sv_name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s: last TCP connect from &quot;
+l_string|&quot;%u.%u.%u.%u:%d&bslash;n&quot;
+comma
+id|serv-&gt;sv_name
+comma
+id|NIPQUAD
+c_func
+(paren
+id|sin.sin_addr.s_addr
+)paren
+comma
+id|ntohs
+c_func
+(paren
+id|sin.sin_port
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Always select the oldest socket. It&squot;s not fair,&n;&t;&t;&t; * but so is life&n;&t;&t;&t; */
 id|svsk
 op_assign
 id|list_entry
 c_func
 (paren
 id|serv-&gt;sv_tempsocks.prev
-comma
-r_struct
-id|svc_sock
-comma
-id|sk_list
-)paren
-suffix:semicolon
-r_else
-id|svsk
-op_assign
-id|list_entry
-c_func
-(paren
-id|serv-&gt;sv_tempsocks.next
 comma
 r_struct
 id|svc_sock

@@ -8385,7 +8385,7 @@ multiline_comment|/*&n;&t; * To have permissions to do most of the vt ioctls, we
 r_if
 c_cond
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_eq
 id|tty
 op_logical_or

@@ -369,9 +369,29 @@ id|bh
 )paren
 )paren
 (brace
-id|blk_run_queues
+r_struct
+id|block_device
+op_star
+id|bd
+suffix:semicolon
+id|smp_mb
 c_func
 (paren
+)paren
+suffix:semicolon
+id|bd
+op_assign
+id|bh-&gt;b_bdev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bd
+)paren
+id|blk_run_address_space
+c_func
+(paren
+id|bd-&gt;bd_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|io_schedule
@@ -951,6 +971,20 @@ c_func
 l_string|&quot;Emergency Sync complete&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|laptop_mode
+)paren
+)paren
+id|laptop_sync_completion
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|sys_sync
 id|asmlinkage
@@ -1391,7 +1425,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Various filesystems appear to want __find_get_block to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;page_lock).&n; */
+multiline_comment|/*&n; * Various filesystems appear to want __find_get_block to be non-blocking.&n; * But it&squot;s the page lock which protects the buffers.  To get around this,&n; * we get exclusion from try_to_free_buffers with the blockdev mapping&squot;s&n; * private_lock.&n; *&n; * Hack idea: for the blockdev mapping, i_bufferlist_lock contention&n; * may be quite high.  This code could TryLock the page, and if that&n; * succeeds, there is no need to take private_lock. (But if&n; * private_lock is contended then so is mapping-&gt;tree_lock).&n; */
 r_static
 r_struct
 id|buffer_head
@@ -1657,11 +1691,6 @@ id|wakeup_bdflush
 c_func
 (paren
 l_int|1024
-)paren
-suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
 )paren
 suffix:semicolon
 id|yield
@@ -2631,7 +2660,7 @@ c_func
 id|mark_buffer_dirty_inode
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * There is also a small window where the page is dirty, and not on dirty_pages.&n; * Also a possibility that by the time the page is added to dirty_pages, it has&n; * been set clean.  The page lists are somewhat approximate in this regard.&n; * It&squot;s better to have clean pages accidentally attached to dirty_pages than to&n; * leave dirty pages attached to clean_pages.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; *&n; * For now, we treat swapper_space specially.  It doesn&squot;t use the normal&n; * block a_ops.&n; */
+multiline_comment|/*&n; * Add a page to the dirty page list.&n; *&n; * It is a sad fact of life that this function is called from several places&n; * deeply under spinlocking.  It may not sleep.&n; *&n; * If the page has buffers, the uptodate buffers are set dirty, to preserve&n; * dirty-state coherency between the page and the buffers.  It the page does&n; * not have buffers then when they are later attached they will all be set&n; * dirty.&n; *&n; * The buffers are dirtied before the page is dirtied.  There&squot;s a small race&n; * window in which a writepage caller may see the page cleanness but not the&n; * buffer dirtiness.  That&squot;s fine.  If this code were to set the page dirty&n; * before the buffers, a concurrent writepage caller could clear the page dirty&n; * bit, see a bunch of clean buffers and we&squot;d end up with dirty buffers/clean&n; * page on the dirty page list.&n; *&n; * We use private_lock to lock against try_to_free_buffers while using the&n; * page&squot;s buffer list.  Also use this to protect against clean buffers being&n; * added to the page after it was set dirty.&n; *&n; * FIXME: may need to call -&gt;reservepage here as well.  That&squot;s rather up to the&n; * address_space though.&n; */
 DECL|function|__set_page_dirty_buffers
 r_int
 id|__set_page_dirty_buffers
@@ -2651,29 +2680,6 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mapping
-op_eq
-l_int|NULL
-)paren
-(brace
-id|SetPageDirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
@@ -2764,11 +2770,11 @@ id|page
 )paren
 )paren
 (brace
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 r_if
@@ -2790,29 +2796,23 @@ c_func
 id|nr_dirty
 )paren
 suffix:semicolon
-id|list_del
+id|radix_tree_tag_set
 c_func
 (paren
 op_amp
-id|page-&gt;list
-)paren
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|page-&gt;list
+id|mapping-&gt;page_tree
 comma
-op_amp
-id|mapping-&gt;dirty_pages
+id|page-&gt;index
+comma
+id|PAGECACHE_TAG_DIRTY
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|mapping-&gt;page_lock
+id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
 id|__mark_inode_dirty
@@ -2824,10 +2824,8 @@ id|I_DIRTY_PAGES
 )paren
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|__set_page_dirty_buffers
@@ -4061,8 +4059,8 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages:&n; *&n; * Whenever a page has any dirty buffers, the page&squot;s dirty bit is set, and&n; * the page appears on its address_space.dirty_pages list.&n; *&n; * At all times, the dirtiness of the buffers represents the dirtiness of&n; * subsections of the page.  If the page has buffers, the page dirty bit is&n; * merely a hint about the true dirty state.&n; *&n; * When a page is set dirty in its entirety, all its buffers are marked dirty&n; * (if the page has buffers).&n; *&n; * When a buffer is marked dirty, its page is dirtied, but the page&squot;s other&n; * buffers are not.&n; *&n; * Also.  When blockdev buffers are explicitly read with bread(), they&n; * individually become uptodate.  But their backing page remains not&n; * uptodate - even if all of its buffers are uptodate.  A subsequent&n; * block_read_full_page() against that page will discover all the uptodate&n; * buffers, will set the page uptodate and will perform no I/O.&n; */
-multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer,&n; * then set its backing page dirty, then attach the page to its&n; * address_space&squot;s dirty_pages list and then attach the address_space&squot;s&n; * inode to its superblock&squot;s dirty inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;page_lock and the global inode_lock.&n; */
+multiline_comment|/*&n; * The relationship between dirty buffers and dirty pages:&n; *&n; * Whenever a page has any dirty buffers, the page&squot;s dirty bit is set, and&n; * the page is tagged dirty in its radix tree.&n; *&n; * At all times, the dirtiness of the buffers represents the dirtiness of&n; * subsections of the page.  If the page has buffers, the page dirty bit is&n; * merely a hint about the true dirty state.&n; *&n; * When a page is set dirty in its entirety, all its buffers are marked dirty&n; * (if the page has buffers).&n; *&n; * When a buffer is marked dirty, its page is dirtied, but the page&squot;s other&n; * buffers are not.&n; *&n; * Also.  When blockdev buffers are explicitly read with bread(), they&n; * individually become uptodate.  But their backing page remains not&n; * uptodate - even if all of its buffers are uptodate.  A subsequent&n; * block_read_full_page() against that page will discover all the uptodate&n; * buffers, will set the page uptodate and will perform no I/O.&n; */
+multiline_comment|/**&n; * mark_buffer_dirty - mark a buffer_head as needing writeout&n; *&n; * mark_buffer_dirty() will set the dirty bit against the buffer, then set its&n; * backing page dirty, then tag the page as dirty in its address_space&squot;s radix&n; * tree and then attach the address_space&squot;s inode to its superblock&squot;s dirty&n; * inode list.&n; *&n; * mark_buffer_dirty() is atomic.  It takes bh-&gt;b_page-&gt;mapping-&gt;private_lock,&n; * mapping-&gt;tree_lock and the global inode_lock.&n; */
 DECL|function|mark_buffer_dirty
 r_void
 id|fastcall
@@ -5286,8 +5284,8 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
@@ -5295,10 +5293,6 @@ c_func
 (paren
 id|page
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5339,6 +5333,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|try_to_release_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|try_to_release_page
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * block_invalidatepage - invalidate part of all of a buffer-backed page&n; *&n; * @page: the page which is affected&n; * @offset: the index of the truncation point&n; *&n; * block_invalidatepage() is called when all or part of the page has become&n; * invalidatedby a truncate operation.&n; *&n; * block_invalidatepage() does not have to release all buffers, but it must&n; * ensure that no dirty buffer is left outside @offset and that no I/O&n; * is underway against any of the blocks which are outside the truncation&n; * point.  Because the caller is about to free (and possibly reuse) those&n; * blocks on-disk.&n; */
 DECL|function|block_invalidatepage
 r_int
@@ -6025,25 +6026,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|buffer_mapped
 c_func
 (paren
 id|bh
 )paren
-op_logical_and
-id|buffer_dirty
-c_func
-(paren
-id|bh
 )paren
-)paren
-(brace
+r_continue
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If it&squot;s a fully non-blocking write attempt and we cannot&n;&t;&t; * lock the buffer then redirty the page.  Note that this can&n;&t;&t; * potentially cause a busy-wait loop from pdflush and kswapd&n;&t;&t; * activity, but those code paths have their own higher-level&n;&t;&t; * throttling.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|wbc-&gt;sync_mode
 op_ne
 id|WB_SYNC_NONE
+op_logical_or
+op_logical_neg
+id|wbc-&gt;nonblocking
 )paren
 (brace
 id|lock_buffer
@@ -6054,7 +6055,6 @@ id|bh
 suffix:semicolon
 )brace
 r_else
-(brace
 r_if
 c_cond
 (paren
@@ -6073,7 +6073,6 @@ id|page
 suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -6117,7 +6116,6 @@ id|bh
 suffix:semicolon
 )brace
 )brace
-)brace
 r_while
 c_loop
 (paren
@@ -6140,7 +6138,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page
@@ -6274,6 +6272,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|wbc-&gt;pages_skipped
+op_increment
+suffix:semicolon
+multiline_comment|/* We didn&squot;t write this page */
 )brace
 r_return
 id|err
@@ -6362,7 +6364,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page
@@ -11069,7 +11071,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* swapped-in anon page */
+multiline_comment|/* can this still happen? */
 id|ret
 op_assign
 id|drop_buffers
@@ -11107,13 +11109,6 @@ r_if
 c_cond
 (paren
 id|ret
-op_logical_and
-op_logical_neg
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the filesystem writes its buffers by hand (eg ext3)&n;&t;&t; * then we can have clean buffers against a dirty page.  We&n;&t;&t; * clean the page here; otherwise later reattachment of buffers&n;&t;&t; * could encounter a non-uptodate page, which is unresolvable.&n;&t;&t; * This only applies in the rare case where try_to_free_buffers&n;&t;&t; * succeeds but the page is not freed.&n;&t;&t; */
@@ -11197,9 +11192,24 @@ op_star
 id|page
 )paren
 (brace
-id|blk_run_queues
+r_struct
+id|address_space
+op_star
+id|mapping
+suffix:semicolon
+id|smp_mb
 c_func
 (paren
+)paren
+suffix:semicolon
+id|mapping
+op_assign
+id|page-&gt;mapping
+suffix:semicolon
+id|blk_run_address_space
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 r_return

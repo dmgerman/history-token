@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * (C) 2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  Library for common functions for Intel SpeedStep v.1 and v.2 support&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -15,6 +16,18 @@ mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_SPEEDSTEP_RELAXED_CAP_CHECK
+DECL|variable|relaxed_check
+r_static
+r_int
+id|relaxed_check
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+DECL|macro|relaxed_check
+mdefine_line|#define relaxed_check 0
 macro_line|#endif
 multiline_comment|/*********************************************************************&n; *                   GET PROCESSOR CORE SPEED IN KHZ                 *&n; *********************************************************************/
 DECL|function|pentium3_get_frequency
@@ -420,7 +433,7 @@ id|msr_tmp
 op_star
 l_int|100
 op_star
-l_int|10000
+l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -743,10 +756,7 @@ l_string|&quot;ebx value is %x, x86_mask is %x&bslash;n&quot;
 comma
 id|ebx
 comma
-id|c
-op_member_access_from_pointer
-l_int|86
-id|_mask
+id|c-&gt;x86_mask
 )paren
 suffix:semicolon
 r_switch
@@ -933,12 +943,19 @@ l_int|18
 )paren
 op_logical_and
 (paren
+id|relaxed_check
+ques
+c_cond
+l_int|1
+suffix:colon
+(paren
 id|msr_hi
 op_amp
 (paren
 l_int|3
 op_lshift
 l_int|24
+)paren
 )paren
 )paren
 )paren
@@ -1202,6 +1219,26 @@ c_func
 id|speedstep_get_freqs
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_SPEEDSTEP_RELAXED_CAP_CHECK
+id|module_param
+c_func
+(paren
+id|relaxed_check
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|relaxed_check
+comma
+l_string|&quot;Don&squot;t do all checks for speedstep capability.&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Dominik Brodowski &lt;linux@brodo.de&gt;&quot;

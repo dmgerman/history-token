@@ -2468,7 +2468,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page
@@ -4611,7 +4611,7 @@ op_minus
 id|error
 suffix:semicolon
 r_return
-id|blockdev_direct_IO
+id|blockdev_direct_IO_no_locking
 c_func
 (paren
 id|rw

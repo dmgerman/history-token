@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * QLogic ISP2100 device driver for Linux 2.6.x&n; * Copyright (C) 2003 Christoph Hellwig.&n; * Copyright (C) 2003 QLogic Corporation (www.qlogic.com)&n; *&n; * Released under GPL v2.&n; */
+multiline_comment|/*&n; * QLogic ISP2100 device driver for Linux 2.6.x&n; * Copyright (C) 2003 Christoph Hellwig.&n; * Copyright (C) 2003-2004 QLogic Corporation (www.qlogic.com)&n; *&n; * Released under GPL v2.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

@@ -64,9 +64,9 @@ mdefine_line|#define DEBUG_FREE         0x0000008
 DECL|macro|DEBUG_SET_FLAGS
 mdefine_line|#define DEBUG_SET_FLAGS    0x0000010
 DECL|macro|DEBUG_S_READ
-mdefine_line|#define DEBUG_S_READ       0x0000100        /*  Break  */
+mdefine_line|#define DEBUG_S_READ       0x0000100&t;/*  Break  */
 DECL|macro|DEBUG_I_LOOKUP
-mdefine_line|#define DEBUG_I_LOOKUP     0x0001000        /*  Break  */
+mdefine_line|#define DEBUG_I_LOOKUP     0x0001000&t;/*  Break  */
 DECL|macro|DEBUG_I_CREATE
 mdefine_line|#define DEBUG_I_CREATE     0x0002000
 DECL|macro|DEBUG_I_GET
@@ -82,9 +82,9 @@ mdefine_line|#define DEBUG_I_FLINK      0x0040000
 DECL|macro|DEBUG_I_MKNOD
 mdefine_line|#define DEBUG_I_MKNOD      0x0080000
 DECL|macro|DEBUG_F_READDIR
-mdefine_line|#define DEBUG_F_READDIR    0x0100000        /*  Break  */
+mdefine_line|#define DEBUG_F_READDIR    0x0100000&t;/*  Break  */
 DECL|macro|DEBUG_D_DELETE
-mdefine_line|#define DEBUG_D_DELETE     0x1000000        /*  Break  */
+mdefine_line|#define DEBUG_D_DELETE     0x1000000&t;/*  Break  */
 DECL|macro|DEBUG_D_RELEASE
 mdefine_line|#define DEBUG_D_RELEASE    0x2000000
 DECL|macro|DEBUG_D_IPUT
@@ -174,8 +174,8 @@ suffix:semicolon
 DECL|struct|devfs_inode
 r_struct
 id|devfs_inode
-multiline_comment|/*  This structure is for &quot;persistent&quot; inode storage  */
 (brace
+multiline_comment|/*  This structure is for &quot;persistent&quot; inode storage  */
 DECL|member|dentry
 r_struct
 id|dentry
@@ -257,8 +257,8 @@ op_star
 id|name
 suffix:semicolon
 multiline_comment|/*  Only used for (mode == 0)               */
-)brace
 DECL|member|u
+)brace
 id|u
 suffix:semicolon
 DECL|member|prev
@@ -312,7 +312,7 @@ id|name
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/*  This is just a dummy: the allocated array&n;&t;&t;&t;&t;     is bigger. This is NULL-terminated      */
+multiline_comment|/*  This is just a dummy: the allocated array&n;&t;&t;&t;&t;   is bigger. This is NULL-terminated      */
 )brace
 suffix:semicolon
 multiline_comment|/*  The root of the device tree  */
@@ -363,8 +363,8 @@ suffix:semicolon
 DECL|struct|fs_info
 r_struct
 id|fs_info
-multiline_comment|/*  This structure is for the mounted devfs  */
 (brace
+multiline_comment|/*  This structure is for the mounted devfs  */
 DECL|member|sb
 r_struct
 id|super_block
@@ -547,6 +547,7 @@ multiline_comment|/*  Forward function declarations  */
 r_static
 id|devfs_handle_t
 id|_devfs_walk_path
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -568,6 +569,7 @@ suffix:semicolon
 r_static
 id|ssize_t
 id|devfsd_read
+c_func
 (paren
 r_struct
 id|file
@@ -589,6 +591,7 @@ suffix:semicolon
 r_static
 r_int
 id|devfsd_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -612,6 +615,7 @@ suffix:semicolon
 r_static
 r_int
 id|devfsd_close
+c_func
 (paren
 r_struct
 id|inode
@@ -628,6 +632,7 @@ macro_line|#ifdef CONFIG_DEVFS_DEBUG
 r_static
 id|ssize_t
 id|stat_read
+c_func
 (paren
 r_struct
 id|file
@@ -694,6 +699,7 @@ r_struct
 id|devfs_entry
 op_star
 id|devfs_get
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -702,6 +708,7 @@ id|de
 )paren
 (brace
 id|VERIFY_ENTRY
+c_func
 (paren
 id|de
 )paren
@@ -712,6 +719,7 @@ c_cond
 id|de
 )paren
 id|atomic_inc
+c_func
 (paren
 op_amp
 id|de-&gt;refcount
@@ -727,6 +735,7 @@ DECL|function|devfs_put
 r_static
 r_void
 id|devfs_put
+c_func
 (paren
 id|devfs_handle_t
 id|de
@@ -741,6 +750,7 @@ id|de
 r_return
 suffix:semicolon
 id|VERIFY_ENTRY
+c_func
 (paren
 id|de
 )paren
@@ -753,6 +763,7 @@ op_eq
 id|POISON_PTR
 )paren
 id|OOPS
+c_func
 (paren
 l_string|&quot;(%p): poisoned pointer&bslash;n&quot;
 comma
@@ -764,6 +775,7 @@ c_cond
 (paren
 op_logical_neg
 id|atomic_dec_and_test
+c_func
 (paren
 op_amp
 id|de-&gt;refcount
@@ -779,6 +791,7 @@ op_eq
 id|root_entry
 )paren
 id|OOPS
+c_func
 (paren
 l_string|&quot;(%p): root entry being freed&bslash;n&quot;
 comma
@@ -786,6 +799,7 @@ id|de
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_FREE
 comma
@@ -809,16 +823,19 @@ r_if
 c_cond
 (paren
 id|S_ISLNK
+c_func
 (paren
 id|de-&gt;mode
 )paren
 )paren
 id|kfree
+c_func
 (paren
 id|de-&gt;u.symlink.linkname
 )paren
 suffix:semicolon
 id|WRITE_ENTRY_MAGIC
+c_func
 (paren
 id|de
 comma
@@ -827,6 +844,7 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|spin_lock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -847,6 +865,7 @@ r_if
 c_cond
 (paren
 id|S_ISLNK
+c_func
 (paren
 id|de-&gt;mode
 )paren
@@ -858,6 +877,7 @@ op_plus
 l_int|1
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -869,6 +889,7 @@ op_assign
 id|POISON_PTR
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|de
 )paren
@@ -882,6 +903,7 @@ r_struct
 id|devfs_entry
 op_star
 id|_devfs_search_dir
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -908,12 +930,14 @@ c_cond
 (paren
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|dir-&gt;mode
 )paren
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): not a directory&bslash;n&quot;
 comma
@@ -953,6 +977,7 @@ r_if
 c_cond
 (paren
 id|memcmp
+c_func
 (paren
 id|curr-&gt;name
 comma
@@ -969,6 +994,7 @@ multiline_comment|/*  Not found: try the next one  */
 )brace
 r_return
 id|devfs_get
+c_func
 (paren
 id|curr
 )paren
@@ -982,6 +1008,7 @@ r_struct
 id|devfs_entry
 op_star
 id|_devfs_alloc_entry
+c_func
 (paren
 r_const
 r_char
@@ -1028,6 +1055,7 @@ l_int|1
 id|namelen
 op_assign
 id|strlen
+c_func
 (paren
 id|name
 )paren
@@ -1039,6 +1067,7 @@ c_cond
 r_new
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 op_star
@@ -1056,6 +1085,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 id|memset
+c_func
 (paren
 r_new
 comma
@@ -1079,11 +1109,13 @@ r_if
 c_cond
 (paren
 id|S_ISDIR
+c_func
 (paren
 id|mode
 )paren
 )paren
 id|rwlock_init
+c_func
 (paren
 op_amp
 r_new
@@ -1092,6 +1124,7 @@ id|u.dir.lock
 )paren
 suffix:semicolon
 id|atomic_set
+c_func
 (paren
 op_amp
 r_new
@@ -1102,6 +1135,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|counter_lock
@@ -1115,6 +1149,7 @@ id|inode_counter
 op_increment
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|counter_lock
@@ -1126,6 +1161,7 @@ c_cond
 id|name
 )paren
 id|memcpy
+c_func
 (paren
 r_new
 op_member_access_from_pointer
@@ -1143,6 +1179,7 @@ op_assign
 id|namelen
 suffix:semicolon
 id|WRITE_ENTRY_MAGIC
+c_func
 (paren
 r_new
 comma
@@ -1151,6 +1188,7 @@ id|MAGIC_VALUE
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|spin_lock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -1168,6 +1206,7 @@ op_plus
 id|namelen
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -1184,6 +1223,7 @@ DECL|function|_devfs_append_entry
 r_static
 r_int
 id|_devfs_append_entry
+c_func
 (paren
 id|devfs_handle_t
 id|dir
@@ -1214,12 +1254,14 @@ c_cond
 (paren
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|dir-&gt;mode
 )paren
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): dir: &bslash;&quot;%s&bslash;&quot; is not a directory&bslash;n&quot;
 comma
@@ -1229,6 +1271,7 @@ id|dir-&gt;name
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -1239,6 +1282,7 @@ id|ENOTDIR
 suffix:semicolon
 )brace
 id|write_lock
+c_func
 (paren
 op_amp
 id|dir-&gt;u.dir.lock
@@ -1264,6 +1308,7 @@ suffix:semicolon
 id|old
 op_assign
 id|_devfs_search_dir
+c_func
 (paren
 id|dir
 comma
@@ -1284,6 +1329,7 @@ id|old
 suffix:semicolon
 r_else
 id|devfs_put
+c_func
 (paren
 id|old
 )paren
@@ -1338,6 +1384,7 @@ id|EEXIST
 suffix:semicolon
 )brace
 id|write_unlock
+c_func
 (paren
 op_amp
 id|dir-&gt;u.dir.lock
@@ -1349,6 +1396,7 @@ c_cond
 id|retval
 )paren
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -1464,6 +1512,7 @@ r_struct
 id|devfs_entry
 op_star
 id|_devfs_descend
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -1507,6 +1556,7 @@ l_int|3
 op_logical_and
 (paren
 id|strncmp
+c_func
 (paren
 id|name
 comma
@@ -1527,6 +1577,7 @@ l_int|3
 suffix:semicolon
 r_return
 id|devfs_get
+c_func
 (paren
 id|dir-&gt;parent
 )paren
@@ -1571,6 +1622,7 @@ op_minus
 id|name
 suffix:semicolon
 id|read_lock
+c_func
 (paren
 op_amp
 id|dir-&gt;u.dir.lock
@@ -1579,6 +1631,7 @@ suffix:semicolon
 id|entry
 op_assign
 id|_devfs_search_dir
+c_func
 (paren
 id|dir
 comma
@@ -1589,6 +1642,7 @@ id|next_pos
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|dir-&gt;u.dir.lock
@@ -1603,6 +1657,7 @@ DECL|function|_devfs_make_parent_for_leaf
 r_static
 id|devfs_handle_t
 id|_devfs_make_parent_for_leaf
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -1637,6 +1692,7 @@ l_int|NULL
 id|dir
 op_assign
 id|_devfs_get_root_entry
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1651,6 +1707,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 id|devfs_get
+c_func
 (paren
 id|dir
 )paren
@@ -1736,6 +1793,7 @@ c_cond
 id|de
 op_assign
 id|_devfs_descend
+c_func
 (paren
 id|dir
 comma
@@ -1754,6 +1812,7 @@ l_int|NULL
 id|de
 op_assign
 id|_devfs_alloc_entry
+c_func
 (paren
 id|name
 comma
@@ -1763,6 +1822,7 @@ id|MODE_DIR
 )paren
 suffix:semicolon
 id|devfs_get
+c_func
 (paren
 id|de
 )paren
@@ -1774,6 +1834,7 @@ op_logical_neg
 id|de
 op_logical_or
 id|_devfs_append_entry
+c_func
 (paren
 id|dir
 comma
@@ -1785,6 +1846,7 @@ id|old
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -1797,17 +1859,20 @@ id|old
 op_logical_or
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|old-&gt;mode
 )paren
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|old
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -1832,11 +1897,13 @@ id|dir-&gt;parent
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -1846,6 +1913,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -1877,6 +1945,7 @@ DECL|function|_devfs_prepare_leaf
 r_static
 id|devfs_handle_t
 id|_devfs_prepare_leaf
+c_func
 (paren
 id|devfs_handle_t
 op_star
@@ -1904,6 +1973,7 @@ suffix:semicolon
 id|namelen
 op_assign
 id|strlen
+c_func
 (paren
 id|name
 )paren
@@ -1916,6 +1986,7 @@ op_star
 id|dir
 op_assign
 id|_devfs_make_parent_for_leaf
+c_func
 (paren
 op_star
 id|dir
@@ -1933,6 +2004,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): could not create parent path&bslash;n&quot;
 comma
@@ -1950,6 +2022,7 @@ c_cond
 id|de
 op_assign
 id|_devfs_alloc_entry
+c_func
 (paren
 id|name
 op_plus
@@ -1967,6 +2040,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): could not allocate entry&bslash;n&quot;
 comma
@@ -1974,6 +2048,7 @@ id|name
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 op_star
 id|dir
@@ -1992,6 +2067,7 @@ DECL|function|_devfs_walk_path
 r_static
 id|devfs_handle_t
 id|_devfs_walk_path
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -2025,6 +2101,7 @@ l_int|NULL
 id|dir
 op_assign
 id|_devfs_get_root_entry
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2039,6 +2116,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 id|devfs_get
+c_func
 (paren
 id|dir
 )paren
@@ -2073,12 +2151,14 @@ c_cond
 (paren
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|dir-&gt;mode
 )paren
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -2094,6 +2174,7 @@ c_cond
 id|de
 op_assign
 id|_devfs_descend
+c_func
 (paren
 id|dir
 comma
@@ -2110,6 +2191,7 @@ l_int|NULL
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -2122,6 +2204,7 @@ r_if
 c_cond
 (paren
 id|S_ISLNK
+c_func
 (paren
 id|de-&gt;mode
 )paren
@@ -2134,6 +2217,7 @@ multiline_comment|/* FIXME what if it puts outside of mounted tree? */
 id|link
 op_assign
 id|_devfs_walk_path
+c_func
 (paren
 id|dir
 comma
@@ -2145,6 +2229,7 @@ id|TRUE
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -2157,6 +2242,7 @@ id|link
 )paren
 (brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -2171,6 +2257,7 @@ id|link
 suffix:semicolon
 )brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -2205,6 +2292,7 @@ r_struct
 id|devfs_entry
 op_star
 id|_devfs_find_entry
+c_func
 (paren
 id|devfs_handle_t
 id|dir
@@ -2223,6 +2311,7 @@ r_int
 id|namelen
 op_assign
 id|strlen
+c_func
 (paren
 id|name
 )paren
@@ -2248,6 +2337,7 @@ l_int|2
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): too short&bslash;n&quot;
 comma
@@ -2296,6 +2386,7 @@ l_int|2
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): too short&bslash;n&quot;
 comma
@@ -2315,6 +2406,7 @@ suffix:semicolon
 )brace
 r_return
 id|_devfs_walk_path
+c_func
 (paren
 id|dir
 comma
@@ -2333,6 +2425,7 @@ r_struct
 id|devfs_entry
 op_star
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 r_struct
 id|inode
@@ -2351,6 +2444,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 id|VERIFY_ENTRY
+c_func
 (paren
 (paren
 r_struct
@@ -2370,6 +2464,7 @@ DECL|function|free_dentry
 r_static
 r_void
 id|free_dentry
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -2393,17 +2488,20 @@ id|dentry
 r_return
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
 id|dget_locked
+c_func
 (paren
 id|dentry
 )paren
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|dcache_lock
@@ -2422,11 +2520,13 @@ op_assign
 l_int|0
 suffix:semicolon
 id|d_drop
+c_func
 (paren
 id|dentry
 )paren
 suffix:semicolon
 id|dput
+c_func
 (paren
 id|dentry
 )paren
@@ -2438,6 +2538,7 @@ DECL|function|is_devfsd_or_child
 r_static
 r_int
 id|is_devfsd_or_child
+c_func
 (paren
 r_struct
 id|fs_info
@@ -2510,6 +2611,7 @@ id|fs_info-&gt;devfsd_task
 )paren
 (brace
 id|read_unlock
+c_func
 (paren
 op_amp
 id|tasklist_lock
@@ -2523,6 +2625,7 @@ suffix:semicolon
 )brace
 )brace
 id|read_unlock
+c_func
 (paren
 op_amp
 id|tasklist_lock
@@ -2541,6 +2644,7 @@ r_static
 r_inline
 r_int
 id|devfsd_queue_empty
+c_func
 (paren
 r_struct
 id|fs_info
@@ -2565,6 +2669,7 @@ DECL|function|wait_for_devfsd_finished
 r_static
 r_int
 id|wait_for_devfsd_finished
+c_func
 (paren
 r_struct
 id|fs_info
@@ -2573,6 +2678,7 @@ id|fs_info
 )paren
 (brace
 id|DECLARE_WAITQUEUE
+c_func
 (paren
 id|wait
 comma
@@ -2595,6 +2701,7 @@ r_if
 c_cond
 (paren
 id|devfsd_queue_empty
+c_func
 (paren
 id|fs_info
 )paren
@@ -2608,6 +2715,7 @@ r_if
 c_cond
 (paren
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
@@ -2618,11 +2726,13 @@ id|FALSE
 )paren
 suffix:semicolon
 id|set_current_state
+c_func
 (paren
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|fs_info-&gt;revalidate_wait_queue
@@ -2636,6 +2746,7 @@ c_cond
 (paren
 op_logical_neg
 id|devfsd_queue_empty
+c_func
 (paren
 id|fs_info
 )paren
@@ -2649,10 +2760,12 @@ c_cond
 id|fs_info-&gt;devfsd_task
 )paren
 id|schedule
+c_func
 (paren
 )paren
 suffix:semicolon
 id|remove_wait_queue
+c_func
 (paren
 op_amp
 id|fs_info-&gt;revalidate_wait_queue
@@ -2662,6 +2775,7 @@ id|wait
 )paren
 suffix:semicolon
 id|__set_current_state
+c_func
 (paren
 id|TASK_RUNNING
 )paren
@@ -2678,6 +2792,7 @@ DECL|function|devfsd_notify_de
 r_static
 r_int
 id|devfsd_notify_de
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -2739,6 +2854,7 @@ c_cond
 id|entry
 op_assign
 id|kmem_cache_alloc
+c_func
 (paren
 id|devfsd_buf_cache
 comma
@@ -2750,6 +2866,7 @@ l_int|NULL
 )paren
 (brace
 id|atomic_inc
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_overrun_count
@@ -2777,6 +2894,7 @@ op_assign
 id|curr-&gt;parent
 )paren
 id|devfs_get
+c_func
 (paren
 id|curr
 )paren
@@ -2806,6 +2924,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
@@ -2835,12 +2954,14 @@ op_assign
 id|entry
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
 )paren
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_wait_queue
@@ -2858,6 +2979,7 @@ DECL|function|devfsd_notify
 r_static
 r_void
 id|devfsd_notify
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -3242,6 +3364,7 @@ DECL|function|_devfs_unhook
 r_static
 r_int
 id|_devfs_unhook
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -3325,6 +3448,7 @@ DECL|function|_devfs_unregister
 r_static
 r_void
 id|_devfs_unregister
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -3341,11 +3465,13 @@ r_int
 id|unhooked
 op_assign
 id|_devfs_unhook
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|write_unlock
+c_func
 (paren
 op_amp
 id|dir-&gt;u.dir.lock
@@ -3360,11 +3486,13 @@ id|unhooked
 r_return
 suffix:semicolon
 id|devfs_get
+c_func
 (paren
 id|dir
 )paren
 suffix:semicolon
 id|devfsd_notify
+c_func
 (paren
 id|de
 comma
@@ -3372,11 +3500,13 @@ id|DEVFSD_NOTIFY_UNREGISTERED
 )paren
 suffix:semicolon
 id|free_dentry
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -3386,6 +3516,7 @@ c_cond
 (paren
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|de-&gt;mode
 )paren
@@ -3397,14 +3528,15 @@ c_loop
 (paren
 id|TRUE
 )paren
-multiline_comment|/*  Recursively unregister: this is a stack chomper  */
 (brace
+multiline_comment|/*  Recursively unregister: this is a stack chomper  */
 r_struct
 id|devfs_entry
 op_star
 id|child
 suffix:semicolon
 id|write_lock
+c_func
 (paren
 op_amp
 id|de-&gt;u.dir.lock
@@ -3419,11 +3551,13 @@ op_assign
 id|de-&gt;u.dir.first
 suffix:semicolon
 id|VERIFY_ENTRY
+c_func
 (paren
 id|child
 )paren
 suffix:semicolon
 id|_devfs_unregister
+c_func
 (paren
 id|de
 comma
@@ -3439,6 +3573,7 @@ id|child
 r_break
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_UNREGISTER
 comma
@@ -3449,6 +3584,7 @@ comma
 id|child
 comma
 id|atomic_read
+c_func
 (paren
 op_amp
 id|child-&gt;refcount
@@ -3456,6 +3592,7 @@ id|child-&gt;refcount
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|child
 )paren
@@ -3467,6 +3604,7 @@ DECL|function|devfs_do_symlink
 r_static
 r_int
 id|devfs_do_symlink
+c_func
 (paren
 id|devfs_handle_t
 id|dir
@@ -3523,6 +3661,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(): NULL name pointer&bslash;n&quot;
 )paren
@@ -3541,6 +3680,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): NULL link pointer&bslash;n&quot;
 comma
@@ -3555,6 +3695,7 @@ suffix:semicolon
 id|linklength
 op_assign
 id|strlen
+c_func
 (paren
 id|link
 )paren
@@ -3566,6 +3707,7 @@ c_cond
 id|newlink
 op_assign
 id|kmalloc
+c_func
 (paren
 id|linklength
 op_plus
@@ -3582,6 +3724,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|newlink
 comma
@@ -3604,6 +3747,7 @@ c_cond
 id|de
 op_assign
 id|_devfs_prepare_leaf
+c_func
 (paren
 op_amp
 id|dir
@@ -3622,6 +3766,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): could not prepare leaf&bslash;n&quot;
 comma
@@ -3629,6 +3774,7 @@ id|name
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|newlink
 )paren
@@ -3657,6 +3803,7 @@ c_cond
 id|err
 op_assign
 id|_devfs_append_entry
+c_func
 (paren
 id|dir
 comma
@@ -3670,6 +3817,7 @@ l_int|0
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): could not append to parent, err: %d&bslash;n&quot;
 comma
@@ -3679,6 +3827,7 @@ id|err
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
@@ -3688,12 +3837,14 @@ id|err
 suffix:semicolon
 )brace
 id|devfs_put
+c_func
 (paren
 id|dir
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 id|spin_lock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -3706,6 +3857,7 @@ op_plus
 l_int|1
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|stat_lock
@@ -4146,6 +4298,7 @@ DECL|function|devfs_generate_path
 r_static
 r_int
 id|devfs_generate_path
+c_func
 (paren
 id|devfs_handle_t
 id|de
@@ -4175,6 +4328,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 id|VERIFY_ENTRY
+c_func
 (paren
 id|de
 )paren
@@ -4222,12 +4376,14 @@ op_minus
 l_int|1
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|path
 op_plus
 id|pos
 comma
 id|NAMEOF
+c_func
 (paren
 id|de
 )paren
@@ -4279,12 +4435,14 @@ op_sub_assign
 id|de-&gt;namelen
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|path
 op_plus
 id|pos
 comma
 id|NAMEOF
+c_func
 (paren
 id|de
 )paren
@@ -4304,6 +4462,7 @@ r_static
 r_int
 id|__init
 id|devfs_setup
+c_func
 (paren
 r_char
 op_star
@@ -4442,7 +4601,7 @@ op_amp
 id|devfs_debug_init
 )brace
 comma
-macro_line|#endif  /*  CONFIG_DEVFS_DEBUG  */
+macro_line|#endif&t;&t;&t;&t;/*  CONFIG_DEVFS_DEBUG  */
 (brace
 l_string|&quot;mount&quot;
 comma
@@ -4473,6 +4632,7 @@ l_char|&squot;&bslash;0&squot;
 op_logical_and
 op_logical_neg
 id|isspace
+c_func
 (paren
 op_star
 id|str
@@ -4494,6 +4654,7 @@ r_if
 c_cond
 (paren
 id|strncmp
+c_func
 (paren
 id|str
 comma
@@ -4538,6 +4699,7 @@ r_int
 id|len
 op_assign
 id|strlen
+c_func
 (paren
 id|devfs_options_tab
 (braket
@@ -4551,6 +4713,7 @@ r_if
 c_cond
 (paren
 id|strncmp
+c_func
 (paren
 id|str
 comma
@@ -4681,6 +4844,7 @@ DECL|function|try_modload
 r_static
 r_int
 id|try_modload
+c_func
 (paren
 r_struct
 id|devfs_entry
@@ -4728,6 +4892,7 @@ r_if
 c_cond
 (paren
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
@@ -4737,6 +4902,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|buf
 comma
@@ -4748,6 +4914,7 @@ id|buf
 )paren
 suffix:semicolon
 id|atomic_set
+c_func
 (paren
 op_amp
 id|buf-&gt;refcount
@@ -4768,6 +4935,7 @@ op_assign
 id|name
 suffix:semicolon
 id|WRITE_ENTRY_MAGIC
+c_func
 (paren
 id|buf
 comma
@@ -4779,6 +4947,7 @@ c_cond
 (paren
 op_logical_neg
 id|devfsd_notify_de
+c_func
 (paren
 id|buf
 comma
@@ -4838,6 +5007,7 @@ DECL|function|devfs_notify_change
 r_static
 r_int
 id|devfs_notify_change
+c_func
 (paren
 r_struct
 id|dentry
@@ -4875,6 +5045,7 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|inode
 )paren
@@ -4893,6 +5064,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|inode_change_ok
+c_func
 (paren
 id|inode
 comma
@@ -4912,6 +5084,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|inode_setattr
+c_func
 (paren
 id|inode
 comma
@@ -4929,6 +5102,7 @@ r_return
 id|retval
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_CHANGE
 comma
@@ -4945,6 +5119,7 @@ id|de
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_CHANGE
 comma
@@ -4966,7 +5141,7 @@ r_int
 id|inode-&gt;i_gid
 )paren
 suffix:semicolon
-multiline_comment|/*  Inode is not on hash chains, thus must save permissions here rather&n;&t;than in a write_inode() method  */
+multiline_comment|/*  Inode is not on hash chains, thus must save permissions here rather&n;&t;   than in a write_inode() method  */
 id|de-&gt;mode
 op_assign
 id|inode-&gt;i_mode
@@ -5008,11 +5183,13 @@ id|ATTR_GID
 op_logical_and
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -5058,6 +5235,7 @@ r_struct
 id|inode
 op_star
 id|_devfs_get_vfs_inode
+c_func
 (paren
 r_struct
 id|super_block
@@ -5098,6 +5276,7 @@ c_cond
 id|inode
 op_assign
 id|new_inode
+c_func
 (paren
 id|sb
 )paren
@@ -5107,6 +5286,7 @@ l_int|NULL
 )paren
 (brace
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(%s): new_inode() failed, de: %p&bslash;n&quot;
 comma
@@ -5126,6 +5306,7 @@ id|de-&gt;parent
 )paren
 (brace
 id|read_lock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -5144,6 +5325,7 @@ id|dentry
 suffix:semicolon
 multiline_comment|/*      Not unhooked  */
 id|read_unlock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -5166,6 +5348,7 @@ id|dentry
 (brace
 multiline_comment|/*  Must have been unhooked  */
 id|iput
+c_func
 (paren
 id|inode
 )paren
@@ -5178,6 +5361,7 @@ multiline_comment|/* FIXME where is devfs_put? */
 id|inode-&gt;u.generic_ip
 op_assign
 id|devfs_get
+c_func
 (paren
 id|de
 )paren
@@ -5187,6 +5371,7 @@ op_assign
 id|de-&gt;inode.ino
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_GET
 comma
@@ -5368,6 +5553,7 @@ op_assign
 id|de-&gt;inode.ctime
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_GET
 comma
@@ -5399,6 +5585,7 @@ DECL|function|devfs_readdir
 r_static
 r_int
 id|devfs_readdir
+c_func
 (paren
 r_struct
 id|file
@@ -5455,6 +5642,7 @@ suffix:semicolon
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
@@ -5474,6 +5662,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_F_READDIR
 comma
@@ -5517,6 +5706,7 @@ comma
 id|file-&gt;f_pos
 comma
 id|parent_ino
+c_func
 (paren
 id|file-&gt;f_dentry
 )paren
@@ -5611,6 +5801,7 @@ op_minus
 l_int|2
 suffix:semicolon
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -5639,11 +5830,13 @@ op_decrement
 id|count
 suffix:semicolon
 id|devfs_get
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -5686,6 +5879,7 @@ OL
 l_int|0
 )paren
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -5720,6 +5914,7 @@ r_return
 id|err
 suffix:semicolon
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -5728,17 +5923,20 @@ suffix:semicolon
 id|next
 op_assign
 id|devfs_get
+c_func
 (paren
 id|de-&gt;next
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -5761,6 +5959,7 @@ DECL|function|devfs_open
 r_static
 r_int
 id|devfs_open
+c_func
 (paren
 r_struct
 id|inode
@@ -5942,6 +6141,7 @@ DECL|function|devfs_d_release
 r_static
 r_void
 id|devfs_d_release
+c_func
 (paren
 r_struct
 id|dentry
@@ -5950,6 +6150,7 @@ id|dentry
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_D_RELEASE
 comma
@@ -5967,6 +6168,7 @@ DECL|function|devfs_d_iput
 r_static
 r_void
 id|devfs_d_iput
+c_func
 (paren
 r_struct
 id|dentry
@@ -5987,11 +6189,13 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_D_IPUT
 comma
@@ -6020,6 +6224,7 @@ id|dentry
 )paren
 )paren
 id|OOPS
+c_func
 (paren
 l_string|&quot;(%s): de: %p dentry: %p de-&gt;dentry: %p&bslash;n&quot;
 comma
@@ -6037,11 +6242,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|iput
+c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -6051,6 +6258,7 @@ multiline_comment|/*  End Function devfs_d_iput  */
 r_static
 r_int
 id|devfs_d_delete
+c_func
 (paren
 r_struct
 id|dentry
@@ -6085,6 +6293,7 @@ suffix:semicolon
 r_static
 r_int
 id|devfs_d_revalidate_wait
+c_func
 (paren
 r_struct
 id|dentry
@@ -6130,6 +6339,7 @@ DECL|function|devfs_d_delete
 r_static
 r_int
 id|devfs_d_delete
+c_func
 (paren
 r_struct
 id|dentry
@@ -6167,6 +6377,7 @@ l_int|NULL
 )paren
 (brace
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_D_DELETE
 comma
@@ -6203,6 +6414,7 @@ DECL|function|devfs_d_revalidate_wait
 r_static
 r_int
 id|devfs_d_revalidate_wait
+c_func
 (paren
 r_struct
 id|dentry
@@ -6233,6 +6445,7 @@ id|devfs_handle_t
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dir
 )paren
@@ -6245,6 +6458,7 @@ op_assign
 id|dentry-&gt;d_fsdata
 suffix:semicolon
 id|DECLARE_WAITQUEUE
+c_func
 (paren
 id|wait
 comma
@@ -6254,7 +6468,7 @@ suffix:semicolon
 r_int
 id|need_lock
 suffix:semicolon
-multiline_comment|/*&n;     * FIXME HACK&n;     *&n;     * make sure that&n;     *   d_instantiate always runs under lock&n;     *   we release i_sem lock before going to sleep&n;     *&n;     * unfortunately sometimes d_revalidate is called with&n;     * and sometimes without i_sem lock held. The following checks&n;     * attempt to deduce when we need to add (and drop resp.) lock&n;     * here. This relies on current (2.6.2) calling coventions:&n;     *&n;     *   lookup_hash is always run under i_sem and is passing NULL&n;     *   as nd&n;     *&n;     *   open(...,O_CREATE,...) calls _lookup_hash under i_sem&n;     *   and sets flags to LOOKUP_OPEN|LOOKUP_CREATE&n;     *&n;     *   all other invocations of -&gt;d_revalidate seem to happen&n;     *   outside of i_sem&n;     */
+multiline_comment|/*&n;&t; * FIXME HACK&n;&t; *&n;&t; * make sure that&n;&t; *   d_instantiate always runs under lock&n;&t; *   we release i_sem lock before going to sleep&n;&t; *&n;&t; * unfortunately sometimes d_revalidate is called with&n;&t; * and sometimes without i_sem lock held. The following checks&n;&t; * attempt to deduce when we need to add (and drop resp.) lock&n;&t; * here. This relies on current (2.6.2) calling coventions:&n;&t; *&n;&t; *   lookup_hash is always run under i_sem and is passing NULL&n;&t; *   as nd&n;&t; *&n;&t; *   open(...,O_CREATE,...) calls _lookup_hash under i_sem&n;&t; *   and sets flags to LOOKUP_OPEN|LOOKUP_CREATE&n;&t; *&n;&t; *   all other invocations of -&gt;d_revalidate seem to happen&n;&t; *   outside of i_sem&n;&t; */
 id|need_lock
 op_assign
 id|nd
@@ -6290,6 +6504,7 @@ r_if
 c_cond
 (paren
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
@@ -6306,6 +6521,7 @@ op_star
 id|inode
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_LOOKUP
 comma
@@ -6339,6 +6555,7 @@ l_int|NULL
 )paren
 (brace
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6347,6 +6564,7 @@ suffix:semicolon
 id|de
 op_assign
 id|_devfs_search_dir
+c_func
 (paren
 id|parent
 comma
@@ -6356,6 +6574,7 @@ id|dentry-&gt;d_name.len
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6380,6 +6599,7 @@ multiline_comment|/*  Create an inode, now that the driver information is availa
 id|inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|dir-&gt;i_sb
 comma
@@ -6398,6 +6618,7 @@ r_goto
 id|out
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_LOOKUP
 comma
@@ -6415,6 +6636,7 @@ id|current-&gt;comm
 )paren
 suffix:semicolon
 id|d_instantiate
+c_func
 (paren
 id|dentry
 comma
@@ -6437,6 +6659,7 @@ id|out
 suffix:semicolon
 multiline_comment|/*  Early termination  */
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6449,11 +6672,13 @@ id|dentry-&gt;d_fsdata
 )paren
 (brace
 id|set_current_state
+c_func
 (paren
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|lookup_info-&gt;wait_queue
@@ -6463,6 +6688,7 @@ id|wait
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6477,6 +6703,7 @@ id|dir-&gt;i_sem
 )paren
 suffix:semicolon
 id|schedule
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -6487,10 +6714,11 @@ op_amp
 id|dir-&gt;i_sem
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This does not need nor should remove wait from wait_queue.&n;&t; * Wait queue head is never reused - nothing is ever added to it&n;&t; * after all waiters have been waked up and head itself disappears&n;&t; * very soon after it. Moreover it is local variable on stack that&n;&t; * is likely to have already disappeared so any reference to it&n;&t; * at this point is buggy.&n;&t; */
+multiline_comment|/*&n;&t;&t; * This does not need nor should remove wait from wait_queue.&n;&t;&t; * Wait queue head is never reused - nothing is ever added to it&n;&t;&t; * after all waiters have been waked up and head itself disappears&n;&t;&t; * very soon after it. Moreover it is local variable on stack that&n;&t;&t; * is likely to have already disappeared so any reference to it&n;&t;&t; * at this point is buggy.&n;&t;&t; */
 )brace
 r_else
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6522,6 +6750,7 @@ r_struct
 id|dentry
 op_star
 id|devfs_lookup
+c_func
 (paren
 r_struct
 id|inode
@@ -6575,7 +6804,7 @@ id|retval
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*  Set up the dentry operations before anything else, to ensure cleaning&n;&t;up on any error  */
+multiline_comment|/*  Set up the dentry operations before anything else, to ensure cleaning&n;&t;   up on any error  */
 id|dentry-&gt;d_op
 op_assign
 op_amp
@@ -6585,11 +6814,13 @@ multiline_comment|/*  First try to get the devfs entry for this directory  */
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dir
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_LOOKUP
 comma
@@ -6613,12 +6844,14 @@ l_int|NULL
 )paren
 r_return
 id|ERR_PTR
+c_func
 (paren
 op_minus
 id|ENOENT
 )paren
 suffix:semicolon
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6627,6 +6860,7 @@ suffix:semicolon
 id|de
 op_assign
 id|_devfs_search_dir
+c_func
 (paren
 id|parent
 comma
@@ -6636,6 +6870,7 @@ id|dentry-&gt;d_name.len
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6646,6 +6881,7 @@ op_assign
 id|de
 suffix:semicolon
 id|init_waitqueue_head
+c_func
 (paren
 op_amp
 id|lookup_info.wait_queue
@@ -6664,11 +6900,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/*  Try with devfsd. For any kind of failure, leave a negative dentry&n;&t;    so someone else can deal with it (in the case where the sysadmin&n;&t;    does a mknod()). It&squot;s important to do this before hashing the&n;&t;    dentry, so that the devfsd queue is filled before revalidates&n;&t;    can start  */
+multiline_comment|/*  Try with devfsd. For any kind of failure, leave a negative dentry&n;&t;&t;&t;&t;   so someone else can deal with it (in the case where the sysadmin&n;&t;&t;&t;&t;   does a mknod()). It&squot;s important to do this before hashing the&n;&t;&t;&t;&t;   dentry, so that the devfsd queue is filled before revalidates&n;&t;&t;&t;&t;   can start  */
 r_if
 c_cond
 (paren
 id|try_modload
+c_func
 (paren
 id|parent
 comma
@@ -6687,6 +6924,7 @@ l_int|0
 (brace
 multiline_comment|/*  Lookup event was not queued to devfsd  */
 id|d_add
+c_func
 (paren
 id|dentry
 comma
@@ -6704,6 +6942,7 @@ op_amp
 id|devfs_wait_dops
 suffix:semicolon
 id|d_add
+c_func
 (paren
 id|dentry
 comma
@@ -6711,20 +6950,23 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*  Open the floodgates  */
-multiline_comment|/*  Unlock directory semaphore, which will release any waiters. They&n;&t;will get the hashed dentry, and may be forced to wait for&n;&t;revalidation  */
+multiline_comment|/*  Unlock directory semaphore, which will release any waiters. They&n;&t;   will get the hashed dentry, and may be forced to wait for&n;&t;   revalidation  */
 id|up
+c_func
 (paren
 op_amp
 id|dir-&gt;i_sem
 )paren
 suffix:semicolon
 id|wait_for_devfsd_finished
+c_func
 (paren
 id|fs_info
 )paren
 suffix:semicolon
 multiline_comment|/*  If I&squot;m not devfsd, must wait  */
 id|down
+c_func
 (paren
 op_amp
 id|dir-&gt;i_sem
@@ -6735,7 +6977,7 @@ id|de
 op_assign
 id|lookup_info.de
 suffix:semicolon
-multiline_comment|/*  If someone else has been so kind as to make the inode, we go home&n;&t;early  */
+multiline_comment|/*  If someone else has been so kind as to make the inode, we go home&n;&t;   early  */
 r_if
 c_cond
 (paren
@@ -6753,6 +6995,7 @@ l_int|NULL
 )paren
 (brace
 id|read_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6761,6 +7004,7 @@ suffix:semicolon
 id|de
 op_assign
 id|_devfs_search_dir
+c_func
 (paren
 id|parent
 comma
@@ -6770,6 +7014,7 @@ id|dentry-&gt;d_name.len
 )paren
 suffix:semicolon
 id|read_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6791,6 +7036,7 @@ multiline_comment|/*  Create an inode, now that the driver information is availa
 id|inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|dir-&gt;i_sb
 comma
@@ -6809,6 +7055,7 @@ id|inode
 id|retval
 op_assign
 id|ERR_PTR
+c_func
 (paren
 op_minus
 id|ENOMEM
@@ -6819,6 +7066,7 @@ id|out
 suffix:semicolon
 )brace
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_LOOKUP
 comma
@@ -6836,6 +7084,7 @@ id|current-&gt;comm
 )paren
 suffix:semicolon
 id|d_instantiate
+c_func
 (paren
 id|dentry
 comma
@@ -6845,6 +7094,7 @@ suffix:semicolon
 id|out
 suffix:colon
 id|write_lock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
@@ -6860,18 +7110,21 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|wake_up
+c_func
 (paren
 op_amp
 id|lookup_info.wait_queue
 )paren
 suffix:semicolon
 id|write_unlock
+c_func
 (paren
 op_amp
 id|parent-&gt;u.dir.lock
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -6885,6 +7138,7 @@ DECL|function|devfs_unlink
 r_static
 r_int
 id|devfs_unlink
+c_func
 (paren
 r_struct
 id|inode
@@ -6922,11 +7176,13 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|inode
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_UNLINK
 comma
@@ -6959,6 +7215,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 id|write_lock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -6967,11 +7224,13 @@ suffix:semicolon
 id|unhooked
 op_assign
 id|_devfs_unhook
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|write_unlock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -6992,11 +7251,13 @@ c_cond
 (paren
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -7012,11 +7273,13 @@ id|fs_info
 )paren
 suffix:semicolon
 id|free_dentry
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -7030,6 +7293,7 @@ DECL|function|devfs_symlink
 r_static
 r_int
 id|devfs_symlink
+c_func
 (paren
 r_struct
 id|inode
@@ -7074,6 +7338,7 @@ multiline_comment|/*  First try to get the devfs entry for this directory  */
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dir
 )paren
@@ -7092,6 +7357,7 @@ suffix:semicolon
 id|err
 op_assign
 id|devfs_do_symlink
+c_func
 (paren
 id|parent
 comma
@@ -7104,6 +7370,7 @@ id|de
 )paren
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_DISABLED
 comma
@@ -7155,6 +7422,7 @@ c_cond
 id|inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|dir-&gt;i_sb
 comma
@@ -7171,6 +7439,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_DISABLED
 comma
@@ -7186,6 +7455,7 @@ id|dentry
 )paren
 suffix:semicolon
 id|d_instantiate
+c_func
 (paren
 id|dentry
 comma
@@ -7197,11 +7467,13 @@ c_cond
 (paren
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -7225,6 +7497,7 @@ DECL|function|devfs_mkdir
 r_static
 r_int
 id|devfs_mkdir
+c_func
 (paren
 r_struct
 id|inode
@@ -7278,6 +7551,7 @@ multiline_comment|/*  VFS doesn&squot;t pass S_IFMT part  */
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dir
 )paren
@@ -7296,6 +7570,7 @@ suffix:semicolon
 id|de
 op_assign
 id|_devfs_alloc_entry
+c_func
 (paren
 id|dentry-&gt;d_name.name
 comma
@@ -7325,6 +7600,7 @@ c_cond
 id|err
 op_assign
 id|_devfs_append_entry
+c_func
 (paren
 id|parent
 comma
@@ -7366,6 +7642,7 @@ c_cond
 id|inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|dir-&gt;i_sb
 comma
@@ -7382,6 +7659,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_DISABLED
 comma
@@ -7397,6 +7675,7 @@ id|dentry
 )paren
 suffix:semicolon
 id|d_instantiate
+c_func
 (paren
 id|dentry
 comma
@@ -7408,11 +7687,13 @@ c_cond
 (paren
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -7436,6 +7717,7 @@ DECL|function|devfs_rmdir
 r_static
 r_int
 id|devfs_rmdir
+c_func
 (paren
 r_struct
 id|inode
@@ -7486,6 +7768,7 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|inode
 )paren
@@ -7506,6 +7789,7 @@ c_cond
 (paren
 op_logical_neg
 id|S_ISDIR
+c_func
 (paren
 id|de-&gt;mode
 )paren
@@ -7526,6 +7810,7 @@ id|EPERM
 suffix:semicolon
 multiline_comment|/*  First ensure the directory is empty and will stay that way  */
 id|write_lock
+c_func
 (paren
 op_amp
 id|de-&gt;u.dir.lock
@@ -7547,6 +7832,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 id|write_unlock
+c_func
 (paren
 op_amp
 id|de-&gt;u.dir.lock
@@ -7562,6 +7848,7 @@ id|err
 suffix:semicolon
 multiline_comment|/*  Now unhook the directory from its parent  */
 id|write_lock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -7572,6 +7859,7 @@ c_cond
 (paren
 op_logical_neg
 id|_devfs_unhook
+c_func
 (paren
 id|de
 )paren
@@ -7582,6 +7870,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 id|write_unlock
+c_func
 (paren
 op_amp
 id|de-&gt;parent-&gt;u.dir.lock
@@ -7600,11 +7889,13 @@ c_cond
 (paren
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -7620,11 +7911,13 @@ id|fs_info
 )paren
 suffix:semicolon
 id|free_dentry
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
@@ -7638,6 +7931,7 @@ DECL|function|devfs_mknod
 r_static
 r_int
 id|devfs_mknod
+c_func
 (paren
 r_struct
 id|inode
@@ -7680,6 +7974,7 @@ op_star
 id|inode
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_MKNOD
 comma
@@ -7705,6 +8000,7 @@ suffix:semicolon
 id|parent
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dir
 )paren
@@ -7723,6 +8019,7 @@ suffix:semicolon
 id|de
 op_assign
 id|_devfs_alloc_entry
+c_func
 (paren
 id|dentry-&gt;d_name.name
 comma
@@ -7771,6 +8068,7 @@ c_cond
 id|err
 op_assign
 id|_devfs_append_entry
+c_func
 (paren
 id|parent
 comma
@@ -7812,6 +8110,7 @@ c_cond
 id|inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|dir-&gt;i_sb
 comma
@@ -7828,6 +8127,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_I_MKNOD
 comma
@@ -7841,6 +8141,7 @@ id|dentry
 )paren
 suffix:semicolon
 id|d_instantiate
+c_func
 (paren
 id|dentry
 comma
@@ -7852,11 +8153,13 @@ c_cond
 (paren
 op_logical_neg
 id|is_devfsd_or_child
+c_func
 (paren
 id|fs_info
 )paren
 )paren
 id|devfsd_notify_de
+c_func
 (paren
 id|de
 comma
@@ -7880,6 +8183,7 @@ DECL|function|devfs_readlink
 r_static
 r_int
 id|devfs_readlink
+c_func
 (paren
 r_struct
 id|dentry
@@ -7905,6 +8209,7 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dentry-&gt;d_inode
 )paren
@@ -7922,6 +8227,7 @@ suffix:semicolon
 id|err
 op_assign
 id|vfs_readlink
+c_func
 (paren
 id|dentry
 comma
@@ -7941,6 +8247,7 @@ DECL|function|devfs_follow_link
 r_static
 r_int
 id|devfs_follow_link
+c_func
 (paren
 r_struct
 id|dentry
@@ -7964,6 +8271,7 @@ suffix:semicolon
 id|de
 op_assign
 id|get_devfs_entry_from_vfs_inode
+c_func
 (paren
 id|dentry-&gt;d_inode
 )paren
@@ -7981,6 +8289,7 @@ suffix:semicolon
 id|err
 op_assign
 id|vfs_follow_link
+c_func
 (paren
 id|nd
 comma
@@ -8078,6 +8387,7 @@ DECL|function|devfs_fill_super
 r_static
 r_int
 id|devfs_fill_super
+c_func
 (paren
 r_struct
 id|super_block
@@ -8103,6 +8413,7 @@ r_if
 c_cond
 (paren
 id|_devfs_get_root_entry
+c_func
 (paren
 )paren
 op_eq
@@ -8112,6 +8423,7 @@ r_goto
 id|out_no_root
 suffix:semicolon
 id|atomic_set
+c_func
 (paren
 op_amp
 id|fs_info.devfsd_overrun_count
@@ -8120,12 +8432,14 @@ l_int|0
 )paren
 suffix:semicolon
 id|init_waitqueue_head
+c_func
 (paren
 op_amp
 id|fs_info.devfsd_wait_queue
 )paren
 suffix:semicolon
 id|init_waitqueue_head
+c_func
 (paren
 op_amp
 id|fs_info.revalidate_wait_queue
@@ -8164,6 +8478,7 @@ c_cond
 id|root_inode
 op_assign
 id|_devfs_get_vfs_inode
+c_func
 (paren
 id|sb
 comma
@@ -8181,6 +8496,7 @@ suffix:semicolon
 id|sb-&gt;s_root
 op_assign
 id|d_alloc_root
+c_func
 (paren
 id|root_inode
 )paren
@@ -8195,6 +8511,7 @@ r_goto
 id|out_no_root
 suffix:semicolon
 id|DPRINTK
+c_func
 (paren
 id|DEBUG_S_READ
 comma
@@ -8209,6 +8526,7 @@ suffix:semicolon
 id|out_no_root
 suffix:colon
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(): get root inode failed&bslash;n&quot;
 )paren
@@ -8219,6 +8537,7 @@ c_cond
 id|root_inode
 )paren
 id|iput
+c_func
 (paren
 id|root_inode
 )paren
@@ -8229,12 +8548,13 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfs_fill_super  */
+DECL|function|devfs_get_sb
 r_static
 r_struct
 id|super_block
 op_star
-DECL|function|devfs_get_sb
 id|devfs_get_sb
+c_func
 (paren
 r_struct
 id|file_system_type
@@ -8256,6 +8576,7 @@ id|data
 (brace
 r_return
 id|get_sb_single
+c_func
 (paren
 id|fs_type
 comma
@@ -8296,6 +8617,7 @@ DECL|function|devfsd_read
 r_static
 id|ssize_t
 id|devfsd_read
+c_func
 (paren
 r_struct
 id|file
@@ -8354,6 +8676,7 @@ op_assign
 id|fs_info-&gt;devfsd_info
 suffix:semicolon
 id|DECLARE_WAITQUEUE
+c_func
 (paren
 id|wait
 comma
@@ -8395,11 +8718,13 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*  Block for a new entry  */
 id|set_current_state
+c_func
 (paren
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 id|add_wait_queue
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_wait_queue
@@ -8412,6 +8737,7 @@ r_while
 c_loop
 (paren
 id|devfsd_queue_empty
+c_func
 (paren
 id|fs_info
 )paren
@@ -8422,12 +8748,14 @@ op_assign
 id|TRUE
 suffix:semicolon
 id|wake_up
+c_func
 (paren
 op_amp
 id|fs_info-&gt;revalidate_wait_queue
 )paren
 suffix:semicolon
 id|schedule
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -8439,12 +8767,14 @@ r_if
 c_cond
 (paren
 id|signal_pending
+c_func
 (paren
 id|current
 )paren
 )paren
 (brace
 id|remove_wait_queue
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_wait_queue
@@ -8454,6 +8784,7 @@ id|wait
 )paren
 suffix:semicolon
 id|__set_current_state
+c_func
 (paren
 id|TASK_RUNNING
 )paren
@@ -8464,12 +8795,14 @@ id|EINTR
 suffix:semicolon
 )brace
 id|set_current_state
+c_func
 (paren
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 )brace
 id|remove_wait_queue
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_wait_queue
@@ -8479,6 +8812,7 @@ id|wait
 )paren
 suffix:semicolon
 id|__set_current_state
+c_func
 (paren
 id|TASK_RUNNING
 )paren
@@ -8487,6 +8821,7 @@ multiline_comment|/*  Now play with the data  */
 id|ival
 op_assign
 id|atomic_read
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_overrun_count
@@ -8556,6 +8891,7 @@ suffix:semicolon
 id|pos
 op_assign
 id|devfs_generate_path
+c_func
 (paren
 id|de
 comma
@@ -8638,6 +8974,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 id|buf
 comma
@@ -8756,6 +9093,7 @@ id|devfs_handle_t
 id|parent
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
@@ -8777,6 +9115,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
@@ -8800,12 +9139,14 @@ op_assign
 id|de-&gt;parent
 suffix:semicolon
 id|devfs_put
+c_func
 (paren
 id|de
 )paren
 suffix:semicolon
 )brace
 id|kmem_cache_free
+c_func
 (paren
 id|devfsd_buf_cache
 comma
@@ -8820,6 +9161,7 @@ OG
 l_int|0
 )paren
 id|atomic_sub
+c_func
 (paren
 id|ival
 comma
@@ -8848,6 +9190,7 @@ DECL|function|devfsd_ioctl
 r_static
 r_int
 id|devfsd_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -8895,6 +9238,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_void
@@ -8918,7 +9262,7 @@ suffix:semicolon
 r_case
 id|DEVFSDIOC_SET_EVENT_MASK
 suffix:colon
-multiline_comment|/*  Ensure only one reader has access to the queue. This scheme will&n;&t;    work even if the global kernel lock were to be removed, because it&n;&t;    doesn&squot;t matter who gets in first, as long as only one gets it  */
+multiline_comment|/*  Ensure only one reader has access to the queue. This scheme will&n;&t;&t;   work even if the global kernel lock were to be removed, because it&n;&t;&t;   doesn&squot;t matter who gets in first, as long as only one gets it  */
 r_if
 c_cond
 (paren
@@ -8938,6 +9282,7 @@ c_cond
 (paren
 op_logical_neg
 id|spin_trylock
+c_func
 (paren
 op_amp
 id|lock
@@ -8957,6 +9302,7 @@ l_int|NULL
 (brace
 multiline_comment|/*  We lost the race...  */
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|lock
@@ -8972,6 +9318,7 @@ op_assign
 id|current
 suffix:semicolon
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|lock
@@ -9005,6 +9352,7 @@ suffix:semicolon
 id|fs_info-&gt;devfsd_info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 op_star
@@ -9021,6 +9369,7 @@ id|fs_info-&gt;devfsd_info
 )paren
 (brace
 id|devfsd_close
+c_func
 (paren
 id|inode
 comma
@@ -9068,13 +9417,14 @@ id|EPERM
 suffix:semicolon
 r_return
 id|devfsd_close
+c_func
 (paren
 id|inode
 comma
 id|file
 )paren
 suffix:semicolon
-multiline_comment|/*break;*/
+multiline_comment|/*break; */
 macro_line|#ifdef CONFIG_DEVFS_DEBUG
 r_case
 id|DEVFSDIOC_SET_DEBUG_MASK
@@ -9083,6 +9433,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 op_amp
 id|ival
@@ -9124,6 +9475,7 @@ DECL|function|devfsd_close
 r_static
 r_int
 id|devfsd_close
+c_func
 (paren
 r_struct
 id|inode
@@ -9170,6 +9522,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
@@ -9194,6 +9547,7 @@ id|fs_info-&gt;devfsd_info
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|fs_info-&gt;devfsd_info
 )paren
@@ -9204,6 +9558,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|fs_info-&gt;devfsd_buffer_lock
@@ -9218,6 +9573,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|wake_up
+c_func
 (paren
 op_amp
 id|fs_info-&gt;revalidate_wait_queue
@@ -9239,6 +9595,7 @@ op_assign
 id|entry-&gt;next
 suffix:semicolon
 id|kmem_cache_free
+c_func
 (paren
 id|devfsd_buf_cache
 comma
@@ -9256,6 +9613,7 @@ DECL|function|stat_read
 r_static
 id|ssize_t
 id|stat_read
+c_func
 (paren
 r_struct
 id|file
@@ -9286,6 +9644,7 @@ suffix:semicolon
 id|num
 op_assign
 id|sprintf
+c_func
 (paren
 id|txt
 comma
@@ -9343,6 +9702,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 id|buf
 comma
@@ -9593,6 +9953,7 @@ l_int|1
 )paren
 suffix:semicolon
 id|_devfs_append_entry
+c_func
 (paren
 id|root_entry
 comma
@@ -9620,6 +9981,7 @@ DECL|function|mount_devfs_fs
 r_void
 id|__init
 id|mount_devfs_fs
+c_func
 (paren
 r_void
 )paren
@@ -9642,6 +10004,7 @@ suffix:semicolon
 id|err
 op_assign
 id|do_mount
+c_func
 (paren
 l_string|&quot;none&quot;
 comma
@@ -9662,6 +10025,7 @@ op_eq
 l_int|0
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Mounted devfs on /dev&bslash;n&quot;
@@ -9669,6 +10033,7 @@ l_string|&quot;Mounted devfs on /dev&bslash;n&quot;
 suffix:semicolon
 r_else
 id|PRINTK
+c_func
 (paren
 l_string|&quot;(): unable to mount devfs, err: %d&bslash;n&quot;
 comma

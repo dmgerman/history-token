@@ -67,16 +67,12 @@ DECL|variable|skip_vga
 r_static
 r_int
 id|skip_vga
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* If set do not modify base addresses&n;&t;&t;&t;&t;&t;   of vga cards.*/
 DECL|variable|disable_pci_burst
 r_static
 r_int
 id|disable_pci_burst
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* If set do not allow PCI bursts. */
 DECL|variable|io_base

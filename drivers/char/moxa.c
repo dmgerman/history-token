@@ -3782,10 +3782,6 @@ r_int
 id|port
 suffix:semicolon
 r_int
-id|flag
-op_assign
-l_int|0
-comma
 id|dtr
 comma
 id|rts
@@ -3931,14 +3927,6 @@ id|port
 suffix:semicolon
 r_int
 id|retval
-comma
-id|dtr
-comma
-id|rts
-suffix:semicolon
-r_int
-r_int
-id|flag
 suffix:semicolon
 id|port
 op_assign

@@ -642,6 +642,14 @@ id|dentry
 op_star
 id|parent
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dir_notify_enable
+)paren
+r_return
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

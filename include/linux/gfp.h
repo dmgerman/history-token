@@ -31,10 +31,15 @@ DECL|macro|__GFP_NORETRY
 mdefine_line|#define __GFP_NORETRY&t;0x1000&t;/* Do not retry.  Might fail */
 DECL|macro|__GFP_NO_GROW
 mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
+DECL|macro|__GFP_COMP
+mdefine_line|#define __GFP_COMP&t;0x4000&t;/* Add compound page metadata */
 DECL|macro|__GFP_BITS_SHIFT
 mdefine_line|#define __GFP_BITS_SHIFT 16&t;/* Room for 16 __GFP_FOO bits */
 DECL|macro|__GFP_BITS_MASK
 mdefine_line|#define __GFP_BITS_MASK ((1 &lt;&lt; __GFP_BITS_SHIFT) - 1)
+multiline_comment|/* if you forget to add the bitmask here kernel will crash, period */
+DECL|macro|GFP_LEVEL_MASK
+mdefine_line|#define GFP_LEVEL_MASK (__GFP_WAIT|__GFP_HIGH|__GFP_IO|__GFP_FS| &bslash;&n;&t;&t;&t;__GFP_COLD|__GFP_NOWARN|__GFP_REPEAT| &bslash;&n;&t;&t;&t;__GFP_NOFAIL|__GFP_NORETRY|__GFP_NO_GROW|__GFP_COMP)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_NOIO

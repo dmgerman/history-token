@@ -278,6 +278,42 @@ DECL|macro|task_rq
 mdefine_line|#define task_rq(p)&t;&t;cpu_rq(task_cpu(p))
 DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
+r_extern
+r_int
+r_int
+id|__scheduling_functions_start_here
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|__scheduling_functions_end_here
+suffix:semicolon
+DECL|variable|scheduling_functions_start_here
+r_const
+r_int
+r_int
+id|scheduling_functions_start_here
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__scheduling_functions_start_here
+suffix:semicolon
+DECL|variable|scheduling_functions_end_here
+r_const
+r_int
+r_int
+id|scheduling_functions_end_here
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|__scheduling_functions_end_here
+suffix:semicolon
 multiline_comment|/*&n; * Default context-switch locking:&n; */
 macro_line|#ifndef prepare_arch_switch
 DECL|macro|prepare_arch_switch
@@ -5012,19 +5048,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|scheduling_functions_start_here
-r_void
-id|scheduling_functions_start_here
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 multiline_comment|/*&n; * schedule() is the main scheduler function.&n; */
 DECL|function|schedule
 id|asmlinkage
 r_void
+id|__sched
 id|schedule
 c_func
 (paren
@@ -5630,6 +5658,7 @@ multiline_comment|/*&n; * this is is the entry point to schedule() from in-kerne
 DECL|function|preempt_schedule
 id|asmlinkage
 r_void
+id|__sched
 id|preempt_schedule
 c_func
 (paren
@@ -6145,9 +6174,17 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|complete_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|complete_all
+)paren
+suffix:semicolon
 DECL|function|wait_for_completion
 r_void
 id|fastcall
+id|__sched
 id|wait_for_completion
 c_func
 (paren
@@ -6271,6 +6308,7 @@ mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&
 DECL|function|interruptible_sleep_on
 r_void
 id|fastcall
+id|__sched
 id|interruptible_sleep_on
 c_func
 (paren
@@ -6302,6 +6340,7 @@ suffix:semicolon
 DECL|function|interruptible_sleep_on_timeout
 r_int
 id|fastcall
+id|__sched
 id|interruptible_sleep_on_timeout
 c_func
 (paren
@@ -6342,6 +6381,7 @@ suffix:semicolon
 DECL|function|sleep_on
 r_void
 id|fastcall
+id|__sched
 id|sleep_on
 c_func
 (paren
@@ -6373,6 +6413,7 @@ suffix:semicolon
 DECL|function|sleep_on_timeout
 r_int
 id|fastcall
+id|__sched
 id|sleep_on_timeout
 c_func
 (paren
@@ -6410,15 +6451,6 @@ c_func
 id|sleep_on_timeout
 )paren
 suffix:semicolon
-DECL|function|scheduling_functions_end_here
-r_void
-id|scheduling_functions_end_here
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 DECL|function|set_user_nice
 r_void
 id|set_user_nice
@@ -8013,6 +8045,7 @@ suffix:semicolon
 )brace
 DECL|function|__cond_resched
 r_void
+id|__sched
 id|__cond_resched
 c_func
 (paren
@@ -8041,6 +8074,7 @@ suffix:semicolon
 multiline_comment|/**&n; * yield - yield the current processor to other threads.&n; *&n; * this is a shortcut for kernel-space yielding - it marks the&n; * thread runnable and calls sys_sched_yield().&n; */
 DECL|function|yield
 r_void
+id|__sched
 id|yield
 c_func
 (paren
@@ -8069,6 +8103,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This task is about to go to sleep on IO.  Increment rq-&gt;nr_iowait so&n; * that process accounting knows that this is a task in IO wait state.&n; *&n; * But don&squot;t do that if it is a deliberate, throttling IO wait (this task&n; * has set its backing_dev_info: the queue against which it should throttle)&n; */
 DECL|function|io_schedule
 r_void
+id|__sched
 id|io_schedule
 c_func
 (paren
@@ -8114,6 +8149,7 @@ id|io_schedule
 suffix:semicolon
 DECL|function|io_schedule_timeout
 r_int
+id|__sched
 id|io_schedule_timeout
 c_func
 (paren
@@ -10252,7 +10288,9 @@ c_func
 )paren
 )paren
 op_logical_and
-id|system_running
+id|system_state
+op_eq
+id|SYSTEM_RUNNING
 )paren
 (brace
 r_if
@@ -10324,6 +10362,7 @@ macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
 multiline_comment|/*&n; * This could be a long-held lock.  If another CPU holds it for a long time,&n; * and that CPU is not asked to reschedule then *this* CPU will spin on the&n; * lock for a long time, even if *this* CPU is asked to reschedule.&n; *&n; * So what we do here, in the slow (contended) path is to spin on the lock by&n; * hand while permitting preemption.&n; *&n; * Called inside preempt_disable().&n; */
 DECL|function|__preempt_spin_lock
 r_void
+id|__sched
 id|__preempt_spin_lock
 c_func
 (paren
@@ -10400,6 +10439,7 @@ id|__preempt_spin_lock
 suffix:semicolon
 DECL|function|__preempt_write_lock
 r_void
+id|__sched
 id|__preempt_write_lock
 c_func
 (paren

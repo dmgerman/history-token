@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -266,6 +268,39 @@ DECL|variable|ppc_md
 r_struct
 id|machdep_calls
 id|ppc_md
+suffix:semicolon
+r_static
+r_int
+id|ppc64_panic_event
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+comma
+r_int
+r_int
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|variable|ppc64_panic_block
+r_static
+r_struct
+id|notifier_block
+id|ppc64_panic_block
+op_assign
+(brace
+id|notifier_call
+suffix:colon
+id|ppc64_panic_event
+comma
+id|priority
+suffix:colon
+id|INT_MIN
+multiline_comment|/* may not return; must be done last */
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Perhaps we can put the pmac screen_info[] here&n; * on pmac as well so we don&squot;t need the ifdef&squot;s.&n; * Until we get multiple-console support in here&n; * that is.  -- Cort&n; * Maybe tie it to serial consoles, since this is really what&n; * these processors use on existing boards.  -- Dan&n; */
 DECL|variable|screen_info
@@ -613,6 +648,10 @@ c_func
 op_amp
 id|udbg_console
 )paren
+suffix:semicolon
+id|__irq_offset_value
+op_assign
+id|NUM_ISA_INTERRUPTS
 suffix:semicolon
 id|finish_device_tree
 c_func
@@ -1058,6 +1097,43 @@ r_int
 r_int
 id|ppc_tb_freq
 suffix:semicolon
+DECL|function|ppc64_panic_event
+r_static
+r_int
+id|ppc64_panic_event
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|this
+comma
+r_int
+r_int
+id|event
+comma
+r_void
+op_star
+id|ptr
+)paren
+(brace
+id|ppc_md
+dot
+id|panic
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+multiline_comment|/* May not return */
+r_return
+id|NOTIFY_DONE
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 id|DEFINE_PER_CPU
 c_func
@@ -1146,6 +1222,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* We only show online cpus: disable preempt (overzealous, I&n;&t; * knew) to prevent cpu going down. */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1156,9 +1238,16 @@ c_func
 id|cpu_id
 )paren
 )paren
+(brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 id|pvr
 op_assign
@@ -1291,6 +1380,11 @@ comma
 id|maj
 comma
 id|min
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2302,6 +2396,21 @@ multiline_comment|/* reboot on panic */
 id|panic_timeout
 op_assign
 l_int|180
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc_md.panic
+)paren
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|panic_notifier_list
+comma
+op_amp
+id|ppc64_panic_block
+)paren
 suffix:semicolon
 id|init_mm.start_code
 op_assign

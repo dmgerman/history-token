@@ -268,7 +268,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|bad_interrupt
 c_func
 (paren
@@ -283,7 +283,7 @@ op_star
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler
 c_func
 (paren
@@ -291,7 +291,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler1
 c_func
 (paren
@@ -299,7 +299,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler2
 c_func
 (paren
@@ -307,7 +307,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler3
 c_func
 (paren
@@ -315,7 +315,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler4
 c_func
 (paren
@@ -323,7 +323,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler5
 c_func
 (paren
@@ -331,7 +331,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler6
 c_func
 (paren
@@ -339,7 +339,7 @@ r_void
 )paren
 suffix:semicolon
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|inthandler7
 c_func
 (paren
@@ -378,168 +378,21 @@ suffix:semicolon
 macro_line|#if !defined(CONFIG_DRAGEN2)
 id|asm
 (paren
-"&quot;"
-dot
-id|global
-id|_start
-comma
-id|__ramend
-dot
-id|section
-dot
-id|romvec
-id|e_vectors
-suffix:colon
-dot
-r_int
-id|__ramend
-op_minus
-l_int|4
-comma
-id|_start
-comma
-id|buserr
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
+l_string|&quot;.global _start, __ramend/n/t&quot;
+l_string|&quot;.section .romvec/n&quot;
+l_string|&quot;e_vectors:&bslash;n&bslash;t&quot;
+l_string|&quot;.long __ramend-4, _start, buserr, trap, trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long trap, trap, trap, trap, trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long trap, trap, trap, trap, trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long trap, trap, trap, trap&bslash;n&bslash;t&quot;
 multiline_comment|/*.long inthandler, inthandler, inthandler, inthandler&n;&t;.long inthandler4, inthandler, inthandler, inthandler   */
 multiline_comment|/* TRAP #0-15 */
-dot
-r_int
-id|system_call
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-comma
-id|trap
-dot
-r_int
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-dot
-id|text
-id|ignore
-suffix:colon
-id|rte
-"&quot;"
+l_string|&quot;.long system_call, trap, trap, trap, trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long trap, trap, trap, trap, trap, trap, trap, trap&bslash;n&bslash;t&quot;
+l_string|&quot;.long 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0&bslash;n&bslash;t&quot;
+l_string|&quot;.text&bslash;n&quot;
+l_string|&quot;ignore: rte&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -592,6 +445,9 @@ id|_ramvec
 l_int|65
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler1
 suffix:semicolon
 id|_ramvec
@@ -599,6 +455,9 @@ id|_ramvec
 l_int|66
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler2
 suffix:semicolon
 id|_ramvec
@@ -606,6 +465,9 @@ id|_ramvec
 l_int|67
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler3
 suffix:semicolon
 id|_ramvec
@@ -613,6 +475,9 @@ id|_ramvec
 l_int|68
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler4
 suffix:semicolon
 id|_ramvec
@@ -620,6 +485,9 @@ id|_ramvec
 l_int|69
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler5
 suffix:semicolon
 id|_ramvec
@@ -627,6 +495,9 @@ id|_ramvec
 l_int|70
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler6
 suffix:semicolon
 id|_ramvec
@@ -634,6 +505,9 @@ id|_ramvec
 l_int|71
 )braket
 op_assign
+(paren
+id|e_vector
+)paren
 id|inthandler7
 suffix:semicolon
 id|IVR
@@ -710,7 +584,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -750,6 +624,7 @@ id|NR_IRQS
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -796,6 +671,7 @@ id|IRQ_FLG_LOCK
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: IRQ %d from %s is not replaceable&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -826,6 +702,7 @@ id|IRQ_FLG_REPLACE
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: %s can&squot;t replace IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -928,6 +805,7 @@ id|NR_IRQS
 (brace
 id|printk
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Unknown IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -953,6 +831,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: removing probably wrong IRQ %d from %s&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -1058,12 +937,9 @@ id|int_irq_list
 id|i
 )braket
 dot
-id|flags
-op_amp
-id|IRQ_FLG_STD
+id|devname
 )paren
-r_continue
-suffix:semicolon
+(brace
 id|seq_printf
 c_func
 (paren
@@ -1129,6 +1005,7 @@ dot
 id|devname
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -1400,6 +1277,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unregistered interrupt %d!&bslash;nTurning it off in the IMR...&bslash;n&quot;
 comma
 id|irq

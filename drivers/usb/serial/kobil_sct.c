@@ -2050,7 +2050,7 @@ op_star
 id|port
 )paren
 (brace
-singleline_comment|//dbg(__FUNCTION__ &quot; - port %d&quot;, port-&gt;number);
+singleline_comment|//dbg(&quot;%s - port %d&quot;, __FUNCTION__, port-&gt;number);
 r_return
 l_int|8
 suffix:semicolon

@@ -1,19 +1,53 @@
 multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&n; * Copyright 2001, Rik van Riel &lt;riel@conectiva.com.br&gt;&n; * Released under the General Public License (GPL).&n; *&n; *&n; * Simple, low overhead pte-based reverse mapping scheme.&n; * This is kept modular because we may want to experiment&n; * with object-based reverse mapping schemes. Please try&n; * to keep this thing as modular as possible.&n; */
-multiline_comment|/*&n; * Locking:&n; * - the page-&gt;pte.chain is protected by the PG_chainlock bit,&n; *   which nests within the the mm-&gt;page_table_lock,&n; *   which nests within the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
+multiline_comment|/*&n; * Locking:&n; * - the page-&gt;pte.chain is protected by the PG_maplock bit,&n; *   which nests within the the mm-&gt;page_table_lock,&n; *   which nests within the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/rmap-locking.h&gt;
+macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/rmap.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/* #define DEBUG_RMAP */
+multiline_comment|/*&n; * Something oopsable to put for now in the page-&gt;mapping&n; * of an anonymous page, to test that it is ignored.&n; */
+DECL|macro|ANON_MAPPING_DEBUG
+mdefine_line|#define ANON_MAPPING_DEBUG&t;((struct address_space *) 0xADB)
+DECL|function|clear_page_anon
+r_static
+r_inline
+r_void
+id|clear_page_anon
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+id|page-&gt;mapping
+op_ne
+id|ANON_MAPPING_DEBUG
+)paren
+suffix:semicolon
+id|page-&gt;mapping
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ClearPageAnon
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Shared pages have a chain of pte_chain structures, used to locate&n; * all the mappings to this page. We only need a pointer to the pte&n; * here, the page struct for the page table page contains the process&n; * it belongs to and the offset within that process.&n; *&n; * We use an array of pte pointers in this structure to minimise cache misses&n; * while traversing reverse maps.&n; */
 DECL|macro|NRPTE
 mdefine_line|#define NRPTE ((L1_CACHE_BYTES - sizeof(unsigned long))/sizeof(pte_addr_t))
@@ -148,7 +182,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * pte_chain list management policy:&n; *&n; * - If a page has a pte_chain list then it is shared by at least two processes,&n; *   because a single sharing uses PageDirect. (Well, this isn&squot;t true yet,&n; *   coz this code doesn&squot;t collapse singletons back to PageDirect on the remove&n; *   path).&n; * - A pte_chain list has free space only in the head member - all succeeding&n; *   members are 100% full.&n; * - If the head element has free space, it occurs in its leading slots.&n; * - All free space in the pte_chain is at the start of the head member.&n; * - Insertion into the pte_chain puts a pte pointer in the last free slot of&n; *   the head member.&n; * - Removal from a pte chain moves the head pte of the head member onto the&n; *   victim pte and frees the head member if it became empty.&n; */
 multiline_comment|/**&n; ** VM stuff below this comment&n; **/
-multiline_comment|/**&n; * page_referenced - test if the page was referenced&n; * @page: the page to test&n; *&n; * Quick test_and_clear_referenced for all mappings to a page,&n; * returns the number of processes which referenced the page.&n; * Caller needs to hold the pte_chain_lock.&n; *&n; * If the page has a single-entry pte_chain, collapse that back to a PageDirect&n; * representation.  This way, it&squot;s only done under memory pressure.&n; */
+multiline_comment|/**&n; * page_referenced - test if the page was referenced&n; * @page: the page to test&n; *&n; * Quick test_and_clear_referenced for all mappings to a page,&n; * returns the number of processes which referenced the page.&n; * Caller needs to hold the rmap lock.&n; *&n; * If the page has a single-entry pte_chain, collapse that back to a PageDirect&n; * representation.  This way, it&squot;s only done under memory pressure.&n; */
 DECL|function|page_referenced
 r_int
 id|fastcall
@@ -423,7 +457,7 @@ id|page
 r_return
 id|pte_chain
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -447,6 +481,24 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page-&gt;mapping
+)paren
+(brace
+id|SetPageAnon
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page-&gt;mapping
+op_assign
+id|ANON_MAPPING_DEBUG
+suffix:semicolon
+)brace
 id|inc_page_state
 c_func
 (paren
@@ -587,7 +639,7 @@ op_decrement
 suffix:semicolon
 id|out
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
@@ -650,7 +702,7 @@ id|page
 )paren
 r_return
 suffix:semicolon
-id|pte_chain_lock
+id|rmap_lock
 c_func
 (paren
 id|page
@@ -858,10 +910,17 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|page-&gt;pte.direct
-op_eq
-l_int|0
-op_logical_and
+op_logical_neg
+id|page_mapped
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|page_test_and_clear_dirty
 c_func
 (paren
@@ -877,47 +936,35 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|page_mapped
+id|PageAnon
 c_func
 (paren
 id|page
 )paren
 )paren
+id|clear_page_anon
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|dec_page_state
 c_func
 (paren
 id|nr_mapped
 )paren
 suffix:semicolon
+)brace
 id|out_unlock
 suffix:colon
-id|pte_chain_unlock
+id|rmap_unlock
 c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap_one - worker function for try_to_unmap&n; * @page: page to unmap&n; * @ptep: page table entry to unmap from page&n; *&n; * Internal helper function for try_to_unmap, called for each page&n; * table entry mapping a page. Because locking order here is opposite&n; * to the locking order used by the page fault path, we use trylocks.&n; * Locking:&n; *&t;    page lock&t;&t;&t;shrink_list(), trylock&n; *&t;&t;pte_chain_lock&t;&t;shrink_list()&n; *&t;&t;    mm-&gt;page_table_lock&t;try_to_unmap_one(), trylock&n; */
-r_static
-r_int
-id|FASTCALL
-c_func
-(paren
-id|try_to_unmap_one
-c_func
-(paren
-r_struct
-id|page
-op_star
-comma
-id|pte_addr_t
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/**&n; * try_to_unmap_one - worker function for try_to_unmap&n; * @page: page to unmap&n; * @ptep: page table entry to unmap from page&n; *&n; * Internal helper function for try_to_unmap, called for each page&n; * table entry mapping a page. Because locking order here is opposite&n; * to the locking order used by the page fault path, we use trylocks.&n; * Locking:&n; *&t;    page lock&t;&t;&t;shrink_list(), trylock&n; *&t;&t;rmap lock&t;&t;shrink_list()&n; *&t;&t;    mm-&gt;page_table_lock&t;try_to_unmap_one(), trylock&n; */
 DECL|function|try_to_unmap_one
 r_static
 r_int
@@ -1010,7 +1057,7 @@ r_return
 id|SWAP_AGAIN
 suffix:semicolon
 )brace
-multiline_comment|/* During mremap, it&squot;s possible pages are not in a VMA. */
+multiline_comment|/* unmap_vmas drops page_table_lock with vma unlinked */
 id|vma
 op_assign
 id|find_vma
@@ -1077,14 +1124,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PageSwapCache
+id|PageAnon
 c_func
 (paren
 id|page
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Store the swap location in the pte.&n;&t;&t; * See handle_pte_fault() ...&n;&t;&t; */
 id|swp_entry_t
 id|entry
 op_assign
@@ -1092,8 +1138,22 @@ op_assign
 dot
 id|val
 op_assign
-id|page-&gt;index
+id|page
+op_member_access_from_pointer
+r_private
 )brace
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Store the swap location in the pte.&n;&t;&t; * See handle_pte_fault() ...&n;&t;&t; */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
 suffix:semicolon
 id|swap_duplicate
 c_func
@@ -1132,6 +1192,13 @@ r_int
 id|pgidx
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If a nonlinear mapping then store the file page offset&n;&t;&t; * in the pte.&n;&t;&t; */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|page-&gt;mapping
+)paren
+suffix:semicolon
 id|pgidx
 op_assign
 (paren
@@ -1234,7 +1301,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold the page lock&n; * and its pte chain lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; */
+multiline_comment|/**&n; * try_to_unmap - try to remove all page table mappings to a page&n; * @page: the page to get unmapped&n; *&n; * Tries to remove all the page table entries which are mapping this&n; * page, used in the pageout path.  Caller must hold the page lock&n; * and its rmap lock.  Return values are:&n; *&n; * SWAP_SUCCESS&t;- we succeeded in removing all mappings&n; * SWAP_AGAIN&t;- we missed a trylock, try again later&n; * SWAP_FAIL&t;- the page is unswappable&n; */
 DECL|function|try_to_unmap
 r_int
 id|fastcall
@@ -1296,18 +1363,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* We need backing store to swap out a page. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|page-&gt;mapping
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1336,21 +1391,6 @@ op_eq
 id|SWAP_SUCCESS
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|page_test_and_clear_dirty
-c_func
-(paren
-id|page
-)paren
-)paren
-id|set_page_dirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|page-&gt;pte.direct
 op_assign
 l_int|0
@@ -1514,25 +1554,6 @@ id|start-&gt;next_and_idx
 op_increment
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|page-&gt;pte.direct
-op_eq
-l_int|0
-op_logical_and
-id|page_test_and_clear_dirty
-c_func
-(paren
-id|page
-)paren
-)paren
-id|set_page_dirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1570,12 +1591,48 @@ c_func
 id|page
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|page_test_and_clear_dirty
+c_func
+(paren
+id|page
+)paren
+)paren
+id|set_page_dirty
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PageAnon
+c_func
+(paren
+id|page
+)paren
+)paren
+id|clear_page_anon
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|dec_page_state
 c_func
 (paren
 id|nr_mapped
 )paren
 suffix:semicolon
+id|ret
+op_assign
+id|SWAP_SUCCESS
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -1806,9 +1863,13 @@ r_struct
 id|pte_chain
 )paren
 comma
-l_int|0
+r_sizeof
+(paren
+r_struct
+id|pte_chain
+)paren
 comma
-id|SLAB_MUST_HWCACHE_ALIGN
+l_int|0
 comma
 id|pte_chain_ctor
 comma
