@@ -33,11 +33,20 @@ l_int|1
 id|KM_SKB_SUNRPC_DATA
 comma
 DECL|enumerator|D
-DECL|enumerator|KM_SKB_DATA_SOFTIRQ
+DECL|enumerator|KM_CRYPTO
 id|D
 c_func
 (paren
 l_int|2
+)paren
+id|KM_CRYPTO
+comma
+DECL|enumerator|D
+DECL|enumerator|KM_SKB_DATA_SOFTIRQ
+id|D
+c_func
+(paren
+l_int|3
 )paren
 id|KM_SKB_DATA_SOFTIRQ
 comma
@@ -46,7 +55,7 @@ DECL|enumerator|KM_USER0
 id|D
 c_func
 (paren
-l_int|3
+l_int|4
 )paren
 id|KM_USER0
 comma
@@ -55,7 +64,7 @@ DECL|enumerator|KM_USER1
 id|D
 c_func
 (paren
-l_int|4
+l_int|5
 )paren
 id|KM_USER1
 comma
@@ -64,7 +73,7 @@ DECL|enumerator|KM_BIO_SRC_IRQ
 id|D
 c_func
 (paren
-l_int|5
+l_int|6
 )paren
 id|KM_BIO_SRC_IRQ
 comma
@@ -73,7 +82,7 @@ DECL|enumerator|KM_BIO_DST_IRQ
 id|D
 c_func
 (paren
-l_int|6
+l_int|7
 )paren
 id|KM_BIO_DST_IRQ
 comma
@@ -82,7 +91,7 @@ DECL|enumerator|KM_PTE0
 id|D
 c_func
 (paren
-l_int|7
+l_int|8
 )paren
 id|KM_PTE0
 comma
@@ -91,7 +100,7 @@ DECL|enumerator|KM_PTE1
 id|D
 c_func
 (paren
-l_int|8
+l_int|9
 )paren
 id|KM_PTE1
 comma
@@ -100,7 +109,7 @@ DECL|enumerator|KM_IRQ0
 id|D
 c_func
 (paren
-l_int|9
+l_int|10
 )paren
 id|KM_IRQ0
 comma
@@ -109,7 +118,7 @@ DECL|enumerator|KM_IRQ1
 id|D
 c_func
 (paren
-l_int|10
+l_int|11
 )paren
 id|KM_IRQ1
 comma
@@ -118,7 +127,7 @@ DECL|enumerator|KM_TYPE_NR
 id|D
 c_func
 (paren
-l_int|11
+l_int|12
 )paren
 id|KM_TYPE_NR
 )brace

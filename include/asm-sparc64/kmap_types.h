@@ -12,6 +12,9 @@ comma
 DECL|enumerator|KM_SKB_SUNRPC_DATA
 id|KM_SKB_SUNRPC_DATA
 comma
+DECL|enumerator|KM_CRYPTO
+id|KM_CRYPTO
+comma
 DECL|enumerator|KM_SKB_DATA_SOFTIRQ
 id|KM_SKB_DATA_SOFTIRQ
 comma
