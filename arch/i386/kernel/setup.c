@@ -16,6 +16,19 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &quot;setup_arch_pre.h&quot;
+r_static
+r_inline
+r_char
+op_star
+id|__init
+id|machine_specific_memory_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|ignore_irq13
 r_char
@@ -1988,95 +2001,11 @@ r_char
 op_star
 id|who
 op_assign
-l_string|&quot;BIOS-e820&quot;
-suffix:semicolon
-multiline_comment|/*&n;&t; * Try to copy the BIOS-supplied E820-map.&n;&t; *&n;&t; * Otherwise fake a memory map; one section from 0k-&gt;640k,&n;&t; * the next section from 1mb-&gt;appropriate_mem_k&n;&t; */
-id|sanitize_e820_map
-c_func
-(paren
-id|E820_MAP
-comma
-op_amp
-id|E820_MAP_NR
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_e820_map
-c_func
-(paren
-id|E820_MAP
-comma
-id|E820_MAP_NR
-)paren
-OL
-l_int|0
-)paren
-(brace
-r_int
-r_int
-id|mem_size
-suffix:semicolon
-multiline_comment|/* compare results from other methods and take the greater */
-r_if
-c_cond
-(paren
-id|ALT_MEM_K
-OL
-id|EXT_MEM_K
-)paren
-(brace
-id|mem_size
-op_assign
-id|EXT_MEM_K
-suffix:semicolon
-id|who
-op_assign
-l_string|&quot;BIOS-88&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|mem_size
-op_assign
-id|ALT_MEM_K
-suffix:semicolon
-id|who
-op_assign
-l_string|&quot;BIOS-e801&quot;
-suffix:semicolon
-)brace
-id|e820.nr_map
-op_assign
-l_int|0
-suffix:semicolon
-id|add_memory_region
-c_func
-(paren
-l_int|0
-comma
-id|LOWMEMSIZE
+id|machine_specific_memory_setup
 c_func
 (paren
 )paren
-comma
-id|E820_RAM
-)paren
 suffix:semicolon
-id|add_memory_region
-c_func
-(paren
-id|HIGH_MEMORY
-comma
-id|mem_size
-op_lshift
-l_int|10
-comma
-id|E820_RAM
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2449,18 +2378,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|pre_setup_arch_hook
+c_func
+(paren
+)paren
+suffix:semicolon
 id|early_cpu_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VISWS
-id|visws_get_board_type_and_rev
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ROOT_DEV
 op_assign
 id|ORIG_ROOT_DEV
@@ -2473,10 +2400,12 @@ id|screen_info
 op_assign
 id|SCREEN_INFO
 suffix:semicolon
+macro_line|#ifdef CONFIG_APM
 id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
 suffix:semicolon
+macro_line|#endif
 id|saved_videomode
 op_assign
 id|VIDEO_MODE
@@ -2564,6 +2493,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|ARCH_SETUP
 id|setup_memory_region
 c_func
 (paren
@@ -3281,7 +3211,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef CONFIG_X86_FIND_SMP_CONFIG
 multiline_comment|/*&n;&t; * Find and reserve possible boot-time SMP configuration:&n;&t; */
 id|find_smp_config
 c_func
@@ -3692,5 +3622,6 @@ comma
 id|highio_setup
 )paren
 suffix:semicolon
+macro_line|#include &quot;setup_arch_post.h&quot;
 multiline_comment|/*&n; * Local Variables:&n; * mode:c&n; * c-file-style:&quot;k&amp;r&quot;&n; * c-basic-offset:8&n; * End:&n; */
 eof

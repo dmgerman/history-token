@@ -14,6 +14,51 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
+DECL|function|apic_intr_init
+r_void
+id|__init
+id|apic_intr_init
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+id|smp_intr_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* self generated IPI for local APIC timer */
+id|set_intr_gate
+c_func
+(paren
+id|LOCAL_TIMER_VECTOR
+comma
+id|apic_timer_interrupt
+)paren
+suffix:semicolon
+multiline_comment|/* IPI vectors for APIC spurious and error interrupts */
+id|set_intr_gate
+c_func
+(paren
+id|SPURIOUS_APIC_VECTOR
+comma
+id|spurious_interrupt
+)paren
+suffix:semicolon
+id|set_intr_gate
+c_func
+(paren
+id|ERROR_APIC_VECTOR
+comma
+id|error_interrupt
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Using APIC to generate smp_local_timer_interrupt? */
 DECL|variable|using_apic_timer
 r_int
