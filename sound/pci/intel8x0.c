@@ -5228,6 +5228,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|err
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|chip-&gt;multi6
 )paren
 (brace
