@@ -218,6 +218,14 @@ DECL|member|status_register
 id|u16
 id|status_register
 suffix:semicolon
+DECL|member|control_register_bit_width
+id|u8
+id|control_register_bit_width
+suffix:semicolon
+DECL|member|status_register_bit_width
+id|u8
+id|status_register_bit_width
+suffix:semicolon
 DECL|member|state_count
 r_int
 id|state_count
