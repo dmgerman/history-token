@@ -4583,6 +4583,21 @@ r_int
 id|devtype
 suffix:semicolon
 multiline_comment|/* for each physical lun, do an inquiry */
+r_if
+c_cond
+(paren
+id|ld_buff-&gt;LUN
+(braket
+id|i
+)braket
+(braket
+l_int|3
+)braket
+op_amp
+l_int|0xC0
+)paren
+r_continue
+suffix:semicolon
 id|memset
 c_func
 (paren
