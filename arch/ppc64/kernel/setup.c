@@ -2728,9 +2728,10 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
-multiline_comment|/* interrupt stacks must be under 256MB, we cannot afford to take SLB misses on them */
+multiline_comment|/*&n;&t; * interrupt stacks must be under 256MB, we cannot afford to take&n;&t; * SLB misses on them.&n;&t; */
 id|for_each_cpu
 c_func
 (paren
@@ -2791,6 +2792,51 @@ macro_line|#else
 DECL|macro|irqstack_early_init
 mdefine_line|#define irqstack_early_init()
 macro_line|#endif
+multiline_comment|/*&n; * Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
+DECL|function|emergency_stack_init
+r_static
+r_void
+id|__init
+id|emergency_stack_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * Emergency stacks must be under 256MB, we cannot afford to take&n;&t; * SLB misses on them. The ABI also requires them to be 128-byte&n;&t; * aligned.&n;&t; */
+id|for_each_cpu
+c_func
+(paren
+id|i
+)paren
+id|paca
+(braket
+id|i
+)braket
+dot
+id|emergency_sp
+op_assign
+id|__va
+c_func
+(paren
+id|lmb_alloc_base
+c_func
+(paren
+id|PAGE_SIZE
+comma
+l_int|128
+comma
+l_int|0x10000000
+)paren
+)paren
+op_plus
+id|PAGE_SIZE
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Called into from start_kernel, after lock_kernel has been called.&n; * Initializes bootmem, which is unsed to manage page allocation until&n; * mem_init is called.&n; */
 DECL|function|setup_arch
 r_void
@@ -2925,6 +2971,11 @@ op_assign
 id|cmd_line
 suffix:semicolon
 id|irqstack_early_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|emergency_stack_init
 c_func
 (paren
 )paren
