@@ -7070,8 +7070,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|__uart_register_port
-id|__uart_register_port
+DECL|function|uart_configure_port
+id|uart_configure_port
 c_func
 (paren
 r_struct
@@ -7093,25 +7093,6 @@ id|port
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|state-&gt;port
-op_assign
-id|port
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|port-&gt;lock
-)paren
-suffix:semicolon
-id|port-&gt;cons
-op_assign
-id|drv-&gt;cons
-suffix:semicolon
-id|port-&gt;info
-op_assign
-id|state-&gt;info
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there isn&squot;t a port here, don&squot;t do anything further.&n;&t; */
 r_if
@@ -7167,17 +7148,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
-id|tty_register_device
-c_func
-(paren
-id|drv-&gt;tty_driver
-comma
-id|drv-&gt;minor
-op_plus
-id|port-&gt;line
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7229,11 +7199,11 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This reverses the affects of __uart_register_port, hanging up the&n; * port before removal.&n; */
+multiline_comment|/*&n; * This reverses the affects of uart_configure_port, hanging up the&n; * port before removal.&n; */
 r_static
 r_void
-DECL|function|__uart_unregister_port
-id|__uart_unregister_port
+DECL|function|uart_unconfigure_port
+id|uart_unconfigure_port
 c_func
 (paren
 r_struct
@@ -7284,17 +7254,6 @@ suffix:semicolon
 id|state-&gt;info
 op_assign
 l_int|NULL
-suffix:semicolon
-multiline_comment|/*&n;&t; * Remove the devices from devfs&n;&t; */
-id|tty_unregister_device
-c_func
-(paren
-id|drv-&gt;tty_driver
-comma
-id|drv-&gt;minor
-op_plus
-id|port-&gt;line
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Free the port IO and memory resources, if any.&n;&t; */
 r_if
@@ -7872,6 +7831,11 @@ id|uart_state
 op_star
 id|state
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -7905,7 +7869,41 @@ op_amp
 id|port_sem
 )paren
 suffix:semicolon
-id|__uart_register_port
+r_if
+c_cond
+(paren
+id|state-&gt;port
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|state-&gt;port
+op_assign
+id|port
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|port-&gt;lock
+)paren
+suffix:semicolon
+id|port-&gt;cons
+op_assign
+id|drv-&gt;cons
+suffix:semicolon
+id|port-&gt;info
+op_assign
+id|state-&gt;info
+suffix:semicolon
+id|uart_configure_port
 c_func
 (paren
 id|drv
@@ -7915,6 +7913,19 @@ comma
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
+id|tty_register_device
+c_func
+(paren
+id|drv-&gt;tty_driver
+comma
+id|drv-&gt;minor
+op_plus
+id|port-&gt;line
+)paren
+suffix:semicolon
+id|out
+suffix:colon
 id|up
 c_func
 (paren
@@ -7923,7 +7934,7 @@ id|port_sem
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;uart_remove_one_port - detach a driver defined port structure&n; *&t;@drv: pointer to the uart low level driver structure for this port&n; *&t;@port: uart port structure for this port&n; *&n; *&t;This unhooks (and hangs up) the specified port structure from the&n; *&t;core driver.  No further calls will be made to the low-level code&n; *&t;for this port.&n; */
@@ -7986,7 +7997,18 @@ op_amp
 id|port_sem
 )paren
 suffix:semicolon
-id|__uart_unregister_port
+multiline_comment|/*&n;&t; * Remove the devices from devfs&n;&t; */
+id|tty_unregister_device
+c_func
+(paren
+id|drv-&gt;tty_driver
+comma
+id|drv-&gt;minor
+op_plus
+id|port-&gt;line
+)paren
+suffix:semicolon
+id|uart_unconfigure_port
 c_func
 (paren
 id|drv
@@ -8365,7 +8387,7 @@ id|state-&gt;port-&gt;mapbase
 op_assign
 id|port-&gt;mapbase
 suffix:semicolon
-id|__uart_register_port
+id|uart_configure_port
 c_func
 (paren
 id|drv
@@ -8469,7 +8491,7 @@ op_amp
 id|port_sem
 )paren
 suffix:semicolon
-id|__uart_unregister_port
+id|uart_unconfigure_port
 c_func
 (paren
 id|drv
