@@ -111,11 +111,6 @@ r_struct
 id|list_head
 id|devices
 suffix:semicolon
-DECL|member|drivers
-r_struct
-id|list_head
-id|drivers
-suffix:semicolon
 DECL|member|match
 r_int
 (paren
@@ -413,11 +408,6 @@ DECL|member|kobj
 r_struct
 id|kobject
 id|kobj
-suffix:semicolon
-DECL|member|bus_list
-r_struct
-id|list_head
-id|bus_list
 suffix:semicolon
 DECL|member|class_list
 r_struct
