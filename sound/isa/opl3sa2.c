@@ -835,6 +835,23 @@ l_string|&quot;YMH0021&quot;
 )brace
 )brace
 comma
+multiline_comment|/* Yamaha OPL3-SA2 */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;YMH0801&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;YMH0021&quot;
+)brace
+)brace
+)brace
+comma
 multiline_comment|/* NeoMagic MagicWave 3DX */
 (brace
 dot
