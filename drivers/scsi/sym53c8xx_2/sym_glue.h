@@ -16,10 +16,6 @@ macro_line|#endif
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;../scsi.h&quot;&t;&t;/* XXX: DID_* */
-macro_line|#ifndef bcopy
-DECL|macro|bcopy
-mdefine_line|#define bcopy(s, d, n)&t;memcpy((d), (s), (n))
-macro_line|#endif
 macro_line|#ifndef bzero
 DECL|macro|bzero
 mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
