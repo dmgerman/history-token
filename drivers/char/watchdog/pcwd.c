@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * These are the auto-probe addresses available.&n; *&n; * Revision A only uses ports 0x270 and 0x370.  Revision C introduced 0x350.&n; * Revision A has an address range of 2 addresses, while Revision C has 3.&n; */
@@ -425,6 +426,7 @@ id|WD_WDRST
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Previous reboot was caused by the card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -439,13 +441,20 @@ id|WD_T110
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|machine_power_off
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -473,6 +482,7 @@ id|WD_T110
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Cold boot sense.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -489,6 +499,7 @@ l_int|0x01
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Previous reboot was caused by the card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -503,13 +514,20 @@ l_int|0x04
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: Card senses a CPU Overheat.  Panicking!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;pcwd: CPU Overheat.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|machine_power_off
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -537,6 +555,7 @@ l_int|0x04
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Cold boot sense.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -770,12 +789,19 @@ c_cond
 (paren
 id|temp_panic
 )paren
-id|panic
-c_func
+(brace
+id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature overheat trip!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|machine_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -808,12 +834,19 @@ c_cond
 (paren
 id|temp_panic
 )paren
-id|panic
-c_func
+(brace
+id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature overheat trip!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|machine_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -1122,6 +1155,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Could not disable card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1187,6 +1221,7 @@ l_int|0x10
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Could not enable card.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2148,6 +2183,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: v%s Ken Hollis (kenji@bitgate.com)&bslash;n&quot;
 comma
 id|WD_VER
@@ -2223,6 +2259,7 @@ id|found
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: No card detected, or port not available.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2260,6 +2297,7 @@ id|PCWD_REVISION_A
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: PC Watchdog (REV.A) detected at port 0x%03x&bslash;n&quot;
 comma
 id|current_readport
@@ -2276,6 +2314,7 @@ id|PCWD_REVISION_C
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: PC Watchdog (REV.C) detected at port 0x%03x (Firmware version: %s)&bslash;n&quot;
 comma
 id|current_readport
@@ -2308,6 +2347,7 @@ id|supports_temp
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature Option Detected.&bslash;n&quot;
 )paren
 suffix:semicolon
