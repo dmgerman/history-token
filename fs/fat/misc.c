@@ -1316,6 +1316,9 @@ suffix:semicolon
 op_star
 id|time
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 (paren
 id|unix_date
 op_mod
@@ -1350,6 +1353,7 @@ l_int|24
 )paren
 op_lshift
 l_int|11
+)paren
 )paren
 suffix:semicolon
 id|day
@@ -1475,6 +1479,9 @@ suffix:semicolon
 op_star
 id|date
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|nl_day
 op_minus
 id|day_n
@@ -1496,6 +1503,7 @@ op_plus
 id|year
 op_lshift
 l_int|9
+)paren
 )paren
 suffix:semicolon
 )brace
