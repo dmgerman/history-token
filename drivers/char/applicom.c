@@ -299,6 +299,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -317,6 +318,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -1575,6 +1577,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2435,6 +2438,7 @@ r_int
 id|IndexCard
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2890,6 +2894,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3848,6 +3853,18 @@ id|st_ram_io
 op_star
 id|adgl
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 multiline_comment|/* In general, the device is only openable by root anyway, so we&squot;re not&n;&t;   particularly concerned that bogus ioctls can flood the console. */
 id|adgl
 op_assign
@@ -3881,11 +3898,7 @@ c_func
 (paren
 id|adgl
 comma
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -4042,11 +4055,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|adgl
 comma
@@ -4282,11 +4291,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|adgl
 comma
@@ -4477,11 +4482,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|arg
+id|argp
 comma
 id|adgl
 comma
