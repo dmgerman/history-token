@@ -738,11 +738,7 @@ r_int
 id|size
 )paren
 (brace
-r_void
-id|__iomem
-op_star
-id|ret
-op_assign
+r_return
 id|__ioremap
 c_func
 (paren
@@ -752,26 +748,6 @@ id|size
 comma
 id|_PAGE_NO_CACHE
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mem_init_done
-)paren
-(brace
-r_return
-id|eeh_ioremap
-c_func
-(paren
-id|addr
-comma
-id|ret
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* may remap the addr */
-r_return
-id|ret
 suffix:semicolon
 )brace
 r_void
@@ -1412,7 +1388,6 @@ id|mem_init_done
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* addr could be in EEH or IO region, map it to IO region regardless.&n;&t; */
 id|addr
 op_assign
 (paren
@@ -1420,11 +1395,12 @@ r_void
 op_star
 )paren
 (paren
-id|IO_TOKEN_TO_ADDR
-c_func
 (paren
-id|token
+r_int
+r_int
+id|__force
 )paren
+id|token
 op_amp
 id|PAGE_MASK
 )paren
@@ -1657,18 +1633,16 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* addr could be in EEH or IO region, map it to IO region regardless.&n;&t; */
 id|addr
 op_assign
 (paren
-id|IO_TOKEN_TO_ADDR
-c_func
-(paren
-id|start
+r_int
+r_int
+id|__force
 )paren
+id|start
 op_amp
 id|PAGE_MASK
-)paren
 suffix:semicolon
 multiline_comment|/* Verify that the region either exists or is a subset of an existing&n;&t; * region.  In the latter case, split the parent region to create &n;&t; * the exact region &n;&t; */
 id|area
