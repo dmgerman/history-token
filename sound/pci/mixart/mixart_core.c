@@ -1761,10 +1761,9 @@ l_int|0
 )braket
 )paren
 (brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;tasklet : MSG_STREAM_ST***_***PUT_STAGE_PACKET txx_status(%x)&bslash;n&quot;
 comma
 id|mixart_msg_data
@@ -1791,10 +1790,9 @@ l_int|0
 )braket
 )paren
 (brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;tasklet : MSG_CLOCK_***_PROPERTIES txx_status(%x) clock_mode(%x)&bslash;n&quot;
 comma
 id|mixart_msg_data
@@ -1823,10 +1821,9 @@ l_int|0
 )braket
 )paren
 (brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;tasklet : MSG_SYSTEM_WAIT_SYNCHRO_CMD txx_status(%x)&bslash;n&quot;
 comma
 id|mixart_msg_data
@@ -1840,10 +1837,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;tasklet received mf(%x) : msg_id(%x) uid(%x, %x) size(%d)&bslash;n&quot;
 comma
 id|msg
@@ -2512,10 +2508,9 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;MIXART TRACE : %s&bslash;n&quot;
 comma
 (paren
@@ -2529,10 +2524,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;command %x not handled&bslash;n&quot;
 comma
 id|resp.message_id
@@ -2628,10 +2622,9 @@ id|MSG_TYPE_REQUEST
 suffix:colon
 r_default
 suffix:colon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;interrupt received request %x&bslash;n&quot;
 comma
 id|msg

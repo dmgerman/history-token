@@ -2480,10 +2480,9 @@ id|err
 suffix:semicolon
 )brace
 suffix:semicolon
-id|printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;miXart firmware downloaded and successfully set up&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -786,10 +786,9 @@ l_int|0
 op_assign
 id|pipe-&gt;group_uid
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;mixart_set_clock to %d kHz&bslash;n&quot;
 comma
 id|rate
@@ -998,10 +997,9 @@ suffix:semicolon
 id|mixart_streaming_group_req_t
 id|streaming_group_req
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;add_ref_pipe audio chip(%d) pcm(%d)&bslash;n&quot;
 comma
 id|chip-&gt;chip_idx
@@ -1731,10 +1729,9 @@ id|cmd
 r_case
 id|SNDRV_PCM_TRIGGER_START
 suffix:colon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;SNDRV_PCM_TRIGGER_START&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1789,10 +1786,9 @@ id|stream-&gt;status
 op_assign
 id|MIXART_STREAM_STATUS_OPEN
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;SNDRV_PCM_TRIGGER_STOP&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1806,10 +1802,9 @@ id|stream-&gt;status
 op_assign
 id|MIXART_STREAM_STATUS_PAUSE
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;SNDRV_PCM_PAUSE_PUSH&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1823,10 +1818,9 @@ id|stream-&gt;status
 op_assign
 id|MIXART_STREAM_STATUS_RUNNING
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;SNDRV_PCM_PAUSE_RELEASE&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1876,10 +1870,9 @@ op_star
 id|subs-&gt;runtime-&gt;private_data
 suffix:semicolon
 multiline_comment|/* TODO de fa&#xfffd;on non bloquante, r&#xfffd;appliquer les hw_params (rate, bits, codec) */
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;snd_mixart_prepare&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2124,10 +2117,9 @@ op_assign
 l_int|16
 suffix:semicolon
 )brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;set SNDRV_PCM_FORMAT sample_type(%d) sample_size(%d) freq(%d) channels(%d)&bslash;n&quot;
 comma
 id|stream_param.sample_type
@@ -2483,10 +2475,9 @@ op_assign
 id|subs-&gt;runtime-&gt;dma_bytes
 suffix:semicolon
 multiline_comment|/* mgr-&gt;bufferinfo_array[i].buffer_id  is already defined */
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;snd_mixart_hw_params(pcm %d) : dma_addr(%x) dma_bytes(%x) subs-number(%d)&bslash;n&quot;
 comma
 id|i
@@ -2849,10 +2840,9 @@ op_assign
 id|snd_mixart_digital_caps
 suffix:semicolon
 )brace
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;snd_mixart_playback_open C%d/P%d/Sub%d&bslash;n&quot;
 comma
 id|chip-&gt;chip_idx
@@ -3172,10 +3162,9 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* for instance, no mono */
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;snd_mixart_capture_open C%d/P%d/Sub%d&bslash;n&quot;
 comma
 id|chip-&gt;chip_idx
@@ -3434,10 +3423,9 @@ op_amp
 id|mgr-&gt;setup_mutex
 )paren
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;snd_mixart_close C%d/P%d/Sub%d&bslash;n&quot;
 comma
 id|chip-&gt;chip_idx
@@ -4386,10 +4374,9 @@ c_func
 id|mgr
 )paren
 suffix:semicolon
-id|snd_printk
+id|snd_printdd
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;reset miXart !&bslash;n&quot;
 )paren
 suffix:semicolon
