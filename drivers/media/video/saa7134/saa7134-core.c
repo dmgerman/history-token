@@ -5954,6 +5954,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_MODULES
 r_if
 c_cond
 (paren
@@ -5966,6 +5967,7 @@ op_amp
 id|pending_notifier
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pci_unregister_driver
 c_func
 (paren
