@@ -606,6 +606,10 @@ c_cond
 (paren
 id|pid
 op_logical_and
+id|pid
+op_ne
+id|current-&gt;pid
+op_logical_and
 op_logical_neg
 id|capable
 c_func
