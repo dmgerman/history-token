@@ -3063,6 +3063,8 @@ suffix:semicolon
 )brace
 DECL|macro|pci_dev_present
 mdefine_line|#define pci_dev_present(ids)&t;(0)
+DECL|macro|pci_dev_put
+mdefine_line|#define pci_dev_put(dev)&t;do { } while (0)
 DECL|function|pci_set_master
 r_static
 r_inline
