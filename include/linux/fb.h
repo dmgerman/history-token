@@ -935,6 +935,10 @@ id|spinlock_t
 id|lock
 suffix:semicolon
 multiline_comment|/* spinlock                      */
+DECL|member|count
+id|atomic_t
+id|count
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__

@@ -13,23 +13,11 @@ r_struct
 id|display
 (brace
 multiline_comment|/* Filled in by the frame buffer device */
-DECL|member|can_soft_blank
-id|u_short
-id|can_soft_blank
-suffix:semicolon
-multiline_comment|/* zero if no hardware blanking */
 DECL|member|inverse
 id|u_short
 id|inverse
 suffix:semicolon
 multiline_comment|/* != 0 text black on white as default */
-DECL|member|dispsw
-r_struct
-id|display_switch
-op_star
-id|dispsw
-suffix:semicolon
-multiline_comment|/* low level operations */
 multiline_comment|/* Filled in by the low-level console driver */
 DECL|member|fb_info
 r_struct
@@ -95,29 +83,9 @@ id|fgshift
 comma
 id|bgshift
 suffix:semicolon
-DECL|member|charmask
-r_int
-r_int
-id|charmask
-suffix:semicolon
-multiline_comment|/* 0xff or 0x1ff */
-DECL|member|fontwidthmask
-r_int
-r_int
-id|fontwidthmask
-suffix:semicolon
-multiline_comment|/* 1 at (1 &lt;&lt; (width - 1)) if width is supported */
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */
-r_extern
-r_struct
-id|display
-id|fb_display
-(braket
-id|MAX_NR_CONSOLES
-)braket
-suffix:semicolon
 r_extern
 r_char
 id|con2fb_map
@@ -137,12 +105,6 @@ r_int
 id|newidx
 )paren
 suffix:semicolon
-multiline_comment|/* fontwidth w is supported by dispsw */
-DECL|macro|FONTWIDTH
-mdefine_line|#define FONTWIDTH(w)&t;(1 &lt;&lt; ((w) - 1))
-multiline_comment|/* fontwidths w1-w2 inclusive are supported by dispsw */
-DECL|macro|FONTWIDTHRANGE
-mdefine_line|#define FONTWIDTHRANGE(w1,w2)&t;(FONTWIDTH(w2+1) - FONTWIDTH(w1))
 multiline_comment|/*&n;     *  Attribute Decoding&n;     */
 multiline_comment|/* Color */
 DECL|macro|attr_fgcol
