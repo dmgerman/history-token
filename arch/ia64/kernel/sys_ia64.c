@@ -767,6 +767,17 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * A zero mmap always succeeds in Linux, independent of whether or not the&n;&t; * remaining arguments are valid.&n;&t; */
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* Careful about overflows.. */
 id|len
 op_assign
 id|PAGE_ALIGN
@@ -778,13 +789,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|len
-op_eq
-l_int|0
+op_logical_or
+id|len
+OG
+id|TASK_SIZE
 )paren
+(brace
+id|addr
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Don&squot;t permit mappings into unmapped space, the virtual page table of a region,&n;&t; * or across a region boundary.  Note: RGN_MAP_LIMIT is equal to 2^n-PAGE_SIZE&n;&t; * (for some integer n &lt;= 61) and len &gt; 0.&n;&t; */
 id|roff
 op_assign

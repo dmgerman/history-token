@@ -1114,25 +1114,16 @@ id|size
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* PMU out of entries */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|dma_map
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;pci_map_single: Unable to allocate anymore &quot;
-l_string|&quot;32 bit page map entries.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 id|dma_addr
 op_assign
 (paren
@@ -2165,6 +2156,17 @@ id|dma_addr_t
 id|dma_addr
 )paren
 (brace
+multiline_comment|/*&n;&t; * We can only run out of page mapping entries, so if there&squot;s&n;&t; * an error, tell the caller to try again later.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dma_addr
+)paren
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -1516,6 +1516,12 @@ id|i
 op_assign
 id|numnodes
 suffix:semicolon
+id|node_set_online
+c_func
+(paren
+id|numnodes
+)paren
+suffix:semicolon
 id|nid_to_pxm_map
 (braket
 id|numnodes

@@ -101,7 +101,7 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|error
 op_assign
-id|link_path_walk
+id|path_walk
 c_func
 (paren
 id|buf
@@ -314,7 +314,7 @@ id|error
 suffix:semicolon
 id|error
 op_assign
-id|link_path_walk
+id|path_walk
 c_func
 (paren
 id|name
@@ -1140,7 +1140,7 @@ l_int|0
 suffix:semicolon
 id|error
 op_assign
-id|link_path_walk
+id|path_walk
 c_func
 (paren
 id|name
