@@ -5655,7 +5655,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|sci_console_init
 r_static
-r_void
+r_int
 id|__init
 id|sci_console_init
 c_func
@@ -5678,6 +5678,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|sci_console_init
 id|console_initcall
