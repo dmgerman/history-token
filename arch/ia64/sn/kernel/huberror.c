@@ -26,9 +26,7 @@ r_void
 id|bte_crb_error_handler
 c_func
 (paren
-r_struct
-id|hubdev_info
-op_star
+id|cnodeid_t
 comma
 r_int
 comma
@@ -474,7 +472,11 @@ suffix:semicolon
 id|bte_crb_error_handler
 c_func
 (paren
-id|hubdev_info
+id|nasid_to_cnodeid
+c_func
+(paren
+id|nasid
+)paren
 comma
 id|bte_num
 comma
