@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/nmi.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 DECL|macro|_COMPONENT
@@ -3791,7 +3792,7 @@ r_int
 r_int
 id|max_cstate
 op_assign
-id|ACPI_C_STATES_MAX
+id|ACPI_PROCESSOR_MAX_POWER
 suffix:semicolon
 DECL|variable|max_cstate
 id|EXPORT_SYMBOL

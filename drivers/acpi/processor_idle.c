@@ -74,7 +74,7 @@ c_cond
 (paren
 id|max_cstate
 OG
-id|ACPI_C_STATES_MAX
+id|ACPI_PROCESSOR_MAX_POWER
 )paren
 r_return
 l_int|0
@@ -85,9 +85,13 @@ c_func
 id|KERN_NOTICE
 id|PREFIX
 l_string|&quot;%s detected - C2,C3 disabled.&quot;
-l_string|&quot; Override with &bslash;&quot;processor.max_cstate=9&bslash;&quot;&bslash;n&quot;
+l_string|&quot; Override with &bslash;&quot;processor.max_cstate=%d&bslash;&quot;&bslash;n&quot;
 comma
 id|id-&gt;ident
+comma
+id|ACPI_PROCESSOR_MAX_POWER
+op_plus
+l_int|1
 )paren
 suffix:semicolon
 id|max_cstate
@@ -763,7 +767,11 @@ c_cond
 id|cx-&gt;promotion.state
 op_logical_and
 (paren
-id|cx-&gt;promotion.state-&gt;type
+(paren
+id|cx-&gt;promotion.state
+op_minus
+id|pr-&gt;power.states
+)paren
 op_le
 id|max_cstate
 )paren
@@ -877,7 +885,11 @@ multiline_comment|/*&n;&t; * Demote if current state exceeds max_cstate&n;&t; */
 r_if
 c_cond
 (paren
-id|pr-&gt;power.state-&gt;type
+(paren
+id|pr-&gt;power.state
+op_minus
+id|pr-&gt;power.states
+)paren
 OG
 id|max_cstate
 )paren
