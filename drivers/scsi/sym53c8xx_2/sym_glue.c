@@ -16,6 +16,18 @@ DECL|macro|NAME53C
 mdefine_line|#define NAME53C&t;&t;&quot;sym53c&quot;
 DECL|macro|NAME53C8XX
 mdefine_line|#define NAME53C8XX&t;&quot;sym53c8xx&quot;
+multiline_comment|/* SPARC just has to be different ... */
+macro_line|#ifdef __sparc__
+DECL|macro|IRQ_FMT
+mdefine_line|#define IRQ_FMT &quot;%s&quot;
+DECL|macro|IRQ_PRM
+mdefine_line|#define IRQ_PRM(x) __irq_itoa(x)
+macro_line|#else
+DECL|macro|IRQ_FMT
+mdefine_line|#define IRQ_FMT &quot;%d&quot;
+DECL|macro|IRQ_PRM
+mdefine_line|#define IRQ_PRM(x) (x)
+macro_line|#endif
 DECL|variable|sym_driver_setup
 r_struct
 id|sym_driver_setup
@@ -596,6 +608,7 @@ macro_line|#undef PCI_BAR_OFFSET
 )brace
 multiline_comment|/* This lock protects only the memory allocation/free.  */
 DECL|variable|sym53c8xx_lock
+r_static
 id|spinlock_t
 id|sym53c8xx_lock
 op_assign
@@ -1215,6 +1228,7 @@ id|ccb
 suffix:semicolon
 )brace
 DECL|function|sym_xpt_done2
+r_static
 r_void
 id|sym_xpt_done2
 c_func
@@ -1595,11 +1609,13 @@ op_assign
 id|DRIVER_SENSE
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *  Bounce back the sense data to user.&n;&t;&t;&t; */
-id|bzero
+id|memset
 c_func
 (paren
 op_amp
 id|csio-&gt;sense_buffer
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -2176,7 +2192,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Retreive the target descriptor.&n;&t; */
+multiline_comment|/*&n;&t; *  Retrieve the target descriptor.&n;&t; */
 id|tp
 op_assign
 op_amp
@@ -5030,10 +5046,12 @@ suffix:semicolon
 id|u_long
 id|target
 suffix:semicolon
-id|bzero
+id|memset
 c_func
 (paren
 id|uc
+comma
+l_int|0
 comma
 r_sizeof
 (paren
@@ -6081,36 +6099,23 @@ c_func
 op_amp
 id|info
 comma
-l_string|&quot;At PCI address %s, &quot;
-macro_line|#ifdef __sparc__
-l_string|&quot;IRQ %s&bslash;n&quot;
+l_string|&quot;At PCI address %s, IRQ &quot;
+id|IRQ_FMT
+l_string|&quot;&bslash;n&quot;
 comma
-macro_line|#else
-l_string|&quot;IRQ %d&bslash;n&quot;
-comma
-macro_line|#endif
 id|pci_name
 c_func
 (paren
 id|np-&gt;s.device
 )paren
 comma
-macro_line|#ifdef __sparc__
-id|__irq_itoa
+id|IRQ_PRM
 c_func
 (paren
 id|np-&gt;s.irq
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-(paren
-r_int
-)paren
-id|np-&gt;s.irq
-)paren
-suffix:semicolon
-macro_line|#endif
 id|copy_info
 c_func
 (paren
@@ -6396,35 +6401,41 @@ op_star
 id|np
 )paren
 (brace
-macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 0
-r_if
-c_cond
-(paren
-id|pci_set_dma_mask
-c_func
-(paren
-id|np-&gt;s.device
-comma
-l_int|0xffffffffUL
-)paren
-)paren
-r_goto
-id|out_err32
-suffix:semicolon
-macro_line|#else
+macro_line|#if SYM_CONF_DMA_ADDRESSING_MODE &gt; 0
 macro_line|#if   SYM_CONF_DMA_ADDRESSING_MODE == 1
-mdefine_line|#define&t;PciDmaMask&t;0xffffffffffULL
+DECL|macro|DMA_DAC_MASK
+mdefine_line|#define&t;DMA_DAC_MASK&t;0x000000ffffffffffULL /* 40-bit */
 macro_line|#elif SYM_CONF_DMA_ADDRESSING_MODE == 2
-mdefine_line|#define&t;PciDmaMask&t;0xffffffffffffffffULL
+mdefine_line|#define&t;DMA_DAC_MASK&t;DMA_64BIT_MASK
 macro_line|#endif
 r_if
 c_cond
+(paren
 (paren
 id|np-&gt;features
 op_amp
 id|FE_DAC
 )paren
+op_logical_and
+op_logical_neg
+id|pci_set_dma_mask
+c_func
+(paren
+id|np-&gt;s.device
+comma
+id|DMA_DAC_MASK
+)paren
+)paren
 (brace
+id|np-&gt;use_dac
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6434,56 +6445,16 @@ c_func
 (paren
 id|np-&gt;s.device
 comma
-id|PciDmaMask
+id|DMA_32BIT_MASK
 )paren
 )paren
-(brace
-id|np-&gt;use_dac
-op_assign
-l_int|1
-suffix:semicolon
-id|printf_info
-c_func
-(paren
-l_string|&quot;%s: using 64 bit DMA addressing&bslash;n&quot;
-comma
-id|sym_name
-c_func
-(paren
-id|np
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|pci_set_dma_mask
-c_func
-(paren
-id|np-&gt;s.device
-comma
-l_int|0xffffffffUL
-)paren
-)paren
-r_goto
-id|out_err32
-suffix:semicolon
-)brace
-)brace
-macro_line|#undef&t;PciDmaMask
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
-id|out_err32
-suffix:colon
 id|printf_warning
 c_func
 (paren
-l_string|&quot;%s: 32 BIT DMA ADDRESSING NOT SUPPORTED&bslash;n&quot;
+l_string|&quot;%s: No suitable DMA available&bslash;n&quot;
 comma
 id|sym_name
 c_func
@@ -6553,14 +6524,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;sym%d: &lt;%s&gt; rev 0x%x at pci %s &quot;
-macro_line|#ifdef __sparc__
-l_string|&quot;irq %s&bslash;n&quot;
+l_string|&quot;sym%d: &lt;%s&gt; rev 0x%x at pci %s irq &quot;
+id|IRQ_FMT
+l_string|&quot;&bslash;n&quot;
 comma
-macro_line|#else
-l_string|&quot;irq %d&bslash;n&quot;
-comma
-macro_line|#endif
 id|unit
 comma
 id|dev-&gt;chip.name
@@ -6573,19 +6540,13 @@ c_func
 id|dev-&gt;pdev
 )paren
 comma
-macro_line|#ifdef __sparc__
-id|__irq_itoa
+id|IRQ_PRM
 c_func
 (paren
 id|dev-&gt;s.irq
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;s.irq
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Get the firmware for this chip.&n;&t; */
 id|fw
 op_assign
@@ -6762,7 +6723,6 @@ comma
 id|np-&gt;s.unit
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Ask/tell the system about DMA addressing.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7908,6 +7868,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The NCR PQS and PDS cards are constructed as a DEC bridge&n; * behind which sits a proprietary NCR memory controller and&n; * either four or two 53c875s as separate devices.  We can tell&n; * if an 875 is part of a PQS/PDS or not since if it is, it will&n; * be on the same bus as the memory controller.  In its usual&n; * mode of operation, the 875s are slaved to the memory&n; * controller for all transfers.  To operate with the Linux&n; * driver, the memory controller is disabled and the 875s&n; * freed to function independently.  The only wrinkle is that&n; * the preset SCSI ID (which may be zero) must be read in from&n; * a special configuration space register of the 875.&n; */
 DECL|function|sym_config_pqs
+r_static
 r_void
 id|sym_config_pqs
 c_func
