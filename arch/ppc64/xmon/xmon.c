@@ -1151,7 +1151,7 @@ id|SSTEP
 suffix:semicolon
 id|excp-&gt;msr
 op_or_assign
-l_int|0x400
+id|MSR_SE
 suffix:semicolon
 )brace
 r_else
@@ -1177,7 +1177,7 @@ id|BRSTEP
 suffix:semicolon
 id|excp-&gt;msr
 op_or_assign
-l_int|0x400
+id|MSR_SE
 suffix:semicolon
 )brace
 r_else
@@ -1522,7 +1522,7 @@ id|BRSTEP
 suffix:semicolon
 id|regs-&gt;msr
 op_or_assign
-l_int|0x400
+id|MSR_SE
 suffix:semicolon
 )brace
 r_else
@@ -1670,7 +1670,7 @@ id|BRSTEP
 suffix:semicolon
 id|regs-&gt;msr
 op_or_assign
-l_int|0x400
+id|MSR_SE
 suffix:semicolon
 )brace
 r_else
@@ -1735,7 +1735,7 @@ id|BRSTEP
 suffix:semicolon
 id|regs-&gt;msr
 op_or_assign
-l_int|0x400
+id|MSR_SE
 suffix:semicolon
 )brace
 r_else
