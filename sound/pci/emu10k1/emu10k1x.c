@@ -3810,17 +3810,19 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_emu10k1x_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cannot allocate the port&bslash;n&quot;
+l_string|&quot;emu10k1x: cannot allocate the port 0x%lx&bslash;n&quot;
+comma
+id|chip-&gt;port
+)paren
+suffix:semicolon
+id|snd_emu10k1x_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
@@ -3852,17 +3854,19 @@ id|chip
 )paren
 )paren
 (brace
-id|snd_emu10k1x_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cannot grab irq&bslash;n&quot;
+l_string|&quot;emu10k1x: cannot grab irq %d&bslash;n&quot;
+comma
+id|pci-&gt;irq
+)paren
+suffix:semicolon
+id|snd_emu10k1x_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
