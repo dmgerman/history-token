@@ -26,8 +26,12 @@ suffix:semicolon
 DECL|macro|MAX_NUMNODES
 mdefine_line|#define MAX_NUMNODES 4
 multiline_comment|/* XXX grab this from the device tree - Anton */
+DECL|macro|MEMORY_ZONE_BITS
+mdefine_line|#define MEMORY_ZONE_BITS&t;33
+DECL|macro|CPU_SHIFT_BITS
+mdefine_line|#define CPU_SHIFT_BITS          1
 DECL|macro|PHYSADDR_TO_NID
-mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;((pa) &gt;&gt; 36)
+mdefine_line|#define PHYSADDR_TO_NID(pa)&t;&t;((pa) &gt;&gt; MEMORY_ZONE_BITS)
 DECL|macro|PLAT_NODE_DATA
 mdefine_line|#define PLAT_NODE_DATA(n)&t;&t;(&amp;plat_node_data[(n)])
 DECL|macro|PLAT_NODE_DATA_STARTNR
@@ -64,7 +68,7 @@ mdefine_line|#define discontigmem_pfn_to_page(pfn) &bslash;&n;({ &bslash;&n;&t;u
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* XXX grab this from the device tree - Anton */
 DECL|macro|cputonode
-mdefine_line|#define cputonode(cpu)&t;((cpu) &gt;&gt; 3)
+mdefine_line|#define cputonode(cpu)&t;((cpu) &gt;&gt; CPU_SHIFT_BITS)
 DECL|macro|numa_node_id
 mdefine_line|#define numa_node_id()&t;cputonode(smp_processor_id())
 macro_line|#endif /* CONFIG_NUMA */

@@ -382,6 +382,8 @@ DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork&t;&t;189
 DECL|macro|__NR_ugetrlimit
 mdefine_line|#define __NR_ugetrlimit&t;&t;190&t;/* SuS compliant getrlimit */
+DECL|macro|__NR_readahead
+mdefine_line|#define __NR_readahead&t;&t;191
 DECL|macro|__NR_mmap2
 mdefine_line|#define __NR_mmap2&t;&t;192
 DECL|macro|__NR_truncate64
@@ -442,17 +444,14 @@ DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;220
 DECL|macro|__NR_futex
 mdefine_line|#define __NR_futex&t;&t;221
-DECL|macro|__NR_tux
-mdefine_line|#define __NR_tux&t;&t;222
 DECL|macro|__NR_sched_setaffinity
-mdefine_line|#define __NR_sched_setaffinity&t;223     
+mdefine_line|#define __NR_sched_setaffinity&t;222     
 DECL|macro|__NR_sched_getaffinity
-mdefine_line|#define __NR_sched_getaffinity&t;224
-macro_line|#if 0
-multiline_comment|/* Remind paulus to add these into ppc32 */
-id|__NR_security
-id|__NR_readahead
-macro_line|#endif
+mdefine_line|#define __NR_sched_getaffinity&t;223
+DECL|macro|__NR_security
+mdefine_line|#define __NR_security&t;&t;224
+DECL|macro|__NR_tuxcall
+mdefine_line|#define __NR_tuxcall&t;&t;225
 DECL|macro|__NR
 mdefine_line|#define __NR(n)&t;#n
 DECL|macro|__syscall_return
