@@ -1137,7 +1137,7 @@ id|RS_MULTICAST
 id|lp-&gt;stats.multicast
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Actual payload is packet_len - 4 (or 3 if odd byte).&n;&t;&t; * We want skb_reserve(2) and the final ctrl word&n;&t;&t; * (2 bytes, possibly containing the payload odd byte).&n;&t;&t; * Ence packet_len - 4 + 2 + 2.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Actual payload is packet_len - 6 (or 5 if odd byte).&n;&t;&t; * We want skb_reserve(2) and the final ctrl word&n;&t;&t; * (2 bytes, possibly containing the payload odd byte).&n;&t;&t; * Furthermore, we add 2 bytes to allow rounding up to&n;&t;&t; * multiple of 4 bytes on 32 bit buses.&n;&t;&t; * Ence packet_len - 6 + 2 + 2 + 2.&n;&t;&t; */
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -1195,7 +1195,7 @@ id|status
 op_or_assign
 id|RS_ODDFRAME
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If odd length: packet_len - 3,&n;&t;&t; * otherwise packet_len - 4.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If odd length: packet_len - 5,&n;&t;&t; * otherwise packet_len - 6.&n;&t;&t; * With the trailing ctrl byte it&squot;s packet_len - 4.&n;&t;&t; */
 id|data_len
 op_assign
 id|packet_len
@@ -1208,9 +1208,9 @@ id|RS_ODDFRAME
 )paren
 ques
 c_cond
-l_int|3
+l_int|5
 suffix:colon
-l_int|4
+l_int|6
 )paren
 suffix:semicolon
 id|data
@@ -1230,7 +1230,7 @@ id|data
 comma
 id|packet_len
 op_minus
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 id|PRINT_PKT
@@ -1240,7 +1240,7 @@ id|data
 comma
 id|packet_len
 op_minus
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 id|dev-&gt;last_rx
