@@ -8330,6 +8330,7 @@ suffix:colon
 r_case
 id|F_SETLKW
 suffix:colon
+macro_line|#if BITS_PER_LONG == 32
 r_case
 id|F_GETLK64
 suffix:colon
@@ -8339,6 +8340,7 @@ suffix:colon
 r_case
 id|F_SETLKW64
 suffix:colon
+macro_line|#endif
 r_if
 c_cond
 (paren
