@@ -2679,14 +2679,14 @@ comma
 r_sizeof
 (paren
 r_struct
-id|ipv6_mib
+id|ipstats_mib
 )paren
 comma
 id|__alignof__
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|ipstats_mib
 )paren
 )paren
 OL
@@ -2718,7 +2718,7 @@ id|__alignof__
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|icmpv6_mib
 )paren
 )paren
 OL
@@ -2750,7 +2750,7 @@ id|__alignof__
 c_func
 (paren
 r_struct
-id|ipv6_mib
+id|udp_mib
 )paren
 )paren
 OL
