@@ -4278,7 +4278,6 @@ id|irq
 op_add_assign
 id|pin
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t;&t;&t; * For MPS mode, so far only used by ES7000 platform&n;&t;&t;&t; */
 r_if
 c_cond
@@ -4295,7 +4294,6 @@ comma
 id|irq
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
