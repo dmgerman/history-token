@@ -179,12 +179,8 @@ id|irqdma_allocated
 suffix:semicolon
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt; /* for the compatibility eject ioctl */
@@ -17259,7 +17255,7 @@ id|name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 id|base_minor
 op_plus
@@ -18513,7 +18509,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 comma
@@ -18527,7 +18523,7 @@ c_func
 (paren
 l_string|&quot;Unable to get major %d for floppy&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 )paren
 suffix:semicolon
 id|err
@@ -18561,7 +18557,7 @@ id|i
 op_member_access_from_pointer
 id|major
 op_assign
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 suffix:semicolon
 id|disks
 (braket
@@ -18608,7 +18604,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_int|0
 )paren
@@ -19261,7 +19257,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_int|0
 )paren
@@ -19272,7 +19268,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren
@@ -20274,7 +20270,7 @@ c_func
 id|MKDEV
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_int|0
 )paren
@@ -20285,7 +20281,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|FLOPPY_MAJOR
 comma
 l_string|&quot;fd&quot;
 )paren

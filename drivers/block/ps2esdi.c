@@ -11,15 +11,10 @@ multiline_comment|/*                    (bash@vnet.ibm.com) 08/08/95 */
 multiline_comment|/* Modified further for ThinkPad-720C by Uri Blumenthal */
 multiline_comment|/*                    (uri@watson.ibm.com) Sep 11, 1995 */
 multiline_comment|/* TODO : &n;   + Timeouts&n;   + Get disk parameters&n;   + DMA above 16MB&n;   + reset after read/write error&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#ifdef  CONFIG_BLK_DEV_PS2
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR PS2ESDI_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;PS/2 ESDI&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -564,7 +559,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|PS2ESDI_MAJOR
 comma
 l_string|&quot;ed&quot;
 comma
@@ -580,7 +575,7 @@ l_string|&quot;%s: Unable to get major number %d&bslash;n&quot;
 comma
 id|DEVICE_NAME
 comma
-id|MAJOR_NR
+id|PS2ESDI_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -626,7 +621,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|PS2ESDI_MAJOR
 comma
 l_string|&quot;ed&quot;
 )paren
@@ -923,7 +918,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|PS2ESDI_MAJOR
 comma
 l_string|&quot;ed&quot;
 )paren
@@ -1796,7 +1791,7 @@ id|err_out4
 suffix:semicolon
 id|disk-&gt;major
 op_assign
-id|MAJOR_NR
+id|PS2ESDI_MAJOR
 suffix:semicolon
 id|disk-&gt;first_minor
 op_assign
@@ -5361,5 +5356,4 @@ id|ps2esdi_int
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

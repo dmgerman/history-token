@@ -235,6 +235,8 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;&t;/* for the eject ioctl */
+macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|pd_lock
 r_static
@@ -413,10 +415,6 @@ l_string|&quot;1-8i&quot;
 )paren
 suffix:semicolon
 macro_line|#include &quot;paride.h&quot;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR   major
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 DECL|macro|PD_BITS
 mdefine_line|#define PD_BITS    4
@@ -4215,7 +4213,7 @@ c_cond
 id|register_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 comma
@@ -4296,7 +4294,7 @@ c_func
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 )paren
@@ -4331,7 +4329,7 @@ suffix:semicolon
 id|unregister_blkdev
 c_func
 (paren
-id|MAJOR_NR
+id|major
 comma
 id|name
 )paren

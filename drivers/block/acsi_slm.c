@@ -31,8 +31,6 @@ mdefine_line|#define&t;SLM_CONTINUOUS_DMA
 multiline_comment|/* Use continuous reprogramming of the ST-DMA counter register. This is&n; * --strictly speaking-- not allowed, Atari recommends not to look at the&n; * counter register while a DMA is going on. But I don&squot;t know if that applies&n; * only for reading the register, or also writing to it. Writing only works&n; * fine for me... The advantage is that the timing becomes absolutely&n; * uncritical: Just update each, say 200ms, the counter reg to its maximum,&n; * and the DMA will work until the status byte interrupt occurs.&n; */
 DECL|macro|SLM_CONT_CNT_REPROG
 mdefine_line|#define&t;SLM_CONT_CNT_REPROG
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR ACSI_MAJOR
 DECL|macro|CMDSET_TARG_LUN
 mdefine_line|#define CMDSET_TARG_LUN(cmd,targ,lun)&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cmd[0] = (cmd[0] &amp; ~0xe0) | (targ)&lt;&lt;5;&t;&bslash;&n;&t;&t;cmd[1] = (cmd[1] &amp; ~0xe0) | (lun)&lt;&lt;5;&t;&bslash;&n;&t;} while(0)
 DECL|macro|START_TIMER
@@ -4144,7 +4142,7 @@ c_cond
 id|register_chrdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;slm&quot;
 comma
@@ -4159,7 +4157,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;Unable to get major %d for ACSI SLM&bslash;n&quot;
 comma
-id|MAJOR_NR
+id|ACSI_MAJOR
 )paren
 suffix:semicolon
 r_return
@@ -4196,7 +4194,7 @@ suffix:semicolon
 id|unregister_chrdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;slm&quot;
 )paren
@@ -4263,7 +4261,7 @@ id|name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 id|i
 comma
@@ -4384,7 +4382,7 @@ c_cond
 id|unregister_chrdev
 c_func
 (paren
-id|MAJOR_NR
+id|ACSI_MAJOR
 comma
 l_string|&quot;slm&quot;
 )paren
