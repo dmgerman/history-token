@@ -1410,7 +1410,7 @@ comma
 id|gf2k_seq_reset
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|GF2K_TIMEOUT
@@ -1424,7 +1424,7 @@ comma
 id|gf2k_seq_digital
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|GF2K_TIMEOUT
