@@ -2083,7 +2083,7 @@ id|disp.var.bits_per_pixel
 OG
 l_int|1
 )paren
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 l_int|0

@@ -507,12 +507,12 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 id|con
 comma
-id|info2
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -1322,17 +1322,17 @@ id|FB_VISUAL_MONO01
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/**&n; *&t;fbgen_install_cmap - install the current colormap&n; *&t;@con: virtual console number&n; *&t;@info: generic frame buffer info structure&n; *&n; *&t;Installs the current colormap for virtual console @con on&n; *&t;device @info.&n; *&n; */
-DECL|function|fbgen_install_cmap
+multiline_comment|/**&n; *&t;do_install_cmap - install the current colormap&n; *&t;@con: virtual console number&n; *&t;@info: generic frame buffer info structure&n; *&n; *&t;Installs the current colormap for virtual console @con on&n; *&t;device @info.&n; *&n; */
+DECL|function|do_install_cmap
 r_void
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 r_int
 id|con
 comma
 r_struct
-id|fb_info_gen
+id|fb_info
 op_star
 id|info
 )paren
@@ -1342,7 +1342,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|info-&gt;info.currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -1369,8 +1369,7 @@ id|cmap
 comma
 l_int|1
 comma
-op_amp
-id|info-&gt;info
+id|info
 )paren
 suffix:semicolon
 r_else
@@ -1403,8 +1402,7 @@ id|size
 comma
 l_int|1
 comma
-op_amp
-id|info-&gt;info
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -1568,12 +1566,12 @@ op_assign
 id|con
 suffix:semicolon
 multiline_comment|/* Install new colormap */
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 id|con
 comma
-id|info2
+id|info
 )paren
 suffix:semicolon
 r_return
@@ -1701,12 +1699,12 @@ id|info
 suffix:semicolon
 )brace
 r_else
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 id|info-&gt;currcon
 comma
-id|info2
+id|info
 )paren
 suffix:semicolon
 r_return
@@ -1791,11 +1789,11 @@ c_func
 id|fbgen_set_disp
 )paren
 suffix:semicolon
-DECL|variable|fbgen_install_cmap
+DECL|variable|do_install_cmap
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|fbgen_install_cmap
+id|do_install_cmap
 )paren
 suffix:semicolon
 DECL|variable|fbgen_update_var

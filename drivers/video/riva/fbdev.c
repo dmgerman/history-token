@@ -4433,7 +4433,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * rivafb_setcolreg&n; * @regno: register index&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; * @transp: transparency&n; * @info: pointer to rivafb_info object containing info for current riva board&n; *&n; * DESCRIPTION:&n; * Set a single color register. The values supplied have a 16 bit&n; * magnitude.&n; *&n; * RETURNS:&n; * Return != 0 for invalid regno.&n; *&n; * CALLED FROM:&n; * rivafb_set_cmap()&n; * fbcmap.c:fb_set_cmap()&n; *&t;fbgen.c:fbgen_get_cmap()&n; *&t;fbgen.c:fbgen_install_cmap()&n; *&t;&t;fbgen.c:fbgen_set_var()&n; *&t;&t;fbgen.c:fbgen_switch()&n; *&t;&t;fbgen.c:fbgen_blank()&n; *&t;fbgen.c:fbgen_blank()&n; */
+multiline_comment|/**&n; * rivafb_setcolreg&n; * @regno: register index&n; * @red: red component&n; * @green: green component&n; * @blue: blue component&n; * @transp: transparency&n; * @info: pointer to rivafb_info object containing info for current riva board&n; *&n; * DESCRIPTION:&n; * Set a single color register. The values supplied have a 16 bit&n; * magnitude.&n; *&n; * RETURNS:&n; * Return != 0 for invalid regno.&n; *&n; * CALLED FROM:&n; * rivafb_set_cmap()&n; * fbcmap.c:fb_set_cmap()&n; *&t;fbgen.c:fbgen_get_cmap()&n; *&t;fbgen.c:do_install_cmap()&n; *&t;&t;fbgen.c:fbgen_set_var()&n; *&t;&t;fbgen.c:fbgen_switch()&n; *&t;&t;fbgen.c:fbgen_blank()&n; *&t;fbgen.c:fbgen_blank()&n; */
 DECL|function|rivafb_setcolreg
 r_static
 r_int

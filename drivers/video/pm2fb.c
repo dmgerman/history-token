@@ -13238,13 +13238,13 @@ op_amp
 id|fb_info.gen
 )paren
 suffix:semicolon
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 l_int|0
 comma
 op_amp
-id|fb_info.gen
+id|fb_info.gen.info
 )paren
 suffix:semicolon
 r_if

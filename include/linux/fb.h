@@ -1881,14 +1881,14 @@ id|info
 suffix:semicolon
 r_extern
 r_void
-id|fbgen_install_cmap
+id|do_install_cmap
 c_func
 (paren
 r_int
 id|con
 comma
 r_struct
-id|fb_info_gen
+id|fb_info
 op_star
 id|info
 )paren

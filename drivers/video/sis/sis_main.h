@@ -3758,19 +3758,6 @@ op_star
 id|var
 )paren
 suffix:semicolon
-r_static
-r_void
-id|sisfb_do_install_cmap
-(paren
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/* Chip-dependent Routines */
 macro_line|#ifdef CONFIG_FB_SIS_300
 r_static

@@ -12081,12 +12081,12 @@ op_amp
 id|fb_info-&gt;gen
 )paren
 suffix:semicolon
-id|fbgen_install_cmap
+id|do_install_cmap
 (paren
 l_int|0
 comma
 op_amp
-id|fb_info-&gt;gen
+id|fb_info-&gt;gen.info
 )paren
 suffix:semicolon
 id|err
