@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   fs/cifs/cifsfs.c&n; *&n; *   Copyright (c) Internati
 multiline_comment|/* Note that BB means BUGBUG (ie something to fix eventually) */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
