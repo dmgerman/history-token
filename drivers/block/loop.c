@@ -3371,6 +3371,10 @@ id|lo-&gt;lo_flags
 op_assign
 l_int|0
 suffix:semicolon
+id|lo-&gt;lo_queue.queuedata
+op_assign
+l_int|NULL
+suffix:semicolon
 id|memset
 c_func
 (paren
