@@ -210,18 +210,28 @@ id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * XICS only has a single IPI, so encode the messages per CPU&n; */
-DECL|variable|xics_ipi_message
+DECL|struct|xics_ipi_struct
+r_struct
+id|xics_ipi_struct
+(brace
+DECL|member|value
 r_volatile
 r_int
 r_int
+id|value
+suffix:semicolon
+DECL|variable|____cacheline_aligned
+)brace
+id|____cacheline_aligned
+suffix:semicolon
+DECL|variable|__cacheline_aligned
+r_struct
+id|xics_ipi_struct
 id|xics_ipi_message
 (braket
 id|NR_CPUS
 )braket
-op_assign
-(brace
-l_int|0
-)brace
+id|__cacheline_aligned
 suffix:semicolon
 DECL|macro|smp_message_pass
 mdefine_line|#define smp_message_pass(t,m,d,w) ppc_md.smp_message_pass((t),(m),(d),(w))
@@ -1283,6 +1293,8 @@ id|xics_ipi_message
 (braket
 id|i
 )braket
+dot
+id|value
 )paren
 suffix:semicolon
 id|mb
@@ -1510,8 +1522,6 @@ r_int
 id|cpu
 )paren
 (brace
-multiline_comment|/*&n;&t; * This is only used if `cpu&squot; is running an idle task,&n;&t; * so it will reschedule itself anyway...&n;&t; *&n;&t; * This isn&squot;t the case anymore since the other CPU could be&n;&t; * sleeping and won&squot;t reschedule until the next interrupt (such&n;&t; * as the timer).&n;&t; *  -- Cort&n;&t; */
-multiline_comment|/* This is only used if `cpu&squot; is running an idle task,&n;&t;   so it will reschedule itself anyway... */
 id|smp_message_pass
 c_func
 (paren
