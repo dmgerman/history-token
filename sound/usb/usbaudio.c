@@ -14408,6 +14408,9 @@ suffix:colon
 r_case
 id|QUIRK_MIDI_MOTU
 suffix:colon
+r_case
+id|QUIRK_MIDI_EMAGIC
+suffix:colon
 r_return
 id|snd_usb_create_midi_interface
 c_func

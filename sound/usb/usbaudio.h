@@ -232,6 +232,8 @@ DECL|macro|QUIRK_MIDI_NOVATION
 mdefine_line|#define QUIRK_MIDI_NOVATION&t;&t;10
 DECL|macro|QUIRK_MIDI_MOTU
 mdefine_line|#define QUIRK_MIDI_MOTU&t;&t;&t;11
+DECL|macro|QUIRK_MIDI_EMAGIC
+mdefine_line|#define QUIRK_MIDI_EMAGIC&t;&t;12
 DECL|typedef|snd_usb_audio_quirk_t
 r_typedef
 r_struct
@@ -319,6 +321,7 @@ multiline_comment|/* for QUIRK_AUDIO/MIDI_STANDARD_INTERFACE, data is NULL */
 multiline_comment|/* for QUIRK_AUDIO_EDIROL_UA700_UA25/UA1000, data is NULL */
 multiline_comment|/* for QUIRK_IGNORE_INTERFACE, data is NULL */
 multiline_comment|/* for QUIRK_MIDI_NOVATION and _MOTU, data is NULL */
+multiline_comment|/* for QUIRK_MIDI_EMAGIC, data points to a snd_usb_midi_endpoint_info&n; * structure (out_cables and in_cables only) */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))
