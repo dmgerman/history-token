@@ -519,7 +519,7 @@ suffix:semicolon
 )brace
 DECL|function|hfs_direct_IO
 r_static
-r_int
+id|ssize_t
 id|hfs_direct_IO
 c_func
 (paren

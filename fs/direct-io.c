@@ -239,7 +239,7 @@ id|is_async
 suffix:semicolon
 multiline_comment|/* is IO async ? */
 DECL|member|result
-r_int
+id|ssize_t
 id|result
 suffix:semicolon
 multiline_comment|/* IO result */
@@ -2817,7 +2817,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Releases both i_sem and i_alloc_sem&n; */
 r_static
-r_int
+id|ssize_t
 DECL|function|direct_io_worker
 id|direct_io_worker
 c_func
@@ -2870,12 +2870,12 @@ suffix:semicolon
 r_int
 id|seg
 suffix:semicolon
-r_int
+id|ssize_t
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+id|ssize_t
 id|ret2
 suffix:semicolon
 r_int
@@ -3575,7 +3575,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is a library function for use by filesystem drivers.&n; *&n; * For writes to S_ISREG files, we are called under i_sem and return with i_sem&n; * held, even though it is internally dropped.&n; *&n; * For writes to S_ISBLK files, i_sem is not held on entry; it is never taken.&n; */
-r_int
+id|ssize_t
 DECL|function|__blockdev_direct_IO
 id|__blockdev_direct_IO
 c_func

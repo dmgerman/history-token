@@ -535,7 +535,7 @@ suffix:semicolon
 )brace
 DECL|function|hfsplus_direct_IO
 r_static
-r_int
+id|ssize_t
 id|hfsplus_direct_IO
 c_func
 (paren

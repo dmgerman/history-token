@@ -4519,7 +4519,7 @@ id|BMAPI_DIRECT
 suffix:semicolon
 )brace
 id|STATIC
-r_int
+id|ssize_t
 DECL|function|linvfs_direct_IO
 id|linvfs_direct_IO
 c_func
