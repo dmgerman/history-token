@@ -6297,6 +6297,7 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|b44_interrupt
+c_func
 (paren
 id|dev-&gt;irq
 comma
