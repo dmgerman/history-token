@@ -2808,6 +2808,8 @@ id|__ALIGNED__
 suffix:semicolon
 r_int
 id|i
+op_assign
+l_int|0
 comma
 id|n
 op_assign
