@@ -359,13 +359,10 @@ id|tq_struct
 id|tq_fake_dma
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|0
-comma
+id|routine
+suffix:colon
 id|dma_commit
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|macro|DMA_MAXTRANSFER

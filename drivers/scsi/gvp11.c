@@ -110,6 +110,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
+op_amp
 id|instance-&gt;host_lock
 comma
 id|flags
@@ -123,6 +124,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
 id|instance-&gt;host_lock
 comma
 id|flags
@@ -255,7 +257,7 @@ id|cmd-&gt;host
 op_member_access_from_pointer
 id|dma_bounce_buffer
 op_assign
-id|scsi_malloc
+id|kmalloc
 (paren
 id|HDATA
 c_func
@@ -264,6 +266,8 @@ id|cmd-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|HDATA
@@ -396,7 +400,7 @@ op_eq
 id|BUF_SCSI_ALLOCED
 )paren
 (brace
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -405,14 +409,6 @@ id|cmd-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|cmd-&gt;host
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|scsi_alloc_out_of_range
@@ -747,7 +743,7 @@ id|dma_buffer_pool
 op_eq
 id|BUF_SCSI_ALLOCED
 )paren
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -756,14 +752,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 r_else
