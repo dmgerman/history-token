@@ -39,10 +39,11 @@ id|subsystem
 op_star
 id|subsys
 suffix:semicolon
-DECL|member|dir
+DECL|member|dentry
 r_struct
-id|sysfs_dir
-id|dir
+id|dentry
+op_star
+id|dentry
 suffix:semicolon
 )brace
 suffix:semicolon
