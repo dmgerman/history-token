@@ -1842,6 +1842,12 @@ op_star
 id|screen_base
 suffix:semicolon
 multiline_comment|/* Virtual address */
+DECL|member|screen_size
+r_int
+r_int
+id|screen_size
+suffix:semicolon
+multiline_comment|/* Amount of ioremapped VRAM or 0 */
 DECL|member|currcon
 r_int
 id|currcon
