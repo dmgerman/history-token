@@ -114,10 +114,6 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-id|file-&gt;f_reada
-op_assign
-l_int|0
-suffix:semicolon
 id|file-&gt;f_version
 op_assign
 op_increment
@@ -217,10 +213,6 @@ id|file-&gt;f_pos
 id|file-&gt;f_pos
 op_assign
 id|offset
-suffix:semicolon
-id|file-&gt;f_reada
-op_assign
-l_int|0
 suffix:semicolon
 id|file-&gt;f_version
 op_assign
@@ -337,10 +329,6 @@ id|file-&gt;f_pos
 id|file-&gt;f_pos
 op_assign
 id|offset
-suffix:semicolon
-id|file-&gt;f_reada
-op_assign
-l_int|0
 suffix:semicolon
 id|file-&gt;f_version
 op_assign

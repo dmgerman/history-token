@@ -2774,10 +2774,6 @@ id|f-&gt;f_pos
 op_assign
 l_int|0
 suffix:semicolon
-id|f-&gt;f_reada
-op_assign
-l_int|0
-suffix:semicolon
 id|f-&gt;f_op
 op_assign
 id|fops_get
