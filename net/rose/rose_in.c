@@ -97,7 +97,7 @@ id|rose-&gt;state
 op_assign
 id|ROSE_STATE_3
 suffix:semicolon
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
 suffix:semicolon
@@ -115,7 +115,7 @@ id|SOCK_DEAD
 )paren
 id|sk
 op_member_access_from_pointer
-id|state_change
+id|sk_state_change
 c_func
 (paren
 id|sk
@@ -685,11 +685,11 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|sk-&gt;rmem_alloc
+id|sk-&gt;sk_rmem_alloc
 )paren
 OG
 (paren
-id|sk-&gt;rcvbuf
+id|sk-&gt;sk_rcvbuf
 op_div
 l_int|2
 )paren

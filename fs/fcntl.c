@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1323,6 +1324,11 @@ multiline_comment|/*&n;&t;&t;&t; * XXX If f_owner is a process group, the&n;&t;&
 id|err
 op_assign
 id|filp-&gt;f_owner.pid
+suffix:semicolon
+id|force_successful_syscall_return
+c_func
+(paren
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -2005,7 +2005,7 @@ suffix:semicolon
 id|add_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2040,7 +2040,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 )paren
@@ -2063,7 +2063,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_ne
 id|BT_CONNECTED
 )paren
@@ -2080,7 +2080,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 )paren
@@ -2118,7 +2118,7 @@ suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -2668,7 +2668,7 @@ id|s
 )paren
 (brace
 multiline_comment|/* Wakeup user-space which is polling for socket errors.&n;&t;&t; * This is temporary hack untill we have shutdown in L2CAP */
-id|s-&gt;sock-&gt;sk-&gt;err
+id|s-&gt;sock-&gt;sk-&gt;sk_err
 op_assign
 id|EUNATCH
 suffix:semicolon
@@ -2683,7 +2683,7 @@ suffix:semicolon
 id|wake_up_interruptible
 c_func
 (paren
-id|s-&gt;sock-&gt;sk-&gt;sleep
+id|s-&gt;sock-&gt;sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 )brace

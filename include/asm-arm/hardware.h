@@ -3,5 +3,32 @@ macro_line|#ifndef __ASM_HARDWARE_H
 DECL|macro|__ASM_HARDWARE_H
 mdefine_line|#define __ASM_HARDWARE_H
 macro_line|#include &lt;asm/arch/hardware.h&gt;
+macro_line|#ifndef __ASSEMBLY__
+r_struct
+id|platform_device
+suffix:semicolon
+r_extern
+r_int
+id|platform_add_devices
+c_func
+(paren
+r_struct
+id|platform_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|platform_add_device
+c_func
+(paren
+r_struct
+id|platform_device
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 eof

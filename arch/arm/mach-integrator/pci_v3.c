@@ -1018,7 +1018,7 @@ suffix:semicolon
 )brace
 DECL|function|v3_irq
 r_static
-r_void
+id|irqreturn_t
 id|v3_irq
 c_func
 (paren
@@ -1177,6 +1177,9 @@ id|buf
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|pci_v3_setup
 r_int

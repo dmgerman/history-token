@@ -1485,6 +1485,19 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|inb
+c_func
+(paren
+id|ICEREG
+c_func
+(paren
+id|ice
+comma
+id|DATA
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 DECL|function|snd_ice1712_set_gpio_mask
 r_static
@@ -1511,6 +1524,19 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|inb
+c_func
+(paren
+id|ICEREG
+c_func
+(paren
+id|ice
+comma
+id|DATA
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 DECL|function|snd_ice1712_get_gpio_data
 r_static
@@ -1559,6 +1585,19 @@ comma
 id|val
 )paren
 suffix:semicolon
+id|inb
+c_func
+(paren
+id|ICEREG
+c_func
+(paren
+id|ice
+comma
+id|DATA
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 multiline_comment|/*&n; *&n; * CS8427 interface&n; *&n; */
 multiline_comment|/*&n; * change the input clock selection&n; * spdif_clock = 1 - IEC958 input, 0 - Envy24&n; */

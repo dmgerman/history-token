@@ -1251,7 +1251,7 @@ l_int|0
 id|sock_release
 c_func
 (paren
-id|nflognl-&gt;socket
+id|nflognl-&gt;sk_socket
 )paren
 suffix:semicolon
 r_return
@@ -1296,7 +1296,7 @@ suffix:semicolon
 id|sock_release
 c_func
 (paren
-id|nflognl-&gt;socket
+id|nflognl-&gt;sk_socket
 )paren
 suffix:semicolon
 multiline_comment|/* remove pending timers and free allocated skb&squot;s */

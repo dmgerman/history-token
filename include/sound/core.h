@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Main header file for the ALSA driver&n; *  Copyright 
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
 macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
 macro_line|#include &lt;linux/rwsem.h&gt;&t;&t;/* struct rw_semaphore */
+macro_line|#include &lt;linux/workqueue.h&gt;&t;&t;/* struct workqueue_struct */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
@@ -544,6 +545,12 @@ DECL|member|shutdown_sleep
 id|wait_queue_head_t
 id|shutdown_sleep
 suffix:semicolon
+DECL|member|free_workq
+r_struct
+id|work_struct
+id|free_workq
+suffix:semicolon
+multiline_comment|/* for free in workqueue */
 macro_line|#ifdef CONFIG_PM
 DECL|member|set_power_state
 r_int

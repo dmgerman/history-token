@@ -1172,7 +1172,7 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_PMAC
 DECL|member|of_node
 r_struct
 id|device_node

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 multiline_comment|/* Definition for rcupdate control block. */
 DECL|variable|rcu_ctrlblk
 r_struct

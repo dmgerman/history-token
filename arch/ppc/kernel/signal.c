@@ -176,6 +176,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -336,10 +337,12 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 id|uss
 comma
 id|stack_t
+id|__user
 op_star
 id|uoss
 comma
@@ -387,11 +390,13 @@ comma
 r_const
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -684,6 +689,7 @@ id|regs
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|rt_sf
 suffix:semicolon
@@ -693,6 +699,7 @@ id|sigctx
 suffix:semicolon
 r_struct
 id|sigregs
+id|__user
 op_star
 id|sr
 suffix:semicolon
@@ -711,6 +718,7 @@ op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -825,6 +833,7 @@ op_assign
 (paren
 r_struct
 id|sigregs
+id|__user
 op_star
 )paren
 id|sigctx.regs
@@ -900,26 +909,6 @@ id|sr-&gt;fp_regs
 r_goto
 id|badframe
 suffix:semicolon
-multiline_comment|/* This function sets back the stack flags into&n;&t;   the current task structure.  */
-id|sys_sigaltstack
-c_func
-(paren
-op_amp
-id|st
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|regs
-)paren
-suffix:semicolon
 id|sigreturn_exit
 c_func
 (paren
@@ -952,6 +941,7 @@ id|regs
 comma
 r_struct
 id|sigregs
+id|__user
 op_star
 id|frame
 comma
@@ -962,12 +952,14 @@ id|newsp
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|rt_sf
 op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 id|newsp
@@ -1121,6 +1113,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newsp
@@ -1158,6 +1151,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1175,6 +1169,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1267,13 +1262,17 @@ id|regs
 (brace
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
-comma
+suffix:semicolon
+r_struct
+id|sigcontext
 id|sigctx
 suffix:semicolon
 r_struct
 id|sigregs
+id|__user
 op_star
 id|sr
 suffix:semicolon
@@ -1289,6 +1288,7 @@ op_assign
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 )paren
 (paren
@@ -1391,6 +1391,7 @@ op_assign
 (paren
 r_struct
 id|sigregs
+id|__user
 op_star
 )paren
 id|sigctx.regs
@@ -1499,6 +1500,7 @@ id|regs
 comma
 r_struct
 id|sigregs
+id|__user
 op_star
 id|frame
 comma
@@ -1509,12 +1511,14 @@ id|newsp
 (brace
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 op_assign
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 )paren
 id|newsp
@@ -1665,6 +1669,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newsp
@@ -1781,11 +1786,13 @@ id|frame
 (brace
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 suffix:semicolon
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|rt_sf
 suffix:semicolon
@@ -1911,6 +1918,7 @@ op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 op_star
@@ -2095,6 +2103,7 @@ op_assign
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 )paren
 op_star
@@ -2562,6 +2571,7 @@ comma
 (paren
 r_struct
 id|sigregs
+id|__user
 op_star
 )paren
 id|frame
@@ -2578,6 +2588,7 @@ comma
 (paren
 r_struct
 id|sigregs
+id|__user
 op_star
 )paren
 id|frame

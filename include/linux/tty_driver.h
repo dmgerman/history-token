@@ -31,6 +31,12 @@ r_char
 op_star
 id|driver_name
 suffix:semicolon
+DECL|member|devfs_name
+r_const
+r_char
+op_star
+id|devfs_name
+suffix:semicolon
 DECL|member|name
 r_const
 r_char

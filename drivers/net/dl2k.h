@@ -868,11 +868,6 @@ id|VIDShift
 op_assign
 l_int|32
 comma
-DECL|enumerator|CFI
-id|CFI
-op_assign
-l_int|0x0000100000000000
-comma
 DECL|enumerator|UsePriorityShift
 id|UsePriorityShift
 op_assign

@@ -660,8 +660,28 @@ DECL|macro|__NR_restart_syscall
 mdefine_line|#define __NR_restart_syscall&t;&t;412
 DECL|macro|__NR_fadvise64
 mdefine_line|#define __NR_fadvise64&t;&t;&t;413
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;&t;414
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;&t;415
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;&t;416
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;&t;417
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;&t;418
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;&t;419
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;&t;420
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;&t;421
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;&t;422
+DECL|macro|__NR_semtimedop
+mdefine_line|#define __NR_semtimedop&t;&t;&t;423
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;414
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;424
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

@@ -610,7 +610,7 @@ id|s
 suffix:semicolon
 id|s
 op_assign
-id|s-&gt;next
+id|s-&gt;sk_next
 )paren
 op_decrement
 id|pos
@@ -732,7 +732,7 @@ id|v
 suffix:semicolon
 id|i
 op_assign
-id|i-&gt;next
+id|i-&gt;sk_next
 suffix:semicolon
 id|out
 suffix:colon
@@ -835,7 +835,7 @@ comma
 l_string|&quot;%02X   %04X:%02X:%02X  %04X:%02X:%02X  %08X:%08X &quot;
 l_string|&quot;%02X %d&bslash;n&quot;
 comma
-id|s-&gt;type
+id|s-&gt;sk_type
 comma
 id|ntohs
 c_func
@@ -861,22 +861,22 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|s-&gt;wmem_alloc
+id|s-&gt;sk_wmem_alloc
 )paren
 comma
 id|atomic_read
 c_func
 (paren
 op_amp
-id|s-&gt;rmem_alloc
+id|s-&gt;sk_rmem_alloc
 )paren
 comma
-id|s-&gt;state
+id|s-&gt;sk_state
 comma
 id|SOCK_INODE
 c_func
 (paren
-id|s-&gt;socket
+id|s-&gt;sk_socket
 )paren
 op_member_access_from_pointer
 id|i_uid

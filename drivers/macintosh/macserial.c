@@ -7934,6 +7934,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|retinfo
 )paren
@@ -8041,6 +8042,7 @@ id|info
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_info
 )paren
@@ -8894,6 +8896,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -8911,6 +8914,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -8946,6 +8950,7 @@ c_func
 (paren
 r_struct
 id|mac_serial
+id|__user
 op_star
 )paren
 id|arg
@@ -11354,6 +11359,7 @@ DECL|function|probe_sccs
 id|probe_sccs
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -12065,17 +12071,14 @@ id|serial_driver.driver_name
 op_assign
 l_string|&quot;macserial&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|serial_driver.name
+id|serial_driver.devfs_name
 op_assign
 l_string|&quot;tts/&quot;
 suffix:semicolon
-macro_line|#else
 id|serial_driver.name
 op_assign
 l_string|&quot;ttyS&quot;
 suffix:semicolon
-macro_line|#endif /* CONFIG_DEVFS_FS */
 id|serial_driver.major
 op_assign
 id|TTY_MAJOR

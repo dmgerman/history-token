@@ -354,9 +354,9 @@ id|TCP
 )paren
 op_logical_and
 (paren
-id|sk-&gt;ack_backlog
+id|sk-&gt;sk_ack_backlog
 op_ge
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 )paren
 )paren
 )paren

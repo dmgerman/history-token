@@ -119,7 +119,7 @@ id|uInt
 id|k
 suffix:semicolon
 multiline_comment|/* bits in bit buffer */
-id|Bytef
+id|Byte
 op_star
 id|p
 suffix:semicolon
@@ -128,7 +128,7 @@ id|uInt
 id|n
 suffix:semicolon
 multiline_comment|/* bytes available there */
-id|Bytef
+id|Byte
 op_star
 id|q
 suffix:semicolon
@@ -137,7 +137,7 @@ id|uInt
 id|m
 suffix:semicolon
 multiline_comment|/* bytes to end of window or read pointer */
-id|Bytef
+id|Byte
 op_star
 id|f
 suffix:semicolon
@@ -579,76 +579,27 @@ r_case
 id|COPY
 suffix:colon
 multiline_comment|/* o: copying bytes in window, waiting for space */
-macro_line|#ifndef __TURBOC__ /* Turbo C bug for following expression */
 id|f
 op_assign
-(paren
-id|uInt
-)paren
-(paren
 id|q
 op_minus
+id|c-&gt;sub.copy.dist
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|f
+OL
 id|s-&gt;window
 )paren
-OL
-id|c-&gt;sub.copy.dist
-ques
-c_cond
+multiline_comment|/* modulo window size-&quot;while&quot; instead */
+id|f
+op_add_assign
 id|s-&gt;end
 op_minus
-(paren
-id|c-&gt;sub.copy.dist
-op_minus
-(paren
-id|q
-op_minus
 id|s-&gt;window
-)paren
-)paren
-suffix:colon
-id|q
-op_minus
-id|c-&gt;sub.copy.dist
 suffix:semicolon
-macro_line|#else
-id|f
-op_assign
-id|q
-op_minus
-id|c-&gt;sub.copy.dist
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|uInt
-)paren
-(paren
-id|q
-op_minus
-id|s-&gt;window
-)paren
-OL
-id|c-&gt;sub.copy.dist
-)paren
-id|f
-op_assign
-id|s-&gt;end
-op_minus
-(paren
-id|c-&gt;sub.copy.dist
-op_minus
-(paren
-id|uInt
-)paren
-(paren
-id|q
-op_minus
-id|s-&gt;window
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* of &quot;if&quot; handles invalid distances */
 r_while
 c_loop
 (paren

@@ -917,7 +917,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* API 8.1 sctp_bindx()&n; *&n; * The syntax of sctp_bindx() is,&n; *&n; *   ret = sctp_bindx(int sd,&n; *                    struct sockaddr_storage *addrs,&n; * &t;&t;      int addrcnt,&n; * &t;&t;      int flags);&n; *&n; * If sd is an IPv4 socket, the addresses passed must be IPv4 addresses.&n; * If the sd is an IPv6 socket, the addresses passed can either be IPv4&n; * or IPv6 addresses.&n; *&n; * A single address may be specified as INADDR_ANY or IPV6_ADDR_ANY, see&n; * section 3.1.2 for this usage.&n; *&n; * addrs is a pointer to an array of one or more socket addresses.  Each&n; * address is contained in a struct sockaddr_storage, so each address is&n; * fixed length. The caller specifies the number of addresses in the&n; * array with addrcnt.&n; *&n; * On success, sctp_bindx() returns 0. On failure, sctp_bindx() returns -1,&n; * and sets errno to the appropriate error code. [ Editor&squot;s note: need&n; * to fill in all error code? ]&n; *&n; * For SCTP, the port given in each socket address must be the same, or&n; * sctp_bindx() will fail, setting errno to EINVAL .&n; *&n; * The flags parameter is formed from the bitwise OR of zero or&n; * more of the following currently defined flags:&n; *&n; *     SCTP_BINDX_ADD_ADDR&n; *     SCTP_BINDX_REM_ADDR&n; *&n; * SCTP_BIND_ADD_ADDR directs SCTP to add the given addresses to the&n; * association, and SCTP_BIND_REM_ADDR directs SCTP to remove the given&n; * addresses from the association. The two flags are mutually exclusive;&n; * if both are given, sctp_bindx() will fail with EINVAL.  A caller may not&n; * remove all addresses from an association; sctp_bindx() will reject such&n; * an attempt with EINVAL.&n; *&n; * An application can use sctp_bindx(SCTP_BINDX_ADD_ADDR) to associate&n; * additional addresses with an endpoint after calling bind().  Or use&n; * sctp_bindx(SCTP_BINDX_REM_ADDR) to remove some addresses a listening&n; * socket is associated with so that no new association accepted will be&n; * associated with those addresses.&n; *&n; * SCTP_BIND_ADD_ADDR is defined as 0, so that it becomes the default&n; * behavior for sctp_bindx() when no flags are given.&n; *&n; * Adding and removing addresses from a connected association is optional&n; * functionality. Implementations that do not support this functionality&n; * should return EOPNOTSUPP.&n; *&n; * NOTE: This could be integrated into sctp_setsockopt_bindx(),&n; * but keeping it this way makes it easier if sometime sys_bindx is&n; * added.&n; */
-multiline_comment|/* Unprotected by locks. Call only with socket lock sk-&gt;lock held! See&n; * sctp_bindx() for a lock-protected call.&n; */
+multiline_comment|/* Unprotected by locks. Call only with socket lock sk-&gt;sk_lock held! See&n; * sctp_bindx() for a lock-protected call.&n; */
 DECL|function|__sctp_bindx
 r_static
 r_int
@@ -1571,7 +1571,7 @@ id|err_bindx_rem
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* FIXME - There is probably a need to check if sk-&gt;saddr and&n;&t;&t; * sk-&gt;rcv_addr are currently set to one of the addresses to&n;&t;&t; * be removed. This is something which needs to be looked into&n;&t;&t; * when we are fixing the outstanding issues with multi-homing&n;&t;&t; * socket routing and failover schemes. Refer to comments in&n;&t;&t; * sctp_do_bind(). -daisy&n;&t;&t; */
+multiline_comment|/* FIXME - There is probably a need to check if sk-&gt;sk_saddr and&n;&t;&t; * sk-&gt;sk_rcv_addr are currently set to one of the addresses to&n;&t;&t; * be removed. This is something which needs to be looked into&n;&t;&t; * when we are fixing the outstanding issues with multi-homing&n;&t;&t; * socket routing and failover schemes. Refer to comments in&n;&t;&t; * sctp_do_bind(). -daisy&n;&t;&t; */
 id|sctp_local_bh_disable
 c_func
 (paren
@@ -1956,7 +1956,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_assign
 id|SHUTDOWN_MASK
 suffix:semicolon
@@ -2046,7 +2046,7 @@ id|SOCK_LINGER
 )paren
 op_logical_and
 op_logical_neg
-id|sk-&gt;lingertime
+id|sk-&gt;sk_lingertime
 )paren
 id|sctp_primitive_ABORT
 c_func
@@ -2081,7 +2081,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|skb_queue_purge
@@ -3262,7 +3262,7 @@ c_cond
 (paren
 id|msg_len
 OG
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 )paren
 (brace
 id|err
@@ -4096,7 +4096,7 @@ multiline_comment|/* FIXME: we should be calling IP/IPv6 layers.  */
 r_if
 c_cond
 (paren
-id|sk-&gt;protinfo.af_inet.cmsg_flags
+id|sk-&gt;sk_protinfo.af_inet.cmsg_flags
 )paren
 id|ip_cmsg_recv
 c_func
@@ -4147,7 +4147,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -6047,7 +6047,7 @@ c_func
 (paren
 id|sk
 comma
-id|sk-&gt;socket-&gt;file-&gt;f_flags
+id|sk-&gt;sk_socket-&gt;file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
 )paren
@@ -6218,7 +6218,7 @@ c_func
 (paren
 id|sk
 comma
-id|sk-&gt;socket-&gt;file-&gt;f_flags
+id|sk-&gt;sk_socket-&gt;file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
 )paren
@@ -6393,7 +6393,7 @@ multiline_comment|/* Initialize the SCTP per socket area.  */
 r_switch
 c_cond
 (paren
-id|sk-&gt;type
+id|sk-&gt;sk_type
 )paren
 (brace
 r_case
@@ -6525,7 +6525,7 @@ op_assign
 id|sctp_get_pf_specific
 c_func
 (paren
-id|sk-&gt;family
+id|sk-&gt;sk_family
 )paren
 suffix:semicolon
 multiline_comment|/* Control variables for partial data delivery. */
@@ -7332,7 +7332,7 @@ op_assign
 id|sock_create
 c_func
 (paren
-id|sk-&gt;family
+id|sk-&gt;sk_family
 comma
 id|SOCK_SEQPACKET
 comma
@@ -9950,9 +9950,9 @@ id|pp-&gt;sk
 (brace
 multiline_comment|/* We had a port hash table hit - there is an&n;&t;&t; * available port (pp != NULL) and it is being&n;&t;&t; * used by other socket (pp-&gt;sk != NULL); that other&n;&t;&t; * socket is going to be sk2.&n;&t;&t; */
 r_int
-id|sk_reuse
+id|reuse
 op_assign
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 suffix:semicolon
 r_struct
 id|sock
@@ -9972,12 +9972,8 @@ r_if
 c_cond
 (paren
 id|pp-&gt;fastreuse
-op_ne
-l_int|0
 op_logical_and
-id|sk-&gt;reuse
-op_ne
-l_int|0
+id|sk-&gt;sk_reuse
 )paren
 r_goto
 id|success
@@ -9988,12 +9984,10 @@ c_loop
 (paren
 suffix:semicolon
 id|sk2
-op_ne
-l_int|NULL
 suffix:semicolon
 id|sk2
 op_assign
-id|sk2-&gt;bind_next
+id|sk2-&gt;sk_bind_next
 )paren
 (brace
 r_struct
@@ -10014,9 +10008,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk_reuse
+id|reuse
 op_logical_and
-id|sk2-&gt;reuse
+id|sk2-&gt;sk_reuse
 )paren
 r_continue
 suffix:semicolon
@@ -10098,7 +10092,7 @@ id|snum
 r_goto
 id|fail_unlock
 suffix:semicolon
-multiline_comment|/* In either case (hit or miss), make sure fastreuse is 1 only&n;&t; * if sk-&gt;reuse is too (that is, if the caller requested&n;&t; * SO_REUSEADDR on this socket -sk-).&n;&t; */
+multiline_comment|/* In either case (hit or miss), make sure fastreuse is 1 only&n;&t; * if sk-&gt;sk_reuse is too (that is, if the caller requested&n;&t; * SO_REUSEADDR on this socket -sk-).&n;&t; */
 r_if
 c_cond
 (paren
@@ -10107,7 +10101,7 @@ id|pp-&gt;sk
 )paren
 id|pp-&gt;fastreuse
 op_assign
-id|sk-&gt;reuse
+id|sk-&gt;sk_reuse
 ques
 c_cond
 l_int|1
@@ -10120,9 +10114,8 @@ c_cond
 (paren
 id|pp-&gt;fastreuse
 op_logical_and
-id|sk-&gt;reuse
-op_eq
-l_int|0
+op_logical_neg
+id|sk-&gt;sk_reuse
 )paren
 id|pp-&gt;fastreuse
 op_assign
@@ -10144,37 +10137,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;prev
-op_eq
-l_int|NULL
+op_logical_neg
+id|sk-&gt;sk_prev
 )paren
 (brace
 r_if
 c_cond
 (paren
 (paren
-id|sk-&gt;bind_next
+id|sk-&gt;sk_bind_next
 op_assign
 id|pp-&gt;sk
 )paren
 op_ne
 l_int|NULL
 )paren
-id|pp-&gt;sk-&gt;bind_pprev
+id|pp-&gt;sk-&gt;sk_bind_pprev
 op_assign
 op_amp
-id|sk-&gt;bind_next
+id|sk-&gt;sk_bind_next
 suffix:semicolon
 id|pp-&gt;sk
 op_assign
 id|sk
 suffix:semicolon
-id|sk-&gt;bind_pprev
+id|sk-&gt;sk_bind_pprev
 op_assign
 op_amp
 id|pp-&gt;sk
 suffix:semicolon
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 op_assign
 (paren
 r_struct
@@ -10281,7 +10273,7 @@ c_func
 id|snum
 )paren
 suffix:semicolon
-multiline_comment|/* Note: sk-&gt;num gets filled in if ephemeral port request. */
+multiline_comment|/* Note: sk-&gt;sk_num gets filled in if ephemeral port request. */
 id|ret
 op_assign
 id|sctp_get_port_local
@@ -10391,7 +10383,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|SCTP_SS_LISTENING
 suffix:semicolon
@@ -10475,11 +10467,11 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-id|sk-&gt;state
+id|sk-&gt;sk_state
 op_assign
 id|SCTP_SS_LISTENING
 suffix:semicolon
-id|sk-&gt;max_ack_backlog
+id|sk-&gt;sk_max_ack_backlog
 op_assign
 id|backlog
 suffix:semicolon
@@ -10730,7 +10722,7 @@ c_func
 (paren
 id|file
 comma
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 id|wait
 )paren
@@ -10783,14 +10775,14 @@ multiline_comment|/* Is there any exceptional events?  */
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 op_logical_neg
 id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;error_queue
+id|sk-&gt;sk_error_queue
 )paren
 )paren
 id|mask
@@ -10800,7 +10792,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_eq
 id|SHUTDOWN_MASK
 )paren
@@ -10817,11 +10809,11 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -10882,7 +10874,7 @@ c_func
 id|SOCK_ASYNC_NOSPACE
 comma
 op_amp
-id|sk-&gt;socket-&gt;flags
+id|sk-&gt;sk_socket-&gt;flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Since the socket is not locked, the buffer&n;&t;&t; * might be made available after the writeable check and&n;&t;&t; * before the bit is set.  This could cause a lost I/O&n;&t;&t; * signal.  tcp_poll() has a race breaker for this race&n;&t;&t; * condition.  Based on their implementation, we put&n;&t;&t; * in the following code to cover it as well.&n;&t;&t; */
@@ -11065,25 +11057,25 @@ op_assign
 id|sctp_bind_bucket_t
 op_star
 )paren
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;bind_next
+id|sk-&gt;sk_bind_next
 )paren
-id|sk-&gt;bind_next-&gt;bind_pprev
+id|sk-&gt;sk_bind_next-&gt;sk_bind_pprev
 op_assign
-id|sk-&gt;bind_pprev
+id|sk-&gt;sk_bind_pprev
 suffix:semicolon
 op_star
 (paren
-id|sk-&gt;bind_pprev
+id|sk-&gt;sk_bind_pprev
 )paren
 op_assign
-id|sk-&gt;bind_next
+id|sk-&gt;sk_bind_next
 suffix:semicolon
-id|sk-&gt;prev
+id|sk-&gt;sk_prev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -11465,7 +11457,7 @@ suffix:semicolon
 id|prepare_to_wait_exclusive
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -11498,7 +11490,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 r_goto
@@ -11508,7 +11500,7 @@ multiline_comment|/* Socket shut down?  */
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -11591,7 +11583,7 @@ suffix:colon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -11616,7 +11608,7 @@ suffix:colon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -11667,7 +11659,7 @@ suffix:semicolon
 r_int
 id|timeo
 suffix:semicolon
-multiline_comment|/* Caller is allowed not to check sk-&gt;err before calling.  */
+multiline_comment|/* Caller is allowed not to check sk-&gt;sk_err before calling.  */
 id|error
 op_assign
 id|sock_error
@@ -11723,7 +11715,7 @@ id|sctp_spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue.lock
+id|sk-&gt;sk_receive_queue.lock
 comma
 id|cpu_flags
 )paren
@@ -11734,7 +11726,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 r_if
@@ -11753,7 +11745,7 @@ id|sctp_spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue.lock
+id|sk-&gt;sk_receive_queue.lock
 comma
 id|cpu_flags
 )paren
@@ -11767,7 +11759,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 )brace
@@ -11782,7 +11774,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -11968,7 +11960,7 @@ l_int|0
 suffix:semicolon
 id|amt
 op_assign
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
 id|asoc-&gt;sndbuf_used
 suffix:semicolon
@@ -12050,7 +12042,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_add_assign
 id|SCTP_DATA_SNDSIZE
 c_func
@@ -12084,7 +12076,7 @@ id|socket
 op_star
 id|sock
 op_assign
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 suffix:semicolon
 r_if
 c_cond
@@ -12132,18 +12124,18 @@ id|sk
 r_if
 c_cond
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 op_logical_and
 id|waitqueue_active
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 )paren
 id|wake_up_interruptible
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 )paren
 suffix:semicolon
 multiline_comment|/* Note that we try to include the Async I/O support&n;&t;&t;&t; * here by modeling from the current TCP/UDP code.&n;&t;&t;&t; * We have not tested with it yet.&n;&t;&t;&t; */
@@ -12154,7 +12146,7 @@ id|sock-&gt;fasync_list
 op_logical_and
 op_logical_neg
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|SEND_SHUTDOWN
 )paren
@@ -12232,7 +12224,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 op_sub_assign
 id|SCTP_DATA_SNDSIZE
 c_func
@@ -12355,7 +12347,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 id|asoc-&gt;state
 op_ge
@@ -12558,9 +12550,9 @@ l_int|0
 suffix:semicolon
 id|amt
 op_assign
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
-id|sk-&gt;wmem_queued
+id|sk-&gt;sk_wmem_queued
 suffix:semicolon
 r_if
 c_cond
@@ -12675,7 +12667,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -12684,7 +12676,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;err
+id|sk-&gt;sk_err
 op_logical_or
 id|asoc-&gt;state
 op_ge
@@ -12855,7 +12847,7 @@ suffix:semicolon
 id|prepare_to_wait_exclusive
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -12967,7 +12959,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -13002,7 +12994,7 @@ r_do
 id|prepare_to_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -13065,7 +13057,7 @@ suffix:semicolon
 id|finish_wait
 c_func
 (paren
-id|sk-&gt;sleep
+id|sk-&gt;sk_sleep
 comma
 op_amp
 id|wait
@@ -13141,13 +13133,13 @@ op_star
 id|event
 suffix:semicolon
 multiline_comment|/* Migrate socket buffer sizes and all the socket level options to the&n;&t; * new socket.&n;&t; */
-id|newsk-&gt;sndbuf
+id|newsk-&gt;sk_sndbuf
 op_assign
-id|oldsk-&gt;sndbuf
+id|oldsk-&gt;sk_sndbuf
 suffix:semicolon
-id|newsk-&gt;rcvbuf
+id|newsk-&gt;sk_rcvbuf
 op_assign
-id|oldsk-&gt;rcvbuf
+id|oldsk-&gt;sk_rcvbuf
 suffix:semicolon
 op_star
 id|newsp
@@ -13171,7 +13163,7 @@ c_func
 id|skb
 comma
 op_amp
-id|oldsk-&gt;receive_queue
+id|oldsk-&gt;sk_receive_queue
 comma
 id|tmp
 )paren
@@ -13204,7 +13196,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|newsk-&gt;receive_queue
+id|newsk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -13264,7 +13256,7 @@ r_else
 id|queue
 op_assign
 op_amp
-id|newsk-&gt;receive_queue
+id|newsk-&gt;sk_receive_queue
 suffix:semicolon
 multiline_comment|/* Walk through the pd_lobby, looking for skbs that&n;&t;&t; * need moved to the new socket.&n;&t;&t; */
 id|sctp_skb_for_each
@@ -13359,11 +13351,11 @@ comma
 id|TCP
 )paren
 )paren
-id|newsk-&gt;shutdown
+id|newsk-&gt;sk_shutdown
 op_or_assign
 id|RCV_SHUTDOWN
 suffix:semicolon
-id|newsk-&gt;state
+id|newsk-&gt;sk_state
 op_assign
 id|SCTP_SS_ESTABLISHED
 suffix:semicolon

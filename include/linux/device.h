@@ -850,19 +850,6 @@ id|BUS_ID_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* unique to this class */
-DECL|member|release
-r_void
-(paren
-op_star
-id|release
-)paren
-(paren
-r_struct
-id|class_device
-op_star
-id|class_dev
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -1347,6 +1334,33 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|device_for_each_child
+c_func
+(paren
+r_struct
+id|device
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_struct
+id|device
+op_star
+comma
+r_void
+op_star
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Manual binding of a device to driver. See drivers/base/bus.c &n; * for information on use.&n; */
 r_extern
 r_void
@@ -1646,6 +1660,8 @@ id|resource
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_platform_device
+mdefine_line|#define to_platform_device(x) container_of((x), struct platform_device, dev)
 r_extern
 r_int
 id|platform_device_register

@@ -3149,12 +3149,6 @@ id|qstr
 op_star
 id|qstr
 suffix:semicolon
-id|prefetch
-c_func
-(paren
-id|node-&gt;next
-)paren
-suffix:semicolon
 id|smp_read_barrier_depends
 c_func
 (paren
@@ -3496,12 +3490,6 @@ comma
 id|base
 )paren
 (brace
-id|prefetch
-c_func
-(paren
-id|lhp-&gt;next
-)paren
-suffix:semicolon
 multiline_comment|/* read_barrier_depends() not required for d_hash list&n;&t;&t; * as it is parsed under dcache_lock&n;&t;&t; */
 r_if
 c_cond

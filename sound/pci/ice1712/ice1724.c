@@ -18,6 +18,7 @@ macro_line|#include &quot;envy24ht.h&quot;
 multiline_comment|/* lowlevel routines */
 macro_line|#include &quot;amp.h&quot;
 macro_line|#include &quot;revo.h&quot;
+macro_line|#include &quot;aureon.h&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -48,6 +49,7 @@ c_func
 l_string|&quot;{&quot;
 id|REVO_DEVICE_DESC
 id|AMP_AUDIO2000_DEVICE_DESC
+id|AUREON_DEVICE_DESC
 l_string|&quot;{VIA,VT1724},&quot;
 l_string|&quot;{ICEnsemble,Generic ICE1724},&quot;
 l_string|&quot;{ICEnsemble,Generic Envy24HT}}&quot;
@@ -705,6 +707,19 @@ id|GPIO_DIRECTION
 )paren
 )paren
 suffix:semicolon
+id|inw
+c_func
+(paren
+id|ICEREG1724
+c_func
+(paren
+id|ice
+comma
+id|GPIO_DIRECTION
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 multiline_comment|/* set the gpio mask (0 = writable) */
 DECL|function|snd_vt1724_set_gpio_mask
@@ -756,6 +771,19 @@ id|GPIO_WRITE_MASK_22
 )paren
 )paren
 suffix:semicolon
+id|inw
+c_func
+(paren
+id|ICEREG1724
+c_func
+(paren
+id|ice
+comma
+id|GPIO_WRITE_MASK
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 DECL|function|snd_vt1724_set_gpio_data
 r_static
@@ -802,6 +830,19 @@ id|GPIO_DATA_22
 )paren
 )paren
 suffix:semicolon
+id|inw
+c_func
+(paren
+id|ICEREG1724
+c_func
+(paren
+id|ice
+comma
+id|GPIO_DATA
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read for pci-posting */
 )brace
 DECL|function|snd_vt1724_get_gpio_data
 r_static
@@ -2098,6 +2139,14 @@ id|I2S_FORMAT
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ice-&gt;eeprom.subvendor
+op_eq
+id|VT1724_SUBDEVICE_REVOLUTION71
+)paren
+(brace
 multiline_comment|/* FIXME: is this revo only? */
 multiline_comment|/* assert PRST# to converters; MT05 bit 7 */
 id|outb
@@ -2178,6 +2227,7 @@ id|AC97_CMD
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|spin_unlock_irqrestore
@@ -8084,6 +8134,8 @@ id|snd_vt1724_revo_cards
 comma
 id|snd_vt1724_amp_cards
 comma
+id|snd_vt1724_aureon_cards
+comma
 l_int|0
 comma
 )brace
@@ -8209,6 +8261,15 @@ id|i
 comma
 id|size
 suffix:semicolon
+r_struct
+id|snd_ice1712_card_info
+op_star
+op_star
+id|tbl
+comma
+op_star
+id|c
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8300,6 +8361,89 @@ op_lshift
 l_int|24
 )paren
 suffix:semicolon
+multiline_comment|/* if the EEPROM is given by the driver, use it */
+r_for
+c_loop
+(paren
+id|tbl
+op_assign
+id|card_tables
+suffix:semicolon
+op_star
+id|tbl
+suffix:semicolon
+id|tbl
+op_increment
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|c
+op_assign
+op_star
+id|tbl
+suffix:semicolon
+id|c-&gt;subvendor
+suffix:semicolon
+id|c
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|c-&gt;subvendor
+op_eq
+id|ice-&gt;eeprom.subvendor
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|c-&gt;eeprom_size
+op_logical_or
+op_logical_neg
+id|c-&gt;eeprom_data
+)paren
+r_goto
+id|found
+suffix:semicolon
+id|snd_printdd
+c_func
+(paren
+l_string|&quot;using the defined eeprom..&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ice-&gt;eeprom.version
+op_assign
+l_int|2
+suffix:semicolon
+id|ice-&gt;eeprom.size
+op_assign
+id|c-&gt;eeprom_size
+op_plus
+l_int|6
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|ice-&gt;eeprom.data
+comma
+id|c-&gt;eeprom_data
+comma
+id|c-&gt;eeprom_size
+)paren
+suffix:semicolon
+r_goto
+id|read_skipped
+suffix:semicolon
+)brace
+)brace
+)brace
+id|found
+suffix:colon
 id|ice-&gt;eeprom.size
 op_assign
 id|snd_vt1724_read_i2c
@@ -8412,6 +8556,8 @@ op_plus
 l_int|6
 )paren
 suffix:semicolon
+id|read_skipped
+suffix:colon
 id|ice-&gt;eeprom.gpiomask
 op_assign
 id|eeprom_triple

@@ -2666,7 +2666,7 @@ op_star
 id|rinfo
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 r_static
 r_int
 id|radeon_read_OF
@@ -2772,7 +2772,7 @@ id|radeon_set_backlight_level
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_OF */
 DECL|function|radeon_find_rom
 r_static
 r_char
@@ -3263,7 +3263,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 r_if
 c_cond
 (paren
@@ -3787,7 +3787,7 @@ op_star
 id|rinfo
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 r_if
 c_cond
 (paren
@@ -3808,7 +3808,7 @@ macro_line|#else
 multiline_comment|/* XXX use other methods later */
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|function|radeon_get_EDID_OF
 r_static
 r_int
@@ -3935,7 +3935,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_OF */
 DECL|function|radeon_dfp_parse_EDID
 r_static
 r_int
@@ -5159,7 +5159,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|function|radeon_read_OF
 r_static
 r_int
@@ -8664,7 +8664,7 @@ id|newmode.vclk_ecp_cntl
 op_assign
 id|rinfo-&gt;init_state.vclk_ecp_cntl
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/* Gross hack for iBook with M7 until I find out a proper fix */
 r_if
 c_cond
@@ -8683,7 +8683,7 @@ id|newmode.ppll_div_3
 op_assign
 l_int|0x000600ad
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALL_PPC */&t;
+macro_line|#endif /* CONFIG_PPC_OF */&t;
 id|RTRACE
 c_func
 (paren

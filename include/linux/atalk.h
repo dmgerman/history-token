@@ -647,7 +647,7 @@ r_void
 suffix:semicolon
 macro_line|#endif /* MODULE */
 DECL|macro|at_sk
-mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;protinfo)
+mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;sk_protinfo)
 r_extern
 r_struct
 id|sock

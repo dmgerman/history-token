@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
 mdefine_line|#define cpu_to_node_mask(cpu) node_to_cpumask(cpu_to_node(cpu))
@@ -2357,19 +2358,10 @@ id|minload
 op_assign
 l_int|10000000
 suffix:semicolon
-r_for
-c_loop
+id|for_each_node_with_cpus
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 id|load

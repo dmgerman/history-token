@@ -933,13 +933,53 @@ op_assign
 id|n
 suffix:semicolon
 )brace
+DECL|function|hlist_add_after
+r_static
+id|__inline__
+r_void
+id|hlist_add_after
+c_func
+(paren
+r_struct
+id|hlist_node
+op_star
+id|n
+comma
+r_struct
+id|hlist_node
+op_star
+id|next
+)paren
+(brace
+id|next-&gt;next
+op_assign
+id|n-&gt;next
+suffix:semicolon
+op_star
+(paren
+id|next-&gt;pprev
+)paren
+op_assign
+id|n
+suffix:semicolon
+id|n-&gt;next
+op_assign
+id|next
+suffix:semicolon
+)brace
 DECL|macro|hlist_entry
 mdefine_line|#define hlist_entry(ptr, type, member) container_of(ptr,type,member)
 multiline_comment|/* Cannot easily do prefetch unfortunately */
 DECL|macro|hlist_for_each
-mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos; &bslash;&n;&t;     pos = pos-&gt;next) 
+mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos &amp;&amp; ({ prefetch(pos-&gt;next); 1; }); &bslash;&n;&t;     pos = pos-&gt;next) 
 DECL|macro|hlist_for_each_safe
 mdefine_line|#define hlist_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;first; n = pos ? pos-&gt;next : 0, pos; &bslash;&n;&t;     pos = n)
+multiline_comment|/**&n; * hlist_for_each_entry&t;- iterate over list of given type&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
+DECL|macro|hlist_for_each_entry
+mdefine_line|#define hlist_for_each_entry(tpos, pos, head, member)&t;&t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ prefetch(pos-&gt;next); 1;}) &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = pos-&gt;next)
+multiline_comment|/**&n; * hlist_for_each_entry_safe - iterate over list of given type safe against removal of list entry&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @n:&t;&t;another &amp;struct hlist_node to use as temporary storage&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
+DECL|macro|hlist_for_each_entry_safe
+mdefine_line|#define hlist_for_each_entry_safe(tpos, pos, n, head, member) &t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ n = pos-&gt;next; 1; }) &amp;&amp; &t;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = n)
 macro_line|#else
 macro_line|#warning &quot;don&squot;t include kernel headers in userspace&quot;
 macro_line|#endif /* __KERNEL__ */

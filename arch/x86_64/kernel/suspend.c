@@ -537,10 +537,7 @@ multiline_comment|/*&n;&t; * Now maybe reload the debug registers&n;&t; */
 r_if
 c_cond
 (paren
-id|current-&gt;thread.debugreg
-(braket
-l_int|7
-)braket
+id|current-&gt;thread.debugreg7
 )paren
 (brace
 id|loaddebug

@@ -4382,7 +4382,10 @@ op_star
 )paren
 l_int|0x80808000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* onboard */
@@ -4394,7 +4397,10 @@ op_star
 )paren
 l_int|0x80800800
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* onboard */
@@ -4406,7 +4412,10 @@ op_star
 )paren
 l_int|0x80801000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* onboard */
@@ -4418,7 +4427,10 @@ op_star
 )paren
 l_int|0x80802000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* onboard */
@@ -4430,7 +4442,10 @@ op_star
 )paren
 l_int|0x80804000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* onboard */
@@ -4442,7 +4457,10 @@ op_star
 )paren
 l_int|0x80810000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* slot A/1 */
@@ -4454,7 +4472,10 @@ op_star
 )paren
 l_int|0x80820000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 comma
 multiline_comment|/* slot B/2 */
@@ -4466,7 +4487,10 @@ op_star
 )paren
 l_int|0x80840000
 comma
+(brace
 l_int|0xDEADBEEF
+comma
+)brace
 )brace
 multiline_comment|/* slot C/3 */
 )brace

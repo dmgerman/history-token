@@ -32,6 +32,12 @@ id|numa_cpumask_lookup_table
 (braket
 )braket
 suffix:semicolon
+r_extern
+r_int
+id|nr_cpus_in_node
+(braket
+)braket
+suffix:semicolon
 DECL|macro|MAX_MEMORY
 mdefine_line|#define MAX_MEMORY (1UL &lt;&lt; 41)
 multiline_comment|/* 256MB regions */

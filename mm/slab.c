@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/mm/slab.c&n; * Written by Mark Hemment, 1996/97.&n; * (markhe@nextd.demon.co.uk)&n; *&n; * kmem_cache_destroy() + some cleanup - 1999 Andrea Arcangeli&n; *&n; * Major cleanup, different bufctl logic, per-cpu arrays&n; *&t;(c) 2000 Manfred Spraul&n; *&n; * Cleanup, make the head arrays unconditional, preparation for NUMA&n; * &t;(c) 2002 Manfred Spraul&n; *&n; * An implementation of the Slab Allocator as described in outline in;&n; *&t;UNIX Internals: The New Frontiers by Uresh Vahalia&n; *&t;Pub: Prentice Hall&t;ISBN 0-13-101908-2&n; * or with a little more detail in;&n; *&t;The Slab Allocator: An Object-Caching Kernel Memory Allocator&n; *&t;Jeff Bonwick (Sun Microsystems).&n; *&t;Presented at: USENIX Summer 1994 Technical Conference&n; *&n; * The memory is organized in caches, one cache for each object type.&n; * (e.g. inode_cache, dentry_cache, buffer_head, vm_area_struct)&n; * Each cache consists out of many slabs (they are small (usually one&n; * page long) and always contiguous), and each slab contains multiple&n; * initialized objects.&n; *&n; * Each cache can only support one memory type (GFP_DMA, GFP_HIGHMEM,&n; * normal). If you need a special memory type, then must create a new&n; * cache for that memory type.&n; *&n; * In order to reduce fragmentation, the slabs are sorted in 3 groups:&n; *   full slabs with 0 free objects&n; *   partial slabs&n; *   empty slabs with no allocated objects&n; *&n; * If partial slabs exist, then new allocations come from these slabs,&n; * otherwise from empty slabs or new slabs are allocated.&n; *&n; * kmem_cache_destroy() CAN CRASH if you try to allocate from the cache&n; * during kmem_cache_destroy(). The caller must prevent concurrent allocs.&n; *&n; * Each cache has a short per-cpu head array, most allocs&n; * and frees go into that array, and if that array overflows, then 1/2&n; * of the entries in the array are given back into the global cache.&n; * The head array is strictly LIFO and should improve the cache hit rates.&n; * On SMP, it additionally reduces the spinlock operations.&n; *&n; * The c_cpuarray may not be read with enabled local interrupts - &n; * it&squot;s changed with a smp_call_function().&n; *&n; * SMP synchronization:&n; *  constructors and destructors are called without any locking.&n; *  Several members in kmem_cache_t and struct slab never change, they&n; *&t;are accessed without any locking.&n; *  The per-cpu arrays are never accessed from the wrong cpu, no locking,&n; *  &t;and local interrupts are disabled so slab code is preempt-safe.&n; *  The non-constant members are protected with a per-cache irq spinlock.&n; *&n; * Many thanks to Mark Hemment, who wrote another per-cpu slab patch&n; * in 2000 - many ideas in the current implementation are derived from&n; * his patch.&n; *&n; * Further notes from the original documentation:&n; *&n; * 11 April &squot;97.  Started multi-threading - markhe&n; *&t;The global cache-chain is protected by the semaphore &squot;cache_chain_sem&squot;.&n; *&t;The sem is only needed when accessing/extending the cache-chain, which&n; *&t;can never happen inside an interrupt (kmem_cache_create(),&n; *&t;kmem_cache_shrink() and kmem_cache_reap()).&n; *&n; *&t;At present, each engine can be growing a cache.  This should be blocked.&n; *&n; */
+multiline_comment|/*&n; * linux/mm/slab.c&n; * Written by Mark Hemment, 1996/97.&n; * (markhe@nextd.demon.co.uk)&n; *&n; * kmem_cache_destroy() + some cleanup - 1999 Andrea Arcangeli&n; *&n; * Major cleanup, different bufctl logic, per-cpu arrays&n; *&t;(c) 2000 Manfred Spraul&n; *&n; * Cleanup, make the head arrays unconditional, preparation for NUMA&n; * &t;(c) 2002 Manfred Spraul&n; *&n; * An implementation of the Slab Allocator as described in outline in;&n; *&t;UNIX Internals: The New Frontiers by Uresh Vahalia&n; *&t;Pub: Prentice Hall&t;ISBN 0-13-101908-2&n; * or with a little more detail in;&n; *&t;The Slab Allocator: An Object-Caching Kernel Memory Allocator&n; *&t;Jeff Bonwick (Sun Microsystems).&n; *&t;Presented at: USENIX Summer 1994 Technical Conference&n; *&n; * The memory is organized in caches, one cache for each object type.&n; * (e.g. inode_cache, dentry_cache, buffer_head, vm_area_struct)&n; * Each cache consists out of many slabs (they are small (usually one&n; * page long) and always contiguous), and each slab contains multiple&n; * initialized objects.&n; *&n; * This means, that your constructor is used only for newly allocated&n; * slabs and you must pass objects with the same intializations to&n; * kmem_cache_free.&n; *&n; * Each cache can only support one memory type (GFP_DMA, GFP_HIGHMEM,&n; * normal). If you need a special memory type, then must create a new&n; * cache for that memory type.&n; *&n; * In order to reduce fragmentation, the slabs are sorted in 3 groups:&n; *   full slabs with 0 free objects&n; *   partial slabs&n; *   empty slabs with no allocated objects&n; *&n; * If partial slabs exist, then new allocations come from these slabs,&n; * otherwise from empty slabs or new slabs are allocated.&n; *&n; * kmem_cache_destroy() CAN CRASH if you try to allocate from the cache&n; * during kmem_cache_destroy(). The caller must prevent concurrent allocs.&n; *&n; * Each cache has a short per-cpu head array, most allocs&n; * and frees go into that array, and if that array overflows, then 1/2&n; * of the entries in the array are given back into the global cache.&n; * The head array is strictly LIFO and should improve the cache hit rates.&n; * On SMP, it additionally reduces the spinlock operations.&n; *&n; * The c_cpuarray may not be read with enabled local interrupts - &n; * it&squot;s changed with a smp_call_function().&n; *&n; * SMP synchronization:&n; *  constructors and destructors are called without any locking.&n; *  Several members in kmem_cache_t and struct slab never change, they&n; *&t;are accessed without any locking.&n; *  The per-cpu arrays are never accessed from the wrong cpu, no locking,&n; *  &t;and local interrupts are disabled so slab code is preempt-safe.&n; *  The non-constant members are protected with a per-cache irq spinlock.&n; *&n; * Many thanks to Mark Hemment, who wrote another per-cpu slab patch&n; * in 2000 - many ideas in the current implementation are derived from&n; * his patch.&n; *&n; * Further notes from the original documentation:&n; *&n; * 11 April &squot;97.  Started multi-threading - markhe&n; *&t;The global cache-chain is protected by the semaphore &squot;cache_chain_sem&squot;.&n; *&t;The sem is only needed when accessing/extending the cache-chain, which&n; *&t;can never happen inside an interrupt (kmem_cache_create(),&n; *&t;kmem_cache_shrink() and kmem_cache_reap()).&n; *&n; *&t;At present, each engine can be growing a cache.  This should be blocked.&n; *&n; */
 macro_line|#include&t;&lt;linux/config.h&gt;
 macro_line|#include&t;&lt;linux/slab.h&gt;
 macro_line|#include&t;&lt;linux/mm.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include&t;&lt;linux/compiler.h&gt;
 macro_line|#include&t;&lt;linux/seq_file.h&gt;
 macro_line|#include&t;&lt;linux/notifier.h&gt;
 macro_line|#include&t;&lt;linux/kallsyms.h&gt;
+macro_line|#include&t;&lt;linux/cpu.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * DEBUG&t;- 1 for kmem_cache_create() to honour; SLAB_DEBUG_INITIAL,&n; *&t;&t;  SLAB_RED_ZONE &amp; SLAB_POISON.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * STATS&t;- 1 to collect stats for /proc/slabinfo.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * FORCED_DEBUG&t;- 1 enables SLAB_RED_ZONE and SLAB_POISON (if possible)&n; */
 macro_line|#ifdef CONFIG_DEBUG_SLAB
@@ -2079,11 +2080,11 @@ op_assign
 id|POISON_END
 suffix:semicolon
 )brace
-DECL|function|fprob
+DECL|function|scan_poisoned_obj
 r_static
 r_void
 op_star
-id|fprob
+id|scan_poisoned_obj
 c_func
 (paren
 r_int
@@ -2211,7 +2212,7 @@ suffix:semicolon
 )brace
 id|end
 op_assign
-id|fprob
+id|scan_poisoned_obj
 c_func
 (paren
 id|addr
@@ -7361,18 +7362,18 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * kmalloc_percpu - allocate one copy of the object for every present&n; * cpu in the system.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @flags: the type of memory to allocate.&n; * The @flags argument may be one of:&n; *&n; * %GFP_USER - Allocate memory on behalf of user.  May sleep.&n; *&n; * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.&n; *&n; * %GFP_ATOMIC - Allocation will not sleep.  Use inside interrupt handlers.&n; */
+multiline_comment|/**&n; * __alloc_percpu - allocate one copy of the object for every present&n; * cpu in the system, zeroing them.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @align: the alignment, which can&squot;t be greater than SMP_CACHE_BYTES.&n; */
+DECL|function|__alloc_percpu
 r_void
 op_star
-DECL|function|kmalloc_percpu
-id|kmalloc_percpu
+id|__alloc_percpu
 c_func
 (paren
 r_int
 id|size
 comma
 r_int
-id|flags
+id|align
 )paren
 (brace
 r_int
@@ -7392,7 +7393,7 @@ op_star
 id|pdata
 )paren
 comma
-id|flags
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7441,7 +7442,7 @@ c_func
 (paren
 id|size
 comma
-id|flags
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7455,6 +7456,19 @@ id|i
 )paren
 r_goto
 id|unwind_oom
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|pdata-&gt;ptrs
+(braket
+id|i
+)braket
+comma
+l_int|0
+comma
+id|size
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Catch derefs w/o wrappers */
@@ -7626,10 +7640,10 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * kfree_percpu - free previously allocated percpu memory&n; * @objp: pointer returned by kmalloc_percpu.&n; *&n; * Don&squot;t free memory not originally allocated by kmalloc_percpu()&n; * The complemented objp is to check for that.&n; */
+multiline_comment|/**&n; * free_percpu - free previously allocated percpu memory&n; * @objp: pointer returned by alloc_percpu.&n; *&n; * Don&squot;t free memory not originally allocated by alloc_percpu()&n; * The complemented objp is to check for that.&n; */
 r_void
-DECL|function|kfree_percpu
-id|kfree_percpu
+DECL|function|free_percpu
+id|free_percpu
 c_func
 (paren
 r_const

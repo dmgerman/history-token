@@ -9250,6 +9250,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;         * if this page only had a direct item, it is very possible for&n;         * no io to be required without there being an error.  Or, &n;&t; * someone else could have locked them and sent them down the &n;&t; * pipe without locking the page&n;&t; */
+id|bh
+op_assign
+id|head
+suffix:semicolon
 r_do
 (brace
 r_if
@@ -9270,6 +9274,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|bh
+op_assign
+id|bh-&gt;b_this_page
+suffix:semicolon
 )brace
 r_while
 c_loop

@@ -35,6 +35,7 @@ op_star
 id|ti
 comma
 r_int
+r_int
 id|argc
 comma
 r_char
@@ -290,6 +291,7 @@ r_char
 op_star
 id|result
 comma
+r_int
 r_int
 id|maxlen
 )paren

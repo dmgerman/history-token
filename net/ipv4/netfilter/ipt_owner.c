@@ -123,7 +123,7 @@ comma
 id|i
 )paren
 op_eq
-id|skb-&gt;sk-&gt;socket-&gt;file
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
 )paren
 (brace
 id|spin_unlock
@@ -287,7 +287,7 @@ comma
 id|i
 )paren
 op_eq
-id|skb-&gt;sk-&gt;socket-&gt;file
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
 )paren
 (brace
 id|spin_unlock
@@ -371,7 +371,7 @@ id|file
 op_star
 id|file
 op_assign
-id|skb-&gt;sk-&gt;socket-&gt;file
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
 suffix:semicolon
 r_int
 id|i
@@ -565,10 +565,10 @@ op_logical_neg
 id|skb-&gt;sk
 op_logical_or
 op_logical_neg
-id|skb-&gt;sk-&gt;socket
+id|skb-&gt;sk-&gt;sk_socket
 op_logical_or
 op_logical_neg
-id|skb-&gt;sk-&gt;socket-&gt;file
+id|skb-&gt;sk-&gt;sk_socket-&gt;file
 )paren
 r_return
 l_int|0
@@ -585,7 +585,7 @@ r_if
 c_cond
 (paren
 (paren
-id|skb-&gt;sk-&gt;socket-&gt;file-&gt;f_uid
+id|skb-&gt;sk-&gt;sk_socket-&gt;file-&gt;f_uid
 op_ne
 id|info-&gt;uid
 )paren
@@ -598,11 +598,9 @@ op_amp
 id|IPT_OWNER_UID
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -616,7 +614,7 @@ r_if
 c_cond
 (paren
 (paren
-id|skb-&gt;sk-&gt;socket-&gt;file-&gt;f_gid
+id|skb-&gt;sk-&gt;sk_socket-&gt;file-&gt;f_gid
 op_ne
 id|info-&gt;gid
 )paren
@@ -629,11 +627,9 @@ op_amp
 id|IPT_OWNER_GID
 )paren
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

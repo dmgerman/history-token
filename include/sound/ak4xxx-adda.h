@@ -88,6 +88,8 @@ id|rate
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|AK4XXX_IMAGE_SIZE
+mdefine_line|#define AK4XXX_IMAGE_SIZE&t;(AK4XXX_MAX_CHIPS * 16)&t;/* 64 bytes */
 DECL|struct|snd_akm4xxx
 r_struct
 id|snd_akm4xxx
@@ -114,10 +116,7 @@ r_int
 r_char
 id|images
 (braket
-id|AK4XXX_MAX_CHIPS
-)braket
-(braket
-l_int|16
+id|AK4XXX_IMAGE_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* saved register image */
@@ -235,5 +234,13 @@ op_star
 id|ak
 )paren
 suffix:semicolon
+DECL|macro|snd_akm4xxx_get
+mdefine_line|#define snd_akm4xxx_get(ak,chip,reg) (ak)-&gt;images[(chip) * 16 + (reg)]
+DECL|macro|snd_akm4xxx_set
+mdefine_line|#define snd_akm4xxx_set(ak,chip,reg,val) ((ak)-&gt;images[(chip) * 16 + (reg)] = (val))
+DECL|macro|snd_akm4xxx_get_ipga
+mdefine_line|#define snd_akm4xxx_get_ipga(ak,chip,reg) (ak)-&gt;ipga_gain[chip][(reg)-4]
+DECL|macro|snd_akm4xxx_set_ipga
+mdefine_line|#define snd_akm4xxx_set_ipga(ak,chip,reg,val) ((ak)-&gt;ipga_gain[chip][(reg)-4] = (val))
 macro_line|#endif /* __SOUND_AK4XXX_ADDA_H */
 eof

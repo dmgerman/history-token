@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -2263,9 +2264,11 @@ id|orig
 id|loff_t
 id|ret
 suffix:semicolon
-id|lock_kernel
+id|down
 c_func
 (paren
+op_amp
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_switch
@@ -2285,6 +2288,11 @@ id|ret
 op_assign
 id|file-&gt;f_pos
 suffix:semicolon
+id|force_successful_syscall_return
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2298,6 +2306,11 @@ id|ret
 op_assign
 id|file-&gt;f_pos
 suffix:semicolon
+id|force_successful_syscall_return
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -2308,9 +2321,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
@@ -3105,7 +3120,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|chr_dev_init
-id|__initcall
+id|subsys_initcall
 c_func
 (paren
 id|chr_dev_init

@@ -445,7 +445,7 @@ id|spin_trylock
 c_func
 (paren
 op_amp
-id|icmp_socket-&gt;sk-&gt;lock.slock
+id|icmp_socket-&gt;sk-&gt;sk_lock.slock
 )paren
 )paren
 )paren
@@ -468,7 +468,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|icmp_socket-&gt;sk-&gt;lock.slock
+id|icmp_socket-&gt;sk-&gt;sk_lock.slock
 )paren
 suffix:semicolon
 )brace
@@ -825,7 +825,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|icmp_socket-&gt;sk-&gt;write_queue
+id|icmp_socket-&gt;sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne
@@ -854,7 +854,7 @@ id|skb_queue_walk
 c_func
 (paren
 op_amp
-id|icmp_socket-&gt;sk-&gt;write_queue
+id|icmp_socket-&gt;sk-&gt;sk_write_queue
 comma
 id|skb1
 )paren
@@ -2102,7 +2102,7 @@ id|info
 suffix:semicolon
 id|raw_sk
 op_assign
-id|raw_sk-&gt;next
+id|raw_sk-&gt;sk_next
 suffix:semicolon
 id|iph
 op_assign
@@ -3824,7 +3824,7 @@ comma
 id|i
 )paren
 op_member_access_from_pointer
-id|sk-&gt;allocation
+id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
@@ -3836,7 +3836,7 @@ comma
 id|i
 )paren
 op_member_access_from_pointer
-id|sk-&gt;sndbuf
+id|sk-&gt;sk_sndbuf
 op_assign
 id|SK_WMEM_MAX
 op_star
@@ -3876,7 +3876,7 @@ comma
 id|i
 )paren
 op_member_access_from_pointer
-id|sk-&gt;prot
+id|sk-&gt;sk_prot
 op_member_access_from_pointer
 id|unhash
 c_func

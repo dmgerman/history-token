@@ -7607,7 +7607,7 @@ macro_line|#if defined(CONFIG_NETLINK_DEV) || defined(CONFIG_NETLINK_DEV_MODULE)
 id|sock_release
 c_func
 (paren
-id|ipfwsk-&gt;socket
+id|ipfwsk-&gt;sk_socket
 )paren
 suffix:semicolon
 id|cleanup_nothing

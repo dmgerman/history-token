@@ -347,7 +347,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skbn
 )paren
@@ -370,7 +370,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -607,14 +607,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|skb_peek
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
-op_eq
-l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -671,7 +670,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 suffix:semicolon
 r_do
@@ -698,7 +697,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 comma
 id|skb
 )paren
@@ -758,7 +757,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;write_queue
+id|sk-&gt;sk_write_queue
 )paren
 )paren
 op_ne

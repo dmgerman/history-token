@@ -440,11 +440,19 @@ c_func
 id|t-&gt;name
 )paren
 )paren
+(brace
+id|kfree
+c_func
+(paren
+id|ti
+)paren
+suffix:semicolon
 id|rv
 op_assign
 op_minus
 id|EEXIST
 suffix:semicolon
+)brace
 r_else
 id|list_add
 c_func
@@ -582,6 +590,7 @@ id|dm_target
 op_star
 id|ti
 comma
+r_int
 r_int
 id|argc
 comma

@@ -610,7 +610,7 @@ macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 DECL|macro|__ipv6_only_sock
 mdefine_line|#define __ipv6_only_sock(sk)&t;(inet6_sk(sk)-&gt;ipv6only)
 DECL|macro|ipv6_only_sock
-mdefine_line|#define ipv6_only_sock(sk)&t;((sk)-&gt;family == PF_INET6 &amp;&amp; __ipv6_only_sock(sk))
+mdefine_line|#define ipv6_only_sock(sk)&t;((sk)-&gt;sk_family == PF_INET6 &amp;&amp; __ipv6_only_sock(sk))
 macro_line|#else
 DECL|macro|__ipv6_only_sock
 mdefine_line|#define __ipv6_only_sock(sk)&t;0

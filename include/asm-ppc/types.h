@@ -66,17 +66,6 @@ l_int|4
 suffix:semicolon
 DECL|typedef|__vector128
 )brace
-id|__attribute
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|16
-)paren
-)paren
-)paren
 id|__vector128
 suffix:semicolon
 multiline_comment|/*&n; * XXX allowed outside of __KERNEL__ for now, until glibc gets&n; * a proper set of asm headers of its own.  -- paulus&n; */

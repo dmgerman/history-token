@@ -5,9 +5,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_DEVFS_FS
-macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &quot;ctctty.h&quot;
 DECL|macro|CTC_TTY_MAJOR
 mdefine_line|#define CTC_TTY_MAJOR       43
@@ -204,27 +202,6 @@ DECL|macro|MODEM_DO_RESTART
 mdefine_line|#define MODEM_DO_RESTART
 DECL|macro|CTC_TTY_NAME
 mdefine_line|#define CTC_TTY_NAME &quot;ctctty&quot;
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|ctc_ttyname
-r_static
-r_char
-op_star
-id|ctc_ttyname
-op_assign
-l_string|&quot;ctc/&quot;
-id|CTC_TTY_NAME
-l_string|&quot;%d&quot;
-suffix:semicolon
-macro_line|#else
-DECL|variable|ctc_ttyname
-r_static
-r_char
-op_star
-id|ctc_ttyname
-op_assign
-id|CTC_TTY_NAME
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ctc_tty_magic
 r_static
 id|__u32
@@ -5026,9 +5003,14 @@ id|device-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|device-&gt;devfs_name
+op_assign
+l_string|&quot;ctc/&quot;
+id|CTC_TTY_NAME
+suffix:semicolon
 id|device-&gt;name
 op_assign
-id|ctc_ttyname
+id|CTC_TTY_NAME
 suffix:semicolon
 id|device-&gt;major
 op_assign

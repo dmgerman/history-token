@@ -4765,7 +4765,12 @@ id|bi
 op_logical_and
 id|bi-&gt;bi_sector
 OL
-id|dev-&gt;sector
+id|sh-&gt;dev
+(braket
+id|i
+)braket
+dot
+id|sector
 op_plus
 id|STRIPE_SECTORS
 )paren

@@ -163,6 +163,17 @@ r_int
 id|depth
 suffix:semicolon
 multiline_comment|/* nested irq disables */
+DECL|member|irq_count
+r_int
+r_int
+id|irq_count
+suffix:semicolon
+multiline_comment|/* For detecting broken interrupts */
+DECL|member|irqs_unhandled
+r_int
+r_int
+id|irqs_unhandled
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock

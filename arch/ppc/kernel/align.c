@@ -801,6 +801,7 @@ id|areg
 suffix:semicolon
 r_int
 r_char
+id|__user
 op_star
 id|addr
 suffix:semicolon
@@ -1079,6 +1080,7 @@ op_assign
 (paren
 r_int
 r_char
+id|__user
 op_star
 )paren
 id|regs-&gt;dar

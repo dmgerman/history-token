@@ -2,10 +2,7 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 macro_line|#ifndef _LINUX_UDP_H
 DECL|macro|_LINUX_UDP_H
 mdefine_line|#define _LINUX_UDP_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 DECL|struct|udphdr
 r_struct
 id|udphdr
@@ -36,6 +33,10 @@ mdefine_line|#define UDP_ENCAP&t;100&t;/* Set the socket to accept encapsulated 
 multiline_comment|/* UDP encapsulation types */
 DECL|macro|UDP_ENCAP_ESPINUDP
 mdefine_line|#define UDP_ENCAP_ESPINUDP&t;2 /* draft-ietf-ipsec-udp-encaps-06 */
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 DECL|struct|udp_opt
 r_struct
 id|udp_opt
@@ -116,5 +117,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|udp_sk
 mdefine_line|#define udp_sk(__sk) (&amp;((struct udp_sock *)__sk)-&gt;udp)
+macro_line|#endif
 macro_line|#endif&t;/* _LINUX_UDP_H */
 eof

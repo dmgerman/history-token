@@ -89,7 +89,7 @@ DECL|macro|POOL_TIMEOUT_JIFFIES
 mdefine_line|#define&t;POOL_TIMEOUT_JIFFIES&t;((100 /* msec */ * HZ) / 1000)
 DECL|macro|POOL_POISON_BYTE
 mdefine_line|#define&t;POOL_POISON_BYTE&t;0xa7
-DECL|variable|pools_lock
+r_static
 id|DECLARE_MUTEX
 (paren
 id|pools_lock

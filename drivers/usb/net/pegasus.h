@@ -275,11 +275,6 @@ DECL|member|ctrl_wait
 id|wait_queue_head_t
 id|ctrl_wait
 suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
 DECL|member|rx_pool_lock
 id|spinlock_t
 id|rx_pool_lock

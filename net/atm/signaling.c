@@ -180,7 +180,7 @@ id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|sigd-&gt;sk-&gt;receive_queue
+id|sigd-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -379,7 +379,7 @@ c_func
 id|skb-&gt;truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -557,9 +557,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vcc-&gt;sk-&gt;ack_backlog
+id|vcc-&gt;sk-&gt;sk_ack_backlog
 op_eq
-id|vcc-&gt;sk-&gt;max_ack_backlog
+id|vcc-&gt;sk-&gt;sk_max_ack_backlog
 )paren
 (brace
 id|sigd_enq
@@ -580,14 +580,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|vcc-&gt;sk-&gt;ack_backlog
+id|vcc-&gt;sk-&gt;sk_ack_backlog
 op_increment
 suffix:semicolon
 id|skb_queue_tail
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -1003,7 +1003,7 @@ id|vcc
 r_if
 c_cond
 (paren
-id|vcc-&gt;sk-&gt;family
+id|vcc-&gt;sk-&gt;sk_family
 op_eq
 id|PF_ATMSVC
 op_logical_and
@@ -1089,7 +1089,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 )paren
 id|printk
@@ -1103,7 +1103,7 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;receive_queue
+id|vcc-&gt;sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|spin_lock

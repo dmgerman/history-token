@@ -4245,6 +4245,8 @@ r_struct
 id|pci_dev
 op_star
 id|device
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef FULL_VALID_PDIR
 r_int
@@ -4601,10 +4603,24 @@ id|IOC_PCOM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** If an AGP device is present, only use half of the IOV space&n;&t;** for PCI DMA.  Unfortunately we can&squot;t know ahead of time&n;&t;** whether GART support will actually be used, for now we&n;&t;** can just key on an AGP device found in the system.&n;&t;** We program the next pdir index after we stop w/ a key for&n;&t;** the GART code to handshake on.&n;&t;*/
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|device
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|device
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 id|agp_found
 op_or_assign

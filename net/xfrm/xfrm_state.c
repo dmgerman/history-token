@@ -3408,7 +3408,7 @@ op_member_access_from_pointer
 id|compile_policy
 c_func
 (paren
-id|sk-&gt;family
+id|sk-&gt;sk_family
 comma
 id|optname
 comma

@@ -8001,7 +8001,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 DECL|function|riva_get_EDID_OF
 r_static
 r_int
@@ -8075,7 +8075,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_OF */
 DECL|function|riva_dfp_parse_EDID
 r_static
 r_int
@@ -8583,7 +8583,7 @@ op_star
 id|pdev
 )paren
 (brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 r_if
 c_cond
 (paren

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -114,6 +113,16 @@ id|entry-&gt;card-&gt;id
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+id|snd_card_free_thread
+c_func
+(paren
+r_void
+op_star
+id|__card
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *  snd_card_new - create and initialize a soundcard structure&n; *  @idx: card index (address) [0 ... (SNDRV_CARDS-1)]&n; *  @xid: card identification (ASCII string)&n; *  @module: top level module for locking&n; *  @extra_size: allocate this extra size after the main soundcard structure&n; *&n; *  Creates and initializes a soundcard structure.&n; *&n; *  Returns kmallocated snd_card_t structure. Creates the ALSA control interface&n; *  (which is blocked until snd_card_register function is called).&n; */
 DECL|function|snd_card_new
 id|snd_card_t
@@ -446,6 +455,17 @@ c_func
 (paren
 op_amp
 id|card-&gt;shutdown_sleep
+)paren
+suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|card-&gt;free_workq
+comma
+id|snd_card_free_thread
+comma
+id|card
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
@@ -1198,16 +1218,6 @@ op_star
 id|card
 )paren
 (brace
-id|DECLARE_WORK
-c_func
-(paren
-id|works
-comma
-id|snd_card_free_thread
-comma
-id|card
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1233,7 +1243,7 @@ id|schedule_work
 c_func
 (paren
 op_amp
-id|works
+id|card-&gt;free_workq
 )paren
 )paren
 r_return
@@ -1243,7 +1253,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;kernel_thread failed in snd_card_free_in_thread for card %i&bslash;n&quot;
+l_string|&quot;schedule_work() failed in snd_card_free_in_thread for card %i&bslash;n&quot;
 comma
 id|card-&gt;number
 )paren
@@ -1336,6 +1346,56 @@ id|spos
 op_ne
 l_char|&squot;&bslash;0&squot;
 op_logical_and
+op_logical_neg
+id|isalnum
+c_func
+(paren
+op_star
+id|spos
+)paren
+)paren
+id|spos
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|isdigit
+c_func
+(paren
+op_star
+id|spos
+)paren
+)paren
+op_star
+id|id
+op_increment
+op_assign
+id|isalpha
+c_func
+(paren
+id|card-&gt;shortname
+(braket
+l_int|0
+)braket
+)paren
+ques
+c_cond
+id|card-&gt;shortname
+(braket
+l_int|0
+)braket
+suffix:colon
+l_char|&squot;D&squot;
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|spos
+op_ne
+l_char|&squot;&bslash;0&squot;
+op_logical_and
 (paren
 r_int
 )paren
@@ -1382,6 +1442,22 @@ suffix:semicolon
 id|id
 op_assign
 id|card-&gt;id
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|id
+op_eq
+l_char|&squot;&bslash;0&squot;
+)paren
+id|strcpy
+c_func
+(paren
+id|id
+comma
+l_string|&quot;default&quot;
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -1657,11 +1733,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|card-&gt;id
 (braket
 l_int|0
 )braket
+op_eq
+l_char|&squot;&bslash;0&squot;
 )paren
 id|choose_default_id
 c_func

@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -1062,14 +1063,19 @@ comma
 id|SMP_CACHE_BYTES
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODULES
 r_if
 c_cond
 (paren
-op_logical_neg
 id|size
+OL
+id|PERCPU_ENOUGH_ROOM
 )paren
-r_return
+id|size
+op_assign
+id|PERCPU_ENOUGH_ROOM
 suffix:semicolon
+macro_line|#endif
 id|ptr
 op_assign
 id|alloc_bootmem
@@ -1115,7 +1121,9 @@ id|ptr
 comma
 id|__per_cpu_start
 comma
-id|size
+id|__per_cpu_end
+op_minus
+id|__per_cpu_start
 )paren
 suffix:semicolon
 )brace
@@ -1302,6 +1310,11 @@ c_func
 (paren
 op_amp
 id|command_line
+)paren
+suffix:semicolon
+id|setup_per_zone_pages_min
+c_func
+(paren
 )paren
 suffix:semicolon
 id|setup_per_cpu_areas

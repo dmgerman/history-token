@@ -493,7 +493,7 @@ op_amp
 id|sp-&gt;pd_lobby
 comma
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|list
@@ -597,7 +597,7 @@ id|SOCK_DEAD
 )paren
 op_logical_or
 (paren
-id|sk-&gt;shutdown
+id|sk-&gt;sk_shutdown
 op_amp
 id|RCV_SHUTDOWN
 )paren
@@ -645,7 +645,7 @@ id|pd_mode
 id|queue
 op_assign
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 suffix:semicolon
 )brace
 r_else
@@ -684,7 +684,7 @@ suffix:semicolon
 id|queue
 op_assign
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 suffix:semicolon
 )brace
 )brace
@@ -757,11 +757,11 @@ c_cond
 id|queue
 op_eq
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 id|sk
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|sk
@@ -2736,7 +2736,7 @@ id|skb_queue_empty
 c_func
 (paren
 op_amp
-id|asoc-&gt;base.sk-&gt;receive_queue
+id|asoc-&gt;base.sk-&gt;sk_receive_queue
 )paren
 )paren
 (brace
@@ -2907,7 +2907,7 @@ id|__skb_queue_tail
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|sctp_event2skb
 c_func
@@ -2930,7 +2930,7 @@ id|ev
 )paren
 id|sk
 op_member_access_from_pointer
-id|data_ready
+id|sk_data_ready
 c_func
 (paren
 id|sk

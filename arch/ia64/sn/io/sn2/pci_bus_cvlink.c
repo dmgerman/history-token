@@ -1091,10 +1091,24 @@ op_assign
 l_int|0xcfffffffffffffff
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
-id|pci_for_each_dev
-c_func
+r_while
+c_loop
+(paren
 (paren
 id|device_dev
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+id|device_dev
+)paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_int

@@ -312,7 +312,7 @@ DECL|member|fib_rt_alloc
 id|__u32
 id|fib_rt_alloc
 suffix:semicolon
-multiline_comment|/* permanet routes&t;*/
+multiline_comment|/* permanent routes&t;*/
 DECL|member|fib_rt_entries
 id|__u32
 id|fib_rt_entries
@@ -323,6 +323,10 @@ id|__u32
 id|fib_rt_cache
 suffix:semicolon
 multiline_comment|/* cache routes&t;&t;*/
+DECL|member|fib_discarded_routes
+id|__u32
+id|fib_discarded_routes
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|RTN_TL_ROOT

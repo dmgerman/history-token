@@ -248,25 +248,6 @@ DECL|macro|MODEM_PARANOIA_CHECK
 mdefine_line|#define MODEM_PARANOIA_CHECK
 DECL|macro|MODEM_DO_RESTART
 mdefine_line|#define MODEM_DO_RESTART
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|isdn_ttyname_ttyI
-r_static
-r_char
-op_star
-id|isdn_ttyname_ttyI
-op_assign
-l_string|&quot;isdn/ttyI%d&quot;
-suffix:semicolon
-macro_line|#else
-DECL|variable|isdn_ttyname_ttyI
-r_static
-r_char
-op_star
-id|isdn_ttyname_ttyI
-op_assign
-l_string|&quot;ttyI&quot;
-suffix:semicolon
-macro_line|#endif
 DECL|variable|isdn_mdm
 r_struct
 id|isdn_modem
@@ -8541,7 +8522,11 @@ id|TTY_DRIVER_MAGIC
 suffix:semicolon
 id|m-&gt;tty_modem.name
 op_assign
-id|isdn_ttyname_ttyI
+l_string|&quot;ttyI&quot;
+suffix:semicolon
+id|m-&gt;tty_modem.devfs_name
+op_assign
+l_string|&quot;isdn/ttyI&quot;
 suffix:semicolon
 id|m-&gt;tty_modem.major
 op_assign

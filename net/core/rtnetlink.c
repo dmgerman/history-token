@@ -2379,7 +2379,7 @@ id|skb_dequeue
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 )paren
 op_ne
@@ -2405,7 +2405,7 @@ id|skb_queue_head
 c_func
 (paren
 op_amp
-id|sk-&gt;receive_queue
+id|sk-&gt;sk_receive_queue
 comma
 id|skb
 )paren
@@ -2445,7 +2445,7 @@ c_loop
 (paren
 id|rtnl
 op_logical_and
-id|rtnl-&gt;receive_queue.qlen
+id|rtnl-&gt;sk_receive_queue.qlen
 )paren
 suffix:semicolon
 )brace

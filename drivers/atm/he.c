@@ -22,31 +22,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;
-macro_line|#ifndef ATM_OC12_PCR
-DECL|macro|ATM_OC12_PCR
-mdefine_line|#define ATM_OC12_PCR (622080000/1080*1040/8/53)
-macro_line|#endif
-macro_line|#ifdef BUS_INT_WAR
-r_void
-id|sn_add_polled_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_int
-id|interval
-)paren
-suffix:semicolon
-r_void
-id|sn_delete_polled_interrupt
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|macro|USE_TASKLET
 mdefine_line|#define USE_TASKLET
 DECL|macro|USE_HE_FIND_VCC
@@ -376,48 +351,52 @@ id|atmdev_ops
 id|he_ops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|he_open
 comma
+dot
 id|close
-suffix:colon
+op_assign
 id|he_close
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|he_ioctl
 comma
+dot
 id|send
-suffix:colon
+op_assign
 id|he_send
 comma
+dot
 id|sg_send
-suffix:colon
+op_assign
 id|he_sg_send
 comma
+dot
 id|phy_put
-suffix:colon
+op_assign
 id|he_phy_put
 comma
+dot
 id|phy_get
-suffix:colon
+op_assign
 id|he_phy_get
 comma
+dot
 id|proc_read
-suffix:colon
+op_assign
 id|he_proc_read
 comma
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 )brace
 suffix:semicolon
-multiline_comment|/* see the comments in he.h about global_lock */
-DECL|macro|HE_SPIN_LOCK
-mdefine_line|#define HE_SPIN_LOCK(dev, flags)&t;spin_lock_irqsave(&amp;(dev)-&gt;global_lock, flags)
-DECL|macro|HE_SPIN_UNLOCK
-mdefine_line|#define HE_SPIN_UNLOCK(dev, flags)&t;spin_unlock_irqrestore(&amp;(dev)-&gt;global_lock, flags)
 DECL|macro|he_writel
 mdefine_line|#define he_writel(dev, val, reg)&t;do { writel(val, (dev)-&gt;membase + (reg)); wmb(); } while (0)
 DECL|macro|he_readl
@@ -575,66 +554,66 @@ DECL|macro|he_readl_mbox
 mdefine_line|#define he_readl_mbox(dev, reg) &bslash;&n;&t;&t;&t;he_readl_internal(dev, reg, CON_CTL_MBOX)
 multiline_comment|/* figure 2.2 connection id */
 DECL|macro|he_mkcid
-mdefine_line|#define he_mkcid(dev, vpi, vci)&t;&t;(((vpi&lt;&lt;(dev)-&gt;vcibits) | vci) &amp; 0x1fff)
+mdefine_line|#define he_mkcid(dev, vpi, vci)&t;&t;(((vpi &lt;&lt; (dev)-&gt;vcibits) | vci) &amp; 0x1fff)
 multiline_comment|/* 2.5.1 per connection transmit state registers */
 DECL|macro|he_writel_tsr0
-mdefine_line|#define he_writel_tsr0(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 0)
+mdefine_line|#define he_writel_tsr0(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 0)
 DECL|macro|he_readl_tsr0
-mdefine_line|#define he_readl_tsr0(dev, cid) &bslash;&n;&t;&t;he_readl_tcm(dev, CONFIG_TSRA | (cid&lt;&lt;3) | 0)
+mdefine_line|#define he_readl_tsr0(dev, cid) &bslash;&n;&t;&t;he_readl_tcm(dev, CONFIG_TSRA | (cid &lt;&lt; 3) | 0)
 DECL|macro|he_writel_tsr1
-mdefine_line|#define he_writel_tsr1(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 1)
+mdefine_line|#define he_writel_tsr1(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 1)
 DECL|macro|he_writel_tsr2
-mdefine_line|#define he_writel_tsr2(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 2)
+mdefine_line|#define he_writel_tsr2(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 2)
 DECL|macro|he_writel_tsr3
-mdefine_line|#define he_writel_tsr3(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 3)
+mdefine_line|#define he_writel_tsr3(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 3)
 DECL|macro|he_writel_tsr4
-mdefine_line|#define he_writel_tsr4(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 4)
+mdefine_line|#define he_writel_tsr4(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 4)
 multiline_comment|/* from page 2-20&n;&t; *&n;&t; * NOTE While the transmit connection is active, bits 23 through 0&n;&t; *      of this register must not be written by the host.  Byte&n;&t; *      enables should be used during normal operation when writing&n;&t; *      the most significant byte.&n;&t; */
 DECL|macro|he_writel_tsr4_upper
-mdefine_line|#define he_writel_tsr4_upper(dev, val, cid) &bslash;&n;&t;&t;he_writel_internal(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 4, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;CON_CTL_TCM &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_2 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_1 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_0)
+mdefine_line|#define he_writel_tsr4_upper(dev, val, cid) &bslash;&n;&t;&t;he_writel_internal(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 4, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;CON_CTL_TCM &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_2 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_1 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_0)
 DECL|macro|he_readl_tsr4
-mdefine_line|#define he_readl_tsr4(dev, cid) &bslash;&n;&t;&t;he_readl_tcm(dev, CONFIG_TSRA | (cid&lt;&lt;3) | 4)
+mdefine_line|#define he_readl_tsr4(dev, cid) &bslash;&n;&t;&t;he_readl_tcm(dev, CONFIG_TSRA | (cid &lt;&lt; 3) | 4)
 DECL|macro|he_writel_tsr5
-mdefine_line|#define he_writel_tsr5(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 5)
+mdefine_line|#define he_writel_tsr5(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 5)
 DECL|macro|he_writel_tsr6
-mdefine_line|#define he_writel_tsr6(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 6)
+mdefine_line|#define he_writel_tsr6(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 6)
 DECL|macro|he_writel_tsr7
-mdefine_line|#define he_writel_tsr7(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid&lt;&lt;3) | 7)
+mdefine_line|#define he_writel_tsr7(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRA | (cid &lt;&lt; 3) | 7)
 DECL|macro|he_writel_tsr8
-mdefine_line|#define he_writel_tsr8(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid&lt;&lt;2) | 0)
+mdefine_line|#define he_writel_tsr8(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid &lt;&lt; 2) | 0)
 DECL|macro|he_writel_tsr9
-mdefine_line|#define he_writel_tsr9(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid&lt;&lt;2) | 1)
+mdefine_line|#define he_writel_tsr9(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid &lt;&lt; 2) | 1)
 DECL|macro|he_writel_tsr10
-mdefine_line|#define he_writel_tsr10(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid&lt;&lt;2) | 2)
+mdefine_line|#define he_writel_tsr10(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid &lt;&lt; 2) | 2)
 DECL|macro|he_writel_tsr11
-mdefine_line|#define he_writel_tsr11(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid&lt;&lt;2) | 3)
+mdefine_line|#define he_writel_tsr11(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRB | (cid &lt;&lt; 2) | 3)
 DECL|macro|he_writel_tsr12
-mdefine_line|#define he_writel_tsr12(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRC | (cid&lt;&lt;1) | 0)
+mdefine_line|#define he_writel_tsr12(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRC | (cid &lt;&lt; 1) | 0)
 DECL|macro|he_writel_tsr13
-mdefine_line|#define he_writel_tsr13(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRC | (cid&lt;&lt;1) | 1)
+mdefine_line|#define he_writel_tsr13(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRC | (cid &lt;&lt; 1) | 1)
 DECL|macro|he_writel_tsr14
 mdefine_line|#define he_writel_tsr14(dev, val, cid) &bslash;&n;&t;&t;he_writel_tcm(dev, val, CONFIG_TSRD | cid)
 DECL|macro|he_writel_tsr14_upper
 mdefine_line|#define he_writel_tsr14_upper(dev, val, cid) &bslash;&n;&t;&t;he_writel_internal(dev, val, CONFIG_TSRD | cid, &bslash;&n;&t;&t;&t;&t;&t;&t;&t;CON_CTL_TCM &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_2 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_1 &bslash;&n;&t;&t;&t;&t;&t;&t;&t;| CON_BYTE_DISABLE_0)
 multiline_comment|/* 2.7.1 per connection receive state registers */
 DECL|macro|he_writel_rsr0
-mdefine_line|#define he_writel_rsr0(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 0)
+mdefine_line|#define he_writel_rsr0(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 0)
 DECL|macro|he_readl_rsr0
-mdefine_line|#define he_readl_rsr0(dev, cid) &bslash;&n;&t;&t;he_readl_rcm(dev, 0x00000 | (cid&lt;&lt;3) | 0)
+mdefine_line|#define he_readl_rsr0(dev, cid) &bslash;&n;&t;&t;he_readl_rcm(dev, 0x00000 | (cid &lt;&lt; 3) | 0)
 DECL|macro|he_writel_rsr1
-mdefine_line|#define he_writel_rsr1(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 1)
+mdefine_line|#define he_writel_rsr1(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 1)
 DECL|macro|he_writel_rsr2
-mdefine_line|#define he_writel_rsr2(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 2)
+mdefine_line|#define he_writel_rsr2(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 2)
 DECL|macro|he_writel_rsr3
-mdefine_line|#define he_writel_rsr3(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 3)
+mdefine_line|#define he_writel_rsr3(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 3)
 DECL|macro|he_writel_rsr4
-mdefine_line|#define he_writel_rsr4(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 4)
+mdefine_line|#define he_writel_rsr4(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 4)
 DECL|macro|he_writel_rsr5
-mdefine_line|#define he_writel_rsr5(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 5)
+mdefine_line|#define he_writel_rsr5(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 5)
 DECL|macro|he_writel_rsr6
-mdefine_line|#define he_writel_rsr6(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 6)
+mdefine_line|#define he_writel_rsr6(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 6)
 DECL|macro|he_writel_rsr7
-mdefine_line|#define he_writel_rsr7(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid&lt;&lt;3) | 7)
+mdefine_line|#define he_writel_rsr7(dev, val, cid) &bslash;&n;&t;&t;he_writel_rcm(dev, val, 0x00000 | (cid &lt;&lt; 3) | 7)
 r_static
 id|__inline__
 r_struct
@@ -1118,7 +1097,7 @@ id|rate
 multiline_comment|/* cps to atm forum format */
 (brace
 DECL|macro|NONZERO
-mdefine_line|#define NONZERO (1&lt;&lt;14)
+mdefine_line|#define NONZERO (1 &lt;&lt; 14)
 r_int
 id|exp
 op_assign
@@ -2774,60 +2753,11 @@ l_int|2
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* this is pretty, but avoids _divdu3 and is mostly correct */
-id|buf
-op_assign
-l_int|0
-suffix:semicolon
 id|mult
 op_assign
 id|he_dev-&gt;atm_dev-&gt;link_rate
 op_div
 id|ATM_OC3_PCR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rate_cps
-OG
-(paren
-l_int|68
-op_star
-id|mult
-)paren
-)paren
-id|buf
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rate_cps
-OG
-(paren
-l_int|136
-op_star
-id|mult
-)paren
-)paren
-id|buf
-op_assign
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rate_cps
-OG
-(paren
-l_int|204
-op_star
-id|mult
-)paren
-)paren
-id|buf
-op_assign
-l_int|3
 suffix:semicolon
 r_if
 c_cond
@@ -2843,6 +2773,59 @@ id|mult
 id|buf
 op_assign
 l_int|4
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|rate_cps
+OG
+(paren
+l_int|204
+op_star
+id|mult
+)paren
+)paren
+id|buf
+op_assign
+l_int|3
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|rate_cps
+OG
+(paren
+l_int|136
+op_star
+id|mult
+)paren
+)paren
+id|buf
+op_assign
+l_int|2
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|rate_cps
+OG
+(paren
+l_int|68
+op_star
+id|mult
+)paren
+)paren
+id|buf
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|buf
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif
 r_if
@@ -4372,24 +4355,6 @@ id|he_dev-&gt;irq
 op_assign
 id|he_dev-&gt;pci_dev-&gt;irq
 suffix:semicolon
-macro_line|#ifdef BUS_INT_WAR
-id|HPRINTK
-c_func
-(paren
-l_string|&quot;sn_add_polled_interrupt(irq %d, 1)&bslash;n&quot;
-comma
-id|he_dev-&gt;irq
-)paren
-suffix:semicolon
-id|sn_add_polled_interrupt
-c_func
-(paren
-id|he_dev-&gt;irq
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -7380,15 +7345,6 @@ c_cond
 (paren
 id|he_dev-&gt;irq
 )paren
-(brace
-macro_line|#ifdef BUS_INT_WAR
-id|sn_delete_polled_interrupt
-c_func
-(paren
-id|he_dev-&gt;irq
-)paren
-suffix:semicolon
-macro_line|#endif
 id|free_irq
 c_func
 (paren
@@ -7397,7 +7353,6 @@ comma
 id|he_dev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8064,10 +8019,10 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|macro|AAL5_LEN
-mdefine_line|#define AAL5_LEN(buf,len) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((((unsigned char *)(buf))[(len)-6]&lt;&lt;8) |&t;&bslash;&n;&t;&t;&t;&t;(((unsigned char *)(buf))[(len)-5]))
+mdefine_line|#define AAL5_LEN(buf,len) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((((unsigned char *)(buf))[(len)-6] &lt;&lt; 8) |&t;&bslash;&n;&t;&t;&t;&t;(((unsigned char *)(buf))[(len)-5]))
 multiline_comment|/* 2.10.1.2 receive&n; *&n; * aal5 packets can optionally return the tcp checksum in the lower&n; * 16 bits of the crc (RSR0_TCP_CKSUM)&n; */
 DECL|macro|TCP_CKSUM
-mdefine_line|#define TCP_CKSUM(buf,len) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((((unsigned char *)(buf))[(len)-2]&lt;&lt;8) |&t;&bslash;&n;&t;&t;&t;&t;(((unsigned char *)(buf))[(len-1)]))
+mdefine_line|#define TCP_CKSUM(buf,len) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((((unsigned char *)(buf))[(len)-2] &lt;&lt; 8) |&t;&bslash;&n;&t;&t;&t;&t;(((unsigned char *)(buf))[(len-1)]))
 r_static
 r_int
 DECL|function|he_service_rbrq
@@ -9856,10 +9811,11 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#ifdef USE_TASKLET
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -10009,10 +9965,11 @@ l_string|&quot;phy interrupt&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ATM_HE_USE_SUNI
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -10032,10 +9989,11 @@ c_func
 id|he_dev-&gt;atm_dev
 )paren
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -10229,10 +10187,11 @@ suffix:semicolon
 multiline_comment|/* 8.1.2 controller errata */
 )brace
 macro_line|#ifdef USE_TASKLET
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -10289,10 +10248,11 @@ l_int|NULL
 r_return
 id|IRQ_NONE
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -10452,10 +10412,11 @@ id|INT_FIFO
 suffix:semicolon
 macro_line|#endif
 )brace
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11048,10 +11009,11 @@ r_goto
 id|open_failed
 suffix:semicolon
 )brace
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11066,10 +11028,11 @@ comma
 id|cid
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11165,10 +11128,11 @@ r_goto
 id|open_failed
 suffix:semicolon
 )brace
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11225,10 +11189,11 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11309,10 +11274,11 @@ op_plus
 id|reg
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11348,10 +11314,11 @@ r_goto
 id|open_failed
 suffix:semicolon
 )brace
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11547,10 +11514,11 @@ id|cid
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11619,10 +11587,11 @@ r_goto
 id|open_failed
 suffix:semicolon
 )brace
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11645,10 +11614,11 @@ op_amp
 id|RSR0_OPEN_CONN
 )paren
 (brace
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11763,7 +11733,7 @@ comma
 id|cid
 )paren
 suffix:semicolon
-multiline_comment|/* 5.1.11 last parameter initialized should be&n;&t;&t;          the open/closed indication in rsr0 */
+multiline_comment|/* 5.1.11 last parameter initialized should be&n;&t;&t;&t;  the open/closed indication in rsr0 */
 id|he_writel_rsr0
 c_func
 (paren
@@ -11793,10 +11763,11 @@ id|cid
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -11978,10 +11949,11 @@ id|cid
 suffix:semicolon
 multiline_comment|/* 2.7.2.2 close receive operation */
 multiline_comment|/* wait for previous close (if any) to finish */
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12064,10 +12036,11 @@ comma
 id|RXCON_CLOSE
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12171,7 +12144,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;wmem_alloc
+id|vcc-&gt;sk-&gt;sk_wmem_alloc
 )paren
 )paren
 OG
@@ -12239,10 +12212,11 @@ id|tx_inuse
 )paren
 suffix:semicolon
 multiline_comment|/* 2.3.1.1 generic close operations with flush */
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12395,10 +12369,11 @@ comma
 id|cid
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12449,10 +12424,11 @@ r_goto
 id|close_tx_incomplete
 suffix:semicolon
 )brace
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12594,10 +12570,11 @@ dot
 id|pcr
 suffix:semicolon
 )brace
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12848,10 +12825,11 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#endif
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -12901,10 +12879,11 @@ op_amp
 id|vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13149,10 +13128,11 @@ op_amp
 id|vcc-&gt;stats-&gt;tx_err
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13283,10 +13263,11 @@ comma
 id|cid
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13389,10 +13370,11 @@ id|he_ioctl_reg
 )paren
 )paren
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13473,10 +13455,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13595,10 +13578,11 @@ comma
 id|addr
 )paren
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13638,10 +13622,11 @@ l_int|4
 )paren
 suffix:semicolon
 macro_line|#endif
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13682,10 +13667,11 @@ suffix:semicolon
 r_int
 id|reg
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13706,10 +13692,11 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13869,10 +13856,11 @@ comma
 l_string|&quot;Mismatched Cells  VPI/VCI Not Open  Dropped Cells  RCM Dropped Cells&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HE_SPIN_LOCK
+id|spin_lock_irqsave
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -13917,10 +13905,11 @@ comma
 id|CEC
 )paren
 suffix:semicolon
-id|HE_SPIN_UNLOCK
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|he_dev
+op_amp
+id|he_dev-&gt;global_lock
 comma
 id|flags
 )paren
@@ -14528,9 +14517,7 @@ id|EEPROM_DELAY
 )paren
 suffix:semicolon
 r_return
-(paren
 id|byte_read
-)paren
 suffix:semicolon
 )brace
 id|MODULE_LICENSE

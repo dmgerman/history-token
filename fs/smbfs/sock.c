@@ -153,7 +153,7 @@ id|socket
 )paren
 (brace
 r_return
-id|socket-&gt;sk-&gt;user_data
+id|socket-&gt;sk-&gt;sk_user_data
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when there is data on the socket.&n; */
@@ -179,7 +179,7 @@ op_assign
 id|server_from_socket
 c_func
 (paren
-id|sk-&gt;socket
+id|sk-&gt;sk_socket
 )paren
 suffix:semicolon
 r_void
@@ -358,7 +358,7 @@ comma
 id|sock
 )paren
 suffix:semicolon
-id|sock-&gt;sk-&gt;data_ready
+id|sock-&gt;sk-&gt;sk_data_ready
 op_assign
 id|server-&gt;data_ready
 suffix:semicolon
@@ -799,7 +799,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock-&gt;sk-&gt;state
+id|sock-&gt;sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -1058,7 +1058,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock-&gt;sk-&gt;state
+id|sock-&gt;sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -1270,7 +1270,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock-&gt;sk-&gt;state
+id|sock-&gt;sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren
@@ -1483,7 +1483,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sock-&gt;sk-&gt;state
+id|sock-&gt;sk-&gt;sk_state
 op_ne
 id|TCP_ESTABLISHED
 )paren

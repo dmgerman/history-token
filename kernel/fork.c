@@ -25,12 +25,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|variable|task_struct_cachep
-r_static
-id|kmem_cache_t
-op_star
-id|task_struct_cachep
-suffix:semicolon
 r_extern
 r_int
 id|copy_semundo
@@ -157,10 +151,22 @@ r_return
 id|total
 suffix:semicolon
 )brace
-DECL|function|free_task_struct
+macro_line|#ifndef __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
+DECL|macro|alloc_task_struct
+macro_line|# define alloc_task_struct()&t;kmem_cache_alloc(task_struct_cachep, GFP_KERNEL)
+DECL|macro|free_task_struct
+macro_line|# define free_task_struct(tsk)&t;kmem_cache_free(task_struct_cachep, (tsk))
+DECL|variable|task_struct_cachep
+r_static
+id|kmem_cache_t
+op_star
+id|task_struct_cachep
+suffix:semicolon
+macro_line|#endif
+DECL|function|free_task
 r_static
 r_void
-id|free_task_struct
+id|free_task
 c_func
 (paren
 r_struct
@@ -184,11 +190,9 @@ c_func
 id|tsk-&gt;thread_info
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|free_task_struct
 c_func
 (paren
-id|task_struct_cachep
-comma
 id|tsk
 )paren
 suffix:semicolon
@@ -222,11 +226,9 @@ c_func
 id|tsk-&gt;thread_info
 )paren
 suffix:semicolon
-id|kmem_cache_free
+id|free_task_struct
 c_func
 (paren
-id|task_struct_cachep
-comma
 id|tsk
 )paren
 suffix:semicolon
@@ -302,7 +304,7 @@ c_func
 id|tsk-&gt;user
 )paren
 suffix:semicolon
-id|free_task_struct
+id|free_task
 c_func
 (paren
 id|tsk
@@ -709,6 +711,7 @@ r_int
 id|mempages
 )paren
 (brace
+macro_line|#ifndef __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
 multiline_comment|/* create a slab on which task_structs can be allocated */
 id|task_struct_cachep
 op_assign
@@ -744,6 +747,7 @@ c_func
 l_string|&quot;fork_init(): cannot create task_struct SLAB cache&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * The default maximum number of threads is set to a safe&n;&t; * value: the thread structures can take up at most half&n;&t; * of memory.&n;&t; */
 id|max_threads
 op_assign
@@ -858,11 +862,28 @@ op_logical_neg
 id|tsk
 )paren
 (brace
+id|tsk
+op_assign
+id|alloc_task_struct
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tsk
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|ti
 op_assign
 id|alloc_thread_info
 c_func
 (paren
+id|tsk
 )paren
 suffix:semicolon
 r_if
@@ -870,31 +891,12 @@ c_cond
 (paren
 op_logical_neg
 id|ti
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|tsk
-op_assign
-id|kmem_cache_alloc
-c_func
-(paren
-id|task_struct_cachep
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tsk
 )paren
 (brace
-id|free_thread_info
+id|free_task_struct
 c_func
 (paren
-id|ti
+id|tsk
 )paren
 suffix:semicolon
 r_return
@@ -4267,7 +4269,7 @@ id|p-&gt;user
 suffix:semicolon
 id|bad_fork_free
 suffix:colon
-id|free_task_struct
+id|free_task
 c_func
 (paren
 id|p

@@ -820,16 +820,6 @@ id|entry
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpufreq_driver
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/* are these acceptable values? */
 id|entry
 op_assign

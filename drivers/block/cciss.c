@@ -9505,7 +9505,7 @@ id|queue
 suffix:semicolon
 id|startio
 suffix:colon
-id|__blk_stop_queue
+id|blk_stop_queue
 c_func
 (paren
 id|q
@@ -9754,6 +9754,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * See if we can queue up some more IO&n;&t; */
+id|blk_start_queue
+c_func
+(paren
+op_amp
+id|h-&gt;queue
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -9764,13 +9771,6 @@ id|h-&gt;ctlr
 )paren
 comma
 id|flags
-)paren
-suffix:semicolon
-id|blk_start_queue
-c_func
-(paren
-op_amp
-id|h-&gt;queue
 )paren
 suffix:semicolon
 r_return
