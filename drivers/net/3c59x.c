@@ -674,8 +674,6 @@ op_or
 id|HAS_HWCKSM
 op_or
 id|EXTRA_PREAMBLE
-op_or
-id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -693,8 +691,6 @@ op_or
 id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
-op_or
-id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -710,8 +706,6 @@ comma
 id|IS_CYCLONE
 op_or
 id|HAS_HWCKSM
-op_or
-id|EEPROM_RESET
 comma
 l_int|128
 comma
@@ -1108,8 +1102,6 @@ op_or
 id|HAS_HWCKSM
 op_or
 id|EXTRA_PREAMBLE
-op_or
-id|EEPROM_RESET
 comma
 l_int|128
 comma
