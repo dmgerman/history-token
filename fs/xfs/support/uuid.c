@@ -2,11 +2,11 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;xfs_types.h&gt;
 macro_line|#include &lt;xfs_arch.h&gt;
-macro_line|#include &quot;time.h&quot;
+macro_line|#include &lt;time.h&gt;
+macro_line|#include &lt;kmem.h&gt;
+macro_line|#include &lt;mutex.h&gt;
 macro_line|#include &quot;uuid.h&quot;
-macro_line|#include &quot;kmem.h&quot;
 macro_line|#include &quot;debug.h&quot;
-macro_line|#include &quot;mutex.h&quot;
 DECL|variable|uuid_monitor
 r_static
 id|mutex_t

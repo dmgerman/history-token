@@ -16,8 +16,11 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;support/ktrace.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
-macro_line|#include &lt;support/kmem.h&gt;
-macro_line|#include &quot;page_buf.h&quot;
+macro_line|#include &quot;kmem.h&quot;
+macro_line|#include &quot;xfs_types.h&quot;
+macro_line|#include &quot;xfs_cred.h&quot;
+macro_line|#include &quot;xfs_lrw.h&quot;
+macro_line|#include &quot;xfs_buf.h&quot;
 DECL|macro|BBSHIFT
 mdefine_line|#define BBSHIFT&t;&t;9
 DECL|macro|BN_ALIGN_MASK

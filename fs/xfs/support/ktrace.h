@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPPORT_KTRACE_H__
 DECL|macro|__XFS_SUPPORT_KTRACE_H__
 mdefine_line|#define __XFS_SUPPORT_KTRACE_H__
-macro_line|#include &lt;support/spin.h&gt;
+macro_line|#include &lt;spin.h&gt;
 multiline_comment|/*&n; * Trace buffer entry structure.&n; */
 DECL|struct|ktrace_entry
 r_typedef

@@ -23,18 +23,25 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;linux/xfs_behavior.h&gt;
-macro_line|#include &lt;linux/xfs_vfs.h&gt;
-macro_line|#include &lt;linux/xfs_cred.h&gt;
-macro_line|#include &lt;linux/xfs_vnode.h&gt;
-macro_line|#include &lt;linux/xfs_stats.h&gt;
-macro_line|#include &lt;linux/xfs_sysctl.h&gt;
-macro_line|#include &lt;linux/xfs_iops.h&gt;
-macro_line|#include &lt;linux/xfs_super.h&gt;
-macro_line|#include &lt;linux/xfs_globals.h&gt;
-macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
-macro_line|#include &lt;linux/xfs_lrw.h&gt;
-macro_line|#include &lt;pagebuf/page_buf.h&gt;
+macro_line|#include &lt;mrlock.h&gt;
+macro_line|#include &lt;spin.h&gt;
+macro_line|#include &lt;sv.h&gt;
+macro_line|#include &lt;mutex.h&gt;
+macro_line|#include &lt;sema.h&gt;
+macro_line|#include &lt;time.h&gt;
+macro_line|#include &lt;kmem.h&gt;
+macro_line|#include &lt;xfs_behavior.h&gt;
+macro_line|#include &lt;xfs_vfs.h&gt;
+macro_line|#include &lt;xfs_cred.h&gt;
+macro_line|#include &lt;xfs_vnode.h&gt;
+macro_line|#include &lt;xfs_stats.h&gt;
+macro_line|#include &lt;xfs_sysctl.h&gt;
+macro_line|#include &lt;xfs_iops.h&gt;
+macro_line|#include &lt;xfs_super.h&gt;
+macro_line|#include &lt;xfs_globals.h&gt;
+macro_line|#include &lt;xfs_fs_subr.h&gt;
+macro_line|#include &lt;xfs_lrw.h&gt;
+macro_line|#include &lt;xfs_buf.h&gt;
 multiline_comment|/*&n; * Feature macros (disable/enable)&n; */
 DECL|macro|HAVE_REFCACHE
 macro_line|#undef  HAVE_REFCACHE&t;/* reference cache not needed for NFS in 2.6 */
