@@ -1173,7 +1173,7 @@ c_cond
 (paren
 id|cap_ptr
 op_ne
-l_int|0x00
+l_int|0
 )paren
 (brace
 r_do
@@ -1227,7 +1227,7 @@ op_logical_and
 (paren
 id|cap_ptr
 op_ne
-l_int|0x00
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -2611,10 +2611,6 @@ id|pci_dev
 op_star
 id|bridge_dev
 suffix:semicolon
-id|agp_bridge.dev
-op_assign
-id|dev
-suffix:semicolon
 multiline_comment|/* Everything is on func 1 here so we are hardcoding function one */
 id|bridge_dev
 op_assign
@@ -2754,6 +2750,10 @@ op_eq
 l_int|0
 )paren
 (brace
+id|agp_bridge.dev
+op_assign
+id|dev
+suffix:semicolon
 id|agp_register_driver
 c_func
 (paren
