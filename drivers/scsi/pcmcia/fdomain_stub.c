@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;fdomain.h&quot;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -127,46 +128,6 @@ suffix:semicolon
 DECL|typedef|scsi_info_t
 )brace
 id|scsi_info_t
-suffix:semicolon
-r_extern
-id|Scsi_Host_Template
-id|fdomain_driver_template
-suffix:semicolon
-r_extern
-r_void
-id|fdomain_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|Scsi_Host
-op_star
-id|__fdomain_16x0_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-id|tpnt
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fdomain_16x0_bus_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
 suffix:semicolon
 r_static
 r_void
@@ -621,11 +582,6 @@ comma
 id|last_ret
 comma
 id|last_fn
-comma
-id|ints
-(braket
-l_int|3
-)braket
 suffix:semicolon
 id|u_char
 id|tuple_data
@@ -874,27 +830,6 @@ id|link-&gt;io.NumPorts1
 )paren
 suffix:semicolon
 multiline_comment|/* Set configuration options for the fdomain driver */
-id|ints
-(braket
-l_int|0
-)braket
-op_assign
-l_int|2
-suffix:semicolon
-id|ints
-(braket
-l_int|1
-)braket
-op_assign
-id|link-&gt;io.BasePort1
-suffix:semicolon
-id|ints
-(braket
-l_int|2
-)braket
-op_assign
-id|link-&gt;irq.AssignedIRQ
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -911,8 +846,6 @@ id|fdomain_setup
 c_func
 (paren
 id|str
-comma
-id|ints
 )paren
 suffix:semicolon
 id|host

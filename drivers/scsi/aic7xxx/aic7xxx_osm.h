@@ -2659,8 +2659,7 @@ r_void
 )paren
 (brace
 r_return
-op_minus
-id|ENODEV
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ahc_linux_pci_exit

@@ -22,7 +22,8 @@ r_int
 id|advansys_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 )paren
 suffix:semicolon
@@ -50,7 +51,8 @@ r_int
 id|advansys_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_void
@@ -59,7 +61,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -68,7 +71,8 @@ r_int
 id|advansys_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -96,7 +100,8 @@ r_int
 id|advansys_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon

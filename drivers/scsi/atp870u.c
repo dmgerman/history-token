@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&n; *  linux/kernel/atp870u.c&n; *&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *  2.5.x update (C) 2002  Red Hat &lt;alan@redhat.com&gt;&n; *  2.6.x update (C) 2004  Red Hat &lt;alan@redhat.com&gt;&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15&n; *&t;&t;   fix prd table bug 2001/09/12 (7.1)&n; */
+multiline_comment|/*&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *  2.5.x update (C) 2002  Red Hat &lt;alan@redhat.com&gt;&n; *  2.6.x update (C) 2004  Red Hat &lt;alan@redhat.com&gt;&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15&n; *&t;&t;   fix prd table bug 2001/09/12 (7.1)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -11,19 +11,29 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;atp870u.h&quot;
-multiline_comment|/*&n; *   static const char RCSid[] = &quot;$Header: /usr/src/linux/kernel/blk_drv/scsi/RCS/atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&quot;;&n; */
-DECL|variable|sync_idu
+DECL|variable|atp870u_template
 r_static
-r_int
-r_int
-r_int
-id|sync_idu
+r_struct
+id|scsi_host_template
+id|atp870u_template
+suffix:semicolon
+r_static
+r_void
+id|send_s870
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
 suffix:semicolon
 DECL|function|atp870u_intr_handle
 r_static
@@ -70,7 +80,8 @@ r_char
 op_star
 id|prd
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|workrequ
 suffix:semicolon
@@ -1856,11 +1867,7 @@ id|workrequ-&gt;buffer
 comma
 id|workrequ-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|workrequ-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1872,7 +1879,7 @@ id|workrequ-&gt;request_bufflen
 op_logical_and
 id|workrequ-&gt;sc_data_direction
 op_ne
-id|SCSI_DATA_NONE
+id|DMA_NONE
 )paren
 (brace
 id|pci_unmap_single
@@ -1884,11 +1891,7 @@ id|workrequ-&gt;SCp.dma_handle
 comma
 id|workrequ-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|workrequ-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2419,7 +2422,8 @@ r_int
 id|atp870u_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|req_p
 comma
@@ -2429,7 +2433,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -2684,7 +2689,8 @@ r_int
 r_int
 id|tmport
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|workrequ
 suffix:semicolon
@@ -3245,11 +3251,7 @@ id|sgpnt
 comma
 id|workrequ-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|workrequ-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -3324,11 +3326,7 @@ id|workrequ-&gt;request_buffer
 comma
 id|workrequ-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|workrequ-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|l
@@ -3478,7 +3476,7 @@ c_cond
 (paren
 id|workrequ-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|outb
@@ -4287,7 +4285,7 @@ c_cond
 (paren
 id|workrequ-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|dev-&gt;id
@@ -6171,10 +6169,6 @@ op_star
 )paren
 op_amp
 id|host-&gt;hostdata
-suffix:semicolon
-id|sync_idu
-op_assign
-l_int|0
 suffix:semicolon
 id|tmport
 op_assign
@@ -9478,10 +9472,6 @@ op_star
 )paren
 op_amp
 id|host-&gt;hostdata
-suffix:semicolon
-id|sync_idu
-op_assign
-l_int|0
 suffix:semicolon
 id|lvdmode
 op_assign
@@ -15433,11 +15423,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* The abort command does not leave the device in a clean state where&n;   it is available to be used again.  Until this gets worked out, we will&n;   leave it commented out.  */
 DECL|function|atp870u_abort
+r_static
 r_int
 id|atp870u_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -15448,7 +15440,8 @@ id|j
 comma
 id|k
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|workrequ
 suffix:semicolon
@@ -15718,6 +15711,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 DECL|function|atp870u_info
+r_static
 r_const
 r_char
 op_star
@@ -15749,33 +15743,10 @@ r_return
 id|buffer
 suffix:semicolon
 )brace
-DECL|function|atp870u_set_info
-r_int
-id|atp870u_set_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|length
-comma
-r_struct
-id|Scsi_Host
-op_star
-id|HBAptr
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-multiline_comment|/* Currently this is a no-op */
-)brace
 DECL|macro|BLS
 mdefine_line|#define BLS buffer + len + size
 DECL|function|atp870u_proc_info
+r_static
 r_int
 id|atp870u_proc_info
 c_func
@@ -15835,25 +15806,11 @@ r_if
 c_cond
 (paren
 id|inout
-op_eq
-id|TRUE
 )paren
-(brace
-multiline_comment|/* Has data been written to the file? */
 r_return
-(paren
-id|atp870u_set_info
-c_func
-(paren
-id|buffer
-comma
-id|length
-comma
-id|HBAptr
-)paren
-)paren
+op_minus
+id|ENOSYS
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -16185,7 +16142,8 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|variable|atp870u_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|atp870u_template
 op_assign
 (brace
@@ -16403,15 +16361,13 @@ c_func
 r_void
 )paren
 (brace
-id|pci_register_driver
+r_return
+id|pci_module_init
 c_func
 (paren
 op_amp
 id|atp870u_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|atp870u_exit

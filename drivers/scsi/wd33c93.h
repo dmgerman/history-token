@@ -299,7 +299,8 @@ op_star
 id|dma_setup_t
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -320,7 +321,8 @@ id|Scsi_Host
 op_star
 id|instance
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -434,28 +436,32 @@ suffix:semicolon
 multiline_comment|/* index = target, bit = lun */
 DECL|member|input_Q
 r_volatile
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|input_Q
 suffix:semicolon
 multiline_comment|/* commands waiting to be started */
 DECL|member|selecting
 r_volatile
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|selecting
 suffix:semicolon
 multiline_comment|/* trying to select this command */
 DECL|member|connected
 r_volatile
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|connected
 suffix:semicolon
 multiline_comment|/* currently connected command */
 DECL|member|disconnected_Q
 r_volatile
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|disconnected_Q
 suffix:semicolon
@@ -716,7 +722,8 @@ suffix:semicolon
 r_int
 id|wd33c93_abort
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -724,7 +731,8 @@ suffix:semicolon
 r_int
 id|wd33c93_queuecommand
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -734,7 +742,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -773,7 +782,8 @@ suffix:semicolon
 r_int
 id|wd33c93_host_reset
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon

@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;fcp_impl.h&quot;
-macro_line|#include &quot;../scsi/hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/* #define FCDEBUG */
 DECL|macro|fc_printk
 mdefine_line|#define fc_printk printk (&quot;%s: &quot;, fc-&gt;name); printk 
