@@ -320,20 +320,6 @@ id|skb_to_sgvec
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|flow_cache_lookup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flow_cache_lookup
-)paren
-suffix:semicolon
-DECL|variable|flow_cache_genid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flow_cache_genid
-)paren
-suffix:semicolon
 macro_line|#if defined (CONFIG_IPV6_MODULE) || defined (CONFIG_IP_SCTP_MODULE)
 multiline_comment|/* inet functions common to v4 and v6 */
 multiline_comment|/* UDP/TCP exported functions for TCPv6 */
