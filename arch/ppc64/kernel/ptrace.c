@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/audit.h&gt;
+macro_line|#include &lt;linux/seccomp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1266,6 +1267,15 @@ op_star
 id|regs
 )paren
 (brace
+id|secure_computing
+c_func
+(paren
+id|regs-&gt;gpr
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
