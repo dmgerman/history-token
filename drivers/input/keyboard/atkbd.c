@@ -2074,11 +2074,46 @@ suffix:semicolon
 r_case
 id|ATKBD_KEY_UNKNOWN
 suffix:colon
+r_if
+c_cond
+(paren
+id|data
+op_eq
+id|ATKBD_RET_ACK
+op_logical_or
+id|data
+op_eq
+id|ATKBD_RET_NAK
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;atkbd.c: Unknown key %s (%s set %d, code %#x on %s).&bslash;n&quot;
+l_string|&quot;atkbd.c: Spurious %s on %s. Some program, &quot;
+l_string|&quot;like XFree86, might be trying access hardware directly.&bslash;n&quot;
+comma
+id|data
+op_eq
+id|ATKBD_RET_ACK
+ques
+c_cond
+l_string|&quot;ACK&quot;
+suffix:colon
+l_string|&quot;NAK&quot;
+comma
+id|serio-&gt;phys
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;atkbd.c: Unknown key %s &quot;
+l_string|&quot;(%s set %d, code %#x on %s).&bslash;n&quot;
 comma
 id|atkbd-&gt;release
 ques
@@ -2101,33 +2136,12 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|atkbd-&gt;translated
-op_logical_and
-id|atkbd-&gt;set
-op_eq
-l_int|2
-op_logical_and
-id|code
-op_eq
-l_int|0x7a
-)paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;atkbd.c: This is an XFree86 bug. It shouldn&squot;t access&quot;
-l_string|&quot; hardware directly.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;atkbd.c: Use &squot;setkeycodes %s%02x &lt;keycode&gt;&squot; to make it known.&bslash;n&quot;
+l_string|&quot;atkbd.c: Use &squot;setkeycodes %s%02x &lt;keycode&gt;&squot; &quot;
+l_string|&quot;to make it known.&bslash;n&quot;
 comma
 id|code
 op_amp
@@ -2143,6 +2157,7 @@ op_amp
 l_int|0x7f
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
