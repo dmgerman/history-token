@@ -79,12 +79,6 @@ op_assign
 l_int|41
 comma
 multiline_comment|/* IPv6-in-IPv4 tunnelling&t;&t;*/
-DECL|enumerator|IPPROTO_PIM
-id|IPPROTO_PIM
-op_assign
-l_int|103
-comma
-multiline_comment|/* Protocol Independent Multicast&t;*/
 DECL|enumerator|IPPROTO_ESP
 id|IPPROTO_ESP
 op_assign
@@ -97,12 +91,24 @@ op_assign
 l_int|51
 comma
 multiline_comment|/* Authentication Header protocol       */
+DECL|enumerator|IPPROTO_PIM
+id|IPPROTO_PIM
+op_assign
+l_int|103
+comma
+multiline_comment|/* Protocol Independent Multicast&t;*/
 DECL|enumerator|IPPROTO_COMP
 id|IPPROTO_COMP
 op_assign
 l_int|108
 comma
 multiline_comment|/* Compression Header protocol */
+DECL|enumerator|IPPROTO_SCTP
+id|IPPROTO_SCTP
+op_assign
+l_int|132
+comma
+multiline_comment|/* Stream Control Transport Protocol&t;*/
 DECL|enumerator|IPPROTO_RAW
 id|IPPROTO_RAW
 op_assign
