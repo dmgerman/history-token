@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.11 2003/06/23 12:00:08 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * inftlcore.c -- Linux driver for Inverse Flash Translation Layer (INFTL)&n; *&n; * (C) Copyright 2002, Greg Ungerer (gerg@snapgear.com)&n; *&n; * Based heavily on the nftlcore.c code which is:&n; * (c) 1999 Machine Vision Holdings, Inc.&n; * Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * $Id: inftlcore.c,v 1.14 2003/06/26 08:28:26 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2132,8 +2132,6 @@ r_int
 r_int
 id|thisEUN
 comma
-id|prevEUN
-comma
 id|status
 suffix:semicolon
 r_int
@@ -2438,18 +2436,44 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/* Find oldest unit in chain. */
-id|thisEUN
+id|u16
+op_star
+id|prevEUN
 op_assign
+op_amp
 id|inftl-&gt;VUtable
 (braket
 id|thisVUC
 )braket
 suffix:semicolon
-id|prevEUN
+id|thisEUN
 op_assign
-id|BLOCK_NIL
+op_star
+id|prevEUN
 suffix:semicolon
+multiline_comment|/* If the chain is all gone already, we&squot;re done */
+r_if
+c_cond
+(paren
+id|thisEUN
+op_eq
+id|BLOCK_NIL
+)paren
+(brace
+id|DEBUG
+c_func
+(paren
+id|MTD_DEBUG_LEVEL2
+comma
+l_string|&quot;INFTL: Empty VUC %d for deletion was already absent&bslash;n&quot;
+comma
+id|thisEUN
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Find oldest unit in chain. */
 r_while
 c_loop
 (paren
@@ -2461,18 +2485,40 @@ op_ne
 id|BLOCK_NIL
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|thisEUN
+op_ge
+id|inftl-&gt;nb_blocks
+)paren
+suffix:semicolon
 id|prevEUN
 op_assign
-id|thisEUN
-suffix:semicolon
-id|thisEUN
-op_assign
+op_amp
 id|inftl-&gt;PUtable
 (braket
 id|thisEUN
 )braket
 suffix:semicolon
+id|thisEUN
+op_assign
+op_star
+id|prevEUN
+suffix:semicolon
 )brace
+id|DEBUG
+c_func
+(paren
+id|MTD_DEBUG_LEVEL3
+comma
+l_string|&quot;Deleting EUN %d from VUC %d&bslash;n&quot;
+comma
+id|thisEUN
+comma
+id|thisVUC
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2487,7 +2533,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; * FixMe: Update Bad Unit Table on disk.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Could not erase : mark block as reserved.&n;&t;&t;&t; * FixMe: Update Bad Unit Table on medium.&n;&t;&t;&t; */
 id|inftl-&gt;PUtable
 (braket
 id|thisEUN
@@ -2506,17 +2552,22 @@ id|thisEUN
 op_assign
 id|BLOCK_FREE
 suffix:semicolon
-id|inftl-&gt;PUtable
-(braket
-id|prevEUN
-)braket
-op_assign
-id|BLOCK_NIL
-suffix:semicolon
 id|inftl-&gt;numfreeEUNs
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Now sort out whatever was pointing to it... */
+op_star
+id|prevEUN
+op_assign
+id|BLOCK_NIL
+suffix:semicolon
+multiline_comment|/* Ideally we&squot;d actually be responsive to new&n;&t;&t;   requests while we&squot;re doing this -- if there&squot;s&n;&t;&t;   free space why should others be made to wait? */
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 id|inftl-&gt;VUtable
 (braket
@@ -3373,9 +3424,9 @@ id|geo
 )paren
 (brace
 r_struct
-id|NFTLrecord
+id|INFTLrecord
 op_star
-id|nftl
+id|inftl
 op_assign
 (paren
 r_void
@@ -3385,15 +3436,15 @@ id|dev
 suffix:semicolon
 id|geo-&gt;heads
 op_assign
-id|nftl-&gt;heads
+id|inftl-&gt;heads
 suffix:semicolon
 id|geo-&gt;sectors
 op_assign
-id|nftl-&gt;sectors
+id|inftl-&gt;sectors
 suffix:semicolon
 id|geo-&gt;cylinders
 op_assign
-id|nftl-&gt;cylinders
+id|inftl-&gt;cylinders
 suffix:semicolon
 r_return
 l_int|0
@@ -3471,7 +3522,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;INFTL: inftlcore.c $Revision: 1.11 $, &quot;
+l_string|&quot;INFTL: inftlcore.c $Revision: 1.14 $, &quot;
 l_string|&quot;inftlmount.c %s&bslash;n&quot;
 comma
 id|inftlmountrev
