@@ -49,7 +49,7 @@ id|sp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Fetch spi and seq frpm ipsec header */
+multiline_comment|/* Fetch spi and seq from ipsec header */
 DECL|function|xfrm_parse_spi
 r_int
 id|xfrm_parse_spi
