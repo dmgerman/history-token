@@ -959,11 +959,11 @@ id|ring_org
 suffix:semicolon
 multiline_comment|/*Organization of ring */
 DECL|macro|RING_ORG_BUFF1
-mdefine_line|#define RING_ORG_BUFF1           0x01
+mdefine_line|#define RING_ORG_BUFF1&t;&t;0x01
 DECL|macro|RX_RING_ORG_BUFF3
-mdefine_line|#define RX_RING_ORG_BUFF3           0x03
+mdefine_line|#define RX_RING_ORG_BUFF3&t;0x03
 DECL|macro|RX_RING_ORG_BUFF5
-mdefine_line|#define RX_RING_ORG_BUFF5           0x05
+mdefine_line|#define RX_RING_ORG_BUFF5&t;0x05
 DECL|member|f_no_snoop
 id|u8
 id|f_no_snoop
