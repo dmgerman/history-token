@@ -13,6 +13,25 @@ macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
 macro_line|#include &quot;cifs_fs_sb.h&quot;
+r_extern
+r_int
+id|cifs_readdir2
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_void
+op_star
+id|direntry
+comma
+id|filldir_t
+id|filldir
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
 r_int
 DECL|function|cifs_open
 id|cifs_open
@@ -1911,7 +1930,7 @@ suffix:semicolon
 r_struct
 id|cifsFileInfo
 op_star
-id|pSMBFileStruct
+id|pCFileStruct
 op_assign
 (paren
 r_struct
@@ -1919,6 +1938,10 @@ id|cifsFileInfo
 op_star
 )paren
 id|file-&gt;private_data
+suffix:semicolon
+r_char
+op_star
+id|ptmp
 suffix:semicolon
 id|cFYI
 c_func
@@ -1939,13 +1962,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB add code to close search if not end of search BB */
 r_if
 c_cond
 (paren
-id|pSMBFileStruct
+id|pCFileStruct
 )paren
 (brace
+r_struct
+id|cifsTconInfo
+op_star
+id|pTcon
+suffix:semicolon
+r_struct
+id|cifs_sb_info
+op_star
+id|cifs_sb
+op_assign
+id|CIFS_SB
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_sb
+)paren
+suffix:semicolon
+id|pTcon
+op_assign
+id|cifs_sb-&gt;tcon
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -1956,6 +1998,112 @@ l_string|&quot;Freeing private data in close dir&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pCFileStruct-&gt;srch_inf.endOfSearch
+op_eq
+id|FALSE
+)paren
+(brace
+id|pCFileStruct-&gt;invalidHandle
+op_assign
+id|TRUE
+suffix:semicolon
+id|rc
+op_assign
+id|CIFSFindClose
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|pCFileStruct-&gt;netfid
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Closing uncompleted readdir with rc %d&quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* not much we can do if it fails anywway, ignore rc */
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|ptmp
+op_assign
+id|pCFileStruct-&gt;srch_inf.ntwrk_buf_start
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptmp
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;freeing smb buf in srch struct in closedir&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+id|pCFileStruct-&gt;srch_inf.ntwrk_buf_start
+op_assign
+l_int|NULL
+suffix:semicolon
+id|cifs_buf_release
+c_func
+(paren
+id|ptmp
+)paren
+suffix:semicolon
+)brace
+id|ptmp
+op_assign
+id|pCFileStruct-&gt;search_resume_name
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptmp
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;freeing resume name in closedir&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+id|pCFileStruct-&gt;search_resume_name
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ptmp
+)paren
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -1967,6 +2115,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* BB can we lock the filestruct while this is going on? */
 id|FreeXid
 c_func
 (paren
@@ -6711,7 +6860,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns one if new inode created (which therefore needs to be hashed) */
 multiline_comment|/* Might check in the future if inode number changed so we can rehash inode */
-r_static
 r_int
 DECL|function|construct_dentry
 id|construct_dentry
@@ -7592,6 +7740,26 @@ id|FILE_UNIX_INFO
 op_star
 id|pfindDataUnix
 suffix:semicolon
+multiline_comment|/* BB removeme begin */
+r_if
+c_cond
+(paren
+id|experimEnabled
+)paren
+(brace
+r_return
+id|cifs_readdir2
+c_func
+(paren
+id|file
+comma
+id|direntry
+comma
+id|filldir
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* BB removeme end */
 id|xid
 op_assign
 id|GetXid

@@ -10772,7 +10772,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#ifdef CIFS_EXPERIMENTAL
 multiline_comment|/* xid, tcon, searchName and codepage are input parms, rest are returned */
 r_int
 DECL|function|CIFSFindFirst2
@@ -11132,43 +11131,14 @@ op_or
 id|CIFS_SEARCH_RETURN_RESUME
 )paren
 suffix:semicolon
-multiline_comment|/* test for Unix extensions */
-r_if
-c_cond
-(paren
-id|tcon-&gt;ses-&gt;capabilities
-op_amp
-id|CAP_UNIX
-)paren
-(brace
 id|pSMB-&gt;InformationLevel
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|SMB_FIND_FILE_UNIX
+id|psrch_inf-&gt;info_level
 )paren
 suffix:semicolon
-id|psrch_inf-&gt;info_level
-op_assign
-id|SMB_FIND_FILE_UNIX
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pSMB-&gt;InformationLevel
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|SMB_FIND_FILE_DIRECTORY_INFO
-)paren
-suffix:semicolon
-id|psrch_inf-&gt;info_level
-op_assign
-id|SMB_FIND_FILE_DIRECTORY_INFO
-suffix:semicolon
-)brace
 multiline_comment|/* BB what should we set StorageType to? Does it matter? BB */
 id|pSMB-&gt;SearchStorageType
 op_assign
@@ -11618,42 +11588,15 @@ id|FILE_UNIX_INFO
 )paren
 suffix:semicolon
 multiline_comment|/* test for Unix extensions */
-r_if
-c_cond
-(paren
-id|tcon-&gt;ses-&gt;capabilities
-op_amp
-id|CAP_UNIX
-)paren
-(brace
+multiline_comment|/*&t;if (tcon-&gt;ses-&gt;capabilities &amp; CAP_UNIX) {&n;&t;&t;pSMB-&gt;InformationLevel = cpu_to_le16(SMB_FIND_FILE_UNIX);&n;&t;&t;psrch_inf-&gt;info_level = SMB_FIND_FILE_UNIX;&n;&t;} else {&n;&t;&t;pSMB-&gt;InformationLevel =&n;&t;&t;   cpu_to_le16(SMB_FIND_FILE_DIRECTORY_INFO);&n;&t;&t;psrch_inf-&gt;info_level = SMB_FIND_FILE_DIRECTORY_INFO;&n;&t;} */
 id|pSMB-&gt;InformationLevel
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|SMB_FIND_FILE_UNIX
+id|psrch_inf-&gt;info_level
 )paren
 suffix:semicolon
-id|psrch_inf-&gt;info_level
-op_assign
-id|SMB_FIND_FILE_UNIX
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pSMB-&gt;InformationLevel
-op_assign
-id|cpu_to_le16
-c_func
-(paren
-id|SMB_FIND_FILE_DIRECTORY_INFO
-)paren
-suffix:semicolon
-id|psrch_inf-&gt;info_level
-op_assign
-id|SMB_FIND_FILE_DIRECTORY_INFO
-suffix:semicolon
-)brace
 id|pSMB-&gt;ResumeKey
 op_assign
 l_int|0
@@ -11903,7 +11846,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif /* CIFS_EXPERIMENTAL */
 r_int
 DECL|function|CIFSFindNext
 id|CIFSFindNext

@@ -53,10 +53,10 @@ id|oplockEnabled
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|quotaEnabled
+DECL|variable|experimEnabled
 r_int
 r_int
-id|quotaEnabled
+id|experimEnabled
 op_assign
 l_int|0
 suffix:semicolon

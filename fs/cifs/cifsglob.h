@@ -647,7 +647,7 @@ id|__u16
 id|entries_in_buffer
 suffix:semicolon
 DECL|member|info_level
-r_int
+id|__u16
 id|info_level
 suffix:semicolon
 DECL|member|ntwrk_buf_start
@@ -1138,11 +1138,11 @@ r_int
 r_int
 id|oplockEnabled
 suffix:semicolon
-DECL|variable|quotaEnabled
+DECL|variable|experimEnabled
 id|GLOBAL_EXTERN
 r_int
 r_int
-id|quotaEnabled
+id|experimEnabled
 suffix:semicolon
 DECL|variable|lookupCacheEnabled
 id|GLOBAL_EXTERN
