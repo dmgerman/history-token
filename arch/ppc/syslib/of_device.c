@@ -765,6 +765,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|ofdev-&gt;node
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1080,7 +1086,11 @@ id|dev
 suffix:semicolon
 id|dev-&gt;node
 op_assign
+id|of_node_get
+c_func
+(paren
 id|np
+)paren
 suffix:semicolon
 id|dev-&gt;dma_mask
 op_assign
