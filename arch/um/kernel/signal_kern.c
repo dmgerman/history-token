@@ -44,7 +44,7 @@ mdefine_line|#define _BLOCKABLE (~(_S(SIGKILL) | _S(SIGSTOP)))
 multiline_comment|/*&n; * OK, we&squot;re invoking a handler&n; */
 DECL|function|handle_signal
 r_static
-r_void
+r_int
 id|handle_signal
 c_func
 (paren
@@ -357,6 +357,9 @@ id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|err
+suffix:semicolon
 )brace
 DECL|function|kern_do_signal
 r_static
@@ -383,7 +386,15 @@ id|info
 suffix:semicolon
 r_int
 id|sig
+comma
+id|handled_sig
+op_assign
+l_int|0
 suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
 id|sig
 op_assign
 id|get_signal_to_deliver
@@ -399,16 +410,20 @@ id|regs
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sig
+)paren
 OG
 l_int|0
 )paren
 (brace
+id|handled_sig
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Whee!  Actually deliver the signal.  */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|handle_signal
 c_func
 (paren
@@ -424,14 +439,19 @@ id|info
 comma
 id|oldset
 )paren
+)paren
+(brace
+r_break
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Did we come from a system call? */
 r_if
 c_cond
+(paren
+op_logical_neg
+id|handled_sig
+op_logical_and
 (paren
 id|PT_REGS_SYSCALL_NR
 c_func
@@ -440,6 +460,7 @@ id|regs
 )paren
 op_ge
 l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* Restart the system call - no handlers present */
@@ -547,7 +568,7 @@ id|current-&gt;thread.regs
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|handled_sig
 suffix:semicolon
 )brace
 DECL|function|do_signal
