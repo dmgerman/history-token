@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/* Page table allocation/freeing. */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Sliiiicck */
@@ -563,7 +564,7 @@ id|pgd
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|macro|VPTE_COLOR
 mdefine_line|#define VPTE_COLOR(address)&t;&t;(((address) &gt;&gt; (PAGE_SHIFT + 10)) &amp; 1UL)
 DECL|macro|DCACHE_COLOR

@@ -2632,11 +2632,13 @@ r_int
 r_int
 id|xcall_receive_signal
 suffix:semicolon
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 r_extern
 r_int
 r_int
 id|xcall_flush_dcache_page_cheetah
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 r_int
@@ -2665,7 +2667,7 @@ op_star
 id|page
 )paren
 (brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|__flush_dcache_page
 c_func
 (paren
@@ -2865,6 +2867,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|data0
 op_assign
 (paren
@@ -2891,6 +2894,7 @@ comma
 id|mask
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 id|atomic_inc
@@ -3041,6 +3045,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|data0
 op_assign
 (paren
@@ -3067,6 +3072,7 @@ comma
 id|mask
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 id|atomic_inc

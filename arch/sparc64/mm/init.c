@@ -429,7 +429,7 @@ id|dcpage_flushes
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|__flush_dcache_page
 c_func
 (paren
@@ -4654,6 +4654,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|function|__flush_dcache_range
 r_void
 id|__flush_dcache_range
@@ -4778,6 +4779,7 @@ id|ASI_DCACHE_INVALIDATE
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* DCACHE_ALIASING_POSSIBLE */
 multiline_comment|/* If not locked, zap it. */
 DECL|function|__flush_tlb_all
 r_void
@@ -5259,7 +5261,7 @@ id|pgt_quicklists
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* OK, we have to color these pages. The page tables are accessed&n; * by non-Dcache enabled mapping in the VPTE area by the dtlb_backend.S&n; * code, as well as by PAGE_OFFSET range direct-mapped addresses by &n; * other parts of the kernel. By coloring, we make sure that the tlbmiss &n; * fast handlers do not get data from old/garbage dcache lines that &n; * correspond to an old/stale virtual address (user/kernel) that &n; * previously mapped the pagetable page while accessing vpte range &n; * addresses. The idea is that if the vpte color and PAGE_OFFSET range &n; * color is the same, then when the kernel initializes the pagetable &n; * using the later address range, accesses with the first address&n; * range will see the newly initialized data rather than the garbage.&n; */
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 DECL|macro|DC_ALIAS_SHIFT
 mdefine_line|#define DC_ALIAS_SHIFT&t;1
 macro_line|#else
@@ -5352,7 +5354,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 id|set_page_count
 c_func
 (paren
@@ -5471,7 +5473,7 @@ op_star
 id|paddr
 suffix:semicolon
 )brace
-macro_line|#if (L1DCACHE_SIZE &gt; PAGE_SIZE)&t;&t;&t;/* is there D$ aliasing problem */
+macro_line|#ifdef DCACHE_ALIASING_POSSIBLE
 multiline_comment|/* Now free the other one up, adjust cache size. */
 id|preempt_disable
 c_func
