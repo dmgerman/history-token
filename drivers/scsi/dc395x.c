@@ -21541,7 +21541,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *$$$$$$$$$$$  MEMORY ALLOCATE FOR ADAPTER CONTROL BLOCK $$$$$$$$$$$$&n;&t; */
 id|host
 op_assign
-id|scsi_register
+id|scsi_host_alloc
 c_func
 (paren
 id|host_template
@@ -21565,7 +21565,7 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;pSH scsi_register ERROR&bslash;n&quot;
+l_string|&quot;pSH scsi_host_alloc ERROR&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -21603,7 +21603,7 @@ id|index
 )paren
 )paren
 (brace
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
@@ -21675,7 +21675,7 @@ comma
 l_string|&quot;DC395x_initAdapter initial ERROR&bslash;n&quot;
 )paren
 suffix:semicolon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
