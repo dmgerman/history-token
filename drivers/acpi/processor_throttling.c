@@ -89,11 +89,6 @@ id|pr-&gt;throttling.state
 op_assign
 l_int|0
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|duty_mask
 op_assign
 id|pr-&gt;throttling.state_count
@@ -103,6 +98,11 @@ suffix:semicolon
 id|duty_mask
 op_lshift_assign
 id|pr-&gt;throttling.duty_offset
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 id|value
 op_assign
@@ -277,11 +277,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Calculate the duty_value and duty_mask.&n;&t; */
 r_if
 c_cond
@@ -316,6 +311,11 @@ op_complement
 id|duty_mask
 suffix:semicolon
 )brace
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Disable throttling by writing a 0 to bit 4.  Note that we must&n;&t; * turn it off before you can change the duty_value.&n;&t; */
 id|value
 op_assign
