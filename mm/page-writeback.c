@@ -11,15 +11,38 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
 DECL|macro|MAX_WRITEBACK_PAGES
 mdefine_line|#define MAX_WRITEBACK_PAGES&t;1024
-multiline_comment|/*&n; * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited&n; * will look to see if it needs to force writeback or throttling.  Probably&n; * should be scaled by memory size.&n; */
-DECL|macro|RATELIMIT_PAGES
-mdefine_line|#define RATELIMIT_PAGES&t;&t;((512 * 1024) / PAGE_SIZE)
+multiline_comment|/*&n; * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited&n; * will look to see if it needs to force writeback or throttling.&n; */
+DECL|variable|ratelimit_pages
+r_static
+r_int
+id|ratelimit_pages
+op_assign
+l_int|32
+suffix:semicolon
 multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
-DECL|macro|SYNC_WRITEBACK_PAGES
-mdefine_line|#define SYNC_WRITEBACK_PAGES&t;((RATELIMIT_PAGES * 3) / 2)
+DECL|function|sync_writeback_pages
+r_static
+r_inline
+r_int
+id|sync_writeback_pages
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|ratelimit_pages
+op_plus
+id|ratelimit_pages
+op_div
+l_int|2
+suffix:semicolon
+)brace
 multiline_comment|/* The following parameters are exported via /proc/sys/vm */
 multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
@@ -171,7 +194,10 @@ id|sync_thresh
 r_int
 id|nr_to_write
 op_assign
-id|SYNC_WRITEBACK_PAGES
+id|sync_writeback_pages
+c_func
+(paren
+)paren
 suffix:semicolon
 id|writeback_backing_dev
 c_func
@@ -206,7 +232,10 @@ id|async_thresh
 r_int
 id|nr_to_write
 op_assign
-id|SYNC_WRITEBACK_PAGES
+id|sync_writeback_pages
+c_func
+(paren
+)paren
 suffix:semicolon
 id|writeback_backing_dev
 c_func
@@ -299,7 +328,7 @@ dot
 id|count
 op_increment
 op_ge
-id|RATELIMIT_PAGES
+id|ratelimit_pages
 )paren
 (brace
 id|ratelimits
@@ -633,11 +662,118 @@ id|HZ
 suffix:semicolon
 multiline_comment|/* delay 1 second */
 )brace
-DECL|function|wb_timer_init
+multiline_comment|/*&n; * If ratelimit_pages is too high then we can get into dirty-data overload&n; * if a large number of processes all perform writes at the same time.&n; * If it is too low then SMP machines will call the (expensive) get_page_state&n; * too often.&n; *&n; * Here we set ratelimit_pages to a level which ensures that when all CPUs are&n; * dirtying in parallel, we cannot go more than 3% (1/32) over the dirty memory&n; * thresholds before writeback cuts in.&n; *&n; * But the limit should not be set too high.  Because it also controls the&n; * amount of memory which the balance_dirty_pages() caller has to write back.&n; * If this is too large then the caller will block on the IO queue all the&n; * time.  So limit it to four megabytes - the balance_dirty_pages() caller&n; * will write six megabyte chunks, max.&n; */
+DECL|function|set_ratelimit
+r_static
+r_void
+id|set_ratelimit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|ratelimit_pages
+op_assign
+id|nr_free_pagecache_pages
+c_func
+(paren
+)paren
+op_div
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_star
+l_int|32
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ratelimit_pages
+OL
+l_int|16
+)paren
+id|ratelimit_pages
+op_assign
+l_int|16
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ratelimit_pages
+op_star
+id|PAGE_CACHE_SIZE
+OG
+l_int|4096
+op_star
+l_int|1024
+)paren
+id|ratelimit_pages
+op_assign
+(paren
+l_int|4096
+op_star
+l_int|1024
+)paren
+op_div
+id|PAGE_CACHE_SIZE
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|ratelimit_handler
+id|ratelimit_handler
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|self
+comma
+r_int
+r_int
+id|u
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+id|set_ratelimit
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ratelimit_nb
+r_static
+r_struct
+id|notifier_block
+id|ratelimit_nb
+op_assign
+(brace
+dot
+id|notifier_call
+op_assign
+id|ratelimit_handler
+comma
+dot
+id|next
+op_assign
+l_int|NULL
+comma
+)brace
+suffix:semicolon
+DECL|function|page_writeback_init
 r_static
 r_int
 id|__init
-id|wb_timer_init
+id|page_writeback_init
 c_func
 (paren
 r_void
@@ -677,15 +813,27 @@ op_amp
 id|wb_timer
 )paren
 suffix:semicolon
+id|set_ratelimit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|register_cpu_notifier
+c_func
+(paren
+op_amp
+id|ratelimit_nb
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|wb_timer_init
+DECL|variable|page_writeback_init
 id|module_init
 c_func
 (paren
-id|wb_timer_init
+id|page_writeback_init
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * A library function, which implements the vm_writeback a_op.  It&squot;s fairly&n; * lame at this time.  The idea is: the VM wants to liberate this page,&n; * so we pass the page to the address_space and give the fs the opportunity&n; * to write out lots of pages around this one.  It allows extent-based&n; * filesytems to do intelligent things.  It lets delayed-allocate filesystems&n; * perform better file layout.  It lets the address_space opportunistically&n; * write back disk-contiguous pages which are in other zones.&n; *&n; * FIXME: the VM wants to start I/O against *this* page.  Because its zone&n; * is under pressure.  But this function may start writeout against a&n; * totally different set of pages.  Unlikely to be a huge problem, but if it&n; * is, we could just writepage the page if it is still (PageDirty &amp;&amp;&n; * !PageWriteback) (See below).&n; *&n; * Another option is to just reposition page-&gt;mapping-&gt;dirty_pages so we&n; * *know* that the page will be written.  That will work fine, but seems&n; * unpleasant.  (If the page is not for-sure on -&gt;dirty_pages we&squot;re dead).&n; * Plus it assumes that the address_space is performing writeback in&n; * -&gt;dirty_pages order.&n; *&n; * So.  The proper fix is to leave the page locked-and-dirty and to pass&n; * it all the way down.&n; */
