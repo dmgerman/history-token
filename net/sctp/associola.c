@@ -2494,7 +2494,7 @@ r_else
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpInCtrlChunks
+id|SCTP_MIB_INCTRLCHUNKS
 )paren
 suffix:semicolon
 r_if
@@ -3219,6 +3219,9 @@ id|SCTP_STATE_SHUTDOWN_PENDING
 suffix:colon
 r_case
 id|SCTP_STATE_SHUTDOWN_RECEIVED
+suffix:colon
+r_case
+id|SCTP_STATE_SHUTDOWN_SENT
 suffix:colon
 r_if
 c_cond

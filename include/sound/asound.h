@@ -8,14 +8,16 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#if  __LITTLE_ENDIAN == 1234
+macro_line|#ifdef  __LITTLE_ENDIAN
 DECL|macro|SNDRV_LITTLE_ENDIAN
 mdefine_line|#define SNDRV_LITTLE_ENDIAN
-macro_line|#elif __BIG_ENDIAN == 4321
+macro_line|#else
+macro_line|#ifdef __BIG_ENDIAN
 DECL|macro|SNDRV_BIG_ENDIAN
 mdefine_line|#define SNDRV_BIG_ENDIAN
 macro_line|#else
 macro_line|#error &quot;Unsupported endian...&quot;
+macro_line|#endif
 macro_line|#endif
 macro_line|#else /* !__KERNEL__ */
 macro_line|#include &lt;endian.h&gt;

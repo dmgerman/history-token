@@ -83,6 +83,7 @@ suffix:semicolon
 multiline_comment|/* Length of op_name. */
 DECL|member|op_name
 r_char
+id|__user
 op_star
 id|op_name
 suffix:semicolon
@@ -94,6 +95,7 @@ suffix:semicolon
 multiline_comment|/* Length of op_buf (value-result) */
 DECL|member|op_buf
 r_char
+id|__user
 op_star
 id|op_buf
 suffix:semicolon

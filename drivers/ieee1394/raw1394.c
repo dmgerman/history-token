@@ -25,17 +25,10 @@ macro_line|#include &quot;iso.h&quot;
 macro_line|#include &quot;ieee1394_transactions.h&quot;
 macro_line|#include &quot;raw1394.h&quot;
 macro_line|#include &quot;raw1394-private.h&quot;
-macro_line|#if BITS_PER_LONG == 64
 DECL|macro|int2ptr
-mdefine_line|#define int2ptr(x) ((void __user *)x)
+mdefine_line|#define int2ptr(x) ((void __user *)(unsigned long)x)
 DECL|macro|ptr2int
 mdefine_line|#define ptr2int(x) ((u64)(unsigned long)(void __user *)x)
-macro_line|#else
-DECL|macro|int2ptr
-mdefine_line|#define int2ptr(x) ((void __user *)(u32)x)
-DECL|macro|ptr2int
-mdefine_line|#define ptr2int(x) ((u64)(unsigned long)(void __user *)x)
-macro_line|#endif
 macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 DECL|macro|RAW1394_DEBUG
 mdefine_line|#define RAW1394_DEBUG
@@ -8706,12 +8699,8 @@ c_func
 id|req-&gt;req.recvb
 )paren
 comma
-id|int2ptr
-c_func
-(paren
 op_amp
 id|addr-&gt;start
-)paren
 comma
 r_sizeof
 (paren

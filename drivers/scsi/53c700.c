@@ -6834,7 +6834,7 @@ id|host
 )paren
 id|SDp-&gt;hostdata
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* clear all the slots and their pending commands */
 r_for

@@ -712,17 +712,17 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_MCOUNT)
 r_extern
 r_void
-id|mcount
+id|_mcount
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mcount
+DECL|variable|_mcount
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|mcount
+id|_mcount
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1832,7 +1832,7 @@ c_func
 id|ip_fast_csum
 )paren
 suffix:semicolon
-multiline_comment|/* Moving data to/from userspace. */
+multiline_comment|/* Moving data to/from/in userspace. */
 DECL|variable|__copy_to_user
 id|EXPORT_SYMBOL
 c_func
@@ -1845,6 +1845,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__copy_from_user
+)paren
+suffix:semicolon
+DECL|variable|__copy_in_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__copy_in_user
 )paren
 suffix:semicolon
 DECL|variable|__strncpy_from_user

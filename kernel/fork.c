@@ -3821,11 +3821,6 @@ id|bad_fork_cleanup
 suffix:semicolon
 )brace
 macro_line|#endif
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -2604,10 +2604,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-(paren
-r_void
-)paren
-id|try_module_get
+id|__module_get
 c_func
 (paren
 id|THIS_MODULE

@@ -284,6 +284,7 @@ r_void
 id|mvme16x_reset
 c_func
 (paren
+r_void
 )paren
 (brace
 id|printk

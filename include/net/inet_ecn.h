@@ -2,6 +2,35 @@ macro_line|#ifndef _INET_ECN_H_
 DECL|macro|_INET_ECN_H_
 mdefine_line|#define _INET_ECN_H_
 macro_line|#include &lt;linux/ip.h&gt;
+r_enum
+(brace
+DECL|enumerator|INET_ECN_NOT_ECT
+id|INET_ECN_NOT_ECT
+op_assign
+l_int|0
+comma
+DECL|enumerator|INET_ECN_ECT_1
+id|INET_ECN_ECT_1
+op_assign
+l_int|1
+comma
+DECL|enumerator|INET_ECN_ECT_0
+id|INET_ECN_ECT_0
+op_assign
+l_int|2
+comma
+DECL|enumerator|INET_ECN_CE
+id|INET_ECN_CE
+op_assign
+l_int|3
+comma
+DECL|enumerator|INET_ECN_MASK
+id|INET_ECN_MASK
+op_assign
+l_int|3
+comma
+)brace
+suffix:semicolon
 DECL|function|INET_ECN_is_ce
 r_static
 r_inline
@@ -17,10 +46,10 @@ r_return
 (paren
 id|dsfield
 op_amp
-l_int|3
+id|INET_ECN_MASK
 )paren
 op_eq
-l_int|3
+id|INET_ECN_CE
 suffix:semicolon
 )brace
 DECL|function|INET_ECN_is_not_ce
@@ -38,10 +67,10 @@ r_return
 (paren
 id|dsfield
 op_amp
-l_int|3
+id|INET_ECN_MASK
 )paren
 op_eq
-l_int|2
+id|INET_ECN_ECT_0
 suffix:semicolon
 )brace
 DECL|function|INET_ECN_is_capable
@@ -59,7 +88,7 @@ r_return
 (paren
 id|dsfield
 op_amp
-l_int|2
+id|INET_ECN_ECT_0
 )paren
 suffix:semicolon
 )brace
@@ -80,7 +109,7 @@ id|inner
 id|outer
 op_and_assign
 op_complement
-l_int|3
+id|INET_ECN_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -96,7 +125,7 @@ op_or_assign
 (paren
 id|inner
 op_amp
-l_int|3
+id|INET_ECN_MASK
 )paren
 suffix:semicolon
 r_return
@@ -104,13 +133,13 @@ id|outer
 suffix:semicolon
 )brace
 DECL|macro|INET_ECN_xmit
-mdefine_line|#define&t;INET_ECN_xmit(sk) do { inet_sk(sk)-&gt;tos |= 2; } while (0)
+mdefine_line|#define&t;INET_ECN_xmit(sk) do { inet_sk(sk)-&gt;tos |= INET_ECN_ECT_0; } while (0)
 DECL|macro|INET_ECN_dontxmit
-mdefine_line|#define&t;INET_ECN_dontxmit(sk) do { inet_sk(sk)-&gt;tos &amp;= ~3; } while (0)
+mdefine_line|#define&t;INET_ECN_dontxmit(sk) &bslash;&n;&t;do { inet_sk(sk)-&gt;tos &amp;= ~INET_ECN_MASK; } while (0)
 DECL|macro|IP6_ECN_flow_init
-mdefine_line|#define IP6_ECN_flow_init(label) do {&t;&bslash;&n;      (label) &amp;= ~htonl(3&lt;&lt;20);&t;&t;&bslash;&n;    } while (0)
+mdefine_line|#define IP6_ECN_flow_init(label) do {&t;&t;&bslash;&n;      (label) &amp;= ~htonl(INET_ECN_MASK &lt;&lt; 20);&t;&bslash;&n;    } while (0)
 DECL|macro|IP6_ECN_flow_xmit
-mdefine_line|#define&t;IP6_ECN_flow_xmit(sk, label) do {&t;&t;&t;&bslash;&n;&t;if (INET_ECN_is_capable(inet_sk(sk)-&gt;tos))&t;&t;&bslash;&n;&t;&t;(label) |= __constant_htons(2 &lt;&lt; 4);&t;&t;&bslash;&n;    } while (0)
+mdefine_line|#define&t;IP6_ECN_flow_xmit(sk, label) do {&t;&t;&t;&t;&bslash;&n;&t;if (INET_ECN_is_capable(inet_sk(sk)-&gt;tos))&t;&t;&t;&bslash;&n;&t;&t;(label) |= __constant_htons(INET_ECN_ECT_0 &lt;&lt; 4);&t;&bslash;&n;    } while (0)
 DECL|function|IP_ECN_set_ce
 r_static
 r_inline
@@ -149,7 +178,7 @@ l_int|0xFFFF
 suffix:semicolon
 id|iph-&gt;tos
 op_or_assign
-l_int|1
+id|INET_ECN_CE
 suffix:semicolon
 )brace
 DECL|function|IP_ECN_clear
@@ -168,7 +197,7 @@ id|iph
 id|iph-&gt;tos
 op_and_assign
 op_complement
-l_int|3
+id|INET_ECN_MASK
 suffix:semicolon
 )brace
 r_struct
@@ -197,7 +226,7 @@ op_or_assign
 id|htonl
 c_func
 (paren
-l_int|1
+id|INET_ECN_CE
 op_lshift
 l_int|20
 )paren
@@ -227,7 +256,7 @@ op_complement
 id|htonl
 c_func
 (paren
-l_int|3
+id|INET_ECN_MASK
 op_lshift
 l_int|20
 )paren

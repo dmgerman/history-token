@@ -1659,7 +1659,7 @@ op_star
 id|rqstp
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|iov
 comma
@@ -1670,9 +1670,6 @@ r_int
 id|buflen
 )paren
 (brace
-id|mm_segment_t
-id|oldfs
-suffix:semicolon
 r_struct
 id|msghdr
 id|msg
@@ -1710,14 +1707,6 @@ r_sizeof
 id|rqstp-&gt;rq_addr
 )paren
 suffix:semicolon
-id|msg.msg_iov
-op_assign
-id|iov
-suffix:semicolon
-id|msg.msg_iovlen
-op_assign
-id|nr
-suffix:semicolon
 id|msg.msg_control
 op_assign
 l_int|NULL
@@ -1730,22 +1719,9 @@ id|msg.msg_flags
 op_assign
 id|MSG_DONTWAIT
 suffix:semicolon
-id|oldfs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
 id|len
 op_assign
-id|sock_recvmsg
+id|kernel_recvmsg
 c_func
 (paren
 id|sock
@@ -1753,15 +1729,13 @@ comma
 op_amp
 id|msg
 comma
+id|iov
+comma
+id|nr
+comma
 id|buflen
 comma
 id|MSG_DONTWAIT
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|oldfs
 )paren
 suffix:semicolon
 multiline_comment|/* sock_recvmsg doesn&squot;t fill in the name/namelen, so we must..&n;&t; * possibly we should cache this in the svc_sock structure&n;&t; * at accept time. FIXME&n;&t; */
@@ -3524,7 +3498,7 @@ r_int
 id|len
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|vec
 (braket
 id|RPCSVC_MAXPAGES
@@ -3708,7 +3682,7 @@ op_minus
 id|svsk-&gt;sk_tcplen
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|iov
 suffix:semicolon
 id|iov.iov_base
@@ -4188,7 +4162,7 @@ suffix:semicolon
 id|u32
 id|reclen
 suffix:semicolon
-multiline_comment|/* Set up the first element of the reply iovec.&n;&t; * Any other iovecs that may be in use have been taken&n;&t; * care of by the server implementation itself.&n;&t; */
+multiline_comment|/* Set up the first element of the reply kvec.&n;&t; * Any other kvecs that may be in use have been taken&n;&t; * care of by the server implementation itself.&n;&t; */
 id|reclen
 op_assign
 id|htonl

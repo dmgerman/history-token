@@ -610,9 +610,7 @@ l_string|&quot;Success&quot;
 )brace
 comma
 (brace
-l_int|0x0
-comma
-l_int|0x0
+l_int|0
 )brace
 )brace
 suffix:semicolon
@@ -1525,7 +1523,7 @@ id|rbuf
 suffix:semicolon
 id|rbuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|DPRINT
@@ -2408,7 +2406,7 @@ id|wavefront_cmd
 (paren
 id|WFC_DELETE_SAMPLE
 comma
-l_int|0
+l_int|NULL
 comma
 id|wbuf
 )paren
@@ -3218,7 +3216,7 @@ id|wavefront_cmd
 (paren
 id|WFC_DOWNLOAD_PATCH
 comma
-l_int|0
+l_int|NULL
 comma
 id|buf
 )paren
@@ -3357,7 +3355,7 @@ id|wavefront_cmd
 (paren
 id|WFC_DOWNLOAD_PROGRAM
 comma
-l_int|0
+l_int|NULL
 comma
 id|buf
 )paren
@@ -3406,7 +3404,7 @@ id|WFC_REPORT_FREE_MEMORY
 comma
 id|rbuf
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -3464,7 +3462,7 @@ id|__user
 op_star
 id|data_end
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -3989,7 +3987,7 @@ id|WFC_DOWNLOAD_SAMPLE
 suffix:colon
 id|WFC_DOWNLOAD_SAMPLE_HEADER
 comma
-l_int|0
+l_int|NULL
 comma
 id|sample_hdr
 )paren
@@ -4106,9 +4104,9 @@ id|wavefront_cmd
 (paren
 id|WFC_DOWNLOAD_BLOCK
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -4516,7 +4514,7 @@ id|wavefront_cmd
 (paren
 id|WFC_DOWNLOAD_SAMPLE_ALIAS
 comma
-l_int|0
+l_int|NULL
 comma
 id|alias_hdr
 )paren
@@ -5063,7 +5061,7 @@ id|wavefront_cmd
 (paren
 id|WFC_DOWNLOAD_EDRUM_PROGRAM
 comma
-l_int|0
+l_int|NULL
 comma
 id|drumbuf
 )paren
@@ -9503,7 +9501,7 @@ id|wavefront_cmd
 (paren
 id|WFC_SET_NVOICES
 comma
-l_int|0
+l_int|NULL
 comma
 id|voices
 )paren

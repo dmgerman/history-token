@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * hvconsole.c&n; * Copyright (C) 2004 Hollis Blanchard, IBM Corporation&n; *&n; * LPAR console support.&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/hvconsole.h&gt;
@@ -152,6 +153,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hvc_get_chars
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hvc_get_chars
+)paren
+suffix:semicolon
 DECL|function|hvc_put_chars
 r_int
 id|hvc_put_chars
@@ -231,6 +239,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|hvc_put_chars
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hvc_put_chars
+)paren
+suffix:semicolon
 multiline_comment|/* return the number of client vterms present */
 multiline_comment|/* XXX this requires an interface change to handle multiple discontiguous&n; * vterms */
 DECL|function|hvc_count
@@ -293,7 +308,7 @@ id|vty
 comma
 l_string|&quot;reg&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

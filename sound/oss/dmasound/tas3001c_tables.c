@@ -14,6 +14,7 @@ l_int|1
 comma
 dot
 id|above
+op_assign
 (brace
 dot
 id|val
@@ -34,6 +35,7 @@ l_int|0
 comma
 dot
 id|below
+op_assign
 (brace
 dot
 id|val
@@ -54,6 +56,7 @@ l_int|0
 comma
 dot
 id|threshold
+op_assign
 op_minus
 l_float|15.33
 op_star
@@ -65,6 +68,7 @@ l_int|8
 comma
 dot
 id|energy
+op_assign
 l_float|2.4
 op_star
 (paren
@@ -75,6 +79,7 @@ l_int|12
 comma
 dot
 id|attack
+op_assign
 l_float|0.013
 op_star
 (paren
@@ -85,6 +90,7 @@ l_int|12
 comma
 dot
 id|decay
+op_assign
 l_float|0.212
 op_star
 (paren

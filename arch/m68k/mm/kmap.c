@@ -56,7 +56,6 @@ op_star
 id|addr
 )paren
 (brace
-r_return
 id|vfree
 c_func
 (paren

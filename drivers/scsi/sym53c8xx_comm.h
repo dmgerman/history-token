@@ -282,7 +282,7 @@ suffix:semicolon
 r_else
 id|elem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|elem
@@ -589,7 +589,7 @@ id|MEMO_PAGE_ORDER
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -668,7 +668,7 @@ id|j
 dot
 id|next-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -753,7 +753,7 @@ id|j
 dot
 id|next-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1201,7 +1201,7 @@ id|m_pool_s
 id|mp0
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 id|___mp0_getp
 comma
@@ -1694,7 +1694,7 @@ r_void
 op_star
 id|m
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NCR_LOCK_DRIVER
 c_func
@@ -1880,7 +1880,7 @@ id|m_vtob_s
 op_star
 id|vp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|m_addr_t
 id|a

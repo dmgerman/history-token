@@ -190,6 +190,13 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+DECL|variable|strcpy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcpy
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCPY
 multiline_comment|/**&n; * strncpy - Copy a length-limited, %NUL-terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @count: The maximum number of bytes to copy&n; *&n; * The result is not %NUL-terminated if the source exceeds&n; * @count bytes.&n; */
@@ -251,6 +258,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|strncpy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncpy
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRLCPY
 multiline_comment|/**&n; * strlcpy - Copy a %NUL terminated string into a sized buffer&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @size: size of destination buffer&n; *&n; * Compatible with *BSD: the result is always a valid&n; * NUL-terminated string that fits in the buffer (unless,&n; * of course, the buffer size is zero). It does not pad&n; * out the result like strncpy() does.&n; */
@@ -386,6 +400,13 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+DECL|variable|strcat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcat
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCAT
 multiline_comment|/**&n; * strncat - Append a length-limited, %NUL-terminated string to another&n; * @dest: The string to be appended to&n; * @src: The string to append to it&n; * @count: The maximum numbers of bytes to copy&n; *&n; * Note that in contrast to strncpy, strncat ensures the result is&n; * terminated.&n; */
@@ -468,6 +489,13 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+DECL|variable|strncat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncat
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRLCAT
 multiline_comment|/**&n; * strlcat - Append a length-limited, %NUL-terminated string to another&n; * @dest: The string to be appended to&n; * @src: The string to append to it&n; * @count: The size of the destination buffer.&n; */
@@ -630,6 +658,13 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+DECL|variable|strcmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcmp
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCMP
 multiline_comment|/**&n; * strncmp - Compare two length-limited strings&n; * @cs: One string&n; * @ct: Another string&n; * @count: The maximum number of bytes to compare&n; */
@@ -696,6 +731,13 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+DECL|variable|strncmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strncmp
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCHR
 multiline_comment|/**&n; * strchr - Find the first occurrence of a character in a string&n; * @s: The string to be searched&n; * @c: The character to search for&n; */
@@ -748,6 +790,13 @@ op_star
 id|s
 suffix:semicolon
 )brace
+DECL|variable|strchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strchr
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRRCHR
 multiline_comment|/**&n; * strrchr - Find the last occurrence of a character in a string&n; * @s: The string to be searched&n; * @c: The character to search for&n; */
@@ -813,6 +862,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|strrchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strrchr
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCHR
 multiline_comment|/**&n; * strnchr - Find a character in a length limited string&n; * @s: The string to be searched&n; * @count: The number of characters to be searched&n; * @c: The character to search for&n; */
@@ -871,6 +927,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|strnchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strnchr
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRLEN
 multiline_comment|/**&n; * strlen - Find the length of a string&n; * @s: The string to be sized&n; */
@@ -913,6 +976,13 @@ op_minus
 id|s
 suffix:semicolon
 )brace
+DECL|variable|strlen
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strlen
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNLEN
 multiline_comment|/**&n; * strnlen - Find the length of a length-limited string&n; * @s: The string to be sized&n; * @count: The maximum number of bytes to search&n; */
@@ -961,6 +1031,13 @@ op_minus
 id|s
 suffix:semicolon
 )brace
+DECL|variable|strnlen
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strnlen
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSPN
 multiline_comment|/**&n; * strspn - Calculate the length of the initial substring of @s which only&n; * &t;contain letters in @accept&n; * @s: The string to be searched&n; * @accept: The string to search for&n; */
@@ -1151,6 +1228,13 @@ r_return
 id|count
 suffix:semicolon
 )brace
+DECL|variable|strcspn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strcspn
+)paren
+suffix:semicolon
 macro_line|#ifndef __HAVE_ARCH_STRPBRK
 multiline_comment|/**&n; * strpbrk - Find the first occurrence of a set of characters&n; * @cs: The string to be searched&n; * @ct: The characters to search for&n; */
 DECL|function|strpbrk
@@ -1232,6 +1316,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|strpbrk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strpbrk
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSEP
 multiline_comment|/**&n; * strsep - Split a string into tokens&n; * @s: The string to be searched&n; * @ct: The characters to search for&n; *&n; * strsep() updates @s to point after the token, ready for the next call.&n; *&n; * It returns empty tokens, too, behaving exactly like the libc function&n; * of that name. In fact, it was stolen from glibc2 and de-fancy-fied.&n; * Same semantics, slimmer shape. ;)&n; */
@@ -1355,6 +1446,13 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|variable|memset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memset
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_BCOPY
 multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @srcp: Where to copy from&n; * @destp: Where to copy to&n; * @count: The size of the area.&n; *&n; * Note that this is the same as memcpy(), with the arguments reversed.&n; * memcpy() is the standard, bcopy() is a legacy BSD function.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
@@ -1404,6 +1502,13 @@ id|src
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|bcopy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bcopy
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCPY
 multiline_comment|/**&n; * memcpy - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
@@ -1463,6 +1568,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|memcpy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcpy
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMMOVE
 multiline_comment|/**&n; * memmove - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * Unlike memcpy(), memmove() copes with overlapping areas.&n; */
@@ -1572,6 +1684,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|variable|memmove
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memmove
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCMP
 multiline_comment|/**&n; * memcmp - Compare two areas of memory&n; * @cs: One area of memory&n; * @ct: Another area of memory&n; * @count: The size of the area.&n; */
@@ -1653,6 +1772,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|memcmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memcmp
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMSCAN
 multiline_comment|/**&n; * memscan - Find a character in an area of memory.&n; * @addr: The memory area&n; * @c: The byte to search for&n; * @size: The size of the area.&n; *&n; * returns the address of the first occurrence of @c, or 1 byte past&n; * the area if @c is not found&n; */
@@ -1721,6 +1847,13 @@ op_star
 id|p
 suffix:semicolon
 )brace
+DECL|variable|memscan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memscan
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRSTR
 multiline_comment|/**&n; * strstr - Find the first substring in a %NUL terminated string&n; * @s1: The string to be searched&n; * @s2: The string to search for&n; */
@@ -1815,6 +1948,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|strstr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strstr
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCHR
 multiline_comment|/**&n; * memchr - Find a character in an area of memory.&n; * @s: The memory area&n; * @c: The byte to search for&n; * @n: The size of the area.&n; *&n; * returns the address of the first occurrence of @c, or %NULL&n; * if @c is not found&n; */
@@ -1884,5 +2024,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|memchr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|memchr
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

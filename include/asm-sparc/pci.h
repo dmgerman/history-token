@@ -378,6 +378,27 @@ id|dev
 )paren
 (brace
 )brace
+DECL|macro|PCI_DMA_ERROR_CODE
+mdefine_line|#define PCI_DMA_ERROR_CODE      (~(dma_addr_t)0x0)
+DECL|function|pci_dma_mapping_error
+r_static
+r_inline
+r_int
+id|pci_dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_eq
+id|PCI_DMA_ERROR_CODE
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* generic pci stuff */
 macro_line|#include &lt;asm-generic/pci.h&gt;

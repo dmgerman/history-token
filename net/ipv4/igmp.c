@@ -10449,7 +10449,7 @@ id|v
 op_eq
 id|SEQ_START_TOKEN
 )paren
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq

@@ -7,6 +7,8 @@ multiline_comment|/*&n; * On a 486 or Pentium, we are better off not using the&n
 multiline_comment|/*&n; * This string-include defines all string functions as inline&n; * functions. Use gcc. It also assumes ds=es=data space, this should be&n; * normal. Most of the string-functions are rather heavily hand-optimized,&n; * see especially strsep,strstr,str[c]spn. They should work, but are not&n; * very easy to understand. Everything is done entirely within the register&n; * set, making the functions fast and clean. String instructions have been&n; * used through-out, making for &quot;slightly&quot; unclear code :-)&n; *&n; *&t;&t;NO Copyright (C) 1991, 1992 Linus Torvalds,&n; *&t;&t;consider these trivial functions to be PD.&n; */
 multiline_comment|/* AK: in fact I bet it would be better to move this stuff all out of line.&n; */
 macro_line|#if !defined(IN_STRING_C)
+DECL|macro|__HAVE_ARCH_STRCPY
+mdefine_line|#define __HAVE_ARCH_STRCPY
 DECL|function|strcpy
 r_static
 r_inline
@@ -73,6 +75,8 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRNCPY
+mdefine_line|#define __HAVE_ARCH_STRNCPY
 DECL|function|strncpy
 r_static
 r_inline
@@ -159,6 +163,8 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRCAT
+mdefine_line|#define __HAVE_ARCH_STRCAT
 DECL|function|strcat
 r_static
 r_inline
@@ -245,6 +251,8 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRNCAT
+mdefine_line|#define __HAVE_ARCH_STRNCAT
 DECL|function|strncat
 r_static
 r_inline
@@ -344,6 +352,8 @@ r_return
 id|dest
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRCMP
+mdefine_line|#define __HAVE_ARCH_STRCMP
 DECL|function|strcmp
 r_static
 r_inline
@@ -416,6 +426,8 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRNCMP
+mdefine_line|#define __HAVE_ARCH_STRNCMP
 DECL|function|strncmp
 r_static
 r_inline
@@ -505,6 +517,8 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRCHR
+mdefine_line|#define __HAVE_ARCH_STRCHR
 DECL|function|strchr
 r_static
 r_inline
@@ -569,6 +583,8 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_STRRCHR
+mdefine_line|#define __HAVE_ARCH_STRRCHR
 DECL|function|strrchr
 r_static
 r_inline

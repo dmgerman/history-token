@@ -2290,7 +2290,7 @@ op_star
 id|phys_to_virt
 c_func
 (paren
-l_int|8192
+id|SMP_TRAMPOLINE_BASE
 )paren
 )paren
 op_eq
@@ -2350,23 +2350,6 @@ id|cpucount
 op_decrement
 suffix:semicolon
 )brace
-multiline_comment|/* mark &quot;stuck&quot; area as not stuck */
-op_star
-(paren
-(paren
-r_volatile
-r_int
-op_star
-)paren
-id|phys_to_virt
-c_func
-(paren
-l_int|8192
-)paren
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 DECL|variable|cacheflush_time
 id|cycles_t

@@ -1307,12 +1307,12 @@ id|__setup_cpu_603
 )brace
 comma
 (brace
-multiline_comment|/* 8280 is a G2_LE (603e core, plus some) */
+multiline_comment|/* All G2_LE (603e core, plus some) have the same pvr */
 l_int|0x7fff0000
 comma
 l_int|0x00820000
 comma
-l_string|&quot;8280&quot;
+l_string|&quot;G2_LE&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or

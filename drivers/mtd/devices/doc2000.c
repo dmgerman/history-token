@@ -169,7 +169,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -2679,7 +2679,7 @@ id|buf
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3454,7 +3454,7 @@ id|buf
 comma
 id|eccbuf
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -4390,7 +4390,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma

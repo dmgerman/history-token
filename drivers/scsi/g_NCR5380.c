@@ -1097,7 +1097,7 @@ r_continue
 suffix:semicolon
 id|ports
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond

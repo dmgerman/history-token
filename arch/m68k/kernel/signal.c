@@ -1582,7 +1582,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * user process trying to return with weird frame format&n;&t;&t; */
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -2114,7 +2114,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * user process trying to return with weird frame format&n;&t;&t; */
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4006,7 +4006,7 @@ op_plus
 id|regs-&gt;stkadj
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4462,7 +4462,7 @@ op_plus
 id|regs-&gt;stkadj
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

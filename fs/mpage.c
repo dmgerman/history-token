@@ -2160,10 +2160,17 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * we cannot drop the bh if the page is not uptodate&n;&t;&t; * or a concurrent readpage would fail to serialize with the bh&n;&t;&t; * and it would read from disk before we reach the platter.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|buffer_heads_over_limit
+op_logical_and
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
 )paren
 id|try_to_free_buffers
 c_func

@@ -98,7 +98,9 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_int
+r_struct
+id|nand_oobinfo
+op_star
 id|oobsel
 )paren
 suffix:semicolon
@@ -131,7 +133,9 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_int
+r_struct
+id|nand_oobinfo
+op_star
 id|oobsel
 )paren
 suffix:semicolon
@@ -1814,7 +1818,7 @@ id|buf
 comma
 l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1846,7 +1850,9 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_int
+r_struct
+id|nand_oobinfo
+op_star
 id|oobsel
 )paren
 (brace
@@ -2476,7 +2482,7 @@ id|buf
 comma
 id|eccbuf
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2509,7 +2515,9 @@ id|u_char
 op_star
 id|eccbuf
 comma
-r_int
+r_struct
+id|nand_oobinfo
+op_star
 id|oobsel
 )paren
 (brace

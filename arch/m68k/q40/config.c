@@ -530,6 +530,7 @@ r_void
 id|q40_reset
 c_func
 (paren
+r_void
 )paren
 (brace
 id|halted
@@ -562,6 +563,7 @@ r_void
 id|q40_halt
 c_func
 (paren
+r_void
 )paren
 (brace
 id|halted
@@ -1153,6 +1155,7 @@ r_int
 id|q40_get_ss
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return

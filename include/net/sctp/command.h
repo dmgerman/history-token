@@ -209,6 +209,18 @@ DECL|enumerator|SCTP_CMD_CLEAR_INIT_TAG
 id|SCTP_CMD_CLEAR_INIT_TAG
 comma
 multiline_comment|/* Clears association peer&squot;s inittag. */
+DECL|enumerator|SCTP_CMD_DEL_NON_PRIMARY
+id|SCTP_CMD_DEL_NON_PRIMARY
+comma
+multiline_comment|/* Removes non-primary peer transports. */
+DECL|enumerator|SCTP_CMD_T3_RTX_TIMERS_STOP
+id|SCTP_CMD_T3_RTX_TIMERS_STOP
+comma
+multiline_comment|/* Stops T3-rtx pending timers */
+DECL|enumerator|SCTP_CMD_FORCE_PRIM_RETRAN
+id|SCTP_CMD_FORCE_PRIM_RETRAN
+comma
+multiline_comment|/* Forces retrans. over primary path. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t

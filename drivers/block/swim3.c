@@ -5313,6 +5313,10 @@ id|disk-&gt;queue
 op_assign
 id|swim3_queue
 suffix:semicolon
+id|disk-&gt;flags
+op_or_assign
+id|GENHD_FL_REMOVABLE
+suffix:semicolon
 id|sprintf
 c_func
 (paren

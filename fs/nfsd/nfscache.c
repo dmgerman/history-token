@@ -78,7 +78,7 @@ op_star
 id|rqstp
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vec
 )paren
@@ -1113,7 +1113,7 @@ op_star
 id|rp
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 op_star
 id|resv
 op_assign
@@ -1340,13 +1340,13 @@ op_star
 id|rqstp
 comma
 r_struct
-id|iovec
+id|kvec
 op_star
 id|data
 )paren
 (brace
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vec
 op_assign

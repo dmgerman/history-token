@@ -28,6 +28,8 @@ DECL|macro|OCP_FUNC_IIC
 mdefine_line|#define OCP_FUNC_IIC&t;&t;0x0032
 DECL|macro|OCP_FUNC_USB
 mdefine_line|#define OCP_FUNC_USB&t;&t;0x0033
+DECL|macro|OCP_FUNC_PSC_UART
+mdefine_line|#define OCP_FUNC_PSC_UART&t;0x0034
 multiline_comment|/* Memory devices 0x0090 - 0x009F */
 DECL|macro|OCP_FUNC_MAL
 mdefine_line|#define OCP_FUNC_MAL&t;&t;0x0090

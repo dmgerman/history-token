@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: netiucv.c,v 1.57 2004/06/30 09:26:40 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.57 $&n; *&n; */
+multiline_comment|/*&n; * $Id: netiucv.c,v 1.63 2004/07/27 13:36:05 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Driverfs integration and all bugs therein by Cornelia Huck(cohuck@de.ibm.com)&n; *&n; * Documentation used:&n; *  the source of the original IUCV driver by:&n; *    Stefan Hegewald &lt;hegewald@de.ibm.com&gt;&n; *    Hartmut Penner &lt;hpenner@de.ibm.com&gt;&n; *    Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *    Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *    Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV network driver $Revision: 1.63 $&n; *&n; */
 "&f;"
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -36,6 +36,28 @@ l_string|&quot;Linux for S/390 IUCV network driver&quot;
 )paren
 suffix:semicolon
 "&f;"
+DECL|macro|PRINTK_HEADER
+mdefine_line|#define PRINTK_HEADER &quot; iucv: &quot;       /* for debugging */
+DECL|variable|netiucv_driver
+r_static
+r_struct
+id|device_driver
+id|netiucv_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;netiucv&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|iucv_bus
+comma
+)brace
+suffix:semicolon
 multiline_comment|/**&n; * Per connection profiling data&n; */
 DECL|struct|connection_profile
 r_struct
@@ -171,12 +193,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * Linked list of all connection structs.&n; */
-DECL|variable|connections
+DECL|variable|iucv_connections
 r_static
 r_struct
 id|iucv_connection
 op_star
-id|connections
+id|iucv_connections
 suffix:semicolon
 multiline_comment|/**&n; * Representation of event-data for the&n; * connection state machine.&n; */
 DECL|struct|iucv_event
@@ -407,10 +429,10 @@ l_int|0x40
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * This mask means the 16-byte IUCV &quot;magic&quot; and the origin userid must&n; * match exactly as specified in order to give connection_pending()&n; * control.&n; */
-DECL|variable|mask
+DECL|variable|netiucv_mask
 r_static
 id|__u8
-id|mask
+id|netiucv_mask
 (braket
 )braket
 op_assign
@@ -773,6 +795,223 @@ comma
 )brace
 suffix:semicolon
 "&f;"
+multiline_comment|/**&n; * Debug Facility Stuff&n; */
+DECL|variable|iucv_dbf_setup
+r_static
+id|debug_info_t
+op_star
+id|iucv_dbf_setup
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|iucv_dbf_data
+r_static
+id|debug_info_t
+op_star
+id|iucv_dbf_data
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|iucv_dbf_trace
+r_static
+id|debug_info_t
+op_star
+id|iucv_dbf_trace
+op_assign
+l_int|NULL
+suffix:semicolon
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_char
+(braket
+l_int|256
+)braket
+comma
+id|iucv_dbf_txt_buf
+)paren
+suffix:semicolon
+r_static
+r_void
+DECL|function|iucv_unregister_dbf_views
+id|iucv_unregister_dbf_views
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|iucv_dbf_setup
+)paren
+id|debug_unregister
+c_func
+(paren
+id|iucv_dbf_setup
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iucv_dbf_data
+)paren
+id|debug_unregister
+c_func
+(paren
+id|iucv_dbf_data
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iucv_dbf_trace
+)paren
+id|debug_unregister
+c_func
+(paren
+id|iucv_dbf_trace
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|iucv_register_dbf_views
+id|iucv_register_dbf_views
+c_func
+(paren
+r_void
+)paren
+(brace
+id|iucv_dbf_setup
+op_assign
+id|debug_register
+c_func
+(paren
+id|IUCV_DBF_SETUP_NAME
+comma
+id|IUCV_DBF_SETUP_INDEX
+comma
+id|IUCV_DBF_SETUP_NR_AREAS
+comma
+id|IUCV_DBF_SETUP_LEN
+)paren
+suffix:semicolon
+id|iucv_dbf_data
+op_assign
+id|debug_register
+c_func
+(paren
+id|IUCV_DBF_DATA_NAME
+comma
+id|IUCV_DBF_DATA_INDEX
+comma
+id|IUCV_DBF_DATA_NR_AREAS
+comma
+id|IUCV_DBF_DATA_LEN
+)paren
+suffix:semicolon
+id|iucv_dbf_trace
+op_assign
+id|debug_register
+c_func
+(paren
+id|IUCV_DBF_TRACE_NAME
+comma
+id|IUCV_DBF_TRACE_INDEX
+comma
+id|IUCV_DBF_TRACE_NR_AREAS
+comma
+id|IUCV_DBF_TRACE_LEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|iucv_dbf_setup
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|iucv_dbf_data
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|iucv_dbf_trace
+op_eq
+l_int|NULL
+)paren
+)paren
+(brace
+id|iucv_unregister_dbf_views
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|debug_register_view
+c_func
+(paren
+id|iucv_dbf_setup
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|iucv_dbf_setup
+comma
+id|IUCV_DBF_SETUP_LEVEL
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|iucv_dbf_data
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|iucv_dbf_data
+comma
+id|IUCV_DBF_DATA_LEVEL
+)paren
+suffix:semicolon
+id|debug_register_view
+c_func
+(paren
+id|iucv_dbf_trace
+comma
+op_amp
+id|debug_hex_ascii_view
+)paren
+suffix:semicolon
+id|debug_set_level
+c_func
+(paren
+id|iucv_dbf_trace
+comma
+id|IUCV_DBF_TRACE_LEVEL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * Callback-wrappers, called from lowlevel iucv layer.&n; *****************************************************************************/
 r_static
 r_void
@@ -1309,9 +1548,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|header-&gt;next
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -1347,14 +1585,31 @@ OL
 id|header-&gt;next
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Illegal next field in iucv header: &quot;
 l_string|&quot;%d &gt; %d&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|header-&gt;next
+comma
+id|skb_tailroom
+c_func
+(paren
+id|pskb
+)paren
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;Illegal next field: %d &gt; %d&bslash;n&quot;
 comma
 id|header-&gt;next
 comma
@@ -1395,13 +1650,22 @@ op_logical_neg
 id|skb
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s Out of memory in netiucv_unpack_skb&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;Out of memory in netiucv_unpack_skb&bslash;n&quot;
 )paren
 suffix:semicolon
 id|privptr-&gt;stats.rx_dropped
@@ -1545,10 +1809,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|4
 comma
 id|__FUNCTION__
 )paren
@@ -1561,10 +1827,19 @@ id|conn-&gt;netdev
 )paren
 (brace
 multiline_comment|/* FRITZ: How to tell iucv LL to drop the msg? */
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
+l_string|&quot;Received data for unlinked connection&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
 l_string|&quot;Received data for unlinked connection&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1582,6 +1857,30 @@ id|conn-&gt;max_buffsize
 multiline_comment|/* FRITZ: How to tell iucv LL to drop the msg? */
 id|privptr-&gt;stats.rx_dropped
 op_increment
+suffix:semicolon
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;msglen %d &gt; max_buffsize %d&bslash;n&quot;
+comma
+id|msglen
+comma
+id|conn-&gt;max_buffsize
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;msglen %d &gt; max_buffsize %d&bslash;n&quot;
+comma
+id|msglen
+comma
+id|conn-&gt;max_buffsize
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1622,8 +1921,6 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 op_logical_or
 id|msglen
 OL
@@ -1633,11 +1930,22 @@ l_int|5
 id|privptr-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;iucv_receive returned %08x&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;rc %d from iucv_receive&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -1741,10 +2049,12 @@ suffix:semicolon
 id|ll_header
 id|header
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|4
 comma
 id|__FUNCTION__
 )paren
@@ -2030,8 +2340,6 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 )paren
 (brace
 id|conn-&gt;prof.tx_pending
@@ -2054,11 +2362,22 @@ id|privptr-&gt;stats.tx_errors
 op_add_assign
 id|txpackets
 suffix:semicolon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;iucv_send returned %08x&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;rc %d from iucv_send&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -2182,10 +2501,12 @@ id|udata
 l_int|16
 )braket
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2217,17 +2538,26 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: IUCV accept failed with error %d&bslash;n&quot;
 comma
 id|netdev-&gt;name
+comma
+id|rc
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;rc %d from iucv_accept&quot;
 comma
 id|rc
 )paren
@@ -2322,10 +2652,12 @@ id|udata
 l_int|16
 )braket
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2346,13 +2678,27 @@ op_ne
 id|conn-&gt;pathid
 )paren
 (brace
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: IR Connection Pending; pathid %d does not match original pathid %d&bslash;n&quot;
+l_string|&quot;%s: IR Connection Pending; &quot;
+l_string|&quot;pathid %d does not match original pathid %d&bslash;n&quot;
 comma
 id|netdev-&gt;name
+comma
+id|eib-&gt;ippathid
+comma
+id|conn-&gt;pathid
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;connreject: IR pathid %d, conn. pathid %d&bslash;n&quot;
 comma
 id|eib-&gt;ippathid
 comma
@@ -2435,10 +2781,12 @@ op_star
 )paren
 id|netdev-&gt;priv
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2466,13 +2814,27 @@ op_ne
 id|conn-&gt;pathid
 )paren
 (brace
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: IR Connection Complete; pathid %d does not match original pathid %d&bslash;n&quot;
+l_string|&quot;%s: IR Connection Complete; &quot;
+l_string|&quot;pathid %d does not match original pathid %d&bslash;n&quot;
 comma
 id|netdev-&gt;name
+comma
+id|eib-&gt;ippathid
+comma
+id|conn-&gt;pathid
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;connack: IR pathid %d, conn. pathid %d&bslash;n&quot;
 comma
 id|eib-&gt;ippathid
 comma
@@ -2535,10 +2897,12 @@ id|udata
 l_int|16
 )braket
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2629,10 +2993,12 @@ id|udata
 l_int|16
 )braket
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2652,13 +3018,22 @@ comma
 id|udata
 )paren
 suffix:semicolon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: Remote dropped connection&bslash;n&quot;
 comma
 id|netdev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;conn_action_connsever: Remote dropped connection&bslash;n&quot;
 )paren
 suffix:semicolon
 id|fsm_newstate
@@ -2723,10 +3098,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -2734,11 +3111,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|conn-&gt;handle
-op_eq
-l_int|0
 )paren
 (brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+l_string|&quot;calling iucv_register_program&bslash;n&quot;
+)paren
+suffix:semicolon
 id|conn-&gt;handle
 op_assign
 id|iucv_register_program
@@ -2748,7 +3134,7 @@ id|iucvMagic
 comma
 id|conn-&gt;userid
 comma
-id|mask
+id|netiucv_mask
 comma
 op_amp
 id|netiucv_ops
@@ -2767,9 +3153,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|conn-&gt;handle
-op_le
-l_int|0
 )paren
 (brace
 id|fsm_newstate
@@ -2782,12 +3167,22 @@ id|CONN_STATE_REGERR
 suffix:semicolon
 id|conn-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;NULL from iucv_register_program&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|pr_debug
+id|PRINT_DEBUG
 c_func
 (paren
 l_string|&quot;%s(&squot;%s&squot;): registered successfully&bslash;n&quot;
@@ -2798,7 +3193,7 @@ id|conn-&gt;userid
 )paren
 suffix:semicolon
 )brace
-id|pr_debug
+id|PRINT_DEBUG
 c_func
 (paren
 l_string|&quot;%s(&squot;%s&squot;): connecting ...&bslash;n&quot;
@@ -2878,10 +3273,9 @@ suffix:semicolon
 r_case
 l_int|11
 suffix:colon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;%s: User %s is currently not available.&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -2906,10 +3300,9 @@ suffix:semicolon
 r_case
 l_int|12
 suffix:colon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;%s: User %s is currently not ready.&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -2934,10 +3327,9 @@ suffix:semicolon
 r_case
 l_int|13
 suffix:colon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Too many IUCV connections.&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -2956,10 +3348,9 @@ suffix:semicolon
 r_case
 l_int|14
 suffix:colon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: User %s has too many IUCV connections.&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -2984,10 +3375,9 @@ suffix:semicolon
 r_case
 l_int|15
 suffix:colon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: No IUCV authorization in CP directory.&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -3005,10 +3395,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: iucv_connect returned error %d&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
@@ -3027,6 +3416,28 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|5
+comma
+l_string|&quot;iucv_connect rc is %d&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+l_string|&quot;calling iucv_unregister_program&bslash;n&quot;
+)paren
+suffix:semicolon
 id|iucv_unregister_program
 c_func
 (paren
@@ -3035,7 +3446,7 @@ id|conn-&gt;handle
 suffix:semicolon
 id|conn-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_static
@@ -3140,10 +3551,12 @@ op_star
 )paren
 id|netdev-&gt;priv
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -3175,6 +3588,16 @@ c_cond
 (paren
 id|conn-&gt;handle
 )paren
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+l_string|&quot;calling iucv_unregister_program&bslash;n&quot;
+)paren
+suffix:semicolon
 id|iucv_unregister_program
 c_func
 (paren
@@ -3183,7 +3606,7 @@ id|conn-&gt;handle
 suffix:semicolon
 id|conn-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|netiucv_purge_skb_queue
 c_func
@@ -3247,13 +3670,22 @@ id|netdev
 op_assign
 id|conn-&gt;netdev
 suffix:semicolon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Cannot connect without username&bslash;n&quot;
 comma
 id|netdev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;conn_action_inval called&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3512,10 +3944,12 @@ r_struct
 id|iucv_event
 id|ev
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -3586,10 +4020,12 @@ r_struct
 id|iucv_event
 id|ev
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -3656,10 +4092,12 @@ id|privptr
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -3685,10 +4123,9 @@ comma
 id|DEV_STATE_RUNNING
 )paren
 suffix:semicolon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: connected with remote side %s&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3696,18 +4133,37 @@ comma
 id|privptr-&gt;conn-&gt;userid
 )paren
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|3
+comma
+l_string|&quot;connection is up and running&bslash;n&quot;
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|DEV_STATE_STOPWAIT
 suffix:colon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;%s: got connection UP event during shutdown!!&bslash;n&quot;
+l_string|&quot;%s: got connection UP event during shutdown!&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;dev_action_connup: in DEV_STATE_STOPWAIT&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3733,10 +4189,12 @@ op_star
 id|arg
 )paren
 (brace
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -3773,6 +4231,16 @@ c_func
 id|fi
 comma
 id|DEV_STATE_STOPPED
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|3
+comma
+l_string|&quot;connection is down&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -3941,11 +4409,23 @@ op_minus
 id|NETIUCV_HDRLEN
 )paren
 )paren
+(brace
 id|rc
 op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;EBUSY from netiucv_transmit_skb&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_else
 (brace
 id|atomic_inc
@@ -4051,13 +4531,22 @@ op_logical_neg
 id|nskb
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Could not allocate tx_skb&bslash;n&quot;
 comma
 id|conn-&gt;netdev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;alloc_skb failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -4207,8 +4696,6 @@ r_if
 c_cond
 (paren
 id|rc
-op_ne
-l_int|0
 )paren
 (brace
 r_struct
@@ -4277,11 +4764,22 @@ id|NETIUCV_HDRLEN
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;iucv_send returned %08x&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;rc %d from iucv_send&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -4426,6 +4924,16 @@ id|privptr
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 multiline_comment|/**&n;&t; * Some sanity checks ...&n;&t; */
 r_if
 c_cond
@@ -4435,13 +4943,22 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: NULL sk_buff passed&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;netiucv_tx: skb is NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 id|privptr-&gt;stats.tx_dropped
@@ -4460,20 +4977,27 @@ c_func
 id|skb
 )paren
 OL
-(paren
 id|NETIUCV_HDRLEN
 )paren
-)paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: Got sk_buff with head room &lt; %ld bytes&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|NETIUCV_HDRLEN
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;netiucv_tx: skb_headroom &lt; NETIUCV_HDRLEN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4540,10 +5064,22 @@ c_func
 id|dev
 )paren
 )paren
+(brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;EBUSY from netiucv_tx&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+)brace
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
@@ -4558,8 +5094,6 @@ id|privptr-&gt;conn
 comma
 id|skb
 )paren
-op_ne
-l_int|0
 )paren
 id|rc
 op_assign
@@ -4589,6 +5123,16 @@ op_star
 id|dev
 )paren
 (brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 op_amp
 (paren
@@ -4618,6 +5162,16 @@ r_int
 id|new_mtu
 )paren
 (brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4633,10 +5187,22 @@ OG
 id|NETIUCV_MTU_MAX
 )paren
 )paren
+(brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;given MTU out of valid range&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|dev-&gt;mtu
 op_assign
 id|new_mtu
@@ -4667,6 +5233,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 r_return
 id|sprintf
@@ -4734,6 +5310,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4742,11 +5328,25 @@ OG
 l_int|9
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: username too long (%d)!&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|count
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;%d is length of username&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4841,11 +5441,26 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;netiucv: Invalid character in username!&bslash;n&quot;
+l_string|&quot;netiucv: Invalid char %c in username!&bslash;n&quot;
+comma
+op_star
+id|p
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;username: invalid character %c&bslash;n&quot;
+comma
+op_star
+id|p
 )paren
 suffix:semicolon
 r_return
@@ -4888,8 +5503,6 @@ id|priv-&gt;conn-&gt;userid
 comma
 l_int|8
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 multiline_comment|/* username changed */
@@ -4905,10 +5518,9 @@ id|IFF_RUNNING
 )paren
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: device %s active, connected to %s&bslash;n&quot;
 comma
 id|dev-&gt;bus_id
@@ -4916,11 +5528,20 @@ comma
 id|priv-&gt;conn-&gt;userid
 )paren
 suffix:semicolon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: user cannot be updated&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;user_write: device active&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4978,6 +5599,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5030,6 +5661,16 @@ suffix:semicolon
 r_int
 id|bs1
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5070,11 +5711,23 @@ id|e
 )paren
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: Invalid character in buffer!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;buffer_write: invalid char %c&bslash;n&quot;
+comma
+op_star
+id|e
 )paren
 suffix:semicolon
 r_return
@@ -5090,11 +5743,22 @@ OG
 id|NETIUCV_BUFSIZE_MAX
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: Given buffer size %d too large.&bslash;n&quot;
+comma
+id|bs1
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;buffer_write: buffer size %d too large&bslash;n&quot;
 comma
 id|bs1
 )paren
@@ -5125,10 +5789,32 @@ l_int|2
 )paren
 )paren
 )paren
+(brace
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;netiucv: Given buffer size %d too small.&bslash;n&quot;
+comma
+id|bs1
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;buffer_write: buffer size %d too small&bslash;n&quot;
+comma
+id|bs1
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5142,10 +5828,32 @@ op_plus
 id|NETIUCV_HDRLEN
 )paren
 )paren
+(brace
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;netiucv: Given buffer size %d too small.&bslash;n&quot;
+comma
+id|bs1
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;buffer_write: buffer size %d too small&bslash;n&quot;
+comma
+id|bs1
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|priv-&gt;conn-&gt;max_buffsize
 op_assign
 id|bs1
@@ -5207,6 +5915,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5257,6 +5975,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 r_return
 id|sprintf
@@ -5309,6 +6037,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5346,6 +6084,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.maxmulti
 op_assign
@@ -5390,6 +6138,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5427,6 +6185,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.maxcqueue
 op_assign
@@ -5471,6 +6239,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5508,6 +6286,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.doios_single
 op_assign
@@ -5552,6 +6340,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5589,6 +6387,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.doios_multi
 op_assign
@@ -5633,6 +6441,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5670,6 +6488,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.txlen
 op_assign
@@ -5714,6 +6542,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5751,6 +6589,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.tx_time
 op_assign
@@ -5795,6 +6643,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5832,6 +6690,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.tx_pending
 op_assign
@@ -5876,6 +6744,16 @@ id|priv
 op_assign
 id|dev-&gt;driver_data
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|5
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_return
 id|sprintf
 c_func
@@ -5913,6 +6791,16 @@ op_star
 id|priv
 op_assign
 id|dev-&gt;driver_data
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|4
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 id|priv-&gt;conn-&gt;prof.tx_max_pending
 op_assign
@@ -6048,10 +6936,12 @@ id|dev
 r_int
 id|ret
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6120,10 +7010,12 @@ op_star
 id|dev
 )paren
 (brace
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6188,10 +7080,12 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6253,6 +7147,11 @@ op_star
 )paren
 id|kfree
 suffix:semicolon
+id|dev-&gt;driver
+op_assign
+op_amp
+id|netiucv_driver
+suffix:semicolon
 )brace
 r_else
 r_return
@@ -6291,13 +7190,13 @@ id|ret
 r_goto
 id|out_unreg
 suffix:semicolon
-id|dev-&gt;driver_data
-op_assign
-id|priv
-suffix:semicolon
 id|priv-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|dev-&gt;driver_data
+op_assign
+id|priv
 suffix:semicolon
 r_return
 l_int|0
@@ -6326,10 +7225,12 @@ op_star
 id|dev
 )paren
 (brace
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6347,7 +7248,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Allocate and initialize a new connection structure.&n; * Add it to the list of connections;&n; */
+multiline_comment|/**&n; * Allocate and initialize a new connection structure.&n; * Add it to the list of netiucv connections;&n; */
 r_static
 r_struct
 id|iucv_connection
@@ -6373,7 +7274,7 @@ op_star
 id|clist
 op_assign
 op_amp
-id|connections
+id|iucv_connections
 suffix:semicolon
 r_struct
 id|iucv_connection
@@ -6611,7 +7512,7 @@ r_return
 id|conn
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Release a connection structure and remove it from the&n; * list of connections.&n; */
+multiline_comment|/**&n; * Release a connection structure and remove it from the&n; * list of netiucv connections.&n; */
 r_static
 r_void
 DECL|function|netiucv_remove_connection
@@ -6631,12 +7532,14 @@ op_star
 id|clist
 op_assign
 op_amp
-id|connections
+id|iucv_connections
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6675,8 +7578,6 @@ r_if
 c_cond
 (paren
 id|conn-&gt;handle
-op_ne
-l_int|0
 )paren
 (brace
 id|iucv_unregister_program
@@ -6687,7 +7588,7 @@ id|conn-&gt;handle
 suffix:semicolon
 id|conn-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|fsm_deltimer
@@ -6750,10 +7651,12 @@ id|netiucv_priv
 op_star
 id|privptr
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -6805,11 +7708,11 @@ id|privptr-&gt;fsm
 suffix:semicolon
 id|privptr-&gt;conn
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|privptr-&gt;fsm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* privptr gets freed by free_netdev() */
 )brace
@@ -6953,6 +7856,30 @@ id|dev
 r_return
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev_alloc_name
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;name
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|privptr
 op_assign
 (paren
@@ -6987,9 +7914,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|privptr-&gt;fsm
-op_eq
-l_int|NULL
 )paren
 (brace
 id|free_netdev
@@ -7029,6 +7955,16 @@ id|free_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;NULL from netiucv_new_connection&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7087,6 +8023,16 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7095,16 +8041,25 @@ OG
 l_int|9
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: username too long (%d)!&bslash;n&quot;
 comma
 (paren
 r_int
 )paren
 id|count
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;conn_write: too long&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7182,11 +8137,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: Invalid character in username!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;conn_write: invalid character %c&bslash;n&quot;
+comma
+op_star
+id|p
 )paren
 suffix:semicolon
 r_return
@@ -7232,10 +8199,9 @@ op_logical_neg
 id|dev
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: Could not allocate network device structure &quot;
 l_string|&quot;for user &squot;%s&squot;&bslash;n&quot;
 comma
@@ -7246,27 +8212,19 @@ id|username
 )paren
 )paren
 suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;NULL from netiucv_init_netdevice&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|ret
-op_assign
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
-)paren
-)paren
-(brace
-r_goto
-id|out_free_ndev
 suffix:semicolon
 )brace
 r_if
@@ -7283,10 +8241,16 @@ id|dev
 )paren
 )paren
 (brace
-id|unregister_netdev
+id|IUCV_DBF_TEXT_
 c_func
 (paren
-id|dev
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;ret %d from netiucv_register_device&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_goto
@@ -7316,10 +8280,47 @@ op_member_access_from_pointer
 id|dev
 )paren
 suffix:semicolon
-id|printk
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
+id|register_netdev
 c_func
 (paren
-id|KERN_INFO
+id|dev
+)paren
+)paren
+)paren
+(brace
+id|netiucv_unregister_device
+c_func
+(paren
+(paren
+r_struct
+id|device
+op_star
+)paren
+(paren
+(paren
+r_struct
+id|netiucv_priv
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|dev
+)paren
+suffix:semicolon
+r_goto
+id|out_free_ndev
+suffix:semicolon
+)brace
+id|PRINT_INFO
+c_func
+(paren
 l_string|&quot;%s: &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7336,13 +8337,22 @@ id|count
 suffix:semicolon
 id|out_free_ndev
 suffix:colon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: Could not register &squot;%s&squot;&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;conn_write: could not register&bslash;n&quot;
 )paren
 suffix:semicolon
 id|netiucv_free_netdevice
@@ -7393,7 +8403,7 @@ op_star
 id|clist
 op_assign
 op_amp
-id|connections
+id|iucv_connections
 suffix:semicolon
 r_struct
 id|net_device
@@ -7423,10 +8433,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|pr_debug
+id|IUCV_DBF_TEXT
 c_func
 (paren
-l_string|&quot;%s() called&bslash;n&quot;
+id|trace
+comma
+l_int|3
 comma
 id|__FUNCTION__
 )paren
@@ -7584,10 +8596,9 @@ id|IFF_RUNNING
 )paren
 )paren
 (brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: net device %s active with peer %s&bslash;n&quot;
 comma
 id|ndev-&gt;name
@@ -7595,13 +8606,22 @@ comma
 id|priv-&gt;conn-&gt;userid
 )paren
 suffix:semicolon
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: %s cannot be removed&bslash;n&quot;
 comma
 id|ndev-&gt;name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;remove_write: still active&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7625,13 +8645,22 @@ r_return
 id|count
 suffix:semicolon
 )brace
-id|printk
+id|PRINT_WARN
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;netiucv: net device %s unknown&bslash;n&quot;
 comma
 id|name
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|data
+comma
+l_int|2
+comma
+l_string|&quot;remove_write: unknown device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7651,26 +8680,6 @@ comma
 id|remove_write
 )paren
 suffix:semicolon
-DECL|variable|netiucv_driver
-r_static
-r_struct
-id|device_driver
-id|netiucv_driver
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;netiucv&quot;
-comma
-dot
-id|bus
-op_assign
-op_amp
-id|iucv_bus
-comma
-)brace
-suffix:semicolon
 r_static
 r_void
 DECL|function|netiucv_banner
@@ -7685,7 +8694,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.57 $&quot;
+l_string|&quot;$Revision: 1.63 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -7739,10 +8748,9 @@ id|version
 op_assign
 l_string|&quot; ??? &quot;
 suffix:semicolon
-id|printk
+id|PRINT_INFO
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;NETIUCV driver Version%s initialized&bslash;n&quot;
 comma
 id|version
@@ -7759,10 +8767,20 @@ c_func
 r_void
 )paren
 (brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
-id|connections
+id|iucv_connections
 )paren
 (brace
 r_struct
@@ -7770,7 +8788,7 @@ id|net_device
 op_star
 id|ndev
 op_assign
-id|connections-&gt;netdev
+id|iucv_connections-&gt;netdev
 suffix:semicolon
 r_struct
 id|netiucv_priv
@@ -7831,10 +8849,14 @@ op_amp
 id|netiucv_driver
 )paren
 suffix:semicolon
-id|printk
+id|iucv_unregister_dbf_views
 c_func
 (paren
-id|KERN_INFO
+)paren
+suffix:semicolon
+id|PRINT_INFO
+c_func
+(paren
 l_string|&quot;NETIUCV driver unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7856,6 +8878,42 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
+id|iucv_register_dbf_views
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|PRINT_WARN
+c_func
+(paren
+l_string|&quot;netiucv_init failed, &quot;
+l_string|&quot;iucv_register_dbf_views rc = %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+id|IUCV_DBF_TEXT
+c_func
+(paren
+id|trace
+comma
+l_int|3
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|driver_register
 c_func
 (paren
@@ -7867,15 +8925,29 @@ r_if
 c_cond
 (paren
 id|ret
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
+id|PRINT_ERR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;NETIUCV: failed to register driver.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;ret %d from driver_register&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+id|iucv_unregister_dbf_views
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -7898,9 +8970,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ret
-op_eq
-l_int|0
 )paren
 (brace
 id|ret
@@ -7923,11 +8994,22 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|PRINT_ERR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;NETIUCV: failed to add driver attribute.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|IUCV_DBF_TEXT_
+c_func
+(paren
+id|setup
+comma
+l_int|2
+comma
+l_string|&quot;ret %d from driver_create_file&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 id|driver_unregister
@@ -7935,6 +9017,11 @@ c_func
 (paren
 op_amp
 id|netiucv_driver
+)paren
+suffix:semicolon
+id|iucv_unregister_dbf_views
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

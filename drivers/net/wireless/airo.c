@@ -11965,19 +11965,19 @@ id|dev
 (brace
 id|dev-&gt;hard_header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;rebuild_header
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;hard_header_cache
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;header_cache_update
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;hard_header_parse
 op_assign
@@ -12366,7 +12366,7 @@ id|dev-&gt;priv
 suffix:semicolon
 id|ai-&gt;wifidev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ai-&gt;flags
 op_assign
@@ -13105,7 +13105,7 @@ id|port
 comma
 id|is_pcmcia
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -21514,8 +21514,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|airo_entry
-op_assign
-l_int|0
 suffix:semicolon
 DECL|struct|proc_data
 r_struct
@@ -26430,7 +26428,7 @@ id|ai
 comma
 id|index
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -27744,11 +27742,11 @@ l_int|0
 suffix:semicolon
 id|data-&gt;wbuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|data-&gt;on_close
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -28131,8 +28129,6 @@ DECL|variable|airo_devices
 )brace
 op_star
 id|airo_devices
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Since the card doesn&squot;t automatically switch to the right WEP mode,&n;   we will make it do it.  If the card isn&squot;t associated, every secs we&n;   will switch WEP modes to see if that will help.  If the card is&n;   associated we will check every minute to see if anything has&n;   changed. */
 DECL|function|timer_func
@@ -28208,7 +28204,7 @@ id|apriv
 comma
 id|apriv-&gt;keyindex
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -28239,7 +28235,7 @@ id|apriv
 comma
 id|apriv-&gt;defindex
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -31774,7 +31770,7 @@ id|local
 comma
 id|index
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

@@ -109,6 +109,21 @@ macro_line|#ifndef WDIOC_GET_PRETIMEOUT
 DECL|macro|WDIOC_GET_PRETIMEOUT
 mdefine_line|#define&t;WDIOC_GET_PRETIMEOUT     _IOW(WATCHDOG_IOCTL_BASE, 22, int)
 macro_line|#endif
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+suffix:semicolon
+macro_line|#endif
 DECL|variable|watchdog_user
 r_static
 id|ipmi_user_t
@@ -359,6 +374,24 @@ l_string|&quot;Set to 1 to start the watchdog as&quot;
 l_string|&quot;soon as the driver is loaded.&quot;
 )paren
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|nowayout
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* Default state of the timer. */
 DECL|variable|ipmi_watchdog_state
 r_static
@@ -548,7 +581,7 @@ id|send_heartbeat_now
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_int
@@ -1214,7 +1247,7 @@ r_void
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_int
@@ -1444,7 +1477,7 @@ r_void
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_struct
@@ -2362,7 +2395,13 @@ op_eq
 id|WATCHDOG_MINOR
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT&t;
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|ipmi_watchdog_state
 op_assign
 id|WDOG_TIMEOUT_NONE
@@ -2373,7 +2412,7 @@ c_func
 id|IPMI_SET_TIMEOUT_NO_HB
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+)brace
 id|ipmi_wdog_open
 op_assign
 l_int|0

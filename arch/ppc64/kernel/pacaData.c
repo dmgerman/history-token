@@ -28,7 +28,7 @@ r_int
 r_int
 id|__toc_start
 suffix:semicolon
-multiline_comment|/* Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
+multiline_comment|/* Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; *&n; * ABI requires stack to be 128-byte aligned&n; */
 DECL|variable|emergency_stack
 r_char
 id|emergency_stack
@@ -37,6 +37,17 @@ id|PAGE_SIZE
 op_star
 id|NR_CPUS
 )braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|128
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * ItLpPaca, which contains the information shared between the &n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
 DECL|macro|PACAINITDATA
@@ -74,7 +85,7 @@ l_int|0
 comma
 l_int|1
 comma
-l_int|0
+l_int|NULL
 comma
 id|STAB0_PHYS_ADDR
 comma
@@ -89,7 +100,7 @@ l_int|1
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -103,7 +114,7 @@ l_int|2
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -117,7 +128,7 @@ l_int|3
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -131,7 +142,7 @@ l_int|4
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -145,7 +156,7 @@ l_int|5
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -159,7 +170,7 @@ l_int|6
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -173,7 +184,7 @@ l_int|7
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -187,7 +198,7 @@ l_int|8
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -201,7 +212,7 @@ l_int|9
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -215,7 +226,7 @@ l_int|10
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -229,7 +240,7 @@ l_int|11
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -243,7 +254,7 @@ l_int|12
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -257,7 +268,7 @@ l_int|13
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -271,7 +282,7 @@ l_int|14
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -285,7 +296,7 @@ l_int|15
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -299,7 +310,7 @@ l_int|16
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -313,7 +324,7 @@ l_int|17
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -327,7 +338,7 @@ l_int|18
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -341,7 +352,7 @@ l_int|19
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -355,7 +366,7 @@ l_int|20
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -369,7 +380,7 @@ l_int|21
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -383,7 +394,7 @@ l_int|22
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -397,7 +408,7 @@ l_int|23
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -411,7 +422,7 @@ l_int|24
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -425,7 +436,7 @@ l_int|25
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -439,7 +450,7 @@ l_int|26
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -453,7 +464,7 @@ l_int|27
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -467,7 +478,7 @@ l_int|28
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -481,7 +492,7 @@ l_int|29
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -495,7 +506,7 @@ l_int|30
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -509,7 +520,7 @@ l_int|31
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -524,7 +535,7 @@ l_int|32
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -538,7 +549,7 @@ l_int|33
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -552,7 +563,7 @@ l_int|34
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -566,7 +577,7 @@ l_int|35
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -580,7 +591,7 @@ l_int|36
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -594,7 +605,7 @@ l_int|37
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -608,7 +619,7 @@ l_int|38
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -622,7 +633,7 @@ l_int|39
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -636,7 +647,7 @@ l_int|40
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -650,7 +661,7 @@ l_int|41
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -664,7 +675,7 @@ l_int|42
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -678,7 +689,7 @@ l_int|43
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -692,7 +703,7 @@ l_int|44
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -706,7 +717,7 @@ l_int|45
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -720,7 +731,7 @@ l_int|46
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -734,7 +745,7 @@ l_int|47
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -748,7 +759,7 @@ l_int|48
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -762,7 +773,7 @@ l_int|49
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -776,7 +787,7 @@ l_int|50
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -790,7 +801,7 @@ l_int|51
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -804,7 +815,7 @@ l_int|52
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -818,7 +829,7 @@ l_int|53
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -832,7 +843,7 @@ l_int|54
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -846,7 +857,7 @@ l_int|55
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -860,7 +871,7 @@ l_int|56
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -874,7 +885,7 @@ l_int|57
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -888,7 +899,7 @@ l_int|58
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -902,7 +913,7 @@ l_int|59
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -916,7 +927,7 @@ l_int|60
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -930,7 +941,7 @@ l_int|61
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -944,7 +955,7 @@ l_int|62
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -958,7 +969,7 @@ l_int|63
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -973,7 +984,7 @@ l_int|64
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -987,7 +998,7 @@ l_int|65
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1001,7 +1012,7 @@ l_int|66
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1015,7 +1026,7 @@ l_int|67
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1029,7 +1040,7 @@ l_int|68
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1043,7 +1054,7 @@ l_int|69
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1057,7 +1068,7 @@ l_int|70
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1071,7 +1082,7 @@ l_int|71
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1085,7 +1096,7 @@ l_int|72
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1099,7 +1110,7 @@ l_int|73
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1113,7 +1124,7 @@ l_int|74
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1127,7 +1138,7 @@ l_int|75
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1141,7 +1152,7 @@ l_int|76
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1155,7 +1166,7 @@ l_int|77
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1169,7 +1180,7 @@ l_int|78
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1183,7 +1194,7 @@ l_int|79
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1197,7 +1208,7 @@ l_int|80
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1211,7 +1222,7 @@ l_int|81
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1225,7 +1236,7 @@ l_int|82
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1239,7 +1250,7 @@ l_int|83
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1253,7 +1264,7 @@ l_int|84
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1267,7 +1278,7 @@ l_int|85
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1281,7 +1292,7 @@ l_int|86
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1295,7 +1306,7 @@ l_int|87
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1309,7 +1320,7 @@ l_int|88
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1323,7 +1334,7 @@ l_int|89
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1337,7 +1348,7 @@ l_int|90
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1351,7 +1362,7 @@ l_int|91
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1365,7 +1376,7 @@ l_int|92
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1379,7 +1390,7 @@ l_int|93
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1393,7 +1404,7 @@ l_int|94
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1407,7 +1418,7 @@ l_int|95
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1421,7 +1432,7 @@ l_int|96
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1435,7 +1446,7 @@ l_int|97
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1449,7 +1460,7 @@ l_int|98
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1463,7 +1474,7 @@ l_int|99
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1477,7 +1488,7 @@ l_int|100
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1491,7 +1502,7 @@ l_int|101
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1505,7 +1516,7 @@ l_int|102
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1519,7 +1530,7 @@ l_int|103
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1533,7 +1544,7 @@ l_int|104
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1547,7 +1558,7 @@ l_int|105
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1561,7 +1572,7 @@ l_int|106
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1575,7 +1586,7 @@ l_int|107
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1589,7 +1600,7 @@ l_int|108
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1603,7 +1614,7 @@ l_int|109
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1617,7 +1628,7 @@ l_int|110
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1631,7 +1642,7 @@ l_int|111
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1645,7 +1656,7 @@ l_int|112
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1659,7 +1670,7 @@ l_int|113
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1673,7 +1684,7 @@ l_int|114
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1687,7 +1698,7 @@ l_int|115
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1701,7 +1712,7 @@ l_int|116
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1715,7 +1726,7 @@ l_int|117
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1729,7 +1740,7 @@ l_int|118
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1743,7 +1754,7 @@ l_int|119
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1757,7 +1768,7 @@ l_int|120
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1771,7 +1782,7 @@ l_int|121
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1785,7 +1796,7 @@ l_int|122
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1799,7 +1810,7 @@ l_int|123
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1813,7 +1824,7 @@ l_int|124
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1827,7 +1838,7 @@ l_int|125
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1841,7 +1852,7 @@ l_int|126
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1855,7 +1866,7 @@ l_int|127
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

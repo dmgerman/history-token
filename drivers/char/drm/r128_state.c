@@ -5803,6 +5803,7 @@ id|clear
 comma
 (paren
 id|drm_r128_clear_t
+id|__user
 op_star
 )paren
 id|data
@@ -6209,6 +6210,7 @@ id|vertex
 comma
 (paren
 id|drm_r128_vertex_t
+id|__user
 op_star
 )paren
 id|data
@@ -6463,6 +6465,7 @@ id|elts
 comma
 (paren
 id|drm_r128_indices_t
+id|__user
 op_star
 )paren
 id|data
@@ -6761,6 +6764,7 @@ id|blit
 comma
 (paren
 id|drm_r128_blit_t
+id|__user
 op_star
 )paren
 id|data
@@ -6884,6 +6888,7 @@ id|depth
 comma
 (paren
 id|drm_r128_depth_t
+id|__user
 op_star
 )paren
 id|data
@@ -7020,6 +7025,7 @@ id|stipple
 comma
 (paren
 id|drm_r128_stipple_t
+id|__user
 op_star
 )paren
 id|data
@@ -7154,6 +7160,7 @@ id|indirect
 comma
 (paren
 id|drm_r128_indirect_t
+id|__user
 op_star
 )paren
 id|data
@@ -7408,6 +7415,7 @@ id|param
 comma
 (paren
 id|drm_r128_getparam_t
+id|__user
 op_star
 )paren
 id|data

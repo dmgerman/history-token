@@ -3671,7 +3671,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * A successful selection is defined as one that &n;&t;&t;&t;&t;&t; * leaves us with the command connected and &n;&t;&t;&t;&t;&t; * in hostdata-&gt;connected, OR has terminated the&n;&t;&t;&t;&t;&t; * command.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * With successful commands, we fall through&n;&t;&t;&t;&t;&t; * and see if we can do an information transfer,&n;&t;&t;&t;&t;&t; * with failures we will restart.&n;&t;&t;&t;&t;&t; */
 id|hostdata-&gt;selecting
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* RvC: have to preset this to indicate a new command is being performed */
 r_if
@@ -5019,7 +5019,7 @@ multiline_comment|/* RvC: we return here with hostdata-&gt;selecting set,&n;&t;&
 )brace
 id|hostdata-&gt;selecting
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* clear this pointer, because we passed the&n;&t;&t;&t;&t;&t;   waiting period */
 r_if

@@ -184,7 +184,7 @@ r_volatile
 r_struct
 id|_I596_RBD
 (brace
-macro_line|#if INTEL_RETENTIVE
+macro_line|#ifdef INTEL_RETENTIVE
 DECL|member|count
 id|ushort
 id|count
@@ -214,7 +214,7 @@ op_star
 id|buf
 suffix:semicolon
 multiline_comment|/* Data buffer */
-macro_line|#if INTEL_RETENTIVE
+macro_line|#ifdef INTEL_RETENTIVE
 DECL|member|size
 id|ushort
 id|size

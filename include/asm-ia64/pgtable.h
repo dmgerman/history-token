@@ -422,6 +422,9 @@ suffix:semicolon
 multiline_comment|/* In the kernel&squot;s mapped region we have a full 43 bit space available and completely&n;   ignore the region number (since we know its in region number 5). */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(addr) &bslash;&n;&t;(init_mm.pgd + (((addr) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1)))
+multiline_comment|/* Look up a pgd entry in the gate area.  On IA-64, the gate-area&n;   resides in the kernel-mapped segment, hence we use pgd_offset_k()&n;   here.  */
+DECL|macro|pgd_offset_gate
+mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset_k(addr)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir,addr) &bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + (((addr) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD - 1)))
@@ -973,6 +976,8 @@ DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
 mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
+DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
+mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof

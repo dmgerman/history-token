@@ -193,9 +193,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Specify the minimum PROM revsion required for this kernel.&n; * Note that they&squot;re stored in hex format...&n; */
 DECL|macro|SN_SAL_MIN_MAJOR
-mdefine_line|#define SN_SAL_MIN_MAJOR&t;0x1  /* SN2 kernels need at least PROM 1.0 */
+mdefine_line|#define SN_SAL_MIN_MAJOR&t;0x3  /* SN2 kernels need at least PROM 3.40 */
 DECL|macro|SN_SAL_MIN_MINOR
-mdefine_line|#define SN_SAL_MIN_MINOR&t;0x0
+mdefine_line|#define SN_SAL_MIN_MINOR&t;0x40
 id|u64
 id|ia64_sn_probe_io_slot
 c_func

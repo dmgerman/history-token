@@ -945,7 +945,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 )brace
@@ -1000,13 +1000,13 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmTimeout
+id|IPSTATS_MIB_REASMTIMEOUT
 )paren
 suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 r_if
@@ -2523,7 +2523,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmOKs
+id|IPSTATS_MIB_REASMOKS
 )paren
 suffix:semicolon
 id|qp-&gt;fragments
@@ -2586,7 +2586,7 @@ suffix:colon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 r_return
@@ -2627,7 +2627,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmReqds
+id|IPSTATS_MIB_REASMREQDS
 )paren
 suffix:semicolon
 multiline_comment|/* Start by cleaning up the memory. */
@@ -2736,7 +2736,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|ReasmFails
+id|IPSTATS_MIB_REASMFAILS
 )paren
 suffix:semicolon
 id|kfree_skb

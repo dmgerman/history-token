@@ -1447,7 +1447,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-macro_line|#ifdef __i386__
+macro_line|#ifdef CONFIG_X86
 DECL|function|radeon_find_mem_vbios
 r_static
 r_int
@@ -1581,7 +1581,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __i386__ */
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/*&n; * Read XTAL (ref clock), SCLK and MCLK from Open Firmware device&n; * tree. Hopefully, ATI OF driver is kind enough to fill these&n; */
 DECL|function|radeon_read_xtal_OF
@@ -1646,7 +1646,7 @@ id|dp
 comma
 l_string|&quot;ATY,RefCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1694,7 +1694,7 @@ id|dp
 comma
 l_string|&quot;ATY,SCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1727,7 +1727,7 @@ id|dp
 comma
 l_string|&quot;ATY,MCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -10041,8 +10041,8 @@ comma
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * On x86, the primary display on laptop may have it&squot;s BIOS&n;&t; * ROM elsewhere, try to locate it at the legacy memory hole.&n;&t; * We probably need to make sure this is the primary dispay,&n;&t; * but that is difficult without some arch support.&n;&t; */
-macro_line|#ifdef __i386__
+multiline_comment|/*&n;&t; * On x86, the primary display on laptop may have it&squot;s BIOS&n;&t; * ROM elsewhere, try to locate it at the legacy memory hole.&n;&t; * We probably need to make sure this is the primary display,&n;&t; * but that is difficult without some arch support.&n;&t; */
+macro_line|#ifdef CONFIG_X86
 r_if
 c_cond
 (paren
@@ -10056,7 +10056,7 @@ c_func
 id|rinfo
 )paren
 suffix:semicolon
-macro_line|#endif /* __i386__ */
+macro_line|#endif
 multiline_comment|/* If both above failed, try the BIOS ROM again for mobility&n;&t; * chips&n;&t; */
 r_if
 c_cond

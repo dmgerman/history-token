@@ -8,7 +8,21 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef CONFIG_AMIGA
 macro_line|#include &lt;asm/vga.h&gt;
 macro_line|#else
-multiline_comment|/*&n; * FIXME&n; * Ugh, we don&squot;t have PCI space, so map readb() and friends to use Zorro space&n; * for MMIO accesses. This should make clgenfb work again on Amiga&n; */
+multiline_comment|/*&n; * FIXME&n; * Ugh, we don&squot;t have PCI space, so map readb() and friends to use Zorro space&n; * for MMIO accesses. This should make cirrusfb work again on Amiga&n; */
+DECL|macro|inb_p
+macro_line|#undef inb_p
+DECL|macro|inw_p
+macro_line|#undef inw_p
+DECL|macro|outb_p
+macro_line|#undef outb_p
+DECL|macro|outw
+macro_line|#undef outw
+DECL|macro|readb
+macro_line|#undef readb
+DECL|macro|writeb
+macro_line|#undef writeb
+DECL|macro|writew
+macro_line|#undef writew
 DECL|macro|inb_p
 mdefine_line|#define inb_p(port)&t;0
 DECL|macro|inw_p

@@ -43,14 +43,14 @@ id|bus
 )paren
 (brace
 id|cpumask_t
-id|tmp
+id|res
 suffix:semicolon
 id|cpus_and
 c_func
 (paren
-id|tmp
+id|res
 comma
-id|mp_bus_to_cpumask
+id|pci_bus_to_cpumask
 (braket
 id|bus
 )braket
@@ -59,7 +59,7 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 r_return
-id|tmp
+id|res
 suffix:semicolon
 )brace
 DECL|macro|NODE_BALANCE_RATE

@@ -4514,7 +4514,7 @@ l_int|0
 suffix:semicolon
 id|sp-&gt;last_cmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sp-&gt;tx_full
 op_assign
@@ -6234,7 +6234,7 @@ id|sp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|sp-&gt;dirty_tx
@@ -7363,7 +7363,7 @@ id|sp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dirty_tx
@@ -9247,7 +9247,7 @@ id|sp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Clear the Rx descriptors. */
 r_if
@@ -9315,7 +9315,7 @@ id|sp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Clear the Tx descriptors. */
 r_if
@@ -10439,7 +10439,7 @@ id|sp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Redundant. */
 id|sp-&gt;tx_ring
@@ -10737,7 +10737,7 @@ id|sp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sp-&gt;tx_ring
 (braket
@@ -11208,7 +11208,7 @@ id|sp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sp-&gt;tx_ring
 (braket

@@ -2081,7 +2081,7 @@ id|SCtmp-&gt;host_scribble
 suffix:semicolon
 id|SCtmp-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Fetch the sense data, and tuck it away, in the required slot.  The&n;&t;&t;   Adaptec automatically fetches it, and there is no guarantee that&n;&t;&t;   we will still have it in the cdb when we come back */

@@ -2033,34 +2033,6 @@ op_eq
 id|DATA_PROTECT
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * check if this was a write protected media&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-op_eq
-id|WRITE
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ide-cd: media marked write protected&bslash;n&quot;
-)paren
-suffix:semicolon
-id|set_disk_ro
-c_func
-(paren
-id|drive-&gt;disk
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* No point in retrying after an illegal&n;&t;&t;&t;   request or data protect error.*/
 id|ide_dump_status
 (paren
@@ -12945,22 +12917,7 @@ id|ide_cdrom_probe_capabilities
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * set correct block size and read-only for non-ram media&n;&t; */
-id|set_disk_ro
-c_func
-(paren
-id|drive-&gt;disk
-comma
-op_logical_neg
-id|CDROM_CONFIG_FLAGS
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ram
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * set correct block size&n;&t; */
 id|blk_queue_hardsect_size
 c_func
 (paren

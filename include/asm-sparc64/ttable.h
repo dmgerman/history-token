@@ -41,8 +41,13 @@ macro_line|#else
 DECL|macro|SUNOS_SYSCALL_TRAP
 mdefine_line|#define SUNOS_SYSCALL_TRAP TRAP(sunos_syscall)
 macro_line|#endif
+macro_line|#ifdef CONFIG_COMPAT
 DECL|macro|LINUX_32BIT_SYSCALL_TRAP
 mdefine_line|#define&t;LINUX_32BIT_SYSCALL_TRAP SYSCALL_TRAP(linux_sparc_syscall32, sys_call_table32)
+macro_line|#else
+DECL|macro|LINUX_32BIT_SYSCALL_TRAP
+mdefine_line|#define&t;LINUX_32BIT_SYSCALL_TRAP BTRAP(0x110)
+macro_line|#endif
 DECL|macro|LINUX_64BIT_SYSCALL_TRAP
 mdefine_line|#define LINUX_64BIT_SYSCALL_TRAP SYSCALL_TRAP(linux_sparc_syscall, sys_call_table64)
 DECL|macro|GETCC_TRAP

@@ -564,6 +564,7 @@ id|lock
 comma
 (paren
 id|drm_lock_t
+id|__user
 op_star
 )paren
 id|arg

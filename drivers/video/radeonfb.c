@@ -5242,7 +5242,7 @@ id|dp
 comma
 l_string|&quot;ATY,RefCLK&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|rinfo-&gt;pll.ref_clk

@@ -280,14 +280,14 @@ multiline_comment|/* WT mixin objects */
 macro_line|#endif
 multiline_comment|/* Global resources */
 DECL|member|mixcapt
-r_char
+id|s8
 id|mixcapt
 (braket
 l_int|2
 )braket
 suffix:semicolon
 DECL|member|mixplayb
-r_char
+id|s8
 id|mixplayb
 (braket
 l_int|4
@@ -295,14 +295,14 @@ l_int|4
 suffix:semicolon
 macro_line|#ifndef CHIP_AU8820
 DECL|member|mixspdif
-r_char
+id|s8
 id|mixspdif
 (braket
 l_int|2
 )braket
 suffix:semicolon
 DECL|member|mixa3d
-r_char
+id|s8
 id|mixa3d
 (braket
 l_int|2
@@ -310,7 +310,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* mixers which collect all a3d streams. */
 DECL|member|mixxtlk
-r_char
+id|s8
 id|mixxtlk
 (braket
 l_int|2

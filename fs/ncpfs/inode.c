@@ -4208,6 +4208,8 @@ c_cond
 op_logical_neg
 id|result
 )paren
+id|result
+op_assign
 id|inode_setattr
 c_func
 (paren
