@@ -1306,6 +1306,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1536,6 +1537,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2379,6 +2381,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2536,6 +2539,7 @@ id|npi
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2597,6 +2601,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2672,6 +2677,7 @@ id|uprog
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2684,18 +2690,6 @@ id|uprog
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|uprog.len
-OG
-l_int|0
-op_logical_and
-id|uprog.len
-OL
-l_int|65536
-)paren
-(brace
 id|err
 op_assign
 op_minus
@@ -2743,6 +2737,11 @@ c_func
 (paren
 id|code
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|uprog.filter
 comma
 id|len
@@ -2782,7 +2781,6 @@ id|code
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
 )brace
 id|filtp
 op_assign
@@ -3616,11 +3614,13 @@ op_minus
 id|EFAULT
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|ifr-&gt;ifr_ifru.ifru_data
@@ -8230,6 +8230,7 @@ id|data
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -8250,6 +8251,11 @@ c_func
 (paren
 id|ccp_option
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|data.ptr
 comma
 id|data.length
