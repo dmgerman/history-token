@@ -466,6 +466,7 @@ id|qos_info
 op_star
 id|qos
 comma
+r_const
 r_char
 op_star
 id|hw_name

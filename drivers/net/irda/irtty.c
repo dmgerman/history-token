@@ -3202,12 +3202,6 @@ id|tty
 op_assign
 id|self-&gt;tty
 suffix:semicolon
-r_char
-id|hwname
-(braket
-l_int|16
-)braket
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -3260,17 +3254,6 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* Give self a hardware name */
-id|sprintf
-c_func
-(paren
-id|hwname
-comma
-l_string|&quot;%s&quot;
-comma
-id|tty-&gt;name
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t; * Open new IrLAP layer instance, now that everything should be&n;&t; * initialized properly &n;&t; */
 id|self-&gt;irlap
 op_assign
@@ -3282,7 +3265,7 @@ comma
 op_amp
 id|self-&gt;qos
 comma
-id|hwname
+id|tty-&gt;name
 )paren
 suffix:semicolon
 r_return
