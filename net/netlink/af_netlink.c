@@ -1652,6 +1652,10 @@ id|nladdr-&gt;nl_family
 op_assign
 id|AF_NETLINK
 suffix:semicolon
+id|nladdr-&gt;nl_pad
+op_assign
+l_int|0
+suffix:semicolon
 op_star
 id|addr_len
 op_assign
@@ -3282,6 +3286,10 @@ suffix:semicolon
 id|addr-&gt;nl_family
 op_assign
 id|AF_NETLINK
+suffix:semicolon
+id|addr-&gt;nl_pad
+op_assign
+l_int|0
 suffix:semicolon
 id|addr-&gt;nl_pid
 op_assign

@@ -11,8 +11,22 @@ id|limit_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|macro|MAX_CPJ
+mdefine_line|#define MAX_CPJ (0xFFFFFFFF / (HZ*60*60*24))
+DECL|macro|_POW2_BELOW2
+mdefine_line|#define _POW2_BELOW2(x) ((x)|((x)&gt;&gt;1))
+DECL|macro|_POW2_BELOW4
+mdefine_line|#define _POW2_BELOW4(x) (_POW2_BELOW2(x)|_POW2_BELOW2((x)&gt;&gt;2))
+DECL|macro|_POW2_BELOW8
+mdefine_line|#define _POW2_BELOW8(x) (_POW2_BELOW4(x)|_POW2_BELOW4((x)&gt;&gt;4))
+DECL|macro|_POW2_BELOW16
+mdefine_line|#define _POW2_BELOW16(x) (_POW2_BELOW8(x)|_POW2_BELOW8((x)&gt;&gt;8))
+DECL|macro|_POW2_BELOW32
+mdefine_line|#define _POW2_BELOW32(x) (_POW2_BELOW16(x)|_POW2_BELOW16((x)&gt;&gt;16))
+DECL|macro|POW2_BELOW32
+mdefine_line|#define POW2_BELOW32(x) ((_POW2_BELOW32(x)&gt;&gt;1) + 1)
 DECL|macro|CREDITS_PER_JIFFY
-mdefine_line|#define CREDITS_PER_JIFFY 128
+mdefine_line|#define CREDITS_PER_JIFFY POW2_BELOW32(MAX_CPJ)
 DECL|function|ebt_limit_match
 r_static
 r_int
@@ -271,7 +285,7 @@ id|info-&gt;avg
 id|printk
 c_func
 (paren
-l_string|&quot;Overflow in ebt_limit: %u/%u&bslash;n&quot;
+l_string|&quot;Overflow in ebt_limit, try lower: %u/%u&bslash;n&quot;
 comma
 id|info-&gt;avg
 comma
