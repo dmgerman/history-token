@@ -113,7 +113,7 @@ r_enum
 id|MCA_AdapterStatus
 id|status
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_MCA_PROC_FS
 multiline_comment|/* name of the proc/mca file */
 DECL|member|procname
 r_char
@@ -482,7 +482,65 @@ op_star
 id|mca_dev
 )paren
 suffix:semicolon
-multiline_comment|/* for now, include the legacy API */
+macro_line|#ifdef CONFIG_MCA_LEGACY
 macro_line|#include &lt;linux/mca-legacy.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MCA_PROC_FS
+r_extern
+r_void
+id|mca_do_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|mca_set_adapter_procfn
+c_func
+(paren
+r_int
+id|slot
+comma
+id|MCA_ProcFn
+comma
+r_void
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|mca_do_proc_init
+r_static
+r_inline
+r_void
+id|mca_do_proc_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+DECL|function|mca_set_adapter_procfn
+r_static
+r_inline
+r_void
+id|mca_set_adapter_procfn
+c_func
+(paren
+r_int
+id|slot
+comma
+id|MCA_ProcFn
+op_star
+id|fn
+comma
+r_void
+op_star
+id|dev
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif /* _LINUX_MCA_H */
 eof
