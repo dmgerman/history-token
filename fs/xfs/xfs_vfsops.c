@@ -146,8 +146,6 @@ r_extern
 id|lock_t
 id|xfs_dabuf_global_lock
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef XFS_DABUF_DEBUG
 id|spinlock_init
 c_func
 (paren

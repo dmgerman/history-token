@@ -110,46 +110,52 @@ mdefine_line|#define PB_TRACE_BUFSIZE&t;1024
 DECL|macro|CIRC_INC
 mdefine_line|#define CIRC_INC(i)     (((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
 multiline_comment|/*&n; * Tunable pagebuf parameters&n; */
-DECL|macro|P_PARAM
-mdefine_line|#define P_PARAM&t;4
-DECL|union|pagebuf_param
+DECL|struct|pb_sysctl_val
 r_typedef
-r_union
+r_struct
+id|pb_sysctl_val
+(brace
+DECL|member|min
+id|ulong
+id|min
+suffix:semicolon
+DECL|member|val
+id|ulong
+id|val
+suffix:semicolon
+DECL|member|max
+id|ulong
+id|max
+suffix:semicolon
+DECL|typedef|pb_sysctl_val_t
+)brace
+id|pb_sysctl_val_t
+suffix:semicolon
+DECL|struct|pagebuf_param
+r_typedef
+r_struct
 id|pagebuf_param
 (brace
-r_struct
-(brace
 DECL|member|flush_interval
-id|ulong
+id|pb_sysctl_val_t
 id|flush_interval
 suffix:semicolon
 multiline_comment|/* interval between runs of the&n;&t;&t;&t;&t;&t; * delwri flush daemon.  */
 DECL|member|age_buffer
-id|ulong
+id|pb_sysctl_val_t
 id|age_buffer
 suffix:semicolon
 multiline_comment|/* time for buffer to age before&n;&t;&t;&t;&t;&t; * we flush it.  */
-DECL|member|debug
-id|ulong
-id|debug
-suffix:semicolon
-multiline_comment|/* debug tracing on or off */
 DECL|member|stats_clear
-id|ulong
+id|pb_sysctl_val_t
 id|stats_clear
 suffix:semicolon
 multiline_comment|/* clear the pagebuf stats */
-DECL|member|p_un
-)brace
-id|p_un
+DECL|member|debug
+id|pb_sysctl_val_t
+id|debug
 suffix:semicolon
-DECL|member|data
-id|ulong
-id|data
-(braket
-id|P_PARAM
-)braket
-suffix:semicolon
+multiline_comment|/* debug tracing on or off */
 DECL|typedef|pagebuf_param_t
 )brace
 id|pagebuf_param_t
