@@ -674,9 +674,9 @@ r_else
 id|kobject_hotplug
 c_func
 (paren
-l_string|&quot;add&quot;
-comma
 id|kobj
+comma
+id|KOBJ_ADD
 )paren
 suffix:semicolon
 )brace
@@ -1021,9 +1021,9 @@ id|kobj
 id|kobject_hotplug
 c_func
 (paren
-l_string|&quot;remove&quot;
-comma
 id|kobj
+comma
+id|KOBJ_REMOVE
 )paren
 suffix:semicolon
 id|sysfs_remove_dir

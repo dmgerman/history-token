@@ -4,8 +4,63 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/kobject_uevent.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+multiline_comment|/* &n; * These must match up with the values for enum kobject_action&n; * as found in include/linux/kobject_uevent.h&n; */
+DECL|variable|actions
+r_static
+r_char
+op_star
+id|actions
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;add&quot;
+comma
+multiline_comment|/* 0x00 */
+l_string|&quot;remove&quot;
+comma
+multiline_comment|/* 0x01 */
+l_string|&quot;change&quot;
+comma
+multiline_comment|/* 0x02 */
+l_string|&quot;mount&quot;
+comma
+multiline_comment|/* 0x03 */
+)brace
+suffix:semicolon
+DECL|function|action_to_string
+r_static
+r_char
+op_star
+id|action_to_string
+c_func
+(paren
+r_enum
+id|kobject_action
+id|action
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|action
+op_ge
+id|KOBJ_MAX_ACTION
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_else
+r_return
+id|actions
+(braket
+id|action
+)braket
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_KOBJECT_UEVENT
 DECL|variable|uevent_sock
 r_static
@@ -167,15 +222,14 @@ r_int
 id|do_kobject_uevent
 c_func
 (paren
-r_const
-r_char
-op_star
-id|signal
-comma
 r_struct
 id|kobject
 op_star
 id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
 comma
 r_struct
 id|attribute
@@ -193,6 +247,10 @@ suffix:semicolon
 r_char
 op_star
 id|attrpath
+suffix:semicolon
+r_char
+op_star
+id|signal
 suffix:semicolon
 r_int
 id|len
@@ -222,6 +280,24 @@ id|path
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+id|signal
+op_assign
+id|action_to_string
+c_func
+(paren
+id|action
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|signal
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -338,15 +414,14 @@ r_int
 id|kobject_uevent
 c_func
 (paren
-r_const
-r_char
-op_star
-id|signal
-comma
 r_struct
 id|kobject
 op_star
 id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
 comma
 r_struct
 id|attribute
@@ -358,9 +433,9 @@ r_return
 id|do_kobject_uevent
 c_func
 (paren
-id|signal
-comma
 id|kobj
+comma
+id|action
 comma
 id|attr
 comma
@@ -380,15 +455,14 @@ r_int
 id|kobject_uevent_atomic
 c_func
 (paren
-r_const
-r_char
-op_star
-id|signal
-comma
 r_struct
 id|kobject
 op_star
 id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
 comma
 r_struct
 id|attribute
@@ -400,9 +474,9 @@ r_return
 id|do_kobject_uevent
 c_func
 (paren
-id|signal
-comma
 id|kobj
+comma
+id|action
 comma
 id|attr
 comma
@@ -524,15 +598,14 @@ r_void
 id|kobject_hotplug
 c_func
 (paren
-r_const
-r_char
-op_star
-id|action
-comma
 r_struct
 id|kobject
 op_star
 id|kobj
+comma
+r_enum
+id|kobject_action
+id|action
 )paren
 (brace
 r_char
@@ -578,6 +651,10 @@ op_star
 id|name
 op_assign
 l_int|NULL
+suffix:semicolon
+r_char
+op_star
+id|action_string
 suffix:semicolon
 id|u64
 id|seq
@@ -664,6 +741,22 @@ l_string|&quot;%s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
+suffix:semicolon
+id|action_string
+op_assign
+id|action_to_string
+c_func
+(paren
+id|action
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|action_string
+)paren
+r_return
 suffix:semicolon
 id|envp
 op_assign
@@ -810,7 +903,7 @@ id|scratch
 comma
 l_string|&quot;ACTION=%s&quot;
 comma
-id|action
+id|action_string
 )paren
 op_plus
 l_int|1
@@ -1023,7 +1116,7 @@ suffix:semicolon
 id|send_uevent
 c_func
 (paren
-id|action
+id|action_string
 comma
 id|kobj_path
 comma
