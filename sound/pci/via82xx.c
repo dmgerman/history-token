@@ -3728,24 +3728,22 @@ id|runtime-&gt;rate
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
 r_if
 c_cond
 (paren
-id|chip-&gt;revision
+id|runtime-&gt;rate
 op_eq
-id|VIA_REV_8233A
+l_int|48000
 )paren
 id|rbits
 op_assign
-l_int|0
+l_int|0xfffff
 suffix:semicolon
 r_else
-macro_line|#endif
 id|rbits
 op_assign
 (paren
-l_int|0xfffff
+l_int|0x100000
 op_div
 l_int|48000
 )paren
@@ -3754,7 +3752,7 @@ id|runtime-&gt;rate
 op_plus
 (paren
 (paren
-l_int|0xfffff
+l_int|0x100000
 op_mod
 l_int|48000
 )paren
@@ -9579,6 +9577,24 @@ id|VIA_DXS_ENABLE
 )brace
 comma
 multiline_comment|/* MSI KT4V */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1462
+comma
+dot
+id|device
+op_assign
+l_int|0x5901
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* MSI KT6 Delta-SR */
 (brace
 dot
 id|vendor
