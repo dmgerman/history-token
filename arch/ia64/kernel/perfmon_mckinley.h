@@ -261,7 +261,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; * we must clear the debug registers if any pmc13.ena_dbrpX bit is enabled&n;&t; * before they are written (fl_using_dbreg==0) to avoid picking up stale information.&n;&t; */
+multiline_comment|/*&n;&t; * we must clear the debug registers if pmc13 has a value which enable&n;&t; * memory pipeline event constraints. In this case we need to clear the&n;&t; * the debug registers if they have not yet been accessed. This is required&n;&t; * to avoid picking stale state.&n;&t; * PMC13 is &quot;active&quot; if:&n;&t; * &t;one of the pmc13.cfg_dbrpXX field is different from 0x3&n;&t; * AND&n;&t; * &t;at the corresponding pmc13.ena_dbrpXX is set.&n;&t; *&n;&t; * For now, we just check on cfg_dbrXX != 0x3.&n;&t; */
 r_if
 c_cond
 (paren
@@ -270,14 +270,14 @@ op_eq
 l_int|13
 op_logical_and
 (paren
+(paren
 op_star
 id|val
 op_amp
-(paren
-l_int|0xfUL
-op_lshift
-l_int|45
+l_int|0x18181818UL
 )paren
+op_ne
+l_int|0x18181818UL
 )paren
 op_logical_and
 id|ctx-&gt;ctx_fl_using_dbreg
@@ -285,6 +285,19 @@ op_eq
 l_int|0
 )paren
 (brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;pmc[%d]=0x%lx has active pmc13 settings, clearing dbr&bslash;n&quot;
+comma
+id|cnum
+comma
+op_star
+id|val
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
@@ -342,10 +355,10 @@ op_logical_and
 op_star
 id|val
 op_amp
-l_int|0x2222
+l_int|0x2222UL
 )paren
 op_ne
-l_int|0x2222
+l_int|0x2222UL
 )paren
 op_logical_and
 id|ctx-&gt;ctx_fl_using_dbreg
@@ -353,6 +366,19 @@ op_eq
 l_int|0
 )paren
 (brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;pmc[%d]=0x%lx has active pmc14 settings, clearing ibr&bslash;n&quot;
+comma
+id|cnum
+comma
+op_star
+id|val
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* don&squot;t mix debug with perfmon */
 r_if
 c_cond
@@ -591,10 +617,13 @@ c_cond
 (paren
 id|ret
 )paren
-id|printk
+id|DPRINT
 c_func
 (paren
+(paren
+id|KERN_DEBUG
 l_string|&quot;perfmon: failure check_case1&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
