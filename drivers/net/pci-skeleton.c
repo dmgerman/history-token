@@ -2950,9 +2950,9 @@ id|tp-&gt;phys
 l_int|0
 )braket
 comma
-l_int|4
+id|MII_ADVERTISE
 comma
-l_int|0x141
+id|ADVERTISE_FULL
 )paren
 suffix:semicolon
 id|tp-&gt;duplex_lock
@@ -4654,9 +4654,9 @@ op_star
 id|HZ
 suffix:semicolon
 r_int
-id|mii_reg5
+id|mii_lpa
 suffix:semicolon
-id|mii_reg5
+id|mii_lpa
 op_assign
 id|mdio_read
 (paren
@@ -4667,7 +4667,7 @@ id|tp-&gt;phys
 l_int|0
 )braket
 comma
-l_int|5
+id|MII_LPA
 )paren
 suffix:semicolon
 r_if
@@ -4676,7 +4676,7 @@ c_cond
 op_logical_neg
 id|tp-&gt;duplex_lock
 op_logical_and
-id|mii_reg5
+id|mii_lpa
 op_ne
 l_int|0xffff
 )paren
@@ -4685,13 +4685,13 @@ r_int
 id|duplex
 op_assign
 (paren
-id|mii_reg5
+id|mii_lpa
 op_amp
-l_int|0x0100
+id|LPA_100FULL
 )paren
 op_logical_or
 (paren
-id|mii_reg5
+id|mii_lpa
 op_amp
 l_int|0x01C0
 )paren
@@ -4730,7 +4730,7 @@ id|tp-&gt;phys
 l_int|0
 )braket
 comma
-id|mii_reg5
+id|mii_lpa
 )paren
 suffix:semicolon
 id|NETDRV_W8
