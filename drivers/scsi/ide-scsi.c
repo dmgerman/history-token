@@ -4497,14 +4497,6 @@ id|queuecommand
 suffix:colon
 id|idescsi_queue
 comma
-m_abort
-suffix:colon
-id|idescsi_abort
-comma
-id|reset
-suffix:colon
-id|idescsi_reset
-comma
 id|bios_param
 suffix:colon
 id|idescsi_bios
