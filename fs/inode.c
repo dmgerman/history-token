@@ -1853,13 +1853,6 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|inode-&gt;i_state
-op_amp
-id|I_DIRTY
-)paren
 id|sync_one
 c_func
 (paren
