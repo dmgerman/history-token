@@ -1265,7 +1265,7 @@ c_func
 (paren
 l_string|&quot;xfs_itobp&quot;
 comma
-id|XFS_ERRLEVEL_LOW
+id|XFS_ERRLEVEL_HIGH
 comma
 id|mp
 comma
