@@ -260,7 +260,7 @@ id|ioport
 suffix:semicolon
 id|emu-&gt;gameport.name
 op_assign
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 suffix:semicolon
 id|emu-&gt;gameport.phys
 op_assign
@@ -299,7 +299,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
-id|pdev-&gt;name
+id|pdev-&gt;dev.name
 comma
 id|pdev-&gt;slot_name
 comma
