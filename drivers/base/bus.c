@@ -522,6 +522,8 @@ id|bus
 comma
 op_amp
 id|ktype_bus
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;bus_for_each_dev - device iterator.&n; *&t;@bus:&t;bus type.&n; *&t;@start:&t;device to start iterating from.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @bus&squot;s list of devices, and call @fn for each,&n; *&t;passing it @data. If @start is not NULL, we use that device to&n; *&t;begin iterating from.&n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; *&n; *&t;NOTE: The device that returns a non-zero value is not retained&n; *&t;in any way, nor is its refcount incremented. If the caller needs&n; *&t;to retain this data, it should do, and increment the reference &n; *&t;count in the supplied callback.&n; */
