@@ -441,7 +441,8 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;239
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;240
-multiline_comment|/*&n; * Number 241 is currently unused&n; */
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;241
 multiline_comment|/*&n; * Number 242 is reserved for tux&n; */
 DECL|macro|__NR_io_setup
 mdefine_line|#define __NR_io_setup&t;&t;243
@@ -483,8 +484,9 @@ DECL|macro|__NR_clock_getres
 mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
+multiline_comment|/*&n; * Number 263 is reserved for vserver&n; */
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 263
+mdefine_line|#define NR_syscalls 264
 multiline_comment|/* &n; * There are some system calls that are not present on 64 bit, some&n; * have a different name although they do the same (e.g. __NR_chown32&n; * is __NR_chown on 64 bit).&n; */
 macro_line|#ifdef __s390x__
 DECL|macro|__NR_time

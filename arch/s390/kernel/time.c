@@ -868,6 +868,8 @@ multiline_comment|/* set xtime */
 id|xtime_cc
 op_assign
 id|init_timer_cc
+op_plus
+id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 id|set_time_cc
 op_assign
