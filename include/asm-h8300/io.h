@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/virtconvert.h&gt;
 macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
 macro_line|#include &lt;asm/regs306x.h&gt;
 macro_line|#elif defined(CONFIG_H8S2678)
-macro_line|#include &lt;asm/regs2678.h&gt;
+macro_line|#include &lt;asm/regs267x.h&gt;
 macro_line|#else
 macro_line|#error UNKNOWN CPU TYPE
 macro_line|#endif
@@ -152,12 +152,14 @@ op_amp
 l_int|1
 op_lshift
 (paren
+(paren
 id|addr
 op_rshift
 l_int|21
 )paren
 op_amp
 l_int|7
+)paren
 )paren
 )paren
 op_eq
@@ -601,13 +603,13 @@ mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 DECL|macro|inb
-mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readb(addr ^ 1) &amp; 0xff:readb(addr))
+mdefine_line|#define inb(addr)    ((h8300_buswidth(addr))?readb((addr) ^ 1) &amp; 0xff:readb(addr))
 DECL|macro|inw
 mdefine_line|#define inw(addr)    _swapw(readw(addr))
 DECL|macro|inl
 mdefine_line|#define inl(addr)    _swapl(readl(addr))
 DECL|macro|outb
-mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; (addr &amp; 1))?writew(x,addr):writeb(x,addr)))
+mdefine_line|#define outb(x,addr) ((void)((h8300_buswidth(addr) &amp;&amp; ((addr) &amp; 1))?writew(x,addr):writeb(x,addr)))
 DECL|macro|outw
 mdefine_line|#define outw(x,addr) ((void) writew(_swapw(x),addr))
 DECL|macro|outl

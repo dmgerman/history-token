@@ -322,6 +322,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;virtual vector at 0x%08lx&bslash;n&quot;
 comma
 (paren
@@ -459,6 +460,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;&bslash;n%p: &quot;
 comma
 id|ramvec_p
@@ -467,6 +469,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%p &quot;
 comma
 op_star
@@ -480,6 +483,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -544,6 +548,7 @@ id|NR_IRQS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Incorrect IRQ %d from %s&bslash;n&quot;
 comma
 id|irq
@@ -674,6 +679,25 @@ id|irq
 op_assign
 id|irq_handle
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq_handle-&gt;flags
+op_amp
+id|SA_SAMPLE_RANDOM
+)paren
+id|rand_initialize_irq
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -706,10 +730,8 @@ id|irq
 op_ge
 id|NR_IRQS
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -731,6 +753,7 @@ id|dev_id
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Removing probably wrong IRQ %d from %s&bslash;n&quot;
 comma
 id|irq
@@ -741,6 +764,12 @@ id|irq
 )braket
 op_member_access_from_pointer
 id|devname
+)paren
+suffix:semicolon
+id|disable_irq
+c_func
+(paren
+id|irq
 )paren
 suffix:semicolon
 id|h8300_disable_irq_pin

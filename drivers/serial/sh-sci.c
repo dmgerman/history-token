@@ -1151,7 +1151,7 @@ id|h8300_sci_enable
 c_func
 (paren
 r_struct
-id|sci_port
+id|uart_port
 op_star
 id|port
 comma
@@ -1178,7 +1178,7 @@ r_int
 id|ch
 op_assign
 (paren
-id|port-&gt;base
+id|port-&gt;mapbase
 op_minus
 id|SMR0
 )paren
@@ -5706,7 +5706,7 @@ comma
 dot
 id|irqs
 op_assign
-id|H8S_IRQS1
+id|H8S_SCI_IRQS1
 comma
 dot
 id|init_pins
@@ -5770,7 +5770,7 @@ comma
 dot
 id|irqs
 op_assign
-id|H8S_IRQS2
+id|H8S_SCI_IRQS2
 comma
 dot
 id|init_pins

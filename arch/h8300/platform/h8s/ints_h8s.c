@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/h8300/platform/h8s/ints_h8s.c&n; * Interrup
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -258,6 +259,8 @@ id|IRQ_GPIO_MAP
 c_func
 (paren
 id|ptn
+comma
+id|irq
 comma
 id|port_no
 comma
