@@ -5600,7 +5600,7 @@ c_cond
 (paren
 id|iflag
 op_amp
-id|IGNPAR
+id|INPCK
 )paren
 id|up-&gt;port.read_status_mask
 op_or_assign
