@@ -34,11 +34,6 @@ DECL|macro|BLOCK_SIZE_BITS
 mdefine_line|#define BLOCK_SIZE_BITS 10
 DECL|macro|BLOCK_SIZE
 mdefine_line|#define BLOCK_SIZE (1&lt;&lt;BLOCK_SIZE_BITS)
-multiline_comment|/* buffer header fixed size for the blkdev I/O through pagecache */
-DECL|macro|BUFFERED_BLOCKSIZE_BITS
-mdefine_line|#define BUFFERED_BLOCKSIZE_BITS 10
-DECL|macro|BUFFERED_BLOCKSIZE
-mdefine_line|#define BUFFERED_BLOCKSIZE (1 &lt;&lt; BUFFERED_BLOCKSIZE_BITS)
 multiline_comment|/* And dynamically-tunable limits and defaults: */
 DECL|struct|files_stat_struct
 r_struct
@@ -4959,11 +4954,9 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|invalidate_buffers
-mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0, 0)
+mdefine_line|#define invalidate_buffers(dev)&t;__invalidate_buffers((dev), 0)
 DECL|macro|destroy_buffers
-mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1, 0)
-DECL|macro|update_buffers
-mdefine_line|#define update_buffers(dev)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__invalidate_buffers((dev), 0, 1);&t;&bslash;&n;&t;__invalidate_buffers((dev), 0, 2);&t;&bslash;&n;} while (0)
+mdefine_line|#define destroy_buffers(dev)&t;__invalidate_buffers((dev), 1)
 r_extern
 r_void
 id|__invalidate_buffers
@@ -4971,8 +4964,6 @@ c_func
 (paren
 id|kdev_t
 id|dev
-comma
-r_int
 comma
 r_int
 )paren
@@ -6227,30 +6218,6 @@ id|address_space
 op_star
 comma
 id|loff_t
-comma
-id|get_block_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|generic_direct_IO
-c_func
-(paren
-r_int
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|kiobuf
-op_star
-comma
-r_int
-r_int
-comma
-r_int
 comma
 id|get_block_t
 op_star

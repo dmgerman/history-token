@@ -4619,6 +4619,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Swap 80% full? Release the pages as they are paged in.. */
+DECL|macro|vm_swap_full
+mdefine_line|#define vm_swap_full() &bslash;&n;&t;(swapper_space.nrpages*5 &gt; total_swap_pages*4)
 multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and exit.&n; */
 DECL|function|do_swap_page
 r_static
@@ -4841,6 +4844,25 @@ id|page
 r_if
 c_cond
 (paren
+id|write_access
+op_logical_or
+id|vm_swap_full
+c_func
+(paren
+)paren
+)paren
+(brace
+id|pte
+op_assign
+id|pte_mkdirty
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|vma-&gt;vm_flags
 op_amp
 id|VM_WRITE
@@ -4853,20 +4875,13 @@ c_func
 id|pte
 )paren
 suffix:semicolon
-id|pte
-op_assign
-id|pte_mkdirty
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
 id|delete_from_swap_cache
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 )brace
 id|UnlockPage
 c_func

@@ -1035,13 +1035,6 @@ c_func
 id|generic_file_write
 )paren
 suffix:semicolon
-DECL|variable|generic_direct_IO
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|generic_direct_IO
-)paren
-suffix:semicolon
 DECL|variable|generic_file_mmap
 id|EXPORT_SYMBOL
 c_func
