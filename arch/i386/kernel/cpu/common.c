@@ -1737,6 +1737,14 @@ id|init_tss
 op_plus
 id|cpu
 suffix:semicolon
+r_struct
+id|thread_struct
+op_star
+id|thread
+op_assign
+op_amp
+id|current-&gt;thread
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1865,6 +1873,8 @@ dot
 id|size
 op_assign
 id|GDT_SIZE
+op_minus
+l_int|1
 suffix:semicolon
 id|cpu_gdt_descr
 (braket
@@ -1883,6 +1893,22 @@ id|cpu
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Set up the per-thread TLS descriptor cache:&n;&t; */
+id|memcpy
+c_func
+(paren
+id|thread-&gt;tls_array
+comma
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+comma
+id|GDT_ENTRY_TLS_MAX
+op_star
+l_int|8
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -1955,7 +1981,7 @@ id|cpu
 suffix:semicolon
 id|t-&gt;esp0
 op_assign
-id|current-&gt;thread.esp0
+id|thread-&gt;esp0
 suffix:semicolon
 id|set_tss_desc
 c_func
@@ -1970,7 +1996,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|TSS_ENTRY
+id|GDT_ENTRY_TSS
 )braket
 dot
 id|b
