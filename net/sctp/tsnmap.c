@@ -74,7 +74,7 @@ id|__u32
 id|initial_tsn
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -99,7 +99,7 @@ c_func
 id|len
 )paren
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if

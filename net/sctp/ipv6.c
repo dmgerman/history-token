@@ -95,11 +95,13 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -190,7 +192,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Warning:  The sock lock is held.  Remember to call &n;&t; * sctp_err_finish!&n;&t; */
+multiline_comment|/* Warning:  The sock lock is held.  Remember to call&n;&t; * sctp_err_finish!&n;&t; */
 r_switch
 c_cond
 (paren
@@ -493,7 +495,8 @@ op_star
 id|sctp_v6_get_dst
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -753,7 +756,8 @@ r_void
 id|sctp_v6_get_saddr
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1431,7 +1435,7 @@ id|rt-&gt;rt6i_src.addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Compare addresses exactly.  &n; * FIXME: v4-mapped-v6.&n; */
+multiline_comment|/* Compare addresses exactly.&n; * FIXME: v4-mapped-v6.&n; */
 DECL|function|sctp_v6_cmp_addr
 r_static
 r_int

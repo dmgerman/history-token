@@ -6474,7 +6474,8 @@ id|sctp_generate_tag
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -6517,7 +6518,8 @@ id|sctp_generate_tsn
 c_func
 (paren
 r_const
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren

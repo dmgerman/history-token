@@ -124,8 +124,6 @@ op_amp
 id|queue-&gt;in
 )paren
 )paren
-op_ne
-l_int|NULL
 )paren
 id|sctp_free_chunk
 c_func
@@ -235,8 +233,6 @@ id|chunk
 op_assign
 id|queue-&gt;in_progress
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* There is a packet that we have been working on.&n;&t;&t; * Any post processing work to do before we move on?&n;&t;&t; */

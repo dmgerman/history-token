@@ -51,7 +51,7 @@ id|__u16
 id|out
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -72,7 +72,7 @@ comma
 id|out
 )paren
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if

@@ -52,7 +52,7 @@ r_int
 id|msg_flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -72,7 +72,7 @@ c_func
 (paren
 id|size
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -222,7 +222,8 @@ id|sctp_ulpevent_make_assoc_change
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -242,7 +243,7 @@ id|__u16
 id|inbound
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -273,7 +274,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -385,7 +386,8 @@ id|sctp_ulpevent_make_peer_addr_change
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -405,7 +407,7 @@ r_int
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -436,7 +438,7 @@ id|sctp_paddr_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -555,7 +557,8 @@ id|sctp_ulpevent_make_remote_error
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -567,7 +570,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -652,7 +655,7 @@ multiline_comment|/* headroom */
 l_int|0
 comma
 multiline_comment|/* tailroom */
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 multiline_comment|/* Pull off the rest of the cause TLV from the chunk.  */
@@ -798,7 +801,8 @@ id|sctp_ulpevent_make_send_failed
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -813,7 +817,7 @@ id|__u32
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -849,7 +853,7 @@ multiline_comment|/* headroom */
 l_int|0
 comma
 multiline_comment|/* tailroom */
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1000,7 +1004,8 @@ id|sctp_ulpevent_make_shutdown_event
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1008,7 +1013,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1039,7 +1044,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1131,7 +1136,8 @@ op_star
 id|sctp_ulpevent_make_rcvmsg
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1140,7 +1146,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1174,7 +1180,7 @@ c_func
 (paren
 id|chunk-&gt;skb
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1264,7 +1270,7 @@ c_func
 id|chunk
 )paren
 suffix:semicolon
-multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting. &n;&t; */
+multiline_comment|/* Note:  Not clearing the entire event struct as&n;&t; * this is just a fragment of the real event.  However,&n;&t; * we still need to do rwnd accounting.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1342,7 +1348,7 @@ id|info-&gt;sinfo_flags
 op_or_assign
 id|MSG_UNORDERED
 suffix:semicolon
-multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *  &n;&t;&t; * This field will hold the current cumulative TSN as &n;&t;&t; * known by the underlying SCTP layer.  Note this field is &n;&t;&t; * ignored when sending and only valid for a receive &n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
+multiline_comment|/* sinfo_cumtsn: 32 bit (unsigned integer)&n;&t;&t; *&n;&t;&t; * This field will hold the current cumulative TSN as&n;&t;&t; * known by the underlying SCTP layer.  Note this field is&n;&t;&t; * ignored when sending and only valid for a receive&n;&t;&t; * operation when sinfo_flags are set to MSG_UNORDERED.&n;&t;&t; */
 id|info-&gt;sinfo_cumtsn
 op_assign
 id|sctp_tsnmap_get_ctsn
@@ -1353,7 +1359,7 @@ id|asoc-&gt;peer.tsn_map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits. &n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
+multiline_comment|/* Note:  For reassembly, we need to have the fragmentation bits.&n;&t; * For now, merge these into the msg_flags, since those bit&n;&t; * possitions are not used.&n;&t; */
 id|event-&gt;msg_flags
 op_or_assign
 id|chunk-&gt;chunk_hdr-&gt;flags
@@ -1398,7 +1404,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Create a partial delivery related event. &n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
+multiline_comment|/* Create a partial delivery related event.&n; *&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
 DECL|function|sctp_ulpevent_make_pdapi
 r_struct
 id|sctp_ulpevent
@@ -1407,7 +1413,8 @@ id|sctp_ulpevent_make_pdapi
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1415,7 +1422,7 @@ id|__u32
 id|indication
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -1446,7 +1453,7 @@ id|sctp_assoc_change
 comma
 id|MSG_NOTIFICATION
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1508,7 +1515,7 @@ id|pd-&gt;pdapi_indication
 op_assign
 id|indication
 suffix:semicolon
-multiline_comment|/*  pdapi_assoc_id: sizeof (sctp_assoc_t)&n;&t; * &n;&t; * The association id field, holds the identifier for the association.&n;&t; */
+multiline_comment|/*  pdapi_assoc_id: sizeof (sctp_assoc_t)&n;&t; *&n;&t; * The association id field, holds the identifier for the association.&n;&t; */
 id|pd-&gt;pdapi_assoc_id
 op_assign
 id|sctp_assoc2id
@@ -1642,7 +1649,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1695,7 +1703,8 @@ id|sk_buff
 op_star
 id|skb
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren

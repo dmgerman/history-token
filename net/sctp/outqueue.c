@@ -239,7 +239,8 @@ op_star
 id|sctp_outq_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -289,7 +290,8 @@ r_void
 id|sctp_outq_init
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -1351,7 +1353,8 @@ id|sctp_chunk_t
 op_star
 id|chunk
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1873,7 +1876,8 @@ op_star
 id|frag
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -2017,7 +2021,8 @@ r_int
 id|max_frag_data_len
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -2395,7 +2400,8 @@ r_struct
 id|sctp_packet
 id|singleton
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -3459,7 +3465,8 @@ r_void
 id|sctp_sack_update_unack_data
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|assoc
 comma
@@ -3556,7 +3563,8 @@ id|sctp_sackhdr_t
 op_star
 id|sack
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -3697,7 +3705,8 @@ op_star
 id|sack
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign

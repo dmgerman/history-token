@@ -615,7 +615,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|copy_flags
@@ -737,7 +737,7 @@ comma
 op_amp
 id|addr-&gt;a
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -1618,7 +1618,8 @@ r_void
 id|sctp_v4_get_saddr
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -2445,7 +2446,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Verify that sockaddr looks sendable.  Common verification has already &n; * been taken care of.&n; */
+multiline_comment|/* Verify that sockaddr looks sendable.  Common verification has already&n; * been taken care of.&n; */
 DECL|function|sctp_inet_send_verify
 r_static
 r_int

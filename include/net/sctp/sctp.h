@@ -85,7 +85,7 @@ comma
 id|sctp_scope_t
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -183,7 +183,8 @@ r_int
 id|sctp_primitive_ASSOCIATE
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -196,7 +197,8 @@ r_int
 id|sctp_primitive_SHUTDOWN
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -209,7 +211,8 @@ r_int
 id|sctp_primitive_ABORT
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -222,7 +225,8 @@ r_int
 id|sctp_primitive_SEND
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -235,7 +239,8 @@ r_int
 id|sctp_primitive_REQUESTHEARTBEAT
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_void
@@ -313,7 +318,8 @@ r_void
 id|sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -322,7 +328,8 @@ r_void
 id|__sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -331,7 +338,8 @@ r_void
 id|sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -340,7 +348,8 @@ r_void
 id|__sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -349,7 +358,8 @@ r_void
 id|sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -358,7 +368,8 @@ r_void
 id|__sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -367,7 +378,8 @@ r_void
 id|sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
@@ -376,12 +388,14 @@ r_void
 id|__sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 )paren
 suffix:semicolon
 r_extern
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_lookup_association
 c_func
@@ -844,10 +858,10 @@ macro_line|#else
 DECL|macro|sctp_crypto_alloc_tfm
 mdefine_line|#define sctp_crypto_alloc_tfm(x...) NULL
 DECL|macro|sctp_crypto_free_tfm
-mdefine_line|#define sctp_crypto_free_tfm(x...) 
+mdefine_line|#define sctp_crypto_free_tfm(x...)
 DECL|macro|sctp_crypto_hmac
-mdefine_line|#define sctp_crypto_hmac(x...) 
-macro_line|#endif 
+mdefine_line|#define sctp_crypto_hmac(x...)
+macro_line|#endif
 multiline_comment|/* Map an association to an assoc_id. */
 DECL|function|sctp_assoc2id
 r_static
@@ -857,7 +871,8 @@ id|sctp_assoc2id
 c_func
 (paren
 r_const
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -870,7 +885,8 @@ id|asoc
 suffix:semicolon
 )brace
 multiline_comment|/* Look up the association by its id.  */
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_id2assoc
 c_func

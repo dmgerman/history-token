@@ -50,12 +50,13 @@ op_star
 id|sctp_ulpq_new
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -74,7 +75,7 @@ r_struct
 id|sctp_ulpq
 )paren
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -135,7 +136,8 @@ id|sctp_ulpq
 op_star
 id|ulpq
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -313,7 +315,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -347,7 +349,7 @@ id|chunk-&gt;asoc
 comma
 id|chunk
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -2455,7 +2457,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -2546,7 +2548,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -2677,7 +2679,7 @@ id|ulpq
 comma
 id|chunk
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 id|sctp_ulpq_partial_delivery
@@ -2687,7 +2689,7 @@ id|ulpq
 comma
 id|chunk
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 )brace
@@ -2706,7 +2708,7 @@ op_star
 id|ulpq
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -2760,7 +2762,7 @@ id|ulpq-&gt;asoc
 comma
 id|SCTP_PARTIAL_DELIVERY_ABORTED
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if

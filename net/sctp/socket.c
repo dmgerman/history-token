@@ -301,7 +301,8 @@ id|sk
 op_member_access_from_pointer
 id|ep-&gt;asocs.next
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -329,14 +330,17 @@ r_struct
 id|sctp_association
 op_star
 id|temp
+suffix:semicolon
+multiline_comment|/* Verify that this _is_ an sctp_association&n;&t;&t; * data structure and if so, that the socket matches.&n;&t;&t; */
+id|temp
 op_assign
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 id|id
 suffix:semicolon
-multiline_comment|/* Verify that this _is_ an sctp_association&n;&t;&t; * data structure and if so, that the socket matches.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -578,7 +582,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -1258,11 +1263,13 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1292,7 +1299,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -1347,7 +1355,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -1631,11 +1640,13 @@ id|list_head
 op_star
 id|pos
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1665,7 +1676,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -1894,11 +1906,13 @@ r_int
 id|timeout
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1957,7 +1971,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -2094,11 +2109,13 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|new_asoc
 op_assign
@@ -4078,7 +4095,8 @@ r_struct
 id|sctp_paddrparams
 id|params
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -4330,7 +4348,8 @@ r_struct
 id|sctp_sndrcvinfo
 id|info
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -5044,11 +5063,13 @@ id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -5719,7 +5740,8 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -6603,7 +6625,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * assoc to the newsk.&n;&t; */
+multiline_comment|/* Populate the fields of the newsk from the oldsk and migrate the&n;&t; * asoc to the newsk.&n;&t; */
 id|sctp_sock_migrate
 c_func
 (paren
@@ -6661,9 +6683,10 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
-id|assoc
+id|asoc
 suffix:semicolon
 r_if
 c_cond
@@ -6697,7 +6720,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|assoc
+id|asoc
 op_assign
 id|sctp_id2assoc
 c_func
@@ -6711,7 +6734,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|assoc
+id|asoc
 )paren
 (brace
 id|retval
@@ -6726,13 +6749,13 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: sk: %p assoc: %p&bslash;n&quot;
+l_string|&quot;%s: sk: %p asoc: %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|sk
 comma
-id|assoc
+id|asoc
 )paren
 suffix:semicolon
 id|retval
@@ -6740,7 +6763,7 @@ op_assign
 id|sctp_do_peeloff
 c_func
 (paren
-id|assoc
+id|asoc
 comma
 op_amp
 id|newsock
@@ -6786,13 +6809,13 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;%s: sk: %p assoc: %p newsk: %p sd: %d&bslash;n&quot;
+l_string|&quot;%s: sk: %p asoc: %p newsk: %p sd: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|sk
 comma
-id|assoc
+id|asoc
 comma
 id|newsock-&gt;sk
 comma
@@ -6856,7 +6879,8 @@ r_struct
 id|sctp_paddrparams
 id|params
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7100,7 +7124,8 @@ id|optlen
 id|sctp_assoc_t
 id|id
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7231,7 +7256,8 @@ op_star
 id|optlen
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7451,7 +7477,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -7614,7 +7641,8 @@ id|sctp_bind_addr_t
 op_star
 id|bp
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -8002,7 +8030,8 @@ r_struct
 id|sctp_sndrcvinfo
 id|info
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -9005,7 +9034,8 @@ op_assign
 id|sk2-&gt;bind_next
 )paren
 (brace
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep2
 suffix:semicolon
@@ -9339,7 +9369,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -9430,7 +9461,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
@@ -10913,7 +10945,8 @@ r_int
 id|sctp_wspace
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -10964,7 +10997,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 op_assign
@@ -11027,7 +11061,8 @@ r_void
 id|__sctp_write_space
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -11145,7 +11180,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -11217,7 +11253,8 @@ r_int
 id|sctp_wait_for_sndbuf
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -11455,7 +11492,8 @@ op_star
 id|sk
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -11491,7 +11529,8 @@ c_func
 (paren
 id|pos
 comma
-id|sctp_association_t
+r_struct
+id|sctp_association
 comma
 id|asocs
 )paren
@@ -11550,7 +11589,8 @@ r_int
 id|sctp_wait_for_connect
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -11996,7 +12036,8 @@ c_func
 id|newsk
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|newep
 op_assign

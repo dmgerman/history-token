@@ -100,7 +100,7 @@ r_int
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -164,7 +164,7 @@ id|__u16
 id|inbound
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -195,7 +195,7 @@ r_int
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -219,7 +219,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -246,7 +246,7 @@ id|__u32
 id|error
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -265,7 +265,7 @@ id|__u16
 id|flags
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -284,7 +284,7 @@ id|__u32
 id|indication
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_struct
@@ -304,7 +304,7 @@ op_star
 id|chunk
 comma
 r_int
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_void

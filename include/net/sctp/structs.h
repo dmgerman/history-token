@@ -68,22 +68,10 @@ r_struct
 id|sctp_opt
 suffix:semicolon
 r_struct
-id|sctp_endpoint_common
+id|sctp_ep_common
 suffix:semicolon
 r_struct
 id|sctp_ssnmap
-suffix:semicolon
-DECL|typedef|sctp_endpoint_t
-r_typedef
-r_struct
-id|sctp_endpoint
-id|sctp_endpoint_t
-suffix:semicolon
-DECL|typedef|sctp_association_t
-r_typedef
-r_struct
-id|sctp_association
-id|sctp_association_t
 suffix:semicolon
 DECL|typedef|sctp_chunk_t
 r_typedef
@@ -96,12 +84,6 @@ r_typedef
 r_struct
 id|sctp_bind_addr
 id|sctp_bind_addr_t
-suffix:semicolon
-DECL|typedef|sctp_endpoint_common_t
-r_typedef
-r_struct
-id|sctp_endpoint_common
-id|sctp_endpoint_common_t
 suffix:semicolon
 macro_line|#include &lt;net/sctp/tsnmap.h&gt;
 macro_line|#include &lt;net/sctp/ulpevent.h&gt;
@@ -175,7 +157,8 @@ id|rwlock_t
 id|lock
 suffix:semicolon
 DECL|member|chain
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|chain
 suffix:semicolon
@@ -1415,7 +1398,8 @@ id|asoc
 suffix:semicolon
 multiline_comment|/* What endpoint received this chunk? */
 DECL|member|rcvr
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|rcvr
 suffix:semicolon
@@ -2734,7 +2718,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* What type of sctp_endpoint_common?  */
+multiline_comment|/* What type of endpoint?  */
 r_typedef
 r_enum
 (brace
@@ -2749,18 +2733,20 @@ DECL|typedef|sctp_endpoint_type_t
 id|sctp_endpoint_type_t
 suffix:semicolon
 multiline_comment|/*&n; * A common base class to bridge the implmentation view of a&n; * socket (usually listening) endpoint versus an association&squot;s&n; * local endpoint.&n; * This common structure is useful for several purposes:&n; *   1) Common interface for lookup routines.&n; *      a) Subfunctions work for either endpoint or association&n; *      b) Single interface to lookup allows hiding the lookup lock rather&n; *         than acquiring it externally.&n; *   2) Common interface for the inbound chunk handling/state machine.&n; *   3) Common object handling routines for reference counting, etc.&n; *   4) Disentangle association lookup from endpoint lookup, where we&n; *      do not have to find our endpoint to find our association.&n; *&n; */
-DECL|struct|sctp_endpoint_common
+DECL|struct|sctp_ep_common
 r_struct
-id|sctp_endpoint_common
+id|sctp_ep_common
 (brace
 multiline_comment|/* Fields to help us manage our entries in the hash tables. */
 DECL|member|next
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|next
 suffix:semicolon
 DECL|member|pprev
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 op_star
 id|pprev
@@ -2819,7 +2805,8 @@ id|sctp_endpoint
 (brace
 multiline_comment|/* Common substructure for endpoint and association. */
 DECL|member|base
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 id|base
 suffix:semicolon
 multiline_comment|/* Associations: A list of current associations and mappings&n;&t; *            to the data consumers for each association. This&n;&t; *            may be in the form of a hash table or other&n;&t; *            implementation dependent structure. The data&n;&t; *            consumers may be process identification&n;&t; *            information such as file descriptors, named pipe&n;&t; *            pointer, or table pointers dependent on how SCTP&n;&t; *            is implemented.&n;&t; */
@@ -2879,7 +2866,8 @@ op_star
 id|sctp_ep
 c_func
 (paren
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|base
 )paren
@@ -3152,7 +3140,8 @@ id|sctp_association
 (brace
 multiline_comment|/* A base structure common to endpoint and association.&n;&t; * In this context, it represents the associations&squot;s view&n;&t; * of the local endpoint of the association.&n;&t; */
 DECL|member|base
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 id|base
 suffix:semicolon
 multiline_comment|/* Associations on the same socket. */
@@ -3581,7 +3570,8 @@ op_star
 id|sctp_assoc
 c_func
 (paren
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|base
 )paren
