@@ -1487,7 +1487,7 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren
@@ -2240,7 +2240,7 @@ r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-macro_line|#if DEBUG_SIG
+macro_line|#ifdef DEBUG_SIG
 id|printk
 c_func
 (paren

@@ -5906,6 +5906,11 @@ id|__user
 op_star
 id|ubuf
 comma
+r_struct
+id|bio
+op_star
+id|bio
+comma
 r_int
 r_int
 id|ulen
@@ -5931,12 +5936,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;biotail
+id|bio
 )paren
 id|bio_unmap_user
 c_func
 (paren
-id|rq-&gt;biotail
+id|bio
 comma
 id|read
 )paren

@@ -49,7 +49,7 @@ mdefine_line|#define cpus_promote(map)&t;&t;({ map; })
 DECL|macro|cpumask_of_cpu
 mdefine_line|#define cpumask_of_cpu(cpu)&t;&t;({ ((cpumask_t)1) &lt;&lt; (cpu); })
 DECL|macro|first_cpu
-mdefine_line|#define first_cpu(map)&t;&t;&t;__ffs(map)
+mdefine_line|#define first_cpu(map)&t;&t;&t;find_first_bit(&amp;(map), NR_CPUS)
 DECL|macro|next_cpu
 mdefine_line|#define next_cpu(cpu, map)&t;&t;find_next_bit(&amp;(map), NR_CPUS, cpu + 1)
 macro_line|#endif /* __ASM_GENERIC_CPUMASK_ARITH_H */

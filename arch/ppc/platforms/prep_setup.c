@@ -1105,7 +1105,7 @@ op_amp
 l_int|0x60
 )paren
 op_eq
-l_int|1
+l_int|0x20
 )paren
 id|seq_printf
 c_func
@@ -2651,6 +2651,9 @@ id|PREP_IBM_CAROLINA_IDE_1
 suffix:colon
 r_case
 id|PREP_IBM_CAROLINA_IDE_2
+suffix:colon
+r_case
+id|PREP_IBM_CAROLINA_IDE_3
 suffix:colon
 id|is_ide
 op_assign

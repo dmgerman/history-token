@@ -1699,6 +1699,10 @@ r_void
 id|__user
 op_star
 comma
+r_struct
+id|bio
+op_star
+comma
 r_int
 r_int
 )paren

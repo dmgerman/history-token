@@ -60,5 +60,5 @@ r_int
 id|pci_mem_offset
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* __ASMPPC_PPLUS_H */
+macro_line|#endif&t;/* __ASMPPC_HAWK_H */
 eof

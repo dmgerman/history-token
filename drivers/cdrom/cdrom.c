@@ -8159,6 +8159,11 @@ id|request
 op_star
 id|rq
 suffix:semicolon
+r_struct
+id|bio
+op_star
+id|bio
+suffix:semicolon
 r_int
 r_int
 id|len
@@ -8393,6 +8398,10 @@ l_int|60
 op_star
 id|HZ
 suffix:semicolon
+id|bio
+op_assign
+id|rq-&gt;bio
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8433,6 +8442,8 @@ c_func
 id|rq
 comma
 id|ubuf
+comma
+id|bio
 comma
 id|len
 )paren

@@ -215,7 +215,7 @@ id|idx
 op_star
 id|PAGE_SIZE
 suffix:semicolon
-macro_line|#if HIGHMEM_DEBUG
+macro_line|#ifdef HIGHMEM_DEBUG
 id|BUG_ON
 c_func
 (paren
@@ -281,7 +281,7 @@ id|km_type
 id|type
 )paren
 (brace
-macro_line|#if HIGHMEM_DEBUG
+macro_line|#ifdef HIGHMEM_DEBUG
 r_int
 r_int
 id|vaddr

@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.2&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.3&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;April 26, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;April 27, 2004&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -36031,7 +36031,7 @@ id|tp-&gt;tg3_flags2
 op_or_assign
 id|TG3_FLG2_PHY_5704_A0_BUG
 suffix:semicolon
-multiline_comment|/* Note: 5705 also needs this flag set to improve bit error rate. */
+multiline_comment|/* Note: 5750 also needs this flag set to improve bit error rate. */
 r_if
 c_cond
 (paren
