@@ -301,7 +301,7 @@ DECL|typedef|rwlock_t
 id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { 0, 0, 0xff, { 0, 0, 0, 0 } }
+mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { 0, 0, 0xff, { } }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
 DECL|macro|rwlock_is_locked
