@@ -3460,14 +3460,15 @@ id|dev
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * alloc_ei_netdev - alloc_etherdev counterpart for 8390&n; *&n; * Allocate 8390-specific net_device.&n; */
-DECL|function|alloc_ei_netdev
+DECL|function|__alloc_ei_netdev
 r_struct
 id|net_device
 op_star
-id|alloc_ei_netdev
+id|__alloc_ei_netdev
 c_func
 (paren
-r_void
+r_int
+id|size
 )paren
 (brace
 r_struct
@@ -3485,6 +3486,8 @@ r_sizeof
 r_struct
 id|ei_device
 )paren
+op_plus
+id|size
 comma
 l_string|&quot;eth%d&quot;
 comma
@@ -4096,11 +4099,11 @@ c_func
 id|NS8390_init
 )paren
 suffix:semicolon
-DECL|variable|alloc_ei_netdev
+DECL|variable|__alloc_ei_netdev
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|alloc_ei_netdev
+id|__alloc_ei_netdev
 )paren
 suffix:semicolon
 macro_line|#if defined(MODULE)
