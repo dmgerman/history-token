@@ -1,32 +1,9 @@
 multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is ALPHA test software. This code may break your machine,&n; *&t;randomly fail to work with new releases, misbehave and/or generally&n; *&t;screw up. It might even work. &n; *&n; *&t;This code REQUIRES 2.1.15 or higher&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;X.25 001&t;Jonathan Naylor&t;Started coding.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sockios.h&gt;
-macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/termios.h&gt;&t;/* For TIOCINQ/OUTQ */
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/x25.h&gt;
 DECL|variable|x25_route_list
-r_static
 r_struct
 id|list_head
 id|x25_route_list
@@ -38,7 +15,6 @@ id|x25_route_list
 )paren
 suffix:semicolon
 DECL|variable|x25_route_list_lock
-r_static
 id|rwlock_t
 id|x25_route_list_lock
 op_assign
@@ -776,186 +752,6 @@ id|out
 suffix:colon
 r_return
 id|rc
-suffix:semicolon
-)brace
-DECL|function|x25_routes_get_info
-r_int
-id|x25_routes_get_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-)paren
-(brace
-r_struct
-id|x25_route
-op_star
-id|rt
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|entry
-suffix:semicolon
-id|off_t
-id|pos
-op_assign
-l_int|0
-suffix:semicolon
-id|off_t
-id|begin
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|len
-op_assign
-id|sprintf
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;address          digits  device&bslash;n&quot;
-)paren
-suffix:semicolon
-id|read_lock_bh
-c_func
-(paren
-op_amp
-id|x25_route_list_lock
-)paren
-suffix:semicolon
-id|list_for_each
-c_func
-(paren
-id|entry
-comma
-op_amp
-id|x25_route_list
-)paren
-(brace
-id|rt
-op_assign
-id|list_entry
-c_func
-(paren
-id|entry
-comma
-r_struct
-id|x25_route
-comma
-id|node
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buffer
-op_plus
-id|len
-comma
-l_string|&quot;%-15s  %-6d  %-5s&bslash;n&quot;
-comma
-id|rt-&gt;address.x25_addr
-comma
-id|rt-&gt;sigdigits
-comma
-id|rt-&gt;dev
-ques
-c_cond
-id|rt-&gt;dev-&gt;name
-suffix:colon
-l_string|&quot;???&quot;
-)paren
-suffix:semicolon
-id|pos
-op_assign
-id|begin
-op_plus
-id|len
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pos
-OL
-id|offset
-)paren
-(brace
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-id|begin
-op_assign
-id|pos
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|pos
-OG
-id|offset
-op_plus
-id|length
-)paren
-r_break
-suffix:semicolon
-)brace
-id|read_unlock_bh
-c_func
-(paren
-op_amp
-id|x25_route_list_lock
-)paren
-suffix:semicolon
-op_star
-id|start
-op_assign
-id|buffer
-op_plus
-(paren
-id|offset
-op_minus
-id|begin
-)paren
-suffix:semicolon
-id|len
-op_sub_assign
-(paren
-id|offset
-op_minus
-id|begin
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|length
-)paren
-id|len
-op_assign
-id|length
-suffix:semicolon
-r_return
-id|len
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Release all memory associated with X.25 routing structures.&n; */

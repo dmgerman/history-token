@@ -516,7 +516,7 @@ l_int|0
 suffix:semicolon
 id|iph-&gt;frag_off
 op_assign
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|IP_DF

@@ -5561,7 +5561,7 @@ id|NF_IP_PRE_ROUTING
 op_logical_and
 id|udph-&gt;source
 op_eq
-id|__constant_ntohs
+id|ntohs
 c_func
 (paren
 id|SNMP_PORT
@@ -5579,7 +5579,7 @@ id|NF_IP_POST_ROUTING
 op_logical_and
 id|udph-&gt;dest
 op_eq
-id|__constant_ntohs
+id|ntohs
 c_func
 (paren
 id|SNMP_TRAP_PORT

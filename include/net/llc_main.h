@@ -138,16 +138,6 @@ id|lsap
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|llc_station
-op_star
-id|llc_station_get
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|llc_station_state_process
 c_func
@@ -188,6 +178,11 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|llc_station
+id|llc_main_station
 suffix:semicolon
 macro_line|#endif /* LLC_MAIN_H */
 eof

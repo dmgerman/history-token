@@ -1743,7 +1743,7 @@ id|addr
 l_int|2
 )braket
 op_eq
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 l_int|0xffff

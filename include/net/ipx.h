@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *&t;The following information is in its entirety obtained from:&n; *&n; *&t;Novell &squot;IPX Router Specification&squot; Version 1.10 &n; *&t;&t;Part No. 107-000029-001&n; *&n; *&t;Which is available from ftp.novell.com&n; */
 macro_line|#ifndef _NET_INET_IPX_H_
 DECL|macro|_NET_INET_IPX_H_
 mdefine_line|#define _NET_INET_IPX_H_
+multiline_comment|/*&n; *&t;The following information is in its entirety obtained from:&n; *&n; *&t;Novell &squot;IPX Router Specification&squot; Version 1.10 &n; *&t;&t;Part No. 107-000029-001&n; *&n; *&t;Which is available from ftp.novell.com&n; */
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/ipx.h&gt;
@@ -328,5 +328,71 @@ DECL|macro|IPX_MIN_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MIN_EPHEMERAL_SOCKET&t;0x4000
 DECL|macro|IPX_MAX_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MAX_EPHEMERAL_SOCKET&t;0x7fff
+r_extern
+r_struct
+id|ipx_route
+op_star
+id|ipx_routes
+suffix:semicolon
+r_extern
+id|rwlock_t
+id|ipx_routes_lock
+suffix:semicolon
+r_extern
+r_struct
+id|ipx_interface
+op_star
+id|ipx_interfaces
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ipx_interfaces_lock
+suffix:semicolon
+r_extern
+r_struct
+id|ipx_interface
+op_star
+id|ipx_primary_net
+suffix:semicolon
+r_extern
+r_int
+id|ipx_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ipx_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|ipx_frame_name
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|ipx_device_name
+c_func
+(paren
+r_struct
+id|ipx_interface
+op_star
+id|intrfc
+)paren
+suffix:semicolon
 macro_line|#endif /* def _NET_INET_IPX_H_ */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.13 2002/05/25 09:04:50 devik Exp $&n; */
+multiline_comment|/* vim: ts=8 sw=8&n; * net/sched/sch_htb.c&t;Hierarchical token bucket, feed tree version&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Authors:&t;Martin Devera, &lt;devik@cdi.cz&gt;&n; *&n; * Credits (in time order) for older HTB versions:&n; *&t;&t;Ondrej Kraus, &lt;krauso@barr.cz&gt; &n; *&t;&t;&t;found missing INIT_QDISC(htb)&n; *&t;&t;Vladimir Smelhaus, Aamer Akhter, Bert Hubert&n; *&t;&t;&t;helped a lot to locate nasty class stall bug&n; *&t;&t;Andi Kleen, Jamal Hadi, Bert Hubert&n; *&t;&t;&t;code review and helpful comments on shaping&n; *&t;&t;Tomasz Wrona, &lt;tw@eter.tym.pl&gt;&n; *&t;&t;&t;created test case so that I was able to fix nasty bug&n; *&t;&t;and many others. thanks.&n; *&n; * $Id: sch_htb.c,v 1.14 2002/09/28 12:55:22 devik Exp devik $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -44,7 +44,7 @@ mdefine_line|#define HTB_QLOCK(S) spin_lock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_QUNLOCK
 mdefine_line|#define HTB_QUNLOCK(S) spin_unlock_bh(&amp;(S)-&gt;dev-&gt;queue_lock)
 DECL|macro|HTB_VER
-mdefine_line|#define HTB_VER 0x30006&t;/* major must be matched with number suplied by TC as version */
+mdefine_line|#define HTB_VER 0x30007&t;/* major must be matched with number suplied by TC as version */
 macro_line|#if HTB_VER &gt;&gt; 16 != TC_HTB_PROTOVER
 macro_line|#error &quot;Mismatched sch_htb.c and pkt_sch.h&quot;
 macro_line|#endif
@@ -7536,6 +7536,14 @@ c_func
 id|sch
 )paren
 suffix:semicolon
+multiline_comment|/* it used to be a nasty bug here, we have to check that node&n;           is really leaf before changing cl-&gt;un.leaf ! */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cl-&gt;level
+)paren
+(brace
 id|cl-&gt;un.leaf.quantum
 op_assign
 id|rtab-&gt;rate.rate
@@ -7618,6 +7626,7 @@ id|TC_HTB_NUMPRIO
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|cl-&gt;buffer
 op_assign
 id|hopt-&gt;buffer

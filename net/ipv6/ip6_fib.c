@@ -153,8 +153,9 @@ id|timer_list
 id|ip6_fib_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|fib6_run_gc
 )brace
 suffix:semicolon

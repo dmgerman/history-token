@@ -1,33 +1,12 @@
 multiline_comment|/*&n; *&t;AARP:&t;&t;An implementation of the AppleTalk AARP protocol for&n; *&t;&t;&t;Ethernet &squot;ELAP&squot;.&n; *&n; *&t;&t;Alan Cox  &lt;Alan.Cox@linux.org&gt;&n; *&n; *&t;This doesn&squot;t fit cleanly with the IP arp. Potentially we can use&n; *&t;the generic neighbour discovery code to clean this up.&n; *&n; *&t;FIXME:&n; *&t;&t;We ought to handle the retransmits with a single list and a &n; *&t;separate fast timer for when it is needed.&n; *&t;&t;Use neighbour discovery code.&n; *&t;&t;Token Ring Support.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;References:&n; *&t;&t;Inside AppleTalk (2nd Ed).&n; *&t;Fixes:&n; *&t;&t;Jaume Grau&t;-&t;flush caches on AARP_PROBE&n; *&t;&t;Rob Newberry&t;-&t;Added proxy AARP and AARP proc fs, &n; *&t;&t;&t;&t;&t;moved probing from DDP module.&n; *&t;&t;Arnaldo C. Melo -&t;don&squot;t mangle rx packets&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/sockios.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/if_ether.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;net/psnap.h&gt;
 macro_line|#include &lt;linux/atalk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 DECL|variable|sysctl_aarp_expiry_time
 r_int
 id|sysctl_aarp_expiry_time
@@ -4103,10 +4082,4 @@ l_string|&quot;aarp&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof
