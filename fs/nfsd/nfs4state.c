@@ -589,7 +589,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* release_delegation:&n; *&n; * Remove the associated file_lock first, then remove the delegation.&n; * lease_modify() is called to remove the FS_LEASE file_lock from&n; * the i_flock list, eventually calling nfsd&squot;s lock_manager&n; * fl_release_callback.&n; *&n; */
+multiline_comment|/* Remove the associated file_lock first, then remove the delegation.&n; * lease_modify() is called to remove the FS_LEASE file_lock from&n; * the i_flock list, eventually calling nfsd&squot;s lock_manager&n; * fl_release_callback.&n; */
 r_static
 r_void
 DECL|function|nfs4_close_delegation
@@ -646,8 +646,8 @@ suffix:semicolon
 multiline_comment|/* Called under the state lock. */
 r_static
 r_void
-DECL|function|release_delegation
-id|release_delegation
+DECL|function|unhash_delegation
+id|unhash_delegation
 c_func
 (paren
 r_struct
@@ -1220,7 +1220,7 @@ op_amp
 id|dp-&gt;dl_recall_lru
 )paren
 suffix:semicolon
-id|release_delegation
+id|unhash_delegation
 c_func
 (paren
 id|dp
@@ -7728,7 +7728,7 @@ op_amp
 id|dp-&gt;dl_recall_lru
 )paren
 suffix:semicolon
-id|release_delegation
+id|unhash_delegation
 c_func
 (paren
 id|dp
@@ -8710,7 +8710,7 @@ id|flags
 op_amp
 id|DELEG_RET
 )paren
-id|release_delegation
+id|unhash_delegation
 c_func
 (paren
 id|dp
@@ -13932,7 +13932,7 @@ op_amp
 id|dp-&gt;dl_recall_lru
 )paren
 suffix:semicolon
-id|release_delegation
+id|unhash_delegation
 c_func
 (paren
 id|dp
