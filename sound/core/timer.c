@@ -6815,11 +6815,11 @@ r_else
 (brace
 id|gstatus.resolution_num
 op_assign
-l_int|1
+id|gstatus.resolution
 suffix:semicolon
 id|gstatus.resolution_den
 op_assign
-id|gstatus.resolution
+l_int|1000000000uL
 suffix:semicolon
 )brace
 )brace
