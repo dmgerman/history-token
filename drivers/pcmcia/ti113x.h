@@ -642,6 +642,7 @@ comma
 r_new
 )paren
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/*&n;&t; * If ISA interrupts don&squot;t work, then fall back to routing card&n;&t; * interrupts to the PCI interrupt of the socket.&n;&t; *&n;&t; * Tweaking this when we are using serial PCI IRQs causes hangs&n;&t; *   --rmk&n;&t; */
 r_if
 c_cond
@@ -744,6 +745,7 @@ id|devctl
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti_init
@@ -1002,6 +1004,7 @@ comma
 id|TI122X_IRQMUX
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|ti_irqmux
 c_func
 (paren
@@ -1045,6 +1048,7 @@ op_or_assign
 l_int|0x20
 suffix:semicolon
 multiline_comment|/* route INTB */
+macro_line|#endif
 id|config_writel
 c_func
 (paren
