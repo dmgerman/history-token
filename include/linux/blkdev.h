@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -428,22 +427,6 @@ id|max_depth
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|blk_plug
-r_struct
-id|blk_plug
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|task
-r_struct
-id|tasklet_struct
-id|task
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Default nr free requests per queue, ll_rw_blk will scale it down&n; * according to available RAM at init time&n; */
 DECL|macro|QUEUE_NR_REQUESTS
 mdefine_line|#define QUEUE_NR_REQUESTS&t;8192
@@ -527,10 +510,10 @@ DECL|member|bounce_gfp
 r_int
 id|bounce_gfp
 suffix:semicolon
-DECL|member|plug
+DECL|member|plug_list
 r_struct
-id|blk_plug
-id|plug
+id|list_head
+id|plug_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * various queue flags, see QUEUE_* below&n;&t; */
 DECL|member|queue_flags
