@@ -1181,7 +1181,7 @@ multiline_comment|/* extract register offset from codec struct */
 DECL|macro|IO_REG_OFF
 mdefine_line|#define IO_REG_OFF(codec) (((struct i810_card *) codec-&gt;private_data)-&gt;ac97_id_map[codec-&gt;id])
 DECL|macro|I810_IOREAD
-mdefine_line|#define I810_IOREAD(size, type, card, off)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;type val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (card-&gt;use_mmio) val=read##size(card-&gt;iobase_mmio+off);&t;&bslash;&n;&t;else val=in##size(card-&gt;iobase+off);&t;&t;&t;&t;&bslash;&n;&t;val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define I810_IOREAD(size, type, card, off)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;type val;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (card-&gt;use_mmio)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val=read##size(card-&gt;iobase_mmio+off);&t;&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;val=in##size(card-&gt;iobase+off);&t;&t;&t;&t;&bslash;&n;&t;val;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|I810_IOREADL
 mdefine_line|#define I810_IOREADL(card, off)&t;&t;I810_IOREAD(l, u32, card, off)
 DECL|macro|I810_IOREADW
@@ -1189,7 +1189,7 @@ mdefine_line|#define I810_IOREADW(card, off)&t;&t;I810_IOREAD(w, u16, card, off)
 DECL|macro|I810_IOREADB
 mdefine_line|#define I810_IOREADB(card, off)&t;&t;I810_IOREAD(b, u8,  card, off)
 DECL|macro|I810_IOWRITE
-mdefine_line|#define I810_IOWRITE(size, val, card, off)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (card-&gt;use_mmio) write##size(val, card-&gt;iobase_mmio+off);&t;&bslash;&n;&t;else out##size(val, card-&gt;iobase+off);&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define I810_IOWRITE(size, val, card, off)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (card-&gt;use_mmio)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;write##size(val, card-&gt;iobase_mmio+off);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;out##size(val, card-&gt;iobase+off);&t;&t;&t;&bslash;&n;})
 DECL|macro|I810_IOWRITEL
 mdefine_line|#define I810_IOWRITEL(val, card, off)&t;I810_IOWRITE(l, val, card, off)
 DECL|macro|I810_IOWRITEW
@@ -12086,7 +12086,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;See if the primary codec comes ready. This must happen&n;&t; *&t;before we start doing DMA stuff&n;&t; */
-multiline_comment|/* see i810_ac97_init for the next 7 lines (jsaw) */
+multiline_comment|/* see i810_ac97_init for the next 10 lines (jsaw) */
 r_if
 c_cond
 (paren
@@ -13654,9 +13654,16 @@ op_logical_neg
 id|card-&gt;use_mmio
 )paren
 op_logical_and
+(paren
 op_logical_neg
 (paren
 id|card-&gt;iobase
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|card-&gt;ac97base
+)paren
 )paren
 )paren
 (brace
