@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
@@ -1237,35 +1236,6 @@ l_string|&quot;irda%d&quot;
 comma
 id|irda_device_setup
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Function irda_device_txqueue_empty (dev)&n; *&n; *    Check if there is still some frames in the transmit queue for this&n; *    device. Maybe we should use: q-&gt;q.qlen == 0.&n; *&n; */
-DECL|function|irda_device_txqueue_empty
-r_int
-id|irda_device_txqueue_empty
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|skb_queue_len
-c_func
-(paren
-op_amp
-id|dev-&gt;qdisc-&gt;q
-)paren
-)paren
-r_return
-id|FALSE
-suffix:semicolon
-r_return
-id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_device_init_dongle (self, type, qos)&n; *&n; *    Initialize attached dongle.&n; *&n; * Important : request_module require us to call this function with&n; * a process context and irq enabled. - Jean II&n; */
