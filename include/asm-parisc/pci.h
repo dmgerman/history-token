@@ -347,5 +347,26 @@ DECL|macro|pci_controller_num
 mdefine_line|#define&t;pci_controller_num(PDEV)&t;(0)
 multiline_comment|/* export the pci_ DMA API in terms of the dma_ one */
 macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
+r_extern
+r_void
+id|pcibios_resource_to_bus
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|pci_bus_region
+op_star
+id|region
+comma
+r_struct
+id|resource
+op_star
+id|res
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASM_PARISC_PCI_H */
 eof
