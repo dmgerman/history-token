@@ -3982,13 +3982,21 @@ op_amp
 id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
+id|regs-&gt;result
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
 id|regs-&gt;gpr
 (braket
 l_int|3
 )braket
 op_assign
-op_minus
 id|EINTR
+suffix:semicolon
+id|regs-&gt;ccr
+op_or_assign
+l_int|0x10000000
 suffix:semicolon
 r_while
 c_loop
@@ -4017,6 +4025,7 @@ comma
 id|regs
 )paren
 )paren
+multiline_comment|/*&n;&t;&t;&t; * If a signal handler needs to be called,&n;&t;&t;&t; * do_signal() has set R3 to the signal number (the&n;&t;&t;&t; * first argument of the signal handler), so don&squot;t&n;&t;&t;&t; * overwrite that with EINTR !&n;&t;&t;&t; * In the other cases, do_signal() doesn&squot;t touch &n;&t;&t;&t; * R3, so it&squot;s still set to -EINTR (see above).&n;&t;&t;&t; */
 r_return
 id|regs-&gt;gpr
 (braket
