@@ -1410,7 +1410,7 @@ op_or
 id|AGPSTAT2_4X
 )paren
 suffix:semicolon
-multiline_comment|/* 1Xf */
+multiline_comment|/* 1X */
 )brace
 multiline_comment|/*&n; * mode = requested mode.&n; * cmd = PCI_AGP_STATUS from agp bridge.&n; * tmp = PCI_AGP_STATUS from graphic card.&n; */
 DECL|function|agp_v3_parse_one
