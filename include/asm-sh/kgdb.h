@@ -3,6 +3,9 @@ macro_line|#ifndef __KGDB_H
 DECL|macro|__KGDB_H
 mdefine_line|#define __KGDB_H
 macro_line|#include &lt;asm/ptrace.h&gt;
+r_struct
+id|console
+suffix:semicolon
 multiline_comment|/* Same as pt_regs but has vbr in place of syscall_nr */
 DECL|struct|kgdb_regs
 r_struct
@@ -310,6 +313,14 @@ mdefine_line|#define KGDB_PRINTK(...) printk(&quot;KGDB: &quot; __VA_ARGS__)
 multiline_comment|/* Forced breakpoint */
 DECL|macro|BREAKPOINT
 mdefine_line|#define BREAKPOINT() do {                                     &bslash;&n;  if (kgdb_enabled) {                                         &bslash;&n;    asm volatile(&quot;trapa   #0xff&quot;);                            &bslash;&n;  }                                                           &bslash;&n;} while (0)
+multiline_comment|/* KGDB should be able to flush all kernel text space */
+macro_line|#if defined(CONFIG_CPU_SH4)
+DECL|macro|kgdb_flush_icache_range
+mdefine_line|#define kgdb_flush_icache_range(start, end) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern void __flush_purge_region(void *, int);&t;&t;&t;&bslash;&n;&t;__flush_purge_region((void*)(start), (int)(end) - (int)(start));&bslash;&n;&t;flush_icache_range((start), (end));&t;&t;&t;&t;&bslash;&n;}
+macro_line|#else
+DECL|macro|kgdb_flush_icache_range
+mdefine_line|#define kgdb_flush_icache_range(start, end)&t;do { } while (0)
+macro_line|#endif
 multiline_comment|/* Kernel assert macros */
 macro_line|#ifdef CONFIG_KGDB_KERNEL_ASSERTS
 multiline_comment|/* Predefined conditions */

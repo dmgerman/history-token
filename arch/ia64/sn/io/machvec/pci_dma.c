@@ -1,24 +1,6 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000,2002-2003 Silicon Graphics, Inc. All rights reserved.&n; *&n; * Routines for PCI DMA mapping.  See Documentation/DMA-mapping.txt for&n; * a description of how these routines should be used.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
-macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
-macro_line|#include &lt;asm/sn/driver.h&gt;
-macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
-macro_line|#include &lt;asm/sn/nag.h&gt;
 multiline_comment|/*&n; * For ATE allocations&n; */
 id|pciio_dmamap_t
 id|get_free_pciio_dmamap
@@ -271,7 +253,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sn_pci_alloc_consistent - allocate memory for coherent DMA&n; * @hwdev: device to allocate for&n; * @size: size of the region&n; * @dma_handle: DMA (bus) address&n; *&n; * pci_alloc_consistent() returns a pointer to a memory region suitable for&n; * coherent DMA traffic to/from a PCI device.  On SN platforms, this means&n; * that @dma_handle will have the %PCIIO_DMA_CMD flag set.&n; *&n; * This interface is usually used for &quot;command&quot; streams (e.g. the command&n; * queue for a SCSI controller).  See Documentation/DMA-mapping.txt for&n; * more information.  Note that this routine will always put a 32 bit&n; * DMA address into @dma_handle.  This is because most devices&n; * that are capable of 64 bit PCI DMA transactions can&squot;t do 64 bit _coherent_&n; * DMAs, and unfortunately this interface has to cater to the LCD.  Oh well.&n; *&n; * Also known as platform_pci_alloc_consistent() by the IA64 machvec code.&n; */
+multiline_comment|/**&n; * sn_pci_alloc_consistent - allocate memory for coherent DMA&n; * @hwdev: device to allocate for&n; * @size: size of the region&n; * @dma_handle: DMA (bus) address&n; *&n; * pci_alloc_consistent() returns a pointer to a memory region suitable for&n; * coherent DMA traffic to/from a PCI device.  On SN platforms, this means&n; * that @dma_handle will have the %PCIIO_DMA_CMD flag set.&n; *&n; * This interface is usually used for &quot;command&quot; streams (e.g. the command&n; * queue for a SCSI controller).  See Documentation/DMA-mapping.txt for&n; * more information.&n; *&n; * Also known as platform_pci_alloc_consistent() by the IA64 machvec code.&n; */
 r_void
 op_star
 DECL|function|sn_pci_alloc_consistent
@@ -312,21 +294,6 @@ id|dma_map
 op_assign
 l_int|0
 suffix:semicolon
-op_star
-id|dma_handle
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwdev-&gt;dma_mask
-OL
-l_int|0xffffffffUL
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
 multiline_comment|/*&n;&t; * Get hwgraph vertex for the device&n;&t; */
 id|device_sysdata
 op_assign
@@ -341,7 +308,7 @@ id|vhdl
 op_assign
 id|device_sysdata-&gt;vhdl
 suffix:semicolon
-multiline_comment|/*&n;&t; * Allocate the memory.  FIXME: if we&squot;re allocating for&n;&t; * two devices on the same bus, we should at least try to&n;&t; * allocate memory in the same 2 GB window to avoid using&n;&t; * ATEs for the translation.  See the comment above about the&n;&t; * 32 bit requirement for this function.&n;&t; */
+multiline_comment|/*&n;&t; * Allocate the memory.&n;&t; * FIXME: We should be doing alloc_pages_node for the node closest&n;&t; *        to the PCI device.&n;&t; */
 r_if
 c_cond
 (paren
@@ -366,11 +333,9 @@ id|size
 )paren
 )paren
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 multiline_comment|/* physical addr. of the memory we just got */
 id|phys_addr
 op_assign
@@ -380,7 +345,15 @@ c_func
 id|cpuaddr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This will try to use a Direct Map register to do the&n;&t; * 32 bit DMA mapping, but it may not succeed if another&n;&t; * device on the same bus is already mapped with different&n;&t; * attributes or to a different memory region.&n;&t; */
+multiline_comment|/*&n;&t; * 64 bit address translations should never fail.&n;&t; * 32 bit translations can fail if there are insufficient mapping&n;&t; *   resources and the direct map is already wired to a different&n;&t; *   2GB range.&n;&t; * 32 bit translations can also return a &gt; 32 bit address, because&n;&t; *   pcibr_dmatrans_addr ignores a missing PCIIO_DMA_A64 flag on&n;&t; *   PCI-X buses.&n;&t; */
+r_if
+c_cond
+(paren
+id|hwdev-&gt;consistent_dma_mask
+op_eq
+op_complement
+l_int|0UL
+)paren
 op_star
 id|dma_handle
 op_assign
@@ -395,64 +368,12 @@ id|phys_addr
 comma
 id|size
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_CMD
+op_or
+id|PCIIO_DMA_A64
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If this device is in PCI-X mode, the system would have&n;&t; * automatically allocated a 64Bits DMA Address.  Error out if the &n;&t; * device cannot support DAC.&n;&t; */
-r_if
-c_cond
-(paren
-op_star
-id|dma_handle
-OG
-id|hwdev-&gt;consistent_dma_mask
-)paren
-(brace
-id|free_pages
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|cpuaddr
-comma
-id|get_order
-c_func
-(paren
-id|size
-)paren
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * It is a 32 bit card and we cannot do direct mapping,&n;&t; * so we try to use an ATE.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-op_star
-id|dma_handle
-)paren
-)paren
+r_else
 (brace
 id|dma_map
 op_assign
@@ -465,43 +386,15 @@ l_int|NULL
 comma
 id|size
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_CMD
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|dma_map
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;sn_pci_alloc_consistent: Unable to &quot;
-l_string|&quot;allocate anymore 32 bit page map entries.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 op_star
 id|dma_handle
 op_assign
@@ -522,6 +415,79 @@ id|dma_map-&gt;bd_dma_addr
 op_assign
 op_star
 id|dma_handle
+suffix:semicolon
+)brace
+r_else
+(brace
+op_star
+id|dma_handle
+op_assign
+id|pcibr_dmatrans_addr
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|phys_addr
+comma
+id|size
+comma
+id|PCIIO_DMA_CMD
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|dma_handle
+op_logical_or
+op_star
+id|dma_handle
+OG
+id|hwdev-&gt;consistent_dma_mask
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dma_map
+)paren
+(brace
+id|pcibr_dmamap_done
+c_func
+(paren
+id|dma_map
+)paren
+suffix:semicolon
+id|pcibr_dmamap_free
+c_func
+(paren
+id|dma_map
+)paren
+suffix:semicolon
+)brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|cpuaddr
+comma
+id|get_order
+c_func
+(paren
+id|size
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -595,10 +561,6 @@ c_func
 (paren
 id|dma_map
 )paren
-suffix:semicolon
-id|dma_map-&gt;bd_dma_addr
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|free_pages
@@ -754,21 +716,6 @@ id|phys_addr
 comma
 id|sg-&gt;length
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 op_or
 id|PCIIO_DMA_A64
@@ -805,21 +752,6 @@ id|phys_addr
 comma
 id|sg-&gt;length
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
@@ -850,21 +782,6 @@ l_int|NULL
 comma
 id|sg-&gt;length
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
@@ -1036,10 +953,6 @@ c_func
 id|dma_map
 )paren
 suffix:semicolon
-id|dma_map-&gt;bd_dma_addr
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 )brace
 id|sg-&gt;dma_address
@@ -1055,7 +968,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * sn_pci_map_single - map a single region for DMA&n; * @hwdev: device to map for&n; * @ptr: kernel virtual address of the region to map&n; * @size: size of the region&n; * @direction: DMA direction&n; *&n; * Map the region pointed to by @ptr for DMA and return the&n; * DMA address.   Also known as platform_pci_map_single() by&n; * the IA64 machvec code.&n; *&n; * We map this to the one step pcibr_dmamap_trans interface rather than&n; * the two step pciio_dmamap_alloc/pciio_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
+multiline_comment|/**&n; * sn_pci_map_single - map a single region for DMA&n; * @hwdev: device to map for&n; * @ptr: kernel virtual address of the region to map&n; * @size: size of the region&n; * @direction: DMA direction&n; *&n; * Map the region pointed to by @ptr for DMA and return the&n; * DMA address.   Also known as platform_pci_map_single() by&n; * the IA64 machvec code.&n; *&n; * We map this to the one step pcibr_dmamap_trans interface rather than&n; * the two step pcibr_dmamap_alloc/pcibr_dmamap_addr because we have&n; * no way of saving the dmamap handle from the alloc to later free&n; * (which is pretty much unacceptable).&n; *&n; * TODO: simplify our interface;&n; *       get rid of dev_desc and vhdl (seems redundant given a pci_dev);&n; *       figure out how to save dmamap handle so can use two step.&n; */
 id|dma_addr_t
 DECL|function|sn_pci_map_single
 id|sn_pci_map_single
@@ -1173,21 +1086,6 @@ id|phys_addr
 comma
 id|size
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 op_or
 id|PCIIO_DMA_A64
@@ -1221,21 +1119,6 @@ id|phys_addr
 comma
 id|size
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
@@ -1264,21 +1147,6 @@ l_int|NULL
 comma
 id|size
 comma
-(paren
-(paren
-id|IS_PIC_DEVICE
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|PCIIO_BYTE_STREAM
-)paren
-op_or
 id|PCIIO_DMA_DATA
 )paren
 suffix:semicolon
@@ -1407,10 +1275,6 @@ c_func
 (paren
 id|dma_map
 )paren
-suffix:semicolon
-id|dma_map-&gt;bd_dma_addr
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace

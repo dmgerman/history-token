@@ -115,12 +115,14 @@ DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
 suffix:semicolon
+DECL|macro|RW_LOCK_BIAS
+mdefine_line|#define RW_LOCK_BIAS&t;&t;0x01000000
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { { 0 } }
+mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { { 0 }, { RW_LOCK_BIAS } }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while (0)
 DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x)&t;(*(volatile int *)(x) != 0)
+mdefine_line|#define rwlock_is_locked(x)&t;(atomic_read(&amp;(x)-&gt;counter) != RW_LOCK_BIAS)
 DECL|function|_raw_read_lock
 r_static
 r_inline
@@ -246,6 +248,46 @@ c_func
 op_amp
 id|rw-&gt;lock
 )paren
+suffix:semicolon
+)brace
+DECL|function|_raw_write_trylock
+r_static
+r_inline
+r_int
+id|_raw_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_sub_and_test
+c_func
+(paren
+id|RW_LOCK_BIAS
+comma
+op_amp
+id|rw-&gt;counter
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|atomic_add
+c_func
+(paren
+id|RW_LOCK_BIAS
+comma
+op_amp
+id|rw-&gt;counter
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_SH_SPINLOCK_H */

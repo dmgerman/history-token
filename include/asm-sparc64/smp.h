@@ -25,8 +25,8 @@ r_extern
 id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map phys_cpu_present_map
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 r_extern

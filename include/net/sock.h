@@ -385,6 +385,11 @@ id|module
 op_star
 id|sk_owner
 suffix:semicolon
+DECL|member|sk_security
+r_void
+op_star
+id|sk_security
+suffix:semicolon
 DECL|member|sk_state_change
 r_void
 (paren

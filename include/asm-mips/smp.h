@@ -84,8 +84,8 @@ r_extern
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map&t;phys_cpu_present_map
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 DECL|function|num_online_cpus

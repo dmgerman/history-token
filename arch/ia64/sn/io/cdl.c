@@ -1,22 +1,13 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
+macro_line|#include &lt;asm/sn/pci/pic.h&gt;
 macro_line|#include &quot;asm/sn/ioerror_handling.h&quot;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 multiline_comment|/* these get called directly in cdl_add_connpt in fops bypass hack */
-r_extern
-r_int
-id|pcibr_attach
-c_func
-(paren
-id|vertex_hdl_t
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|xbow_attach
@@ -35,7 +26,7 @@ id|vertex_hdl_t
 suffix:semicolon
 multiline_comment|/*&n; *    cdl: Connection and Driver List&n; *&n; *&t;We are not porting this to Linux.  Devices are registered via &n; *&t;the normal Linux PCI layer.  This is a very simplified version &n; *&t;of cdl that will allow us to register and call our very own &n; *&t;IO Infrastructure Drivers e.g. pcibr.&n; */
 DECL|macro|MAX_SGI_IO_INFRA_DRVR
-mdefine_line|#define MAX_SGI_IO_INFRA_DRVR 7
+mdefine_line|#define MAX_SGI_IO_INFRA_DRVR 5
 DECL|variable|sgi_infrastructure_drivers
 r_static
 r_struct
@@ -47,30 +38,12 @@ id|MAX_SGI_IO_INFRA_DRVR
 op_assign
 (brace
 (brace
-id|XBRIDGE_WIDGET_PART_NUM
-comma
-id|XBRIDGE_WIDGET_MFGR_NUM
-comma
-id|pcibr_attach
-multiline_comment|/* &amp;pcibr_fops  */
-)brace
-comma
-(brace
-id|BRIDGE_WIDGET_PART_NUM
-comma
-id|BRIDGE_WIDGET_MFGR_NUM
-comma
-id|pcibr_attach
-multiline_comment|/* &amp;pcibr_fops */
-)brace
-comma
-(brace
 id|PIC_WIDGET_PART_NUM_BUS0
 comma
 id|PIC_WIDGET_MFGR_NUM
 comma
 id|pic_attach
-multiline_comment|/* &amp;pic_fops */
+multiline_comment|/* &amp;pcibr_fops */
 )brace
 comma
 (brace
@@ -79,7 +52,7 @@ comma
 id|PIC_WIDGET_MFGR_NUM
 comma
 id|pic_attach
-multiline_comment|/* &amp;pic_fops */
+multiline_comment|/* &amp;pcibr_fops */
 )brace
 comma
 (brace

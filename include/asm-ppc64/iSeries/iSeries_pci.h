@@ -5,7 +5,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/* File iSeries_pci.h created by Allan Trautman on Tue Feb 20, 2001.    */
 multiline_comment|/************************************************************************/
 multiline_comment|/* Define some useful macros for the iSeries pci routines.              */
-multiline_comment|/* Copyright (C) 20yy  Allan H Trautman, IBM Corporation                */
+multiline_comment|/* Copyright (C) 2001  Allan H Trautman, IBM Corporation                */
 multiline_comment|/*                                                                      */
 multiline_comment|/* This program is free software; you can redistribute it and/or modify */
 multiline_comment|/* it under the terms of the GNU General Public License as published by */
@@ -38,56 +38,46 @@ r_struct
 id|iSeries_Device_Node
 suffix:semicolon
 multiline_comment|/************************************************************************/
-multiline_comment|/* Gets iSeries Bus, SubBus, of DevFn using pci_dev* structure          */
+multiline_comment|/* Gets iSeries Bus, SubBus, DevFn using iSeries_Device_Node structure */
 multiline_comment|/************************************************************************/
 DECL|macro|ISERIES_BUS
-mdefine_line|#define ISERIES_BUS(DevPtr)    DevPtr-&gt;DsaAddr.busNumber
+mdefine_line|#define ISERIES_BUS(DevPtr)&t;DevPtr-&gt;DsaAddr.Dsa.busNumber
 DECL|macro|ISERIES_SUBBUS
-mdefine_line|#define ISERIES_SUBBUS(DevPtr) DevPtr-&gt;DsaAddr.subBusNumber
+mdefine_line|#define ISERIES_SUBBUS(DevPtr)&t;DevPtr-&gt;DsaAddr.Dsa.subBusNumber
 DECL|macro|ISERIES_DEVICE
-mdefine_line|#define ISERIES_DEVICE(DevPtr) DevPtr-&gt;DsaAddr.deviceId
-DECL|macro|ISERIES_DEVFUN
-mdefine_line|#define ISERIES_DEVFUN(DevPtr) DevPtr-&gt;DevFn
+mdefine_line|#define ISERIES_DEVICE(DevPtr)&t;DevPtr-&gt;DsaAddr.Dsa.deviceId
 DECL|macro|ISERIES_DSA
-mdefine_line|#define ISERIES_DSA(DevPtr)   (*(u64*)&amp;DevPtr-&gt;DsaAddr)
+mdefine_line|#define ISERIES_DSA(DevPtr)&t;DevPtr-&gt;DsaAddr.DsaAddr
+DECL|macro|ISERIES_DEVFUN
+mdefine_line|#define ISERIES_DEVFUN(DevPtr)&t;DevPtr-&gt;DevFn
 DECL|macro|ISERIES_DEVNODE
 mdefine_line|#define ISERIES_DEVNODE(PciDev) ((struct iSeries_Device_Node*)PciDev-&gt;sysdata)
 DECL|macro|EADsMaxAgents
 mdefine_line|#define EADsMaxAgents 7
-multiline_comment|/************************************************************************************/
-multiline_comment|/* Decodes Linux DevFn to iSeries DevFn, bridge device, or function.                */
-multiline_comment|/* For Linux, see PCI_SLOT and PCI_FUNC in include/linux/pci.h                      */
-multiline_comment|/************************************************************************************/
+multiline_comment|/************************************************************************/
+multiline_comment|/* Decodes Linux DevFn to iSeries DevFn, bridge device, or function.    */
+multiline_comment|/* For Linux, see PCI_SLOT and PCI_FUNC in include/linux/pci.h          */
+multiline_comment|/************************************************************************/
+DECL|macro|ISERIES_PCI_AGENTID
+mdefine_line|#define ISERIES_PCI_AGENTID(idsel,func)&t;((idsel &amp; 0x0F) &lt;&lt; 4) | (func  &amp; 0x07)
+DECL|macro|ISERIES_ENCODE_DEVICE
+mdefine_line|#define ISERIES_ENCODE_DEVICE(agentid)&t;((0x10) | ((agentid&amp;0x20)&gt;&gt;2) | (agentid&amp;07))
+DECL|macro|ISERIES_GET_DEVICE_FROM_SUBBUS
+mdefine_line|#define ISERIES_GET_DEVICE_FROM_SUBBUS(subbus)   ((subbus &gt;&gt; 5) &amp; 0x7)
+DECL|macro|ISERIES_GET_FUNCTION_FROM_SUBBUS
+mdefine_line|#define ISERIES_GET_FUNCTION_FROM_SUBBUS(subbus) ((subbus &gt;&gt; 2) &amp; 0x7)
+multiline_comment|/*&n; * N.B. the ISERIES_DECODE_* macros are not used anywhere, and I think&n; * the 0x71 (at least) must be wrong - 0x78 maybe?  -- paulus.&n; */
 DECL|macro|ISERIES_DECODE_DEVFN
 mdefine_line|#define ISERIES_DECODE_DEVFN(linuxdevfn)  (((linuxdevfn &amp; 0x71) &lt;&lt; 1) | (linuxdevfn &amp; 0x07))
 DECL|macro|ISERIES_DECODE_DEVICE
 mdefine_line|#define ISERIES_DECODE_DEVICE(linuxdevfn) (((linuxdevfn &amp; 0x38) &gt;&gt; 3) |(((linuxdevfn &amp; 0x40) &gt;&gt; 2) + 0x10))
 DECL|macro|ISERIES_DECODE_FUNCTION
 mdefine_line|#define ISERIES_DECODE_FUNCTION(linuxdevfn) (linuxdevfn &amp; 0x07)
-DECL|macro|ISERIES_PCI_AGENTID
-mdefine_line|#define ISERIES_PCI_AGENTID(idsel,func)&t;((idsel &amp; 0x0F) &lt;&lt; 4) | (func  &amp; 0x07)
-DECL|macro|ISERIES_GET_DEVICE_FROM_SUBBUS
-mdefine_line|#define ISERIES_GET_DEVICE_FROM_SUBBUS(subbus)   ((subbus &gt;&gt; 5) &amp; 0x7)
-DECL|macro|ISERIES_GET_FUNCTION_FROM_SUBBUS
-mdefine_line|#define ISERIES_GET_FUNCTION_FROM_SUBBUS(subbus) ((subbus &gt;&gt; 2) &amp; 0x7)
-DECL|macro|ISERIES_ENCODE_DEVICE
-mdefine_line|#define ISERIES_ENCODE_DEVICE(agentid)&t;((0x10) | ((agentid&amp;0x20)&gt;&gt;2) | (agentid&amp;07))
-multiline_comment|/************************************************************************************/
-multiline_comment|/* Converts Virtual Address to Real Address for Hypervisor calls                    */
-multiline_comment|/************************************************************************************/
+multiline_comment|/************************************************************************/
+multiline_comment|/* Converts Virtual Address to Real Address for Hypervisor calls        */
+multiline_comment|/************************************************************************/
 DECL|macro|REALADDR
 mdefine_line|#define REALADDR(virtaddr)  (0x8000000000000000 | (virt_to_absolute((u64)virtaddr) ))
-multiline_comment|/************************************************************************************/
-multiline_comment|/* Define TRUE and FALSE Values for Al                                              */
-multiline_comment|/************************************************************************************/
-macro_line|#ifndef TRUE
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
-macro_line|#endif
 multiline_comment|/************************************************************************/
 multiline_comment|/* iSeries Device Information                                           */
 multiline_comment|/************************************************************************/
@@ -100,7 +90,6 @@ r_struct
 id|list_head
 id|Device_List
 suffix:semicolon
-multiline_comment|/* Must be first for cast to wo*/
 DECL|member|PciDev
 r_struct
 id|pci_dev
@@ -109,8 +98,8 @@ id|PciDev
 suffix:semicolon
 multiline_comment|/* Pointer to pci_dev structure*/
 DECL|member|DsaAddr
-r_struct
-id|HvCallPci_DsaAddr
+r_union
+id|HvDsaMap
 id|DsaAddr
 suffix:semicolon
 multiline_comment|/* Direct Select Address       */
@@ -254,26 +243,6 @@ id|LocationData
 suffix:semicolon
 DECL|macro|LOCATION_DATA_SIZE
 mdefine_line|#define LOCATION_DATA_SIZE      48
-multiline_comment|/************************************************************************/
-multiline_comment|/* Flight Recorder tracing                                              */
-multiline_comment|/************************************************************************/
-r_extern
-r_int
-id|iSeries_Set_PciTraceFlag
-c_func
-(paren
-r_int
-id|TraceFlag
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|iSeries_Get_PciTraceFlag
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/************************************************************************/
 multiline_comment|/* Functions                                                            */
 multiline_comment|/************************************************************************/

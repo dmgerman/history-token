@@ -4,7 +4,6 @@ DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -134,6 +133,11 @@ DECL|member|sn_first_irq
 r_int
 id|sn_first_irq
 suffix:semicolon
+DECL|member|sn_num_irqs
+r_int
+id|sn_num_irqs
+suffix:semicolon
+multiline_comment|/* number of irqs targeted for this cpu */
 DECL|typedef|pda_t
 )brace
 id|pda_t

@@ -3,6 +3,7 @@ DECL|macro|_PPC64_BYTEORDER_H
 mdefine_line|#define _PPC64_BYTEORDER_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 macro_line|#ifdef __KERNEL__
 DECL|function|ld_le16
@@ -174,7 +175,7 @@ suffix:semicolon
 macro_line|#if 0
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u16
 id|___arch__swab16
 c_func
@@ -215,7 +216,7 @@ suffix:semicolon
 )brace
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|___arch__swab32
 c_func
@@ -258,7 +259,7 @@ suffix:semicolon
 )brace
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u64
 id|___arch__swab64
 c_func

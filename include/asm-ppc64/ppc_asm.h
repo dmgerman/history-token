@@ -44,6 +44,30 @@ DECL|macro|REST_16FPRS
 mdefine_line|#define REST_16FPRS(n, base)&t;REST_8FPRS(n, base); REST_8FPRS(n+8, base)
 DECL|macro|REST_32FPRS
 mdefine_line|#define REST_32FPRS(n, base)&t;REST_16FPRS(n, base); REST_16FPRS(n+16, base)
+DECL|macro|SAVE_VR
+mdefine_line|#define SAVE_VR(n,b,base)&t;li b,THREAD_VR0+(16*(n));  stvx n,b,base
+DECL|macro|SAVE_2VRS
+mdefine_line|#define SAVE_2VRS(n,b,base)&t;SAVE_VR(n,b,base); SAVE_VR(n+1,b,base)
+DECL|macro|SAVE_4VRS
+mdefine_line|#define SAVE_4VRS(n,b,base)&t;SAVE_2VRS(n,b,base); SAVE_2VRS(n+2,b,base)
+DECL|macro|SAVE_8VRS
+mdefine_line|#define SAVE_8VRS(n,b,base)&t;SAVE_4VRS(n,b,base); SAVE_4VRS(n+4,b,base)
+DECL|macro|SAVE_16VRS
+mdefine_line|#define SAVE_16VRS(n,b,base)&t;SAVE_8VRS(n,b,base); SAVE_8VRS(n+8,b,base)
+DECL|macro|SAVE_32VRS
+mdefine_line|#define SAVE_32VRS(n,b,base)&t;SAVE_16VRS(n,b,base); SAVE_16VRS(n+16,b,base)
+DECL|macro|REST_VR
+mdefine_line|#define REST_VR(n,b,base)&t;li b,THREAD_VR0+(16*(n)); lvx n,b,base
+DECL|macro|REST_2VRS
+mdefine_line|#define REST_2VRS(n,b,base)&t;REST_VR(n,b,base); REST_VR(n+1,b,base)
+DECL|macro|REST_4VRS
+mdefine_line|#define REST_4VRS(n,b,base)&t;REST_2VRS(n,b,base); REST_2VRS(n+2,b,base)
+DECL|macro|REST_8VRS
+mdefine_line|#define REST_8VRS(n,b,base)&t;REST_4VRS(n,b,base); REST_4VRS(n+4,b,base)
+DECL|macro|REST_16VRS
+mdefine_line|#define REST_16VRS(n,b,base)&t;REST_8VRS(n,b,base); REST_8VRS(n+8,b,base)
+DECL|macro|REST_32VRS
+mdefine_line|#define REST_32VRS(n,b,base)&t;REST_16VRS(n,b,base); REST_16VRS(n+16,b,base)
 DECL|macro|CHECKANYINT
 mdefine_line|#define CHECKANYINT(ra,rb)&t;&t;&t;&bslash;&n;&t;mfspr&t;rb,SPRG3;&t;&t;/* Get Paca address */&bslash;&n;&t;ld&t;ra,PACALPPACA+LPPACAANYINT(rb); /* Get pending interrupt flags */&bslash;&n;&t;cmpldi&t;0,ra,0;
 multiline_comment|/* Macros to adjust thread priority for Iseries hardware multithreading */

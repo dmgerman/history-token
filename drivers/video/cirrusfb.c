@@ -13173,7 +13173,7 @@ macro_line|#endif
 multiline_comment|/*******************************************************************&n;&t;clgen_WaitBLT()&n;&n;&t;Wait for the BitBLT engine to complete a possible earlier job&n;*********************************************************************/
 multiline_comment|/* FIXME: use interrupts instead */
 DECL|function|clgen_WaitBLT
-r_extern
+r_static
 r_inline
 r_void
 id|clgen_WaitBLT

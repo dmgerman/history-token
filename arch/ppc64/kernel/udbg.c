@@ -450,14 +450,9 @@ c_cond
 op_logical_neg
 id|ppc_md.udbg_putc
 )paren
-r_for
-c_loop
-(paren
+r_return
+l_int|0
 suffix:semicolon
-suffix:semicolon
-)paren
-suffix:semicolon
-multiline_comment|/* stop here for cpuctl */
 r_if
 c_cond
 (paren

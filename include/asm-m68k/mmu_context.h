@@ -25,10 +25,10 @@ macro_line|#ifndef CONFIG_SUN3
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
-r_extern
+DECL|function|init_new_context
+r_static
 r_inline
 r_int
-DECL|function|init_new_context
 id|init_new_context
 c_func
 (paren
@@ -58,7 +58,7 @@ suffix:semicolon
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;do { } while(0)
 DECL|function|switch_mm_0230
-r_extern
+r_static
 r_inline
 r_void
 id|switch_mm_0230
@@ -143,7 +143,7 @@ l_string|&quot;.chip 68k&quot;
 suffix:semicolon
 )brace
 DECL|function|switch_mm_0460
-r_extern
+r_static
 r_inline
 r_void
 id|switch_mm_0460
@@ -272,7 +272,7 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|function|activate_mm
-r_extern
+r_static
 r_inline
 r_void
 id|activate_mm
@@ -489,7 +489,7 @@ suffix:semicolon
 DECL|macro|deactivate_mm
 mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 DECL|function|activate_mm
-r_extern
+r_static
 r_inline
 r_void
 id|activate_mm

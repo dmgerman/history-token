@@ -36,14 +36,10 @@ macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 singleline_comment|//#include &lt;asm/iSeries/iSeries_VpdInfo.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
-multiline_comment|/************************************************/
-multiline_comment|/* Size of Bus VPD data                         */
-multiline_comment|/************************************************/
+multiline_comment|/*&n; * Size of Bus VPD data&n; */
 DECL|macro|BUS_VPDSIZE
 mdefine_line|#define BUS_VPDSIZE      1024
-multiline_comment|/************************************************/
-multiline_comment|/* Bus Vpd Tags                                 */
-multiline_comment|/************************************************/
+multiline_comment|/*&n; * Bus Vpd Tags&n; */
 DECL|macro|VpdEndOfDataTag
 mdefine_line|#define  VpdEndOfDataTag   0x78
 DECL|macro|VpdEndOfAreaTag
@@ -52,9 +48,7 @@ DECL|macro|VpdIdStringTag
 mdefine_line|#define  VpdIdStringTag    0x82
 DECL|macro|VpdVendorAreaTag
 mdefine_line|#define  VpdVendorAreaTag  0x84
-multiline_comment|/************************************************/
-multiline_comment|/* Mfg Area Tags                                */
-multiline_comment|/************************************************/
+multiline_comment|/*&n; * Mfg Area Tags&n; */
 DECL|macro|VpdFruFlag
 mdefine_line|#define  VpdFruFlag       0x4647     
 singleline_comment|// &quot;FG&quot;
@@ -73,9 +67,7 @@ singleline_comment|// &quot;SN&quot;
 DECL|macro|VpdSlotMap
 mdefine_line|#define  VpdSlotMap       0x534D     
 singleline_comment|// &quot;SM&quot;
-multiline_comment|/************************************************/
-multiline_comment|/* Structures of the areas                      */
-multiline_comment|/************************************************/
+multiline_comment|/*&n; * Structures of the areas&n; */
 DECL|struct|MfgVpdAreaStruct
 r_struct
 id|MfgVpdAreaStruct
@@ -153,7 +145,7 @@ id|SlotMap
 suffix:semicolon
 DECL|macro|SLOT_ENTRY_SIZE
 mdefine_line|#define SLOT_ENTRY_SIZE   16
-multiline_comment|/****************************************************************&n; *                                                              *&n; * Bus, Card, Board, FrameId, CardLocation.                     *&n; ****************************************************************/
+multiline_comment|/*&n; * Bus, Card, Board, FrameId, CardLocation.&n; */
 DECL|function|iSeries_GetLocationData
 id|LocationData
 op_star
@@ -266,16 +258,7 @@ r_return
 id|LocationPtr
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Formats the device information.                                      */
-multiline_comment|/* - Pass in pci_dev* pointer to the device.                            */
-multiline_comment|/* - Pass in buffer to place the data.  Danger here is the buffer must  */
-multiline_comment|/*   be as big as the client says it is.   Should be at least 128 bytes.*/
-multiline_comment|/* Return will the length of the string data put in the buffer.         */
-multiline_comment|/* Format:                                                              */
-multiline_comment|/* PCI: Bus  0, Device 26, Vendor 0x12AE  Frame  1, Card  C10  Ethernet */
-multiline_comment|/* controller                                                           */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Formats the device information.&n; * - Pass in pci_dev* pointer to the device.&n; * - Pass in buffer to place the data.  Danger here is the buffer must&n; *   be as big as the client says it is.   Should be at least 128 bytes.&n; * Return will the length of the string data put in the buffer.&n; * Format:&n; * PCI: Bus  0, Device 26, Vendor 0x12AE  Frame  1, Card  C10  Ethernet&n; * controller&n; */
 DECL|function|iSeries_Device_Information
 r_int
 id|iSeries_Device_Information
@@ -288,7 +271,7 @@ id|PciDev
 comma
 r_char
 op_star
-id|Buffer
+id|buffer
 comma
 r_int
 id|BufferSize
@@ -306,16 +289,8 @@ op_star
 )paren
 id|PciDev-&gt;sysdata
 suffix:semicolon
-r_char
-op_star
-id|BufPtr
-op_assign
-id|Buffer
-suffix:semicolon
 r_int
-id|LineLen
-op_assign
-l_int|0
+id|len
 suffix:semicolon
 r_if
 c_cond
@@ -324,39 +299,31 @@ id|DevNode
 op_eq
 l_int|NULL
 )paren
-(brace
-id|LineLen
-op_assign
+r_return
 id|sprintf
 c_func
 (paren
-id|BufPtr
-op_plus
-id|LineLen
+id|buffer
 comma
 l_string|&quot;PCI: iSeries_Device_Information DevNode is NULL&quot;
 )paren
 suffix:semicolon
-r_return
-id|LineLen
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|BufferSize
-op_ge
+OL
 l_int|128
 )paren
-(brace
-id|LineLen
+r_return
+l_int|0
+suffix:semicolon
+id|len
 op_assign
 id|sprintf
 c_func
 (paren
-id|BufPtr
-op_plus
-id|LineLen
+id|buffer
 comma
 l_string|&quot;PCI: Bus%3d, Device%3d, Vendor %04X &quot;
 comma
@@ -375,14 +342,14 @@ comma
 id|PciDev-&gt;vendor
 )paren
 suffix:semicolon
-id|LineLen
+id|len
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|BufPtr
+id|buffer
 op_plus
-id|LineLen
+id|len
 comma
 l_string|&quot;Frame%3d, Card %4s  &quot;
 comma
@@ -391,6 +358,7 @@ comma
 id|DevNode-&gt;CardLocation
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -406,15 +374,14 @@ l_int|8
 op_eq
 l_int|0
 )paren
-(brace
-id|LineLen
+id|len
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|BufPtr
+id|buffer
 op_plus
-id|LineLen
+id|len
 comma
 l_string|&quot;0x%04X  &quot;
 comma
@@ -430,17 +397,15 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-id|LineLen
+id|len
 op_add_assign
 id|sprintf
 c_func
 (paren
-id|BufPtr
+id|buffer
 op_plus
-id|LineLen
+id|len
 comma
 l_string|&quot;%s&quot;
 comma
@@ -455,15 +420,12 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-)brace
-)brace
+macro_line|#endif
 r_return
-id|LineLen
+id|len
 suffix:semicolon
 )brace
-multiline_comment|/************************************************************************/
-multiline_comment|/* Build a character string of the device location, Frame  1, Card  C10 */
-multiline_comment|/************************************************************************/
+multiline_comment|/*&n; * Build a character string of the device location, Frame  1, Card  C10&n; */
 DECL|function|device_Location
 r_int
 id|device_Location
@@ -499,7 +461,7 @@ id|BufPtr
 comma
 l_string|&quot;PCI: Bus%3d, AgentId%3d, Vendor %04X, Location %s&quot;
 comma
-id|DevNode-&gt;DsaAddr.busNumber
+id|DevNode-&gt;DsaAddr.Dsa.busNumber
 comma
 id|DevNode-&gt;AgentId
 comma
@@ -509,9 +471,7 @@ id|DevNode-&gt;Location
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************/
-multiline_comment|/* Parse the Slot Area                                           */
-multiline_comment|/*****************************************************************/
+multiline_comment|/*&n; * Parse the Slot Area&n; */
 DECL|function|iSeries_Parse_SlotArea
 r_void
 id|iSeries_Parse_SlotArea
@@ -541,9 +501,7 @@ id|SlotMapPtr
 op_assign
 id|MapPtr
 suffix:semicolon
-multiline_comment|/*************************************************************/
-multiline_comment|/* Parse Slot label until we find the one requrested         */
-multiline_comment|/*************************************************************/
+multiline_comment|/*&n;&t; * Parse Slot label until we find the one requrested&n;&t; */
 r_while
 c_loop
 (paren
@@ -560,9 +518,7 @@ op_eq
 id|DevNode-&gt;AgentId
 )paren
 (brace
-multiline_comment|/*******************************************************/
-multiline_comment|/* If Phb wasn&squot;t found, grab the entry first one found.*/
-multiline_comment|/*******************************************************/
+multiline_comment|/*&n;&t;&t;&t; * If Phb wasn&squot;t found, grab the entry first one found.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -570,15 +526,11 @@ id|DevNode-&gt;PhbId
 op_eq
 l_int|0xff
 )paren
-(brace
 id|DevNode-&gt;PhbId
 op_assign
 id|SlotMapPtr-&gt;PhbId
 suffix:semicolon
-)brace
-multiline_comment|/**************************************************/
-multiline_comment|/* Found it, extract the data.                    */
-multiline_comment|/**************************************************/
+multiline_comment|/* Found it, extract the data. */
 r_if
 c_cond
 (paren
@@ -610,9 +562,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*********************************************************/
-multiline_comment|/* Point to the next Slot                                */
-multiline_comment|/*********************************************************/
+multiline_comment|/* Point to the next Slot */
 id|SlotMapPtr
 op_assign
 (paren
@@ -635,9 +585,7 @@ id|SLOT_ENTRY_SIZE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*****************************************************************/
-multiline_comment|/* Parse the Mfg Area                                            */
-multiline_comment|/*****************************************************************/
+multiline_comment|/*&n; * Parse the Mfg Area&n; */
 DECL|function|iSeries_Parse_MfgArea
 r_static
 r_void
@@ -677,9 +625,7 @@ id|SlotMapFmt
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*************************************************************/
-multiline_comment|/* Parse Mfg Data                                            */
-multiline_comment|/*************************************************************/
+multiline_comment|/* Parse Mfg Data */
 r_while
 c_loop
 (paren
@@ -693,9 +639,7 @@ id|MfgTagLen
 op_assign
 id|MfgAreaPtr-&gt;TagLength
 suffix:semicolon
-multiline_comment|/*******************************************************/
-multiline_comment|/* Frame ID         (FI 4649020310 )                   */
-multiline_comment|/*******************************************************/
+multiline_comment|/* Frame ID         (FI 4649020310 ) */
 r_if
 c_cond
 (paren
@@ -703,16 +647,12 @@ id|MfgAreaPtr-&gt;Tag
 op_eq
 id|VpdFruFrameId
 )paren
-(brace
 multiline_comment|/* FI  */
 id|DevNode-&gt;FrameId
 op_assign
 id|MfgAreaPtr-&gt;AreaData1
 suffix:semicolon
-)brace
-multiline_comment|/*******************************************************/
-multiline_comment|/* Slot Map Format  (MF 4D46020004 )                   */
-multiline_comment|/*******************************************************/
+multiline_comment|/* Slot Map Format  (MF 4D46020004 ) */
 r_else
 r_if
 c_cond
@@ -721,7 +661,6 @@ id|MfgAreaPtr-&gt;Tag
 op_eq
 id|VpdSlotMapFormat
 )paren
-(brace
 multiline_comment|/* MF  */
 id|SlotMapFmt
 op_assign
@@ -731,14 +670,9 @@ op_star
 l_int|256
 )paren
 op_plus
-(paren
 id|MfgAreaPtr-&gt;AreaData2
-)paren
 suffix:semicolon
-)brace
-multiline_comment|/*******************************************************/
-multiline_comment|/* Slot Map         (SM 534D90                         */
-multiline_comment|/*******************************************************/
+multiline_comment|/* Slot Map         (SM 534D90 */
 r_else
 r_if
 c_cond
@@ -806,10 +740,7 @@ id|DevNode
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*********************************************************/
-multiline_comment|/* Point to the next Mfg Area                            */
-multiline_comment|/* Use defined size, sizeof give wrong answer            */
-multiline_comment|/*********************************************************/
+multiline_comment|/*&n;&t;&t; * Point to the next Mfg Area&n;&t;&t; * Use defined size, sizeof give wrong answer&n;&t;&t; */
 id|MfgAreaPtr
 op_assign
 (paren
@@ -838,10 +769,7 @@ id|MFG_ENTRY_SIZE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*****************************************************************/
-multiline_comment|/* Look for &quot;BUS&quot;.. Data is not Null terminated.                 */
-multiline_comment|/* PHBID of 0xFF indicates PHB was not found in VPD Data.        */
-multiline_comment|/*****************************************************************/
+multiline_comment|/*&n; * Look for &quot;BUS&quot;.. Data is not Null terminated.&n; * PHBID of 0xFF indicates PHB was not found in VPD Data.&n; */
 DECL|function|iSeries_Parse_PhbId
 r_static
 r_int
@@ -883,11 +811,14 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
 op_star
 id|PhbPtr
 op_eq
 l_char|&squot;B&squot;
+)paren
 op_logical_and
+(paren
 op_star
 (paren
 id|PhbPtr
@@ -896,7 +827,9 @@ l_int|1
 )paren
 op_eq
 l_char|&squot;U&squot;
+)paren
 op_logical_and
+(paren
 op_star
 (paren
 id|PhbPtr
@@ -905,6 +838,7 @@ l_int|2
 )paren
 op_eq
 l_char|&squot;S&squot;
+)paren
 )paren
 (brace
 id|PhbPtr
@@ -919,11 +853,9 @@ id|PhbPtr
 op_eq
 l_char|&squot; &squot;
 )paren
-(brace
 op_increment
 id|PhbPtr
 suffix:semicolon
-)brace
 id|PhbId
 op_assign
 (paren
@@ -947,9 +879,7 @@ r_return
 id|PhbId
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************/
-multiline_comment|/* Parse out the VPD Areas                                      */
-multiline_comment|/****************************************************************/
+multiline_comment|/*&n; * Parse out the VPD Areas&n; */
 DECL|function|iSeries_Parse_Vpd
 r_static
 r_void
@@ -982,20 +912,21 @@ id|VpdDataLen
 op_minus
 l_int|3
 suffix:semicolon
-multiline_comment|/*************************************************************/
-multiline_comment|/* Parse the Areas                                           */
-multiline_comment|/*************************************************************/
 r_while
 c_loop
+(paren
 (paren
 op_star
 id|TagPtr
 op_ne
 id|VpdEndOfAreaTag
+)paren
 op_logical_and
+(paren
 id|DataLen
 OG
 l_int|0
+)paren
 )paren
 (brace
 r_int
@@ -1035,7 +966,6 @@ id|TagPtr
 op_eq
 id|VpdIdStringTag
 )paren
-(brace
 id|DevNode-&gt;PhbId
 op_assign
 id|iSeries_Parse_PhbId
@@ -1046,7 +976,6 @@ comma
 id|AreaLen
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -1056,7 +985,6 @@ id|TagPtr
 op_eq
 id|VpdVendorAreaTag
 )paren
-(brace
 id|iSeries_Parse_MfgArea
 c_func
 (paren
@@ -1067,8 +995,7 @@ comma
 id|DevNode
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*********************************************************&n;&t;&t; * Point to next Area.&n;&t;&t; *********************************************************/
+multiline_comment|/* Point to next Area. */
 id|TagPtr
 op_assign
 id|AreaData
@@ -1081,7 +1008,6 @@ id|AreaLen
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/****************************************************************&n; *  iSeries_Get_Location_Code(struct iSeries_Device_Node*)      *&n; *&n; ****************************************************************/
 DECL|function|iSeries_Get_Location_Code
 r_void
 id|iSeries_Get_Location_Code
@@ -1174,10 +1100,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-singleline_comment|//printk(&quot;PCI: BusVpdPtr: %p, %d&bslash;n&quot;,BusVpdPtr, BusVpdLen);
-multiline_comment|/*************************************************************/
-multiline_comment|/* Make sure this is what I think it is                      */
-multiline_comment|/*************************************************************/
+multiline_comment|/* printk(&quot;PCI: BusVpdPtr: %p, %d&bslash;n&quot;,BusVpdPtr, BusVpdLen); */
+multiline_comment|/* Make sure this is what I think it is */
 r_if
 c_cond
 (paren
@@ -1187,7 +1111,7 @@ op_ne
 id|VpdIdStringTag
 )paren
 (brace
-multiline_comment|/*0x82     */
+multiline_comment|/* 0x82 */
 id|printk
 c_func
 (paren
@@ -1203,8 +1127,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/***************************************************************/
-multiline_comment|/***************************************************************/
 id|iSeries_Parse_Vpd
 c_func
 (paren

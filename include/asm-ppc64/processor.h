@@ -563,6 +563,8 @@ DECL|macro|SPRN_XER
 mdefine_line|#define&t;SPRN_XER&t;0x001&t;/* Fixed Point Exception Register */
 DECL|macro|SPRN_ZPR
 mdefine_line|#define&t;SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register */
+DECL|macro|SPRN_VRSAVE
+mdefine_line|#define SPRN_VRSAVE     0x100   /* Vector save */
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define&t;CTR&t;SPRN_CTR&t;/* Counter Register */
@@ -670,6 +672,8 @@ DECL|macro|PV_SSTAR
 mdefine_line|#define&t;PV_SSTAR&t;0x0037
 DECL|macro|PV_POWER4p
 mdefine_line|#define&t;PV_POWER4p&t;0x0038
+DECL|macro|PV_POWER5
+mdefine_line|#define&t;PV_POWER5&t;0x003A
 DECL|macro|PV_630
 mdefine_line|#define&t;PV_630        &t;0x0040
 DECL|macro|PV_630p
@@ -681,6 +685,8 @@ DECL|macro|PLATFORM_PSERIES_LPAR
 mdefine_line|#define PLATFORM_PSERIES_LPAR 0x0101
 DECL|macro|PLATFORM_ISERIES_LPAR
 mdefine_line|#define PLATFORM_ISERIES_LPAR 0x0201
+DECL|macro|PLATFORM_LPAR
+mdefine_line|#define PLATFORM_LPAR         0x0001
 multiline_comment|/*&n; * List of interrupt controllers.&n; */
 DECL|macro|IC_INVALID
 mdefine_line|#define IC_INVALID    0
@@ -773,9 +779,18 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
-DECL|macro|prepare_to_copy
-mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
-multiline_comment|/*&n; * Create a new kernel thread.&n; */
+r_extern
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+multiline_comment|/* Create a new kernel thread. */
 r_extern
 r_int
 id|kernel_thread
@@ -811,6 +826,12 @@ r_struct
 id|task_struct
 op_star
 id|last_task_used_math
+suffix:semicolon
+r_extern
+r_struct
+id|task_struct
+op_star
+id|last_task_used_altivec
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* 64-bit user address space is 41-bits (2TBs user VM) */
@@ -895,6 +916,51 @@ r_int
 id|saved_softe
 suffix:semicolon
 multiline_comment|/* Ditto for Soft Enable/Disable */
+macro_line|#ifdef CONFIG_ALTIVEC
+multiline_comment|/* Complete AltiVec register set */
+id|vector128
+id|vr
+(braket
+l_int|32
+)braket
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* AltiVec status */
+id|vector128
+id|vscr
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|member|vrsave
+r_int
+r_int
+id|vrsave
+suffix:semicolon
+DECL|member|used_vr
+r_int
+id|used_vr
+suffix:semicolon
+multiline_comment|/* set if process has used altivec */
+macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 suffix:semicolon
 DECL|macro|INIT_SP

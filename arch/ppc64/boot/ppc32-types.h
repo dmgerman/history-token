@@ -101,7 +101,37 @@ r_int
 r_int
 id|u64
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|u
+id|__u32
+id|u
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|typedef|__vector128
+)brace
+id|__attribute
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|16
+)paren
+)paren
+)paren
+id|__vector128
+suffix:semicolon
 DECL|macro|BITS_PER_LONG
 mdefine_line|#define BITS_PER_LONG 32
+DECL|typedef|vector128
+r_typedef
+id|__vector128
+id|vector128
+suffix:semicolon
 macro_line|#endif /* _PPC64_TYPES_H */
 eof

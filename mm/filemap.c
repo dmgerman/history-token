@@ -2707,7 +2707,7 @@ id|inode
 suffix:semicolon
 id|mapping
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 suffix:semicolon
 id|inode
 op_assign
@@ -3392,7 +3392,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_int
 r_int
@@ -3494,7 +3494,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|page
@@ -3625,7 +3625,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|file_ra_state
@@ -4212,7 +4212,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|page
@@ -4529,7 +4529,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|inode
@@ -4801,7 +4801,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|inode
@@ -6029,11 +6029,6 @@ id|generic_write_checks
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -6050,6 +6045,13 @@ r_int
 id|isblk
 )paren
 (brace
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_mapping-&gt;host
+suffix:semicolon
 r_int
 r_int
 id|limit
@@ -6360,7 +6362,11 @@ c_cond
 id|bdev_read_only
 c_func
 (paren
-id|inode-&gt;i_bdev
+id|I_BDEV
+c_func
+(paren
+id|inode
+)paren
 )paren
 )paren
 r_return
@@ -6469,7 +6475,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 r_struct
 id|address_space_operations
@@ -6688,8 +6694,6 @@ op_assign
 id|generic_write_checks
 c_func
 (paren
-id|inode
-comma
 id|file
 comma
 op_amp
@@ -6855,6 +6859,8 @@ id|generic_osync_inode
 c_func
 (paren
 id|inode
+comma
+id|mapping
 comma
 id|OSYNC_METADATA
 )paren
@@ -7297,6 +7303,8 @@ c_func
 (paren
 id|inode
 comma
+id|mapping
+comma
 id|OSYNC_METADATA
 op_or
 id|OSYNC_DATA
@@ -7457,7 +7465,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|err
@@ -7561,7 +7569,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|err
@@ -7741,7 +7749,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 id|ssize_t
 id|ret
@@ -7824,7 +7832,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|file-&gt;f_mapping
 suffix:semicolon
 id|ssize_t
 id|retval

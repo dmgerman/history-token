@@ -3,6 +3,7 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -47,13 +48,15 @@ DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */
 DECL|macro|IMALLOC_START
-mdefine_line|#define IMALLOC_START (ioremap_bot)
+mdefine_line|#define IMALLOC_START     (ioremap_bot)
 DECL|macro|IMALLOC_VMADDR
 mdefine_line|#define IMALLOC_VMADDR(x) ((unsigned long)(x))
+DECL|macro|PHBS_IO_BASE
+mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000)&t;/* Reserve 2 gigs for PHBs */
 DECL|macro|IMALLOC_BASE
-mdefine_line|#define IMALLOC_BASE  (0xE000000000000000)
+mdefine_line|#define IMALLOC_BASE      (0xE000000080000000)  
 DECL|macro|IMALLOC_END
-mdefine_line|#define IMALLOC_END   (IMALLOC_BASE + VALID_EA_BITS)
+mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + VALID_EA_BITS)
 multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */
 DECL|macro|KRANGE_START
 mdefine_line|#define KRANGE_START KERNELBASE
@@ -66,36 +69,38 @@ DECL|macro|USER_END
 mdefine_line|#define USER_END   (USER_START + VALID_EA_BITS)
 multiline_comment|/*&n; * Bits in a linux-style PTE.  These match the bits in the&n; * (hardware-defined) PowerPC PTE as closely as possible.&n; */
 DECL|macro|_PAGE_PRESENT
-mdefine_line|#define _PAGE_PRESENT&t;0x001UL&t;/* software: pte contains a translation */
+mdefine_line|#define _PAGE_PRESENT&t;0x0001 /* software: pte contains a translation */
 DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER&t;0x002UL&t;/* matches one of the PP bits */
-DECL|macro|_PAGE_RW
-mdefine_line|#define _PAGE_RW&t;0x004UL&t;/* software: user write access allowed */
-DECL|macro|_PAGE_GUARDED
-mdefine_line|#define _PAGE_GUARDED&t;0x008UL
-DECL|macro|_PAGE_COHERENT
-mdefine_line|#define _PAGE_COHERENT&t;0x010UL&t;/* M: enforce memory coherence (SMP systems) */
-DECL|macro|_PAGE_NO_CACHE
-mdefine_line|#define _PAGE_NO_CACHE&t;0x020UL&t;/* I: cache inhibit */
-DECL|macro|_PAGE_WRITETHRU
-mdefine_line|#define _PAGE_WRITETHRU&t;0x040UL&t;/* W: cache write-through */
-DECL|macro|_PAGE_DIRTY
-mdefine_line|#define _PAGE_DIRTY&t;0x080UL&t;/* C: page changed */
-DECL|macro|_PAGE_ACCESSED
-mdefine_line|#define _PAGE_ACCESSED&t;0x100UL&t;/* R: page referenced */
+mdefine_line|#define _PAGE_USER&t;0x0002 /* matches one of the PP bits */
 DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x200UL /* software: pte holds file offset */
-DECL|macro|_PAGE_HASHPTE
-mdefine_line|#define _PAGE_HASHPTE&t;0x400UL&t;/* software: pte has an associated HPTE */
+mdefine_line|#define _PAGE_FILE&t;0x0002 /* (!present only) software: pte holds file offset */
+DECL|macro|_PAGE_RW
+mdefine_line|#define _PAGE_RW&t;0x0004 /* software: user write access allowed */
+DECL|macro|_PAGE_GUARDED
+mdefine_line|#define _PAGE_GUARDED&t;0x0008
+DECL|macro|_PAGE_COHERENT
+mdefine_line|#define _PAGE_COHERENT&t;0x0010 /* M: enforce memory coherence (SMP systems) */
+DECL|macro|_PAGE_NO_CACHE
+mdefine_line|#define _PAGE_NO_CACHE&t;0x0020 /* I: cache inhibit */
+DECL|macro|_PAGE_WRITETHRU
+mdefine_line|#define _PAGE_WRITETHRU&t;0x0040 /* W: cache write-through */
+DECL|macro|_PAGE_DIRTY
+mdefine_line|#define _PAGE_DIRTY&t;0x0080 /* C: page changed */
+DECL|macro|_PAGE_ACCESSED
+mdefine_line|#define _PAGE_ACCESSED&t;0x0100 /* R: page referenced */
 DECL|macro|_PAGE_EXEC
-mdefine_line|#define _PAGE_EXEC&t;0x800UL&t;/* software: i-cache coherence required */
+mdefine_line|#define _PAGE_EXEC&t;0x0200 /* software: i-cache coherence required */
+DECL|macro|_PAGE_HASHPTE
+mdefine_line|#define _PAGE_HASHPTE&t;0x0400 /* software: pte has an associated HPTE */
+DECL|macro|_PAGE_BUSY
+mdefine_line|#define _PAGE_BUSY&t;0x0800 /* software: PTE &amp; hash are busy */ 
 DECL|macro|_PAGE_SECONDARY
-mdefine_line|#define _PAGE_SECONDARY 0x8000UL /* software: HPTE is in secondary group */
+mdefine_line|#define _PAGE_SECONDARY 0x8000 /* software: HPTE is in secondary group */
 DECL|macro|_PAGE_GROUP_IX
-mdefine_line|#define _PAGE_GROUP_IX  0x7000UL /* software: HPTE index within group */
+mdefine_line|#define _PAGE_GROUP_IX  0x7000 /* software: HPTE index within group */
 multiline_comment|/* Bits 0x7000 identify the index within an HPT Group */
 DECL|macro|_PAGE_HPTEFLAGS
-mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_HASHPTE | _PAGE_SECONDARY | _PAGE_GROUP_IX)
+mdefine_line|#define _PAGE_HPTEFLAGS (_PAGE_BUSY | _PAGE_HASHPTE | _PAGE_SECONDARY | _PAGE_GROUP_IX)
 multiline_comment|/* PAGE_MASK gives the right answer below, but only by accident */
 multiline_comment|/* It should be preserving the high 48 bits and then specifically */
 multiline_comment|/* preserving _PAGE_SECONDARY | _PAGE_GROUP_IX */
@@ -187,6 +192,7 @@ DECL|macro|_PMD_HUGEPAGE
 mdefine_line|#define _PMD_HUGEPAGE&t;0x00000001U
 DECL|macro|HUGEPTE_BATCH_SIZE
 mdefine_line|#define HUGEPTE_BATCH_SIZE (1&lt;&lt;(HPAGE_SHIFT-PMD_SHIFT))
+macro_line|#ifndef __ASSEMBLY__
 r_int
 id|hash_huge_page
 c_func
@@ -212,6 +218,7 @@ r_int
 id|local
 )paren
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#else
@@ -735,7 +742,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;ldarx&t;%0,0,%3&t;&t;# pte_update&bslash;n&bslash;&n;&t;andc&t;%1,%0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%1,%5 &bslash;n&bslash;&n;&t;stdcx.&t;%1,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
+l_string|&quot;1:&t;ldarx&t;%0,0,%3&t;&t;# pte_update&bslash;n&bslash;&n;&t;andi.&t;%1,%0,%7&bslash;n&bslash;&n;&t;bne-&t;1b &bslash;n&bslash;&n;&t;andc&t;%1,%0,%4 &bslash;n&bslash;&n;&t;or&t;%1,%1,%5 &bslash;n&bslash;&n;&t;stdcx.&t;%1,0,%3 &bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -772,6 +779,11 @@ l_string|&quot;m&quot;
 (paren
 op_star
 id|p
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|_PAGE_BUSY
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
@@ -1083,6 +1095,56 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* imalloc region types */
+DECL|macro|IM_REGION_UNUSED
+mdefine_line|#define IM_REGION_UNUSED&t;0x1
+DECL|macro|IM_REGION_SUBSET
+mdefine_line|#define IM_REGION_SUBSET&t;0x2
+DECL|macro|IM_REGION_EXISTS
+mdefine_line|#define IM_REGION_EXISTS&t;0x4
+DECL|macro|IM_REGION_OVERLAP
+mdefine_line|#define IM_REGION_OVERLAP&t;0x8
+r_extern
+r_struct
+id|vm_struct
+op_star
+id|im_get_free_area
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|vm_struct
+op_star
+id|im_get_area
+c_func
+(paren
+r_int
+r_int
+id|v_addr
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|region_type
+)paren
+suffix:semicolon
+r_int
+r_int
+id|im_free
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t
@@ -1149,6 +1211,132 @@ r_int
 id|large
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * find_linux_pte returns the address of a linux pte for a given &n; * effective address and directory.  If not found, it returns zero.&n; */
+DECL|function|find_linux_pte
+r_static
+r_inline
+id|pte_t
+op_star
+id|find_linux_pte
+c_func
+(paren
+id|pgd_t
+op_star
+id|pgdir
+comma
+r_int
+r_int
+id|ea
+)paren
+(brace
+id|pgd_t
+op_star
+id|pg
+suffix:semicolon
+id|pmd_t
+op_star
+id|pm
+suffix:semicolon
+id|pte_t
+op_star
+id|pt
+op_assign
+l_int|NULL
+suffix:semicolon
+id|pte_t
+id|pte
+suffix:semicolon
+id|pg
+op_assign
+id|pgdir
+op_plus
+id|pgd_index
+c_func
+(paren
+id|ea
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pgd_none
+c_func
+(paren
+op_star
+id|pg
+)paren
+)paren
+(brace
+id|pm
+op_assign
+id|pmd_offset
+c_func
+(paren
+id|pg
+comma
+id|ea
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmd_present
+c_func
+(paren
+op_star
+id|pm
+)paren
+)paren
+(brace
+id|pt
+op_assign
+id|pte_offset_kernel
+c_func
+(paren
+id|pm
+comma
+id|ea
+)paren
+suffix:semicolon
+id|pte
+op_assign
+op_star
+id|pt
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_present
+c_func
+(paren
+id|pte
+)paren
+)paren
+id|pt
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+r_return
+id|pt
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
+DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _PPC64_PGTABLE_H */
 eof

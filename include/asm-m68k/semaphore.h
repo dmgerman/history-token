@@ -54,10 +54,11 @@ mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
 DECL|macro|DECLARE_MUTEX_LOCKED
 mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
 DECL|function|sema_init
-r_extern
+r_static
 r_inline
 r_void
 id|sema_init
+c_func
 (paren
 r_struct
 id|semaphore
@@ -209,7 +210,7 @@ id|sem
 suffix:semicolon
 multiline_comment|/*&n; * This is ugly, but we want the default case to fall through.&n; * &quot;down_failed&quot; is a special asm handler that calls the C&n; * routine that actually waits. See arch/m68k/lib/semaphore.S&n; */
 DECL|function|down
-r_extern
+r_static
 r_inline
 r_void
 id|down
@@ -275,7 +276,7 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|function|down_interruptible
-r_extern
+r_static
 r_inline
 r_int
 id|down_interruptible
@@ -356,7 +357,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|down_trylock
-r_extern
+r_static
 r_inline
 r_int
 id|down_trylock
@@ -433,7 +434,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Note! This is subtle. We jump to wake people up only if&n; * the semaphore was negative (== somebody was waiting on it).&n; * The default case (no contention) will result in NO&n; * jumps for both down() and up().&n; */
 DECL|function|up
-r_extern
+r_static
 r_inline
 r_void
 id|up

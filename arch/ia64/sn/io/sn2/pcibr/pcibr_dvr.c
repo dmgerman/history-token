@@ -1,31 +1,17 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
-macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/klconfig.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/prio.h&gt; 
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-multiline_comment|/*&n; * global variables to toggle the different levels of pcibr debugging.  &n; *   -pcibr_debug_mask is the mask of the different types of debugging&n; *    you want to enable.  See sys/PCI/pcibr_private.h &n; *   -pcibr_debug_module is the module you want to trace.  By default&n; *    all modules are trace.  For IP35 this value has the format of&n; *    something like &quot;001c10&quot;.  For IP27 this value is a node number,&n; *    i.e. &quot;1&quot;, &quot;2&quot;...  For IP30 this is undefined and should be set to&n; *    &squot;all&squot;.&n; *   -pcibr_debug_widget is the widget you want to trace.  For IP27&n; *    the widget isn&squot;t exposed in the hwpath so use the xio slot num.&n; *    i.e. for &squot;io2&squot; set pcibr_debug_widget to &quot;2&quot;.&n; *   -pcibr_debug_slot is the pci slot you want to trace.&n; */
+multiline_comment|/*&n; * global variables to toggle the different levels of pcibr debugging.  &n; *   -pcibr_debug_mask is the mask of the different types of debugging&n; *    you want to enable.  See sys/PCI/pcibr_private.h &n; *   -pcibr_debug_module is the module you want to trace.  By default&n; *    all modules are trace.  The format is something like &quot;001c10&quot;.&n; *   -pcibr_debug_widget is the widget you want to trace.  For TIO &n; *    based bricks use the corelet id.&n; *   -pcibr_debug_slot is the pci slot you want to trace.&n; */
 DECL|variable|pcibr_debug_mask
 r_uint32
 id|pcibr_debug_mask
@@ -34,6 +20,7 @@ l_int|0x0
 suffix:semicolon
 multiline_comment|/* 0x00000000 to disable */
 DECL|variable|pcibr_debug_module
+r_static
 r_char
 op_star
 id|pcibr_debug_module
@@ -42,6 +29,7 @@ l_string|&quot;all&quot;
 suffix:semicolon
 multiline_comment|/* &squot;all&squot; for all modules */
 DECL|variable|pcibr_debug_widget
+r_static
 r_int
 id|pcibr_debug_widget
 op_assign
@@ -50,6 +38,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* &squot;-1&squot; for all widgets  */
 DECL|variable|pcibr_debug_slot
+r_static
 r_int
 id|pcibr_debug_slot
 op_assign
@@ -57,19 +46,6 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* &squot;-1&squot; for all slots    */
-multiline_comment|/*&n; * Macros related to the Lucent USS 302/312 usb timeout workaround.  It&n; * appears that if the lucent part can get into a retry loop if it sees a&n; * DAC on the bus during a pio read retry.  The loop is broken after about&n; * 1ms, so we need to set up bridges holding this part to allow at least&n; * 1ms for pio.&n; */
-DECL|macro|USS302_TIMEOUT_WAR
-mdefine_line|#define USS302_TIMEOUT_WAR
-macro_line|#ifdef USS302_TIMEOUT_WAR
-DECL|macro|LUCENT_USBHC_VENDOR_ID_NUM
-mdefine_line|#define LUCENT_USBHC_VENDOR_ID_NUM&t;0x11c1
-DECL|macro|LUCENT_USBHC302_DEVICE_ID_NUM
-mdefine_line|#define LUCENT_USBHC302_DEVICE_ID_NUM&t;0x5801
-DECL|macro|LUCENT_USBHC312_DEVICE_ID_NUM
-mdefine_line|#define LUCENT_USBHC312_DEVICE_ID_NUM&t;0x5802
-DECL|macro|USS302_BRIDGE_TIMEOUT_HLD
-mdefine_line|#define USS302_BRIDGE_TIMEOUT_HLD&t;4
-macro_line|#endif
 multiline_comment|/* kbrick widgetnum-to-bus layout */
 DECL|variable|p_busnum
 r_int
@@ -120,6 +96,47 @@ multiline_comment|/* 0xe          */
 l_int|3
 comma
 multiline_comment|/* 0xf          */
+)brace
+suffix:semicolon
+DECL|variable|pci_space
+r_char
+op_star
+id|pci_space
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;NONE&quot;
+comma
+l_string|&quot;ROM&quot;
+comma
+l_string|&quot;IO&quot;
+comma
+l_string|&quot;&quot;
+comma
+l_string|&quot;MEM&quot;
+comma
+l_string|&quot;MEM32&quot;
+comma
+l_string|&quot;MEM64&quot;
+comma
+l_string|&quot;CFG&quot;
+comma
+l_string|&quot;WIN0&quot;
+comma
+l_string|&quot;WIN1&quot;
+comma
+l_string|&quot;WIN2&quot;
+comma
+l_string|&quot;WIN3&quot;
+comma
+l_string|&quot;WIN4&quot;
+comma
+l_string|&quot;WIN5&quot;
+comma
+l_string|&quot;&quot;
+comma
+l_string|&quot;BAD&quot;
 )brace
 suffix:semicolon
 macro_line|#if PCIBR_SOFT_LIST
@@ -1418,16 +1435,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|mask
 op_eq
 id|BRIDGE_DEV_PMU_BITS
@@ -1447,7 +1454,6 @@ id|xmask
 op_assign
 id|XBRIDGE_DEV_D64_BITS
 suffix:semicolon
-)brace
 id|slotp
 op_assign
 op_amp
@@ -1626,18 +1632,7 @@ id|PCIIO_BYTE_STREAM
 )paren
 r_new
 op_or_assign
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-ques
-c_cond
 id|BRIDGE_DEV_SWAP_DIR
-suffix:colon
-id|BRIDGE_DEV_SWAP_BITS
 suffix:semicolon
 r_if
 c_cond
@@ -1648,20 +1643,8 @@ id|PCIIO_WORD_VALUES
 )paren
 r_new
 op_and_assign
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-ques
-c_cond
 op_complement
 id|BRIDGE_DEV_SWAP_DIR
-suffix:colon
-op_complement
-id|BRIDGE_DEV_SWAP_BITS
 suffix:semicolon
 multiline_comment|/* Provider-specific flags&n;     */
 r_if
@@ -1760,12 +1743,6 @@ multiline_comment|/*&n;     * PIC BRINGUP WAR (PV# 855271):&n;     * Allow setti
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 id|mask
 op_eq
 id|BRIDGE_DEV_D64_BITS
@@ -1796,6 +1773,41 @@ op_or_assign
 id|BRIDGE_DEV_VIRTUAL_EN
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* PIC BRINGUP WAR (PV# 878674):   Don&squot;t allow 64bit PIO accesses */
+r_if
+c_cond
+(paren
+id|IS_PIC_SOFT
+c_func
+(paren
+id|pcibr_soft
+)paren
+op_logical_and
+(paren
+id|flags
+op_amp
+id|PCIBR_64BIT
+)paren
+op_logical_and
+id|PCIBR_WAR_ENABLED
+c_func
+(paren
+id|PV878674
+comma
+id|pcibr_soft
+)paren
+)paren
+(brace
+r_new
+op_and_assign
+op_complement
+(paren
+l_int|1ull
+op_lshift
+l_int|22
+)paren
+suffix:semicolon
 )brace
 id|chg
 op_assign
@@ -1828,16 +1840,6 @@ id|chg
 suffix:colon
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|badpmu
 op_assign
 id|slotp-&gt;bss_pmu_uctr
@@ -1864,36 +1866,6 @@ id|chg
 suffix:colon
 l_int|0
 suffix:semicolon
-)brace
-r_else
-(brace
-id|badpmu
-op_assign
-id|slotp-&gt;bss_pmu_uctr
-ques
-c_cond
-(paren
-id|BRIDGE_DEV_PMU_BITS
-op_amp
-id|chg
-)paren
-suffix:colon
-l_int|0
-suffix:semicolon
-id|badd64
-op_assign
-id|slotp-&gt;bss_d64_uctr
-ques
-c_cond
-(paren
-id|BRIDGE_DEV_D64_BITS
-op_amp
-id|chg
-)paren
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
 id|bad
 op_assign
 id|badpmu
@@ -1989,6 +1961,20 @@ comma
 id|s
 )paren
 suffix:semicolon
+id|PCIBR_DEBUG
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_DEVREG
+comma
+id|pcibr_soft-&gt;bs_vhdl
+comma
+l_string|&quot;pcibr_try_set_device: mod blocked by 0x%x&bslash;n&quot;
+comma
+id|bad
+)paren
+)paren
+suffix:semicolon
 r_return
 id|bad
 suffix:semicolon
@@ -2053,16 +2039,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_device
 (braket
 id|slot
@@ -2079,78 +2055,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_device
-(braket
-id|slot
-)braket
-dot
-id|reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-r_new
-)paren
-suffix:semicolon
-id|slotp-&gt;bss_device
-op_assign
-r_new
-suffix:semicolon
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-id|bridge-&gt;b_device
-(braket
-id|slot
-)braket
-dot
-id|reg
-op_assign
-r_new
-suffix:semicolon
-id|slotp-&gt;bss_device
-op_assign
-r_new
-suffix:semicolon
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-)brace
 id|pcibr_unlock
 c_func
 (paren
@@ -2159,14 +2063,20 @@ comma
 id|s
 )paren
 suffix:semicolon
-id|printk
+id|PCIBR_DEBUG
 c_func
 (paren
-l_string|&quot;pcibr_try_set_device: Device(%d): %x&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_DEVREG
+comma
+id|pcibr_soft-&gt;bs_vhdl
+comma
+l_string|&quot;pcibr_try_set_device: Device(%d): 0x%x&bslash;n&quot;
 comma
 id|slot
 comma
 r_new
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2288,16 +2198,6 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|wrf
 op_assign
 id|bridge-&gt;b_wr_req_buf
@@ -2307,53 +2207,6 @@ id|slot
 dot
 id|reg
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|wrf
-op_assign
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wr_req_buf
-(braket
-id|slot
-)braket
-dot
-id|reg
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|wrf
-op_assign
-id|bridge-&gt;b_wr_req_buf
-(braket
-id|slot
-)braket
-dot
-id|reg
-suffix:semicolon
-)brace
-)brace
 id|pcibr_unlock
 c_func
 (paren
@@ -2665,10 +2518,47 @@ suffix:colon
 id|rfunc
 suffix:semicolon
 multiline_comment|/*&n;     * Create a pciio_info_s for this device.  pciio_device_info_new()&n;     * will set the c_slot (which is suppose to represent the external&n;     * slot (i.e the slot number silk screened on the back of the I/O&n;     * brick)).  So for PIC we need to adjust this &quot;internal slot&quot; num&n;     * passed into us, into its external representation.  See comment&n;     * for the PCIBR_DEVICE_TO_SLOT macro for more information.&n;     */
-id|NEW
+id|pcibr_info
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_info
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_info
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_info
+)paren
+)paren
 )paren
 suffix:semicolon
 id|pciio_device_info_new
@@ -2807,6 +2697,7 @@ comma
 id|count_vchan1
 suffix:semicolon
 r_int
+r_int
 id|s
 suffix:semicolon
 r_int
@@ -2892,7 +2783,6 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-multiline_comment|/* PIC NOTE: If this is a BRIDGE, VCHAN2 &amp; VCHAN3 will be zero so&n;&t; * no need to conditionalize this (ie. &quot;if (IS_PIC_SOFT())&quot; ).&n;&t; */
 id|pcibr_soft-&gt;bs_rrb_res
 (braket
 id|slot
@@ -3740,9 +3630,6 @@ suffix:semicolon
 r_uint64
 id|int_enable
 suffix:semicolon
-id|bridgereg_t
-id|int_enable_32
-suffix:semicolon
 id|picreg_t
 id|int_enable_64
 suffix:semicolon
@@ -3750,9 +3637,6 @@ r_int
 id|rrb_fixed
 op_assign
 l_int|0
-suffix:semicolon
-r_int
-id|spl_level
 suffix:semicolon
 macro_line|#if PCI_FBBE
 r_int
@@ -3771,7 +3655,7 @@ id|nasid
 )paren
 suffix:semicolon
 r_int
-id|iobrick_module_get_nasid
+id|iomoduleid_get
 c_func
 (paren
 id|nasid_t
@@ -3899,10 +3783,20 @@ id|rev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * allocate soft state structure, fill in some&n;     * fields, and hook it up to our vertex.&n;     */
-id|NEW
+id|pcibr_soft
+op_assign
+id|kmalloc
 c_func
 (paren
+r_sizeof
+(paren
+op_star
+(paren
 id|pcibr_soft
+)paren
+)paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -3915,10 +3809,22 @@ id|ret_softp
 op_assign
 id|pcibr_soft
 suffix:semicolon
-id|BZERO
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_soft
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memset
 c_func
 (paren
 id|pcibr_soft
+comma
+l_int|0
 comma
 r_sizeof
 op_star
@@ -4145,10 +4051,46 @@ multiline_comment|/*&n;     * link all the pcibr_soft structs&n;     */
 id|pcibr_list_p
 id|self
 suffix:semicolon
-id|NEW
+id|self
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|self
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|self
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|memset
 c_func
 (paren
 id|self
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|self
+)paren
+)paren
 )paren
 suffix:semicolon
 id|self-&gt;bl_soft
@@ -4216,25 +4158,7 @@ id|pcibr_vhdl
 comma
 l_string|&quot;pcibr_attach2: %s ASIC: rev %s (code=0x%x)&bslash;n&quot;
 comma
-id|IS_XBRIDGE_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-ques
-c_cond
-l_string|&quot;XBridge&quot;
-suffix:colon
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-ques
-c_cond
 l_string|&quot;PIC&quot;
-suffix:colon
-l_string|&quot;Bridge&quot;
 comma
 (paren
 id|rev
@@ -4398,7 +4322,7 @@ id|pcibr_soft-&gt;bs_bricktype
 suffix:semicolon
 id|pcibr_soft-&gt;bs_moduleid
 op_assign
-id|iobrick_module_get_nasid
+id|iomoduleid_get
 c_func
 (paren
 id|nasid
@@ -4872,16 +4796,6 @@ multiline_comment|/*&n;     * connect up our error handler.  PIC has 2 busses (t
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|busnum
 op_eq
 l_int|0
@@ -4893,20 +4807,6 @@ c_func
 id|xconn_vhdl
 comma
 id|pcibr_error_handler_wrapper
-comma
-id|pcibr_soft
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|xwidget_error_register
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|pcibr_error_handler
 comma
 id|pcibr_soft
 )paren
@@ -4934,15 +4834,6 @@ id|BRIDGE_IRR_ALL_CLR
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize some PIC specific registers. */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
 (brace
 id|picreg_t
 id|pic_ctrl_reg
@@ -5016,30 +4907,12 @@ op_assign
 id|pic_ctrl_reg
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * Until otherwise set up,&n;     * assume all interrupts are&n;     * from slot 7(Bridge/Xbridge) or 3(PIC).&n;     * XXX. Not sure why we&squot;re doing this, made change for PIC&n;     * just to avoid setting reserved bits.&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
 id|bridge-&gt;b_int_device
 op_assign
 (paren
 r_uint32
 )paren
 l_int|0x006db6db
-suffix:semicolon
-r_else
-id|bridge-&gt;b_int_device
-op_assign
-(paren
-r_uint32
-)paren
-l_int|0xffffffff
 suffix:semicolon
 (brace
 id|bridgereg_t
@@ -5107,7 +4980,7 @@ l_int|0
 comma
 id|paddr
 comma
-id|_PAGESZ
+id|PAGE_SIZE
 comma
 l_int|0
 )paren
@@ -5210,61 +5083,17 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Set bridge&squot;s idea of page size according to the system&squot;s&n;&t; * idea of &quot;IO page size&quot;.  TBD: The idea of IO page size&n;&t; * should really go away.&n;&t; */
 multiline_comment|/*&n;&t; * ensure that we write and read without any interruption.&n;&t; * The read following the write is required for the Bridge war&n;&t; */
-id|spl_level
-op_assign
-id|splhi
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if IOPGSIZE == 4096
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_wid_control_64
 op_and_assign
 op_complement
 id|BRIDGE_CTRL_PAGE_SIZE
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_wid_control
-op_and_assign
-op_complement
-id|BRIDGE_CTRL_PAGE_SIZE
-suffix:semicolon
-)brace
 macro_line|#elif IOPGSIZE == 16384
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_wid_control_64
 op_or_assign
 id|BRIDGE_CTRL_PAGE_SIZE
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_wid_control
-op_or_assign
-id|BRIDGE_CTRL_PAGE_SIZE
-suffix:semicolon
-)brace
 macro_line|#else
 op_lshift
 template_param
@@ -5273,12 +5102,6 @@ macro_line|#endif
 id|bridge-&gt;b_wid_control
 suffix:semicolon
 multiline_comment|/* inval addr bug war */
-id|splx
-c_func
-(paren
-id|spl_level
-)paren
-suffix:semicolon
 multiline_comment|/* Initialize internal mapping entries */
 r_for
 c_loop
@@ -5306,27 +5129,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Determine if there&squot;s external mapping SSRAM on this&n;&t; * bridge.  Set up Bridge control register appropriately,&n;&t; * inititlize SSRAM, and set software up to manage RAM&n;&t; * entries as an allocatable resource.&n;&t; *&n;&t; * Currently, we just use the rm* routines to manage ATE&n;&t; * allocation.  We should probably replace this with a&n;&t; * Best Fit allocator.&n;&t; *&n;&t; * For now, if we have external SSRAM, avoid using&n;&t; * the internal ssram: we can&squot;t turn PREFETCH on&n;&t; * when we use the internal SSRAM; and besides,&n;&t; * this also guarantees that no allocation will&n;&t; * straddle the internal/external line, so we&n;&t; * can increment ATE write addresses rather than&n;&t; * recomparing against BRIDGE_INTERNAL_ATES every&n;&t; * time.&n;&t; */
-r_if
-c_cond
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
 id|num_entries
 op_assign
 l_int|0
-suffix:semicolon
-r_else
-id|num_entries
-op_assign
-id|pcibr_init_ext_ate_ram
-c_func
-(paren
-id|bridge
-)paren
 suffix:semicolon
 multiline_comment|/* we always have 128 ATEs (512 for Xbridge) inside the chip&n;&t; * even if disabled for debugging.&n;&t; */
 id|pcibr_soft-&gt;bs_int_ate_resource.start
@@ -5651,17 +5456,6 @@ id|bridge-&gt;b_wid_int_lower
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * now we can start handling error interrupts;&n;     * enable all of them.&n;     * NOTE: some PCI ints may already be enabled.&n;     */
-multiline_comment|/* We read the INT_ENABLE register as a 64bit picreg_t for PIC and a&n;     * 32bit bridgereg_t for BRIDGE, but always process the result as a&n;     * 64bit value so the code can be &quot;common&quot; for both PIC and BRIDGE...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|int_enable_64
 op_assign
 id|bridge-&gt;p_int_enable_64
@@ -5675,49 +5469,6 @@ r_uint64
 )paren
 id|int_enable_64
 suffix:semicolon
-macro_line|#ifdef PFG_TEST
-id|int_enable
-op_assign
-(paren
-r_uint64
-)paren
-l_int|0x7ffffeff7ffffeff
-suffix:semicolon
-macro_line|#endif
-)brace
-r_else
-(brace
-id|int_enable_32
-op_assign
-id|bridge-&gt;b_int_enable
-op_or
-(paren
-id|BRIDGE_ISR_ERRORS
-op_amp
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|int_enable
-op_assign
-(paren
-(paren
-r_uint64
-)paren
-id|int_enable_32
-op_amp
-l_int|0xffffffff
-)paren
-suffix:semicolon
-macro_line|#ifdef PFG_TEST
-id|int_enable
-op_assign
-(paren
-r_uint64
-)paren
-l_int|0x7ffffeff
-suffix:semicolon
-macro_line|#endif
-)brace
 macro_line|#if BRIDGE_ERROR_INTR_WAR
 r_if
 c_cond
@@ -5798,12 +5549,6 @@ multiline_comment|/* PIC BRINGUP WAR (PV# 856864 &amp; 856865): allow the tnums 
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 id|PCIBR_WAR_ENABLED
 c_func
 (paren
@@ -5832,12 +5577,6 @@ multiline_comment|/*&n;     * PIC BRINGUP WAR (PV# 856866, 859504, 861476, 86147
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 id|PCIBR_WAR_ENABLED
 c_func
 (paren
@@ -5856,16 +5595,6 @@ op_or_assign
 l_int|0x000f000f
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_int_enable_64
 op_assign
 (paren
@@ -5873,17 +5602,6 @@ id|picreg_t
 )paren
 id|int_enable
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_int_enable
-op_assign
-(paren
-id|bridgereg_t
-)paren
-id|int_enable
-suffix:semicolon
-)brace
 id|bridge-&gt;b_int_mode
 op_assign
 l_int|0
@@ -6004,7 +5722,7 @@ r_struct
 id|resource
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -6059,7 +5777,7 @@ suffix:semicolon
 multiline_comment|/* Setup the Small Window Root Resource */
 id|pcibr_soft-&gt;bs_swin_root_resource.start
 op_assign
-id|_PAGESZ
+id|PAGE_SIZE
 suffix:semicolon
 id|pcibr_soft-&gt;bs_swin_root_resource.end
 op_assign
@@ -6090,7 +5808,7 @@ r_struct
 id|resource
 )paren
 comma
-id|KM_NOSLEEP
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -6345,15 +6063,6 @@ id|slot
 suffix:semicolon
 )brace
 multiline_comment|/* Set up convenience links */
-r_if
-c_cond
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
 id|pcibr_bus_cnvlink
 c_func
 (paren
@@ -6781,28 +6490,10 @@ id|pcibr_soft
 )paren
 suffix:semicolon
 multiline_comment|/* Disable the interrupts from the bridge */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_int_enable_64
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_int_enable
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|pcibr_unlock
 c_func
 (paren
@@ -6866,13 +6557,6 @@ id|pcibr_soft-&gt;bs_noslot_info-&gt;f_c
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_destroy
-c_func
-(paren
-op_amp
-id|pcibr_soft-&gt;bs_lock
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -6893,7 +6577,7 @@ id|pcibr_soft-&gt;bsi_err_intr
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the software state maintained by the bridge driver for this&n;     * bridge.&n;     */
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_soft
@@ -6914,9 +6598,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the character device associated with this bridge */
-(paren
-r_void
-)paren
 id|hwgraph_edge_remove
 c_func
 (paren
@@ -6928,9 +6609,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Remove the PCI bridge vertex */
-(paren
-r_void
-)paren
 id|hwgraph_edge_remove
 c_func
 (paren
@@ -7191,12 +6869,6 @@ r_int
 id|mmask
 suffix:semicolon
 multiline_comment|/* addr bits stored in Device(x) */
-r_char
-id|tmp_str
-(braket
-l_int|512
-)braket
-suffix:semicolon
 r_int
 r_int
 id|s
@@ -7692,16 +7364,6 @@ op_ne
 id|devreg
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_device
 (braket
 id|win
@@ -7723,88 +7385,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_device
-(braket
-id|win
-)braket
-dot
-id|reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-id|devreg
-)paren
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|win
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-id|bridge-&gt;b_device
-(braket
-id|win
-)braket
-dot
-id|reg
-op_assign
-id|devreg
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|win
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-)brace
 macro_line|#ifdef PCI_LATER
 id|PCIBR_DEBUG
 c_func
@@ -7814,13 +7394,11 @@ id|PCIBR_DEBUG_DEVREG
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_addr_pci_to_xio: Device(%d): %x&bslash;n&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: Device(%d): 0x%x&bslash;n&quot;
 comma
 id|win
 comma
 id|devreg
-comma
-id|device_bits
 )paren
 )paren
 suffix:semicolon
@@ -7887,58 +7465,6 @@ id|w_devio_index
 op_assign
 id|win
 suffix:semicolon
-multiline_comment|/*&n;&t;     * The kernel only allows functions to have so many variable args,&n;&t;     * attempting to call PCIBR_DEBUG_ALWAYS() with more than 5 printk&n;&t;     * arguments fails so sprintf() it into a temporary string.&n;&t;     */
-r_if
-c_cond
-(paren
-id|pcibr_debug_mask
-op_amp
-id|PCIBR_DEBUG_PIOMAP
-)paren
-(brace
-id|sprintf
-c_func
-(paren
-id|tmp_str
-comma
-l_string|&quot;pcibr_addr_pci_to_xio: map to [%lx..%lx] for &quot;
-l_string|&quot;slot %d allocates DevIO(%d) Device(%d) set to %lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|pci_addr
-comma
-(paren
-r_int
-r_int
-)paren
-(paren
-id|pci_addr
-op_plus
-id|req_size
-op_minus
-l_int|1
-)paren
-comma
-(paren
-r_int
-r_int
-)paren
-id|slot
-comma
-id|win
-comma
-id|win
-comma
-(paren
-r_int
-r_int
-)paren
-id|devreg
-)paren
-suffix:semicolon
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -7947,13 +7473,32 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: map to space %s [0x%lx..0x%lx] &quot;
+l_string|&quot;for slot %d allocates DevIO(%d) Device(%d) set to %lx&bslash;n&quot;
 comma
-id|tmp_str
+id|pci_space
+(braket
+id|space
+)braket
+comma
+id|pci_addr
+comma
+id|pci_addr
+op_plus
+id|req_size
+op_minus
+l_int|1
+comma
+id|slot
+comma
+id|win
+comma
+id|win
+comma
+id|devreg
 )paren
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|done
 suffix:semicolon
@@ -8074,14 +7619,6 @@ id|w_devio_index
 op_assign
 id|win
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pcibr_debug_mask
-op_amp
-id|PCIBR_DEBUG_PIOMAP
-)paren
-(brace
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -8090,13 +7627,28 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: map to space %s [0x%lx..0x%lx] &quot;
+l_string|&quot;for slot %d uses DevIO(%d)&bslash;n&quot;
 comma
-id|tmp_str
+id|pci_space
+(braket
+id|space
+)braket
+comma
+id|pci_addr
+comma
+id|pci_addr
+op_plus
+id|req_size
+op_minus
+l_int|1
+comma
+id|slot
+comma
+id|win
 )paren
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|done
 suffix:semicolon
@@ -8163,14 +7715,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Bridge/Xbridge */
-id|base
-op_assign
-id|BRIDGE_PCI_MEM32_BASE
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_addr_pci_to_xio(): unknown bridge type&quot;
+)paren
 suffix:semicolon
-id|limit
-op_assign
-id|BRIDGE_PCI_MEM32_LIMIT
+r_return
+(paren
+id|iopaddr_t
+)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -8247,14 +7802,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Bridge/Xbridge */
-id|base
-op_assign
-id|BRIDGE_PCI_MEM64_BASE
+id|printk
+c_func
+(paren
+l_string|&quot;pcibr_addr_pci_to_xio(): unknown bridge type&quot;
+)paren
 suffix:semicolon
-id|limit
-op_assign
-id|BRIDGE_PCI_MEM64_LIMIT
+r_return
+(paren
+id|iopaddr_t
+)paren
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -8285,52 +7843,9 @@ id|PCIIO_SPACE_IO
 suffix:colon
 multiline_comment|/* &quot;i/o space&quot; */
 multiline_comment|/*&n;&t; * PIC bridges do not support big-window aliases into PCI I/O space&n;&t; */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|xio_addr
 op_assign
 id|XIO_NOWHERE
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* Bridge Hardware Bug WAR #482741:&n;&t; * The 4G area that maps directly from&n;&t; * XIO space to PCI I/O space is busted&n;&t; * until Bridge Rev D.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|pcibr_soft-&gt;bs_rev_num
-OG
-id|BRIDGE_PART_REV_C
-)paren
-op_logical_and
-(paren
-(paren
-id|pci_addr
-op_plus
-id|BRIDGE_PCI_IO_BASE
-op_plus
-id|req_size
-op_minus
-l_int|1
-)paren
-op_le
-id|BRIDGE_PCI_IO_LIMIT
-)paren
-)paren
-id|xio_addr
-op_assign
-id|pci_addr
-op_plus
-id|BRIDGE_PCI_IO_BASE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8427,14 +7942,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* we have a conflict. */
-r_if
-c_cond
-(paren
-id|pcibr_debug_mask
-op_amp
-id|PCIBR_DEBUG_PIOMAP
-)paren
-(brace
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -8443,13 +7950,52 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: swap conflict in %s, &quot;
+l_string|&quot;was%s%s, want%s%s&bslash;n&quot;
 comma
-id|tmp_str
+id|pci_space
+(braket
+id|space
+)braket
+comma
+id|bfo
+op_amp
+id|PCIIO_BYTE_STREAM
+ques
+c_cond
+l_string|&quot; BYTE_STREAM&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|bfo
+op_amp
+id|PCIIO_WORD_VALUES
+ques
+c_cond
+l_string|&quot; WORD_VALUES&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|bfn
+op_amp
+id|PCIIO_BYTE_STREAM
+ques
+c_cond
+l_string|&quot; BYTE_STREAM&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|bfn
+op_amp
+id|PCIIO_WORD_VALUES
+ques
+c_cond
+l_string|&quot; WORD_VALUES&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-)brace
 id|xio_addr
 op_assign
 id|XIO_NOWHERE
@@ -8458,6 +8004,11 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* OK to make the change. */
+id|picreg_t
+id|octl
+comma
+id|nctl
+suffix:semicolon
 id|swb
 op_assign
 (paren
@@ -8470,21 +8021,6 @@ c_cond
 id|BRIDGE_CTRL_IO_SWAP
 suffix:colon
 id|BRIDGE_CTRL_MEM_SWAP
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-id|picreg_t
-id|octl
-comma
-id|nctl
 suffix:semicolon
 id|octl
 op_assign
@@ -8524,125 +8060,12 @@ id|bridge-&gt;b_wid_control
 op_assign
 id|nctl
 suffix:semicolon
-)brace
-r_else
-(brace
-id|picreg_t
-id|octl
-comma
-id|nctl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|octl
-op_assign
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_control
-)paren
-)paren
-suffix:semicolon
-id|nctl
-op_assign
-id|bst
-ques
-c_cond
-id|octl
-op_or
-id|swb
-suffix:colon
-id|octl
-op_amp
-op_complement
-id|swb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|octl
-op_ne
-id|nctl
-)paren
-multiline_comment|/* make the change if any */
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_control
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-id|nctl
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|octl
-op_assign
-id|bridge-&gt;b_wid_control
-suffix:semicolon
-id|nctl
-op_assign
-id|bst
-ques
-c_cond
-id|octl
-op_or
-id|swb
-suffix:colon
-id|octl
-op_amp
-op_complement
-id|swb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|octl
-op_ne
-id|nctl
-)paren
-multiline_comment|/* make the change if any */
-id|bridge-&gt;b_wid_control
-op_assign
-id|nctl
-suffix:semicolon
-)brace
-)brace
 op_star
 id|bfp
 op_assign
 id|bfn
 suffix:semicolon
 multiline_comment|/* record the assignment */
-r_if
-c_cond
-(paren
-id|pcibr_debug_mask
-op_amp
-id|PCIBR_DEBUG_PIOMAP
-)paren
-(brace
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -8651,13 +8074,33 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;pcibr_addr_pci_to_xio: swap for %s set to%s%s&bslash;n&quot;
 comma
-id|tmp_str
+id|pci_space
+(braket
+id|space
+)braket
+comma
+id|bfn
+op_amp
+id|PCIIO_BYTE_STREAM
+ques
+c_cond
+l_string|&quot; BYTE_STREAM&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|bfn
+op_amp
+id|PCIIO_WORD_VALUES
+ques
+c_cond
+l_string|&quot; WORD_VALUES&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 id|done
@@ -8901,10 +8344,59 @@ comma
 id|s
 )paren
 suffix:semicolon
-id|NEW
+id|pcibr_piomap
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_piomap
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pcibr_piomap
+)paren
+(brace
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_PIOMAP
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_piomap_alloc: malloc fails&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|pcibr_piomap
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|pcibr_piomap
+)paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -9051,7 +8543,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piomap_alloc: map=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piomap_alloc: map=0x%lx&bslash;n&quot;
 comma
 id|pcibr_piomap
 )paren
@@ -9079,7 +8571,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pcibr_piomap-&gt;bp_dev
 comma
-l_string|&quot;pcibr_piomap_free: map=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piomap_free: map=0x%lx&bslash;n&quot;
 comma
 id|pcibr_piomap
 )paren
@@ -9143,7 +8635,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pcibr_piomap-&gt;bp_dev
 comma
-l_string|&quot;pcibr_piomap_free: map=0x%x, addr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piomap_addr: map=0x%lx, addr=0x%lx&bslash;n&quot;
 comma
 id|pcibr_piomap
 comma
@@ -9173,7 +8665,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pcibr_piomap-&gt;bp_dev
 comma
-l_string|&quot;pcibr_piomap_done: map=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piomap_done: map=0x%lx&bslash;n&quot;
 comma
 id|pcibr_piomap
 )paren
@@ -9320,7 +8812,7 @@ id|PCIBR_DEBUG_PIODIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piotrans_addr: xio_addr=0x%x, addr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piotrans_addr: xio_addr=0x%lx, addr=0x%lx&bslash;n&quot;
 comma
 id|xio_addr
 comma
@@ -9401,7 +8893,7 @@ c_func
 (paren
 id|alignment
 op_ge
-id|NBPP
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|ASSERT
@@ -9435,14 +8927,14 @@ id|pcibr_soft
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * First look if a previously allocated chunk exists.&n;     */
-r_if
-c_cond
-(paren
-(paren
 id|piosp
 op_assign
 id|pcibr_info-&gt;f_piospace
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|piosp
 )paren
 (brace
 multiline_comment|/*&n;&t; * Look through the list for a right sized free chunk.&n;&t; */
@@ -9622,7 +9114,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piospace_alloc: request 0x%x to big&bslash;n&quot;
+l_string|&quot;pcibr_piospace_alloc: request 0x%lx to big&bslash;n&quot;
 comma
 id|req_size
 )paren
@@ -9632,10 +9124,59 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|NEW
+id|piosp
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+op_star
+(paren
+id|piosp
+)paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|piosp
+)paren
+(brace
+id|PCIBR_DEBUG_ALWAYS
+c_func
+(paren
+(paren
+id|PCIBR_DEBUG_PIOMAP
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_piospace_alloc: malloc fails&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|memset
 c_func
 (paren
 id|piosp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|piosp
+)paren
+)paren
 )paren
 suffix:semicolon
 id|piosp-&gt;free
@@ -9678,7 +9219,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piospace_alloc: piosp=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piospace_alloc: piosp=0x%lx&bslash;n&quot;
 comma
 id|piosp
 )paren
@@ -9715,6 +9256,14 @@ c_func
 (paren
 id|pconn_vhdl
 )paren
+suffix:semicolon
+id|pcibr_soft_t
+id|pcibr_soft
+op_assign
+(paren
+id|pcibr_soft_t
+)paren
+id|pcibr_info-&gt;f_mfast
 suffix:semicolon
 id|pciio_piospace_t
 id|piosp
@@ -9863,7 +9412,7 @@ id|PCIBR_DEBUG_PIOMAP
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_piospace_free: piosp=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_piospace_free: piosp=0x%lx&bslash;n&quot;
 comma
 id|piosp
 )paren
@@ -9983,16 +9532,6 @@ multiline_comment|/* the swap bit is in the address attributes for xbridge */
 r_if
 c_cond
 (paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|flags
 op_amp
 id|PCIIO_BYTE_STREAM
@@ -10013,7 +9552,6 @@ op_and_assign
 op_complement
 id|PCI64_ATTR_SWAP
 suffix:semicolon
-)brace
 multiline_comment|/* Provider-specific flags&n;     */
 r_if
 c_cond
@@ -10201,12 +9739,24 @@ id|vchan
 op_assign
 id|VCHAN0
 suffix:semicolon
+r_int
+r_int
+id|s
+suffix:semicolon
 multiline_comment|/* merge in forced flags */
 id|flags
 op_or_assign
 id|pcibr_soft-&gt;bs_dma_flags
 suffix:semicolon
 multiline_comment|/*&n;     * On SNIA64, these maps are pre-allocated because pcibr_dmamap_alloc()&n;     * can be called within an interrupt thread.&n;     */
+id|s
+op_assign
+id|pcibr_lock
+c_func
+(paren
+id|pcibr_soft
+)paren
+suffix:semicolon
 id|pcibr_dmamap
 op_assign
 (paren
@@ -10216,6 +9766,14 @@ id|get_free_pciio_dmamap
 c_func
 (paren
 id|pcibr_soft-&gt;bs_vhdl
+)paren
+suffix:semicolon
+id|pcibr_unlock
+c_func
+(paren
+id|pcibr_soft
+comma
+id|s
 )paren
 suffix:semicolon
 r_if
@@ -10471,7 +10029,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmamap_alloc: using direct64, map=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_alloc: using direct64, map=0x%lx&bslash;n&quot;
 comma
 id|pcibr_dmamap
 )paren
@@ -10495,7 +10053,7 @@ l_string|&quot;pcibr_dmamap_alloc: unable to use direct64&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* PIC only supports 64-bit direct mapping in PCI-X mode. */
+multiline_comment|/* PIC in PCI-X mode only supports 64-bit direct mapping so&n;&t; * don&squot;t fall thru and try 32-bit direct mapping or 32-bit&n;&t; * page mapping&n;&t; */
 r_if
 c_cond
 (paren
@@ -10506,7 +10064,7 @@ id|pcibr_soft
 )paren
 )paren
 (brace
-id|DEL
+id|kfree
 c_func
 (paren
 id|pcibr_dmamap
@@ -10559,7 +10117,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmamap_alloc: using direct32, map=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_alloc: using direct32, map=0x%lx&bslash;n&quot;
 comma
 id|pcibr_dmamap
 )paren
@@ -10718,7 +10276,7 @@ comma
 id|pconn_vhdl
 comma
 l_string|&quot;pcibr_dmamap_alloc: using PMU, ate_index=%d, &quot;
-l_string|&quot;pcibr_dmamap=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap=0x%lx&bslash;n&quot;
 comma
 id|ate_index
 comma
@@ -10746,17 +10304,6 @@ id|IOPGSIZE
 op_star
 id|ate_index
 suffix:semicolon
-multiline_comment|/*&n;&t;     * for xbridge the byte-swap bit == bit 29 of PCI address&n;&t;     */
-r_if
-c_cond
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -10770,7 +10317,7 @@ c_func
 id|pcibr_dmamap-&gt;bd_pci_addr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;     * If swap was set in bss_device in pcibr_endian_set()&n;&t;&t;     * we need to change the address bit.&n;&t;&t;     */
+multiline_comment|/*&n;&t;     * If swap was set in bss_device in pcibr_endian_set()&n;&t;     * we need to change the address bit.&n;&t;     */
 r_if
 c_cond
 (paren
@@ -10802,7 +10349,6 @@ c_func
 id|pcibr_dmamap-&gt;bd_pci_addr
 )paren
 suffix:semicolon
-)brace
 id|pcibr_dmamap-&gt;bd_xio_addr
 op_assign
 l_int|0
@@ -10901,168 +10447,6 @@ id|have_rrbs
 )paren
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|ate_index
-op_ge
-id|pcibr_soft-&gt;bs_int_ate_size
-op_logical_and
-op_logical_neg
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-id|bridge_t
-op_star
-id|bridge
-op_assign
-id|pcibr_soft-&gt;bs_base
-suffix:semicolon
-r_volatile
-r_int
-op_star
-id|cmd_regp
-suffix:semicolon
-r_int
-id|cmd_reg
-suffix:semicolon
-r_int
-r_int
-id|s
-suffix:semicolon
-id|pcibr_dmamap-&gt;bd_flags
-op_or_assign
-id|PCIBR_DMAMAP_SSRAM
-suffix:semicolon
-id|s
-op_assign
-id|pcibr_lock
-c_func
-(paren
-id|pcibr_soft
-)paren
-suffix:semicolon
-id|cmd_regp
-op_assign
-id|pcibr_slot_config_addr
-c_func
-(paren
-id|bridge
-comma
-id|slot
-comma
-id|PCI_CFG_COMMAND
-op_div
-l_int|4
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-id|cmd_reg
-op_assign
-id|pcibr_slot_config_get
-c_func
-(paren
-id|bridge
-comma
-id|slot
-comma
-id|PCI_CFG_COMMAND
-op_div
-l_int|4
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|cmd_reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-op_star
-id|cmd_regp
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|cmd_reg
-op_assign
-id|pcibr_slot_config_get
-c_func
-(paren
-id|bridge
-comma
-id|slot
-comma
-id|PCI_CFG_COMMAND
-op_div
-l_int|4
-)paren
-suffix:semicolon
-)brace
-)brace
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|slot
-)braket
-dot
-id|bss_cmd_pointer
-op_assign
-id|cmd_regp
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|slot
-)braket
-dot
-id|bss_cmd_shadow
-op_assign
-id|cmd_reg
-suffix:semicolon
-id|pcibr_unlock
-c_func
-(paren
-id|pcibr_soft
-comma
-id|s
-)paren
-suffix:semicolon
 )brace
 r_return
 id|pcibr_dmamap
@@ -11242,7 +10626,7 @@ id|PCIBR_DEBUG_DMAMAP
 comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
-l_string|&quot;pcibr_dmamap_free: pcibr_dmamap=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_free: pcibr_dmamap=0x%lx&bslash;n&quot;
 comma
 id|pcibr_dmamap
 )paren
@@ -11420,58 +10804,18 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
+id|printk
+c_func
 (paren
-(paren
-id|xio_addr
-op_ge
-id|BRIDGE_PCI_MEM32_BASE
+l_string|&quot;pcibr_addr_xio_to_pci(): unknown bridge type&quot;
 )paren
-op_logical_and
-(paren
-id|xio_lim
-op_le
-id|BRIDGE_PCI_MEM32_LIMIT
-)paren
-)paren
-(brace
-id|pci_addr
-op_assign
-id|xio_addr
-op_minus
-id|BRIDGE_PCI_MEM32_BASE
 suffix:semicolon
 r_return
-id|pci_addr
-suffix:semicolon
-)brace
-r_if
-c_cond
 (paren
-(paren
-id|xio_addr
-op_ge
-id|BRIDGE_PCI_MEM64_BASE
+id|iopaddr_t
 )paren
-op_logical_and
-(paren
-id|xio_lim
-op_le
-id|BRIDGE_PCI_MEM64_LIMIT
-)paren
-)paren
-(brace
-id|pci_addr
-op_assign
-id|xio_addr
-op_minus
-id|BRIDGE_PCI_MEM64_BASE
+l_int|0
 suffix:semicolon
-r_return
-id|pci_addr
-suffix:semicolon
-)brace
 )brace
 r_for
 c_loop
@@ -11750,8 +11094,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
-l_string|&quot;pcibr_dmamap_addr: (direct64): wanted paddr [0x%x..0x%x] &quot;
-l_string|&quot;XIO port 0x%x offset 0x%x, returning PCI 0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_addr: (direct64): wanted paddr [0x%lx..0x%lx] &quot;
+l_string|&quot;XIO port 0x%x offset 0x%lx, returning PCI 0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -11845,8 +11189,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
-l_string|&quot;pcibr_dmamap_addr (direct32): wanted paddr [0x%x..0x%x] &quot;
-l_string|&quot;XIO port 0x%x offset 0x%x, returning PCI 0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_addr (direct32): wanted paddr [0x%lx..0x%lx] &quot;
+l_string|&quot;XIO port 0x%x offset 0x%lx, returning PCI 0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -12001,52 +11345,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-)brace
-)brace
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -12056,7 +11357,7 @@ comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
 l_string|&quot;pcibr_dmamap_addr (PMU) : wanted paddr &quot;
-l_string|&quot;[0x%x..0x%x] returning PCI 0x%x&bslash;n&quot;
+l_string|&quot;[0x%lx..0x%lx] returning PCI 0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -12083,7 +11384,7 @@ comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
 l_string|&quot;pcibr_dmamap_addr (PMU) : wanted paddr &quot;
-l_string|&quot;[0x%x..0x%x] ate_count 0x%x bd_ate_count 0x%x &quot;
+l_string|&quot;[0x%lx..0x%lx] ate_count 0x%x bd_ate_count 0x%x &quot;
 l_string|&quot;ATE&squot;s required &gt; number allocated&bslash;n&quot;
 comma
 id|paddr
@@ -12170,7 +11471,7 @@ id|PCIBR_DEBUG_DMAMAP
 comma
 id|pcibr_dmamap-&gt;bd_dev
 comma
-l_string|&quot;pcibr_dmamap_done: pcibr_dmamap=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmamap_done: pcibr_dmamap=0x%lx&bslash;n&quot;
 comma
 id|pcibr_dmamap
 )paren
@@ -12345,8 +11646,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr: wanted paddr [0x%x..0x%x], &quot;
-l_string|&quot;xtalk_dmatrans_addr failed with 0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmatrans_addr: wanted paddr [0x%lx..0x%lx], &quot;
+l_string|&quot;xtalk_dmatrans_addr failed with 0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -12391,7 +11692,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr: wanted paddr [0x%x..0x%x], &quot;
+l_string|&quot;pcibr_dmatrans_addr: wanted paddr [0x%lx..0x%lx], &quot;
 l_string|&quot;xtalk_dmatrans_addr failed with XIO_NOWHERE&bslash;n&quot;
 comma
 id|paddr
@@ -12459,8 +11760,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
-l_string|&quot;xio_port=0x%x, pci_addr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
+l_string|&quot;xio_port=0x%x, pci_addr=0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -12714,15 +12015,6 @@ id|have_rrbs
 suffix:semicolon
 )brace
 )brace
-macro_line|#if HWG_PERF_CHECK
-r_if
-c_cond
-(paren
-id|xio_addr
-op_ne
-l_int|0x20000000
-)paren
-macro_line|#endif
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -12731,8 +12023,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
-l_string|&quot;xio_port=0x%x, direct64: pci_addr=0x%x, &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
+l_string|&quot;xio_port=0x%x, direct64: pci_addr=0x%lx, &quot;
 l_string|&quot;new flags: 0x%x&bslash;n&quot;
 comma
 id|paddr
@@ -12768,7 +12060,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
 l_string|&quot;xio_port=0x%x, Unable to set direct64 Device(x) bits&bslash;n&quot;
 comma
 id|paddr
@@ -12810,6 +12102,24 @@ op_or
 id|PCIBR_VCHAN0
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BUS in PCI-X mode only supports 64-bit direct mapping */
+r_if
+c_cond
+(paren
+id|IS_PCIX
+c_func
+(paren
+id|pcibr_soft
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Try to satisfy the request with the 32-bit direct&n;     * map. This can fail if the configuration bits in&n;     * Device(x) conflict with our flags, or if the&n;     * target address is outside where DIR_OFF points.&n;     */
 (brace
@@ -12875,7 +12185,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
 l_string|&quot;xio_port=0x%x, xio region outside direct32 target&bslash;n&quot;
 comma
 id|paddr
@@ -12925,8 +12235,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
-l_string|&quot;xio_port=0x%x, direct32: pci_addr=0x%x&bslash;n&quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx],&quot;
+l_string|&quot; xio_port=0x%x, direct32: pci_addr=0x%lx&bslash;n&quot;
 comma
 id|paddr
 comma
@@ -13054,15 +12364,6 @@ id|have_rrbs
 suffix:semicolon
 )brace
 )brace
-macro_line|#if HWG_PERF_CHECK
-r_if
-c_cond
-(paren
-id|xio_addr
-op_ne
-l_int|0x20000000
-)paren
-macro_line|#endif
 id|PCIBR_DEBUG
 c_func
 (paren
@@ -13071,8 +12372,8 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
-l_string|&quot;xio_port=0x%x, direct32: pci_addr=0x%x, &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx],&quot;
+l_string|&quot; xio_port=0x%x, direct32: pci_addr=0x%lx, &quot;
 l_string|&quot;new flags: 0x%x&bslash;n&quot;
 comma
 id|paddr
@@ -13109,7 +12410,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
 l_string|&quot;xio_port=0x%x, Unable to set direct32 Device(x) bits&bslash;n&quot;
 comma
 id|paddr
@@ -13134,7 +12435,7 @@ id|PCIBR_DEBUG_DMADIR
 comma
 id|pconn_vhdl
 comma
-l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%x..0x%x], &quot;
+l_string|&quot;pcibr_dmatrans_addr:  wanted paddr [0x%lx..0x%lx], &quot;
 l_string|&quot;xio_port=0x%x, No acceptable PCI address found&bslash;n&quot;
 comma
 id|paddr
@@ -13433,16 +12734,6 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_device
 (braket
 id|pciio_slot
@@ -13464,88 +12755,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-id|devreg
-)paren
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-op_assign
-id|devreg
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-)brace
 )brace
 id|pcibr_unlock
 c_func
@@ -13746,16 +12955,6 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_device
 (braket
 id|pciio_slot
@@ -13777,88 +12976,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-id|devreg
-)paren
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-op_assign
-id|devreg
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-)brace
 )brace
 id|pcibr_unlock
 c_func
@@ -14190,16 +13307,6 @@ id|bridge
 op_assign
 id|pcibr_soft-&gt;bs_base
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;b_device
 (braket
 id|pciio_slot
@@ -14221,88 +13328,6 @@ suffix:semicolon
 id|bridge-&gt;b_wid_tflush
 suffix:semicolon
 multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|io_get_sh_swapper
-c_func
-(paren
-id|NASID_GET
-c_func
-(paren
-id|bridge
-)paren
-)paren
-)paren
-(brace
-id|BRIDGE_REG_SET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-)paren
-)paren
-op_assign
-id|__swab32
-c_func
-(paren
-id|devreg
-)paren
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|BRIDGE_REG_GET32
-c_func
-(paren
-(paren
-op_amp
-id|bridge-&gt;b_wid_tflush
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-r_else
-(brace
-id|bridge-&gt;b_device
-(braket
-id|pciio_slot
-)braket
-dot
-id|reg
-op_assign
-id|devreg
-suffix:semicolon
-id|pcibr_soft-&gt;bs_slot
-(braket
-id|pciio_slot
-)braket
-dot
-id|bss_device
-op_assign
-id|devreg
-suffix:semicolon
-id|bridge-&gt;b_wid_tflush
-suffix:semicolon
-multiline_comment|/* wait until Bridge PIO complete */
-)brace
-)brace
 )brace
 id|pcibr_unlock
 c_func
@@ -14312,14 +13337,20 @@ comma
 id|s
 )paren
 suffix:semicolon
-id|printk
+id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
-l_string|&quot;pcibr_device_flags_set: Device(%d): %x&bslash;n&quot;
+(paren
+id|PCIBR_DEBUG_DEVREG
+comma
+id|pconn_vhdl
+comma
+l_string|&quot;pcibr_device_flags_set: Device(%d): 0x%x&bslash;n&quot;
 comma
 id|pciio_slot
 comma
 id|devreg
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -14600,12 +13631,6 @@ op_star
 id|pcibr_config_set
 comma
 (paren
-id|pciio_error_devenable_f
-op_star
-)paren
-l_int|0
-comma
-(paren
 id|pciio_error_extract_f
 op_star
 )paren
@@ -14629,52 +13654,8 @@ op_star
 )paren
 id|pcibr_device_unregister
 comma
-(paren
-id|pciio_dma_enabled_f
-op_star
-)paren
-id|pcibr_dma_enabled
-comma
 )brace
 suffix:semicolon
-r_int
-DECL|function|pcibr_dma_enabled
-id|pcibr_dma_enabled
-c_func
-(paren
-id|vertex_hdl_t
-id|pconn_vhdl
-)paren
-(brace
-id|pciio_info_t
-id|pciio_info
-op_assign
-id|pciio_info_get
-c_func
-(paren
-id|pconn_vhdl
-)paren
-suffix:semicolon
-id|pcibr_soft_t
-id|pcibr_soft
-op_assign
-(paren
-id|pcibr_soft_t
-)paren
-id|pciio_info_mfast_get
-c_func
-(paren
-id|pciio_info
-)paren
-suffix:semicolon
-r_return
-id|xtalk_dma_enabled
-c_func
-(paren
-id|pcibr_soft-&gt;bs_conn
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * pcibr_debug() is used to print pcibr debug messages to the console.  A&n; * user enables tracing by setting the following global variables:&n; *&n; *    pcibr_debug_mask &t;   -Bitmask of what to trace. see pcibr_private.h&n; *    pcibr_debug_module   -Module to trace.  &squot;all&squot; means trace all modules&n; *    pcibr_debug_widget   -Widget to trace. &squot;-1&squot; means trace all widgets&n; *    pcibr_debug_slot&t;   -Slot to trace.  &squot;-1&squot; means trace all slots&n; *&n; * &squot;type&squot; is the type of debugging that the current PCIBR_DEBUG macro is&n; * tracing.  &squot;vhdl&squot; (which can be NULL) is the vhdl associated with the&n; * debug statement.  If there is a &squot;vhdl&squot; associated with this debug&n; * statement, it is parsed to obtain the module, widget, and slot.  If the&n; * globals above match the PCIBR_DEBUG params, then the debug info in the&n; * parameter &squot;format&squot; is sent to the console.&n; */
 r_void
 DECL|function|pcibr_debug
@@ -14795,7 +13776,9 @@ c_func
 (paren
 id|copy_of_hwpath
 comma
-l_string|&quot;/module/&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_MODULE
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
 r_if
@@ -14809,7 +13792,9 @@ op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;/module&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_MODULE
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
 id|module
@@ -14841,7 +13826,9 @@ c_func
 (paren
 id|hwpath
 comma
-l_string|&quot;/xtalk/&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_XTALK
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
 r_if
@@ -14855,7 +13842,9 @@ op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;/xtalk/&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_XTALK
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
 id|widget
@@ -14888,9 +13877,31 @@ c_func
 (paren
 id|hwpath
 comma
-l_string|&quot;/pci/&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_PCIX_0
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cp
+)paren
+(brace
+id|cp
+op_assign
+id|strstr
+c_func
+(paren
+id|hwpath
+comma
+l_string|&quot;/&quot;
+id|EDGE_LBL_PCIX_1
+l_string|&quot;/&quot;
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14902,7 +13913,9 @@ op_add_assign
 id|strlen
 c_func
 (paren
-l_string|&quot;/pci/&quot;
+l_string|&quot;/&quot;
+id|EDGE_LBL_PCIX_0
+l_string|&quot;/&quot;
 )paren
 suffix:semicolon
 id|slot

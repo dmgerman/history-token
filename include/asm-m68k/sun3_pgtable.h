@@ -99,10 +99,11 @@ multiline_comment|/*&n; * Conversion functions: convert a page and protection to
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot) pfn_pte(page_to_pfn(page), (pgprot))
 DECL|function|pte_modify
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_modify
+c_func
 (paren
 id|pte_t
 id|pte
@@ -140,7 +141,7 @@ suffix:semicolon
 DECL|macro|pmd_set
 mdefine_line|#define pmd_set(pmdp,ptep) do {} while (0)
 DECL|function|pgd_set
-r_extern
+r_static
 r_inline
 r_void
 id|pgd_set
@@ -174,7 +175,7 @@ mdefine_line|#define __pte_page(pte) &bslash;&n;((unsigned long) __va ((pte_val 
 DECL|macro|__pmd_page
 mdefine_line|#define __pmd_page(pmd) &bslash;&n;((unsigned long) __va (pmd_val (pmd) &amp; PAGE_MASK))
 DECL|function|pte_none
-r_extern
+r_static
 r_inline
 r_int
 id|pte_none
@@ -192,7 +193,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_present
-r_extern
+r_static
 r_inline
 r_int
 id|pte_present
@@ -211,7 +212,7 @@ id|SUN3_PAGE_VALID
 suffix:semicolon
 )brace
 DECL|function|pte_clear
-r_extern
+r_static
 r_inline
 r_void
 id|pte_clear
@@ -239,7 +240,7 @@ mdefine_line|#define pte_page(pte)&t;&t;(mem_map+((__pte_page(pte) - PAGE_OFFSET
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;(mem_map+((__pmd_page(pmd) - PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
 DECL|function|pmd_none2
-r_extern
+r_static
 r_inline
 r_int
 id|pmd_none2
@@ -260,9 +261,9 @@ suffix:semicolon
 )brace
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd) pmd_none2(&amp;(pmd))
-singleline_comment|//extern inline int pmd_bad (pmd_t pmd) { return (pmd_val (pmd) &amp; SUN3_PMD_MASK) != SUN3_PMD_MAGIC; }
+singleline_comment|//static inline int pmd_bad (pmd_t pmd) { return (pmd_val (pmd) &amp; SUN3_PMD_MASK) != SUN3_PMD_MAGIC; }
 DECL|function|pmd_bad2
-r_extern
+r_static
 r_inline
 r_int
 id|pmd_bad2
@@ -279,7 +280,7 @@ suffix:semicolon
 DECL|macro|pmd_bad
 mdefine_line|#define pmd_bad(pmd) pmd_bad2(&amp;(pmd))
 DECL|function|pmd_present2
-r_extern
+r_static
 r_inline
 r_int
 id|pmd_present2
@@ -303,7 +304,7 @@ multiline_comment|/* #define pmd_present(pmd) pmd_present2(&amp;(pmd)) */
 DECL|macro|pmd_present
 mdefine_line|#define pmd_present(pmd) (!pmd_none2(&amp;(pmd)))
 DECL|function|pmd_clear
-r_extern
+r_static
 r_inline
 r_void
 id|pmd_clear
@@ -323,7 +324,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_none
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_none
@@ -337,7 +338,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_bad
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_bad
@@ -351,7 +352,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pgd_present
-r_extern
+r_static
 r_inline
 r_int
 id|pgd_present
@@ -365,7 +366,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pgd_clear
-r_extern
+r_static
 r_inline
 r_void
 id|pgd_clear
@@ -384,7 +385,7 @@ DECL|macro|pgd_ERROR
 mdefine_line|#define pgd_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pgd %08lx.&bslash;n&quot;, __FILE__, __LINE__, pgd_val(e))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not...&n; * [we have the full set here even if they don&squot;t change from m68k]&n; */
 DECL|function|pte_read
-r_extern
+r_static
 r_inline
 r_int
 id|pte_read
@@ -399,7 +400,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_extern
+r_static
 r_inline
 r_int
 id|pte_write
@@ -420,7 +421,7 @@ id|SUN3_PAGE_WRITEABLE
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_extern
+r_static
 r_inline
 r_int
 id|pte_exec
@@ -435,7 +436,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_extern
+r_static
 r_inline
 r_int
 id|pte_dirty
@@ -456,7 +457,7 @@ id|SUN3_PAGE_MODIFIED
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_extern
+r_static
 r_inline
 r_int
 id|pte_young
@@ -477,7 +478,7 @@ id|SUN3_PAGE_ACCESSED
 suffix:semicolon
 )brace
 DECL|function|pte_file
-r_extern
+r_static
 r_inline
 r_int
 id|pte_file
@@ -498,7 +499,7 @@ id|SUN3_PAGE_ACCESSED
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -522,7 +523,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -537,7 +538,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -552,7 +553,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -576,7 +577,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkold
@@ -600,7 +601,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -623,7 +624,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkread
@@ -638,7 +639,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -653,7 +654,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -676,7 +677,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkyoung
@@ -699,7 +700,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mknocache
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mknocache
@@ -722,10 +723,10 @@ id|pte
 suffix:semicolon
 )brace
 singleline_comment|// use this version when caches work...
-singleline_comment|//extern inline pte_t pte_mkcache(pte_t pte)&t;{ pte_val(pte) &amp;= SUN3_PAGE_NOCACHE; return pte; }
+singleline_comment|//static inline pte_t pte_mkcache(pte_t pte)&t;{ pte_val(pte) &amp;= SUN3_PAGE_NOCACHE; return pte; }
 singleline_comment|// until then, use:
 DECL|function|pte_mkcache
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkcache
@@ -763,7 +764,7 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level pagetable. */
 DECL|function|pmd_offset
-r_extern
+r_static
 r_inline
 id|pmd_t
 op_star

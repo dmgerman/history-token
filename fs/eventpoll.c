@@ -2247,6 +2247,10 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
+suffix:semicolon
 id|file-&gt;f_pos
 op_assign
 l_int|0

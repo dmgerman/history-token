@@ -1,4 +1,7 @@
-multiline_comment|/* include/asm-sh/dc_sysasic.h&n; *&n; * Definitions for the Dreamcast System ASIC and related peripherals.&n; *&n; * Copyright (c) 2001 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; *&n; */
+multiline_comment|/* include/asm-sh/dc_sysasic.h&n; *&n; * Definitions for the Dreamcast System ASIC and related peripherals.&n; *&n; * Copyright (c) 2001 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; * Copyright (C) 2003 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; *&n; */
+macro_line|#ifndef __ASM_SH_DREAMCAST_SYSASIC_H
+DECL|macro|__ASM_SH_DREAMCAST_SYSASIC_H
+mdefine_line|#define __ASM_SH_DREAMCAST_SYSASIC_H
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* Hardware events -&n;&n;   Each of these events correspond to a bit within the Event Mask Registers/&n;   Event Status Registers.  Because of the virtual IRQ numbering scheme, a&n;   base offset must be used when calculating the virtual IRQ that each event&n;   takes.&n;*/
 DECL|macro|HW_EVENT_IRQ_BASE
@@ -10,6 +13,10 @@ DECL|macro|HW_EVENT_MAPLE_DMA
 mdefine_line|#define HW_EVENT_MAPLE_DMA (HW_EVENT_IRQ_BASE + 12) /* Maple DMA complete */
 DECL|macro|HW_EVENT_GDROM_DMA
 mdefine_line|#define HW_EVENT_GDROM_DMA (HW_EVENT_IRQ_BASE + 14) /* GD-ROM DMA complete */
+DECL|macro|HW_EVENT_G2_DMA
+mdefine_line|#define HW_EVENT_G2_DMA    (HW_EVENT_IRQ_BASE + 15) /* G2 DMA complete */
+DECL|macro|HW_EVENT_PVR2_DMA
+mdefine_line|#define HW_EVENT_PVR2_DMA  (HW_EVENT_IRQ_BASE + 19) /* PVR2 DMA complete */
 multiline_comment|/* IRQ 11 */
 DECL|macro|HW_EVENT_GDROM_CMD
 mdefine_line|#define HW_EVENT_GDROM_CMD (HW_EVENT_IRQ_BASE + 32) /* GD-ROM cmd. complete */
@@ -19,4 +26,5 @@ DECL|macro|HW_EVENT_EXTERNAL
 mdefine_line|#define HW_EVENT_EXTERNAL  (HW_EVENT_IRQ_BASE + 35) /* Ext. (expansion) */
 DECL|macro|HW_EVENT_IRQ_MAX
 mdefine_line|#define HW_EVENT_IRQ_MAX (HW_EVENT_IRQ_BASE + 95)
+macro_line|#endif /* __ASM_SH_DREAMCAST_SYSASIC_H */
 eof

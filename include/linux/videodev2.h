@@ -2,7 +2,9 @@ macro_line|#ifndef __LINUX_VIDEODEV2_H
 DECL|macro|__LINUX_VIDEODEV2_H
 mdefine_line|#define __LINUX_VIDEODEV2_H
 multiline_comment|/*&n; *&t;Video for Linux Two&n; *&n; *&t;Header file for v4l or V4L2 drivers and applications, for&n; *&t;Linux kernels 2.2.x or 2.4.x.&n; *&n; *&t;See http://bytesex.org/v4l/ for API specs and other&n; *&t;v4l2 documentation.&n; *&n; *&t;Author: Bill Dirks &lt;bdirks@pacbell.net&gt;&n; *&t;&t;Justin Schoeman&n; *&t;&t;et al.&n; */
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt; /* need struct timeval */
+macro_line|#endif
 multiline_comment|/*&n; *&t;M I S C E L L A N E O U S&n; */
 multiline_comment|/*  Four-character-code (FOURCC) */
 DECL|macro|v4l2_fourcc
@@ -221,6 +223,38 @@ l_int|8
 comma
 )brace
 suffix:semicolon
+DECL|enum|v4l2_priority
+r_enum
+id|v4l2_priority
+(brace
+DECL|enumerator|V4L2_PRIORITY_UNSET
+id|V4L2_PRIORITY_UNSET
+op_assign
+l_int|0
+comma
+multiline_comment|/* not initialized */
+DECL|enumerator|V4L2_PRIORITY_BACKGROUND
+id|V4L2_PRIORITY_BACKGROUND
+op_assign
+l_int|1
+comma
+DECL|enumerator|V4L2_PRIORITY_INTERACTIVE
+id|V4L2_PRIORITY_INTERACTIVE
+op_assign
+l_int|2
+comma
+DECL|enumerator|V4L2_PRIORITY_RECORD
+id|V4L2_PRIORITY_RECORD
+op_assign
+l_int|3
+comma
+DECL|enumerator|V4L2_PRIORITY_DEFAULT
+id|V4L2_PRIORITY_DEFAULT
+op_assign
+id|V4L2_PRIORITY_INTERACTIVE
+comma
+)brace
+suffix:semicolon
 DECL|struct|v4l2_rect
 r_struct
 id|v4l2_rect
@@ -319,9 +353,11 @@ mdefine_line|#define V4L2_CAP_VBI_OUTPUT&t;0x00000020  /* Is a VBI output device
 DECL|macro|V4L2_CAP_RDS_CAPTURE
 mdefine_line|#define V4L2_CAP_RDS_CAPTURE&t;0x00000100  /* RDS data capture */
 DECL|macro|V4L2_CAP_TUNER
-mdefine_line|#define V4L2_CAP_TUNER&t;&t;0x00010000  /* Has a tuner */
+mdefine_line|#define V4L2_CAP_TUNER&t;&t;0x00010000  /* has a tuner */
 DECL|macro|V4L2_CAP_AUDIO
 mdefine_line|#define V4L2_CAP_AUDIO&t;&t;0x00020000  /* has audio support */
+DECL|macro|V4L2_CAP_RADIO
+mdefine_line|#define V4L2_CAP_RADIO&t;&t;0x00040000  /* is a radio device */
 DECL|macro|V4L2_CAP_READWRITE
 mdefine_line|#define V4L2_CAP_READWRITE      0x01000000  /* read/write systemcalls */
 DECL|macro|V4L2_CAP_ASYNCIO
@@ -431,7 +467,7 @@ DECL|macro|V4L2_PIX_FMT_MPEG
 mdefine_line|#define V4L2_PIX_FMT_MPEG     v4l2_fourcc(&squot;M&squot;,&squot;P&squot;,&squot;E&squot;,&squot;G&squot;) /* MPEG          */
 multiline_comment|/*  Vendor-specific formats   */
 DECL|macro|V4L2_PIX_FMT_WNVA
-mdefine_line|#define V4L2_PIX_FMT_WNVA    v4l2_fourcc(&squot;W&squot;,&squot;N&squot;,&squot;V&squot;,&squot;A&squot;) /* Winnov hw compres */
+mdefine_line|#define V4L2_PIX_FMT_WNVA     v4l2_fourcc(&squot;W&squot;,&squot;N&squot;,&squot;V&squot;,&squot;A&squot;) /* Winnov hw compress */
 multiline_comment|/*&n; *&t;F O R M A T   E N U M E R A T I O N&n; */
 DECL|struct|v4l2_fmtdesc
 r_struct
@@ -558,6 +594,7 @@ id|reserved
 l_int|5
 )braket
 suffix:semicolon
+multiline_comment|/*  what we&squot;ll need for MPEG, extracted from some postings on&n;    the v4l list (Gert Vervoort, PlasmaJohn).&n;&n;system stream:&n;  - type: elementary stream(ES), packatised elementary stream(s) (PES)&n;    program stream(PS), transport stream(TS)&n;  - system bitrate&n;  - PS packet size (DVD: 2048 bytes, VCD: 2324 bytes)&n;  - TS video PID&n;  - TS audio PID&n;  - TS PCR PID&n;  - TS system information tables (PAT, PMT, CAT, NIT and SIT)&n;  - (MPEG-1 systems stream vs. MPEG-2 program stream (TS not supported&n;    by MPEG-1 systems)&n;&n;audio:&n;  - type: MPEG (+Layer I,II,III), AC-3, LPCM&n;  - bitrate&n;  - sampling frequency (DVD: 48 Khz, VCD: 44.1 KHz, 32 kHz)&n;  - Trick Modes? (ff, rew)&n;  - Copyright&n;  - Inverse Telecine&n;&n;video:&n;  - picturesize (SIF, 1/2 D1, 2/3 D1, D1) and PAL/NTSC norm can be set&n;    through excisting V4L2 controls&n;  - noise reduction, parameters encoder specific?&n;  - MPEG video version: MPEG-1, MPEG-2&n;  - GOP (Group Of Pictures) definition:&n;    - N: number of frames per GOP&n;    - M: distance between reference (I,P) frames&n;    - open/closed GOP&n;  - quantiser matrix: inter Q matrix (64 bytes) and intra Q matrix (64 bytes)&n;  - quantiser scale: linear or logarithmic&n;  - scanning: alternate or zigzag&n;  - bitrate mode: CBR (constant bitrate) or VBR (variable bitrate).&n;  - target video bitrate for CBR&n;  - target video bitrate for VBR&n;  - maximum video bitrate for VBR - min. quantiser value for VBR&n;  - max. quantiser value for VBR&n;  - adaptive quantisation value&n;  - return the number of bytes per GOP or bitrate for bitrate monitoring&n;&n;*/
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -1749,7 +1786,7 @@ mdefine_line|#define VIDIOC_G_FBUF&t;&t;_IOR  (&squot;V&squot;, 10, struct v4l2_
 DECL|macro|VIDIOC_S_FBUF
 mdefine_line|#define VIDIOC_S_FBUF&t;&t;_IOW  (&squot;V&squot;, 11, struct v4l2_framebuffer)
 DECL|macro|VIDIOC_OVERLAY
-mdefine_line|#define VIDIOC_OVERLAY&t;&t;_IOWR (&squot;V&squot;, 14, int)
+mdefine_line|#define VIDIOC_OVERLAY&t;&t;_IOW  (&squot;V&squot;, 14, int)
 DECL|macro|VIDIOC_QBUF
 mdefine_line|#define VIDIOC_QBUF&t;&t;_IOWR (&squot;V&squot;, 15, struct v4l2_buffer)
 DECL|macro|VIDIOC_DQBUF
@@ -1761,7 +1798,7 @@ mdefine_line|#define VIDIOC_STREAMOFF&t;_IOW  (&squot;V&squot;, 19, int)
 DECL|macro|VIDIOC_G_PARM
 mdefine_line|#define VIDIOC_G_PARM&t;&t;_IOWR (&squot;V&squot;, 21, struct v4l2_streamparm)
 DECL|macro|VIDIOC_S_PARM
-mdefine_line|#define VIDIOC_S_PARM&t;&t;_IOW  (&squot;V&squot;, 22, struct v4l2_streamparm)
+mdefine_line|#define VIDIOC_S_PARM&t;&t;_IOWR (&squot;V&squot;, 22, struct v4l2_streamparm)
 DECL|macro|VIDIOC_G_STD
 mdefine_line|#define VIDIOC_G_STD&t;&t;_IOR  (&squot;V&squot;, 23, v4l2_std_id)
 DECL|macro|VIDIOC_S_STD
@@ -1773,13 +1810,13 @@ mdefine_line|#define VIDIOC_ENUMINPUT&t;_IOWR (&squot;V&squot;, 26, struct v4l2_
 DECL|macro|VIDIOC_G_CTRL
 mdefine_line|#define VIDIOC_G_CTRL&t;&t;_IOWR (&squot;V&squot;, 27, struct v4l2_control)
 DECL|macro|VIDIOC_S_CTRL
-mdefine_line|#define VIDIOC_S_CTRL&t;&t;_IOW  (&squot;V&squot;, 28, struct v4l2_control)
+mdefine_line|#define VIDIOC_S_CTRL&t;&t;_IOWR (&squot;V&squot;, 28, struct v4l2_control)
 DECL|macro|VIDIOC_G_TUNER
 mdefine_line|#define VIDIOC_G_TUNER&t;&t;_IOWR (&squot;V&squot;, 29, struct v4l2_tuner)
 DECL|macro|VIDIOC_S_TUNER
 mdefine_line|#define VIDIOC_S_TUNER&t;&t;_IOW  (&squot;V&squot;, 30, struct v4l2_tuner)
 DECL|macro|VIDIOC_G_AUDIO
-mdefine_line|#define VIDIOC_G_AUDIO&t;&t;_IOWR (&squot;V&squot;, 33, struct v4l2_audio)
+mdefine_line|#define VIDIOC_G_AUDIO&t;&t;_IOR  (&squot;V&squot;, 33, struct v4l2_audio)
 DECL|macro|VIDIOC_S_AUDIO
 mdefine_line|#define VIDIOC_S_AUDIO&t;&t;_IOW  (&squot;V&squot;, 34, struct v4l2_audio)
 DECL|macro|VIDIOC_QUERYCTRL
@@ -1797,7 +1834,7 @@ mdefine_line|#define VIDIOC_S_OUTPUT&t;&t;_IOWR (&squot;V&squot;, 47, int)
 DECL|macro|VIDIOC_ENUMOUTPUT
 mdefine_line|#define VIDIOC_ENUMOUTPUT&t;_IOWR (&squot;V&squot;, 48, struct v4l2_output)
 DECL|macro|VIDIOC_G_AUDOUT
-mdefine_line|#define VIDIOC_G_AUDOUT&t;&t;_IOWR (&squot;V&squot;, 49, struct v4l2_audioout)
+mdefine_line|#define VIDIOC_G_AUDOUT&t;&t;_IOR  (&squot;V&squot;, 49, struct v4l2_audioout)
 DECL|macro|VIDIOC_S_AUDOUT
 mdefine_line|#define VIDIOC_S_AUDOUT&t;&t;_IOW  (&squot;V&squot;, 50, struct v4l2_audioout)
 DECL|macro|VIDIOC_G_MODULATOR
@@ -1822,6 +1859,25 @@ DECL|macro|VIDIOC_QUERYSTD
 mdefine_line|#define VIDIOC_QUERYSTD      &t;_IOR  (&squot;V&squot;, 63, v4l2_std_id)
 DECL|macro|VIDIOC_TRY_FMT
 mdefine_line|#define VIDIOC_TRY_FMT      &t;_IOWR (&squot;V&squot;, 64, struct v4l2_format)
+DECL|macro|VIDIOC_ENUMAUDIO
+mdefine_line|#define VIDIOC_ENUMAUDIO&t;_IOWR (&squot;V&squot;, 65, struct v4l2_audio)
+DECL|macro|VIDIOC_ENUMAUDOUT
+mdefine_line|#define VIDIOC_ENUMAUDOUT&t;_IOWR (&squot;V&squot;, 66, struct v4l2_audioout)
+DECL|macro|VIDIOC_G_PRIORITY
+mdefine_line|#define VIDIOC_G_PRIORITY       _IOR  (&squot;V&squot;, 67, enum v4l2_priority)
+DECL|macro|VIDIOC_S_PRIORITY
+mdefine_line|#define VIDIOC_S_PRIORITY       _IOW  (&squot;V&squot;, 68, enum v4l2_priority)
+multiline_comment|/* for compatibility, will go away some day */
+DECL|macro|VIDIOC_OVERLAY_OLD
+mdefine_line|#define VIDIOC_OVERLAY_OLD     &t;_IOWR (&squot;V&squot;, 14, int)
+DECL|macro|VIDIOC_S_PARM_OLD
+mdefine_line|#define VIDIOC_S_PARM_OLD      &t;_IOW  (&squot;V&squot;, 22, struct v4l2_streamparm)
+DECL|macro|VIDIOC_S_CTRL_OLD
+mdefine_line|#define VIDIOC_S_CTRL_OLD      &t;_IOW  (&squot;V&squot;, 28, struct v4l2_control)
+DECL|macro|VIDIOC_G_AUDIO_OLD
+mdefine_line|#define VIDIOC_G_AUDIO_OLD     &t;_IOWR (&squot;V&squot;, 33, struct v4l2_audio)
+DECL|macro|VIDIOC_G_AUDOUT_OLD
+mdefine_line|#define VIDIOC_G_AUDOUT_OLD    &t;_IOWR (&squot;V&squot;, 49, struct v4l2_audioout)
 DECL|macro|BASE_VIDIOC_PRIVATE
 mdefine_line|#define BASE_VIDIOC_PRIVATE&t;192&t;&t;/* 192-255 are private */
 macro_line|#ifdef __KERNEL__
@@ -1858,7 +1914,128 @@ op_star
 id|name
 )paren
 suffix:semicolon
-multiline_comment|/*  Compatibility layer interface  */
+multiline_comment|/* prority handling */
+DECL|struct|v4l2_prio_state
+r_struct
+id|v4l2_prio_state
+(brace
+DECL|member|prios
+id|atomic_t
+id|prios
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|v4l2_prio_init
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+)paren
+suffix:semicolon
+r_int
+id|v4l2_prio_change
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+comma
+r_enum
+id|v4l2_priority
+op_star
+id|local
+comma
+r_enum
+id|v4l2_priority
+r_new
+)paren
+suffix:semicolon
+r_int
+id|v4l2_prio_open
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+comma
+r_enum
+id|v4l2_priority
+op_star
+id|local
+)paren
+suffix:semicolon
+r_int
+id|v4l2_prio_close
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+comma
+r_enum
+id|v4l2_priority
+op_star
+id|local
+)paren
+suffix:semicolon
+r_enum
+id|v4l2_priority
+id|v4l2_prio_max
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+)paren
+suffix:semicolon
+r_int
+id|v4l2_prio_check
+c_func
+(paren
+r_struct
+id|v4l2_prio_state
+op_star
+id|global
+comma
+r_enum
+id|v4l2_priority
+op_star
+id|local
+)paren
+suffix:semicolon
+multiline_comment|/* names for fancy debug output */
+r_extern
+r_char
+op_star
+id|v4l2_field_names
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|v4l2_type_names
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|v4l2_ioctl_names
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/*  Compatibility layer interface  --  v4l1-compat module */
 DECL|typedef|v4l2_kioctl
 r_typedef
 r_int
@@ -1910,28 +2087,6 @@ comma
 id|v4l2_kioctl
 id|driver_ioctl
 )paren
-suffix:semicolon
-multiline_comment|/* names for fancy debug output */
-r_extern
-r_char
-op_star
-id|v4l2_field_names
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|v4l2_type_names
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-op_star
-id|v4l2_ioctl_names
-(braket
-)braket
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_VIDEODEV2_H */

@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_SH_TIMEX_H
 DECL|macro|__ASM_SH_TIMEX_H
 mdefine_line|#define __ASM_SH_TIMEX_H
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;(current_cpu_data.module_clock/4) /* Underlying HZ */
+mdefine_line|#define CLOCK_TICK_RATE&t;&t;(CONFIG_SH_PCLK_FREQ / 4) /* Underlying HZ */
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
 DECL|macro|FINETUNE

@@ -6,12 +6,14 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt; /* for ppc_md */
 macro_line|#include &lt;asm/time.h&gt;
 multiline_comment|/* Token for Sensors */
@@ -505,6 +507,28 @@ op_star
 id|ppos
 )paren
 suffix:semicolon
+r_static
+id|ssize_t
+id|ppc_rtas_rmo_buf_read
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+suffix:semicolon
 DECL|variable|ppc_rtas_poweron_operations
 r_struct
 id|file_operations
@@ -588,6 +612,20 @@ dot
 id|write
 op_assign
 id|ppc_rtas_tone_volume_write
+)brace
+suffix:semicolon
+DECL|variable|ppc_rtas_rmo_buf_ops
+r_static
+r_struct
+id|file_operations
+id|ppc_rtas_rmo_buf_ops
+op_assign
+(brace
+dot
+id|read
+op_assign
+id|ppc_rtas_rmo_buf_read
+comma
 )brace
 suffix:semicolon
 r_int
@@ -682,9 +720,11 @@ id|entry
 suffix:semicolon
 id|rtas_node
 op_assign
-id|find_devices
+id|of_find_node_by_name
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;rtas&quot;
 )paren
 suffix:semicolon
@@ -710,26 +750,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
 (brace
-id|proc_rtas
-op_assign
-id|proc_mkdir
+id|proc_ppc64_init
 c_func
 (paren
-l_string|&quot;rtas&quot;
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|proc_rtas
+id|proc_ppc64.rtas
 op_eq
 l_int|NULL
 )paren
@@ -756,7 +791,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -780,7 +815,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -804,7 +839,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -824,7 +859,7 @@ l_string|&quot;sensors&quot;
 comma
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 comma
 id|ppc_rtas_sensor_read
 comma
@@ -842,7 +877,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -866,7 +901,7 @@ id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
-id|proc_rtas
+id|proc_ppc64.rtas
 )paren
 suffix:semicolon
 r_if
@@ -878,6 +913,28 @@ id|entry-&gt;proc_fops
 op_assign
 op_amp
 id|ppc_rtas_tone_volume_operations
+suffix:semicolon
+id|entry
+op_assign
+id|create_proc_entry
+c_func
+(paren
+l_string|&quot;rmo_buffer&quot;
+comma
+id|S_IRUSR
+comma
+id|proc_ppc64.rtas
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+id|entry-&gt;proc_fops
+op_assign
+op_amp
+id|ppc_rtas_rmo_buf_ops
 suffix:semicolon
 )brace
 multiline_comment|/* ****************************************************************** */
@@ -4805,6 +4862,111 @@ suffix:semicolon
 op_star
 id|ppos
 op_add_assign
+id|n
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
+DECL|macro|RMO_READ_BUF_MAX
+mdefine_line|#define RMO_READ_BUF_MAX 30
+multiline_comment|/* RTAS Userspace access */
+DECL|function|ppc_rtas_rmo_buf_read
+r_static
+id|ssize_t
+id|ppc_rtas_rmo_buf_read
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_char
+id|__user
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+(brace
+r_char
+id|kbuf
+(braket
+id|RMO_READ_BUF_MAX
+)braket
+suffix:semicolon
+r_int
+id|n
+suffix:semicolon
+id|n
+op_assign
+id|sprintf
+c_func
+(paren
+id|kbuf
+comma
+l_string|&quot;%016lx %x&bslash;n&quot;
+comma
+id|rtas_rmo_buf
+comma
+id|RTAS_RMOBUF_MAX
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+OG
+id|count
+)paren
+id|n
+op_assign
+id|count
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppos
+op_logical_and
+op_star
+id|ppos
+op_ne
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|buf
+comma
+id|kbuf
+comma
+id|n
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppos
+)paren
+op_star
+id|ppos
+op_assign
 id|n
 suffix:semicolon
 r_return

@@ -1,215 +1,241 @@
+multiline_comment|/*&n; * include/asm-sh/dma.h&n; *&n; * Copyright (C) 2003  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#ifndef __ASM_SH_DMA_H
 DECL|macro|__ASM_SH_DMA_H
 mdefine_line|#define __ASM_SH_DMA_H
-macro_line|#ifdef CONFIG_SH_MPC1211
-macro_line|#include &lt;asm/mpc1211/dma.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/cpu/dma.h&gt;
-macro_line|#include &lt;asm/io.h&gt;&t;&t;/* need byte IO */
-DECL|macro|MAX_DMA_CHANNELS
-mdefine_line|#define MAX_DMA_CHANNELS 8
-DECL|macro|SH_MAX_DMA_CHANNELS
-mdefine_line|#define SH_MAX_DMA_CHANNELS 4
+macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* The maximum address that we can perform a DMA transfer to on this platform */
 multiline_comment|/* Don&squot;t define MAX_DMA_ADDRESS; it&squot;s useless on the SuperH and any&n;   occurrence should be flagged as an error.  */
 multiline_comment|/* But... */
 multiline_comment|/* XXX: This is not applicable to SuperH, just needed for alloc_bootmem */
 DECL|macro|MAX_DMA_ADDRESS
-mdefine_line|#define MAX_DMA_ADDRESS      (PAGE_OFFSET+0x10000000)
-DECL|macro|DMTE_IRQ
-mdefine_line|#define DMTE_IRQ ((int[]){DMTE0_IRQ,DMTE1_IRQ,DMTE2_IRQ,DMTE3_IRQ})
+mdefine_line|#define MAX_DMA_ADDRESS&t;&t;(PAGE_OFFSET+0x10000000)
+macro_line|#ifdef CONFIG_NR_DMA_CHANNELS
+DECL|macro|MAX_DMA_CHANNELS
+macro_line|#  define MAX_DMA_CHANNELS&t;(CONFIG_NR_DMA_CHANNELS)
+macro_line|#else
+DECL|macro|MAX_DMA_CHANNELS
+macro_line|#  define MAX_DMA_CHANNELS&t;(CONFIG_NR_ONCHIP_DMA_CHANNELS)
+macro_line|#endif
+multiline_comment|/* &n; * Read and write modes can mean drastically different things depending on the&n; * channel configuration. Consult your DMAC documentation and module&n; * implementation for further clues.&n; */
 DECL|macro|DMA_MODE_READ
-mdefine_line|#define DMA_MODE_READ&t;0x00&t;/* I/O to memory, no autoinit, increment, single mode */
+mdefine_line|#define DMA_MODE_READ&t;&t;0x00
 DECL|macro|DMA_MODE_WRITE
-mdefine_line|#define DMA_MODE_WRITE&t;0x01&t;/* memory to I/O, no autoinit, increment, single mode */
-DECL|macro|DMA_AUTOINIT
-mdefine_line|#define DMA_AUTOINIT&t;0x10
-DECL|macro|REQ_L
-mdefine_line|#define REQ_L&t;0x00000000
-DECL|macro|REQ_E
-mdefine_line|#define REQ_E&t;0x00080000
-DECL|macro|RACK_H
-mdefine_line|#define RACK_H&t;0x00000000
-DECL|macro|RACK_L
-mdefine_line|#define RACK_L&t;0x00040000
-DECL|macro|ACK_R
-mdefine_line|#define ACK_R&t;0x00000000
-DECL|macro|ACK_W
-mdefine_line|#define ACK_W&t;0x00020000
-DECL|macro|ACK_H
-mdefine_line|#define ACK_H&t;0x00000000
-DECL|macro|ACK_L
-mdefine_line|#define ACK_L&t;0x00010000
-DECL|macro|DM_INC
-mdefine_line|#define DM_INC&t;0x00004000
-DECL|macro|DM_DEC
-mdefine_line|#define DM_DEC&t;0x00008000
-DECL|macro|SM_INC
-mdefine_line|#define SM_INC&t;0x00001000
-DECL|macro|SM_DEC
-mdefine_line|#define SM_DEC&t;0x00002000
-DECL|macro|RS_DUAL
-mdefine_line|#define RS_DUAL&t;0x00000000
-DECL|macro|RS_IN
-mdefine_line|#define RS_IN&t;0x00000200
-DECL|macro|RS_OUT
-mdefine_line|#define RS_OUT&t;0x00000300
-DECL|macro|TM_BURST
-mdefine_line|#define TM_BURST 0x0000080
-DECL|macro|TS_8
-mdefine_line|#define TS_8&t;0x00000010
-DECL|macro|TS_16
-mdefine_line|#define TS_16&t;0x00000020
-DECL|macro|TS_32
-mdefine_line|#define TS_32&t;0x00000030
-DECL|macro|TS_64
-mdefine_line|#define TS_64&t;0x00000000
-DECL|macro|TS_BLK
-mdefine_line|#define TS_BLK&t;0x00000040
-DECL|macro|CHCR_DE
-mdefine_line|#define CHCR_DE 0x00000001
-DECL|macro|CHCR_TE
-mdefine_line|#define CHCR_TE 0x00000002
-DECL|macro|CHCR_IE
-mdefine_line|#define CHCR_IE 0x00000004
-DECL|macro|DMAOR_COD
-mdefine_line|#define DMAOR_COD&t;0x00000008
-DECL|macro|DMAOR_AE
-mdefine_line|#define DMAOR_AE&t;0x00000004
-DECL|macro|DMAOR_NMIF
-mdefine_line|#define DMAOR_NMIF&t;0x00000002
-DECL|macro|DMAOR_DME
-mdefine_line|#define DMAOR_DME&t;0x00000001
-DECL|struct|dma_info_t
+mdefine_line|#define DMA_MODE_WRITE&t;&t;0x01
+DECL|macro|DMA_MODE_MASK
+mdefine_line|#define DMA_MODE_MASK&t;&t;0x01
+r_extern
+id|spinlock_t
+id|dma_spin_lock
+suffix:semicolon
 r_struct
-id|dma_info_t
+id|dma_info
+suffix:semicolon
+DECL|struct|dma_ops
+r_struct
+id|dma_ops
 (brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|request
+r_int
+(paren
+op_star
+id|request
+)paren
+(paren
+r_struct
+id|dma_info
+op_star
+id|info
+)paren
+suffix:semicolon
+DECL|member|free
+r_void
+(paren
+op_star
+id|free
+)paren
+(paren
+r_struct
+id|dma_info
+op_star
+id|info
+)paren
+suffix:semicolon
+DECL|member|get_residue
+r_int
+(paren
+op_star
+id|get_residue
+)paren
+(paren
+r_struct
+id|dma_info
+op_star
+id|info
+)paren
+suffix:semicolon
+DECL|member|xfer
+r_int
+(paren
+op_star
+id|xfer
+)paren
+(paren
+r_struct
+id|dma_info
+op_star
+id|info
+)paren
+suffix:semicolon
+DECL|member|configure
+r_void
+(paren
+op_star
+id|configure
+)paren
+(paren
+r_struct
+id|dma_info
+op_star
+id|info
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|dma_info
+r_struct
+id|dma_info
+(brace
+DECL|member|dev_id
+r_const
+r_char
+op_star
+id|dev_id
+suffix:semicolon
 DECL|member|chan
 r_int
 r_int
 id|chan
-suffix:semicolon
-DECL|member|dev_addr
-r_int
-r_int
-id|dev_addr
 suffix:semicolon
 DECL|member|mode
 r_int
 r_int
 id|mode
 suffix:semicolon
-DECL|member|mem_addr
-r_int
-r_int
-id|mem_addr
-suffix:semicolon
 DECL|member|count
 r_int
 r_int
 id|count
 suffix:semicolon
-)brace
+DECL|member|sar
+r_int
+r_int
+id|sar
 suffix:semicolon
-DECL|function|clear_dma_ff
-r_static
-id|__inline__
-r_void
-multiline_comment|/* These are in arch/sh/kernel/dma.c: */
-r_extern
+DECL|member|dar
 r_int
 r_int
-id|claim_dma_lock
-c_func
-(paren
-r_void
-)paren
+id|dar
 suffix:semicolon
-r_extern
-r_void
-id|release_dma_lock
-c_func
-(paren
+DECL|member|configured
 r_int
 r_int
-id|flags
-)paren
+id|configured
+suffix:colon
+l_int|1
 suffix:semicolon
-r_extern
-r_void
-id|setup_dma
-c_func
-(paren
-r_int
-r_int
-id|dmanr
-comma
+DECL|member|busy
+id|atomic_t
+id|busy
+suffix:semicolon
+DECL|member|sem
 r_struct
-id|dma_info_t
+id|semaphore
+id|sem
+suffix:semicolon
+DECL|member|ops
+r_struct
+id|dma_ops
 op_star
-id|info
+id|ops
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
 )paren
 suffix:semicolon
+multiline_comment|/* arch/sh/drivers/dma/dma-api.c */
 r_extern
-r_void
-id|enable_dma
+r_int
+id|dma_xfer
 c_func
 (paren
 r_int
 r_int
-id|dmanr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|disable_dma
-c_func
-(paren
-r_int
-r_int
-id|dmanr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|set_dma_mode
-c_func
-(paren
-r_int
-r_int
-id|dmanr
+id|chan
 comma
-r_char
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|to
+comma
+r_int
+id|size
+comma
+r_int
+r_int
 id|mode
 )paren
 suffix:semicolon
+DECL|macro|dma_write
+mdefine_line|#define dma_write(chan, from, to, size)&t;&bslash;&n;&t;dma_xfer(chan, from, to, size, DMA_MODE_WRITE)
+DECL|macro|dma_write_page
+mdefine_line|#define dma_write_page(chan, from, to)&t;&bslash;&n;&t;dma_write(chan, from, to, PAGE_SIZE)
+DECL|macro|dma_read
+mdefine_line|#define dma_read(chan, from, to, size)&t;&bslash;&n;&t;dma_xfer(chan, from, to, size, DMA_MODE_READ)
+DECL|macro|dma_read_page
+mdefine_line|#define dma_read_page(chan, from, to)&t;&bslash;&n;&t;dma_read(chan, from, to, PAGE_SIZE)
 r_extern
-r_void
-id|set_dma_addr
+r_int
+id|request_dma
 c_func
 (paren
 r_int
 r_int
-id|dmanr
+id|chan
 comma
-r_int
-r_int
-id|a
+r_const
+r_char
+op_star
+id|dev_id
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|set_dma_count
+id|free_dma
 c_func
 (paren
 r_int
 r_int
-id|dmanr
-comma
-r_int
-r_int
-id|count
+id|chan
 )paren
 suffix:semicolon
 r_extern
@@ -219,8 +245,62 @@ c_func
 (paren
 r_int
 r_int
-id|dmanr
+id|chan
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|dma_info
+op_star
+id|get_dma_info
+c_func
+(paren
+r_int
+r_int
+id|chan
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dma_wait_for_completion
+c_func
+(paren
+r_int
+r_int
+id|chan
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dma_configure_channel
+c_func
+(paren
+r_int
+r_int
+id|chan
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_dmac
+c_func
+(paren
+r_struct
+id|dma_ops
+op_star
+id|ops
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|dma_info
+id|dma_info
+(braket
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -231,6 +311,5 @@ macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy &t;(0)
 macro_line|#endif
-macro_line|#endif /* CONFIG_SH_MPC1211 */
 macro_line|#endif /* __ASM_SH_DMA_H */
 eof

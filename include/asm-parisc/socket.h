@@ -68,6 +68,8 @@ DECL|macro|SO_DETACH_FILTER
 mdefine_line|#define SO_DETACH_FILTER        0x401b
 DECL|macro|SO_ACCEPTCONN
 mdefine_line|#define SO_ACCEPTCONN&t;&t;0x401c
+DECL|macro|SO_PEERSEC
+mdefine_line|#define SO_PEERSEC&t;&t;0x401d
 macro_line|#if defined(__KERNEL__)
 DECL|macro|SOCK_STREAM
 mdefine_line|#define SOCK_STREAM&t;1&t;/* stream (connection) socket&t;*/

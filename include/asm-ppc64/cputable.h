@@ -129,14 +129,34 @@ DECL|macro|FW_FEATURE_ASR
 mdefine_line|#define FW_FEATURE_ASR&t;&t;(1UL&lt;&lt;5)&t;
 DECL|macro|FW_FEATURE_DEBUG
 mdefine_line|#define FW_FEATURE_DEBUG&t;(1UL&lt;&lt;6)&t;
+DECL|macro|FW_FEATURE_TERM
+mdefine_line|#define FW_FEATURE_TERM&t;&t;(1UL&lt;&lt;7)&t;
 DECL|macro|FW_FEATURE_PERF
-mdefine_line|#define FW_FEATURE_PERF&t;&t;(1UL&lt;&lt;7)&t;
+mdefine_line|#define FW_FEATURE_PERF&t;&t;(1UL&lt;&lt;8)&t;
 DECL|macro|FW_FEATURE_DUMP
-mdefine_line|#define FW_FEATURE_DUMP&t;&t;(1UL&lt;&lt;8)&t;
+mdefine_line|#define FW_FEATURE_DUMP&t;&t;(1UL&lt;&lt;9)&t;
 DECL|macro|FW_FEATURE_INTERRUPT
-mdefine_line|#define FW_FEATURE_INTERRUPT&t;(1UL&lt;&lt;9)&t;
+mdefine_line|#define FW_FEATURE_INTERRUPT&t;(1UL&lt;&lt;10)&t;
 DECL|macro|FW_FEATURE_MIGRATE
-mdefine_line|#define FW_FEATURE_MIGRATE&t;(1UL&lt;&lt;10)&t;
+mdefine_line|#define FW_FEATURE_MIGRATE&t;(1UL&lt;&lt;11)&t;
+DECL|macro|FW_FEATURE_PERFMON
+mdefine_line|#define FW_FEATURE_PERFMON&t;(1UL&lt;&lt;12)&t;
+DECL|macro|FW_FEATURE_CRQ
+mdefine_line|#define FW_FEATURE_CRQ   &t;(1UL&lt;&lt;13)&t;
+DECL|macro|FW_FEATURE_VIO
+mdefine_line|#define FW_FEATURE_VIO   &t;(1UL&lt;&lt;14)&t;
+DECL|macro|FW_FEATURE_RDMA
+mdefine_line|#define FW_FEATURE_RDMA   &t;(1UL&lt;&lt;15)&t;
+DECL|macro|FW_FEATURE_LLAN
+mdefine_line|#define FW_FEATURE_LLAN   &t;(1UL&lt;&lt;16)&t;
+DECL|macro|FW_FEATURE_BULK
+mdefine_line|#define FW_FEATURE_BULK   &t;(1UL&lt;&lt;17)&t;
+DECL|macro|FW_FEATURE_XDABR
+mdefine_line|#define FW_FEATURE_XDABR   &t;(1UL&lt;&lt;18)&t;
+DECL|macro|FW_FEATURE_MULTITCE
+mdefine_line|#define FW_FEATURE_MULTITCE   &t;(1UL&lt;&lt;19)&t;
+DECL|macro|FW_FEATURE_SPLPAR
+mdefine_line|#define FW_FEATURE_SPLPAR   &t;(1UL&lt;&lt;20)&t;
 r_typedef
 r_struct
 (brace
@@ -224,11 +244,16 @@ DECL|macro|BEGIN_FTR_SECTION
 mdefine_line|#define BEGIN_FTR_SECTION&t;&t;98:
 DECL|macro|END_FTR_SECTION
 mdefine_line|#define END_FTR_SECTION(msk, val)&t;&t;&bslash;&n;99:&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.section __ftr_fixup,&quot;a&quot;;&t;&t;&bslash;&n;&t;.align 3;&t;&t;&t;&t;&bslash;&n;&t;.llong msk;&t;&t;&t;        &bslash;&n;&t;.llong val;&t;&t;&t;        &bslash;&n;&t;.llong 98b;&t;&t;&t;        &bslash;&n;&t;.llong 99b;&t; &t;&t;        &bslash;&n;&t;.previous
+macro_line|#else
+DECL|macro|BEGIN_FTR_SECTION
+mdefine_line|#define BEGIN_FTR_SECTION&t;&t;&quot;98:&bslash;n&quot;
+DECL|macro|END_FTR_SECTION
+mdefine_line|#define END_FTR_SECTION(msk, val)&t;&t;&bslash;&n;&quot;99:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;.section __ftr_fixup,&bslash;&quot;a&bslash;&quot;;&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;.align 3;&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&quot;&t;.llong &quot;#msk&quot;;&bslash;n&quot;&t;&t;&t;&bslash;&n;&quot;&t;.llong &quot;#val&quot;;&bslash;n&quot;&t;&t;&t;&bslash;&n;&quot;&t;.llong 98b;&bslash;n&quot;&t;&t;&t;        &bslash;&n;&quot;&t;.llong 99b;&bslash;n&quot;&t; &t;&t;        &bslash;&n;&quot;&t;.previous&bslash;n&quot;
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|END_FTR_SECTION_IFSET
 mdefine_line|#define END_FTR_SECTION_IFSET(msk)&t;END_FTR_SECTION((msk), (msk))
 DECL|macro|END_FTR_SECTION_IFCLR
 mdefine_line|#define END_FTR_SECTION_IFCLR(msk)&t;END_FTR_SECTION((msk), 0)
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_PPC_CPUTABLE_H */
 macro_line|#endif /* __KERNEL__ */
 eof

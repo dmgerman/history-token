@@ -1,29 +1,12 @@
 multiline_comment|/*&n; * HvCallEvent.h&n; * Copyright (C) 2001  Mike Corrigan IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-singleline_comment|//==================================================================
-singleline_comment|//
-singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; interface which is used to
-singleline_comment|//&t;drive the hypervisor from the OS.
-singleline_comment|//
-singleline_comment|//==================================================================
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Standard Includes
-singleline_comment|//-------------------------------------------------------------------
-macro_line|#ifndef  _HVCALLSC_H
-macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
-macro_line|#endif
-macro_line|#ifndef  _HVTYPES_H
-macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#endif
-macro_line|#include &lt;asm/abs_addr.h&gt;
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Other Includes
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Constants
-singleline_comment|//-------------------------------------------------------------------
+multiline_comment|/*&n; *&t;This file contains the &quot;hypervisor call&quot; interface which is used to&n; *&t;drive the hypervisor from the OS.&n; */
 macro_line|#ifndef _HVCALLEVENT_H
 DECL|macro|_HVCALLEVENT_H
 mdefine_line|#define _HVCALLEVENT_H
+multiline_comment|/*&n; * Standard Includes&n; */
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
+macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
+macro_line|#include &lt;asm/abs_addr.h&gt;
 r_struct
 id|HvLpEvent
 suffix:semicolon
@@ -190,7 +173,6 @@ DECL|macro|HvCallEventSetLpEventQueueInterruptProc
 mdefine_line|#define HvCallEventSetLpEventQueueInterruptProc&t;&t;HvCallEvent + 14
 DECL|macro|HvCallEventRouter15
 mdefine_line|#define HvCallEventRouter15&t;&t;&t;&t;HvCallEvent + 15
-singleline_comment|//======================================================================
 DECL|function|HvCallEvent_getOverflowLpEvents
 r_static
 r_inline
@@ -212,7 +194,6 @@ id|queueIndex
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//======================================================================
 DECL|function|HvCallEvent_setInterLpQueueIndex
 r_static
 r_inline
@@ -234,7 +215,6 @@ id|queueIndex
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//======================================================================
 DECL|function|HvCallEvent_setLpEventStack
 r_static
 r_inline
@@ -282,7 +262,6 @@ id|eventStackSize
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//======================================================================
 DECL|function|HvCallEvent_setLpEventQueueInterruptProc
 r_static
 r_inline
@@ -309,7 +288,6 @@ id|lpLogicalProcIndex
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//=====================================================================
 DECL|function|HvCallEvent_signalLpEvent
 r_static
 r_inline
@@ -373,7 +351,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//=====================================================================
 DECL|function|HvCallEvent_signalLpEventFast
 r_static
 r_inline
@@ -499,7 +476,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//====================================================================
 DECL|function|HvCallEvent_ackLpEvent
 r_static
 r_inline
@@ -549,7 +525,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//====================================================================
 DECL|function|HvCallEvent_cancelLpEvent
 r_static
 r_inline
@@ -599,7 +574,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//===================================================================
 DECL|function|HvCallEvent_getSourceLpInstanceId
 r_static
 r_inline
@@ -634,7 +608,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//===================================================================
 DECL|function|HvCallEvent_getTargetLpInstanceId
 r_static
 r_inline
@@ -669,7 +642,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//===================================================================
 DECL|function|HvCallEvent_openLpEventPath
 r_static
 r_inline
@@ -696,7 +668,6 @@ id|type
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//===================================================================
 DECL|function|HvCallEvent_closeLpEventPath
 r_static
 r_inline
@@ -723,7 +694,6 @@ id|type
 suffix:semicolon
 singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
-singleline_comment|//===================================================================
 DECL|function|HvCallEvent_dmaBufList
 r_static
 r_inline
@@ -752,8 +722,7 @@ comma
 id|HvLpDma_AddressType
 id|remoteAddressType
 comma
-singleline_comment|// Do these need to be converted to
-singleline_comment|// absolute addresses?
+multiline_comment|/* Do these need to be converted to absolute addresses? */
 id|u64
 id|localBufList
 comma
@@ -840,7 +809,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//=================================================================
 DECL|function|HvCallEvent_dmaSingle
 r_static
 r_inline
@@ -955,7 +923,6 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//=================================================================
 DECL|function|HvCallEvent_dmaToSp
 r_static
 r_inline
@@ -1019,7 +986,5 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-singleline_comment|//================================================================
-macro_line|#endif 
-singleline_comment|// _HVCALLEVENT_H
+macro_line|#endif /* _HVCALLEVENT_H */
 eof

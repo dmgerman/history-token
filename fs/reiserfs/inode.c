@@ -10491,7 +10491,7 @@ id|inode
 op_star
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_mapping-&gt;host
+id|file-&gt;f_mapping-&gt;host
 suffix:semicolon
 r_return
 id|blockdev_direct_IO

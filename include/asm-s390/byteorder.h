@@ -8,7 +8,6 @@ macro_line|#ifdef __s390x__
 DECL|function|___arch__swab64p
 r_static
 id|__inline__
-id|__const__
 id|__u64
 id|___arch__swab64p
 c_func
@@ -45,7 +44,6 @@ suffix:semicolon
 DECL|function|___arch__swab64
 r_static
 id|__inline__
-id|__const__
 id|__u64
 id|___arch__swab64
 c_func
@@ -103,7 +101,6 @@ macro_line|#endif /* __s390x__ */
 DECL|function|___arch__swab32p
 r_static
 id|__inline__
-id|__const__
 id|__u32
 id|___arch__swab32p
 c_func
@@ -161,7 +158,6 @@ suffix:semicolon
 DECL|function|___arch__swab32
 r_static
 id|__inline__
-id|__const__
 id|__u32
 id|___arch__swab32
 c_func
@@ -229,7 +225,6 @@ suffix:semicolon
 DECL|function|___arch__swab16p
 r_static
 id|__inline__
-id|__const__
 id|__u16
 id|___arch__swab16p
 c_func
@@ -285,7 +280,6 @@ suffix:semicolon
 DECL|function|___arch__swab16
 r_static
 id|__inline__
-id|__const__
 id|__u16
 id|___arch__swab16
 c_func

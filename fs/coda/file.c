@@ -329,6 +329,10 @@ id|host_inode
 op_assign
 id|host_file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
+id|coda_file-&gt;f_mapping
+op_assign
+id|host_file-&gt;f_mapping
+suffix:semicolon
 r_if
 c_cond
 (paren

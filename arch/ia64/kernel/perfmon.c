@@ -7425,6 +7425,10 @@ c_func
 id|pfmfs_mnt
 )paren
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
+suffix:semicolon
 id|file-&gt;f_op
 op_assign
 op_amp

@@ -1,10 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
@@ -123,6 +122,9 @@ r_return
 suffix:semicolon
 id|xswitch_info-&gt;vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 op_assign
@@ -154,6 +156,9 @@ suffix:semicolon
 r_return
 id|xswitch_info-&gt;vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 suffix:semicolon
@@ -185,6 +190,9 @@ r_return
 suffix:semicolon
 id|xswitch_info-&gt;master_vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 op_assign
@@ -216,6 +224,9 @@ suffix:semicolon
 r_return
 id|xswitch_info-&gt;master_vhdl
 (braket
+(paren
+r_int
+)paren
 id|port
 )braket
 suffix:semicolon

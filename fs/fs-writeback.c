@@ -1608,6 +1608,11 @@ id|inode
 op_star
 id|inode
 comma
+r_struct
+id|address_space
+op_star
+id|mapping
+comma
 r_int
 id|what
 )paren
@@ -1641,7 +1646,7 @@ op_assign
 id|filemap_fdatawrite
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -1661,7 +1666,7 @@ op_assign
 id|sync_mapping_buffers
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if
@@ -1688,7 +1693,7 @@ op_assign
 id|filemap_fdatawait
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.7 2003/05/04 19:29:53 lethal Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
+multiline_comment|/* $Id: traps.c,v 1.14 2003/11/14 18:40:10 lethal Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
 multiline_comment|/*&n; * &squot;Traps.c&squot; handles hardware traps and faults after we have saved some&n; * state in &squot;entry.S&squot;.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -14,11 +14,13 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#ifdef CONFIG_SH_KGDB
 macro_line|#include &lt;asm/kgdb.h&gt;
 DECL|macro|CHK_REMOTE_DEBUG
@@ -28,7 +30,18 @@ DECL|macro|CHK_REMOTE_DEBUG
 mdefine_line|#define CHK_REMOTE_DEBUG(regs)
 macro_line|#endif
 DECL|macro|DO_ERROR
-mdefine_line|#define DO_ERROR(trapnr, signr, str, name, tsk) &bslash;&n;asmlinkage void do_##name(unsigned long r4, unsigned long r5, &bslash;&n;&t;&t;&t;  unsigned long r6, unsigned long r7, &bslash;&n;&t;&t;&t;  struct pt_regs regs) &bslash;&n;{ &bslash;&n;&t;unsigned long error_code; &bslash;&n; &bslash;&n;&t;asm volatile(&quot;stc&t;r2_bank, %0&quot;: &quot;=r&quot; (error_code)); &bslash;&n;&t;local_irq_enable(); &bslash;&n;&t;tsk-&gt;thread.error_code = error_code; &bslash;&n;&t;tsk-&gt;thread.trap_no = trapnr; &bslash;&n;        CHK_REMOTE_DEBUG(&amp;regs); &bslash;&n;&t;force_sig(signr, tsk); &bslash;&n;&t;die_if_no_fixup(str,&amp;regs,error_code); &bslash;&n;}
+mdefine_line|#define DO_ERROR(trapnr, signr, str, name, tsk)&t;&t;&t;&t;&bslash;&n;asmlinkage void do_##name(unsigned long r4, unsigned long r5,&t;&t;&bslash;&n;&t;&t;&t;  unsigned long r6, unsigned long r7,&t;&t;&bslash;&n;&t;&t;&t;  struct pt_regs regs)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long error_code;&t;&t;&t;&t;&t;&bslash;&n; &t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Check if it&squot;s a DSP instruction */&t;&t;&t;&t;&bslash;&n; &t;if (is_dsp_inst(&amp;regs)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/* Enable DSP mode, and restart instruction. */&t;&t;&bslash;&n;&t;&t;regs.sr |= SR_DSP;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;stc&t;r2_bank, %0&quot;: &quot;=r&quot; (error_code));&t;&bslash;&n;&t;local_irq_enable();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;tsk-&gt;thread.error_code = error_code;&t;&t;&t;&t;&bslash;&n;&t;tsk-&gt;thread.trap_no = trapnr;&t;&t;&t;&t;&t;&bslash;&n;        CHK_REMOTE_DEBUG(&amp;regs);&t;&t;&t;&t;&t;&bslash;&n;&t;force_sig(signr, tsk);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;die_if_no_fixup(str,&amp;regs,error_code);&t;&t;&t;&t;&bslash;&n;}
+macro_line|#ifdef CONFIG_CPU_SH2
+DECL|macro|TRAP_RESERVED_INST
+mdefine_line|#define TRAP_RESERVED_INST&t;4
+DECL|macro|TRAP_ILLEGAL_SLOT_INST
+mdefine_line|#define TRAP_ILLEGAL_SLOT_INST&t;6
+macro_line|#else
+DECL|macro|TRAP_RESERVED_INST
+mdefine_line|#define TRAP_RESERVED_INST&t;12
+DECL|macro|TRAP_ILLEGAL_SLOT_INST
+mdefine_line|#define TRAP_ILLEGAL_SLOT_INST&t;13
+macro_line|#endif
 multiline_comment|/*&n; * These constants are for searching for possible module text&n; * segments.  VMALLOC_OFFSET comes from mm/vmalloc.c; MODULE_RANGE is&n; * a guess of how much space is likely to be vmalloced.&n; */
 DECL|macro|VMALLOC_OFFSET
 mdefine_line|#define VMALLOC_OFFSET (8*1024*1024)
@@ -2034,10 +2047,98 @@ id|oldfs
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_SH_DSP
+multiline_comment|/*&n; *&t;SH-DSP support gerg@snapgear.com.&n; */
+DECL|function|is_dsp_inst
+r_int
+id|is_dsp_inst
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|inst
+suffix:semicolon
+multiline_comment|/* &n;&t; * Safe guard if DSP mode is already enabled or we&squot;re lacking&n;&t; * the DSP altogether.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|CPU_HAS_DSP
+comma
+op_amp
+(paren
+id|cpu_data-&gt;flags
+)paren
+)paren
+op_logical_or
+(paren
+id|regs-&gt;sr
+op_amp
+id|SR_DSP
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|get_user
+c_func
+(paren
+id|inst
+comma
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|regs-&gt;pc
+)paren
+)paren
+suffix:semicolon
+id|inst
+op_and_assign
+l_int|0xf000
+suffix:semicolon
+multiline_comment|/* Check for any type of DSP or support instruction */
+r_if
+c_cond
+(paren
+(paren
+id|inst
+op_eq
+l_int|0xf000
+)paren
+op_logical_or
+(paren
+id|inst
+op_eq
+l_int|0x4000
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|is_dsp_inst
+mdefine_line|#define is_dsp_inst(regs)&t;(0)
+macro_line|#endif /* CONFIG_SH_DSP */
 id|DO_ERROR
 c_func
 (paren
-l_int|12
+id|TRAP_RESERVED_INST
 comma
 id|SIGILL
 comma
@@ -2050,7 +2151,7 @@ id|current
 id|DO_ERROR
 c_func
 (paren
-l_int|13
+id|TRAP_ILLEGAL_SLOT_INST
 comma
 id|SIGILL
 comma
@@ -2130,13 +2231,12 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Read the old value of the VBR register to initialise&n;&t; * the vector through which debug and BIOS traps are&n;&t; * delegated by the Linux trap handler.&n;&t; */
-(brace
 r_register
 r_int
 r_int
 id|vbr
 suffix:semicolon
+multiline_comment|/*&n;&t; * Read the old value of the VBR register to initialise&n;&t; * the vector through which debug and BIOS traps are&n;&t; * delegated by the Linux trap handler.&n;&t; */
 id|asm
 r_volatile
 (paren
@@ -2172,7 +2272,6 @@ r_int
 id|gdb_vbr_vector
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 DECL|function|per_cpu_trap_init
@@ -2228,12 +2327,11 @@ r_void
 op_star
 id|exception_handling_table
 (braket
-l_int|14
 )braket
 suffix:semicolon
 id|exception_handling_table
 (braket
-l_int|12
+id|TRAP_RESERVED_INST
 )braket
 op_assign
 (paren
@@ -2244,7 +2342,7 @@ id|do_reserved_inst
 suffix:semicolon
 id|exception_handling_table
 (braket
-l_int|13
+id|TRAP_ILLEGAL_SLOT_INST
 )braket
 op_assign
 (paren
@@ -2253,6 +2351,50 @@ op_star
 )paren
 id|do_illegal_slot_inst
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_SH4
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|CPU_HAS_FPU
+comma
+op_amp
+(paren
+id|cpu_data-&gt;flags
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* For SH-4 lacking an FPU, treat floating point instructions&n;&t;&t;   as reserved. */
+multiline_comment|/* entry 64 corresponds to EXPEVT=0x800 */
+id|exception_handling_table
+(braket
+l_int|64
+)braket
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|do_reserved_inst
+suffix:semicolon
+id|exception_handling_table
+(braket
+l_int|65
+)braket
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|do_illegal_slot_inst
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* Setup VBR for boot cpu */
 id|per_cpu_trap_init
 c_func
 (paren
@@ -2293,12 +2435,6 @@ r_int
 id|module_end
 op_assign
 id|VMALLOC_END
-suffix:semicolon
-r_extern
-r_int
-id|_text
-comma
-id|_etext
 suffix:semicolon
 r_int
 id|i
@@ -2349,20 +2485,22 @@ c_func
 l_string|&quot;&bslash;nCall trace: &quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KALLSYMS
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
+op_logical_neg
+id|kstack_end
+c_func
 (paren
-(paren
-r_int
-)paren
 id|stack
-op_amp
-(paren
-id|THREAD_SIZE
-op_minus
-l_int|1
-)paren
 )paren
 )paren
 (brace
@@ -2383,7 +2521,6 @@ op_ge
 r_int
 r_int
 )paren
-op_amp
 id|_text
 )paren
 op_logical_and
@@ -2394,7 +2531,6 @@ op_le
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 )paren
 )paren
@@ -2415,6 +2551,7 @@ id|module_end
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * For 80-columns display, 6 entry is maximum.&n;&t;&t;&t; * NOTE: &squot;[&lt;8c00abcd&gt;] &squot; consumes 13 columns .&n;&t;&t;&t; */
+macro_line|#ifndef CONFIG_KALLSYMS
 r_if
 c_cond
 (paren
@@ -2436,10 +2573,19 @@ c_func
 l_string|&quot;&bslash;n       &quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
 l_string|&quot;[&lt;%08lx&gt;] &quot;
+comma
+id|addr
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|addr
 )paren

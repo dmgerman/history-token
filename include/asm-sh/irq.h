@@ -1,7 +1,7 @@
 macro_line|#ifndef __ASM_SH_IRQ_H
 DECL|macro|__ASM_SH_IRQ_H
 mdefine_line|#define __ASM_SH_IRQ_H
-multiline_comment|/*&n; *&n; * linux/include/asm-sh/irq.h&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/include/asm-sh/irq.h&n; *&n; * Copyright (C) 1999  Niibe Yutaka &amp; Takeshi Yaegashi&n; * Copyright (C) 2000  Kazumoto Kojima&n; * Copyright (C) 2003  Paul Mundt&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;&t;&t;/* for pt_regs */
@@ -17,6 +17,8 @@ DECL|macro|INTC_IPRB
 mdefine_line|#define INTC_IPRB&t;0xffd00008UL
 DECL|macro|INTC_IPRC
 mdefine_line|#define INTC_IPRC&t;0xffd0000cUL
+DECL|macro|INTC_IPRD
+mdefine_line|#define INTC_IPRD&t;0xffd00010UL
 macro_line|#endif
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ&t;16
@@ -58,6 +60,14 @@ DECL|macro|DMTE2_IRQ
 mdefine_line|#define DMTE2_IRQ&t;36
 DECL|macro|DMTE3_IRQ
 mdefine_line|#define DMTE3_IRQ&t;37
+DECL|macro|DMTE4_IRQ
+mdefine_line|#define DMTE4_IRQ&t;44&t;/* 7751R only */
+DECL|macro|DMTE5_IRQ
+mdefine_line|#define DMTE5_IRQ&t;45&t;/* 7751R only */
+DECL|macro|DMTE6_IRQ
+mdefine_line|#define DMTE6_IRQ&t;46&t;/* 7751R only */
+DECL|macro|DMTE7_IRQ
+mdefine_line|#define DMTE7_IRQ&t;47&t;/* 7751R only */
 DECL|macro|DMAE_IRQ
 mdefine_line|#define DMAE_IRQ&t;38
 DECL|macro|DMA_IPR_ADDR
@@ -173,6 +183,9 @@ singleline_comment|// Actually 44
 macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7751)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 72
+macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7760)
+DECL|macro|ONCHIP_NR_IRQS
+macro_line|#  define ONCHIP_NR_IRQS 110
 macro_line|# elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 144
@@ -307,7 +320,30 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7604)
+DECL|macro|INTC_IPRA
+mdefine_line|#define INTC_IPRA&t;0xfffffee2UL
+DECL|macro|INTC_IPRB
+mdefine_line|#define INTC_IPRB&t;0xfffffe60UL
+DECL|macro|INTC_VCRA
+mdefine_line|#define INTC_VCRA&t;0xfffffe62UL
+DECL|macro|INTC_VCRB
+mdefine_line|#define INTC_VCRB&t;0xfffffe64UL
+DECL|macro|INTC_VCRC
+mdefine_line|#define INTC_VCRC&t;0xfffffe66UL
+DECL|macro|INTC_VCRD
+mdefine_line|#define INTC_VCRD&t;0xfffffe68UL
+DECL|macro|INTC_VCRWDT
+mdefine_line|#define INTC_VCRWDT&t;0xfffffee4UL
+DECL|macro|INTC_VCRDIV
+mdefine_line|#define INTC_VCRDIV&t;0xffffff0cUL
+DECL|macro|INTC_VCRDMA0
+mdefine_line|#define INTC_VCRDMA0&t;0xffffffa0UL
+DECL|macro|INTC_VCRDMA1
+mdefine_line|#define INTC_VCRDMA1&t;0xffffffa8UL
+DECL|macro|INTC_ICR
+mdefine_line|#define INTC_ICR&t;0xfffffee0UL
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
 DECL|macro|INTC_IRR0
 mdefine_line|#define INTC_IRR0&t;0xa4000004UL
 DECL|macro|INTC_IRR1
@@ -483,136 +519,11 @@ id|priority
 )paren
 suffix:semicolon
 macro_line|#endif                                                                        
-macro_line|#ifdef CONFIG_SH_GENERIC
-DECL|function|irq_demux
+DECL|function|generic_irq_demux
 r_static
-id|__inline__
+r_inline
 r_int
-id|irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sh_mv.mv_irq_demux
-)paren
-(brace
-id|irq
-op_assign
-id|sh_mv
-dot
-id|mv_irq_demux
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-)brace
-r_return
-id|__irq_demux
-c_func
-(paren
-id|irq
-)paren
-suffix:semicolon
-)brace
-macro_line|#elif defined(CONFIG_SH_BIGSUR)
-r_extern
-r_int
-id|bigsur_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux(irq) bigsur_irq_demux(irq)
-macro_line|#elif defined(CONFIG_HD64461)
-r_extern
-r_int
-id|hd64461_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux(irq) hd64461_irq_demux(irq)
-macro_line|#elif defined(CONFIG_HD64465)
-r_extern
-r_int
-id|hd64465_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux(irq) hd64465_irq_demux(irq)
-macro_line|#elif defined(CONFIG_SH_EC3104)
-r_extern
-r_int
-id|ec3104_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux ec3104_irq_demux
-macro_line|#elif defined(CONFIG_SH_CAT68701)
-r_extern
-r_int
-id|cat68701_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux cat68701_irq_demux
-macro_line|#elif defined(CONFIG_SH_DREAMCAST)
-r_extern
-r_int
-id|systemasic_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux systemasic_irq_demux
-macro_line|#elif defined(CONFIG_SH_MPC1211)
-r_extern
-r_int
-id|mpc1211_irq_demux
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux mpc1211_irq_demux
-macro_line|#else
-DECL|macro|irq_demux
-mdefine_line|#define irq_demux(irq) __irq_demux(irq)
-macro_line|#endif
-DECL|function|irq_canonicalize
-r_static
-id|__inline__
-r_int
-id|irq_canonicalize
+id|generic_irq_demux
 c_func
 (paren
 r_int
@@ -623,5 +534,9 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(irq)&t;(irq)
+DECL|macro|irq_demux
+mdefine_line|#define irq_demux(irq)&t;&t;__irq_demux(sh_mv.mv_irq_demux(irq))
 macro_line|#endif /* __ASM_SH_IRQ_H */
 eof

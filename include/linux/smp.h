@@ -214,8 +214,6 @@ id|cpu
 )brace
 DECL|macro|num_booting_cpus
 mdefine_line|#define num_booting_cpus()&t;&t;&t;1
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu)&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
 DECL|macro|smp_prepare_boot_cpu
 mdefine_line|#define smp_prepare_boot_cpu()&t;&t;&t;do {} while (0)
 macro_line|#endif /* !SMP */

@@ -51,6 +51,13 @@ r_struct
 id|hw_interrupt_type
 id|no_irq_type
 suffix:semicolon
+DECL|variable|sh_mv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sh_mv
+)paren
+suffix:semicolon
 multiline_comment|/* platform dependent support */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
@@ -269,6 +276,7 @@ c_func
 id|boot_cpu_data
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MMU
 DECL|variable|get_vm_area
 id|EXPORT_SYMBOL
 c_func
@@ -276,6 +284,7 @@ c_func
 id|get_vm_area
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* semaphore exports */
 DECL|variable|__up
 id|EXPORT_SYMBOL

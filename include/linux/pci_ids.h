@@ -913,6 +913,8 @@ DECL|macro|PCI_DEVICE_ID_MATROX_VIA
 mdefine_line|#define PCI_DEVICE_ID_MATROX_VIA&t;0x4536
 DECL|macro|PCI_VENDOR_ID_CT
 mdefine_line|#define PCI_VENDOR_ID_CT&t;&t;0x102c
+DECL|macro|PCI_DEVICE_ID_CT_69000
+mdefine_line|#define PCI_DEVICE_ID_CT_69000&t;&t;0x00c0
 DECL|macro|PCI_DEVICE_ID_CT_65545
 mdefine_line|#define PCI_DEVICE_ID_CT_65545&t;&t;0x00d8
 DECL|macro|PCI_DEVICE_ID_CT_65548
@@ -2550,6 +2552,10 @@ DECL|macro|PCI_DEVICE_ID_IKON_10115
 mdefine_line|#define PCI_DEVICE_ID_IKON_10115&t;0x0115
 DECL|macro|PCI_DEVICE_ID_IKON_10117
 mdefine_line|#define PCI_DEVICE_ID_IKON_10117&t;0x0117
+DECL|macro|PCI_VENDOR_ID_SEGA
+mdefine_line|#define PCI_VENDOR_ID_SEGA&t;&t;0x11db
+DECL|macro|PCI_DEVICE_ID_SEGA_BBA
+mdefine_line|#define PCI_DEVICE_ID_SEGA_BBA&t;&t;0x1234
 DECL|macro|PCI_VENDOR_ID_ZORAN
 mdefine_line|#define PCI_VENDOR_ID_ZORAN&t;&t;0x11de
 DECL|macro|PCI_DEVICE_ID_ZORAN_36057

@@ -17,7 +17,35 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
+(paren
+op_star
 id|clear_page
+)paren
+(paren
+r_void
+op_star
+id|to
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|copy_page
+)paren
+(paren
+r_void
+op_star
+id|to
+comma
+r_void
+op_star
+id|from
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|clear_page_slow
 c_func
 (paren
 r_void
@@ -27,7 +55,7 @@ id|to
 suffix:semicolon
 r_extern
 r_void
-id|copy_page
+id|copy_page_slow
 c_func
 (paren
 r_void
@@ -39,7 +67,7 @@ op_star
 id|from
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH3)
+macro_line|#if defined(CONFIG_CPU_SH2) || defined(CONFIG_CPU_SH3) || !defined(CONFIG_MMU)
 DECL|macro|clear_user_page
 mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
@@ -192,7 +220,7 @@ macro_line|#endif /* !__ASSEMBLY__ */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN
 mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
-multiline_comment|/*&n; * IF YOU CHANGE THIS, PLEASE ALSO CHANGE&n; *&n; *&t;arch/sh/vmlinux.lds.S&n; *&n; * which has the same constant encoded..&n; */
+multiline_comment|/*&n; * IF YOU CHANGE THIS, PLEASE ALSO CHANGE&n; *&n; *&t;arch/sh/kernel/vmlinux.lds.S&n; *&n; * which has the same constant encoded..&n; */
 DECL|macro|__MEMORY_START
 mdefine_line|#define __MEMORY_START&t;&t;CONFIG_MEMORY_START
 DECL|macro|__MEMORY_SIZE

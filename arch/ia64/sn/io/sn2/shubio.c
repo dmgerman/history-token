@@ -1,11 +1,10 @@
-multiline_comment|/* $Id: shubio.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000,2002-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000,2002-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
@@ -337,18 +336,6 @@ id|p
 suffix:semicolon
 id|caddr_t
 id|cp
-suffix:semicolon
-id|IOERROR_DUMP
-c_func
-(paren
-l_string|&quot;hub_ioerror_handler&quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
 suffix:semicolon
 id|hubinfo_get
 c_func
@@ -806,18 +793,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|IOERROR_DUMP
-c_func
-(paren
-l_string|&quot;hub_ioerror_handler&quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
 id|IOERR_PRINTF
 c_func
 (paren
@@ -872,30 +847,6 @@ id|ioerror
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|error_state_get
-c_func
-(paren
-id|hub_v
-)paren
-op_eq
-id|ERROR_STATE_ACTION
-)paren
-id|ioerror_dump
-c_func
-(paren
-l_string|&quot;No outbound widget&quot;
-l_string|&quot; access - &quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
 r_return
 id|IOERROR_HANDLED
 suffix:semicolon
@@ -970,30 +921,6 @@ id|ioerror
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|error_state_get
-c_func
-(paren
-id|hub_v
-)paren
-op_eq
-id|ERROR_STATE_ACTION
-)paren
-id|ioerror_dump
-c_func
-(paren
-l_string|&quot;No outbound widget&quot;
-l_string|&quot; access - &quot;
-comma
-id|error_code
-comma
-id|mode
-comma
-id|ioerror
-)paren
-suffix:semicolon
 r_return
 id|IOERROR_HANDLED
 suffix:semicolon
@@ -1164,10 +1091,10 @@ id|new_state
 id|error_state_t
 id|old_state
 suffix:semicolon
-id|boolean_t
+r_int
 id|replace
 op_assign
-id|B_TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Check if we have a valid hwgraph vertex */
 r_if
@@ -1232,7 +1159,7 @@ id|GRAPH_SUCCESS
 )paren
 id|replace
 op_assign
-id|B_FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond

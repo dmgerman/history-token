@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sh-sci.h,v 1.8 2000/03/08 15:19:39 gniibe Exp $&n; *&n; *  linux/drivers/char/sh-sci.h&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Greg Banks&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *&n; */
+multiline_comment|/* $Id: sh-sci.h,v 1.6 2003/10/13 01:11:11 lethal Exp $&n; *&n; *  linux/drivers/char/sh-sci.h&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Greg Banks&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *  Modified to support SH7760 SCIF. Paul Mundt (Oct 2003).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Values for sci_port-&gt;type */
 DECL|macro|PORT_SCI
@@ -25,6 +25,12 @@ DECL|macro|SH4_SCIF_IRQS
 mdefine_line|#define SH4_SCIF_IRQS { 40,  41,  43,  42 }
 DECL|macro|STB1_SCIF1_IRQS
 mdefine_line|#define STB1_SCIF1_IRQS {23, 24,  26,  25 }
+DECL|macro|SH7760_SCIF0_IRQS
+mdefine_line|#define SH7760_SCIF0_IRQS { 52, 53, 55, 54 }
+DECL|macro|SH7760_SCIF1_IRQS
+mdefine_line|#define SH7760_SCIF1_IRQS { 72, 73, 75, 74 }
+DECL|macro|SH7760_SCIF2_IRQS
+mdefine_line|#define SH7760_SCIF2_IRQS { 76, 77, 79, 78 }
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7708)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 1
@@ -64,6 +70,23 @@ DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port) (((port)-&gt;type == PORT_SCI) ? &bslash;&n;&t;0x30 /* TIE=0,RIE=0,TE=1,RE=1 */ : &bslash;&n;&t;0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */ )
 DECL|macro|SCI_AND_SCIF
 macro_line|# define SCI_AND_SCIF
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7760)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 3
+DECL|macro|SCI_INIT
+macro_line|# define SCI_INIT { &bslash;&n;  { {}, PORT_SCIF, 0xfe600000, SH7760_SCIF0_IRQS, sci_init_pins_scif }, &bslash;&n;  { {}, PORT_SCIF, 0xfe610000, SH7760_SCIF1_IRQS, sci_init_pins_scif }, &bslash;&n;  { {}, PORT_SCIF, 0xfe620000, SH7760_SCIF2_IRQS, sci_init_pins_scif }  &bslash;&n;}
+DECL|macro|SCSPTR0
+macro_line|# define SCSPTR0 0xfe600024 /* 16 bit SCIF */
+DECL|macro|SCSPTR1
+macro_line|# define SCSPTR1 0xfe610024 /* 16 bit SCIF */
+DECL|macro|SCSPTR2
+macro_line|# define SCSPTR2 0xfe620024 /* 16 bit SCIF */
+DECL|macro|SCIF_ORDER
+macro_line|# define SCIF_ORDER 0x0001  /* overrun error bit */
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port)          0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */
+DECL|macro|SCIF_ONLY
+macro_line|# define SCIF_ONLY
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 2
@@ -222,11 +245,6 @@ mdefine_line|#define SCI_MINOR_START&t;&t;8
 multiline_comment|/* Generic serial flags */
 DECL|macro|SCI_RX_THROTTLE
 mdefine_line|#define SCI_RX_THROTTLE&t;&t;0x0000001
-multiline_comment|/* generic serial tty */
-DECL|macro|O_OTHER
-mdefine_line|#define O_OTHER(tty)    &bslash;&n;      ((O_OLCUC(tty))  ||&bslash;&n;      (O_ONLCR(tty))   ||&bslash;&n;      (O_OCRNL(tty))   ||&bslash;&n;      (O_ONOCR(tty))   ||&bslash;&n;      (O_ONLRET(tty))  ||&bslash;&n;      (O_OFILL(tty))   ||&bslash;&n;      (O_OFDEL(tty))   ||&bslash;&n;      (O_NLDLY(tty))   ||&bslash;&n;      (O_CRDLY(tty))   ||&bslash;&n;      (O_TABDLY(tty))  ||&bslash;&n;      (O_BSDLY(tty))   ||&bslash;&n;      (O_VTDLY(tty))   ||&bslash;&n;      (O_FFDLY(tty)))
-DECL|macro|I_OTHER
-mdefine_line|#define I_OTHER(tty)    &bslash;&n;      ((I_INLCR(tty))  ||&bslash;&n;      (I_IGNCR(tty))   ||&bslash;&n;      (I_ICRNL(tty))   ||&bslash;&n;      (I_IUCLC(tty))   ||&bslash;&n;      (L_ISIG(tty)))
 DECL|macro|SCI_MAGIC
 mdefine_line|#define SCI_MAGIC 0xbabeface
 multiline_comment|/*&n; * Events are used to schedule things to happen at timer-interrupt&n; * time, instead of at rs interrupt time.&n; */
@@ -296,6 +314,10 @@ r_int
 r_int
 id|event
 suffix:semicolon
+DECL|member|break_flag
+r_int
+id|break_flag
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SCI_IN
@@ -306,7 +328,7 @@ DECL|macro|CPU_SCIx_FNS
 mdefine_line|#define CPU_SCIx_FNS(name, sci_offset, sci_size, scif_offset, scif_size)&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (port-&gt;type == PORT_SCI) { &t;&t;&t;&t;&t;&bslash;&n;      SCI_IN(sci_size, sci_offset)&t;&t;&t;&t;&t;&bslash;&n;    } else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      SCI_IN(scif_size, scif_offset);&t;&t; &t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (port-&gt;type == PORT_SCI) {&t;&t;&t;&t;&t;&bslash;&n;      SCI_OUT(sci_size, sci_offset, value)&t;&t;&t;&t;&bslash;&n;    } else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      SCI_OUT(scif_size, scif_offset, value);&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }
 DECL|macro|CPU_SCIF_FNS
 mdefine_line|#define CPU_SCIF_FNS(name, scif_offset, scif_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(scif_size, scif_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(scif_size, scif_offset, value);&t;&t;&t;&t;&bslash;&n;  }
-macro_line|#ifdef __sh3__
+macro_line|#ifdef CONFIG_CPU_SH3
 DECL|macro|SCIx_FNS
 mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh3_scif_offset, sh3_scif_size)
 DECL|macro|SCIF_FNS
@@ -676,6 +698,86 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7760)
+r_static
+r_inline
+r_int
+id|sci_rxd_in
+c_func
+(paren
+r_struct
+id|sci_port
+op_star
+id|port
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|port-&gt;base
+op_eq
+l_int|0xfe600000
+)paren
+r_return
+id|ctrl_inw
+c_func
+(paren
+id|SCSPTR0
+)paren
+op_amp
+l_int|0x0001
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
+r_if
+c_cond
+(paren
+id|port-&gt;base
+op_eq
+l_int|0xfe610000
+)paren
+r_return
+id|ctrl_inw
+c_func
+(paren
+id|SCSPTR1
+)paren
+op_amp
+l_int|0x0001
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
+r_if
+c_cond
+(paren
+id|port-&gt;base
+op_eq
+l_int|0xfe620000
+)paren
+r_return
+id|ctrl_inw
+c_func
+(paren
+id|SCSPTR2
+)paren
+op_amp
+l_int|0x0001
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/* SCIF */
+)brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 r_static
 r_inline
@@ -748,4 +850,6 @@ DECL|macro|BPS_57600
 mdefine_line|#define BPS_57600      SCBRR_VALUE(57600)
 DECL|macro|BPS_115200
 mdefine_line|#define BPS_115200     SCBRR_VALUE(115200)
+DECL|macro|BPS_230400
+mdefine_line|#define BPS_230400     SCBRR_VALUE(230400)
 eof

@@ -2289,9 +2289,6 @@ id|zone
 op_star
 op_star
 id|zones
-comma
-op_star
-id|classzone
 suffix:semicolon
 r_struct
 id|page
@@ -2344,17 +2341,13 @@ op_assign
 id|zonelist-&gt;zones
 suffix:semicolon
 multiline_comment|/* the list of zones suitable for gfp_mask */
-id|classzone
-op_assign
+r_if
+c_cond
+(paren
 id|zones
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|classzone
 op_eq
 l_int|NULL
 )paren
@@ -2714,7 +2707,7 @@ suffix:semicolon
 id|try_to_free_pages
 c_func
 (paren
-id|classzone
+id|zones
 comma
 id|gfp_mask
 comma
@@ -2892,11 +2885,17 @@ id|gfp_mask
 op_amp
 id|__GFP_NOWARN
 )paren
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: page allocation failure.&quot;
 l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
 comma
@@ -2905,6 +2904,11 @@ comma
 id|order
 comma
 id|gfp_mask
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -3659,7 +3663,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu
@@ -3698,7 +3702,7 @@ id|cpu
 OL
 id|NR_CPUS
 op_logical_and
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu

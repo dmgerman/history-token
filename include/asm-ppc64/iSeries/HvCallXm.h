@@ -8,27 +8,20 @@ singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; inter
 singleline_comment|//&t;drive the hypervisor from SLIC.
 singleline_comment|//
 singleline_comment|//============================================================================
+macro_line|#ifndef _HVCALLXM_H
+DECL|macro|_HVCALLXM_H
+mdefine_line|#define _HVCALLXM_H
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|// Forward declarations 
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|// Standard Includes
 singleline_comment|//-------------------------------------------------------------------
-macro_line|#ifndef  _HVCALLSC_H
-macro_line|#include &quot;HvCallSc.h&quot;
-macro_line|#endif
-macro_line|#ifndef  _HVTYPES_H
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#endif
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Other Includes
-singleline_comment|//-------------------------------------------------------------------
 singleline_comment|//-----------------------------------------------------------------------------
 singleline_comment|// Constants
 singleline_comment|//-----------------------------------------------------------------------------
-macro_line|#ifndef _HVCALLXM_H
-DECL|macro|_HVCALLXM_H
-mdefine_line|#define _HVCALLXM_H
 DECL|macro|HvCallXmGetTceTableParms
 mdefine_line|#define HvCallXmGetTceTableParms&t;HvCallXm +  0
 DECL|macro|HvCallXmTestBus
@@ -324,6 +317,5 @@ id|retVal
 suffix:semicolon
 )brace
 singleline_comment|//=====================================================================================
-macro_line|#endif 
-singleline_comment|// _HVCALLXM_H
+macro_line|#endif /* _HVCALLXM_H */
 eof

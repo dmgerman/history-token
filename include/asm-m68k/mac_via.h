@@ -199,8 +199,8 @@ id|__u8
 id|rbv_clear
 suffix:semicolon
 DECL|function|rbv_set_video_bpp
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|rbv_set_video_bpp
 c_func

@@ -799,6 +799,18 @@ mdefine_line|#define DOIO_DENY_PREFETCH&t; 0x0002 /* don&squot;t allow for CCW p
 DECL|macro|DOIO_SUPPRESS_INTER
 mdefine_line|#define DOIO_SUPPRESS_INTER&t; 0x0004 /* suppress intermediate inter. */
 multiline_comment|/* ... for suspended CCWs */
+multiline_comment|/* Device or subchannel gone. */
+DECL|macro|CIO_GONE
+mdefine_line|#define CIO_GONE       0x0001
+multiline_comment|/* No path to device. */
+DECL|macro|CIO_NO_PATH
+mdefine_line|#define CIO_NO_PATH    0x0002
+multiline_comment|/* Device has appeared. */
+DECL|macro|CIO_OPER
+mdefine_line|#define CIO_OPER       0x0004
+multiline_comment|/* Sick revalidation of device. */
+DECL|macro|CIO_REVALIDATE
+mdefine_line|#define CIO_REVALIDATE 0x0008
 DECL|struct|diag210
 r_struct
 id|diag210

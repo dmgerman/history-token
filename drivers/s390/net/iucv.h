@@ -586,6 +586,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|device
+op_star
 id|iucv_root
 suffix:semicolon
 multiline_comment|/*   -prototypes-    */

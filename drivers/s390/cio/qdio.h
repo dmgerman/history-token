@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.20 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.22 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -56,15 +56,15 @@ mdefine_line|#define QDIO_PERF &quot;qdio_perf&quot;
 multiline_comment|/* must be a power of 2 */
 multiline_comment|/*#define QDIO_STATS_NUMBER 4&n;&n;#define QDIO_STATS_CLASSES 2&n;#define QDIO_STATS_COUNT_NEEDED 2*/
 DECL|macro|QDIO_NO_USE_COUNT_TIMEOUT
-mdefine_line|#define QDIO_NO_USE_COUNT_TIMEOUT 1000 /* wait for 1 sec on each q before&n;&t;&t;&t;&t;&t;  exiting without having use_count&n;&t;&t;&t;&t;&t;  of the queue to 0 */
+mdefine_line|#define QDIO_NO_USE_COUNT_TIMEOUT (1*HZ) /* wait for 1 sec on each q before&n;&t;&t;&t;&t;&t;    exiting without having use_count&n;&t;&t;&t;&t;&t;    of the queue to 0 */
 DECL|macro|QDIO_ESTABLISH_TIMEOUT
-mdefine_line|#define QDIO_ESTABLISH_TIMEOUT 1000
+mdefine_line|#define QDIO_ESTABLISH_TIMEOUT (1*HZ)
 DECL|macro|QDIO_ACTIVATE_TIMEOUT
-mdefine_line|#define QDIO_ACTIVATE_TIMEOUT 5
+mdefine_line|#define QDIO_ACTIVATE_TIMEOUT ((5*HZ)&gt;&gt;10)
 DECL|macro|QDIO_CLEANUP_CLEAR_TIMEOUT
-mdefine_line|#define QDIO_CLEANUP_CLEAR_TIMEOUT 20000
+mdefine_line|#define QDIO_CLEANUP_CLEAR_TIMEOUT (20*HZ)
 DECL|macro|QDIO_CLEANUP_HALT_TIMEOUT
-mdefine_line|#define QDIO_CLEANUP_HALT_TIMEOUT 10000
+mdefine_line|#define QDIO_CLEANUP_HALT_TIMEOUT (10*HZ)
 DECL|enum|qdio_irq_states
 r_enum
 id|qdio_irq_states

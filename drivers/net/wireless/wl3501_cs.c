@@ -7236,11 +7236,9 @@ c_cond
 (paren
 id|link-&gt;handle
 )paren
-id|CardServices
+id|pcmcia_deregister_client
 c_func
 (paren
-id|DeregisterClient
-comma
 id|link-&gt;handle
 )paren
 suffix:semicolon
@@ -9694,11 +9692,9 @@ id|link
 suffix:semicolon
 id|ret
 op_assign
-id|CardServices
+id|pcmcia_register_client
 c_func
 (paren
-id|RegisterClient
-comma
 op_amp
 id|link-&gt;handle
 comma
@@ -9755,7 +9751,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|macro|CS_CHECK
-mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret = CardServices(last_fn = (fn), args)) != 0) goto cs_failed
+mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
 multiline_comment|/**&n; * wl3501_config - configure the PCMCIA socket and make eth device available&n; * @link - FILL_IN&n; *&n; * wl3501_config() is scheduled to run after a CARD_INSERTION event is&n; * received, to configure the PCMCIA socket, and to make the ethernet device&n; * available to the system.&n; */
 DECL|function|wl3501_config
 r_static
@@ -9823,10 +9819,14 @@ c_func
 (paren
 id|GetFirstTuple
 comma
+id|pcmcia_get_first_tuple
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
+)paren
 )paren
 suffix:semicolon
 id|tuple.TupleData
@@ -9849,10 +9849,14 @@ c_func
 (paren
 id|GetTupleData
 comma
+id|pcmcia_get_tuple_data
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
+)paren
 )paren
 suffix:semicolon
 id|CS_CHECK
@@ -9860,6 +9864,9 @@ c_func
 (paren
 id|ParseTuple
 comma
+id|pcmcia_parse_tuple
+c_func
+(paren
 id|handle
 comma
 op_amp
@@ -9867,6 +9874,7 @@ id|tuple
 comma
 op_amp
 id|parse
+)paren
 )paren
 suffix:semicolon
 id|link-&gt;conf.ConfigBase
@@ -9915,11 +9923,9 @@ l_int|0x10
 suffix:semicolon
 id|i
 op_assign
-id|CardServices
+id|pcmcia_request_io
 c_func
 (paren
-id|RequestIO
-comma
 id|link-&gt;handle
 comma
 op_amp
@@ -9964,10 +9970,14 @@ c_func
 (paren
 id|RequestIRQ
 comma
+id|pcmcia_request_irq
+c_func
+(paren
 id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;irq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* This actually configures the PCMCIA socket -- setting up the I/O&n;&t; * windows and the interrupt mapping.  */
@@ -9976,10 +9986,14 @@ c_func
 (paren
 id|RequestConfiguration
 comma
+id|pcmcia_request_configuration
+c_func
+(paren
 id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;conf
+)paren
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -10322,30 +10336,24 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Don&squot;t bother checking to see if these succeed or not */
-id|CardServices
+id|pcmcia_release_configuration
 c_func
 (paren
-id|ReleaseConfiguration
-comma
 id|link-&gt;handle
 )paren
 suffix:semicolon
-id|CardServices
+id|pcmcia_release_io
 c_func
 (paren
-id|ReleaseIO
-comma
 id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;io
 )paren
 suffix:semicolon
-id|CardServices
+id|pcmcia_release_irq
 c_func
 (paren
-id|ReleaseIRQ
-comma
 id|link-&gt;handle
 comma
 op_amp
@@ -10511,11 +10519,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|CardServices
+id|pcmcia_release_configuration
 c_func
 (paren
-id|ReleaseConfiguration
-comma
 id|link-&gt;handle
 )paren
 suffix:semicolon
@@ -10550,11 +10556,9 @@ op_amp
 id|DEV_CONFIG
 )paren
 (brace
-id|CardServices
+id|pcmcia_request_configuration
 c_func
 (paren
-id|RequestConfiguration
-comma
 id|link-&gt;handle
 comma
 op_amp

@@ -53,19 +53,19 @@ mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
 DECL|macro|MAX_TIMESLICE
 mdefine_line|#define MAX_TIMESLICE&t;&t;(200 * HZ / 1000)
 DECL|macro|ON_RUNQUEUE_WEIGHT
-mdefine_line|#define ON_RUNQUEUE_WEIGHT&t;30
+mdefine_line|#define ON_RUNQUEUE_WEIGHT&t; 30
 DECL|macro|CHILD_PENALTY
-mdefine_line|#define CHILD_PENALTY&t;&t;95
+mdefine_line|#define CHILD_PENALTY&t;&t; 95
 DECL|macro|PARENT_PENALTY
 mdefine_line|#define PARENT_PENALTY&t;&t;100
 DECL|macro|EXIT_WEIGHT
-mdefine_line|#define EXIT_WEIGHT&t;&t;3
+mdefine_line|#define EXIT_WEIGHT&t;&t;  3
 DECL|macro|PRIO_BONUS_RATIO
-mdefine_line|#define PRIO_BONUS_RATIO&t;25
+mdefine_line|#define PRIO_BONUS_RATIO&t; 25
 DECL|macro|MAX_BONUS
 mdefine_line|#define MAX_BONUS&t;&t;(MAX_USER_PRIO * PRIO_BONUS_RATIO / 100)
 DECL|macro|INTERACTIVE_DELTA
-mdefine_line|#define INTERACTIVE_DELTA&t;2
+mdefine_line|#define INTERACTIVE_DELTA&t;  2
 DECL|macro|MAX_SLEEP_AVG
 mdefine_line|#define MAX_SLEEP_AVG&t;&t;(AVG_TIMESLICE * MAX_BONUS)
 DECL|macro|STARVATION_LIMIT
@@ -92,8 +92,8 @@ DECL|macro|DELTA
 mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_USER_PRIO*PRIO_BONUS_RATIO/100) + &bslash;&n;&t;&t;INTERACTIVE_DELTA)
 DECL|macro|TASK_INTERACTIVE
 mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
-DECL|macro|JUST_INTERACTIVE_SLEEP
-mdefine_line|#define JUST_INTERACTIVE_SLEEP(p) &bslash;&n;&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG * &bslash;&n;&t;&t;(MAX_BONUS / 2 + DELTA((p)) + 1) / MAX_BONUS - 1))
+DECL|macro|INTERACTIVE_SLEEP
+mdefine_line|#define INTERACTIVE_SLEEP(p) &bslash;&n;&t;(JIFFIES_TO_NS(MAX_SLEEP_AVG * &bslash;&n;&t;&t;(MAX_BONUS / 2 + DELTA((p)) + 1) / MAX_BONUS - 1))
 DECL|macro|HIGH_CREDIT
 mdefine_line|#define HIGH_CREDIT(p) &bslash;&n;&t;((p)-&gt;interactive_credit &gt; CREDIT_LIMIT)
 DECL|macro|LOW_CREDIT
@@ -102,7 +102,7 @@ DECL|macro|TASK_PREEMPTS_CURR
 mdefine_line|#define TASK_PREEMPTS_CURR(p, rq) &bslash;&n;&t;((p)-&gt;prio &lt; (rq)-&gt;curr-&gt;prio)
 multiline_comment|/*&n; * BASE_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a thread&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority thread gets MIN_TIMESLICE worth of execution time.&n; *&n; * task_timeslice() is the interface that is used by the scheduler.&n; */
 DECL|macro|BASE_TIMESLICE
-mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (MAX_PRIO-1-(p)-&gt;static_prio)/(MAX_USER_PRIO - 1)))
+mdefine_line|#define BASE_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * &bslash;&n;&t;&t;&t;(MAX_PRIO-1 - (p)-&gt;static_prio) / (MAX_USER_PRIO-1)))
 DECL|function|task_timeslice
 r_static
 r_inline
@@ -180,7 +180,10 @@ comma
 id|expired_timestamp
 comma
 DECL|member|nr_uninterruptible
+DECL|member|timestamp_last_tick
 id|nr_uninterruptible
+comma
+id|timestamp_last_tick
 suffix:semicolon
 DECL|member|curr
 DECL|member|idle
@@ -212,8 +215,11 @@ id|arrays
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|best_expired_prio
 DECL|member|prev_cpu_load
 r_int
+id|best_expired_prio
+comma
 id|prev_cpu_load
 (braket
 id|NR_CPUS
@@ -270,7 +276,7 @@ mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
 multiline_comment|/*&n; * Default context-switch locking:&n; */
 macro_line|#ifndef prepare_arch_switch
 DECL|macro|prepare_arch_switch
-macro_line|# define prepare_arch_switch(rq, next)&t;do { } while(0)
+macro_line|# define prepare_arch_switch(rq, next)&t;do { } while (0)
 DECL|macro|finish_arch_switch
 macro_line|# define finish_arch_switch(rq, next)&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 DECL|macro|task_running
@@ -429,11 +435,11 @@ suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_NUMA */
 DECL|macro|nr_running_init
-macro_line|# define nr_running_init(rq)   do { } while (0)
+macro_line|# define nr_running_init(rq)&t;do { } while (0)
 DECL|macro|nr_running_inc
-macro_line|# define nr_running_inc(rq)    do { (rq)-&gt;nr_running++; } while (0)
+macro_line|# define nr_running_inc(rq)&t;do { (rq)-&gt;nr_running++; } while (0)
 DECL|macro|nr_running_dec
-macro_line|# define nr_running_dec(rq)    do { (rq)-&gt;nr_running--; } while (0)
+macro_line|# define nr_running_dec(rq)&t;do { (rq)-&gt;nr_running--; } while (0)
 macro_line|#endif /* CONFIG_NUMA */
 multiline_comment|/*&n; * task_rq_lock - lock the runqueue a given task resides on and disable&n; * interrupts.  Note the ordering: we can safely lookup the task_rq without&n; * explicitly disabling preemption.&n; */
 DECL|function|task_rq_lock
@@ -879,7 +885,7 @@ l_int|1
 op_logical_and
 id|sleep_time
 OG
-id|JUST_INTERACTIVE_SLEEP
+id|INTERACTIVE_SLEEP
 c_func
 (paren
 id|p
@@ -987,7 +993,7 @@ c_cond
 (paren
 id|p-&gt;sleep_avg
 op_ge
-id|JUST_INTERACTIVE_SLEEP
+id|INTERACTIVE_SLEEP
 c_func
 (paren
 id|p
@@ -1005,7 +1011,7 @@ id|p-&gt;sleep_avg
 op_plus
 id|sleep_time
 op_ge
-id|JUST_INTERACTIVE_SLEEP
+id|INTERACTIVE_SLEEP
 c_func
 (paren
 id|p
@@ -1014,7 +1020,7 @@ id|p
 (brace
 id|p-&gt;sleep_avg
 op_assign
-id|JUST_INTERACTIVE_SLEEP
+id|INTERACTIVE_SLEEP
 c_func
 (paren
 id|p
@@ -1026,7 +1032,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t; * This code gives a bonus to interactive tasks.&n;&t;&t;&t; *&n;&t;&t;&t; * The boost works by updating the &squot;average sleep time&squot;&n;&t;&t;&t; * value here, based on -&gt;timestamp. The more time a task&n;&t;&t;&t; * spends sleeping, the higher the average gets - and the&n;&t;&t;&t; * higher the priority boost gets as well.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This code gives a bonus to interactive tasks.&n;&t;&t;&t; *&n;&t;&t;&t; * The boost works by updating the &squot;average sleep time&squot;&n;&t;&t;&t; * value here, based on -&gt;timestamp. The more time a&n;&t;&t;&t; * task spends sleeping, the higher the average gets -&n;&t;&t;&t; * and the higher the priority boost gets as well.&n;&t;&t;&t; */
 id|p-&gt;sleep_avg
 op_add_assign
 id|sleep_time
@@ -1125,11 +1131,13 @@ op_assign
 l_int|2
 suffix:semicolon
 r_else
-multiline_comment|/*&n;&t;&t; * Normal first-time wakeups get a credit too for on-runqueue&n;&t;&t; * time, but it will be weighted down:&n;&t;&t; */
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Normal first-time wakeups get a credit too for&n;&t;&t;&t; * on-runqueue time, but it will be weighted down:&n;&t;&t;&t; */
 id|p-&gt;activated
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 id|p-&gt;timestamp
 op_assign
@@ -1798,6 +1806,122 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current.&n; */
+DECL|function|sched_fork
+r_void
+id|sched_fork
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+(brace
+multiline_comment|/*&n;&t; * We mark the process as running here, but have not actually&n;&t; * inserted it onto the runqueue yet. This guarantees that&n;&t; * nobody will actually run it, and a signal or other external&n;&t; * event cannot wake it up and insert it on the runqueue either.&n;&t; */
+id|p-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|p-&gt;run_list
+)paren
+suffix:semicolon
+id|p-&gt;array
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|p-&gt;switch_lock
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * During context-switch we hold precisely one spinlock, which&n;&t; * schedule_tail drops. (in the common case it&squot;s this_rq()-&gt;lock,&n;&t; * but it also can be p-&gt;switch_lock.) So we compensate with a count&n;&t; * of 1. Also, we want to start with kernel preemption disabled.&n;&t; */
+id|p-&gt;thread_info-&gt;preempt_count
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n;&t; * Share the timeslice between parent and child, thus the&n;&t; * total amount of pending timeslices in the system doesn&squot;t change,&n;&t; * resulting in more scheduling fairness.&n;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|p-&gt;time_slice
+op_assign
+(paren
+id|current-&gt;time_slice
+op_plus
+l_int|1
+)paren
+op_rshift
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * The remainder of the first timeslice might be recovered by&n;&t; * the parent if the child exits early enough.&n;&t; */
+id|p-&gt;first_time_slice
+op_assign
+l_int|1
+suffix:semicolon
+id|current-&gt;time_slice
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|p-&gt;timestamp
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;time_slice
+)paren
+(brace
+multiline_comment|/*&n;&t; &t; * This case is rare, it happens when the parent has only&n;&t; &t; * a single jiffy left from its timeslice. Taking the&n;&t;&t; * runqueue lock is not a problem.&n;&t;&t; */
+id|current-&gt;time_slice
+op_assign
+l_int|1
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|scheduler_tick
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_else
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * wake_up_forked_process - wake up a freshly forked process.&n; *&n; * This function will do some initial scheduler statistics housekeeping&n; * that must be done for every newly created process.&n; */
 DECL|function|wake_up_forked_process
 r_void
@@ -2150,9 +2274,9 @@ id|current-&gt;set_child_tid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * context_switch - switch to the new MM and the new&n; * thread&squot;s register state.&n; */
-DECL|function|context_switch
 r_static
 r_inline
+DECL|function|context_switch
 id|task_t
 op_star
 id|context_switch
@@ -2331,33 +2455,11 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_online
+id|for_each_cpu
 c_func
 (paren
 id|i
 )paren
-)paren
-r_continue
-suffix:semicolon
 id|sum
 op_add_assign
 id|cpu_rq
@@ -2368,7 +2470,6 @@ id|i
 op_member_access_from_pointer
 id|nr_uninterruptible
 suffix:semicolon
-)brace
 r_return
 id|sum
 suffix:semicolon
@@ -2390,33 +2491,11 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_online
+id|for_each_cpu
 c_func
 (paren
 id|i
 )paren
-)paren
-r_continue
-suffix:semicolon
 id|sum
 op_add_assign
 id|cpu_rq
@@ -2427,7 +2506,6 @@ id|i
 op_member_access_from_pointer
 id|nr_switches
 suffix:semicolon
-)brace
 r_return
 id|sum
 suffix:semicolon
@@ -2449,33 +2527,11 @@ id|sum
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu_online
+id|for_each_cpu
 c_func
 (paren
 id|i
 )paren
-)paren
-r_continue
-suffix:semicolon
 id|sum
 op_add_assign
 id|atomic_read
@@ -2491,7 +2547,6 @@ op_member_access_from_pointer
 id|nr_iowait
 )paren
 suffix:semicolon
-)brace
 r_return
 id|sum
 suffix:semicolon
@@ -2733,7 +2788,7 @@ c_func
 id|i
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Node load is always divided by nr_cpus_node to normalise &n;&t;&t; * load values in case cpu count differs from node to node.&n;&t;&t; * We first multiply node_nr_running by 10 to get a little&n;&t;&t; * better resolution.   &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Node load is always divided by nr_cpus_node to normalise&n;&t;&t; * load values in case cpu count differs from node to node.&n;&t;&t; * We first multiply node_nr_running by 10 to get a little&n;&t;&t; * better resolution.&n;&t;&t; */
 id|load
 op_assign
 l_int|10
@@ -2894,7 +2949,7 @@ id|new_cpu
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; * Node load is divided by nr_cpus_node() in order to compare nodes&n; * of different cpu count but also [first] multiplied by 10 to &n; * provide better resolution.&n; */
+multiline_comment|/*&n; * Find the busiest node. All previous node loads contribute with a&n; * geometrically deccaying weight to the load measure:&n; *      load_{t} = load_{t-1}/2 + nr_node_running_{t}&n; * This way sudden load peaks are flattened out a bit.&n; * Node load is divided by nr_cpus_node() in order to compare nodes&n; * of different cpu count but also [first] multiplied by 10 to&n; * provide better resolution.&n; */
 DECL|function|find_busiest_node
 r_static
 r_int
@@ -3080,9 +3135,9 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_NUMA */
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue&n; *&n; * this_rq is locked already. Recalculate nr_running if we have to&n; * drop the runqueue lock.&n; */
-DECL|function|double_lock_balance
 r_static
 r_inline
+DECL|function|double_lock_balance
 r_int
 r_int
 id|double_lock_balance
@@ -3194,9 +3249,9 @@ id|nr_running
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * find_busiest_queue - find the busiest runqueue among the cpus in cpumask.&n; */
-DECL|function|find_busiest_queue
 r_static
 r_inline
+DECL|function|find_busiest_queue
 id|runqueue_t
 op_star
 id|find_busiest_queue
@@ -3458,9 +3513,9 @@ id|busiest
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pull_task - move a task from a remote runqueue to the local runqueue.&n; * Both runqueues must be locked.&n; */
-DECL|function|pull_task
 r_static
 r_inline
+DECL|function|pull_task
 r_void
 id|pull_task
 c_func
@@ -3521,6 +3576,19 @@ comma
 id|this_rq-&gt;active
 )paren
 suffix:semicolon
+id|p-&gt;timestamp
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
+op_minus
+(paren
+id|src_rq-&gt;timestamp_last_tick
+op_minus
+id|p-&gt;timestamp
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Note that idle threads have a prio of MAX_PRIO, for this test&n;&t; * to be always true for them.&n;&t; */
 r_if
 c_cond
@@ -3539,11 +3607,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Previously:&n; *&n; * #define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&bslash;&n; *&t;((!idle || (NS_TO_JIFFIES(now - (p)-&gt;timestamp) &gt; &bslash;&n; *&t;&t;cache_decay_ticks)) &amp;&amp; !task_running(rq, p) &amp;&amp; &bslash;&n; *&t;&t;&t;cpu_isset(this_cpu, (p)-&gt;cpus_allowed))&n; */
+multiline_comment|/*&n; * can_migrate_task - may task p from runqueue rq be migrated to this_cpu?&n; */
 r_static
 r_inline
-r_int
 DECL|function|can_migrate_task
+r_int
 id|can_migrate_task
 c_func
 (paren
@@ -3566,32 +3634,11 @@ r_int
 r_int
 id|delta
 op_assign
-id|sched_clock
-c_func
-(paren
-)paren
+id|rq-&gt;timestamp_last_tick
 op_minus
 id|tsk-&gt;timestamp
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle
-op_logical_and
-(paren
-id|delta
-op_le
-id|JIFFIES_TO_NS
-c_func
-(paren
-id|cache_decay_ticks
-)paren
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3616,6 +3663,25 @@ c_func
 id|this_cpu
 comma
 id|tsk-&gt;cpus_allowed
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idle
+op_logical_and
+(paren
+id|delta
+op_le
+id|JIFFIES_TO_NS
+c_func
+(paren
+id|cache_decay_ticks
+)paren
 )paren
 )paren
 r_return
@@ -3809,7 +3875,6 @@ comma
 id|run_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 id|curr
 op_assign
 id|curr-&gt;prev
@@ -3862,6 +3927,7 @@ comma
 id|this_cpu
 )paren
 suffix:semicolon
+multiline_comment|/* Only migrate one task if we are idle */
 r_if
 c_cond
 (paren
@@ -4186,12 +4252,6 @@ id|kernel_stat
 comma
 id|kstat
 )paren
-op_assign
-(brace
-(brace
-l_int|0
-)brace
-)brace
 suffix:semicolon
 DECL|variable|kstat
 id|EXPORT_PER_CPU_SYMBOL
@@ -4200,9 +4260,9 @@ c_func
 id|kstat
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
+multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks. We also ignore the interactivity&n; * if a better static_prio task has expired:&n; */
 DECL|macro|EXPIRED_STARVING
-mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;(STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1)))
+mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;((STARVATION_LIMIT &amp;&amp; ((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1))) || &bslash;&n;&t;&t;&t;((rq)-&gt;curr-&gt;static_prio &gt; (rq)-&gt;best_expired_prio))
 multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; *&n; * It also gets called by the fork code, when changing the parent&squot;s&n; * timeslices.&n; */
 DECL|function|scheduler_tick
 r_void
@@ -4246,6 +4306,13 @@ op_star
 id|p
 op_assign
 id|current
+suffix:semicolon
+id|rq-&gt;timestamp_last_tick
+op_assign
+id|sched_clock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4540,6 +4607,17 @@ id|p
 comma
 id|rq-&gt;expired
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;static_prio
+OL
+id|rq-&gt;best_expired_prio
+)paren
+id|rq-&gt;best_expired_prio
+op_assign
+id|p-&gt;static_prio
 suffix:semicolon
 )brace
 r_else
@@ -4985,6 +5063,10 @@ suffix:semicolon
 id|rq-&gt;expired_timestamp
 op_assign
 l_int|0
+suffix:semicolon
+id|rq-&gt;best_expired_prio
+op_assign
+id|MAX_PRIO
 suffix:semicolon
 )brace
 id|idx
@@ -5886,11 +5968,11 @@ id|wait_for_completion
 )paren
 suffix:semicolon
 DECL|macro|SLEEP_ON_VAR
-mdefine_line|#define&t;SLEEP_ON_VAR&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;wait_queue_t wait;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;wait, current);
+mdefine_line|#define&t;SLEEP_ON_VAR&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;wait_queue_t wait;&t;&t;&t;&t;&bslash;&n;&t;init_waitqueue_entry(&amp;wait, current);
 DECL|macro|SLEEP_ON_HEAD
 mdefine_line|#define SLEEP_ON_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;q-&gt;lock,flags);&t;&t;&bslash;&n;&t;__add_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock(&amp;q-&gt;lock);
 DECL|macro|SLEEP_ON_TAIL
-mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
+mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
 DECL|function|interruptible_sleep_on
 r_void
 id|interruptible_sleep_on
@@ -6249,7 +6331,7 @@ suffix:semicolon
 r_int
 id|nice
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Setpriority might change our priority at the same moment.&n;&t; *&t;We don&squot;t have to worry. Conceptually one call occurs first&n;&t; *&t;and we have a single winner.&n;&t; */
+multiline_comment|/*&n;&t; * Setpriority might change our priority at the same moment.&n;&t; * We don&squot;t have to worry. Conceptually one call occurs first&n;&t; * and we have a single winner.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7823,8 +7905,8 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sys_sched_rr_get_interval - return the default timeslice of a process.&n; * @pid: pid of the process.&n; * @interval: userspace pointer to the timeslice value.&n; *&n; * this syscall writes the default timeslice value of a given process&n; * into the user-space timespec buffer. A value of &squot;0&squot; means infinity.&n; */
-DECL|function|sys_sched_rr_get_interval
 id|asmlinkage
+DECL|function|sys_sched_rr_get_interval
 r_int
 id|sys_sched_rr_get_interval
 c_func
@@ -8958,6 +9040,10 @@ id|rq_dest-&gt;curr
 )paren
 suffix:semicolon
 )brace
+id|p-&gt;timestamp
+op_assign
+id|rq_dest-&gt;timestamp_last_tick
+suffix:semicolon
 id|out
 suffix:colon
 id|double_rq_unlock
@@ -9368,12 +9454,11 @@ id|notifier_block
 id|migration_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 op_amp
 id|migration_call
-comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|migration_init
@@ -9630,6 +9715,10 @@ op_assign
 id|rq-&gt;arrays
 op_plus
 l_int|1
+suffix:semicolon
+id|rq-&gt;best_expired_prio
+op_assign
+id|MAX_PRIO
 suffix:semicolon
 id|spin_lock_init
 c_func

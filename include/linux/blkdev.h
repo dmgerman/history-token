@@ -1778,7 +1778,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;q
+id|req-&gt;rl
 )paren
 id|elv_remove_request
 c_func

@@ -219,6 +219,10 @@ DECL|macro|BT848_ADC_C_SLEEP
 mdefine_line|#define BT848_ADC_C_SLEEP      (1&lt;&lt;1)
 DECL|macro|BT848_ADC_CRUSH
 mdefine_line|#define BT848_ADC_CRUSH        (1&lt;&lt;0)
+DECL|macro|BT848_WC_UP
+mdefine_line|#define BT848_WC_UP            0x044
+DECL|macro|BT848_WC_DOWN
+mdefine_line|#define BT848_WC_DOWN          0x078
 DECL|macro|BT848_E_VTC
 mdefine_line|#define BT848_E_VTC            0x06C
 DECL|macro|BT848_O_VTC

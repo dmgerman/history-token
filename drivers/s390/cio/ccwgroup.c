@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.17 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/ccwgroup.c&n; *  bus driver for ccwgroup&n; *   $Revision: 1.19 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *                       IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -1388,9 +1388,6 @@ id|ccwgroup_driver
 op_star
 id|gdrv
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 id|gdev
 op_assign
 id|to_ccwgroupdev
@@ -1426,21 +1423,13 @@ op_amp
 id|dev_attr_online
 )paren
 suffix:semicolon
-id|ccwgroup_set_offline
-c_func
-(paren
-id|gdev
-)paren
-suffix:semicolon
-id|ret
-op_assign
+r_if
+c_cond
 (paren
 id|gdrv
 op_logical_and
 id|gdrv-&gt;remove
 )paren
-ques
-c_cond
 id|gdrv
 op_member_access_from_pointer
 id|remove
@@ -1448,11 +1437,9 @@ c_func
 (paren
 id|gdev
 )paren
-suffix:colon
-l_int|0
 suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 r_int
@@ -1716,7 +1703,7 @@ r_return
 id|gdev
 suffix:semicolon
 )brace
-r_int
+r_void
 DECL|function|ccwgroup_remove_ccwdev
 id|ccwgroup_remove_ccwdev
 c_func
@@ -1731,6 +1718,13 @@ r_struct
 id|ccwgroup_device
 op_star
 id|gdev
+suffix:semicolon
+multiline_comment|/* Ignore offlining errors, device is gone anyway. */
+id|ccw_device_set_offline
+c_func
+(paren
+id|cdev
+)paren
 suffix:semicolon
 multiline_comment|/* If one of its devices is gone, the whole group is done for. */
 id|gdev
@@ -1747,12 +1741,6 @@ c_cond
 id|gdev
 )paren
 (brace
-id|ccwgroup_set_offline
-c_func
-(paren
-id|gdev
-)paren
-suffix:semicolon
 id|__ccwgroup_remove_symlinks
 c_func
 (paren
@@ -1774,9 +1762,6 @@ id|gdev-&gt;dev
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

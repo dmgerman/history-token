@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    bttv-risc.c  --  interfaces to other kernel modules&n;&n;    bttv risc code handling&n;&t;- memory management&n;&t;- generation&n;&n;    (c) 2000 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    bttv-risc.c  --  interfaces to other kernel modules&n;&n;    bttv risc code handling&n;&t;- memory management&n;&t;- generation&n;&n;    (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -93,7 +93,7 @@ op_assign
 id|btcx_riscmem_alloc
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 id|risc
 comma
@@ -181,6 +181,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|offset
+op_logical_and
 id|offset
 op_ge
 id|sg_dma_len
@@ -431,7 +433,7 @@ c_func
 (paren
 l_string|&quot;bttv%d: risc planar: %d sglist elems&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 (paren
 r_int
@@ -573,7 +575,7 @@ op_assign
 id|btcx_riscmem_alloc
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 id|risc
 comma
@@ -739,6 +741,8 @@ r_while
 c_loop
 (paren
 id|yoffset
+op_logical_and
+id|yoffset
 op_ge
 id|sg_dma_len
 c_func
@@ -763,6 +767,8 @@ r_while
 c_loop
 (paren
 id|uoffset
+op_logical_and
+id|uoffset
 op_ge
 id|sg_dma_len
 c_func
@@ -786,6 +792,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|voffset
+op_logical_and
 id|voffset
 op_ge
 id|sg_dma_len
@@ -1216,7 +1224,7 @@ op_assign
 id|btcx_riscmem_alloc
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 id|risc
 comma
@@ -1338,34 +1346,6 @@ id|VCR_HACK_LINES
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|line
-op_mod
-l_int|2
-)paren
-op_eq
-l_int|0
-op_logical_and
-id|skip_even
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|line
-op_mod
-l_int|2
-)paren
-op_eq
-l_int|1
-op_logical_and
-id|skip_odd
-)paren
 r_if
 c_cond
 (paren
@@ -1686,7 +1666,7 @@ c_cond
 (paren
 id|bttv_tvcards
 (braket
-id|btv-&gt;type
+id|btv-&gt;c.type
 )braket
 dot
 id|muxsel
@@ -2235,7 +2215,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: capctl=%x irq=%d top=%08Lx/%08Lx even=%08Lx/%08Lx&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 id|capctl
 comma
@@ -2453,7 +2433,7 @@ op_assign
 id|btcx_riscmem_alloc
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 op_amp
 id|btv-&gt;main
@@ -2473,7 +2453,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: risc main @ %08Lx&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 (paren
 r_int
@@ -2766,7 +2746,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: risc=%p slot[%d]=NULL&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 id|risc
 comma
@@ -2795,7 +2775,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: risc=%p slot[%d]=%08Lx irq=%d&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 id|risc
 comma
@@ -2930,7 +2910,7 @@ suffix:semicolon
 id|videobuf_dma_pci_unmap
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 op_amp
 id|buf-&gt;vb.dma
@@ -2946,7 +2926,7 @@ suffix:semicolon
 id|btcx_riscmem_free
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 op_amp
 id|buf-&gt;bottom
@@ -2955,7 +2935,7 @@ suffix:semicolon
 id|btcx_riscmem_free
 c_func
 (paren
-id|btv-&gt;dev
+id|btv-&gt;c.pci
 comma
 op_amp
 id|buf-&gt;top
@@ -3481,7 +3461,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: buffer field: %s  format: %s  size: %dx%d&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 id|v4l2_field_names
 (braket
@@ -4232,7 +4212,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;bttv%d: overlay fields: %s format: %s  size: %dx%d&bslash;n&quot;
 comma
-id|btv-&gt;nr
+id|btv-&gt;c.nr
 comma
 id|v4l2_field_names
 (braket

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sn_private.h,v 1.1 2002/02/28 17:31:26 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_SN2_SN_PRIVATE_H
 DECL|macro|_ASM_IA64_SN_SN2_SN_PRIVATE_H
 mdefine_line|#define _ASM_IA64_SN_SN2_SN_PRIVATE_H
@@ -52,14 +52,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|set_master_bridge_base
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|check_nasid_equiv
 c_func
@@ -67,14 +59,6 @@ c_func
 id|nasid_t
 comma
 id|nasid_t
-)paren
-suffix:semicolon
-r_extern
-id|nasid_t
-id|get_console_nasid
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 r_extern
@@ -386,7 +370,7 @@ id|hub_migrintr_init
 c_func
 (paren
 id|cnodeid_t
-multiline_comment|/*cnode*/
+multiline_comment|/*cnode */
 )paren
 suffix:semicolon
 r_extern
@@ -400,7 +384,8 @@ comma
 id|intr_func_t
 id|handler
 comma
-id|uint
+r_int
+r_int
 id|intr_spl_mask
 )paren
 suffix:semicolon
@@ -759,11 +744,6 @@ id|xtalk_intr_s
 id|i_xtalk_info
 suffix:semicolon
 multiline_comment|/* standard crosstalk intr info */
-DECL|member|i_swlevel
-id|ilvl_t
-id|i_swlevel
-suffix:semicolon
-multiline_comment|/* software level for blocking intr */
 DECL|member|i_cpuid
 id|cpuid_t
 id|i_cpuid
@@ -904,6 +884,10 @@ r_extern
 id|xtalk_provider_t
 id|hub_provider
 suffix:semicolon
+r_extern
+r_int
+id|numionodes
+suffix:semicolon
 multiline_comment|/* du.c */
 r_int
 id|ducons_write
@@ -1039,5 +1023,5 @@ id|vertex_hdl_t
 id|vertex
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_IA64_SN_SN2_SN_PRIVATE_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_SN2_SN_PRIVATE_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.10 2003/05/04 19:29:54 lethal Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: fault.c,v 1.13 2003/08/11 11:44:50 lethal Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2003  Paul Mundt&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,9 +19,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#if defined(CONFIG_SH_KGDB)
 macro_line|#include &lt;asm/kgdb.h&gt;
-macro_line|#endif
 r_extern
 r_void
 id|die
@@ -78,13 +76,7 @@ r_int
 r_int
 id|page
 suffix:semicolon
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|fixup
-suffix:semicolon
-macro_line|#if defined(CONFIG_SH_KGDB)
+macro_line|#ifdef CONFIG_SH_KGDB
 r_if
 c_cond
 (paren
@@ -110,7 +102,7 @@ multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren
@@ -247,7 +239,7 @@ id|writeaccess
 )paren
 (brace
 r_case
-l_int|1
+id|VM_FAULT_MINOR
 suffix:colon
 id|tsk-&gt;min_flt
 op_increment
@@ -255,7 +247,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|2
+id|VM_FAULT_MAJOR
 suffix:colon
 id|tsk-&gt;maj_flt
 op_increment
@@ -263,15 +255,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0
+id|VM_FAULT_SIGBUS
 suffix:colon
 r_goto
 id|do_sigbus
 suffix:semicolon
-r_default
+r_case
+id|VM_FAULT_OOM
 suffix:colon
 r_goto
 id|out_of_memory
+suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 id|up_read
@@ -325,27 +325,17 @@ suffix:semicolon
 id|no_context
 suffix:colon
 multiline_comment|/* Are we prepared to handle this kernel fault?  */
-id|fixup
-op_assign
-id|search_exception_tables
-c_func
-(paren
-id|regs-&gt;pc
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|fixup
+id|fixup_exception
+c_func
+(paren
+id|regs
 )paren
-(brace
-id|regs-&gt;pc
-op_assign
-id|fixup-&gt;fixup
-suffix:semicolon
+)paren
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Oops. The kernel tried to access some bad page. We&squot;ll have to&n; * terminate things with extreme prejudice.&n; *&n; */
 r_if
 c_cond
@@ -626,6 +616,12 @@ r_int
 id|address
 )paren
 (brace
+r_int
+r_int
+id|addrmax
+op_assign
+id|P4SEG
+suffix:semicolon
 id|pgd_t
 op_star
 id|dir
@@ -641,7 +637,7 @@ suffix:semicolon
 id|pte_t
 id|entry
 suffix:semicolon
-macro_line|#if defined(CONFIG_SH_KGDB)
+macro_line|#ifdef CONFIG_SH_KGDB
 r_if
 c_cond
 (paren
@@ -655,6 +651,14 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SH_STORE_QUEUES
+id|addrmax
+op_assign
+id|P4SEG_STORE_QUE
+op_plus
+l_int|0x04000000
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -664,7 +668,7 @@ id|P3SEG
 op_logical_and
 id|address
 OL
-id|P4SEG
+id|addrmax
 )paren
 id|dir
 op_assign
@@ -822,7 +826,7 @@ c_func
 id|entry
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_SH4)
+macro_line|#ifdef CONFIG_CPU_SH4
 multiline_comment|/*&n;&t; * ITLB is not affected by &quot;ldtlb&quot; instruction.&n;&t; * So, we need to flush the entry by ourselves.&n;&t; */
 id|__flush_tlb_page
 c_func

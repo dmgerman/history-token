@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &quot;tape.h&quot;
 DECL|macro|PRINTK_HEADER
-mdefine_line|#define PRINTK_HEADER &quot;T390:&quot;
+mdefine_line|#define PRINTK_HEADER &quot;TAPE_PROC: &quot;
 DECL|variable|tape_med_st_verbose
 r_static
 r_const
@@ -102,8 +102,8 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;TapeNo&bslash;tDevNo&bslash;tCuType&bslash;tCuModel&bslash;tDevType&bslash;t&quot;
-l_string|&quot;DevMod&bslash;tBlkSize&bslash;tState&bslash;tOp&bslash;tMedState&bslash;n&quot;
+l_string|&quot;TapeNo&bslash;tBusID      CuType/Model&bslash;t&quot;
+l_string|&quot;DevType/Model&bslash;tBlkSize&bslash;tState&bslash;tOp&bslash;tMedState&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -155,7 +155,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%s&bslash;t&quot;
+l_string|&quot;%-10.10s &quot;
 comma
 id|device-&gt;cdev-&gt;dev.bus_id
 )paren
@@ -165,7 +165,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%04X&bslash;t&quot;
+l_string|&quot;%04X/&quot;
 comma
 id|device-&gt;cdev-&gt;id.cu_type
 )paren
@@ -185,7 +185,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%04X&bslash;t&quot;
+l_string|&quot;%04X/&quot;
 comma
 id|device-&gt;cdev-&gt;id.dev_type
 )paren
@@ -195,7 +195,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%02X&bslash;t&quot;
+l_string|&quot;%02X&bslash;t&bslash;t&quot;
 comma
 id|device-&gt;cdev-&gt;id.dev_model
 )paren

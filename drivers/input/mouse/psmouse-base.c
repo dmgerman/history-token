@@ -29,29 +29,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|psmouse_noext
-r_static
-r_int
-id|psmouse_noext
-suffix:semicolon
-id|module_param
-c_func
-(paren
-id|psmouse_noext
-comma
-r_int
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|psmouse_noext
-comma
-l_string|&quot;[DEPRECATED] Disable any protocol extensions. Useful for KVM switches.&quot;
-)paren
-suffix:semicolon
 DECL|variable|psmouse_proto
 r_static
 r_char
@@ -67,9 +44,11 @@ op_assign
 op_minus
 l_int|1U
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|proto
+comma
 id|psmouse_proto
 comma
 id|charp
@@ -80,7 +59,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|psmouse_proto
+id|proto
 comma
 l_string|&quot;Highest protocol extension to probe (bare, imps, exps). Useful for KVM switches.&quot;
 )paren
@@ -91,9 +70,11 @@ id|psmouse_resolution
 op_assign
 l_int|200
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|resolution
+comma
 id|psmouse_resolution
 comma
 id|uint
@@ -104,7 +85,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|psmouse_resolution
+id|resolution
 comma
 l_string|&quot;Resolution, in dpi.&quot;
 )paren
@@ -116,9 +97,11 @@ id|psmouse_rate
 op_assign
 l_int|100
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|rate
+comma
 id|psmouse_rate
 comma
 id|uint
@@ -129,7 +112,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|psmouse_rate
+id|rate
 comma
 l_string|&quot;Report rate, in reports per second.&quot;
 )paren
@@ -140,9 +123,11 @@ id|psmouse_smartscroll
 op_assign
 l_int|1
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|smartscroll
+comma
 id|psmouse_smartscroll
 comma
 r_bool
@@ -153,7 +138,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|psmouse_smartscroll
+id|smartscroll
 comma
 l_string|&quot;Logitech Smartscroll autorepeat, 1 = enabled (default), 0 = disabled.&quot;
 )paren
@@ -163,9 +148,11 @@ r_int
 r_int
 id|psmouse_resetafter
 suffix:semicolon
-id|module_param
+id|module_param_named
 c_func
 (paren
+id|resetafter
+comma
 id|psmouse_resetafter
 comma
 id|uint
@@ -176,7 +163,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|psmouse_resetafter
+id|resetafter
 comma
 l_string|&quot;Reset Synaptics Touchpad after so many bad packets (0 = never).&quot;
 )paren
@@ -2806,25 +2793,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|psmouse_noext
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;psmouse: &squot;psmouse_noext&squot; option is deprecated, please use &squot;psmouse_proto&squot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|psmouse_max_proto
-op_assign
-id|PSMOUSE_PS2
-suffix:semicolon
-)brace
-multiline_comment|/* even is psmouse_noext is present psmouse_proto overrides it */
 r_if
 c_cond
 (paren
