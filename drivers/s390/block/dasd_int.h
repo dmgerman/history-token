@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.60 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.61 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -452,6 +452,22 @@ op_star
 comma
 r_struct
 id|format_data_t
+op_star
+)paren
+suffix:semicolon
+DECL|member|free_cp
+r_int
+(paren
+op_star
+id|free_cp
+)paren
+(paren
+r_struct
+id|dasd_ccw_req
+op_star
+comma
+r_struct
+id|request
 op_star
 )paren
 suffix:semicolon
@@ -1319,6 +1335,11 @@ r_extern
 r_struct
 id|block_device_operations
 id|dasd_device_operations
+suffix:semicolon
+r_extern
+id|kmem_cache_t
+op_star
+id|dasd_page_cache
 suffix:semicolon
 r_struct
 id|dasd_ccw_req

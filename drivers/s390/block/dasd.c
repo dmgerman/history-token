@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.147 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.151 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -4517,6 +4517,14 @@ id|request
 op_star
 id|req
 suffix:semicolon
+r_struct
+id|dasd_device
+op_star
+id|device
+suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|req
 op_assign
 (paren
@@ -4526,11 +4534,27 @@ op_star
 )paren
 id|data
 suffix:semicolon
+id|device
+op_assign
+id|cqr-&gt;device
+suffix:semicolon
 id|dasd_profile_end
 c_func
 (paren
-id|cqr-&gt;device
+id|device
 comma
+id|cqr
+comma
+id|req
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|cqr-&gt;device-&gt;discipline
+op_member_access_from_pointer
+id|free_cp
+c_func
+(paren
 id|cqr
 comma
 id|req
@@ -4540,7 +4564,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|cqr-&gt;device-&gt;request_queue_lock
+id|device-&gt;request_queue_lock
 )paren
 suffix:semicolon
 id|dasd_end_request
@@ -4548,26 +4572,14 @@ c_func
 (paren
 id|req
 comma
-(paren
-id|cqr-&gt;status
-op_eq
-id|DASD_CQR_DONE
-)paren
+id|status
 )paren
 suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|cqr-&gt;device-&gt;request_queue_lock
-)paren
-suffix:semicolon
-id|dasd_sfree_request
-c_func
-(paren
-id|cqr
-comma
-id|cqr-&gt;device
+id|device-&gt;request_queue_lock
 )paren
 suffix:semicolon
 )brace
@@ -7703,10 +7715,15 @@ id|cqr-&gt;status
 op_eq
 id|DASD_CQR_IN_IO
 )paren
+(brace
 id|cqr-&gt;status
 op_assign
 id|DASD_CQR_QUEUED
 suffix:semicolon
+id|cqr-&gt;retries
+op_increment
+suffix:semicolon
+)brace
 id|device-&gt;stopped
 op_or_assign
 id|DASD_STOPPED_DC_WAIT
