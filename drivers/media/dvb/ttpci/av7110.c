@@ -24663,6 +24663,9 @@ r_struct
 id|saa7146_ext_vv
 id|av7110_vv_data_c
 suffix:semicolon
+macro_line|#ifdef CONFIG_DVB_AV7110_FIRMWARE_FILE
+macro_line|#include &quot;av7110_firm.h&quot;
+macro_line|#endif
 DECL|function|av7110_attach
 r_static
 r_int
@@ -24679,12 +24682,20 @@ op_star
 id|pci_ext
 )paren
 (brace
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE
 r_const
 r_struct
 id|firmware
 op_star
 id|fw
 suffix:semicolon
+macro_line|#else
+r_struct
+id|firmware
+op_star
+id|fw
+suffix:semicolon
+macro_line|#endif
 r_struct
 id|av7110
 op_star
@@ -24723,6 +24734,7 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 multiline_comment|/* request the av7110 firmware, this will block until someone uploads it */
 id|ret
 op_assign
@@ -24757,6 +24769,50 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#else
+id|fw
+op_assign
+id|vmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|firmware
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|fw
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: not enough memory&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|fw-&gt;size
+op_assign
+r_sizeof
+(paren
+id|dvb_ttpci_fw
+)paren
+suffix:semicolon
+id|fw-&gt;data
+op_assign
+id|dvb_ttpci_fw
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -25125,6 +25181,14 @@ id|av7110-&gt;size_root
 op_assign
 id|len
 suffix:semicolon
+macro_line|#ifdef CONFIG_DVB_AV7110_FIRMWARE_FILE
+id|vfree
+c_func
+(paren
+id|fw
+)paren
+suffix:semicolon
+macro_line|#endif&t;
 multiline_comment|/* go on with regular device initialization */
 id|av7110-&gt;card_name
 op_assign
