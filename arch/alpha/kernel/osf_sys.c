@@ -3168,7 +3168,7 @@ id|si_code
 suffix:semicolon
 id|info.si_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* FIXME */
 id|send_sig_info
@@ -4177,7 +4177,7 @@ ques
 c_cond
 id|ktvs
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

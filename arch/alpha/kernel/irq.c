@@ -1424,7 +1424,7 @@ c_func
 (paren
 l_string|&quot;irq&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP 

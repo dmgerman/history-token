@@ -1043,7 +1043,7 @@ id|regs
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info.si_signo
@@ -1184,7 +1184,7 @@ id|regs
 comma
 id|type
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1700,7 +1700,7 @@ id|regs
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|info.si_signo
