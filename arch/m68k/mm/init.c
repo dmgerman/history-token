@@ -24,7 +24,8 @@ macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/tlb.h&gt;
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

@@ -119,7 +119,8 @@ id|svwks_devs
 id|i
 )braket
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
@@ -212,10 +213,6 @@ op_assign
 id|inb_p
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bibma
 op_plus
 l_int|0x02
@@ -226,10 +223,6 @@ op_assign
 id|inb_p
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|bibma
 op_plus
 l_int|0x0a

@@ -916,6 +916,15 @@ id|hdr
 op_amp
 l_int|0x7f
 suffix:semicolon
+id|dev-&gt;dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+id|dev-&gt;dev.dma_mask
+op_assign
+op_amp
+id|dev-&gt;dma_mask
+suffix:semicolon
 id|pci_setup_device
 c_func
 (paren

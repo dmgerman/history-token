@@ -4,10 +4,9 @@ DECL|macro|__ASMARM_TLB_H
 mdefine_line|#define __ASMARM_TLB_H
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * TLB handling.  This allows us to remove pages from the page&n; * tables, and efficiently handle the TLB issues.&n; */
-DECL|struct|free_pte_ctx
-r_typedef
+DECL|struct|mmu_gather
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 (brace
 DECL|member|mm
 r_struct
@@ -30,22 +29,22 @@ r_int
 r_int
 id|avoided_flushes
 suffix:semicolon
-DECL|typedef|mmu_gather_t
 )brace
-id|mmu_gather_t
 suffix:semicolon
 r_extern
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|function|tlb_gather_mmu
 r_static
 r_inline
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
+DECL|function|tlb_gather_mmu
 id|tlb_gather_mmu
 c_func
 (paren
@@ -67,7 +66,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 op_assign
@@ -89,14 +89,15 @@ r_return
 id|tlb
 suffix:semicolon
 )brace
-DECL|function|tlb_finish_mmu
 r_static
 r_inline
 r_void
+DECL|function|tlb_finish_mmu
 id|tlb_finish_mmu
 c_func
 (paren
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 op_star
 id|tlb
 comma

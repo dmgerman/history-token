@@ -1579,6 +1579,9 @@ suffix:semicolon
 id|mm_release
 c_func
 (paren
+id|tsk
+comma
+id|mm
 )paren
 suffix:semicolon
 r_if

@@ -1822,7 +1822,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bio_unmap_user&t;-&t;unmap a bio&n; *&t;@bio:&t;&t;the bio being unmapped&n; *&t;@write_to_vm:&t;bool indicating whether pages were written to&n; *&n; *&t;Unmap a bio previously mapped by bio_map_user(). The @write_to_vm&n; *&t;must be the same as passed into bio_map_user(). Must be called with&n; *&t;a process context.&n; */
+multiline_comment|/**&n; *&t;bio_unmap_user&t;-&t;unmap a bio&n; *&t;@bio:&t;&t;the bio being unmapped&n; *&t;@write_to_vm:&t;bool indicating whether pages were written to&n; *&n; *&t;Unmap a bio previously mapped by bio_map_user(). The @write_to_vm&n; *&t;must be the same as passed into bio_map_user(). Must be called with&n; *&t;a process context.&n; *&n; *&t;bio_unmap_user() may sleep.&n; */
 DECL|function|bio_unmap_user
 r_void
 id|bio_unmap_user
@@ -1889,7 +1889,7 @@ c_cond
 (paren
 id|write_to_vm
 )paren
-id|set_page_dirty
+id|set_page_dirty_lock
 c_func
 (paren
 id|bvec-&gt;bv_page
@@ -1964,7 +1964,7 @@ c_cond
 (paren
 id|page
 )paren
-id|set_page_dirty
+id|set_page_dirty_lock
 c_func
 (paren
 id|bvec

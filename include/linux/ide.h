@@ -2663,6 +2663,13 @@ op_star
 id|cds
 suffix:semicolon
 multiline_comment|/* chipset device struct */
+DECL|member|pnp_dev
+r_struct
+id|pnp_dev
+op_star
+id|pnp_dev
+suffix:semicolon
+multiline_comment|/* for PnP devices */
 macro_line|#if 0
 id|ide_hwif_ops_t
 op_star

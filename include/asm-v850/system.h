@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/system.h -- Low-level interrupt/thread ops&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/system.h -- Low-level interrupt/thread ops&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_SYSTEM_H__
 DECL|macro|__V850_SYSTEM_H__
 mdefine_line|#define __V850_SYSTEM_H__
@@ -78,6 +78,8 @@ DECL|macro|rmb
 mdefine_line|#define rmb()&t;&t;&t;mb ()
 DECL|macro|wmb
 mdefine_line|#define wmb()&t;&t;&t;mb ()
+DECL|macro|read_barrier_depends
+mdefine_line|#define read_barrier_depends()&t;((void)0)
 DECL|macro|set_rmb
 mdefine_line|#define set_rmb(var, value)&t;do { xchg (&amp;var, value); } while (0)
 DECL|macro|set_mb

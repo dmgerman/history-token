@@ -6245,6 +6245,39 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|ETH_ZLEN
+op_logical_and
+id|lp-&gt;chip
+op_eq
+id|HP100_CHIPID_SHASTA
+)paren
+(brace
+id|skb
+op_assign
+id|skb_padto
+c_func
+(paren
+id|skb
+comma
+id|ETH_ZLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Get Tx ring tail pointer */
 r_if
 c_cond
@@ -8721,6 +8754,11 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 macro_line|#ifdef HP100_DEBUG_B
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
 id|hp100_outw
 c_func
 (paren
@@ -10667,6 +10705,7 @@ id|HP100_AUI_ST
 )paren
 (brace
 multiline_comment|/* have we BNC or AUI onboard? */
+multiline_comment|/*&n;&t;&t; * This can be overriden by dos utility, so if this has no effect,&n;&t;&t; * perhaps you need to download that utility from HP and set card&n;&t;&t; * back to &quot;auto detect&quot;.&n;&t;&t; */
 id|val_10
 op_or_assign
 id|HP100_AUI_SEL

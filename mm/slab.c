@@ -1100,6 +1100,7 @@ r_void
 id|__slab_error
 c_func
 (paren
+r_const
 r_char
 op_star
 id|function

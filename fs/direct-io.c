@@ -1108,7 +1108,7 @@ id|dio-&gt;rw
 op_eq
 id|READ
 )paren
-id|set_page_dirty
+id|set_page_dirty_lock
 c_func
 (paren
 id|page

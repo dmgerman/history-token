@@ -2877,7 +2877,6 @@ suffix:semicolon
 DECL|function|cleanup_ipv6_mibs
 r_static
 r_void
-id|__exit
 id|cleanup_ipv6_mibs
 c_func
 (paren

@@ -9,10 +9,11 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -20,11 +21,6 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &lt;asm/arch/shannon.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-mfb.h&gt;
-macro_line|#include &lt;video/fbcon-cfb4.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 multiline_comment|/*&n; * debugging?&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
@@ -3167,7 +3163,6 @@ c_cond
 id|var-&gt;bits_per_pixel
 )paren
 (brace
-macro_line|#ifdef FBCON_HAS_CFB4
 r_case
 l_int|4
 suffix:colon
@@ -3179,8 +3174,6 @@ l_int|12
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB8
 r_case
 l_int|8
 suffix:colon
@@ -3192,8 +3185,6 @@ l_int|12
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB16
 r_case
 l_int|16
 suffix:colon
@@ -3205,7 +3196,6 @@ l_int|12
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 id|ret
@@ -3453,7 +3443,7 @@ OL
 l_int|16
 )paren
 (brace
-id|u16
+id|u32
 op_star
 id|pal
 op_assign
@@ -3673,7 +3663,6 @@ c_cond
 id|var-&gt;bits_per_pixel
 )paren
 (brace
-macro_line|#ifdef FBCON_HAS_CFB4
 r_case
 l_int|4
 suffix:colon
@@ -3683,8 +3672,6 @@ id|RGB_8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB8
 r_case
 l_int|8
 suffix:colon
@@ -3694,8 +3681,6 @@ id|RGB_8
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB16
 r_case
 l_int|16
 suffix:colon
@@ -3705,7 +3690,6 @@ id|RGB_16
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -3942,6 +3926,14 @@ op_assign
 id|FB_VISUAL_STATIC_PSEUDOCOLOR
 suffix:semicolon
 )brace
+id|fbi-&gt;fb.fix.line_length
+op_assign
+id|var-&gt;xres_virtual
+op_star
+id|var-&gt;bits_per_pixel
+op_div
+l_int|8
+suffix:semicolon
 id|fbi-&gt;palette_size
 op_assign
 id|var-&gt;bits_per_pixel
@@ -4033,93 +4025,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sa1100fb_set_var():&n; *&t;Set the user defined part of the display for the specified console&n; */
+macro_line|#if 0
 r_static
 r_int
-DECL|function|sa1100fb_set_var
-id|sa1100fb_set_var
-c_func
-(paren
-r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-r_int
-id|ret
-comma
-id|act
-suffix:semicolon
-id|act
-op_assign
-id|var-&gt;activate
-op_amp
-id|FB_ACTIVATE_MASK
-suffix:semicolon
-id|ret
-op_assign
-id|gen_set_var
-c_func
-(paren
-id|var
-comma
-id|con
-comma
-id|info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_eq
-l_int|0
-op_logical_and
-id|act
-op_amp
-id|FB_ACTIVATE_NOW
-)paren
-(brace
-r_struct
-id|display
-op_star
-id|display
-op_assign
-(paren
-id|con
-OL
-l_int|0
-)paren
-ques
-c_cond
-id|info-&gt;disp
-suffix:colon
-id|fb_display
-op_plus
-id|con
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * fbcon assumes too much.&n;&t;&t; */
-id|display-&gt;can_soft_blank
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-r_static
-r_int
-DECL|function|sa1100fb_set_cmap
 id|sa1100fb_set_cmap
 c_func
 (paren
@@ -4152,26 +4060,6 @@ op_star
 )paren
 id|info
 suffix:semicolon
-r_struct
-id|display
-op_star
-id|disp
-op_assign
-(paren
-id|con
-OL
-l_int|0
-)paren
-ques
-c_cond
-id|info-&gt;disp
-suffix:colon
-(paren
-id|fb_display
-op_plus
-id|con
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure the user isn&squot;t doing something stupid.&n;&t; */
 r_if
 c_cond
@@ -4180,7 +4068,7 @@ op_logical_neg
 id|kspc
 op_logical_and
 (paren
-id|disp-&gt;var.bits_per_pixel
+id|fbi-&gt;fb.var.bits_per_pixel
 op_eq
 l_int|16
 op_logical_or
@@ -4205,6 +4093,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Formal definition of the VESA spec:&n; *  On&n; *  &t;This refers to the state of the display when it is in full operation&n; *  Stand-By&n; *  &t;This defines an optional operating state of minimal power reduction with&n; *  &t;the shortest recovery time&n; *  Suspend&n; *  &t;This refers to a level of power management in which substantial power&n; *  &t;reduction is achieved by the display.  The display can have a longer &n; *  &t;recovery time from this state than from the Stand-by state&n; *  Off&n; *  &t;This indicates that the display is consuming the lowest level of power&n; *  &t;and is non-operational. Recovery from this state may optionally require&n; *  &t;the user to manually power on the monitor&n; *&n; *  Now, the fbdev driver adds an additional state, (blank), where they&n; *  turn off the video (maybe by colormap tricks), but don&squot;t mess with the&n; *  video itself: think of it semantically between on and Stand-By.&n; *&n; *  So here&squot;s what we should do in our fbdev blank routine:&n; *&n; *  &t;VESA_NO_BLANKING (mode 0)&t;Video on,  front/back light on&n; *  &t;VESA_VSYNC_SUSPEND (mode 1)  &t;Video on,  front/back light off&n; *  &t;VESA_HSYNC_SUSPEND (mode 2)  &t;Video on,  front/back light off&n; *  &t;VESA_POWERDOWN (mode 3)&t;&t;Video off, front/back light off&n; *&n; *  This will match the matrox implementation.&n; */
 multiline_comment|/*&n; * sa1100fb_blank():&n; *&t;Blank the display by setting all palette values to zero.  Note, the &n; * &t;12 and 16 bpp modes don&squot;t really use the palette, so this will not&n; *      blank the display in all modes.  &n; */
 DECL|function|sa1100fb_blank
@@ -4240,11 +4129,9 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;sa1100fb_blank: blank=%d info-&gt;modename=%s&bslash;n&quot;
+l_string|&quot;sa1100fb_blank: blank=%d&bslash;n&quot;
 comma
 id|blank
-comma
-id|fbi-&gt;fb.modename
 )paren
 suffix:semicolon
 r_switch
@@ -4373,25 +4260,26 @@ id|fb_set_par
 op_assign
 id|sa1100fb_set_par
 comma
-dot
-id|fb_set_var
-op_assign
-id|sa1100fb_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|sa1100fb_set_cmap
-comma
+singleline_comment|//&t;.fb_set_cmap&t;= sa1100fb_set_cmap,
 dot
 id|fb_setcolreg
 op_assign
 id|sa1100fb_setcolreg
+comma
+dot
+id|fb_fillrect
+op_assign
+id|cfb_fillrect
+comma
+dot
+id|fb_copyarea
+op_assign
+id|cfb_copyarea
+comma
+dot
+id|fb_imageblit
+op_assign
+id|cfb_imageblit
 comma
 dot
 id|fb_blank
@@ -4400,26 +4288,6 @@ id|sa1100fb_blank
 comma
 )brace
 suffix:semicolon
-DECL|function|sa1100fb_updatevar
-r_static
-r_int
-id|sa1100fb_updatevar
-c_func
-(paren
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-multiline_comment|/* we don&squot;t support panning nor scrolling */
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Calculate the PCD value from the clock rate (in picoseconds).&n; * We take account of the PPCR clock setting.&n; */
 DECL|function|get_pcd
 r_static
@@ -4810,7 +4678,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;nlccr0 = 0x%08x&bslash;n&quot;
+l_string|&quot;nlccr0 = 0x%08lx&bslash;n&quot;
 comma
 id|new_regs.lccr0
 )paren
@@ -4818,7 +4686,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;nlccr1 = 0x%08x&bslash;n&quot;
+l_string|&quot;nlccr1 = 0x%08lx&bslash;n&quot;
 comma
 id|new_regs.lccr1
 )paren
@@ -4826,7 +4694,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;nlccr2 = 0x%08x&bslash;n&quot;
+l_string|&quot;nlccr2 = 0x%08lx&bslash;n&quot;
 comma
 id|new_regs.lccr2
 )paren
@@ -4834,7 +4702,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;nlccr3 = 0x%08x&bslash;n&quot;
+l_string|&quot;nlccr3 = 0x%08lx&bslash;n&quot;
 comma
 id|new_regs.lccr3
 )paren
@@ -5263,7 +5131,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;DBAR1 = %p&bslash;n&quot;
+l_string|&quot;DBAR1 = 0x%08x&bslash;n&quot;
 comma
 id|DBAR1
 )paren
@@ -5271,7 +5139,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;DBAR2 = %p&bslash;n&quot;
+l_string|&quot;DBAR2 = 0x%08x&bslash;n&quot;
 comma
 id|DBAR2
 )paren
@@ -5561,6 +5429,22 @@ id|old_state
 op_assign
 id|fbi-&gt;state
 suffix:semicolon
+multiline_comment|/*&n;&t; * Hack around fbcon initialisation.&n;&t; */
+r_if
+c_cond
+(paren
+id|old_state
+op_eq
+id|C_STARTUP
+op_logical_and
+id|state
+op_eq
+id|C_REENABLE
+)paren
+id|state
+op_assign
+id|C_ENABLE
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5831,6 +5715,7 @@ op_star
 id|fbi
 )paren
 (brace
+macro_line|#if 0
 r_int
 r_int
 id|min_period
@@ -5911,6 +5796,17 @@ suffix:semicolon
 r_return
 id|min_period
 suffix:semicolon
+macro_line|#else
+multiline_comment|/*&n;&t; * FIXME: we need to verify _all_ consoles.&n;&t; */
+r_return
+id|sa1100fb_display_dma_period
+c_func
+(paren
+op_amp
+id|fbi-&gt;fb.var
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * CPU clock speed change handler.  We need to adjust the LCD timing&n; * parameters when the CPU clock is adjusted by the power management&n; * subsystem.&n; */
 r_static
@@ -6092,24 +5988,23 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
-multiline_comment|/*&n; * Power management hook.  Note that we won&squot;t be called from IRQ context,&n; * unlike the blank functions above, so we may sleep.&n; */
+multiline_comment|/*&n; * Power management hooks.  Note that we won&squot;t be called from IRQ context,&n; * unlike the blank functions above, so we may sleep.&n; */
+DECL|function|sa1100fb_suspend
 r_static
 r_int
-DECL|function|sa1100fb_pm_callback
-id|sa1100fb_pm_callback
+id|sa1100fb_suspend
 c_func
 (paren
 r_struct
-id|pm_dev
+id|device
 op_star
-id|pm_dev
+id|dev
 comma
-id|pm_request_t
-id|req
+id|u32
+id|state
 comma
-r_void
-op_star
-id|data
+id|u32
+id|level
 )paren
 (brace
 r_struct
@@ -6117,57 +6012,23 @@ id|sa1100fb_info
 op_star
 id|fbi
 op_assign
-id|pm_dev-&gt;data
-suffix:semicolon
-id|DPRINTK
+id|dev_get_drvdata
 c_func
 (paren
-l_string|&quot;pm_callback: %d&bslash;n&quot;
-comma
-id|req
+id|dev
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|req
+id|level
 op_eq
-id|PM_SUSPEND
+id|SUSPEND_DISABLE
 op_logical_or
-id|req
+id|level
 op_eq
-id|PM_RESUME
+id|SUSPEND_POWER_DOWN
 )paren
-(brace
-r_int
-id|state
-op_assign
-(paren
-r_int
-)paren
-id|data
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|state
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* Enter D0. */
-id|set_ctrlr_state
-c_func
-(paren
-id|fbi
-comma
-id|C_ENABLE_PM
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Enter D1-D3.  Disable the LCD controller.  */
 id|set_ctrlr_state
 c_func
 (paren
@@ -6176,18 +6037,60 @@ comma
 id|C_DISABLE_PM
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-)brace
-id|DPRINTK
+DECL|function|sa1100fb_resume
+r_static
+r_int
+id|sa1100fb_resume
 c_func
 (paren
-l_string|&quot;done&bslash;n&quot;
+r_struct
+id|device
+op_star
+id|dev
+comma
+id|u32
+id|level
+)paren
+(brace
+r_struct
+id|sa1100fb_info
+op_star
+id|fbi
+op_assign
+id|dev_get_drvdata
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|level
+op_eq
+id|RESUME_ENABLE
+)paren
+id|set_ctrlr_state
+c_func
+(paren
+id|fbi
+comma
+id|C_ENABLE_PM
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|sa1100fb_suspend
+mdefine_line|#define sa1100fb_suspend&t;NULL
+DECL|macro|sa1100fb_resume
+mdefine_line|#define sa1100fb_resume&t;&t;NULL
 macro_line|#endif
 multiline_comment|/*&n; * sa1100fb_map_video_memory():&n; *      Allocates the DRAM memory for the frame buffer.  This buffer is  &n; *&t;remapped into a non-cached, non-buffered, memory region to  &n; *      allow palette and pixel writes to occur without flushing the &n; *      cache.  Once this area is remapped, all virtual memory&n; *      access to the video memory should occur at the new region.&n; */
 DECL|function|sa1100fb_map_video_memory
@@ -6225,6 +6128,8 @@ id|fbi-&gt;map_size
 comma
 op_amp
 id|fbi-&gt;map_dma
+comma
+id|PTE_BUFFERABLE
 )paren
 suffix:semicolon
 r_if
@@ -6316,13 +6221,7 @@ id|sa1100fb_info
 op_plus
 r_sizeof
 (paren
-r_struct
-id|display
-)paren
-op_plus
-r_sizeof
-(paren
-id|u16
+id|u32
 )paren
 op_star
 l_int|16
@@ -6351,12 +6250,6 @@ r_sizeof
 r_struct
 id|sa1100fb_info
 )paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|display
-)paren
 )paren
 suffix:semicolon
 id|strcpy
@@ -6384,10 +6277,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|fbi-&gt;fb.fix.ywrapstep
-op_assign
-l_int|0
-suffix:semicolon
-id|fbi-&gt;fb.fix.line_length
 op_assign
 l_int|0
 suffix:semicolon
@@ -6421,38 +6310,10 @@ id|fbi-&gt;fb.var.vmode
 op_assign
 id|FB_VMODE_NONINTERLACED
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fbi-&gt;fb.modename
-comma
-id|SA1100_NAME
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fbi-&gt;fb.fontname
-comma
-l_string|&quot;Acorn8x8&quot;
-)paren
-suffix:semicolon
 id|fbi-&gt;fb.fbops
 op_assign
 op_amp
 id|sa1100fb_ops
-suffix:semicolon
-id|fbi-&gt;fb.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|fbi-&gt;fb.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fbi-&gt;fb.updatevar
-op_assign
-id|sa1100fb_updatevar
 suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign
@@ -6471,27 +6332,10 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|fbi-&gt;fb.disp
-op_assign
-(paren
-r_struct
-id|display
-op_star
-)paren
-(paren
-id|fbi
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|fbi-&gt;fb.pseudo_palette
 op_assign
 (paren
-r_void
-op_star
-)paren
-(paren
-id|fbi-&gt;fb.disp
+id|fbi
 op_plus
 l_int|1
 )paren
@@ -6631,7 +6475,7 @@ id|inf-&gt;lccr3
 suffix:semicolon
 id|fbi-&gt;state
 op_assign
-id|C_DISABLE
+id|C_STARTUP
 suffix:semicolon
 id|fbi-&gt;task_state
 op_assign
@@ -6650,10 +6494,6 @@ op_star
 id|fbi-&gt;max_bpp
 op_div
 l_int|8
-suffix:semicolon
-id|fbi-&gt;fb.disp-&gt;inverse
-op_assign
-id|inf-&gt;cmap_inverse
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -6684,6 +6524,82 @@ r_return
 id|fbi
 suffix:semicolon
 )brace
+DECL|variable|sa1100fb_driver
+r_static
+r_struct
+id|device_driver
+id|sa1100fb_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sa1100fb&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|system_bus_type
+comma
+dot
+id|suspend
+op_assign
+id|sa1100fb_suspend
+comma
+dot
+id|resume
+op_assign
+id|sa1100fb_resume
+comma
+)brace
+suffix:semicolon
+DECL|variable|sa1100fb_dev
+r_static
+r_struct
+id|sys_device
+id|sa1100fb_dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;LCD&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|root
+op_assign
+l_int|NULL
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;Intel Corporation SA11x0 [LCD]&quot;
+comma
+dot
+id|bus_id
+op_assign
+l_string|&quot;b0100000&quot;
+comma
+dot
+id|driver
+op_assign
+op_amp
+id|sa1100fb_driver
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|sa1100fb_init
 r_int
 id|__init
@@ -6719,6 +6635,20 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+id|driver_register
+c_func
+(paren
+op_amp
+id|sa1100fb_driver
+)paren
+suffix:semicolon
+id|sys_device_register
+c_func
+(paren
+op_amp
+id|sa1100fb_dev
+)paren
+suffix:semicolon
 id|fbi
 op_assign
 id|sa1100fb_init_fbinfo
@@ -6739,6 +6669,15 @@ id|fbi
 )paren
 r_goto
 id|failed
+suffix:semicolon
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|sa1100fb_dev.dev
+comma
+id|fbi
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize video memory */
 id|ret
@@ -6845,14 +6784,12 @@ l_int|20
 suffix:semicolon
 )brace
 macro_line|#endif
-id|sa1100fb_set_var
+multiline_comment|/*&n;&t; * This makes sure that our colour bitfield&n;&t; * descriptors are correctly initialised.&n;&t; */
+id|sa1100fb_check_var
 c_func
 (paren
 op_amp
 id|fbi-&gt;fb.var
-comma
-op_minus
-l_int|1
 comma
 op_amp
 id|fbi-&gt;fb
@@ -6877,30 +6814,6 @@ l_int|0
 r_goto
 id|failed
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-multiline_comment|/*&n;&t; * Note that the console registers this as well, but we want to&n;&t; * power down the display prior to sleeping.&n;&t; */
-id|fbi-&gt;pm
-op_assign
-id|pm_register
-c_func
-(paren
-id|PM_SYS_DEV
-comma
-id|PM_SYS_VGA
-comma
-id|sa1100fb_pm_callback
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fbi-&gt;pm
-)paren
-id|fbi-&gt;pm-&gt;data
-op_assign
-id|fbi
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ
 id|fbi-&gt;freq_transition.notifier_call
 op_assign
@@ -6929,15 +6842,6 @@ id|CPUFREQ_POLICY_NOTIFIER
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Ok, now enable the LCD controller&n;&t; */
-id|set_ctrlr_state
-c_func
-(paren
-id|fbi
-comma
-id|C_ENABLE
-)paren
-suffix:semicolon
 multiline_comment|/* This driver cannot be unloaded at the moment */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -6946,6 +6850,20 @@ l_int|0
 suffix:semicolon
 id|failed
 suffix:colon
+id|sys_device_unregister
+c_func
+(paren
+op_amp
+id|sa1100fb_dev
+)paren
+suffix:semicolon
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|sa1100fb_driver
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

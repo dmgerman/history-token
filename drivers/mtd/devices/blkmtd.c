@@ -5570,12 +5570,12 @@ id|mtd_rawdevice-&gt;as.host
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock_init
+id|init_MUTEX
 c_func
 (paren
 op_amp
 (paren
-id|mtd_rawdevice-&gt;as.i_shared_lock
+id|mtd_rawdevice-&gt;as.i_shared_sem
 )paren
 )paren
 suffix:semicolon

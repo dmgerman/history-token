@@ -78,24 +78,24 @@ mdefine_line|#define PNPMSG_PNP_OS_ACTIVE&t;&t;0x42
 DECL|macro|PNPMSG_PNP_OS_INACTIVE
 mdefine_line|#define PNPMSG_PNP_OS_INACTIVE&t;&t;0x43
 multiline_comment|/*&n; * Plug and Play BIOS flags&n; */
-DECL|macro|PNP_NO_DISABLE
-mdefine_line|#define PNP_NO_DISABLE&t;&t;0x0001
-DECL|macro|PNP_NO_CONFIG
-mdefine_line|#define PNP_NO_CONFIG&t;&t;0x0002
-DECL|macro|PNP_OUTPUT
-mdefine_line|#define PNP_OUTPUT&t;&t;0x0004
-DECL|macro|PNP_INPUT
-mdefine_line|#define PNP_INPUT&t;&t;0x0008
-DECL|macro|PNP_BOOTABLE
-mdefine_line|#define PNP_BOOTABLE&t;&t;0x0010
-DECL|macro|PNP_DOCK
-mdefine_line|#define PNP_DOCK&t;&t;0x0020
-DECL|macro|PNP_REMOVABLE
-mdefine_line|#define PNP_REMOVABLE&t;&t;0x0040
-DECL|macro|pnp_is_static
-mdefine_line|#define pnp_is_static(x) (x-&gt;flags &amp; 0x0100) == 0x0000
-DECL|macro|pnp_is_dynamic
-mdefine_line|#define pnp_is_dynamic(x) x-&gt;flags &amp; 0x0080
+DECL|macro|PNPBIOS_NO_DISABLE
+mdefine_line|#define PNPBIOS_NO_DISABLE&t;&t;0x0001
+DECL|macro|PNPBIOS_NO_CONFIG
+mdefine_line|#define PNPBIOS_NO_CONFIG&t;&t;0x0002
+DECL|macro|PNPBIOS_OUTPUT
+mdefine_line|#define PNPBIOS_OUTPUT&t;&t;&t;0x0004
+DECL|macro|PNPBIOS_INPUT
+mdefine_line|#define PNPBIOS_INPUT&t;&t;&t;0x0008
+DECL|macro|PNPBIOS_BOOTABLE
+mdefine_line|#define PNPBIOS_BOOTABLE&t;&t;0x0010
+DECL|macro|PNPBIOS_DOCK
+mdefine_line|#define PNPBIOS_DOCK&t;&t;&t;0x0020
+DECL|macro|PNPBIOS_REMOVABLE
+mdefine_line|#define PNPBIOS_REMOVABLE&t;&t;0x0040
+DECL|macro|pnpbios_is_static
+mdefine_line|#define pnpbios_is_static(x) ((x)-&gt;flags &amp; 0x0100) == 0x0000
+DECL|macro|pnpbios_is_dynamic
+mdefine_line|#define pnpbios_is_dynamic(x) (x)-&gt;flags &amp; 0x0080
 multiline_comment|/* 0x8000 through 0xffff are OEM defined */
 macro_line|#pragma pack(1)
 DECL|struct|pnp_dev_node_info

@@ -25,7 +25,8 @@ macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;&t;/* bug in asm-generic/tlb.h: check_pgt_cache */
 macro_line|#include &lt;asm/tlb.h&gt;
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

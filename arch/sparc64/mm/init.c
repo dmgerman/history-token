@@ -29,7 +29,8 @@ macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

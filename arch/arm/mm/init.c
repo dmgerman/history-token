@@ -39,7 +39,8 @@ macro_line|#endif
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE&t;((TABLE_OFFSET + PTRS_PER_PTE) * sizeof(pte_t))
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS

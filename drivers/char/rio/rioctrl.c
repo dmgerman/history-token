@@ -531,7 +531,7 @@ id|func_enter
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Confuse teh compiler to think that we&squot;ve initialized these */
+multiline_comment|/* Confuse the compiler to think that we&squot;ve initialized these */
 id|Host
 op_assign
 l_int|0

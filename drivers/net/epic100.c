@@ -4804,6 +4804,35 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|ETH_ZLEN
+)paren
+(brace
+id|skb
+op_assign
+id|skb_padto
+c_func
+(paren
+id|skb
+comma
+id|ETH_ZLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Caution: the write order is important here, set the field with the&n;&t;   &quot;ownership&quot; bit last. */
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|spin_lock_irqsave

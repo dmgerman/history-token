@@ -33,7 +33,8 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|mmu_gathers
-id|mmu_gather_t
+r_struct
+id|mmu_gather
 id|mmu_gathers
 (braket
 id|NR_CPUS
@@ -144,6 +145,17 @@ op_star
 id|pmd
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pmd_none
+c_func
+(paren
+op_star
+id|pmd
+)paren
+)paren
+(brace
 id|pte_t
 op_star
 id|page_table
@@ -196,6 +208,16 @@ c_func
 suffix:semicolon
 r_return
 id|page_table
+suffix:semicolon
+)brace
+r_return
+id|pte_offset_kernel
+c_func
+(paren
+id|pmd
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function initializes a certain range of kernel virtual memory &n; * with new bootmem page tables, everywhere page tables are missing in&n; * the given range.&n; */

@@ -2566,6 +2566,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 macro_line|#if 0
 r_if
 c_cond
@@ -2596,6 +2601,40 @@ l_int|0x0000
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* FIXME: is the 79C960 new enough to do its own padding right ? */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OL
+id|ETH_ZLEN
+)paren
+(brace
+id|skb
+op_assign
+id|skb_padto
+c_func
+(paren
+id|skb
+comma
+id|ETH_ZLEN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|len
+op_assign
+id|ETH_ZLEN
+suffix:semicolon
+)brace
 multiline_comment|/* Fill in a Tx ring entry */
 macro_line|#if 0
 id|printk
@@ -2777,14 +2816,7 @@ op_star
 )paren
 id|skb-&gt;data
 comma
-id|skb-&gt;len
-op_le
-id|ETH_ZLEN
-ques
-c_cond
-id|ETH_ZLEN
-suffix:colon
-id|skb-&gt;len
+id|len
 )paren
 suffix:semicolon
 macro_line|#if 0

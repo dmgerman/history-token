@@ -124,11 +124,6 @@ op_amp
 id|swap_backing_dev_info
 comma
 dot
-id|i_shared_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-comma
-dot
 id|i_mmap
 op_assign
 id|LIST_HEAD_INIT

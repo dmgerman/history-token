@@ -1469,5 +1469,12 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/*&n;&t; * Right now other parts of the system means that we&n;&t; * _really_ don&squot;t want to cluster much more&n;&t; */
+id|init_MUTEX
+c_func
+(paren
+op_amp
+id|swapper_space.i_shared_sem
+)paren
+suffix:semicolon
 )brace
 eof

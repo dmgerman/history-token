@@ -29,6 +29,7 @@ mdefine_line|#define DEV_AWC_INFO &t;1
 DECL|macro|DEV_AWC
 mdefine_line|#define DEV_AWC &t;1
 DECL|variable|driver_lock
+r_static
 id|spinlock_t
 id|driver_lock
 op_assign

@@ -56,7 +56,8 @@ id|p
 op_assign
 id|buffer
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
