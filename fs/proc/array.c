@@ -193,10 +193,10 @@ comma
 multiline_comment|/*  2 */
 l_string|&quot;T (stopped)&quot;
 comma
-multiline_comment|/*  8 */
+multiline_comment|/*  4 */
 l_string|&quot;Z (zombie)&quot;
 comma
-multiline_comment|/*  4 */
+multiline_comment|/*  8 */
 l_string|&quot;X (dead)&quot;
 multiline_comment|/* 16 */
 )brace
