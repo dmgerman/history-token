@@ -73,7 +73,6 @@ id|len
 OG
 id|buflen
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
