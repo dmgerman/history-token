@@ -44,15 +44,6 @@ DECL|macro|TAPEBLOCK_HSEC_S2B
 mdefine_line|#define TAPEBLOCK_HSEC_S2B&t;2
 DECL|macro|TAPEBLOCK_RETRIES
 mdefine_line|#define TAPEBLOCK_RETRIES&t;5
-multiline_comment|/* Event types for hotplug */
-DECL|macro|TAPE_HOTPLUG_CHAR_ADD
-mdefine_line|#define TAPE_HOTPLUG_CHAR_ADD     1
-DECL|macro|TAPE_HOTPLUG_BLOCK_ADD
-mdefine_line|#define TAPE_HOTPLUG_BLOCK_ADD    2
-DECL|macro|TAPE_HOTPLUG_CHAR_REMOVE
-mdefine_line|#define TAPE_HOTPLUG_CHAR_REMOVE  3
-DECL|macro|TAPE_HOTPLUG_BLOCK_REMOVE
-mdefine_line|#define TAPE_HOTPLUG_BLOCK_REMOVE 4
 DECL|enum|tape_medium_state
 r_enum
 id|tape_medium_state
@@ -585,6 +576,18 @@ r_struct
 id|ccw_device
 op_star
 id|cdev
+suffix:semicolon
+DECL|member|nt
+r_struct
+id|cdev
+op_star
+id|nt
+suffix:semicolon
+DECL|member|rt
+r_struct
+id|cdev
+op_star
+id|rt
 suffix:semicolon
 multiline_comment|/* Device discipline information. */
 DECL|member|discipline
