@@ -894,7 +894,10 @@ r_struct
 id|atm_vcc
 op_star
 id|out_vcc
+op_assign
+l_int|NULL
 suffix:semicolon
+multiline_comment|/* Initializer quietens GCC warning */
 r_struct
 id|sk_buff
 op_star
