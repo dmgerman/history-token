@@ -436,11 +436,11 @@ id|high
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0
 multiline_comment|/*&n; *&t;Initialise the later (saner) Winchip MCR variant. In this version&n; *&t;the BIOS can pass us the registers it has used (but not their values)&n; *&t;and the control register is read/write&n; */
 r_static
 r_void
 id|__init
-DECL|function|centaur_mcr1_init
 id|centaur_mcr1_init
 c_func
 (paren
@@ -611,7 +611,6 @@ multiline_comment|/*&n; *&t;Initialise the original winchip with read only MCR r
 r_static
 r_void
 id|__init
-DECL|function|centaur_mcr0_init
 id|centaur_mcr0_init
 c_func
 (paren
@@ -688,7 +687,6 @@ multiline_comment|/*&n; *&t;Initialise Winchip series MCR registers&n; */
 r_static
 r_void
 id|__init
-DECL|function|centaur_mcr_init
 id|centaur_mcr_init
 c_func
 (paren
@@ -750,6 +748,7 @@ id|ctxt
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|centaur_validate_add_page
 r_static
 r_int
@@ -823,11 +822,7 @@ id|vendor
 op_assign
 id|X86_VENDOR_CENTAUR
 comma
-dot
-id|init
-op_assign
-id|centaur_mcr_init
-comma
+singleline_comment|//&t;.init              = centaur_mcr_init,
 dot
 id|set
 op_assign

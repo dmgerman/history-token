@@ -44,6 +44,7 @@ r_int
 id|smp_changes_mask
 suffix:semicolon
 DECL|variable|mtrr_state
+r_static
 r_struct
 id|mtrr_state
 id|mtrr_state
@@ -1823,6 +1824,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|generic_have_wrcomb
+r_static
 r_int
 id|generic_have_wrcomb
 c_func
