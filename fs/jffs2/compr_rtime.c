@@ -1,8 +1,10 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_rtime.c,v 1.11 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; *&n; * Very simple lz77-ish encoder.&n; *&n; * Theory of operation: Both encoder and decoder have a list of &quot;last&n; * occurrences&quot; for every possible source-value; after sending the&n; * first source-byte, the second byte indicated the &quot;run&quot; length of&n; * matches&n; *&n; * The algorithm is intended to only send &quot;whole bytes&quot;, no bit-messing.&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr_rtime.c,v 1.14 2004/06/23 16:34:40 havasi Exp $&n; *&n; *&n; * Very simple lz77-ish encoder.&n; *&n; * Theory of operation: Both encoder and decoder have a list of &quot;last&n; * occurrences&quot; for every possible source-value; after sending the&n; * first source-byte, the second byte indicated the &quot;run&quot; length of&n; * matches&n; *&n; * The algorithm is intended to only send &quot;whole bytes&quot;, no bit-messing.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt; 
+macro_line|#include &lt;linux/jffs2.h&gt; 
+macro_line|#include &quot;compr.h&quot;
 multiline_comment|/* _compress returns the compressed size, -1 if bigger */
 DECL|function|jffs2_rtime_compress
 r_int
@@ -26,6 +28,10 @@ comma
 r_uint32
 op_star
 id|dstlen
+comma
+r_void
+op_star
+id|model
 )paren
 (brace
 r_int
@@ -205,7 +211,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jffs2_rtime_decompress
-r_void
+r_int
 id|jffs2_rtime_decompress
 c_func
 (paren
@@ -224,6 +230,10 @@ id|srclen
 comma
 r_uint32
 id|destlen
+comma
+r_void
+op_star
+id|model
 )paren
 (brace
 r_int
@@ -378,5 +388,90 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|jffs2_rtime_comp
+r_static
+r_struct
+id|jffs2_compressor
+id|jffs2_rtime_comp
+op_assign
+(brace
+dot
+id|priority
+op_assign
+id|JFFS2_RTIME_PRIORITY
+comma
+dot
+id|name
+op_assign
+l_string|&quot;rtime&quot;
+comma
+dot
+id|compr
+op_assign
+id|JFFS2_COMPR_RTIME
+comma
+dot
+id|compress
+op_assign
+op_amp
+id|jffs2_rtime_compress
+comma
+dot
+id|decompress
+op_assign
+op_amp
+id|jffs2_rtime_decompress
+comma
+macro_line|#ifdef JFFS2_RTIME_DISABLED
+dot
+id|disabled
+op_assign
+l_int|1
+comma
+macro_line|#else
+dot
+id|disabled
+op_assign
+l_int|0
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+DECL|function|jffs2_rtime_init
+r_int
+id|jffs2_rtime_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|jffs2_register_compressor
+c_func
+(paren
+op_amp
+id|jffs2_rtime_comp
+)paren
+suffix:semicolon
+)brace
+DECL|function|jffs2_rtime_exit
+r_void
+id|jffs2_rtime_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|jffs2_unregister_compressor
+c_func
+(paren
+op_amp
+id|jffs2_rtime_comp
+)paren
+suffix:semicolon
 )brace
 eof

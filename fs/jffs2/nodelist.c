@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.80 2003/10/04 08:33:06 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.86 2003/10/31 15:37:51 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -327,6 +327,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Put a new tmp_dnode_info into the list, keeping the list in &n;   order of increasing version&n;*/
 DECL|function|jffs2_add_tn_to_list
+r_static
 r_void
 id|jffs2_add_tn_to_list
 c_func
@@ -688,7 +689,15 @@ c_func
 (paren
 r_uint32
 comma
-id|ref-&gt;totlen
+id|ref_totlen
+c_func
+(paren
+id|c
+comma
+l_int|NULL
+comma
+id|ref
+)paren
 comma
 r_sizeof
 (paren
@@ -743,7 +752,15 @@ c_func
 (paren
 r_uint32
 comma
-id|ref-&gt;totlen
+id|ref_totlen
+c_func
+(paren
+id|c
+comma
+l_int|NULL
+comma
+id|ref
+)paren
 comma
 r_sizeof
 (paren
@@ -1401,6 +1418,8 @@ id|REF_UNCHECKED
 (brace
 r_uint32
 id|crc
+comma
+id|len
 suffix:semicolon
 r_struct
 id|jffs2_eraseblock
@@ -1960,21 +1979,33 @@ op_div
 id|c-&gt;sector_size
 )braket
 suffix:semicolon
+id|len
+op_assign
+id|ref_totlen
+c_func
+(paren
+id|c
+comma
+id|jeb
+comma
+id|ref
+)paren
+suffix:semicolon
 id|jeb-&gt;used_size
 op_add_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|jeb-&gt;unchecked_size
 op_sub_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|c-&gt;used_size
 op_add_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|c-&gt;unchecked_size
 op_sub_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 multiline_comment|/* If node covers at least a whole page, or if it starts at the &n;&t;&t;&t;&t;   beginning of a page and runs to the end of the file, or if &n;&t;&t;&t;&t;   it&squot;s a hole node, mark it REF_PRISTINE, else REF_NORMAL. &n;&n;&t;&t;&t;&t;   If it&squot;s actually overlapped, it&squot;ll get made NORMAL (or OBSOLETE) &n;&t;&t;&t;&t;   when the overlapping node(s) get added to the tree anyway. &n;&t;&t;&t;&t;*/
 r_if
@@ -2297,6 +2328,9 @@ id|jffs2_eraseblock
 op_star
 id|jeb
 suffix:semicolon
+r_uint32
+id|len
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2334,21 +2368,33 @@ op_div
 id|c-&gt;sector_size
 )braket
 suffix:semicolon
+id|len
+op_assign
+id|ref_totlen
+c_func
+(paren
+id|c
+comma
+id|jeb
+comma
+id|ref
+)paren
+suffix:semicolon
 id|jeb-&gt;used_size
 op_add_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|jeb-&gt;unchecked_size
 op_sub_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|c-&gt;used_size
 op_add_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|c-&gt;unchecked_size
 op_sub_assign
-id|ref-&gt;totlen
+id|len
 suffix:semicolon
 id|mark_ref_normal
 c_func
@@ -3640,6 +3686,11 @@ suffix:semicolon
 id|frag
 op_assign
 id|parent
+suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 )brace
