@@ -6487,7 +6487,28 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Paul Richards: below if block borks things in kernel for some reason */
-multiline_comment|/* if((bpp != 8) &amp;&amp; (chip-&gt;Architecture != NV_ARCH_03))&n;    state-&gt;general |= 0x00000030; */
+multiline_comment|/* Tony: Below is needed to set hardware in DirectColor */
+r_if
+c_cond
+(paren
+(paren
+id|bpp
+op_ne
+l_int|8
+)paren
+op_logical_and
+(paren
+id|chip-&gt;Architecture
+op_ne
+id|NV_ARCH_03
+)paren
+)paren
+(brace
+id|state-&gt;general
+op_or_assign
+l_int|0x00000030
+suffix:semicolon
+)brace
 id|state-&gt;vpll
 op_assign
 (paren

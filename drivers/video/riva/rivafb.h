@@ -108,6 +108,22 @@ id|RIVA_HW_INST
 id|riva
 suffix:semicolon
 multiline_comment|/* interface to riva_hw.c */
+DECL|member|pseudo_palette
+id|u32
+id|pseudo_palette
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* default palette */
+DECL|member|palette
+id|u32
+id|palette
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/* for Riva128 */
 DECL|member|ctrl_base
 id|caddr_t
 id|ctrl_base
@@ -139,21 +155,6 @@ macro_line|#endif
 DECL|member|ref_count
 id|atomic_t
 id|ref_count
-suffix:semicolon
-DECL|member|cursor_data
-id|u32
-id|cursor_data
-(braket
-l_int|32
-op_star
-l_int|32
-op_div
-l_int|4
-)braket
-suffix:semicolon
-DECL|member|cursor_reset
-r_int
-id|cursor_reset
 suffix:semicolon
 DECL|member|EDID
 r_int

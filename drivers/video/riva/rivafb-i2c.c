@@ -419,11 +419,15 @@ id|riva_gpio_getscl
 suffix:semicolon
 id|chan-&gt;algo.udelay
 op_assign
-l_int|40
+l_int|5
+suffix:semicolon
+id|chan-&gt;algo.mdelay
+op_assign
+l_int|5
 suffix:semicolon
 id|chan-&gt;algo.timeout
 op_assign
-l_int|20
+l_int|10
 suffix:semicolon
 id|chan-&gt;algo.data
 op_assign
