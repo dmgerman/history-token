@@ -11276,9 +11276,13 @@ multiline_comment|/* Paranoia checking: */
 r_if
 c_cond
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
+id|PDE
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 op_ne
-id|entry-&gt;low_ino
+id|entry
 )paren
 (brace
 id|printk

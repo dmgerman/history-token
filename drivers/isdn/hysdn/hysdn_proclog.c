@@ -857,8 +857,16 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-id|word
-id|ino
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 r_struct
 id|procdata
@@ -901,13 +909,6 @@ id|EAGAIN
 )paren
 suffix:semicolon
 multiline_comment|/* sorry, but we need to search the card */
-id|ino
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
-op_amp
-l_int|0xFFFF
-suffix:semicolon
-multiline_comment|/* low-ino */
 id|card
 op_assign
 id|card_root
@@ -925,9 +926,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pd-&gt;log-&gt;low_ino
+id|pd-&gt;log
 op_eq
-id|ino
+id|pde
 )paren
 r_break
 suffix:semicolon
@@ -1105,12 +1106,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pd-&gt;log-&gt;low_ino
+id|pd-&gt;log
 op_eq
+id|PDE
+c_func
 (paren
-id|ino-&gt;i_ino
-op_amp
-l_int|0xFFFF
+id|ino
 )paren
 )paren
 r_break
@@ -1403,12 +1404,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pd-&gt;log-&gt;low_ino
+id|pd-&gt;log
 op_eq
+id|PDE
+c_func
 (paren
-id|ino-&gt;i_ino
-op_amp
-l_int|0xFFFF
+id|ino
 )paren
 )paren
 r_break
@@ -1534,8 +1535,16 @@ id|mask
 op_assign
 l_int|0
 suffix:semicolon
-id|word
-id|ino
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
+id|file-&gt;f_dentry-&gt;d_inode
+)paren
 suffix:semicolon
 id|hysdn_card
 op_star
@@ -1570,13 +1579,6 @@ id|mask
 suffix:semicolon
 multiline_comment|/* no polling for write supported */
 multiline_comment|/* we need to search the card */
-id|ino
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
-op_amp
-l_int|0xFFFF
-suffix:semicolon
-multiline_comment|/* low-ino */
 id|card
 op_assign
 id|card_root
@@ -1594,9 +1596,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pd-&gt;log-&gt;low_ino
+id|pd-&gt;log
 op_eq
-id|ino
+id|pde
 )paren
 r_break
 suffix:semicolon

@@ -5032,12 +5032,6 @@ r_if
 c_cond
 (paren
 (paren
-id|de
-op_logical_and
-id|de-&gt;low_ino
-)paren
-op_logical_and
-(paren
 id|de-&gt;namelen
 op_eq
 id|dentry-&gt;d_name.len

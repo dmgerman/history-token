@@ -61,22 +61,12 @@ id|iucv
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
-multiline_comment|/**&n; * compatibility stuff&n; */
-macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
 DECL|typedef|net_device
 r_typedef
 r_struct
 id|net_device
 id|net_device
 suffix:semicolon
-macro_line|#else
-DECL|typedef|net_device
-r_typedef
-r_struct
-id|device
-id|net_device
-suffix:semicolon
-macro_line|#endif
 "&f;"
 multiline_comment|/**&n; * Per connection profiling data&n; */
 DECL|struct|connection_profile_t
@@ -248,13 +238,11 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x02032D
 DECL|member|tbusy
 r_int
 r_int
 id|tbusy
 suffix:semicolon
-macro_line|#endif
 DECL|member|fsm
 id|fsm_instance
 op_star
@@ -326,69 +314,6 @@ mdefine_line|#define NETIUCV_QUEUELEN_DEFAULT 50
 DECL|macro|NETIUCV_TIMEOUT_5SEC
 mdefine_line|#define NETIUCV_TIMEOUT_5SEC     5000
 multiline_comment|/**&n; * Compatibility macros for busy handling&n; * of network devices.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; 0x02032D
-DECL|function|netiucv_clear_busy
-r_static
-id|__inline__
-r_void
-id|netiucv_clear_busy
-c_func
-(paren
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|clear_bit
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|dev-&gt;tbusy
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-)brace
-DECL|function|netiucv_test_and_set_busy
-r_static
-id|__inline__
-r_int
-id|netiucv_test_and_set_busy
-c_func
-(paren
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|dev-&gt;tbusy
-)paren
-suffix:semicolon
-)brace
-DECL|macro|SET_DEVICE_START
-mdefine_line|#define SET_DEVICE_START(device, value) dev-&gt;start = value
-macro_line|#else
 DECL|function|netiucv_clear_busy
 r_static
 id|__inline__
@@ -466,11 +391,6 @@ suffix:semicolon
 )brace
 DECL|macro|SET_DEVICE_START
 mdefine_line|#define SET_DEVICE_START(device, value)
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
-DECL|macro|dev_kfree_skb_irq
-macro_line|#  define dev_kfree_skb_irq(a) dev_kfree_skb(a)
-macro_line|#endif
 DECL|variable|iucv_host
 id|__u8
 id|iucv_host
@@ -4531,9 +4451,10 @@ DECL|function|find_netdev_by_ino
 id|find_netdev_by_ino
 c_func
 (paren
-r_int
-r_int
-id|ino
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
 )paren
 (brace
 id|iucv_connection
@@ -4582,21 +4503,21 @@ r_if
 c_cond
 (paren
 (paren
-id|privptr-&gt;proc_buffer_entry-&gt;low_ino
+id|privptr-&gt;proc_buffer_entry
 op_eq
-id|ino
+id|pde
 )paren
 op_logical_or
 (paren
-id|privptr-&gt;proc_user_entry-&gt;low_ino
+id|privptr-&gt;proc_user_entry
 op_eq
-id|ino
+id|pde
 )paren
 op_logical_or
 (paren
-id|privptr-&gt;proc_stat_entry-&gt;low_ino
+id|privptr-&gt;proc_stat_entry
 op_eq
-id|ino
+id|pde
 )paren
 )paren
 r_return
@@ -4612,37 +4533,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-multiline_comment|/**&n; * Lock the module, if someone changes into&n; * our proc directory.&n; */
-r_static
-r_void
-DECL|function|netiucv_fill_inode
-id|netiucv_fill_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|fill
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|fill
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-)brace
-r_else
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|macro|CTRL_BUFSIZE
 mdefine_line|#define CTRL_BUFSIZE 40
 r_static
@@ -4742,20 +4632,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 id|net_device
 op_star
@@ -4788,7 +4674,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -4988,20 +4874,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 r_char
 op_star
@@ -5045,7 +4927,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -5258,20 +5140,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 id|net_device
 op_star
@@ -5310,7 +5188,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -5510,20 +5388,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 r_char
 op_star
@@ -5567,7 +5441,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -5786,20 +5660,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 id|net_device
 op_star
@@ -5819,7 +5689,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -5886,20 +5756,16 @@ op_star
 id|off
 )paren
 (brace
-r_int
-r_int
-id|ino
-op_assign
-(paren
-(paren
 r_struct
-id|inode
+id|proc_dir_entry
 op_star
-)paren
+id|pde
+op_assign
+id|PDE
+c_func
+(paren
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
-op_member_access_from_pointer
-id|i_ino
 suffix:semicolon
 r_char
 op_star
@@ -5943,7 +5809,7 @@ op_assign
 id|find_netdev_by_ino
 c_func
 (paren
-id|ino
+id|pde
 )paren
 )paren
 )paren
@@ -6246,263 +6112,6 @@ id|netiucv_user_close
 comma
 )brace
 suffix:semicolon
-DECL|variable|netiucv_stat_iops
-r_static
-r_struct
-id|inode_operations
-id|netiucv_stat_iops
-op_assign
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-id|default_file_ops
-suffix:colon
-op_amp
-id|netiucv_stat_fops
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|variable|netiucv_buffer_iops
-r_static
-r_struct
-id|inode_operations
-id|netiucv_buffer_iops
-op_assign
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-id|default_file_ops
-suffix:colon
-op_amp
-id|netiucv_buffer_fops
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|variable|netiucv_user_iops
-r_static
-r_struct
-id|inode_operations
-id|netiucv_user_iops
-op_assign
-(brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-id|default_file_ops
-suffix:colon
-op_amp
-id|netiucv_user_fops
-macro_line|#endif
-)brace
-suffix:semicolon
-DECL|variable|stat_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|stat_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino */
-l_int|10
-comma
-multiline_comment|/* namelen */
-l_string|&quot;statistics&quot;
-comma
-multiline_comment|/* name    */
-id|S_IFREG
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-comma
-multiline_comment|/* mode    */
-l_int|1
-comma
-multiline_comment|/* nlink   */
-l_int|0
-comma
-multiline_comment|/* uid     */
-l_int|0
-comma
-multiline_comment|/* gid     */
-l_int|0
-comma
-multiline_comment|/* size    */
-op_amp
-id|netiucv_stat_iops
-multiline_comment|/* ops     */
-)brace
-suffix:semicolon
-DECL|variable|buffer_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|buffer_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino */
-l_int|10
-comma
-multiline_comment|/* namelen */
-l_string|&quot;buffersize&quot;
-comma
-multiline_comment|/* name    */
-id|S_IFREG
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-comma
-multiline_comment|/* mode    */
-l_int|1
-comma
-multiline_comment|/* nlink   */
-l_int|0
-comma
-multiline_comment|/* uid     */
-l_int|0
-comma
-multiline_comment|/* gid     */
-l_int|0
-comma
-multiline_comment|/* size    */
-op_amp
-id|netiucv_buffer_iops
-multiline_comment|/* ops     */
-)brace
-suffix:semicolon
-DECL|variable|user_entry
-r_static
-r_struct
-id|proc_dir_entry
-id|user_entry
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino */
-l_int|8
-comma
-multiline_comment|/* namelen */
-l_string|&quot;username&quot;
-comma
-multiline_comment|/* name    */
-id|S_IFREG
-op_or
-id|S_IRUSR
-op_or
-id|S_IWUSR
-comma
-multiline_comment|/* mode    */
-l_int|1
-comma
-multiline_comment|/* nlink   */
-l_int|0
-comma
-multiline_comment|/* uid     */
-l_int|0
-comma
-multiline_comment|/* gid     */
-l_int|0
-comma
-multiline_comment|/* size    */
-op_amp
-id|netiucv_user_iops
-multiline_comment|/* ops     */
-)brace
-suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020363
-DECL|variable|netiucv_dir
-r_static
-r_struct
-id|proc_dir_entry
-id|netiucv_dir
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino  */
-l_int|4
-comma
-multiline_comment|/* namelen  */
-l_string|&quot;iucv&quot;
-comma
-multiline_comment|/* name     */
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-multiline_comment|/* mode     */
-l_int|2
-comma
-multiline_comment|/* nlink    */
-l_int|0
-comma
-multiline_comment|/* uid      */
-l_int|0
-comma
-multiline_comment|/* gid      */
-l_int|0
-comma
-multiline_comment|/* size     */
-l_int|0
-comma
-multiline_comment|/* ops      */
-l_int|0
-comma
-multiline_comment|/* get_info */
-id|netiucv_fill_inode
-multiline_comment|/* fill_ino (for locking) */
-)brace
-suffix:semicolon
-DECL|variable|netiucv_template
-r_static
-r_struct
-id|proc_dir_entry
-id|netiucv_template
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* low_ino  */
-l_int|0
-comma
-multiline_comment|/* namelen  */
-l_string|&quot;&quot;
-comma
-multiline_comment|/* name     */
-id|S_IFDIR
-op_or
-id|S_IRUGO
-op_or
-id|S_IXUGO
-comma
-multiline_comment|/* mode     */
-l_int|2
-comma
-multiline_comment|/* nlink    */
-l_int|0
-comma
-multiline_comment|/* uid      */
-l_int|0
-comma
-multiline_comment|/* gid      */
-l_int|0
-comma
-multiline_comment|/* size     */
-l_int|0
-comma
-multiline_comment|/* ops      */
-l_int|0
-comma
-multiline_comment|/* get_info */
-id|netiucv_fill_inode
-multiline_comment|/* fill_ino (for locking) */
-)brace
-suffix:semicolon
-macro_line|#else
 DECL|variable|netiucv_dir
 r_static
 r_struct
@@ -6521,7 +6130,6 @@ id|netiucv_template
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * Create the driver&squot;s main directory /proc/net/iucv&n; */
 r_static
 r_void
@@ -6533,7 +6141,6 @@ r_void
 )paren
 (brace
 multiline_comment|/**&n;&t; * If not registered, register main proc dir-entry now&n;&t; */
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 r_if
 c_cond
 (paren
@@ -6550,22 +6157,6 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|netiucv_dir.low_ino
-op_eq
-l_int|0
-)paren
-id|proc_net_register
-c_func
-(paren
-op_amp
-id|netiucv_dir
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef MODULE
 multiline_comment|/**&n; * Destroy /proc/net/iucv&n; */
@@ -6578,7 +6169,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|remove_proc_entry
 c_func
 (paren
@@ -6587,14 +6177,6 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_net_unregister
-c_func
-(paren
-id|netiucv_dir.low_ino
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#endif MODULE
 multiline_comment|/**&n; * Create a device specific subdirectory in /proc/net/iucv/ with the&n; * same name like the device. In that directory, create 3 entries&n; * &quot;statistics&quot;, &quot;buffersize&quot; and &quot;username&quot;.&n; *&n; * @param dev The device for which the subdirectory should be created.&n; *&n; */
@@ -6615,7 +6197,6 @@ id|privptr
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|privptr-&gt;proc_dentry
 op_assign
 id|proc_mkdir
@@ -6647,11 +6228,6 @@ op_assign
 op_amp
 id|netiucv_stat_fops
 suffix:semicolon
-id|privptr-&gt;proc_stat_entry-&gt;proc_iops
-op_assign
-op_amp
-id|netiucv_stat_iops
-suffix:semicolon
 id|privptr-&gt;proc_buffer_entry
 op_assign
 id|create_proc_entry
@@ -6672,11 +6248,6 @@ id|privptr-&gt;proc_buffer_entry-&gt;proc_fops
 op_assign
 op_amp
 id|netiucv_buffer_fops
-suffix:semicolon
-id|privptr-&gt;proc_buffer_entry-&gt;proc_iops
-op_assign
-op_amp
-id|netiucv_buffer_iops
 suffix:semicolon
 id|privptr-&gt;proc_user_entry
 op_assign
@@ -6699,58 +6270,6 @@ op_assign
 op_amp
 id|netiucv_user_fops
 suffix:semicolon
-id|privptr-&gt;proc_user_entry-&gt;proc_iops
-op_assign
-op_amp
-id|netiucv_user_iops
-suffix:semicolon
-macro_line|#else
-id|privptr-&gt;proc_dentry-&gt;name
-op_assign
-id|dev-&gt;name
-suffix:semicolon
-id|privptr-&gt;proc_dentry-&gt;namelen
-op_assign
-id|strlen
-c_func
-(paren
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-op_amp
-id|netiucv_dir
-comma
-id|privptr-&gt;proc_dentry
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_stat_entry
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_buffer_entry
-)paren
-suffix:semicolon
-id|proc_register
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_user_entry
-)paren
-suffix:semicolon
-macro_line|#endif
 id|privptr-&gt;proc_registered
 op_assign
 l_int|1
@@ -6776,7 +6295,6 @@ id|privptr-&gt;proc_registered
 )paren
 r_return
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x020362
 id|remove_proc_entry
 c_func
 (paren
@@ -6809,41 +6327,6 @@ comma
 id|netiucv_dir
 )paren
 suffix:semicolon
-macro_line|#else
-id|proc_unregister
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_stat_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|proc_unregister
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_buffer_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|proc_unregister
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-id|privptr-&gt;proc_user_entry-&gt;low_ino
-)paren
-suffix:semicolon
-id|proc_unregister
-c_func
-(paren
-op_amp
-id|netiucv_dir
-comma
-id|privptr-&gt;proc_dentry-&gt;low_ino
-)paren
-suffix:semicolon
-macro_line|#endif
 id|privptr-&gt;proc_registered
 op_assign
 l_int|0
@@ -7241,11 +6724,6 @@ r_sizeof
 (paren
 id|net_device
 )paren
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-op_plus
-l_int|11
-multiline_comment|/* name + zero */
-macro_line|#endif
 comma
 id|GFP_KERNEL
 )paren
@@ -7272,21 +6750,6 @@ id|net_device
 )paren
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020300
-id|dev-&gt;name
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|dev
-op_plus
-r_sizeof
-(paren
-id|net_device
-)paren
-suffix:semicolon
-macro_line|#endif
 id|sprintf
 c_func
 (paren
@@ -7302,26 +6765,6 @@ op_assign
 r_sizeof
 (paren
 id|netiucv_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_template
-)paren
-op_plus
-r_sizeof
-(paren
-id|stat_entry
-)paren
-op_plus
-r_sizeof
-(paren
-id|buffer_entry
-)paren
-op_plus
-r_sizeof
-(paren
-id|user_entry
 )paren
 suffix:semicolon
 id|dev-&gt;priv
@@ -7369,180 +6812,6 @@ id|netiucv_priv
 op_star
 )paren
 id|dev-&gt;priv
-suffix:semicolon
-id|privptr-&gt;proc_dentry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_priv
-)paren
-)paren
-suffix:semicolon
-id|privptr-&gt;proc_stat_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_template
-)paren
-)paren
-suffix:semicolon
-id|privptr-&gt;proc_buffer_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_template
-)paren
-op_plus
-r_sizeof
-(paren
-id|stat_entry
-)paren
-)paren
-suffix:semicolon
-id|privptr-&gt;proc_user_entry
-op_assign
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-(paren
-(paren
-(paren
-r_char
-op_star
-)paren
-id|privptr
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_priv
-)paren
-op_plus
-r_sizeof
-(paren
-id|netiucv_template
-)paren
-op_plus
-r_sizeof
-(paren
-id|stat_entry
-)paren
-op_plus
-r_sizeof
-(paren
-id|buffer_entry
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_dentry
-comma
-op_amp
-id|netiucv_template
-comma
-r_sizeof
-(paren
-id|netiucv_template
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_stat_entry
-comma
-op_amp
-id|stat_entry
-comma
-r_sizeof
-(paren
-id|stat_entry
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_buffer_entry
-comma
-op_amp
-id|buffer_entry
-comma
-r_sizeof
-(paren
-id|buffer_entry
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|privptr-&gt;proc_user_entry
-comma
-op_amp
-id|user_entry
-comma
-r_sizeof
-(paren
-id|user_entry
-)paren
-)paren
 suffix:semicolon
 id|privptr-&gt;fsm
 op_assign
@@ -7860,7 +7129,6 @@ id|version
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-macro_line|# if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
 DECL|macro|init_return
 macro_line|#  define init_return(a) return a
 r_static
@@ -7874,24 +7142,6 @@ r_char
 op_star
 id|param
 )paren
-macro_line|# else
-macro_line|#  define init_return(a) return
-id|__initfunc
-(paren
-r_void
-id|iucv_setup
-c_func
-(paren
-r_char
-op_star
-id|param
-comma
-r_int
-op_star
-id|ints
-)paren
-)paren
-macro_line|# endif
 (brace
 multiline_comment|/**&n;&t;* We do not parse parameters here because at the time of&n;&t;* calling iucv_setup(), the kernel does not yet have&n;&t;* memory management running. We delay this until probing&n;&t;* is called.&n;&t;*/
 id|iucv
@@ -7905,7 +7155,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|# if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0))
 id|__setup
 (paren
 l_string|&quot;iucv=&quot;
@@ -7913,7 +7162,6 @@ comma
 id|iucv_setup
 )paren
 suffix:semicolon
-macro_line|# endif
 macro_line|#else
 r_static
 r_void
