@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    | C5A      | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               | C5C      | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M      | v3 : multipliers, voltage &amp; FSB |&n; *  |  Nehemiah           | C5N      | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  (C) 2001-2003  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -207,7 +207,7 @@ c_cond
 (paren
 id|longhaul_version
 op_eq
-l_int|3
+l_int|2
 )paren
 (brace
 r_if
@@ -411,59 +411,9 @@ id|bcr2.val
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t; * Longhaul v2. (Ezra [C5C])&n;&t; * We can scale voltage with this too, but that&squot;s currently&n;&t; * disabled until we come up with a decent &squot;match freq to voltage&squot;&n;&t; * algorithm.&n;&t; * We also need to do the voltage/freq setting in order depending&n;&t; * on the direction of scaling (like we do in powernow-k7.c)&n;&t; */
+multiline_comment|/*&n;&t; * Powersaver. (Ezra-T [C5M], Nehemiah [C5N])&n;&t; * We can scale voltage with this too, but that&squot;s currently&n;&t; * disabled until we come up with a decent &squot;match freq to voltage&squot;&n;&t; * algorithm.&n;&t; * We also need to do the voltage/freq setting in order depending&n;&t; * on the direction of scaling (like we do in powernow-k7.c)&n;&t; * Ezra-T was alleged to do FSB scaling too, but it never worked in practice.&n;&t; */
 r_case
 l_int|2
-suffix:colon
-id|rdmsrl
-(paren
-id|MSR_VIA_LONGHAUL
-comma
-id|longhaul.val
-)paren
-suffix:semicolon
-id|longhaul.bits.SoftBusRatio
-op_assign
-id|clock_ratio_index
-op_amp
-l_int|0xf
-suffix:semicolon
-id|longhaul.bits.SoftBusRatio4
-op_assign
-(paren
-id|clock_ratio_index
-op_amp
-l_int|0x10
-)paren
-op_rshift
-l_int|4
-suffix:semicolon
-id|longhaul.bits.EnableSoftBusRatio
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* We must program the revision key only with values we&n;&t;&t; * know about, not blindly copy it from 0:3 */
-id|longhaul.bits.RevisionKey
-op_assign
-l_int|1
-suffix:semicolon
-id|wrmsrl
-(paren
-id|MSR_VIA_LONGHAUL
-comma
-id|longhaul.val
-)paren
-suffix:semicolon
-id|__hlt
-c_func
-(paren
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/*&n;&t; * Longhaul v3. (Ezra-T [C5M], Nehemiah [C5N])&n;&t; * This can also do voltage scaling, but see above.&n;&t; * Ezra-T was alleged to do FSB scaling too, but it never worked in practice.&n;&t; */
-r_case
-l_int|3
 suffix:colon
 id|rdmsrl
 (paren
@@ -875,10 +825,6 @@ r_break
 suffix:semicolon
 r_case
 l_int|2
-dot
-dot
-dot
-l_int|3
 suffix:colon
 id|rdmsrl
 (paren
@@ -1563,6 +1509,10 @@ r_case
 l_int|7
 suffix:colon
 multiline_comment|/* C5B / C5C */
+id|longhaul_version
+op_assign
+l_int|1
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1575,10 +1525,6 @@ suffix:colon
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
-suffix:semicolon
-id|longhaul_version
-op_assign
-l_int|1
 suffix:semicolon
 multiline_comment|/* Note, this is not a typo, early Samuel2&squot;s had Samuel1 ratios. */
 id|memcpy
@@ -1630,10 +1576,6 @@ id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
 suffix:semicolon
-id|longhaul_version
-op_assign
-l_int|2
-suffix:semicolon
 id|memcpy
 (paren
 id|clock_ratio
@@ -1668,11 +1610,11 @@ l_int|8
 suffix:colon
 id|cpuname
 op_assign
-l_string|&quot;C3 &squot;Ezra-T [C5M]&quot;
+l_string|&quot;C3 &squot;Ezra-T&squot; [C5M]&quot;
 suffix:semicolon
 id|longhaul_version
 op_assign
-l_int|3
+l_int|2
 suffix:semicolon
 id|numscales
 op_assign
@@ -1704,7 +1646,7 @@ id|ezrat_eblcr
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=3;&n;&t;&t;numscales=32;&n;&t;&t;memcpy (clock_ratio, nehemiah_clock_ratio, sizeof(nehemiah_clock_ratio));&n;&t;&t;memcpy (eblcr_table, nehemiah_eblcr, sizeof(nehemiah_eblcr));&n;&t;*/
+multiline_comment|/*&n;&t;case 9:&n;&t;&t;cpuname = &quot;C3 &squot;Nehemiah&squot; [C5N]&quot;;&n;&t;&t;longhaul_version=2;&n;&t;&t;numscales=32;&n;&t;&t;memcpy (clock_ratio, nehemiah_clock_ratio, sizeof(nehemiah_clock_ratio));&n;&t;&t;memcpy (eblcr_table, nehemiah_eblcr, sizeof(nehemiah_eblcr));&n;&t;*/
 r_default
 suffix:colon
 id|cpuname
@@ -1732,10 +1674,6 @@ c_cond
 id|longhaul_version
 op_eq
 l_int|2
-op_logical_or
-id|longhaul_version
-op_eq
-l_int|3
 )paren
 op_logical_and
 (paren
