@@ -938,10 +938,6 @@ id|callback_init_IRQ
 op_assign
 id|ppc_md.init_IRQ
 suffix:semicolon
-id|ppc_md.setup_arch
-op_assign
-id|sbc82xx_setup_arch
-suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign
 id|sbc82xx_init_IRQ
