@@ -1940,6 +1940,8 @@ DECL|macro|R200_RE_CNTL
 mdefine_line|#define R200_RE_CNTL                      0x1c50 
 DECL|macro|R200_RB3D_BLENDCOLOR
 mdefine_line|#define R200_RB3D_BLENDCOLOR              0x3218
+DECL|macro|R200_SE_TCL_POINT_SPRITE_CNTL
+mdefine_line|#define R200_SE_TCL_POINT_SPRITE_CNTL     0x22c4
 multiline_comment|/* Constants */
 DECL|macro|RADEON_MAX_USEC_TIMEOUT
 mdefine_line|#define RADEON_MAX_USEC_TIMEOUT&t;&t;100000&t;/* 100 ms */

@@ -1055,6 +1055,9 @@ suffix:colon
 r_case
 id|R200_EMIT_RB3D_BLENDCOLOR
 suffix:colon
+r_case
+id|R200_EMIT_TCL_POINT_SPRITE_CNTL
+suffix:colon
 multiline_comment|/* These packets don&squot;t contain memory offsets */
 r_break
 suffix:semicolon
@@ -3316,6 +3319,14 @@ comma
 l_int|3
 comma
 l_string|&quot;R200_RB3D_BLENDCOLOR&quot;
+)brace
+comma
+(brace
+id|R200_SE_TCL_POINT_SPRITE_CNTL
+comma
+l_int|1
+comma
+l_string|&quot;R200_SE_TCL_POINT_SPRITE_CNTL&quot;
 )brace
 comma
 )brace
