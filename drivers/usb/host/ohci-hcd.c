@@ -35,9 +35,6 @@ mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber &lt;weissg@vienna.at
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB 1.1 &squot;Open&squot; Host Controller (OHCI) Driver&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|macro|OHCI_USE_NPS
-mdefine_line|#define OHCI_USE_NPS&t;&t;
-singleline_comment|// force NoPowerSwitching mode
 singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
 multiline_comment|/* For initializing controller (mask in an HCFS mode too) */
 DECL|macro|OHCI_CONTROL_INIT
@@ -928,17 +925,10 @@ op_star
 id|ohci
 )paren
 (brace
-r_int
-id|timeout
-op_assign
-l_int|30
+id|u32
+id|temp
 suffix:semicolon
-r_int
-id|smm_timeout
-op_assign
-l_int|50
-suffix:semicolon
-multiline_comment|/* 0,5 sec */
+multiline_comment|/* SMM owns the HC?  not for long! */
 r_if
 c_cond
 (paren
@@ -951,7 +941,11 @@ op_amp
 id|OHCI_CTRL_IR
 )paren
 (brace
-multiline_comment|/* SMM owns the HC */
+id|temp
+op_assign
+l_int|50
+suffix:semicolon
+multiline_comment|/* arbitrary: half second */
 id|writel
 (paren
 id|OHCI_INTR_OC
@@ -994,7 +988,7 @@ r_if
 c_cond
 (paren
 op_decrement
-id|smm_timeout
+id|temp
 op_eq
 l_int|0
 )paren
@@ -1033,16 +1027,34 @@ id|ohci-&gt;regs-&gt;control
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Reset USB (needed by some controllers) */
+multiline_comment|/* Reset USB (needed by some controllers); RemoteWakeupConnected&n;&t; * saved if boot firmware (BIOS/SMM/...) told us it&squot;s connected&n;&t; */
+id|ohci-&gt;hc_control
+op_assign
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+multiline_comment|/* hcfs 0 = RESET */
 id|writel
 (paren
-l_int|0
+id|ohci-&gt;hc_control
 comma
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-multiline_comment|/* HC Reset requires max 10 ms delay */
+id|wait_ms
+(paren
+l_int|50
+)paren
+suffix:semicolon
+multiline_comment|/* HC Reset requires max 10 us delay */
 id|writel
 (paren
 id|OHCI_HCR
@@ -1051,6 +1063,11 @@ op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
+id|temp
+op_assign
+l_int|30
+suffix:semicolon
+multiline_comment|/* ... allow extra time */
 r_while
 c_loop
 (paren
@@ -1071,7 +1088,7 @@ r_if
 c_cond
 (paren
 op_decrement
-id|timeout
+id|temp
 op_eq
 l_int|0
 )paren
@@ -1092,7 +1109,15 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; */
+multiline_comment|/* now we&squot;re in the SUSPEND state ... must go OPERATIONAL&n;&t; * within 2msec else HC enters RESUME&n;&t; *&n;&t; * ... but some hardware won&squot;t init fmInterval &quot;by the book&quot;&n;&t; * (SiS, OPTi ...), so reset again instead.  SiS doesn&squot;t need&n;&t; * this if we write fmInterval after we&squot;re OPERATIONAL.&n;&t; */
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1256,7 +1281,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* start controller operations */
 id|ohci-&gt;hc_control
-op_assign
+op_and_assign
+id|OHCI_CTRL_RWC
+suffix:semicolon
+id|ohci-&gt;hc_control
+op_or_assign
 id|OHCI_CONTROL_INIT
 op_or
 id|OHCI_USB_OPER
@@ -1298,8 +1327,7 @@ op_amp
 id|ohci-&gt;regs-&gt;intrenable
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;OHCI_USE_NPS
-multiline_comment|/* required for AMD-756 and some Mac platforms */
+multiline_comment|/* hub power always on: required for AMD-756 and some Mac platforms */
 id|writel
 (paren
 (paren
@@ -1338,7 +1366,6 @@ op_amp
 id|ohci-&gt;regs-&gt;roothub.b
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* OHCI_USE_NPS */
 singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
 id|mdelay
 (paren
@@ -1382,7 +1409,19 @@ id|ohci-&gt;disabled
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// FIXME cleanup
+id|ohci-&gt;hc_control
+op_and_assign
+op_complement
+id|OHCI_CTRL_HCFS
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
@@ -1419,7 +1458,19 @@ id|ohci-&gt;disabled
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// FIXME cleanup
+id|ohci-&gt;hc_control
+op_and_assign
+op_complement
+id|OHCI_CTRL_HCFS
+suffix:semicolon
+id|writel
+(paren
+id|ohci-&gt;hc_control
+comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
