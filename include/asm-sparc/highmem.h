@@ -30,6 +30,18 @@ id|pte_t
 op_star
 id|pkmap_page_table
 suffix:semicolon
+multiline_comment|/* This gets set in {srmmu,sun4c}_paging_init() */
+r_extern
+r_int
+r_int
+id|fix_kmap_begin
+suffix:semicolon
+multiline_comment|/* Only used and set with srmmu? */
+r_extern
+r_int
+r_int
+id|pkmap_base
+suffix:semicolon
 r_extern
 r_void
 id|kmap_init
@@ -43,11 +55,11 @@ multiline_comment|/*&n; * Right now we initialize only a single pte table. It ca
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 1024
 DECL|macro|LAST_PKMAP_MASK
-mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP-1)
+mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP - 1)
 DECL|macro|PKMAP_NR
-mdefine_line|#define PKMAP_NR(virt)  ((virt-PKMAP_BASE) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define PKMAP_NR(virt)  ((virt - pkmap_base) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PKMAP_ADDR
-mdefine_line|#define PKMAP_ADDR(nr)  (PKMAP_BASE + ((nr) &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define PKMAP_ADDR(nr)  (pkmap_base + ((nr) &lt;&lt; PAGE_SHIFT))
 r_extern
 r_void
 op_star
@@ -227,7 +239,7 @@ c_cond
 (paren
 id|vaddr
 OL
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 )paren
 r_return
 id|virt_to_page
@@ -242,7 +254,7 @@ op_assign
 (paren
 id|vaddr
 op_minus
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 )paren
 op_rshift
 id|PAGE_SHIFT

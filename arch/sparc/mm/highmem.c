@@ -61,7 +61,7 @@ c_func
 suffix:semicolon
 id|vaddr
 op_assign
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 op_plus
 id|idx
 op_star
@@ -185,7 +185,7 @@ c_cond
 (paren
 id|vaddr
 OL
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 )paren
 (brace
 singleline_comment|// FIXME
@@ -202,7 +202,7 @@ c_cond
 (paren
 id|vaddr
 op_ne
-id|FIX_KMAP_BEGIN
+id|fix_kmap_begin
 op_plus
 id|idx
 op_star
