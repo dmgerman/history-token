@@ -15,20 +15,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|ppc_irq_dispatch_handler
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|irq
-)paren
-suffix:semicolon
 DECL|macro|INLINE_IRQS
 mdefine_line|#define INLINE_IRQS
 DECL|macro|irqs_disabled

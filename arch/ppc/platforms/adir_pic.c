@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
 macro_line|#include &quot;adir.h&quot;
@@ -27,26 +27,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_static
-r_void
-DECL|function|no_action
-id|no_action
-c_func
-(paren
-r_int
-id|cpl
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-)brace
 id|__init
 r_static
 r_void
@@ -292,6 +272,35 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|variable|noop_action
+r_static
+r_struct
+id|irqaction
+id|noop_action
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|no_action
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|mask
+op_assign
+id|CPU_MASK_NONE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;82c59 primary cascade&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Linux interrupt values are assigned as follows:&n; *&n; * &t;0-15&t;&t;VT82C686 8259 interrupts&n; * &t;16-31&t;&t;Adirondack CPLD interrupts&n; */
 id|__init
 r_void
@@ -367,18 +376,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Enable 8259 interrupt cascade */
-id|request_irq
+id|setup_irq
 c_func
 (paren
 id|ADIR_IRQ_VT82C686_INTR
 comma
-id|no_action
-comma
-id|SA_INTERRUPT
-comma
-l_string|&quot;82c59 primary cascade&quot;
-comma
-l_int|NULL
+op_amp
+id|noop_action
 )paren
 suffix:semicolon
 )brace
