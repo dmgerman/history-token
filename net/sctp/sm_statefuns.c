@@ -11849,14 +11849,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Special case the INIT as there is no vtag yet. */
-r_if
+multiline_comment|/* Special case the INIT and stale COOKIE_ECHO as there is no&n;&t;&t; * vtag yet.&n;&t;&t; */
+r_switch
 c_cond
 (paren
-id|SCTP_CID_INIT
-op_eq
 id|chunk-&gt;chunk_hdr-&gt;type
 )paren
+(brace
+r_case
+id|SCTP_CID_INIT
+suffix:colon
 (brace
 id|sctp_init_chunk_t
 op_star
@@ -11878,9 +11880,11 @@ c_func
 id|init-&gt;init_hdr.init_tag
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-r_else
-(brace
+r_default
+suffix:colon
 id|vtag
 op_assign
 id|ntohl
@@ -11888,6 +11892,8 @@ c_func
 (paren
 id|chunk-&gt;sctp_hdr-&gt;vtag
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -12091,6 +12097,19 @@ c_cond
 id|packet
 )paren
 (brace
+id|sctp_signed_cookie_t
+op_star
+id|cookie
+suffix:semicolon
+multiline_comment|/* Override the OOTB vtag from the cookie. */
+id|cookie
+op_assign
+id|chunk-&gt;subh.cookie_hdr
+suffix:semicolon
+id|packet-&gt;vtag
+op_assign
+id|cookie-&gt;c.peer_vtag
+suffix:semicolon
 multiline_comment|/* Set the skb to the belonging sock for accounting. */
 id|err_chunk-&gt;skb-&gt;sk
 op_assign

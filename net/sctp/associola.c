@@ -1016,7 +1016,7 @@ id|asoc-&gt;peer.active_path
 op_assign
 id|transport
 suffix:semicolon
-multiline_comment|/* &n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
+multiline_comment|/*&n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2144,6 +2144,67 @@ r_return
 id|transport
 suffix:semicolon
 )brace
+multiline_comment|/*  Is this a live association structure. */
+DECL|function|sctp_assoc_valid
+r_int
+id|sctp_assoc_valid
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+)paren
+(brace
+multiline_comment|/* First, verify that this is a kernel address. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_is_valid_kaddr
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|asoc
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Verify that this _is_ an sctp_association&n;&t; * data structure and if so, that the socket matches.&n;&t; */
+r_if
+c_cond
+(paren
+id|SCTP_ASSOC_EYECATCHER
+op_ne
+id|asoc-&gt;eyecatcher
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|asoc-&gt;base.sk
+op_ne
+id|sk
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* The association is valid. */
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Do delayed input processing.  This is scheduled by sctp_rcv(). */
 DECL|function|sctp_assoc_bh_rcv
 r_static
@@ -2181,15 +2242,6 @@ r_int
 id|state
 comma
 id|subtype
-suffix:semicolon
-id|sctp_assoc_t
-id|associd
-op_assign
-id|sctp_assoc2id
-c_func
-(paren
-id|asoc
-)paren
 suffix:semicolon
 r_int
 id|error
@@ -2294,12 +2346,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_id2assoc
+id|sctp_assoc_valid
 c_func
 (paren
 id|sk
 comma
-id|associd
+id|asoc
 )paren
 )paren
 r_break
