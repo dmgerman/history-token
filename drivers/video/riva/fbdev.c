@@ -7123,8 +7123,7 @@ id|rinfo-&gt;drvr_name
 suffix:semicolon
 id|info-&gt;node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|info-&gt;flags
 op_assign
