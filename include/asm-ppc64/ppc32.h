@@ -363,20 +363,5 @@ id|uc_mcontext
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ipc_kludge_32
-r_struct
-id|ipc_kludge_32
-(brace
-DECL|member|msgp
-r_int
-r_int
-id|msgp
-suffix:semicolon
-DECL|member|msgtyp
-r_int
-id|msgtyp
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#endif  /* _PPC64_PPC32_H */
 eof
