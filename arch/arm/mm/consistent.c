@@ -1045,6 +1045,8 @@ op_plus
 id|off
 comma
 id|user_size
+op_lshift
+id|PAGE_SHIFT
 comma
 id|vma-&gt;vm_page_prot
 )paren
