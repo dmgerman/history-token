@@ -23,6 +23,8 @@ mdefine_line|#define USECS_PER_JIFFY_FRAC ((1000000ULL &lt;&lt; 32) / HZ &amp; 0
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+op_assign
+id|INITIAL_JIFFIES
 suffix:semicolon
 multiline_comment|/*&n; * forward reference&n; */
 r_extern
