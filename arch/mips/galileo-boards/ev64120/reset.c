@@ -1,0 +1,113 @@
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997, 2002 Ralf Baechle&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/reboot.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+DECL|function|galileo_machine_restart
+r_void
+id|galileo_machine_restart
+c_func
+(paren
+r_char
+op_star
+id|command
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_char
+op_star
+)paren
+l_int|0xbc000000
+op_assign
+l_int|0x0f
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ouch, we&squot;re still alive ... This time we take the silver bullet ...&n;&t; * ... and find that we leave the hardware in a state in which the&n;&t; * kernel in the flush locks up somewhen during of after the PCI&n;&t; * detection stuff.&n;&t; */
+id|set_c0_status
+c_func
+(paren
+id|ST0_BEV
+op_or
+id|ST0_ERL
+)paren
+suffix:semicolon
+id|change_c0_config
+c_func
+(paren
+id|CONF_CM_CMASK
+comma
+id|CONF_CM_UNCACHED
+)paren
+suffix:semicolon
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
+id|write_c0_wired
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;jr&bslash;t%0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+l_int|0xbfc00000
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|galileo_machine_halt
+r_void
+id|galileo_machine_halt
+c_func
+(paren
+r_void
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;You can safely turn off the power&bslash;n&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+id|__asm__
+c_func
+(paren
+l_string|&quot;.set&bslash;tmips3&bslash;n&bslash;t&quot;
+l_string|&quot;wait&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tmips0&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|galileo_machine_power_off
+r_void
+id|galileo_machine_power_off
+c_func
+(paren
+r_void
+)paren
+(brace
+id|galileo_machine_halt
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+eof
