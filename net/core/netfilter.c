@@ -1861,7 +1861,7 @@ id|nf_info
 op_star
 id|info
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_struct
 id|net_device
 op_star
@@ -2047,7 +2047,7 @@ c_func
 id|outdev
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
 (paren
@@ -2146,7 +2146,7 @@ c_func
 id|outdev
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
 (paren
@@ -2518,7 +2518,7 @@ c_func
 id|info-&gt;outdev
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
 (paren

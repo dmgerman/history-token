@@ -247,4 +247,11 @@ c_func
 id|ip6_push_pending_frames
 )paren
 suffix:semicolon
+DECL|variable|ipv6_push_nfrag_opts
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ipv6_push_nfrag_opts
+)paren
+suffix:semicolon
 eof

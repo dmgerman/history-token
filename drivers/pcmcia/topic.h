@@ -2,23 +2,7 @@ multiline_comment|/*&n; * topic.h 1.8 1999/08/28 04:01:47&n; *&n; * The contents
 macro_line|#ifndef _LINUX_TOPIC_H
 DECL|macro|_LINUX_TOPIC_H
 mdefine_line|#define _LINUX_TOPIC_H
-macro_line|#ifndef PCI_VENDOR_ID_TOSHIBA
-DECL|macro|PCI_VENDOR_ID_TOSHIBA
-mdefine_line|#define PCI_VENDOR_ID_TOSHIBA&t;&t;0x1179
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TOSHIBA_TOPIC95_A
-DECL|macro|PCI_DEVICE_ID_TOSHIBA_TOPIC95_A
-mdefine_line|#define PCI_DEVICE_ID_TOSHIBA_TOPIC95_A&t;0x0603
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TOSHIBA_TOPIC95_B
-DECL|macro|PCI_DEVICE_ID_TOSHIBA_TOPIC95_B
-mdefine_line|#define PCI_DEVICE_ID_TOSHIBA_TOPIC95_B&t;0x060a
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_TOSHIBA_TOPIC97
-DECL|macro|PCI_DEVICE_ID_TOSHIBA_TOPIC97
-mdefine_line|#define PCI_DEVICE_ID_TOSHIBA_TOPIC97&t;0x060f
-macro_line|#endif
-multiline_comment|/* Register definitions for Toshiba ToPIC95 controllers */
+multiline_comment|/* Register definitions for Toshiba ToPIC95/97/100 controllers */
 DECL|macro|TOPIC_SOCKET_CONTROL
 mdefine_line|#define TOPIC_SOCKET_CONTROL&t;&t;0x0090&t;/* 32 bit */
 DECL|macro|TOPIC_SCR_IRQSEL
@@ -101,5 +85,199 @@ DECL|macro|TOPIC97_RCR_CAUDIO_OFF
 mdefine_line|#define  TOPIC97_RCR_CAUDIO_OFF&t;&t;0x00000002
 DECL|macro|TOPIC_RCR_CAUDIO_INVERT
 mdefine_line|#define  TOPIC_RCR_CAUDIO_INVERT&t;0x00000001
+DECL|macro|TOPIC97_MISC1
+mdefine_line|#define TOPIC97_MISC1&t;&t;&t;0x00ad  /* 8bit */
+DECL|macro|TOPIC97_MISC1_CLOCKRUN_ENABLE
+mdefine_line|#define  TOPIC97_MISC1_CLOCKRUN_ENABLE&t;0x80
+DECL|macro|TOPIC97_MISC1_CLOCKRUN_MODE
+mdefine_line|#define  TOPIC97_MISC1_CLOCKRUN_MODE&t;0x40
+DECL|macro|TOPIC97_MISC1_DETECT_REQ_ENA
+mdefine_line|#define  TOPIC97_MISC1_DETECT_REQ_ENA&t;0x10
+DECL|macro|TOPIC97_MISC1_SCK_CLEAR_DIS
+mdefine_line|#define  TOPIC97_MISC1_SCK_CLEAR_DIS&t;0x04
+DECL|macro|TOPIC97_MISC1_R2_LOW_ENABLE
+mdefine_line|#define  TOPIC97_MISC1_R2_LOW_ENABLE&t;0x10
+DECL|macro|TOPIC97_MISC2
+mdefine_line|#define TOPIC97_MISC2&t;&t;&t;0x00ae  /* 8 bit */
+DECL|macro|TOPIC97_MISC2_SPWRCLK_MASK
+mdefine_line|#define  TOPIC97_MISC2_SPWRCLK_MASK&t;0x70
+DECL|macro|TOPIC97_MISC2_SPWRMOD
+mdefine_line|#define  TOPIC97_MISC2_SPWRMOD&t;&t;0x08
+DECL|macro|TOPIC97_MISC2_SPWR_ENABLE
+mdefine_line|#define  TOPIC97_MISC2_SPWR_ENABLE&t;0x04
+DECL|macro|TOPIC97_MISC2_ZV_MODE
+mdefine_line|#define  TOPIC97_MISC2_ZV_MODE&t;&t;0x02
+DECL|macro|TOPIC97_MISC2_ZV_ENABLE
+mdefine_line|#define  TOPIC97_MISC2_ZV_ENABLE&t;0x01
+DECL|macro|TOPIC97_ZOOM_VIDEO_CONTROL
+mdefine_line|#define TOPIC97_ZOOM_VIDEO_CONTROL&t;0x009c  /* 8 bit */
+DECL|macro|TOPIC97_ZV_CONTROL_ENABLE
+mdefine_line|#define  TOPIC97_ZV_CONTROL_ENABLE&t;0x01
+DECL|macro|TOPIC97_AUDIO_VIDEO_SWITCH
+mdefine_line|#define TOPIC97_AUDIO_VIDEO_SWITCH&t;0x003c  /* 8 bit */
+DECL|macro|TOPIC97_AVS_AUDIO_CONTROL
+mdefine_line|#define  TOPIC97_AVS_AUDIO_CONTROL&t;0x02
+DECL|macro|TOPIC97_AVS_VIDEO_CONTROL
+mdefine_line|#define  TOPIC97_AVS_VIDEO_CONTROL&t;0x01
+DECL|function|topic97_zoom_video
+r_static
+r_void
+id|topic97_zoom_video
+c_func
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|sock
+comma
+r_int
+id|onoff
+)paren
+(brace
+r_struct
+id|yenta_socket
+op_star
+id|socket
+op_assign
+id|container_of
+c_func
+(paren
+id|sock
+comma
+r_struct
+id|yenta_socket
+comma
+id|socket
+)paren
+suffix:semicolon
+id|u8
+id|reg_zv
+comma
+id|reg
+suffix:semicolon
+id|reg_zv
+op_assign
+id|config_readb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_ZOOM_VIDEO_CONTROL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|onoff
+)paren
+(brace
+id|reg_zv
+op_or_assign
+id|TOPIC97_ZV_CONTROL_ENABLE
+suffix:semicolon
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_ZOOM_VIDEO_CONTROL
+comma
+id|reg_zv
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|config_readb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_MISC2
+)paren
+suffix:semicolon
+id|reg
+op_or_assign
+id|TOPIC97_MISC2_ZV_ENABLE
+suffix:semicolon
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_MISC2
+comma
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* not sure this is needed, doc is unclear */
+macro_line|#if 0
+id|reg
+op_assign
+id|config_readb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_AUDIO_VIDEO_SWITCH
+)paren
+suffix:semicolon
+id|reg
+op_or_assign
+id|TOPIC97_AVS_AUDIO_CONTROL
+op_or
+id|TOPIC97_AVS_VIDEO_CONTROL
+suffix:semicolon
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_AUDIO_VIDEO_SWITCH
+comma
+id|reg
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+(brace
+id|reg_zv
+op_and_assign
+op_complement
+id|TOPIC97_ZV_CONTROL_ENABLE
+suffix:semicolon
+id|config_writeb
+c_func
+(paren
+id|socket
+comma
+id|TOPIC97_ZOOM_VIDEO_CONTROL
+comma
+id|reg_zv
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|topic97_override
+r_static
+r_int
+id|topic97_override
+c_func
+(paren
+r_struct
+id|yenta_socket
+op_star
+id|socket
+)paren
+(brace
+multiline_comment|/* ToPIC97/100 support ZV */
+id|socket-&gt;socket.zoom_video
+op_assign
+id|topic97_zoom_video
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_TOPIC_H */
 eof

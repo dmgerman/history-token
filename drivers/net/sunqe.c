@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunqe.c,v 1.55 2002/01/15 06:48:55 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunqe.c,v 1.55 2002/01/15 06:48:55 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999, 2003 David S. Miller (davem@redhat.com)&n; */
 DECL|variable|version
 r_static
 r_char
@@ -6,7 +6,7 @@ id|version
 (braket
 )braket
 op_assign
-l_string|&quot;sunqe.c:v2.9 9/11/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
+l_string|&quot;sunqe.c:v3.0 8/24/03 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -24,6 +24,7 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3087,6 +3088,137 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Ethtool support... */
+DECL|function|qe_get_drvinfo
+r_static
+r_void
+id|qe_get_drvinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_drvinfo
+op_star
+id|info
+)paren
+(brace
+r_struct
+id|sunqe
+op_star
+id|qep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;driver
+comma
+l_string|&quot;sunqe&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;version
+comma
+l_string|&quot;3.0&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info-&gt;bus_info
+comma
+l_string|&quot;SBUS:%d&quot;
+comma
+id|qep-&gt;qe_sdev-&gt;slot
+)paren
+suffix:semicolon
+)brace
+DECL|function|qe_get_link
+r_static
+id|u32
+id|qe_get_link
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|sunqe
+op_star
+id|qep
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+r_int
+id|mregs
+op_assign
+id|qep-&gt;mregs
+suffix:semicolon
+id|u8
+id|phyconfig
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|qep-&gt;lock
+)paren
+suffix:semicolon
+id|phyconfig
+op_assign
+id|sbus_readb
+c_func
+(paren
+id|mregs
+op_plus
+id|MREGS_PHYCONFIG
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|qep-&gt;lock
+)paren
+suffix:semicolon
+r_return
+(paren
+id|phyconfig
+op_amp
+id|MREGS_PHYCONFIG_LSTAT
+)paren
+suffix:semicolon
+)brace
+DECL|variable|qe_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|qe_ethtool_ops
+op_assign
+(brace
+dot
+id|get_drvinfo
+op_assign
+id|qe_get_drvinfo
+comma
+dot
+id|get_link
+op_assign
+id|qe_get_link
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* This is only called once at boot time for each card probed. */
 DECL|function|qec_init_once
 r_static
@@ -4063,6 +4195,16 @@ op_member_access_from_pointer
 id|dma
 op_assign
 l_int|0
+suffix:semicolon
+id|qe_devs
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|ethtool_ops
+op_assign
+op_amp
+id|qe_ethtool_ops
 suffix:semicolon
 )brace
 multiline_comment|/* QEC receives interrupts from each QE, then it sends the actual&n;&t; * IRQ to the cpu itself.  Since QEC is the single point of&n;&t; * interrupt for all QE channels we register the IRQ handler&n;&t; * for it now.&n;&t; */

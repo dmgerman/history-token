@@ -45,24 +45,57 @@ id|IMM_MODE_STRING
 )braket
 op_assign
 (brace
+(braket
+id|IMM_AUTODETECT
+)braket
+op_assign
 l_string|&quot;Autodetect&quot;
 comma
+(braket
+id|IMM_NIBBLE
+)braket
+op_assign
 l_string|&quot;SPP&quot;
 comma
+(braket
+id|IMM_PS2
+)braket
+op_assign
 l_string|&quot;PS/2&quot;
 comma
+(braket
+id|IMM_EPP_8
+)braket
+op_assign
 l_string|&quot;EPP 8 bit&quot;
 comma
+(braket
+id|IMM_EPP_16
+)braket
+op_assign
 l_string|&quot;EPP 16 bit&quot;
 comma
 macro_line|#ifdef CONFIG_SCSI_IZIP_EPP16
+(braket
+id|IMM_EPP_16
+)braket
+op_assign
 l_string|&quot;EPP 16 bit&quot;
 comma
 macro_line|#else
+(braket
+id|IMM_EPP_32
+)braket
+op_assign
 l_string|&quot;EPP 32 bit&quot;
 comma
 macro_line|#endif
+(braket
+id|IMM_UNKNOWN
+)braket
+op_assign
 l_string|&quot;Unknown&quot;
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* This is a global option */

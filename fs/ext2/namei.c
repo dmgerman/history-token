@@ -530,7 +530,7 @@ comma
 id|rdev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EXT2_FS_EXT_ATTR
+macro_line|#ifdef CONFIG_EXT2_FS_XATTR
 id|inode-&gt;i_op
 op_assign
 op_amp

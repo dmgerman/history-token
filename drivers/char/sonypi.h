@@ -29,6 +29,8 @@ DECL|macro|SONYPI_G10A
 mdefine_line|#define SONYPI_G10A&t;&t;&t;(SONYPI_BASE+0x14)
 DECL|macro|SONYPI_TYPE1_REGION_SIZE
 mdefine_line|#define SONYPI_TYPE1_REGION_SIZE&t;0x08
+DECL|macro|SONYPI_TYPE1_EVTYPE_OFFSET
+mdefine_line|#define SONYPI_TYPE1_EVTYPE_OFFSET&t;0x04
 multiline_comment|/* type2 series specifics */
 DECL|macro|SONYPI_SIRQ
 mdefine_line|#define SONYPI_SIRQ&t;&t;&t;0x9b
@@ -38,6 +40,8 @@ DECL|macro|SONYPI_SHIB
 mdefine_line|#define SONYPI_SHIB&t;&t;&t;0x9d
 DECL|macro|SONYPI_TYPE2_REGION_SIZE
 mdefine_line|#define SONYPI_TYPE2_REGION_SIZE&t;0x20
+DECL|macro|SONYPI_TYPE2_EVTYPE_OFFSET
+mdefine_line|#define SONYPI_TYPE2_EVTYPE_OFFSET&t;0x12
 multiline_comment|/* battery / brightness addresses */
 DECL|macro|SONYPI_BAT_FLAGS
 mdefine_line|#define SONYPI_BAT_FLAGS&t;0x81
@@ -336,6 +340,8 @@ DECL|macro|SONYPI_MEYE_MASK
 mdefine_line|#define SONYPI_MEYE_MASK&t;&t;&t;0x00000400
 DECL|macro|SONYPI_MEMORYSTICK_MASK
 mdefine_line|#define SONYPI_MEMORYSTICK_MASK&t;&t;&t;0x00000800
+DECL|macro|SONYPI_BATTERY_MASK
+mdefine_line|#define SONYPI_BATTERY_MASK&t;&t;&t;0x00001000
 DECL|struct|sonypi_event
 r_struct
 id|sonypi_event
@@ -895,6 +901,35 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/* The set of possible battery events */
+DECL|variable|sonypi_batteryev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_batteryev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x20
+comma
+id|SONYPI_EVENT_BATTERY_INSERT
+)brace
+comma
+(brace
+l_int|0x30
+comma
+id|SONYPI_EVENT_BATTERY_REMOVE
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+)brace
+)brace
+suffix:semicolon
 DECL|struct|sonypi_eventtypes
 r_struct
 id|sonypi_eventtypes
@@ -1006,6 +1041,26 @@ id|sonypi_pkeyev
 )brace
 comma
 (brace
+id|SONYPI_DEVICE_MODEL_TYPE1
+comma
+l_int|0x30
+comma
+id|SONYPI_MEMORYSTICK_MASK
+comma
+id|sonypi_memorystickev
+)brace
+comma
+(brace
+id|SONYPI_DEVICE_MODEL_TYPE1
+comma
+l_int|0x40
+comma
+id|SONYPI_BATTERY_MASK
+comma
+id|sonypi_batteryev
+)brace
+comma
+(brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
 l_int|0
@@ -1028,7 +1083,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x11
 comma
 id|SONYPI_JOGGER_MASK
 comma
@@ -1038,7 +1093,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x61
 comma
 id|SONYPI_CAPTURE_MASK
 comma
@@ -1048,7 +1103,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x21
 comma
 id|SONYPI_FNKEY_MASK
 comma
@@ -1058,7 +1113,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x31
 comma
 id|SONYPI_BLUETOOTH_MASK
 comma
@@ -1078,7 +1133,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x11
 comma
 id|SONYPI_BACK_MASK
 comma
@@ -1118,11 +1173,21 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x31
 comma
 id|SONYPI_MEMORYSTICK_MASK
 comma
 id|sonypi_memorystickev
+)brace
+comma
+(brace
+id|SONYPI_DEVICE_MODEL_TYPE2
+comma
+l_int|0x41
+comma
+id|SONYPI_BATTERY_MASK
+comma
+id|sonypi_batteryev
 )brace
 comma
 (brace
@@ -1220,6 +1285,10 @@ suffix:semicolon
 DECL|member|region_size
 id|u16
 id|region_size
+suffix:semicolon
+DECL|member|evtype_offset
+id|u16
+id|evtype_offset
 suffix:semicolon
 DECL|member|camera_power
 r_int

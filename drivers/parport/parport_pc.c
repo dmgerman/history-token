@@ -87,13 +87,10 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|user_specified
 r_static
 r_int
 id|user_specified
-id|__devinitdata
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#if defined(CONFIG_PARPORT_PC_SUPERIO) || &bslash;&n;       (defined(CONFIG_PARPORT_1284) &amp;&amp; defined(CONFIG_PARPORT_PC_FIFO))
 DECL|variable|verbose_probing

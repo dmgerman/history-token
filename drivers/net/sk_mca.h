@@ -3,7 +3,6 @@ DECL|macro|_SK_MCA_INCLUDE_
 mdefine_line|#define _SK_MCA_INCLUDE_
 macro_line|#ifdef _SK_MCA_DRIVER_
 multiline_comment|/* version-dependent functions/structures */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020318
 DECL|macro|SKMCA_READB
 mdefine_line|#define SKMCA_READB(addr) isa_readb(addr)
 DECL|macro|SKMCA_READW
@@ -18,26 +17,6 @@ DECL|macro|SKMCA_FROMIO
 mdefine_line|#define SKMCA_FROMIO(dest, src, len) isa_memcpy_fromio(dest, src, len)
 DECL|macro|SKMCA_SETIO
 mdefine_line|#define SKMCA_SETIO(dest, val, len) isa_memset_io(dest, val, len)
-DECL|macro|SKMCA_NETDEV
-mdefine_line|#define SKMCA_NETDEV net_device
-macro_line|#else
-DECL|macro|SKMCA_READB
-mdefine_line|#define SKMCA_READB(addr) readb(addr)
-DECL|macro|SKMCA_READW
-mdefine_line|#define SKMCA_READW(addr) readw(addr)
-DECL|macro|SKMCA_WRITEB
-mdefine_line|#define SKMCA_WRITEB(data, addr) writeb(data, addr)
-DECL|macro|SKMCA_WRITEW
-mdefine_line|#define SKMCA_WRITEW(data, addr) writew(data, addr)
-DECL|macro|SKMCA_TOIO
-mdefine_line|#define SKMCA_TOIO(dest, src, len) memcpy_toio(dest, src, len)
-DECL|macro|SKMCA_FROMIO
-mdefine_line|#define SKMCA_FROMIO(dest, src, len) memcpy_fromio(dest, src, len)
-DECL|macro|SKMCA_SETIO
-mdefine_line|#define SKMCA_SETIO(dest, val, len) memset_io(dest, val, len)
-DECL|macro|SKMCA_NETDEV
-mdefine_line|#define SKMCA_NETDEV device
-macro_line|#endif
 multiline_comment|/* Adapter ID&squot;s */
 DECL|macro|SKNET_MCA_ID
 mdefine_line|#define SKNET_MCA_ID 0x6afd
@@ -411,7 +390,7 @@ id|skmca_probe
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 )paren
 suffix:semicolon

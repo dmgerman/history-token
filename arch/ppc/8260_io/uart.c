@@ -8851,7 +8851,9 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|serial_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|serial_console_device
 c_func
 (paren
@@ -8859,6 +8861,10 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
 op_star

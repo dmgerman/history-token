@@ -187,7 +187,7 @@ suffix:semicolon
 DECL|macro|EXTRA_THREAD_STRUCT
 mdefine_line|#define EXTRA_THREAD_STRUCT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;uaccess_t&t;*uaccess;&t;&t;/* User access functions*/
 DECL|macro|EXTRA_THREAD_STRUCT_INIT
-mdefine_line|#define EXTRA_THREAD_STRUCT_INIT&t;&t;&bslash;&n;&t;uaccess:&t;&amp;uaccess_kernel,
+mdefine_line|#define EXTRA_THREAD_STRUCT_INIT&t;&t;&bslash;&n;&t;.uaccess&t;= &amp;uaccess_kernel,
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs,pc,sp)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long *stack = (unsigned long *)sp;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;memzero(regs-&gt;uregs, sizeof (regs-&gt;uregs));&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_pc = pc;&t;&t;/* pc */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_sp = sp;&t;&t;/* sp */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r2 = stack[2];&t;/* r2 (envp) */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r1 = stack[1];&t;/* r1 (argv) */&t;&t;&t;&bslash;&n;&t;regs-&gt;ARM_r0 = stack[0];&t;/* r0 (argc) */&t;&t;&t;&bslash;&n;})
 DECL|macro|KSTK_EIP

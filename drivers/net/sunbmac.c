@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunbmac.c,v 1.30 2002/01/15 06:48:55 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunbmac.c,v 1.30 2002/01/15 06:48:55 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2003 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -35,7 +36,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;sunbmac.c:v1.9 11/Sep/99 David S. Miller (davem@redhat.com)&bslash;n&quot;
+l_string|&quot;sunbmac.c:v2.0 24/Nov/03 David S. Miller (davem@redhat.com)&bslash;n&quot;
 suffix:semicolon
 DECL|macro|DEBUG_PROBE
 macro_line|#undef DEBUG_PROBE
@@ -5173,6 +5174,130 @@ id|BMAC_RXCFG
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Ethtool support... */
+DECL|function|bigmac_get_drvinfo
+r_static
+r_void
+id|bigmac_get_drvinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_drvinfo
+op_star
+id|info
+)paren
+(brace
+r_struct
+id|bigmac
+op_star
+id|bp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;driver
+comma
+l_string|&quot;sunbmac&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;version
+comma
+l_string|&quot;2.0&quot;
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|info-&gt;bus_info
+comma
+l_string|&quot;SBUS:%d&quot;
+comma
+id|bp-&gt;qec_sdev-&gt;slot
+)paren
+suffix:semicolon
+)brace
+DECL|function|bigmac_get_link
+r_static
+id|u32
+id|bigmac_get_link
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|bigmac
+op_star
+id|bp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|bp-&gt;lock
+)paren
+suffix:semicolon
+id|bp-&gt;sw_bmsr
+op_assign
+id|bigmac_tcvr_read
+c_func
+(paren
+id|bp
+comma
+id|bp-&gt;tregs
+comma
+id|BIGMAC_BMSR
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|bp-&gt;lock
+)paren
+suffix:semicolon
+r_return
+(paren
+id|bp-&gt;sw_bmsr
+op_amp
+id|BMSR_LSTATUS
+)paren
+suffix:semicolon
+)brace
+DECL|variable|bigmac_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|bigmac_ethtool_ops
+op_assign
+(brace
+dot
+id|get_drvinfo
+op_assign
+id|bigmac_get_drvinfo
+comma
+dot
+id|get_link
+op_assign
+id|bigmac_get_link
+comma
+)brace
+suffix:semicolon
 DECL|function|bigmac_ether_init
 r_static
 r_int
@@ -5743,6 +5868,11 @@ id|dev-&gt;hard_start_xmit
 op_assign
 op_amp
 id|bigmac_start_xmit
+suffix:semicolon
+id|dev-&gt;ethtool_ops
+op_assign
+op_amp
+id|bigmac_ethtool_ops
 suffix:semicolon
 multiline_comment|/* Set links to BigMAC statistic and multi-cast loading code. */
 id|dev-&gt;get_stats

@@ -4488,10 +4488,10 @@ op_assign
 id|capiminor_find
 c_func
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 )paren
 )paren

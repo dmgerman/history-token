@@ -344,7 +344,8 @@ id|atomic_t
 id|users
 suffix:semicolon
 DECL|member|linger
-id|u32
+r_int
+r_int
 id|linger
 suffix:semicolon
 DECL|member|share

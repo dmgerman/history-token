@@ -343,7 +343,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;SH hash table (memory=%dbytes) allocated for &quot;
+l_string|&quot;SH hash table (memory=%Zdbytes) allocated for &quot;
 l_string|&quot;current service&bslash;n&quot;
 comma
 r_sizeof
@@ -406,7 +406,7 @@ c_func
 (paren
 l_int|6
 comma
-l_string|&quot;SH hash table (memory=%dbytes) released&bslash;n&quot;
+l_string|&quot;SH hash table (memory=%Zdbytes) released&bslash;n&quot;
 comma
 r_sizeof
 (paren

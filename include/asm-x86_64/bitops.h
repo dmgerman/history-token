@@ -1399,7 +1399,8 @@ id|x
 comma
 l_string|&quot;r&quot;
 (paren
-l_int|32
+op_minus
+l_int|1
 )paren
 )paren
 suffix:semicolon

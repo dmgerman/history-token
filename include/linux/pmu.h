@@ -43,6 +43,8 @@ DECL|macro|PMU_SLEEP
 mdefine_line|#define PMU_SLEEP&t;&t;0x7f&t;/* put CPU to sleep */
 DECL|macro|PMU_POWER_EVENTS
 mdefine_line|#define PMU_POWER_EVENTS&t;0x8f&t;/* Send power-event commands to PMU */
+DECL|macro|PMU_I2C_CMD
+mdefine_line|#define PMU_I2C_CMD&t;&t;0x9a&t;/* I2C operations */
 DECL|macro|PMU_RESET
 mdefine_line|#define PMU_RESET&t;&t;0xd0&t;/* reset CPU */
 DECL|macro|PMU_GET_BRIGHTBUTTON
@@ -96,6 +98,25 @@ mdefine_line|#define PMU_INT_AUTO_SRQ_POLL&t;0x02&t;/* ??? */
 multiline_comment|/* Bits in the environement message (either obtained via PMU_GET_COVER,&n; * or via PMU_INT_ENVIRONMENT on core99 */
 DECL|macro|PMU_ENV_LID_CLOSED
 mdefine_line|#define PMU_ENV_LID_CLOSED&t;0x01&t;/* The lid is closed */
+multiline_comment|/* I2C related definitions */
+DECL|macro|PMU_I2C_MODE_SIMPLE
+mdefine_line|#define PMU_I2C_MODE_SIMPLE&t;0
+DECL|macro|PMU_I2C_MODE_STDSUB
+mdefine_line|#define PMU_I2C_MODE_STDSUB&t;1
+DECL|macro|PMU_I2C_MODE_COMBINED
+mdefine_line|#define PMU_I2C_MODE_COMBINED&t;2
+DECL|macro|PMU_I2C_BUS_STATUS
+mdefine_line|#define PMU_I2C_BUS_STATUS&t;0
+DECL|macro|PMU_I2C_BUS_SYSCLK
+mdefine_line|#define PMU_I2C_BUS_SYSCLK&t;1
+DECL|macro|PMU_I2C_BUS_POWER
+mdefine_line|#define PMU_I2C_BUS_POWER&t;2
+DECL|macro|PMU_I2C_STATUS_OK
+mdefine_line|#define PMU_I2C_STATUS_OK&t;0
+DECL|macro|PMU_I2C_STATUS_DATAREAD
+mdefine_line|#define PMU_I2C_STATUS_DATAREAD&t;1
+DECL|macro|PMU_I2C_STATUS_BUSY
+mdefine_line|#define PMU_I2C_STATUS_BUSY&t;0xfe
 multiline_comment|/* Kind of PMU (model) */
 r_enum
 (brace
@@ -264,6 +285,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pmu_poll_adb
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* For use by xmon */
+r_extern
+r_void
+id|pmu_wait_complete
+c_func
+(paren
+r_struct
+id|adb_request
+op_star
+id|req
+)paren
+suffix:semicolon
 multiline_comment|/* For use before switching interrupts off for a long time;&n; * warning: not stackable&n; */
 r_extern
 r_void
@@ -307,6 +348,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|pmu_unlock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|pmu_present
 c_func
@@ -320,6 +369,88 @@ id|pmu_get_model
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pmu_i2c_combined_read
+c_func
+(paren
+r_int
+id|bus
+comma
+r_int
+id|addr
+comma
+r_int
+id|subaddr
+comma
+id|u8
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pmu_i2c_stdsub_write
+c_func
+(paren
+r_int
+id|bus
+comma
+r_int
+id|addr
+comma
+r_int
+id|subaddr
+comma
+id|u8
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pmu_i2c_simple_read
+c_func
+(paren
+r_int
+id|bus
+comma
+r_int
+id|addr
+comma
+id|u8
+op_star
+id|data
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pmu_i2c_simple_write
+c_func
+(paren
+r_int
+id|bus
+comma
+r_int
+id|addr
+comma
+id|u8
+op_star
+id|data
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK

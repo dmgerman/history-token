@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;piix.h&quot;
 DECL|variable|no_piix_dma
 r_static

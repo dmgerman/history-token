@@ -310,33 +310,6 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-DECL|function|attrib_to_str
-r_static
-r_char
-op_star
-id|attrib_to_str
-c_func
-(paren
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-id|x
-op_le
-l_int|6
-)paren
-ques
-c_cond
-id|mtrr_strings
-(braket
-id|x
-)braket
-suffix:colon
-l_string|&quot;?&quot;
-suffix:semicolon
-)brace
 DECL|function|init_table
 r_static
 r_void
@@ -1113,13 +1086,13 @@ id|base
 comma
 id|size
 comma
-id|attrib_to_str
+id|mtrr_attrib_to_str
 c_func
 (paren
 id|ltype
 )paren
 comma
-id|attrib_to_str
+id|mtrr_attrib_to_str
 c_func
 (paren
 id|type
@@ -2330,38 +2303,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-DECL|variable|mtrr_strings
-r_char
-op_star
-id|mtrr_strings
-(braket
-id|MTRR_NUM_TYPES
-)braket
-op_assign
-(brace
-l_string|&quot;uncachable&quot;
-comma
-multiline_comment|/* 0 */
-l_string|&quot;write-combining&quot;
-comma
-multiline_comment|/* 1 */
-l_string|&quot;?&quot;
-comma
-multiline_comment|/* 2 */
-l_string|&quot;?&quot;
-comma
-multiline_comment|/* 3 */
-l_string|&quot;write-through&quot;
-comma
-multiline_comment|/* 4 */
-l_string|&quot;write-protect&quot;
-comma
-multiline_comment|/* 5 */
-l_string|&quot;write-back&quot;
-comma
-multiline_comment|/* 6 */
-)brace
-suffix:semicolon
 DECL|variable|mtrr_init
 id|subsys_initcall
 c_func

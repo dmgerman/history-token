@@ -1660,6 +1660,21 @@ op_star
 id|x
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu_data
+(braket
+l_int|0
+)braket
+dot
+id|x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Some athlons fault if the address is bad */
 id|alternative_input
 c_func
 (paren

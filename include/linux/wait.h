@@ -503,8 +503,6 @@ id|wait
 )paren
 suffix:semicolon
 )brace
-DECL|macro|add_wait_queue_cond
-mdefine_line|#define add_wait_queue_cond(q, wait, cond) &bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;&t;int _raced = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqsave(&amp;(q)-&gt;lock, flags);&t;&bslash;&n;&t;&t;(wait)-&gt;flags = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;__add_wait_queue((q), (wait));&t;&t;&t;&bslash;&n;&t;&t;rmb();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!(cond)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;_raced = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__remove_wait_queue((q), (wait));&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;spin_lock_irqrestore(&amp;(q)-&gt;lock, flags);&t;&bslash;&n;&t;&t;_raced;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * These are the old interfaces to sleep waiting for an event.&n; * They are racy.  DO NOT use them, use the wait_event* interfaces above.  &n; * We plan to remove these interfaces during 2.7.&n; */
 r_extern
 r_void

@@ -2105,6 +2105,7 @@ c_func
 id|banner
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -2147,6 +2148,7 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
+macro_line|#endif  /* CONFIG_PROC_FS */
 id|rtnl_lock
 c_func
 (paren

@@ -220,7 +220,7 @@ l_int|4096
 suffix:semicolon
 multiline_comment|/* TTY callbacks */
 r_static
-r_int
+id|ssize_t
 id|n_hdlc_tty_read
 c_func
 (paren
@@ -243,7 +243,7 @@ id|nr
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|n_hdlc_tty_write
 c_func
 (paren
@@ -1664,7 +1664,7 @@ multiline_comment|/* end of n_hdlc_tty_receive() */
 multiline_comment|/**&n; * n_hdlc_tty_read - Called to retreive one frame of data (if available)&n; * @tty - pointer to tty instance data&n; * @file - pointer to open file object&n; * @buf - pointer to returned data buffer&n; * @nr - size of returned data buffer&n; * &t;&n; * Returns the number of bytes returned or error code.&n; */
 DECL|function|n_hdlc_tty_read
 r_static
-r_int
+id|ssize_t
 id|n_hdlc_tty_read
 c_func
 (paren
@@ -1943,7 +1943,7 @@ multiline_comment|/* end of n_hdlc_tty_read() */
 multiline_comment|/**&n; * n_hdlc_tty_write - write a single frame of data to device&n; * @tty&t;- pointer to associated tty device instance data&n; * @file - pointer to file object data&n; * @data - pointer to transmit data (one frame)&n; * @count - size of transmit frame in bytes&n; * &t;&t;&n; * Returns the number of bytes written (or error code).&n; */
 DECL|function|n_hdlc_tty_write
 r_static
-r_int
+id|ssize_t
 id|n_hdlc_tty_write
 c_func
 (paren
@@ -2004,7 +2004,7 @@ id|DEBUG_LEVEL_INFO
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d)n_hdlc_tty_write() called count=%d&bslash;n&quot;
+l_string|&quot;%s(%d)n_hdlc_tty_write() called count=%Zd&bslash;n&quot;
 comma
 id|__FILE__
 comma
@@ -2055,7 +2055,7 @@ id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;n_hdlc_tty_write: truncating user packet &quot;
-l_string|&quot;from %lu to %d&bslash;n&quot;
+l_string|&quot;from %lu to %Zd&bslash;n&quot;
 comma
 (paren
 r_int

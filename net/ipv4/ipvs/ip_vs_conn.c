@@ -3211,7 +3211,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Each connection entry needs %d bytes at least&bslash;n&quot;
+l_string|&quot;Each connection entry needs %Zd bytes at least&bslash;n&quot;
 comma
 r_sizeof
 (paren

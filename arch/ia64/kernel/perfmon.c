@@ -7286,8 +7286,9 @@ id|dentry_operations
 id|pfmfs_dentry_operations
 op_assign
 (brace
+dot
 id|d_delete
-suffix:colon
+op_assign
 id|pfmfs_delete_dentry
 comma
 )brace

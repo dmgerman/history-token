@@ -6,10 +6,6 @@ mdefine_line|#define MAC_NCR5380_H
 DECL|macro|MACSCSI_PUBLIC_RELEASE
 mdefine_line|#define MACSCSI_PUBLIC_RELEASE 2
 macro_line|#ifndef ASM
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2

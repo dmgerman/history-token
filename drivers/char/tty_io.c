@@ -460,8 +460,10 @@ id|tty_struct
 op_star
 id|tty
 comma
-id|kdev_t
-id|device
+r_struct
+id|inode
+op_star
+id|inode
 comma
 r_const
 r_char
@@ -505,7 +507,7 @@ comma
 id|cdevname
 c_func
 (paren
-id|device
+id|inode-&gt;i_rdev
 )paren
 comma
 id|routine
@@ -531,7 +533,7 @@ comma
 id|cdevname
 c_func
 (paren
-id|device
+id|inode-&gt;i_rdev
 )paren
 comma
 id|routine
@@ -2561,7 +2563,7 @@ c_func
 (paren
 id|tty
 comma
-id|inode-&gt;i_rdev
+id|inode
 comma
 l_string|&quot;tty_read&quot;
 )paren
@@ -3127,7 +3129,7 @@ c_func
 (paren
 id|tty
 comma
-id|inode-&gt;i_rdev
+id|inode
 comma
 l_string|&quot;tty_write&quot;
 )paren
@@ -4189,7 +4191,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -4256,7 +4258,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -4337,7 +4339,7 @@ c_func
 (paren
 id|tty
 comma
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|filp-&gt;f_dentry-&gt;d_inode
 comma
 l_string|&quot;release_dev&quot;
 )paren
@@ -5758,7 +5760,7 @@ c_func
 (paren
 id|tty
 comma
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|filp-&gt;f_dentry-&gt;d_inode
 comma
 l_string|&quot;tty_poll&quot;
 )paren
@@ -5830,7 +5832,7 @@ c_func
 (paren
 id|tty
 comma
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|filp-&gt;f_dentry-&gt;d_inode
 comma
 l_string|&quot;tty_fasync&quot;
 )paren
@@ -7191,7 +7193,7 @@ c_func
 (paren
 id|tty
 comma
-id|inode-&gt;i_rdev
+id|inode
 comma
 l_string|&quot;tty_ioctl&quot;
 )paren

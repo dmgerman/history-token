@@ -1556,15 +1556,10 @@ l_int|5000L
 )paren
 suffix:semicolon
 multiline_comment|/* Enable the Tx interrupts on the CD1400 */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|cy_writeb
@@ -1642,7 +1637,7 @@ op_or
 id|CyTxRdy
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -25156,6 +25151,8 @@ id|i
 suffix:semicolon
 r_int
 id|e1
+comma
+id|e2
 suffix:semicolon
 r_int
 r_int
@@ -25181,17 +25178,6 @@ id|cyz_timerlist
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_CYZ_INTR */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -25211,12 +25197,6 @@ c_func
 l_string|&quot;cyc: failed to unregister Cyclades serial driver(%d)&bslash;n&quot;
 comma
 id|e1
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|put_tty_driver

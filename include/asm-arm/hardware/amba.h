@@ -109,8 +109,6 @@ id|amba_device
 op_star
 comma
 id|u32
-comma
-id|u32
 )paren
 suffix:semicolon
 DECL|member|resume
@@ -123,8 +121,6 @@ id|resume
 r_struct
 id|amba_device
 op_star
-comma
-id|u32
 )paren
 suffix:semicolon
 DECL|member|id_table

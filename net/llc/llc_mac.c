@@ -28,7 +28,7 @@ id|IFHWADDRLEN
 )braket
 suffix:semicolon
 r_static
-r_void
+r_int
 id|fix_up_incoming_skb
 c_func
 (paren
@@ -140,11 +140,18 @@ id|skb
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|fix_up_incoming_skb
 c_func
 (paren
 id|skb
 )paren
+)paren
+r_goto
+id|drop
 suffix:semicolon
 id|pdu
 op_assign
@@ -633,7 +640,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;fix_up_incoming_skb - initializes skb pointers&n; *&t;@skb: This argument points to incoming skb&n; *&n; *&t;Initializes internal skb pointer to start of network layer by deriving&n; *&t;length of LLC header; finds length of LLC control field in LLC header&n; *&t;by looking at the two lowest-order bits of the first control field&n; *&t;byte; field is either 3 or 4 bytes long.&n; */
 DECL|function|fix_up_incoming_skb
 r_static
-r_void
+r_int
 id|fix_up_incoming_skb
 c_func
 (paren
@@ -651,6 +658,27 @@ suffix:semicolon
 r_struct
 id|llc_pdu_sn
 op_star
+id|pdu
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pskb_may_pull
+c_func
+(paren
+id|skb
+comma
+r_sizeof
+(paren
+op_star
+id|pdu
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|pdu
 op_assign
 (paren
@@ -736,6 +764,9 @@ id|data_size
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;llc_station_rcv - send received pdu to the station state machine&n; *&t;@skb: received frame.&n; *&n; *&t;Sends data unit to station state machine.&n; */
 DECL|function|llc_station_rcv

@@ -1534,7 +1534,7 @@ op_plus
 id|cpu
 suffix:semicolon
 multiline_comment|/* never put a printk in __switch_to... printk() calls wake_up*() indirectly */
-id|unlazy_fpu
+id|__unlazy_fpu
 c_func
 (paren
 id|prev_p

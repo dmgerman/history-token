@@ -169,6 +169,19 @@ id|leds_event
 op_assign
 id|system3_leds_event
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|machine_is_simpad
+c_func
+(paren
+)paren
+)paren
+id|leds_event
+op_assign
+id|simpad_leds_event
+suffix:semicolon
+multiline_comment|/* what about machine registry? including led, apm... -zecke */
 id|leds_event
 c_func
 (paren

@@ -67,7 +67,8 @@ r_int
 id|reset_cyc2x
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -76,7 +77,8 @@ r_int
 id|detect_cyc2x
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 suffix:semicolon
@@ -95,11 +97,11 @@ r_int
 id|get_option_index
 c_func
 (paren
-id|u32
+r_int
 op_star
 id|optlist
 comma
-id|u32
+r_int
 id|optval
 )paren
 suffix:semicolon
@@ -151,7 +153,7 @@ suffix:semicolon
 multiline_comment|/* Hardware configuration options.&n; * These are arrays of configuration options used by verification routines.&n; * The first element of each array is its size (i.e. number of options).&n; */
 DECL|variable|cyc2x_dpmbase_options
 r_static
-id|u32
+r_int
 id|cyc2x_dpmbase_options
 (braket
 )braket
@@ -202,7 +204,7 @@ l_int|0xEC000
 suffix:semicolon
 DECL|variable|cycx_2x_irq_options
 r_static
-id|u32
+r_int
 id|cycx_2x_irq_options
 (braket
 )braket
@@ -293,9 +295,11 @@ id|len
 )paren
 (brace
 r_int
-r_int
 id|dpmbase
 op_assign
+(paren
+r_int
+)paren
 id|hw-&gt;dpmbase
 suffix:semicolon
 r_int
@@ -336,7 +340,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|hw-&gt;dpmbase
+id|dpmbase
 )paren
 (brace
 id|printk
@@ -363,7 +367,7 @@ c_func
 (paren
 id|cyc2x_dpmbase_options
 comma
-id|hw-&gt;dpmbase
+id|dpmbase
 )paren
 )paren
 (brace
@@ -385,9 +389,6 @@ suffix:semicolon
 )brace
 id|hw-&gt;dpmbase
 op_assign
-(paren
-id|u32
-)paren
 id|ioremap
 c_func
 (paren
@@ -489,10 +490,6 @@ id|hw
 id|iounmap
 c_func
 (paren
-(paren
-id|u32
-op_star
-)paren
 id|hw-&gt;dpmbase
 )paren
 suffix:semicolon
@@ -571,7 +568,8 @@ r_int
 id|cycx_exec
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 (brace
@@ -759,7 +757,8 @@ r_int
 id|memory_exists
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 (brace
@@ -837,7 +836,8 @@ r_void
 id|reset_load
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 comma
 id|u8
@@ -848,7 +848,8 @@ id|u32
 id|cnt
 )paren
 (brace
-id|u32
+r_void
+op_star
 id|pt_code
 op_assign
 id|addr
@@ -895,7 +896,8 @@ r_int
 id|buffer_load
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 comma
 id|u8
@@ -943,7 +945,8 @@ r_void
 id|cycx_start
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 (brace
@@ -1017,7 +1020,8 @@ r_void
 id|cycx_reset_boot
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 comma
 id|u8
@@ -1028,7 +1032,8 @@ id|u32
 id|len
 )paren
 (brace
-id|u32
+r_void
+op_star
 id|pt_start
 op_assign
 id|addr
@@ -1115,7 +1120,8 @@ r_int
 id|cycx_data_boot
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 comma
 id|u8
@@ -1126,7 +1132,8 @@ id|u32
 id|len
 )paren
 (brace
-id|u32
+r_void
+op_star
 id|pt_boot_cmd
 op_assign
 id|addr
@@ -1294,7 +1301,8 @@ r_int
 id|cycx_code_boot
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 comma
 id|u8
@@ -1305,7 +1313,8 @@ id|u32
 id|len
 )paren
 (brace
-id|u32
+r_void
+op_star
 id|pt_boot_cmd
 op_assign
 id|addr
@@ -1505,7 +1514,8 @@ comma
 op_star
 id|code_image
 suffix:semicolon
-id|u32
+r_void
+op_star
 id|pt_cycld
 op_assign
 id|hw-&gt;dpmbase
@@ -1641,7 +1651,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot; cdsize = 0x%x (expected 0x%lx)&bslash;n&quot;
+l_string|&quot; cdsize = 0x%lx (expected 0x%lx)&bslash;n&quot;
 comma
 id|len
 op_minus
@@ -1680,23 +1690,8 @@ r_struct
 id|cycx_fw_header
 op_star
 )paren
-(paren
-(paren
-(paren
-id|u8
-op_star
-)paren
-id|cfm
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|cycx_firmware
-)paren
-op_minus
-l_int|1
-)paren
+op_amp
+id|cfm-&gt;image
 suffix:semicolon
 macro_line|#ifdef FIRMWARE_DEBUG
 id|printk
@@ -2037,7 +2032,8 @@ r_int
 id|detect_cyc2x
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 (brace
@@ -2063,11 +2059,11 @@ r_int
 id|get_option_index
 c_func
 (paren
-id|u32
+r_int
 op_star
 id|optlist
 comma
-id|u32
+r_int
 id|optval
 )paren
 (brace
@@ -2114,7 +2110,8 @@ r_int
 id|reset_cyc2x
 c_func
 (paren
-id|u32
+r_void
+op_star
 id|addr
 )paren
 (brace

@@ -2,10 +2,10 @@ multiline_comment|/*&n;** z2ram - Amiga pseudo-driver to access 16bit-RAM in Zor
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Z2RAM&quot;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
@@ -492,10 +492,10 @@ id|ENOMEM
 suffix:semicolon
 id|device
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if

@@ -116,6 +116,10 @@ DECL|macro|SONYPI_EVENT_MEMORYSTICK_EJECT
 mdefine_line|#define SONYPI_EVENT_MEMORYSTICK_EJECT&t;&t;55
 DECL|macro|SONYPI_EVENT_ANYBUTTON_RELEASED
 mdefine_line|#define SONYPI_EVENT_ANYBUTTON_RELEASED&t;&t;56
+DECL|macro|SONYPI_EVENT_BATTERY_INSERT
+mdefine_line|#define SONYPI_EVENT_BATTERY_INSERT&t;&t;57
+DECL|macro|SONYPI_EVENT_BATTERY_REMOVE
+mdefine_line|#define SONYPI_EVENT_BATTERY_REMOVE&t;&t;58
 multiline_comment|/* get/set brightness */
 DECL|macro|SONYPI_IOCGBRT
 mdefine_line|#define SONYPI_IOCGBRT&t;&t;_IOR(&squot;v&squot;, 0, __u8)

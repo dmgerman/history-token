@@ -75,7 +75,7 @@ comma
 suffix:semicolon
 macro_line|#ifndef i2c_device_name
 DECL|macro|i2c_device_name
-mdefine_line|#define i2c_device_name(x)&t;((x)-&gt;dev.name)
+mdefine_line|#define i2c_device_name(x)&t;((x)-&gt;name)
 macro_line|#endif
 DECL|function|keywest_attach_adapter
 r_static

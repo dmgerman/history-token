@@ -20,6 +20,8 @@ DECL|macro|RTF_FLOW
 mdefine_line|#define RTF_FLOW&t;0x02000000&t;/* flow significant route&t;*/
 DECL|macro|RTF_POLICY
 mdefine_line|#define RTF_POLICY&t;0x04000000&t;/* policy route&t;&t;&t;*/
+DECL|macro|RTF_NDISC
+mdefine_line|#define RTF_NDISC&t;0x08000000&t;/* ndisc route&t;&t;&t;*/
 DECL|macro|RTF_LOCAL
 mdefine_line|#define RTF_LOCAL&t;0x80000000
 DECL|struct|in6_rtmsg

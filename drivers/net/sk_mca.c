@@ -124,7 +124,7 @@ id|dumpmem
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -573,7 +573,7 @@ id|ResetBoard
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -619,7 +619,7 @@ id|WaitLANCE
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -695,7 +695,7 @@ id|SetLANCE
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -820,7 +820,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -838,7 +838,7 @@ id|GetLANCE
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -964,7 +964,7 @@ id|priv-&gt;ioregaddr
 )paren
 suffix:semicolon
 multiline_comment|/* reenable interrupts */
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -985,7 +985,7 @@ id|InitDscrs
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1393,7 +1393,7 @@ id|InitLANCE
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1474,19 +1474,12 @@ l_int|0xff
 )paren
 suffix:semicolon
 multiline_comment|/* we don&squot;t get ready until the LANCE has read the init block */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* let LANCE read the initialization block.  LANCE is ready&n;&t;   when we receive the corresponding interrupt. */
 id|SetLANCE
 c_func
@@ -1509,25 +1502,18 @@ id|StopLANCE
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
 (brace
 multiline_comment|/* can&squot;t take frames any more */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* disable interrupts, stop it */
 id|SetLANCE
 c_func
@@ -1548,7 +1534,7 @@ id|InitBoard
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1655,7 +1641,7 @@ id|DeinitBoard
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1684,7 +1670,7 @@ id|ProbeIRQ
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -1807,7 +1793,7 @@ id|irqstart_handler
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -1816,19 +1802,12 @@ id|oldcsr0
 )paren
 (brace
 multiline_comment|/* now we&squot;re ready to transmit */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* reset IDON bit, start LANCE */
 id|SetLANCE
 c_func
@@ -1862,7 +1841,7 @@ id|irqmiss_handler
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -1915,7 +1894,7 @@ id|irqrx_handler
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -2240,7 +2219,7 @@ id|irqtx_handler
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -2483,25 +2462,12 @@ id|LANCE_CSR0
 suffix:semicolon
 multiline_comment|/* at least one descriptor is freed.  Therefore we can accept&n;&t;   a new one */
 multiline_comment|/* inform upper layers we&squot;re in business again */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|NET_BH
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|oldcsr0
 suffix:semicolon
@@ -2527,13 +2493,13 @@ id|regs
 )paren
 (brace
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 op_assign
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 )paren
 id|device
@@ -2567,7 +2533,6 @@ l_int|0
 r_return
 id|IRQ_NONE
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 macro_line|#if 0
 id|set_bit
 c_func
@@ -2577,12 +2542,6 @@ comma
 op_amp
 id|dev-&gt;state
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* loop through the interrupt bits until everything is clear */
@@ -2755,7 +2714,6 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 macro_line|#if 0
 id|clear_bit
 c_func
@@ -2765,12 +2723,6 @@ comma
 op_amp
 id|dev-&gt;state
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
@@ -2805,13 +2757,13 @@ comma
 id|i
 suffix:semicolon
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 op_assign
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 )paren
 id|d
@@ -2983,7 +2935,7 @@ id|skmca_open
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3054,29 +3006,12 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* set up flags */
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_start_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;interrupt
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;tbusy
-op_assign
-l_int|0
-suffix:semicolon
-id|dev-&gt;start
-op_assign
-l_int|0
-suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3089,7 +3024,7 @@ id|skmca_close
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3121,10 +3056,6 @@ id|dev-&gt;irq
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032a)
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3142,7 +3073,7 @@ op_star
 id|skb
 comma
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3405,19 +3336,12 @@ id|priv-&gt;txbusy
 op_ge
 id|TXCOUNT
 )paren
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x02032a)
 id|netif_stop_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev-&gt;tbusy
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* write descriptor back to RAM */
 id|SKMCA_TOIO
 c_func
@@ -3455,7 +3379,7 @@ op_or
 id|CSR0_TDMD
 )paren
 suffix:semicolon
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
@@ -3486,7 +3410,7 @@ id|skmca_stats
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3516,7 +3440,7 @@ id|skmca_config
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 comma
@@ -3538,7 +3462,7 @@ id|skmca_set_multicast_list
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3711,7 +3635,7 @@ id|skmca_probe
 c_func
 (paren
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 )paren
@@ -3830,7 +3754,6 @@ op_amp
 id|medium
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020300
 multiline_comment|/* slot already in use ? */
 r_if
 c_cond
@@ -3858,7 +3781,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* were we looking for something different ? */
 r_if
 c_cond
@@ -4355,11 +4277,10 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|macro|DEVMAX
 mdefine_line|#define DEVMAX 5
-macro_line|#if (LINUX_VERSION_CODE &gt;= 0x020369)
 DECL|variable|moddevs
 r_static
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 id|moddevs
 (braket
 id|DEVMAX
@@ -4367,299 +4288,66 @@ id|DEVMAX
 op_assign
 (brace
 (brace
-l_string|&quot;    &quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|skmca_probe
-)brace
-comma
-(brace
-l_string|&quot;    &quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|skmca_probe
-)brace
-comma
-(brace
-l_string|&quot;    &quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|skmca_probe
-)brace
-comma
-(brace
-l_string|&quot;    &quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|skmca_probe
-)brace
-comma
-(brace
-l_string|&quot;    &quot;
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|skmca_probe
-)brace
-)brace
-suffix:semicolon
-macro_line|#else
-DECL|variable|NameSpace
-r_static
-r_char
-id|NameSpace
-(braket
-l_int|8
-op_star
-id|DEVMAX
-)braket
-suffix:semicolon
-DECL|variable|moddevs
-r_static
-r_struct
-id|SKMCA_NETDEV
-id|moddevs
-(braket
-id|DEVMAX
-)braket
+dot
+id|name
 op_assign
-(brace
-(brace
-id|NameSpace
-op_plus
-l_int|0
+l_string|&quot;    &quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|skmca_probe
 )brace
 comma
 (brace
-id|NameSpace
-op_plus
-l_int|8
+dot
+id|name
+op_assign
+l_string|&quot;    &quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|skmca_probe
 )brace
 comma
 (brace
-id|NameSpace
-op_plus
-l_int|16
+dot
+id|name
+op_assign
+l_string|&quot;    &quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|skmca_probe
 )brace
 comma
 (brace
-id|NameSpace
-op_plus
-l_int|24
+dot
+id|name
+op_assign
+l_string|&quot;    &quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|skmca_probe
 )brace
 comma
 (brace
-id|NameSpace
-op_plus
-l_int|32
+dot
+id|name
+op_assign
+l_string|&quot;    &quot;
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
-comma
+dot
+id|init
+op_assign
 id|skmca_probe
 )brace
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|variable|irq
 r_int
 id|irq
@@ -4757,7 +4445,7 @@ r_void
 )paren
 (brace
 r_struct
-id|SKMCA_NETDEV
+id|net_device
 op_star
 id|dev
 suffix:semicolon

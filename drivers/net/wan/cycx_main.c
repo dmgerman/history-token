@@ -631,6 +631,10 @@ id|irq
 suffix:semicolon
 id|card-&gt;hw.dpmbase
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|conf-&gt;maddr
 suffix:semicolon
 id|card-&gt;hw.dpmsize
@@ -686,6 +690,10 @@ l_int|0
 suffix:semicolon
 id|wandev-&gt;maddr
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|card-&gt;hw.dpmbase
 suffix:semicolon
 id|wandev-&gt;msize

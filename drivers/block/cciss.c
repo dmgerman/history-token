@@ -1590,10 +1590,10 @@ id|filep
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR
@@ -1601,10 +1601,10 @@ suffix:semicolon
 r_int
 id|dsk
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 id|NWD_SHIFT
@@ -1614,9 +1614,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;cciss_open %x (%x:%x)&bslash;n&quot;
+l_string|&quot;cciss_open %s (%x:%x)&bslash;n&quot;
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|ctlr
 comma
@@ -1664,10 +1664,10 @@ l_int|0
 r_if
 c_cond
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_ne
 l_int|0
@@ -1737,10 +1737,10 @@ id|filep
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR
@@ -1748,10 +1748,10 @@ suffix:semicolon
 r_int
 id|dsk
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 id|NWD_SHIFT
@@ -1761,9 +1761,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;cciss_release %x (%x:%x)&bslash;n&quot;
+l_string|&quot;cciss_release %s (%x:%x)&bslash;n&quot;
 comma
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev-&gt;bd_disk-&gt;disk_name
 comma
 id|ctlr
 comma
@@ -1826,10 +1826,10 @@ id|arg
 r_int
 id|ctlr
 op_assign
-id|major
+id|imajor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_minus
 id|COMPAQ_CISS_MAJOR
@@ -1837,10 +1837,10 @@ suffix:semicolon
 r_int
 id|dsk
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 id|NWD_SHIFT
@@ -12768,6 +12768,22 @@ id|q
 r_goto
 id|err_all
 suffix:semicolon
+id|hba
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|queue
+op_assign
+id|q
+suffix:semicolon
+id|q-&gt;queuedata
+op_assign
+id|hba
+(braket
+id|i
+)braket
+suffix:semicolon
 multiline_comment|/* Initialize the pdev driver private data. &n;&t;&t;have it point to hba[i].  */
 id|pci_set_drvdata
 c_func
@@ -12859,13 +12875,6 @@ c_func
 (paren
 id|i
 )paren
-suffix:semicolon
-id|q-&gt;queuedata
-op_assign
-id|hba
-(braket
-id|i
-)braket
 suffix:semicolon
 id|blk_queue_bounce_limit
 c_func

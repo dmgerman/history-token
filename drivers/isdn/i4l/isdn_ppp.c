@@ -278,10 +278,10 @@ r_int
 r_int
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 op_minus
 id|ISDN_MINOR_PPP

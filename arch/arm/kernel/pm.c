@@ -68,51 +68,10 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tell LDM devices we&squot;re going to suspend.&n;&t; */
-id|ret
-op_assign
 id|device_suspend
 c_func
 (paren
-l_int|4
-comma
-id|SUSPEND_NOTIFY
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-l_int|0
-)paren
-r_goto
-id|resume_legacy
-suffix:semicolon
-multiline_comment|/*&n;&t; * Disable, devices, and save state.&n;&t; */
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_DISABLE
-)paren
-suffix:semicolon
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_SAVE_STATE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Tell devices that they&squot;re going to be powered off.&n;&t; */
-id|device_suspend
-c_func
-(paren
-l_int|4
-comma
-id|SUSPEND_POWER_DOWN
+l_int|3
 )paren
 suffix:semicolon
 id|local_irq_disable
@@ -144,29 +103,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Tell devices that they now have power.&n;&t; */
 id|device_resume
 c_func
 (paren
-id|RESUME_POWER_ON
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Resume LDM devices.&n;&t; */
-id|device_resume
-c_func
-(paren
-id|RESUME_RESTORE_STATE
-)paren
-suffix:semicolon
-id|device_resume
-c_func
-(paren
-id|RESUME_ENABLE
-)paren
-suffix:semicolon
-id|resume_legacy
-suffix:colon
-multiline_comment|/*&n;&t; * Resume &quot;legacy&quot; devices.&n;&t; */
 id|pm_send_all
 c_func
 (paren

@@ -550,15 +550,22 @@ r_struct
 id|inquiry_data
 id|InquiryData
 suffix:semicolon
-DECL|member|drive
+DECL|member|id
 r_struct
 id|hd_driveid
-id|drive
+op_star
+id|id
 suffix:semicolon
 DECL|member|ConfigData
 r_struct
 id|isd200_config
 id|ConfigData
+suffix:semicolon
+DECL|member|RegsBuf
+r_int
+r_char
+op_star
+id|RegsBuf
 suffix:semicolon
 DECL|member|ATARegs
 r_int
@@ -1241,8 +1248,7 @@ op_assign
 r_void
 op_star
 )paren
-op_amp
-id|info-&gt;drive
+id|info-&gt;id
 suffix:semicolon
 id|srb-&gt;request_bufflen
 op_assign
@@ -1378,7 +1384,7 @@ id|us
 comma
 id|ACTION_READ_STATUS
 comma
-id|info-&gt;ATARegs
+id|info-&gt;RegsBuf
 comma
 r_sizeof
 (paren
@@ -1407,6 +1413,19 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|memcpy
+c_func
+(paren
+id|info-&gt;ATARegs
+comma
+id|info-&gt;RegsBuf
+comma
+r_sizeof
+(paren
+id|info-&gt;ATARegs
+)paren
+)paren
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -2418,13 +2437,6 @@ op_assign
 id|ISD200_GOOD
 suffix:semicolon
 r_int
-r_char
-op_star
-id|regs
-op_assign
-id|us-&gt;iobuf
-suffix:semicolon
-r_int
 r_int
 id|endTime
 suffix:semicolon
@@ -2439,6 +2451,13 @@ id|isd200_info
 op_star
 )paren
 id|us-&gt;extra
+suffix:semicolon
+r_int
+r_char
+op_star
+id|regs
+op_assign
+id|info-&gt;RegsBuf
 suffix:semicolon
 r_int
 id|recheckAsMaster
@@ -2983,6 +3002,13 @@ id|retStatus
 op_assign
 id|ISD200_GOOD
 suffix:semicolon
+r_struct
+id|hd_driveid
+op_star
+id|id
+op_assign
+id|info-&gt;id
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -3034,8 +3060,7 @@ id|us
 comma
 id|ACTION_IDENTIFY
 comma
-op_amp
-id|info-&gt;drive
+id|id
 comma
 r_sizeof
 (paren
@@ -3080,8 +3105,7 @@ suffix:semicolon
 id|ide_fix_driveid
 c_func
 (paren
-op_amp
-id|info-&gt;drive
+id|id
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3095,7 +3119,7 @@ c_func
 (paren
 l_string|&quot;      config = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.config
+id|id-&gt;config
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3103,7 +3127,7 @@ c_func
 (paren
 l_string|&quot;      cyls = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.cyls
+id|id-&gt;cyls
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3111,7 +3135,7 @@ c_func
 (paren
 l_string|&quot;      heads = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.heads
+id|id-&gt;heads
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3119,7 +3143,7 @@ c_func
 (paren
 l_string|&quot;      track_bytes = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.track_bytes
+id|id-&gt;track_bytes
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3127,7 +3151,7 @@ c_func
 (paren
 l_string|&quot;      sector_bytes = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.sector_bytes
+id|id-&gt;sector_bytes
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3135,7 +3159,7 @@ c_func
 (paren
 l_string|&quot;      sectors = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3143,7 +3167,7 @@ c_func
 (paren
 l_string|&quot;      serial_no[0] = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.serial_no
+id|id-&gt;serial_no
 (braket
 l_int|0
 )braket
@@ -3154,7 +3178,7 @@ c_func
 (paren
 l_string|&quot;      buf_type = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.buf_type
+id|id-&gt;buf_type
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3162,7 +3186,7 @@ c_func
 (paren
 l_string|&quot;      buf_size = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.buf_size
+id|id-&gt;buf_size
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3170,7 +3194,7 @@ c_func
 (paren
 l_string|&quot;      ecc_bytes = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.ecc_bytes
+id|id-&gt;ecc_bytes
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3178,7 +3202,7 @@ c_func
 (paren
 l_string|&quot;      fw_rev[0] = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.fw_rev
+id|id-&gt;fw_rev
 (braket
 l_int|0
 )braket
@@ -3189,7 +3213,7 @@ c_func
 (paren
 l_string|&quot;      model[0] = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.model
+id|id-&gt;model
 (braket
 l_int|0
 )braket
@@ -3200,7 +3224,7 @@ c_func
 (paren
 l_string|&quot;      max_multsect = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.max_multsect
+id|id-&gt;max_multsect
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3208,7 +3232,7 @@ c_func
 (paren
 l_string|&quot;      dword_io = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.dword_io
+id|id-&gt;dword_io
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3216,7 +3240,7 @@ c_func
 (paren
 l_string|&quot;      capability = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.capability
+id|id-&gt;capability
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3224,7 +3248,7 @@ c_func
 (paren
 l_string|&quot;      tPIO = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.tPIO
+id|id-&gt;tPIO
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3232,7 +3256,7 @@ c_func
 (paren
 l_string|&quot;      tDMA = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.tDMA
+id|id-&gt;tDMA
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3240,7 +3264,7 @@ c_func
 (paren
 l_string|&quot;      field_valid = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.field_valid
+id|id-&gt;field_valid
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3248,7 +3272,7 @@ c_func
 (paren
 l_string|&quot;      cur_cyls = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.cur_cyls
+id|id-&gt;cur_cyls
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3256,7 +3280,7 @@ c_func
 (paren
 l_string|&quot;      cur_heads = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.cur_heads
+id|id-&gt;cur_heads
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3264,7 +3288,7 @@ c_func
 (paren
 l_string|&quot;      cur_sectors = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.cur_sectors
+id|id-&gt;cur_sectors
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3273,12 +3297,12 @@ c_func
 l_string|&quot;      cur_capacity = 0x%x&bslash;n&quot;
 comma
 (paren
-id|info-&gt;drive.cur_capacity1
+id|id-&gt;cur_capacity1
 op_lshift
 l_int|16
 )paren
 op_plus
-id|info-&gt;drive.cur_capacity0
+id|id-&gt;cur_capacity0
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3286,7 +3310,7 @@ c_func
 (paren
 l_string|&quot;      multsect = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.multsect
+id|id-&gt;multsect
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3294,7 +3318,7 @@ c_func
 (paren
 l_string|&quot;      lba_capacity = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.lba_capacity
+id|id-&gt;lba_capacity
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3302,7 +3326,7 @@ c_func
 (paren
 l_string|&quot;      command_set_1 = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.command_set_1
+id|id-&gt;command_set_1
 )paren
 suffix:semicolon
 id|US_DEBUGP
@@ -3310,7 +3334,7 @@ c_func
 (paren
 l_string|&quot;      command_set_2 = 0x%x&bslash;n&quot;
 comma
-id|info-&gt;drive.command_set_2
+id|id-&gt;command_set_2
 )paren
 suffix:semicolon
 id|memset
@@ -3345,7 +3369,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;drive.command_set_1
+id|id-&gt;command_set_1
 op_amp
 id|COMMANDSET_MEDIA_STATUS
 )paren
@@ -3367,7 +3391,7 @@ op_assign
 id|__u16
 op_star
 )paren
-id|info-&gt;drive.model
+id|id-&gt;model
 suffix:semicolon
 id|dest
 op_assign
@@ -3412,7 +3436,7 @@ id|__u16
 op_star
 )paren
 (paren
-id|info-&gt;drive.model
+id|id-&gt;model
 op_plus
 l_int|8
 )paren
@@ -3459,7 +3483,7 @@ op_assign
 id|__u16
 op_star
 )paren
-id|info-&gt;drive.fw_rev
+id|id-&gt;fw_rev
 suffix:semicolon
 id|dest
 op_assign
@@ -3501,7 +3525,7 @@ multiline_comment|/* determine if it supports Media Status Notification */
 r_if
 c_cond
 (paren
-id|info-&gt;drive.command_set_2
+id|id-&gt;command_set_2
 op_amp
 id|COMMANDSET_MEDIA_STATUS
 )paren
@@ -3546,18 +3570,12 @@ id|us-&gt;protocol_name
 )paren
 suffix:semicolon
 multiline_comment|/* Free driver structure */
-r_if
-c_cond
-(paren
-id|us-&gt;extra
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree
+id|us
+op_member_access_from_pointer
+id|extra_destructor
 c_func
 (paren
-id|us-&gt;extra
+id|info
 )paren
 suffix:semicolon
 id|us-&gt;extra
@@ -3568,7 +3586,6 @@ id|us-&gt;extra_destructor
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 )brace
 id|US_DEBUGP
@@ -3856,6 +3873,13 @@ id|isd200_info
 op_star
 )paren
 id|us-&gt;extra
+suffix:semicolon
+r_struct
+id|hd_driveid
+op_star
+id|id
+op_assign
+id|info-&gt;id
 suffix:semicolon
 r_int
 id|sendToTransport
@@ -4158,14 +4182,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;drive.capability
+id|id-&gt;capability
 op_amp
 id|CAPABILITY_LBA
 )paren
 (brace
 id|capacity
 op_assign
-id|info-&gt;drive.lba_capacity
+id|id-&gt;lba_capacity
 op_minus
 l_int|1
 suffix:semicolon
@@ -4175,11 +4199,11 @@ r_else
 id|capacity
 op_assign
 (paren
-id|info-&gt;drive.heads
+id|id-&gt;heads
 op_star
-id|info-&gt;drive.cyls
+id|id-&gt;cyls
 op_star
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 op_minus
 l_int|1
@@ -4302,7 +4326,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;drive.capability
+id|id-&gt;capability
 op_amp
 id|CAPABILITY_LBA
 )paren
@@ -4358,7 +4382,7 @@ r_char
 (paren
 id|lba
 op_mod
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 op_plus
 l_int|1
@@ -4374,9 +4398,9 @@ r_int
 id|lba
 op_div
 (paren
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 op_star
-id|info-&gt;drive.heads
+id|id-&gt;heads
 )paren
 )paren
 suffix:semicolon
@@ -4390,10 +4414,10 @@ r_char
 (paren
 id|lba
 op_div
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 op_mod
-id|info-&gt;drive.heads
+id|id-&gt;heads
 )paren
 suffix:semicolon
 )brace
@@ -4525,7 +4549,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;drive.capability
+id|id-&gt;capability
 op_amp
 id|CAPABILITY_LBA
 )paren
@@ -4581,7 +4605,7 @@ r_char
 (paren
 id|lba
 op_mod
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 op_plus
 l_int|1
@@ -4597,9 +4621,9 @@ r_int
 id|lba
 op_div
 (paren
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 op_star
-id|info-&gt;drive.heads
+id|id-&gt;heads
 )paren
 )paren
 suffix:semicolon
@@ -4613,10 +4637,10 @@ r_char
 (paren
 id|lba
 op_div
-id|info-&gt;drive.sectors
+id|id-&gt;sectors
 )paren
 op_mod
-id|info-&gt;drive.heads
+id|id-&gt;heads
 )paren
 suffix:semicolon
 )brace
@@ -4950,6 +4974,49 @@ r_return
 id|sendToTransport
 suffix:semicolon
 )brace
+multiline_comment|/**************************************************************************&n; * isd200_free_info&n; *&n; * Frees the driver structure.&n; */
+DECL|function|isd200_free_info_ptrs
+r_void
+id|isd200_free_info_ptrs
+c_func
+(paren
+r_void
+op_star
+id|info_
+)paren
+(brace
+r_struct
+id|isd200_info
+op_star
+id|info
+op_assign
+(paren
+r_struct
+id|isd200_info
+op_star
+)paren
+id|info_
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|info-&gt;id
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info-&gt;RegsBuf
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**************************************************************************&n; * isd200_init_info&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Allocates (if necessary) and initializes the driver structure.&n; *&n; * RETURNS:&n; *    ISD status code&n; */
 DECL|function|isd200_init_info
 r_int
@@ -4967,17 +5034,16 @@ id|retStatus
 op_assign
 id|ISD200_GOOD
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us-&gt;extra
-)paren
-(brace
-id|us-&gt;extra
+r_struct
+id|isd200_info
+op_star
+id|info
+suffix:semicolon
+id|info
 op_assign
 (paren
-r_void
+r_struct
+id|isd200_info
 op_star
 )paren
 id|kmalloc
@@ -4996,33 +5062,18 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|us-&gt;extra
+id|info
 )paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;ERROR - kmalloc failure&bslash;n&quot;
-)paren
-suffix:semicolon
 id|retStatus
 op_assign
 id|ISD200_ERROR
 suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|retStatus
-op_eq
-id|ISD200_GOOD
-)paren
+r_else
 (brace
 id|memset
 c_func
 (paren
-id|us-&gt;extra
+id|info
 comma
 l_int|0
 comma
@@ -5033,7 +5084,110 @@ id|isd200_info
 )paren
 )paren
 suffix:semicolon
+id|info-&gt;id
+op_assign
+(paren
+r_struct
+id|hd_driveid
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|hd_driveid
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|info-&gt;RegsBuf
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|info-&gt;ATARegs
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;id
+op_logical_or
+op_logical_neg
+id|info-&gt;RegsBuf
+)paren
+(brace
+id|isd200_free_info_ptrs
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+id|retStatus
+op_assign
+id|ISD200_ERROR
+suffix:semicolon
 )brace
+r_else
+id|memset
+c_func
+(paren
+id|info-&gt;id
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|hd_driveid
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|retStatus
+op_eq
+id|ISD200_GOOD
+)paren
+(brace
+id|us-&gt;extra
+op_assign
+id|info
+suffix:semicolon
+id|us-&gt;extra_destructor
+op_assign
+id|isd200_free_info_ptrs
+suffix:semicolon
+)brace
+r_else
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;ERROR - kmalloc failure&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|retStatus
 suffix:semicolon

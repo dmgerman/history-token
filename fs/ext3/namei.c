@@ -6605,7 +6605,11 @@ op_star
 )paren
 id|fde
 op_plus
+id|le16_to_cpu
+c_func
+(paren
 id|fde-&gt;rec_len
+)paren
 )paren
 suffix:semicolon
 id|len

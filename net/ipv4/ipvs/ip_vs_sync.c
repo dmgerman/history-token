@@ -3230,7 +3230,7 @@ c_func
 (paren
 l_int|7
 comma
-l_string|&quot;Each ip_vs_sync_conn entry need %d bytes&bslash;n&quot;
+l_string|&quot;Each ip_vs_sync_conn entry need %Zd bytes&bslash;n&quot;
 comma
 r_sizeof
 (paren

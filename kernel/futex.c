@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  Fast Userspace Mutexes (which I call &quot;Futexes!&quot;).&n; *  (C) Rusty Russell, IBM 2002&n; *&n; *  Generalized futexes, futex requeueing, misc fixes by Ingo Molnar&n; *  (C) Copyright 2003 Red Hat Inc, All Rights Reserved&n; *&n; *  Thanks to Ben LaHaise for yelling &quot;hashed waitqueues&quot; loudly&n; *  enough at me, Linus for the original (flawed) idea, Matthew&n; *  Kirkwood for proof-of-concept implementation.&n; *&n; *  &quot;The futexes are also cursed.&quot;&n; *  &quot;But they come in a choice of three flavours!&quot;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -70,23 +71,6 @@ id|spinlock_t
 id|futex_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-r_extern
-r_void
-id|send_sigio
-c_func
-(paren
-r_struct
-id|fown_struct
-op_star
-id|fown
-comma
-r_int
-id|fd
-comma
-r_int
-id|band
-)paren
 suffix:semicolon
 multiline_comment|/* Futex-fs vfsmount entry: */
 DECL|variable|futex_mnt

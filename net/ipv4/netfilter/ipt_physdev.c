@@ -8,6 +8,24 @@ DECL|macro|MATCH
 mdefine_line|#define MATCH   1
 DECL|macro|NOMATCH
 mdefine_line|#define NOMATCH 0
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables bridge physical device match module&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|match
@@ -643,12 +661,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

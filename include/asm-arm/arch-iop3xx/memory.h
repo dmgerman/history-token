@@ -52,5 +52,7 @@ op_star
 id|mu_mem
 suffix:semicolon
 macro_line|#endif
+DECL|macro|PFN_TO_NID
+mdefine_line|#define PFN_TO_NID(addr)&t;(0)
 macro_line|#endif
 eof

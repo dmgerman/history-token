@@ -813,10 +813,10 @@ c_func
 id|inode-&gt;i_mode
 )paren
 )paren
-id|invalidate_inode_pages
+id|invalidate_remote_inode
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|inode
 )paren
 suffix:semicolon
 )brace
@@ -1007,10 +1007,10 @@ c_func
 id|inode-&gt;i_mode
 )paren
 )paren
-id|invalidate_inode_pages
+id|invalidate_remote_inode
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|inode
 )paren
 suffix:semicolon
 r_else

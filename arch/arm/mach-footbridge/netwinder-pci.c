@@ -72,15 +72,13 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: unknown device in slot %s: %s&bslash;n&quot;
+l_string|&quot;PCI: unknown device in slot %s&bslash;n&quot;
 comma
 id|pci_name
 c_func
 (paren
 id|dev
 )paren
-comma
-id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return

@@ -39,6 +39,7 @@ r_void
 suffix:semicolon
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() do { stts(); preempt_enable(); } while(0)
+multiline_comment|/*&n; * These must be called with preempt disabled&n; */
 DECL|function|__save_init_fpu
 r_static
 r_inline
@@ -90,6 +91,11 @@ op_complement
 id|TS_USEDFPU
 suffix:semicolon
 )brace
+DECL|macro|__unlazy_fpu
+mdefine_line|#define __unlazy_fpu( tsk ) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
+DECL|macro|__clear_fpu
+mdefine_line|#define __clear_fpu( tsk )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * These disable preemption on their own and are safe&n; */
 DECL|function|save_init_fpu
 r_static
 r_inline
@@ -103,6 +109,11 @@ op_star
 id|tsk
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__save_init_fpu
 c_func
 (paren
@@ -114,11 +125,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu( tsk ) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) &bslash;&n;&t;&t;save_init_fpu( tsk ); &bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu( tsk ) do {&t;&bslash;&n;&t;preempt_disable();&t;&bslash;&n;&t;__unlazy_fpu(tsk);&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu( tsk )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;status &amp; TS_USEDFPU) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;thread_info-&gt;status &amp;= ~TS_USEDFPU;&t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu( tsk ) do {&t;&bslash;&n;&t;preempt_disable();&t;&bslash;&n;&t;__clear_fpu( tsk );&t;&bslash;&n;&t;preempt_enable();&t;&bslash;&n;} while (0)
+"&bslash;"
 multiline_comment|/*&n; * FPU state interaction...&n; */
 r_extern
 r_int

@@ -736,6 +736,21 @@ id|bio_vec
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|activity_fn
+r_typedef
+r_void
+(paren
+id|activity_fn
+)paren
+(paren
+r_void
+op_star
+id|data
+comma
+r_int
+id|rw
+)paren
+suffix:semicolon
 DECL|enum|blk_queue_state
 r_enum
 id|blk_queue_state
@@ -860,6 +875,11 @@ id|merge_bvec_fn
 op_star
 id|merge_bvec_fn
 suffix:semicolon
+DECL|member|activity_fn
+id|activity_fn
+op_star
+id|activity_fn
+suffix:semicolon
 multiline_comment|/*&n;&t; * Auto-unplugging state&n;&t; */
 DECL|member|unplug_timer
 r_struct
@@ -892,6 +912,11 @@ DECL|member|queuedata
 r_void
 op_star
 id|queuedata
+suffix:semicolon
+DECL|member|activity_data
+r_void
+op_star
+id|activity_data
 suffix:semicolon
 multiline_comment|/*&n;&t; * queue needs bounce pages for pages above this limit&n;&t; */
 DECL|member|bounce_pfn
@@ -1609,6 +1634,21 @@ c_func
 id|request_queue_t
 op_star
 id|q
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_activity_fn
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+id|activity_fn
+op_star
+comma
+r_void
+op_star
 )paren
 suffix:semicolon
 DECL|function|bdev_get_queue

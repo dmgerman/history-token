@@ -188,9 +188,13 @@ c_func
 (paren
 id|_pad2_
 )paren
-multiline_comment|/*&n;&t; * measure of scanning intensity for this zone. It is calculated&n;&t; * as exponentially decaying average of the scanning priority&n;&t; * required to free enough pages in this zone&n;&t; * (zone_adj_pressure()).&n;&t; *&n;&t; *     0                    --- low pressure&n;&t; *&n;&t; *     (DEF_PRIORITY &lt;&lt; 10) --- high pressure&n;&t; */
+multiline_comment|/*&n;&t; * prev_priority holds the scanning priority for this zone.  It is&n;&t; * defined as the scanning priority at which we achieved our reclaim&n;&t; * target at the previous try_to_free_pages() or balance_pgdat()&n;&t; * invokation.&n;&t; *&n;&t; * We use prev_priority as a measure of how much stress page reclaim is&n;&t; * under - it drives the swappiness decision: whether to unmap mapped&n;&t; * pages.&n;&t; *&n;&t; * temp_priority is used to remember the scanning priority at which&n;&t; * this zone was successfully refilled to free_pages == pages_high.&n;&t; *&n;&t; * Access to both these fields is quite racy even on uniprocessor.  But&n;&t; * it is expected to average out OK.&n;&t; */
 r_int
-id|pressure
+id|temp_priority
+suffix:semicolon
+DECL|member|prev_priority
+r_int
+id|prev_priority
 suffix:semicolon
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
 DECL|member|free_area

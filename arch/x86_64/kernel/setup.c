@@ -988,6 +988,10 @@ op_star
 id|cmdline_p
 )paren
 (brace
+r_int
+r_int
+id|low_mem_size
+suffix:semicolon
 id|ROOT_DEV
 op_assign
 id|ORIG_ROOT_DEV
@@ -1438,9 +1442,32 @@ id|i
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Will likely break when you have unassigned resources with more&n;&t;   than 4GB memory and bridges that don&squot;t support more than 4GB. &n;&t;   Doing it properly would require to allocate GFP_DMA memory&n;&t;   in this case. */
+id|low_mem_size
+op_assign
+(paren
+(paren
+id|end_pfn
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_plus
+l_int|0xfffff
+)paren
+op_amp
+op_complement
+l_int|0xfffff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|low_mem_size
+OG
+id|pci_mem_start
+)paren
 id|pci_mem_start
 op_assign
-id|IOMAP_START
+id|low_mem_size
 suffix:semicolon
 macro_line|#ifdef CONFIG_GART_IOMMU
 id|iommu_hole_init

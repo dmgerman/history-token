@@ -1126,8 +1126,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;security: ebitmap: map size %d does not &quot;
-l_string|&quot;match my size %d (high bit was %d)&bslash;n&quot;
+l_string|&quot;security: ebitmap: map size %u does not &quot;
+l_string|&quot;match my size %Zd (high bit was %d)&bslash;n&quot;
 comma
 id|mapsize
 comma
@@ -1172,7 +1172,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;security: ebitmap: high bit (%d) is not a &quot;
-l_string|&quot;multiple of the map size (%d)&bslash;n&quot;
+l_string|&quot;multiple of the map size (%Zd)&bslash;n&quot;
 comma
 id|e-&gt;highbit
 comma
@@ -1312,7 +1312,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;security: ebitmap start bit (%d) is &quot;
-l_string|&quot;not a multiple of the map size (%d)&bslash;n&quot;
+l_string|&quot;not a multiple of the map size (%Zd)&bslash;n&quot;
 comma
 id|n-&gt;startbit
 comma
@@ -1340,7 +1340,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;security: ebitmap start bit (%d) is &quot;
-l_string|&quot;beyond the end of the bitmap (%d)&bslash;n&quot;
+l_string|&quot;beyond the end of the bitmap (%Zd)&bslash;n&quot;
 comma
 id|n-&gt;startbit
 comma

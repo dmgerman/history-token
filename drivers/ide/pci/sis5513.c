@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ide-timing.h&quot;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;sis5513.h&quot;
 multiline_comment|/* registers layout and init values are chipset family dependant */
 DECL|macro|ATA_16

@@ -7,6 +7,24 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables mangle table&quot;
+)paren
+suffix:semicolon
 DECL|macro|MANGLE_VALID_HOOKS
 mdefine_line|#define MANGLE_VALID_HOOKS ((1 &lt;&lt; NF_IP_PRE_ROUTING) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP_LOCAL_IN) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP_FORWARD) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP_LOCAL_OUT) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP_POST_ROUTING))
 multiline_comment|/* Standard entry. */
@@ -1548,12 +1566,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

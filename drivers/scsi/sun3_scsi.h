@@ -4,10 +4,6 @@ multiline_comment|/*&n; * $Log: cumana_NCR5380.h,v $&n; */
 macro_line|#ifndef SUN3_NCR5380_H
 DECL|macro|SUN3_NCR5380_H
 mdefine_line|#define SUN3_NCR5380_H
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 DECL|macro|SUN3SCSI_PUBLIC_RELEASE
 mdefine_line|#define SUN3SCSI_PUBLIC_RELEASE 1
 multiline_comment|/*&n; * Int: level 2 autovector&n; * IO: type 1, base 0x00140000, 5 bits phys space: A&lt;4..0&gt;&n; */

@@ -2795,7 +2795,7 @@ suffix:semicolon
 id|free_netdev
 c_func
 (paren
-id|chan-&gt;ppp.dev
+id|chan-&gt;pppdev.dev
 )paren
 suffix:semicolon
 )brace
@@ -4360,10 +4360,10 @@ c_cond
 (paren
 id|n
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 op_rshift
 id|CARD_MINOR_BITS
@@ -4387,10 +4387,10 @@ c_cond
 (paren
 id|n
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 op_amp
 (paren
@@ -4593,10 +4593,10 @@ id|on
 r_int
 id|port
 op_assign
-id|MINOR
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_int

@@ -92,7 +92,7 @@ mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;&t;((dma_addr_t) page
 DECL|macro|pci_dac_dma_to_page
 mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;&t;(virt_to_page(bus_to_virt(dma_addr)))
 DECL|macro|pci_dac_dma_to_offset
-mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;&t;((dma_addr) &amp; ~PAGE_MASK)
+mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;&t;offset_in_page(dma_addr)
 DECL|macro|pci_dac_dma_sync_single
 mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { mb(); } while (0)
 DECL|macro|sg_dma_len

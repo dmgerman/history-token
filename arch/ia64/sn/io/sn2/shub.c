@@ -903,8 +903,9 @@ id|file_operations
 id|shub_mon_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|shubstats_ioctl
 comma
 )brace

@@ -193,7 +193,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|SIS_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|temp

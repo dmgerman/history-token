@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;opti621.h&quot;
 DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3

@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;pdc202xx_old.h&quot;
 DECL|macro|PDC202_DEBUG_CABLE
 mdefine_line|#define PDC202_DEBUG_CABLE&t;0

@@ -2228,7 +2228,7 @@ mdefine_line|#define IS_EP_BULK_OUT(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep)-&gt;bEn
 DECL|macro|IS_EP_INTR
 mdefine_line|#define IS_EP_INTR(ep) ((ep)-&gt;bmAttributes == USB_ENDPOINT_XFER_INT ? 1 : 0)
 DECL|macro|USB_SCN_MINOR
-mdefine_line|#define USB_SCN_MINOR(X) minor((X)-&gt;i_rdev)
+mdefine_line|#define USB_SCN_MINOR(X) iminor(X)
 macro_line|#ifdef DEBUG
 DECL|macro|SCN_DEBUG
 mdefine_line|#define SCN_DEBUG(X) X

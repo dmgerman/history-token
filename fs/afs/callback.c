@@ -512,10 +512,10 @@ c_cond
 id|valid
 )paren
 (brace
-id|invalidate_inode_pages
+id|invalidate_remote_inode
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|inode
 )paren
 suffix:semicolon
 id|afs_put_server

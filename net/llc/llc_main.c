@@ -793,6 +793,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 macro_line|#ifdef LLC_REFCNT_DEBUG
 id|atomic_inc
 c_func
@@ -2144,6 +2152,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;LLC 2.0, NET4.0 IEEE 802.2 extended support&quot;
+)paren
+suffix:semicolon
+DECL|variable|PF_LLC
+id|MODULE_ALIAS_NETPROTO
+c_func
+(paren
+id|PF_LLC
 )paren
 suffix:semicolon
 eof

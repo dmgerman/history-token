@@ -416,7 +416,7 @@ id|D_DURING
 id|printk
 c_func
 (paren
-l_string|&quot;arcnet: struct sizes: %d %d %d %d %d&bslash;n&quot;
+l_string|&quot;arcnet: struct sizes: %Zd %Zd %Zd %Zd %Zd&bslash;n&quot;
 comma
 r_sizeof
 (paren

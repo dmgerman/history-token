@@ -2,6 +2,24 @@ multiline_comment|/* module that allows mangling of the arp payload */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_arp/arpt_mangle.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;David S. Miller &lt;davem@redhat.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;arptables mangle table&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -511,12 +529,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

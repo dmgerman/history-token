@@ -180,10 +180,10 @@ c_cond
 (paren
 id|D7S_MINOR
 op_ne
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 r_return
@@ -326,10 +326,10 @@ c_cond
 (paren
 id|D7S_MINOR
 op_ne
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 r_return

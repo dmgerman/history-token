@@ -145,6 +145,17 @@ c_func
 id|t
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|t
+OL
+id|__vxtime.last_tsc
+)paren
+id|t
+op_assign
+id|__vxtime.last_tsc
+suffix:semicolon
 id|usec
 op_add_assign
 (paren

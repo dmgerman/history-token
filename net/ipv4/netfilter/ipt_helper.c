@@ -13,6 +13,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Martin Josefsson &lt;gandalf@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables helper match module&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else

@@ -880,17 +880,7 @@ c_func
 id|pages
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Sometimes we want to use more memory than we have&n;&t; */
-r_if
-c_cond
-(paren
-id|sysctl_overcommit_memory
-op_eq
-l_int|1
-)paren
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/* We estimate memory ourselves (common case) */
 r_if
 c_cond
 (paren
@@ -965,6 +955,18 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* Kernel assumes allocation */
+r_if
+c_cond
+(paren
+id|sysctl_overcommit_memory
+op_eq
+l_int|1
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* sysctl_overcommit_memory must be 2 which means strict_overcommit*/
 id|allowed
 op_assign
 id|totalram_pages

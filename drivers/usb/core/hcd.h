@@ -90,6 +90,12 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* hw-specific hooks */
+DECL|member|saw_irq
+r_int
+id|saw_irq
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|irq
 r_int
 id|irq
@@ -148,8 +154,6 @@ id|state
 suffix:semicolon
 DECL|macro|__ACTIVE
 macro_line|#&t;define&t;__ACTIVE&t;&t;0x01
-DECL|macro|__SLEEPY
-macro_line|#&t;define&t;__SLEEPY&t;&t;0x02
 DECL|macro|__SUSPEND
 macro_line|#&t;define&t;__SUSPEND&t;&t;0x04
 DECL|macro|__TRANSIENT
@@ -158,8 +162,6 @@ DECL|macro|USB_STATE_HALT
 macro_line|#&t;define&t;USB_STATE_HALT&t;&t;0
 DECL|macro|USB_STATE_RUNNING
 macro_line|#&t;define&t;USB_STATE_RUNNING&t;(__ACTIVE)
-DECL|macro|USB_STATE_READY
-macro_line|#&t;define&t;USB_STATE_READY&t;&t;(__ACTIVE|__SLEEPY)
 DECL|macro|USB_STATE_QUIESCING
 macro_line|#&t;define&t;USB_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
 DECL|macro|USB_STATE_RESUMING

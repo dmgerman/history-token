@@ -3631,6 +3631,14 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Note : set sk-&gt;sk_refcnt to 1 */
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|sk-&gt;sk_family
 op_assign
 id|PF_IRDA

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * net/sunrpc/rpc_pipe.c&n; *&n; * Userland/kernel interface for rpcauth_gss.&n; * Code shamelessly plagiarized from fs/nfsd/nfsctl.c&n; * and fs/driverfs/inode.c&n; *&n; * Copyright (c) 2002, Trond Myklebust &lt;trond.myklebust@fys.uio.no&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;

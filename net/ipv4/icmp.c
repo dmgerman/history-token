@@ -422,7 +422,7 @@ mdefine_line|#define icmp_socket&t;__get_cpu_var(__icmp_socket)
 DECL|function|icmp_xmit_lock
 r_static
 id|__inline__
-r_void
+r_int
 id|icmp_xmit_lock
 c_func
 (paren
@@ -449,10 +449,19 @@ id|icmp_socket-&gt;sk-&gt;sk_lock.slock
 )paren
 )paren
 )paren
-id|BUG
+(brace
+multiline_comment|/* This can happen if the output path signals a&n;&t;&t; * dst_link_failure() for an outgoing ICMP packet.&n;&t;&t; */
+id|local_bh_enable
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|icmp_xmit_unlock
@@ -983,10 +992,15 @@ id|skb
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|icmp_xmit_lock
 c_func
 (paren
 )paren
+)paren
+r_return
 suffix:semicolon
 id|icmp_param-&gt;data.icmph.checksum
 op_assign
@@ -1335,10 +1349,15 @@ id|out
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
 id|icmp_xmit_lock
 c_func
 (paren
 )paren
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Construct source address and options.&n;&t; */
 macro_line|#ifdef CONFIG_IP_ROUTE_NAT
