@@ -1852,13 +1852,17 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;AFFS: get_block(%u, %ld)&bslash;n&quot;
+l_string|&quot;AFFS: get_block(%u, %lu)&bslash;n&quot;
 comma
 (paren
 id|u32
 )paren
 id|inode-&gt;i_ino
 comma
+(paren
+r_int
+r_int
+)paren
 id|block
 )paren
 suffix:semicolon
@@ -1866,11 +1870,16 @@ r_if
 c_cond
 (paren
 id|block
-OL
-l_int|0
+OG
+(paren
+id|sector_t
 )paren
-r_goto
-id|err_small
+l_int|0x7fffffffUL
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1920,6 +1929,9 @@ id|inode
 suffix:semicolon
 id|ext
 op_assign
+(paren
+id|u32
+)paren
 id|block
 op_div
 id|AFFS_SB
@@ -1971,6 +1983,9 @@ id|bh_result
 comma
 id|sb
 comma
+(paren
+id|sector_t
+)paren
 id|be32_to_cpu
 c_func
 (paren
@@ -2368,7 +2383,7 @@ suffix:semicolon
 )brace
 DECL|function|_affs_bmap
 r_static
-r_int
+id|sector_t
 id|_affs_bmap
 c_func
 (paren
@@ -2377,7 +2392,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

@@ -4457,13 +4457,11 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
-r_int
-r_int
+id|sector_t
 id|blknr
 op_assign
 id|isofs_bmap
@@ -4522,7 +4520,7 @@ suffix:semicolon
 )brace
 DECL|function|_isofs_bmap
 r_static
-r_int
+id|sector_t
 id|_isofs_bmap
 c_func
 (paren
@@ -4531,7 +4529,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

@@ -23,7 +23,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
+id|sector_t
 id|vxfs_bmap
 c_func
 (paren
@@ -31,7 +31,7 @@ r_struct
 id|address_space
 op_star
 comma
-r_int
+id|sector_t
 )paren
 suffix:semicolon
 DECL|variable|vxfs_aops
@@ -340,7 +340,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * vxfs_bmap - perform logical to physical block mapping&n; * @mapping:&t;logical to physical mapping to use&n; * @block:&t;logical block (relative to @mapping).&n; *&n; * Description:&n; *   Vxfs_bmap find out the corresponding phsical block to the&n; *   @mapping, @block pair.&n; *&n; * Returns:&n; *   Physical block number on success, else Zero.&n; *&n; * Locking status:&n; *   We are under the bkl.&n; */
 r_static
-r_int
+id|sector_t
 DECL|function|vxfs_bmap
 id|vxfs_bmap
 c_func
@@ -350,7 +350,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

@@ -4328,7 +4328,7 @@ suffix:semicolon
 multiline_comment|/* &n; * bmap() is special.  It gets used by applications such as lilo and by&n; * the swapper to find the on-disk block of a specific piece of data.&n; *&n; * Naturally, this is dangerous if the block concerned is still in the&n; * journal.  If somebody makes a swapfile on an ext3 data-journaling&n; * filesystem and enables swap, then they may get a nasty shock when the&n; * data getting swapped to that swapfile suddenly gets overwritten by&n; * the original zero&squot;s written out previously to the journal and&n; * awaiting writeback in the kernel&squot;s buffer cache. &n; *&n; * So, if we see any bmap calls here on a modified, data-journaled file,&n; * take extra steps to flush any blocks which might be in the cache. &n; */
 DECL|function|ext3_bmap
 r_static
-r_int
+id|sector_t
 id|ext3_bmap
 c_func
 (paren
@@ -4337,7 +4337,7 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+id|sector_t
 id|block
 )paren
 (brace

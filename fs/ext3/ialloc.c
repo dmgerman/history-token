@@ -2226,6 +2226,10 @@ id|__FUNCTION__
 comma
 l_string|&quot;bad orphan inode %lu!  e2fsck was run?&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon

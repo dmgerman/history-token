@@ -284,16 +284,8 @@ id|__s64
 r_int64
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * transition to 64-bit sector_t, possibly making it an option...&n; */
-DECL|macro|BLK_64BIT_SECTOR
-macro_line|#undef BLK_64BIT_SECTOR
-macro_line|#ifdef BLK_64BIT_SECTOR
-DECL|typedef|sector_t
-r_typedef
-id|u64
-id|sector_t
-suffix:semicolon
-macro_line|#else
+multiline_comment|/*&n; * The type used for indexing onto a disc or disc partition.&n; * If required, asm/types.h can override it and define&n; * HAVE_SECTOR_T&n; */
+macro_line|#ifndef HAVE_SECTOR_T
 DECL|typedef|sector_t
 r_typedef
 r_int

@@ -6033,8 +6033,7 @@ id|block_start
 comma
 id|block_end
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|block
 suffix:semicolon
 r_int
@@ -6142,6 +6141,9 @@ id|inode-&gt;i_blkbits
 suffix:semicolon
 id|block
 op_assign
+(paren
+id|sector_t
+)paren
 id|page-&gt;index
 op_lshift
 (paren
@@ -6832,8 +6834,7 @@ id|inode
 op_assign
 id|page-&gt;mapping-&gt;host
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|iblock
 comma
 id|lblock
@@ -6935,6 +6936,9 @@ id|inode-&gt;i_blkbits
 suffix:semicolon
 id|iblock
 op_assign
+(paren
+id|sector_t
+)paren
 id|page-&gt;index
 op_lshift
 (paren
