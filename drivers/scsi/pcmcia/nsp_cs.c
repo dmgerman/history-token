@@ -1,6 +1,6 @@
 multiline_comment|/*======================================================================&n;&n;    NinjaSCSI-3 / NinjaSCSI-32Bi PCMCIA SCSI host adapter card driver&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.2.8   Support 32bit MMIO mode&n;              Support Synchronous Data TRansfer (SDTR) mode&n;    Ver.2.0   Support 32bit PIO mode&n;    Ver.1.1.2 Fix for scatter list buffer exceeds&n;    Ver.1.1   Support scatter list&n;    Ver.0.1   Initial version&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;======================================================================*/
 multiline_comment|/***********************************************************************&n;    This driver is for these PCcards.&n;&n;&t;I-O DATA PCSC-F&t; (Workbit NinjaSCSI-3)&n;&t;&t;&t;&quot;WBT&quot;, &quot;NinjaSCSI-3&quot;, &quot;R1.0&quot;&n;&t;I-O DATA CBSC-II (Workbit NinjaSCSI-32Bi in 16bit mode)&n;&t;&t;&t;&quot;IO DATA&quot;, &quot;CBSC16&t; &quot;, &quot;1&quot;&n;&n;***********************************************************************/
-multiline_comment|/* $Id: nsp_cs.c,v 1.4 2002/10/15 15:57:01 elca Exp $ */
+multiline_comment|/* $Id: nsp_cs.c,v 1.5 2002/11/05 12:06:29 elca Exp $ */
 macro_line|#ifdef NSP_KERNEL_2_2
 macro_line|#include &lt;pcmcia/config.h&gt;
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -42,7 +42,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module $Revision: 1.4 $&quot;
+l_string|&quot;WorkBit NinjaSCSI-3 / NinjaSCSI-32Bi(16bit) PCMCIA SCSI host adapter module $Revision: 1.5 $&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
@@ -89,7 +89,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;$Id: nsp_cs.c,v 1.4 2002/10/15 15:57:01 elca Exp $&quot;
+l_string|&quot;$Id: nsp_cs.c,v 1.5 2002/11/05 12:06:29 elca Exp $&quot;
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
@@ -275,7 +275,6 @@ id|Scsi_Host_Template
 id|driver_template
 op_assign
 (brace
-multiline_comment|/*&t;.next&t;&t;&t; = NULL,*/
 macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0))
 dot
 id|proc_name
@@ -300,7 +299,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;WorkBit NinjaSCSI-3/32Bi&quot;
+l_string|&quot;WorkBit NinjaSCSI-3/32Bi(16bit)&quot;
 comma
 dot
 id|detect
@@ -317,7 +316,6 @@ id|info
 op_assign
 id|nsp_info
 comma
-multiline_comment|/*&t;.command&t;&t; = NULL,*/
 dot
 id|queuecommand
 op_assign
@@ -336,8 +334,6 @@ id|eh_host_reset_handler
 op_assign
 id|nsp_eh_host_reset
 comma
-multiline_comment|/*&t;.slave_attach&t;&t; = NULL,*/
-multiline_comment|/*&t;.bios_param&t;&t; = NULL,*/
 dot
 id|can_queue
 op_assign
@@ -358,8 +354,6 @@ id|cmd_per_lun
 op_assign
 l_int|1
 comma
-multiline_comment|/*&t;.present&t;&t; = 0,*/
-multiline_comment|/*&t;.unchecked_isa_dma&t; = 0,*/
 dot
 id|use_clustering
 op_assign
@@ -372,7 +366,6 @@ op_assign
 l_int|1
 comma
 macro_line|#endif
-multiline_comment|/*&t;.emulated&t;&t; = 0,*/
 )brace
 suffix:semicolon
 DECL|variable|dev_list
@@ -441,7 +434,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() SCpnt=0x%p target=%d lun=%d buff=0x%p bufflen=%d use_sg=%d&bslash;n&quot;
+l_string|&quot;%s: SCpnt=0x%p target=%d lun=%d buff=0x%p bufflen=%d use_sg=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -471,7 +464,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; %s() CurrentSC!=NULL cannot happen!&bslash;n&quot;
+l_string|&quot; %s: CurrentSC!=NULL this can&squot;t be happen&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -632,7 +625,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __func__ &quot;() out&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s: out&bslash;n&quot;, __FUNCTION__);
 r_return
 l_int|0
 suffix:semicolon
@@ -662,7 +655,7 @@ r_int
 r_char
 id|transfer_mode_reg
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;() enabled=%d&bslash;n&quot;, enabled);
+singleline_comment|//DEBUG(0, &quot;%s: enabled=%d&bslash;n&quot;, __FUNCTION__, enabled);
 r_if
 c_cond
 (paren
@@ -744,7 +737,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|N_TARGET
+id|NUMBER
+c_func
+(paren
+id|data-&gt;Sync
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -782,7 +779,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() in base=0x%x&bslash;n&quot;
+l_string|&quot;%s: in base=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1070,7 +1067,7 @@ id|phase
 comma
 id|arbit
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;()in&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s:in&bslash;n&quot;, __FUNCTION__);
 id|phase
 op_assign
 id|nsp_index_read
@@ -1504,7 +1501,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s()&bslash;n&quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1707,7 +1704,7 @@ id|base
 op_assign
 id|SCpnt-&gt;host-&gt;io_port
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;() in SCpnt=0x%p, time=%d&bslash;n&quot;, SCpnt, time);
+singleline_comment|//DEBUG(0, &quot;%s: in SCpnt=0x%p, time=%d&bslash;n&quot;, __FUNCTION__, SCpnt, time);
 id|data-&gt;TimerCount
 op_assign
 id|time
@@ -1756,7 +1753,7 @@ suffix:semicolon
 r_int
 id|time_out
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s:&bslash;n&quot;, __FUNCTION__);
 id|time_out
 op_assign
 l_int|100
@@ -1816,7 +1813,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: %s signal off timeut&bslash;n&quot;
+l_string|&quot;%s:: %s signal off timeut&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1863,7 +1860,7 @@ id|phase
 comma
 id|i_src
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;() current_phase=0x%x, mask=0x%x&bslash;n&quot;, current_phase, mask);
+singleline_comment|//DEBUG(0, &quot;%s: current_phase=0x%x, mask=0x%x&bslash;n&quot;, __FUNCTION__, current_phase, mask);
 id|time_out
 op_assign
 l_int|100
@@ -1954,7 +1951,7 @@ l_int|0
 (brace
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __func__ &quot; : &quot; __func__ &quot; timeout&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s: timeout&bslash;n&quot;, __FUNCTION__);
 r_return
 op_minus
 l_int|1
@@ -2008,7 +2005,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s:&bslash;n&quot;, __FUNCTION__);
 r_for
 c_loop
 (paren
@@ -2175,7 +2172,7 @@ r_int
 r_int
 id|count
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s:&bslash;n&quot;, __FUNCTION__);
 r_if
 c_cond
 (paren
@@ -2268,7 +2265,7 @@ r_int
 r_char
 id|reg
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;()&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s:&bslash;n&quot;, __FUNCTION__);
 id|nsp_negate_signal
 c_func
 (paren
@@ -2436,7 +2433,7 @@ op_lshift
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;() =0x%x&bslash;n&quot;, count);
+singleline_comment|//DEBUG(0, &quot;%s: =0x%x&bslash;n&quot;, __FUNCTION__, count);
 r_return
 id|count
 suffix:semicolon
@@ -2497,7 +2494,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() in SCpnt=0x%p resid=%d ocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d&bslash;n&quot;
+l_string|&quot;%s: in SCpnt=0x%p resid=%d ocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2814,7 +2811,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s() pio read timeout resid=%d this_residual=%d buffers_residual=%d&bslash;n&quot;
+l_string|&quot;%s: pio read timeout resid=%d this_residual=%d buffers_residual=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2886,7 +2883,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() in fifocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d resid=0x%x&bslash;n&quot;
+l_string|&quot;%s: in fifocount=%d ptr=0x%p this_residual=%d buffers=0x%p nbuf=%d resid=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3206,7 +3203,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s() pio write timeout resid=0x%x&bslash;n&quot;
+l_string|&quot;%s: pio write timeout resid=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3270,7 +3267,7 @@ id|target
 )braket
 )paren
 suffix:semicolon
-singleline_comment|//DEBUG(0, __func__ &quot;() in SCpnt=0x%p&bslash;n&quot;, SCpnt);
+singleline_comment|//DEBUG(0, &quot;%s: in SCpnt=0x%p&bslash;n&quot;, __FUNCTION__, SCpnt);
 multiline_comment|/* setup synch transfer registers */
 id|nsp_index_write
 c_func
@@ -3637,7 +3634,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: CurrentSC==NULL irq_status=0x%x phase=0x%x irq_phase=0x%x cannot happen&bslash;n&quot;
+l_string|&quot;%s: CurrentSC==NULL irq_status=0x%x phase=0x%x irq_phase=0x%x this can&squot;t be happen&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3707,7 +3704,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; %s() bus reset (power off?)&bslash;n&quot;
+l_string|&quot; %s: bus reset (power off?)&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4155,7 +4152,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: unexpected bus free. i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;
+l_string|&quot; %s: unexpected bus free. i_src=0x%x, phase=0x%x, irq_phase=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4824,7 +4821,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|//DEBUG(0, __func__ &quot;() out&bslash;n&quot;);
+singleline_comment|//DEBUG(0, &quot;%s: out&bslash;n&quot;, __FUNCTION__);
 r_return
 suffix:semicolon
 id|timer_out
@@ -4960,7 +4957,7 @@ r_sizeof
 id|data-&gt;nspinfo
 )paren
 comma
-l_string|&quot;NinjaSCSI-3/32Bi Driver $Revision: 1.4 $ IO:0x%04lx-0x%04lx MMIO(virt addr):0x%04lx IRQ:%02d&quot;
+l_string|&quot;NinjaSCSI-3/32Bi Driver $Revision: 1.5 $ IO:0x%04lx-0x%04lx MMIO(virt addr):0x%04lx IRQ:%02d&quot;
 comma
 id|host-&gt;io_port
 comma
@@ -5122,6 +5119,8 @@ r_struct
 id|Scsi_Host
 op_star
 id|host
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -5134,6 +5133,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* search this HBA host */
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,45))
 id|host
 op_assign
 id|scsi_host_hn_get
@@ -5142,6 +5143,47 @@ c_func
 id|hostno
 )paren
 suffix:semicolon
+macro_line|#else
+r_for
+c_loop
+(paren
+id|host
+op_assign
+id|scsi_hostlist
+suffix:semicolon
+id|host
+suffix:semicolon
+id|host
+op_assign
+id|host-&gt;next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|host-&gt;host_no
+op_eq
+id|hostno
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|host
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ESRCH
+suffix:semicolon
+)brace
 id|SPRINTF
 c_func
 (paren
@@ -5151,7 +5193,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;Driver version:        $Revision: 1.4 $&bslash;n&quot;
+l_string|&quot;Driver version:        $Revision: 1.5 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SPRINTF
@@ -5535,7 +5577,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() SCpnt=0x%p base=0x%x&bslash;n&quot;
+l_string|&quot;%s: SCpnt=0x%p base=0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5649,7 +5691,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -5735,7 +5777,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s()&bslash;n&quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -6081,7 +6123,7 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-id|del_timer_sync
+id|del_timer
 c_func
 (paren
 op_amp
@@ -6245,7 +6287,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() in&bslash;n&quot;
+l_string|&quot;%s: in&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -6849,7 +6891,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s next&bslash;n&quot;
+l_string|&quot;%s: next&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -6962,7 +7004,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s I/O[0x%x+0x%x] IRQ %d&bslash;n&quot;
+l_string|&quot;%s: I/O[0x%x+0x%x] IRQ %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7025,6 +7067,7 @@ id|info-&gt;ndev
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if (LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,45))
 r_for
 c_loop
 (paren
@@ -7047,6 +7090,24 @@ id|host
 )paren
 )paren
 (brace
+macro_line|#else
+r_for
+c_loop
+(paren
+id|host
+op_assign
+id|scsi_hostlist
+suffix:semicolon
+id|host
+op_ne
+l_int|NULL
+suffix:semicolon
+id|host
+op_assign
+id|host-&gt;next
+)paren
+(brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7861,7 +7922,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s end&bslash;n&quot;
+l_string|&quot;%s: end&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7890,7 +7951,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() in&bslash;n&quot;
+l_string|&quot;%s: in&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7953,7 +8014,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() out&bslash;n&quot;
+l_string|&quot;%s: out&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7977,7 +8038,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s() unloading&bslash;n&quot;
+l_string|&quot;%s: unloading&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
