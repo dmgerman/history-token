@@ -1,6 +1,4 @@
 multiline_comment|/* &n; * Audio driver for the NeoMagic 256AV and 256ZX chipsets in native&n; * mode, with AC97 mixer support.&n; *&n; * Overall design and parts of this code stolen from vidc_*.c and&n; * skeleton.c.&n; *&n; * Yeah, there are a lot of magic constants in here.  You tell ME what&n; * they are.  I just get this stuff psychically, remember? &n; *&n; * This driver was written by someone who wishes to remain anonymous. &n; * It is in the public domain, so share and enjoy.  Try to make a profit&n; * off of it; go on, I dare you.  &n; *&n; * Changes:&n; * 11-10-2000&t;Bartlomiej Zolnierkiewicz &lt;bkz@linux-ide.org&gt;&n; *&t;&t;Added some __init&n; * 19-04-2001&t;Marcus Meissner &lt;mm@caldera.de&gt;&n; *&t;&t;Ported to 2.4 PCI API.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
