@@ -300,11 +300,6 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
 r_for
 c_loop
 (paren

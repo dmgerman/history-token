@@ -33,9 +33,10 @@ op_assign
 (brace
 l_string|&quot;PCI mem&quot;
 comma
-l_int|0x00000000
+l_int|0UL
 comma
-l_int|0xffffffff
+op_complement
+l_int|0UL
 comma
 id|IORESOURCE_MEM
 )brace
