@@ -8010,12 +8010,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|msg
 (braket
 l_int|0
 )braket
 op_amp
 l_int|0x80
+)paren
 )paren
 (brace
 id|printk
