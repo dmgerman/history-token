@@ -37,21 +37,6 @@ macro_line|#include &lt;net/ip6_tunnel.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if 0 /*def MODULE*/
-r_static
-r_int
-id|unloadable
-suffix:semicolon
-multiline_comment|/* XX: Turn to one when all is ok within the&n;&t;&t;&t;      module for allowing unload */
-id|MODULE_PARM
-c_func
-(paren
-id|unloadable
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2231,40 +2216,6 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-macro_line|#if 0 /* FIXME --RR */
-r_int
-id|ipv6_unload
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|unloadable
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* We keep internally 3 raw sockets */
-r_return
-id|atomic_read
-c_func
-(paren
-op_amp
-(paren
-id|__this_module.uc.usecount
-)paren
-)paren
-op_minus
-l_int|3
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_void
