@@ -1560,10 +1560,6 @@ id|cmd-&gt;data_cmnd
 )paren
 )paren
 suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cmd-&gt;serial_number
 op_assign
 l_int|0

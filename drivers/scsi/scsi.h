@@ -1342,12 +1342,6 @@ id|Scsi_Request
 op_star
 id|sc_request
 suffix:semicolon
-DECL|member|reset_chain
-r_struct
-id|scsi_cmnd
-op_star
-id|reset_chain
-suffix:semicolon
 DECL|member|list
 r_struct
 id|list_head
@@ -1550,13 +1544,6 @@ multiline_comment|/* obtained by REQUEST SENSE&n;&t;&t;&t;&t;&t;&t; * when CHECK
 DECL|member|flags
 r_int
 id|flags
-suffix:semicolon
-multiline_comment|/*&n;&t; * Used to indicate that a command which has timed out also&n;&t; * completed normally.  Typically the completion function will&n;&t; * do nothing but set this flag in this instance because the&n;&t; * timeout handler is already running.&n;&t; */
-DECL|member|done_late
-r_int
-id|done_late
-suffix:colon
-l_int|1
 suffix:semicolon
 multiline_comment|/* Low-level done function - can be used by low-level driver to point&n;&t; *        to completion function.  Not used by mid/upper level code. */
 DECL|member|scsi_done

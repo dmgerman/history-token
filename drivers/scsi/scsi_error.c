@@ -4521,10 +4521,6 @@ id|scmd-&gt;done
 op_assign
 l_int|NULL
 suffix:semicolon
-id|scmd-&gt;reset_chain
-op_assign
-l_int|NULL
-suffix:semicolon
 id|scmd-&gt;buffer
 op_assign
 l_int|NULL

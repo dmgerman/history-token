@@ -602,10 +602,6 @@ id|cmd-&gt;owner
 op_assign
 id|SCSI_OWNER_MIDLEVEL
 suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
-suffix:semicolon
 id|cmd-&gt;serial_number
 op_assign
 l_int|0
@@ -688,10 +684,6 @@ suffix:semicolon
 id|cmd-&gt;bufflen
 op_assign
 id|cmd-&gt;request_bufflen
-suffix:semicolon
-id|cmd-&gt;reset_chain
-op_assign
-l_int|NULL
 suffix:semicolon
 id|cmd-&gt;internal_timeout
 op_assign

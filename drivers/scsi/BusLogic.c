@@ -10096,6 +10096,7 @@ c_func
 id|CCB
 )paren
 suffix:semicolon
+macro_line|#if 0&t;/* this needs to be redone different for new EH */
 multiline_comment|/*&n;&t;    Bus Device Reset CCBs have the Command field non-NULL only when a&n;&t;    Bus Device Reset was requested for a Command that did not have a&n;&t;    currently active CCB in the Host Adapter (i.e., a Synchronous&n;&t;    Bus Device Reset), and hence would not have its Completion Routine&n;&t;    called otherwise.&n;&t;  */
 r_while
 c_loop
@@ -10134,6 +10135,7 @@ op_assign
 id|NextCommand
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;&t;    Iterate over the CCBs for this Host Adapter performing completion&n;&t;    processing for any CCBs marked as Reset for this Target.&n;&t;  */
 r_for
 c_loop
@@ -12525,6 +12527,7 @@ c_func
 id|CCB
 )paren
 suffix:semicolon
+macro_line|#if 0&t;/* this needs to be redone different for new EH */
 r_while
 c_loop
 (paren
@@ -12562,6 +12565,7 @@ op_assign
 id|NextCommand
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_for
 c_loop
@@ -12605,8 +12609,8 @@ r_return
 id|Result
 suffix:semicolon
 )brace
+macro_line|#if 0&t;/* old-style EH code references a dead struct scsi_cmnd member */
 multiline_comment|/*&n;  BusLogic_SendBusDeviceReset sends a Bus Device Reset to the Target&n;  Device associated with Command.&n;*/
-DECL|function|BusLogic_SendBusDeviceReset
 r_static
 r_int
 id|BusLogic_SendBusDeviceReset
@@ -13158,7 +13162,6 @@ id|Result
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  BusLogic_ResetCommand takes appropriate action to reset Command.&n;*/
-DECL|function|BusLogic_ResetCommand
 r_int
 id|BusLogic_ResetCommand
 c_func
@@ -13378,6 +13381,7 @@ r_return
 id|SCSI_RESET_PUNT
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n;  BusLogic_BIOSDiskParameters returns the Heads/Sectors/Cylinders BIOS Disk&n;  Parameters for Disk.  The default disk geometry is 64 heads, 32 sectors, and&n;  the appropriate number of cylinders so as not to exceed drive capacity.  In&n;  order for disks equal to or larger than 1 GB to be addressable by the BIOS&n;  without exceeding the BIOS limitation of 1024 cylinders, Extended Translation&n;  may be enabled in AutoSCSI on FlashPoint Host Adapters and on &quot;W&quot; and &quot;C&quot;&n;  series MultiMaster Host Adapters, or by a dip switch setting on &quot;S&quot; and &quot;A&quot;&n;  series MultiMaster Host Adapters.  With Extended Translation enabled, drives&n;  between 1 GB inclusive and 2 GB exclusive are given a disk geometry of 128&n;  heads and 32 sectors, and drives above 2 GB inclusive are given a disk&n;  geometry of 255 heads and 63 sectors.  However, if the BIOS detects that the&n;  Extended Translation setting does not match the geometry in the partition&n;  table, then the translation inferred from the partition table will be used by&n;  the BIOS, and a warning may be displayed.&n;*/
 r_int
 r_char
