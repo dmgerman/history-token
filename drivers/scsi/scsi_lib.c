@@ -1680,12 +1680,18 @@ op_eq
 l_int|0
 )paren
 (brace
+id|SCSI_LOG_MLQUEUE
+c_func
+(paren
+l_int|3
+comma
 id|printk
 c_func
 (paren
 l_string|&quot;scsi%d unblocking host at zero depth&bslash;n&quot;
 comma
 id|SHpnt-&gt;host_no
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1721,6 +1727,11 @@ op_eq
 l_int|0
 )paren
 (brace
+id|SCSI_LOG_MLQUEUE
+c_func
+(paren
+l_int|3
+comma
 id|printk
 c_func
 (paren
@@ -1731,6 +1742,7 @@ comma
 id|SDpnt-&gt;id
 comma
 id|SDpnt-&gt;lun
+)paren
 )paren
 suffix:semicolon
 )brace

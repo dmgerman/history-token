@@ -649,16 +649,6 @@ id|tpnt-&gt;max_host_blocked
 suffix:colon
 id|SCSI_DEFAULT_HOST_BLOCKED
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;scsi%d: max_host_blocked set to %d&bslash;n&quot;
-comma
-id|retval-&gt;host_no
-comma
-id|retval-&gt;max_host_blocked
-)paren
-suffix:semicolon
 id|retval-&gt;host_blocked
 op_assign
 l_int|0
