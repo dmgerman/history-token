@@ -500,7 +500,7 @@ mdefine_line|#define __NR_clock_getres&t;247
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;248
 DECL|macro|__NR_syscalls
-mdefine_line|#define __NR_syscalls&t;&t;249
+mdefine_line|#define __NR_syscalls&t;&t;239
 macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;__NR_syscalls
