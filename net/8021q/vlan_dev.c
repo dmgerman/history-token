@@ -259,8 +259,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: skb: %p vlan_id: %hx&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: skb: %p vlan_id: %hx&bslash;n&quot;
 comma
 id|skb
 comma
@@ -306,8 +307,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: ERROR: No net_device for VID: %i on dev: %s [%i]&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: ERROR:&t;No net_device for VID: %i on dev: %s [%i]&bslash;n&quot;
 comma
 (paren
 r_int
@@ -390,9 +392,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
-id|__FUNCTION__
-l_string|&quot;: dropping skb: %p because came in on wrong device, dev: %s  real_dev: %s, skb_dev: %s&bslash;n&quot;
+l_string|&quot;%s: dropping skb: %p because came in on wrong device, dev: %s  real_dev: %s, skb_dev: %s&bslash;n&quot;
 comma
+id|__FUNCTION__
 id|skb
 comma
 id|dev-&gt;name
@@ -443,8 +445,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: priority: %lu  for TCI: %hu (hbo)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: priority: %lu  for TCI: %hu (hbo)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -835,8 +838,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: skb: %p type: %hx len: %x vlan_id: %hx, daddr: %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: skb: %p type: %hx len: %x vlan_id: %hx, daddr: %p&bslash;n&quot;
 comma
 id|skb
 comma
@@ -1056,8 +1060,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: %s: had to grow skb.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: %s: had to grow skb.&bslash;n&quot;
 comma
 id|vdev-&gt;name
 )paren
@@ -1222,8 +1227,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: proto to encap: 0x%hx (hbo)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: proto to encap: 0x%hx (hbo)&bslash;n&quot;
 comma
 id|htons
 c_func
@@ -1412,8 +1418,9 @@ id|printk
 c_func
 (paren
 id|VLAN_DBG
+l_string|&quot;%s: about to send skb: %p to dev: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: about to send skb: %p to dev: %s&bslash;n&quot;
 comma
 id|skb
 comma
@@ -2033,8 +2040,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: flag %i is not valid.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: flag %i is not valid.&bslash;n&quot;
 comma
 (paren
 r_int
@@ -2062,8 +2070,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: %s is not a vlan device, priv_flags: %hX.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: %s is not a vlan device, priv_flags: %hX.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2084,8 +2093,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s: Could not find device: %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Could not find device: %s&bslash;n&quot;
 comma
 id|dev_name
 )paren
