@@ -287,7 +287,6 @@ op_amp
 id|resfh
 )paren
 suffix:semicolon
-multiline_comment|/* XXXJBF: keep a saved svc_fh struct instead?? */
 id|open-&gt;op_stateowner-&gt;so_replay.rp_openfh_len
 op_assign
 id|resfh.fh_handle.fh_size
@@ -410,8 +409,11 @@ op_amp
 id|ATTR_SIZE
 )paren
 op_logical_and
-op_logical_neg
+(paren
 id|open-&gt;op_iattr.ia_size
+op_eq
+l_int|0
+)paren
 suffix:semicolon
 id|status
 op_assign

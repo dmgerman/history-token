@@ -5992,11 +5992,12 @@ op_logical_neg
 id|sop-&gt;so_replay.rp_buflen
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;* The original OPEN failed in so spectacularly that we&n;&t;&t;&t;* don&squot;t even have replay data saved!  Therefore, we&n;&t;&t;&t;* have no choice but to continue processing&n;&t;&t;&t;* this OPEN; presumably, we&squot;ll fail again for the same&n;&t;&t;&t;* reason.&n;&t;&t;&t;*/
+multiline_comment|/* The original OPEN failed so spectacularly&n;&t;&t;&t;&t; * that we don&squot;t even have replay data saved!&n;&t;&t;&t;&t; * Therefore, we have no choice but to continue&n;&t;&t;&t;&t; * processing this OPEN; presumably, we&squot;ll&n;&t;&t;&t;&t; * fail again for the same reason.&n;&t;&t;&t;&t; */
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfsd4_process_open1: replay with no replay cache&bslash;n&quot;
+l_string|&quot;nfsd4_process_open1:&quot;
+l_string|&quot; replay with no replay cache&bslash;n&quot;
 )paren
 suffix:semicolon
 id|status
@@ -6007,7 +6008,6 @@ r_goto
 id|renew
 suffix:semicolon
 )brace
-multiline_comment|/* replay: indicate to calling function */
 id|status
 op_assign
 id|NFSERR_REPLAY_ME
@@ -6048,7 +6048,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* If we get here, we received and OPEN for an unconfirmed&n;&t;&t; * nfs4_stateowner. &n;&t;&t; * Since the sequid&squot;s are different, purge the &n;&t;&t; * existing nfs4_stateowner, and instantiate a new one.&n;&t;&t; */
+multiline_comment|/* If we get here, we received an OPEN for an unconfirmed&n;&t;&t; * nfs4_stateowner. &n;&t;&t; * Since the sequid&squot;s are different, purge the &n;&t;&t; * existing nfs4_stateowner, and instantiate a new one.&n;&t;&t; */
 id|clp
 op_assign
 id|sop-&gt;so_client
