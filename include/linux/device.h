@@ -1036,6 +1036,12 @@ id|u32
 id|class_num
 suffix:semicolon
 multiline_comment|/* class-enumerated value */
+DECL|member|class_data
+r_void
+op_star
+id|class_data
+suffix:semicolon
+multiline_comment|/* class-specific data */
 DECL|member|platform_data
 r_void
 op_star
