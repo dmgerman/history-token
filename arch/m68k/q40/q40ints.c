@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be losely based on bvme6000ints.c&n; *&n; */
+multiline_comment|/*&n; * arch/m68k/q40/q40ints.c&n; *&n; * Copyright (C) 1999,2001 Richard Zidlicky&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * .. used to be loosely based on bvme6000ints.c&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1800,7 +1800,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;   * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;   * Any driver should not attempt to sleep accross disable_irq !!&n;   */
+multiline_comment|/* disable ISA iqs : only do something if the driver has been&n;   * verified to be Q40 &quot;compatible&quot; - right now IDE, NE2K&n;   * Any driver should not attempt to sleep across disable_irq !!&n;   */
 r_if
 c_cond
 (paren
