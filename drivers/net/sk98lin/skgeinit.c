@@ -4640,7 +4640,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkGeInit2 */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit() - Initialize the GE Adapter with the specified level.&n; *&n; * Description:&n; *&t;Level&t;0:&t;Initialize the Module structures.&n; *&t;Level&t;1:&t;Generic Hardware Initialization. The&n; *&t;&t;&t;IOP/MemBase pointer has to be set before&n; *&t;&t;&t;calling this level.&n; *&n; *&t;&t;&t;o Do a software reset.&n; *&t;&t;&t;o Clear all reset bits.&n; *&t;&t;&t;o Verify that the detected hardware is present.&n; *&t;&t;&t;  Return an error if not.&n; *&t;&t;&t;o Get the hardware configuration&n; *&t;&t;&t;&t;+ Set GIMacsFound with the number of MACs.&n; *&t;&t;&t;&t;+ Store the RAM size in GIRamSize.&n; *&t;&t;&t;&t;+ Save the PCI Revision ID in GIPciHwRev.&n; *&t;&t;&t;o return an error&n; *&t;&t;&t;&t;if Number of MACs &gt; SK_MAX_MACS&n; *&n; *&t;&t;&t;After returning from Level 0 the adapter&n; *&t;&t;&t;may be accessed with IO operations.&n; *&n; *&t;Level&t;2:&t;start the Blink Source Counter&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Number of MACs exceeds SK_MAX_MACS&t;( after level 1)&n; *&t;2:&t;Adapter not present or not accessable&n; *&t;3:&t;Illegal initialization level&n; *&t;4:&t;Initialization Level 1 Call missing&n; *&t;5:&t;Unexpected PHY type detected&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGeInit() - Initialize the GE Adapter with the specified level.&n; *&n; * Description:&n; *&t;Level&t;0:&t;Initialize the Module structures.&n; *&t;Level&t;1:&t;Generic Hardware Initialization. The&n; *&t;&t;&t;IOP/MemBase pointer has to be set before&n; *&t;&t;&t;calling this level.&n; *&n; *&t;&t;&t;o Do a software reset.&n; *&t;&t;&t;o Clear all reset bits.&n; *&t;&t;&t;o Verify that the detected hardware is present.&n; *&t;&t;&t;  Return an error if not.&n; *&t;&t;&t;o Get the hardware configuration&n; *&t;&t;&t;&t;+ Set GIMacsFound with the number of MACs.&n; *&t;&t;&t;&t;+ Store the RAM size in GIRamSize.&n; *&t;&t;&t;&t;+ Save the PCI Revision ID in GIPciHwRev.&n; *&t;&t;&t;o return an error&n; *&t;&t;&t;&t;if Number of MACs &gt; SK_MAX_MACS&n; *&n; *&t;&t;&t;After returning from Level 0 the adapter&n; *&t;&t;&t;may be accessed with IO operations.&n; *&n; *&t;Level&t;2:&t;start the Blink Source Counter&n; *&n; * Returns:&n; *&t;0:&t;success&n; *&t;1:&t;Number of MACs exceeds SK_MAX_MACS&t;( after level 1)&n; *&t;2:&t;Adapter not present or not accessible&n; *&t;3:&t;Illegal initialization level&n; *&t;4:&t;Initialization Level 1 Call missing&n; *&t;5:&t;Unexpected PHY type detected&n; */
 DECL|function|SkGeInit
 r_int
 id|SkGeInit
@@ -4725,7 +4725,7 @@ comma
 id|IoC
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the adapter seems to be accessable */
+multiline_comment|/* Check if the adapter seems to be accessible */
 id|SK_OUT32
 c_func
 (paren

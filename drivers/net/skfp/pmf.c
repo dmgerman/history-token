@@ -573,7 +573,7 @@ comma
 l_string|&quot;wS&quot;
 )brace
 comma
-multiline_comment|/*&n;&t; * PRIVATE EXTENSIONS&n;&t; * only accessable locally to get/set passwd&n;&t; */
+multiline_comment|/*&n;&t; * PRIVATE EXTENSIONS&n;&t; * only accessible locally to get/set passwd&n;&t; */
 (brace
 id|SMT_P10F0
 comma
@@ -1418,7 +1418,7 @@ comma
 l_string|&quot;bF&quot;
 )brace
 comma
-multiline_comment|/*&n;&t; * PRIVATE EXTENSIONS&n;&t; * only accessable locally to get/set TMIN&n;&t; */
+multiline_comment|/*&n;&t; * PRIVATE EXTENSIONS&n;&t; * only accessible locally to get/set TMIN&n;&t; */
 (brace
 id|SMT_P20F0
 comma

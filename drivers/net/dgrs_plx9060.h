@@ -12,7 +12,7 @@ DECL|macro|PCI_ROM_ENABLED
 macro_line|#&t;define PCI_ROM_ENABLED&t;&t;0x00000001
 DECL|macro|PCI_INT_LINE
 mdefine_line|#define&t;PCI_INT_LINE&t;&t;0x3C
-multiline_comment|/*&n; *&t;Registers accessable directly from PCI and local side.&n; *&t;Offset is from PCI side.  Add PLX_LCL_OFFSET for local address.&n; */
+multiline_comment|/*&n; *&t;Registers accessible directly from PCI and local side.&n; *&t;Offset is from PCI side.  Add PLX_LCL_OFFSET for local address.&n; */
 DECL|macro|PLX_LCL_OFFSET
 mdefine_line|#define&t;PLX_LCL_OFFSET&t;0x80&t;/* Offset of regs from local side */
 multiline_comment|/*&n; *&t;Local Configuration Registers&n; */

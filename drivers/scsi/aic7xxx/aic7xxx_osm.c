@@ -4766,7 +4766,7 @@ id|ahc-&gt;platform_data-&gt;hw_dma_mask
 )paren
 suffix:semicolon
 macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
-multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessable via DMA by the controller.&n;&t; */
+multiline_comment|/*&n;&t; * At least in 2.2.14, malloc is a slab allocator so all&n;&t; * allocations are aligned.  We assume for these kernel versions&n;&t; * that all allocations will be bellow 4Gig, physically contiguous,&n;&t; * and accessible via DMA by the controller.&n;&t; */
 id|map
 op_assign
 l_int|NULL
