@@ -82,6 +82,10 @@ DECL|macro|NT_TRANSACT_RENAME
 mdefine_line|#define NT_TRANSACT_RENAME            0x05
 DECL|macro|NT_TRANSACT_QUERY_SECURITY_DESC
 mdefine_line|#define NT_TRANSACT_QUERY_SECURITY_DESC 0x06
+DECL|macro|NT_TRANSACT_GET_USER_QUOTA
+mdefine_line|#define NT_TRANSACT_GET_USER_QUOTA    0x07
+DECL|macro|NT_TRANSACT_SET_USER_QUOTA
+mdefine_line|#define NT_TRANSACT_SET_USER_QUOTA    0x08
 DECL|macro|MAX_CIFS_HDR_SIZE
 mdefine_line|#define MAX_CIFS_HDR_SIZE 256&t;/* chained NTCreateXReadX will probably be biggest */
 multiline_comment|/* internal cifs vfs structures */
@@ -2369,6 +2373,53 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|cifs_quota_data
+r_struct
+id|cifs_quota_data
+(brace
+DECL|member|rsrvd1
+id|__u32
+id|rsrvd1
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|sid_size
+id|__u32
+id|sid_size
+suffix:semicolon
+DECL|member|rsrvd2
+id|__u64
+id|rsrvd2
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|space_used
+id|__u64
+id|space_used
+suffix:semicolon
+DECL|member|soft_limit
+id|__u64
+id|soft_limit
+suffix:semicolon
+DECL|member|hard_limit
+id|__u64
+id|hard_limit
+suffix:semicolon
+DECL|member|sid
+r_char
+id|sid
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* variable size? */
+)brace
+suffix:semicolon
+multiline_comment|/* quota sub commands */
+DECL|macro|QUOTA_LIST_CONTINUE
+mdefine_line|#define QUOTA_LIST_CONTINUE&t;    0
+DECL|macro|QUOTA_LIST_START
+mdefine_line|#define QUOTA_LIST_START&t;0x100
+DECL|macro|QUOTA_FOR_SID
+mdefine_line|#define QUOTA_FOR_SID&t;&t;0x101
 DECL|union|smb_com_transaction2
 r_typedef
 r_union
