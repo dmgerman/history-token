@@ -726,7 +726,6 @@ id|auth-&gt;au_expire
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Look up a process&squot; credentials in the authentication cache&n; */
-r_static
 r_struct
 id|rpc_cred
 op_star
@@ -1579,18 +1578,7 @@ op_star
 id|task
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|rpc_credcache_lock
-)paren
-suffix:semicolon
-id|retval
-op_assign
+r_return
 op_logical_neg
 (paren
 id|task-&gt;tk_msg.rpc_cred
@@ -1601,16 +1589,6 @@ id|task-&gt;tk_msg.rpc_cred-&gt;cr_flags
 op_amp
 id|RPCAUTH_CRED_UPTODATE
 )paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|rpc_credcache_lock
-)paren
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 eof

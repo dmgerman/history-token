@@ -271,6 +271,13 @@ c_func
 id|rpcauth_lookupcred
 )paren
 suffix:semicolon
+DECL|variable|rpcauth_lookup_credcache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rpcauth_lookup_credcache
+)paren
+suffix:semicolon
 DECL|variable|rpcauth_free_credcache
 id|EXPORT_SYMBOL
 c_func

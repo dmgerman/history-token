@@ -147,6 +147,10 @@ DECL|struct|gss_cl_ctx
 r_struct
 id|gss_cl_ctx
 (brace
+DECL|member|count
+id|atomic_t
+id|count
+suffix:semicolon
 DECL|member|gc_proc
 id|u32
 id|gc_proc
