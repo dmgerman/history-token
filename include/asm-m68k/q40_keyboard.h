@@ -87,7 +87,7 @@ id|keycode
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|q40kbd_init_hw
 c_func
 (paren
