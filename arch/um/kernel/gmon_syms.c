@@ -1,23 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/module.h&quot;
-macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 3) || &bslash;&n;&t;(__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ == 3 &amp;&amp; __GNUC_PATCHLEVEL__ &gt;= 4)
-r_extern
-r_void
-id|__gcov_init
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|variable|__gcov_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__gcov_init
-)paren
-suffix:semicolon
-macro_line|#else
 r_extern
 r_void
 id|__bb_init_func
@@ -34,6 +16,52 @@ c_func
 id|__bb_init_func
 )paren
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* This is defined (and referred to in profiling stub code) only by some GCC&n; * versions in libgcov.&n; *&n; * Since SuSE backported the fix, we cannot handle it depending on GCC version.&n; * So, unconditinally export it. But also give it a weak declaration, which will&n; * be overriden by any other one.&n; */
+r_extern
+r_void
+id|__gcov_init
+c_func
+(paren
+r_void
+op_star
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|weak
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__gcov_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__gcov_init
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__gcov_merge_add
+c_func
+(paren
+r_void
+op_star
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|weak
+)paren
+)paren
+suffix:semicolon
+DECL|variable|__gcov_merge_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__gcov_merge_add
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
