@@ -1104,211 +1104,14 @@ DECL|macro|hweight16
 mdefine_line|#define hweight16(x) generic_hweight16(x)
 DECL|macro|hweight8
 mdefine_line|#define hweight8(x) generic_hweight8(x)
-DECL|function|ext2_set_bit
-r_static
-r_inline
-r_int
-id|ext2_set_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-(brace
-r_int
-r_int
-id|old
-comma
-id|tmp
-comma
-id|mask
-suffix:semicolon
-r_volatile
-r_int
-r_char
-op_star
-id|ptr
-op_assign
-id|addr
-suffix:semicolon
-id|ptr
-op_add_assign
-id|nr
-op_rshift
-l_int|3
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;0:&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;setlos.p&t;#1,%3&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;orcc&t;&t;gr0,gr0,gr0,icc3&t;&bslash;n&quot;
-multiline_comment|/* set ICC3.Z */
-l_string|&quot;&t;sll%I4.p&t;%3,%4,%3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ckeq&t;&t;icc3,cc7&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ldub.p&t;&t;%M0,%1&t;&t;&t;&bslash;n&quot;
-multiline_comment|/* LDUB.P/ORCR must be atomic */
-l_string|&quot;&t;orcr&t;&t;cc7,cc7,cc3&t;&t;&bslash;n&quot;
-multiline_comment|/* set CC3 to true */
-l_string|&quot;&t;or&t;&t;%1,%3,%2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;cstb.p&t;&t;%2,%M0&t;&t;,cc3,#1&t;&bslash;n&quot;
-l_string|&quot;&t;corcc&t;&t;gr29,gr29,gr0&t;,cc3,#1&t;&bslash;n&quot;
-multiline_comment|/* clear ICC3.Z if store happens */
-l_string|&quot;&t;beq&t;&t;icc3,#0,0b&t;&t;&bslash;n&quot;
-suffix:colon
-l_string|&quot;+U&quot;
-(paren
-op_star
-id|ptr
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|old
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|mask
-)paren
-suffix:colon
-l_string|&quot;Ir&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc7&quot;
-comma
-l_string|&quot;cc3&quot;
-comma
-l_string|&quot;icc3&quot;
-)paren
-suffix:semicolon
-r_return
-id|old
-op_amp
-id|mask
-suffix:semicolon
-)brace
+DECL|macro|ext2_set_bit
+mdefine_line|#define ext2_set_bit(nr, addr)&t;&t;test_and_set_bit  ((nr) ^ 0x18, (addr))
+DECL|macro|ext2_clear_bit
+mdefine_line|#define ext2_clear_bit(nr, addr)&t;test_and_clear_bit((nr) ^ 0x18, (addr))
 DECL|macro|ext2_set_bit_atomic
-mdefine_line|#define ext2_set_bit_atomic(lock,nr,addr) ext2_set_bit((nr), addr)
-DECL|function|ext2_clear_bit
-r_static
-r_inline
-r_int
-id|ext2_clear_bit
-c_func
-(paren
-r_int
-id|nr
-comma
-r_volatile
-r_void
-op_star
-id|addr
-)paren
-(brace
-r_int
-r_int
-id|old
-comma
-id|tmp
-comma
-id|mask
-suffix:semicolon
-r_volatile
-r_int
-r_char
-op_star
-id|ptr
-op_assign
-id|addr
-suffix:semicolon
-id|ptr
-op_add_assign
-id|nr
-op_rshift
-l_int|3
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;0:&t;&t;&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;setlos.p&t;#1,%3&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;orcc&t;&t;gr0,gr0,gr0,icc3&t;&bslash;n&quot;
-multiline_comment|/* set ICC3.Z */
-l_string|&quot;&t;sll%I4.p&t;%3,%4,%3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ckeq&t;&t;icc3,cc7&t;&t;&bslash;n&quot;
-l_string|&quot;&t;ldub.p&t;&t;%M0,%1&t;&t;&t;&bslash;n&quot;
-multiline_comment|/* LDUB.P/ORCR must be atomic */
-l_string|&quot;&t;orcr&t;&t;cc7,cc7,cc3&t;&t;&bslash;n&quot;
-multiline_comment|/* set CC3 to true */
-l_string|&quot;&t;not&t;&t;%3,%2&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;and&t;&t;%1,%2,%2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;cstb.p&t;&t;%2,%M0&t;&t;,cc3,#1&t;&bslash;n&quot;
-l_string|&quot;&t;corcc&t;&t;gr29,gr29,gr0&t;,cc3,#1&t;&bslash;n&quot;
-multiline_comment|/* clear ICC3.Z if store happens */
-l_string|&quot;&t;beq&t;&t;icc3,#0,0b&t;&t;&bslash;n&quot;
-suffix:colon
-l_string|&quot;+U&quot;
-(paren
-op_star
-id|ptr
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|old
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|mask
-)paren
-suffix:colon
-l_string|&quot;Ir&quot;
-(paren
-id|nr
-op_amp
-l_int|7
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-comma
-l_string|&quot;cc7&quot;
-comma
-l_string|&quot;cc3&quot;
-comma
-l_string|&quot;icc3&quot;
-)paren
-suffix:semicolon
-r_return
-id|old
-op_amp
-id|mask
-suffix:semicolon
-)brace
+mdefine_line|#define ext2_set_bit_atomic(lock,nr,addr)&t;ext2_set_bit((nr), addr)
 DECL|macro|ext2_clear_bit_atomic
-mdefine_line|#define ext2_clear_bit_atomic(lock,nr,addr) ext2_clear_bit((nr), addr)
+mdefine_line|#define ext2_clear_bit_atomic(lock,nr,addr)&t;ext2_clear_bit((nr), addr)
 DECL|function|ext2_test_bit
 r_static
 r_inline
@@ -1326,9 +1129,6 @@ op_star
 id|addr
 )paren
 (brace
-r_int
-id|mask
-suffix:semicolon
 r_const
 r_volatile
 r_int
@@ -1343,6 +1143,9 @@ r_char
 op_star
 )paren
 id|addr
+suffix:semicolon
+r_int
+id|mask
 suffix:semicolon
 id|ADDR
 op_add_assign
@@ -1603,15 +1406,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* Bitmap functions for the minix filesystem.  */
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&t;test_and_set_bit(nr,addr)
+mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&t;ext2_set_bit(nr,addr)
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,addr)&t;&t;&t;set_bit(nr,addr)
+mdefine_line|#define minix_set_bit(nr,addr)&t;&t;&t;ext2_set_bit(nr,addr)
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,addr)&t;test_and_clear_bit(nr,addr)
+mdefine_line|#define minix_test_and_clear_bit(nr,addr)&t;ext2_clear_bit(nr,addr)
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,addr)&t;&t;&t;test_bit(nr,addr)
+mdefine_line|#define minix_test_bit(nr,addr)&t;&t;&t;ext2_test_bit(nr,addr)
 DECL|macro|minix_find_first_zero_bit
-mdefine_line|#define minix_find_first_zero_bit(addr,size)&t;find_first_zero_bit(addr,size)
+mdefine_line|#define minix_find_first_zero_bit(addr,size)&t;ext2_find_first_zero_bit(addr,size)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_BITOPS_H */
 eof
