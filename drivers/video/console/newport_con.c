@@ -2310,7 +2310,7 @@ r_int
 id|unit
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
 id|op
 )paren
@@ -2738,9 +2738,12 @@ op_star
 id|vc
 comma
 r_struct
-id|console_font_op
+id|console_font
 op_star
-id|op
+id|font
+comma
+r_int
+id|flags
 )paren
 (brace
 r_return
@@ -2749,7 +2752,7 @@ c_func
 (paren
 id|vc-&gt;vc_num
 comma
-id|op
+id|font
 )paren
 suffix:semicolon
 )brace
