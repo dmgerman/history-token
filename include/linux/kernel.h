@@ -567,6 +567,8 @@ mdefine_line|#define pr_info(fmt,arg...) &bslash;&n;&t;printk(KERN_INFO fmt,##ar
 multiline_comment|/*&n; *      Display an IP address in readable format.&n; */
 DECL|macro|NIPQUAD
 mdefine_line|#define NIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[0], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[3]
+DECL|macro|NIP6
+mdefine_line|#define NIP6(addr) &bslash;&n;&t;ntohs((addr).s6_addr16[0]), &bslash;&n;&t;ntohs((addr).s6_addr16[1]), &bslash;&n;&t;ntohs((addr).s6_addr16[2]), &bslash;&n;&t;ntohs((addr).s6_addr16[3]), &bslash;&n;&t;ntohs((addr).s6_addr16[4]), &bslash;&n;&t;ntohs((addr).s6_addr16[5]), &bslash;&n;&t;ntohs((addr).s6_addr16[6]), &bslash;&n;&t;ntohs((addr).s6_addr16[7])
 macro_line|#if defined(__LITTLE_ENDIAN)
 DECL|macro|HIPQUAD
 mdefine_line|#define HIPQUAD(addr) &bslash;&n;&t;((unsigned char *)&amp;addr)[3], &bslash;&n;&t;((unsigned char *)&amp;addr)[2], &bslash;&n;&t;((unsigned char *)&amp;addr)[1], &bslash;&n;&t;((unsigned char *)&amp;addr)[0]
