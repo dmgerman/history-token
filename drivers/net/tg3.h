@@ -215,6 +215,8 @@ DECL|macro|CHIPREV_ID_5750_A0
 mdefine_line|#define  CHIPREV_ID_5750_A0&t;&t; 0x4000
 DECL|macro|CHIPREV_ID_5750_A1
 mdefine_line|#define  CHIPREV_ID_5750_A1&t;&t; 0x4001
+DECL|macro|CHIPREV_ID_5750_A3
+mdefine_line|#define  CHIPREV_ID_5750_A3&t;&t; 0x4003
 DECL|macro|GET_ASIC_REV
 mdefine_line|#define  GET_ASIC_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 12)
 DECL|macro|ASIC_REV_5700
