@@ -12,10 +12,6 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* for sock_no_* */
 macro_line|#include &quot;resources.h&quot;&t;&t;/* devs and vccs */
 macro_line|#include &quot;common.h&quot;&t;&t;/* common for PVCs and SVCs */
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 DECL|function|pvc_shutdown
 r_static
 r_int
@@ -492,7 +488,7 @@ comma
 dot
 id|release
 op_assign
-id|atm_release
+id|vcc_release
 comma
 dot
 id|bind
@@ -592,7 +588,7 @@ op_amp
 id|pvc_proto_ops
 suffix:semicolon
 r_return
-id|atm_create
+id|vcc_create
 c_func
 (paren
 id|sock
