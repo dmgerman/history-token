@@ -301,6 +301,21 @@ op_star
 id|t
 )paren
 suffix:semicolon
+r_void
+id|show_trace
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_int
+r_int
+op_star
+id|stack
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Start user thread in another space.&n; *&n; * Note that we set both the iaoq and r31 to the new pc. When&n; * the kernel initially calls execve it will return through an&n; * rfi path that will use the values in the iaoq. The execve&n; * syscall path will return through the gateway page, and&n; * that uses r31 to branch to.&n; *&n; * For ELF we clear r23, because the dynamic linker uses it to pass&n; * the address of the finalizer function.&n; *&n; * We also initialize sr3 to an illegal value (illegal for our&n; * implementation, not for the architecture).&n; */
 DECL|typedef|elf_caddr_t
 r_typedef

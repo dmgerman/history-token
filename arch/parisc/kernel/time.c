@@ -543,7 +543,7 @@ DECL|function|do_settimeofday
 id|do_settimeofday
 (paren
 r_struct
-id|timeval
+id|timespec
 op_star
 id|tv
 )paren
