@@ -52,7 +52,11 @@ suffix:semicolon
 id|cpumask_t
 id|mask
 op_assign
-id|node_dev-&gt;cpumap
+id|node_to_cpumask
+c_func
+(paren
+id|node_dev-&gt;sysdev.id
+)paren
 suffix:semicolon
 r_int
 id|len
@@ -474,14 +478,6 @@ id|parent
 (brace
 r_int
 id|error
-suffix:semicolon
-id|node-&gt;cpumap
-op_assign
-id|node_to_cpumask
-c_func
-(paren
-id|num
-)paren
 suffix:semicolon
 id|node-&gt;sysdev.id
 op_assign
