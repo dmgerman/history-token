@@ -82,8 +82,6 @@ c_func
 (paren
 op_amp
 id|urb-&gt;kref
-comma
-id|urb_destroy
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -191,6 +189,8 @@ c_func
 (paren
 op_amp
 id|urb-&gt;kref
+comma
+id|urb_destroy
 )paren
 suffix:semicolon
 )brace
