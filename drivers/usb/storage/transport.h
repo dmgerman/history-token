@@ -133,6 +133,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|US_BULK_CS_WRAP_LEN
 mdefine_line|#define US_BULK_CS_WRAP_LEN&t;13
+DECL|macro|US_BULK_CS_SIGN
+mdefine_line|#define US_BULK_CS_SIGN&t;&t;0x53425355&t;/* spells out &squot;USBS&squot; */
 DECL|macro|US_BULK_STAT_OK
 mdefine_line|#define US_BULK_STAT_OK&t;&t;0
 DECL|macro|US_BULK_STAT_FAIL

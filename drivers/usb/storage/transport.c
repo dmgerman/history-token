@@ -3333,6 +3333,17 @@ id|us-&gt;bcs_signature
 op_assign
 id|bcs-&gt;Signature
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|us-&gt;bcs_signature
+op_ne
+id|cpu_to_le32
+c_func
+(paren
+id|US_BULK_CS_SIGN
+)paren
+)paren
 id|US_DEBUGP
 c_func
 (paren
@@ -3358,7 +3369,7 @@ id|us-&gt;bcs_signature
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Signature mismatch: device sent %08X, expecting %08X&quot;
+l_string|&quot;Signature mismatch: got %08X, expecting %08X&bslash;n&quot;
 comma
 id|le32_to_cpu
 c_func

@@ -165,7 +165,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Some disks return the total number blocks in response&n;&t;&t; * to READ CAPACITY rather than the highest block number.&n;&t;&t; * If this device makes that mistake, tell the sd driver. */
+multiline_comment|/* Some disks return the total number of blocks in response&n;&t;&t; * to READ CAPACITY rather than the highest block number.&n;&t;&t; * If this device makes that mistake, tell the sd driver. */
 r_if
 c_cond
 (paren
