@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_UACCESS_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/vac-ops.h&gt;
 macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#endif

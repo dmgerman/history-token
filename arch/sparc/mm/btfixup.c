@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|BTFIXUP_OPTIMIZE_NOP
 mdefine_line|#define BTFIXUP_OPTIMIZE_NOP
 DECL|macro|BTFIXUP_OPTIMIZE_OTHER

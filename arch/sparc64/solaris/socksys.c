@@ -688,12 +688,14 @@ id|file_operations
 id|socksys_fops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|socksys_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|socksys_release
 comma
 )brace

@@ -191,18 +191,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_unlock_wait
-c_func
-(paren
-op_amp
-id|__br_write_locks
-(braket
-id|BR_GLOBALIRQ_LOCK
-)braket
-dot
-id|lock
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN_CONSOLE
 r_if

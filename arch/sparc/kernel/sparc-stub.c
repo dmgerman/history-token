@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/vac-ops.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/*&n; *&n; * external low-level support routines&n; */
 r_extern
 r_void

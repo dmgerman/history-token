@@ -4357,9 +4357,6 @@ id|boot_cpu_id
 id|irq_enter
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|kstat.irqs
@@ -4380,9 +4377,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5248,6 +5242,13 @@ id|cache_decay_ticks
 suffix:semicolon
 )brace
 multiline_comment|/* /proc/profile writes can call this, don&squot;t __init it please. */
+DECL|variable|prof_setup_lock
+r_static
+id|spinlock_t
+id|prof_setup_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|setup_profiling_timer
 r_int
 id|setup_profiling_timer
@@ -5285,9 +5286,12 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|prof_setup_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5321,9 +5325,12 @@ op_div
 id|multiplier
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|prof_setup_lock
+comma
 id|flags
 )paren
 suffix:semicolon

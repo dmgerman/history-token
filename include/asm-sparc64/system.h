@@ -83,66 +83,9 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;&t;((flags) = read_pil_and_cli())
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;&t;setipl((flags))
-macro_line|#ifndef CONFIG_SMP
-DECL|macro|cli
-mdefine_line|#define cli() local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti() local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) local_save_flags(x)
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) local_irq_restore(x)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(x) local_irq_save(x)
-macro_line|#else
-macro_line|#ifndef __ASSEMBLY__
-r_extern
-r_void
-id|__global_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-c_func
-(paren
-r_int
-r_int
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|macro|cli
-mdefine_line|#define cli()&t;&t;&t;__global_cli()
-DECL|macro|sti
-mdefine_line|#define sti()&t;&t;&t;__global_sti()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x)&t;&t;((x) = __global_save_flags())
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(flags)&t;__global_restore_flags(flags)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;do { save_flags(flags); cli(); } while(0)
-macro_line|#endif
+multiline_comment|/* On sparc64 IRQ flags are the PIL register.  A value of zero&n; * means all interrupt levels are enabled, any other value means&n; * only IRQ levels greater than that value will be received.&n; * Consequently this means that the lowest IRQ level is one.&n; */
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&bslash;&n;({&t;unsigned long flags;&t;&bslash;&n;&t;local_save_flags(flags);&bslash;&n;&t;(flags &gt; 0);&t;&t;&bslash;&n;})
 DECL|macro|nop
 mdefine_line|#define nop() &t;&t;__asm__ __volatile__ (&quot;nop&quot;)
 DECL|macro|membar
