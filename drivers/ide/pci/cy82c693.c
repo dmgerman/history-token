@@ -1368,9 +1368,9 @@ id|__devinitdata
 op_assign
 (brace
 (brace
-id|PCI_VENDOR_ID_NVIDIA
+id|PCI_VENDOR_ID_CONTAQ
 comma
-id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
+id|PCI_DEVICE_ID_CONTAQ_82C693
 comma
 id|PCI_ANY_ID
 comma
