@@ -853,7 +853,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: illegal slot number %d for IMM64&bslash;n&quot;
+l_string|&quot;%s: invalid slot number %d for IMM64&bslash;n&quot;
 comma
 id|mod-&gt;name
 comma
@@ -918,7 +918,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: illegal slot number %d for IMM60&bslash;n&quot;
+l_string|&quot;%s: invalid slot number %d for IMM60&bslash;n&quot;
 comma
 id|mod-&gt;name
 comma

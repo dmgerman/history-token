@@ -674,7 +674,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: ISA IRQ %d from %x illegal&bslash;n&quot;
+l_string|&quot;%s: ISA IRQ %d from %x invalid&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
