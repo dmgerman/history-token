@@ -183,6 +183,17 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* Trivial case. */
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|kbuffer
 op_assign
 id|kmalloc
