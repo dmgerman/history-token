@@ -2,7 +2,6 @@ multiline_comment|/*&n; * thread_info.h: sparc low-level thread information&n; *
 macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
-singleline_comment|// XXX todo: comment thread_info components and see what breaks.
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/btfixup.h&gt;
