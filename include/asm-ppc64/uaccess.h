@@ -42,6 +42,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -144,11 +145,13 @@ id|__copy_tofrom_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -311,6 +314,11 @@ r_return
 id|__copy_tofrom_user
 c_func
 (paren
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|to
 comma
 id|from
@@ -382,6 +390,7 @@ id|from
 comma
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|to
@@ -411,6 +420,7 @@ id|from
 comma
 (paren
 id|u16
+id|__user
 op_star
 )paren
 id|to
@@ -440,6 +450,7 @@ id|from
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|to
@@ -469,6 +480,7 @@ id|from
 comma
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|to
@@ -491,6 +503,12 @@ c_func
 (paren
 id|to
 comma
+(paren
+r_const
+r_void
+id|__user
+op_star
+)paren
 id|from
 comma
 id|n
@@ -513,6 +531,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -574,6 +593,7 @@ id|copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -629,11 +649,13 @@ id|copy_in_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -697,6 +719,7 @@ id|__clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -714,6 +737,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -769,6 +793,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -789,6 +814,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -842,6 +868,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 comma
@@ -859,6 +886,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|str
 comma

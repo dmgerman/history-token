@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * xfs_dir2_node.c&n; * XFS directory implementation, version 2, node form files&n; * See data structures in xfs_dir2_node.h and xfs_da_btree.h.&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
@@ -848,6 +848,21 @@ suffix:semicolon
 id|leaf
 op_assign
 id|bp-&gt;data
+suffix:semicolon
+multiline_comment|/*&n;&t; * Quick check just to make sure we are not going to index&n;&t; * into other peoples memory&n;&t; */
+r_if
+c_cond
+(paren
+id|index
+OL
+l_int|0
+)paren
+r_return
+id|XFS_ERROR
+c_func
+(paren
+id|EFSCORRUPTED
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are already the maximum number of leaf entries in&n;&t; * the block, if there are no stale entries it won&squot;t fit.&n;&t; * Caller will do a split.  If there are stale entries we&squot;ll do&n;&t; * a compact.&n;&t; */
 r_if
@@ -3694,17 +3709,12 @@ op_assign
 id|swap
 op_xor
 (paren
-id|args-&gt;hashval
-OL
+id|blk1-&gt;index
+op_le
 id|INT_GET
 c_func
 (paren
-id|leaf2-&gt;ents
-(braket
-l_int|0
-)braket
-dot
-id|hashval
+id|leaf1-&gt;hdr.count
 comma
 id|ARCH_CONVERT
 )paren
@@ -3729,6 +3739,35 @@ comma
 id|ARCH_CONVERT
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * Finally sanity check just to make sure we are not returning a negative index &n;&t; */
+r_if
+c_cond
+(paren
+id|blk2-&gt;index
+OL
+l_int|0
+)paren
+(brace
+id|state-&gt;inleaf
+op_assign
+l_int|1
+suffix:semicolon
+id|blk2-&gt;index
+op_assign
+l_int|0
+suffix:semicolon
+id|cmn_err
+c_func
+(paren
+id|CE_ALERT
+comma
+l_string|&quot;xfs_dir2_leafn_rebalance: picked the wrong leaf? reverting orignal leaf: &quot;
+l_string|&quot;blk1-&gt;index %d&bslash;n&quot;
+comma
+id|blk1-&gt;index
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Remove an entry from a node directory.&n; * This removes the leaf entry and the data entry,&n; * and updates the free block if necessary.&n; */
 r_static

@@ -686,7 +686,7 @@ id|mempages
 macro_line|#ifndef __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
 macro_line|#ifndef ARCH_MIN_TASKALIGN
 DECL|macro|ARCH_MIN_TASKALIGN
-mdefine_line|#define ARCH_MIN_TASKALIGN&t;0
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;L1_CACHE_BYTES
 macro_line|#endif
 multiline_comment|/* create a slab on which task_structs can be allocated */
 id|task_struct_cachep

@@ -4469,6 +4469,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|ip_netdev_notifier
+r_static
 r_struct
 id|notifier_block
 id|ip_netdev_notifier

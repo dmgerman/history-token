@@ -178,7 +178,7 @@ r_int
 id|flashboot
 op_assign
 (paren
-id|CONF_SWITCHES
+id|LUB_CONF_SWITCHES
 op_amp
 l_int|1
 )paren

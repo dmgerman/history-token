@@ -1572,7 +1572,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: direct_IO result=%d&bslash;n&quot;
+l_string|&quot;NFS: direct_IO result=%zd&bslash;n&quot;
 comma
 id|result
 )paren

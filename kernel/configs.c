@@ -152,15 +152,6 @@ id|proc_dir_entry
 op_star
 id|entry
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;ikconfig %s with /proc/config*&bslash;n&quot;
-comma
-id|IKCONFIG_VERSION
-)paren
-suffix:semicolon
 multiline_comment|/* create the current config file */
 id|entry
 op_assign

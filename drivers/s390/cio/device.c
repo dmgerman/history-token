@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.113 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.115 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -556,6 +556,12 @@ id|workqueue_struct
 op_star
 id|ccw_device_work
 suffix:semicolon
+DECL|variable|ccw_device_notify_work
+r_struct
+id|workqueue_struct
+op_star
+id|ccw_device_notify_work
+suffix:semicolon
 DECL|variable|ccw_device_init_wq
 r_static
 id|wait_queue_head_t
@@ -596,7 +602,7 @@ l_int|0
 suffix:semicolon
 id|ccw_device_work
 op_assign
-id|create_workqueue
+id|create_singlethread_workqueue
 c_func
 (paren
 l_string|&quot;cio&quot;
@@ -613,6 +619,31 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* FIXME: better errno ? */
+id|ccw_device_notify_work
+op_assign
+id|create_singlethread_workqueue
+c_func
+(paren
+l_string|&quot;cio_notify&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ccw_device_notify_work
+)paren
+(brace
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+multiline_comment|/* FIXME: better errno ? */
+r_goto
+id|out_err
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -626,8 +657,8 @@ id|ccw_bus_type
 )paren
 )paren
 )paren
-r_return
-id|ret
+r_goto
+id|out_err
 suffix:semicolon
 r_if
 c_cond
@@ -643,8 +674,8 @@ id|io_subchannel_driver.drv
 )paren
 )paren
 )paren
-r_return
-id|ret
+r_goto
+id|out_err
 suffix:semicolon
 id|wait_event
 c_func
@@ -670,6 +701,33 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|out_err
+suffix:colon
+r_if
+c_cond
+(paren
+id|ccw_device_work
+)paren
+id|destroy_workqueue
+c_func
+(paren
+id|ccw_device_work
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ccw_device_notify_work
+)paren
+id|destroy_workqueue
+c_func
+(paren
+id|ccw_device_notify_work
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -692,6 +750,12 @@ c_func
 (paren
 op_amp
 id|ccw_bus_type
+)paren
+suffix:semicolon
+id|destroy_workqueue
+c_func
+(paren
+id|ccw_device_notify_work
 )paren
 suffix:semicolon
 id|destroy_workqueue
@@ -2512,10 +2576,9 @@ id|wait_q
 )paren
 suffix:semicolon
 )brace
-r_static
 r_void
-DECL|function|device_call_sch_unregister
-id|device_call_sch_unregister
+DECL|function|ccw_device_call_sch_unregister
+id|ccw_device_call_sch_unregister
 c_func
 (paren
 r_void
@@ -2543,6 +2606,18 @@ c_func
 id|cdev-&gt;dev.parent
 )paren
 suffix:semicolon
+multiline_comment|/* Check if device is registered. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|sch-&gt;dev.node
+)paren
+)paren
 id|device_unregister
 c_func
 (paren
@@ -2566,6 +2641,13 @@ c_func
 (paren
 op_amp
 id|cdev-&gt;dev
+)paren
+suffix:semicolon
+id|put_device
+c_func
+(paren
+op_amp
+id|sch-&gt;dev
 )paren
 suffix:semicolon
 )brace
@@ -2658,7 +2740,7 @@ r_private
 op_member_access_from_pointer
 id|kick_work
 comma
-id|device_call_sch_unregister
+id|ccw_device_call_sch_unregister
 comma
 (paren
 r_void
@@ -4411,6 +4493,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ccw_device_work
+)paren
+suffix:semicolon
+DECL|variable|ccw_device_notify_work
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ccw_device_notify_work
 )paren
 suffix:semicolon
 eof

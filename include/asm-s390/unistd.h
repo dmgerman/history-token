@@ -187,6 +187,8 @@ DECL|macro|__NR_lstat
 mdefine_line|#define __NR_lstat              107
 DECL|macro|__NR_fstat
 mdefine_line|#define __NR_fstat              108
+DECL|macro|__NR_lookup_dcookie
+mdefine_line|#define __NR_lookup_dcookie     110
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup            111
 DECL|macro|__NR_idle

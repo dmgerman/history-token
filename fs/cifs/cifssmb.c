@@ -12711,6 +12711,10 @@ comma
 (paren
 l_string|&quot;SetFileSize (via SetFileInfo) %lld&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|size
 )paren
 )paren

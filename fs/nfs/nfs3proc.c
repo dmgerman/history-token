@@ -1811,6 +1811,34 @@ c_func
 l_string|&quot;NFS call  setattr (post-create)&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sattr-&gt;ia_valid
+op_amp
+id|ATTR_ATIME_SET
+)paren
+)paren
+id|sattr-&gt;ia_valid
+op_or_assign
+id|ATTR_ATIME
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sattr-&gt;ia_valid
+op_amp
+id|ATTR_MTIME_SET
+)paren
+)paren
+id|sattr-&gt;ia_valid
+op_or_assign
+id|ATTR_MTIME
+suffix:semicolon
 multiline_comment|/* Note: we could use a guarded setattr here, but I&squot;m&n;&t;&t; * not sure this buys us anything (and I&squot;d have&n;&t;&t; * to revamp the NFSv3 XDR code) */
 id|fattr.valid
 op_assign

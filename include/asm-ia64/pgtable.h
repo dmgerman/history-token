@@ -171,9 +171,9 @@ mdefine_line|#define __P100&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_R
 DECL|macro|__P101
 mdefine_line|#define __P101&t;__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
 DECL|macro|__P110
-mdefine_line|#define __P110&t;PAGE_COPY
+mdefine_line|#define __P110&t;PAGE_COPY_EXEC
 DECL|macro|__P111
-mdefine_line|#define __P111&t;PAGE_COPY
+mdefine_line|#define __P111&t;PAGE_COPY_EXEC
 DECL|macro|__S000
 mdefine_line|#define __S000&t;PAGE_NONE
 DECL|macro|__S001

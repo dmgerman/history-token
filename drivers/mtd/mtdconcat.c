@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * MTD device concatenation layer&n; *&n; * (C) 2002 Robert Kaiser &lt;rkaiser@sysgo.de&gt;&n; *&n; * NAND support by Christian Gan &lt;cgan@iders.ca&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdconcat.c,v 1.4 2003/03/07 17:44:59 rkaiser Exp $&n; */
+multiline_comment|/*&n; * MTD device concatenation layer&n; *&n; * (C) 2002 Robert Kaiser &lt;rkaiser@sysgo.de&gt;&n; *&n; * NAND support by Christian Gan &lt;cgan@iders.ca&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdconcat.c,v 1.8 2003/06/30 11:01:26 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -35,10 +35,11 @@ multiline_comment|/*&n; * Given a pointer to the MTD object in the mtd_concat st
 DECL|macro|CONCAT
 mdefine_line|#define CONCAT(x)  ((struct mtd_concat *)(x))
 multiline_comment|/* &n; * MTD methods which look up the relevant subdevice, translate the&n; * effective address and pass through to the subdevice.&n; */
-DECL|function|concat_read
 r_static
 r_int
+DECL|function|concat_read
 id|concat_read
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -132,9 +133,9 @@ id|from
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -144,19 +145,19 @@ id|len
 OG
 id|subdev-&gt;size
 )paren
+multiline_comment|/* First part goes into this subdev */
 id|size
 op_assign
 id|subdev-&gt;size
 op_minus
 id|from
 suffix:semicolon
-multiline_comment|/* First part goes into this subdev */
 r_else
+multiline_comment|/* Entire transaction goes into this subdev */
 id|size
 op_assign
 id|len
 suffix:semicolon
-multiline_comment|/* Entire transaction goes into this subdev */
 id|err
 op_assign
 id|subdev
@@ -181,10 +182,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -201,10 +200,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -219,15 +216,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|concat_write
 r_static
 r_int
+DECL|function|concat_write
 id|concat_write
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -335,9 +332,9 @@ id|to
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -398,10 +395,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -418,10 +413,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -436,15 +429,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|concat_read_ecc
 r_static
 r_int
+DECL|function|concat_read_ecc
 id|concat_read_ecc
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -547,9 +540,9 @@ id|from
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -559,19 +552,19 @@ id|len
 OG
 id|subdev-&gt;size
 )paren
+multiline_comment|/* First part goes into this subdev */
 id|size
 op_assign
 id|subdev-&gt;size
 op_minus
 id|from
 suffix:semicolon
-multiline_comment|/* First part goes into this subdev */
 r_else
+multiline_comment|/* Entire transaction goes into this subdev */
 id|size
 op_assign
 id|len
 suffix:semicolon
-multiline_comment|/* Entire transaction goes into this subdev */
 r_if
 c_cond
 (paren
@@ -611,10 +604,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -631,10 +622,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -654,7 +643,7 @@ id|eccbuf
 op_add_assign
 id|subdev-&gt;oobsize
 suffix:semicolon
-multiline_comment|/* in nand.c at least, eccbufs are tagged with 2 (int)eccstatus&squot;,&n;                   we must account for these */
+multiline_comment|/* in nand.c at least, eccbufs are&n;&t;&t;&t;   tagged with 2 (int)eccstatus&squot;; we&n;&t;&t;&t;   must account for these */
 id|eccbuf
 op_add_assign
 l_int|2
@@ -672,15 +661,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|concat_write_ecc
 r_static
 r_int
+DECL|function|concat_write_ecc
 id|concat_write_ecc
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -797,9 +786,9 @@ id|to
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -875,10 +864,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -895,10 +882,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -922,15 +907,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|concat_read_oob
 r_static
 r_int
+DECL|function|concat_read_oob
 id|concat_read_oob
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -1024,9 +1009,9 @@ id|from
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -1036,19 +1021,19 @@ id|len
 OG
 id|subdev-&gt;size
 )paren
+multiline_comment|/* First part goes into this subdev */
 id|size
 op_assign
 id|subdev-&gt;size
 op_minus
 id|from
 suffix:semicolon
-multiline_comment|/* First part goes into this subdev */
 r_else
+multiline_comment|/* Entire transaction goes into this subdev */
 id|size
 op_assign
 id|len
 suffix:semicolon
-multiline_comment|/* Entire transaction goes into this subdev */
 r_if
 c_cond
 (paren
@@ -1084,10 +1069,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -1104,10 +1087,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -1122,15 +1103,15 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|concat_write_oob
 r_static
 r_int
+DECL|function|concat_write_oob
 id|concat_write_oob
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -1238,9 +1219,9 @@ id|to
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -1312,10 +1293,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 op_star
 id|retlen
 op_add_assign
@@ -1332,10 +1311,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -1350,7 +1327,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -1359,6 +1335,7 @@ DECL|function|concat_erase_callback
 r_static
 r_void
 id|concat_erase_callback
+c_func
 (paren
 r_struct
 id|erase_info
@@ -1524,6 +1501,7 @@ DECL|function|concat_erase
 r_static
 r_int
 id|concat_erase
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -1586,12 +1564,10 @@ id|instr-&gt;addr
 OG
 id|concat-&gt;mtd.size
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1601,12 +1577,10 @@ id|instr-&gt;addr
 OG
 id|concat-&gt;mtd.size
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Check for proper erase block alignment of the to-be-erased area.&n;&t; * It is easier to do this based on the super device&squot;s erase&n;&t; * region info rather than looking at each particular sub-device&n;&t; * in turn.&n;&t; */
 r_if
 c_cond
@@ -1627,12 +1601,10 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1644,12 +1616,10 @@ op_minus
 l_int|1
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -1685,9 +1655,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 suffix:semicolon
-)brace
 op_decrement
 id|i
 suffix:semicolon
@@ -1737,9 +1705,7 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-(brace
 suffix:semicolon
-)brace
 op_decrement
 id|i
 suffix:semicolon
@@ -1834,16 +1800,15 @@ id|subdev-&gt;size
 op_le
 id|erase-&gt;addr
 )paren
-(brace
 id|erase-&gt;addr
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
-)brace
 r_else
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* must never happen since size limit has been verified above */
 r_if
 c_cond
 (paren
@@ -1851,15 +1816,11 @@ id|i
 op_ge
 id|concat-&gt;num_subdev
 )paren
-(brace
-multiline_comment|/* must never happen since size */
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* limit has been verified above */
 multiline_comment|/* now do the erase: */
 id|err
 op_assign
@@ -1876,8 +1837,8 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-multiline_comment|/* loop for all subevices affected by this request */
 (brace
+multiline_comment|/* loop for all subdevices affected by this request */
 id|subdev
 op_assign
 id|concat-&gt;subdev
@@ -1896,14 +1857,12 @@ id|length
 OG
 id|subdev-&gt;size
 )paren
-(brace
 id|erase-&gt;len
 op_assign
 id|subdev-&gt;size
 op_minus
 id|erase-&gt;addr
 suffix:semicolon
-)brace
 r_else
 id|erase-&gt;len
 op_assign
@@ -1948,6 +1907,7 @@ id|erase
 )paren
 )paren
 (brace
+multiline_comment|/* sanity check: should never happen since&n;&t;&t;&t; * block alignment has been checked above */
 r_if
 c_cond
 (paren
@@ -1956,15 +1916,11 @@ op_eq
 op_minus
 id|EINVAL
 )paren
-(brace
-multiline_comment|/* sanity check: must never happen since */
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* block alignment has been checked above */
 r_break
 suffix:semicolon
 )brace
@@ -2013,6 +1969,7 @@ DECL|function|concat_lock
 r_static
 r_int
 id|concat_lock
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -2104,9 +2061,9 @@ id|ofs
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -2146,10 +2103,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|len
 op_sub_assign
 id|size
@@ -2161,10 +2116,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -2175,7 +2128,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-)brace
 r_return
 id|err
 suffix:semicolon
@@ -2184,6 +2136,7 @@ DECL|function|concat_unlock
 r_static
 r_int
 id|concat_unlock
+c_func
 (paren
 r_struct
 id|mtd_info
@@ -2274,9 +2227,9 @@ id|ofs
 op_sub_assign
 id|subdev-&gt;size
 suffix:semicolon
+r_continue
+suffix:semicolon
 )brace
-r_else
-(brace
 r_if
 c_cond
 (paren
@@ -2316,10 +2269,8 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|len
 op_sub_assign
 id|size
@@ -2331,10 +2282,8 @@ id|len
 op_eq
 l_int|0
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|err
 op_assign
 op_minus
@@ -2344,7 +2293,6 @@ id|ofs
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_return
 id|err
@@ -2483,11 +2431,9 @@ id|subdev
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|rc
 suffix:semicolon
-)brace
 )brace
 r_return
 id|rc
@@ -2578,8 +2524,8 @@ r_char
 op_star
 id|name
 )paren
-multiline_comment|/* name for the new device   */
 (brace
+multiline_comment|/* name for the new device   */
 r_int
 id|i
 suffix:semicolon
@@ -2620,7 +2566,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -2637,7 +2582,6 @@ op_member_access_from_pointer
 id|name
 )paren
 suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -2659,6 +2603,7 @@ suffix:semicolon
 id|concat
 op_assign
 id|kmalloc
+c_func
 (paren
 id|size
 comma
@@ -2780,6 +2725,62 @@ l_int|0
 op_member_access_from_pointer
 id|eccsize
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|subdev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|read_ecc
+)paren
+id|concat-&gt;mtd.read_ecc
+op_assign
+id|concat_read_ecc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subdev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|write_ecc
+)paren
+id|concat-&gt;mtd.write_ecc
+op_assign
+id|concat_write_ecc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subdev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|read_oob
+)paren
+id|concat-&gt;mtd.read_oob
+op_assign
+id|concat_read_oob
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|subdev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|write_oob
+)paren
+id|concat-&gt;mtd.write_oob
+op_assign
+id|concat_write_oob
+suffix:semicolon
 id|concat-&gt;subdev
 (braket
 l_int|0
@@ -2825,6 +2826,7 @@ id|concat
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;Incompatible device type on &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
@@ -2853,7 +2855,7 @@ op_member_access_from_pointer
 id|flags
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Expect all flags except MTD_WRITEABLE to be equal on&n;&t;&t;&t; * all subdevices.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Expect all flags except MTD_WRITEABLE to be&n;&t;&t;&t; * equal on all subdevices.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2879,6 +2881,7 @@ id|concat
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;Incompatible device flags on &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
@@ -2895,7 +2898,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* if writeable attribute differs, make super device writeable */
+multiline_comment|/* if writeable attribute differs,&n;&t;&t;&t;&t;   make super device writeable */
 id|concat-&gt;mtd.flags
 op_or_assign
 id|subdev
@@ -2955,6 +2958,50 @@ id|i
 )braket
 op_member_access_from_pointer
 id|eccsize
+op_logical_or
+op_logical_neg
+id|concat-&gt;mtd.read_ecc
+op_ne
+op_logical_neg
+id|subdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|read_ecc
+op_logical_or
+op_logical_neg
+id|concat-&gt;mtd.write_ecc
+op_ne
+op_logical_neg
+id|subdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|write_ecc
+op_logical_or
+op_logical_neg
+id|concat-&gt;mtd.read_oob
+op_ne
+op_logical_neg
+id|subdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|read_oob
+op_logical_or
+op_logical_neg
+id|concat-&gt;mtd.write_oob
+op_ne
+op_logical_neg
+id|subdev
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|write_oob
 )paren
 (brace
 id|kfree
@@ -2964,6 +3011,7 @@ id|concat
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;Incompatible OOB or ECC data on &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
@@ -3010,22 +3058,6 @@ suffix:semicolon
 id|concat-&gt;mtd.write
 op_assign
 id|concat_write
-suffix:semicolon
-id|concat-&gt;mtd.read_ecc
-op_assign
-id|concat_read_ecc
-suffix:semicolon
-id|concat-&gt;mtd.write_ecc
-op_assign
-id|concat_write_ecc
-suffix:semicolon
-id|concat-&gt;mtd.read_oob
-op_assign
-id|concat_read_oob
-suffix:semicolon
-id|concat-&gt;mtd.write_oob
-op_assign
-id|concat_write_oob
 suffix:semicolon
 id|concat-&gt;mtd.sync
 op_assign
@@ -3125,12 +3157,10 @@ id|curr_erasesize
 OG
 id|max_erasesize
 )paren
-(brace
 id|max_erasesize
 op_assign
 id|curr_erasesize
 suffix:semicolon
-)brace
 )brace
 )brace
 r_else
@@ -3202,12 +3232,10 @@ id|curr_erasesize
 OG
 id|max_erasesize
 )paren
-(brace
 id|max_erasesize
 op_assign
 id|curr_erasesize
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -3256,6 +3284,7 @@ op_assign
 id|erase_region_p
 op_assign
 id|kmalloc
+c_func
 (paren
 id|num_erase_region
 op_star
@@ -3554,14 +3583,12 @@ c_cond
 (paren
 id|concat-&gt;mtd.numeraseregions
 )paren
-(brace
 id|kfree
 c_func
 (paren
 id|concat-&gt;mtd.eraseregions
 )paren
 suffix:semicolon
-)brace
 id|kfree
 c_func
 (paren

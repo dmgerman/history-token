@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Oct 15, 2000 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -19,13 +20,6 @@ DECL|macro|tobe
 mdefine_line|#define tobe(x) (x)
 macro_line|#endif
 macro_line|#include &quot;crc32table.h&quot;
-macro_line|#if __GNUC__ &gt;= 3&t;/* 2.x has &quot;attribute&quot;, but only 3.0 has &quot;pure */
-DECL|macro|attribute
-mdefine_line|#define attribute(x) __attribute__(x)
-macro_line|#else
-DECL|macro|attribute
-mdefine_line|#define attribute(x)
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -49,13 +43,7 @@ multiline_comment|/*&n; * In fact, the table-based code will work in this case, 
 multiline_comment|/**&n; * crc32_le() - Calculate bitwise little-endian Ethernet AUTODIN II CRC32&n; * @crc - seed value for computation.  ~0 for Ethernet, sometimes 0 for&n; *        other uses, or the previous crc32 value if computing incrementally.&n; * @p   - pointer to buffer over which CRC is run&n; * @len - length of buffer @p&n; * &n; */
 DECL|function|crc32_le
 id|u32
-id|attribute
-c_func
-(paren
-(paren
-id|pure
-)paren
-)paren
+id|__attribute_pure__
 id|crc32_le
 c_func
 (paren
@@ -132,13 +120,7 @@ macro_line|#else&t;&t;&t;&t;/* Table-based approach */
 multiline_comment|/**&n; * crc32_le() - Calculate bitwise little-endian Ethernet AUTODIN II CRC32&n; * @crc - seed value for computation.  ~0 for Ethernet, sometimes 0 for&n; *        other uses, or the previous crc32 value if computing incrementally.&n; * @p   - pointer to buffer over which CRC is run&n; * @len - length of buffer @p&n; * &n; */
 DECL|function|crc32_le
 id|u32
-id|attribute
-c_func
-(paren
-(paren
-id|pure
-)paren
-)paren
+id|__attribute_pure__
 id|crc32_le
 c_func
 (paren
@@ -524,13 +506,7 @@ multiline_comment|/*&n; * In fact, the table-based code will work in this case, 
 multiline_comment|/**&n; * crc32_be() - Calculate bitwise big-endian Ethernet AUTODIN II CRC32&n; * @crc - seed value for computation.  ~0 for Ethernet, sometimes 0 for&n; *        other uses, or the previous crc32 value if computing incrementally.&n; * @p   - pointer to buffer over which CRC is run&n; * @len - length of buffer @p&n; * &n; */
 DECL|function|crc32_be
 id|u32
-id|attribute
-c_func
-(paren
-(paren
-id|pure
-)paren
-)paren
+id|__attribute_pure__
 id|crc32_be
 c_func
 (paren
@@ -609,13 +585,7 @@ macro_line|#else&t;&t;&t;&t;/* Table-based approach */
 multiline_comment|/**&n; * crc32_be() - Calculate bitwise big-endian Ethernet AUTODIN II CRC32&n; * @crc - seed value for computation.  ~0 for Ethernet, sometimes 0 for&n; *        other uses, or the previous crc32 value if computing incrementally.&n; * @p   - pointer to buffer over which CRC is run&n; * @len - length of buffer @p&n; * &n; */
 DECL|function|crc32_be
 id|u32
-id|attribute
-c_func
-(paren
-(paren
-id|pure
-)paren
-)paren
+id|__attribute_pure__
 id|crc32_be
 c_func
 (paren
