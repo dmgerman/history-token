@@ -36,8 +36,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Exported functions/variables&n; */
 DECL|macro|KBD_DEFMODE
 mdefine_line|#define KBD_DEFMODE ((1 &lt;&lt; VC_REPEAT) | (1 &lt;&lt; VC_META))
-multiline_comment|/*&n; * Some laptops take the 789uiojklm,. keys as number pad when NumLock is on.&n; * This seems a good reason to start with NumLock off. On PC9800 however there&n; * is no NumLock key and everyone expects the keypad to be used for numbers.&n; */
-macro_line|#ifdef CONFIG_X86_PC9800
+multiline_comment|/*&n; * Some laptops take the 789uiojklm,. keys as number pad when NumLock is on.&n; * This seems a good reason to start with NumLock off. On PC9800 and HIL keyboards &n; * of PARISC machines however there is no NumLock key and everyone expects the keypad &n; * to be used for numbers.&n; */
+macro_line|#if defined(CONFIG_X86_PC9800) || &bslash;&n;    defined(CONFIG_PARISC) &amp;&amp; (defined(CONFIG_KEYBOARD_HIL) || defined(CONFIG_KEYBOARD_HIL_OLD))
 DECL|macro|KBD_DEFLEDS
 mdefine_line|#define KBD_DEFLEDS (1 &lt;&lt; VC_NUMLOCK)
 macro_line|#else
