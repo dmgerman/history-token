@@ -211,6 +211,13 @@ id|lci
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Its not a Call Request, nor is it a control frame.&n;&t; *      Let caller throw it away.&n;&t; */
 multiline_comment|/*&n;&t;x25_transmit_clear_request(nb, lci, 0x0D);&n;*/
+r_if
+c_cond
+(paren
+id|frametype
+op_ne
+id|X25_CLEAR_CONFIRMATION
+)paren
 id|printk
 c_func
 (paren
