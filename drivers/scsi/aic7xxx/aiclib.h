@@ -2151,22 +2151,6 @@ id|scsi_sense_key_text
 )braket
 suffix:semicolon
 multiline_comment|/************************* Large Disk Handling ********************************/
-r_static
-id|__inline
-r_int
-id|aic_sector_div
-c_func
-(paren
-id|u_long
-id|capacity
-comma
-r_int
-id|heads
-comma
-r_int
-id|sectors
-)paren
-suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_static
 id|__inline
