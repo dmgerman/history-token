@@ -1647,6 +1647,10 @@ DECL|enumerator|AC97_TUNE_INV_EAPD
 id|AC97_TUNE_INV_EAPD
 comma
 multiline_comment|/* inverted EAPD implementation */
+DECL|enumerator|AC97_TUNE_MUTE_LED
+id|AC97_TUNE_MUTE_LED
+comma
+multiline_comment|/* EAPD bit works as mute LED */
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk
