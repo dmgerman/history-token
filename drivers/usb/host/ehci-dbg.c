@@ -292,7 +292,7 @@ id|params
 singleline_comment|// EHCI 0.96 ... could interpret these (legacy?)
 id|dbg
 (paren
-l_string|&quot;%s extended capabilities at pci %d&quot;
+l_string|&quot;%s extended capabilities at pci %2x&quot;
 comma
 id|label
 comma
@@ -2847,6 +2847,58 @@ op_add_assign
 id|temp
 suffix:semicolon
 )brace
+macro_line|#ifdef EHCI_STATS
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;irq normal %ld err %ld reclaim %ld&bslash;n&quot;
+comma
+id|ehci-&gt;stats.normal
+comma
+id|ehci-&gt;stats.error
+comma
+id|ehci-&gt;stats.reclaim
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot;complete %ld unlink %ld qpatch %ld&bslash;n&quot;
+comma
+id|ehci-&gt;stats.complete
+comma
+id|ehci-&gt;stats.unlink
+comma
+id|ehci-&gt;stats.qpatch
+)paren
+suffix:semicolon
+id|size
+op_sub_assign
+id|temp
+suffix:semicolon
+id|next
+op_add_assign
+id|temp
+suffix:semicolon
+macro_line|#endif
 id|spin_unlock_irqrestore
 (paren
 op_amp
