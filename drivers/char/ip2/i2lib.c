@@ -4316,8 +4316,6 @@ l_int|1
 comma
 id|CMD_STOPFL
 )paren
-OG
-l_int|0
 )paren
 (brace
 id|old_flags
