@@ -535,10 +535,11 @@ op_star
 id|p
 suffix:semicolon
 r_int
+r_int
 id|best
 op_assign
 op_complement
-l_int|0U
+l_int|0UL
 suffix:semicolon
 id|retry
 suffix:colon
