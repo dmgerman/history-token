@@ -843,6 +843,18 @@ id|zoran
 op_star
 id|zr
 suffix:semicolon
+multiline_comment|/* Random maximum */
+r_if
+c_cond
+(paren
+id|count
+OG
+l_int|256
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|zr
 op_assign
 (paren
