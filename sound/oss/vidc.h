@@ -184,7 +184,7 @@ id|mask
 suffix:semicolon
 multiline_comment|/*&n; * Virtual DMA buffer exhausted&n; */
 r_extern
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|dma_interrupt
