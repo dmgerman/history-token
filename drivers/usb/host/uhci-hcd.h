@@ -659,11 +659,6 @@ r_int
 id|state_end
 suffix:semicolon
 multiline_comment|/* Time of next transition */
-DECL|member|resume_detect
-r_int
-id|resume_detect
-suffix:semicolon
-multiline_comment|/* Need a Global Resume */
 DECL|member|frame_number
 r_int
 r_int
@@ -677,6 +672,30 @@ id|is_stopped
 suffix:semicolon
 DECL|macro|UHCI_IS_STOPPED
 mdefine_line|#define UHCI_IS_STOPPED&t;&t;9999&t;&t;/* Larger than a frame # */
+DECL|member|scan_in_progress
+r_int
+r_int
+id|scan_in_progress
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Schedule scan is running */
+DECL|member|need_rescan
+r_int
+r_int
+id|need_rescan
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Redo the schedule scan */
+DECL|member|resume_detect
+r_int
+r_int
+id|resume_detect
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Need a Global Resume */
 multiline_comment|/* Support for port suspend/resume/reset */
 DECL|member|port_c_suspend
 r_int
