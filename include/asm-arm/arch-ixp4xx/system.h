@@ -61,19 +61,20 @@ multiline_comment|/* set the &quot;key&quot; register to enable access to&n;&t;&
 op_star
 id|IXP4XX_OSWK
 op_assign
-l_int|0x482e
+id|IXP4XX_WDT_KEY
 suffix:semicolon
-multiline_comment|/* write 0 to the timer register for an immidiate reset */
+multiline_comment|/* write 0 to the timer register for an immediate reset */
 op_star
 id|IXP4XX_OSWT
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* disable watchdog interrupt, enable reset, enable count */
 op_star
 id|IXP4XX_OSWE
 op_assign
-l_int|0x3
+id|IXP4XX_WDT_RESET_ENABLE
+op_or
+id|IXP4XX_WDT_COUNT_ENABLE
 suffix:semicolon
 )brace
 )brace
