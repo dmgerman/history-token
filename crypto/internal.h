@@ -4,6 +4,7 @@ DECL|macro|_CRYPTO_INTERNAL_H
 mdefine_line|#define _CRYPTO_INTERNAL_H
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 DECL|function|crypto_kmap
@@ -226,6 +227,28 @@ r_struct
 id|crypto_tfm
 op_star
 id|tfm
+)paren
+(brace
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+r_void
+id|__init
+id|crypto_init_proc
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|crypto_init_proc
+r_static
+r_inline
+r_void
+id|crypto_init_proc
+c_func
+(paren
+r_void
 )paren
 (brace
 )brace
