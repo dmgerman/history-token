@@ -49,27 +49,48 @@ DECL|struct|rcu_ctrlblk
 r_struct
 id|rcu_ctrlblk
 (brace
+multiline_comment|/* &quot;const&quot; members: only changed when starting/ending a grace period  */
+r_struct
+(brace
+DECL|member|cur
+r_int
+id|cur
+suffix:semicolon
+multiline_comment|/* Current batch number.&t;      */
+DECL|member|completed
+r_int
+id|completed
+suffix:semicolon
+multiline_comment|/* Number of the last completed batch */
+DECL|member|____cacheline_maxaligned_in_smp
+)brace
+id|batch
+id|____cacheline_maxaligned_in_smp
+suffix:semicolon
+multiline_comment|/* remaining members: bookkeeping of the progress of the grace period */
+r_struct
+(brace
 DECL|member|mutex
 id|spinlock_t
 id|mutex
 suffix:semicolon
 multiline_comment|/* Guard this struct                  */
-DECL|member|curbatch
+DECL|member|next_pending
 r_int
-id|curbatch
+id|next_pending
 suffix:semicolon
-multiline_comment|/* Current batch number.&t;      */
-DECL|member|maxbatch
-r_int
-id|maxbatch
-suffix:semicolon
-multiline_comment|/* Max requested batch number.        */
+multiline_comment|/* Is the next batch already waiting? */
 DECL|member|rcu_cpu_mask
 id|cpumask_t
 id|rcu_cpu_mask
 suffix:semicolon
-multiline_comment|/* CPUs that need to switch in order  */
-multiline_comment|/* for current batch to proceed.      */
+multiline_comment|/* CPUs that need to switch   */
+multiline_comment|/* in order for current batch to proceed.     */
+DECL|member|____cacheline_maxaligned_in_smp
+)brace
+id|state
+id|____cacheline_maxaligned_in_smp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Is batch a before batch b ? */
@@ -127,6 +148,12 @@ DECL|struct|rcu_data
 r_struct
 id|rcu_data
 (brace
+multiline_comment|/* 1) quiescent state handling : */
+DECL|member|quiescbatch
+r_int
+id|quiescbatch
+suffix:semicolon
+multiline_comment|/* Batch # for grace period */
 DECL|member|qsctr
 r_int
 id|qsctr
@@ -138,6 +165,12 @@ id|last_qsctr
 suffix:semicolon
 multiline_comment|/* value of qsctr at beginning */
 multiline_comment|/* of rcu grace period */
+DECL|member|qs_pending
+r_int
+id|qs_pending
+suffix:semicolon
+multiline_comment|/* core waits for quiesc state */
+multiline_comment|/* 2) batch handling */
 DECL|member|batch
 r_int
 id|batch
@@ -169,18 +202,20 @@ r_struct
 id|rcu_ctrlblk
 id|rcu_ctrlblk
 suffix:semicolon
+DECL|macro|RCU_quiescbatch
+mdefine_line|#define RCU_quiescbatch(cpu)&t;(per_cpu(rcu_data, (cpu)).quiescbatch)
 DECL|macro|RCU_qsctr
 mdefine_line|#define RCU_qsctr(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).qsctr)
 DECL|macro|RCU_last_qsctr
 mdefine_line|#define RCU_last_qsctr(cpu) &t;(per_cpu(rcu_data, (cpu)).last_qsctr)
+DECL|macro|RCU_qs_pending
+mdefine_line|#define RCU_qs_pending(cpu)&t;(per_cpu(rcu_data, (cpu)).qs_pending)
 DECL|macro|RCU_batch
 mdefine_line|#define RCU_batch(cpu) &t;&t;(per_cpu(rcu_data, (cpu)).batch)
 DECL|macro|RCU_nxtlist
 mdefine_line|#define RCU_nxtlist(cpu) &t;(per_cpu(rcu_data, (cpu)).nxtlist)
 DECL|macro|RCU_curlist
 mdefine_line|#define RCU_curlist(cpu) &t;(per_cpu(rcu_data, (cpu)).curlist)
-DECL|macro|RCU_QSCTR_INVALID
-mdefine_line|#define RCU_QSCTR_INVALID&t;0
 DECL|function|rcu_pending
 r_static
 r_inline
@@ -192,9 +227,9 @@ r_int
 id|cpu
 )paren
 (brace
+multiline_comment|/* This cpu has pending rcu entries and the grace period&n;&t; * for them has completed.&n;&t; */
 r_if
 c_cond
-(paren
 (paren
 op_logical_neg
 id|list_empty
@@ -208,19 +243,25 @@ id|cpu
 )paren
 )paren
 op_logical_and
+op_logical_neg
 id|rcu_batch_before
 c_func
 (paren
+id|rcu_ctrlblk.batch.completed
+comma
 id|RCU_batch
 c_func
 (paren
 id|cpu
 )paren
-comma
-id|rcu_ctrlblk.curbatch
 )paren
 )paren
-op_logical_or
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* This cpu has no pending entries, but there are new entries */
+r_if
+c_cond
 (paren
 id|list_empty
 c_func
@@ -245,19 +286,31 @@ id|cpu
 )paren
 )paren
 )paren
-op_logical_or
-id|cpu_isset
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* The rcu core waits for a quiescent state from the cpu */
+r_if
+c_cond
+(paren
+id|RCU_quiescbatch
 c_func
 (paren
 id|cpu
-comma
-id|rcu_ctrlblk.rcu_cpu_mask
+)paren
+op_ne
+id|rcu_ctrlblk.batch.cur
+op_logical_or
+id|RCU_qs_pending
+c_func
+(paren
+id|cpu
 )paren
 )paren
 r_return
 l_int|1
 suffix:semicolon
-r_else
+multiline_comment|/* nothing to do */
 r_return
 l_int|0
 suffix:semicolon
@@ -284,6 +337,15 @@ id|cpu
 comma
 r_int
 id|user
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rcu_restart_cpu
+c_func
+(paren
+r_int
+id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/* Exported interfaces */
