@@ -776,7 +776,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#elif CONFIG_X86_LOCAL_APIC
+macro_line|#elif defined(CONFIG_X86_LOCAL_APIC)
 r_if
 c_cond
 (paren
