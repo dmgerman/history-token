@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: xdi_msg.h,v 1.1.2.2 2002/10/02 14:38:38 armin Exp $ */
+multiline_comment|/* $Id: xdi_msg.h,v 1.1.2.2 2001/02/16 08:40:36 armin Exp $ */
 macro_line|#ifndef __DIVA_XDI_UM_CFG_MESSSGE_H__
 DECL|macro|__DIVA_XDI_UM_CFG_MESSAGE_H__
 mdefine_line|#define __DIVA_XDI_UM_CFG_MESSAGE_H__

@@ -379,7 +379,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ipppds
+id|ipppds_lock
 comma
 id|flags
 )paren
@@ -398,7 +398,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ipppds
+id|ipppds_lock
 comma
 id|flags
 )paren
@@ -471,7 +471,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ipppds
+id|ipppds_lock
 comma
 id|flags
 )paren
@@ -487,7 +487,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|ipppds
+id|ipppds_lock
 comma
 id|flags
 )paren
@@ -2739,7 +2739,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* device bound to ippp device ? */
+multiline_comment|/* device not bound to ippp device ? */
 r_struct
 id|list_head
 op_star
@@ -2843,8 +2843,6 @@ id|exclusive
 id|ipppd-&gt;minor
 )braket
 )paren
-r_break
-suffix:semicolon
 r_goto
 id|found
 suffix:semicolon

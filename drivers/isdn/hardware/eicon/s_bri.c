@@ -2619,7 +2619,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// disable interrupts !
+multiline_comment|/* disable interrupts ! */
 )brace
 id|outpp
 (paren
@@ -2628,7 +2628,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// clear int, halt cpu
+multiline_comment|/* clear int, halt cpu */
 )brace
 multiline_comment|/* -------------------------------------------------------------------------&n;  Fill card entry points&n;  ------------------------------------------------------------------------- */
 DECL|function|prepare_maestra_functions

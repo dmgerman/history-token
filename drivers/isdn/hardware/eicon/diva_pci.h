@@ -1,10 +1,11 @@
-multiline_comment|/* $Id: diva_pci.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: diva_pci.h,v 1.1.2.2 2001/02/12 20:23:46 armin Exp $ */
 macro_line|#ifndef __DIVA_PCI_INTERFACE_H__
 DECL|macro|__DIVA_PCI_INTERFACE_H__
 mdefine_line|#define __DIVA_PCI_INTERFACE_H__
 r_void
 op_star
 id|divasa_remap_pci_bar
+c_func
 (paren
 r_int
 r_int
@@ -17,6 +18,7 @@ id|area_length
 suffix:semicolon
 r_void
 id|divasa_unmap_pci_bar
+c_func
 (paren
 r_void
 op_star
@@ -26,6 +28,7 @@ suffix:semicolon
 r_int
 r_int
 id|divasa_get_pci_irq
+c_func
 (paren
 r_int
 r_char
@@ -43,6 +46,7 @@ suffix:semicolon
 r_int
 r_int
 id|divasa_get_pci_bar
+c_func
 (paren
 r_int
 r_char
@@ -62,6 +66,7 @@ id|pci_dev_handle
 suffix:semicolon
 id|byte
 id|diva_os_get_pci_bus
+c_func
 (paren
 r_void
 op_star
@@ -70,6 +75,7 @@ id|pci_dev_handle
 suffix:semicolon
 id|byte
 id|diva_os_get_pci_func
+c_func
 (paren
 r_void
 op_star

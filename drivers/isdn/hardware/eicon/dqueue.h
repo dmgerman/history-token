@@ -1,9 +1,9 @@
-multiline_comment|/* $Id: dqueue.h,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $ */
+multiline_comment|/* $Id: dqueue.h,v 1.1.2.2 2001/02/08 12:25:43 armin Exp $ */
 macro_line|#ifndef _DIVA_USER_MODE_IDI_DATA_QUEUE_H__
 DECL|macro|_DIVA_USER_MODE_IDI_DATA_QUEUE_H__
 mdefine_line|#define _DIVA_USER_MODE_IDI_DATA_QUEUE_H__
 DECL|macro|DIVA_UM_IDI_MAX_MSGS
-mdefine_line|#define DIVA_UM_IDI_MAX_MSGS 64 
+mdefine_line|#define DIVA_UM_IDI_MAX_MSGS 64
 DECL|struct|_diva_um_idi_data_queue
 r_typedef
 r_struct
@@ -78,6 +78,7 @@ id|q
 suffix:semicolon
 r_int
 id|diva_data_q_get_max_length
+c_func
 (paren
 r_const
 id|diva_um_idi_data_queue_t
@@ -88,6 +89,7 @@ suffix:semicolon
 r_void
 op_star
 id|diva_data_q_get_segment4write
+c_func
 (paren
 id|diva_um_idi_data_queue_t
 op_star
@@ -96,6 +98,7 @@ id|q
 suffix:semicolon
 r_void
 id|diva_data_q_ack_segment4write
+c_func
 (paren
 id|diva_um_idi_data_queue_t
 op_star
@@ -109,6 +112,7 @@ r_const
 r_void
 op_star
 id|diva_data_q_get_segment4read
+c_func
 (paren
 r_const
 id|diva_um_idi_data_queue_t
@@ -118,6 +122,7 @@ id|q
 suffix:semicolon
 r_int
 id|diva_data_q_get_segment_length
+c_func
 (paren
 r_const
 id|diva_um_idi_data_queue_t
@@ -127,6 +132,7 @@ id|q
 suffix:semicolon
 r_void
 id|diva_data_q_ack_segment4read
+c_func
 (paren
 id|diva_um_idi_data_queue_t
 op_star
