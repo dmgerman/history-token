@@ -58,17 +58,6 @@ DECL|macro|ei_debug
 mdefine_line|#define ei_debug 1
 macro_line|#endif
 r_extern
-r_int
-id|ethdev_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|NS8390_init
 c_func
@@ -387,7 +376,7 @@ multiline_comment|/* The maximum time waited (in jiffies) before assuming a Tx f
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT (20*HZ/100)
 DECL|macro|ei_status
-mdefine_line|#define ei_status (*(struct ei_device *)(dev-&gt;priv))
+mdefine_line|#define ei_status (*(struct ei_device *)netdev_priv(dev))
 multiline_comment|/* Some generic ethernet register configurations. */
 DECL|macro|E8390_TX_IRQ_MASK
 mdefine_line|#define E8390_TX_IRQ_MASK&t;0xa&t;/* For register EN0_ISR */
