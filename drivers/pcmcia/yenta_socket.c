@@ -13,6 +13,29 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;yenta_socket.h&quot;
 macro_line|#include &quot;i82365.h&quot;
+DECL|variable|disable_clkrun
+r_static
+r_int
+id|disable_clkrun
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|disable_clkrun
+comma
+r_bool
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|disable_clkrun
+comma
+l_string|&quot;If PC card doesn&squot;t function properly, please try this option&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define debug(x,args...) printk(KERN_DEBUG &quot;%s: &quot; x, __func__ , ##args)
 macro_line|#else
