@@ -148,6 +148,8 @@ id|pteptr
 suffix:semicolon
 )brace
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = (pmdval))
 DECL|macro|pte_page

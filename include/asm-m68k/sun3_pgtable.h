@@ -217,6 +217,15 @@ r_inline
 r_void
 id|pte_clear
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep

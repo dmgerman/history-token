@@ -534,6 +534,11 @@ id|pte_clear
 c_func
 (paren
 op_amp
+id|init_mm
+comma
+l_int|0
+comma
+op_amp
 id|pte
 )paren
 suffix:semicolon
@@ -908,6 +913,11 @@ id|max_low_pfn
 id|pte_clear
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+l_int|0
+comma
 op_amp
 id|pte
 )paren

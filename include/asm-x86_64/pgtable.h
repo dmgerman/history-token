@@ -161,6 +161,8 @@ id|val
 )paren
 suffix:semicolon
 )brace
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|function|set_pmd
 r_static
 r_inline
@@ -299,7 +301,7 @@ suffix:semicolon
 DECL|macro|pud_page
 mdefine_line|#define pud_page(pud) &bslash;&n;((unsigned long) __va(pud_val(pud) &amp; PHYSICAL_PAGE_MASK))
 DECL|macro|ptep_get_and_clear
-mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
+mdefine_line|#define ptep_get_and_clear(mm,addr,xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(a, b)&t;&t;((a).pte == (b).pte)
 DECL|macro|PMD_SIZE
@@ -565,7 +567,7 @@ mdefine_line|#define pte_none(x)&t;(!pte_val(x))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; (_PAGE_PRESENT | _PAGE_PROTNONE))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { set_pte(xp, __pte(0)); } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { set_pte_at(mm, addr, xp, __pte(0)); } while (0)
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x) ((x) &gt;&gt; (20-PAGE_SHIFT))&t;/* FIXME: is this&n;&t;&t;&t;&t;&t;&t;   right? */
 DECL|macro|pte_page
@@ -1126,6 +1128,15 @@ r_int
 id|ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1162,6 +1173,15 @@ r_int
 id|ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1198,6 +1218,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1207,27 +1236,6 @@ id|clear_bit
 c_func
 (paren
 id|_PAGE_BIT_RW
-comma
-id|ptep
-)paren
-suffix:semicolon
-)brace
-DECL|function|ptep_mkdirty
-r_static
-r_inline
-r_void
-id|ptep_mkdirty
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-id|set_bit
-c_func
-(paren
-id|_PAGE_BIT_DIRTY
 comma
 id|ptep
 )paren
@@ -1500,8 +1508,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;

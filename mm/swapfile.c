@@ -1685,9 +1685,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|address
+comma
 id|dir
 comma
 id|pte_mkold

@@ -350,7 +350,7 @@ suffix:semicolon
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte) BTFIXUP_CALL(pte_present)(pte)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(pte) BTFIXUP_CALL(pte_clear)(pte)
+mdefine_line|#define pte_clear(mm,addr,pte) BTFIXUP_CALL(pte_clear)(pte)
 id|BTFIXUPDEF_CALL_CONST
 c_func
 (paren
@@ -1079,6 +1079,8 @@ id|pte_t
 )paren
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep,pteval) BTFIXUP_CALL(set_pte)(ptep,pteval)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 r_struct
 id|seq_file
 suffix:semicolon

@@ -713,6 +713,11 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|vaddr
+comma
 id|pte
 )paren
 suffix:semicolon
