@@ -2189,17 +2189,31 @@ macro_line|#else
 DECL|macro|sched_exec
 mdefine_line|#define sched_exec()   {}
 macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
 r_extern
 r_void
-id|sched_idle_next
+id|idle_task_exit
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-r_extern
+macro_line|#else
+DECL|function|idle_task_exit
+r_static
+r_inline
 r_void
 id|idle_task_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif
+r_extern
+r_void
+id|sched_idle_next
 c_func
 (paren
 r_void
