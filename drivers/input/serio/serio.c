@@ -989,6 +989,12 @@ c_func
 id|serio
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|serio
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Serio driver operations&n; */
 DECL|function|serio_register_driver

@@ -2794,7 +2794,6 @@ suffix:semicolon
 id|__serio_unregister_port
 c_func
 (paren
-op_amp
 id|psmouse-&gt;ptport-&gt;serio
 )paren
 suffix:semicolon
@@ -3204,7 +3203,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;serio: %s port at %s&bslash;n&quot;
 comma
-id|psmouse-&gt;ptport-&gt;serio.name
+id|psmouse-&gt;ptport-&gt;serio-&gt;name
 comma
 id|psmouse-&gt;phys
 )paren
@@ -3212,7 +3211,6 @@ suffix:semicolon
 id|__serio_register_port
 c_func
 (paren
-op_amp
 id|psmouse-&gt;ptport-&gt;serio
 )paren
 suffix:semicolon
@@ -3385,7 +3383,6 @@ c_cond
 id|psmouse_reconnect
 c_func
 (paren
-op_amp
 id|psmouse-&gt;ptport-&gt;serio
 )paren
 )paren
@@ -3393,14 +3390,12 @@ id|psmouse-&gt;ptport-&gt;serio
 id|__serio_unregister_port
 c_func
 (paren
-op_amp
 id|psmouse-&gt;ptport-&gt;serio
 )paren
 suffix:semicolon
 id|__serio_register_port
 c_func
 (paren
-op_amp
 id|psmouse-&gt;ptport-&gt;serio
 )paren
 suffix:semicolon

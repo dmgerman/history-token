@@ -70,7 +70,14 @@ id|psmouse_ptport
 DECL|member|serio
 r_struct
 id|serio
+op_star
 id|serio
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|psmouse
+op_star
+id|parent
 suffix:semicolon
 DECL|member|activate
 r_void
