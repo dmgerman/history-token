@@ -116,6 +116,7 @@ r_struct
 id|timespec
 op_star
 comma
+r_const
 r_struct
 id|compat_timespec
 op_star
@@ -130,6 +131,7 @@ r_struct
 id|timespec
 op_star
 comma
+r_const
 r_struct
 id|compat_timespec
 op_star
