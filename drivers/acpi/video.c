@@ -40,9 +40,9 @@ mdefine_line|#define ACPI_VIDEO_NOTIFY_ZERO_BRIGHTNESS&t;0x85
 DECL|macro|ACPI_VIDEO_NOTIFY_DISPLAY_OFF
 mdefine_line|#define ACPI_VIDEO_NOTIFY_DISPLAY_OFF&t;&t;0x86
 DECL|macro|ACPI_VIDEO_HEAD_INVALID
-mdefine_line|#define ACPI_VIDEO_HEAD_INVALID&t;&t;(~0ul - 1)
+mdefine_line|#define ACPI_VIDEO_HEAD_INVALID&t;&t;(~0u - 1)
 DECL|macro|ACPI_VIDEO_HEAD_END
-mdefine_line|#define ACPI_VIDEO_HEAD_END&t;&t;(~0ul)
+mdefine_line|#define ACPI_VIDEO_HEAD_END&t;&t;(~0u)
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_VIDEO_COMPONENT
 id|ACPI_MODULE_NAME
