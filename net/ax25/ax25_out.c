@@ -224,7 +224,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|ax25_free_cb
+id|ax25_cb_put
 c_func
 (paren
 id|ax25
@@ -297,7 +297,7 @@ r_break
 suffix:semicolon
 macro_line|#endif
 )brace
-id|ax25_insert_socket
+id|ax25_cb_add
 c_func
 (paren
 id|ax25

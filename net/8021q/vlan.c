@@ -1809,13 +1809,27 @@ id|VLAN_ID
 op_assign
 id|new_dev
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|vlan_proc_add_dev
 c_func
 (paren
 id|new_dev
 )paren
-suffix:semicolon
+OL
+l_int|0
+)paren
 multiline_comment|/* create it&squot;s proc entry */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;VLAN: failed to add proc entry for %s&bslash;n&quot;
+comma
+id|new_dev-&gt;name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1819,18 +1819,18 @@ op_logical_neg
 id|gus-&gt;ess_flag
 )paren
 (brace
-id|snd_card_free
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
 id|snd_printdd
 c_func
 (paren
 l_string|&quot;GUS Extreme soundcard was not detected at 0x%lx&bslash;n&quot;
 comma
 id|gus-&gt;gf1.port
+)paren
+suffix:semicolon
+id|snd_card_free
+c_func
+(paren
+id|card
 )paren
 suffix:semicolon
 r_return
