@@ -140,13 +140,9 @@ comma
 r_int
 id|offset
 comma
-r_const
-r_void
-op_star
-id|protohdr
-comma
-id|u_int16_t
-id|datalen
+r_int
+r_int
+id|protoff
 comma
 r_int
 op_star
@@ -159,6 +155,8 @@ op_star
 id|ah
 op_assign
 l_int|NULL
+comma
+id|_ah
 suffix:semicolon
 r_const
 r_struct
@@ -189,7 +187,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*DEBUGP(&quot;IPv6 AH entered&bslash;n&quot;);*/
-multiline_comment|/* if (opt-&gt;auth == 0) return 0;&n;       * It does not filled on output */
+multiline_comment|/* if (opt-&gt;auth == 0) return 0;&n;&t;* It does not filled on output */
 multiline_comment|/* type of the 1st exthdr */
 id|nexthdr
 op_assign
@@ -227,8 +225,10 @@ id|nexthdr
 (brace
 r_struct
 id|ipv6_opt_hdr
+id|_hdr
+comma
 op_star
-id|hdr
+id|hp
 suffix:semicolon
 id|DEBUGP
 c_func
@@ -242,9 +242,6 @@ c_cond
 (paren
 id|len
 OL
-(paren
-r_int
-)paren
 r_sizeof
 (paren
 r_struct
@@ -262,10 +259,8 @@ id|nexthdr
 op_eq
 id|NEXTHDR_NONE
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 multiline_comment|/* ESP -&gt; evaluate */
 r_if
 c_cond
@@ -274,20 +269,33 @@ id|nexthdr
 op_eq
 id|NEXTHDR_ESP
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
-id|hdr
+id|hp
 op_assign
+id|skb_header_pointer
+c_func
 (paren
-r_struct
-id|ipv6_opt_hdr
-op_star
-)paren
-id|skb-&gt;data
-op_plus
+id|skb
+comma
 id|ptr
+comma
+r_sizeof
+(paren
+id|_hdr
+)paren
+comma
+op_amp
+id|_hdr
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|hp
+op_eq
+l_int|NULL
+)paren
 suffix:semicolon
 multiline_comment|/* Calculate the header length */
 r_if
@@ -297,12 +305,10 @@ id|nexthdr
 op_eq
 id|NEXTHDR_FRAGMENT
 )paren
-(brace
 id|hdrlen
 op_assign
 l_int|8
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -314,7 +320,7 @@ id|NEXTHDR_AUTH
 id|hdrlen
 op_assign
 (paren
-id|hdr-&gt;hdrlen
+id|hp-&gt;hdrlen
 op_plus
 l_int|2
 )paren
@@ -327,7 +333,7 @@ op_assign
 id|ipv6_optlen
 c_func
 (paren
-id|hdr
+id|hp
 )paren
 suffix:semicolon
 multiline_comment|/* AH -&gt; evaluate */
@@ -383,12 +389,10 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 id|nexthdr
 op_assign
-id|hdr-&gt;nexthdr
+id|hp-&gt;nexthdr
 suffix:semicolon
 id|len
 op_sub_assign
@@ -432,9 +436,6 @@ c_cond
 (paren
 id|len
 OL
-(paren
-r_int
-)paren
 r_sizeof
 (paren
 r_struct
@@ -453,15 +454,28 @@ suffix:semicolon
 )brace
 id|ah
 op_assign
+id|skb_header_pointer
+c_func
 (paren
-r_struct
-id|ip_auth_hdr
-op_star
-)paren
-(paren
-id|skb-&gt;data
-op_plus
+id|skb
+comma
 id|ptr
+comma
+r_sizeof
+(paren
+id|_ah
+)paren
+comma
+op_amp
+id|_ah
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|ah
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 id|DEBUGP
