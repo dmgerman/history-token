@@ -1461,8 +1461,6 @@ c_func
 id|add_disk_randomness
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************&n; *&n; * Hash function definition&n; *&n; *******************************************************************/
-multiline_comment|/*&n; * This chunk of code defines a function&n; * void sha_transform(__u32 digest[HASH_BUFFER_SIZE + HASH_EXTRA_SIZE],&n; * &t;&t;__u32 const data[16])&n; *&n; * The function hashes the input data to produce a digest in the first&n; * HASH_BUFFER_SIZE words of the digest[] array, and uses HASH_EXTRA_SIZE&n; * more words for internal purposes.  (This buffer is exported so the&n; * caller can wipe it once rather than this code doing it each call,&n; * and tacking it onto the end of the digest[] array is the quick and&n; * dirty way of doing it.)&n; *&n; * For /dev/random purposes, the length of the data being hashed is&n; * fixed in length, so appending a bit count in the usual way is not&n; * cryptographically necessary.&n; */
 DECL|macro|HASH_BUFFER_SIZE
 mdefine_line|#define HASH_BUFFER_SIZE 5
 DECL|macro|EXTRACT_SIZE
@@ -1488,6 +1486,7 @@ DECL|macro|K3
 mdefine_line|#define K3  0x8F1BBCDCL&t;&t;&t;/* Rounds 40-59: sqrt(5) * 2^30 */
 DECL|macro|K4
 mdefine_line|#define K4  0xCA62C1D6L&t;&t;&t;/* Rounds 60-79: sqrt(10) * 2^30 */
+multiline_comment|/*&n; * sha_transform: single block SHA1 transform&n; *&n; * @digest: 160 bit digest to update&n; * @data:   512 bytes of data to hash&n; * @W:      80 words of workspace&n; *&n; * This function generates a SHA1 digest for a single. Be warned, it&n; * does not handle padding and message digest, do not confuse it with&n; * the full FIPS 180-1 digest algorithm for variable length messages.&n; */
 DECL|function|sha_transform
 r_static
 r_void
@@ -1497,14 +1496,18 @@ c_func
 id|__u32
 id|digest
 (braket
-l_int|85
+l_int|5
 )braket
 comma
-id|__u32
 r_const
+r_char
+op_star
 id|data
+comma
+id|__u32
+id|W
 (braket
-l_int|16
+l_int|80
 )braket
 )paren
 (brace
@@ -1519,31 +1522,61 @@ id|D
 comma
 id|E
 suffix:semicolon
-multiline_comment|/* Local vars */
 id|__u32
 id|TEMP
 suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-DECL|macro|W
-mdefine_line|#define W (digest + HASH_BUFFER_SIZE)&t;/* Expanded data array */
-multiline_comment|/*&n;&t; * Do the preliminary expansion of 16 to 80 words.  Doing it&n;&t; * out-of-line line this is faster than doing it in-line on&n;&t; * register-starved machines like the x86, and not really any&n;&t; * slower on real processors.&n;&t; */
-id|memcpy
+id|memset
 c_func
 (paren
 id|W
 comma
-id|data
+l_int|0
 comma
-l_int|16
-op_star
 r_sizeof
 (paren
-id|__u32
+id|W
 )paren
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|W
+(braket
+id|i
+)braket
+op_assign
+id|be32_to_cpu
+c_func
+(paren
+(paren
+(paren
+r_const
+id|__u32
+op_star
+)paren
+id|data
+)paren
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Do the preliminary expansion of 16 to 80 words.  Doing it&n;&t; * out-of-line line this is faster than doing it in-line on&n;&t; * register-starved machines like the x86, and not really any&n;&t; * slower on real processors.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1820,8 +1853,6 @@ op_add_assign
 id|E
 suffix:semicolon
 multiline_comment|/* W is wiped by the caller */
-DECL|macro|W
-macro_line|#undef W
 )brace
 DECL|macro|f1
 macro_line|#undef f1
@@ -1839,6 +1870,54 @@ DECL|macro|K3
 macro_line|#undef K3
 DECL|macro|K4
 macro_line|#undef K4
+multiline_comment|/*&n; * sha_init: initialize the vectors for a SHA1 digest&n; *&n; * @buf: vector to initialize&n; */
+DECL|function|sha_init
+r_static
+r_void
+id|sha_init
+c_func
+(paren
+id|__u32
+op_star
+id|buf
+)paren
+(brace
+id|buf
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x67452301
+suffix:semicolon
+id|buf
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0xefcdab89
+suffix:semicolon
+id|buf
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x98badcfe
+suffix:semicolon
+id|buf
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x10325476
+suffix:semicolon
+id|buf
+(braket
+l_int|4
+)braket
+op_assign
+l_int|0xc3d2e1f0
+suffix:semicolon
+)brace
 multiline_comment|/*********************************************************************&n; *&n; * Entropy extraction routines&n; *&n; *********************************************************************/
 r_static
 id|ssize_t
@@ -2206,41 +2285,11 @@ id|buf
 l_int|85
 )braket
 suffix:semicolon
-multiline_comment|/* Hash the pool to get the output */
+id|sha_init
+c_func
+(paren
 id|buf
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x67452301
-suffix:semicolon
-id|buf
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0xefcdab89
-suffix:semicolon
-id|buf
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0x98badcfe
-suffix:semicolon
-id|buf
-(braket
-l_int|3
-)braket
-op_assign
-l_int|0x10325476
-suffix:semicolon
-id|buf
-(braket
-l_int|4
-)braket
-op_assign
-l_int|0xc3d2e1f0
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * As we hash the pool, we mix intermediate values of&n;&t; * the hash back into the pool.  This eliminates&n;&t; * backtracking attacks (where the attacker knows&n;&t; * the state of the pool plus the current outputs, and&n;&t; * attempts to find previous ouputs), unless the hash&n;&t; * function can be inverted.&n;&t; */
 r_for
@@ -2272,9 +2321,17 @@ c_func
 (paren
 id|buf
 comma
+(paren
+id|__u8
+op_star
+)paren
 id|r-&gt;pool
 op_plus
 id|i
+comma
+id|buf
+op_plus
+l_int|5
 )paren
 suffix:semicolon
 id|add_entropy_words
@@ -2318,7 +2375,15 @@ c_func
 (paren
 id|buf
 comma
+(paren
+id|__u8
+op_star
+)paren
 id|data
+comma
+id|buf
+op_plus
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * In case the hash function has some recognizable&n;&t; * output pattern, we fold it in half.&n;&t; */
@@ -7029,7 +7094,17 @@ id|tmp
 op_plus
 l_int|16
 comma
+(paren
+id|__u8
+op_star
+)paren
 id|tmp
+comma
+id|tmp
+op_plus
+l_int|16
+op_plus
+l_int|5
 )paren
 suffix:semicolon
 id|seq
@@ -7110,7 +7185,17 @@ id|tmp
 op_plus
 l_int|16
 comma
+(paren
+id|__u8
+op_star
+)paren
 id|tmp
+comma
+id|tmp
+op_plus
+l_int|16
+op_plus
+l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* Add in the second hash and the data */
@@ -7246,7 +7331,17 @@ id|tmp
 op_plus
 l_int|16
 comma
+(paren
+id|__u8
+op_star
+)paren
 id|tmp
+comma
+id|tmp
+op_plus
+l_int|16
+op_plus
+l_int|5
 )paren
 suffix:semicolon
 id|cookie
