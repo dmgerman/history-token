@@ -7263,16 +7263,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cdev_add
-c_func
-(paren
-op_amp
-id|video1394_cdev
-comma
-id|IEEE1394_VIDEO1394_DEV
-comma
-l_int|16
-)paren
+id|ret
 )paren
 (brace
 id|PRINT_G
