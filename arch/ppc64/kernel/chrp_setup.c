@@ -58,7 +58,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|openpic_init_IRQ
+id|pSeries_init_openpic
 c_func
 (paren
 r_void
@@ -825,7 +825,7 @@ id|IC_OPEN_PIC
 (brace
 id|ppc_md.init_IRQ
 op_assign
-id|openpic_init_IRQ
+id|pSeries_init_openpic
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
