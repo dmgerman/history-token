@@ -1205,6 +1205,14 @@ id|v86mask
 comma
 id|saved_esp0
 suffix:semicolon
+DECL|member|saved_fs
+DECL|member|saved_gs
+r_int
+r_int
+id|saved_fs
+comma
+id|saved_gs
+suffix:semicolon
 multiline_comment|/* IO permissions */
 DECL|member|ts_io_bitmap
 r_int
