@@ -1465,6 +1465,20 @@ id|net_bridge_fdb_entry
 op_star
 id|fdb
 suffix:semicolon
+multiline_comment|/* some users want to always flood. */
+r_if
+c_cond
+(paren
+id|hold_time
+c_func
+(paren
+id|br
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|rcu_read_lock
 c_func
 (paren

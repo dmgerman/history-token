@@ -1122,6 +1122,12 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|bh_lock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1173,7 +1179,13 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|release_sock
+id|bh_unlock_sock
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|sock_put
 c_func
 (paren
 id|sk

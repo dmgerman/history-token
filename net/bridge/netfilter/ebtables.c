@@ -767,10 +767,6 @@ r_struct
 id|ebt_table_info
 op_star
 r_private
-op_assign
-id|table
-op_member_access_from_pointer
-r_private
 suffix:semicolon
 id|read_lock_bh
 c_func
@@ -778,6 +774,12 @@ c_func
 op_amp
 id|table-&gt;lock
 )paren
+suffix:semicolon
+r_private
+op_assign
+id|table
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|cb_base
 op_assign

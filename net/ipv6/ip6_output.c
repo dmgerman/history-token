@@ -1614,6 +1614,10 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
+id|dst
+op_assign
+id|skb-&gt;dst
+suffix:semicolon
 multiline_comment|/* IPv6 specs say nothing about it, but it is clear that we cannot&n;&t;   send redirects to source routed frames.&n;&t; */
 r_if
 c_cond
