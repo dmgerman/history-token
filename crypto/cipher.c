@@ -794,15 +794,6 @@ id|iv
 op_assign
 id|info
 suffix:semicolon
-multiline_comment|/* Null encryption */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|iv
-)paren
-r_return
-suffix:semicolon
 r_if
 c_cond
 (paren
