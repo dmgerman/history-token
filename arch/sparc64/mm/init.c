@@ -1963,8 +1963,14 @@ op_and_assign
 op_complement
 l_int|0x0003fe0000000000UL
 suffix:semicolon
-id|set_pte
+id|set_pte_at
+c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|vaddr
+comma
 id|ptep
 comma
 id|__pte

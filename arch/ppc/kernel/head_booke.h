@@ -20,7 +20,7 @@ mdefine_line|#define FINISH_EXCEPTION(func)&t;&t;&t;&t;&t;&bslash;&n;&t;bl&t;tra
 DECL|macro|EXCEPTION
 mdefine_line|#define EXCEPTION(n, label, hdlr, xfer)&t;&t;&t;&t;&bslash;&n;&t;START_EXCEPTION(label);&t;&t;&t;&t;&t;&bslash;&n;&t;NORMAL_EXCEPTION_PROLOG;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r3,r1,STACK_FRAME_OVERHEAD;&t;&t;&t;&bslash;&n;&t;xfer(n, hdlr)
 DECL|macro|CRITICAL_EXCEPTION
-mdefine_line|#define CRITICAL_EXCEPTION(n, label, hdlr)&t;&t;&t;&bslash;&n;&t;START_EXCEPTION(label);&t;&t;&t;&t;&t;&bslash;&n;&t;CRITICAL_EXCEPTION_PROLOG;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r3,r1,STACK_FRAME_OVERHEAD;&t;&t;&t;&bslash;&n;&t;EXC_XFER_TEMPLATE(hdlr, n+2, (MSR_KERNEL &amp; ~(MSR_ME|MSR_DE|MSR_CE)), &bslash;&n;&t;&t;&t;  NOCOPY, transfer_to_handler_full, &bslash;&n;&t;&t;&t;  ret_from_except_full)
+mdefine_line|#define CRITICAL_EXCEPTION(n, label, hdlr)&t;&t;&t;&bslash;&n;&t;START_EXCEPTION(label);&t;&t;&t;&t;&t;&bslash;&n;&t;CRITICAL_EXCEPTION_PROLOG;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r3,r1,STACK_FRAME_OVERHEAD;&t;&t;&t;&bslash;&n;&t;EXC_XFER_TEMPLATE(hdlr, n+2, (MSR_KERNEL &amp; ~(MSR_ME|MSR_DE|MSR_CE)), &bslash;&n;&t;&t;&t;  NOCOPY, crit_transfer_to_handler, &bslash;&n;&t;&t;&t;  ret_from_crit_exc)
 DECL|macro|MCHECK_EXCEPTION
 mdefine_line|#define MCHECK_EXCEPTION(n, label, hdlr)&t;&t;&t;&bslash;&n;&t;START_EXCEPTION(label);&t;&t;&t;&t;&t;&bslash;&n;&t;MCHECK_EXCEPTION_PROLOG;&t;&t;&t;&t;&bslash;&n;&t;mfspr&t;r5,SPRN_ESR;&t;&t;&t;&t;&t;&bslash;&n;&t;stw&t;r5,_ESR(r11);&t;&t;&t;&t;&t;&bslash;&n;&t;addi&t;r3,r1,STACK_FRAME_OVERHEAD;&t;&t;&t;&bslash;&n;&t;EXC_XFER_TEMPLATE(hdlr, n+2, (MSR_KERNEL &amp; ~(MSR_ME|MSR_DE|MSR_CE)), &bslash;&n;&t;&t;&t;  NOCOPY, mcheck_transfer_to_handler,   &bslash;&n;&t;&t;&t;  ret_from_mcheck_exc)
 DECL|macro|EXC_XFER_TEMPLATE

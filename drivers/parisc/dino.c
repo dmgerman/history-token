@@ -2190,7 +2190,11 @@ id|KERN_WARNING
 l_string|&quot;Device %s has undefined IRQ, &quot;
 l_string|&quot;setting to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|irq_pin
 )paren
@@ -2231,7 +2235,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Device %s has unassigned IRQ&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -13,6 +13,8 @@ macro_line|#include &lt;asm/virtconvert.h&gt;
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval)&t;&t;&t;&t;&t;&bslash;&n;&t;do{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*(pteptr) = (pteval);&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 macro_line|#ifdef CONFIG_SUN3
 DECL|macro|PMD_SHIFT

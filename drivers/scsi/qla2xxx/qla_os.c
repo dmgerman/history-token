@@ -6662,7 +6662,11 @@ id|ha
 comma
 l_string|&quot;Invalid PCI I/O region size (%s)...&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 id|pio
@@ -6682,7 +6686,11 @@ id|ha
 comma
 l_string|&quot;region #0 not a PIO resource (%s)...&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 id|pio
@@ -6741,7 +6749,11 @@ id|ha
 comma
 l_string|&quot;region #0 not an MMIO resource (%s), aborting&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -6765,7 +6777,11 @@ id|ha
 comma
 l_string|&quot;Invalid PCI mem region size (%s), aborting&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -6793,7 +6809,11 @@ id|ha
 comma
 l_string|&quot;Failed to reserve PIO/MMIO regions (%s)&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -6834,7 +6854,11 @@ id|ha
 comma
 l_string|&quot;cannot remap MMIO (%s), aborting&bslash;n&quot;
 comma
-id|ha-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_goto

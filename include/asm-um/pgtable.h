@@ -194,7 +194,7 @@ multiline_comment|/* to find an entry in a page-table */
 DECL|macro|PAGE_PTR
 mdefine_line|#define PAGE_PTR(address) &bslash;&n;((unsigned long)(address)&gt;&gt;(PAGE_SHIFT-SIZEOF_PTR_LOG2)&amp;PTR_MASK&amp;~PAGE_MASK)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp) pte_set_val(*(xp), (phys_t) 0, __pgprot(_PAGE_NEWPAGE))
+mdefine_line|#define pte_clear(mm,addr,xp) pte_set_val(*(xp), (phys_t) 0, __pgprot(_PAGE_NEWPAGE))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!(pmd_val(x) &amp; ~_PAGE_NEWPAGE))
 DECL|macro|pmd_bad

@@ -460,16 +460,11 @@ suffix:semicolon
 multiline_comment|/* current phase&t;&t;&t;*/
 DECL|member|io_base
 r_void
+id|__iomem
 op_star
 id|io_base
 suffix:semicolon
 multiline_comment|/* iomem base of FAS216&t;&t;&t;*/
-DECL|member|io_port
-r_int
-r_int
-id|io_port
-suffix:semicolon
-multiline_comment|/* base address of FAS216&t;&t;*/
 DECL|member|io_shift
 r_int
 r_int
@@ -498,6 +493,11 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* interrupt&t;&t;&t;&t;*/
+DECL|member|dma
+r_int
+id|dma
+suffix:semicolon
+multiline_comment|/* dma channel&t;&t;&t;&t;*/
 DECL|member|SCp
 id|Scsi_Pointer
 id|SCp

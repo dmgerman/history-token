@@ -15,8 +15,10 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fsl_devices.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -859,56 +861,29 @@ c_func
 (paren
 id|m
 comma
+l_string|&quot;chip&bslash;t&bslash;t: MPC%s&bslash;n&quot;
+comma
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
 l_string|&quot;Vendor&bslash;t&bslash;t: RPC Electronics STx &bslash;n&quot;
 )paren
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|svid
-op_amp
-l_int|0xffff0000
-)paren
-(brace
-r_case
-id|SVR_8540
-suffix:colon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;Machine&bslash;t&bslash;t: GP3 - MPC8540&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SVR_8560
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
+l_string|&quot;Machine&bslash;t&bslash;t: GP3 - MPC%s&bslash;n&quot;
 comma
-l_string|&quot;Machine&bslash;t&bslash;t: GP3 - MPC8560&bslash;n&quot;
+id|cur_ppc_sys_spec-&gt;ppc_sys_name
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;Machine&bslash;t&bslash;t: unknown&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|seq_printf
 c_func
 (paren

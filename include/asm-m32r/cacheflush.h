@@ -27,7 +27,7 @@ mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
+mdefine_line|#define flush_cache_page(vma, vmaddr, pfn)&t;do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_dcache_mmap_lock
@@ -69,7 +69,7 @@ mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
+mdefine_line|#define flush_cache_page(vma, vmaddr, pfn)&t;do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_dcache_mmap_lock
@@ -92,7 +92,7 @@ mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
 mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
+mdefine_line|#define flush_cache_page(vma, vmaddr, pfn)&t;do { } while (0)
 DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_dcache_mmap_lock

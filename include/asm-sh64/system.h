@@ -419,5 +419,7 @@ mdefine_line|#define PLS()
 macro_line|#endif&t;/* CONFIG_SH_ALPHANUMERIC */
 DECL|macro|PL
 mdefine_line|#define PL() printk(&quot;@ &lt;%s,%s:%d&gt;&bslash;n&quot;,__FILE__,__FUNCTION__,__LINE__)
+DECL|macro|arch_align_stack
+mdefine_line|#define arch_align_stack(x) (x)
 macro_line|#endif /* __ASM_SH64_SYSTEM_H */
 eof

@@ -4135,7 +4135,11 @@ op_logical_neg
 (paren
 id|id-&gt;driver_info
 op_amp
+(paren
 id|HCI_BROKEN_ISOC
+op_or
+id|HCI_SNIFFER
+)paren
 )paren
 )paren
 id|isoc_iface

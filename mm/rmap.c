@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -2077,6 +2076,12 @@ c_func
 id|vma
 comma
 id|address
+comma
+id|page_to_pfn
+c_func
+(paren
+id|page
+)paren
 )paren
 suffix:semicolon
 id|pteval
@@ -2183,9 +2188,13 @@ id|mmlist_lock
 )paren
 suffix:semicolon
 )brace
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|pte
 comma
 id|swp_entry_to_pte
@@ -2212,11 +2221,6 @@ suffix:semicolon
 )brace
 id|mm-&gt;rss
 op_decrement
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
-)paren
 suffix:semicolon
 id|page_remove_rmap
 c_func
@@ -2550,6 +2554,8 @@ c_func
 id|vma
 comma
 id|address
+comma
+id|pfn
 )paren
 suffix:semicolon
 id|pteval
@@ -2578,9 +2584,13 @@ comma
 id|address
 )paren
 )paren
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|pte
 comma
 id|pgoff_to_pte
@@ -2616,11 +2626,6 @@ id|page_cache_release
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|acct_update_integrals
-c_func
-(paren
 )paren
 suffix:semicolon
 id|mm-&gt;rss

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/map.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - Memory map definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  06-Jan-2003 BJD  Linux 2.6.0 version, moved bast specifics out&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/map.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - Memory map definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  12-May-2003 BJD  Created file&n; *  06-Jan-2003 BJD  Linux 2.6.0 version, moved bast specifics out&n; *  10-Feb-2005 BJD  Added CAMIF definition from guillaume.gourat@nexvision.tv&n;*/
 macro_line|#ifndef __ASM_ARCH_MAP_H
 DECL|macro|__ASM_ARCH_MAP_H
 mdefine_line|#define __ASM_ARCH_MAP_H
@@ -133,6 +133,11 @@ DECL|macro|S3C2410_PA_SDI
 mdefine_line|#define S3C2410_PA_SDI&t;   (0x5A000000)
 DECL|macro|S3C2410_SZ_SDI
 mdefine_line|#define S3C2410_SZ_SDI&t;   SZ_1M
+multiline_comment|/* CAMIF */
+DECL|macro|S3C2440_PA_CAMIF
+mdefine_line|#define S3C2440_PA_CAMIF   (0x4F000000)
+DECL|macro|S3C2440_SZ_CAMIF
+mdefine_line|#define S3C2440_SZ_CAMIF   SZ_1M
 multiline_comment|/* ISA style IO, for each machine to sort out mappings for, if it&n; * implements it. We reserve two 16M regions for ISA.&n; */
 DECL|macro|S3C2410_VA_ISA_WORD
 mdefine_line|#define S3C2410_VA_ISA_WORD  S3C2410_ADDR(0x02000000)

@@ -5408,7 +5408,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: enable failure&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -5577,7 +5581,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: could not request regions.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto

@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
@@ -5797,6 +5798,13 @@ r_return
 id|head
 suffix:semicolon
 )brace
+DECL|variable|find_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_devices
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Construct and return a list of the device_nodes with a given type.&n; */
 r_struct
 id|device_node
@@ -5883,6 +5891,13 @@ r_return
 id|head
 suffix:semicolon
 )brace
+DECL|variable|find_type_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_type_devices
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Returns all nodes linked together&n; */
 r_struct
 id|device_node
@@ -5947,6 +5962,13 @@ r_return
 id|head
 suffix:semicolon
 )brace
+DECL|variable|find_all_nodes
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_all_nodes
+)paren
+suffix:semicolon
 multiline_comment|/** Checks if the given &quot;compat&quot; string matches one of the strings in&n; * the device&squot;s &quot;compatible&quot; property&n; */
 r_int
 DECL|function|device_is_compatible
@@ -6054,6 +6076,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|device_is_compatible
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_is_compatible
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Indicates whether the root node has a given value in its&n; * compatible property.&n; */
 r_int
 DECL|function|machine_is_compatible
@@ -6111,6 +6140,13 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|variable|machine_is_compatible
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_is_compatible
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Construct and return a list of the device_nodes with a given type&n; * and compatible property.&n; */
 r_struct
 id|device_node
@@ -6222,6 +6258,13 @@ r_return
 id|head
 suffix:semicolon
 )brace
+DECL|variable|find_compatible_devices
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_compatible_devices
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Find the device_node with a given full_name.&n; */
 r_struct
 id|device_node
@@ -6280,6 +6323,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|find_path_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_path_device
+)paren
+suffix:semicolon
 multiline_comment|/*******&n; *&n; * New implementation of the OF &quot;find&quot; APIs, return a refcounted&n; * object, call of_node_put() when done.  The device tree and list&n; * are protected by a rw_lock.&n; *&n; * Note that property management will need some locking as well,&n; * this isn&squot;t dealt with yet.&n; *&n; *******/
 multiline_comment|/**&n; *&t;of_find_node_by_name - Find a node by its &quot;name&quot; property&n; *&t;@from:&t;The node to start searching from or NULL, the node&n; *&t;&t;you pass will not be searched, only the next one&n; *&t;&t;will; typically, you pass what the previous call&n; *&t;&t;returned. of_node_put() will be called on it&n; *&t;@name:&t;The name string to match against&n; *&n; *&t;Returns a node pointer with refcount incremented, use&n; *&t;of_node_put() on it when done.&n; */
 DECL|function|of_find_node_by_name
@@ -8753,6 +8803,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|get_property
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|get_property
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Add a property to a node&n; */
 r_void
 DECL|function|prom_add_property

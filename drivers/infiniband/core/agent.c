@@ -5,6 +5,7 @@ macro_line|#include &lt;ib_smi.h&gt;
 macro_line|#include &quot;smi.h&quot;
 macro_line|#include &quot;agent_priv.h&quot;
 macro_line|#include &quot;mad_priv.h&quot;
+macro_line|#include &quot;agent.h&quot;
 DECL|variable|ib_agent_port_list_lock
 id|spinlock_t
 id|ib_agent_port_list_lock
@@ -15,11 +16,6 @@ c_func
 (paren
 id|ib_agent_port_list
 )paren
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
-id|ib_mad_cache
 suffix:semicolon
 multiline_comment|/*&n; * Caller must hold ib_agent_port_list_lock&n; */
 r_static
@@ -86,7 +82,7 @@ id|port_list
 r_if
 c_cond
 (paren
-id|entry-&gt;dr_smp_agent-&gt;device
+id|entry-&gt;smp_agent-&gt;device
 op_eq
 id|device
 op_logical_and
@@ -116,13 +112,7 @@ r_if
 c_cond
 (paren
 (paren
-id|entry-&gt;dr_smp_agent
-op_eq
-id|mad_agent
-)paren
-op_logical_or
-(paren
-id|entry-&gt;lr_smp_agent
+id|entry-&gt;smp_agent
 op_eq
 id|mad_agent
 )paren
@@ -282,7 +272,7 @@ r_return
 id|smi_check_local_smp
 c_func
 (paren
-id|port_priv-&gt;dr_smp_agent
+id|port_priv-&gt;smp_agent
 comma
 id|smp
 )paren
@@ -815,18 +805,12 @@ id|mad-&gt;mad.mad.mad_hdr.mgmt_class
 r_case
 id|IB_MGMT_CLASS_SUBN_DIRECTED_ROUTE
 suffix:colon
-id|mad_agent
-op_assign
-id|port_priv-&gt;dr_smp_agent
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|IB_MGMT_CLASS_SUBN_LID_ROUTED
 suffix:colon
 id|mad_agent
 op_assign
-id|port_priv-&gt;lr_smp_agent
+id|port_priv-&gt;smp_agent
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1031,10 +1015,6 @@ id|ib_agent_port_private
 op_star
 id|port_priv
 suffix:semicolon
-r_struct
-id|ib_mad_reg_req
-id|reg_req
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1141,16 +1121,8 @@ op_amp
 id|port_priv-&gt;send_posted_list
 )paren
 suffix:semicolon
-multiline_comment|/* Obtain MAD agent for directed route SM class */
-id|reg_req.mgmt_class
-op_assign
-id|IB_MGMT_CLASS_SUBN_DIRECTED_ROUTE
-suffix:semicolon
-id|reg_req.mgmt_class_version
-op_assign
-l_int|1
-suffix:semicolon
-id|port_priv-&gt;dr_smp_agent
+multiline_comment|/* Obtain send only MAD agent for SM class (SMI QP) */
+id|port_priv-&gt;smp_agent
 op_assign
 id|ib_register_mad_agent
 c_func
@@ -1179,7 +1151,7 @@ c_cond
 id|IS_ERR
 c_func
 (paren
-id|port_priv-&gt;dr_smp_agent
+id|port_priv-&gt;smp_agent
 )paren
 )paren
 (brace
@@ -1188,68 +1160,14 @@ op_assign
 id|PTR_ERR
 c_func
 (paren
-id|port_priv-&gt;dr_smp_agent
+id|port_priv-&gt;smp_agent
 )paren
 suffix:semicolon
 r_goto
 id|error2
 suffix:semicolon
 )brace
-multiline_comment|/* Obtain MAD agent for LID routed SM class */
-id|reg_req.mgmt_class
-op_assign
-id|IB_MGMT_CLASS_SUBN_LID_ROUTED
-suffix:semicolon
-id|port_priv-&gt;lr_smp_agent
-op_assign
-id|ib_register_mad_agent
-c_func
-(paren
-id|device
-comma
-id|port_num
-comma
-id|IB_QPT_SMI
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-op_amp
-id|agent_send_handler
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_ERR
-c_func
-(paren
-id|port_priv-&gt;lr_smp_agent
-)paren
-)paren
-(brace
-id|ret
-op_assign
-id|PTR_ERR
-c_func
-(paren
-id|port_priv-&gt;lr_smp_agent
-)paren
-suffix:semicolon
-r_goto
-id|error3
-suffix:semicolon
-)brace
-multiline_comment|/* Obtain MAD agent for PerfMgmt class */
-id|reg_req.mgmt_class
-op_assign
-id|IB_MGMT_CLASS_PERF_MGMT
-suffix:semicolon
+multiline_comment|/* Obtain send only MAD agent for PerfMgmt class (GSI QP) */
 id|port_priv-&gt;perf_mgmt_agent
 op_assign
 id|ib_register_mad_agent
@@ -1292,7 +1210,7 @@ id|port_priv-&gt;perf_mgmt_agent
 )paren
 suffix:semicolon
 r_goto
-id|error4
+id|error3
 suffix:semicolon
 )brace
 id|port_priv-&gt;mr
@@ -1300,7 +1218,7 @@ op_assign
 id|ib_get_dma_mr
 c_func
 (paren
-id|port_priv-&gt;dr_smp_agent-&gt;qp-&gt;pd
+id|port_priv-&gt;smp_agent-&gt;qp-&gt;pd
 comma
 id|IB_ACCESS_LOCAL_WRITE
 )paren
@@ -1332,7 +1250,7 @@ id|port_priv-&gt;mr
 )paren
 suffix:semicolon
 r_goto
-id|error5
+id|error4
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -1366,7 +1284,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|error5
+id|error4
 suffix:colon
 id|ib_unregister_mad_agent
 c_func
@@ -1374,20 +1292,12 @@ c_func
 id|port_priv-&gt;perf_mgmt_agent
 )paren
 suffix:semicolon
-id|error4
-suffix:colon
-id|ib_unregister_mad_agent
-c_func
-(paren
-id|port_priv-&gt;lr_smp_agent
-)paren
-suffix:semicolon
 id|error3
 suffix:colon
 id|ib_unregister_mad_agent
 c_func
 (paren
-id|port_priv-&gt;dr_smp_agent
+id|port_priv-&gt;smp_agent
 )paren
 suffix:semicolon
 id|error2
@@ -1511,13 +1421,7 @@ suffix:semicolon
 id|ib_unregister_mad_agent
 c_func
 (paren
-id|port_priv-&gt;lr_smp_agent
-)paren
-suffix:semicolon
-id|ib_unregister_mad_agent
-c_func
-(paren
-id|port_priv-&gt;dr_smp_agent
+id|port_priv-&gt;smp_agent
 )paren
 suffix:semicolon
 id|kfree

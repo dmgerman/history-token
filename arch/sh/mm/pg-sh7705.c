@@ -441,6 +441,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -455,6 +464,10 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon

@@ -226,6 +226,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|expkey_request
+r_static
 r_void
 id|expkey_request
 c_func
@@ -352,6 +353,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|function|expkey_parse
+r_static
 r_int
 id|expkey_parse
 c_func
@@ -1426,6 +1428,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|svc_export_request
+r_static
 r_void
 id|svc_export_request
 c_func
@@ -1659,6 +1662,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|svc_export_parse
+r_static
 r_int
 id|svc_export_parse
 c_func
@@ -2579,6 +2583,7 @@ id|ek
 suffix:semicolon
 )brace
 DECL|function|exp_set_key
+r_static
 r_int
 id|exp_set_key
 c_func
@@ -4783,6 +4788,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|struct|flags
+r_static
 r_struct
 id|flags
 (brace

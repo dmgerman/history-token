@@ -19,10 +19,6 @@ DECL|macro|LOG_TEMP
 mdefine_line|#define LOG_TEMP&t;&t;0&t;&t;&t;/* continously log temperature */
 DECL|macro|I2C_DRIVERID_G4FAN
 mdefine_line|#define I2C_DRIVERID_G4FAN&t;0x9001&t;&t;&t;/* fixme */
-DECL|macro|THERMOSTAT_CLIENT_ID
-mdefine_line|#define THERMOSTAT_CLIENT_ID&t;1
-DECL|macro|FAN_CLIENT_ID
-mdefine_line|#define FAN_CLIENT_ID&t;&t;2
 r_static
 r_int
 id|do_probe
@@ -1808,10 +1804,6 @@ comma
 id|cl-&gt;addr
 )paren
 suffix:semicolon
-id|cl-&gt;id
-op_assign
-id|FAN_CLIENT_ID
-suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -2017,10 +2009,6 @@ suffix:semicolon
 id|x.overheat_hyst
 op_assign
 id|hyst_temp
-suffix:semicolon
-id|cl-&gt;id
-op_assign
-id|THERMOSTAT_CLIENT_ID
 suffix:semicolon
 id|strlcpy
 c_func

@@ -77,6 +77,10 @@ comma
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 suffix:semicolon
 r_extern
@@ -138,9 +142,9 @@ mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma, page)&t;do { } while (0)
 DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&t;&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;&t;flush_icache_user_range(vma, page, vaddr, len);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;&t;flush_icache_user_range(vma, page, vaddr, len);&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&t;&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __ASM_SH64_CACHEFLUSH_H */
 eof

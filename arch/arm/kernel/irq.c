@@ -67,6 +67,11 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n; * No architecture-specific irq_finish function defined in arm/arch/irqs.h.&n; */
+macro_line|#ifndef irq_finish
+DECL|macro|irq_finish
+mdefine_line|#define irq_finish(irq) do { } while (0)
+macro_line|#endif
 multiline_comment|/*&n; * Dummy mask/unmask handler&n; */
 DECL|function|dummy_mask_unmask_irq
 r_void
@@ -1901,6 +1906,12 @@ id|do_pending_irqs
 c_func
 (paren
 id|regs
+)paren
+suffix:semicolon
+id|irq_finish
+c_func
+(paren
+id|irq
 )paren
 suffix:semicolon
 id|spin_unlock

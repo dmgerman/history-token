@@ -36,6 +36,15 @@ multiline_comment|/*&n; * Bus Control Uint&n; */
 r_extern
 r_int
 r_int
+id|vr41xx_calculate_clock_frequency
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|vr41xx_get_vtclock_frequency
 c_func
 (paren

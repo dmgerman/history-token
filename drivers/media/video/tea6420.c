@@ -75,14 +75,6 @@ r_struct
 id|i2c_client
 id|client_template
 suffix:semicolon
-multiline_comment|/* unique ID allocation */
-DECL|variable|tea6420_id
-r_static
-r_int
-id|tea6420_id
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* make a connection between the input &squot;i&squot; and the output &squot;o&squot;&n;   with gain &squot;g&squot; for the tea6420-client &squot;client&squot; (note: i = 6 means &squot;mute&squot;) */
 DECL|function|tea6420_switch
 r_static
@@ -367,11 +359,6 @@ r_struct
 id|i2c_client
 )paren
 )paren
-suffix:semicolon
-id|client-&gt;id
-op_assign
-id|tea6420_id
-op_increment
 suffix:semicolon
 id|client-&gt;addr
 op_assign

@@ -184,6 +184,12 @@ op_star
 id|b
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|b-&gt;legacy_io
+)paren
+(brace
 id|class_device_remove_bin_file
 c_func
 (paren
@@ -209,6 +215,7 @@ id|b-&gt;legacy_io
 )paren
 suffix:semicolon
 multiline_comment|/* both are allocated here */
+)brace
 )brace
 macro_line|#else /* !HAVE_PCI_LEGACY */
 DECL|function|pci_create_legacy_files
@@ -2527,10 +2534,6 @@ id|dev
 (brace
 id|u32
 r_class
-suffix:semicolon
-id|dev-&gt;slot_name
-op_assign
-id|dev-&gt;dev.bus_id
 suffix:semicolon
 id|sprintf
 c_func

@@ -72,12 +72,6 @@ op_star
 id|client
 )paren
 suffix:semicolon
-multiline_comment|/* Unique ID allocation */
-DECL|variable|daca_id
-r_static
-r_int
-id|daca_id
-suffix:semicolon
 DECL|variable|daca_driver
 r_struct
 id|i2c_driver
@@ -584,12 +578,6 @@ comma
 id|client_name
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|daca_id
-op_increment
-suffix:semicolon
-multiline_comment|/* racy... */
 r_if
 c_cond
 (paren

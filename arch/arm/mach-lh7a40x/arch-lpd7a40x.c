@@ -532,8 +532,6 @@ id|lh7a40x_unmask_cpld_irq
 comma
 )brace
 suffix:semicolon
-DECL|macro|IRQ_DISPATCH
-mdefine_line|#define IRQ_DISPATCH(irq) irq_desc[irq].handle ((irq), &amp;irq_desc[irq], regs)
 DECL|function|lpd7a40x_cpld_handler
 r_static
 r_void

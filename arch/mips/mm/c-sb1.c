@@ -359,6 +359,10 @@ comma
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 (brace
 r_int
@@ -432,6 +436,11 @@ r_int
 r_int
 id|addr
 suffix:semicolon
+DECL|member|pfn
+r_int
+r_int
+id|pfn
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|sb1_flush_cache_page_ipi
@@ -458,6 +467,8 @@ c_func
 id|args-&gt;vma
 comma
 id|args-&gt;addr
+comma
+id|args-&gt;pfn
 )paren
 suffix:semicolon
 )brace
@@ -476,6 +487,10 @@ comma
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 (brace
 r_struct
@@ -505,6 +520,10 @@ suffix:semicolon
 id|args.addr
 op_assign
 id|addr
+suffix:semicolon
+id|args.pfn
+op_assign
+id|pfn
 suffix:semicolon
 id|on_each_cpu
 c_func
@@ -537,6 +556,10 @@ comma
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 id|__attribute__
 c_func

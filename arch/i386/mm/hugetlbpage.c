@@ -1014,6 +1014,10 @@ op_assign
 id|ptep_get_and_clear
 c_func
 (paren
+id|mm
+comma
+id|address
+comma
 id|huge_pte_offset
 c_func
 (paren

@@ -14,8 +14,9 @@ macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 DECL|macro|MODULE_VERS
-mdefine_line|#define MODULE_VERS &quot;1.5&quot;
+mdefine_line|#define MODULE_VERS &quot;1.6&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;lparcfg&quot;
 multiline_comment|/* #define LPARCFG_DEBUG */
@@ -744,7 +745,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* ToDo:  get sum of purr across all processors.  The purr collection code&n; * is coming, but at this time is still problematic, so for now this&n; * function will return 0.&n; */
+multiline_comment|/* Track sum of all purrs across all processors. This is used to further */
+multiline_comment|/* calculate usage values by different applications                       */
 DECL|function|get_purr
 r_static
 r_int
@@ -761,6 +763,36 @@ id|sum_purr
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|cpu
+suffix:semicolon
+r_struct
+id|cpu_usage
+op_star
+id|cu
+suffix:semicolon
+id|for_each_cpu
+c_func
+(paren
+id|cpu
+)paren
+(brace
+id|cu
+op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
+id|cpu_usage_array
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|sum_purr
+op_add_assign
+id|cu-&gt;current_tb
+suffix:semicolon
+)brace
 r_return
 id|sum_purr
 suffix:semicolon

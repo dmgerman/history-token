@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Addresses to scan */
@@ -247,26 +248,19 @@ id|slice
 )paren
 )paren
 op_logical_or
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|data-&gt;last_updated
 (braket
 id|slice
 )braket
-OG
+op_plus
 l_int|300
 op_star
 id|HZ
-)paren
-op_logical_or
-(paren
-id|jiffies
-OL
-id|data-&gt;last_updated
-(braket
-id|slice
-)braket
 )paren
 )paren
 (brace

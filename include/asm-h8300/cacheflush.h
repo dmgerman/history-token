@@ -10,7 +10,7 @@ mdefine_line|#define&t;flush_cache_mm(mm)
 DECL|macro|flush_cache_range
 mdefine_line|#define&t;flush_cache_range(vma,a,b)
 DECL|macro|flush_cache_page
-mdefine_line|#define&t;flush_cache_page(vma,p)
+mdefine_line|#define&t;flush_cache_page(vma,p,pfn)
 DECL|macro|flush_dcache_page
 mdefine_line|#define&t;flush_dcache_page(page)
 DECL|macro|flush_dcache_mmap_lock

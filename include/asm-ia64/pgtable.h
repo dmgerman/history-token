@@ -228,6 +228,8 @@ multiline_comment|/*&n; * Now come the defines and routines to manage and access
 multiline_comment|/*&n; * On some architectures, special things need to be done when setting&n; * the PTE in a page table.  Nothing special needs to be on IA-64.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pteval)&t;(*(ptep) = (pteval))
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|RGN_SIZE
 mdefine_line|#define RGN_SIZE&t;(1UL &lt;&lt; 61)
 DECL|macro|RGN_KERNEL
@@ -275,7 +277,7 @@ mdefine_line|#define pte_none(pte) &t;&t;&t;(!pte_val(pte))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;&t;(pte_val(pte) &amp; (_PAGE_P | _PAGE_PROTNONE))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(pte)&t;&t;&t;(pte_val(*(pte)) = 0UL)
+mdefine_line|#define pte_clear(mm,addr,pte)&t;&t;(pte_val(*(pte)) = 0UL)
 multiline_comment|/* pte_page() returns the &quot;struct page *&quot; corresponding to the PTE: */
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;&t;virt_to_page(((pte_val(pte) &amp; _PFN_MASK) + PAGE_OFFSET))
@@ -448,6 +450,15 @@ r_int
 DECL|function|ptep_test_and_clear_young
 id|ptep_test_and_clear_young
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -497,9 +508,13 @@ id|pte
 r_return
 l_int|0
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_mkold
@@ -520,6 +535,15 @@ r_int
 DECL|function|ptep_test_and_clear_dirty
 id|ptep_test_and_clear_dirty
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -569,9 +593,13 @@ id|pte
 r_return
 l_int|0
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|vma-&gt;vm_mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_mkclean
@@ -591,7 +619,17 @@ r_inline
 id|pte_t
 DECL|function|ptep_get_and_clear
 id|ptep_get_and_clear
+c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -625,6 +663,10 @@ suffix:semicolon
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -638,7 +680,17 @@ r_inline
 r_void
 DECL|function|ptep_set_wrprotect
 id|ptep_set_wrprotect
+c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -706,53 +758,16 @@ op_assign
 op_star
 id|ptep
 suffix:semicolon
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 comma
 id|pte_wrprotect
-c_func
-(paren
-id|old_pte
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-r_static
-r_inline
-r_void
-DECL|function|ptep_mkdirty
-id|ptep_mkdirty
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-(brace
-macro_line|#ifdef CONFIG_SMP
-id|set_bit
-c_func
-(paren
-id|_PAGE_D_BIT
-comma
-id|ptep
-)paren
-suffix:semicolon
-macro_line|#else
-id|pte_t
-id|old_pte
-op_assign
-op_star
-id|ptep
-suffix:semicolon
-id|set_pte
-c_func
-(paren
-id|ptep
-comma
-id|pte_mkdirty
 c_func
 (paren
 id|old_pte
@@ -968,8 +983,6 @@ DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
 mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
 DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE

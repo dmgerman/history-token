@@ -183,8 +183,10 @@ DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)        (pte_val(pte) &amp; _PAGE_PRESENT)
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pte_ptr, pte)   ((*(pte_ptr)) = (pte))
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)         set_pte((ptep), __pte(0))
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;set_pte_at((mm),(addr),(ptep), __pte(0))
 multiline_comment|/* macros to ease the getting of pointers to stuff... */
 DECL|macro|pgd_offset
 mdefine_line|#define pgd_offset(mm, addr)&t;((pgd_t *)(mm)-&gt;pgd        + __pgd_index(addr))

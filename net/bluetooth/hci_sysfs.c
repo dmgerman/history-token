@@ -309,7 +309,11 @@ id|data-&gt;dev_class
 l_int|0
 )braket
 comma
+id|__le16_to_cpu
+c_func
+(paren
 id|data-&gt;clock_offset
+)paren
 comma
 id|data-&gt;rssi
 comma

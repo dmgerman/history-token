@@ -1116,7 +1116,7 @@ op_star
 )paren
 id|vmlinux.addr
 comma
-id|vmlinux.memsize
+id|vmlinux.size
 )paren
 suffix:semicolon
 r_if

@@ -2,6 +2,7 @@ multiline_comment|/*&n;    smsc47b397.c - Part of lm_sensors, Linux kernel modul
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -417,22 +418,10 @@ id|time_after
 c_func
 (paren
 id|jiffies
-op_minus
-id|data-&gt;last_updated
 comma
-(paren
-r_int
-r_int
-)paren
+id|data-&gt;last_updated
+op_plus
 id|HZ
-)paren
-op_logical_or
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

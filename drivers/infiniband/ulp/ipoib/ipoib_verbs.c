@@ -602,11 +602,6 @@ op_assign
 id|IB_SIGNAL_ALL_WR
 comma
 dot
-id|rq_sig_type
-op_assign
-id|IB_SIGNAL_ALL_WR
-comma
-dot
 id|qp_type
 op_assign
 id|IB_QPT_UD

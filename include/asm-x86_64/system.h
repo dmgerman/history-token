@@ -736,5 +736,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|arch_align_stack
+c_func
+(paren
+r_int
+r_int
+id|sp
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

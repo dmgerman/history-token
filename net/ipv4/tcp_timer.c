@@ -85,6 +85,13 @@ op_assign
 id|KERN_DEBUG
 l_string|&quot;tcpbug: unknown timer value&bslash;n&quot;
 suffix:semicolon
+DECL|variable|tcp_timer_bug_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_timer_bug_msg
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Using different timers for retransmit, delayed acks and probes&n; * We may wish use just one timer maintaining a list of expire jiffies &n; * to optimize.&n; */
 DECL|function|tcp_init_xmit_timers

@@ -5238,10 +5238,6 @@ id|isp-&gt;client.adapter
 op_assign
 id|bus
 suffix:semicolon
-id|isp-&gt;client.id
-op_assign
-l_int|1301
-suffix:semicolon
 id|isp-&gt;client.driver
 op_assign
 op_amp

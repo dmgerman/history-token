@@ -845,9 +845,14 @@ r_void
 id|hpte_update
 c_func
 (paren
-id|pte_t
+r_struct
+id|mm_struct
 op_star
-id|ptep
+id|mm
+comma
+r_int
+r_int
+id|addr
 comma
 r_int
 r_int
@@ -857,13 +862,22 @@ r_int
 id|wrprot
 )paren
 suffix:semicolon
-DECL|function|ptep_test_and_clear_young
+DECL|function|__ptep_test_and_clear_young
 r_static
 r_inline
 r_int
-id|ptep_test_and_clear_young
+id|__ptep_test_and_clear_young
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -917,7 +931,9 @@ id|_PAGE_HASHPTE
 id|hpte_update
 c_func
 (paren
-id|ptep
+id|mm
+comma
+id|addr
 comma
 id|old
 comma
@@ -940,14 +956,27 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|macro|ptep_test_and_clear_young
+mdefine_line|#define ptep_test_and_clear_young(__vma, __addr, __ptep)&t;&t;   &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;int __r;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;__r = __ptep_test_and_clear_young((__vma)-&gt;vm_mm, __addr, __ptep); &bslash;&n;&t;__r;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;})
 multiline_comment|/*&n; * On RW/DIRTY bit transitions we can avoid flushing the hpte. For the&n; * moment we always flush but we need to fix hpte_update and test if the&n; * optimisation is worth it.&n; */
-DECL|function|ptep_test_and_clear_dirty
+DECL|function|__ptep_test_and_clear_dirty
 r_static
 r_inline
 r_int
-id|ptep_test_and_clear_dirty
+id|__ptep_test_and_clear_dirty
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -996,7 +1025,9 @@ id|_PAGE_HASHPTE
 id|hpte_update
 c_func
 (paren
-id|ptep
+id|mm
+comma
+id|addr
 comma
 id|old
 comma
@@ -1013,6 +1044,12 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+DECL|macro|ptep_test_and_clear_dirty
+mdefine_line|#define ptep_test_and_clear_dirty(__vma, __addr, __ptep)&t;&t;   &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;int __r;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;__r = __ptep_test_and_clear_dirty((__vma)-&gt;vm_mm, __addr, __ptep); &bslash;&n;&t;__r;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;})
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
 DECL|function|ptep_set_wrprotect
 r_static
 r_inline
@@ -1020,6 +1057,15 @@ r_void
 id|ptep_set_wrprotect
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1067,7 +1113,9 @@ id|_PAGE_HASHPTE
 id|hpte_update
 c_func
 (paren
-id|ptep
+id|mm
+comma
+id|addr
 comma
 id|old
 comma
@@ -1079,11 +1127,13 @@ multiline_comment|/*&n; * We currently remove entries from the hashtable regardl
 DECL|macro|__HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
 DECL|macro|ptep_clear_flush_young
-mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __young = ptep_test_and_clear_young(__ptep);&t;&t;&bslash;&n;&t;__young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ptep_clear_flush_young(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __young = __ptep_test_and_clear_young((__vma)-&gt;vm_mm, __address, &bslash;&n;&t;&t;&t;&t;&t;&t;  __ptep);&t;&t;&bslash;&n;&t;__young;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
 mdefine_line|#define __HAVE_ARCH_PTEP_CLEAR_DIRTY_FLUSH
 DECL|macro|ptep_clear_flush_dirty
-mdefine_line|#define ptep_clear_flush_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __dirty = ptep_test_and_clear_dirty(__ptep);&t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;&t;__dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ptep_clear_flush_dirty(__vma, __address, __ptep)&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __dirty = __ptep_test_and_clear_dirty((__vma)-&gt;vm_mm, __address, &bslash;&n;&t;&t;&t;&t;&t;&t;  __ptep); &t;&t;&bslash;&n;&t;flush_tlb_page(__vma, __address);&t;&t;&t;&t;&bslash;&n;&t;__dirty;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -1091,6 +1141,15 @@ id|pte_t
 id|ptep_get_and_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1119,7 +1178,9 @@ id|_PAGE_HASHPTE
 id|hpte_update
 c_func
 (paren
-id|ptep
+id|mm
+comma
+id|addr
 comma
 id|old
 comma
@@ -1141,6 +1202,15 @@ r_void
 id|pte_clear
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1169,7 +1239,9 @@ id|_PAGE_HASHPTE
 id|hpte_update
 c_func
 (paren
-id|ptep
+id|mm
+comma
+id|addr
 comma
 id|old
 comma
@@ -1178,13 +1250,22 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set_pte stores a linux PTE into the linux page table.&n; */
-DECL|function|set_pte
+DECL|function|set_pte_at
 r_static
 r_inline
 r_void
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1207,6 +1288,10 @@ id|ptep
 id|pte_clear
 c_func
 (paren
+id|mm
+comma
+id|addr
+comma
 id|ptep
 )paren
 suffix:semicolon
@@ -1330,6 +1415,8 @@ mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, _
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HPTEFLAGS) == 0)
 r_extern
@@ -1696,19 +1783,7 @@ r_return
 id|pt
 suffix:semicolon
 )brace
-macro_line|#endif /* __ASSEMBLY__ */
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
-DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
-mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
-DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
-mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTEP_MKDIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_MKDIRTY
-DECL|macro|__HAVE_ARCH_PTE_SAME
-mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _PPC64_PGTABLE_H */
 eof

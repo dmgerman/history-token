@@ -94,6 +94,13 @@ DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;1
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((TASK_SIZE/PGDIR_SIZE) - FIRST_USER_PGD_NR)
+multiline_comment|/*&n; * ARMv6 supersection address mask and size definitions.&n; */
+DECL|macro|SUPERSECTION_SHIFT
+mdefine_line|#define SUPERSECTION_SHIFT&t;24
+DECL|macro|SUPERSECTION_SIZE
+mdefine_line|#define SUPERSECTION_SIZE&t;(1UL &lt;&lt; SUPERSECTION_SHIFT)
+DECL|macro|SUPERSECTION_MASK
+mdefine_line|#define SUPERSECTION_MASK&t;(~(SUPERSECTION_SIZE-1))
 multiline_comment|/*&n; * Hardware page table definitions.&n; *&n; * + Level 1 descriptor (PMD)&n; *   - common&n; */
 DECL|macro|PMD_TYPE_MASK
 mdefine_line|#define PMD_TYPE_MASK&t;&t;(3 &lt;&lt; 0)
@@ -126,6 +133,8 @@ DECL|macro|PMD_SECT_S
 mdefine_line|#define PMD_SECT_S&t;&t;(1 &lt;&lt; 16)&t;/* v6 */
 DECL|macro|PMD_SECT_nG
 mdefine_line|#define PMD_SECT_nG&t;&t;(1 &lt;&lt; 17)&t;/* v6 */
+DECL|macro|PMD_SECT_SUPER
+mdefine_line|#define PMD_SECT_SUPER&t;&t;(1 &lt;&lt; 18)&t;/* v6 */
 DECL|macro|PMD_SECT_UNCACHED
 mdefine_line|#define PMD_SECT_UNCACHED&t;(0)
 DECL|macro|PMD_SECT_BUFFERED
@@ -273,7 +282,7 @@ mdefine_line|#define pfn_pte(pfn,prot)&t;(__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pg
 DECL|macro|pte_none
 mdefine_line|#define pte_none(pte)&t;&t;(!pte_val(pte))
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(ptep)&t;&t;set_pte((ptep), __pte(0))
+mdefine_line|#define pte_clear(mm,addr,ptep)&t;set_pte_at((mm),(addr),(ptep), __pte(0))
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;(pfn_to_page(pte_pfn(pte)))
 DECL|macro|pte_offset_kernel
@@ -288,6 +297,8 @@ DECL|macro|pte_unmap_nested
 mdefine_line|#define pte_unmap_nested(pte)&t;do { } while (0)
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep, pte)&t;cpu_set_pte(ptep,pte)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|macro|pte_present
 mdefine_line|#define pte_present(pte)&t;(pte_val(pte) &amp; L_PTE_PRESENT)

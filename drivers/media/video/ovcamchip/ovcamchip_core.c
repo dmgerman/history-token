@@ -1708,12 +1708,6 @@ l_string|&quot;(unset)&quot;
 )paren
 comma
 dot
-id|id
-op_assign
-op_minus
-l_int|1
-comma
-dot
 id|driver
 op_assign
 op_amp

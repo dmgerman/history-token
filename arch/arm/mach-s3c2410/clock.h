@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/arm/mach-s3c2410/clock.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Written by Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n;*/
+multiline_comment|/*&n; * linux/arch/arm/mach-s3c2410/clock.h&n; *&n; * Copyright (c) 2004-2005 Simtec Electronics&n; *&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&t;Written by Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n;*/
 DECL|struct|clk
 r_struct
 id|clk
@@ -87,27 +87,6 @@ r_struct
 id|clk
 id|s3c24xx_uclk
 suffix:semicolon
-multiline_comment|/* processor clock settings, in Hz */
-r_extern
-r_int
-r_int
-id|s3c24xx_xtal
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|s3c24xx_pclk
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|s3c24xx_hclk
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|s3c24xx_fclk
-suffix:semicolon
 multiline_comment|/* exports for arch/arm/mach-s3c2410&n; *&n; * Please DO NOT use these outside of arch/arm/mach-s3c2410&n;*/
 r_extern
 r_int
@@ -139,7 +118,21 @@ r_int
 id|s3c24xx_setup_clocks
 c_func
 (paren
-r_void
+r_int
+r_int
+id|xtal
+comma
+r_int
+r_int
+id|fclk
+comma
+r_int
+r_int
+id|hclk
+comma
+r_int
+r_int
+id|pclk
 )paren
 suffix:semicolon
 eof

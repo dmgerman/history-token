@@ -1,16 +1,11 @@
 multiline_comment|/*&n;    asb100.c - Part of lm_sensors, Linux kernel modules for hardware&n;&t;        monitoring&n;&n;    Copyright (C) 2004 Mark M. Hoffman &lt;mhoffman@lightlink.com&gt;&n;&n;&t;(derived from w83781d.c)&n;&n;    Copyright (C) 1998 - 2003  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;, and&n;    Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This driver supports the hardware sensor chips: Asus ASB100 and&n;    ASB100-A &quot;BACH&quot;.&n;&n;    ASB100-A supports pwm1, while plain ASB100 does not.  There is no known&n;    way for the driver to tell which one is there.&n;&n;    Chip&t;#vin&t;#fanin&t;#pwm&t;#temp&t;wchipid&t;vendid&t;i2c&t;ISA&n;    asb100&t;7&t;3&t;1&t;4&t;0x31&t;0x0694&t;yes&t;no&n;*/
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;lm75.h&quot;
 multiline_comment|/*&n;&t;HISTORY:&n;&t;2003-12-29&t;1.0.0&t;Ported from lm_sensors project for kernel 2.6&n;*/
 DECL|macro|ASB100_VERSION
@@ -4050,28 +4045,14 @@ id|time_after
 c_func
 (paren
 id|jiffies
-op_minus
-id|data-&gt;last_updated
 comma
-(paren
-r_int
-r_int
-)paren
-(paren
+id|data-&gt;last_updated
+op_plus
 id|HZ
 op_plus
 id|HZ
 op_div
 l_int|2
-)paren
-)paren
-op_logical_or
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|data-&gt;last_updated
 )paren
 op_logical_or
 op_logical_neg

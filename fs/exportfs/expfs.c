@@ -94,6 +94,14 @@ suffix:semicolon
 r_int
 id|noprogress
 suffix:semicolon
+r_char
+id|nbuf
+(braket
+id|NAME_MAX
+op_plus
+l_int|1
+)braket
+suffix:semicolon
 multiline_comment|/*&n;&t; * Attempt to find the inode.&n;&t; */
 id|result
 op_assign
@@ -603,14 +611,6 @@ id|dentry
 op_star
 id|npd
 suffix:semicolon
-r_char
-id|nbuf
-(braket
-id|NAME_MAX
-op_plus
-l_int|1
-)braket
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -909,14 +909,6 @@ r_struct
 id|dentry
 op_star
 id|nresult
-suffix:semicolon
-r_char
-id|nbuf
-(braket
-id|NAME_MAX
-op_plus
-l_int|1
-)braket
 suffix:semicolon
 id|err
 op_assign

@@ -1356,6 +1356,12 @@ id|sacked
 op_assign
 l_int|0
 suffix:semicolon
+id|skb_header_release
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|__skb_queue_tail
 c_func
 (paren

@@ -23,6 +23,8 @@ macro_line|#endif
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 multiline_comment|/*&n; * (pmds are folded into pgds so this doesn&squot;t get actually called,&n; * but the define is needed for a generic inline function.)&n; */
 DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) (*(pmdptr) = pmdval)
@@ -85,7 +87,7 @@ mdefine_line|#define pte_none(x)&t;(!pte_val(x))
 DECL|macro|pte_present
 mdefine_line|#define pte_present(x)&t;(pte_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pte_clear
-mdefine_line|#define pte_clear(xp)&t;do { pte_val(*(xp)) = 0; } while (0)
+mdefine_line|#define pte_clear(mm,addr,xp)&t;do { pte_val(*(xp)) = 0; } while (0)
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(x)&t;(!pmd_val(x))
 multiline_comment|/* by removing the _PAGE_KERNEL bit from the comparision, the same pmd_bad&n; * works for both _PAGE_TABLE and _KERNPG_TABLE pmd entries.&n; */

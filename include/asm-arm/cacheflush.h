@@ -354,9 +354,9 @@ DECL|macro|flush_cache_vunmap
 mdefine_line|#define flush_cache_vunmap(start, end)&t;&t;flush_cache_all()
 multiline_comment|/*&n; * Copy user data from/to a page which is mapped into a different&n; * processes address space.  Really, we want to allow our &quot;user&n; * space&quot; model to handle this.&n; */
 DECL|macro|copy_to_user_page
-mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&bslash;&n;&t;&t;flush_dcache_page(page);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define copy_to_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;&t;flush_dcache_page(page);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|copy_from_user_page
-mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr);&t;&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define copy_from_user_page(vma, page, vaddr, dst, src, len) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;flush_cache_page(vma, vaddr, page_to_pfn(page));&bslash;&n;&t;&t;memcpy(dst, src, len);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Convert calls to our calling convention.&n; */
 DECL|macro|flush_cache_all
 mdefine_line|#define flush_cache_all()&t;&t;__cpuc_flush_kern_all()
@@ -460,6 +460,10 @@ comma
 r_int
 r_int
 id|user_addr
+comma
+r_int
+r_int
+id|pfn
 )paren
 (brace
 r_if
@@ -520,9 +524,9 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|flush_dcache_mmap_lock
-mdefine_line|#define flush_dcache_mmap_lock(mapping) &bslash;&n;&t;spin_lock_irq(&amp;(mapping)-&gt;tree_lock)
+mdefine_line|#define flush_dcache_mmap_lock(mapping) &bslash;&n;&t;write_lock_irq(&amp;(mapping)-&gt;tree_lock)
 DECL|macro|flush_dcache_mmap_unlock
-mdefine_line|#define flush_dcache_mmap_unlock(mapping) &bslash;&n;&t;spin_unlock_irq(&amp;(mapping)-&gt;tree_lock)
+mdefine_line|#define flush_dcache_mmap_unlock(mapping) &bslash;&n;&t;write_unlock_irq(&amp;(mapping)-&gt;tree_lock)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,page,addr,len) &bslash;&n;&t;flush_dcache_page(page)
 multiline_comment|/*&n; * We don&squot;t appear to need to do anything here.  In fact, if we did, we&squot;d&n; * duplicate cache flushing elsewhere performed by flush_dcache_page().&n; */

@@ -814,7 +814,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;PCI: %s has unsupported PM cap regs version (%u)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|pmc
 op_amp

@@ -32,7 +32,15 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
+macro_line|#include &lt;asm/ppcboot.h&gt;
 macro_line|#include &lt;syslib/gen550.h&gt;
+macro_line|#include &lt;syslib/ibm440gp_common.h&gt;
+multiline_comment|/*&n; * This is a horrible kludge, we eventually need to abstract this&n; * generic PHY stuff, so the  standard phy mode defines can be&n; * easily used from arch code.&n; */
+macro_line|#include &quot;../../../../drivers/net/ibm_emac/ibm_emac_phy.h&quot;
+DECL|variable|__res
+id|bd_t
+id|__res
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -803,11 +811,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_char
-op_star
-id|vpd_base
-suffix:semicolon
 r_struct
 id|ocp_def
 op_star
@@ -819,16 +822,6 @@ op_star
 id|emacdata
 suffix:semicolon
 multiline_comment|/* Set mac_addr for each EMAC */
-id|vpd_base
-op_assign
-id|ioremap64
-c_func
-(paren
-id|EBONY_VPD_BASE
-comma
-id|EBONY_VPD_SIZE
-)paren
-suffix:semicolon
 id|def
 op_assign
 id|ocp_get_one_device
@@ -845,16 +838,21 @@ id|emacdata
 op_assign
 id|def-&gt;additions
 suffix:semicolon
+id|emacdata-&gt;phy_map
+op_assign
+l_int|0x00000001
+suffix:semicolon
+multiline_comment|/* Skip 0x00 */
+id|emacdata-&gt;phy_mode
+op_assign
+id|PHY_MODE_RMII
+suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|emacdata-&gt;mac_addr
 comma
-id|EBONY_NA0_ADDR
-c_func
-(paren
-id|vpd_base
-)paren
+id|__res.bi_enetaddr
 comma
 l_int|6
 )paren
@@ -875,24 +873,23 @@ id|emacdata
 op_assign
 id|def-&gt;additions
 suffix:semicolon
+id|emacdata-&gt;phy_map
+op_assign
+l_int|0x00000001
+suffix:semicolon
+multiline_comment|/* Skip 0x00 */
+id|emacdata-&gt;phy_mode
+op_assign
+id|PHY_MODE_RMII
+suffix:semicolon
 id|memcpy
 c_func
 (paren
 id|emacdata-&gt;mac_addr
 comma
-id|EBONY_NA1_ADDR
-c_func
-(paren
-id|vpd_base
-)paren
+id|__res.bi_enet1addr
 comma
 l_int|6
-)paren
-suffix:semicolon
-id|iounmap
-c_func
-(paren
-id|vpd_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Determine various clocks.&n;&t; * To be completely correct we should get SysClk&n;&t; * from FPGA, because it can be changed by on-board switches&n;&t; * --ebs&n;&t; */
@@ -1013,16 +1010,29 @@ id|r7
 id|parse_bootinfo
 c_func
 (paren
+id|find_bootinfo
+c_func
 (paren
-r_struct
-id|bi_record
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we were passed in a board information, copy it into the&n;&t; * residual data area.&n;&t; */
+r_if
+c_cond
+(paren
+id|r3
+)paren
+id|__res
+op_assign
+op_star
+(paren
+id|bd_t
 op_star
 )paren
 (paren
 id|r3
 op_plus
 id|KERNELBASE
-)paren
 )paren
 suffix:semicolon
 id|ibm44x_platform_init

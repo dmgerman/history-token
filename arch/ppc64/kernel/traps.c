@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#ifdef CONFIG_DEBUGGER
 DECL|variable|__debugger
 r_int
@@ -1767,67 +1768,9 @@ id|SIGABRT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Ensure exceptions are disabled */
-DECL|function|dummy_perf
-r_static
-r_void
-id|dummy_perf
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_int
-r_int
-id|mmcr0
-op_assign
-id|mfspr
-c_func
-(paren
-id|SPRN_MMCR0
-)paren
-suffix:semicolon
-id|mmcr0
-op_and_assign
-op_complement
-(paren
-id|MMCR0_PMXE
-op_or
-id|MMCR0_PMAO
-)paren
-suffix:semicolon
-id|mtspr
-c_func
-(paren
-id|SPRN_MMCR0
-comma
-id|mmcr0
-)paren
-suffix:semicolon
-)brace
-DECL|variable|perf_irq
-r_void
-(paren
-op_star
+r_extern
+id|perf_irq_t
 id|perf_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_assign
-id|dummy_perf
-suffix:semicolon
-DECL|variable|perf_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|perf_irq
-)paren
 suffix:semicolon
 DECL|function|performance_monitor_exception
 r_void

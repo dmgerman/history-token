@@ -2111,6 +2111,8 @@ DECL|macro|PF_SYNCWRITE
 mdefine_line|#define PF_SYNCWRITE&t;0x00200000&t;/* I am doing a sync write */
 DECL|macro|PF_BORROWED_MM
 mdefine_line|#define PF_BORROWED_MM&t;0x00400000&t;/* I am a kthread doing use_mm */
+DECL|macro|PF_RANDOMIZE
+mdefine_line|#define PF_RANDOMIZE&t;0x00800000&t;/* randomize virtual address space */
 multiline_comment|/*&n; * Only the _current_ task can read/write to tsk-&gt;flags, but other&n; * tasks can access tsk-&gt;flags in readonly mode for example&n; * with tsk_used_math (like during threaded core dumping).&n; * There is however an exception to this rule during ptrace&n; * or during fork: the ptracer task is allowed to write to the&n; * child-&gt;flags of its traced child (same goes for fork, the parent&n; * can write to the child-&gt;flags), because we&squot;re guaranteed the&n; * child is not running and in turn not changing child-&gt;flags&n; * at the same time the parent does it.&n; */
 DECL|macro|clear_stopped_child_used_math
 mdefine_line|#define clear_stopped_child_used_math(child) do { (child)-&gt;flags &amp;= ~PF_USED_MATH; } while (0)

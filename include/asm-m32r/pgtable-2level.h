@@ -72,6 +72,8 @@ mdefine_line|#define pgd_clear(xp)&t;&t;&t;&t;do { } while (0)
 multiline_comment|/*&n; * Certain architectures need to do special things when PTEs&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) (*(pteptr) = pteval)
+DECL|macro|set_pte_at
+mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
 DECL|macro|set_pte_atomic
 mdefine_line|#define set_pte_atomic(pteptr, pteval)&t;set_pte(pteptr, pteval)
 multiline_comment|/*&n; * (pmds are folded into pgds so this doesnt get actually called,&n; * but the define is needed for a generic inline function.)&n; */
@@ -107,7 +109,7 @@ id|dir
 suffix:semicolon
 )brace
 DECL|macro|ptep_get_and_clear
-mdefine_line|#define ptep_get_and_clear(xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
+mdefine_line|#define ptep_get_and_clear(mm,addr,xp)&t;__pte(xchg(&amp;(xp)-&gt;pte, 0))
 DECL|macro|pte_same
 mdefine_line|#define pte_same(a, b)&t;&t;(pte_val(a) == pte_val(b))
 DECL|macro|pte_page

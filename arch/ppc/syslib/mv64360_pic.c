@@ -90,7 +90,7 @@ op_assign
 dot
 r_typename
 op_assign
-l_string|&quot; mv64360_pic &quot;
+l_string|&quot; mv64360  &quot;
 comma
 dot
 id|enable
@@ -355,7 +355,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 )paren
@@ -364,7 +364,9 @@ op_minus
 l_int|1
 suffix:semicolon
 r_return
-l_int|28
+id|mv64360_irq_base
+op_plus
+id|MV64x60_IRQ_DOORBELL
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -461,7 +463,7 @@ op_logical_and
 (paren
 id|irq
 OL
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 (brace
@@ -595,7 +597,7 @@ op_minus
 id|mv64360_irq_base
 )paren
 op_eq
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 (brace
 id|mv64x60_set_bits
@@ -609,7 +611,7 @@ comma
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 suffix:semicolon
@@ -747,7 +749,7 @@ op_minus
 id|mv64360_irq_base
 )paren
 op_eq
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 (brace
 id|mv64x60_clr_bits
@@ -761,7 +763,7 @@ comma
 (paren
 l_int|1
 op_lshift
-l_int|28
+id|MV64x60_IRQ_DOORBELL
 )paren
 )paren
 suffix:semicolon
@@ -1484,6 +1486,8 @@ id|request_irq
 c_func
 (paren
 id|MV64x60_IRQ_CPU_ERR
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_cpu_error_int_handler
 comma
@@ -1548,6 +1552,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_SRAM_PAR_ERR
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_sram_error_int_handler
 comma
@@ -1621,6 +1627,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_PCI0
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_pci_error_int_handler
 comma
@@ -1689,6 +1697,8 @@ id|request_irq
 c_func
 (paren
 id|MV64360_IRQ_PCI1
+op_plus
+id|mv64360_irq_base
 comma
 id|mv64360_pci_error_int_handler
 comma
