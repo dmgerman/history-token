@@ -2347,7 +2347,6 @@ suffix:semicolon
 id|local_irq_disable
 c_func
 (paren
-id|s
 )paren
 suffix:semicolon
 id|rtas_args-&gt;token
