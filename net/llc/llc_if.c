@@ -1039,7 +1039,7 @@ c_func
 (paren
 id|daddr.mac
 comma
-id|ddev-&gt;dev_addr
+id|prim-&gt;data-&gt;conn.daddr.mac
 comma
 r_sizeof
 (paren
