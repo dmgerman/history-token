@@ -32,7 +32,7 @@ mdefine_line|#define DEVFSD_NOTIFY_CREATE        6
 DECL|macro|DEVFSD_NOTIFY_DELETE
 mdefine_line|#define DEVFSD_NOTIFY_DELETE        7
 DECL|macro|DEVFS_PATHLEN
-mdefine_line|#define DEVFS_PATHLEN               1024  /*  Never change this otherwise the&n;&t;&t;&t;&t;&t;      binary interface will change   */
+mdefine_line|#define DEVFS_PATHLEN               1024&t;/*  Never change this otherwise the&n;&t;&t;&t;&t;&t;&t;   binary interface will change   */
 DECL|struct|devfsd_notify_struct
 r_struct
 id|devfsd_notify_struct
@@ -97,5 +97,5 @@ suffix:semicolon
 multiline_comment|/*  This will be &squot;&bslash;0&squot; terminated            */
 )brace
 suffix:semicolon
-macro_line|#endif  /*  _LINUX_DEVFS_FS_H  */
+macro_line|#endif&t;&t;&t;&t;/*  _LINUX_DEVFS_FS_H  */
 eof
