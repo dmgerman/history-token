@@ -201,6 +201,8 @@ op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
+r_else
 id|error
 op_assign
 op_minus
@@ -258,6 +260,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|function|sysfs_mknod
 r_int
 id|sysfs_mknod
 c_func
@@ -291,6 +294,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|function|sysfs_get_dentry
 r_struct
 id|dentry
 op_star
@@ -345,6 +349,7 @@ id|parent
 )paren
 suffix:semicolon
 )brace
+DECL|function|sysfs_hash_and_remove
 r_void
 id|sysfs_hash_and_remove
 c_func
@@ -435,18 +440,7 @@ id|victim-&gt;d_count
 )paren
 )paren
 suffix:semicolon
-op_star
-id|Drop
-id|reference
-id|from
-id|initial
-id|sysfs_get_dentry
-c_func
-(paren
-)paren
-dot
-op_star
-op_div
+multiline_comment|/*&n;&t;&t;&t; * Drop reference from initial sysfs_get_dentry().&n;&t;&t;&t; */
 id|dput
 c_func
 (paren
