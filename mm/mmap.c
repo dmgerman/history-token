@@ -3430,7 +3430,7 @@ id|pgoff
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EOVERFLOW
 suffix:semicolon
 multiline_comment|/* Too many mappings? */
 r_if
