@@ -481,7 +481,7 @@ id|mark-&gt;cw
 op_assign
 id|mark-&gt;mw
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Still zero, which means no availabe servers.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Still zero, which means no available servers.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren

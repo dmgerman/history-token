@@ -4007,7 +4007,7 @@ id|IP_VS_DEST_F_AVAILABLE
 )paren
 )paren
 (brace
-multiline_comment|/* the destination server is not availabe */
+multiline_comment|/* the destination server is not available */
 r_if
 c_cond
 (paren
