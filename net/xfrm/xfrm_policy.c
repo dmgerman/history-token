@@ -1258,13 +1258,6 @@ c_cond
 id|delpol
 )paren
 (brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|delpol-&gt;refcnt
-)paren
-suffix:semicolon
 id|xfrm_policy_kill
 c_func
 (paren
