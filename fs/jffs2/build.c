@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.57 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.60 2004/11/17 17:13:13 dedekind Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -224,6 +224,14 @@ comma
 id|ic-&gt;ino
 )paren
 suffix:semicolon
+id|jffs2_mark_node_obsolete
+c_func
+(paren
+id|c
+comma
+id|fd-&gt;raw
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -342,11 +350,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|c-&gt;flags
-op_and_assign
-op_complement
-id|JFFS2_SB_FLAG_MOUNTING
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -433,6 +436,11 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|c-&gt;flags
+op_and_assign
+op_complement
+id|JFFS2_SB_FLAG_MOUNTING
+suffix:semicolon
 id|D1
 c_func
 (paren
