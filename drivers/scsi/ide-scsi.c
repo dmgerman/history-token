@@ -4016,7 +4016,7 @@ op_star
 id|p
 )paren
 op_member_access_from_pointer
-id|tag
+id|scsi_driverfs_driver.name
 comma
 l_string|&quot;sg&quot;
 )paren

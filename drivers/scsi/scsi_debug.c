@@ -29,7 +29,7 @@ r_char
 op_star
 id|scsi_debug_version_str
 op_assign
-l_string|&quot;Version: 1.65 (20021119)&quot;
+l_string|&quot;Version: 1.66 (20021205)&quot;
 suffix:semicolon
 macro_line|#ifndef SCSI_CMD_READ_16
 DECL|macro|SCSI_CMD_READ_16
@@ -2265,9 +2265,9 @@ suffix:semicolon
 id|errsts
 op_assign
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -2381,9 +2381,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -2814,9 +2814,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -3044,9 +3044,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -3978,9 +3978,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -4253,9 +4253,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -4411,9 +4411,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -4466,9 +4466,9 @@ suffix:semicolon
 multiline_comment|/* claim unrecoverable read error */
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -4730,9 +4730,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
@@ -5018,9 +5018,9 @@ l_int|14
 suffix:semicolon
 r_return
 (paren
-id|COMMAND_COMPLETE
+id|DRIVER_SENSE
 op_lshift
-l_int|8
+l_int|24
 )paren
 op_or
 (paren
