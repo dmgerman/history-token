@@ -342,7 +342,6 @@ DECL|macro|IIO_IPCR
 mdefine_line|#define    IIO_IPCR                  0x00430000    /* IO Performance Control */
 DECL|macro|IIO_IPPR
 mdefine_line|#define    IIO_IPPR                  0x00430008    /* IO Performance Profiling */
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * Description:  This register echoes some information from the         *&n; * LB_REV_ID register. It is available through Crosstalk as described   *&n; * above. The REV_NUM and MFG_NUM fields receive their values from      *&n; * the REVISION and MANUFACTURER fields in the LB_REV_ID register.      *&n; * The PART_NUM field&squot;s value is the Crosstalk device ID number that    *&n; * Steve Miller assigned to the SHub chip.                              *&n; *                                                                      *&n; ************************************************************************/
 DECL|union|ii_wid_u
 r_typedef
@@ -6236,7 +6235,6 @@ DECL|typedef|ii_ippr_u_t
 )brace
 id|ii_ippr_u_t
 suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**************************************************************************&n; *                                                                        *&n; * The following defines which were not formed into structures are        *&n; * probably indentical to another register, and the name of the           *&n; * register is provided against each of these registers. This             *&n; * information needs to be checked carefully                              *&n; *                                                                        *&n; *           IIO_ICRB1_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB1_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB1_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB1_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB1_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB2_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB2_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB2_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB2_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB2_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB3_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB3_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB3_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB3_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB3_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB4_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB4_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB4_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB4_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB4_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB5_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB5_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB5_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB5_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB5_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB6_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB6_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB6_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB6_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB6_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB7_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB7_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB7_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB7_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB7_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB8_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB8_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB8_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB8_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB8_E                IIO_ICRB0_E                       *&n; *           IIO_ICRB9_A                IIO_ICRB0_A                       *&n; *           IIO_ICRB9_B                IIO_ICRB0_B                       *&n; *           IIO_ICRB9_C                IIO_ICRB0_C                       *&n; *           IIO_ICRB9_D                IIO_ICRB0_D                       *&n; *           IIO_ICRB9_E                IIO_ICRB0_E                       *&n; *           IIO_ICRBA_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBA_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBA_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBA_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBA_E                IIO_ICRB0_E                       *&n; *           IIO_ICRBB_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBB_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBB_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBB_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBB_E                IIO_ICRB0_E                       *&n; *           IIO_ICRBC_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBC_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBC_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBC_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBC_E                IIO_ICRB0_E                       *&n; *           IIO_ICRBD_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBD_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBD_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBD_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBD_E                IIO_ICRB0_E                       *&n; *           IIO_ICRBE_A                IIO_ICRB0_A                       *&n; *           IIO_ICRBE_B                IIO_ICRB0_B                       *&n; *           IIO_ICRBE_C                IIO_ICRB0_C                       *&n; *           IIO_ICRBE_D                IIO_ICRB0_D                       *&n; *           IIO_ICRBE_E                IIO_ICRB0_E                       *&n; *                                                                        *&n; **************************************************************************/
 multiline_comment|/*&n; * Slightly friendlier names for some common registers.&n; */
 DECL|macro|IIO_WIDGET
@@ -6823,7 +6821,6 @@ multiline_comment|/* Number of II perf. counters we can multiplex at once */
 DECL|macro|IO_PERF_SETS
 mdefine_line|#define IO_PERF_SETS&t;32
 macro_line|#if __KERNEL__
-macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/dmamap.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
@@ -7528,19 +7525,6 @@ comma
 id|ioerror_mode_t
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|hub_error_devenable
-c_func
-(paren
-id|vertex_hdl_t
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _KERNEL */
 macro_line|#endif /* _ASM_IA64_SN_SN2_SHUBIO_H */
 eof
