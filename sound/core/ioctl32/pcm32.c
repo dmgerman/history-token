@@ -2,7 +2,6 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl wrapper for PCM API&n; *   C
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;ioctl32.h&quot;
@@ -280,6 +279,27 @@ id|packed
 suffix:semicolon
 DECL|macro|CVT_sndrv_pcm_channel_info
 mdefine_line|#define CVT_sndrv_pcm_channel_info()&bslash;&n;{&bslash;&n;&t;COPY(channel);&bslash;&n;&t;COPY(offset);&bslash;&n;&t;COPY(first);&bslash;&n;&t;COPY(step);&bslash;&n;}
+DECL|struct|timeval32
+r_struct
+id|timeval32
+(brace
+DECL|member|tv_sec
+id|s32
+id|tv_sec
+suffix:semicolon
+DECL|member|tv_usec
+id|s32
+id|tv_usec
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|struct|sndrv_pcm_status32
 r_struct
 id|sndrv_pcm_status32
@@ -290,12 +310,12 @@ id|state
 suffix:semicolon
 DECL|member|trigger_tstamp
 r_struct
-id|compat_timespec
+id|timeval32
 id|trigger_tstamp
 suffix:semicolon
 DECL|member|tstamp
 r_struct
-id|compat_timespec
+id|timeval32
 id|tstamp
 suffix:semicolon
 DECL|member|appl_ptr
@@ -344,7 +364,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_pcm_status
-mdefine_line|#define CVT_sndrv_pcm_status()&bslash;&n;{&bslash;&n;&t;COPY(state);&bslash;&n;&t;COPY(trigger_tstamp.tv_sec);&bslash;&n;&t;COPY(trigger_tstamp.tv_nsec);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_nsec);&bslash;&n;&t;COPY(appl_ptr);&bslash;&n;&t;COPY(hw_ptr);&bslash;&n;&t;COPY(delay);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(avail_max);&bslash;&n;&t;COPY(overrange);&bslash;&n;&t;COPY(suspended_state);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_pcm_status()&bslash;&n;{&bslash;&n;&t;COPY(state);&bslash;&n;&t;COPY(trigger_tstamp.tv_sec);&bslash;&n;&t;COPY(trigger_tstamp.tv_usec);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_usec);&bslash;&n;&t;COPY(appl_ptr);&bslash;&n;&t;COPY(hw_ptr);&bslash;&n;&t;COPY(delay);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(avail_max);&bslash;&n;&t;COPY(overrange);&bslash;&n;&t;COPY(suspended_state);&bslash;&n;}
 DECL|variable|pcm_uframes_str
 id|DEFINE_ALSA_IOCTL
 c_func

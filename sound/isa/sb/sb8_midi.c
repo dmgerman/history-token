@@ -6,7 +6,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 multiline_comment|/*&n;&n; */
 DECL|function|snd_sb8dsp_midi_interrupt
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_midi_interrupt
 c_func
 (paren
@@ -57,6 +57,7 @@ id|READ
 suffix:semicolon
 multiline_comment|/* ack interrupt */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_while
@@ -137,6 +138,9 @@ id|chip-&gt;midi_input_lock
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&n; */
 DECL|function|snd_sb8dsp_midi_input_open

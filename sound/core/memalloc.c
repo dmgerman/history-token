@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;sound/memalloc.h&gt;
 id|MODULE_AUTHOR
@@ -139,6 +140,7 @@ DECL|macro|HACK_PCI_ALLOC_CONSISTENT
 mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
 multiline_comment|/*&n; * A hack to allocate large buffers via pci_alloc_consistent()&n; *&n; * since pci_alloc_consistent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order of pages cannot be allocated.&n; *&n; * so in the following, we allocate at first without dma_mask, so that&n; * allocation will be done without GFP_DMA.  if the area doesn&squot;t match&n; * with the requested region, then realloate with the original dma_mask&n; * again.&n; */
 DECL|function|snd_pci_hack_alloc_consistent
+r_static
 r_void
 op_star
 id|snd_pci_hack_alloc_consistent
