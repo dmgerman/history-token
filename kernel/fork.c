@@ -3444,12 +3444,6 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The newly dup&squot;ed task shares the same cpus_allowed mask as its&n;&t; * parent (ie. current), and it is not attached to the tasklist.&n;&t; * The end result is that this CPU might go down and the parent&n;&t; * be migrated away, leaving the task on a dead CPU. So take the&n;&t; * hotplug lock here and release it after the child has been attached&n;&t; * to the tasklist.&n;&t; */
-id|lock_cpu_hotplug
-c_func
-(paren
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|security_task_create
@@ -4115,6 +4109,22 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The task hasn&squot;t been attached yet, so cpus_allowed mask cannot&n;&t; * have changed. The cpus_allowed mask of the parent may have&n;&t; * changed after it was copied first time, and it may then move to&n;&t; * another CPU - so we re-copy it here and set the child&squot;s CPU to&n;&t; * the parent&squot;s CPU. This avoids alot of nasty races.&n;&t; */
+id|p-&gt;cpus_allowed
+op_assign
+id|current-&gt;cpus_allowed
+suffix:semicolon
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Check for pending SIGKILL! The new thread should not be allowed&n;&t; * to slip out of an OOM kill. (or normal SIGKILL.)&n;&t; */
 r_if
 c_cond
@@ -4371,11 +4381,6 @@ l_int|0
 suffix:semicolon
 id|fork_out
 suffix:colon
-id|unlock_cpu_hotplug
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

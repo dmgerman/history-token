@@ -2365,7 +2365,7 @@ id|sd
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current. The cpu hotplug lock is held.&n; */
+multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current.&n; */
 DECL|function|sched_fork
 r_void
 id|fastcall
@@ -2377,47 +2377,6 @@ op_star
 id|p
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * The task hasn&squot;t been attached yet, so cpus_allowed mask cannot&n;&t; * change. The cpus_allowed mask of the parent may have changed&n;&t; * after it is copied, and it may then move to a CPU that is not&n;&t; * allowed for the child.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-op_logical_neg
-id|cpu_isset
-c_func
-(paren
-id|cpu
-comma
-id|p-&gt;cpus_allowed
-)paren
-)paren
-)paren
-id|cpu
-op_assign
-id|any_online_cpu
-c_func
-(paren
-id|p-&gt;cpus_allowed
-)paren
-suffix:semicolon
-id|set_task_cpu
-c_func
-(paren
-id|p
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * We mark the process as running here, but have not actually&n;&t; * inserted it onto the runqueue yet. This guarantees that&n;&t; * nobody will actually run it, and a signal or other external&n;&t; * event cannot wake it up and insert it on the runqueue either.&n;&t; */
 id|p-&gt;state
 op_assign
