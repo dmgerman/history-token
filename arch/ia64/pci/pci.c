@@ -1960,21 +1960,6 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PCI: Found IRQ %d for device %s&bslash;n&quot;
-comma
-id|dev-&gt;irq
-comma
-id|pci_name
-c_func
-(paren
-id|dev
-)paren
-)paren
-suffix:semicolon
 r_return
 id|acpi_pci_irq_enable
 c_func
