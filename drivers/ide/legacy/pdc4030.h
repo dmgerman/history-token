@@ -3,6 +3,72 @@ multiline_comment|/*&n; * Principal author: Peter Denison &lt;peterd@pnd-pc.demo
 macro_line|#ifndef IDE_PROMISE_H
 DECL|macro|IDE_PROMISE_H
 mdefine_line|#define IDE_PROMISE_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifndef CONFIG_BLK_DEV_PDC4030
+macro_line|# ifdef _IDE_DISK
+DECL|macro|IS_PDC4030_DRIVE
+macro_line|# define IS_PDC4030_DRIVE (0)&t;/* auto-NULLs out pdc4030 code */
+id|ide_startstop_t
+id|promise_rw_disk
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|function|promise_rw_disk
+id|ide_startstop_t
+id|promise_rw_disk
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+id|block
+)paren
+(brace
+r_return
+id|ide_stopped
+suffix:semicolon
+)brace
+macro_line|# endif /* _IDE_DISK */
+macro_line|#else /* CONFIG_BLK_DEV_PDC4030 */
+macro_line|# ifdef _IDE_DISK
+DECL|macro|IS_PDC4030_DRIVE
+macro_line|#  define IS_PDC4030_DRIVE (HWIF(drive)-&gt;chipset == ide_pdc4030)
+id|ide_startstop_t
+id|promise_rw_disk
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+macro_line|# endif /* _IDE_DISK */
+macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
+macro_line|#ifdef __PROMISE_4030
 DECL|macro|PROMISE_EXTENDED_COMMAND
 mdefine_line|#define&t;PROMISE_EXTENDED_COMMAND&t;0xF0
 DECL|macro|PROMISE_READ
@@ -108,5 +174,6 @@ l_int|32
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* __PROMISE_4030 */
 macro_line|#endif /* IDE_PROMISE_H */
 eof
