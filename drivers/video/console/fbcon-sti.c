@@ -5,11 +5,11 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/gsc.h&gt;&t;&t;/* for gsc_read/write */
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &quot;fbcon.h&quot;
-macro_line|#include &quot;fbcon-mfb.h&quot;
-macro_line|#include &quot;sti.h&quot;
-multiline_comment|/* Translate an address as it would be found in a 2048x2048x1 bit frame&n; * buffer into a logical address Artist actually expects.  Addresses fed&n; * into Artist look like this:&n; *  fixed          Y               X&n; * FFFF FFFF LLLL LLLL LLLC CCCC CCCC CC00&n; *&n; * our &quot;RAM&quot; addresses look like this:&n; * &n; * FFFF FFFF 0000 0LLL LLLL LLLL CCCC CCCC [CCC]&n; *&n; * */
+macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#include &lt;video/fbcon-mfb.h&gt;
+macro_line|#include &quot;../sticore.h&quot;
 r_static
 r_inline
 id|u32
@@ -22,85 +22,12 @@ op_star
 id|addr
 )paren
 (brace
-id|u32
-id|a
-op_assign
+r_return
 (paren
 r_int
 r_int
 )paren
 id|addr
-suffix:semicolon
-id|u32
-id|r
-suffix:semicolon
-macro_line|#if 0
-id|r
-op_assign
-id|a
-op_amp
-l_int|0xff000000
-suffix:semicolon
-multiline_comment|/* fixed part */
-id|r
-op_add_assign
-(paren
-(paren
-id|a
-op_amp
-l_int|0x000000ff
-)paren
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-id|r
-op_add_assign
-(paren
-(paren
-id|a
-op_amp
-l_int|0x00ffff00
-)paren
-op_lshift
-l_int|3
-)paren
-suffix:semicolon
-macro_line|#else
-id|r
-op_assign
-id|a
-op_amp
-l_int|0xff000000
-suffix:semicolon
-multiline_comment|/* fixed part */
-id|r
-op_add_assign
-(paren
-(paren
-id|a
-op_amp
-l_int|0x000000ff
-)paren
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-id|r
-op_add_assign
-(paren
-(paren
-id|a
-op_amp
-l_int|0x0007ff00
-)paren
-op_lshift
-l_int|5
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|r
 suffix:semicolon
 )brace
 multiline_comment|/* All those functions need better names. */
@@ -187,115 +114,6 @@ op_star
 l_int|4
 suffix:semicolon
 )brace
-)brace
-r_static
-r_void
-DECL|function|memcpy_tohp
-id|memcpy_tohp
-c_func
-(paren
-r_void
-op_star
-id|dest
-comma
-r_void
-op_star
-id|src
-comma
-r_int
-id|count
-)paren
-(brace
-r_int
-r_int
-id|d
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|dest
-suffix:semicolon
-id|u32
-op_star
-id|s
-op_assign
-(paren
-id|u32
-op_star
-)paren
-id|src
-suffix:semicolon
-id|count
-op_add_assign
-l_int|3
-suffix:semicolon
-id|count
-op_and_assign
-op_complement
-l_int|3
-suffix:semicolon
-multiline_comment|/* XXX */
-id|d
-op_assign
-id|ram2log
-c_func
-(paren
-id|dest
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|count
-)paren
-(brace
-id|count
-op_decrement
-suffix:semicolon
-id|gsc_writel
-c_func
-(paren
-op_star
-id|s
-op_increment
-comma
-id|d
-)paren
-suffix:semicolon
-id|d
-op_add_assign
-l_int|32
-op_star
-l_int|4
-suffix:semicolon
-)brace
-)brace
-r_static
-r_void
-DECL|function|memcopy_fromhp
-id|memcopy_fromhp
-c_func
-(paren
-r_void
-op_star
-id|dest
-comma
-r_void
-op_star
-id|src
-comma
-r_int
-id|count
-)paren
-(brace
-multiline_comment|/* FIXME */
-id|printk
-c_func
-(paren
-l_string|&quot;uhm ...&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -464,22 +282,25 @@ op_star
 id|p
 )paren
 (brace
+multiline_comment|/* in kernel 2.5 the value of sadly line_length disapeared */
 r_if
 c_cond
 (paren
-id|p-&gt;line_length
+id|p-&gt;var.xres_virtual
+multiline_comment|/*line_length*/
 )paren
-id|p-&gt;next_line
-op_assign
-id|p-&gt;line_length
-suffix:semicolon
-r_else
 id|p-&gt;next_line
 op_assign
 id|p-&gt;var.xres_virtual
 op_rshift
 l_int|3
 suffix:semicolon
+r_else
+id|p-&gt;next_line
+op_assign
+l_int|2048
+suffix:semicolon
+multiline_comment|/* default STI value */
 id|p-&gt;next_plane
 op_assign
 l_int|0
@@ -519,7 +340,6 @@ macro_line|#if 0 /* Unfortunately, still broken */
 id|sti_bmove
 c_func
 (paren
-op_amp
 id|default_sti
 multiline_comment|/* FIXME */
 comma

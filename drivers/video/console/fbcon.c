@@ -41,11 +41,11 @@ macro_line|#endif
 DECL|macro|INCLUDE_LINUX_LOGO_DATA
 mdefine_line|#define INCLUDE_LINUX_LOGO_DATA
 macro_line|#include &lt;asm/linux_logo.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#include &quot;fbcon.h&quot;
 macro_line|#ifdef CONFIG_FBCON_ACCEL
 macro_line|#include &quot;fbcon-accel.h&quot;
 macro_line|#endif
-macro_line|#include &lt;video/font.h&gt;
+macro_line|#include &quot;font.h&quot;
 macro_line|#ifdef FBCONDEBUG
 DECL|macro|DPRINTK
 macro_line|#  define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)

@@ -1,6 +1,6 @@
 multiline_comment|/* Acorn-like font definition, with PC graphics characters */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;video/font.h&gt;
+macro_line|#include &quot;font.h&quot;
 DECL|variable|acorndata_8x8
 r_static
 r_int

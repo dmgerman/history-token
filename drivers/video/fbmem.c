@@ -27,7 +27,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#ifdef CONFIG_VT
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#include &quot;console/fbcon.h&quot;
 macro_line|#endif
 multiline_comment|/*&n;     *  Frame buffer device initialization and setup routines&n;     */
 r_extern

@@ -1,4 +1,4 @@
-macro_line|#include &lt;video/font.h&gt;
+macro_line|#include &quot;font.h&quot;
 DECL|macro|FONTDATAMAX
 mdefine_line|#define FONTDATAMAX 11264
 DECL|variable|fontdata_sun12x22

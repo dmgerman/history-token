@@ -354,6 +354,9 @@ id|image
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|fb_pan_display
 r_int

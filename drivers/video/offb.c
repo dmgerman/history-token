@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/bootx.h&gt;
 macro_line|#endif
-macro_line|#include &lt;video/macmodes.h&gt;
+macro_line|#include &quot;macmodes.h&quot;
 multiline_comment|/* Supported palette hacks */
 r_enum
 (brace
