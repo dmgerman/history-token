@@ -1020,7 +1020,7 @@ mdefine_line|#define ARCH_MIN_TASKALIGN 16
 DECL|macro|INIT_SP
 mdefine_line|#define INIT_SP&t;&t;(sizeof(init_stack) + (unsigned long) &amp;init_stack)
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;INIT_SP, /* ksp */ &bslash;&n;&t;(struct pt_regs *)INIT_SP - 1, /* regs */ &bslash;&n;&t;KERNEL_DS, /*fs*/ &bslash;&n;&t;{0}, /* fpr */ &bslash;&n;&t;0, /* fpscr */ &bslash;&n;&t;MSR_FE0|MSR_FE1, /* fpexc_mode */ &bslash;&n;}
+mdefine_line|#define INIT_THREAD  { &bslash;&n;&t;.ksp = INIT_SP, &bslash;&n;&t;.regs = (struct pt_regs *)INIT_SP - 1, &bslash;&n;&t;.fs = KERNEL_DS, &bslash;&n;&t;.fpr = {0}, &bslash;&n;&t;.fpscr = 0, &bslash;&n;&t;.fpexc_mode = MSR_FE0|MSR_FE1, &bslash;&n;}
 multiline_comment|/*&n; * Note: the vm_start and vm_end fields here should *not*&n; * be in kernel space.  (Could vm_end == vm_start perhaps?)&n; */
 DECL|macro|IOREMAP_MMAP
 mdefine_line|#define IOREMAP_MMAP { &amp;ioremap_mm, 0, 0x1000, NULL, &bslash;&n;&t;&t;    PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, &bslash;&n;&t;&t;    1, NULL, NULL }
