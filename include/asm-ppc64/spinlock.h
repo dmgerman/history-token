@@ -460,7 +460,7 @@ suffix:semicolon
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)      do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)    do { barrier(); } while(spin_is_locked(x))
+mdefine_line|#define spin_unlock_wait(x)    do { cpu_relax(); } while(spin_is_locked(x))
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)         do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 macro_line|#endif /* __KERNEL__ */
