@@ -20,7 +20,7 @@ multiline_comment|/* kernel_thread */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &quot;msp3400.h&quot;
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
@@ -7840,7 +7840,7 @@ id|VIDEO_AUDIO_MUTE
 suffix:semicolon
 id|va-&gt;volume
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|msp-&gt;left
@@ -7853,7 +7853,7 @@ op_assign
 (paren
 l_int|32768
 op_star
-id|MIN
+id|min
 c_func
 (paren
 id|msp-&gt;left
@@ -7958,7 +7958,7 @@ suffix:semicolon
 id|msp-&gt;left
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 l_int|65536
@@ -7976,11 +7976,14 @@ suffix:semicolon
 id|msp-&gt;right
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 id|va-&gt;balance
 comma
+(paren
+id|__u16
+)paren
 l_int|32768
 )paren
 op_star

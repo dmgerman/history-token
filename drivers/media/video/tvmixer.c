@@ -14,8 +14,6 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;audiochip.h&quot;
-macro_line|#include &quot;id.h&quot;
 DECL|macro|DEV_MAX
 mdefine_line|#define DEV_MAX  4
 DECL|variable|debug
@@ -712,7 +710,7 @@ l_int|8
 suffix:semicolon
 id|va.volume
 op_assign
-id|MAX
+id|max
 c_func
 (paren
 id|left
@@ -725,7 +723,7 @@ op_assign
 (paren
 l_int|32768
 op_star
-id|MIN
+id|min
 c_func
 (paren
 id|left
@@ -797,7 +795,7 @@ suffix:colon
 id|left
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 l_int|65536
@@ -815,7 +813,7 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|MIN
+id|min
 c_func
 (paren
 id|va.balance

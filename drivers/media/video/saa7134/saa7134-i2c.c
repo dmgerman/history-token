@@ -9,8 +9,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
-macro_line|#include &quot;tuner.h&quot;
-macro_line|#include &quot;id.h&quot;
 multiline_comment|/* ----------------------------------------------------------- */
 DECL|variable|i2c_debug
 r_static

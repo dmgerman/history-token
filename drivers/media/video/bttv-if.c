@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;bttvp.h&quot;
-macro_line|#include &quot;tuner.h&quot;
 DECL|variable|bttv_i2c_algo_template
 r_static
 r_struct
