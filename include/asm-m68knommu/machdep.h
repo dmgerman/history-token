@@ -1,6 +1,7 @@
 macro_line|#ifndef _M68KNOMMU_MACHDEP_H
 DECL|macro|_M68KNOMMU_MACHDEP_H
 mdefine_line|#define _M68KNOMMU_MACHDEP_H
+macro_line|#include &lt;linux/seq_file.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
