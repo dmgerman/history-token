@@ -224,9 +224,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|aoeblk_exit
+id|unregister_blkdev
 c_func
 (paren
+id|AOE_MAJOR
+comma
+id|DEVICE_NAME
 )paren
 suffix:semicolon
 id|aoechr_exit
@@ -239,6 +242,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|aoeblk_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* free cache after de-allocating bufs */
 )brace
 r_static
 r_int
