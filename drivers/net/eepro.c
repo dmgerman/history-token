@@ -7281,7 +7281,8 @@ l_string|&quot;eepro_init_module: Please add &bslash;&quot;autodetect=1&bslash;&
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_else
