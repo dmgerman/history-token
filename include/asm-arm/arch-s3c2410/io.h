@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-s3c2410/io.h&n; *  from linux/include/asm-arm/arch-rpc/io.h&n; *&n; * Copyright (C) 1997 Russell King&n; *&t;     (C) 2003 Simtec Electronics&n; *&n; * Modifications:&n; *  06-Dec-1997&t;RMK&t;Created.&n; *  02-Sep-2003 BJD&t;Modified for S3C2410&n; *&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-s3c2410/io.h&n; *  from linux/include/asm-arm/arch-rpc/io.h&n; *&n; * Copyright (C) 1997 Russell King&n; *&t;     (C) 2003 Simtec Electronics&n; *&n; * Modifications:&n; *  06-Dec-1997&t;RMK&t;Created.&n; *  02-Sep-2003 BJD&t;Modified for S3C2410&n; *  10-Mar-2005 LCVR&t;Changed S3C2410_VA to S3C24XX_VA&n; *&n; */
 macro_line|#ifndef __ASM_ARM_ARCH_IO_H
 DECL|macro|__ASM_ARM_ARCH_IO_H
 mdefine_line|#define __ASM_ARM_ARCH_IO_H
@@ -8,13 +8,13 @@ multiline_comment|/*&n; * We use two different types of addressing - PC style ad
 DECL|macro|__PORT_PCIO
 mdefine_line|#define __PORT_PCIO(x)&t;((x) &lt; (1&lt;&lt;28))
 DECL|macro|PCIO_BASE
-mdefine_line|#define PCIO_BASE&t; (S3C2410_VA_ISA_WORD)
+mdefine_line|#define PCIO_BASE&t; (S3C24XX_VA_ISA_WORD)
 DECL|macro|PCIO_BASE_b
-mdefine_line|#define PCIO_BASE_b&t; (S3C2410_VA_ISA_BYTE)
+mdefine_line|#define PCIO_BASE_b&t; (S3C24XX_VA_ISA_BYTE)
 DECL|macro|PCIO_BASE_w
-mdefine_line|#define PCIO_BASE_w&t; (S3C2410_VA_ISA_WORD)
+mdefine_line|#define PCIO_BASE_w&t; (S3C24XX_VA_ISA_WORD)
 DECL|macro|PCIO_BASE_l
-mdefine_line|#define PCIO_BASE_l&t; (S3C2410_VA_ISA_WORD)
+mdefine_line|#define PCIO_BASE_l&t; (S3C24XX_VA_ISA_WORD)
 multiline_comment|/*&n; * Dynamic IO functions - let the compiler&n; * optimize the expressions&n; */
 DECL|macro|DECLARE_DYN_OUT
 mdefine_line|#define DECLARE_DYN_OUT(sz,fnsuffix,instr) &bslash;&n;static inline void __out##fnsuffix (unsigned int val, unsigned int port) &bslash;&n;{ &bslash;&n;&t;unsigned long temp;&t;&t;&t;&t;      &bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;      &bslash;&n;&t;&quot;cmp&t;%2, #(1&lt;&lt;28)&bslash;n&bslash;t&quot;&t;&t;&t;      &bslash;&n;&t;&quot;mov&t;%0, %2&bslash;n&bslash;t&quot;&t;&t;&t;&t;      &bslash;&n;&t;&quot;addcc&t;%0, %0, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;      &bslash;&n;&t;&quot;str&quot; instr &quot; %1, [%0, #0 ]&t;@ out&quot; #fnsuffix      &bslash;&n;&t;: &quot;=&amp;r&quot; (temp)&t;&t;&t;&t;&t;      &bslash;&n;&t;: &quot;r&quot; (val), &quot;r&quot; (port), &quot;Ir&quot; (PCIO_BASE_##fnsuffix)  &bslash;&n;&t;: &quot;cc&quot;);&t;&t;&t;&t;&t;      &bslash;&n;}

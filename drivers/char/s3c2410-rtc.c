@@ -1,4 +1,4 @@
-multiline_comment|/* drivers/char/s3c2410_rtc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC Driver&n; *&n; *  Changelog:&n; *&t;08-Nov-2004&t;BJD&t;Initial creation&n; *&t;12-Nov-2004&t;BJD&t;Added periodic IRQ and PM code&n; *&t;22-Nov-2004&t;BJD&t;Sign-test on alarm code to check for &lt;0&n;*/
+multiline_comment|/* drivers/char/s3c2410_rtc.c&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 Internal RTC Driver&n; *&n; *  Changelog:&n; *&t;08-Nov-2004&t;BJD&t;Initial creation&n; *&t;12-Nov-2004&t;BJD&t;Added periodic IRQ and PM code&n; *&t;22-Nov-2004&t;BJD&t;Sign-test on alarm code to check for &lt;0&n; *&t;10-Mar-2005&t;LCVR&t;Changed S3C2410_VA_RTC to S3C24XX_VA_RTC&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -17,10 +17,10 @@ macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-rtc.h&gt;
 multiline_comment|/* need this for the RTC_AF definitions */
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-DECL|macro|S3C2410_VA_RTC
-macro_line|#undef S3C2410_VA_RTC
-DECL|macro|S3C2410_VA_RTC
-mdefine_line|#define S3C2410_VA_RTC s3c2410_rtc_base
+DECL|macro|S3C24XX_VA_RTC
+macro_line|#undef S3C24XX_VA_RTC
+DECL|macro|S3C24XX_VA_RTC
+mdefine_line|#define S3C24XX_VA_RTC s3c2410_rtc_base
 DECL|variable|s3c2410_rtc_mem
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpio.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n; *    17-10-2004     BJD     Added GSTATUS1 register definitions&n; *    18-11-2004     BJD     Fixed definitions of GPE3, GPE4, GPE5 and GPE6&n; *    18-11-2004     BJD     Added S3C2440 AC97 controls&n;*/
+multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpio.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n; *    17-10-2004     BJD     Added GSTATUS1 register definitions&n; *    18-11-2004     BJD     Fixed definitions of GPE3, GPE4, GPE5 and GPE6&n; *    18-11-2004     BJD     Added S3C2440 AC97 controls&n; *    10-Mar-2005    LCVR    Changed S3C2410_VA to S3C24XX_VA&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_GPIO_H
 DECL|macro|__ASM_ARCH_REGS_GPIO_H
 mdefine_line|#define __ASM_ARCH_REGS_GPIO_H &quot;$Id: gpio.h,v 1.5 2003/05/19 12:51:08 ben Exp $&quot;
@@ -21,7 +21,7 @@ mdefine_line|#define S3C2410_GPIO_BANKG   (32*6)
 DECL|macro|S3C2410_GPIO_BANKH
 mdefine_line|#define S3C2410_GPIO_BANKH   (32*7)
 DECL|macro|S3C2410_GPIO_BASE
-mdefine_line|#define S3C2410_GPIO_BASE(pin)   ((((pin) &amp; ~31) &gt;&gt; 1) + S3C2410_VA_GPIO)
+mdefine_line|#define S3C2410_GPIO_BASE(pin)   ((((pin) &amp; ~31) &gt;&gt; 1) + S3C24XX_VA_GPIO)
 DECL|macro|S3C2410_GPIO_OFFSET
 mdefine_line|#define S3C2410_GPIO_OFFSET(pin) ((pin) &amp; 31)
 multiline_comment|/* general configuration options */
@@ -29,7 +29,7 @@ DECL|macro|S3C2410_GPIO_LEAVE
 mdefine_line|#define S3C2410_GPIO_LEAVE   (0xFFFFFFFF)
 multiline_comment|/* configure GPIO ports A..G */
 DECL|macro|S3C2410_GPIOREG
-mdefine_line|#define S3C2410_GPIOREG(x) ((x) + S3C2410_VA_GPIO)
+mdefine_line|#define S3C2410_GPIOREG(x) ((x) + S3C24XX_VA_GPIO)
 multiline_comment|/* port A - 22bits, zero in bit X makes pin X output&n; * 1 makes port special function, this is default&n;*/
 DECL|macro|S3C2410_GPACON
 mdefine_line|#define S3C2410_GPACON&t;   S3C2410_GPIOREG(0x00)

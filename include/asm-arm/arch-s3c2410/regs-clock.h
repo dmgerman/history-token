@@ -1,9 +1,9 @@
-multiline_comment|/* linux/include/asm/arch-s3c2410/regs-clock.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 clock register definitions&n; *&n; *  Changelog:&n; *    18-Aug-2004 Ben Dooks      Added 2440 definitions&n; *    08-Aug-2004 Herbert P&#xfffd;tzl  Added CLKCON definitions&n; *    19-06-2003  Ben Dooks      Created file&n; *    12-03-2004  Ben Dooks      Updated include protection&n; *    29-Sep-2004 Ben Dooks&t; Fixed usage for assembly inclusion&n; *    10-Feb-2005 Ben Dooks&t; Fixed CAMDIVN address (Guillaume Gourat)&n; */
+multiline_comment|/* linux/include/asm/arch-s3c2410/regs-clock.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 clock register definitions&n; *&n; *  Changelog:&n; *    18-Aug-2004 Ben Dooks         Added 2440 definitions&n; *    08-Aug-2004 Herbert P&#xfffd;tzl     Added CLKCON definitions&n; *    19-06-2003  Ben Dooks         Created file&n; *    12-03-2004  Ben Dooks         Updated include protection&n; *    29-Sep-2004 Ben Dooks&t;    Fixed usage for assembly inclusion&n; *    10-Feb-2005 Ben Dooks&t;    Fixed CAMDIVN address (Guillaume Gourat)&n; *    10-Mar-2005 Lucas Villa Real  Changed S3C2410_VA to S3C24XX_VA&n; */
 macro_line|#ifndef __ASM_ARM_REGS_CLOCK
 DECL|macro|__ASM_ARM_REGS_CLOCK
 mdefine_line|#define __ASM_ARM_REGS_CLOCK &quot;$Id: clock.h,v 1.4 2003/04/30 14:50:51 ben Exp $&quot;
 DECL|macro|S3C2410_CLKREG
-mdefine_line|#define S3C2410_CLKREG(x) ((x) + S3C2410_VA_CLKPWR)
+mdefine_line|#define S3C2410_CLKREG(x) ((x) + S3C24XX_VA_CLKPWR)
 DECL|macro|S3C2410_PLLVAL
 mdefine_line|#define S3C2410_PLLVAL(_m,_p,_s) ((_m) &lt;&lt; 12 | ((_p) &lt;&lt; 4) | ((_s)))
 DECL|macro|S3C2410_LOCKTIME
