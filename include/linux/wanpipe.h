@@ -678,7 +678,8 @@ id|hw
 suffix:semicolon
 multiline_comment|/* hardware configuration */
 DECL|member|wandev
-id|wan_device_t
+r_struct
+id|wan_device
 id|wandev
 suffix:semicolon
 multiline_comment|/* WAN device data space */

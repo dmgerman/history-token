@@ -24,7 +24,8 @@ r_int
 id|device_setup
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -38,7 +39,8 @@ r_int
 id|device_stat
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -52,7 +54,8 @@ r_int
 id|device_shutdown
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -62,7 +65,8 @@ r_int
 id|device_new_if
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -76,7 +80,8 @@ r_int
 id|device_del_if
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -87,7 +92,8 @@ id|u_name
 suffix:semicolon
 multiline_comment|/*&n; *&t;Miscellaneous&n; */
 r_static
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|find_device
 (paren
@@ -100,7 +106,8 @@ r_static
 r_int
 id|delete_interface
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -167,19 +174,16 @@ id|ROUTER_NAME
 suffix:semicolon
 multiline_comment|/* short module name */
 DECL|variable|router_devlist
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|router_devlist
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* list of registered devices */
 DECL|variable|devcnt
 r_static
 r_int
 id|devcnt
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; *&t;Organize Unique Identifiers for encapsulation/decapsulation&n; */
 DECL|variable|oui_ether
@@ -390,7 +394,8 @@ r_int
 id|register_wan_device
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -545,7 +550,8 @@ op_star
 id|name
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -1044,7 +1050,8 @@ id|proc_dir_entry
 op_star
 id|dent
 suffix:semicolon
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 suffix:semicolon
@@ -1271,8 +1278,10 @@ DECL|function|device_setup
 r_static
 r_int
 id|device_setup
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -1581,8 +1590,10 @@ DECL|function|device_shutdown
 r_static
 r_int
 id|device_shutdown
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1686,8 +1697,10 @@ DECL|function|device_stat
 r_static
 r_int
 id|device_stat
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -1772,8 +1785,10 @@ DECL|function|device_new_if
 r_static
 r_int
 id|device_new_if
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -2290,8 +2305,10 @@ DECL|function|device_del_if
 r_static
 r_int
 id|device_del_if
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -2399,7 +2416,8 @@ multiline_comment|/*&n; *&t;Miscellaneous Functions&n; */
 multiline_comment|/*&n; *&t;Find WAN device by name.&n; *&t;Return pointer to the WAN device data space or NULL if device not found.&n; */
 DECL|function|find_device
 r_static
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|find_device
 c_func
@@ -2409,7 +2427,8 @@ op_star
 id|name
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 suffix:semicolon
@@ -2444,8 +2463,10 @@ DECL|function|delete_interface
 r_static
 r_int
 id|delete_interface
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma

@@ -1290,7 +1290,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;&t;/* proc filesystem pragmatics */
 macro_line|#include &lt;linux/netdevice.h&gt;&t;/* support for network drivers */
 multiline_comment|/*----------------------------------------------------------------------------&n; * WAN device data space.&n; */
 DECL|struct|wan_device
-r_typedef
 r_struct
 id|wan_device
 (brace
@@ -1606,9 +1605,7 @@ op_star
 id|dent
 suffix:semicolon
 multiline_comment|/* proc filesystem entry */
-DECL|typedef|wan_device_t
 )brace
-id|wan_device_t
 suffix:semicolon
 multiline_comment|/* Public functions available for device drivers */
 r_extern
@@ -1616,7 +1613,8 @@ r_int
 id|register_wan_device
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1686,7 +1684,8 @@ r_int
 id|wanrouter_proc_add
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1696,7 +1695,8 @@ r_int
 id|wanrouter_proc_delete
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1757,7 +1757,8 @@ id|smp_flags
 suffix:semicolon
 multiline_comment|/* Public Data */
 r_extern
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|router_devlist
 suffix:semicolon

@@ -87,7 +87,8 @@ op_star
 id|pos
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 suffix:semicolon
@@ -158,7 +159,8 @@ op_star
 id|pos
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 op_assign
@@ -225,7 +227,8 @@ op_star
 id|v
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|p
 op_assign
@@ -332,7 +335,8 @@ op_star
 id|v
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|p
 op_assign
@@ -730,7 +734,8 @@ op_star
 id|v
 )paren
 (brace
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 op_assign
@@ -1257,8 +1262,10 @@ multiline_comment|/*&n; *&t;Add directory entry for WAN device.&n; */
 DECL|function|wanrouter_proc_add
 r_int
 id|wanrouter_proc_add
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1315,7 +1322,8 @@ r_int
 id|wanrouter_proc_delete
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1372,7 +1380,8 @@ r_int
 id|wanrouter_proc_add
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -1386,7 +1395,8 @@ r_int
 id|wanrouter_proc_delete
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren

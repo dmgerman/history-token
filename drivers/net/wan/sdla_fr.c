@@ -458,7 +458,8 @@ r_int
 id|update
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -468,7 +469,8 @@ r_int
 id|new_if
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -486,7 +488,8 @@ r_int
 id|del_if
 c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -2446,8 +2449,10 @@ DECL|function|update
 r_static
 r_int
 id|update
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 )paren
@@ -2577,8 +2582,10 @@ DECL|function|new_if
 r_static
 r_int
 id|new_if
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -3390,8 +3397,10 @@ DECL|function|del_if
 r_static
 r_int
 id|del_if
+c_func
 (paren
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 comma
@@ -3720,7 +3729,8 @@ id|card
 op_assign
 id|chan-&gt;card
 suffix:semicolon
-id|wan_device_t
+r_struct
+id|wan_device
 op_star
 id|wandev
 op_assign
