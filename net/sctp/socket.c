@@ -4567,7 +4567,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * 7.1.14 Set default send parameters (SET_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; */
+multiline_comment|/*&n; * 7.1.14 Set default send parameters (SCTP_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; */
 DECL|function|sctp_setsockopt_default_send_param
 r_static
 r_int
@@ -6874,7 +6874,7 @@ op_minus
 id|ESOCKTNOSUPPORT
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME:  The next draft (04) of the SCTP Sockets Extensions&n;&t; * should include a socket option for manipulating these&n;&t; * message parameters (and a few others).&n;&t; */
+multiline_comment|/* Initialize default send parameters. These parameters can be&n;&t; * modified with the SCTP_DEFAULT_SEND_PARAM socket option.&n;&t; */
 id|sp-&gt;default_stream
 op_assign
 l_int|0
@@ -6918,7 +6918,7 @@ id|HZ
 op_star
 l_int|1000
 suffix:semicolon
-multiline_comment|/* Initialize default RTO related parameters.  These parameters can&n;&t; * be modified for with the SCTP_RTOINFO socket option.&n;&t; * FIXME: These are not used yet.&n;&t; */
+multiline_comment|/* Initialize default RTO related parameters.  These parameters can&n;&t; * be modified for with the SCTP_RTOINFO socket option.&n;&t; */
 id|sp-&gt;rtoinfo.srto_initial
 op_assign
 (paren
@@ -9605,7 +9605,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&n; * 7.1.14 Set default send parameters (SET_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n;&n;&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; *&n; *   For getsockopt, it get the default sctp_sndrcvinfo structure.&n; */
+multiline_comment|/*&n; *&n; * 7.1.14 Set default send parameters (SCTP_DEFAULT_SEND_PARAM)&n; *&n; *   Applications that wish to use the sendto() system call may wish to&n; *   specify a default set of parameters that would normally be supplied&n; *   through the inclusion of ancillary data.  This socket option allows&n; *   such an application to set the default sctp_sndrcvinfo structure.&n;&n;&n; *   The application that wishes to use this socket option simply passes&n; *   in to this call the sctp_sndrcvinfo structure defined in Section&n; *   5.2.2) The input parameters accepted by this call include&n; *   sinfo_stream, sinfo_flags, sinfo_ppid, sinfo_context,&n; *   sinfo_timetolive.  The user must provide the sinfo_assoc_id field in&n; *   to this call if the caller is using the UDP model.&n; *&n; *   For getsockopt, it get the default sctp_sndrcvinfo structure.&n; */
 DECL|function|sctp_getsockopt_default_send_param
 r_static
 r_int

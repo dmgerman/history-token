@@ -5731,13 +5731,20 @@ id|asoc-&gt;peer.i.initial_tsn
 )paren
 suffix:semicolon
 multiline_comment|/* RFC 2960 6.5 Stream Identifier and Stream Sequence Number&n;&t; *&n;&t; * The stream sequence number in all the streams shall start&n;&t; * from 0 when the association is established.  Also, when the&n;&t; * stream sequence number reaches the value 65535 the next&n;&t; * stream sequence number shall be set to 0.&n;&t; */
-multiline_comment|/* Allocate storage for the negotiated streams. */
+multiline_comment|/* Allocate storage for the negotiated streams if it is not a temporary &t; * association.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|asoc-&gt;temp
+)paren
+(brace
 id|asoc-&gt;ssnmap
 op_assign
 id|sctp_ssnmap_new
 c_func
 (paren
-id|asoc-&gt;peer.i.num_outbound_streams
+id|asoc-&gt;c.sinit_max_instreams
 comma
 id|asoc-&gt;c.sinit_num_ostreams
 comma
@@ -5753,6 +5760,7 @@ id|asoc-&gt;ssnmap
 r_goto
 id|nomem_ssnmap
 suffix:semicolon
+)brace
 multiline_comment|/* ADDIP Section 4.1 ASCONF Chunk Procedures&n;&t; *&n;&t; * When an endpoint has an ASCONF signaled change to be sent to the&n;&t; * remote endpoint it should do the following:&n;&t; * ...&n;&t; * A2) A serial number should be assigned to the Chunk. The serial&n;&t; * number should be a monotonically increasing number. All serial&n;&t; * numbers are defined to be initialized at the start of the&n;&t; * association to the same value as the Initial TSN.&n;&t; */
 id|asoc-&gt;peer.addip_serial
 op_assign
