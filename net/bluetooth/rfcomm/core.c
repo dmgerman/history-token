@@ -21,7 +21,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.3&quot;
+mdefine_line|#define VERSION &quot;1.0&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
@@ -1992,7 +1992,7 @@ op_amp
 id|session_list
 )paren
 suffix:semicolon
-multiline_comment|/* Do not increment module usage count for listeting sessions.&n;&t; * Otherwise we won&squot;t be able to unload the module. */
+multiline_comment|/* Do not increment module usage count for listeting sessions.&n;&t; * Otherwise we won&squot;t be able to unload the module.&n;&t; * Non listening session are added either by a socket or a TTYs&n;&t; * which means that we already hold refcount to this module.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2000,7 +2000,11 @@ id|state
 op_ne
 id|BT_LISTEN
 )paren
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|s
@@ -2073,7 +2077,11 @@ id|state
 op_ne
 id|BT_LISTEN
 )paren
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|rfcomm_session_get
@@ -9100,6 +9108,11 @@ c_func
 r_void
 )paren
 (brace
+id|l2cap_load
+c_func
+(paren
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren

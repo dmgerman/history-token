@@ -606,5 +606,12 @@ DECL|macro|CONF_INPUT_DONE
 mdefine_line|#define CONF_INPUT_DONE  0x02
 DECL|macro|CONF_OUTPUT_DONE
 mdefine_line|#define CONF_OUTPUT_DONE 0x04
+r_void
+id|l2cap_load
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __L2CAP_H */
 eof

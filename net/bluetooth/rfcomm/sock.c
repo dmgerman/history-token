@@ -647,8 +647,6 @@ c_func
 id|sk-&gt;protinfo
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|rfcomm_sock_cleanup_listen
 r_static
@@ -968,6 +966,14 @@ id|sk
 r_return
 l_int|NULL
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|d
 op_assign
 id|rfcomm_dlc_alloc
@@ -1063,8 +1069,6 @@ l_string|&quot;sk %p&quot;
 comma
 id|sk
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 id|sk
