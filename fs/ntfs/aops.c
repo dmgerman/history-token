@@ -940,9 +940,6 @@ suffix:semicolon
 r_else
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* Successful remap. */
@@ -2279,9 +2276,6 @@ suffix:semicolon
 r_else
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 multiline_comment|/* Successful remap. */
@@ -5218,9 +5212,6 @@ suffix:semicolon
 r_else
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 r_if
