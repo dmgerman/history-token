@@ -553,14 +553,6 @@ op_amp
 id|xd_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* 8 sector (4kB) read ahead */
 id|add_gendisk
 c_func
 (paren
@@ -1628,12 +1620,6 @@ id|BLKROSET
 suffix:colon
 r_case
 id|BLKROGET
-suffix:colon
-r_case
-id|BLKRASET
-suffix:colon
-r_case
-id|BLKRAGET
 suffix:colon
 r_case
 id|BLKPG

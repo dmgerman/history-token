@@ -1323,13 +1323,6 @@ id|ATAMAJOR
 op_assign
 l_int|NULL
 suffix:semicolon
-id|max_readahead
-(braket
-id|ATAMAJOR
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren

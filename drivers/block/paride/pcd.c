@@ -1122,14 +1122,6 @@ op_amp
 id|pcd_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* 8 sector (4kB) read ahead */
 r_for
 c_loop
 (paren

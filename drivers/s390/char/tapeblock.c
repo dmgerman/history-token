@@ -316,13 +316,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|tapeblock_major
-)braket
-op_assign
-id|TAPEBLOCK_READAHEAD
-suffix:semicolon
 id|PRINT_WARN
 c_func
 (paren

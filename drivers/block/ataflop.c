@@ -6172,12 +6172,6 @@ r_case
 id|BLKROGET
 suffix:colon
 r_case
-id|BLKRASET
-suffix:colon
-r_case
-id|BLKRAGET
-suffix:colon
-r_case
 id|BLKFLSBUF
 suffix:colon
 r_return

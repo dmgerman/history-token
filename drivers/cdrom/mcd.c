@@ -4318,13 +4318,6 @@ op_amp
 id|mcd_spinlock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|4
-suffix:semicolon
 multiline_comment|/* check for card */
 id|outb
 c_func

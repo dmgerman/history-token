@@ -4856,13 +4856,6 @@ op_amp
 id|mcdx_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|READ_AHEAD
-suffix:semicolon
 id|blksize_size
 (braket
 id|MAJOR_NR

@@ -6110,14 +6110,6 @@ op_assign
 op_amp
 id|sonycd535_block_size
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* 8 sector (4kB) read-ahead */
 id|sony_toc
 op_assign
 (paren

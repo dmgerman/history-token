@@ -8423,13 +8423,6 @@ op_amp
 id|optcd_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|4
-suffix:semicolon
 id|request_region
 c_func
 (paren

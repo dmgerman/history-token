@@ -9150,15 +9150,6 @@ id|hwif-&gt;major
 )braket
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|max_readahead
-(braket
-id|hwif-&gt;major
-)braket
-)paren
-suffix:semicolon
 id|blk_dev
 (braket
 id|hwif-&gt;major

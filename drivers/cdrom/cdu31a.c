@@ -12954,13 +12954,6 @@ op_amp
 id|cdu31a_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|CDU31A_READAHEAD
-suffix:semicolon
 id|cdu31a_block_size
 op_assign
 l_int|1024

@@ -3538,13 +3538,6 @@ id|MAJOR_NR
 op_assign
 id|gscd_blocksizes
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|4
-suffix:semicolon
 id|disk_state
 op_assign
 l_int|0

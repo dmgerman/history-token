@@ -5804,13 +5804,6 @@ op_amp
 id|sjcd_lock
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|4
-suffix:semicolon
 id|register_disk
 c_func
 (paren

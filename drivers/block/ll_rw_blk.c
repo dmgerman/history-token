@@ -47,14 +47,6 @@ c_func
 id|tq_disk
 )paren
 suffix:semicolon
-multiline_comment|/* This specifies how many sectors to read ahead on the disk. */
-DECL|variable|read_ahead
-r_int
-id|read_ahead
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
 multiline_comment|/* blk_dev_struct is:&n; *&t;request_queue&n; *&t;*queue&n; */
 DECL|variable|blk_dev
 r_struct
@@ -79,15 +71,6 @@ DECL|variable|blksize_size
 r_int
 op_star
 id|blksize_size
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
-multiline_comment|/*&n; * The following tunes the read-ahead algorithm in mm/filemap.c&n; */
-DECL|variable|max_readahead
-r_int
-op_star
-id|max_readahead
 (braket
 id|MAX_BLKDEV
 )braket
@@ -5837,19 +5820,6 @@ comma
 r_sizeof
 (paren
 id|ro_bits
-)paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|max_readahead
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|max_readahead
 )paren
 )paren
 suffix:semicolon

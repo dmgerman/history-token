@@ -1087,14 +1087,6 @@ id|blksize_size
 id|MAX_BLKDEV
 )braket
 suffix:semicolon
-r_extern
-r_int
-op_star
-id|max_readahead
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
 DECL|macro|MAX_PHYS_SEGMENTS
 mdefine_line|#define MAX_PHYS_SEGMENTS 128
 DECL|macro|MAX_HW_SEGMENTS
@@ -1157,20 +1149,6 @@ id|major
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|max_readahead
-(braket
-id|major
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|read_ahead
-(braket
-id|major
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|get_hardsect_size

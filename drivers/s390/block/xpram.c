@@ -143,13 +143,6 @@ id|devs
 op_assign
 id|XPRAM_DEVS
 suffix:semicolon
-DECL|variable|rahead
-r_static
-r_int
-id|rahead
-op_assign
-id|XPRAM_RAHEAD
-suffix:semicolon
 DECL|variable|sizes
 r_static
 r_int
@@ -178,11 +171,8 @@ op_assign
 id|XPRAM_HARDSECT
 suffix:semicolon
 DECL|variable|xpram_devs
-DECL|variable|xpram_rahead
 r_int
 id|xpram_devs
-comma
-id|xpram_rahead
 suffix:semicolon
 DECL|variable|xpram_blksize
 DECL|variable|xpram_hardsect
@@ -1815,96 +1805,6 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
-id|BLKRAGET
-suffix:colon
-multiline_comment|/* return the readahead value, 0x1263 */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|arg
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* verify_area_20(VERIFY_WRITE, (long *) arg, sizeof(long));&n;&t;&t;          * if (err) return err;&n;                          */
-id|put_user
-c_func
-(paren
-id|read_ahead
-(braket
-id|MAJOR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)braket
-comma
-(paren
-r_int
-op_star
-)paren
-id|arg
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_case
-id|BLKRASET
-suffix:colon
-multiline_comment|/* set the readahead value, 0x1262 */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|arg
-OG
-l_int|0xff
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* limit it */
-id|read_ahead
-(braket
-id|MAJOR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)braket
-op_assign
-id|arg
-suffix:semicolon
-id|atomic_eieio
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-r_case
 id|BLKRRPART
 suffix:colon
 multiline_comment|/* re-read partition table: can&squot;t do it, 0x1259 */
@@ -2688,10 +2588,6 @@ suffix:semicolon
 multiline_comment|/* request queue */
 macro_line|#endif /* V24 */
 multiline_comment|/*&n;&t;&t;&t;&t; * Copy the (static) cfg variables to public prefixed ones to allow&n;&t;&t;&t;&t; * snoozing with a debugger.&n;&t;&t;&t;&t; */
-id|xpram_rahead
-op_assign
-id|rahead
-suffix:semicolon
 id|xpram_blksize
 op_assign
 id|blksize
@@ -3111,7 +3007,7 @@ comma
 id|xpram_mem_avail
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Assign the other needed values: request, rahead, size, blksize,&n;&t; * hardsect. All the minor devices feature the same value.&n;&t; * Note that `xpram&squot; defines all of them to allow testing non-default&n;&t; * values. A real device could well avoid setting values in global&n;&t; * arrays if it uses the default values.&n;&t; */
+multiline_comment|/*&n;&t; * Assign the other needed values: request, size, blksize,&n;&t; * hardsect. All the minor devices feature the same value.&n;&t; * Note that `xpram&squot; defines all of them to allow testing non-default&n;&t; * values. A real device could well avoid setting values in global&n;&t; * arrays if it uses the default values.&n;&t; */
 macro_line|#if (XPRAM_VERSION == 22)
 id|blk_dev
 (braket
@@ -3138,13 +3034,6 @@ id|xpram_request
 )paren
 suffix:semicolon
 macro_line|#endif /* V22/V24 */
-id|read_ahead
-(braket
-id|major
-)braket
-op_assign
-id|xpram_rahead
-suffix:semicolon
 multiline_comment|/* we want to have XPRAM_UNUSED blocks security buffer between devices */
 id|mem_usable
 op_assign
@@ -3915,13 +3804,6 @@ l_int|NULL
 suffix:semicolon
 id|fail_malloc
 suffix:colon
-id|read_ahead
-(braket
-id|major
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#if (XPRAM_VERSION == 22)
 id|blk_dev
 (braket
