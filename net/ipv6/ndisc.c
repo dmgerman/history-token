@@ -1820,11 +1820,11 @@ id|fl-&gt;proto
 op_assign
 id|IPPROTO_ICMPV6
 suffix:semicolon
-id|fl-&gt;uli_u.icmpt.type
+id|fl-&gt;fl_icmp_type
 op_assign
 id|type
 suffix:semicolon
-id|fl-&gt;uli_u.icmpt.code
+id|fl-&gt;fl_icmp_code
 op_assign
 l_int|0
 suffix:semicolon

@@ -2701,11 +2701,11 @@ op_assign
 op_amp
 id|np-&gt;saddr
 suffix:semicolon
-id|fl.uli_u.icmpt.type
+id|fl.fl_icmp_type
 op_assign
 l_int|0
 suffix:semicolon
-id|fl.uli_u.icmpt.code
+id|fl.fl_icmp_code
 op_assign
 l_int|0
 suffix:semicolon

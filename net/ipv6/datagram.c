@@ -357,7 +357,7 @@ id|skb-&gt;nh.raw
 suffix:semicolon
 id|serr-&gt;port
 op_assign
-id|fl-&gt;uli_u.ports.dport
+id|fl-&gt;fl_ip_dport
 suffix:semicolon
 id|skb-&gt;h.raw
 op_assign
