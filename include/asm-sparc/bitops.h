@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bitops.h,v 1.64 2001/07/18 13:48:23 anton Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright 2001 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.65 2001/10/30 04:08:26 davem Exp $&n; * bitops.h: Bit string operations on the Sparc.&n; *&n; * Copyright 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1996 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright 2001 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#ifndef _SPARC_BITOPS_H
 DECL|macro|_SPARC_BITOPS_H
 mdefine_line|#define _SPARC_BITOPS_H
@@ -76,32 +76,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___set_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___set_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren
@@ -204,32 +183,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___set_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___set_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren
@@ -325,32 +283,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___clear_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___clear_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren
@@ -453,32 +390,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___clear_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___clear_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren
@@ -574,32 +490,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___change_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___change_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren
@@ -702,32 +597,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___change_bit
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___change_bit&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|mask
 )paren

@@ -40,7 +40,9 @@ comma
 id|qh
 comma
 (paren
-id|u64
+r_int
+r_int
+r_int
 )paren
 id|qh-&gt;dma_addr
 )paren

@@ -2117,7 +2117,6 @@ op_star
 id|skb
 )paren
 (brace
-macro_line|#ifdef CONFIG_INET_ECN
 id|u8
 id|inner
 op_assign
@@ -2172,11 +2171,6 @@ comma
 id|inner
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-id|tos
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|ipgre_rcv
 r_int

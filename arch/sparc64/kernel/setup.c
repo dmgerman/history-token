@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.69 2001/10/18 09:40:00 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.70 2001/10/25 18:48:03 davem Exp $&n; *  linux/arch/sparc64/kernel/setup.c&n; *&n; *  Copyright (C) 1995,1996  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997       Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -694,6 +694,50 @@ id|pte_t
 op_star
 id|ptep
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|va
+op_ge
+id|LOW_OBP_ADDRESS
+)paren
+op_logical_and
+(paren
+id|va
+OL
+id|HI_OBP_ADDRESS
+)paren
+)paren
+(brace
+id|tte
+op_assign
+id|prom_virt_to_phys
+c_func
+(paren
+id|va
+comma
+op_amp
+id|error
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|res
+op_assign
+id|PROM_TRUE
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 id|pgdp
 op_assign
 id|pgd_offset_k

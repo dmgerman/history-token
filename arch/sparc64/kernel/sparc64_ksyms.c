@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.113 2001/10/17 18:26:58 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.116 2001/10/26 15:49:21 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -653,6 +653,7 @@ c_func
 id|global_irq_holder
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
 c_func
@@ -660,6 +661,7 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__global_cli
 id|EXPORT_SYMBOL
 c_func
@@ -697,6 +699,7 @@ id|cpu_data
 )paren
 suffix:semicolon
 multiline_comment|/* Misc SMP information */
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_num_cpus
 id|EXPORT_SYMBOL
 c_func
@@ -704,6 +707,7 @@ c_func
 id|smp_num_cpus
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__cpu_number_map
 id|EXPORT_SYMBOL
 c_func
@@ -770,6 +774,7 @@ id|_do_write_unlock
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_call_function
 id|EXPORT_SYMBOL
 c_func
@@ -777,6 +782,7 @@ c_func
 id|smp_call_function
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* semaphores */
 DECL|variable|__down
@@ -1603,20 +1609,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sparc32_open
-)paren
-suffix:semicolon
-DECL|variable|move_addr_to_kernel
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|move_addr_to_kernel
-)paren
-suffix:semicolon
-DECL|variable|move_addr_to_user
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|move_addr_to_user
 )paren
 suffix:semicolon
 macro_line|#endif

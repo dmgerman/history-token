@@ -11,6 +11,22 @@ DECL|macro|REISERFS_OLD_BLOCKSIZE
 mdefine_line|#define REISERFS_OLD_BLOCKSIZE 4096
 DECL|macro|REISERFS_SUPER_MAGIC_STRING_OFFSET_NJ
 mdefine_line|#define REISERFS_SUPER_MAGIC_STRING_OFFSET_NJ 20
+DECL|variable|reiserfs_super_magic_string
+r_char
+id|reiserfs_super_magic_string
+(braket
+)braket
+op_assign
+id|REISERFS_SUPER_MAGIC_STRING
+suffix:semicolon
+DECL|variable|reiser2fs_super_magic_string
+r_char
+id|reiser2fs_super_magic_string
+(braket
+)braket
+op_assign
+id|REISER2FS_SUPER_MAGIC_STRING
+suffix:semicolon
 singleline_comment|//
 singleline_comment|// a portion of this function, particularly the VFS interface portion,
 singleline_comment|// was derived from minix or ext2&squot;s analog and evolved as the

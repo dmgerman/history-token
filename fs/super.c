@@ -4916,8 +4916,10 @@ id|bdev
 )paren
 suffix:semicolon
 multiline_comment|/* sb holds a reference */
+macro_line|#ifdef CONFIG_ROOT_NFS
 id|attach_it
 suffix:colon
+macro_line|#endif
 id|root_nd.mnt
 op_assign
 id|root_vfsmnt

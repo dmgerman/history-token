@@ -369,7 +369,7 @@ r_int
 r_int
 id|hh_type
 suffix:semicolon
-multiline_comment|/* protocol identifier, f.e ETH_P_IP */
+multiline_comment|/* protocol identifier, f.e ETH_P_IP&n;                                         *  NOTE:  For VLANs, this will be the&n;                                         *  encapuslated type. --BLG&n;                                         */
 DECL|member|hh_len
 r_int
 id|hh_len
@@ -612,6 +612,18 @@ r_int
 r_int
 id|gflags
 suffix:semicolon
+DECL|member|priv_flags
+r_int
+r_int
+id|priv_flags
+suffix:semicolon
+multiline_comment|/* Like &squot;flags&squot; but invisible to userspace. */
+DECL|member|unused_alignment_fixer
+r_int
+r_int
+id|unused_alignment_fixer
+suffix:semicolon
+multiline_comment|/* Because we need priv_flags,&n;                                                         * and we want to be 32-bit aligned.&n;                                                         */
 DECL|member|mtu
 r_int
 id|mtu

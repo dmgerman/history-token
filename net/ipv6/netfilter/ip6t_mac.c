@@ -95,8 +95,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|ipt_mac_checkentry
-id|ipt_mac_checkentry
+DECL|function|ip6t_mac_checkentry
+id|ip6t_mac_checkentry
 c_func
 (paren
 r_const
@@ -147,7 +147,7 @@ id|NF_IP6_LOCAL_IN
 id|printk
 c_func
 (paren
-l_string|&quot;ipt_mac: only valid for PRE_ROUTING or LOCAL_IN.&bslash;n&quot;
+l_string|&quot;ip6t_mac: only valid for PRE_ROUTING or LOCAL_IN.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -195,7 +195,7 @@ op_amp
 id|match
 comma
 op_amp
-id|ipt_mac_checkentry
+id|ip6t_mac_checkentry
 comma
 l_int|NULL
 comma

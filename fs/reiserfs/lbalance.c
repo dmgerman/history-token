@@ -1017,12 +1017,20 @@ id|bytes_or_entries
 comma
 l_string|&quot;vs-10060: no so much bytes %lu (needed %lu)&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ih_item_len
 c_func
 (paren
 id|ih
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|bytes_or_entries
 )paren
 suffix:semicolon
@@ -1655,8 +1663,16 @@ id|dest-&gt;b_blocknr
 comma
 l_string|&quot;vs-10160: block number in bh does not match to field in disk_child structure %lu and %lu&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|dest-&gt;b_blocknr
 comma
+(paren
+r_int
+r_int
+)paren
 id|dc_block_number
 c_func
 (paren
@@ -1840,6 +1856,10 @@ id|ih
 comma
 l_string|&quot;vs-10180: when whole indirect item is bottle to left neighbor, it must have free_space==0 (not %lu)&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|get_ih_free_space
 (paren
 id|ih
@@ -4980,10 +5000,22 @@ id|ih
 comma
 l_string|&quot;10200: invalid offset (%lu) or trunc_size (%lu) or ih_item_len (%lu)&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|pos_in_item
 comma
+(paren
+r_int
+r_int
+)paren
 id|cut_size
 comma
+(paren
+r_int
+r_int
+)paren
 id|ih_item_len
 (paren
 id|ih

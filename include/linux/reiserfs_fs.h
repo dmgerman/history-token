@@ -61,6 +61,8 @@ macro_line|#else
 DECL|macro|RFALSE
 mdefine_line|#define RFALSE( cond, format, args... ) do {;} while( 0 )
 macro_line|#endif
+DECL|macro|CONSTF
+mdefine_line|#define CONSTF __attribute__( ( const ) )
 multiline_comment|/*&n; * Disk Data Structures&n; */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             SUPER BLOCK                                 */
@@ -74,12 +76,25 @@ DECL|macro|REISERFS_SUPER_MAGIC_STRING
 mdefine_line|#define REISERFS_SUPER_MAGIC_STRING &quot;ReIsErFs&quot;
 DECL|macro|REISER2FS_SUPER_MAGIC_STRING
 mdefine_line|#define REISER2FS_SUPER_MAGIC_STRING &quot;ReIsEr2Fs&quot;
+r_extern
+r_char
+id|reiserfs_super_magic_string
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_char
+id|reiser2fs_super_magic_string
+(braket
+)braket
+suffix:semicolon
 DECL|function|is_reiserfs_magic_string
 r_static
 r_inline
 r_int
 id|is_reiserfs_magic_string
 (paren
+r_const
 r_struct
 id|reiserfs_super_block
 op_star
@@ -93,11 +108,11 @@ id|strncmp
 (paren
 id|rs-&gt;s_magic
 comma
-id|REISERFS_SUPER_MAGIC_STRING
+id|reiserfs_super_magic_string
 comma
 id|strlen
 (paren
-id|REISERFS_SUPER_MAGIC_STRING
+id|reiserfs_super_magic_string
 )paren
 )paren
 op_logical_or
@@ -106,11 +121,11 @@ id|strncmp
 (paren
 id|rs-&gt;s_magic
 comma
-id|REISER2FS_SUPER_MAGIC_STRING
+id|reiser2fs_super_magic_string
 comma
 id|strlen
 (paren
-id|REISER2FS_SUPER_MAGIC_STRING
+id|reiser2fs_super_magic_string
 )paren
 )paren
 )paren
@@ -172,25 +187,10 @@ suffix:semicolon
 multiline_comment|/* when reiserfs_file_write is called with a byte count &gt;= MIN_PACK_ON_CLOSE,&n;** it sets the inode to pack on close, and when extending the file, will only&n;** use unformatted nodes.&n;**&n;** This is a big speed up for the journal, which is badly hurt by direct-&gt;indirect&n;** conversions (they must be logged).&n;*/
 DECL|macro|MIN_PACK_ON_CLOSE
 mdefine_line|#define MIN_PACK_ON_CLOSE&t;&t;512
-multiline_comment|/* the defines below say, that if file size is &gt;=&n;   DIRECT_TAIL_SUPPRESSION_SIZE * blocksize, then if tail is longer&n;   than MAX_BYTES_SUPPRESS_DIRECT_TAIL, it will be stored in&n;   unformatted node */
-DECL|macro|DIRECT_TAIL_SUPPRESSION_SIZE
-mdefine_line|#define DIRECT_TAIL_SUPPRESSION_SIZE      1024
-DECL|macro|MAX_BYTES_SUPPRESS_DIRECT_TAIL
-mdefine_line|#define MAX_BYTES_SUPPRESS_DIRECT_TAIL    1024
-macro_line|#if 0
-singleline_comment|//
-mdefine_line|#define mark_file_with_tail(inode,offset) &bslash;&n;{&bslash;&n;inode-&gt;u.reiserfs_i.i_has_tail = 1;&bslash;&n;}
-mdefine_line|#define mark_file_without_tail(inode) &bslash;&n;{&bslash;&n;inode-&gt;u.reiserfs_i.i_has_tail = 0;&bslash;&n;}
-macro_line|#endif
 singleline_comment|// this says about version of all items (but stat data) the object
 singleline_comment|// consists of
 DECL|macro|inode_items_version
 mdefine_line|#define inode_items_version(inode) ((inode)-&gt;u.reiserfs_i.i_version)
-multiline_comment|/* We store tail in unformatted node if it is too big to fit into a&n;   formatted node or if DIRECT_TAIL_SUPPRESSION_SIZE,&n;   MAX_BYTES_SUPPRESS_DIRECT_TAIL and file size say that. */
-multiline_comment|/* #define STORE_TAIL_IN_UNFM(n_file_size,n_tail_size,n_block_size) &bslash; */
-multiline_comment|/* ( ((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash; */
-multiline_comment|/*   ( ( (n_file_size) &gt;= (n_block_size) * DIRECT_TAIL_SUPPRESSION_SIZE ) &amp;&amp; &bslash; */
-multiline_comment|/*    ( (n_tail_size) &gt;= MAX_BYTES_SUPPRESS_DIRECT_TAIL ) ) ) */
 multiline_comment|/* This is an aggressive tail suppression policy, I am hoping it&n;     improves our benchmarks. The principle behind it is that&n;     percentage space saving is what matters, not absolute space&n;     saving.  This is non-intuitive, but it helps to understand it if&n;     you consider that the cost to access 4 blocks is not much more&n;     than the cost to access 1 block, if you have to do a seek and&n;     rotate.  A tail risks a non-linear disk access that is&n;     significant as a percentage of total time cost for a 4 block file&n;     and saves an amount of space that is less significant as a&n;     percentage of space, or so goes the hypothesis.  -Hans */
 DECL|macro|STORE_TAIL_IN_UNFM
 mdefine_line|#define STORE_TAIL_IN_UNFM(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash;&n;   ( (n_file_size) &gt;= (n_block_size) * 4 ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 3 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/4) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 2 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/2) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size) * 3)/4) ) ) &bslash;&n;)
@@ -676,7 +676,6 @@ DECL|macro|put_ih_location
 mdefine_line|#define put_ih_location(ih, val)     do { (ih)-&gt;ih_item_location = cpu_to_le16(val); } while (0)
 DECL|macro|put_ih_item_len
 mdefine_line|#define put_ih_item_len(ih, val)     do { (ih)-&gt;ih_item_len = cpu_to_le16(val); } while (0)
-singleline_comment|// FIXME: now would that work for other than i386 archs
 DECL|macro|unreachable_item
 mdefine_line|#define unreachable_item(ih) (ih_version(ih) &amp; (1 &lt;&lt; 15))
 DECL|macro|get_ih_free_space
@@ -719,6 +718,16 @@ singleline_comment|// FIXME: comment is required
 singleline_comment|//
 singleline_comment|// here are conversion routines
 singleline_comment|//
+r_static
+r_inline
+r_int
+id|uniqueness2type
+(paren
+id|__u32
+id|uniqueness
+)paren
+id|CONSTF
+suffix:semicolon
 DECL|function|uniqueness2type
 r_static
 r_inline
@@ -765,6 +774,16 @@ r_return
 id|TYPE_ANY
 suffix:semicolon
 )brace
+r_static
+r_inline
+id|__u32
+id|type2uniqueness
+(paren
+r_int
+id|type
+)paren
+id|CONSTF
+suffix:semicolon
 DECL|function|type2uniqueness
 r_static
 r_inline
@@ -825,6 +844,7 @@ id|le_key_k_offset
 r_int
 id|version
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -861,6 +881,7 @@ r_inline
 id|loff_t
 id|le_ih_k_offset
 (paren
+r_const
 r_struct
 id|item_head
 op_star
@@ -891,6 +912,7 @@ id|le_key_k_type
 r_int
 id|version
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -931,6 +953,7 @@ r_inline
 id|loff_t
 id|le_ih_k_type
 (paren
+r_const
 r_struct
 id|item_head
 op_star
@@ -1144,6 +1167,7 @@ r_inline
 id|loff_t
 id|cpu_key_k_offset
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -1169,6 +1193,7 @@ r_inline
 id|loff_t
 id|cpu_key_k_type
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -2340,11 +2365,13 @@ r_inline
 r_int
 id|entry_length
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
 id|bh
 comma
+r_const
 r_struct
 id|item_head
 op_star
@@ -2682,6 +2709,7 @@ r_inline
 id|loff_t
 id|max_reiserfs_offset
 (paren
+r_const
 r_struct
 id|inode
 op_star
@@ -3119,165 +3147,6 @@ suffix:semicolon
 multiline_comment|/* saved value of `reiserfs_generation&squot; counter&n;&t;&t;&t;          see FILESYSTEM_CHANGED() macro in reiserfs_fs.h */
 )brace
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* when balancing we potentially affect a 3 node wide column of nodes&n;                                   in the tree (the top of the column may be tapered). C is the nodes&n;                                   at the center of this column, and L and R are the nodes to the&n;                                   left and right.  */
-r_struct
-id|seal
-op_star
-id|L_path_seals
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-id|seal
-op_star
-id|C_path_seals
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-id|seal
-op_star
-id|R_path_seals
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_char
-id|L_path_lock_types
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* &squot;r&squot;, &squot;w&squot;, or &squot;n&squot; for read, write, or none */
-r_char
-id|C_path_lock_types
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_char
-id|R_path_lock_types
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-id|seal_list_elem
-op_star
-id|C_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on nodes in the path */
-r_struct
-id|seal_list_elem
-op_star
-id|L_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on left neighbors of nodes in the path */
-r_struct
-id|seal_list_elem
-op_star
-id|R_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on right neighbors of nodes in the path*/
-r_struct
-id|seal_list_elem
-op_star
-id|FL_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on fathers of the left  neighbors      */
-r_struct
-id|seal_list_elem
-op_star
-id|FR_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on fathers of the right neighbors      */
-r_struct
-id|seal_list_elem
-op_star
-id|CFL_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on common parents of center node and its left neighbor  */
-r_struct
-id|seal_list_elem
-op_star
-id|CFR_seal
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* array of seals on common parents of center node and its right neighbor */
-r_struct
-r_char
-id|C_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-multiline_comment|/* &squot;r&squot;, &squot;w&squot;, or &squot;n&squot; for read, write, or none */
-r_struct
-r_char
-id|L_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-r_char
-id|R_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-r_char
-id|FL_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-r_char
-id|FR_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-r_char
-id|CFL_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-r_struct
-r_char
-id|CFR_desired_lock_type
-(braket
-id|MAX_HEIGHT
-)braket
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* These are modes of balancing */
 multiline_comment|/* When inserting an item. */
 DECL|macro|M_INSERT
@@ -3615,74 +3484,6 @@ DECL|macro|B_I_POS_UNFM_POINTER
 mdefine_line|#define B_I_POS_UNFM_POINTER(bh,ih,pos) le32_to_cpu(*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)))
 DECL|macro|PUT_B_I_POS_UNFM_POINTER
 mdefine_line|#define PUT_B_I_POS_UNFM_POINTER(bh,ih,pos, val) do {*(((unp_t *)B_I_PITEM(bh,ih)) + (pos)) = cpu_to_le32(val); } while (0)
-multiline_comment|/* Reiserfs buffer cache statistics. */
-macro_line|#ifdef REISERFS_CACHE_STAT
-DECL|struct|reiserfs_cache_stat
-r_struct
-id|reiserfs_cache_stat
-(brace
-DECL|member|nr_reiserfs_ll_r_block
-r_int
-id|nr_reiserfs_ll_r_block
-suffix:semicolon
-multiline_comment|/* Number of block reads. */
-DECL|member|nr_reiserfs_ll_w_block
-r_int
-id|nr_reiserfs_ll_w_block
-suffix:semicolon
-multiline_comment|/* Number of block writes. */
-DECL|member|nr_reiserfs_schedule
-r_int
-id|nr_reiserfs_schedule
-suffix:semicolon
-multiline_comment|/* Number of locked buffers waits. */
-DECL|member|nr_reiserfs_bread
-r_int
-r_int
-id|nr_reiserfs_bread
-suffix:semicolon
-multiline_comment|/* Number of calls to reiserfs_bread function */
-DECL|member|nr_returns
-r_int
-r_int
-id|nr_returns
-suffix:semicolon
-multiline_comment|/* Number of breads of buffers that were hoped to contain a key but did not after bread completed&n;&t;&t;&t;&t;     (usually due to object shifting while bread was executing.)&n;&t;&t;&t;&t;     In the code this manifests as the number&n;&t;&t;&t;&t;     of times that the repeat variable is nonzero in search_by_key.*/
-DECL|member|nr_fixed
-r_int
-r_int
-id|nr_fixed
-suffix:semicolon
-multiline_comment|/* number of calls of fix_nodes function */
-DECL|member|nr_failed
-r_int
-r_int
-id|nr_failed
-suffix:semicolon
-multiline_comment|/* number of calls of fix_nodes in which schedule occurred while the function worked */
-DECL|member|nr_find1
-r_int
-r_int
-id|nr_find1
-suffix:semicolon
-multiline_comment|/* How many times we access a child buffer using its direct pointer from an internal node.*/
-DECL|member|nr_find2
-r_int
-r_int
-id|nr_find2
-suffix:semicolon
-multiline_comment|/* Number of times there is neither a direct pointer to&n;&t;&t;&t;&t;&t;   nor any entry in the child list pointing to the buffer. */
-DECL|member|nr_find3
-r_int
-r_int
-id|nr_find3
-suffix:semicolon
-multiline_comment|/* When parent is locked (meaning that there are no direct pointers)&n;&t;&t;&t;&t;&t;   or parent is leaf and buffer to be found is an unformatted node. */
-DECL|variable|cache_stat
-)brace
-id|cache_stat
-suffix:semicolon
-macro_line|#endif
 DECL|struct|reiserfs_iget4_args
 r_struct
 id|reiserfs_iget4_args
@@ -4191,6 +3992,7 @@ r_int
 id|buffer_journaled
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -4283,6 +4085,7 @@ r_int
 id|reiserfs_buffer_prepared
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -4299,6 +4102,11 @@ c_func
 (paren
 id|BH_JPrepared
 comma
+(paren
+r_struct
+id|buffer_head
+op_star
+)paren
 op_amp
 id|bh-&gt;b_state
 )paren
@@ -4319,6 +4127,7 @@ r_int
 id|buffer_journal_dirty
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -4336,6 +4145,11 @@ c_func
 (paren
 id|BH_JDirty_wait
 comma
+(paren
+r_struct
+id|buffer_head
+op_star
+)paren
 op_amp
 id|bh-&gt;b_state
 )paren
@@ -4445,6 +4259,7 @@ r_int
 id|B_IS_IN_TREE
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -4459,6 +4274,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -4470,11 +4286,14 @@ r_void
 id|copy_item_head
 c_func
 (paren
-r_void
+r_struct
+id|item_head
 op_star
 id|p_v_to
 comma
-r_void
+r_const
+r_struct
+id|item_head
 op_star
 id|p_v_from
 )paren
@@ -4485,11 +4304,13 @@ r_inline
 r_int
 id|comp_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|le_key
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4501,11 +4322,13 @@ r_inline
 r_int
 id|comp_short_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|le_key
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4522,6 +4345,7 @@ id|cpu_key
 op_star
 id|to
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -4534,10 +4358,12 @@ r_inline
 r_int
 id|comp_cpu_keys
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4548,10 +4374,12 @@ r_inline
 r_int
 id|comp_short_cpu_keys
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4566,6 +4394,7 @@ r_struct
 id|cpu_key
 op_star
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4577,10 +4406,12 @@ r_inline
 r_int
 id|comp_le_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -4591,10 +4422,12 @@ r_inline
 r_int
 id|comp_short_le_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -4609,6 +4442,7 @@ r_inline
 r_int
 id|le_key_version
 (paren
+r_const
 r_struct
 id|key
 op_star
@@ -4657,11 +4491,14 @@ r_inline
 r_void
 id|copy_key
 (paren
-r_void
+r_struct
+id|key
 op_star
 id|to
 comma
-r_void
+r_const
+r_struct
+id|key
 op_star
 id|from
 )paren
@@ -4679,27 +4516,32 @@ suffix:semicolon
 r_int
 id|comp_items
 (paren
+r_const
 r_struct
 id|item_head
 op_star
-id|p_s_ih
+id|stored_ih
 comma
+r_const
 r_struct
 id|path
 op_star
 id|p_s_path
 )paren
 suffix:semicolon
+r_const
 r_struct
 id|key
 op_star
 id|get_rkey
 (paren
+r_const
 r_struct
 id|path
 op_star
 id|p_s_chk_path
 comma
+r_const
 r_struct
 id|super_block
 op_star
@@ -4710,10 +4552,12 @@ r_inline
 r_int
 id|bin_search
 (paren
+r_const
 r_void
 op_star
 id|p_v_key
 comma
+r_const
 r_void
 op_star
 id|p_v_base
@@ -4736,6 +4580,7 @@ r_struct
 id|super_block
 op_star
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4757,6 +4602,7 @@ id|super_block
 op_star
 id|p_s_sb
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4834,6 +4680,7 @@ id|path
 op_star
 id|path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4863,6 +4710,7 @@ id|path
 op_star
 id|path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4922,6 +4770,7 @@ id|path
 op_star
 id|path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5063,6 +4912,7 @@ id|item_head
 op_star
 id|ih
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5115,6 +4965,7 @@ id|super_block
 op_star
 id|s
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5339,6 +5190,7 @@ id|super_block
 op_star
 id|sb
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5540,24 +5392,6 @@ id|bh
 )paren
 suffix:semicolon
 r_void
-id|reiserfs_panic
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-r_void
 id|reiserfs_write_super
 (paren
 r_struct
@@ -5678,6 +5512,7 @@ r_struct
 id|path
 op_star
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5754,6 +5589,7 @@ suffix:semicolon
 r_void
 id|wait_buffer_until_released
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -5865,7 +5701,14 @@ dot
 dot
 dot
 )paren
+id|__attribute__
+(paren
+(paren
+id|noreturn
+)paren
+)paren
 suffix:semicolon
+multiline_comment|/* __attribute__( ( format ( printf, 2, 3 ) ) ) */
 r_void
 id|reiserfs_warning
 (paren
@@ -5879,6 +5722,7 @@ dot
 dot
 )paren
 suffix:semicolon
+multiline_comment|/* __attribute__( ( format ( printf, 1, 2 ) ) ); */
 r_void
 id|reiserfs_debug
 (paren
@@ -5900,6 +5744,7 @@ dot
 dot
 )paren
 suffix:semicolon
+multiline_comment|/* __attribute__( ( format ( printf, 3, 4 ) ) ); */
 r_void
 id|print_virtual_node
 (paren
@@ -6576,6 +6421,7 @@ id|len
 )paren
 suffix:semicolon
 multiline_comment|/* version.c */
+r_const
 r_char
 op_star
 id|reiserfs_get_version_string
@@ -6583,6 +6429,7 @@ c_func
 (paren
 r_void
 )paren
+id|CONSTF
 suffix:semicolon
 multiline_comment|/* the ext2 bit routines adjust for big or little endian as&n;** appropriate for the arch, so in our laziness we use them rather&n;** than using the bit routines they call more directly.  These&n;** routines must be used when changing on disk bitmaps.  */
 DECL|macro|reiserfs_test_and_set_le_bit
@@ -6605,6 +6452,7 @@ DECL|function|find_first_nonzero_bit
 id|find_first_nonzero_bit
 c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -6701,6 +6549,7 @@ r_int
 id|find_next_nonzero_bit
 c_func
 (paren
+r_const
 r_void
 op_star
 id|addr
@@ -6894,6 +6743,7 @@ r_int
 id|reiserfs_get_journal_block
 c_func
 (paren
+r_const
 r_struct
 id|super_block
 op_star
@@ -6922,6 +6772,7 @@ r_int
 id|reiserfs_get_journal_orig_size
 c_func
 (paren
+r_const
 r_struct
 id|super_block
 op_star

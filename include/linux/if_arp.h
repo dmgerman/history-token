@@ -30,6 +30,8 @@ DECL|macro|ARPHRD_METRICOM
 mdefine_line|#define ARPHRD_METRICOM&t;23&t;&t;/* Metricom STRIP (new IANA id)&t;*/
 DECL|macro|ARPHRD_IEEE1394
 mdefine_line|#define&t;ARPHRD_IEEE1394&t;24&t;&t;/* IEEE 1394 IPv4 - RFC 2734&t;*/
+DECL|macro|ARPHRD_EUI64
+mdefine_line|#define ARPHRD_EUI64&t;27&t;&t;/* EUI-64                       */
 multiline_comment|/* Dummy types for non ARP hardware */
 DECL|macro|ARPHRD_SLIP
 mdefine_line|#define ARPHRD_SLIP&t;256

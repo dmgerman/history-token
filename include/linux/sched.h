@@ -1107,6 +1107,8 @@ DECL|macro|PF_SIGNALED
 mdefine_line|#define PF_SIGNALED&t;0x00000400&t;/* killed by a signal */
 DECL|macro|PF_MEMALLOC
 mdefine_line|#define PF_MEMALLOC&t;0x00000800&t;/* Allocating memory */
+DECL|macro|PF_MEMDIE
+mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_USEDFPU

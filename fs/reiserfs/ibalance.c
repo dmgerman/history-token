@@ -546,9 +546,7 @@ id|reiserfs_panic
 (paren
 id|tb-&gt;tb_sb
 comma
-l_string|&quot;internal_define_dest_src_infos&quot;
-comma
-l_string|&quot;shift type is unknown (%d)&quot;
+l_string|&quot;internal_define_dest_src_infos: shift type is unknown (%d)&quot;
 comma
 id|shift_mode
 )paren
@@ -3464,9 +3462,7 @@ id|reiserfs_panic
 (paren
 id|tb-&gt;tb_sb
 comma
-l_string|&quot;balance_internal_when_delete&quot;
-comma
-l_string|&quot;unexpected tb-&gt;lnum[%d]==%d or tb-&gt;rnum[%d]==%d&quot;
+l_string|&quot;balance_internal_when_delete: unexpected tb-&gt;lnum[%d]==%d or tb-&gt;rnum[%d]==%d&quot;
 comma
 id|h
 comma
@@ -4632,9 +4628,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;balance_internal&quot;
-comma
-l_string|&quot;One new node required for creating the new root&quot;
+l_string|&quot;balance_internal: One new node required for creating the new root&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* S[h] = empty buffer from the list FEB. */

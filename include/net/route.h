@@ -516,13 +516,8 @@ id|rt-&gt;u.dst
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_INET_ECN
 DECL|macro|IPTOS_RT_MASK
 mdefine_line|#define IPTOS_RT_MASK&t;(IPTOS_TOS_MASK &amp; ~3)
-macro_line|#else
-DECL|macro|IPTOS_RT_MASK
-mdefine_line|#define IPTOS_RT_MASK&t;IPTOS_TOS_MASK
-macro_line|#endif
 r_extern
 id|__u8
 id|ip_tos2prio

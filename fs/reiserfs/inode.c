@@ -294,6 +294,7 @@ id|item_head
 op_star
 id|ih
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4764,6 +4765,7 @@ id|super_block
 op_star
 id|s
 comma
+r_const
 r_struct
 id|cpu_key
 op_star

@@ -42,6 +42,11 @@ id|s
 comma
 l_string|&quot;vs-15010: check_objectid_map: map corrupted: %lx&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|le32_to_cpu
 (paren
 id|map
@@ -671,6 +676,10 @@ id|reiserfs_warning
 (paren
 l_string|&quot;vs-15010: reiserfs_release_objectid: tried to free free object id (%lu)&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|objectid_to_release
 )paren
 suffix:semicolon

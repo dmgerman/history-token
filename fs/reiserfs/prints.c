@@ -1403,54 +1403,7 @@ id|BUG
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// console_print (error_buf);
-singleline_comment|// for (;;);
-multiline_comment|/* comment before release */
-singleline_comment|//for (;;);
-macro_line|#if 0 /* this is not needed, the state is ignored */
-r_if
-c_cond
-(paren
-id|sb
-op_logical_and
-op_logical_neg
-(paren
-id|sb-&gt;s_flags
-op_amp
-id|MS_RDONLY
-)paren
-)paren
-(brace
-id|sb-&gt;u.reiserfs_sb.s_mount_state
-op_or_assign
-id|REISERFS_ERROR_FS
-suffix:semicolon
-id|sb-&gt;u.reiserfs_sb.s_rs-&gt;s_state
-op_assign
-id|REISERFS_ERROR_FS
-suffix:semicolon
-id|mark_buffer_dirty
-c_func
-(paren
-id|sb-&gt;u.reiserfs_sb.s_sbh
-)paren
-suffix:semicolon
-id|sb-&gt;s_dirt
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* this is to prevent panic from syncing this filesystem */
-r_if
-c_cond
-(paren
-id|sb
-)paren
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_RDONLY
-suffix:semicolon
+multiline_comment|/* this is not actually called, but makes reiserfs_panic() &quot;noreturn&quot; */
 id|panic
 (paren
 l_string|&quot;REISERFS: panic (device %s): %s&bslash;n&quot;

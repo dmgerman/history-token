@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.120 2001/07/18 13:40:05 anton Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.121 2001/10/30 04:54:22 davem Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -700,21 +700,12 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|psr
-comma
-op_mod
-l_int|0
-id|nop
-id|nop
-id|nop
-l_string|&quot; : &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;rd %%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&bslash;t&quot;
+l_string|&quot;nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|regs.psr
 )paren

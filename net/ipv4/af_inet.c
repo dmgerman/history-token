@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PF_INET protocol family socket handler.&n; *&n; * Version:&t;$Id: af_inet.c,v 1.133 2001/08/06 13:21:16 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Alan Cox, &lt;A.Cox@swansea.ac.uk&gt;&n; *&n; * Changes (see also sock.c)&n; *&n; *&t;&t;piggy,&n; *&t;&t;Karl Knutson&t;:&t;Socket protocol table&n; *&t;&t;A.N.Kuznetsov&t;:&t;Socket death error in accept().&n; *&t;&t;John Richardson :&t;Fix non blocking error in connect()&n; *&t;&t;&t;&t;&t;so sockets that fail to connect&n; *&t;&t;&t;&t;&t;don&squot;t return -EINPROGRESS.&n; *&t;&t;Alan Cox&t;:&t;Asynchronous I/O support&n; *&t;&t;Alan Cox&t;:&t;Keep correct socket pointer on sock structures&n; *&t;&t;&t;&t;&t;when accept() ed&n; *&t;&t;Alan Cox&t;:&t;Semantics of SO_LINGER aren&squot;t state moved&n; *&t;&t;&t;&t;&t;to close when you look carefully. With&n; *&t;&t;&t;&t;&t;this fixed and the accept bug fixed &n; *&t;&t;&t;&t;&t;some RPC stuff seems happier.&n; *&t;&t;Niibe Yutaka&t;:&t;4.4BSD style write async I/O&n; *&t;&t;Alan Cox, &n; *&t;&t;Tony Gale &t;:&t;Fixed reuse semantics.&n; *&t;&t;Alan Cox&t;:&t;bind() shouldn&squot;t abort existing but dead&n; *&t;&t;&t;&t;&t;sockets. Stops FTP netin:.. I hope.&n; *&t;&t;Alan Cox&t;:&t;bind() works correctly for RAW sockets. Note&n; *&t;&t;&t;&t;&t;that FreeBSD at least was broken in this respect&n; *&t;&t;&t;&t;&t;so be careful with compatibility tests...&n; *&t;&t;Alan Cox&t;:&t;routing cache support&n; *&t;&t;Alan Cox&t;:&t;memzero the socket structure for compactness.&n; *&t;&t;Matt Day&t;:&t;nonblock connect error handler&n; *&t;&t;Alan Cox&t;:&t;Allow large numbers of pending sockets&n; *&t;&t;&t;&t;&t;(eg for big web sites), but only if&n; *&t;&t;&t;&t;&t;specifically application requested.&n; *&t;&t;Alan Cox&t;:&t;New buffering throughout IP. Used dumbly.&n; *&t;&t;Alan Cox&t;:&t;New buffering now used smartly.&n; *&t;&t;Alan Cox&t;:&t;BSD rather than common sense interpretation of&n; *&t;&t;&t;&t;&t;listen.&n; *&t;&t;Germano Caronni&t;:&t;Assorted small races.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg basic support.&n; *&t;&t;Alan Cox&t;:&t;Only sendmsg/recvmsg now supported.&n; *&t;&t;Alan Cox&t;:&t;Locked down bind (see security list).&n; *&t;&t;Alan Cox&t;:&t;Loosened bind a little.&n; *&t;&t;Mike McLagan&t;:&t;ADD/DEL DLCI Ioctls&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;Some other random speedups.&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned up file for kmod hacks.&n; *&t;&t;Andi Kleen&t;:&t;Fix inet_stream_connect TCP race.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PF_INET protocol family socket handler.&n; *&n; * Version:&t;$Id: af_inet.c,v 1.135 2001/10/27 03:27:13 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Alan Cox, &lt;A.Cox@swansea.ac.uk&gt;&n; *&n; * Changes (see also sock.c)&n; *&n; *&t;&t;piggy,&n; *&t;&t;Karl Knutson&t;:&t;Socket protocol table&n; *&t;&t;A.N.Kuznetsov&t;:&t;Socket death error in accept().&n; *&t;&t;John Richardson :&t;Fix non blocking error in connect()&n; *&t;&t;&t;&t;&t;so sockets that fail to connect&n; *&t;&t;&t;&t;&t;don&squot;t return -EINPROGRESS.&n; *&t;&t;Alan Cox&t;:&t;Asynchronous I/O support&n; *&t;&t;Alan Cox&t;:&t;Keep correct socket pointer on sock structures&n; *&t;&t;&t;&t;&t;when accept() ed&n; *&t;&t;Alan Cox&t;:&t;Semantics of SO_LINGER aren&squot;t state moved&n; *&t;&t;&t;&t;&t;to close when you look carefully. With&n; *&t;&t;&t;&t;&t;this fixed and the accept bug fixed &n; *&t;&t;&t;&t;&t;some RPC stuff seems happier.&n; *&t;&t;Niibe Yutaka&t;:&t;4.4BSD style write async I/O&n; *&t;&t;Alan Cox, &n; *&t;&t;Tony Gale &t;:&t;Fixed reuse semantics.&n; *&t;&t;Alan Cox&t;:&t;bind() shouldn&squot;t abort existing but dead&n; *&t;&t;&t;&t;&t;sockets. Stops FTP netin:.. I hope.&n; *&t;&t;Alan Cox&t;:&t;bind() works correctly for RAW sockets. Note&n; *&t;&t;&t;&t;&t;that FreeBSD at least was broken in this respect&n; *&t;&t;&t;&t;&t;so be careful with compatibility tests...&n; *&t;&t;Alan Cox&t;:&t;routing cache support&n; *&t;&t;Alan Cox&t;:&t;memzero the socket structure for compactness.&n; *&t;&t;Matt Day&t;:&t;nonblock connect error handler&n; *&t;&t;Alan Cox&t;:&t;Allow large numbers of pending sockets&n; *&t;&t;&t;&t;&t;(eg for big web sites), but only if&n; *&t;&t;&t;&t;&t;specifically application requested.&n; *&t;&t;Alan Cox&t;:&t;New buffering throughout IP. Used dumbly.&n; *&t;&t;Alan Cox&t;:&t;New buffering now used smartly.&n; *&t;&t;Alan Cox&t;:&t;BSD rather than common sense interpretation of&n; *&t;&t;&t;&t;&t;listen.&n; *&t;&t;Germano Caronni&t;:&t;Assorted small races.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg basic support.&n; *&t;&t;Alan Cox&t;:&t;Only sendmsg/recvmsg now supported.&n; *&t;&t;Alan Cox&t;:&t;Locked down bind (see security list).&n; *&t;&t;Alan Cox&t;:&t;Loosened bind a little.&n; *&t;&t;Mike McLagan&t;:&t;ADD/DEL DLCI Ioctls&n; *&t;Willy Konynenberg&t;:&t;Transparent proxying support.&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;Some other random speedups.&n; *&t;&t;Cyrus Durgin&t;:&t;Cleaned up file for kmod hacks.&n; *&t;&t;Andi Kleen&t;:&t;Fix inet_stream_connect TCP race.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -219,6 +219,20 @@ id|br_ioctl_hook
 (paren
 r_int
 r_int
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|variable|vlan_ioctl_hook
+r_int
+(paren
+op_star
+id|vlan_ioctl_hook
+)paren
+(paren
+r_int
+r_int
+id|arg
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1887,46 +1901,6 @@ id|out
 suffix:semicolon
 id|err
 op_assign
-op_minus
-id|EAGAIN
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;num
-op_eq
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sk-&gt;prot
-op_member_access_from_pointer
-id|get_port
-c_func
-(paren
-id|sk
-comma
-l_int|0
-)paren
-op_ne
-l_int|0
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|sk-&gt;sport
-op_assign
-id|htons
-c_func
-(paren
-id|sk-&gt;num
-)paren
-suffix:semicolon
-)brace
-id|err
-op_assign
 id|sk-&gt;prot
 op_member_access_from_pointer
 id|connect
@@ -2982,6 +2956,47 @@ l_int|NULL
 )paren
 r_return
 id|br_ioctl_hook
+c_func
+(paren
+id|arg
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+op_minus
+id|ENOPKG
+suffix:semicolon
+r_case
+id|SIOCGIFVLAN
+suffix:colon
+r_case
+id|SIOCSIFVLAN
+suffix:colon
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+macro_line|#ifdef CONFIG_KMOD
+r_if
+c_cond
+(paren
+id|vlan_ioctl_hook
+op_eq
+l_int|NULL
+)paren
+id|request_module
+c_func
+(paren
+l_string|&quot;8021q&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|vlan_ioctl_hook
+op_ne
+l_int|NULL
+)paren
+r_return
+id|vlan_ioctl_hook
 c_func
 (paren
 id|arg

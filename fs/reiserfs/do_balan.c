@@ -265,6 +265,12 @@ l_int|0
 comma
 l_string|&quot;vs-12013: mode Delete, insert size %d, ih to be deleted %h&quot;
 comma
+op_minus
+id|tb-&gt;insert_size
+(braket
+l_int|0
+)braket
+comma
 id|ih
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Intel CPU Microcode Update driver for Linux&n; *&n; *&t;Copyright (C) 2000 Tigran Aivazian&n; *&n; *&t;This driver allows to upgrade microcode on Intel processors&n; *&t;belonging to IA-32 family - PentiumPro, Pentium II, &n; *&t;Pentium III, Xeon, Pentium 4, etc.&n; *&n; *&t;Reference: Section 8.10 of Volume III, Intel Pentium 4 Manual, &n; *&t;Order Number 245472 or free download from:&n; *&t;&t;&n; *&t;http://developer.intel.com/design/pentium4/manuals/245472.htm&n; *&n; *&t;For more information, go to http://www.urbanmyth.org/microcode&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;1.0&t;16 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Initial release.&n; *&t;1.01&t;18 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added read() support + cleanups.&n; *&t;1.02&t;21 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added &squot;device trimming&squot; support. open(O_WRONLY) zeroes&n; *&t;&t;and frees the saved copy of applied microcode.&n; *&t;1.03&t;29 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Made to use devfs (/dev/cpu/microcode) + cleanups.&n; *&t;1.04&t;06 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Added misc device support (now uses both devfs and misc).&n; *&t;&t;Added MICROCODE_IOCFREE ioctl to clear memory.&n; *&t;1.05&t;09 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Messages for error cases (non intel &amp; no suitable microcode).&n; *&t;1.06&t;03 Aug 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Removed -&gt;release(). Removed exclusive open and status bitmap.&n; *&t;&t;Added microcode_rwsem to serialize read()/write()/ioctl().&n; *&t;&t;Removed global kernel lock usage.&n; *&t;1.07&t;07 Sep 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Write 0 to 0x8B msr and then cpuid before reading revision,&n; *&t;&t;so that it works even if there were no update done by the&n; *&t;&t;BIOS. Otherwise, reading from 0x8B gives junk (which happened&n; *&t;&t;to be 0 on my machine which is why it worked even when I&n; *&t;&t;disabled update by the BIOS)&n; *&t;&t;Thanks to Eric W. Biederman &lt;ebiederman@lnxi.com&gt; for the fix.&n; *&t;1.08&t;11 Dec 2000, Richard Schaal &lt;richard.schaal@intel.com&gt; and&n; *&t;&t;&t;     Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Intel Pentium 4 processor support and bugfixes.&n; */
+multiline_comment|/*&n; *&t;Intel CPU Microcode Update driver for Linux&n; *&n; *&t;Copyright (C) 2000 Tigran Aivazian&n; *&n; *&t;This driver allows to upgrade microcode on Intel processors&n; *&t;belonging to IA-32 family - PentiumPro, Pentium II, &n; *&t;Pentium III, Xeon, Pentium 4, etc.&n; *&n; *&t;Reference: Section 8.10 of Volume III, Intel Pentium 4 Manual, &n; *&t;Order Number 245472 or free download from:&n; *&t;&t;&n; *&t;http://developer.intel.com/design/pentium4/manuals/245472.htm&n; *&n; *&t;For more information, go to http://www.urbanmyth.org/microcode&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;1.0&t;16 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Initial release.&n; *&t;1.01&t;18 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added read() support + cleanups.&n; *&t;1.02&t;21 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Added &squot;device trimming&squot; support. open(O_WRONLY) zeroes&n; *&t;&t;and frees the saved copy of applied microcode.&n; *&t;1.03&t;29 Feb 2000, Tigran Aivazian &lt;tigran@sco.com&gt;&n; *&t;&t;Made to use devfs (/dev/cpu/microcode) + cleanups.&n; *&t;1.04&t;06 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Added misc device support (now uses both devfs and misc).&n; *&t;&t;Added MICROCODE_IOCFREE ioctl to clear memory.&n; *&t;1.05&t;09 Jun 2000, Simon Trimmer &lt;simon@veritas.com&gt;&n; *&t;&t;Messages for error cases (non intel &amp; no suitable microcode).&n; *&t;1.06&t;03 Aug 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Removed -&gt;release(). Removed exclusive open and status bitmap.&n; *&t;&t;Added microcode_rwsem to serialize read()/write()/ioctl().&n; *&t;&t;Removed global kernel lock usage.&n; *&t;1.07&t;07 Sep 2000, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Write 0 to 0x8B msr and then cpuid before reading revision,&n; *&t;&t;so that it works even if there were no update done by the&n; *&t;&t;BIOS. Otherwise, reading from 0x8B gives junk (which happened&n; *&t;&t;to be 0 on my machine which is why it worked even when I&n; *&t;&t;disabled update by the BIOS)&n; *&t;&t;Thanks to Eric W. Biederman &lt;ebiederman@lnxi.com&gt; for the fix.&n; *&t;1.08&t;11 Dec 2000, Richard Schaal &lt;richard.schaal@intel.com&gt; and&n; *&t;&t;&t;     Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Intel Pentium 4 processor support and bugfixes.&n; *&t;1.09&t;30 Oct 2001, Tigran Aivazian &lt;tigran@veritas.com&gt;&n; *&t;&t;Bugfix for HT (Hyper-Threading) enabled processors&n; *&t;&t;whereby processor resources are shared by all logical processors&n; *&t;&t;in a single CPU package.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|MICROCODE_VERSION
-mdefine_line|#define MICROCODE_VERSION &t;&quot;1.08&quot;
+mdefine_line|#define MICROCODE_VERSION &t;&quot;1.09&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -1025,32 +1025,6 @@ id|i
 )braket
 dot
 id|rev
-comma
-id|rev
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|microcode
-(braket
-id|i
-)braket
-dot
-id|rev
-op_eq
-id|rev
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;microcode: CPU%d already up-to-date (revision %d)&bslash;n&quot;
-comma
-id|cpu_num
 comma
 id|rev
 )paren

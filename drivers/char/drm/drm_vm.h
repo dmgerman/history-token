@@ -164,6 +164,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#else
 multiline_comment|/* Return type changed in 2.3.23 */
@@ -184,6 +187,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#endif
 (brace
@@ -457,6 +463,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#else
 multiline_comment|/* Return type changed in 2.3.23 */
@@ -477,6 +486,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#endif
 (brace
@@ -1055,6 +1067,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#else
 multiline_comment|/* Return type changed in 2.3.23 */
@@ -1075,6 +1090,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#endif
 (brace
@@ -1223,6 +1241,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#else
 multiline_comment|/* Return type changed in 2.3.23 */
@@ -1243,6 +1264,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 macro_line|#endif
 (brace

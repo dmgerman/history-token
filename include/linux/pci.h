@@ -397,9 +397,9 @@ mdefine_line|#define  PCI_AGP_COMMAND_FW&t;0x0010 &t;/* Force FW transfers */
 DECL|macro|PCI_AGP_COMMAND_RATE4
 mdefine_line|#define  PCI_AGP_COMMAND_RATE4&t;0x0004&t;/* Use 4x rate */
 DECL|macro|PCI_AGP_COMMAND_RATE2
-mdefine_line|#define  PCI_AGP_COMMAND_RATE2&t;0x0002&t;/* Use 4x rate */
+mdefine_line|#define  PCI_AGP_COMMAND_RATE2&t;0x0002&t;/* Use 2x rate */
 DECL|macro|PCI_AGP_COMMAND_RATE1
-mdefine_line|#define  PCI_AGP_COMMAND_RATE1&t;0x0001&t;/* Use 4x rate */
+mdefine_line|#define  PCI_AGP_COMMAND_RATE1&t;0x0001&t;/* Use 1x rate */
 DECL|macro|PCI_AGP_SIZEOF
 mdefine_line|#define PCI_AGP_SIZEOF&t;&t;12
 multiline_comment|/* Slot Identification */

@@ -205,78 +205,18 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|ldstub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|orcc
-op_mod
-op_mod
-id|g2
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|g0
-id|bne
-comma
-id|a
-l_float|2f
-id|ldub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g2
-dot
-id|subsection
-l_int|2
-l_int|2
-suffix:colon
-id|orcc
-op_mod
-op_mod
-id|g2
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|g0
-id|bne
-comma
-id|a
-l_int|2
-id|b
-id|ldub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|b
-comma
-id|a
-l_int|1
-id|b
-dot
-id|previous
-"&quot;"
+l_string|&quot;&bslash;n1:&bslash;n&bslash;t&quot;
+l_string|&quot;ldstub&t;[%0], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;orcc&t;%%g2, 0x0, %%g0&bslash;n&bslash;t&quot;
+l_string|&quot;bne,a&t;2f&bslash;n&bslash;t&quot;
+l_string|&quot; ldub&t;[%0], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;.subsection&t;2&bslash;n&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;orcc&t;%%g2, 0x0, %%g0&bslash;n&bslash;t&quot;
+l_string|&quot;bne,a&t;2b&bslash;n&bslash;t&quot;
+l_string|&quot; ldub&t;[%0], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;b,a&t;1b&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -413,30 +353,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___rw_read_enter
-id|ldstub
-(braket
-op_mod
-op_mod
-id|g1
-op_plus
-l_int|3
-)braket
-comma
-op_mod
-op_mod
-id|g2
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___rw_read_enter&bslash;n&bslash;t&quot;
+l_string|&quot; ldstub&t;[%%g1 + 3], %%g2&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -487,30 +406,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___rw_read_exit
-id|ldstub
-(braket
-op_mod
-op_mod
-id|g1
-op_plus
-l_int|3
-)braket
-comma
-op_mod
-op_mod
-id|g2
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___rw_read_exit&bslash;n&bslash;t&quot;
+l_string|&quot; ldstub&t;[%%g1 + 3], %%g2&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -561,30 +459,9 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___rw_write_enter
-id|ldstub
-(braket
-op_mod
-op_mod
-id|g1
-op_plus
-l_int|3
-)braket
-comma
-op_mod
-op_mod
-id|g2
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___rw_write_enter&bslash;n&bslash;t&quot;
+l_string|&quot; ldstub&t;[%%g1 + 3], %%g2&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

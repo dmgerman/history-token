@@ -23,6 +23,7 @@ macro_line|#endif
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#ifdef CONFIG_NET_DIVERT
 macro_line|#include &lt;linux/divert.h&gt;
@@ -836,6 +837,23 @@ id|destroy_EII_client
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* for 801q VLAN support */
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|variable|dev_change_flags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_change_flags
+)paren
+suffix:semicolon
+DECL|variable|vlan_ioctl_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vlan_ioctl_hook
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|sklist_destroy_socket
 id|EXPORT_SYMBOL
 c_func
@@ -1633,13 +1651,6 @@ c_func
 id|tcp_v4_connect
 )paren
 suffix:semicolon
-DECL|variable|tcp_v4_hash_connecting
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_v4_hash_connecting
-)paren
-suffix:semicolon
 DECL|variable|tcp_unhash
 id|EXPORT_SYMBOL
 c_func
@@ -1689,11 +1700,18 @@ c_func
 id|tcp_transmit_skb
 )paren
 suffix:semicolon
-DECL|variable|tcp_connect
+DECL|variable|tcp_connect_init
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|tcp_connect
+id|tcp_connect_init
+)paren
+suffix:semicolon
+DECL|variable|tcp_connect_send
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_connect_send
 )paren
 suffix:semicolon
 DECL|variable|tcp_make_synack
@@ -2038,6 +2056,21 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|rtnl_unlock
+)paren
+suffix:semicolon
+multiline_comment|/* ABI emulation layers need this */
+DECL|variable|move_addr_to_kernel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|move_addr_to_kernel
+)paren
+suffix:semicolon
+DECL|variable|move_addr_to_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|move_addr_to_user
 )paren
 suffix:semicolon
 multiline_comment|/* Used by at least ipip.c.  */

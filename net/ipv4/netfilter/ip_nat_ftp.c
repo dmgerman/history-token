@@ -173,8 +173,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|ftpinfo-&gt;is_ftp
+op_ne
+l_int|21
 )paren
 (brace
 id|UNLOCK_BH

@@ -2408,6 +2408,9 @@ comma
 r_int
 r_int
 id|address
+comma
+r_int
+id|unused
 )paren
 (brace
 r_struct

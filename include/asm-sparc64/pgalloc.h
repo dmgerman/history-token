@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.26 2001/10/18 09:06:37 davem Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.29 2001/10/20 12:38:51 davem Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -77,11 +77,14 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+id|cpu
 )paren
 suffix:semicolon
 macro_line|#else
 DECL|macro|smp_flush_dcache_page_impl
-mdefine_line|#define smp_flush_dcache_page_impl flush_dcache_page_impl
+mdefine_line|#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page)
 macro_line|#endif
 r_extern
 r_void

@@ -1,8 +1,6 @@
 macro_line|#ifndef _NET_TCP_ECN_H_
 DECL|macro|_NET_TCP_ECN_H_
 mdefine_line|#define _NET_TCP_ECN_H_ 1
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_INET_ECN
 macro_line|#include &lt;net/inet_ecn.h&gt;
 DECL|macro|TCP_HP_BITS
 mdefine_line|#define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH)|TCP_FLAG_ECE|TCP_FLAG_CWR)
@@ -571,35 +569,5 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|TCP_HP_BITS
-mdefine_line|#define TCP_HP_BITS (~(TCP_RESERVED_BITS|TCP_FLAG_PSH))
-DECL|macro|TCP_ECN_send_syn
-mdefine_line|#define TCP_ECN_send_syn(x...)&t;&t;do { } while (0)
-DECL|macro|TCP_ECN_send_synack
-mdefine_line|#define TCP_ECN_send_synack(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_make_synack
-mdefine_line|#define TCP_ECN_make_synack(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_send
-mdefine_line|#define TCP_ECN_send(x...)&t;&t;do { } while (0)
-DECL|macro|TCP_ECN_queue_cwr
-mdefine_line|#define TCP_ECN_queue_cwr(x...)&t;&t;do { } while (0)
-DECL|macro|TCP_ECN_accept_cwr
-mdefine_line|#define TCP_ECN_accept_cwr(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_check_ce
-mdefine_line|#define TCP_ECN_check_ce(x...)&t;&t;do { } while (0)
-DECL|macro|TCP_ECN_rcv_synack
-mdefine_line|#define TCP_ECN_rcv_synack(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_rcv_syn
-mdefine_line|#define TCP_ECN_rcv_syn(x...)&t;&t;do { } while (0)
-DECL|macro|TCP_ECN_rcv_ecn_echo
-mdefine_line|#define TCP_ECN_rcv_ecn_echo(x...)&t;(0)
-DECL|macro|TCP_ECN_openreq_child
-mdefine_line|#define TCP_ECN_openreq_child(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_create_request
-mdefine_line|#define TCP_ECN_create_request(x...)&t;do { } while (0)
-DECL|macro|TCP_ECN_withdraw_cwr
-mdefine_line|#define TCP_ECN_withdraw_cwr(x...)&t;do { } while (0)
-macro_line|#endif
 macro_line|#endif
 eof

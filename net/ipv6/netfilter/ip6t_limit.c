@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ipt_limit.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv6/ip6t_limit.h&gt;
 multiline_comment|/* The algorithm used is the Simple Token Bucket Filter (TBF)&n; * see net/sched/sch_tbf.c in the linux source tree&n; */
 DECL|variable|limit_lock
 r_static
@@ -18,8 +18,8 @@ DECL|macro|CREDITS_PER_JIFFY
 mdefine_line|#define CREDITS_PER_JIFFY 128
 r_static
 r_int
-DECL|function|ipt_limit_match
-id|ipt_limit_match
+DECL|function|ip6t_limit_match
+id|ip6t_limit_match
 c_func
 (paren
 r_const
@@ -62,14 +62,14 @@ id|hotdrop
 )paren
 (brace
 r_struct
-id|ipt_rateinfo
+id|ip6t_rateinfo
 op_star
 id|r
 op_assign
 (paren
 (paren
 r_struct
-id|ipt_rateinfo
+id|ip6t_rateinfo
 op_star
 )paren
 id|matchinfo
@@ -183,7 +183,7 @@ r_return
 (paren
 id|user
 op_div
-id|IPT_LIMIT_SCALE
+id|IP6T_LIMIT_SCALE
 )paren
 op_star
 id|HZ
@@ -199,13 +199,13 @@ op_star
 id|CREDITS_PER_JIFFY
 )paren
 op_div
-id|IPT_LIMIT_SCALE
+id|IP6T_LIMIT_SCALE
 suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|ipt_limit_checkentry
-id|ipt_limit_checkentry
+DECL|function|ip6t_limit_checkentry
+id|ip6t_limit_checkentry
 c_func
 (paren
 r_const
@@ -233,7 +233,7 @@ id|hook_mask
 )paren
 (brace
 r_struct
-id|ipt_rateinfo
+id|ip6t_rateinfo
 op_star
 id|r
 op_assign
@@ -250,7 +250,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|ipt_rateinfo
+id|ip6t_rateinfo
 )paren
 )paren
 )paren
@@ -283,7 +283,7 @@ id|r-&gt;avg
 id|printk
 c_func
 (paren
-l_string|&quot;Call rusty: overflow in ipt_limit: %u/%u&bslash;n&quot;
+l_string|&quot;Call rusty: overflow in ip6t_limit: %u/%u&bslash;n&quot;
 comma
 id|r-&gt;avg
 comma
@@ -294,7 +294,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* User avg in seconds * IPT_LIMIT_SCALE: convert to jiffies *&n;&t;   128. */
+multiline_comment|/* User avg in seconds * IP6T_LIMIT_SCALE: convert to jiffies *&n;&t;   128. */
 id|r-&gt;prev
 op_assign
 id|jiffies
@@ -338,11 +338,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|ipt_limit_reg
+DECL|variable|ip6t_limit_reg
 r_static
 r_struct
 id|ip6t_match
-id|ipt_limit_reg
+id|ip6t_limit_reg
 op_assign
 (brace
 (brace
@@ -353,9 +353,9 @@ l_int|NULL
 comma
 l_string|&quot;limit&quot;
 comma
-id|ipt_limit_match
+id|ip6t_limit_match
 comma
-id|ipt_limit_checkentry
+id|ip6t_limit_checkentry
 comma
 l_int|NULL
 comma
@@ -379,7 +379,7 @@ id|ip6t_register_match
 c_func
 (paren
 op_amp
-id|ipt_limit_reg
+id|ip6t_limit_reg
 )paren
 )paren
 r_return
@@ -404,7 +404,7 @@ id|ip6t_unregister_match
 c_func
 (paren
 op_amp
-id|ipt_limit_reg
+id|ip6t_limit_reg
 )paren
 suffix:semicolon
 )brace

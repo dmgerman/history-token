@@ -14,6 +14,7 @@ r_inline
 r_int
 id|B_IS_IN_TREE
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -57,6 +58,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -81,11 +83,14 @@ r_void
 id|copy_item_head
 c_func
 (paren
-r_void
+r_struct
+id|item_head
 op_star
 id|p_v_to
 comma
-r_void
+r_const
+r_struct
+id|item_head
 op_star
 id|p_v_from
 )paren
@@ -106,11 +111,13 @@ r_inline
 r_int
 id|comp_short_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|le_key
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -201,11 +208,13 @@ r_inline
 r_int
 id|comp_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|le_key
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -329,11 +338,13 @@ r_inline
 r_int
 id|comp_cpu_keys
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
 id|key1
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -466,11 +477,13 @@ r_inline
 r_int
 id|comp_short_le_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|key1
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -566,11 +579,13 @@ r_inline
 r_int
 id|comp_short_cpu_keys
 (paren
+r_const
 r_struct
 id|cpu_key
 op_star
 id|key1
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -659,6 +674,7 @@ id|cpu_key
 op_star
 id|to
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -689,6 +705,7 @@ id|cpu_key
 op_star
 id|to
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -769,11 +786,13 @@ r_inline
 r_int
 id|comp_le_keys
 (paren
+r_const
 r_struct
 id|key
 op_star
 id|k1
 comma
+r_const
 r_struct
 id|key
 op_star
@@ -802,11 +821,13 @@ r_inline
 r_int
 id|bin_search
 (paren
+r_const
 r_void
 op_star
 id|p_v_key
 comma
 multiline_comment|/* Key to search for.                   */
+r_const
 r_void
 op_star
 id|p_v_base
@@ -958,6 +979,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Minimal possible key. It is never in the tree. */
 DECL|variable|MIN_KEY
+r_const
 r_struct
 id|key
 id|MIN_KEY
@@ -979,6 +1001,7 @@ comma
 suffix:semicolon
 multiline_comment|/* Maximal possible key. It is never in the tree. */
 DECL|variable|MAX_KEY
+r_const
 r_struct
 id|key
 id|MAX_KEY
@@ -1001,16 +1024,19 @@ suffix:semicolon
 multiline_comment|/* Get delimiting key of the buffer by looking for it in the buffers in the path, starting from the bottom&n;   of the path, and going upwards.  We must check the path&squot;s validity at each step.  If the key is not in&n;   the path, there is no delimiting key in the tree (buffer is first or last buffer in tree), and in this&n;   case we return a special key, either MIN_KEY or MAX_KEY. */
 DECL|function|get_lkey
 r_inline
+r_const
 r_struct
 id|key
 op_star
 id|get_lkey
 (paren
+r_const
 r_struct
 id|path
 op_star
 id|p_s_chk_path
 comma
+r_const
 r_struct
 id|super_block
 op_star
@@ -1194,16 +1220,19 @@ suffix:semicolon
 multiline_comment|/* Get delimiting key of the buffer at the path and its right neighbor. */
 DECL|function|get_rkey
 r_inline
+r_const
 r_struct
 id|key
 op_star
 id|get_rkey
 (paren
+r_const
 r_struct
 id|path
 op_star
 id|p_s_chk_path
 comma
+r_const
 r_struct
 id|super_block
 op_star
@@ -1401,6 +1430,7 @@ op_star
 id|p_s_chk_path
 comma
 multiline_comment|/* Path which should be checked.  */
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -2371,6 +2401,7 @@ id|super_block
 op_star
 id|p_s_sb
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -2667,7 +2698,7 @@ id|expected_level
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-5150: search_by_key: &quot;
-l_string|&quot;invalid format found in block %d. Fsck?&bslash;n&quot;
+l_string|&quot;invalid format found in block %ld. Fsck?&bslash;n&quot;
 comma
 id|p_s_bh-&gt;b_blocknr
 )paren
@@ -2696,7 +2727,7 @@ id|n_node_level
 OL
 id|n_stop_level
 comma
-l_string|&quot;vs-5152: tree level is less than stop level (%d)&quot;
+l_string|&quot;vs-5152: tree level (%d) is less than stop level (%d)&quot;
 comma
 id|n_node_level
 comma
@@ -2822,6 +2853,7 @@ op_star
 id|p_s_sb
 comma
 multiline_comment|/* Pointer to the super block.          */
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -3112,11 +3144,13 @@ DECL|function|comp_items
 r_int
 id|comp_items
 (paren
+r_const
 r_struct
 id|item_head
 op_star
 id|stored_ih
 comma
+r_const
 r_struct
 id|path
 op_star
@@ -3190,87 +3224,6 @@ comma
 id|IH_SIZE
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Get item at the path. */
-id|p_s_path_item
-op_assign
-id|PATH_PITEM_HEAD
-c_func
-(paren
-id|p_s_path
-)paren
-suffix:semicolon
-multiline_comment|/* Compare keys. */
-r_if
-c_cond
-(paren
-id|COMP_KEYS
-c_func
-(paren
-op_amp
-(paren
-id|p_s_path_item-&gt;ih_key
-)paren
-comma
-op_amp
-(paren
-id|p_cpu_ih-&gt;ih_key
-)paren
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* Compare other items fields. */
-r_if
-c_cond
-(paren
-id|ih_entry_count
-c_func
-(paren
-id|p_s_path_item
-)paren
-op_ne
-id|ih_entry_count
-c_func
-(paren
-id|p_cpu_ih
-)paren
-op_logical_or
-id|ih_item_len
-c_func
-(paren
-id|p_s_path_item
-)paren
-op_ne
-id|ih_item_len
-c_func
-(paren
-id|p_cpu_ih
-)paren
-op_logical_or
-id|ih_location
-c_func
-(paren
-id|p_s_path_item
-)paren
-op_ne
-id|ih_location
-c_func
-(paren
-id|p_cpu_ih
-)paren
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Items are equal. */
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* unformatted nodes are not logged anymore, ever.  This is safe&n;** now&n;*/
 DECL|macro|held_by_others
@@ -3658,6 +3611,7 @@ id|path
 op_star
 id|p_s_path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -4960,6 +4914,7 @@ op_star
 id|p_s_path
 comma
 multiline_comment|/* Path to the deleted item. */
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -5648,6 +5603,7 @@ id|path
 op_star
 id|p_s_path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -6355,7 +6311,7 @@ id|NO_DISK_SPACE
 )paren
 id|reiserfs_warning
 (paren
-l_string|&quot;&quot;
+l_string|&quot;NO_DISK_SPACE&quot;
 )paren
 suffix:semicolon
 id|unfix_nodes
@@ -6522,7 +6478,7 @@ id|reiserfs_panic
 id|p_s_sb
 comma
 l_string|&quot;vs-5653: reiserfs_cut_from_item: &quot;
-l_string|&quot;completing indirect2direct conversion indirect item %h&quot;
+l_string|&quot;completing indirect2direct conversion indirect item %h &quot;
 l_string|&quot;being deleted must be of 4 byte long&quot;
 comma
 id|le_ih
@@ -7194,6 +7150,7 @@ id|path
 op_star
 id|path
 comma
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -7366,6 +7323,7 @@ op_star
 id|p_s_search_path
 comma
 multiline_comment|/* Path to the pasted item.          */
+r_const
 r_struct
 id|cpu_key
 op_star
@@ -7564,6 +7522,7 @@ op_star
 id|p_s_path
 comma
 multiline_comment|/* Path to the inserteded item.         */
+r_const
 r_struct
 id|cpu_key
 op_star

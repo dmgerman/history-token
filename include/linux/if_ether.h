@@ -54,6 +54,8 @@ DECL|macro|ETH_P_ATALK
 mdefine_line|#define ETH_P_ATALK&t;0x809B&t;&t;/* Appletalk DDP&t;&t;*/
 DECL|macro|ETH_P_AARP
 mdefine_line|#define ETH_P_AARP&t;0x80F3&t;&t;/* Appletalk AARP&t;&t;*/
+DECL|macro|ETH_P_8021Q
+mdefine_line|#define ETH_P_8021Q&t;0x8100          /* 802.1Q VLAN Extended Header  */
 DECL|macro|ETH_P_IPX
 mdefine_line|#define ETH_P_IPX&t;0x8137&t;&t;/* IPX over DIX&t;&t;&t;*/
 DECL|macro|ETH_P_IPV6

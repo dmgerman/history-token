@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: console.c,v 1.24 2001/04/27 07:02:42 davem Exp $&n; * console.c: Routines that deal with sending and receiving IO&n; *            to/from the current console device using the PROM.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Pete Zaitcev &lt;zaitcev@yahoo.com&gt;&n; */
+multiline_comment|/* $Id: console.c,v 1.25 2001/10/30 04:54:22 davem Exp $&n; * console.c: Routines that deal with sending and receiving IO&n; *            to/from the current console device using the PROM.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1998 Pete Zaitcev &lt;zaitcev@yahoo.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -984,9 +984,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
+suffix:semicolon
 )brace
-)brace
+suffix:semicolon
 r_return
 id|PROMDEV_O_UNK
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.15 2001/10/15 12:34:50 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
+multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n; *  Copyright (C) 1997 Andi Kleen&n; *  Based on ideas by D.J.Bernstein and Eric Schenk. &n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; * &n; *  $Id: syncookies.c,v 1.17 2001/10/26 14:55:41 davem Exp $&n; *&n; *  Missing: IPv6 support. &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SYN_COOKIES) 
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -8,12 +8,6 @@ macro_line|#include &lt;net/tcp.h&gt;
 r_extern
 r_int
 id|sysctl_tcp_syncookies
-suffix:semicolon
-DECL|variable|tcp_lastsynq_overflow
-r_static
-r_int
-r_int
-id|tcp_lastsynq_overflow
 suffix:semicolon
 multiline_comment|/* &n; * This table has to be sorted and terminated with (__u16)-1.&n; * XXX generate a better table.&n; * Unresolved Issues: HIPPI with a 64k MSS is not well supported.&n; */
 DECL|variable|msstab
@@ -98,7 +92,7 @@ op_assign
 op_star
 id|mssp
 suffix:semicolon
-id|tcp_lastsynq_overflow
+id|sk-&gt;tp_pinfo.af_tcp.last_synq_overflow
 op_assign
 id|jiffies
 suffix:semicolon
@@ -194,20 +188,6 @@ id|seq
 suffix:semicolon
 id|__u32
 id|mssind
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|tcp_lastsynq_overflow
-)paren
-OG
-id|TCP_TIMEOUT_INIT
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|seq
 op_assign
@@ -424,6 +404,20 @@ id|skb-&gt;h.th-&gt;ack
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|sk-&gt;tp_pinfo.af_tcp.last_synq_overflow
+op_plus
+id|TCP_TIMEOUT_INIT
+)paren
+op_logical_or
+(paren
 id|mss
 op_assign
 id|cookie_check
@@ -433,12 +427,9 @@ id|skb
 comma
 id|cookie
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mss
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 id|NET_INC_STATS_BH

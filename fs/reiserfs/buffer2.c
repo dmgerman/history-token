@@ -11,6 +11,7 @@ DECL|function|wait_buffer_until_released
 r_void
 id|wait_buffer_until_released
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: uaccess.h,v 1.23 2001/09/24 03:51:39 davem Exp $&n; * uaccess.h: User space memore access functions.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: uaccess.h,v 1.24 2001/10/30 04:32:24 davem Exp $&n; * uaccess.h: User space memore access functions.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996,1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _ASM_UACCESS_H
 DECL|macro|_ASM_UACCESS_H
 mdefine_line|#define _ASM_UACCESS_H
@@ -223,55 +223,27 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-dot
-id|section
-id|__ex_table
-comma
-macro_line|#alloc
-dot
-id|align
-l_int|4
-dot
-id|word
-l_float|1f
-comma
-l_int|3
-dot
-id|previous
-id|mov
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|o1
-l_int|1
+l_string|&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&bslash;t&quot;
+l_string|&quot;.word 1f,3&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&bslash;t&quot;
+l_string|&quot;mov %2, %%o1&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;call __bzero&bslash;n&bslash;t&quot;
+l_string|&quot; mov %1, %%o0&bslash;n&bslash;t&quot;
+l_string|&quot;mov %%o0, %0&bslash;n&quot;
 suffix:colon
-id|call
-id|__bzero
-id|mov
-op_mod
-l_int|1
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
 comma
-op_mod
-op_mod
-id|o0
-id|mov
-op_mod
-op_mod
-id|o0
-comma
-op_mod
-l_int|0
-l_string|&quot; : &quot;
-op_assign
-id|r
-l_string|&quot; (ret) : &quot;
-id|r
-l_string|&quot; (addr), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
 (paren
 id|size
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: checksum.h,v 1.31 2000/01/31 01:26:52 davem Exp $ */
+multiline_comment|/* $Id: checksum.h,v 1.32 2001/10/30 04:32:24 davem Exp $ */
 macro_line|#ifndef __SPARC_CHECKSUM_H
 DECL|macro|__SPARC_CHECKSUM_H
 mdefine_line|#define __SPARC_CHECKSUM_H
@@ -111,28 +111,36 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-id|call
-l_string|&quot; C_LABEL_STR(__csum_partial_copy_sparc_generic) &quot;
-id|mov
-op_mod
-l_int|4
+l_string|&quot;call &quot;
+id|C_LABEL_STR
+c_func
+(paren
+id|__csum_partial_copy_sparc_generic
+)paren
+l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot; mov %4, %%g7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|ret
+)paren
 comma
-op_mod
-op_mod
-id|g7
-l_string|&quot; : &quot;
-op_assign
-id|r
-l_string|&quot; (ret) : &quot;
-l_int|0
-l_string|&quot; (ret), &quot;
-id|r
-l_string|&quot; (d), &quot;
-id|r
-l_string|&quot; (l), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;r&quot;
 (paren
 id|sum
 )paren
@@ -284,51 +292,46 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-dot
-id|section
-id|__ex_table
-comma
-macro_line|#alloc
-dot
-id|align
-l_int|4
-dot
-id|word
-l_float|1f
-comma
-l_int|2
-dot
-id|previous
-l_int|1
+l_string|&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&bslash;t&quot;
+l_string|&quot;.word 1f,2&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;call &quot;
+id|C_LABEL_STR
+c_func
+(paren
+id|__csum_partial_copy_sparc_generic
+)paren
+l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot; st %5, [%%sp + 64]&bslash;n&quot;
 suffix:colon
-id|call
-l_string|&quot; C_LABEL_STR(__csum_partial_copy_sparc_generic) &quot;
-id|st
-op_mod
-l_int|5
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|ret
+)paren
 comma
-(braket
-op_mod
-op_mod
-id|sp
-op_plus
-l_int|64
-)braket
-l_string|&quot; : &quot;
-op_assign
-id|r
-l_string|&quot; (ret) : &quot;
-l_int|0
-l_string|&quot; (ret), &quot;
-id|r
-l_string|&quot; (d), &quot;
-id|r
-l_string|&quot; (l), &quot;
-id|r
-l_string|&quot; (s), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|s
+)paren
+comma
+l_string|&quot;r&quot;
 (paren
 id|err
 )paren
@@ -472,51 +475,46 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-dot
-id|section
-id|__ex_table
-comma
-macro_line|#alloc
-dot
-id|align
-l_int|4
-dot
-id|word
-l_float|1f
-comma
-l_int|1
-dot
-id|previous
-l_int|1
+l_string|&quot;.section __ex_table,#alloc&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&bslash;t&quot;
+l_string|&quot;.word 1f,1&bslash;n&bslash;t&quot;
+l_string|&quot;.previous&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;call &quot;
+id|C_LABEL_STR
+c_func
+(paren
+id|__csum_partial_copy_sparc_generic
+)paren
+l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot; st %5, [%%sp + 64]&bslash;n&quot;
 suffix:colon
-id|call
-l_string|&quot; C_LABEL_STR(__csum_partial_copy_sparc_generic) &quot;
-id|st
-op_mod
-l_int|5
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|ret
+)paren
 comma
-(braket
-op_mod
-op_mod
-id|sp
-op_plus
-l_int|64
-)braket
-l_string|&quot; : &quot;
-op_assign
-id|r
-l_string|&quot; (ret) : &quot;
-l_int|0
-l_string|&quot; (ret), &quot;
-id|r
-l_string|&quot; (d), &quot;
-id|r
-l_string|&quot; (l), &quot;
-id|r
-l_string|&quot; (s), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|s
+)paren
+comma
+l_string|&quot;r&quot;
 (paren
 id|err
 )paren
@@ -864,220 +862,25 @@ id|sum
 id|__asm__
 id|__volatile__
 (paren
-"&quot;"
-id|addcc
-op_mod
-l_int|3
-comma
-op_mod
-l_int|4
-comma
-op_mod
-op_mod
-id|g4
-id|addxcc
-op_mod
-l_int|5
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x0c
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|ld
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x08
-)braket
-comma
-op_mod
-op_mod
-id|g3
-id|addxcc
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x04
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|addxcc
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x00
-)braket
-comma
-op_mod
-op_mod
-id|g3
-id|addxcc
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|1
-op_plus
-l_int|0x0c
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|addxcc
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|1
-op_plus
-l_int|0x08
-)braket
-comma
-op_mod
-op_mod
-id|g3
-id|addxcc
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|1
-op_plus
-l_int|0x04
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|addxcc
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|ld
-(braket
-op_mod
-l_int|1
-op_plus
-l_int|0x00
-)braket
-comma
-op_mod
-op_mod
-id|g3
-id|addxcc
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-op_mod
-id|g4
-id|addxcc
-op_mod
-op_mod
-id|g3
-comma
-op_mod
-op_mod
-id|g4
-comma
-op_mod
-l_int|0
-id|addx
-l_int|0
-comma
-op_mod
-l_int|0
-comma
-op_mod
-l_int|0
-"&quot;"
+l_string|&quot;addcc&t;%3, %4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%5, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%2 + 0x0c], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%2 + 0x08], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g2, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%2 + 0x04], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g3, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%2 + 0x00], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g2, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%1 + 0x0c], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g3, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%1 + 0x08], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g2, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%1 + 0x04], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g3, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%1 + 0x00], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g2, %%g4, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;addxcc&t;%%g3, %%g4, %0&bslash;n&bslash;t&quot;
+l_string|&quot;addx&t;0, %0, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

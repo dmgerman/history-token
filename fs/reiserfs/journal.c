@@ -1645,6 +1645,7 @@ r_int
 id|buffer_journaled
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -1662,6 +1663,11 @@ c_func
 (paren
 id|BH_JDirty
 comma
+(paren
+r_struct
+id|buffer_head
+op_star
+)paren
 op_amp
 id|bh-&gt;b_state
 )paren
@@ -1678,6 +1684,7 @@ r_int
 id|buffer_journal_new
 c_func
 (paren
+r_const
 r_struct
 id|buffer_head
 op_star
@@ -1695,6 +1702,11 @@ c_func
 (paren
 id|BH_JNew
 comma
+(paren
+r_struct
+id|buffer_head
+op_star
+)paren
 op_amp
 id|bh-&gt;b_state
 )paren
@@ -3314,7 +3326,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;journal-563: flush_commit_list: BAD, j_commit_left is %lu, should be 1&bslash;n&quot;
+l_string|&quot;journal-563: flush_commit_list: BAD, j_commit_left is %u, should be 1&bslash;n&quot;
 comma
 id|atomic_read
 c_func
@@ -4067,7 +4079,7 @@ id|bh
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;clm-2084: pinned buffer %u:%s sent to disk&bslash;n&quot;
+l_string|&quot;clm-2084: pinned buffer %lu:%s sent to disk&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -10676,7 +10688,7 @@ c_func
 (paren
 id|th-&gt;t_super
 comma
-l_string|&quot;journal-1577: handle trans id %d != current trans id %d&bslash;n&quot;
+l_string|&quot;journal-1577: handle trans id %ld != current trans id %ld&bslash;n&quot;
 comma
 id|th-&gt;t_trans_id
 comma
@@ -12450,7 +12462,7 @@ c_func
 (paren
 id|th-&gt;t_super
 comma
-l_string|&quot;journal-1577: handle trans id %d != current trans id %d&bslash;n&quot;
+l_string|&quot;journal-1577: handle trans id %ld != current trans id %ld&bslash;n&quot;
 comma
 id|th-&gt;t_trans_id
 comma
@@ -12940,7 +12952,7 @@ c_func
 (paren
 id|p_s_sb
 comma
-l_string|&quot;journal-003: journal_end: j_start (%d) is too high&bslash;n&quot;
+l_string|&quot;journal-003: journal_end: j_start (%ld) is too high&bslash;n&quot;
 comma
 id|SB_JOURNAL
 c_func

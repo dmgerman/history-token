@@ -1649,7 +1649,11 @@ c_cond
 (paren
 id|current-&gt;flags
 op_amp
+(paren
 id|PF_MEMALLOC
+op_or
+id|PF_MEMDIE
+)paren
 )paren
 (brace
 id|zone
@@ -1947,9 +1951,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|free_lru_page
+DECL|function|page_cache_release
 r_void
-id|free_lru_page
+id|page_cache_release
 c_func
 (paren
 r_struct

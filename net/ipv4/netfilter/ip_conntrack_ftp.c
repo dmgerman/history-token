@@ -1894,7 +1894,7 @@ id|tuple.src.ip
 (brace
 id|info-&gt;is_ftp
 op_assign
-l_int|1
+l_int|21
 suffix:semicolon
 id|info-&gt;seq
 op_assign

@@ -197,6 +197,7 @@ id|item_num
 comma
 id|entry_num
 suffix:semicolon
+r_const
 r_struct
 id|key
 op_star

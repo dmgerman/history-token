@@ -179,7 +179,7 @@ multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;
 id|duprintf
 c_func
 (paren
-l_string|&quot;ipt_multiport:&quot;
+l_string|&quot;ip6t_multiport:&quot;
 l_string|&quot; Dropping evil offset=0 tinygram.&bslash;n&quot;
 )paren
 suffix:semicolon

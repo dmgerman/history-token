@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: system.h,v 1.84 2000/09/23 02:11:22 davem Exp $ */
+multiline_comment|/* $Id: system.h,v 1.86 2001/10/30 04:57:10 davem Exp $ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __SPARC_SYSTEM_H
 DECL|macro|__SPARC_SYSTEM_H
@@ -171,7 +171,7 @@ DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch() do { &bslash;&n;&t;__asm__ __volatile__( &bslash;&n;&t;&quot;.globl&bslash;tflush_patch_switch&bslash;nflush_patch_switch:&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp; save %sp, -0x40, %sp; save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp; save %sp, -0x40, %sp; save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;save %sp, -0x40, %sp&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;restore; restore; restore; restore; restore; restore; restore&quot;); &bslash;&n;} while(0)
 multiline_comment|/* Much care has gone into this code, do not touch it.&n;&t; *&n;&t; * We need to loadup regs l0/l1 for the newly forked child&n;&t; * case because the trap return path relies on those registers&n;&t; * holding certain values, gcc is told that they are clobbered.&n;&t; * Gcc needs registers for 3 values in and 1 value out, so we&n;&t; * clobber every non-fixed-usage register besides l2/l3/o4/o5.  -DaveM&n;&t; *&n;&t; * Hey Dave, that do not touch sign is too much of an incentive&n;&t; * - Anton&n;&t; */
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev, next, last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__label__ here;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long task_pc asm(&quot;o7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;extern struct task_struct *current_set[NR_CPUS];&t;&t;&t;&t;&bslash;&n;&t;SWITCH_ENTER&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SWITCH_DO_LAZY_FPU&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;next-&gt;active_mm-&gt;cpu_vm_mask |= (1 &lt;&lt; smp_processor_id());&t;&t;&t;&bslash;&n;&t;task_pc = ((unsigned long) &amp;&amp;here) - 0x8;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%%g6, %%g3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;rd&t;%%psr, %%g4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;std&t;%%sp, [%%g6 + %4]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;rd&t;%%wim, %%g5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x20, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;std&t;%%g4, [%%g6 + %3]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%2 + %3], %%g4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%2, %%g6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.globl&t;patchme_store_new_current&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;patchme_store_new_current:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;st&t;%2, [%1]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x20, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%g6 + %4], %%sp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g5, 0x0, %%wim&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%sp + 0x00], %%l0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%sp + 0x38], %%i6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x0, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jmpl&t;%%o7 + 0x8, %%g0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot; mov&t;%%g3, %0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=&amp;r&quot; (last)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;r&quot; (&amp;(current_set[hard_smp_processor_id()])), &quot;r&quot; (next),&t;&t;&t;&bslash;&n;&t;  &quot;i&quot; ((const unsigned long)(&amp;((struct task_struct *)0)-&gt;thread.kpsr)),&t;&t;&bslash;&n;&t;  &quot;i&quot; ((const unsigned long)(&amp;((struct task_struct *)0)-&gt;thread.ksp)),&t;&t;&bslash;&n;&t;  &quot;r&quot; (task_pc)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;g1&quot;, &quot;g2&quot;, &quot;g3&quot;, &quot;g4&quot;, &quot;g5&quot;, &quot;g7&quot;, &quot;l0&quot;, &quot;l1&quot;,&t;&t;&t;&t;&bslash;&n;&t;&quot;l4&quot;, &quot;l5&quot;, &quot;l6&quot;, &quot;l7&quot;, &quot;i0&quot;, &quot;i1&quot;, &quot;i2&quot;, &quot;i3&quot;, &quot;i4&quot;, &quot;i5&quot;, &quot;o0&quot;, &quot;o1&quot;, &quot;o2&quot;,&t;&bslash;&n;&t;&quot;o3&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;here:  } while(0)
+mdefine_line|#define switch_to(prev, next, last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__label__ here;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long task_pc asm(&quot;o7&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;extern struct task_struct *current_set[NR_CPUS];&t;&t;&t;&t;&bslash;&n;&t;SWITCH_ENTER&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SWITCH_DO_LAZY_FPU&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;next-&gt;active_mm-&gt;cpu_vm_mask |= (1 &lt;&lt; smp_processor_id());&t;&t;&t;&bslash;&n;&t;task_pc = ((unsigned long) &amp;&amp;here) - 0x8;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%%g6, %%g3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;rd&t;%%psr, %%g4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;std&t;%%sp, [%%g6 + %4]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;rd&t;%%wim, %%g5&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x20, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;std&t;%%g4, [%%g6 + %3]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%2 + %3], %%g4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%2, %%g6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.globl&t;patchme_store_new_current&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&quot;patchme_store_new_current:&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;st&t;%2, [%1]&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x20, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%g6 + %4], %%sp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g5, 0x0, %%wim&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%sp + 0x00], %%l0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldd&t;[%%sp + 0x38], %%i6&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;wr&t;%%g4, 0x0, %%psr&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;jmpl&t;%%o7 + 0x8, %%g0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot; mov&t;%%g3, %0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;=&amp;r&quot; (last)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        : &quot;r&quot; (&amp;(current_set[hard_smp_processor_id()])), &quot;r&quot; (next),&t;&t;&t;&bslash;&n;&t;  &quot;i&quot; ((const unsigned long)(&amp;((struct task_struct *)0)-&gt;thread.kpsr)),&t;&t;&bslash;&n;&t;  &quot;i&quot; ((const unsigned long)(&amp;((struct task_struct *)0)-&gt;thread.ksp)),&t;&t;&bslash;&n;&t;  &quot;r&quot; (task_pc)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;g1&quot;, &quot;g2&quot;, &quot;g3&quot;, &quot;g4&quot;, &quot;g5&quot;, &quot;g7&quot;, &quot;l0&quot;, &quot;l1&quot;,&t;&t;&t;&t;&bslash;&n;&t;&quot;l4&quot;, &quot;l5&quot;, &quot;l6&quot;, &quot;l7&quot;, &quot;i0&quot;, &quot;i1&quot;, &quot;i2&quot;, &quot;i3&quot;, &quot;i4&quot;, &quot;i5&quot;, &quot;o0&quot;, &quot;o1&quot;, &quot;o2&quot;,&t;&bslash;&n;&t;&quot;o3&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;here:;  } while(0)
 multiline_comment|/*&n; * Changing the IRQ level on the Sparc.&n; */
 DECL|function|setipl
 r_extern
@@ -189,22 +189,8 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|wr
-op_mod
-l_int|0
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|psr
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-"&quot;"
+l_string|&quot;wr&t;%0, 0x0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -237,48 +223,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|psr
-comma
-op_mod
-l_int|0
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop;&bslash;n&bslash;t&quot;
 multiline_comment|/* Sun4m + Cypress + SMP bug */
-op_logical_or
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|wr
-op_mod
-l_int|0
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|psr
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-l_string|&quot;&t;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;or&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0x0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|tmp
 )paren
@@ -310,48 +262,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|psr
-comma
-op_mod
-l_int|0
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop;&bslash;n&bslash;t&quot;
 multiline_comment|/* Sun4m + Cypress + SMP bug */
-id|andn
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-l_int|0
-id|wr
-op_mod
-l_int|0
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|psr
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-l_string|&quot;&t;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;andn&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0x0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|tmp
 )paren
@@ -417,78 +335,19 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|psr
-comma
-op_mod
-l_int|0
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop;&bslash;n&bslash;t&quot;
 multiline_comment|/* Sun4m + Cypress + SMP bug */
-op_logical_and
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|g1
-op_logical_and
-op_mod
-l_int|1
-comma
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|g2
-id|xorcc
-op_mod
-op_mod
-id|g1
-comma
-op_mod
-op_mod
-id|g2
-comma
-op_mod
-op_mod
-id|g0
-id|be
-l_float|1f
-id|nop
-id|wr
-op_mod
-l_int|0
-comma
-op_mod
-l_int|2
-comma
-op_mod
-op_mod
-id|psr
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-l_int|1
+l_string|&quot;and&t;%0, %2, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%1, %2, %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;xorcc&t;%%g1, %%g2, %%g0&bslash;n&bslash;t&quot;
+l_string|&quot;be&t;1f&bslash;n&bslash;t&quot;
+l_string|&quot; nop&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, %2, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop;&bslash;n&quot;
+l_string|&quot;1:&bslash;n&quot;
 suffix:colon
-l_string|&quot;&t;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;=r&quot;
 (paren
 id|retval
 )paren
@@ -535,50 +394,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|rd
-op_mod
-op_mod
-id|psr
-comma
-op_mod
-l_int|0
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
+l_string|&quot;rd&t;%%psr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop;&bslash;n&bslash;t&quot;
 multiline_comment|/* Sun4m + Cypress + SMP bug */
-op_logical_or
-op_mod
-l_int|0
-comma
-op_mod
-l_int|1
-comma
-op_mod
-op_mod
-id|g1
-id|wr
-op_mod
-op_mod
-id|g1
-comma
-l_int|0x0
-comma
-op_mod
-op_mod
-id|psr
-id|nop
-suffix:semicolon
-id|nop
-suffix:semicolon
-id|nop
-l_string|&quot;&t;&t;: &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;or&t;%0, %1, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%%g1, 0x0, %%psr&bslash;n&bslash;t&quot;
+l_string|&quot;nop; nop; nop&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=r&quot;
 (paren
 id|retval
 )paren
@@ -790,23 +613,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___f____xchg32
-id|nop
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___f____xchg32&bslash;n&bslash;t&quot;
+l_string|&quot; nop&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
 )paren

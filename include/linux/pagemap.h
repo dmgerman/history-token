@@ -19,8 +19,20 @@ DECL|macro|PAGE_CACHE_ALIGN
 mdefine_line|#define PAGE_CACHE_ALIGN(addr)&t;(((addr)+PAGE_CACHE_SIZE-1)&amp;PAGE_CACHE_MASK)
 DECL|macro|page_cache_get
 mdefine_line|#define page_cache_get(x)&t;get_page(x)
-DECL|macro|page_cache_release
-mdefine_line|#define page_cache_release(x)&t;free_lru_page(x)
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|page_cache_release
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
 DECL|function|page_cache_alloc
 r_static
 r_inline

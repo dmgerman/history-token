@@ -6666,9 +6666,11 @@ id|r-&gt;poolinfo.POOLBITS
 r_int
 id|nwords
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|r-&gt;poolinfo.poolwords
 op_minus
 id|r-&gt;entropy_count

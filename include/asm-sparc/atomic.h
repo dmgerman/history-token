@@ -114,32 +114,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___atomic_add
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic_add&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|increment
 )paren
@@ -217,32 +196,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|mov
-op_mod
-op_mod
-id|o7
-comma
-op_mod
-op_mod
-id|g4
-id|call
-id|___atomic_sub
-id|add
-op_mod
-op_mod
-id|o7
-comma
-l_int|8
-comma
-op_mod
-op_mod
-id|o7
-l_string|&quot;&t;: &quot;
-op_assign
-op_amp
-id|r
-"&quot;"
+l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic_sub&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
 (paren
 id|increment
 )paren

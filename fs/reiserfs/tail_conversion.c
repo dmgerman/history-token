@@ -713,6 +713,7 @@ op_star
 id|p_s_path
 comma
 multiline_comment|/* path to the indirect item. */
+r_const
 r_struct
 id|cpu_key
 op_star

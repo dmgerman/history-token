@@ -4,7 +4,7 @@ DECL|macro|_LINUX_IF_H
 mdefine_line|#define _LINUX_IF_H
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* for &quot;__kernel_caddr_t&quot; et al&t;*/
 macro_line|#include &lt;linux/socket.h&gt;&t;&t;/* for &quot;struct sockaddr&quot; et al&t;*/
-multiline_comment|/* Standard interface flags. */
+multiline_comment|/* Standard interface flags (netdevice-&gt;flags). */
 DECL|macro|IFF_UP
 mdefine_line|#define&t;IFF_UP&t;&t;0x1&t;&t;/* interface is up&t;&t;*/
 DECL|macro|IFF_BROADCAST
@@ -39,6 +39,9 @@ DECL|macro|IFF_AUTOMEDIA
 mdefine_line|#define IFF_AUTOMEDIA&t;0x4000&t;&t;/* auto media select active&t;*/
 DECL|macro|IFF_DYNAMIC
 mdefine_line|#define IFF_DYNAMIC&t;0x8000&t;&t;/* dialup device with changing addresses*/
+multiline_comment|/* Private (from user) interface flags (netdevice-&gt;priv_flags). */
+DECL|macro|IFF_802_1Q_VLAN
+mdefine_line|#define IFF_802_1Q_VLAN 0x1             /* 802.1Q VLAN device.          */
 multiline_comment|/*&n; *&t;Device mapping structure. I&squot;d just gone off and designed a &n; *&t;beautiful scheme using only loadable modules with arguments&n; *&t;for driver options and along come the PCMCIA people 8)&n; *&n; *&t;Ah well. The get() side of this is good for WDSETUP, and it&squot;ll&n; *&t;be handy for debugging things. The set side is fine for now and&n; *&t;being very small might be worth keeping for clean configuration.&n; */
 DECL|struct|ifmap
 r_struct

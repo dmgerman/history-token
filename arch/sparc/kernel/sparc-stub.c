@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc-stub.c,v 1.27 2000/10/03 07:28:49 anton Exp $&n; * sparc-stub.c:  KGDB support for the Linux kernel.&n; *&n; * Modifications to run under Linux&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * This file originally came from the gdb sources, and the&n; * copyright notices have been retained below.&n; */
+multiline_comment|/* $Id: sparc-stub.c,v 1.28 2001/10/30 04:54:21 davem Exp $&n; * sparc-stub.c:  KGDB support for the Linux kernel.&n; *&n; * Modifications to run under Linux&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * This file originally came from the gdb sources, and the&n; * copyright notices have been retained below.&n; */
 multiline_comment|/****************************************************************************&n;&n;&t;&t;THIS SOFTWARE IS NOT COPYRIGHTED&n;&n;   HP offers the following for use in the public domain.  HP makes no&n;   warranty with regard to the software or its performance and the&n;   user accepts the software &quot;AS IS&quot; with all faults.&n;&n;   HP DISCLAIMS ANY WARRANTIES, EXPRESS OR IMPLIED, WITH REGARD&n;   TO THIS SOFTWARE INCLUDING BUT NOT LIMITED TO THE WARRANTIES&n;   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.&n;&n;****************************************************************************/
 multiline_comment|/****************************************************************************&n; *  Header: remcom.c,v 1.34 91/03/09 12:29:49 glenne Exp $&n; *&n; *  Module name: remcom.c $&n; *  Revision: 1.34 $&n; *  Date: 91/03/09 12:29:49 $&n; *  Contributor:     Lake Stevens Instrument Division$&n; *&n; *  Description:     low level support for gdb debugger. $&n; *&n; *  Considerations:  only works on target hardware $&n; *&n; *  Written by:      Glenn Engel $&n; *  ModuleState:     Experimental $&n; *&n; *  NOTES:           See Below $&n; *&n; *  Modified for SPARC by Stu Grossman, Cygnus Support.&n; *&n; *  This code has been extensively tested on the Fujitsu SPARClite demo board.&n; *&n; *  To enable debugger support, two things need to happen.  One, a&n; *  call to set_debug_traps() is necessary in order to allow any breakpoints&n; *  or error conditions to be properly intercepted and reported to gdb.&n; *  Two, a breakpoint needs to be generated to begin communication.  This&n; *  is most easily accomplished by a call to breakpoint().  Breakpoint()&n; *  simulates a breakpoint by executing a trap #1.&n; *&n; *************&n; *&n; *    The following gdb commands are supported:&n; *&n; * command          function                               Return value&n; *&n; *    g             return the value of the CPU registers  hex data or ENN&n; *    G             set the value of the CPU registers     OK or ENN&n; *&n; *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN&n; *    MAA..AA,LLLL: Write LLLL bytes at address AA.AA      OK or ENN&n; *&n; *    c             Resume at current address              SNN   ( signal NN)&n; *    cAA..AA       Continue at address AA..AA             SNN&n; *&n; *    s             Step one instruction                   SNN&n; *    sAA..AA       Step one instruction from AA..AA       SNN&n; *&n; *    k             kill&n; *&n; *    ?             What was the last sigval ?             SNN   (signal NN)&n; *&n; *    bBB..BB&t;    Set baud rate to BB..BB&t;&t;   OK or BNN, then sets&n; *&t;&t;&t;&t;&t;&t;&t;   baud rate&n; *&n; * All commands and responses are sent with a packet which includes a&n; * checksum.  A packet consists of&n; *&n; * $&lt;packet info&gt;#&lt;checksum&gt;.&n; *&n; * where&n; * &lt;packet info&gt; :: &lt;characters representing the command or response&gt;&n; * &lt;checksum&gt;    :: &lt; two hex digits computed as modulo 256 sum of &lt;packetinfo&gt;&gt;&n; *&n; * When a packet is received, it is first acknowledged with either &squot;+&squot; or &squot;-&squot;.&n; * &squot;+&squot; indicates a successful transfer.  &squot;-&squot; indicates a failed transfer.&n; *&n; * Example:&n; *&n; * Host:                  Reply:&n; * $m0,10#2a               +$00010203040506070809101112131415#42&n; *&n; ****************************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1104,56 +1104,18 @@ multiline_comment|/* This assembler code is basically:  ch = *mem++;&n;&t;&t; * 
 id|__asm__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|ldub
-(braket
-op_mod
-l_int|0
-)braket
-comma
-op_mod
-l_int|1
-id|inc
-op_mod
-l_int|0
-dot
-id|section
-dot
-id|fixup
-comma
-macro_line|#alloc,#execinstr
-dot
-id|align
-l_int|4
-l_int|2
-suffix:colon
-id|retl
-id|mov
-l_int|0
-comma
-op_mod
-op_mod
-id|o0
-dot
-id|section
-id|__ex_table
-comma
-macro_line|#alloc
-dot
-id|align
-l_int|4
-dot
-id|word
-l_int|1
-id|b
-comma
-l_int|2
-id|b
-dot
-id|text
-"&quot;"
+l_string|&quot;&bslash;n1:&bslash;n&bslash;t&quot;
+l_string|&quot;ldub [%0], %1&bslash;n&bslash;t&quot;
+l_string|&quot;inc %0&bslash;n&bslash;t&quot;
+l_string|&quot;.section .fixup,#alloc,#execinstr&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;retl&bslash;n&bslash;t&quot;
+l_string|&quot; mov 0, %%o0&bslash;n&bslash;t&quot;
+l_string|&quot;.section __ex_table, #alloc&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&bslash;t&quot;
+l_string|&quot;.word 1b, 2b&bslash;n&bslash;t&quot;
+l_string|&quot;.text&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1271,56 +1233,18 @@ multiline_comment|/* Assembler code is   *mem++ = ch;   with return 0 on fault *
 id|__asm__
 c_func
 (paren
-"&quot;"
-l_int|1
-suffix:colon
-id|stb
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-id|inc
-op_mod
-l_int|0
-dot
-id|section
-dot
-id|fixup
-comma
-macro_line|#alloc,#execinstr
-dot
-id|align
-l_int|4
-l_int|2
-suffix:colon
-id|retl
-id|mov
-l_int|0
-comma
-op_mod
-op_mod
-id|o0
-dot
-id|section
-id|__ex_table
-comma
-macro_line|#alloc
-dot
-id|align
-l_int|4
-dot
-id|word
-l_int|1
-id|b
-comma
-l_int|2
-id|b
-dot
-id|text
-"&quot;"
+l_string|&quot;&bslash;n1:&bslash;n&bslash;t&quot;
+l_string|&quot;stb %1, [%0]&bslash;n&bslash;t&quot;
+l_string|&quot;inc %0&bslash;n&bslash;t&quot;
+l_string|&quot;.section .fixup,#alloc,#execinstr&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;retl&bslash;n&bslash;t&quot;
+l_string|&quot; mov 0, %%o0&bslash;n&bslash;t&quot;
+l_string|&quot;.section __ex_table, #alloc&bslash;n&bslash;t&quot;
+l_string|&quot;.align 4&bslash;n&bslash;t&quot;
+l_string|&quot;.word 1b, 2b&bslash;n&bslash;t&quot;
+l_string|&quot;.text&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -2765,30 +2689,18 @@ macro_line|#if defined(__svr4__) || defined(__ELF__)
 id|asm
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|breakinst
-id|breakinst
-suffix:colon
-id|ta
-l_int|1
-"&quot;"
+l_string|&quot;.globl breakinst&bslash;n&quot;
+l_string|&quot;breakinst:&bslash;n&bslash;t&quot;
+l_string|&quot;ta 1&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
 id|asm
 c_func
 (paren
-"&quot;"
-dot
-id|globl
-id|_breakinst
-id|_breakinst
-suffix:colon
-id|ta
-l_int|1
-"&quot;"
+l_string|&quot;.globl _breakinst&bslash;n&quot;
+l_string|&quot;_breakinst:&bslash;n&bslash;t&quot;
+l_string|&quot;ta 1&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

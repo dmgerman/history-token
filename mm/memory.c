@@ -5185,6 +5185,8 @@ comma
 id|address
 op_amp
 id|PAGE_MASK
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: srmmu.c,v 1.231 2001/09/20 00:35:31 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/* $Id: srmmu.c,v 1.232 2001/10/30 04:54:22 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -2165,6 +2165,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|srmmu_free_pte_fast
 r_static
@@ -4251,51 +4254,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|lda
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-comma
-op_mod
-op_mod
-id|g5
-id|sta
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|sta
-op_mod
-op_mod
-id|g0
-comma
-(braket
-op_mod
-l_int|1
-)braket
-op_mod
-l_int|4
-id|sta
-op_mod
-op_mod
-id|g5
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-"&quot;"
+l_string|&quot;lda&t;[%0] %3, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%2, [%0] %3&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%%g0, [%1] %4&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%%g5, [%0] %3&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4376,68 +4338,13 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|lda
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|5
-comma
-op_mod
-op_mod
-id|g5
-id|sta
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|5
-l_int|1
-suffix:colon
-id|subcc
-op_mod
-l_int|3
-comma
-op_mod
-l_int|4
-comma
-op_mod
-l_int|3
-id|bne
-l_int|1
-id|b
-id|sta
-op_mod
-op_mod
-id|g0
-comma
-(braket
-op_mod
-l_int|2
-op_plus
-op_mod
-l_int|3
-)braket
-op_mod
-l_int|6
-id|sta
-op_mod
-op_mod
-id|g5
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|5
-"&quot;"
+l_string|&quot;lda&t;[%0] %5, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%1, [%0] %5&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;subcc&t;%3, %4, %3&bslash;n&bslash;t&quot;
+l_string|&quot;bne&t;1b&bslash;n&bslash;t&quot;
+l_string|&quot; sta&t;%%g0, [%2 + %3] %6&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%%g5, [%0] %5&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -4517,51 +4424,10 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|lda
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-comma
-op_mod
-op_mod
-id|g5
-id|sta
-op_mod
-l_int|1
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-id|sta
-op_mod
-op_mod
-id|g0
-comma
-(braket
-op_mod
-l_int|2
-)braket
-op_mod
-l_int|4
-id|sta
-op_mod
-op_mod
-id|g5
-comma
-(braket
-op_mod
-l_int|0
-)braket
-op_mod
-l_int|3
-"&quot;"
+l_string|&quot;lda&t;[%0] %3, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%1, [%0] %3&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%%g0, [%2] %4&bslash;n&bslash;t&quot;
+l_string|&quot;sta&t;%%g5, [%0] %3&bslash;n&quot;
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

@@ -6277,6 +6277,11 @@ id|type
 op_assign
 id|f
 suffix:semicolon
+id|sb-&gt;dq_op
+op_assign
+op_amp
+id|dquot_operations
+suffix:semicolon
 id|set_enable_flags
 c_func
 (paren
@@ -6334,11 +6339,6 @@ c_func
 (paren
 id|dquot
 )paren
-suffix:semicolon
-id|sb-&gt;dq_op
-op_assign
-op_amp
-id|dquot_operations
 suffix:semicolon
 id|add_dquot_ref
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.58 2001/01/11 15:07:09 davem Exp $&n; * linux/arch/sparc/kernel/time.c&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * Chris Davis (cdavis@cois.on.ca) 03/27/1998&n; * Added support for the intersil on the sun4/4200&n; *&n; * Gleb Raiko (rajko@mech.math.msu.su) 08/18/1998&n; * Support for MicroSPARC-IIep, PCI CPU.&n; *&n; * This file handles the Sparc specific time handling details.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
+multiline_comment|/* $Id: time.c,v 1.59 2001/10/30 04:54:21 davem Exp $&n; * linux/arch/sparc/kernel/time.c&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Thomas K. Dyas (tdyas@eden.rutgers.edu)&n; *&n; * Chris Davis (cdavis@cois.on.ca) 03/27/1998&n; * Added support for the intersil on the sun4/4200&n; *&n; * Gleb Raiko (rajko@mech.math.msu.su) 08/18/1998&n; * Support for MicroSPARC-IIep, PCI CPU.&n; *&n; * This file handles the Sparc specific time handling details.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2119,287 +2119,38 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|sethi
-op_mod
-id|hi
-c_func
-(paren
-id|master_l10_counter
-)paren
-comma
-op_mod
-id|o1
-id|ld
-(braket
-op_mod
-id|o1
-op_plus
-op_mod
-id|lo
-c_func
-(paren
-id|master_l10_counter
-)paren
-)braket
-comma
-op_mod
-id|g3
-id|sethi
-op_mod
-id|hi
-c_func
-(paren
-id|xtime
-)paren
-comma
-op_mod
-id|g2
-l_int|1
-suffix:colon
-id|ldd
-(braket
-op_mod
-id|g2
-op_plus
-op_mod
-id|lo
-c_func
-(paren
-id|xtime
-)paren
-)braket
-comma
-op_mod
-id|o4
-id|ld
-(braket
-op_mod
-id|g3
-)braket
-comma
-op_mod
-id|o1
-id|ldd
-(braket
-op_mod
-id|g2
-op_plus
-op_mod
-id|lo
-c_func
-(paren
-id|xtime
-)paren
-)braket
-comma
-op_mod
-id|o2
-op_xor
-op_mod
-id|o4
-comma
-op_mod
-id|o2
-comma
-op_mod
-id|o2
-op_xor
-op_mod
-id|o5
-comma
-op_mod
-id|o3
-comma
-op_mod
-id|o3
-id|orcc
-op_mod
-id|o2
-comma
-op_mod
-id|o3
-comma
-op_mod
-id|g0
-id|bne
-l_int|1
-id|b
-id|cmp
-op_mod
-id|o1
-comma
-l_int|0
-id|bge
-l_float|1f
-id|srl
-op_mod
-id|o1
-comma
-l_int|0xa
-comma
-op_mod
-id|o1
-id|sethi
-op_mod
-id|hi
-c_func
-(paren
-id|tick
-)paren
-comma
-op_mod
-id|o3
-id|ld
-(braket
-op_mod
-id|o3
-op_plus
-op_mod
-id|lo
-c_func
-(paren
-id|tick
-)paren
-)braket
-comma
-op_mod
-id|o3
-id|sethi
-op_mod
-id|hi
-c_func
-(paren
-l_int|0x1fffff
-)paren
-comma
-op_mod
-id|o2
-op_logical_or
-op_mod
-id|o2
-comma
-op_mod
-id|lo
-c_func
-(paren
-l_int|0x1fffff
-)paren
-comma
-op_mod
-id|o2
-id|add
-op_mod
-id|o5
-comma
-op_mod
-id|o3
-comma
-op_mod
-id|o5
-op_logical_and
-op_mod
-id|o1
-comma
-op_mod
-id|o2
-comma
-op_mod
-id|o1
-l_int|1
-suffix:colon
-id|add
-op_mod
-id|o5
-comma
-op_mod
-id|o1
-comma
-op_mod
-id|o5
-id|sethi
-op_mod
-id|hi
-c_func
-(paren
-l_int|1000000
-)paren
-comma
-op_mod
-id|o2
-op_logical_or
-op_mod
-id|o2
-comma
-op_mod
-id|lo
-c_func
-(paren
-l_int|1000000
-)paren
-comma
-op_mod
-id|o2
-id|cmp
-op_mod
-id|o5
-comma
-op_mod
-id|o2
-id|bl
-comma
-id|a
-l_float|1f
-id|st
-op_mod
-id|o4
-comma
-(braket
-op_mod
-id|o0
-op_plus
-l_int|0x0
-)braket
-id|add
-op_mod
-id|o4
-comma
-l_int|0x1
-comma
-op_mod
-id|o4
-id|sub
-op_mod
-id|o5
-comma
-op_mod
-id|o2
-comma
-op_mod
-id|o5
-id|st
-op_mod
-id|o4
-comma
-(braket
-op_mod
-id|o0
-op_plus
-l_int|0x0
-)braket
-l_int|1
-suffix:colon
-id|st
-op_mod
-id|o5
-comma
-(braket
-op_mod
-id|o0
-op_plus
-l_int|0x4
-)braket
-"&quot;"
+l_string|&quot;sethi&t;%hi(master_l10_counter), %o1&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%o1 + %lo(master_l10_counter)], %g3&bslash;n&bslash;t&quot;
+l_string|&quot;sethi&t;%hi(xtime), %g2&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;ldd&t;[%g2 + %lo(xtime)], %o4&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%g3], %o1&bslash;n&bslash;t&quot;
+l_string|&quot;ldd&t;[%g2 + %lo(xtime)], %o2&bslash;n&bslash;t&quot;
+l_string|&quot;xor&t;%o4, %o2, %o2&bslash;n&bslash;t&quot;
+l_string|&quot;xor&t;%o5, %o3, %o3&bslash;n&bslash;t&quot;
+l_string|&quot;orcc&t;%o2, %o3, %g0&bslash;n&bslash;t&quot;
+l_string|&quot;bne&t;1b&bslash;n&bslash;t&quot;
+l_string|&quot; cmp&t;%o1, 0&bslash;n&bslash;t&quot;
+l_string|&quot;bge&t;1f&bslash;n&bslash;t&quot;
+l_string|&quot; srl&t;%o1, 0xa, %o1&bslash;n&bslash;t&quot;
+l_string|&quot;sethi&t;%hi(tick), %o3&bslash;n&bslash;t&quot;
+l_string|&quot;ld&t;[%o3 + %lo(tick)], %o3&bslash;n&bslash;t&quot;
+l_string|&quot;sethi&t;%hi(0x1fffff), %o2&bslash;n&bslash;t&quot;
+l_string|&quot;or&t;%o2, %lo(0x1fffff), %o2&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%o5, %o3, %o5&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%o1, %o2, %o1&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%o5, %o1, %o5&bslash;n&bslash;t&quot;
+l_string|&quot;sethi&t;%hi(1000000), %o2&bslash;n&bslash;t&quot;
+l_string|&quot;or&t;%o2, %lo(1000000), %o2&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%o5, %o2&bslash;n&bslash;t&quot;
+l_string|&quot;bl,a&t;1f&bslash;n&bslash;t&quot;
+l_string|&quot; st&t;%o4, [%o0 + 0x0]&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%o4, 0x1, %o4&bslash;n&bslash;t&quot;
+l_string|&quot;sub&t;%o5, %o2, %o5&bslash;n&bslash;t&quot;
+l_string|&quot;st&t;%o4, [%o0 + 0x0]&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;st&t;%o5, [%o0 + 0x4]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
