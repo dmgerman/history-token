@@ -1547,6 +1547,10 @@ id|peer-&gt;rtt_usage
 op_increment
 suffix:semicolon
 multiline_comment|/* recalculate RTT */
+id|rtt
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1570,8 +1574,6 @@ id|peer-&gt;rtt_cache
 id|loop
 )braket
 suffix:semicolon
-id|peer-&gt;rtt
-op_assign
 id|do_div
 c_func
 (paren
@@ -1580,18 +1582,32 @@ comma
 id|peer-&gt;rtt_usage
 )paren
 suffix:semicolon
+id|peer-&gt;rtt
+op_assign
+id|rtt
+suffix:semicolon
 id|_leave
 c_func
 (paren
 l_string|&quot; RTT=%lu.%lums&quot;
 comma
+(paren
+r_int
+)paren
+(paren
 id|peer-&gt;rtt
 op_div
 l_int|1000
+)paren
 comma
+(paren
+r_int
+)paren
+(paren
 id|peer-&gt;rtt
 op_mod
 l_int|1000
+)paren
 )paren
 suffix:semicolon
 )brace
