@@ -1323,24 +1323,6 @@ r_int
 id|eventLogSize
 suffix:semicolon
 multiline_comment|/* Max number of cached events */
-macro_line|#ifdef MPTSCSIH_DBG_TIMEOUT
-DECL|member|timeout_hard
-r_int
-id|timeout_hard
-suffix:semicolon
-DECL|member|timeout_delta
-r_int
-id|timeout_delta
-suffix:semicolon
-DECL|member|timeout_cnt
-r_int
-id|timeout_cnt
-suffix:semicolon
-DECL|member|timeout_maxcnt
-r_int
-id|timeout_maxcnt
-suffix:semicolon
-macro_line|#endif
 DECL|member|events
 r_struct
 id|_mpt_ioctl_events
