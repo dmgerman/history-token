@@ -1425,16 +1425,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|MINOR
-c_func
-(paren
 id|ctx-&gt;names
 (braket
 id|j
 )braket
 dot
 id|ino
-)paren
 op_eq
 id|value
 )paren

@@ -3353,7 +3353,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|bad
+id|out
 suffix:semicolon
 )brace
 id|memset
