@@ -144,8 +144,6 @@ r_int
 id|newidx
 )paren
 suffix:semicolon
-DECL|macro|fontheight
-mdefine_line|#define fontheight(p) ((p)-&gt;_fontheight)
 macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
 multiline_comment|/* fontwidth w is supported by dispsw */
 DECL|macro|FONTWIDTH
@@ -153,8 +151,6 @@ mdefine_line|#define FONTWIDTH(w)&t;(1 &lt;&lt; ((8) - 1))
 multiline_comment|/* fontwidths w1-w2 inclusive are supported by dispsw */
 DECL|macro|FONTWIDTHRANGE
 mdefine_line|#define FONTWIDTHRANGE(w1,w2)&t;FONTWIDTH(8)
-DECL|macro|fontwidth
-mdefine_line|#define fontwidth(p) (8)
 macro_line|#else
 multiline_comment|/* fontwidth w is supported by dispsw */
 DECL|macro|FONTWIDTH
@@ -162,8 +158,6 @@ mdefine_line|#define FONTWIDTH(w)&t;(1 &lt;&lt; ((w) - 1))
 multiline_comment|/* fontwidths w1-w2 inclusive are supported by dispsw */
 DECL|macro|FONTWIDTHRANGE
 mdefine_line|#define FONTWIDTHRANGE(w1,w2)&t;(FONTWIDTH(w2+1) - FONTWIDTH(w1))
-DECL|macro|fontwidth
-mdefine_line|#define fontwidth(p) ((p)-&gt;_fontwidth)
 macro_line|#endif
 multiline_comment|/*&n;     *  Attribute Decoding&n;     */
 multiline_comment|/* Color */

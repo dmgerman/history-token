@@ -1,6 +1,6 @@
 multiline_comment|/***************************************************************************&bslash;&n;|*                                                                           *|&n;|*       Copyright 1993-1999 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NOTICE TO USER:   The source code  is copyrighted under  U.S. and     *|&n;|*     international laws.  Users and possessors of this source code are     *|&n;|*     hereby granted a nonexclusive,  royalty-free copyright license to     *|&n;|*     use this code in individual and commercial software.                  *|&n;|*                                                                           *|&n;|*     Any use of this source code must include,  in the user documenta-     *|&n;|*     tion and  internal comments to the code,  notices to the end user     *|&n;|*     as follows:                                                           *|&n;|*                                                                           *|&n;|*       Copyright 1993-1999 NVIDIA, Corporation.  All rights reserved.      *|&n;|*                                                                           *|&n;|*     NVIDIA, CORPORATION MAKES NO REPRESENTATION ABOUT THE SUITABILITY     *|&n;|*     OF  THIS SOURCE  CODE  FOR ANY PURPOSE.  IT IS  PROVIDED  &quot;AS IS&quot;     *|&n;|*     WITHOUT EXPRESS OR IMPLIED WARRANTY OF ANY KIND.  NVIDIA, CORPOR-     *|&n;|*     ATION DISCLAIMS ALL WARRANTIES  WITH REGARD  TO THIS SOURCE CODE,     *|&n;|*     INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY, NONINFRINGE-     *|&n;|*     MENT,  AND FITNESS  FOR A PARTICULAR PURPOSE.   IN NO EVENT SHALL     *|&n;|*     NVIDIA, CORPORATION  BE LIABLE FOR ANY SPECIAL,  INDIRECT,  INCI-     *|&n;|*     DENTAL, OR CONSEQUENTIAL DAMAGES,  OR ANY DAMAGES  WHATSOEVER RE-     *|&n;|*     SULTING FROM LOSS OF USE,  DATA OR PROFITS,  WHETHER IN AN ACTION     *|&n;|*     OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,  ARISING OUT OF     *|&n;|*     OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOURCE CODE.     *|&n;|*                                                                           *|&n;|*     U.S. Government  End  Users.   This source code  is a &quot;commercial     *|&n;|*     item,&quot;  as that  term is  defined at  48 C.F.R. 2.101 (OCT 1995),     *|&n;|*     consisting  of &quot;commercial  computer  software&quot;  and  &quot;commercial     *|&n;|*     computer  software  documentation,&quot;  as such  terms  are  used in     *|&n;|*     48 C.F.R. 12.212 (SEPT 1995)  and is provided to the U.S. Govern-     *|&n;|*     ment only as  a commercial end item.   Consistent with  48 C.F.R.     *|&n;|*     12.212 and  48 C.F.R. 227.7202-1 through  227.7202-4 (JUNE 1995),     *|&n;|*     all U.S. Government End Users  acquire the source code  with only     *|&n;|*     those rights set forth herein.                                        *|&n;|*                                                                           *|&n;&bslash;***************************************************************************/
 multiline_comment|/*&n; * GPL licensing note -- nVidia is allowing a liberal interpretation of&n; * the documentation restriction above, to merely say that this nVidia&squot;s&n; * copyright and disclaimer should be included with all code derived&n; * from this source.  -- Jeff Garzik &lt;jgarzik@pobox.com&gt;, 01/Nov/99 &n; */
-multiline_comment|/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/nv/riva_hw.h,v 1.6 2000/02/08 17:19:12 dawes Exp $ */
+multiline_comment|/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/nv/riva_hw.h,v 1.21 2002/10/14 18:22:46 mvojkovi Exp $ */
 macro_line|#ifndef __RIVA_HW_H__
 DECL|macro|__RIVA_HW_H__
 mdefine_line|#define __RIVA_HW_H__
@@ -53,9 +53,9 @@ DECL|macro|NV_RD08
 mdefine_line|#define NV_RD08(p,i)&t;in_8(p+i)
 macro_line|#else
 DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)&t;(((U008 *)(p))[i]=(d))
+mdefine_line|#define NV_WR08(p,i,d)  (((U008 *)(p))[i]=(d))
 DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)&t;(((U008 *)(p))[i])
+mdefine_line|#define NV_RD08(p,i)    (((U008 *)(p))[i])
 macro_line|#endif
 DECL|macro|NV_WR16
 mdefine_line|#define NV_WR16(p,i,d)  (((U016 *)(p))[(i)/2]=(d))
@@ -1281,24 +1281,6 @@ id|U032
 op_star
 id|CURSOR
 suffix:semicolon
-DECL|member|CURSORPOS
-r_volatile
-id|U032
-op_star
-id|CURSORPOS
-suffix:semicolon
-DECL|member|VBLANKENABLE
-r_volatile
-id|U032
-op_star
-id|VBLANKENABLE
-suffix:semicolon
-DECL|member|VBLANK
-r_volatile
-id|U032
-op_star
-id|VBLANK
-suffix:semicolon
 DECL|member|PCIO0
 r_volatile
 id|U008
@@ -1362,22 +1344,6 @@ comma
 r_struct
 id|_riva_hw_state
 op_star
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
-comma
-r_int
 comma
 r_int
 comma
@@ -1706,10 +1672,13 @@ c_func
 (paren
 id|RIVA_HW_INST
 op_star
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * FIFO Free Count. Should attempt to yield processor if RIVA is busy.&n; */
 DECL|macro|RIVA_FIFO_FREE
-mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                           &bslash;&n;{                                                                  &bslash;&n;   while ((hwinst).FifoFreeCount &lt; (cnt))                          &bslash;&n;&t;(hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;        &bslash;&n;   (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
+mdefine_line|#define RIVA_FIFO_FREE(hwinst,hwptr,cnt)                            &bslash;&n;{                                                                   &bslash;&n;    while ((hwinst).FifoFreeCount &lt; (cnt))                          &bslash;&n;        (hwinst).FifoFreeCount = (hwinst).hwptr-&gt;FifoFree &gt;&gt; 2;     &bslash;&n;    (hwinst).FifoFreeCount -= (cnt);                                &bslash;&n;}
 macro_line|#endif /* __RIVA_HW_H__ */
 eof

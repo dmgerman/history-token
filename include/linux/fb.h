@@ -1501,7 +1501,14 @@ id|fb_info
 suffix:semicolon
 r_extern
 r_int
-id|num_registered_fb
+id|fb_show_logo
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
 suffix:semicolon
 r_extern
 r_struct
@@ -1511,6 +1518,10 @@ id|registered_fb
 (braket
 id|FB_MAX
 )braket
+suffix:semicolon
+r_extern
+r_int
+id|num_registered_fb
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 r_extern

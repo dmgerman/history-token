@@ -79,7 +79,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MDA_CONSOLE
 r_extern
-r_void
+r_int
 id|mda_console_init
 c_func
 (paren

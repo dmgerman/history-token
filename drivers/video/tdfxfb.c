@@ -6886,17 +6886,6 @@ op_rshift
 l_int|10
 )paren
 suffix:semicolon
-multiline_comment|/* clear framebuffer memory */
-id|memset_io
-c_func
-(paren
-id|info-&gt;screen_base
-comma
-l_int|0
-comma
-id|tdfx_fix.smem_len
-)paren
-suffix:semicolon
 id|tdfx_fix.ypanstep
 op_assign
 id|nopan

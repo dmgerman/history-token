@@ -194,16 +194,6 @@ id|pitch_index
 (brace
 multiline_comment|/* Draw the penguin */
 r_int
-id|i
-comma
-id|n
-suffix:semicolon
-r_int
-id|bpp
-op_assign
-id|p-&gt;var.bits_per_pixel
-suffix:semicolon
-r_int
 r_int
 op_star
 id|palette
@@ -230,6 +220,15 @@ comma
 id|val
 comma
 id|shift
+suffix:semicolon
+r_int
+id|i
+comma
+id|n
+comma
+id|bpp
+op_assign
+id|p-&gt;var.bits_per_pixel
 suffix:semicolon
 r_int
 r_int
@@ -718,6 +717,14 @@ r_else
 id|color
 op_assign
 id|bgcolor
+suffix:semicolon
+id|color
+op_lshift_assign
+id|LEFT_POS
+c_func
+(paren
+id|bpp
+)paren
 suffix:semicolon
 id|val
 op_or_assign
