@@ -31,14 +31,11 @@ id|env
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* We get __ARCH_WANT_OLD_STAT and __ARCH_WANT_STAT64 from the base arch */
 DECL|macro|__ARCH_WANT_IPC_PARSE_VERSION
 mdefine_line|#define __ARCH_WANT_IPC_PARSE_VERSION
 DECL|macro|__ARCH_WANT_OLD_READDIR
 mdefine_line|#define __ARCH_WANT_OLD_READDIR
-DECL|macro|__ARCH_WANT_OLD_STAT
-mdefine_line|#define __ARCH_WANT_OLD_STAT
-DECL|macro|__ARCH_WANT_STAT64
-mdefine_line|#define __ARCH_WANT_STAT64
 DECL|macro|__ARCH_WANT_SYS_ALARM
 mdefine_line|#define __ARCH_WANT_SYS_ALARM
 DECL|macro|__ARCH_WANT_SYS_GETHOSTNAME
