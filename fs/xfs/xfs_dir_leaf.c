@@ -2010,11 +2010,9 @@ id|xfs_dir_hash_dotdot
 suffix:semicolon
 id|sbp-&gt;ino
 op_assign
-id|XFS_GET_DIR_INO
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sf-&gt;hdr.parent
 )paren
 suffix:semicolon
@@ -2163,11 +2161,9 @@ id|sfe-&gt;namelen
 suffix:semicolon
 id|sbp-&gt;ino
 op_assign
-id|XFS_GET_DIR_INO
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sfe-&gt;inumber
 )paren
 suffix:semicolon
@@ -11340,11 +11336,9 @@ macro_line|#endif /* BITS_PER_LONG == 32 */
 multiline_comment|/*&n;&t;&t; * Put the current entry into the outgoing buffer.  If we fail&n;&t;&t; * then restore the UIO to the first entry in the current&n;&t;&t; * run of equal-hashval entries (probably one 1 entry long).&n;&t;&t; */
 id|p.ino
 op_assign
-id|XFS_GET_DIR_INO
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|namest-&gt;inumber
 )paren
 suffix:semicolon

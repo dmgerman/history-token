@@ -150,7 +150,7 @@ DECL|macro|XFS_DIR_SF_GET_DIRINO
 mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;&t;    xfs_dir_sf_get_dirino(from, to)
 macro_line|#else
 DECL|macro|XFS_DIR_SF_GET_DIRINO
-mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;            DIRINO_COPY_ARCH(from,to,ARCH_CONVERT)
+mdefine_line|#define&t;XFS_DIR_SF_GET_DIRINO(from,to)&t;&t;    (*(to) = XFS_GET_DIR_INO8(*from))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR_SF_PUT_DIRINO)
 r_void
@@ -170,7 +170,7 @@ DECL|macro|XFS_DIR_SF_PUT_DIRINO
 mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)    xfs_dir_sf_put_dirino(from, to)
 macro_line|#else
 DECL|macro|XFS_DIR_SF_PUT_DIRINO
-mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)    DIRINO_COPY_ARCH(from,to,ARCH_CONVERT)
+mdefine_line|#define&t;XFS_DIR_SF_PUT_DIRINO(from,to)    XFS_PUT_DIR_INO8(*(from), *(to))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR_SF_ENTSIZE_BYNAME)
 r_int

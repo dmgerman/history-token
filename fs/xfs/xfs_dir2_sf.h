@@ -42,8 +42,6 @@ suffix:semicolon
 )brace
 id|xfs_dir2_ino8_t
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_INO8
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO8(di)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO_GET_ARCH(&amp;di, ARCH_CONVERT))
 multiline_comment|/*&n; * Inode number stored as 4 8-bit values.&n; * Works a lot of the time, when all the inode numbers in a directory&n; * fit in 32 bits.&n; */
 DECL|member|i
 DECL|typedef|xfs_dir2_ino4_t
@@ -59,8 +57,6 @@ suffix:semicolon
 )brace
 id|xfs_dir2_ino4_t
 suffix:semicolon
-DECL|macro|XFS_DIR2_SF_GET_INO4
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INO4(di)&t;&bslash;&n;&t;(xfs_ino_t)(DIRINO4_GET_ARCH(&amp;di, ARCH_CONVERT))
 r_typedef
 r_union
 (brace
@@ -222,7 +218,7 @@ DECL|macro|XFS_DIR2_SF_GET_INUMBER
 mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER(sfp, from)&t;&bslash;&n;&t;xfs_dir2_sf_get_inumber(sfp, from)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_GET_INUMBER
-mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER(sfp, from)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO4(*(from)) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_DIR2_SF_GET_INO8(*(from)))
+mdefine_line|#define&t;XFS_DIR2_SF_GET_INUMBER(sfp, from)&t;&bslash;&n;&t;((sfp)-&gt;hdr.i8count == 0 ? &bslash;&n;&t;&t;(xfs_intino_t)XFS_GET_DIR_INO4((from)-&gt;i4) : &bslash;&n;&t;&t;(xfs_intino_t)XFS_GET_DIR_INO8((from)-&gt;i8))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_PUT_INUMBER)
 r_void
@@ -246,7 +242,7 @@ DECL|macro|XFS_DIR2_SF_PUT_INUMBER
 mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER(sfp,from,to)&t;&bslash;&n;&t;xfs_dir2_sf_put_inumber(sfp,from,to)
 macro_line|#else
 DECL|macro|XFS_DIR2_SF_PUT_INUMBER
-mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER(sfp,from,to)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;    DIRINO4_COPY_ARCH(from,to,ARCH_CONVERT); &bslash;&n;&t;} else { &bslash;&n;&t;    DIRINO_COPY_ARCH(from,to,ARCH_CONVERT); &bslash;&n;&t;}
+mdefine_line|#define&t;XFS_DIR2_SF_PUT_INUMBER(sfp,from,to)&t;&bslash;&n;&t;if ((sfp)-&gt;hdr.i8count == 0) { &bslash;&n;&t;&t;XFS_PUT_DIR_INO4(*(from), (to)-&gt;i4); &bslash;&n;&t;} else { &bslash;&n;&t;&t;XFS_PUT_DIR_INO8(*(from), (to)-&gt;i8); &bslash;&n;&t;}
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_SF_GET_OFFSET)
 id|xfs_dir2_data_aoff_t

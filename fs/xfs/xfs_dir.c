@@ -2301,11 +2301,9 @@ id|dp-&gt;di_u.di_dirsf
 suffix:semicolon
 id|ino
 op_assign
-id|XFS_GET_DIR_INO
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sf-&gt;hdr.parent
 )paren
 suffix:semicolon
@@ -2410,11 +2408,9 @@ op_decrement
 (brace
 id|ino
 op_assign
-id|XFS_GET_DIR_INO
+id|XFS_GET_DIR_INO8
 c_func
 (paren
-id|mp
-comma
 id|sfe-&gt;inumber
 )paren
 suffix:semicolon
