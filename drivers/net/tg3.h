@@ -643,12 +643,18 @@ DECL|macro|LED_CTRL_10MBPS_STATUS
 mdefine_line|#define  LED_CTRL_10MBPS_STATUS&t;&t; 0x00000200
 DECL|macro|LED_CTRL_TRAFFIC_STATUS
 mdefine_line|#define  LED_CTRL_TRAFFIC_STATUS&t; 0x00000400
-DECL|macro|LED_CTRL_MAC_MODE
-mdefine_line|#define  LED_CTRL_MAC_MODE&t;&t; 0x00000000
-DECL|macro|LED_CTRL_PHY_MODE_1
-mdefine_line|#define  LED_CTRL_PHY_MODE_1&t;&t; 0x00000800
-DECL|macro|LED_CTRL_PHY_MODE_2
-mdefine_line|#define  LED_CTRL_PHY_MODE_2&t;&t; 0x00001000
+DECL|macro|LED_CTRL_MODE_MAC
+mdefine_line|#define  LED_CTRL_MODE_MAC&t;&t; 0x00000000
+DECL|macro|LED_CTRL_MODE_PHY_1
+mdefine_line|#define  LED_CTRL_MODE_PHY_1&t;&t; 0x00000800
+DECL|macro|LED_CTRL_MODE_PHY_2
+mdefine_line|#define  LED_CTRL_MODE_PHY_2&t;&t; 0x00001000
+DECL|macro|LED_CTRL_MODE_SHASTA_MAC
+mdefine_line|#define  LED_CTRL_MODE_SHASTA_MAC&t; 0x00002000
+DECL|macro|LED_CTRL_MODE_SHARED
+mdefine_line|#define  LED_CTRL_MODE_SHARED&t;&t; 0x00004000
+DECL|macro|LED_CTRL_MODE_COMBO
+mdefine_line|#define  LED_CTRL_MODE_COMBO&t;&t; 0x00008000
 DECL|macro|LED_CTRL_BLINK_RATE_MASK
 mdefine_line|#define  LED_CTRL_BLINK_RATE_MASK&t; 0x7ff80000
 DECL|macro|LED_CTRL_BLINK_RATE_SHIFT
@@ -2559,16 +2565,12 @@ DECL|macro|NIC_SRAM_DATA_CFG
 mdefine_line|#define NIC_SRAM_DATA_CFG&t;&t;&t;0x00000b58
 DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MASK
 mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MASK&t; 0x0000000c
-DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_UNKNOWN&t; 0x00000000
-DECL|macro|NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_TRIPLE_SPD&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OPEN_DRAIN&t; 0x00000004
-DECL|macro|NIC_SRAM_DATA_CFG_LED_LINK_SPD
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_LINK_SPD&t;&t; 0x00000008
-DECL|macro|NIC_SRAM_DATA_CFG_LED_OUTPUT
-mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_OUTPUT&t;&t; 0x00000008
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_MAC
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_MAC&t;&t; 0x00000000
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_PHY_1
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_PHY_1&t; 0x00000004
+DECL|macro|NIC_SRAM_DATA_CFG_LED_MODE_PHY_2
+mdefine_line|#define  NIC_SRAM_DATA_CFG_LED_MODE_PHY_2&t; 0x00000008
 DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_MASK
 mdefine_line|#define  NIC_SRAM_DATA_CFG_PHY_TYPE_MASK&t; 0x00000030
 DECL|macro|NIC_SRAM_DATA_CFG_PHY_TYPE_UNKNOWN
@@ -2629,6 +2631,18 @@ DECL|macro|NIC_SRAM_MAC_ADDR_HIGH_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_HIGH_MBOX&t;0x00000c14
 DECL|macro|NIC_SRAM_MAC_ADDR_LOW_MBOX
 mdefine_line|#define NIC_SRAM_MAC_ADDR_LOW_MBOX&t;0x00000c18
+DECL|macro|NIC_SRAM_DATA_CFG_2
+mdefine_line|#define NIC_SRAM_DATA_CFG_2&t;&t;0x00000d38
+DECL|macro|SHASTA_EXT_LED_MODE_MASK
+mdefine_line|#define  SHASTA_EXT_LED_MODE_MASK&t; 0x00018000
+DECL|macro|SHASTA_EXT_LED_LEGACY
+mdefine_line|#define  SHASTA_EXT_LED_LEGACY&t;&t; 0x00000000
+DECL|macro|SHASTA_EXT_LED_SHARED
+mdefine_line|#define  SHASTA_EXT_LED_SHARED&t;&t; 0x00008000
+DECL|macro|SHASTA_EXT_LED_MAC
+mdefine_line|#define  SHASTA_EXT_LED_MAC&t;&t; 0x00010000
+DECL|macro|SHASTA_EXT_LED_COMBO
+mdefine_line|#define  SHASTA_EXT_LED_COMBO&t;&t; 0x00018000
 DECL|macro|NIC_SRAM_RX_MINI_BUFFER_DESC
 mdefine_line|#define NIC_SRAM_RX_MINI_BUFFER_DESC&t;0x00001000
 DECL|macro|NIC_SRAM_DMA_DESC_POOL_BASE
@@ -3457,20 +3471,6 @@ l_int|0x9c0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|enum|phy_led_mode
-r_enum
-id|phy_led_mode
-(brace
-DECL|enumerator|led_mode_auto
-id|led_mode_auto
-comma
-DECL|enumerator|led_mode_three_link
-id|led_mode_three_link
-comma
-DECL|enumerator|led_mode_link10
-id|led_mode_link10
-)brace
-suffix:semicolon
 multiline_comment|/* &squot;mapping&squot; is superfluous as the chip does not write into&n; * the tx/rx post rings so we could just fetch it from there.&n; * But the cache behavior is better how we are doing it now.&n; */
 DECL|struct|ring_info
 r_struct
@@ -4151,10 +4151,9 @@ DECL|macro|PHY_REV_BCM5401_C0
 mdefine_line|#define PHY_REV_BCM5401_C0&t;&t;0x6
 DECL|macro|PHY_REV_BCM5411_X0
 mdefine_line|#define PHY_REV_BCM5411_X0&t;&t;0x1 /* Found on Netgear GA302T */
-DECL|member|led_mode
-r_enum
-id|phy_led_mode
-id|led_mode
+DECL|member|led_ctrl
+id|u32
+id|led_ctrl
 suffix:semicolon
 DECL|member|board_part_number
 r_char
