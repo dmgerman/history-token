@@ -385,10 +385,13 @@ id|p_le_ih
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* we only send the unbh pointer if the buffer is not up to date.&n;&t;** this avoids overwriting good data from writepage() with old data&n;&t;** from the disk or buffer cache&n;&t;*/
+multiline_comment|/* we only send the unbh pointer if the buffer is not up to date.&n;&t;** this avoids overwriting good data from writepage() with old data&n;&t;** from the disk or buffer cache&n;&t;** Special case: unbh-&gt;b_page will be NULL if we are coming through&n;&t;** DIRECT_IO handler here.&n;&t;*/
 r_if
 c_cond
 (paren
+op_logical_neg
+id|unbh-&gt;b_page
+op_logical_or
 id|buffer_uptodate
 c_func
 (paren
