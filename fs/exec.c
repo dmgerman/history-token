@@ -2486,12 +2486,10 @@ id|oldsig-&gt;group_exit
 op_assign
 l_int|1
 suffix:semicolon
-id|__broadcast_thread_group
+id|zap_other_threads
 c_func
 (paren
 id|current
-comma
-id|SIGKILL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Account for the thread group leader hanging around:&n;&t; */
@@ -2757,6 +2755,13 @@ id|parent
 )paren
 suffix:semicolon
 )brace
+id|list_del
+c_func
+(paren
+op_amp
+id|current-&gt;tasks
+)paren
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -2842,6 +2847,10 @@ suffix:semicolon
 id|newsig-&gt;group_exit_task
 op_assign
 l_int|NULL
+suffix:semicolon
+id|newsig-&gt;group_stop_count
+op_assign
+l_int|0
 suffix:semicolon
 id|memcpy
 c_func
