@@ -3738,11 +3738,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int
@@ -4249,11 +4244,6 @@ id|netdev_private
 op_star
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int

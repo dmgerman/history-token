@@ -6088,11 +6088,6 @@ id|dev-&gt;base_addr
 suffix:semicolon
 id|np
 op_assign
-(paren
-r_struct
-id|netdev_private
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_do
