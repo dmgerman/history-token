@@ -10243,7 +10243,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
 id|KERN_DEBUG

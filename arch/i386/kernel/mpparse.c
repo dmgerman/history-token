@@ -4574,7 +4574,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; IRQ %d&bslash;n&quot;
+l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; IRQ %d %s %s&bslash;n&quot;
 comma
 id|entry-&gt;id.segment
 comma
@@ -4598,6 +4598,20 @@ comma
 id|ioapic_pin
 comma
 id|entry-&gt;irq
+comma
+id|edge_level
+ques
+c_cond
+l_string|&quot;level&quot;
+suffix:colon
+l_string|&quot;edge&quot;
+comma
+id|active_high_low
+ques
+c_cond
+l_string|&quot;low&quot;
+suffix:colon
+l_string|&quot;high&quot;
 )paren
 suffix:semicolon
 )brace

@@ -91,13 +91,6 @@ id|KERN_INFO
 l_string|&quot;PCI: Using ACPI for IRQ routing&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;PCI: if you experience problems, try using option &squot;pci=noacpi&squot; or even &squot;acpi=off&squot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|pcibios_scanned
 op_increment
 suffix:semicolon
