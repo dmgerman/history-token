@@ -215,6 +215,13 @@ c_func
 id|legacy_bus
 )paren
 suffix:semicolon
+DECL|variable|platform_bus_type
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|platform_bus_type
+)paren
+suffix:semicolon
 DECL|variable|platform_device_register
 id|EXPORT_SYMBOL
 c_func
