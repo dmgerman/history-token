@@ -134,7 +134,6 @@ id|br_pass_frame_up_finish
 suffix:semicolon
 )brace
 DECL|function|br_handle_frame_finish
-r_static
 r_int
 id|br_handle_frame_finish
 c_func

@@ -691,6 +691,12 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|skb-&gt;nf_bridge
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_SCHED
 id|skb-&gt;tc_index
@@ -1029,6 +1035,14 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_put
+c_func
+(paren
+id|skb-&gt;nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|skb_headerinit
 c_func
@@ -1295,6 +1309,14 @@ id|nf_debug
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|C
+c_func
+(paren
+id|nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /*CONFIG_NETFILTER*/
 macro_line|#if defined(CONFIG_HIPPI)
 id|C
@@ -1338,6 +1360,14 @@ c_func
 id|skb-&gt;nfct
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_get
+c_func
+(paren
+id|skb-&gt;nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 id|n
@@ -1519,6 +1549,22 @@ op_member_access_from_pointer
 id|nf_debug
 op_assign
 id|old-&gt;nf_debug
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+r_new
+op_member_access_from_pointer
+id|nf_bridge
+op_assign
+id|old-&gt;nf_bridge
+suffix:semicolon
+id|nf_bridge_get
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|nf_bridge
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif

@@ -1566,6 +1566,18 @@ c_func
 id|to-&gt;nfct
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|to-&gt;nf_bridge
+op_assign
+id|from-&gt;nf_bridge
+suffix:semicolon
+id|nf_bridge_get
+c_func
+(paren
+id|to-&gt;nf_bridge
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 id|to-&gt;nf_debug
 op_assign

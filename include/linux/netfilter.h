@@ -315,10 +315,14 @@ multiline_comment|/* RR:&n;   &gt; I don&squot;t want nf_hook to return anything
 multiline_comment|/* This is gross, but inline doesn&squot;t cut it for avoiding the function&n;   call in fast path: gcc doesn&squot;t inline (needs value tracking?). --RR */
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|macro|NF_HOOK
-mdefine_line|#define NF_HOOK nf_hook_slow
+mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;&bslash;&n; nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), INT_MIN)
+DECL|macro|NF_HOOK_THRESH
+mdefine_line|#define NF_HOOK_THRESH nf_hook_slow
 macro_line|#else
 DECL|macro|NF_HOOK
-mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;&bslash;&n;(list_empty(&amp;nf_hooks[(pf)][(hook)])&t;&t;&t;&t;&t;&bslash;&n; ? (okfn)(skb)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; : nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn)))
+mdefine_line|#define NF_HOOK(pf, hook, skb, indev, outdev, okfn)&t;&t;&t;&bslash;&n;(list_empty(&amp;nf_hooks[(pf)][(hook)])&t;&t;&t;&t;&t;&bslash;&n; ? (okfn)(skb)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; : nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), INT_MIN))
+DECL|macro|NF_HOOK_THRESH
+mdefine_line|#define NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, thresh)&t;&bslash;&n;(list_empty(&amp;nf_hooks[(pf)][(hook)])&t;&t;&t;&t;&t;&bslash;&n; ? (okfn)(skb)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; : nf_hook_slow((pf), (hook), (skb), (indev), (outdev), (okfn), (thresh)))
 macro_line|#endif
 r_int
 id|nf_hook_slow
@@ -356,6 +360,9 @@ r_struct
 id|sk_buff
 op_star
 )paren
+comma
+r_int
+id|thresh
 )paren
 suffix:semicolon
 multiline_comment|/* Call setsockopt() */
