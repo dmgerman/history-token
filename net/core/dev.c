@@ -4993,6 +4993,10 @@ OL
 id|no_cong_thresh
 )paren
 (brace
+id|queue-&gt;throttle
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5004,10 +5008,6 @@ id|netdev_dropping
 )paren
 )paren
 (brace
-id|queue-&gt;throttle
-op_assign
-l_int|0
-suffix:semicolon
 id|netdev_wakeup
 c_func
 (paren
