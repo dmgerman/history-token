@@ -89,8 +89,14 @@ DECL|enumerator|PBMF_UNWRITTEN
 id|PBMF_UNWRITTEN
 op_assign
 l_int|0x20
+comma
 multiline_comment|/* mapping covers allocated&t;*/
 multiline_comment|/* but uninitialized file data&t;*/
+DECL|enumerator|PBMF_NEW
+id|PBMF_NEW
+op_assign
+l_int|0x40
+multiline_comment|/* just allocated&t;&t;*/
 DECL|typedef|bmap_flags_t
 )brace
 id|bmap_flags_t
@@ -190,6 +196,16 @@ l_int|8
 )paren
 comma
 multiline_comment|/* non-blocking request */
+DECL|enumerator|BMAP_DEVICE
+id|BMAP_DEVICE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|9
+)paren
+comma
+multiline_comment|/* we only want to know the device */
 DECL|typedef|bmapi_flags_t
 )brace
 id|bmapi_flags_t
