@@ -2378,7 +2378,7 @@ l_int|0
 suffix:semicolon
 id|length
 op_assign
-id|buf-&gt;len
+id|ETH_ZLEN
 suffix:semicolon
 )brace
 id|disable_irq
