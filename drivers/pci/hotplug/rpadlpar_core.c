@@ -640,30 +640,13 @@ id|dn-&gt;bussubno
 op_assign
 id|child-&gt;number
 suffix:semicolon
-multiline_comment|/* ioremap() for child bus */
-r_if
-c_cond
-(paren
+multiline_comment|/* ioremap() for child bus, which may or may not succeed */
 id|remap_bus_range
 c_func
 (paren
 id|child
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: could not ioremap() child bus&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
