@@ -503,6 +503,17 @@ l_int|NULL
 )paren
 (brace
 r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|tcp_opt
 op_star
 id|tp
@@ -677,11 +688,11 @@ suffix:semicolon
 multiline_comment|/* Build TCP header and checksum it. */
 id|th-&gt;source
 op_assign
-id|sk-&gt;sport
+id|inet-&gt;sport
 suffix:semicolon
 id|th-&gt;dest
 op_assign
-id|sk-&gt;dport
+id|inet-&gt;dport
 suffix:semicolon
 id|th-&gt;seq
 op_assign
@@ -4545,7 +4556,13 @@ id|th
 suffix:semicolon
 id|th-&gt;source
 op_assign
-id|sk-&gt;sport
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|sport
 suffix:semicolon
 id|th-&gt;dest
 op_assign

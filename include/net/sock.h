@@ -50,33 +50,34 @@ DECL|struct|sock
 r_struct
 id|sock
 (brace
-multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
-DECL|member|daddr
-id|__u32
-id|daddr
-suffix:semicolon
-multiline_comment|/* Foreign IPv4 addr&t;&t;&t;*/
-DECL|member|rcv_saddr
-id|__u32
-id|rcv_saddr
-suffix:semicolon
-multiline_comment|/* Bound local IPv4 addr&t;&t;*/
-DECL|member|dport
-id|__u16
-id|dport
-suffix:semicolon
-multiline_comment|/* Destination port&t;&t;&t;*/
-DECL|member|num
+multiline_comment|/* Begin of struct sock/struct tcp_tw_bucket shared layout */
+DECL|member|state
+r_volatile
 r_int
-r_int
-id|num
+r_char
+id|state
+comma
+multiline_comment|/* Connection state */
+DECL|member|zapped
+id|zapped
 suffix:semicolon
-multiline_comment|/* Local port&t;&t;&t;&t;*/
+multiline_comment|/* ax25 &amp; ipx means !linked */
+DECL|member|reuse
+r_int
+r_char
+id|reuse
+suffix:semicolon
+multiline_comment|/* SO_REUSEADDR setting */
+DECL|member|shutdown
+r_int
+r_char
+id|shutdown
+suffix:semicolon
 DECL|member|bound_dev_if
 r_int
 id|bound_dev_if
 suffix:semicolon
-multiline_comment|/* Bound device index if != 0&t;&t;*/
+multiline_comment|/* Bound device index if != 0 */
 multiline_comment|/* Main hash linkage for various protocol lookup tables. */
 DECL|member|next
 r_struct
@@ -104,44 +105,28 @@ op_star
 op_star
 id|bind_pprev
 suffix:semicolon
-DECL|member|state
-r_volatile
-r_int
-r_char
-id|state
-comma
-multiline_comment|/* Connection state&t;&t;&t;*/
-DECL|member|zapped
-id|zapped
-suffix:semicolon
-multiline_comment|/* In ax25 &amp; ipx means not linked&t;*/
-DECL|member|sport
-id|__u16
-id|sport
-suffix:semicolon
-multiline_comment|/* Source port&t;&t;&t;&t;*/
-DECL|member|family
-r_int
-r_int
-id|family
-suffix:semicolon
-multiline_comment|/* Address family&t;&t;&t;*/
-DECL|member|reuse
-r_int
-r_char
-id|reuse
-suffix:semicolon
-multiline_comment|/* SO_REUSEADDR setting&t;&t;&t;*/
-DECL|member|shutdown
-r_int
-r_char
-id|shutdown
-suffix:semicolon
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
 multiline_comment|/* Reference count&t;&t;&t;*/
+DECL|member|family
+r_int
+r_int
+id|family
+suffix:semicolon
+multiline_comment|/* Address family */
+multiline_comment|/* End of struct sock/struct tcp_tw_bucket shared layout */
+DECL|member|use_write_queue
+r_int
+r_char
+id|use_write_queue
+suffix:semicolon
+DECL|member|userlocks
+r_int
+r_char
+id|userlocks
+suffix:semicolon
 DECL|member|lock
 id|socket_lock_t
 id|lock
@@ -206,11 +191,6 @@ r_int
 id|forward_alloc
 suffix:semicolon
 multiline_comment|/* Space allocated forward. */
-DECL|member|saddr
-id|__u32
-id|saddr
-suffix:semicolon
-multiline_comment|/* Sending source&t;&t;&t;*/
 DECL|member|allocation
 r_int
 r_int
@@ -268,17 +248,7 @@ r_int
 r_char
 id|rcvtstamp
 suffix:semicolon
-DECL|member|use_write_queue
-r_int
-r_char
-id|use_write_queue
-suffix:semicolon
-DECL|member|userlocks
-r_int
-r_char
-id|userlocks
-suffix:semicolon
-multiline_comment|/* Hole of 3 bytes. Try to pack. */
+multiline_comment|/* Hole of 1 byte. Try to pack. */
 DECL|member|route_caps
 r_int
 id|route_caps
@@ -2797,10 +2767,7 @@ DECL|macro|SOCK_MIN_SNDBUF
 mdefine_line|#define SOCK_MIN_SNDBUF 2048
 DECL|macro|SOCK_MIN_RCVBUF
 mdefine_line|#define SOCK_MIN_RCVBUF 256
-multiline_comment|/* Must be less or equal SOCK_MIN_SNDBUF */
-DECL|macro|SOCK_MIN_WRITE_SPACE
-mdefine_line|#define SOCK_MIN_WRITE_SPACE&t;SOCK_MIN_SNDBUF
-multiline_comment|/*&n; *&t;Default write policy as shown to user space via poll/select/SIGIO&n; *&t;Kernel internally doesn&squot;t use the MIN_WRITE_SPACE threshold.&n; */
+multiline_comment|/*&n; *&t;Default write policy as shown to user space via poll/select/SIGIO&n; */
 DECL|function|sock_writeable
 r_static
 r_inline
@@ -2815,13 +2782,18 @@ id|sk
 )paren
 (brace
 r_return
-id|sock_wspace
+id|atomic_read
 c_func
 (paren
-id|sk
+op_amp
+id|sk-&gt;wmem_alloc
 )paren
-op_ge
-id|SOCK_MIN_WRITE_SPACE
+OL
+(paren
+id|sk-&gt;sndbuf
+op_div
+l_int|2
+)paren
 suffix:semicolon
 )brace
 DECL|function|gfp_any
