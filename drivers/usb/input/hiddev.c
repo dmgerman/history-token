@@ -2154,6 +2154,12 @@ comma
 id|USB_DIR_IN
 )paren
 suffix:semicolon
+id|hid_wait_io
+c_func
+(paren
+id|hid
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
