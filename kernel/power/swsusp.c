@@ -594,6 +594,7 @@ id|i
 comma
 id|len
 suffix:semicolon
+r_static
 r_char
 id|buff
 (braket
@@ -1417,6 +1418,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|struct|highmem_page
 r_struct
 id|highmem_page
@@ -1450,7 +1452,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|save_highmem_zone
 r_static
-r_void
+r_int
 id|save_highmem_zone
 c_func
 (paren
@@ -1511,7 +1513,7 @@ op_logical_neg
 (paren
 id|pfn
 op_mod
-l_int|200
+l_int|1000
 )paren
 )paren
 id|printk
@@ -1557,10 +1559,7 @@ c_func
 l_string|&quot;highmem reserved page?!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -1612,11 +1611,9 @@ c_cond
 op_logical_neg
 id|save
 )paren
-id|panic
-c_func
-(paren
-l_string|&quot;Not enough memory&quot;
-)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|save-&gt;next
 op_assign
@@ -1644,12 +1641,18 @@ c_cond
 op_logical_neg
 id|save-&gt;data
 )paren
-id|panic
+(brace
+id|kfree
 c_func
 (paren
-l_string|&quot;Not enough memory&quot;
+id|save
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|kaddr
 op_assign
 id|kmap_atomic
@@ -1683,10 +1686,13 @@ op_assign
 id|save
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|save_highmem
 r_static
-r_void
+r_int
 id|save_highmem
 c_func
 (paren
@@ -1697,6 +1703,11 @@ r_struct
 id|zone
 op_star
 id|zone
+suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
 suffix:semicolon
 id|for_each_zone
 c_func
@@ -1713,13 +1724,26 @@ c_func
 id|zone
 )paren
 )paren
+id|res
+op_assign
 id|save_highmem_zone
 c_func
 (paren
 id|zone
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|res
+)paren
+r_return
+id|res
+suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|restore_highmem
 r_static
@@ -1799,6 +1823,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|pfn_is_nosave
 r_static
 r_int
@@ -1926,7 +1951,7 @@ op_logical_neg
 (paren
 id|pfn
 op_mod
-l_int|200
+l_int|1000
 )paren
 )paren
 id|printk
@@ -2599,18 +2624,50 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;/critical section: Handling highmem&quot;
+l_string|&quot;/critical section: &quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+id|printk
+c_func
+(paren
+l_string|&quot;handling highmem&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|save_highmem
 c_func
 (paren
 )paren
-suffix:semicolon
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;, counting pages to copy&quot;
+id|KERN_CRIT
+l_string|&quot;%sNot enough free pages for highmem&bslash;n&quot;
+comma
+id|name_suspend
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;, &quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;counting pages to copy&quot;
 )paren
 suffix:semicolon
 id|drain_local_pages
@@ -2681,7 +2738,8 @@ op_assign
 l_int|0xFFFF
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|si_swapinfo
@@ -2714,7 +2772,8 @@ id|i.freeswap
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOSPC
 suffix:semicolon
 )brace
 id|PRINTK
@@ -2740,24 +2799,19 @@ op_logical_neg
 id|pagedir_nosave
 )paren
 (brace
-multiline_comment|/* Shouldn&squot;t happen */
+multiline_comment|/* Pagedir is big, one-chunk allocation. It is easily possible for this allocation to fail */
 id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;%sCouldn&squot;t allocate enough pages&bslash;n&quot;
+l_string|&quot;%sCouldn&squot;t allocate continuous pagedir&bslash;n&quot;
 comma
 id|name_suspend
 )paren
 suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;Really should not happen&quot;
-)paren
-suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|nr_copy_pages_check
@@ -3039,6 +3093,7 @@ r_int
 id|pagedir_save
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
 id|printk
 c_func
 (paren
@@ -3050,6 +3105,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
