@@ -725,7 +725,7 @@ id|blank
 )paren
 (brace
 r_case
-id|FB_BLAnK_UNBLANK
+id|FB_BLANK_UNBLANK
 suffix:colon
 multiline_comment|/* Unblanking */
 id|val
