@@ -18485,6 +18485,7 @@ macro_line|#endif
 )brace
 multiline_comment|/**&n; * adapter_init_chip - Get the chip into a know state and figure out&n; * some of the settings that apply to this adapter.&n; *&n; * The io port in the adapter needs to have been set before calling&n; * this function. The config will be configured correctly on return.&n; *&n; * @acb: The adapter which we are to init.&n; **/
 DECL|function|adapter_init_chip
+r_static
 r_void
 id|__init
 id|adapter_init_chip
