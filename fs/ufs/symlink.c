@@ -97,12 +97,14 @@ id|inode_operations
 id|ufs_fast_symlink_inode_operations
 op_assign
 (brace
+dot
 id|readlink
-suffix:colon
+op_assign
 id|ufs_readlink
 comma
+dot
 id|follow_link
-suffix:colon
+op_assign
 id|ufs_follow_link
 comma
 )brace
