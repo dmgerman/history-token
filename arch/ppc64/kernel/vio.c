@@ -1656,8 +1656,6 @@ comma
 id|npages
 comma
 id|direction
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|dma_handle
@@ -1794,10 +1792,6 @@ id|iommu_table
 op_star
 id|tbl
 suffix:semicolon
-r_int
-r_int
-id|handle
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -1835,14 +1829,14 @@ c_func
 (paren
 id|tbl
 comma
+op_amp
+id|vdev-&gt;dev
+comma
 id|sglist
 comma
 id|nelems
 comma
 id|direction
-comma
-op_amp
-id|handle
 )paren
 suffix:semicolon
 )brace
@@ -1905,8 +1899,6 @@ comma
 id|sglist
 comma
 id|nelems
-comma
-id|direction
 )paren
 suffix:semicolon
 )brace
@@ -2061,8 +2053,6 @@ comma
 id|npages
 comma
 id|PCI_DMA_BIDIRECTIONAL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

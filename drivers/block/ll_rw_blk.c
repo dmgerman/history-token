@@ -3822,7 +3822,7 @@ id|q-&gt;unplug_work
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue(). Must not be called from driver&n; *   request function due to recursion issues. Queue lock must be held.&n; **/
+multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue(). Queue lock must be held.&n; **/
 DECL|function|blk_start_queue
 r_void
 id|blk_start_queue
@@ -3842,6 +3842,47 @@ op_amp
 id|q-&gt;queue_flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * one level of recursion is ok and is much faster than kicking&n;&t; * the unplug handling&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|QUEUE_FLAG_REENTER
+comma
+op_amp
+id|q-&gt;queue_flags
+)paren
+)paren
+(brace
+id|q
+op_member_access_from_pointer
+id|request_fn
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|QUEUE_FLAG_REENTER
+comma
+op_amp
+id|q-&gt;queue_flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|blk_plug_device
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
 id|schedule_work
 c_func
 (paren
@@ -3849,6 +3890,7 @@ op_amp
 id|q-&gt;unplug_work
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|variable|blk_start_queue
 id|EXPORT_SYMBOL
@@ -5566,7 +5608,6 @@ c_cond
 (paren
 id|reinsert
 )paren
-(brace
 id|blk_requeue_request
 c_func
 (paren
@@ -5575,7 +5616,6 @@ comma
 id|rq
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 r_int
@@ -5632,6 +5672,22 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|blk_queue_plugged
+c_func
+(paren
+id|q
+)paren
+)paren
+id|__generic_unplug_device
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+r_else
 id|q
 op_member_access_from_pointer
 id|request_fn
@@ -6936,16 +6992,28 @@ r_goto
 id|again
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * first three bits are identical in rq-&gt;flags and bio-&gt;bi_rw,&n;&t; * see bio.h and blkdev.h&n;&t; */
 id|req-&gt;flags
-op_assign
-(paren
-id|bio-&gt;bi_rw
-op_amp
-l_int|7
-)paren
-op_or
+op_or_assign
 id|REQ_CMD
+suffix:semicolon
+multiline_comment|/*&n;&t; * inherit FAILFAST from bio and don&squot;t stack up&n;&t; * retries for read ahead&n;&t; */
+r_if
+c_cond
+(paren
+id|ra
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|BIO_RW_FAILFAST
+comma
+op_amp
+id|bio-&gt;bi_rw
+)paren
+)paren
+id|req-&gt;flags
+op_or_assign
+id|REQ_FAILFAST
 suffix:semicolon
 multiline_comment|/*&n;&t; * REQ_BARRIER implies no merging, but lets make it explicit&n;&t; */
 r_if
@@ -6960,16 +7028,6 @@ id|REQ_HARDBARRIER
 op_or
 id|REQ_NOMERGE
 )paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * don&squot;t stack up retries for read ahead&n;&t; */
-r_if
-c_cond
-(paren
-id|ra
-)paren
-id|req-&gt;flags
-op_or_assign
-id|REQ_FAILFAST
 suffix:semicolon
 id|req-&gt;errors
 op_assign

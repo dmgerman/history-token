@@ -124,10 +124,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 id|prefix_node
@@ -362,10 +360,8 @@ id|status
 )paren
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Lookup the name in the namespace */

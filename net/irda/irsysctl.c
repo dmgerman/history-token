@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;net/irda/irda.h&gt;
+macro_line|#include &lt;net/irda/irda.h&gt;&t;&t;/* irda_debug */
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 DECL|macro|NET_IRDA
 mdefine_line|#define NET_IRDA 412 /* Random number */
@@ -115,13 +115,6 @@ r_extern
 r_int
 id|sysctl_lap_keepalive_time
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_DEBUG
-r_extern
-r_int
-r_int
-id|irda_debug
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* this is needed for the proc_dointvec_minmax - Jean II */
 DECL|variable|max_discovery_slots
 r_static

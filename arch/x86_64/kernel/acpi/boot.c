@@ -25,8 +25,6 @@ DECL|variable|__initdata
 r_int
 id|acpi_noirq
 id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* skip ACPI IRQ initialization */
 DECL|variable|__initdata
@@ -44,6 +42,10 @@ suffix:semicolon
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
+suffix:semicolon
+DECL|variable|acpi_strict
+r_int
+id|acpi_strict
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
@@ -624,7 +626,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_BUS
-multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recogznied or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
+multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recognized or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
 DECL|variable|acpi_pic_sci_trigger
 r_static
 r_int

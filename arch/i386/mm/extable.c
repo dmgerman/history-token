@@ -29,14 +29,18 @@ c_func
 (paren
 (paren
 id|regs-&gt;xcs
-op_or
-l_int|8
+op_amp
+op_complement
+l_int|15
 )paren
 op_eq
-l_int|0x88
+(paren
+id|GDT_ENTRY_PNPBIOS_BASE
+op_lshift
+l_int|3
 )paren
 )paren
-multiline_comment|/* 0x80 or 0x88 */
+)paren
 (brace
 r_extern
 id|u32
@@ -65,12 +69,13 @@ r_volatile
 l_string|&quot;movl %0, %%esp&bslash;n&bslash;t&quot;
 l_string|&quot;jmp *%1&bslash;n&bslash;t&quot;
 suffix:colon
-l_string|&quot;=a&quot;
+suffix:colon
+l_string|&quot;g&quot;
 (paren
 id|pnp_bios_fault_esp
 )paren
 comma
-l_string|&quot;=b&quot;
+l_string|&quot;g&quot;
 (paren
 id|pnp_bios_fault_eip
 )paren

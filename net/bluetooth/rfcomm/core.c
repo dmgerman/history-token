@@ -19,7 +19,7 @@ macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/l2cap.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.1&quot;
+mdefine_line|#define VERSION &quot;1.2&quot;
 macro_line|#ifndef CONFIG_BT_RFCOMM_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
@@ -1699,6 +1699,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_throttle
 r_void
+id|fastcall
 id|__rfcomm_dlc_throttle
 c_func
 (paren
@@ -1748,6 +1749,7 @@ suffix:semicolon
 )brace
 DECL|function|__rfcomm_dlc_unthrottle
 r_void
+id|fastcall
 id|__rfcomm_dlc_unthrottle
 c_func
 (paren

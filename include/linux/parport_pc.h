@@ -77,6 +77,17 @@ id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|port
+r_struct
+id|parport
+op_star
+id|port
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|parport_pc_write_data

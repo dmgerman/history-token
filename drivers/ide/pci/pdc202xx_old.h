@@ -4,8 +4,6 @@ mdefine_line|#define PDC202XX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|DISPLAY_PDC202XX_TIMINGS
-mdefine_line|#define DISPLAY_PDC202XX_TIMINGS
 macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
 mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
@@ -1015,14 +1013,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* PDC202XX_DECODE_REGISTER_INFO */
-DECL|macro|set_2regs
-mdefine_line|#define set_2regs(a, b)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;OUTB((a + adj), indexreg);&t;&bslash;&n;&t;&t;hwif-&gt;OUTB(b, datareg);&t;&t;&t;&bslash;&n;&t;} while(0)
-DECL|macro|set_ultra
-mdefine_line|#define set_ultra(a, b, c)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x10,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x11,(b));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x12,(c));&t;&t;&t;&bslash;&n;&t;} while(0)
-DECL|macro|set_ata2
-mdefine_line|#define set_ata2(a, b)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0e,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0f,(b));&t;&t;&t;&bslash;&n;&t;} while(0)
-DECL|macro|set_pio
-mdefine_line|#define set_pio(a, b, c)&t;&t;&t;&t;&bslash;&n;&t;do { &t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0c,(a));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x0d,(b));&t;&t;&t;&bslash;&n;&t;&t;set_2regs(0x13,(c));&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|DISPLAY_PDC202XX_TIMINGS
 mdefine_line|#define DISPLAY_PDC202XX_TIMINGS
 r_static

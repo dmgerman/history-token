@@ -2116,6 +2116,12 @@ op_star
 id|on
 )paren
 (brace
+r_enum
+id|v4l2_buf_type
+id|type
+op_assign
+id|V4L2_BUF_TYPE_VIDEO_CAPTURE
+suffix:semicolon
 multiline_comment|/* dirty hack time.  But v4l1 has no STREAMOFF&n;&t;&t;&t; * equivalent in the API, and this one at&n;&t;&t;&t; * least comes close ... */
 id|drv
 c_func
@@ -2126,7 +2132,8 @@ id|file
 comma
 id|VIDIOC_STREAMOFF
 comma
-l_int|NULL
+op_amp
+id|type
 )paren
 suffix:semicolon
 )brace
@@ -4088,6 +4095,12 @@ id|mm
 op_assign
 id|arg
 suffix:semicolon
+r_enum
+id|v4l2_buf_type
+id|type
+op_assign
+id|V4L2_BUF_TYPE_VIDEO_CAPTURE
+suffix:semicolon
 id|fmt2
 op_assign
 id|kmalloc
@@ -4333,7 +4346,8 @@ id|file
 comma
 id|VIDIOC_STREAMON
 comma
-l_int|NULL
+op_amp
+id|type
 )paren
 suffix:semicolon
 r_if

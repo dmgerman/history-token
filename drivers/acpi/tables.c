@@ -132,6 +132,12 @@ id|ACPI_HPET
 op_assign
 l_string|&quot;HPET&quot;
 comma
+(braket
+id|ACPI_MCFG
+)braket
+op_assign
+l_string|&quot;MCFG&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|mps_inti_flags_polarity
@@ -2243,6 +2249,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * acpi_table_init()&n; *&n; * find RSDP, find and checksum SDT/XSDT.&n; * checksum all tables, print SDT/XSDT&n; * &n; * result: sdt_entry[] is initialized&n; */
 r_int
 id|__init
 DECL|function|acpi_table_init

@@ -36,6 +36,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|ppc_tb_freq
+suffix:semicolon
 multiline_comment|/* Apparently the RTC stores seconds since 1 Jan 1904 */
 DECL|macro|RTC_OFFSET
 mdefine_line|#define RTC_OFFSET&t;2082844800
@@ -634,6 +639,10 @@ suffix:semicolon
 id|tb_to_xs
 op_assign
 id|divres.result_low
+suffix:semicolon
+id|ppc_tb_freq
+op_assign
+id|freq
 suffix:semicolon
 id|setup_default_decr
 c_func

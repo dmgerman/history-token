@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -9006,6 +9007,19 @@ id|flush_signals
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 r_if

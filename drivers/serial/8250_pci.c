@@ -472,6 +472,11 @@ op_add_assign
 id|idx
 suffix:semicolon
 r_else
+(brace
+id|bar
+op_assign
+l_int|4
+suffix:semicolon
 id|offset
 op_add_assign
 (paren
@@ -482,6 +487,7 @@ l_int|4
 op_star
 id|board-&gt;uart_offset
 suffix:semicolon
+)brace
 r_return
 id|setup_port
 c_func
@@ -6857,7 +6863,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|pbn_b0_2_115200
+id|pbn_b0_bt_2_921600
 )brace
 comma
 multiline_comment|/*&n;&t; * Digitan DS560-558, from jimd@esoft.com&n;&t; */
@@ -7380,6 +7386,22 @@ multiline_comment|/*&n;&t; * AFAVLAB serial card, from Harald Welte &lt;laforge@
 id|PCI_VENDOR_ID_AFAVLAB
 comma
 id|PCI_DEVICE_ID_AFAVLAB_P028
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b0_bt_8_115200
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_AFAVLAB
+comma
+id|PCI_DEVICE_ID_AFAVLAB_P030
 comma
 id|PCI_ANY_ID
 comma

@@ -67,6 +67,7 @@ DECL|function|save_v86_state
 r_struct
 id|pt_regs
 op_star
+id|fastcall
 id|save_v86_state
 c_func
 (paren

@@ -11,6 +11,19 @@ macro_line|#else
 DECL|macro|ACPI_EXTERN
 mdefine_line|#define ACPI_EXTERN extern
 macro_line|#endif
+multiline_comment|/*&n; * Keep local copies of these FADT-based registers.  NOTE: These globals&n; * are first in this file for alignment reasons on 64-bit systems.&n; */
+DECL|variable|acpi_gbl_xpm1a_enable
+id|ACPI_EXTERN
+r_struct
+id|acpi_generic_address
+id|acpi_gbl_xpm1a_enable
+suffix:semicolon
+DECL|variable|acpi_gbl_xpm1b_enable
+id|ACPI_EXTERN
+r_struct
+id|acpi_generic_address
+id|acpi_gbl_xpm1b_enable
+suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Debug support&n; *&n; ****************************************************************************/
 multiline_comment|/* Runtime configuration of debug print levels */
 r_extern
@@ -76,6 +89,7 @@ r_struct
 id|acpi_common_facs
 id|acpi_gbl_common_fACS
 suffix:semicolon
+multiline_comment|/*&n; * Since there may be multiple SSDTs and PSDTS, a single pointer is not&n; * sufficient; Therefore, there isn&squot;t one!&n; */
 multiline_comment|/*&n; * Handle both ACPI 1.0 and ACPI 2.0 Integer widths&n; * If we are running a method that exists in a 32-bit ACPI table.&n; * Use only 32 bits of the Integer for conversion.&n; */
 DECL|variable|acpi_gbl_integer_bit_width
 id|ACPI_EXTERN
@@ -92,20 +106,6 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_integer_nybble_width
 suffix:semicolon
-multiline_comment|/* Keep local copies of these FADT-based registers */
-DECL|variable|acpi_gbl_xpm1a_enable
-id|ACPI_EXTERN
-r_struct
-id|acpi_generic_address
-id|acpi_gbl_xpm1a_enable
-suffix:semicolon
-DECL|variable|acpi_gbl_xpm1b_enable
-id|ACPI_EXTERN
-r_struct
-id|acpi_generic_address
-id|acpi_gbl_xpm1b_enable
-suffix:semicolon
-multiline_comment|/*&n; * Since there may be multiple SSDTs and PSDTS, a single pointer is not&n; * sufficient; Therefore, there isn&squot;t one!&n; */
 multiline_comment|/*&n; * ACPI Table info arrays&n; */
 r_extern
 r_struct
@@ -267,9 +267,18 @@ r_extern
 r_const
 r_char
 op_star
-id|acpi_gbl_db_sleep_states
+id|acpi_gbl_sleep_state_names
 (braket
 id|ACPI_S_STATE_COUNT
+)braket
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|acpi_gbl_highest_dstate_names
+(braket
+l_int|4
 )braket
 suffix:semicolon
 r_extern

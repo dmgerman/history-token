@@ -1659,6 +1659,11 @@ id|hfs_find_data
 id|fd
 suffix:semicolon
 r_struct
+id|inode
+op_star
+id|root
+suffix:semicolon
+r_struct
 id|qstr
 id|str
 suffix:semicolon
@@ -2237,11 +2242,8 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Load the root directory */
-id|sb-&gt;s_root
+id|root
 op_assign
-id|d_alloc_root
-c_func
-(paren
 id|iget
 c_func
 (paren
@@ -2249,6 +2251,13 @@ id|sb
 comma
 id|HFSPLUS_ROOT_CNID
 )paren
+suffix:semicolon
+id|sb-&gt;s_root
+op_assign
+id|d_alloc_root
+c_func
+(paren
+id|root
 )paren
 suffix:semicolon
 r_if
@@ -2268,6 +2277,12 @@ id|printk
 c_func
 (paren
 l_string|&quot;HFS+-fs: failed to load root directory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|root
 )paren
 suffix:semicolon
 r_goto

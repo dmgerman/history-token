@@ -7,6 +7,26 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwsleep&quot;
 )paren
+DECL|macro|METHOD_NAME__BFS
+mdefine_line|#define METHOD_NAME__BFS        &quot;&bslash;&bslash;_BFS&quot;
+DECL|macro|METHOD_NAME__GTS
+mdefine_line|#define METHOD_NAME__GTS        &quot;&bslash;&bslash;_GTS&quot;
+DECL|macro|METHOD_NAME__PTS
+mdefine_line|#define METHOD_NAME__PTS        &quot;&bslash;&bslash;_PTS&quot;
+DECL|macro|METHOD_NAME__SST
+mdefine_line|#define METHOD_NAME__SST        &quot;&bslash;&bslash;_SI._SST&quot;
+DECL|macro|METHOD_NAME__WAK
+mdefine_line|#define METHOD_NAME__WAK        &quot;&bslash;&bslash;_WAK&quot;
+DECL|macro|ACPI_SST_INDICATOR_OFF
+mdefine_line|#define ACPI_SST_INDICATOR_OFF  0
+DECL|macro|ACPI_SST_WORKING
+mdefine_line|#define ACPI_SST_WORKING        1
+DECL|macro|ACPI_SST_WAKING
+mdefine_line|#define ACPI_SST_WAKING         2
+DECL|macro|ACPI_SST_SLEEPING
+mdefine_line|#define ACPI_SST_SLEEPING       3
+DECL|macro|ACPI_SST_SLEEP_CONTEXT
+mdefine_line|#define ACPI_SST_SLEEP_CONTEXT  4
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_set_firmware_waking_vector&n; *&n; * PARAMETERS:  physical_address    - Physical address of ACPI real mode&n; *                                    entry point.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: access function for d_firmware_waking_vector field in FACS&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_firmware_waking_vector
@@ -208,7 +228,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_PTS&quot;
+id|METHOD_NAME__PTS
 comma
 op_amp
 id|arg_list
@@ -241,7 +261,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_GTS&quot;
+id|METHOD_NAME__GTS
 comma
 op_amp
 id|arg_list
@@ -266,6 +286,56 @@ id|return_ACPI_STATUS
 (paren
 id|status
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* Setup the argument to _SST */
+r_switch
+c_cond
+(paren
+id|sleep_state
+)paren
+(brace
+r_case
+id|ACPI_STATE_S0
+suffix:colon
+id|arg.integer.value
+op_assign
+id|ACPI_SST_WORKING
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_S1
+suffix:colon
+r_case
+id|ACPI_STATE_S2
+suffix:colon
+r_case
+id|ACPI_STATE_S3
+suffix:colon
+id|arg.integer.value
+op_assign
+id|ACPI_SST_SLEEPING
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_STATE_S4
+suffix:colon
+id|arg.integer.value
+op_assign
+id|ACPI_SST_SLEEP_CONTEXT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|arg.integer.value
+op_assign
+id|ACPI_SST_INDICATOR_OFF
+suffix:semicolon
+multiline_comment|/* Default is indicator off */
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Set the system indicators to show the desired sleep state. */
@@ -275,7 +345,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_SI._SST&quot;
+id|METHOD_NAME__SST
 comma
 op_amp
 id|arg_list
@@ -1116,7 +1186,7 @@ suffix:semicolon
 multiline_comment|/* Ignore any errors from these methods */
 id|arg.integer.value
 op_assign
-l_int|0
+id|ACPI_SST_WAKING
 suffix:semicolon
 id|status
 op_assign
@@ -1124,7 +1194,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_SI._SST&quot;
+id|METHOD_NAME__SST
 comma
 op_amp
 id|arg_list
@@ -1168,7 +1238,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_BFS&quot;
+id|METHOD_NAME__BFS
 comma
 op_amp
 id|arg_list
@@ -1208,7 +1278,7 @@ id|acpi_evaluate_object
 (paren
 l_int|NULL
 comma
-l_string|&quot;&bslash;&bslash;_WAK&quot;
+id|METHOD_NAME__WAK
 comma
 op_amp
 id|arg_list
@@ -1264,6 +1334,37 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Enable power button */
+id|acpi_set_register
+c_func
+(paren
+id|acpi_gbl_fixed_event_info
+(braket
+id|ACPI_EVENT_POWER_BUTTON
+)braket
+dot
+id|enable_register_id
+comma
+l_int|1
+comma
+id|ACPI_MTX_DO_NOT_LOCK
+)paren
+suffix:semicolon
+id|acpi_set_register
+c_func
+(paren
+id|acpi_gbl_fixed_event_info
+(braket
+id|ACPI_EVENT_POWER_BUTTON
+)braket
+dot
+id|status_register_id
+comma
+l_int|1
+comma
+id|ACPI_MTX_DO_NOT_LOCK
+)paren
+suffix:semicolon
 multiline_comment|/* Enable BM arbitration */
 id|status
 op_assign
@@ -1276,6 +1377,65 @@ comma
 id|ACPI_MTX_LOCK
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|arg.integer.value
+op_assign
+id|ACPI_SST_WORKING
+suffix:semicolon
+id|status
+op_assign
+id|acpi_evaluate_object
+(paren
+l_int|NULL
+comma
+id|METHOD_NAME__SST
+comma
+op_amp
+id|arg_list
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+op_logical_and
+id|status
+op_ne
+id|AE_NOT_FOUND
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Method _SST failed, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status

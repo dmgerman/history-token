@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: parport_probe.c,v 1.1 1999/07/03 08:56:17 davem Exp $&n; * Parallel port device probing code&n; *&n; * Authors:    Carsten Gross, carsten@sol.wohnheim.uni-ulm.de&n; *             Philip Blundell &lt;Philip.Blundell@pobox.com&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1131,4 +1132,11 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|parport_device_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_device_id
+)paren
+suffix:semicolon
 eof

@@ -82,6 +82,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 r_struct
 id|uart_port
 suffix:semicolon

@@ -443,6 +443,14 @@ DECL|macro|MLDV2_QQIC
 mdefine_line|#define MLDV2_QQIC(value) MLDV2_EXP(0x80, 4, 3, value)
 DECL|macro|MLDV2_MRC
 mdefine_line|#define MLDV2_MRC(value) MLDV2_EXP(0x8000, 12, 3, value)
+DECL|macro|IPV6_MLD_MAX_MSF
+mdefine_line|#define IPV6_MLD_MAX_MSF&t;10
+DECL|variable|sysctl_mld_max_msf
+r_int
+id|sysctl_mld_max_msf
+op_assign
+id|IPV6_MLD_MAX_MSF
+suffix:semicolon
 multiline_comment|/*&n; *&t;socket join on multicast group&n; */
 DECL|function|ipv6_sock_mc_join
 r_int
@@ -1660,6 +1668,25 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/* else, add a new source to the filter */
+r_if
+c_cond
+(paren
+id|psl
+op_logical_and
+id|psl-&gt;sl_count
+op_ge
+id|sysctl_mld_max_msf
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOBUFS
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -1453,36 +1453,7 @@ c_func
 r_void
 )paren
 (brace
-id|u32
-id|lo
-comma
-id|hi
-suffix:semicolon
-id|rdmsr
-c_func
-(paren
-id|MSR_VIA_RNG
-comma
-id|lo
-comma
-id|hi
-)paren
-suffix:semicolon
-id|lo
-op_and_assign
-op_complement
-id|VIA_RNG_ENABLE
-suffix:semicolon
-id|wrmsr
-c_func
-(paren
-id|MSR_VIA_RNG
-comma
-id|lo
-comma
-id|hi
-)paren
-suffix:semicolon
+multiline_comment|/* do nothing */
 )brace
 multiline_comment|/***********************************************************************&n; *&n; * /dev/hwrandom character device handling (major 10, minor 183)&n; *&n; */
 DECL|function|rng_dev_open

@@ -893,6 +893,15 @@ id|sbi
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|root_inode
+)paren
+r_goto
+id|fail_free
+suffix:semicolon
 id|root_inode-&gt;i_op
 op_assign
 op_amp
@@ -1072,7 +1081,6 @@ c_func
 l_string|&quot;autofs: pipe file descriptor does not contain proper ops&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * fput() can block, so we clear the super block first.&n;&t; */
 id|fput
 c_func
 (paren
@@ -1082,7 +1090,6 @@ suffix:semicolon
 multiline_comment|/* fall through */
 id|fail_dput
 suffix:colon
-multiline_comment|/*&n;&t; * dput() can block, so we clear the super block first.&n;&t; */
 id|dput
 c_func
 (paren
@@ -1100,7 +1107,6 @@ c_func
 l_string|&quot;autofs: get root dentry failed&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * iput() can block, so we clear the super block first.&n;&t; */
 id|iput
 c_func
 (paren

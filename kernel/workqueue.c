@@ -138,6 +138,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Queue work on a workqueue. Return non-zero if it was successfully&n; * added.&n; *&n; * We queue the work to the CPU it was submitted, but there is no&n; * guarantee that it will be processed by that CPU.&n; */
 DECL|function|queue_work
 r_int
+id|fastcall
 id|queue_work
 c_func
 (paren
@@ -260,6 +261,7 @@ suffix:semicolon
 )brace
 DECL|function|queue_delayed_work
 r_int
+id|fastcall
 id|queue_delayed_work
 c_func
 (paren
@@ -720,6 +722,7 @@ suffix:semicolon
 multiline_comment|/*&n; * flush_workqueue - ensure that any scheduled work has run to completion.&n; *&n; * Forces execution of the workqueue and blocks until its completion.&n; * This is typically used in driver shutdown handlers.&n; *&n; * This function will sample each workqueue&squot;s current insert_sequence number and&n; * will sleep until the head sequence is greater than or equal to that.  This&n; * means that we sleep until all works which were queued on entry have been&n; * handled, but we are not livelocked by new incoming ones.&n; *&n; * This function used to run the workqueues itself.  Now we just wait for the&n; * helper threads to do it.&n; */
 DECL|function|flush_workqueue
 r_void
+id|fastcall
 id|flush_workqueue
 c_func
 (paren
@@ -1230,6 +1233,7 @@ id|keventd_wq
 suffix:semicolon
 DECL|function|schedule_work
 r_int
+id|fastcall
 id|schedule_work
 c_func
 (paren
@@ -1251,6 +1255,7 @@ suffix:semicolon
 )brace
 DECL|function|schedule_delayed_work
 r_int
+id|fastcall
 id|schedule_delayed_work
 c_func
 (paren

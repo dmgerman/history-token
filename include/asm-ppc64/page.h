@@ -39,13 +39,13 @@ mdefine_line|#define TASK_HPAGE_END_32&t;(0xc0000000UL)
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
 mdefine_line|#define ARCH_HAS_HUGEPAGE_ONLY_RANGE
 DECL|macro|is_hugepage_only_range
-mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  ((current-&gt;mm-&gt;context &amp; CONTEXT_LOW_HPAGES) &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
+mdefine_line|#define is_hugepage_only_range(addr, len) &bslash;&n;&t;( ((addr &gt; (TASK_HPAGE_BASE-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  (current-&gt;mm-&gt;context.low_hpages &amp;&amp; &bslash;&n;&t;   (addr &gt; (TASK_HPAGE_BASE_32-len)) &amp;&amp; (addr &lt; TASK_HPAGE_END_32)) )
 DECL|macro|hugetlb_free_pgtables
 mdefine_line|#define hugetlb_free_pgtables free_pgtables
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|in_hugepage_area
-mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ((((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  (((context) &amp; CONTEXT_LOW_HPAGES) &amp;&amp; &bslash;&n;&t;   (((addr) &gt;= TASK_HPAGE_BASE_32) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32)))))
+mdefine_line|#define in_hugepage_area(context, addr) &bslash;&n;&t;((cur_cpu_spec-&gt;cpu_features &amp; CPU_FTR_16M_PAGE) &amp;&amp; &bslash;&n;&t; ((((addr) &gt;= TASK_HPAGE_BASE) &amp;&amp; ((addr) &lt; TASK_HPAGE_END)) || &bslash;&n;&t;  ((context).low_hpages &amp;&amp; &bslash;&n;&t;   (((addr) &gt;= TASK_HPAGE_BASE_32) &amp;&amp; ((addr) &lt; TASK_HPAGE_END_32)))))
 macro_line|#else /* !CONFIG_HUGETLB_PAGE */
 DECL|macro|in_hugepage_area
 mdefine_line|#define in_hugepage_area(mm, addr)&t;0

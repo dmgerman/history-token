@@ -1,6 +1,8 @@
 multiline_comment|/* Sysctl interface for parport devices.&n; * &n; * Authors: David Campbell &lt;campbell@torque.net&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *          Philip Blundell &lt;philb@gnu.org&gt;&n; *          Andrea Arcangeli&n; *          Riccardo Facchetti &lt;fizban@tin.it&gt;&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt;&n; *              and Philip Blundell&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2248,7 +2250,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parport_default_proc_register
+r_static
 r_int
+id|__init
 id|parport_default_proc_register
 c_func
 (paren
@@ -2270,7 +2274,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parport_default_proc_unregister
-r_int
+r_static
+r_void
+id|__exit
 id|parport_default_proc_unregister
 c_func
 (paren
@@ -2296,9 +2302,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#else /* no sysctl or no procfs*/
 DECL|function|parport_proc_register
@@ -2362,7 +2365,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parport_default_proc_register
+r_static
 r_int
+id|__init
 id|parport_default_proc_register
 (paren
 r_void
@@ -2373,7 +2378,9 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|parport_default_proc_unregister
-r_int
+r_static
+r_void
+id|__exit
 id|parport_default_proc_unregister
 (paren
 r_void
@@ -2384,4 +2391,28 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|parport_device_proc_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_device_proc_register
+)paren
+suffix:semicolon
+DECL|variable|parport_device_proc_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_device_proc_unregister
+)paren
+suffix:semicolon
+id|module_init
+c_func
+(paren
+id|parport_default_proc_register
+)paren
+id|module_exit
+c_func
+(paren
+id|parport_default_proc_unregister
+)paren
 eof

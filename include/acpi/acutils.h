@@ -1034,6 +1034,19 @@ op_star
 id|uid
 )paren
 suffix:semicolon
+id|acpi_status
+id|acpi_ut_execute_sxds
+(paren
+r_struct
+id|acpi_namespace_node
+op_star
+id|device_node
+comma
+id|u8
+op_star
+id|highest
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ut_mutex - mutual exclusion interfaces&n; */
 id|acpi_status
 id|acpi_ut_mutex_initialize

@@ -1364,6 +1364,7 @@ suffix:semicolon
 DECL|function|rx_refill_atomic
 r_static
 r_void
+id|fastcall
 id|rx_refill_atomic
 c_func
 (paren
@@ -1490,6 +1491,7 @@ suffix:semicolon
 DECL|function|phy_intr
 r_static
 r_void
+id|fastcall
 id|phy_intr
 c_func
 (paren
@@ -2461,6 +2463,7 @@ suffix:semicolon
 DECL|function|ns83820_rx_kick
 r_static
 r_void
+id|fastcall
 id|ns83820_rx_kick
 c_func
 (paren
@@ -2568,6 +2571,7 @@ suffix:semicolon
 DECL|function|rx_irq
 r_static
 r_void
+id|fastcall
 id|rx_irq
 c_func
 (paren

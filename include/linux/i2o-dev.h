@@ -480,9 +480,9 @@ id|parent_tid
 suffix:colon
 l_int|12
 suffix:semicolon
-DECL|member|tate
+DECL|member|state
 id|u32
-id|tate
+id|state
 suffix:colon
 l_int|4
 suffix:semicolon

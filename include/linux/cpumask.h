@@ -16,6 +16,8 @@ id|cpu_possible_map
 suffix:semicolon
 DECL|macro|num_online_cpus
 mdefine_line|#define num_online_cpus()&t;&t;cpus_weight(cpu_online_map)
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;&t;cpus_weight(cpu_possible_map)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;&t;cpu_isset(cpu, cpu_online_map)
 DECL|macro|cpu_possible
@@ -29,8 +31,12 @@ mdefine_line|#define for_each_online_cpu(cpu) for_each_cpu_mask(cpu, cpu_online_
 macro_line|#else
 DECL|macro|cpu_online_map
 mdefine_line|#define&t;cpu_online_map&t;&t;&t;cpumask_of_cpu(0)
+DECL|macro|cpu_possible_map
+mdefine_line|#define&t;cpu_possible_map&t;&t;cpumask_of_cpu(0)
 DECL|macro|num_online_cpus
 mdefine_line|#define num_online_cpus()&t;&t;1
+DECL|macro|num_possible_cpus
+mdefine_line|#define num_possible_cpus()&t;&t;1
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
 DECL|macro|cpu_possible

@@ -557,7 +557,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-elv: found device at %#x.&bslash;n&quot;
+l_string|&quot;i2c-elv: found device at %#lx.&bslash;n&quot;
 comma
 id|base
 )paren

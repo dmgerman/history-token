@@ -1566,6 +1566,37 @@ DECL|macro|I2O_DSC_DEVICE_BUSY
 mdefine_line|#define I2O_DSC_DEVICE_BUSY                    0x001B
 DECL|macro|I2O_DSC_DEVICE_NOT_AVAILABLE
 mdefine_line|#define I2O_DSC_DEVICE_NOT_AVAILABLE           0x001C
+multiline_comment|/* DetailedStatusCode defines for Block Storage Operation: Table 6-7 Detailed&n;   Status Codes.*/
+DECL|macro|I2O_BSA_DSC_SUCCESS
+mdefine_line|#define I2O_BSA_DSC_SUCCESS               0x0000
+DECL|macro|I2O_BSA_DSC_MEDIA_ERROR
+mdefine_line|#define I2O_BSA_DSC_MEDIA_ERROR           0x0001
+DECL|macro|I2O_BSA_DSC_ACCESS_ERROR
+mdefine_line|#define I2O_BSA_DSC_ACCESS_ERROR          0x0002
+DECL|macro|I2O_BSA_DSC_DEVICE_FAILURE
+mdefine_line|#define I2O_BSA_DSC_DEVICE_FAILURE        0x0003
+DECL|macro|I2O_BSA_DSC_DEVICE_NOT_READY
+mdefine_line|#define I2O_BSA_DSC_DEVICE_NOT_READY      0x0004
+DECL|macro|I2O_BSA_DSC_MEDIA_NOT_PRESENT
+mdefine_line|#define I2O_BSA_DSC_MEDIA_NOT_PRESENT     0x0005
+DECL|macro|I2O_BSA_DSC_MEDIA_LOCKED
+mdefine_line|#define I2O_BSA_DSC_MEDIA_LOCKED          0x0006
+DECL|macro|I2O_BSA_DSC_MEDIA_FAILURE
+mdefine_line|#define I2O_BSA_DSC_MEDIA_FAILURE         0x0007
+DECL|macro|I2O_BSA_DSC_PROTOCOL_FAILURE
+mdefine_line|#define I2O_BSA_DSC_PROTOCOL_FAILURE      0x0008
+DECL|macro|I2O_BSA_DSC_BUS_FAILURE
+mdefine_line|#define I2O_BSA_DSC_BUS_FAILURE           0x0009
+DECL|macro|I2O_BSA_DSC_ACCESS_VIOLATION
+mdefine_line|#define I2O_BSA_DSC_ACCESS_VIOLATION      0x000A
+DECL|macro|I2O_BSA_DSC_WRITE_PROTECTED
+mdefine_line|#define I2O_BSA_DSC_WRITE_PROTECTED       0x000B
+DECL|macro|I2O_BSA_DSC_DEVICE_RESET
+mdefine_line|#define I2O_BSA_DSC_DEVICE_RESET          0x000C
+DECL|macro|I2O_BSA_DSC_VOLUME_CHANGED
+mdefine_line|#define I2O_BSA_DSC_VOLUME_CHANGED        0x000D
+DECL|macro|I2O_BSA_DSC_TIMEOUT
+mdefine_line|#define I2O_BSA_DSC_TIMEOUT               0x000E
 multiline_comment|/* FailureStatusCodes, Table 3-3 Message Failure Codes */
 DECL|macro|I2O_FSC_TRANSPORT_SERVICE_SUSPENDED
 mdefine_line|#define I2O_FSC_TRANSPORT_SERVICE_SUSPENDED             0x81

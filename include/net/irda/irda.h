@@ -39,7 +39,8 @@ macro_line|#  define IRDA_PACK __attribute__((packed))
 macro_line|#endif
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 r_extern
-id|__u32
+r_int
+r_int
 id|irda_debug
 suffix:semicolon
 multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug */

@@ -1892,15 +1892,15 @@ comma
 id|TIF_SYSCALL_TRACE
 )paren
 suffix:semicolon
+id|child-&gt;exit_code
+op_assign
+id|data
+suffix:semicolon
 id|wake_up_process
 c_func
 (paren
 id|child
 )paren
-suffix:semicolon
-id|child-&gt;exit_code
-op_assign
-id|data
 suffix:semicolon
 multiline_comment|/* give it a chance to run. */
 id|ret

@@ -1,5 +1,6 @@
 multiline_comment|/* IEEE-1284 operations for parport.&n; *&n; * This file is for generic IEEE 1284 operations.  The idea is that&n; * they are used by the low-level drivers.  If they have a special way&n; * of doing something, they can provide their own routines (and put&n; * the function pointers in port-&gt;ops); if not, they can just use these&n; * as a fallback.&n; *&n; * Note: Make no assumptions about hardware or architecture in this file!&n; *&n; * Author: Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; * Fixed AUTOFD polarity in ecp_forward_to_reverse().  Fred Barnes, 1999&n; * Software emulated EPP fixes, Fred Barnes, 04/2001.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2949,4 +2950,74 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|parport_ieee1284_ecp_write_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_ecp_write_data
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_ecp_read_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_ecp_read_data
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_ecp_write_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_ecp_write_addr
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_write_compat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_write_compat
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_read_nibble
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_read_nibble
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_read_byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_read_byte
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_epp_write_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_epp_write_data
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_epp_read_data
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_epp_read_data
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_epp_write_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_epp_write_addr
+)paren
+suffix:semicolon
+DECL|variable|parport_ieee1284_epp_read_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parport_ieee1284_epp_read_addr
+)paren
+suffix:semicolon
 eof

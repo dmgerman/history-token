@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2003&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; * Module: jfs_mount.c&n; *&n; * note: file system in transition to aggregate/fileset:&n; *&n; * file system mount is interpreted as the mount of aggregate, &n; * if not already mounted, and mount of the single/only fileset in &n; * the aggregate;&n; *&n; * a file system/aggregate is represented by an internal inode&n; * (aka mount inode) initialized with aggregate superblock;&n; * each vfs represents a fileset, and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka fileset inode):&n; * (an aggregate itself is structured recursively as a filset: &n; * an internal vfs is constructed and points to its &quot;fileset inode &n; * allocation map inode&quot; (aka aggregate inode) where each inode &n; * represents a fileset inode) so that inode number is mapped to &n; * on-disk inode in uniform way at both aggregate and fileset level;&n; *&n; * each vnode/inode of a fileset is linked to its vfs (to facilitate&n; * per fileset inode operations, e.g., unmount of a fileset, etc.);&n; * each inode points to the mount inode (to facilitate access to&n; * per aggregate information, e.g., block size, etc.) as well as&n; * its file set inode.&n; *&n; *   aggregate &n; *   ipmnt&n; *   mntvfs -&gt; fileset ipimap+ -&gt; aggregate ipbmap -&gt; aggregate ipaimap;&n; *             fileset vfs     -&gt; vp(1) &lt;-&gt; ... &lt;-&gt; vp(n) &lt;-&gt;vproot;&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -554,11 +554,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-r_struct
-id|jfs_log
-op_star
-id|log
-suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -680,24 +675,11 @@ id|lmLogOpen
 c_func
 (paren
 id|sb
-comma
-op_amp
-id|log
 )paren
 )paren
 )paren
 r_return
 id|rc
-suffix:semicolon
-id|JFS_SBI
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|log
-op_assign
-id|log
 suffix:semicolon
 multiline_comment|/*&n;&t; * update file system superblock;&n;&t; */
 r_if
@@ -728,19 +710,7 @@ id|lmLogClose
 c_func
 (paren
 id|sb
-comma
-id|log
 )paren
-suffix:semicolon
-id|JFS_SBI
-c_func
-(paren
-id|sb
-)paren
-op_member_access_from_pointer
-id|log
-op_assign
-l_int|0
 suffix:semicolon
 r_return
 id|rc

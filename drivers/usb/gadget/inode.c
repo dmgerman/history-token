@@ -6711,8 +6711,6 @@ id|inode
 )paren
 )paren
 (brace
-id|enomem
-suffix:colon
 id|iput
 (paren
 id|inode
@@ -6740,8 +6738,9 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-r_goto
-id|enomem
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|dev-&gt;sb
 op_assign
@@ -6770,9 +6769,18 @@ id|dev-&gt;dentry
 )paren
 )paren
 )paren
-r_goto
-id|enomem
+(brace
+id|put_dev
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* other endpoint files are available after hardware setup,&n;&t; * from binding to a controller.&n;&t; */
 id|the_device
 op_assign
@@ -6837,6 +6845,12 @@ id|kill_litter_super
 id|sb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|the_device
+)paren
+(brace
 id|put_dev
 (paren
 id|the_device
@@ -6846,6 +6860,7 @@ id|the_device
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*----------------------------------------------------------------------*/
 DECL|variable|gadgetfs_type
