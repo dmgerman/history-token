@@ -2457,8 +2457,7 @@ r_void
 id|aic_option_callback_t
 c_func
 (paren
-r_void
-op_star
+id|u_long
 comma
 r_int
 comma
@@ -2490,8 +2489,7 @@ comma
 id|aic_option_callback_t
 op_star
 comma
-r_void
-op_star
+id|u_long
 )paren
 suffix:semicolon
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *      3940, 2940, aic7895, aic7890, aic7880,&n; *&t;aic7870, aic7860 and aic7850 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_pci.c#62 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *      3940, 2940, aic7895, aic7890, aic7880,&n; *&t;aic7870, aic7860 and aic7850 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_pci.c#63 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -1920,23 +1920,6 @@ id|command
 op_or_assign
 id|PCIM_CMD_BUSMASTEREN
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable PCI parity error reporting.  Users typically&n;&t; * do this to work around broken PCI chipsets that get&n;&t; * the parity timing wrong and thus generate lots of spurious&n;&t; * errors.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|ahc-&gt;flags
-op_amp
-id|AHC_DISABLE_PCI_PERR
-)paren
-op_ne
-l_int|0
-)paren
-id|command
-op_and_assign
-op_complement
-id|PCIM_CMD_PERRESPEN
-suffix:semicolon
 id|ahc_pci_write_config
 c_func
 (paren
@@ -1975,6 +1958,28 @@ r_return
 id|error
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Disable PCI parity error checking.  Users typically&n;&t; * do this to work around broken PCI chipsets that get&n;&t; * the parity timing wrong and thus generate lots of spurious&n;&t; * errors.  The chip only allows us to disable *all* parity&n;&t; * error reporting when doing this, so CIO bus, scb ram, and&n;&t; * scratch ram parity errors will be ignored too.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|ahc-&gt;flags
+op_amp
+id|AHC_DISABLE_PCI_PERR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|ahc-&gt;pause
+op_or_assign
+id|FAILDIS
+suffix:semicolon
+id|ahc-&gt;unpause
+op_or_assign
+id|FAILDIS
+suffix:semicolon
+)brace
 id|ahc-&gt;bus_intr
 op_assign
 id|ahc_pci_intr
@@ -6911,6 +6916,9 @@ op_amp
 id|DPE
 )paren
 (brace
+id|ahc-&gt;pci_target_perr_count
+op_increment
+suffix:semicolon
 id|printf
 c_func
 (paren
@@ -7095,6 +7103,70 @@ id|CLRINT
 comma
 id|CLRPARERR
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ahc-&gt;pci_target_perr_count
+OG
+id|AHC_PCI_TARGET_PERR_THRESH
+)paren
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;%s: WARNING WARNING WARNING WARNING&bslash;n&quot;
+l_string|&quot;%s: Too many PCI parity errors observed as a target.&bslash;n&quot;
+l_string|&quot;%s: Some device on this bus is generating bad parity.&bslash;n&quot;
+l_string|&quot;%s: This is an error *observed by*, not *generated by*, this controller.&bslash;n&quot;
+l_string|&quot;%s: PCI parity error checking has been disabled.&bslash;n&quot;
+l_string|&quot;%s: WARNING WARNING WARNING WARNING&bslash;n&quot;
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+comma
+id|ahc_name
+c_func
+(paren
+id|ahc
+)paren
+)paren
+suffix:semicolon
+id|ahc-&gt;pause
+op_or_assign
+id|FAILDIS
+suffix:semicolon
+id|ahc-&gt;unpause
+op_or_assign
+id|FAILDIS
 suffix:semicolon
 )brace
 id|ahc_unpause
