@@ -46,7 +46,7 @@ l_int|5
 )braket
 suffix:semicolon
 r_extern
-id|u64
+id|MFT_REF
 id|ntfs_lookup_inode_by_name
 c_func
 (paren

@@ -32,10 +32,11 @@ id|state
 suffix:semicolon
 multiline_comment|/* NTFS specific flags describing this inode.&n;&t;&t;&t;&t;   See fs/ntfs/ntfs.h:ntfs_inode_state_bits. */
 DECL|member|mft_no
-id|u64
+r_int
+r_int
 id|mft_no
 suffix:semicolon
-multiline_comment|/* Mft record number (inode number). */
+multiline_comment|/* Number of the mft record / inode. */
 DECL|member|seq_no
 id|u16
 id|seq_no

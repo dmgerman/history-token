@@ -495,11 +495,11 @@ id|u64
 id|MFT_REF
 suffix:semicolon
 DECL|macro|MREF
-mdefine_line|#define MREF(x)&t;&t;((u64)((x) &amp; MFT_REF_MASK_CPU))
+mdefine_line|#define MREF(x)&t;&t;((unsigned long)((x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO
 mdefine_line|#define MSEQNO(x)&t;((u16)(((x) &gt;&gt; 48) &amp; 0xffff))
 DECL|macro|MREF_LE
-mdefine_line|#define MREF_LE(x)&t;((u64)(le64_to_cpu(x) &amp; MFT_REF_MASK_CPU))
+mdefine_line|#define MREF_LE(x)&t;((unsigned long)(le64_to_cpu(x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO_LE
 mdefine_line|#define MSEQNO_LE(x)&t;((u16)((le64_to_cpu(x) &gt;&gt; 48) &amp; 0xffff))
 DECL|macro|IS_ERR_MREF

@@ -47,7 +47,7 @@ id|name
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u64
+id|MFT_REF
 id|mref
 suffix:semicolon
 r_int
@@ -147,10 +147,6 @@ id|mref
 (brace
 id|dent_ino
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|MREF
 c_func
 (paren
@@ -241,20 +237,11 @@ c_func
 id|vol-&gt;sb
 comma
 l_string|&quot;Found stale reference to inode &quot;
-l_string|&quot;0x%Lx (reference sequence number = &quot;
+l_string|&quot;0x%lx (reference sequence number = &quot;
 l_string|&quot;0x%x, inode sequence number = 0x%x, &quot;
 l_string|&quot;returning -EACCES. Run chkdsk.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|MREF
-c_func
-(paren
-id|mref
-)paren
+id|dent_ino
 comma
 id|MSEQNO
 c_func
@@ -284,19 +271,10 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;iget(0x%Lx) failed, returning &quot;
+l_string|&quot;iget(0x%lx) failed, returning &quot;
 l_string|&quot;-EACCES.&quot;
 comma
-(paren
-r_int
-r_int
-r_int
-)paren
-id|MREF
-c_func
-(paren
-id|mref
-)paren
+id|dent_ino
 )paren
 suffix:semicolon
 r_if
