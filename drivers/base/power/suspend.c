@@ -31,6 +31,14 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+id|dev_dbg
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;suspending&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -173,9 +181,28 @@ id|dpm_off_irq
 suffix:semicolon
 )brace
 r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Could not suspend device %s: &quot;
+l_string|&quot;error %d&bslash;n&quot;
+comma
+id|kobject_name
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+)paren
+comma
+id|error
+)paren
+suffix:semicolon
 r_goto
 id|Error
 suffix:semicolon
+)brace
 )brace
 id|Done
 suffix:colon
