@@ -680,6 +680,13 @@ mdefine_line|#define rq_mergeable(rq)&t;&bslash;&n;&t;(!((rq)-&gt;flags &amp; (R
 multiline_comment|/*&n; * noop, requests are automagically marked as active/inactive by I/O&n; * scheduler -- see elv_next_request&n; */
 DECL|macro|blk_queue_headactive
 mdefine_line|#define blk_queue_headactive(q, head_active)
+multiline_comment|/*&n; * q-&gt;prep_rq_fn return values&n; */
+DECL|macro|BLKPREP_OK
+mdefine_line|#define BLKPREP_OK&t;&t;0&t;/* serve it */
+DECL|macro|BLKPREP_KILL
+mdefine_line|#define BLKPREP_KILL&t;&t;1&t;/* fatal error, kill */
+DECL|macro|BLKPREP_DEFER
+mdefine_line|#define BLKPREP_DEFER&t;&t;2&t;/* leave on queue */
 r_extern
 r_int
 r_int
