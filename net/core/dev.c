@@ -10193,11 +10193,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|rtnl_exlock
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Rebroadcast unregister notification */
 id|notifier_call_chain
 c_func
@@ -10230,11 +10225,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|rtnl_exunlock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rtnl_shunlock
 c_func
 (paren
