@@ -14,10 +14,10 @@ multiline_comment|/* Use timer 1 as system timer */
 DECL|macro|TIMER_BASE
 mdefine_line|#define TIMER_BASE IMX_TIM1_BASE
 multiline_comment|/*&n; * Returns number of us since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; */
+DECL|function|imx_gettimeoffset
 r_static
 r_int
 r_int
-DECL|function|imx_gettimeoffset
 id|imx_gettimeoffset
 c_func
 (paren
@@ -150,10 +150,10 @@ id|imx_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; */
+DECL|function|imx_timer_init
 r_static
 r_void
 id|__init
-DECL|function|imx_timer_init
 id|imx_timer_init
 c_func
 (paren
@@ -210,7 +210,9 @@ id|imx_timer_irq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|imx_timer
 r_struct
+id|sys_timer
 id|imx_timer
 op_assign
 (brace
