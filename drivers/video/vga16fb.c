@@ -8,16 +8,9 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-vga-planes.h&gt;
-macro_line|#include &lt;video/fbcon-vga.h&gt;
-macro_line|#include &lt;video/fbcon-cfb4.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &quot;vga.h&quot;
 DECL|macro|GRAPHICS_ADDR_REG
 mdefine_line|#define GRAPHICS_ADDR_REG 0x3ce&t;&t;/* Graphics address register. */
@@ -4979,16 +4972,6 @@ op_assign
 id|vga16fb_set_par
 comma
 dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|vga16fb_setcolreg
@@ -5023,13 +5006,6 @@ id|options
 r_char
 op_star
 id|this_opt
-suffix:semicolon
-id|vga16fb.fontname
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 r_if
 c_cond
@@ -5071,30 +5047,6 @@ op_star
 id|this_opt
 )paren
 r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|this_opt
-comma
-l_string|&quot;font:&quot;
-comma
-l_int|5
-)paren
-)paren
-id|strcpy
-c_func
-(paren
-id|vga16fb.fontname
-comma
-id|this_opt
-op_plus
-l_int|5
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -5192,23 +5144,14 @@ id|vga16fb_defined.blue.length
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/* XXX share VGA I/O region with vgacon and others */
-id|disp.var
-op_assign
-id|vga16fb_defined
-suffix:semicolon
 multiline_comment|/* name should not depend on EGA/VGA */
 id|strcpy
 c_func
 (paren
-id|vga16fb.modename
+id|vga16fb_fix.id
 comma
 l_string|&quot;VGA16 VGA&quot;
 )paren
-suffix:semicolon
-id|vga16fb.changevar
-op_assign
-l_int|NULL
 suffix:semicolon
 id|vga16fb.node
 op_assign
@@ -5232,38 +5175,9 @@ op_assign
 op_amp
 id|vga16_par
 suffix:semicolon
-id|vga16fb.disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|vga16fb.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|vga16fb.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|vga16fb.updatevar
-op_assign
-op_amp
-id|vga16fb_update_var
-suffix:semicolon
 id|vga16fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|vga16fb_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-op_amp
-id|vga16fb
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5301,7 +5215,7 @@ c_func
 id|vga16fb.node
 )paren
 comma
-id|vga16fb.modename
+id|vga16fb.fix.id
 )paren
 suffix:semicolon
 r_return

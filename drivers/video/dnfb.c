@@ -849,13 +849,6 @@ id|mem_start
 r_int
 id|err
 suffix:semicolon
-id|fb_info.fontname
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 id|fb_info.node
 op_assign
 id|NODEV

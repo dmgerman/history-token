@@ -2588,13 +2588,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|info-&gt;fontname
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

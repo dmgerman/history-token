@@ -298,14 +298,6 @@ id|fb_info.fix
 op_assign
 id|anakinfb_fix
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.fontname
-comma
-l_string|&quot;VGA8x16&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

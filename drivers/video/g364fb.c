@@ -900,13 +900,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|fb_info.fontname
-(braket
-l_int|0
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren

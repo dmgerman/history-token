@@ -22,6 +22,8 @@ DECL|macro|FBIOPUTCMAP
 mdefine_line|#define FBIOPUTCMAP&t;&t;0x4605
 DECL|macro|FBIOPAN_DISPLAY
 mdefine_line|#define FBIOPAN_DISPLAY&t;&t;0x4606
+DECL|macro|FBIO_CURSOR
+mdefine_line|#define FBIO_CURSOR            _IOWR(&squot;F&squot;, 0x08, struct fbcursor)
 multiline_comment|/* 0x4607-0x460B are defined below */
 multiline_comment|/* #define FBIOGET_MONITORSPEC&t;0x460C */
 multiline_comment|/* #define FBIOPUT_MONITORSPEC&t;0x460D */
@@ -631,6 +633,84 @@ suffix:semicolon
 multiline_comment|/* reserved for future compatibility */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * hardware cursor control&n; */
+DECL|macro|FB_CUR_SETCUR
+mdefine_line|#define FB_CUR_SETCUR   0x01
+DECL|macro|FB_CUR_SETPOS
+mdefine_line|#define FB_CUR_SETPOS   0x02
+DECL|macro|FB_CUR_SETHOT
+mdefine_line|#define FB_CUR_SETHOT   0x04
+DECL|macro|FB_CUR_SETCMAP
+mdefine_line|#define FB_CUR_SETCMAP  0x08
+DECL|macro|FB_CUR_SETSHAPE
+mdefine_line|#define FB_CUR_SETSHAPE 0x10
+DECL|macro|FB_CUR_SETALL
+mdefine_line|#define FB_CUR_SETALL   0x1F
+DECL|struct|fbcurpos
+r_struct
+id|fbcurpos
+(brace
+DECL|member|x
+DECL|member|y
+id|__u16
+id|x
+comma
+id|y
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|fbcursor
+r_struct
+id|fbcursor
+(brace
+DECL|member|set
+id|__u16
+id|set
+suffix:semicolon
+multiline_comment|/* what to set */
+DECL|member|enable
+id|__u16
+id|enable
+suffix:semicolon
+multiline_comment|/* cursor on/off */
+DECL|member|pos
+r_struct
+id|fbcurpos
+id|pos
+suffix:semicolon
+multiline_comment|/* cursor position */
+DECL|member|hot
+r_struct
+id|fbcurpos
+id|hot
+suffix:semicolon
+multiline_comment|/* cursor hot spot */
+DECL|member|cmap
+r_struct
+id|fb_cmap
+id|cmap
+suffix:semicolon
+multiline_comment|/* color map info */
+DECL|member|size
+r_struct
+id|fbcurpos
+id|size
+suffix:semicolon
+multiline_comment|/* cursor bit map size */
+DECL|member|image
+r_char
+op_star
+id|image
+suffix:semicolon
+multiline_comment|/* cursor image bits */
+DECL|member|mask
+r_char
+op_star
+id|mask
+suffix:semicolon
+multiline_comment|/* cursor mask bits */
+)brace
+suffix:semicolon
 multiline_comment|/* Internal HW accel */
 DECL|macro|ROP_COPY
 mdefine_line|#define ROP_COPY 0
@@ -895,6 +975,25 @@ r_struct
 id|fb_info
 op_star
 id|info
+)paren
+suffix:semicolon
+multiline_comment|/* cursor control */
+DECL|member|fb_cursor
+r_int
+(paren
+op_star
+id|fb_cursor
+)paren
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_struct
+id|fbcursor
+op_star
+id|cursor
 )paren
 suffix:semicolon
 multiline_comment|/* set color register */
@@ -1163,6 +1262,12 @@ id|fb_monspecs
 id|monspecs
 suffix:semicolon
 multiline_comment|/* Current Monitor specs */
+DECL|member|cursor
+r_struct
+id|fbcursor
+id|cursor
+suffix:semicolon
+multiline_comment|/* Current cursor */
 DECL|member|cmap
 r_struct
 id|fb_cmap
@@ -1193,14 +1298,6 @@ r_int
 id|currcon
 suffix:semicolon
 multiline_comment|/* Current VC. */
-DECL|member|fontname
-r_char
-id|fontname
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* default font name */
 DECL|member|devfs_handle
 id|devfs_handle_t
 id|devfs_handle
