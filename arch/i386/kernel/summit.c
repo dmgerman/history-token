@@ -2,8 +2,7 @@ multiline_comment|/*&n; * arch/i386/kernel/summit.c - IBM Summit-Specific Code&n
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;mach_mpparse.h&gt;
-macro_line|#ifdef CONFIG_NUMA
+macro_line|#include &lt;asm/mach-summit/mach_mpparse.h&gt;
 DECL|function|setup_pci_node_map_for_wpeg
 r_static
 r_void
@@ -741,5 +740,4 @@ id|rio_devs
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_NUMA */
 eof

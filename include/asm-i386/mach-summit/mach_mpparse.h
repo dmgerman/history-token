@@ -6,7 +6,7 @@ r_extern
 r_int
 id|use_cyclone
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifdef CONFIG_X86_SUMMIT_NUMA
 r_extern
 r_void
 id|setup_summit
@@ -15,10 +15,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else /* !CONFIG_NUMA */
+macro_line|#else
 DECL|macro|setup_summit
 mdefine_line|#define setup_summit()&t;{}
-macro_line|#endif /* CONFIG_NUMA */
+macro_line|#endif
 DECL|function|mpc_oem_bus_info
 r_static
 r_inline
