@@ -138,6 +138,8 @@ mdefine_line|#define MTMSRD(r)&t;mtmsr&t;r
 DECL|macro|CLR_TOP32
 mdefine_line|#define CLR_TOP32(r)
 macro_line|#endif /* CONFIG_PPC64BRIDGE */
+DECL|macro|RFMCI
+mdefine_line|#define RFMCI&t;&t;.long 0x4c00004c&t;/* rfmci instruction */
 macro_line|#ifdef CONFIG_IBM405_ERR77
 DECL|macro|PPC405_ERR77
 mdefine_line|#define PPC405_ERR77(ra,rb)&t;dcbt&t;ra, rb;
