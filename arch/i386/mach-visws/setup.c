@@ -4,9 +4,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
-macro_line|#include &lt;asm/cobalt.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;cobalt.h&quot;
+macro_line|#include &quot;piix4.h&quot;
 DECL|variable|visws_board_type
 r_char
 id|visws_board_type
@@ -21,62 +22,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|macro|PIIX_PM_START
-mdefine_line|#define&t;PIIX_PM_START&t;&t;0x0F80
-DECL|macro|SIO_GPIO_START
-mdefine_line|#define&t;SIO_GPIO_START&t;&t;0x0FC0
-DECL|macro|SIO_PM_START
-mdefine_line|#define&t;SIO_PM_START&t;&t;0x0FC8
-DECL|macro|PMBASE
-mdefine_line|#define&t;PMBASE&t;&t;&t;PIIX_PM_START
-DECL|macro|GPIREG0
-mdefine_line|#define&t;GPIREG0&t;&t;&t;(PMBASE+0x30)
-DECL|macro|GPIREG
-mdefine_line|#define&t;GPIREG(x)&t;&t;(GPIREG0+((x)/8))
-DECL|macro|PIIX_GPI_BD_ID1
-mdefine_line|#define&t;PIIX_GPI_BD_ID1&t;&t;18
-DECL|macro|PIIX_GPI_BD_REG
-mdefine_line|#define&t;PIIX_GPI_BD_REG&t;&t;GPIREG(PIIX_GPI_BD_ID1)
-DECL|macro|PIIX_GPI_BD_SHIFT
-mdefine_line|#define&t;PIIX_GPI_BD_SHIFT&t;(PIIX_GPI_BD_ID1 % 8)
-DECL|macro|SIO_INDEX
-mdefine_line|#define&t;SIO_INDEX&t;0x2e
-DECL|macro|SIO_DATA
-mdefine_line|#define&t;SIO_DATA&t;0x2f
-DECL|macro|SIO_DEV_SEL
-mdefine_line|#define&t;SIO_DEV_SEL&t;0x7
-DECL|macro|SIO_DEV_ENB
-mdefine_line|#define&t;SIO_DEV_ENB&t;0x30
-DECL|macro|SIO_DEV_MSB
-mdefine_line|#define&t;SIO_DEV_MSB&t;0x60
-DECL|macro|SIO_DEV_LSB
-mdefine_line|#define&t;SIO_DEV_LSB&t;0x61
-DECL|macro|SIO_GP_DEV
-mdefine_line|#define&t;SIO_GP_DEV&t;0x7
-DECL|macro|SIO_GP_BASE
-mdefine_line|#define&t;SIO_GP_BASE&t;SIO_GPIO_START
-DECL|macro|SIO_GP_MSB
-mdefine_line|#define&t;SIO_GP_MSB&t;(SIO_GP_BASE&gt;&gt;8)
-DECL|macro|SIO_GP_LSB
-mdefine_line|#define&t;SIO_GP_LSB&t;(SIO_GP_BASE&amp;0xff)
-DECL|macro|SIO_GP_DATA1
-mdefine_line|#define&t;SIO_GP_DATA1&t;(SIO_GP_BASE+0)
-DECL|macro|SIO_PM_DEV
-mdefine_line|#define&t;SIO_PM_DEV&t;0x8
-DECL|macro|SIO_PM_BASE
-mdefine_line|#define&t;SIO_PM_BASE&t;SIO_PM_START
-DECL|macro|SIO_PM_MSB
-mdefine_line|#define&t;SIO_PM_MSB&t;(SIO_PM_BASE&gt;&gt;8)
-DECL|macro|SIO_PM_LSB
-mdefine_line|#define&t;SIO_PM_LSB&t;(SIO_PM_BASE&amp;0xff)
-DECL|macro|SIO_PM_INDEX
-mdefine_line|#define&t;SIO_PM_INDEX&t;(SIO_PM_BASE+0)
-DECL|macro|SIO_PM_DATA
-mdefine_line|#define&t;SIO_PM_DATA&t;(SIO_PM_BASE+1)
-DECL|macro|SIO_PM_FER2
-mdefine_line|#define&t;SIO_PM_FER2&t;0x1
-DECL|macro|SIO_PM_GP_EN
-mdefine_line|#define&t;SIO_PM_GP_EN&t;0x80
 DECL|function|visws_get_board_type_and_rev
 r_void
 id|__init
@@ -106,7 +51,7 @@ id|PIIX_GPI_BD_REG
 op_rshift
 id|PIIX_GPI_BD_SHIFT
 suffix:semicolon
-multiline_comment|/*&n; * Get Board rev.&n; * First, we have to initialize the 307 part to allow us access&n; * to the GPIO registers.  Let&squot;s map them at 0x0fc0 which is right&n; * after the PIIX4 PM section.&n; */
+multiline_comment|/*&n;&t; * Get Board rev.&n;&t; * First, we have to initialize the 307 part to allow us access&n;&t; * to the GPIO registers.  Let&squot;s map them at 0x0fc0 which is right&n;&t; * after the PIIX4 PM section.&n;&t; */
 id|outb_p
 c_func
 (paren
@@ -175,7 +120,7 @@ id|SIO_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* Enable GPIO registers. */
-multiline_comment|/*&n; * Now, we have to map the power management section to write&n; * a bit which enables access to the GPIO registers.&n; * What lunatic came up with this shit?&n; */
+multiline_comment|/*&n;&t; * Now, we have to map the power management section to write&n;&t; * a bit which enables access to the GPIO registers.&n;&t; * What lunatic came up with this shit?&n;&t; */
 id|outb_p
 c_func
 (paren
@@ -244,7 +189,7 @@ id|SIO_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* Enable PM registers. */
-multiline_comment|/*&n; * Now, write the PM register which enables the GPIO registers.&n; */
+multiline_comment|/*&n;&t; * Now, write the PM register which enables the GPIO registers.&n;&t; */
 id|outb_p
 c_func
 (paren
@@ -261,7 +206,7 @@ comma
 id|SIO_PM_DATA
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Now, initialize the GPIO registers.&n; * We want them all to be inputs which is the&n; * power on default, so let&squot;s leave them alone.&n; * So, let&squot;s just read the board rev!&n; */
+multiline_comment|/*&n;&t; * Now, initialize the GPIO registers.&n;&t; * We want them all to be inputs which is the&n;&t; * power on default, so let&squot;s leave them alone.&n;&t; * So, let&squot;s just read the board rev!&n;&t; */
 id|raw
 op_assign
 id|inb_p
@@ -343,8 +288,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Silicon Graphics %s (rev %d)&bslash;n&quot;
+l_string|&quot;Silicon Graphics Visual Workstation %s (rev %d) detected&bslash;n&quot;
 comma
+(paren
 id|visws_board_type
 op_eq
 id|VISWS_320
@@ -361,6 +307,7 @@ c_cond
 l_string|&quot;540&quot;
 suffix:colon
 l_string|&quot;unknown&quot;
+)paren
 )paren
 comma
 id|visws_board_rev
@@ -420,17 +367,21 @@ id|irqaction
 id|irq0
 op_assign
 (brace
+dot
+id|handler
+op_assign
 id|timer_interrupt
 comma
+dot
+id|flags
+op_assign
 id|SA_INTERRUPT
 comma
-l_int|0
-comma
+dot
+id|name
+op_assign
 l_string|&quot;timer&quot;
 comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|time_init_hook
@@ -445,6 +396,7 @@ r_void
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Starting Cobalt Timer system clock&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -494,7 +446,7 @@ multiline_comment|/* Wire cpu IDT entry to s/w handler (and Cobalt APIC to IDT) 
 id|setup_irq
 c_func
 (paren
-id|CO_IRQ_TIMER
+l_int|0
 comma
 op_amp
 id|irq0

@@ -30,13 +30,8 @@ DECL|macro|FIRST_SYSTEM_VECTOR
 mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef
 DECL|macro|TIMER_IRQ
 mdefine_line|#define TIMER_IRQ 0
-multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sources.&n; * Right now the APIC is mostly only used for SMP.&n; * 256 vectors is an architectural limit. (we can have&n; * more than 256 devices theoretically, but they will&n; * have to use shared interrupts)&n; * Since vectors 0x00-0x1f are used/reserved for the CPU,&n; * the usable vector space is 0x20-0xff (224 vectors)&n; */
-macro_line|#ifdef CONFIG_X86_IO_APIC
+multiline_comment|/*&n; * &n; */
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
-macro_line|#else
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 16
-macro_line|#endif
 macro_line|#endif /* _ASM_IRQ_VECTORS_H */
 eof

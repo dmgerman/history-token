@@ -1,6 +1,6 @@
 multiline_comment|/* defines for inline arch setup functions */
 macro_line|#include &lt;asm/fixmap.h&gt;
-macro_line|#include &lt;asm/cobalt.h&gt;
+macro_line|#include &quot;cobalt.h&quot;
 DECL|function|do_timer_interrupt_hook
 r_static
 r_inline
