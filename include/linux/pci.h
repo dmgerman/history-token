@@ -1147,13 +1147,6 @@ id|list_head
 id|pci_devices
 suffix:semicolon
 multiline_comment|/* list of all devices */
-r_int
-id|pci_present
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_void
 id|pcibios_fixup_bus
 c_func
@@ -2336,20 +2329,6 @@ multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
 multiline_comment|/*&n; *  If the system does not have PCI, clearly these return errors.  Define&n; *  these as simple inline functions to avoid hair in drivers.&n; */
 macro_line|#ifndef CONFIG_PCI
-DECL|function|pci_present
-r_static
-r_inline
-r_int
-id|pci_present
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|macro|_PCI_NOP
 mdefine_line|#define _PCI_NOP(o,s,t) &bslash;&n;&t;static inline int pci_##o##_config_##s (struct pci_dev *dev, int where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; }
 DECL|macro|_PCI_NOP_ALL
