@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * Used with a gadget driver like &quot;zero.c&quot; this enumerates fine to Windows&n; * or Linux hosts; handles disconnect, reconnect, and reset, for full or&n; * high speed operation; and passes USB-IF &quot;chapter 9&quot; tests.&n; *&n; * Handles standard stress loads from the Linux &quot;usbtest&quot; driver, with&n; * either DMA (default) or PIO (use_dma=n) used for ep-{a,b,c,d}.  Testing&n; * with &quot;ttcp&quot; (and the &quot;ether.c&quot; driver) behaves nicely too.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; *&n; * Note that almost all the errata workarounds here are only needed for&n; * rev1 chips.  Rev1a silicon (0110) fixes almost all of them.&n; */
 DECL|macro|USE_DMA_CHAINING
 mdefine_line|#define USE_DMA_CHAINING
-multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2003 NetChip Technologies&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;1
 singleline_comment|// #define&t;VERBOSE&t;&t;/* extra debug messages (success too) */
@@ -32,7 +32,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define&t;DRIVER_DESC&t;&t;&quot;NetChip 2280 USB Peripheral Controller&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define&t;DRIVER_VERSION&t;&t;&quot;May Day 2003&quot;
+mdefine_line|#define&t;DRIVER_VERSION&t;&t;&quot;Bastille Day 2003&quot;
 DECL|macro|DMA_ADDR_INVALID
 mdefine_line|#define&t;DMA_ADDR_INVALID&t;(~(dma_addr_t)0)
 DECL|macro|EP_DONTUSE
@@ -5301,14 +5301,16 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;%s &quot;
+l_string|&quot;%s version &quot;
 id|DRIVER_VERSION
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;, chiprev %04x&bslash;n&quot;
 l_string|&quot;devinit %03x fifoctl %08x gadget &squot;%s&squot;&bslash;n&quot;
 l_string|&quot;pci irqenb0 %02x irqenb1 %08x &quot;
 l_string|&quot;irqstat0 %04x irqstat1 %08x&bslash;n&quot;
 comma
 id|driver_name
+comma
+id|dev-&gt;chiprev
 comma
 id|readl
 (paren
@@ -5512,6 +5514,16 @@ op_amp
 id|ep-&gt;regs-&gt;ep_cfg
 )paren
 suffix:semicolon
+id|t2
+op_assign
+id|readl
+(paren
+op_amp
+id|ep-&gt;regs-&gt;ep_rsp
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
 id|t
 op_assign
 id|snprintf
@@ -5520,19 +5532,134 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;%s&bslash;tcfg %05x rsp %02x enb %02x &quot;
+l_string|&quot;%s&bslash;tcfg %05x rsp (%02x) %s%s%s%s%s%s%s%s&quot;
+l_string|&quot;irqenb %02x&bslash;n&quot;
 comma
 id|ep-&gt;ep.name
 comma
 id|t1
 comma
-id|readl
+id|t2
+comma
 (paren
+id|t2
 op_amp
-id|ep-&gt;regs-&gt;ep_rsp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_NAK_OUT_PACKETS
 )paren
+)paren
+ques
+c_cond
+l_string|&quot;NAK &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
 op_amp
-l_int|0xff
+(paren
+l_int|1
+op_lshift
+id|CLEAR_EP_HIDE_STATUS_PHASE
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;hide &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_EP_FORCE_CRC_ERROR
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;CRC &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_INTERRUPT_MODE
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;interrupt &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_CONTROL_STATUS_PHASE_HANDSHAKE
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;status &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_NAK_OUT_PACKETS_MODE
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;NAKmode &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_ENDPOINT_TOGGLE
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;DATA1 &quot;
+suffix:colon
+l_string|&quot;DATA0 &quot;
+comma
+(paren
+id|t2
+op_amp
+(paren
+l_int|1
+op_lshift
+id|CLEAR_ENDPOINT_HALT
+)paren
+)paren
+ques
+c_cond
+l_string|&quot;HALT &quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|readl
 (paren
@@ -5557,7 +5684,7 @@ id|next
 comma
 id|size
 comma
-l_string|&quot;stat %08x avail %04x &quot;
+l_string|&quot;&bslash;tstat %08x avail %04x &quot;
 l_string|&quot;(ep%d%s-%s)%s&bslash;n&quot;
 comma
 id|readl
@@ -7279,6 +7406,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hook up the driver ... */
+id|driver-&gt;driver.bus
+op_assign
+l_int|0
+suffix:semicolon
 id|dev-&gt;driver
 op_assign
 id|driver
@@ -7325,9 +7456,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-singleline_comment|// FIXME
-singleline_comment|// driver_register (&amp;driver-&gt;driver);
-singleline_comment|// device_register (&amp;dev-&gt;gadget.dev);
 id|device_create_file
 (paren
 op_amp
@@ -7586,9 +7714,6 @@ op_amp
 id|dev_attr_queues
 )paren
 suffix:semicolon
-singleline_comment|// FIXME
-singleline_comment|// device_unregister()
-singleline_comment|// driver_unregister (&amp;driver-&gt;driver);
 id|DEBUG
 (paren
 id|dev
@@ -8281,7 +8406,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* FIXME need mechanism (request flag?) so control OUT&n;&t;&t;&t; * can decide to stall ep0 after that done() returns,&n;&t;&t;&t; * from non-irq context&n;&t;&t;&t; */
+multiline_comment|/* NOTE:  net2280 could let gadget driver start the&n;&t;&t;&t; * status stage later. since not all controllers let&n;&t;&t;&t; * them control that, the api doesn&squot;t (yet) allow it.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8858,7 +8983,7 @@ op_lshift
 id|SETUP_PACKET_INTERRUPT
 )paren
 suffix:semicolon
-multiline_comment|/* watch control traffic at the token level, and force&n;&t;&t; * synchronization before letting the status stage happen.&n;&t;&t; */
+multiline_comment|/* watch control traffic at the token level, and force&n;&t;&t; * synchronization before letting the status stage happen.&n;&t;&t; * FIXME ignore tokens we&squot;ll NAK, until driver responds.&n;&t;&t; * that&squot;ll mean a lot less irqs for some drivers.&n;&t;&t; */
 id|ep-&gt;is_in
 op_assign
 (paren
@@ -9950,6 +10075,33 @@ id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|function|gadget_release
+r_static
+r_void
+id|gadget_release
+(paren
+r_struct
+id|device
+op_star
+id|_dev
+)paren
+(brace
+r_struct
+id|net2280
+op_star
+id|dev
+op_assign
+id|dev_get_drvdata
+(paren
+id|_dev
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* tear down the binding between this driver and the pci device */
 DECL|function|net2280_remove
 r_static
@@ -10118,6 +10270,12 @@ id|pci_disable_device
 id|pdev
 )paren
 suffix:semicolon
+id|device_unregister
+(paren
+op_amp
+id|dev-&gt;gadget.dev
+)paren
+suffix:semicolon
 id|device_remove_file
 (paren
 op_amp
@@ -10138,18 +10296,7 @@ id|INFO
 (paren
 id|dev
 comma
-l_string|&quot;unbind from pci %s&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|dev
+l_string|&quot;unbind&bslash;n&quot;
 )paren
 suffix:semicolon
 id|the_controller
@@ -10213,17 +10360,12 @@ c_cond
 id|the_controller
 )paren
 (brace
-id|WARN
+id|dev_warn
 (paren
-id|the_controller
+op_amp
+id|pdev-&gt;dev
 comma
-l_string|&quot;ignoring %s&bslash;n&quot;
-comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
+l_string|&quot;ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10286,15 +10428,12 @@ op_assign
 op_amp
 id|net2280_ops
 suffix:semicolon
+multiline_comment|/* the &quot;gadget&quot; abstracts/virtualizes the controller */
 id|strcpy
 (paren
 id|dev-&gt;gadget.dev.bus_id
 comma
-id|pci_name
-c_func
-(paren
-id|pdev
-)paren
+l_string|&quot;gadget&quot;
 )paren
 suffix:semicolon
 id|dev-&gt;gadget.dev.parent
@@ -10305,6 +10444,10 @@ suffix:semicolon
 id|dev-&gt;gadget.dev.dma_mask
 op_assign
 id|pdev-&gt;dev.dma_mask
+suffix:semicolon
+id|dev-&gt;gadget.dev.release
+op_assign
+id|gadget_release
 suffix:semicolon
 id|dev-&gt;gadget.name
 op_assign
@@ -10833,6 +10976,12 @@ suffix:semicolon
 id|the_controller
 op_assign
 id|dev
+suffix:semicolon
+id|device_register
+(paren
+op_amp
+id|dev-&gt;gadget.dev
+)paren
 suffix:semicolon
 id|device_create_file
 (paren
