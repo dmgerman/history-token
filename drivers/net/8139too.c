@@ -25,6 +25,9 @@ DECL|macro|RTL8139_DRIVER_NAME
 mdefine_line|#define RTL8139_DRIVER_NAME   DRV_NAME &quot; Fast Ethernet driver &quot; DRV_VERSION
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_NAME &quot;: &quot;
+multiline_comment|/* Default Message level */
+DECL|macro|RTL8139_DEF_MSG_ENABLE
+mdefine_line|#define RTL8139_DEF_MSG_ENABLE   (NETIF_MSG_DRV   | &bslash;&n;                                 NETIF_MSG_PROBE  | &bslash;&n;                                 NETIF_MSG_LINK)
 multiline_comment|/* enable PIO instead of MMIO, if CONFIG_8139TOO_PIO is selected */
 macro_line|#ifdef CONFIG_8139TOO_PIO
 DECL|macro|USE_IO_OPS
@@ -1975,6 +1978,10 @@ id|pci_state
 l_int|16
 )braket
 suffix:semicolon
+DECL|member|msg_enable
+id|u32
+id|msg_enable
+suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -3860,6 +3867,27 @@ id|tp-&gt;mmio_addr
 op_assign
 id|ioaddr
 suffix:semicolon
+id|tp-&gt;msg_enable
+op_assign
+(paren
+id|debug
+OL
+l_int|0
+ques
+c_cond
+id|RTL8139_DEF_MSG_ENABLE
+suffix:colon
+(paren
+(paren
+l_int|1
+op_lshift
+id|debug
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
 id|spin_lock_init
 (paren
 op_amp
@@ -5253,14 +5281,12 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-macro_line|#ifdef RTL8139_DEBUG
 r_void
 op_star
 id|ioaddr
 op_assign
 id|tp-&gt;mmio_addr
 suffix:semicolon
-macro_line|#endif
 id|retval
 op_assign
 id|request_irq
@@ -5393,8 +5419,19 @@ id|rtl8139_hw_start
 id|dev
 )paren
 suffix:semicolon
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_ifup
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: rtl8139_open() ioaddr %#lx IRQ %d&quot;
 l_string|&quot; GP Pins %2.2x %s-duplex.&bslash;n&quot;
 comma
@@ -5471,7 +5508,11 @@ c_func
 op_amp
 id|tp-&gt;mii
 comma
-l_int|1
+id|netif_msg_link
+c_func
+(paren
+id|tp
+)paren
 comma
 id|init_media
 )paren
@@ -7137,8 +7178,18 @@ op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_tx_queued
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: Queued Tx packet size %u to slot %d.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7276,8 +7327,19 @@ id|TxAborted
 )paren
 (brace
 multiline_comment|/* There was an major error, log it. */
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: Transmit error, Tx status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7487,8 +7549,18 @@ r_int
 id|tmp_work
 suffix:semicolon
 macro_line|#endif
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_rx_err
+(paren
+id|tp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: Ethernet frame had errors, status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7962,8 +8034,19 @@ id|rx_size
 op_minus
 l_int|4
 suffix:semicolon
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_rx_status
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s:  rtl8139_rx() status %4.4x, size %4.4x,&quot;
 l_string|&quot; cur %4.4x.&bslash;n&quot;
 comma
@@ -8595,8 +8678,18 @@ comma
 id|ackstat
 )paren
 suffix:semicolon
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_intr
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: interrupt  status=%#4.4x ackstat=%#4.4x new intstat=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8867,8 +8960,19 @@ id|tp-&gt;thr_exited
 )paren
 suffix:semicolon
 )brace
-id|DPRINTK
+r_if
+c_cond
 (paren
+id|netif_msg_ifdown
+c_func
+(paren
+id|tp
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
 l_string|&quot;%s: Shutting down ethercard, status was 0x%4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9602,8 +9706,15 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|rtl8139_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_return
-id|debug
+id|np-&gt;msg_enable
 suffix:semicolon
 )brace
 DECL|function|rtl8139_set_msglevel
@@ -9621,7 +9732,14 @@ id|u32
 id|datum
 )paren
 (brace
-id|debug
+r_struct
+id|rtl8139_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|np-&gt;msg_enable
 op_assign
 id|datum
 suffix:semicolon
