@@ -144,6 +144,11 @@ DECL|member|link_mode
 id|__u16
 id|link_mode
 suffix:semicolon
+DECL|member|quirks
+r_int
+r_int
+id|quirks
+suffix:semicolon
 DECL|member|cmd_cnt
 id|atomic_t
 id|cmd_cnt

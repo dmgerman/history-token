@@ -37,6 +37,13 @@ DECL|macro|HCI_RS232
 mdefine_line|#define HCI_RS232 &t;4
 DECL|macro|HCI_PCI
 mdefine_line|#define HCI_PCI&t;&t;5
+multiline_comment|/* HCI device quirks */
+r_enum
+(brace
+DECL|enumerator|HCI_QUIRK_RESET_ON_INIT
+id|HCI_QUIRK_RESET_ON_INIT
+)brace
+suffix:semicolon
 multiline_comment|/* HCI device flags */
 r_enum
 (brace
