@@ -57,8 +57,6 @@ id|via82c505_preinit
 c_func
 (paren
 r_void
-op_star
-id|sysdata
 )paren
 suffix:semicolon
 DECL|variable|__initdata
@@ -98,6 +96,7 @@ dot
 id|preinit
 op_assign
 id|via82c505_preinit
+comma
 )brace
 suffix:semicolon
 DECL|function|shark_pci_init

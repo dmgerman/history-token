@@ -249,8 +249,6 @@ id|via82c505_preinit
 c_func
 (paren
 r_void
-op_star
-id|sysdata
 )paren
 (brace
 id|printk

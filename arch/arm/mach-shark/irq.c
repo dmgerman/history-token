@@ -195,7 +195,7 @@ r_static
 r_void
 DECL|function|bogus_int
 r_static
-r_void
+id|irqreturn_t
 id|bogus_int
 c_func
 (paren
@@ -219,6 +219,9 @@ l_string|&quot;Got interrupt %i!&bslash;n&quot;
 comma
 id|irq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|variable|cascade
@@ -425,10 +428,6 @@ op_assign
 id|bogus_int
 suffix:semicolon
 id|cascade.flags
-op_assign
-l_int|0
-suffix:semicolon
-id|cascade.mask
 op_assign
 l_int|0
 suffix:semicolon
