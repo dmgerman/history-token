@@ -773,8 +773,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -856,8 +857,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -907,8 +909,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -956,8 +959,9 @@ id|transfer_buffer
 id|err
 c_func
 (paren
+l_string|&quot;%s - kmalloc(%d) failed.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - kmalloc(%d) failed.&quot;
 comma
 l_int|0x12
 )paren
@@ -1055,8 +1059,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1261,8 +1266,9 @@ id|port
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1286,8 +1292,9 @@ id|port
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1335,8 +1342,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1350,8 +1358,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1452,8 +1461,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1468,8 +1478,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1484,8 +1495,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1614,8 +1626,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1637,8 +1650,9 @@ id|port
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1666,8 +1680,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1694,8 +1709,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1743,8 +1759,9 @@ id|transfer_buffer
 id|err
 c_func
 (paren
+l_string|&quot;%s - kmalloc(%d) failed.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - kmalloc(%d) failed.&quot;
 comma
 l_int|256
 )paren
@@ -1757,14 +1774,17 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - Set config to 1&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - Set config to 1&quot;
 )paren
 suffix:semicolon
 id|usb_set_configuration
@@ -1815,8 +1835,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - error getting connection information&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - error getting connection information&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2034,8 +2055,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - error getting first unknown palm command&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - error getting first unknown palm command&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2093,8 +2115,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - error getting second unknown palm command&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - error getting second unknown palm command&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2154,8 +2177,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s - error getting bytes available request&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - error getting bytes available request&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2233,6 +2257,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2281,8 +2307,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: get config number failed: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: get config number failed: %d&quot;
 comma
 id|result
 )paren
@@ -2302,8 +2329,9 @@ l_int|1
 id|err
 c_func
 (paren
+l_string|&quot;%s: get config number bad return length: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: get config number bad return length: %d&quot;
 comma
 id|result
 )paren
@@ -2359,8 +2387,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: get interface number failed: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: get interface number failed: %d&quot;
 comma
 id|result
 )paren
@@ -2380,8 +2409,9 @@ l_int|1
 id|err
 c_func
 (paren
+l_string|&quot;%s: get interface number bad return length: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: get interface number bad return length: %d&quot;
 comma
 id|result
 )paren
@@ -2407,7 +2437,10 @@ id|serial
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2439,8 +2472,9 @@ id|arg
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d, cmd 0x%.4x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d, cmd 0x%.4x&quot;
 comma
 id|port-&gt;number
 comma
@@ -2476,8 +2510,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -2499,8 +2534,9 @@ id|port-&gt;tty-&gt;termios
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - no tty structures&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - no tty structures&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2544,8 +2580,9 @@ id|old_termios-&gt;c_iflag
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nothing to change...&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nothing to change...&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2567,8 +2604,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - data bits = 5&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - data bits = 5&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2579,8 +2617,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - data bits = 6&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - data bits = 6&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2591,8 +2630,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - data bits = 7&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - data bits = 7&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2605,8 +2645,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - data bits = 8&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - data bits = 8&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2630,24 +2671,27 @@ id|PARODD
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = odd&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = odd&quot;
 )paren
 suffix:semicolon
 r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = even&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = even&quot;
 )paren
 suffix:semicolon
 r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - parity = none&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - parity = none&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* figure out the stop bits requested */
@@ -2661,16 +2705,18 @@ id|CSTOPB
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - stop bits = 2&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - stop bits = 2&quot;
 )paren
 suffix:semicolon
 r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - stop bits = 1&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - stop bits = 1&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* figure out the flow control settings */
@@ -2684,8 +2730,9 @@ id|CRTSCTS
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - RTS/CTS is enabled&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - RTS/CTS is enabled&quot;
 )paren
 suffix:semicolon
 r_else
