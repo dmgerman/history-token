@@ -1894,6 +1894,13 @@ op_eq
 id|dev
 )paren
 (brace
+id|list_del
+c_func
+(paren
+op_amp
+id|dlp-&gt;list
+)paren
+suffix:semicolon
 id|unregister_netdevice
 c_func
 (paren
