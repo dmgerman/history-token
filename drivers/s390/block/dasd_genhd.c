@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * gendisk related functions for the dasd driver.&n; *&n; * $Revision: 1.46 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_genhd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * gendisk related functions for the dasd driver.&n; *&n; * $Revision: 1.48 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -465,6 +465,10 @@ op_assign
 op_amp
 id|bpart
 suffix:semicolon
+id|barg.op
+op_assign
+id|BLKPG_DEL_PARTITION
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -486,7 +490,7 @@ c_func
 (paren
 id|bdev
 comma
-id|BLKPG_DEL_PARTITION
+id|BLKPG
 comma
 (paren
 r_int

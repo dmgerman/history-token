@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.30 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * $Revision: 1.33 $&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
@@ -604,7 +604,7 @@ id|LPM_ANYPATH
 op_amp
 op_complement
 (paren
-id|erp-&gt;dstat-&gt;esw.esw0.sublog.lpum
+id|erp-&gt;irb.esw.esw0.sublog.lpum
 )paren
 suffix:semicolon
 r_else
@@ -612,7 +612,7 @@ id|erp-&gt;lpm
 op_and_assign
 op_complement
 (paren
-id|erp-&gt;dstat-&gt;esw.esw0.sublog.lpum
+id|erp-&gt;irb.esw.esw0.sublog.lpum
 )paren
 suffix:semicolon
 r_if
@@ -638,7 +638,7 @@ l_string|&quot;try alternate lpm=%x (lpum=%x / opm=%x)&quot;
 comma
 id|erp-&gt;lpm
 comma
-id|erp-&gt;dstat-&gt;esw.esw0.sublog.lpum
+id|erp-&gt;irb.esw.esw0.sublog.lpum
 comma
 id|opm
 )paren
@@ -672,7 +672,7 @@ comma
 l_string|&quot;No alternate channel path left (lpum=%x / &quot;
 l_string|&quot;opm=%x) -&gt; permanent error&quot;
 comma
-id|erp-&gt;dstat-&gt;esw.esw0.sublog.lpum
+id|erp-&gt;irb.esw.esw0.sublog.lpum
 comma
 id|opm
 )paren
@@ -945,6 +945,19 @@ op_ne
 id|dasd_3990_erp_action_4
 )paren
 (brace
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_INFO
+comma
+id|device
+comma
+l_string|&quot;dasd_3990_erp_action_4: first time retry&quot;
+l_string|&quot;%s&quot;
+comma
+l_string|&quot; &quot;
+)paren
+suffix:semicolon
 id|erp-&gt;retries
 op_assign
 l_int|256
@@ -4832,7 +4845,7 @@ multiline_comment|/* determine the address of the CCW to be restarted */
 multiline_comment|/* Imprecise ending is not set -&gt; addr from IRB-SCSW */
 id|cpa
 op_assign
-id|default_erp-&gt;refers-&gt;dstat-&gt;scsw.cpa
+id|default_erp-&gt;refers-&gt;irb.scsw.cpa
 suffix:semicolon
 r_if
 c_cond
@@ -5272,7 +5285,7 @@ id|erp-&gt;retries
 op_assign
 l_int|256
 suffix:semicolon
-id|cqr-&gt;buildclk
+id|erp-&gt;buildclk
 op_assign
 id|get_clock
 c_func
@@ -5415,7 +5428,7 @@ multiline_comment|/* determine the address of the CCW to be restarted */
 multiline_comment|/* Imprecise ending is not set -&gt; addr from IRB-SCSW */
 id|cpa
 op_assign
-id|previous_erp-&gt;dstat-&gt;scsw.cpa
+id|previous_erp-&gt;irb.scsw.cpa
 suffix:semicolon
 r_if
 c_cond
@@ -6416,7 +6429,7 @@ r_char
 op_star
 id|sense
 op_assign
-id|erp-&gt;refers-&gt;dstat-&gt;ecw
+id|erp-&gt;refers-&gt;irb.ecw
 suffix:semicolon
 multiline_comment|/* distinguish between 24 and 32 byte sense data */
 r_if
@@ -6639,6 +6652,13 @@ id|erp-&gt;retries
 op_assign
 l_int|256
 suffix:semicolon
+id|erp-&gt;buildclk
+op_assign
+id|get_clock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|erp-&gt;status
 op_assign
 id|DASD_CQR_FILLED
@@ -6723,9 +6743,9 @@ multiline_comment|/* check failed CCW */
 r_if
 c_cond
 (paren
-id|cqr1-&gt;dstat-&gt;scsw.cpa
+id|cqr1-&gt;irb.scsw.cpa
 op_ne
-id|cqr2-&gt;dstat-&gt;scsw.cpa
+id|cqr2-&gt;irb.scsw.cpa
 )paren
 (brace
 singleline_comment|//&t;return 0;&t;/* CCW doesn&squot;t match */
@@ -6739,9 +6759,9 @@ op_logical_neg
 (paren
 id|memcmp
 (paren
-id|cqr1-&gt;dstat-&gt;ecw
+id|cqr1-&gt;irb.ecw
 comma
-id|cqr2-&gt;dstat-&gt;ecw
+id|cqr2-&gt;irb.ecw
 comma
 l_int|3
 )paren
@@ -6750,24 +6770,24 @@ l_int|0
 )paren
 op_logical_and
 (paren
-id|cqr1-&gt;dstat-&gt;ecw
+id|cqr1-&gt;irb.ecw
 (braket
 l_int|27
 )braket
 op_eq
-id|cqr2-&gt;dstat-&gt;ecw
+id|cqr2-&gt;irb.ecw
 (braket
 l_int|27
 )braket
 )paren
 op_logical_and
 (paren
-id|cqr1-&gt;dstat-&gt;ecw
+id|cqr1-&gt;irb.ecw
 (braket
 l_int|25
 )braket
 op_eq
-id|cqr2-&gt;dstat-&gt;ecw
+id|cqr2-&gt;irb.ecw
 (braket
 l_int|25
 )braket
@@ -6917,7 +6937,7 @@ r_char
 op_star
 id|sense
 op_assign
-id|erp-&gt;dstat-&gt;ecw
+id|erp-&gt;irb.ecw
 suffix:semicolon
 multiline_comment|/* check for 24 byte sense ERP */
 r_if
@@ -7252,7 +7272,7 @@ r_char
 op_star
 id|sense
 op_assign
-id|erp-&gt;refers-&gt;dstat-&gt;ecw
+id|erp-&gt;refers-&gt;irb.ecw
 suffix:semicolon
 multiline_comment|/* check for special retries */
 r_if
@@ -7385,7 +7405,7 @@ suffix:semicolon
 id|__u32
 id|cpa
 op_assign
-id|cqr-&gt;dstat-&gt;scsw.cpa
+id|cqr-&gt;irb.scsw.cpa
 suffix:semicolon
 macro_line|#ifdef ERP_DEBUG
 multiline_comment|/* print current erp_chain */
@@ -7449,13 +7469,13 @@ r_if
 c_cond
 (paren
 (paren
-id|cqr-&gt;dstat-&gt;scsw.cstat
+id|cqr-&gt;irb.scsw.cstat
 op_eq
 l_int|0x00
 )paren
 op_logical_and
 (paren
-id|cqr-&gt;dstat-&gt;scsw.dstat
+id|cqr-&gt;irb.scsw.dstat
 op_eq
 (paren
 id|DEV_STAT_CHN_END
@@ -7491,7 +7511,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cqr-&gt;dstat-&gt;ecw
+id|cqr-&gt;irb.ecw
 )paren
 (brace
 id|DEV_MESSAGE

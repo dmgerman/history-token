@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.55 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.57 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -4788,20 +4788,28 @@ l_int|9
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ARCH_S390X)
-id|cidaw
-op_add_assign
-id|idal_nr_words
-c_func
+r_if
+c_cond
+(paren
+id|idal_is_needed
 (paren
 id|page_address
 c_func
 (paren
 id|bv-&gt;bv_page
 )paren
-op_plus
-id|bv-&gt;bv_offset
 comma
 id|bv-&gt;bv_len
+)paren
+)paren
+id|cidaw
+op_add_assign
+id|bv-&gt;bv_len
+op_rshift
+(paren
+id|device-&gt;s2b_shift
+op_plus
+l_int|9
 )paren
 suffix:semicolon
 macro_line|#endif
