@@ -997,6 +997,16 @@ op_star
 id|q
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__blk_run_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+suffix:semicolon
 DECL|function|bdev_get_queue
 r_static
 r_inline
