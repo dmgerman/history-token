@@ -221,17 +221,22 @@ id|dparent
 )paren
 suffix:semicolon
 r_else
-(brace
-multiline_comment|/* must be &quot;..&quot; */
-multiline_comment|/* checking mountpoint crossing is very different when stepping up */
 r_if
 c_cond
 (paren
 id|dparent
-op_eq
+op_ne
 id|exp-&gt;ex_dentry
 )paren
-(brace
+id|dentry
+op_assign
+id|dget
+c_func
+(paren
+id|dparent-&gt;d_parent
+)paren
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
@@ -253,6 +258,7 @@ suffix:semicolon
 multiline_comment|/* .. == . just like at / */
 r_else
 (brace
+multiline_comment|/* checking mountpoint crossing is very different when stepping up */
 r_struct
 id|svc_export
 op_star
@@ -322,9 +328,8 @@ r_for
 c_loop
 (paren
 suffix:semicolon
+op_logical_neg
 id|exp2
-op_eq
-l_int|NULL
 op_logical_and
 id|dp-&gt;d_parent
 op_ne
@@ -336,22 +341,21 @@ id|dp-&gt;d_parent
 )paren
 id|exp2
 op_assign
-id|exp_get
+id|exp_get_by_name
 c_func
 (paren
 id|exp-&gt;ex_client
 comma
-id|dp-&gt;d_inode-&gt;i_dev
+id|mnt
 comma
-id|dp-&gt;d_inode-&gt;i_ino
+id|dp
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|exp2
-op_eq
-l_int|NULL
 )paren
 (brace
 id|dput
@@ -380,17 +384,6 @@ id|mntput
 c_func
 (paren
 id|mnt
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-id|dentry
-op_assign
-id|dget
-c_func
-(paren
-id|dparent-&gt;d_parent
 )paren
 suffix:semicolon
 )brace
@@ -497,14 +490,14 @@ id|mounts
 suffix:semicolon
 id|exp2
 op_assign
-id|exp_get
+id|exp_get_by_name
 c_func
 (paren
 id|rqstp-&gt;rq_client
 comma
-id|mounts-&gt;d_inode-&gt;i_dev
+id|mnt
 comma
-id|mounts-&gt;d_inode-&gt;i_ino
+id|mounts
 )paren
 suffix:semicolon
 r_if
@@ -2194,6 +2187,11 @@ r_struct
 id|file
 id|file
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
 id|err
 op_assign
 id|nfsd_open
@@ -2232,6 +2230,10 @@ id|file.f_op-&gt;read
 r_goto
 id|out_close
 suffix:semicolon
+id|inode
+op_assign
+id|file.f_dentry-&gt;d_inode
+suffix:semicolon
 macro_line|#ifdef MSNFS
 r_if
 c_cond
@@ -2247,7 +2249,7 @@ op_logical_neg
 id|lock_may_read
 c_func
 (paren
-id|file.f_dentry-&gt;d_inode
+id|inode
 comma
 id|offset
 comma
@@ -2266,9 +2268,9 @@ op_assign
 id|nfsd_get_raparms
 c_func
 (paren
-id|fhp-&gt;fh_export-&gt;ex_dev
+id|inode-&gt;i_dev
 comma
-id|fhp-&gt;fh_dentry-&gt;d_inode-&gt;i_ino
+id|inode-&gt;i_ino
 )paren
 suffix:semicolon
 r_if
