@@ -3031,15 +3031,6 @@ comma
 id|ps
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ge
-id|nr_pages
-)paren
-r_break
-suffix:semicolon
 )brace
 r_return
 id|ret
