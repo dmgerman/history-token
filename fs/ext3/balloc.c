@@ -1100,6 +1100,9 @@ l_int|0
 comma
 id|ret
 suffix:semicolon
+r_int
+id|group_freed
+suffix:semicolon
 op_star
 id|pdquot_freed_blocks
 op_assign
@@ -1430,6 +1433,10 @@ c_loop
 id|i
 op_assign
 l_int|0
+comma
+id|group_freed
+op_assign
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -1669,10 +1676,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-(paren
-op_star
-id|pdquot_freed_blocks
-)paren
+id|group_freed
 op_increment
 suffix:semicolon
 )brace
@@ -1695,7 +1699,7 @@ id|block_group
 )paren
 )paren
 suffix:semicolon
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 op_assign
 id|cpu_to_le16
 c_func
@@ -1703,11 +1707,10 @@ c_func
 id|le16_to_cpu
 c_func
 (paren
-id|gdp-&gt;bg_free_blocks_count
+id|desc-&gt;bg_free_blocks_count
 )paren
 op_plus
-op_star
-id|pdquot_freed_blocks
+id|group_freed
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1778,6 +1781,11 @@ id|err
 id|err
 op_assign
 id|ret
+suffix:semicolon
+op_star
+id|pdquot_freed_blocks
+op_add_assign
+id|group_freed
 suffix:semicolon
 r_if
 c_cond
