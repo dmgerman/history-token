@@ -3508,7 +3508,10 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -3573,7 +3576,10 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -3618,7 +3624,10 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren

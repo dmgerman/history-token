@@ -1157,13 +1157,9 @@ id|table
 op_member_access_from_pointer
 r_private
 comma
-id|cpu_number_map
-c_func
-(paren
 id|smp_processor_id
 c_func
 (paren
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3251,7 +3247,7 @@ l_int|1
 suffix:semicolon
 id|i
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
@@ -3481,7 +3477,7 @@ l_int|0
 suffix:semicolon
 id|cpu
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|cpu
 op_increment
@@ -4061,7 +4057,7 @@ c_func
 id|tmp.size
 )paren
 op_star
-id|smp_num_cpus
+id|NR_CPUS
 )paren
 suffix:semicolon
 r_if
@@ -5385,7 +5381,7 @@ c_func
 id|table-&gt;table-&gt;size
 )paren
 op_star
-id|smp_num_cpus
+id|NR_CPUS
 )paren
 suffix:semicolon
 r_if
