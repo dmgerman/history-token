@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 DECL|variable|mostek_lock
 id|spinlock_t
 id|mostek_lock
@@ -1350,10 +1351,6 @@ suffix:semicolon
 (brace
 r_extern
 r_int
-id|_stext
-suffix:semicolon
-r_extern
-r_int
 id|rwlock_impl_begin
 comma
 id|rwlock_impl_end
@@ -1495,7 +1492,6 @@ op_sub_assign
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|pc
