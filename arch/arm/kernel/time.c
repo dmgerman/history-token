@@ -98,11 +98,7 @@ id|pc
 (brace
 id|fp
 op_assign
-id|thread_saved_fp
-c_func
-(paren
-id|current
-)paren
+id|regs-&gt;ARM_fp
 suffix:semicolon
 id|pc
 op_assign
