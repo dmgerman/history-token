@@ -612,28 +612,12 @@ id|state
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|t
 op_assign
 id|HT_PREFETCH_MODE
 op_lshift
 l_int|8
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 multiline_comment|/*&n;&t; *  Prefetch mode and unmask irq seems to conflict&n;&t; */
 r_if
 c_cond
@@ -668,12 +652,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|restore_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -694,6 +672,7 @@ l_string|&quot;dis&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* Assumes IRQ&squot;s are disabled or at least that no other process will attempt to&n; * access the IDE registers concurrently.&n; */
 DECL|function|tune_ht6560b
 r_static
 r_void
@@ -709,10 +688,6 @@ id|u8
 id|pio
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u8
 id|timing
 suffix:semicolon
@@ -753,18 +728,6 @@ comma
 id|pio
 )paren
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|drive-&gt;drive_data
 op_and_assign
 l_int|0xff00
@@ -773,12 +736,6 @@ id|drive-&gt;drive_data
 op_or_assign
 id|timing
 suffix:semicolon
-id|restore_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 macro_line|#ifdef DEBUG
 id|printk
 c_func

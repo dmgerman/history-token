@@ -16,9 +16,10 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/atapi.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -7023,7 +7024,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_unregister_subdriver
+id|ata_unregister_device
+c_func
 (paren
 id|drive
 )paren
@@ -7036,6 +7038,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|floppy
 )paren
@@ -7266,7 +7269,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_register_subdriver
+id|ata_register_device
 c_func
 (paren
 id|drive
