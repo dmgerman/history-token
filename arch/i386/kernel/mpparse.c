@@ -4807,6 +4807,13 @@ id|entry-&gt;irq
 )paren
 suffix:semicolon
 )brace
+id|print_IO_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
 macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER*/
