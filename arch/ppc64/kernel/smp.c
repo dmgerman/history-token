@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
@@ -2150,9 +2151,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_has_slb
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
 )paren
 )paren
 (brace

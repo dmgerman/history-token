@@ -1345,14 +1345,6 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
-DECL|macro|cpu_has_largepage
-mdefine_line|#define cpu_has_largepage()&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
-DECL|macro|cpu_has_slb
-mdefine_line|#define cpu_has_slb()&t;&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
-DECL|macro|cpu_has_tlbiel
-mdefine_line|#define cpu_has_tlbiel()&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
-DECL|macro|cpu_has_noexecute
-mdefine_line|#define cpu_has_noexecute()&t;(processor_type() == PV_POWER4 || &bslash;&n;&t;&t;&t;&t; processor_type() == PV_POWER4p)
 multiline_comment|/* XXX we have to call HV to set when in LPAR */
 DECL|macro|cpu_has_dabr
 mdefine_line|#define cpu_has_dabr()&t;&t;(1)

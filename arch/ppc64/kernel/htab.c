@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 multiline_comment|/*&n; * Note:  pte   --&gt; Linux PTE&n; *        HPTE  --&gt; PowerPC Hashed Page Table Entry&n; *&n; * Execution context:&n; *   htab_initialize is called with the MMU off (of course), but&n; *   the kernel has been copied down to zero so it can directly&n; *   reference global data.  At this point it is very difficult&n; *   to print debug info.&n; *&n; */
 DECL|variable|htab_data
 id|HTAB
@@ -486,9 +487,10 @@ multiline_comment|/* XXX we currently map kernel text rw, should fix this */
 r_if
 c_cond
 (paren
-id|cpu_has_largepage
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_16M_PAGE
 )paren
 op_logical_and
 id|systemcfg-&gt;physicalMemorySize
@@ -939,9 +941,10 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|cpu_has_noexecute
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_NOEXECUTE
 )paren
 op_logical_and
 id|pfn_valid

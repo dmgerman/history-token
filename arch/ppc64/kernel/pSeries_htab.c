@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|HPTE_LOCK_BIT
 mdefine_line|#define HPTE_LOCK_BIT 3
 DECL|function|pSeries_lock_hpte
@@ -781,9 +782,10 @@ multiline_comment|/* Ensure it is out of the tlb too */
 r_if
 c_cond
 (paren
-id|cpu_has_tlbiel
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_TLBIEL
 )paren
 op_logical_and
 op_logical_neg
@@ -1054,9 +1056,10 @@ multiline_comment|/* Invalidate the tlb */
 r_if
 c_cond
 (paren
-id|cpu_has_tlbiel
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_TLBIEL
 )paren
 op_logical_and
 op_logical_neg
@@ -1410,9 +1413,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_has_tlbiel
-c_func
 (paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_TLBIEL
 )paren
 op_logical_and
 op_logical_neg
