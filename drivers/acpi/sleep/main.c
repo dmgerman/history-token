@@ -605,7 +605,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|acpi_sleep_init
-id|subsys_initcall
+id|late_initcall
 c_func
 (paren
 id|acpi_sleep_init
