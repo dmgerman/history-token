@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* Version Information */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.5.4 (2002/04/11)&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.5.5 (2002/07/22)&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Petko Manolov &lt;petkan@users.sourceforge.net&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -91,8 +91,12 @@ mdefine_line|#define&t;RX_URB_FAIL&t;&t;3
 multiline_comment|/* Define these values to match your device */
 DECL|macro|VENDOR_ID_REALTEK
 mdefine_line|#define VENDOR_ID_REALTEK&t;&t;0x0bda
+DECL|macro|VENDOR_ID_MELCO
+mdefine_line|#define&t;VENDOR_ID_MELCO&t;&t;&t;0x0411
 DECL|macro|PRODUCT_ID_RTL8150
 mdefine_line|#define PRODUCT_ID_RTL8150&t;&t;0x8150
+DECL|macro|PRODUCT_ID_LUAKTX
+mdefine_line|#define&t;PRODUCT_ID_LUAKTX&t;&t;0x0012
 multiline_comment|/* table of devices that work with this driver */
 DECL|variable|rtl8150_table
 r_static
@@ -110,6 +114,16 @@ c_func
 id|VENDOR_ID_REALTEK
 comma
 id|PRODUCT_ID_RTL8150
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|VENDOR_ID_MELCO
+comma
+id|PRODUCT_ID_LUAKTX
 )paren
 )brace
 comma
@@ -3513,32 +3527,6 @@ id|err
 c_func
 (paren
 l_string|&quot;usb_set_configuration() failed&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|udev-&gt;descriptor.idVendor
-op_ne
-id|VENDOR_ID_REALTEK
-)paren
-op_logical_or
-(paren
-id|udev-&gt;descriptor.idProduct
-op_ne
-id|PRODUCT_ID_RTL8150
-)paren
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;Not the one we are interested about&quot;
 )paren
 suffix:semicolon
 r_return
