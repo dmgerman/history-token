@@ -3050,7 +3050,7 @@ id|signal.phy_pset
 l_int|2
 )braket
 op_assign
-id|this-&gt;chan
+id|this-&gt;def_chan
 suffix:semicolon
 r_if
 c_cond
@@ -8724,7 +8724,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|this-&gt;chan
+id|this-&gt;def_chan
 op_assign
 id|channel
 suffix:semicolon
