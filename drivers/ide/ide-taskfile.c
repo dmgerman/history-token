@@ -1177,6 +1177,7 @@ id|stat
 suffix:semicolon
 )brace
 DECL|function|ide_pio_sector
+r_static
 r_void
 id|ide_pio_sector
 c_func
@@ -1333,14 +1334,8 @@ id|flags
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|variable|ide_pio_sector
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|ide_pio_sector
-)paren
-suffix:semicolon
 DECL|function|ide_pio_multi
+r_static
 r_void
 id|ide_pio_multi
 c_func
@@ -1386,13 +1381,6 @@ id|write
 )paren
 suffix:semicolon
 )brace
-DECL|variable|ide_pio_multi
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|ide_pio_multi
-)paren
-suffix:semicolon
 DECL|function|ide_pio_datablock
 r_static
 r_inline
@@ -1461,6 +1449,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|task_error
+r_static
 id|ide_startstop_t
 id|task_error
 c_func
@@ -1584,13 +1573,6 @@ id|stat
 )paren
 suffix:semicolon
 )brace
-DECL|variable|task_error
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|task_error
-)paren
-suffix:semicolon
 DECL|function|task_end_request
 r_static
 r_void
@@ -1708,6 +1690,7 @@ c_func
 id|IDE_STATUS_REG
 )paren
 suffix:semicolon
+multiline_comment|/* new way for dealing with premature shared PCI interrupts */
 r_if
 c_cond
 (paren
