@@ -41,11 +41,6 @@ id|semaphore
 id|mutex
 suffix:semicolon
 multiline_comment|/* locks this struct */
-DECL|member|sem
-r_struct
-id|semaphore
-id|sem
-suffix:semicolon
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
@@ -79,22 +74,6 @@ DECL|member|remove_pending
 r_int
 id|remove_pending
 suffix:semicolon
-DECL|member|rd_buf
-r_char
-id|rd_buf
-(braket
-id|BULK_RCV_MAX
-)braket
-suffix:semicolon
-multiline_comment|/* read  buffer */
-DECL|member|wr_buf
-r_char
-id|wr_buf
-(braket
-id|BULK_SND_MAX
-)braket
-suffix:semicolon
-multiline_comment|/* write buffer */
 DECL|typedef|tiglusb_t
 DECL|typedef|ptiglusb_t
 )brace
@@ -103,10 +82,5 @@ comma
 op_star
 id|ptiglusb_t
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 macro_line|#endif
 eof
