@@ -693,7 +693,7 @@ op_or_assign
 id|ROSE_COND_OWN_RX_BUSY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * If the window is full, ack the frame, else start the&n;&t;&t;&t; * acknowledge hold back timer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the window is full, ack the frame, else start the&n;&t;&t; * acknowledge hold back timer.&n;&t;&t; */
 r_if
 c_cond
 (paren

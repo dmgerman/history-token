@@ -4762,7 +4762,6 @@ id|arg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*NOTREACHED*/
 r_return
 l_int|0
 suffix:semicolon
