@@ -4109,16 +4109,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|umount_tree
-c_func
-(paren
-r_struct
-id|vfsmount
-op_star
-)paren
-suffix:semicolon
 DECL|macro|kern_umount
 mdefine_line|#define kern_umount mntput
 r_extern
