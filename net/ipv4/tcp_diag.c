@@ -327,6 +327,10 @@ id|info-&gt;tcpi_rcv_space
 op_assign
 id|tp-&gt;rcvq_space.space
 suffix:semicolon
+id|info-&gt;tcpi_total_retrans
+op_assign
+id|tp-&gt;total_retrans
+suffix:semicolon
 )brace
 DECL|function|tcpdiag_fill
 r_static

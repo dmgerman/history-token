@@ -4385,6 +4385,9 @@ c_func
 id|TCP_MIB_RETRANSSEGS
 )paren
 suffix:semicolon
+id|tp-&gt;total_retrans
+op_increment
+suffix:semicolon
 macro_line|#if FASTRETRANS_DEBUG &gt; 0
 r_if
 c_cond
