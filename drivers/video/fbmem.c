@@ -2596,7 +2596,7 @@ c_cond
 (paren
 id|fb-&gt;fb_blank
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 op_minus

@@ -1027,7 +1027,7 @@ id|gen_set_cmap
 comma
 id|fb_setcolreg
 suffix:colon
-id|control_setcolreg
+id|controlfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon
