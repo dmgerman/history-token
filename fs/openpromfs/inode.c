@@ -402,6 +402,10 @@ c_cond
 id|filp-&gt;f_pos
 op_ge
 l_int|0xffffff
+op_logical_or
+id|count
+op_ge
+l_int|0xffffff
 )paren
 r_return
 op_minus
@@ -1643,7 +1647,7 @@ id|OPP_HEXSTRING
 r_char
 id|buffer
 (braket
-l_int|8
+l_int|3
 )braket
 suffix:semicolon
 r_if
@@ -1672,6 +1676,7 @@ l_string|&quot;%02x&quot;
 comma
 (paren
 r_int
+r_char
 )paren
 op_star
 (paren
@@ -1747,6 +1752,7 @@ l_string|&quot;%02x&quot;
 comma
 (paren
 r_int
+r_char
 )paren
 op_star
 (paren
@@ -1810,6 +1816,7 @@ l_string|&quot;%02x&quot;
 comma
 (paren
 r_int
+r_char
 )paren
 op_star
 (paren
@@ -1948,11 +1955,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|filp-&gt;f_pos
-op_plus
+op_ge
+l_int|0xffffff
+op_logical_or
 id|count
-)paren
 op_ge
 l_int|0xffffff
 )paren
