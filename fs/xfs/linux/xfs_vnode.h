@@ -111,7 +111,7 @@ id|inode
 id|v_inode
 suffix:semicolon
 multiline_comment|/* Linux inode */
-macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
+macro_line|#ifdef XFS_VNODE_TRACE
 DECL|member|v_trace
 r_struct
 id|ktrace
@@ -1683,17 +1683,17 @@ id|vnode
 op_star
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_XFS_VNODE_TRACING)
+macro_line|#if defined(XFS_VNODE_TRACE)
 DECL|macro|VN_HOLD
-mdefine_line|#define VN_HOLD(vp)&t;&t;&bslash;&n;&t;((void)vn_hold(vp), &bslash;&n;&t;  vn_trace_hold(vp, __FILE__, __LINE__, (inst_t *)__return_address))
+mdefine_line|#define VN_HOLD(vp)&t;&t;&bslash;&n;&t;((void)vn_hold(vp),&t;&bslash;&n;&t;  vn_trace_hold(vp, __FILE__, __LINE__, (inst_t *)__return_address))
 DECL|macro|VN_RELE
 mdefine_line|#define VN_RELE(vp)&t;&t;&bslash;&n;&t;  (vn_trace_rele(vp, __FILE__, __LINE__, (inst_t *)__return_address), &bslash;&n;&t;   iput(LINVFS_GET_IP(vp)))
-macro_line|#else&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
+macro_line|#else
 DECL|macro|VN_HOLD
 mdefine_line|#define VN_HOLD(vp)&t;&t;((void)vn_hold(vp))
 DECL|macro|VN_RELE
 mdefine_line|#define VN_RELE(vp)&t;&t;(iput(LINVFS_GET_IP(vp)))
-macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
+macro_line|#endif
 multiline_comment|/*&n; * Vname handling macros.&n; */
 DECL|macro|VNAME
 mdefine_line|#define VNAME(dentry)&t;&t;((char *) (dentry)-&gt;d_name.name)
@@ -1810,10 +1810,10 @@ DECL|macro|FSYNC_INVAL
 mdefine_line|#define FSYNC_INVAL&t;0x2&t;/* flush and invalidate cached data */
 DECL|macro|FSYNC_DATA
 mdefine_line|#define FSYNC_DATA&t;0x4&t;/* synchronous fsync of data only */
-macro_line|#if (defined(CONFIG_XFS_VNODE_TRACING))
+multiline_comment|/*&n; * Tracking vnode activity.&n; */
+macro_line|#if defined(XFS_VNODE_TRACE)
 DECL|macro|VNODE_TRACE_SIZE
 mdefine_line|#define&t;VNODE_TRACE_SIZE&t;16&t;&t;/* number of trace entries */
-multiline_comment|/*&n; * Tracing entries.&n; */
 DECL|macro|VNODE_KTRACE_ENTRY
 mdefine_line|#define&t;VNODE_KTRACE_ENTRY&t;1
 DECL|macro|VNODE_KTRACE_EXIT
@@ -1912,7 +1912,7 @@ op_star
 suffix:semicolon
 DECL|macro|VN_TRACE
 mdefine_line|#define&t;VN_TRACE(vp)&t;&t;&bslash;&n;&t;vn_trace_ref(vp, __FILE__, __LINE__, (inst_t *)__return_address)
-macro_line|#else&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
+macro_line|#else
 DECL|macro|vn_trace_entry
 mdefine_line|#define&t;vn_trace_entry(a,b,c)
 DECL|macro|vn_trace_exit
@@ -1925,6 +1925,6 @@ DECL|macro|vn_trace_rele
 mdefine_line|#define&t;vn_trace_rele(a,b,c,d)
 DECL|macro|VN_TRACE
 mdefine_line|#define&t;VN_TRACE(vp)
-macro_line|#endif&t;/* ! (defined(CONFIG_XFS_VNODE_TRACING)) */
+macro_line|#endif
 macro_line|#endif&t;/* __XFS_VNODE_H__ */
 eof
