@@ -2828,7 +2828,7 @@ id|HIDIOCSUSAGES
 op_logical_and
 (paren
 id|uref_multi-&gt;num_values
-op_ge
+OG
 id|HID_MAX_MULTI_USAGES
 op_logical_or
 id|uref-&gt;usage_index
@@ -2836,12 +2836,6 @@ op_plus
 id|uref_multi-&gt;num_values
 op_ge
 id|field-&gt;report_count
-op_logical_or
-id|uref-&gt;usage_index
-op_plus
-id|uref_multi-&gt;num_values
-OL
-id|uref-&gt;usage_index
 )paren
 )paren
 r_goto
