@@ -1061,7 +1061,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;signature:0%.8lx, command:0lx%.8lx, event:0x%.8lx, perf_level:0x%.8lx.&bslash;n&quot;
+l_string|&quot;signature:0x%.8lx, command:0x%.8lx, event:0x%.8lx, perf_level:0x%.8lx.&bslash;n&quot;
 comma
 id|ist_info.signature
 comma
