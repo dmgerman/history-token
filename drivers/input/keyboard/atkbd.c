@@ -1438,20 +1438,19 @@ r_char
 id|set
 suffix:semicolon
 DECL|member|release
+r_int
 r_char
 id|release
 suffix:semicolon
 DECL|member|ack
+r_int
 r_char
 id|ack
 suffix:semicolon
 DECL|member|emul
+r_int
 r_char
 id|emul
-suffix:semicolon
-DECL|member|error
-r_char
-id|error
 suffix:semicolon
 DECL|member|id
 r_int
@@ -2845,7 +2844,7 @@ c_func
 (paren
 id|atkbd-&gt;name
 comma
-l_string|&quot;AT Set 2 Extended keyboard&bslash;n&quot;
+l_string|&quot;AT Set 2 Extended keyboard&quot;
 )paren
 suffix:semicolon
 )brace
