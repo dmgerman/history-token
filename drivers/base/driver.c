@@ -116,6 +116,12 @@ c_func
 id|drv
 )paren
 suffix:semicolon
+id|driver_bind
+c_func
+(paren
+id|drv
+)paren
+suffix:semicolon
 id|put_driver
 c_func
 (paren
@@ -175,6 +181,12 @@ comma
 id|drv-&gt;name
 comma
 id|drv-&gt;bus-&gt;name
+)paren
+suffix:semicolon
+id|driver_unbind
+c_func
+(paren
+id|drv
 )paren
 suffix:semicolon
 id|write_lock
