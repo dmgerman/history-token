@@ -8864,7 +8864,7 @@ suffix:semicolon
 )brace
 DECL|function|tg3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|tg3_interrupt
 c_func
 (paren
@@ -9001,6 +9001,9 @@ id|tp-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
