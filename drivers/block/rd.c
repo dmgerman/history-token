@@ -16,9 +16,6 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/* The RAM disk size is now a parameter */
-DECL|macro|NUM_RAMDISKS
-mdefine_line|#define NUM_RAMDISKS 16&t;&t;/* This cannot be overridden (yet) */
 multiline_comment|/* Various static variables go here.  Most are used only in the RAM disk code.&n; */
 DECL|variable|rd_disks
 r_static
@@ -27,7 +24,7 @@ id|gendisk
 op_star
 id|rd_disks
 (braket
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 )braket
 suffix:semicolon
 DECL|variable|rd_bdev
@@ -37,7 +34,7 @@ id|block_device
 op_star
 id|rd_bdev
 (braket
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 )braket
 suffix:semicolon
 multiline_comment|/* Protected device data */
@@ -48,7 +45,7 @@ id|request_queue
 op_star
 id|rd_queue
 (braket
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Parameters for the boot-loading of the RAM disk.  These are set by&n; * init/main.c (from arguments to the kernel command line) or from the&n; * architecture-specific setup routine (from the stored boot sector&n; * information).&n; */
@@ -1237,7 +1234,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 suffix:semicolon
 id|i
 op_increment
@@ -1388,7 +1385,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 suffix:semicolon
 id|i
 op_increment
@@ -1454,7 +1451,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 suffix:semicolon
 id|i
 op_increment
@@ -1588,7 +1585,7 @@ c_func
 l_string|&quot;RAMDISK driver initialized: &quot;
 l_string|&quot;%d RAM disks of %dK size %d blocksize&bslash;n&quot;
 comma
-id|NUM_RAMDISKS
+id|CONFIG_BLK_DEV_RAM_COUNT
 comma
 id|rd_size
 comma
