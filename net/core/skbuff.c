@@ -146,18 +146,6 @@ id|u8
 op_star
 id|data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|gfp_mask
-op_amp
-id|__GFP_WAIT
-)paren
-id|might_sleep
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Get the HEAD */
 id|skb
 op_assign
