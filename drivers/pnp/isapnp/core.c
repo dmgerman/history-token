@@ -5561,7 +5561,7 @@ id|protocol_for_each_card
 c_func
 (paren
 op_amp
-id|isapnp_protocol
+id|isapnp_card_protocol
 comma
 id|card
 )paren
