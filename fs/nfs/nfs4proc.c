@@ -2256,14 +2256,14 @@ op_star
 id|fhandle
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 op_star
 id|spp
 )paren
 (brace
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -2508,7 +2508,7 @@ op_logical_neg
 (paren
 id|sp
 op_assign
-id|nfs4_get_shareowner
+id|nfs4_get_state_owner
 c_func
 (paren
 id|dir
@@ -2519,7 +2519,7 @@ id|dir
 id|dprintk
 c_func
 (paren
-l_string|&quot;nfs4_do_open: nfs4_get_shareowner failed!&bslash;n&quot;
+l_string|&quot;nfs4_do_open: nfs4_get_state_owner failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2871,7 +2871,7 @@ op_star
 id|sattr
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -3028,7 +3028,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -3138,7 +3138,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* hmm. we are done with the inode, and in the process of freeing&n;&t; * the shareowner. we keep this around to process errors&n;&t; */
+multiline_comment|/* hmm. we are done with the inode, and in the process of freeing&n;&t; * the state_owner. we keep this around to process errors&n;&t; */
 id|nfs4_increment_seqid
 c_func
 (paren
@@ -3653,7 +3653,7 @@ op_amp
 id|ATTR_SIZE
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 op_assign
@@ -4343,7 +4343,7 @@ id|inode
 )paren
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -4650,7 +4650,7 @@ id|inode
 )paren
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -4915,7 +4915,7 @@ r_int
 id|oflags
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 op_assign
@@ -6967,7 +6967,7 @@ id|data-&gt;pages.next
 )paren
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -7396,7 +7396,7 @@ id|data-&gt;pages.next
 )paren
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -8147,7 +8147,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 op_assign
@@ -8181,7 +8181,7 @@ c_cond
 id|status
 )paren
 (brace
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 id|inode
@@ -8205,7 +8205,7 @@ comma
 id|flags
 )paren
 )paren
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 id|inode

@@ -198,19 +198,19 @@ macro_line|#ifdef CONFIG_NFS_V4
 multiline_comment|/* NFSv4 state */
 DECL|member|ro_owner
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|ro_owner
 suffix:semicolon
 DECL|member|wo_owner
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|wo_owner
 suffix:semicolon
 DECL|member|rw_owner
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|rw_owner
 suffix:semicolon
@@ -1445,10 +1445,10 @@ id|cl_lockowner_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;* The -&gt;so_sema is held during all shareowner seqid-mutating operations:&n;* OPEN, OPEN_DOWNGRADE, and CLOSE.&n;* Its purpose is to properly serialize so_seqid, as mandated by&n;* the protocol.&n;*/
-DECL|struct|nfs4_shareowner
+multiline_comment|/*&n;* The -&gt;so_sema is held during all state_owner seqid-mutating operations:&n;* OPEN, OPEN_DOWNGRADE, and CLOSE.&n;* Its purpose is to properly serialize so_seqid, as mandated by&n;* the protocol.&n;*/
+DECL|struct|nfs4_state_owner
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 (brace
 DECL|member|so_id
 id|u32
@@ -1501,7 +1501,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -1542,9 +1542,9 @@ id|clp
 suffix:semicolon
 r_extern
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
-id|nfs4_get_shareowner
+id|nfs4_get_state_owner
 c_func
 (paren
 r_struct
@@ -1554,7 +1554,7 @@ id|inode
 )paren
 suffix:semicolon
 r_void
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 r_struct
@@ -1563,7 +1563,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -1579,7 +1579,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 comma
@@ -1597,14 +1597,14 @@ id|u32
 id|status
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|nfs4_test_shareowner
+id|nfs4_test_state_owner
 c_func
 (paren
 r_struct
@@ -1618,7 +1618,7 @@ id|open_flags
 )paren
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|nfs4_get_inode_share
 c_func
@@ -1715,8 +1715,8 @@ DECL|macro|create_nfsv4_state
 mdefine_line|#define create_nfsv4_state(server, data)  0
 DECL|macro|destroy_nfsv4_state
 mdefine_line|#define destroy_nfsv4_state(server)       do { } while (0)
-DECL|macro|nfs4_put_shareowner
-mdefine_line|#define nfs4_put_shareowner(inode, owner) do { } while (0)
+DECL|macro|nfs4_put_state_owner
+mdefine_line|#define nfs4_put_state_owner(inode, owner) do { } while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * NFS debug flags&n; */

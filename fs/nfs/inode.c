@@ -471,7 +471,7 @@ id|cred
 )paren
 suffix:semicolon
 multiline_comment|/* Clean up the V4 state */
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 id|inode
@@ -479,7 +479,7 @@ comma
 id|nfsi-&gt;wo_owner
 )paren
 suffix:semicolon
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 id|inode
@@ -487,7 +487,7 @@ comma
 id|nfsi-&gt;ro_owner
 )paren
 suffix:semicolon
-id|nfs4_put_shareowner
+id|nfs4_put_state_owner
 c_func
 (paren
 id|inode

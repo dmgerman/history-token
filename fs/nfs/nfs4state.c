@@ -203,12 +203,12 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * nfs4_get_shareowner(): this is called on the OPEN or CREATE path to&n; * obtain a new shareowner.&n; *&n; * There are three shareowners (open_owner4 in rfc3010) per inode,&n; * one for each possible combination of share lock access. Since&n; * Linux does not support the deny access type, there are&n; * three (not 9) referenced by the nfs_inode:&n; *&n; * O_WRONLY: inode-&gt;wo_owner&n; * O_RDONLY: inode-&gt;ro_owner&n; * O_RDWR:   inode-&gt;rw_owner&n; *&n; * We create a new shareowner the first time a file is OPENed with&n; * one of the above shares. All other OPENs with a similar&n; * share use the single stateid associated with the inode.&n; *&n; */
+multiline_comment|/*&n; * nfs4_get_state_owner(): this is called on the OPEN or CREATE path to&n; * obtain a new state_owner.&n; *&n; * There are three state_owners (open_owner4 in rfc3010) per inode,&n; * one for each possible combination of share lock access. Since&n; * Linux does not support the deny access type, there are&n; * three (not 9) referenced by the nfs_inode:&n; *&n; * O_WRONLY: inode-&gt;wo_owner&n; * O_RDONLY: inode-&gt;ro_owner&n; * O_RDWR:   inode-&gt;rw_owner&n; *&n; * We create a new state_owner the first time a file is OPENed with&n; * one of the above shares. All other OPENs with a similar&n; * share use the single stateid associated with the inode.&n; *&n; */
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
-DECL|function|nfs4_get_shareowner
-id|nfs4_get_shareowner
+DECL|function|nfs4_get_state_owner
+id|nfs4_get_state_owner
 c_func
 (paren
 r_struct
@@ -223,7 +223,7 @@ op_star
 id|clp
 suffix:semicolon
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 suffix:semicolon
@@ -306,10 +306,10 @@ r_return
 id|sp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called for each non-null inode shareowner in nfs_clear_inode, &n; * or if nfs4_do_open fails.&n; */
+multiline_comment|/*&n; * Called for each non-null inode state_owner in nfs_clear_inode, &n; * or if nfs4_do_open fails.&n; */
 r_void
-DECL|function|nfs4_put_shareowner
-id|nfs4_put_shareowner
+DECL|function|nfs4_put_state_owner
+id|nfs4_put_state_owner
 c_func
 (paren
 r_struct
@@ -318,7 +318,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -363,7 +363,7 @@ id|u32
 id|status
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 )paren
@@ -397,7 +397,7 @@ op_star
 id|inode
 comma
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 id|sp
 comma
@@ -491,8 +491,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;* Boolean test to determine if an OPEN call goes on the wire.&n;*&n;* Called by nfs4_proc_open.&n;*/
 r_int
-DECL|function|nfs4_test_shareowner
-id|nfs4_test_shareowner
+DECL|function|nfs4_test_state_owner
+id|nfs4_test_state_owner
 c_func
 (paren
 r_struct
@@ -573,7 +573,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_struct
-id|nfs4_shareowner
+id|nfs4_state_owner
 op_star
 DECL|function|nfs4_get_inode_share
 id|nfs4_get_inode_share
