@@ -105,11 +105,6 @@ suffix:semicolon
 multiline_comment|/* general race avoidance */
 )brace
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 DECL|variable|rio_instance
 r_static
 r_struct
@@ -1936,9 +1931,9 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
-l_string|&quot;rio500&quot;
+l_string|&quot;usb/rio500&quot;
 comma
 id|DEVFS_FL_DEFAULT
 comma

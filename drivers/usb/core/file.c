@@ -13,17 +13,11 @@ macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|variable|usb_devfs_handle
+r_static
 id|devfs_handle_t
 id|usb_devfs_handle
 suffix:semicolon
 multiline_comment|/* /dev/usb dir. */
-DECL|variable|usb_devfs_handle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_devfs_handle
-)paren
-suffix:semicolon
 DECL|macro|MAX_USB_MINORS
 mdefine_line|#define MAX_USB_MINORS&t;256
 DECL|variable|usb_minors

@@ -253,10 +253,6 @@ id|rtl8150
 id|rtl8150_t
 suffix:semicolon
 multiline_comment|/* the global usb devfs handle */
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
 DECL|variable|multicast_filter_limit
 r_int
 r_int
