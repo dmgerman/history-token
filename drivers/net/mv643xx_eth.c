@@ -162,12 +162,12 @@ r_int
 id|eth_port_num
 )paren
 suffix:semicolon
-DECL|variable|mv64x60_eth_shared_base
+DECL|variable|mv643xx_eth_shared_base
 r_static
 r_void
 id|__iomem
 op_star
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 suffix:semicolon
 multiline_comment|/* used to protect MV643XX_ETH_SMI_REG, which is shared across ports */
 DECL|variable|mv643xx_eth_phy_lock
@@ -195,7 +195,7 @@ id|reg_base
 suffix:semicolon
 id|reg_base
 op_assign
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 op_minus
 id|MV643XX_ETH_SHARED_REGS
 suffix:semicolon
@@ -230,7 +230,7 @@ id|reg_base
 suffix:semicolon
 id|reg_base
 op_assign
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 op_minus
 id|MV643XX_ETH_SHARED_REGS
 suffix:semicolon
@@ -5294,7 +5294,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 op_assign
 id|ioremap
 c_func
@@ -5307,7 +5307,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 op_eq
 l_int|NULL
 )paren
@@ -5334,10 +5334,10 @@ id|ddev
 id|iounmap
 c_func
 (paren
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 )paren
 suffix:semicolon
-id|mv64x60_eth_shared_base
+id|mv643xx_eth_shared_base
 op_assign
 l_int|NULL
 suffix:semicolon
