@@ -315,6 +315,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|sz
 suffix:semicolon
 id|s-&gt;s_flags
