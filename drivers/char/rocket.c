@@ -43,8 +43,6 @@ DECL|macro|REV_PCI_ORDER
 macro_line|#undef REV_PCI_ORDER
 DECL|macro|ROCKET_DEBUG_IO
 macro_line|#undef ROCKET_DEBUG_IO
-DECL|macro|CONFIG_DEVFS_FS
-macro_line|#undef CONFIG_DEVFS_FS
 multiline_comment|/*   CAUTION!!!!!  The TIME_STAT Function relies on the Pentium 64 bit&n; *    register.  For various reasons related to 1.2.13, the test for this&n; *    register is omitted from this driver.  If you are going to enable&n; *    this option, make sure you are running a Pentium CPU and that a&n; *    cat of /proc/cpuinfo shows ability TS Counters as Yes.  Warning part&n; *    done, don&squot;t cry to me if you enable this options and things won&squot;t&n; *    work.  If it gives you any problems, then disable the option.  The code&n; *    in this function is pretty straight forward, if it breaks on your&n; *    CPU, there is probably something funny about your CPU.&n; */
 DECL|macro|TIME_STAT
 macro_line|#undef TIME_STAT&t;&t;/* For performing timing statistics on driver. */
