@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
