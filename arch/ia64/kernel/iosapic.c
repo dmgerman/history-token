@@ -20,8 +20,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|DEBUG_INTERRUPT_ROUTING
 macro_line|#undef DEBUG_INTERRUPT_ROUTING
-DECL|macro|OVERRIDE_DEBUG
-macro_line|#undef OVERRIDE_DEBUG
 macro_line|#ifdef DEBUG_INTERRUPT_ROUTING
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)&t;printk(fmt)
@@ -1694,9 +1692,13 @@ op_amp
 id|SMP_IRQ_REDIRECTION
 )paren
 r_return
-id|hard_smp_processor_id
+id|cpu_physical_id
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some interrupts (ACPI SCI, for instance) are registered&n;&t; * before the BSP is marked as online.&n;&t; */
@@ -1714,9 +1716,13 @@ c_func
 )paren
 )paren
 r_return
-id|hard_smp_processor_id
+id|cpu_physical_id
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
@@ -1910,9 +1916,13 @@ id|cpu
 suffix:semicolon
 macro_line|#else
 r_return
-id|hard_smp_processor_id
+id|cpu_physical_id
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2701,9 +2711,13 @@ r_int
 r_int
 id|dest
 op_assign
-id|hard_smp_processor_id
+id|cpu_physical_id
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|vector
