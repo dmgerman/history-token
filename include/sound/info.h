@@ -1051,7 +1051,7 @@ suffix:semicolon
 DECL|macro|snd_card_proc_new
 mdefine_line|#define snd_card_proc_new(card,name,entryp)  0 /* always success */
 DECL|macro|snd_info_set_text_ops
-mdefine_line|#define snd_info_set_text_ops(entry,private_data,read) /*NOP*/
+mdefine_line|#define snd_info_set_text_ops(entry,private_data,read_size,read) /*NOP*/
 macro_line|#endif
 multiline_comment|/*&n; * OSS info part&n; */
 macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)

@@ -4042,6 +4042,15 @@ id|snd_pcm_uframes_t
 id|frames
 )paren
 suffix:semicolon
+r_int
+id|snd_pcm_limit_hw_rates
+c_func
+(paren
+id|snd_pcm_runtime_t
+op_star
+id|runtime
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  Timer interface&n; */
 r_void
 id|snd_pcm_timer_resolution_change

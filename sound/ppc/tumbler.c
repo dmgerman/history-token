@@ -4318,7 +4318,7 @@ c_func
 id|mix
 comma
 op_amp
-id|tumbler_bass_vol_info
+id|snapper_bass_vol_info
 )paren
 suffix:semicolon
 id|tumbler_set_mono_volume
@@ -4327,7 +4327,7 @@ c_func
 id|mix
 comma
 op_amp
-id|tumbler_treble_vol_info
+id|snapper_treble_vol_info
 )paren
 suffix:semicolon
 id|snapper_set_drc

@@ -935,10 +935,17 @@ DECL|macro|SOLEH
 mdefine_line|#define SOLEH&t;&t;&t;0x5d&t;&t;/* Stop on loop enable high register&t;&t;*/
 DECL|macro|SPBYPASS
 mdefine_line|#define SPBYPASS&t;&t;0x5e&t;&t;/* SPDIF BYPASS mode register&t;&t;&t;*/
-DECL|macro|SPBYPASS_ENABLE
-mdefine_line|#define SPBYPASS_ENABLE&t;&t;0x00000001&t;/* Enable SPDIF bypass mode&t;&t;&t;*/
+DECL|macro|SPBYPASS_SPDIF0_MASK
+mdefine_line|#define SPBYPASS_SPDIF0_MASK&t;0x00000003&t;/* SPDIF 0 bypass mode&t;&t;&t;&t;*/
+DECL|macro|SPBYPASS_SPDIF1_MASK
+mdefine_line|#define SPBYPASS_SPDIF1_MASK&t;0x0000000c&t;/* SPDIF 1 bypass mode&t;&t;&t;&t;*/
+multiline_comment|/* bypass mode: 0 - DSP; 1 - SPDIF A, 2 - SPDIF B, 3 - SPDIF C&t;&t;&t;&t;&t;*/
+DECL|macro|SPBYPASS_FORMAT
+mdefine_line|#define SPBYPASS_FORMAT&t;&t;0x00000f00      /* If 1, SPDIF XX uses 24 bit, if 0 - 20 bit&t;*/
 DECL|macro|AC97SLOT
 mdefine_line|#define AC97SLOT&t;&t;0x5f            /* additional AC97 slots enable bits&t;&t;*/
+DECL|macro|AC97SLOT_10K2
+mdefine_line|#define AC97SLOT_10K2&t;&t;0x03
 DECL|macro|AC97SLOT_CNTR
 mdefine_line|#define AC97SLOT_CNTR&t;&t;0x10            /* Center enable */
 DECL|macro|AC97SLOT_LFE

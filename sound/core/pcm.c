@@ -1632,6 +1632,20 @@ comma
 id|runtime-&gt;oss.periods
 )paren
 suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;OSS period frames: %lu&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|runtime-&gt;oss.period_frames
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif
 id|snd_pcm_stream_unlock_irq
@@ -5651,6 +5665,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_build_linear_format
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_limit_hw_rates
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_limit_hw_rates
 )paren
 suffix:semicolon
 eof
