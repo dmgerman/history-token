@@ -8539,7 +8539,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Suspending device %lx&bslash;n&quot;
+l_string|&quot;Suspending device %p&bslash;n&quot;
 comma
 id|dev-&gt;driver_data
 )paren

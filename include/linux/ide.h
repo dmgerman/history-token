@@ -387,7 +387,7 @@ id|OUTB
 id|u8
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -401,7 +401,7 @@ id|OUTW
 id|u16
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -415,7 +415,7 @@ id|OUTL
 id|u32
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -426,7 +426,7 @@ op_star
 id|OUTSW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -444,7 +444,7 @@ op_star
 id|OUTSL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -462,7 +462,7 @@ op_star
 id|INB
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -473,7 +473,7 @@ op_star
 id|INW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -484,7 +484,7 @@ op_star
 id|INL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -495,7 +495,7 @@ op_star
 id|INSW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -513,7 +513,7 @@ op_star
 id|INSL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -3011,7 +3011,7 @@ id|OUTB
 id|u8
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3025,7 +3025,7 @@ id|OUTW
 id|u16
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3039,7 +3039,7 @@ id|OUTL
 id|u32
 id|addr
 comma
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3050,7 +3050,7 @@ op_star
 id|OUTSW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -3068,7 +3068,7 @@ op_star
 id|OUTSL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -3086,7 +3086,7 @@ op_star
 id|INB
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3097,7 +3097,7 @@ op_star
 id|INW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3108,7 +3108,7 @@ op_star
 id|INL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 )paren
 suffix:semicolon
@@ -3119,7 +3119,7 @@ op_star
 id|INSW
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
@@ -3137,7 +3137,7 @@ op_star
 id|INSL
 )paren
 (paren
-id|u32
+id|ide_ioreg_t
 id|port
 comma
 r_void
