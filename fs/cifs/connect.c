@@ -286,9 +286,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|tcon
+)paren
+op_logical_and
+(paren
+id|tcon-&gt;ses
+)paren
+op_logical_and
+(paren
 id|tcon-&gt;ses-&gt;server
 op_eq
 id|server
+)paren
 )paren
 (brace
 id|tcon-&gt;tidStatus
@@ -3602,6 +3612,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* BB other socket options to set KEEPALIVE, timeouts? NODELAY? */
 id|cFYI
 c_func
 (paren
@@ -3919,6 +3930,7 @@ op_ge
 l_int|0
 )paren
 (brace
+multiline_comment|/* BB other socket options to set KEEPALIVE, timeouts? NODELAY? */
 r_return
 id|rc
 suffix:semicolon

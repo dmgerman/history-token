@@ -1184,7 +1184,7 @@ id|nls_codepage
 suffix:semicolon
 r_extern
 r_int
-id|CIFSSMBDummyRenameOpenFile
+id|CIFSSMBRenameOpenFile
 c_func
 (paren
 r_const
@@ -1198,6 +1198,10 @@ id|pTcon
 comma
 r_int
 id|netfid
+comma
+r_char
+op_star
+id|target_name
 comma
 r_const
 r_struct

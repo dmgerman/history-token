@@ -3198,8 +3198,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* no response expected */
+)brace
 id|pSMB-&gt;NumberOfLocks
 op_assign
 id|cpu_to_le32
@@ -3863,7 +3863,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Send error in RMDir = %d&quot;
+l_string|&quot;Send error in rename = %d&quot;
 comma
 id|rc
 )paren
@@ -3885,9 +3885,9 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|CIFSSMBDummyRenameOpenFile
+DECL|function|CIFSSMBRenameOpenFile
 r_int
-id|CIFSSMBDummyRenameOpenFile
+id|CIFSSMBRenameOpenFile
 c_func
 (paren
 r_const
@@ -3901,6 +3901,10 @@ id|pTcon
 comma
 r_int
 id|netfid
+comma
+r_char
+op_star
+id|target_name
 comma
 r_const
 r_struct
@@ -3932,6 +3936,12 @@ r_char
 op_star
 id|data_offset
 suffix:semicolon
+r_char
+id|dummy_string
+(braket
+l_int|30
+)braket
+suffix:semicolon
 r_int
 id|rc
 op_assign
@@ -3951,7 +3961,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Rename to Dummy Random File Name&quot;
+l_string|&quot;Rename to File by handle&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4136,6 +4146,25 @@ id|rename_info-&gt;root_fid
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* unicode only call */
+r_if
+c_cond
+(paren
+id|target_name
+op_eq
+l_int|NULL
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|dummy_string
+comma
+l_string|&quot;cifs%x&quot;
+comma
+id|pSMB-&gt;hdr.Mid
+)paren
+suffix:semicolon
 id|len_of_str
 op_assign
 id|cifs_strtoUCS
@@ -4147,11 +4176,56 @@ op_star
 )paren
 id|rename_info-&gt;target_name
 comma
-l_string|&quot;.cifs&quot;
+id|dummy_string
 comma
-l_int|12
+l_int|24
 comma
 id|nls_codepage
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|len_of_str
+op_assign
+id|cifs_strtoUCS
+c_func
+(paren
+(paren
+m_wchar_t
+op_star
+)paren
+id|rename_info-&gt;target_name
+comma
+id|target_name
+comma
+l_int|530
+comma
+id|nls_codepage
+)paren
+suffix:semicolon
+)brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;len of str: %d&quot;
+comma
+id|len_of_str
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB removeme BB */
+id|rename_info-&gt;target_name_len
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|2
+op_star
+id|len_of_str
 )paren
 suffix:semicolon
 id|pSMB-&gt;DataCount
@@ -4181,7 +4255,6 @@ id|pSMB-&gt;Fid
 op_assign
 id|netfid
 suffix:semicolon
-multiline_comment|/* should we check the passthrough bit ? */
 id|pSMB-&gt;InformationLevel
 op_assign
 id|cpu_to_le16
@@ -4247,7 +4320,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Send error in DummyRename = %d&quot;
+l_string|&quot;Send error in Rename (by file handle) = %d&quot;
 comma
 id|rc
 )paren
