@@ -922,7 +922,7 @@ id|bound
 )paren
 suffix:semicolon
 DECL|macro|PSCHED_TDIFF_SAFE
-mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   int __delta_sec = (tv1).tv_sec - (tv2).tv_sec; &bslash;&n;&t;   int __delta = (tv1).tv_usec - (tv2).tv_usec; &bslash;&n;&t;   switch (__delta_sec) { &bslash;&n;&t;   default: &bslash;&n;&t;&t;   __delta = psched_tod_diff(__delta_sec, bound); guard; break; &bslash;&n;&t;   case 2: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 1: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 0: ; &bslash;&n;&t;   } &bslash;&n;&t;   __delta; &bslash;&n;})
+mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound) &bslash;&n;({ &bslash;&n;&t;   int __delta_sec = (tv1).tv_sec - (tv2).tv_sec; &bslash;&n;&t;   int __delta = (tv1).tv_usec - (tv2).tv_usec; &bslash;&n;&t;   switch (__delta_sec) { &bslash;&n;&t;   default: &bslash;&n;&t;&t;   __delta = psched_tod_diff(__delta_sec, bound);  break; &bslash;&n;&t;   case 2: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 1: &bslash;&n;&t;&t;   __delta += 1000000; &bslash;&n;&t;   case 0: ; &bslash;&n;&t;   } &bslash;&n;&t;   __delta; &bslash;&n;})
 DECL|macro|PSCHED_TLESS
 mdefine_line|#define PSCHED_TLESS(tv1, tv2) (((tv1).tv_usec &lt; (tv2).tv_usec &amp;&amp; &bslash;&n;&t;&t;&t;&t;(tv1).tv_sec &lt;= (tv2).tv_sec) || &bslash;&n;&t;&t;&t;&t; (tv1).tv_sec &lt; (tv2).tv_sec)
 DECL|macro|PSCHED_TADD2
@@ -940,7 +940,7 @@ macro_line|#else
 DECL|macro|PSCHED_TDIFF
 mdefine_line|#define PSCHED_TDIFF(tv1, tv2) (long)((tv1) - (tv2))
 DECL|macro|PSCHED_TDIFF_SAFE
-mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound, guard) &bslash;&n;({ &bslash;&n;&t;   long long __delta = (tv1) - (tv2); &bslash;&n;&t;   if ( __delta &gt; (long long)(bound)) {  __delta = (bound); guard; } &bslash;&n;&t;   __delta; &bslash;&n;})
+mdefine_line|#define PSCHED_TDIFF_SAFE(tv1, tv2, bound) &bslash;&n;&t;min_t(long long, (tv1) - (tv2), bound)
 DECL|macro|PSCHED_TLESS
 mdefine_line|#define PSCHED_TLESS(tv1, tv2) ((tv1) &lt; (tv2))
 DECL|macro|PSCHED_TADD2
