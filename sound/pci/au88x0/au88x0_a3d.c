@@ -3221,6 +3221,7 @@ l_int|0x11
 suffix:semicolon
 )brace
 DECL|function|Vort3DRend_Initialize
+r_static
 r_int
 id|Vort3DRend_Initialize
 c_func

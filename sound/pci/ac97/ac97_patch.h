@@ -108,6 +108,15 @@ id|ac97
 )paren
 suffix:semicolon
 r_int
+id|patch_sigmatel_stac9758
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+r_int
 id|patch_cirrus_cs4299
 c_func
 (paren

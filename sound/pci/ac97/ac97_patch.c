@@ -2222,6 +2222,70 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|patch_sigmatel_stac9758
+r_int
+id|patch_sigmatel_stac9758
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+singleline_comment|// patch for SigmaTel
+id|ac97-&gt;build_ops
+op_assign
+op_amp
+id|patch_sigmatel_stac9700_ops
+suffix:semicolon
+singleline_comment|// turn on stereo speaker, headphone and line-out
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_SIGMATEL_OUTSEL
+comma
+l_int|0x9040
+)paren
+suffix:semicolon
+singleline_comment|// headphone select and boost
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_SIGMATEL_IOMISC
+comma
+l_int|0x2102
+)paren
+suffix:semicolon
+singleline_comment|// enable mic
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_SIGMATEL_INSEL
+comma
+l_int|0x0203
+)paren
+suffix:semicolon
+singleline_comment|// enable stereo mic
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_SIGMATEL_VARIOUS
+comma
+l_int|0x0001
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Cirrus Logic CS42xx codecs&n; */
 DECL|variable|snd_ac97_cirrus_controls_spdif
 r_static
