@@ -160,6 +160,27 @@ mdefine_line|#define CB_LEGACY_MODE_BASE&t;0x44
 multiline_comment|/*&n; * ExCA area extensions in Yenta&n; */
 DECL|macro|CB_MEM_PAGE
 mdefine_line|#define CB_MEM_PAGE(map)&t;(0x40 + (map))
+r_struct
+id|yenta_socket
+suffix:semicolon
+DECL|struct|cardbus_type
+r_struct
+id|cardbus_type
+(brace
+DECL|member|override
+r_int
+(paren
+op_star
+id|override
+)paren
+(paren
+r_struct
+id|yenta_socket
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|yenta_socket
 r_struct
 id|yenta_socket
@@ -191,6 +212,12 @@ DECL|member|socket
 r_struct
 id|pcmcia_socket
 id|socket
+suffix:semicolon
+DECL|member|type
+r_struct
+id|cardbus_type
+op_star
+id|type
 suffix:semicolon
 multiline_comment|/* A few words of private data for special stuff of overrides... */
 DECL|member|private
