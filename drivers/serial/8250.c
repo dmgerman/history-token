@@ -295,9 +295,7 @@ l_int|16
 comma
 l_int|16
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 )brace
 comma
 (brace
@@ -317,7 +315,7 @@ l_int|1
 comma
 l_int|1
 comma
-id|UART_CLEAR_FIFO
+id|UART_CAP_FIFO
 op_or
 id|UART_STARTECH
 )brace
@@ -329,9 +327,7 @@ l_int|32
 comma
 l_int|16
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 op_or
 id|UART_STARTECH
 )brace
@@ -343,9 +339,7 @@ l_int|64
 comma
 l_int|64
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 )brace
 comma
 (brace
@@ -365,9 +359,7 @@ l_int|128
 comma
 l_int|128
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 )brace
 comma
 (brace
@@ -377,9 +369,7 @@ l_int|64
 comma
 l_int|32
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 op_or
 id|UART_STARTECH
 )brace
@@ -391,9 +381,7 @@ l_int|128
 comma
 l_int|128
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 op_or
 id|UART_STARTECH
 )brace
@@ -405,9 +393,7 @@ l_int|2048
 comma
 l_int|2048
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 )brace
 comma
 (brace
@@ -417,9 +403,7 @@ l_int|16
 comma
 l_int|16
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 op_or
 id|UART_NATSEMI
 )brace
@@ -431,9 +415,7 @@ l_int|32
 comma
 l_int|32
 comma
-id|UART_CLEAR_FIFO
-op_or
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 )brace
 comma
 )brace
@@ -729,7 +711,7 @@ c_cond
 (paren
 id|p-&gt;capabilities
 op_amp
-id|UART_CLEAR_FIFO
+id|UART_CAP_FIFO
 )paren
 (brace
 id|serial_outp
@@ -6056,7 +6038,7 @@ c_cond
 (paren
 id|up-&gt;capabilities
 op_amp
-id|UART_USE_FIFO
+id|UART_CAP_FIFO
 op_logical_and
 id|up-&gt;port.fifosize
 OG
