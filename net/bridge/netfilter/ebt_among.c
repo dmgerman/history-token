@@ -996,7 +996,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;ebtables: among: wrong size: %d&quot;
-l_string|&quot;against expected %d, rounded to %d&bslash;n&quot;
+l_string|&quot;against expected %d, rounded to %Zd&bslash;n&quot;
 comma
 id|datalen
 comma
