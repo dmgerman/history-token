@@ -47,27 +47,6 @@ DECL|macro|F_SETLKW64
 mdefine_line|#define F_SETLKW64&t;14
 macro_line|#include &lt;asm/sigcontext32.h&gt;
 multiline_comment|/* signal.h */
-DECL|macro|_IA32_NSIG
-mdefine_line|#define _IA32_NSIG&t;       64
-DECL|macro|_IA32_NSIG_BPW
-mdefine_line|#define _IA32_NSIG_BPW&t;       32
-DECL|macro|_IA32_NSIG_WORDS
-mdefine_line|#define _IA32_NSIG_WORDS&t;       (_IA32_NSIG / _IA32_NSIG_BPW)
-r_typedef
-r_struct
-(brace
-DECL|member|sig
-r_int
-r_int
-id|sig
-(braket
-id|_IA32_NSIG_WORDS
-)braket
-suffix:semicolon
-DECL|typedef|sigset32_t
-)brace
-id|sigset32_t
-suffix:semicolon
 DECL|struct|sigaction32
 r_struct
 id|sigaction32
@@ -90,19 +69,12 @@ id|sa_restorer
 suffix:semicolon
 multiline_comment|/* Another 32 bit pointer */
 DECL|member|sa_mask
-id|sigset32_t
+id|compat_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
 )brace
 suffix:semicolon
-DECL|typedef|old_sigset32_t
-r_typedef
-r_int
-r_int
-id|old_sigset32_t
-suffix:semicolon
-multiline_comment|/* at least 32 bits */
 DECL|struct|old_sigaction32
 r_struct
 id|old_sigaction32
@@ -114,7 +86,7 @@ id|sa_handler
 suffix:semicolon
 multiline_comment|/* Really a pointer, but need to deal &n;&t;&t;&t;&t;&t;     with 32 bits */
 DECL|member|sa_mask
-id|old_sigset32_t
+id|compat_old_sigset_t
 id|sa_mask
 suffix:semicolon
 multiline_comment|/* A 32 bit mask */
@@ -178,7 +150,7 @@ id|sigcontext_ia32
 id|uc_mcontext
 suffix:semicolon
 DECL|member|uc_sigmask
-id|sigset32_t
+id|compat_sigset_t
 id|uc_sigmask
 suffix:semicolon
 multiline_comment|/* mask last for extensibility */
