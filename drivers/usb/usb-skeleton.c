@@ -54,7 +54,7 @@ comma
 l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Define these values to match your device */
+multiline_comment|/* Define these values to match your devices */
 DECL|macro|USB_SKEL_VENDOR_ID
 mdefine_line|#define USB_SKEL_VENDOR_ID&t;0xfff0
 DECL|macro|USB_SKEL_PRODUCT_ID
@@ -76,6 +76,17 @@ c_func
 id|USB_SKEL_VENDOR_ID
 comma
 id|USB_SKEL_PRODUCT_ID
+)paren
+)brace
+comma
+multiline_comment|/* &quot;Gadget Zero&quot; firmware runs under Linux */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0525
+comma
+l_int|0xa4a0
 )paren
 )brace
 comma
@@ -214,11 +225,6 @@ id|sem
 suffix:semicolon
 multiline_comment|/* locks this structure */
 )brace
-suffix:semicolon
-multiline_comment|/* the global usb devfs handle */
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
 suffix:semicolon
 multiline_comment|/* prevent races between open() and disconnect() */
 r_static
@@ -1522,7 +1528,7 @@ suffix:semicolon
 r_char
 id|name
 (braket
-l_int|10
+l_int|14
 )braket
 suffix:semicolon
 multiline_comment|/* See if the device offered us matches what we can accept */
@@ -1897,7 +1903,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;skel%d&quot;
+l_string|&quot;usb/skel%d&quot;
 comma
 id|dev-&gt;minor
 )paren
@@ -1905,8 +1911,9 @@ suffix:semicolon
 id|dev-&gt;devfs
 op_assign
 id|devfs_register
+c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|name
 comma
@@ -2174,9 +2181,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;usb_register failed for the &quot;
-id|__FILE__
-l_string|&quot; driver. Error number %d&quot;
+l_string|&quot;usb_register failed. Error number %d&quot;
 comma
 id|result
 )paren

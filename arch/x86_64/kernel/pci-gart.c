@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Dynamic DMA mapping support for AMD Hammer.&n; * &n; * Use the integrated AGP GART in the Hammer northbridge as an IOMMU for PCI.&n; * This allows to use PCI devices that only support 32bit addresses on systems&n; * with more than 4GB. &n; *&n; * See Documentation/DMA-mapping.txt for the interface specification.&n; * &n; * Copyright 2002 Andi Kleen, SuSE Labs.&n; * $Id: pci-gart.c,v 1.12 2002/09/19 19:25:32 ak Exp $&n; */
-multiline_comment|/* &n; * Notebook:&n;&n;agpgart_be&n; check if the simple reservation scheme is enough.&n;&n;possible future tuning: &n; fast path for sg streaming mappings &n; more intelligent flush strategy - flush only a single NB?&n; move boundary between IOMMU and AGP in GART dynamically&n; could use exact fit in the gart in alloc_consistent, not order of two.&n;*/
+multiline_comment|/*&n; * Dynamic DMA mapping support for AMD Hammer.&n; * &n; * Use the integrated AGP GART in the Hammer northbridge as an IOMMU for PCI.&n; * This allows to use PCI devices that only support 32bit addresses on systems&n; * with more than 4GB. &n; *&n; * See Documentation/DMA-mapping.txt for the interface specification.&n; * &n; * Copyright 2002 Andi Kleen, SuSE Labs.&n; * $Id: pci-gart.c,v 1.20 2003/03/12 08:23:29 ak Exp $&n; */
+multiline_comment|/* &n; * Notebook:&n;&n;agpgart_be&n; check if the simple reservation scheme is enough.&n;&n;possible future tuning: &n; fast path for sg streaming mappings &n; more intelligent flush strategy - flush only a single NB? flush only when&n; gart area fills up and alloc_iommu wraps. &n; don&squot;t flush on allocation - need to unmap the gart area first to avoid prefetches&n; by the CPU&n; move boundary between IOMMU and AGP in GART dynamically&n;  &n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -51,12 +51,21 @@ r_static
 r_int
 id|no_agp
 suffix:semicolon
+macro_line|#ifdef CONFIG_IOMMU_DEBUG
 DECL|variable|force_mmu
 r_int
 id|force_mmu
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#else
+DECL|variable|force_mmu
+r_int
+id|force_mmu
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|fallback_aper_order
@@ -81,14 +90,12 @@ op_star
 id|iommu_gart_bitmap
 suffix:semicolon
 multiline_comment|/* guarded by iommu_bitmap_lock */
-DECL|macro|GPTE_MASK
-mdefine_line|#define GPTE_MASK 0xfffffff000
 DECL|macro|GPTE_VALID
 mdefine_line|#define GPTE_VALID    1
 DECL|macro|GPTE_COHERENT
 mdefine_line|#define GPTE_COHERENT 2
 DECL|macro|GPTE_ENCODE
-mdefine_line|#define GPTE_ENCODE(x,flag) (((x) &amp; 0xfffffff0) | ((x) &gt;&gt; 28) | GPTE_VALID | (flag))
+mdefine_line|#define GPTE_ENCODE(x) (((x) &amp; 0xfffff000) | (((x) &gt;&gt; 32) &lt;&lt; 4) | GPTE_VALID | GPTE_COHERENT)
 DECL|macro|GPTE_DECODE
 mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0xff0) &lt;&lt; 28))
 DECL|macro|for_all_nb
@@ -96,14 +103,6 @@ mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;pci_for_each_dev(dev) &bslash
 DECL|macro|EMERGENCY_PAGES
 mdefine_line|#define EMERGENCY_PAGES 32 /* = 128KB */ 
 macro_line|#ifdef CONFIG_AGP
-r_extern
-r_int
-id|agp_amdk8_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|agp_init
@@ -382,8 +381,6 @@ op_assign
 id|GFP_ATOMIC
 suffix:semicolon
 r_int
-id|order
-comma
 id|i
 suffix:semicolon
 r_int
@@ -408,12 +405,14 @@ op_or_assign
 id|GFP_DMA
 suffix:semicolon
 multiline_comment|/* &n;&t; * First try to allocate continuous and use directly if already &n;&t; * in lowmem. &n;&t; */
-id|order
+id|size
 op_assign
-id|get_order
+id|round_up
 c_func
 (paren
 id|size
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
 id|memory
@@ -427,7 +426,11 @@ c_func
 (paren
 id|gfp
 comma
-id|order
+id|get_order
+c_func
+(paren
+id|size
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -470,6 +473,13 @@ r_if
 c_cond
 (paren
 id|force_mmu
+op_logical_and
+op_logical_neg
+(paren
+id|gfp
+op_amp
+id|GFP_DMA
+)paren
 )paren
 id|mmu
 op_assign
@@ -525,14 +535,16 @@ id|memory
 suffix:semicolon
 )brace
 )brace
+id|size
+op_rshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
 id|iommu_page
 op_assign
 id|alloc_iommu
 c_func
 (paren
-l_int|1
-op_lshift
-id|order
+id|size
 )paren
 suffix:semicolon
 r_if
@@ -556,9 +568,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|1
-op_lshift
-id|order
+id|size
 suffix:semicolon
 id|i
 op_increment
@@ -612,7 +622,7 @@ c_func
 id|phys_mem
 op_amp
 op_complement
-id|PTE_MASK
+id|PHYSICAL_PAGE_MASK
 )paren
 suffix:semicolon
 id|iommu_gatt_base
@@ -626,8 +636,6 @@ id|GPTE_ENCODE
 c_func
 (paren
 id|phys_mem
-comma
-id|GPTE_COHERENT
 )paren
 suffix:semicolon
 )brace
@@ -661,7 +669,11 @@ r_int
 )paren
 id|memory
 comma
-id|order
+id|get_order
+c_func
+(paren
+id|size
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -694,20 +706,21 @@ id|u64
 id|pte
 suffix:semicolon
 r_int
-id|order
-op_assign
-id|get_order
-c_func
-(paren
-id|size
-)paren
-suffix:semicolon
-r_int
 r_int
 id|iommu_page
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|size
+op_assign
+id|round_up
+c_func
+(paren
+id|size
+comma
+id|PAGE_SIZE
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -728,12 +741,20 @@ r_int
 )paren
 id|vaddr
 comma
-id|order
+id|get_order
+c_func
+(paren
+id|size
+)paren
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|size
+op_rshift_assign
+id|PAGE_SHIFT
+suffix:semicolon
 id|iommu_page
 op_assign
 (paren
@@ -753,9 +774,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|1
-op_lshift
-id|order
+id|size
 suffix:semicolon
 id|i
 op_increment
@@ -820,9 +839,7 @@ c_func
 (paren
 id|iommu_page
 comma
-l_int|1
-op_lshift
-id|order
+id|size
 )paren
 suffix:semicolon
 )brace
@@ -840,11 +857,21 @@ r_static
 r_int
 id|leak_trace
 suffix:semicolon
-DECL|variable|iommu_leak_dumppages
+DECL|variable|iommu_leak_pages
 r_int
-id|iommu_leak_dumppages
+id|iommu_leak_pages
 op_assign
 l_int|20
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|printk_address
+c_func
+(paren
+r_int
+r_int
+)paren
 suffix:semicolon
 DECL|function|dump_leak
 r_void
@@ -881,12 +908,13 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Very crude. dump some from the end of the table too */
 id|printk
 c_func
 (paren
 l_string|&quot;Dumping %d pages from end of IOMMU:&bslash;n&quot;
 comma
-id|iommu_leak_dumppages
+id|iommu_leak_pages
 )paren
 suffix:semicolon
 r_for
@@ -898,20 +926,26 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iommu_leak_dumppages
+id|iommu_leak_pages
 suffix:semicolon
 id|i
-op_increment
+op_add_assign
+l_int|2
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;[%lu: %lx] &quot;
+l_string|&quot;%lu: &quot;
 comma
 id|iommu_pages
 op_minus
 id|i
-comma
+)paren
+suffix:semicolon
+id|printk_address
+c_func
+(paren
 (paren
 r_int
 r_int
@@ -924,6 +958,28 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%c&quot;
+comma
+(paren
+id|i
+op_plus
+l_int|1
+)paren
+op_mod
+l_int|2
+op_eq
+l_int|0
+ques
+c_cond
+l_char|&squot;&bslash;n&squot;
+suffix:colon
+l_char|&squot; &squot;
+)paren
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -1123,9 +1179,9 @@ r_return
 id|mmu
 suffix:semicolon
 )brace
-DECL|function|pci_map_single
+DECL|function|__pci_map_single
 id|dma_addr_t
-id|pci_map_single
+id|__pci_map_single
 c_func
 (paren
 r_struct
@@ -1142,6 +1198,9 @@ id|size
 comma
 r_int
 id|dir
+comma
+r_int
+id|flush
 )paren
 (brace
 r_int
@@ -1276,7 +1335,7 @@ c_func
 id|phys_mem
 op_amp
 op_complement
-id|PTE_MASK
+id|PHYSICAL_PAGE_MASK
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Set coherent mapping here to avoid needing to flush&n;&t;&t; * the caches on mapping.&n;&t;&t; */
@@ -1291,10 +1350,28 @@ id|GPTE_ENCODE
 c_func
 (paren
 id|phys_mem
-comma
-id|GPTE_COHERENT
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IOMMU_DEBUG
+multiline_comment|/* paranoia check */
+id|BUG_ON
+c_func
+(paren
+id|GPTE_DECODE
+c_func
+(paren
+id|iommu_gatt_base
+(braket
+id|iommu_page
+op_plus
+id|i
+)braket
+)paren
+op_ne
+id|phys_mem
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_IOMMU_LEAK
 multiline_comment|/* XXX need eventually caller of pci_map_sg */
 r_if
@@ -1317,6 +1394,11 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+r_if
+c_cond
+(paren
+id|flush
+)paren
 id|flush_gart
 c_func
 (paren
@@ -1470,11 +1552,11 @@ id|npages
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pci_map_single
+DECL|variable|__pci_map_single
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pci_map_single
+id|__pci_map_single
 )paren
 suffix:semicolon
 DECL|variable|pci_unmap_single
@@ -1866,6 +1948,11 @@ comma
 id|PAGE_KERNEL_NOCACHE
 )paren
 suffix:semicolon
+id|global_flush_tlb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|agp_gatt_table
 op_assign
 id|gatt
@@ -1951,11 +2038,6 @@ id|ctl
 suffix:semicolon
 )brace
 id|flush_gart
-c_func
-(paren
-)paren
-suffix:semicolon
-id|global_flush_tlb
 c_func
 (paren
 )paren
@@ -2337,7 +2419,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;*/
+multiline_comment|/* iommu=[size][,noagp][,off][,force][,noforce][,leak][,memaper[=order]]&n;   size  set size of iommu (in bytes) &n;   noagp don&squot;t initialize the AGP driver and use full aperture.&n;   off   don&squot;t use the IOMMU&n;   leak  turn on simple iommu leak tracing (only when CONFIG_IOMMU_LEAK is on)&n;   memaper[=order] allocate an own aperture over RAM with size 32MB^order.  &n;   noforce don&squot;t force IOMMU usage. Should be fastest.&n;   force  Force IOMMU and turn on unmap debugging.&n;*/
 DECL|function|iommu_setup
 id|__init
 r_int
@@ -2347,11 +2429,6 @@ c_func
 r_char
 op_star
 id|opt
-comma
-r_char
-op_star
-op_star
-id|end
 )paren
 (brace
 r_int
@@ -2503,10 +2580,52 @@ comma
 l_int|4
 )paren
 )paren
+(brace
 id|leak_trace
 op_assign
 l_int|1
 suffix:semicolon
+id|p
+op_add_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|p
+op_eq
+l_char|&squot;=&squot;
+)paren
+op_increment
+id|p
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|isdigit
+c_func
+(paren
+op_star
+id|p
+)paren
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|p
+comma
+op_amp
+id|arg
+)paren
+)paren
+id|iommu_leak_pages
+op_assign
+id|arg
+suffix:semicolon
+)brace
+r_else
 macro_line|#endif
 r_if
 c_cond
@@ -2547,16 +2666,9 @@ id|p
 op_eq
 l_int|0
 )paren
-(brace
-op_star
-id|end
-op_assign
-id|p
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 r_while
 c_loop
@@ -2569,5 +2681,8 @@ l_char|&squot;,&squot;
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|1
+suffix:semicolon
 )brace
 eof

@@ -221,6 +221,16 @@ l_int|11
 )paren
 comma
 multiline_comment|/* filesystem controls freeing memory  */
+DECL|enumerator|PBF_FS_DATAIOD
+id|PBF_FS_DATAIOD
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|12
+)paren
+comma
+multiline_comment|/* schedule IO completion on fs datad  */
 multiline_comment|/* flags used only as arguments to access routines */
 DECL|enumerator|PBF_LOCK
 id|PBF_LOCK

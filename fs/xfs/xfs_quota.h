@@ -1,7 +1,12 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_QUOTA_H__
 DECL|macro|__XFS_QUOTA_H__
 mdefine_line|#define __XFS_QUOTA_H__
+multiline_comment|/*&n; * The ondisk form of a dquot structure.&n; */
+DECL|macro|XFS_DQUOT_MAGIC
+mdefine_line|#define XFS_DQUOT_MAGIC&t;&t;0x4451&t;&t;/* &squot;DQ&squot; */
+DECL|macro|XFS_DQUOT_VERSION
+mdefine_line|#define XFS_DQUOT_VERSION&t;(u_int8_t)0x01&t;/* latest version number */
 multiline_comment|/*&n; * uid_t and gid_t are hard-coded to 32 bits in the inode.&n; * Hence, an &squot;id&squot; in a dquot is 32 bits..&n; */
 DECL|typedef|xfs_dqid_t
 r_typedef
@@ -18,6 +23,260 @@ DECL|typedef|xfs_qwarncnt_t
 r_typedef
 id|__uint16_t
 id|xfs_qwarncnt_t
+suffix:semicolon
+multiline_comment|/*&n; * This is the main portion of the on-disk representation of quota&n; * information for a user. This is the q_core of the xfs_dquot_t that&n; * is kept in kernel memory. We pad this with some more expansion room&n; * to construct the on disk structure.&n; */
+DECL|struct|xfs_disk_dquot
+r_typedef
+r_struct
+id|xfs_disk_dquot
+(brace
+DECL|member|d_magic
+multiline_comment|/*16*/
+id|u_int16_t
+id|d_magic
+suffix:semicolon
+multiline_comment|/* dquot magic = XFS_DQUOT_MAGIC */
+DECL|member|d_version
+multiline_comment|/*8 */
+id|u_int8_t
+id|d_version
+suffix:semicolon
+multiline_comment|/* dquot version */
+DECL|member|d_flags
+multiline_comment|/*8 */
+id|u_int8_t
+id|d_flags
+suffix:semicolon
+multiline_comment|/* XFS_DQ_USER/PROJ/GROUP */
+DECL|member|d_id
+multiline_comment|/*32*/
+id|xfs_dqid_t
+id|d_id
+suffix:semicolon
+multiline_comment|/* user,project,group id */
+DECL|member|d_blk_hardlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_blk_hardlimit
+suffix:semicolon
+multiline_comment|/* absolute limit on disk blks */
+DECL|member|d_blk_softlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_blk_softlimit
+suffix:semicolon
+multiline_comment|/* preferred limit on disk blks */
+DECL|member|d_ino_hardlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_ino_hardlimit
+suffix:semicolon
+multiline_comment|/* maximum # allocated inodes */
+DECL|member|d_ino_softlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_ino_softlimit
+suffix:semicolon
+multiline_comment|/* preferred inode limit */
+DECL|member|d_bcount
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_bcount
+suffix:semicolon
+multiline_comment|/* disk blocks owned by the user */
+DECL|member|d_icount
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_icount
+suffix:semicolon
+multiline_comment|/* inodes owned by the user */
+DECL|member|d_itimer
+multiline_comment|/*32*/
+id|__int32_t
+id|d_itimer
+suffix:semicolon
+multiline_comment|/* zero if within inode limits if not,&n;&t;&t;&t;&t;&t;   this is when we refuse service */
+DECL|member|d_btimer
+multiline_comment|/*32*/
+id|__int32_t
+id|d_btimer
+suffix:semicolon
+multiline_comment|/* similar to above; for disk blocks */
+DECL|member|d_iwarns
+multiline_comment|/*16*/
+id|xfs_qwarncnt_t
+id|d_iwarns
+suffix:semicolon
+multiline_comment|/* warnings issued wrt num inodes */
+DECL|member|d_bwarns
+multiline_comment|/*16*/
+id|xfs_qwarncnt_t
+id|d_bwarns
+suffix:semicolon
+multiline_comment|/* warnings issued wrt disk blocks */
+DECL|member|d_pad0
+multiline_comment|/*32*/
+id|__int32_t
+id|d_pad0
+suffix:semicolon
+multiline_comment|/* 64 bit align */
+DECL|member|d_rtb_hardlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_rtb_hardlimit
+suffix:semicolon
+multiline_comment|/* absolute limit on realtime blks */
+DECL|member|d_rtb_softlimit
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_rtb_softlimit
+suffix:semicolon
+multiline_comment|/* preferred limit on RT disk blks */
+DECL|member|d_rtbcount
+multiline_comment|/*64*/
+id|xfs_qcnt_t
+id|d_rtbcount
+suffix:semicolon
+multiline_comment|/* realtime blocks owned */
+DECL|member|d_rtbtimer
+multiline_comment|/*32*/
+id|__int32_t
+id|d_rtbtimer
+suffix:semicolon
+multiline_comment|/* similar to above; for RT disk blocks */
+DECL|member|d_rtbwarns
+multiline_comment|/*16*/
+id|xfs_qwarncnt_t
+id|d_rtbwarns
+suffix:semicolon
+multiline_comment|/* warnings issued wrt RT disk blocks */
+DECL|member|d_pad
+multiline_comment|/*16*/
+id|__uint16_t
+id|d_pad
+suffix:semicolon
+DECL|typedef|xfs_disk_dquot_t
+)brace
+id|xfs_disk_dquot_t
+suffix:semicolon
+multiline_comment|/*&n; * This is what goes on disk. This is separated from the xfs_disk_dquot because&n; * carrying the unnecessary padding would be a waste of memory.&n; */
+DECL|struct|xfs_dqblk
+r_typedef
+r_struct
+id|xfs_dqblk
+(brace
+DECL|member|dd_diskdq
+id|xfs_disk_dquot_t
+id|dd_diskdq
+suffix:semicolon
+multiline_comment|/* portion that lives incore as well */
+DECL|member|dd_fill
+r_char
+id|dd_fill
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* filling for posterity */
+DECL|typedef|xfs_dqblk_t
+)brace
+id|xfs_dqblk_t
+suffix:semicolon
+multiline_comment|/*&n; * flags for q_flags field in the dquot.&n; */
+DECL|macro|XFS_DQ_USER
+mdefine_line|#define XFS_DQ_USER&t;&t;0x0001&t;&t;/* a user quota */
+multiline_comment|/* #define XFS_DQ_PROJ&t;&t;0x0002&t;&t;-- project quota (IRIX) */
+DECL|macro|XFS_DQ_GROUP
+mdefine_line|#define XFS_DQ_GROUP&t;&t;0x0004&t;&t;/* a group quota */
+DECL|macro|XFS_DQ_FLOCKED
+mdefine_line|#define XFS_DQ_FLOCKED&t;&t;0x0008&t;&t;/* flush lock taken */
+DECL|macro|XFS_DQ_DIRTY
+mdefine_line|#define XFS_DQ_DIRTY&t;&t;0x0010&t;&t;/* dquot is dirty */
+DECL|macro|XFS_DQ_WANT
+mdefine_line|#define XFS_DQ_WANT&t;&t;0x0020&t;&t;/* for lookup/reclaim race */
+DECL|macro|XFS_DQ_INACTIVE
+mdefine_line|#define XFS_DQ_INACTIVE&t;&t;0x0040&t;&t;/* dq off mplist &amp; hashlist */
+DECL|macro|XFS_DQ_MARKER
+mdefine_line|#define XFS_DQ_MARKER&t;&t;0x0080&t;&t;/* sentinel */
+multiline_comment|/*&n; * In the worst case, when both user and group quotas are on,&n; * we can have a max of three dquots changing in a single transaction.&n; */
+DECL|macro|XFS_DQUOT_LOGRES
+mdefine_line|#define XFS_DQUOT_LOGRES(mp)&t;(sizeof(xfs_disk_dquot_t) * 3)
+multiline_comment|/*&n; * These are the structures used to lay out dquots and quotaoff&n; * records on the log. Quite similar to those of inodes.&n; */
+multiline_comment|/*&n; * log format struct for dquots.&n; * The first two fields must be the type and size fitting into&n; * 32 bits : log_recovery code assumes that.&n; */
+DECL|struct|xfs_dq_logformat
+r_typedef
+r_struct
+id|xfs_dq_logformat
+(brace
+DECL|member|qlf_type
+id|__uint16_t
+id|qlf_type
+suffix:semicolon
+multiline_comment|/* dquot log item type */
+DECL|member|qlf_size
+id|__uint16_t
+id|qlf_size
+suffix:semicolon
+multiline_comment|/* size of this item */
+DECL|member|qlf_id
+id|xfs_dqid_t
+id|qlf_id
+suffix:semicolon
+multiline_comment|/* usr/grp id number : 32 bits */
+DECL|member|qlf_blkno
+id|__int64_t
+id|qlf_blkno
+suffix:semicolon
+multiline_comment|/* blkno of dquot buffer */
+DECL|member|qlf_len
+id|__int32_t
+id|qlf_len
+suffix:semicolon
+multiline_comment|/* len of dquot buffer */
+DECL|member|qlf_boffset
+id|__uint32_t
+id|qlf_boffset
+suffix:semicolon
+multiline_comment|/* off of dquot in buffer */
+DECL|typedef|xfs_dq_logformat_t
+)brace
+id|xfs_dq_logformat_t
+suffix:semicolon
+multiline_comment|/*&n; * log format struct for QUOTAOFF records.&n; * The first two fields must be the type and size fitting into&n; * 32 bits : log_recovery code assumes that.&n; * We write two LI_QUOTAOFF logitems per quotaoff, the last one keeps a pointer&n; * to the first and ensures that the first logitem is taken out of the AIL&n; * only when the last one is securely committed.&n; */
+DECL|struct|xfs_qoff_logformat
+r_typedef
+r_struct
+id|xfs_qoff_logformat
+(brace
+DECL|member|qf_type
+r_int
+r_int
+id|qf_type
+suffix:semicolon
+multiline_comment|/* quotaoff log item type */
+DECL|member|qf_size
+r_int
+r_int
+id|qf_size
+suffix:semicolon
+multiline_comment|/* size of this item */
+DECL|member|qf_flags
+r_int
+r_int
+id|qf_flags
+suffix:semicolon
+multiline_comment|/* USR and/or GRP */
+DECL|member|qf_pad
+r_char
+id|qf_pad
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* padding for future */
+DECL|typedef|xfs_qoff_logformat_t
+)brace
+id|xfs_qoff_logformat_t
 suffix:semicolon
 multiline_comment|/*&n; * Disk quotas status in m_qflags, and also sb_qflags. 16 bits.&n; */
 DECL|macro|XFS_UQUOTA_ACCT
@@ -121,7 +380,8 @@ DECL|macro|XFS_QMOPT_QUOTALL
 mdefine_line|#define XFS_QMOPT_QUOTALL&t;(XFS_QMOPT_UQUOTA|XFS_QMOPT_GQUOTA)
 DECL|macro|XFS_QMOPT_RESBLK_MASK
 mdefine_line|#define XFS_QMOPT_RESBLK_MASK&t;(XFS_QMOPT_RES_REGBLKS | XFS_QMOPT_RES_RTBLKS)
-multiline_comment|/*&n; * This check is done typically without holding the inode lock;&n; * that may seem racey, but it is harmless in the context that it is used.&n; * The inode cannot go inactive as long a reference is kept, and&n; * therefore if dquot(s) were attached, they&squot;ll stay consistent.&n; * If, for example, the ownership of the inode changes while&n; * we didnt have the inode locked, the appropriate dquot(s) will be&n; * attached atomically.&n; */
+macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * This check is done typically without holding the inode lock;&n; * that may seem racey, but it is harmless in the context that it is used.&n; * The inode cannot go inactive as long a reference is kept, and&n; * therefore if dquot(s) were attached, they&squot;ll stay consistent.&n; * If, for example, the ownership of the inode changes while&n; * we didn&squot;t have the inode locked, the appropriate dquot(s) will be&n; * attached atomically.&n; */
 DECL|macro|XFS_NOT_DQATTACHED
 mdefine_line|#define XFS_NOT_DQATTACHED(mp, ip) ((XFS_IS_UQUOTA_ON(mp) &amp;&amp;&bslash;&n;&t;&t;&t;&t;     (ip)-&gt;i_udquot == NULL) || &bslash;&n;&t;&t;&t;&t;    (XFS_IS_GQUOTA_ON(mp) &amp;&amp; &bslash;&n;&t;&t;&t;&t;     (ip)-&gt;i_gdquot == NULL))
 DECL|macro|XFS_QM_NEED_QUOTACHECK
@@ -130,230 +390,168 @@ DECL|macro|XFS_MOUNT_QUOTA_ALL
 mdefine_line|#define XFS_MOUNT_QUOTA_ALL&t;(XFS_UQUOTA_ACCT|XFS_UQUOTA_ENFD|&bslash;&n;&t;&t;&t;&t; XFS_UQUOTA_CHKD|XFS_GQUOTA_ACCT|&bslash;&n;&t;&t;&t;&t; XFS_GQUOTA_ENFD|XFS_GQUOTA_CHKD)
 DECL|macro|XFS_MOUNT_QUOTA_MASK
 mdefine_line|#define XFS_MOUNT_QUOTA_MASK&t;(XFS_MOUNT_QUOTA_ALL | XFS_UQUOTA_ACTIVE | &bslash;&n;&t;&t;&t;&t; XFS_GQUOTA_ACTIVE)
-DECL|macro|XFS_IS_REALTIME_INODE
-mdefine_line|#define XFS_IS_REALTIME_INODE(ip) ((ip)-&gt;i_d.di_flags &amp; XFS_DIFLAG_REALTIME)
-macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_XFS_QUOTA
-multiline_comment|/*&n; * External Interface to the XFS disk quota subsystem.&n; */
+multiline_comment|/*&n; * The structure kept inside the xfs_trans_t keep track of dquot changes&n; * within a transaction and apply them later.&n; */
+DECL|struct|xfs_dqtrx
+r_typedef
 r_struct
-id|xfs_disk_dquot
-suffix:semicolon
-r_struct
-id|xfs_dqhash
-suffix:semicolon
+id|xfs_dqtrx
+(brace
+DECL|member|qt_dquot
 r_struct
 id|xfs_dquot
+op_star
+id|qt_dquot
 suffix:semicolon
-r_struct
-id|xfs_inode
+multiline_comment|/* the dquot this refers to */
+DECL|member|qt_blk_res
+id|ulong
+id|qt_blk_res
 suffix:semicolon
-r_struct
-id|xfs_mount
+multiline_comment|/* blks reserved on a dquot */
+DECL|member|qt_blk_res_used
+id|ulong
+id|qt_blk_res_used
 suffix:semicolon
+multiline_comment|/* blks used from the reservation */
+DECL|member|qt_ino_res
+id|ulong
+id|qt_ino_res
+suffix:semicolon
+multiline_comment|/* inode reserved on a dquot */
+DECL|member|qt_ino_res_used
+id|ulong
+id|qt_ino_res_used
+suffix:semicolon
+multiline_comment|/* inodes used from the reservation */
+DECL|member|qt_bcount_delta
+r_int
+id|qt_bcount_delta
+suffix:semicolon
+multiline_comment|/* dquot blk count changes */
+DECL|member|qt_delbcnt_delta
+r_int
+id|qt_delbcnt_delta
+suffix:semicolon
+multiline_comment|/* delayed dquot blk count changes */
+DECL|member|qt_icount_delta
+r_int
+id|qt_icount_delta
+suffix:semicolon
+multiline_comment|/* dquot inode count changes */
+DECL|member|qt_rtblk_res
+id|ulong
+id|qt_rtblk_res
+suffix:semicolon
+multiline_comment|/* # blks reserved on a dquot */
+DECL|member|qt_rtblk_res_used
+id|ulong
+id|qt_rtblk_res_used
+suffix:semicolon
+multiline_comment|/* # blks used from reservation */
+DECL|member|qt_rtbcount_delta
+r_int
+id|qt_rtbcount_delta
+suffix:semicolon
+multiline_comment|/* dquot realtime blk changes */
+DECL|member|qt_delrtb_delta
+r_int
+id|qt_delrtb_delta
+suffix:semicolon
+multiline_comment|/* delayed RT blk count changes */
+DECL|typedef|xfs_dqtrx_t
+)brace
+id|xfs_dqtrx_t
+suffix:semicolon
+multiline_comment|/*&n; * Dquot transaction functions, used if quota is enabled.&n; */
+DECL|typedef|qo_dup_dqinfo_t
+r_typedef
+r_void
+(paren
+op_star
+id|qo_dup_dqinfo_t
+)paren
+(paren
 r_struct
 id|xfs_trans
-suffix:semicolon
-multiline_comment|/*&n; * Quota Manager Interface.&n; */
-r_extern
-r_struct
-id|xfs_qm
-op_star
-id|xfs_qm_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_destroy
-c_func
-(paren
-r_struct
-id|xfs_qm
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_dqflush_all
-c_func
-(paren
-r_struct
-id|xfs_mount
 op_star
 comma
-r_int
+r_struct
+id|xfs_trans
+op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_dqattach
-c_func
+DECL|typedef|qo_mod_dquot_byino_t
+r_typedef
+r_void
 (paren
+op_star
+id|qo_mod_dquot_byino_t
+)paren
+(paren
+r_struct
+id|xfs_trans
+op_star
+comma
 r_struct
 id|xfs_inode
 op_star
 comma
 id|uint
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_dqpurge_all
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_mount_quotainit
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_unmount_quotadestroy
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_mount_quotas
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_unmount_quotas
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_dqdettach_inode
-c_func
-(paren
-r_struct
-id|xfs_inode
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_sync
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
 comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Dquot interface.&n; */
-r_extern
+DECL|typedef|qo_free_dqinfo_t
+r_typedef
 r_void
-id|xfs_dqlock
-c_func
+(paren
+op_star
+id|qo_free_dqinfo_t
+)paren
 (paren
 r_struct
-id|xfs_dquot
+id|xfs_trans
 op_star
 )paren
 suffix:semicolon
-r_extern
+DECL|typedef|qo_apply_dquot_deltas_t
+r_typedef
 r_void
-id|xfs_dqunlock
-c_func
+(paren
+op_star
+id|qo_apply_dquot_deltas_t
+)paren
 (paren
 r_struct
-id|xfs_dquot
+id|xfs_trans
 op_star
 )paren
 suffix:semicolon
-r_extern
+DECL|typedef|qo_unreserve_and_mod_dquots_t
+r_typedef
 r_void
-id|xfs_dqunlock_nonotify
-c_func
+(paren
+op_star
+id|qo_unreserve_and_mod_dquots_t
+)paren
 (paren
 r_struct
-id|xfs_dquot
+id|xfs_trans
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|xfs_dqlock2
-c_func
+DECL|typedef|qo_reserve_quota_nblks_t
+r_typedef
+r_int
+(paren
+op_star
+id|qo_reserve_quota_nblks_t
+)paren
 (paren
 r_struct
-id|xfs_dquot
+id|xfs_trans
 op_star
 comma
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_dqput
-c_func
-(paren
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_dqrele
-c_func
-(paren
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-id|xfs_dqid_t
-id|xfs_qm_dqid
-c_func
-(paren
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_dqget
-c_func
-(paren
 r_struct
 id|xfs_mount
 op_star
@@ -362,25 +560,113 @@ r_struct
 id|xfs_inode
 op_star
 comma
-id|xfs_dqid_t
+r_int
+comma
+r_int
 comma
 id|uint
+)paren
+suffix:semicolon
+DECL|typedef|qo_reserve_quota_bydquots_t
+r_typedef
+r_int
+(paren
+op_star
+id|qo_reserve_quota_bydquots_t
+)paren
+(paren
+r_struct
+id|xfs_trans
+op_star
 comma
-id|uint
+r_struct
+id|xfs_mount
+op_star
 comma
 r_struct
 id|xfs_dquot
 op_star
+comma
+r_struct
+id|xfs_dquot
 op_star
+comma
+r_int
+comma
+r_int
+comma
+id|uint
 )paren
 suffix:semicolon
+DECL|struct|xfs_dqtrxops
+r_typedef
+r_struct
+id|xfs_dqtrxops
+(brace
+DECL|member|qo_dup_dqinfo
+id|qo_dup_dqinfo_t
+id|qo_dup_dqinfo
+suffix:semicolon
+DECL|member|qo_free_dqinfo
+id|qo_free_dqinfo_t
+id|qo_free_dqinfo
+suffix:semicolon
+DECL|member|qo_mod_dquot_byino
+id|qo_mod_dquot_byino_t
+id|qo_mod_dquot_byino
+suffix:semicolon
+DECL|member|qo_apply_dquot_deltas
+id|qo_apply_dquot_deltas_t
+id|qo_apply_dquot_deltas
+suffix:semicolon
+DECL|member|qo_reserve_quota_nblks
+id|qo_reserve_quota_nblks_t
+id|qo_reserve_quota_nblks
+suffix:semicolon
+DECL|member|qo_reserve_quota_bydquots
+id|qo_reserve_quota_bydquots_t
+id|qo_reserve_quota_bydquots
+suffix:semicolon
+DECL|member|qo_unreserve_and_mod_dquots
+id|qo_unreserve_and_mod_dquots_t
+id|qo_unreserve_and_mod_dquots
+suffix:semicolon
+DECL|typedef|xfs_dqtrxops_t
+)brace
+id|xfs_dqtrxops_t
+suffix:semicolon
+DECL|macro|XFS_DQTRXOP
+mdefine_line|#define XFS_DQTRXOP(mp, tp, op, args...) &bslash;&n;&t;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops ? &bslash;&n;&t;&t;&t;((mp)-&gt;m_qm_ops.xfs_dqtrxops-&gt;op)(tp, ## args) : 0)
+DECL|macro|XFS_TRANS_DUP_DQINFO
+mdefine_line|#define XFS_TRANS_DUP_DQINFO(mp, otp, ntp) &bslash;&n;&t;XFS_DQTRXOP(mp, otp, qo_dup_dqinfo, ntp)
+DECL|macro|XFS_TRANS_FREE_DQINFO
+mdefine_line|#define XFS_TRANS_FREE_DQINFO(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_free_dqinfo)
+DECL|macro|XFS_TRANS_MOD_DQUOT_BYINO
+mdefine_line|#define XFS_TRANS_MOD_DQUOT_BYINO(mp, tp, ip, field, delta) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_mod_dquot_byino, ip, field, delta)
+DECL|macro|XFS_TRANS_APPLY_DQUOT_DELTAS
+mdefine_line|#define XFS_TRANS_APPLY_DQUOT_DELTAS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_apply_dquot_deltas)
+DECL|macro|XFS_TRANS_RESERVE_QUOTA_NBLKS
+mdefine_line|#define XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, nblks, ninos, fl) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_reserve_quota_nblks, mp, ip, nblks, ninos, fl)
+DECL|macro|XFS_TRANS_RESERVE_QUOTA_BYDQUOTS
+mdefine_line|#define XFS_TRANS_RESERVE_QUOTA_BYDQUOTS(mp, tp, ud, gd, nb, ni, fl) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_reserve_quota_bydquots, mp, ud, gd, nb, ni, fl)
+DECL|macro|XFS_TRANS_UNRESERVE_AND_MOD_DQUOTS
+mdefine_line|#define XFS_TRANS_UNRESERVE_AND_MOD_DQUOTS(mp, tp) &bslash;&n;&t;XFS_DQTRXOP(mp, tp, qo_unreserve_and_mod_dquots)
+DECL|macro|XFS_TRANS_RESERVE_BLKQUOTA
+mdefine_line|#define XFS_TRANS_RESERVE_BLKQUOTA(mp, tp, ip, nblks) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, nblks, 0, &bslash;&n;&t;&t;&t;&t;XFS_QMOPT_RES_REGBLKS)
+DECL|macro|XFS_TRANS_RESERVE_BLKQUOTA_FORCE
+mdefine_line|#define XFS_TRANS_RESERVE_BLKQUOTA_FORCE(mp, tp, ip, nblks) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, nblks, 0, &bslash;&n;&t;&t;&t;&t;XFS_QMOPT_RES_REGBLKS | XFS_QMOPT_FORCE_RES)
+DECL|macro|XFS_TRANS_UNRESERVE_BLKQUOTA
+mdefine_line|#define XFS_TRANS_UNRESERVE_BLKQUOTA(mp, tp, ip, nblks) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_NBLKS(mp, tp, ip, -(nblks), 0, &bslash;&n;&t;&t;&t;&t;XFS_QMOPT_RES_REGBLKS)
+DECL|macro|XFS_TRANS_RESERVE_QUOTA
+mdefine_line|#define XFS_TRANS_RESERVE_QUOTA(mp, tp, ud, gd, nb, ni, f) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_BYDQUOTS(mp, tp, ud, gd, nb, ni, &bslash;&n;&t;&t;&t;&t;f | XFS_QMOPT_RES_REGBLKS)
+DECL|macro|XFS_TRANS_UNRESERVE_QUOTA
+mdefine_line|#define XFS_TRANS_UNRESERVE_QUOTA(mp, tp, ud, gd, nb, ni, f) &bslash;&n;&t;XFS_TRANS_RESERVE_QUOTA_BYDQUOTS(mp, tp, ud, gd, -(nb), -(ni), &bslash;&n;&t;&t;&t;&t;f | XFS_QMOPT_RES_REGBLKS)
 r_extern
 r_int
 id|xfs_qm_dqcheck
 c_func
 (paren
-r_struct
-id|xfs_disk_dquot
+id|xfs_disk_dquot_t
 op_star
 comma
 id|xfs_dqid_t
@@ -393,394 +679,27 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Vnodeops specific code that should actually be _in_ xfs_vnodeops.c, but&n; * is here because it&squot;s nicer to keep vnodeops (therefore, XFS) lean&n; * and clean.&n; */
 r_extern
 r_struct
-id|xfs_dquot
-op_star
-id|xfs_qm_vop_chown
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-)paren
+id|bhv_vfsops
+id|xfs_qmops
 suffix:semicolon
 r_extern
-r_int
-id|xfs_qm_vop_dqalloc
+r_void
+id|xfs_qm_init
 c_func
 (paren
-r_struct
-id|xfs_mount
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-id|uid_t
-comma
-id|gid_t
-comma
-id|uint
-comma
-r_struct
-id|xfs_dquot
-op_star
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_vop_chown_reserve
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_qm_vop_rename_dqattach
-c_func
-(paren
-r_struct
-id|xfs_inode
-op_star
-op_star
+r_void
 )paren
 suffix:semicolon
 r_extern
 r_void
-id|xfs_qm_vop_dqattach_and_dqmod_newinode
+id|xfs_qm_exit
 c_func
 (paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Dquot Transaction interface&n; */
-r_extern
 r_void
-id|xfs_trans_alloc_dqinfo
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_free_dqinfo
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_dup_dqinfo
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_trans
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_mod_dquot
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-id|uint
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_mod_dquot_byino
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-id|uint
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_apply_dquot_deltas
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_unreserve_and_mod_dquots
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_trans_reserve_quota_nblks
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_inode
-op_star
-comma
-r_int
-comma
-r_int
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|xfs_trans_reserve_quota_bydquots
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-comma
-r_int
-comma
-r_int
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_log_dquot
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_trans_dqjoin
-c_func
-(paren
-r_struct
-id|xfs_trans
-op_star
-comma
-r_struct
-id|xfs_dquot
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xfs_qm_dqrele_all_inodes
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-comma
-id|uint
-)paren
-suffix:semicolon
-DECL|macro|_XQM_ZONE_DESTROY
-macro_line|# define _XQM_ZONE_DESTROY(z)&t;((z)? kmem_cache_destroy(z) : (void)0)
-macro_line|#else
-DECL|macro|xfs_qm_init
-macro_line|# define xfs_qm_init()&t;&t;&t;&t;&t;(NULL)
-DECL|macro|xfs_qm_destroy
-macro_line|# define xfs_qm_destroy(xqm)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_dqflush_all
-macro_line|# define xfs_qm_dqflush_all(m,t)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_dqattach
-macro_line|# define xfs_qm_dqattach(i,t)&t;&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_dqpurge_all
-macro_line|# define xfs_qm_dqpurge_all(m,t)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_mount_quotainit
-macro_line|# define xfs_qm_mount_quotainit(m,t)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_unmount_quotadestroy
-macro_line|# define xfs_qm_unmount_quotadestroy(m)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_mount_quotas
-macro_line|# define xfs_qm_mount_quotas(m)&t;&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_unmount_quotas
-macro_line|# define xfs_qm_unmount_quotas(m)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_dqdettach_inode
-macro_line|# define xfs_qm_dqdettach_inode(i)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_sync
-macro_line|# define xfs_qm_sync(m,t)&t;&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_dqlock
-macro_line|# define xfs_dqlock(d)&t;&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_dqunlock
-macro_line|# define xfs_dqunlock(d)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_dqunlock_nonotify
-macro_line|# define xfs_dqunlock_nonotify(d)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_dqlock2
-macro_line|# define xfs_dqlock2(d1,d2)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_dqput
-macro_line|# define xfs_qm_dqput(d)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_dqrele
-macro_line|# define xfs_qm_dqrele(d)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_dqid
-macro_line|# define xfs_qm_dqid(d)&t;&t;&t;&t;&t;(-1)
-DECL|macro|xfs_qm_dqget
-macro_line|# define xfs_qm_dqget(m,i,di,t,f,d)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_dqcheck
-macro_line|# define xfs_qm_dqcheck(dd,di,t,f,s)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_trans_alloc_dqinfo
-macro_line|# define xfs_trans_alloc_dqinfo(t)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_trans_free_dqinfo
-macro_line|# define xfs_trans_free_dqinfo(t)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_trans_dup_dqinfo
-macro_line|# define xfs_trans_dup_dqinfo(t1,t2)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_trans_mod_dquot
-macro_line|# define xfs_trans_mod_dquot(t,d,f,x)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_trans_mod_dquot_byino
-macro_line|# define xfs_trans_mod_dquot_byino(t,i,f,x)&t;&t;do { } while (0)
-DECL|macro|xfs_trans_apply_dquot_deltas
-macro_line|# define xfs_trans_apply_dquot_deltas(t)&t;&t;do { } while (0)
-DECL|macro|xfs_trans_unreserve_and_mod_dquots
-macro_line|# define xfs_trans_unreserve_and_mod_dquots(t)&t;&t;do { } while (0)
-DECL|macro|xfs_trans_reserve_quota_nblks
-macro_line|# define xfs_trans_reserve_quota_nblks(t,i,nb,ni,f)&t;(ENOSYS)
-DECL|macro|xfs_trans_reserve_quota_bydquots
-macro_line|# define xfs_trans_reserve_quota_bydquots(t,x,y,b,i,f)&t;(ENOSYS)
-DECL|macro|xfs_trans_log_dquot
-macro_line|# define xfs_trans_log_dquot(t,d)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_trans_dqjoin
-macro_line|# define xfs_trans_dqjoin(t,d)&t;&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_dqrele_all_inodes
-macro_line|# define xfs_qm_dqrele_all_inodes(m,t)&t;&t;&t;do { } while (0)
-DECL|macro|xfs_qm_vop_chown
-macro_line|# define xfs_qm_vop_chown(t,i,d1,d2)&t;&t;&t;(NULL)
-DECL|macro|xfs_qm_vop_dqalloc
-macro_line|# define xfs_qm_vop_dqalloc(m,i,u,g,f,d1,d2)&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_vop_chown_reserve
-macro_line|# define xfs_qm_vop_chown_reserve(t,i,d1,d2,f)&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_vop_rename_dqattach
-macro_line|# define xfs_qm_vop_rename_dqattach(i)&t;&t;&t;(ENOSYS)
-DECL|macro|xfs_qm_vop_dqattach_and_dqmod_newinode
-macro_line|# define xfs_qm_vop_dqattach_and_dqmod_newinode(t,i,x,y) do { } while (0)
-DECL|macro|_XQM_ZONE_DESTROY
-macro_line|# define _XQM_ZONE_DESTROY(z)&t;&t;&t;&t;do { } while (0)
-macro_line|#endif&t;/* CONFIG_XFS_QUOTA */
-multiline_comment|/*&n; * Regular disk block quota reservations&n; */
-DECL|macro|xfs_trans_reserve_blkquota
-mdefine_line|#define&t;&t;xfs_trans_reserve_blkquota(tp, ip, nblks) &bslash;&n;xfs_trans_reserve_quota_nblks(tp, ip, nblks, 0, XFS_QMOPT_RES_REGBLKS)
-DECL|macro|xfs_trans_reserve_blkquota_force
-mdefine_line|#define&t;&t;xfs_trans_reserve_blkquota_force(tp, ip, nblks) &bslash;&n;xfs_trans_reserve_quota_nblks(tp, ip, nblks, 0, &bslash;&n;&t;&t;XFS_QMOPT_RES_REGBLKS|XFS_QMOPT_FORCE_RES)
-DECL|macro|xfs_trans_unreserve_blkquota
-mdefine_line|#define&t;&t;xfs_trans_unreserve_blkquota(tp, ip, nblks) &bslash;&n;(void)xfs_trans_reserve_quota_nblks(tp, ip, -(nblks), 0, XFS_QMOPT_RES_REGBLKS)
-DECL|macro|xfs_trans_reserve_quota
-mdefine_line|#define&t;&t;xfs_trans_reserve_quota(tp, udq, gdq, nb, ni, f) &bslash;&n;xfs_trans_reserve_quota_bydquots(tp, udq, gdq, nb, ni, f|XFS_QMOPT_RES_REGBLKS)
-DECL|macro|xfs_trans_unreserve_quota
-mdefine_line|#define&t;&t;xfs_trans_unreserve_quota(tp, ud, gd, b, i, f) &bslash;&n;xfs_trans_reserve_quota_bydquots(tp, ud, gd, -(b), -(i), f|XFS_QMOPT_RES_REGBLKS)
-multiline_comment|/*&n; * Realtime disk block quota reservations&n; */
-DECL|macro|xfs_trans_reserve_rtblkquota
-mdefine_line|#define&t;&t;xfs_trans_reserve_rtblkquota(mp, tp, ip, nblks) &bslash;&n;xfs_trans_reserve_quota_nblks(tp, ip, nblks, 0, XFS_QMOPT_RES_RTBLKS)
-DECL|macro|xfs_trans_unreserve_rtblkquota
-mdefine_line|#define&t;&t;xfs_trans_unreserve_rtblkquota(tp, ip, nblks) &bslash;&n;(void)xfs_trans_reserve_quota_nblks(tp, ip, -(nblks), 0, XFS_QMOPT_RES_RTBLKS)
-DECL|macro|xfs_trans_reserve_rtquota
-mdefine_line|#define&t;&t;xfs_trans_reserve_rtquota(mp, tp, uq, pq, blks, f) &bslash;&n;xfs_trans_reserve_quota_bydquots(mp, tp, uq, pq, blks, 0, f|XFS_QMOPT_RES_RTBLKS)
-DECL|macro|xfs_trans_unreserve_rtquota
-mdefine_line|#define&t;&t;xfs_trans_unreserve_rtquota(tp, uq, pq, blks) &bslash;&n;xfs_trans_reserve_quota_bydquots(tp, uq, pq, -(blks), XFS_QMOPT_RES_RTBLKS)
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_QUOTA_H__ */
 eof

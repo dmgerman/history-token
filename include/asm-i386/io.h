@@ -14,7 +14,7 @@ mdefine_line|#define XQUAD_PORTIO_QUAD 0x40000  /* 256k per quad. */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * Temporary debugging check to catch old code using&n; * unmapped ISA addresses. Will be removed in 2.4.&n; */
-macro_line|#if CONFIG_DEBUG_IOVIRT
+macro_line|#ifdef CONFIG_DEBUG_IOVIRT
 r_extern
 r_void
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_MOUNT_H__
 DECL|macro|__XFS_MOUNT_H__
 mdefine_line|#define __XFS_MOUNT_H__
@@ -148,9 +148,6 @@ r_struct
 id|xfs_perag
 suffix:semicolon
 r_struct
-id|xfs_quotainfo
-suffix:semicolon
-r_struct
 id|xfs_iocore
 suffix:semicolon
 r_struct
@@ -171,13 +168,509 @@ DECL|macro|AIL_LOCK
 mdefine_line|#define AIL_LOCK(mp,s)&t;&t;s=mutex_spinlock(&amp;(mp)-&gt;m_ail_lock)
 DECL|macro|AIL_UNLOCK
 mdefine_line|#define AIL_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_ail_lock, s)
+multiline_comment|/*&n; * Prototypes and functions for the Data Migration subsystem.&n; */
+DECL|typedef|xfs_send_data_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_send_data_t
+)paren
+(paren
+r_int
+comma
+r_struct
+id|bhv_desc
+op_star
+comma
+id|xfs_off_t
+comma
+r_int
+comma
+r_int
+comma
+id|vrwlock_t
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_send_mmap_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_send_mmap_t
+)paren
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+DECL|typedef|xfs_send_destroy_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_send_destroy_t
+)paren
+(paren
+r_struct
+id|bhv_desc
+op_star
+comma
+id|dm_right_t
+)paren
+suffix:semicolon
+DECL|typedef|xfs_send_namesp_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_send_namesp_t
+)paren
+(paren
+id|dm_eventtype_t
+comma
+r_struct
+id|bhv_desc
+op_star
+comma
+id|dm_right_t
+comma
+r_struct
+id|bhv_desc
+op_star
+comma
+id|dm_right_t
+comma
+r_char
+op_star
+comma
+r_char
+op_star
+comma
+id|mode_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|xfs_send_unmount_t
+r_typedef
+r_void
+(paren
+op_star
+id|xfs_send_unmount_t
+)paren
+(paren
+r_struct
+id|vfs
+op_star
+comma
+r_struct
+id|vnode
+op_star
+comma
+id|dm_right_t
+comma
+id|mode_t
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|struct|xfs_dmops
+r_typedef
+r_struct
+id|xfs_dmops
+(brace
+DECL|member|xfs_send_data
+id|xfs_send_data_t
+id|xfs_send_data
+suffix:semicolon
+DECL|member|xfs_send_mmap
+id|xfs_send_mmap_t
+id|xfs_send_mmap
+suffix:semicolon
+DECL|member|xfs_send_destroy
+id|xfs_send_destroy_t
+id|xfs_send_destroy
+suffix:semicolon
+DECL|member|xfs_send_namesp
+id|xfs_send_namesp_t
+id|xfs_send_namesp
+suffix:semicolon
+DECL|member|xfs_send_unmount
+id|xfs_send_unmount_t
+id|xfs_send_unmount
+suffix:semicolon
+DECL|typedef|xfs_dmops_t
+)brace
+id|xfs_dmops_t
+suffix:semicolon
+DECL|macro|XFS_SEND_DATA
+mdefine_line|#define XFS_SEND_DATA(mp, ev,bdp,off,len,fl,lock) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_data)(ev,bdp,off,len,fl,lock)
+DECL|macro|XFS_SEND_MMAP
+mdefine_line|#define XFS_SEND_MMAP(mp, vma,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_mmap)(vma,fl)
+DECL|macro|XFS_SEND_DESTROY
+mdefine_line|#define XFS_SEND_DESTROY(mp, bdp,right) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_destroy)(bdp,right)
+DECL|macro|XFS_SEND_NAMESP
+mdefine_line|#define XFS_SEND_NAMESP(mp, ev,b1,r1,b2,r2,n1,n2,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_namesp)(ev,b1,r1,b2,r2,n1,n2,mode,rval,fl)
+DECL|macro|XFS_SEND_UNMOUNT
+mdefine_line|#define XFS_SEND_UNMOUNT(mp, vfsp,vp,right,mode,rval,fl) &bslash;&n;&t;(*(mp)-&gt;m_dm_ops.xfs_send_unmount)(vfsp,vp,right,mode,rval,fl)
+multiline_comment|/*&n; * Prototypes and functions for the Quota Management subsystem.&n; */
+r_struct
+id|xfs_dquot
+suffix:semicolon
+r_struct
+id|xfs_dqtrxops
+suffix:semicolon
+r_struct
+id|xfs_quotainfo
+suffix:semicolon
+DECL|typedef|xfs_qminit_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_qminit_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+id|uint
+op_star
+comma
+id|uint
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_qmmount_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_qmmount_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+id|uint
+comma
+id|uint
+)paren
+suffix:semicolon
+DECL|typedef|xfs_qmunmount_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_qmunmount_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_qmdone_t
+r_typedef
+r_void
+(paren
+op_star
+id|xfs_qmdone_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqrele_t
+r_typedef
+r_void
+(paren
+op_star
+id|xfs_dqrele_t
+)paren
+(paren
+r_struct
+id|xfs_dquot
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqattach_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_dqattach_t
+)paren
+(paren
+r_struct
+id|xfs_inode
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqdetach_t
+r_typedef
+r_void
+(paren
+op_star
+id|xfs_dqdetach_t
+)paren
+(paren
+r_struct
+id|xfs_inode
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqpurgeall_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_dqpurgeall_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqvopalloc_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_dqvopalloc_t
+)paren
+(paren
+r_struct
+id|xfs_mount
+op_star
+comma
+r_struct
+id|xfs_inode
+op_star
+comma
+id|uid_t
+comma
+id|gid_t
+comma
+id|uint
+comma
+r_struct
+id|xfs_dquot
+op_star
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqvopcreate_t
+r_typedef
+r_void
+(paren
+op_star
+id|xfs_dqvopcreate_t
+)paren
+(paren
+r_struct
+id|xfs_trans
+op_star
+comma
+r_struct
+id|xfs_inode
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqvoprename_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_dqvoprename_t
+)paren
+(paren
+r_struct
+id|xfs_inode
+op_star
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqvopchown_t
+r_typedef
+r_struct
+id|xfs_dquot
+op_star
+(paren
+op_star
+id|xfs_dqvopchown_t
+)paren
+(paren
+r_struct
+id|xfs_trans
+op_star
+comma
+r_struct
+id|xfs_inode
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|xfs_dqvopchownresv_t
+r_typedef
+r_int
+(paren
+op_star
+id|xfs_dqvopchownresv_t
+)paren
+(paren
+r_struct
+id|xfs_trans
+op_star
+comma
+r_struct
+id|xfs_inode
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+comma
+r_struct
+id|xfs_dquot
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+DECL|struct|xfs_qmops
+r_typedef
+r_struct
+id|xfs_qmops
+(brace
+DECL|member|xfs_qminit
+id|xfs_qminit_t
+id|xfs_qminit
+suffix:semicolon
+DECL|member|xfs_qmdone
+id|xfs_qmdone_t
+id|xfs_qmdone
+suffix:semicolon
+DECL|member|xfs_qmmount
+id|xfs_qmmount_t
+id|xfs_qmmount
+suffix:semicolon
+DECL|member|xfs_qmunmount
+id|xfs_qmunmount_t
+id|xfs_qmunmount
+suffix:semicolon
+DECL|member|xfs_dqrele
+id|xfs_dqrele_t
+id|xfs_dqrele
+suffix:semicolon
+DECL|member|xfs_dqattach
+id|xfs_dqattach_t
+id|xfs_dqattach
+suffix:semicolon
+DECL|member|xfs_dqdetach
+id|xfs_dqdetach_t
+id|xfs_dqdetach
+suffix:semicolon
+DECL|member|xfs_dqpurgeall
+id|xfs_dqpurgeall_t
+id|xfs_dqpurgeall
+suffix:semicolon
+DECL|member|xfs_dqvopalloc
+id|xfs_dqvopalloc_t
+id|xfs_dqvopalloc
+suffix:semicolon
+DECL|member|xfs_dqvopcreate
+id|xfs_dqvopcreate_t
+id|xfs_dqvopcreate
+suffix:semicolon
+DECL|member|xfs_dqvoprename
+id|xfs_dqvoprename_t
+id|xfs_dqvoprename
+suffix:semicolon
+DECL|member|xfs_dqvopchown
+id|xfs_dqvopchown_t
+id|xfs_dqvopchown
+suffix:semicolon
+DECL|member|xfs_dqvopchownresv
+id|xfs_dqvopchownresv_t
+id|xfs_dqvopchownresv
+suffix:semicolon
+DECL|member|xfs_dqtrxops
+r_struct
+id|xfs_dqtrxops
+op_star
+id|xfs_dqtrxops
+suffix:semicolon
+DECL|typedef|xfs_qmops_t
+)brace
+id|xfs_qmops_t
+suffix:semicolon
+DECL|macro|XFS_QM_INIT
+mdefine_line|#define XFS_QM_INIT(mp, mnt, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qminit)(mp, mnt, fl)
+DECL|macro|XFS_QM_MOUNT
+mdefine_line|#define XFS_QM_MOUNT(mp, mnt, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmmount)(mp, mnt, fl)
+DECL|macro|XFS_QM_UNMOUNT
+mdefine_line|#define XFS_QM_UNMOUNT(mp) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmunmount)(mp)
+DECL|macro|XFS_QM_DONE
+mdefine_line|#define XFS_QM_DONE(mp) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_qmdone)(mp)
+DECL|macro|XFS_QM_DQRELE
+mdefine_line|#define XFS_QM_DQRELE(mp, dq) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqrele)(dq)
+DECL|macro|XFS_QM_DQATTACH
+mdefine_line|#define XFS_QM_DQATTACH(mp, ip, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqattach)(ip, fl)
+DECL|macro|XFS_QM_DQDETACH
+mdefine_line|#define XFS_QM_DQDETACH(mp, ip) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqdetach)(ip)
+DECL|macro|XFS_QM_DQPURGEALL
+mdefine_line|#define XFS_QM_DQPURGEALL(mp, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqpurgeall)(mp, fl)
+DECL|macro|XFS_QM_DQVOPALLOC
+mdefine_line|#define XFS_QM_DQVOPALLOC(mp, ip, uid, gid, fl, dq1, dq2) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqvopalloc)(mp, ip, uid, gid, fl, dq1, dq2)
+DECL|macro|XFS_QM_DQVOPCREATE
+mdefine_line|#define XFS_QM_DQVOPCREATE(mp, tp, ip, dq1, dq2) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqvopcreate)(tp, ip, dq1, dq2)
+DECL|macro|XFS_QM_DQVOPRENAME
+mdefine_line|#define XFS_QM_DQVOPRENAME(mp, ip) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqvoprename)(ip)
+DECL|macro|XFS_QM_DQVOPCHOWN
+mdefine_line|#define XFS_QM_DQVOPCHOWN(mp, tp, ip, dqp, dq) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqvopchown)(tp, ip, dqp, dq)
+DECL|macro|XFS_QM_DQVOPCHOWNRESV
+mdefine_line|#define XFS_QM_DQVOPCHOWNRESV(mp, tp, ip, dq1, dq2, fl) &bslash;&n;&t;(*(mp)-&gt;m_qm_ops.xfs_dqvopchownresv)(tp, ip, dq1, dq2, fl)
 multiline_comment|/*&n; * Prototypes and functions for I/O core modularization.&n; */
-r_struct
-id|flid
-suffix:semicolon
-r_struct
-id|buf
-suffix:semicolon
 DECL|typedef|xfs_ioinit_t
 r_typedef
 r_int
@@ -195,7 +688,6 @@ id|xfs_mount_args
 op_star
 comma
 r_int
-op_star
 )paren
 suffix:semicolon
 DECL|typedef|xfs_bmapi_t
@@ -529,7 +1021,6 @@ DECL|macro|XFS_SIZE
 mdefine_line|#define XFS_SIZE(mp, io) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_size_func)((io)-&gt;io_obj)
 DECL|macro|XFS_IODONE
 mdefine_line|#define XFS_IODONE(vfsp) &bslash;&n;&t;(*(mp)-&gt;m_io_ops.xfs_iodone)(vfsp)
-multiline_comment|/*&n; * Prototypes and functions for the XFS realtime subsystem.&n; */
 DECL|struct|xfs_mount
 r_typedef
 r_struct
@@ -1042,29 +1533,24 @@ op_star
 id|m_chash
 suffix:semicolon
 multiline_comment|/* fs private inode per-cluster&n;&t;&t;&t;&t;&t;&t; * hash table */
+DECL|member|m_dm_ops
+r_struct
+id|xfs_dmops
+id|m_dm_ops
+suffix:semicolon
+multiline_comment|/* vector of DMI ops */
+DECL|member|m_qm_ops
+r_struct
+id|xfs_qmops
+id|m_qm_ops
+suffix:semicolon
+multiline_comment|/* vector of XQM ops */
 DECL|member|m_io_ops
 r_struct
 id|xfs_ioops
 id|m_io_ops
 suffix:semicolon
 multiline_comment|/* vector of I/O ops */
-DECL|member|m_expinfo
-r_struct
-id|xfs_expinfo
-op_star
-id|m_expinfo
-suffix:semicolon
-multiline_comment|/* info to export to other&n;&t;&t;&t;&t;&t;&t;   cells. */
-DECL|member|m_shadow_pinmask
-r_uint64
-id|m_shadow_pinmask
-suffix:semicolon
-multiline_comment|/* which bits matter in rpc&n;&t;&t;&t;&t;&t;&t;   log item pin masks */
-DECL|member|m_cxfstype
-id|uint
-id|m_cxfstype
-suffix:semicolon
-multiline_comment|/* mounted shared, etc. */
 DECL|member|m_freeze_lock
 id|lock_t
 id|m_freeze_lock
@@ -1107,8 +1593,7 @@ mdefine_line|#define XFS_MOUNT_RETERR&t;0x00000040&t;/* return alignment errors 
 DECL|macro|XFS_MOUNT_NOALIGN
 mdefine_line|#define XFS_MOUNT_NOALIGN&t;0x00000080&t;/* turn off stripe alignment&n;&t;&t;&t;&t;&t;&t;   allocations */
 multiline_comment|/* 0x00000100&t;-- currently unused */
-DECL|macro|XFS_MOUNT_REGISTERED
-mdefine_line|#define XFS_MOUNT_REGISTERED&t;0x00000200&t;/* registered with cxfs master&n;&t;&t;&t;&t;&t;&t;   cell logic */
+multiline_comment|/*&t;0x00000200&t;-- currently unused */
 DECL|macro|XFS_MOUNT_NORECOVERY
 mdefine_line|#define XFS_MOUNT_NORECOVERY&t;0x00000400&t;/* no recovery - dirty fs */
 DECL|macro|XFS_MOUNT_SHARED
@@ -1124,15 +1609,6 @@ DECL|macro|XFS_MOUNT_32BITINODES
 mdefine_line|#define XFS_MOUNT_32BITINODES&t;0x00008000&t;/* do not create inodes above&n;&t;&t;&t;&t;&t;&t; * 32 bits in size */
 DECL|macro|XFS_MOUNT_NOLOGFLUSH
 mdefine_line|#define XFS_MOUNT_NOLOGFLUSH&t;0x00010000
-multiline_comment|/*&n; * Flags for m_cxfstype&n; */
-DECL|macro|XFS_CXFS_NOT
-mdefine_line|#define XFS_CXFS_NOT&t;&t;0x00000001&t;/* local mount */
-DECL|macro|XFS_CXFS_SERVER
-mdefine_line|#define XFS_CXFS_SERVER&t;&t;0x00000002&t;/* we&squot;re the CXFS server */
-DECL|macro|XFS_CXFS_CLIENT
-mdefine_line|#define XFS_CXFS_CLIENT&t;&t;0x00000004&t;/* We&squot;re a CXFS client */
-DECL|macro|XFS_CXFS_REC_ENABLED
-mdefine_line|#define XFS_CXFS_REC_ENABLED&t;0x00000008&t;/* recovery is enabled */
 DECL|macro|XFS_FORCED_SHUTDOWN
 mdefine_line|#define XFS_FORCED_SHUTDOWN(mp) ((mp)-&gt;m_flags &amp; XFS_MOUNT_FS_SHUTDOWN)
 multiline_comment|/*&n; * Default minimum read and write sizes.&n; */
@@ -1154,7 +1630,7 @@ mdefine_line|#define XFS_WSYNC_READIO_LOG&t;15&t;/* 32K */
 DECL|macro|XFS_WSYNC_WRITEIO_LOG
 mdefine_line|#define XFS_WSYNC_WRITEIO_LOG&t;14&t;/* 16K */
 DECL|macro|xfs_force_shutdown
-mdefine_line|#define xfs_force_shutdown(m,f)&t;VFS_FORCE_SHUTDOWN(XFS_MTOVFS(m),f)
+mdefine_line|#define xfs_force_shutdown(m,f)&t;&bslash;&n;&t;VFS_FORCE_SHUTDOWN((XFS_MTOVFS(m)), f, __FILE__, __LINE__)
 multiline_comment|/*&n; * Flags sent to xfs_force_shutdown.&n; */
 DECL|macro|XFS_METADATA_IO_ERROR
 mdefine_line|#define XFS_METADATA_IO_ERROR&t;0x1
@@ -1163,17 +1639,15 @@ mdefine_line|#define XFS_LOG_IO_ERROR&t;0x2
 DECL|macro|XFS_FORCE_UMOUNT
 mdefine_line|#define XFS_FORCE_UMOUNT&t;0x4
 DECL|macro|XFS_CORRUPT_INCORE
-mdefine_line|#define XFS_CORRUPT_INCORE&t;0x8&t;/* corrupt in-memory data structures */
+mdefine_line|#define XFS_CORRUPT_INCORE&t;0x8&t;/* Corrupt in-memory data structures */
 DECL|macro|XFS_SHUTDOWN_REMOTE_REQ
-mdefine_line|#define XFS_SHUTDOWN_REMOTE_REQ 0x10&t;/* shutdown came from remote cell */
+mdefine_line|#define XFS_SHUTDOWN_REMOTE_REQ 0x10&t;/* Shutdown came from remote cell */
 multiline_comment|/*&n; * xflags for xfs_syncsub&n; */
 DECL|macro|XFS_XSYNC_RELOC
 mdefine_line|#define XFS_XSYNC_RELOC&t;&t;0x01
 multiline_comment|/*&n; * Flags for xfs_mountfs&n; */
 DECL|macro|XFS_MFSI_SECOND
-mdefine_line|#define XFS_MFSI_SECOND&t;&t;0x01&t;/* Is a cxfs secondary mount -- skip */
-multiline_comment|/* stuff which should only be done */
-multiline_comment|/* once. */
+mdefine_line|#define XFS_MFSI_SECOND&t;&t;0x01&t;/* Secondary mount -- skip stuff */
 DECL|macro|XFS_MFSI_CLIENT
 mdefine_line|#define XFS_MFSI_CLIENT&t;&t;0x02&t;/* Is a client -- skip lots of stuff */
 DECL|macro|XFS_MFSI_NOUNLINK
@@ -1214,6 +1688,23 @@ mdefine_line|#define XFS_BHVTOM(bdp) xfs_bhvtom(bdp)
 macro_line|#else
 DECL|macro|XFS_BHVTOM
 mdefine_line|#define XFS_BHVTOM(bdp)&t;&t;((xfs_mount_t *)BHV_PDATA(bdp))
+macro_line|#endif
+macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_VFSTOM)
+id|xfs_mount_t
+op_star
+id|xfs_vfstom
+c_func
+(paren
+id|vfs_t
+op_star
+id|vfs
+)paren
+suffix:semicolon
+DECL|macro|XFS_VFSTOM
+mdefine_line|#define XFS_VFSTOM(vfs) xfs_vfstom(vfs)
+macro_line|#else
+DECL|macro|XFS_VFSTOM
+mdefine_line|#define XFS_VFSTOM(vfs)&t;&t;&bslash;&n;&t;(XFS_BHVTOM(bhv_lookup(VFS_BHVHEAD(vfs), &amp;xfs_vfsops)))
 macro_line|#endif
 multiline_comment|/*&n; * Moved here from xfs_ag.h to avoid reordering header files&n; */
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DADDR_TO_AGNO)
@@ -1345,7 +1836,7 @@ DECL|member|msb_delta
 r_int
 id|msb_delta
 suffix:semicolon
-multiline_comment|/* change to make to the specified field */
+multiline_comment|/* Change to make to specified field */
 DECL|typedef|xfs_mod_sb_t
 )brace
 id|xfs_mod_sb_t
@@ -1358,6 +1849,16 @@ DECL|macro|XFS_SB_LOCK
 mdefine_line|#define XFS_SB_LOCK(mp)&t;&t;mutex_spinlock(&amp;(mp)-&gt;m_sb_lock)
 DECL|macro|XFS_SB_UNLOCK
 mdefine_line|#define XFS_SB_UNLOCK(mp,s)&t;mutex_spinunlock(&amp;(mp)-&gt;m_sb_lock,(s))
+r_extern
+id|xfs_mount_t
+op_star
+id|xfs_mount_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|xfs_mod_sb
 c_func
@@ -1368,14 +1869,7 @@ comma
 id|__int64_t
 )paren
 suffix:semicolon
-id|xfs_mount_t
-op_star
-id|xfs_mount_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+r_extern
 r_void
 id|xfs_mount_free
 c_func
@@ -1388,6 +1882,7 @@ r_int
 id|remove_bhv
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mountfs
 c_func
@@ -1405,6 +1900,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmountfs
 c_func
@@ -1417,6 +1913,7 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_unmountfs_close
 c_func
@@ -1429,6 +1926,7 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmountfs_writesb
 c_func
@@ -1437,6 +1935,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_unmount_flush
 c_func
@@ -1447,6 +1946,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mod_incore_sb
 c_func
@@ -1461,6 +1961,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_mod_incore_sb_batch
 c_func
@@ -1476,15 +1977,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_int
-id|xfs_readsb
-c_func
-(paren
-id|xfs_mount_t
-op_star
-id|mp
-)paren
-suffix:semicolon
+r_extern
 r_struct
 id|xfs_buf
 op_star
@@ -1497,6 +1990,17 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|xfs_readsb
+c_func
+(paren
+id|xfs_mount_t
+op_star
+id|mp
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|xfs_freesb
 c_func
@@ -1505,6 +2009,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_do_force_shutdown
 c_func
@@ -1520,6 +2025,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|xfs_syncsub
 c_func
@@ -1535,6 +2041,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_initialize_perag
 c_func
@@ -1545,6 +2052,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_xlatesb
 c_func
@@ -1568,6 +2076,7 @@ DECL|macro|XFS_FREEZE_WRITE
 mdefine_line|#define XFS_FREEZE_WRITE&t;1
 DECL|macro|XFS_FREEZE_TRANS
 mdefine_line|#define XFS_FREEZE_TRANS&t;2
+r_extern
 r_void
 id|xfs_start_freeze
 c_func
@@ -1578,6 +2087,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_finish_freeze
 c_func
@@ -1586,6 +2096,7 @@ id|xfs_mount_t
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|xfs_check_frozen
 c_func
@@ -1603,6 +2114,42 @@ r_extern
 r_struct
 id|vfsops
 id|xfs_vfsops
+suffix:semicolon
+r_extern
+r_struct
+id|vnodeops
+id|xfs_vnodeops
+suffix:semicolon
+r_extern
+r_struct
+id|xfs_dmops
+id|xfs_dmcore_xfs
+suffix:semicolon
+r_extern
+r_struct
+id|xfs_qmops
+id|xfs_qmcore_xfs
+suffix:semicolon
+r_extern
+r_struct
+id|xfs_ioops
+id|xfs_iocore_xfs
+suffix:semicolon
+r_extern
+r_int
+id|xfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_cleanup
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* __XFS_MOUNT_H__ */

@@ -372,6 +372,10 @@ r_return
 r_void
 op_star
 )paren
+(paren
+r_int
+r_int
+)paren
 id|uptr
 suffix:semicolon
 )brace

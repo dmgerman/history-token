@@ -1293,7 +1293,7 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
 l_string|&quot;ESR value before enabling vector: %08x&bslash;n&quot;
@@ -1338,7 +1338,7 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
 l_string|&quot;ESR value after enabling vector: %08x&bslash;n&quot;
@@ -3662,10 +3662,7 @@ r_if
 c_cond
 (paren
 id|smp_found_config
-)paren
-r_if
-c_cond
-(paren
+op_logical_and
 op_logical_neg
 id|skip_ioapic_setup
 op_logical_and
@@ -3675,6 +3672,11 @@ id|setup_IO_APIC
 c_func
 (paren
 )paren
+suffix:semicolon
+r_else
+id|nr_ioapics
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#endif
 id|setup_boot_APIC_clock

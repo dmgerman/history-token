@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *&t;cs4232.c&n; *&n; * The low level driver for Crystal CS4232 based cards. The CS4232 is&n; * a PnP compatible chip which contains a CS4231A codec, SB emulation,&n; * a MPU401 compatible MIDI port, joystick and synthesizer and IDE CD-ROM &n; * interfaces. This is just a temporary driver until full PnP support&n; * gets implemented. Just the WSS codec, FM synth and the MIDI ports are&n; * supported. Other interfaces are left uninitialized.&n; *&n; * ifdef ...WAVEFRONT...&n; * &n; *   Support is provided for initializing the WaveFront synth&n; *   interface as well, which is logical device #4. Note that if&n; *   you have a Tropez+ card, you probably don&squot;t need to setup&n; *   the CS4232-supported MIDI interface, since it corresponds to&n; *   the internal 26-pin header that&squot;s hard to access. Using this&n; *   requires an additional IRQ, a resource none too plentiful in&n; *   this environment. Just don&squot;t set module parameters mpuio and&n; *   mpuirq, and the MIDI port will be left uninitialized. You can&n; *   still use the ICS2115 hosted MIDI interface which corresponds&n; *   to the 9-pin D connector on the back of the card.&n; *&n; * endif  ...WAVEFRONT...&n; *&n; * Supported chips are:&n; *      CS4232&n; *      CS4236&n; *      CS4236B&n; *&n; * Note: You will need a PnP config setup to initialise some CS4232 boards&n; * anyway.&n; *&n; * Changes&n; *&t;Alan Cox&t;&t;Modularisation, Basic cleanups.&n; *      Paul Barton-Davis&t;Separated MPU configuration, added&n; *                                       Tropez+ (WaveFront) support&n; *&t;Christoph Hellwig&t;Adapted to module_init/module_exit,&n; * &t;&t;&t;&t;&t;simple cleanups&n; * &t;Arnaldo C. de Melo&t;got rid of attach_uart401&n; *&t;Bartlomiej Zolnierkiewicz&n; *&t;&t;&t;&t;Added some __init/__initdata/__exit&n; *&t;Marcus Meissner&t;&t;Added ISA PnP support.&n; */
+multiline_comment|/*&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; *&t;cs4232.c&n; *&n; * The low level driver for Crystal CS4232 based cards. The CS4232 is&n; * a PnP compatible chip which contains a CS4231A codec, SB emulation,&n; * a MPU401 compatible MIDI port, joystick and synthesizer and IDE CD-ROM &n; * interfaces. This is just a temporary driver until full PnP support&n; * gets implemented. Just the WSS codec, FM synth and the MIDI ports are&n; * supported. Other interfaces are left uninitialized.&n; *&n; * ifdef ...WAVEFRONT...&n; * &n; *   Support is provided for initializing the WaveFront synth&n; *   interface as well, which is logical device #4. Note that if&n; *   you have a Tropez+ card, you probably don&squot;t need to setup&n; *   the CS4232-supported MIDI interface, since it corresponds to&n; *   the internal 26-pin header that&squot;s hard to access. Using this&n; *   requires an additional IRQ, a resource none too plentiful in&n; *   this environment. Just don&squot;t set module parameters mpuio and&n; *   mpuirq, and the MIDI port will be left uninitialized. You can&n; *   still use the ICS2115 hosted MIDI interface which corresponds&n; *   to the 9-pin D connector on the back of the card.&n; *&n; * endif  ...WAVEFRONT...&n; *&n; * Supported chips are:&n; *      CS4232&n; *      CS4236&n; *      CS4236B&n; *&n; * Note: You will need a PnP config setup to initialise some CS4232 boards&n; * anyway.&n; *&n; * Changes&n; *      John Rood               Added Bose Sound System Support.&n; *      Toshio Spoor&n; *&t;Alan Cox&t;&t;Modularisation, Basic cleanups.&n; *      Paul Barton-Davis&t;Separated MPU configuration, added&n; *                                       Tropez+ (WaveFront) support&n; *&t;Christoph Hellwig&t;Adapted to module_init/module_exit,&n; * &t;&t;&t;&t;&t;simple cleanups&n; * &t;Arnaldo C. de Melo&t;got rid of attach_uart401&n; *&t;Bartlomiej Zolnierkiewicz&n; *&t;&t;&t;&t;Added some __init/__initdata/__exit&n; *&t;Marcus Meissner&t;&t;Added ISA PnP support.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,6 +11,14 @@ DECL|macro|KEY_PORT
 mdefine_line|#define KEY_PORT&t;0x279&t;/* Same as LPT1 status port */
 DECL|macro|CSN_NUM
 mdefine_line|#define CSN_NUM&t;&t;0x99&t;/* Just a random number */
+DECL|macro|INDEX_ADDRESS
+mdefine_line|#define INDEX_ADDRESS   0x00    /* (R0) Index Address Register */
+DECL|macro|INDEX_DATA
+mdefine_line|#define INDEX_DATA      0x01    /* (R1) Indexed Data Register */
+DECL|macro|PIN_CONTROL
+mdefine_line|#define PIN_CONTROL     0x0a    /* (I10) Pin Control */
+DECL|macro|ENABLE_PINS
+mdefine_line|#define ENABLE_PINS     0xc0    /* XCTRL0/XCTRL1 enable */
 DECL|function|CS_OUT
 r_static
 r_void
@@ -35,6 +43,14 @@ DECL|macro|CS_OUT2
 mdefine_line|#define CS_OUT2(a, b)&t;&t;{CS_OUT(a);CS_OUT(b);}
 DECL|macro|CS_OUT3
 mdefine_line|#define CS_OUT3(a, b, c)&t;{CS_OUT(a);CS_OUT(b);CS_OUT(c);}
+DECL|variable|bss
+r_static
+r_int
+id|__initdata
+id|bss
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|mpu_base
 DECL|variable|mpu_irq
 r_static
@@ -186,8 +202,95 @@ id|howlong
 )paren
 suffix:semicolon
 )brace
+DECL|function|enable_xctrl
+r_static
+r_void
+id|enable_xctrl
+c_func
+(paren
+r_int
+id|baseio
+)paren
+(brace
+r_int
+r_char
+id|regd
+suffix:semicolon
+multiline_comment|/*&n;         * Some IBM Aptiva&squot;s have the Bose Sound System. By default&n;         * the Bose Amplifier is disabled. The amplifier will be &n;         * activated, by setting the XCTRL0 and XCTRL1 bits.&n;         * Volume of the monitor bose speakers/woofer, can then&n;         * be set by changing the PCM volume.&n;         *&n;         */
+id|printk
+c_func
+(paren
+l_string|&quot;cs4232: enabling Bose Sound System Amplifier.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Switch to Pin Control Address */
+id|regd
+op_assign
+id|inb
+c_func
+(paren
+id|baseio
+op_plus
+id|INDEX_ADDRESS
+)paren
+op_amp
+l_int|0xe0
+suffix:semicolon
+id|outb
+c_func
+(paren
+(paren
+(paren
+r_int
+r_char
+)paren
+(paren
+id|PIN_CONTROL
+op_or
+id|regd
+)paren
+)paren
+comma
+id|baseio
+op_plus
+id|INDEX_ADDRESS
+)paren
+suffix:semicolon
+multiline_comment|/* Activate the XCTRL0 and XCTRL1 Pins */
+id|regd
+op_assign
+id|inb
+c_func
+(paren
+id|baseio
+op_plus
+id|INDEX_DATA
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+(paren
+(paren
+r_int
+r_char
+)paren
+(paren
+id|ENABLE_PINS
+op_or
+id|regd
+)paren
+)paren
+comma
+id|baseio
+op_plus
+id|INDEX_DATA
+)paren
+suffix:semicolon
+)brace
 DECL|function|probe_cs4232
 r_int
+id|__init
 id|probe_cs4232
 c_func
 (paren
@@ -634,6 +737,7 @@ suffix:semicolon
 )brace
 DECL|function|attach_cs4232
 r_void
+id|__init
 id|attach_cs4232
 c_func
 (paren
@@ -878,10 +982,24 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|bss
+)paren
+(brace
+id|enable_xctrl
+c_func
+(paren
+id|base
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|unload_cs4232
 r_static
 r_void
+id|__exit
 id|unload_cs4232
 c_func
 (paren
@@ -1279,6 +1397,22 @@ c_func
 id|isapnp
 comma
 l_string|&quot;Enable ISAPnP probing (default 1)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|bss
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|bss
+comma
+l_string|&quot;Enable Bose Sound System Support (default 0)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Install a CS4232 based card. Need to have ad1848 and mpu401&n; *&t;loaded ready.&n; */

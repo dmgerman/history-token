@@ -47,34 +47,15 @@ op_star
 op_star
 id|hose_tail
 suffix:semicolon
-multiline_comment|/* PHB&squot;s are also in a table. */
-DECL|macro|PCI_MAX_PHB
-mdefine_line|#define PCI_MAX_PHB 64
 r_extern
 r_int
 id|global_phb_number
-suffix:semicolon
-r_extern
-r_struct
-id|pci_controller
-op_star
-id|phbtab
-(braket
-)braket
 suffix:semicolon
 multiline_comment|/*******************************************************************&n; * Platform functions that are brand specific implementation. &n; *******************************************************************/
 r_extern
 r_int
 r_int
 id|find_and_init_phbs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ppc64_pcibios_init
 c_func
 (paren
 r_void
@@ -177,27 +158,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
-id|iSeries_pcibios_init_early
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|pSeries_pcibios_init_early
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|pSeries_pcibios_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*******************************************************************&n; * Helper macros for extracting data from pci structures.  &n; *   PCI_GET_PHB_PTR(struct pci_dev*)    returns the Phb pointer.&n; *   PCI_GET_PHB_NUMBER(struct pci_dev*) returns the Phb number.&n; *   PCI_GET_BUS_NUMBER(struct pci_dev*) returns the bus number.&n; *******************************************************************/
 DECL|macro|PCI_GET_PHB_PTR
 mdefine_line|#define PCI_GET_PHB_PTR(dev)    (((struct device_node *)(dev)-&gt;sysdata)-&gt;phb)
@@ -205,50 +165,5 @@ DECL|macro|PCI_GET_PHB_NUMBER
 mdefine_line|#define PCI_GET_PHB_NUMBER(dev) (((dev)-&gt;bus-&gt;number&amp;0x00FFFF00)&gt;&gt;8)
 DECL|macro|PCI_GET_BUS_NUMBER
 mdefine_line|#define PCI_GET_BUS_NUMBER(dev) ((dev)-&gt;bus-&gt;number&amp;0x0000FF)
-multiline_comment|/*******************************************************************&n; * Debugging  Routines.&n; *******************************************************************/
-r_extern
-r_void
-id|dumpResources
-c_func
-(paren
-r_struct
-id|resource
-op_star
-id|Resource
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dumpPci_Controller
-c_func
-(paren
-r_struct
-id|pci_controller
-op_star
-id|phb
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dumpPci_Bus
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|Pci_Bus
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dumpPci_Dev
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|Pci_Dev
-)paren
-suffix:semicolon
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */
 eof

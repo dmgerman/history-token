@@ -27,7 +27,6 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
-macro_line|#include &lt;pcmcia/bus_ops.h&gt;
 macro_line|#include &quot;cs_internal.h&quot;
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|PCI_OPT
@@ -2497,12 +2496,18 @@ id|s-&gt;state
 op_amp
 id|SOCKET_CARDBUS
 )paren
+(brace
 id|cb_alloc
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
+id|s-&gt;state
+op_or_assign
+id|SOCKET_CARDBUS_CONFIG
+suffix:semicolon
+)brace
 macro_line|#endif
 id|send_event
 c_func
@@ -4773,7 +4778,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;cb_config
+id|s-&gt;state
+op_amp
+id|SOCKET_CARDBUS_CONFIG
 )paren
 (brace
 id|config-&gt;Attributes
@@ -6597,10 +6604,6 @@ id|client-&gt;event_callback_args.client_handle
 op_assign
 id|client
 suffix:semicolon
-id|client-&gt;event_callback_args.bus
-op_assign
-id|s-&gt;cap.bus
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6863,21 +6866,9 @@ id|handle-&gt;state
 op_amp
 id|CLIENT_CARDBUS
 )paren
-(brace
-id|cb_disable
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
-id|s-&gt;lock_count
-op_assign
-l_int|0
-suffix:semicolon
 r_return
 id|CS_SUCCESS
 suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -7075,11 +7066,9 @@ id|handle-&gt;state
 op_amp
 id|CLIENT_CARDBUS
 )paren
-(brace
 r_return
 id|CS_SUCCESS
 suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -7307,18 +7296,16 @@ op_amp
 id|IRQ_HANDLE_PRESENT
 )paren
 (brace
-id|bus_free_irq
+id|free_irq
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|req-&gt;AssignedIRQ
 comma
 id|req-&gt;Instance
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 r_if
 c_cond
 (paren
@@ -7531,47 +7518,9 @@ id|handle-&gt;state
 op_amp
 id|CLIENT_CARDBUS
 )paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|req-&gt;IntType
-op_amp
-id|INT_CARDBUS
-)paren
-)paren
 r_return
 id|CS_UNSUPPORTED_MODE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;lock_count
-op_ne
-l_int|0
-)paren
-r_return
-id|CS_CONFIGURATION_LOCKED
-suffix:semicolon
-id|cb_enable
-c_func
-(paren
-id|s
-)paren
-suffix:semicolon
-id|handle-&gt;state
-op_or_assign
-id|CLIENT_CONFIG_LOCKED
-suffix:semicolon
-id|s-&gt;lock_count
-op_increment
-suffix:semicolon
-r_return
-id|CS_SUCCESS
-suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -8561,7 +8510,7 @@ l_int|0
 suffix:colon
 id|CS_IN_USE
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCMCIA_PROBE
 )brace
 r_else
 r_if
@@ -8770,11 +8719,9 @@ id|IRQ_HANDLE_PRESENT
 r_if
 c_cond
 (paren
-id|bus_request_irq
+id|request_irq
 c_func
 (paren
-id|s-&gt;cap.bus
-comma
 id|irq
 comma
 id|req-&gt;Handler

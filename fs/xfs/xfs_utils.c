@@ -603,9 +603,11 @@ id|tp-&gt;t_dqinfo
 op_assign
 id|dqinfo
 suffix:semicolon
-id|xfs_trans_free_dqinfo
+id|XFS_TRANS_FREE_DQINFO
 c_func
 (paren
+id|tp-&gt;t_mountp
+comma
 id|tp
 )paren
 suffix:semicolon
@@ -685,6 +687,7 @@ id|code
 suffix:semicolon
 )brace
 id|xfs_trans_bjoin
+c_func
 (paren
 id|tp
 comma

@@ -853,6 +853,12 @@ op_decrement
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 id|freqs.old
 op_assign

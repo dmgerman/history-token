@@ -5018,7 +5018,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;__ipv6_regen_rndid(): too short regeneration interval; timer diabled for %s.&bslash;n&quot;
+l_string|&quot;__ipv6_regen_rndid(): too short regeneration interval; timer disabled for %s.&bslash;n&quot;
 comma
 id|idev-&gt;dev-&gt;name
 )paren

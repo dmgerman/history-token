@@ -2195,10 +2195,6 @@ multiline_comment|/* Handles our reference counting */
 suffix:semicolon
 DECL|macro|to_scanner
 mdefine_line|#define to_scanner(d) container_of(d, struct scn_usb_data, kobj)
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
 DECL|variable|scanner_driver
 r_static
 r_struct

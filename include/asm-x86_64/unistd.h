@@ -2089,8 +2089,17 @@ id|__NR_clock_nanosleep
 comma
 id|sys_clock_nanosleep
 )paren
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;231
+id|__SYSCALL
+c_func
+(paren
+id|__NR_exit_group
+comma
+id|sys_exit_group
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_clock_nanosleep
+mdefine_line|#define __NR_syscall_max __NR_exit_group
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

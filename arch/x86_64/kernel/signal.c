@@ -1056,6 +1056,7 @@ op_minus
 l_int|128
 suffix:semicolon
 multiline_comment|/* This is the X/Open sanctioned signal stack switching.  */
+multiline_comment|/* RED-PEN: redzone on that stack? */
 r_if
 c_cond
 (paren
@@ -2033,8 +2034,16 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Reenable any watchpoints before delivering the&n;&t;&t; * signal to user space. The processor register will&n;&t;&t; * have been cleared if the watchpoint triggered&n;&t;&t; * inside the kernel.&n;&t;&t; */
-id|__asm__
-c_func
+r_if
+c_cond
+(paren
+id|current-&gt;thread.debugreg
+(braket
+l_int|7
+)braket
+)paren
+id|asm
+r_volatile
 (paren
 l_string|&quot;movq %0,%%db7&quot;
 suffix:colon

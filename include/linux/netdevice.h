@@ -2241,21 +2241,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|dev_init_buffers
-r_static
-r_inline
-r_void
-id|dev_init_buffers
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-multiline_comment|/* WILL BE REMOVED IN 2.5.0 */
-)brace
 r_extern
 r_int
 id|netdev_finish_unregister

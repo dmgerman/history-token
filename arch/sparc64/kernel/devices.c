@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 multiline_comment|/* Used to synchronize acceses to NatSemi SUPER I/O chip configure&n; * operations in asm/ns87303.h&n; */
 DECL|variable|ns87303_lock
 id|spinlock_t
@@ -394,11 +395,6 @@ id|prom_node_cpu
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 (brace
-r_extern
-r_int
-r_int
-id|up_clock_tick
-suffix:semicolon
 id|up_clock_tick
 op_assign
 id|prom_getintdefault

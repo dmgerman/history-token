@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/bootsetup.h&gt;
 multiline_comment|/* Don&squot;t add a printk in there. printk relies on the PDA which is not initialized &n;   yet. */
 DECL|function|clear_bss
 r_static
@@ -183,7 +184,7 @@ id|saved_command_line
 comma
 id|command_line
 comma
-l_int|2048
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 id|printk

@@ -516,11 +516,6 @@ DECL|macro|sndcontrolmsg
 mdefine_line|#define sndcontrolmsg(priv,a,b,c,d,e,f) &bslash;&n;    controlmsg(priv, 0, a,b,c,d,e,f)
 DECL|macro|rcvcontrolmsg
 mdefine_line|#define rcvcontrolmsg(priv,a,b,c,d,e,f) &bslash;&n;    controlmsg(priv, USB_DIR_IN, a,b,c,d,e,f)
-r_extern
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* Data */
 multiline_comment|/* key event queue size */
@@ -991,7 +986,7 @@ suffix:semicolon
 r_char
 id|devfs_name
 (braket
-l_int|16
+l_int|20
 )braket
 suffix:semicolon
 id|actifsettings
@@ -1390,7 +1385,7 @@ c_func
 (paren
 id|devfs_name
 comma
-l_string|&quot;brlvger%d&quot;
+l_string|&quot;usb/brlvger%d&quot;
 comma
 id|priv-&gt;subminor
 )paren
@@ -1400,7 +1395,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|usb_devfs_handle
+l_int|NULL
 comma
 id|devfs_name
 comma

@@ -92,6 +92,10 @@ id|us-&gt;current_urb-&gt;transfer_flags
 op_assign
 id|URB_ASYNC_UNLINK
 suffix:semicolon
+id|us-&gt;current_urb-&gt;status
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* submit the URB */
 id|status
 op_assign
@@ -2774,12 +2778,7 @@ id|srb-&gt;serial_number
 suffix:semicolon
 id|bcb.Lun
 op_assign
-id|srb-&gt;cmnd
-(braket
-l_int|1
-)braket
-op_rshift
-l_int|5
+id|srb-&gt;device-&gt;lun
 suffix:semicolon
 r_if
 c_cond

@@ -21,7 +21,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;  /* for in_interrupt () */
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;

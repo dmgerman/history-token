@@ -156,8 +156,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|rc
-comma
-id|nbperpage
 suffix:semicolon
 r_int
 id|xflag
@@ -194,11 +192,6 @@ id|MAXXLEN
 id|xlen
 op_assign
 id|MAXXLEN
-suffix:semicolon
-multiline_comment|/* get the number of blocks per page */
-id|nbperpage
-op_assign
-id|sbi-&gt;nbperpage
 suffix:semicolon
 multiline_comment|/* get the page&squot;s starting extent offset */
 id|xoff

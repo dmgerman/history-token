@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * DMA memory management for framework level HCD code (hc_driver)&n; *&n; * This implementation plugs in through generic &quot;usb_bus&quot; level methods,&n; * and works with real PCI, or when &quot;pci device == null&quot; makes sense.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

@@ -1299,14 +1299,15 @@ op_eq
 l_int|0
 )paren
 op_logical_and
+op_logical_neg
 (paren
-id|current
-op_ne
-id|jfsCommitTask
+id|flag
+op_amp
+id|COMMIT_FORCE
 )paren
 )paren
 (brace
-multiline_comment|/* Save one tblk for jfsCommit thread */
+multiline_comment|/* Don&squot;t let a non-forced transaction take the last tblk */
 id|jfs_info
 c_func
 (paren
@@ -4731,11 +4732,6 @@ id|tlck
 )paren
 (brace
 r_struct
-id|inode
-op_star
-id|ip
-suffix:semicolon
-r_struct
 id|metapage
 op_star
 id|mp
@@ -4748,10 +4744,6 @@ suffix:semicolon
 id|pxd_t
 op_star
 id|pxd
-suffix:semicolon
-id|ip
-op_assign
-id|tlck-&gt;ip
 suffix:semicolon
 id|mp
 op_assign
@@ -9348,9 +9340,6 @@ id|sb
 op_member_access_from_pointer
 id|log
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 id|tid_t
 id|tid
 suffix:semicolon
@@ -9425,8 +9414,6 @@ op_amp
 id|jfs_ip-&gt;commit_sem
 )paren
 suffix:semicolon
-id|rc
-op_assign
 id|txCommit
 c_func
 (paren
@@ -9663,8 +9650,6 @@ c_func
 id|ip-&gt;i_sb
 comma
 id|COMMIT_INODE
-op_or
-id|COMMIT_FORCE
 )paren
 suffix:semicolon
 id|rc

@@ -1169,7 +1169,6 @@ l_int|1
 (brace
 suffix:semicolon
 )brace
-multiline_comment|/* Halt */
 )brace
 DECL|function|setup_normal_output_buffer
 r_void
@@ -2106,17 +2105,6 @@ id|mv
 )paren
 suffix:semicolon
 id|makecrc
-c_func
-(paren
-)paren
-suffix:semicolon
-id|puts
-c_func
-(paren
-l_string|&quot;Checking CPU type...&quot;
-)paren
-suffix:semicolon
-id|check_cpu
 c_func
 (paren
 )paren

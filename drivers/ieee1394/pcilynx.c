@@ -370,11 +370,6 @@ id|bit_ops
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;PCILynx I2C adapter&quot;
-comma
-dot
 id|id
 op_assign
 l_int|0xAA
@@ -389,6 +384,17 @@ dot
 id|client_unregister
 op_assign
 id|bit_unreg
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;PCILynx I2C&quot;
+comma
+)brace
 comma
 )brace
 suffix:semicolon
