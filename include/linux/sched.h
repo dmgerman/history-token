@@ -2361,16 +2361,6 @@ op_star
 suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
 r_extern
-r_int
-r_int
-id|itimer_ticks
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|itimer_next
-suffix:semicolon
-r_extern
 r_void
 id|do_timer
 c_func
