@@ -246,6 +246,8 @@ id|urb-&gt;complete
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* call complete */
@@ -754,6 +756,8 @@ suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|urb-&gt;status

@@ -4,19 +4,6 @@ multiline_comment|/* sponsored by the Linux Usb Project */
 multiline_comment|/* large parts based on or taken from code by John Fremlin and Matt Dharm */
 multiline_comment|/* this file is licensed under the GPL */
 multiline_comment|/* A big thanks to Jose for untiring testing */
-DECL|typedef|usb_urb_callback
-r_typedef
-r_void
-(paren
-op_star
-id|usb_urb_callback
-)paren
-(paren
-r_struct
-id|urb
-op_star
-)paren
-suffix:semicolon
 DECL|typedef|scsi_callback
 r_typedef
 r_void
@@ -234,6 +221,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -245,6 +237,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -255,6 +252,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -265,6 +267,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -275,6 +282,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -285,6 +297,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static

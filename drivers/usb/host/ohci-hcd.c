@@ -656,6 +656,8 @@ id|finish_urb
 id|ohci
 comma
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1493,6 +1495,11 @@ r_struct
 id|usb_hcd
 op_star
 id|hcd
+comma
+r_struct
+id|pt_regs
+op_star
+id|ptregs
 )paren
 (brace
 r_struct
@@ -1661,6 +1668,8 @@ id|dl_reverse_done_list
 (paren
 id|ohci
 )paren
+comma
+id|ptregs
 )paren
 suffix:semicolon
 id|writel
@@ -1693,6 +1702,8 @@ id|le16_to_cpu
 (paren
 id|ohci-&gt;hcca-&gt;frame_no
 )paren
+comma
+id|ptregs
 )paren
 suffix:semicolon
 r_if

@@ -27,6 +27,11 @@ r_struct
 id|urb
 op_star
 id|u
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 macro_line|#ifdef DEBUG
