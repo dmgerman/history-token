@@ -1077,7 +1077,7 @@ multiline_comment|/* Cannot easily do prefetch unfortunately */
 DECL|macro|hlist_for_each
 mdefine_line|#define hlist_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;first; pos &amp;&amp; ({ prefetch(pos-&gt;next); 1; }); &bslash;&n;&t;     pos = pos-&gt;next)
 DECL|macro|hlist_for_each_safe
-mdefine_line|#define hlist_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;first; n = pos ? pos-&gt;next : 0, pos; &bslash;&n;&t;     pos = n)
+mdefine_line|#define hlist_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;first; n = pos ? pos-&gt;next : NULL, pos; &bslash;&n;&t;     pos = n)
 multiline_comment|/**&n; * hlist_for_each_entry&t;- iterate over list of given type&n; * @tpos:&t;the type * to use as a loop counter.&n; * @pos:&t;the &amp;struct hlist_node to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the hlist_node within the struct.&n; */
 DECL|macro|hlist_for_each_entry
 mdefine_line|#define hlist_for_each_entry(tpos, pos, head, member)&t;&t;&t; &bslash;&n;&t;for (pos = (head)-&gt;first;&t;&t;&t;&t;&t; &bslash;&n;&t;     pos &amp;&amp; ({ prefetch(pos-&gt;next); 1;}) &amp;&amp;&t;&t;&t; &bslash;&n;&t;&t;({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); &bslash;&n;&t;     pos = pos-&gt;next)
