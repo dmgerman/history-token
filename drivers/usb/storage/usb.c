@@ -3238,13 +3238,6 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;WARNING: USB Mass Storage data integrity not assured&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
 l_string|&quot;USB Mass Storage device found at %d&bslash;n&quot;
 comma
 id|us-&gt;pusb_dev-&gt;devnum
