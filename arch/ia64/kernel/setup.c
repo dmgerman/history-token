@@ -1086,30 +1086,16 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
-macro_line|#ifdef CONFIG_SERIAL_8250_HCDP
-r_if
-c_cond
-(paren
-id|efi.hcdp
-)paren
-(brace
-r_void
-id|setup_serial_hcdp
+macro_line|#ifdef CONFIG_EFI_PCDP
+id|efi_setup_pcdp_console
 c_func
 (paren
-r_void
 op_star
+id|cmdline_p
 )paren
 suffix:semicolon
-id|setup_serial_hcdp
-c_func
-(paren
-id|efi.hcdp
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
 r_if
 c_cond
 (paren
@@ -1123,6 +1109,13 @@ c_func
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|conswitchp
+)paren
+(brace
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
@@ -1131,7 +1124,7 @@ id|dummy_con
 suffix:semicolon
 macro_line|# endif
 macro_line|# if defined(CONFIG_VGA_CONSOLE)
-multiline_comment|/*&n;&t; * Non-legacy systems may route legacy VGA MMIO range to system&n;&t; * memory.  vga_con probes the MMIO hole, so memory looks like&n;&t; * a VGA device to it.  The EFI memory map can tell us if it&squot;s&n;&t; * memory so we can avoid this problem.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Non-legacy systems may route legacy VGA MMIO range to system&n;&t;&t; * memory.  vga_con probes the MMIO hole, so memory looks like&n;&t;&t; * a VGA device to it.  The EFI memory map can tell us if it&squot;s&n;&t;&t; * memory so we can avoid this problem.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1149,6 +1142,7 @@ op_amp
 id|vga_con
 suffix:semicolon
 macro_line|# endif
+)brace
 macro_line|#endif
 multiline_comment|/* enable IA-64 Machine Check Abort Handling */
 id|ia64_mca_init
