@@ -9104,6 +9104,8 @@ c_func
 op_amp
 id|raw1394_highlevel
 comma
+id|fi-&gt;host
+comma
 op_amp
 id|arm_ops
 comma
@@ -9575,6 +9577,8 @@ c_func
 (paren
 op_amp
 id|raw1394_highlevel
+comma
+id|fi-&gt;host
 comma
 id|addr-&gt;start
 )paren
@@ -13447,6 +13451,8 @@ c_func
 (paren
 op_amp
 id|raw1394_highlevel
+comma
+id|fi-&gt;host
 comma
 id|addr-&gt;start
 )paren

@@ -4564,11 +4564,6 @@ op_amp
 id|ieee1394_bus_type
 )paren
 suffix:semicolon
-id|init_hpsb_highlevel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|init_csr
 c_func
 (paren

@@ -23,6 +23,12 @@ id|hpsb_address_ops
 op_star
 id|op
 suffix:semicolon
+DECL|member|host
+r_struct
+id|hpsb_host
+op_star
+id|host
+suffix:semicolon
 multiline_comment|/* first address handled and first address behind, quadlet aligned */
 DECL|member|start
 DECL|member|end
@@ -533,6 +539,11 @@ op_star
 id|hl
 comma
 r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+r_struct
 id|hpsb_address_ops
 op_star
 id|ops
@@ -552,6 +563,11 @@ r_struct
 id|hpsb_highlevel
 op_star
 id|hl
+comma
+r_struct
+id|hpsb_host
+op_star
+id|host
 comma
 id|u64
 id|start
@@ -744,7 +760,10 @@ r_void
 id|init_hpsb_highlevel
 c_func
 (paren
-r_void
+r_struct
+id|hpsb_host
+op_star
+id|host
 )paren
 suffix:semicolon
 macro_line|#endif /* IEEE1394_HIGHLEVEL_H */
