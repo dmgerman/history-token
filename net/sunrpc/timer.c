@@ -85,6 +85,13 @@ id|i
 op_assign
 id|RPC_RTO_INIT
 suffix:semicolon
+id|rt-&gt;ntimeouts
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * NB: When computing the smoothed RTT and standard deviation,&n; *     be careful not to produce negative intermediate results.&n; */

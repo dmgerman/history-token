@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef _H_JFS_TYPES
 DECL|macro|_H_JFS_TYPES
 mdefine_line|#define&t;_H_JFS_TYPES
@@ -6,15 +6,15 @@ multiline_comment|/*&n; *&t;jfs_types.h:&n; *&n; * basic type/utility  definitio
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &quot;endian24.h&quot;
-multiline_comment|/*&n; * transaction and lock id&squot;s&n; */
+multiline_comment|/*&n; * transaction and lock id&squot;s&n; *&n; * Don&squot;t change these without carefully considering the impact on the&n; * size and alignment of all of the linelock variants&n; */
 DECL|typedef|tid_t
 r_typedef
-id|uint
+id|u16
 id|tid_t
 suffix:semicolon
 DECL|typedef|lid_t
 r_typedef
-id|uint
+id|u16
 id|lid_t
 suffix:semicolon
 multiline_comment|/*&n; * Almost identical to Linux&squot;s timespec, but not quite&n; */

@@ -175,7 +175,8 @@ id|pseudoflavor
 id|printk
 c_func
 (paren
-l_string|&quot;Registered pseudoflavor %d again&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;RPC: Registered pseudoflavor %d again&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren
@@ -204,7 +205,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: registered pseudoflavor %d&bslash;n&quot;
+l_string|&quot;RPC:      registered pseudoflavor %d&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren
@@ -427,7 +428,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_cmp_triples &bslash;n&quot;
+l_string|&quot;RPC:      gss_cmp_triples&bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_sec_triple
@@ -505,7 +506,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_cmp_triples return %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_cmp_triples return %d&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren
@@ -639,8 +640,7 @@ id|triple
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_pseudoflavor_to_service called with&quot;
-l_string|&quot; unsupported pseudoflavor %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_pseudoflavor_to_service called with unsupported pseudoflavor %d&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren
@@ -715,8 +715,7 @@ r_else
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_pseudoflavor_to_mech called with&quot;
-l_string|&quot; unsupported pseudoflavor %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_pseudoflavor_to_mech called with unsupported pseudoflavor %d&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren
@@ -762,8 +761,7 @@ id|mech
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_pseudoflavor_to_mechOID called with&quot;
-l_string|&quot; unsupported pseudoflavor %d&bslash;n&quot;
+l_string|&quot;RPC:      gss_pseudoflavor_to_mechOID called with unsupported pseudoflavor %d&bslash;n&quot;
 comma
 id|pseudoflavor
 )paren

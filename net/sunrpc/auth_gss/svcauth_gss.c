@@ -2644,8 +2644,7 @@ id|MAXSEQ
 id|dprintk
 c_func
 (paren
-l_string|&quot;svcauth_gss: discarding request with large&quot;
-l_string|&quot; sequence number %d&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: discarding request with large sequence number %d&bslash;n&quot;
 comma
 id|gc-&gt;gc_seq
 )paren
@@ -2675,8 +2674,7 @@ id|gc-&gt;gc_seq
 id|dprintk
 c_func
 (paren
-l_string|&quot;svcauth_gss: discarding request with old&quot;
-l_string|&quot; sequence number %d&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: discarding request with old sequence number %d&bslash;n&quot;
 comma
 id|gc-&gt;gc_seq
 )paren
@@ -2893,7 +2891,6 @@ id|pseudoflavor
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* XXX this should be done in gss_pseudoflavors, and shouldn&squot;t be hardcoded: */
 r_static
 r_struct
 id|auth_domain
@@ -2911,53 +2908,35 @@ id|u32
 id|svc
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|gss_get_pseudoflavor
+r_char
+op_star
+id|name
+suffix:semicolon
+id|name
+op_assign
+id|gss_service_to_auth_domain_name
 c_func
 (paren
-id|ctx
-comma
-l_int|0
+id|ctx-&gt;mech_type
 comma
 id|svc
 )paren
-)paren
-(brace
-r_case
-id|RPC_AUTH_GSS_KRB5
-suffix:colon
-r_return
-id|auth_domain_find
-c_func
-(paren
-l_string|&quot;gss/krb5&quot;
-)paren
 suffix:semicolon
-r_case
-id|RPC_AUTH_GSS_KRB5I
-suffix:colon
-r_return
-id|auth_domain_find
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;gss/krb5i&quot;
+op_logical_neg
+id|name
 )paren
-suffix:semicolon
-r_case
-id|RPC_AUTH_GSS_KRB5P
-suffix:colon
-r_return
-id|auth_domain_find
-c_func
-(paren
-l_string|&quot;gss/krb5p&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|NULL
+suffix:semicolon
+r_return
+id|auth_domain_find
+c_func
+(paren
+id|name
+)paren
 suffix:semicolon
 )brace
 r_int
@@ -2983,18 +2962,11 @@ id|auth_domain
 op_star
 id|test
 suffix:semicolon
-r_static
-r_char
-op_star
-id|prefix
-op_assign
-l_string|&quot;gss/&quot;
-suffix:semicolon
 r_int
 id|stat
 op_assign
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 r_new
 op_assign
@@ -3050,12 +3022,6 @@ c_func
 id|name
 )paren
 op_plus
-id|strlen
-c_func
-(paren
-id|prefix
-)paren
-op_plus
 l_int|1
 comma
 id|GFP_KERNEL
@@ -3073,16 +3039,6 @@ r_goto
 id|out_free_dom
 suffix:semicolon
 id|strcpy
-c_func
-(paren
-r_new
-op_member_access_from_pointer
-id|h.name
-comma
-id|prefix
-)paren
-suffix:semicolon
-id|strcat
 c_func
 (paren
 r_new
@@ -3187,6 +3143,13 @@ r_return
 id|stat
 suffix:semicolon
 )brace
+DECL|variable|svcauth_gss_register_pseudoflavor
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svcauth_gss_register_pseudoflavor
+)paren
+suffix:semicolon
 r_static
 r_inline
 r_int
@@ -3591,7 +3554,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: svcauth_gss: argv-&gt;iov_len = %zd&bslash;n&quot;
+l_string|&quot;RPC:      svcauth_gss: argv-&gt;iov_len = %zd&bslash;n&quot;
 comma
 id|argv-&gt;iov_len
 )paren

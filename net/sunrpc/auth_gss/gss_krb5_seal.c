@@ -120,7 +120,10 @@ l_string|&quot;RPC:     gss_krb5_seal&bslash;n&quot;
 suffix:semicolon
 id|now
 op_assign
-id|jiffies
+id|get_seconds
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -152,7 +155,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_krb5_seal: ctx-&gt;signalg %d not&quot;
+l_string|&quot;RPC:      gss_krb5_seal: ctx-&gt;signalg %d not&quot;
 l_string|&quot; supported&bslash;n&quot;
 comma
 id|ctx-&gt;signalg
@@ -177,7 +180,7 @@ id|SEAL_ALG_DES
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: gss_krb5_seal: ctx-&gt;sealalg %d not supported&bslash;n&quot;
+l_string|&quot;RPC:      gss_krb5_seal: ctx-&gt;sealalg %d not supported&bslash;n&quot;
 comma
 id|ctx-&gt;sealalg
 )paren
@@ -255,8 +258,38 @@ id|tmsglen
 comma
 op_amp
 id|ptr
-comma
+)paren
+suffix:semicolon
+op_star
+id|ptr
+op_increment
+op_assign
+(paren
+r_int
+r_char
+)paren
+(paren
+(paren
 id|toktype
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+)paren
+suffix:semicolon
+op_star
+id|ptr
+op_increment
+op_assign
+(paren
+r_int
+r_char
+)paren
+(paren
+id|toktype
+op_amp
+l_int|0xff
 )paren
 suffix:semicolon
 multiline_comment|/* ptr now at byte 2 of header described in rfc 1964, section 1.2.1: */
@@ -344,12 +377,14 @@ multiline_comment|/* Sign only.  */
 r_if
 c_cond
 (paren
-id|krb5_make_checksum
+id|make_checksum
 c_func
 (paren
 id|checksum_type
 comma
 id|krb5_hdr
+comma
+l_int|8
 comma
 id|text
 comma
@@ -409,7 +444,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;make_seal_token: cksum data: &bslash;n&quot;
+l_string|&quot;RPC:      make_seal_token: cksum data: &bslash;n&quot;
 )paren
 suffix:semicolon
 id|print_hexl

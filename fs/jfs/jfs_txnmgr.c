@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
@@ -17,23 +19,21 @@ multiline_comment|/*&n; *      transaction management structures&n; */
 r_static
 r_struct
 (brace
-multiline_comment|/* tblock */
 DECL|member|freetid
 r_int
 id|freetid
 suffix:semicolon
 multiline_comment|/* index of a free tid structure */
-DECL|member|freewait
-id|wait_queue_head_t
-id|freewait
-suffix:semicolon
-multiline_comment|/* eventlist of free tblock */
-multiline_comment|/* tlock */
 DECL|member|freelock
 r_int
 id|freelock
 suffix:semicolon
 multiline_comment|/* index first free lock word */
+DECL|member|freewait
+id|wait_queue_head_t
+id|freewait
+suffix:semicolon
+multiline_comment|/* eventlist of free tblock */
 DECL|member|freelockwait
 id|wait_queue_head_t
 id|freelockwait
@@ -49,11 +49,6 @@ r_int
 id|tlocksInUse
 suffix:semicolon
 multiline_comment|/* Number of tlocks in use */
-DECL|member|TlocksLow
-r_int
-id|TlocksLow
-suffix:semicolon
-multiline_comment|/* Indicates low number of available tlocks */
 DECL|member|LazyLock
 id|spinlock_t
 id|LazyLock
@@ -62,18 +57,10 @@ multiline_comment|/* synchronize sync_queue &amp; unlock_queue */
 multiline_comment|/*&t;struct tblock *sync_queue; * Transactions waiting for data sync */
 DECL|member|unlock_queue
 r_struct
-id|tblock
-op_star
+id|list_head
 id|unlock_queue
 suffix:semicolon
 multiline_comment|/* Txns waiting to be released */
-DECL|member|unlock_tail
-r_struct
-id|tblock
-op_star
-id|unlock_tail
-suffix:semicolon
-multiline_comment|/* Tail of unlock_queue */
 DECL|member|anon_list
 r_struct
 id|list_head
@@ -90,6 +77,11 @@ DECL|variable|TxAnchor
 )brace
 id|TxAnchor
 suffix:semicolon
+DECL|variable|jfs_tlocks_low
+r_int
+id|jfs_tlocks_low
+suffix:semicolon
+multiline_comment|/* Indicates low number of available tlocks */
 macro_line|#ifdef CONFIG_JFS_STATISTICS
 r_struct
 (brace
@@ -142,13 +134,24 @@ op_assign
 l_int|512
 suffix:semicolon
 multiline_comment|/* number of transaction blocks */
-DECL|variable|TxBlock
-r_struct
-id|tblock
-op_star
-id|TxBlock
+id|module_param
+c_func
+(paren
+id|nTxBlock
+comma
+r_int
+comma
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* transaction block table */
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nTxBlock
+comma
+l_string|&quot;Number of transaction blocks (default:512, max:65536)&quot;
+)paren
+suffix:semicolon
 DECL|variable|nTxLock
 r_static
 r_int
@@ -157,28 +160,49 @@ op_assign
 l_int|4096
 suffix:semicolon
 multiline_comment|/* number of transaction locks */
+id|module_param
+c_func
+(paren
+id|nTxLock
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nTxLock
+comma
+l_string|&quot;Number of transaction locks (default:4096, max:65536)&quot;
+)paren
+suffix:semicolon
+DECL|variable|TxBlock
+r_struct
+id|tblock
+op_star
+id|TxBlock
+suffix:semicolon
+multiline_comment|/* transaction block table */
 DECL|variable|TxLockLWM
 r_static
 r_int
 id|TxLockLWM
-op_assign
-l_int|4096
-op_star
-dot
-l_int|4
 suffix:semicolon
 multiline_comment|/* Low water mark for number of txLocks used */
 DECL|variable|TxLockHWM
 r_static
 r_int
 id|TxLockHWM
-op_assign
-l_int|4096
-op_star
-dot
-l_int|8
 suffix:semicolon
 multiline_comment|/* High water mark for number of txLocks used */
+DECL|variable|TxLockVHWM
+r_static
+r_int
+id|TxLockVHWM
+suffix:semicolon
+multiline_comment|/* Very High water mark */
 DECL|variable|TxLock
 r_struct
 id|tlock
@@ -354,12 +378,6 @@ suffix:semicolon
 r_extern
 r_int
 id|jfs_stop_threads
-suffix:semicolon
-DECL|variable|jfsCommitTask
-r_struct
-id|task_struct
-op_star
-id|jfsCommitTask
 suffix:semicolon
 r_extern
 r_struct
@@ -667,7 +685,7 @@ id|TxLockHWM
 )paren
 op_logical_and
 (paren
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 op_eq
 l_int|0
 )paren
@@ -676,10 +694,10 @@ l_int|0
 id|jfs_info
 c_func
 (paren
-l_string|&quot;txLockAlloc TlocksLow&quot;
+l_string|&quot;txLockAlloc tlocks low&quot;
 )paren
 suffix:semicolon
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 op_assign
 l_int|1
 suffix:semicolon
@@ -724,7 +742,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 op_logical_and
 (paren
 id|TxAnchor.tlocksInUse
@@ -736,10 +754,10 @@ id|TxLockLWM
 id|jfs_info
 c_func
 (paren
-l_string|&quot;txLockFree TlocksLow no more&quot;
+l_string|&quot;txLockFree jfs_tlocks_low no more&quot;
 )paren
 suffix:semicolon
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 op_assign
 l_int|0
 suffix:semicolon
@@ -773,7 +791,84 @@ id|k
 comma
 id|size
 suffix:semicolon
+multiline_comment|/* Verify tunable parameters */
+r_if
+c_cond
+(paren
+id|nTxBlock
+OL
+l_int|16
+)paren
+id|nTxBlock
+op_assign
+l_int|16
+suffix:semicolon
+multiline_comment|/* No one should set it this low */
+r_if
+c_cond
+(paren
+id|nTxBlock
+OG
+l_int|65536
+)paren
+id|nTxBlock
+op_assign
+l_int|65536
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nTxLock
+OL
+l_int|256
+)paren
+id|nTxLock
+op_assign
+l_int|256
+suffix:semicolon
+multiline_comment|/* No one should set it this low */
+r_if
+c_cond
+(paren
+id|nTxLock
+OG
+l_int|65536
+)paren
+id|nTxLock
+op_assign
+l_int|65536
+suffix:semicolon
 multiline_comment|/*&n;&t; * initialize transaction block (tblock) table&n;&t; *&n;&t; * transaction id (tid) = tblock index&n;&t; * tid = 0 is reserved.&n;&t; */
+id|TxLockLWM
+op_assign
+(paren
+id|nTxLock
+op_star
+l_int|4
+)paren
+op_div
+l_int|10
+suffix:semicolon
+id|TxLockHWM
+op_assign
+(paren
+id|nTxLock
+op_star
+l_int|8
+)paren
+op_div
+l_int|10
+suffix:semicolon
+id|TxLockVHWM
+op_assign
+(paren
+id|nTxLock
+op_star
+l_int|9
+)paren
+op_div
+l_int|10
+suffix:semicolon
 id|size
 op_assign
 r_sizeof
@@ -1026,6 +1121,18 @@ op_amp
 id|TxAnchor.anon_list2
 )paren
 suffix:semicolon
+id|LAZY_LOCK_INIT
+c_func
+(paren
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|TxAnchor.unlock_queue
+)paren
+suffix:semicolon
 id|stattx.maxlid
 op_assign
 l_int|1
@@ -1188,7 +1295,9 @@ multiline_comment|/*&n;&t;&t; * Don&squot;t begin transaction if we&squot;re get
 r_if
 c_cond
 (paren
-id|TxAnchor.TlocksLow
+id|TxAnchor.tlocksInUse
+OG
+id|TxLockVHWM
 )paren
 (brace
 id|INCREMENT
@@ -1443,7 +1552,9 @@ multiline_comment|/*&n;&t; * Don&squot;t begin transaction if we&squot;re gettin
 r_if
 c_cond
 (paren
-id|TxAnchor.TlocksLow
+id|TxAnchor.tlocksInUse
+OG
+id|TxLockVHWM
 )paren
 (brace
 id|INCREMENT
@@ -8241,6 +8352,11 @@ id|jfs_ip-&gt;atlhead
 )paren
 r_return
 suffix:semicolon
+id|TXN_LOCK
+c_func
+(paren
+)paren
+suffix:semicolon
 id|xtlck
 op_assign
 (paren
@@ -8316,11 +8432,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If inode was on anon_list, remove it&n;&t;&t; */
-id|TXN_LOCK
-c_func
-(paren
-)paren
-suffix:semicolon
 id|list_del_init
 c_func
 (paren
@@ -8328,12 +8439,12 @@ op_amp
 id|jfs_ip-&gt;anon_inode_list
 )paren
 suffix:semicolon
+)brace
 id|TXN_UNLOCK
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *      txAbort()&n; *&n; * function: abort tx before commit;&n; *&n; * frees line-locks and segment locks for all&n; * segments in comdata structure.&n; * Optionally sets state of file-system to FM_DIRTY in super-block.&n; * log age of page-frames in memory for which caller has&n; * are reset to 0 (to avoid logwarap).&n; */
 DECL|function|txAbort
@@ -8678,26 +8789,16 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_struct
+id|jfs_sb_info
+op_star
+id|sbi
+suffix:semicolon
 id|daemonize
 c_func
 (paren
 l_string|&quot;jfsCommit&quot;
 )paren
-suffix:semicolon
-id|jfsCommitTask
-op_assign
-id|current
-suffix:semicolon
-id|LAZY_LOCK_INIT
-c_func
-(paren
-)paren
-suffix:semicolon
-id|TxAnchor.unlock_queue
-op_assign
-id|TxAnchor.unlock_tail
-op_assign
-l_int|0
 suffix:semicolon
 id|complete
 c_func
@@ -8714,46 +8815,66 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|restart
-suffix:colon
-id|WorkDone
-op_assign
-l_int|0
-suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|list_empty
+c_func
 (paren
-id|tblk
-op_assign
+op_amp
 id|TxAnchor.unlock_queue
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We can&squot;t get ahead of user thread.  Spinning is&n;&t;&t;&t; * simpler than blocking/waking.  We shouldn&squot;t spin&n;&t;&t;&t; * very long, since user thread shouldn&squot;t be blocking&n;&t;&t;&t; * between lmGroupCommit &amp; txEnd.&n;&t;&t;&t; */
+id|WorkDone
+op_assign
+l_int|0
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|tblk
+comma
+op_amp
+id|TxAnchor.unlock_queue
+comma
+id|cqueue
+)paren
+(brace
+id|sbi
+op_assign
+id|JFS_SBI
+c_func
+(paren
+id|tblk-&gt;sb
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * For each volume, the transactions must be&n;&t;&t;&t;&t; * handled in order.  If another commit thread&n;&t;&t;&t;&t; * is handling a tblk for this superblock,&n;&t;&t;&t;&t; * skip it&n;&t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|sbi-&gt;commit_state
+op_amp
+id|IN_LAZYCOMMIT
+)paren
+r_continue
+suffix:semicolon
+id|sbi-&gt;commit_state
+op_or_assign
+id|IN_LAZYCOMMIT
+suffix:semicolon
 id|WorkDone
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Remove first transaction from queue&n;&t;&t;&t; */
-id|TxAnchor.unlock_queue
-op_assign
-id|tblk-&gt;cqnext
-suffix:semicolon
-id|tblk-&gt;cqnext
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
+multiline_comment|/*&n;&t;&t;&t;&t; * Remove transaction from queue&n;&t;&t;&t;&t; */
+id|list_del
+c_func
 (paren
-id|TxAnchor.unlock_tail
-op_eq
-id|tblk
+op_amp
+id|tblk-&gt;cqueue
 )paren
-id|TxAnchor.unlock_tail
-op_assign
-l_int|0
 suffix:semicolon
 id|LAZY_UNLOCK
 c_func
@@ -8767,27 +8888,31 @@ c_func
 id|tblk
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We can be running indefinitely if other processors&n;&t;&t;&t; * are adding transactions to this list&n;&t;&t;&t; */
-id|cond_resched
-c_func
-(paren
-)paren
-suffix:semicolon
 id|LAZY_LOCK
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+id|sbi-&gt;commit_state
+op_and_assign
+op_complement
+id|IN_LAZYCOMMIT
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Don&squot;t continue in the for loop.  (We can&squot;t&n;&t;&t;&t;&t; * anyway, it&squot;s unsafe!)  We want to go back to&n;&t;&t;&t;&t; * the beginning of the list.&n;&t;&t;&t;&t; */
+r_break
+suffix:semicolon
 )brace
+multiline_comment|/* If there was nothing to do, don&squot;t continue */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|WorkDone
 )paren
-r_goto
-id|restart
+r_break
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8872,7 +8997,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
 id|TxAnchor.unlock_queue
+)paren
 )paren
 id|jfs_err
 c_func
@@ -8918,39 +9049,44 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|tblk-&gt;cqueue
+comma
+op_amp
+id|TxAnchor.unlock_queue
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Don&squot;t wake up a commit thread if there is already one servicing&n;&t; * this superblock.&n;&t; */
 r_if
 c_cond
 (paren
-id|TxAnchor.unlock_tail
-)paren
-id|TxAnchor.unlock_tail-&gt;cqnext
-op_assign
-id|tblk
-suffix:semicolon
-r_else
-id|TxAnchor.unlock_queue
-op_assign
-id|tblk
-suffix:semicolon
-id|TxAnchor.unlock_tail
-op_assign
-id|tblk
-suffix:semicolon
-id|tblk-&gt;cqnext
-op_assign
-l_int|0
-suffix:semicolon
-id|LAZY_UNLOCK
+op_logical_neg
+(paren
+id|JFS_SBI
 c_func
 (paren
-id|flags
+id|tblk-&gt;sb
 )paren
-suffix:semicolon
+op_member_access_from_pointer
+id|commit_state
+op_amp
+id|IN_LAZYCOMMIT
+)paren
+)paren
 id|wake_up
 c_func
 (paren
 op_amp
 id|jfs_commit_thread_wait
+)paren
+suffix:semicolon
+id|LAZY_UNLOCK
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -9056,7 +9192,7 @@ id|mp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;txQuiesce&n; *&n; *&t;Block all new transactions and push anonymous transactions to&n; *&t;completion&n; *&n; *&t;This does almost the same thing as jfs_sync below.  We don&squot;t&n; *&t;worry about deadlocking when TlocksLow is set, since we would&n; *&t;expect jfs_sync to get us out of that jam.&n; */
+multiline_comment|/*&n; *&t;txQuiesce&n; *&n; *&t;Block all new transactions and push anonymous transactions to&n; *&t;completion&n; *&n; *&t;This does almost the same thing as jfs_sync below.  We don&squot;t&n; *&t;worry about deadlocking when jfs_tlocks_low is set, since we would&n; *&t;expect jfs_sync to get us out of that jam.&n; */
 DECL|function|txQuiesce
 r_void
 id|txQuiesce
@@ -9345,7 +9481,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 op_logical_and
 op_logical_neg
 id|list_empty
@@ -9722,9 +9858,8 @@ l_string|&quot;freelock = %d&bslash;n&quot;
 l_string|&quot;freelockwait = %s&bslash;n&quot;
 l_string|&quot;lowlockwait = %s&bslash;n&quot;
 l_string|&quot;tlocksInUse = %d&bslash;n&quot;
-l_string|&quot;TlocksLow = %d&bslash;n&quot;
-l_string|&quot;unlock_queue = 0x%p&bslash;n&quot;
-l_string|&quot;unlock_tail = 0x%p&bslash;n&quot;
+l_string|&quot;jfs_tlocks_low = %d&bslash;n&quot;
+l_string|&quot;unlock_queue is %sempty&bslash;n&quot;
 comma
 id|TxAnchor.freetid
 comma
@@ -9738,11 +9873,19 @@ id|lowlockwait
 comma
 id|TxAnchor.tlocksInUse
 comma
-id|TxAnchor.TlocksLow
+id|jfs_tlocks_low
 comma
+id|list_empty
+c_func
+(paren
+op_amp
 id|TxAnchor.unlock_queue
-comma
-id|TxAnchor.unlock_tail
+)paren
+ques
+c_cond
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;not &quot;
 )paren
 suffix:semicolon
 id|begin

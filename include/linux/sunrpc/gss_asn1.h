@@ -112,9 +112,6 @@ r_char
 op_star
 op_star
 id|buf
-comma
-r_int
-id|tok_type
 )paren
 suffix:semicolon
 eof

@@ -3215,6 +3215,15 @@ comma
 id|open_states
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|state-&gt;state
+op_eq
+l_int|0
+)paren
+r_continue
+suffix:semicolon
 id|status
 op_assign
 id|nfs4_open_reclaim
