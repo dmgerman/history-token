@@ -560,7 +560,7 @@ comma
 r_struct
 id|pt_regs
 op_star
-id|reg
+id|regs
 comma
 r_struct
 id|switch_stack
@@ -607,6 +607,15 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+multiline_comment|/* Indicate EINTR on return from any possible signal handler,&n;&t;   which will not come back through here, but via sigreturn.  */
+id|regs-&gt;r0
+op_assign
+id|EINTR
+suffix:semicolon
+id|regs-&gt;r19
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -631,7 +640,7 @@ c_func
 op_amp
 id|oldset
 comma
-id|reg
+id|regs
 comma
 id|sw
 comma
@@ -663,7 +672,7 @@ comma
 r_struct
 id|pt_regs
 op_star
-id|reg
+id|regs
 comma
 r_struct
 id|switch_stack
@@ -749,6 +758,15 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+multiline_comment|/* Indicate EINTR on return from any possible signal handler,&n;&t;   which will not come back through here, but via sigreturn.  */
+id|regs-&gt;r0
+op_assign
+id|EINTR
+suffix:semicolon
+id|regs-&gt;r19
+op_assign
+l_int|1
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -773,7 +791,7 @@ c_func
 op_amp
 id|oldset
 comma
-id|reg
+id|regs
 comma
 id|sw
 comma

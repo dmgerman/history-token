@@ -708,8 +708,10 @@ DECL|macro|__NR_mq_notify
 mdefine_line|#define __NR_mq_notify&t;&t;&t;436
 DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;&t;437
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;&t;438
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;438
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;439
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
