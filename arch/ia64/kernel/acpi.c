@@ -2234,9 +2234,6 @@ id|i
 dot
 id|bus
 op_assign
-(paren
-id|u16
-)paren
 id|entry-&gt;id.bus
 suffix:semicolon
 id|vector
@@ -2247,9 +2244,11 @@ dot
 id|pci_id
 op_assign
 (paren
+(paren
 id|u32
 )paren
 id|entry-&gt;id.dev
+)paren
 op_lshift
 l_int|16
 op_or
@@ -2262,9 +2261,6 @@ id|i
 dot
 id|pin
 op_assign
-(paren
-id|u8
-)paren
 id|entry-&gt;id.pin
 suffix:semicolon
 id|vector
@@ -2274,9 +2270,6 @@ id|i
 dot
 id|irq
 op_assign
-(paren
-id|u8
-)paren
 id|entry-&gt;source.index
 suffix:semicolon
 id|i
