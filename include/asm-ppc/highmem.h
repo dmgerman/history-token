@@ -242,9 +242,14 @@ id|idx
 )paren
 suffix:semicolon
 macro_line|#endif
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+op_amp
+id|init_mm
+comma
+id|vaddr
+comma
 id|kmap_pte
 op_plus
 id|idx

@@ -947,6 +947,45 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_pages is assembler (for speed) in hashtable.S.&n; */
+r_extern
+r_int
+id|flush_hash_pages
+c_func
+(paren
+r_int
+id|context
+comma
+r_int
+r_int
+id|va
+comma
+r_int
+r_int
+id|pmdval
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+multiline_comment|/* Add an HPTE to the hash table */
+r_extern
+r_void
+id|add_hash_page
+c_func
+(paren
+r_int
+id|context
+comma
+r_int
+r_int
+id|va
+comma
+r_int
+r_int
+id|pmdval
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Atomic PTE updates.&n; *&n; * pte_update clears and sets bit atomically, and returns&n; * the old pte value.&n; * The ((unsigned long)(p+1) - 4) hack is to get to the least-significant&n; * 32 bits of the PTE regardless of whether PTEs are 32 or 64 bits.&n; */
 DECL|function|pte_update
 r_static
@@ -1045,13 +1084,22 @@ id|old
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set_pte stores a linux PTE into the linux page table.&n; * On machines which use an MMU hash table we avoid changing the&n; * _PAGE_HASHPTE bit.&n; */
-DECL|function|set_pte
+DECL|function|set_pte_at
 r_static
 r_inline
 r_void
-id|set_pte
+id|set_pte_at
 c_func
 (paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
 id|pte_t
 op_star
 id|ptep
@@ -1087,30 +1135,19 @@ id|pte
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|macro|set_pte_at
-mdefine_line|#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
-r_extern
-r_void
-id|flush_hash_one_pte
-c_func
-(paren
-id|pte_t
-op_star
-id|ptep
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * 2.6 calles this without flushing the TLB entry, this is wrong&n; * for our hash-based implementation, we fix that up here&n; */
-DECL|function|ptep_test_and_clear_young
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+DECL|function|__ptep_test_and_clear_young
 r_static
 r_inline
 r_int
-id|ptep_test_and_clear_young
+id|__ptep_test_and_clear_young
 c_func
 (paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
+r_int
+r_int
+id|context
 comma
 r_int
 r_int
@@ -1145,12 +1182,32 @@ id|old
 op_amp
 id|_PAGE_HASHPTE
 )paren
-id|flush_hash_one_pte
+(brace
+r_int
+r_int
+id|ptephys
+op_assign
+id|__pa
 c_func
 (paren
 id|ptep
 )paren
+op_amp
+id|PAGE_MASK
 suffix:semicolon
+id|flush_hash_pages
+c_func
+(paren
+id|context
+comma
+id|addr
+comma
+id|ptephys
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 (paren
@@ -1162,6 +1219,10 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|ptep_test_and_clear_young
+mdefine_line|#define ptep_test_and_clear_young(__vma, __addr, __ptep) &bslash;&n;&t;__ptep_test_and_clear_young((__vma)-&gt;vm_mm-&gt;context, __addr, __ptep)
+DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
+mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
 DECL|function|ptep_test_and_clear_dirty
 r_static
 r_inline
@@ -1205,6 +1266,8 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
+mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 DECL|function|ptep_get_and_clear
 r_static
 r_inline
@@ -1243,6 +1306,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
+mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
 DECL|function|ptep_set_wrprotect
 r_static
 r_inline
@@ -1333,6 +1398,8 @@ mdefine_line|#define  ptep_set_access_flags(__vma, __address, __ptep, __entry, _
 multiline_comment|/*&n; * Macro to mark a page protection value as &quot;uncacheable&quot;.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;(__pgprot(pgprot_val(prot) | _PAGE_NO_CACHE | _PAGE_GUARDED))
+DECL|macro|__HAVE_ARCH_PTE_SAME
+mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HASHPTE) == 0)
 multiline_comment|/*&n; * Note that on Book E processors, the pmd contains the kernel virtual&n; * (lowmem) address of the pte page.  The physical address is less useful&n; * because everything runs with translation enabled (even the TLB miss&n; * handler).  On everything else the pmd contains the physical address&n; * of the pte page.  -- paulus&n; */
@@ -1407,45 +1474,6 @@ id|paging_init
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_pages is assembler (for speed) in hashtable.S.&n; */
-r_extern
-r_int
-id|flush_hash_pages
-c_func
-(paren
-r_int
-id|context
-comma
-r_int
-r_int
-id|va
-comma
-r_int
-r_int
-id|pmdval
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-multiline_comment|/* Add an HPTE to the hash table */
-r_extern
-r_void
-id|add_hash_page
-c_func
-(paren
-r_int
-id|context
-comma
-r_int
-r_int
-id|va
-comma
-r_int
-r_int
-id|pmdval
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Encode and decode a swap entry.&n; * Note that the bits we use in a PTE for representing a swap entry&n; * must not include the _PAGE_PRESENT bit, the _PAGE_FILE bit, or the&n; *_PAGE_HASHPTE bit (if used).  -- paulus&n; */
@@ -1693,18 +1721,8 @@ op_star
 id|ptep
 )paren
 suffix:semicolon
-macro_line|#endif /* !__ASSEMBLY__ */
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
-DECL|macro|__HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
-mdefine_line|#define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_DIRTY
-DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
-mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
-DECL|macro|__HAVE_ARCH_PTEP_SET_WRPROTECT
-mdefine_line|#define __HAVE_ARCH_PTEP_SET_WRPROTECT
-DECL|macro|__HAVE_ARCH_PTE_SAME
-mdefine_line|#define __HAVE_ARCH_PTE_SAME
 macro_line|#include &lt;asm-generic/pgtable.h&gt;
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _PPC_PGTABLE_H */
 macro_line|#endif /* __KERNEL__ */
 eof
