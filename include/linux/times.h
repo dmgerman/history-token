@@ -4,6 +4,7 @@ mdefine_line|#define _LINUX_TIMES_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#if (HZ % USER_HZ)==0
 DECL|macro|jiffies_to_clock_t
 macro_line|# define jiffies_to_clock_t(x) ((x) / (HZ / USER_HZ))
