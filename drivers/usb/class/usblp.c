@@ -3087,6 +3087,10 @@ id|usblp-&gt;readcount
 op_assign
 l_int|0
 suffix:semicolon
+id|usblp-&gt;rcomplete
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
