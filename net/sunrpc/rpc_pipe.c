@@ -1222,6 +1222,23 @@ id|clnt-&gt;cl_xprt-&gt;addr.sin_addr.s_addr
 )paren
 )paren
 suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;protocol: %s&bslash;n&quot;
+comma
+id|clnt-&gt;cl_xprt-&gt;prot
+op_eq
+id|IPPROTO_UDP
+ques
+c_cond
+l_string|&quot;udp&quot;
+suffix:colon
+l_string|&quot;tcp&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
