@@ -1065,11 +1065,6 @@ op_or
 id|EXT_INT_STATECHANGE_PENDING
 )paren
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|req
 op_assign
 l_int|NULL
@@ -1209,11 +1204,6 @@ id|sclp_lock
 suffix:semicolon
 multiline_comment|/* and start next request on the queue */
 id|sclp_start_request
-c_func
-(paren
-)paren
-suffix:semicolon
-id|irq_exit
 c_func
 (paren
 )paren

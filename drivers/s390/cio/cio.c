@@ -1951,6 +1951,7 @@ id|do_IRQ
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -1971,6 +1972,19 @@ id|irb
 suffix:semicolon
 id|irq_enter
 (paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S390_lowcore.int_clock
+op_ge
+id|S390_lowcore.jiffy_timer
+)paren
+id|account_ticks
+c_func
+(paren
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get interrupt information from lowcore&n;&t; */
@@ -2227,9 +2241,9 @@ c_func
 (paren
 )paren
 )paren
-id|udelay
+id|cpu_relax
+c_func
 (paren
-l_int|100
 )paren
 suffix:semicolon
 id|spin_lock

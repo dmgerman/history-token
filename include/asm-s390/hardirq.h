@@ -80,6 +80,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|account_ticks
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 DECL|macro|invoke_softirq
 mdefine_line|#define invoke_softirq() do_call_softirq()
 macro_line|#ifdef CONFIG_PREEMPT

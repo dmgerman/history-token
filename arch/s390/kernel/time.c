@@ -472,19 +472,15 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
-DECL|function|do_comparator_interrupt
-r_static
+DECL|function|account_ticks
 r_void
-id|do_comparator_interrupt
+id|account_ticks
 c_func
 (paren
 r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-id|__u16
-id|error_code
 )paren
 (brace
 id|__u64
@@ -496,10 +492,7 @@ suffix:semicolon
 multiline_comment|/* Calculate how many ticks have passed. */
 id|tmp
 op_assign
-id|get_clock
-c_func
-(paren
-)paren
+id|S390_lowcore.int_clock
 op_minus
 id|S390_lowcore.jiffy_timer
 suffix:semicolon
@@ -513,7 +506,7 @@ op_star
 id|CLK_TICKS_PER_JIFFY
 )paren
 (brace
-multiline_comment|/* more than one tick ? */
+multiline_comment|/* more than two ticks ? */
 id|ticks
 op_assign
 id|__calculate_ticks
@@ -521,6 +514,8 @@ c_func
 (paren
 id|tmp
 )paren
+op_plus
+l_int|1
 suffix:semicolon
 id|S390_lowcore.jiffy_timer
 op_add_assign
@@ -530,6 +525,26 @@ op_star
 id|__u64
 )paren
 id|ticks
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|tmp
+op_ge
+id|CLK_TICKS_PER_JIFFY
+)paren
+(brace
+id|ticks
+op_assign
+l_int|2
+suffix:semicolon
+id|S390_lowcore.jiffy_timer
+op_add_assign
+l_int|2
+op_star
+id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 )brace
 r_else
@@ -548,8 +563,6 @@ id|tmp
 op_assign
 id|S390_lowcore.jiffy_timer
 op_plus
-id|CLK_TICKS_PER_JIFFY
-op_plus
 id|CPU_DEVIATION
 suffix:semicolon
 id|asm
@@ -562,11 +575,6 @@ l_string|&quot;m&quot;
 (paren
 id|tmp
 )paren
-)paren
-suffix:semicolon
-id|irq_enter
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -684,11 +692,6 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start the clock comparator on the current CPU.&n; */
 DECL|function|init_cpu_timer
@@ -717,6 +720,8 @@ suffix:semicolon
 id|S390_lowcore.jiffy_timer
 op_assign
 id|timer
+op_plus
+id|CLK_TICKS_PER_JIFFY
 suffix:semicolon
 id|timer
 op_add_assign
@@ -909,7 +914,7 @@ c_func
 (paren
 l_int|0x1004
 comma
-id|do_comparator_interrupt
+l_int|0
 comma
 op_amp
 id|ext_int_info_timer
