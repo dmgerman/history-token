@@ -465,8 +465,9 @@ mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;container_of(pt
 multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
 mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))
-DECL|macro|list_for_each_noprefetch
-mdefine_line|#define list_for_each_noprefetch(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)
+multiline_comment|/**&n; * __list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; *&n; * This variant differs from list_for_each() in that it&squot;s the&n; * simplest possible list iteration code, no prefetching is done.&n; * Use this for code that knows the list to be very short (empty&n; * or 1 entry) most of the time.&n; */
+DECL|macro|__list_for_each
+mdefine_line|#define __list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)
 multiline_comment|/**&n; * list_for_each_prev&t;-&t;iterate over a list backwards&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_prev
 mdefine_line|#define list_for_each_prev(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;prev, prefetch(pos-&gt;prev); pos != (head); &bslash;&n;        &t;pos = pos-&gt;prev, prefetch(pos-&gt;prev))
