@@ -2869,17 +2869,7 @@ id|MAX_SCSI_DEVICE_CODE
 )braket
 suffix:semicolon
 macro_line|#endif
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* For now this is constant so we may walk it */
 r_for
 c_loop
 (paren
@@ -2916,6 +2906,14 @@ id|NCR5380_hostdata
 op_star
 )paren
 id|scsi_ptr-&gt;hostdata
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|scsi_ptr-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|PRINTP
 c_func
@@ -3595,9 +3593,11 @@ id|len
 op_assign
 id|length
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|scsi_ptr-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon

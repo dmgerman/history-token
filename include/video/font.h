@@ -48,6 +48,8 @@ DECL|macro|SUN12x22_IDX
 mdefine_line|#define SUN12x22_IDX&t;5
 DECL|macro|ACORN8x8_IDX
 mdefine_line|#define ACORN8x8_IDX&t;6
+DECL|macro|MINI4x6_IDX
+mdefine_line|#define&t;MINI4x6_IDX&t;7
 r_extern
 r_struct
 id|fbcon_font_desc
@@ -64,6 +66,8 @@ comma
 id|font_sun_12x22
 comma
 id|font_acorn_8x8
+comma
+id|font_mini_4x6
 suffix:semicolon
 multiline_comment|/* Find a font with a specific name */
 r_extern

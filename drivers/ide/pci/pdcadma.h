@@ -111,13 +111,13 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 id|ide_pci_device_t
 id|pdcadma_chipsets
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace

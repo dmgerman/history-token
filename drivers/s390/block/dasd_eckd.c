@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;&t;/* HDIO_GETGEO&t;&t;&t;    */
+macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -82,7 +83,6 @@ DECL|typedef|dasd_eckd_private_t
 )brace
 id|dasd_eckd_private_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_static
 DECL|variable|dasd_eckd_known_devices
 id|devreg_t
@@ -202,7 +202,6 @@ id|dasd_oper_handler
 )brace
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|variable|sizes_trk0
 r_static
 r_const
@@ -5252,15 +5251,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * SECTION: ioctl functions for eckd devices.&n; */
 multiline_comment|/*&n; * Release device ioctl.&n; * Buils a channel programm to releases a prior reserved &n; * (see dasd_eckd_reserve) device.&n; */
-DECL|function|dasd_eckd_release
 r_static
 r_int
+DECL|function|dasd_eckd_release
 id|dasd_eckd_release
 c_func
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -5300,19 +5300,10 @@ id|EACCES
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|inp
-)paren
-op_member_access_from_pointer
-id|i_rdev
+id|bdev
 )paren
 suffix:semicolon
 id|device
@@ -5445,15 +5436,16 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reserve device ioctl.&n; * Options are set to &squot;synchronous wait for interrupt&squot; and&n; * &squot;timeout the request&squot;. This leads to an terminate IO if &n; * the interrupt is outstanding for a certain time. &n; */
-DECL|function|dasd_eckd_reserve
 r_static
 r_int
+DECL|function|dasd_eckd_reserve
 id|dasd_eckd_reserve
 c_func
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -5493,19 +5485,10 @@ id|EACCES
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|inp
-)paren
-op_member_access_from_pointer
-id|i_rdev
+id|bdev
 )paren
 suffix:semicolon
 id|device
@@ -5632,7 +5615,7 @@ multiline_comment|/* Request got an eror or has been timed out. */
 id|dasd_eckd_release
 c_func
 (paren
-id|inp
+id|bdev
 comma
 id|no
 comma
@@ -5659,15 +5642,16 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Steal lock ioctl - unconditional reserve device.&n; * Buils a channel programm to break a device&squot;s reservation. &n; * (unconditional reserve)&n; */
-DECL|function|dasd_eckd_steal_lock
 r_static
 r_int
+DECL|function|dasd_eckd_steal_lock
 id|dasd_eckd_steal_lock
 c_func
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -5707,19 +5691,10 @@ id|EACCES
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|inp
-)paren
-op_member_access_from_pointer
-id|i_rdev
+id|bdev
 )paren
 suffix:semicolon
 id|device
@@ -5846,7 +5821,7 @@ multiline_comment|/* Request got an eror or has been timed out. */
 id|dasd_eckd_release
 c_func
 (paren
-id|inp
+id|bdev
 comma
 id|no
 comma
@@ -5873,15 +5848,16 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read performance statistics&n; */
-DECL|function|dasd_eckd_performance
 r_static
 r_int
+DECL|function|dasd_eckd_performance
 id|dasd_eckd_performance
 c_func
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -5919,19 +5895,10 @@ id|rc
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|inp
-)paren
-op_member_access_from_pointer
-id|i_rdev
+id|bdev
 )paren
 suffix:semicolon
 id|device
@@ -6242,15 +6209,16 @@ id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set attributes (cache operations)&n; * Stores the attributes for cache operation to be used in Define Extend (DE).&n; */
-DECL|function|dasd_eckd_set_attrib
 r_static
 r_int
+DECL|function|dasd_eckd_set_attrib
 id|dasd_eckd_set_attrib
 c_func
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -6300,19 +6268,10 @@ id|EINVAL
 suffix:semicolon
 id|devmap
 op_assign
-id|dasd_devmap_from_kdev
+id|dasd_devmap_from_bdev
 c_func
 (paren
-(paren
-(paren
-r_struct
-id|inode
-op_star
-)paren
-id|inp
-)paren
-op_member_access_from_pointer
-id|i_rdev
+id|bdev
 )paren
 suffix:semicolon
 id|device
@@ -7065,7 +7024,6 @@ op_amp
 id|dasd_eckd_discipline
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_for
 c_loop
 (paren
@@ -7098,7 +7056,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -7114,7 +7071,6 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_DASD_DYNAMIC
 r_for
 c_loop
 (paren
@@ -7147,7 +7103,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_DASD_DYNAMIC */
 id|dasd_discipline_del
 c_func
 (paren

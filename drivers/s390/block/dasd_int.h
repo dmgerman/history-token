@@ -33,9 +33,10 @@ macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/s390dyn.h&gt;
-DECL|macro|CONFIG_DASD_DYNAMIC
-mdefine_line|#define CONFIG_DASD_DYNAMIC
 multiline_comment|/*&n; * SECTION: Type definitions&n; */
+r_struct
+id|dasd_device_t
+suffix:semicolon
 DECL|typedef|dasd_ioctl_fn_t
 r_typedef
 r_int
@@ -44,9 +45,10 @@ op_star
 id|dasd_ioctl_fn_t
 )paren
 (paren
-r_void
+r_struct
+id|block_device
 op_star
-id|inp
+id|bdev
 comma
 r_int
 id|no
@@ -149,12 +151,9 @@ DECL|macro|DBF_DEBUG
 mdefine_line|#define&t;DBF_DEBUG&t;6&t;/* debug-level messages&t;&t;&t;*/
 multiline_comment|/* messages to be written via klogd and dbf */
 DECL|macro|DEV_MESSAGE
-mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; /dev/%-7s(%3d:%3d),%04x@%02x: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;name, &bslash;&n;&t;       major(d_device-&gt;kdev), minor(d_device-&gt;kdev), &bslash;&n;&t;       d_device-&gt;devinfo.devno, d_device-&gt;devinfo.irq, &bslash;&n;&t;       d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
+mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%04x@%02x: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, bdevname(d_device-&gt;bdev), &bslash;&n;&t;       d_device-&gt;devinfo.devno, d_device-&gt;devinfo.irq, &bslash;&n;&t;       d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
-r_struct
-id|dasd_device_t
-suffix:semicolon
 DECL|struct|dasd_ccw_req_t
 r_typedef
 r_struct
@@ -548,9 +547,17 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* The device name in /dev. */
-DECL|member|kdev
-id|kdev_t
-id|kdev
+DECL|member|bdev
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+DECL|member|gdp
+r_struct
+id|gendisk
+op_star
+id|gdp
 suffix:semicolon
 DECL|member|devfs_entry
 id|devfs_handle_t
@@ -1563,6 +1570,17 @@ c_func
 id|kdev_t
 )paren
 suffix:semicolon
+id|dasd_devmap_t
+op_star
+id|dasd_devmap_from_bdev
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+id|bdev
+)paren
+suffix:semicolon
 id|dasd_device_t
 op_star
 id|dasd_get_device
@@ -1638,14 +1656,14 @@ r_void
 )paren
 suffix:semicolon
 r_int
-id|dasd_gendisk_new_major
+id|dasd_gendisk_major_index
 c_func
 (paren
-r_void
+r_int
 )paren
 suffix:semicolon
 r_int
-id|dasd_gendisk_major_index
+id|dasd_gendisk_index_major
 c_func
 (paren
 r_int
@@ -1654,9 +1672,12 @@ suffix:semicolon
 r_struct
 id|gendisk
 op_star
-id|dasd_gendisk_from_devindex
+id|dasd_gendisk_alloc
 c_func
 (paren
+r_char
+op_star
+comma
 r_int
 )paren
 suffix:semicolon

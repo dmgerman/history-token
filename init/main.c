@@ -1512,6 +1512,11 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+id|page_address_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mem_init
 c_func
 (paren
@@ -1688,14 +1693,6 @@ r_void
 (brace
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Ok, at this point all CPU&squot;s should be initialized, so&n;&t; * we can start looking into devices..&n;&t; */
-macro_line|#if defined(CONFIG_ARCH_S390)
-id|s390_init_machine_check
 c_func
 (paren
 )paren

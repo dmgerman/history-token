@@ -409,34 +409,20 @@ comma
 id|myport
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|100
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|udelay
+id|set_current_state
 c_func
 (paren
-l_int|1400
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-id|cond_resched
+id|schedule_timeout
 c_func
 (paren
+id|HZ
+op_div
+l_int|7
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* If this becomes allowed use it ... &t;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&n;&t;schedule_timeout(HZ/7);&n;*/
 id|res
 op_assign
 (paren
@@ -1276,7 +1262,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;radio-sf16fmi: No PnP card found.&quot;
+l_string|&quot;radio-sf16fmi: No PnP card found.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

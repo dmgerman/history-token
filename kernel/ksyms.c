@@ -443,6 +443,15 @@ id|kmap_pte
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef HASHED_PAGE_VIRTUAL
+DECL|variable|page_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|page_address
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|get_user_pages
 id|EXPORT_SYMBOL
 c_func

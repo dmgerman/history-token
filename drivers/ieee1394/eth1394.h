@@ -102,7 +102,7 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* This is our task struct. It&squot;s used for the complete_tq callback.  */
+multiline_comment|/* This is our task struct. It&squot;s used for the packet complete callback.  */
 DECL|struct|packet_task
 r_struct
 id|packet_task

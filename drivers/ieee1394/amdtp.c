@@ -4146,7 +4146,8 @@ id|p
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|length
 suffix:semicolon
 r_if

@@ -164,11 +164,9 @@ id|ret
 )paren
 id|ret
 op_assign
-id|FIX_PSW
-c_func
-(paren
 id|ret
-)paren
+op_or
+id|PSW_ADDR_AMODE31
 suffix:semicolon
 r_return
 id|ret
@@ -256,11 +254,9 @@ id|ret
 (brace
 id|ret
 op_assign
-id|FIX_PSW
-c_func
-(paren
 id|ret
-)paren
+op_or
+id|PSW_ADDR_AMODE31
 suffix:semicolon
 r_break
 suffix:semicolon

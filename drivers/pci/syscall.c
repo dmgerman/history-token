@@ -401,7 +401,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pcibios_present
+id|pci_present
 c_func
 (paren
 )paren

@@ -363,9 +363,18 @@ id|i
 suffix:semicolon
 )brace
 r_else
+(brace
 multiline_comment|/* Can only get here on architectures with 64-bit jiffies */
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|timer-&gt;entry
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Timers are FIFO:&n;&t; */
 id|list_add_tail
 c_func
