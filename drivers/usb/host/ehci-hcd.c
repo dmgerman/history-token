@@ -1055,6 +1055,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|create_debug_files
+(paren
+id|ehci
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Start, enabling full USB 2.0 functionality ... usb 1.1 devices&n;&t; * are explicitly handed to companion controller(s), so no TT is&n;&t; * involved with the root hub.&n;&t; */
 id|ehci-&gt;hcd.state
 op_assign
@@ -1229,6 +1234,11 @@ id|ehci
 )paren
 suffix:semicolon
 id|ehci_reset
+(paren
+id|ehci
+)paren
+suffix:semicolon
+id|remove_debug_files
 (paren
 id|ehci
 )paren
