@@ -3333,6 +3333,8 @@ op_assign
 id|security_netlink_send
 c_func
 (paren
+id|sk
+comma
 id|skb
 )paren
 suffix:semicolon
