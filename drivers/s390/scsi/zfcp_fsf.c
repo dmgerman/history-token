@@ -672,16 +672,14 @@ id|adapter
 )paren
 suffix:semicolon
 multiline_comment|/* wait for woken intiators to clean up their requests */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|jiffies_to_msecs
 c_func
 (paren
 id|ZFCP_FSFREQ_CLEANUP_TIMEOUT
+)paren
 )paren
 suffix:semicolon
 )brace
