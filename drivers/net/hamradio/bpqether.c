@@ -1270,8 +1270,6 @@ r_return
 id|buf
 suffix:semicolon
 )brace
-DECL|macro|BPQ_PROC_START
-mdefine_line|#define BPQ_PROC_START ((void *)1)
 DECL|function|bpq_seq_start
 r_static
 r_void
@@ -1313,7 +1311,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|BPQ_PROC_START
+id|SEQ_START_TOKEN
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -1377,7 +1375,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|BPQ_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|p
 op_assign
@@ -1463,7 +1461,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|BPQ_PROC_START
+id|SEQ_START_TOKEN
 )paren
 id|seq_puts
 c_func

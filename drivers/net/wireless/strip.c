@@ -2950,8 +2950,6 @@ id|buffer
 )paren
 suffix:semicolon
 )brace
-DECL|macro|STRIP_PROC_HEADER
-mdefine_line|#define STRIP_PROC_HEADER&t;((void *)1)
 multiline_comment|/* get Nth element of the linked list */
 DECL|function|strip_get_idx
 r_static
@@ -3047,7 +3045,7 @@ op_minus
 l_int|1
 )paren
 suffix:colon
-id|STRIP_PROC_HEADER
+id|SEQ_START_TOKEN
 suffix:semicolon
 )brace
 DECL|function|strip_seq_next
@@ -3090,7 +3088,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|STRIP_PROC_HEADER
+id|SEQ_START_TOKEN
 )paren
 r_return
 id|strip_get_idx
@@ -3836,7 +3834,7 @@ c_cond
 (paren
 id|v
 op_eq
-id|STRIP_PROC_HEADER
+id|SEQ_START_TOKEN
 )paren
 id|seq_printf
 c_func
