@@ -883,11 +883,11 @@ mdefine_line|#define snd_power_get_state(card)&t;SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
 mdefine_line|#define snd_power_change_state(card, state)&t;do { (void)(card); } while (0)
 DECL|macro|snd_card_set_pm_callback
-mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_pm_callback(card,suspend,resume,data)
 DECL|macro|snd_card_set_dev_pm_callback
-mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_dev_pm_callback(card,suspend,resume,data)
 DECL|macro|snd_card_set_isa_pm_callback
-mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data) -EINVAL
+mdefine_line|#define snd_card_set_isa_pm_callback(card,suspend,resume,data)
 macro_line|#ifdef CONFIG_PCI
 DECL|macro|SND_PCI_PM_CALLBACKS
 mdefine_line|#define SND_PCI_PM_CALLBACKS
