@@ -777,6 +777,9 @@ multiline_comment|/*&n;&t; * First, sync the memory before unmapping the entry&n
 r_if
 c_cond
 (paren
+id|buffer
+op_logical_and
+(paren
 (paren
 id|dir
 op_eq
@@ -787,6 +790,7 @@ op_logical_or
 id|dir
 op_eq
 id|DMA_BIDIRECTIONAL
+)paren
 )paren
 )paren
 multiline_comment|/*&n;&t;&t; * bounce... copy the data back into the original buffer * and delete the&n;&t;&t; * bounce buffer.&n;&t;&t; */
@@ -1033,6 +1037,15 @@ r_void
 op_star
 id|ret
 suffix:semicolon
+r_int
+id|order
+op_assign
+id|get_order
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/* XXX fix me: the DMA API should pass us an explicit DMA mask instead: */
 id|flags
 op_or_assign
@@ -1049,13 +1062,45 @@ c_func
 (paren
 id|flags
 comma
-id|get_order
-c_func
-(paren
-id|size
-)paren
+id|order
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_logical_and
+id|address_needs_mapping
+c_func
+(paren
+id|hwdev
+comma
+id|virt_to_phys
+c_func
+(paren
+id|ret
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The allocated memory isn&squot;t reachable by the device.&n;&t;&t; * Fall back on swiotlb_map_single().&n;&t;&t; */
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|ret
+comma
+id|order
+)paren
+suffix:semicolon
+id|ret
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1063,7 +1108,7 @@ op_logical_neg
 id|ret
 )paren
 (brace
-multiline_comment|/* DMA_FROM_DEVICE is to avoid the memcpy in map_single */
+multiline_comment|/*&n;&t;&t; * We are either out of memory or the device can&squot;t DMA&n;&t;&t; * to GFP_DMA memory; fall back on&n;&t;&t; * swiotlb_map_single(), which will grab memory from&n;&t;&t; * the lowest available address range.&n;&t;&t; */
 id|dma_addr_t
 id|handle
 suffix:semicolon
@@ -2241,7 +2286,16 @@ id|mask
 )paren
 (brace
 r_return
+(paren
+id|virt_to_phys
+(paren
+id|io_tlb_end
+)paren
+op_minus
 l_int|1
+)paren
+op_le
+id|mask
 suffix:semicolon
 )brace
 DECL|variable|swiotlb_init
