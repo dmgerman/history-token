@@ -94,7 +94,19 @@ mdefine_line|#define ACT_P_CREATED 1
 DECL|macro|ACT_P_DELETED
 mdefine_line|#define ACT_P_DELETED 1
 DECL|macro|tca_gen
-mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct tc_stats stats; &bslash;&n;&t;spinlock_t *stats_lock; &bslash;&n;&t;spinlock_t lock
+mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct gnet_stats_basic bstats; &bslash;&n;&t;struct gnet_stats_queue qstats; &bslash;&n;&t;struct gnet_stats_rate_est rate_est; &bslash;&n;&t;spinlock_t *stats_lock; &bslash;&n;&t;spinlock_t lock
+DECL|struct|tcf_act_hdr
+r_struct
+id|tcf_act_hdr
+(brace
+id|tca_gen
+c_func
+(paren
+id|act_hdr
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|tc_action
 r_struct
 id|tc_action
