@@ -10995,6 +10995,7 @@ l_int|256
 op_star
 r_sizeof
 (paren
+r_struct
 id|ip_rt_acct
 )paren
 op_star
