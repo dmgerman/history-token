@@ -32,6 +32,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+multiline_comment|/* set if new pid should be 0 (kernel only)*/
+DECL|macro|CLONE_IDLETASK
+mdefine_line|#define CLONE_IDLETASK&t;0x00001000
 multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|nr_threads
 r_int
@@ -4712,11 +4715,7 @@ c_cond
 (paren
 id|clone_flags
 op_amp
-(paren
 id|CLONE_UNTRACED
-op_or
-id|CLONE_IDLETASK
-)paren
 )paren
 r_return
 l_int|0
@@ -4826,6 +4825,11 @@ l_int|0
 suffix:semicolon
 r_int
 id|pid
+suffix:semicolon
+id|clone_flags
+op_and_assign
+op_complement
+id|CLONE_IDLETASK
 suffix:semicolon
 r_if
 c_cond
@@ -4964,21 +4968,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|likely
-c_func
-(paren
-op_logical_neg
-(paren
-id|clone_flags
-op_amp
-id|CLONE_IDLETASK
-)paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 op_logical_neg
 (paren
 id|clone_flags
@@ -5002,7 +4991,6 @@ suffix:semicolon
 op_increment
 id|total_forks
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

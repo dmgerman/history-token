@@ -3061,11 +3061,6 @@ comma
 op_star
 id|child_tid_ptr
 suffix:semicolon
-id|clone_flags
-op_and_assign
-op_complement
-id|CLONE_IDLETASK
-suffix:semicolon
 macro_line|#ifdef CONFIG_COMPAT
 r_if
 c_cond

@@ -1904,11 +1904,6 @@ id|parent_tid_ptr
 comma
 id|child_tid_ptr
 suffix:semicolon
-id|clone_flags
-op_and_assign
-op_complement
-id|CLONE_IDLETASK
-suffix:semicolon
 id|parent_tid_ptr
 op_assign
 id|regs-&gt;u_regs
