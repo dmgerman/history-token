@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ctctty.c,v 1.8 2001/05/16 16:28:31 felfert Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * $Id: ctctty.c,v 1.9 2002/12/02 15:25:13 aberg Exp $&n; *&n; * CTC / ESCON network driver, tty interface.&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -11,36 +11,6 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ctctty.h&quot;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020212
-DECL|typedef|wait_queue_t
-r_typedef
-r_struct
-id|wait_queue
-id|wait_queue_t
-suffix:semicolon
-DECL|typedef|wait_queue_head_t
-r_typedef
-r_struct
-id|wait_queue
-op_star
-id|wait_queue_head_t
-suffix:semicolon
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(wait, current) &bslash;&n;&t;struct wait_queue wait = { current, NULL }
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(x) *(x)=NULL
-DECL|macro|__set_current_state
-mdefine_line|#define __set_current_state(state_value) &bslash;&n;&t;do { current-&gt;state = state_value; } while (0)
-macro_line|#ifdef __SMP__
-DECL|macro|set_current_state
-mdefine_line|#define set_current_state(state_value) &bslash;&n;&t;do { __set_current_state(state_value); mb(); } while (0)
-macro_line|#else
-DECL|macro|set_current_state
-mdefine_line|#define set_current_state(state_value) __set_current_state(state_value)
-macro_line|#endif
-DECL|macro|init_MUTEX
-mdefine_line|#define init_MUTEX(x) *(x)=MUTEX
-macro_line|#endif
 DECL|macro|CTC_TTY_MAJOR
 mdefine_line|#define CTC_TTY_MAJOR       43
 DECL|macro|CTC_TTY_MAX_DEVICES
@@ -114,6 +84,7 @@ id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens             */
 DECL|member|netdev
+r_struct
 id|net_device
 op_star
 id|netdev
@@ -258,14 +229,6 @@ op_assign
 id|CTC_TTY_NAME
 suffix:semicolon
 macro_line|#endif
-DECL|variable|ctc_tty_revision
-r_static
-r_char
-op_star
-id|ctc_tty_revision
-op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
-suffix:semicolon
 DECL|variable|ctc_tty_magic
 r_static
 id|__u32
@@ -584,6 +547,7 @@ DECL|function|ctc_tty_setcarrier
 id|ctc_tty_setcarrier
 c_func
 (paren
+r_struct
 id|net_device
 op_star
 id|netdev
@@ -3890,12 +3854,17 @@ id|info-&gt;flags
 op_amp
 id|CTC_ASYNC_CLOSING
 )paren
-macro_line|#warning: FIXME [kj] Using sleep_on derivative, is racy. consider using wait_event instead
-id|interruptible_sleep_on
+id|wait_event
 c_func
 (paren
-op_amp
 id|info-&gt;close_wait
+comma
+op_logical_neg
+(paren
+id|info-&gt;flags
+op_amp
+id|CTC_ASYNC_CLOSING
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef MODEM_DO_RESTART
@@ -4654,7 +4623,9 @@ c_func
 (paren
 id|tty
 comma
-l_int|3000
+l_int|30
+op_star
+id|HZ
 )paren
 suffix:semicolon
 multiline_comment|/* 30 seconds timeout */
@@ -4694,7 +4665,9 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|20
+id|HZ
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -4776,7 +4749,9 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|50
+id|HZ
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -5367,6 +5342,7 @@ DECL|function|ctc_tty_register_netdev
 id|ctc_tty_register_netdev
 c_func
 (paren
+r_struct
 id|net_device
 op_star
 id|dev
@@ -5534,6 +5510,7 @@ DECL|function|ctc_tty_unregister_netdev
 id|ctc_tty_unregister_netdev
 c_func
 (paren
+r_struct
 id|net_device
 op_star
 id|dev
@@ -5639,8 +5616,7 @@ DECL|function|ctc_tty_cleanup
 id|ctc_tty_cleanup
 c_func
 (paren
-r_int
-id|final
+r_void
 )paren
 (brace
 r_int
@@ -5660,12 +5636,13 @@ id|ctc_tty_shuttingdown
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
+id|tty_unregister_driver
+c_func
 (paren
-id|final
+op_amp
+id|driver-&gt;ctc_tty_device
 )paren
-(brace
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -5676,17 +5653,6 @@ id|driver
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
-r_else
-(brace
-id|tty_unregister_driver
-c_func
-(paren
-op_amp
-id|driver-&gt;ctc_tty_device
-)paren
-suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
