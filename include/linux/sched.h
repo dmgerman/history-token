@@ -858,7 +858,7 @@ suffix:semicolon
 DECL|macro|NGROUPS_SMALL
 mdefine_line|#define NGROUPS_SMALL&t;&t;32
 DECL|macro|NGROUPS_PER_BLOCK
-mdefine_line|#define NGROUPS_PER_BLOCK&t;((int)(EXEC_PAGESIZE / sizeof(gid_t)))
+mdefine_line|#define NGROUPS_PER_BLOCK&t;((int)(PAGE_SIZE / sizeof(gid_t)))
 DECL|struct|group_info
 r_struct
 id|group_info
