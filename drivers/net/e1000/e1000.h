@@ -456,6 +456,10 @@ id|pci_state
 l_int|16
 )braket
 suffix:semicolon
+DECL|member|msg_enable
+r_int
+id|msg_enable
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* _E1000_H_ */
