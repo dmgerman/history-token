@@ -685,6 +685,42 @@ id|ptep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro and implementation to make a page protection as uncachable.&n; */
+DECL|function|pgprot_noncached
+r_static
+id|__inline__
+id|pgprot_t
+id|pgprot_noncached
+c_func
+(paren
+id|pgprot_t
+id|_prot
+)paren
+(brace
+r_int
+r_int
+id|prot
+op_assign
+id|pgprot_val
+c_func
+(paren
+id|_prot
+)paren
+suffix:semicolon
+id|prot
+op_or_assign
+id|_PAGE_NONCACHABLE
+suffix:semicolon
+r_return
+id|__pgprot
+c_func
+(paren
+id|prot
+)paren
+suffix:semicolon
+)brace
+DECL|macro|pgprot_writecombine
+mdefine_line|#define pgprot_writecombine(prot) pgprot_noncached(prot)
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), pgprot)
