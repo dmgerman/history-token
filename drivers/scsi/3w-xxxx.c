@@ -10977,28 +10977,6 @@ comma
 id|tw_driver_version
 )paren
 suffix:semicolon
-multiline_comment|/* Check if the kernel has PCI interface compiled in */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;3w-xxxx: tw_scsi_detect(): No pci interface present.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|ret
 op_assign
 id|tw_findcards
