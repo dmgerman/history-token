@@ -79,25 +79,10 @@ DECL|member|device_lock
 id|spinlock_t
 id|device_lock
 suffix:semicolon
-multiline_comment|/* buffer pool */
-multiline_comment|/* buffer_heads that we have pre-allocated have b_pprev -&gt; &amp;freebh&n;&t; * and are linked into a stack using b_next&n;&t; * multipath_bh that are pre-allocated have MPBH_PreAlloc set.&n;&t; * All these variable are protected by device_lock&n;&t; */
-DECL|member|freer1
-r_struct
-id|multipath_bh
+DECL|member|pool
+id|mempool_t
 op_star
-id|freer1
-suffix:semicolon
-DECL|member|freer1_blocked
-r_int
-id|freer1_blocked
-suffix:semicolon
-DECL|member|freer1_cnt
-r_int
-id|freer1_cnt
-suffix:semicolon
-DECL|member|wait_buffer
-id|wait_queue_head_t
-id|wait_buffer
+id|pool
 suffix:semicolon
 )brace
 suffix:semicolon
