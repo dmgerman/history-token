@@ -13,11 +13,11 @@ multiline_comment|/*&n;&n;   READ THIS&n;&n;   This module started to configure 
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;1.3&quot;&t;&t;/* Version of Audio Excel DSP 16 driver */
 DECL|macro|AEDSP16_DEBUG
-macro_line|#undef&t;AEDSP16_DEBUG 1&t;&t;/* Define this to enable debug code     */
+macro_line|#undef&t;AEDSP16_DEBUG &t;&t;/* Define this to 1 to enable debug code     */
 DECL|macro|AEDSP16_DEBUG_MORE
-macro_line|#undef&t;AEDSP16_DEBUG_MORE 1&t;/* Define this to enable more debug     */
+macro_line|#undef&t;AEDSP16_DEBUG_MORE &t;/* Define this to 1 to enable more debug     */
 DECL|macro|AEDSP16_INFO
-macro_line|#undef&t;AEDSP16_INFO  1&t;&t;/* Define this to enable info code      */
+macro_line|#undef&t;AEDSP16_INFO &t;&t;/* Define this to 1 to enable info code      */
 macro_line|#if defined(AEDSP16_DEBUG)
 DECL|macro|DBG
 macro_line|# define DBG(x)  printk x

@@ -35,14 +35,12 @@ r_int
 r_int
 id|count
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Entering rwsem_down_read_failed(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Entering rwsem_down_read_failed&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* this waitqueue context flag will be cleared when we are granted the lock */
@@ -87,14 +85,6 @@ comma
 id|sem
 )paren
 suffix:semicolon
-id|rwsemdebug
-c_func
-(paren
-l_string|&quot;X(%08lx)&bslash;n&quot;
-comma
-id|count
-)paren
-suffix:semicolon
 multiline_comment|/* if there are no longer active locks, wake the front queued process(es) up&n;&t; * - it might even be this process, since the waker takes a more active part&n;&t; */
 r_if
 c_cond
@@ -163,14 +153,12 @@ id|tsk-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Leaving rwsem_down_read_failed(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Leaving rwsem_down_read_failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -210,14 +198,12 @@ r_int
 r_int
 id|count
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Entering rwsem_down_write_failed(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Entering rwsem_down_write_failed&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* this waitqueue context flag will be cleared when we are granted the lock */
@@ -259,16 +245,6 @@ op_minus
 id|RWSEM_ACTIVE_BIAS
 comma
 id|sem
-)paren
-suffix:semicolon
-id|rwsemdebug
-c_func
-(paren
-l_string|&quot;[%d] updated(%08lx)&bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|count
 )paren
 suffix:semicolon
 multiline_comment|/* if there are no longer active locks, wake the front queued process(es) up&n;&t; * - it might even be this process, since the waker takes a more active part&n;&t; */
@@ -339,14 +315,12 @@ id|tsk-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Leaving rwsem_down_write_failed(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Leaving rwsem_down_write_failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -374,14 +348,12 @@ suffix:semicolon
 r_int
 id|woken
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Entering rwsem_wake(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Entering rwsem_wake&quot;
 )paren
 suffix:semicolon
 id|try_again
@@ -403,12 +375,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] rwsem_wake: abort wakeup due to renewed activity&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
+l_string|&quot;rwsem_wake: abort wakeup due to renewed activity&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -481,14 +453,12 @@ id|sem
 suffix:semicolon
 id|out
 suffix:colon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] Leaving rwsem_wake(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|sem-&gt;count
+l_string|&quot;Leaving rwsem_wake&quot;
 )paren
 suffix:semicolon
 r_return
@@ -508,14 +478,12 @@ comma
 id|sem
 )paren
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;[%d] corrected(%08lx)&bslash;n&quot;
+id|sem
 comma
-id|current-&gt;pid
-comma
-id|count
+l_string|&quot;corrected count&quot;
 )paren
 suffix:semicolon
 r_if

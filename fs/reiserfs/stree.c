@@ -1320,7 +1320,7 @@ r_return
 op_amp
 id|MIN_KEY
 suffix:semicolon
-multiline_comment|/* Check whether position in the parrent is correct. */
+multiline_comment|/* Check whether position in the parent is correct. */
 r_if
 c_cond
 (paren

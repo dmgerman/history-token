@@ -2163,10 +2163,6 @@ id|skb-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|skb-&gt;used
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* skb-&gt;data points to the start of sk_buff data area */
 id|buffer
 op_assign

@@ -6030,15 +6030,6 @@ c_func
 id|kdev_t
 )paren
 suffix:semicolon
-r_struct
-id|super_block
-op_star
-id|get_empty_super
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|put_super

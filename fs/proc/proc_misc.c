@@ -1412,6 +1412,7 @@ id|kstat.per_cpu_system
 id|cpu
 )braket
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ARCH_S390)
 r_for
 c_loop
 (paren
@@ -1436,6 +1437,7 @@ id|cpu
 id|j
 )braket
 suffix:semicolon
+macro_line|#endif
 )brace
 id|len
 op_assign
@@ -1581,6 +1583,7 @@ comma
 id|sum
 )paren
 suffix:semicolon
+macro_line|#if !defined(CONFIG_ARCH_S390)
 r_for
 c_loop
 (paren
@@ -1613,6 +1616,7 @@ id|i
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|len
 op_add_assign
 id|sprintf

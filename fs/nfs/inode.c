@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/nfs/inode.c&n; *&n; *  Copyright (C) 1992  Rick Sladkey&n; *&n; *  nfs inode and superblock handling functions&n; *&n; *  Modularised by Alan Cox &lt;Alan.Cox@linux.org&gt;, while hacking some&n; *  experimental NFS changes. Modularisation taken straight from SYS5 fs.&n; *&n; *  Change to nfs_read_super() to permit NFS mounts to multi-homed hosts.&n; *  J.S.Peatfield@damtp.cam.ac.uk&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -4430,8 +4431,10 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialize NFS&n; */
-r_int
 DECL|function|init_nfs_fs
+r_static
+r_int
+id|__init
 id|init_nfs_fs
 c_func
 (paren
@@ -4489,35 +4492,11 @@ id|nfs_fs_type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Every kernel module contains stuff like this.&n; */
-macro_line|#ifdef MODULE
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
-multiline_comment|/* Not quite true; I just maintain it */
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Olaf Kirch &lt;okir@monad.swb.de&gt;&quot;
-)paren
-suffix:semicolon
-r_int
-DECL|function|init_module
-id|init_module
-c_func
-(paren
+DECL|function|exit_nfs_fs
+r_static
 r_void
-)paren
-(brace
-r_return
-id|init_nfs_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|exit_nfs_fs
 c_func
 (paren
 r_void
@@ -4549,5 +4528,23 @@ id|nfs_fs_type
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+multiline_comment|/* Not quite true; I just maintain it */
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Olaf Kirch &lt;okir@monad.swb.de&gt;&quot;
+)paren
+suffix:semicolon
+id|module_init
+c_func
+(paren
+id|init_nfs_fs
+)paren
+id|module_exit
+c_func
+(paren
+id|exit_nfs_fs
+)paren
 eof

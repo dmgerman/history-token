@@ -878,6 +878,22 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdata-&gt;s_spar_map
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;couldnt allocate UDF s_spar_map!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|sdata-&gt;s_spar_remap.s_spar_remap32
 op_assign
 op_amp

@@ -1962,6 +1962,10 @@ op_assign
 op_amp
 id|reiserfs_sops
 suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

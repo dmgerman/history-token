@@ -256,8 +256,6 @@ DECL|macro|ENOMEDIUM
 mdefine_line|#define ENOMEDIUM&t;159&t;/* No medium found */
 DECL|macro|EMEDIUMTYPE
 mdefine_line|#define EMEDIUMTYPE&t;160&t;/* Wrong medium type */
-DECL|macro|EHASHCOLLISION
-mdefine_line|#define EHASHCOLLISION&t;125&t;/* Number of hash collisons exceeds maximum generation counter value.  */
 DECL|macro|EDQUOT
 mdefine_line|#define EDQUOT&t;&t;1133&t;/* Quota exceeded */
 macro_line|#ifdef __KERNEL__

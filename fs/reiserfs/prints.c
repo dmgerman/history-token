@@ -949,6 +949,7 @@ suffix:semicolon
 multiline_comment|/* console_print (error_buf); */
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;%s&quot;
 comma
 id|error_buf
@@ -982,6 +983,7 @@ id|do_reiserfs_warning
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s&quot;
 comma
 id|error_buf

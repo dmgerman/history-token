@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: misc.c,v 1.1 1998/10/18 13:32:09 tsbogend Exp $&n; *&n; * misc.c: Miscellaneous ARCS PROM routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * misc.c: Miscellaneous ARCS PROM routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6,11 +6,6 @@ macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-r_extern
-r_int
-r_int
-id|mips_cputype
-suffix:semicolon
 r_extern
 r_void
 op_star
@@ -34,8 +29,6 @@ c_func
 r_void
 )paren
 (brace
-id|bcops
-op_member_access_from_pointer
 id|bc_disable
 c_func
 (paren
@@ -70,8 +63,6 @@ c_func
 r_void
 )paren
 (brace
-id|bcops
-op_member_access_from_pointer
 id|bc_disable
 c_func
 (paren
@@ -107,8 +98,6 @@ c_func
 r_void
 )paren
 (brace
-id|bcops
-op_member_access_from_pointer
 id|bc_disable
 c_func
 (paren
@@ -143,8 +132,6 @@ c_func
 r_void
 )paren
 (brace
-id|bcops
-op_member_access_from_pointer
 id|bc_disable
 c_func
 (paren
@@ -179,8 +166,6 @@ c_func
 r_void
 )paren
 (brace
-id|bcops
-op_member_access_from_pointer
 id|bc_disable
 c_func
 (paren

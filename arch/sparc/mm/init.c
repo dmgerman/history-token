@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.97 2001/02/26 02:57:34 anton Exp $&n; *  linux/arch/sparc/mm/init.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Eddie C. Dost (ecd@skynet.be)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Copyright (C) 2000 Anton Blanchard (anton@linuxcare.com.au)&n; */
+multiline_comment|/*  $Id: init.c,v 1.96 2000/11/30 08:51:50 anton Exp $&n; *  linux/arch/sparc/mm/init.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1995 Eddie C. Dost (ecd@skynet.be)&n; *  Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Copyright (C) 2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

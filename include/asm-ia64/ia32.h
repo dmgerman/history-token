@@ -968,7 +968,7 @@ mdefine_line|#define IA32_SEG_HIGH_BASE 56
 DECL|macro|IA32_SEG_DESCRIPTOR
 mdefine_line|#define IA32_SEG_DESCRIPTOR(base, limit, segtype, nonsysseg, dpl, segpresent, avl, segdb, granularity) &bslash;&n;&t;       ((limit &amp; 0xFFFF)&t;&t;&t;       |       &bslash;&n;&t;&t; (base &amp; 0xFFFFFF &lt;&lt; IA32_SEG_BASE)&t;       |       &bslash;&n;&t;&t;(segtype &lt;&lt; IA32_SEG_TYPE)&t;&t;       |       &bslash;&n;&t;&t;(nonsysseg &lt;&lt; IA32_SEG_SYS)&t;&t;       |       &bslash;&n;&t;&t;(dpl &lt;&lt; IA32_SEG_DPL)&t;&t;&t;       |       &bslash;&n;&t;&t;(segpresent &lt;&lt; IA32_SEG_P)&t;&t;       |       &bslash;&n;&t;&t;(((limit &gt;&gt; 16) &amp; 0xF) &lt;&lt; IA32_SEG_HIGH_LIMIT) |       &bslash;&n;&t;&t;(avl &lt;&lt; IA32_SEG_AVL)&t;&t;&t;       |       &bslash;&n;&t;&t;(segdb &lt;&lt; IA32_SEG_DB)&t;&t;&t;       |       &bslash;&n;&t;&t;(granularity &lt;&lt; IA32_SEG_G)&t;&t;       |       &bslash;&n;&t;&t;(((base &gt;&gt; 24) &amp; 0xFF) &lt;&lt; IA32_SEG_HIGH_BASE)) 
 DECL|macro|IA32_IOBASE
-mdefine_line|#define IA32_IOBASE    0x2000000000000000 /* Virtual addres for I/O space */
+mdefine_line|#define IA32_IOBASE    0x2000000000000000 /* Virtual address for I/O space */
 DECL|macro|IA32_CR0
 mdefine_line|#define IA32_CR0       0x80000001      /* Enable PG and PE bits */
 DECL|macro|IA32_CR4

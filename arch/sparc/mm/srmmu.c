@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: srmmu.c,v 1.228 2001/03/16 06:56:20 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@linuxcare.com)&n; */
+multiline_comment|/* $Id: srmmu.c,v 1.228 2001/03/16 06:56:20 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;

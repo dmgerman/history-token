@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun4c.c,v 1.205 2001/03/16 06:57:41 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@linuxcare.com)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: sun4c.c,v 1.205 2001/03/16 06:57:41 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@samba.org)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 DECL|macro|NR_TASK_BUCKETS
 mdefine_line|#define NR_TASK_BUCKETS 512
 macro_line|#include &lt;linux/config.h&gt;

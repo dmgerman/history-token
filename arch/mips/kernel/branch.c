@@ -1,11 +1,15 @@
-multiline_comment|/*&n; * Branch and jump emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Branch and jump emulation.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 97, 2000 by Ralf Baechle&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Compute the return address and do emulate branch simulation, if required.&n; */
 DECL|function|__compute_return_epc
 r_int
@@ -176,6 +180,9 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -215,6 +222,9 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -263,6 +273,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -311,6 +324,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -482,6 +498,9 @@ multiline_comment|/* rt field assumed to be zero */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -522,6 +541,9 @@ multiline_comment|/* rt field assumed to be zero */
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|regs-&gt;regs
 (braket
 id|insn.i_format.rs
@@ -556,6 +578,25 @@ multiline_comment|/*&n;&t; * And now the FPA/cp1 branch instructions.&n;&t; */
 r_case
 id|cop1_op
 suffix:colon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|fcr31
+op_assign
+id|current-&gt;thread.fpu.soft.sr
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|asm
 (paren
 l_string|&quot;cfc1&bslash;t%0,$31&quot;

@@ -2976,6 +2976,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;get_empty_super&t;-&t;find empty superblocks&n; *&n; *&t;Find a superblock with no device assigned. A free superblock is &n; *&t;found and returned. If neccessary new superblocks are allocated.&n; *&t;%NULL is returned if there are insufficient resources to complete&n; *&t;the request.&n; */
 DECL|function|get_empty_super
+r_static
 r_struct
 id|super_block
 op_star
@@ -3245,6 +3246,10 @@ suffix:semicolon
 id|s-&gt;s_dquot.flags
 op_assign
 l_int|0
+suffix:semicolon
+id|s-&gt;s_maxbytes
+op_assign
+id|MAX_NON_LFS
 suffix:semicolon
 id|lock_super
 c_func

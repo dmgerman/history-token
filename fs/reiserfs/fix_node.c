@@ -1786,7 +1786,7 @@ id|to_bytes
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/* go through all item begining from the start_item-th item and ending by&n;       the end_item-th item. Do not count first &squot;start_bytes&squot; units of&n;       &squot;start_item&squot;-th item and last &squot;end_bytes&squot; of &squot;end_item&squot;-th item */
+multiline_comment|/* go through all item beginning from the start_item-th item and ending by&n;       the end_item-th item. Do not count first &squot;start_bytes&squot; units of&n;       &squot;start_item&squot;-th item and last &squot;end_bytes&squot; of &squot;end_item&squot;-th item */
 r_for
 c_loop
 (paren

@@ -3401,7 +3401,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;timod_putmsg: unsuported command %u.&bslash;n&quot;
+l_string|&quot;timod_putmsg: unsupported command %u.&bslash;n&quot;
 comma
 id|ret
 )paren

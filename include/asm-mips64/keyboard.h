@@ -144,7 +144,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* PSaux driver resource managment  */
+multiline_comment|/* PSaux driver resource management  */
 DECL|member|aux_request_irq
 r_int
 (paren

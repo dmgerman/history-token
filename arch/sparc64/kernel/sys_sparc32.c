@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc32.c,v 1.175 2001/03/27 02:36:37 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/* $Id: sys_sparc32.c,v 1.176 2001/04/14 01:12:02 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -22977,30 +22977,6 @@ id|new_len
 (brace
 r_int
 r_int
-(paren
-op_star
-id|get_addr
-)paren
-(paren
-r_struct
-id|file
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_int
-r_int
 id|map_flags
 op_assign
 l_int|0
@@ -23065,7 +23041,7 @@ suffix:semicolon
 multiline_comment|/* MREMAP_FIXED checked above. */
 id|new_addr
 op_assign
-id|get_unmapped_addr
+id|get_unmapped_area
 c_func
 (paren
 id|file

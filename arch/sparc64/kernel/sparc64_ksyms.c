@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sparc64_ksyms.c,v 1.104 2001/04/05 11:08:11 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: sparc64_ksyms.c,v 1.105 2001/04/14 01:12:02 davem Exp $&n; * arch/sparc64/kernel/sparc64_ksyms.c: Sparc64 specific ksyms support.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
@@ -805,28 +805,6 @@ c_func
 id|__up
 )paren
 suffix:semicolon
-multiline_comment|/* rw semaphores */
-DECL|variable|__down_read_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_read_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_write_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_write_failed
-)paren
-suffix:semicolon
-DECL|variable|__rwsem_wake
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__rwsem_wake
-)paren
-suffix:semicolon
 multiline_comment|/* Atomic counter implementation. */
 DECL|variable|__atomic_add
 id|EXPORT_SYMBOL
@@ -843,39 +821,39 @@ id|__atomic_sub
 )paren
 suffix:semicolon
 multiline_comment|/* Atomic bit operations. */
-DECL|variable|__test_and_set_bit
+DECL|variable|___test_and_set_bit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__test_and_set_bit
+id|___test_and_set_bit
 )paren
 suffix:semicolon
-DECL|variable|__test_and_clear_bit
+DECL|variable|___test_and_clear_bit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__test_and_clear_bit
+id|___test_and_clear_bit
 )paren
 suffix:semicolon
-DECL|variable|__test_and_change_bit
+DECL|variable|___test_and_change_bit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__test_and_change_bit
+id|___test_and_change_bit
 )paren
 suffix:semicolon
-DECL|variable|__test_and_set_le_bit
+DECL|variable|___test_and_set_le_bit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__test_and_set_le_bit
+id|___test_and_set_le_bit
 )paren
 suffix:semicolon
-DECL|variable|__test_and_clear_le_bit
+DECL|variable|___test_and_clear_le_bit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__test_and_clear_le_bit
+id|___test_and_clear_le_bit
 )paren
 suffix:semicolon
 DECL|variable|ivector_table

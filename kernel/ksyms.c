@@ -460,13 +460,6 @@ c_func
 id|get_super
 )paren
 suffix:semicolon
-DECL|variable|get_empty_super
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|get_empty_super
-)paren
-suffix:semicolon
 DECL|variable|getname
 id|EXPORT_SYMBOL
 c_func

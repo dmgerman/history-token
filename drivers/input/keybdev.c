@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
-macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || defined(__mips__) || defined(CONFIG_SPARC64)
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(__alpha__) || &bslash;&n;    defined(__mips__) || defined(CONFIG_SPARC64) || defined(CONFIG_SUPERH)
 DECL|variable|x86_sysrq_alt
 r_static
 r_int

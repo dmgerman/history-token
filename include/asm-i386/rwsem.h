@@ -1,4 +1,4 @@
-multiline_comment|/* rwsem.h: R/W semaphores based on spinlocks&n; *&n; * Written by David Howells (dhowells@redhat.com).&n; *&n; * Derived from asm-i386/semaphore.h&n; */
+multiline_comment|/* rwsem.h: R/W semaphores optimised using i386 assembly&n; *&n; * Written by David Howells (dhowells@redhat.com).&n; *&n; * Derived from asm-i386/semaphore.h&n; */
 macro_line|#ifndef _I386_RWSEM_H
 DECL|macro|_I386_RWSEM_H
 mdefine_line|#define _I386_RWSEM_H
@@ -6,8 +6,6 @@ macro_line|#ifndef _LINUX_RWSEM_H
 macro_line|#error please dont include asm/rwsem.h directly, use linux/rwsem.h instead
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
-DECL|macro|__HAVE_ARCH_SPECIFIC_RWSEM_IMPLEMENTATION
-mdefine_line|#define __HAVE_ARCH_SPECIFIC_RWSEM_IMPLEMENTATION 1
 macro_line|#ifdef CONFIG_X86_XADD
 macro_line|#include &lt;asm/rwsem-xadd.h&gt; /* use XADD based semaphores if possible */
 macro_line|#else

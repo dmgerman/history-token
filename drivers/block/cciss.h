@@ -401,7 +401,7 @@ op_assign
 id|h-&gt;commands_outstanding
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  This card is the oposite of the other cards.  &n; *   0 turns interrupts on... &n; *   0x08 turns them off... &n; */
+multiline_comment|/*  &n; *  This card is the opposite of the other cards.  &n; *   0 turns interrupts on... &n; *   0x08 turns them off... &n; */
 DECL|function|SA5_intr_mask
 r_static
 r_void
@@ -450,7 +450,7 @@ id|SA5_REPLY_INTR_MASK_OFFSET
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  This card is the oposite of the other cards.&n; *   0 turns interrupts on...&n; *   0x04 turns them off...&n; */
+multiline_comment|/*&n; *  This card is the opposite of the other cards.&n; *   0 turns interrupts on...&n; *   0x04 turns them off...&n; */
 DECL|function|SA5B_intr_mask
 r_static
 r_void

@@ -46,7 +46,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__s390__) &amp;&amp; !defined(__hppa__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__sparc__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(CONFIG_ARCH_S390) &amp;&amp; !defined(__hppa__)
 multiline_comment|/*&n; * For backward compatibility?  Maybe this should be moved&n; * into arch/i386 instead?&n; */
 DECL|function|cp_old_stat
 r_static
@@ -89,6 +89,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;VFS: Warning: %s using old stat() call. Recompile your binary.&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -160,7 +161,7 @@ c_cond
 (paren
 id|inode-&gt;i_size
 OG
-l_int|0x7fffffff
+id|MAX_NON_LFS
 )paren
 r_return
 op_minus
@@ -297,7 +298,7 @@ c_cond
 (paren
 id|inode-&gt;i_size
 OG
-l_int|0x7fffffff
+id|MAX_NON_LFS
 )paren
 r_return
 op_minus

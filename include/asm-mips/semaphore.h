@@ -7,6 +7,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 DECL|struct|semaphore
 r_struct
 id|semaphore
@@ -560,8 +561,10 @@ suffix:semicolon
 multiline_comment|/* bit 0 means read bias granted;&n;&t;   bit 1 means write bias granted.  */
 DECL|member|granted
 r_int
+r_int
 id|granted
 suffix:semicolon
+multiline_comment|/* pedant: long req&squot;d for set_bit */
 DECL|member|wait
 id|wait_queue_head_t
 id|wait

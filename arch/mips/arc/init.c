@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: init.c,v 1.5 2000/03/07 15:45:27 ralf Exp $&n; * This file is subject to the terms and conditions of the GNU General Public+ &n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * PROM library initialisation code.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public+ &n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * PROM library initialisation code.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
@@ -48,8 +48,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|arc_setup_console
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|prom_init
-r_int
+r_void
 id|__init
 id|prom_init
 c_func
@@ -99,6 +107,14 @@ id|prom_envp
 op_assign
 id|envp
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* arc_printf should not use prom_printf as soon as we free&n;&t; * the prom buffers - This horribly breaks on Indys with framebuffer&n;&t; * as it simply stops after initialising swap - On the Indigo2 serial&n;&t; * console you will get A LOT illegal instructions - Only enable&n;&t; * this for early init crashes - This also brings up artefacts of&n;&t; * printing everything twice on serial console and on GFX Console&n;&t; * this has the effect of having the prom printing everything&n;&t; * in the small rectangle and the kernel printing around.&n;&t; */
+id|arc_setup_console
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -182,8 +198,5 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof

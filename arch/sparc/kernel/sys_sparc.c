@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc.c,v 1.69 2001/03/27 02:36:37 davem Exp $&n; * linux/arch/sparc/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
+multiline_comment|/* $Id: sys_sparc.c,v 1.70 2001/04/14 01:12:02 davem Exp $&n; * linux/arch/sparc/kernel/sys_sparc.c&n; *&n; * This file contains various random system calls that&n; * have a non-standard calling sequence on the Linux/sparc&n; * platform.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1436,30 +1436,6 @@ op_minus
 id|PAGE_SIZE
 )paren
 (brace
-r_int
-r_int
-(paren
-op_star
-id|get_addr
-)paren
-(paren
-r_struct
-id|file
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 r_int
 r_int
 id|map_flags

@@ -1,4 +1,5 @@
-multiline_comment|/* $Id: ptrace.c,v 1.17 1999/09/28 22:25:47 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Ross Biro&n; * Copyright (C) Linus Torvalds&n; * Copyright (C) 1994, 1995, 1996, 1997, 1998 Ralf Baechle&n; * Copyright (C) 1996 David S. Miller&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 Ross Biro&n; * Copyright (C) Linus Torvalds&n; * Copyright (C) 1994, 95, 96, 97, 98, 2000 Ralf Baechle&n; * Copyright (C) 1996 David S. Miller&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999 MIPS Technologies, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -13,6 +14,8 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 DECL|function|sys_ptrace
 id|asmlinkage
 r_int
@@ -552,6 +555,53 @@ c_cond
 id|child-&gt;used_math
 )paren
 (brace
+r_int
+r_int
+r_int
+op_star
+id|fregs
+op_assign
+(paren
+r_int
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|child-&gt;thread.fpu.hard.fp_regs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|fregs
+op_assign
+(paren
+r_int
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|child-&gt;thread.fpu.soft.regs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -583,11 +633,17 @@ suffix:semicolon
 )brace
 id|tmp
 op_assign
-id|child-&gt;thread.fpu.hard.fp_regs
+(paren
+r_int
+r_int
+)paren
+id|fregs
 (braket
+(paren
 id|addr
 op_minus
 l_int|32
+)paren
 )braket
 suffix:semicolon
 )brace
@@ -650,6 +706,25 @@ suffix:semicolon
 r_case
 id|FPC_CSR
 suffix:colon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|tmp
+op_assign
+id|child-&gt;thread.fpu.soft.sr
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|tmp
 op_assign
 id|child-&gt;thread.fpu.hard.control
@@ -851,8 +926,23 @@ suffix:colon
 (brace
 r_int
 r_int
+r_int
 op_star
 id|fregs
+suffix:semicolon
+id|fregs
+op_assign
+(paren
+r_int
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|child-&gt;thread.fpu.hard.fp_regs
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -867,6 +957,35 @@ id|last_task_used_math
 op_eq
 id|child
 )paren
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|fregs
+op_assign
+(paren
+r_int
+r_int
+r_int
+op_star
+)paren
+op_amp
+id|child-&gt;thread.fpu.soft.regs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 (brace
 id|enable_cp1
 c_func
@@ -919,10 +1038,6 @@ l_int|0
 suffix:semicolon
 )brace
 id|fregs
-op_assign
-id|child-&gt;thread.fpu.hard.fp_regs
-suffix:semicolon
-id|fregs
 (braket
 id|addr
 op_minus
@@ -964,6 +1079,25 @@ suffix:semicolon
 r_case
 id|FPC_CSR
 suffix:colon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|child-&gt;thread.fpu.soft.sr
+op_assign
+id|data
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|child-&gt;thread.fpu.hard.control
 op_assign
 id|data

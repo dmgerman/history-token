@@ -7,8 +7,6 @@ macro_line|#error please dont include asm/rwsem-spinlock.h directly, use linux/r
 macro_line|#endif
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef __KERNEL__
-DECL|macro|CONFIG_USING_SPINLOCK_BASED_RWSEM
-mdefine_line|#define CONFIG_USING_SPINLOCK_BASED_RWSEM 1
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
 r_struct

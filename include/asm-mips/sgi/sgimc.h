@@ -632,10 +632,10 @@ DECL|member|_unused8
 id|u32
 id|_unused8
 suffix:semicolon
-DECL|member|dmacount
+DECL|member|dmaccount
 r_volatile
 id|u32
-id|dmacount
+id|dmaccount
 suffix:semicolon
 multiline_comment|/* Zoom and byte count for DMA */
 DECL|member|_unused9

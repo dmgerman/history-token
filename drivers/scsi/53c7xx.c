@@ -6,7 +6,7 @@ mdefine_line|#define FORCE_DSA_ALIGNMENT
 multiline_comment|/*&n; * Selection timer does not always work on the 53c710, depending on the&n; * timing at the last disconnect, if this is a problem for you, try&n; * using validids as detailed below.&n; *&n; * Options for the NCR7xx driver&n; *&n; * noasync:0&t;&t;-&t;disables sync and asynchronous negotiation&n; * nosync:0&t;&t;-&t;disables synchronous negotiation (does async)&n; * nodisconnect:0&t;-&t;disables disconnection&n; * validids:0x??&t;-&t;Bitmask field that disallows certain ID&squot;s.&n; *&t;&t;&t;-&t;e.g.&t;0x03&t;allows ID 0,1&n; *&t;&t;&t;-&t;&t;0x1F&t;allows ID 0,1,2,3,4&n; * opthi:n&t;&t;-&t;replace top word of options with &squot;n&squot;&n; * optlo:n&t;&t;-&t;replace bottom word of options with &squot;n&squot;&n; *&t;&t;&t;-&t;ALWAYS SPECIFY opthi THEN optlo &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&n; */
 multiline_comment|/*&n; * PERM_OPTIONS are driver options which will be enabled for all NCR boards&n; * in the system at driver initialization time.&n; *&n; * Don&squot;t THINK about touching these in PERM_OPTIONS : &n; *   OPTION_MEMORY_MAPPED &n; * &t;680x0 doesn&squot;t have an IO map!&n; *&n; *   OPTION_DEBUG_TEST1&n; *&t;Test 1 does bus mastering and interrupt tests, which will help weed &n; *&t;out brain damaged main boards.&n; *&n; * Other PERM_OPTIONS settings are listed below.  Note the actual options&n; * required are set in the relevant file (mvme16x.c, amiga7xx.c, etc):&n; *&n; *   OPTION_NO_ASYNC&n; *&t;Don&squot;t negotiate for asynchronous transfers on the first command &n; *&t;when OPTION_ALWAYS_SYNCHRONOUS is set.  Useful for dain bramaged&n; *&t;devices which do something bad rather than sending a MESSAGE &n; *&t;REJECT back to us like they should if they can&squot;t cope.&n; *&n; *   OPTION_SYNCHRONOUS&n; *&t;Enable support for synchronous transfers.  Target negotiated &n; *&t;synchronous transfers will be responded to.  To initiate &n; *&t;a synchronous transfer request,  call &n; *&n; *&t;    request_synchronous (hostno, target) &n; *&n; *&t;from within KGDB.&n; *&n; *   OPTION_ALWAYS_SYNCHRONOUS&n; *&t;Negotiate for synchronous transfers with every target after&n; *&t;driver initialization or a SCSI bus reset.  This is a bit dangerous, &n; *&t;since there are some dain bramaged SCSI devices which will accept&n; *&t;SDTR messages but keep talking asynchronously.&n; *&n; *   OPTION_DISCONNECT&n; *&t;Enable support for disconnect/reconnect.  To change the &n; *&t;default setting on a given host adapter, call&n; *&n; *&t;    request_disconnect (hostno, allow)&n; *&n; *&t;where allow is non-zero to allow, 0 to disallow.&n; * &n; *  If you really want to run 10MHz FAST SCSI-II transfers, you should &n; *  know that the NCR driver currently ignores parity information.  Most&n; *  systems do 5MHz SCSI fine.  I&squot;ve seen a lot that have problems faster&n; *  than 8MHz.  To play it safe, we only request 5MHz transfers.&n; *&n; *  If you&squot;d rather get 10MHz transfers, edit sdtr_message and change &n; *  the fourth byte from 50 to 25.&n; */
 multiline_comment|/*&n; * Sponsored by &n; *&t;iX Multiuser Multitasking Magazine&n; *&t;Hannover, Germany&n; *&t;hm@ix.de&n; *&n; * Copyright 1993, 1994, 1995 Drew Eckhardt&n; *      Visionary Computing &n; *      (Unix and Linux consulting and custom programming)&n; *      drew@PoohSticks.ORG&n; *&t;+1 (303) 786-7975&n; *&n; * TolerANT and SCSI SCRIPTS are registered trademarks of NCR Corporation.&n; * &n; * For more information, please consult &n; *&n; * NCR53C810 &n; * SCSI I/O Processor&n; * Programmer&squot;s Guide&n; *&n; * NCR 53C810&n; * PCI-SCSI I/O Processor&n; * Data Manual&n; *&n; * NCR 53C810/53C820&n; * PCI-SCSI I/O Processor Design In Guide&n; *&n; * For literature on Symbios Logic Inc. formerly NCR, SCSI, &n; * and Communication products please call (800) 334-5454 or&n; * (719) 536-3300. &n; * &n; * PCI BIOS Specification Revision&n; * PCI Local Bus Specification&n; * PCI System Design Guide&n; *&n; * PCI Special Interest Group&n; * M/S HF3-15A&n; * 5200 N.E. Elam Young Parkway&n; * Hillsboro, Oregon 97124-6497&n; * +1 (503) 696-2000 &n; * +1 (800) 433-5177&n; */
-multiline_comment|/*&n; * Design issues : &n; * The cumulative latency needed to propagate a read/write request &n; * through the file system, buffer cache, driver stacks, SCSI host, and &n; * SCSI device is ultimately the limiting factor in throughput once we &n; * have a sufficiently fast host adapter.&n; *  &n; * So, to maximize performance we want to keep the ratio of latency to data &n; * transfer time to a minimum by&n; * 1.  Minimizing the total number of commands sent (typical command latency&n; *&t;including drive and bus mastering host overhead is as high as 4.5ms)&n; *&t;to transfer a given amount of data.  &n; *&n; *      This is accomplished by placing no arbitrary limit on the number&n; *&t;of scatter/gather buffers supported, since we can transfer 1K&n; *&t;per scatter/gather buffer without Eric&squot;s cluster patches, &n; *&t;4K with.  &n; *&n; * 2.  Minimizing the number of fatal interrupts serviced, since&n; * &t;fatal interrupts halt the SCSI I/O processor.  Basically,&n; *&t;this means offloading the practical maximum amount of processing &n; *&t;to the SCSI chip.&n; * &n; *&t;On the NCR53c810/820/720,  this is accomplished by using &n; *&t;&t;interrupt-on-the-fly signals when commands complete, &n; *&t;&t;and only handling fatal errors and SDTR / WDTR &t;messages &n; *&t;&t;in the host code.&n; *&n; *&t;On the NCR53c710, interrupts are generated as on the NCR53c8x0,&n; *&t;&t;only the lack of a interrupt-on-the-fly facility complicates&n; *&t;&t;things.   Also, SCSI ID registers and commands are &n; *&t;&t;bit fielded rather than binary encoded.&n; *&t;&t;&n; * &t;On the NCR53c700 and NCR53c700-66, operations that are done via &n; *&t;&t;indirect, table mode on the more advanced chips must be&n; *&t;        replaced by calls through a jump table which &n; *&t;&t;acts as a surrogate for the DSA.  Unfortunately, this &n; * &t;&t;will mean that we must service an interrupt for each &n; *&t;&t;disconnect/reconnect.&n; * &n; * 3.  Eliminating latency by pipelining operations at the different levels.&n; * &t;&n; *&t;This driver allows a configurable number of commands to be enqueued&n; *&t;for each target/lun combination (experimentally, I have discovered&n; *&t;that two seems to work best) and will ultimately allow for &n; *&t;SCSI-II tagged queuing.&n; * &t;&n; *&n; * Architecture : &n; * This driver is built around a Linux queue of commands waiting to &n; * be executed, and a shared Linux/NCR array of commands to start.  Commands&n; * are transfered to the array  by the run_process_issue_queue() function &n; * which is called whenever a command completes.&n; *&n; * As commands are completed, the interrupt routine is triggered,&n; * looks for commands in the linked list of completed commands with&n; * valid status, removes these commands from a list of running commands, &n; * calls the done routine, and flags their target/luns as not busy.&n; *&n; * Due to limitations in the intelligence of the NCR chips, certain&n; * concessions are made.  In many cases, it is easier to dynamically &n; * generate/fix-up code rather than calculate on the NCR at run time.  &n; * So, code is generated or fixed up for&n; *&n; * - Handling data transfers, using a variable number of MOVE instructions&n; *&t;interspersed with CALL MSG_IN, WHEN MSGIN instructions.&n; *&n; * &t;The DATAIN and DATAOUT routines&t;are separate, so that an incorrect&n; *&t;direction can be trapped, and space isn&squot;t wasted. &n; *&n; *&t;It may turn out that we&squot;re better off using some sort &n; *&t;of table indirect instruction in a loop with a variable&n; *&t;sized table on the NCR53c710 and newer chips.&n; *&n; * - Checking for reselection (NCR53c710 and better)&n; *&n; * - Handling the details of SCSI context switches (NCR53c710 and better),&n; *&t;such as reprogramming appropriate synchronous parameters, &n; *&t;removing the dsa structure from the NCR&squot;s queue of outstanding&n; *&t;commands, etc.&n; *&n; */
+multiline_comment|/*&n; * Design issues : &n; * The cumulative latency needed to propagate a read/write request &n; * through the file system, buffer cache, driver stacks, SCSI host, and &n; * SCSI device is ultimately the limiting factor in throughput once we &n; * have a sufficiently fast host adapter.&n; *  &n; * So, to maximize performance we want to keep the ratio of latency to data &n; * transfer time to a minimum by&n; * 1.  Minimizing the total number of commands sent (typical command latency&n; *&t;including drive and bus mastering host overhead is as high as 4.5ms)&n; *&t;to transfer a given amount of data.  &n; *&n; *      This is accomplished by placing no arbitrary limit on the number&n; *&t;of scatter/gather buffers supported, since we can transfer 1K&n; *&t;per scatter/gather buffer without Eric&squot;s cluster patches, &n; *&t;4K with.  &n; *&n; * 2.  Minimizing the number of fatal interrupts serviced, since&n; * &t;fatal interrupts halt the SCSI I/O processor.  Basically,&n; *&t;this means offloading the practical maximum amount of processing &n; *&t;to the SCSI chip.&n; * &n; *&t;On the NCR53c810/820/720,  this is accomplished by using &n; *&t;&t;interrupt-on-the-fly signals when commands complete, &n; *&t;&t;and only handling fatal errors and SDTR / WDTR &t;messages &n; *&t;&t;in the host code.&n; *&n; *&t;On the NCR53c710, interrupts are generated as on the NCR53c8x0,&n; *&t;&t;only the lack of a interrupt-on-the-fly facility complicates&n; *&t;&t;things.   Also, SCSI ID registers and commands are &n; *&t;&t;bit fielded rather than binary encoded.&n; *&t;&t;&n; * &t;On the NCR53c700 and NCR53c700-66, operations that are done via &n; *&t;&t;indirect, table mode on the more advanced chips must be&n; *&t;        replaced by calls through a jump table which &n; *&t;&t;acts as a surrogate for the DSA.  Unfortunately, this &n; * &t;&t;will mean that we must service an interrupt for each &n; *&t;&t;disconnect/reconnect.&n; * &n; * 3.  Eliminating latency by pipelining operations at the different levels.&n; * &t;&n; *&t;This driver allows a configurable number of commands to be enqueued&n; *&t;for each target/lun combination (experimentally, I have discovered&n; *&t;that two seems to work best) and will ultimately allow for &n; *&t;SCSI-II tagged queuing.&n; * &t;&n; *&n; * Architecture : &n; * This driver is built around a Linux queue of commands waiting to &n; * be executed, and a shared Linux/NCR array of commands to start.  Commands&n; * are transferred to the array  by the run_process_issue_queue() function &n; * which is called whenever a command completes.&n; *&n; * As commands are completed, the interrupt routine is triggered,&n; * looks for commands in the linked list of completed commands with&n; * valid status, removes these commands from a list of running commands, &n; * calls the done routine, and flags their target/luns as not busy.&n; *&n; * Due to limitations in the intelligence of the NCR chips, certain&n; * concessions are made.  In many cases, it is easier to dynamically &n; * generate/fix-up code rather than calculate on the NCR at run time.  &n; * So, code is generated or fixed up for&n; *&n; * - Handling data transfers, using a variable number of MOVE instructions&n; *&t;interspersed with CALL MSG_IN, WHEN MSGIN instructions.&n; *&n; * &t;The DATAIN and DATAOUT routines&t;are separate, so that an incorrect&n; *&t;direction can be trapped, and space isn&squot;t wasted. &n; *&n; *&t;It may turn out that we&squot;re better off using some sort &n; *&t;of table indirect instruction in a loop with a variable&n; *&t;sized table on the NCR53c710 and newer chips.&n; *&n; * - Checking for reselection (NCR53c710 and better)&n; *&n; * - Handling the details of SCSI context switches (NCR53c710 and better),&n; *&t;such as reprogramming appropriate synchronous parameters, &n; *&t;removing the dsa structure from the NCR&squot;s queue of outstanding&n; *&t;commands, etc.&n; *&n; */
 macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif
@@ -2615,14 +2615,8 @@ comma
 id|host-&gt;irq
 )paren
 suffix:semicolon
-id|scsi_unregister
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|err_unregister
 suffix:semicolon
 )brace
 r_if
@@ -2651,14 +2645,8 @@ id|OPTION_DEBUG_TESTS_ONLY
 )paren
 (brace
 multiline_comment|/* XXX Should disable interrupts, etc. here */
-id|scsi_unregister
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
 r_else
@@ -2673,6 +2661,10 @@ id|host-&gt;n_io_port
 op_assign
 l_int|128
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 (paren
 id|host-&gt;io_port
@@ -2681,6 +2673,9 @@ id|host-&gt;n_io_port
 comma
 l_string|&quot;ncr53c7xx&quot;
 )paren
+)paren
+r_goto
+id|err_free_irq
 suffix:semicolon
 )brace
 )brace
@@ -2710,6 +2705,28 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|err_free_irq
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|host-&gt;irq
+comma
+id|NCR53c7x0_intr
+)paren
+suffix:semicolon
+id|err_unregister
+suffix:colon
+id|scsi_unregister
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : static int ncr53c7xx_init(Scsi_Host_Template *tpnt, int board, &n; *&t;int chip, u32 base, int io_port, int irq, int dma, long long options,&n; *&t;int clock);&n; *&n; * Purpose : initializes a NCR53c7,8x0 based on base addresses,&n; *&t;IRQ, and DMA channel.&t;&n; *&t;&n; * Inputs : tpnt - Template for this SCSI adapter, board - board level&n; *&t;product, chip - 710&n; * &n; * Returns : 0 on success, -1 on failure.&n; *&n; */
@@ -3015,12 +3032,19 @@ id|size
 OG
 l_int|8192
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;53c7xx: hostdata &gt; 8K&quot;
+id|KERN_ERR
+l_string|&quot;53c7xx: hostdata &gt; 8K&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|instance
 op_assign
 id|scsi_register
@@ -10952,11 +10976,17 @@ id|size
 OG
 l_int|4096
 )paren
-id|panic
+(brace
+id|printk
 (paren
-l_string|&quot;53c7xx: allocate_cmd size &gt; 4K&quot;
+id|KERN_ERR
+l_string|&quot;53c7xx: allocate_cmd size &gt; 4K&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 id|real
 op_assign
 id|get_free_page
@@ -11542,7 +11572,7 @@ id|data_transfer_instructions
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;     * The saved data pointer is set up so that a RESTORE POINTERS message &n;     * will start the data transfer over at the begining.&n;     */
+multiline_comment|/*&n;     * The saved data pointer is set up so that a RESTORE POINTERS message &n;     * will start the data transfer over at the beginning.&n;     */
 id|tmp-&gt;saved_data_pointer
 op_assign
 id|virt_to_bus
@@ -17563,7 +17593,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * We can&squot;t guarantee we&squot;ll be able to execute the WAIT DISCONNECT&n;     * instruction within the 3.4us of bus free and arbitration delay&n;     * that a target can RESELECT in and assert REQ after we&squot;ve dropped&n;     * ACK.  If this happens, we&squot;ll get an illegal instruction interrupt.&n;     * Doing away with the WAIT DISCONNECT instructions broke everything,&n;     * so instead I&squot;ll settle for moving one WAIT DISCONNECT a few &n;     * instructions closer to the CLEAR ACK before it to minimize the&n;     * chances of this happening, and handle it if it occurs anyway.&n;     *&n;     * Simply continue with what we were doing, and control should&n;     * be transfered to the schedule routine which will ultimately&n;     * pass control onto the reselection or selection (not yet)&n;     * code.&n;     */
+multiline_comment|/*&n;     * We can&squot;t guarantee we&squot;ll be able to execute the WAIT DISCONNECT&n;     * instruction within the 3.4us of bus free and arbitration delay&n;     * that a target can RESELECT in and assert REQ after we&squot;ve dropped&n;     * ACK.  If this happens, we&squot;ll get an illegal instruction interrupt.&n;     * Doing away with the WAIT DISCONNECT instructions broke everything,&n;     * so instead I&squot;ll settle for moving one WAIT DISCONNECT a few &n;     * instructions closer to the CLEAR ACK before it to minimize the&n;     * chances of this happening, and handle it if it occurs anyway.&n;     *&n;     * Simply continue with what we were doing, and control should&n;     * be transferred to the schedule routine which will ultimately&n;     * pass control onto the reselection or selection (not yet)&n;     * code.&n;     */
 )brace
 r_else
 r_if

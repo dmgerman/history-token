@@ -2,6 +2,7 @@ multiline_comment|/*&n; ********************************************************
 macro_line|#ifndef _TIMER_H
 DECL|macro|_TIMER_H
 mdefine_line|#define _TIMER_H
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;hwaccess.h&quot;
 DECL|struct|emu_timer

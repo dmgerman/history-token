@@ -262,7 +262,7 @@ mdefine_line|#define QIOCSETCPOS     _IOWR(&squot;Q&squot;, 10, struct shmiqsetc
 multiline_comment|/* get time since last event */
 DECL|macro|QIOCGETITIME
 mdefine_line|#define QIOCGETITIME    _IOR(&squot;Q&squot;, 11, time_t)
-multiline_comment|/* set curent screen */
+multiline_comment|/* set current screen */
 DECL|macro|QIOCSETSCRN
 mdefine_line|#define QIOCSETSCRN     _IOW(&squot;Q&squot;,6,int)
 multiline_comment|/* -------------------- iDev stuff -------------------- */

@@ -59,13 +59,6 @@ DECL|macro|_PAGE_FOE
 mdefine_line|#define _PAGE_FOE&t;0x0008&t;/* used for page protection (fault on exec) */
 DECL|macro|_PAGE_ASM
 mdefine_line|#define _PAGE_ASM&t;0x0010
-macro_line|#if defined(CONFIG_ALPHA_EV6) &amp;&amp; !defined(CONFIG_SMP)
-DECL|macro|_PAGE_MBE
-mdefine_line|#define _PAGE_MBE&t;0x0080&t;/* MB disable bit for EV6.  */
-macro_line|#else
-DECL|macro|_PAGE_MBE
-mdefine_line|#define _PAGE_MBE&t;0x0000
-macro_line|#endif
 DECL|macro|_PAGE_KRE
 mdefine_line|#define _PAGE_KRE&t;0x0100&t;/* xxx - see below on the &quot;accessed&quot; bit */
 DECL|macro|_PAGE_URE
@@ -89,8 +82,8 @@ mdefine_line|#define _PFN_MASK&t;0xFFFFFFFF00000000
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_VALID | __DIRTY_BITS | __ACCESS_BITS)
 DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;(_PFN_MASK | __DIRTY_BITS | __ACCESS_BITS | _PAGE_MBE)
-multiline_comment|/*&n; * All the normal masks have the &quot;page accessed&quot; bits on, as any time they&n; * are used, the page is accessed.  They are cleared only by the page-out&n; * routines. &n; */
+mdefine_line|#define _PAGE_CHG_MASK&t;(_PFN_MASK | __DIRTY_BITS | __ACCESS_BITS)
+multiline_comment|/*&n; * All the normal masks have the &quot;page accessed&quot; bits on, as any time they are used,&n; * the page is accessed. They are cleared only by the page-out routines&n; */
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_VALID | __ACCESS_BITS | _PAGE_FOR | _PAGE_FOW | _PAGE_FOE)
 DECL|macro|PAGE_SHARED
@@ -100,9 +93,9 @@ mdefine_line|#define PAGE_COPY&t;__pgprot(_PAGE_VALID | __ACCESS_BITS | _PAGE_FO
 DECL|macro|PAGE_READONLY
 mdefine_line|#define PAGE_READONLY&t;__pgprot(_PAGE_VALID | __ACCESS_BITS | _PAGE_FOW)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_VALID | _PAGE_ASM | _PAGE_KRE | _PAGE_KWE | _PAGE_MBE)
+mdefine_line|#define PAGE_KERNEL&t;__pgprot(_PAGE_VALID | _PAGE_ASM | _PAGE_KRE | _PAGE_KWE)
 DECL|macro|_PAGE_NORMAL
-mdefine_line|#define _PAGE_NORMAL(x) __pgprot(_PAGE_VALID | __ACCESS_BITS | _PAGE_MBE | (x))
+mdefine_line|#define _PAGE_NORMAL(x) __pgprot(_PAGE_VALID | __ACCESS_BITS | (x))
 DECL|macro|_PAGE_P
 mdefine_line|#define _PAGE_P(x) _PAGE_NORMAL((x) | (((x) &amp; _PAGE_FOW)?0:_PAGE_FOW))
 DECL|macro|_PAGE_S
@@ -238,15 +231,10 @@ id|PAGE_SHIFT
 )paren
 )paren
 op_or
-(paren
 id|pgprot_val
 c_func
 (paren
 id|pgprot
-)paren
-op_amp
-op_complement
-id|_PAGE_MBE
 )paren
 suffix:semicolon
 r_return

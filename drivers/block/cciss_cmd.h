@@ -670,7 +670,7 @@ DECL|member|busaddr
 id|__u32
 id|busaddr
 suffix:semicolon
-multiline_comment|/* physical addres of this record */
+multiline_comment|/* physical address of this record */
 DECL|member|err_info
 id|ErrorInfo_struct
 op_star

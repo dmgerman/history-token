@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * identify.c: identify machine by looking up system identifier&n; *&n; * Copyright (C) 1998 Thomas Bogendoerfer&n; * &n; * This code is based on arch/mips/sgi/kernel/system.c, which is&n; * &n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: identify.c,v 1.2 1999/02/25 21:04:13 tsbogend Exp $&n; */
+multiline_comment|/*&n; * identify.c: identify machine by looking up system identifier&n; *&n; * Copyright (C) 1998 Thomas Bogendoerfer&n; * &n; * This code is based on arch/mips/sgi/kernel/system.c, which is&n; * &n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -135,7 +135,6 @@ dot
 id|name
 )paren
 )paren
-(brace
 r_return
 op_amp
 id|mach_table
@@ -143,7 +142,6 @@ id|mach_table
 id|i
 )braket
 suffix:semicolon
-)brace
 )brace
 id|prom_printf
 c_func
@@ -193,7 +191,7 @@ id|smatch
 op_star
 id|mach
 suffix:semicolon
-multiline_comment|/* The root component tells us what machine architecture we&n;     * have here.&n;     */
+multiline_comment|/*&n;&t; * The root component tells us what machine architecture we&n;&t; * have here.&n;&t; */
 id|p
 op_assign
 id|prom_getchild

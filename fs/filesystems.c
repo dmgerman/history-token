@@ -1,57 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/filesystems.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  table of configured filesystems&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;linux/nfs_fs.h&gt;
-macro_line|#include &lt;linux/auto_fs.h&gt;
-macro_line|#include &lt;linux/devpts_fs.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/nfsd/interface.h&gt;
-macro_line|#ifdef CONFIG_DEVPTS_FS
-r_extern
-r_int
-id|init_devpts_fs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
-DECL|function|filesystem_setup
-r_void
-id|__init
-id|filesystem_setup
-c_func
-(paren
-r_void
-)paren
-(brace
-id|init_devfs_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*  Header file may make this empty  */
-macro_line|#ifdef CONFIG_NFS_FS
-id|init_nfs_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_DEVPTS_FS
-id|init_devpts_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 macro_line|#if defined(CONFIG_NFSD_MODULE)
 DECL|variable|nfsd_linkage
 r_struct

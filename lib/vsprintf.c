@@ -1841,7 +1841,7 @@ op_minus
 id|buf
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @args: Arguments for the format string&n; */
+multiline_comment|/**&n; * sprintf - Format a string and place it in a buffer&n; * @buf: The buffer to place the result into&n; * @fmt: The format string to use&n; * @...: Arguments for the format string&n; */
 DECL|function|sprintf
 r_int
 id|sprintf

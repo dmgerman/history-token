@@ -23781,7 +23781,7 @@ id|POSITIVE_ACK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Reset the ring speed to the oposite of what it was. This auto-pilot&n; * mode requires a complete reset and re-init of the adapter.&n; */
+multiline_comment|/* Reset the ring speed to the opposite of what it was. This auto-pilot&n; * mode requires a complete reset and re-init of the adapter.&n; */
 DECL|function|smctr_set_ring_speed
 r_static
 r_int

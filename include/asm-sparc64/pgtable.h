@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.139 2001/03/27 02:36:37 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.140 2001/04/12 22:41:15 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -422,11 +422,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|SWP_TYPE
-mdefine_line|#define SWP_TYPE(entry)&t;&t;(((entry).val &gt;&gt; PAGE_SHIFT) &amp; 0xff)
+mdefine_line|#define SWP_TYPE(entry)&t;&t;(((entry).val &gt;&gt; PAGE_SHIFT) &amp; 0xffUL)
 DECL|macro|SWP_OFFSET
-mdefine_line|#define SWP_OFFSET(entry)&t;((entry).val &gt;&gt; (PAGE_SHIFT + 8))
+mdefine_line|#define SWP_OFFSET(entry)&t;((entry).val &gt;&gt; (PAGE_SHIFT + 8UL))
 DECL|macro|SWP_ENTRY
-mdefine_line|#define SWP_ENTRY(type, offset)&t;&bslash;&n;&t;( (swp_entry_t) &bslash;&n;&t;  { &bslash;&n;&t;&t;((type &lt;&lt; PAGE_SHIFT) | (offset &lt;&lt; (PAGE_SHIFT + 8))) &bslash;&n;&t;  } )
+mdefine_line|#define SWP_ENTRY(type, offset)&t;&bslash;&n;&t;( (swp_entry_t) &bslash;&n;&t;  { &bslash;&n;&t;&t;(((long)(type) &lt;&lt; PAGE_SHIFT) | &bslash;&n;                 ((long)(offset) &lt;&lt; (PAGE_SHIFT + 8UL))) &bslash;&n;&t;  } )
 DECL|macro|pte_to_swp_entry
 mdefine_line|#define pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|swp_entry_to_pte

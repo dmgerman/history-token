@@ -45,7 +45,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_DDB5074
+macro_line|#if (defined(CONFIG_DDB5074) || defined(CONFIG_DDB5476))
 DECL|macro|PCIBIOS_MIN_IO
 macro_line|#undef PCIBIOS_MIN_IO
 DECL|macro|PCIBIOS_MIN_MEM

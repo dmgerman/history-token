@@ -1,11 +1,11 @@
-multiline_comment|/*&n; *  arch/mips/ddb5074/pci.c -- NEC DDB Vrc-5074 PCI access routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Albert Dorofeev &lt;albert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; *  $Id: pci.c,v 1.4 2000/02/18 00:02:17 ralf Exp $&n; */
+multiline_comment|/*&n; *  arch/mips/ddb5074/pci.c -- NEC DDB Vrc-5074 PCI access routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Albert Dorofeev &lt;albert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;asm-mips/nile4.h&gt;
+macro_line|#include &lt;asm/nile4.h&gt;
 DECL|function|nile4_pre_pci_access0
 r_static
 id|u32
@@ -90,7 +90,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Set window 1 back to address 8000000 - 64 bit - 128 MB (PCI IO space) */
+multiline_comment|/*&n;&t; * Set window 1 back to address 8000000 - 64 bit - 128 MB&n;&t; * (PCI IO space)&n;&t; */
 id|nile4_set_pdar
 c_func
 (paren
@@ -149,7 +149,7 @@ suffix:semicolon
 id|u32
 id|base
 suffix:semicolon
-multiline_comment|/*&n;     *  For starters let&squot;s do configuration cycle 0 only (one bus only)&n;     */
+multiline_comment|/*&n;&t; *  For starters let&squot;s do configuration cycle 0 only (one bus only)&n;&t; */
 r_if
 c_cond
 (paren
@@ -182,7 +182,7 @@ op_eq
 l_int|5
 )paren
 (brace
-multiline_comment|/*&n;&t; *  This is Nile 4 and it will crash if we access it like other&n;&t; *   devices&n;&t; */
+multiline_comment|/*&n;&t;&t; * This is Nile 4 and it will crash if we access it like other&n;&t;&t; * devices&n;&t;&t; */
 op_star
 id|val
 op_assign
@@ -268,7 +268,7 @@ suffix:semicolon
 id|u32
 id|base
 suffix:semicolon
-multiline_comment|/*&n;     *  For starters let&squot;s do configuration cycle 0 only (one bus only)&n;     */
+multiline_comment|/*&n;&t; * For starters let&squot;s do configuration cycle 0 only (one bus only)&n;&t; */
 r_if
 c_cond
 (paren
@@ -301,7 +301,7 @@ op_eq
 l_int|5
 )paren
 (brace
-multiline_comment|/*&n;&t; *  This is Nile 4 and it will crash if we access it like other&n;&t; *   devices&n;&t; */
+multiline_comment|/*&n;&t;&t; * This is Nile 4 and it will crash if we access it like other&n;&t;&t; * devices&n;&t;&t; */
 id|nile4_out32
 c_func
 (paren
@@ -875,7 +875,7 @@ op_eq
 id|PCI_DEVICE_ID_NEC_NILE4
 )paren
 (brace
-multiline_comment|/*&n;&t;     *  The first 64-bit PCI base register should point to the Nile4&n;&t;     *  control registers. Unfortunately this isn&squot;t the case, so we fix&n;&t;     *  it ourselves. This allows the serial driver to find the UART.&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * The first 64-bit PCI base register should point to&n;&t;&t;&t; * the Nile4 control registers. Unfortunately this&n;&t;&t;&t; * isn&squot;t the case, so we fix it ourselves. This allows&n;&t;&t;&t; * the serial driver to find the UART.&n;&t;&t;&t; */
 id|dev-&gt;resource
 (braket
 l_int|0
@@ -896,7 +896,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;     *  The second 64-bit PCI base register points to the first memory&n;&t;     *  bank. Unfortunately the address is wrong, so we fix it (again).&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * The second 64-bit PCI base register points to the&n;&t;&t;&t; * first memory bank. Unfortunately the address is&n;&t;&t;&t; * wrong, so we fix it (again).&n;&t;&t;&t; */
 id|dev-&gt;resource
 (braket
 l_int|2
@@ -931,7 +931,7 @@ op_eq
 id|PCI_DEVICE_ID_AL_M7101
 )paren
 (brace
-multiline_comment|/*&n;&t;     *  It&squot;s nice to have the LEDs on the GPIO pins available for&n;&t;     *  debugging&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * It&squot;s nice to have the LEDs on the GPIO pins&n;&t;&t;&t; * available for debugging&n;&t;&t;&t; */
 r_extern
 r_struct
 id|pci_dev
@@ -1110,7 +1110,7 @@ suffix:semicolon
 r_case
 l_int|5
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Fixup so the serial driver can use the UART&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Fixup so the serial driver can use the UART&n;&t;&t;&t; */
 id|dev-&gt;irq
 op_assign
 id|nile4_to_irq
@@ -1279,6 +1279,7 @@ DECL|function|pcibios_setup
 r_char
 op_star
 id|pcibios_setup
+c_func
 (paren
 r_char
 op_star
@@ -1459,7 +1460,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
+l_string|&quot;PCI: Device %s not available because &quot;
+l_string|&quot;of resource collisions&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 )paren
@@ -1625,7 +1627,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Somebody might have asked allocation of a non-standard resource */
+multiline_comment|/*&n;&t;&t; * Somebody might have asked allocation of a non-standard&n;&t;&t; * resource&n;&t;&t; */
 r_return
 suffix:semicolon
 )brace

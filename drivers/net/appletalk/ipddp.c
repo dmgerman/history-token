@@ -1,13 +1,4 @@
-multiline_comment|/*&n; *&t;ipddp.c: IP to Appletalk-IP Encapsulation driver for Linux&n; *&t;&t; Appletalk-IP to IP Decapsulation driver for Linux&n; *&n; *&t;Authors:&n; *      - DDP-IP Encap by: Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *&t;- DDP-IP Decap by: Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *&t;Derived from:&n; *&t;- Almost all code already existed in net/appletalk/ddp.c I just&n; *&t;  moved/reorginized it into a driver file. Original IP-over-DDP code&n; *&t;  was done by Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- dummy.c: A dummy net driver. By Nick Holloway.&n; *&t;- MacGate: A user space Daemon for Appletalk-IP Decap for&n; *&t;  Linux by Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU Public License, incorporated herein by reference.&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;ipddp.c:v0.01 8/28/97 Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&bslash;n&quot;
-suffix:semicolon
+multiline_comment|/*&n; *&t;ipddp.c: IP to Appletalk-IP Encapsulation driver for Linux&n; *&t;&t; Appletalk-IP to IP Decapsulation driver for Linux&n; *&n; *&t;Authors:&n; *      - DDP-IP Encap by: Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *&t;- DDP-IP Decap by: Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *&t;Derived from:&n; *&t;- Almost all code already existed in net/appletalk/ddp.c I just&n; *&t;  moved/reorginized it into a driver file. Original IP-over-DDP code&n; *&t;  was done by Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&n; *      - skeleton.c: A network driver outline for linux.&n; *        Written 1993-94 by Donald Becker.&n; *&t;- dummy.c: A dummy net driver. By Nick Holloway.&n; *&t;- MacGate: A user space Daemon for Appletalk-IP Decap for&n; *&t;  Linux by Jay Schulist &lt;jschlst@turbolinux.com&gt;&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; *      This software may be used and distributed according to the terms&n; *      of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -19,14 +10,23 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ipddp.h&quot;&t;&t;/* Our stuff */
+DECL|variable|version
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+op_assign
+id|KERN_INFO
+l_string|&quot;ipddp.c:v0.01 8/28/97 Bradford W. Johnson &lt;johns393@maroon.tc.umn.edu&gt;&bslash;n&quot;
+suffix:semicolon
 DECL|variable|ipddp_route_list
 r_static
 r_struct
 id|ipddp_route
 op_star
 id|ipddp_route_list
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_IPDDP_ENCAP
 DECL|variable|ipddp_mode
@@ -45,19 +45,6 @@ op_assign
 id|IPDDP_DECAP
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Use 0 for production, 1 for verification, 2 for debug, 3 for verbose debug */
-macro_line|#ifndef IPDDP_DEBUG
-DECL|macro|IPDDP_DEBUG
-mdefine_line|#define IPDDP_DEBUG 1
-macro_line|#endif
-DECL|variable|ipddp_debug
-r_static
-r_int
-r_int
-id|ipddp_debug
-op_assign
-id|IPDDP_DEBUG
-suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */
 r_static
 r_int
@@ -158,8 +145,6 @@ id|dev
 r_static
 r_int
 id|version_printed
-op_assign
-l_int|0
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -170,8 +155,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipddp_debug
-op_logical_and
 id|version_printed
 op_increment
 op_eq
@@ -180,8 +163,6 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;%s&quot;
-comma
 id|version
 )paren
 suffix:semicolon
@@ -666,11 +647,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-r_struct
-id|ipddp_route
-op_star
-id|test
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -678,12 +654,10 @@ id|rt
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|rt-&gt;ip
 op_assign
 id|new_rt-&gt;ip
@@ -696,6 +670,10 @@ id|rt-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|rt-&gt;dev
 op_assign
 id|atrtr_get_dev
@@ -704,11 +682,7 @@ c_func
 op_amp
 id|rt-&gt;at
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rt-&gt;dev
+)paren
 op_eq
 l_int|NULL
 )paren
@@ -720,33 +694,29 @@ id|rt
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|ENETUNREACH
-)paren
 suffix:semicolon
 )brace
-id|test
-op_assign
+r_if
+c_cond
+(paren
 id|ipddp_find_route
 c_func
 (paren
 id|rt
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test
-op_ne
-l_int|NULL
 )paren
 (brace
-r_return
+id|kfree
+c_func
 (paren
+id|rt
+)paren
+suffix:semicolon
+r_return
 op_minus
 id|EEXIST
-)paren
 suffix:semicolon
 )brace
 id|rt-&gt;next
@@ -1115,6 +1085,11 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|ipddp_route
+op_star
+id|p
+suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
@@ -1128,24 +1103,27 @@ c_func
 id|dev_ipddp.priv
 )paren
 suffix:semicolon
-id|memset
+r_while
+c_loop
+(paren
+id|ipddp_route_list
+)paren
+(brace
+id|p
+op_assign
+id|ipddp_route_list-&gt;next
+suffix:semicolon
+id|kfree
 c_func
 (paren
-op_amp
-id|dev_ipddp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|dev_ipddp
-)paren
+id|ipddp_route_list
 )paren
 suffix:semicolon
-id|dev_ipddp.init
+id|ipddp_route_list
 op_assign
-id|ipddp_init
+id|p
 suffix:semicolon
+)brace
 )brace
 DECL|variable|ipddp_init_module
 id|module_init

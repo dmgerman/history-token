@@ -7442,7 +7442,7 @@ id|ints
 l_int|3
 )braket
 suffix:semicolon
-id|dma16
+id|dma2
 op_assign
 id|ints
 (braket

@@ -11982,6 +11982,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*  End Function devfsd_close  */
 DECL|function|init_devfs_fs
+r_static
 r_int
 id|__init
 id|init_devfs_fs
@@ -12136,4 +12137,9 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*  End Function mount_devfs_fs  */
+id|module_init
+c_func
+(paren
+id|init_devfs_fs
+)paren
 eof

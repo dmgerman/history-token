@@ -28,10 +28,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
-macro_line|#ifndef CONFIG_AMIGA
-DECL|macro|dbprintf
-mdefine_line|#define dbprintf&t;printk
-macro_line|#endif
 DECL|variable|m68k_machtype
 r_int
 r_int

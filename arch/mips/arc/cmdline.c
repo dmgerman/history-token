@@ -1,15 +1,16 @@
-multiline_comment|/*&n; * cmdline.c: Kernel command line creation using ARCS argc/argv.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; *&n; * $Id: cmdline.c,v 1.1 1998/10/18 13:32:08 tsbogend Exp $&n; */
+multiline_comment|/*&n; * cmdline.c: Kernel command line creation using ARCS argc/argv.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-multiline_comment|/* #define DEBUG_CMDLINE */
+DECL|macro|DEBUG_CMDLINE
+macro_line|#undef DEBUG_CMDLINE
 DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|CL_SIZE
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
 DECL|function|prom_getcmdline

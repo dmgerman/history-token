@@ -1,11 +1,11 @@
-multiline_comment|/* $Id: bitops.h,v 1.31 2000/09/23 02:09:21 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: bitops.h,v 1.32 2001/04/14 01:12:16 davem Exp $&n; * bitops.h: Bit string operations on the V9.&n; *&n; * Copyright 1996, 1997 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#ifndef _SPARC64_BITOPS_H
 DECL|macro|_SPARC64_BITOPS_H
 mdefine_line|#define _SPARC64_BITOPS_H
 macro_line|#include &lt;asm/byteorder.h&gt;
 r_extern
 r_int
-id|__test_and_set_bit
+id|___test_and_set_bit
 c_func
 (paren
 r_int
@@ -20,7 +20,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_int
-id|__test_and_clear_bit
+id|___test_and_clear_bit
 c_func
 (paren
 r_int
@@ -35,7 +35,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_int
-id|__test_and_change_bit
+id|___test_and_change_bit
 c_func
 (paren
 r_int
@@ -49,17 +49,30 @@ id|addr
 )paren
 suffix:semicolon
 DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit(nr,addr)&t;(__test_and_set_bit(nr,addr)!=0)
+mdefine_line|#define test_and_set_bit(nr,addr)&t;(___test_and_set_bit(nr,addr)!=0)
 DECL|macro|test_and_clear_bit
-mdefine_line|#define test_and_clear_bit(nr,addr)&t;(__test_and_clear_bit(nr,addr)!=0)
+mdefine_line|#define test_and_clear_bit(nr,addr)&t;(___test_and_clear_bit(nr,addr)!=0)
 DECL|macro|test_and_change_bit
-mdefine_line|#define test_and_change_bit(nr,addr)&t;(__test_and_change_bit(nr,addr)!=0)
+mdefine_line|#define test_and_change_bit(nr,addr)&t;(___test_and_change_bit(nr,addr)!=0)
 DECL|macro|set_bit
-mdefine_line|#define set_bit(nr,addr)&t;&t;((void)__test_and_set_bit(nr,addr))
+mdefine_line|#define set_bit(nr,addr)&t;&t;((void)___test_and_set_bit(nr,addr))
 DECL|macro|clear_bit
-mdefine_line|#define clear_bit(nr,addr)&t;&t;((void)__test_and_clear_bit(nr,addr))
+mdefine_line|#define clear_bit(nr,addr)&t;&t;((void)___test_and_clear_bit(nr,addr))
 DECL|macro|change_bit
-mdefine_line|#define change_bit(nr,addr)&t;&t;((void)__test_and_change_bit(nr,addr))
+mdefine_line|#define change_bit(nr,addr)&t;&t;((void)___test_and_change_bit(nr,addr))
+multiline_comment|/* &quot;non-atomic&quot; versions, nothing special for now... */
+DECL|macro|__set_bit
+mdefine_line|#define __set_bit(X,Y)&t;&t;set_bit(X,Y)
+DECL|macro|__clear_bit
+mdefine_line|#define __clear_bit(X,Y)&t;clear_bit(X,Y)
+DECL|macro|__change_bit
+mdefine_line|#define __change_bit(X,Y)&t;change_bit(X,Y)
+DECL|macro|__test_and_set_bit
+mdefine_line|#define __test_and_set_bit(X,Y)&t;&t;test_and_set_bit(X,Y)
+DECL|macro|__test_and_clear_bit
+mdefine_line|#define __test_and_clear_bit(X,Y)&t;test_and_clear_bit(X,Y)
+DECL|macro|__test_and_change_bit
+mdefine_line|#define __test_and_change_bit(X,Y)&t;test_and_change_bit(X,Y)
 DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;do { } while(0)
 DECL|macro|smp_mb__after_clear_bit
@@ -668,7 +681,7 @@ DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;        find_next_zero_bit((addr), (size), 0)
 r_extern
 r_int
-id|__test_and_set_le_bit
+id|___test_and_set_le_bit
 c_func
 (paren
 r_int
@@ -682,7 +695,7 @@ id|addr
 suffix:semicolon
 r_extern
 r_int
-id|__test_and_clear_le_bit
+id|___test_and_clear_le_bit
 c_func
 (paren
 r_int
@@ -695,13 +708,13 @@ id|addr
 )paren
 suffix:semicolon
 DECL|macro|test_and_set_le_bit
-mdefine_line|#define test_and_set_le_bit(nr,addr)&t;(__test_and_set_le_bit(nr,addr)!=0)
+mdefine_line|#define test_and_set_le_bit(nr,addr)&t;(___test_and_set_le_bit(nr,addr)!=0)
 DECL|macro|test_and_clear_le_bit
-mdefine_line|#define test_and_clear_le_bit(nr,addr)&t;(__test_and_clear_le_bit(nr,addr)!=0)
+mdefine_line|#define test_and_clear_le_bit(nr,addr)&t;(___test_and_clear_le_bit(nr,addr)!=0)
 DECL|macro|set_le_bit
-mdefine_line|#define set_le_bit(nr,addr)&t;&t;((void)__test_and_set_le_bit(nr,addr))
+mdefine_line|#define set_le_bit(nr,addr)&t;&t;((void)___test_and_set_le_bit(nr,addr))
 DECL|macro|clear_le_bit
-mdefine_line|#define clear_le_bit(nr,addr)&t;&t;((void)__test_and_clear_le_bit(nr,addr))
+mdefine_line|#define clear_le_bit(nr,addr)&t;&t;((void)___test_and_clear_le_bit(nr,addr))
 DECL|function|test_le_bit
 r_extern
 id|__inline__

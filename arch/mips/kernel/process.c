@@ -1,4 +1,5 @@
-multiline_comment|/* $Id: process.c,v 1.18 2000/01/29 01:41:59 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle and others.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -12,6 +13,7 @@ macro_line|#include &lt;linux/sys.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
@@ -117,8 +119,6 @@ id|set_cp0_status
 c_func
 (paren
 id|ST0_CU1
-comma
-id|ST0_CU1
 )paren
 suffix:semicolon
 id|__asm__
@@ -154,8 +154,6 @@ id|current
 id|set_cp0_status
 c_func
 (paren
-id|ST0_CU1
-comma
 id|ST0_CU1
 )paren
 suffix:semicolon
@@ -239,12 +237,19 @@ id|last_task_used_math
 op_eq
 id|current
 )paren
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+macro_line|#endif
 (brace
 id|set_cp0_status
 c_func
 (paren
-id|ST0_CU1
-comma
 id|ST0_CU1
 )paren
 suffix:semicolon

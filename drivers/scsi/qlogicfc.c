@@ -188,9 +188,9 @@ mdefine_line|#define FLASH_BIOS_DATA&t;0x02
 DECL|macro|ISP_CTRL_STATUS
 mdefine_line|#define ISP_CTRL_STATUS&t;0x06&t;/* configuration register #1 */
 DECL|macro|PCI_INTER_CTL
-mdefine_line|#define PCI_INTER_CTL&t;0x08&t;/* pci interupt control */
+mdefine_line|#define PCI_INTER_CTL&t;0x08&t;/* pci interrupt control */
 DECL|macro|PCI_INTER_STS
-mdefine_line|#define PCI_INTER_STS&t;0x0a&t;/* pci interupt status */
+mdefine_line|#define PCI_INTER_STS&t;0x0a&t;/* pci interrupt status */
 DECL|macro|PCI_SEMAPHORE
 mdefine_line|#define PCI_SEMAPHORE&t;0x0c&t;/* pci semaphore */
 DECL|macro|PCI_NVRAM
@@ -242,8 +242,8 @@ DECL|macro|RESPONSE_TRANSFER_ERROR
 mdefine_line|#define RESPONSE_TRANSFER_ERROR&t;&t;0x8004
 DECL|macro|REQUEST_QUEUE_WAKEUP
 mdefine_line|#define REQUEST_QUEUE_WAKEUP&t;&t;0x8005
-DECL|macro|LIP_OCCURED
-mdefine_line|#define LIP_OCCURED                     0x8010
+DECL|macro|LIP_OCCURRED
+mdefine_line|#define LIP_OCCURRED                     0x8010
 DECL|macro|LOOP_UP
 mdefine_line|#define LOOP_UP                         0x8011
 DECL|macro|LOOP_DOWN
@@ -603,7 +603,7 @@ DECL|macro|STF_ABORTED
 mdefine_line|#define STF_ABORTED&t;&t;&t;0x0020
 DECL|macro|STF_TIMEOUT
 mdefine_line|#define STF_TIMEOUT&t;&t;&t;0x0040
-multiline_comment|/* interupt control commands */
+multiline_comment|/* interrupt control commands */
 DECL|macro|ISP_EN_INT
 mdefine_line|#define ISP_EN_INT&t;&t;&t;0x8000
 DECL|macro|ISP_EN_RISC
@@ -1828,6 +1828,24 @@ id|isp2x00_hostdata
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|host
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;qlogicfc%d : could not register host.&bslash;n&quot;
+comma
+id|hostdata-&gt;host_id
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|host-&gt;max_id
 op_assign
 id|QLOGICFC_MAX_ID
@@ -1897,6 +1915,20 @@ c_func
 l_string|&quot;qlogicfc%d : could not allocate memory for request and response queue.&bslash;n&quot;
 comma
 id|hostdata-&gt;host_id
+)paren
+suffix:semicolon
+id|pci64_free_consistent
+c_func
+(paren
+id|pdev
+comma
+id|RES_SIZE
+op_plus
+id|REQ_SIZE
+comma
+id|hostdata-&gt;res
+comma
+id|busaddr
 )paren
 suffix:semicolon
 id|scsi_unregister
@@ -2212,12 +2244,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|host-&gt;io_port
 comma
 l_int|0xff
+comma
+l_string|&quot;qlogicfc&quot;
 )paren
 )paren
 (brace
@@ -2266,16 +2301,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|host-&gt;io_port
-comma
-l_int|0xff
-comma
-l_string|&quot;qlogicfc&quot;
-)paren
-suffix:semicolon
 id|outw
 c_func
 (paren
@@ -6624,7 +6649,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|LIP_OCCURED
+id|LIP_OCCURRED
 suffix:colon
 r_case
 id|LIP_RECEIVED

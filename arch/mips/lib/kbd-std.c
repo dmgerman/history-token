@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: kbd-std.c,v 1.2 1999/06/11 14:29:45 ralf Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Routines for standard PC style keyboards accessible via I/O ports.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pc_keyb.h&gt;
@@ -17,6 +18,24 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIPS_ITE8172
+id|printk
+c_func
+(paren
+l_string|&quot;std_kbd_request_region&bslash;n&quot;
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+l_int|0x14000060
+comma
+l_int|16
+comma
+l_string|&quot;keyboard&quot;
+)paren
+suffix:semicolon
+macro_line|#else
 id|request_region
 c_func
 (paren
@@ -27,6 +46,7 @@ comma
 l_string|&quot;keyboard&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|std_kbd_request_irq
 r_static
@@ -51,6 +71,12 @@ op_star
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;std_kbd_request_irq&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|request_irq
 c_func

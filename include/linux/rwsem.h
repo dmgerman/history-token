@@ -11,13 +11,13 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#if RWSEM_DEBUG
-DECL|macro|rwsemdebug
-mdefine_line|#define rwsemdebug(FMT, ARGS...) do { if (sem-&gt;debug) printk(FMT,##ARGS); } while(0)
+macro_line|#ifdef CONFIG_RWSEM_GENERIC_SPINLOCK
+macro_line|#include &lt;linux/rwsem-spinlock.h&gt; /* use a generic implementation */
 macro_line|#else
-DECL|macro|rwsemdebug
-mdefine_line|#define rwsemdebug(FMT, ARGS...)
+macro_line|#include &lt;asm/rwsem.h&gt; /* use an arch-specific implementation */
 macro_line|#endif
+multiline_comment|/* defined contention handler functions for the generic case&n; * - these are also used for the exchange-and-add based algorithm&n; */
+macro_line|#if defined(CONFIG_RWSEM_GENERIC) || defined(CONFIG_RWSEM_XCHGADD_ALGORITHM)
 multiline_comment|/* we use FASTCALL convention for the helpers */
 r_extern
 r_struct
@@ -70,9 +70,16 @@ id|sem
 )paren
 )paren
 suffix:semicolon
-macro_line|#include &lt;asm/rwsem.h&gt; /* find the arch specific bits */
-macro_line|#ifndef __HAVE_ARCH_SPECIFIC_RWSEM_IMPLEMENTATION
-macro_line|#include &lt;linux/rwsem-spinlock.h&gt;
+macro_line|#endif
+macro_line|#ifndef rwsemtrace
+macro_line|#if RWSEM_DEBUG
+macro_line|#include &lt;asm/current.h&gt;
+DECL|macro|rwsemtrace
+mdefine_line|#define rwsemtrace(SEM,FMT) do { if ((SEM)-&gt;debug) printk(&quot;[%d] &quot;FMT&quot;(count=%08lx)&bslash;n&quot;,current-&gt;pid,(SEM)-&gt;count); } while(0)
+macro_line|#else
+DECL|macro|rwsemtrace
+mdefine_line|#define rwsemtrace(SEM,FMT)
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * lock for reading&n; */
 DECL|function|down_read
@@ -88,12 +95,12 @@ op_star
 id|sem
 )paren
 (brace
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Entering down_read(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Entering down_read&quot;
 )paren
 suffix:semicolon
 macro_line|#if RWSEM_DEBUG_MAGIC
@@ -144,12 +151,12 @@ id|sem-&gt;readers
 )paren
 suffix:semicolon
 macro_line|#endif
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Leaving down_read(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Leaving down_read&quot;
 )paren
 suffix:semicolon
 )brace
@@ -167,12 +174,12 @@ op_star
 id|sem
 )paren
 (brace
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Entering down_write(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Entering down_write&quot;
 )paren
 suffix:semicolon
 macro_line|#if RWSEM_DEBUG_MAGIC
@@ -238,12 +245,12 @@ id|sem-&gt;writers
 )paren
 suffix:semicolon
 macro_line|#endif
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Leaving down_write(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Leaving down_write&quot;
 )paren
 suffix:semicolon
 )brace
@@ -261,12 +268,12 @@ op_star
 id|sem
 )paren
 (brace
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Entering up_read(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Entering up_read&quot;
 )paren
 suffix:semicolon
 macro_line|#if RWSEM_DEBUG_MAGIC
@@ -299,12 +306,12 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Leaving up_read(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Leaving up_read&quot;
 )paren
 suffix:semicolon
 )brace
@@ -322,12 +329,12 @@ op_star
 id|sem
 )paren
 (brace
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Entering up_write(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Entering up_write&quot;
 )paren
 suffix:semicolon
 macro_line|#if RWSEM_DEBUG_MAGIC
@@ -377,12 +384,12 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-id|rwsemdebug
+id|rwsemtrace
 c_func
 (paren
-l_string|&quot;Leaving up_write(count=%08lx)&bslash;n&quot;
+id|sem
 comma
-id|sem-&gt;count
+l_string|&quot;Leaving up_write&quot;
 )paren
 suffix:semicolon
 )brace

@@ -3378,6 +3378,12 @@ id|p
 suffix:semicolon
 id|free0
 suffix:colon
+r_if
+c_cond
+(paren
+id|p
+)paren
+(brace
 id|rio_dprintk
 (paren
 id|RIO_DEBUG_INIT
@@ -3395,6 +3401,7 @@ comma
 id|rio_termios
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 id|ENOMEM

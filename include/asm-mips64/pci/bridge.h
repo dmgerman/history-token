@@ -888,7 +888,7 @@ id|error
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Error occured  */
+multiline_comment|/* Error occurred  */
 DECL|member|barr
 id|barr
 suffix:colon

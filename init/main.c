@@ -182,14 +182,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|filesystem_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -2861,12 +2853,6 @@ c_func
 )paren
 suffix:semicolon
 id|do_initcalls
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* .. filesystems .. */
-id|filesystem_setup
 c_func
 (paren
 )paren

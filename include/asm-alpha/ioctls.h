@@ -181,5 +181,9 @@ DECL|macro|TIOCMIWAIT
 mdefine_line|#define TIOCMIWAIT&t;0x545C&t;/* wait for a change on serial input line(s) */
 DECL|macro|TIOCGICOUNT
 mdefine_line|#define TIOCGICOUNT&t;0x545D&t;/* read serial port inline interrupt counts */
+DECL|macro|TIOCGHAYESESP
+mdefine_line|#define TIOCGHAYESESP&t;0x545E  /* Get Hayes ESP configuration */
+DECL|macro|TIOCSHAYESESP
+mdefine_line|#define TIOCSHAYESESP&t;0x545F  /* Set Hayes ESP configuration */
 macro_line|#endif /* _ASM_ALPHA_IOCTLS_H */
 eof

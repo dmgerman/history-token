@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/mips/ddb5074/irq.c -- NEC DDB Vrc-5074 interrupt routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; *  $Id: irq.c,v 1.1 2000/01/26 00:07:44 ralf Exp $&n; */
+multiline_comment|/*&n; *  arch/mips/ddb5074/irq.c -- NEC DDB Vrc-5074 interrupt routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -131,8 +131,8 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;     *  The ALI M1543 has 13 interrupt inputs, IRQ1..IRQ13.  Not all&n;     *  the possible IO sources in the M1543 are in use by us.  We will&n;     *  use the following mapping:&n;     *&n;     *&t;    IRQ1  - keyboard (default set by M1543)&n;     *&t;    IRQ3  - reserved for UART B (default set by M1543) (note that&n;     *&t;&t;    the schematics for the DDB Vrc-5074 board seem to &n;     *&t;&t;    indicate that IRQ3 is connected to the DS1386 &n;     *&t;&t;    watchdog timer interrupt output so we might have &n;     *&t;&t;    a conflict)&n;     *&t;    IRQ4  - reserved for UART A (default set by M1543)&n;     *&t;    IRQ5  - parallel (default set by M1543)&n;     *&t;    IRQ8  - DS1386 time of day (RTC) interrupt&n;     *&t;    IRQ12 - mouse&n;     */
-multiline_comment|/*&n;     *  Assing mouse interrupt to IRQ12 &n;     */
+multiline_comment|/*&n;&t; *  The ALI M1543 has 13 interrupt inputs, IRQ1..IRQ13.  Not all&n;&t; *  the possible IO sources in the M1543 are in use by us.  We will&n;&t; *  use the following mapping:&n;&t; *&n;&t; *      IRQ1  - keyboard (default set by M1543)&n;&t; *      IRQ3  - reserved for UART B (default set by M1543) (note that&n;&t; *              the schematics for the DDB Vrc-5074 board seem to &n;&t; *              indicate that IRQ3 is connected to the DS1386 &n;&t; *              watchdog timer interrupt output so we might have &n;&t; *              a conflict)&n;&t; *      IRQ4  - reserved for UART A (default set by M1543)&n;&t; *      IRQ5  - parallel (default set by M1543)&n;&t; *      IRQ8  - DS1386 time of day (RTC) interrupt&n;&t; *      IRQ12 - mouse&n;&t; */
+multiline_comment|/*&n;&t; *  Assing mouse interrupt to IRQ12 &n;&t; */
 multiline_comment|/* Enter configuration mode */
 id|outb
 c_func

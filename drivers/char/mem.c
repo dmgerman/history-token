@@ -65,6 +65,16 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
+r_extern
+r_void
+id|tapechar_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_ADB)
 r_extern
 r_void
@@ -2699,6 +2709,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_FTAPE
 id|ftape_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
+id|tapechar_init
 c_func
 (paren
 )paren

@@ -1,9 +1,6 @@
 macro_line|#ifndef __ALPHA_IO_H
 DECL|macro|__ALPHA_IO_H
 mdefine_line|#define __ALPHA_IO_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/* We don&squot;t use IO slowdowns on the Alpha, but.. */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
@@ -18,6 +15,9 @@ DECL|macro|IDENT_ADDR
 mdefine_line|#define IDENT_ADDR     0xfffffc0000000000
 macro_line|#endif
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 multiline_comment|/*&n; * We try to avoid hae updates (thus the cache), but when we&n; * do need to update the hae, we need to do it atomically, so&n; * that any interrupts wouldn&squot;t get confused with the hae&n; * register not being up-to-date with respect to the hardware&n; * value.&n; */
 DECL|function|__set_hae

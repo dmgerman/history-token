@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************************&n;* wanrouter.h&t;Definitions for the WAN Multiprotocol Router Module.&n;*&t;&t;This module provides API and common services for WAN Link&n;*&t;&t;Drivers and is completely hardware-independent.&n;*&n;* Author: &t;Nenad Corbic &lt;ncorbic@sangoma.com&gt;&n;*&t;&t;Gideon Hack &t;&n;*&n;* Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jul 21, 2000  Nenad Corbic&t;Added WAN_FT1_READY State&n;* Feb 24, 2000  Nenad Corbic    Added support for socket based x25api&n;* Jan 28, 2000  Nenad Corbic    Added support for the ASYNC protocol.&n;* Oct 04, 1999  Nenad Corbic &t;Updated for 2.1.0 release&n;* Jun 02, 1999  Gideon Hack&t;Added support for the S514 adapter.&n;* Jul 20, 1998&t;David Fong&t;Added Inverse ARP options to &squot;wanif_conf_t&squot;&n;* Jun 12, 1998&t;David Fong&t;Added Cisco HDLC support.&n;* Dec 16, 1997&t;Jaspreet Singh&t;Moved &squot;enable_IPX&squot; and &squot;network_number&squot; to&n;*&t;&t;&t;&t;&squot;wanif_conf_t&squot;&n;* Dec 05, 1997&t;Jaspreet Singh&t;Added &squot;pap&squot;, &squot;chap&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;authenticator&squot; to &squot;wan_ppp_conf_t&squot;&n;* Nov 06, 1997&t;Jaspreet Singh&t;Changed Router Driver version to 1.1 from 1.0&n;* Oct 20, 1997&t;Jaspreet Singh&t;Added &squot;cir&squot;,&squot;bc&squot;,&squot;be&squot; and &squot;mc&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;enable_IPX&squot; and &squot;network_number&squot; to &n;*&t;&t;&t;&t;&squot;wan_device_t&squot;.  Also added defines for&n;*&t;&t;&t;&t;UDP PACKET TYPE, Interrupt test, critical values&n;*&t;&t;&t;&t;for RACE conditions.&n;* Oct 05, 1997&t;Jaspreet Singh&t;Added &squot;dlci_num&squot; and &squot;dlci[100]&squot; to &n;*&t;&t;&t;&t;&squot;wan_fr_conf_t&squot; to configure a list of dlci(s)&n;*&t;&t;&t;&t;for a NODE &n;* Jul 07, 1997&t;Jaspreet Singh&t;Added &squot;ttl&squot; to &squot;wandev_conf_t&squot; &amp; &squot;wan_device_t&squot;&n;* May 29, 1997 &t;Jaspreet Singh&t;Added &squot;tx_int_enabled&squot; to &squot;wan_device_t&squot;&n;* May 21, 1997&t;Jaspreet Singh&t;Added &squot;udp_port&squot; to &squot;wan_device_t&squot;&n;* Apr 25, 1997  Farhan Thawar   Added &squot;udp_port&squot; to &squot;wandev_conf_t&squot;&n;* Jan 16, 1997&t;Gene Kozin&t;router_devlist made public&n;* Jan 02, 1997&t;Gene Kozin&t;Initial version (based on wanpipe.h).&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* wanrouter.h&t;Definitions for the WAN Multiprotocol Router Module.&n;*&t;&t;This module provides API and common services for WAN Link&n;*&t;&t;Drivers and is completely hardware-independent.&n;*&n;* Author: &t;Nenad Corbic &lt;ncorbic@sangoma.com&gt;&n;*&t;&t;Gideon Hack &t;&n;* Additions:&t;Arnaldo Melo&n;*&n;* Copyright:&t;(c) 1995-2000 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jul 21, 2000  Nenad Corbic&t;Added WAN_FT1_READY State&n;* Feb 24, 2000  Nenad Corbic    Added support for socket based x25api&n;* Jan 28, 2000  Nenad Corbic    Added support for the ASYNC protocol.&n;* Oct 04, 1999  Nenad Corbic &t;Updated for 2.1.0 release&n;* Jun 02, 1999  Gideon Hack&t;Added support for the S514 adapter.&n;* May 23, 1999&t;Arnaldo Melo&t;Added local_addr to wanif_conf_t&n;*&t;&t;&t;&t;WAN_DISCONNECTING state added&n;* Jul 20, 1998&t;David Fong&t;Added Inverse ARP options to &squot;wanif_conf_t&squot;&n;* Jun 12, 1998&t;David Fong&t;Added Cisco HDLC support.&n;* Dec 16, 1997&t;Jaspreet Singh&t;Moved &squot;enable_IPX&squot; and &squot;network_number&squot; to&n;*&t;&t;&t;&t;&squot;wanif_conf_t&squot;&n;* Dec 05, 1997&t;Jaspreet Singh&t;Added &squot;pap&squot;, &squot;chap&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;authenticator&squot; to &squot;wan_ppp_conf_t&squot;&n;* Nov 06, 1997&t;Jaspreet Singh&t;Changed Router Driver version to 1.1 from 1.0&n;* Oct 20, 1997&t;Jaspreet Singh&t;Added &squot;cir&squot;,&squot;bc&squot;,&squot;be&squot; and &squot;mc&squot; to &squot;wanif_conf_t&squot;&n;*&t;&t;&t;&t;Added &squot;enable_IPX&squot; and &squot;network_number&squot; to &n;*&t;&t;&t;&t;&squot;wan_device_t&squot;.  Also added defines for&n;*&t;&t;&t;&t;UDP PACKET TYPE, Interrupt test, critical values&n;*&t;&t;&t;&t;for RACE conditions.&n;* Oct 05, 1997&t;Jaspreet Singh&t;Added &squot;dlci_num&squot; and &squot;dlci[100]&squot; to &n;*&t;&t;&t;&t;&squot;wan_fr_conf_t&squot; to configure a list of dlci(s)&n;*&t;&t;&t;&t;for a NODE &n;* Jul 07, 1997&t;Jaspreet Singh&t;Added &squot;ttl&squot; to &squot;wandev_conf_t&squot; &amp; &squot;wan_device_t&squot;&n;* May 29, 1997 &t;Jaspreet Singh&t;Added &squot;tx_int_enabled&squot; to &squot;wan_device_t&squot;&n;* May 21, 1997&t;Jaspreet Singh&t;Added &squot;udp_port&squot; to &squot;wan_device_t&squot;&n;* Apr 25, 1997  Farhan Thawar   Added &squot;udp_port&squot; to &squot;wandev_conf_t&squot;&n;* Jan 16, 1997&t;Gene Kozin&t;router_devlist made public&n;* Jan 02, 1997&t;Gene Kozin&t;Initial version (based on wanpipe.h).&n;*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifndef KERNEL_VERSION
 DECL|macro|KERNEL_VERSION
@@ -1074,6 +1074,28 @@ r_char
 id|mc
 suffix:semicolon
 multiline_comment|/* Multicast on or off */
+DECL|member|local_addr
+r_char
+id|local_addr
+(braket
+id|WAN_ADDRESS_SZ
+op_plus
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* local media address, ASCIIZ */
+DECL|member|port
+r_int
+r_char
+id|port
+suffix:semicolon
+multiline_comment|/* board port */
+DECL|member|protocol
+r_int
+r_char
+id|protocol
+suffix:semicolon
+multiline_comment|/* prococol used in this channel (TCPOX25 or X25) */
 DECL|member|pap
 r_char
 id|pap
@@ -1135,12 +1157,6 @@ r_char
 id|hdlc_streaming
 suffix:semicolon
 multiline_comment|/*  Hdlc streaming mode (Y/N) */
-DECL|member|receive_only
-r_int
-r_char
-id|receive_only
-suffix:semicolon
-multiline_comment|/*  no transmit buffering (Y/N) */
 DECL|member|keepalive_tx_tmr
 r_int
 id|keepalive_tx_tmr
@@ -1279,6 +1295,12 @@ DECL|member|xoff_char
 r_int
 id|xoff_char
 suffix:semicolon
+DECL|member|receive_only
+r_int
+r_char
+id|receive_only
+suffix:semicolon
+multiline_comment|/*  no transmit buffering (Y/N) */
 DECL|typedef|wanif_conf_t
 )brace
 id|wanif_conf_t

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id: bootinfo.h,v 1.11 2000/03/06 11:14:32 raiko Exp $&n; *&n; * bootinfo.h -- Definition of the Linux/MIPS boot information structure&n; *&n; * Copyright (C) 1995, 1996 by Ralf Baechle, Andreas Busse,&n; *                             Stoned Elipot and Paul M. Antoine.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
-macro_line|#ifndef __ASM_MIPS_BOOTINFO_H
-DECL|macro|__ASM_MIPS_BOOTINFO_H
-mdefine_line|#define __ASM_MIPS_BOOTINFO_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996 by Ralf Baechle, Andreas Busse,&n; *                             Stoned Elipot and Paul M. Antoine.&n; */
+macro_line|#ifndef _ASM_BOOTINFO_H
+DECL|macro|_ASM_BOOTINFO_H
+mdefine_line|#define _ASM_BOOTINFO_H
 multiline_comment|/*&n; * Values for machgroup&n; */
 DECL|macro|MACH_GROUP_UNKNOWN
 mdefine_line|#define MACH_GROUP_UNKNOWN      0 /* whatever... */
@@ -94,8 +94,10 @@ mdefine_line|#define GROUP_COBALT_NAMES { &quot;Microserver 27&quot; }
 multiline_comment|/*&n; * Valid machtype for group NEC DDB&n; */
 DECL|macro|MACH_NEC_DDB5074
 mdefine_line|#define MACH_NEC_DDB5074&t; 0&t;/* NEC DDB Vrc-5074 */
+DECL|macro|MACH_NEC_DDB5476
+mdefine_line|#define MACH_NEC_DDB5476         1      /* NEC DDB Vrc-5476 */
 DECL|macro|GROUP_NEC_DDB_NAMES
-mdefine_line|#define GROUP_NEC_DDB_NAMES { &quot;Vrc-5074&quot; }
+mdefine_line|#define GROUP_NEC_DDB_NAMES { &quot;Vrc-5074&quot;, &quot;Vrc-5476&quot;}
 multiline_comment|/*&n; * Valid machtype for group BAGET&n; */
 DECL|macro|MACH_BAGET201
 mdefine_line|#define MACH_BAGET201&t;&t;0&t;/* BT23-201 */

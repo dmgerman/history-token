@@ -257,7 +257,7 @@ DECL|macro|ST0_CU3
 mdefine_line|#define ST0_CU3&t;&t;&t;0x80000000
 DECL|macro|ST0_XX
 mdefine_line|#define ST0_XX&t;&t;&t;0x80000000&t;/* MIPS IV naming */
-multiline_comment|/*&n; * Bitfields and bit numbers in the coprocessor 0 cause register.&n; *&n; * Refer to to your MIPS R4xx0 manual, chapter 5 for explanation.&n; */
+multiline_comment|/*&n; * Bitfields and bit numbers in the coprocessor 0 cause register.&n; *&n; * Refer to your MIPS R4xx0 manual, chapter 5 for explanation.&n; */
 DECL|macro|CAUSEB_EXCCODE
 mdefine_line|#define  CAUSEB_EXCCODE&t;&t;2
 DECL|macro|CAUSEF_EXCCODE

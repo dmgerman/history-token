@@ -2801,7 +2801,7 @@ l_string|&quot;smb_retry: caught signal&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/*&n;&t; * We don&squot;t want to be interrupted. For example, what if &squot;current&squot;&n;&t; * already has recieved a signal? sleep_on would terminate immediately&n;&t; * and smbmount would not be able to re-establish connection.&n;&t; *&n;&t; * smbmount should be able to reconnect later, but it can&squot;t because&n;&t; * it will get an -EIO on attempts to open the mountpoint!&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t want to be interrupted. For example, what if &squot;current&squot;&n;&t; * already has received a signal? sleep_on would terminate immediately&n;&t; * and smbmount would not be able to re-establish connection.&n;&t; *&n;&t; * smbmount should be able to reconnect later, but it can&squot;t because&n;&t; * it will get an -EIO on attempts to open the mountpoint!&n;&t; */
 id|sleep_on_timeout
 c_func
 (paren
@@ -2827,7 +2827,7 @@ multiline_comment|/* This should be changed to VERBOSE, except many smbfs&n;&t;&
 id|PARANOIA
 c_func
 (paren
-l_string|&quot;sucessful, new pid=%d, generation=%d&bslash;n&quot;
+l_string|&quot;successful, new pid=%d, generation=%d&bslash;n&quot;
 comma
 id|server-&gt;conn_pid
 comma

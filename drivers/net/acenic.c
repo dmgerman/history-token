@@ -12355,5 +12355,5 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__SMP__ -D__KERNEL__ -DMODULE -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -DMODVERSIONS -include ../../include/linux/modversions.h   -c -o acenic.o acenic.c&quot;&n; * End:&n; */
+multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__KERNEL__ -DMODULE -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -DMODVERSIONS -include ../../include/linux/modversions.h   -c -o acenic.o acenic.c&quot;&n; * End:&n; */
 eof

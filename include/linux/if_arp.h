@@ -93,7 +93,7 @@ DECL|macro|ARPHRD_IRDA
 mdefine_line|#define ARPHRD_IRDA &t;783&t;&t;/* Linux-IrDA&t;&t;&t;*/
 multiline_comment|/* ARP works differently on different FC media .. so  */
 DECL|macro|ARPHRD_FCPP
-mdefine_line|#define ARPHRD_FCPP&t;784&t;&t;/* Point to point fibrechanel&t;*/
+mdefine_line|#define ARPHRD_FCPP&t;784&t;&t;/* Point to point fibrechannel&t;*/
 DECL|macro|ARPHRD_FCAL
 mdefine_line|#define ARPHRD_FCAL&t;785&t;&t;/* Fibrechannel arbitrated loop */
 DECL|macro|ARPHRD_FCPL

@@ -707,6 +707,9 @@ r_goto
 id|restart_scan
 suffix:semicolon
 )brace
+r_return
+l_int|NULL
+suffix:semicolon
 id|found
 suffix:colon
 r_if
@@ -1432,9 +1435,19 @@ id|pgdat-&gt;node_next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Whoops, we cannot satisfy the allocation request.&n;&t; */
-id|BUG
+id|printk
 c_func
 (paren
+id|KERN_ALERT
+l_string|&quot;bootmem alloc of %lu bytes failed!&bslash;n&quot;
+comma
+id|size
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Out of memory&quot;
 )paren
 suffix:semicolon
 r_return

@@ -25613,6 +25613,11 @@ id|cflag
 op_or_assign
 id|B9600
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Set this to a sane value to prevent a divide error&n;&t;&t;&t; */
+id|baud
+op_assign
+l_int|9600
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/mips/ddb5074/setup.c -- NEC DDB Vrc-5074 setup routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; *  $Id: setup.c,v 1.1 2000/01/26 00:07:44 ralf Exp $&n; */
+multiline_comment|/*&n; *  arch/mips/ddb5074/setup.c -- NEC DDB Vrc-5074 setup routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kbd_ll.h&gt;
@@ -279,7 +279,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|set_cp0_status
+id|change_cp0_status
 c_func
 (paren
 id|ST0_IM
@@ -403,21 +403,6 @@ multiline_comment|/* Reboot on panic */
 id|panic_timeout
 op_assign
 l_int|180
-suffix:semicolon
-)brace
-DECL|function|page_is_ram
-r_int
-id|__init
-id|page_is_ram
-c_func
-(paren
-r_int
-r_int
-id|pagenr
-)paren
-(brace
-r_return
-l_int|1
 suffix:semicolon
 )brace
 DECL|macro|USE_NILE4_SERIAL
@@ -737,7 +722,7 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  Hexadecimal 7-segment LED&n;     */
+multiline_comment|/*&n; *  Hexadecimal 7-segment LED&n; */
 DECL|function|ddb5074_led_hex
 r_void
 id|ddb5074_led_hex
@@ -756,7 +741,7 @@ l_int|0x80
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     *  LEDs D2 and D3, connected to the GPIO pins of the PMU in the ALi M1543&n;     */
+multiline_comment|/*&n; *  LEDs D2 and D3, connected to the GPIO pins of the PMU in the ALi M1543&n; */
 DECL|variable|pci_pmu
 r_struct
 id|pci_dev

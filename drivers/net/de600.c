@@ -1586,12 +1586,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

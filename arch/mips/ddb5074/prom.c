@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/mips/ddb5074/prom.c -- NEC DDB Vrc-5074 PROM routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; *  $Id: prom.c,v 1.1 2000/01/26 00:07:44 ralf Exp $&n; */
+multiline_comment|/*&n; *  arch/mips/ddb5074/prom.c -- NEC DDB Vrc-5074 PROM routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,17 +9,9 @@ DECL|variable|arcs_cmdline
 r_char
 id|arcs_cmdline
 (braket
-id|CL_SIZE
+id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
-r_extern
-r_char
-id|_end
-suffix:semicolon
-DECL|macro|PFN_UP
-mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
-DECL|macro|PFN_ALIGN
-mdefine_line|#define PFN_ALIGN(x)&t;(((unsigned long)(x) + (PAGE_SIZE - 1)) &amp; PAGE_MASK)
 DECL|function|prom_init
 r_void
 id|__init
@@ -37,19 +29,6 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
-id|mem_size
-comma
-id|free_start
-comma
-id|free_end
-comma
-id|start_pfn
-comma
-id|bootmap_size
-suffix:semicolon
-singleline_comment|//  _serinit();
 r_if
 c_cond
 (paren
@@ -103,86 +82,18 @@ op_assign
 id|MACH_NEC_DDB5074
 suffix:semicolon
 multiline_comment|/* 64 MB non-upgradable */
-id|mem_size
-op_assign
+id|add_memory_region
+c_func
+(paren
+l_int|0
+comma
 l_int|64
 op_lshift
 l_int|20
-suffix:semicolon
-id|free_start
-op_assign
-id|PHYSADDR
-c_func
-(paren
-id|PFN_ALIGN
-c_func
-(paren
-op_amp
-id|_end
-)paren
-)paren
-suffix:semicolon
-id|free_end
-op_assign
-id|mem_size
-suffix:semicolon
-id|start_pfn
-op_assign
-id|PFN_UP
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|_end
-)paren
-suffix:semicolon
-multiline_comment|/* Register all the contiguous memory with the bootmem allocator&n;       and free it.  Be careful about the bootmem freemap.  */
-id|bootmap_size
-op_assign
-id|init_bootmem
-c_func
-(paren
-id|start_pfn
 comma
-id|mem_size
-op_rshift
-id|PAGE_SHIFT
+id|BOOT_MEM_RAM
 )paren
 suffix:semicolon
-multiline_comment|/* Free the entire available memory after the _end symbol.  */
-id|free_start
-op_add_assign
-id|bootmap_size
-suffix:semicolon
-id|free_bootmem
-c_func
-(paren
-id|free_start
-comma
-id|free_end
-op_minus
-id|free_start
-)paren
-suffix:semicolon
-)brace
-DECL|function|prom_fixup_mem_map
-r_void
-id|__init
-id|prom_fixup_mem_map
-c_func
-(paren
-r_int
-r_int
-id|start
-comma
-r_int
-r_int
-id|end
-)paren
-(brace
 )brace
 DECL|function|prom_free_prom_memory
 r_void

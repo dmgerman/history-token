@@ -2829,7 +2829,7 @@ op_complement
 id|RIO_WAITDRAIN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; ** Store setings if locking or unlocking port or if the&n;&t;&t;&t;&t;&t; ** port is not locked, when setting the store option.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; ** Store settings if locking or unlocking port or if the&n;&t;&t;&t;&t;&t; ** port is not locked, when setting the store option.&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; * Modified for R3000 by Paul M. Antoine, 1995, 1996&n; * Complete output from die() by Ulf Carlsson, 1998&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; * Modified for R3000 by Paul M. Antoine, 1995, 1996&n; * Complete output from die() by Ulf Carlsson, 1998&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; *&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -6,12 +6,15 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
+macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
+macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/watch.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -200,10 +203,31 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_void
+id|handle_mcheck
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_void
 id|handle_reserved
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fpu_emulator_cop1Handler
+c_func
+(paren
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
 DECL|variable|cpu_names
@@ -225,12 +249,6 @@ suffix:semicolon
 DECL|variable|dedicated_iv_available
 r_char
 id|dedicated_iv_available
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|vce_available
-r_char
-id|vce_available
 op_assign
 l_int|0
 suffix:semicolon
@@ -1290,23 +1308,26 @@ r_int
 id|fcr31
 )paren
 (brace
-r_int
-r_int
-id|pc
-suffix:semicolon
-r_int
-r_int
-id|insn
-suffix:semicolon
-r_extern
-r_void
-id|simfp
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+id|panic
 c_func
 (paren
-r_int
-r_int
+l_string|&quot;Floating Point Exception with No FPU&quot;
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS_FPE_MODULE
 r_if
 c_cond
@@ -1333,9 +1354,96 @@ c_cond
 (paren
 id|fcr31
 op_amp
-l_int|0x20000
+id|FPU_CSR_UNI_X
 )paren
 (brace
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_extern
+r_void
+id|save_fp
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|restore_fp
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_int
+id|sig
+suffix:semicolon
+multiline_comment|/*&n;&t; &t; * Unimplemented operation exception.  If we&squot;ve got the&n;&t; &t; * Full software emulator on-board, let&squot;s use it...&n;&t;&t; *&n;&t;&t; * Force FPU to dump state into task/thread context.&n;&t;&t; * We&squot;re moving a lot of data here for what is probably&n;&t;&t; * a single instruction, but the alternative is to &n;&t;&t; * pre-decode the FP register operands before invoking&n;&t;&t; * the emulator, which seems a bit extreme for what&n;&t;&t; * should be an infrequent event.&n;&t;&t; */
+id|save_fp
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* Run the emulator */
+id|sig
+op_assign
+id|fpu_emulator_cop1Handler
+c_func
+(paren
+l_int|0
+comma
+id|regs
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * We can&squot;t allow the emulated instruction to leave the&n;&t;&t; * Unimplemented Operation bit set in the FCR31 fp-register.&n;&t;&t; */
+id|current-&gt;thread.fpu.soft.sr
+op_and_assign
+op_complement
+id|FPU_CSR_UNI_X
+suffix:semicolon
+multiline_comment|/* Restore the hardware register state */
+id|restore_fp
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* If something went wrong, signal */
+r_if
+c_cond
+(paren
+id|sig
+)paren
+id|force_sig
+c_func
+(paren
+id|sig
+comma
+id|current
+)paren
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* Else use mini-emulator */
+r_extern
+r_void
+id|simfp
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_int
+r_int
+id|pc
+suffix:semicolon
+r_int
+r_int
+id|insn
+suffix:semicolon
 multiline_comment|/* Retry instruction with flush to zero ...  */
 r_if
 c_cond
@@ -1363,7 +1471,7 @@ suffix:semicolon
 id|fcr31
 op_and_assign
 op_complement
-l_int|0x20000
+id|FPU_CSR_UNI_X
 suffix:semicolon
 id|fcr31
 op_or_assign
@@ -1410,6 +1518,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pc
+op_amp
+l_int|0x80000000
+)paren
+(brace
+id|insn
+op_assign
+op_star
+(paren
+r_int
+r_int
+op_star
+)paren
+id|pc
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -1450,8 +1578,21 @@ suffix:semicolon
 id|simfp
 c_func
 (paren
+id|MIPSInst
+c_func
+(paren
 id|insn
 )paren
+)paren
+suffix:semicolon
+id|compute_return_epc
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_MIPS_FPU_EMULATOR */
+r_return
 suffix:semicolon
 )brace
 r_if
@@ -1465,12 +1606,19 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-singleline_comment|//force_sig(SIGFPE, current);
+id|force_sig
+c_func
+(paren
+id|SIGFPE
+comma
+id|current
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;Should send SIGFPE to %s&bslash;n&quot;
+l_string|&quot;Sent send SIGFPE to %s&bslash;n&quot;
 comma
 id|current-&gt;comm
 )paren
@@ -1611,7 +1759,70 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * (A short test says that IRIX 5.3 sends SIGTRAP for all break&n;&t; * insns, even for break codes that indicate arithmetic failures.&n;&t; * Weird ...)&n;&t; */
+multiline_comment|/*&n;&t; * (A short test says that IRIX 5.3 sends SIGTRAP for all break&n;&t; * insns, even for break codes that indicate arithmetic failures.&n;&t; * Weird ...)&n;&t; * But should we continue the brokenness???  --macro&n;&t; */
+r_switch
+c_cond
+(paren
+id|bcode
+)paren
+(brace
+r_case
+l_int|6
+suffix:colon
+r_case
+l_int|7
+suffix:colon
+r_if
+c_cond
+(paren
+id|bcode
+op_eq
+l_int|7
+)paren
+id|info.si_code
+op_assign
+id|FPE_INTDIV
+suffix:semicolon
+r_else
+id|info.si_code
+op_assign
+id|FPE_INTOVF
+suffix:semicolon
+id|info.si_signo
+op_assign
+id|SIGFPE
+suffix:semicolon
+id|info.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|info.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|compute_return_epc
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGFPE
+comma
+op_amp
+id|info
+comma
+id|current
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|force_sig
 c_func
 (paren
@@ -1620,6 +1831,7 @@ comma
 id|current
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|do_tr
 r_void
@@ -1632,6 +1844,9 @@ op_star
 id|regs
 )paren
 (brace
+id|siginfo_t
+id|info
+suffix:semicolon
 r_int
 r_int
 id|opcode
@@ -1672,7 +1887,70 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * (A short test says that IRIX 5.3 sends SIGTRAP for all break&n;&t; * insns, even for break codes that indicate arithmetic failures.&n;&t; * Weird ...)&n;&t; */
+multiline_comment|/*&n;&t; * (A short test says that IRIX 5.3 sends SIGTRAP for all break&n;&t; * insns, even for break codes that indicate arithmetic failures.&n;&t; * Weird ...)&n;&t; * But should we continue the brokenness???  --macro&n;&t; */
+r_switch
+c_cond
+(paren
+id|bcode
+)paren
+(brace
+r_case
+l_int|6
+suffix:colon
+r_case
+l_int|7
+suffix:colon
+r_if
+c_cond
+(paren
+id|bcode
+op_eq
+l_int|7
+)paren
+id|info.si_code
+op_assign
+id|FPE_INTDIV
+suffix:semicolon
+r_else
+id|info.si_code
+op_assign
+id|FPE_INTOVF
+suffix:semicolon
+id|info.si_signo
+op_assign
+id|SIGFPE
+suffix:semicolon
+id|info.si_errno
+op_assign
+l_int|0
+suffix:semicolon
+id|info.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|compute_return_epc
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGFPE
+comma
+op_amp
+id|info
+comma
+id|current
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|force_sig
 c_func
 (paren
@@ -1681,6 +1959,7 @@ comma
 id|current
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#if !defined(CONFIG_CPU_HAS_LLSC)
 multiline_comment|/*&n; * userland emulation for R2300 CPUs&n; * needed for the multithreading part of glibc&n; */
@@ -2185,6 +2464,18 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_void
+id|fpu_emulator_init_fpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|sig
+suffix:semicolon
+macro_line|#endif
 id|cpid
 op_assign
 (paren
@@ -2205,6 +2496,93 @@ l_int|1
 r_goto
 id|bad_cid
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS_FPU_EMULATOR
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|last_task_used_math
+op_ne
+id|current
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;used_math
+)paren
+(brace
+id|fpu_emulator_init_fpu
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current-&gt;used_math
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+id|sig
+op_assign
+id|fpu_emulator_cop1Handler
+c_func
+(paren
+l_int|0
+comma
+id|regs
+)paren
+suffix:semicolon
+id|last_task_used_math
+op_assign
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sig
+)paren
+(brace
+id|force_sig
+c_func
+(paren
+id|sig
+comma
+id|current
+)paren
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
+macro_line|#else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|mips_cpu.options
+op_amp
+id|MIPS_CPU_FPU
+)paren
+)paren
+(brace
+r_goto
+id|bad_cid
+suffix:semicolon
+)brace
+macro_line|#endif
 id|regs-&gt;cp0_status
 op_or_assign
 id|ST0_CU1

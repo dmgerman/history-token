@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * linux/drivers/char/qpmouse.c&n; *&n; * Driver for a 82C710 C&amp;T mouse interface chip.&n; *&n; * Based on the PS/2 driver by Johan Myreen.&n; *&n; * Corrections in device setup for some laptop mice &amp; trackballs.&n; * 02Feb93  (troyer@saifr00.cfsat.Honeywell.COM,mch@wimsey.bc.ca)&n; *&n; * Modified by Johan Myreen (jem@iki.fi) 04Aug93&n; *   to include support for QuickPort mouse.&n; *&n; * Changed references to &quot;QuickPort&quot; with &quot;82C710&quot; since &quot;QuickPort&quot;&n; * is not what this driver is all about -- QuickPort is just a&n; * connector type, and this driver is for the mouse port on the Chips&n; * &amp; Technologies 82C710 interface chip. 15Nov93 jem@iki.fi&n; *&n; * Added support for SIGIO. 28Jul95 jem@iki.fi&n; *&n; * Rearranged SIGIO support to use code from tty_io.  9Sept95 ctm@ardi.com&n; *&n; * Modularised 8-Sep-95 Philip Blundell &lt;pjb27@cam.ac.uk&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -405,6 +405,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: Mouse device busy in release_qp()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -443,6 +444,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: Mouse device busy in release_qp()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -603,6 +605,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Error: Mouse device busy in open_qp()&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1106,12 +1109,19 @@ id|miscdevice
 id|qp_mouse
 op_assign
 (brace
+id|minor
+suffix:colon
 id|PSMOUSE_MINOR
 comma
+id|name
+suffix:colon
 l_string|&quot;QPmouse&quot;
 comma
+id|fops
+suffix:colon
 op_amp
 id|qp_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function to read register in 82C710.&n; */
@@ -1256,10 +1266,35 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|qpmouse_init
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;82C710 type pointing device detected -- driver installed.&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|msg_nomem
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_ERR
+l_string|&quot;qpmouse: no queue memory.&bslash;n&quot;
+suffix:semicolon
+DECL|function|qpmouse_init_driver
+r_static
 r_int
 id|__init
-id|qpmouse_init
+id|qpmouse_init_driver
 c_func
 (paren
 r_void
@@ -1281,8 +1316,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;82C710 type pointing device detected -- driver installed.&bslash;n&quot;
+id|msg_banner
 )paren
 suffix:semicolon
 multiline_comment|/*&t;printk(&quot;82C710 address = %x (should be 0x310)&bslash;n&quot;, qp_data); */
@@ -1316,8 +1350,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;qpmouse: no queue memory.&bslash;n&quot;
+id|msg_nomem
 )paren
 suffix:semicolon
 r_return
@@ -1367,25 +1400,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|qpmouse_exit_driver
+r_static
 r_void
-)paren
-(brace
-r_return
-id|qpmouse_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|qpmouse_exit_driver
 c_func
 (paren
 r_void
@@ -1405,5 +1424,18 @@ id|queue
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|qpmouse_init_driver
+id|module_init
+c_func
+(paren
+id|qpmouse_init_driver
+)paren
+suffix:semicolon
+DECL|variable|qpmouse_exit_driver
+id|module_exit
+c_func
+(paren
+id|qpmouse_exit_driver
+)paren
+suffix:semicolon
 eof
