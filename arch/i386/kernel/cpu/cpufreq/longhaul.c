@@ -2264,6 +2264,10 @@ c_cond
 id|longhaul_version
 op_eq
 id|TYPE_LONGHAUL_V2
+op_logical_or
+id|longhaul_version
+op_eq
+id|TYPE_POWERSAVER
 )paren
 op_logical_and
 (paren
