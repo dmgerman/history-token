@@ -838,6 +838,12 @@ op_amp
 id|loopback_dev
 )paren
 suffix:semicolon
+multiline_comment|/* Wait for at least one quiescent state after&n;&t;&t;&t; * detaching the stale device from dst.&n;&t;&t;&t; */
+id|synchronize_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|dev_put
 c_func
 (paren
