@@ -170,33 +170,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/************************** sysfs interface ************************/
-DECL|function|show_current_freq
-r_static
-id|ssize_t
-id|show_current_freq
-c_func
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-comma
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_return
-id|sprintf
-(paren
-id|buf
-comma
-l_string|&quot;%u&bslash;n&quot;
-comma
-id|policy-&gt;cur
-)paren
-suffix:semicolon
-)brace
 DECL|function|show_sampling_rate_max
 r_static
 id|ssize_t
@@ -253,13 +226,6 @@ suffix:semicolon
 )brace
 DECL|macro|define_one_ro
 mdefine_line|#define define_one_ro(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name = { &t;&t;&t;&t;&bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0444 }, &t;&bslash;&n;&t;.show = show_##_name, &t;&t;&t;&t;&t;&bslash;&n;}
-DECL|variable|current_freq
-id|define_one_ro
-c_func
-(paren
-id|current_freq
-)paren
-suffix:semicolon
 DECL|variable|sampling_rate_max
 id|define_one_ro
 c_func
@@ -673,9 +639,6 @@ id|dbs_attributes
 )braket
 op_assign
 (brace
-op_amp
-id|current_freq.attr
-comma
 op_amp
 id|sampling_rate_max.attr
 comma
