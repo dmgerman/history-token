@@ -3218,9 +3218,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;flags
-op_amp
-id|IFF_UP
+op_logical_neg
+id|mc-&gt;idev-&gt;dead
 )paren
 id|igmp6_leave_group
 c_func
