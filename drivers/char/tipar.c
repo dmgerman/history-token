@@ -22,7 +22,7 @@ multiline_comment|/*&n; * TI definitions&n; */
 macro_line|#include &lt;linux/ticable.h&gt;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.17&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.19&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR  &quot;Romain Lievin &lt;roms@lpg.ticalc.org&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -1295,6 +1295,13 @@ suffix:semicolon
 r_case
 id|IOCTL_TIPAR_TIMEOUT
 suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+op_ne
+l_int|0
+)paren
 id|timeout
 op_assign
 (paren
@@ -1302,7 +1309,12 @@ r_int
 )paren
 id|arg
 suffix:semicolon
-singleline_comment|//get_user(timeout, &amp;arg);
+r_else
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1412,12 +1424,29 @@ OG
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ints
+(braket
+l_int|1
+)braket
+op_ne
+l_int|0
+)paren
 id|timeout
 op_assign
 id|ints
 (braket
 l_int|1
 )braket
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;tipar: wrong timeout value (0), using default value instead.&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -1404,12 +1404,18 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* &n;&t;&t; * Need more space? Allocate it and try again &n;&t;&t; */
+id|limit
+op_assign
+id|need
+op_plus
+l_int|1
+suffix:semicolon
 id|name
 op_assign
 id|kmalloc
 c_func
 (paren
-id|need
+id|limit
 comma
 id|GFP_KERNEL
 )paren
@@ -1430,10 +1436,6 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-id|limit
-op_assign
-id|need
-suffix:semicolon
 id|need
 op_assign
 id|vsnprintf
@@ -1453,7 +1455,7 @@ r_if
 c_cond
 (paren
 id|need
-OG
+op_ge
 id|limit
 )paren
 (brace

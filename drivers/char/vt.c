@@ -12223,6 +12223,11 @@ c_func
 r_void
 )paren
 (brace
+id|vcs_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|console_driver
 op_assign
 id|alloc_tty_driver
@@ -12336,11 +12341,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif&t;
-id|vcs_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
