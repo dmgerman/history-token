@@ -100,7 +100,7 @@ macro_line|#include &quot;he.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &lt;linux/atm_he.h&gt;
 DECL|macro|hprintk
-mdefine_line|#define hprintk(fmt,args...)&t;printk(KERN_ERR DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number, ##args)
+mdefine_line|#define hprintk(fmt,args...)&t;printk(KERN_ERR DEV_LABEL &quot;%d: &quot; fmt, he_dev-&gt;number , ##args)
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
