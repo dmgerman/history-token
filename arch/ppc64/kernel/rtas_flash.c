@@ -677,9 +677,6 @@ id|RTAS_MSG_MAXLEN
 )braket
 suffix:semicolon
 r_int
-id|error
-suffix:semicolon
-r_int
 id|msglen
 suffix:semicolon
 id|uf
@@ -760,9 +757,11 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* be cheap */
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -771,11 +770,6 @@ id|buf
 comma
 id|msglen
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
 op_minus
@@ -1329,9 +1323,6 @@ suffix:semicolon
 r_int
 id|msglen
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
 id|args_buf
 op_assign
 (paren
@@ -1388,9 +1379,11 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* be cheap */
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1399,11 +1392,6 @@ id|buf
 comma
 id|msglen
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
 op_minus
@@ -1938,9 +1926,6 @@ suffix:semicolon
 r_int
 id|msglen
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
 id|args_buf
 op_assign
 (paren
@@ -1985,9 +1970,11 @@ id|msglen
 op_assign
 id|count
 suffix:semicolon
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -1996,11 +1983,6 @@ id|buf
 comma
 id|msglen
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
 op_minus
@@ -2183,7 +2165,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ

@@ -2685,7 +2685,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3203,7 +3204,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -3277,7 +3279,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -3327,7 +3330,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we get a fault copying the context into the kernel&squot;s&n;&t; * image of the user&squot;s registers, we can&squot;t just return -EFAULT&n;&t; * because the user&squot;s registers will be corrupted.  For instance&n;&t; * the NIP value may have been updated but not some of the&n;&t; * other registers.  Given that we have done the verify_area&n;&t; * and successfully read the first and last bytes of the region&n;&t; * above, this should only happen in an out-of-memory situation&n;&t; * or if another thread unmaps the region containing the context.&n;&t; * We kill the task with a SIGSEGV in this situation.&n;&t; */
+multiline_comment|/*&n;&t; * If we get a fault copying the context into the kernel&squot;s&n;&t; * image of the user&squot;s registers, we can&squot;t just return -EFAULT&n;&t; * because the user&squot;s registers will be corrupted.  For instance&n;&t; * the NIP value may have been updated but not some of the&n;&t; * other registers.  Given that we have done the access_ok&n;&t; * and successfully read the first and last bytes of the region&n;&t; * above, this should only happen in an out-of-memory situation&n;&t; * or if another thread unmaps the region containing the context.&n;&t; * We kill the task with a SIGSEGV in this situation.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3421,7 +3424,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -3600,7 +3604,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -4018,7 +4023,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ

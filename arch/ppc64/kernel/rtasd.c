@@ -950,9 +950,11 @@ id|count
 op_assign
 id|rtas_error_log_buffer_max
 suffix:semicolon
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -961,11 +963,6 @@ id|buf
 comma
 id|count
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
 op_minus

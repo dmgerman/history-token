@@ -890,7 +890,7 @@ id|EOVERFLOW
 suffix:semicolon
 id|err
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -903,6 +903,12 @@ op_star
 id|statbuf
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 suffix:semicolon
 id|err
 op_or_assign
@@ -5399,7 +5405,8 @@ id|ctv
 (brace
 r_return
 (paren
-id|verify_area
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
