@@ -32,12 +32,12 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|dst_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dst_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dst_gc_timer_expires
 r_static

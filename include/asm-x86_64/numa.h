@@ -25,6 +25,9 @@ r_struct
 id|node
 op_star
 id|nodes
+comma
+r_int
+id|numnodes
 )paren
 suffix:semicolon
 DECL|macro|ZONE_ALIGN

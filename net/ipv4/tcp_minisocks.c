@@ -1411,12 +1411,12 @@ id|tcp_tw_death_row
 id|TCP_TWKILL_SLOTS
 )braket
 suffix:semicolon
-DECL|variable|tw_death_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tw_death_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|tcp_tw_timer
 r_static

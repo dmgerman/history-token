@@ -1336,9 +1336,8 @@ id|file-&gt;f_pos
 suffix:semicolon
 id|error
 op_assign
-id|count
 op_minus
-id|buf.count
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -1352,10 +1351,14 @@ op_amp
 id|lastdirent-&gt;d_off
 )paren
 )paren
+r_goto
+id|out_putf
+suffix:semicolon
 id|error
 op_assign
+id|count
 op_minus
-id|EFAULT
+id|buf.count
 suffix:semicolon
 )brace
 id|out_putf

@@ -42,10 +42,11 @@ id|ax25_list
 )paren
 suffix:semicolon
 DECL|variable|ax25_list_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ax25_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ax25_proto_ops
 r_static

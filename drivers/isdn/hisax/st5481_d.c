@@ -2891,7 +2891,11 @@ l_string|&quot;endpoint address=%02x,packet size=%d&quot;
 comma
 id|endpoint-&gt;desc.bEndpointAddress
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;desc.wMaxPacketSize
+)paren
 )paren
 suffix:semicolon
 r_return

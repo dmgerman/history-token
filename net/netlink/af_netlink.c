@@ -197,18 +197,6 @@ id|nl_nonroot
 id|MAX_LINKS
 )braket
 suffix:semicolon
-macro_line|#ifdef NL_EMULATE_DEV
-DECL|variable|netlink_kernel
-r_static
-r_struct
-id|socket
-op_star
-id|netlink_kernel
-(braket
-id|MAX_LINKS
-)braket
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|netlink_dump
@@ -231,12 +219,12 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-DECL|variable|nl_table_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|nl_table_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|nl_table_users
 r_static

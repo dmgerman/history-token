@@ -21,6 +21,21 @@ mdefine_line|#define cpu_possible_map cpu_present_mask
 multiline_comment|/*&n; * at the moment, there&squot;s not a big penalty for changing CPUs&n; * (the &gt;big&lt; penalty is running SMP in the first place)&n; */
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;&t;15
+r_struct
+id|seq_file
+suffix:semicolon
+multiline_comment|/*&n; * generate IPI list text&n; */
+r_extern
+r_void
+id|show_ipi_list
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|p
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Move global data into per-processor storage.&n; */
 r_extern
 r_void
@@ -45,7 +60,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Boot a secondary CPU, and assign it the specified idle task.&n; * This also gives us the initial stack to use for this CPU.&n; */
 r_extern
 r_int
-id|__init
 id|boot_secondary
 c_func
 (paren

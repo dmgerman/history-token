@@ -1227,12 +1227,12 @@ id|udp_apps
 id|UDP_APP_TAB_SIZE
 )braket
 suffix:semicolon
-DECL|variable|udp_app_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|udp_app_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|udp_app_hashkey
 r_static

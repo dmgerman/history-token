@@ -149,12 +149,12 @@ op_assign
 op_amp
 id|default_rule
 suffix:semicolon
-DECL|variable|dn_fib_rules_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dn_fib_rules_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dn_fib_rtm_delrule
 r_int

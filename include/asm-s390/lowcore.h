@@ -77,13 +77,27 @@ DECL|macro|__LC_MCCK_CODE
 mdefine_line|#define __LC_MCCK_CODE                  0x0E8
 DECL|macro|__LC_RETURN_PSW
 mdefine_line|#define __LC_RETURN_PSW                 0x200
-DECL|macro|__LC_IRB
-mdefine_line|#define __LC_IRB&t;&t;&t;0x210
-DECL|macro|__LC_DIAG44_OPCODE
-mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x250
 DECL|macro|__LC_SAVE_AREA
 mdefine_line|#define __LC_SAVE_AREA                  0xC00
 macro_line|#ifndef __s390x__
+DECL|macro|__LC_IRB
+mdefine_line|#define __LC_IRB&t;&t;&t;0x208
+DECL|macro|__LC_SYNC_ENTER_TIMER
+mdefine_line|#define __LC_SYNC_ENTER_TIMER&t;&t;0x248
+DECL|macro|__LC_ASYNC_ENTER_TIMER
+mdefine_line|#define __LC_ASYNC_ENTER_TIMER&t;&t;0x250
+DECL|macro|__LC_EXIT_TIMER
+mdefine_line|#define __LC_EXIT_TIMER&t;&t;&t;0x258
+DECL|macro|__LC_LAST_UPDATE_TIMER
+mdefine_line|#define __LC_LAST_UPDATE_TIMER&t;&t;0x260
+DECL|macro|__LC_USER_TIMER
+mdefine_line|#define __LC_USER_TIMER&t;&t;&t;0x268
+DECL|macro|__LC_SYSTEM_TIMER
+mdefine_line|#define __LC_SYSTEM_TIMER&t;&t;0x270
+DECL|macro|__LC_LAST_UPDATE_CLOCK
+mdefine_line|#define __LC_LAST_UPDATE_CLOCK&t;&t;0x278
+DECL|macro|__LC_STEAL_CLOCK
+mdefine_line|#define __LC_STEAL_CLOCK&t;&t;0x280
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xC40
 DECL|macro|__LC_THREAD_INFO
@@ -109,6 +123,26 @@ mdefine_line|#define __LC_CURRENT&t;&t;&t;0xC90
 DECL|macro|__LC_INT_CLOCK
 mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xC98
 macro_line|#else /* __s390x__ */
+DECL|macro|__LC_IRB
+mdefine_line|#define __LC_IRB&t;&t;&t;0x210
+DECL|macro|__LC_SYNC_ENTER_TIMER
+mdefine_line|#define __LC_SYNC_ENTER_TIMER&t;&t;0x250
+DECL|macro|__LC_ASYNC_ENTER_TIMER
+mdefine_line|#define __LC_ASYNC_ENTER_TIMER&t;&t;0x258
+DECL|macro|__LC_EXIT_TIMER
+mdefine_line|#define __LC_EXIT_TIMER&t;&t;&t;0x260
+DECL|macro|__LC_LAST_UPDATE_TIMER
+mdefine_line|#define __LC_LAST_UPDATE_TIMER&t;&t;0x268
+DECL|macro|__LC_USER_TIMER
+mdefine_line|#define __LC_USER_TIMER&t;&t;&t;0x270
+DECL|macro|__LC_SYSTEM_TIMER
+mdefine_line|#define __LC_SYSTEM_TIMER&t;&t;0x278
+DECL|macro|__LC_LAST_UPDATE_CLOCK
+mdefine_line|#define __LC_LAST_UPDATE_CLOCK&t;&t;0x280
+DECL|macro|__LC_STEAL_CLOCK
+mdefine_line|#define __LC_STEAL_CLOCK&t;&t;0x288
+DECL|macro|__LC_DIAG44_OPCODE
+mdefine_line|#define __LC_DIAG44_OPCODE&t;&t;0x290
 DECL|macro|__LC_KERNEL_STACK
 mdefine_line|#define __LC_KERNEL_STACK               0xD40
 DECL|macro|__LC_THREAD_INFO
@@ -132,7 +166,7 @@ mdefine_line|#define __LC_JIFFY_TIMER&t;&t;0xDC0
 DECL|macro|__LC_CURRENT
 mdefine_line|#define __LC_CURRENT&t;&t;&t;0xDD8
 DECL|macro|__LC_INT_CLOCK
-mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xDe8
+mdefine_line|#define __LC_INT_CLOCK&t;&t;&t;0xDE8
 macro_line|#endif /* __s390x__ */
 DECL|macro|__LC_PANIC_MAGIC
 mdefine_line|#define __LC_PANIC_MAGIC                0xE00
@@ -504,16 +538,56 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* 0x208 */
+DECL|member|sync_enter_timer
+id|__u64
+id|sync_enter_timer
+suffix:semicolon
+multiline_comment|/* 0x248 */
+DECL|member|async_enter_timer
+id|__u64
+id|async_enter_timer
+suffix:semicolon
+multiline_comment|/* 0x250 */
+DECL|member|exit_timer
+id|__u64
+id|exit_timer
+suffix:semicolon
+multiline_comment|/* 0x258 */
+DECL|member|last_update_timer
+id|__u64
+id|last_update_timer
+suffix:semicolon
+multiline_comment|/* 0x260 */
+DECL|member|user_timer
+id|__u64
+id|user_timer
+suffix:semicolon
+multiline_comment|/* 0x268 */
+DECL|member|system_timer
+id|__u64
+id|system_timer
+suffix:semicolon
+multiline_comment|/* 0x270 */
+DECL|member|last_update_clock
+id|__u64
+id|last_update_clock
+suffix:semicolon
+multiline_comment|/* 0x278 */
+DECL|member|steal_clock
+id|__u64
+id|steal_clock
+suffix:semicolon
+multiline_comment|/* 0x280 */
 DECL|member|pad8
 id|__u8
 id|pad8
 (braket
 l_int|0xc00
 op_minus
-l_int|0x248
+l_int|0x288
 )braket
 suffix:semicolon
-multiline_comment|/* 0x248 */
+multiline_comment|/* 0x288 */
 multiline_comment|/* System info area */
 DECL|member|save_area
 id|__u32
@@ -876,19 +950,51 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* 0x210 */
+id|__u64
+id|sync_enter_timer
+suffix:semicolon
+multiline_comment|/* 0x250 */
+id|__u64
+id|async_enter_timer
+suffix:semicolon
+multiline_comment|/* 0x258 */
+id|__u64
+id|exit_timer
+suffix:semicolon
+multiline_comment|/* 0x260 */
+id|__u64
+id|last_update_timer
+suffix:semicolon
+multiline_comment|/* 0x268 */
+id|__u64
+id|user_timer
+suffix:semicolon
+multiline_comment|/* 0x270 */
+id|__u64
+id|system_timer
+suffix:semicolon
+multiline_comment|/* 0x278 */
+id|__u64
+id|last_update_clock
+suffix:semicolon
+multiline_comment|/* 0x280 */
+id|__u64
+id|steal_clock
+suffix:semicolon
+multiline_comment|/* 0x288 */
 id|__u32
 id|diag44_opcode
 suffix:semicolon
-multiline_comment|/* 0x250 */
+multiline_comment|/* 0x290 */
 id|__u8
 id|pad8
 (braket
 l_int|0xc00
 op_minus
-l_int|0x254
+l_int|0x294
 )braket
 suffix:semicolon
-multiline_comment|/* 0x254 */
+multiline_comment|/* 0x294 */
 multiline_comment|/* System info area */
 id|__u64
 id|save_area

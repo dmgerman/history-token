@@ -3057,7 +3057,11 @@ id|bulk_out_ep-&gt;desc.bEndpointAddress
 suffix:semicolon
 id|bfusb-&gt;bulk_pkt_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|bulk_out_ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|rwlock_init
 c_func

@@ -17,11 +17,6 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#ifndef bzero
-DECL|macro|bzero
-mdefine_line|#define bzero(d, n)&t;memset((d), 0, (n))
-macro_line|#endif
-multiline_comment|/*&n; *  General driver includes.&n; */
 macro_line|#include &quot;sym_conf.h&quot;
 macro_line|#include &quot;sym_defs.h&quot;
 macro_line|#include &quot;sym_misc.h&quot;
@@ -85,30 +80,6 @@ id|sym_ccb
 op_star
 id|ccb_p
 suffix:semicolon
-DECL|typedef|hcb_p
-r_typedef
-r_struct
-id|sym_hcb
-op_star
-id|hcb_p
-suffix:semicolon
-multiline_comment|/*&n; *  Define a reference to the O/S dependent IO request.&n; */
-DECL|typedef|cam_ccb_p
-r_typedef
-r_struct
-id|scsi_cmnd
-op_star
-id|cam_ccb_p
-suffix:semicolon
-multiline_comment|/* Generic */
-DECL|typedef|cam_scsiio_p
-r_typedef
-r_struct
-id|scsi_cmnd
-op_star
-id|cam_scsiio_p
-suffix:semicolon
-multiline_comment|/* SCSI I/O */
 multiline_comment|/*&n; *  IO functions definition for big/little endian CPU support.&n; *  For now, PCI chips are only supported in little endian addressing mode, &n; */
 macro_line|#ifdef&t;__BIG_ENDIAN
 DECL|macro|inw_l2b
@@ -793,7 +764,9 @@ r_void
 id|sym_xpt_async_nego_wide
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -812,7 +785,9 @@ r_void
 id|sym_set_cam_result_ok
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 id|ccb_p
@@ -858,7 +833,9 @@ r_void
 id|sym_set_cam_result_error
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 id|ccb_p
@@ -879,25 +856,15 @@ r_void
 id|sym_xpt_done
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|cam_ccb_p
+r_struct
+id|scsi_cmnd
+op_star
 id|ccb
-)paren
-suffix:semicolon
-r_void
-id|sym_xpt_done2
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-id|cam_ccb_p
-id|ccb
-comma
-r_int
-id|cam_status
 )paren
 suffix:semicolon
 r_void
@@ -911,7 +878,9 @@ r_void
 id|sym_xpt_async_bus_reset
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 suffix:semicolon
@@ -919,7 +888,9 @@ r_void
 id|sym_xpt_async_sent_bdr
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_int
@@ -929,10 +900,14 @@ suffix:semicolon
 r_int
 id|sym_setup_data_and_start
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
-id|cam_scsiio_p
+r_struct
+id|scsi_cmnd
+op_star
 id|csio
 comma
 id|ccb_p
@@ -943,7 +918,9 @@ r_void
 id|sym_log_bus_error
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 )paren
 suffix:semicolon
@@ -951,7 +928,9 @@ r_void
 id|sym_sniff_inquiry
 c_func
 (paren
-id|hcb_p
+r_struct
+id|sym_hcb
+op_star
 id|np
 comma
 r_struct

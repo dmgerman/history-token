@@ -540,15 +540,6 @@ suffix:semicolon
 macro_line|#else
 macro_line|#error &quot;You must build at least 1 IO scheduler into the kernel&quot;
 macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;elevator: using %s as default io scheduler&bslash;n&quot;
-comma
-id|chosen_elevator
-)paren
-suffix:semicolon
 )brace
 DECL|function|elevator_setup
 r_static
@@ -1937,9 +1928,33 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;io scheduler %s registered&bslash;n&quot;
+l_string|&quot;io scheduler %s registered&quot;
 comma
 id|e-&gt;elevator_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|e-&gt;elevator_name
+comma
+id|chosen_elevator
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; (default)&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

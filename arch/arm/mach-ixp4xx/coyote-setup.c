@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arm/mach-ixp4xx/coyote-setup.c&n; *&n; * Board setup for ADI Engineering and IXDGP425 boards&n; *&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;

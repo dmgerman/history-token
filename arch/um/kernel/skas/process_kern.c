@@ -18,6 +18,7 @@ macro_line|#include &quot;tlb.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
+macro_line|#include &quot;registers.h&quot;
 DECL|function|switch_to_skas
 r_void
 op_star
@@ -437,43 +438,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|memcpy
+id|init_thread_registers
 c_func
 (paren
-id|p-&gt;thread.regs.regs.skas.regs
-comma
-id|exec_regs
-comma
-r_sizeof
-(paren
-id|p-&gt;thread.regs.regs.skas.regs
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|p-&gt;thread.regs.regs.skas.fp
-comma
-id|exec_fp_regs
-comma
-r_sizeof
-(paren
-id|p-&gt;thread.regs.regs.skas.fp
-)paren
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|p-&gt;thread.regs.regs.skas.xfp
-comma
-id|exec_fpx_regs
-comma
-r_sizeof
-(paren
-id|p-&gt;thread.regs.regs.skas.xfp
-)paren
+op_amp
+id|p-&gt;thread.regs.regs
 )paren
 suffix:semicolon
 id|p-&gt;thread.request.u.thread

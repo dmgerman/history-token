@@ -219,5 +219,7 @@ DECL|macro|pte_free_tlb
 mdefine_line|#define pte_free_tlb(tlb,ptep)&t;&t;pte_free(ptep)
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(tlb,pmdp)&t;&t;pmd_free(pmdp)
+DECL|macro|tlb_migrate_finish
+mdefine_line|#define tlb_migrate_finish(mm)&t;&t;do { } while (0)
 macro_line|#endif
 eof

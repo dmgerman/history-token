@@ -73,12 +73,12 @@ macro_line|#ifdef CONFIG_IPV6_XFRM6_TUNNEL_DEBUG
 DECL|macro|XFRM6_TUNNEL_SPI_MAGIC
 macro_line|# define XFRM6_TUNNEL_SPI_MAGIC 0xdeadbeef
 macro_line|#endif
-DECL|variable|xfrm6_tunnel_spi_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|xfrm6_tunnel_spi_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|xfrm6_tunnel_spi
 r_static

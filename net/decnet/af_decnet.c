@@ -82,12 +82,12 @@ r_struct
 id|proto_ops
 id|dn_proto_ops
 suffix:semicolon
-DECL|variable|dn_hash_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dn_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dn_sk_hash
 r_static

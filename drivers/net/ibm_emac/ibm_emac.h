@@ -209,7 +209,7 @@ DECL|macro|EMAC_M1_JUMBO_ENABLE
 mdefine_line|#define EMAC_M1_JUMBO_ENABLE&t;&t;0x00001000
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_IBM_EMAC4 */
 DECL|macro|EMAC_M1_BASE
-mdefine_line|#define EMAC_M1_BASE&t;&t;&t;(EMAC_M1_TX_FIFO_2K | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_APP | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_TR)
+mdefine_line|#define EMAC_M1_BASE&t;&t;&t;(EMAC_M1_TX_FIFO_2K | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_APP | &bslash;&n;&t;&t;&t;&t;&t;EMAC_M1_TR | EMAC_M1_VLE)
 multiline_comment|/* Transmit Mode Register 0 */
 DECL|macro|EMAC_TMR0_GNP0
 mdefine_line|#define EMAC_TMR0_GNP0&t;&t;&t;0x80000000

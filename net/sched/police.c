@@ -48,12 +48,12 @@ id|MY_TAB_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Policer hash table lock */
-DECL|variable|police_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|police_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Each policer is serialized by its individual spinlock */
 DECL|function|tcf_police_hash
@@ -710,24 +710,14 @@ id|rta
 op_eq
 l_int|NULL
 op_logical_or
-id|rtattr_parse
+id|rtattr_parse_nested
 c_func
 (paren
 id|tb
 comma
 id|TCA_POLICE_MAX
 comma
-id|RTA_DATA
-c_func
-(paren
 id|rta
-)paren
-comma
-id|RTA_PAYLOAD
-c_func
-(paren
-id|rta
-)paren
 )paren
 OL
 l_int|0
@@ -1045,7 +1035,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* No failure allowed after this point */
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1221,7 +1211,7 @@ id|est
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -1994,24 +1984,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rtattr_parse
+id|rtattr_parse_nested
 c_func
 (paren
 id|tb
 comma
 id|TCA_POLICE_MAX
 comma
-id|RTA_DATA
-c_func
-(paren
 id|rta
-)paren
-comma
-id|RTA_PAYLOAD
-c_func
-(paren
-id|rta
-)paren
 )paren
 OL
 l_int|0

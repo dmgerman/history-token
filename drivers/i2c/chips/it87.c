@@ -2749,7 +2749,7 @@ id|address
 comma
 id|IT87_EXTENT
 comma
-id|name
+id|it87_driver.name
 )paren
 )paren
 r_goto

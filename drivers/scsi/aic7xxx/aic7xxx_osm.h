@@ -2251,19 +2251,6 @@ r_void
 macro_line|#endif
 multiline_comment|/******************************* PCI Routines *********************************/
 macro_line|#ifdef CONFIG_PCI
-r_void
-id|ahc_power_state_change
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-comma
-id|ahc_power_state
-id|new_state
-)paren
-suffix:semicolon
 r_int
 id|ahc_linux_pci_init
 c_func

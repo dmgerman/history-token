@@ -4374,18 +4374,24 @@ r_goto
 id|repeat
 suffix:semicolon
 )brace
-r_else
-(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: too big for kernel.  Assuming maximum 2Tb&bslash;n&quot;
+l_string|&quot;%s: too big for this kernel.  Use a &quot;
+l_string|&quot;kernel compiled with support for large block &quot;
+l_string|&quot;devices.&bslash;n&quot;
 comma
 id|diskname
 )paren
 suffix:semicolon
-)brace
+id|sdkp-&gt;capacity
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|got_data
+suffix:semicolon
 )brace
 id|sdkp-&gt;capacity
 op_assign

@@ -67,12 +67,12 @@ DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
 multiline_comment|/* Use lock to serialize, so printks don&squot;t overlap */
-DECL|variable|log_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|log_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* One level of recursion won&squot;t kill us */
 DECL|function|dump_packet

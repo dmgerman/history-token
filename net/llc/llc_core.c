@@ -15,10 +15,11 @@ id|llc_sap_list
 )paren
 suffix:semicolon
 DECL|variable|llc_sap_list_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|llc_sap_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|llc_station_mac_sa
 r_int

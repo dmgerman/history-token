@@ -198,12 +198,12 @@ op_assign
 id|MLD2_ALL_MCR_INIT
 suffix:semicolon
 multiline_comment|/* Big mc list lock for all the sockets */
-DECL|variable|ipv6_sk_mc_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipv6_sk_mc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|igmp6_socket
 r_static

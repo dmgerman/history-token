@@ -584,6 +584,7 @@ id|alignment
 comma
 r_int
 r_int
+r_int
 op_star
 id|size
 )paren
@@ -999,7 +1000,9 @@ id|time_t
 op_star
 id|mtime_out
 comma
-id|__u64
+r_int
+r_int
+r_int
 op_star
 id|size_out
 comma
@@ -1498,7 +1501,9 @@ op_star
 id|data_offset_out
 )paren
 (brace
-id|__u64
+r_int
+r_int
+r_int
 id|size
 comma
 id|offset

@@ -15,12 +15,12 @@ c_func
 id|snap_list
 )paren
 suffix:semicolon
-DECL|variable|snap_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|snap_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|snap_sap
 r_static

@@ -2757,9 +2757,17 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;uss720: probe: vendor id 0x%x, device id 0x%x&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* our known interfaces have 3 alternate settings */

@@ -419,7 +419,7 @@ id|pr
 op_assign
 id|processors
 (braket
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
@@ -2694,7 +2694,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;active state:            C%d&bslash;n&quot;
+l_string|&quot;active state:            C%zd&bslash;n&quot;
 l_string|&quot;max_cstate:              C%d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
@@ -2709,6 +2709,9 @@ l_int|0
 comma
 id|max_cstate
 comma
+(paren
+r_int
+)paren
 id|pr-&gt;power.bm_activity
 )paren
 suffix:semicolon
@@ -2861,7 +2864,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;promotion[C%d] &quot;
+l_string|&quot;promotion[C%zd] &quot;
 comma
 (paren
 id|pr-&gt;power.states
@@ -2899,7 +2902,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;demotion[C%d] &quot;
+l_string|&quot;demotion[C%zd] &quot;
 comma
 (paren
 id|pr-&gt;power.states

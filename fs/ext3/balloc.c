@@ -5443,6 +5443,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ext3_group_sparse
+r_static
 r_int
 id|ext3_group_sparse
 c_func

@@ -34,10 +34,11 @@ id|atalk_sockets
 )paren
 suffix:semicolon
 DECL|variable|atalk_sockets_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_sockets_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__atalk_insert_socket
 r_static
@@ -509,10 +510,11 @@ op_star
 id|atalk_routes
 suffix:semicolon
 DECL|variable|atalk_routes_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_routes_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|atalk_interfaces
 r_struct
@@ -521,10 +523,11 @@ op_star
 id|atalk_interfaces
 suffix:semicolon
 DECL|variable|atalk_interfaces_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|atalk_interfaces_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* For probing devices or in a routerless network */
 DECL|variable|atrtr_default

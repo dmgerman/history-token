@@ -25,12 +25,12 @@ l_string|&quot;iptables rate limit match&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The algorithm used is the Simple Token Bucket Filter (TBF)&n; * see net/sched/sch_tbf.c in the linux source tree&n; */
-DECL|variable|limit_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|limit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Rusty: This is my (non-mathematically-inclined) understanding of&n;   this algorithm.  The `average rate&squot; in jiffies becomes your initial&n;   amount of credit `credit&squot; and the most credit you can ever have&n;   `credit_cap&squot;.  The `peak rate&squot; becomes the cost of passing the&n;   test, `cost&squot;.&n;&n;   `prev&squot; tracks the last packet hit: you gain one credit per jiffy.&n;   If you get credit balance more than this, the extra credit is&n;   discarded.  Every time the match passes, you lose `cost&squot; credits;&n;   if you don&squot;t have that many, the test fails.&n;&n;   See Alexey&squot;s formal explanation in net/sched/sch_tbf.c.&n;&n;   To get the maxmum range, we multiply by this factor (ie. you get N&n;   credits per jiffy).  We want to allow a rate as low as 1 per day&n;   (slowest userspace tool allows), which means&n;   CREDITS_PER_JIFFY*HZ*60*60*24 &lt; 2^32. ie. */
 DECL|macro|MAX_CPJ

@@ -122,12 +122,12 @@ id|decnet_address
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|dndev_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dndev_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|decnet_default_device
 r_static

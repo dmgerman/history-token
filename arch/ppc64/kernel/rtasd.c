@@ -1872,7 +1872,6 @@ id|systemcfg-&gt;platform
 op_amp
 id|PLATFORM_PSERIES
 )paren
-suffix:semicolon
 id|printk
 c_func
 (paren

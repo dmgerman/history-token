@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
-macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 DECL|variable|__initdata
@@ -242,7 +241,7 @@ c_func
 r_void
 )paren
 (brace
-id|s3c2410_init_irq
+id|s3c24xx_init_irq
 c_func
 (paren
 )paren
@@ -291,7 +290,7 @@ dot
 id|timer
 op_assign
 op_amp
-id|s3c2410_timer
+id|s3c24xx_timer
 comma
 id|MACHINE_END
 eof

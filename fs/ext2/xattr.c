@@ -229,37 +229,6 @@ r_return
 id|handler
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: don&squot;t care&n; */
-id|ssize_t
-DECL|function|ext2_listxattr
-id|ext2_listxattr
-c_func
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|size
-)paren
-(brace
-r_return
-id|ext2_xattr_list
-c_func
-(paren
-id|dentry-&gt;d_inode
-comma
-id|buffer
-comma
-id|size
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * ext2_xattr_get()&n; *&n; * Copy an extended attribute into the buffer&n; * provided, or compute the buffer size required.&n; * Buffer is NULL to compute the size of the buffer required.&n; *&n; * Returns a negative error number on failure, or the number of bytes&n; * used / required on success.&n; */
 r_int
 DECL|function|ext2_xattr_get
@@ -811,6 +780,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ext2_xattr_list()&n; *&n; * Copy a list of attribute names into the buffer&n; * provided, or compute the buffer size required.&n; * Buffer is NULL to compute the size of the buffer required.&n; *&n; * Returns a negative error number on failure, or the number of bytes&n; * used / required on success.&n; */
+r_static
 r_int
 DECL|function|ext2_xattr_list
 id|ext2_xattr_list
@@ -1239,6 +1209,37 @@ id|xattr_sem
 suffix:semicolon
 r_return
 id|error
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Inode operation listxattr()&n; *&n; * dentry-&gt;d_inode-&gt;i_sem: don&squot;t care&n; */
+id|ssize_t
+DECL|function|ext2_listxattr
+id|ext2_listxattr
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+comma
+r_char
+op_star
+id|buffer
+comma
+r_int
+id|size
+)paren
+(brace
+r_return
+id|ext2_xattr_list
+c_func
+(paren
+id|dentry-&gt;d_inode
+comma
+id|buffer
+comma
+id|size
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If the EXT2_FEATURE_COMPAT_EXT_ATTR feature of this file system is&n; * not set, set it.&n; */

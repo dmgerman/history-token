@@ -338,11 +338,11 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|le16_to_cpus
+id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|endpoint-&gt;desc.wMaxPacketSize
+id|endpoint-&gt;urb_list
 )paren
 suffix:semicolon
 multiline_comment|/* Skip over any Class Specific or Vendor Specific descriptors;&n;&t; * find the next endpoint or interface descriptor */
@@ -1489,9 +1489,13 @@ id|buffer
 suffix:semicolon
 id|config-&gt;desc.wTotalLength
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|buffer2
 op_minus
 id|buffer0
+)paren
 suffix:semicolon
 r_if
 c_cond

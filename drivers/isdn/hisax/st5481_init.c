@@ -146,9 +146,17 @@ c_func
 id|KERN_INFO
 l_string|&quot;st541: found adapter VendorId %04x, ProductId %04x, LEDs %d&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;descriptor.idProduct
+)paren
 comma
 id|number_of_leds
 )paren
