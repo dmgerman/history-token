@@ -2,6 +2,7 @@ multiline_comment|/* &n; * osd.h&n; *&n; * Copyright (C) 2001 Ralph  Metzler &lt
 macro_line|#ifndef _DVBOSD_H_
 DECL|macro|_DVBOSD_H_
 mdefine_line|#define _DVBOSD_H_
+macro_line|#include &lt;linux/compiler.h&gt;
 r_typedef
 r_enum
 (brace
