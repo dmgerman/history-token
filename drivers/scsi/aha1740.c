@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; */
+multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; *&n; * Reworked for new_eh and new locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -78,6 +78,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|aha1740_proc_info
+r_static
 r_int
 id|aha1740_proc_info
 c_func
@@ -236,6 +237,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|aha1740_makecode
+r_static
 r_int
 id|aha1740_makecode
 c_func
@@ -544,6 +546,7 @@ l_int|16
 suffix:semicolon
 )brace
 DECL|function|aha1740_test_port
+r_static
 r_int
 id|aha1740_test_port
 c_func
@@ -764,6 +767,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* A &quot;high&quot; level interrupt handler */
 DECL|function|aha1740_intr_handle
+r_static
 r_void
 id|aha1740_intr_handle
 c_func
@@ -1259,6 +1263,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|aha1740_queuecommand
+r_static
 r_int
 id|aha1740_queuecommand
 c_func
@@ -1341,29 +1346,6 @@ op_eq
 id|REQUEST_SENSE
 )paren
 (brace
-macro_line|#if 0
-multiline_comment|/* scsi_request_sense() provides a buffer of size 256,&n;&t;   so there is no reason to expect equality */
-r_if
-c_cond
-(paren
-id|bufflen
-op_ne
-r_sizeof
-(paren
-id|SCpnt-&gt;sense_buffer
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Wrong buffer length supplied for request sense (%d)&bslash;n&quot;
-comma
-id|bufflen
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;
 id|SCpnt-&gt;result
 op_assign
 l_int|0
@@ -2333,6 +2315,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|aha1740_command
+r_static
 r_int
 id|aha1740_command
 c_func
@@ -2378,6 +2361,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Query the board for its irq_level.  Nothing else matters&n;   in enhanced mode on an EISA bus. */
 DECL|function|aha1740_getconfig
+r_static
 r_void
 id|aha1740_getconfig
 c_func
@@ -2478,6 +2462,7 @@ id|base
 suffix:semicolon
 )brace
 DECL|function|aha1740_detect
+r_static
 r_int
 id|aha1740_detect
 c_func
@@ -2642,6 +2627,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Configuring aha174x at IO:%x, IRQ %d&bslash;n&quot;
 comma
 id|slotbase
@@ -2652,6 +2638,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;aha174x: Extended translation %sabled.&bslash;n&quot;
 comma
 id|translation
@@ -2803,61 +2790,8 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* Note:  They following two functions do not apply very well to the Adaptec,&n;   which basically manages its own affairs quite well without our interference,&n;   so I haven&squot;t put anything into them.  I can faintly imagine someone with a&n;   *very* badly behaved SCSI target (perhaps an old tape?) wanting the abort(),&n;   but it hasn&squot;t happened yet, and doing aborts brings the Adaptec to its&n;   knees.  I cannot (at this moment in time) think of any reason to reset the&n;   card once it&squot;s running.  So there. */
-DECL|function|aha1740_abort
-r_int
-id|aha1740_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-id|DEB
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;aha1740_abort called&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-id|SCSI_ABORT_SNOOZE
-suffix:semicolon
-)brace
-multiline_comment|/* We do not implement a reset function here, but the upper level code assumes&n;   that it will get some kind of response for the command in SCpnt.  We must&n;   oblige, or the command will hang the scsi system */
-DECL|function|aha1740_reset
-r_int
-id|aha1740_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-comma
-r_int
-r_int
-id|ignored
-)paren
-(brace
-id|DEB
-c_func
-(paren
-id|printk
-c_func
-(paren
-l_string|&quot;aha1740_reset called&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-id|SCSI_RESET_PUNT
-suffix:semicolon
-)brace
 DECL|function|aha1740_biosparam
+r_static
 r_int
 id|aha1740_biosparam
 c_func

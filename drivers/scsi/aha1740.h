@@ -3,9 +3,9 @@ multiline_comment|/* $Id$&n; *&n; * Header file for the adaptec 1740 driver for 
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Eisa Enhanced mode operation - slot locating and addressing */
 DECL|macro|MINEISA
-mdefine_line|#define MINEISA 1   /* I don&squot;t have an EISA Spec to know these ranges, so I */
+mdefine_line|#define MINEISA 1&t;&t;/* I don&squot;t have an EISA Spec to know these ranges, so I */
 DECL|macro|MAXEISA
-mdefine_line|#define MAXEISA 8   /* Just took my machine&squot;s specifications.  Adjust to fit.*/
+mdefine_line|#define MAXEISA 8&t;&t;/* Just took my machine&squot;s specifications.  Adjust to fit. */
 multiline_comment|/* I just saw an ad, and bumped this from 6 to 8 */
 DECL|macro|SLOTBASE
 mdefine_line|#define&t;SLOTBASE(x)&t;((x &lt;&lt; 12) + 0xc80)
@@ -107,11 +107,11 @@ mdefine_line|#define&t;ATTN_START&t;0x40&t;/* Start CCB */
 DECL|macro|ATTN_ABORT
 mdefine_line|#define&t;ATTN_ABORT&t;0x50&t;/* Abort CCB */
 DECL|macro|G2CNTRL_HRST
-mdefine_line|#define G2CNTRL_HRST&t;0x80&t;&t;/* Hard Reset */
+mdefine_line|#define G2CNTRL_HRST&t;0x80&t;/* Hard Reset */
 DECL|macro|G2CNTRL_IRST
-mdefine_line|#define G2CNTRL_IRST&t;0x40&t;&t;/* Clear EISA Interrupt */
+mdefine_line|#define G2CNTRL_IRST&t;0x40&t;/* Clear EISA Interrupt */
 DECL|macro|G2CNTRL_HRDY
-mdefine_line|#define G2CNTRL_HRDY&t;0x20&t;&t;/* Sets HOST ready */
+mdefine_line|#define G2CNTRL_HRDY&t;0x20&t;/* Sets HOST ready */
 multiline_comment|/* This is used with scatter-gather */
 DECL|struct|aha1740_chain
 r_struct
@@ -380,6 +380,7 @@ DECL|macro|AHA1740CMD_RINQ
 mdefine_line|#define AHA1740CMD_RINQ  0x0a&t;/* Read Host Adapter Inquiry Data */
 DECL|macro|AHA1740CMD_TARG
 mdefine_line|#define AHA1740CMD_TARG  0x10&t;/* Target SCSI Command */
+r_static
 r_int
 id|aha1740_detect
 c_func
@@ -388,6 +389,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1740_command
 c_func
@@ -396,6 +398,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1740_queuecommand
 c_func
@@ -414,25 +417,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_int
-id|aha1740_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
-id|aha1740_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
+r_static
 r_int
 id|aha1740_biosparam
 c_func
@@ -451,6 +436,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|aha1740_proc_info
 c_func
@@ -483,11 +469,7 @@ DECL|macro|AHA1740_SCATTER
 mdefine_line|#define AHA1740_SCATTER 16
 DECL|macro|AHA1740_CMDLUN
 mdefine_line|#define AHA1740_CMDLUN 1
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 DECL|macro|AHA1740
-mdefine_line|#define AHA1740 {  proc_name:      &quot;aha1740&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;   proc_info:      aha1740_proc_info,&t;                &bslash;&n;&t;&t;   name:           &quot;Adaptec 174x (EISA)&quot;,&t;&t;&bslash;&n;&t;&t;   detect:         aha1740_detect,&t;&t;&t;&bslash;&n;&t;&t;   command:        aha1740_command,&t;&t;&t;&bslash;&n;&t;&t;   queuecommand:   aha1740_queuecommand,&t;&t;&bslash;&n;&t;&t;   abort:          aha1740_abort,&t;&t;&t;&bslash;&n;&t;&t;   reset:          aha1740_reset,&t;&t;&t;&bslash;&n;&t;&t;   bios_param:     aha1740_biosparam,                   &bslash;&n;&t;&t;   can_queue:      AHA1740_ECBS, &t;&t;&t;&bslash;&n;&t;&t;   this_id:        7, &t;&t;&t;&t;&t;&bslash;&n;&t;&t;   sg_tablesize:   AHA1740_SCATTER, &t;&t;&t;&bslash;&n;&t;&t;   cmd_per_lun:    AHA1740_CMDLUN, &t;&t;&t;&bslash;&n;&t;&t;   use_clustering: ENABLE_CLUSTERING}
+mdefine_line|#define AHA1740 {  proc_name:      &quot;aha1740&quot;,&t;&t;&t;&t;&bslash;&n;&t;&t;   proc_info:      aha1740_proc_info,&t;                &bslash;&n;&t;&t;   name:           &quot;Adaptec 174x (EISA)&quot;,&t;&t;&bslash;&n;&t;&t;   detect:         aha1740_detect,&t;&t;&t;&bslash;&n;&t;&t;   command:        aha1740_command,&t;&t;&t;&bslash;&n;&t;&t;   queuecommand:   aha1740_queuecommand,&t;&t;&bslash;&n;&t;&t;   bios_param:     aha1740_biosparam,                   &bslash;&n;&t;&t;   can_queue:      AHA1740_ECBS, &t;&t;&t;&bslash;&n;&t;&t;   this_id:        7, &t;&t;&t;&t;&t;&bslash;&n;&t;&t;   sg_tablesize:   AHA1740_SCATTER, &t;&t;&t;&bslash;&n;&t;&t;   cmd_per_lun:    AHA1740_CMDLUN, &t;&t;&t;&bslash;&n;&t;&t;   use_clustering: ENABLE_CLUSTERING}
 macro_line|#endif
 eof
