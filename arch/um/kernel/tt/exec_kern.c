@@ -143,7 +143,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;processor
+id|current-&gt;thread_info-&gt;cpu
 op_eq
 l_int|0
 )paren
@@ -170,7 +170,7 @@ c_func
 r_int
 r_int
 )paren
-id|current
+id|current-&gt;thread_info
 )paren
 suffix:semicolon
 id|os_usr1_process
@@ -218,7 +218,7 @@ c_func
 r_int
 r_int
 )paren
-id|current
+id|current-&gt;thread_info
 )paren
 suffix:semicolon
 id|force_flush_all

@@ -1,0 +1,75 @@
+multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &quot;linux/init.h&quot;
+macro_line|#include &quot;linux/config.h&quot;
+macro_line|#include &quot;mconsole_kern.h&quot;
+macro_line|#ifdef CONFIG_MCONSOLE
+r_extern
+r_int
+id|gdb_config
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|gdb_remove
+c_func
+(paren
+r_char
+op_star
+id|unused
+)paren
+suffix:semicolon
+DECL|variable|gdb_mc
+r_static
+r_struct
+id|mc_device
+id|gdb_mc
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;gdb&quot;
+comma
+id|config
+suffix:colon
+id|gdb_config
+comma
+id|remove
+suffix:colon
+id|gdb_remove
+comma
+)brace
+suffix:semicolon
+DECL|function|gdb_mc_init
+r_int
+id|gdb_mc_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|mconsole_register_dev
+c_func
+(paren
+op_amp
+id|gdb_mc
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|gdb_mc_init
+id|__initcall
+c_func
+(paren
+id|gdb_mc_init
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
+eof

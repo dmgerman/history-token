@@ -545,7 +545,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|tracing_cb
+id|initial_thread_cb
 c_func
 (paren
 id|update_debugregs_cb

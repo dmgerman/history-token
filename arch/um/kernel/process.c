@@ -17,9 +17,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#ifdef PROFILING
-macro_line|#include &lt;sys/gmon.h&gt;
-macro_line|#endif
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user.h&quot;
@@ -29,14 +26,19 @@ macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
-macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
-DECL|function|init_new_thread
+macro_line|#include &quot;uml-config.h&quot;
+macro_line|#include &quot;choose-mode.h&quot;
+macro_line|#include &quot;mode.h&quot;
+macro_line|#ifdef CONFIG_MODE_SKAS
+macro_line|#include &quot;skas_ptrace.h&quot;
+macro_line|#endif
+DECL|function|init_new_thread_stack
 r_void
-id|init_new_thread
+id|init_new_thread_stack
 c_func
 (paren
 r_void
@@ -84,6 +86,46 @@ op_assign
 id|SA_ONSTACK
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|usr1_handler
+)paren
+(brace
+id|set_handler
+c_func
+(paren
+id|SIGUSR1
+comma
+id|usr1_handler
+comma
+id|flags
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|init_new_thread_signals
+r_void
+id|init_new_thread_signals
+c_func
+(paren
+r_int
+id|altstack
+)paren
+(brace
+r_int
+id|flags
+op_assign
+id|altstack
+ques
+c_cond
+id|SA_ONSTACK
+suffix:colon
+l_int|0
+suffix:semicolon
 id|set_handler
 c_func
 (paren
@@ -258,32 +300,25 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
 (paren
-id|usr1_handler
+r_void
 )paren
-(brace
-id|set_handler
+id|CHOOSE_MODE
 c_func
 (paren
-id|SIGUSR1
-comma
-id|usr1_handler
-comma
-id|flags
-comma
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|signal
 c_func
 (paren
 id|SIGCHLD
 comma
 id|SIG_IGN
+)paren
+comma
+(paren
+r_void
+op_star
+)paren
+l_int|0
 )paren
 suffix:semicolon
 id|signal
@@ -297,9 +332,7 @@ suffix:semicolon
 id|init_irq_signals
 c_func
 (paren
-id|sig_stack
-op_ne
-l_int|NULL
+id|altstack
 )paren
 suffix:semicolon
 )brace
@@ -647,149 +680,6 @@ id|panic
 c_func
 (paren
 l_string|&quot;ptrace failed in trace_myself&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|attach_process
-r_void
-id|attach_process
-c_func
-(paren
-r_int
-id|pid
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|ptrace
-c_func
-(paren
-id|PTRACE_ATTACH
-comma
-id|pid
-comma
-l_int|0
-comma
-l_int|0
-)paren
-OL
-l_int|0
-)paren
-op_logical_or
-(paren
-id|ptrace
-c_func
-(paren
-id|PTRACE_CONT
-comma
-id|pid
-comma
-l_int|0
-comma
-l_int|0
-)paren
-OL
-l_int|0
-)paren
-)paren
-(brace
-id|tracer_panic
-c_func
-(paren
-l_string|&quot;OP_FORK failed to attach pid&quot;
-)paren
-suffix:semicolon
-)brace
-id|wait_for_stop
-c_func
-(paren
-id|pid
-comma
-id|SIGSTOP
-comma
-id|PTRACE_CONT
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ptrace
-c_func
-(paren
-id|PTRACE_CONT
-comma
-id|pid
-comma
-l_int|0
-comma
-l_int|0
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|tracer_panic
-c_func
-(paren
-l_string|&quot;OP_FORK failed to continue process&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|tracer_panic
-r_void
-id|tracer_panic
-c_func
-(paren
-r_char
-op_star
-id|format
-comma
-dot
-dot
-dot
-)paren
-(brace
-id|va_list
-id|ap
-suffix:semicolon
-id|va_start
-c_func
-(paren
-id|ap
-comma
-id|format
-)paren
-suffix:semicolon
-id|vprintf
-c_func
-(paren
-id|format
-comma
-id|ap
-)paren
-suffix:semicolon
-id|printf
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-id|sleep
-c_func
-(paren
-l_int|10
 )paren
 suffix:semicolon
 )brace

@@ -68,14 +68,14 @@ r_if
 c_cond
 (paren
 (paren
-id|current-&gt;thread.extern_pid
+id|current-&gt;thread.mode.tt.extern_pid
 op_ne
 op_minus
 l_int|1
 )paren
 op_logical_and
 (paren
-id|current-&gt;thread.extern_pid
+id|current-&gt;thread.mode.tt.extern_pid
 op_ne
 id|os_getpid
 c_func
@@ -256,7 +256,7 @@ id|npte
 (brace
 id|err
 op_assign
-id|unmap
+id|os_unmap_memory
 c_func
 (paren
 (paren
@@ -297,7 +297,7 @@ id|npte
 )paren
 )paren
 (brace
-id|map
+id|map_memory
 c_func
 (paren
 id|addr
@@ -334,7 +334,7 @@ id|npte
 )paren
 )paren
 (brace
-id|protect
+id|protect_memory
 c_func
 (paren
 id|addr
@@ -383,7 +383,7 @@ id|npmd
 (brace
 id|err
 op_assign
-id|unmap
+id|os_unmap_memory
 c_func
 (paren
 (paren
@@ -567,7 +567,7 @@ l_int|1
 suffix:semicolon
 id|err
 op_assign
-id|unmap
+id|os_unmap_memory
 c_func
 (paren
 (paren
@@ -608,7 +608,7 @@ id|pte
 )paren
 )paren
 (brace
-id|map
+id|map_memory
 c_func
 (paren
 id|addr
@@ -649,7 +649,7 @@ id|updated
 op_assign
 l_int|1
 suffix:semicolon
-id|protect
+id|protect_memory
 c_func
 (paren
 id|addr
@@ -690,7 +690,7 @@ l_int|1
 suffix:semicolon
 id|err
 op_assign
-id|unmap
+id|os_unmap_memory
 c_func
 (paren
 (paren
@@ -791,7 +791,7 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|protect
+id|protect_memory
 c_func
 (paren
 id|addr
@@ -1151,7 +1151,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;thread.vm_seq
+id|current-&gt;thread.mode.tt.vm_seq
 op_eq
 id|seq
 )paren
@@ -1159,7 +1159,7 @@ id|seq
 r_return
 suffix:semicolon
 )brace
-id|current-&gt;thread.vm_seq
+id|current-&gt;thread.mode.tt.vm_seq
 op_assign
 id|seq
 suffix:semicolon

@@ -21,6 +21,8 @@ macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;init.h&quot;
+macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;mode_kern.h&quot;
 multiline_comment|/* Changed during early boot */
 DECL|variable|swapper_pg_dir
 id|pgd_t
@@ -145,7 +147,7 @@ op_star
 id|unused
 )paren
 (brace
-id|map
+id|map_memory
 c_func
 (paren
 id|brk_end
@@ -176,7 +178,7 @@ c_func
 r_void
 )paren
 (brace
-id|unmap
+id|os_unmap_memory
 c_func
 (paren
 (paren
@@ -253,7 +255,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ROUND_UP
+id|UML_ROUND_UP
 c_func
 (paren
 id|sbrk
@@ -269,7 +271,7 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-id|tracing_cb
+id|initial_thread_cb
 c_func
 (paren
 id|map_cb
@@ -313,7 +315,7 @@ op_ne
 id|start
 )paren
 (brace
-id|map
+id|map_memory
 c_func
 (paren
 id|uml_physmem
@@ -391,6 +393,62 @@ suffix:semicolon
 id|kmalloc_ok
 op_assign
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Changed during early boot */
+DECL|variable|kmem_top
+r_static
+r_int
+r_int
+id|kmem_top
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|get_kmem_end
+r_int
+r_int
+id|get_kmem_end
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|kmem_top
+op_eq
+l_int|0
+)paren
+(brace
+id|kmem_top
+op_assign
+id|CHOOSE_MODE
+c_func
+(paren
+id|kmem_end_tt
+comma
+id|kmem_end_skas
+)paren
+suffix:semicolon
+)brace
+r_return
+id|kmem_top
+suffix:semicolon
+)brace
+DECL|function|set_kmem_end
+r_void
+id|set_kmem_end
+c_func
+(paren
+r_int
+r_int
+r_new
+)paren
+(brace
+id|kmem_top
+op_assign
+r_new
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_HIGHMEM
@@ -1874,58 +1932,6 @@ id|cached
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Changed during early boot */
-DECL|variable|kmem_top
-r_static
-r_int
-r_int
-id|kmem_top
-op_assign
-l_int|0
-suffix:semicolon
-DECL|function|get_kmem_end
-r_int
-r_int
-id|get_kmem_end
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|kmem_top
-op_eq
-l_int|0
-)paren
-(brace
-id|kmem_top
-op_assign
-id|host_task_size
-op_minus
-id|ABOVE_KMEM
-suffix:semicolon
-)brace
-r_return
-id|kmem_top
-suffix:semicolon
-)brace
-DECL|function|set_kmem_end
-r_void
-id|set_kmem_end
-c_func
-(paren
-r_int
-r_int
-r_new
-)paren
-(brace
-id|kmem_top
-op_assign
-r_new
-suffix:semicolon
-)brace
 DECL|function|uml_mem_setup
 r_static
 r_int
@@ -2611,7 +2617,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ROUND_UP
+id|UML_ROUND_UP
 c_func
 (paren
 id|this-&gt;end
@@ -2880,6 +2886,7 @@ comma
 r_int
 id|fd
 comma
+r_int
 r_int
 id|size
 )paren

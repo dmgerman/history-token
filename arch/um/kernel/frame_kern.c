@@ -227,7 +227,7 @@ op_star
 )paren
 id|sc
 comma
-id|regs-&gt;regs.sc
+id|regs-&gt;regs.mode.tt
 comma
 op_amp
 id|signal_frame_sc.arch
@@ -557,7 +557,7 @@ c_func
 (paren
 id|user_sc
 comma
-id|regs-&gt;regs.sc
+id|regs-&gt;regs.mode.tt
 comma
 op_amp
 id|signal_frame_sc.arch

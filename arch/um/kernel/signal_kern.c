@@ -739,7 +739,7 @@ id|current-&gt;thread.regs
 )paren
 )paren
 (brace
-id|current-&gt;thread.singlestep_syscall
+id|current-&gt;thread.mode.tt.singlestep_syscall
 op_assign
 l_int|1
 suffix:semicolon
@@ -1117,7 +1117,7 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
-id|current-&gt;thread.regs.regs.sc
+id|current-&gt;thread.regs.regs.mode.tt
 comma
 id|sc
 comma
@@ -1228,7 +1228,7 @@ suffix:semicolon
 id|copy_sc_from_user
 c_func
 (paren
-id|current-&gt;thread.regs.regs.sc
+id|current-&gt;thread.regs.regs.mode.tt
 comma
 id|sc
 comma
