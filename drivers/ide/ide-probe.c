@@ -598,6 +598,9 @@ id|drive-&gt;type
 op_assign
 id|type
 suffix:semicolon
+r_goto
+id|init_queue
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -683,6 +686,8 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+id|init_queue
+suffix:colon
 multiline_comment|/*&n;&t; * it&squot;s an ata drive, build command list&n;&t; */
 id|drive-&gt;queue_depth
 op_assign

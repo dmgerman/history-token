@@ -1720,7 +1720,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
+id|__devinit
 DECL|function|parse_eeprom
 id|parse_eeprom
 (paren
@@ -6427,7 +6429,9 @@ mdefine_line|#define EEP_READ 0x0200
 DECL|macro|EEP_BUSY
 mdefine_line|#define EEP_BUSY 0x8000
 multiline_comment|/* Read the EEPROM word */
+r_static
 r_int
+id|__devinit
 DECL|function|read_eeprom
 id|read_eeprom
 (paren

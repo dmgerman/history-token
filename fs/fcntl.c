@@ -326,6 +326,26 @@ op_amp
 id|files-&gt;file_lock
 )paren
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|orig_start
+op_ge
+id|current-&gt;rlim
+(braket
+id|RLIMIT_NOFILE
+)braket
+dot
+id|rlim_cur
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|repeat
 suffix:colon
 multiline_comment|/*&n;&t; * Someone might have closed fd&squot;s in the range&n;&t; * orig_start..files-&gt;next_fd&n;&t; */
