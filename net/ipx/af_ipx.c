@@ -6863,6 +6863,10 @@ id|sipx.sipx_type
 op_assign
 id|ipxs-&gt;type
 suffix:semicolon
+id|sipx.sipx_zero
+op_assign
+l_int|0
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -7748,6 +7752,10 @@ suffix:semicolon
 id|sipx-&gt;sipx_type
 op_assign
 id|ipx-&gt;ipx_type
+suffix:semicolon
+id|sipx-&gt;sipx_zero
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 id|rc

@@ -2861,6 +2861,28 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* Previously seen (loopback or untracked)?  Ignore. */
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|pskb
+)paren
+op_member_access_from_pointer
+id|nfct
+)paren
+(brace
+id|CONNTRACK_STAT_INC
+c_func
+(paren
+id|ignore
+)paren
+suffix:semicolon
+r_return
+id|NF_ACCEPT
+suffix:semicolon
+)brace
 multiline_comment|/* Never happen */
 r_if
 c_cond
@@ -3015,28 +3037,6 @@ id|pkt_type
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Previously seen (loopback or untracked)?  Ignore. */
-r_if
-c_cond
-(paren
-(paren
-op_star
-id|pskb
-)paren
-op_member_access_from_pointer
-id|nfct
-)paren
-(brace
-id|CONNTRACK_STAT_INC
-c_func
-(paren
-id|ignore
-)paren
-suffix:semicolon
-r_return
-id|NF_ACCEPT
-suffix:semicolon
-)brace
 id|proto
 op_assign
 id|ip_ct_find_proto

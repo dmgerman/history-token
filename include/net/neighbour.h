@@ -1,7 +1,7 @@
 macro_line|#ifndef _NET_NEIGHBOUR_H
 DECL|macro|_NET_NEIGHBOUR_H
 mdefine_line|#define _NET_NEIGHBOUR_H
-multiline_comment|/*&n; *&t;Generic neighbour manipulation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; */
+multiline_comment|/*&n; *&t;Generic neighbour manipulation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; * &t;Changes:&n; *&n; *&t;Harald Welte:&t;&t;&lt;laforge@gnumonks.org&gt;&n; *&t;&t;- Add neighbour cache statistics like rtstat&n; */
 multiline_comment|/* The following flags &amp; states are exported to user space,&n;   so that they should be moved to include/linux/ directory.&n; */
 multiline_comment|/*&n; *&t;Neighbor Cache Entry Flags&n; */
 DECL|macro|NTF_PROXY
@@ -164,23 +164,65 @@ r_int
 r_int
 id|allocs
 suffix:semicolon
+multiline_comment|/* number of allocated neighs */
+DECL|member|destroys
+r_int
+r_int
+id|destroys
+suffix:semicolon
+multiline_comment|/* number of destroyed neighs */
+DECL|member|hash_grows
+r_int
+r_int
+id|hash_grows
+suffix:semicolon
+multiline_comment|/* number of hash resizes */
 DECL|member|res_failed
 r_int
 r_int
 id|res_failed
 suffix:semicolon
+multiline_comment|/* nomber of failed resolutions */
+DECL|member|lookups
+r_int
+r_int
+id|lookups
+suffix:semicolon
+multiline_comment|/* number of lookups */
+DECL|member|hits
+r_int
+r_int
+id|hits
+suffix:semicolon
+multiline_comment|/* number of hits (among lookups) */
 DECL|member|rcv_probes_mcast
 r_int
 r_int
 id|rcv_probes_mcast
 suffix:semicolon
+multiline_comment|/* number of received mcast ipv6 */
 DECL|member|rcv_probes_ucast
 r_int
 r_int
 id|rcv_probes_ucast
 suffix:semicolon
+multiline_comment|/* number of received ucast ipv6 */
+DECL|member|periodic_gc_runs
+r_int
+r_int
+id|periodic_gc_runs
+suffix:semicolon
+multiline_comment|/* number of periodic GC runs */
+DECL|member|forced_gc_runs
+r_int
+r_int
+id|forced_gc_runs
+suffix:semicolon
+multiline_comment|/* number of forced GC runs */
 )brace
 suffix:semicolon
+DECL|macro|NEIGH_CACHE_STAT_INC
+mdefine_line|#define NEIGH_CACHE_STAT_INC(tbl, field)&t;&t;&t;&t;&bslash;&n;&t;&t;(per_cpu_ptr((tbl)-&gt;stats, smp_processor_id())-&gt;field++)
 DECL|struct|neighbour
 r_struct
 id|neighbour
@@ -616,6 +658,7 @@ suffix:semicolon
 DECL|member|stats
 r_struct
 id|neigh_statistics
+op_star
 id|stats
 suffix:semicolon
 DECL|member|hash_buckets
@@ -646,6 +689,14 @@ op_star
 op_star
 id|phash_buckets
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|member|pde
+r_struct
+id|proc_dir_entry
+op_star
+id|pde
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* flags for neigh_update() */
