@@ -2364,8 +2364,6 @@ id|map-&gt;police
 op_minus
 l_int|1
 )braket
-op_logical_and
-id|rate_tlv
 )paren
 (brace
 id|act
@@ -2423,8 +2421,6 @@ id|map-&gt;action
 op_minus
 l_int|1
 )braket
-op_logical_and
-id|rate_tlv
 )paren
 (brace
 id|act
@@ -2478,8 +2474,6 @@ id|map-&gt;police
 op_minus
 l_int|1
 )braket
-op_logical_and
-id|rate_tlv
 )paren
 (brace
 r_struct
