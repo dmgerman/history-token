@@ -6419,10 +6419,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|linux_num_cpus
-suffix:semicolon
 r_void
 (paren
 op_star
