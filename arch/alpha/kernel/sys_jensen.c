@@ -670,6 +670,25 @@ id|pci_controller
 op_star
 id|hose
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+r_static
+r_struct
+id|pci_dev
+id|fake_isa_bridge
+op_assign
+(brace
+id|dma_mask
+suffix:colon
+l_int|0xffffffffUL
+comma
+)brace
+suffix:semicolon
+id|isa_bridge
+op_assign
+op_amp
+id|fake_isa_bridge
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Create a hose so that we can report i/o base addresses to&n;&t;   userland.  */
 id|pci_isa_hose
 op_assign
@@ -791,9 +810,9 @@ op_assign
 id|jensen_machine_check
 comma
 dot
-id|max_dma_address
+id|max_isa_dma_address
 op_assign
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 dot
 id|rtc_port

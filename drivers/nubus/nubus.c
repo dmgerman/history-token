@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;Macintosh Nubus Interface Code&n; *&n; *      Originally by Alan Cox&n; *&n; *      Mostly rewritten by David Huggins-Daines, C. Scott Ananian,&n; *      and others.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -11,33 +11,6 @@ macro_line|#include &lt;rxrpc/connection.h&gt;
 macro_line|#include &lt;rxrpc/call.h&gt;
 macro_line|#include &lt;rxrpc/message.h&gt;
 macro_line|#include &quot;internal.h&quot;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-DECL|function|PDE
-r_static
-r_inline
-r_struct
-id|proc_dir_entry
-op_star
-id|PDE
-c_func
-(paren
-r_const
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|inode-&gt;u.generic_ip
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|variable|proc_rxrpc
 r_static
 r_struct
@@ -1584,7 +1557,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%5hu %08x %5d %5d %8ld %5u %7lu&bslash;n&quot;
+l_string|&quot;%5hu %08x %5d %5d %8ld %5Zu %7lu&bslash;n&quot;
 comma
 id|peer-&gt;trans-&gt;port
 comma
@@ -1612,6 +1585,9 @@ id|timeout
 comma
 id|peer-&gt;if_mtu
 comma
+(paren
+r_int
+)paren
 id|peer-&gt;rtt
 )paren
 suffix:semicolon
@@ -1967,7 +1943,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%5hu %08x %5hu %04hx %08x %-3.3s %08x %08x %5u %8ld&bslash;n&quot;
+l_string|&quot;%5hu %08x %5hu %04hx %08x %-3.3s %08x %08x %5Zu %8ld&bslash;n&quot;
 comma
 id|conn-&gt;trans-&gt;port
 comma

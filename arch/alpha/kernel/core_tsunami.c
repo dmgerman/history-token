@@ -16,7 +16,7 @@ macro_line|#undef __EXTERN_INLINE
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
-r_static
+multiline_comment|/* Save Tsunami configuration data as the console had it set up.  */
 r_struct
 (brace
 DECL|member|wsba
@@ -43,12 +43,19 @@ id|tba
 l_int|4
 )braket
 suffix:semicolon
-DECL|variable|saved_pchip
+DECL|variable|saved_config
 )brace
-id|saved_pchip
+id|saved_config
 (braket
 l_int|2
 )braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|common
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * NOTE: Herein lie back-to-back mb instructions.  They are magic. &n; * One plausible explanation is that the I/O controller does not properly&n; * handle the system transaction.  Another involves timing.  Ho hum.&n; */
 multiline_comment|/*&n; * BIOS32-style PCI interface:&n; */
@@ -1014,7 +1021,7 @@ id|index
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Save the existing PCI window translations.  SRM will &n;&t; * need them when we go to reboot.&n;&t; */
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1031,7 +1038,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1048,7 +1055,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1065,7 +1072,7 @@ l_int|0
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1082,7 +1089,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1099,7 +1106,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1116,7 +1123,7 @@ l_int|1
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1133,7 +1140,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1150,7 +1157,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1167,7 +1174,7 @@ l_int|2
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1184,7 +1191,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1201,7 +1208,7 @@ l_int|3
 dot
 id|csr
 suffix:semicolon
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1671,7 +1678,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1688,7 +1695,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1705,7 +1712,7 @@ l_int|0
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1722,7 +1729,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1739,7 +1746,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1756,7 +1763,7 @@ l_int|1
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1773,7 +1780,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1790,7 +1797,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1807,7 +1814,7 @@ l_int|2
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1824,7 +1831,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1841,7 +1848,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket
@@ -1858,7 +1865,7 @@ l_int|3
 dot
 id|csr
 op_assign
-id|saved_pchip
+id|saved_config
 (braket
 id|index
 )braket

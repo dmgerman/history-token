@@ -13,6 +13,12 @@ r_typedef
 r_struct
 id|scsi_cd
 (brace
+DECL|member|driver
+r_struct
+id|Scsi_Device_Template
+op_star
+id|driver
+suffix:semicolon
 DECL|member|capacity
 r_int
 id|capacity

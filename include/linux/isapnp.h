@@ -689,7 +689,7 @@ r_void
 r_return
 l_int|0
 suffix:semicolon
-)paren
+)brace
 macro_line|#endif
 multiline_comment|/* misc */
 r_void
@@ -719,6 +719,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* manager */
+DECL|function|isapnp_find_card
 r_static
 r_inline
 r_struct
@@ -745,6 +746,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|isapnp_find_dev
 r_static
 r_inline
 r_struct
@@ -776,6 +778,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|isapnp_probe_cards
 r_static
 r_inline
 r_int
@@ -812,6 +815,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_probe_devs
 r_static
 r_inline
 r_int
@@ -848,6 +852,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_activate_dev
 r_static
 r_inline
 r_int
@@ -870,6 +875,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_register_driver
 r_static
 r_inline
 r_int
@@ -886,6 +892,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|isapnp_unregister_driver
 r_static
 r_inline
 r_void
@@ -920,6 +927,7 @@ DECL|macro|isapnp_for_each_dev
 mdefine_line|#define isapnp_for_each_dev(dev) &bslash;&n;&t;for(dev = protocol_to_pnp_dev(isapnp_protocol.devices.next); dev != protocol_to_pnp_dev(&amp;isapnp_protocol.devices); dev = protocol_to_pnp_dev(dev-&gt;dev_list.next))
 macro_line|#else /* !CONFIG_ISAPNP */
 multiline_comment|/* lowlevel configuration */
+DECL|function|isapnp_present
 r_static
 r_inline
 r_int
@@ -933,6 +941,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|isapnp_cfg_begin
 r_static
 r_inline
 r_int
@@ -951,6 +960,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_cfg_end
 r_static
 r_inline
 r_int
@@ -965,6 +975,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_read_byte
 r_static
 r_inline
 r_int
@@ -981,6 +992,7 @@ r_return
 l_int|0xff
 suffix:semicolon
 )brace
+DECL|function|isapnp_read_word
 r_static
 r_inline
 r_int
@@ -997,6 +1009,7 @@ r_return
 l_int|0xffff
 suffix:semicolon
 )brace
+DECL|function|isapnp_read_dword
 r_static
 r_inline
 r_int
@@ -1013,6 +1026,7 @@ r_return
 l_int|0xffffffff
 suffix:semicolon
 )brace
+DECL|function|isapnp_write_byte
 r_static
 r_inline
 r_void
@@ -1030,6 +1044,7 @@ id|val
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_write_word
 r_static
 r_inline
 r_void
@@ -1047,6 +1062,7 @@ id|val
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_write_dword
 r_static
 r_inline
 r_void
@@ -1064,6 +1080,7 @@ id|val
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_wake
 r_static
 r_inline
 r_void
@@ -1077,6 +1094,7 @@ id|csn
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_device
 r_static
 r_inline
 r_void
@@ -1090,6 +1108,7 @@ id|device
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_activate
 r_static
 r_inline
 r_void
@@ -1103,6 +1122,7 @@ id|device
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_deactivate
 r_static
 r_inline
 r_void
@@ -1117,6 +1137,7 @@ id|device
 suffix:semicolon
 )brace
 multiline_comment|/* manager */
+DECL|function|isapnp_find_card
 r_static
 r_inline
 r_struct
@@ -1143,6 +1164,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|isapnp_find_dev
 r_static
 r_inline
 r_struct
@@ -1174,6 +1196,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|isapnp_probe_cards
 r_static
 r_inline
 r_int
@@ -1210,6 +1233,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_probe_devs
 r_static
 r_inline
 r_int
@@ -1246,6 +1270,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_resource_change
 r_static
 r_inline
 r_void
@@ -1268,6 +1293,7 @@ id|size
 (brace
 suffix:semicolon
 )brace
+DECL|function|isapnp_activate_dev
 r_static
 r_inline
 r_int
@@ -1290,6 +1316,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|isapnp_register_driver
 r_static
 r_inline
 r_int
@@ -1306,6 +1333,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|isapnp_unregister_driver
 r_static
 r_inline
 r_void

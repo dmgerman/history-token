@@ -664,7 +664,7 @@ id|bh
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * There are two policies for allocating an inode.  If the new inode is&n; * a directory, then a forward search is made for a block group with both&n; * free space and a low directory-to-inode ratio; if that fails, then of&n; * the groups with above-average free space, that group with the fewest&n; * directories already is chosen.&n; *&n; * For other inodes, search forward from the parent directory&bslash;&squot;s block&n; * group to find a free inode.&n; */
-macro_line|#if 0
+DECL|function|find_group_dir
 r_static
 r_int
 id|find_group_dir
@@ -675,8 +675,10 @@ id|super_block
 op_star
 id|sb
 comma
-r_int
-id|parent_group
+r_struct
+id|inode
+op_star
+id|parent
 )paren
 (brace
 r_struct
@@ -876,7 +878,6 @@ r_return
 id|best_group
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* &n; * Orlov&squot;s allocator for directories. &n; * &n; * We always try to spread first-level directories.&n; *&n; * If there are blockgroups with both free inodes and free blocks counts &n; * not worse than average we return one with smallest directory count. &n; * Otherwise we simply return a random group. &n; * &n; * For the rest rules look so: &n; * &n; * It&squot;s OK to put directory into a group unless &n; * it has too many directories already (max_dirs) or &n; * it has too few free inodes left (min_inodes) or &n; * it has too few free blocks left (min_blocks) or &n; * it&squot;s already running too large debt (max_debt). &n; * Parent&squot;s group is prefered, if it doesn&squot;t satisfy these &n; * conditions we search cyclically through the rest. If none &n; * of the groups look good we just look for a group with more &n; * free inodes than average (starting at parent&squot;s group). &n; * &n; * Debt is incremented each time we allocate a directory and decremented &n; * when we allocate an inode, within 0--255. &n; */
 DECL|macro|INODE_COST
 mdefine_line|#define INODE_COST 64
@@ -1002,9 +1003,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|parent
 op_eq
 id|sb-&gt;s_root-&gt;d_inode
+)paren
+op_logical_or
+(paren
+id|parent-&gt;i_flags
+op_amp
+id|EXT2_TOPDIR_FL
+)paren
 )paren
 (brace
 r_struct
@@ -1341,7 +1350,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sbi-&gt;debts
+id|sbi-&gt;s_debts
 (braket
 id|group
 )braket
@@ -1864,6 +1873,28 @@ c_func
 id|mode
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|test_opt
+(paren
+id|sb
+comma
+id|OLDALLOC
+)paren
+)paren
+id|group
+op_assign
+id|find_group_dir
+c_func
+(paren
+id|sb
+comma
+id|dir
+)paren
+suffix:semicolon
+r_else
 id|group
 op_assign
 id|find_group_orlov
@@ -1874,6 +1905,7 @@ comma
 id|dir
 )paren
 suffix:semicolon
+)brace
 r_else
 id|group
 op_assign
@@ -2090,7 +2122,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|debts
+id|s_debts
 (braket
 id|group
 )braket
@@ -2103,7 +2135,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|debts
+id|s_debts
 (braket
 id|group
 )braket
@@ -2121,7 +2153,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|debts
+id|s_debts
 (braket
 id|group
 )braket
@@ -2132,7 +2164,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|debts
+id|s_debts
 (braket
 id|group
 )braket

@@ -69,24 +69,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|dn_keyb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dn_dummy_kbdrate
-c_func
-(paren
-r_struct
-id|kbd_repeat
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|dn_init_IRQ
 c_func
@@ -206,20 +188,6 @@ c_func
 (paren
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dn_mksound
-c_func
-(paren
-r_int
-r_int
-id|count
-comma
-r_int
-r_int
-id|ticks
 )paren
 suffix:semicolon
 r_extern
@@ -785,16 +753,6 @@ op_assign
 id|dn_sched_init
 suffix:semicolon
 multiline_comment|/* */
-macro_line|#ifdef CONFIG_VT
-id|mach_keyb_init
-op_assign
-id|dn_keyb_init
-suffix:semicolon
-id|mach_kbdrate
-op_assign
-id|dn_dummy_kbdrate
-suffix:semicolon
-macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|dn_init_IRQ
@@ -865,12 +823,6 @@ id|conswitchp
 op_assign
 op_amp
 id|dummy_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|kd_mksound
-op_assign
-id|dn_mksound
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT

@@ -1,4 +1,4 @@
-multiline_comment|/* sun3xflop.h: Sun3/80 specific parts of the floppy driver.&n; *&n; * Derived partially from asm-sparc/floppy.h, which is:&n; *     Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * Sun3x version 2/4/2000 Sam Creasey (sammy@oh.verio.com)&n; */
+multiline_comment|/* sun3xflop.h: Sun3/80 specific parts of the floppy driver.&n; *&n; * Derived partially from asm-sparc/floppy.h, which is:&n; *     Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * Sun3x version 2/4/2000 Sam Creasey (sammy@sammy.net)&n; */
 macro_line|#ifndef __ASM_SUN3X_FLOPPY_H
 DECL|macro|__ASM_SUN3X_FLOPPY_H
 mdefine_line|#define __ASM_SUN3X_FLOPPY_H

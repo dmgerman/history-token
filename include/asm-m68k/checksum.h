@@ -48,8 +48,28 @@ op_star
 id|csum_err
 )paren
 suffix:semicolon
-DECL|macro|csum_partial_copy_nocheck
-mdefine_line|#define csum_partial_copy_nocheck(src, dst, len, sum)&t;&bslash;&n;&t;csum_partial_copy((src), (dst), (len), (sum))
+r_extern
+r_int
+r_int
+id|csum_partial_copy_nocheck
+c_func
+(paren
+r_const
+r_char
+op_star
+id|src
+comma
+r_char
+op_star
+id|dst
+comma
+r_int
+id|len
+comma
+r_int
+id|sum
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; */
 r_static
 r_inline

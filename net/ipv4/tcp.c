@@ -813,6 +813,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sock-&gt;fasync_list
+op_logical_and
 op_logical_neg
 (paren
 id|sk-&gt;shutdown
@@ -820,10 +822,10 @@ op_amp
 id|SEND_SHUTDOWN
 )paren
 )paren
-id|sk_wake_async
+id|sock_wake_async
 c_func
 (paren
-id|sk
+id|sock
 comma
 l_int|2
 comma

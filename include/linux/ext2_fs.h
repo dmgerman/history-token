@@ -239,12 +239,14 @@ DECL|macro|EXT2_NOTAIL_FL
 mdefine_line|#define EXT2_NOTAIL_FL&t;&t;&t;0x00008000 /* file tail should not be merged */
 DECL|macro|EXT2_DIRSYNC_FL
 mdefine_line|#define EXT2_DIRSYNC_FL&t;&t;&t;0x00010000 /* dirsync behaviour (directories only) */
+DECL|macro|EXT2_TOPDIR_FL
+mdefine_line|#define EXT2_TOPDIR_FL&t;&t;&t;0x00020000 /* Top of directory hierarchies*/
 DECL|macro|EXT2_RESERVED_FL
 mdefine_line|#define EXT2_RESERVED_FL&t;&t;0x80000000 /* reserved for ext2 lib */
 DECL|macro|EXT2_FL_USER_VISIBLE
-mdefine_line|#define EXT2_FL_USER_VISIBLE&t;&t;0x00011FFF /* User visible flags */
+mdefine_line|#define EXT2_FL_USER_VISIBLE&t;&t;0x0003DFFF /* User visible flags */
 DECL|macro|EXT2_FL_USER_MODIFIABLE
-mdefine_line|#define EXT2_FL_USER_MODIFIABLE&t;&t;0x000100FF /* User modifiable flags */
+mdefine_line|#define EXT2_FL_USER_MODIFIABLE&t;&t;0x000380FF /* User modifiable flags */
 multiline_comment|/*&n; * ioctl commands&n; */
 DECL|macro|EXT2_IOC_GETFLAGS
 mdefine_line|#define&t;EXT2_IOC_GETFLAGS&t;&t;_IOR(&squot;f&squot;, 1, long)
@@ -533,6 +535,8 @@ mdefine_line|#define&t;EXT2_ERROR_FS&t;&t;&t;0x0002&t;/* Errors detected */
 multiline_comment|/*&n; * Mount flags&n; */
 DECL|macro|EXT2_MOUNT_CHECK
 mdefine_line|#define EXT2_MOUNT_CHECK&t;&t;0x0001&t;/* Do mount-time checks */
+DECL|macro|EXT2_MOUNT_OLDALLOC
+mdefine_line|#define EXT2_MOUNT_OLDALLOC&t;&t;0x0002  /* Don&squot;t use the new Orlov allocator */
 DECL|macro|EXT2_MOUNT_GRPID
 mdefine_line|#define EXT2_MOUNT_GRPID&t;&t;0x0004&t;/* Create files with directory&squot;s group */
 DECL|macro|EXT2_MOUNT_DEBUG

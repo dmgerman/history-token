@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -225,6 +225,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Ps_get_next_package_end&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Function below changes Parser_state-&gt;Aml */
 id|length
 op_assign
 (paren
@@ -328,7 +329,13 @@ suffix:colon
 multiline_comment|/* Two name segments */
 id|end
 op_add_assign
-l_int|9
+l_int|1
+op_plus
+(paren
+l_int|2
+op_star
+id|ACPI_NAME_SIZE
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -351,7 +358,7 @@ op_plus
 l_int|1
 )paren
 op_star
-l_int|4
+id|ACPI_NAME_SIZE
 )paren
 suffix:semicolon
 r_break
@@ -361,7 +368,7 @@ suffix:colon
 multiline_comment|/* Single name segment */
 id|end
 op_add_assign
-l_int|4
+id|ACPI_NAME_SIZE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -384,11 +391,15 @@ id|start
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              Arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              Method_call         - Whether the namepath can be the start&n; *                                    of a method call&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next name (if method call, return # of required args).&n; *              Names are looked up in the internal namespace to determine&n; *              if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_next_namepath&n; *&n; * PARAMETERS:  Parser_state        - Current parser state object&n; *              Arg                 - Where the namepath will be stored&n; *              Arg_count           - If the namepath points to a control method&n; *                                    the method&squot;s argument is returned here.&n; *              Method_call         - Whether the namepath can possibly be the&n; *                                    start of a method call&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Get next name (if method call, return # of required args).&n; *              Names are looked up in the internal namespace to determine&n; *              if the name represents a control method.  If a method&n; *              is found, the number of arguments to the method is returned.&n; *              This information is critical for parsing to continue correctly.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ps_get_next_namepath
 id|acpi_ps_get_next_namepath
 (paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -396,10 +407,6 @@ comma
 id|acpi_parse_object
 op_star
 id|arg
-comma
-id|u32
-op_star
-id|arg_count
 comma
 id|u8
 id|method_call
@@ -511,6 +518,7 @@ op_eq
 id|ACPI_TYPE_METHOD
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * This name is actually a control method invocation&n;&t;&t;&t;&t; */
 id|method_desc
 op_assign
 id|acpi_ns_get_attached_object
@@ -614,8 +622,8 @@ id|method_desc-&gt;method.param_count
 )paren
 )paren
 suffix:semicolon
-op_star
-id|arg_count
+multiline_comment|/* Get the number of arguments to expect */
+id|walk_state-&gt;arg_count
 op_assign
 id|method_desc-&gt;method.param_count
 suffix:semicolon
@@ -626,6 +634,67 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t;&t; * Else this is normal named object reference.&n;&t;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t;&t; * (See code below)&n;&t;&t;&t; */
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * 1) Any error other than NOT_FOUND is always severe&n;&t;&t;&t; * 2) NOT_FOUND is only important if we are executing a method.&n;&t;&t;&t; * 3) If executing a Cond_ref_of opcode, NOT_FOUND is ok.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+(paren
+(paren
+id|walk_state-&gt;parse_flags
+op_amp
+id|ACPI_PARSE_MODE_MASK
+)paren
+op_eq
+id|ACPI_PARSE_EXECUTE
+)paren
+op_logical_and
+(paren
+id|status
+op_eq
+id|AE_NOT_FOUND
+)paren
+op_logical_and
+(paren
+id|walk_state-&gt;op-&gt;common.aml_opcode
+op_ne
+id|AML_COND_REF_OF_OP
+)paren
+)paren
+op_logical_or
+(paren
+id|status
+op_ne
+id|AE_NOT_FOUND
+)paren
+)paren
+(brace
+id|ACPI_REPORT_NSERROR
+(paren
+id|path
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We got a NOT_FOUND during table load or we encountered&n;&t;&t;&t;&t; * a Cond_ref_of(x) where the target does not exist.&n;&t;&t;&t;&t; * -- either case is ok&n;&t;&t;&t;&t; */
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n;&t; * Regardless of success/failure above,&n;&t; * Just initialize the Op with the pathname.&n;&t; */
@@ -985,7 +1054,7 @@ id|name
 suffix:semicolon
 id|parser_state-&gt;aml
 op_add_assign
-l_int|4
+id|ACPI_NAME_SIZE
 suffix:semicolon
 multiline_comment|/* Get the length which is encoded as a package length */
 id|field-&gt;common.value.size
@@ -1057,16 +1126,16 @@ id|acpi_status
 DECL|function|acpi_ps_get_next_arg
 id|acpi_ps_get_next_arg
 (paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
 id|u32
 id|arg_type
-comma
-id|u32
-op_star
-id|arg_count
 comma
 id|acpi_parse_object
 op_star
@@ -1358,11 +1427,11 @@ id|status
 op_assign
 id|acpi_ps_get_next_namepath
 (paren
+id|walk_state
+comma
 id|parser_state
 comma
 id|arg
-comma
-id|arg_count
 comma
 l_int|0
 )paren
@@ -1371,8 +1440,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* single complex argument, nothing returned */
-op_star
-id|arg_count
+id|walk_state-&gt;arg_count
 op_assign
 l_int|1
 suffix:semicolon
@@ -1386,8 +1454,7 @@ r_case
 id|ARGP_TERMARG
 suffix:colon
 multiline_comment|/* single complex argument, nothing returned */
-op_star
-id|arg_count
+id|walk_state-&gt;arg_count
 op_assign
 l_int|1
 suffix:semicolon
@@ -1411,8 +1478,7 @@ id|parser_state-&gt;pkg_end
 )paren
 (brace
 multiline_comment|/* non-empty list of variable arguments, nothing returned */
-op_star
-id|arg_count
+id|walk_state-&gt;arg_count
 op_assign
 id|ACPI_VAR_ARGS
 suffix:semicolon

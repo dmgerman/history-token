@@ -1477,14 +1477,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;MTRR: setting reg %x&bslash;n&quot;
-comma
-id|reg
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

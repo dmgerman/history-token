@@ -18,8 +18,8 @@ DECL|macro|PMD_TYPE_TABLE
 mdefine_line|#define PMD_TYPE_TABLE&t;&t;(1 &lt;&lt; 0)
 DECL|macro|PMD_TYPE_SECT
 mdefine_line|#define PMD_TYPE_SECT&t;&t;(2 &lt;&lt; 0)
-DECL|macro|PMD_UPDATABLE
-mdefine_line|#define PMD_UPDATABLE&t;&t;(1 &lt;&lt; 4)
+DECL|macro|PMD_BIT4
+mdefine_line|#define PMD_BIT4&t;&t;(1 &lt;&lt; 4)
 DECL|macro|PMD_DOMAIN
 mdefine_line|#define PMD_DOMAIN(x)&t;&t;((x) &lt;&lt; 5)
 DECL|macro|PMD_PROTECTION
@@ -35,6 +35,16 @@ DECL|macro|PMD_SECT_AP_READ
 mdefine_line|#define PMD_SECT_AP_READ&t;(1 &lt;&lt; 11)
 DECL|macro|PMD_SECT_TEX
 mdefine_line|#define PMD_SECT_TEX(x)&t;&t;((x) &lt;&lt; 12)&t;/* v5 */
+DECL|macro|PMD_SECT_UNCACHED
+mdefine_line|#define PMD_SECT_UNCACHED&t;(0)
+DECL|macro|PMD_SECT_WT
+mdefine_line|#define PMD_SECT_WT&t;&t;(PMD_SECT_CACHEABLE)
+DECL|macro|PMD_SECT_WB
+mdefine_line|#define PMD_SECT_WB&t;&t;(PMD_SECT_CACHEABLE | PMD_SECT_BUFFERABLE)
+DECL|macro|PMD_SECT_MINICACHE
+mdefine_line|#define PMD_SECT_MINICACHE&t;(PMD_SECT_TEX(1) | PMD_SECT_CACHEABLE)
+DECL|macro|PMD_SECT_WBWA
+mdefine_line|#define PMD_SECT_WBWA&t;&t;(PMD_SECT_TEX(1) | PMD_SECT_CACHEABLE | PMD_SECT_BUFFERABLE)
 multiline_comment|/*&n; *   - coarse table (not used)&n; */
 multiline_comment|/*&n; * + Level 2 descriptor (PTE)&n; *   - common&n; */
 DECL|macro|PTE_TYPE_MASK
@@ -323,6 +333,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Mark the prot value as uncacheable and unbufferable.&n; */
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;__pgprot(pgprot_val(prot) &amp; ~(L_PTE_CACHEABLE | L_PTE_BUFFERABLE))
+DECL|macro|pgprot_writecombine
+mdefine_line|#define pgprot_writecombine(prot) __pgprot(pgprot_val(prot) &amp; ~L_PTE_CACHEABLE)
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init() do { } while (0)
 macro_line|#endif /* __ASSEMBLY__ */

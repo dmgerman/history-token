@@ -156,6 +156,12 @@ id|LCLONE_VM
 comma
 id|CLONE_VM
 )paren
+id|VAL
+(paren
+id|LCLONE_UNTRACED
+comma
+id|CLONE_UNTRACED
+)paren
 id|__asm__
 (paren
 l_string|&quot;.endif&quot;

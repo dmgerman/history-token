@@ -58,32 +58,32 @@ id|rxrpc_message_count
 suffix:semicolon
 multiline_comment|/*&n; * debug tracing&n; */
 DECL|macro|kenter
-mdefine_line|#define kenter(FMT,...)&t;printk(&quot;==&gt; %s(&quot;FMT&quot;)&bslash;n&quot;,__FUNCTION__,##__VA_ARGS__)
+mdefine_line|#define kenter(FMT, a...)&t;printk(&quot;==&gt; %s(&quot;FMT&quot;)&bslash;n&quot;,__FUNCTION__ , ##a)
 DECL|macro|kleave
-mdefine_line|#define kleave(FMT,...)&t;printk(&quot;&lt;== %s()&quot;FMT&quot;&bslash;n&quot;,__FUNCTION__,##__VA_ARGS__)
+mdefine_line|#define kleave(FMT, a...)&t;printk(&quot;&lt;== %s()&quot;FMT&quot;&bslash;n&quot;,__FUNCTION__ , ##a)
 DECL|macro|kdebug
-mdefine_line|#define kdebug(FMT,...)&t;printk(&quot;    &quot;FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define kdebug(FMT, a...)&t;printk(&quot;    &quot;FMT&quot;&bslash;n&quot; , ##a)
 DECL|macro|kproto
-mdefine_line|#define kproto(FMT,...)&t;printk(&quot;### &quot;FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define kproto(FMT, a...)&t;printk(&quot;### &quot;FMT&quot;&bslash;n&quot; , ##a)
 DECL|macro|knet
-mdefine_line|#define knet(FMT,...)&t;printk(&quot;    &quot;FMT&quot;&bslash;n&quot;,##__VA_ARGS__)
+mdefine_line|#define knet(FMT, a...)&t;&t;printk(&quot;    &quot;FMT&quot;&bslash;n&quot; , ##a)
 macro_line|#if 0
-mdefine_line|#define _enter(FMT,...)&t;kenter(FMT,##__VA_ARGS__)
-mdefine_line|#define _leave(FMT,...)&t;kleave(FMT,##__VA_ARGS__)
-mdefine_line|#define _debug(FMT,...)&t;kdebug(FMT,##__VA_ARGS__)
-mdefine_line|#define _proto(FMT,...)&t;kproto(FMT,##__VA_ARGS__)
-mdefine_line|#define _net(FMT,...)&t;knet(FMT,##__VA_ARGS__)
+mdefine_line|#define _enter(FMT, a...)&t;kenter(FMT , ##a)
+mdefine_line|#define _leave(FMT, a...)&t;kleave(FMT , ##a)
+mdefine_line|#define _debug(FMT, a...)&t;kdebug(FMT , ##a)
+mdefine_line|#define _proto(FMT, a...)&t;kproto(FMT , ##a)
+mdefine_line|#define _net(FMT, a...)&t;&t;knet(FMT , ##a)
 macro_line|#else
 DECL|macro|_enter
-mdefine_line|#define _enter(FMT,...)&t;do { if (rxrpc_ktrace) kenter(FMT,##__VA_ARGS__); } while(0)
+mdefine_line|#define _enter(FMT, a...)&t;do { if (rxrpc_ktrace) kenter(FMT , ##a); } while(0)
 DECL|macro|_leave
-mdefine_line|#define _leave(FMT,...)&t;do { if (rxrpc_ktrace) kleave(FMT,##__VA_ARGS__); } while(0)
+mdefine_line|#define _leave(FMT, a...)&t;do { if (rxrpc_ktrace) kleave(FMT , ##a); } while(0)
 DECL|macro|_debug
-mdefine_line|#define _debug(FMT,...)&t;do { if (rxrpc_kdebug) kdebug(FMT,##__VA_ARGS__); } while(0)
+mdefine_line|#define _debug(FMT, a...)&t;do { if (rxrpc_kdebug) kdebug(FMT , ##a); } while(0)
 DECL|macro|_proto
-mdefine_line|#define _proto(FMT,...)&t;do { if (rxrpc_kproto) kproto(FMT,##__VA_ARGS__); } while(0)
+mdefine_line|#define _proto(FMT, a...)&t;do { if (rxrpc_kproto) kproto(FMT , ##a); } while(0)
 DECL|macro|_net
-mdefine_line|#define _net(FMT,...)&t;do { if (rxrpc_knet)   knet  (FMT,##__VA_ARGS__); } while(0)
+mdefine_line|#define _net(FMT, a...)&t;&t;do { if (rxrpc_knet)   knet  (FMT , ##a); } while(0)
 macro_line|#endif
 DECL|function|rxrpc_discard_my_signals
 r_static

@@ -555,6 +555,22 @@ id|mmx_copy_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_HT
+DECL|variable|smp_num_siblings
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_num_siblings
+)paren
+suffix:semicolon
+DECL|variable|cpu_sibling_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_sibling_map
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpu_data
 id|EXPORT_SYMBOL

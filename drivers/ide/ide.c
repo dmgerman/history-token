@@ -102,14 +102,14 @@ r_int
 id|ide_scan_direction
 suffix:semicolon
 multiline_comment|/* THIS was formerly 2.2.x pci=reverse */
-macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
+macro_line|#ifdef IDE_ARCH_LOCK
 multiline_comment|/*&n; * ide_lock is used by the Atari code to obtain access to the IDE interrupt,&n; * which is shared between several drivers.&n; */
 DECL|variable|ide_intr_lock
 r_static
 r_int
 id|ide_intr_lock
 suffix:semicolon
-macro_line|#endif /* __mc68000__ || CONFIG_APUS */
+macro_line|#endif /* IDE_ARCH_LOCK */
 macro_line|#ifdef CONFIG_IDEDMA_AUTO
 DECL|variable|noautodma
 r_int
@@ -4664,7 +4664,7 @@ id|ide_release_lock
 c_func
 (paren
 op_amp
-id|ide_lock
+id|ide_intr_lock
 )paren
 suffix:semicolon
 id|hwgroup-&gt;busy
@@ -6081,16 +6081,6 @@ suffix:semicolon
 id|rq-&gt;rq_status
 op_assign
 id|RQ_ACTIVE
-suffix:semicolon
-id|rq-&gt;rq_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|drive-&gt;disk-&gt;major
-comma
-id|drive-&gt;disk-&gt;first_minor
-)paren
 suffix:semicolon
 id|rq-&gt;rq_disk
 op_assign

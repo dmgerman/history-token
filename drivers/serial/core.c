@@ -67,18 +67,15 @@ id|timeout
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule processing in&n; * the software interrupt portion of the driver.&n; */
-DECL|function|uart_event
+DECL|function|uart_write_wakeup
 r_void
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 r_struct
 id|uart_port
 op_star
 id|port
-comma
-r_int
-id|event
 )paren
 (brace
 r_struct
@@ -87,15 +84,6 @@ op_star
 id|info
 op_assign
 id|port-&gt;info
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|info-&gt;event
-)paren
 suffix:semicolon
 id|tasklet_schedule
 c_func
@@ -309,21 +297,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|tty
-op_logical_or
-op_logical_neg
-id|test_and_clear_bit
-c_func
-(paren
-id|EVT_WRITE_WAKEUP
-comma
-op_amp
-id|info-&gt;event
 )paren
-)paren
-r_return
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -339,9 +315,10 @@ id|TTY_DO_WRITE_WAKEUP
 op_logical_and
 id|tty-&gt;ldisc.write_wakeup
 )paren
-(paren
-id|tty-&gt;ldisc.write_wakeup
-)paren
+id|tty-&gt;ldisc
+dot
+id|write_wakeup
+c_func
 (paren
 id|tty
 )paren
@@ -353,6 +330,7 @@ op_amp
 id|tty-&gt;write_wait
 )paren
 suffix:semicolon
+)brace
 )brace
 r_static
 r_inline
@@ -7556,11 +7534,15 @@ id|port
 id|printk
 c_func
 (paren
-l_string|&quot;%s%d at &quot;
-comma
 id|drv-&gt;dev_name
 comma
 id|port-&gt;line
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; at &quot;
 )paren
 suffix:semicolon
 r_switch
@@ -7663,10 +7645,6 @@ op_amp
 id|port-&gt;lock
 )paren
 suffix:semicolon
-id|port-&gt;type
-op_assign
-id|PORT_UNKNOWN
-suffix:semicolon
 id|port-&gt;cons
 op_assign
 id|drv-&gt;cons
@@ -7710,6 +7688,11 @@ id|port-&gt;flags
 op_amp
 id|UPF_BOOT_AUTOCONF
 )paren
+(brace
+id|port-&gt;type
+op_assign
+id|PORT_UNKNOWN
+suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
 id|config_port
@@ -7720,6 +7703,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Register the port whether it&squot;s detected or not.  This allows&n;&t; * setserial to be used to alter this ports parameters.&n;&t; */
 id|tty_register_devfs
 c_func
@@ -9115,11 +9099,21 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Attempt to unregister %s%d&bslash;n&quot;
-comma
+l_string|&quot;Attempt to unregister &quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 id|drv-&gt;dev_name
 comma
 id|line
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -9162,11 +9156,11 @@ id|port_sem
 )paren
 suffix:semicolon
 )brace
-DECL|variable|uart_event
+DECL|variable|uart_write_wakeup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|uart_event
+id|uart_write_wakeup
 )paren
 suffix:semicolon
 DECL|variable|uart_register_driver

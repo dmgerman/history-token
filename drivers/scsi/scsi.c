@@ -6397,11 +6397,12 @@ id|SCpnt-&gt;target
 comma
 id|SCpnt-&gt;lun
 comma
-id|kdevname
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
+id|SCpnt-&gt;request-&gt;rq_disk
+ques
+c_cond
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;disk_name
+suffix:colon
+l_string|&quot;?&quot;
 comma
 (paren
 r_int

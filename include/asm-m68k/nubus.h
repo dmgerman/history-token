@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_M68K_NUBUS_H
 DECL|macro|_ASM_M68K_NUBUS_H
 mdefine_line|#define _ASM_M68K_NUBUS_H
-macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/raw_io.h&gt;
 DECL|macro|nubus_readb
 mdefine_line|#define nubus_readb raw_inb
 DECL|macro|nubus_readw

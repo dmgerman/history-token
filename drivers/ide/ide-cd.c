@@ -2538,6 +2538,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Send a packet command to DRIVE described by CMD_BUF and CMD_LEN.&n;   The device registers must have already been prepared&n;   by cdrom_start_packet_command.&n;   HANDLER is the interrupt handler to call when the command completes&n;   or there&squot;s data ready. */
 multiline_comment|/*&n; * changed 5 parameters to 3 for dvd-ram&n; * struct packet_command *pc; now packet_command_t *pc;&n; */
+DECL|macro|ATAPI_MIN_CDB_BYTES
+mdefine_line|#define ATAPI_MIN_CDB_BYTES 12
 DECL|function|cdrom_transfer_packet_command
 r_static
 id|ide_startstop_t
@@ -2557,6 +2559,9 @@ op_star
 id|handler
 )paren
 (brace
+r_int
+id|cmd_len
+suffix:semicolon
 r_struct
 id|cdrom_info
 op_star
@@ -2655,6 +2660,22 @@ comma
 id|cdrom_timer_expiry
 )paren
 suffix:semicolon
+multiline_comment|/* ATAPI commands get padded out to 12 bytes minimum */
+id|cmd_len
+op_assign
+id|rq-&gt;cmd_len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd_len
+OL
+id|ATAPI_MIN_CDB_BYTES
+)paren
+id|cmd_len
+op_assign
+id|ATAPI_MIN_CDB_BYTES
+suffix:semicolon
 multiline_comment|/* Send the command to the device. */
 id|HWIF
 c_func
@@ -2669,10 +2690,7 @@ id|drive
 comma
 id|rq-&gt;cmd
 comma
-r_sizeof
-(paren
-id|rq-&gt;cmd
-)paren
+id|cmd_len
 )paren
 suffix:semicolon
 multiline_comment|/* Start the DMA if need be */
@@ -11864,6 +11882,10 @@ id|blocks
 op_amp
 l_int|0xff
 suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|10
+suffix:semicolon
 r_return
 id|BLKPREP_OK
 suffix:semicolon
@@ -11972,6 +11994,10 @@ id|READ_10
 op_minus
 id|READ_6
 )paren
+suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|10
 suffix:semicolon
 r_return
 id|BLKPREP_OK

@@ -6895,7 +6895,7 @@ c_func
 id|KERN_ALERT
 id|DEV_LABEL
 l_string|&quot;(itf %d): system parity &quot;
-l_string|&quot;error at 0x%08lx&bslash;n&quot;
+l_string|&quot;error at 0x%08x&bslash;n&quot;
 comma
 id|dev-&gt;number
 comma
@@ -6919,7 +6919,7 @@ c_func
 id|KERN_ALERT
 id|DEV_LABEL
 l_string|&quot;(itf %d): control memory &quot;
-l_string|&quot;parity error at 0x%08lx&bslash;n&quot;
+l_string|&quot;parity error at 0x%08x&bslash;n&quot;
 comma
 id|dev-&gt;number
 comma
@@ -6944,7 +6944,7 @@ c_func
 id|KERN_ALERT
 id|DEV_LABEL
 l_string|&quot;(itf %d): system bus &quot;
-l_string|&quot;error at 0x%08lx&bslash;n&quot;
+l_string|&quot;error at 0x%08x&bslash;n&quot;
 comma
 id|dev-&gt;number
 comma
@@ -8152,7 +8152,7 @@ c_func
 (paren
 id|KERN_NOTICE
 id|DEV_LABEL
-l_string|&quot;(itf %d): uPD98401 %ld.%ld at %d.%03d &quot;
+l_string|&quot;(itf %d): uPD98401 %d.%d at %d.%03d &quot;
 l_string|&quot;MHz&bslash;n&quot;
 comma
 id|dev-&gt;number

@@ -196,7 +196,7 @@ id|ret
 )paren
 suffix:semicolon
 DECL|macro|mod_page_state
-mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int cpu = get_cpu();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;per_cpu(page_states, cpu).member += (delta);&t;&t;&bslash;&n;&t;&t;put_cpu();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_cpu_var(page_states).member += (delta);&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state
@@ -320,6 +320,7 @@ mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)
 DECL|macro|TestClearPageDirect
 mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
+macro_line|#ifdef CONFIG_SWAP
 r_extern
 r_struct
 id|address_space
@@ -327,6 +328,10 @@ id|swapper_space
 suffix:semicolon
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+macro_line|#else
+DECL|macro|PageSwapCache
+mdefine_line|#define PageSwapCache(page) 0
+macro_line|#endif
 r_struct
 id|page
 suffix:semicolon

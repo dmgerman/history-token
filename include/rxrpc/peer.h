@@ -159,12 +159,10 @@ suffix:semicolon
 multiline_comment|/* current RTT estimate (in uS) */
 DECL|member|rtt_point
 r_int
-r_int
 id|rtt_point
 suffix:semicolon
 multiline_comment|/* next entry at which to insert */
 DECL|member|rtt_usage
-r_int
 r_int
 id|rtt_usage
 suffix:semicolon

@@ -1989,9 +1989,11 @@ multiline_comment|/* The tape drive descriptor */
 r_typedef
 r_struct
 (brace
-DECL|member|devt
-id|kdev_t
-id|devt
+DECL|member|driver
+r_struct
+id|Scsi_Device_Template
+op_star
+id|driver
 suffix:semicolon
 DECL|member|capacity
 r_int
@@ -2410,6 +2412,12 @@ l_int|16
 )braket
 suffix:semicolon
 macro_line|#endif
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
 DECL|typedef|OS_Scsi_Tape
 )brace
 id|OS_Scsi_Tape

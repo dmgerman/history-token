@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * arch/m68k/sun3/intersil.c&n; *&n; * basic routines for accessing the intersil clock within the sun3 machines&n; *&n; * started 11/12/1999 Sam Creasey&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;

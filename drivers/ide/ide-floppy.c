@@ -4631,15 +4631,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;rq_status: %d, rq_dev: %u, flags: %lx, errors: %d&bslash;n&quot;
+l_string|&quot;rq_status: %d, dev: %s, flags: %lx, errors: %d&bslash;n&quot;
 comma
 id|rq-&gt;rq_status
 comma
-(paren
-r_int
-r_int
-)paren
-id|rq-&gt;rq_dev
+id|rq-&gt;rq_disk-&gt;disk_name
 comma
 id|rq-&gt;flags
 comma

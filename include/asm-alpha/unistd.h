@@ -801,7 +801,7 @@ id|off_t
 id|off
 comma
 r_int
-id|whense
+id|whence
 )paren
 (brace
 r_return
@@ -812,7 +812,7 @@ id|fd
 comma
 id|off
 comma
-id|whense
+id|whence
 )paren
 suffix:semicolon
 )brace

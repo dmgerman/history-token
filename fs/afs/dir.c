@@ -145,27 +145,53 @@ id|lookup
 op_assign
 id|afs_dir_lookup
 comma
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 dot
 id|getattr
 op_assign
 id|afs_inode_getattr
 comma
-macro_line|#else
+macro_line|#if 0 /* TODO */
 dot
-id|revalidate
+id|create
 op_assign
-id|afs_inode_revalidate
+id|afs_dir_create
+comma
+dot
+id|link
+op_assign
+id|afs_dir_link
+comma
+dot
+id|unlink
+op_assign
+id|afs_dir_unlink
+comma
+dot
+id|symlink
+op_assign
+id|afs_dir_symlink
+comma
+dot
+id|mkdir
+op_assign
+id|afs_dir_mkdir
+comma
+dot
+id|rmdir
+op_assign
+id|afs_dir_rmdir
+comma
+dot
+id|mknod
+op_assign
+id|afs_dir_mknod
+comma
+dot
+id|rename
+op_assign
+id|afs_dir_rename
 comma
 macro_line|#endif
-singleline_comment|//&t;.create&t;&t;= afs_dir_create,
-singleline_comment|//&t;.link&t;&t;= afs_dir_link,
-singleline_comment|//&t;.unlink&t;&t;= afs_dir_unlink,
-singleline_comment|//&t;.symlink&t;= afs_dir_symlink,
-singleline_comment|//&t;.mkdir&t;&t;= afs_dir_mkdir,
-singleline_comment|//&t;.rmdir&t;&t;= afs_dir_rmdir,
-singleline_comment|//&t;.mknod&t;&t;= afs_dir_mknod,
-singleline_comment|//&t;.rename&t;&t;= afs_dir_rename,
 )brace
 suffix:semicolon
 DECL|variable|afs_fs_dentry_operations
@@ -238,7 +264,9 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* if any char of the name (inc NUL) reaches here, consume&n;&t;&t;&t;&t;&t; * the next dirent too */
+DECL|member|parts
 )brace
+id|parts
 suffix:semicolon
 DECL|member|extended_name
 id|u8
@@ -992,7 +1020,7 @@ l_int|8
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%u.%u]: unused&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]: unused&bslash;n&quot;
 comma
 id|blkoff
 op_div
@@ -1040,7 +1068,7 @@ op_assign
 id|strnlen
 c_func
 (paren
-id|dire-&gt;name
+id|dire-&gt;parts.name
 comma
 r_sizeof
 (paren
@@ -1059,7 +1087,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%u.%u]: %s %u &bslash;&quot;%.*s&bslash;&quot;&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]: %s %Zu &bslash;&quot;%s&bslash;&quot;&bslash;n&quot;
 comma
 id|blkoff
 op_div
@@ -1070,6 +1098,7 @@ id|afs_dir_block_t
 comma
 id|offset
 comma
+(paren
 id|offset
 OL
 id|curr
@@ -1078,12 +1107,11 @@ c_cond
 l_string|&quot;skip&quot;
 suffix:colon
 l_string|&quot;fill&quot;
+)paren
 comma
 id|nlen
 comma
-id|nlen
-comma
-id|dire-&gt;name
+id|dire-&gt;u.name
 )paren
 suffix:semicolon
 multiline_comment|/* work out where the next possible entry is */
@@ -1117,8 +1145,8 @@ id|AFS_DIRENT_PER_BLOCK
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%u.%u]:&quot;
-l_string|&quot; %u travelled beyond end dir block (len %u/%u)&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]:&quot;
+l_string|&quot; %u travelled beyond end dir block (len %u/%Zu)&bslash;n&quot;
 comma
 id|blkoff
 op_div
@@ -1168,7 +1196,7 @@ l_int|8
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%u.%u]: %u unmarked extension (len %u/%u)&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]: %u unmarked extension (len %u/%Zu)&bslash;n&quot;
 comma
 id|blkoff
 op_div
@@ -1194,7 +1222,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;ENT[%u.%u]: ext %u/%u&bslash;n&quot;
+l_string|&quot;ENT[%Zu.%u]: ext %u/%Zu&bslash;n&quot;
 comma
 id|blkoff
 op_div
@@ -1232,7 +1260,7 @@ c_func
 (paren
 id|cookie
 comma
-id|dire-&gt;name
+id|dire-&gt;parts.name
 comma
 id|nlen
 comma
@@ -1248,7 +1276,7 @@ comma
 id|ntohl
 c_func
 (paren
-id|dire-&gt;vnode
+id|dire-&gt;parts.vnode
 )paren
 comma
 id|filldir
@@ -1256,7 +1284,7 @@ op_eq
 id|afs_dir_lookup_filldir
 ques
 c_cond
-id|dire-&gt;unique
+id|dire-&gt;parts.unique
 suffix:colon
 id|DT_UNKNOWN
 )paren
@@ -1705,7 +1733,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;{%s,%u},%s,%u,,%lu,%u&quot;
+l_string|&quot;{%s,%Zu},%s,%u,,%lu,%u&quot;
 comma
 id|cookie-&gt;name
 comma
@@ -2067,6 +2095,7 @@ op_star
 )paren
 (paren
 r_int
+r_int
 )paren
 id|vnode-&gt;status.version
 suffix:semicolon
@@ -2148,7 +2177,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* lock down the parent dentry so we can peer at it */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 id|read_lock
 c_func
 (paren
@@ -2171,26 +2199,6 @@ op_amp
 id|dparent_lock
 )paren
 suffix:semicolon
-macro_line|#else
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|parent
-op_assign
-id|dget
-c_func
-(paren
-id|dentry-&gt;d_parent
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dir
 op_assign
 id|parent-&gt;d_inode
@@ -2315,10 +2323,12 @@ c_cond
 (paren
 (paren
 r_int
+r_int
 )paren
 id|dentry-&gt;d_fsdata
 op_ne
 (paren
+r_int
 r_int
 )paren
 id|AFS_FS_I
@@ -2333,11 +2343,12 @@ id|status.version
 id|_debug
 c_func
 (paren
-l_string|&quot;%s: parent changed %u -&gt; %u&quot;
+l_string|&quot;%s: parent changed %lu -&gt; %u&quot;
 comma
 id|dentry-&gt;d_name.name
 comma
 (paren
+r_int
 r_int
 )paren
 id|dentry-&gt;d_fsdata
@@ -2553,6 +2564,7 @@ r_void
 op_star
 )paren
 (paren
+r_int
 r_int
 )paren
 id|AFS_FS_I

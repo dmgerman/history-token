@@ -31,6 +31,31 @@ DECL|macro|PTRACE_DETACH
 mdefine_line|#define PTRACE_DETACH&t;&t;0x11
 DECL|macro|PTRACE_SYSCALL
 mdefine_line|#define PTRACE_SYSCALL&t;&t;  24
+multiline_comment|/* 0x4200-0x4300 are reserved for architecture-independent additions.  */
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS&t;0x4200
+DECL|macro|PTRACE_GETEVENTMSG
+mdefine_line|#define PTRACE_GETEVENTMSG&t;0x4201
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
+DECL|macro|PTRACE_O_TRACEFORK
+mdefine_line|#define PTRACE_O_TRACEFORK&t;0x00000002
+DECL|macro|PTRACE_O_TRACEVFORK
+mdefine_line|#define PTRACE_O_TRACEVFORK&t;0x00000004
+DECL|macro|PTRACE_O_TRACECLONE
+mdefine_line|#define PTRACE_O_TRACECLONE&t;0x00000008
+DECL|macro|PTRACE_O_TRACEEXEC
+mdefine_line|#define PTRACE_O_TRACEEXEC&t;0x00000010
+multiline_comment|/* Wait extended result codes for the above trace options.  */
+DECL|macro|PTRACE_EVENT_FORK
+mdefine_line|#define PTRACE_EVENT_FORK&t;1
+DECL|macro|PTRACE_EVENT_VFORK
+mdefine_line|#define PTRACE_EVENT_VFORK&t;2
+DECL|macro|PTRACE_EVENT_CLONE
+mdefine_line|#define PTRACE_EVENT_CLONE&t;3
+DECL|macro|PTRACE_EVENT_EXEC
+mdefine_line|#define PTRACE_EVENT_EXEC&t;4
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 r_extern
@@ -123,6 +148,35 @@ id|task
 comma
 r_int
 id|kill
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ptrace_request
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|child
+comma
+r_int
+id|request
+comma
+r_int
+id|addr
+comma
+r_int
+id|data
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ptrace_notify
+c_func
+(paren
+r_int
+id|exit_code
 )paren
 suffix:semicolon
 r_extern

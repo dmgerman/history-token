@@ -1,5 +1,4 @@
 multiline_comment|/* drivers/nubus/proc.c: Proc FS interface for NuBus.&n;&n;   By David Huggins-Daines &lt;dhd@debian.org&gt;&n;&n;   Much code and many ideas from drivers/pci/proc.c:&n;   Copyright (c) 1997, 1998 Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n;&n;   This is initially based on the Zorro and PCI interfaces.  However,&n;   it works somewhat differently.  The intent is to provide a&n;   structure in /proc analogous to the structure of the NuBus ROM&n;   resources.&n;&n;   Therefore each NuBus device is in fact a directory, which may in&n;   turn contain subdirectories.  The &quot;files&quot; correspond to NuBus&n;   resource records.  For those types of records which we know how to&n;   convert to formats that are meaningful to userspace (mostly just&n;   icons) these files will provide &quot;cooked&quot; data.  Otherwise they will&n;   simply provide raw access (read-only of course) to the ROM.  */
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/nubus.h&gt;

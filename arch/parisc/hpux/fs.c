@@ -117,13 +117,8 @@ DECL|struct|hpux_dirent
 r_struct
 id|hpux_dirent
 (brace
-DECL|member|d_off_pad
-r_int
-id|d_off_pad
-suffix:semicolon
-multiline_comment|/* we only have a 32-bit off_t */
 DECL|member|d_off
-r_int
+id|loff_t
 id|d_off
 suffix:semicolon
 DECL|member|d_ino
@@ -200,6 +195,9 @@ id|offset
 comma
 id|ino_t
 id|ino
+comma
+r_int
+id|d_type
 )paren
 (brace
 r_struct
@@ -431,10 +429,10 @@ c_func
 (paren
 id|file
 comma
+id|filldir
+comma
 op_amp
 id|buf
-comma
-id|filldir
 )paren
 suffix:semicolon
 r_if
@@ -642,15 +640,14 @@ r_int
 id|hpux_stat64
 c_func
 (paren
-r_const
 r_char
 op_star
-id|path
+id|filename
 comma
 r_struct
 id|hpux_stat64
 op_star
-id|buf
+id|statbuf
 )paren
 (brace
 r_struct

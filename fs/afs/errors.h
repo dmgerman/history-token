@@ -1,7 +1,7 @@
 multiline_comment|/* errors.h: AFS abort/error codes&n; *&n; * Copyright (C) 2002 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#ifndef _H_DB712916_5113_11D6_9A6D_0002B3163499
-DECL|macro|_H_DB712916_5113_11D6_9A6D_0002B3163499
-mdefine_line|#define _H_DB712916_5113_11D6_9A6D_0002B3163499
+macro_line|#ifndef _LINUX_AFS_ERRORS_H
+DECL|macro|_LINUX_AFS_ERRORS_H
+mdefine_line|#define _LINUX_AFS_ERRORS_H
 macro_line|#include &quot;types.h&quot;
 multiline_comment|/* file server abort codes */
 r_typedef
@@ -86,5 +86,5 @@ r_int
 id|abortcode
 )paren
 suffix:semicolon
-macro_line|#endif /* _H_DB712916_5113_11D6_9A6D_0002B3163499 */
+macro_line|#endif /* _LINUX_AFS_ERRORS_H */
 eof

@@ -2420,7 +2420,7 @@ suffix:semicolon
 id|kstat_cpu
 c_func
 (paren
-id|i
+id|cpu
 )paren
 dot
 id|irqs

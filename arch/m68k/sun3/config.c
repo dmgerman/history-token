@@ -557,9 +557,6 @@ id|mach_free_irq
 op_assign
 id|sun3_free_irq
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-singleline_comment|//&t;mach_keyb_init       =  sun3_keyb_init;
-macro_line|#endif
 id|enable_irq
 op_assign
 id|sun3_enable_irq

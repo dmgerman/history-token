@@ -607,12 +607,10 @@ id|xmit
 OL
 id|WAKEUP_CHARS
 )paren
-id|uart_event
+id|uart_write_wakeup
 c_func
 (paren
 id|port
-comma
-id|EVT_WRITE_WAKEUP
 )paren
 suffix:semicolon
 r_if
@@ -1951,19 +1949,11 @@ id|driver_name
 op_assign
 l_string|&quot;ttyFB&quot;
 comma
-macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
 l_string|&quot;ttyFB%d&quot;
 comma
-macro_line|#else
-dot
-id|dev_name
-op_assign
-l_string|&quot;ttyFB&quot;
-comma
-macro_line|#endif
 dot
 id|major
 op_assign

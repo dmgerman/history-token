@@ -733,16 +733,6 @@ r_return
 id|virtaddr
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|empty_bad_page_table
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|empty_bad_page
-suffix:semicolon
 multiline_comment|/*&n; * paging_init() continues the virtual memory environment setup which&n; * was begun by the code in arch/head.S.&n; */
 DECL|function|paging_init
 r_void

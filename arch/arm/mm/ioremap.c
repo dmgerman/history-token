@@ -1,11 +1,11 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; *&n; * Hacked for ARM by Phil Blundell &lt;philb@gnu.org&gt;&n; * Hacked to allow all architectures to build, and various cleanups&n; * by Russell King&n; */
-multiline_comment|/*&n; * This allows a driver to remap an arbitrary region of bus memory into&n; * virtual space.  One should *only* use readl, writel, memcpy_toio and&n; * so on with such remapped areas.&n; *&n; * Because the ARM only has a 32-bit address space we can&squot;t address the&n; * whole of the (physical) PCI space at once.  PCI huge-mode addressing&n; * allows us to circumvent this restriction by splitting PCI space into&n; * two 2GB chunks and mapping only one at a time into processor memory.&n; * We use MMU protection domains to trap any attempt to access the bank&n; * that is not currently mapped.  (This isn&squot;t fully implemented yet.)&n; *&n; * DC21285 currently has a bug in that the PCI address extension&n; * register affects the address of any writes waiting in the outbound&n; * FIFO.  Unfortunately, it is not possible to tell the DC21285 to&n; * flush this - flushing the area causes the bus to lock.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; *&n; * Hacked for ARM by Phil Blundell &lt;philb@gnu.org&gt;&n; * Hacked to allow all architectures to build, and various cleanups&n; * by Russell King&n; *&n; * This allows a driver to remap an arbitrary region of bus memory into&n; * virtual space.  One should *only* use readl, writel, memcpy_toio and&n; * so on with such remapped areas.&n; *&n; * Because the ARM only has a 32-bit address space we can&squot;t address the&n; * whole of the (physical) PCI space at once.  PCI huge-mode addressing&n; * allows us to circumvent this restriction by splitting PCI space into&n; * two 2GB chunks and mapping only one at a time into processor memory.&n; * We use MMU protection domains to trap any attempt to access the bank&n; * that is not currently mapped.  (This isn&squot;t fully implemented yet.)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|remap_area_pte
 r_static
 r_inline
@@ -233,7 +233,7 @@ id|pte_t
 op_star
 id|pte
 op_assign
-id|pte_alloc
+id|pte_alloc_kernel
 c_func
 (paren
 op_amp
@@ -481,9 +481,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; *&n; * &squot;flags&squot; are the extra L_PTE_ flags that you want to specify for this&n; * mapping.  See include/asm-arm/proc-armv/pgtable.h for more information.&n; */
-DECL|function|__ioremap
 r_void
 op_star
+DECL|function|__ioremap
 id|__ioremap
 c_func
 (paren
@@ -497,6 +497,10 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_int
+r_int
+id|align
 )paren
 (brace
 r_void

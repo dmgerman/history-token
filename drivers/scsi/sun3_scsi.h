@@ -1,9 +1,13 @@
-multiline_comment|/*&n; * Sun3 SCSI stuff by Erik Verbruggen (erik@bigmama.xtdnet.nl)&n; *&n; * Sun3 DMA additions by Sam Creasey (sammy@oh.verio.com)&n; *&n; * Adapted from mac_scsinew.h:&n; */
+multiline_comment|/*&n; * Sun3 SCSI stuff by Erik Verbruggen (erik@bigmama.xtdnet.nl)&n; *&n; * Sun3 DMA additions by Sam Creasey (sammy@sammy.net)&n; *&n; * Adapted from mac_scsinew.h:&n; */
 multiline_comment|/*&n; * Cumana Generic NCR5380 driver defines&n; *&n; * Copyright 1993, Drew Eckhardt&n; *&t;Visionary Computing&n; *&t;(Unix and Linux consulting and custom programming)&n; *&t;drew@colorado.edu&n; *      +1 (303) 440-4894&n; *&n; * ALPHA RELEASE 1.&n; *&n; * For more information, please consult&n; *&n; * NCR 5380 Family&n; * SCSI Protocol Controller&n; * Databook&n; *&n; * NCR Microelectronics&n; * 1635 Aeroplaza Drive&n; * Colorado Springs, CO 80916&n; * 1+ (719) 578-3400&n; * 1+ (800) 334-5454&n; */
 multiline_comment|/*&n; * $Log: cumana_NCR5380.h,v $&n; */
 macro_line|#ifndef SUN3_NCR5380_H
 DECL|macro|SUN3_NCR5380_H
 mdefine_line|#define SUN3_NCR5380_H
+macro_line|#ifndef NULL
+DECL|macro|NULL
+mdefine_line|#define NULL 0
+macro_line|#endif
 DECL|macro|SUN3SCSI_PUBLIC_RELEASE
 mdefine_line|#define SUN3SCSI_PUBLIC_RELEASE 1
 multiline_comment|/*&n; * Int: level 2 autovector&n; * IO: type 1, base 0x00140000, 5 bits phys space: A&lt;4..0&gt;&n; */
@@ -11,6 +15,9 @@ DECL|macro|IRQ_SUN3_SCSI
 mdefine_line|#define IRQ_SUN3_SCSI 2
 DECL|macro|IOBASE_SUN3_SCSI
 mdefine_line|#define IOBASE_SUN3_SCSI 0x00140000
+DECL|macro|IOBASE_SUN3_VMESCSI
+mdefine_line|#define IOBASE_SUN3_VMESCSI 0xff200000
+r_static
 r_int
 id|sun3scsi_abort
 (paren
@@ -18,6 +25,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|sun3scsi_detect
 (paren
@@ -25,14 +33,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
-r_int
-id|sun3scsi_release
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -43,6 +44,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|sun3scsi_reset
 c_func
@@ -54,6 +56,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|sun3scsi_queue_command
 (paren
@@ -71,6 +74,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|sun3scsi_proc_info
 (paren
@@ -96,9 +100,19 @@ r_int
 id|inout
 )paren
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
+macro_line|#ifdef MODULE
+r_static
+r_int
+id|sun3scsi_release
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|sun3scsi_release
+mdefine_line|#define sun3scsi_release NULL
 macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
@@ -112,13 +126,24 @@ macro_line|#ifndef SG_TABLESIZE
 DECL|macro|SG_TABLESIZE
 mdefine_line|#define SG_TABLESIZE SG_NONE
 macro_line|#endif
+macro_line|#ifndef MAX_TAGS
+DECL|macro|MAX_TAGS
+mdefine_line|#define MAX_TAGS 32
+macro_line|#endif
 macro_line|#ifndef USE_TAGGED_QUEUING
 DECL|macro|USE_TAGGED_QUEUING
-mdefine_line|#define&t;USE_TAGGED_QUEUING 0
+mdefine_line|#define&t;USE_TAGGED_QUEUING 1
 macro_line|#endif
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#ifdef SUN3_SCSI_VME
+DECL|macro|SUN3_SCSI_NAME
+mdefine_line|#define SUN3_SCSI_NAME &quot;Sun3 NCR5380 VME SCSI&quot;
+macro_line|#else
+DECL|macro|SUN3_SCSI_NAME
+mdefine_line|#define SUN3_SCSI_NAME &quot;Sun3 NCR5380 SCSI&quot;
+macro_line|#endif
 DECL|macro|SUN3_NCR5380
-mdefine_line|#define SUN3_NCR5380 {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;name:&t;&t;&t;&quot;Sun3 NCR5380 SCSI&quot;,&t;&t;&t;&t;&bslash;&n;detect:&t;&t;&t;sun3scsi_detect,&t;&t;&t;&t;&bslash;&n;release:&t;&t;sun3scsi_release,&t;/* Release */&t;&t;&bslash;&n;info:&t;&t;&t;sun3scsi_info,&t;&t;&t;&t;&t;&bslash;&n;queuecommand:&t;&t;sun3scsi_queue_command,&t;&t;&t;&t;&bslash;&n;abort:&t;&t;&t;sun3scsi_abort,&t;&t;&t; &t;&t;&bslash;&n;reset:&t;&t;&t;sun3scsi_reset,&t;&t;&t;&t;&t;&bslash;&n;can_queue:&t;&t;CAN_QUEUE,&t;&t;/* can queue */&t;&t;&bslash;&n;this_id:&t;&t;7,&t;&t;&t;/* id */&t;&t;&bslash;&n;sg_tablesize:&t;&t;SG_ALL,&t;&t;&t;/* sg_tablesize */&t;&bslash;&n;cmd_per_lun:&t;&t;CMD_PER_LUN,&t;&t;/* cmd per lun */&t;&bslash;&n;unchecked_isa_dma:&t;0,&t;&t;&t;/* unchecked_isa_dma */&t;&bslash;&n;use_clustering:&t;&t;DISABLE_CLUSTERING&t;&t;&t;&t;&bslash;&n;&t;}
+mdefine_line|#define SUN3_NCR5380 {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;.name =&t;&t;&t;SUN3_SCSI_NAME,&t;&t;&t;&t;&t;&bslash;&n;.detect =&t;&t;sun3scsi_detect,&t;&t;&t;&t;&bslash;&n;.release =&t;&t;sun3scsi_release,&t;/* Release */&t;&t;&bslash;&n;.info =&t;&t;&t;sun3scsi_info,&t;&t;&t;&t;&t;&bslash;&n;.queuecommand =&t;&t;sun3scsi_queue_command,&t;&t;&t;&t;&bslash;&n;.abort =&t;&t;sun3scsi_abort,&t;&t;&t;&t;&t;&bslash;&n;.reset =&t;&t;sun3scsi_reset,&t;&t;&t;&t;&t;&bslash;&n;.can_queue =&t;&t;CAN_QUEUE,&t;&t;/* can queue */&t;&t;&bslash;&n;.this_id =&t;&t;7,&t;&t;&t;/* id */&t;&t;&bslash;&n;.sg_tablesize =&t;&t;SG_TABLESIZE,&t;&t;/* sg_tablesize */&t;&bslash;&n;.cmd_per_lun =&t;&t;CMD_PER_LUN,&t;&t;/* cmd per lun */&t;&bslash;&n;.unchecked_isa_dma =&t;0,&t;&t;&t;/* unchecked_isa_dma */&t;&bslash;&n;.use_clustering =&t;DISABLE_CLUSTERING&t;&t;&t;&t;&bslash;&n;&t;}
 macro_line|#ifndef HOSTS_C
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
@@ -158,27 +183,42 @@ DECL|struct|sun3_dma_regs
 r_struct
 id|sun3_dma_regs
 (brace
-DECL|member|vmeregs
+DECL|member|dma_addr_hi
 r_int
 r_int
-id|vmeregs
-(braket
-l_int|4
-)braket
+id|dma_addr_hi
 suffix:semicolon
-multiline_comment|/* unimpl vme stuff */
+multiline_comment|/* vme only */
+DECL|member|dma_addr_lo
+r_int
+r_int
+id|dma_addr_lo
+suffix:semicolon
+multiline_comment|/* vme only */
+DECL|member|dma_count_hi
+r_int
+r_int
+id|dma_count_hi
+suffix:semicolon
+multiline_comment|/* vme only */
+DECL|member|dma_count_lo
+r_int
+r_int
+id|dma_count_lo
+suffix:semicolon
+multiline_comment|/* vme only */
 DECL|member|udc_data
 r_int
 r_int
 id|udc_data
 suffix:semicolon
-multiline_comment|/* udc dma data reg */
+multiline_comment|/* udc dma data reg (obio only) */
 DECL|member|udc_addr
 r_int
 r_int
 id|udc_addr
 suffix:semicolon
-multiline_comment|/* uda dma addr reg */
+multiline_comment|/* uda dma addr reg (obio only) */
 DECL|member|fifo_data
 r_int
 r_int
@@ -196,6 +236,30 @@ r_int
 id|csr
 suffix:semicolon
 multiline_comment|/* control/status reg */
+DECL|member|bpack_hi
+r_int
+r_int
+id|bpack_hi
+suffix:semicolon
+multiline_comment|/* vme only */
+DECL|member|bpack_lo
+r_int
+r_int
+id|bpack_lo
+suffix:semicolon
+multiline_comment|/* vme only */
+DECL|member|ivect
+r_int
+r_int
+id|ivect
+suffix:semicolon
+multiline_comment|/* vme only */
+DECL|member|fifo_count_hi
+r_int
+r_int
+id|fifo_count_hi
+suffix:semicolon
+multiline_comment|/* vme only */
 )brace
 suffix:semicolon
 multiline_comment|/* ucd chip specific regs - live in dvma space */
@@ -296,6 +360,18 @@ DECL|macro|CSR_SDB_INT
 mdefine_line|#define CSR_SDB_INT 0x200 /* sbc interrupt pending */
 DECL|macro|CSR_DMA_INT
 mdefine_line|#define CSR_DMA_INT 0x100 /* dma interrupt pending */
+DECL|macro|CSR_LEFT
+mdefine_line|#define CSR_LEFT 0xc0
+DECL|macro|CSR_LEFT_3
+mdefine_line|#define CSR_LEFT_3 0xc0
+DECL|macro|CSR_LEFT_2
+mdefine_line|#define CSR_LEFT_2 0x80
+DECL|macro|CSR_LEFT_1
+mdefine_line|#define CSR_LEFT_1 0x40
+DECL|macro|CSR_PACK_ENABLE
+mdefine_line|#define CSR_PACK_ENABLE 0x20
+DECL|macro|CSR_DMA_ENABLE
+mdefine_line|#define CSR_DMA_ENABLE 0x10
 DECL|macro|CSR_SEND
 mdefine_line|#define CSR_SEND 0x8 /* 1 = send  0 = recv */
 DECL|macro|CSR_FIFO
@@ -304,6 +380,8 @@ DECL|macro|CSR_INTR
 mdefine_line|#define CSR_INTR 0x4 /* interrupt enable */
 DECL|macro|CSR_SCSI
 mdefine_line|#define CSR_SCSI 0x1 
+DECL|macro|VME_DATA24
+mdefine_line|#define VME_DATA24 0x3d00
 singleline_comment|// debugging printk&squot;s, taken from atari_scsi.h 
 multiline_comment|/* Debugging printk definitions:&n; *&n; *  ARB  -&gt; arbitration&n; *  ASEN -&gt; auto-sense&n; *  DMA  -&gt; DMA&n; *  HSH  -&gt; PIO handshake&n; *  INF  -&gt; information transfer&n; *  INI  -&gt; initialization&n; *  INT  -&gt; interrupt&n; *  LNK  -&gt; linked commands&n; *  MAIN -&gt; NCR5380_main() control flow&n; *  NDAT -&gt; no data-out phase&n; *  NWR  -&gt; no write commands&n; *  PIO  -&gt; PIO transfers&n; *  PDMA -&gt; pseudo DMA (unused on Atari)&n; *  QU   -&gt; queues&n; *  RSL  -&gt; reselections&n; *  SEL  -&gt; selections&n; *  USL  -&gt; usleep cpde (unused on Atari)&n; *  LBS  -&gt; last byte sent (unused on Atari)&n; *  RSS  -&gt; restarting of selections&n; *  EXT  -&gt; extended messages&n; *  ABRT -&gt; aborting and resetting&n; *  TAG  -&gt; queue tag handling&n; *  MER  -&gt; merging of consec. buffers&n; *&n; */
 macro_line|#if NDEBUG &amp; NDEBUG_ARBITRATION
@@ -474,8 +552,6 @@ DECL|macro|NCR_PRINT_PHASE
 mdefine_line|#define NCR_PRINT_PHASE(mask) &bslash;&n;&t;((NDEBUG &amp; (mask)) ? NCR5380_print_phase(instance) : (void)0)
 DECL|macro|NCR_PRINT_STATUS
 mdefine_line|#define NCR_PRINT_STATUS(mask) &bslash;&n;&t;((NDEBUG &amp; (mask)) ? NCR5380_print_status(instance) : (void)0)
-DECL|macro|NDEBUG_ANY
-mdefine_line|#define NDEBUG_ANY&t;0xffffffff
 macro_line|#endif /* ndef HOSTS_C */
 macro_line|#endif /* SUN3_NCR5380_H */
 eof

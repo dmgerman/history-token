@@ -81,7 +81,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 r_static
 r_struct
 id|super_block
@@ -106,27 +105,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_struct
-id|super_block
-op_star
-id|afs_read_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_void
-op_star
-id|data
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_struct
 id|inode
@@ -179,7 +157,6 @@ id|name
 op_assign
 l_string|&quot;afs&quot;
 comma
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 dot
 id|get_sb
 op_assign
@@ -190,13 +167,6 @@ id|kill_sb
 op_assign
 id|kill_anon_super
 comma
-macro_line|#else
-dot
-id|read_super
-op_assign
-id|afs_read_super
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|afs_super_ops
@@ -206,7 +176,6 @@ id|super_operations
 id|afs_super_ops
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 dot
 id|statfs
 op_assign
@@ -227,13 +196,6 @@ id|destroy_inode
 op_assign
 id|afs_destroy_inode
 comma
-macro_line|#else
-dot
-id|read_inode2
-op_assign
-id|afs_read_inode2
-comma
-macro_line|#endif
 dot
 id|clear_inode
 op_assign
@@ -246,14 +208,12 @@ id|afs_put_super
 comma
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|variable|afs_inode_cachep
 r_static
 id|kmem_cache_t
 op_star
 id|afs_inode_cachep
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * initialise the filesystem&n; */
 DECL|function|afs_fs_init
@@ -274,70 +234,6 @@ c_func
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* open the cache */
-macro_line|#if 0
-id|ret
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cachedev
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;kAFS: No cache device specified as module parm&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;kAFS: Set with &bslash;&quot;cachedev=&lt;devname&gt;&bslash;&quot; on insmod&squot;s cmdline&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-id|ret
-op_assign
-id|afs_cache_open
-c_func
-(paren
-id|cachedev
-comma
-op_amp
-id|afs_cache
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;kAFS: Failed to open cache device&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 multiline_comment|/* create ourselves an inode cache */
 id|ret
 op_assign
@@ -379,19 +275,10 @@ id|KERN_NOTICE
 l_string|&quot;kAFS: Failed to allocate inode cache&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|afs_put_cache
-c_func
-(paren
-id|afs_cache
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* now export our filesystem to lesser mortals */
 id|ret
 op_assign
@@ -410,22 +297,12 @@ OL
 l_int|0
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 id|kmem_cache_destroy
 c_func
 (paren
 id|afs_inode_cachep
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#if 0
-id|afs_put_cache
-c_func
-(paren
-id|afs_cache
-)paren
-suffix:semicolon
-macro_line|#endif
 id|kleave
 c_func
 (paren
@@ -461,14 +338,12 @@ r_void
 )paren
 (brace
 multiline_comment|/* destroy our private inode cache */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 id|kmem_cache_destroy
 c_func
 (paren
 id|afs_inode_cachep
 )paren
 suffix:semicolon
-macro_line|#endif
 id|unregister_filesystem
 c_func
 (paren
@@ -476,19 +351,6 @@ op_amp
 id|afs_fs_type
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|afs_cache
-)paren
-id|afs_put_cache
-c_func
-(paren
-id|afs_cache
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* end afs_fs_exit() */
 multiline_comment|/*****************************************************************************/
@@ -1835,7 +1697,6 @@ suffix:semicolon
 multiline_comment|/* end afs_fill_super() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * get an AFS superblock&n; * - TODO: don&squot;t use get_sb_nodev(), but rather call sget() directly&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|function|afs_get_sb
 r_static
 r_struct
@@ -1969,139 +1830,6 @@ id|sb
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_get_sb() */
-macro_line|#endif
-multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * read an AFS superblock&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-DECL|function|afs_read_super
-r_static
-r_struct
-id|super_block
-op_star
-id|afs_read_super
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_void
-op_star
-id|options
-comma
-r_int
-id|silent
-)paren
-(brace
-r_void
-op_star
-id|data
-(braket
-l_int|2
-)braket
-op_assign
-(brace
-l_int|NULL
-comma
-id|options
-)brace
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|_enter
-c_func
-(paren
-l_string|&quot;,,%s&quot;
-comma
-(paren
-r_char
-op_star
-)paren
-id|options
-)paren
-suffix:semicolon
-multiline_comment|/* start the cache manager */
-id|ret
-op_assign
-id|afscm_start
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|_leave
-c_func
-(paren
-l_string|&quot; = NULL (%d)&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/* allocate a deviceless superblock */
-id|ret
-op_assign
-id|afs_fill_super
-c_func
-(paren
-id|sb
-comma
-id|data
-comma
-id|silent
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-OL
-l_int|0
-)paren
-(brace
-id|afscm_stop
-c_func
-(paren
-)paren
-suffix:semicolon
-id|_leave
-c_func
-(paren
-l_string|&quot; = NULL (%d)&quot;
-comma
-id|ret
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|_leave
-c_func
-(paren
-l_string|&quot; = %p&quot;
-comma
-id|sb
-)paren
-suffix:semicolon
-r_return
-id|sb
-suffix:semicolon
-)brace
-multiline_comment|/* end afs_read_super() */
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * finish the unmounting process on the superblock&n; */
 DECL|function|afs_put_super
@@ -2163,7 +1891,6 @@ suffix:semicolon
 multiline_comment|/* end afs_put_super() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * initialise an inode cache slab element prior to any use&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|function|afs_i_init_once
 r_static
 r_void
@@ -2271,10 +1998,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* end afs_i_init_once() */
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * allocate an AFS inode struct from our slab cache&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|function|afs_alloc_inode
 r_static
 r_struct
@@ -2362,10 +2087,8 @@ id|vnode-&gt;vfs_inode
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_alloc_inode() */
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * destroy an AFS inode struct&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 DECL|function|afs_destroy_inode
 r_static
 r_void
@@ -2400,5 +2123,4 @@ id|inode
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_destroy_inode() */
-macro_line|#endif
 eof

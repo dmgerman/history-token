@@ -6,14 +6,6 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/entry.h&gt;
-DECL|macro|prepare_arch_schedule
-mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|finish_arch_schedule
-mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
-DECL|macro|prepare_arch_switch
-mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
-DECL|macro|finish_arch_switch
-mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 multiline_comment|/*&n; * switch_to(n) should switch tasks to task ptr, first checking that&n; * ptr isn&squot;t the current task, in which case it does nothing.  This&n; * also clears the TS-flag if the task we switched to has used the&n; * math co-processor latest.&n; */
 multiline_comment|/*&n; * switch_to() saves the extra registers, that are not saved&n; * automatically by SAVE_SWITCH_STACK in resume(), ie. d0-d5 and&n; * a0-a1. Some of these are used by schedule() and its predecessors&n; * and so we might get see unexpected behaviors when a task returns&n; * with unexpected register values.&n; *&n; * syscall stores these registers itself and none of them are used&n; * by syscall after the function in the syscall has been called.&n; *&n; * Beware that resume now expects *next to be in d1 and the offset of&n; * tss to be in a1. This saves a few instructions as we no longer have&n; * to push them onto the stack and read them back right after.&n; *&n; * 02/17/96 - Jes Sorensen (jds@kom.auc.dk)&n; *&n; * Changed 96/09/19 by Andreas Schwab&n; * pass prev in a0, next in a1&n; */
 id|asmlinkage
@@ -32,7 +24,7 @@ mdefine_line|#define local_irq_enable() asm volatile (&quot;andiw %0,%%sr&quot;:
 macro_line|#else
 macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable() ({&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;if (MACH_IS_Q40 || !local_irq_count(smp_processor_id()))              &bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);  &bslash;&n;})
+mdefine_line|#define local_irq_enable() ({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (MACH_IS_Q40 || !hardirq_count())&t;&t;&t;&t;&t;&bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);&t;&bslash;&n;})
 macro_line|#endif
 DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable() asm volatile (&quot;oriw  #0x0700,%%sr&quot;: : : &quot;memory&quot;)
@@ -40,19 +32,36 @@ DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(x) asm volatile (&quot;movew %%sr,%0&quot;:&quot;=d&quot; (x) : : &quot;memory&quot;)
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x) asm volatile (&quot;movew %0,%%sr&quot;: :&quot;d&quot; (x) : &quot;memory&quot;)
+DECL|function|irqs_disabled
+r_static
+r_inline
+r_int
+id|irqs_disabled
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|flags
+op_amp
+op_complement
+id|ALLOWINT
+suffix:semicolon
+)brace
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;({ local_save_flags(x); local_irq_disable(); })
-DECL|macro|cli
-mdefine_line|#define cli()&t;&t;&t;local_irq_disable()
-DECL|macro|sti
-mdefine_line|#define sti()&t;&t;&t;local_irq_enable()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x)&t;&t;local_save_flags(x)
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x)&t;local_irq_restore(x)
-DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)   do { save_flags(flags); cli(); } while(0)
 multiline_comment|/*&n; * Force strict CPU ordering.&n; * Not really required on m68k...&n; */
 DECL|macro|nop
 mdefine_line|#define nop()&t;&t;do { asm volatile (&quot;nop&quot;); barrier(); } while (0)
@@ -116,19 +125,14 @@ id|size
 (brace
 r_int
 r_int
-id|tmp
+id|flags
 comma
-id|flags
+id|tmp
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_switch
@@ -140,107 +144,81 @@ id|size
 r_case
 l_int|1
 suffix:colon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;moveb %2,%0&bslash;n&bslash;t&quot;
-l_string|&quot;moveb %1,%2&quot;
-suffix:colon
-l_string|&quot;=&amp;d&quot;
-(paren
 id|tmp
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|x
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
+op_assign
 op_star
-id|__xg
-c_func
 (paren
+id|u8
+op_star
+)paren
 id|ptr
+suffix:semicolon
+op_star
+(paren
+id|u8
+op_star
 )paren
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
+id|ptr
+op_assign
+id|x
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;movew %2,%0&bslash;n&bslash;t&quot;
-l_string|&quot;movew %1,%2&quot;
-suffix:colon
-l_string|&quot;=&amp;d&quot;
-(paren
 id|tmp
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|x
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
+op_assign
 op_star
-id|__xg
-c_func
 (paren
+id|u16
+op_star
+)paren
 id|ptr
+suffix:semicolon
+op_star
+(paren
+id|u16
+op_star
 )paren
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
+id|ptr
+op_assign
+id|x
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|4
 suffix:colon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;movel %2,%0&bslash;n&bslash;t&quot;
-l_string|&quot;movel %1,%2&quot;
-suffix:colon
-l_string|&quot;=&amp;d&quot;
-(paren
 id|tmp
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|x
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
+op_assign
 op_star
-id|__xg
-c_func
 (paren
+id|u32
+op_star
+)paren
 id|ptr
+suffix:semicolon
+op_star
+(paren
+id|u32
+op_star
 )paren
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
+id|ptr
+op_assign
+id|x
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

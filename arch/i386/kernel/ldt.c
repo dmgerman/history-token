@@ -418,9 +418,9 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * No need to lock the MM as we are the last user&n; */
-DECL|function|release_segments
+DECL|function|destroy_context
 r_void
-id|release_segments
+id|destroy_context
 c_func
 (paren
 r_struct

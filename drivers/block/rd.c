@@ -616,7 +616,7 @@ id|READ
 id|flush_dcache_page
 c_func
 (paren
-id|sbh-&gt;b_page
+id|vec-&gt;bv_page
 )paren
 suffix:semicolon
 )brace

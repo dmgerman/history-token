@@ -45,6 +45,13 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* list of all scsi_disks */
+DECL|member|driver
+r_struct
+id|Scsi_Device_Template
+op_star
+id|driver
+suffix:semicolon
+multiline_comment|/* always &amp;sd_template */
 DECL|member|device
 r_struct
 id|scsi_device
@@ -257,21 +264,6 @@ op_assign
 id|TYPE_DISK
 comma
 dot
-id|major
-op_assign
-id|SCSI_DISK0_MAJOR
-comma
-dot
-id|min_major
-op_assign
-id|SCSI_DISK1_MAJOR
-comma
-dot
-id|max_major
-op_assign
-id|SCSI_DISK7_MAJOR
-comma
-dot
 id|blk
 op_assign
 l_int|1
@@ -438,6 +430,34 @@ id|sd_devlist_lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|scsi_disk
+r_static
+r_inline
+r_struct
+id|scsi_disk
+op_star
+id|scsi_disk
+c_func
+(paren
+r_struct
+id|gendisk
+op_star
+id|disk
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+id|disk-&gt;private_data
+comma
+r_struct
+id|scsi_disk
+comma
+id|driver
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;sd_ioctl - process an ioctl&n; *&t;@inode: only i_rdev member may be used&n; *&t;@filp: only f_mode and f_flags may be used&n; *&t;@cmd: ioctl command number&n; *&t;@arg: this is third argument given to ioctl(2) system call.&n; *&t;Often contains a pointer.&n; *&n; *&t;Returns 0 if successful (some ioctls return postive numbers on&n; *&t;success as well). Returns a negated errno value in case of error.&n; *&n; *&t;Note: most ioctls are forward onto the block subsystem or further&n; *&t;down in the scsi subsytem.&n; **/
 DECL|function|sd_ioctl
 r_static
@@ -483,7 +503,11 @@ id|scsi_disk
 op_star
 id|sdkp
 op_assign
-id|disk-&gt;private_data
+id|scsi_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -1625,7 +1649,11 @@ id|scsi_disk
 op_star
 id|sdkp
 op_assign
-id|disk-&gt;private_data
+id|scsi_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -1874,7 +1902,11 @@ id|scsi_disk
 op_star
 id|sdkp
 op_assign
-id|disk-&gt;private_data
+id|scsi_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -2434,7 +2466,11 @@ id|scsi_disk
 op_star
 id|sdkp
 op_assign
-id|disk-&gt;private_data
+id|scsi_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_struct
 id|scsi_device
@@ -2517,7 +2553,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * check_disk_change */
 )brace
-multiline_comment|/* Using Start/Stop enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; * This also handles drives that auto spin down. eg iomega jaz 1GB&n;&t; * as this will spin up the drive.&n;&t; */
+multiline_comment|/* Using TEST_UNIT_READY enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; *&n;&t; * Drives that auto spin down. eg iomega jaz 1G, will be started&n;&t; * by sd_spinup_disk() from sd_init_onedisk(), which happens whenever&n;&t; * sd_revalidate() is called.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -2539,7 +2575,7 @@ c_func
 (paren
 id|sdp
 comma
-id|SCSI_IOCTL_START_UNIT
+id|SCSI_IOCTL_TEST_UNIT_READY
 comma
 l_int|NULL
 )paren
@@ -2848,14 +2884,11 @@ id|SRpnt
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Look for non-removable devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
+multiline_comment|/* Look for devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
 r_if
 c_cond
 (paren
 id|the_result
-op_logical_and
-op_logical_neg
-id|sdp-&gt;removable
 op_logical_and
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -4708,6 +4741,11 @@ id|sdkp-&gt;device
 op_assign
 id|sdp
 suffix:semicolon
+id|sdkp-&gt;driver
+op_assign
+op_amp
+id|sd_template
+suffix:semicolon
 id|sdkp-&gt;disk
 op_assign
 id|gd
@@ -4815,7 +4853,8 @@ id|GENHD_FL_REMOVABLE
 suffix:semicolon
 id|gd-&gt;private_data
 op_assign
-id|sdkp
+op_amp
+id|sdkp-&gt;driver
 suffix:semicolon
 id|gd-&gt;queue
 op_assign
@@ -4904,7 +4943,11 @@ id|scsi_disk
 op_star
 id|sdkp
 op_assign
-id|disk-&gt;private_data
+id|scsi_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_if
 c_cond

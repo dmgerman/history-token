@@ -178,6 +178,20 @@ r_void
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|atari_mksound
+c_func
+(paren
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|ticks
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT
 r_static
 r_void
@@ -883,7 +897,7 @@ id|mach_max_dma_address
 op_assign
 l_int|0xffffff
 suffix:semicolon
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 id|mach_beep
 op_assign
 id|atari_mksound

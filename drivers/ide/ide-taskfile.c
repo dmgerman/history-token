@@ -6101,16 +6101,6 @@ id|rq-&gt;rq_status
 op_assign
 id|RQ_ACTIVE
 suffix:semicolon
-id|rq-&gt;rq_dev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|disk-&gt;major
-comma
-id|disk-&gt;first_minor
-)paren
-suffix:semicolon
 id|rq-&gt;rq_disk
 op_assign
 id|drive-&gt;disk

@@ -40,6 +40,10 @@ DECL|macro|dvma_malloc
 mdefine_line|#define dvma_malloc(x) dvma_malloc_align(x, 0)
 DECL|macro|dvma_map
 mdefine_line|#define dvma_map(x, y) dvma_map_align(x, y, 0)
+DECL|macro|dvma_map_vme
+mdefine_line|#define dvma_map_vme(x, y) (dvma_map(x, y) &amp; 0xfffff)
+DECL|macro|dvma_map_align_vme
+mdefine_line|#define dvma_map_align_vme(x, y, z) (dvma_map_align (x, y, z) &amp; 0xfffff)
 r_extern
 r_int
 r_int
@@ -119,6 +123,10 @@ DECL|macro|dvma_vtop
 mdefine_line|#define dvma_vtop(x) ((unsigned long)(x) &amp; 0xffffff)
 DECL|macro|dvma_ptov
 mdefine_line|#define dvma_ptov(x) ((unsigned long)(x) | 0xf000000)
+DECL|macro|dvma_vtovme
+mdefine_line|#define dvma_vtovme(x) ((unsigned long)(x) &amp; 0x00fffff)
+DECL|macro|dvma_vmetov
+mdefine_line|#define dvma_vmetov(x) ((unsigned long)(x) | 0xff00000)
 DECL|macro|dvma_vtob
 mdefine_line|#define dvma_vtob(x) dvma_vtop(x)
 DECL|macro|dvma_btov

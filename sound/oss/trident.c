@@ -18883,12 +18883,19 @@ suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|500
+l_int|5000
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;ALi 5451 did not come out of reset.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
-l_int|0
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* AC97 codec initialisation. */

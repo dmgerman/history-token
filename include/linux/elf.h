@@ -156,6 +156,8 @@ DECL|macro|EM_S390
 mdefine_line|#define EM_S390&t;&t;22&t;/* IBM S/390 */
 DECL|macro|EM_CRIS
 mdefine_line|#define EM_CRIS         76      /* Axis Communications 32-bit embedded processor */
+DECL|macro|EM_V850
+mdefine_line|#define EM_V850&t;&t;87&t;/* NEC v850 */
 multiline_comment|/*&n; * This is an interim value that we will use until the committee comes&n; * up with a final number.&n; */
 DECL|macro|EM_ALPHA
 mdefine_line|#define EM_ALPHA&t;0x9026

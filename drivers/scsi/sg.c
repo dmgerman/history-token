@@ -181,11 +181,6 @@ op_assign
 l_int|0xff
 comma
 dot
-id|major
-op_assign
-id|SCSI_GENERIC_MAJOR
-comma
-dot
 id|detect
 op_assign
 id|sg_detect
@@ -451,6 +446,12 @@ r_struct
 id|sg_device
 (brace
 multiline_comment|/* holds the state of each scsi generic device */
+DECL|member|driver
+r_struct
+id|Scsi_Device_Template
+op_star
+id|driver
+suffix:semicolon
 DECL|member|device
 id|Scsi_Device
 op_star
@@ -476,11 +477,6 @@ DECL|member|de
 id|devfs_handle_t
 id|de
 suffix:semicolon
-DECL|member|i_rdev
-id|kdev_t
-id|i_rdev
-suffix:semicolon
-multiline_comment|/* holds device major+minor number */
 DECL|member|detached
 r_volatile
 r_char
@@ -502,6 +498,12 @@ DECL|member|sg_driverfs_dev
 r_struct
 id|device
 id|sg_driverfs_dev
+suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
 suffix:semicolon
 DECL|typedef|Sg_device
 )brace
@@ -1457,13 +1459,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_release: dev=%d&bslash;n&quot;
+l_string|&quot;sg_release: %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 )paren
 )paren
 suffix:semicolon
@@ -1628,13 +1626,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_read: dev=%d, count=%d&bslash;n&quot;
+l_string|&quot;sg_read: %s, count=%d&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 (paren
 r_int
@@ -2504,13 +2498,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_write: dev=%d, count=%d&bslash;n&quot;
+l_string|&quot;sg_write: %s, count=%d&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 (paren
 r_int
@@ -3677,9 +3667,9 @@ op_assign
 op_amp
 id|SRpnt-&gt;sr_device-&gt;request_queue
 suffix:semicolon
-id|SRpnt-&gt;sr_request-&gt;rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_disk
 op_assign
-id|sdp-&gt;i_rdev
+id|sdp-&gt;disk
 suffix:semicolon
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -3905,13 +3895,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_ioctl: dev=%d, cmd=0x%x&bslash;n&quot;
+l_string|&quot;sg_ioctl: %s, cmd=0x%x&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 (paren
 r_int
@@ -5803,13 +5789,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_poll: dev=%d, res=0x%x&bslash;n&quot;
+l_string|&quot;sg_poll: %s, res=0x%x&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 (paren
 r_int
@@ -5888,13 +5870,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_fasync: dev=%d, mode=%d&bslash;n&quot;
+l_string|&quot;sg_fasync: %s, mode=%d&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 id|mode
 )paren
@@ -6895,15 +6873,9 @@ id|SRpnt-&gt;sr_underflow
 op_assign
 l_int|0
 suffix:semicolon
-id|SRpnt-&gt;sr_request-&gt;rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_disk
 op_assign
-id|mk_kdev
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* &quot;sg&quot; _disowns_ request blk */
 id|srp-&gt;my_cmdp
@@ -6922,13 +6894,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;sg_cmd_done: dev=%d, pack_id=%d, res=0x%x&bslash;n&quot;
+l_string|&quot;sg_cmd_done: %s, pack_id=%d, res=0x%x&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
+id|sdp-&gt;disk-&gt;disk_name
 comma
 id|srp-&gt;header.pack_id
 comma
@@ -7683,7 +7651,13 @@ id|page
 comma
 l_string|&quot;%x&bslash;n&quot;
 comma
-id|sdp-&gt;i_rdev.value
+id|MKDEV
+c_func
+(paren
+id|sdp-&gt;disk-&gt;major
+comma
+id|sdp-&gt;disk-&gt;first_minor
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7761,6 +7735,17 @@ op_star
 id|scsidp
 )paren
 (brace
+r_struct
+id|gendisk
+op_star
+id|disk
+op_assign
+id|alloc_disk
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|Sg_device
 op_star
 id|sdp
@@ -7773,6 +7758,15 @@ id|iflags
 suffix:semicolon
 r_int
 id|k
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk
+)paren
+r_return
+l_int|1
 suffix:semicolon
 id|write_lock_irqsave
 c_func
@@ -7848,6 +7842,12 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;sg_attach: device array cannot be resized&bslash;n&quot;
+)paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|disk
 )paren
 suffix:semicolon
 r_return
@@ -7998,6 +7998,12 @@ op_star
 id|sdp
 )paren
 suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -8097,6 +8103,12 @@ id|KERN_ERR
 l_string|&quot;sg_attach: Sg_device cannot be allocated&bslash;n&quot;
 )paren
 suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -8128,6 +8140,38 @@ op_star
 id|sdp
 )paren
 )paren
+suffix:semicolon
+id|sdp-&gt;driver
+op_assign
+op_amp
+id|sg_template
+suffix:semicolon
+id|disk-&gt;private_data
+op_assign
+op_amp
+id|sdp-&gt;driver
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;disk_name
+comma
+l_string|&quot;sg%d&quot;
+comma
+id|k
+)paren
+suffix:semicolon
+id|disk-&gt;major
+op_assign
+id|SCSI_GENERIC_MAJOR
+suffix:semicolon
+id|disk-&gt;first_minor
+op_assign
+id|k
+suffix:semicolon
+id|sdp-&gt;disk
+op_assign
+id|disk
 suffix:semicolon
 id|sdp-&gt;device
 op_assign
@@ -8164,16 +8208,6 @@ c_cond
 id|scsidp-&gt;host-&gt;sg_tablesize
 suffix:colon
 l_int|0
-suffix:semicolon
-id|sdp-&gt;i_rdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|SCSI_GENERIC_MAJOR
-comma
-id|k
-)paren
 suffix:semicolon
 id|memset
 c_func
@@ -8701,6 +8735,16 @@ c_func
 op_amp
 id|sdp-&gt;sg_driverfs_dev
 )paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|sdp-&gt;disk
+)paren
+suffix:semicolon
+id|sdp-&gt;disk
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -16178,11 +16222,6 @@ r_struct
 id|scsi_device
 op_star
 id|scsidp
-suffix:semicolon
-r_int
-id|dev
-suffix:semicolon
-id|scsidp
 op_assign
 id|sdp-&gt;device
 suffix:semicolon
@@ -16205,14 +16244,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|dev
-op_assign
-id|minor
-c_func
-(paren
-id|sdp-&gt;i_rdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16228,9 +16259,9 @@ l_int|0
 id|PRINT_PROC
 c_func
 (paren
-l_string|&quot; &gt;&gt;&gt; device=sg%d &quot;
+l_string|&quot; &gt;&gt;&gt; device=%s &quot;
 comma
-id|dev
+id|sdp-&gt;disk-&gt;disk_name
 )paren
 suffix:semicolon
 r_if

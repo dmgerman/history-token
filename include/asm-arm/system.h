@@ -131,6 +131,28 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|CPU_ARCH_UNKNOWN
+mdefine_line|#define CPU_ARCH_UNKNOWN&t;0
+DECL|macro|CPU_ARCH_ARMv3
+mdefine_line|#define CPU_ARCH_ARMv3&t;&t;1
+DECL|macro|CPU_ARCH_ARMv4
+mdefine_line|#define CPU_ARCH_ARMv4&t;&t;2
+DECL|macro|CPU_ARCH_ARMv4T
+mdefine_line|#define CPU_ARCH_ARMv4T&t;&t;3
+DECL|macro|CPU_ARCH_ARMv5
+mdefine_line|#define CPU_ARCH_ARMv5&t;&t;4
+DECL|macro|CPU_ARCH_ARMv5T
+mdefine_line|#define CPU_ARCH_ARMv5T&t;&t;5
+DECL|macro|CPU_ARCH_ARMv5TE
+mdefine_line|#define CPU_ARCH_ARMv5TE&t;6
+r_extern
+r_int
+id|cpu_architecture
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Include processor dependent parts&n; */
 macro_line|#include &lt;asm/proc/system.h&gt;
 DECL|macro|mb

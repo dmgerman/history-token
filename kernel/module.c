@@ -1658,6 +1658,10 @@ op_logical_neg
 id|mod_bound
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|mod-&gt;init
 comma
 l_int|0
@@ -1686,6 +1690,10 @@ op_logical_neg
 id|mod_bound
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|mod-&gt;cleanup
 comma
 l_int|0
@@ -1822,6 +1830,10 @@ op_logical_neg
 id|mod_bound
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|mod-&gt;can_unload
 comma
 l_int|0

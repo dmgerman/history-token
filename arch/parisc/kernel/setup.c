@@ -362,15 +362,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-macro_line|# if defined(CONFIG_STI_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE)
+macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
 multiline_comment|/* we use take_over_console() later ! */
-macro_line|# endif
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Display cpu info for all cpu&squot;s.&n; * for parisc this is in processor.c&n; */

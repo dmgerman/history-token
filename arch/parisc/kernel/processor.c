@@ -303,18 +303,62 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;** CONFIG_SMP: init_smp_config() will attempt to get CPU&squot;s into&n;&t;** OS control. RENDEZVOUS is the default state - see mem_set above.&n;&t;**&t;p-&gt;state = STATE_RENDEZVOUS;&n;&t;*/
-multiline_comment|/*&n;&t;** itimer and ipi IRQ handlers are statically initialized in&n;&t;** arch/parisc/kernel/irq.c. ie Don&squot;t need to register them.&n;&t;*/
-id|p-&gt;region
-op_assign
-id|irq_region
-(braket
-id|IRQ_FROM_REGION
-c_func
+macro_line|#if 0
+multiline_comment|/* CPU 0 IRQ table is statically allocated/initialized */
+r_if
+c_cond
 (paren
-id|CPU_IRQ_REGION
+id|cpuid
 )paren
+(brace
+r_struct
+id|irqaction
+id|actions
+(braket
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;** itimer and ipi IRQ handlers are statically initialized in&n;&t;&t;** arch/parisc/kernel/irq.c. ie Don&squot;t need to register them.&n;&t;&t;*/
+id|actions
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|irqaction
+)paren
+op_star
+id|MAX_CPU_IRQ
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|actions
+)paren
+(brace
+multiline_comment|/* not getting it&squot;s own table, share with monarch */
+id|actions
+op_assign
+id|cpu_irq_actions
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+id|cpu_irq_actions
+(braket
+id|cpuid
+)braket
+op_assign
+id|actions
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

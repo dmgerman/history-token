@@ -6,11 +6,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/perf.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;
+macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for __raw_read() */
 macro_line|#include &quot;perf_images.h&quot;
 DECL|macro|MAX_RDR_WORDS
 mdefine_line|#define MAX_RDR_WORDS&t;24

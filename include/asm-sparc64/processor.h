@@ -152,10 +152,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;&t;do { } while (0)
 DECL|macro|get_wchan
 mdefine_line|#define get_wchan(__TSK) &bslash;&n;({&t;extern void scheduling_functions_start_here(void); &bslash;&n;&t;extern void scheduling_functions_end_here(void); &bslash;&n;&t;unsigned long pc, fp, bias = 0; &bslash;&n;&t;unsigned long thread_info_base; &bslash;&n;&t;struct reg_window *rw; &bslash;&n;        unsigned long __ret = 0; &bslash;&n;&t;int count = 0; &bslash;&n;&t;if (!(__TSK) || (__TSK) == current || &bslash;&n;            (__TSK)-&gt;state == TASK_RUNNING) &bslash;&n;&t;&t;goto __out; &bslash;&n;&t;thread_info_base = (unsigned long) ((__TSK)-&gt;thread_info); &bslash;&n;&t;bias = STACK_BIAS; &bslash;&n;&t;fp = (__TSK)-&gt;thread_info-&gt;ksp + bias; &bslash;&n;&t;do { &bslash;&n;&t;&t;/* Bogus frame pointer? */ &bslash;&n;&t;&t;if (fp &lt; (thread_info_base + sizeof(struct thread_info)) || &bslash;&n;&t;&t;    fp &gt;= (thread_info_base + THREAD_SIZE)) &bslash;&n;&t;&t;&t;break; &bslash;&n;&t;&t;rw = (struct reg_window *) fp; &bslash;&n;&t;&t;pc = rw-&gt;ins[7]; &bslash;&n;&t;&t;if (pc &lt; ((unsigned long) scheduling_functions_start_here) || &bslash;&n;&t;&t;    pc &gt;= ((unsigned long) scheduling_functions_end_here)) { &bslash;&n;&t;&t;&t;__ret = pc; &bslash;&n;&t;&t;&t;goto __out; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;fp = rw-&gt;ins[6] + bias; &bslash;&n;&t;} while (++count &lt; 16); &bslash;&n;__out:&t;__ret; &bslash;&n;})
 DECL|macro|KSTK_EIP

@@ -187,8 +187,8 @@ macro_line|#endif
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
 DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x6000
+mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM &t;0x40000000
+mdefine_line|#define PCIBIOS_MIN_MEM &t;0x81000000
 macro_line|#endif
 eof

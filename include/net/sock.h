@@ -13,9 +13,6 @@ macro_line|#endif
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/file.h&gt;
-macro_line|#include &lt;linux/fcblist.h&gt;
 multiline_comment|/*&n; * This structure really needs to be cleaned up.&n; * Most of it is for TCP, and not used by any of&n; * the other protocols.&n; */
 multiline_comment|/* Define this to get the sk-&gt;debug debugging facility. */
 DECL|macro|SOCK_DEBUGGING
@@ -2872,36 +2869,7 @@ r_if
 c_cond
 (paren
 id|sk-&gt;socket
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|sk-&gt;socket-&gt;file
-)paren
-id|file_send_notify
-c_func
-(paren
-id|sk-&gt;socket-&gt;file
-comma
-id|ion_band_table
-(braket
-id|band
-op_minus
-id|POLL_IN
-)braket
-comma
-id|poll_band_table
-(braket
-id|band
-op_minus
-id|POLL_IN
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_and
 id|sk-&gt;socket-&gt;fasync_list
 )paren
 id|sock_wake_async
@@ -2914,7 +2882,6 @@ comma
 id|band
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|macro|SOCK_MIN_SNDBUF
 mdefine_line|#define SOCK_MIN_SNDBUF 2048

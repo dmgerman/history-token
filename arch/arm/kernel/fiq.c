@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/fiq.c&n; *&n; *  Copyright (C) 1998 Russell King&n; *  Copyright (C) 1998, 1999 Phil Blundell&n; *&n; *  FIQ support written by Philip Blundell &lt;philb@gnu.org&gt;, 1998.&n; *&n; *  FIQ support re-written by Russell King to be more generic&n; *&n; * We now properly support a method by which the FIQ handlers can&n; * be stacked onto the vector.  We still do not support sharing&n; * the FIQ vector itself.&n; *&n; * Operation is as follows:&n; *  1. Owner A claims FIQ:&n; *     - default_fiq relinquishes control.&n; *  2. Owner A:&n; *     - inserts code.&n; *     - sets any registers,&n; *     - enables FIQ.&n; *  3. Owner B claims FIQ:&n; *     - if owner A has a relinquish function.&n; *       - disable FIQs.&n; *       - saves any registers.&n; *       - returns zero.&n; *  4. Owner B:&n; *     - inserts code.&n; *     - sets any registers,&n; *     - enables FIQ.&n; *  5. Owner B releases FIQ:&n; *     - Owner A is asked to reacquire FIQ:&n; *&t; - inserts code.&n; *&t; - restores saved registers.&n; *&t; - enables FIQ.&n; *  6. Goto 3&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -670,13 +671,11 @@ comma
 id|current_fiq-&gt;name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_ERRORS
-id|__backtrace
+id|dump_stack
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace

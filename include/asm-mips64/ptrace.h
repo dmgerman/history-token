@@ -79,11 +79,8 @@ multiline_comment|/* #define PTRACE_GETFPREGS&t;&t;14 */
 multiline_comment|/* #define PTRACE_SETFPREGS&t;&t;15 */
 multiline_comment|/* #define PTRACE_GETFPXREGS&t;&t;18 */
 multiline_comment|/* #define PTRACE_SETFPXREGS&t;&t;19 */
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS&t;21
-multiline_comment|/* options set using PTRACE_SETOPTIONS */
-DECL|macro|PTRACE_O_TRACESYSGOOD
-mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS&t;21
 macro_line|#ifdef _LANGUAGE_ASSEMBLY
 macro_line|#include &lt;asm/offset.h&gt;
 macro_line|#endif /* (_LANGUAGE_ASSEMBLY__) */

@@ -871,10 +871,7 @@ DECL|macro|PTRACE_GETREGS
 mdefine_line|#define PTRACE_GETREGS&t;&t;18&t;/* get all registers (pt_all_user_regs) in one shot */
 DECL|macro|PTRACE_SETREGS
 mdefine_line|#define PTRACE_SETREGS&t;&t;19&t;/* set all registers (pt_all_user_regs) in one shot */
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS&t;21
-multiline_comment|/* options set using PTRACE_SETOPTIONS */
-DECL|macro|PTRACE_O_TRACESYSGOOD
-mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS&t;21
 macro_line|#endif /* _ASM_IA64_PTRACE_H */
 eof

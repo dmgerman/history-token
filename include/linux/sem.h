@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_SEM_H
 DECL|macro|_LINUX_SEM_H
 mdefine_line|#define _LINUX_SEM_H
 macro_line|#include &lt;linux/ipc.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* semop flags */
 DECL|macro|SEM_UNDO
 mdefine_line|#define SEM_UNDO        0x1000  /* undo the operation on exit */

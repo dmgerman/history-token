@@ -54,6 +54,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|root-&gt;dev.parent
+)paren
+id|root-&gt;dev.parent
+op_assign
+op_amp
+id|system_bus
+suffix:semicolon
 id|pr_debug
 c_func
 (paren

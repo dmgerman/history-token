@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
 multiline_comment|/* See comments in include/asm-parisc/pci.h */
 DECL|variable|hppa_dma_ops
 r_struct

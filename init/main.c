@@ -154,6 +154,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|populate_rootfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_TC
 r_extern
 r_void
@@ -221,7 +229,7 @@ r_int
 r_int
 id|max_cpus
 op_assign
-id|UINT_MAX
+id|NR_CPUS
 suffix:semicolon
 multiline_comment|/*&n; * Setup routine for controlling SMP activation&n; *&n; * Command-line option of &quot;nosmp&quot; or &quot;maxcpus=0&quot; will disable SMP&n; * activation entirely (the MPS table probe still happens, though).&n; *&n; * Command-line option of &quot;maxcpus=&lt;NUM&gt;&quot;, where &lt;NUM&gt; is an integer&n; * greater than 0, limits the maximum number of CPUs activated in&n; * SMP mode to &lt;NUM&gt;.&n; */
 DECL|function|nosmp
@@ -1491,6 +1499,11 @@ c_func
 )paren
 suffix:semicolon
 id|signals_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|populate_rootfs
 c_func
 (paren
 )paren

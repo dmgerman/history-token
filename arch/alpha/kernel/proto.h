@@ -104,6 +104,14 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|cia_kill_arch
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|cia_machine_check
 c_func
 (paren

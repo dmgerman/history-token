@@ -3,6 +3,18 @@ DECL|macro|_LINUX_SCSI_H
 mdefine_line|#define _LINUX_SCSI_H
 multiline_comment|/*&n; * This header file contains public constants and structures used by&n; * the scsi code for linux.&n; */
 multiline_comment|/*&n;    $Header: /usr/src/linux/include/linux/RCS/scsi.h,v 1.3 1993/09/24 12:20:33 drew Exp $&n;&n;    For documentation on the OPCODES, MESSAGES, and SENSE values,&n;    please consult the SCSI standard.&n;&n;*/
+multiline_comment|/*&n; * SCSI command lengths&n; */
+r_extern
+r_const
+r_int
+r_char
+id|scsi_command_size
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|macro|COMMAND_SIZE
+mdefine_line|#define COMMAND_SIZE(opcode) scsi_command_size[((opcode) &gt;&gt; 5) &amp; 7]
 multiline_comment|/*&n; *      SCSI opcodes&n; */
 DECL|macro|TEST_UNIT_READY
 mdefine_line|#define TEST_UNIT_READY       0x00

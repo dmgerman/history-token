@@ -10630,7 +10630,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|de_remove_one
+)paren
 comma
 macro_line|#ifdef CONFIG_PM
 dot

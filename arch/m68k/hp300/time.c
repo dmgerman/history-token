@@ -74,7 +74,7 @@ op_star
 op_assign
 id|dev_id
 suffix:semicolon
-id|readb
+id|in_8
 c_func
 (paren
 id|CLOCKBASE
@@ -133,7 +133,7 @@ id|ticks
 suffix:semicolon
 id|msb1
 op_assign
-id|readb
+id|in_8
 c_func
 (paren
 id|CLOCKBASE
@@ -143,7 +143,7 @@ l_int|5
 suffix:semicolon
 id|lsb
 op_assign
-id|readb
+id|in_8
 c_func
 (paren
 id|CLOCKBASE
@@ -153,7 +153,7 @@ l_int|7
 suffix:semicolon
 id|msb2
 op_assign
-id|readb
+id|in_8
 c_func
 (paren
 id|CLOCKBASE
@@ -171,7 +171,7 @@ id|msb2
 multiline_comment|/* A carry happened while we were reading.  Read it again */
 id|lsb
 op_assign
-id|readb
+id|in_8
 c_func
 (paren
 id|CLOCKBASE
@@ -226,25 +226,25 @@ op_star
 )paren
 )paren
 (brace
-id|writeb
+id|out_8
 c_func
 (paren
-l_int|0x1
-comma
 id|CLOCKBASE
 op_plus
 id|CLKCR2
+comma
+l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* select CR1 */
-id|writeb
+id|out_8
 c_func
 (paren
-l_int|0x1
-comma
 id|CLOCKBASE
 op_plus
 id|CLKCR1
+comma
+l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* reset */
@@ -279,25 +279,25 @@ comma
 id|vector
 )paren
 suffix:semicolon
-id|writeb
+id|out_8
 c_func
 (paren
-l_int|0x1
-comma
 id|CLOCKBASE
 op_plus
 id|CLKCR2
+comma
+l_int|0x1
 )paren
 suffix:semicolon
 multiline_comment|/* select CR1 */
-id|writeb
+id|out_8
 c_func
 (paren
-l_int|0x40
-comma
 id|CLOCKBASE
 op_plus
 id|CLKCR1
+comma
+l_int|0x40
 )paren
 suffix:semicolon
 multiline_comment|/* enable irq */

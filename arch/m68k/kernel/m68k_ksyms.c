@@ -164,14 +164,15 @@ c_func
 id|mm_end_of_chunk
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_SINGLE_MEMORY_CHUNK */
-DECL|variable|mm_vtop_fallback
+macro_line|#else
+DECL|variable|m68k_memoffset
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|mm_vtop_fallback
+id|m68k_memoffset
 )paren
 suffix:semicolon
+macro_line|#endif /* !CONFIG_SINGLE_MEMORY_CHUNK */
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL
 c_func
@@ -199,6 +200,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|m68k_debug_device
+)paren
+suffix:semicolon
+DECL|variable|mach_hwclk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mach_hwclk
 )paren
 suffix:semicolon
 DECL|variable|dump_fpu

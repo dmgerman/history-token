@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Implementation independent bits of the Floppy driver.&n; *&n; * much of this file is derived from what was originally the Q40 floppy driver.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000, 2001&n; *&n; * Sun3x support added 2/4/2000 Sam Creasey (sammy@oh.verio.com)&n; *&n; */
+multiline_comment|/*&n; * Implementation independent bits of the Floppy driver.&n; *&n; * much of this file is derived from what was originally the Q40 floppy driver.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000, 2001&n; *&n; * Sun3x support added 2/4/2000 Sam Creasey (sammy@sammy.net)&n; *&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 id|asmlinkage

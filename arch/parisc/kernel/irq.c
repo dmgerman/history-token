@@ -63,6 +63,7 @@ mdefine_line|#define EIEM_MASK(irq)       (1UL&lt;&lt;(MAX_CPU_IRQ-IRQ_OFFSET(ir
 multiline_comment|/* Bits in EIEM correlate with cpu_irq_action[].&n;** Numbered *Big Endian*! (ie bit 0 is MSB)&n;*/
 DECL|variable|cpu_eiem
 r_static
+r_volatile
 r_int
 r_int
 id|cpu_eiem
@@ -270,8 +271,8 @@ id|cpu_eiem
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * XXX cpu_irq_actions[] will become 2 dimensional for per CPU EIR support.&n; * correspond changes needed in:&n; * &t;processor_probe()&t;initialize additional action arrays&n; * &t;request_irq()&t;&t;handle CPU IRQ region specially&n; * &t;do_cpu_irq_mask()&t;index into the matching irq_action array.&n; */
 DECL|variable|cpu_irq_actions
-r_static
 r_struct
 id|irqaction
 id|cpu_irq_actions
@@ -320,10 +321,25 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|variable|cpu_irq_region
+DECL|variable|cpu_irq_ops
+r_struct
+id|irq_region_ops
+id|cpu_irq_ops
+op_assign
+(brace
+id|disable_cpu_irq
+comma
+id|enable_cpu_irq
+comma
+id|unmask_cpu_irq
+comma
+id|unmask_cpu_irq
+)brace
+suffix:semicolon
+DECL|variable|cpu0_irq_region
 r_struct
 id|irq_region
-id|cpu_irq_region
+id|cpu0_irq_region
 op_assign
 (brace
 id|ops
@@ -351,7 +367,7 @@ l_int|0
 comma
 id|name
 suffix:colon
-l_string|&quot;PA-CPU-00&quot;
+l_string|&quot;PARISC-CPU&quot;
 comma
 id|irqbase
 suffix:colon
@@ -389,7 +405,7 @@ multiline_comment|/* reserved for EISA, else causes data page fault (aka code 15
 id|CPU_IRQ_REGION
 )braket
 op_amp
-id|cpu_irq_region
+id|cpu0_irq_region
 comma
 )brace
 suffix:semicolon
@@ -752,14 +768,17 @@ comma
 l_string|&quot;     &quot;
 )paren
 suffix:semicolon
-macro_line|#if 0 /* def CONFIG_SMP */
+macro_line|#ifdef CONFIG_SMP
 r_for
 c_loop
 (paren
+id|regnr
+op_assign
+l_int|0
 suffix:semicolon
 id|regnr
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|regnr
 op_increment
@@ -770,7 +789,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;      CPU%d &quot;
+l_string|&quot;      CPU%02d &quot;
 comma
 id|regnr
 )paren
@@ -879,13 +898,11 @@ id|regnr
 op_plus
 id|i
 suffix:semicolon
-macro_line|#if 0 /* def CONFIG_SMP */
-multiline_comment|/* We currently direct all Interrupts at the Monarch.&n; * The right way to handle SMP IRQ stats is to have one IRQ region/CPU.&n; */
-r_int
 r_int
 id|j
+op_assign
+l_int|0
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -904,36 +921,19 @@ comma
 id|irq_no
 )paren
 suffix:semicolon
-macro_line|#if 1 /* ndef CONFIG_SMP */
-id|seq_printf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;%10u &quot;
-comma
-id|kstat_irqs
-c_func
-(paren
-id|irq_no
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef CONFIG_SMP
 r_for
 c_loop
 (paren
-id|j
-op_assign
-l_int|0
 suffix:semicolon
 id|j
 OL
-id|smp_num_cpus
+id|NR_CPUS
 suffix:semicolon
 id|j
 op_increment
 )paren
+macro_line|#endif
 id|seq_printf
 c_func
 (paren
@@ -941,23 +941,18 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|kstat_cpu
-c_func
-(paren
-id|cpu_logical_map
-c_func
-(paren
+id|kstat.irqs
+(braket
 id|j
-)paren
-)paren
-dot
-id|irqs
+)braket
+(braket
+id|regnr
+)braket
 (braket
 id|irq_no
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 id|seq_printf
 c_func
 (paren
@@ -1017,7 +1012,7 @@ id|action-&gt;next
 (brace
 r_int
 r_int
-id|i
+id|k
 comma
 id|avg
 comma
@@ -1039,15 +1034,15 @@ c_loop
 (paren
 id|avg
 op_assign
-id|i
+id|k
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|k
 OL
 id|PARISC_CR16_HIST_SIZE
 suffix:semicolon
-id|i
+id|k
 op_increment
 )paren
 (brace
@@ -1056,7 +1051,7 @@ id|hist
 op_assign
 id|action-&gt;cr16_hist
 (braket
-id|i
+id|k
 )braket
 suffix:semicolon
 r_if
@@ -1098,7 +1093,7 @@ suffix:semicolon
 )brace
 id|avg
 op_div_assign
-id|i
+id|k
 suffix:semicolon
 id|seq_printf
 c_func
@@ -1179,7 +1174,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|cpu_irq_region.action
+id|cpu_irq_actions
 (braket
 id|irq
 )braket
@@ -1261,55 +1256,57 @@ r_int
 id|virt_irq
 )paren
 (brace
-r_struct
-id|cpuinfo_parisc
-op_star
-id|dev
+r_static
+r_int
+id|next_cpu
 op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|next_cpu
+op_increment
+suffix:semicolon
+multiline_comment|/* assign to &quot;next&quot; CPU we want this bugger on */
+multiline_comment|/* validate entry */
+r_while
+c_loop
 (paren
-r_struct
-id|cpuinfo_parisc
-op_star
+(paren
+id|next_cpu
+OL
+id|NR_CPUS
 )paren
-(paren
-id|irq_region
+op_logical_and
+op_logical_neg
+id|cpu_data
 (braket
-id|IRQ_REGION
-c_func
-(paren
-id|virt_irq
-)paren
+id|next_cpu
 )braket
-op_member_access_from_pointer
-id|data.dev
+dot
+id|txn_addr
 )paren
+id|next_cpu
+op_increment
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dev
+id|next_cpu
+op_ge
+id|NR_CPUS
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;txn_alloc_addr(0x%x): CPU IRQ region? dev %p&bslash;n&quot;
-comma
-id|virt_irq
-comma
-id|dev
-)paren
-suffix:semicolon
-r_return
+id|next_cpu
+op_assign
 l_int|0
 suffix:semicolon
-)brace
+multiline_comment|/* nothing else, assign monarch */
 r_return
-(paren
-id|dev-&gt;txn_addr
-)paren
+id|cpu_data
+(braket
+id|next_cpu
+)braket
+dot
+id|txn_addr
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** The alloc process needs to accept a parameter to accomodate limitations&n;** of the HW/SW which use these bits:&n;** Legacy PA I/O (GSC/NIO): 5 bits (architected EIM register)&n;** V-class (EPIC):          6 bits&n;** N/L-class/A500:          8 bits (iosapic)&n;** PCI 2.2 MSI:             16 bits (I think)&n;** Existing PCI devices:    32-bits (all Symbios SCSI/ATM/HyperFabric)&n;**&n;** On the service provider side:&n;** o PA 1.1 (and PA2.0 narrow mode)     5-bits (width of EIR register)&n;** o PA 2.0 wide mode                   6-bits (per processor)&n;** o IA64                               8-bits (0-256 total)&n;**&n;** So a Legacy PA I/O device on a PA 2.0 box can&squot;t use all&n;** the bits supported by the processor...and the N/L-class&n;** I/O subsystem supports more bits than PA2.0 has. The first&n;** case is the problem.&n;*/
@@ -1399,6 +1396,9 @@ c_func
 suffix:semicolon
 op_increment
 id|kstat.irqs
+(braket
+id|cpu
+)braket
 (braket
 id|IRQ_REGION
 c_func
@@ -1626,11 +1626,6 @@ id|do_cpu_irq_mask
 c_func
 (paren
 r_struct
-id|irq_region
-op_star
-id|region
-comma
-r_struct
 id|pt_regs
 op_star
 id|regs
@@ -1690,8 +1685,6 @@ suffix:semicolon
 r_int
 r_int
 id|irq
-op_assign
-l_int|0
 suffix:semicolon
 id|mtctl
 c_func
@@ -1724,9 +1717,13 @@ id|eirr_val
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Work our way from MSb to LSb...same order we alloc EIRs */
 r_for
 c_loop
 (paren
+id|irq
+op_assign
+l_int|0
 suffix:semicolon
 id|eirr_val
 op_logical_and
@@ -1740,10 +1737,6 @@ id|irq
 op_increment
 )paren
 (brace
-r_int
-r_int
-id|irq_num
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1752,6 +1745,8 @@ op_logical_neg
 id|bit
 op_amp
 id|eirr_val
+op_amp
+id|cpu_eiem
 )paren
 )paren
 r_continue
@@ -1762,22 +1757,18 @@ op_and_assign
 op_complement
 id|bit
 suffix:semicolon
-id|irq_num
-op_assign
-id|region-&gt;data.irqbase
-op_plus
-id|irq
-suffix:semicolon
 id|do_irq
 c_func
 (paren
 op_amp
-id|region-&gt;action
+id|cpu_irq_actions
 (braket
 id|irq
 )braket
 comma
-id|irq_num
+id|TIMER_IRQ
+op_plus
+id|irq
 comma
 id|regs
 )paren
@@ -2736,6 +2727,28 @@ id|irq
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
+DECL|function|synchronize_irq
+r_void
+id|synchronize_irq
+c_func
+(paren
+r_int
+r_int
+id|irqnum
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|in_irq
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * IRQ autodetection code..&n; *&n; * This depends on the fact that any interrupt that&n; * comes in on to an unassigned handler will get stuck&n; * with &quot;IRQ_WAITING&quot; cleared and the interrupt&n; * disabled.&n; */
 r_static
 id|DECLARE_MUTEX

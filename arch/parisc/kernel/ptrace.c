@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -247,6 +248,26 @@ c_cond
 id|current-&gt;ptrace
 op_amp
 id|PT_PTRACED
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|ret
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|ptrace
+c_func
+(paren
+id|current-&gt;parent
+comma
+id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
 )paren
 r_goto
 id|out
@@ -1754,8 +1775,17 @@ r_default
 suffix:colon
 id|ret
 op_assign
-op_minus
-id|EIO
+id|ptrace_request
+c_func
+(paren
+id|child
+comma
+id|request
+comma
+id|addr
+comma
+id|data
+)paren
 suffix:semicolon
 r_goto
 id|out_tsk
@@ -1853,6 +1883,19 @@ suffix:semicolon
 id|current-&gt;exit_code
 op_assign
 id|SIGTRAP
+op_or
+(paren
+(paren
+id|current-&gt;ptrace
+op_amp
+id|PT_TRACESYSGOOD
+)paren
+ques
+c_cond
+l_int|0x80
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 id|current-&gt;state
 op_assign

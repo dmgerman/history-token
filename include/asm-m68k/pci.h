@@ -46,13 +46,10 @@ op_star
 id|conf_device
 )paren
 (paren
-r_int
-r_char
-id|bus
-comma
-r_int
-r_char
-id|device_fn
+r_struct
+id|pci_dev
+op_star
+id|dev
 )paren
 suffix:semicolon
 )brace

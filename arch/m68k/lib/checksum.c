@@ -461,4 +461,197 @@ r_return
 id|sum
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * copy from kernel space while checksumming, otherwise like csum_partial&n; */
+r_int
+r_int
+DECL|function|csum_partial_copy_nocheck
+id|csum_partial_copy_nocheck
+c_func
+(paren
+r_const
+r_char
+op_star
+id|src
+comma
+r_char
+op_star
+id|dst
+comma
+r_int
+id|len
+comma
+r_int
+id|sum
+)paren
+(brace
+r_int
+r_int
+id|tmp1
+comma
+id|tmp2
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;movel %2,%4&bslash;n&bslash;t&quot;
+l_string|&quot;btst #1,%4&bslash;n&bslash;t&quot;
+multiline_comment|/* Check alignment */
+l_string|&quot;jeq 2f&bslash;n&bslash;t&quot;
+l_string|&quot;subql #2,%1&bslash;n&bslash;t&quot;
+multiline_comment|/* buff%4==2: treat first word */
+l_string|&quot;jgt 1f&bslash;n&bslash;t&quot;
+l_string|&quot;addql #2,%1&bslash;n&bslash;t&quot;
+multiline_comment|/* len was == 2, treat only rest */
+l_string|&quot;jra 4f&bslash;n&quot;
+l_string|&quot;1:&bslash;t&quot;
+l_string|&quot;movew %2@+,%4&bslash;n&bslash;t&quot;
+multiline_comment|/* add first word to sum */
+l_string|&quot;addw %4,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movew %4,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;clrl %4&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %4,%0&bslash;n&quot;
+multiline_comment|/* add X bit */
+l_string|&quot;2:&bslash;t&quot;
+multiline_comment|/* unrolled loop for the main part: do 8 longs at once */
+l_string|&quot;movel %1,%4&bslash;n&bslash;t&quot;
+multiline_comment|/* save len in tmp1 */
+l_string|&quot;lsrl #5,%1&bslash;n&bslash;t&quot;
+multiline_comment|/* len/32 */
+l_string|&quot;jeq 2f&bslash;n&bslash;t&quot;
+multiline_comment|/* not enough... */
+l_string|&quot;subql #1,%1&bslash;n&quot;
+l_string|&quot;1:&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %1,1b&bslash;n&bslash;t&quot;
+l_string|&quot;clrl %5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+multiline_comment|/* add X bit */
+l_string|&quot;clrw %1&bslash;n&bslash;t&quot;
+l_string|&quot;subql #1,%1&bslash;n&bslash;t&quot;
+l_string|&quot;jcc 1b&bslash;n&quot;
+l_string|&quot;2:&bslash;t&quot;
+l_string|&quot;movel %4,%1&bslash;n&bslash;t&quot;
+multiline_comment|/* restore len from tmp1 */
+l_string|&quot;andw #0x1c,%4&bslash;n&bslash;t&quot;
+multiline_comment|/* number of rest longs */
+l_string|&quot;jeq 4f&bslash;n&bslash;t&quot;
+l_string|&quot;lsrw #2,%4&bslash;n&bslash;t&quot;
+l_string|&quot;subqw #1,%4&bslash;n&quot;
+l_string|&quot;3:&bslash;t&quot;
+multiline_comment|/* loop for rest longs */
+l_string|&quot;movel %2@+,%5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&bslash;t&quot;
+l_string|&quot;movel %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;dbra %4,3b&bslash;n&bslash;t&quot;
+l_string|&quot;clrl %5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&quot;
+multiline_comment|/* add X bit */
+l_string|&quot;4:&bslash;t&quot;
+multiline_comment|/* now check for rest bytes that do not fit into longs */
+l_string|&quot;andw #3,%1&bslash;n&bslash;t&quot;
+l_string|&quot;jeq 7f&bslash;n&bslash;t&quot;
+l_string|&quot;clrl %5&bslash;n&bslash;t&quot;
+multiline_comment|/* clear tmp2 for rest bytes */
+l_string|&quot;subqw #2,%1&bslash;n&bslash;t&quot;
+l_string|&quot;jlt 5f&bslash;n&bslash;t&quot;
+l_string|&quot;movew %2@+,%5&bslash;n&bslash;t&quot;
+multiline_comment|/* have rest &gt;= 2: get word */
+l_string|&quot;movew %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;swap %5&bslash;n&bslash;t&quot;
+multiline_comment|/* into bits 16..31 */
+l_string|&quot;tstw %1&bslash;n&bslash;t&quot;
+multiline_comment|/* another byte? */
+l_string|&quot;jeq 6f&bslash;n&quot;
+l_string|&quot;5:&bslash;t&quot;
+l_string|&quot;moveb %2@,%5&bslash;n&bslash;t&quot;
+multiline_comment|/* have odd rest: get byte */
+l_string|&quot;moveb %5,%3@+&bslash;n&bslash;t&quot;
+l_string|&quot;lslw #8,%5&bslash;n&quot;
+multiline_comment|/* into bits 8..15; 16..31 untouched */
+l_string|&quot;6:&bslash;t&quot;
+l_string|&quot;addl %5,%0&bslash;n&bslash;t&quot;
+multiline_comment|/* now add rest long to sum */
+l_string|&quot;clrl %5&bslash;n&bslash;t&quot;
+l_string|&quot;addxl %5,%0&bslash;n&quot;
+multiline_comment|/* add X bit */
+l_string|&quot;7:&bslash;t&quot;
+suffix:colon
+l_string|&quot;=d&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;=d&quot;
+(paren
+id|len
+)paren
+comma
+l_string|&quot;=a&quot;
+(paren
+id|src
+)paren
+comma
+l_string|&quot;=a&quot;
+(paren
+id|dst
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|tmp1
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|tmp2
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|sum
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|len
+)paren
+comma
+l_string|&quot;2&quot;
+(paren
+id|src
+)paren
+comma
+l_string|&quot;3&quot;
+(paren
+id|dst
+)paren
+)paren
+suffix:semicolon
+r_return
+id|sum
+suffix:semicolon
+)brace
 eof

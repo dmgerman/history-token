@@ -211,7 +211,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This double-counts: the nrpages are both in the&n;&t;&t; * page-cache and in the swapper space. At the same time,&n;&t;&t; * this compensates for the swap-space over-allocation&n;&t;&t; * (ie &quot;nr_swap_pages&quot; being too small).&n;&t;&t; */
 id|free
 op_add_assign
-id|swapper_space.nrpages
+id|total_swapcache_pages
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The code below doesn&squot;t account for free space in the&n;&t;&t; * inode and dentry slab cache, slab cache fragmentation,&n;&t;&t; * inodes and dentries which will become freeable under&n;&t;&t; * VM load, etc. Lets just hope all these (complex)&n;&t;&t; * factors balance out...&n;&t;&t; */
 id|free
@@ -5408,12 +5408,6 @@ op_star
 id|mpnt
 suffix:semicolon
 id|profile_exit_mmap
-c_func
-(paren
-id|mm
-)paren
-suffix:semicolon
-id|release_segments
 c_func
 (paren
 id|mm

@@ -73,6 +73,8 @@ DECL|macro|BADGE4_5V_PCMCIA_SOCK
 mdefine_line|#define BADGE4_5V_PCMCIA_SOCK(n)&t;(1&lt;&lt;(n))
 DECL|macro|BADGE4_5V_USB
 mdefine_line|#define BADGE4_5V_USB&t;&t;&t;(1&lt;&lt;2)
+DECL|macro|BADGE4_5V_INITIALLY
+mdefine_line|#define BADGE4_5V_INITIALLY&t;&t;(1&lt;&lt;3)
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void

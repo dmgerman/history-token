@@ -44,7 +44,7 @@ suffix:semicolon
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;}
 multiline_comment|/* THREAD_SIZE should be 8k, so handle differently for 4k and 8k machines */
 macro_line|#if PAGE_SHIFT == 13 /* 8k machines */
 DECL|macro|alloc_thread_info
@@ -85,9 +85,9 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * flag set/clear/test wrappers&n; * - pass TIF_xxxx constants to these functions&n; */
 DECL|macro|__set_tsk_thread_flag
-mdefine_line|#define __set_tsk_thread_flag(tsk, flag, val) ({ &t;&bslash;&n;&t;switch (flag) {&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SIGPENDING:&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;thread.work.sigpending = val;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_NEED_RESCHED:&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;thread.work.need_resched = val;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;thread_flag_fixme();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __set_tsk_thread_flag(tsk, flag, val) ({ &t;&bslash;&n;&t;switch (flag) {&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SIGPENDING:&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;thread.work.sigpending = val;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_NEED_RESCHED:&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;thread.work.need_resched = val;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SYSCALL_TRACE:&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;thread.work.syscall_trace = val;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;thread_flag_fixme();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_tsk_thread_flag
-mdefine_line|#define __get_tsk_thread_flag(tsk, flag) ({&t;&t;&bslash;&n;&t;int ___res;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (flag) {&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SIGPENDING:&t;&t;&t;&t;&bslash;&n;&t;&t;___res = tsk-&gt;thread.work.sigpending;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_NEED_RESCHED:&t;&t;&t;&t;&bslash;&n;&t;&t;___res = tsk-&gt;thread.work.need_resched;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;___res = thread_flag_fixme();&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;___res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __get_tsk_thread_flag(tsk, flag) ({&t;&t;&bslash;&n;&t;int ___res;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (flag) {&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SIGPENDING:&t;&t;&t;&t;&bslash;&n;&t;&t;___res = tsk-&gt;thread.work.sigpending;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_NEED_RESCHED:&t;&t;&t;&t;&bslash;&n;&t;&t;___res = tsk-&gt;thread.work.need_resched;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;case TIF_SYSCALL_TRACE:&t;&t;&t;&t;&bslash;&n;&t;&t;___res = tsk-&gt;thread.work.syscall_trace;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;default:&t;&t;&t;&t;&t;&bslash;&n;&t;&t;___res = thread_flag_fixme();&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;___res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|__get_set_tsk_thread_flag
 mdefine_line|#define __get_set_tsk_thread_flag(tsk, flag, val) ({&t;&bslash;&n;&t;int __res = __get_tsk_thread_flag(tsk, flag);&t;&bslash;&n;&t;__set_tsk_thread_flag(tsk, flag, val);&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|set_tsk_thread_flag

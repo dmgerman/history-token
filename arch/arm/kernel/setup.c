@@ -545,6 +545,52 @@ l_string|&quot;undefined 15&quot;
 comma
 )brace
 suffix:semicolon
+DECL|variable|proc_arch
+r_static
+r_const
+r_char
+op_star
+id|proc_arch
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;undefined/unknown&quot;
+comma
+l_string|&quot;3&quot;
+comma
+l_string|&quot;4&quot;
+comma
+l_string|&quot;4T&quot;
+comma
+l_string|&quot;5&quot;
+comma
+l_string|&quot;5T&quot;
+comma
+l_string|&quot;5TE&quot;
+comma
+l_string|&quot;?(8)&quot;
+comma
+l_string|&quot;?(9)&quot;
+comma
+l_string|&quot;?(10)&quot;
+comma
+l_string|&quot;?(11)&quot;
+comma
+l_string|&quot;?(12)&quot;
+comma
+l_string|&quot;?(13)&quot;
+comma
+l_string|&quot;?(14)&quot;
+comma
+l_string|&quot;?(15)&quot;
+comma
+l_string|&quot;?(16)&quot;
+comma
+l_string|&quot;?(17)&quot;
+comma
+)brace
+suffix:semicolon
 DECL|macro|CACHE_TYPE
 mdefine_line|#define CACHE_TYPE(x)&t;(((x) &gt;&gt; 25) &amp; 15)
 DECL|macro|CACHE_S
@@ -766,6 +812,91 @@ macro_line|#else
 DECL|macro|dump_cpu_info
 mdefine_line|#define dump_cpu_info() do { } while (0)
 macro_line|#endif
+DECL|function|cpu_architecture
+r_int
+id|cpu_architecture
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu_arch
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0x0000f000
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cpu_arch
+op_assign
+id|CPU_ARCH_UNKNOWN
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|processor_id
+op_amp
+l_int|0x0000f000
+)paren
+op_eq
+l_int|0x00007000
+)paren
+(brace
+id|cpu_arch
+op_assign
+(paren
+id|processor_id
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|23
+)paren
+)paren
+ques
+c_cond
+id|CPU_ARCH_ARMv4T
+suffix:colon
+id|CPU_ARCH_ARMv3
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cpu_arch
+op_assign
+(paren
+id|processor_id
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|15
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_arch
+)paren
+id|cpu_arch
+op_add_assign
+id|CPU_ARCH_ARMv3
+suffix:semicolon
+)brace
+r_return
+id|cpu_arch
+suffix:semicolon
+)brace
 DECL|function|setup_processor
 r_static
 r_void
@@ -873,7 +1004,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: %s %s revision %d&bslash;n&quot;
+l_string|&quot;CPU: %s %s revision %d (ARMv%s)&bslash;n&quot;
 comma
 id|proc_info.manufacturer
 comma
@@ -885,6 +1016,14 @@ r_int
 id|processor_id
 op_amp
 l_int|15
+comma
+id|proc_arch
+(braket
+id|cpu_architecture
+c_func
+(paren
+)paren
+)braket
 )paren
 suffix:semicolon
 id|dump_cpu_info
@@ -2619,50 +2758,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|variable|proc_arch
-r_static
-r_const
-r_char
-op_star
-id|proc_arch
-(braket
-l_int|16
-)braket
-op_assign
-(brace
-l_string|&quot;undefined 0&quot;
-comma
-l_string|&quot;4&quot;
-comma
-l_string|&quot;4T&quot;
-comma
-l_string|&quot;5&quot;
-comma
-l_string|&quot;5T&quot;
-comma
-l_string|&quot;5TE&quot;
-comma
-l_string|&quot;undefined 6&quot;
-comma
-l_string|&quot;undefined 7&quot;
-comma
-l_string|&quot;undefined 8&quot;
-comma
-l_string|&quot;undefined 9&quot;
-comma
-l_string|&quot;undefined 10&quot;
-comma
-l_string|&quot;undefined 11&quot;
-comma
-l_string|&quot;undefined 12&quot;
-comma
-l_string|&quot;undefined 13&quot;
-comma
-l_string|&quot;undefined 14&quot;
-comma
-l_string|&quot;undefined 15&quot;
-)brace
-suffix:semicolon
 r_static
 r_void
 DECL|function|c_show_cache
@@ -2895,12 +2990,32 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|seq_puts
+id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;&bslash;nCPU implementer&bslash;t: 0x%02x&bslash;n&quot;
+comma
+id|processor_id
+op_rshift
+l_int|24
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU architecture: %s&bslash;n&quot;
+comma
+id|proc_arch
+(braket
+id|cpu_architecture
+c_func
+(paren
+)paren
+)braket
 )paren
 suffix:semicolon
 r_if
@@ -2930,6 +3045,7 @@ l_int|4
 suffix:semicolon
 )brace
 r_else
+(brace
 r_if
 c_cond
 (paren
@@ -2948,27 +3064,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;CPU implementor&bslash;t: 0x%02x&bslash;n&quot;
-l_string|&quot;CPU architecture: %s&bslash;n&quot;
 l_string|&quot;CPU variant&bslash;t: 0x%02x&bslash;n&quot;
-l_string|&quot;CPU part&bslash;t: 0x%03x&bslash;n&quot;
-comma
-id|processor_id
-op_rshift
-l_int|24
-comma
-id|processor_id
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|23
-)paren
-ques
-c_cond
-l_string|&quot;4T&quot;
-suffix:colon
-l_string|&quot;3&quot;
 comma
 (paren
 id|processor_id
@@ -2977,14 +3073,6 @@ l_int|16
 )paren
 op_amp
 l_int|127
-comma
-(paren
-id|processor_id
-op_rshift
-l_int|4
-)paren
-op_amp
-l_int|0xfff
 )paren
 suffix:semicolon
 )brace
@@ -2996,25 +3084,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;CPU implementor&bslash;t: 0x%02x&bslash;n&quot;
-l_string|&quot;CPU architecture: %s&bslash;n&quot;
 l_string|&quot;CPU variant&bslash;t: 0x%x&bslash;n&quot;
-l_string|&quot;CPU part&bslash;t: 0x%03x&bslash;n&quot;
-comma
-id|processor_id
-op_rshift
-l_int|24
-comma
-id|proc_arch
-(braket
-(paren
-id|processor_id
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|15
-)braket
 comma
 (paren
 id|processor_id
@@ -3023,6 +3093,15 @@ l_int|20
 )paren
 op_amp
 l_int|15
+)paren
+suffix:semicolon
+)brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;CPU part&bslash;t: 0x%03x&bslash;n&quot;
 comma
 (paren
 id|processor_id

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/if_bonding.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;linux/loop.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -4961,6 +4962,72 @@ id|IOCTL32_DEFAULT
 c_func
 (paren
 id|SIOCGSTAMP
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_VERSION
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_REMOVE_ALL
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_CREATE
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_REMOVE
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_RELOAD
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_SUSPEND
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_RENAME
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_DEPS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_DEV_STATUS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_TARGET_STATUS
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
+id|DM_TARGET_WAIT
 )paren
 comma
 id|IOCTL32_DEFAULT

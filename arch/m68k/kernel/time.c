@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
@@ -153,6 +154,8 @@ id|regs-&gt;pc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have an externally synchronized Linux clock, then update&n;&t; * CMOS clock accordingly every ~11 minutes. Set_rtc_mmss() has to be&n;&t; * called as close as possible to 500 ms before the new second starts.&n;&t; */
+multiline_comment|/*&n;&t; * This code hopefully becomes obsolete in 2.5 or earlier&n;&t; * Should it ever be reenabled it must be serialized with&n;&t; * genrtc.c operation&n;&t; */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -170,7 +173,11 @@ id|last_rtc_update
 op_plus
 l_int|660
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_ge
 l_int|500000
 op_minus
@@ -183,7 +190,11 @@ id|tick
 op_div
 l_int|2
 op_logical_and
-id|xtime.tv_usec
+(paren
+id|xtime.tv_nsec
+op_div
+l_int|1000
+)paren
 op_le
 l_int|500000
 op_plus
@@ -221,6 +232,7 @@ l_int|600
 suffix:semicolon
 multiline_comment|/* do it again in 60 s */
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 multiline_comment|/* use power LED as a heartbeat instead -- much more useful&n;&t;   for debugging -- based on the version for PReP by Cort */
 multiline_comment|/* acts like an actual heart beat -- ie thump-thump-pause... */
@@ -392,7 +404,7 @@ comma
 id|time.tm_sec
 )paren
 suffix:semicolon
-id|xtime.tv_usec
+id|xtime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
@@ -480,7 +492,9 @@ id|xtime.tv_sec
 suffix:semicolon
 id|usec
 op_add_assign
-id|xtime.tv_usec
+id|xtime.tv_nsec
+op_div
+l_int|1000
 suffix:semicolon
 id|read_unlock_irqrestore
 c_func
@@ -527,6 +541,11 @@ op_star
 id|tv
 )paren
 (brace
+r_extern
+r_int
+r_int
+id|wall_jiffies
+suffix:semicolon
 id|write_lock_irq
 c_func
 (paren
@@ -534,12 +553,26 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-multiline_comment|/* This is revolting. We need to set the xtime.tv_usec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
+multiline_comment|/* This is revolting. We need to set the xtime.tv_nsec&n;&t; * correctly. However, the value in this location is&n;&t; * is value at the last tick.&n;&t; * Discover what correction gettimeofday&n;&t; * would have done, and then undo it!&n;&t; */
 id|tv-&gt;tv_usec
 op_sub_assign
 id|mach_gettimeoffset
 c_func
 (paren
+)paren
+suffix:semicolon
+id|tv-&gt;tv_usec
+op_sub_assign
+(paren
+id|jiffies
+op_minus
+id|wall_jiffies
+)paren
+op_star
+(paren
+l_int|1000000
+op_div
+id|HZ
 )paren
 suffix:semicolon
 r_while
@@ -558,10 +591,15 @@ id|tv-&gt;tv_sec
 op_decrement
 suffix:semicolon
 )brace
-id|xtime
+id|xtime.tv_sec
 op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
+id|xtime.tv_nsec
+op_assign
+id|tv-&gt;tv_usec
 op_star
-id|tv
+l_int|1000
 suffix:semicolon
 id|time_adjust
 op_assign

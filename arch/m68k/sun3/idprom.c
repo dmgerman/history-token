@@ -94,7 +94,7 @@ multiline_comment|/* Now, Sun3x&squot;s */
 l_string|&quot;Sun 3/460 Series&quot;
 comma
 (paren
-id|SM_SUN3
+id|SM_SUN3X
 op_or
 id|SM_3_460
 )paren
@@ -104,7 +104,7 @@ comma
 l_string|&quot;Sun 3/80&quot;
 comma
 (paren
-id|SM_SUN3
+id|SM_SUN3X
 op_or
 id|SM_3_80
 )paren

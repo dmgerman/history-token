@@ -230,6 +230,7 @@ mdefine_line|#define spin_lock_bh(lock) do {start_bh_atomic();spin_lock(lock);} 
 DECL|macro|spin_unlock_bh
 mdefine_line|#define spin_unlock_bh(lock) do {spin_unlock(lock);end_bh_atomic();} while(0)
 macro_line|#else
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#endif

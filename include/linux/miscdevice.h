@@ -10,8 +10,7 @@ DECL|macro|MS_BUSMOUSE_MINOR
 mdefine_line|#define MS_BUSMOUSE_MINOR 2
 DECL|macro|ATIXL_BUSMOUSE_MINOR
 mdefine_line|#define ATIXL_BUSMOUSE_MINOR 3
-DECL|macro|AMIGAMOUSE_MINOR
-mdefine_line|#define AMIGAMOUSE_MINOR 4
+multiline_comment|/*#define AMIGAMOUSE_MINOR 4&t;FIXME OBSOLETE */
 DECL|macro|ATARIMOUSE_MINOR
 mdefine_line|#define ATARIMOUSE_MINOR 5
 DECL|macro|SUN_MOUSE_MINOR
@@ -20,8 +19,7 @@ DECL|macro|APOLLO_MOUSE_MINOR
 mdefine_line|#define APOLLO_MOUSE_MINOR 7
 DECL|macro|PC110PAD_MINOR
 mdefine_line|#define PC110PAD_MINOR 9
-DECL|macro|ADB_MOUSE_MINOR
-mdefine_line|#define ADB_MOUSE_MINOR 10
+multiline_comment|/*#define ADB_MOUSE_MINOR 10&t;FIXME OBSOLETE */
 DECL|macro|WATCHDOG_MINOR
 mdefine_line|#define WATCHDOG_MINOR&t;&t;130&t;/* Watchdog timer     */
 DECL|macro|TEMP_MINOR

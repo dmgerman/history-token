@@ -49,6 +49,8 @@ DECL|macro|HOSTNO
 mdefine_line|#define&t;HOSTNO&t;&t;instance-&gt;host_no
 DECL|macro|H_NO
 mdefine_line|#define&t;H_NO(cmd)&t;(cmd)-&gt;host-&gt;host_no
+DECL|macro|SGADDR
+mdefine_line|#define SGADDR(buffer) (void *)(((unsigned long)page_address((buffer)-&gt;page)) + &bslash;&n;&t;&t;&t;(buffer)-&gt;offset)
 macro_line|#ifdef SUPPORT_TAGS
 multiline_comment|/*&n; * Functions for handling tagged queuing&n; * =====================================&n; *&n; * ++roman (01/96): Now I&squot;ve implemented SCSI-2 tagged queuing. Some notes:&n; *&n; * Using consecutive numbers for the tags is no good idea in my eyes. There&n; * could be wrong re-usings if the counter (8 bit!) wraps and some early&n; * command has been preempted for a long time. My solution: a bitfield for&n; * remembering used tags.&n; *&n; * There&squot;s also the problem that each target has a certain queue size, but we&n; * cannot know it in advance :-( We just see a QUEUE_FULL status being&n; * returned. So, in this case, the driver internal queue size assumption is&n; * reduced to the number of active tags if QUEUE_FULL is returned by the&n; * target. The command is returned to the mid-level, but with status changed&n; * to BUSY, since --as I&squot;ve seen-- the mid-level can&squot;t handle QUEUE_FULL&n; * correctly.&n; *&n; * We&squot;re also not allowed running tagged commands as long as an untagged&n; * command is active. And REQUEST SENSE commands after a contingent allegiance&n; * condition _must_ be untagged. To keep track whether an untagged command has&n; * been issued, the host-&gt;busy array is still employed, as it is without&n; * support for tagged queuing.&n; *&n; * One could suspect that there are possible race conditions between&n; * is_lun_busy(), cmd_get_tag() and cmd_free_tag(). But I think this isn&squot;t the&n; * case: is_lun_busy() and cmd_get_tag() are both called from NCR5380_main(),&n; * which already guaranteed to be running at most once. It is also the only&n; * place where tags/LUNs are allocated. So no other allocation can slip&n; * between that pair, there could only happen a reselection, which can free a&n; * tag, but that doesn&squot;t hurt. Only the sequence in cmd_free_tag() becomes&n; * important: the tag bit must be cleared before &squot;nr_allocated&squot; is decreased.&n; */
 multiline_comment|/* -1 for TAG_NONE is not possible with unsigned char cmd-&gt;tag */
@@ -685,12 +687,17 @@ op_logical_and
 id|virt_to_phys
 c_func
 (paren
+id|SGADDR
+c_func
+(paren
+op_amp
+(paren
 id|cmd-&gt;SCp.buffer
 (braket
 l_int|1
 )braket
-dot
-id|address
+)paren
+)paren
 )paren
 op_eq
 id|endaddr
@@ -702,12 +709,17 @@ c_func
 (paren
 l_string|&quot;VTOP(%p) == %08lx -&gt; merging&bslash;n&quot;
 comma
+id|SGADDR
+c_func
+(paren
+op_amp
+(paren
 id|cmd-&gt;SCp.buffer
 (braket
 l_int|1
 )braket
-dot
-id|address
+)paren
+)paren
 comma
 id|endaddr
 )paren
@@ -795,19 +807,18 @@ op_assign
 r_char
 op_star
 )paren
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 id|cmd-&gt;SCp.this_residual
 op_assign
 id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 multiline_comment|/* ++roman: Try to merge some scatter-buffers if they are at&n;&t; * contiguous physical addresses.&n;&t; */
-id|merge_contiguous_buffers
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
+singleline_comment|//&t;merge_contiguous_buffers( cmd );
 )brace
 r_else
 (brace
@@ -1447,7 +1458,6 @@ id|SR_REQ
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;scsi%d: REQ not asserted, phase unknown.&bslash;n&quot;
 comma
 id|HOSTNO
@@ -1495,7 +1505,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;scsi%d: phase %s&bslash;n&quot;
 comma
 id|HOSTNO
@@ -1810,10 +1819,8 @@ r_int
 id|length
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_proc_info
-r_static
-macro_line|#endif
 DECL|function|NCR5380_proc_info
+r_static
 r_int
 id|NCR5380_proc_info
 (paren
@@ -2486,10 +2493,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_queue_command (Scsi_Cmnd *cmd, &n; *&t;void (*done)(Scsi_Cmnd *)) &n; *&n; * Purpose :  enqueues a SCSI command&n; *&n; * Inputs : cmd - SCSI command, done - function called on completion, with&n; *&t;a pointer to the command descriptor.&n; * &n; * Returns : 0&n; *&n; * Side effects : &n; *      cmd is added to the per instance issue_queue, with minor &n; *&t;twiddling done to the host specific fields of cmd.  If the &n; *&t;main coroutine is not running, it is restarted.&n; *&n; */
 multiline_comment|/* Only make static if a wrapper function is used */
-macro_line|#ifndef NCR5380_queue_command
-r_static
-macro_line|#endif
 DECL|function|NCR5380_queue_command
+r_static
 r_int
 id|NCR5380_queue_command
 (paren
@@ -3464,7 +3469,11 @@ c_cond
 id|sun3scsi_dma_finish
 c_func
 (paren
-id|hostdata-&gt;connected-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|hostdata-&gt;connected-&gt;request
+)paren
 )paren
 )paren
 )paren
@@ -3921,10 +3930,9 @@ id|basr
 op_amp
 id|BASR_PHASE_MATCH
 )paren
-id|printk
+id|INT_PRINTK
 c_func
 (paren
-id|KERN_NOTICE
 l_string|&quot;scsi%d: unknown interrupt, &quot;
 l_string|&quot;BASR 0x%x, MR 0x%x, SR 0x%x&bslash;n&quot;
 comma
@@ -3954,6 +3962,12 @@ c_func
 id|RESET_PARITY_INTERRUPT_REG
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 multiline_comment|/* if !(SELECTION || PARITY) */
@@ -3994,6 +4008,12 @@ c_func
 id|RESET_PARITY_INTERRUPT_REG
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -5072,6 +5092,12 @@ id|cmd-&gt;lun
 )paren
 suffix:semicolon
 macro_line|#endif    
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
+macro_line|#endif
 id|initialize_SCp
 c_func
 (paren
@@ -5779,7 +5805,8 @@ l_string|&quot;to&quot;
 suffix:colon
 l_string|&quot;from&quot;
 comma
-id|d
+op_star
+id|data
 )paren
 suffix:semicolon
 multiline_comment|/* netbsd turns off ints here, why not be safe and do it too */
@@ -5795,12 +5822,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* send start chain */
-id|sun3_udc_write
+id|sun3scsi_dma_start
 c_func
 (paren
-id|UDC_CHN_START
+id|c
 comma
-id|UDC_CSR
+op_star
+id|data
 )paren
 suffix:semicolon
 r_if
@@ -5911,6 +5939,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 id|restore_flags
 c_func
 (paren
@@ -5997,6 +6031,12 @@ op_star
 )paren
 id|hostdata-&gt;connected
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -6078,7 +6118,11 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|d
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -6113,17 +6157,9 @@ id|cmd
 r_if
 c_cond
 (paren
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|1
-)paren
+id|cmd-&gt;request-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
 id|sun3scsi_dma_setup
@@ -6133,7 +6169,11 @@ id|d
 comma
 id|count
 comma
-id|cmd-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|cmd-&gt;request
+)paren
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done
@@ -6142,6 +6182,12 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_INTR
+suffix:semicolon
 macro_line|#endif
 )brace
 r_if
@@ -6280,7 +6326,11 @@ id|cmd-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|cmd-&gt;SCp.ptr
 op_assign
-id|cmd-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|cmd-&gt;SCp.buffer
+)paren
 suffix:semicolon
 multiline_comment|/* ++roman: Try to merge some scatter-buffers if&n;&t;&t;     * they are at contiguous physical addresses.&n;&t;&t;     */
 singleline_comment|//&t;&t;    merge_contiguous_buffers( cmd );
@@ -7222,6 +7272,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef SUN3_SCSI_VME
+id|dregs-&gt;csr
+op_or_assign
+id|CSR_DMA_ENABLE
+suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * The SCSI data pointer is *IMPLICITLY* saved on a disconnect&n;&t;&t; * operation, in violation of the SCSI spec so we can safely &n;&t;&t; * ignore SAVE/RESTORE pointers calls.&n;&t;&t; *&n;&t;&t; * Unfortunately, some disks violate the SCSI spec and &n;&t;&t; * don&squot;t issue the required SAVE_POINTERS message before&n;&t;&t; * disconnecting, and we have to break spec to remain &n;&t;&t; * compatible.&n;&t;&t; */
@@ -8183,7 +8239,11 @@ id|tmp-&gt;SCp.buffer-&gt;length
 suffix:semicolon
 id|d
 op_assign
-id|tmp-&gt;SCp.buffer-&gt;address
+id|SGADDR
+c_func
+(paren
+id|tmp-&gt;SCp.buffer
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -8197,7 +8257,7 @@ op_assign
 id|tmp-&gt;SCp.ptr
 suffix:semicolon
 )brace
-macro_line|#ifdef REAL_DMA&t;&t;
+macro_line|#ifdef REAL_DMA
 multiline_comment|/* setup this command for dma if not already */
 r_if
 c_cond
@@ -8222,7 +8282,11 @@ id|d
 comma
 id|count
 comma
-id|tmp-&gt;request-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|tmp-&gt;request
+)paren
 )paren
 suffix:semicolon
 id|sun3_dma_setup_done
@@ -8357,10 +8421,8 @@ id|tmp-&gt;tag
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : abort a command&n; *&n; * Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n; * &t;host byte of the result field to, if zero DID_ABORTED is &n; *&t;used.&n; *&n; * Returns : 0 - success, -1 on failure.&n; *&n; * XXX - there is no way to abort the command that is currently &n; * &t; connected, you have to wait for it to complete.  If this is &n; *&t; a problem, we could implement longjmp() / setjmp(), setjmp()&n; * &t; called where the loop started in NCR5380_main().&n; */
-macro_line|#ifndef NCR5380_abort
-r_static
-macro_line|#endif
 DECL|function|NCR5380_abort
+r_static
 r_int
 id|NCR5380_abort
 (paren
@@ -8932,6 +8994,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Function : int NCR5380_reset (Scsi_Cmnd *cmd, unsigned int reset_flags)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SCSI_RESET_WAKEUP&n; *&n; */
 DECL|function|NCR5380_reset
+r_static
 r_int
 id|NCR5380_reset
 c_func

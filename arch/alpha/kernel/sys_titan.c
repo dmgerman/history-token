@@ -925,12 +925,10 @@ id|pin
 id|u8
 id|irq
 suffix:semicolon
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 id|PCI_INTERRUPT_LINE
 comma
@@ -1182,9 +1180,9 @@ op_assign
 id|privateer_machine_check
 comma
 dot
-id|max_dma_address
+id|max_isa_dma_address
 op_assign
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 dot
 id|min_io_address

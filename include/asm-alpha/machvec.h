@@ -58,10 +58,10 @@ DECL|member|max_asn
 r_int
 id|max_asn
 suffix:semicolon
-DECL|member|max_dma_address
+DECL|member|max_isa_dma_address
 r_int
 r_int
-id|max_dma_address
+id|max_isa_dma_address
 suffix:semicolon
 DECL|member|irq_probe_mask
 r_int

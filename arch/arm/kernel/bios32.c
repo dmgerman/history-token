@@ -779,7 +779,7 @@ l_int|0
 )brace
 suffix:semicolon
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_update_resource
 id|pcibios_update_resource
 c_func
@@ -969,7 +969,7 @@ suffix:semicolon
 )brace
 DECL|function|pcibios_update_irq
 r_void
-id|__init
+id|__devinit
 id|pcibios_update_irq
 c_func
 (paren
@@ -1043,7 +1043,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Adjust the device resources from bus-centric to Linux-centric.&n; */
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pdev_fixup_device_resources
 id|pdev_fixup_device_resources
 c_func
@@ -1138,7 +1138,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|pbus_assign_bus_resources
 id|pbus_assign_bus_resources
 c_func
@@ -1201,7 +1201,7 @@ suffix:semicolon
 multiline_comment|/*&n; * pcibios_fixup_bus - Called after each bus is probed,&n; * but before its children are examined.&n; */
 DECL|function|pcibios_fixup_bus
 r_void
-id|__init
+id|__devinit
 id|pcibios_fixup_bus
 c_func
 (paren
@@ -1449,7 +1449,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert from Linux-centric to bus-centric addresses for bridge devices.&n; */
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_fixup_pbus_ranges
 id|pcibios_fixup_pbus_ranges
 c_func
@@ -2030,14 +2030,6 @@ r_int
 id|align
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|res-&gt;flags
-op_amp
-id|IORESOURCE_IO
-)paren
-(brace
 r_int
 r_int
 id|start
@@ -2047,11 +2039,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_IO
+op_logical_and
 id|start
 op_amp
 l_int|0x300
 )paren
-id|res-&gt;start
+id|start
 op_assign
 (paren
 id|start
@@ -2062,7 +2058,23 @@ op_amp
 op_complement
 l_int|0x3ff
 suffix:semicolon
-)brace
+id|res-&gt;start
+op_assign
+(paren
+id|start
+op_plus
+id|align
+op_minus
+l_int|1
+)paren
+op_amp
+op_complement
+(paren
+id|align
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * pcibios_enable_device - Enable I/O and memory.&n; * @dev: PCI device to be enabled&n; */
 DECL|function|pcibios_enable_device
@@ -2192,6 +2204,26 @@ op_or_assign
 id|PCI_COMMAND_MEMORY
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Bridges (eg, cardbus bridges) need to be fully enabled&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|16
+)paren
+op_eq
+id|PCI_BASE_CLASS_BRIDGE
+)paren
+id|cmd
+op_or_assign
+id|PCI_COMMAND_IO
+op_or
+id|PCI_COMMAND_MEMORY
+suffix:semicolon
 r_if
 c_cond
 (paren

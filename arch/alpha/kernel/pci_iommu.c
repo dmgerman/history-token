@@ -28,9 +28,8 @@ DECL|macro|DEBUG_NODIRECT
 mdefine_line|#define DEBUG_NODIRECT 0
 DECL|macro|DEBUG_FORCEDAC
 mdefine_line|#define DEBUG_FORCEDAC 0
-multiline_comment|/* Most Alphas support 32-bit ISA DMA. Exceptions are XL, Ruffian,&n;   Nautilus, Sable, and Alcor (see asm-alpha/dma.h for details). */
 DECL|macro|ISA_DMA_MASK
-mdefine_line|#define ISA_DMA_MASK&t;(MAX_DMA_ADDRESS - IDENT_ADDR - 1)
+mdefine_line|#define ISA_DMA_MASK&t;&t;0x00ffffff
 r_static
 r_inline
 r_int
@@ -702,6 +701,12 @@ suffix:semicolon
 id|dma_addr_t
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|align
+op_assign
+l_int|0
+suffix:semicolon
 id|paddr
 op_assign
 id|__pa
@@ -796,7 +801,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* If the machine doesn&squot;t define a pci_tbi routine, we have to&n;&t;   assume it doesn&squot;t support sg mapping.  */
+multiline_comment|/* If the machine doesn&squot;t define a pci_tbi routine, we have to&n;&t;   assume it doesn&squot;t support sg mapping, and, since we tried to&n;&t;   use direct_map above, it now must be considered an error. */
 r_if
 c_cond
 (paren
@@ -810,6 +815,7 @@ id|been_here
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Only print the message once. */
 r_if
 c_cond
 (paren
@@ -821,8 +827,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;pci_map_single: no hw sg, using &quot;
-l_string|&quot;direct map when possible&bslash;n&quot;
+l_string|&quot;pci_map_single: no HW sg&bslash;n&quot;
 )paren
 suffix:semicolon
 id|been_here
@@ -830,23 +835,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|paddr
-op_plus
-id|size
-op_le
-id|__direct_map_size
-)paren
-r_return
-(paren
-id|paddr
-op_plus
-id|__direct_map_base
-)paren
-suffix:semicolon
-r_else
 r_return
 l_int|0
 suffix:semicolon
@@ -888,7 +876,20 @@ op_plus
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/* Force allocation to 64KB boundary for all ISA devices. */
+multiline_comment|/* Force allocation to 64KB boundary for ISA bridges. */
+r_if
+c_cond
+(paren
+id|pdev
+op_logical_and
+id|pdev
+op_eq
+id|isa_bridge
+)paren
+id|align
+op_assign
+l_int|8
+suffix:semicolon
 id|dma_ofs
 op_assign
 id|iommu_arena_alloc
@@ -898,12 +899,7 @@ id|arena
 comma
 id|npages
 comma
-id|pdev
-ques
-c_cond
-l_int|8
-suffix:colon
-l_int|0
+id|align
 )paren
 suffix:semicolon
 r_if
@@ -1481,6 +1477,13 @@ c_func
 id|size
 )paren
 suffix:semicolon
+r_int
+id|gfp
+op_assign
+id|GFP_ATOMIC
+suffix:semicolon
+id|try_again
+suffix:colon
 id|cpu_addr
 op_assign
 (paren
@@ -1490,7 +1493,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|gfp
 comma
 id|order
 )paren
@@ -1567,8 +1570,27 @@ comma
 id|order
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|alpha_mv.mv_pci_tbi
+op_logical_or
+(paren
+id|gfp
+op_amp
+id|GFP_DMA
+)paren
+)paren
 r_return
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* The address doesn&squot;t fit required mask and we&n;&t;&t;   do not have iommu. Try again with GFP_DMA. */
+id|gfp
+op_or_assign
+id|GFP_DMA
+suffix:semicolon
+r_goto
+id|try_again
 suffix:semicolon
 )brace
 id|DBGA2
@@ -3113,6 +3135,24 @@ op_logical_and
 id|arena-&gt;dma_base
 op_plus
 id|arena-&gt;size
+op_minus
+l_int|1
+op_le
+id|mask
+)paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* As last resort try ZONE_DMA.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|__direct_map_base
+op_logical_and
+id|MAX_DMA_ADDRESS
+op_minus
+id|IDENT_ADDR
 op_minus
 l_int|1
 op_le

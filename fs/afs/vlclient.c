@@ -3026,7 +3026,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;kAFS: Reply bigger than expected {cst=%u asyn=%d mark=%d rdy=%u pr=%u%s}&quot;
+l_string|&quot;kAFS: Reply bigger than expected {cst=%u asyn=%d mark=%Zu rdy=%Zu pr=%u%s}&quot;
 comma
 id|call-&gt;app_call_state
 comma

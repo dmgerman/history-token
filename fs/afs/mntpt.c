@@ -72,19 +72,11 @@ id|readlink
 op_assign
 id|page_readlink
 comma
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 dot
 id|getattr
 op_assign
 id|afs_inode_getattr
 comma
-macro_line|#else
-dot
-id|revalidate
-op_assign
-id|afs_inode_revalidate
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
@@ -233,6 +225,9 @@ l_string|&quot;symlink to %*.*s&quot;
 comma
 id|size
 comma
+(paren
+r_int
+)paren
 id|size
 comma
 id|buf

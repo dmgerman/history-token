@@ -859,6 +859,20 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+id|driver-&gt;cpu_min_freq
+op_assign
+id|longrun_low_freq
+suffix:semicolon
+id|driver-&gt;cpu_cur_freq
+(braket
+l_int|0
+)braket
+op_assign
+id|longrun_high_freq
+suffix:semicolon
+multiline_comment|/* dummy value */
+macro_line|#endif
 id|driver-&gt;verify
 op_assign
 op_amp

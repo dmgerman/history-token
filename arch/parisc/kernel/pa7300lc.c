@@ -2,7 +2,7 @@ multiline_comment|/*&n; *   linux/arch/parisc/kernel/pa7300lc.c&n; *&t;- PA7300L
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/gsc.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 multiline_comment|/* CPU register indices */

@@ -210,6 +210,18 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|mac_mksound
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|nubus_sweep_video
 c_func
 (paren
@@ -685,7 +697,7 @@ op_assign
 id|mac_debug_init
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 id|mach_beep
 op_assign
 id|mac_mksound

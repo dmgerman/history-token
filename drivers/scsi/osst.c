@@ -444,10 +444,6 @@ id|scsi_type
 suffix:colon
 id|TYPE_TAPE
 comma
-id|major
-suffix:colon
-id|OSST_MAJOR
-comma
 id|detect
 suffix:colon
 id|osst_detect
@@ -557,6 +553,23 @@ r_int
 id|pending
 )paren
 suffix:semicolon
+DECL|function|tape_name
+r_static
+r_inline
+r_char
+op_star
+id|tape_name
+c_func
+(paren
+id|OS_Scsi_Tape
+op_star
+id|tape
+)paren
+(brace
+r_return
+id|tape-&gt;disk-&gt;disk_name
+suffix:semicolon
+)brace
 "&f;"
 multiline_comment|/* Routines that handle the interaction with mid-layer SCSI routines */
 multiline_comment|/* Convert the result to success code */
@@ -575,13 +588,14 @@ op_star
 id|SRpnt
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -670,9 +684,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
+l_string|&quot;%s:D: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 comma
@@ -807,9 +821,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Command with sense data: &quot;
+l_string|&quot;%s:W: Command with sense data: &quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|print_req_sense
@@ -833,9 +847,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Warning %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
+l_string|&quot;%s:W: Warning %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 comma
@@ -874,18 +888,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: This warning may be caused by your scsi controller,&bslash;n&quot;
+l_string|&quot;%s:I: This warning may be caused by your scsi controller,&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: it has been reported with some Buslogic cards.&bslash;n&quot;
+l_string|&quot;%s:I: it has been reported with some Buslogic cards.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -961,18 +975,13 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Recovered %s error (%d).&bslash;n&quot;
+l_string|&quot;%s:D: Recovered %s error (%d).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|stp
 comma
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
-op_member_access_from_pointer
-id|recover_count
+id|STp-&gt;recover_count
 )paren
 suffix:semicolon
 )brace
@@ -1013,35 +1022,20 @@ op_star
 id|SCpnt
 )paren
 (brace
-r_int
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|SCpnt-&gt;request-&gt;rq_dev
-)paren
-suffix:semicolon
 id|OS_Scsi_Tape
 op_star
 id|STp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|os_scsi_tapes
-op_logical_and
-(paren
-id|STp
 op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
+id|container_of
+c_func
+(paren
+id|SCpnt-&gt;request-&gt;rq_disk-&gt;private_data
+comma
+id|OS_Scsi_Tape
+comma
+id|driver
 )paren
-)paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1141,24 +1135,6 @@ id|SCpnt-&gt;request-&gt;waiting
 )paren
 suffix:semicolon
 )brace
-macro_line|#if DEBUG
-r_else
-r_if
-c_cond
-(paren
-id|debugging
-)paren
-id|printk
-c_func
-(paren
-id|OSST_DEB_MSG
-l_string|&quot;osst?:D: Illegal interrupt device %x&bslash;n&quot;
-comma
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/* Do the scsi command. Waits until command performed if do_wait is true.&n;   Otherwise osst_write_behind_check() is used to check that the command&n;   has finished. */
 DECL|function|osst_do_scsi
 r_static
@@ -1243,12 +1219,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Can&squot;t get SCSI request-&gt;&bslash;n&quot;
+l_string|&quot;%s:E: Can&squot;t get SCSI request-&gt;&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 )paren
 suffix:semicolon
@@ -1382,9 +1358,9 @@ id|SRpnt-&gt;sr_request-&gt;rq_status
 op_assign
 id|RQ_SCSI_BUSY
 suffix:semicolon
-id|SRpnt-&gt;sr_request-&gt;rq_dev
+id|SRpnt-&gt;sr_request-&gt;rq_disk
 op_assign
-id|STp-&gt;devt
+id|STp-&gt;disk
 suffix:semicolon
 id|scsi_do_req
 c_func
@@ -1482,12 +1458,12 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Injecting read error&bslash;n&quot;
+l_string|&quot;%s:D: Injecting read error&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 )paren
 suffix:semicolon
@@ -2016,6 +1992,16 @@ r_int
 id|quiet
 )paren
 (brace
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
+suffix:semicolon
 id|os_aux_t
 op_star
 id|aux
@@ -2041,15 +2027,6 @@ id|STp-&gt;ps
 (braket
 id|STp-&gt;partition
 )braket
-)paren
-suffix:semicolon
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|STp-&gt;devt
 )paren
 suffix:semicolon
 r_int
@@ -2138,9 +2115,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, read error&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, read error&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2165,9 +2142,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, format_id %u&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, format_id %u&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ntohl
 c_func
@@ -2220,9 +2197,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, incorrect application signature&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, incorrect application signature&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2254,9 +2231,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, partition num %d&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, partition num %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|par-&gt;partition_num
 )paren
@@ -2280,9 +2257,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, partition version %d&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, partition version %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|par-&gt;par_desc_ver
 )paren
@@ -2309,9 +2286,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, wrt_pass_cntr %d (expected %d)&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, wrt_pass_cntr %d (expected %d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ntohs
 c_func
@@ -2354,9 +2331,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, frame type %x&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, frame type %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|aux-&gt;frame_type
 )paren
@@ -2382,9 +2359,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Skipping premature EOD frame %d&bslash;n&quot;
+l_string|&quot;%s:I: Skipping premature EOD frame %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 )paren
@@ -2425,9 +2402,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame, sequence number %u (expected %d)&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame, sequence number %u (expected %d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ntohl
 c_func
@@ -2499,9 +2476,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: %s filemark %d at frame pos %d&bslash;n&quot;
+l_string|&quot;%s:D: %s filemark %d at frame pos %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;header_cache-&gt;dat_fm_tab.fm_tab_ent
 (braket
@@ -2625,9 +2602,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: File was written with block size %d%c, currently %d%c, adjusted to match.&bslash;n&quot;
+l_string|&quot;%s:I: File was written with block size %d%c, currently %d%c, adjusted to match.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|blk_sz
 OL
@@ -2766,22 +2743,23 @@ id|dbg
 op_assign
 id|debugging
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached onstream wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Reached onstream wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2928,18 +2906,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Sleeping in onstream wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Sleeping in onstream wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;%s:D: Turning off debugging for a while&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|debugging
@@ -3034,18 +3012,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Abnormal exit from onstream wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Abnormal exit from onstream wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
+l_string|&quot;%s:D: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;buffer-&gt;syscall_result
 comma
@@ -3083,9 +3061,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Normal exit from onstream wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Normal exit from onstream wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3135,22 +3113,23 @@ id|dbg
 op_assign
 id|debugging
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached onstream wait for medium&bslash;n&quot;
+l_string|&quot;%s:D: Reached onstream wait for medium&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3261,18 +3240,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Sleeping in onstream wait medium&bslash;n&quot;
+l_string|&quot;%s:D: Sleeping in onstream wait medium&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;%s:D: Turning off debugging for a while&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|debugging
@@ -3378,18 +3357,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Abnormal exit from onstream wait medium&bslash;n&quot;
+l_string|&quot;%s:D: Abnormal exit from onstream wait medium&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
+l_string|&quot;%s:D: Result = %d, Sense: 0=%02x, 2=%02x, 12=%02x, 13=%02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;buffer-&gt;syscall_result
 comma
@@ -3424,9 +3403,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Normal exit from onstream wait medium&bslash;n&quot;
+l_string|&quot;%s:D: Normal exit from onstream wait medium&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3551,22 +3530,23 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached onstream flush drive buffer (write filemark)&bslash;n&quot;
+l_string|&quot;%s:D: Reached onstream flush drive buffer (write filemark)&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3716,13 +3696,14 @@ id|startwait
 op_assign
 id|jiffies
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -3752,9 +3733,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:A: Waiting for frame without having initialized read!&bslash;n&quot;
+l_string|&quot;%s:A: Waiting for frame without having initialized read!&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_while
@@ -3878,9 +3859,9 @@ id|OSST_POLL_PER_SEC
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Succ wait f fr %i (&gt;%i): %i-%i %i (%i): %3li.%li s&bslash;n&quot;
+l_string|&quot;%s:D: Succ wait f fr %i (&gt;%i): %i-%i %i (%i): %3li.%li s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|curr
 comma
@@ -3946,9 +3927,9 @@ id|notyetprinted
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Wait for frame %i (&gt;%i): %i-%i %i (%i)&bslash;n&quot;
+l_string|&quot;%s:D: Wait for frame %i (&gt;%i): %i-%i %i (%i)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|curr
 comma
@@ -3988,9 +3969,9 @@ macro_line|#if DEBUG
 id|printk
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Fail wait f fr %i (&gt;%i): %i-%i %i: %3li.%li s&bslash;n&quot;
+l_string|&quot;%s:D: Fail wait f fr %i (&gt;%i): %i-%i %i: %3li.%li s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|curr
 comma
@@ -4078,13 +4059,14 @@ id|aux
 op_assign
 id|STp-&gt;buffer-&gt;aux
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4160,9 +4142,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reading frame from OnStream tape&bslash;n&quot;
+l_string|&quot;%s:D: Reading frame from OnStream tape&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4237,9 +4219,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Recording read error at %d&bslash;n&quot;
+l_string|&quot;%s:D: Recording read error at %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;read_error_frame
 )paren
@@ -4256,9 +4238,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
+l_string|&quot;%s:D: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -4318,9 +4300,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: AUX: %c%c%c%c UpdFrCt#%d Wpass#%d %s FrSeq#%d LogBlk#%d Qty=%d Sz=%d&bslash;n&quot;
+l_string|&quot;%s:D: AUX: %c%c%c%c UpdFrCt#%d Wpass#%d %s FrSeq#%d LogBlk#%d Qty=%d Sz=%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|aux-&gt;application_sig
 (braket
@@ -4430,9 +4412,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: mark_cnt=%d, last_mark_ppos=%d, last_mark_lbn=%d&bslash;n&quot;
+l_string|&quot;%s:D: mark_cnt=%d, last_mark_ppos=%d, last_mark_lbn=%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ntohl
 c_func
@@ -4457,9 +4439,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Exit read frame from OnStream tape with code %d&bslash;n&quot;
+l_string|&quot;%s:D: Exit read frame from OnStream tape with code %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retval
 )paren
@@ -4517,13 +4499,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4599,9 +4582,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Start Read Ahead on OnStream tape&bslash;n&quot;
+l_string|&quot;%s:D: Start Read Ahead on OnStream tape&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4676,13 +4659,14 @@ id|STp-&gt;partition
 )braket
 )paren
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -4722,9 +4706,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Couldn&squot;t find logical frame %d, aborting&bslash;n&quot;
+l_string|&quot;%s:E: Couldn&squot;t find logical frame %d, aborting&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame_seq_number
 )paren
@@ -4752,9 +4736,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Repositioning tape to bad frame %d&bslash;n&quot;
+l_string|&quot;%s:D: Repositioning tape to bad frame %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;read_error_frame
 )paren
@@ -4782,9 +4766,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Looking for frame %d, attempt %d&bslash;n&quot;
+l_string|&quot;%s:D: Looking for frame %d, attempt %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame_seq_number
 comma
@@ -4894,9 +4878,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Bad frame detected, positioning tape to block %d&bslash;n&quot;
+l_string|&quot;%s:D: Bad frame detected, positioning tape to block %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|position
 )paren
@@ -4965,9 +4949,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Found logical frame %d instead of %d after fast open&bslash;n&quot;
+l_string|&quot;%s:W: Found logical frame %d instead of %d after fast open&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|x
 comma
@@ -5053,9 +5037,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Found logical frame %d while looking for %d: back up %d&bslash;n&quot;
+l_string|&quot;%s:D: Found logical frame %d while looking for %d: back up %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|x
 comma
@@ -5109,9 +5093,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping config partition&bslash;n&quot;
+l_string|&quot;%s:D: Skipping config partition&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5154,9 +5138,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:I: Don&squot;t worry, Read error at position %d recovered&bslash;n&quot;
+l_string|&quot;%s:I: Don&squot;t worry, Read error at position %d recovered&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;read_error_frame
 )paren
@@ -5177,9 +5161,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Exit get logical frame (%d=&gt;%d) from OnStream tape with code %d&bslash;n&quot;
+l_string|&quot;%s:D: Exit get logical frame (%d=&gt;%d) from OnStream tape with code %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame_seq_number
 comma
@@ -5234,13 +5218,14 @@ id|STp-&gt;partition
 )braket
 )paren
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -5271,9 +5256,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Seeking logical block %d (now at %d, size %d%c)&bslash;n&quot;
+l_string|&quot;%s:D: Seeking logical block %d (now at %d, size %d%c)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|logical_blk_num
 comma
@@ -5540,9 +5525,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d) move %d&bslash;n&quot;
+l_string|&quot;%s:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d) move %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retries
 comma
@@ -5596,9 +5581,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Seek success at ppos %d fsq %d in_buf %d, bytes %d, ptr %d*%d&bslash;n&quot;
+l_string|&quot;%s:D: Seek success at ppos %d fsq %d in_buf %d, bytes %d, ptr %d*%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos_estimate
 comma
@@ -5717,9 +5702,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d)&bslash;n&quot;
+l_string|&quot;%s:D: Seek retry %d at ppos %d fsq %d (est %d) lbn %d (need %d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retries
 comma
@@ -5758,9 +5743,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Couldn&squot;t seek to logical block %d (at %d), %d retries&bslash;n&quot;
+l_string|&quot;%s:E: Couldn&squot;t seek to logical block %d (at %d), %d retries&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|logical_blk_num
 comma
@@ -5803,22 +5788,23 @@ r_int
 id|sector
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, %cptr %d, eof %d&bslash;n&quot;
+l_string|&quot;%s:D: Positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, %cptr %d, eof %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -6019,22 +6005,23 @@ comma
 id|r
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Seeking sector %d in frame %d at offset %d&bslash;n&quot;
+l_string|&quot;%s:D: Seeking sector %d in frame %d at offset %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|sector
 comma
@@ -6303,9 +6290,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Now positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, rptr %d, eof %d&bslash;n&quot;
+l_string|&quot;%s:D: Now positioned at ppos %d, frame %d, lbn %d, file %d, blk %d, rptr %d, eof %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -6439,13 +6426,14 @@ l_int|1
 op_star
 id|blks_per_frame
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -6496,9 +6484,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Reading back %d frames from drive buffer%s&bslash;n&quot;
+l_string|&quot;%s:I: Reading back %d frames from drive buffer%s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|nframes
 comma
@@ -6540,9 +6528,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Pending frame %d (lblk %d), data %02x %02x %02x %02x&bslash;n&quot;
+l_string|&quot;%s:D: Pending frame %d (lblk %d), data %02x %02x %02x %02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame_seq_number
 op_plus
@@ -6682,9 +6670,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Failed to read frame back from OnStream buffer&bslash;n&quot;
+l_string|&quot;%s:E: Failed to read frame back from OnStream buffer&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|vfree
@@ -6727,9 +6715,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Read back logical frame %d, data %02x %02x %02x %02x&bslash;n&quot;
+l_string|&quot;%s:D: Read back logical frame %d, data %02x %02x %02x %02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame_seq_number
 op_plus
@@ -6776,9 +6764,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Frames left in buffer: %d&bslash;n&quot;
+l_string|&quot;%s:D: Frames left in buffer: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;cur_frames
 )paren
@@ -6872,9 +6860,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Position to frame %d, write fseq %d&bslash;n&quot;
+l_string|&quot;%s:D: Position to frame %d, write fseq %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|new_frame
 op_plus
@@ -6937,9 +6925,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Failed to find writable tape media&bslash;n&quot;
+l_string|&quot;%s:E: Failed to find writable tape media&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|vfree
@@ -7056,9 +7044,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: About to write frame %d, seq %d, lbn %d, data %02x %02x %02x %02x&bslash;n&quot;
+l_string|&quot;%s:D: About to write frame %d, seq %d, lbn %d, data %02x %02x %02x %02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|new_frame
 op_plus
@@ -7152,9 +7140,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Check re-write successful&bslash;n&quot;
+l_string|&quot;%s:D: Check re-write successful&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7215,18 +7203,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Sleeping in re-write wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Sleeping in re-write wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;%s:D: Turning off debugging for a while&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|debugging
@@ -7364,9 +7352,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Wait re-write finished&bslash;n&quot;
+l_string|&quot;%s:D: Wait re-write finished&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7416,9 +7404,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Volume overflow in write error recovery&bslash;n&quot;
+l_string|&quot;%s:E: Volume overflow in write error recovery&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|vfree
@@ -7492,9 +7480,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Additional write error at %d&bslash;n&quot;
+l_string|&quot;%s:D: Additional write error at %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|new_frame
 op_plus
@@ -7515,9 +7503,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
+l_string|&quot;%s:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -7594,13 +7582,14 @@ id|Scsi_Request
 op_star
 id|SRpnt
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -7700,9 +7689,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Position to fppos %d, re-write from fseq %d&bslash;n&quot;
+l_string|&quot;%s:D: Position to fppos %d, re-write from fseq %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame
 op_plus
@@ -7758,9 +7747,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Addl error, host %d, tape %d, buffer %d&bslash;n&quot;
+l_string|&quot;%s:D: Addl error, host %d, tape %d, buffer %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -7827,9 +7816,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: About to write pending fseq %d at fppos %d&bslash;n&quot;
+l_string|&quot;%s:D: About to write pending fseq %d at fppos %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;frame_seq_number
 op_minus
@@ -7907,9 +7896,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Volume overflow in write error recovery&bslash;n&quot;
+l_string|&quot;%s:E: Volume overflow in write error recovery&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -7946,9 +7935,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Wait re-write finished&bslash;n&quot;
+l_string|&quot;%s:D: Wait re-write finished&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7964,9 +7953,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:A: Actual position %d - expected %d&bslash;n&quot;
+l_string|&quot;%s:A: Actual position %d - expected %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -7995,18 +7984,18 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Sleeping in re-write wait ready&bslash;n&quot;
+l_string|&quot;%s:D: Sleeping in re-write wait ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Turning off debugging for a while&bslash;n&quot;
+l_string|&quot;%s:D: Turning off debugging for a while&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|debugging
@@ -8028,9 +8017,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Failed to find valid tape media&bslash;n&quot;
+l_string|&quot;%s:E: Failed to find valid tape media&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -8083,13 +8072,14 @@ id|STp-&gt;ps
 id|STp-&gt;partition
 )braket
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -8144,9 +8134,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Write error recovery cannot handle %02x:%02x:%02x&bslash;n&quot;
+l_string|&quot;%s:D: Write error recovery cannot handle %02x:%02x:%02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -8218,9 +8208,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Detected physical bad frame at %u, advised to skip %d&bslash;n&quot;
+l_string|&quot;%s:D: Detected physical bad frame at %u, advised to skip %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|frame
 comma
@@ -8241,9 +8231,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
+l_string|&quot;%s:D: reported frame positions: host = %d, tape = %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -8270,9 +8260,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:I: Relocating %d buffered logical frames from position %u to %u&bslash;n&quot;
+l_string|&quot;%s:I: Relocating %d buffered logical frames from position %u to %u&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;cur_frames
 comma
@@ -8342,9 +8332,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:%s: %sWrite error%srecovered&bslash;n&quot;
+l_string|&quot;%s:%s: %sWrite error%srecovered&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retval
 ques
@@ -8377,9 +8367,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Bad frame in update last marker, fatal&bslash;n&quot;
+l_string|&quot;%s:E: Bad frame in update last marker, fatal&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|osst_set_frame_position
@@ -8412,9 +8402,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:I: Bad frame in header partition, skipped&bslash;n&quot;
+l_string|&quot;%s:I: Bad frame in header partition, skipped&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -8441,9 +8431,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Bad frame in filler, ignored&bslash;n&quot;
+l_string|&quot;%s:I: Bad frame in filler, ignored&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|osst_set_frame_position
@@ -8476,9 +8466,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Positioning complete, cur_frames %d, pos %d, tape pos %d&bslash;n&quot;
+l_string|&quot;%s:D: Positioning complete, cur_frames %d, pos %d, tape pos %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;cur_frames
 comma
@@ -8491,9 +8481,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: next logical frame to write: %d&bslash;n&quot;
+l_string|&quot;%s:D: next logical frame to write: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;logical_blk_num
 )paren
@@ -8544,13 +8534,14 @@ r_int
 id|mt_count
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -8567,9 +8558,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached space_over_filemarks_backwards %d %d&bslash;n&quot;
+l_string|&quot;%s:D: Reached space_over_filemarks_backwards %d %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|mt_op
 comma
@@ -8601,9 +8592,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_bwd&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks_bwd&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8712,9 +8703,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Filemark lookup fail due to %s&bslash;n&quot;
+l_string|&quot;%s:D: Filemark lookup fail due to %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;header_cache
 op_eq
@@ -8731,9 +8722,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
+l_string|&quot;%s:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cnt
 comma
@@ -8823,9 +8814,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8848,9 +8839,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|last_mark_ppos
 )paren
@@ -8900,9 +8891,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reverting to scan filemark backwards&bslash;n&quot;
+l_string|&quot;%s:D: Reverting to scan filemark backwards&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8946,9 +8937,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Positioning to last mark at %d&bslash;n&quot;
+l_string|&quot;%s:D: Positioning to last mark at %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|last_mark_ppos
 )paren
@@ -8991,9 +8982,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9016,9 +9007,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|last_mark_ppos
 )paren
@@ -9093,22 +9084,23 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached space_over_filemarks_forward_slow %d %d&bslash;n&quot;
+l_string|&quot;%s:D: Reached space_over_filemarks_forward_slow %d %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|mt_op
 comma
@@ -9140,9 +9132,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9183,9 +9175,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9219,9 +9211,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: space_fwd: EOD reached&bslash;n&quot;
+l_string|&quot;%s:D: space_fwd: EOD reached&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9240,9 +9232,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: EOD position corrected (%d=&gt;%d)&bslash;n&quot;
+l_string|&quot;%s:D: EOD position corrected (%d=&gt;%d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;eod_frame_ppos
 comma
@@ -9336,13 +9328,14 @@ r_int
 id|mt_count
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -9360,9 +9353,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached space_over_filemarks_forward_fast %d %d&bslash;n&quot;
+l_string|&quot;%s:D: Reached space_over_filemarks_forward_fast %d %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|mt_op
 comma
@@ -9394,9 +9387,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks_fwd&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9511,9 +9504,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Filemark lookup fail due to %s&bslash;n&quot;
+l_string|&quot;%s:D: Filemark lookup fail due to %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;header_cache
 op_eq
@@ -9530,9 +9523,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
+l_string|&quot;%s:D: Filemark lookup: prev mark %d (%s), skip %d to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cnt
 comma
@@ -9591,9 +9584,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
+l_string|&quot;%s:D: Reverting to slow filemark space&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9647,9 +9640,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9672,9 +9665,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|next_mark_ppos
 )paren
@@ -9704,9 +9697,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find marker %d at ppos %d, not %d&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find marker %d at ppos %d, not %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cnt
 op_plus
@@ -9761,9 +9754,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: space_fwd: EOD reached&bslash;n&quot;
+l_string|&quot;%s:D: space_fwd: EOD reached&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9800,9 +9793,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
+l_string|&quot;%s:D: Reverting to slow filemark space&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9854,9 +9847,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks_fwd_fast&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks_fwd_fast&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9879,9 +9872,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find filemark at %d&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find filemark at %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_mark_ppos
 )paren
@@ -9959,9 +9952,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reverting to slow filemark space&bslash;n&quot;
+l_string|&quot;%s:D: Reverting to slow filemark space&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -9987,9 +9980,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Positioning to next mark at %d&bslash;n&quot;
+l_string|&quot;%s:D: Positioning to next mark at %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|next_mark_ppos
 )paren
@@ -10032,9 +10025,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in space_filemarks&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10057,9 +10050,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
+l_string|&quot;%s:W: Expected to find marker at ppos %d, not found&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|next_mark_ppos
 )paren
@@ -10141,13 +10134,14 @@ op_assign
 op_star
 id|aSRpnt
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|memset
@@ -10302,9 +10296,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Setting number of retries on OnStream tape to %d&bslash;n&quot;
+l_string|&quot;%s:D: Setting number of retries on OnStream tape to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retries
 )paren
@@ -10351,9 +10345,9 @@ id|syscall_result
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:D: Couldn&squot;t set retries to %d&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t set retries to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|retries
 )paren
@@ -10390,13 +10384,14 @@ op_assign
 id|STp-&gt;logical_blk_num
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10417,9 +10412,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing Filemark %i at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
+l_string|&quot;%s:D: Writing Filemark %i at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;filemark_cnt
 comma
@@ -10521,13 +10516,14 @@ r_int
 id|result
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10552,9 +10548,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing EOD at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
+l_string|&quot;%s:D: Writing EOD at fppos %d (fseq %d, lblk %d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;eod_frame_ppos
 comma
@@ -10621,13 +10617,14 @@ r_int
 id|count
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -10635,9 +10632,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached onstream write filler group %d&bslash;n&quot;
+l_string|&quot;%s:D: Reached onstream write filler group %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|where
 )paren
@@ -10712,9 +10709,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:I: Couldn&squot;t write filler frame&bslash;n&quot;
+l_string|&quot;%s:I: Couldn&squot;t write filler frame&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -10730,9 +10727,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Exiting onstream write filler group&bslash;n&quot;
+l_string|&quot;%s:D: Exiting onstream write filler group&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -10768,13 +10765,14 @@ r_int
 id|count
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_int
@@ -10785,9 +10783,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached onstream write header group %d&bslash;n&quot;
+l_string|&quot;%s:D: Reached onstream write header group %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|where
 )paren
@@ -10868,9 +10866,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:I: Couldn&squot;t write header frame&bslash;n&quot;
+l_string|&quot;%s:I: Couldn&squot;t write header frame&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -10896,9 +10894,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Write onstream header group %s&bslash;n&quot;
+l_string|&quot;%s:D: Write onstream header group %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 ques
@@ -10939,13 +10937,14 @@ suffix:semicolon
 r_int
 id|result
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -10953,9 +10952,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing tape header&bslash;n&quot;
+l_string|&quot;%s:D: Writing tape header&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -11002,9 +11001,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Failed to allocate header cache&bslash;n&quot;
+l_string|&quot;%s:E: Failed to allocate header cache&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -11032,9 +11031,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Allocated and cleared memory for header cache&bslash;n&quot;
+l_string|&quot;%s:D: Allocated and cleared memory for header cache&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -11303,9 +11302,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Locating back to eod frame addr %d&bslash;n&quot;
+l_string|&quot;%s:D: Locating back to eod frame addr %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;eod_frame_ppos
 )paren
@@ -11333,9 +11332,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Write header failed&bslash;n&quot;
+l_string|&quot;%s:E: Write header failed&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_else
@@ -11463,13 +11462,14 @@ r_int
 id|ppos
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|os_header_t
@@ -11532,9 +11532,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i:W: Couldn&squot;t position tape&bslash;n&quot;
+l_string|&quot;%s:W: Couldn&squot;t position tape&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -11552,9 +11552,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i:W: Couldn&squot;t initiate read&bslash;n&quot;
+l_string|&quot;%s:W: Couldn&squot;t initiate read&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -11581,9 +11581,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t read header frame&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t read header frame&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -11617,9 +11617,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping non-header frame (%d)&bslash;n&quot;
+l_string|&quot;%s:D: Skipping non-header frame (%d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 )paren
@@ -11674,9 +11674,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Invalid header frame (%d,%d,%d,%d,%d)&bslash;n&quot;
+l_string|&quot;%s:D: Invalid header frame (%d,%d,%d,%d,%d)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ntohl
 c_func
@@ -11760,9 +11760,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Invalid header identification string %s&bslash;n&quot;
+l_string|&quot;%s:D: Invalid header identification string %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|id_string
 )paren
@@ -11793,9 +11793,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame %d with update_frame_counter %d&lt;%d&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame %d with update_frame_counter %d&lt;%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 comma
@@ -11826,9 +11826,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: %s revision %d.%d detected (1.4 supported)&bslash;n&quot;
+l_string|&quot;%s:D: %s revision %d.%d detected (1.4 supported)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|header-&gt;major_rev
@@ -11878,9 +11878,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:W: %d partitions defined, only one supported&bslash;n&quot;
+l_string|&quot;%s:W: %d partitions defined, only one supported&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|header-&gt;pt_par_num
 )paren
@@ -11943,9 +11943,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:I: Linux media version %d detected (current 4)&bslash;n&quot;
+l_string|&quot;%s:I: Linux media version %d detected (current 4)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|linux_media_version
 )paren
@@ -11957,9 +11957,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i:W: Non Linux media detected (%s)&bslash;n&quot;
+l_string|&quot;%s:W: Non Linux media detected (%s)&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|id_string
 )paren
@@ -11981,9 +11981,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping frame %d with linux_media_version %d&bslash;n&quot;
+l_string|&quot;%s:D: Skipping frame %d with linux_media_version %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 comma
@@ -12008,9 +12008,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Frame %d sets linux_media_version to %d&bslash;n&quot;
+l_string|&quot;%s:D: Frame %d sets linux_media_version to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 comma
@@ -12051,9 +12051,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Frame %d sets update_frame_counter to %d&bslash;n&quot;
+l_string|&quot;%s:D: Frame %d sets update_frame_counter to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 comma
@@ -12096,9 +12096,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Failed to allocate header cache&bslash;n&quot;
+l_string|&quot;%s:E: Failed to allocate header cache&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -12110,9 +12110,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Allocated memory for header cache&bslash;n&quot;
+l_string|&quot;%s:D: Allocated memory for header cache&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12223,9 +12223,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Detected write pass %d, update frame counter %d, filemark counter %d&bslash;n&quot;
+l_string|&quot;%s:D: Detected write pass %d, update frame counter %d, filemark counter %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;wrt_pass_cntr
 comma
@@ -12238,9 +12238,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: first data frame on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
+l_string|&quot;%s:D: first data frame on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_data_ppos
 comma
@@ -12271,9 +12271,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: first mark on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
+l_string|&quot;%s:D: first mark on tape = %d, last = %d, eod frame = %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_mark_ppos
 comma
@@ -12300,9 +12300,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%i:D: Moving filemark list to ADR 1.4 location&bslash;n&quot;
+l_string|&quot;%s:D: Moving filemark list to ADR 1.4 location&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12480,9 +12480,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%i:W: Failed consistency check ADR 1.4 format&bslash;n&quot;
+l_string|&quot;%s:W: Failed consistency check ADR 1.4 format&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -12521,13 +12521,14 @@ id|valid
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|position
@@ -12596,9 +12597,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reading header&bslash;n&quot;
+l_string|&quot;%s:D: Reading header&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12721,9 +12722,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Failed to find valid ADRL header, new media?&bslash;n&quot;
+l_string|&quot;%s:E: Failed to find valid ADRL header, new media?&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|STp-&gt;eod_frame_ppos
@@ -12856,22 +12857,23 @@ comma
 id|n
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Verify that the tape is really the one we think before writing&bslash;n&quot;
+l_string|&quot;%s:D: Verify that the tape is really the one we think before writing&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12913,9 +12915,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t get logical blk num in verify_position&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t get logical blk num in verify_position&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13026,9 +13028,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Block mismatch: fppos %d-%d, fseq %d-%d, mark %d-%d&bslash;n&quot;
+l_string|&quot;%s:D: Block mismatch: fppos %d-%d, fseq %d-%d, mark %d-%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -13247,13 +13249,14 @@ id|cmd
 id|MAX_COMMAND_SIZE
 )braket
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|Scsi_Request
@@ -13295,9 +13298,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Not Ready&bslash;n&quot;
+l_string|&quot;%s:D: Not Ready&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13320,9 +13323,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:I: Old OnStream firmware revision detected (%s),&bslash;n&quot;
+l_string|&quot;%s:I: Old OnStream firmware revision detected (%s),&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;device-&gt;rev
 )paren
@@ -13331,9 +13334,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: an upgrade to version 1.06 or above is recommended&bslash;n&quot;
+l_string|&quot;%s:I: an upgrade to version 1.06 or above is recommended&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -13447,9 +13450,9 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Can&squot;t get tape block size mode page&bslash;n&quot;
+l_string|&quot;%s:E: Can&squot;t get tape block size mode page&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -13497,9 +13500,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: 32KB play back: %s&bslash;n&quot;
+l_string|&quot;%s:D: 32KB play back: %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|bs-&gt;play32
 ques
@@ -13513,9 +13516,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: 32.5KB play back: %s&bslash;n&quot;
+l_string|&quot;%s:D: 32.5KB play back: %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|bs-&gt;play32_5
 ques
@@ -13529,9 +13532,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: 32KB record: %s&bslash;n&quot;
+l_string|&quot;%s:D: 32KB record: %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|bs-&gt;record32
 ques
@@ -13545,9 +13548,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: 32.5KB record: %s&bslash;n&quot;
+l_string|&quot;%s:D: 32.5KB record: %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|bs-&gt;record32_5
 ques
@@ -13657,9 +13660,9 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Couldn&squot;t set tape block size mode page&bslash;n&quot;
+l_string|&quot;%s:E: Couldn&squot;t set tape block size mode page&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -13674,9 +13677,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:D: Drive Block Size changed to 32.5K&bslash;n&quot;
+l_string|&quot;%s:D: Drive Block Size changed to 32.5K&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * In debug mode, we want to see as many errors as possible&n;&t; * to test the error recovery mechanism.&n;&t; */
@@ -13908,9 +13911,9 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Couldn&squot;t set vendor name to %s&bslash;n&quot;
+l_string|&quot;%s:E: Couldn&squot;t set vendor name to %s&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 r_char
@@ -14021,9 +14024,9 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Can&squot;t get capabilities page&bslash;n&quot;
+l_string|&quot;%s:E: Can&squot;t get capabilities page&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -14161,9 +14164,9 @@ l_int|0
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;osst%i:E: Can&squot;t get tape parameter page&bslash;n&quot;
+l_string|&quot;%s:E: Can&squot;t get tape parameter page&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -14229,9 +14232,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Density %d, tape length: %dMB, drive buffer size: %dKB&bslash;n&quot;
+l_string|&quot;%s:D: Density %d, tape length: %dMB, drive buffer size: %dKB&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;density
 comma
@@ -14270,13 +14273,14 @@ id|forward
 r_int
 id|result
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -14289,9 +14293,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Stepping over filemark %s.&bslash;n&quot;
+l_string|&quot;%s:D: Stepping over filemark %s.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|forward
 ques
@@ -14351,9 +14355,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Stepping over filemark %s failed.&bslash;n&quot;
+l_string|&quot;%s:W: Stepping over filemark %s failed.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|forward
 ques
@@ -14418,13 +14422,14 @@ id|oldsize
 op_assign
 id|STp-&gt;buffer-&gt;buffer_size
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -14553,9 +14558,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Can&squot;t read tape position.&bslash;n&quot;
+l_string|&quot;%s:E: Can&squot;t read tape position.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_else
@@ -14770,9 +14775,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Drive Positions: host %d, tape %d%s, buffer %d&bslash;n&quot;
+l_string|&quot;%s:D: Drive Positions: host %d, tape %d%s, buffer %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -14834,9 +14839,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:D: Correcting read position %d, %d, %d&bslash;n&quot;
+l_string|&quot;%s:D: Correcting read position %d, %d, %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -14933,13 +14938,14 @@ l_int|0
 suffix:colon
 id|ppos
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -14977,9 +14983,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Reposition request %d out of range&bslash;n&quot;
+l_string|&quot;%s:W: Reposition request %d out of range&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|ppos
 )paren
@@ -15021,9 +15027,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Setting ppos to %d.&bslash;n&quot;
+l_string|&quot;%s:D: Setting ppos to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|pp
 )paren
@@ -15161,9 +15167,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: SEEK command from %d to %d failed.&bslash;n&quot;
+l_string|&quot;%s:D: SEEK command from %d to %d failed.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 comma
@@ -15292,13 +15298,14 @@ id|ST_partstat
 op_star
 id|STps
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -15328,9 +15335,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: aSRpnt points to Scsi_Request that write_behind_check will release -- cleared&bslash;n&quot;
+l_string|&quot;%s:D: aSRpnt points to Scsi_Request that write_behind_check will release -- cleared&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -15353,9 +15360,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: aSRpnt does not point to Scsi_Request that write_behind_check will release -- strange&bslash;n&quot;
+l_string|&quot;%s:D: aSRpnt does not point to Scsi_Request that write_behind_check will release -- strange&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif&t;
@@ -15385,9 +15392,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Async write error (flush) %x.&bslash;n&quot;
+l_string|&quot;%s:D: Async write error (flush) %x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|STp-&gt;buffer
@@ -15556,9 +15563,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
+l_string|&quot;%s:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|blks
 comma
@@ -15695,9 +15702,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Flushing %d bytes, Transfering %d bytes in %d lblocks.&bslash;n&quot;
+l_string|&quot;%s:D: Flushing %d bytes, Transfering %d bytes in %d lblocks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|offset
 comma
@@ -15764,9 +15771,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: write sense [0]=0x%02x [2]=%02x [12]=%02x [13]=%02x&bslash;n&quot;
+l_string|&quot;%s:D: write sense [0]=0x%02x [2]=%02x [12]=%02x [13]=%02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -15866,9 +15873,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Error on flush write.&bslash;n&quot;
+l_string|&quot;%s:E: Error on flush write.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|result
@@ -15912,9 +15919,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Exit flush write buffer with code %d&bslash;n&quot;
+l_string|&quot;%s:D: Exit flush write buffer with code %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 )paren
@@ -15958,13 +15965,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16034,9 +16042,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reached flush (read) buffer&bslash;n&quot;
+l_string|&quot;%s:D: Reached flush (read) buffer&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16249,13 +16257,14 @@ r_int
 id|blks
 suffix:semicolon
 macro_line|#if DEBUG
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16282,9 +16291,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Reaching config partition.&bslash;n&quot;
+l_string|&quot;%s:D: Reaching config partition.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16329,9 +16338,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping over config partition.&bslash;n&quot;
+l_string|&quot;%s:D: Skipping over config partition.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16429,9 +16438,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
+l_string|&quot;%s:D: Writing %d blocks to frame %d, lblks %d-%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|blks
 comma
@@ -16542,9 +16551,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Error on write:&bslash;n&quot;
+l_string|&quot;%s:D: Error on write:&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16655,13 +16664,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 id|ssize_t
 id|total
 comma
@@ -16697,10 +16699,6 @@ id|SRpnt
 op_assign
 l_int|NULL
 suffix:semicolon
-id|OS_Scsi_Tape
-op_star
-id|STp
-suffix:semicolon
 id|ST_mode
 op_star
 id|STm
@@ -16709,21 +16707,21 @@ id|ST_partstat
 op_star
 id|STps
 suffix:semicolon
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
+id|OS_Scsi_Tape
+op_star
 id|STp
 op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
+id|filp-&gt;private_data
+suffix:semicolon
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16887,9 +16885,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
+l_string|&quot;%s:D: Incorrect device.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -16942,9 +16940,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Write (%ld bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
+l_string|&quot;%s:E: Write (%ld bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 r_int
@@ -16998,9 +16996,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:E: Write truncated at EOM early warning (frame %d).&bslash;n&quot;
+l_string|&quot;%s:E: Write truncated at EOM early warning (frame %d).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;first_frame_position
 )paren
@@ -17132,9 +17130,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Allocating next write pass counter: %d&bslash;n&quot;
+l_string|&quot;%s:D: Allocating next write pass counter: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;wrt_pass_cntr
 )paren
@@ -17210,9 +17208,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Cannot write at indeterminate position.&bslash;n&quot;
+l_string|&quot;%s:D: Cannot write at indeterminate position.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -17265,9 +17263,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Overwriting file %d with old write pass counter %d&bslash;n&quot;
+l_string|&quot;%s:W: Overwriting file %d with old write pass counter %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STps-&gt;drv_file
 comma
@@ -17278,9 +17276,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: may lead to stale data being accepted on reading back!&bslash;n&quot;
+l_string|&quot;%s:W: may lead to stale data being accepted on reading back!&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
@@ -17288,9 +17286,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: resetting filemark count to %d and last mark ppos,lbn to %d,%d&bslash;n&quot;
+l_string|&quot;%s:D: resetting filemark count to %d and last mark ppos,lbn to %d,%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;filemark_cnt
 comma
@@ -17319,9 +17317,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Write cannot proceed without valid headers&bslash;n&quot;
+l_string|&quot;%s:D: Write cannot proceed without valid headers&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -17355,9 +17353,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;osst%d:A: Not supposed to have SRpnt at line %d&bslash;n&quot;
+l_string|&quot;%s:A: Not supposed to have SRpnt at line %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|__LINE__
 )paren
@@ -17388,9 +17386,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Async write error (write) %x.&bslash;n&quot;
+l_string|&quot;%s:D: Async write error (write) %x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|STp-&gt;buffer
@@ -17555,9 +17553,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing %d bytes to file %d block %d lblk %d fseq %d fppos %d&bslash;n&quot;
+l_string|&quot;%s:D: Writing %d bytes to file %d block %d lblk %d fseq %d fppos %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|count
 comma
@@ -17749,9 +17747,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: EOM with %d bytes unwritten.&bslash;n&quot;
+l_string|&quot;%s:D: EOM with %d bytes unwritten.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|transfer
 )paren
@@ -17790,9 +17788,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: EOM with lost data.&bslash;n&quot;
+l_string|&quot;%s:D: EOM with lost data.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -18149,13 +18147,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 id|ssize_t
 id|total
 comma
@@ -18171,10 +18162,6 @@ suffix:semicolon
 r_int
 id|special
 suffix:semicolon
-id|OS_Scsi_Tape
-op_star
-id|STp
-suffix:semicolon
 id|ST_mode
 op_star
 id|STm
@@ -18189,21 +18176,21 @@ id|SRpnt
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
+id|OS_Scsi_Tape
+op_star
 id|STp
 op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
+id|filp-&gt;private_data
+suffix:semicolon
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -18339,9 +18326,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
+l_string|&quot;%s:D: Incorrect device.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -18463,9 +18450,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Read (%Zd bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
+l_string|&quot;%s:W: Read (%Zd bytes) not multiple of tape block size (%d%c).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|count
 comma
@@ -18505,9 +18492,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
+l_string|&quot;%s:D: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STps-&gt;eof
 comma
@@ -18752,9 +18739,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
+l_string|&quot;%s:D: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STps-&gt;eof
 comma
@@ -18875,9 +18862,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Finished with frame %d&bslash;n&quot;
+l_string|&quot;%s:D: Finished with frame %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;frame_seq_number
 )paren
@@ -19041,17 +19028,18 @@ id|ST_mode
 op_star
 id|STm
 comma
-r_int
-id|dev
+r_char
+op_star
+id|name
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
+l_string|&quot;%s:I: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 comma
@@ -19066,9 +19054,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
+l_string|&quot;%s:I:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;can_bsr
 comma
@@ -19083,9 +19071,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
+l_string|&quot;%s:I:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;defaults_for_writes
 comma
@@ -19100,9 +19088,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I:    sysv: %d&bslash;n&quot;
+l_string|&quot;%s:I:    sysv: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;sysv
 )paren
@@ -19112,9 +19100,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:D:    debugging: %d&bslash;n&quot;
+l_string|&quot;%s:D:    debugging: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|debugging
 )paren
@@ -19145,13 +19133,14 @@ id|ST_mode
 op_star
 id|STm
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|STm
@@ -19204,9 +19193,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Initialized mode %d definition from mode 0&bslash;n&quot;
+l_string|&quot;%s:D: Initialized mode %d definition from mode 0&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 )paren
@@ -19377,7 +19366,7 @@ id|STp
 comma
 id|STm
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -19614,7 +19603,7 @@ id|STp
 comma
 id|STm
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -19650,9 +19639,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Write threshold %d too small or too large.&bslash;n&quot;
+l_string|&quot;%s:W: Write threshold %d too small or too large.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -19672,9 +19661,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Write threshold set to %d bytes.&bslash;n&quot;
+l_string|&quot;%s:I: Write threshold set to %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -19718,9 +19707,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Default block size disabled.&bslash;n&quot;
+l_string|&quot;%s:I: Default block size disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -19742,9 +19731,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Default block size cannot be set to %d.&bslash;n&quot;
+l_string|&quot;%s:W: Default block size cannot be set to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -19764,9 +19753,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Default block size set to %d bytes.&bslash;n&quot;
+l_string|&quot;%s:I: Default block size set to %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;default_blksize
 )paren
@@ -19818,9 +19807,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Long timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;%s:I: Long timeout set to %d seconds.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|value
@@ -19843,9 +19832,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Normal timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;%s:I: Normal timeout set to %d seconds.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -19905,9 +19894,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Density default disabled.&bslash;n&quot;
+l_string|&quot;%s:I: Density default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -19923,9 +19912,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Density default set to %x&bslash;n&quot;
+l_string|&quot;%s:I: Density default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;default_density
 )paren
@@ -19957,9 +19946,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Drive buffer default disabled.&bslash;n&quot;
+l_string|&quot;%s:I: Drive buffer default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -19975,9 +19964,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Drive buffer default set to %x&bslash;n&quot;
+l_string|&quot;%s:I: Drive buffer default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;default_drvbuffer
 )paren
@@ -20009,9 +19998,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Compression default disabled.&bslash;n&quot;
+l_string|&quot;%s:I: Compression default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -20034,9 +20023,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Compression default set to %x&bslash;n&quot;
+l_string|&quot;%s:I: Compression default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|value
@@ -20138,13 +20127,14 @@ id|direction
 op_assign
 id|SCSI_DATA_NONE
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -20397,9 +20387,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Skipping %lu blocks %s from logical block %d&bslash;n&quot;
+l_string|&quot;%s:D: Skipping %lu blocks %s from logical block %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|arg
 comma
@@ -20548,9 +20538,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Spacing tape forward %d setmarks.&bslash;n&quot;
+l_string|&quot;%s:D: Spacing tape forward %d setmarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -20704,9 +20694,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Spacing tape backward %ld setmarks.&bslash;n&quot;
+l_string|&quot;%s:D: Spacing tape backward %ld setmarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 op_minus
@@ -20783,9 +20773,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing %ld filemark(s).&bslash;n&quot;
+l_string|&quot;%s:D: Writing %ld filemark(s).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|arg
 )paren
@@ -20929,9 +20919,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Writing %d setmark(s).&bslash;n&quot;
+l_string|&quot;%s:D: Writing %d setmark(s).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -21093,9 +21083,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Unloading tape.&bslash;n&quot;
+l_string|&quot;%s:D: Unloading tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -21107,9 +21097,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Loading tape.&bslash;n&quot;
+l_string|&quot;%s:D: Loading tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -21121,9 +21111,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Retensioning tape.&bslash;n&quot;
+l_string|&quot;%s:D: Retensioning tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -21135,9 +21125,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Ejecting tape.&bslash;n&quot;
+l_string|&quot;%s:D: Ejecting tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_break
@@ -21172,9 +21162,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: No-op on tape.&bslash;n&quot;
+l_string|&quot;%s:D: No-op on tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21197,9 +21187,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Spacing to end of recorded medium.&bslash;n&quot;
+l_string|&quot;%s:D: Spacing to end of recorded medium.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21258,9 +21248,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: No EOD frame found where expected.&bslash;n&quot;
+l_string|&quot;%s:D: No EOD frame found where expected.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21411,9 +21401,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Rewinding tape, Immed=%d.&bslash;n&quot;
+l_string|&quot;%s:D: Rewinding tape, Immed=%d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -21467,9 +21457,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Locking drive door.&bslash;n&quot;
+l_string|&quot;%s:D: Locking drive door.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21506,9 +21496,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Unlocking drive door.&bslash;n&quot;
+l_string|&quot;%s:D: Unlocking drive door.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21598,9 +21588,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Illegal block size.&bslash;n&quot;
+l_string|&quot;%s:W: Illegal block size.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -21665,9 +21655,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Couldn&squot;t exec scsi cmd for IOCTL&bslash;n&quot;
+l_string|&quot;%s:D: Couldn&squot;t exec scsi cmd for IOCTL&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -21704,9 +21694,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: IOCTL (%d) Result=%d&bslash;n&quot;
+l_string|&quot;%s:D: IOCTL (%d) Result=%d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd_in
 comma
@@ -22259,6 +22249,10 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
 r_int
 id|mode
 op_assign
@@ -22295,6 +22289,18 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
+id|filp-&gt;private_data
+op_assign
+id|STp
+suffix:semicolon
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -22322,9 +22328,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Device already in use.&bslash;n&quot;
+l_string|&quot;%s:D: Device already in use.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -22396,9 +22402,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Mode change from %d to %d.&bslash;n&quot;
+l_string|&quot;%s:D: Mode change from %d to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 comma
@@ -22538,9 +22544,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: Can&squot;t allocate tape buffer.&bslash;n&quot;
+l_string|&quot;%s:W: Can&squot;t allocate tape buffer.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -22818,9 +22824,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Unit not ready, cause %x&bslash;n&quot;
+l_string|&quot;%s:D: Unit not ready, cause %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -22952,9 +22958,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Unit wants attention&bslash;n&quot;
+l_string|&quot;%s:D: Unit wants attention&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -23255,9 +23261,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Signature was changed to %c%c%c%c&bslash;n&quot;
+l_string|&quot;%s:D: Signature was changed to %c%c%c%c&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;buffer-&gt;b_data
 (braket
@@ -23343,9 +23349,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Can&squot;t lock drive door&bslash;n&quot;
+l_string|&quot;%s:I: Can&squot;t lock drive door&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_else
@@ -23413,9 +23419,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Tape position changed from %d to %d&bslash;n&quot;
+l_string|&quot;%s:D: Tape position changed from %d to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|i
 comma
@@ -23603,9 +23609,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Applying soft reset&bslash;n&quot;
+l_string|&quot;%s:D: Applying soft reset&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -23831,9 +23837,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%i:I: Device did not become Ready in open&bslash;n&quot;
+l_string|&quot;%s:I: Device did not become Ready in open&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -23993,9 +23999,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;osst%d:A: Framesize %d too large for buffer.&bslash;n&quot;
+l_string|&quot;%s:A: Framesize %d too large for buffer.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|OS_FRAME_SIZE
 )paren
@@ -24090,9 +24096,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: b_data points to %p in segment 0 at %p&bslash;n&quot;
+l_string|&quot;%s:D: b_data points to %p in segment 0 at %p&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;buffer-&gt;b_data
 comma
@@ -24112,9 +24118,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: AUX points to %p in segment %d at %p&bslash;n&quot;
+l_string|&quot;%s:D: AUX points to %p in segment %d at %p&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;buffer-&gt;aux
 comma
@@ -24189,9 +24195,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Block size: %d, frame size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
+l_string|&quot;%s:D: Block size: %d, frame size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;block_size
 comma
@@ -24231,9 +24237,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Write protected&bslash;n&quot;
+l_string|&quot;%s:D: Write protected&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -24286,9 +24292,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: New Session&bslash;n&quot;
+l_string|&quot;%s:D: New Session&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -24332,9 +24338,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: Can&squot;t lock drive door&bslash;n&quot;
+l_string|&quot;%s:I: Can&squot;t lock drive door&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_else
@@ -24457,14 +24463,32 @@ suffix:semicolon
 id|OS_Scsi_Tape
 op_star
 id|STp
+op_assign
+id|filp-&gt;private_data
 suffix:semicolon
 id|ST_mode
 op_star
 id|STm
+op_assign
+op_amp
+(paren
+id|STp-&gt;modes
+(braket
+id|STp-&gt;current_mode
+)braket
+)paren
 suffix:semicolon
 id|ST_partstat
 op_star
 id|STps
+op_assign
+op_amp
+(paren
+id|STp-&gt;ps
+(braket
+id|STp-&gt;partition
+)braket
+)paren
 suffix:semicolon
 id|Scsi_Request
 op_star
@@ -24472,20 +24496,15 @@ id|SRpnt
 op_assign
 l_int|NULL
 suffix:semicolon
-r_struct
-id|inode
+r_char
 op_star
-id|inode
+id|name
 op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-id|kdev_t
-id|devt
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
-r_int
-id|dev
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -24500,41 +24519,6 @@ l_int|1
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|devt
-)paren
-suffix:semicolon
-id|STp
-op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
-suffix:semicolon
-id|STm
-op_assign
-op_amp
-(paren
-id|STp-&gt;modes
-(braket
-id|STp-&gt;current_mode
-)braket
-)paren
-suffix:semicolon
-id|STps
-op_assign
-op_amp
-(paren
-id|STp-&gt;ps
-(braket
-id|STp-&gt;partition
-)braket
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -24606,9 +24590,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: File length %ld bytes.&bslash;n&quot;
+l_string|&quot;%s:D: File length %ld bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 r_int
@@ -24622,9 +24606,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Async write waits %d, finished %d.&bslash;n&quot;
+l_string|&quot;%s:D: Async write waits %d, finished %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;nbr_waits
 comma
@@ -24738,9 +24722,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Buffer flushed, %d EOF(s) written&bslash;n&quot;
+l_string|&quot;%s:D: Buffer flushed, %d EOF(s) written&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 l_int|1
 op_plus
@@ -24970,9 +24954,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst%d:I: %d recovered errors in&quot;
+l_string|&quot;%s:I: %d recovered errors in&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;recover_count
 )paren
@@ -25052,35 +25036,14 @@ suffix:semicolon
 id|OS_Scsi_Tape
 op_star
 id|STp
+op_assign
+id|filp-&gt;private_data
 suffix:semicolon
 id|Scsi_Request
 op_star
 id|SRpnt
 op_assign
 l_int|NULL
-suffix:semicolon
-id|kdev_t
-id|devt
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
-r_int
-id|dev
-suffix:semicolon
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|devt
-)paren
-suffix:semicolon
-id|STp
-op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
 suffix:semicolon
 r_if
 c_cond
@@ -25209,10 +25172,6 @@ r_int
 r_int
 id|blk
 suffix:semicolon
-id|OS_Scsi_Tape
-op_star
-id|STp
-suffix:semicolon
 id|ST_mode
 op_star
 id|STm
@@ -25227,21 +25186,21 @@ id|SRpnt
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
+id|OS_Scsi_Tape
+op_star
 id|STp
 op_assign
-id|os_scsi_tapes
-(braket
-id|dev
-)braket
+id|file-&gt;private_data
+suffix:semicolon
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -25271,9 +25230,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Incorrect device.&bslash;n&quot;
+l_string|&quot;%s:D: Incorrect device.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -25352,9 +25311,9 @@ id|printk
 c_func
 (paren
 id|OSST_DEB_MSG
-l_string|&quot;osst%d:D: Ioctl %d,%d in %s mode&bslash;n&quot;
+l_string|&quot;%s:D: Ioctl %d,%d in %s mode&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd_type
 comma
@@ -25480,9 +25439,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;osst%d:W: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
+l_string|&quot;%s:W: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -25772,9 +25731,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;osst%d:I: Could not relock door after bus reset.&bslash;n&quot;
+l_string|&quot;%s:I: Could not relock door after bus reset.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|STp-&gt;door_locked
@@ -29146,6 +29105,11 @@ id|i
 comma
 id|dev
 suffix:semicolon
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 r_int
 id|mode
@@ -29168,6 +29132,23 @@ id|SDp
 r_return
 l_int|1
 suffix:semicolon
+id|disk
+op_assign
+id|alloc_disk
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk
+)paren
+r_return
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -29178,6 +29159,12 @@ id|osst_template.dev_max
 (brace
 id|SDp-&gt;attached
 op_decrement
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|disk
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -29252,6 +29239,12 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;osst :W: Can&squot;t allocate device descriptor.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|disk
 )paren
 suffix:semicolon
 r_return
@@ -29540,15 +29533,29 @@ id|tpnt-&gt;device
 op_assign
 id|SDp
 suffix:semicolon
-id|tpnt-&gt;devt
+id|disk-&gt;private_data
 op_assign
-id|mk_kdev
+op_amp
+id|tpnt-&gt;driver
+suffix:semicolon
+id|sprintf
 c_func
 (paren
-id|MAJOR_NR
+id|disk-&gt;disk_name
+comma
+l_string|&quot;osst%d&quot;
 comma
 id|i
 )paren
+suffix:semicolon
+id|tpnt-&gt;driver
+op_assign
+op_amp
+id|osst_template
+suffix:semicolon
+id|tpnt-&gt;disk
+op_assign
+id|disk
 suffix:semicolon
 id|tpnt-&gt;dirty
 op_assign
@@ -29856,7 +29863,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;osst :I: Attached OnStream %.5s tape at scsi%d, channel %d, id %d, lun %d as osst%d&bslash;n&quot;
+l_string|&quot;osst :I: Attached OnStream %.5s tape at scsi%d, channel %d, id %d, lun %d as %s&bslash;n&quot;
 comma
 id|SDp-&gt;model
 comma
@@ -29868,7 +29875,11 @@ id|SDp-&gt;id
 comma
 id|SDp-&gt;lun
 comma
-id|dev
+id|tape_name
+c_func
+(paren
+id|tpnt
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30019,11 +30030,6 @@ id|ST_NBR_MODES
 suffix:semicolon
 id|os_scsi_tapes
 op_assign
-(paren
-id|OS_Scsi_Tape
-op_star
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -30041,9 +30047,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|os_scsi_tapes
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -30089,11 +30094,6 @@ suffix:semicolon
 multiline_comment|/* Allocate the buffer pointers */
 id|osst_buffers
 op_assign
-(paren
-id|OSST_buffer
-op_star
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -30111,9 +30111,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|osst_buffers
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -30282,6 +30281,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
+id|put_disk
+c_func
+(paren
+id|tpnt-&gt;disk
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -30373,8 +30378,6 @@ r_if
 c_cond
 (paren
 id|os_scsi_tapes
-op_ne
-l_int|NULL
 )paren
 (brace
 r_for
@@ -30392,30 +30395,36 @@ op_increment
 id|i
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|STp
 op_assign
 id|os_scsi_tapes
 (braket
 id|i
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|STp
 )paren
-)paren
-(brace
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|STp-&gt;header_cache
-op_ne
-l_int|NULL
 )paren
 id|vfree
 c_func
 (paren
 id|STp-&gt;header_cache
+)paren
+suffix:semicolon
+id|put_disk
+c_func
+(paren
+id|STp-&gt;disk
 )paren
 suffix:semicolon
 id|kfree
@@ -30424,7 +30433,6 @@ c_func
 id|STp
 )paren
 suffix:semicolon
-)brace
 )brace
 id|kfree
 c_func
@@ -30436,8 +30444,6 @@ r_if
 c_cond
 (paren
 id|osst_buffers
-op_ne
-l_int|NULL
 )paren
 (brace
 r_for
@@ -30454,6 +30460,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -30461,8 +30468,6 @@ id|osst_buffers
 (braket
 id|i
 )braket
-op_ne
-l_int|NULL
 )paren
 (brace
 id|osst_buffers
@@ -30492,6 +30497,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 )brace
 id|kfree
 c_func

@@ -232,15 +232,10 @@ id|snd_data
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|del_timer
@@ -376,7 +371,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

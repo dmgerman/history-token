@@ -34,11 +34,8 @@ DECL|macro|REG_XDREG14
 mdefine_line|#define REG_XDREG14&t;47
 DECL|macro|REG_FPSCR
 mdefine_line|#define REG_FPSCR&t;48
-DECL|macro|PTRACE_SETOPTIONS
-mdefine_line|#define PTRACE_SETOPTIONS         21
-multiline_comment|/* options set using PTRACE_SETOPTIONS */
-DECL|macro|PTRACE_O_TRACESYSGOOD
-mdefine_line|#define PTRACE_O_TRACESYSGOOD     0x00000001
+DECL|macro|PTRACE_OLDSETOPTIONS
+mdefine_line|#define PTRACE_OLDSETOPTIONS         21
 multiline_comment|/*&n; * This struct defines the way the registers are stored on the&n; * kernel stack during a system call or other kernel entry.&n; */
 DECL|struct|pt_regs
 r_struct

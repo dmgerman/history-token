@@ -89,6 +89,12 @@ id|node
 )paren
 )paren
 (brace
+id|node_set_online
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 id|numnodes
 op_increment
 suffix:semicolon

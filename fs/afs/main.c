@@ -556,13 +556,23 @@ c_func
 id|peer-&gt;addr.s_addr
 )paren
 comma
+(paren
+r_int
+)paren
+(paren
 id|peer-&gt;rtt
 op_div
 l_int|1000
+)paren
 comma
+(paren
+r_int
+)paren
+(paren
 id|peer-&gt;rtt
 op_mod
 l_int|1000
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* uncross-point the structs under a global lock */

@@ -3,7 +3,6 @@ macro_line|#ifndef __ASM_ARM_IO_H
 DECL|macro|__ASM_ARM_IO_H
 mdefine_line|#define __ASM_ARM_IO_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
@@ -153,7 +152,7 @@ macro_line|#endif
 macro_line|#if defined(__arch_putb) || defined(__arch_putw) || defined(__arch_putl) || &bslash;&n;    defined(__arch_getb) || defined(__arch_getw) || defined(__arch_getl)
 macro_line|#warning machine class uses old __arch_putw or __arch_getw
 macro_line|#endif
-multiline_comment|/*&n; *  IO port access primitives&n; *  -------------------------&n; *&n; * The ARM doesn&squot;t have special IO access instructions; all IO is memory&n; * mapped.  Note that these are defined to perform little endian accesses&n; * only.  Their primary purpose is to access PCI and ISA peripherals.&n; *&n; * Note that for a big endian machine, this implies that the following&n; * big endian mode connectivity is in place, as described by numerious&n; * ARM documents:&n; *&n; *    PCI:  D0-D7   D8-D15 D16-D23 D24-D31&n; *    ARM: D24-D31 D16-D23  D8-D15  D0-D7&n; *&n; * The machine specific io.h include defines __io to translate an &quot;IO&quot;&n; * address to a memory address.&n; *&n; * Note that we prevent GCC re-ordering or caching values in expressions&n; * by introducing sequence points into the in*() definitions.  Note that&n; * __raw_* do not guarantee this behaviour.&n; */
+multiline_comment|/*&n; *  IO port access primitives&n; *  -------------------------&n; *&n; * The ARM doesn&squot;t have special IO access instructions; all IO is memory&n; * mapped.  Note that these are defined to perform little endian accesses&n; * only.  Their primary purpose is to access PCI and ISA peripherals.&n; *&n; * Note that for a big endian machine, this implies that the following&n; * big endian mode connectivity is in place, as described by numerious&n; * ARM documents:&n; *&n; *    PCI:  D0-D7   D8-D15 D16-D23 D24-D31&n; *    ARM: D24-D31 D16-D23  D8-D15  D0-D7&n; *&n; * The machine specific io.h include defines __io to translate an &quot;IO&quot;&n; * address to a memory address.&n; *&n; * Note that we prevent GCC re-ordering or caching values in expressions&n; * by introducing sequence points into the in*() definitions.  Note that&n; * __raw_* do not guarantee this behaviour.&n; *&n; * The {in,out}[bwl] macros are for emulating x86-style PCI/ISA IO space.&n; */
 macro_line|#ifdef __io
 DECL|macro|outb
 mdefine_line|#define outb(v,p)&t;&t;__raw_writeb(v,__io(p))

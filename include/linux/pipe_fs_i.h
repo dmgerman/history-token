@@ -51,18 +51,6 @@ r_int
 r_int
 id|w_counter
 suffix:semicolon
-DECL|member|rdfile
-r_struct
-id|file
-op_star
-id|rdfile
-suffix:semicolon
-DECL|member|wrfile
-r_struct
-id|file
-op_star
-id|wrfile
-suffix:semicolon
 DECL|member|fasync_readers
 r_struct
 id|fasync_struct
@@ -100,10 +88,6 @@ DECL|macro|PIPE_RCOUNTER
 mdefine_line|#define PIPE_RCOUNTER(inode)&t;((inode).i_pipe-&gt;r_counter)
 DECL|macro|PIPE_WCOUNTER
 mdefine_line|#define PIPE_WCOUNTER(inode)&t;((inode).i_pipe-&gt;w_counter)
-DECL|macro|PIPE_READFILE
-mdefine_line|#define PIPE_READFILE(inode)&t;((inode).i_pipe-&gt;rdfile)
-DECL|macro|PIPE_WRITEFILE
-mdefine_line|#define PIPE_WRITEFILE(inode)&t;((inode).i_pipe-&gt;wrfile)
 DECL|macro|PIPE_FASYNC_READERS
 mdefine_line|#define PIPE_FASYNC_READERS(inode)     (&amp;((inode).i_pipe-&gt;fasync_readers))
 DECL|macro|PIPE_FASYNC_WRITERS

@@ -346,12 +346,10 @@ suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
 multiline_comment|/*&n;&t; * PPCBug doesn&squot;t set the enable bits for the IDE device.&n;&t; * Turn them on now.&n;&t; */
-id|pcibios_read_config_byte
+id|pci_read_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 l_int|0x40
 comma
@@ -363,12 +361,10 @@ id|c
 op_or_assign
 l_int|0x03
 suffix:semicolon
-id|pcibios_write_config_byte
+id|pci_write_config_byte
 c_func
 (paren
-id|dev-&gt;bus-&gt;number
-comma
-id|dev-&gt;devfn
+id|dev
 comma
 l_int|0x40
 comma

@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;&t;/* for BUG() */
 multiline_comment|/*&n; * linux/include/linux/dcache.h&n; *&n; * Dirent cache data structures&n; *&n; * (C) Copyright 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 DECL|macro|IS_ROOT
@@ -189,8 +190,8 @@ id|hash
 )paren
 suffix:semicolon
 )brace
-DECL|macro|DNAME_INLINE_LEN
-mdefine_line|#define DNAME_INLINE_LEN 16
+DECL|macro|DNAME_INLINE_LEN_MIN
+mdefine_line|#define DNAME_INLINE_LEN_MIN 16
 r_struct
 id|dcookie_struct
 suffix:semicolon
@@ -290,15 +291,6 @@ op_star
 id|d_fsdata
 suffix:semicolon
 multiline_comment|/* fs-specific data */
-DECL|member|d_iname
-r_int
-r_char
-id|d_iname
-(braket
-id|DNAME_INLINE_LEN
-)braket
-suffix:semicolon
-multiline_comment|/* small names */
 DECL|member|d_cookie
 r_struct
 id|dcookie_struct
@@ -306,8 +298,21 @@ op_star
 id|d_cookie
 suffix:semicolon
 multiline_comment|/* cookie, if any */
-)brace
+DECL|member|d_iname
+r_int
+r_char
+id|d_iname
+(braket
+id|DNAME_INLINE_LEN_MIN
+)braket
 suffix:semicolon
+multiline_comment|/* small names */
+DECL|variable|____cacheline_aligned
+)brace
+id|____cacheline_aligned
+suffix:semicolon
+DECL|macro|DNAME_INLINE_LEN
+mdefine_line|#define DNAME_INLINE_LEN&t;(sizeof(struct dentry)-offsetof(struct dentry,d_iname))
 DECL|struct|dentry_operations
 r_struct
 id|dentry_operations

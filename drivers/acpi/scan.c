@@ -2354,7 +2354,7 @@ r_int
 id|type
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI_DEBUG
+macro_line|#ifdef CONFIG_ACPI_DEBUG_OUTPUT
 r_char
 op_star
 id|type_string
@@ -2385,17 +2385,6 @@ comma
 id|name
 )brace
 suffix:semicolon
-id|acpi_get_name
-c_func
-(paren
-id|handle
-comma
-id|ACPI_FULL_PATHNAME
-comma
-op_amp
-id|buffer
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2409,6 +2398,17 @@ id|type_string
 op_assign
 l_string|&quot;Device&quot;
 suffix:semicolon
+id|acpi_get_name
+c_func
+(paren
+id|handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2417,6 +2417,17 @@ suffix:colon
 id|type_string
 op_assign
 l_string|&quot;Power Resource&quot;
+suffix:semicolon
+id|acpi_get_name
+c_func
+(paren
+id|handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2427,6 +2438,17 @@ id|type_string
 op_assign
 l_string|&quot;Processor&quot;
 suffix:semicolon
+id|acpi_get_name
+c_func
+(paren
+id|handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2436,6 +2458,17 @@ id|type_string
 op_assign
 l_string|&quot;System&quot;
 suffix:semicolon
+id|acpi_get_name
+c_func
+(paren
+id|handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2444,6 +2477,17 @@ suffix:colon
 id|type_string
 op_assign
 l_string|&quot;Thermal Zone&quot;
+suffix:semicolon
+id|acpi_get_name
+c_func
+(paren
+id|handle
+comma
+id|ACPI_FULL_PATHNAME
+comma
+op_amp
+id|buffer
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2494,7 +2538,7 @@ comma
 id|handle
 )paren
 suffix:semicolon
-macro_line|#endif /*CONFIG_ACPI_DEBUG*/
+macro_line|#endif /*CONFIG_ACPI_DEBUG_OUTPUT*/
 )brace
 r_static
 r_int
@@ -2812,7 +2856,7 @@ id|device
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Locate &amp; Attach Driver&n;&t; * ----------------------&n;&t; * If there&squot;s a hardware id (_HID) or compatible ids (_CID) we check&n;&t; * to see if there&squot;s a driver installed for this kind of device.  Note&n;&t; * that drivers can install before or after a device in enumerated.&n;&t; *&n;&t; * TBD: Assumes LDM provides driver hot-plug capability.&n;&t; */
+multiline_comment|/*&n;&t; * Locate &amp; Attach Driver&n;&t; * ----------------------&n;&t; * If there&squot;s a hardware id (_HID) or compatible ids (_CID) we check&n;&t; * to see if there&squot;s a driver installed for this kind of device.  Note&n;&t; * that drivers can install before or after a device is enumerated.&n;&t; *&n;&t; * TBD: Assumes LDM provides driver hot-plug capability.&n;&t; */
 id|acpi_bus_find_driver
 c_func
 (paren
@@ -3018,32 +3062,7 @@ c_cond
 (paren
 id|type
 op_eq
-id|ACPI_TYPE_ANY
-)paren
-(brace
-multiline_comment|/* Hack to get around scope identity problem */
-id|status
-op_assign
-id|acpi_get_next_object
-c_func
-(paren
-id|ACPI_TYPE_ANY
-comma
-id|chandle
-comma
-l_int|0
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_SUCCESS
-c_func
-(paren
-id|status
-)paren
+id|ACPI_TYPE_LOCAL_SCOPE
 )paren
 (brace
 id|level
@@ -3057,7 +3076,6 @@ id|chandle
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_continue
 suffix:semicolon
 )brace
@@ -3251,7 +3269,7 @@ id|device
 comma
 id|acpi_root
 comma
-id|ACPI_ROOT_OBJECT
+l_int|NULL
 comma
 id|ACPI_BUS_TYPE_POWER_BUTTON
 )paren
@@ -3273,7 +3291,7 @@ id|device
 comma
 id|acpi_root
 comma
-id|ACPI_ROOT_OBJECT
+l_int|NULL
 comma
 id|ACPI_BUS_TYPE_SLEEP_BUTTON
 )paren

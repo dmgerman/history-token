@@ -43,25 +43,33 @@ DECL|variable|rxrpc_call_rcv_timeout
 r_int
 id|rxrpc_call_rcv_timeout
 op_assign
-l_int|30
+id|HZ
+op_div
+l_int|3
 suffix:semicolon
 DECL|variable|rxrpc_call_acks_timeout
 r_int
 id|rxrpc_call_acks_timeout
 op_assign
-l_int|30
+id|HZ
+op_div
+l_int|3
 suffix:semicolon
 DECL|variable|rxrpc_call_dfr_ack_timeout
 r_int
 id|rxrpc_call_dfr_ack_timeout
 op_assign
-l_int|5
+id|HZ
+op_div
+l_int|20
 suffix:semicolon
 DECL|variable|rxrpc_call_max_resend
 r_int
 r_int
 id|rxrpc_call_max_resend
 op_assign
+id|HZ
+op_div
 l_int|10
 suffix:semicolon
 DECL|variable|rxrpc_call_states
@@ -516,6 +524,83 @@ id|call
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*****************************************************************************/
+multiline_comment|/*&n; * calculate a timeout based on an RTT value&n; */
+DECL|function|__rxrpc_rtt_based_timeout
+r_static
+r_inline
+r_int
+r_int
+id|__rxrpc_rtt_based_timeout
+c_func
+(paren
+r_struct
+id|rxrpc_call
+op_star
+id|call
+comma
+r_int
+r_int
+id|val
+)paren
+(brace
+r_int
+r_int
+id|expiry
+op_assign
+id|call-&gt;conn-&gt;peer-&gt;rtt
+op_div
+(paren
+l_int|1000000
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|expiry
+op_add_assign
+l_int|10
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|expiry
+OL
+id|HZ
+op_div
+l_int|25
+)paren
+id|expiry
+op_assign
+id|HZ
+op_div
+l_int|25
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|expiry
+OG
+id|HZ
+)paren
+id|expiry
+op_assign
+id|HZ
+suffix:semicolon
+id|_leave
+c_func
+(paren
+l_string|&quot; = %lu jiffies&quot;
+comma
+id|expiry
+)paren
+suffix:semicolon
+r_return
+id|jiffies
+op_plus
+id|expiry
+suffix:semicolon
+)brace
+multiline_comment|/* end __rxrpc_rtt_based_timeout() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * create a new call record&n; */
 DECL|function|__rxrpc_create_call
@@ -1352,6 +1437,24 @@ id|conn-&gt;channels
 (braket
 id|cix
 )braket
+op_logical_or
+id|conn-&gt;channels
+(braket
+id|cix
+)braket
+op_member_access_from_pointer
+id|app_call_state
+op_eq
+id|RXRPC_CSTATE_COMPLETE
+op_logical_or
+id|conn-&gt;channels
+(braket
+id|cix
+)braket
+op_member_access_from_pointer
+id|app_call_state
+op_eq
+id|RXRPC_CSTATE_ERROR
 )paren
 (brace
 id|conn-&gt;channels
@@ -1386,6 +1489,7 @@ id|ret
 OL
 l_int|0
 )paren
+(brace
 id|free_page
 c_func
 (paren
@@ -1396,14 +1500,11 @@ r_int
 id|call
 )paren
 suffix:semicolon
-id|_leave
-c_func
-(paren
-l_string|&quot; = %p&quot;
-comma
 id|call
-)paren
+op_assign
+l_int|NULL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1453,6 +1554,16 @@ op_assign
 id|call
 suffix:semicolon
 )brace
+id|_leave
+c_func
+(paren
+l_string|&quot; = %d [%p]&quot;
+comma
+id|ret
+comma
+id|call
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -1556,6 +1667,20 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|conn-&gt;channels
+(braket
+id|ntohl
+c_func
+(paren
+id|call-&gt;chan_ix
+)paren
+)braket
+op_eq
+id|call
+)paren
 id|conn-&gt;channels
 (braket
 id|ntohl
@@ -4269,7 +4394,7 @@ multiline_comment|/* next in sequence - simply append into the call&squot;s read
 id|_debug
 c_func
 (paren
-l_string|&quot;Call add packet %d to readyq (+%d =&gt; %d bytes)&quot;
+l_string|&quot;Call add packet %d to readyq (+%Zd =&gt; %Zd bytes)&quot;
 comma
 id|msg-&gt;seq
 comma
@@ -4344,7 +4469,7 @@ multiline_comment|/* next in sequence - just move list-to-list */
 id|_debug
 c_func
 (paren
-l_string|&quot;Call transfer packet %d to readyq (+%d =&gt; %d bytes)&quot;
+l_string|&quot;Call transfer packet %d to readyq (+%Zd =&gt; %Zd bytes)&quot;
 comma
 id|pmsg-&gt;seq
 comma
@@ -4884,7 +5009,7 @@ multiline_comment|/* otherwise just invoke the data function whenever we can sat
 id|_proto
 c_func
 (paren
-l_string|&quot;Rx Received Op Data: st=%u qty=%u mk=%u%s&quot;
+l_string|&quot;Rx Received Op Data: st=%u qty=%Zu mk=%Zu%s&quot;
 comma
 id|call-&gt;app_call_state
 comma
@@ -5852,7 +5977,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%p{apc=%u ads=%u},%p,%u,%u&quot;
+l_string|&quot;%p{apc=%u ads=%u},%p,%u,%Zu&quot;
 comma
 id|call
 comma
@@ -6076,11 +6201,16 @@ l_string|&quot;Rx ACK of packets #%u-#%u [%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c] (pen
 comma
 id|seq
 comma
+(paren
+r_int
+)paren
+(paren
 id|seq
 op_plus
 id|chunk
 op_minus
 l_int|1
+)paren
 comma
 id|_acktype
 (braket
@@ -6559,7 +6689,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%p{as=%d buf=%p qty=%u/%u}&quot;
+l_string|&quot;%p{as=%d buf=%p qty=%Zu/%Zu}&quot;
 comma
 id|call
 comma
@@ -6594,7 +6724,7 @@ id|call-&gt;app_last_rcv
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%p,%p,%d): Inconsistent call state (%s, last pkt)&quot;
+l_string|&quot;%s(%p,%p,%Zd): Inconsistent call state (%s, last pkt)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6642,7 +6772,7 @@ id|call-&gt;app_last_rcv
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%p,%p,%d): Inconsistent call state (%s, not last pkt)&quot;
+l_string|&quot;%s(%p,%p,%Zd): Inconsistent call state (%s, not last pkt)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6817,7 +6947,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;reading %u from skb=%p off=%lu&quot;
+l_string|&quot;reading %Zu from skb=%p off=%lu&quot;
 comma
 id|qty
 comma
@@ -6851,7 +6981,7 @@ l_int|0
 id|panic
 c_func
 (paren
-l_string|&quot;%s: Failed to copy data from packet: (%p,%p,%d)&quot;
+l_string|&quot;%s: Failed to copy data from packet: (%p,%p,%Zd)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7058,7 +7188,7 @@ id|call-&gt;app_last_rcv
 id|_debug
 c_func
 (paren
-l_string|&quot;Insufficient data (%u/%u)&quot;
+l_string|&quot;Insufficient data (%Zu/%Zu)&quot;
 comma
 id|call-&gt;app_ready_qty
 comma
@@ -7129,7 +7259,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%p{arq=%u},%p,%d,%x&quot;
+l_string|&quot;%p{arq=%Zu},%p,%Zd,%x&quot;
 comma
 id|call
 comma
@@ -7511,7 +7641,7 @@ suffix:semicolon
 id|_enter
 c_func
 (paren
-l_string|&quot;%p,%u,%p,%02x,%x,%d,%p&quot;
+l_string|&quot;%p,%Zu,%p,%02x,%x,%d,%p&quot;
 comma
 id|call
 comma
@@ -7615,7 +7745,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;- size=%u mtu=%u&quot;
+l_string|&quot;- size=%Zu mtu=%Zu&quot;
 comma
 id|size
 comma
@@ -7667,7 +7797,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;- allocated new message [ds=%u]&quot;
+l_string|&quot;- allocated new message [ds=%Zu]&quot;
 comma
 id|call-&gt;snd_nextmsg-&gt;dsize
 )paren
@@ -7740,7 +7870,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;- [before] space=%u chunk=%u&quot;
+l_string|&quot;- [before] space=%Zu chunk=%Zu&quot;
 comma
 id|space
 comma
@@ -7997,7 +8127,7 @@ suffix:semicolon
 id|_debug
 c_func
 (paren
-l_string|&quot;- [loaded] chunk=%u size=%u&quot;
+l_string|&quot;- [loaded] chunk=%Zu size=%Zu&quot;
 comma
 id|chunk
 comma
@@ -8054,7 +8184,7 @@ suffix:colon
 id|_leave
 c_func
 (paren
-l_string|&quot; = %d (%d queued, %d rem)&quot;
+l_string|&quot; = %d (%Zd queued, %Zd rem)&quot;
 comma
 id|ret
 comma
@@ -8149,7 +8279,7 @@ suffix:semicolon
 id|_proto
 c_func
 (paren
-l_string|&quot;Sending DATA message { ds=%u dc=%u df=%02lu }&quot;
+l_string|&quot;Sending DATA message { ds=%Zu dc=%u df=%02lu }&quot;
 comma
 id|msg-&gt;dsize
 comma
@@ -8265,9 +8395,13 @@ c_func
 op_amp
 id|call-&gt;acks_timeout
 comma
-id|jiffies
-op_plus
+id|__rxrpc_rtt_based_timeout
+c_func
+(paren
+id|call
+comma
 id|rxrpc_call_acks_timeout
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -8531,7 +8665,7 @@ multiline_comment|/* send each message again (and ignore any errors we might inc
 id|_proto
 c_func
 (paren
-l_string|&quot;Resending DATA message { ds=%u dc=%u df=%02lu }&quot;
+l_string|&quot;Resending DATA message { ds=%Zu dc=%u df=%02lu }&quot;
 comma
 id|msg-&gt;dsize
 comma
@@ -8577,9 +8711,13 @@ c_func
 op_amp
 id|call-&gt;acks_timeout
 comma
-id|jiffies
-op_plus
+id|__rxrpc_rtt_based_timeout
+c_func
+(paren
+id|call
+comma
 id|rxrpc_call_acks_timeout
+)paren
 )paren
 suffix:semicolon
 id|spin_unlock

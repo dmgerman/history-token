@@ -260,12 +260,6 @@ multiline_comment|/* Current speed of the drive */
 suffix:semicolon
 DECL|macro|CDROM_STATE_FLAGS
 mdefine_line|#define CDROM_STATE_FLAGS(drive) (&amp;(((struct cdrom_info *)(drive-&gt;driver_data))-&gt;state_flags))
-DECL|struct|packet_command
-r_struct
-id|packet_command
-(brace
-)brace
-suffix:semicolon
 multiline_comment|/* Structure of a MSF cdrom address. */
 DECL|struct|atapi_msf
 r_struct
@@ -1398,11 +1392,6 @@ DECL|member|request_sense_request
 r_struct
 id|request
 id|request_sense_request
-suffix:semicolon
-DECL|member|request_sense_pc
-r_struct
-id|packet_command
-id|request_sense_pc
 suffix:semicolon
 DECL|member|dma
 r_int

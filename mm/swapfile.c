@@ -10,7 +10,9 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
@@ -4465,6 +4467,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|swaps_op
+r_static
 r_struct
 id|seq_operations
 id|swaps_op
@@ -4490,6 +4493,111 @@ id|show
 op_assign
 id|swap_show
 )brace
+suffix:semicolon
+DECL|function|swaps_open
+r_static
+r_int
+id|swaps_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+id|seq_open
+c_func
+(paren
+id|file
+comma
+op_amp
+id|swaps_op
+)paren
+suffix:semicolon
+)brace
+DECL|variable|proc_swaps_operations
+r_static
+r_struct
+id|file_operations
+id|proc_swaps_operations
+op_assign
+(brace
+dot
+id|open
+op_assign
+id|swaps_open
+comma
+dot
+id|read
+op_assign
+id|seq_read
+comma
+dot
+id|llseek
+op_assign
+id|seq_lseek
+comma
+dot
+id|release
+op_assign
+id|seq_release
+comma
+)brace
+suffix:semicolon
+DECL|function|procswaps_init
+r_static
+r_int
+id|__init
+id|procswaps_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|proc_dir_entry
+op_star
+id|entry
+suffix:semicolon
+id|entry
+op_assign
+id|create_proc_entry
+c_func
+(paren
+l_string|&quot;swaps&quot;
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|entry
+)paren
+id|entry-&gt;proc_fops
+op_assign
+op_amp
+id|proc_swaps_operations
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|procswaps_init
+id|__initcall
+c_func
+(paren
+id|procswaps_init
+)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Written 01/25/92 by Simmule Turner, heavily changed by Linus.&n; *&n; * The swapon system call&n; */

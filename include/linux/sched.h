@@ -65,6 +65,8 @@ DECL|macro|CLONE_CLEARTID
 mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
 DECL|macro|CLONE_DETACHED
 mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
+DECL|macro|CLONE_UNTRACED
+mdefine_line|#define CLONE_UNTRACED  0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
@@ -1155,6 +1157,11 @@ id|backing_dev_info
 op_star
 id|backing_dev_info
 suffix:semicolon
+DECL|member|ptrace_message
+r_int
+r_int
+id|ptrace_message
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -1217,6 +1224,14 @@ DECL|macro|PT_TRACESYSGOOD
 mdefine_line|#define PT_TRACESYSGOOD&t;0x00000004
 DECL|macro|PT_PTRACE_CAP
 mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exec */
+DECL|macro|PT_TRACE_FORK
+mdefine_line|#define PT_TRACE_FORK&t;0x00000010
+DECL|macro|PT_TRACE_VFORK
+mdefine_line|#define PT_TRACE_VFORK&t;0x00000020
+DECL|macro|PT_TRACE_CLONE
+mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
+DECL|macro|PT_TRACE_EXEC
+mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)

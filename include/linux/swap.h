@@ -1,11 +1,13 @@
 macro_line|#ifndef _LINUX_SWAP_H
 DECL|macro|_LINUX_SWAP_H
 mdefine_line|#define _LINUX_SWAP_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|SWAP_FLAG_PREFER
 mdefine_line|#define SWAP_FLAG_PREFER&t;0x8000&t;/* set if swap priority specified */
@@ -107,6 +109,15 @@ DECL|typedef|swp_entry_t
 id|swp_entry_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+r_struct
+id|sysinfo
+suffix:semicolon
+r_struct
+id|address_space
+suffix:semicolon
+r_struct
+id|zone
+suffix:semicolon
 multiline_comment|/*&n; * A swap extent maps a range of a swapfile&squot;s PAGE_SIZE pages onto a range of&n; * disk blocks.  A list of swap extents maps the entire swapfile.  (Where the&n; * term `swapfile&squot; refers to either a blockdevice or an IS_REG file.  Apart&n; * from setup, they&squot;re handled identically.&n; *&n; * We always assume that blocks are of size PAGE_SIZE.&n; */
 DECL|struct|swap_extent
 r_struct
@@ -136,7 +147,6 @@ DECL|macro|__swapoffset
 mdefine_line|#define __swapoffset(x) ((unsigned long)&amp;((union swap_header *)0)-&gt;x)
 DECL|macro|MAX_SWAP_BADPAGES
 mdefine_line|#define MAX_SWAP_BADPAGES &bslash;&n;&t;((__swapoffset(magic.magic) - __swapoffset(info.badpages)) / sizeof(int))
-macro_line|#include &lt;asm/atomic.h&gt;
 r_enum
 (brace
 DECL|enumerator|SWP_USED
@@ -268,16 +278,26 @@ suffix:semicolon
 multiline_comment|/* next entry on swap list */
 )brace
 suffix:semicolon
+DECL|struct|swap_list_t
 r_struct
-id|inode
-suffix:semicolon
-r_extern
+id|swap_list_t
+(brace
+DECL|member|head
 r_int
-id|nr_swap_pages
+id|head
+suffix:semicolon
+multiline_comment|/* head of priority-ordered swapfile list */
+DECL|member|next
+r_int
+id|next
+suffix:semicolon
+multiline_comment|/* swapfile to be used next */
+)brace
 suffix:semicolon
 multiline_comment|/* Swap 50% full? Release swapcache more aggressively.. */
 DECL|macro|vm_swap_full
 mdefine_line|#define vm_swap_full() (nr_swap_pages*2 &lt; total_swap_pages)
+multiline_comment|/* linux/mm/page_alloc.c */
 r_extern
 r_int
 r_int
@@ -290,11 +310,27 @@ id|totalhigh_pages
 suffix:semicolon
 r_extern
 r_int
+id|nr_swap_pages
+suffix:semicolon
+multiline_comment|/* XXX: shouldn&squot;t this be ulong? --hch */
+r_extern
+r_int
 r_int
 id|nr_free_pages
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|nr_free_pages_pgdat
+c_func
+(paren
+id|pg_data_t
+op_star
+id|pgdat
 )paren
 suffix:semicolon
 r_extern
@@ -315,21 +351,117 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* Incomplete types for prototype declarations: */
+multiline_comment|/* linux/mm/filemap.c */
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|mark_page_accessed
+c_func
+(paren
 r_struct
-id|task_struct
+id|page
+op_star
+)paren
+)paren
 suffix:semicolon
+multiline_comment|/* linux/mm/swap.c */
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|lru_cache_add
+c_func
+(paren
 r_struct
-id|vm_area_struct
+id|page
+op_star
+)paren
+)paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|lru_cache_add_active
+c_func
+(paren
 r_struct
-id|sysinfo
+id|page
+op_star
+)paren
+)paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|activate_page
+c_func
+(paren
 r_struct
-id|address_space
+id|page
+op_star
+)paren
+)paren
 suffix:semicolon
+r_extern
+r_void
+id|lru_add_drain
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|swap_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* linux/mm/vmscan.c */
+r_extern
+r_int
+id|try_to_free_pages
+c_func
+(paren
 r_struct
 id|zone
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|shrink_all_memory
+c_func
+(paren
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|vm_swappiness
+suffix:semicolon
+multiline_comment|/* linux/mm/oom_kill.c */
+r_extern
+r_void
+id|out_of_memory
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* linux/mm/rmap.c */
 r_extern
@@ -417,126 +549,12 @@ DECL|macro|SWAP_FAIL
 mdefine_line|#define&t;SWAP_FAIL&t;2
 DECL|macro|SWAP_ERROR
 mdefine_line|#define&t;SWAP_ERROR&t;3
-multiline_comment|/* linux/mm/swap.c */
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|lru_cache_add
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|lru_cache_add_active
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|activate_page
-c_func
-(paren
-r_struct
-id|page
-op_star
-)paren
-)paren
-suffix:semicolon
-r_void
-id|lru_add_drain
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|swap_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* linux/mm/vmscan.c */
+multiline_comment|/* linux/mm/shmem.c */
 r_extern
 r_int
-id|try_to_free_pages
+id|shmem_unuse
 c_func
 (paren
-r_struct
-id|zone
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_int
-id|shrink_all_memory
-c_func
-(paren
-r_int
-id|nr_pages
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|vm_swappiness
-suffix:semicolon
-multiline_comment|/* linux/mm/page_io.c */
-r_int
-id|swap_readpage
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_int
-id|swap_writepage
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-)paren
-suffix:semicolon
-r_int
-id|rw_swap_page_sync
-c_func
-(paren
-r_int
-id|rw
-comma
 id|swp_entry_t
 id|entry
 comma
@@ -546,8 +564,54 @@ op_star
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* linux/mm/page_alloc.c */
+macro_line|#ifdef CONFIG_SWAP
+multiline_comment|/* linux/mm/page_io.c */
+r_extern
+r_int
+id|swap_readpage
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|swap_writepage
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|rw_swap_page_sync
+c_func
+(paren
+r_int
+comma
+id|swp_entry_t
+comma
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* linux/mm/swap_state.c */
+r_extern
+r_struct
+id|address_space
+id|swapper_space
+suffix:semicolon
+DECL|macro|total_swapcache_pages
+mdefine_line|#define total_swapcache_pages  swapper_space.nrpages
 r_extern
 r_void
 id|show_swap_cache_info
@@ -586,7 +650,6 @@ c_func
 r_struct
 id|page
 op_star
-id|page
 )paren
 suffix:semicolon
 r_extern
@@ -597,7 +660,6 @@ c_func
 r_struct
 id|page
 op_star
-id|page
 )paren
 suffix:semicolon
 r_extern
@@ -608,10 +670,8 @@ c_func
 r_struct
 id|page
 op_star
-id|page
 comma
 id|swp_entry_t
-id|entry
 )paren
 suffix:semicolon
 r_extern
@@ -622,16 +682,13 @@ c_func
 r_struct
 id|page
 op_star
-id|page
 comma
 r_int
 r_int
-id|index
 comma
 r_struct
 id|address_space
 op_star
-id|mapping
 )paren
 suffix:semicolon
 r_extern
@@ -642,7 +699,6 @@ c_func
 r_struct
 id|page
 op_star
-id|page
 )paren
 suffix:semicolon
 r_extern
@@ -654,10 +710,8 @@ r_struct
 id|page
 op_star
 op_star
-id|pages
 comma
 r_int
-id|nr
 )paren
 suffix:semicolon
 r_extern
@@ -678,15 +732,6 @@ id|read_swap_cache_async
 c_func
 (paren
 id|swp_entry_t
-)paren
-suffix:semicolon
-multiline_comment|/* linux/mm/oom_kill.c */
-r_extern
-r_void
-id|out_of_memory
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/swapfile.c */
@@ -760,6 +805,7 @@ c_func
 id|swp_entry_t
 )paren
 suffix:semicolon
+r_extern
 id|sector_t
 id|map_swap_page
 c_func
@@ -767,12 +813,11 @@ c_func
 r_struct
 id|swap_info_struct
 op_star
-id|p
 comma
 id|pgoff_t
-id|offset
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|swap_info_struct
 op_star
@@ -780,65 +825,32 @@ id|get_swap_info_struct
 c_func
 (paren
 r_int
-id|type
-)paren
-suffix:semicolon
-DECL|struct|swap_list_t
-r_struct
-id|swap_list_t
-(brace
-DECL|member|head
-r_int
-id|head
-suffix:semicolon
-multiline_comment|/* head of priority-ordered swapfile list */
-DECL|member|next
-r_int
-id|next
-suffix:semicolon
-multiline_comment|/* swapfile to be used next */
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|swap_list_t
-id|swap_list
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_swapoff
-c_func
-(paren
-r_const
-r_char
-op_star
-)paren
-suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_swapon
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
-id|mark_page_accessed
+r_int
+id|can_share_swap_page
 c_func
 (paren
 r_struct
 id|page
 op_star
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|remove_exclusive_swap_page
+c_func
+(paren
+r_struct
+id|page
+op_star
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|swap_list_t
+id|swap_list
 suffix:semicolon
 r_extern
 id|spinlock_t
@@ -852,20 +864,65 @@ DECL|macro|swap_device_lock
 mdefine_line|#define swap_device_lock(p)&t;spin_lock(&amp;p-&gt;sdev_lock)
 DECL|macro|swap_device_unlock
 mdefine_line|#define swap_device_unlock(p)&t;spin_unlock(&amp;p-&gt;sdev_lock)
-r_extern
-r_int
-id|shmem_unuse
+macro_line|#else /* CONFIG_SWAP */
+DECL|macro|total_swap_pages
+mdefine_line|#define total_swap_pages&t;&t;&t;0
+DECL|macro|total_swapcache_pages
+mdefine_line|#define total_swapcache_pages&t;&t;&t;0UL
+DECL|macro|si_swapinfo
+mdefine_line|#define si_swapinfo(val) &bslash;&n;&t;do { (val)-&gt;freeswap = (val)-&gt;totalswap = 0; } while (0)
+DECL|macro|free_page_and_swap_cache
+mdefine_line|#define free_page_and_swap_cache(page) &bslash;&n;&t;page_cache_release(page)
+DECL|macro|free_pages_and_swap_cache
+mdefine_line|#define free_pages_and_swap_cache(pages, nr) &bslash;&n;&t;release_pages((pages), (nr), 0);
+DECL|macro|show_swap_cache_info
+mdefine_line|#define show_swap_cache_info()&t;&t;&t;/*NOTHING*/
+DECL|macro|free_swap_and_cache
+mdefine_line|#define free_swap_and_cache(swp)&t;&t;/*NOTHING*/
+DECL|macro|swap_duplicate
+mdefine_line|#define swap_duplicate(swp)&t;&t;&t;/*NOTHING*/
+DECL|macro|swap_free
+mdefine_line|#define swap_free(swp)&t;&t;&t;&t;/*NOTHING*/
+DECL|macro|read_swap_cache_async
+mdefine_line|#define read_swap_cache_async(swp)&t;&t;NULL
+DECL|macro|lookup_swap_cache
+mdefine_line|#define lookup_swap_cache(swp)&t;&t;&t;NULL
+DECL|macro|valid_swaphandles
+mdefine_line|#define valid_swaphandles(swp, off)&t;&t;0
+DECL|macro|can_share_swap_page
+mdefine_line|#define can_share_swap_page(p)&t;&t;&t;0
+DECL|macro|remove_exclusive_swap_page
+mdefine_line|#define remove_exclusive_swap_page(p)&t;&t;0
+DECL|macro|move_to_swap_cache
+mdefine_line|#define move_to_swap_cache(p, swp)&t;&t;1
+DECL|macro|move_from_swap_cache
+mdefine_line|#define move_from_swap_cache(p, i, m)&t;&t;1
+DECL|macro|__delete_from_swap_cache
+mdefine_line|#define __delete_from_swap_cache(p)&t;&t;/*NOTHING*/
+DECL|macro|delete_from_swap_cache
+mdefine_line|#define delete_from_swap_cache(p)&t;&t;/*NOTHING*/
+DECL|function|get_swap_page
+r_static
+r_inline
+id|swp_entry_t
+id|get_swap_page
 c_func
 (paren
+r_void
+)paren
+(brace
 id|swp_entry_t
 id|entry
-comma
-r_struct
-id|page
-op_star
-id|page
-)paren
 suffix:semicolon
+id|entry.val
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+id|entry
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_SWAP */
 macro_line|#endif /* __KERNEL__*/
 macro_line|#endif /* _LINUX_SWAP_H */
 eof

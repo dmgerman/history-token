@@ -732,7 +732,7 @@ id|tda.link
 op_or_assign
 l_int|1
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -861,7 +861,7 @@ id|rra.cnthi
 op_assign
 l_int|0
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -924,7 +924,7 @@ id|rda.inuse
 op_assign
 l_int|1
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1549,7 +1549,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* feed CDA into SONIC, initialize RCR value (always get broadcasts) */
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -1564,7 +1564,7 @@ op_star
 id|camcnt
 )paren
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -2319,7 +2319,7 @@ id|rda.inuse
 op_assign
 l_int|1
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -2336,7 +2336,7 @@ id|rda_t
 )paren
 suffix:semicolon
 multiline_comment|/* set up link and EOL = 0 in currently last descriptor. Only write&n;&t;&t;   the link field since the SONIC may currently already access the&n;&t;&t;   other fields. */
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3222,7 +3222,7 @@ op_star
 id|PKTSIZE
 )paren
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3271,7 +3271,7 @@ OL
 id|tmplen
 )paren
 (brace
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start
@@ -3327,7 +3327,7 @@ id|tda.fraglength
 op_assign
 id|tmplen
 suffix:semicolon
-id|isa_memcpy_to_io
+id|isa_memcpy_toio
 c_func
 (paren
 id|dev-&gt;mem_start

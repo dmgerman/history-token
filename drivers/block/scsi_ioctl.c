@@ -78,14 +78,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|rq-&gt;rq_dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|rq-&gt;rq_disk
 op_assign
 id|bdev-&gt;bd_disk
@@ -816,6 +808,10 @@ id|__GFP_WAIT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * fill in request structure&n;&t; */
+id|rq-&gt;cmd_len
+op_assign
+id|hdr.cmd_len
+suffix:semicolon
 id|copy_from_user
 c_func
 (paren
@@ -1339,6 +1335,10 @@ id|err
 op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+id|cmdlen
 suffix:semicolon
 r_if
 c_cond
@@ -1907,6 +1907,10 @@ id|close
 op_ne
 l_int|0
 )paren
+suffix:semicolon
+id|rq-&gt;cmd_len
+op_assign
+l_int|6
 suffix:semicolon
 id|err
 op_assign

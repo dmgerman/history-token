@@ -8085,6 +8085,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|rs_read_proc
+r_static
 r_int
 id|rs_read_proc
 c_func

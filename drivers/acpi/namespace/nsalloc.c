@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 75 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 77 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -199,6 +199,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_compare_names&n; *&n; * PARAMETERS:  Name1           - First name to compare&n; *              Name2           - Second name to compare&n; *&n; * RETURN:      value from strncmp&n; *&n; * DESCRIPTION: Compare two ACPI names.  Names that are prefixed with an&n; *              underscore are forced to be alphabetically first.&n; *&n; ******************************************************************************/
 r_int
 DECL|function|acpi_ns_compare_names
@@ -321,20 +322,21 @@ r_return
 (paren
 op_star
 (paren
-id|s32
+r_int
 op_star
 )paren
 id|reversed_name1
 op_minus
 op_star
 (paren
-id|s32
+r_int
 op_star
 )paren
 id|reversed_name2
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_install_node&n; *&n; * PARAMETERS:  Walk_state      - Current state of the walk&n; *              Parent_node     - The parent of the new Node&n; *              Node            - The new Node to install&n; *              Type            - ACPI object type of the new Node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a new namespace node and install it amongst&n; *              its peers.&n; *&n; *              Note: Current namespace lookup is linear search.  However, the&n; *              nodes are linked in alphabetical order to 1) put all reserved&n; *              names (start with underscore) first, and to 2) make a readable&n; *              namespace dump.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_install_node
@@ -367,10 +369,12 @@ id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
+macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
 id|acpi_namespace_node
 op_star
 id|previous_child_node
 suffix:semicolon
+macro_line|#endif
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ns_install_node&quot;
@@ -415,6 +419,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
 multiline_comment|/*&n;&t;&t; * Walk the list whilst searching for the the correct&n;&t;&t; * alphabetic placement.&n;&t;&t; */
 id|previous_child_node
 op_assign
@@ -516,6 +521,42 @@ id|node
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|child_node-&gt;flags
+op_amp
+id|ANOBJ_END_OF_PEER_LIST
+)paren
+)paren
+(brace
+id|child_node
+op_assign
+id|child_node-&gt;peer
+suffix:semicolon
+)brace
+id|child_node-&gt;peer
+op_assign
+id|node
+suffix:semicolon
+multiline_comment|/* Clear end-of-list flag */
+id|child_node-&gt;flags
+op_and_assign
+op_complement
+id|ANOBJ_END_OF_PEER_LIST
+suffix:semicolon
+id|node-&gt;flags
+op_or_assign
+id|ANOBJ_END_OF_PEER_LIST
+suffix:semicolon
+id|node-&gt;peer
+op_assign
+id|parent_node
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Init the new entry */
 id|node-&gt;owner_id

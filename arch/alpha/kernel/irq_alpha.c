@@ -464,7 +464,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;%s machine check: vector=0x%lx pc=0x%lx code=0x%lx&bslash;n&quot;
+l_string|&quot;%s machine check: vector=0x%lx pc=0x%lx code=0x%x&bslash;n&quot;
 comma
 id|machine
 comma
@@ -478,10 +478,6 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-(paren
-r_int
-r_int
-)paren
 id|mchk_header-&gt;code
 )paren
 (brace

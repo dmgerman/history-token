@@ -445,6 +445,7 @@ suffix:semicolon
 id|kleave
 c_func
 (paren
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 )brace
