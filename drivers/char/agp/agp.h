@@ -792,38 +792,6 @@ DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
 mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
 DECL|macro|ALI_CACHE_FLUSH_EN
 mdefine_line|#define ALI_CACHE_FLUSH_EN&t;&t;0x100
-macro_line|#ifndef PCI_VENDOR_ID_ATI
-DECL|macro|PCI_VENDOR_ID_ATI
-mdefine_line|#define PCI_VENDOR_ID_ATI&t;&t;0x1002
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS100
-DECL|macro|PCI_DEVICE_ID_ATI_RS100
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS100&t;&t;0xcab0
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS200
-DECL|macro|PCI_DEVICE_ID_ATI_RS200
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS200&t;&t;0xcab2
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS250
-DECL|macro|PCI_DEVICE_ID_ATI_RS250
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS250&t;&t;0xcab3
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_100
-DECL|macro|PCI_DEVICE_ID_ATI_RS300_100
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_100&t;0x5830
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_133
-DECL|macro|PCI_DEVICE_ID_ATI_RS300_133
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_133&t;0x5831
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_166
-DECL|macro|PCI_DEVICE_ID_ATI_RS300_166
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_166&t;0x5832
-macro_line|#endif
-macro_line|#ifndef PCI_DEVICE_ID_ATI_RS300_200
-DECL|macro|PCI_DEVICE_ID_ATI_RS300_200
-mdefine_line|#define PCI_DEVICE_ID_ATI_RS300_200&t;0x5833
-macro_line|#endif
 multiline_comment|/* ATI register */
 DECL|macro|ATI_APBASE
 mdefine_line|#define ATI_APBASE                  0x10
