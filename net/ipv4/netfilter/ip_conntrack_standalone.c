@@ -63,7 +63,7 @@ id|i-&gt;tuplehash
 id|IP_CT_DIR_ORIGINAL
 )braket
 dot
-id|dst.protonum
+id|tuple.dst.protonum
 op_eq
 op_star
 (paren
