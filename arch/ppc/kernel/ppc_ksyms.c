@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.57 10/16/01 15:58:42 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.59 11/04/01 22:58:20 paulus&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -53,6 +53,17 @@ macro_line|#endif
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
+r_extern
+r_void
+id|ppc_generic_ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|transfer_to_handler
@@ -675,6 +686,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ppc_ide_md
+)paren
+suffix:semicolon
+DECL|variable|ppc_generic_ide_fix_driveid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ppc_generic_ide_fix_driveid
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI

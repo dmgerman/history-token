@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.23 10/18/01 11:16:28 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.machdep.h 1.25 11/13/01 21:26:07 paulus&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
@@ -16,6 +16,9 @@ suffix:semicolon
 r_struct
 id|pci_dev
 suffix:semicolon
+r_struct
+id|seq_file
+suffix:semicolon
 DECL|struct|machdep_calls
 r_struct
 id|machdep_calls
@@ -31,29 +34,33 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */
-DECL|member|setup_residual
+DECL|member|show_cpuinfo
 r_int
 (paren
 op_star
-id|setup_residual
+id|show_cpuinfo
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 )paren
 suffix:semicolon
-multiline_comment|/* Optional, may be NULL. */
-DECL|member|get_cpuinfo
+DECL|member|show_percpuinfo
 r_int
 (paren
 op_star
-id|get_cpuinfo
+id|show_percpuinfo
 )paren
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
+comma
+r_int
+id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */

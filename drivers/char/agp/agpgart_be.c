@@ -6114,7 +6114,7 @@ comma
 id|INTEL_AGPCTRL
 comma
 id|temp
-op_amp
+op_or
 (paren
 l_int|1
 op_lshift

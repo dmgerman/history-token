@@ -21,6 +21,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -1913,53 +1914,47 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Get CPU information for use by the procfs.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
-DECL|function|get_cpuinfo
+DECL|function|show_cpuinfo
+r_static
 r_int
-id|get_cpuinfo
+id|show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
+comma
+r_void
+op_star
+id|v
 )paren
 (brace
-r_char
-op_star
-id|p
-op_assign
-id|buffer
-suffix:semicolon
 macro_line|#if defined(__sh3__)
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;cpu family&bslash;t: SH-3&bslash;n&quot;
 l_string|&quot;cache size&bslash;t: 8K-byte&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#elif defined(__SH4__)
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;cpu family&bslash;t: SH-4&bslash;n&quot;
 l_string|&quot;cache size&bslash;t: 8K-byte/16K-byte&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&bslash;n&quot;
 comma
@@ -1984,12 +1979,10 @@ op_mod
 l_int|100
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Machine: %s&bslash;n&quot;
 comma
@@ -1997,7 +1990,7 @@ id|sh_mv.mv_name
 )paren
 suffix:semicolon
 DECL|macro|PRINT_CLOCK
-mdefine_line|#define PRINT_CLOCK(name, value) &bslash;&n;&t;p += sprintf(p, name &quot; clock: %d.%02dMHz&bslash;n&quot;, &bslash;&n;&t;&t;     ((value) / 1000000), ((value) % 1000000)/10000)
+mdefine_line|#define PRINT_CLOCK(name, value) &bslash;&n;&t;seq_printf(m, name &quot; clock: %d.%02dMHz&bslash;n&quot;, &bslash;&n;&t;&t;     ((value) / 1000000), ((value) % 1000000)/10000)
 id|PRINT_CLOCK
 c_func
 (paren
@@ -2033,10 +2026,104 @@ id|boot_cpu_data.module_clock
 )paren
 suffix:semicolon
 r_return
-id|p
-op_minus
-id|buffer
+l_int|0
 suffix:semicolon
 )brace
+DECL|function|c_start
+r_static
+r_void
+op_star
+id|c_start
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+(paren
+op_star
+id|pos
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|c_next
+r_static
+r_void
+op_star
+id|c_next
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_stop
+r_static
+r_void
+id|c_stop
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+)brace
+DECL|variable|cpuinfo_op
+r_struct
+id|seq_operations
+id|cpuinfo_op
+op_assign
+(brace
+id|start
+suffix:colon
+id|c_start
+comma
+id|next
+suffix:colon
+id|c_next
+comma
+id|stop
+suffix:colon
+id|c_stop
+comma
+id|show
+suffix:colon
+id|show_cpuinfo
+comma
+)brace
+suffix:semicolon
 macro_line|#endif
 eof

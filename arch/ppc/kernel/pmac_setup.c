@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.41 10/18/01 11:16:28 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.43 11/13/01 21:26:07 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -523,20 +524,120 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
+multiline_comment|/*&n; * Assume here that all clock rates are the same in a&n; * smp system.  -- Cort&n; */
 r_int
-id|__pmac
-DECL|function|pmac_get_cpuinfo
-id|pmac_get_cpuinfo
+id|__openfirmware
+DECL|function|of_show_percpuinfo
+id|of_show_percpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
+comma
+r_int
+id|i
 )paren
 (brace
-r_int
-id|len
+r_struct
+id|device_node
+op_star
+id|cpu_node
 suffix:semicolon
+r_int
+op_star
+id|fp
+comma
+id|s
+suffix:semicolon
+id|cpu_node
+op_assign
+id|find_type_devices
+c_func
+(paren
+l_string|&quot;cpu&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_node
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+id|s
+OL
+id|i
+op_logical_and
+id|cpu_node-&gt;next
+suffix:semicolon
+id|s
+op_increment
+)paren
+id|cpu_node
+op_assign
+id|cpu_node-&gt;next
+suffix:semicolon
+id|fp
+op_assign
+(paren
+r_int
+op_star
+)paren
+id|get_property
+c_func
+(paren
+id|cpu_node
+comma
+l_string|&quot;clock-frequency&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fp
+)paren
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
+comma
+op_star
+id|fp
+op_div
+l_int|1000000
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_int
+id|__pmac
+DECL|function|pmac_show_cpuinfo
+id|pmac_show_cpuinfo
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+)paren
+(brace
 r_struct
 id|device_node
 op_star
@@ -550,12 +651,10 @@ r_int
 id|plen
 suffix:semicolon
 multiline_comment|/* find motherboard type */
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: &quot;
 )paren
@@ -599,14 +698,10 @@ id|pp
 op_ne
 l_int|NULL
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -614,14 +709,10 @@ id|pp
 )paren
 suffix:semicolon
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;PowerMac&bslash;n&quot;
 )paren
@@ -651,14 +742,10 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;motherboard&bslash;t:&quot;
 )paren
@@ -682,14 +769,10 @@ id|pp
 op_plus
 l_int|1
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot; %s&quot;
 comma
@@ -705,25 +788,21 @@ op_add_assign
 id|l
 suffix:semicolon
 )brace
-id|buffer
-(braket
-id|len
-op_increment
-)braket
-op_assign
-l_char|&squot;&bslash;n&squot;
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 )brace
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;PowerMac&bslash;n&quot;
 )paren
@@ -800,14 +879,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;L2 cache&bslash;t:&quot;
 )paren
@@ -834,14 +909,10 @@ op_logical_and
 id|dc
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot; %dK unified&quot;
 comma
@@ -859,14 +930,10 @@ c_cond
 (paren
 id|ic
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot; %dK instruction&quot;
 comma
@@ -881,14 +948,10 @@ c_cond
 (paren
 id|dc
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;%s %dK data&quot;
 comma
@@ -925,27 +988,23 @@ c_cond
 (paren
 id|pp
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot; %s&quot;
 comma
 id|pp
 )paren
 suffix:semicolon
-id|buffer
-(braket
-id|len
-op_increment
-)braket
-op_assign
-l_char|&squot;&bslash;n&squot;
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* find ram info */
@@ -1030,14 +1089,10 @@ op_increment
 op_member_access_from_pointer
 id|size
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;memory&bslash;t&bslash;t: %luMB&bslash;n&quot;
 comma
@@ -1108,14 +1163,10 @@ op_ne
 l_int|0
 )paren
 (brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;l2cr override&bslash;t: 0x%x&bslash;n&quot;
 comma
@@ -1126,14 +1177,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Indicate newworld/oldworld */
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;pmac-generation&bslash;t: %s&bslash;n&quot;
 comma
@@ -1146,7 +1193,7 @@ l_string|&quot;OldWorld&quot;
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SCSI
@@ -3020,13 +3067,13 @@ id|ppc_md.setup_arch
 op_assign
 id|pmac_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_cpuinfo
 op_assign
-l_int|NULL
+id|pmac_show_cpuinfo
 suffix:semicolon
-id|ppc_md.get_cpuinfo
+id|ppc_md.show_percpuinfo
 op_assign
-id|pmac_get_cpuinfo
+id|of_show_percpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.31 11/01/01 12:24:55 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.35 11/13/01 08:19:57 trini&n; */
 multiline_comment|/*&n; * Common pmac/prep/chrp pci routines. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -79,6 +79,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_void
+id|fixup_rev1_53c810
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALL_PPC
 r_static
 r_void
@@ -145,6 +156,16 @@ comma
 (brace
 id|PCI_FIXUP_HEADER
 comma
+id|PCI_VENDOR_ID_NCR
+comma
+id|PCI_DEVICE_ID_NCR_53C810
+comma
+id|fixup_rev1_53c810
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
 id|PCI_ANY_ID
 comma
 id|PCI_ANY_ID
@@ -170,6 +191,45 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+r_static
+r_void
+DECL|function|fixup_rev1_53c810
+id|fixup_rev1_53c810
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* rev 1 ncr53c810 chips don&squot;t set the class at all which means&n;&t; * they don&squot;t get their resources remapped. Fix that here.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_eq
+id|PCI_CLASS_NOT_DEFINED
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;NCR 53c810 rev 1 detected, setting PCI class.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dev
+op_member_access_from_pointer
+r_class
+op_assign
+id|PCI_CLASS_STORAGE_SCSI
+suffix:semicolon
+)brace
+)brace
 r_static
 r_void
 DECL|function|fixup_broken_pcnet32

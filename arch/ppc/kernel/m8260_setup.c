@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.28 10/18/01 11:16:28 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8260_setup.c 1.30 11/13/01 21:26:07 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx and 8260 by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
@@ -348,20 +349,19 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|m8260_setup_residual
-id|m8260_setup_residual
+DECL|function|m8260_show_percpuinfo
+id|m8260_show_percpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
+comma
+r_int
+id|i
 )paren
 (brace
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 id|bd_t
 op_star
 id|bp
@@ -374,14 +374,10 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|len
-op_plus
-id|buffer
+id|m
 comma
 l_string|&quot;core clock&bslash;t: %d MHz&bslash;n&quot;
 l_string|&quot;CPM  clock&bslash;t: %d MHz&bslash;n&quot;
@@ -401,7 +397,7 @@ l_int|1000000
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the internal interrupt controller.  The number of&n; * interrupts supported can vary with the processor type, and the&n; * 8260 family can have up to 64.&n; * External interrupts can be either edge or level triggered, and&n; * need to be initialized by the appropriate driver.&n; */
@@ -664,13 +660,9 @@ id|ppc_md.setup_arch
 op_assign
 id|m8260_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_percpuinfo
 op_assign
-id|m8260_setup_residual
-suffix:semicolon
-id|ppc_md.get_cpuinfo
-op_assign
-l_int|NULL
+id|m8260_show_percpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/setup.c&n; *&n; *  Copyright (C) 1995-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/setup.c&n; *&n; *  Copyright (C) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -2099,64 +2100,29 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * get_cpuinfo - Get information on one CPU for use by the procfs.&n; *&n; *&t;Prints info on the next CPU into buffer.  Beware, doesn&squot;t check for&n; *&t;buffer overflow.  Current implementation of procfs assumes that the&n; *&t;resulting data is &lt;= 1K.&n; *&n; * Args:&n; *&t;buffer&t;-- you guessed it, the data buffer&n; *&t;cpu_np&t;-- Input: next cpu to get (start at 0).  Output: Updated.&n; *&n; *&t;Returns number of bytes written to buffer.&n; */
-DECL|function|get_cpuinfo
+DECL|function|c_show
+r_static
 r_int
-id|get_cpuinfo
+id|c_show
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 comma
-r_int
+r_void
 op_star
-id|cpu_np
+id|v
 )paren
 (brace
-r_char
-op_star
-id|p
-op_assign
-id|buffer
-suffix:semicolon
-r_int
-id|n
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* No SMP at the moment, so just toggle 0/1 */
-id|n
-op_assign
-op_star
-id|cpu_np
-suffix:semicolon
-op_star
-id|cpu_np
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|n
-op_ne
-l_int|0
-)paren
-(brace
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Processor&bslash;t: %s %s rev %d (%s)&bslash;n&quot;
 comma
@@ -2174,12 +2140,10 @@ comma
 id|elf_platform
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;BogoMIPS&bslash;t: %lu.%02lu&bslash;n&quot;
 comma
@@ -2205,12 +2169,10 @@ l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* dump out the processor features */
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Features&bslash;t: &quot;
 )paren
@@ -2241,12 +2203,10 @@ op_lshift
 id|i
 )paren
 )paren
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;%s &quot;
 comma
@@ -2256,46 +2216,38 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_puts
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Hardware&bslash;t: %s&bslash;n&quot;
 comma
 id|machine_name
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Revision&bslash;t: %04x&bslash;n&quot;
 comma
 id|system_rev
 )paren
 suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|p
+id|m
 comma
 l_string|&quot;Serial&bslash;t&bslash;t: %08x%08x&bslash;n&quot;
 comma
@@ -2305,9 +2257,109 @@ id|system_serial_low
 )paren
 suffix:semicolon
 r_return
-id|p
-op_minus
-id|buffer
+l_int|0
 suffix:semicolon
 )brace
+DECL|function|c_start
+r_static
+r_void
+op_star
+id|c_start
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+r_return
+op_star
+id|pos
+OL
+l_int|1
+ques
+c_cond
+(paren
+r_void
+op_star
+)paren
+l_int|1
+suffix:colon
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_next
+r_static
+r_void
+op_star
+id|c_next
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+op_increment
+op_star
+id|pos
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_stop
+r_static
+r_void
+id|c_stop
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+)brace
+DECL|variable|cpuinfo_op
+r_struct
+id|seq_operations
+id|cpuinfo_op
+op_assign
+(brace
+id|start
+suffix:colon
+id|c_start
+comma
+id|next
+suffix:colon
+id|c_next
+comma
+id|stop
+suffix:colon
+id|c_stop
+comma
+id|show
+suffix:colon
+id|c_show
+)brace
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.22 10/18/01 11:16:27 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.24 11/13/01 21:26:07 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/apus_setup.c&n; *&n; *  Copyright (C) 1998, 1999  Jesper Skov&n; *&n; *  Basically what is needed to replace functionality found in&n; *  arch/m68k allowing Amiga drivers to work under APUS.&n; *  Bits of code and/or ideas from arch/m68k and arch/ppc files.&n; *&n; * TODO:&n; *  This file needs a *really* good cleanup. Restructure and optimize.&n; *  Make sure it can be compiled for non-APUS configs. Begin to move&n; *  Amiga specific stuff into mach/amiga.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#ifdef CONFIG_APUS
 macro_line|#include &lt;asm/logging.h&gt;
 macro_line|#endif
@@ -1088,16 +1089,16 @@ macro_line|#endif
 macro_line|#endif
 )brace
 r_int
-DECL|function|apus_get_cpuinfo
-id|apus_get_cpuinfo
+DECL|function|apus_show_cpuinfo
+id|apus_show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 )paren
 (brace
-macro_line|#ifdef CONFIG_APUS
 r_extern
 r_int
 id|__map_without_bats
@@ -1107,27 +1108,18 @@ r_int
 r_int
 id|powerup_PCI_present
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: Amiga&bslash;n&quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;bus speed&bslash;t: %d%s&quot;
 comma
@@ -1143,14 +1135,10 @@ suffix:colon
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;using BATs&bslash;t: %s&bslash;n&quot;
 comma
@@ -1164,14 +1152,10 @@ suffix:colon
 l_string|&quot;Yes&quot;
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;ram speed&bslash;t: %dns&bslash;n&quot;
 comma
@@ -1185,14 +1169,10 @@ suffix:colon
 l_int|70
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;PCI bridge&bslash;t: %s&bslash;n&quot;
 comma
@@ -1207,9 +1187,8 @@ l_string|&quot;No&quot;
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|get_current_tb
 r_static
@@ -4330,13 +4309,9 @@ id|ppc_md.setup_arch
 op_assign
 id|apus_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_cpuinfo
 op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.get_cpuinfo
-op_assign
-id|apus_get_cpuinfo
+id|apus_show_cpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign

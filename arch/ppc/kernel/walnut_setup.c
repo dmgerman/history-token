@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.walnut_setup.c 1.8 10/18/01 11:16:28 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.walnut_setup.c 1.10 11/13/01 21:26:07 paulus&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: walnut_setup.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GP &quot;Walnut&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/board.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -161,13 +162,9 @@ id|ppc_md.setup_arch
 op_assign
 id|walnut_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_percpuinfo
 op_assign
-id|walnut_setup_residual
-suffix:semicolon
-id|ppc_md.get_cpuinfo
-op_assign
-l_int|NULL
+id|walnut_show_percpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign
@@ -254,22 +251,18 @@ r_void
 (brace
 multiline_comment|/* XXX - Implement me */
 )brace
-multiline_comment|/*&n; * int walnut_setup_residual()&n; *&n; * Description:&n; *   This routine pretty-prints the platform&squot;s internal CPU and bus clock&n; *   frequencies into the buffer for usage in /proc/cpuinfo.&n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU and bus clock frequencies are to be&n; *            printed.&n; *&n; * Output(s):&n; *  *buffer - Buffer with the CPU and bus clock frequencies.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
+multiline_comment|/*&n; * int walnut_show_percpuinfo()&n; *&n; * Description:&n; *   This routine pretty-prints the platform&squot;s internal CPU and bus clock&n; *   frequencies into the buffer for usage in /proc/cpuinfo.&n; *&n; * Input(s):&n; *  *buffer - Buffer into which CPU and bus clock frequencies are to be&n; *            printed.&n; *&n; * Output(s):&n; *  *buffer - Buffer with the CPU and bus clock frequencies.&n; *&n; * Returns:&n; *   The number of bytes copied into &squot;buffer&squot; if OK, otherwise zero or less&n; *   on error.&n; */
 r_int
-DECL|function|walnut_setup_residual
-id|walnut_setup_residual
+DECL|function|walnut_show_percpuinfo
+id|walnut_show_percpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 )paren
 (brace
-r_int
-id|len
-op_assign
-l_int|0
-suffix:semicolon
 id|bd_t
 op_star
 id|bp
@@ -280,14 +273,10 @@ op_star
 )paren
 id|__res
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|len
-op_plus
-id|buffer
+id|m
 comma
 l_string|&quot;clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
 l_string|&quot;bus clock&bslash;t&bslash;t: %dMHz&bslash;n&quot;
@@ -302,9 +291,7 @@ l_int|1000000
 )paren
 suffix:semicolon
 r_return
-(paren
-id|len
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Document me.&n; */

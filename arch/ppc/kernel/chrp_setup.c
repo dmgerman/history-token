@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.36 09/08/01 15:47:42 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.38 11/13/01 21:26:07 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -219,6 +220,18 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|of_show_percpuinfo
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
 id|kdev_t
 id|boot_dev
 suffix:semicolon
@@ -345,19 +358,18 @@ l_string|&quot;Transparent Mode&quot;
 suffix:semicolon
 r_int
 id|__chrp
-DECL|function|chrp_get_cpuinfo
-id|chrp_get_cpuinfo
+DECL|function|chrp_show_cpuinfo
+id|chrp_show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 )paren
 (brace
 r_int
 id|i
-comma
-id|len
 comma
 id|sdramen
 suffix:semicolon
@@ -402,12 +414,10 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: CHRP %s&bslash;n&quot;
 comma
@@ -583,14 +593,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;memory bank %d&bslash;t: %s %s&bslash;n&quot;
 comma
@@ -635,14 +641,10 @@ id|GG2_PCI_CC_CTRL
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;board l2&bslash;t: %s %s (%s)&bslash;n&quot;
 comma
@@ -678,7 +680,7 @@ l_int|3
 suffix:semicolon
 )brace
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Fixes for the National Semiconductor PC78308VUL SuperI/O&n; *&n; *  Some versions of Open Firmware incorrectly initialize the IRQ settings&n; *  for keyboard and mouse&n; */
@@ -1406,17 +1408,12 @@ id|irq
 op_eq
 l_int|2
 )paren
-(brace
 r_return
 l_int|9
 suffix:semicolon
-)brace
-r_else
-(brace
 r_return
 id|irq
 suffix:semicolon
-)brace
 )brace
 DECL|function|chrp_init_IRQ
 r_void
@@ -2133,13 +2130,13 @@ id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_percpuinfo
 op_assign
-l_int|NULL
+id|of_show_percpuinfo
 suffix:semicolon
-id|ppc_md.get_cpuinfo
+id|ppc_md.show_cpuinfo
 op_assign
-id|chrp_get_cpuinfo
+id|chrp_show_cpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign

@@ -65,6 +65,7 @@ suffix:semicolon
 multiline_comment|/* for inodes with NULL i_sb */
 multiline_comment|/*&n; * A simple spinlock to protect the list manipulations.&n; *&n; * NOTE! You also have to own the lock if you change&n; * the i_state of an inode while it is in use..&n; */
 DECL|variable|inode_lock
+r_static
 id|spinlock_t
 id|inode_lock
 op_assign

@@ -551,9 +551,9 @@ id|EV5_CPU
 )braket
 op_assign
 (brace
-l_int|266000000
+l_int|250000000
 comma
-l_int|333333333
+l_int|433000000
 )brace
 comma
 (braket
@@ -561,7 +561,7 @@ id|EV56_CPU
 )braket
 op_assign
 (brace
-l_int|366000000
+l_int|333000000
 comma
 l_int|667000000
 )brace

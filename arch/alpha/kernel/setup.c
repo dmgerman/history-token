@@ -4461,15 +4461,6 @@ suffix:semicolon
 r_int
 id|nr_processors
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpu
-)paren
-r_return
-l_int|1
-suffix:semicolon
 id|cpu_index
 op_assign
 (paren

@@ -153,9 +153,9 @@ mdefine_line|#define CHECK_MAGIC(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;
 DECL|macro|CHECK_MAGIC_WQHEAD
 mdefine_line|#define CHECK_MAGIC_WQHEAD(x)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((x)-&gt;__magic != (long)&amp;((x)-&gt;__magic)) {&t;&t;&t;&bslash;&n;&t;&t;&t;printk(&quot;bad magic %lx (should be %lx, creator %lx), &quot;,&t;&bslash;&n;&t;&t;&t;(x)-&gt;__magic, (long)&amp;((x)-&gt;__magic), (x)-&gt;__creator);&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|WQ_CHECK_LIST_HEAD
-mdefine_line|#define WQ_CHECK_LIST_HEAD(list) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!list-&gt;next || !list-&gt;prev)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define WQ_CHECK_LIST_HEAD(list) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!(list)-&gt;next || !(list)-&gt;prev)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;WQ_BUG();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|WQ_NOTE_WAKER
-mdefine_line|#define WQ_NOTE_WAKER(tsk)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tsk-&gt;__waker = (long)__builtin_return_address(0);&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define WQ_NOTE_WAKER(tsk)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(tsk)-&gt;__waker = (long)__builtin_return_address(0);&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|WQ_BUG
 mdefine_line|#define WQ_BUG()

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -244,18 +245,16 @@ id|phys
 suffix:semicolon
 )brace
 r_int
-DECL|function|gemini_get_cpuinfo
-id|gemini_get_cpuinfo
+DECL|function|gemini_show_cpuinfo
+id|gemini_show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
 )paren
 (brace
-r_int
-id|len
-suffix:semicolon
 r_int
 r_char
 id|reg
@@ -347,12 +346,10 @@ c_func
 id|GEMINI_BECO
 )paren
 suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;machine&bslash;t&bslash;t: Gemini %s%d, rev %c, eco %d&bslash;n&quot;
 comma
@@ -373,12 +370,10 @@ l_int|0xf
 )paren
 )paren
 suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;board&bslash;t&bslash;t: Gemini %s&quot;
 comma
@@ -392,14 +387,10 @@ id|type
 OG
 l_int|9
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;%c&quot;
 comma
@@ -413,28 +404,20 @@ l_char|&squot;A&squot;
 )paren
 suffix:semicolon
 r_else
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;%d&quot;
 comma
 id|type
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;, rev %c, eco %d&bslash;n&quot;
 comma
@@ -451,14 +434,10 @@ l_int|0xf
 )paren
 )paren
 suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;clock&bslash;t&bslash;t: %dMhz&bslash;n&quot;
 comma
@@ -469,7 +448,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|gemini_openpic_initsenses
@@ -569,17 +548,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* We only want to do this on 1 CPU */
-r_if
-c_cond
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-r_return
-suffix:semicolon
 r_static
 r_int
 r_int
@@ -598,6 +566,17 @@ r_char
 id|direction
 op_assign
 l_int|8
+suffix:semicolon
+multiline_comment|/* We only want to do this on 1 CPU */
+r_if
+c_cond
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+r_return
 suffix:semicolon
 op_star
 (paren
@@ -2273,13 +2252,9 @@ id|ppc_md.setup_arch
 op_assign
 id|gemini_setup_arch
 suffix:semicolon
-id|ppc_md.setup_residual
+id|ppc_md.show_cpuinfo
 op_assign
-l_int|NULL
-suffix:semicolon
-id|ppc_md.get_cpuinfo
-op_assign
-id|gemini_get_cpuinfo
+id|gemini_show_cpuinfo
 suffix:semicolon
 id|ppc_md.irq_cannonicalize
 op_assign

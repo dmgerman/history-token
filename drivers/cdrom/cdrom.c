@@ -12383,6 +12383,12 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|devfs_handle
+)paren
 id|devfs_handle
 op_assign
 id|devfs_mk_dir
