@@ -1181,6 +1181,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sym-&gt;visible
+op_eq
+id|mod
+)paren
+id|sym-&gt;visible
+op_assign
+id|yes
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sym-&gt;rev_dep.tri
 op_eq
 id|mod
