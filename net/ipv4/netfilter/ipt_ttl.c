@@ -53,14 +53,6 @@ comma
 r_int
 id|offset
 comma
-r_const
-r_void
-op_star
-id|hdr
-comma
-id|u_int16_t
-id|datalen
-comma
 r_int
 op_star
 id|hotdrop
@@ -74,14 +66,6 @@ id|info
 op_assign
 id|matchinfo
 suffix:semicolon
-r_const
-r_struct
-id|iphdr
-op_star
-id|iph
-op_assign
-id|skb-&gt;nh.iph
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -93,7 +77,7 @@ id|IPT_TTL_EQ
 suffix:colon
 r_return
 (paren
-id|iph-&gt;ttl
+id|skb-&gt;nh.iph-&gt;ttl
 op_eq
 id|info-&gt;ttl
 )paren
@@ -107,7 +91,7 @@ r_return
 (paren
 op_logical_neg
 (paren
-id|iph-&gt;ttl
+id|skb-&gt;nh.iph-&gt;ttl
 op_eq
 id|info-&gt;ttl
 )paren
@@ -120,7 +104,7 @@ id|IPT_TTL_LT
 suffix:colon
 r_return
 (paren
-id|iph-&gt;ttl
+id|skb-&gt;nh.iph-&gt;ttl
 OL
 id|info-&gt;ttl
 )paren
@@ -132,7 +116,7 @@ id|IPT_TTL_GT
 suffix:colon
 r_return
 (paren
-id|iph-&gt;ttl
+id|skb-&gt;nh.iph-&gt;ttl
 OG
 id|info-&gt;ttl
 )paren
