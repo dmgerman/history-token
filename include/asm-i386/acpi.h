@@ -332,6 +332,17 @@ r_void
 )paren
 (brace
 )brace
+DECL|function|check_acpi_pci
+r_static
+r_inline
+r_void
+id|check_acpi_pci
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#endif
 macro_line|#else&t;/* CONFIG_ACPI_BOOT */
 DECL|macro|acpi_lapic
