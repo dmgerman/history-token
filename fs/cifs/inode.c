@@ -1974,10 +1974,17 @@ comma
 id|newinode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|direntry-&gt;d_inode
+)paren
+(brace
 id|direntry-&gt;d_inode-&gt;i_nlink
 op_assign
 l_int|2
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
