@@ -4562,7 +4562,13 @@ op_member_access_from_pointer
 id|getattr
 c_func
 (paren
+id|server
+comma
+id|NFS_FH
+c_func
+(paren
 id|inode
+)paren
 comma
 op_amp
 id|fattr

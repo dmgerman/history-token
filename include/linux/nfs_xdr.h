@@ -2511,7 +2511,11 @@ id|getattr
 )paren
 (paren
 r_struct
-id|inode
+id|nfs_server
+op_star
+comma
+r_struct
+id|nfs_fh
 op_star
 comma
 r_struct
