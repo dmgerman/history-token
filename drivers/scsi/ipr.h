@@ -12,9 +12,9 @@ macro_line|#include &lt;linux/kdb.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
-mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.8&quot;
+mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.9&quot;
 DECL|macro|IPR_DRIVER_DATE
-mdefine_line|#define IPR_DRIVER_DATE &quot;(May 23, 2004)&quot;
+mdefine_line|#define IPR_DRIVER_DATE &quot;(May 26, 2004)&quot;
 multiline_comment|/*&n; * IPR_DBG_TRACE: Setting this to 1 will turn on some general function tracing&n; *&t;&t;&t;resulting in a bunch of extra debugging printks to the console&n; *&n; * IPR_DEBUG:&t;Setting this to 1 will turn on some error path tracing.&n; *&t;&t;&t;Enables the ipr_trace macro.&n; */
 macro_line|#ifdef IPR_DEBUG_ALL
 DECL|macro|IPR_DEBUG

@@ -17671,6 +17671,10 @@ r_int
 )paren
 id|ipr_timeout
 suffix:semicolon
+id|ipr_cmd-&gt;done
+op_assign
+id|ipr_reset_ioa_job
+suffix:semicolon
 id|add_timer
 c_func
 (paren
