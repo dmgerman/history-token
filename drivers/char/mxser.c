@@ -2494,11 +2494,6 @@ l_int|0
 op_minus
 l_int|1
 suffix:semicolon
-r_int
-id|index
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
