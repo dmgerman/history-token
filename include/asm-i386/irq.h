@@ -4,7 +4,8 @@ mdefine_line|#define _ASM_IRQ_H
 multiline_comment|/*&n; *&t;linux/include/asm/irq.h&n; *&n; *&t;(C) 1992, 1993 Linus Torvalds, (C) 1997 Ingo Molnar&n; *&n; *&t;IRQ/IPI changes taken from work by Thomas Radke&n; *&t;&lt;tomsoft@informatik.tu-chemnitz.de&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/irq_vectors.h&gt;
+multiline_comment|/* include comes from machine specific directory */
+macro_line|#include &quot;irq_vectors.h&quot;
 DECL|function|irq_cannonicalize
 r_static
 id|__inline__
