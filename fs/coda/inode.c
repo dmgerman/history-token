@@ -671,10 +671,6 @@ id|vc-&gt;vc_sb
 op_assign
 id|sb
 suffix:semicolon
-id|sbi-&gt;sbi_sb
-op_assign
-id|sb
-suffix:semicolon
 id|sbi-&gt;sbi_vcomm
 op_assign
 id|vc

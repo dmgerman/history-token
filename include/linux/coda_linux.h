@@ -150,15 +150,6 @@ id|iattr
 op_star
 )paren
 suffix:semicolon
-r_int
-id|coda_isnullfid
-c_func
-(paren
-id|ViceFid
-op_star
-id|fid
-)paren
-suffix:semicolon
 multiline_comment|/* global variables */
 r_extern
 r_int
@@ -280,16 +271,6 @@ c_func
 (paren
 r_int
 r_int
-)paren
-suffix:semicolon
-r_void
-id|print_vattr
-c_func
-(paren
-r_struct
-id|coda_vattr
-op_star
-id|attr
 )paren
 suffix:semicolon
 r_int

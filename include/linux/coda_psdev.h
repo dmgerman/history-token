@@ -8,7 +8,7 @@ mdefine_line|#define MAX_CODADEVS  5&t;   /* how many do we allow */
 DECL|macro|CODA_SUPER_MAGIC
 mdefine_line|#define CODA_SUPER_MAGIC&t;0x73757245
 r_struct
-id|statfs
+id|kstatfs
 suffix:semicolon
 DECL|struct|coda_sb_info
 r_struct
@@ -19,12 +19,6 @@ r_struct
 id|venus_comm
 op_star
 id|sbi_vcomm
-suffix:semicolon
-DECL|member|sbi_sb
-r_struct
-id|super_block
-op_star
-id|sbi_sb
 suffix:semicolon
 DECL|member|sbi_cihead
 r_struct

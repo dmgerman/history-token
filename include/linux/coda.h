@@ -219,26 +219,22 @@ r_struct
 id|venus_dirent
 (brace
 DECL|member|d_fileno
-r_int
-r_int
+id|u_int32_t
 id|d_fileno
 suffix:semicolon
 multiline_comment|/* file number of entry */
 DECL|member|d_reclen
-r_int
-r_int
+id|u_int16_t
 id|d_reclen
 suffix:semicolon
 multiline_comment|/* length of this record */
 DECL|member|d_type
-r_int
-r_char
+id|u_int8_t
 id|d_type
 suffix:semicolon
 multiline_comment|/* file type, see below */
 DECL|member|d_namlen
-r_int
-r_char
+id|u_int8_t
 id|d_namlen
 suffix:semicolon
 multiline_comment|/* length of string in d_name */
@@ -288,22 +284,22 @@ DECL|macro|_FID_T_
 mdefine_line|#define _FID_T_&t;1
 DECL|typedef|VolumeId
 r_typedef
-id|u_long
+id|u_int32_t
 id|VolumeId
 suffix:semicolon
 DECL|typedef|VnodeId
 r_typedef
-id|u_long
+id|u_int32_t
 id|VnodeId
 suffix:semicolon
 DECL|typedef|Unique_t
 r_typedef
-id|u_long
+id|u_int32_t
 id|Unique_t
 suffix:semicolon
 DECL|typedef|FileVersion
 r_typedef
-id|u_long
+id|u_int32_t
 id|FileVersion
 suffix:semicolon
 macro_line|#endif 
@@ -696,28 +692,26 @@ r_struct
 id|coda_in_hdr
 (brace
 DECL|member|opcode
-r_int
-r_int
+id|u_int32_t
 id|opcode
 suffix:semicolon
 DECL|member|unique
-r_int
-r_int
+id|u_int32_t
 id|unique
 suffix:semicolon
 multiline_comment|/* Keep multiple outstanding msgs distinct */
 DECL|member|pid
-id|u_short
+id|u_int16_t
 id|pid
 suffix:semicolon
 multiline_comment|/* Common to all */
 DECL|member|pgid
-id|u_short
+id|u_int16_t
 id|pgid
 suffix:semicolon
 multiline_comment|/* Common to all */
 DECL|member|sid
-id|u_short
+id|u_int16_t
 id|sid
 suffix:semicolon
 multiline_comment|/* Common to all */
@@ -735,18 +729,15 @@ r_struct
 id|coda_out_hdr
 (brace
 DECL|member|opcode
-r_int
-r_int
+id|u_int32_t
 id|opcode
 suffix:semicolon
 DECL|member|unique
-r_int
-r_int
+id|u_int32_t
 id|unique
 suffix:semicolon
 DECL|member|result
-r_int
-r_int
+id|u_int32_t
 id|result
 suffix:semicolon
 )brace
@@ -1543,28 +1534,6 @@ id|CodaFid
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* coda_zapnode: */
-multiline_comment|/* CODA_ZAPVNODE is a venus-&gt;kernel call */
-DECL|struct|coda_zapvnode_out
-r_struct
-id|coda_zapvnode_out
-(brace
-DECL|member|oh
-r_struct
-id|coda_out_hdr
-id|oh
-suffix:semicolon
-DECL|member|cred
-r_struct
-id|coda_cred
-id|cred
-suffix:semicolon
-DECL|member|VFid
-id|ViceFid
-id|VFid
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* coda_purgefid: */
 multiline_comment|/* CODA_PURGEFID is a venus-&gt;kernel call */
 DECL|struct|coda_purgefid_out
@@ -1906,11 +1875,6 @@ r_struct
 id|coda_zapdir_out
 id|coda_zapdir
 suffix:semicolon
-DECL|member|coda_zapvnode
-r_struct
-id|coda_zapvnode_out
-id|coda_zapvnode
-suffix:semicolon
 DECL|member|coda_purgefid
 r_struct
 id|coda_purgefid_out
@@ -1958,11 +1922,6 @@ DECL|member|zapdir
 r_struct
 id|coda_zapdir_out
 id|zapdir
-suffix:semicolon
-DECL|member|zapvnode
-r_struct
-id|coda_zapvnode_out
-id|zapvnode
 suffix:semicolon
 DECL|member|purgefid
 r_struct
@@ -2025,21 +1984,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CODA_CONTROL
-mdefine_line|#define&t;CODA_CONTROL&t;&t;&quot;.CONTROL&quot;
+mdefine_line|#define CODA_CONTROL&t;&t;&quot;.CONTROL&quot;
 DECL|macro|CODA_CONTROLLEN
-mdefine_line|#define CODA_CONTROLLEN           8
-DECL|macro|CTL_VOL
-mdefine_line|#define&t;CTL_VOL&t;&t;&t;-1
-DECL|macro|CTL_VNO
-mdefine_line|#define&t;CTL_VNO&t;&t;&t;-1
-DECL|macro|CTL_UNI
-mdefine_line|#define&t;CTL_UNI&t;&t;&t;-1
+mdefine_line|#define CODA_CONTROLLEN&t;&t;8
 DECL|macro|CTL_INO
-mdefine_line|#define CTL_INO                 -1
-DECL|macro|CTL_FILE
-mdefine_line|#define&t;CTL_FILE&t;&t;&quot;/coda/.CONTROL&quot;
-DECL|macro|IS_CTL_FID
-mdefine_line|#define&t;IS_CTL_FID(fidp)&t;((fidp)-&gt;Volume == CTL_VOL &amp;&amp;&bslash;&n;&t;&t;&t;&t; (fidp)-&gt;Vnode == CTL_VNO &amp;&amp;&bslash;&n;&t;&t;&t;&t; (fidp)-&gt;Unique == CTL_UNI)
+mdefine_line|#define CTL_INO&t;&t;&t;-1
 multiline_comment|/* Data passed to mount */
 DECL|macro|CODA_MOUNT_VERSION
 mdefine_line|#define CODA_MOUNT_VERSION 1

@@ -2831,8 +2831,10 @@ r_if
 c_cond
 (paren
 id|vdir-&gt;d_reclen
-template_param
-id|CODA_MAXNAMLEN
+OL
+id|vdir_size
+op_plus
+id|vdir-&gt;d_namlen
 )paren
 (brace
 id|printk

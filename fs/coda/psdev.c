@@ -58,19 +58,6 @@ id|coda_comms
 id|MAX_CODADEVS
 )braket
 suffix:semicolon
-DECL|variable|cii_cache
-DECL|variable|cred_cache
-DECL|variable|upc_cache
-id|kmem_cache_t
-op_star
-id|cii_cache
-comma
-op_star
-id|cred_cache
-comma
-op_star
-id|upc_cache
-suffix:semicolon
 multiline_comment|/*&n; * Device operations&n; */
 DECL|function|coda_psdev_poll
 r_static
@@ -366,7 +353,7 @@ id|coda_out_hdr
 id|printk
 c_func
 (paren
-l_string|&quot;coda_downcall opc %ld uniq %ld, not enough!&bslash;n&quot;
+l_string|&quot;coda_downcall opc %d uniq %d, not enough!&bslash;n&quot;
 comma
 id|hdr.opcode
 comma
@@ -392,7 +379,7 @@ id|size
 id|printk
 c_func
 (paren
-l_string|&quot;Coda: downcall opc %ld, uniq %ld, too much!&quot;
+l_string|&quot;Coda: downcall opc %d, uniq %d, too much!&quot;
 comma
 id|hdr.opcode
 comma
@@ -574,7 +561,7 @@ id|req
 id|printk
 c_func
 (paren
-l_string|&quot;psdev_write: msg (%ld, %ld) not found&bslash;n&quot;
+l_string|&quot;psdev_write: msg (%d, %d) not found&bslash;n&quot;
 comma
 id|hdr.opcode
 comma
@@ -602,7 +589,7 @@ id|nbytes
 id|printk
 c_func
 (paren
-l_string|&quot;psdev_write: too much cnt: %d, cnt: %ld, opc: %ld, uniq: %ld.&bslash;n&quot;
+l_string|&quot;psdev_write: too much cnt: %d, cnt: %ld, opc: %d, uniq: %d.&bslash;n&quot;
 comma
 id|req-&gt;uc_outSize
 comma
@@ -1234,31 +1221,17 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Wakeup clients so they can return. */
-id|lh
-op_assign
-id|vcp-&gt;vc_pending.next
-suffix:semicolon
-id|next
-op_assign
-id|lh
-suffix:semicolon
-r_while
-c_loop
-(paren
+id|list_for_each_safe
+c_func
 (paren
 id|lh
-op_assign
+comma
 id|next
-)paren
-op_ne
+comma
 op_amp
 id|vcp-&gt;vc_pending
 )paren
 (brace
-id|next
-op_assign
-id|lh-&gt;next
-suffix:semicolon
 id|req
 op_assign
 id|list_entry
@@ -1314,37 +1287,17 @@ id|req-&gt;uc_sleep
 )paren
 suffix:semicolon
 )brace
-id|lh
-op_assign
-op_amp
-id|vcp-&gt;vc_processing
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|lh
-op_assign
-id|lh-&gt;next
-)paren
-op_ne
-op_amp
-id|vcp-&gt;vc_processing
-)paren
-(brace
-id|req
-op_assign
-id|list_entry
+id|list_for_each_entry
 c_func
 (paren
-id|lh
+id|req
 comma
-r_struct
-id|upc_req
+op_amp
+id|vcp-&gt;vc_processing
 comma
 id|uc_chain
 )paren
-suffix:semicolon
+(brace
 id|req-&gt;uc_flags
 op_or_assign
 id|REQ_ABORT
