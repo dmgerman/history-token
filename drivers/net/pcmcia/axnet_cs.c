@@ -3740,7 +3740,7 @@ id|cmd
 )paren
 (brace
 r_case
-id|SIOCDEVPRIVATE
+id|SIOCGMIIPHY
 suffix:colon
 id|data
 (braket
@@ -3750,10 +3750,9 @@ op_assign
 id|info-&gt;phy_id
 suffix:semicolon
 r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
+id|SIOCGMIIREG
 suffix:colon
+multiline_comment|/* Read MII PHY register. */
 id|data
 (braket
 l_int|3
@@ -3781,10 +3780,9 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
+id|SIOCSMIIREG
 suffix:colon
+multiline_comment|/* Write MII PHY register. */
 r_if
 c_cond
 (paren

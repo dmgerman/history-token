@@ -6126,7 +6126,7 @@ id|cmd
 )paren
 (brace
 r_case
-id|SIOCDEVPRIVATE
+id|SIOCGMIIPHY
 suffix:colon
 multiline_comment|/* Get the address of the PHY in use. */
 id|data
@@ -6137,9 +6137,7 @@ op_assign
 id|phy
 suffix:semicolon
 r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
+id|SIOCGMIIREG
 suffix:colon
 multiline_comment|/* Read the specified MII register. */
 (brace
@@ -6222,9 +6220,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
+id|SIOCSMIIREG
 suffix:colon
 multiline_comment|/* Write the specified MII register */
 (brace
