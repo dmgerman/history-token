@@ -1144,8 +1144,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* will die */
-macro_line|#include &lt;linux/coda_fs_i.h&gt;
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
