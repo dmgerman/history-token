@@ -389,6 +389,12 @@ id|u32
 id|length
 )paren
 suffix:semicolon
+id|u32
+id|acpi_os_get_timer
+(paren
+r_void
+)paren
+suffix:semicolon
 id|acpi_status
 id|acpi_os_signal
 (paren
@@ -427,6 +433,14 @@ id|va_list
 id|args
 )paren
 suffix:semicolon
+r_void
+id|acpi_os_redirect_output
+(paren
+r_void
+op_star
+id|destination
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Debug input&n; */
 id|u32
 id|acpi_os_get_line
@@ -434,6 +448,27 @@ id|acpi_os_get_line
 id|NATIVE_CHAR
 op_star
 id|buffer
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Debug&n; */
+r_void
+id|acpi_os_dbg_assert
+c_func
+(paren
+r_void
+op_star
+id|failed_assertion
+comma
+r_void
+op_star
+id|file_name
+comma
+id|u32
+id|line_number
+comma
+id|NATIVE_CHAR
+op_star
+id|message
 )paren
 suffix:semicolon
 macro_line|#endif /* __ACPIOSXF_H__ */

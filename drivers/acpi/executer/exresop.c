@@ -1,10 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 55 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -1037,7 +1036,8 @@ suffix:semicolon
 r_case
 id|ARGI_DATAOBJECT
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or Node reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or Ref_of reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -1142,6 +1142,7 @@ op_assign
 id|temp_node
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Need a buffer, string, package */
 r_switch
 c_cond
@@ -1161,6 +1162,9 @@ id|ACPI_TYPE_STRING
 suffix:colon
 r_case
 id|ACPI_TYPE_BUFFER
+suffix:colon
+r_case
+id|INTERNAL_TYPE_REFERENCE
 suffix:colon
 multiline_comment|/* Valid operand */
 r_break

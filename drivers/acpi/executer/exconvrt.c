@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 38 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -453,10 +453,94 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
+multiline_comment|/*&n;&t;&t; * Create a new Buffer object&n;&t;&t; */
+id|ret_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_BUFFER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret_desc
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Need enough space for one integer */
+id|new_buf
+op_assign
+id|ACPI_MEM_CALLOCATE
+(paren
+id|obj_desc-&gt;string.length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_buf
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Ex_convert_to_buffer: Buffer allocation failure&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|acpi_ut_remove_reference
+(paren
+id|ret_desc
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|ACPI_STRNCPY
+(paren
+(paren
+r_char
+op_star
+)paren
+id|new_buf
+comma
+(paren
+r_char
+op_star
+)paren
+id|obj_desc-&gt;string.pointer
+comma
+id|obj_desc-&gt;string.length
+)paren
+suffix:semicolon
+id|ret_desc-&gt;buffer.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
+id|ret_desc-&gt;buffer.pointer
+op_assign
+id|new_buf
+suffix:semicolon
+id|ret_desc-&gt;buffer.length
+op_assign
+id|obj_desc-&gt;string.length
+suffix:semicolon
+multiline_comment|/* Return the new buffer descriptor */
 op_star
 id|result_desc
 op_assign
-id|obj_desc
+id|ret_desc
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 139 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsdump - table dumping routines for debug&n; *              $Revision: 140 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -183,6 +183,10 @@ l_string|&quot;%s %s (Node %p)&bslash;n&quot;
 comma
 id|msg
 comma
+(paren
+r_char
+op_star
+)paren
 id|buffer.pointer
 comma
 id|handle
@@ -602,13 +606,17 @@ id|ACPI_TYPE_PROCESSOR
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; ID %hd Addr %.4X Len %.4X&bslash;n&quot;
+l_string|&quot; ID %X Len %.4X Addr %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;processor.proc_id
 comma
-id|obj_desc-&gt;processor.address
-comma
 id|obj_desc-&gt;processor.length
+comma
+(paren
+r_char
+op_star
+)paren
+id|obj_desc-&gt;processor.address
 )paren
 suffix:semicolon
 r_break
@@ -630,8 +638,11 @@ id|ACPI_TYPE_METHOD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot; Args %hd Len %.4X Aml %p &bslash;n&quot;
+l_string|&quot; Args %X Len %.4X Aml %p&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|obj_desc-&gt;method.param_count
 comma
 id|obj_desc-&gt;method.aml_length

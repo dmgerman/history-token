@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 33 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions to display the resource structures.&n; *              $Revision: 34 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -1739,37 +1739,77 @@ l_string|&quot;not &quot;
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Granularity: %16X&bslash;n&quot;
+l_string|&quot;  Granularity: %8.8X%8.8X&bslash;n&quot;
 comma
+id|ACPI_HIDWORD
+(paren
 id|address64_data-&gt;granularity
 )paren
+comma
+id|ACPI_LODWORD
+(paren
+id|address64_data-&gt;granularity
+)paren
+)paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Address range min: %16X&bslash;n&quot;
+l_string|&quot;  Address range min: %8.8X%8.8X&bslash;n&quot;
 comma
+id|ACPI_HIDWORD
+(paren
 id|address64_data-&gt;min_address_range
 )paren
+comma
+id|ACPI_HIDWORD
+(paren
+id|address64_data-&gt;min_address_range
+)paren
+)paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Address range max: %16X&bslash;n&quot;
+l_string|&quot;  Address range max: %8.8X%8.8X&bslash;n&quot;
 comma
+id|ACPI_HIDWORD
+(paren
 id|address64_data-&gt;max_address_range
 )paren
-suffix:semicolon
-id|acpi_os_printf
-(paren
-l_string|&quot;  Address translation offset: %16X&bslash;n&quot;
 comma
-id|address64_data-&gt;address_translation_offset
+id|ACPI_HIDWORD
+(paren
+id|address64_data-&gt;max_address_range
+)paren
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
-l_string|&quot;  Address Length: %16X&bslash;n&quot;
+l_string|&quot;  Address translation offset: %8.8X%8.8X&bslash;n&quot;
 comma
+id|ACPI_HIDWORD
+(paren
+id|address64_data-&gt;address_translation_offset
+)paren
+comma
+id|ACPI_HIDWORD
+(paren
+id|address64_data-&gt;address_translation_offset
+)paren
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;  Address Length: %8.8X%8.8X&bslash;n&quot;
+comma
+id|ACPI_HIDWORD
+(paren
 id|address64_data-&gt;address_length
+)paren
+comma
+id|ACPI_HIDWORD
+(paren
+id|address64_data-&gt;address_length
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
@@ -178,8 +178,10 @@ DECL|macro|AE_AML_NO_RESOURCE_END_TAG
 mdefine_line|#define AE_AML_NO_RESOURCE_END_TAG      (acpi_status) (0x001E | AE_CODE_AML)
 DECL|macro|AE_AML_BAD_RESOURCE_VALUE
 mdefine_line|#define AE_AML_BAD_RESOURCE_VALUE       (acpi_status) (0x001F | AE_CODE_AML)
+DECL|macro|AE_AML_CIRCULAR_REFERENCE
+mdefine_line|#define AE_AML_CIRCULAR_REFERENCE       (acpi_status) (0x0020 | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
-mdefine_line|#define AE_CODE_AML_MAX                 0x001F
+mdefine_line|#define AE_CODE_AML_MAX                 0x0020
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
 DECL|macro|AE_CTRL_RETURN_VALUE
 mdefine_line|#define AE_CTRL_RETURN_VALUE            (acpi_status) (0x0001 | AE_CODE_CONTROL)
@@ -201,8 +203,10 @@ DECL|macro|AE_CTRL_BREAK
 mdefine_line|#define AE_CTRL_BREAK                   (acpi_status) (0x0009 | AE_CODE_CONTROL)
 DECL|macro|AE_CTRL_CONTINUE
 mdefine_line|#define AE_CTRL_CONTINUE                (acpi_status) (0x000A | AE_CODE_CONTROL)
+DECL|macro|AE_CTRL_SKIP
+mdefine_line|#define AE_CTRL_SKIP                    (acpi_status) (0x000B | AE_CODE_CONTROL)
 DECL|macro|AE_CODE_CTRL_MAX
-mdefine_line|#define AE_CODE_CTRL_MAX                0x000A
+mdefine_line|#define AE_CODE_CTRL_MAX                0x000B
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/*&n; * String versions of the exception codes above&n; * These strings must match the corresponding defines exactly&n; */
 DECL|variable|acpi_gbl_exception_names_env
@@ -391,6 +395,8 @@ comma
 l_string|&quot;AE_AML_NO_RESOURCE_END_TAG&quot;
 comma
 l_string|&quot;AE_AML_BAD_RESOURCE_VALUE&quot;
+comma
+l_string|&quot;AE_AML_CIRCULAR_REFERENCE&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_ctrl
@@ -421,6 +427,8 @@ comma
 l_string|&quot;AE_CTRL_BREAK&quot;
 comma
 l_string|&quot;AE_CTRL_CONTINUE&quot;
+comma
+l_string|&quot;AE_CTRL_SKIP&quot;
 )brace
 suffix:semicolon
 macro_line|#endif /* ACPI GLOBALS */

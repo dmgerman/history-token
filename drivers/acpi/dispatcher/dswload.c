@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 71 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -405,6 +405,40 @@ r_case
 id|ACPI_TYPE_THERMAL
 suffix:colon
 multiline_comment|/* These are acceptable types */
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * These types we will allow, but we will change the type.  This&n;&t;&t;&t; * enables some existing code of the form:&n;&t;&t;&t; *&n;&t;&t;&t; *  Name (DEB, 0)&n;&t;&t;&t; *  Scope (DEB) { ... }&n;&t;&t;&t; */
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;Invalid type (%s) for target of Scope operator [%4.4s], changing type to ANY&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|node-&gt;type
+)paren
+comma
+id|path
+)paren
+)paren
+suffix:semicolon
+id|node-&gt;type
+op_assign
+id|ACPI_TYPE_ANY
+suffix:semicolon
+id|walk_state-&gt;scope_info-&gt;common.value
+op_assign
+id|ACPI_TYPE_ANY
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1060,6 +1094,101 @@ id|status
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * For the scope op, we must check to make sure that the target is&n;&t;&t; * one of the opcodes that actually opens a scope&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;opcode
+op_eq
+id|AML_SCOPE_OP
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|node-&gt;type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_ANY
+suffix:colon
+multiline_comment|/* Scope nodes are untyped (ANY) */
+r_case
+id|ACPI_TYPE_DEVICE
+suffix:colon
+r_case
+id|ACPI_TYPE_METHOD
+suffix:colon
+r_case
+id|ACPI_TYPE_POWER
+suffix:colon
+r_case
+id|ACPI_TYPE_PROCESSOR
+suffix:colon
+r_case
+id|ACPI_TYPE_THERMAL
+suffix:colon
+multiline_comment|/* These are acceptable types */
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * These types we will allow, but we will change the type.  This&n;&t;&t;&t;&t; * enables some existing code of the form:&n;&t;&t;&t;&t; *&n;&t;&t;&t;&t; *  Name (DEB, 0)&n;&t;&t;&t;&t; *  Scope (DEB) { ... }&n;&t;&t;&t;&t; */
+id|ACPI_REPORT_WARNING
+(paren
+(paren
+l_string|&quot;Invalid type (%s) for target of Scope operator [%4.4s], changing type to ANY&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|node-&gt;type
+)paren
+comma
+id|buffer_ptr
+)paren
+)paren
+suffix:semicolon
+id|node-&gt;type
+op_assign
+id|ACPI_TYPE_ANY
+suffix:semicolon
+id|walk_state-&gt;scope_info-&gt;common.value
+op_assign
+id|ACPI_TYPE_ANY
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All other types are an error */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Invalid type (%s) for target of Scope operator [%4.4s]&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|node-&gt;type
+)paren
+comma
+id|buffer_ptr
+)paren
+)paren
+suffix:semicolon
+r_return
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
