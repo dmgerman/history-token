@@ -211,6 +211,21 @@ r_int
 id|cr_alignment
 suffix:semicolon
 multiline_comment|/* defined in entry-armv.S */
+DECL|macro|UDBG_UNDEFINED
+mdefine_line|#define UDBG_UNDEFINED&t;(1 &lt;&lt; 0)
+DECL|macro|UDBG_SYSCALL
+mdefine_line|#define UDBG_SYSCALL&t;(1 &lt;&lt; 1)
+DECL|macro|UDBG_BADABORT
+mdefine_line|#define UDBG_BADABORT&t;(1 &lt;&lt; 2)
+DECL|macro|UDBG_SEGV
+mdefine_line|#define UDBG_SEGV&t;(1 &lt;&lt; 3)
+DECL|macro|UDBG_BUS
+mdefine_line|#define UDBG_BUS&t;(1 &lt;&lt; 4)
+r_extern
+r_int
+r_int
+id|user_debug
+suffix:semicolon
 macro_line|#if __LINUX_ARM_ARCH__ &gt;= 4
 DECL|macro|vectors_base
 mdefine_line|#define vectors_base()&t;((cr_alignment &amp; CR_V) ? 0xffff0000 : 0)
