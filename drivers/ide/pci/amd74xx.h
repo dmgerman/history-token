@@ -664,7 +664,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;NFORCE2S_SATA&quot;
+l_string|&quot;NFORCE2S-SATA&quot;
 comma
 dot
 id|init_chipset
@@ -859,7 +859,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;NFORCE3S_SATA&quot;
+l_string|&quot;NFORCE3S-SATA&quot;
 comma
 dot
 id|init_chipset
@@ -924,7 +924,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;NFORCE3S_SATA2&quot;
+l_string|&quot;NFORCE3S-SATA2&quot;
 comma
 dot
 id|init_chipset
