@@ -2,19 +2,6 @@ macro_line|#ifndef _I386_PGTABLE_3LEVEL_H
 DECL|macro|_I386_PGTABLE_3LEVEL_H
 mdefine_line|#define _I386_PGTABLE_3LEVEL_H
 multiline_comment|/*&n; * Intel Physical Address Extension (PAE) Mode - three-level page&n; * tables on PPro+ CPUs.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
-multiline_comment|/*&n; * PGDIR_SHIFT determines what a top-level page table entry can map&n; */
-DECL|macro|PGDIR_SHIFT
-mdefine_line|#define PGDIR_SHIFT&t;30
-DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;4
-multiline_comment|/*&n; * PMD_SHIFT determines the size of the area a middle-level&n; * page table can map&n; */
-DECL|macro|PMD_SHIFT
-mdefine_line|#define PMD_SHIFT&t;21
-DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;512
-multiline_comment|/*&n; * entries per page directory level&n; */
-DECL|macro|PTRS_PER_PTE
-mdefine_line|#define PTRS_PER_PTE&t;512
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e) &bslash;&n;&t;printk(&quot;%s:%d: bad pte %p(%08lx%08lx).&bslash;n&quot;, __FILE__, __LINE__, &amp;(e), (e).pte_high, (e).pte_low)
 DECL|macro|pmd_ERROR
@@ -64,6 +51,77 @@ id|pgd
 (brace
 r_return
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Is the pte executable?&n; */
+DECL|function|pte_x
+r_static
+r_inline
+r_int
+id|pte_x
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+op_logical_neg
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_NX
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * All present user-pages with !NX bit are user-executable:&n; */
+DECL|function|pte_exec
+r_static
+r_inline
+r_int
+id|pte_exec
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_user
+c_func
+(paren
+id|pte
+)paren
+op_logical_and
+id|pte_x
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * All present pages with !NX bit are kernel-executable:&n; */
+DECL|function|pte_exec_kernel
+r_static
+r_inline
+r_int
+id|pte_exec_kernel
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+id|pte_x
+c_func
+(paren
+id|pte
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Rules for using set_pte: the pte being assigned *must* be&n; * either not present or in a state where the hardware will&n; * not attempt to update the pte.  In places where this is&n; * not possible, use pte_get_and_clear to obtain the old pte&n; * value and then use set_pte to update it.  -ben&n; */
