@@ -599,12 +599,12 @@ id|pid-&gt;task_list
 suffix:semicolon
 id|pid-&gt;task
 op_assign
-id|current
+id|task
 suffix:semicolon
 id|get_task_struct
 c_func
 (paren
-id|current
+id|task
 )paren
 suffix:semicolon
 id|list_add
