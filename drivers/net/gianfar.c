@@ -1393,6 +1393,13 @@ id|mii_info-&gt;autoneg
 op_assign
 l_int|1
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|mii_info-&gt;mdio_lock
+)paren
+suffix:semicolon
 id|mii_info-&gt;mii_id
 op_assign
 id|priv-&gt;einfo-&gt;phyid
