@@ -4019,7 +4019,7 @@ suffix:semicolon
 multiline_comment|/* add_pcic */
 multiline_comment|/*====================================================================*/
 macro_line|#ifdef CONFIG_ISA
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|variable|__initdata
 r_static
 r_struct
@@ -4130,7 +4130,7 @@ suffix:semicolon
 DECL|variable|i82365_pnpdev
 r_static
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|i82365_pnpdev
 suffix:semicolon
@@ -4161,14 +4161,14 @@ suffix:semicolon
 id|ioaddr_t
 id|port
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_struct
 id|isapnp_device_id
 op_star
 id|devid
 suffix:semicolon
 r_struct
-id|pci_dev
+id|pnp_dev
 op_star
 id|dev
 suffix:semicolon
@@ -4191,7 +4191,7 @@ c_cond
 (paren
 id|dev
 op_assign
-id|isapnp_find_dev
+id|pnp_find_dev
 c_func
 (paren
 l_int|NULL
@@ -4208,45 +4208,18 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;ISAPNP &quot;
+l_string|&quot;PNP &quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;prepare
-op_logical_and
-id|dev
-op_member_access_from_pointer
-id|prepare
+id|pnp_activate_dev
 c_func
 (paren
 id|dev
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;prepare failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;activate
-op_logical_and
-id|dev
-op_member_access_from_pointer
-id|activate
-c_func
-(paren
-id|dev
+comma
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -4261,20 +4234,20 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|i365_base
 op_assign
-id|pci_resource_start
+id|pnp_port_start
 c_func
 (paren
 id|dev
 comma
 l_int|0
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i365_base
 )paren
 (brace
 id|printk
@@ -8993,12 +8966,8 @@ r_if
 c_cond
 (paren
 id|i82365_pnpdev
-op_logical_and
-id|i82365_pnpdev-&gt;deactivate
 )paren
-id|i82365_pnpdev
-op_member_access_from_pointer
-id|deactivate
+id|pnp_disable_dev
 c_func
 (paren
 id|i82365_pnpdev
