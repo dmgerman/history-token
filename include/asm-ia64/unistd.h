@@ -495,6 +495,8 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls
 mdefine_line|#define NR_syscalls&t;&t;&t;256 /* length of syscall table */
+DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
+mdefine_line|#define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 DECL|macro|__ARCH_WANT_SYS_FADVISE64
 macro_line|# define __ARCH_WANT_SYS_FADVISE64
@@ -512,8 +514,6 @@ DECL|macro|__ARCH_WANT_SYS_SIGPENDING
 macro_line|# define __ARCH_WANT_SYS_SIGPENDING
 DECL|macro|__ARCH_WANT_SYS_SIGPROCMASK
 macro_line|# define __ARCH_WANT_SYS_SIGPROCMASK
-DECL|macro|__ARCH_WANT_SYS_RT_SIGACTION
-macro_line|# define __ARCH_WANT_SYS_RT_SIGACTION
 macro_line|#endif
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 macro_line|#include &lt;linux/types.h&gt;
