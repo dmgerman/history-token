@@ -740,7 +740,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -768,7 +767,6 @@ comma
 r_int
 )paren
 id|node
-)paren
 )paren
 suffix:semicolon
 id|m
@@ -863,7 +861,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -893,7 +890,6 @@ comma
 r_int
 )paren
 id|node
-)paren
 )paren
 suffix:semicolon
 id|m

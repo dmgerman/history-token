@@ -19,6 +19,7 @@ c_func
 r_char
 op_star
 comma
+r_const
 r_char
 op_star
 comma
@@ -38,7 +39,7 @@ dot
 suffix:semicolon
 macro_line|#if 1
 DECL|macro|HWGRAPH_DEBUG
-mdefine_line|#define HWGRAPH_DEBUG(args) hwgraph_debug args ;
+mdefine_line|#define HWGRAPH_DEBUG(args...) hwgraph_debug(args)
 macro_line|#else   
 DECL|macro|HWGRAPH_DEBUG
 mdefine_line|#define HWGRAPH_DEBUG(args)

@@ -75,7 +75,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -87,7 +86,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created path for hub vertex for Shub node.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|rc
@@ -257,7 +255,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -269,7 +266,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created path for disabled cpu slice.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|mark_cpuvertex_as_cpu
@@ -381,7 +377,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -393,7 +388,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created path for active cpu slice.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|mark_cpuvertex_as_cpu
@@ -460,7 +454,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -474,7 +467,6 @@ comma
 l_string|&quot;Created % from vhdl1 to vhdl2.&bslash;n&quot;
 comma
 id|name
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -733,7 +725,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -745,7 +736,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created path for xtalk.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|xswitch_vertex_init
@@ -932,7 +922,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -944,7 +933,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created path for SHUB node.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|hub
@@ -1196,7 +1184,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -1208,7 +1195,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created cpu directiry on SHUB node.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1433,7 +1419,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -1445,7 +1430,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created router path.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Find the rest of the routers stored on this node. */
@@ -1851,7 +1835,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -1865,7 +1848,6 @@ comma
 l_string|&quot;Created edge %s from vhdl1 to vhdl2.&bslash;n&quot;
 comma
 id|dest_path
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2288,7 +2270,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -2300,7 +2281,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created link path.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|sprintf
@@ -2353,7 +2333,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -2367,7 +2346,6 @@ comma
 l_string|&quot;Created edge %s from vhdl1 to vhdl2.&bslash;n&quot;
 comma
 id|buf
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2518,7 +2496,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -2530,7 +2507,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created module path.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|hwgraph_fastinfo_set
@@ -2588,7 +2564,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -2600,7 +2575,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Created L1 path.&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|hwgraph_info_add_LBL

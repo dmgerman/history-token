@@ -432,7 +432,6 @@ suffix:semicolon
 id|HWGRAPH_DEBUG
 c_func
 (paren
-(paren
 id|__FILE__
 comma
 id|__FUNCTION__
@@ -444,7 +443,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;Creating path vhdl1&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 )brace
