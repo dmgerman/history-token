@@ -918,8 +918,6 @@ op_assign
 l_int|44100
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 r_return
 id|dev
 suffix:semicolon

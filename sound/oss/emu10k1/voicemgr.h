@@ -24,21 +24,19 @@ DECL|member|send_routing
 id|u32
 id|send_routing
 suffix:semicolon
-DECL|member|send_a
+singleline_comment|// audigy only:
+DECL|member|send_routing2
 id|u32
-id|send_a
+id|send_routing2
 suffix:semicolon
-DECL|member|send_b
+DECL|member|send_dcba
 id|u32
-id|send_b
+id|send_dcba
 suffix:semicolon
-DECL|member|send_c
+singleline_comment|// audigy only:
+DECL|member|send_hgfe
 id|u32
-id|send_c
-suffix:semicolon
-DECL|member|send_d
-id|u32
-id|send_d
+id|send_hgfe
 suffix:semicolon
 DECL|member|initial_fc
 id|u32

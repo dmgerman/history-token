@@ -65,6 +65,8 @@ DECL|macro|CLONE_UNTRACED
 mdefine_line|#define CLONE_UNTRACED&t;&t;0x00800000&t;/* set if the tracing process can&squot;t force CLONE_PTRACE on this clone */
 DECL|macro|CLONE_CHILD_SETTID
 mdefine_line|#define CLONE_CHILD_SETTID&t;0x01000000&t;/* set the TID in the child */
+DECL|macro|CLONE_STOPPED
+mdefine_line|#define CLONE_STOPPED&t;&t;0x02000000&t;/* Start in stopped state */
 multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
 DECL|macro|CLONE_KERNEL
 mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)

@@ -4877,6 +4877,8 @@ c_func
 (paren
 id|p
 comma
+l_int|NULL
+comma
 op_amp
 id|t-&gt;fpu
 )paren
@@ -5502,6 +5504,8 @@ id|elf_core_copy_task_fpregs
 c_func
 (paren
 id|current
+comma
+id|regs
 comma
 id|fpu
 )paren

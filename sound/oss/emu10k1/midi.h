@@ -60,5 +60,38 @@ id|mid_hdrs
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* uncomment next line to use midi port on Audigy drive */
+singleline_comment|//#define USE_AUDIGY_DRIVE_MIDI
+macro_line|#ifdef USE_AUDIGY_DRIVE_MIDI
+DECL|macro|A_MUDATA
+mdefine_line|#define A_MUDATA&t;A_MUDATA2
+DECL|macro|A_MUCMD
+mdefine_line|#define A_MUCMD&t;&t;A_MUCMD2
+DECL|macro|A_MUSTAT
+mdefine_line|#define A_MUSTAT&t;A_MUCMD2
+DECL|macro|A_IPR_MIDITRANSBUFEMPTY
+mdefine_line|#define A_IPR_MIDITRANSBUFEMPTY&t;A_IPR_MIDITRANSBUFEMPTY2
+DECL|macro|A_IPR_MIDIRECVBUFEMPTY
+mdefine_line|#define A_IPR_MIDIRECVBUFEMPTY&t;A_IPR_MIDIRECVBUFEMPTY2
+DECL|macro|A_INTE_MIDITXENABLE
+mdefine_line|#define A_INTE_MIDITXENABLE&t;A_INTE_MIDITXENABLE2
+DECL|macro|A_INTE_MIDIRXENABLE
+mdefine_line|#define A_INTE_MIDIRXENABLE&t;A_INTE_MIDIRXENABLE2
+macro_line|#else
+DECL|macro|A_MUDATA
+mdefine_line|#define A_MUDATA&t;A_MUDATA1
+DECL|macro|A_MUCMD
+mdefine_line|#define A_MUCMD&t;&t;A_MUCMD1
+DECL|macro|A_MUSTAT
+mdefine_line|#define A_MUSTAT&t;A_MUCMD1
+DECL|macro|A_IPR_MIDITRANSBUFEMPTY
+mdefine_line|#define A_IPR_MIDITRANSBUFEMPTY&t;A_IPR_MIDITRANSBUFEMPTY1
+DECL|macro|A_IPR_MIDIRECVBUFEMPTY
+mdefine_line|#define A_IPR_MIDIRECVBUFEMPTY&t;A_IPR_MIDIRECVBUFEMPTY1
+DECL|macro|A_INTE_MIDITXENABLE
+mdefine_line|#define A_INTE_MIDITXENABLE&t;A_INTE_MIDITXENABLE1
+DECL|macro|A_INTE_MIDIRXENABLE
+mdefine_line|#define A_INTE_MIDIRXENABLE&t;A_INTE_MIDIRXENABLE1
+macro_line|#endif
 macro_line|#endif /* _MIDI_H */
 eof

@@ -4142,7 +4142,7 @@ c_func
 (paren
 id|inode
 comma
-id|EXT3_XATTR_TRANS_BLOCKS
+id|EXT3_DATA_TRANS_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -5039,8 +5039,6 @@ id|ce-&gt;e_block
 suffix:semicolon
 )brace
 r_else
-(brace
-multiline_comment|/* ext3_journal_get_write_access() requires an unlocked&n;&t;&t;&t; * bh, which complicates things here. */
 r_if
 c_cond
 (paren
@@ -5053,12 +5051,11 @@ id|bh
 comma
 id|credits
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
-r_return
-l_int|NULL
-suffix:semicolon
+(brace
+multiline_comment|/* ext3_journal_get_write_access() requires an unlocked&n;&t;&t;&t; * bh, which complicates things here. */
 id|lock_buffer
 c_func
 (paren
@@ -5157,6 +5154,11 @@ comma
 op_star
 id|credits
 )paren
+suffix:semicolon
+op_star
+id|credits
+op_assign
+l_int|0
 suffix:semicolon
 id|brelse
 c_func

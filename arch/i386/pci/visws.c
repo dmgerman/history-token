@@ -12,7 +12,7 @@ id|broken_hp_bios_irq9
 suffix:semicolon
 r_extern
 r_struct
-id|pci_ops
+id|pci_raw_ops
 id|pci_direct_conf1
 suffix:semicolon
 DECL|function|pci_visws_enable_irq
@@ -449,13 +449,18 @@ comma
 id|pci_bus0
 )paren
 suffix:semicolon
+id|raw_pci_ops
+op_assign
+op_amp
+id|pci_direct_conf1
+suffix:semicolon
 id|pci_scan_bus
 c_func
 (paren
 id|pci_bus0
 comma
 op_amp
-id|pci_direct_conf1
+id|pci_root_ops
 comma
 l_int|NULL
 )paren
@@ -466,7 +471,7 @@ c_func
 id|pci_bus1
 comma
 op_amp
-id|pci_direct_conf1
+id|pci_root_ops
 comma
 l_int|NULL
 )paren

@@ -2013,7 +2013,7 @@ c_func
 (paren
 id|inode
 comma
-id|EXT3_XATTR_TRANS_BLOCKS
+id|EXT3_DATA_TRANS_BLOCKS
 )paren
 suffix:semicolon
 r_if
@@ -2569,7 +2569,7 @@ c_func
 (paren
 id|inode
 comma
-id|EXT3_XATTR_TRANS_BLOCKS
+id|EXT3_DATA_TRANS_BLOCKS
 )paren
 suffix:semicolon
 r_if

@@ -1593,6 +1593,7 @@ l_int|5
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: ARR usage was not enabled, enabled manually&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1607,6 +1608,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: ARR3 cannot be changed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1622,6 +1624,7 @@ l_int|6
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;mtrr: ARR3 was write protected, unprotected&bslash;n&quot;
 )paren
 suffix:semicolon

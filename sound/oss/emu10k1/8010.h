@@ -1,8 +1,16 @@
-multiline_comment|/*&n; **********************************************************************&n; *     8010.h&n; *     Copyright 1999, 2000 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date&t;&t;    Author&t;    Summary of changes&n; *     ----&t;&t;    ------&t;    ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *     November 2, 1999     Alan Cox&t;    Cleaned of 8bit chars, DOS&n; *&t;&t;&t;&t;&t;    line endings&n; *     December 8, 1999     Jon Taylor&t;    Added lots of new register info&n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; *&n; **********************************************************************&n; */
+multiline_comment|/*&n; **********************************************************************&n; *     8010.h&n; *     Copyright 1999-2001 Creative Labs, Inc.&n; *&n; **********************************************************************&n; *&n; *     Date&t;&t;    Author&t;    Summary of changes&n; *     ----&t;&t;    ------&t;    ------------------&n; *     October 20, 1999     Bertrand Lee    base code release&n; *     November 2, 1999     Alan Cox&t;    Cleaned of 8bit chars, DOS&n; *&t;&t;&t;&t;&t;    line endings&n; *     December 8, 1999     Jon Taylor&t;    Added lots of new register info&n; *     May 16, 2001         Daniel Bertrand Added unofficial DBG register info&n; *     Oct-Nov 2001         D.B.            Added unofficial Audigy registers &n; *&n; **********************************************************************&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public&n; *     License along with this program; if not, write to the Free&n; *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,&n; *     USA.&n; *&n; *&n; **********************************************************************&n; */
 macro_line|#ifndef _8010_H
 DECL|macro|_8010_H
 mdefine_line|#define _8010_H
 macro_line|#include &lt;linux/types.h&gt;
+singleline_comment|// Driver version:
+DECL|macro|MAJOR_VER
+mdefine_line|#define MAJOR_VER 0
+DECL|macro|MINOR_VER
+mdefine_line|#define MINOR_VER 20
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;0.20a&quot;
+singleline_comment|// Audigy specify registers are prefixed with &squot;A_&squot;
 multiline_comment|/************************************************************************************************/
 multiline_comment|/* PCI function 0 registers, address = &lt;val&gt; + PCIBASE0&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/************************************************************************************************/
@@ -23,6 +31,11 @@ DECL|macro|IPR
 mdefine_line|#define IPR&t;&t;&t;0x08&t;&t;/* Global interrupt pending register&t;&t;*/
 multiline_comment|/* Clear pending interrupts by writing a 1 to&t;*/
 multiline_comment|/* the relevant bits and zero to the other bits&t;*/
+multiline_comment|/* The next two interrupts are for the midi port on the Audigy Drive (A_MPU1)&t;&t;&t;*/
+DECL|macro|A_IPR_MIDITRANSBUFEMPTY2
+mdefine_line|#define A_IPR_MIDITRANSBUFEMPTY2&t;0x10000000&t;/* MIDI UART transmit buffer empty&t;&t;*/
+DECL|macro|A_IPR_MIDIRECVBUFEMPTY2
+mdefine_line|#define A_IPR_MIDIRECVBUFEMPTY2&t;0x08000000&t;/* MIDI UART receive buffer empty&t;&t;*/
 DECL|macro|IPR_SAMPLERATETRACKER
 mdefine_line|#define IPR_SAMPLERATETRACKER&t;0x01000000&t;/* Sample rate tracker lock status change&t;*/
 DECL|macro|IPR_FXDSP
@@ -67,6 +80,10 @@ multiline_comment|/* Highest set channel in CLIPL or CLIPH.  When&t;*/
 multiline_comment|/* IP is written with CL set, the bit in CLIPL&t;*/
 multiline_comment|/* or CLIPH corresponding to the CIN value &t;*/
 multiline_comment|/* written will be cleared.&t;&t;&t;*/
+DECL|macro|A_IPR_MIDITRANSBUFEMPTY1
+mdefine_line|#define A_IPR_MIDITRANSBUFEMPTY1&t;IPR_MIDITRANSBUFEMPTY&t;/* MIDI UART transmit buffer empty&t;&t;*/
+DECL|macro|A_IPR_MIDIRECVBUFEMPTY1
+mdefine_line|#define A_IPR_MIDIRECVBUFEMPTY1&t;IPR_MIDIRECVBUFEMPTY&t;/* MIDI UART receive buffer empty&t;&t;*/
 DECL|macro|INTE
 mdefine_line|#define INTE&t;&t;&t;0x0c&t;&t;/* Interrupt enable register&t;&t;&t;*/
 DECL|macro|INTE_VIRTUALSB_MASK
@@ -111,6 +128,11 @@ multiline_comment|/* NOTE: There is no reason to use this under&t;*/
 multiline_comment|/* Linux, and it will cause odd hardware &t;*/
 multiline_comment|/* behavior and possibly random segfaults and&t;*/
 multiline_comment|/* lockups if enabled.&t;&t;&t;&t;*/
+multiline_comment|/* The next two interrupts are for the midi port on the Audigy Drive (A_MPU1)&t;&t;&t;*/
+DECL|macro|A_INTE_MIDITXENABLE2
+mdefine_line|#define A_INTE_MIDITXENABLE2&t;0x00020000&t;/* Enable MIDI transmit-buffer-empty interrupts&t;*/
+DECL|macro|A_INTE_MIDIRXENABLE2
+mdefine_line|#define A_INTE_MIDIRXENABLE2&t;0x00010000&t;/* Enable MIDI receive-buffer-empty interrupts&t;*/
 DECL|macro|INTE_SAMPLERATETRACKER
 mdefine_line|#define INTE_SAMPLERATETRACKER&t;0x00002000&t;/* Enable sample rate tracker interrupts&t;*/
 multiline_comment|/* NOTE: This bit must always be enabled       &t;*/
@@ -140,6 +162,11 @@ DECL|macro|INTE_MIDITXENABLE
 mdefine_line|#define INTE_MIDITXENABLE&t;0x00000002&t;/* Enable MIDI transmit-buffer-empty interrupts&t;*/
 DECL|macro|INTE_MIDIRXENABLE
 mdefine_line|#define INTE_MIDIRXENABLE&t;0x00000001&t;/* Enable MIDI receive-buffer-empty interrupts&t;*/
+multiline_comment|/* The next two interrupts are for the midi port on the Audigy (A_MPU2)&t;*/
+DECL|macro|A_INTE_MIDITXENABLE1
+mdefine_line|#define A_INTE_MIDITXENABLE1  &t;INTE_MIDITXENABLE
+DECL|macro|A_INTE_MIDIRXENABLE1
+mdefine_line|#define A_INTE_MIDIRXENABLE1&t;INTE_MIDIRXENABLE
 DECL|macro|WC
 mdefine_line|#define WC&t;&t;&t;0x10&t;&t;/* Wall Clock register&t;&t;&t;&t;*/
 DECL|macro|WC_SAMPLECOUNTER_MASK
@@ -234,6 +261,7 @@ DECL|macro|HCFG_AUDIOENABLE
 mdefine_line|#define HCFG_AUDIOENABLE&t;0x00000001&t;/* 0 = CODECs transmit zero-valued samples&t;*/
 multiline_comment|/* Should be set to 1 when the EMU10K1 is&t;*/
 multiline_comment|/* completely initialized.&t;&t;&t;*/
+singleline_comment|//For Audigy, MPU port move to 0x70-0x74 ptr register
 DECL|macro|MUDATA
 mdefine_line|#define MUDATA&t;&t;&t;0x18&t;&t;/* MPU401 data register (8 bits)       &t;&t;*/
 DECL|macro|MUCMD
@@ -249,16 +277,20 @@ DECL|macro|MUSTAT_IRDYN
 mdefine_line|#define MUSTAT_IRDYN&t;&t;0x80&t;&t;/* 0 = MIDI data or command ACK&t;&t;&t;*/
 DECL|macro|MUSTAT_ORDYN
 mdefine_line|#define MUSTAT_ORDYN&t;&t;0x40&t;&t;/* 0 = MUDATA can accept a command or data&t;*/
+DECL|macro|A_IOCFG
+mdefine_line|#define A_IOCFG&t;&t;&t;0x18&t;&t;/* GPIO on Audigy card (16bits)&t;&t;&t;*/
+DECL|macro|A_GPINPUT_MASK
+mdefine_line|#define A_GPINPUT_MASK&t;&t;0xff00
+DECL|macro|A_GPOUTPUT_MASK
+mdefine_line|#define A_GPOUTPUT_MASK&t;&t;0x00ff
 DECL|macro|TIMER
-mdefine_line|#define TIMER&t;&t;&t;0x1a&t;&t;/* Timer terminal count register&t;&t;*/
+mdefine_line|#define TIMER&t;&t;&t;0x1a&t;&t;/* Timer terminal count register (16-bit)&t;*/
 multiline_comment|/* NOTE: After the rate is changed, a maximum&t;*/
 multiline_comment|/* of 1024 sample periods should be allowed&t;*/
 multiline_comment|/* before the new rate is guaranteed accurate.&t;*/
 DECL|macro|TIMER_RATE_MASK
-mdefine_line|#define TIMER_RATE_MASK&t;&t;0x000003ff&t;/* Timer interrupt rate in sample periods&t;*/
+mdefine_line|#define TIMER_RATE_MASK&t;&t;0x03ff&t;&t;/* Timer interrupt rate in sample periods&t;*/
 multiline_comment|/* 0 == 1024 periods, [1..4] are not useful&t;*/
-DECL|macro|TIMER_RATE
-mdefine_line|#define TIMER_RATE&t;&t;0x0a00001a
 DECL|macro|AC97DATA
 mdefine_line|#define AC97DATA&t;&t;0x1c&t;&t;/* AC97 register set data register (16 bit)&t;*/
 DECL|macro|AC97ADDRESS
@@ -521,6 +553,9 @@ mdefine_line|#define TREMFRQ &t;&t;0x1c&t;&t;/* Tremolo amount and modulation LF
 DECL|macro|TREMFRQ_DEPTH
 mdefine_line|#define TREMFRQ_DEPTH&t;&t;0x0000ff00&t;/* Tremolo depth&t;&t;&t;&t;&t;*/
 multiline_comment|/* Signed 2&squot;s complement, with +/- 12dB extremes&t;*/
+DECL|macro|TREMFRQ_FREQUENCY
+mdefine_line|#define TREMFRQ_FREQUENCY&t;0x000000ff&t;/* Tremolo LFO frequency&t;&t;&t;&t;*/
+multiline_comment|/* ??Hz steps, maximum of ?? Hz.&t;&t;&t;*/
 DECL|macro|FM2FRQ2
 mdefine_line|#define FM2FRQ2 &t;&t;0x1d&t;&t;/* Vibrato amount and vibrato LFO frequency register&t;*/
 DECL|macro|FM2FRQ2_DEPTH
@@ -583,6 +618,12 @@ DECL|macro|ADCCR_LCHANENABLE
 mdefine_line|#define ADCCR_LCHANENABLE&t;0x00000008&t;/* Enables left channel for writing to the host&t;&t;*/
 multiline_comment|/* NOTE: To guarantee phase coherency, both channels&t;*/
 multiline_comment|/* must be disabled prior to enabling both channels.&t;*/
+DECL|macro|A_ADCCR_RCHANENABLE
+mdefine_line|#define A_ADCCR_RCHANENABLE&t;0x00000020
+DECL|macro|A_ADCCR_LCHANENABLE
+mdefine_line|#define A_ADCCR_LCHANENABLE&t;0x00000010
+DECL|macro|A_ADCCR_SAMPLERATE_MASK
+mdefine_line|#define A_ADCCR_SAMPLERATE_MASK 0x0000000F      /* Audigy sample rate convertor output rate&t;&t;*/
 DECL|macro|ADCCR_SAMPLERATE_MASK
 mdefine_line|#define ADCCR_SAMPLERATE_MASK&t;0x00000007&t;/* Sample rate convertor output rate&t;&t;&t;*/
 DECL|macro|ADCCR_SAMPLERATE_48
@@ -601,10 +642,19 @@ DECL|macro|ADCCR_SAMPLERATE_11
 mdefine_line|#define ADCCR_SAMPLERATE_11&t;0x00000006&t;/* 11.025kHz sample rate&t;&t;&t;&t;*/
 DECL|macro|ADCCR_SAMPLERATE_8
 mdefine_line|#define ADCCR_SAMPLERATE_8&t;0x00000007&t;/* 8kHz sample rate&t;&t;&t;&t;&t;*/
+DECL|macro|A_ADCCR_SAMPLERATE_12
+mdefine_line|#define A_ADCCR_SAMPLERATE_12&t;0x00000006&t;/* 12kHz sample rate&t;&t;&t;&t;&t;*/
+DECL|macro|A_ADCCR_SAMPLERATE_11
+mdefine_line|#define A_ADCCR_SAMPLERATE_11&t;0x00000007&t;/* 11.025kHz sample rate&t;&t;&t;&t;*/
+DECL|macro|A_ADCCR_SAMPLERATE_8
+mdefine_line|#define A_ADCCR_SAMPLERATE_8&t;0x00000008&t;/* 8kHz sample rate&t;&t;&t;&t;&t;*/
 DECL|macro|FXWC
 mdefine_line|#define FXWC&t;&t;&t;0x43&t;&t;/* FX output write channels register&t;&t;&t;*/
 multiline_comment|/* When set, each bit enables the writing of the&t;*/
-multiline_comment|/* corresponding FX output channel into host memory&t;*/
+multiline_comment|/* corresponding FX output channel (internal registers  */
+multiline_comment|/* 0x20-0x3f) into host memory. This mode of recording&t;*/
+multiline_comment|/* is 16bit, 48KHz only. All 32&t;channels can be enabled */
+multiline_comment|/* simultaneously.&t;&t;&t;&t;&t;*/
 DECL|macro|TCBS
 mdefine_line|#define TCBS&t;&t;&t;0x44&t;&t;/* Tank cache buffer size register&t;&t;&t;*/
 DECL|macro|TCBS_MASK
@@ -731,6 +781,18 @@ DECL|macro|DBG_SINGLE_STEP_ADDR
 mdefine_line|#define DBG_SINGLE_STEP_ADDR    0x000001ff      /* single step address */
 DECL|macro|REG53
 mdefine_line|#define REG53&t;&t;&t;0x53&t;&t;/* DO NOT PROGRAM THIS REGISTER!!! MAY DESTROY CHIP */
+DECL|macro|A_DBG
+mdefine_line|#define A_DBG&t;&t;&t; 0x53
+DECL|macro|A_DBG_SINGLE_STEP
+mdefine_line|#define A_DBG_SINGLE_STEP&t; 0x00020000&t;/* Set to zero to start dsp */
+DECL|macro|A_DBG_ZC
+mdefine_line|#define A_DBG_ZC&t;&t; 0x40000000&t;/* zero tram counter */
+DECL|macro|A_DBG_STEP_ADDR
+mdefine_line|#define A_DBG_STEP_ADDR&t;&t; 0x000003ff
+DECL|macro|A_DBG_SATURATION_OCCURED
+mdefine_line|#define A_DBG_SATURATION_OCCURED 0x20000000
+DECL|macro|A_DBG_SATURATION_ADDR
+mdefine_line|#define A_DBG_SATURATION_ADDR&t; 0x0ffc0000
 DECL|macro|SPCS0
 mdefine_line|#define SPCS0&t;&t;&t;0x54&t;&t;/* SPDIF output Channel Status 0 register&t;*/
 DECL|macro|SPCS1
@@ -821,12 +883,23 @@ DECL|macro|SRCS_RATELOCKED
 mdefine_line|#define SRCS_RATELOCKED&t;&t;0x01000000&t;/* Sample rate locked&t;&t;&t;&t;*/
 DECL|macro|SRCS_ESTSAMPLERATE
 mdefine_line|#define SRCS_ESTSAMPLERATE&t;0x0007ffff&t;/* Do not modify this field.&t;&t;&t;*/
+multiline_comment|/* Note that these values can vary +/- by a small amount                                        */
+DECL|macro|SRCS_SPDIFRATE_44
+mdefine_line|#define SRCS_SPDIFRATE_44&t;0x0003acd9
+DECL|macro|SRCS_SPDIFRATE_48
+mdefine_line|#define SRCS_SPDIFRATE_48&t;0x00040000
+DECL|macro|SRCS_SPDIFRATE_96
+mdefine_line|#define SRCS_SPDIFRATE_96&t;0x00080000
 DECL|macro|MICIDX
 mdefine_line|#define MICIDX                  0x63            /* Microphone recording buffer index register   */
 DECL|macro|MICIDX_MASK
 mdefine_line|#define MICIDX_MASK             0x0000ffff      /* 16-bit value                                 */
 DECL|macro|MICIDX_IDX
 mdefine_line|#define MICIDX_IDX&t;&t;0x10000063
+DECL|macro|A_ADCIDX
+mdefine_line|#define A_ADCIDX&t;&t;0x63
+DECL|macro|A_ADCIDX_IDX
+mdefine_line|#define A_ADCIDX_IDX&t;&t;0x10000063
 DECL|macro|ADCIDX
 mdefine_line|#define ADCIDX&t;&t;&t;0x64&t;&t;/* ADC recording buffer index register&t;&t;*/
 DECL|macro|ADCIDX_MASK
@@ -839,9 +912,71 @@ DECL|macro|FXIDX_MASK
 mdefine_line|#define FXIDX_MASK&t;&t;0x0000ffff&t;/* 16-bit value&t;&t;&t;&t;&t;*/
 DECL|macro|FXIDX_IDX
 mdefine_line|#define FXIDX_IDX&t;&t;0x10000065
+multiline_comment|/* This is the MPU port on the card (via the game port)&t;&t;&t;&t;&t;&t;*/
+DECL|macro|A_MUDATA1
+mdefine_line|#define A_MUDATA1&t;&t;0x70
+DECL|macro|A_MUCMD1
+mdefine_line|#define A_MUCMD1&t;&t;0x71
+DECL|macro|A_MUSTAT1
+mdefine_line|#define A_MUSTAT1&t;&t;A_MUCMD1
+multiline_comment|/* This is the MPU port on the Audigy Drive &t;&t;&t;&t;&t;&t;&t;*/
+DECL|macro|A_MUDATA2
+mdefine_line|#define A_MUDATA2&t;&t;0x72
+DECL|macro|A_MUCMD2
+mdefine_line|#define A_MUCMD2&t;&t;0x73
+DECL|macro|A_MUSTAT2
+mdefine_line|#define A_MUSTAT2&t;&t;A_MUCMD2&t;
+multiline_comment|/* The next two are the Audigy equivalent of FXWC&t;&t;&t;&t;&t;&t;*/
+multiline_comment|/* the Audigy can record any output (16bit, 48kHz, up to 64 channel simultaneously) &t;&t;*/
+multiline_comment|/* Each bit selects a channel for recording */
+DECL|macro|A_FXWC1
+mdefine_line|#define A_FXWC1&t;&t;&t;0x74            /* Selects 0x7f-0x60 for FX recording           */
+DECL|macro|A_FXWC2
+mdefine_line|#define A_FXWC2&t;&t;&t;0x75&t;&t;/* Selects 0x9f-0x80 for FX recording           */
+DECL|macro|A_SPDIF_SAMPLERATE
+mdefine_line|#define A_SPDIF_SAMPLERATE&t;0x76&t;&t;/* Set the sample rate of SPDIF output&t;&t;*/
+DECL|macro|A_SPDIF_48000
+mdefine_line|#define A_SPDIF_48000&t;&t;0x00000080
+DECL|macro|A_SPDIF_44100
+mdefine_line|#define A_SPDIF_44100&t;&t;0x00000000
+DECL|macro|A_SPDIF_96000
+mdefine_line|#define A_SPDIF_96000&t;&t;0x00000040
+DECL|macro|A_FXRT2
+mdefine_line|#define A_FXRT2&t;&t;&t;0x7c
+DECL|macro|A_FXRT_CHANNELE
+mdefine_line|#define A_FXRT_CHANNELE&t;&t;0x0000003f&t;/* Effects send bus number for channel&squot;s effects send E&t;*/
+DECL|macro|A_FXRT_CHANNELF
+mdefine_line|#define A_FXRT_CHANNELF&t;&t;0x00003f00&t;/* Effects send bus number for channel&squot;s effects send F&t;*/
+DECL|macro|A_FXRT_CHANNELG
+mdefine_line|#define A_FXRT_CHANNELG&t;&t;0x003f0000&t;/* Effects send bus number for channel&squot;s effects send G&t;*/
+DECL|macro|A_FXRT_CHANNELH
+mdefine_line|#define A_FXRT_CHANNELH&t;&t;0x3f000000&t;/* Effects send bus number for channel&squot;s effects send H&t;*/
+DECL|macro|A_SENDAMOUNTS
+mdefine_line|#define A_SENDAMOUNTS&t;&t;0x7d
+DECL|macro|A_FXSENDAMOUNT_E_MASK
+mdefine_line|#define A_FXSENDAMOUNT_E_MASK&t;0xff000000
+DECL|macro|A_FXSENDAMOUNT_F_MASK
+mdefine_line|#define A_FXSENDAMOUNT_F_MASK&t;0x00ff0000
+DECL|macro|A_FXSENDAMOUNT_G_MASK
+mdefine_line|#define A_FXSENDAMOUNT_G_MASK&t;0x0000ff00
+DECL|macro|A_FXSENDAMOUNT_H_MASK
+mdefine_line|#define A_FXSENDAMOUNT_H_MASK&t;0x000000ff
+multiline_comment|/* The send amounts for this one are the same as used with the emu10k1 */
+DECL|macro|A_FXRT1
+mdefine_line|#define A_FXRT1&t;&t;&t;0x7e
+DECL|macro|A_FXRT_CHANNELA
+mdefine_line|#define A_FXRT_CHANNELA&t;&t;0x0000003f
+DECL|macro|A_FXRT_CHANNELB
+mdefine_line|#define A_FXRT_CHANNELB&t;&t;0x00003f00
+DECL|macro|A_FXRT_CHANNELC
+mdefine_line|#define A_FXRT_CHANNELC&t;&t;0x003f0000
+DECL|macro|A_FXRT_CHANNELD
+mdefine_line|#define A_FXRT_CHANNELD&t;&t;0x3f000000
 multiline_comment|/* Each FX general purpose register is 32 bits in length, all bits are used&t;&t;&t;*/
 DECL|macro|FXGPREGBASE
 mdefine_line|#define FXGPREGBASE&t;&t;0x100&t;&t;/* FX general purpose registers base       &t;*/
+DECL|macro|A_FXGPREGBASE
+mdefine_line|#define A_FXGPREGBASE&t;&t;0x400&t;&t;/* Audigy GPRs, 0x400 to 0x5ff&t;&t;&t;*/
 multiline_comment|/* Tank audio data is logarithmically compressed down to 16 bits before writing to TRAM and is&t;*/
 multiline_comment|/* decompressed back to 20 bits on a read.  There are a total of 160 locations, the last 32&t;*/
 multiline_comment|/* locations are for external TRAM. &t;&t;&t;&t;&t;&t;&t;&t;*/
@@ -876,5 +1011,18 @@ DECL|macro|HIWORD_RESULT_MASK
 mdefine_line|#define HIWORD_RESULT_MASK&t;0x000ffc00&t;/* Instruction result&t;&t;&t;&t;*/
 DECL|macro|HIWORD_OPA_MASK
 mdefine_line|#define HIWORD_OPA_MASK&t;&t;0x000003ff&t;/* Instruction operand A&t;&t;&t;*/
+multiline_comment|/* Audigy Soundcard have a different instruction format */
+DECL|macro|AUDIGY_CODEBASE
+mdefine_line|#define AUDIGY_CODEBASE&t;&t;0x600
+DECL|macro|A_LOWORD_OPY_MASK
+mdefine_line|#define A_LOWORD_OPY_MASK&t;0x000007ff&t;&t;
+DECL|macro|A_LOWORD_OPX_MASK
+mdefine_line|#define A_LOWORD_OPX_MASK&t;0x007ff000
+DECL|macro|A_HIWORD_OPCODE_MASK
+mdefine_line|#define A_HIWORD_OPCODE_MASK&t;0x0f000000
+DECL|macro|A_HIWORD_RESULT_MASK
+mdefine_line|#define A_HIWORD_RESULT_MASK&t;0x007ff000
+DECL|macro|A_HIWORD_OPA_MASK
+mdefine_line|#define A_HIWORD_OPA_MASK&t;0x000007ff
 macro_line|#endif /* _8010_H */
 eof
