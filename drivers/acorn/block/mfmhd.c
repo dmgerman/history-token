@@ -17,8 +17,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;MFM_ACORN_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;mfm disk&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_mfm
 DECL|macro|DEVICE_NR

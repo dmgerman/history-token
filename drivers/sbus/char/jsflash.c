@@ -12,8 +12,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/*&n; * &lt;linux/blk.h&gt; is controlled from the outside with these definitions.&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;JSFD_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;jsfd&quot;
 DECL|macro|DEVICE_REQUEST
 mdefine_line|#define DEVICE_REQUEST jsfd_do_request
 DECL|macro|DEVICE_NR

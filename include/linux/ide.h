@@ -1970,8 +1970,6 @@ DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;ide&quot;
 macro_line|#include &lt;linux/blk.h&gt;
 r_extern
 r_int

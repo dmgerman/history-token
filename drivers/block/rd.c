@@ -10,8 +10,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * 35 has been officially registered as the RAMDISK major number, but&n; * so is the original MAJOR number of 1.  We&squot;re using 1 in&n; * include/linux/major.h for now&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR RAMDISK_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;ramdisk&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;

@@ -16,8 +16,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR NBD_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;nbd&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/nbd.h&gt;

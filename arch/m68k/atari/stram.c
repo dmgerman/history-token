@@ -25,15 +25,9 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR    Z2RAM_MAJOR
 DECL|macro|do_z2_request
 mdefine_line|#define do_z2_request do_stram_request
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;Z2RAM&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
-DECL|macro|DEVICE_NAME
-macro_line|#undef DEVICE_NAME
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME&t;&quot;stram&quot;
 macro_line|#endif
 DECL|macro|DEBUG
 macro_line|#undef DEBUG

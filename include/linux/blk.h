@@ -259,10 +259,6 @@ macro_line|#ifndef CURRENT
 DECL|macro|CURRENT
 macro_line|# define CURRENT elv_next_request(QUEUE)
 macro_line|#endif
-macro_line|#ifndef DEVICE_NAME
-DECL|macro|DEVICE_NAME
-macro_line|# define DEVICE_NAME &quot;unknown&quot;
-macro_line|#endif
 macro_line|#ifdef DEVICE_INTR
 DECL|variable|DEVICE_INTR
 r_static

@@ -47,8 +47,6 @@ id|xpram_devfs_handle
 suffix:semicolon
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) MINOR(device)   /* xpram has no partition bits */
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;xpram&quot;               /* name for messaging */
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR xpram_intrptr         /* pointer to the bottom half */
 DECL|macro|DEVICE_NO_RANDOM

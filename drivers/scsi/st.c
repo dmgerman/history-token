@@ -42,8 +42,6 @@ mdefine_line|#define DEBC(a)
 macro_line|#endif
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SCSI_TAPE_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;scsitape&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_st  
 DECL|macro|DEVICE_NR

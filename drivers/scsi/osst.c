@@ -48,8 +48,6 @@ DECL|macro|OSST_DEB_MSG
 mdefine_line|#define OSST_DEB_MSG  KERN_NOTICE
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR OSST_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;onstream&quot; 
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_osst
 DECL|macro|DEVICE_NR
