@@ -3803,7 +3803,7 @@ r_if
 c_cond
 (paren
 id|pcm-&gt;sw_io
-OG
+op_ge
 id|runtime-&gt;buffer_size
 )paren
 id|pcm-&gt;sw_io
