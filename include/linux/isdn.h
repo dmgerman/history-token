@@ -1068,14 +1068,6 @@ op_star
 id|mlp
 suffix:semicolon
 multiline_comment|/* Ptr to master device for all devs*/
-DECL|member|slave
-r_struct
-id|isdn_net_dev_s
-op_star
-id|slave
-suffix:semicolon
-multiline_comment|/* Ptr to Slave device for masters  */
-singleline_comment|// FIXME kill
 DECL|member|slaves
 r_struct
 id|list_head
