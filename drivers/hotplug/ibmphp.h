@@ -15,7 +15,9 @@ DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME THIS_MODULE-&gt;name
 macro_line|#endif
 DECL|macro|debug
-mdefine_line|#define debug(fmt, arg...) do { if (ibmphp_debug) printk(KERN_DEBUG &quot;%s: &quot; fmt , MY_NAME , ## arg); } while (0)
+mdefine_line|#define debug(fmt, arg...) do { if (ibmphp_debug == 1) printk(KERN_DEBUG &quot;%s: &quot; fmt , MY_NAME , ## arg); } while (0)
+DECL|macro|debug_pci
+mdefine_line|#define debug_pci(fmt, arg...) do { if (ibmphp_debug) printk(KERN_DEBUG &quot;%s: &quot; fmt , MY_NAME , ## arg); } while (0)
 DECL|macro|err
 mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format , MY_NAME , ## arg)
 DECL|macro|info
@@ -132,6 +134,10 @@ DECL|member|port2_port_connect
 id|u8
 id|port2_port_connect
 suffix:semicolon
+DECL|member|chassis_num
+id|u8
+id|chassis_num
+suffix:semicolon
 singleline_comment|//&t;struct list_head scal_detail_list;
 )brace
 suffix:semicolon
@@ -182,7 +188,77 @@ DECL|member|status
 id|u8
 id|status
 suffix:semicolon
-singleline_comment|//&t;struct list_head rio_detail_list;
+DECL|member|wpindex
+id|u8
+id|wpindex
+suffix:semicolon
+DECL|member|chassis_num
+id|u8
+id|chassis_num
+suffix:semicolon
+DECL|member|rio_detail_list
+r_struct
+id|list_head
+id|rio_detail_list
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|opt_rio
+r_struct
+id|opt_rio
+(brace
+DECL|member|rio_type
+id|u8
+id|rio_type
+suffix:semicolon
+DECL|member|chassis_num
+id|u8
+id|chassis_num
+suffix:semicolon
+DECL|member|first_slot_num
+id|u8
+id|first_slot_num
+suffix:semicolon
+DECL|member|middle_num
+id|u8
+id|middle_num
+suffix:semicolon
+DECL|member|opt_rio_list
+r_struct
+id|list_head
+id|opt_rio_list
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|opt_rio_lo
+r_struct
+id|opt_rio_lo
+(brace
+DECL|member|rio_type
+id|u8
+id|rio_type
+suffix:semicolon
+DECL|member|chassis_num
+id|u8
+id|chassis_num
+suffix:semicolon
+DECL|member|first_slot_num
+id|u8
+id|first_slot_num
+suffix:semicolon
+DECL|member|middle_num
+id|u8
+id|middle_num
+suffix:semicolon
+DECL|member|pack_count
+id|u8
+id|pack_count
+suffix:semicolon
+DECL|member|opt_rio_lo_list
+r_struct
+id|list_head
+id|opt_rio_lo_list
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************&n;*  HPC DESCRIPTOR NODE                                          *&n;****************************************************************/
@@ -301,6 +377,12 @@ id|i2c_addr
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|HPC_DEVICE_ID
+mdefine_line|#define HPC_DEVICE_ID&t;&t;0x0246
+DECL|macro|HPC_SUBSYSTEM_ID
+mdefine_line|#define HPC_SUBSYSTEM_ID&t;0x0247
+DECL|macro|HPC_PCI_OFFSET
+mdefine_line|#define HPC_PCI_OFFSET&t;&t;0x40
 multiline_comment|/*************************************************************************&n;*   RSTC DESCRIPTOR NODE                                                 *&n;*************************************************************************/
 DECL|struct|ebda_rsrc_list
 r_struct
@@ -344,13 +426,18 @@ id|u8
 id|dev_fun
 suffix:semicolon
 DECL|member|start_addr
-id|ulong
+id|u32
 id|start_addr
 suffix:semicolon
 DECL|member|end_addr
-id|ulong
+id|u32
 id|end_addr
 suffix:semicolon
+DECL|member|marked
+id|u8
+id|marked
+suffix:semicolon
+multiline_comment|/* for NVRAM */
 DECL|member|ebda_pci_rsrc_list
 r_struct
 id|list_head
@@ -433,6 +520,11 @@ r_struct
 id|list_head
 id|ibmphp_slot_head
 suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|ibmphp_res_head
+suffix:semicolon
 multiline_comment|/***********************************************************&n;* FUNCTION PROTOTYPES                                      *&n;***********************************************************/
 r_extern
 r_void
@@ -506,6 +598,13 @@ suffix:semicolon
 r_extern
 id|u16
 id|ibmphp_get_total_controllers
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ibmphp_register_pci
 (paren
 r_void
 )paren
@@ -1285,9 +1384,9 @@ DECL|macro|PCI66
 mdefine_line|#define PCI66&t;&t;0x04
 r_extern
 r_struct
-id|pci_ops
+id|pci_bus
 op_star
-id|ibmphp_pci_root_ops
+id|ibmphp_pci_bus
 suffix:semicolon
 multiline_comment|/* Variables */
 DECL|struct|pci_func
@@ -1488,6 +1587,13 @@ id|ebda_hpc_bus
 op_star
 id|buses
 suffix:semicolon
+DECL|member|ctrl_dev
+r_struct
+id|pci_dev
+op_star
+id|ctrl_dev
+suffix:semicolon
+multiline_comment|/* in case where controller is PCI */
 DECL|member|starting_slot_num
 id|u8
 id|starting_slot_num

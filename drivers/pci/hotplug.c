@@ -7,9 +7,10 @@ mdefine_line|#define FALSE&t;(0)
 DECL|macro|TRUE
 mdefine_line|#define TRUE&t;(!FALSE)
 macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG
+DECL|function|run_sbin_hotplug
 r_static
 r_void
-DECL|function|run_sbin_hotplug
 id|run_sbin_hotplug
 c_func
 (paren
@@ -239,7 +240,25 @@ id|envp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pci_insert_device - insert a hotplug device&n; * @dev: the device to insert&n; * @bus: where to insert it&n; *&n; * Add a new device to the device lists and notify userspace (/sbin/hotplug).&n; */
+macro_line|#else
+DECL|function|run_sbin_hotplug
+r_static
+r_void
+id|run_sbin_hotplug
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_int
+id|insert
+)paren
+(brace
+)brace
+macro_line|#endif
+multiline_comment|/**&n; * pci_insert_device - insert a pci device&n; * @dev: the device to insert&n; * @bus: where to insert it&n; *&n; * Link the device to both the global PCI device chain and the &n; * per-bus list of devices, add the /proc entry, and notify&n; * userspace (/sbin/hotplug).&n; */
 r_void
 DECL|function|pci_insert_device
 id|pci_insert_device
@@ -346,7 +365,7 @@ id|res
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * pci_remove_device - remove a hotplug device&n; * @dev: the device to remove&n; *&n; * Delete the device structure from the device lists and &n; * notify userspace (/sbin/hotplug).&n; */
+multiline_comment|/**&n; * pci_remove_device - remove a pci device&n; * @dev: the device to remove&n; *&n; * Delete the device structure from the device lists,&n; * remove the /proc entry, and notify userspace (/sbin/hotplug).&n; */
 r_void
 DECL|function|pci_remove_device
 id|pci_remove_device
@@ -403,6 +422,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG
 DECL|variable|pci_insert_device
 id|EXPORT_SYMBOL
 c_func
@@ -417,4 +437,5 @@ c_func
 id|pci_remove_device
 )paren
 suffix:semicolon
+macro_line|#endif
 eof
