@@ -92,9 +92,11 @@ id|tsk-&gt;thread.i387.fsave
 )paren
 suffix:semicolon
 )brace
-id|clear_thread_flag
+id|clear_tsk_thread_flag
 c_func
 (paren
+id|tsk
+comma
 id|TIF_USEDFPU
 )paren
 suffix:semicolon
@@ -130,13 +132,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|tsk
-op_assign
-id|current
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -150,7 +145,7 @@ id|TIF_USEDFPU
 id|__save_init_fpu
 c_func
 (paren
-id|tsk
+id|current
 )paren
 suffix:semicolon
 r_return

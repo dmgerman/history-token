@@ -118,9 +118,9 @@ mdefine_line|#define alloc_thread_info() ((struct thread_info *) __get_free_page
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
 DECL|macro|get_thread_info
-mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;l_task)
+mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
-mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;l_task)
+mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
 DECL|macro|GET_THREAD_INFO
