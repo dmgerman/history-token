@@ -15,11 +15,6 @@ macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/au1000.h&gt;
-r_extern
-r_struct
-id|rtc_ops
-id|no_rtc_ops
-suffix:semicolon
 DECL|function|board_reset
 r_void
 id|board_reset
@@ -39,11 +34,6 @@ r_void
 (brace
 id|u32
 id|pin_func
-suffix:semicolon
-id|rtc_ops
-op_assign
-op_amp
-id|no_rtc_ops
 suffix:semicolon
 macro_line|#ifdef CONFIG_AU1X00_USB_DEVICE
 singleline_comment|// 2nd USB port is USB device

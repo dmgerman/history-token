@@ -3,6 +3,7 @@ multiline_comment|/* Specifics for the Au1xxx Descriptor-Based DMA Controllers, 
 macro_line|#ifndef _AU1000_DBDMA_H_
 DECL|macro|_AU1000_DBDMA_H_
 mdefine_line|#define _AU1000_DBDMA_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef _LANGUAGE_ASSEMBLY
 multiline_comment|/* The DMA base addresses.&n; * The Channels are every 256 bytes (0x0100) from the channel 0 base.&n; * Interrupt status/enable is bits 15:0 for channels 15 to zero.&n; */
 DECL|macro|DDMA_GLOBAL_BASE

@@ -105,12 +105,12 @@ DECL|macro|ACPI_S1_SLP_TYP
 mdefine_line|#define&t;ACPI_S1_SLP_TYP 19
 DECL|macro|ACPI_SLEEP
 mdefine_line|#define&t;ACPI_SLEEP 21
-DECL|variable|pm_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pm_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* We need to save/restore a bunch of core registers that are&n; * either volatile or reset to some state across a processor sleep.&n; * If reading a register doesn&squot;t provide a proper result for a&n; * later restore, we have to provide a function for loading that&n; * register and save a copy.&n; *&n; * We only have to save/restore registers that aren&squot;t otherwise&n; * done as part of a driver pm_* function.&n; */
 DECL|variable|sleep_aux_pll_cntrl

@@ -3,6 +3,7 @@ multiline_comment|/*&n;  * some definitions add by takuzo@sm.sony.co.jp and sato
 macro_line|#ifndef _AU1000_H_
 DECL|macro|_AU1000_H_
 mdefine_line|#define _AU1000_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef _LANGUAGE_ASSEMBLY
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
