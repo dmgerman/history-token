@@ -2201,10 +2201,6 @@ op_amp
 id|ni
 )paren
 suffix:semicolon
-id|ctx-&gt;ntfs_ino
-op_assign
-id|ni
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2259,9 +2255,18 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
+multiline_comment|/* Cause @ctx to be sanitized below. */
+id|ni
+op_assign
+l_int|NULL
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|ctx-&gt;ntfs_ino
+op_assign
+id|ni
+suffix:semicolon
 )brace
 id|ctx-&gt;attr
 op_assign
@@ -2510,6 +2515,11 @@ op_ne
 id|base_ni
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ni
+)paren
 id|unmap_extent_mft_record
 c_func
 (paren
