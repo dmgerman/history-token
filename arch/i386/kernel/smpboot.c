@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
+macro_line|#include &quot;smpboot_hooks.h&quot;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -3659,12 +3660,11 @@ id|KERN_NOTICE
 l_string|&quot;SMP motherboard not detected.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|cpu_online_map
 op_assign
 id|phys_cpu_present_map
@@ -3762,12 +3762,11 @@ id|KERN_ERR
 l_string|&quot;... forcing use of dummy APIC emulation. (tell your hw vendor)&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|cpu_online_map
 op_assign
 id|phys_cpu_present_map
@@ -3802,12 +3801,11 @@ id|KERN_INFO
 l_string|&quot;SMP mode deactivated, forcing use of dummy APIC emulation.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_VISWS
-id|io_apic_irqs
-op_assign
-l_int|0
+id|smpboot_clear_io_apic_irqs
+c_func
+(paren
+)paren
 suffix:semicolon
-macro_line|#endif
 id|cpu_online_map
 op_assign
 id|phys_cpu_present_map
@@ -3958,41 +3956,11 @@ id|apicid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */
-macro_line|#ifndef CONFIG_VISWS
-(brace
-multiline_comment|/*&n;&t;&t; * Install writable page 0 entry to set BIOS data area.&n;&t;&t; */
-id|local_flush_tlb
+id|smpboot_setup_warm_reset_vector
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Paranoid:  Set warm reset code and vector here back&n;&t;&t; * to default values.&n;&t;&t; */
-id|CMOS_WRITE
-c_func
-(paren
-l_int|0
-comma
-l_int|0xf
-)paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-op_star
-)paren
-id|phys_to_virt
-c_func
-(paren
-l_int|0x467
-)paren
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t; * Allow the user to impress friends.&n;&t; */
 id|Dprintk
 c_func
@@ -4271,22 +4239,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifndef CONFIG_VISWS
-multiline_comment|/*&n;&t; * Here we can be sure that there is an IO-APIC in the system. Let&squot;s&n;&t; * go and set it up:&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skip_ioapic_setup
-op_logical_and
-id|nr_ioapics
-)paren
-id|setup_IO_APIC
+id|smpboot_setup_io_apic
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set up all local APIC timers in the system:&n;&t; */
 id|setup_APIC_clocks
 c_func
