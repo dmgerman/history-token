@@ -2015,9 +2015,9 @@ id|ED_C
 )paren
 ques
 c_cond
-id|data1
+l_string|&quot;data1&quot;
 suffix:colon
-id|data0
+l_string|&quot;data0&quot;
 )paren
 suffix:semicolon
 id|size

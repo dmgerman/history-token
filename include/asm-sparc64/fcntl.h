@@ -135,38 +135,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-DECL|struct|flock32
-r_struct
-id|flock32
-(brace
-DECL|member|l_type
-r_int
-id|l_type
-suffix:semicolon
-DECL|member|l_whence
-r_int
-id|l_whence
-suffix:semicolon
-DECL|member|l_start
-id|__kernel_off_t32
-id|l_start
-suffix:semicolon
-DECL|member|l_len
-id|__kernel_off_t32
-id|l_len
-suffix:semicolon
-DECL|member|l_pid
-id|__kernel_pid_t32
-id|l_pid
-suffix:semicolon
-DECL|member|__unused
-r_int
-id|__unused
-suffix:semicolon
-)brace
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
 DECL|macro|flock64
 mdefine_line|#define flock64&t;flock
 macro_line|#endif

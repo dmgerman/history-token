@@ -6816,6 +6816,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SUN4
 macro_line|#include &lt;asm/sun4paddr.h&gt;
+macro_line|#include &lt;asm/machines.h&gt;
 multiline_comment|/* Find all the lance cards on the system and initialize them */
 DECL|function|sparc_lance_probe
 r_static

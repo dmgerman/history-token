@@ -67,33 +67,6 @@ DECL|macro|IA32_PAGE_ALIGN
 mdefine_line|#define IA32_PAGE_ALIGN(addr)&t;(((addr) + IA32_PAGE_SIZE - 1) &amp; IA32_PAGE_MASK)
 DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
-multiline_comment|/* fcntl.h */
-DECL|struct|flock32
-r_struct
-id|flock32
-(brace
-DECL|member|l_type
-r_int
-id|l_type
-suffix:semicolon
-DECL|member|l_whence
-r_int
-id|l_whence
-suffix:semicolon
-DECL|member|l_start
-id|compat_off_t
-id|l_start
-suffix:semicolon
-DECL|member|l_len
-id|compat_off_t
-id|l_len
-suffix:semicolon
-DECL|member|l_pid
-id|compat_pid_t
-id|l_pid
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|F_GETLK64
 mdefine_line|#define F_GETLK64&t;12
 DECL|macro|F_SETLK64

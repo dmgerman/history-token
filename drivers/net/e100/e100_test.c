@@ -25,6 +25,8 @@ comma
 id|u32
 comma
 id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 r_extern
@@ -377,15 +379,6 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-id|e100_deisolate_driver
-c_func
-(paren
-id|bdp
-comma
-l_bool|false
-)paren
-suffix:semicolon
-multiline_comment|/*Let card recover from the test*/
 id|set_current_state
 c_func
 (paren
@@ -398,6 +391,14 @@ c_func
 id|HZ
 op_star
 l_int|2
+)paren
+suffix:semicolon
+id|e100_deisolate_driver
+c_func
+(paren
+id|bdp
+comma
+l_bool|false
 )paren
 suffix:semicolon
 r_return
@@ -509,12 +510,10 @@ id|TEST_TIMEOUT
 suffix:semicolon
 )brace
 )brace
-id|e100_hw_reset_recover
+id|e100_configure_device
 c_func
 (paren
 id|bdp
-comma
-id|PORT_SOFTWARE_RESET
 )paren
 suffix:semicolon
 r_return
@@ -633,6 +632,23 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: PHY loopback test starts&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|e100_sw_reset
+c_func
+(paren
+id|dev-&gt;priv
+comma
+id|PORT_SELECTIVE_RESET
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -651,6 +667,32 @@ op_or_assign
 id|PHY_LOOPBACK
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: PHY loopback test ends&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: MAC loopback test starts&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|e100_sw_reset
+c_func
+(paren
+id|dev-&gt;priv
+comma
+id|PORT_SELECTIVE_RESET
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -669,6 +711,15 @@ op_or_assign
 id|MAC_LOOPBACK
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: MAC loopback test ends&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1344,11 +1395,14 @@ comma
 l_int|0
 comma
 id|SCB_CUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;e100: SCB_CUC_LOAD_BASE failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1364,12 +1418,15 @@ comma
 l_int|0
 comma
 id|SCB_RUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;e100: SCB_RUC_LOAD_BASE failed!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1386,12 +1443,15 @@ comma
 id|bdp-&gt;loopback.dma_handle
 comma
 id|SCB_RUC_START
+comma
+l_int|0
 )paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;e100: SCB_RUC_START failed!&bslash;n&quot;
 )paren
 suffix:semicolon

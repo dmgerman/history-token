@@ -7217,6 +7217,13 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+multiline_comment|/* Keep track of module usage */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Setup to be a normal IrDA network device driver */
 id|irda_device_setup
 c_func
@@ -7451,8 +7458,6 @@ comma
 id|hwname
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7612,8 +7617,6 @@ id|iobase
 op_plus
 id|BSR
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

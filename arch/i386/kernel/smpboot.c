@@ -2763,23 +2763,14 @@ comma
 id|start_eip
 )paren
 suffix:semicolon
+multiline_comment|/* Stack for startup_32 can be just as for start_secondary onwards */
 id|stack_start.esp
 op_assign
 (paren
 r_void
 op_star
 )paren
-(paren
-l_int|1024
-op_plus
-id|PAGE_SIZE
-op_plus
-(paren
-r_char
-op_star
-)paren
-id|idle-&gt;thread_info
-)paren
+id|idle-&gt;thread.esp
 suffix:semicolon
 multiline_comment|/*&n;&t; * This grunge runs the startup process for&n;&t; * the targeted processor.&n;&t; */
 id|atomic_set
@@ -3077,11 +3068,7 @@ r_int
 r_char
 op_star
 )paren
-id|phys_to_virt
-c_func
-(paren
-l_int|8192
-)paren
+id|trampoline_base
 )paren
 op_eq
 l_int|0xA5
@@ -3165,11 +3152,7 @@ r_int
 r_int
 op_star
 )paren
-id|phys_to_virt
-c_func
-(paren
-l_int|8192
-)paren
+id|trampoline_base
 )paren
 op_assign
 l_int|0
