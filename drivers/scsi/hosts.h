@@ -800,20 +800,12 @@ suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions/data in scsi_scan.c&n; */
 r_extern
 r_void
-id|scan_scsis
+id|scsi_scan_host
 c_func
 (paren
 r_struct
 id|Scsi_Host
 op_star
-comma
-id|uint
-comma
-id|uint
-comma
-id|uint
-comma
-id|uint
 )paren
 suffix:semicolon
 DECL|struct|Scsi_Device_Template
