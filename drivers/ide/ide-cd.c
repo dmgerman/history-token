@@ -5986,12 +5986,16 @@ r_if
 c_cond
 (paren
 id|len
+OG
+l_int|0
 )paren
 (brace
 r_while
 c_loop
 (paren
 id|len
+OG
+l_int|0
 )paren
 (brace
 r_int
