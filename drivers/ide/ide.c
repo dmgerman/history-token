@@ -2324,6 +2324,10 @@ id|hwif-&gt;atapi_output_bytes
 op_assign
 id|tmp_hwif-&gt;atapi_output_bytes
 suffix:semicolon
+id|hwif-&gt;dma_setup
+op_assign
+id|tmp_hwif-&gt;dma_setup
+suffix:semicolon
 id|hwif-&gt;ide_dma_read
 op_assign
 id|tmp_hwif-&gt;ide_dma_read
