@@ -718,9 +718,14 @@ comma
 l_string|&quot;IrLAN: Sending gratuitous ARP&bslash;n&quot;
 )paren
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|dev
@@ -733,12 +738,8 @@ id|in_dev
 op_eq
 l_int|NULL
 )paren
-r_return
-suffix:semicolon
-id|rcu_read_lock
-c_func
-(paren
-)paren
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -765,15 +766,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|rcu_read_unlock
 c_func
 (paren
-)paren
-suffix:semicolon
-id|in_dev_put
-c_func
-(paren
-id|in_dev
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_INET */
