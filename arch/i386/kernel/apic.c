@@ -32,6 +32,32 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves.&n; */
+DECL|function|ack_bad_irq
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;unexpected IRQ trap at vector %02x&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Currently unexpected vectors happen only on SMP and APIC.&n;&t; * We _must_ ack these because every local APIC has only N&n;&t; * irq slots per priority level, and a &squot;hanging, unacked&squot; IRQ&n;&t; * holds up an irq slot - in excessive cases (when multiple&n;&t; * unexpected vectors occur) that might lock up the APIC&n;&t; * completely.&n;&t; */
+id|ack_APIC_irq
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|apic_intr_init
 r_void
 id|__init

@@ -1138,7 +1138,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|release_x86_irqs
+id|release_vm86_irqs
 c_func
 (paren
 id|dead_task

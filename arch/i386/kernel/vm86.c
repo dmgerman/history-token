@@ -2723,9 +2723,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|release_x86_irqs
+DECL|function|release_vm86_irqs
 r_void
-id|release_x86_irqs
+id|release_vm86_irqs
 c_func
 (paren
 r_struct
