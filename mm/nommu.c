@@ -22,8 +22,6 @@ r_struct
 id|page
 op_star
 id|mem_map
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|max_mapnr
 r_int
@@ -56,8 +54,6 @@ suffix:semicolon
 DECL|variable|sysctl_overcommit_memory
 r_int
 id|sysctl_overcommit_memory
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* default is heuristic overcommit */
 DECL|variable|sysctl_overcommit_ratio

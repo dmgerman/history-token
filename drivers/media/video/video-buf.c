@@ -8,11 +8,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#ifndef TryLockPage
-macro_line|# include &quot;linux/page-flags.h&quot;
-DECL|macro|TryLockPage
-macro_line|# define TryLockPage TestSetPageLocked
-macro_line|#endif
 macro_line|#include &lt;media/video-buf.h&gt;
 DECL|variable|debug
 r_static

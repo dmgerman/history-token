@@ -623,6 +623,7 @@ c_func
 (paren
 id|sys_epoll_wait
 )paren
+multiline_comment|/* arch-specific weak syscall entries */
 id|cond_syscall
 c_func
 (paren
@@ -632,6 +633,11 @@ id|cond_syscall
 c_func
 (paren
 id|sys_pciconfig_write
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_pciconfig_iobase
 )paren
 DECL|function|set_one_prio
 r_static

@@ -3981,28 +3981,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|scmd-&gt;device-&gt;online
-)paren
-(brace
-id|scmd-&gt;result
-op_or_assign
-(paren
-id|DRIVER_TIMEOUT
-op_lshift
-l_int|24
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_increment
 id|scmd-&gt;retries
 OL
 id|scmd-&gt;allowed
+)paren
 )paren
 (brace
 id|SCSI_LOG_ERROR_RECOVERY
@@ -4013,8 +3999,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;%s: flush retry&quot;
-l_string|&quot; cmd: %p&bslash;n&quot;
+l_string|&quot;%s: flush&quot;
+l_string|&quot; retry cmd: %p&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -4030,10 +4016,23 @@ comma
 id|SCSI_MLQUEUE_EH_RETRY
 )paren
 suffix:semicolon
-r_continue
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|scmd-&gt;result
+)paren
+id|scmd-&gt;result
+op_or_assign
+(paren
+id|DRIVER_TIMEOUT
+op_lshift
+l_int|24
+)paren
 suffix:semicolon
-)brace
-)brace
 id|SCSI_LOG_ERROR_RECOVERY
 c_func
 (paren
@@ -4057,6 +4056,7 @@ c_func
 id|scmd
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/**&n; * scsi_unjam_host - Attempt to fix a host which has a cmd that failed.&n; * @shost:&t;Host to unjam.&n; *&n; * Notes:&n; *    When we come in here, we *know* that all commands on the bus have&n; *    either completed, failed or timed out.  we also know that no further&n; *    commands are being sent to the host, so things are relatively quiet&n; *    and we have freedom to fiddle with things as we wish.&n; *&n; *    This is only the *default* implementation.  it is possible for&n; *    individual drivers to supply their own version of this function, and&n; *    if the maintainer wishes to do this, it is strongly suggested that&n; *    this function be taken as a template and modified.  this function&n; *    was designed to correctly handle problems for about 95% of the&n; *    different cases out there, and it should always provide at least a&n; *    reasonable amount of error recovery.&n; *&n; *    Any command marked &squot;failed&squot; or &squot;timeout&squot; must eventually have&n; *    scsi_finish_cmd() called for it.  we do all of the retry stuff&n; *    here, so when we restart the host after we return it should have an&n; *    empty queue.&n; **/

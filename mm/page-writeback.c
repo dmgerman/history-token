@@ -579,6 +579,13 @@ id|ratelimits
 )paren
 suffix:semicolon
 )brace
+DECL|variable|balance_dirty_pages_ratelimited
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|balance_dirty_pages_ratelimited
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * writeback at least _min_pages, and keep writing until the amount of dirty&n; * memory is less than the background threshold, or until we&squot;re all clean.&n; */
 DECL|function|background_writeout
 r_static

@@ -1,11 +1,8 @@
 multiline_comment|/*&n; * linux/kernel/workqueue.c&n; *&n; * Generic mechanism for defining kernel helper threads for running&n; * arbitrary tasks in process context.&n; *&n; * Started by Ingo Molnar, Copyright (C) 2002&n; *&n; * Derived from the taskqueue/keventd code by:&n; *&n; *   David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *   Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *   Kai Petzke &lt;wpp@marie.physik.tu-berlin.de&gt;&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -622,12 +619,6 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|allow_signal
-c_func
-(paren
-id|SIGCHLD
-)paren
-suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_IOTHREAD
@@ -664,7 +655,7 @@ op_amp
 id|startup-&gt;done
 )paren
 suffix:semicolon
-multiline_comment|/* Install a handler so SIGCLD is delivered */
+multiline_comment|/* SIG_IGN makes children autoreap: see do_notify_parent(). */
 id|sa.sa.sa_handler
 op_assign
 id|SIG_IGN
@@ -786,44 +777,6 @@ c_func
 id|cwq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|waitpid
-c_func
-(paren
-op_minus
-l_int|1
-comma
-l_int|NULL
-comma
-id|__WALL
-op_or
-id|WNOHANG
-)paren
-OG
-l_int|0
-)paren
-multiline_comment|/* SIGCHLD - auto-reaping */
-suffix:semicolon
-multiline_comment|/* zap all other signals */
-id|flush_signals
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-)brace
 )brace
 id|remove_wait_queue
 c_func

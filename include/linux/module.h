@@ -112,7 +112,7 @@ mdefine_line|#define ___module_cat(a,b) __mod_ ## a ## b
 DECL|macro|__module_cat
 mdefine_line|#define __module_cat(a,b) ___module_cat(a,b)
 DECL|macro|__MODULE_INFO
-mdefine_line|#define __MODULE_INFO(tag, name, info)&t;&t;&t;&t;&t;  &bslash;&n;static const char __module_cat(name,__LINE__)[]&t;&t;&t;&t;  &bslash;&n;  __attribute__((section(&quot;.modinfo&quot;),unused)) = __stringify(tag) &quot;=&quot; info
+mdefine_line|#define __MODULE_INFO(tag, name, info)&t;&t;&t;&t;&t;  &bslash;&n;static const char __module_cat(name,__LINE__)[]&t;&t;&t;&t;  &bslash;&n;  __attribute_used__&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;  __attribute__((section(&quot;.modinfo&quot;),unused)) = __stringify(tag) &quot;=&quot; info
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
@@ -191,14 +191,14 @@ macro_line|#ifndef __GENKSYMS__
 macro_line|#ifdef CONFIG_MODVERSIONS
 multiline_comment|/* Mark the CRC weak since genksyms apparently decides not to&n; * generate a checksums for some symbols */
 DECL|macro|__CRC_SYMBOL
-mdefine_line|#define __CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__crc_##sym __attribute__((weak));&t;&t;&bslash;&n;&t;static const unsigned long __kcrctab_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__kcrctab&quot; sec), unused))&t;&bslash;&n;&t;= (unsigned long) &amp;__crc_##sym;
+mdefine_line|#define __CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;extern void *__crc_##sym __attribute__((weak));&t;&t;&bslash;&n;&t;static const unsigned long __kcrctab_##sym&t;&t;&bslash;&n;&t;__attribute_used__&t;&t;&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__kcrctab&quot; sec), unused))&t;&bslash;&n;&t;= (unsigned long) &amp;__crc_##sym;
 macro_line|#else
 DECL|macro|__CRC_SYMBOL
 mdefine_line|#define __CRC_SYMBOL(sym, sec)
 macro_line|#endif
 multiline_comment|/* For every exported symbol, place a struct in the __ksymtab section */
 DECL|macro|__EXPORT_SYMBOL
-mdefine_line|#define __EXPORT_SYMBOL(sym, sec)&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot; sec), unused))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
+mdefine_line|#define __EXPORT_SYMBOL(sym, sec)&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(sym, sec)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&bslash;&n;&t;= MODULE_SYMBOL_PREFIX #sym;                    &t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab_##sym&t;&bslash;&n;&t;__attribute_used__&t;&t;&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot; sec), unused))&t;&bslash;&n;&t;= { (unsigned long)&amp;sym, __kstrtab_##sym }
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYMBOL(sym, &quot;&quot;)
 DECL|macro|EXPORT_SYMBOL_GPL

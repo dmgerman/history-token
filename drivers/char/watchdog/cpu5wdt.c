@@ -369,19 +369,6 @@ op_star
 id|file
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-)paren
-(brace
-r_case
-id|WATCHDOG_MINOR
-suffix:colon
 r_if
 c_cond
 (paren
@@ -398,15 +385,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -428,18 +406,6 @@ op_star
 id|file
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-op_eq
-id|WATCHDOG_MINOR
-)paren
-(brace
 id|clear_bit
 c_func
 (paren
@@ -449,7 +415,6 @@ op_amp
 id|cpu5wdt_device.inuse
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -498,6 +463,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;CPU5 WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -667,7 +633,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 r_return
@@ -773,6 +739,7 @@ id|fops
 op_assign
 op_amp
 id|cpu5wdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* init/exit function */

@@ -390,13 +390,6 @@ id|fp
 op_assign
 l_int|0xF0000
 suffix:semicolon
-macro_line|#ifdef CONFIG_SIMNOW
-multiline_comment|/*&n; &t; *&t;Skip on x86/64 with simnow. Will eventually go away&n; &t; *&t;If you see this ifdef in 2.6pre mail me !&n; &t; */
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
