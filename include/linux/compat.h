@@ -495,7 +495,7 @@ id|timeout
 suffix:semicolon
 id|asmlinkage
 r_int
-id|compat_keyctl
+id|compat_sys_keyctl
 c_func
 (paren
 id|u32

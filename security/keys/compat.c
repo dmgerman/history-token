@@ -6,10 +6,10 @@ macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;internal.h&quot;
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * the key control system call, 32-bit compatibility version for 64-bit archs&n; * - this should only be called if the 64-bit arch uses weird pointers in&n; *   32-bit mode or doesn&squot;t guarantee that the top 32-bits of the argument&n; *   registers on taking a 32-bit syscall are zero&n; * - if you can, you should call sys_keyctl directly&n; */
-DECL|function|compat_keyctl
+DECL|function|compat_sys_keyctl
 id|asmlinkage
 r_int
-id|compat_keyctl
+id|compat_sys_keyctl
 c_func
 (paren
 id|u32
@@ -250,5 +250,5 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* end compat_keyctl() */
+multiline_comment|/* end compat_sys_keyctl() */
 eof
