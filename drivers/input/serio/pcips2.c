@@ -79,7 +79,7 @@ id|pcips2_data
 op_star
 id|ps2if
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -366,7 +366,7 @@ id|pcips2_data
 op_star
 id|ps2if
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 r_int
 id|ret
@@ -447,7 +447,7 @@ id|pcips2_data
 op_star
 id|ps2if
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 id|outb
 c_func
@@ -617,7 +617,7 @@ id|ps2if-&gt;io.phys
 op_assign
 id|dev-&gt;dev.bus_id
 suffix:semicolon
-id|ps2if-&gt;io.driver
+id|ps2if-&gt;io.port_data
 op_assign
 id|ps2if
 suffix:semicolon

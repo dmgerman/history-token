@@ -5394,7 +5394,7 @@ id|uart_sunzilog_port
 op_star
 id|up
 op_assign
-id|serio-&gt;driver
+id|serio-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -5452,7 +5452,7 @@ id|uart_sunzilog_port
 op_star
 id|up
 op_assign
-id|serio-&gt;driver
+id|serio-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -5522,7 +5522,7 @@ id|uart_sunzilog_port
 op_star
 id|up
 op_assign
-id|serio-&gt;driver
+id|serio-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -6835,7 +6835,7 @@ id|up-&gt;serio
 )paren
 )paren
 suffix:semicolon
-id|up-&gt;serio.driver
+id|up-&gt;serio.port_data
 op_assign
 id|up
 suffix:semicolon

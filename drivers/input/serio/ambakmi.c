@@ -158,7 +158,7 @@ id|amba_kmi_port
 op_star
 id|kmi
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -230,7 +230,7 @@ id|amba_kmi_port
 op_star
 id|kmi
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 r_int
 r_int
@@ -394,7 +394,7 @@ id|amba_kmi_port
 op_star
 id|kmi
 op_assign
-id|io-&gt;driver
+id|io-&gt;port_data
 suffix:semicolon
 id|writeb
 c_func
@@ -535,7 +535,7 @@ id|kmi-&gt;io.phys
 op_assign
 id|dev-&gt;dev.bus_id
 suffix:semicolon
-id|kmi-&gt;io.driver
+id|kmi-&gt;io.port_data
 op_assign
 id|kmi
 suffix:semicolon

@@ -18,10 +18,10 @@ r_void
 op_star
 r_private
 suffix:semicolon
-DECL|member|driver
+DECL|member|port_data
 r_void
 op_star
-id|driver
+id|port_data
 suffix:semicolon
 DECL|member|name
 r_char

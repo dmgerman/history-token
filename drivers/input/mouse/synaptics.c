@@ -928,7 +928,7 @@ id|psmouse
 op_star
 id|parent
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 r_char
 id|rate_param
@@ -1277,7 +1277,7 @@ id|port-&gt;serio.write
 op_assign
 id|synaptics_pt_write
 suffix:semicolon
-id|port-&gt;serio.driver
+id|port-&gt;serio.port_data
 op_assign
 id|psmouse
 suffix:semicolon

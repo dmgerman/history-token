@@ -105,7 +105,7 @@ r_struct
 id|maceps2_data
 op_star
 )paren
-id|dev-&gt;driver
+id|dev-&gt;port_data
 )paren
 op_member_access_from_pointer
 id|port
@@ -198,7 +198,7 @@ r_struct
 id|maceps2_data
 op_star
 )paren
-id|dev-&gt;driver
+id|dev-&gt;port_data
 )paren
 op_member_access_from_pointer
 id|port
@@ -268,7 +268,7 @@ r_struct
 id|maceps2_data
 op_star
 )paren
-id|dev-&gt;driver
+id|dev-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -356,7 +356,7 @@ r_struct
 id|maceps2_data
 op_star
 )paren
-id|dev-&gt;driver
+id|dev-&gt;port_data
 suffix:semicolon
 id|mace_write
 c_func
@@ -430,7 +430,7 @@ op_assign
 l_string|&quot;mace/serio0&quot;
 comma
 dot
-id|driver
+id|port_data
 op_assign
 op_amp
 id|port0_data
@@ -475,7 +475,7 @@ op_assign
 l_string|&quot;mace/serio1&quot;
 comma
 dot
-id|driver
+id|port_data
 op_assign
 op_amp
 id|port1_data

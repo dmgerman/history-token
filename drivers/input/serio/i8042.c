@@ -918,7 +918,7 @@ id|i8042_values
 op_star
 id|values
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 r_int
 id|retval
@@ -990,7 +990,7 @@ id|i8042_values
 op_star
 id|values
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 id|i8042_flush
 c_func
@@ -1052,7 +1052,7 @@ id|i8042_values
 op_star
 id|values
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -1185,7 +1185,7 @@ id|i8042_values
 op_star
 id|values
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -1306,7 +1306,7 @@ op_assign
 id|i8042_close
 comma
 dot
-id|driver
+id|port_data
 op_assign
 op_amp
 id|i8042_kbd_values
@@ -1381,7 +1381,7 @@ op_assign
 id|i8042_close
 comma
 dot
-id|driver
+id|port_data
 op_assign
 op_amp
 id|i8042_aux_values
@@ -3332,7 +3332,7 @@ id|i8042_mux_phys
 id|index
 )braket
 suffix:semicolon
-id|port-&gt;driver
+id|port-&gt;port_data
 op_assign
 id|values
 suffix:semicolon

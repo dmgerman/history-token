@@ -97,7 +97,7 @@ id|serport
 op_star
 id|serport
 op_assign
-id|serio-&gt;driver
+id|serio-&gt;port_data
 suffix:semicolon
 r_return
 op_minus
@@ -138,7 +138,7 @@ id|serport
 op_star
 id|serport
 op_assign
-id|serio-&gt;driver
+id|serio-&gt;port_data
 suffix:semicolon
 id|serport-&gt;serio.type
 op_assign
@@ -276,7 +276,7 @@ id|serport-&gt;serio.close
 op_assign
 id|serport_serio_close
 suffix:semicolon
-id|serport-&gt;serio.driver
+id|serport-&gt;serio.port_data
 op_assign
 id|serport
 suffix:semicolon

@@ -821,7 +821,7 @@ id|gscps2port
 op_star
 id|ps2port
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 r_if
 c_cond
@@ -873,7 +873,7 @@ id|gscps2port
 op_star
 id|ps2port
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 id|gscps2_reset
 c_func
@@ -913,7 +913,7 @@ id|gscps2port
 op_star
 id|ps2port
 op_assign
-id|port-&gt;driver
+id|port-&gt;port_data
 suffix:semicolon
 id|gscps2_enable
 c_func
@@ -1159,7 +1159,7 @@ id|gscps2_serio_port
 )paren
 )paren
 suffix:semicolon
-id|ps2port-&gt;port.driver
+id|ps2port-&gt;port.port_data
 op_assign
 id|ps2port
 suffix:semicolon
