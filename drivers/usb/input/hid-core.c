@@ -4124,12 +4124,18 @@ id|ENOENT
 suffix:colon
 r_case
 op_minus
-id|ESHUTDOWN
+id|EPERM
 suffix:colon
 r_case
 op_minus
-id|EPERM
+id|ESHUTDOWN
 suffix:colon
+multiline_comment|/* unplug */
+r_case
+op_minus
+id|EILSEQ
+suffix:colon
+multiline_comment|/* unplug timeout on uhci */
 r_return
 suffix:semicolon
 r_case
@@ -5239,6 +5245,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|unplug
+op_assign
+l_int|0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5251,16 +5262,26 @@ suffix:colon
 multiline_comment|/* success */
 r_case
 op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* unplug */
+r_case
+op_minus
+id|EILSEQ
+suffix:colon
+multiline_comment|/* unplug timeout on uhci */
+id|unplug
+op_assign
+l_int|1
+suffix:semicolon
+r_case
+op_minus
 id|ECONNRESET
 suffix:colon
 multiline_comment|/* unlink */
 r_case
 op_minus
 id|ENOENT
-suffix:colon
-r_case
-op_minus
-id|ESHUTDOWN
 suffix:colon
 r_break
 suffix:semicolon
@@ -5285,6 +5306,16 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unplug
+)paren
+id|hid-&gt;outtail
+op_assign
+id|hid-&gt;outhead
+suffix:semicolon
+r_else
 id|hid-&gt;outtail
 op_assign
 (paren
@@ -5402,6 +5433,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|unplug
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5450,16 +5486,26 @@ id|regs
 suffix:semicolon
 r_case
 op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* unplug */
+r_case
+op_minus
+id|EILSEQ
+suffix:colon
+multiline_comment|/* unplug timectrl on uhci */
+id|unplug
+op_assign
+l_int|1
+suffix:semicolon
+r_case
+op_minus
 id|ECONNRESET
 suffix:colon
 multiline_comment|/* unlink */
 r_case
 op_minus
 id|ENOENT
-suffix:colon
-r_case
-op_minus
-id|ESHUTDOWN
 suffix:colon
 r_case
 op_minus
@@ -5480,6 +5526,16 @@ id|urb-&gt;status
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|unplug
+)paren
+id|hid-&gt;ctrltail
+op_assign
+id|hid-&gt;ctrlhead
+suffix:semicolon
+r_else
 id|hid-&gt;ctrltail
 op_assign
 (paren
