@@ -75,6 +75,8 @@ suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|SMC91111_BASE_ADDR
 mdefine_line|#define SMC91111_BASE_ADDR&t;0xf2000300
+DECL|macro|SMC91111_REG_SIZE
+mdefine_line|#define SMC91111_REG_SIZE&t;16
 DECL|macro|SMC91111_IRQ
 mdefine_line|#define SMC91111_IRQ&t;&t;28
 macro_line|#ifdef MAX_HWIFS
