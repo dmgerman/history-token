@@ -1055,7 +1055,7 @@ id|signal
 (brace
 id|filp-&gt;f_owner.pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|filp-&gt;f_owner.uid
 op_assign
