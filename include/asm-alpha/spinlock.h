@@ -65,7 +65,7 @@ mdefine_line|#define spin_unlock_wait(x)&t;({ do { barrier(); } while ((x)-&gt;l
 macro_line|#if CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -105,18 +105,18 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(LOCK) debug_spin_lock(LOCK, __BASE_FILE__, __LINE__)
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(LOCK) debug_spin_trylock(LOCK, __BASE_FILE__, __LINE__)
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(LOCK) debug_spin_lock(LOCK, __BASE_FILE__, __LINE__)
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(LOCK) debug_spin_trylock(LOCK, __BASE_FILE__, __LINE__)
 DECL|macro|spin_lock_own
 mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!((LOCK)-&gt;lock &amp;&amp; (LOCK)-&gt;on_cpu == smp_processor_id()))&t;&bslash;&n;&t;&t;printk(&quot;%s: called on %d from %p but lock %s on %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;       LOCATION, smp_processor_id(),&t;&t;&t;&bslash;&n;&t;&t;       __builtin_return_address(0),&t;&t;&t;&bslash;&n;&t;&t;       (LOCK)-&gt;lock ? &quot;taken&quot; : &quot;freed&quot;, (LOCK)-&gt;on_cpu); &bslash;&n;} while (0)
 macro_line|#else
-DECL|function|spin_unlock
+DECL|function|_raw_spin_unlock
 r_static
 r_inline
 r_void
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 id|spinlock_t
@@ -134,11 +134,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|spin_lock
+DECL|function|_raw_spin_lock
 r_static
 r_inline
 r_void
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 id|spinlock_t
@@ -185,8 +185,30 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|spin_trylock
-mdefine_line|#define spin_trylock(lock) (!test_and_set_bit(0,(lock)))
+DECL|function|_raw_spin_trylock
+r_static
+r_inline
+r_int
+id|_raw_spin_trylock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|lock
+)paren
+(brace
+r_return
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|lock-&gt;lock
+)paren
+suffix:semicolon
+)brace
 DECL|macro|spin_lock_own
 mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;((void)0)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
@@ -218,7 +240,7 @@ mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
 macro_line|#if CONFIG_DEBUG_RWLOCK
 r_extern
 r_void
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -228,7 +250,7 @@ id|lock
 suffix:semicolon
 r_extern
 r_void
-id|read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -237,11 +259,11 @@ id|lock
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|function|write_lock
+DECL|function|_raw_write_lock
 r_static
 r_inline
 r_void
-id|write_lock
+id|_raw_write_lock
 c_func
 (paren
 id|rwlock_t
@@ -299,11 +321,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|read_lock
+DECL|function|_raw_read_lock
 r_static
 r_inline
 r_void
-id|read_lock
+id|_raw_read_lock
 c_func
 (paren
 id|rwlock_t
@@ -362,11 +384,11 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_DEBUG_RWLOCK */
-DECL|function|write_unlock
+DECL|function|_raw_write_unlock
 r_static
 r_inline
 r_void
-id|write_unlock
+id|_raw_write_unlock
 c_func
 (paren
 id|rwlock_t
@@ -390,11 +412,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|read_unlock
+DECL|function|_raw_read_unlock
 r_static
 r_inline
 r_void
-id|read_unlock
+id|_raw_read_unlock
 c_func
 (paren
 id|rwlock_t
