@@ -206,12 +206,6 @@ r_if
 c_cond
 (paren
 (paren
-id|syscall
-op_ne
-id|__NR_sigreturn
-)paren
-op_logical_and
-(paren
 (paren
 r_int
 r_int
