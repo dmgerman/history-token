@@ -770,7 +770,7 @@ r_void
 suffix:semicolon
 macro_line|#else
 DECL|macro|atalk_proc_init
-mdefine_line|#define atalk_proc_init()&t;0
+mdefine_line|#define atalk_proc_init()&t;({ 0; })
 DECL|macro|atalk_proc_exit
 mdefine_line|#define atalk_proc_exit()&t;do { } while(0)
 macro_line|#endif /* CONFIG_PROC_FS */
