@@ -12,6 +12,7 @@ macro_line|#include &quot;atari.h&quot;
 macro_line|#include &quot;ldm.h&quot;
 macro_line|#include &quot;mac.h&quot;
 macro_line|#include &quot;msdos.h&quot;
+macro_line|#include &quot;nec98.h&quot;
 macro_line|#include &quot;osf.h&quot;
 macro_line|#include &quot;sgi.h&quot;
 macro_line|#include &quot;sun.h&quot;
@@ -69,6 +70,11 @@ macro_line|#ifdef CONFIG_LDM_PARTITION
 id|ldm_partition
 comma
 multiline_comment|/* this must come before msdos */
+macro_line|#endif
+macro_line|#ifdef CONFIG_NEC98_PARTITION
+id|nec98_partition
+comma
+multiline_comment|/* must be come before `msdos_partition&squot; */
 macro_line|#endif
 macro_line|#ifdef CONFIG_MSDOS_PARTITION
 id|msdos_partition
