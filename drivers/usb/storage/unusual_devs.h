@@ -1049,6 +1049,8 @@ comma
 id|US_FL_SINGLE_LUN
 op_or
 id|US_FL_NOT_LOCKABLE
+op_or
+id|US_FL_NO_WP_DETECT
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -3002,6 +3004,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Reported by Michael Stattmann &lt;michael@stattmann.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0fce
+comma
+l_int|0xd008
+comma
+l_int|0x0000
+comma
+l_int|0x0000
+comma
+l_string|&quot;Sony Ericsson&quot;
+comma
+l_string|&quot;V800-Vodafone 802&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_NO_WP_DETECT
 )paren
 comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */

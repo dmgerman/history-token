@@ -148,18 +148,23 @@ id|sdev-&gt;use_192_bytes_for_3f
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Some devices don&squot;t like MODE SENSE with page=0x3f,&n;&t;&t; * which is the command used for checking if a device&n;&t;&t; * is write-protected.  Now that we tell the sd driver&n;&t;&t; * to do a 192-byte transfer with this command the&n;&t;&t; * majority of devices work fine, but a few still can&squot;t&n;&t;&t; * handle it.  The sd driver will simply assume those&n;&t;&t; * devices are write-enabled. */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_NO_WP_DETECT
+)paren
+id|sdev-&gt;skip_ms_page_3f
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* A number of devices have problems with MODE SENSE for&n;&t;&t; * page x08, so we will skip it. */
 id|sdev-&gt;skip_ms_page_8
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifndef CONFIG_USB_STORAGE_RW_DETECT
-multiline_comment|/* Some devices may not like MODE SENSE with page=0x3f.&n;&t;&t; * Now that we&squot;re using 192-byte transfers this may no&n;&t;&t; * longer be a problem.  So this will be a configuration&n;&t;&t; * option. */
-id|sdev-&gt;skip_ms_page_3f
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Some disks return the total number of blocks in response&n;&t;&t; * to READ CAPACITY rather than the highest block number.&n;&t;&t; * If this device makes that mistake, tell the sd driver. */
 r_if
 c_cond
