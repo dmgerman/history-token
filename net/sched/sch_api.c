@@ -397,6 +397,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|qdisc_leaf
+r_static
 r_struct
 id|Qdisc
 op_star
@@ -488,6 +489,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Find queueing discipline by name */
 DECL|function|qdisc_lookup_ops
+r_static
 r_struct
 id|Qdisc_ops
 op_star
@@ -813,6 +815,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Allocate an unique handle from space managed by kernel */
 DECL|function|qdisc_alloc_handle
+r_static
 id|u32
 id|qdisc_alloc_handle
 c_func
@@ -1074,6 +1077,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Graft qdisc &quot;new&quot; to class &quot;classid&quot; of qdisc &quot;parent&quot; or&n;   to device &quot;dev&quot;.&n;&n;   Old qdisc is not destroyed but returned in *old.&n; */
 DECL|function|qdisc_graft
+r_static
 r_int
 id|qdisc_graft
 c_func

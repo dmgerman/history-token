@@ -117,6 +117,8 @@ DECL|macro|TIMER_DIVIDER_256
 mdefine_line|#define&t;TIMER_DIVIDER_256&t;&t;0x00000008
 DECL|macro|TIMER_ENABLE
 mdefine_line|#define&t;TIMER_ENABLE&t;&t;&t;0x00000080
+DECL|macro|IRQ_MASK_TIMER1
+mdefine_line|#define&t;IRQ_MASK_TIMER1         &t;(1 &lt;&lt; 4)
 multiline_comment|/*&n; * Interrupt controller registers&n; */
 DECL|macro|IXP2000_INTCTL_REG
 mdefine_line|#define IXP2000_INTCTL_REG(x)&t;&t;(volatile unsigned long*)(IXP2000_INTCTL_VIRT_BASE | (x))

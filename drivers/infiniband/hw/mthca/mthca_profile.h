@@ -1,0 +1,73 @@
+multiline_comment|/*&n; * Copyright (c) 2004 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_profile.h 1349 2004-12-16 21:09:43Z roland $&n; */
+macro_line|#ifndef MTHCA_PROFILE_H
+DECL|macro|MTHCA_PROFILE_H
+mdefine_line|#define MTHCA_PROFILE_H
+macro_line|#include &quot;mthca_dev.h&quot;
+macro_line|#include &quot;mthca_cmd.h&quot;
+r_enum
+(brace
+DECL|enumerator|MTHCA_RES_QP
+id|MTHCA_RES_QP
+comma
+DECL|enumerator|MTHCA_RES_EEC
+id|MTHCA_RES_EEC
+comma
+DECL|enumerator|MTHCA_RES_SRQ
+id|MTHCA_RES_SRQ
+comma
+DECL|enumerator|MTHCA_RES_CQ
+id|MTHCA_RES_CQ
+comma
+DECL|enumerator|MTHCA_RES_EQP
+id|MTHCA_RES_EQP
+comma
+DECL|enumerator|MTHCA_RES_EEEC
+id|MTHCA_RES_EEEC
+comma
+DECL|enumerator|MTHCA_RES_EQ
+id|MTHCA_RES_EQ
+comma
+DECL|enumerator|MTHCA_RES_RDB
+id|MTHCA_RES_RDB
+comma
+DECL|enumerator|MTHCA_RES_MCG
+id|MTHCA_RES_MCG
+comma
+DECL|enumerator|MTHCA_RES_MPT
+id|MTHCA_RES_MPT
+comma
+DECL|enumerator|MTHCA_RES_MTT
+id|MTHCA_RES_MTT
+comma
+DECL|enumerator|MTHCA_RES_UAR
+id|MTHCA_RES_UAR
+comma
+DECL|enumerator|MTHCA_RES_UDAV
+id|MTHCA_RES_UDAV
+comma
+DECL|enumerator|MTHCA_RES_NUM
+id|MTHCA_RES_NUM
+)brace
+suffix:semicolon
+r_int
+id|mthca_make_profile
+c_func
+(paren
+r_struct
+id|mthca_dev
+op_star
+id|mdev
+comma
+r_struct
+id|mthca_dev_lim
+op_star
+id|dev_lim
+comma
+r_struct
+id|mthca_init_hca_param
+op_star
+id|init_hca
+)paren
+suffix:semicolon
+macro_line|#endif /* MTHCA_PROFILE_H */
+eof

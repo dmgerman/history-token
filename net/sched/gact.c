@@ -133,6 +133,7 @@ id|p-&gt;paction
 suffix:semicolon
 )brace
 DECL|variable|gact_rand
+r_static
 id|g_rand
 id|gact_rand
 (braket

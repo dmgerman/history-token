@@ -48,7 +48,7 @@ op_star
 id|uaddr
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1593,7 +1593,7 @@ suffix:semicolon
 r_else
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

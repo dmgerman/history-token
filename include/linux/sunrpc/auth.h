@@ -385,13 +385,6 @@ id|rpc_authops
 id|authdes_ops
 suffix:semicolon
 macro_line|#endif
-id|u32
-id|pseudoflavor_to_flavor
-c_func
-(paren
-id|rpc_authflavor_t
-)paren
-suffix:semicolon
 r_int
 id|rpcauth_register
 c_func

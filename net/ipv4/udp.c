@@ -84,7 +84,7 @@ op_star
 id|sk2
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -400,7 +400,7 @@ l_int|1
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet2
 op_assign
@@ -608,6 +608,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* UDP is nearly always wildcards out the wazoo, it makes no sense to try&n; * harder than this. -DaveM&n; */
 DECL|function|udp_v4_lookup_longway
+r_static
 r_struct
 id|sock
 op_star
@@ -682,7 +683,7 @@ l_int|1
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -841,6 +842,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|udp_v4_lookup
+r_static
 id|__inline__
 r_struct
 id|sock
@@ -975,7 +977,7 @@ id|node
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1080,7 +1082,7 @@ id|info
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon
@@ -1427,7 +1429,7 @@ id|up
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1838,7 +1840,7 @@ id|len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2677,6 +2679,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|udp_sendpage
+r_static
 r_int
 id|udp_sendpage
 c_func
@@ -3125,6 +3128,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * &t;This should be easy, if there is something there we&n; * &t;return it, otherwise we block.&n; */
 DECL|function|udp_recvmsg
+r_static
 r_int
 id|udp_recvmsg
 c_func
@@ -3159,7 +3163,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3585,7 +3589,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -6323,7 +6327,7 @@ id|bucket
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

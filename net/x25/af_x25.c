@@ -977,6 +977,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Find a connected X.25 socket given my LCI and neighbour.&n; */
 DECL|function|__x25_find_socket
+r_static
 r_struct
 id|sock
 op_star
@@ -1109,6 +1110,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Find a unique LCI for a given device.&n; */
 DECL|function|x25_new_lci
+r_static
 r_int
 r_int
 id|x25_new_lci
@@ -5544,6 +5546,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|variable|x25_family_ops
+r_static
 r_struct
 id|net_proto_family
 id|x25_family_ops
@@ -5702,6 +5705,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|x25_dev_notifier
+r_static
 r_struct
 id|notifier_block
 id|x25_dev_notifier

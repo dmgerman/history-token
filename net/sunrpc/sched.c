@@ -69,6 +69,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
+r_void
+id|rpc_free
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+id|task
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * When an asynchronous RPC task is activated within a bottom half&n; * handler, or while executing another RPC task, it is put on&n; * schedq, and rpciod is woken up.&n; */
 r_static
 id|RPC_WAITQ
@@ -2985,6 +2996,7 @@ r_return
 id|task-&gt;tk_buffer
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|rpc_free
 id|rpc_free

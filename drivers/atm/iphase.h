@@ -3492,14 +3492,6 @@ DECL|macro|FE_DS3_PHY
 mdefine_line|#define FE_DS3_PHY      0x0080          /* DS3 */
 DECL|macro|FE_E3_PHY
 mdefine_line|#define FE_E3_PHY       0x0090          /* E3 */
-r_extern
-r_void
-id|ia_mb25_init
-(paren
-id|IADEV
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*********************** SUNI_PM7345 PHY DEFINE HERE *********************/
 DECL|struct|_suni_pm7345_t
 r_typedef
@@ -4105,15 +4097,6 @@ DECL|macro|SUNI_DS3_FOVRI
 mdefine_line|#define SUNI_DS3_FOVRI  0x02            /* FIFO overrun                 */
 DECL|macro|SUNI_DS3_FUDRI
 mdefine_line|#define SUNI_DS3_FUDRI  0x01            /* FIFO underrun                */
-r_extern
-r_void
-id|ia_suni_pm7345_init
-(paren
-id|IADEV
-op_star
-id|iadev
-)paren
-suffix:semicolon
 singleline_comment|///////////////////SUNI_PM7345 PHY DEFINE END /////////////////////////////
 multiline_comment|/* ia_eeprom define*/
 DECL|macro|MEM_SIZE_MASK

@@ -129,6 +129,7 @@ op_star
 id|pmc
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip_mc_add_src
 c_func
@@ -6107,6 +6108,7 @@ DECL|macro|igmp_ifc_event
 mdefine_line|#define igmp_ifc_event(x)&t;do { } while (0)
 macro_line|#endif
 DECL|function|ip_mc_del_src
+r_static
 r_int
 id|ip_mc_del_src
 c_func
@@ -6776,6 +6778,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Add multicast source filter list to the interface list&n; */
 DECL|function|ip_mc_add_src
+r_static
 r_int
 id|ip_mc_add_src
 c_func
@@ -7271,7 +7274,7 @@ op_star
 id|in_dev
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -7520,6 +7523,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ip_mc_leave_src
+r_static
 r_int
 id|ip_mc_leave_src
 c_func
@@ -7630,7 +7634,7 @@ id|imr
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -7866,7 +7870,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -8525,7 +8529,7 @@ op_star
 id|in_dev
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -8914,7 +8918,7 @@ op_star
 id|in_dev
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -9213,7 +9217,7 @@ op_star
 id|pmc
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -9508,7 +9512,7 @@ id|dif
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -9669,7 +9673,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

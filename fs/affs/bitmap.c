@@ -1,13 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/bitmap.c&n; *&n; *  (c) 1996 Hans-Joachim Widmaier&n; *&n; *  bitmap.c contains the code that handles all bitmap related stuff -&n; *  block allocation, deallocation, calculation of free space.&n; */
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &quot;affs.h&quot;
 multiline_comment|/* This is, of course, shamelessly stolen from fs/minix */
 DECL|variable|nibblemap
 r_static

@@ -47,6 +47,7 @@ multiline_comment|/* The last entry should be about 64k. However, the &quot;buff
 DECL|macro|NP
 mdefine_line|#define NP FS_NR_FREE_POOLS
 DECL|variable|rx_buf_sizes
+r_static
 r_int
 id|rx_buf_sizes
 (braket
@@ -73,6 +74,7 @@ l_int|65520
 suffix:semicolon
 multiline_comment|/* log2:                 7     8     9    10    11    12    14     16 */
 macro_line|#if 0
+r_static
 r_int
 id|rx_pool_sizes
 (braket
@@ -100,6 +102,7 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* debug */
 DECL|variable|rx_pool_sizes
+r_static
 r_int
 id|rx_pool_sizes
 (braket
@@ -349,6 +352,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
+r_static
 r_struct
 id|reginit_item
 id|PHY_NTC_INIT
@@ -541,6 +545,7 @@ mdefine_line|#define func_enter() fs_dprintk (FS_DEBUG_FLOW, &quot;fs: enter %s&
 DECL|macro|func_exit
 mdefine_line|#define func_exit()  fs_dprintk (FS_DEBUG_FLOW, &quot;fs: exit  %s&bslash;n&quot;, __FUNCTION__)
 DECL|variable|fs_boards
+r_static
 r_struct
 id|fs_dev
 op_star
@@ -7673,6 +7678,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|firestream_remove_one
+r_static
 r_void
 id|__devexit
 id|firestream_remove_one

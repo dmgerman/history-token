@@ -282,6 +282,7 @@ id|__u8
 id|__readb
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -307,6 +308,7 @@ id|__u16
 id|__readw
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -332,6 +334,7 @@ id|__u32
 id|__readl
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -357,6 +360,7 @@ id|__u64
 id|__readq
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -627,7 +631,6 @@ mdefine_line|#define __raw_writel writel
 DECL|macro|__raw_writeq
 mdefine_line|#define __raw_writeq writeq
 r_void
-op_star
 id|__memcpy_fromio
 c_func
 (paren
@@ -641,7 +644,6 @@ r_int
 )paren
 suffix:semicolon
 r_void
-op_star
 id|__memcpy_toio
 c_func
 (paren
@@ -659,7 +661,6 @@ DECL|function|memcpy_fromio
 r_static
 r_inline
 r_void
-op_star
 id|memcpy_fromio
 c_func
 (paren
@@ -667,6 +668,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -677,7 +679,6 @@ r_int
 id|len
 )paren
 (brace
-r_return
 id|__memcpy_fromio
 c_func
 (paren
@@ -697,7 +698,6 @@ DECL|function|memcpy_toio
 r_static
 r_inline
 r_void
-op_star
 id|memcpy_toio
 c_func
 (paren
@@ -716,7 +716,6 @@ r_int
 id|len
 )paren
 (brace
-r_return
 id|__memcpy_toio
 c_func
 (paren
@@ -736,7 +735,6 @@ DECL|function|memset_io
 r_static
 r_inline
 r_void
-op_star
 id|memset_io
 c_func
 (paren
@@ -753,7 +751,6 @@ r_int
 id|c
 )paren
 (brace
-r_return
 id|memset
 c_func
 (paren

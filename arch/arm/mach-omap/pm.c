@@ -123,6 +123,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_OMAP_32K_TIMER) &amp;&amp; defined(CONFIG_NO_IDLE_HZ)
+multiline_comment|/* Override timer to use VST for the next cycle */
+id|omap_32k_timer_next_vst_interrupt
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1826,7 +1834,7 @@ r_int
 id|omap_pm_prepare
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -1874,7 +1882,7 @@ r_int
 id|omap_pm_enter
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
@@ -1922,7 +1930,7 @@ r_int
 id|omap_pm_finish
 c_func
 (paren
-id|u32
+id|suspend_state_t
 id|state
 )paren
 (brace
