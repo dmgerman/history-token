@@ -4730,9 +4730,10 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldlenp
@@ -4832,9 +4833,10 @@ id|oldlen
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|a32.oldlenp

@@ -387,7 +387,7 @@ suffix:semicolon
 DECL|macro|COMPAT_OFF_T_MAX
 mdefine_line|#define COMPAT_OFF_T_MAX&t;0x7fffffff
 DECL|macro|COMPAT_LOFF_T_MAX
-mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffff
+mdefine_line|#define COMPAT_LOFF_T_MAX&t;0x7fffffffffffffffL
 DECL|struct|compat_ipc64_perm
 r_struct
 id|compat_ipc64_perm

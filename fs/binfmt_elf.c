@@ -826,6 +826,7 @@ id|elf_addr_t
 )paren
 (paren
 r_int
+r_int
 )paren
 id|argv
 comma
@@ -840,6 +841,7 @@ c_func
 id|elf_addr_t
 )paren
 (paren
+r_int
 r_int
 )paren
 id|envp
