@@ -878,7 +878,7 @@ multiline_comment|/*&n; * Error numbers and messages for skxmac2.c and skgeinit.
 DECL|macro|SKERR_HWI_E001
 mdefine_line|#define SKERR_HWI_E001&t;&t;(SK_ERRBASE_HWINIT)
 DECL|macro|SKERR_HWI_E001MSG
-mdefine_line|#define SKERR_HWI_E001MSG&t;&quot;SkXmClrExactAddr() has got invalid parameters&quot;
+mdefine_line|#define SKERR_HWI_E001MSG&t;&quot;SkXmClrExactAddr() has got illegal parameters&quot;
 DECL|macro|SKERR_HWI_E002
 mdefine_line|#define SKERR_HWI_E002&t;&t;(SKERR_HWI_E001+1)
 DECL|macro|SKERR_HWI_E002MSG
@@ -886,11 +886,11 @@ mdefine_line|#define SKERR_HWI_E002MSG&t;&quot;SkGeInit(): Level 1 call missing&
 DECL|macro|SKERR_HWI_E003
 mdefine_line|#define SKERR_HWI_E003&t;&t;(SKERR_HWI_E002+1)
 DECL|macro|SKERR_HWI_E003MSG
-mdefine_line|#define SKERR_HWI_E003MSG&t;&quot;SkGeInit() called with invalid init Level&quot;
+mdefine_line|#define SKERR_HWI_E003MSG&t;&quot;SkGeInit() called with illegal init Level&quot;
 DECL|macro|SKERR_HWI_E004
 mdefine_line|#define SKERR_HWI_E004&t;&t;(SKERR_HWI_E003+1)
 DECL|macro|SKERR_HWI_E004MSG
-mdefine_line|#define SKERR_HWI_E004MSG&t;&quot;SkGeInitPort(): Queue Size invalid configured&quot;
+mdefine_line|#define SKERR_HWI_E004MSG&t;&quot;SkGeInitPort(): Queue Size illegal configured&quot;
 DECL|macro|SKERR_HWI_E005
 mdefine_line|#define SKERR_HWI_E005&t;&t;(SKERR_HWI_E004+1)
 DECL|macro|SKERR_HWI_E005MSG
@@ -934,15 +934,15 @@ mdefine_line|#define SKERR_HWI_E014MSG&t;&quot;SkGeInitPort(): unknown GIPortUsa
 DECL|macro|SKERR_HWI_E015
 mdefine_line|#define SKERR_HWI_E015&t;&t;(SKERR_HWI_E014+1)
 DECL|macro|SKERR_HWI_E015MSG
-mdefine_line|#define SKERR_HWI_E015MSG&t;&quot;Invalid Link mode parameter&quot;
+mdefine_line|#define SKERR_HWI_E015MSG&t;&quot;Illegal Link mode parameter&quot;
 DECL|macro|SKERR_HWI_E016
 mdefine_line|#define SKERR_HWI_E016&t;&t;(SKERR_HWI_E015+1)
 DECL|macro|SKERR_HWI_E016MSG
-mdefine_line|#define SKERR_HWI_E016MSG&t;&quot;Invalid Flow control mode parameter&quot;
+mdefine_line|#define SKERR_HWI_E016MSG&t;&quot;Illegal Flow control mode parameter&quot;
 DECL|macro|SKERR_HWI_E017
 mdefine_line|#define SKERR_HWI_E017&t;&t;(SKERR_HWI_E016+1)
 DECL|macro|SKERR_HWI_E017MSG
-mdefine_line|#define SKERR_HWI_E017MSG&t;&quot;Invalid value specified for GIPollTimerVal&quot;
+mdefine_line|#define SKERR_HWI_E017MSG&t;&quot;Illegal value specified for GIPollTimerVal&quot;
 DECL|macro|SKERR_HWI_E018
 mdefine_line|#define SKERR_HWI_E018&t;&t;(SKERR_HWI_E017+1)
 DECL|macro|SKERR_HWI_E018MSG
@@ -950,11 +950,11 @@ mdefine_line|#define SKERR_HWI_E018MSG&t;&quot;FATAL: SkGeStopPort() does not te
 DECL|macro|SKERR_HWI_E019
 mdefine_line|#define SKERR_HWI_E019&t;&t;(SKERR_HWI_E018+1)
 DECL|macro|SKERR_HWI_E019MSG
-mdefine_line|#define SKERR_HWI_E019MSG&t;&quot;Invalid Speed parameter&quot;
+mdefine_line|#define SKERR_HWI_E019MSG&t;&quot;Illegal Speed parameter&quot;
 DECL|macro|SKERR_HWI_E020
 mdefine_line|#define SKERR_HWI_E020&t;&t;(SKERR_HWI_E019+1)
 DECL|macro|SKERR_HWI_E020MSG
-mdefine_line|#define SKERR_HWI_E020MSG&t;&quot;Invalid Master/Slave parameter&quot;
+mdefine_line|#define SKERR_HWI_E020MSG&t;&quot;Illegal Master/Slave parameter&quot;
 DECL|macro|SKERR_HWI_E021
 mdefine_line|#define SKERR_HWI_E021&t;&t;(SKERR_HWI_E020+1)
 DECL|macro|SKERR_HWI_E021MSG
@@ -962,7 +962,7 @@ mdefine_line|#define&t;SKERR_HWI_E021MSG&t;&quot;MacUpdateStats(): cannot update
 DECL|macro|SKERR_HWI_E022
 mdefine_line|#define&t;SKERR_HWI_E022&t;&t;(SKERR_HWI_E021+1)
 DECL|macro|SKERR_HWI_E022MSG
-mdefine_line|#define&t;SKERR_HWI_E022MSG&t;&quot;MacStatistic(): invalid statistic base address&quot;
+mdefine_line|#define&t;SKERR_HWI_E022MSG&t;&quot;MacStatistic(): illegal statistic base address&quot;
 DECL|macro|SKERR_HWI_E023
 mdefine_line|#define SKERR_HWI_E023&t;&t;(SKERR_HWI_E022+1)
 DECL|macro|SKERR_HWI_E023MSG
