@@ -73,6 +73,9 @@ DECL|macro|disable_irq_nosync
 mdefine_line|#define disable_irq_nosync&t;disable_irq
 DECL|macro|enable_irq_nosync
 mdefine_line|#define enable_irq_nosync&t;enable_irq
+r_struct
+id|pt_regs
+suffix:semicolon
 r_extern
 r_int
 id|sys_request_irq
@@ -120,7 +123,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * various flags for request_irq() - the Amiga now uses the standard&n; * mechanism like all other architectures - SA_INTERRUPT and SA_SHIRQ&n; * are your friends.&n; */
-macro_line|#ifndef CONFIG_AMIGA
+macro_line|#ifndef MACH_AMIGA_ONLY
 DECL|macro|IRQ_FLG_LOCK
 mdefine_line|#define IRQ_FLG_LOCK&t;(0x0001)&t;/* handler is not replaceable&t;*/
 DECL|macro|IRQ_FLG_REPLACE

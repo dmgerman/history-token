@@ -58,6 +58,7 @@ DECL|macro|WWIDTH
 mdefine_line|#define WWIDTH&t;&t;0x4102
 DECL|macro|WMOVE
 mdefine_line|#define WMOVE&t;&t;0x409c
+DECL|variable|__initdata
 r_static
 r_struct
 id|fb_fix_screeninfo
@@ -91,6 +92,9 @@ id|accel
 suffix:colon
 id|FB_ACCEL_NONE
 comma
+)brace
+suffix:semicolon
+DECL|variable|hpfb_defined
 r_static
 r_struct
 id|fb_var_screeninfo
@@ -173,12 +177,14 @@ id|FB_VMODE_NONINTERLACED
 comma
 )brace
 suffix:semicolon
+DECL|variable|display
 r_static
 r_struct
 id|display
 id|display
 suffix:semicolon
 multiline_comment|/*&n; * Set the palette.  This may not work on all boards but only experimentation &n; * will tell.&n; * XXX Doesn&squot;t work at all.&n; */
+DECL|function|hpfb_setcolreg
 r_static
 r_int
 id|hpfb_setcolreg
@@ -304,6 +310,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|hpfb_copyarea
 r_void
 id|hpfb_copyarea
 c_func
@@ -414,6 +421,7 @@ id|WMOVE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hpfb_ops
 r_static
 r_struct
 id|fb_ops
@@ -466,6 +474,7 @@ DECL|macro|TOPCAT_FBOMSB
 mdefine_line|#define TOPCAT_FBOMSB&t;0x5d
 DECL|macro|TOPCAT_FBOLSB
 mdefine_line|#define TOPCAT_FBOLSB&t;0x5f
+DECL|function|hpfb_init_one
 r_int
 id|__init
 id|hpfb_init_one
@@ -687,8 +696,13 @@ id|hpfb_fix
 suffix:semicolon
 id|fb_info.screen_base
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|hpfb_fix.smem_start
 suffix:semicolon
+singleline_comment|// FIXME
 multiline_comment|/* The below feilds will go away !!!! */
 id|fb_info.currcon
 op_assign
@@ -760,6 +774,7 @@ multiline_comment|/* &n; * Check that the secondary ID indicates that we have so
 DECL|macro|topcat_sid_ok
 mdefine_line|#define topcat_sid_ok(x)  (((x) == DIO_ID2_LRCATSEYE) || ((x) == DIO_ID2_HRCCATSEYE)    &bslash;&n;&t;&t;&t;   || ((x) == DIO_ID2_HRMCATSEYE) || ((x) == DIO_ID2_TOPCAT))
 multiline_comment|/* &n; * Initialise the framebuffer&n; */
+DECL|function|hpfb_init
 r_int
 id|__init
 id|hpfb_init

@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/init.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/HvCallXm.h&gt;
 macro_line|#endif
@@ -427,7 +426,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
-multiline_comment|/* &n; * This function recalibrates the timebase based on the 49-bit time-of-day value in the Titan chip.&n; * The Titan is much more accurate than the value returned by the service processor for the&n; * timebase frequency.  &n; */
+multiline_comment|/* &n; * This function recalibrates the timebase based on the 49-bit time-of-day&n; * value in the Titan chip.  The Titan is much more accurate than the value&n; * returned by the service processor for the timebase frequency.  &n; */
 DECL|function|iSeries_tb_recal
 r_static
 r_void
@@ -692,7 +691,6 @@ suffix:semicolon
 id|irq_enter
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_PPC_ISERIES
@@ -749,7 +747,7 @@ c_cond
 (paren
 id|cpu
 op_eq
-l_int|0
+id|boot_cpuid
 )paren
 (brace
 id|write_lock
@@ -860,7 +858,6 @@ suffix:semicolon
 id|irq_exit
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -1489,7 +1486,7 @@ id|tb_ticks_per_jiffy
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * After adjtimex is called, adjust the conversion of tb ticks&n; * to microseconds to keep do_gettimeofday synchronized &n; * with ntpd.&n;&n; * Use the time_adjust, time_freq and time_offset computed by adjtimex to &n; * adjust the frequency.&n;*/
+multiline_comment|/* &n; * After adjtimex is called, adjust the conversion of tb ticks&n; * to microseconds to keep do_gettimeofday synchronized &n; * with ntpd.&n; *&n; * Use the time_adjust, time_freq and time_offset computed by adjtimex to &n; * adjust the frequency.&n; */
 multiline_comment|/* #define DEBUG_PPC_ADJTIMEX 1 */
 DECL|function|ppc_adjtimex
 r_void
@@ -1643,7 +1640,7 @@ id|tickadj
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* The adjustment should be tickadj*HZ to match the code in linux/kernel/timer.c, but&n;&t;&t;   experiments show that this is too large. 3/4 of tickadj*HZ seems about right */
+multiline_comment|/*&n;&t;&t; * The adjustment should be tickadj*HZ to match the code in&n;&t;&t; * linux/kernel/timer.c, but experiments show that this is too&n;&t;&t; * large. 3/4 of tickadj*HZ seems about right&n;&t;&t; */
 id|singleshot_ppm
 op_sub_assign
 id|singleshot_ppm

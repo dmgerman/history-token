@@ -1112,13 +1112,13 @@ id|ANALOG_MAX_TIME
 op_star
 id|port-&gt;speed
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1135,7 +1135,7 @@ c_func
 id|now
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1163,7 +1163,7 @@ id|last
 op_assign
 id|this
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1184,7 +1184,7 @@ c_func
 id|now
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

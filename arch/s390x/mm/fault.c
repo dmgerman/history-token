@@ -468,7 +468,7 @@ r_goto
 id|no_context
 suffix:semicolon
 multiline_comment|/*&n;&t; * When we get here, the fault happened in the current&n;&t; * task&squot;s user address space, so we can switch on the&n;&t; * interrupts again and then search the VMAs&n;&t; */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1293,7 +1293,7 @@ id|regs-&gt;psw.mask
 op_amp
 id|PSW_PROBLEM_STATE
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

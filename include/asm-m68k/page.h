@@ -241,9 +241,9 @@ DECL|macro|copy_page
 mdefine_line|#define copy_page(to,from)&t;memcpy((to), (from), PAGE_SIZE)
 macro_line|#endif
 DECL|macro|clear_user_page
-mdefine_line|#define clear_user_page(page, vaddr)&t;clear_page(page)
+mdefine_line|#define clear_user_page(page, vaddr, pg)&t;clear_page(page)
 DECL|macro|copy_user_page
-mdefine_line|#define copy_user_page(to, from, vaddr)&t;copy_page(to, from)
+mdefine_line|#define copy_user_page(to, from, vaddr, pg)&t;copy_page(to, from)
 multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
 DECL|member|pte
 DECL|typedef|pte_t
@@ -509,18 +509,34 @@ l_int|0x2000000
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SUN3 */
-DECL|macro|MAP_NR
-mdefine_line|#define MAP_NR(addr)&t;&t;(((unsigned long)(addr)-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT)
+multiline_comment|/*&n; * NOTE: virtual isn&squot;t really correct, actually it should be the offset into the&n; * memory node, but we have no highmem, so that works for now.&n; * TODO: implement (fast) pfn&lt;-&gt;pgdat_idx conversion functions, this makes lots&n; * of the shifts unneccessary.&n; */
+DECL|macro|virt_to_pfn
+mdefine_line|#define virt_to_pfn(kaddr)&t;(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pfn_to_virt
+mdefine_line|#define pfn_to_virt(pfn)&t;__va((pfn) &lt;&lt; PAGE_SHIFT)
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;(mem_map + (((unsigned long)(kaddr)-PAGE_OFFSET) &gt;&gt; PAGE_SHIFT))
-DECL|macro|VALID_PAGE
-mdefine_line|#define VALID_PAGE(page)&t;((page - mem_map) &lt; max_mapnr)
+DECL|macro|page_to_virt
+mdefine_line|#define page_to_virt(page)&t;((((page) - mem_map) &lt;&lt; PAGE_SHIFT) + PAGE_OFFSET)
+DECL|macro|pfn_to_page
+mdefine_line|#define pfn_to_page(pfn)&t;virt_to_page(pfn_to_virt(pfn))
+DECL|macro|page_to_pfn
+mdefine_line|#define page_to_pfn(page)&t;virt_to_pfn(page_to_virt(page))
+DECL|macro|virt_addr_valid
+mdefine_line|#define virt_addr_valid(kaddr)&t;((void *)(kaddr) &gt;= (void *)PAGE_OFFSET &amp;&amp; (void *)(kaddr) &lt; high_memory)
+DECL|macro|pfn_valid
+mdefine_line|#define pfn_valid(pfn)&t;&t;virt_addr_valid(pfn_to_virt(pfn))
+macro_line|#ifdef CONFIG_DEBUG_BUGVERBOSE
 macro_line|#ifndef CONFIG_SUN3
 DECL|macro|BUG
 mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;asm volatile(&quot;illegal&quot;); &bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|BUG
 mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;panic(&quot;BUG!&quot;); &bslash;&n;} while (0)
+macro_line|#endif
+macro_line|#else
+DECL|macro|BUG
+mdefine_line|#define BUG() do { &bslash;&n;&t;asm volatile(&quot;illegal&quot;); &bslash;&n;} while (0)
 macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { &bslash;&n;&t;BUG(); &bslash;&n;} while (0)

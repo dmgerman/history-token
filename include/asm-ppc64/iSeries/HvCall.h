@@ -108,6 +108,8 @@ DECL|macro|HvCallBaseRouter29
 mdefine_line|#define HvCallBaseRouter29&t;&t;&t;&t;HvCallBase + 29
 DECL|macro|HvCallBaseRouter30
 mdefine_line|#define HvCallBaseRouter30&t;&t;&t;&t;HvCallBase + 30
+DECL|macro|HvCallCcSetDABR
+mdefine_line|#define HvCallCcSetDABR  &t;&t;&t;&t;HvCallCc + 7
 singleline_comment|//=====================================================================================
 DECL|function|HvCall_setVirtualDecr
 r_static
@@ -369,6 +371,27 @@ id|HvCall0
 c_func
 (paren
 id|HvCallBaseTerminateMachineSrc
+)paren
+suffix:semicolon
+)brace
+DECL|function|HvCall_setDABR
+r_static
+r_inline
+r_void
+id|HvCall_setDABR
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+id|HvCall1
+c_func
+(paren
+id|HvCallCcSetDABR
+comma
+id|val
 )paren
 suffix:semicolon
 )brace

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PPC
 macro_line|#include &lt;asm/prom.h&gt;
@@ -97,7 +98,7 @@ op_amp
 id|adb_iop_driver
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_ADB_PMU
+macro_line|#if defined(CONFIG_ADB_PMU) || defined(CONFIG_ADB_PMU68K)
 op_amp
 id|via_pmu_driver
 comma
@@ -1143,6 +1144,7 @@ id|adb_sleep_notifier
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
+macro_line|#ifdef CONFIG_PPC
 r_if
 c_cond
 (paren
@@ -1162,6 +1164,7 @@ id|sleepy_trackpad
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC */
 id|init_completion
 c_func
 (paren

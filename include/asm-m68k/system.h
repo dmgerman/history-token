@@ -6,10 +6,16 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/entry.h&gt;
-DECL|macro|prepare_to_switch
-mdefine_line|#define prepare_to_switch()&t;do { } while(0)
+DECL|macro|prepare_arch_schedule
+mdefine_line|#define prepare_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|finish_arch_schedule
+mdefine_line|#define finish_arch_schedule(prev)&t;&t;do { } while(0)
+DECL|macro|prepare_arch_switch
+mdefine_line|#define prepare_arch_switch(rq)&t;&t;&t;do { } while(0)
+DECL|macro|finish_arch_switch
+mdefine_line|#define finish_arch_switch(rq)&t;&t;&t;spin_unlock_irq(&amp;(rq)-&gt;lock)
 multiline_comment|/*&n; * switch_to(n) should switch tasks to task ptr, first checking that&n; * ptr isn&squot;t the current task, in which case it does nothing.  This&n; * also clears the TS-flag if the task we switched to has used the&n; * math co-processor latest.&n; */
-multiline_comment|/*&n; * switch_to() saves the extra registers, that are not saved&n; * automatically by SAVE_SWITCH_STACK in resume(), ie. d0-d5 and&n; * a0-a1. Some of these are used by schedule() and its predecessors&n; * and so we might get see unexpected behaviors when a task returns&n; * with unexpected register values.&n; *&n; * syscall stores these registers itself and none of them are used&n; * by syscall after the function in the syscall has been called.&n; *&n; * Beware that resume now expects *next to be in d1 and the offset of&n; * tss to be in a1. This saves a few instructions as we no longer have&n; * to push them onto the stack and read them back right after.&n; *&n; * 02/17/96 - Jes Sorensen (jds@kom.auc.dk)&n; *&n; * Changed 96/09/19 by Andreas Schwab&n; * pass prev in a0, next in a1, offset of tss in d1, and whether&n; * the mm structures are shared in d2 (to avoid atc flushing).&n; */
+multiline_comment|/*&n; * switch_to() saves the extra registers, that are not saved&n; * automatically by SAVE_SWITCH_STACK in resume(), ie. d0-d5 and&n; * a0-a1. Some of these are used by schedule() and its predecessors&n; * and so we might get see unexpected behaviors when a task returns&n; * with unexpected register values.&n; *&n; * syscall stores these registers itself and none of them are used&n; * by syscall after the function in the syscall has been called.&n; *&n; * Beware that resume now expects *next to be in d1 and the offset of&n; * tss to be in a1. This saves a few instructions as we no longer have&n; * to push them onto the stack and read them back right after.&n; *&n; * 02/17/96 - Jes Sorensen (jds@kom.auc.dk)&n; *&n; * Changed 96/09/19 by Andreas Schwab&n; * pass prev in a0, next in a1&n; */
 id|asmlinkage
 r_void
 id|resume
@@ -19,38 +25,32 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) { &bslash;&n;  register void *_prev __asm__ (&quot;a0&quot;) = (prev); &bslash;&n;  register void *_next __asm__ (&quot;a1&quot;) = (next); &bslash;&n;  register void *_last __asm__ (&quot;d1&quot;); &bslash;&n;  __asm__ __volatile__(&quot;jbsr resume&quot; &bslash;&n;&t;&t;       : &quot;=d&quot; (_last) : &quot;a&quot; (_prev), &quot;a&quot; (_next) &bslash;&n;&t;&t;       : &quot;d0&quot;, /* &quot;d1&quot;, */ &quot;d2&quot;, &quot;d3&quot;, &quot;d4&quot;, &quot;d5&quot;, &quot;a0&quot;, &quot;a1&quot;); &bslash;&n;  (last) = _last; &bslash;&n;}
+mdefine_line|#define switch_to(prev,next,last) do { &bslash;&n;  register void *_prev __asm__ (&quot;a0&quot;) = (prev); &bslash;&n;  register void *_next __asm__ (&quot;a1&quot;) = (next); &bslash;&n;  __asm__ __volatile__(&quot;jbsr resume&quot; &bslash;&n;&t;&t;       : : &quot;a&quot; (_prev), &quot;a&quot; (_next) &bslash;&n;&t;&t;       : &quot;d0&quot;, &quot;d1&quot;, &quot;d2&quot;, &quot;d3&quot;, &quot;d4&quot;, &quot;d5&quot;, &quot;a0&quot;, &quot;a1&quot;); &bslash;&n;} while (0)
 multiline_comment|/* interrupt control.. */
 macro_line|#if 0
-mdefine_line|#define __sti() asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;)
+mdefine_line|#define local_irq_enable() asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;)
 macro_line|#else
 macro_line|#include &lt;asm/hardirq.h&gt;
-DECL|macro|__sti
-mdefine_line|#define __sti() ({&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;if (MACH_IS_Q40 || !local_irq_count(smp_processor_id()))              &bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);  &bslash;&n;})
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable() ({&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;if (MACH_IS_Q40 || !local_irq_count(smp_processor_id()))              &bslash;&n;&t;&t;asm volatile (&quot;andiw %0,%%sr&quot;: : &quot;i&quot; (ALLOWINT) : &quot;memory&quot;);  &bslash;&n;})
 macro_line|#endif
-DECL|macro|__cli
-mdefine_line|#define __cli() asm volatile (&quot;oriw  #0x0700,%%sr&quot;: : : &quot;memory&quot;)
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) asm volatile (&quot;movew %%sr,%0&quot;:&quot;=d&quot; (x) : : &quot;memory&quot;)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x) asm volatile (&quot;movew %0,%%sr&quot;: :&quot;d&quot; (x) : &quot;memory&quot;)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() asm volatile (&quot;oriw  #0x0700,%%sr&quot;: : : &quot;memory&quot;)
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(x) asm volatile (&quot;movew %%sr,%0&quot;:&quot;=d&quot; (x) : : &quot;memory&quot;)
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(x) asm volatile (&quot;movew %0,%%sr&quot;: :&quot;d&quot; (x) : &quot;memory&quot;)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
-mdefine_line|#define local_irq_save(x)&t;({ __save_flags(x); __cli(); })
-DECL|macro|local_irq_restore
-mdefine_line|#define local_irq_restore(x)&t;__restore_flags(x)
-DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;__cli()
-DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__sti()
+mdefine_line|#define local_irq_save(x)&t;({ local_save_flags(x); local_irq_disable(); })
 DECL|macro|cli
-mdefine_line|#define cli()&t;&t;&t;__cli()
+mdefine_line|#define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti
-mdefine_line|#define sti()&t;&t;&t;__sti()
+mdefine_line|#define sti()&t;&t;&t;local_irq_enable()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x)&t;&t;__save_flags(x)
+mdefine_line|#define save_flags(x)&t;&t;local_save_flags(x)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x)&t;__restore_flags(x)
+mdefine_line|#define restore_flags(x)&t;local_irq_restore(x)
 DECL|macro|save_and_cli
 mdefine_line|#define save_and_cli(flags)   do { save_flags(flags); cli(); } while(0)
 multiline_comment|/*&n; * Force strict CPU ordering.&n; * Not really required on m68k...&n; */

@@ -7,6 +7,22 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef CONFIG_AMIGA
 macro_line|#include &lt;asm/vga.h&gt;
+macro_line|#else
+multiline_comment|/*&n; * FIXME&n; * Ugh, we don&squot;t have PCI space, so map readb() and friends to use Zorro space&n; * for MMIO accesses. This should make clgenfb work again on Amiga&n; */
+DECL|macro|inb
+mdefine_line|#define inb(port)&t;0
+DECL|macro|inw
+mdefine_line|#define inw(port)&t;0
+DECL|macro|outb
+mdefine_line|#define outb(port, val)&t;do { } while (0)
+DECL|macro|outw
+mdefine_line|#define outw(port, val)&t;do { } while (0)
+DECL|macro|readb
+mdefine_line|#define readb&t;&t;z_readb
+DECL|macro|writeb
+mdefine_line|#define writeb&t;&t;z_writeb
+DECL|macro|writew
+mdefine_line|#define writew&t;&t;z_writew
 macro_line|#endif
 macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* Some of the code below is taken from SVGAlib.  The original,&n;   unmodified copyright notice for that code is below. */

@@ -1424,7 +1424,7 @@ c_func
 (paren
 id|tlb
 comma
-id|pte
+id|ptep
 comma
 id|address
 op_plus

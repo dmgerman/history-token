@@ -47,10 +47,6 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-r_extern
-r_int
-id|use_of_interrupt_tree
-suffix:semicolon
 r_void
 id|find_ISUs
 c_func
@@ -220,12 +216,12 @@ macro_line|#ifdef CONFIG_SMP
 DECL|macro|THIS_CPU
 mdefine_line|#define THIS_CPU&t;&t;Processor[cpu]
 DECL|macro|DECL_THIS_CPU
-mdefine_line|#define DECL_THIS_CPU&t;&t;int cpu = hard_smp_processor_id()
+mdefine_line|#define DECL_THIS_CPU&t;&t;int cpu = smp_processor_id()
 DECL|macro|CHECK_THIS_CPU
 mdefine_line|#define CHECK_THIS_CPU&t;&t;check_arg_cpu(cpu)
 macro_line|#else
 DECL|macro|THIS_CPU
-mdefine_line|#define THIS_CPU&t;&t;Processor[hard_smp_processor_id()]
+mdefine_line|#define THIS_CPU&t;&t;Processor[smp_processor_id()]
 DECL|macro|DECL_THIS_CPU
 mdefine_line|#define DECL_THIS_CPU
 DECL|macro|CHECK_THIS_CPU
@@ -1404,11 +1400,7 @@ l_int|0
 comma
 l_int|1
 op_lshift
-id|get_hard_smp_processor_id
-c_func
-(paren
-l_int|0
-)paren
+id|boot_cpuid
 )paren
 suffix:semicolon
 )brace
@@ -1513,11 +1505,7 @@ id|i
 comma
 l_int|1
 op_lshift
-id|get_hard_smp_processor_id
-c_func
-(paren
-l_int|0
-)paren
+id|boot_cpuid
 )paren
 suffix:semicolon
 )brace
@@ -1940,62 +1928,6 @@ id|vec
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Convert a cpu mask from logical to physical cpu numbers.&n; */
-DECL|function|physmask
-r_static
-r_inline
-id|u32
-id|physmask
-c_func
-(paren
-id|u32
-id|cpumask
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|u32
-id|mask
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|smp_num_cpus
-suffix:semicolon
-op_increment
-id|i
-comma
-id|cpumask
-op_rshift_assign
-l_int|1
-)paren
-id|mask
-op_or_assign
-(paren
-id|cpumask
-op_amp
-l_int|1
-)paren
-op_lshift
-id|get_hard_smp_processor_id
-c_func
-(paren
-id|i
-)paren
-suffix:semicolon
-r_return
-id|mask
-suffix:semicolon
-)brace
 DECL|function|openpic_init_processor
 r_void
 id|openpic_init_processor
@@ -2011,11 +1943,9 @@ c_func
 op_amp
 id|OpenPIC-&gt;Global.Processor_Initialization
 comma
-id|physmask
-c_func
-(paren
 id|cpumask
-)paren
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
@@ -2117,11 +2047,9 @@ c_func
 id|ipi
 )paren
 comma
-id|physmask
-c_func
-(paren
 id|cpumask
-)paren
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
@@ -2258,7 +2186,7 @@ id|msk
 op_assign
 l_int|1
 op_lshift
-id|hard_smp_processor_id
+id|smp_processor_id
 c_func
 (paren
 )paren
@@ -2417,11 +2345,9 @@ id|timer
 dot
 id|Destination
 comma
-id|physmask
-c_func
-(paren
 id|cpumask
-)paren
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
@@ -2874,11 +2800,9 @@ id|irq_nr
 op_minus
 id|open_pic_irq_offset
 comma
-id|physmask
-c_func
-(paren
 id|cpumask
-)paren
+op_amp
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace
@@ -2894,7 +2818,7 @@ r_int
 id|irq_nr
 )paren
 (brace
-multiline_comment|/* IPIs are marked IRQ_PER_CPU. This has the side effect of&n;&t; * preventing the IRQ_PENDING/IRQ_INPROGRESS logic from&n;&t; * applying to them. We EOI them late to avoid re-entering.&n;&t; * however, I&squot;m wondering if we could simply let them have the&n;&t; * SA_INTERRUPT flag and let them execute with all interrupts OFF.&n;&t; * This would have the side effect of either running cross-CPU&n;&t; * functions with interrupts off, or we can re-enable them explicitely&n;&t; * with a __sti() in smp_call_function_interrupt(), since&n;&t; * smp_call_function() is protected by a spinlock.&n;&t; * Or maybe we shouldn&squot;t set the IRQ_PER_CPU flag on cross-CPU&n;&t; * function calls IPI at all but that would make a special case.&n;&t; */
+multiline_comment|/* IPIs are marked IRQ_PER_CPU. This has the side effect of&n;&t; * preventing the IRQ_PENDING/IRQ_INPROGRESS logic from&n;&t; * applying to them. We EOI them late to avoid re-entering.&n;&t; * however, I&squot;m wondering if we could simply let them have the&n;&t; * SA_INTERRUPT flag and let them execute with all interrupts OFF.&n;&t; * This would have the side effect of either running cross-CPU&n;&t; * functions with interrupts off, or we can re-enable them explicitely&n;&t; * with a local_irq_enable() in smp_call_function_interrupt(), since&n;&t; * smp_call_function() is protected by a spinlock.&n;&t; * Or maybe we shouldn&squot;t set the IRQ_PER_CPU flag on cross-CPU&n;&t; * function calls IPI at all but that would make a special case.&n;&t; */
 id|openpic_eoi
 c_func
 (paren

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_buffers() */
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -1139,7 +1140,9 @@ r_void
 id|check_change
 c_func
 (paren
-r_void
+r_int
+r_int
+id|dummy
 )paren
 suffix:semicolon
 r_static
@@ -1320,16 +1323,6 @@ c_func
 (paren
 r_int
 id|dummy
-)paren
-suffix:semicolon
-r_static
-r_void
-id|floppy_off
-c_func
-(paren
-r_int
-r_int
-id|nr
 )paren
 suffix:semicolon
 r_static
@@ -1936,7 +1929,9 @@ r_void
 id|check_change
 c_func
 (paren
-r_void
+r_int
+r_int
+id|dummy
 )paren
 (brace
 r_static
@@ -5233,19 +5228,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/* dummy for blk.h */
-DECL|function|floppy_off
-r_static
-r_void
-id|floppy_off
-c_func
-(paren
-r_int
-r_int
-id|nr
-)paren
-(brace
-)brace
 multiline_comment|/* The detection of disk changes is a dark chapter in Atari history :-(&n; * Because the &quot;Drive ready&quot; signal isn&squot;t present in the Atari&n; * hardware, one has to rely on the &quot;Write Protect&quot;. This works fine,&n; * as long as no write protected disks are used. TOS solves this&n; * problem by introducing tri-state logic (&quot;maybe changed&quot;) and&n; * looking at the serial number in block 0. This isn&squot;t possible for&n; * Linux, since the floppy driver can&squot;t make assumptions about the&n; * filesystem used on the disk and thus the contents of block 0. I&squot;ve&n; * chosen the method to always say &quot;The disk was changed&quot; if it is&n; * unsure whether it was. This implies that every open or mount&n; * invalidates the disk buffers if you work with write protected&n; * disks. But at least this is better than working with incorrect data&n; * due to unrecognised disk changes.&n; */
 DECL|function|check_floppy_change
 r_static
@@ -5709,25 +5691,6 @@ id|DEVICE_NAME
 l_string|&quot;: request list destroyed&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-op_logical_and
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
 id|device
 op_assign
 id|minor
@@ -5954,7 +5917,11 @@ l_int|0
 suffix:semicolon
 id|ReqCmd
 op_assign
-id|CURRENT-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 suffix:semicolon
 id|ReqBlock
 op_assign
@@ -8091,12 +8058,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|do_floppy
-suffix:semicolon
-multiline_comment|/* avoid warning about unused variable */
 r_return
 l_int|0
 suffix:semicolon

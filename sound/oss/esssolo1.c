@@ -396,7 +396,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* the __cli stunt is to send the data within the command window */
+multiline_comment|/* the local_irq_disable stunt is to send the data within the command window */
 r_for
 c_loop
 (paren
@@ -412,13 +412,13 @@ id|i
 op_increment
 )paren
 (brace
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -450,7 +450,7 @@ op_plus
 l_int|0xc
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -459,7 +459,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -2330,12 +2330,6 @@ id|addrs
 suffix:semicolon
 r_int
 id|i
-comma
-id|j
-comma
-id|bit
-comma
-id|byte
 suffix:semicolon
 id|u32
 id|crc

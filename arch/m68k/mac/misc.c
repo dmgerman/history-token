@@ -724,7 +724,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;via_read_time: couldn&squot;t get valid time, &quot;
-l_string|&quot;last read = 0x%08X and 0x%08X&bslash;n&quot;
+l_string|&quot;last read = 0x%08lx and 0x%08lx&bslash;n&quot;
 comma
 id|last_result.idata
 comma

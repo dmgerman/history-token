@@ -2966,7 +2966,7 @@ id|drvr_globals
 (brace
 macro_line|#if LINUX_VERSION_CODE&lt;=KERNEL_VERSION(2,2,16)
 multiline_comment|/* tq_scheduler sometimes leaves interrupts disabled from do&n;&t; * bottom half */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

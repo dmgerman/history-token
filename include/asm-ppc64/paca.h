@@ -24,8 +24,19 @@ id|paca
 (braket
 )braket
 suffix:semicolon
+r_register
+r_struct
+id|paca_struct
+op_star
+id|local_paca
+id|asm
+c_func
+(paren
+l_string|&quot;r13&quot;
+)paren
+suffix:semicolon
 DECL|macro|get_paca
-mdefine_line|#define get_paca() ((struct paca_struct *)mfspr(SPRG3))
+mdefine_line|#define get_paca()&t;local_paca
 multiline_comment|/*============================================================================&n; * Name_______:&t;paca&n; *&n; * Description:&n; *&n; *&t;Defines the layout of the paca.  &n; *&n; *&t;This structure is not directly accessed by PLIC or the SP except&n; *&t;for the first two pointers that point to the ItLpPaca area and the&n; *&t;ItLpRegSave area for this processor.  Both the ItLpPaca and&n; *&t;ItLpRegSave objects are currently contained within the&n; *&t;PACA but they do not need to be.&n; *&n; *============================================================================&n; */
 DECL|struct|paca_struct
 r_struct
@@ -56,11 +67,11 @@ id|u16
 id|xPacaIndex
 suffix:semicolon
 multiline_comment|/* Logical processor number&t;&t;0x18 */
-DECL|member|xHwProcNum
+DECL|member|active
 id|u16
-id|xHwProcNum
+id|active
 suffix:semicolon
-multiline_comment|/* Actual Hardware Processor Number&t;0x1a */
+multiline_comment|/* Is this cpu active?&t;&t;&t;0x1a */
 DECL|member|default_decr
 id|u32
 id|default_decr

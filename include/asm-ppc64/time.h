@@ -3,6 +3,7 @@ macro_line|#ifndef __PPC64_TIME_H
 DECL|macro|__PPC64_TIME_H
 mdefine_line|#define __PPC64_TIME_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;

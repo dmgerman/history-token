@@ -24,9 +24,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/q40ints.h&gt;
-multiline_comment|/* Some configuration switches are present in the include file... */
-DECL|macro|KBD_REPORT_ERR
-mdefine_line|#define KBD_REPORT_ERR
 multiline_comment|/* Simple translation table for the SysRq keys */
 DECL|macro|SYSRQ_KEY
 mdefine_line|#define SYSRQ_KEY 0x54
@@ -1625,15 +1622,6 @@ l_int|0
 multiline_comment|/* 0x78-0x7f */
 )brace
 suffix:semicolon
-DECL|variable|prev_scancode
-r_static
-r_int
-r_int
-id|prev_scancode
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* remember E0, E1 */
 DECL|function|q40kbd_setkeycode
 r_int
 id|q40kbd_setkeycode
@@ -1758,6 +1746,11 @@ r_char
 id|raw_mode
 )paren
 (brace
+r_static
+r_int
+id|prev_scancode
+suffix:semicolon
+multiline_comment|/* special prefix scancodes.. */
 r_if
 c_cond
 (paren
@@ -1778,6 +1771,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* 0xFF is sent by a few keyboards, ignore it. 0x00 is error */
+r_if
+c_cond
+(paren
+id|scancode
+op_eq
+l_int|0x00
+op_logical_or
+id|scancode
+op_eq
+l_int|0xff
+)paren
+(brace
+id|prev_scancode
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|scancode
+op_and_assign
+l_int|0x7f
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2312,19 +2330,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|q40kbd_leds
-r_extern
-r_void
-id|q40kbd_leds
-c_func
-(paren
-r_int
-r_char
-id|leds
-)paren
-(brace
-multiline_comment|/* nothing can be done */
-)brace
 DECL|function|kbd_clear_input
 r_static
 r_void
@@ -2365,7 +2370,7 @@ id|maxread
 suffix:semicolon
 )brace
 DECL|function|q40kbd_init_hw
-r_void
+r_int
 id|__init
 id|q40kbd_init_hw
 c_func
@@ -2373,19 +2378,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 0
-multiline_comment|/* Get the keyboard controller registers (incomplete decode) */
-id|request_region
-c_func
-(paren
-l_int|0x60
-comma
-l_int|16
-comma
-l_string|&quot;keyboard&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Flush any pending input. */
 id|kbd_clear_input
 c_func
@@ -2423,6 +2415,9 @@ l_int|1
 comma
 id|KEY_IRQ_ENABLE_REG
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * macsonic.c&n; *&n; * (C) 1998 Alan Cox&n; *&n; * Debugging Andreas Ehliar, Michael Schmitz&n; *&n; * Based on code&n; * (C) 1996 by Thomas Bogendoerfer (tsbogend@bigbug.franken.de)&n; * &n; * This driver is based on work from Andreas Busse, but most of&n; * the code is rewritten.&n; * &n; * (C) 1995 by Andreas Busse (andy@waldorf-gmbh.de)&n; *&n; * A driver for the Mac onboard Sonic ethernet chip.&n; *&n; * 98/12/21 MSch: judged from tests on Q800, it&squot;s basically working, &n; *&t;&t;  but eating up both receive and transmit resources&n; *&t;&t;  and duplicating packets. Needs more testing.&n; *&n; * 99/01/03 MSch: upgraded to version 0.92 of the core driver, fixed.&n; */
+multiline_comment|/*&n; * macsonic.c&n; *&n; * (C) 1998 Alan Cox&n; *&n; * Debugging Andreas Ehliar, Michael Schmitz&n; *&n; * Based on code&n; * (C) 1996 by Thomas Bogendoerfer (tsbogend@bigbug.franken.de)&n; * &n; * This driver is based on work from Andreas Busse, but most of&n; * the code is rewritten.&n; * &n; * (C) 1995 by Andreas Busse (andy@waldorf-gmbh.de)&n; *&n; * A driver for the Mac onboard Sonic ethernet chip.&n; *&n; * 98/12/21 MSch: judged from tests on Q800, it&squot;s basically working, &n; *&t;&t;  but eating up both receive and transmit resources&n; *&t;&t;  and duplicating packets. Needs more testing.&n; *&n; * 99/01/03 MSch: upgraded to version 0.92 of the core driver, fixed.&n; * &n; * 00/10/31 sammy@oh.verio.com: Updated driver for 2.4 kernels, fixed problems&n; *          on centris.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/macintosh.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_via.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -31,6 +32,14 @@ macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|SREGS_PAD
 mdefine_line|#define SREGS_PAD(n)    u16 n;
 macro_line|#include &quot;sonic.h&quot;
+DECL|macro|SONIC_READ
+mdefine_line|#define SONIC_READ(reg) &bslash;&n;&t;nubus_readl(base_addr+(reg))
+DECL|macro|SONIC_WRITE
+mdefine_line|#define SONIC_WRITE(reg,val) &bslash;&n;&t;nubus_writel((val), base_addr+(reg))
+DECL|macro|sonic_read
+mdefine_line|#define sonic_read(dev, reg) &bslash;&n;&t;nubus_readl((dev)-&gt;base_addr+(reg))
+DECL|macro|sonic_write
+mdefine_line|#define sonic_write(dev, reg, val) &bslash;&n;&t;nubus_writel((val), (dev)-&gt;base_addr+(reg))
 DECL|variable|sonic_debug
 r_static
 r_int
@@ -40,6 +49,11 @@ DECL|variable|sonic_version_printed
 r_static
 r_int
 id|sonic_version_printed
+suffix:semicolon
+DECL|variable|reg_offset
+r_static
+r_int
+id|reg_offset
 suffix:semicolon
 r_extern
 r_int
@@ -119,7 +133,7 @@ multiline_comment|/* This is what OpenBSD says.  However, this is definitely in 
 DECL|macro|DAYNA_SONIC_MAC_ADDR
 mdefine_line|#define DAYNA_SONIC_MAC_ADDR&t;0xffe004
 DECL|macro|SONIC_READ_PROM
-mdefine_line|#define SONIC_READ_PROM(addr) readb(prom_addr+addr)
+mdefine_line|#define SONIC_READ_PROM(addr) nubus_readb(prom_addr+addr)
 DECL|function|macsonic_probe
 r_int
 id|__init
@@ -292,13 +306,6 @@ r_struct
 id|sonic_local
 op_star
 id|lp
-op_assign
-(paren
-r_struct
-id|sonic_local
-op_star
-)paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
@@ -329,17 +336,15 @@ r_if
 c_cond
 (paren
 (paren
-id|lp-&gt;sonic_desc
+id|lp
 op_assign
 id|kmalloc
 c_func
 (paren
-id|SIZEOF_SONIC_DESC
-op_star
-id|SONIC_BUS_SCALE
-c_func
+r_sizeof
 (paren
-id|lp-&gt;dma_bitmode
+r_struct
+id|sonic_local
 )paren
 comma
 id|GFP_KERNEL
@@ -371,18 +376,16 @@ op_assign
 r_int
 r_int
 )paren
-id|lp-&gt;sonic_desc
+id|lp
 suffix:semicolon
 id|desc_top
 op_assign
 id|desc_base
 op_plus
-id|SIZEOF_SONIC_DESC
-op_star
-id|SONIC_BUS_SCALE
-c_func
+r_sizeof
 (paren
-id|lp-&gt;dma_bitmode
+r_struct
+id|sonic_local
 )paren
 suffix:semicolon
 r_if
@@ -406,7 +409,7 @@ multiline_comment|/* Hmm. try again (FIXME: does this actually work?) */
 id|kfree
 c_func
 (paren
-id|lp-&gt;sonic_desc
+id|lp
 )paren
 suffix:semicolon
 id|printk
@@ -426,7 +429,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;sonic_desc
+id|lp
 op_eq
 l_int|NULL
 )paren
@@ -445,6 +448,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|dev-&gt;priv
+op_assign
+id|lp
+suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* this code is only here as a curiousity...   mainly, where the &n;&t;   fuck did SONIC_BUS_SCALE come from, and what was it supposed&n;&t;   to do?  the normal allocation works great for 32 bit stuffs..  */
 multiline_comment|/* Now set up the pointers to point to the appropriate places */
 id|lp-&gt;cda
 op_assign
@@ -496,6 +505,56 @@ id|lp-&gt;dma_bitmode
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
+id|memset
+c_func
+(paren
+id|lp
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|sonic_local
+)paren
+)paren
+suffix:semicolon
+id|lp-&gt;cda_laddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+(paren
+id|lp-&gt;cda
+)paren
+suffix:semicolon
+id|lp-&gt;tda_laddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|lp-&gt;tda
+suffix:semicolon
+id|lp-&gt;rra_laddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|lp-&gt;rra
+suffix:semicolon
+id|lp-&gt;rda_laddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|lp-&gt;rda
+suffix:semicolon
 multiline_comment|/* FIXME, maybe we should use skbs */
 r_if
 c_cond
@@ -532,21 +591,19 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|lp-&gt;sonic_desc
-)paren
-suffix:semicolon
-id|lp-&gt;sonic_desc
-op_assign
-l_int|NULL
-suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|lp-&gt;rba_laddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|lp-&gt;rba
+suffix:semicolon
 (brace
 r_int
 id|rs
@@ -575,7 +632,11 @@ id|ds
 op_assign
 (paren
 (paren
-id|SIZEOF_SONIC_DESC
+r_sizeof
+(paren
+r_struct
+id|sonic_local
+)paren
 op_plus
 l_int|4095
 )paren
@@ -598,7 +659,7 @@ suffix:semicolon
 id|kernel_set_cachemode
 c_func
 (paren
-id|lp-&gt;sonic_desc
+id|lp
 comma
 id|ds
 comma
@@ -1047,13 +1108,11 @@ r_static
 r_int
 id|once_is_more_than_enough
 suffix:semicolon
-r_struct
-id|sonic_local
-op_star
-id|lp
-suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+id|dma_bitmode
 suffix:semicolon
 r_if
 c_cond
@@ -1275,29 +1334,33 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|lp
-op_assign
+r_if
+c_cond
 (paren
-r_struct
-id|sonic_local
-op_star
-)paren
 id|dev-&gt;priv
-suffix:semicolon
-id|memset
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|lp
+l_string|&quot;%s: warning! sonic entering with priv already allocated!&bslash;n&quot;
 comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|sonic_local
-)paren
+id|dev-&gt;name
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: discarding, will attempt to reallocate&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|dev-&gt;priv
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Danger!  My arms are flailing wildly!  You *must* set this&n;           before using sonic_read() */
 id|dev-&gt;base_addr
 op_assign
@@ -1359,13 +1422,31 @@ op_eq
 id|MAC_MODEL_PB520
 )paren
 (brace
-id|lp-&gt;reg_offset
+id|reg_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|lp-&gt;dma_bitmode
+id|dma_bitmode
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|macintosh_config-&gt;ident
+op_eq
+id|MAC_MODEL_C610
+)paren
+(brace
+id|reg_offset
+op_assign
+l_int|0
+suffix:semicolon
+id|dma_bitmode
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -1375,11 +1456,11 @@ r_int
 id|sr
 suffix:semicolon
 multiline_comment|/* Technically this is not necessary since we zeroed&n;                   it above */
-id|lp-&gt;reg_offset
+id|reg_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|lp-&gt;dma_bitmode
+id|dma_bitmode
 op_assign
 l_int|0
 suffix:semicolon
@@ -1405,7 +1486,7 @@ op_eq
 l_int|0xffff
 )paren
 (brace
-id|lp-&gt;reg_offset
+id|reg_offset
 op_assign
 l_int|2
 suffix:semicolon
@@ -1420,7 +1501,7 @@ comma
 id|SONIC_SR
 )paren
 suffix:semicolon
-id|lp-&gt;dma_bitmode
+id|dma_bitmode
 op_assign
 l_int|1
 suffix:semicolon
@@ -1435,15 +1516,35 @@ id|dev-&gt;name
 comma
 id|sr
 comma
-id|lp-&gt;dma_bitmode
+id|dma_bitmode
 ques
 c_cond
 l_int|32
 suffix:colon
 l_int|16
 comma
-id|lp-&gt;reg_offset
+id|reg_offset
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* this carries my sincere apologies -- by the time I got to updating&n;&t;   the driver, support for &quot;reg_offsets&quot; appeares nowhere in the sonic&n;&t;   code, going back for over a year.  Fortunately, my Mac does&squot;t seem&n;&t;   to use whatever this was.&n;&n;&t;   If you know how this is supposed to be implemented, either fix it,&n;&t;   or contact me (sammy@oh.verio.com) to explain what it is. --Sam */
+r_if
+c_cond
+(paren
+id|reg_offset
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: register offset unsupported.  please fix this if you know what it is.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Software reset, then initialize control registers. */
@@ -1473,7 +1574,7 @@ op_or
 id|SONIC_DCR_EXBUS
 op_or
 (paren
-id|lp-&gt;dma_bitmode
+id|dma_bitmode
 ques
 c_cond
 id|SONIC_DCR_DW
@@ -1761,8 +1862,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|reg_offset
-comma
 id|dma_bitmode
 suffix:semicolon
 multiline_comment|/* Find the first SONIC that hasn&squot;t been initialized already */
@@ -2152,14 +2251,6 @@ id|sonic_local
 )paren
 suffix:semicolon
 multiline_comment|/* Danger!  My arms are flailing wildly!  You *must* set this&n;           before using sonic_read() */
-id|lp-&gt;reg_offset
-op_assign
-id|reg_offset
-suffix:semicolon
-id|lp-&gt;dma_bitmode
-op_assign
-id|dma_bitmode
-suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|base_addr
@@ -2232,6 +2323,25 @@ comma
 id|reg_offset
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|reg_offset
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: register offset unsupported.  please fix this if you know what it is.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* Software reset, then initialize control registers. */
 id|sonic_write
 c_func
@@ -2495,6 +2605,10 @@ DECL|macro|sonic_chiptomem
 mdefine_line|#define sonic_chiptomem(bat) (bat)
 DECL|macro|PHYSADDR
 mdefine_line|#define PHYSADDR(quux) (quux)
+DECL|macro|sonic_request_irq
+mdefine_line|#define sonic_request_irq       request_irq
+DECL|macro|sonic_free_irq
+mdefine_line|#define sonic_free_irq          free_irq
 macro_line|#include &quot;sonic.c&quot;
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;m68k-linux-gcc -D__KERNEL__ -I../../include -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer -pipe -fno-strength-reduce -ffixed-a2 -DMODULE -DMODVERSIONS -include ../../include/linux/modversions.h   -c -o macsonic.o macsonic.c&quot;&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  c-indent-level: 8&n; *  tab-width: 8&n; * End:&n; *&n; */
 eof

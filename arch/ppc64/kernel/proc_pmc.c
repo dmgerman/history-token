@@ -1,5 +1,8 @@
 multiline_comment|/*&n; * proc_pmc.c&n; * Copyright (C) 2001 Mike Corrigan &amp; Dave Engebretsen IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 multiline_comment|/* Change Activity:&n; * 2001       : mikec    : Created&n; * 2001/06/05 : engebret : Software event count support.&n; * End Change Activity &n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
@@ -9,11 +12,10 @@ macro_line|#include &lt;asm/iSeries/IoHriMainStore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/rtas.h&gt;
 DECL|variable|proc_pmc_control_mode
 r_static
 r_int
@@ -645,14 +647,17 @@ op_amp
 id|proc_ppc64_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
-id|eeh_init_proc
+multiline_comment|/* Placeholder for rtas interfaces. */
+id|rtas_proc_dir
+op_assign
+id|proc_mkdir
 c_func
 (paren
+l_string|&quot;rtas&quot;
+comma
 id|proc_ppc64_root
 )paren
 suffix:semicolon
-macro_line|#endif
 id|proc_ppc64_pmc_root
 op_assign
 id|proc_mkdir
@@ -682,10 +687,20 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
 )paren
 (brace
 id|sprintf
@@ -712,6 +727,7 @@ id|proc_ppc64_pmc_root
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/* Create directories for the software counters. */
 r_for
 c_loop
@@ -722,12 +738,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|ent
 op_assign
 id|create_proc_entry
@@ -947,12 +975,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 id|ent
 op_assign
 id|create_proc_entry
@@ -1105,12 +1145,24 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1707,6 +1759,10 @@ op_star
 )paren
 l_int|0
 suffix:semicolon
+id|ent-&gt;size
+op_assign
+l_int|0
+suffix:semicolon
 id|ent-&gt;read_proc
 op_assign
 id|proc_get_titanTod
@@ -2016,12 +2072,21 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|naca-&gt;processorCount
+id|NR_CPUS
 suffix:semicolon
 op_increment
 id|i
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu_online
+c_func
+(paren
+id|i
+)paren
+)paren
 id|len
 op_add_assign
 id|sprintf

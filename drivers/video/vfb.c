@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/fbcon.h&gt;
+macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/*&n;     *  RAM we reserve for the frame buffer. This defines the maximum screen&n;     *  size&n;     *&n;     *  The default can be overridden if the driver is compiled as a module&n;     */
 DECL|macro|VIDEOMEMSIZE
 mdefine_line|#define VIDEOMEMSIZE&t;(1*1024*1024)&t;/* 1 MB */
@@ -1518,7 +1518,7 @@ c_func
 (paren
 id|fb_info.modename
 comma
-id|vesafb_fix.id
+id|vfb_fix.id
 )paren
 suffix:semicolon
 id|fb_info.changevar

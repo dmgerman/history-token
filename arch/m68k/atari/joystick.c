@@ -14,9 +14,9 @@ mdefine_line|#define MAJOR_NR    JOYSTICK_MAJOR
 DECL|macro|ANALOG_JOY
 mdefine_line|#define&t;ANALOG_JOY(n)&t;(!(n &amp; 0x80))
 DECL|macro|DIGITAL_JOY
-mdefine_line|#define&t;DIGITAL_JOY(n)&t;(n &amp; 0x80)
+mdefine_line|#define&t;DIGITAL_JOY(n)&t;(minor(n) &amp; 0x80)
 DECL|macro|DEVICE_NR
-mdefine_line|#define&t;DEVICE_NR(n)&t;(MINOR(n) &amp; 0x7f)
+mdefine_line|#define&t;DEVICE_NR(n)&t;(minor(n) &amp; 0x7f)
 DECL|variable|joystick
 r_static
 r_struct
@@ -604,24 +604,29 @@ id|file_operations
 id|atari_joystick_fops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|read_joystick
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|write_joystick
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|joystick_poll
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|open_joystick
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|release_joystick
 comma
 )brace

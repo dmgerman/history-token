@@ -51,15 +51,15 @@ DECL|macro|DIO_SCINHOLE
 mdefine_line|#define DIO_SCINHOLE(scode) (((scode) &gt;= 32) &amp;&amp; ((scode) &lt; DIOII_SCBASE))
 multiline_comment|/* macros to read device IDs, given base address */
 DECL|macro|DIO_ID
-mdefine_line|#define DIO_ID(baseaddr) readb((baseaddr) + DIO_IDOFF)
+mdefine_line|#define DIO_ID(baseaddr) in_8((baseaddr) + DIO_IDOFF)
 DECL|macro|DIO_SECID
-mdefine_line|#define DIO_SECID(baseaddr) readb((baseaddr) + DIO_SECIDOFF)
+mdefine_line|#define DIO_SECID(baseaddr) in_8((baseaddr) + DIO_SECIDOFF)
 multiline_comment|/* extract the interrupt level */
 DECL|macro|DIO_IPL
-mdefine_line|#define DIO_IPL(baseaddr) (((readb((baseaddr) + DIO_IPLOFF) &gt;&gt; 4) &amp; 0x03) + 3)
+mdefine_line|#define DIO_IPL(baseaddr) (((in_8((baseaddr) + DIO_IPLOFF) &gt;&gt; 4) &amp; 0x03) + 3)
 multiline_comment|/* find the size of a DIO-II board&squot;s address space.&n; * DIO boards are all fixed length.&n; */
 DECL|macro|DIOII_SIZE
-mdefine_line|#define DIOII_SIZE(baseaddr) ((readb((baseaddr) + DIOII_SIZEOFF) + 1) * 0x100000)
+mdefine_line|#define DIOII_SIZE(baseaddr) ((in_8((baseaddr) + DIOII_SIZEOFF) + 1) * 0x100000)
 multiline_comment|/* general purpose macro for both DIO and DIO-II */
 DECL|macro|DIO_SIZE
 mdefine_line|#define DIO_SIZE(scode, base) (DIO_ISDIOII((scode)) ? DIOII_SIZE((base)) : DIO_DEVSIZE)
@@ -97,7 +97,7 @@ mdefine_line|#define DIO_DESC_DCMREM &quot;98642A DCMREM serial MUX&quot;
 DECL|macro|DIO_ID_LAN
 mdefine_line|#define DIO_ID_LAN      0x15 /* 98643A LAN */
 DECL|macro|DIO_DESC_LAN
-mdefine_line|#define DIO_DESC_LAN &quot;98643A LAN&quot;
+mdefine_line|#define DIO_DESC_LAN &quot;98643A LANCE ethernet&quot;
 DECL|macro|DIO_ID_FHPIB
 mdefine_line|#define DIO_ID_FHPIB    0x08 /* 98625A/98625B fast HP-IB */
 DECL|macro|DIO_DESC_FHPIB
@@ -254,14 +254,6 @@ DECL|macro|DIO_DESC2_YGENESIS
 mdefine_line|#define DIO_DESC2_YGENESIS       &quot;&bslash;&quot;y-genesis&bslash;&quot; display&quot;
 multiline_comment|/* if you add new IDs then you should tell dio.c about them so it can&n; * identify them...&n; */
 r_extern
-r_void
-id|dio_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|dio_find
 c_func
@@ -283,6 +275,17 @@ suffix:semicolon
 r_extern
 r_int
 id|dio_scodetoipl
+c_func
+(paren
+r_int
+id|scode
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|dio_scodetoname
 c_func
 (paren
 r_int

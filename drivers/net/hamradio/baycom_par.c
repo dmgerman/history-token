@@ -865,7 +865,7 @@ id|bc-&gt;modem.arb_divider
 op_assign
 l_int|6
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -881,7 +881,7 @@ id|bc-&gt;hdrv
 suffix:semicolon
 )brace
 )brace
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -904,7 +904,7 @@ op_amp
 id|bc-&gt;hdrv
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

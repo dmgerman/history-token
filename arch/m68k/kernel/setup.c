@@ -25,6 +25,7 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atarihw.h&gt;
+macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SUN3X
 macro_line|#include &lt;asm/dvma.h&gt;
@@ -170,6 +171,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* machine dependent keyboard functions */
+macro_line|#ifdef CONFIG_VT
 r_int
 (paren
 op_star
@@ -231,11 +233,7 @@ id|raw_mode
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|SYSRQ_KEY
-r_int
-r_int
-id|SYSRQ_KEY
-suffix:semicolon
+macro_line|#endif
 multiline_comment|/* machine dependent irq functions */
 r_void
 (paren
@@ -470,6 +468,11 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+DECL|variable|SYSRQ_KEY
+r_int
+r_int
+id|SYSRQ_KEY
+suffix:semicolon
 DECL|variable|mach_sysrq_key
 r_int
 id|mach_sysrq_key
@@ -497,7 +500,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ISA)
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)
 DECL|variable|isa_type
 r_int
 id|isa_type
@@ -1071,6 +1074,13 @@ comma
 op_star
 id|q
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|MACH_IS_HP300
+)paren
+(brace
 multiline_comment|/* The bootinfo is located right after the kernel bss */
 id|m68k_parse_bootinfo
 c_func
@@ -1085,6 +1095,58 @@ op_amp
 id|_end
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* FIXME HP300 doesn&squot;t use bootinfo yet */
+r_extern
+r_int
+r_int
+id|hp300_phys_ram_base
+suffix:semicolon
+r_int
+r_int
+id|hp300_mem_size
+op_assign
+l_int|0xffffffff
+op_minus
+id|hp300_phys_ram_base
+suffix:semicolon
+id|m68k_cputype
+op_assign
+id|CPU_68030
+suffix:semicolon
+id|m68k_fputype
+op_assign
+id|FPU_68882
+suffix:semicolon
+id|m68k_memory
+(braket
+l_int|0
+)braket
+dot
+id|addr
+op_assign
+id|hp300_phys_ram_base
+suffix:semicolon
+multiline_comment|/* 0.5M fudge factor */
+id|m68k_memory
+(braket
+l_int|0
+)braket
+dot
+id|size
+op_assign
+id|hp300_mem_size
+op_minus
+l_int|512
+op_star
+l_int|1024
+suffix:semicolon
+id|m68k_num_memory
+op_increment
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1806,6 +1868,10 @@ id|MACH_IS_ATARI
 id|atari_stram_reserve_pages
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|availmem
 )paren
 suffix:semicolon
@@ -1838,7 +1904,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* set ISA defs early as possible */
-macro_line|#if defined(CONFIG_ISA)
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)
 macro_line|#if defined(CONFIG_Q40) 
 r_if
 c_cond
@@ -2314,20 +2380,24 @@ id|seq_operations
 id|cpuinfo_op
 op_assign
 (brace
+dot
 id|start
-suffix:colon
+op_assign
 id|c_start
 comma
+dot
 id|next
-suffix:colon
+op_assign
 id|c_next
 comma
+dot
 id|stop
-suffix:colon
+op_assign
 id|c_stop
 comma
+dot
 id|show
-suffix:colon
+op_assign
 id|show_cpuinfo
 comma
 )brace
@@ -2392,16 +2462,6 @@ comma
 l_string|&quot;Model:&bslash;t&bslash;t%s&bslash;n&quot;
 comma
 id|model
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|get_cpuinfo
-c_func
-(paren
-id|buffer
-op_plus
-id|len
 )paren
 suffix:semicolon
 r_for

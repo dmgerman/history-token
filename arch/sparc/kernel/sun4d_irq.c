@@ -2465,7 +2465,7 @@ op_minus
 id|real_irq_entry
 suffix:semicolon
 multiline_comment|/* For SMP we use the level 14 ticker, however the bootup code&n;&t;&t; * has copied the firmwares level 14 vector into boot cpu&squot;s&n;&t;&t; * trap table, we must fix this now or we get squashed.&n;&t;&t; */
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2512,7 +2512,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2737,7 +2737,7 @@ c_func
 r_void
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

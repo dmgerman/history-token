@@ -309,7 +309,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -371,7 +371,7 @@ comma
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -958,7 +958,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1044,7 +1044,7 @@ id|Create_Dirty_Excl_D
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1491,7 +1491,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1512,7 +1512,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1533,7 +1533,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1554,7 +1554,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1575,7 +1575,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1596,7 +1596,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1617,7 +1617,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1638,7 +1638,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1659,7 +1659,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1680,7 +1680,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1701,7 +1701,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1722,7 +1722,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1743,7 +1743,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1764,7 +1764,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1785,7 +1785,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1801,7 +1801,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1822,7 +1822,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -1838,7 +1838,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1967,7 +1967,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2036,7 +2036,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2167,7 +2167,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2236,7 +2236,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2367,7 +2367,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2436,7 +2436,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2567,7 +2567,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2636,7 +2636,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2767,7 +2767,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -2836,7 +2836,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2967,7 +2967,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -3036,7 +3036,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3167,7 +3167,7 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -3236,7 +3236,7 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3310,7 +3310,7 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -3326,7 +3326,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3399,7 +3399,7 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -3415,7 +3415,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -3938,7 +3938,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -4065,7 +4065,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4145,7 +4145,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -4272,7 +4272,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4352,7 +4352,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -4479,7 +4479,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4559,7 +4559,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -4686,7 +4686,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4766,7 +4766,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -4893,7 +4893,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -4973,7 +4973,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5100,7 +5100,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5180,7 +5180,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5307,7 +5307,7 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5387,7 +5387,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5492,7 +5492,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5572,7 +5572,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5690,7 +5690,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5770,7 +5770,7 @@ id|page
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -5896,7 +5896,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6027,7 +6027,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6047,7 +6047,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6070,7 +6070,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6090,7 +6090,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6144,7 +6144,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Workaround for R4600 bug.  See comment above. */
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6220,7 +6220,7 @@ op_add_assign
 id|dc_lsize
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6385,7 +6385,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Workaround for R4600 bug.  See comment above. */
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6461,7 +6461,7 @@ op_add_assign
 id|dc_lsize
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6664,7 +6664,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6706,7 +6706,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6748,7 +6748,7 @@ l_string|&quot;[tlball]&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6829,7 +6829,7 @@ c_func
 id|old_ctx
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6879,7 +6879,7 @@ id|mm-&gt;context
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6922,7 +6922,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6999,7 +6999,7 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -7226,7 +7226,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7315,7 +7315,7 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -7403,7 +7403,7 @@ c_func
 id|oldpid
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7472,7 +7472,7 @@ id|vma-&gt;vm_mm
 )paren
 r_return
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -7710,7 +7710,7 @@ id|pid
 suffix:semicolon
 id|BARRIER
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -7755,7 +7755,7 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -7877,7 +7877,7 @@ c_func
 suffix:semicolon
 id|BARRIER
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -8406,7 +8406,7 @@ l_int|1024
 )paren
 suffix:semicolon
 multiline_comment|/* This is such a bitch, you&squot;d think they would make it&n;&t; * easy to do this.  Away you daemons of stupidity!&n;&t; */
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -8623,7 +8623,7 @@ op_lshift_assign
 l_int|1
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

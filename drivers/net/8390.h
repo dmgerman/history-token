@@ -389,10 +389,26 @@ DECL|macro|E8390_PAGE1
 mdefine_line|#define E8390_PAGE1&t;0x40&t;/* using the two high-order bits */
 DECL|macro|E8390_PAGE2
 mdefine_line|#define E8390_PAGE2&t;0x80&t;/* Page 3 is invalid. */
-multiline_comment|/*&n; *&t;Only generate indirect loads given a machine that needs them.&n; */
-macro_line|#if defined(CONFIG_MAC) || defined(CONFIG_AMIGA_PCMCIA) || &bslash;&n;    defined(CONFIG_ARIADNE2) || defined(CONFIG_ARIADNE2_MODULE) || &bslash;&n;    defined(CONFIG_HYDRA) || defined(CONFIG_HYDRA_MODULE) || &bslash;&n;    defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE)
+multiline_comment|/*&n; *&t;Only generate indirect loads given a machine that needs them.&n; *      - removed AMIGA_PCMCIA from this list, handled as ISA io now&n; */
+macro_line|#if defined(CONFIG_MAC) ||  &bslash;&n;    defined(CONFIG_ARIADNE2) || defined(CONFIG_ARIADNE2_MODULE) || &bslash;&n;    defined(CONFIG_HYDRA) || defined(CONFIG_HYDRA_MODULE) || &bslash;&n;    defined(CONFIG_ARM_ETHERH) || defined(CONFIG_ARM_ETHERH_MODULE)
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(ei_local-&gt;reg_offset[x])
+DECL|macro|inb
+macro_line|#undef inb
+DECL|macro|inb_p
+macro_line|#undef inb_p
+DECL|macro|outb
+macro_line|#undef outb
+DECL|macro|outb_p
+macro_line|#undef outb_p
+DECL|macro|inb
+mdefine_line|#define inb(port)   in_8(port)
+DECL|macro|outb
+mdefine_line|#define outb(val,port)  out_8(port,val)
+DECL|macro|inb_p
+mdefine_line|#define inb_p(port)   in_8(port)
+DECL|macro|outb_p
+mdefine_line|#define outb_p(val,port)  out_8(port,val)
 macro_line|#else
 DECL|macro|EI_SHIFT
 mdefine_line|#define EI_SHIFT(x)&t;(x)

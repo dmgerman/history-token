@@ -90,5 +90,8 @@ multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(PDEV)&t;(0)
+multiline_comment|/* The PCI address space does equal the physical memory&n; * address space.  The networking and block device layers use&n; * this boolean for bounce buffer decisions.&n; */
+DECL|macro|PCI_DMA_BUS_IS_PHYS
+mdefine_line|#define PCI_DMA_BUS_IS_PHYS&t;(1)
 macro_line|#endif /* _ASM_M68K_PCI_H */
 eof

@@ -1867,7 +1867,6 @@ c_func
 (paren
 id|p
 comma
-comma
 l_string|&quot;auto %2d: %10u &quot;
 comma
 id|i
@@ -1886,7 +1885,6 @@ id|seq_printf
 c_func
 (paren
 id|p
-comma
 comma
 l_string|&quot;vec $%02x: %10u &quot;
 comma
@@ -1923,7 +1921,6 @@ c_func
 (paren
 id|p
 comma
-comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|irq_param
@@ -1939,12 +1936,12 @@ r_else
 (brace
 id|irq_node_t
 op_star
-id|p
+id|n
 suffix:semicolon
 r_for
 c_loop
 (paren
-id|p
+id|n
 op_assign
 (paren
 id|irq_node_t
@@ -1957,11 +1954,11 @@ id|i
 dot
 id|dev_id
 suffix:semicolon
-id|p
+id|n
 suffix:semicolon
-id|p
+id|n
 op_assign
-id|p-&gt;next
+id|n-&gt;next
 )paren
 (brace
 id|seq_printf
@@ -1969,22 +1966,20 @@ c_func
 (paren
 id|p
 comma
-comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|p-&gt;devname
+id|n-&gt;devname
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;next
+id|n-&gt;next
 )paren
 id|seq_puts
 c_func
 (paren
 id|p
-comma
 comma
 l_string|&quot;                    &quot;
 )paren

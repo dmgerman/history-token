@@ -21,27 +21,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 r_static
 r_void
-id|tr_source_route
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|trh_hdr
-op_star
-id|trh
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_void
 id|tr_add_rif_info
 c_func
 (paren
@@ -803,7 +782,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;We try to do source routing... &n; */
 DECL|function|tr_source_route
-r_static
 r_void
 id|tr_source_route
 c_func

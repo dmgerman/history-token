@@ -355,6 +355,24 @@ r_int
 id|level
 )paren
 suffix:semicolon
+r_static
+r_void
+id|pmu_enable_backlight
+c_func
+(paren
+r_int
+id|on
+)paren
+suffix:semicolon
+r_static
+r_void
+id|pmu_set_brightness
+c_func
+(paren
+r_int
+id|level
+)paren
+suffix:semicolon
 DECL|variable|via_pmu_driver
 r_struct
 id|adb_driver
@@ -4921,6 +4939,7 @@ l_int|0
 suffix:semicolon
 DECL|macro|LEVEL_TO_BRIGHT
 mdefine_line|#define LEVEL_TO_BRIGHT(lev)&t;((lev) &lt; 1? 0x7f: 0x4a - ((lev) &lt;&lt; 1))
+r_static
 r_void
 DECL|function|pmu_enable_backlight
 id|pmu_enable_backlight
@@ -5094,6 +5113,7 @@ op_assign
 id|on
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|pmu_set_brightness
 id|pmu_set_brightness

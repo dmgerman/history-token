@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifdef CONFIG_X86_MCE
 multiline_comment|/* as supported by the P4/Xeon family */
 DECL|struct|intel_mce_extended_msrs
@@ -218,11 +219,21 @@ id|pt_regs
 id|regs
 )paren
 (brace
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 id|vendor_thermal_interrupt
 c_func
 (paren
 op_amp
 id|regs
+)paren
+suffix:semicolon
+id|irq_exit
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

@@ -1025,6 +1025,12 @@ c_func
 (paren
 id|PV_POWER4
 )paren
+op_logical_or
+id|__is_processor
+c_func
+(paren
+id|PV_POWER4p
+)paren
 )paren
 id|dsisr
 op_assign

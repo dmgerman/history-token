@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 multiline_comment|/*&n; * Create a pte. Used during initialization only.&n; * We assume the PTE will fit in the primary PTEG.&n; */
 DECL|function|pSeries_make_pte
 r_void
@@ -785,7 +786,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;ldarx&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;rldimi&t;%0,%2,0,62&bslash;n&bslash;&n;&t;&t;stdcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;bne&t;1b&quot;
+l_string|&quot;1:&t;ldarx&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;rldimi&t;%0,%2,0,61&bslash;n&bslash;&n;&t;&t;stdcx.&t;%0,0,%3&bslash;n&bslash;&n;&t;&t;bne&t;1b&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -1004,12 +1005,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1360,16 +1355,15 @@ multiline_comment|/* Invalidate the tlb */
 r_if
 c_cond
 (paren
+id|cpu_has_tlbiel
+c_func
+(paren
+)paren
+op_logical_and
 op_logical_neg
 id|large
 op_logical_and
 id|local
-op_logical_and
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4
-)paren
 )paren
 (brace
 id|_tlbiel
@@ -1450,13 +1444,6 @@ id|i
 comma
 id|j
 suffix:semicolon
-r_int
-r_int
-id|va_array
-(braket
-id|MAX_BATCH_FLUSH
-)braket
-suffix:semicolon
 id|HPTE
 op_star
 id|hptep
@@ -1465,20 +1452,17 @@ id|Hpte_dword0
 id|dw0
 suffix:semicolon
 r_struct
-id|tlb_batch_data
+id|ppc64_tlb_batch
 op_star
-id|ptes
+id|batch
 op_assign
 op_amp
-id|tlb_batch_array
+id|ppc64_tlb_batch
 (braket
 id|smp_processor_id
 c_func
 (paren
 )paren
-)braket
-(braket
-l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* XXX fix for large ptes */
@@ -1511,13 +1495,19 @@ r_if
 c_cond
 (paren
 (paren
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 op_ge
 id|USER_START
 )paren
 op_logical_and
 (paren
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 op_le
 id|USER_END
 )paren
@@ -1529,7 +1519,10 @@ c_func
 (paren
 id|context
 comma
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 r_else
@@ -1538,7 +1531,10 @@ op_assign
 id|get_kernel_vsid
 c_func
 (paren
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 id|va
@@ -1550,12 +1546,15 @@ l_int|28
 )paren
 op_or
 (paren
-id|ptes-&gt;addr
+id|batch-&gt;addr
+(braket
+id|i
+)braket
 op_amp
 l_int|0x0fffffff
 )paren
 suffix:semicolon
-id|va_array
+id|batch-&gt;vaddr
 (braket
 id|j
 )braket
@@ -1596,7 +1595,10 @@ op_assign
 id|pte_val
 c_func
 (paren
-id|ptes-&gt;pte
+id|batch-&gt;pte
+(braket
+id|i
+)braket
 )paren
 op_amp
 id|_PAGE_SECONDARY
@@ -1630,7 +1632,10 @@ op_add_assign
 id|pte_val
 c_func
 (paren
-id|ptes-&gt;pte
+id|batch-&gt;pte
+(braket
+id|i
+)braket
 )paren
 op_amp
 id|_PAGE_GROUP_IX
@@ -1659,9 +1664,6 @@ suffix:semicolon
 id|dw0
 op_assign
 id|hptep-&gt;dw0.dw0
-suffix:semicolon
-id|ptes
-op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -1703,16 +1705,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpu_has_tlbiel
+c_func
+(paren
+)paren
+op_logical_and
 op_logical_neg
 id|large
 op_logical_and
 id|local
-op_logical_and
-id|__is_processor
-c_func
-(paren
-id|PV_POWER4
-)paren
 )paren
 (brace
 id|asm
@@ -1747,7 +1748,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|va_array
+id|batch-&gt;vaddr
 (braket
 id|i
 )braket
@@ -1811,7 +1812,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-id|va_array
+id|batch-&gt;vaddr
 (braket
 id|i
 )braket

@@ -813,7 +813,7 @@ op_star
 id|cmd
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -864,7 +864,7 @@ c_func
 r_void
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
