@@ -40,7 +40,7 @@ id|fixup
 suffix:semicolon
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|address
