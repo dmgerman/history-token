@@ -5513,7 +5513,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|filemap_fdatasync
 c_func
 (paren
@@ -5523,7 +5523,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|filemap_fdatawait
 c_func
 (paren
@@ -7103,6 +7103,16 @@ suffix:semicolon
 r_extern
 r_int
 id|waitfor_one_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|writeout_one_page
 c_func
 (paren
 r_struct
