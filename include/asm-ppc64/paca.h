@@ -145,11 +145,6 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* used for SLB/segment table misses&n;&t;&t;&t;&t; * on the linear mapping */
-DECL|member|slb_r3
-id|u64
-id|slb_r3
-suffix:semicolon
-multiline_comment|/* spot to save R3 on SLB miss */
 DECL|member|context
 id|mm_context_t
 id|context

@@ -591,20 +591,6 @@ id|context.id
 )paren
 )paren
 suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACASLBR3
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|slb_r3
-)paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 id|DEFINE
 c_func
