@@ -7,6 +7,7 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/vector.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 DECL|typedef|router_reg_t
 r_typedef
 r_uint64
