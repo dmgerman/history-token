@@ -3388,7 +3388,7 @@ id|socket-&gt;tq_task
 comma
 id|yenta_bh
 comma
-l_int|NULL
+id|socket
 )paren
 suffix:semicolon
 r_if
