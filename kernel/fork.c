@@ -3524,21 +3524,9 @@ id|p-&gt;binfmt-&gt;module
 r_goto
 id|bad_fork_cleanup_put_domain
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREEMPT
-multiline_comment|/*&n;&t; * schedule_tail drops this_rq()-&gt;lock so we compensate with a count&n;&t; * of 1.  Also, we want to start with kernel preemption disabled.&n;&t; */
-id|p-&gt;thread_info-&gt;preempt_count
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|p-&gt;did_exec
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * We mark the process as running here, but have not actually&n;&t; * inserted it onto the runqueue yet. This guarantees that&n;&t; * nobody will actually run it, and a signal or other external&n;&t; * event cannot wake it up and insert it on the runqueue either.&n;&t; */
-id|p-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 id|copy_flags
 c_func
@@ -3614,13 +3602,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|p-&gt;run_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|p-&gt;children
 )paren
 suffix:semicolon
@@ -3654,13 +3635,6 @@ c_func
 (paren
 op_amp
 id|p-&gt;alloc_lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|p-&gt;switch_lock
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -3736,10 +3710,6 @@ op_assign
 id|p-&gt;cstime
 op_assign
 l_int|0
-suffix:semicolon
-id|p-&gt;array
-op_assign
-l_int|NULL
 suffix:semicolon
 id|p-&gt;lock_depth
 op_assign
@@ -4000,81 +3970,14 @@ id|p-&gt;pdeath_signal
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Share the timeslice between parent and child, thus the&n;&t; * total amount of pending timeslices in the system doesn&squot;t change,&n;&t; * resulting in more scheduling fairness.&n;&t; */
-id|local_irq_disable
+multiline_comment|/* Perform scheduler related setup */
+id|sched_fork
 c_func
 (paren
+id|p
 )paren
 suffix:semicolon
-id|p-&gt;time_slice
-op_assign
-(paren
-id|current-&gt;time_slice
-op_plus
-l_int|1
-)paren
-op_rshift
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t; * The remainder of the first timeslice might be recovered by&n;&t; * the parent if the child exits early enough.&n;&t; */
-id|p-&gt;first_time_slice
-op_assign
-l_int|1
-suffix:semicolon
-id|current-&gt;time_slice
-op_rshift_assign
-l_int|1
-suffix:semicolon
-id|p-&gt;timestamp
-op_assign
-id|sched_clock
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|current-&gt;time_slice
-)paren
-(brace
-multiline_comment|/*&n;&t; &t; * This case is rare, it happens when the parent has only&n;&t; &t; * a single jiffy left from its timeslice. Taking the&n;&t;&t; * runqueue lock is not a problem.&n;&t;&t; */
-id|current-&gt;time_slice
-op_assign
-l_int|1
-suffix:semicolon
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|scheduler_tick
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|preempt_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Ok, add it to the run-queues and make it&n;&t; * visible to the rest of the system.&n;&t; *&n;&t; * Let it rip!&n;&t; */
+multiline_comment|/*&n;&t; * Ok, make it visible to the rest of the system.&n;&t; * We dont wake it up yet.&n;&t; */
 id|p-&gt;tgid
 op_assign
 id|p-&gt;pid
