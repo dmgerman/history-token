@@ -2357,19 +2357,6 @@ op_increment
 suffix:semicolon
 id|end
 suffix:colon
-multiline_comment|/* disable all links -- to be activated on use */
-id|acpi_ut_evaluate_object
-c_func
-(paren
-id|link-&gt;handle
-comma
-l_string|&quot;_DIS&quot;
-comma
-l_int|0
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
