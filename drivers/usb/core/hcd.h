@@ -427,6 +427,19 @@ mdefine_line|#define&t;HCD_USB11&t;0x0010&t;&t;/* USB 1.1 */
 DECL|macro|HCD_USB2
 mdefine_line|#define&t;HCD_USB2&t;0x0020&t;&t;/* USB 2.0 */
 multiline_comment|/* called to init HCD and root hub */
+DECL|member|reset
+r_int
+(paren
+op_star
+id|reset
+)paren
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+suffix:semicolon
 DECL|member|start
 r_int
 (paren
