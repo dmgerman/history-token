@@ -7959,12 +7959,8 @@ id|desc-&gt;type_flags
 op_amp
 id|RXD_FLAG_TCPUDP_CSUM
 )paren
-)paren
-(brace
-id|skb-&gt;csum
-op_assign
-id|htons
-c_func
+op_logical_and
+(paren
 (paren
 (paren
 id|desc-&gt;ip_tcp_csum
@@ -7974,19 +7970,20 @@ id|RXD_TCPCSUM_MASK
 op_rshift
 id|RXD_TCPCSUM_SHIFT
 )paren
-suffix:semicolon
+op_eq
+l_int|0xffff
+)paren
+)paren
+(brace
 id|skb-&gt;ip_summed
 op_assign
-id|CHECKSUM_HW
+id|CHECKSUM_UNNECESSARY
 suffix:semicolon
-)brace
 r_else
-(brace
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_NONE
 suffix:semicolon
-)brace
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -14767,6 +14764,7 @@ l_int|0x00000000
 )brace
 suffix:semicolon
 macro_line|#if 0 /* All zeros, dont eat up space with it. */
+DECL|variable|tg3FwData
 id|u32
 id|tg3FwData
 (braket
@@ -18612,6 +18610,7 @@ l_int|0x00000000
 )brace
 suffix:semicolon
 macro_line|#if 0 /* All zeros, dont eat up space with it. */
+DECL|variable|tg3TsoFwData
 id|u32
 id|tg3TsoFwData
 (braket
@@ -22455,6 +22454,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#if 0
+DECL|function|tg3_dump_state
 multiline_comment|/*static*/
 r_void
 id|tg3_dump_state
@@ -29733,13 +29733,14 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_BROKEN_CHECKSUMS
 suffix:semicolon
-multiline_comment|/* Regardless of whether checksums work or not, we configure&n;&t; * the StrongARM chips to not compute the pseudo header checksums&n;&t; * in either direction.  Because of the way Linux checksum support&n;&t; * works we do not need the chips to do this, and taking the load&n;&t; * off of the TX/RX onboard StrongARM cpus means that they will not be&n;&t; * the bottleneck.  Whoever wrote Broadcom&squot;s driver did not&n;&t; * understand the situation at all.  He could have bothered&n;&t; * to read Jes&squot;s Acenic driver because the logic (and this part of&n;&t; * the Tigon2 hardware/firmware) is pretty much identical.&n;&t; */
+multiline_comment|/* Pseudo-header checksum is done by hardware logic and not&n;&t; * the offload processers, so make the chip do the pseudo-&n;&t; * header checksums on receive.  For transmit it is more&n;&t; * convenient to do the pseudo-header checksum in software&n;&t; * as Linux does that on transmit for us in all cases.&n;&t; */
 id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_NO_TX_PSEUDO_CSUM
 suffix:semicolon
 id|tp-&gt;tg3_flags
-op_or_assign
+op_and_assign
+op_complement
 id|TG3_FLAG_NO_RX_PSEUDO_CSUM
 suffix:semicolon
 multiline_comment|/* Derive initial jumbo mode from MTU assigned in&n;&t; * ether_setup() via the alloc_etherdev() call&n;&t; */
