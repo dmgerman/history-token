@@ -3592,6 +3592,10 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|error
+op_assign
 id|move_from_swap_cache
 c_func
 (paren
@@ -3601,8 +3605,7 @@ id|idx
 comma
 id|mapping
 )paren
-op_eq
-l_int|0
+)paren
 )paren
 (brace
 id|shmem_swp_set
@@ -3666,6 +3669,15 @@ c_func
 id|swappage
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+op_eq
+op_minus
+id|ENOMEM
+)paren
+(brace
 multiline_comment|/* let kswapd refresh zone for GFP_ATOMICs */
 id|blk_congestion_wait
 c_func
@@ -3677,6 +3689,7 @@ op_div
 l_int|50
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|repeat
 suffix:semicolon
@@ -3980,17 +3993,6 @@ id|error
 )paren
 r_goto
 id|failed
-suffix:semicolon
-multiline_comment|/* let kswapd refresh zone for GFP_ATOMICs */
-id|blk_congestion_wait
-c_func
-(paren
-id|WRITE
-comma
-id|HZ
-op_div
-l_int|50
-)paren
 suffix:semicolon
 r_goto
 id|repeat
