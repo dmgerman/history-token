@@ -68,8 +68,8 @@ c_func
 (paren
 (paren
 id|KERN_ERR
-l_string|&quot;  got res [%lx:%lx] bus [%lx:%lx] for &quot;
-l_string|&quot;resource %d of %s&bslash;n&quot;
+l_string|&quot;  got res [%lx:%lx] bus [%lx:%lx] flags %lx for &quot;
+l_string|&quot;BAR %d of %s&bslash;n&quot;
 comma
 id|res-&gt;start
 comma
@@ -78,6 +78,8 @@ comma
 id|region.start
 comma
 id|region.end
+comma
+id|res-&gt;flags
 comma
 id|resno
 comma

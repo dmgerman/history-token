@@ -320,7 +320,11 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* reset_for_srm(); */
+id|pci_restore_srm_config
+c_func
+(paren
+)paren
+suffix:semicolon
 id|set_hae
 c_func
 (paren

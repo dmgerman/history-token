@@ -118,6 +118,61 @@ id|align_entry
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#if defined(CONFIG_ALPHA_SRM) &amp;&amp; &bslash;&n;    (defined(CONFIG_ALPHA_CIA) || defined(CONFIG_ALPHA_LCA))
+DECL|macro|NEED_SRM_SAVE_RESTORE
+macro_line|# define NEED_SRM_SAVE_RESTORE
+macro_line|#else
+DECL|macro|NEED_SRM_SAVE_RESTORE
+macro_line|# undef NEED_SRM_SAVE_RESTORE
+macro_line|#endif
+macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(NEED_SRM_SAVE_RESTORE)
+DECL|macro|ALPHA_RESTORE_SRM_SETUP
+macro_line|# define ALPHA_RESTORE_SRM_SETUP
+macro_line|#else
+DECL|macro|ALPHA_RESTORE_SRM_SETUP
+macro_line|# undef ALPHA_RESTORE_SRM_SETUP
+macro_line|#endif
+macro_line|#ifdef ALPHA_RESTORE_SRM_SETUP
+multiline_comment|/* Store PCI device configuration left by SRM here. */
+DECL|struct|pdev_srm_saved_conf
+r_struct
+id|pdev_srm_saved_conf
+(brace
+DECL|member|next
+r_struct
+id|pdev_srm_saved_conf
+op_star
+id|next
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+DECL|member|regs
+id|u32
+id|regs
+(braket
+l_int|16
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_void
+id|pci_restore_srm_config
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|pdev_save_srm_config
+mdefine_line|#define pdev_save_srm_config(dev)&t;do {} while (0)
+DECL|macro|pci_restore_srm_config
+mdefine_line|#define pci_restore_srm_config()&t;do {} while (0)
+macro_line|#endif
 multiline_comment|/* The hose list.  */
 r_extern
 r_struct

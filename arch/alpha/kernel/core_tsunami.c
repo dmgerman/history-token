@@ -59,8 +59,6 @@ id|common
 suffix:semicolon
 multiline_comment|/*&n; * NOTE: Herein lie back-to-back mb instructions.  They are magic. &n; * One plausible explanation is that the I/O controller does not properly&n; * handle the system transaction.  Another involves timing.  Ho hum.&n; */
 multiline_comment|/*&n; * BIOS32-style PCI interface:&n; */
-DECL|macro|DEBUG_MCHECK
-mdefine_line|#define DEBUG_MCHECK 0&t;&t;/* 0 = minimal, 1 = debug, 2 = debug+dump.  */
 DECL|macro|DEBUG_CONFIG
 mdefine_line|#define DEBUG_CONFIG 0
 macro_line|#if DEBUG_CONFIG
@@ -138,10 +136,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hose-&gt;bus
-op_eq
-id|pbus
+op_logical_neg
+id|pbus-&gt;parent
 )paren
+multiline_comment|/* No parent means peer PCI bus. */
 id|bus
 op_assign
 l_int|0
