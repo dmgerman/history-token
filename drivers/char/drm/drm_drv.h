@@ -86,7 +86,7 @@ mdefine_line|#define DRIVER_IOCTLS
 macro_line|#endif
 macro_line|#ifndef DRIVER_FOPS
 DECL|macro|DRIVER_FOPS
-mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;owner:   THIS_MODULE,&t;&t;&t;&bslash;&n;&t;open:&t; DRM(open),&t;&t;&t;&bslash;&n;&t;flush:&t; DRM(flush),&t;&t;&t;&bslash;&n;&t;release: DRM(release),&t;&t;&t;&bslash;&n;&t;ioctl:&t; DRM(ioctl),&t;&t;&t;&bslash;&n;&t;mmap:&t; DRM(mmap),&t;&t;&t;&bslash;&n;&t;read:&t; DRM(read),&t;&t;&t;&bslash;&n;&t;fasync:&t; DRM(fasync),&t;&t;&t;&bslash;&n;&t;poll:&t; DRM(poll),&t;&t;&t;&bslash;&n;}
+mdefine_line|#define DRIVER_FOPS&t;&t;&t;&t;&bslash;&n;static struct file_operations&t;DRM(fops) = {&t;&bslash;&n;&t;.owner   = THIS_MODULE,&t;&t;&t;&bslash;&n;&t;.open&t; = DRM(open),&t;&t;&t;&bslash;&n;&t;.flush&t; = DRM(flush),&t;&t;&t;&bslash;&n;&t;.release = DRM(release),&t;&t;&bslash;&n;&t;.ioctl&t; = DRM(ioctl),&t;&t;&t;&bslash;&n;&t;.mmap&t; = DRM(mmap),&t;&t;&t;&bslash;&n;&t;.read&t; = DRM(read),&t;&t;&t;&bslash;&n;&t;.fasync  = DRM(fasync),&t;&t;&t;&bslash;&n;&t;.poll&t; = DRM(poll),&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 macro_line|#ifndef MODULE
 multiline_comment|/* DRM(options) is called by the kernel to parse command-line options&n; * passed via the boot-loader (e.g., LILO).  It calls the insmod option&n; * routine, drm_parse_drm.&n; */

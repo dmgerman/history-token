@@ -164,7 +164,7 @@ mdefine_line|#define pte_offset_map pte_offset
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020500
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020413 /* KERNEL_VERSION(2,4,19) */
 DECL|function|vmalloc_to_page
 r_static
 r_inline
