@@ -7552,6 +7552,9 @@ comma
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|data
 comma
 id|dev-&gt;state
@@ -7569,6 +7572,9 @@ c_func
 (paren
 id|state
 comma
+(paren
+r_int
+)paren
 (paren
 r_int
 )paren
