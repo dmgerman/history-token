@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; *&n; * Released under the terms of the GPL&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.15 2002/01/18 21:33:19 laforge Exp&n; */
+multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; *&n; * Released under the terms of the GPL&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.18 2002/04/16 07:33:00 laforge Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -1259,6 +1259,13 @@ c_func
 r_void
 )paren
 (brace
+id|ulog_buff_t
+op_star
+id|ub
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -1278,6 +1285,73 @@ c_func
 id|nflognl-&gt;socket
 )paren
 suffix:semicolon
+multiline_comment|/* remove pending timers and free allocated skb&squot;s */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ULOG_MAXNLGROUPS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|ub
+op_assign
+op_amp
+id|ulog_buffers
+(braket
+id|i
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|timer_pending
+c_func
+(paren
+op_amp
+id|ub-&gt;timer
+)paren
+)paren
+(brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;timer was pending, deleting&bslash;n&quot;
+)paren
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|ub-&gt;timer
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ub-&gt;skb
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|ub-&gt;skb
+)paren
+suffix:semicolon
+id|ub-&gt;skb
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 )brace
 DECL|variable|init
 id|module_init
