@@ -236,6 +236,8 @@ r_int
 id|i
 comma
 id|mt
+op_assign
+id|MT_NONE
 suffix:semicolon
 id|RTRACE
 c_func
@@ -345,6 +347,10 @@ r_return
 id|MT_NONE
 suffix:semicolon
 )brace
+r_else
+r_return
+id|MT_NONE
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3155,6 +3161,34 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Aluminium PowerBook 15&quot; */
+r_if
+c_cond
+(paren
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook5,4&quot;
+)paren
+)paren
+(brace
+id|rinfo-&gt;panel_info.ref_divider
+op_assign
+id|rinfo-&gt;pll.ref_div
+suffix:semicolon
+id|rinfo-&gt;panel_info.post_divider
+op_assign
+l_int|0x2
+suffix:semicolon
+id|rinfo-&gt;panel_info.fbk_divider
+op_assign
+l_int|0x8e
+suffix:semicolon
+id|rinfo-&gt;panel_info.use_bios_dividers
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Aluminium PowerBook 17&quot; */
 r_if
 c_cond
@@ -3163,6 +3197,12 @@ id|machine_is_compatible
 c_func
 (paren
 l_string|&quot;PowerBook5,3&quot;
+)paren
+op_logical_or
+id|machine_is_compatible
+c_func
+(paren
+l_string|&quot;PowerBook5,5&quot;
 )paren
 )paren
 (brace
@@ -3192,7 +3232,7 @@ c_func
 (paren
 l_string|&quot;PowerBook6,3&quot;
 )paren
-op_or
+op_logical_or
 id|machine_is_compatible
 c_func
 (paren
