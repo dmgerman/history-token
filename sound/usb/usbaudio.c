@@ -9676,7 +9676,7 @@ l_int|1
 suffix:colon
 id|pcm_format
 op_assign
-id|SNDRV_PCM_FORMAT_U8
+id|SNDRV_PCM_FORMAT_S8
 suffix:semicolon
 r_break
 suffix:semicolon
