@@ -1768,6 +1768,18 @@ c_func
 l_string|&quot;get_unique_tuple: Found current src map&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ip_nat_used_tuple
+c_func
+(paren
+id|tuple
+comma
+id|conntrack
+)paren
+)paren
 r_return
 l_int|1
 suffix:semicolon
