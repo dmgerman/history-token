@@ -2106,12 +2106,6 @@ id|filp
 r_if
 c_cond
 (paren
-id|is_dx
-c_func
-(paren
-id|inode
-)paren
-op_logical_and
 id|filp-&gt;private_data
 )paren
 id|ext3_htree_free_dir_info
