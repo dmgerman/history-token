@@ -857,10 +857,6 @@ id|pr-&gt;power.state
 op_assign
 id|ACPI_STATE_C1
 suffix:semicolon
-id|pr-&gt;power.default_state
-op_assign
-id|ACPI_STATE_C1
-suffix:semicolon
 multiline_comment|/*&n;&t; * C1/C2&n;&t; * -----&n;&t; * Set the default C1 promotion and C2 demotion policies, where we&n;&t; * promote from C1 to C2 after several (10) successive C1 transitions,&n;&t; * as we cannot (currently) measure the time spent in C1. Demote from&n;&t; * C2 to C1 anytime we experience a &squot;short&squot; (time spent in C2 is less&n;&t; * than the C2 transtion latency).  Note the simplifying assumption&n;&t; * that the &squot;cost&squot; of a transition is amortized when we sleep for at&n;&t; * least as long as the transition&squot;s latency (thus the total transition&n;&t; * time is two times the latency).&n;&t; *&n;&t; * TBD: Measure C1 sleep times by instrumenting the core IRQ handler.&n;&t; * TBD: Demote to default C-State after long periods of activity.&n;&t; * TBD: Investigate policy&squot;s use of CPU utilization -vs- sleep duration.&n;&t; */
 r_if
 c_cond
@@ -1711,13 +1707,10 @@ c_func
 id|seq
 comma
 l_string|&quot;active state:            %d&bslash;n&quot;
-l_string|&quot;default state:           %d&bslash;n&quot;
 l_string|&quot;max_cstate:              %d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
 id|pr-&gt;power.state
-comma
-id|pr-&gt;power.default_state
 comma
 id|max_cstate
 comma
