@@ -3334,6 +3334,15 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* FIXME: Move this lock upwards.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3361,19 +3370,13 @@ id|KERN_ERR
 l_string|&quot;ide-floppy: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|startstop
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+r_else
+(brace
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -3430,6 +3433,7 @@ id|ret
 op_assign
 id|ide_started
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -3884,7 +3888,6 @@ id|drive-&gt;using_dma
 )paren
 id|dma_ok
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren
@@ -4812,6 +4815,13 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idefloppy_floppy_t
 op_star
 id|floppy
@@ -4822,6 +4832,9 @@ r_struct
 id|atapi_packet_command
 op_star
 id|pc
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
@@ -4898,6 +4911,13 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4906,6 +4926,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -4939,6 +4965,13 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -4947,6 +4980,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5003,6 +5042,13 @@ comma
 l_string|&quot;ide-floppy: unsupported command in queue&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idefloppy_end_request
 c_func
 (paren
@@ -5013,11 +5059,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idefloppy_issue_pc
 c_func
 (paren
@@ -5027,6 +5087,15 @@ id|rq
 comma
 id|pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;idefloppy_queue_pc_tail adds a special packet command request to the&n; *&t;tail of the request queue, and waits for it to be serviced.&n; */

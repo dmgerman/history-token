@@ -283,7 +283,7 @@ c_func
 id|ata_status
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking error handler -- caller&n; * should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter, until&n; * timeout is achieved, before timing out.&n; *&n; * FIXME: Channel lock should be held.&n; */
+multiline_comment|/*&n; * Busy-wait for the drive status to be not &quot;busy&quot;.  Check then the status for&n; * all of the &quot;good&quot; bits and none of the &quot;bad&quot; bits, and if all is okay it&n; * returns 0.  All other cases return 1 after invoking error handler -- caller&n; * should just return.&n; *&n; * This routine should get fixed to not hog the cpu during extra long waits..&n; * That could be done by busy-waiting for the first jiffy or two, and then&n; * setting a timer to wake up at half second intervals thereafter, until&n; * timeout is achieved, before timing out.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|ata_status_poll
 r_int
 id|ata_status_poll

@@ -422,8 +422,6 @@ id|BP
 comma
 id|CP
 comma
-id|DP
-comma
 id|TA
 op_assign
 l_int|0
@@ -434,6 +432,11 @@ id|TC
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if PDC202XX_DECODE_REGISTER_INFO
+id|u8
+id|DP
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -676,7 +679,7 @@ l_int|0x0B
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 r_case
 id|XFER_PIO_4
 suffix:colon
@@ -1607,10 +1610,10 @@ id|speed
 suffix:semicolon
 )brace
 multiline_comment|/*   0    1    2    3    4    5    6   7   8&n; * 960, 480, 390, 300, 240, 180, 120, 90, 60&n; *           180, 150, 120,  90,  60&n; * DMA_Speed&n; * 180, 120,  90,  90,  90,  60,  30&n; *  11,   5,   4,   3,   2,   1,   0&n; */
-DECL|function|config_chipset_for_pio
+DECL|function|pdc202xx_tune_drive
 r_static
 r_void
-id|config_chipset_for_pio
+id|pdc202xx_tune_drive
 c_func
 (paren
 r_struct
@@ -1618,11 +1621,11 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
-id|byte
+id|u8
 id|speed
 suffix:semicolon
 r_if
@@ -1634,14 +1637,10 @@ l_int|255
 )paren
 id|speed
 op_assign
-id|ata_timing_mode
+id|ata_best_pio_mode
 c_func
 (paren
 id|drive
-comma
-id|XFER_PIO
-op_or
-id|XFER_EPIO
 )paren
 suffix:semicolon
 r_else
@@ -2509,12 +2508,12 @@ l_int|2
 (brace
 id|no_dma_set
 suffix:colon
-id|config_chipset_for_pio
+id|pdc202xx_tune_drive
 c_func
 (paren
 id|drive
 comma
-l_int|5
+l_int|255
 )paren
 suffix:semicolon
 )brace
@@ -2678,9 +2677,6 @@ id|ch-&gt;dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* start DMA */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|pdc202xx_udma_stop
 r_int
@@ -3500,7 +3496,7 @@ id|hwif
 id|hwif-&gt;tuneproc
 op_assign
 op_amp
-id|config_chipset_for_pio
+id|pdc202xx_tune_drive
 suffix:semicolon
 id|hwif-&gt;quirkproc
 op_assign

@@ -1708,6 +1708,17 @@ id|info
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Wait for the controller to be idle. */
 r_if
 c_cond
@@ -1729,17 +1740,12 @@ op_amp
 id|startstop
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|startstop
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -1759,7 +1765,6 @@ id|WRITE
 )paren
 id|info-&gt;dma
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren
@@ -1873,15 +1878,8 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* packet command */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_started
 suffix:semicolon
 )brace
@@ -1895,6 +1893,7 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 multiline_comment|/* packet command */
+multiline_comment|/* FIXME: Oj kurwa! We have to ungrab the lock before&n;&t;&t;&t; * the IRQ handler gets called.&n;&t;&t;&t; */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -1903,8 +1902,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: Woah we have to ungrab the lock before the IRQ&n;&t;&t; * handler gets called.&n;&t;&t; */
-r_return
+id|ret
+op_assign
 id|handler
 c_func
 (paren
@@ -1913,7 +1912,27 @@ comma
 id|rq
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send a packet command cmd to the drive.  The device registers must have&n; * already been prepared by cdrom_start_packet_command.  &quot;handler&quot; is the&n; * interrupt handler to call when the command completes or there&squot;s data ready.&n; */
 DECL|function|cdrom_transfer_packet_command
@@ -2000,6 +2019,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* FIXME: make this locking go away */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Otherwise, we must wait for DRQ to get set. */
 r_if
 c_cond
@@ -2021,11 +2049,30 @@ op_amp
 id|startstop
 )paren
 )paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|startstop
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Arm the interrupt handler and send the command to the device. */
+multiline_comment|/* FIXME: make this locking go away */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5253,8 +5300,15 @@ id|sector_t
 id|block
 )paren
 (brace
-id|ide_startstop_t
-id|action
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 r_struct
 id|cdrom_info
@@ -5345,6 +5399,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5360,7 +5421,8 @@ id|IDECD_SEEK_THRESHOLD
 op_logical_and
 id|drive-&gt;dsc_overlap
 )paren
-id|action
+(brace
+id|ret
 op_assign
 id|cdrom_start_seek
 c_func
@@ -5372,6 +5434,7 @@ comma
 id|block
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 r_if
@@ -5385,7 +5448,7 @@ id|rq
 op_eq
 id|READ
 )paren
-id|action
+id|ret
 op_assign
 id|cdrom_start_read
 c_func
@@ -5398,7 +5461,7 @@ id|block
 )paren
 suffix:semicolon
 r_else
-id|action
+id|ret
 op_assign
 id|cdrom_start_write
 c_func
@@ -5413,8 +5476,14 @@ id|info-&gt;last_block
 op_assign
 id|block
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
-id|action
+id|ret
 suffix:semicolon
 )brace
 r_else
@@ -5430,7 +5499,15 @@ id|REQ_SENSE
 )paren
 )paren
 (brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|cdrom_do_packet_command
 c_func
 (paren
@@ -5438,6 +5515,15 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_else
@@ -5450,6 +5536,13 @@ id|REQ_SPECIAL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * FIXME: Kill REQ_SEPCIAL and replace it with commands queued&n;&t;&t; * at the request queue instead as suggested by Linus.&n;&t;&t; *&n;&t;&t; * right now this can only be a reset...&n;&t;&t; */
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|cdrom_end_request
 c_func
 (paren
@@ -5458,6 +5551,12 @@ comma
 id|rq
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -5514,6 +5613,13 @@ op_star
 op_amp
 id|pc
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|startstop
 op_assign
 id|cdrom_do_packet_command
@@ -5522,6 +5628,12 @@ c_func
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -5544,6 +5656,13 @@ comma
 l_string|&quot;ide-cd bad flags&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|cdrom_end_request
 c_func
 (paren
@@ -5552,6 +5671,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return

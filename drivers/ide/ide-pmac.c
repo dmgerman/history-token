@@ -6361,7 +6361,7 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 id|dma
 op_assign
@@ -6421,7 +6421,7 @@ id|dma-&gt;control
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|pmac_udma_stop
@@ -6613,7 +6613,7 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+id|ide_stopped
 suffix:semicolon
 r_if
 c_cond
@@ -6684,7 +6684,7 @@ id|reading
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* Apple adds 60ns to wrDataSetup on reads */
 r_if
@@ -6776,7 +6776,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 id|ata_set_handler
 c_func
@@ -6860,7 +6860,6 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 )brace
-r_return
 id|udma_start
 c_func
 (paren
@@ -6868,6 +6867,9 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+r_return
+id|ide_started
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
