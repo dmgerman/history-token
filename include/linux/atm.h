@@ -494,28 +494,5 @@ r_int
 r_int
 id|atm_backend_t
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/net.h&gt;&t;/* struct net_proto */
-r_void
-id|atmpvc_proto_init
-c_func
-(paren
-r_struct
-id|net_proto
-op_star
-id|pro
-)paren
-suffix:semicolon
-r_void
-id|atmsvc_proto_init
-c_func
-(paren
-r_struct
-id|net_proto
-op_star
-id|pro
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

@@ -600,13 +600,6 @@ c_func
 id|dcache_lock
 )paren
 suffix:semicolon
-DECL|variable|dparent_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dparent_lock
-)paren
-suffix:semicolon
 DECL|variable|d_alloc_root
 id|EXPORT_SYMBOL
 c_func

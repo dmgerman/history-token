@@ -323,6 +323,24 @@ id|calgos
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|xfrm_encap_tmpl
+r_struct
+id|xfrm_encap_tmpl
+(brace
+DECL|member|encap_type
+id|__u16
+id|encap_type
+suffix:semicolon
+DECL|member|encap_sport
+id|__u16
+id|encap_sport
+suffix:semicolon
+DECL|member|encap_dport
+id|__u16
+id|encap_dport
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* Netlink message attributes.  */
 DECL|enum|xfrm_attr_type_t
 r_enum
@@ -343,6 +361,10 @@ DECL|enumerator|XFRMA_ALG_COMP
 id|XFRMA_ALG_COMP
 comma
 multiline_comment|/* struct xfrm_algo */
+DECL|enumerator|XFRMA_ENCAP
+id|XFRMA_ENCAP
+comma
+multiline_comment|/* struct xfrm_algo + struct xfrm_encap_tmpl */
 DECL|enumerator|XFRMA_TMPL
 id|XFRMA_TMPL
 comma

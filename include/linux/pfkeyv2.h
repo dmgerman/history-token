@@ -655,6 +655,71 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/* sizeof(struct sadb_x_ipsecrequest) == 16 */
+multiline_comment|/* This defines the TYPE of Nat Traversal in use.  Currently only one&n; * type of NAT-T is supported, draft-ietf-ipsec-udp-encaps-06&n; */
+DECL|struct|sadb_x_nat_t_type
+r_struct
+id|sadb_x_nat_t_type
+(brace
+DECL|member|sadb_x_nat_t_type_len
+r_uint16
+id|sadb_x_nat_t_type_len
+suffix:semicolon
+DECL|member|sadb_x_nat_t_type_exttype
+r_uint16
+id|sadb_x_nat_t_type_exttype
+suffix:semicolon
+DECL|member|sadb_x_nat_t_type_type
+r_uint8
+id|sadb_x_nat_t_type_type
+suffix:semicolon
+DECL|member|sadb_x_nat_t_type_reserved
+r_uint8
+id|sadb_x_nat_t_type_reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* sizeof(struct sadb_x_nat_t_type) == 8 */
+multiline_comment|/* Pass a NAT Traversal port (Source or Dest port) */
+DECL|struct|sadb_x_nat_t_port
+r_struct
+id|sadb_x_nat_t_port
+(brace
+DECL|member|sadb_x_nat_t_port_len
+r_uint16
+id|sadb_x_nat_t_port_len
+suffix:semicolon
+DECL|member|sadb_x_nat_t_port_exttype
+r_uint16
+id|sadb_x_nat_t_port_exttype
+suffix:semicolon
+DECL|member|sadb_x_nat_t_port_port
+r_uint16
+id|sadb_x_nat_t_port_port
+suffix:semicolon
+DECL|member|sadb_x_nat_t_port_reserved
+r_uint16
+id|sadb_x_nat_t_port_reserved
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* sizeof(struct sadb_x_nat_t_port) == 8 */
 multiline_comment|/* Message types */
 DECL|macro|SADB_RESERVED
 mdefine_line|#define SADB_RESERVED&t;&t;0
@@ -702,8 +767,10 @@ DECL|macro|SADB_X_SPDEXPIRE
 mdefine_line|#define SADB_X_SPDEXPIRE&t;21
 DECL|macro|SADB_X_SPDDELETE2
 mdefine_line|#define SADB_X_SPDDELETE2&t;22
+DECL|macro|SADB_X_NAT_T_NEW_MAPPING
+mdefine_line|#define SADB_X_NAT_T_NEW_MAPPING&t;23
 DECL|macro|SADB_MAX
-mdefine_line|#define SADB_MAX&t;&t;22
+mdefine_line|#define SADB_MAX&t;&t;23
 multiline_comment|/* Security Association flags */
 DECL|macro|SADB_SAFLAGS_PFS
 mdefine_line|#define SADB_SAFLAGS_PFS&t;1
@@ -827,8 +894,17 @@ DECL|macro|SADB_X_EXT_POLICY
 mdefine_line|#define SADB_X_EXT_POLICY&t;&t;18
 DECL|macro|SADB_X_EXT_SA2
 mdefine_line|#define SADB_X_EXT_SA2&t;&t;&t;19
+multiline_comment|/* The next four entries are for setting up NAT Traversal */
+DECL|macro|SADB_X_EXT_NAT_T_TYPE
+mdefine_line|#define SADB_X_EXT_NAT_T_TYPE&t;&t;20
+DECL|macro|SADB_X_EXT_NAT_T_SPORT
+mdefine_line|#define SADB_X_EXT_NAT_T_SPORT&t;&t;21
+DECL|macro|SADB_X_EXT_NAT_T_DPORT
+mdefine_line|#define SADB_X_EXT_NAT_T_DPORT&t;&t;22
+DECL|macro|SADB_X_EXT_NAT_T_OA
+mdefine_line|#define SADB_X_EXT_NAT_T_OA&t;&t;23
 DECL|macro|SADB_EXT_MAX
-mdefine_line|#define SADB_EXT_MAX&t;&t;&t;19
+mdefine_line|#define SADB_EXT_MAX&t;&t;&t;23
 multiline_comment|/* Identity Extension values */
 DECL|macro|SADB_IDENTTYPE_RESERVED
 mdefine_line|#define SADB_IDENTTYPE_RESERVED&t;0

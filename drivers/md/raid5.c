@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/raid/raid5.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Stripe cache&n; */
@@ -2980,12 +2981,14 @@ r_char
 op_star
 id|ba
 op_assign
-id|__bio_kmap
+id|__bio_kmap_atomic
 c_func
 (paren
 id|bio
 comma
 id|i
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 r_if
@@ -3022,12 +3025,12 @@ comma
 id|clen
 )paren
 suffix:semicolon
-id|__bio_kunmap
+id|__bio_kunmap_atomic
 c_func
 (paren
-id|bio
+id|ba
 comma
-id|i
+id|KM_USER0
 )paren
 suffix:semicolon
 )brace

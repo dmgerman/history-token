@@ -2863,6 +2863,9 @@ id|len
 op_assign
 id|buflen
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2872,6 +2875,11 @@ id|path
 comma
 id|len
 )paren
+)paren
+id|len
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 id|out
 suffix:colon

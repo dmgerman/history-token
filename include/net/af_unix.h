@@ -3,17 +3,6 @@ DECL|macro|__LINUX_NET_AFUNIX_H
 mdefine_line|#define __LINUX_NET_AFUNIX_H
 r_extern
 r_void
-id|unix_proto_init
-c_func
-(paren
-r_struct
-id|net_proto
-op_star
-id|pro
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|unix_inflight
 c_func
 (paren
