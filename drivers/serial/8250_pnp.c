@@ -46,6 +46,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* PROLiNK 1456VH ISA PnP K56flex Fax Modem */
+(brace
+l_string|&quot;AEI0250&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* Actiontec ISA PNP 56K X2 Fax Modem */
 (brace
 l_string|&quot;AEI1240&quot;
@@ -144,6 +151,14 @@ comma
 multiline_comment|/* Creative Modem Blaster V.90 DI5660 */
 (brace
 l_string|&quot;DMB2001&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* E-Tech */
+multiline_comment|/* E-Tech CyberBULLET PC56RVP */
+(brace
+l_string|&quot;ETT0002&quot;
 comma
 l_int|0
 )brace

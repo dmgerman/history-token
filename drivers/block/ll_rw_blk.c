@@ -2212,16 +2212,6 @@ l_string|&quot;REQ_PM_RESUME&quot;
 comma
 l_string|&quot;REQ_PM_SHUTDOWN&quot;
 comma
-l_string|&quot;REQ_IDETAPE_PC1&quot;
-comma
-l_string|&quot;REQ_IDETAPE_PC2&quot;
-comma
-l_string|&quot;REQ_IDETAPE_READ&quot;
-comma
-l_string|&quot;REQ_IDETAPE_WRITE&quot;
-comma
-l_string|&quot;REQ_IDETAPE_READ_BUFFER&quot;
-comma
 )brace
 suffix:semicolon
 DECL|function|blk_dump_rq_flags
