@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup.c&n; *&n; *  Setup routines for Renesas M32R&n; *&n; *  Copyright (c) 2001, 2002  Hiroyuki Kondo, Hirokazu Takata,&n; *                            Hitoshi Yamamoto&n; */
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -15,6 +14,8 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -900,6 +901,76 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|cpu
+r_static
+r_struct
+id|cpu
+id|cpu
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+DECL|function|topology_init
+r_static
+r_int
+id|__init
+id|topology_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu_id
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu_id
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu_id
+OL
+id|NR_CPUS
+suffix:semicolon
+id|cpu_id
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|cpu_possible
+c_func
+(paren
+id|cpu_id
+)paren
+)paren
+id|register_cpu
+c_func
+(paren
+op_amp
+id|cpu
+(braket
+id|cpu_id
+)braket
+comma
+id|cpu_id
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|topology_init
+id|subsys_initcall
+c_func
+(paren
+id|topology_init
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; *&t;Get CPU information for use by the procfs.&n; */
 DECL|function|show_cpuinfo
@@ -947,7 +1018,7 @@ id|cpu
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif  /* CONFIG_SMP */
+macro_line|#endif&t;/* CONFIG_SMP */
 id|seq_printf
 c_func
 (paren
@@ -1254,7 +1325,7 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
-macro_line|#endif  /* CONFIG_PROC_FS */
+macro_line|#endif&t;/* CONFIG_PROC_FS */
 DECL|variable|__initdata
 r_int
 r_int
@@ -1381,5 +1452,5 @@ id|M32R_ICU_IMASK_PORTL
 suffix:semicolon
 multiline_comment|/* imask=111 */
 )brace
-macro_line|#endif  /* defined(CONFIG_CHIP_VDEC2) ... */
+macro_line|#endif&t;/* defined(CONFIG_CHIP_VDEC2) ... */
 eof
