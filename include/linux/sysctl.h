@@ -492,40 +492,35 @@ op_assign
 l_int|12
 comma
 multiline_comment|/* dirty_async_ratio */
-DECL|enumerator|VM_DIRTY_SYNC
-id|VM_DIRTY_SYNC
-op_assign
-l_int|13
-comma
-multiline_comment|/* dirty_sync_ratio */
 DECL|enumerator|VM_DIRTY_WB_CS
 id|VM_DIRTY_WB_CS
 op_assign
-l_int|14
+l_int|13
 comma
 multiline_comment|/* dirty_writeback_centisecs */
 DECL|enumerator|VM_DIRTY_EXPIRE_CS
 id|VM_DIRTY_EXPIRE_CS
 op_assign
-l_int|15
+l_int|14
 comma
 multiline_comment|/* dirty_expire_centisecs */
 DECL|enumerator|VM_NR_PDFLUSH_THREADS
 id|VM_NR_PDFLUSH_THREADS
 op_assign
-l_int|16
+l_int|15
 comma
 multiline_comment|/* nr_pdflush_threads */
 DECL|enumerator|VM_OVERCOMMIT_RATIO
 id|VM_OVERCOMMIT_RATIO
 op_assign
-l_int|17
+l_int|16
 comma
 multiline_comment|/* percent of RAM to allow overcommit in */
 DECL|enumerator|VM_PAGEBUF
 id|VM_PAGEBUF
 op_assign
-l_int|18
+l_int|17
+comma
 multiline_comment|/* struct: Control pagebuf parameters */
 )brace
 suffix:semicolon

@@ -43,26 +43,14 @@ id|writeback_sync_modes
 (brace
 DECL|enumerator|WB_SYNC_NONE
 id|WB_SYNC_NONE
-op_assign
-l_int|0
 comma
 multiline_comment|/* Don&squot;t wait on anything */
-DECL|enumerator|WB_SYNC_LAST
-id|WB_SYNC_LAST
-op_assign
-l_int|1
-comma
-multiline_comment|/* Wait on the last-written mapping */
 DECL|enumerator|WB_SYNC_ALL
 id|WB_SYNC_ALL
-op_assign
-l_int|2
 comma
 multiline_comment|/* Wait on every mapping */
 DECL|enumerator|WB_SYNC_HOLD
 id|WB_SYNC_HOLD
-op_assign
-l_int|3
 comma
 multiline_comment|/* Hold the inode on sb_dirty for sys_sync() */
 )brace
@@ -185,10 +173,6 @@ suffix:semicolon
 r_extern
 r_int
 id|dirty_async_ratio
-suffix:semicolon
-r_extern
-r_int
-id|dirty_sync_ratio
 suffix:semicolon
 r_extern
 r_int
