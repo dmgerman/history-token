@@ -110,18 +110,6 @@ op_assign
 id|normal_isa_range
 comma
 dot
-id|probe
-op_assign
-id|normal_i2c
-comma
-multiline_comment|/* cheat */
-dot
-id|probe_range
-op_assign
-id|normal_i2c_range
-comma
-multiline_comment|/* cheat */
-dot
 id|ignore
 op_assign
 id|normal_i2c
