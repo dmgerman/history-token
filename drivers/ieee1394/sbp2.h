@@ -1055,7 +1055,8 @@ id|command_orb_dma
 id|____cacheline_aligned
 suffix:semicolon
 DECL|member|Current_SCpnt
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Current_SCpnt
 suffix:semicolon
@@ -1066,7 +1067,8 @@ op_star
 id|Current_done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 suffix:semicolon
@@ -1391,7 +1393,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|Current_SCpnt
 comma
@@ -1401,7 +1404,8 @@ op_star
 id|Current_done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -1623,9 +1627,9 @@ r_void
 op_star
 id|scsi_request_buffer
 comma
-r_int
-r_char
-id|scsi_dir
+r_enum
+id|dma_data_direction
+id|dma_dir
 )paren
 suffix:semicolon
 r_static
@@ -1654,7 +1658,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -1664,7 +1669,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -1709,7 +1715,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
