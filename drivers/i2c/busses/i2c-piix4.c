@@ -44,58 +44,58 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* PIIX4 SMBus address offsets */
 DECL|macro|SMBHSTSTS
-mdefine_line|#define SMBHSTSTS (0 + piix4_smba)
+mdefine_line|#define SMBHSTSTS&t;(0 + piix4_smba)
 DECL|macro|SMBHSLVSTS
-mdefine_line|#define SMBHSLVSTS (1 + piix4_smba)
+mdefine_line|#define SMBHSLVSTS&t;(1 + piix4_smba)
 DECL|macro|SMBHSTCNT
-mdefine_line|#define SMBHSTCNT (2 + piix4_smba)
+mdefine_line|#define SMBHSTCNT&t;(2 + piix4_smba)
 DECL|macro|SMBHSTCMD
-mdefine_line|#define SMBHSTCMD (3 + piix4_smba)
+mdefine_line|#define SMBHSTCMD&t;(3 + piix4_smba)
 DECL|macro|SMBHSTADD
-mdefine_line|#define SMBHSTADD (4 + piix4_smba)
+mdefine_line|#define SMBHSTADD&t;(4 + piix4_smba)
 DECL|macro|SMBHSTDAT0
-mdefine_line|#define SMBHSTDAT0 (5 + piix4_smba)
+mdefine_line|#define SMBHSTDAT0&t;(5 + piix4_smba)
 DECL|macro|SMBHSTDAT1
-mdefine_line|#define SMBHSTDAT1 (6 + piix4_smba)
+mdefine_line|#define SMBHSTDAT1&t;(6 + piix4_smba)
 DECL|macro|SMBBLKDAT
-mdefine_line|#define SMBBLKDAT (7 + piix4_smba)
+mdefine_line|#define SMBBLKDAT&t;(7 + piix4_smba)
 DECL|macro|SMBSLVCNT
-mdefine_line|#define SMBSLVCNT (8 + piix4_smba)
+mdefine_line|#define SMBSLVCNT&t;(8 + piix4_smba)
 DECL|macro|SMBSHDWCMD
-mdefine_line|#define SMBSHDWCMD (9 + piix4_smba)
+mdefine_line|#define SMBSHDWCMD&t;(9 + piix4_smba)
 DECL|macro|SMBSLVEVT
-mdefine_line|#define SMBSLVEVT (0xA + piix4_smba)
+mdefine_line|#define SMBSLVEVT&t;(0xA + piix4_smba)
 DECL|macro|SMBSLVDAT
-mdefine_line|#define SMBSLVDAT (0xC + piix4_smba)
+mdefine_line|#define SMBSLVDAT&t;(0xC + piix4_smba)
 multiline_comment|/* PCI Address Constants */
 DECL|macro|SMBBA
-mdefine_line|#define SMBBA     0x090
+mdefine_line|#define SMBBA&t;&t;0x090
 DECL|macro|SMBHSTCFG
-mdefine_line|#define SMBHSTCFG 0x0D2
+mdefine_line|#define SMBHSTCFG&t;0x0D2
 DECL|macro|SMBSLVC
-mdefine_line|#define SMBSLVC   0x0D3
+mdefine_line|#define SMBSLVC&t;&t;0x0D3
 DECL|macro|SMBSHDW1
-mdefine_line|#define SMBSHDW1  0x0D4
+mdefine_line|#define SMBSHDW1&t;0x0D4
 DECL|macro|SMBSHDW2
-mdefine_line|#define SMBSHDW2  0x0D5
+mdefine_line|#define SMBSHDW2&t;0x0D5
 DECL|macro|SMBREV
-mdefine_line|#define SMBREV    0x0D6
+mdefine_line|#define SMBREV&t;&t;0x0D6
 multiline_comment|/* Other settings */
 DECL|macro|MAX_TIMEOUT
-mdefine_line|#define MAX_TIMEOUT 500
+mdefine_line|#define MAX_TIMEOUT&t;500
 DECL|macro|ENABLE_INT9
-mdefine_line|#define  ENABLE_INT9 0
+mdefine_line|#define  ENABLE_INT9&t;0
 multiline_comment|/* PIIX4 constants */
 DECL|macro|PIIX4_QUICK
-mdefine_line|#define PIIX4_QUICK      0x00
+mdefine_line|#define PIIX4_QUICK&t;&t;0x00
 DECL|macro|PIIX4_BYTE
-mdefine_line|#define PIIX4_BYTE       0x04
+mdefine_line|#define PIIX4_BYTE&t;&t;0x04
 DECL|macro|PIIX4_BYTE_DATA
-mdefine_line|#define PIIX4_BYTE_DATA  0x08
+mdefine_line|#define PIIX4_BYTE_DATA&t;&t;0x08
 DECL|macro|PIIX4_WORD_DATA
-mdefine_line|#define PIIX4_WORD_DATA  0x0C
+mdefine_line|#define PIIX4_WORD_DATA&t;&t;0x0C
 DECL|macro|PIIX4_BLOCK_DATA
-mdefine_line|#define PIIX4_BLOCK_DATA 0x14
+mdefine_line|#define PIIX4_BLOCK_DATA&t;0x14
 multiline_comment|/* insmod parameters */
 multiline_comment|/* If force is set to anything different from 0, we forcibly enable the&n;   PIIX4. DANGEROUS! */
 DECL|variable|force
@@ -391,7 +391,7 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
-multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;   sure, we disable the PIIX4 first. */
+multiline_comment|/* If force_addr is set, we program the new address here. Just to make&n;&t;   sure, we disable the PIIX4 first. */
 r_if
 c_cond
 (paren
@@ -464,7 +464,7 @@ c_cond
 id|force
 )paren
 (brace
-multiline_comment|/* This should never need to be done, but has been noted that&n;   many Dell machines have the SMBus interface on the PIIX4&n;   disabled!? NOTE: This assumes I/O space and other allocations WERE&n;   done by the Bios!  Don&squot;t complain if your hardware does weird &n;   things after enabling this. :&squot;) Check for Bios updates before&n;   resorting to this.  */
+multiline_comment|/* This should never need to be done, but has been&n;&t;&t;&t; * noted that many Dell machines have the SMBus&n;&t;&t;&t; * interface on the PIIX4 disabled!? NOTE: This assumes&n;&t;&t;&t; * I/O space and other allocations WERE done by the&n;&t;&t;&t; * Bios!  Don&squot;t complain if your hardware does weird&n;&t;&t;&t; * things after enabling this. :&squot;) Check for Bios&n;&t;&t;&t; * updates before resorting to this.&n;&t;&t;&t; */
 id|pci_write_config_byte
 c_func
 (paren
