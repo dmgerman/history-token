@@ -156,7 +156,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|llc_station_send_ev
+id|llc_station_state_process
 c_func
 (paren
 r_struct
