@@ -1699,10 +1699,17 @@ c_cond
 op_logical_neg
 id|dentry-&gt;d_inode
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+)brace
 id|res
 op_assign
 id|affs_remove_header
