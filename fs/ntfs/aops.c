@@ -2816,7 +2816,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_writepage - write a @page to the backing store&n; * @page:&t;page cache page to write out&n; *&n; * For non-resident attributes, ntfs_writepage() writes the @page by calling&n; * the ntfs version of the generic block_write_full_page() function,&n; * ntfs_write_block(), which in turn if necessary creates and writes the&n; * buffers associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_writepage() writes the @page by copying&n; * the data to the mft record (which at this stage is most likely in memory).&n; * Thus, in this case, I/O is synchronous, as even if the mft record is not&n; * cached at this point in time, we need to wait for it to be read in before we&n; * can do the copy.&n; *&n; * Note the caller clears the page dirty flag before calling ntfs_writepage().&n; *&n; * Based on ntfs_readpage() and fs/buffer.c::block_write_full_page().&n; *&n; * Return 0 on success and -errno on error.&n; */
+multiline_comment|/**&n; * ntfs_writepage - write a @page to the backing store&n; * @page:&t;page cache page to write out&n; *&n; * For non-resident attributes, ntfs_writepage() writes the @page by calling&n; * the ntfs version of the generic block_write_full_page() function,&n; * ntfs_write_block(), which in turn if necessary creates and writes the&n; * buffers associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_writepage() writes the @page by copying&n; * the data to the mft record (which at this stage is most likely in memory).&n; * The mft record is then marked dirty and written out asynchronously via the&n; * vfs inode dirty code path.&n; *&n; * Note the caller clears the page dirty flag before calling ntfs_writepage().&n; *&n; * Based on ntfs_readpage() and fs/buffer.c::block_write_full_page().&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|ntfs_writepage
 r_static
 r_int
@@ -3173,25 +3173,6 @@ id|page
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// TODO: Consider using PageWriteback() + unlock_page() in 2.5 once the
-singleline_comment|// &quot;VM fiddling has ended&quot;. Note, don&squot;t forget to replace all the
-singleline_comment|// unlock_page() calls further below with end_page_writeback() ones.
-singleline_comment|// FIXME: Make sure it is ok to SetPageError() on unlocked page under
-singleline_comment|// writeback before doing the change!
-macro_line|#if 0
-id|set_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3432,6 +3413,23 @@ id|bytes
 op_assign
 id|PAGE_CACHE_SIZE
 suffix:semicolon
+singleline_comment|// TODO: Consider using PageWriteback() + unlock_page() in 2.6 once the
+singleline_comment|// &quot;VM fiddling has ended&quot;. Note, don&squot;t forget to replace all the
+singleline_comment|// unlock_page() calls further below with end_page_writeback() ones.
+macro_line|#if 0
+id|set_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.&n;&t; */
 id|kaddr
 op_assign
@@ -3522,14 +3520,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
-singleline_comment|// TODO: Mark mft record dirty so it gets written back.
-id|ntfs_error
+multiline_comment|/* Mark the mft record dirty, so it gets written back. */
+id|mark_mft_record_dirty
 c_func
 (paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to resident files is not supported yet. &quot;
-l_string|&quot;Wrote to memory only...&quot;
+id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
 id|put_attr_search_ctx
@@ -5969,14 +5964,11 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
-singleline_comment|// TODO: Mark mft record dirty so it gets written back.
-id|ntfs_error
+multiline_comment|/* Mark the mft record dirty, so it gets written back. */
+id|mark_mft_record_dirty
 c_func
 (paren
-id|vi-&gt;i_sb
-comma
-l_string|&quot;Writing to resident files is not supported yet. &quot;
-l_string|&quot;Wrote to memory only...&quot;
+id|ctx-&gt;ntfs_ino
 )paren
 suffix:semicolon
 id|put_attr_search_ctx

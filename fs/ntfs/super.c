@@ -1307,6 +1307,59 @@ suffix:semicolon
 )brace
 singleline_comment|// TODO:  For now we enforce no atime and dir atime updates as they are
 singleline_comment|// not implemented.
+r_if
+c_cond
+(paren
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_NOATIME
+)paren
+op_logical_and
+op_logical_neg
+(paren
+op_star
+id|flags
+op_amp
+id|MS_NOATIME
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Atime updates are not implemented yet.  &quot;
+l_string|&quot;Leaving them disabled.&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_NODIRATIME
+)paren
+op_logical_and
+op_logical_neg
+(paren
+op_star
+id|flags
+op_amp
+id|MS_NODIRATIME
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Directory atime updates are not implemented &quot;
+l_string|&quot;yet.  Leaving them disabled.&quot;
+)paren
+suffix:semicolon
 op_star
 id|flags
 op_or_assign
@@ -5788,6 +5841,72 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Throw away all mft data page cache pages to allow a clean umount.&n;&t; * All inodes should by now be written out and clean so this should not&n;&t; * loose any data while removing all the pages which have the dirty bit&n;&t; * set.&n;&t; */
+id|ntfs_commit_inode
+c_func
+(paren
+id|vol-&gt;mft_ino
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|vol-&gt;mft_ino-&gt;i_sem
+)paren
+suffix:semicolon
+id|truncate_inode_pages
+c_func
+(paren
+id|vol-&gt;mft_ino-&gt;i_mapping
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|vol-&gt;mft_ino-&gt;i_sem
+)paren
+suffix:semicolon
+id|write_inode_now
+c_func
+(paren
+id|vol-&gt;mft_ino
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|vfs_sb-&gt;s_dirty
+)paren
+op_logical_or
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|vfs_sb-&gt;s_io
+)paren
+)paren
+id|ntfs_error
+c_func
+(paren
+id|vfs_sb
+comma
+l_string|&quot;Dirty inodes found at umount time.  &quot;
+l_string|&quot;They have been thrown away and their changes &quot;
+l_string|&quot;have been lost.  You should run chkdsk.&quot;
+)paren
+suffix:semicolon
 macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
@@ -6886,8 +7005,45 @@ op_or
 id|MS_NODIRATIME
 suffix:semicolon
 macro_line|#else
-singleline_comment|// TODO:  For now we enforce no atime and dir atime updates as they are
-singleline_comment|// not implemented.
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_NOATIME
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Atime updates are not implemented yet.  &quot;
+l_string|&quot;Disabling them.&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_NODIRATIME
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Directory atime updates are not implemented &quot;
+l_string|&quot;yet.  Disabling them.&quot;
+)paren
+suffix:semicolon
 id|sb-&gt;s_flags
 op_or_assign
 id|MS_NOATIME
