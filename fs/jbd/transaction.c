@@ -4597,7 +4597,7 @@ op_member_access_from_pointer
 id|b_state
 )paren
 )paren
-id|set_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
 id|jh2bh
@@ -4607,6 +4607,7 @@ id|jh
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Expose it to the VM */
 )brace
 DECL|function|journal_unfile_buffer
 r_void
