@@ -1,7 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgehwt.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.14 $&n; * Date:&t;$Date: 2003/05/13 18:01:58 $&n; * Purpose:&t;Hardware Timer.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgehwt.c&n; * Project:&t;Gigabit Ethernet Adapters, Event Scheduler Module&n; * Version:&t;$Revision: 1.15 $&n; * Date:&t;$Date: 2003/09/16 13:41:23 $&n; * Purpose:&t;Hardware Timer&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgehwt.c,v $&n; *&t;Revision 1.14  2003/05/13 18:01:58  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.13  1999/11/22 13:31:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.12  1998/10/15 15:11:34  gklug&n; *&t;fix: ID_sccs to SysKonnectFileId&n; *&t;&n; *&t;Revision 1.11  1998/10/08 15:27:51  gklug&n; *&t;chg: correction factor is host clock dependent&n; *&t;&n; *&t;Revision 1.10  1998/09/15 14:18:31  cgoos&n; *&t;Changed more BOOLEANs to SK_xxx&n; *&n; *&t;Revision 1.9  1998/09/15 14:16:06  cgoos&n; *&t;Changed line 107: FALSE to SK_FALSE&n; *&t;&n; *&t;Revision 1.8  1998/08/24 13:04:44  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.7  1998/08/19 09:50:49  gklug&n; *&t;fix: remove struct keyword from c-code (see CCC) add typedefs&n; *&t;&n; *&t;Revision 1.6  1998/08/17 09:59:02  gklug&n; *&t;fix: typos&n; *&t;&n; *&t;Revision 1.5  1998/08/14 07:09:10  gklug&n; *&t;fix: chg pAc -&gt; pAC&n; *&t;&n; *&t;Revision 1.4  1998/08/10 14:14:52  gklug&n; *&t;rmv: unneccessary SK_ADDR macro&n; *&t;&n; *&t;Revision 1.3  1998/08/07 12:53:44  gklug&n; *&t;fix: first compiled version&n; *&t;&n; *&t;Revision 1.2  1998/08/07 09:19:29  gklug&n; *&t;adapt functions to the C coding conventions&n; *&t;rmv unneccessary functions.&n; *&t;&n; *&t;Revision 1.1  1998/08/05 11:28:36  gklug&n; *&t;first version: adapted from SMT/FDDI&n; *&t;&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
-multiline_comment|/*&n;&t;Event queue and dispatcher&n;*/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgehwt.c,v $&n; *&t;Revision 1.15  2003/09/16 13:41:23  rschmidt&n; *&t;Added (C) Marvell to SysKonnectFileId&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.14  2003/05/13 18:01:58  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.13  1999/11/22 13:31:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.12  1998/10/15 15:11:34  gklug&n; *&t;fix: ID_sccs to SysKonnectFileId&n; *&t;&n; *&t;Revision 1.11  1998/10/08 15:27:51  gklug&n; *&t;chg: correction factor is host clock dependent&n; *&t;&n; *&t;Revision 1.10  1998/09/15 14:18:31  cgoos&n; *&t;Changed more BOOLEANs to SK_xxx&n; *&n; *&t;Revision 1.9  1998/09/15 14:16:06  cgoos&n; *&t;Changed line 107: FALSE to SK_FALSE&n; *&t;&n; *&t;Revision 1.8  1998/08/24 13:04:44  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.7  1998/08/19 09:50:49  gklug&n; *&t;fix: remove struct keyword from c-code (see CCC) add typedefs&n; *&t;&n; *&t;Revision 1.6  1998/08/17 09:59:02  gklug&n; *&t;fix: typos&n; *&t;&n; *&t;Revision 1.5  1998/08/14 07:09:10  gklug&n; *&t;fix: chg pAc -&gt; pAC&n; *&t;&n; *&t;Revision 1.4  1998/08/10 14:14:52  gklug&n; *&t;rmv: unneccessary SK_ADDR macro&n; *&t;&n; *&t;Revision 1.3  1998/08/07 12:53:44  gklug&n; *&t;fix: first compiled version&n; *&t;&n; *&t;Revision 1.2  1998/08/07 09:19:29  gklug&n; *&t;adapt functions to the C coding conventions&n; *&t;rmv unneccessary functions.&n; *&t;&n; *&t;Revision 1.1  1998/08/05 11:28:36  gklug&n; *&t;first version: adapted from SMT/FDDI&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *&t;Event queue and dispatcher&n; */
 macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
@@ -11,13 +11,13 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;$Header: /usr56/projects/ge/schedule/skgehwt.c,v 1.14 2003/05/13 18:01:58 mkarl Exp $&quot;
+l_string|&quot;@(#) $Id: skgehwt.c,v 1.15 2003/09/16 13:41:23 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
 macro_line|#include &quot;h/skdrv2nd.h&quot;&t;&t;/* Adapter Control- and Driver specific Def. */
 macro_line|#ifdef __C2MAN__
-multiline_comment|/*&n;&t;Hardware Timer function queue management.&n;&n;&t;General Description:&n;&n; */
+multiline_comment|/*&n; *   Hardware Timer function queue management.&n; */
 DECL|function|intro
 id|intro
 c_func
@@ -144,7 +144,7 @@ c_func
 (paren
 id|Ioc
 comma
-id|B2_TI_CRTL
+id|B2_TI_CTRL
 comma
 id|TIM_START
 )paren
@@ -176,7 +176,7 @@ c_func
 (paren
 id|Ioc
 comma
-id|B2_TI_CRTL
+id|B2_TI_CTRL
 comma
 id|TIM_STOP
 )paren
@@ -186,7 +186,7 @@ c_func
 (paren
 id|Ioc
 comma
-id|B2_TI_CRTL
+id|B2_TI_CTRL
 comma
 id|TIM_CLR_IRQ
 )paren
@@ -258,7 +258,7 @@ op_amp
 id|IStatus
 )paren
 suffix:semicolon
-multiline_comment|/* Check if timer expired (or wraparound). */
+multiline_comment|/* Check if timer expired (or wraped around) */
 r_if
 c_cond
 (paren
@@ -299,9 +299,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
 id|pAC-&gt;Hwt.TStop
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * interrupt source= timer&n; */

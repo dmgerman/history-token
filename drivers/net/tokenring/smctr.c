@@ -3833,10 +3833,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|tp-&gt;cleanup
 op_assign
 l_int|1
@@ -16091,10 +16087,6 @@ id|err
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|err

@@ -27,16 +27,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ELEMENTS
 mdefine_line|#define ELEMENTS(arr) (sizeof (arr)/sizeof (arr[0]))
 r_extern
-r_struct
-id|sparc_phys_banks
-id|sp_banks
-(braket
-id|SPARC_PHYS_BANKS
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-r_extern
 r_int
 id|prom_node_root
 suffix:semicolon

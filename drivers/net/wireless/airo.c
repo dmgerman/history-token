@@ -3425,8 +3425,6 @@ DECL|macro|FLAG_PENDING_XMIT
 mdefine_line|#define FLAG_PENDING_XMIT 9
 DECL|macro|FLAG_PENDING_XMIT11
 mdefine_line|#define FLAG_PENDING_XMIT11 10
-DECL|macro|FLAG_PCI
-mdefine_line|#define FLAG_PCI&t;11
 DECL|macro|JOB_MASK
 mdefine_line|#define JOB_MASK&t;0x1ff0000
 DECL|macro|JOB_DIE
@@ -23882,23 +23880,6 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|set_bit
-(paren
-id|FLAG_PCI
-comma
-op_amp
-(paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -24043,7 +24024,7 @@ id|KERN_INFO
 l_string|&quot;airo:  Probing for PCI adapters&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
@@ -24073,11 +24054,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|is_pci
-op_assign
-l_int|0
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -24093,33 +24069,6 @@ comma
 id|airo_devices-&gt;dev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|FLAG_PCI
-comma
-op_amp
-(paren
-(paren
-r_struct
-id|airo_info
-op_star
-)paren
-id|airo_devices-&gt;dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|flags
-)paren
-)paren
-id|is_pci
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|stop_airo_card
 c_func
 (paren
@@ -24137,12 +24086,6 @@ comma
 id|proc_root_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|is_pci
-)paren
-(brace
 macro_line|#ifdef CONFIG_PCI
 id|pci_unregister_driver
 c_func
@@ -24152,7 +24095,6 @@ id|airo_driver
 )paren
 suffix:semicolon
 macro_line|#endif
-)brace
 )brace
 macro_line|#ifdef WIRELESS_EXT
 multiline_comment|/*&n; * Initial Wireless Extension code for Aironet driver by :&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt; - HPL - 17 November 00&n; * Conversion to new driver API by :&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt; - HPL - 26 March 02&n; * Javier also did a good amount of work here, adding some new extensions&n; * and fixing my code. Let&squot;s just say that without him this code just&n; * would not work at all... - Jean II&n; */

@@ -19533,8 +19533,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -19691,8 +19689,6 @@ l_int|0xffff
 suffix:semicolon
 )brace
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

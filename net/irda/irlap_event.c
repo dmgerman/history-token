@@ -3020,6 +3020,7 @@ comma
 id|CMD_FRAME
 )paren
 suffix:semicolon
+multiline_comment|/* The timer is set to half the normal timer to quickly&n;&t;&t; * detect a failure to negociate the new connection&n;&t;&t; * parameters. IrLAP 6.11.3.2, note 3.&n;&t;&t; * Note that currently we don&squot;t process this failure&n;&t;&t; * properly, as we should do a quick disconnect.&n;&t;&t; * Jean II */
 id|irlap_start_final_timer
 c_func
 (paren
@@ -4140,11 +4141,14 @@ id|self-&gt;ack_required
 op_assign
 id|FALSE
 suffix:semicolon
+multiline_comment|/* Make sure we account for the time&n;&t;&t;&t;&t; * to transmit our frames. See comemnts&n;&t;&t;&t;&t; * in irlap_send_data_primary_poll().&n;&t;&t;&t;&t; * Jean II */
 id|irlap_start_final_timer
 c_func
 (paren
 id|self
 comma
+l_int|2
+op_star
 id|self-&gt;final_timeout
 )paren
 suffix:semicolon
@@ -4259,12 +4263,14 @@ comma
 id|CMD_FRAME
 )paren
 suffix:semicolon
-multiline_comment|/* Give peer some time to retransmit! */
+multiline_comment|/* Give peer some time to retransmit! &n;&t;&t;&t;&t; * But account for our own Tx. */
 id|irlap_start_final_timer
 c_func
 (paren
 id|self
 comma
+l_int|2
+op_star
 id|self-&gt;final_timeout
 )paren
 suffix:semicolon
@@ -4616,6 +4622,7 @@ comma
 id|CMD_FRAME
 )paren
 suffix:semicolon
+multiline_comment|/* Final timer ??? Jean II */
 id|irlap_next_state
 c_func
 (paren
@@ -4961,6 +4968,8 @@ c_func
 (paren
 id|self
 comma
+l_int|2
+op_star
 id|self-&gt;final_timeout
 )paren
 suffix:semicolon
@@ -5015,6 +5024,8 @@ c_func
 (paren
 id|self
 comma
+l_int|2
+op_star
 id|self-&gt;final_timeout
 )paren
 suffix:semicolon
