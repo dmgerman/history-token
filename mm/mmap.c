@@ -4588,7 +4588,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Munmap is split into 2 main parts -- this part which finds&n; * what needs doing, and the areas themselves, which do the&n; * work.  This now handles partial unmappings.&n; * Jeremy Fitzhardine &lt;jeremy@sw.oz.au&gt;&n; */
+multiline_comment|/* Munmap is split into 2 main parts -- this part which finds&n; * what needs doing, and the areas themselves, which do the&n; * work.  This now handles partial unmappings.&n; * Jeremy Fitzhardinge &lt;jeremy@goop.org&gt;&n; */
 DECL|function|do_munmap
 r_int
 id|do_munmap

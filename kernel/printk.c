@@ -2043,7 +2043,7 @@ id|_log_end
 suffix:semicolon
 r_int
 r_int
-id|must_wake_klogd
+id|wake_klogd
 op_assign
 l_int|0
 suffix:semicolon
@@ -2063,7 +2063,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|must_wake_klogd
+id|wake_klogd
 op_or_assign
 id|log_start
 op_minus
@@ -2133,10 +2133,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|must_wake_klogd
+id|wake_klogd
 op_logical_and
 op_logical_neg
 id|oops_in_progress
+op_logical_and
+id|waitqueue_active
+c_func
+(paren
+op_amp
+id|log_wait
+)paren
 )paren
 id|wake_up_interruptible
 c_func
