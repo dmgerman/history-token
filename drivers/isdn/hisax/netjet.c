@@ -3759,7 +3759,7 @@ id|p
 op_assign
 id|buf
 suffix:semicolon
-id|u_int
+r_int
 id|i
 comma
 id|s_cnt

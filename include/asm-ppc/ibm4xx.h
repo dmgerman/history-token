@@ -115,7 +115,21 @@ mdefine_line|#define _ISA_MEM_BASE&t;0
 DECL|macro|PCI_DRAM_OFFSET
 mdefine_line|#define PCI_DRAM_OFFSET&t;0
 macro_line|#endif
+macro_line|#elif CONFIG_44x
+macro_line|#if defined(CONFIG_EBONY)
+macro_line|#include &lt;platforms/4xx/ebony.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_OCOTEA)
+macro_line|#include &lt;platforms/4xx/ocotea.h&gt;
+macro_line|#endif
 macro_line|#endif /* CONFIG_40x */
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/*&n; * The &quot;residual&quot; board information structure the boot loader passes&n; * into the kernel.&n; */
+r_extern
+id|bd_t
+id|__res
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __ASM_IBM4XX_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

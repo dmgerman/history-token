@@ -3863,9 +3863,9 @@ c_cond
 id|diva_ipac_isa_probe
 c_func
 (paren
-id|cs-&gt;card
+id|card-&gt;cs
 comma
-id|cs
+id|card
 )paren
 )paren
 r_return
@@ -3883,9 +3883,9 @@ c_cond
 id|diva_isac_isa_probe
 c_func
 (paren
-id|cs-&gt;card
+id|card-&gt;cs
 comma
-id|cs
+id|card
 )paren
 )paren
 r_return
@@ -3894,6 +3894,7 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -3907,7 +3908,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 id|pdev
 op_increment

@@ -4334,10 +4334,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|grp
 (braket
 l_int|2
@@ -4640,6 +4636,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|skb_headroom
 c_func
 (paren
@@ -4648,7 +4647,7 @@ id|skb
 OL
 r_sizeof
 (paren
-id|isdn_audio_skb
+id|isdnaudio_header
 )paren
 )paren
 (brace
@@ -4684,17 +4683,6 @@ id|skb
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|isdn_tty_queue_tail
 c_func
 (paren
@@ -4705,13 +4693,6 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Schedule dequeuing */
 r_if
 c_cond
 (paren
@@ -5111,10 +5092,6 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_char
 op_star
 id|p
@@ -5177,6 +5154,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|skb_headroom
 c_func
 (paren
@@ -5185,7 +5165,7 @@ id|skb
 OL
 r_sizeof
 (paren
-id|isdn_audio_skb
+id|isdnaudio_header
 )paren
 )paren
 (brace
@@ -5221,17 +5201,6 @@ id|skb
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|isdn_tty_queue_tail
 c_func
 (paren
@@ -5240,12 +5209,6 @@ comma
 id|skb
 comma
 l_int|2
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Schedule dequeuing */
@@ -5300,6 +5263,9 @@ c_cond
 (paren
 id|s-&gt;idx
 OG
+(paren
+id|u_int
+)paren
 (paren
 id|info-&gt;emu.vpar
 (braket

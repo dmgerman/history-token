@@ -244,6 +244,13 @@ id|sem
 (brace
 r_int
 id|count
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
+id|count
 op_assign
 id|atomic_dec_return
 c_func
@@ -284,6 +291,13 @@ id|sem
 )paren
 (brace
 r_int
+id|count
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|count
 op_assign
 id|atomic_dec_return

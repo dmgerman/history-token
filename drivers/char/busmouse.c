@@ -1596,6 +1596,13 @@ c_func
 id|unregister_busmouse
 )paren
 suffix:semicolon
+DECL|variable|BUSMOUSE_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|BUSMOUSE_MINOR
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

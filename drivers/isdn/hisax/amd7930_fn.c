@@ -3334,6 +3334,9 @@ r_if
 c_cond
 (paren
 (paren
+r_int
+)paren
+(paren
 id|cs-&gt;dc.amd7930.tx_xmtlen
 op_minus
 id|dtcr

@@ -186,7 +186,7 @@ r_struct
 id|work_struct
 id|tq_recv_notify
 suffix:semicolon
-multiline_comment|/* -------- ref counting -------------------------------------- */
+multiline_comment|/* -------- controller ref counting -------------------------------------- */
 r_static
 r_inline
 r_struct
@@ -241,6 +241,54 @@ id|DBG
 c_func
 (paren
 l_string|&quot;MOD_COUNT DEC&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* -------- own ref counting -------------------------------------- */
+r_static
+r_inline
+r_void
+DECL|function|kcapi_get_ref
+id|kcapi_get_ref
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: cannot reserve module&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|kcapi_put_ref
+id|kcapi_put_ref
+c_func
+(paren
+r_void
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
@@ -707,7 +755,10 @@ id|capi_notifier
 op_star
 id|np
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|kcapi_get_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 id|np
 op_assign
@@ -735,7 +786,10 @@ op_logical_neg
 id|np
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
+id|kcapi_put_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -779,7 +833,10 @@ id|np
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The notifier will result in adding/deleteing&n;&t; * of devices. Devices can only removed in&n;&t; * user process, not in bh.&n;&t; */
-id|MOD_INC_USE_COUNT
+id|kcapi_get_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -793,7 +850,10 @@ id|tq_state_notify
 op_eq
 l_int|0
 )paren
-id|MOD_DEC_USE_COUNT
+id|kcapi_put_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -1042,10 +1102,16 @@ c_func
 id|np
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|kcapi_put_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
+id|kcapi_put_ref
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* -------- Receiver ------------------------------------------ */
@@ -2654,10 +2720,8 @@ id|u32
 id|contr
 comma
 id|u8
+op_star
 id|buf
-(braket
-id|CAPI_MANUFACTURER_LEN
-)braket
 )paren
 (brace
 r_struct
@@ -2680,10 +2744,7 @@ id|buf
 comma
 id|capi_manufakturer
 comma
-r_sizeof
-(paren
-id|buf
-)paren
+id|CAPI_MANUFACTURER_LEN
 )paren
 suffix:semicolon
 r_return
@@ -2718,10 +2779,7 @@ id|buf
 comma
 id|card-&gt;manu
 comma
-r_sizeof
-(paren
-id|buf
-)paren
+id|CAPI_MANUFACTURER_LEN
 )paren
 suffix:semicolon
 r_return
@@ -2830,10 +2888,8 @@ id|u32
 id|contr
 comma
 id|u8
+op_star
 id|serial
-(braket
-id|CAPI_SERIAL_LEN
-)braket
 )paren
 (brace
 r_struct
@@ -2856,10 +2912,7 @@ id|serial
 comma
 id|driver_serial
 comma
-r_sizeof
-(paren
-id|serial
-)paren
+id|CAPI_SERIAL_LEN
 )paren
 suffix:semicolon
 r_return
@@ -2898,10 +2951,7 @@ id|serial
 comma
 id|card-&gt;serial
 comma
-r_sizeof
-(paren
-id|serial
-)paren
+id|CAPI_SERIAL_LEN
 )paren
 suffix:semicolon
 r_return

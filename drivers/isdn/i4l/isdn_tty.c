@@ -541,7 +541,7 @@ id|len
 r_int
 id|count
 suffix:semicolon
-r_int
+id|u_int
 id|count_pull
 suffix:semicolon
 r_int
@@ -764,6 +764,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 (paren
 id|count_pull
 op_assign
@@ -1380,6 +1383,9 @@ macro_line|#ifdef CONFIG_ISDN_AUDIO
 r_if
 c_cond
 (paren
+(paren
+r_int
+)paren
 id|skb_headroom
 c_func
 (paren
@@ -1388,7 +1394,7 @@ id|skb
 OL
 r_sizeof
 (paren
-id|isdn_audio_skb
+id|isdnaudio_header
 )paren
 )paren
 (brace
@@ -7302,9 +7308,6 @@ id|retval
 comma
 id|line
 suffix:semicolon
-multiline_comment|/* FIXME. This is not unload-race free AFAICS */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -7344,6 +7347,25 @@ l_string|&quot;isdn_tty_open&quot;
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|info-&gt;owner
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: cannot reserve module&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
 suffix:semicolon
 macro_line|#ifdef ISDN_DEBUG_MODEM_OPEN
 id|printk
@@ -7393,6 +7415,12 @@ l_string|&quot;isdn_tty_open return after startup&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|module_put
+c_func
+(paren
+id|info-&gt;owner
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -7424,6 +7452,12 @@ l_string|&quot;isdn_tty_open return after isdn_tty_block_til_ready &bslash;n&quo
 )paren
 suffix:semicolon
 macro_line|#endif
+id|module_put
+c_func
+(paren
+id|info-&gt;owner
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -7493,7 +7527,12 @@ c_cond
 (paren
 op_logical_neg
 id|info
-op_logical_or
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|isdn_tty_paranoia_check
 c_func
 (paren
@@ -7810,7 +7849,11 @@ suffix:semicolon
 macro_line|#endif
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|info-&gt;owner
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * isdn_tty_hangup() --- called by tty_hangup() when a hangup is signaled.&n; */
@@ -8686,6 +8729,10 @@ l_int|3
 suffix:semicolon
 )brace
 macro_line|#endif
+id|info-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -10597,7 +10644,7 @@ macro_line|#ifdef CONFIG_ISDN_AUDIO
 op_plus
 r_sizeof
 (paren
-id|isdn_audio_skb
+id|isdnaudio_header
 )paren
 macro_line|#endif
 comma
@@ -10628,7 +10675,7 @@ id|skb
 comma
 r_sizeof
 (paren
-id|isdn_audio_skb
+id|isdnaudio_header
 )paren
 )paren
 suffix:semicolon

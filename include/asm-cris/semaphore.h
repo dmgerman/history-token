@@ -217,6 +217,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* atomically decrement the semaphores count, and if its negative, we wait */
 id|local_save_flags
 c_func
@@ -287,6 +292,11 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* atomically decrement the semaphores count, and if its negative, we wait */
 id|local_save_flags
 c_func

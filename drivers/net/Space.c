@@ -199,16 +199,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|de4x5_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|el1_probe
 c_func
 (paren
@@ -774,7 +764,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a bit of an artificial separation as there are PCI drivers&n; * that also probe for EISA cards (in the PCI group) and there are ISA&n; * drivers that probe for EISA cards (in the ISA group).  These are the&n; * EISA only driver probes, and also the legacy PCI probes&n; */
+multiline_comment|/*&n; * This is a bit of an artificial separation as there are PCI drivers&n; * that also probe for EISA cards (in the PCI group) and there are ISA&n; * drivers that probe for EISA cards (in the ISA group).  These are the&n; * legacy EISA only driver probes, and also the legacy PCI probes&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -785,14 +775,6 @@ id|eisa_probes
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_DE4X5             /* DEC DE425, DE434, DE435 adapters */
-(brace
-id|de4x5_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_ULTRA32 
 (brace
 id|ultra32_probe

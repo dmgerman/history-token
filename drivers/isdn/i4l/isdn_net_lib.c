@@ -2766,7 +2766,7 @@ c_func
 id|phone-&gt;name
 )paren
 suffix:semicolon
-r_int
+id|u_int
 id|count
 op_assign
 l_int|0
