@@ -9216,9 +9216,11 @@ id|bh
 )paren
 )paren
 (brace
-id|__set_page_dirty_nobuffers
+id|redirty_page_for_writepage
 c_func
 (paren
+id|wbc
+comma
 id|page
 )paren
 suffix:semicolon

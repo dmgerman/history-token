@@ -321,20 +321,6 @@ id|from-&gt;_sifields._sigchld
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|copy_siginfo_from_user
-c_func
-(paren
-id|siginfo_t
-op_star
-id|to
-comma
-id|siginfo_t
-op_star
-id|from
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_SIGINFO_H */
 eof
