@@ -47,8 +47,6 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;name&quot;
-comma
 id|S_IRUGO
 comma
 id|device_read_name
@@ -448,8 +446,6 @@ id|DEVICE_ATTR
 c_func
 (paren
 id|power
-comma
-l_string|&quot;power&quot;
 comma
 id|S_IWUSR
 op_or
