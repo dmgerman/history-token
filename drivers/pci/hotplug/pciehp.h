@@ -7,13 +7,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
 macro_line|#include &quot;pci_hotplug.h&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_PCIE_MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;pciehp&quot;
-macro_line|#else
-DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
-macro_line|#endif
 r_extern
 r_int
 id|pciehp_poll_mode
