@@ -9198,6 +9198,12 @@ c_func
 id|net_dev
 )paren
 suffix:semicolon
+id|netif_device_detach
+c_func
+(paren
+id|net_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Stop the chip&squot;s Tx and Rx Status Machine */
 id|outl
 c_func
