@@ -978,6 +978,8 @@ DECL|macro|__delete_from_swap_cache
 mdefine_line|#define __delete_from_swap_cache(p)&t;&t;/*NOTHING*/
 DECL|macro|delete_from_swap_cache
 mdefine_line|#define delete_from_swap_cache(p)&t;&t;/*NOTHING*/
+DECL|macro|swap_token_default_timeout
+mdefine_line|#define swap_token_default_timeout&t;&t;0
 DECL|function|remove_exclusive_swap_page
 r_static
 r_inline
