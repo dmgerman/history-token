@@ -5,10 +5,11 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|macro|SUPPORTED_PGBITS
 mdefine_line|#define SUPPORTED_PGBITS (&t;&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_256M |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_64M  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_16M  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_4M   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_1M   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_256K |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_64K  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_16K  |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_8K   |&t;&t;&bslash;&n;&t;&t;1 &lt;&lt; _PAGE_SIZE_4K )
 DECL|variable|ia64_ctx

@@ -35,6 +35,7 @@ r_extern
 r_char
 id|_end
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|__per_cpu_offset
 r_int
 r_int
@@ -43,6 +44,7 @@ id|__per_cpu_offset
 id|NR_CPUS
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__per_cpu_data
 r_struct
 id|cpuinfo_ia64
@@ -1963,10 +1965,6 @@ comma
 id|__phys_per_cpu_start
 (braket
 )braket
-comma
-id|__per_cpu_end
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_void
@@ -1996,6 +1994,13 @@ suffix:semicolon
 r_void
 op_star
 id|my_cpu_data
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_char
+id|__per_cpu_end
+(braket
+)braket
 suffix:semicolon
 r_int
 id|cpu
@@ -2040,6 +2045,27 @@ id|my_cpu_data
 op_minus
 id|__per_cpu_start
 suffix:semicolon
+id|my_cpu_info
+op_assign
+id|my_cpu_data
+op_plus
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|cpu_info
+op_minus
+id|__per_cpu_start
+)paren
+suffix:semicolon
+macro_line|#else
+id|my_cpu_data
+op_assign
+id|__phys_per_cpu_start
+suffix:semicolon
+macro_line|#endif
 id|my_cpu_info
 op_assign
 id|my_cpu_data

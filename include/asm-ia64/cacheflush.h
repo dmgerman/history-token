@@ -2,7 +2,6 @@ macro_line|#ifndef _ASM_IA64_CACHEFLUSH_H
 DECL|macro|_ASM_IA64_CACHEFLUSH_H
 mdefine_line|#define _ASM_IA64_CACHEFLUSH_H
 multiline_comment|/*&n; * Copyright (C) 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * Cache flushing routines.  This is the kind of stuff that can be very expensive, so try&n; * to avoid them whenever possible.&n; */
@@ -34,6 +33,6 @@ id|end
 )paren
 suffix:semicolon
 DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma, page, user_addr, len)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _addr = page_address(page) + ((user_addr) &amp; ~PAGE_MASK);&t;&bslash;&n;&t;flush_icache_range(_addr, _addr + (len));&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define flush_icache_user_range(vma, page, user_addr, len)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long _addr = (unsigned long) page_address(page) + ((user_addr) &amp; ~PAGE_MASK);&t;&bslash;&n;&t;flush_icache_range(_addr, _addr + (len));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#endif /* _ASM_IA64_CACHEFLUSH_H */
 eof

@@ -282,7 +282,7 @@ id|last_cli_ip
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|flush_tlb_range
 id|EXPORT_SYMBOL
 c_func

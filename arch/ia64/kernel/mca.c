@@ -870,12 +870,14 @@ id|target
 r_int
 id|rc
 suffix:semicolon
+macro_line|#ifdef IA64_MCA_DEBUG_INFO
 r_char
 id|out
 (braket
 l_int|40
 )braket
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

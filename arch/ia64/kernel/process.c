@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/perfmon.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -657,7 +657,6 @@ id|in_syscall
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We use this if we don&squot;t have any better idle routine..&n; */
-r_static
 r_void
 DECL|function|default_idle
 id|default_idle
@@ -2583,6 +2582,10 @@ id|tsk
 suffix:semicolon
 id|tsk
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|__get_free_pages
 c_func
 (paren

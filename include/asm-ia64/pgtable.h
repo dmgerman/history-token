@@ -3,7 +3,6 @@ DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -144,6 +143,7 @@ DECL|macro|PAGE_KERNELRX
 mdefine_line|#define PAGE_KERNELRX&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_RX)
 macro_line|# ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * Next come the mappings that determine how mmap() protection bits&n; * (PROT_EXEC, PROT_READ, PROT_WRITE, PROT_NONE) get implemented.  The&n; * _P version gets used for a private shared memory segment, the _S&n; * version gets used for a shared memory segment with MAP_SHARED on.&n; * In a private shared memory segment, we do a copy-on-write if a task&n; * attempts to write to the page.&n; */
@@ -748,105 +748,6 @@ id|paging_init
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this macro to take care of any (delayed) i-cache flushing&n; * that may be necessary.&n; */
-r_static
-r_inline
-r_void
-DECL|function|update_mmu_cache
-id|update_mmu_cache
-(paren
-r_struct
-id|vm_area_struct
-op_star
-id|vma
-comma
-r_int
-r_int
-id|vaddr
-comma
-id|pte_t
-id|pte
-)paren
-(brace
-r_int
-r_int
-id|addr
-suffix:semicolon
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte_exec
-c_func
-(paren
-id|pte
-)paren
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* not an executable page... */
-id|page
-op_assign
-id|pte_page
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
-multiline_comment|/* don&squot;t use VADDR: it may not be mapped on this CPU (or may have just been flushed): */
-id|addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|page_address
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|PG_arch_1
-comma
-op_amp
-id|page-&gt;flags
-)paren
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* i-cache is already coherent with d-cache */
-id|flush_icache_range
-c_func
-(paren
-id|addr
-comma
-id|addr
-op_plus
-id|PAGE_SIZE
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|PG_arch_1
-comma
-op_amp
-id|page-&gt;flags
-)paren
-suffix:semicolon
-multiline_comment|/* mark page as clean */
-)brace
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0xff)
 DECL|macro|SWP_OFFSET
