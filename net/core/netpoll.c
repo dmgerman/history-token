@@ -759,6 +759,7 @@ c_cond
 (paren
 id|skb
 )paren
+(brace
 id|skbs
 op_assign
 id|skb-&gt;next
@@ -770,6 +771,7 @@ suffix:semicolon
 id|nr_skbs
 op_decrement
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren

@@ -971,6 +971,8 @@ c_func
 id|skb
 comma
 id|a
+comma
+l_int|0
 )paren
 )paren
 r_goto
@@ -1772,10 +1774,15 @@ r_struct
 id|tc_action
 op_star
 id|a
+comma
+r_int
+id|compat_mode
 )paren
 (brace
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|gnet_dump
@@ -1798,6 +1805,13 @@ l_int|NULL
 r_goto
 id|errout
 suffix:semicolon
+multiline_comment|/* compat_mode being true specifies a call that is supposed&n;&t; * to add additional backward compatiblity statistic TLVs.&n;&t; */
+r_if
+c_cond
+(paren
+id|compat_mode
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1812,7 +1826,7 @@ c_func
 (paren
 id|skb
 comma
-id|TCA_ACT_STATS
+l_int|0
 comma
 id|TCA_STATS
 comma
@@ -1824,6 +1838,7 @@ op_amp
 id|d
 )paren
 suffix:semicolon
+)brace
 r_else
 id|err
 op_assign

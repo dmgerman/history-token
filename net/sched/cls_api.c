@@ -2964,6 +2964,8 @@ c_func
 id|skb
 comma
 id|exts-&gt;action
+comma
+l_int|1
 )paren
 OL
 l_int|0

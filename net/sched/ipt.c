@@ -1339,6 +1339,12 @@ op_amp
 id|tm
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
 r_return
 id|skb-&gt;len
 suffix:semicolon
@@ -1352,6 +1358,12 @@ comma
 id|b
 op_minus
 id|skb-&gt;data
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|t
 )paren
 suffix:semicolon
 r_return

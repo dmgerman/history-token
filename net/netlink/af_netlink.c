@@ -5008,6 +5008,12 @@ OG
 l_int|0
 )paren
 (brace
+id|sock_hold
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -5032,6 +5038,12 @@ c_func
 id|sk
 comma
 id|len
+)paren
+suffix:semicolon
+id|sock_put
+c_func
+(paren
+id|sk
 )paren
 suffix:semicolon
 r_return

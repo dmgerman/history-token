@@ -3991,7 +3991,16 @@ c_func
 id|dst
 ques
 c_cond
-id|dst-&gt;dev
+(paren
+(paren
+r_struct
+id|rt6_info
+op_star
+)paren
+id|dst
+)paren
+op_member_access_from_pointer
+id|rt6i_idev-&gt;dev
 suffix:colon
 l_int|NULL
 comma
