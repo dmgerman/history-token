@@ -464,6 +464,12 @@ c_func
 (paren
 id|ext2sb-&gt;s_blocks_count
 )paren
+op_lshift
+id|le32_to_cpu
+c_func
+(paren
+id|ext2sb-&gt;s_log_block_size
+)paren
 suffix:semicolon
 r_goto
 id|done
@@ -669,7 +675,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * NOTE NOTE: nblocks suppose that the blocksize is BLOCK_SIZE, so&n;&t; * rd_load_image will work only with filesystem BLOCK_SIZE wide!&n;&t; * So make sure to use 1k blocksize while generating ext2fs&n;&t; * ramdisk-images.&n;&t; */
+multiline_comment|/*&n;&t; * NOTE NOTE: nblocks is not actually blocks but&n;&t; * the number of kibibytes of data to load into a ramdisk.&n;&t; * So any ramdisk block size that is a multiple of 1KiB should&n;&t; * work when the appropriate ramdisk_blocksize is specified&n;&t; * on the command line.&n;&t; *&n;&t; * The default ramdisk_blocksize is 1KiB and it is generally&n;&t; * silly to use anything else, so make sure to use 1KiB&n;&t; * blocksize while generating ext2fs ramdisk-images.&n;&t; */
 r_if
 c_cond
 (paren
@@ -710,7 +716,7 @@ id|rd_blocks
 id|printk
 c_func
 (paren
-l_string|&quot;RAMDISK: image too big! (%d/%ld blocks)&bslash;n&quot;
+l_string|&quot;RAMDISK: image too big! (%dKiB/%ldKiB)&bslash;n&quot;
 comma
 id|nblocks
 comma
@@ -820,7 +826,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;RAMDISK: Loading %d blocks [%ld disk%s] into ram disk... &quot;
+l_string|&quot;RAMDISK: Loading %dKiB [%ld disk%s] into ram disk... &quot;
 comma
 id|nblocks
 comma
