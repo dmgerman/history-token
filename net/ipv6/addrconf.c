@@ -5959,11 +5959,6 @@ id|prefix_info
 op_star
 id|pinfo
 suffix:semicolon
-r_struct
-id|rt6_info
-op_star
-id|rt
-suffix:semicolon
 id|__u32
 id|valid_lft
 suffix:semicolon
@@ -6139,6 +6134,17 @@ id|valid_lft
 op_star
 id|HZ
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pinfo-&gt;onlink
+)paren
+(brace
+r_struct
+id|rt6_info
+op_star
+id|rt
+suffix:semicolon
 id|rt
 op_assign
 id|rt6_lookup
@@ -6185,10 +6191,6 @@ id|RTF_EXPIRES
 r_if
 c_cond
 (paren
-id|pinfo-&gt;onlink
-op_eq
-l_int|0
-op_logical_or
 id|valid_lft
 op_eq
 l_int|0
@@ -6222,8 +6224,6 @@ r_else
 r_if
 c_cond
 (paren
-id|pinfo-&gt;onlink
-op_logical_and
 id|valid_lft
 )paren
 (brace
@@ -6257,6 +6257,7 @@ op_amp
 id|rt-&gt;u.dst
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Try to figure out our local address for this prefix */
 r_if
 c_cond
