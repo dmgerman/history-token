@@ -304,6 +304,12 @@ r_int
 id|printable
 suffix:semicolon
 multiline_comment|/* Is console ready for printing? */
+multiline_comment|/*&n; * ignore_poke: don&squot;t unblank the screen when things are typed.  This is&n; * mainly for the privacy of braille terminal users.&n; */
+DECL|variable|ignore_poke
+r_static
+r_int
+id|ignore_poke
+suffix:semicolon
 DECL|variable|do_poke_blanked_console
 r_int
 id|do_poke_blanked_console
@@ -6382,7 +6388,7 @@ suffix:semicolon
 r_case
 l_int|15
 suffix:colon
-multiline_comment|/* Activate the previous console */
+multiline_comment|/* activate the previous console */
 id|set_console
 c_func
 (paren
@@ -10906,6 +10912,32 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+l_int|14
+suffix:colon
+multiline_comment|/* blank screen until explicitly unblanked, not only poked */
+id|ignore_poke
+op_assign
+l_int|1
+suffix:semicolon
+id|do_blank_screen
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|15
+suffix:colon
+multiline_comment|/* which console is blanked ? */
+id|ret
+op_assign
+id|console_blanked
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ret
@@ -12910,6 +12942,10 @@ r_void
 r_int
 id|currcons
 suffix:semicolon
+id|ignore_poke
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13071,6 +13107,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ignore_poke
+op_logical_or
 op_logical_neg
 id|vt_cons
 (braket
