@@ -630,7 +630,7 @@ l_int|1
 )braket
 op_assign
 (brace
-l_int|1
+l_int|0
 comma
 l_int|0
 )brace
@@ -806,13 +806,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|entry-&gt;timestamp
 op_ne
 id|now
-)paren
 )paren
 (brace
 r_int

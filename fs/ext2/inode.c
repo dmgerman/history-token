@@ -51,19 +51,6 @@ op_star
 id|inode
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|inode-&gt;i_count
-)paren
-OL
-l_int|2
-)paren
-multiline_comment|/* final iput? */
 id|ext2_discard_prealloc
 (paren
 id|inode

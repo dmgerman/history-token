@@ -351,6 +351,10 @@ suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifdef ATA_ARCH_ACK_INTR
+r_extern
+r_int
+id|ide_irq_lock
+suffix:semicolon
 DECL|macro|ide_ack_intr
 macro_line|# define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
 macro_line|#else
@@ -851,10 +855,10 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
-DECL|member|device
+DECL|member|dev
 r_struct
 id|device
-id|device
+id|dev
 suffix:semicolon
 multiline_comment|/* global device tree handle */
 multiline_comment|/*&n;&t; * tcq statistics&n;&t; */
@@ -1291,7 +1295,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|udma_start
-r_int
+r_void
 (paren
 op_star
 id|udma_start
@@ -1304,7 +1308,6 @@ comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
 DECL|member|udma_stop
@@ -1333,7 +1336,6 @@ comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
 DECL|member|udma_irq_status
@@ -1968,10 +1970,13 @@ DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
+multiline_comment|/* Not locking and locking variant: */
 r_extern
 r_int
-id|__ide_end_request
+id|__ata_end_request
 c_func
 (paren
 r_struct
@@ -1990,7 +1995,7 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|ide_end_request
+id|ata_end_request
 c_func
 (paren
 r_struct
@@ -2005,10 +2010,9 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
 r_extern
 r_void
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 r_struct
@@ -2080,48 +2084,6 @@ comma
 r_const
 r_int
 id|byteswap
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_wait_stat
-c_func
-(paren
-id|ide_startstop_t
-op_star
-comma
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-id|rq
-comma
-id|byte
-comma
-id|byte
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_wait_noerr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-id|byte
-comma
-id|byte
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
@@ -2222,11 +2184,11 @@ DECL|member|command_type
 r_int
 id|command_type
 suffix:semicolon
-DECL|member|handler
+DECL|member|XXX_handler
 id|ide_startstop_t
 (paren
 op_star
-id|handler
+id|XXX_handler
 )paren
 (paren
 r_struct
@@ -2270,24 +2232,6 @@ op_star
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|ata_taskfile
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|ata_taskfile
-op_star
-comma
-r_struct
-id|request
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
@@ -2389,20 +2333,6 @@ id|flags
 suffix:semicolon
 )brace
 r_extern
-id|ide_startstop_t
-id|ata_special_intr
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|ide_raw_taskfile
 c_func
@@ -2413,6 +2343,9 @@ op_star
 comma
 r_struct
 id|ata_taskfile
+op_star
+comma
+r_char
 op_star
 )paren
 suffix:semicolon
@@ -2686,7 +2619,7 @@ suffix:semicolon
 DECL|function|udma_start
 r_static
 r_inline
-r_int
+r_void
 id|udma_start
 c_func
 (paren
@@ -2701,7 +2634,6 @@ op_star
 id|rq
 )paren
 (brace
-r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|udma_start
@@ -2740,7 +2672,7 @@ multiline_comment|/*&n; * Initiate actual DMA data transfer. The direction is en
 DECL|function|udma_init
 r_static
 r_inline
-r_int
+id|ide_startstop_t
 id|udma_init
 c_func
 (paren
@@ -2855,7 +2787,7 @@ id|verbose
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|udma_pci_start
 c_func
 (paren
@@ -2995,7 +2927,7 @@ op_star
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|udma_tcq_taskfile
+id|udma_tcq_init
 c_func
 (paren
 r_struct
@@ -3139,6 +3071,19 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|ata_busy_poll
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|ata_status
 c_func
 (paren
@@ -3149,6 +3094,31 @@ comma
 id|u8
 comma
 id|u8
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_status_poll
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+id|u8
+comma
+id|u8
+comma
+r_int
+r_int
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+id|ide_startstop_t
+op_star
 )paren
 suffix:semicolon
 r_extern

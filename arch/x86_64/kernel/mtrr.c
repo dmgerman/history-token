@@ -197,14 +197,7 @@ multiline_comment|/*  Save value of CR4 and clear Page Global Enable (bit 7)  */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_PGE
-comma
-op_amp
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_ge
 )paren
 (brace
 id|ctxt-&gt;cr4val
@@ -323,14 +316,7 @@ multiline_comment|/*  Restore value of CR4  */
 r_if
 c_cond
 (paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_PGE
-comma
-op_amp
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_pge
 )paren
 id|write_cr4
 (paren
@@ -3546,6 +3532,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4009,6 +3996,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4076,6 +4064,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4139,6 +4128,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4202,6 +4192,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4380,6 +4371,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4447,6 +4439,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4510,6 +4503,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -4573,6 +4567,7 @@ c_cond
 (paren
 op_logical_neg
 id|capable
+c_func
 (paren
 id|CAP_SYS_ADMIN
 )paren
@@ -5095,13 +5090,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
-(paren
-id|X86_FEATURE_MTRR
-comma
-op_amp
-id|boot_cpu_data.x86_capability
-)paren
+id|cpu_has_mtrr
 )paren
 (brace
 multiline_comment|/* Query the width (in bits) of the physical&n;&t;&t;   addressable memory on the Hammer family. */

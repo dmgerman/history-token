@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -1247,13 +1248,7 @@ suffix:semicolon
 singleline_comment|// ramdisk in kernel space
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_if
 c_cond
@@ -1284,7 +1279,7 @@ suffix:semicolon
 r_else
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 (brace
-multiline_comment|/*&t;&t;ROOT_DEV = mk_kdev( VIODASD_MAJOR, 1 ); */
+multiline_comment|/*&t;&t;ROOT_DEV = MKDEV( VIODASD_MAJOR, 1 ); */
 )brace
 id|iSeries_recal_tb
 op_assign

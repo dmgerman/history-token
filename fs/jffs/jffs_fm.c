@@ -44,8 +44,8 @@ id|jffs_control
 op_star
 id|c
 comma
-id|kdev_t
-id|dev
+r_int
+id|unit
 )paren
 (brace
 r_struct
@@ -128,11 +128,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|minor
-c_func
-(paren
-id|dev
-)paren
+id|unit
 )paren
 suffix:semicolon
 r_if

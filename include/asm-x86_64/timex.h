@@ -58,5 +58,7 @@ r_int
 r_int
 id|cpu_khz
 suffix:semicolon
+DECL|macro|ARCH_HAS_JIFFIES_64
+mdefine_line|#define ARCH_HAS_JIFFIES_64
 macro_line|#endif
 eof

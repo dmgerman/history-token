@@ -6313,6 +6313,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -6322,7 +6325,16 @@ id|wrq-&gt;u.data.pointer
 comma
 id|wrq-&gt;u.data.length
 )paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|card_essid
 (braket
 id|IW_ESSID_MAX_SIZE

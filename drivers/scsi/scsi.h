@@ -1090,7 +1090,15 @@ id|proc_dir_entry
 op_star
 id|proc_scsi
 suffix:semicolon
-multiline_comment|/*&n; * Prototypes for functions in constants.c&n; */
+multiline_comment|/*&n; * Prototypes for functions in constants.c&n; * Some of these used to live in constants.h&n; */
+r_extern
+r_void
+id|print_Scsi_Cmnd
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|print_command
@@ -1148,12 +1156,50 @@ suffix:semicolon
 r_extern
 r_void
 id|print_status
+c_func
 (paren
 r_int
+r_char
 id|status
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - one of the great regrets that I have is that I failed to define&n; * these structure elements as something like sdev_foo instead of foo.  This would&n; * make it so much easier to grep through sources and so forth.  I propose that&n; * all new elements that get added to these structures follow this convention.&n; * As time goes on and as people have the stomach for it, it should be possible to &n; * go back and retrofit at least some of the elements here with with the prefix.&n; */
+r_extern
+r_int
+id|print_msg
+c_func
+(paren
+r_const
+r_int
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|scsi_sense_key_string
+c_func
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
+r_extern
+r_const
+r_char
+op_star
+id|scsi_extd_sense_format
+c_func
+(paren
+r_int
+r_char
+comma
+r_int
+r_char
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - One of the great regrets that I have is that I failed to&n; * define these structure elements as something like sdev_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
 DECL|struct|scsi_device
 r_struct
 id|scsi_device
@@ -1985,5 +2031,4 @@ r_int
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4 &n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -45,7 +45,6 @@ mdefine_line|#define&t;__initdata
 macro_line|#endif
 macro_line|#include &quot;../scsi.h&quot;
 macro_line|#include &quot;../hosts.h&quot;
-macro_line|#include &quot;../constants.h&quot;
 macro_line|#include &quot;../sd.h&quot;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; *  Define BITS_PER_LONG for earlier linux versions.&n; */

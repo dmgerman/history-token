@@ -9016,7 +9016,7 @@ id|reiserfs_panic
 (paren
 id|p_s_sb
 comma
-l_string|&quot;tb_buffer_sanity_check(): negative or zero reference counter for buffer %s[%d] (%b)&bslash;n&quot;
+l_string|&quot;jmacd-1: tb_buffer_sanity_check(): negative or zero reference counter for buffer %s[%d] (%b)&bslash;n&quot;
 comma
 id|descr
 comma
@@ -9040,7 +9040,7 @@ id|reiserfs_panic
 (paren
 id|p_s_sb
 comma
-l_string|&quot;tb_buffer_sanity_check(): buffer is not up to date %s[%d] (%b)&bslash;n&quot;
+l_string|&quot;jmacd-2: tb_buffer_sanity_check(): buffer is not up to date %s[%d] (%b)&bslash;n&quot;
 comma
 id|descr
 comma
@@ -9064,7 +9064,7 @@ id|reiserfs_panic
 (paren
 id|p_s_sb
 comma
-l_string|&quot;tb_buffer_sanity_check(): buffer is not in tree %s[%d] (%b)&bslash;n&quot;
+l_string|&quot;jmacd-3: tb_buffer_sanity_check(): buffer is not in tree %s[%d] (%b)&bslash;n&quot;
 comma
 id|descr
 comma
@@ -9080,11 +9080,47 @@ c_cond
 id|p_s_bh-&gt;b_bdev
 op_ne
 id|p_s_sb-&gt;s_bdev
-op_logical_or
+)paren
+(brace
+id|reiserfs_panic
+(paren
+id|p_s_sb
+comma
+l_string|&quot;jmacd-4: tb_buffer_sanity_check(): buffer has wrong device %s[%d] (%b)&bslash;n&quot;
+comma
+id|descr
+comma
+id|level
+comma
+id|p_s_bh
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|p_s_bh-&gt;b_size
 op_ne
 id|p_s_sb-&gt;s_blocksize
-op_logical_or
+)paren
+(brace
+id|reiserfs_panic
+(paren
+id|p_s_sb
+comma
+l_string|&quot;jmacd-5: tb_buffer_sanity_check(): buffer has wrong blocksize %s[%d] (%b)&bslash;n&quot;
+comma
+id|descr
+comma
+id|level
+comma
+id|p_s_bh
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|p_s_bh-&gt;b_blocknr
 OG
 id|SB_BLOCK_COUNT
@@ -9098,7 +9134,7 @@ id|reiserfs_panic
 (paren
 id|p_s_sb
 comma
-l_string|&quot;tb_buffer_sanity_check(): check failed for buffer %s[%d] (%b)&bslash;n&quot;
+l_string|&quot;jmacd-6: tb_buffer_sanity_check(): buffer block number too high %s[%d] (%b)&bslash;n&quot;
 comma
 id|descr
 comma

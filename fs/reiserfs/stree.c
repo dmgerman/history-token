@@ -6770,7 +6770,7 @@ l_int|0
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;vs-5665: reiserfs_truncate_file: cut_from_item failed&quot;
+l_string|&quot;vs-5665: reiserfs_do_truncate: reiserfs_cut_from_item failed&quot;
 )paren
 suffix:semicolon
 id|reiserfs_check_path
@@ -6790,7 +6790,7 @@ id|n_deleted
 OG
 id|n_file_size
 comma
-l_string|&quot;PAP-5670: reiserfs_truncate_file returns too big number: deleted %d, file_size %lu, item_key %K&quot;
+l_string|&quot;PAP-5670: reiserfs_cut_from_item: too many bytes deleted: deleted %d, file_size %lu, item_key %K&quot;
 comma
 id|n_deleted
 comma

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1647,11 +1648,7 @@ id|MS_RDONLY
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|tag-&gt;u.core.rootdev
-)paren
 suffix:semicolon
 )brace
 r_return

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -3477,9 +3476,6 @@ id|name_suspend
 )paren
 suffix:semicolon
 )brace
-DECL|macro|SUSPEND_C
-mdefine_line|#define SUSPEND_C
-macro_line|#include &lt;asm/suspend.h&gt;
 multiline_comment|/*&n; * We try to swap out as much as we can then make a copy of the&n; * occupied pages in memory so we can make a copy of kernel state&n; * atomically, the I/O needed by saving won&squot;t bother us anymore. &n; */
 DECL|function|do_software_suspend
 r_void

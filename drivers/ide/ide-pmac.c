@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-pmac.c&t;&t;Version ?.??&t;Mar. 18, 2000&n; *&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; * TODO:&n; *&n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *&n; *  - Fix check_disk_change() call&n; *&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
+multiline_comment|/*&n; * Support for IDE interfaces on PowerMacs.&n; * These IDE interfaces are memory-mapped and have a DBDMA channel&n; * for doing DMA.&n; *&n; *  Copyright (C) 1998-2001 Paul Mackerras &amp; Ben. Herrenschmidt&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; * Some code taken from drivers/ide/ide-dma.c:&n; *&n; *  Copyright (c) 1995-1998  Mark Lord&n; *&n; * TODO:&n; *&n; *  - Find a way to duplicate less code with ide-dma and use the&n; *    dma fileds in the hwif structure instead of our own&n; *&n; *  - Fix check_disk_change() call&n; *&n; *  - Make module-able (includes setting ppc_md. hooks from within&n; *    this file and not from arch code, and handling module deps with&n; *    mediabay (by having both modules do dynamic lookup of each other&n; *    symbols or by storing hooks at arch level).&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1101,49 +1101,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
-multiline_comment|/* This one could be later extended to handle CMD IDE and be used by some kind&n; * of /proc interface. I want to be able to get the devicetree path of a block&n; * device for yaboot configuration&n; */
-r_struct
-id|device_node
-op_star
-id|pmac_ide_get_devnode
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_int
-id|i
-op_assign
-id|pmac_ide_find
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-OL
-l_int|0
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_return
-id|pmac_ide
-(braket
-id|i
-)braket
-dot
-id|node
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Setup timings for the selected drive (master/slave). I still need to verify if this&n; * is enough, I beleive selectproc will be called whenever an IDE command is started,&n; * but... */
 r_static
 r_void
@@ -6361,7 +6318,7 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+id|ide_stopped
 suffix:semicolon
 id|dma
 op_assign
@@ -6421,7 +6378,7 @@ id|dma-&gt;control
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|pmac_udma_stop
@@ -6613,7 +6570,7 @@ OL
 l_int|0
 )paren
 r_return
-l_int|0
+id|ide_stopped
 suffix:semicolon
 r_if
 c_cond
@@ -6684,7 +6641,7 @@ id|reading
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* Apple adds 60ns to wrDataSetup on reads */
 r_if
@@ -6776,9 +6733,9 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -6860,7 +6817,6 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 )brace
-r_return
 id|udma_start
 c_func
 (paren
@@ -6868,6 +6824,9 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+r_return
+id|ide_started
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */

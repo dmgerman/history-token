@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
@@ -284,7 +285,7 @@ c_cond
 r_int
 r_int
 )paren
-id|page-&gt;pprev_hash
+id|page-&gt;lru.prev
 op_eq
 l_int|3
 )paren
@@ -294,9 +295,9 @@ c_cond
 (paren
 id|page2
 )paren
-id|page2-&gt;next_hash
+id|page2-&gt;lru.next
 op_assign
-id|page-&gt;next_hash
+id|page-&gt;lru.next
 suffix:semicolon
 r_else
 (paren
@@ -306,15 +307,7 @@ op_star
 )paren
 id|pgd_quicklist
 op_assign
-id|page-&gt;next_hash
-suffix:semicolon
-id|page-&gt;next_hash
-op_assign
-l_int|NULL
-suffix:semicolon
-id|page-&gt;pprev_hash
-op_assign
-l_int|NULL
+id|page-&gt;lru.next
 suffix:semicolon
 id|pgd_cache_size
 op_sub_assign
@@ -333,7 +326,12 @@ id|page2
 )paren
 id|page
 op_assign
-id|page2-&gt;next_hash
+(paren
+r_struct
+id|page
+op_star
+)paren
+id|page2-&gt;lru.next
 suffix:semicolon
 r_else
 id|page
@@ -365,7 +363,12 @@ id|page
 suffix:semicolon
 id|page
 op_assign
-id|page-&gt;next_hash
+(paren
+r_struct
+id|page
+op_star
+)paren
+id|page-&gt;lru.next
 suffix:semicolon
 )brace
 )brace

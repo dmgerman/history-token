@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_frame.c&n; * Version:       1.0&n; * Description:   Build and transmit IrLAP frames&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Wed Jan  5 08:59:04 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_frame.c&n; * Version:       1.0&n; * Description:   Build and transmit IrLAP frames&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Aug 19 10:27:26 1997&n; * Modified at:   Wed Jan  5 08:59:04 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
@@ -14,7 +14,7 @@ macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/irlap_frame.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
-multiline_comment|/*&n; * Function irlap_insert_info (self, skb)&n; *&n; *    Insert minimum turnaround time and speed information into the skb. We &n; *    need to do this since it&squot;s per packet relevant information. Safe to&n; *    have this function inlined since it&squot;s only called from one place&n; */
+multiline_comment|/*&n; * Function irlap_insert_info (self, skb)&n; *&n; *    Insert minimum turnaround time and speed information into the skb. We&n; *    need to do this since it&squot;s per packet relevant information. Safe to&n; *    have this function inlined since it&squot;s only called from one place&n; */
 DECL|function|irlap_insert_info
 r_static
 r_inline
@@ -45,7 +45,7 @@ op_star
 )paren
 id|skb-&gt;cb
 suffix:semicolon
-multiline_comment|/*  &n;&t; * Insert MTT (min. turn time) and speed into skb, so that the&n;&t; * device driver knows which settings to use &n;&t; */
+multiline_comment|/*&n;&t; * Insert MTT (min. turn time) and speed into skb, so that the&n;&t; * device driver knows which settings to use&n;&t; */
 id|cb-&gt;magic
 op_assign
 id|LAP_MAGIC
@@ -63,7 +63,7 @@ id|self-&gt;mtt_required
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; * Delay equals negotiated BOFs count, plus the number of BOFs to &n;&t; * force the negotiated minimum turnaround time &n;&t; */
+multiline_comment|/*&n;&t; * Delay equals negotiated BOFs count, plus the number of BOFs to&n;&t; * force the negotiated minimum turnaround time&n;&t; */
 id|cb-&gt;xbofs
 op_assign
 id|self-&gt;bofs_count
@@ -254,7 +254,7 @@ id|SNRM_CMD
 op_or
 id|PF_BIT
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If we are establishing a connection then insert QoS paramerters &n;&t; */
+multiline_comment|/*&n;&t; *  If we are establishing a connection then insert QoS paramerters&n;&t; */
 r_if
 c_cond
 (paren
@@ -866,7 +866,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_send_discovery_xid_frame (S, s, command)&n; *&n; *    Build and transmit a XID (eXchange station IDentifier) discovery&n; *    frame. &n; */
+multiline_comment|/*&n; * Function irlap_send_discovery_xid_frame (S, s, command)&n; *&n; *    Build and transmit a XID (eXchange station IDentifier) discovery&n; *    frame.&n; */
 DECL|function|irlap_send_discovery_xid_frame
 r_void
 id|irlap_send_discovery_xid_frame
@@ -1118,7 +1118,7 @@ id|frame-&gt;version
 op_assign
 l_int|0x00
 suffix:semicolon
-multiline_comment|/*  &n;&t; *  Provide info for final slot only in commands, and for all&n;&t; *  responses. Send the second byte of the hint only if the&n;&t; *  EXTENSION bit is set in the first byte.&n;&t; */
+multiline_comment|/*&n;&t; *  Provide info for final slot only in commands, and for all&n;&t; *  responses. Send the second byte of the hint only if the&n;&t; *  EXTENSION bit is set in the first byte.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1412,8 +1412,9 @@ l_int|NULL
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: kmalloc failed!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), kmalloc failed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1558,7 +1559,7 @@ l_int|2
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Terminate info string, should be safe since this is where the &n;&t; *  FCS bytes resides.&n;&t; */
+multiline_comment|/*&n;&t; *  Terminate info string, should be safe since this is where the&n;&t; *  FCS bytes resides.&n;&t; */
 id|skb-&gt;data
 (braket
 id|skb-&gt;len
@@ -1771,7 +1772,7 @@ id|xid_frame
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Check if last frame &n;&t; */
+multiline_comment|/*&n;&t; *  Check if last frame&n;&t; */
 r_if
 c_cond
 (paren
@@ -1800,8 +1801,9 @@ l_int|3
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: discovery frame to short!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), discovery frame to short!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1831,8 +1833,9 @@ id|discovery
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: unable to malloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to malloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1930,7 +1933,7 @@ l_int|2
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; *  Terminate string, should be safe since this is where the &n;&t;&t; *  FCS bytes resides.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Terminate string, should be safe since this is where the&n;&t;&t; *  FCS bytes resides.&n;&t;&t; */
 id|skb-&gt;data
 (braket
 id|skb-&gt;len
@@ -2074,7 +2077,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_send_rd_frame (self)&n; *&n; *    Request disconnect. Used by a secondary station to request the &n; *    disconnection of the link.&n; */
+multiline_comment|/*&n; * Function irlap_send_rd_frame (self)&n; *&n; *    Request disconnect. Used by a secondary station to request the&n; *    disconnection of the link.&n; */
 DECL|function|irlap_send_rd_frame
 r_void
 id|irlap_send_rd_frame
@@ -2731,7 +2734,7 @@ op_eq
 id|I_FRAME
 )paren
 (brace
-multiline_comment|/*  &n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
 id|skb-&gt;data
 (braket
 l_int|1
@@ -2767,7 +2770,7 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; *  Insert frame in store, in case of retransmissions &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; */
 id|skb_queue_tail
 c_func
 (paren
@@ -2885,7 +2888,7 @@ op_eq
 id|I_FRAME
 )paren
 (brace
-multiline_comment|/*  &n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
 id|skb-&gt;data
 (braket
 l_int|1
@@ -2921,7 +2924,7 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; *  Insert frame in store, in case of retransmissions &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame in store, in case of retransmissions&n;&t;&t; */
 id|skb_queue_tail
 c_func
 (paren
@@ -2935,7 +2938,7 @@ id|skb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t; *  Set poll bit if necessary. We do this to the copied&n;&t;&t; *  skb, since retransmitted need to set or clear the poll&n;&t;&t; *  bit depending on when they are sent.  &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Set poll bit if necessary. We do this to the copied&n;&t;&t; *  skb, since retransmitted need to set or clear the poll&n;&t;&t; *  bit depending on when they are sent.&n;&t;&t; */
 id|tx_skb-&gt;data
 (braket
 l_int|1
@@ -3130,7 +3133,7 @@ op_eq
 id|I_FRAME
 )paren
 (brace
-multiline_comment|/*  &n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
 id|skb-&gt;data
 (braket
 l_int|1
@@ -3331,7 +3334,7 @@ op_eq
 id|I_FRAME
 )paren
 (brace
-multiline_comment|/*  &n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Insert frame sequence number (Vs) in control field before&n;&t;&t; *  inserting into transmit window queue.&n;&t;&t; */
 id|skb-&gt;data
 (braket
 l_int|1
@@ -3433,7 +3436,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlap_resend_rejected_frames (nr)&n; *&n; *    Resend frames which has not been acknowledged. Should be safe to &n; *    traverse the list without locking it since this function will only be &n; *    called from interrupt context (BH)&n; */
+multiline_comment|/*&n; * Function irlap_resend_rejected_frames (nr)&n; *&n; *    Resend frames which has not been acknowledged. Should be safe to&n; *    traverse the list without locking it since this function will only be&n; *    called from interrupt context (BH)&n; */
 DECL|function|irlap_resend_rejected_frames
 r_void
 id|irlap_resend_rejected_frames
@@ -3526,7 +3529,7 @@ op_amp
 id|self-&gt;qos_tx
 )paren
 suffix:semicolon
-multiline_comment|/* We copy the skb to be retransmitted since we will have to &n;&t;&t; * modify it. Cloning will confuse packet sniffers &n;&t;&t; */
+multiline_comment|/* We copy the skb to be retransmitted since we will have to&n;&t;&t; * modify it. Cloning will confuse packet sniffers&n;&t;&t; */
 multiline_comment|/* tx_skb = skb_clone( skb, GFP_ATOMIC); */
 id|tx_skb
 op_assign
@@ -3576,7 +3579,7 @@ l_int|1
 op_and_assign
 l_int|0x0f
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Set poll bit on the last frame retransmitted&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Set poll bit on the last frame retransmitted&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3613,7 +3616,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  If our skb is the last buffer in the list, then&n;&t;&t; *  we are finished, if not, move to the next sk-buffer&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  If our skb is the last buffer in the list, then&n;&t;&t; *  we are finished, if not, move to the next sk-buffer&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3637,7 +3640,7 @@ id|skb-&gt;next
 suffix:semicolon
 )brace
 macro_line|#if 0 /* Not yet */
-multiline_comment|/* &n;&t; *  We can now fill the window with additinal data frames&n;&t; */
+multiline_comment|/*&n;&t; *  We can now fill the window with additinal data frames&n;&t; */
 r_while
 c_loop
 (paren
@@ -3701,7 +3704,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  If send window &gt; 1 then send frame with pf &n;&t;&t;&t; *  bit cleared&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  If send window &gt; 1 then send frame with pf&n;&t;&t;&t; *  bit cleared&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3831,7 +3834,7 @@ op_amp
 id|self-&gt;qos_tx
 )paren
 suffix:semicolon
-multiline_comment|/* We copy the skb to be retransmitted since we will have to &n;&t;&t; * modify it. Cloning will confuse packet sniffers &n;&t;&t; */
+multiline_comment|/* We copy the skb to be retransmitted since we will have to&n;&t;&t; * modify it. Cloning will confuse packet sniffers&n;&t;&t; */
 multiline_comment|/* tx_skb = skb_clone( skb, GFP_ATOMIC); */
 id|tx_skb
 op_assign
@@ -4772,7 +4775,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_driver_rcv (skb, netdev, ptype)&n; *&n; *    Called when a frame is received. Dispatches the right receive function &n; *    for processing of the frame.&n; *&n; */
+multiline_comment|/*&n; * Function irlap_driver_rcv (skb, netdev, ptype)&n; *&n; *    Called when a frame is received. Dispatches the right receive function&n; *    for processing of the frame.&n; *&n; */
 DECL|function|irlap_driver_rcv
 r_int
 id|irlap_driver_rcv
@@ -4854,8 +4857,9 @@ l_int|2
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: frame to short!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), frame to short!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -4941,7 +4945,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*  &n;&t; *  Optimize for the common case and check if the frame is an&n;&t; *  I(nformation) frame. Only I-frames have bit 0 set to 0&n;&t; */
+multiline_comment|/*&n;&t; *  Optimize for the common case and check if the frame is an&n;&t; *  I(nformation) frame. Only I-frames have bit 0 set to 0&n;&t; */
 r_if
 c_cond
 (paren
@@ -4968,7 +4972,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  We now check is the frame is an S(upervisory) frame. Only &n;&t; *  S-frames have bit 0 set to 1 and bit 1 set to 0&n;&t; */
+multiline_comment|/*&n;&t; *  We now check is the frame is an S(upervisory) frame. Only&n;&t; *  S-frames have bit 0 set to 1 and bit 1 set to 0&n;&t; */
 r_if
 c_cond
 (paren
@@ -4978,7 +4982,7 @@ op_amp
 l_int|0x02
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; *  Received S(upervisory) frame, check which frame type it is&n;&t;&t; *  only the first nibble is of interest&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Received S(upervisory) frame, check which frame type it is&n;&t;&t; *  only the first nibble is of interest&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -5064,8 +5068,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: Unknown S-frame %02x received!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;() Unknown S-frame %02x received!&bslash;n&quot;
 comma
 id|info.control
 )paren
@@ -5077,7 +5082,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  This must be a C(ontrol) frame &n;&t; */
+multiline_comment|/*&n;&t; *  This must be a C(ontrol) frame&n;&t; */
 r_switch
 c_cond
 (paren
@@ -5240,8 +5245,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: Unknown frame %02x received!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown frame %02x received!&bslash;n&quot;
 comma
 id|info.control
 )paren

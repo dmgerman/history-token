@@ -22,8 +22,8 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Printer Device Class driver&quot;
 DECL|macro|USBLP_BUF_SIZE
 mdefine_line|#define USBLP_BUF_SIZE&t;&t;8192
-DECL|macro|DEVICE_ID_SIZE
-mdefine_line|#define DEVICE_ID_SIZE&t;&t;1024
+DECL|macro|USBLP_DEVICE_ID_SIZE
+mdefine_line|#define USBLP_DEVICE_ID_SIZE&t;1024
 multiline_comment|/* ioctls: */
 DECL|macro|LPGETSTATUS
 mdefine_line|#define LPGETSTATUS&t;&t;0x060b&t;&t;/* same as in drivers/char/lp.c */
@@ -1526,9 +1526,12 @@ id|i
 suffix:semicolon
 r_int
 r_char
-id|status
+id|lpstatus
 comma
 id|newChannel
+suffix:semicolon
+r_int
+id|status
 suffix:semicolon
 r_int
 id|twoints
@@ -2218,7 +2221,7 @@ c_func
 id|usblp
 comma
 op_amp
-id|status
+id|lpstatus
 )paren
 )paren
 (brace
@@ -2239,6 +2242,10 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|lpstatus
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2246,7 +2253,6 @@ id|copy_to_user
 (paren
 (paren
 r_int
-r_char
 op_star
 )paren
 id|arg
@@ -2254,7 +2260,10 @@ comma
 op_amp
 id|status
 comma
-l_int|1
+r_sizeof
+(paren
+r_int
+)paren
 )paren
 )paren
 id|retval
@@ -2900,12 +2909,23 @@ id|usblp-&gt;readcount
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|usb_submit_urb
 c_func
 (paren
 id|usblp-&gt;readurb
 comma
 id|GFP_KERNEL
+)paren
+OL
+l_int|0
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;error submitting urb&quot;
 )paren
 suffix:semicolon
 id|count
@@ -3367,7 +3387,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|DEVICE_ID_SIZE
+id|USBLP_DEVICE_ID_SIZE
 comma
 id|GFP_KERNEL
 )paren
@@ -4214,7 +4234,7 @@ l_int|0
 comma
 id|usblp-&gt;device_id_string
 comma
-id|DEVICE_ID_SIZE
+id|USBLP_DEVICE_ID_SIZE
 op_minus
 l_int|1
 )paren
@@ -4288,11 +4308,11 @@ c_cond
 (paren
 id|length
 op_ge
-id|DEVICE_ID_SIZE
+id|USBLP_DEVICE_ID_SIZE
 )paren
 id|length
 op_assign
-id|DEVICE_ID_SIZE
+id|USBLP_DEVICE_ID_SIZE
 op_minus
 l_int|1
 suffix:semicolon

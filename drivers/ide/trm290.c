@@ -191,7 +191,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|trm290_udma_start
 r_static
-r_int
+r_void
 id|trm290_udma_start
 c_func
 (paren
@@ -207,9 +207,6 @@ id|__rq
 )paren
 (brace
 multiline_comment|/* Nothing to be done here. */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|trm290_udma_stop
 r_static
@@ -335,7 +332,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -377,7 +374,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
 )brace
@@ -427,13 +424,11 @@ r_if
 c_cond
 (paren
 id|drive-&gt;type
-op_ne
+op_eq
 id|ATA_DISK
 )paren
-r_return
-l_int|0
-suffix:semicolon
-id|ide_set_handler
+(brace
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -445,7 +440,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 id|reading
@@ -458,8 +453,9 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
+)brace
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|trm290_udma_irq_status

@@ -2,6 +2,8 @@ macro_line|#ifndef _NAMESPACE_H_
 DECL|macro|_NAMESPACE_H_
 mdefine_line|#define _NAMESPACE_H_
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/dcache.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|struct|namespace
 r_struct
 r_namespace

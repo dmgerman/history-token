@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -51,6 +51,46 @@ r_if
 c_cond
 (paren
 id|type_needed
+op_eq
+id|INTERNAL_TYPE_REFERENCE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Allow the AML &quot;Constant&quot; opcodes (Zero, One, etc.) to be reference&n;&t;&t; * objects and thus allow them to be targets.  (As per the ACPI&n;&t;&t; * specification, a store to a constant is a noop.)&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|this_type
+op_eq
+id|ACPI_TYPE_INTEGER
+)paren
+op_logical_and
+(paren
+(paren
+(paren
+id|acpi_operand_object
+op_star
+)paren
+id|object
+)paren
+op_member_access_from_pointer
+id|common.flags
+op_amp
+id|AOPOBJ_AML_CONSTANT
+)paren
+)paren
+(brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|type_needed
 op_ne
 id|this_type
 )paren
@@ -88,7 +128,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              - Opcode being interpreted&n; *              Stack_ptr           - Pointer to the operand stack to be&n; *                                    resolved&n; *              Walk_state          - Current stateu&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert multiple input operands to the types required by the&n; *              target operator.&n; *&n; *      Each nibble (actually 5 bits)  in Arg_types represents one required&n; *      operand and indicates the required Type:&n; *&n; *      The corresponding operand will be converted to the required type if&n; *      possible, otherwise we abort with an exception.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_operands&n; *&n; * PARAMETERS:  Opcode              - Opcode being interpreted&n; *              Stack_ptr           - Pointer to the operand stack to be&n; *                                    resolved&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert multiple input operands to the types required by the&n; *              target operator.&n; *&n; *      Each 5-bit group in Arg_types represents one required&n; *      operand and indicates the required Type. The corresponding operand&n; *      will be converted to the required type if possible, otherwise we&n; *      abort with an exception.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_operands
 id|acpi_ex_resolve_operands
@@ -288,7 +328,10 @@ suffix:colon
 multiline_comment|/* ACPI internal object */
 id|object_type
 op_assign
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/* Check for bad acpi_object_type */
 r_if
@@ -360,15 +403,6 @@ id|obj_desc-&gt;reference.opcode
 )paren
 (brace
 r_case
-id|AML_ZERO_OP
-suffix:colon
-r_case
-id|AML_ONE_OP
-suffix:colon
-r_case
-id|AML_ONES_OP
-suffix:colon
-r_case
 id|AML_DEBUG_OP
 suffix:colon
 r_case
@@ -382,9 +416,6 @@ id|AML_ARG_OP
 suffix:colon
 r_case
 id|AML_LOCAL_OP
-suffix:colon
-r_case
-id|AML_REVISION_OP
 suffix:colon
 id|ACPI_DEBUG_ONLY_MEMBERS
 (paren
@@ -409,7 +440,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Reference Opcode: Unknown [%02x]&bslash;n&quot;
+l_string|&quot;Unknown Reference Opcode %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
@@ -613,12 +644,11 @@ id|AML_STORE_OP
 )paren
 op_logical_and
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 op_eq
 id|INTERNAL_TYPE_REFERENCE
 )paren
@@ -784,14 +814,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -854,14 +880,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -928,14 +950,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -965,12 +983,11 @@ multiline_comment|/* Need an operand of type INTEGER, STRING or BUFFER */
 r_switch
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 )paren
 (brace
 r_case
@@ -994,14 +1011,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -1025,12 +1038,11 @@ multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the Size_of o
 r_if
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 op_eq
 id|INTERNAL_TYPE_REFERENCE
 )paren
@@ -1131,12 +1143,11 @@ multiline_comment|/* Need a buffer, string, package */
 r_switch
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 )paren
 (brace
 r_case
@@ -1160,14 +1171,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -1191,12 +1198,11 @@ multiline_comment|/* Need a buffer or package or (ACPI 2.0) String */
 r_switch
 c_cond
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 )paren
 (brace
 r_case
@@ -1220,14 +1226,10 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 op_star
 id|stack_ptr
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 op_star
@@ -1271,12 +1273,11 @@ id|acpi_ex_check_object_type
 (paren
 id|type_needed
 comma
+id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
 id|stack_ptr
 )paren
-op_member_access_from_pointer
-id|common.type
 comma
 op_star
 id|stack_ptr

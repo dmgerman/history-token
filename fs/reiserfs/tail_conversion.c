@@ -836,11 +836,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|old_format_only
+id|get_inode_sd_version
 (paren
-id|p_s_sb
+id|p_s_inode
 )paren
+op_eq
+id|STAT_DATA_V2
 )paren
 id|round_tail_len
 op_assign

@@ -48,6 +48,8 @@ DECL|macro|OSST_DEB_MSG
 mdefine_line|#define OSST_DEB_MSG  KERN_NOTICE
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR OSST_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f) 
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -58,7 +60,6 @@ macro_line|#include &quot;st.h&quot;
 macro_line|#include &quot;osst.h&quot;
 macro_line|#include &quot;osst_options.h&quot;
 macro_line|#include &quot;osst_detect.h&quot;
-macro_line|#include &quot;constants.h&quot;
 DECL|variable|buffer_kbs
 r_static
 r_int

@@ -823,9 +823,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 )brace
@@ -844,9 +846,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 id|sign
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 r_if
@@ -874,9 +878,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 l_char|&squot;0&squot;
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 r_else
@@ -897,9 +903,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 l_char|&squot;0&squot;
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 r_if
 c_cond
@@ -910,12 +918,14 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 id|digits
 (braket
 l_int|33
 )braket
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 )brace
@@ -948,9 +958,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 id|c
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 )brace
@@ -972,9 +984,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 l_char|&squot;0&squot;
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 r_while
@@ -995,12 +1009,14 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 id|tmp
 (braket
 id|i
 )braket
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 r_while
@@ -1021,9 +1037,11 @@ id|end
 )paren
 op_star
 id|buf
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|buf
 suffix:semicolon
 )brace
 r_return
@@ -1097,17 +1115,6 @@ suffix:semicolon
 multiline_comment|/* &squot;h&squot;, &squot;l&squot;, or &squot;L&squot; for integer fields */
 multiline_comment|/* &squot;z&squot; support added 23/7/1999 S.H.    */
 multiline_comment|/* &squot;z&squot; changed to &squot;Z&squot; --davidm 1/25/99 */
-multiline_comment|/* Enforce absolute minimum size: one character + the trailing 0 */
-r_if
-c_cond
-(paren
-id|size
-OL
-l_int|2
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|str
 op_assign
 id|buf
@@ -1179,10 +1186,12 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 op_star
 id|fmt
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -1502,9 +1511,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 )brace
 )brace
@@ -1531,9 +1542,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 id|c
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 r_while
 c_loop
@@ -1553,9 +1566,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 )brace
 r_continue
@@ -1623,9 +1638,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 )brace
 )brace
@@ -1653,11 +1670,15 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 op_star
 id|s
+suffix:semicolon
 op_increment
+id|str
+suffix:semicolon
+op_increment
+id|s
 suffix:semicolon
 )brace
 r_while
@@ -1678,9 +1699,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot; &squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 )brace
 r_continue
@@ -1851,9 +1874,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot;%&squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -1911,9 +1936,11 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 l_char|&squot;%&squot;
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 r_if
 c_cond
@@ -1931,10 +1958,12 @@ id|end
 )paren
 op_star
 id|str
-op_increment
 op_assign
 op_star
 id|fmt
+suffix:semicolon
+op_increment
+id|str
 suffix:semicolon
 )brace
 r_else

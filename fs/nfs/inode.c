@@ -925,13 +925,13 @@ id|sb-&gt;s_id
 comma
 l_string|&quot;%x:%x&quot;
 comma
-id|major
+id|MAJOR
 c_func
 (paren
 id|sb-&gt;s_dev
 )paren
 comma
-id|minor
+id|MINOR
 c_func
 (paren
 id|sb-&gt;s_dev

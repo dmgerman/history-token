@@ -20,6 +20,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
 mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
@@ -2294,6 +2296,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2343,6 +2347,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2585,6 +2591,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2847,6 +2855,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3021,6 +3031,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3212,6 +3224,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3356,6 +3370,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4332,12 +4348,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|mcd_port
 comma
 l_int|4
+comma
+l_string|&quot;mcd&quot;
 )paren
 )paren
 (brace
@@ -4487,7 +4506,7 @@ suffix:semicolon
 id|cleanup
 c_func
 (paren
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -4558,7 +4577,7 @@ suffix:semicolon
 id|cleanup
 c_func
 (paren
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -4593,7 +4612,7 @@ l_int|2
 id|cleanup
 c_func
 (paren
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -4659,7 +4678,7 @@ suffix:semicolon
 id|cleanup
 c_func
 (paren
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 r_return
@@ -4713,16 +4732,6 @@ comma
 id|mcd_port
 comma
 id|mcd_irq
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|mcd_port
-comma
-l_int|4
-comma
-l_string|&quot;mcd&quot;
 )paren
 suffix:semicolon
 id|outb

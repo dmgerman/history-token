@@ -397,8 +397,10 @@ r_struct
 id|nameidata
 id|nd
 suffix:semicolon
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 suffix:semicolon
 r_struct
 id|super_block
@@ -424,9 +426,9 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
-id|dev
+id|bdev
 op_assign
-id|nd.dentry-&gt;d_inode-&gt;i_rdev
+id|nd.dentry-&gt;d_inode-&gt;i_bdev
 suffix:semicolon
 id|mode
 op_assign
@@ -467,7 +469,7 @@ op_assign
 id|get_super
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_if

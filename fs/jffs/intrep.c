@@ -1778,7 +1778,11 @@ c_func
 (paren
 id|c
 comma
+id|MINOR
+c_func
+(paren
 id|sb-&gt;s_dev
+)paren
 )paren
 )paren
 )paren
@@ -13224,7 +13228,11 @@ id|__u32
 id|flash_get_direct_pointer
 c_func
 (paren
+id|to_kdev_t
+c_func
+(paren
 id|c-&gt;sb-&gt;s_dev
+)paren
 comma
 id|offset
 )paren

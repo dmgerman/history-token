@@ -353,11 +353,11 @@ id|request
 op_star
 )paren
 suffix:semicolon
-DECL|typedef|unplug_device_fn
+DECL|typedef|unplug_fn
 r_typedef
 r_void
 (paren
-id|unplug_device_fn
+id|unplug_fn
 )paren
 (paren
 r_void
@@ -479,6 +479,11 @@ id|prep_rq_fn
 op_star
 id|prep_rq_fn
 suffix:semicolon
+DECL|member|unplug_fn
+id|unplug_fn
+op_star
+id|unplug_fn
+suffix:semicolon
 DECL|member|backing_dev_info
 r_struct
 id|backing_dev_info
@@ -570,18 +575,14 @@ DECL|macro|RQ_SCSI_DONE
 mdefine_line|#define RQ_SCSI_DONE&t;&t;0xfffe
 DECL|macro|RQ_SCSI_DISCONNECTING
 mdefine_line|#define RQ_SCSI_DISCONNECTING&t;0xffe0
-DECL|macro|QUEUE_FLAG_PLUGGED
-mdefine_line|#define QUEUE_FLAG_PLUGGED&t;0&t;/* queue is plugged */
 DECL|macro|QUEUE_FLAG_CLUSTER
-mdefine_line|#define QUEUE_FLAG_CLUSTER&t;1&t;/* cluster several segments into 1 */
+mdefine_line|#define QUEUE_FLAG_CLUSTER&t;0&t;/* cluster several segments into 1 */
 DECL|macro|QUEUE_FLAG_QUEUED
-mdefine_line|#define QUEUE_FLAG_QUEUED&t;2&t;/* uses generic tag queueing */
+mdefine_line|#define QUEUE_FLAG_QUEUED&t;1&t;/* uses generic tag queueing */
 DECL|macro|QUEUE_FLAG_STOPPED
-mdefine_line|#define QUEUE_FLAG_STOPPED&t;3&t;/* queue is stopped */
+mdefine_line|#define QUEUE_FLAG_STOPPED&t;2&t;/* queue is stopped */
 DECL|macro|blk_queue_plugged
-mdefine_line|#define blk_queue_plugged(q)&t;test_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
-DECL|macro|blk_mark_plugged
-mdefine_line|#define blk_mark_plugged(q)&t;set_bit(QUEUE_FLAG_PLUGGED, &amp;(q)-&gt;queue_flags)
+mdefine_line|#define blk_queue_plugged(q)&t;!list_empty(&amp;(q)-&gt;plug_list)
 DECL|macro|blk_queue_tagged
 mdefine_line|#define blk_queue_tagged(q)&t;test_bit(QUEUE_FLAG_QUEUED, &amp;(q)-&gt;queue_flags)
 DECL|macro|blk_queue_empty
@@ -844,6 +845,15 @@ suffix:semicolon
 r_extern
 r_void
 id|blk_plug_device
+c_func
+(paren
+id|request_queue_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|blk_remove_plug
 c_func
 (paren
 id|request_queue_t

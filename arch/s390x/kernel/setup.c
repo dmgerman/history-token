@@ -19,6 +19,7 @@ macro_line|#ifdef CONFIG_BLK_DEV_RAM
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1137,11 +1138,7 @@ l_string|&quot;We are running native (64 bit mode)&bslash;n&quot;
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0100
-)paren
+id|Root_RAM0
 suffix:semicolon
 id|memory_start
 op_assign

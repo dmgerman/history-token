@@ -48,10 +48,12 @@ DECL|typedef|__s64
 r_typedef
 id|__signed__
 r_int
+r_int
 id|__s64
 suffix:semicolon
 DECL|typedef|__u64
 r_typedef
+r_int
 r_int
 r_int
 id|__u64
@@ -98,10 +100,12 @@ DECL|typedef|s64
 r_typedef
 r_int
 r_int
+r_int
 id|s64
 suffix:semicolon
 DECL|typedef|u64
 r_typedef
+r_int
 r_int
 r_int
 id|u64

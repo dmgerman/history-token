@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/constants.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|CUMANASCSI_PUBLIC_RELEASE
 mdefine_line|#define CUMANASCSI_PUBLIC_RELEASE 1

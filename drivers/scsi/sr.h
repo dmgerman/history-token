@@ -28,18 +28,6 @@ r_int
 id|ms_offset
 suffix:semicolon
 multiline_comment|/* for reading multisession-CD&squot;s        */
-DECL|member|sector_bit_size
-r_int
-r_char
-id|sector_bit_size
-suffix:semicolon
-multiline_comment|/* sector size = 2^sector_bit_size      */
-DECL|member|sector_bit_shift
-r_int
-r_char
-id|sector_bit_shift
-suffix:semicolon
-multiline_comment|/* sectors/FS block = 2^sector_bit_shift */
 DECL|member|needs_sector_size
 r_int
 id|needs_sector_size

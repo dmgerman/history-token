@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -1538,23 +1539,13 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_else
 macro_line|#endif
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|DEFAULT_ROOT_DEVICE
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Check for Core99 */
@@ -2048,18 +2039,9 @@ op_le
 id|current_root_goodness
 )paren
 op_logical_and
-op_logical_neg
-id|kdev_same
-c_func
-(paren
 id|ROOT_DEV
-comma
-id|to_kdev_t
-c_func
-(paren
+op_ne
 id|DEFAULT_ROOT_DEVICE
-)paren
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -2135,7 +2117,7 @@ id|boot_dev
 (brace
 id|ROOT_DEV
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|major

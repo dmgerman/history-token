@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 53 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbutils - Table manipulation utilities&n; *              $Revision: 54 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -113,7 +113,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  Table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_validate_table_header&n; *&n; * PARAMETERS:  Table_header        - Logical pointer to the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check an ACPI table header for validity&n; *&n; * NOTE:  Table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *              which has no checksum because it contains variable fields)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_validate_table_header
 id|acpi_tb_validate_table_header
@@ -382,6 +382,8 @@ id|ACPI_SIZE
 )paren
 id|table-&gt;length
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* We don&squot;t want to validate the header here.  */
 multiline_comment|/*&n;&t;&t; * Validate the header and delete the mapping.&n;&t;&t; * We will create a mapping for the full table below.&n;&t;&t; */
 id|status
 op_assign
@@ -390,6 +392,7 @@ id|acpi_tb_validate_table_header
 id|table
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Always unmap the memory for the header */
 id|acpi_os_unmap_memory
 (paren
@@ -401,6 +404,7 @@ id|acpi_table_header
 )paren
 )paren
 suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* Exit if header invalid */
 r_if
 c_cond
@@ -417,6 +421,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/* Map the physical memory for the correct length */
 id|status

@@ -792,15 +792,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;coda_read_super: rootinode is %ld dev %x&bslash;n&quot;
+l_string|&quot;coda_read_super: rootinode is %ld dev %s&bslash;n&quot;
 comma
 id|root-&gt;i_ino
 comma
-id|kdev_val
-c_func
-(paren
-id|root-&gt;i_dev
-)paren
+id|root-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_root

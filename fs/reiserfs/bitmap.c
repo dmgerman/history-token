@@ -430,7 +430,10 @@ l_string|&quot;block %lu is out of range on %s&bslash;n&quot;
 comma
 id|block
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -472,7 +475,10 @@ id|reiserfs_warning
 l_string|&quot;vs-4080: reiserfs_free_block: &quot;
 l_string|&quot;free_block (%s:%lu)[dev:blocknr]: bit already cleared&bslash;n&quot;
 comma
-id|s-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|s
+)paren
 comma
 id|block
 )paren
@@ -611,18 +617,11 @@ r_int
 id|block
 )paren
 (brace
-r_struct
-id|super_block
-op_star
-id|s
-op_assign
-id|th-&gt;t_super
-suffix:semicolon
 id|RFALSE
 c_func
 (paren
 op_logical_neg
-id|s
+id|th-&gt;t_super
 comma
 l_string|&quot;vs-4060: trying to free block on nonexistent device&quot;
 )paren
@@ -632,7 +631,7 @@ c_func
 (paren
 id|is_reusable
 (paren
-id|s
+id|th-&gt;t_super
 comma
 id|block
 comma
@@ -2352,10 +2351,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// a portion of this function, was derived from minix or ext2&squot;s
-singleline_comment|// analog. You should be able to tell which portion by looking at the
-singleline_comment|// ext2 code and comparing. 
 DECL|function|__discard_prealloc
 r_static
 r_void

@@ -2,12 +2,6 @@ multiline_comment|/*&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *
 macro_line|#ifndef PC_H_INCLUDED
 DECL|macro|PC_H_INCLUDED
 mdefine_line|#define PC_H_INCLUDED
-DECL|macro|byte
-mdefine_line|#define byte unsigned char
-DECL|macro|word
-mdefine_line|#define word unsigned short
-DECL|macro|dword
-mdefine_line|#define dword unsigned long
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/* buffer definition                                                */
 multiline_comment|/*------------------------------------------------------------------*/

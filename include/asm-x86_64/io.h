@@ -324,12 +324,36 @@ DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
+r_void
+op_star
+id|memcpy_fromio
+c_func
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_void
+op_star
+id|memcpy_toio
+c_func
+(paren
+r_void
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 DECL|macro|memset_io
 mdefine_line|#define memset_io(a,b,c)&t;memset(__io_virt(a),(b),(c))
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),__io_virt(b),(c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy(__io_virt(a),(b),(c))
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on a typical x86 system, no need to&n; * explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
 mdefine_line|#define __ISA_IO_base ((char *)(PAGE_OFFSET))

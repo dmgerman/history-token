@@ -72,7 +72,27 @@ op_logical_neg
 id|dma_stat
 )paren
 (brace
-id|__ide_end_request
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t;&t; * file access too.&n;&t;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -82,6 +102,14 @@ comma
 l_int|1
 comma
 id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -152,9 +180,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_SPECIAL
+)paren
+op_logical_and
+(paren
+id|drive-&gt;type
+op_eq
+id|ATA_DISK
+)paren
 )paren
 (brace
 r_struct
@@ -1587,7 +1623,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/* Teardown mappings after DMA has completed.  */
+multiline_comment|/*&n; * Teardown mappings after DMA has completed.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_destroy_table
 r_void
 id|udma_destroy_table
@@ -1612,9 +1648,9 @@ id|ch-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; */
+multiline_comment|/*&n; * Prepare the channel for a DMA startfer. Please note that only the broken&n; * Pacific Digital host chip needs the reques to be passed there to decide&n; * about addressing modes.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_start
-r_int
+r_void
 id|udma_pci_start
 c_func
 (paren
@@ -1642,7 +1678,7 @@ id|dma_base
 op_assign
 id|ch-&gt;dma_base
 suffix:semicolon
-multiline_comment|/* Note that this is done *after* the cmd has&n;&t; * been issued to the drive, as per the BM-IDE spec.&n;&t; * The Promise Ultra33 doesn&squot;t work correctly when&n;&t; * we do this part before issuing the drive cmd.&n;&t; */
+multiline_comment|/* Note that this is done *after* the cmd has been issued to the drive,&n;&t; * as per the BM-IDE spec.  The Promise Ultra33 doesn&squot;t work correctly&n;&t; * when we do this part before issuing the drive cmd.&n;&t; */
 id|outb
 c_func
 (paren
@@ -1658,10 +1694,8 @@ id|dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* start DMA */
-r_return
-l_int|0
-suffix:semicolon
 )brace
+multiline_comment|/*&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_stop
 r_int
 id|udma_pci_stop
@@ -1760,7 +1794,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* verify good DMA status */
 )brace
-multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; */
+multiline_comment|/*&n; * FIXME: This should be attached to a channel as we can see now!&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_irq_status
 r_int
 id|udma_pci_irq_status
@@ -2124,7 +2158,7 @@ l_string|&quot; -- ERROR, UNABLE TO ALLOCATE DMA TABLES&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; */
+multiline_comment|/*&n; * This is the default read write function.&n; *&n; * It&squot;s exported only for host chips which use it for fallback or (too) late&n; * capability checking.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_init
 r_int
 id|udma_pci_init
@@ -2156,7 +2190,7 @@ id|rq
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* No DMA transfers on ATAPI devices. */
 r_if
@@ -2167,7 +2201,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 r_if
 c_cond
@@ -2189,7 +2223,7 @@ id|cmd
 op_assign
 l_int|0x00
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -2233,7 +2267,6 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-r_return
 id|udma_start
 c_func
 (paren
@@ -2241,6 +2274,9 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+r_return
+id|ide_started
 suffix:semicolon
 )brace
 DECL|variable|ide_dma_intr

@@ -84,20 +84,29 @@ r_int
 id|datasync
 )paren
 (brace
-id|lock_kernel
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_commit_for_inode
 c_func
 (paren
-id|dentry-&gt;d_inode
+id|inode
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -191,9 +200,10 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_check_lock_depth
@@ -487,7 +497,7 @@ c_cond
 (paren
 id|d_reclen
 OG
-id|REISERFS_MAX_NAME_LEN
+id|REISERFS_MAX_NAME
 c_func
 (paren
 id|inode-&gt;i_sb-&gt;s_blocksize
@@ -786,7 +796,6 @@ suffix:semicolon
 multiline_comment|/* while */
 id|end
 suffix:colon
-singleline_comment|// FIXME: ext2_readdir does not reset f_pos
 id|filp-&gt;f_pos
 op_assign
 id|next_pos
@@ -812,9 +821,10 @@ id|inode
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return

@@ -8,12 +8,6 @@ macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|init_fpu_env
-r_static
-r_struct
-id|i387_fxsave_struct
-id|init_fpu_env
-suffix:semicolon
 multiline_comment|/*&n; * Called at bootup to set up the initial FPU state that is later cloned&n; * into all processes.&n; */
 DECL|function|fpu_init
 r_void
@@ -207,6 +201,25 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|buf
+op_mod
+l_int|16
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;save_i387: bad fpstate %p&bslash;n&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

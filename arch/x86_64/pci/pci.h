@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Low-Level PCI Access for i386 machines.&n; *&n; *&t;(c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
+multiline_comment|/*&n; *&t;Low-Level PCI Access for x86-64 machines.&n; *&n; *&t;(c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
@@ -35,7 +35,6 @@ r_int
 r_int
 id|pci_probe
 suffix:semicolon
-multiline_comment|/* pci-i386.c */
 r_extern
 r_int
 r_int
@@ -73,31 +72,6 @@ r_struct
 id|pci_ops
 op_star
 id|pci_root_ops
-suffix:semicolon
-r_struct
-id|irq_routing_table
-op_star
-id|pcibios_get_irq_routing_table
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|pcibios_set_irq_routing
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|pin
-comma
-r_int
-id|irq
-)paren
 suffix:semicolon
 multiline_comment|/* pci-irq.c */
 DECL|struct|irq_info
@@ -237,14 +211,11 @@ id|pcibios_irq_mask
 suffix:semicolon
 r_extern
 r_int
-id|pci_use_acpi_routing
+id|pcibios_scanned
 suffix:semicolon
-r_void
-id|pcibios_irq_init
-c_func
-(paren
-r_void
-)paren
+r_extern
+id|spinlock_t
+id|pci_config_lock
 suffix:semicolon
 r_void
 id|pcibios_fixup_irqs
@@ -253,9 +224,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|pcibios_enable_irq
+r_int
+id|pirq_enable_irq
 c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|pcibios_enable_irq
+)paren
 (paren
 r_struct
 id|pci_dev

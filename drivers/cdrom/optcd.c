@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR OPTICS_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;optcd.h&quot;
@@ -4045,6 +4047,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4169,6 +4173,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4297,6 +4303,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4522,6 +4530,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4665,6 +4675,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4789,6 +4801,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4904,6 +4918,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5087,6 +5103,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5153,6 +5171,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5191,6 +5211,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -5233,6 +5255,8 @@ c_func
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -5767,9 +5791,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_tochdr
 id|tochdr
@@ -5817,9 +5838,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_tocentry
 id|entry
@@ -6434,9 +6452,6 @@ r_int
 id|arg
 )paren
 (brace
-r_int
-id|status
-suffix:semicolon
 r_struct
 id|cdrom_multisession
 id|ms
@@ -8161,12 +8176,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|optcd_port
 comma
 l_int|4
+comma
+l_string|&quot;optcd&quot;
 )paren
 )paren
 (brace
@@ -8203,6 +8221,14 @@ comma
 id|optcd_port
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -8223,6 +8249,14 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;optcd: unknown drive detected; aborting&bslash;n&quot;
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -8251,6 +8285,14 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;optcd: cannot init double speed mode&bslash;n&quot;
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 id|DEBUG
@@ -8295,6 +8337,14 @@ id|KERN_ERR
 l_string|&quot;optcd: unable to get major %d&bslash;n&quot;
 comma
 id|MAJOR_NR
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|optcd_port
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_return
@@ -8351,16 +8401,6 @@ id|MAJOR_NR
 )paren
 comma
 l_int|2048
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|optcd_port
-comma
-l_int|4
-comma
-l_string|&quot;optcd&quot;
 )paren
 suffix:semicolon
 id|register_disk

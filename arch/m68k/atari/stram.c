@@ -20,16 +20,15 @@ macro_line|#include &lt;asm/atarihw.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#ifdef CONFIG_STRAM_SWAP
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR    Z2RAM_MAJOR
 DECL|macro|do_z2_request
 mdefine_line|#define do_z2_request do_stram_request
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
-DECL|macro|DEVICE_NAME
-macro_line|#undef DEVICE_NAME
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME&t;&quot;stram&quot;
 macro_line|#endif
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -3429,6 +3428,11 @@ c_loop
 l_int|1
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3438,25 +3442,25 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
+id|req
+op_assign
+id|CURRENT
+suffix:semicolon
 id|start
 op_assign
 id|swap_start
 op_plus
 (paren
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 op_lshift
 l_int|9
 )paren
 suffix:semicolon
 id|len
 op_assign
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 op_lshift
 l_int|9
 suffix:semicolon
@@ -3479,14 +3483,16 @@ id|KERN_ERR
 l_string|&quot;stram: bad access beyond end of device: &quot;
 l_string|&quot;block=%ld, count=%ld&bslash;n&quot;
 comma
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 comma
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 id|end_request
 c_func
 (paren
+id|req
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3496,7 +3502,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT-&gt;cmd
+id|req-&gt;cmd
 op_eq
 id|READ
 )paren
@@ -3504,7 +3510,7 @@ id|READ
 id|memcpy
 c_func
 (paren
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|start
 comma
@@ -3529,7 +3535,7 @@ c_func
 (paren
 id|start
 comma
-id|CURRENT-&gt;buffer
+id|req-&gt;buffer
 comma
 id|len
 )paren
@@ -3548,6 +3554,8 @@ macro_line|#endif
 id|end_request
 c_func
 (paren
+id|req
+comma
 l_int|1
 )paren
 suffix:semicolon

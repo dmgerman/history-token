@@ -80,9 +80,21 @@ id|args
 op_assign
 id|rq-&gt;special
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ide__sti
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|blkdev_dequeue_request
@@ -99,6 +111,14 @@ id|end_that_request_last
 c_func
 (paren
 id|rq
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|drive-&gt;channel-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|kfree
@@ -141,7 +161,7 @@ suffix:semicolon
 r_struct
 id|ata_taskfile
 op_star
-id|args
+id|ar
 suffix:semicolon
 r_struct
 id|request
@@ -234,7 +254,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do some internal stuff -- we really need this command to be&n;&t; * executed before any new commands are started. issue a NOP&n;&t; * to clear internal queue on drive.&n;&t; */
-id|args
+id|ar
 op_assign
 id|kmalloc
 c_func
@@ -242,7 +262,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|args
+id|ar
 )paren
 comma
 id|GFP_ATOMIC
@@ -252,7 +272,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|args
+id|ar
 )paren
 (brace
 id|printk
@@ -310,17 +330,17 @@ id|rq
 suffix:semicolon
 id|rq-&gt;special
 op_assign
-id|args
+id|ar
 suffix:semicolon
-id|args-&gt;cmd
+id|ar-&gt;cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
-id|args-&gt;handler
+id|ar-&gt;XXX_handler
 op_assign
 id|tcq_nop_handler
 suffix:semicolon
-id|args-&gt;command_type
+id|ar-&gt;command_type
 op_assign
 id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
@@ -694,7 +714,7 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; */
+multiline_comment|/*&n; * issue SERVICE command to drive -- drive must have been selected first,&n; * and it must have reported a need for service (status has SERVICE_STAT set)&n; *&n; * Also, nIEN must be set as not to need protection against ide_dmaq_intr&n; *&n; * Channel lock should be held.&n; */
 DECL|function|service
 r_static
 id|ide_startstop_t
@@ -905,7 +925,7 @@ id|feat
 suffix:semicolon
 id|rq
 op_assign
-id|blk_queue_tag_request
+id|blk_queue_find_tag
 c_func
 (paren
 op_amp
@@ -1054,6 +1074,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|u8
 id|dma_stat
 suffix:semicolon
@@ -1131,7 +1162,16 @@ comma
 id|rq-&gt;tag
 )paren
 suffix:semicolon
-id|__ide_end_request
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|__ata_end_request
 c_func
 (paren
 id|drive
@@ -1142,6 +1182,14 @@ op_logical_neg
 id|dma_stat
 comma
 id|rq-&gt;nr_sectors
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * we completed this command, check if we can service a new command&n;&t; */
@@ -1364,6 +1412,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1477,6 +1527,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1525,6 +1577,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1574,6 +1628,8 @@ id|drive
 comma
 op_amp
 id|args
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1699,7 +1755,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * UDMA transfer handling functions.&n; */
-multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; */
+multiline_comment|/*&n; * Invoked from a SERVICE interrupt, command etc already known.  Just need to&n; * start the dma engine for this tag.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|udma_tcq_start
 r_static
 id|ide_startstop_t
@@ -1786,10 +1842,6 @@ comma
 id|ide_dmaq_intr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|udma_start
 c_func
 (paren
@@ -1797,18 +1849,15 @@ id|drive
 comma
 id|rq
 )paren
-)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start a queued command from scratch.&n; */
-DECL|function|udma_tcq_taskfile
+multiline_comment|/*&n; * Start a queued command from scratch.&n; *&n; * Channel lock should be held.&n; */
+DECL|function|udma_tcq_init
 id|ide_startstop_t
-id|udma_tcq_taskfile
+id|udma_tcq_init
 c_func
 (paren
 r_struct

@@ -11,7 +11,8 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
-singleline_comment|//#define NO_VSYSCALL 1
+DECL|macro|NO_VSYSCALL
+mdefine_line|#define NO_VSYSCALL 1
 macro_line|#ifdef NO_VSYSCALL
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|variable|__section_vxtime_sequence
@@ -20,13 +21,11 @@ r_int
 id|errno
 id|__section_vxtime_sequence
 suffix:semicolon
-id|__syscall2
-c_func
-(paren
 r_static
 r_inline
-r_int
-comma
+id|_syscall2
+c_func
+(paren
 r_int
 comma
 id|gettimeofday
@@ -356,12 +355,11 @@ op_star
 id|t
 )paren
 (brace
-macro_line|#ifdef NO_VSYSCALL
 r_struct
 id|timeval
 id|tv
 suffix:semicolon
-id|gettimeofday
+id|vgettimeofday
 c_func
 (paren
 op_amp
@@ -383,62 +381,6 @@ suffix:semicolon
 r_return
 id|tv.tv_sec
 suffix:semicolon
-macro_line|#else
-r_int
-id|sequence
-suffix:semicolon
-id|time_t
-id|__time
-suffix:semicolon
-r_do
-(brace
-id|sequence
-op_assign
-id|__vxtime_sequence
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|rmb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|__time
-op_assign
-id|__xtime.tv_sec
-suffix:semicolon
-id|rmb
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|sequence
-op_ne
-id|__vxtime_sequence
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|t
-)paren
-op_star
-id|t
-op_assign
-id|__time
-suffix:semicolon
-r_return
-id|__time
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|venosys_0
 r_static

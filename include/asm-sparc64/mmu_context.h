@@ -249,6 +249,18 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__flush_tlb_mm
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* Activate a new MM instance for the current task. */
 DECL|function|activate_mm
 r_static

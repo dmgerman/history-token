@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 multiline_comment|/*&n; * sys_pipe() is the normal C calling standard for creating&n; * a pipe. It&squot;s not the way Unix traditionally does this, though.&n; */
@@ -20,7 +21,6 @@ r_int
 id|sys_pipe
 c_func
 (paren
-r_int
 r_int
 op_star
 id|fildes
@@ -393,7 +393,6 @@ id|vma-&gt;vm_end
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Old cruft&n; */
 DECL|function|sys_uname
 id|asmlinkage
 r_int
@@ -401,23 +400,13 @@ id|sys_uname
 c_func
 (paren
 r_struct
-id|old_utsname
+id|new_utsname
 op_star
 id|name
 )paren
 (brace
 r_int
 id|err
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|name
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 id|down_read
 c_func
@@ -450,9 +439,30 @@ op_amp
 id|uts_sem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;personality
+op_eq
+id|PER_LINUX32
+)paren
+id|err
+op_or_assign
+id|copy_to_user
+c_func
+(paren
+op_amp
+id|name-&gt;machine
+comma
+l_string|&quot;i386&quot;
+comma
+l_int|5
+)paren
+suffix:semicolon
 r_return
 id|err
 ques
+c_cond
 op_minus
 id|EFAULT
 suffix:colon

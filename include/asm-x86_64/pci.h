@@ -2,7 +2,6 @@ macro_line|#ifndef __x8664_PCI_H
 DECL|macro|__x8664_PCI_H
 mdefine_line|#define __x8664_PCI_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 macro_line|#ifdef CONFIG_PCI
@@ -28,6 +27,82 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;(pci_mem_start)
+r_void
+id|pcibios_config_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|pcibios_scan_root
+c_func
+(paren
+r_int
+id|bus
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|pci_config_read
+)paren
+(paren
+r_int
+id|seg
+comma
+r_int
+id|bus
+comma
+r_int
+id|dev
+comma
+r_int
+id|fn
+comma
+r_int
+id|reg
+comma
+r_int
+id|len
+comma
+id|u32
+op_star
+id|value
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|pci_config_write
+)paren
+(paren
+r_int
+id|seg
+comma
+r_int
+id|bus
+comma
+r_int
+id|dev
+comma
+r_int
+id|fn
+comma
+r_int
+id|reg
+comma
+r_int
+id|len
+comma
+id|u32
+id|value
+)paren
+suffix:semicolon
 r_void
 id|pcibios_set_master
 c_func
@@ -71,9 +146,10 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/* Dynamic DMA mapping stuff.&n; * x8664 has everything mapped statically.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

@@ -2071,7 +2071,7 @@ id|portp
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|stli_getserial
 c_func
 (paren
@@ -6679,6 +6679,9 @@ op_amp
 id|stli_tmpwritesem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -6688,6 +6691,10 @@ id|chbuf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|chbuf
 op_assign
@@ -8206,7 +8213,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Generate the serial struct info.&n; */
 DECL|function|stli_getserial
 r_static
-r_void
+r_int
 id|stli_getserial
 c_func
 (paren
@@ -8323,6 +8330,7 @@ id|sio.port
 op_assign
 id|brdp-&gt;iobase
 suffix:semicolon
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -8337,6 +8345,12 @@ r_struct
 id|serial_struct
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
@@ -9151,6 +9165,8 @@ id|serial_struct
 op_eq
 l_int|0
 )paren
+id|rc
+op_assign
 id|stli_getserial
 c_func
 (paren
@@ -17461,7 +17477,7 @@ id|brdp-&gt;iobase
 comma
 id|brdp-&gt;iosize
 comma
-id|name
+l_string|&quot;istallion&quot;
 )paren
 )paren
 r_return
@@ -18106,7 +18122,7 @@ id|brdp-&gt;iobase
 comma
 id|brdp-&gt;iosize
 comma
-id|name
+l_string|&quot;istallion&quot;
 )paren
 )paren
 r_return

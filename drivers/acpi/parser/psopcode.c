@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 70 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -538,7 +538,7 @@ id|ARGP_ZERO_OP
 comma
 id|ARGI_ZERO_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -556,7 +556,7 @@ id|ARGP_ONE_OP
 comma
 id|ARGI_ONE_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -1934,7 +1934,7 @@ id|ARGP_ONES_OP
 comma
 id|ARGI_ONES_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2251,7 +2251,7 @@ id|ARGP_REVISION_OP
 comma
 id|ARGI_REVISION_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_INTEGER
 comma
 id|AML_CLASS_ARGUMENT
 comma

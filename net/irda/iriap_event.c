@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      iriap_event.c&n; * Version:       0.1&n; * Description:   IAP Finite State Machine&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Wed Mar  1 11:28:34 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1997, 1999-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap_event.c&n; * Version:       0.1&n; * Description:   IAP Finite State Machine&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Wed Mar  1 11:28:34 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1997, 1999-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 macro_line|#include &lt;net/irda/iriap.h&gt;
@@ -965,7 +965,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function state_s_call (self, event, skb)&n; *&n; *    S-Call, The device can process calls to a specific remote&n; *    device. Whenever the LSAP connection is disconnected, this state&n; *    catches that event and clears up &n; */
+multiline_comment|/*&n; * Function state_s_call (self, event, skb)&n; *&n; *    S-Call, The device can process calls to a specific remote&n; *    device. Whenever the LSAP connection is disconnected, this state&n; *    catches that event and clears up&n; */
 DECL|function|state_s_call
 r_static
 r_void
@@ -1330,7 +1330,7 @@ l_string|&quot;(), Not implemented&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * &n; *  Server FSM &n; *&n; **************************************************************************/
+multiline_comment|/**************************************************************************&n; *&n; *  Server FSM&n; *&n; **************************************************************************/
 multiline_comment|/*&n; * Function state_r_disconnect (self, event, skb)&n; *&n; *    LM-IAS server is disconnected (not processing any requests!)&n; *&n; */
 DECL|function|state_r_disconnect
 r_static
@@ -1385,8 +1385,9 @@ l_int|NULL
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: unable to malloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to malloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1457,7 +1458,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function state_r_call (self, event, skb)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function state_r_call (self, event, skb)&n; */
 DECL|function|state_r_call
 r_static
 r_void
@@ -1530,8 +1531,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; *  R-Connect FSM &n;*/
-multiline_comment|/*&n; * Function state_r_waiting (self, event, skb)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; *  R-Connect FSM&n; */
+multiline_comment|/*&n; * Function state_r_waiting (self, event, skb)&n; */
 DECL|function|state_r_waiting
 r_static
 r_void
@@ -1737,7 +1738,7 @@ id|event
 r_case
 id|IAP_CALL_RESPONSE
 suffix:colon
-multiline_comment|/*  &n;&t;&t; *  Since we don&squot;t implement the Waiting state, we return&n;&t;&t; *  to state Receiving instead, DB.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Since we don&squot;t implement the Waiting state, we return&n;&t;&t; *  to state Receiving instead, DB.&n;&t;&t; */
 id|iriap_next_r_connect_state
 c_func
 (paren

@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * linux/arch/i386/mm/extable.c&n; */
+multiline_comment|/*&n; * linux/arch/x86_64/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_const
 r_struct
@@ -19,8 +20,80 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
+DECL|function|exception_table_check
+r_void
+id|__init
+id|exception_table_check
+c_func
+(paren
+r_void
+)paren
+(brace
+r_const
+r_struct
+id|exception_table_entry
+op_star
+id|e
+suffix:semicolon
+r_int
+r_int
+id|prev
+suffix:semicolon
+id|prev
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|e
+op_assign
+id|__start___ex_table
+suffix:semicolon
+id|e
+OL
+id|__stop___ex_table
+suffix:semicolon
+id|e
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|e-&gt;insn
+OL
+id|prev
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;unordered exception table at %016lx:%016lx and %016lx:%016lx&bslash;n&quot;
+comma
+id|prev
+comma
+id|e
+(braket
+op_minus
+l_int|1
+)braket
+dot
+id|fixup
+comma
+id|e-&gt;insn
+comma
+id|e-&gt;fixup
+)paren
+suffix:semicolon
+)brace
+id|prev
+op_assign
+id|e-&gt;insn
+suffix:semicolon
+)brace
+)brace
 r_static
-r_inline
 r_int
 r_int
 DECL|function|search_one_table
@@ -142,8 +215,7 @@ id|flags
 suffix:semicolon
 macro_line|#ifndef CONFIG_MODULES
 multiline_comment|/* There is only the kernel to search.  */
-id|ret
-op_assign
+r_return
 id|search_one_table
 c_func
 (paren
@@ -155,9 +227,6 @@ l_int|1
 comma
 id|addr
 )paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 macro_line|#else
 multiline_comment|/* The kernel is the last &quot;module&quot; -- no need to treat it special.  */

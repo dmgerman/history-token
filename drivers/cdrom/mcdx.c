@@ -26,6 +26,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_X_CDROM_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 multiline_comment|/* for compatible parameter passing with &quot;insmod&quot; */
@@ -2211,12 +2213,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|dev
 op_assign
 id|minor
@@ -2279,6 +2277,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2308,6 +2308,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2351,6 +2353,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2398,6 +2402,8 @@ l_int|1
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2425,6 +2431,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2442,6 +2450,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4500,7 +4510,8 @@ multiline_comment|/* check if i/o addresses are available */
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 (paren
@@ -4510,6 +4521,8 @@ r_int
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
+comma
+l_string|&quot;mcdx&quot;
 )paren
 )paren
 (brace
@@ -4616,6 +4629,18 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* failed, next drive */
+id|release_region
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|stuffp-&gt;wreg_data
+comma
+id|MCDX_IO_SIZE
+)paren
+suffix:semicolon
 id|xwarn
 c_func
 (paren
@@ -4729,6 +4754,18 @@ op_logical_neg
 id|stuffp-&gt;present
 )paren
 (brace
+id|release_region
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|stuffp-&gt;wreg_data
+comma
+id|MCDX_IO_SIZE
+)paren
+suffix:semicolon
 id|xwarn
 c_func
 (paren
@@ -4777,6 +4814,18 @@ op_ne
 l_int|0
 )paren
 (brace
+id|release_region
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|stuffp-&gt;wreg_data
+comma
+id|MCDX_IO_SIZE
+)paren
+suffix:semicolon
 id|xwarn
 c_func
 (paren
@@ -4849,6 +4898,18 @@ l_int|NULL
 )paren
 )paren
 (brace
+id|release_region
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|stuffp-&gt;wreg_data
+comma
+id|MCDX_IO_SIZE
+)paren
+suffix:semicolon
 id|xwarn
 c_func
 (paren
@@ -4887,20 +4948,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|stuffp-&gt;wreg_data
-comma
-id|MCDX_IO_SIZE
-comma
-l_string|&quot;mcdx&quot;
-)paren
-suffix:semicolon
 id|xtrace
 c_func
 (paren

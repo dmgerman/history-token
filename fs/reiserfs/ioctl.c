@@ -130,9 +130,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* we need to make sure nobody is changing the file size beneath&n;    ** us&n;    */
@@ -278,9 +279,10 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return

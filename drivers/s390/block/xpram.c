@@ -47,10 +47,6 @@ id|xpram_devfs_handle
 suffix:semicolon
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) MINOR(device)   /* xpram has no partition bits */
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;xpram&quot;               /* name for messaging */
-DECL|macro|DEVICE_INTR
-mdefine_line|#define DEVICE_INTR xpram_intrptr         /* pointer to the bottom half */
 DECL|macro|DEVICE_NO_RANDOM
 mdefine_line|#define DEVICE_NO_RANDOM                  /* no entropy to contribute */
 DECL|macro|DEVICE_OFF
@@ -217,13 +213,6 @@ DECL|variable|xpram_devices
 id|Xpram_Dev
 op_star
 id|xpram_devices
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|xpram_hardsects
-r_int
-op_star
-id|xpram_hardsects
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1937,12 +1926,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|fault
 op_assign
 l_int|0
@@ -1992,6 +1977,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2034,6 +2021,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2100,6 +2089,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2128,6 +2119,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2163,6 +2156,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2335,6 +2330,8 @@ multiline_comment|/* can&squot;t happen */
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2349,6 +2346,8 @@ id|fault
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2356,6 +2355,8 @@ r_else
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2893,6 +2894,14 @@ comma
 id|xpram_request
 )paren
 suffix:semicolon
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|q
+comma
+id|xpram_hardsect
+)paren
+suffix:semicolon
 multiline_comment|/* we want to have XPRAM_UNUSED blocks security buffer between devices */
 id|mem_usable
 op_assign
@@ -3114,73 +3123,6 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#endif
-id|xpram_hardsects
-op_assign
-id|kmalloc
-c_func
-(paren
-id|xpram_devs
-op_star
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|xpram_hardsects
-)paren
-(brace
-id|PRINT_ERR
-c_func
-(paren
-l_string|&quot;Not enough memory for xpram_hardsects&bslash;n&quot;
-)paren
-suffix:semicolon
-id|PRINT_ERR
-c_func
-(paren
-l_string|&quot;Giving up xpram&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|fail_malloc_hardsects
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|xpram_devs
-suffix:semicolon
-id|i
-op_increment
-)paren
-multiline_comment|/* all the same hardsect */
-id|xpram_hardsects
-(braket
-id|i
-)braket
-op_assign
-id|xpram_hardsect
-suffix:semicolon
-id|hardsect_size
-(braket
-id|major
-)braket
-op_assign
-id|xpram_hardsects
-suffix:semicolon
 multiline_comment|/* &n;&t; * allocate the devices -- we can&squot;t have them static, as the number&n;&t; * can be specified at load time&n;&t; */
 id|xpram_devices
 op_assign
@@ -3557,23 +3499,8 @@ id|kfree
 id|xpram_offsets
 )paren
 suffix:semicolon
-id|fail_malloc_hardsects
-suffix:colon
 id|fail_malloc_devices
 suffix:colon
-id|kfree
-c_func
-(paren
-id|xpram_hardsects
-)paren
-suffix:semicolon
-id|hardsect_size
-(braket
-id|major
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|fail_malloc
 suffix:colon
 multiline_comment|/* ???&t;unregister_chrdev(major, &quot;xpram&quot;); */
@@ -3654,15 +3581,6 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* first of all, reset all the data structures */
-id|kfree
-c_func
-(paren
-id|hardsect_size
-(braket
-id|major
-)braket
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren

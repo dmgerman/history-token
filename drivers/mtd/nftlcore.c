@@ -3226,12 +3226,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|req
 op_assign
 id|CURRENT
@@ -3695,6 +3691,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|res
 )paren
 suffix:semicolon

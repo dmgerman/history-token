@@ -1990,7 +1990,6 @@ c_func
 (paren
 id|event-&gt;type
 comma
-op_amp
 id|dest-&gt;event_filter
 )paren
 )paren

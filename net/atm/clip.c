@@ -3392,9 +3392,7 @@ comma
 l_int|NULL
 comma
 multiline_comment|/* no data */
-(brace
 l_int|0
-)brace
 comma
 multiline_comment|/* no flags */
 l_int|NULL

@@ -3,6 +3,10 @@ multiline_comment|/*&n; * -------------------&n; * Theory of Operation&n; * ----
 multiline_comment|/* This has to be defined before some of the #includes below */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR  FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -237,6 +241,8 @@ r_int
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 r_struct
 id|swim_iop_req
 op_star
@@ -689,6 +695,8 @@ c_cond
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -849,6 +857,8 @@ r_int
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 r_struct
 id|swim_iop_req
 op_star
@@ -1303,6 +1313,8 @@ op_assign
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -2296,6 +2308,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2321,6 +2335,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2365,6 +2381,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2531,6 +2549,8 @@ id|fs-&gt;total_secs
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2548,6 +2568,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -2563,6 +2585,8 @@ id|fs-&gt;ejected
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2601,6 +2625,8 @@ id|fs-&gt;write_prot
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -2641,6 +2667,8 @@ c_cond
 id|swimiop_send_request
 c_func
 (paren
+id|CURRENT
+comma
 op_amp
 id|req
 )paren
@@ -2649,6 +2677,8 @@ id|req
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon

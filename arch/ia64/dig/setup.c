@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -48,11 +49,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Default to /dev/sda2.  This assumes that the EFI partition&n;&t; * is physical disk 1 partition 1 and the Linux root disk is&n;&t; * physical disk 1 partition 2.&n;&t; */
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0802
-)paren
+id|Root_SDA2
 suffix:semicolon
 multiline_comment|/* default to second partition on first drive */
 macro_line|#ifdef CONFIG_SMP

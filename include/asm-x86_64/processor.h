@@ -174,26 +174,6 @@ mdefine_line|#define cpu_data &amp;boot_cpu_data
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
-DECL|macro|cpu_has_pge
-mdefine_line|#define cpu_has_pge 1
-DECL|macro|cpu_has_pse
-mdefine_line|#define cpu_has_pse 1
-DECL|macro|cpu_has_pae
-mdefine_line|#define cpu_has_pae 1
-DECL|macro|cpu_has_tsc
-mdefine_line|#define cpu_has_tsc 1
-DECL|macro|cpu_has_de
-mdefine_line|#define cpu_has_de 1
-DECL|macro|cpu_has_vme
-mdefine_line|#define cpu_has_vme 1
-DECL|macro|cpu_has_fxsr
-mdefine_line|#define cpu_has_fxsr 1
-DECL|macro|cpu_has_mmx
-mdefine_line|#define cpu_has_mmx 1
-DECL|macro|cpu_has_xmm
-mdefine_line|#define cpu_has_xmm 1
-DECL|macro|cpu_has_apic
-mdefine_line|#define cpu_has_apic 1
 r_extern
 r_char
 id|ignore_irq13
@@ -955,23 +935,6 @@ comma
 r_int
 r_int
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Copy and release all segment info associated with a VM */
-r_extern
-r_void
-id|copy_segments
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-comma
-r_struct
-id|mm_struct
-op_star
-id|mm
 )paren
 suffix:semicolon
 r_extern

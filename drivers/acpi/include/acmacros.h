@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 123 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *       $Revision: 124 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
@@ -208,7 +208,7 @@ DECL|macro|ACPI_SET_DESCRIPTOR_TYPE
 mdefine_line|#define ACPI_SET_DESCRIPTOR_TYPE(d,t)   (((ACPI_DESCRIPTOR *)(void *)(d))-&gt;descriptor_id = t)
 multiline_comment|/* Macro to test the object type */
 DECL|macro|ACPI_GET_OBJECT_TYPE
-mdefine_line|#define ACPI_GET_OBJECT_TYPE(d)         (((acpi_operand_object *)(void *)d)-&gt;common.type)
+mdefine_line|#define ACPI_GET_OBJECT_TYPE(d)         (((acpi_operand_object *)(void *)(d))-&gt;common.type)
 multiline_comment|/* Macro to check the table flags for SINGLE or MULTIPLE tables are allowed */
 DECL|macro|ACPI_IS_SINGLE_TABLE
 mdefine_line|#define ACPI_IS_SINGLE_TABLE(x)         (((x) &amp; 0x01) == ACPI_TABLE_SINGLE ? 1 : 0)

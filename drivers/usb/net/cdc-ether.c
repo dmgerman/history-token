@@ -322,7 +322,7 @@ comma
 id|ether_dev
 )paren
 suffix:semicolon
-singleline_comment|// Give this to the USB subsystem so it can tell us 
+singleline_comment|// Give this to the USB subsystem so it can tell us
 singleline_comment|// when more data arrives.
 r_if
 c_cond
@@ -343,8 +343,9 @@ id|GFP_KERNEL
 id|warn
 c_func
 (paren
+l_string|&quot;%s failed submint rx_urb %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed submint rx_urb %d&quot;
 comma
 id|res
 )paren
@@ -917,8 +918,9 @@ id|ether_dev
 id|err
 c_func
 (paren
+l_string|&quot;%s can&squot;t enable_net_traffic() - %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;can&squot;t enable_net_traffic() - %d&quot;
 comma
 id|res
 )paren
@@ -974,8 +976,9 @@ singleline_comment|// Hmm...  Okay...
 id|warn
 c_func
 (paren
+l_string|&quot;%s failed rx_urb %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed rx_urb %d&quot;
 comma
 id|res
 )paren
@@ -1137,7 +1140,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-DECL|function|CDC_SetEthernetPacketFilter
+macro_line|#if 0
 r_static
 r_void
 id|CDC_SetEthernetPacketFilter
@@ -1197,6 +1200,7 @@ id|HZ
 suffix:semicolon
 multiline_comment|/* timeout */
 )brace
+macro_line|#endif
 DECL|function|CDCEther_set_multicast
 r_static
 r_void

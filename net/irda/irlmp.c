@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer                 &n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlmp.c&n; * Version:       1.0&n; * Description:   IrDA Link Management Protocol (LMP) layer&n; * Status:        Stable.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun Aug 17 20:54:32 1997&n; * Modified at:   Wed Jan  5 11:26:03 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -495,8 +495,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: can&squot;t allocate memory&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -930,8 +931,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: unable to kmalloc&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), unable to kmalloc&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1009,7 +1011,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  We set only this variable so IrLAP can tell us on which link the&n;&t; *  different events happened on &n;&t; */
+multiline_comment|/*&n;&t; *  We set only this variable so IrLAP can tell us on which link the&n;&t; *  different events happened on&n;&t; */
 id|irda_notify_init
 c_func
 (paren
@@ -1104,7 +1106,7 @@ id|link
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlmp_connect_request (handle, dlsap, userdata)&n; *&n; *    Connect with a peer LSAP  &n; *&n; */
+multiline_comment|/*&n; * Function irlmp_connect_request (handle, dlsap, userdata)&n; *&n; *    Connect with a peer LSAP&n; *&n; */
 DECL|function|irlmp_connect_request
 r_int
 id|irlmp_connect_request
@@ -1297,7 +1299,7 @@ id|self-&gt;dlsap_sel
 op_assign
 id|dlsap_sel
 suffix:semicolon
-multiline_comment|/*  &n;&t; * Find the link to where we should try to connect since there may&n;&t; * be more than one IrDA port on this machine. If the client has&n;&t; * passed us the saddr (and already knows which link to use), then&n;&t; * we use that to find the link, if not then we have to look in the&n;&t; * discovery log and check if any of the links has discovered a&n;&t; * device with the given daddr &n;&t; */
+multiline_comment|/*&n;&t; * Find the link to where we should try to connect since there may&n;&t; * be more than one IrDA port on this machine. If the client has&n;&t; * passed us the saddr (and already knows which link to use), then&n;&t; * we use that to find the link, if not then we have to look in the&n;&t; * discovery log and check if any of the links has discovered a&n;&t; * device with the given daddr&n;&t; */
 r_if
 c_cond
 (paren
@@ -1488,7 +1490,7 @@ id|self-&gt;lap
 op_assign
 id|lap
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Remove LSAP from list of unconnected LSAPs and insert it into the &n;&t; *  list of connected LSAPs for the particular link &n;&t; */
+multiline_comment|/*&n;&t; *  Remove LSAP from list of unconnected LSAPs and insert it into the&n;&t; *  list of connected LSAPs for the particular link&n;&t; */
 id|lsap
 op_assign
 id|hashbin_remove
@@ -2199,7 +2201,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_disconnect_request (handle, userdata)&n; *&n; *    The service user is requesting disconnection, this will not remove the &n; *    LSAP, but only mark it as disconnected&n; */
+multiline_comment|/*&n; * Function irlmp_disconnect_request (handle, userdata)&n; *&n; *    The service user is requesting disconnection, this will not remove the&n; *    LSAP, but only mark it as disconnected&n; */
 DECL|function|irlmp_disconnect_request
 r_int
 id|irlmp_disconnect_request
@@ -2303,7 +2305,7 @@ comma
 id|LMP_CONTROL_HEADER
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Do the event before the other stuff since we must know&n;&t; *  which lap layer that the frame should be transmitted on&n;&t; */
+multiline_comment|/*&n;&t; *  Do the event before the other stuff since we must know&n;&t; *  which lap layer that the frame should be transmitted on&n;&t; */
 id|irlmp_do_lsap_event
 c_func
 (paren
@@ -2314,7 +2316,7 @@ comma
 id|userdata
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Remove LSAP from list of connected LSAPs for the particular link&n;&t; *  and insert it into the list of unconnected LSAPs&n;&t; */
+multiline_comment|/*&n;&t; *  Remove LSAP from list of connected LSAPs for the particular link&n;&t; *  and insert it into the list of unconnected LSAPs&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -2552,7 +2554,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Remove association between this LSAP and the link it used &n;&t; */
+multiline_comment|/*&n;&t; *  Remove association between this LSAP and the link it used&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -2817,8 +2819,9 @@ l_int|16
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: invalid value for number of slots!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), invalid value for number of slots!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|nslots
@@ -2833,7 +2836,7 @@ id|irlmp-&gt;discovery_cmd.hints.word
 op_assign
 id|irlmp-&gt;hints.word
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Set character set for device name (we use ASCII), and &n;&t; *  copy device name. Remember to make room for a &bslash;0 at the &n;&t; *  end&n;&t; */
+multiline_comment|/*&n;&t; *  Set character set for device name (we use ASCII), and&n;&t; *  copy device name. Remember to make room for a &bslash;0 at the&n;&t; *  end&n;&t; */
 id|irlmp-&gt;discovery_cmd.charset
 op_assign
 id|CS_ASCII
@@ -2947,7 +2950,7 @@ comma
 id|DISCOVERY_LOG
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Start a single discovery operation if discovery is not already&n;         * running &n;&t; */
+multiline_comment|/*&n;&t; * Start a single discovery operation if discovery is not already&n;         * running&n;&t; */
 r_if
 c_cond
 (paren
@@ -3038,7 +3041,7 @@ id|mask
 suffix:semicolon
 )brace
 macro_line|#if 0
-multiline_comment|/*&n; * Function irlmp_check_services (discovery)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlmp_check_services (discovery)&n; */
 r_void
 id|irlmp_check_services
 c_func
@@ -3175,7 +3178,7 @@ id|S_ANY
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t;&t; * Found no clients for dealing with this service,&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Found no clients for dealing with this service,&n;&t;&t;&t; */
 )brace
 )brace
 id|kfree
@@ -3228,7 +3231,7 @@ id|client-&gt;disco_callback
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* &n;&t; * Now, check all discovered devices (if any), and notify client &n;&t; * only about the services that the client is interested in &n;&t; */
+multiline_comment|/*&n;&t; * Now, check all discovered devices (if any), and notify client&n;&t; * only about the services that the client is interested in&n;&t; */
 id|discovery
 op_assign
 (paren
@@ -3259,7 +3262,7 @@ comma
 id|discovery-&gt;daddr
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Any common hint bits? Remember to mask away the extension&n;&t;&t; * bits ;-)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Any common hint bits? Remember to mask away the extension&n;&t;&t; * bits ;-)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3295,7 +3298,7 @@ id|log
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlmp_discovery_confirm ( self, log)&n; *&n; *    Some device(s) answered to our discovery request! Check to see which&n; *    device it is, and give indication to the client(s)&n; * &n; */
+multiline_comment|/*&n; * Function irlmp_discovery_confirm ( self, log)&n; *&n; *    Some device(s) answered to our discovery request! Check to see which&n; *    device it is, and give indication to the client(s)&n; *&n; */
 DECL|function|irlmp_discovery_confirm
 r_void
 id|irlmp_discovery_confirm
@@ -3392,7 +3395,7 @@ id|irlmp-&gt;clients
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlmp_discovery_expiry (expiry)&n; *&n; *&t;This device is no longer been discovered, and therefore it is beeing&n; *&t;purged from the discovery log. Inform all clients who have&n; *&t;registered for this event...&n; * &n; *&t;Note : called exclusively from discovery.c&n; *&t;Note : as we are currently processing the log, the clients callback&n; *&t;should *NOT* attempt to touch the log now.&n; */
+multiline_comment|/*&n; * Function irlmp_discovery_expiry (expiry)&n; *&n; *&t;This device is no longer been discovered, and therefore it is beeing&n; *&t;purged from the discovery log. Inform all clients who have&n; *&t;registered for this event...&n; *&n; *&t;Note : called exclusively from discovery.c&n; *&t;Note : as we are currently processing the log, the clients callback&n; *&t;should *NOT* attempt to touch the log now.&n; */
 DECL|function|irlmp_discovery_expiry
 r_void
 id|irlmp_discovery_expiry
@@ -3524,7 +3527,7 @@ id|irlmp-&gt;discovery_rsp.hints.word
 op_assign
 id|irlmp-&gt;hints.word
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Set character set for device name (we use ASCII), and &n;&t; *  copy device name. Remember to make room for a &bslash;0 at the &n;&t; *  end&n;&t; */
+multiline_comment|/*&n;&t; *  Set character set for device name (we use ASCII), and&n;&t; *  copy device name. Remember to make room for a &bslash;0 at the&n;&t; *  end&n;&t; */
 id|irlmp-&gt;discovery_rsp.charset
 op_assign
 id|CS_ASCII
@@ -3684,7 +3687,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_udata_request (self, skb)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlmp_udata_request (self, skb)&n; */
 DECL|function|irlmp_udata_request
 r_int
 id|irlmp_udata_request
@@ -3854,7 +3857,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_connless_data_request (self, skb)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlmp_connless_data_request (self, skb)&n; */
 macro_line|#ifdef CONFIG_IRDA_ULTRA
 DECL|function|irlmp_connless_data_request
 r_int
@@ -4562,7 +4565,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; * Allocate array to store services in. 16 entries should be safe &n;&t; * since we currently only support 2 hint bytes&n;&t; */
+multiline_comment|/*&n;&t; * Allocate array to store services in. 16 entries should be safe&n;&t; * since we currently only support 2 hint bytes&n;&t; */
 id|service
 op_assign
 id|kmalloc
@@ -4767,7 +4770,7 @@ op_assign
 id|S_LAN
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Test if extension byte exists. This byte will usually be&n;&t; *  there, but this is not really required by the standard.&n;&t; *  (IrLMP p. 29)&n;&t; */
+multiline_comment|/*&n;&t; *  Test if extension byte exists. This byte will usually be&n;&t; *  there, but this is not really required by the standard.&n;&t; *  (IrLMP p. 29)&n;&t; */
 r_if
 c_cond
 (paren
@@ -5220,7 +5223,7 @@ r_return
 id|handle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_unregister_service (handle)&n; *&n; *    Unregister service with IrLMP. &n; *&n; *    Returns: 0 on success, -1 on error&n; */
+multiline_comment|/*&n; * Function irlmp_unregister_service (handle)&n; *&n; *    Unregister service with IrLMP.&n; *&n; *    Returns: 0 on success, -1 on error&n; */
 DECL|function|irlmp_unregister_service
 r_int
 id|irlmp_unregister_service

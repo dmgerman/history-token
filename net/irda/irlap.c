@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap.c&n; * Version:       1.0&n; * Description:   IrLAP implementation for Linux&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Tue Dec 14 09:26:44 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -143,8 +143,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: can&squot;t allocate irlap hashbin!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), can&squot;t allocate irlap hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -813,7 +814,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_connect_request (self, daddr, qos_user, sniff)&n; *&n; *    Request connection with another device, sniffing is not implemented &n; *    yet.&n; *&n; */
+multiline_comment|/*&n; * Function irlap_connect_request (self, daddr, qos_user, sniff)&n; *&n; *    Request connection with another device, sniffing is not implemented&n; *    yet.&n; *&n; */
 DECL|function|irlap_connect_request
 r_void
 id|irlap_connect_request
@@ -873,7 +874,7 @@ id|self-&gt;daddr
 op_assign
 id|daddr
 suffix:semicolon
-multiline_comment|/*&n;&t; *  If the service user specifies QoS values for this connection, &n;&t; *  then use them&n;&t; */
+multiline_comment|/*&n;&t; *  If the service user specifies QoS values for this connection,&n;&t; *  then use them&n;&t; */
 id|irlap_init_qos_capabilities
 c_func
 (paren
@@ -979,7 +980,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_data_indication (self, skb)&n; *&n; *    Received data frames from IR-port, so we just pass them up to &n; *    IrLMP for further processing&n; *&n; */
+multiline_comment|/*&n; * Function irlap_data_indication (self, skb)&n; *&n; *    Received data frames from IR-port, so we just pass them up to&n; *    IrLMP for further processing&n; *&n; */
 DECL|function|irlap_data_indication
 r_void
 id|irlap_data_indication
@@ -1108,7 +1109,7 @@ op_plus
 id|LAP_CTRL_HEADER
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t; *  Must set frame format now so that the rest of the code knows &n;&t; *  if its dealing with an I or an UI frame&n;&t; */
+multiline_comment|/*&n;&t; *  Must set frame format now so that the rest of the code knows&n;&t; *  if its dealing with an I or an UI frame&n;&t; */
 r_if
 c_cond
 (paren
@@ -1139,7 +1140,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Send event if this frame only if we are in the right state &n;&t; *  FIXME: udata should be sent first! (skb_queue_head?)&n;&t; */
+multiline_comment|/*&n;&t; *  Send event if this frame only if we are in the right state&n;&t; *  FIXME: udata should be sent first! (skb_queue_head?)&n;&t; */
 r_if
 c_cond
 (paren
@@ -1643,8 +1644,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: Unknown reason %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unknown reason %d&bslash;n&quot;
 comma
 id|reason
 )paren
@@ -1899,7 +1901,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check for successful discovery, since we are then allowed to clear &n;&t; * the media busy condition (IrLAP 6.13.4 - p.94). This should allow&n;&t; * us to make connection attempts much faster and easier (i.e. no&n;&t; * collisions).&n;&t; * Setting media busy to false will also generate an event allowing&n;&t; * to process pending events in NDM state machine.&n;&t; * Note : the spec doesn&squot;t define what&squot;s a successful discovery is.&n;&t; * If we want Ultra to work, it&squot;s successful even if there is&n;&t; * nobody discovered - Jean II&n;&t; */
+multiline_comment|/*&n;&t; * Check for successful discovery, since we are then allowed to clear&n;&t; * the media busy condition (IrLAP 6.13.4 - p.94). This should allow&n;&t; * us to make connection attempts much faster and easier (i.e. no&n;&t; * collisions).&n;&t; * Setting media busy to false will also generate an event allowing&n;&t; * to process pending events in NDM state machine.&n;&t; * Note : the spec doesn&squot;t define what&squot;s a successful discovery is.&n;&t; * If we want Ultra to work, it&squot;s successful even if there is&n;&t; * nobody discovered - Jean II&n;&t; */
 r_if
 c_cond
 (paren
@@ -2010,7 +2012,7 @@ id|discovery
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_status_indication (quality_of_link)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlap_status_indication (quality_of_link)&n; */
 DECL|function|irlap_status_indication
 r_void
 id|irlap_status_indication
@@ -2069,7 +2071,7 @@ id|LOCK_NO_CHANGE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_reset_indication (void)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlap_reset_indication (void)&n; */
 DECL|function|irlap_reset_indication
 r_void
 id|irlap_reset_indication
@@ -2145,7 +2147,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_reset_confirm (void)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlap_reset_confirm (void)&n; */
 DECL|function|irlap_reset_confirm
 r_void
 id|irlap_reset_confirm
@@ -2256,7 +2258,7 @@ r_return
 id|slot
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_update_nr_received (nr)&n; *&n; *    Remove all acknowledged frames in current window queue. This code is &n; *    not intuitive and you should not try to change it. If you think it&n; *    contains bugs, please mail a patch to the author instead.&n; */
+multiline_comment|/*&n; * Function irlap_update_nr_received (nr)&n; *&n; *    Remove all acknowledged frames in current window queue. This code is&n; *    not intuitive and you should not try to change it. If you think it&n; *    contains bugs, please mail a patch to the author instead.&n; */
 DECL|function|irlap_update_nr_received
 r_void
 id|irlap_update_nr_received
@@ -2284,7 +2286,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;         * Remove all the ack-ed frames from the window queue.&n;         */
-multiline_comment|/* &n;&t; *  Optimize for the common case. It is most likely that the receiver&n;&t; *  will acknowledge all the frames we have sent! So in that case we&n;&t; *  delete all frames stored in window.&n;&t; */
+multiline_comment|/*&n;&t; *  Optimize for the common case. It is most likely that the receiver&n;&t; *  will acknowledge all the frames we have sent! So in that case we&n;&t; *  delete all frames stored in window.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2469,7 +2471,7 @@ r_return
 id|NR_EXPECTED
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  unexpected nr? (but within current window), first we check if the &n;&t; *  ns numbers of the frames in the current window wrap.&n;&t; */
+multiline_comment|/*&n;&t; *  unexpected nr? (but within current window), first we check if the&n;&t; *  ns numbers of the frames in the current window wrap.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2639,7 +2641,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*  &n;&t; *  Send additional BOF&squot;s for the next frame for the requested&n;&t; *  min turn time, so now we must calculate how many chars (XBOF&squot;s) we &n;&t; *  must send for the requested time period (min turn time)&n;&t; */
+multiline_comment|/*&n;&t; *  Send additional BOF&squot;s for the next frame for the requested&n;&t; *  min turn time, so now we must calculate how many chars (XBOF&squot;s) we&n;&t; *  must send for the requested time period (min turn time)&n;&t; */
 id|self-&gt;xbofs_delay
 op_assign
 id|irlap_min_turn_time_in_bytes
@@ -2913,7 +2915,7 @@ comma
 id|self-&gt;qos_dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Check for user supplied QoS parameters. The service user is only &n;&t; *  allowed to supply these values. We check each parameter since the&n;&t; *  user may not have set all of them.&n;&t; */
+multiline_comment|/*&n;&t; *  Check for user supplied QoS parameters. The service user is only&n;&t; *  allowed to supply these values. We check each parameter since the&n;&t; *  user may not have set all of them.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2981,7 +2983,7 @@ id|self-&gt;qos_rx
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_apply_default_connection_parameters (void, now)&n; *&n; *    Use the default connection and transmission parameters&n; * &n; */
+multiline_comment|/*&n; * Function irlap_apply_default_connection_parameters (void, now)&n; *&n; *    Use the default connection and transmission parameters&n; */
 DECL|function|irlap_apply_default_connection_parameters
 r_void
 id|irlap_apply_default_connection_parameters
@@ -3053,7 +3055,7 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Generate random connection address for this session, which must&n;&t; * be 7 bits wide and different from 0x00 and 0xfe &n;&t; */
+multiline_comment|/*&n;&t; * Generate random connection address for this session, which must&n;&t; * be 7 bits wide and different from 0x00 and 0xfe&n;&t; */
 r_while
 c_loop
 (paren
@@ -3272,7 +3274,7 @@ op_assign
 id|self-&gt;line_capacity
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
-multiline_comment|/* &n;&t; *  Initialize timeout values, some of the rules are listed on &n;&t; *  page 92 in IrLAP.&n;&t; */
+multiline_comment|/*&n;&t; *  Initialize timeout values, some of the rules are listed on&n;&t; *  page 92 in IrLAP.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -3321,7 +3323,7 @@ op_star
 l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * N1 and N2 are maximum retry count for *both* the final timer&n;&t; * and the wd timer (with a factor 2) as defined above.&n;&t; * After N1 retry of a timer, we give a warning to the user.&n;&t; * After N2 retry, we consider the link dead and disconnect it.&n;&t; * Jean II&n;&t; */
-multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to &n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; *  Actually, it&squot;s not always 3 seconds, as we allow to set&n;&t; *  it via sysctl... Max maxtt is 500ms, and N1 need to be multiple&n;&t; *  of 2, so 1 second is minimum we can allow. - Jean II&n;&t; */
+multiline_comment|/*&n;&t; *  Set N1 to 0 if Link Disconnect/Threshold Time = 3 and set it to&n;&t; *  3 seconds otherwise. See page 71 in IrLAP for more details.&n;&t; *  Actually, it&squot;s not always 3 seconds, as we allow to set&n;&t; *  it via sysctl... Max maxtt is 500ms, and N1 need to be multiple&n;&t; *  of 2, so 1 second is minimum we can allow. - Jean II&n;&t; */
 r_if
 c_cond
 (paren
@@ -3329,7 +3331,7 @@ id|self-&gt;qos_tx.link_disc_time.value
 op_eq
 id|sysctl_warn_noreply_time
 )paren
-multiline_comment|/* &n;&t;&t; * If we set N1 to 0, it will trigger immediately, which is&n;&t;&t; * not what we want. What we really want is to disable it,&n;&t;&t; * Jean II &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we set N1 to 0, it will trigger immediately, which is&n;&t;&t; * not what we want. What we really want is to disable it,&n;&t;&t; * Jean II&n;&t;&t; */
 id|self-&gt;N1
 op_assign
 op_minus

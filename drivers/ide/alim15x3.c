@@ -146,6 +146,7 @@ c_func
 id|pio
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: use generic ata-timing library  --bkz */
 id|s_time
 op_assign
 id|t-&gt;setup
@@ -790,10 +791,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 r_return
 id|ide_config_drive_speed
 c_func
@@ -801,27 +798,6 @@ c_func
 id|drive
 comma
 id|speed
-)paren
-suffix:semicolon
-)brace
-DECL|function|config_chipset_for_pio
-r_static
-r_void
-id|config_chipset_for_pio
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-id|ali15x3_tune_drive
-c_func
-(paren
-id|drive
-comma
-l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -1205,10 +1181,12 @@ l_int|0
 suffix:semicolon
 id|no_dma_set
 suffix:colon
-id|config_chipset_for_pio
+id|ali15x3_tune_drive
 c_func
 (paren
 id|drive
+comma
+l_int|255
 )paren
 suffix:semicolon
 )brace
@@ -1259,7 +1237,7 @@ id|ATA_DISK
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
 r_return

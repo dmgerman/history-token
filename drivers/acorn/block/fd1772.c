@@ -28,6 +28,10 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
 DECL|macro|FLOPPY_DMA
 mdefine_line|#define FLOPPY_DMA 0
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Note: FD_MAX_UNITS could be redefined to 2 for the Atari (with&n; * little additional rework in this file). But I&squot;m not yet sure if&n; * some other code depends on the number of floppies... (It is defined&n; * in a public header!)&n; */
 macro_line|#if 0
@@ -1513,6 +1517,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -1572,6 +1578,11 @@ r_int
 id|drive
 )paren
 (brace
+r_struct
+id|request
+op_star
+id|req
+suffix:semicolon
 id|DPRINT
 c_func
 (paren
@@ -1604,6 +1615,10 @@ id|ReqTrack
 )paren
 )paren
 (brace
+id|req
+op_assign
+id|CURRENT
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1630,7 +1645,7 @@ c_cond
 op_increment
 id|ReqCnt
 OL
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 )paren
 (brace
 multiline_comment|/* read next sector */
@@ -1647,17 +1662,19 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* all sectors finished */
-id|CURRENT-&gt;nr_sectors
+id|req-&gt;nr_sectors
 op_sub_assign
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 suffix:semicolon
-id|CURRENT-&gt;sector
+id|req-&gt;sector
 op_add_assign
-id|CURRENT-&gt;current_nr_sectors
+id|req-&gt;current_nr_sectors
 suffix:semicolon
 id|end_request
 c_func
 (paren
+id|req
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -3223,6 +3240,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -4039,6 +4058,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4113,6 +4134,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4160,6 +4183,8 @@ id|floppy-&gt;disktype-&gt;blocks
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon

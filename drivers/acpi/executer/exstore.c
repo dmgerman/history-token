@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 164 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 167 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -107,22 +107,49 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Destination object must be an object of type Reference */
+multiline_comment|/* Destination object must be a Reference or a Constant object */
+r_switch
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|dest_desc
+)paren
+)paren
+(brace
+r_case
+id|INTERNAL_TYPE_REFERENCE
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+multiline_comment|/* Allow stores to Constants -- a Noop as per ACPI spec */
 r_if
 c_cond
 (paren
-id|dest_desc-&gt;common.type
-op_ne
-id|INTERNAL_TYPE_REFERENCE
+id|dest_desc-&gt;common.flags
+op_amp
+id|AOPOBJ_AML_CONSTANT
 )paren
 (brace
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*lint: -fallthrough */
+r_default
+suffix:colon
 multiline_comment|/* Destination is not an Reference */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Destination is not a Reference_obj [%p]&bslash;n&quot;
+l_string|&quot;Destination is not a Reference or Constant object [%p]&bslash;n&quot;
 comma
 id|dest_desc
 )paren
@@ -149,7 +176,7 @@ l_string|&quot;Ex_store&quot;
 comma
 l_int|2
 comma
-l_string|&quot;Target is not a Reference_obj&quot;
+l_string|&quot;Target is not a Reference or Constant object&quot;
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -158,7 +185,7 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Examine the Reference opcode.  These cases are handled:&n;&t; *&n;&t; * 1) Store to Name (Change the object associated with a name)&n;&t; * 2) Store to an indexed area of a Buffer or Package&n;&t; * 3) Store to a Method Local or Arg&n;&t; * 4) Store to the debug object&n;&t; * 5) Store to a constant -- a noop&n;&t; */
+multiline_comment|/*&n;&t; * Examine the Reference opcode.  These cases are handled:&n;&t; *&n;&t; * 1) Store to Name (Change the object associated with a name)&n;&t; * 2) Store to an indexed area of a Buffer or Package&n;&t; * 3) Store to a Method Local or Arg&n;&t; * 4) Store to the debug object&n;&t; */
 r_switch
 c_cond
 (paren
@@ -241,9 +268,9 @@ id|ACPI_DB_DEBUG_OBJECT
 comma
 l_string|&quot;[ACPI Debug] %s: &quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -251,7 +278,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 (brace
 r_case
@@ -338,9 +368,9 @@ id|ACPI_DB_DEBUG_OBJECT
 comma
 l_string|&quot;Type %s %p&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 comma
 id|source_desc
@@ -361,21 +391,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|AML_ZERO_OP
-suffix:colon
-r_case
-id|AML_ONE_OP
-suffix:colon
-r_case
-id|AML_ONES_OP
-suffix:colon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-multiline_comment|/*&n;&t;&t; * Storing to a constant is a no-op according to the  ACPI&n;&t;&t; * Specification. (Delete the reference descriptor, however.)&n;&t;&t; */
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|ACPI_DEBUG_PRINT
@@ -383,7 +398,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Reference subtype %02x&bslash;n&quot;
+l_string|&quot;Unknown Reference opcode %X&bslash;n&quot;
 comma
 id|ref_desc-&gt;reference.opcode
 )paren
@@ -403,7 +418,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (Ref_desc-&gt;Reference.Opcode) */
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -545,7 +559,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
 id|ACPI_TYPE_BUFFER
 )paren
@@ -560,7 +577,10 @@ multiline_comment|/*&n;&t;&t; * The assignment of the individual elements will b
 r_switch
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 (brace
 r_case
@@ -615,9 +635,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Source must be Integer/Buffer/String type, not %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 )paren
 )paren
@@ -727,9 +747,9 @@ l_string|&quot;Storing %p(%s) into node %p(%s)&bslash;n&quot;
 comma
 id|source_desc
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 comma
 id|node
@@ -866,14 +886,14 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;Store %s into %s via Convert/Attach&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|new_desc-&gt;common.type
+id|new_desc
 )paren
 )paren
 )paren
@@ -890,9 +910,9 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;Storing %s (%p) directly into node (%p), no implicit conversion&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 comma
 id|source_desc
@@ -910,7 +930,10 @@ id|node
 comma
 id|source_desc
 comma
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 suffix:semicolon
 r_break

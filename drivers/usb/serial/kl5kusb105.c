@@ -211,7 +211,6 @@ multiline_comment|/*&n;static void klsi_105_break_ctl&t;         (struct usb_ser
 multiline_comment|/*&n; * All of the device info needed for the KLSI converters.&n; */
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table
@@ -323,7 +322,7 @@ suffix:colon
 id|klsi_105_set_termios
 comma
 multiline_comment|/*break_ctl:&t;     klsi_105_break_ctl,*/
-id|startup
+id|attach
 suffix:colon
 id|klsi_105_startup
 comma

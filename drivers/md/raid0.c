@@ -7,6 +7,8 @@ DECL|macro|MD_DRIVER
 mdefine_line|#define MD_DRIVER
 DECL|macro|MD_PERSONALITY
 mdefine_line|#define MD_PERSONALITY
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 DECL|function|create_strip_zones
 r_static
 r_int

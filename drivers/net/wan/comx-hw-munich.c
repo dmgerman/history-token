@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|COMX_NEW
 mdefine_line|#define COMX_NEW
 macro_line|#ifndef COMX_NEW
@@ -8936,6 +8937,8 @@ id|board-&gt;piq
 suffix:semicolon
 id|board-&gt;ccb
 op_assign
+l_int|NULL
+suffix:semicolon
 id|board-&gt;tiq
 op_assign
 id|board-&gt;riq

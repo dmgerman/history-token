@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 35 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 37 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -58,7 +58,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -135,7 +138,10 @@ multiline_comment|/*&n;&t; * String conversion is different than Buffer conversi
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -325,13 +331,16 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Create a new Buffer&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Create a new Buffer object&n;&t;&t; */
 id|ret_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -353,10 +362,6 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 multiline_comment|/* Need enough space for one integer */
-id|ret_desc-&gt;buffer.length
-op_assign
-id|acpi_gbl_integer_byte_width
-suffix:semicolon
 id|new_buf
 op_assign
 id|ACPI_MEM_CALLOCATE
@@ -424,9 +429,18 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Complete buffer object initialization */
+id|ret_desc-&gt;buffer.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
 id|ret_desc-&gt;buffer.pointer
 op_assign
 id|new_buf
+suffix:semicolon
+id|ret_desc-&gt;buffer.length
+op_assign
+id|acpi_gbl_integer_byte_width
 suffix:semicolon
 multiline_comment|/* Return the new buffer descriptor */
 op_star
@@ -823,7 +837,10 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -1348,7 +1365,10 @@ c_cond
 (paren
 id|destination_type
 op_ne
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -1358,13 +1378,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Target does not allow conversion of type %s to %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
-(paren
+id|acpi_ut_get_object_type_name
 (paren
 id|source_desc
-)paren
-op_member_access_from_pointer
-id|common.type
 )paren
 comma
 id|acpi_ut_get_type_name

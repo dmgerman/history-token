@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
@@ -1137,41 +1138,23 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_else
 macro_line|#elif defined(CONFIG_ROOT_NFS)
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x00ff
-)paren
+id|Root_NFS
 suffix:semicolon
 macro_line|#elif defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0301
-)paren
+id|Root_HDA1
 suffix:semicolon
 macro_line|#else
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0801
-)paren
+id|Root_SDA1
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_DUMMY_CONSOLE

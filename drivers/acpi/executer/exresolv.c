@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 111 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 114 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -209,7 +209,10 @@ multiline_comment|/* This is an acpi_operand_object  */
 r_switch
 c_cond
 (paren
-id|stack_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|stack_desc
+)paren
 )paren
 (brace
 r_case
@@ -308,109 +311,6 @@ comma
 id|obj_desc
 )paren
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * For constants, we must change the reference/constant object&n;&t;&t; * to a real integer object&n;&t;&t; */
-r_case
-id|AML_ZERO_OP
-suffix:colon
-r_case
-id|AML_ONE_OP
-suffix:colon
-r_case
-id|AML_ONES_OP
-suffix:colon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-multiline_comment|/* Create a new integer object */
-id|obj_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|ACPI_TYPE_INTEGER
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|obj_desc
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-r_switch
-c_cond
-(paren
-id|opcode
-)paren
-(brace
-r_case
-id|AML_ZERO_OP
-suffix:colon
-id|obj_desc-&gt;integer.value
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONE_OP
-suffix:colon
-id|obj_desc-&gt;integer.value
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_ONES_OP
-suffix:colon
-id|obj_desc-&gt;integer.value
-op_assign
-id|ACPI_INTEGER_MAX
-suffix:semicolon
-multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
-id|acpi_ex_truncate_for32bit_table
-(paren
-id|obj_desc
-comma
-id|walk_state
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|AML_REVISION_OP
-suffix:colon
-id|obj_desc-&gt;integer.value
-op_assign
-id|ACPI_CA_SUPPORT_LEVEL
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-multiline_comment|/* No other opcodes can get here */
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * Remove a reference from the original reference object&n;&t;&t;&t; * and put the new object in its place&n;&t;&t;&t; */
-id|acpi_ut_remove_reference
-(paren
-id|stack_desc
-)paren
-suffix:semicolon
-op_star
-id|stack_ptr
-op_assign
-id|obj_desc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -519,7 +419,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Reference object subtype %02X in %p&bslash;n&quot;
+l_string|&quot;Unknown Reference opcode %X in %p&bslash;n&quot;
 comma
 id|opcode
 comma
@@ -534,10 +434,8 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* switch (Opcode) */
 r_break
 suffix:semicolon
-multiline_comment|/* case INTERNAL_TYPE_REFERENCE */
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
@@ -584,7 +482,10 @@ l_string|&quot;Field_read Source_desc=%p Type=%X&bslash;n&quot;
 comma
 id|stack_desc
 comma
-id|stack_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|stack_desc
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -28,7 +28,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sun3_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;constants.h&quot;
 DECL|macro|USE_WRAPPER
 mdefine_line|#define USE_WRAPPER
 DECL|macro|RESET_BOOT

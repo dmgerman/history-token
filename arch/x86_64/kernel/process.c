@@ -45,6 +45,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|variable|kernel_thread_flags
+r_int
+r_int
+id|kernel_thread_flags
+op_assign
+id|CLONE_VM
+suffix:semicolon
 DECL|variable|hlt_counter
 r_int
 id|hlt_counter
@@ -1141,100 +1148,18 @@ id|cr4
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * No need to lock the MM as we are the last user&n; */
-DECL|function|release_segments
-r_void
-id|release_segments
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-)paren
-(brace
-r_void
-op_star
-id|ldt
-op_assign
-id|mm-&gt;context.segments
-suffix:semicolon
-multiline_comment|/*&n;&t; * free the LDT&n;&t; */
-r_if
-c_cond
-(paren
-id|ldt
-)paren
-(brace
-id|mm-&gt;context.segments
-op_assign
-l_int|NULL
-suffix:semicolon
-id|clear_LDT
-c_func
-(paren
-)paren
-suffix:semicolon
-id|vfree
-c_func
-(paren
-id|ldt
-)paren
-suffix:semicolon
-)brace
-)brace
-DECL|function|load_gs_index
+DECL|macro|__STR
+mdefine_line|#define __STR(x) #x
+DECL|macro|__STR2
+mdefine_line|#define __STR2(x) __STR(x)
+r_extern
 r_void
 id|load_gs_index
 c_func
 (paren
 r_int
-id|gs
-)paren
-(brace
-r_int
-id|access
-suffix:semicolon
-multiline_comment|/* should load gs in syscall exit after swapgs instead */
-multiline_comment|/* XXX need to add LDT locking for SMP to protect against parallel changes */
-id|asm
-r_volatile
-(paren
-l_string|&quot;pushf&bslash;n&bslash;t&quot;
-l_string|&quot;cli&bslash;n&bslash;t&quot;
-l_string|&quot;swapgs&bslash;n&bslash;t&quot;
-l_string|&quot;lar %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jnz 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl %1,%%eax&bslash;n&bslash;t&quot;
-l_string|&quot;movl %%eax,%%gs&bslash;n&bslash;t&quot;
-l_string|&quot;jmp 2f&bslash;n&bslash;t&quot;
-l_string|&quot;1: movl %2,%%gs&bslash;n&bslash;t&quot;
-l_string|&quot;2: swapgs&bslash;n&bslash;t&quot;
-l_string|&quot;popf&quot;
-suffix:colon
-l_string|&quot;=g&quot;
-(paren
-id|access
-)paren
-suffix:colon
-l_string|&quot;g&quot;
-(paren
-id|gs
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0
-)paren
-suffix:colon
-l_string|&quot;rax&quot;
 )paren
 suffix:semicolon
-)brace
-DECL|macro|__STR
-mdefine_line|#define __STR(x) #x
-DECL|macro|__STR2
-mdefine_line|#define __STR2(x) __STR(x)
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
 DECL|function|exit_thread
 r_void
@@ -1306,27 +1231,22 @@ c_cond
 id|dead_task-&gt;mm
 )paren
 (brace
-r_void
-op_star
-id|ldt
-op_assign
-id|dead_task-&gt;mm-&gt;context.segments
-suffix:semicolon
-singleline_comment|// temporary debugging check
 r_if
 c_cond
 (paren
-id|ldt
+id|dead_task-&gt;mm-&gt;context.size
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;WARNING: dead process %8s still has LDT? &lt;%p&gt;&bslash;n&quot;
+l_string|&quot;WARNING: dead process %8s still has LDT? &lt;%p/%d&gt;&bslash;n&quot;
 comma
 id|dead_task-&gt;comm
 comma
-id|ldt
+id|dead_task-&gt;mm-&gt;context.ldt
+comma
+id|dead_task-&gt;mm-&gt;context.size
 )paren
 suffix:semicolon
 id|BUG
@@ -1336,106 +1256,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/*&n; * we do not have to muck with descriptors here, that is&n; * done in switch_mm() as needed.&n; */
-DECL|function|copy_segments
-r_void
-id|copy_segments
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|p
-comma
-r_struct
-id|mm_struct
-op_star
-id|new_mm
-)paren
-(brace
-r_struct
-id|mm_struct
-op_star
-id|old_mm
-suffix:semicolon
-r_void
-op_star
-id|old_ldt
-comma
-op_star
-id|ldt
-suffix:semicolon
-id|ldt
-op_assign
-l_int|NULL
-suffix:semicolon
-id|old_mm
-op_assign
-id|current-&gt;mm
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|old_mm
-op_logical_and
-(paren
-id|old_ldt
-op_assign
-id|old_mm-&gt;context.segments
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Completely new LDT, we initialize it from the parent:&n;&t;&t; */
-id|ldt
-op_assign
-id|vmalloc
-c_func
-(paren
-id|LDT_ENTRIES
-op_star
-id|LDT_ENTRY_SIZE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ldt
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ldt allocation failed&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|memcpy
-c_func
-(paren
-id|ldt
-comma
-id|old_ldt
-comma
-id|LDT_ENTRIES
-op_star
-id|LDT_ENTRY_SIZE
-)paren
-suffix:semicolon
-)brace
-id|new_mm-&gt;context.segments
-op_assign
-id|ldt
-suffix:semicolon
-id|new_mm-&gt;context.cpuvalid
-op_assign
-l_int|0UL
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|copy_thread
 r_int

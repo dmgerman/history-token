@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irda_device.c&n; * Version:       0.9&n; * Description:   Utility functions used by the device drivers&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Oct  9 09:22:27 1999&n; * Modified at:   Sun Jan 23 17:41:24 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irda_device.c&n; * Version:       0.9&n; * Description:   Utility functions used by the device drivers&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Oct  9 09:22:27 1999&n; * Modified at:   Sun Jan 23 17:41:24 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -295,7 +295,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Call the init function of the device drivers that has not been&n;&t; * compiled as a module &n;&t; */
+multiline_comment|/*&n;&t; * Call the init function of the device drivers that has not been&n;&t; * compiled as a module&n;&t; */
 macro_line|#ifdef CONFIG_IRTTY_SIR
 id|irtty_init
 c_func
@@ -595,9 +595,9 @@ id|dev-&gt;do_ioctl
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: do_ioctl not impl. by device driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), do_ioctl not impl. by &quot;
-l_string|&quot;device driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -677,9 +677,9 @@ id|dev-&gt;do_ioctl
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: do_ioctl not impl. by device driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), do_ioctl not impl. by &quot;
-l_string|&quot;device driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -753,9 +753,9 @@ id|dev-&gt;do_ioctl
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: do_ioctl not impl. by device driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), do_ioctl not impl. by &quot;
-l_string|&quot;device driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -973,8 +973,9 @@ l_int|100
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: error in task handler!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), error in task handler!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_task_delete
@@ -1015,8 +1016,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: Error executing task!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Error executing task!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|irda_task_delete
@@ -1154,7 +1156,7 @@ r_return
 id|finished
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_task_execute (instance, function, finished)&n; *&n; *    This function registers and tries to execute tasks that may take some&n; *    time to complete. We do it this hairy way since we may have been&n; *    called from interrupt context, so it&squot;s not possible to use&n; *    schedule_timeout() &n; * Two important notes :&n; *&t;o Make sure you irda_task_delete(task); in case you delete the&n; *&t;  calling instance.&n; *&t;o No real need to lock when calling this function, but you may&n; *&t;  want to lock within the task handler.&n; * Jean II&n; */
+multiline_comment|/*&n; * Function irda_task_execute (instance, function, finished)&n; *&n; *    This function registers and tries to execute tasks that may take some&n; *    time to complete. We do it this hairy way since we may have been&n; *    called from interrupt context, so it&squot;s not possible to use&n; *    schedule_timeout()&n; * Two important notes :&n; *&t;o Make sure you irda_task_delete(task); in case you delete the&n; *&t;  calling instance.&n; *&t;o No real need to lock when calling this function, but you may&n; *&t;  want to lock within the task handler.&n; * Jean II&n; */
 DECL|function|irda_task_execute
 r_struct
 id|irda_task
@@ -1516,7 +1518,7 @@ id|modname
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_KMOD */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1595,7 +1597,7 @@ r_return
 id|dongle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_dongle_cleanup (dongle)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_device_dongle_cleanup (dongle)&n; */
 DECL|function|irda_device_dongle_cleanup
 r_int
 id|irda_device_dongle_cleanup
@@ -1637,7 +1639,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_register_dongle (dongle)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_device_register_dongle (dongle)&n; */
 DECL|function|irda_device_register_dongle
 r_int
 id|irda_device_register_dongle
@@ -1669,8 +1671,9 @@ l_int|NULL
 id|MESSAGE
 c_func
 (paren
+l_string|&quot;%s: Dongle already registered&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Dongle already registered&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1739,8 +1742,9 @@ id|node
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: dongle not found!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), dongle not found!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1788,9 +1792,9 @@ id|dev-&gt;do_ioctl
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: set_raw_mode not impl. by device driver&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), set_raw_mode not impl. by &quot;
-l_string|&quot;device driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

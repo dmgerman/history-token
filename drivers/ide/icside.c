@@ -842,9 +842,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|rq-&gt;flags
 op_amp
 id|REQ_SPECIAL
+)paren
+op_logical_and
+(paren
+id|drive-&gt;type
+op_eq
+id|ATA_DISK
+)paren
 )paren
 (brace
 r_struct
@@ -1439,7 +1447,7 @@ suffix:semicolon
 )brace
 DECL|function|icside_dma_start
 r_static
-r_int
+r_void
 id|icside_dma_start
 c_func
 (paren
@@ -1461,7 +1469,7 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-multiline_comment|/*&n;&t; * We can not enable DMA on both channels.&n;&t; */
+multiline_comment|/* We can not enable DMA on both channels simultaneously. */
 id|BUG_ON
 c_func
 (paren
@@ -1477,9 +1485,6 @@ c_func
 (paren
 id|ch-&gt;hw.dma
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * dma_intr() is the handler for disk read/write DMA interrupts&n; */
@@ -1706,7 +1711,7 @@ id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
-r_int
+id|u8
 r_int
 id|cmd
 suffix:semicolon
@@ -1724,7 +1729,7 @@ id|DMA_MODE_WRITE
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 r_if
 c_cond
@@ -1734,9 +1739,9 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -1830,7 +1835,7 @@ id|ch-&gt;hw.dma
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|icside_irq_status

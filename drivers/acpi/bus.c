@@ -287,9 +287,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|flags
 )paren
 suffix:semicolon
 r_static
@@ -395,9 +392,6 @@ r_struct
 id|device
 op_star
 id|dev
-comma
-id|u32
-id|flags
 )paren
 (brace
 id|ACPI_FUNCTION_TRACE

@@ -1675,8 +1675,7 @@ id|self-&gt;magic
 op_eq
 id|IRCOMM_MAGIC
 comma
-r_return
-id|len
+r_break
 suffix:semicolon
 )paren
 suffix:semicolon

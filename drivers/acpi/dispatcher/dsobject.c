@@ -1,10 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 99 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 103 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
+macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
 id|ACPI_MODULE_NAME
@@ -456,7 +457,12 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ds_init_object_from_op&quot;
 )paren
@@ -484,7 +490,7 @@ id|AML_CLASS_UNKNOWN
 )paren
 (brace
 multiline_comment|/* Unknown opcode */
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_TYPE
 )paren
@@ -494,7 +500,10 @@ multiline_comment|/* Perform per-object initialization */
 r_switch
 c_cond
 (paren
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 )paren
 (brace
 r_case
@@ -550,10 +559,119 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
+r_switch
+c_cond
+(paren
+id|op_info-&gt;type
+)paren
+(brace
+r_case
+id|AML_TYPE_CONSTANT
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Resolve AML Constants here - AND ONLY HERE!&n;&t;&t;&t; * All constants are integers.&n;&t;&t;&t; * We mark the integer with a flag that indicates that it started life&n;&t;&t;&t; * as a constant -- so that stores to constants will perform as expected (noop).&n;&t;&t;&t; * (Zero_op is used as a placeholder for optional target operands.)&n;&t;&t;&t; */
+id|obj_desc-&gt;common.flags
+op_assign
+id|AOPOBJ_AML_CONSTANT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|opcode
+)paren
+(brace
+r_case
+id|AML_ZERO_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_ONE_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_ONES_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
+op_assign
+id|ACPI_INTEGER_MAX
+suffix:semicolon
+multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table */
+id|acpi_ex_truncate_for32bit_table
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AML_REVISION_OP
+suffix:colon
+id|obj_desc-&gt;integer.value
+op_assign
+id|ACPI_CA_SUPPORT_LEVEL
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown constant opcode %X&bslash;n&quot;
+comma
+id|opcode
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|AML_TYPE_LITERAL
+suffix:colon
 id|obj_desc-&gt;integer.value
 op_assign
 id|op-&gt;common.value.integer
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Unknown Integer type %X&bslash;n&quot;
+comma
+id|op_info-&gt;type
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -627,7 +745,7 @@ r_default
 suffix:colon
 (brace
 )brace
-multiline_comment|/* Constants, Literals, etc.. */
+multiline_comment|/* Other literals, etc.. */
 r_if
 c_cond
 (paren
@@ -660,16 +778,23 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unimplemented data type: %X&bslash;n&quot;
 comma
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
 )paren
 )paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-r_return
+id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace
@@ -716,7 +841,7 @@ op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * This is an object reference.  If this name was&n;&t;&t; * previously looked up in the namespace, it was stored in this op.&n;&t;&t; * Otherwise, go ahead and look it up now&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is an named object reference.  If this name was&n;&t;&t; * previously looked up in the namespace, it was stored in this op.&n;&t;&t; * Otherwise, go ahead and look it up now&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -918,7 +1043,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_buffer_obj&n; *&n; * PARAMETERS:  Op              - Parser object to be translated&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_buffer_obj&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              Buffer_length   - Length of the buffer&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_build_internal_buffer_obj
 id|acpi_ds_build_internal_buffer_obj
@@ -1161,7 +1286,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_package_obj&n; *&n; * PARAMETERS:  Op              - Parser object to be translated&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_build_internal_package_obj&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Op              - Parser object to be translated&n; *              Package_length  - Number of elements in the package&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parser Op package object to the equivalent&n; *              namespace object&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_build_internal_package_obj
 id|acpi_ds_build_internal_package_obj
@@ -1453,7 +1578,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_node&n; *&n; * PARAMETERS:  Op              - Parser object to be translated&n; *              Obj_desc_ptr    - Where the ACPI internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION:&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_node&n; *&n; * PARAMETERS:  Walk_state      - Current walk state&n; *              Node            - NS Node to be initialized&n; *              Op              - Parser object to be translated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create the object to be associated with a namespace node&n; *&n; ****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_node
 id|acpi_ds_create_node
@@ -1546,7 +1671,10 @@ suffix:semicolon
 multiline_comment|/* Re-type the object according to it&squot;s argument */
 id|node-&gt;type
 op_assign
-id|obj_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 suffix:semicolon
 multiline_comment|/* Attach obj to node */
 id|status

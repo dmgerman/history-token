@@ -1,12 +1,13 @@
 macro_line|#ifndef _LINUX_SWSUSP_H
 DECL|macro|_LINUX_SWSUSP_H
 mdefine_line|#define _LINUX_SWSUSP_H
-macro_line|#if defined(SUSPEND_C) || defined(ACPI_C)
+macro_line|#ifdef CONFIG_X86
 macro_line|#include &lt;asm/suspend.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 r_extern
 r_int
 r_char

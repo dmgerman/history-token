@@ -1257,27 +1257,10 @@ c_func
 l_string|&quot;i2c-core.o: while &quot;
 l_string|&quot;unregistering driver &quot;
 l_string|&quot;`%s&squot;, the client at &quot;
-"&quot;"
-id|address
-op_mod
-l_int|02
-id|x
-id|of
-id|adapter
-"`"
-op_mod
-id|s
-"&squot;"
-id|could
-op_logical_neg
-id|be
-id|detached
-suffix:semicolon
-id|driver
-op_logical_neg
-id|unloaded
-op_logical_neg
-"&quot;"
+l_string|&quot;address %02x of &quot;
+l_string|&quot;adapter `%s&squot; could not &quot;
+l_string|&quot;be detached; driver &quot;
+l_string|&quot;not unloaded!&quot;
 comma
 id|driver-&gt;name
 comma

@@ -4989,6 +4989,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5408,6 +5419,15 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
@@ -5441,6 +5461,14 @@ comma
 l_int|0
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -5477,6 +5505,14 @@ c_cond
 id|ireason.b.cod
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -5502,6 +5538,14 @@ id|pc-&gt;flags
 )paren
 (brace
 multiline_comment|/* Hopefully, we will never get here */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -5581,7 +5625,7 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5591,6 +5635,14 @@ comma
 id|IDETAPE_WAIT_CMD
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -5718,7 +5770,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5731,6 +5783,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* And set the interrupt handler again */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -5753,6 +5813,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5777,24 +5848,36 @@ suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* FIXME: Move this lock upwards.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
 c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-id|rq
 comma
 id|DRQ_STAT
 comma
 id|BUSY_STAT
 comma
 id|WAIT_READY
+comma
+id|rq
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -5804,10 +5887,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|startstop
 suffix:semicolon
 )brace
+r_else
+(brace
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -5890,15 +5976,18 @@ id|KERN_ERR
 l_string|&quot;ide-tape: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
+r_else
+(brace
 id|tape-&gt;cmd_start_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5922,8 +6011,22 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
-r_return
+id|ret
+op_assign
 id|ide_started
+suffix:semicolon
+)brace
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|idetape_issue_packet_command
@@ -6228,7 +6331,6 @@ id|drive-&gt;using_dma
 )paren
 id|dma_ok
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren
@@ -6320,7 +6422,27 @@ id|tape-&gt;flags
 )paren
 )paren
 (brace
-id|ide_set_handler
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -6338,6 +6460,14 @@ c_func
 id|WIN_PACKETCMD
 comma
 id|IDE_COMMAND_REG
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7892,6 +8022,13 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -7912,6 +8049,9 @@ id|tape-&gt;postponed_rq
 suffix:semicolon
 id|idetape_status_reg_t
 id|status
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 macro_line|#if IDETAPE_DEBUG_LOG
 multiline_comment|/*&t;if (tape-&gt;debug_level &gt;= 5)&n;&t;&t;printk (KERN_INFO &quot;ide-tape: rq_status: %d, rq_dev: %u, cmd: %ld, errors: %d&bslash;n&quot;,rq-&gt;rq_status,(unsigned int) rq-&gt;rq_dev,rq-&gt;flags,rq-&gt;errors); */
@@ -7956,12 +8096,14 @@ comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|ide_end_request
+id|__ata_end_request
 c_func
 (paren
 id|drive
 comma
 id|rq
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -7987,7 +8129,18 @@ op_eq
 id|IDETAPE_REQUEST_SENSE_CMD
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idetape_issue_packet_command
 c_func
 (paren
@@ -7997,6 +8150,15 @@ id|rq
 comma
 id|tape-&gt;failed_pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 macro_line|#if IDETAPE_DEBUG_BUGS
@@ -8021,6 +8183,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: ide-tape.c bug - Two DSC requests were queued&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_end_request
 c_func
 (paren
@@ -8029,6 +8198,12 @@ comma
 id|rq
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8076,6 +8251,7 @@ op_ne
 id|IDETAPE_PC_RQ2
 )paren
 id|set_bit
+c_func
 (paren
 id|IDETAPE_IGNORE_DSC
 comma
@@ -8394,12 +8570,25 @@ op_eq
 id|IDETAPE_PC_RQ2
 )paren
 (brace
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_media_access_finished
 c_func
 (paren
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8514,11 +8703,13 @@ suffix:semicolon
 id|pc
 op_assign
 id|idetape_next_pc_storage
+c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
 id|idetape_create_read_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8611,6 +8802,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_create_write_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8638,6 +8830,7 @@ id|drive
 )paren
 suffix:semicolon
 id|idetape_create_read_buffer_cmd
+c_func
 (paren
 id|tape
 comma
@@ -8730,12 +8923,25 @@ suffix:semicolon
 r_case
 id|IDETAPE_PC_RQ2
 suffix:colon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_media_access_finished
 c_func
 (paren
 id|drive
 comma
 id|rq
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -8749,6 +8955,13 @@ id|KERN_ERR
 l_string|&quot;ide-tape: bug in IDETAPE_RQ_CMD macro&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 id|idetape_end_request
 c_func
 (paren
@@ -8759,11 +8972,25 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_return
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+id|ret
+op_assign
 id|idetape_issue_packet_command
 c_func
 (paren
@@ -8773,6 +9000,15 @@ id|rq
 comma
 id|pc
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Pipeline related functions&n; */
@@ -13493,8 +13729,8 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_chrdev_write_request&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
-multiline_comment|/*&n;     &t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
+macro_line|#endif
+multiline_comment|/*&n;&t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
 r_while
 c_loop
 (paren

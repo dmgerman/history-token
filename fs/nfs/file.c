@@ -1017,11 +1017,7 @@ op_logical_or
 (paren
 id|fl-&gt;fl_flags
 op_amp
-(paren
 id|FL_POSIX
-op_or
-id|FL_BROKEN
-)paren
 )paren
 op_ne
 id|FL_POSIX

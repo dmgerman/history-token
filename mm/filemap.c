@@ -55,6 +55,13 @@ c_func
 id|page
 )paren
 )paren
+op_logical_and
+op_logical_neg
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
 )paren
 id|BUG
 c_func
@@ -8576,10 +8583,10 @@ r_else
 r_if
 c_cond
 (paren
-id|is_read_only
+id|bdev_read_only
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 )paren
 (brace
