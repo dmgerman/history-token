@@ -706,10 +706,37 @@ DECL|macro|symbol_put
 mdefine_line|#define symbol_put(x) do { } while(0)
 DECL|macro|symbol_put_addr
 mdefine_line|#define symbol_put_addr(x) do { } while(0)
-DECL|macro|try_module_get
-mdefine_line|#define try_module_get(module) 1
-DECL|macro|module_put
-mdefine_line|#define module_put(module) do { } while(0)
+DECL|function|try_module_get
+r_static
+r_inline
+r_int
+id|try_module_get
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|module_put
+r_static
+r_inline
+r_void
+id|module_put
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+)brace
 DECL|macro|module_name
 mdefine_line|#define module_name(mod) &quot;kernel&quot;
 DECL|macro|__unsafe
