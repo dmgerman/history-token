@@ -76,7 +76,6 @@ id|addr
 op_assign
 op_star
 id|stack
-op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -91,7 +90,13 @@ id|addr
 id|printk
 c_func
 (paren
-l_string|&quot; [&lt;%08lx&gt;]&quot;
+l_string|&quot;%08lx:  [&lt;%08lx&gt;]&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|stack
 comma
 id|addr
 )paren
@@ -111,6 +116,9 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|stack
+op_increment
+suffix:semicolon
 )brace
 id|printk
 c_func
