@@ -48,7 +48,6 @@ DECL|macro|WORDSWAP
 mdefine_line|#define WORDSWAP(a)&t;((((a)&gt;&gt;8)&amp;0xff) | ((a)&lt;&lt;8))
 DECL|struct|card_info
 r_static
-r_const
 r_struct
 id|card_info
 (brace
