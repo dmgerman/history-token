@@ -1546,7 +1546,8 @@ c_func
 r_void
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon

@@ -145,7 +145,8 @@ comma
 r_int
 id|nr_pages
 comma
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 comma
@@ -835,7 +836,8 @@ c_func
 r_int
 id|nr_pages
 comma
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 comma
@@ -1817,7 +1819,8 @@ DECL|function|shrink_caches
 id|shrink_caches
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 comma
@@ -2008,7 +2011,8 @@ r_int
 id|try_to_free_pages
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 comma
@@ -2094,12 +2098,14 @@ r_int
 id|check_classzone_need_balance
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|first_classzone
 suffix:semicolon
@@ -2151,7 +2157,8 @@ l_int|0
 comma
 id|i
 suffix:semicolon
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon
@@ -2312,7 +2319,8 @@ op_star
 id|pgdat
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon

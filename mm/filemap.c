@@ -2271,7 +2271,8 @@ id|page
 )paren
 (brace
 r_const
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 op_assign

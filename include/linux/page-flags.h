@@ -162,6 +162,8 @@ DECL|macro|ClearPageActive
 mdefine_line|#define ClearPageActive(page)&t;clear_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageActive
 mdefine_line|#define TestClearPageActive(page) test_and_clear_bit(PG_active, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageActive
+mdefine_line|#define TestSetPageActive(page) test_and_set_bit(PG_active, &amp;(page)-&gt;flags)
 DECL|macro|PageSlab
 mdefine_line|#define PageSlab(page)&t;&t;test_bit(PG_slab, &amp;(page)-&gt;flags)
 DECL|macro|SetPageSlab

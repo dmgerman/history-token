@@ -385,11 +385,11 @@ mdefine_line|#define NODE_SHIFT 4
 DECL|macro|ZONE_SHIFT
 mdefine_line|#define ZONE_SHIFT (BITS_PER_LONG - 8)
 r_struct
-id|zone_struct
+id|zone
 suffix:semicolon
 r_extern
 r_struct
-id|zone_struct
+id|zone
 op_star
 id|zone_table
 (braket
@@ -398,7 +398,8 @@ suffix:semicolon
 DECL|function|page_zone
 r_static
 r_inline
-id|zone_t
+r_struct
+id|zone
 op_star
 id|page_zone
 c_func
@@ -1406,9 +1407,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_struct
-id|zone_t
-suffix:semicolon
 multiline_comment|/* filemap.c */
 r_extern
 r_int

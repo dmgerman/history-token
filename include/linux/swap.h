@@ -329,7 +329,7 @@ r_struct
 id|address_space
 suffix:semicolon
 r_struct
-id|zone_t
+id|zone
 suffix:semicolon
 multiline_comment|/* linux/mm/rmap.c */
 r_extern
@@ -461,13 +461,11 @@ id|kswapd_wait
 suffix:semicolon
 r_extern
 r_int
-id|FASTCALL
-c_func
-(paren
 id|try_to_free_pages
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 comma
 r_int
@@ -475,7 +473,6 @@ r_int
 comma
 r_int
 r_int
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
