@@ -68,15 +68,15 @@ DECL|macro|SIXP_DAMA_OFF
 mdefine_line|#define SIXP_DAMA_OFF&t;&t;0
 multiline_comment|/* default level 2 parameters */
 DECL|macro|SIXP_TXDELAY
-mdefine_line|#define SIXP_TXDELAY&t;&t;&t;25&t;/* in 10 ms */
+mdefine_line|#define SIXP_TXDELAY&t;&t;&t;(HZ/4)&t;/* in 1 s */
 DECL|macro|SIXP_PERSIST
 mdefine_line|#define SIXP_PERSIST&t;&t;&t;50&t;/* in 256ths */
 DECL|macro|SIXP_SLOTTIME
-mdefine_line|#define SIXP_SLOTTIME&t;&t;&t;10&t;/* in 10 ms */
+mdefine_line|#define SIXP_SLOTTIME&t;&t;&t;(HZ/10)&t;/* in 1 s */
 DECL|macro|SIXP_INIT_RESYNC_TIMEOUT
-mdefine_line|#define SIXP_INIT_RESYNC_TIMEOUT&t;150&t;/* in 10 ms */
+mdefine_line|#define SIXP_INIT_RESYNC_TIMEOUT&t;(3*HZ/2) /* in 1 s */
 DECL|macro|SIXP_RESYNC_TIMEOUT
-mdefine_line|#define SIXP_RESYNC_TIMEOUT&t;&t;500&t;/* in 10 ms */
+mdefine_line|#define SIXP_RESYNC_TIMEOUT&t;&t;5*HZ&t;/* in 1 s */
 multiline_comment|/* 6pack configuration. */
 DECL|macro|SIXP_NRUNIT
 mdefine_line|#define SIXP_NRUNIT&t;&t;&t;31      /* MAX number of 6pack channels */
