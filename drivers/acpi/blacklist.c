@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
-macro_line|#include &quot;acpi_bus.h&quot;
+macro_line|#include &lt;acpi/acpi_bus.h&gt;
 DECL|enum|acpi_blacklist_predicates
 r_enum
 id|acpi_blacklist_predicates
