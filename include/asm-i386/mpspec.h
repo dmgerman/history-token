@@ -185,9 +185,16 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|mp_parse_prt
+id|mp_register_gsi
 (paren
-r_void
+id|u32
+id|gsi
+comma
+r_int
+id|edge_level
+comma
+r_int
+id|active_high_low
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BOOT*/

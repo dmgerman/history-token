@@ -99,14 +99,6 @@ id|gsi
 suffix:semicolon
 r_extern
 r_void
-id|__init
-id|iosapic_parse_prt
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|iosapic_enable_intr
 (paren
 r_int

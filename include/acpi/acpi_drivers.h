@@ -29,7 +29,7 @@ DECL|macro|ACPI_PCI_COMPONENT
 mdefine_line|#define ACPI_PCI_COMPONENT&t;&t;0x00400000
 multiline_comment|/* ACPI PCI Interrupt Link (pci_link.c) */
 r_int
-id|acpi_pci_link_check
+id|acpi_irq_penalty_init
 (paren
 r_void
 )paren
