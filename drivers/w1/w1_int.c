@@ -356,6 +356,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dev-&gt;nls
+op_logical_and
 id|dev-&gt;nls-&gt;sk_socket
 )paren
 id|sock_release
