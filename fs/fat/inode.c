@@ -4590,14 +4590,20 @@ id|sb
 comma
 id|media
 )paren
-op_ne
+op_eq
 id|first
-op_logical_and
+)paren
+(brace
+multiline_comment|/* all is as it should be */
+)brace
+r_else
+r_if
+c_cond
 (paren
 id|media
-op_ne
+op_eq
 l_int|0xf8
-op_logical_or
+op_logical_and
 id|FAT_FIRST_ENT
 c_func
 (paren
@@ -4605,10 +4611,24 @@ id|sb
 comma
 l_int|0xfe
 )paren
-op_ne
+op_eq
 id|first
 )paren
+(brace
+multiline_comment|/* bad, reported on pc9800 */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|first
+op_eq
+l_int|0
 )paren
+(brace
+multiline_comment|/* bad, reported with a SmartMedia card */
+)brace
+r_else
 (brace
 r_if
 c_cond
@@ -4616,7 +4636,6 @@ c_cond
 op_logical_neg
 id|silent
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -4635,7 +4654,6 @@ comma
 id|first
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|out_invalid
 suffix:semicolon
