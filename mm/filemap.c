@@ -5462,7 +5462,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The logic we want is&n; *&n; *&t;if suid or (sgid and xgrp)&n; *&t;&t;remove privs&n; */
 DECL|function|remove_suid
-r_void
+r_int
 id|remove_suid
 c_func
 (paren
@@ -5479,6 +5479,11 @@ id|dentry-&gt;d_inode-&gt;i_mode
 suffix:semicolon
 r_int
 id|kill
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|result
 op_assign
 l_int|0
 suffix:semicolon
@@ -5549,6 +5554,8 @@ id|ATTR_FORCE
 op_or
 id|kill
 suffix:semicolon
+id|result
+op_assign
 id|notify_change
 c_func
 (paren
@@ -5559,6 +5566,9 @@ id|newattrs
 )paren
 suffix:semicolon
 )brace
+r_return
+id|result
+suffix:semicolon
 )brace
 DECL|variable|remove_suid
 id|EXPORT_SYMBOL
@@ -6712,11 +6722,21 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+id|err
+op_assign
 id|remove_suid
 c_func
 (paren
 id|file-&gt;f_dentry
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|inode_update_time
 c_func
