@@ -388,8 +388,8 @@ op_increment
 id|pgtable_cache_size
 suffix:semicolon
 )brace
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
 r_static
 r_inline
 r_void
@@ -608,8 +608,8 @@ id|pte
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, pte)&t;tlb_remove_page((tlb), (pte))
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb, pte)&t;tlb_remove_page((tlb), (pte))
 r_extern
 r_void
 id|check_pgt_cache

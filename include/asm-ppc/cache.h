@@ -35,6 +35,8 @@ DECL|macro|L1_CACHE_SHIFT
 mdefine_line|#define L1_CACHE_SHIFT LG_L1_CACHE_LINE_SIZE
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define&t;SMP_CACHE_BYTES L1_CACHE_BYTES
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 7&t;/* largest L1 which this arch supports */
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define&t;L1_CACHE_ALIGN(x)       (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))
 DECL|macro|L1_CACHE_PAGES

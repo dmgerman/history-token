@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;This software program is available to you under a choice of one of two &n;licenses. You may choose to be licensed under either the GNU General Public &n;License 2.0, June 1991, available at http://www.fsf.org/copyleft/gpl.html, &n;or the Intel BSD + Patent License, the text of which follows:&n;&n;Recipient has requested a license and Intel Corporation (&quot;Intel&quot;) is willing&n;to grant a license for the software entitled Linux Base Driver for the &n;Intel(R) PRO/100 Family of Adapters (e100) (the &quot;Software&quot;) being provided &n;by Intel Corporation. The following definitions apply to this license:&n;&n;&quot;Licensed Patents&quot; means patent claims licensable by Intel Corporation which &n;are necessarily infringed by the use of sale of the Software alone or when &n;combined with the operating system referred to below.&n;&n;&quot;Recipient&quot; means the party to whom Intel delivers this Software.&n;&n;&quot;Licensee&quot; means Recipient and those third parties that receive a license to &n;any operating system available under the GNU General Public License 2.0 or &n;later.&n;&n;Copyright (c) 1999 - 2002 Intel Corporation.&n;All rights reserved.&n;&n;The license is provided to Recipient and Recipient&squot;s Licensees under the &n;following terms.&n;&n;Redistribution and use in source and binary forms of the Software, with or &n;without modification, are permitted provided that the following conditions &n;are met:&n;&n;Redistributions of source code of the Software may retain the above &n;copyright notice, this list of conditions and the following disclaimer.&n;&n;Redistributions in binary form of the Software may reproduce the above &n;copyright notice, this list of conditions and the following disclaimer in &n;the documentation and/or materials provided with the distribution.&n;&n;Neither the name of Intel Corporation nor the names of its contributors &n;shall be used to endorse or promote products derived from this Software &n;without specific prior written permission.&n;&n;Intel hereby grants Recipient and Licensees a non-exclusive, worldwide, &n;royalty-free patent license under Licensed Patents to make, use, sell, offer &n;to sell, import and otherwise transfer the Software, if any, in source code &n;and object code form. This license shall include changes to the Software &n;that are error corrections or other minor changes to the Software that do &n;not add functionality or features when the Software is incorporated in any &n;version of an operating system that has been distributed under the GNU &n;General Public License 2.0 or later. This patent license shall apply to the &n;combination of the Software and any operating system licensed under the GNU &n;General Public License 2.0 or later if, at the time Intel provides the &n;Software to Recipient, such addition of the Software to the then publicly &n;available versions of such operating systems available under the GNU General &n;Public License 2.0 or later (whether in gold, beta or alpha form) causes &n;such combination to be covered by the Licensed Patents. The patent license &n;shall not apply to any other combinations which include the Software. NO &n;hardware per se is licensed hereunder.&n;&n;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; &n;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE &n;IMPLIED WARRANTIES OF MECHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE &n;ARE DISCLAIMED. IN NO EVENT SHALL INTEL OR IT CONTRIBUTORS BE LIABLE FOR ANY &n;DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES &n;(INCLUDING, BUT NOT LIMITED, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; &n;ANY LOSS OF USE; DATA, OR PROFITS; OR BUSINESS INTERUPTION) HOWEVER CAUSED &n;AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY OR &n;TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE &n;OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;*******************************************************************************/
 macro_line|#include &quot;e100.h&quot;
 macro_line|#include &quot;e100_config.h&quot;
 r_extern
@@ -30,6 +30,39 @@ suffix:semicolon
 r_extern
 r_void
 id|e100_phy_reset
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_phy_autoneg
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_phy_set_loopback
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|e100_force_speed_duplex
 c_func
 (paren
 r_struct
@@ -859,6 +892,7 @@ c_cond
 id|set_loopback
 )paren
 (brace
+multiline_comment|/* Configure loopback on MAC */
 id|e100_config_loopback_mode
 c_func
 (paren
@@ -893,56 +927,57 @@ op_eq
 id|PHY_LOOPBACK
 )paren
 (brace
-r_int
-r_int
-id|expires
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_star
-l_int|5
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|set_loopback
 )paren
-id|e100_phy_reset
+multiline_comment|/* Set PHY loopback mode */
+id|e100_phy_set_loopback
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
-multiline_comment|/* wait up to 5 secs for PHY loopback ON/OFF to take effect */
-r_while
-c_loop
+r_else
+(brace
+multiline_comment|/* Back to normal speed and duplex */
+r_if
+c_cond
 (paren
-(paren
-id|e100_get_link_state
+id|bdp-&gt;params.e100_speed_duplex
+op_eq
+id|E100_AUTONEG
+)paren
+multiline_comment|/* Reset PHY and do autoneg */
+id|e100_phy_autoneg
 c_func
 (paren
 id|bdp
 )paren
-op_ne
-id|set_loopback
-)paren
-op_logical_and
-id|time_before
+suffix:semicolon
+r_else
+multiline_comment|/* Reset PHY and force speed and duplex */
+id|e100_force_speed_duplex
 c_func
 (paren
-id|jiffies
-comma
-id|expires
-)paren
-)paren
-(brace
-id|yield
-c_func
-(paren
+id|bdp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Wait for PHY state change */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -991,6 +1026,7 @@ id|tbd_t
 op_star
 id|tbd
 suffix:semicolon
+multiline_comment|/* tcb, tbd and transmit buffer are allocated */
 id|tcb
 op_assign
 id|pci_alloc_consistent
@@ -1038,6 +1074,11 @@ r_sizeof
 id|tcb_t
 )paren
 op_plus
+r_sizeof
+(paren
+id|tbd_t
+)paren
+op_plus
 id|LB_PACKET_SIZE
 )paren
 suffix:semicolon
@@ -1061,15 +1102,8 @@ op_or
 id|CB_TX_SF_BIT
 )paren
 suffix:semicolon
+multiline_comment|/* Next command is null */
 id|tcb-&gt;tcb_hdr.cb_lnk_ptr
-op_assign
-id|cpu_to_le32
-c_func
-(paren
-id|tcb-&gt;tcb_phys
-)paren
-suffix:semicolon
-id|tcb-&gt;tcb_tbd_ptr
 op_assign
 id|cpu_to_le32
 c_func
@@ -1089,6 +1123,7 @@ id|tcb-&gt;tcb_tbd_num
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Set up tcb tbd pointer */
 id|tcb-&gt;tcb_tbd_ptr
 op_assign
 id|cpu_to_le32
@@ -1121,6 +1156,7 @@ id|tcb_t
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Set up tbd transmit buffer */
 id|tbd-&gt;tbd_buf_addr
 op_assign
 id|cpu_to_le32
@@ -1146,6 +1182,7 @@ c_func
 l_int|1024
 )paren
 suffix:semicolon
+multiline_comment|/* The value of first 512 bytes is FF */
 id|memset
 c_func
 (paren
@@ -1168,9 +1205,10 @@ id|tbd_t
 comma
 l_int|0xFF
 comma
-l_int|1024
+l_int|512
 )paren
 suffix:semicolon
+multiline_comment|/* The value of second 512 bytes is BA */
 id|memset
 c_func
 (paren
@@ -1267,10 +1305,6 @@ id|rfd_t
 )paren
 suffix:semicolon
 multiline_comment|/* init all fields in rfd */
-id|rfd-&gt;rfd_header.cb_status
-op_assign
-l_int|0
-suffix:semicolon
 id|rfd-&gt;rfd_header.cb_cmd
 op_assign
 id|cpu_to_le16
@@ -1278,10 +1312,6 @@ c_func
 (paren
 id|RFD_EL_BIT
 )paren
-suffix:semicolon
-id|rfd-&gt;rfd_act_cnt
-op_assign
-l_int|0
 suffix:semicolon
 id|rfd-&gt;rfd_sz
 op_assign
@@ -1293,6 +1323,7 @@ op_plus
 id|CHKSUM_SIZE
 )paren
 suffix:semicolon
+multiline_comment|/* dma_handle is physical address of rfd */
 id|bdp-&gt;loopback.dma_handle
 op_assign
 id|dma_handle
@@ -1426,8 +1457,28 @@ op_star
 id|datap
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 (paren
 op_star
@@ -1435,28 +1486,41 @@ id|datap
 )paren
 op_eq
 l_int|0xFF
-)paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 op_star
 (paren
 id|datap
 op_plus
-l_int|600
+l_int|512
 )paren
 op_eq
 l_int|0xBA
 )paren
+)paren
+)paren
 (brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;e100: check loopback packet failed at: %x&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 r_return
-l_bool|true
+l_bool|false
 suffix:semicolon
 )brace
 )brace
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;e100: Check received loopback packet OK&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
-l_bool|false
+l_bool|true
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_diag_rcv_loopback_pkt - waits for receive and checks lpbk packet&n; * @bdp: atapter&squot;s private data struct&n; *&n; * Returns true if OK false otherwise.&n; */
@@ -1556,6 +1620,14 @@ id|rfd_status
 op_amp
 id|RFD_STATUS_COMPLETE
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;e100: Loopback packet received&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|e100_diag_check_pkt
 c_func
@@ -1571,10 +1643,20 @@ id|bdp-&gt;rfd_size
 )paren
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: Loopback packet not received&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_bool|false
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * e100_diag_loopback_free - free data allocated for loopback pkt send/receive&n; * @bdp: atapter&squot;s private data struct&n; *&n; */
 r_static

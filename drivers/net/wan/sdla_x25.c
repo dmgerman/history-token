@@ -16411,7 +16411,7 @@ r_return
 id|delay
 suffix:semicolon
 )brace
-multiline_comment|/*===============================================================&n; * api_incoming_call &n; *&n; *&t;Pass an incoming call request up the the listening&n; *      sock.  If the API sock is not listening reject the&n; *      call.&n; *&n; *===============================================================*/
+multiline_comment|/*===============================================================&n; * api_incoming_call &n; *&n; *&t;Pass an incoming call request up the listening&n; *      sock.  If the API sock is not listening reject the&n; *      call.&n; *&n; *===============================================================*/
 DECL|function|api_incoming_call
 r_static
 r_int

@@ -4721,7 +4721,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Apparently the the disk-&gt;capacity attribute is off by 1 sector &n; * for all disk drives.  We add the one here, but it should really&n; * be done in sd.c.  Even if it gets fixed there, this will still&n; * work.&n; */
+multiline_comment|/*&n; * Apparently the disk-&gt;capacity attribute is off by 1 sector &n; * for all disk drives.  We add the one here, but it should really&n; * be done in sd.c.  Even if it gets fixed there, this will still&n; * work.&n; */
 DECL|function|imm_biosparam
 r_int
 id|imm_biosparam

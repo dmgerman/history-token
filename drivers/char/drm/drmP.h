@@ -164,7 +164,7 @@ mdefine_line|#define pte_offset_map pte_offset
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020500
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020413 /* KERNEL_VERSION(2,4,19) */
 DECL|function|vmalloc_to_page
 r_static
 r_inline
@@ -316,14 +316,14 @@ DECL|macro|VM_OFFSET
 mdefine_line|#define VM_OFFSET(vma) ((vma)-&gt;vm_pgoff &lt;&lt; PAGE_SHIFT)
 multiline_comment|/* Macros to make printk easier */
 DECL|macro|DRM_ERROR
-mdefine_line|#define DRM_ERROR(fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:&quot; __FUNCTION__ &quot;] *ERROR* &quot; fmt , ##arg)
+mdefine_line|#define DRM_ERROR(fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:%s] *ERROR* &quot; fmt , __FUNCTION__ , ##arg)
 DECL|macro|DRM_MEM_ERROR
-mdefine_line|#define DRM_MEM_ERROR(area, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:&quot; __FUNCTION__ &quot;:%s] *ERROR* &quot; fmt , &bslash;&n;&t;       DRM(mem_stats)[area].name , ##arg)
+mdefine_line|#define DRM_MEM_ERROR(area, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;[&quot; DRM_NAME &quot;:%s:%s] *ERROR* &quot; fmt , __FUNCTION__, &bslash;&n;&t;       DRM(mem_stats)[area].name , ##arg)
 DECL|macro|DRM_INFO
 mdefine_line|#define DRM_INFO(fmt, arg...)  printk(KERN_INFO &quot;[&quot; DRM_NAME &quot;] &quot; fmt , ##arg)
 macro_line|#if DRM_DEBUG_CODE
 DECL|macro|DRM_DEBUG
-mdefine_line|#define DRM_DEBUG(fmt, arg...)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( DRM(flags) &amp; DRM_FLAG_DEBUG )&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG&t;&t;&t;&t;&bslash;&n;&t;&t;&t;       &quot;[&quot; DRM_NAME &quot;:&quot; __FUNCTION__ &quot;] &quot; fmt ,&t;&bslash;&n;&t;&t;&t;       ##arg);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define DRM_DEBUG(fmt, arg...)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ( DRM(flags) &amp; DRM_FLAG_DEBUG )&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_DEBUG&t;&t;&t;&t;&bslash;&n;&t;&t;&t;       &quot;[&quot; DRM_NAME &quot;:%s] &quot; fmt ,&t;&bslash;&n;&t;&t;&t;       __FUNCTION__ , ##arg);&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|DRM_DEBUG
 mdefine_line|#define DRM_DEBUG(fmt, arg...)&t;&t; do { } while (0)

@@ -7004,7 +7004,7 @@ id|SEM
 comma
 id|SIR_SCRIPT_STOPPED
 comma
-multiline_comment|/*&n;&t;**&t;Start the next job.&n;&t;**&n;&t;**&t;@DSA&t; = start point for this job.&n;&t;**&t;SCRATCHA = address of this job in the start queue.&n;&t;**&n;&t;**&t;We will restore startpos with SCRATCHA if we fails the &n;&t;**&t;arbitration or if it is the idle job.&n;&t;**&n;&t;**&t;The below GETJOB_BEGIN to GETJOB_END section of SCRIPTS &n;&t;**&t;is a critical path. If it is partially executed, it then &n;&t;**&t;may happen that the job address is not yet in the DSA &n;&t;**&t;and the the next queue position points to the next JOB.&n;&t;*/
+multiline_comment|/*&n;&t;**&t;Start the next job.&n;&t;**&n;&t;**&t;@DSA&t; = start point for this job.&n;&t;**&t;SCRATCHA = address of this job in the start queue.&n;&t;**&n;&t;**&t;We will restore startpos with SCRATCHA if we fails the &n;&t;**&t;arbitration or if it is the idle job.&n;&t;**&n;&t;**&t;The below GETJOB_BEGIN to GETJOB_END section of SCRIPTS &n;&t;**&t;is a critical path. If it is partially executed, it then &n;&t;**&t;may happen that the job address is not yet in the DSA &n;&t;**&t;and the next queue position points to the next JOB.&n;&t;*/
 id|SCR_LOAD_ABS
 (paren
 id|dsa
@@ -39763,7 +39763,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* SCSI_NCR_PQS_PDS_SUPPORT */
-multiline_comment|/*===================================================================&n;**    Detect all 53c8xx hosts and then attach them.&n;**&n;**    If we are using NVRAM, once all hosts are detected, we need to &n;**    check any NVRAM for boot order in case detect and boot order &n;**    differ and attach them using the order in the NVRAM.&n;**&n;**    If no NVRAM is found or data appears invalid attach boards in &n;**    the the order they are detected.&n;**===================================================================&n;*/
+multiline_comment|/*===================================================================&n;**    Detect all 53c8xx hosts and then attach them.&n;**&n;**    If we are using NVRAM, once all hosts are detected, we need to &n;**    check any NVRAM for boot order in case detect and boot order &n;**    differ and attach them using the order in the NVRAM.&n;**&n;**    If no NVRAM is found or data appears invalid attach boards in &n;**    the order they are detected.&n;**===================================================================&n;*/
 DECL|function|sym53c8xx_detect
 r_int
 id|__init

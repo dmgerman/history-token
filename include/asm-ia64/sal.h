@@ -1707,7 +1707,7 @@ id|reg_data_pairs
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* array of address/data register pairs is num_mem_regs + num_io_regs&n;       elements long.  Each array element consists of a u64 address followed&n;       by a u64 data value.  The oem_data array immediately follows the the&n;       reg_data_pairs array */
+multiline_comment|/* array of address/data register pairs is num_mem_regs + num_io_regs&n;       elements long.  Each array element consists of a u64 address followed&n;       by a u64 data value.  The oem_data array immediately follows the&n;       reg_data_pairs array */
 DECL|member|oem_data
 id|u8
 id|oem_data

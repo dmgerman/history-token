@@ -134,11 +134,11 @@ macro_line|# define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti
 macro_line|# define sti()&t;&t;&t;local_irq_enable()
 DECL|macro|save_flags
-macro_line|# define save_flags(x)&t;&t;local_irq_save(x)
+macro_line|# define save_flags(x)&t;&t;local_save_flags(x)
 DECL|macro|restore_flags
 macro_line|# define restore_flags(x)&t;local_irq_restore(x)
 DECL|macro|save_and_cli
-macro_line|# define save_and_cli(x)&t;local_irq_save_off(x)
+macro_line|# define save_and_cli(x)&t;local_irq_save(x)
 macro_line|#endif
 multiline_comment|/* PLEASE, avoid to allocate new softirqs, if you need not _really_ high&n;   frequency threaded job scheduling. For almost all the purposes&n;   tasklets are more than enough. F.e. all serial device BHs et&n;   al. should be converted to tasklets, not to softirqs.&n; */
 r_enum

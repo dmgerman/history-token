@@ -181,8 +181,8 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
 DECL|macro|pmd_populate_kernel
 mdefine_line|#define pmd_populate_kernel(mm, pmd, pte) pmd_set(pmd, pte)
 DECL|macro|pmd_populate
@@ -298,8 +298,8 @@ suffix:semicolon
 )brace
 DECL|macro|pte_free
 mdefine_line|#define pte_free(pte_page)&t;pte_free_kernel(page_address(pte_page))
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, pte)&t;pte_free(pte)
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb, pte)&t;pte_free(pte)
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _PPC64_PGALLOC_H */
