@@ -11324,6 +11324,12 @@ r_goto
 id|out_free
 suffix:semicolon
 )brace
+id|pci_set_master
+c_func
+(paren
+id|pcidev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

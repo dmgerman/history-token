@@ -332,6 +332,79 @@ DECL|macro|pci_set_dma_mask
 mdefine_line|#define pci_set_dma_mask(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 0 : -EIO)
 DECL|macro|pci_dma_supported
 mdefine_line|#define pci_dma_supported(dev, mask)&t;&t;&bslash;&n;&t;(((u64)(mask) &amp; 0xffffffff00000000) == 0 ? 1 : 0)
+macro_line|#elif (LINUX_VERSION_CODE &lt; 0x02040d)
+multiline_comment|/*&n; * 2.4.13 introduced pci_map_page()/pci_unmap_page() - for 2.4.12 and prior,&n; * fall back on pci_map_single()/pci_unnmap_single().&n; *&n; * We are guaranteed that the page is mapped at this point since&n; * pci_map_page() is only used upon valid struct skb&squot;s.&n; */
+r_static
+r_inline
+id|dma_addr_t
+DECL|function|pci_map_page
+id|pci_map_page
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|cookie
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|off
+comma
+r_int
+id|size
+comma
+r_int
+id|dir
+)paren
+(brace
+r_void
+op_star
+id|page_virt
+suffix:semicolon
+id|page_virt
+op_assign
+id|page_address
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page_virt
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|pci_map_single
+c_func
+(paren
+id|cookie
+comma
+(paren
+id|page_virt
+op_plus
+id|off
+)paren
+comma
+id|size
+comma
+id|dir
+)paren
+suffix:semicolon
+)brace
+DECL|macro|pci_unmap_page
+mdefine_line|#define pci_unmap_page(cookie, dma_addr, size, dir)&t;&bslash;&n;&t;pci_unmap_single(cookie, dma_addr, size, dir)
 macro_line|#endif
 macro_line|#if (LINUX_VERSION_CODE &lt; 0x02032b)
 multiline_comment|/*&n; * SoftNet&n; *&n; * For pre-softnet kernels we need to tell the upper layer not to&n; * re-enter start_xmit() while we are in there. However softnet&n; * guarantees not to enter while we are in there so there is no need&n; * to do the netif_stop_queue() dance unless the transmit queue really&n; * gets stuck. This should also improve performance according to tests&n; * done by Aman Singla.&n; */
@@ -681,7 +754,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;acenic.c: v0.83 09/30/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
+l_string|&quot;acenic.c: v0.85 11/08/2001  Jes Sorensen, linux-acenic@SunSITE.dk&bslash;n&quot;
 l_string|&quot;                            http://home.cern.ch/~jes/gige/acenic.html&bslash;n&quot;
 suffix:semicolon
 DECL|variable|root_dev
@@ -1671,12 +1744,26 @@ l_int|8
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|tx_ratio
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+l_int|8
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
 id|link
 comma
-l_string|&quot;Acenic/3C985/NetGear link state&quot;
+l_string|&quot;AceNIC/3C985/NetGear link state&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1684,7 +1771,7 @@ c_func
 (paren
 id|trace
 comma
-l_string|&quot;Acenic/3C985/NetGear firmware trace level&quot;
+l_string|&quot;AceNIC/3C985/NetGear firmware trace level&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1717,6 +1804,14 @@ c_func
 id|max_rx_desc
 comma
 l_string|&quot;AceNIC/3C985/GA620 max number of receive descriptors to wait&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|tx_ratio
+comma
+l_string|&quot;AceNIC/3C985/GA620 ratio of NIC memory used for TX/RX descriptors (range 0-63)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2858,12 +2953,12 @@ id|info
 op_assign
 l_int|NULL
 suffix:semicolon
-id|u64
-id|tmp_ptr
-suffix:semicolon
 r_int
 r_int
 id|myjif
+suffix:semicolon
+id|u64
+id|tmp_ptr
 suffix:semicolon
 id|u32
 id|tig_ver
@@ -3837,10 +3932,7 @@ c_func
 (paren
 id|ap-&gt;pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 )paren
 (brace
@@ -3859,10 +3951,7 @@ c_func
 (paren
 id|ap-&gt;pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffff
+l_int|0xffffffffULL
 )paren
 )paren
 (brace
@@ -4060,9 +4149,6 @@ l_int|0
 suffix:semicolon
 id|tmp_ptr
 op_assign
-(paren
-id|u64
-)paren
 id|ap-&gt;info_dma
 suffix:semicolon
 id|writel
@@ -5981,7 +6067,6 @@ c_func
 (paren
 l_string|&quot;refilling jumbo buffers (current %i)&bslash;n&quot;
 comma
-OG
 id|cur_size
 )paren
 suffix:semicolon
@@ -8908,16 +8993,15 @@ id|u32
 id|idx
 )paren
 (brace
-r_int
-r_int
-id|addr
+id|dma_addr_t
+id|mapping
 suffix:semicolon
 r_struct
 id|tx_ring_info
 op_star
 id|info
 suffix:semicolon
-id|addr
+id|mapping
 op_assign
 id|pci_map_page
 c_func
@@ -8958,14 +9042,14 @@ id|tail
 suffix:semicolon
 id|info-&gt;mapping
 op_assign
-id|addr
+id|mapping
 suffix:semicolon
 id|info-&gt;maplen
 op_assign
 id|skb-&gt;len
 suffix:semicolon
 r_return
-id|addr
+id|mapping
 suffix:semicolon
 )brace
 r_static
@@ -9098,11 +9182,10 @@ id|nr_frags
 )paren
 macro_line|#endif
 (brace
-r_int
-r_int
-id|addr
+id|dma_addr_t
+id|mapping
 suffix:semicolon
-id|addr
+id|mapping
 op_assign
 id|ace_map_tx_skb
 c_func
@@ -9176,7 +9259,7 @@ c_func
 (paren
 id|desc
 comma
-id|addr
+id|mapping
 comma
 id|flagsize
 )paren
@@ -9185,9 +9268,8 @@ suffix:semicolon
 macro_line|#if MAX_SKB_FRAGS
 r_else
 (brace
-r_int
-r_int
-id|addr
+id|dma_addr_t
+id|mapping
 suffix:semicolon
 r_int
 id|i
@@ -9196,7 +9278,7 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|addr
+id|mapping
 op_assign
 id|ace_map_tx_skb
 c_func
@@ -9240,7 +9322,7 @@ id|ap-&gt;tx_ring
 op_plus
 id|idx
 comma
-id|addr
+id|mapping
 comma
 id|flagsize
 )paren
@@ -9297,9 +9379,6 @@ id|tx_ring_info
 op_star
 id|info
 suffix:semicolon
-id|dma_addr_t
-id|phys
-suffix:semicolon
 id|len
 op_add_assign
 id|frag-&gt;size
@@ -9316,7 +9395,7 @@ id|ap-&gt;tx_ring
 op_plus
 id|idx
 suffix:semicolon
-id|phys
+id|mapping
 op_assign
 id|pci_map_page
 c_func
@@ -9411,7 +9490,7 @@ suffix:semicolon
 )brace
 id|info-&gt;mapping
 op_assign
-id|phys
+id|mapping
 suffix:semicolon
 id|info-&gt;maplen
 op_assign
@@ -9422,7 +9501,7 @@ c_func
 (paren
 id|desc
 comma
-id|phys
+id|mapping
 comma
 id|flagsize
 )paren

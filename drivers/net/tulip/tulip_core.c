@@ -7534,8 +7534,6 @@ suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-id|early_out
-suffix:colon
 r_if
 c_cond
 (paren

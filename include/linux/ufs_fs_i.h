@@ -28,10 +28,6 @@ DECL|member|i_u1
 )brace
 id|i_u1
 suffix:semicolon
-DECL|member|i_size
-id|__u64
-id|i_size
-suffix:semicolon
 DECL|member|i_flags
 id|__u32
 id|i_flags

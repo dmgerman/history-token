@@ -94,22 +94,6 @@ mdefine_line|#define UFS_FSOSF1    ((char)0x03)&t;/* is this correct for DEC OSF
 DECL|macro|UFS_FSBAD
 mdefine_line|#define UFS_FSBAD     ((char)0xff)
 multiline_comment|/* From here to next blank line, s_flags for ufs_sb_info */
-multiline_comment|/* endianness */
-DECL|macro|UFS_BYTESEX
-mdefine_line|#define UFS_BYTESEX             0x00000001      /* mask; leave room to 0xF */
-macro_line|#if defined(__LITTLE_ENDIAN) || defined(__BIG_ENDIAN)
-multiline_comment|/* these are for sane architectures */
-DECL|macro|UFS_NATIVE_ENDIAN
-mdefine_line|#define UFS_NATIVE_ENDIAN&t;0x00000000
-DECL|macro|UFS_SWABBED_ENDIAN
-mdefine_line|#define UFS_SWABBED_ENDIAN&t;0x00000001
-macro_line|#else
-multiline_comment|/* these are for pervert architectures */
-DECL|macro|UFS_LITTLE_ENDIAN
-mdefine_line|#define UFS_LITTLE_ENDIAN&t;0x00000000
-DECL|macro|UFS_BIG_ENDIAN
-mdefine_line|#define UFS_BIG_ENDIAN&t;&t;0x00000001
-macro_line|#endif
 multiline_comment|/* directory entry encoding */
 DECL|macro|UFS_DE_MASK
 mdefine_line|#define UFS_DE_MASK&t;&t;0x00000010&t;/* mask for the following */
@@ -917,7 +901,7 @@ multiline_comment|/*&n; * Cylinder group block for a file system.&n; *&n; * Writ
 DECL|macro|CG_MAGIC
 mdefine_line|#define&t;CG_MAGIC&t;0x090255
 DECL|macro|ufs_cg_chkmagic
-mdefine_line|#define ufs_cg_chkmagic(ucg)&t;(SWAB32((ucg)-&gt;cg_magic) == CG_MAGIC)
+mdefine_line|#define ufs_cg_chkmagic(sb, ucg) &bslash;&n;&t;(fs32_to_cpu((sb), (ucg)-&gt;cg_magic) == CG_MAGIC)
 multiline_comment|/*&n; * size of this structure is 172 B&n; */
 DECL|struct|ufs_cylinder_group
 r_struct

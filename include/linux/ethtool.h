@@ -124,14 +124,19 @@ DECL|member|reserved2
 r_char
 id|reserved2
 (braket
-l_int|28
+l_int|24
 )braket
 suffix:semicolon
+DECL|member|eedump_len
+id|u32
+id|eedump_len
+suffix:semicolon
+multiline_comment|/* Size of data from ETHTOOL_GEEPROM (bytes) */
 DECL|member|regdump_len
 id|u32
 id|regdump_len
 suffix:semicolon
-multiline_comment|/* Amount of data from ETHTOOL_GREGS (u32s) */
+multiline_comment|/* Size of data from ETHTOOL_GREGS (bytes) */
 )brace
 suffix:semicolon
 DECL|macro|SOPASS_MAX
@@ -196,9 +201,41 @@ DECL|member|len
 id|u32
 id|len
 suffix:semicolon
-multiline_comment|/* in u32 increments */
+multiline_comment|/* bytes */
 DECL|member|data
+id|u8
+id|data
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* for passing EEPROM chunks */
+DECL|struct|ethtool_eeprom
+r_struct
+id|ethtool_eeprom
+(brace
+DECL|member|cmd
 id|u32
+id|cmd
+suffix:semicolon
+DECL|member|magic
+id|u32
+id|magic
+suffix:semicolon
+DECL|member|offset
+id|u32
+id|offset
+suffix:semicolon
+multiline_comment|/* in bytes */
+DECL|member|len
+id|u32
+id|len
+suffix:semicolon
+multiline_comment|/* in bytes */
+DECL|member|data
+id|u8
 id|data
 (braket
 l_int|0
@@ -227,6 +264,10 @@ DECL|macro|ETHTOOL_NWAY_RST
 mdefine_line|#define ETHTOOL_NWAY_RST&t;0x00000009 /* Restart autonegotiation, priv. */
 DECL|macro|ETHTOOL_GLINK
 mdefine_line|#define ETHTOOL_GLINK&t;&t;0x0000000a /* Get link status */
+DECL|macro|ETHTOOL_GEEPROM
+mdefine_line|#define ETHTOOL_GEEPROM&t;&t;0x0000000b /* Get EEPROM data */
+DECL|macro|ETHTOOL_SEEPROM
+mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data */
 multiline_comment|/* compatibility with older code */
 DECL|macro|SPARC_ETH_GSET
 mdefine_line|#define SPARC_ETH_GSET&t;&t;ETHTOOL_GSET

@@ -761,6 +761,10 @@ id|block_device_operations
 id|lvm_blk_dops
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|open
 suffix:colon
 id|lvm_blk_open

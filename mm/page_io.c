@@ -54,11 +54,6 @@ id|swapf
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|wait
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -230,40 +225,6 @@ id|block_size
 )paren
 suffix:semicolon
 multiline_comment|/* Note! For consistency we do all of the logic,&n; &t; * decrementing the page count, and unlocking the page in the&n; &t; * swap lock map - in the IO completion handler.&n; &t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|wait
-)paren
-r_return
-l_int|1
-suffix:semicolon
-id|wait_on_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* This shouldn&squot;t happen, but check to be sure. */
-r_if
-c_cond
-(paren
-id|page_count
-c_func
-(paren
-id|page
-)paren
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;rw_swap_page: page unused while waiting!&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * drivers/video/clgenfb.c - driver for Cirrus Logic chipsets&n; *&n; * Copyright 1999-2001 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n; *&n; * Contributors (thanks, all!)&n; *&n; *      Jeff Rugen:&n; *      Major contributions;  Motorola PowerStack (PPC and PCI) support,&n; *      GD54xx, 1280x1024 mode support, change MCLK based on VCLK.&n; *&n; *&t;Geert Uytterhoeven:&n; *&t;Excellent code review.&n; *&n; *&t;Lars Hecking:&n; *&t;Amiga updates and testing.&n; *&n; * Original clgenfb author:  Frank Neumann&n; *&n; * Based on retz3fb.c and clgen.c:&n; *      Copyright (C) 1997 Jes Sorensen&n; *      Copyright (C) 1996 Frank Neumann&n; *&n; ***************************************************************&n; *&n; * Format this code with GNU indent &squot;-kr -i8 -pcs&squot; options.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; */
 DECL|macro|CLGEN_VERSION
-mdefine_line|#define CLGEN_VERSION &quot;1.9.9&quot;
+mdefine_line|#define CLGEN_VERSION &quot;1.9.9.1&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -74,6 +74,8 @@ DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 DECL|macro|MB_
 mdefine_line|#define MB_ (1024*1024)
+DECL|macro|KB_
+mdefine_line|#define KB_ (1024)
 DECL|macro|MAX_NUM_BOARDS
 mdefine_line|#define MAX_NUM_BOARDS 7
 multiline_comment|/*****************************************************************&n; *&n; * chipset information&n; *&n; */
@@ -1020,21 +1022,106 @@ id|FB_ACCEL_NONE
 comma
 l_int|40000
 comma
-l_int|32
+l_int|48
+comma
+l_int|16
 comma
 l_int|32
 comma
-l_int|33
-comma
-l_int|10
+l_int|8
 comma
 l_int|96
 comma
-l_int|2
+l_int|4
 comma
 id|FB_SYNC_HOR_HIGH_ACT
 op_or
 id|FB_SYNC_VERT_HIGH_ACT
+comma
+id|FB_VMODE_NONINTERLACED
+)brace
+)brace
+comma
+(brace
+l_string|&quot;800x600&quot;
+comma
+multiline_comment|/* 800x600, 48 kHz, 76 Hz, 50 MHz PixClock */
+(brace
+l_int|800
+comma
+l_int|600
+comma
+l_int|800
+comma
+l_int|600
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|8
+comma
+l_int|0
+comma
+(brace
+l_int|0
+comma
+l_int|8
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|8
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|8
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+comma
+id|FB_ACCEL_NONE
+comma
+l_int|20000
+comma
+l_int|128
+comma
+l_int|16
+comma
+l_int|24
+comma
+l_int|2
+comma
+l_int|96
+comma
+l_int|6
+comma
+l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
 )brace
@@ -1108,21 +1195,19 @@ id|FB_ACCEL_NONE
 comma
 l_int|12500
 comma
-l_int|92
+l_int|144
 comma
-l_int|112
+l_int|32
 comma
-l_int|31
+l_int|30
 comma
 l_int|2
 comma
-l_int|204
+l_int|192
 comma
-l_int|4
+l_int|6
 comma
-id|FB_SYNC_HOR_HIGH_ACT
-op_or
-id|FB_SYNC_VERT_HIGH_ACT
+l_int|0
 comma
 id|FB_VMODE_NONINTERLACED
 )brace
@@ -10284,10 +10369,6 @@ id|regbase
 r_int
 r_int
 id|mem
-op_assign
-l_int|1
-op_star
-id|MB_
 suffix:semicolon
 r_int
 r_char
@@ -10307,7 +10388,7 @@ comma
 id|CL_SEQRF
 )paren
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 (paren
@@ -10315,14 +10396,54 @@ id|SRF
 op_amp
 l_int|0x18
 )paren
-op_eq
-l_int|0x18
 )paren
 (brace
-multiline_comment|/* 64-bit DRAM data bus width; assume 2MB. Also indicates 2MB memory&n;&t;&t;   * on the 5430. */
+r_case
+l_int|0x08
+suffix:colon
 id|mem
-op_mul_assign
-l_int|2
+op_assign
+l_int|512
+op_star
+l_int|1024
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x10
+suffix:colon
+id|mem
+op_assign
+l_int|1024
+op_star
+l_int|1024
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 64-bit DRAM data bus width; assume 2MB. Also indicates 2MB memory&n;&t;&t;   * on the 5430. */
+r_case
+l_int|0x18
+suffix:colon
+id|mem
+op_assign
+l_int|2048
+op_star
+l_int|1024
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+(paren
+l_string|&quot;CLgenfb: Unknown memory size!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mem
+op_assign
+l_int|1024
+op_star
+l_int|1024
 suffix:semicolon
 )brace
 r_if
@@ -10339,6 +10460,7 @@ op_mul_assign
 l_int|2
 suffix:semicolon
 )brace
+multiline_comment|/* TODO: Handling of GD5446/5480 (see XF86 sources ...) */
 r_return
 id|mem
 suffix:semicolon
@@ -10952,18 +11074,17 @@ id|board_size
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot; RAM (%lu MB) at 0x%lx, &quot;
+l_string|&quot; RAM (%lu kB) at 0x%lx, &quot;
 comma
 id|info-&gt;size
 op_div
-id|MB_
+id|KB_
 comma
 id|board_addr
 )paren
 suffix:semicolon
 id|printk
 (paren
-id|KERN_INFO
 l_string|&quot;Cirrus Logic chipset on PCI bus&bslash;n&quot;
 )paren
 suffix:semicolon

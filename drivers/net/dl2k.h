@@ -738,6 +738,17 @@ l_int|0x20000000
 comma
 )brace
 suffix:semicolon
+DECL|enum|ASICCtrl_LoWord_bits
+r_enum
+id|ASICCtrl_LoWord_bits
+(brace
+DECL|enumerator|PhyMedia
+id|PhyMedia
+op_assign
+l_int|0x0080
+comma
+)brace
+suffix:semicolon
 DECL|enum|ASICCtrl_HiWord_bits
 r_enum
 id|ASICCtrl_HiWord_bits
@@ -1029,6 +1040,53 @@ DECL|enumerator|MII_PHY_SCR
 id|MII_PHY_SCR
 op_assign
 l_int|16
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* PCS register */
+DECL|enum|_pcs_reg
+r_enum
+id|_pcs_reg
+(brace
+DECL|enumerator|PCS_BMCR
+id|PCS_BMCR
+op_assign
+l_int|0
+comma
+DECL|enumerator|PCS_BMSR
+id|PCS_BMSR
+op_assign
+l_int|1
+comma
+DECL|enumerator|PCS_ANAR
+id|PCS_ANAR
+op_assign
+l_int|4
+comma
+DECL|enumerator|PCS_ANLPAR
+id|PCS_ANLPAR
+op_assign
+l_int|5
+comma
+DECL|enumerator|PCS_ANER
+id|PCS_ANER
+op_assign
+l_int|6
+comma
+DECL|enumerator|PCS_ANNPT
+id|PCS_ANNPT
+op_assign
+l_int|7
+comma
+DECL|enumerator|PCS_ANLPRNP
+id|PCS_ANLPRNP
+op_assign
+l_int|8
+comma
+DECL|enumerator|PCS_ESR
+id|PCS_ESR
+op_assign
+l_int|15
 comma
 )brace
 suffix:semicolon
@@ -2306,6 +2364,255 @@ comma
 op_star
 id|PMII_ADMIN_t
 suffix:semicolon
+multiline_comment|/* Physical Coding Sublayer Management (PCS) */
+multiline_comment|/* PCS control and status registers bitmap as the same as MII */
+multiline_comment|/* PCS Extended Status register bitmap as the same as MII */
+multiline_comment|/* PCS ANAR */
+DECL|union|t_PCS_ANAR
+r_typedef
+r_union
+id|t_PCS_ANAR
+(brace
+DECL|member|image
+id|u16
+id|image
+suffix:semicolon
+r_struct
+(brace
+DECL|member|_bit_4_0
+id|u16
+id|_bit_4_0
+suffix:colon
+l_int|5
+suffix:semicolon
+singleline_comment|// bit 4:0
+DECL|member|full_duplex
+id|u16
+id|full_duplex
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 5
+DECL|member|half_duplex
+id|u16
+id|half_duplex
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 6
+DECL|member|asymmetric
+id|u16
+id|asymmetric
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 7
+DECL|member|pause
+id|u16
+id|pause
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 8
+DECL|member|_bit_11_9
+id|u16
+id|_bit_11_9
+suffix:colon
+l_int|3
+suffix:semicolon
+singleline_comment|// bit 11:9
+DECL|member|remote_fault
+id|u16
+id|remote_fault
+suffix:colon
+l_int|2
+suffix:semicolon
+singleline_comment|// bit 13:12
+DECL|member|_bit_14
+id|u16
+id|_bit_14
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 14
+DECL|member|next_page
+id|u16
+id|next_page
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 15
+DECL|member|bits
+)brace
+id|bits
+suffix:semicolon
+DECL|typedef|ANAR_PCS_t
+DECL|typedef|PANAR_PCS_t
+)brace
+id|ANAR_PCS_t
+comma
+op_star
+id|PANAR_PCS_t
+suffix:semicolon
+DECL|enum|_pcs_anar
+r_enum
+id|_pcs_anar
+(brace
+DECL|enumerator|PCS_ANAR_NEXT_PAGE
+id|PCS_ANAR_NEXT_PAGE
+op_assign
+l_int|0x8000
+comma
+DECL|enumerator|PCS_ANAR_REMOTE_FAULT
+id|PCS_ANAR_REMOTE_FAULT
+op_assign
+l_int|0x3000
+comma
+DECL|enumerator|PCS_ANAR_ASYMMETRIC
+id|PCS_ANAR_ASYMMETRIC
+op_assign
+l_int|0x0100
+comma
+DECL|enumerator|PCS_ANAR_PAUSE
+id|PCS_ANAR_PAUSE
+op_assign
+l_int|0x0080
+comma
+DECL|enumerator|PCS_ANAR_HALF_DUPLEX
+id|PCS_ANAR_HALF_DUPLEX
+op_assign
+l_int|0x0040
+comma
+DECL|enumerator|PCS_ANAR_FULL_DUPLEX
+id|PCS_ANAR_FULL_DUPLEX
+op_assign
+l_int|0x0020
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* PCS ANLPAR */
+DECL|union|t_PCS_ANLPAR
+r_typedef
+r_union
+id|t_PCS_ANLPAR
+(brace
+DECL|member|image
+id|u16
+id|image
+suffix:semicolon
+r_struct
+(brace
+DECL|member|_bit_4_0
+id|u16
+id|_bit_4_0
+suffix:colon
+l_int|5
+suffix:semicolon
+singleline_comment|// bit 4:0
+DECL|member|full_duplex
+id|u16
+id|full_duplex
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 5
+DECL|member|half_duplex
+id|u16
+id|half_duplex
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 6
+DECL|member|asymmetric
+id|u16
+id|asymmetric
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 7
+DECL|member|pause
+id|u16
+id|pause
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 8
+DECL|member|_bit_11_9
+id|u16
+id|_bit_11_9
+suffix:colon
+l_int|3
+suffix:semicolon
+singleline_comment|// bit 11:9
+DECL|member|remote_fault
+id|u16
+id|remote_fault
+suffix:colon
+l_int|2
+suffix:semicolon
+singleline_comment|// bit 13:12
+DECL|member|_bit_14
+id|u16
+id|_bit_14
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 14
+DECL|member|next_page
+id|u16
+id|next_page
+suffix:colon
+l_int|1
+suffix:semicolon
+singleline_comment|// bit 15
+DECL|member|bits
+)brace
+id|bits
+suffix:semicolon
+DECL|typedef|ANLPAR_PCS_t
+DECL|typedef|PANLPAR_PCS_t
+)brace
+id|ANLPAR_PCS_t
+comma
+op_star
+id|PANLPAR_PCS_t
+suffix:semicolon
+DECL|enum|_pcs_anlpar
+r_enum
+id|_pcs_anlpar
+(brace
+DECL|enumerator|PCS_ANLPAR_NEXT_PAGE
+id|PCS_ANLPAR_NEXT_PAGE
+op_assign
+id|PCS_ANAR_NEXT_PAGE
+comma
+DECL|enumerator|PCS_ANLPAR_REMOTE_FAULT
+id|PCS_ANLPAR_REMOTE_FAULT
+op_assign
+id|PCS_ANAR_REMOTE_FAULT
+comma
+DECL|enumerator|PCS_ANLPAR_ASYMMETRIC
+id|PCS_ANLPAR_ASYMMETRIC
+op_assign
+id|PCS_ANAR_ASYMMETRIC
+comma
+DECL|enumerator|PCS_ANLPAR_PAUSE
+id|PCS_ANLPAR_PAUSE
+op_assign
+id|PCS_ANAR_PAUSE
+comma
+DECL|enumerator|PCS_ANLPAR_HALF_DUPLEX
+id|PCS_ANLPAR_HALF_DUPLEX
+op_assign
+id|PCS_ANAR_HALF_DUPLEX
+comma
+DECL|enumerator|PCS_ANLPAR_FULL_DUPLEX
+id|PCS_ANLPAR_FULL_DUPLEX
+op_assign
+id|PCS_ANAR_FULL_DUPLEX
+comma
+)brace
+suffix:semicolon
 DECL|struct|t_SROM
 r_typedef
 r_struct
@@ -2511,6 +2818,36 @@ r_int
 id|rx_buf_sz
 suffix:semicolon
 multiline_comment|/* Based on MTU+slack. */
+DECL|member|speed
+r_int
+r_int
+id|speed
+suffix:semicolon
+multiline_comment|/* Operating speed */
+DECL|member|vlan
+r_int
+r_int
+id|vlan
+suffix:semicolon
+multiline_comment|/* VLAN Id */
+DECL|member|chip_id
+r_int
+r_int
+id|chip_id
+suffix:semicolon
+multiline_comment|/* PCI table chip id */
+DECL|member|int_count
+r_int
+r_int
+id|int_count
+suffix:semicolon
+multiline_comment|/* Maximum frames each RxDMAComplete intr */
+DECL|member|int_timeout
+r_int
+r_int
+id|int_timeout
+suffix:semicolon
+multiline_comment|/* Wait time between RxDMAComplete intr */
 DECL|member|tx_full
 r_int
 r_int
@@ -2527,45 +2864,22 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Full-duplex operation requested. */
-DECL|member|speed
-r_int
-r_int
-id|speed
-suffix:semicolon
-multiline_comment|/* Operating speed */
-DECL|member|vlan
-r_int
-r_int
-id|vlan
-suffix:semicolon
-multiline_comment|/* VLAN Id */
 DECL|member|an_enable
 r_int
 r_int
 id|an_enable
+suffix:colon
+l_int|2
 suffix:semicolon
 multiline_comment|/* Auto-Negotiated Enable */
-DECL|member|chip_id
-r_int
-r_int
-id|chip_id
-suffix:semicolon
-multiline_comment|/* PCI table chip id */
 DECL|member|jumbo
 r_int
 r_int
 id|jumbo
+suffix:colon
+l_int|1
 suffix:semicolon
-DECL|member|int_count
-r_int
-r_int
-id|int_count
-suffix:semicolon
-DECL|member|int_timeout
-r_int
-r_int
-id|int_timeout
-suffix:semicolon
+multiline_comment|/* Jumbo frame enable */
 DECL|member|coalesce
 r_int
 r_int
@@ -2573,6 +2887,31 @@ id|coalesce
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* Rx coalescing enable */
+DECL|member|tx_flow
+r_int
+r_int
+id|tx_flow
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Tx flow control enable */
+DECL|member|rx_flow
+r_int
+r_int
+id|rx_flow
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Rx flow control enable */
+DECL|member|phy_media
+r_int
+r_int
+id|phy_media
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1: fiber, 0: copper */
 DECL|member|last_tx
 r_struct
 id|netdev_desc

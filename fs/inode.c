@@ -2479,10 +2479,7 @@ op_or
 id|I_LOCK
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_continue
 suffix:semicolon
 r_if
 c_cond
@@ -2506,10 +2503,7 @@ op_amp
 id|inode-&gt;i_count
 )paren
 )paren
-id|BUG
-c_func
-(paren
-)paren
+r_continue
 suffix:semicolon
 id|list_del
 c_func

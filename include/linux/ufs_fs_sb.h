@@ -451,9 +451,9 @@ id|s_csp
 id|UFS_MAXCSBUFS
 )braket
 suffix:semicolon
-DECL|member|s_swab
+DECL|member|s_bytesex
 r_int
-id|s_swab
+id|s_bytesex
 suffix:semicolon
 DECL|member|s_flags
 r_int
