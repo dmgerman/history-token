@@ -11256,7 +11256,10 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
+op_amp
+(paren
 id|bond-&gt;stats
+)paren
 comma
 op_star
 id|sstats
@@ -11268,7 +11271,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|bond-&gt;stats
+id|stats
 comma
 l_int|0
 comma
@@ -12233,20 +12236,6 @@ c_func
 (paren
 op_amp
 id|bond-&gt;ptrlock
-)paren
-suffix:semicolon
-multiline_comment|/* space is reserved for stats in alloc_netdev call. */
-id|bond-&gt;stats
-op_assign
-(paren
-r_struct
-id|net_device_stats
-op_star
-)paren
-(paren
-id|bond
-op_plus
-l_int|1
 )paren
 suffix:semicolon
 id|bond-&gt;next
@@ -13623,13 +13612,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|bonding_t
-)paren
-op_plus
-r_sizeof
-(paren
 r_struct
-id|net_device_stats
+id|bonding
 )paren
 comma
 id|name
