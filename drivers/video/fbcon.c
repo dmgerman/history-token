@@ -701,11 +701,15 @@ r_struct
 id|timer_list
 id|cursor_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|cursor_timer_handler
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|function|cursor_timer_handler
 r_static
@@ -2461,7 +2465,7 @@ id|p
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_FBCON_MAC
+macro_line|#if defined(CONFIG_FBCON_MAC) &amp;&amp; defined(CONFIG_MAC)
 r_if
 c_cond
 (paren

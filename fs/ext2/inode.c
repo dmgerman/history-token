@@ -2243,6 +2243,11 @@ id|ext2_readpages
 c_func
 (paren
 r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
 id|address_space
 op_star
 id|mapping
@@ -4154,11 +4159,6 @@ c_func
 (paren
 id|raw_inode-&gt;i_blocks
 )paren
-suffix:semicolon
-id|inode-&gt;i_version
-op_assign
-op_increment
-id|event
 suffix:semicolon
 id|ei-&gt;i_flags
 op_assign

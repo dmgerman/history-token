@@ -19,6 +19,8 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
+macro_line|#include &lt;asm/arch/h3600.h&gt;
+macro_line|#include &lt;asm/arch/yopy.h&gt;
 macro_line|#ifndef GPIO_IRDA_FIR
 DECL|macro|GPIO_IRDA_FIR
 mdefine_line|#define GPIO_IRDA_FIR&t;&t;(0)

@@ -1963,6 +1963,7 @@ id|irq
 )brace
 DECL|function|pcibios_fixup_pbus_ranges
 r_void
+id|__devinit
 id|pcibios_fixup_pbus_ranges
 c_func
 (paren

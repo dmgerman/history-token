@@ -10,8 +10,40 @@ macro_line|#include &quot;volume.h&quot;
 macro_line|#include &quot;vnode.h&quot;
 macro_line|#include &lt;rxrpc/call.h&gt;
 macro_line|#include &quot;internal.h&quot;
-singleline_comment|//static int afs_file_open(struct inode *inode, struct file *file);
-singleline_comment|//static int afs_file_release(struct inode *inode, struct file *file);
+macro_line|#if 0
+r_static
+r_int
+id|afs_file_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_static
+r_int
+id|afs_file_release
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|afs_file_readpage
@@ -28,7 +60,6 @@ op_star
 id|page
 )paren
 suffix:semicolon
-singleline_comment|//static ssize_t afs_file_read(struct file *file, char *buf, size_t size, loff_t *off);
 r_static
 id|ssize_t
 id|afs_file_write
@@ -58,19 +89,11 @@ id|inode_operations
 id|afs_file_inode_operations
 op_assign
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 dot
 id|getattr
 op_assign
 id|afs_inode_getattr
 comma
-macro_line|#else
-dot
-id|revalidate
-op_assign
-id|afs_inode_revalidate
-comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|afs_file_file_operations
@@ -79,14 +102,11 @@ id|file_operations
 id|afs_file_file_operations
 op_assign
 (brace
-singleline_comment|//&t;.open&t;&t;= afs_file_open,
-singleline_comment|//&t;.release&t;= afs_file_release,
 dot
 id|read
 op_assign
 id|generic_file_read
 comma
-singleline_comment|//afs_file_read,
 dot
 id|write
 op_assign
@@ -97,7 +117,23 @@ id|mmap
 op_assign
 id|generic_file_mmap
 comma
-singleline_comment|//&t;.fsync&t;&t;= afs_file_fsync,
+macro_line|#if 0
+dot
+id|open
+op_assign
+id|afs_file_open
+comma
+dot
+id|release
+op_assign
+id|afs_file_release
+comma
+dot
+id|fsync
+op_assign
+id|afs_file_fsync
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|afs_fs_aops
@@ -113,62 +149,6 @@ id|afs_file_readpage
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * AFS file read&n; */
-macro_line|#if 0
-r_static
-id|ssize_t
-id|afs_file_read
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|size
-comma
-id|loff_t
-op_star
-id|off
-)paren
-(brace
-r_struct
-id|afs_inode_info
-op_star
-id|ai
-suffix:semicolon
-id|ai
-op_assign
-id|AFS_FS_I
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ai-&gt;flags
-op_amp
-id|AFS_INODE_DELETED
-)paren
-r_return
-op_minus
-id|ESTALE
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-multiline_comment|/* end afs_file_read() */
-macro_line|#endif
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * AFS file write&n; */
 DECL|function|afs_file_write

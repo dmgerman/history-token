@@ -4352,6 +4352,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;wd7000_init: WAIT timed out.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4397,6 +4398,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;RAM failure.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4408,6 +4410,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;FIFO R/W failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4419,6 +4422,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SBIC register R/W failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4430,6 +4434,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Initialization D-FF failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4441,6 +4446,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Host IRQ D-FF failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4452,6 +4458,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ROM checksum error.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4462,6 +4469,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;diagnostic code 0x%02Xh received.&bslash;n&quot;
 comma
 id|diag

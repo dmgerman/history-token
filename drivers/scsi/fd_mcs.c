@@ -5051,10 +5051,6 @@ id|shpnt
 op_assign
 id|SCpnt-&gt;host
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#if DEBUG_RESET
 r_static
 r_int
@@ -5093,14 +5089,6 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_irqsave
-c_func
-(paren
-id|shpnt-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -5145,15 +5133,7 @@ comma
 id|TMC_Cntl_port
 )paren
 suffix:semicolon
-multiline_comment|/* Unless this is the very first call (i.e., SCPnt == NULL), everything&n;&t;&t;   is probably hosed at this point.  We will, however, try to keep&n;&t;&t;   things going by informing the high-level code that we need help. */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|shpnt-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/* Unless this is the very first call (i.e., SCPnt == NULL), everything&n;&t;   is probably hosed at this point.  We will, however, try to keep&n;&t;   things going by informing the high-level code that we need help. */
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -5165,7 +5145,8 @@ r_int
 id|fd_mcs_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
 id|disk
 comma
@@ -5286,7 +5267,7 @@ op_assign
 id|kernel_scsi_ioctl
 c_func
 (paren
-id|disk-&gt;device
+id|disk
 comma
 id|SCSI_IOCTL_SEND_COMMAND
 comma
@@ -5326,7 +5307,7 @@ l_int|0x1c2
 )paren
 (brace
 multiline_comment|/* Partition type */
-multiline_comment|/* The partition table layout is as follows:&n;&n;&t;&t;&t;   Start: 0x1b3h&n;&t;&t;&t;   Offset: 0 = partition status&n;&t;&t;&t;   1 = starting head&n;&t;&t;&t;   2 = starting sector and cylinder (word, encoded)&n;&t;&t;&t;   4 = partition type&n;&t;&t;&t;   5 = ending head&n;&t;&t;&t;   6 = ending sector and cylinder (word, encoded)&n;&t;&t;&t;   8 = starting absolute sector (double word)&n;&t;&t;&t;   c = number of sectors (double word)&n;&t;&t;&t;   Signature: 0x1fe = 0x55aa&n;&n;&t;&t;&t;   So, this algorithm assumes:&n;&t;&t;&t;   1) the first partition table is in use,&n;&t;&t;&t;   2) the data in the first entry is correct, and&n;&t;&t;&t;   3) partitions never divide cylinders&n;&n;&t;&t;&t;   Note that (1) may be FALSE for NetBSD (and other BSD flavors),&n;&t;&t;&t;   as well as for Linux.  Note also, that Linux doesn&squot;t pay any&n;&t;&t;&t;   attention to the fields that are used by this algorithm -- it&n;&t;&t;&t;   only uses the absolute sector data.  Recent versions of Linux&squot;s&n;&t;&t;&t;   fdisk(1) will fill this data in correctly, and forthcoming&n;&t;&t;&t;   versions will check for consistency.&n;&n;&t;&t;&t;   Checking for a non-zero partition type is not part of the&n;&t;&t;&t;   Future Domain algorithm, but it seemed to be a reasonable thing&n;&t;&t;&t;   to do, especially in the Linux and BSD worlds. */
+multiline_comment|/* The partition table layout is as follows:&n;&n;&t;&t;   Start: 0x1b3h&n;&t;&t;   Offset: 0 = partition status&n;&t;&t;   1 = starting head&n;&t;&t;   2 = starting sector and cylinder (word, encoded)&n;&t;&t;   4 = partition type&n;&t;&t;   5 = ending head&n;&t;&t;   6 = ending sector and cylinder (word, encoded)&n;&t;&t;   8 = starting absolute sector (double word)&n;&t;&t;   c = number of sectors (double word)&n;&t;&t;   Signature: 0x1fe = 0x55aa&n;&n;&t;&t;   So, this algorithm assumes:&n;&t;&t;   1) the first partition table is in use,&n;&t;&t;   2) the data in the first entry is correct, and&n;&t;&t;   3) partitions never divide cylinders&n;&n;&t;&t;   Note that (1) may be FALSE for NetBSD (and other BSD flavors),&n;&t;&t;   as well as for Linux.  Note also, that Linux doesn&squot;t pay any&n;&t;&t;   attention to the fields that are used by this algorithm -- it&n;&t;&t;   only uses the absolute sector data.  Recent versions of Linux&squot;s&n;&t;&t;   fdisk(1) will fill this data in correctly, and forthcoming&n;&t;&t;   versions will check for consistency.&n;&n;&t;&t;   Checking for a non-zero partition type is not part of the&n;&t;&t;   Future Domain algorithm, but it seemed to be a reasonable thing&n;&t;&t;   to do, especially in the Linux and BSD worlds. */
 id|info_array
 (braket
 l_int|0
@@ -5356,7 +5337,7 @@ multiline_comment|/* sectors */
 )brace
 r_else
 (brace
-multiline_comment|/* Note that this new method guarantees that there will always be&n;&t;&t;&t;   less than 1024 cylinders on a platter.  This is good for drives&n;&t;&t;&t;   up to approximately 7.85GB (where 1GB = 1024 * 1024 kB). */
+multiline_comment|/* Note that this new method guarantees that there will always be&n;&t;&t;   less than 1024 cylinders on a platter.  This is good for drives&n;&t;&t;   up to approximately 7.85GB (where 1GB = 1024 * 1024 kB). */
 r_if
 c_cond
 (paren
@@ -5460,7 +5441,12 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Eventually this will go into an include file, but this will be later */
+DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template

@@ -1407,7 +1407,7 @@ id|all_bh
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage.&n; */
+multiline_comment|/*&n; * Calling this without startio set means we are being asked to make a dirty&n; * page ready for freeing it&squot;s buffers.  When called with startio set then&n; * we are coming from writepage. &n; *&n; * When called with startio e.g. from&n; * write page it is important that we write WHOLE page if possible. The&n; * bh-&gt;b_state&squot;s can not know of any of the blocks or which block for&n; * that matter are dirty due to map writes, and therefore bh uptodate is&n; * only vaild if the pagei itself isn&squot;t completely uptodate. Some layers&n; * may clear the page dirty flag prior to calling write page under the&n; * assumption the entire page will be written out, by not writing out the&n; * whole page the page can be reused before all vaild dirty data is&n; * written out. Note: in the case of a page that has been dirty&squot;d by&n; * mapwrite and but partially setup by block_prepare_write the&n; * bh-&gt;b_states&squot;s will not agree and only ones setup by BPW/BCW will have&n; * valid state, thus the whole page must be written out thing.&n; */
 id|STATIC
 r_int
 DECL|function|delalloc_convert
@@ -1747,7 +1747,25 @@ c_func
 id|bh
 )paren
 op_logical_and
+(paren
+id|buffer_uptodate
+c_func
+(paren
+id|bh
+)paren
+op_logical_or
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+op_logical_and
+(paren
 id|allocate_space
+op_logical_or
+id|startio
+)paren
 )paren
 (brace
 r_int
@@ -1880,12 +1898,12 @@ id|bh
 r_if
 c_cond
 (paren
-id|buffer_dirty
+id|buffer_uptodate
 c_func
 (paren
 id|bh
 )paren
-op_logical_or
+op_logical_and
 id|allocate_space
 )paren
 (brace
@@ -2694,6 +2712,11 @@ DECL|function|linvfs_readpages
 id|linvfs_readpages
 c_func
 (paren
+r_struct
+id|file
+op_star
+id|unused
+comma
 r_struct
 id|address_space
 op_star

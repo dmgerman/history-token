@@ -629,9 +629,9 @@ DECL|member|sadb_x_ipsecrequest_len
 r_uint16
 id|sadb_x_ipsecrequest_len
 suffix:semicolon
-DECL|member|sadb_x_ipsecrequest_exttype
+DECL|member|sadb_x_ipsecrequest_proto
 r_uint16
-id|sadb_x_ipsecrequest_exttype
+id|sadb_x_ipsecrequest_proto
 suffix:semicolon
 DECL|member|sadb_x_ipsecrequest_mode
 r_uint8
@@ -750,9 +750,9 @@ multiline_comment|/* Encryption algorithms */
 DECL|macro|SADB_EALG_NONE
 mdefine_line|#define SADB_EALG_NONE&t;&t;0
 DECL|macro|SADB_EALG_DESCBC
-mdefine_line|#define SADB_EALG_DESCBC&t;2
+mdefine_line|#define SADB_EALG_DESCBC&t;1
 DECL|macro|SADB_EALG_3DESCBC
-mdefine_line|#define SADB_EALG_3DESCBC&t;3
+mdefine_line|#define SADB_EALG_3DESCBC&t;2
 DECL|macro|SADB_EALG_NULL
 mdefine_line|#define SADB_EALG_NULL&t;&t;11
 DECL|macro|SADB_EALG_MAX

@@ -311,6 +311,18 @@ id|ops
 op_assign
 op_amp
 id|ip6_dst_ops
+comma
+dot
+id|path
+op_assign
+(paren
+r_struct
+id|dst_entry
+op_star
+)paren
+op_amp
+id|ip6_null_entry
+comma
 )brace
 )brace
 comma
@@ -4927,6 +4939,16 @@ c_func
 (paren
 id|arg-&gt;dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|idev
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
 suffix:semicolon
 multiline_comment|/* For administrative MTU increase, there is no way to discover&n;&t;   IPv6 PMTU increase, so PMTU increase should be updated here.&n;&t;   Since RFC 1981 doesn&squot;t include administrative MTU increase&n;&t;   update PMTU increase is a MUST. (i.e. jumbo frame)&n;&t; */
 multiline_comment|/*&n;&t;   If new MTU is less than route PMTU, this new MTU will be the&n;&t;   lowest MTU in the path, update the route PMTU to refect PMTU&n;&t;   decreases; if new MTU is greater than route PMTU, and the&n;&t;   old MTU is the lowest MTU in the path, update the route PMTU&n;&t;   to refect the increase. In this case if the other nodes&squot; MTU&n;&t;   also have the lowest MTU, TOO BIG MESSAGE will be lead to&n;&t;   PMTU discouvery.&n;&t; */

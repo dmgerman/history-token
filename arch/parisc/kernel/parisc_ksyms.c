@@ -300,7 +300,6 @@ id|global
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#include &lt;asm/gsc.h&gt;
 DECL|variable|register_parisc_driver
 id|EXPORT_SYMBOL
 c_func
@@ -322,15 +321,6 @@ c_func
 id|pdc_iodc_read
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_GSC
-DECL|variable|gsc_alloc_irq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|gsc_alloc_irq
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|__ioremap
 id|EXPORT_SYMBOL

@@ -406,12 +406,6 @@ c_func
 (paren
 id|inode
 )paren
-op_logical_or
-id|nfs_have_read
-c_func
-(paren
-id|inode
-)paren
 )paren
 (brace
 id|printk
@@ -7179,13 +7173,6 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|nfsi-&gt;read
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
 id|nfsi-&gt;dirty
 )paren
 suffix:semicolon
@@ -7202,10 +7189,6 @@ c_func
 op_amp
 id|nfsi-&gt;writeback
 )paren
-suffix:semicolon
-id|nfsi-&gt;nread
-op_assign
-l_int|0
 suffix:semicolon
 id|nfsi-&gt;ndirty
 op_assign

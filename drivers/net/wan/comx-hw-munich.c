@@ -8170,6 +8170,13 @@ c_cond
 id|board-&gt;isx21
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|board-&gt;modemline_timer
+)paren
+suffix:semicolon
 id|board-&gt;modemline_timer.data
 op_assign
 (paren

@@ -2899,9 +2899,7 @@ id|ret
 suffix:semicolon
 )brace
 id|i-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|c
 op_assign
@@ -5140,9 +5138,7 @@ suffix:semicolon
 )brace
 )brace
 id|i-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|for_all_poss
 c_func

@@ -325,7 +325,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * pci_insert_device - insert a pci device&n; * @dev: the device to insert&n; * @bus: where to insert it&n; *&n; * Link the device to both the global PCI device chain and the &n; * per-bus list of devices, add the /proc entry, and notify&n; * userspace (/sbin/hotplug).&n; */
+multiline_comment|/**&n; * pci_insert_device - insert a pci device&n; * @dev: the device to insert&n; * @bus: where to insert it&n; *&n; * Link the device to both the global PCI device chain and the &n; * per-bus list of devices, add the /proc entry.&n; */
 r_void
 DECL|function|pci_insert_device
 id|pci_insert_device

@@ -226,8 +226,6 @@ DECL|macro|SCSI_OWNER_BH_HANDLER
 mdefine_line|#define SCSI_OWNER_BH_HANDLER     0x104
 DECL|macro|SCSI_OWNER_NOBODY
 mdefine_line|#define SCSI_OWNER_NOBODY         0x105
-DECL|macro|COMMAND_SIZE
-mdefine_line|#define COMMAND_SIZE(opcode) scsi_command_size[((opcode) &gt;&gt; 5) &amp; 7]
 DECL|macro|IDENTIFY_BASE
 mdefine_line|#define IDENTIFY_BASE       0x80
 DECL|macro|IDENTIFY
@@ -466,15 +464,6 @@ r_extern
 r_volatile
 r_int
 id|in_scan_scsis
-suffix:semicolon
-r_extern
-r_const
-r_int
-r_char
-id|scsi_command_size
-(braket
-l_int|8
-)braket
 suffix:semicolon
 r_extern
 r_struct
@@ -796,6 +785,28 @@ r_int
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|scsi_slave_attach
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_slave_detach
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|scsi_done
 c_func
@@ -911,6 +922,36 @@ id|scsi_cmnd
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_detect_device
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_attach_device
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_detach_device
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */

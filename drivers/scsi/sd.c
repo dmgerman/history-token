@@ -93,6 +93,12 @@ suffix:semicolon
 multiline_comment|/* state of disk RCD bit */
 )brace
 suffix:semicolon
+DECL|variable|sd_nr_dev
+r_static
+r_int
+id|sd_nr_dev
+suffix:semicolon
+multiline_comment|/* XXX(hch) bad hack, we want a bitmap instead */
 r_static
 id|LIST_HEAD
 c_func
@@ -262,11 +268,6 @@ dot
 id|scsi_type
 op_assign
 id|TYPE_DISK
-comma
-dot
-id|blk
-op_assign
-l_int|1
 comma
 dot
 id|detect
@@ -2553,7 +2554,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * check_disk_change */
 )brace
-multiline_comment|/* Using Start/Stop enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; * This also handles drives that auto spin down. eg iomega jaz 1GB&n;&t; * as this will spin up the drive.&n;&t; */
+multiline_comment|/* Using TEST_UNIT_READY enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; *&n;&t; * Drives that auto spin down. eg iomega jaz 1G, will be started&n;&t; * by sd_spinup_disk() from sd_init_onedisk(), which happens whenever&n;&t; * sd_revalidate() is called.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -2575,7 +2576,7 @@ c_func
 (paren
 id|sdp
 comma
-id|SCSI_IOCTL_START_UNIT
+id|SCSI_IOCTL_TEST_UNIT_READY
 comma
 l_int|NULL
 )paren
@@ -2884,14 +2885,11 @@ id|SRpnt
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Look for non-removable devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
+multiline_comment|/* Look for devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
 r_if
 c_cond
 (paren
 id|the_result
-op_logical_and
-op_logical_neg
-id|sdp-&gt;removable
 op_logical_and
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -4620,9 +4618,6 @@ id|TYPE_MOD
 r_return
 l_int|0
 suffix:semicolon
-id|sd_template.dev_noticed
-op_increment
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4694,6 +4689,18 @@ id|sdp-&gt;lun
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_slave_attach
+c_func
+(paren
+id|sdp
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|sdkp
 op_assign
 id|kmalloc
@@ -4715,7 +4722,7 @@ op_logical_neg
 id|sdkp
 )paren
 r_goto
-id|out
+id|out_detach
 suffix:semicolon
 id|gd
 op_assign
@@ -4737,7 +4744,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * XXX  This doesn&squot;t make us better than the previous code in the&n;&t; * XXX  end (not worse either, though..).&n;&t; * XXX  To properly support hotplugging we should have a bitmap and&n;&t; * XXX  use find_first_zero_bit on it.  This will happen at the&n;&t; * XXX  same time template-&gt;nr_* goes away.&t;&t;--hch&n;&t; */
 id|dsk_nr
 op_assign
-id|sd_template.nr_dev
+id|sd_nr_dev
 op_increment
 suffix:semicolon
 id|sdkp-&gt;device
@@ -4920,11 +4927,16 @@ c_func
 id|sdkp
 )paren
 suffix:semicolon
+id|out_detach
+suffix:colon
+id|scsi_slave_detach
+c_func
+(paren
+id|sdp
+)paren
+suffix:semicolon
 id|out
 suffix:colon
-id|sdp-&gt;attached
-op_decrement
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -5077,13 +5089,13 @@ c_func
 id|sdkp-&gt;disk
 )paren
 suffix:semicolon
-id|sdp-&gt;attached
-op_decrement
+id|scsi_slave_detach
+c_func
+(paren
+id|sdp
+)paren
 suffix:semicolon
-id|sd_template.dev_noticed
-op_decrement
-suffix:semicolon
-id|sd_template.nr_dev
+id|sd_nr_dev
 op_decrement
 suffix:semicolon
 id|put_disk

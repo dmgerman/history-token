@@ -504,7 +504,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&t;log: uuid = &quot;
+l_string|&quot;    log: uuid = &quot;
 )paren
 suffix:semicolon
 r_for
@@ -6246,7 +6246,7 @@ id|XFS_BLI_GDQUOT_BUF
 )paren
 )paren
 (brace
-multiline_comment|/* OK, if this returns nopkg() */
+multiline_comment|/* OK, if this returns ENOSYS */
 id|error
 op_assign
 id|xfs_qm_dqcheck
@@ -8277,7 +8277,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * At this point we know that if we are recovering a root filesystem&n;&t; * then quota was _not_ turned off. Since there is no other flag&n;&t; * indicate to us otherwise, this must mean that quota&squot;s on,&n;&t; * and the dquot needs to be replayed. Remember that we may not have&n;&t; * fully recovered the superblock yet, so we can&squot;t do the usual trick&n;&t; * of looking at the SB quota bits.&n;&t; *&n;&t; * The other possibility, of course, is that the quota subsystem was&n;&t; * removed since the last mount - nopkg().&n;&t; */
+multiline_comment|/*&n;&t; * At this point we know that if we are recovering a root filesystem&n;&t; * then quota was _not_ turned off. Since there is no other flag&n;&t; * indicate to us otherwise, this must mean that quota&squot;s on,&n;&t; * and the dquot needs to be replayed. Remember that we may not have&n;&t; * fully recovered the superblock yet, so we can&squot;t do the usual trick&n;&t; * of looking at the SB quota bits.&n;&t; *&n;&t; * The other possibility, of course, is that the quota subsystem was&n;&t; * removed since the last mount - ENOSYS.&n;&t; */
 id|dq_f
 op_assign
 (paren
@@ -8322,14 +8322,9 @@ l_string|&quot;xlog_recover_do_dquot_trans (log copy)&quot;
 r_if
 c_cond
 (paren
-(paren
 id|error
 op_eq
-id|nopkg
-c_func
-(paren
-)paren
-)paren
+id|ENOSYS
 )paren
 r_return
 (paren

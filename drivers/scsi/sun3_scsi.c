@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Sun3 SCSI stuff by Erik Verbruggen (erik@bigmama.xtdnet.nl)&n; *&n; * Sun3 DMA routines added by Sam Creasey (sammy@oh.verio.com)&n; *&n; * Adapted from mac_scsinew.c:&n; */
+multiline_comment|/*&n; * Sun3 SCSI stuff by Erik Verbruggen (erik@bigmama.xtdnet.nl)&n; *&n; * Sun3 DMA routines added by Sam Creasey (sammy@sammy.net)&n; *&n; * Adapted from mac_scsinew.c:&n; */
 multiline_comment|/*&n; * Generic Macintosh NCR5380 driver&n; *&n; * Copyright 1998, Michael Schmitz &lt;mschmitz@lbl.gov&gt;&n; *&n; * derived in part from:&n; */
 multiline_comment|/*&n; * Generic Generic NCR5380 driver&n; *&n; * Copyright 1995, Russell King&n; *&n; * ALPHA RELEASE 1.&n; *&n; * For more information, please consult&n; *&n; * NCR 5380 Family&n; * SCSI Protocol Controller&n; * Databook&n; *&n; * NCR Microelectronics&n; * 1635 Aeroplaza Drive&n; * Colorado Springs, CO 80916&n; * 1+ (719) 578-3400&n; * 1+ (800) 334-5454&n; */
 multiline_comment|/*&n; * This is from mac_scsi.h, but hey, maybe this is useful for Sun3 too! :)&n; *&n; * Options :&n; *&n; * PARITY - enable parity checking.  Not supported.&n; *&n; * SCSI2 - enable support for SCSI-II tagged queueing.  Untested.&n; *&n; * USLEEP - enable support for devices that don&squot;t disconnect.  Untested.&n; */
@@ -28,10 +28,10 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;sun3_scsi.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
+multiline_comment|/* #define OLDDMA */
 DECL|macro|USE_WRAPPER
 mdefine_line|#define USE_WRAPPER
-DECL|macro|RESET_BOOT
-mdefine_line|#define RESET_BOOT
+multiline_comment|/*#define RESET_BOOT */
 DECL|macro|DRIVER_SETUP
 mdefine_line|#define DRIVER_SETUP
 DECL|macro|NDEBUG
@@ -43,8 +43,7 @@ macro_line|#undef RESET_BOOT
 DECL|macro|DRIVER_SETUP
 macro_line|#undef DRIVER_SETUP
 macro_line|#endif
-DECL|macro|SUPPORT_TAGS
-macro_line|#undef SUPPORT_TAGS
+multiline_comment|/* #define SUPPORT_TAGS */
 DECL|macro|ENABLE_IRQ
 mdefine_line|#define&t;ENABLE_IRQ()&t;enable_irq( IRQ_SUN3_SCSI ); 
 r_static
@@ -97,6 +96,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|setup_can_queue
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|variable|setup_cmd_per_lun
 r_static
 r_int
@@ -105,6 +112,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|setup_cmd_per_lun
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|variable|setup_sg_tablesize
 r_static
 r_int
@@ -112,6 +127,14 @@ id|setup_sg_tablesize
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|setup_sg_tablesize
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_TAGS
 DECL|variable|setup_use_tagged_queuing
@@ -122,6 +145,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|setup_use_tagged_queuing
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|setup_hostid
 r_static
@@ -130,6 +161,14 @@ id|setup_hostid
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|setup_hostid
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
 DECL|variable|sun3_dma_setup_done
 r_static
@@ -166,6 +205,7 @@ id|sun3_dma_regs
 op_star
 id|dregs
 suffix:semicolon
+macro_line|#ifdef OLDDMA
 DECL|variable|dmabuf
 r_static
 r_int
@@ -176,6 +216,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* dma memory buffer */
+macro_line|#endif
 DECL|variable|udc_regs
 r_static
 r_struct
@@ -360,13 +401,6 @@ id|tpnt
 r_int
 r_int
 id|ioaddr
-comma
-id|iopte
-suffix:semicolon
-r_int
-id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
@@ -477,92 +511,20 @@ op_assign
 l_int|7
 suffix:semicolon
 )brace
-multiline_comment|/* Taken from Sammy&squot;s lance driver: */
-multiline_comment|/* IOBASE_SUN3_SCSI can be found within the IO pmeg with some effort */
-r_for
-c_loop
-(paren
 id|ioaddr
 op_assign
-l_int|0xfe00000
-suffix:semicolon
-id|ioaddr
-OL
 (paren
-l_int|0xfe00000
-op_plus
-id|SUN3_PMEG_SIZE
+r_int
+r_int
 )paren
-suffix:semicolon
-id|ioaddr
-op_add_assign
-id|SUN3_PTE_SIZE
-)paren
-(brace
-id|iopte
-op_assign
-id|sun3_get_pte
+id|ioremap
 c_func
 (paren
-id|ioaddr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|iopte
-op_amp
-id|SUN3_PAGE_TYPE_IO
-)paren
-)paren
-(brace
-multiline_comment|/* this an io page? */
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|iopte
-op_amp
-id|SUN3_PAGE_PGNUM_MASK
-)paren
-op_lshift
-id|PAGE_SHIFT
-)paren
-op_eq
 id|IOBASE_SUN3_SCSI
-)paren
-(brace
-id|count
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|count
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;No Sun3 NCR5380 found!&bslash;n&quot;
+comma
+id|PAGE_SIZE
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|sun3_scsi_regp
 op_assign
 (paren
@@ -662,7 +624,7 @@ l_int|0
 )paren
 id|setup_use_tagged_queuing
 op_assign
-id|DEFAULT_USE_TAGGED_QUEUING
+id|USE_TAGGED_QUEUING
 suffix:semicolon
 macro_line|#endif
 id|instance
@@ -874,10 +836,19 @@ id|called
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#ifdef RESET_BOOT
+id|sun3_scsi_reset_boot
+c_func
+(paren
+id|instance
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef MODULE
 DECL|function|sun3scsi_release
 r_int
 id|sun3scsi_release
@@ -902,10 +873,17 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|sun3_scsi_regp
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef RESET_BOOT
 multiline_comment|/*&n; * Our &squot;bus reset on boot&squot; function&n; */
 DECL|function|sun3_scsi_reset_boot
@@ -943,12 +921,7 @@ l_string|&quot;Sun3 SCSI: resetting the SCSI bus...&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* switch off SCSI IRQ - catch an interrupt without IRQ bit set else */
-id|sun3_disable_irq
-c_func
-(paren
-id|IRQ_SUN3_SCSI
-)paren
-suffix:semicolon
+singleline_comment|//       &t;sun3_disable_irq( IRQ_SUN3_SCSI );
 multiline_comment|/* get in phase */
 id|NCR5380_write
 c_func
@@ -1025,12 +998,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* switch on SCSI IRQ again */
-id|sun3_enable_irq
-c_func
-(paren
-id|IRQ_SUN3_SCSI
-)paren
-suffix:semicolon
+singleline_comment|//       &t;sun3_enable_irq( IRQ_SUN3_SCSI );
 id|printk
 c_func
 (paren
@@ -1255,6 +1223,21 @@ r_void
 op_star
 id|addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sun3_dma_orig_addr
+op_ne
+l_int|NULL
+)paren
+(brace
+id|dvma_unmap
+c_func
+(paren
+id|sun3_dma_orig_addr
+)paren
+suffix:semicolon
+)brace
 singleline_comment|//&t;addr = sun3_dvma_page((unsigned long)data, (unsigned long)dmabuf);
 id|addr
 op_assign
@@ -1640,17 +1623,9 @@ id|write_flag
 r_if
 c_cond
 (paren
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|cmd-&gt;request-&gt;cmd
-op_eq
-l_int|1
-)paren
+id|cmd-&gt;request-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
 r_return
@@ -1658,6 +1633,35 @@ id|wanted
 suffix:semicolon
 )brace
 r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|sun3scsi_dma_start
+r_static
+r_inline
+r_int
+id|sun3scsi_dma_start
+c_func
+(paren
+r_int
+r_int
+id|count
+comma
+r_int
+r_char
+op_star
+id|data
+)paren
+(brace
+id|sun3_udc_write
+c_func
+(paren
+id|UDC_CHN_START
+comma
+id|UDC_CSR
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1690,6 +1694,7 @@ id|sun3_dma_active
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if 1
 singleline_comment|// check to empty the fifo on a read
 r_if
 c_cond
@@ -1730,6 +1735,12 @@ op_le
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;sun3scsi: fifo failed to empty!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1742,6 +1753,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 id|count
 op_assign
 id|sun3scsi_dma_count
@@ -1913,6 +1925,10 @@ c_func
 (paren
 id|sun3_dma_orig_addr
 )paren
+suffix:semicolon
+id|sun3_dma_orig_addr
+op_assign
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 id|sun3_udc_write

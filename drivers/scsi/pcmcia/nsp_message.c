@@ -218,7 +218,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; %s msgout: xfer short&bslash;n&quot;
+l_string|&quot; %s: msgout: xfer short&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren

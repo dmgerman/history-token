@@ -134,11 +134,12 @@ c_func
 r_int
 id|fd
 comma
-r_void
+r_const
+r_char
 op_star
 id|buf
 comma
-id|ssize_t
+r_int
 id|size
 )paren
 suffix:semicolon

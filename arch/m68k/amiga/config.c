@@ -457,6 +457,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|amiga_mksound
+c_func
+(paren
+r_int
+r_int
+id|count
+comma
+r_int
+r_int
+id|ticks
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_AMIGA_FLOPPY
 r_extern
 r_void
@@ -1798,7 +1812,7 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 id|mach_beep
 op_assign
 id|amiga_mksound

@@ -780,6 +780,12 @@ r_int
 id|mode
 )paren
 (brace
+id|cia_kill_arch
+c_func
+(paren
+id|mode
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -857,9 +863,9 @@ op_assign
 id|cia_machine_check
 comma
 dot
-id|max_dma_address
+id|max_isa_dma_address
 op_assign
-id|ALPHA_ALCOR_MAX_DMA_ADDRESS
+id|ALPHA_ALCOR_MAX_ISA_DMA_ADDRESS
 comma
 dot
 id|min_io_address
@@ -964,9 +970,9 @@ op_assign
 id|cia_machine_check
 comma
 dot
-id|max_dma_address
+id|max_isa_dma_address
 op_assign
-id|ALPHA_MAX_DMA_ADDRESS
+id|ALPHA_MAX_ISA_DMA_ADDRESS
 comma
 dot
 id|min_io_address

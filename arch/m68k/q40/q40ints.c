@@ -806,16 +806,16 @@ multiline_comment|/* &n; * this stuff doesn&squot;t really belong here..&n;*/
 DECL|variable|ql_ticks
 r_int
 id|ql_ticks
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 200Hz ticks since last jiffie */
 DECL|variable|sound_ticks
 r_static
 r_int
 id|sound_ticks
-op_assign
-l_int|0
+suffix:semicolon
+DECL|variable|q40rtc_oldsecs
+r_int
+id|q40rtc_oldsecs
 suffix:semicolon
 DECL|macro|SVOL
 mdefine_line|#define SVOL 45
@@ -979,13 +979,13 @@ op_logical_and
 (paren
 id|q40rtc_oldsecs
 op_ne
-id|RTC_SECS
+id|Q40_RTC_SECS
 )paren
 )paren
 (brace
 id|q40rtc_oldsecs
 op_assign
-id|RTC_SECS
+id|Q40_RTC_SECS
 suffix:semicolon
 id|gen_rtc_irq_flags
 op_assign

@@ -2664,9 +2664,7 @@ id|PAGE_SIZE
 suffix:semicolon
 multiline_comment|/* This is the optimal IO size (for stat) */
 id|inode-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|ufsi-&gt;i_flags
 op_assign

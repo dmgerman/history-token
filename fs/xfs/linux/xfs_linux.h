@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/xfs_iops.h&gt;
 macro_line|#include &lt;linux/xfs_super.h&gt;
 macro_line|#include &lt;linux/xfs_globals.h&gt;
 macro_line|#include &lt;linux/xfs_fs_subr.h&gt;
+macro_line|#include &lt;linux/xfs_lrw.h&gt;
 macro_line|#include &lt;pagebuf/page_buf.h&gt;
 macro_line|#ifndef STATIC
 DECL|macro|STATIC
@@ -152,16 +153,10 @@ DECL|macro|EFSCORRUPTED
 mdefine_line|#define EFSCORRUPTED&t;990&t;&t;/* Filesystem is corrupted */
 DECL|macro|SYNCHRONIZE
 mdefine_line|#define SYNCHRONIZE()&t;barrier()
-DECL|macro|lbolt
-mdefine_line|#define lbolt&t;&t;jiffies
 DECL|macro|rootdev
 mdefine_line|#define rootdev&t;&t;ROOT_DEV
 DECL|macro|__return_address
 mdefine_line|#define __return_address __builtin_return_address(0)
-DECL|macro|LONGLONG_MAX
-mdefine_line|#define LONGLONG_MAX&t;9223372036854775807LL&t;/* max &quot;long long int&quot; */
-DECL|macro|nopkg
-mdefine_line|#define nopkg()&t;&t;( ENOSYS )
 multiline_comment|/* IRIX uses a dynamic sizing algorithm (ndquot = 200 + numprocs*2) */
 multiline_comment|/* we may well need to fine-tune this if it ever becomes an issue.  */
 DECL|macro|DQUOT_MAX_HEURISTIC

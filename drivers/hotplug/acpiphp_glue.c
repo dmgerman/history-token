@@ -497,7 +497,7 @@ id|sun
 id|warn
 c_func
 (paren
-l_string|&quot;sibling found, but _SUN doesn&squot;t match!&quot;
+l_string|&quot;sibling found, but _SUN doesn&squot;t match!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -600,7 +600,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;found ACPI PCI Hotplug slot at PCI %02x:%02x Slot:0x%x&quot;
+l_string|&quot;found ACPI PCI Hotplug slot at PCI %02x:%02x Slot:%d&bslash;n&quot;
 comma
 id|slot-&gt;bridge-&gt;bus
 comma
@@ -706,7 +706,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;failed to register interrupt notify handler&quot;
+l_string|&quot;failed to register interrupt notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1070,7 +1070,7 @@ id|ACPI_PREFETCHABLE_MEMORY
 id|dbg
 c_func
 (paren
-l_string|&quot;resource type: prefetchable memory 0x%x - 0x%x&quot;
+l_string|&quot;resource type: prefetchable memory 0x%x - 0x%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1103,7 +1103,7 @@ id|res
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1123,7 +1123,7 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;resource type: memory 0x%x - 0x%x&quot;
+l_string|&quot;resource type: memory 0x%x - 0x%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1156,7 +1156,7 @@ id|res
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1179,7 +1179,7 @@ suffix:colon
 id|dbg
 c_func
 (paren
-l_string|&quot;resource type: io 0x%x - 0x%x&quot;
+l_string|&quot;resource type: io 0x%x - 0x%x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1212,7 +1212,7 @@ id|res
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1234,7 +1234,7 @@ suffix:colon
 id|dbg
 c_func
 (paren
-l_string|&quot;resource type: bus number %d - %d&quot;
+l_string|&quot;resource type: bus number %d - %d&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1267,7 +1267,7 @@ id|res
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1319,11 +1319,10 @@ op_amp
 id|bridge-&gt;bus_head
 )paren
 suffix:semicolon
-macro_line|#if 1
-id|info
+id|dbg
 c_func
 (paren
-l_string|&quot;ACPI _CRS resource:&quot;
+l_string|&quot;ACPI _CRS resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_dump_resource
@@ -1332,7 +1331,6 @@ c_func
 id|bridge
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* find pci_bus structure associated to specific bus number */
 DECL|function|find_pci_bus
@@ -1360,7 +1358,6 @@ op_star
 id|l
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -1509,7 +1506,7 @@ id|status
 id|dbg
 c_func
 (paren
-l_string|&quot;_HPP evaluation failed&quot;
+l_string|&quot;_HPP evaluation failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1544,7 +1541,7 @@ id|package-&gt;package.elements
 id|err
 c_func
 (paren
-l_string|&quot;invalid _HPP object; ignoring&quot;
+l_string|&quot;invalid _HPP object; ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1582,7 +1579,7 @@ id|ACPI_TYPE_INTEGER
 id|err
 c_func
 (paren
-l_string|&quot;invalid _HPP parameter type; ignoring&quot;
+l_string|&quot;invalid _HPP parameter type; ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1629,7 +1626,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;_HPP parameter = (%02x, %02x, %02x, %02x)&quot;
+l_string|&quot;_HPP parameter = (%02x, %02x, %02x, %02x)&bslash;n&quot;
 comma
 id|bridge-&gt;hpp.cache_line_size
 comma
@@ -1732,7 +1729,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;failed to register interrupt notify handler&quot;
+l_string|&quot;failed to register interrupt notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1746,11 +1743,10 @@ op_amp
 id|bridge_list
 )paren
 suffix:semicolon
-macro_line|#if 1
 id|dbg
 c_func
 (paren
-l_string|&quot;Bridge resource:&quot;
+l_string|&quot;Bridge resource:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_dump_resource
@@ -1759,7 +1755,6 @@ c_func
 id|bridge
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* allocate and initialize host bridge data structure */
 DECL|function|add_host_bridge
@@ -1899,7 +1894,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;failed to decode bridge resources&quot;
+l_string|&quot;failed to decode bridge resources&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2024,7 +2019,7 @@ l_int|NULL
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2082,7 +2077,7 @@ id|bridge-&gt;pci_dev
 id|err
 c_func
 (paren
-l_string|&quot;Can&squot;t get pci_dev&quot;
+l_string|&quot;Can&squot;t get pci_dev&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2108,7 +2103,7 @@ id|bridge-&gt;pci_bus
 id|err
 c_func
 (paren
-l_string|&quot;This is not a PCI-to-PCI bridge!&quot;
+l_string|&quot;This is not a PCI-to-PCI bridge!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2226,7 +2221,7 @@ id|bridge-&gt;io_head
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2235,7 +2230,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;16bit I/O range: %04x-%04x&quot;
+l_string|&quot;16bit I/O range: %04x-%04x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2354,7 +2349,7 @@ id|bridge-&gt;io_head
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2363,7 +2358,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;32bit I/O range: %08x-%08x&quot;
+l_string|&quot;32bit I/O range: %08x-%08x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2390,7 +2385,7 @@ suffix:colon
 id|dbg
 c_func
 (paren
-l_string|&quot;I/O space unsupported&quot;
+l_string|&quot;I/O space unsupported&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2400,7 +2395,7 @@ suffix:colon
 id|warn
 c_func
 (paren
-l_string|&quot;Unknown I/O range type&quot;
+l_string|&quot;Unknown I/O range type&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2478,7 +2473,7 @@ id|bridge-&gt;mem_head
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2487,7 +2482,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;32bit Memory range: %08x-%08x&quot;
+l_string|&quot;32bit Memory range: %08x-%08x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2599,7 +2594,7 @@ id|bridge-&gt;p_mem_head
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2608,7 +2603,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;32bit Prefetchable memory range: %08x-%08x&quot;
+l_string|&quot;32bit Prefetchable memory range: %08x-%08x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2724,7 +2719,7 @@ id|bridge-&gt;p_mem_head
 id|err
 c_func
 (paren
-l_string|&quot;out of memory&quot;
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2733,7 +2728,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;64bit Prefetchable memory range: %08x%08x-%08x%08x&quot;
+l_string|&quot;64bit Prefetchable memory range: %08x%08x-%08x%08x&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -2796,7 +2791,7 @@ suffix:colon
 id|warn
 c_func
 (paren
-l_string|&quot;Unknown prefetchale memory type&quot;
+l_string|&quot;Unknown prefetchale memory type&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2933,7 +2928,7 @@ id|status
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: _ADR evaluation failure&quot;
+l_string|&quot;%s: _ADR evaluation failure&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3008,13 +3003,9 @@ l_int|0
 id|dbg
 c_func
 (paren
-l_string|&quot;found PCI-to-PCI bridge at PCI %02x:%02x.%d&quot;
+l_string|&quot;found PCI-to-PCI bridge at PCI %s&bslash;n&quot;
 comma
-id|bus
-comma
-id|device
-comma
-id|function
+id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|add_p2p_bridge
@@ -3114,7 +3105,7 @@ id|status
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: _STA evaluation failure&quot;
+l_string|&quot;%s: _STA evaluation failure&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3204,7 +3195,7 @@ r_else
 id|warn
 c_func
 (paren
-l_string|&quot;can&squot;t get bus number, assuming 0&quot;
+l_string|&quot;can&squot;t get bus number, assuming 0&bslash;n&quot;
 )paren
 suffix:semicolon
 id|bus
@@ -3228,7 +3219,7 @@ l_int|0
 id|dbg
 c_func
 (paren
-l_string|&quot;found PCI host-bus bridge with hot-pluggable slots&quot;
+l_string|&quot;found PCI host-bus bridge with hot-pluggable slots&bslash;n&quot;
 )paren
 suffix:semicolon
 id|add_host_bridge
@@ -3288,7 +3279,7 @@ id|status
 id|warn
 c_func
 (paren
-l_string|&quot;find_p2p_bridge faied (error code = 0x%x)&quot;
+l_string|&quot;find_p2p_bridge faied (error code = 0x%x)&bslash;n&quot;
 comma
 id|status
 )paren
@@ -3373,7 +3364,7 @@ id|status
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: failed to get bridge information&quot;
+l_string|&quot;%s: failed to get bridge information&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3432,7 +3423,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;checking PCI-hotplug capable bridges under [%s]&quot;
+l_string|&quot;checking PCI-hotplug capable bridges under [%s]&bslash;n&quot;
 comma
 id|objname
 )paren
@@ -3489,7 +3480,6 @@ r_goto
 id|err_exit
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -3521,15 +3511,11 @@ id|FUNC_HAS_PS0
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: executing _PS0 on %02x:%02x.%d&quot;
+l_string|&quot;%s: executing _PS0 on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|slot-&gt;bridge-&gt;bus
-comma
-id|slot-&gt;device
-comma
-id|func-&gt;function
+id|func-&gt;pci_dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|status
@@ -3559,7 +3545,7 @@ id|status
 id|warn
 c_func
 (paren
-l_string|&quot;%s: _PS0 failed&quot;
+l_string|&quot;%s: _PS0 failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3637,7 +3623,6 @@ r_goto
 id|err_exit
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -3669,15 +3654,11 @@ id|FUNC_HAS_PS3
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: executing _PS3 on %02x:%02x.%d&quot;
+l_string|&quot;%s: executing _PS3 on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|slot-&gt;bridge-&gt;bus
-comma
-id|slot-&gt;device
-comma
-id|func-&gt;function
+id|func-&gt;pci_dev-&gt;slot_name
 )paren
 suffix:semicolon
 id|status
@@ -3707,7 +3688,7 @@ id|status
 id|warn
 c_func
 (paren
-l_string|&quot;%s: _PS3 failed&quot;
+l_string|&quot;%s: _PS3 failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3724,7 +3705,6 @@ suffix:semicolon
 )brace
 )brace
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -3756,15 +3736,11 @@ id|FUNC_HAS_EJ0
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: executing _EJ0 on %02x:%02x.%d&quot;
+l_string|&quot;%s: executing _EJ0 on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|slot-&gt;bridge-&gt;bus
-comma
-id|slot-&gt;device
-comma
-id|func-&gt;function
+id|func-&gt;pci_dev-&gt;slot_name
 )paren
 suffix:semicolon
 multiline_comment|/* _EJ0 method take one argument */
@@ -3813,7 +3789,7 @@ id|status
 id|warn
 c_func
 (paren
-l_string|&quot;%s: _EJ0 failed&quot;
+l_string|&quot;%s: _EJ0 failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3922,7 +3898,7 @@ multiline_comment|/* This case shouldn&squot;t happen */
 id|err
 c_func
 (paren
-l_string|&quot;pci_dev structure already exists.&quot;
+l_string|&quot;pci_dev structure already exists.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4012,7 +3988,7 @@ id|dev
 id|err
 c_func
 (paren
-l_string|&quot;No new device found&quot;
+l_string|&quot;No new device found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4069,7 +4045,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* associate pci_dev to our representation */
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -4136,11 +4111,10 @@ id|slot-&gt;flags
 op_or_assign
 id|SLOT_ENABLED
 suffix:semicolon
-macro_line|#if 1
 id|dbg
 c_func
 (paren
-l_string|&quot;Available resources:&quot;
+l_string|&quot;Available resources:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_dump_resource
@@ -4149,7 +4123,6 @@ c_func
 id|slot-&gt;bridge
 )paren
 suffix:semicolon
-macro_line|#endif
 id|err_exit
 suffix:colon
 r_return
@@ -4198,7 +4171,6 @@ r_goto
 id|err_exit
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -4247,7 +4219,7 @@ r_else
 id|err
 c_func
 (paren
-l_string|&quot;failed to unconfigure device&quot;
+l_string|&quot;failed to unconfigure device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4310,7 +4282,6 @@ op_star
 id|func
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|l
 comma
@@ -4415,7 +4386,7 @@ id|sta
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ACPI event handlers&n; */
-multiline_comment|/**&n; * handle_hotplug_event_bridge - handle ACPI event on bridges&n; *&n; * @handle: Notify()&squot;ed acpi_handle &n; * @type: Notify code&n; * @context: pointer to acpiphp_bridge structure&n; *&n; * handles ACPI event notification on {host,p2p} bridges&n; *&n; */
+multiline_comment|/**&n; * handle_hotplug_event_bridge - handle ACPI event on bridges&n; *&n; * @handle: Notify()&squot;ed acpi_handle&n; * @type: Notify code&n; * @context: pointer to acpiphp_bridge structure&n; *&n; * handles ACPI event notification on {host,p2p} bridges&n; *&n; */
 DECL|function|handle_hotplug_event_bridge
 r_static
 r_void
@@ -4494,7 +4465,7 @@ multiline_comment|/* bus re-enumerate */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Bus check notify on %s&quot;
+l_string|&quot;%s: Bus check notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4516,7 +4487,7 @@ multiline_comment|/* device check */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device check notify on %s&quot;
+l_string|&quot;%s: Device check notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4538,7 +4509,7 @@ multiline_comment|/* wake event */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device wake notify on %s&quot;
+l_string|&quot;%s: Device wake notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4554,7 +4525,7 @@ multiline_comment|/* request device eject */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device eject notify on %s&quot;
+l_string|&quot;%s: Device eject notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4568,7 +4539,7 @@ suffix:colon
 id|warn
 c_func
 (paren
-l_string|&quot;notify_handler: unknown event type 0x%x for %s&quot;
+l_string|&quot;notify_handler: unknown event type 0x%x for %s&bslash;n&quot;
 comma
 id|type
 comma
@@ -4579,7 +4550,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * handle_hotplug_event_func - handle ACPI event on functions (i.e. slots)&n; *&n; * @handle: Notify()&squot;ed acpi_handle &n; * @type: Notify code&n; * @context: pointer to acpiphp_func structure&n; *&n; * handles ACPI event notification on slots&n; *&n; */
+multiline_comment|/**&n; * handle_hotplug_event_func - handle ACPI event on functions (i.e. slots)&n; *&n; * @handle: Notify()&squot;ed acpi_handle&n; * @type: Notify code&n; * @context: pointer to acpiphp_func structure&n; *&n; * handles ACPI event notification on slots&n; *&n; */
 DECL|function|handle_hotplug_event_func
 r_static
 r_void
@@ -4658,7 +4629,7 @@ multiline_comment|/* bus re-enumerate */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Bus check notify on %s&quot;
+l_string|&quot;%s: Bus check notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4680,7 +4651,7 @@ multiline_comment|/* device check : re-enumerate from parent bus */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device check notify on %s&quot;
+l_string|&quot;%s: Device check notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4702,7 +4673,7 @@ multiline_comment|/* wake event */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device wake notify on %s&quot;
+l_string|&quot;%s: Device wake notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4718,7 +4689,7 @@ multiline_comment|/* request device eject */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: Device eject notify on %s&quot;
+l_string|&quot;%s: Device eject notify on %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -4738,7 +4709,7 @@ suffix:colon
 id|warn
 c_func
 (paren
-l_string|&quot;notify_handler: unknown event type 0x%x for %s&quot;
+l_string|&quot;notify_handler: unknown event type 0x%x for %s&bslash;n&quot;
 comma
 id|type
 comma
@@ -4805,7 +4776,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;%s: acpi_walk_namespace() failed&quot;
+l_string|&quot;%s: acpi_walk_namespace() failed&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4863,7 +4834,6 @@ id|acpi_status
 id|status
 suffix:semicolon
 id|list_for_each_safe
-c_func
 (paren
 id|l1
 comma
@@ -4897,7 +4867,6 @@ op_assign
 id|slot-&gt;next
 suffix:semicolon
 id|list_for_each_safe
-c_func
 (paren
 id|l2
 comma
@@ -4972,7 +4941,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;failed to remove notify handler&quot;
+l_string|&quot;failed to remove notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -5017,7 +4986,7 @@ id|status
 id|err
 c_func
 (paren
-l_string|&quot;failed to remove notify handler&quot;
+l_string|&quot;failed to remove notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_free_resource
@@ -5082,7 +5051,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|node
 comma
@@ -5102,7 +5070,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Bus%d %dslot(s)&quot;
+l_string|&quot;Bus%d %dslot(s)&bslash;n&quot;
 comma
 id|bridge-&gt;bus
 comma
@@ -5117,7 +5085,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Total %dslots&quot;
+l_string|&quot;Total %dslots&bslash;n&quot;
 comma
 id|num_slots
 )paren
@@ -5161,7 +5129,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|node
 comma
@@ -5246,7 +5213,6 @@ op_star
 id|slot
 suffix:semicolon
 id|list_for_each
-c_func
 (paren
 id|node
 comma
@@ -5291,7 +5257,7 @@ multiline_comment|/* should never happen! */
 id|err
 c_func
 (paren
-l_string|&quot;%s: no object for id %d&quot;
+l_string|&quot;%s: no object for id %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5461,7 +5427,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;Available resources:&quot;
+l_string|&quot;Available resources:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|acpiphp_dump_resource
@@ -5575,7 +5541,7 @@ id|retval
 id|err
 c_func
 (paren
-l_string|&quot;Error occured in enabling&quot;
+l_string|&quot;Error occured in enabling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -5622,7 +5588,7 @@ id|retval
 id|err
 c_func
 (paren
-l_string|&quot;Error occured in enabling&quot;
+l_string|&quot;Error occured in enabling&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -5645,7 +5611,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: %d enabled, %d disabled&quot;
+l_string|&quot;%s: %d enabled, %d disabled&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

@@ -15,6 +15,11 @@ DECL|macro|LANGUAGE
 macro_line|#  define LANGUAGE C
 macro_line|# endif
 macro_line|#endif
+multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */
+DECL|macro|SA1101_p2v
+mdefine_line|#define SA1101_p2v( x )         ((x) - SA1101_BASE + 0xf4000000)
+DECL|macro|SA1101_v2p
+mdefine_line|#define SA1101_v2p( x )         ((x) - 0xf4000000  + SA1101_BASE)
 macro_line|#ifndef SA1101_p2v
 DECL|macro|SA1101_p2v
 mdefine_line|#define SA1101_p2v(PhAdd)  (PhAdd)

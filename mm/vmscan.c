@@ -696,6 +696,7 @@ id|mapping
 op_assign
 id|page-&gt;mapping
 suffix:semicolon
+macro_line|#ifdef CONFIG_SWAP
 multiline_comment|/*&n;&t;&t; * Anonymous process memory without backing store. Try to&n;&t;&t; * allocate it some swap space here.&n;&t;&t; *&n;&t;&t; * XXX: implement swap clustering ?&n;&t;&t; */
 r_if
 c_cond
@@ -810,6 +811,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * FIXME: this is CPU-inefficient for shared mappings.&n;&t;&t; * try_to_unmap() will set the page dirty and -&gt;vm_writeback&n;&t;&t; * will write it.  So we&squot;re back to page-at-a-time writepage&n;&t;&t; * in LRU order.&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * If the page is dirty, only perform writeback if that write&n;&t;&t; * will be non-blocking.  To prevent this allocation from being&n;&t;&t; * stalled by pagecache activity.  But note that there may be&n;&t;&t; * stalls if we need to run get_block().  We could test&n;&t;&t; * PagePrivate for that.&n;&t;&t; *&n;&t;&t; * If this process is currently in generic_file_write() against&n;&t;&t; * this page&squot;s queue, we can perform writeback even if that&n;&t;&t; * will block.&n;&t;&t; *&n;&t;&t; * If the page is swapcache, write it back even if that would&n;&t;&t; * block, for some throttling. This happens by accident, because&n;&t;&t; * swap_backing_dev_info is bust: it doesn&squot;t reflect the&n;&t;&t; * congestion state of the swapdevs.  Easy to fix, if needed.&n;&t;&t; * See swapfile.c:page_queue_congested().&n;&t;&t; */
 r_if
@@ -1041,6 +1043,7 @@ r_goto
 id|keep_locked
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SWAP
 r_if
 c_cond
 (paren
@@ -1080,9 +1083,18 @@ c_func
 id|swap
 )paren
 suffix:semicolon
+id|__put_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* The pagecache ref */
+r_goto
+id|free_it
+suffix:semicolon
 )brace
-r_else
-(brace
+macro_line|#endif /* CONFIG_SWAP */
 id|__remove_from_page_cache
 c_func
 (paren
@@ -1096,14 +1108,12 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-)brace
 id|__put_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/* The pagecache ref */
 id|free_it
 suffix:colon
 id|unlock_page

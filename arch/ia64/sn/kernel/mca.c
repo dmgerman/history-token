@@ -414,6 +414,16 @@ DECL|variable|sn_cpei_timer
 r_struct
 id|timer_list
 id|sn_cpei_timer
+op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_void
 id|sn_init_cpei_timer

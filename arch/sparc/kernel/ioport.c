@@ -2264,7 +2264,7 @@ comma
 id|len_total
 )paren
 suffix:semicolon
-macro_line|#if 1
+macro_line|#if 0
 multiline_comment|/* P3 */
 id|printk
 c_func

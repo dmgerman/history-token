@@ -320,6 +320,7 @@ mdefine_line|#define ClearPageDirect(page)&t;&t;clear_bit(PG_direct, &amp;(page)
 DECL|macro|TestClearPageDirect
 mdefine_line|#define TestClearPageDirect(page)&t;test_and_clear_bit(PG_direct, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
+macro_line|#ifdef CONFIG_SWAP
 r_extern
 r_struct
 id|address_space
@@ -327,6 +328,10 @@ id|swapper_space
 suffix:semicolon
 DECL|macro|PageSwapCache
 mdefine_line|#define PageSwapCache(page) ((page)-&gt;mapping == &amp;swapper_space)
+macro_line|#else
+DECL|macro|PageSwapCache
+mdefine_line|#define PageSwapCache(page) 0
+macro_line|#endif
 r_struct
 id|page
 suffix:semicolon

@@ -207,11 +207,15 @@ r_struct
 id|timer_list
 id|mac_sound_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|mac_nosound
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Sort of initialize the sound chip (called from mac_mksound on the first&n; * beep).&n; */
 DECL|function|mac_init_asc

@@ -18731,13 +18731,15 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;args 0x%p mp 0x%p blocksize %d inleaf %d&bslash;n&quot;
+l_string|&quot;args 0x%p mp 0x%p blocksize %u node_ents %u inleaf %u&bslash;n&quot;
 comma
 id|s-&gt;args
 comma
 id|s-&gt;mp
 comma
 id|s-&gt;blocksize
+comma
+id|s-&gt;node_ents
 comma
 id|s-&gt;inleaf
 )paren
@@ -23551,11 +23553,19 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;attroffset %d da_node_ents %d maxicount %Ld inoalign_mask %d&bslash;n&quot;
+l_string|&quot;dir_node_ents %u attr_node_ents %u&bslash;n&quot;
+comma
+id|mp-&gt;m_dir_node_ents
+comma
+id|mp-&gt;m_attr_node_ents
+)paren
+suffix:semicolon
+id|kdb_printf
+c_func
+(paren
+l_string|&quot;attroffset %d maxicount %Ld inoalign_mask %d&bslash;n&quot;
 comma
 id|mp-&gt;m_attroffset
-comma
-id|mp-&gt;m_da_node_ents
 comma
 id|mp-&gt;m_maxicount
 comma

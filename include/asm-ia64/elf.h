@@ -40,6 +40,12 @@ DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;128&t;/* we really need just 72 but let&squot;s leave some headroom... */
 DECL|macro|ELF_NFPREG
 mdefine_line|#define ELF_NFPREG&t;128&t;/* f0 and f1 could be omitted, but so what... */
+DECL|typedef|elf_fpxregset_t
+r_typedef
+r_int
+r_int
+id|elf_fpxregset_t
+suffix:semicolon
 DECL|typedef|elf_greg_t
 r_typedef
 r_int
@@ -112,6 +118,35 @@ id|ibcs2_interpreter
 suffix:semicolon
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;ia64_set_personality(&amp;(ex), ibcs2)
+r_extern
+r_int
+id|dump_task_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_gregset_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_gregs) dump_task_regs(tsk, elf_gregs)
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ELF_H */
 eof

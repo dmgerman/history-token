@@ -742,11 +742,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Copy and release all segment info associated with a VM */
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)&t;&t;&t;do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;&t;&t;do { } while (0)
 multiline_comment|/* Get wait channel for task P.  */
 r_extern
 r_int
