@@ -1582,6 +1582,13 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+DECL|variable|pcibios_resource_to_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_resource_to_bus
+)paren
+suffix:semicolon
 DECL|function|pcibios_bus_to_resource
 r_void
 id|pcibios_bus_to_resource
