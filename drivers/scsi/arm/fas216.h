@@ -841,11 +841,6 @@ DECL|member|dma
 id|dma
 suffix:semicolon
 multiline_comment|/* miscellaneous */
-DECL|member|internal_done
-r_int
-id|internal_done
-suffix:semicolon
-multiline_comment|/* flag to indicate request done */
 DECL|member|magic_end
 r_int
 r_int
@@ -899,15 +894,6 @@ id|done
 id|Scsi_Cmnd
 op_star
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Function: int fas216_command (Scsi_Cmnd *SCpnt)&n; * Purpose : queue a command for adapter to process.&n; * Params  : SCpnt - Command to queue&n; * Returns : scsi result code&n; */
-r_extern
-r_int
-id|fas216_command
-(paren
-id|Scsi_Cmnd
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Function: irqreturn_t fas216_intr (FAS216_Info *info)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : info - interface to service&n; */

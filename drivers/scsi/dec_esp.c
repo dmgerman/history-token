@@ -513,11 +513,6 @@ op_assign
 id|esp_info
 comma
 dot
-id|command
-op_assign
-id|esp_command
-comma
-dot
 id|queuecommand
 op_assign
 id|esp_queue

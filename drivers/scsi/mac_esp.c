@@ -2574,7 +2574,6 @@ id|info
 op_assign
 id|esp_info
 comma
-multiline_comment|/* .command&t;&t;= esp_command, */
 dot
 id|queuecommand
 op_assign
