@@ -214,10 +214,6 @@ id|decr_overclock_proc0_set
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|powersave_nap
-r_int
-id|powersave_nap
-suffix:semicolon
 DECL|variable|aux_device_present
 r_int
 r_char
