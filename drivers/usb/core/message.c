@@ -3284,6 +3284,17 @@ id|manual
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
+suffix:semicolon
 id|iface
 op_assign
 id|usb_ifnum_to_if
@@ -3543,6 +3554,17 @@ r_struct
 id|usb_host_config
 op_star
 id|config
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
 suffix:semicolon
 multiline_comment|/* caller must own dev-&gt;serialize (config won&squot;t change)&n;&t; * and the usb bus readlock (so driver bindings are stable);&n;&t; * so calls during probe() are fine&n;&t; */
 r_for
@@ -3883,6 +3905,17 @@ id|dev-&gt;dev
 comma
 l_string|&quot;config 0 descriptor??&bslash;n&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_eq
+id|USB_STATE_SUSPENDED
+)paren
+r_return
+op_minus
+id|EHOSTUNREACH
 suffix:semicolon
 multiline_comment|/* Allocate memory for new interfaces before doing anything else,&n;&t; * so that if we run out then nothing will have changed. */
 id|n
