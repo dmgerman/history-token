@@ -2403,7 +2403,7 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-suffix:semicolon
+comma
 )brace
 suffix:semicolon
 DECL|function|agp_intel_i460_probe

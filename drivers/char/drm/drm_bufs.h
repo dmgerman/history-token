@@ -327,7 +327,7 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if !defined(__sparc__) &amp;&amp; !defined(__alpha__)
+macro_line|#if !defined(__sparc__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__ia64__)
 r_if
 c_cond
 (paren
