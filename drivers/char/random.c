@@ -6619,6 +6619,9 @@ r_int
 id|nbytes
 comma
 r_int
+id|min
+comma
+r_int
 id|flags
 )paren
 suffix:semicolon
@@ -6711,6 +6714,10 @@ id|tmp
 comma
 id|bytes
 comma
+id|random_read_wakeup_thresh
+op_div
+l_int|8
+comma
 id|EXTRACT_ENTROPY_LIMIT
 )paren
 suffix:semicolon
@@ -6742,7 +6749,7 @@ l_int|8
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * If the EXTRACT_ENTROPY_SECONDARY flag is given, then we are actually&n; * extracting entropy from the secondary pool, and can refill from the&n; * primary pool if needed.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
+multiline_comment|/*&n; * This function extracts randomness from the &quot;entropy pool&quot;, and&n; * returns it in a buffer.  This function computes how many remaining&n; * bits of entropy are left in the pool, but it does not restrict the&n; * number of bytes that are actually obtained.  If the EXTRACT_ENTROPY_USER&n; * flag is given, then the buf pointer is assumed to be in user space.&n; *&n; * If the EXTRACT_ENTROPY_SECONDARY flag is given, then we are actually&n; * extracting entropy from the secondary pool, and can refill from the&n; * primary pool if needed.&n; *&n; * If we have less than min bytes of entropy available, exit without&n; * transferring any. This helps avoid racing when reseeding.&n; *&n; * Note: extract_entropy() assumes that .poolwords is a multiple of 16 words.&n; */
 DECL|function|extract_entropy
 r_static
 id|ssize_t
@@ -6760,6 +6767,9 @@ id|buf
 comma
 r_int
 id|nbytes
+comma
+r_int
+id|min
 comma
 r_int
 id|flags
@@ -6842,6 +6852,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|r-&gt;entropy_count
+op_div
+l_int|8
+OL
+id|min
+)paren
+(brace
+id|nbytes
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|flags
 op_amp
 id|EXTRACT_ENTROPY_LIMIT
@@ -6892,6 +6919,7 @@ op_amp
 id|random_write_wait
 )paren
 suffix:semicolon
+)brace
 id|DEBUG_ENT
 c_func
 (paren
@@ -7303,6 +7331,8 @@ id|buf
 comma
 id|nbytes
 comma
+l_int|0
+comma
 id|EXTRACT_ENTROPY_SECONDARY
 )paren
 suffix:semicolon
@@ -7682,6 +7712,8 @@ id|buf
 comma
 id|n
 comma
+l_int|0
+comma
 id|EXTRACT_ENTROPY_USER
 op_or
 id|EXTRACT_ENTROPY_LIMIT
@@ -7901,6 +7933,8 @@ comma
 id|buf
 comma
 id|nbytes
+comma
+l_int|0
 comma
 id|flags
 )paren
