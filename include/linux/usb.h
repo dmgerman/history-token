@@ -644,6 +644,8 @@ id|private_data
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_usb_interface
+mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface, dev)
 multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
 DECL|struct|usb_config_descriptor
 r_struct
@@ -1207,6 +1209,8 @@ id|USB_MAXCHILDREN
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_usb_device
+mdefine_line|#define&t;to_usb_device(d) container_of(d, struct usb_device, dev)
 r_extern
 r_struct
 id|usb_device

@@ -1604,15 +1604,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check if configuration type 1 works.&n;&t; */

@@ -697,20 +697,11 @@ mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__(&quot;sti&quot;: 
 multiline_comment|/* used in the idle loop; sti takes one instruction cycle to complete */
 DECL|macro|safe_halt
 mdefine_line|#define safe_halt()&t;&t;__asm__ __volatile__(&quot;sti; hlt&quot;: : :&quot;memory&quot;)
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;!(flags &amp; (1&lt;&lt;9));&t;&t;&bslash;&n;})
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;__asm__ __volatile__(&quot;pushfl ; popl %0 ; cli&quot;:&quot;=g&quot; (x): /* no input */ :&quot;memory&quot;)
-multiline_comment|/*&n; * Compatibility macros - they will be removed after some time.&n; */
-macro_line|#if !CONFIG_SMP
-DECL|macro|sti
-macro_line|# define sti() local_irq_enable()
-DECL|macro|cli
-macro_line|# define cli() local_irq_disable()
-DECL|macro|save_flags
-macro_line|# define save_flags(flags) local_save_flags(flags)
-DECL|macro|restore_flags
-macro_line|# define restore_flags(flags) local_irq_restore(flags)
-macro_line|#endif
 multiline_comment|/*&n; * disable hlt during certain critical i/o operations&n; */
 DECL|macro|HAVE_DISABLE_HLT
 mdefine_line|#define HAVE_DISABLE_HLT

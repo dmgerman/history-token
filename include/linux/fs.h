@@ -1126,7 +1126,7 @@ id|inode
 (brace
 r_return
 op_amp
-id|list_entry
+id|container_of
 c_func
 (paren
 id|inode
@@ -1157,7 +1157,7 @@ id|socket
 (brace
 r_return
 op_amp
-id|list_entry
+id|container_of
 c_func
 (paren
 id|socket

@@ -940,6 +940,16 @@ op_star
 id|q
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__blk_stop_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * get ready for proper ref counting&n; */
 DECL|macro|blk_put_queue
 mdefine_line|#define blk_put_queue(q)&t;do { } while (0)

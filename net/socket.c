@@ -778,7 +778,7 @@ c_func
 (paren
 id|sock_inode_cachep
 comma
-id|list_entry
+id|container_of
 c_func
 (paren
 id|inode

@@ -779,15 +779,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* init ... */
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_do

@@ -181,15 +181,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait for idle.&n;&t; */
@@ -269,15 +264,10 @@ comma
 id|query_mask
 suffix:semicolon
 multiline_comment|/*&n;&t; * Hack. The clustered APIC addressing mode doesn&squot;t allow us to send &n;&t; * to an arbitrary mask, so I do a unicasts to each CPU instead. This &n;&t; * should be modified to do 1 message per cluster ID - mbligh&n;&t; */
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for

@@ -571,6 +571,8 @@ id|dev
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_device
+mdefine_line|#define to_device(d) container_of(d, struct device, dir)
 r_static
 r_inline
 r_struct

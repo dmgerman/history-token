@@ -445,7 +445,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * list_entry - get the struct for this entry&n; * @ptr:&t;the &amp;list_t pointer.&n; * @type:&t;the type of the struct this is embedded in.&n; * @member:&t;the name of the list_struct within the struct.&n; */
 DECL|macro|list_entry
-mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;((type *)((char *)(ptr)-(unsigned long)(&amp;((type *)0)-&gt;member)))
+mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;container_of(ptr, type, member)
 multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;list_t to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
 mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))

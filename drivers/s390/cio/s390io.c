@@ -375,14 +375,11 @@ id|irq_IPL_TOD
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * As we don&squot;t know about the calling environment&n;&t; *  we assure running disabled. Before leaving the&n;&t; *  function we resestablish the old environment.&n;&t; *&n;&t; * Note : as we don&squot;t need a system wide lock, therefore&n;&t; *        we shouldn&squot;t use cli(), but local_irq_disable() as this&n;&t; *        affects the current CPU only.&n;&t; */
-id|local_save_flags
+multiline_comment|/*&n;&t; * As we don&squot;t know about the calling environment&n;&t; *  we assure running disabled. Before leaving the&n;&t; *  function we resestablish the old environment.&n;&t; *&n;&t; * Note : as we don&squot;t need a system wide lock, therefore&n;&t; *        we shouldn&squot;t use cli(), but local_irq_save() as this&n;&t; *        affects the current CPU only.&n;&t; */
+id|local_irq_save
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * disable all interrupts&n;&t; */
@@ -1191,14 +1188,11 @@ comma
 id|dbf_txt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Before playing around with irq locks we should assure&n;&t; *   running disabled on (just) our CPU. Sync. I/O requests&n;&t; *   also require to run disabled.&n;&t; *&n;&t; * Note : as no global lock is required, we must not use&n;&t; *        cli(), but local_irq_disable() instead.   &n;&t; */
-id|local_save_flags
+multiline_comment|/*&n;&t; * Before playing around with irq locks we should assure&n;&t; *   running disabled on (just) our CPU. Sync. I/O requests&n;&t; *   also require to run disabled.&n;&t; *&n;&t; * Note : as no global lock is required, we must not use&n;&t; *        cli(), but local_irq_save() instead.   &n;&t; */
+id|local_irq_save
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-(paren
 )paren
 suffix:semicolon
 id|rdc_ccw
@@ -1724,13 +1718,10 @@ op_assign
 l_int|5
 suffix:semicolon
 multiline_comment|/* retry count */
-id|local_save_flags
+id|local_irq_save
+c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-(paren
 )paren
 suffix:semicolon
 r_if

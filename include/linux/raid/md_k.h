@@ -932,17 +932,6 @@ r_int
 id|nr
 )paren
 suffix:semicolon
-r_extern
-id|mdk_rdev_t
-op_star
-id|get_spare
-c_func
-(paren
-id|mddev_t
-op_star
-id|mddev
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * iterates through some rdev ringlist. It&squot;s safe to remove the&n; * current &squot;rdev&squot;. Dont touch &squot;tmp&squot; though.&n; */
 DECL|macro|ITERATE_RDEV_GENERIC
 mdefine_line|#define ITERATE_RDEV_GENERIC(head,rdev,tmp)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for ((tmp) = (head).next;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(rdev) = (list_entry((tmp), mdk_rdev_t, same_set)),&t;&bslash;&n;&t;&t;&t;(tmp) = (tmp)-&gt;next, (tmp)-&gt;prev != &amp;(head)&t;&bslash;&n;&t;&t;; )

@@ -1530,6 +1530,8 @@ id|sdev_driverfs_dev
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_scsi_device
+mdefine_line|#define&t;to_scsi_device(d)&t;&bslash;&n;&t;container_of(d, struct scsi_device, sdev_driverfs_dev)
 multiline_comment|/*&n; * The Scsi_Cmnd structure is used by scsi.c internally, and for communication&n; * with low level drivers that support multiple outstanding commands.&n; */
 DECL|struct|scsi_pointer
 r_typedef

@@ -2724,7 +2724,7 @@ id|q-&gt;queue_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue()&n; **/
+multiline_comment|/**&n; * blk_start_queue - restart a previously stopped queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   blk_start_queue() will clear the stop flag on the queue, and call&n; *   the request_fn for the queue if it was in a stopped state when&n; *   entered. Also see blk_stop_queue(). Must not be called from driver&n; *   request function due to recursion issues.&n; **/
 DECL|function|blk_start_queue
 r_void
 id|blk_start_queue
@@ -2788,6 +2788,33 @@ id|flags
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * __blk_stop_queue: see blk_stop_queue()&n; *&n; * Description:&n; *  Like blk_stop_queue(), bust queue_lock must be held&n; **/
+DECL|function|__blk_stop_queue
+r_void
+id|__blk_stop_queue
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+)paren
+(brace
+id|blk_remove_plug
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|QUEUE_FLAG_STOPPED
+comma
+op_amp
+id|q-&gt;queue_flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * blk_stop_queue - stop a queue&n; * @q:    The &amp;request_queue_t in question&n; *&n; * Description:&n; *   The Linux block layer assumes that a block driver will consume all&n; *   entries on the request queue when the request_fn strategy is called.&n; *   Often this will not happen, because of hardware limitations (queue&n; *   depth settings). If a device driver gets a &squot;queue full&squot; response,&n; *   or if it simply chooses not to queue more I/O at one point, it can&n; *   call this function to prevent the request_fn from being called until&n; *   the driver has signalled it&squot;s ready to go again. This happens by calling&n; *   blk_start_queue() to restart queue operations.&n; **/
 DECL|function|blk_stop_queue
 r_void
@@ -2811,7 +2838,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|blk_remove_plug
+id|__blk_stop_queue
 c_func
 (paren
 id|q
@@ -2823,15 +2850,6 @@ c_func
 id|q-&gt;queue_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|QUEUE_FLAG_STOPPED
-comma
-op_amp
-id|q-&gt;queue_flags
 )paren
 suffix:semicolon
 )brace
@@ -7131,6 +7149,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_stop_queue
+)paren
+suffix:semicolon
+DECL|variable|__blk_stop_queue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__blk_stop_queue
 )paren
 suffix:semicolon
 DECL|variable|blk_run_queues

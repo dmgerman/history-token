@@ -4505,7 +4505,8 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+multiline_comment|/*&n;&t; * CAREFUL: do not enable preemption yet, the per-CPU&n;&t; * entries rely on us being atomic.&n;&t; */
+id|_raw_spin_unlock
 c_func
 (paren
 op_amp
@@ -4633,6 +4634,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|save_flags
+)paren
+suffix:semicolon
+multiline_comment|/* end of non-preemptible region */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4641,6 +4654,9 @@ id|objp
 )paren
 r_goto
 id|alloc_new_slab_nolock
+suffix:semicolon
+r_return
+id|objp
 suffix:semicolon
 )brace
 )brace
@@ -4699,8 +4715,6 @@ op_amp
 id|cachep-&gt;spinlock
 )paren
 suffix:semicolon
-id|alloc_new_slab_nolock
-suffix:colon
 macro_line|#endif
 id|local_irq_restore
 c_func
@@ -4708,6 +4722,10 @@ c_func
 id|save_flags
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|alloc_new_slab_nolock
+suffix:colon
+macro_line|#endif
 r_if
 c_cond
 (paren

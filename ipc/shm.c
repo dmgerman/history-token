@@ -334,7 +334,7 @@ id|shmd-&gt;vm_file-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * shm_destroy - free the struct shmid_kernel&n; *&n; * @shp: struct to free&n; *&n; * It has to be called with shp and shm_ids.sem locked&n; */
+multiline_comment|/*&n; * shm_destroy - free the struct shmid_kernel&n; *&n; * @shp: struct to free&n; *&n; * It has to be called with shp and shm_ids.sem locked,&n; * but returns with shp unlocked and freed.&n; */
 DECL|function|shm_destroy
 r_static
 r_void
@@ -359,6 +359,12 @@ op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
 id|shm_rmid
+(paren
+id|shp-&gt;id
+)paren
+suffix:semicolon
+id|shm_unlock
+c_func
 (paren
 id|shp-&gt;id
 )paren
@@ -468,6 +474,7 @@ id|shp
 )paren
 suffix:semicolon
 )brace
+r_else
 id|shm_unlock
 c_func
 (paren
@@ -2168,18 +2175,17 @@ id|shp-&gt;shm_perm.key
 op_assign
 id|IPC_PRIVATE
 suffix:semicolon
+id|shm_unlock
+c_func
+(paren
+id|shmid
+)paren
+suffix:semicolon
 )brace
 r_else
 id|shm_destroy
 (paren
 id|shp
-)paren
-suffix:semicolon
-multiline_comment|/* Unlock */
-id|shm_unlock
-c_func
-(paren
-id|shmid
 )paren
 suffix:semicolon
 id|up
@@ -2788,6 +2794,7 @@ id|shp
 )paren
 suffix:semicolon
 )brace
+r_else
 id|shm_unlock
 c_func
 (paren
