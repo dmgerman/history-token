@@ -1816,6 +1816,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|rme9652-&gt;lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL

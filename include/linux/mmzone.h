@@ -24,10 +24,9 @@ macro_line|#else
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
 macro_line|#endif
-DECL|struct|free_area_struct
-r_typedef
+DECL|struct|free_area
 r_struct
-id|free_area_struct
+id|free_area
 (brace
 DECL|member|free_list
 r_struct
@@ -40,9 +39,7 @@ r_int
 op_star
 id|map
 suffix:semicolon
-DECL|typedef|free_area_t
 )brace
-id|free_area_t
 suffix:semicolon
 r_struct
 id|pglist_data
@@ -135,7 +132,8 @@ c_func
 id|_pad2_
 )paren
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-id|free_area_t
+r_struct
+id|free_area
 id|free_area
 (braket
 id|MAX_ORDER
@@ -290,6 +288,10 @@ r_struct
 id|pglist_data
 op_star
 id|pgdat_next
+suffix:semicolon
+DECL|member|kswapd_wait
+id|wait_queue_head_t
+id|kswapd_wait
 suffix:semicolon
 DECL|typedef|pg_data_t
 )brace
@@ -483,6 +485,17 @@ suffix:semicolon
 multiline_comment|/**&n; * for_each_zone - helper macro to iterate over all memory zones&n; * @zone - pointer to struct zone variable&n; *&n; * The user only needs to declare the zone variable, for_each_zone&n; * fills it in. This basically means for_each_zone() is an&n; * easier to read version of this piece of code:&n; *&n; * for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;node_next)&n; * &t;for (i = 0; i &lt; MAX_NR_ZONES; ++i) {&n; * &t;&t;struct zone * z = pgdat-&gt;node_zones + i;&n; * &t;&t;...&n; * &t;}&n; * }&n; */
 DECL|macro|for_each_zone
 mdefine_line|#define for_each_zone(zone) &bslash;&n;&t;for (zone = pgdat_list-&gt;node_zones; zone; zone = next_zone(zone))
+macro_line|#ifdef CONFIG_NUMA
+DECL|macro|MAX_NR_MEMBLKS
+mdefine_line|#define MAX_NR_MEMBLKS&t;BITS_PER_LONG /* Max number of Memory Blocks */
+macro_line|#else /* !CONFIG_NUMA */
+DECL|macro|MAX_NR_MEMBLKS
+mdefine_line|#define MAX_NR_MEMBLKS&t;1
+macro_line|#endif /* CONFIG_NUMA */
+macro_line|#include &lt;asm/topology.h&gt;
+multiline_comment|/* Returns the number of the current Node. */
+DECL|macro|numa_node_id
+mdefine_line|#define numa_node_id()&t;&t;(__cpu_to_node(smp_processor_id()))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
@@ -490,7 +503,7 @@ DECL|macro|NODE_MEM_MAP
 mdefine_line|#define NODE_MEM_MAP(nid)&t;mem_map
 DECL|macro|MAX_NR_NODES
 mdefine_line|#define MAX_NR_NODES&t;&t;1
-macro_line|#else /* !CONFIG_DISCONTIGMEM */
+macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
 multiline_comment|/* page-&gt;zone is currently 8 bits ... */
 DECL|macro|MAX_NR_NODES

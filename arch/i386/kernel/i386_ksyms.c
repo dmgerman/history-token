@@ -129,6 +129,11 @@ macro_line|#endif
 r_extern
 r_int
 r_int
+id|cpu_khz
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|get_cmos_time
 c_func
 (paren
@@ -287,6 +292,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_cmos_time
+)paren
+suffix:semicolon
+DECL|variable|cpu_khz
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_khz
 )paren
 suffix:semicolon
 DECL|variable|apm_info

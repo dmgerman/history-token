@@ -2287,6 +2287,20 @@ c_func
 id|snd_wrapper_kfree
 )paren
 suffix:semicolon
+DECL|variable|snd_wrapper_vmalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_wrapper_vmalloc
+)paren
+suffix:semicolon
+DECL|variable|snd_wrapper_vfree
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_wrapper_vfree
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef HACK_PCI_ALLOC_CONSISTENT
 DECL|variable|snd_pci_hack_alloc_consistent

@@ -90,7 +90,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|omnimeter_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|omnimeter_init

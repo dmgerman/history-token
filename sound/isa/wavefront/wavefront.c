@@ -367,7 +367,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_4232_port
+id|snd_cs4232_pcm_port
 comma
 l_string|&quot;Port # for CS4232 PCM interface.&quot;
 )paren
@@ -375,7 +375,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_cs4232_port
+id|snd_cs4232_pcm_port
 comma
 id|SNDRV_PORT12_DESC
 )paren

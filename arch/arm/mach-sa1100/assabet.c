@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -128,6 +129,7 @@ id|ASSABET_BCR_LIGHT_ON
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Turn on/off the backlight.  When turning the backlight on,&n; * we wait 500us after turning it on so we don&squot;t cause the&n; * supplies to droop when we enable the LCD controller (and&n; * cause a hard reset.)&n; */
 DECL|function|assabet_lcd_power
 r_static
 r_void
@@ -144,12 +146,20 @@ c_cond
 (paren
 id|on
 )paren
+(brace
 id|ASSABET_BCR_set
 c_func
 (paren
 id|ASSABET_BCR_LCD_ON
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|500
+)paren
+suffix:semicolon
+)brace
 r_else
 macro_line|#endif
 id|ASSABET_BCR_clear
@@ -181,6 +191,15 @@ c_func
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+multiline_comment|/*&n;&t; * Ensure that the power supply is in &quot;high power&quot; mode.&n;&t; */
+id|GPDR
+op_or_assign
+id|GPIO_GPIO16
+suffix:semicolon
+id|GPSR
+op_assign
+id|GPIO_GPIO16
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that these pins are set as outputs and are driving&n;&t; * logic 0.  This ensures that we won&squot;t inadvertently toggle&n;&t; * the WS latch in the CPLD, and we don&squot;t float causing&n;&t; * excessive power drain.  --rmk&n;&t; */
 id|GPDR
@@ -255,7 +274,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|assabet_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|assabet_init

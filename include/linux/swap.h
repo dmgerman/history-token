@@ -456,10 +456,6 @@ r_void
 suffix:semicolon
 multiline_comment|/* linux/mm/vmscan.c */
 r_extern
-id|wait_queue_head_t
-id|kswapd_wait
-suffix:semicolon
-r_extern
 r_int
 id|try_to_free_pages
 c_func

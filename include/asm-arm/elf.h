@@ -70,11 +70,6 @@ multiline_comment|/* When the program starts, a1 contains a pointer to a functio
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r)&t;(_r)-&gt;ARM_r0 = 0
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports. */
-r_extern
-r_int
-r_int
-id|elf_hwcap
-suffix:semicolon
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(elf_hwcap)
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo. */

@@ -1249,7 +1249,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sa1110_clk_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|sa1110_clk_init

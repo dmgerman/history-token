@@ -3489,14 +3489,6 @@ id|jh_journal
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-id|task_queue
-id|reiserfs_commit_thread_tq
-suffix:semicolon
-r_extern
-id|wait_queue_head_t
-id|reiserfs_commit_thread_wait
-suffix:semicolon
 multiline_comment|/* biggest tunable defines are right here */
 DECL|macro|JOURNAL_BLOCK_COUNT
 mdefine_line|#define JOURNAL_BLOCK_COUNT 8192 /* number of blocks in the journal */

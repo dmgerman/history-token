@@ -460,7 +460,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|p-&gt;sigmask_lock
+id|p-&gt;sig-&gt;siglock
 comma
 id|flags
 )paren
@@ -475,7 +475,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|p-&gt;sigmask_lock
+id|p-&gt;sig-&gt;siglock
 comma
 id|flags
 )paren

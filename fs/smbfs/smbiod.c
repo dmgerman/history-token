@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
@@ -20,13 +21,33 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;smb_debug.h&quot;
 macro_line|#include &quot;request.h&quot;
 macro_line|#include &quot;proto.h&quot;
+DECL|enum|smbiod_state
+r_enum
+id|smbiod_state
+(brace
+DECL|enumerator|SMBIOD_DEAD
+id|SMBIOD_DEAD
+comma
+DECL|enumerator|SMBIOD_STARTING
+id|SMBIOD_STARTING
+comma
+DECL|enumerator|SMBIOD_RUNNING
+id|SMBIOD_RUNNING
+comma
+)brace
+suffix:semicolon
+DECL|variable|smbiod_state
+r_static
+r_enum
+id|smbiod_state
+id|smbiod_state
+op_assign
+id|SMBIOD_DEAD
+suffix:semicolon
 DECL|variable|smbiod_pid
 r_static
-r_int
+id|pid_t
 id|smbiod_pid
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
@@ -73,14 +94,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
-r_void
-id|smbiod_stop
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * called when there&squot;s work for us to do&n; */
 DECL|function|smbiod_wake_up
 r_void
@@ -92,10 +105,9 @@ c_func
 r_if
 c_cond
 (paren
-id|smbiod_pid
+id|smbiod_state
 op_eq
-op_minus
-l_int|1
+id|SMBIOD_DEAD
 )paren
 r_return
 suffix:semicolon
@@ -125,17 +137,30 @@ c_func
 (paren
 )paren
 (brace
+id|pid_t
+id|pid
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|smbiod_pid
+id|smbiod_state
 op_ne
-op_minus
-l_int|1
+id|SMBIOD_DEAD
 )paren
 r_return
 suffix:semicolon
-id|smbiod_pid
+id|smbiod_state
+op_assign
+id|SMBIOD_STARTING
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|servers_lock
+)paren
+suffix:semicolon
+id|pid
 op_assign
 id|kernel_thread
 c_func
@@ -147,40 +172,20 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * stop smbiod if there are no open connections&n; */
-DECL|function|smbiod_stop
-r_static
-r_void
-id|smbiod_stop
-c_func
-(paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|smbiod_pid
-op_ne
-op_minus
-l_int|1
-op_logical_and
-id|list_empty
+id|spin_lock
 c_func
 (paren
 op_amp
-id|smb_servers
+id|servers_lock
 )paren
-)paren
-id|kill_proc
-c_func
-(paren
+suffix:semicolon
+id|smbiod_state
+op_assign
+id|SMBIOD_RUNNING
+suffix:semicolon
 id|smbiod_pid
-comma
-id|SIGKILL
-comma
-l_int|1
-)paren
+op_assign
+id|pid
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * register a server &amp; start smbiod if necessary&n; */
@@ -233,7 +238,7 @@ id|servers_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * unregister a server &amp; stop smbiod if necessary&n; */
+multiline_comment|/*&n; * Unregister a server&n; * Must be called with the server lock held.&n; */
 DECL|function|smbiod_unregister_server
 r_void
 id|smbiod_unregister_server
@@ -267,11 +272,6 @@ comma
 id|server
 )paren
 suffix:semicolon
-id|smbiod_stop
-c_func
-(paren
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -279,19 +279,12 @@ op_amp
 id|servers_lock
 )paren
 suffix:semicolon
-id|smb_lock_server
+id|smbiod_wake_up
 c_func
 (paren
-id|server
 )paren
 suffix:semicolon
 id|smbiod_flush
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
-id|smb_unlock_server
 c_func
 (paren
 id|server
@@ -973,6 +966,8 @@ op_star
 id|unused
 )paren
 (brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|daemonize
 c_func
 (paren
@@ -982,7 +977,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -1007,7 +1002,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|strcpy
@@ -1071,8 +1066,28 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|servers_lock
+)paren
+suffix:semicolon
+id|smbiod_state
+op_assign
+id|SMBIOD_DEAD
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|servers_lock
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 id|clear_bit
 c_func
 (paren
@@ -1082,7 +1097,6 @@ op_amp
 id|smbiod_flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We must hold the servers_lock while looking for servers&n;&t;&t; * to check or else we have a race with put_super.&n;&t;&t; */
 id|spin_lock
 c_func
 (paren
@@ -1090,6 +1104,31 @@ op_amp
 id|servers_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|smb_servers
+)paren
+)paren
+(brace
+id|smbiod_state
+op_assign
+id|SMBIOD_DEAD
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|servers_lock
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|list_for_each_safe
 c_func
 (paren
@@ -1122,17 +1161,25 @@ comma
 id|server
 )paren
 suffix:semicolon
-id|smb_lock_server
-c_func
+r_if
+c_cond
 (paren
-id|server
+id|server-&gt;state
+op_eq
+id|CONN_VALID
 )paren
-suffix:semicolon
+(brace
 id|spin_unlock
 c_func
 (paren
 op_amp
 id|servers_lock
+)paren
+suffix:semicolon
+id|smb_lock_server
+c_func
+(paren
+id|server
 )paren
 suffix:semicolon
 id|smbiod_doio
@@ -1155,6 +1202,7 @@ id|servers_lock
 )paren
 suffix:semicolon
 )brace
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -1171,10 +1219,7 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-id|smbiod_pid
-op_assign
-op_minus
-l_int|1
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -709,7 +709,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|integrator_cpu_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|integrator_cpu_init

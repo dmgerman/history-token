@@ -761,6 +761,14 @@ id|sa1111_device
 op_star
 id|sa1111
 suffix:semicolon
+r_int
+id|sa1111_check_dma_bug
+c_func
+(paren
+id|dma_addr_t
+id|addr
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * These frob the SKPCR register.&n; */
 r_void
 id|sa1111_enable_device

@@ -1481,15 +1481,13 @@ suffix:semicolon
 multiline_comment|/* FIXME: I think that this may be the wrong behaviour when we get strapped&n;&t;for time and the cpu is close to being (or actually) behind in sending data.&n;&t;- because we&squot;ve lost the time that the N samples, already in the buffer,&n;&t;would have given us to get here with the next lot from the user.&n;*/
 multiline_comment|/* The interrupt doesn&squot;t start to play the last, incomplete frame.&n;&t; * Thus we can append to it without disabling the interrupts! (Note&n;&t; * also that write_sq.rear isn&squot;t affected by the interrupt.)&n;&t; */
 multiline_comment|/* as of 1.6 this behaviour changes if SNDCTL_DSP_POST has been issued:&n;&t;   this will mimic the behaviour of syncing and allow the sq_play() to&n;&t;   queue a partial fragment.  Since sq_play() may/will be called from&n;&t;   the IRQ handler - at least on Pmac we have to deal with it.&n;&t;   The strategy - possibly not optimum - is to kill _POST status if we&n;&t;   get here.  This seems, at least, reasonable - in the sense that POST&n;&t;   is supposed to indicate that we might not write before the queue&n;&t;   is drained - and if we get here in time then it does not apply.&n;&t;*/
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|write_sq.syncing
@@ -1498,9 +1496,12 @@ op_complement
 l_int|2
 suffix:semicolon
 multiline_comment|/* take out POST status */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4048,6 +4049,13 @@ op_assign
 id|sq_read
 suffix:semicolon
 macro_line|#endif
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 id|sq_unit
 op_assign
 id|register_sound_dsp

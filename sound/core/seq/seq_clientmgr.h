@@ -126,6 +126,11 @@ r_struct
 id|semaphore
 id|ports_mutex
 suffix:semicolon
+DECL|member|convert32
+r_int
+id|convert32
+suffix:semicolon
+multiline_comment|/* convert 32-&gt;64bit */
 multiline_comment|/* output pool */
 DECL|member|pool
 id|pool_t

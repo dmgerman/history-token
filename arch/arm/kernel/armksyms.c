@@ -279,6 +279,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|fp_init
+c_func
+(paren
+r_union
+id|fp_state
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; */
 r_extern
 r_void
@@ -469,6 +479,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|pm_power_off
+)paren
+suffix:semicolon
+DECL|variable|fp_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fp_init
 )paren
 suffix:semicolon
 multiline_comment|/* processor dependencies */

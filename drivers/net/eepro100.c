@@ -5480,15 +5480,6 @@ op_amp
 id|sp-&gt;timer
 )paren
 suffix:semicolon
-macro_line|#if defined(timer_exit)
-id|timer_exit
-c_func
-(paren
-op_amp
-id|sp-&gt;timer
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|speedo_show_state
 r_static

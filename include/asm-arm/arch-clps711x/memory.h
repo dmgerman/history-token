@@ -55,7 +55,6 @@ DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t;((x) + PAGE_OFFSET)
 macro_line|#endif
 multiline_comment|/*&n; * Like the SA1100, the EDB7211 has a large gap between physical RAM&n; * banks.  In 2.2, the Psion (CL-PS7110) port added custom support for&n; * discontiguous physical memory.  In 2.4, we can use the standard&n; * Linux NUMA support.&n; *&n; * This is not necessary for EP7211 implementations with only one used&n; * memory bank.  For those systems, simply undefine CONFIG_DISCONTIGMEM.&n; */
-macro_line|#ifdef CONFIG_ARCH_EDB7211
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * Because of the wide memory address space between physical RAM banks on the &n; * SA1100, it&squot;s much more convenient to use Linux&squot;s NUMA support to implement&n; * our memory map representation.  Assuming all memory nodes have equal access &n; * characteristics, we then have generic discontigous memory support.&n; *&n; * Of course, all this isn&squot;t mandatory for SA1100 implementations with only&n; * one used memory bank.  For those, simply undefine CONFIG_DISCONTIGMEM.&n; *&n; * The nodes are matched with the physical memory bank addresses which are &n; * incidentally the same as virtual addresses.&n; * &n; * &t;node 0:  0xc0000000 - 0xc7ffffff&n; * &t;node 1:  0xc8000000 - 0xcfffffff&n; * &t;node 2:  0xd0000000 - 0xd7ffffff&n; * &t;node 3:  0xd8000000 - 0xdfffffff&n; */
 DECL|macro|NR_NODES
@@ -80,10 +79,5 @@ mdefine_line|#define NODE_MAX_MEM_SHIFT&t;24
 DECL|macro|NODE_MAX_MEM_SIZE
 mdefine_line|#define NODE_MAX_MEM_SIZE&t;(1&lt;&lt;NODE_MAX_MEM_SHIFT)
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
-macro_line|#endif&t;/* CONFIG_ARCH_EDB7211 */
-macro_line|#ifndef PFN_TO_NID
-DECL|macro|PFN_TO_NID
-mdefine_line|#define PFN_TO_NID(pfn)&t;&t;(0)
-macro_line|#endif
 macro_line|#endif
 eof

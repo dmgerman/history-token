@@ -907,9 +907,13 @@ DECL|macro|vmalloc
 mdefine_line|#define vmalloc(size) snd_hidden_vmalloc(size)
 DECL|macro|vfree
 mdefine_line|#define vfree(obj) snd_hidden_vfree(obj)
+DECL|macro|vfree_nocheck
+mdefine_line|#define vfree_nocheck(obj) snd_wrapper_vfree(obj)
 macro_line|#else
 DECL|macro|kfree_nocheck
 mdefine_line|#define kfree_nocheck(obj) kfree(obj)
+DECL|macro|vfree_nocheck
+mdefine_line|#define vfree_nocheck(obj) vfree(obj)
 macro_line|#endif
 r_void
 op_star

@@ -120,6 +120,26 @@ c_func
 id|timer_status
 )paren
 suffix:semicolon
+id|DEFINE_ALSA_IOCTL_ENTRY
+c_func
+(paren
+id|timer_info
+comma
+id|timer_info
+comma
+id|SNDRV_TIMER_IOCTL_INFO
+)paren
+suffix:semicolon
+id|DEFINE_ALSA_IOCTL_ENTRY
+c_func
+(paren
+id|timer_status
+comma
+id|timer_status
+comma
+id|SNDRV_TIMER_IOCTL_STATUS
+)paren
+suffix:semicolon
 multiline_comment|/*&n; */
 DECL|macro|AP
 mdefine_line|#define AP(x) snd_ioctl32_##x

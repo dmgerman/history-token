@@ -4899,6 +4899,11 @@ id|val
 comma
 id|nval
 suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
 id|snd_i2c_lock
 c_func
 (paren
@@ -5011,20 +5016,18 @@ op_ne
 l_int|2
 )paren
 (brace
-id|snd_i2c_unlock
-c_func
-(paren
-id|ice-&gt;i2c
-)paren
-suffix:semicolon
-r_return
+id|res
+op_assign
 op_minus
 id|EREMOTE
 suffix:semicolon
 )brace
-r_return
-l_int|1
+r_else
+(brace
+id|res
+op_increment
 suffix:semicolon
+)brace
 )brace
 id|snd_i2c_unlock
 c_func
@@ -5033,7 +5036,7 @@ id|ice-&gt;i2c
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 multiline_comment|/*&n; */
@@ -21688,6 +21691,8 @@ r_if
 c_cond
 (paren
 id|ice-&gt;irq
+op_ge
+l_int|0
 )paren
 (brace
 id|synchronize_irq
@@ -22079,7 +22084,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
-id|ice-&gt;irq
+id|pci-&gt;irq
 )paren
 suffix:semicolon
 r_if

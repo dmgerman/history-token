@@ -12,6 +12,10 @@ DECL|member|opened
 r_int
 id|opened
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 multiline_comment|/* MIDI fields */
 DECL|member|my_mididev
 r_int

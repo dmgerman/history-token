@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#ifdef CONFIG_ADB_CUDA
@@ -1968,6 +1969,13 @@ op_star
 id|regs
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2032,6 +2040,13 @@ id|gpio_headphone_mute_pol
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Initialize tumbler */
 r_static
@@ -3703,15 +3718,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* CHECK: how much of this *really* needs IRQs masked? */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|count
@@ -4058,9 +4071,12 @@ op_increment
 id|write_sq.active
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4116,15 +4132,13 @@ id|read_sq.active
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* This is all we have to do......Just start it up.&n;&t;*/
@@ -4155,9 +4169,12 @@ id|read_sq.active
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -4202,6 +4219,13 @@ r_int
 id|emergency_in_use
 op_assign
 l_int|0
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -4629,6 +4653,13 @@ id|write_sq.sync_queue
 )paren
 suffix:semicolon
 multiline_comment|/* any time we&squot;re empty */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -4676,6 +4707,13 @@ op_eq
 l_int|0
 )paren
 r_return
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
 suffix:semicolon
 multiline_comment|/* Check multiple buffers in case we were held off from&n;&t; * interrupt processing for a long time.  Geeze, I really hope&n;&t; * this doesn&squot;t happen.&n;&t; */
 r_while
@@ -4824,6 +4862,13 @@ id|WAKE
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 multiline_comment|/* try this block again */
@@ -4888,6 +4933,13 @@ c_func
 id|read_sq.action_queue
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -4909,6 +4961,15 @@ id|regs
 )paren
 (brace
 r_int
+id|ctrl
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dmasound.lock
+)paren
+suffix:semicolon
 id|ctrl
 op_assign
 id|in_le32
@@ -4982,6 +5043,13 @@ op_amp
 id|awacs-&gt;control
 comma
 id|ctrl
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dmasound.lock
 )paren
 suffix:semicolon
 )brace
@@ -5081,15 +5149,13 @@ op_assign
 l_int|600
 suffix:semicolon
 multiline_comment|/* &gt; four samples at lowest rate */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5210,9 +5276,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5391,15 +5460,13 @@ r_return
 suffix:semicolon
 macro_line|#endif
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|del_timer
@@ -5441,9 +5508,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5466,9 +5536,12 @@ op_plus
 id|BR_ALWAYS
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -5646,15 +5719,13 @@ id|awacs_beep_state
 op_assign
 l_int|1
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5787,9 +5858,12 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6723,15 +6797,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* should have timeouts here */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|out_le32
@@ -6890,9 +6962,12 @@ l_int|0xff
 op_lshift
 l_int|24
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -6956,15 +7031,13 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* should have timeouts here */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|out_le32
@@ -7003,9 +7076,12 @@ l_int|4
 op_amp
 l_int|0xff
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|dmasound.lock
+comma
 id|flags
 )paren
 suffix:semicolon

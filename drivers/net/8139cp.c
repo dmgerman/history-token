@@ -1,11 +1,11 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* Test Tx checksumming thoroughly&n;&t;* dev-&gt;tx_timeout&n;&t;* Support forcing media type with a module parameter,&n;&t;  like dl2k.c/sundance.c&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support 8169 GMII&n;&t;* Support external MII transceivers&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO, in rough priority order:&n;&t;* Test Tx checksumming thoroughly&n;&t;* dev-&gt;tx_timeout&n;&t;* Constants (module parms?) for Rx work limit&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Implement 8139C+ statistics dump; maybe not...&n;&t;  h/w stats can be reset only by software reset&n;&t;* Handle netif_rx return value&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support 8169 GMII&n;&t;* Support external MII transceivers&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.2.1&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.3.0&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;Aug 9, 2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;Sep 29, 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -121,6 +121,12 @@ l_string|&quot;8139cp: maximum number of filtered multicast addresses&quot;
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_NAME &quot;: &quot;
+macro_line|#ifndef TRUE
+DECL|macro|FALSE
+mdefine_line|#define FALSE 0
+DECL|macro|TRUE
+mdefine_line|#define TRUE (!FALSE)
+macro_line|#endif
 DECL|macro|CP_DEF_MSG_ENABLE
 mdefine_line|#define CP_DEF_MSG_ENABLE&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_PROBE &t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK)
 DECL|macro|CP_NUM_STATS
@@ -2909,6 +2915,8 @@ c_func
 (paren
 id|cp
 )paren
+comma
+id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -4509,13 +4517,6 @@ op_star
 id|cp
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-id|cp-&gt;dev
-suffix:semicolon
 id|cpw16
 c_func
 (paren
@@ -5671,6 +5672,8 @@ c_func
 (paren
 id|cp
 )paren
+comma
+id|TRUE
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -7927,13 +7930,6 @@ r_struct
 id|mii_ioctl_data
 op_star
 id|mii
-suffix:semicolon
-r_int
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
-id|mii
 op_assign
 (paren
 r_struct
@@ -7942,6 +7938,9 @@ op_star
 )paren
 op_amp
 id|rq-&gt;ifr_data
+suffix:semicolon
+r_int
+id|rc
 suffix:semicolon
 r_if
 c_cond
@@ -7961,22 +7960,9 @@ r_if
 c_cond
 (paren
 id|cmd
-op_ne
+op_eq
 id|SIOCETHTOOL
 )paren
-id|mii-&gt;reg_num
-op_and_assign
-l_int|0x1f
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-r_case
-id|SIOCETHTOOL
-suffix:colon
 r_return
 id|cp_ethtool_ioctl
 c_func
@@ -7990,42 +7976,35 @@ op_star
 id|rq-&gt;ifr_data
 )paren
 suffix:semicolon
-r_case
-id|SIOCGMIIPHY
-suffix:colon
-multiline_comment|/* Get the address of the PHY in use. */
-id|mii-&gt;phy_id
-op_assign
-id|CP_INTERNAL_PHY
-suffix:semicolon
-multiline_comment|/* Fall Through */
-r_case
-id|SIOCGMIIREG
-suffix:colon
-multiline_comment|/* Read the specified MII register. */
-id|mii-&gt;val_out
-op_assign
-id|mdio_read
+id|spin_lock_irq
+c_func
 (paren
-id|dev
-comma
-id|CP_INTERNAL_PHY
-comma
-id|mii-&gt;reg_num
+op_amp
+id|cp-&gt;lock
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 id|rc
 op_assign
-op_minus
-id|EOPNOTSUPP
+id|generic_mii_ioctl
+c_func
+(paren
+op_amp
+id|cp-&gt;mii_if
+comma
+id|mii
+comma
+id|cmd
+comma
+l_int|NULL
+)paren
 suffix:semicolon
-r_break
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|cp-&gt;lock
+)paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -8650,6 +8629,14 @@ suffix:semicolon
 id|cp-&gt;mii_if.phy_id
 op_assign
 id|CP_INTERNAL_PHY
+suffix:semicolon
+id|cp-&gt;mii_if.phy_id_mask
+op_assign
+l_int|0x1f
+suffix:semicolon
+id|cp-&gt;mii_if.reg_num_mask
+op_assign
+l_int|0x1f
 suffix:semicolon
 id|cp_set_rxbufsize
 c_func

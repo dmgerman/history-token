@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/leds-ftvpci.c&n; *&n; *  Copyright (C) 1999 FutureTV Labs Ltd&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -51,23 +52,29 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|variable|leds_event
+DECL|function|ftvpci_leds_init
+r_static
+r_int
+id|__init
+id|ftvpci_leds_init
+c_func
+(paren
 r_void
-(paren
-op_star
+)paren
+(brace
 id|leds_event
-)paren
-(paren
-id|led_event_t
-)paren
 op_assign
 id|ftvpci_leds_event
 suffix:semicolon
-DECL|variable|leds_event
-id|EXPORT_SYMBOL
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ftvpci_leds_init
+id|arch_initcall
 c_func
 (paren
-id|leds_event
+id|ftvpci_leds_init
 )paren
 suffix:semicolon
 eof

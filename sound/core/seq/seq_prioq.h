@@ -55,7 +55,7 @@ id|fifo
 suffix:semicolon
 multiline_comment|/* enqueue cell to prioq */
 r_extern
-r_void
+r_int
 id|snd_seq_prioq_cell_in
 c_func
 (paren

@@ -1778,7 +1778,7 @@ c_cond
 (paren
 id|np-&gt;mii_if.full_duplex
 )paren
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 op_assign
 l_int|1
 suffix:semicolon
@@ -3320,7 +3320,7 @@ suffix:semicolon
 )brace
 id|duplex
 op_or_assign
-id|np-&gt;mii_if.duplex_lock
+id|np-&gt;mii_if.force_media
 suffix:semicolon
 multiline_comment|/* remove fastether and fullduplex */
 id|result

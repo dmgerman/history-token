@@ -312,11 +312,7 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
-r_extern
-id|spinlock_t
-id|timerlist_lock
-suffix:semicolon
-multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out (timerlist_lock is acquired through the&n; * console unblank code)&n; */
+multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out &n; */
 DECL|function|bust_spinlocks
 r_void
 id|bust_spinlocks
@@ -330,13 +326,6 @@ r_int
 id|loglevel_save
 op_assign
 id|console_loglevel
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|timerlist_lock
-)paren
 suffix:semicolon
 r_if
 c_cond

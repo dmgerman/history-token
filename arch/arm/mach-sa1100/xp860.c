@@ -98,7 +98,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|xp860_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|xp860_init

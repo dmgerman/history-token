@@ -5005,19 +5005,15 @@ op_amp
 id|slabp-&gt;list
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;list_add(&amp;slabp-&gt;list, &amp;cachep-&gt;slabs_free); &t;&t;*/
+multiline_comment|/* We only buffer a single page */
 r_if
 c_cond
-(paren
-id|unlikely
-c_func
 (paren
 id|list_empty
 c_func
 (paren
 op_amp
-id|cachep-&gt;slabs_partial
-)paren
+id|cachep-&gt;slabs_free
 )paren
 )paren
 id|list_add
@@ -5027,7 +5023,7 @@ op_amp
 id|slabp-&gt;list
 comma
 op_amp
-id|cachep-&gt;slabs_partial
+id|cachep-&gt;slabs_free
 )paren
 suffix:semicolon
 r_else
@@ -6939,16 +6935,15 @@ comma
 id|list
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|slabp-&gt;inuse
 op_eq
 id|cachep-&gt;num
-)paren
-id|BUG
-c_func
-(paren
+op_logical_or
+op_logical_neg
+id|slabp-&gt;inuse
 )paren
 suffix:semicolon
 id|active_objs
