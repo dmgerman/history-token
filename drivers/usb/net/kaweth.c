@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -4436,14 +4437,6 @@ op_star
 id|actual_length
 )paren
 (brace
-id|DECLARE_WAITQUEUE
-c_func
-(paren
-id|wait
-comma
-id|current
-)paren
-suffix:semicolon
 r_struct
 id|usb_api_data
 id|awd
@@ -4461,16 +4454,6 @@ suffix:semicolon
 id|awd.done
 op_assign
 l_int|0
-suffix:semicolon
-id|add_wait_queue
-c_func
-(paren
-op_amp
-id|awd.wqh
-comma
-op_amp
-id|wait
-)paren
 suffix:semicolon
 id|urb-&gt;context
 op_assign
@@ -4500,59 +4483,23 @@ c_func
 id|urb
 )paren
 suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|awd.wqh
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|timeout
-op_logical_and
-op_logical_neg
-id|awd.done
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|timeout
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|timeout
-)paren
-suffix:semicolon
-)brace
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|awd.wqh
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+id|wait_event_timeout
+c_func
+(paren
+id|awd.wqh
+comma
+id|awd.done
+comma
 id|timeout
+)paren
 )paren
 (brace
 singleline_comment|// timeout
