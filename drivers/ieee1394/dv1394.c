@@ -11346,7 +11346,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 (brace
 r_struct
 id|dv1394_devfs_entry
-op_assign
+op_star
 id|devfs_entry
 op_assign
 id|dv1394_devfs_find
