@@ -1,4 +1,4 @@
-multiline_comment|/*&n;* cycx_drv.c&t;Cyclom 2X Support Module.&n;*&n;*&t;&t;This module is a library of common hardware specific&n;*&t;&t;functions used by the Cyclades Cyclom 2X sync card.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2000 Arnaldo Carvalho de Melo&n;*&n;* Based on sdladrv.c by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1999/11/11&t;acme&t;&t;set_current_state(TASK_INTERRUPTIBLE), code&n;*&t;&t;&t;&t;cleanup&n;* 1999/11/08&t;acme&t;&t;init_cyc2x deleted, doing nothing&n;* 1999/11/06&t;acme&t;&t;back to read[bw], write[bw] and memcpy_to and&n;*&t;&t;&t;&t;fromio to use dpmbase ioremaped&n;* 1999/10/26&t;acme&t;&t;use isa_read[bw], isa_write[bw] &amp; isa_memcpy_to&n;*&t;&t;&t;&t;&amp; fromio&n;* 1999/10/23&t;acme&t;&t;cleanup to only supports cyclom2x: all the other&n;*&t;&t;&t;&t;boards are no longer manufactured by cyclades,&n;*&t;&t;&t;&t;if someone wants to support them... be my guest!&n;* 1999/05/28    acme&t;&t;cycx_intack &amp; cycx_intde gone for good&n;* 1999/05/18&t;acme&t;&t;lots of unlogged work, submitting to Linus...&n;* 1999/01/03&t;acme&t;&t;more judicious use of data types&n;* 1999/01/03&t;acme&t;&t;judicious use of data types :&gt;&n;*&t;&t;&t;&t;cycx_inten trying to reset pending interrupts&n;*&t;&t;&t;&t;from cyclom 2x - I think this isn&squot;t the way to&n;*&t;&t;&t;&t;go, but for now...&n;* 1999/01/02&t;acme&t;&t;cycx_intack ok, I think there&squot;s nothing to do&n;*&t;&t;&t;&t;to ack an int in cycx_drv.c, only handle it in&n;*&t;&t;&t;&t;cyx_isr (or in the other protocols: cyp_isr,&n;*&t;&t;&t;&t;cyf_isr, when they get implemented.&n;* Dec 31, 1998&t;acme&t;&t;cycx_data_boot &amp; cycx_code_boot fixed, crossing&n;*&t;&t;&t;&t;fingers to see x25_configure in cycx_x25.c&n;*&t;&t;&t;&t;work... :)&n;* Dec 26, 1998&t;acme&t;&t;load implementation fixed, seems to work! :)&n;*&t;&t;&t;&t;cycx_2x_dpmbase_options with all the possible&n;*&t;&t;&t;&t;DPM addresses (20).&n;*&t;&t;&t;&t;cycx_intr implemented (test this!)&n;*&t;&t;&t;&t;general code cleanup&n;* Dec  8, 1998&t;Ivan Passos&t;Cyclom-2X firmware load implementation.&n;* Aug  8, 1998&t;acme&t;&t;Initial version.&n;*/
+multiline_comment|/*&n;* cycx_drv.c&t;Cyclom 2X Support Module.&n;*&n;*&t;&t;This module is a library of common hardware specific&n;*&t;&t;functions used by the Cyclades Cyclom 2X sync card.&n;*&n;* Author:&t;Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;*&n;* Copyright:&t;(c) 1998-2003 Arnaldo Carvalho de Melo&n;*&n;* Based on sdladrv.c by Gene Kozin &lt;genek@compuserve.com&gt;&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* 1999/11/11&t;acme&t;&t;set_current_state(TASK_INTERRUPTIBLE), code&n;*&t;&t;&t;&t;cleanup&n;* 1999/11/08&t;acme&t;&t;init_cyc2x deleted, doing nothing&n;* 1999/11/06&t;acme&t;&t;back to read[bw], write[bw] and memcpy_to and&n;*&t;&t;&t;&t;fromio to use dpmbase ioremaped&n;* 1999/10/26&t;acme&t;&t;use isa_read[bw], isa_write[bw] &amp; isa_memcpy_to&n;*&t;&t;&t;&t;&amp; fromio&n;* 1999/10/23&t;acme&t;&t;cleanup to only supports cyclom2x: all the other&n;*&t;&t;&t;&t;boards are no longer manufactured by cyclades,&n;*&t;&t;&t;&t;if someone wants to support them... be my guest!&n;* 1999/05/28    acme&t;&t;cycx_intack &amp; cycx_intde gone for good&n;* 1999/05/18&t;acme&t;&t;lots of unlogged work, submitting to Linus...&n;* 1999/01/03&t;acme&t;&t;more judicious use of data types&n;* 1999/01/03&t;acme&t;&t;judicious use of data types :&gt;&n;*&t;&t;&t;&t;cycx_inten trying to reset pending interrupts&n;*&t;&t;&t;&t;from cyclom 2x - I think this isn&squot;t the way to&n;*&t;&t;&t;&t;go, but for now...&n;* 1999/01/02&t;acme&t;&t;cycx_intack ok, I think there&squot;s nothing to do&n;*&t;&t;&t;&t;to ack an int in cycx_drv.c, only handle it in&n;*&t;&t;&t;&t;cyx_isr (or in the other protocols: cyp_isr,&n;*&t;&t;&t;&t;cyf_isr, when they get implemented.&n;* Dec 31, 1998&t;acme&t;&t;cycx_data_boot &amp; cycx_code_boot fixed, crossing&n;*&t;&t;&t;&t;fingers to see x25_configure in cycx_x25.c&n;*&t;&t;&t;&t;work... :)&n;* Dec 26, 1998&t;acme&t;&t;load implementation fixed, seems to work! :)&n;*&t;&t;&t;&t;cycx_2x_dpmbase_options with all the possible&n;*&t;&t;&t;&t;DPM addresses (20).&n;*&t;&t;&t;&t;cycx_intr implemented (test this!)&n;*&t;&t;&t;&t;general code cleanup&n;* Dec  8, 1998&t;Ivan Passos&t;Cyclom-2X firmware load implementation.&n;* Aug  8, 1998&t;acme&t;&t;Initial version.&n;*/
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __init */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
@@ -29,22 +29,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Function Prototypes */
-multiline_comment|/* Module entry points. These are called by the OS and must be public. */
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Hardware-specific functions */
@@ -132,18 +116,6 @@ id|len
 suffix:semicolon
 DECL|macro|wait_cyc
 mdefine_line|#define wait_cyc(addr) cycx_exec(addr + CMD_OFFSET)
-DECL|macro|cyc2x_readb
-mdefine_line|#define cyc2x_readb(b) readb(b)
-DECL|macro|cyc2x_readw
-mdefine_line|#define cyc2x_readw(b) readw(b)
-DECL|macro|cyc2x_writeb
-mdefine_line|#define cyc2x_writeb(b, addr) writeb(b, addr)
-DECL|macro|cyc2x_writew
-mdefine_line|#define cyc2x_writew(w, addr) writew(w, addr)
-DECL|macro|cyc2x_memcpy_toio
-mdefine_line|#define cyc2x_memcpy_toio(addr, buf, len) memcpy_toio((addr), buf, len)
-DECL|macro|cyc2x_memcpy_fromio
-mdefine_line|#define cyc2x_memcpy_fromio(buf, addr, len) memcpy_fromio(buf, (addr), len)
 multiline_comment|/* Global Data */
 multiline_comment|/* private data */
 DECL|variable|modname
@@ -171,7 +143,7 @@ id|copyright
 (braket
 )braket
 op_assign
-l_string|&quot;(c) 1998-2000 Arnaldo Carvalho de Melo &quot;
+l_string|&quot;(c) 1998-2003 Arnaldo Carvalho de Melo &quot;
 l_string|&quot;&lt;acme@conectiva.com.br&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Hardware configuration options.&n; * These are arrays of configuration options used by verification routines.&n; * The first element of each array is its size (i.e. number of options).&n; */
@@ -542,7 +514,7 @@ op_star
 id|hw
 )paren
 (brace
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0
@@ -569,7 +541,7 @@ op_star
 id|hw
 )paren
 (brace
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 l_int|0
@@ -606,7 +578,7 @@ multiline_comment|/* wait till addr content is zeroed */
 r_while
 c_loop
 (paren
-id|cyc2x_readw
+id|readw
 c_func
 (paren
 id|addr
@@ -678,7 +650,7 @@ op_star
 )paren
 id|buf
 op_assign
-id|cyc2x_readb
+id|readb
 c_func
 (paren
 id|hw-&gt;dpmbase
@@ -687,7 +659,7 @@ id|addr
 )paren
 suffix:semicolon
 r_else
-id|cyc2x_memcpy_fromio
+id|memcpy_fromio
 c_func
 (paren
 id|buf
@@ -738,7 +710,7 @@ id|len
 op_eq
 l_int|1
 )paren
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 op_star
@@ -754,7 +726,7 @@ id|addr
 )paren
 suffix:semicolon
 r_else
-id|cyc2x_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|hw-&gt;dpmbase
@@ -800,7 +772,7 @@ id|tries
 op_increment
 )paren
 (brace
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|TEST_PATTERN
@@ -813,7 +785,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cyc2x_readw
+id|readw
 c_func
 (paren
 id|addr
@@ -826,7 +798,7 @@ id|TEST_PATTERN
 r_if
 c_cond
 (paren
-id|cyc2x_readw
+id|readw
 c_func
 (paren
 id|addr
@@ -895,7 +867,7 @@ op_increment
 )paren
 (brace
 multiline_comment|/*&t;&t;for (j = 0 ; j &lt; 50 ; j++); Delay - FIXME busy waiting... */
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 op_star
@@ -926,7 +898,7 @@ id|u32
 id|cnt
 )paren
 (brace
-id|cyc2x_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|addr
@@ -938,7 +910,7 @@ comma
 id|cnt
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_BOOT_DAT
@@ -968,7 +940,7 @@ id|addr
 )paren
 (brace
 multiline_comment|/* put in 0x30 offset the jump instruction to the code entry point */
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0xea
@@ -978,7 +950,7 @@ op_plus
 l_int|0x30
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0x00
@@ -988,7 +960,7 @@ op_plus
 l_int|0x31
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0xc4
@@ -998,7 +970,7 @@ op_plus
 l_int|0x32
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0x00
@@ -1008,7 +980,7 @@ op_plus
 l_int|0x33
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0x00
@@ -1019,7 +991,7 @@ l_int|0x34
 )paren
 suffix:semicolon
 multiline_comment|/* cmd to start executing code */
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_START
@@ -1055,7 +1027,7 @@ id|addr
 op_plus
 id|START_OFFSET
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0xea
@@ -1065,7 +1037,7 @@ op_increment
 )paren
 suffix:semicolon
 multiline_comment|/* jmp to f000:3f00 */
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0x00
@@ -1074,7 +1046,7 @@ id|pt_start
 op_increment
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0xfc
@@ -1083,7 +1055,7 @@ id|pt_start
 op_increment
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0x00
@@ -1092,7 +1064,7 @@ id|pt_start
 op_increment
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0xf0
@@ -1111,7 +1083,7 @@ id|len
 )paren
 suffix:semicolon
 multiline_comment|/* 80186 was in hold, go */
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0
@@ -1157,7 +1129,7 @@ id|u32
 id|i
 suffix:semicolon
 multiline_comment|/* boot buffer lenght */
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|CFM_LOAD_BUFSZ
@@ -1170,7 +1142,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_DEFPAR
@@ -1193,7 +1165,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 l_int|0
@@ -1206,7 +1178,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 l_int|0x4000
@@ -1221,7 +1193,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_SET_SEG
@@ -1334,7 +1306,7 @@ id|u32
 id|i
 suffix:semicolon
 multiline_comment|/* boot buffer lenght */
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|CFM_LOAD_BUFSZ
@@ -1347,7 +1319,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_DEFPAR
@@ -1370,7 +1342,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -1383,7 +1355,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 l_int|0xc400
@@ -1398,7 +1370,7 @@ id|u16
 )paren
 )paren
 suffix:semicolon
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_SET_SEG
@@ -1480,7 +1452,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Load adapter from the memory image of the CYCX firmware module. &n; * o verify firmware integrity and compatibility&n; * o start adapter up */
+multiline_comment|/* Load adapter from the memory image of the CYCX firmware module.&n; * o verify firmware integrity and compatibility&n; * o start adapter up */
 DECL|function|load_cyc2x
 r_static
 r_int
@@ -1632,7 +1604,7 @@ op_plus
 id|cfm-&gt;info.codesize
 )paren
 suffix:semicolon
-multiline_comment|/*&n;        FIXME cfm-&gt;info.codesize is off by 2&n;&t;if (((len - sizeof(struct cycx_firmware) - 1) != cfm-&gt;info.codesize) ||&n;*/
+multiline_comment|/*&n;&t;FIXME cfm-&gt;info.codesize is off by 2&n;&t;if (((len - sizeof(struct cycx_firmware) - 1) != cfm-&gt;info.codesize) ||&n;*/
 r_if
 c_cond
 (paren
@@ -1857,7 +1829,7 @@ id|img_hdr-&gt;reset_size
 )paren
 suffix:semicolon
 multiline_comment|/* reset is waiting for boot */
-id|cyc2x_writew
+id|writew
 c_func
 (paren
 id|GEN_POWER_ON
@@ -1889,7 +1861,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cyc2x_readw
+id|readw
 c_func
 (paren
 id|pt_cycld
@@ -2033,7 +2005,7 @@ id|hw
 )paren
 (brace
 multiline_comment|/* use fixed buffers */
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 id|FIXED_BUFFERS
@@ -2132,7 +2104,7 @@ id|u32
 id|addr
 )paren
 (brace
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0
@@ -2148,7 +2120,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-id|cyc2x_writeb
+id|writeb
 c_func
 (paren
 l_int|0
