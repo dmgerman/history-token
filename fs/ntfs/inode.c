@@ -7913,6 +7913,12 @@ c_func
 id|vi
 )paren
 suffix:semicolon
+id|ntfs_volume
+op_star
+id|vol
+op_assign
+id|ni-&gt;vol
+suffix:semicolon
 id|ntfs_attr_search_ctx
 op_star
 id|ctx
@@ -7921,8 +7927,23 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
+r_const
+r_char
+op_star
+id|te
+op_assign
+l_string|&quot;  Leaving file length out of sync with i_size.&quot;
+suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering for inode 0x%lx.&quot;
+comma
+id|vi-&gt;i_ino
+)paren
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -7960,41 +7981,39 @@ id|m
 )paren
 )paren
 (brace
+id|err
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
 id|ntfs_error
 c_func
 (paren
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Failed to map mft record for inode 0x%lx &quot;
-l_string|&quot;(error code %ld).&quot;
+l_string|&quot;(error code %d).%s&quot;
 comma
 id|vi-&gt;i_ino
 comma
-id|PTR_ERR
-c_func
-(paren
-id|m
-)paren
+id|err
+comma
+id|te
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PTR_ERR
-c_func
-(paren
-id|m
-)paren
-op_ne
-id|ENOMEM
-)paren
-id|make_bad_inode
-c_func
-(paren
-id|vi
-)paren
+id|ctx
+op_assign
+l_int|NULL
 suffix:semicolon
-r_return
+id|m
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|ctx
@@ -8023,19 +8042,21 @@ c_func
 (paren
 id|vi-&gt;i_sb
 comma
-l_string|&quot;Failed to allocate a search context: &quot;
-l_string|&quot;Not enough memory&quot;
+l_string|&quot;Failed to allocate a search context for &quot;
+l_string|&quot;inode 0x%lx (not enough memory).%s&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|te
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So what do
-singleline_comment|// we do?!?  make_bad_inode() seems a bit harsh...
-id|unmap_mft_record
-c_func
-(paren
-id|ni
-)paren
+id|err
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
-r_return
+r_goto
+id|err_out
 suffix:semicolon
 )brace
 id|err
@@ -8078,7 +8099,6 @@ op_eq
 op_minus
 id|ENOENT
 )paren
-(brace
 id|ntfs_error
 c_func
 (paren
@@ -8091,15 +8111,7 @@ comma
 id|vi-&gt;i_ino
 )paren
 suffix:semicolon
-id|make_bad_inode
-c_func
-(paren
-id|vi
-)paren
-suffix:semicolon
-)brace
 r_else
-(brace
 id|ntfs_error
 c_func
 (paren
@@ -8113,12 +8125,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So
-singleline_comment|// what do we do?!?  make_bad_inode() seems a bit
-singleline_comment|// harsh...
-)brace
 r_goto
-id|out
+id|err_out
 suffix:semicolon
 )brace
 multiline_comment|/* If the size has not changed there is nothing to do. */
@@ -8138,7 +8146,7 @@ id|vi
 )paren
 )paren
 r_goto
-id|out
+id|done
 suffix:semicolon
 singleline_comment|// TODO: Implement the truncate...
 id|ntfs_error
@@ -8163,7 +8171,7 @@ id|ctx-&gt;attr
 )paren
 )paren
 suffix:semicolon
-id|out
+id|done
 suffix:colon
 id|ntfs_attr_put_search_ctx
 c_func
@@ -8171,6 +8179,60 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
+id|unmap_mft_record
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Done.&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|err_out
+suffix:colon
+r_if
+c_cond
+(paren
+id|err
+op_ne
+op_minus
+id|ENOMEM
+)paren
+(brace
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ctx
+)paren
+id|ntfs_attr_put_search_ctx
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|m
+)paren
 id|unmap_mft_record
 c_func
 (paren
