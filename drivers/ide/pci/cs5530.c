@@ -61,7 +61,8 @@ id|p
 op_assign
 id|buffer
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
@@ -380,7 +381,9 @@ suffix:semicolon
 r_int
 r_int
 id|format
-comma
+suffix:semicolon
+r_int
+r_int
 id|basereg
 op_assign
 id|CS5530_BASEREG
@@ -536,11 +539,13 @@ id|drive-&gt;id
 suffix:semicolon
 r_int
 r_int
-id|basereg
-comma
 id|reg
 comma
 id|timings
+suffix:semicolon
+r_int
+r_int
+id|basereg
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default to DMA-off in case we run into trouble here.&n;&t; */
 id|hwif
@@ -1256,7 +1261,8 @@ id|hwif
 r_int
 r_int
 id|basereg
-comma
+suffix:semicolon
+id|u32
 id|d0_timings
 suffix:semicolon
 id|hwif-&gt;autodma

@@ -4,9 +4,9 @@ mdefine_line|#define AMD74XX_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-DECL|macro|DISPLAY_VIPER_TIMINGS
-mdefine_line|#define DISPLAY_VIPER_TIMINGS
-macro_line|#if defined(DISPLAY_VIPER_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
+DECL|macro|DISPLAY_AMD_TIMINGS
+mdefine_line|#define DISPLAY_AMD_TIMINGS
+macro_line|#if defined(DISPLAY_AMD_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|amd74xx_proc
@@ -65,7 +65,7 @@ comma
 comma
 )brace
 suffix:semicolon
-macro_line|#endif  /* defined(DISPLAY_VIPER_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
+macro_line|#endif  /* defined(DISPLAY_AMD_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 r_static
 r_int
 r_int
@@ -504,6 +504,86 @@ dot
 id|extra
 op_assign
 l_int|0
+)brace
+comma
+(brace
+multiline_comment|/* 5 */
+dot
+id|vendor
+op_assign
+id|PCI_VENDOR_ID_NVIDIA
+comma
+dot
+id|device
+op_assign
+id|PCI_DEVICE_ID_NVIDIA_NFORCE_IDE
+comma
+dot
+id|name
+op_assign
+l_string|&quot;NFORCE&quot;
+comma
+dot
+id|init_chipset
+op_assign
+id|init_chipset_amd74xx
+comma
+dot
+id|init_iops
+op_assign
+l_int|NULL
+comma
+dot
+id|init_hwif
+op_assign
+id|init_hwif_amd74xx
+comma
+dot
+id|init_dma
+op_assign
+id|init_dma_amd74xx
+comma
+dot
+id|channels
+op_assign
+l_int|2
+comma
+dot
+id|autodma
+op_assign
+id|AUTODMA
+comma
+dot
+id|enablebits
+op_assign
+(brace
+(brace
+l_int|0x50
+comma
+l_int|0x01
+comma
+l_int|0x01
+)brace
+comma
+(brace
+l_int|0x50
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+)brace
+comma
+dot
+id|bootable
+op_assign
+id|ON_BOARD
+comma
+dot
+id|extra
+op_assign
+l_int|0
+comma
 )brace
 comma
 (brace

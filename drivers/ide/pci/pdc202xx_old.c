@@ -69,7 +69,8 @@ id|p
 op_assign
 id|buf
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|bibma
 op_assign
 id|pci_resource_start
@@ -3186,13 +3187,15 @@ id|drive
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;struct pci_dev *dev&t;= hwif-&gt;pci_dev;
-singleline_comment|//&t;&t;u32 high_16&t;= pci_resource_start(dev, 4);
-id|u32
+singleline_comment|//&t;&t;unsgned long high_16&t;= pci_resource_start(dev, 4);
+r_int
+r_int
 id|high_16
 op_assign
 id|hwif-&gt;dma_master
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|atapi_reg
 op_assign
 id|high_16
@@ -3322,13 +3325,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;u32 high_16&t;= pci_resource_start(hwif-&gt;pci_dev, 4);
-id|u32
+singleline_comment|//&t;&t;unsigned long high_16&t;= pci_resource_start(hwif-&gt;pci_dev, 4);
+r_int
+r_int
 id|high_16
 op_assign
 id|hwif-&gt;dma_master
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|atapi_reg
 op_assign
 id|high_16
@@ -3424,7 +3429,8 @@ id|drive
 suffix:semicolon
 singleline_comment|//&t;struct pci_dev *dev&t;= hwif-&gt;pci_dev;
 singleline_comment|//&t;unsigned long high_16&t;= pci_resource_start(dev, 4);
-id|u32
+r_int
+r_int
 id|high_16
 op_assign
 id|hwif-&gt;dma_master

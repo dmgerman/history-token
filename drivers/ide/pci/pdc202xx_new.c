@@ -1334,12 +1334,14 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|indexreg
 op_assign
 id|hwif-&gt;dma_vendor1
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|datareg
 op_assign
 id|hwif-&gt;dma_vendor3

@@ -25,7 +25,7 @@ DECL|macro|VERSION
 mdefine_line|#define VERSION          &quot;$Revision: 5.50 $&quot;
 multiline_comment|/* START OF USER DEFINABLE OPTIONS */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG            1&t;/* Enable debugging output */
+mdefine_line|#define DEBUG            0&t;/* Enable debugging output */
 DECL|macro|ENABLE_PARITY
 mdefine_line|#define ENABLE_PARITY    1&t;/* Enable SCSI Parity */
 DECL|macro|FIFO_COUNT

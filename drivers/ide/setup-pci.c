@@ -963,7 +963,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Not fully BIOS configured!&bslash;n&quot;
+l_string|&quot;%s: BIOS configuration fixed.&bslash;n&quot;
 comma
 id|d-&gt;name
 )paren
@@ -1600,7 +1600,8 @@ l_int|0x80
 )paren
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|dma_base
 op_assign
 id|ide_get_or_set_dma_base
