@@ -1734,13 +1734,6 @@ id|sys_close
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Special internal versions of library functions. */
-DECL|variable|__memcpy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__memcpy
-)paren
-suffix:semicolon
 DECL|variable|__memset
 id|EXPORT_SYMBOL
 c_func
