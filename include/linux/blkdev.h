@@ -968,10 +968,6 @@ r_int
 r_int
 id|dma_alignment
 suffix:semicolon
-DECL|member|queue_wait
-id|wait_queue_head_t
-id|queue_wait
-suffix:semicolon
 DECL|member|queue_tags
 r_struct
 id|blk_queue_tag

@@ -510,13 +510,6 @@ comma
 id|BLK_BOUNCE_HIGH
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|q-&gt;queue_wait
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
