@@ -1124,17 +1124,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* thermal monitor LVT interrupt */
-macro_line|#ifdef CONFIG_X86_MCE_P4THERMAL
-id|set_intr_gate
-c_func
-(paren
-id|THERMAL_APIC_VECTOR
-comma
-id|smp_thermal_interrupt
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set the clock to HZ Hz, we already have a valid&n;&t; * vector now:&n;&t; */
 id|outb_p
 c_func
