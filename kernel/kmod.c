@@ -338,6 +338,8 @@ id|flush_signal_handlers
 c_func
 (paren
 id|current
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|sigemptyset

@@ -1052,6 +1052,9 @@ r_struct
 id|task_struct
 op_star
 id|t
+comma
+r_int
+id|force_default
 )paren
 (brace
 r_int
@@ -1086,6 +1089,8 @@ op_decrement
 r_if
 c_cond
 (paren
+id|force_default
+op_logical_or
 id|ka-&gt;sa.sa_handler
 op_ne
 id|SIG_IGN
