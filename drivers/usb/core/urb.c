@@ -856,12 +856,13 @@ id|URB_ASYNC_UNLINK
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_DEBUG_KERNEL
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;usb_unlink_urb() is deprecated for &quot;
-l_string|&quot;synchronous unlinks.  Use usb_kill_urb()&bslash;n&quot;
+l_string|&quot;synchronous unlinks.  Use usb_kill_urb() instead.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|WARN_ON
@@ -870,6 +871,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 id|usb_kill_urb
 c_func
 (paren
