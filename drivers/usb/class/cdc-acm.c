@@ -1044,6 +1044,11 @@ r_goto
 id|bail_out_and_unlink
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+l_int|0
+OG
 id|acm_set_control
 c_func
 (paren
@@ -1055,6 +1060,9 @@ id|ACM_CTRL_DTR
 op_or
 id|ACM_CTRL_RTS
 )paren
+)paren
+r_goto
+id|full_bailout
 suffix:semicolon
 multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;   otherwise it is scheduled, and with high data rates data can get lost. */
 id|tty-&gt;low_latency
@@ -1075,6 +1083,14 @@ id|open_sem
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|full_bailout
+suffix:colon
+id|usb_unlink_urb
+c_func
+(paren
+id|acm-&gt;readurb
+)paren
 suffix:semicolon
 id|bail_out_and_unlink
 suffix:colon
