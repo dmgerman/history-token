@@ -104,10 +104,10 @@ op_star
 op_star
 id|pprev
 suffix:semicolon
-DECL|member|sk_list
+DECL|member|owner
 r_struct
 id|hlist_head
-id|sk_list
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon

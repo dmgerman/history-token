@@ -11151,10 +11151,6 @@ id|snum
 op_assign
 id|rover
 suffix:semicolon
-id|pp
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -11199,25 +11195,33 @@ id|pp-&gt;port
 op_eq
 id|snum
 )paren
-r_break
+r_goto
+id|pp_found
 suffix:semicolon
 )brace
 )brace
+id|pp
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|pp_not_found
+suffix:semicolon
+id|pp_found
+suffix:colon
 r_if
 c_cond
 (paren
-id|pp
-op_logical_and
 op_logical_neg
 id|hlist_empty
 c_func
 (paren
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 )paren
 (brace
-multiline_comment|/* We had a port hash table hit - there is an&n;&t;&t; * available port (pp != NULL) and it is being&n;&t;&t; * used by other socket (pp-&gt;sk_list not empty); that other&n;&t;&t; * socket is going to be sk2.&n;&t;&t; */
+multiline_comment|/* We had a port hash table hit - there is an&n;&t;&t; * available port (pp != NULL) and it is being&n;&t;&t; * used by other socket (pp-&gt;owner not empty); that other&n;&t;&t; * socket is going to be sk2.&n;&t;&t; */
 r_int
 id|reuse
 op_assign
@@ -11236,8 +11240,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;sctp_get_port() found a &quot;
-l_string|&quot;possible match&bslash;n&quot;
+l_string|&quot;sctp_get_port() found a possible match&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -11259,7 +11262,7 @@ comma
 id|node
 comma
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 (brace
 r_struct
@@ -11324,6 +11327,8 @@ l_string|&quot;sctp_get_port(): Found a match&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|pp_not_found
+suffix:colon
 multiline_comment|/* If there was a hash table miss, create a new port.  */
 id|ret
 op_assign
@@ -11359,7 +11364,7 @@ id|hlist_empty
 c_func
 (paren
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 )paren
 id|pp-&gt;fastreuse
@@ -11416,7 +11421,7 @@ c_func
 id|sk
 comma
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 suffix:semicolon
 id|sctp_sk
@@ -11448,14 +11453,6 @@ suffix:colon
 id|sctp_local_bh_enable
 c_func
 (paren
-)paren
-suffix:semicolon
-id|SCTP_DEBUG_PRINTK
-c_func
-(paren
-l_string|&quot;sctp_get_port() ends, ret=%d&bslash;n&quot;
-comma
-id|ret
 )paren
 suffix:semicolon
 id|addr-&gt;v4.sin_port
@@ -12210,7 +12207,7 @@ id|INIT_HLIST_HEAD
 c_func
 (paren
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 suffix:semicolon
 r_if
@@ -12263,7 +12260,7 @@ id|hlist_empty
 c_func
 (paren
 op_amp
-id|pp-&gt;sk_list
+id|pp-&gt;owner
 )paren
 )paren
 (brace
@@ -12299,10 +12296,10 @@ id|bind_bucket
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: Comments! */
+multiline_comment|/* Release this socket&squot;s reference to a local port.  */
 DECL|function|__sctp_put_port
 r_static
-id|__inline__
+r_inline
 r_void
 id|__sctp_put_port
 c_func
@@ -14383,6 +14380,12 @@ id|newsk
 )paren
 suffix:semicolon
 r_struct
+id|sctp_bind_bucket
+op_star
+id|pp
+suffix:semicolon
+multiline_comment|/* hash list port iterator */
+r_struct
 id|sctp_endpoint
 op_star
 id|newep
@@ -14411,11 +14414,20 @@ id|newsk-&gt;sk_rcvbuf
 op_assign
 id|oldsk-&gt;sk_rcvbuf
 suffix:semicolon
-op_star
+multiline_comment|/* Brute force copy old sctp opt. */
+id|memcpy
+c_func
+(paren
 id|newsp
-op_assign
-op_star
+comma
 id|oldsp
+comma
+r_sizeof
+(paren
+r_struct
+id|sctp_opt
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Restore the ep value that was overwritten with the above structure&n;&t; * copy.&n;&t; */
 id|newsp-&gt;ep
@@ -14425,6 +14437,52 @@ suffix:semicolon
 id|newsp-&gt;hmac
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* Hook this new socket in to the bind_hash list. */
+id|pp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|oldsk
+)paren
+op_member_access_from_pointer
+id|bind_hash
+suffix:semicolon
+id|sk_add_bind_node
+c_func
+(paren
+id|newsk
+comma
+op_amp
+id|pp-&gt;owner
+)paren
+suffix:semicolon
+id|sctp_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|bind_hash
+op_assign
+id|pp
+suffix:semicolon
+id|inet_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|num
+op_assign
+id|inet_sk
+c_func
+(paren
+id|oldsk
+)paren
+op_member_access_from_pointer
+id|num
 suffix:semicolon
 multiline_comment|/* Move any messages in the old socket&squot;s receive queue that are for the&n;&t; * peeled off association to the new socket&squot;s receive queue.&n;&t; */
 id|sctp_skb_for_each
