@@ -4171,7 +4171,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;inet_init: Cannot add TCP protocol&bslash;n&quot;
+l_string|&quot;inet_init: Cannot add IGMP protocol&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
