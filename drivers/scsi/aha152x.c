@@ -7397,7 +7397,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 macro_line|#endif
 id|DPRINTK
