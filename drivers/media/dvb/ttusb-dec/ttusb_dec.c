@@ -85,7 +85,7 @@ mdefine_line|#define ISO_BUF_COUNT&t;&t;0x04
 DECL|macro|FRAMES_PER_ISO_BUF
 mdefine_line|#define FRAMES_PER_ISO_BUF&t;0x04
 DECL|macro|ISO_FRAME_SIZE
-mdefine_line|#define ISO_FRAME_SIZE&t;&t;0x03FF
+mdefine_line|#define ISO_FRAME_SIZE&t;&t;0x0380
 DECL|macro|MAX_PVA_LENGTH
 mdefine_line|#define&t;MAX_PVA_LENGTH&t;&t;6144
 DECL|enum|ttusb_dec_model
@@ -3549,7 +3549,7 @@ id|dec-&gt;udev
 comma
 l_int|0
 comma
-l_int|7
+l_int|8
 )paren
 suffix:semicolon
 r_break
