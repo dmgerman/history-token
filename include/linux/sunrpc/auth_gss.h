@@ -182,6 +182,9 @@ id|gc_expiry
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|gss_upcall_msg
+suffix:semicolon
 DECL|struct|gss_cred
 r_struct
 id|gss_cred
@@ -201,6 +204,12 @@ r_struct
 id|gss_cl_ctx
 op_star
 id|gc_ctx
+suffix:semicolon
+DECL|member|gc_upcall
+r_struct
+id|gss_upcall_msg
+op_star
+id|gc_upcall
 suffix:semicolon
 )brace
 suffix:semicolon
