@@ -5,7 +5,7 @@ mdefine_line|#define _MEYE_PRIV_H_
 DECL|macro|MEYE_DRIVER_MAJORVERSION
 mdefine_line|#define MEYE_DRIVER_MAJORVERSION&t;1
 DECL|macro|MEYE_DRIVER_MINORVERSION
-mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;1
+mdefine_line|#define MEYE_DRIVER_MINORVERSION&t;2
 multiline_comment|/****************************************************************************/
 multiline_comment|/* Motion JPEG chip registers                                               */
 multiline_comment|/****************************************************************************/
@@ -467,18 +467,22 @@ op_star
 id|mchip_mmregs
 suffix:semicolon
 multiline_comment|/* mchip: memory mapped registers */
-DECL|member|mchip_fbuffer
-r_int
-r_char
+DECL|member|mchip_ptable
+id|u8
 op_star
-id|mchip_fbuffer
+id|mchip_ptable
+(braket
+id|MCHIP_NB_PAGES
+op_plus
+l_int|1
+)braket
 suffix:semicolon
-multiline_comment|/* mchip: framebuffer */
-DECL|member|mchip_ptaddr
-id|u32
-id|mchip_ptaddr
+multiline_comment|/* mchip: ptable + ptable toc */
+DECL|member|mchip_dmahandle
+id|dma_addr_t
+id|mchip_dmahandle
 suffix:semicolon
-multiline_comment|/* mchip: pointer to framebuffer */
+multiline_comment|/* mchip: dma handle to ptable toc */
 DECL|member|grab_fbuffer
 r_int
 r_char
