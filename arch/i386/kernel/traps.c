@@ -2910,7 +2910,7 @@ l_int|6
 op_assign
 id|condition
 suffix:semicolon
-multiline_comment|/*&n;&t; * Single-stepping through TF: make sure we ignore any events in&n;&t; * kernel space (but re-enable TF when returning to user mode).&n;&t; * And if the event was due to a debugger (PT_DTRACE), clear the&n;&t; * TF flag so that register information is correct.&n;&t; */
+multiline_comment|/*&n;&t; * Single-stepping through TF: make sure we ignore any events in&n;&t; * kernel space (but re-enable TF when returning to user mode).&n;&t; */
 r_if
 c_cond
 (paren
@@ -2934,29 +2934,6 @@ l_int|0
 r_goto
 id|clear_TF_reenable
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|tsk-&gt;ptrace
-op_amp
-id|PT_DTRACE
-)paren
-)paren
-(brace
-id|tsk-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_DTRACE
-suffix:semicolon
-id|regs-&gt;eflags
-op_and_assign
-op_complement
-id|TF_MASK
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Ok, finally something we can handle */
 id|send_sigtrap
