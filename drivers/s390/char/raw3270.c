@@ -128,12 +128,14 @@ id|tubxcorrect
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|tubxcorrect
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Wait queue for device init/delete, view delete.&n; */

@@ -53,12 +53,14 @@ DECL|macro|DEBUG_LED_ON_TRANSFER
 mdefine_line|#define DEBUG_LED_ON_TRANSFER&t;0x01
 DECL|macro|DEBUG_BATTERY_POLLING
 mdefine_line|#define DEBUG_BATTERY_POLLING&t;0x02
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -77,12 +79,14 @@ op_assign
 l_int|0x0C
 suffix:semicolon
 multiline_comment|/* Read Multiple */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pci_read_cmd
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -101,12 +105,14 @@ op_assign
 l_int|0x0F
 suffix:semicolon
 multiline_comment|/* Write and Invalidate */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pci_write_cmd
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

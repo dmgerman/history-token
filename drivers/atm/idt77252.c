@@ -19264,12 +19264,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vpibits
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -19281,12 +19283,14 @@ l_string|&quot;number of VPI bits supported (0, 1, or 2)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
