@@ -2814,16 +2814,6 @@ id|tmp
 comma
 id|sd-&gt;span
 comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|tmp
-comma
-id|tmp
-comma
 id|p-&gt;cpus_allowed
 )paren
 suffix:semicolon
@@ -4649,16 +4639,6 @@ id|mask
 comma
 id|sd-&gt;span
 comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|mask
-comma
-id|mask
-comma
 id|p-&gt;cpus_allowed
 )paren
 suffix:semicolon
@@ -5588,9 +5568,6 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|cpumask_t
-id|tmp
-suffix:semicolon
 r_int
 r_int
 id|load
@@ -5620,38 +5597,12 @@ id|avg_load
 op_assign
 l_int|0
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|tmp
-comma
-id|group-&gt;cpumask
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|cpus_empty
-c_func
-(paren
-id|tmp
-)paren
-)paren
-)paren
-r_goto
-id|nextgroup
-suffix:semicolon
 id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
-id|tmp
+id|group-&gt;cpumask
 )paren
 (brace
 multiline_comment|/* Bias balancing toward cpus of our domain */
@@ -6079,9 +6030,6 @@ op_star
 id|group
 )paren
 (brace
-id|cpumask_t
-id|tmp
-suffix:semicolon
 r_int
 r_int
 id|load
@@ -6099,22 +6047,12 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|tmp
-comma
-id|group-&gt;cpumask
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
 id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
-id|tmp
+id|group-&gt;cpumask
 )paren
 (brace
 id|load
@@ -6852,9 +6790,6 @@ id|sd-&gt;groups
 suffix:semicolon
 r_do
 (brace
-id|cpumask_t
-id|tmp
-suffix:semicolon
 id|runqueue_t
 op_star
 id|rq
@@ -6874,35 +6809,12 @@ id|busy_group
 r_goto
 id|next_group
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
-id|tmp
-comma
-id|group-&gt;cpumask
-comma
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cpus_weight
-c_func
-(paren
-id|tmp
-)paren
-)paren
-r_goto
-id|next_group
-suffix:semicolon
 id|for_each_cpu_mask
 c_func
 (paren
 id|i
 comma
-id|tmp
+id|group-&gt;cpumask
 )paren
 (brace
 r_if
@@ -7830,15 +7742,9 @@ op_amp
 id|this_rq-&gt;lock
 )paren
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
 id|sibling_map
-comma
+op_assign
 id|sd-&gt;span
-comma
-id|cpu_online_map
-)paren
 suffix:semicolon
 id|for_each_cpu_mask
 c_func
@@ -7987,15 +7893,9 @@ op_amp
 id|this_rq-&gt;lock
 )paren
 suffix:semicolon
-id|cpus_and
-c_func
-(paren
 id|sibling_map
-comma
+op_assign
 id|sd-&gt;span
-comma
-id|cpu_online_map
-)paren
 suffix:semicolon
 id|for_each_cpu_mask
 c_func
@@ -14263,7 +14163,7 @@ id|kernel_flag
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* Attach the domain &squot;sd&squot; to &squot;cpu&squot; as its base domain */
+multiline_comment|/*&n; * Attach the domain &squot;sd&squot; to &squot;cpu&squot; as its base domain.  Callers must&n; * hold the hotplug lock.&n; */
 DECL|function|cpu_attach_domain
 r_static
 r_void
@@ -14300,11 +14200,6 @@ r_int
 id|local
 op_assign
 l_int|1
-suffix:semicolon
-id|lock_cpu_hotplug
-c_func
-(paren
-)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -14400,11 +14295,6 @@ id|req.done
 )paren
 suffix:semicolon
 )brace
-id|unlock_cpu_hotplug
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * To enable disjoint top-level NUMA domains, define SD_NODES_PER_DOMAIN&n; * in arch code. That defines the number of nearby nodes in a node&squot;s top&n; * level scheduling domain.&n; */
 macro_line|#ifdef CONFIG_NUMA
@@ -14413,7 +14303,7 @@ multiline_comment|/**&n; * find_next_best_node - find the next node to include i
 DECL|function|find_next_best_node
 r_static
 r_int
-id|__init
+id|__devinit
 id|find_next_best_node
 c_func
 (paren
@@ -14528,7 +14418,7 @@ multiline_comment|/**&n; * sched_domain_node_span - get a cpumask for a node&squ
 DECL|function|sched_domain_node_span
 r_static
 id|cpumask_t
-id|__init
+id|__devinit
 id|sched_domain_node_span
 c_func
 (paren
@@ -14620,7 +14510,7 @@ macro_line|#else /* SD_NODES_PER_DOMAIN */
 DECL|function|sched_domain_node_span
 r_static
 id|cpumask_t
-id|__init
+id|__devinit
 id|sched_domain_node_span
 c_func
 (paren
@@ -14655,9 +14545,9 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|function|cpu_to_cpu_group
-id|__init
 r_static
 r_int
+id|__devinit
 id|cpu_to_cpu_group
 c_func
 (paren
@@ -14690,9 +14580,9 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|function|cpu_to_phys_group
-id|__init
 r_static
 r_int
+id|__devinit
 id|cpu_to_phys_group
 c_func
 (paren
@@ -14738,9 +14628,9 @@ id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|function|cpu_to_node_group
-id|__init
 r_static
 r_int
+id|__devinit
 id|cpu_to_node_group
 c_func
 (paren
@@ -14770,15 +14660,15 @@ suffix:semicolon
 multiline_comment|/* cpus with isolated domains */
 DECL|variable|cpu_isolated_map
 id|cpumask_t
-id|__initdata
+id|__devinitdata
 id|cpu_isolated_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
 DECL|function|cpu_to_isolated_group
-id|__init
 r_static
 r_int
+id|__devinit
 id|cpu_to_isolated_group
 c_func
 (paren
@@ -14874,9 +14764,9 @@ id|isolated_cpu_setup
 suffix:semicolon
 multiline_comment|/*&n; * init_sched_build_groups takes an array of groups, the cpumask we wish&n; * to span, and a pointer to a function which identifies what group a CPU&n; * belongs to. The return value of group_fn must be a valid index into the&n; * groups[] array, and must be &gt;= 0 and &lt; NR_CPUS (due to the fact that we&n; * keep track of groups covered with a cpumask_t).&n; *&n; * init_sched_build_groups will build a circular linked list of the groups&n; * covered by the given span, and will set each group&squot;s -&gt;cpumask correctly,&n; * and -&gt;cpu_power to 0.&n; */
 DECL|function|init_sched_build_groups
-id|__init
 r_static
 r_void
+id|__devinit
 id|init_sched_build_groups
 c_func
 (paren
@@ -15039,10 +14929,11 @@ op_assign
 id|first
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Set up scheduler domains and groups.  Callers must hold the hotplug lock.&n; */
 DECL|function|arch_init_sched_domains
-id|__init
 r_static
 r_void
+id|__devinit
 id|arch_init_sched_domains
 c_func
 (paren
@@ -15054,6 +14945,19 @@ id|i
 suffix:semicolon
 id|cpumask_t
 id|cpu_default_map
+suffix:semicolon
+id|cpumask_t
+id|cpu_isolated_online_map
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|cpu_isolated_online_map
+comma
+id|cpu_isolated_map
+comma
+id|cpu_online_map
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup mask for cpus without special case scheduling requirements.&n;&t; * For now this just excludes isolated cpus, but could be used to&n;&t; * exclude other special cases in the future.&n;&t; */
 id|cpus_complement
@@ -15071,11 +14975,11 @@ id|cpu_default_map
 comma
 id|cpu_default_map
 comma
-id|cpu_possible_map
+id|cpu_online_map
 )paren
 suffix:semicolon
 multiline_comment|/* Set up domains */
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -15126,7 +15030,7 @@ c_func
 (paren
 id|i
 comma
-id|cpu_isolated_map
+id|cpu_isolated_online_map
 )paren
 )paren
 (brace
@@ -15288,17 +15192,10 @@ id|sd
 op_assign
 id|SD_CPU_INIT
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
 id|sd-&gt;span
 op_assign
 id|nodemask
 suffix:semicolon
-macro_line|#else
-id|sd-&gt;span
-op_assign
-id|cpu_possible_map
-suffix:semicolon
-macro_line|#endif
 id|sd-&gt;parent
 op_assign
 id|p
@@ -15373,7 +15270,7 @@ macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_SCHED_SMT
 multiline_comment|/* Set up CPU (sibling) groups */
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -15429,24 +15326,16 @@ c_func
 (paren
 id|i
 comma
-id|cpu_isolated_map
+id|cpu_isolated_online_map
 )paren
 (brace
 id|cpumask_t
 id|mask
-suffix:semicolon
-id|cpus_clear
-c_func
-(paren
-id|mask
-)paren
-suffix:semicolon
-id|cpu_set
+op_assign
+id|cpumask_of_cpu
 c_func
 (paren
 id|i
-comma
-id|mask
 )paren
 suffix:semicolon
 id|init_sched_build_groups
@@ -15461,7 +15350,6 @@ id|cpu_to_isolated_group
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* Set up physical groups */
 r_for
 c_loop
@@ -15520,19 +15408,6 @@ id|cpu_to_phys_group
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-id|init_sched_build_groups
-c_func
-(paren
-id|sched_group_phys
-comma
-id|cpu_possible_map
-comma
-op_amp
-id|cpu_to_phys_group
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* Set up node groups */
 id|init_sched_build_groups
@@ -15651,7 +15526,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* Attach the domains */
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -15697,6 +15572,18 @@ id|i
 suffix:semicolon
 )brace
 )brace
+DECL|function|arch_destroy_sched_domains
+r_static
+r_void
+id|__devinit
+id|arch_destroy_sched_domains
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Do nothing: everything is statically allocated. */
+)brace
 DECL|macro|SCHED_DOMAIN_DEBUG
 macro_line|#undef SCHED_DOMAIN_DEBUG
 macro_line|#ifdef SCHED_DOMAIN_DEBUG
@@ -15711,7 +15598,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|i
@@ -15745,22 +15632,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU%d: %s&bslash;n&quot;
+l_string|&quot;CPU%d:&bslash;n&quot;
 comma
 id|i
-comma
-(paren
-id|cpu_online
-c_func
-(paren
-id|i
-)paren
-ques
-c_cond
-l_string|&quot; online&quot;
-suffix:colon
-l_string|&quot;offline&quot;
-)paren
 )paren
 suffix:semicolon
 r_do
@@ -16090,6 +15964,116 @@ macro_line|#else
 DECL|macro|sched_domain_debug
 mdefine_line|#define sched_domain_debug() {}
 macro_line|#endif
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Initial dummy domain for early boot and for hotplug cpu */
+DECL|variable|sched_domain_dummy
+r_static
+id|__devinitdata
+r_struct
+id|sched_domain
+id|sched_domain_dummy
+suffix:semicolon
+DECL|variable|sched_group_dummy
+r_static
+id|__devinitdata
+r_struct
+id|sched_group
+id|sched_group_dummy
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+multiline_comment|/*&n; * Force a reinitialization of the sched domains hierarchy.  The domains&n; * and groups cannot be updated in place without racing with the balancing&n; * code, so we temporarily attach all running cpus to a &quot;dummy&quot; domain&n; * which will prevent rebalancing while the sched domains are recalculated.&n; */
+DECL|function|update_sched_domains
+r_static
+r_int
+id|update_sched_domains
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nfb
+comma
+r_int
+r_int
+id|action
+comma
+r_void
+op_star
+id|hcpu
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|action
+)paren
+(brace
+r_case
+id|CPU_UP_PREPARE
+suffix:colon
+r_case
+id|CPU_DOWN_PREPARE
+suffix:colon
+id|for_each_online_cpu
+c_func
+(paren
+id|i
+)paren
+id|cpu_attach_domain
+c_func
+(paren
+op_amp
+id|sched_domain_dummy
+comma
+id|i
+)paren
+suffix:semicolon
+id|arch_destroy_sched_domains
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+r_case
+id|CPU_UP_CANCELED
+suffix:colon
+r_case
+id|CPU_ONLINE
+suffix:colon
+r_case
+id|CPU_DEAD
+suffix:colon
+multiline_comment|/*&n;&t;&t; * Fall through and re-initialise the domains.&n;&t;&t; */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+id|NOTIFY_DONE
+suffix:semicolon
+)brace
+multiline_comment|/* The hotplug lock is already held by cpu_up/cpu_down */
+id|arch_init_sched_domains
+c_func
+(paren
+)paren
+suffix:semicolon
+id|sched_domain_debug
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|NOTIFY_OK
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|sched_init_smp
 r_void
 id|__init
@@ -16099,6 +16083,11 @@ c_func
 r_void
 )paren
 (brace
+id|lock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
 id|arch_init_sched_domains
 c_func
 (paren
@@ -16107,6 +16096,20 @@ suffix:semicolon
 id|sched_domain_debug
 c_func
 (paren
+)paren
+suffix:semicolon
+id|unlock_cpu_hotplug
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* XXX: Theoretical race here - CPU may be hotplugged now */
+id|hotcpu_notifier
+c_func
+(paren
+id|update_sched_domains
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -16191,21 +16194,11 @@ id|k
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Set up an initial dummy domain for early boot */
-r_static
-r_struct
-id|sched_domain
-id|sched_domain_init
-suffix:semicolon
-r_static
-r_struct
-id|sched_group
-id|sched_group_init
-suffix:semicolon
 id|memset
 c_func
 (paren
 op_amp
-id|sched_domain_init
+id|sched_domain_dummy
 comma
 l_int|0
 comma
@@ -16216,25 +16209,25 @@ id|sched_domain
 )paren
 )paren
 suffix:semicolon
-id|sched_domain_init.span
+id|sched_domain_dummy.span
 op_assign
 id|CPU_MASK_ALL
 suffix:semicolon
-id|sched_domain_init.groups
+id|sched_domain_dummy.groups
 op_assign
 op_amp
-id|sched_group_init
+id|sched_group_dummy
 suffix:semicolon
-id|sched_domain_init.last_balance
+id|sched_domain_dummy.last_balance
 op_assign
 id|jiffies
 suffix:semicolon
-id|sched_domain_init.balance_interval
+id|sched_domain_dummy.balance_interval
 op_assign
 id|INT_MAX
 suffix:semicolon
 multiline_comment|/* Don&squot;t balance */
-id|sched_domain_init.busy_factor
+id|sched_domain_dummy.busy_factor
 op_assign
 l_int|1
 suffix:semicolon
@@ -16242,7 +16235,7 @@ id|memset
 c_func
 (paren
 op_amp
-id|sched_group_init
+id|sched_group_dummy
 comma
 l_int|0
 comma
@@ -16253,16 +16246,16 @@ id|sched_group
 )paren
 )paren
 suffix:semicolon
-id|sched_group_init.cpumask
+id|sched_group_dummy.cpumask
 op_assign
 id|CPU_MASK_ALL
 suffix:semicolon
-id|sched_group_init.next
+id|sched_group_dummy.next
 op_assign
 op_amp
-id|sched_group_init
+id|sched_group_dummy
 suffix:semicolon
-id|sched_group_init.cpu_power
+id|sched_group_dummy.cpu_power
 op_assign
 id|SCHED_LOAD_SCALE
 suffix:semicolon
@@ -16319,7 +16312,7 @@ macro_line|#ifdef CONFIG_SMP
 id|rq-&gt;sd
 op_assign
 op_amp
-id|sched_domain_init
+id|sched_domain_dummy
 suffix:semicolon
 id|rq-&gt;cpu_load
 op_assign
