@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (26/7/2002) ganesh&n; * &t;Fixed up broken error handling in ipaq_open. Retry the &quot;kickstart&quot;&n; * &t;packet much harder - this drastically reduces connection failures.&n; *&n; * (30/4/2002) ganesh&n; * &t;Added support for the Casio EM500. Completely untested. Thanks&n; * &t;to info from Nathan &lt;wfilardo@fuse.net&gt;&n; *&n; * (19/3/2002) ganesh&n; *&t;Don&squot;t submit urbs while holding spinlocks. Not strictly necessary&n; *&t;in 2.5.x.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
+multiline_comment|/*&n; * USB Compaq iPAQ driver&n; *&n; *&t;Copyright (C) 2001 - 2002&n; *&t;    Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * (26/11/2002) ganesh&n; * &t;Added insmod options to specify product and vendor id.&n; * &t;Use modprobe ipaq vendor=0xfoo product=0xbar&n; *&n; * (26/7/2002) ganesh&n; * &t;Fixed up broken error handling in ipaq_open. Retry the &quot;kickstart&quot;&n; * &t;packet much harder - this drastically reduces connection failures.&n; *&n; * (30/4/2002) ganesh&n; * &t;Added support for the Casio EM500. Completely untested. Thanks&n; * &t;to info from Nathan &lt;wfilardo@fuse.net&gt;&n; *&n; * (19/3/2002) ganesh&n; *&t;Don&squot;t submit urbs while holding spinlocks. Not strictly necessary&n; *&t;in 2.5.x.&n; *&n; * (8/3/2002) ganesh&n; * &t;The ipaq sometimes emits a &squot;&bslash;0&squot; before the CLIENT string. At this&n; * &t;point of time, the ppp ldisc is not yet attached to the tty, so&n; * &t;n_tty echoes &quot;^ &quot; to the ipaq, which messes up the chat. In 2.5.6-pre2&n; * &t;this causes a panic because echo_char() tries to sleep in interrupt&n; * &t;context.&n; * &t;The fix is to tell the upper layers that this is a raw device so that&n; * &t;echoing is suppressed. Thanks to Lyle Lindholm for a detailed bug&n; * &t;report.&n; *&n; * (25/2/2002) ganesh&n; * &t;Added support for the HP Jornada 548 and 568. Completely untested.&n; * &t;Thanks to info from Heath Robinson and Arieh Davidoff.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -34,11 +34,19 @@ DECL|macro|KP_RETRIES
 mdefine_line|#define KP_RETRIES&t;100
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.3&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.4&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Ganesh Varadarajan &lt;ganesh@veritas.com&gt;&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;USB Compaq iPAQ, HP Jornada, Casio EM500 driver&quot;
+DECL|variable|product
+DECL|variable|vendor
+r_static
+r_int
+id|product
+comma
+id|vendor
+suffix:semicolon
 multiline_comment|/* Function prototypes for an ipaq */
 r_static
 r_int
@@ -210,6 +218,17 @@ id|ipaq_id_table
 )braket
 op_assign
 (brace
+multiline_comment|/* The first entry is a placeholder for the insmod-specified device */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|COMPAQ_VENDOR_ID
+comma
+id|COMPAQ_IPAQ_ID
+)paren
+)brace
+comma
 (brace
 id|USB_DEVICE
 c_func
@@ -2352,19 +2371,44 @@ op_amp
 id|ipaq_device
 )paren
 suffix:semicolon
-id|usb_register
-c_func
-(paren
-op_amp
-id|ipaq_driver
-)paren
-suffix:semicolon
 id|info
 c_func
 (paren
 id|DRIVER_DESC
 l_string|&quot; &quot;
 id|DRIVER_VERSION
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vendor
+)paren
+(brace
+id|ipaq_id_table
+(braket
+l_int|0
+)braket
+dot
+id|idVendor
+op_assign
+id|vendor
+suffix:semicolon
+id|ipaq_id_table
+(braket
+l_int|0
+)braket
+dot
+id|idProduct
+op_assign
+id|product
+suffix:semicolon
+)brace
+id|usb_register
+c_func
+(paren
+op_amp
+id|ipaq_driver
 )paren
 suffix:semicolon
 r_return
@@ -2444,6 +2488,38 @@ c_func
 id|debug
 comma
 l_string|&quot;Debug enabled or not&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|vendor
+comma
+l_string|&quot;h&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|vendor
+comma
+l_string|&quot;User specified USB idVendor&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|product
+comma
+l_string|&quot;h&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|product
+comma
+l_string|&quot;User specified USB idProduct&quot;
 )paren
 suffix:semicolon
 eof
