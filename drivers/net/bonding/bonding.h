@@ -171,6 +171,13 @@ id|proc_dir_entry
 op_star
 id|bond_proc_info_file
 suffix:semicolon
+DECL|member|procdir_name
+r_char
+id|procdir_name
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 DECL|member|bond_list
 r_struct
