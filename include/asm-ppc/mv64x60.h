@@ -850,6 +850,9 @@ id|offset
 id|ulong
 id|flags
 suffix:semicolon
+id|u32
+id|reg
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -859,7 +862,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+id|reg
+op_assign
 id|in_le32
 c_func
 (paren
@@ -876,6 +880,9 @@ id|mv64x60_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|reg
 suffix:semicolon
 )brace
 r_extern
@@ -917,11 +924,11 @@ id|flags
 suffix:semicolon
 id|reg
 op_assign
-id|mv64x60_read
+id|in_le32
 c_func
 (paren
-id|bh
-comma
+id|bh-&gt;v_base
+op_plus
 id|offs
 )paren
 op_amp
@@ -930,19 +937,17 @@ op_complement
 id|mask
 )paren
 suffix:semicolon
-multiline_comment|/* zero bits we care about */
 id|reg
 op_or_assign
 id|data
 op_amp
 id|mask
 suffix:semicolon
-multiline_comment|/* set bits from the data */
-id|mv64x60_write
+id|out_le32
 c_func
 (paren
-id|bh
-comma
+id|bh-&gt;v_base
+op_plus
 id|offs
 comma
 id|reg
