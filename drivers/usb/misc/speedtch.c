@@ -236,46 +236,44 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|UDSL_SKB
 mdefine_line|#define UDSL_SKB(x)&t;&t;((struct udsl_control *)(x)-&gt;cb)
-DECL|struct|atmsar_vcc_data
+DECL|struct|udsl_vcc_data
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 (brace
+multiline_comment|/* vpi/vci lookup */
 DECL|member|next
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* connection specific non-atmsar data */
-DECL|member|vcc
-r_struct
-id|atm_vcc
-op_star
-id|vcc
+DECL|member|vpi
+r_int
+r_int
+id|vpi
 suffix:semicolon
-DECL|member|mtu
+DECL|member|vci
 r_int
 r_int
-id|mtu
-suffix:semicolon
-multiline_comment|/* max is actually  65k for AAL5... */
-multiline_comment|/* cell data */
-DECL|member|vp
-r_int
-r_int
-id|vp
-suffix:semicolon
-DECL|member|vc
-r_int
-r_int
-id|vc
+id|vci
 suffix:semicolon
 DECL|member|atmHeader
 r_int
 r_int
 id|atmHeader
 suffix:semicolon
+DECL|member|vcc
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+suffix:semicolon
 multiline_comment|/* raw cell reassembly */
+DECL|member|mtu
+r_int
+r_int
+id|mtu
+suffix:semicolon
 DECL|member|reasBuffer
 r_struct
 id|sk_buff
@@ -319,11 +317,11 @@ id|atm_dev
 op_star
 id|atm_dev
 suffix:semicolon
-DECL|member|atmsar_vcc_list
+DECL|member|vcc_list
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
-id|atmsar_vcc_list
+id|vcc_list
 suffix:semicolon
 multiline_comment|/* receiving */
 DECL|member|all_receivers
@@ -638,14 +636,15 @@ suffix:semicolon
 multiline_comment|/*************&n;**  decode  **&n;*************/
 DECL|macro|ATM_HDR_VPVC_MASK
 mdefine_line|#define ATM_HDR_VPVC_MASK&t;&t;(ATM_HDR_VPI_MASK | ATM_HDR_VCI_MASK)
-DECL|function|atmsar_decode_rawcell
+DECL|function|udsl_decode_rawcell
+r_static
 r_struct
 id|sk_buff
 op_star
-id|atmsar_decode_rawcell
+id|udsl_decode_rawcell
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|list
 comma
@@ -655,12 +654,39 @@ op_star
 id|skb
 comma
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 op_star
 id|ctx
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list
+op_logical_or
+op_logical_neg
+id|skb
+op_logical_or
+op_logical_neg
+id|ctx
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb-&gt;data
+op_logical_or
+op_logical_neg
+id|skb-&gt;tail
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -680,7 +706,7 @@ op_star
 id|cell_payload
 suffix:semicolon
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|vcc
 op_assign
@@ -746,7 +772,7 @@ l_int|0xff
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_rawcell (0x%p, 0x%p, 0x%p) called&quot;
+l_string|&quot;udsl_decode_rawcell (0x%p, 0x%p, 0x%p) called&quot;
 comma
 id|list
 comma
@@ -757,39 +783,12 @@ id|ctx
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_rawcell skb-&gt;data %p, skb-&gt;tail %p&quot;
+l_string|&quot;udsl_decode_rawcell skb-&gt;data %p, skb-&gt;tail %p&quot;
 comma
 id|skb-&gt;data
 comma
 id|skb-&gt;tail
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list
-op_logical_or
-op_logical_neg
-id|skb
-op_logical_or
-op_logical_neg
-id|ctx
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb-&gt;data
-op_logical_or
-op_logical_neg
-id|skb-&gt;tail
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* here should the header CRC check be... */
 multiline_comment|/* look up correct vcc */
@@ -820,7 +819,7 @@ id|vcc-&gt;next
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_rawcell found vcc %p for packet on vp %d, vc %d&quot;
+l_string|&quot;udsl_decode_rawcell found vcc %p for packet on vpi %d, vci %d&quot;
 comma
 id|vcc
 comma
@@ -969,7 +968,7 @@ l_int|NULL
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_rawcell returns ATM_AAL5 pdu 0x%p with length %d&quot;
+l_string|&quot;udsl_decode_rawcell returns ATM_AAL5 pdu 0x%p with length %d&quot;
 comma
 id|tmp
 comma
@@ -1016,15 +1015,15 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|function|atmsar_decode_aal5
+DECL|function|udsl_decode_aal5
+r_static
 r_struct
 id|sk_buff
 op_star
-id|atmsar_decode_aal5
+id|udsl_decode_aal5
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|ctx
 comma
@@ -1048,7 +1047,7 @@ id|pdu_length
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5 (0x%p, 0x%p) called&quot;
+l_string|&quot;udsl_decode_aal5 (0x%p, 0x%p) called&quot;
 comma
 id|ctx
 comma
@@ -1143,7 +1142,7 @@ l_int|48
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5: skb-&gt;len = %d, length = %d, pdu_crc = 0x%x, pdu_length = %d&quot;
+l_string|&quot;udsl_decode_aal5: skb-&gt;len = %d, length = %d, pdu_crc = 0x%x, pdu_length = %d&quot;
 comma
 id|skb-&gt;len
 comma
@@ -1189,7 +1188,7 @@ id|pdu_length
 (brace
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5: Warning: readjusting illeagl size %d -&gt; %d&quot;
+l_string|&quot;udsl_decode_aal5: Warning: readjusting illegal size %d -&gt; %d&quot;
 comma
 id|skb-&gt;len
 comma
@@ -1232,7 +1231,7 @@ id|crc
 (brace
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5: crc check failed!&quot;
+l_string|&quot;udsl_decode_aal5: crc check failed!&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1272,7 +1271,7 @@ id|ctx-&gt;vcc-&gt;stats-&gt;rx
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5 returns pdu 0x%p with length %d&quot;
+l_string|&quot;udsl_decode_aal5 returns pdu 0x%p with length %d&quot;
 comma
 id|skb
 comma
@@ -1283,7 +1282,6 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/*************&n;**  encode  **&n;*************/
 DECL|function|udsl_groom_skb
 r_static
@@ -1557,6 +1555,7 @@ id|crc
 suffix:semicolon
 )brace
 DECL|function|udsl_write_cells
+r_static
 r_int
 r_int
 id|udsl_write_cells
@@ -2004,7 +2003,7 @@ op_star
 id|urb
 suffix:semicolon
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|atmsar_vcc
 op_assign
@@ -2153,9 +2152,9 @@ c_loop
 (paren
 r_new
 op_assign
-id|atmsar_decode_rawcell
+id|udsl_decode_rawcell
 (paren
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 comma
 id|skb
 comma
@@ -2163,8 +2162,6 @@ op_amp
 id|atmsar_vcc
 )paren
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 id|dbg
@@ -2182,7 +2179,7 @@ r_new
 suffix:semicolon
 r_new
 op_assign
-id|atmsar_decode_aal5
+id|udsl_decode_aal5
 (paren
 id|atmsar_vcc
 comma
@@ -2271,7 +2268,7 @@ r_else
 (brace
 id|dbg
 (paren
-l_string|&quot;atmsar_decode_aal5 returned NULL!&quot;
+l_string|&quot;udsl_decode_aal5 returned NULL!&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -3877,8 +3874,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|ATMSAR_SET_PTI
-mdefine_line|#define ATMSAR_SET_PTI&t;&t;0x2L
 DECL|function|udsl_atm_open
 r_static
 r_int
@@ -3904,7 +3899,7 @@ op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 r_new
 suffix:semicolon
@@ -3933,7 +3928,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* at the moment only AAL5 support */
+multiline_comment|/* only support AAL5 */
 r_if
 c_cond
 (paren
@@ -3957,7 +3952,7 @@ id|kmalloc
 r_sizeof
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 )paren
 comma
 id|GFP_KERNEL
@@ -3979,7 +3974,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 )paren
 )paren
 suffix:semicolon
@@ -3991,13 +3986,13 @@ id|vcc
 suffix:semicolon
 r_new
 op_member_access_from_pointer
-id|vp
+id|vpi
 op_assign
 id|vpi
 suffix:semicolon
 r_new
 op_member_access_from_pointer
-id|vc
+id|vci
 op_assign
 id|vci
 suffix:semicolon
@@ -4041,15 +4036,15 @@ r_new
 op_member_access_from_pointer
 id|next
 op_assign
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 suffix:semicolon
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 op_assign
 r_new
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;Allocated new SARLib vcc 0x%p with vp %d vc %d&quot;
+l_string|&quot;Allocated new SARLib vcc 0x%p with vpi %d vci %d&quot;
 comma
 r_new
 comma
@@ -4132,7 +4127,7 @@ op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 id|work
 suffix:semicolon
@@ -4168,14 +4163,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 op_eq
 id|vcc-&gt;dev_data
 )paren
 (brace
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 op_assign
-id|instance-&gt;atmsar_vcc_list-&gt;next
+id|instance-&gt;vcc_list-&gt;next
 suffix:semicolon
 )brace
 r_else
@@ -4185,7 +4180,7 @@ c_loop
 (paren
 id|work
 op_assign
-id|instance-&gt;atmsar_vcc_list
+id|instance-&gt;vcc_list
 suffix:semicolon
 id|work
 op_logical_and
@@ -4225,7 +4220,7 @@ c_cond
 (paren
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 )paren
 id|vcc-&gt;dev_data
@@ -4239,7 +4234,7 @@ id|dev_kfree_skb
 (paren
 (paren
 r_struct
-id|atmsar_vcc_data
+id|udsl_vcc_data
 op_star
 )paren
 id|vcc-&gt;dev_data
@@ -4251,13 +4246,13 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
-l_string|&quot;Deallocated SARLib vcc 0x%p with vp %d vc %d&quot;
+l_string|&quot;Deallocated SARLib vcc 0x%p with vpi %d vci %d&quot;
 comma
 id|vcc-&gt;dev_data
 comma
-id|vcc-&gt;dev_data-&gt;vp
+id|vcc-&gt;dev_data-&gt;vpi
 comma
-id|vcc-&gt;dev_data-&gt;vc
+id|vcc-&gt;dev_data-&gt;vci
 )paren
 suffix:semicolon
 id|kfree
