@@ -259,6 +259,9 @@ c_cond
 (paren
 op_logical_neg
 id|driver
+op_logical_or
+op_logical_neg
+id|driver-&gt;disconnect
 )paren
 r_return
 suffix:semicolon
@@ -5088,13 +5091,6 @@ c_func
 r_void
 )paren
 (brace
-id|put_bus
-c_func
-(paren
-op_amp
-id|usb_bus_type
-)paren
-suffix:semicolon
 id|usb_major_cleanup
 c_func
 (paren
@@ -5108,6 +5104,13 @@ suffix:semicolon
 id|usb_hub_cleanup
 c_func
 (paren
+)paren
+suffix:semicolon
+id|put_bus
+c_func
+(paren
+op_amp
+id|usb_bus_type
 )paren
 suffix:semicolon
 )brace
