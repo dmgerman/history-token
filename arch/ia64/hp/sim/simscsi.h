@@ -91,6 +91,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|SIMSCSI
-mdefine_line|#define SIMSCSI {&t;&t;&t;&t;&t;&bslash;&n;&t;detect:&t;&t;&t;simscsi_detect,&t;&t;&bslash;&n;&t;release:&t;&t;simscsi_release,&t;&bslash;&n;&t;info:&t;&t;&t;simscsi_info,&t;&t;&bslash;&n;&t;queuecommand:&t;&t;simscsi_queuecommand,&t;&bslash;&n;&t;abort:&t;&t;&t;simscsi_abort,&t;&t;&bslash;&n;&t;reset:&t;&t;&t;simscsi_reset,&t;&t;&bslash;&n;&t;bios_param:&t;&t;simscsi_biosparam,&t;&bslash;&n;&t;can_queue:&t;&t;SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;this_id:&t;&t;-1,&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;&t;SG_ALL,&t;&t;&t;&bslash;&n;&t;cmd_per_lun:&t;&t;SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;present:&t;&t;0,&t;&t;&t;&bslash;&n;&t;unchecked_isa_dma:&t;0,&t;&t;&t;&bslash;&n;&t;use_clustering:&t;&t;DISABLE_CLUSTERING&t;&bslash;&n;}
+mdefine_line|#define SIMSCSI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.detect&t;&t;&t;= simscsi_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= simscsi_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= simscsi_info,&t;&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= simscsi_queuecommand,&t;&t;&bslash;&n;&t;.bios_param&t;&t;= simscsi_biosparam,&t;&t;&bslash;&n;&t;.can_queue&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= SG_ALL,&t;&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= SIMSCSI_REQ_QUEUE_LEN,&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= DISABLE_CLUSTERING&t;&t;&bslash;&n;}
 macro_line|#endif /* SIMSCSI_H */
 eof

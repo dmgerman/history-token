@@ -8,10 +8,11 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
-DECL|macro|GATE_ADDR
-mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + PAGE_SIZE)
+multiline_comment|/* 0xa000000000000000 - 0xa000000000000000+PERCPU_MAX_SIZE remain unmapped */
 DECL|macro|PERCPU_ADDR
-mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + 2*PAGE_SIZE)
+mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)
+DECL|macro|GATE_ADDR
+mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + 2*PERCPU_PAGE_SIZE)
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

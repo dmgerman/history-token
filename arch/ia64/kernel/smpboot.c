@@ -1401,7 +1401,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_NUMA
+multiline_comment|/* on which node is each logical CPU (one cacheline even for 64 CPUs) */
 DECL|variable|__cacheline_aligned
+r_volatile
 r_char
 id|cpu_to_node_map
 (braket
@@ -1409,7 +1411,18 @@ id|NR_CPUS
 )braket
 id|__cacheline_aligned
 suffix:semicolon
-multiline_comment|/*&n; * Build cpu to node mapping.&n; */
+multiline_comment|/* which logical CPUs are on which nodes */
+DECL|variable|__cacheline_aligned
+r_volatile
+r_int
+r_int
+id|node_to_cpu_mask
+(braket
+id|MAX_NUMNODES
+)braket
+id|__cacheline_aligned
+suffix:semicolon
+multiline_comment|/*&n; * Build cpu to node mapping and initialize the per node cpu masks.&n; */
 r_void
 id|__init
 DECL|function|build_cpu_to_node_map
@@ -1422,7 +1435,32 @@ r_int
 id|cpu
 comma
 id|i
+comma
+id|node
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|node
+op_assign
+l_int|0
+suffix:semicolon
+id|node
+OL
+id|MAX_NUMNODES
+suffix:semicolon
+id|node
+op_increment
+)paren
+(brace
+id|node_to_cpu_mask
+(braket
+id|node
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1440,6 +1478,11 @@ id|cpu
 (brace
 multiline_comment|/*&n;&t;&t; * All Itanium NUMA platforms I know use ACPI, so maybe we&n;&t;&t; * can drop this ifdef completely.                    [EF]&n;&t;&t; */
 macro_line|#ifdef CONFIG_ACPI_NUMA
+id|node
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1471,10 +1514,7 @@ dot
 id|phys_id
 )paren
 (brace
-id|cpu_to_node_map
-(braket
-id|cpu
-)braket
+id|node
 op_assign
 id|node_cpuid
 (braket
@@ -1489,6 +1529,31 @@ suffix:semicolon
 macro_line|#else
 macro_line|#&t;&t;error Fixme: Dunno how to build CPU-to-node map.
 macro_line|#endif
+id|cpu_to_node_map
+(braket
+id|cpu
+)braket
+op_assign
+id|node
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|node
+op_ge
+l_int|0
+)paren
+id|node_to_cpu_mask
+(braket
+id|node
+)braket
+op_or_assign
+(paren
+l_int|1UL
+op_lshift
+id|cpu
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_NUMA */
