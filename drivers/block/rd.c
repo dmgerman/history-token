@@ -925,10 +925,10 @@ id|filp
 r_int
 id|unit
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Immunize device against invalidate_buffers() and prune_icache().&n;&t; */

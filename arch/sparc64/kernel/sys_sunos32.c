@@ -175,7 +175,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|minor
+id|major
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -183,10 +183,10 @@ id|inode-&gt;i_rdev
 op_eq
 id|MEM_MAJOR
 op_logical_and
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_eq
 l_int|5

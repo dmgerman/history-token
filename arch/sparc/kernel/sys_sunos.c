@@ -192,10 +192,10 @@ id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 op_eq
 id|MEM_MAJOR
 op_logical_and
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 op_eq
 l_int|5

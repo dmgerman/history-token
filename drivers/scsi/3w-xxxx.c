@@ -2256,10 +2256,10 @@ id|tw_dev
 op_assign
 id|tw_device_extension_list
 (braket
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )braket
 suffix:semicolon
@@ -3042,10 +3042,10 @@ l_string|&quot;3w-xxxx: tw_ioctl_open()&bslash;n&quot;
 suffix:semicolon
 id|minor_number
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_if

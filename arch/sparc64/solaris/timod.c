@@ -5346,10 +5346,10 @@ id|ino-&gt;i_rdev
 op_ne
 l_int|30
 op_logical_or
-id|minor
+id|iminor
 c_func
 (paren
-id|ino-&gt;i_rdev
+id|ino
 )paren
 op_ne
 l_int|1

@@ -185,10 +185,10 @@ id|dvbdev
 op_assign
 id|dvbdev_find_device
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon

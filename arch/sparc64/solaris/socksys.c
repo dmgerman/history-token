@@ -207,10 +207,10 @@ id|family
 op_assign
 (paren
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_rshift
 l_int|4
@@ -245,10 +245,10 @@ id|protocol
 op_assign
 id|af_inet_protocols
 (braket
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|0xf

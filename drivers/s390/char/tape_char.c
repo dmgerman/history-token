@@ -954,10 +954,10 @@ id|ENODEV
 suffix:semicolon
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|filp-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
 id|device
@@ -995,10 +995,10 @@ l_int|6
 comma
 l_string|&quot;TCHAR:open: %x&bslash;n&quot;
 comma
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -1097,10 +1097,10 @@ l_int|6
 comma
 l_string|&quot;TCHAR:release: %x&bslash;n&quot;
 comma
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 )paren
 suffix:semicolon
@@ -1128,10 +1128,10 @@ r_if
 c_cond
 (paren
 (paren
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 op_amp
 l_int|1

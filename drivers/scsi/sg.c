@@ -985,10 +985,10 @@ id|filp
 r_int
 id|dev
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_int

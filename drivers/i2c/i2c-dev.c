@@ -505,10 +505,10 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d reading %d bytes.&bslash;n&quot;
 comma
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 comma
 id|count
@@ -665,10 +665,10 @@ c_func
 (paren
 l_string|&quot;i2c-dev.o: i2c-%d writing %d bytes.&bslash;n&quot;
 comma
-id|minor
+id|iminor
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|file-&gt;f_dentry-&gt;d_inode
 )paren
 comma
 id|count
@@ -772,10 +772,10 @@ id|client-&gt;dev
 comma
 l_string|&quot;i2c-%d ioctl, cmd: 0x%x, arg: %lx.&bslash;n&quot;
 comma
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 comma
 id|cmd
@@ -1768,10 +1768,10 @@ r_int
 r_int
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode
 )paren
 suffix:semicolon
 r_struct

@@ -895,10 +895,10 @@ r_int
 r_int
 id|minor
 op_assign
-id|minor
+id|iminor
 c_func
 (paren
-id|ip-&gt;i_rdev
+id|ip
 )paren
 suffix:semicolon
 id|tub_t

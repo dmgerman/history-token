@@ -386,10 +386,10 @@ op_lshift
 l_int|8
 )paren
 op_or
-id|minor
+id|iminor
 c_func
 (paren
-id|dentry-&gt;d_inode-&gt;i_rdev
+id|dentry-&gt;d_inode
 )paren
 suffix:semicolon
 id|mdata
