@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ixp2000.c,v 1.1 2004/09/02 00:13:41 dsaxena Exp $&n; *&n; * drivers/mtd/maps/ixp2000.c&n; *&n; * Mapping for the Intel XScale IXP2000 based systems&n; *&n; * Copyright (C) 2002 Intel Corp.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Original Author: Naeem M Afzal &lt;naeem.m.afzal@intel.com&gt;&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * $Id: ixp2000.c,v 1.3 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * drivers/mtd/maps/ixp2000.c&n; *&n; * Mapping for the Intel XScale IXP2000 based systems&n; *&n; * Copyright (C) 2002 Intel Corp.&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Original Author: Naeem M Afzal &lt;naeem.m.afzal@intel.com&gt;&n; * Maintainer: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; * &n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -105,11 +105,11 @@ id|ofs
 suffix:semicolon
 )brace
 macro_line|#ifdef __ARMEB__
-multiline_comment|/*&n; * Rev A0 and A1 of IXP2400 silicon have a broken addressing unit which&n; * causes the lower address bits to be XORed with 0x11 on 8 bit accesses&n; * and XORed with 0x10 on 16 bit accesses. See the spec update, erratta 44.&n; */
-DECL|variable|errata44_workaround
+multiline_comment|/*&n; * Rev A0 and A1 of IXP2400 silicon have a broken addressing unit which &n; * causes the lower address bits to be XORed with 0x11 on 8 bit accesses &n; * and XORed with 0x10 on 16 bit accesses. See the spec update, erratum 44.&n; */
+DECL|variable|erratum44_workaround
 r_static
 r_int
-id|errata44_workaround
+id|erratum44_workaround
 op_assign
 l_int|0
 suffix:semicolon
@@ -129,7 +129,7 @@ id|addr
 r_if
 c_cond
 (paren
-id|errata44_workaround
+id|erratum44_workaround
 )paren
 (brace
 r_return
@@ -480,12 +480,14 @@ c_cond
 (paren
 id|info-&gt;partitions
 )paren
+(brace
 id|kfree
 c_func
 (paren
 id|info-&gt;partitions
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -625,7 +627,7 @@ c_func
 (paren
 id|_dev
 comma
-l_string|&quot;Probe of IXP2000 flash(%d banks x %dM)&bslash;n&quot;
+l_string|&quot;Probe of IXP2000 flash(%d banks x %dMiB)&bslash;n&quot;
 comma
 id|ixp_data-&gt;nr_banks
 comma
@@ -738,7 +740,9 @@ multiline_comment|/*&n; &t; * map_priv_2 is used to store a ptr to to the bank_s
 id|info-&gt;map.map_priv_2
 op_assign
 (paren
-id|u32
+r_void
+id|__iomem
+op_star
 )paren
 id|ixp_data-&gt;bank_setup
 suffix:semicolon
@@ -805,8 +809,9 @@ suffix:semicolon
 id|info-&gt;map.map_priv_1
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -851,7 +856,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#if defined(__ARMEB__)
-multiline_comment|/*&n;&t; * Enable errata 44 workaround for NPUs with broken slowport&n;&t; */
+multiline_comment|/*&n;&t; * Enable erratum 44 workaround for NPUs with broken slowport&n;&t; */
 id|errata44_workaround
 op_assign
 id|ixp2000_has_broken_slowport
@@ -864,9 +869,9 @@ c_func
 (paren
 id|_dev
 comma
-l_string|&quot;Errata 44 workaround %s&bslash;n&quot;
+l_string|&quot;Erratum 44 workaround %s&bslash;n&quot;
 comma
-id|errata44_workaround
+id|erratum44_workaround
 ques
 c_cond
 l_string|&quot;enabled&quot;

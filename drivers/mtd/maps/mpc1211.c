@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash on MPC-1211&n; *&n; * $Id: mpc1211.c,v 1.3 2004/07/14 17:45:40 dwmw2 Exp $&n; *&n; * (C) 2002 Interface, Saito.K &amp; Jeanne&n; *&n; * GPL&squot;d&n; */
+multiline_comment|/*&n; * Flash on MPC-1211&n; *&n; * $Id: mpc1211.c,v 1.4 2004/09/16 23:27:13 gleixner Exp $&n; *&n; * (C) 2002 Interface, Saito.K &amp; Jeanne&n; *&n; * GPL&squot;d&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -109,6 +109,11 @@ l_int|0
 suffix:semicolon
 id|mpc1211_flash_map.virt
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|P2SEGADDR
 c_func
 (paren

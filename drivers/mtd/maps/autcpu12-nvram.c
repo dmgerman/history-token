@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NV-RAM memory access on autcpu12 &n; * (C) 2002 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: autcpu12-nvram.c,v 1.6 2004/07/12 21:59:43 dwmw2 Exp $ &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * NV-RAM memory access on autcpu12 &n; * (C) 2002 Thomas Gleixner (gleixner@autronix.de)&n; *&n; * $Id: autcpu12-nvram.c,v 1.7 2004/09/16 23:27:12 gleixner Exp $ &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -65,8 +65,9 @@ suffix:semicolon
 id|autcpu12_sram_map.virt
 op_assign
 (paren
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap
 c_func
@@ -172,9 +173,7 @@ id|map
 suffix:semicolon
 )brace
 multiline_comment|/* We have a 128K found, restore 0x10000 and set size&n;&t; * to 128K&n;&t; */
-id|ma
-(braket
-id|_write32
+id|map_write32
 c_func
 (paren
 op_amp

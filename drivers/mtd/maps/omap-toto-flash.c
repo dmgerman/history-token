@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NOR Flash memory access on TI Toto board&n; *&n; * jzhang@ti.com (C) 2003 Texas Instruments.&n; *&n; *  (C) 2002 MontVista Software, Inc.&n; *&n; * $Id: omap-toto-flash.c,v 1.2 2004/07/12 21:59:44 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * NOR Flash memory access on TI Toto board&n; *&n; * jzhang@ti.com (C) 2003 Texas Instruments.&n; *&n; *  (C) 2002 MontVista Software, Inc.&n; *&n; * $Id: omap-toto-flash.c,v 1.3 2004/09/16 23:27:13 gleixner Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -38,6 +38,11 @@ comma
 dot
 id|virt
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|OMAP_TOTO_FLASH_BASE
 comma
 )brace

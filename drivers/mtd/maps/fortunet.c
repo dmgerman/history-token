@@ -1,4 +1,4 @@
-multiline_comment|/* fortunet.c memory map&n; *&n; * $Id: fortunet.c,v 1.7 2004/07/12 21:59:44 dwmw2 Exp $&n; */
+multiline_comment|/* fortunet.c memory map&n; *&n; * $Id: fortunet.c,v 1.8 2004/09/16 23:27:13 gleixner Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1203,7 +1203,9 @@ dot
 id|map_info.virt
 op_assign
 (paren
-r_int
+r_void
+id|__iomem
+op_star
 )paren
 id|ioremap_nocache
 c_func
