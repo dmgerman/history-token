@@ -27,6 +27,8 @@ DECL|macro|RX_COPY_THRESHOLD
 mdefine_line|#define RX_COPY_THRESHOLD  &t;&t;256
 DECL|macro|RX_STD_MAX_SIZE
 mdefine_line|#define RX_STD_MAX_SIZE&t;&t;&t;1536
+DECL|macro|RX_STD_MAX_SIZE_5705
+mdefine_line|#define RX_STD_MAX_SIZE_5705&t;&t;512
 DECL|macro|RX_JUMBO_MAX_SIZE
 mdefine_line|#define RX_JUMBO_MAX_SIZE&t;&t;0xdeadbeef /* XXX */
 multiline_comment|/* First 256 bytes are a mirror of PCI config space. */
@@ -92,8 +94,8 @@ DECL|macro|PCIX_CAPS_BURST_MASK
 mdefine_line|#define  PCIX_CAPS_BURST_MASK&t;&t; 0x000c0000
 DECL|macro|PCIX_CAPS_BURST_SHIFT
 mdefine_line|#define  PCIX_CAPS_BURST_SHIFT&t;&t; 18
-DECL|macro|PCIX_CAPS_MAX_BURST_5704
-mdefine_line|#define  PCIX_CAPS_MAX_BURST_5704&t; 2
+DECL|macro|PCIX_CAPS_MAX_BURST_CPIOB
+mdefine_line|#define  PCIX_CAPS_MAX_BURST_CPIOB&t; 2
 DECL|macro|TG3PCI_PM_CAP_PTR
 mdefine_line|#define TG3PCI_PM_CAP_PTR&t;&t;0x00000041
 DECL|macro|TG3PCI_X_COMMAND
@@ -199,6 +201,10 @@ DECL|macro|CHIPREV_ID_5704_A1
 mdefine_line|#define  CHIPREV_ID_5704_A1&t;&t; 0x2001
 DECL|macro|CHIPREV_ID_5704_A2
 mdefine_line|#define  CHIPREV_ID_5704_A2&t;&t; 0x2002
+DECL|macro|CHIPREV_ID_5705_A0
+mdefine_line|#define  CHIPREV_ID_5705_A0&t;&t; 0x3000
+DECL|macro|CHIPREV_ID_5705_A1
+mdefine_line|#define  CHIPREV_ID_5705_A1&t;&t; 0x3001
 DECL|macro|GET_ASIC_REV
 mdefine_line|#define  GET_ASIC_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 12)
 DECL|macro|ASIC_REV_5700
@@ -209,6 +215,8 @@ DECL|macro|ASIC_REV_5703
 mdefine_line|#define   ASIC_REV_5703&t;&t;&t; 0x01
 DECL|macro|ASIC_REV_5704
 mdefine_line|#define   ASIC_REV_5704&t;&t;&t; 0x02
+DECL|macro|ASIC_REV_5705
+mdefine_line|#define   ASIC_REV_5705&t;&t;&t; 0x03
 DECL|macro|GET_CHIP_REV
 mdefine_line|#define  GET_CHIP_REV(CHIP_REV_ID)&t;((CHIP_REV_ID) &gt;&gt; 8)
 DECL|macro|CHIPREV_5700_AX
@@ -329,6 +337,12 @@ DECL|macro|CLOCK_CTRL_PWRDOWN_PLL133
 mdefine_line|#define  CLOCK_CTRL_PWRDOWN_PLL133&t; 0x00008000
 DECL|macro|CLOCK_CTRL_44MHZ_CORE
 mdefine_line|#define  CLOCK_CTRL_44MHZ_CORE&t;&t; 0x00040000
+DECL|macro|CLOCK_CTRL_625_CORE
+mdefine_line|#define  CLOCK_CTRL_625_CORE&t;&t; 0x00100000
+DECL|macro|CLOCK_CTRL_FORCE_CLKRUN
+mdefine_line|#define  CLOCK_CTRL_FORCE_CLKRUN&t; 0x00200000
+DECL|macro|CLOCK_CTRL_CLKRUN_OENABLE
+mdefine_line|#define  CLOCK_CTRL_CLKRUN_OENABLE&t; 0x00400000
 DECL|macro|CLOCK_CTRL_DELAY_PCI_GRANT
 mdefine_line|#define  CLOCK_CTRL_DELAY_PCI_GRANT&t; 0x80000000
 DECL|macro|TG3PCI_REG_BASE_ADDR
@@ -872,7 +886,63 @@ DECL|macro|RCV_RULE_CFG_DEFAULT_CLASS
 mdefine_line|#define  RCV_RULE_CFG_DEFAULT_CLASS&t;0x00000008
 DECL|macro|MAC_LOW_WMARK_MAX_RX_FRAME
 mdefine_line|#define MAC_LOW_WMARK_MAX_RX_FRAME&t;0x00000504
-multiline_comment|/* 0x504 --&gt; 0x590 unused */
+multiline_comment|/* 0x508 --&gt; 0x520 unused */
+DECL|macro|MAC_HASHREGU_0
+mdefine_line|#define MAC_HASHREGU_0&t;&t;&t;0x00000520
+DECL|macro|MAC_HASHREGU_1
+mdefine_line|#define MAC_HASHREGU_1&t;&t;&t;0x00000524
+DECL|macro|MAC_HASHREGU_2
+mdefine_line|#define MAC_HASHREGU_2&t;&t;&t;0x00000528
+DECL|macro|MAC_HASHREGU_3
+mdefine_line|#define MAC_HASHREGU_3&t;&t;&t;0x0000052c
+DECL|macro|MAC_EXTADDR_0_HIGH
+mdefine_line|#define MAC_EXTADDR_0_HIGH&t;&t;0x00000530
+DECL|macro|MAC_EXTADDR_0_LOW
+mdefine_line|#define MAC_EXTADDR_0_LOW&t;&t;0x00000534
+DECL|macro|MAC_EXTADDR_1_HIGH
+mdefine_line|#define MAC_EXTADDR_1_HIGH&t;&t;0x00000538
+DECL|macro|MAC_EXTADDR_1_LOW
+mdefine_line|#define MAC_EXTADDR_1_LOW&t;&t;0x0000053c
+DECL|macro|MAC_EXTADDR_2_HIGH
+mdefine_line|#define MAC_EXTADDR_2_HIGH&t;&t;0x00000540
+DECL|macro|MAC_EXTADDR_2_LOW
+mdefine_line|#define MAC_EXTADDR_2_LOW&t;&t;0x00000544
+DECL|macro|MAC_EXTADDR_3_HIGH
+mdefine_line|#define MAC_EXTADDR_3_HIGH&t;&t;0x00000548
+DECL|macro|MAC_EXTADDR_3_LOW
+mdefine_line|#define MAC_EXTADDR_3_LOW&t;&t;0x0000054c
+DECL|macro|MAC_EXTADDR_4_HIGH
+mdefine_line|#define MAC_EXTADDR_4_HIGH&t;&t;0x00000550
+DECL|macro|MAC_EXTADDR_4_LOW
+mdefine_line|#define MAC_EXTADDR_4_LOW&t;&t;0x00000554
+DECL|macro|MAC_EXTADDR_5_HIGH
+mdefine_line|#define MAC_EXTADDR_5_HIGH&t;&t;0x00000558
+DECL|macro|MAC_EXTADDR_5_LOW
+mdefine_line|#define MAC_EXTADDR_5_LOW&t;&t;0x0000055c
+DECL|macro|MAC_EXTADDR_6_HIGH
+mdefine_line|#define MAC_EXTADDR_6_HIGH&t;&t;0x00000560
+DECL|macro|MAC_EXTADDR_6_LOW
+mdefine_line|#define MAC_EXTADDR_6_LOW&t;&t;0x00000564
+DECL|macro|MAC_EXTADDR_7_HIGH
+mdefine_line|#define MAC_EXTADDR_7_HIGH&t;&t;0x00000568
+DECL|macro|MAC_EXTADDR_7_LOW
+mdefine_line|#define MAC_EXTADDR_7_LOW&t;&t;0x0000056c
+DECL|macro|MAC_EXTADDR_8_HIGH
+mdefine_line|#define MAC_EXTADDR_8_HIGH&t;&t;0x00000570
+DECL|macro|MAC_EXTADDR_8_LOW
+mdefine_line|#define MAC_EXTADDR_8_LOW&t;&t;0x00000574
+DECL|macro|MAC_EXTADDR_9_HIGH
+mdefine_line|#define MAC_EXTADDR_9_HIGH&t;&t;0x00000578
+DECL|macro|MAC_EXTADDR_9_LOW
+mdefine_line|#define MAC_EXTADDR_9_LOW&t;&t;0x0000057c
+DECL|macro|MAC_EXTADDR_10_HIGH
+mdefine_line|#define MAC_EXTADDR_10_HIGH&t;&t;0x00000580
+DECL|macro|MAC_EXTADDR_10_LOW
+mdefine_line|#define MAC_EXTADDR_10_LOW&t;&t;0x00000584
+DECL|macro|MAC_EXTADDR_11_HIGH
+mdefine_line|#define MAC_EXTADDR_11_HIGH&t;&t;0x00000588
+DECL|macro|MAC_EXTADDR_11_LOW
+mdefine_line|#define MAC_EXTADDR_11_LOW&t;&t;0x0000058c
 DECL|macro|MAC_SERDES_CFG
 mdefine_line|#define MAC_SERDES_CFG&t;&t;&t;0x00000590
 DECL|macro|MAC_SERDES_STAT
@@ -883,12 +953,101 @@ mdefine_line|#define MAC_TX_MAC_STATE_BASE&t;&t;0x00000600 /* 16 bytes */
 DECL|macro|MAC_RX_MAC_STATE_BASE
 mdefine_line|#define MAC_RX_MAC_STATE_BASE&t;&t;0x00000610 /* 20 bytes */
 multiline_comment|/* 0x624 --&gt; 0x800 unused */
-DECL|macro|MAC_RX_STATS_BASE
-mdefine_line|#define MAC_RX_STATS_BASE&t;&t;0x00000800 /* 26 32-bit words */
-multiline_comment|/* 0x868 --&gt; 0x880 unused */
-DECL|macro|MAC_TX_STATS_BASE
-mdefine_line|#define MAC_TX_STATS_BASE&t;&t;0x00000880 /* 28 32-bit words */
-multiline_comment|/* 0x8f0 --&gt; 0xc00 unused */
+DECL|macro|MAC_TX_STATS_OCTETS
+mdefine_line|#define MAC_TX_STATS_OCTETS&t;&t;0x00000800
+DECL|macro|MAC_TX_STATS_RESV1
+mdefine_line|#define MAC_TX_STATS_RESV1&t;&t;0x00000804
+DECL|macro|MAC_TX_STATS_COLLISIONS
+mdefine_line|#define MAC_TX_STATS_COLLISIONS&t;&t;0x00000808
+DECL|macro|MAC_TX_STATS_XON_SENT
+mdefine_line|#define MAC_TX_STATS_XON_SENT&t;&t;0x0000080c
+DECL|macro|MAC_TX_STATS_XOFF_SENT
+mdefine_line|#define MAC_TX_STATS_XOFF_SENT&t;&t;0x00000810
+DECL|macro|MAC_TX_STATS_RESV2
+mdefine_line|#define MAC_TX_STATS_RESV2&t;&t;0x00000814
+DECL|macro|MAC_TX_STATS_MAC_ERRORS
+mdefine_line|#define MAC_TX_STATS_MAC_ERRORS&t;&t;0x00000818
+DECL|macro|MAC_TX_STATS_SINGLE_COLLISIONS
+mdefine_line|#define MAC_TX_STATS_SINGLE_COLLISIONS&t;0x0000081c
+DECL|macro|MAC_TX_STATS_MULT_COLLISIONS
+mdefine_line|#define MAC_TX_STATS_MULT_COLLISIONS&t;0x00000820
+DECL|macro|MAC_TX_STATS_DEFERRED
+mdefine_line|#define MAC_TX_STATS_DEFERRED&t;&t;0x00000824
+DECL|macro|MAC_TX_STATS_RESV3
+mdefine_line|#define MAC_TX_STATS_RESV3&t;&t;0x00000828
+DECL|macro|MAC_TX_STATS_EXCESSIVE_COL
+mdefine_line|#define MAC_TX_STATS_EXCESSIVE_COL&t;0x0000082c
+DECL|macro|MAC_TX_STATS_LATE_COL
+mdefine_line|#define MAC_TX_STATS_LATE_COL&t;&t;0x00000830
+DECL|macro|MAC_TX_STATS_RESV4_1
+mdefine_line|#define MAC_TX_STATS_RESV4_1&t;&t;0x00000834
+DECL|macro|MAC_TX_STATS_RESV4_2
+mdefine_line|#define MAC_TX_STATS_RESV4_2&t;&t;0x00000838
+DECL|macro|MAC_TX_STATS_RESV4_3
+mdefine_line|#define MAC_TX_STATS_RESV4_3&t;&t;0x0000083c
+DECL|macro|MAC_TX_STATS_RESV4_4
+mdefine_line|#define MAC_TX_STATS_RESV4_4&t;&t;0x00000840
+DECL|macro|MAC_TX_STATS_RESV4_5
+mdefine_line|#define MAC_TX_STATS_RESV4_5&t;&t;0x00000844
+DECL|macro|MAC_TX_STATS_RESV4_6
+mdefine_line|#define MAC_TX_STATS_RESV4_6&t;&t;0x00000848
+DECL|macro|MAC_TX_STATS_RESV4_7
+mdefine_line|#define MAC_TX_STATS_RESV4_7&t;&t;0x0000084c
+DECL|macro|MAC_TX_STATS_RESV4_8
+mdefine_line|#define MAC_TX_STATS_RESV4_8&t;&t;0x00000850
+DECL|macro|MAC_TX_STATS_RESV4_9
+mdefine_line|#define MAC_TX_STATS_RESV4_9&t;&t;0x00000854
+DECL|macro|MAC_TX_STATS_RESV4_10
+mdefine_line|#define MAC_TX_STATS_RESV4_10&t;&t;0x00000858
+DECL|macro|MAC_TX_STATS_RESV4_11
+mdefine_line|#define MAC_TX_STATS_RESV4_11&t;&t;0x0000085c
+DECL|macro|MAC_TX_STATS_RESV4_12
+mdefine_line|#define MAC_TX_STATS_RESV4_12&t;&t;0x00000860
+DECL|macro|MAC_TX_STATS_RESV4_13
+mdefine_line|#define MAC_TX_STATS_RESV4_13&t;&t;0x00000864
+DECL|macro|MAC_TX_STATS_RESV4_14
+mdefine_line|#define MAC_TX_STATS_RESV4_14&t;&t;0x00000868
+DECL|macro|MAC_TX_STATS_UCAST
+mdefine_line|#define MAC_TX_STATS_UCAST&t;&t;0x0000086c
+DECL|macro|MAC_TX_STATS_MCAST
+mdefine_line|#define MAC_TX_STATS_MCAST&t;&t;0x00000870
+DECL|macro|MAC_TX_STATS_BCAST
+mdefine_line|#define MAC_TX_STATS_BCAST&t;&t;0x00000874
+DECL|macro|MAC_TX_STATS_RESV5_1
+mdefine_line|#define MAC_TX_STATS_RESV5_1&t;&t;0x00000878
+DECL|macro|MAC_TX_STATS_RESV5_2
+mdefine_line|#define MAC_TX_STATS_RESV5_2&t;&t;0x0000087c
+DECL|macro|MAC_RX_STATS_OCTETS
+mdefine_line|#define MAC_RX_STATS_OCTETS&t;&t;0x00000880
+DECL|macro|MAC_RX_STATS_RESV1
+mdefine_line|#define MAC_RX_STATS_RESV1&t;&t;0x00000884
+DECL|macro|MAC_RX_STATS_FRAGMENTS
+mdefine_line|#define MAC_RX_STATS_FRAGMENTS&t;&t;0x00000888
+DECL|macro|MAC_RX_STATS_UCAST
+mdefine_line|#define MAC_RX_STATS_UCAST&t;&t;0x0000088c
+DECL|macro|MAC_RX_STATS_MCAST
+mdefine_line|#define MAC_RX_STATS_MCAST&t;&t;0x00000890
+DECL|macro|MAC_RX_STATS_BCAST
+mdefine_line|#define MAC_RX_STATS_BCAST&t;&t;0x00000894
+DECL|macro|MAC_RX_STATS_FCS_ERRORS
+mdefine_line|#define MAC_RX_STATS_FCS_ERRORS&t;&t;0x00000898
+DECL|macro|MAC_RX_STATS_ALIGN_ERRORS
+mdefine_line|#define MAC_RX_STATS_ALIGN_ERRORS&t;0x0000089c
+DECL|macro|MAC_RX_STATS_XON_PAUSE_RECVD
+mdefine_line|#define MAC_RX_STATS_XON_PAUSE_RECVD&t;0x000008a0
+DECL|macro|MAC_RX_STATS_XOFF_PAUSE_RECVD
+mdefine_line|#define MAC_RX_STATS_XOFF_PAUSE_RECVD&t;0x000008a4
+DECL|macro|MAC_RX_STATS_MAC_CTRL_RECVD
+mdefine_line|#define MAC_RX_STATS_MAC_CTRL_RECVD&t;0x000008a8
+DECL|macro|MAC_RX_STATS_XOFF_ENTERED
+mdefine_line|#define MAC_RX_STATS_XOFF_ENTERED&t;0x000008ac
+DECL|macro|MAC_RX_STATS_FRAME_TOO_LONG
+mdefine_line|#define MAC_RX_STATS_FRAME_TOO_LONG&t;0x000008b0
+DECL|macro|MAC_RX_STATS_JABBERS
+mdefine_line|#define MAC_RX_STATS_JABBERS&t;&t;0x000008b4
+DECL|macro|MAC_RX_STATS_UNDERSIZE
+mdefine_line|#define MAC_RX_STATS_UNDERSIZE&t;&t;0x000008b8
+multiline_comment|/* 0x8bc --&gt; 0xc00 unused */
 multiline_comment|/* Send data initiator control registers */
 DECL|macro|SNDDATAI_MODE
 mdefine_line|#define SNDDATAI_MODE&t;&t;&t;0x00000c00
@@ -1126,6 +1285,8 @@ DECL|macro|RCVLPC_STATSCTRL_FASTUPD
 mdefine_line|#define  RCVLPC_STATSCTRL_FASTUPD&t; 0x00000002
 DECL|macro|RCVLPC_STATS_ENABLE
 mdefine_line|#define RCVLPC_STATS_ENABLE&t;&t;0x00002018
+DECL|macro|RCVLPC_STATSENAB_LNGBRST_RFIX
+mdefine_line|#define  RCVLPC_STATSENAB_LNGBRST_RFIX&t; 0x00400000
 DECL|macro|RCVLPC_STATS_INCMASK
 mdefine_line|#define RCVLPC_STATS_INCMASK&t;&t;0x0000201c
 multiline_comment|/* 0x2020 --&gt; 0x2100 unused */
@@ -1511,19 +1672,25 @@ mdefine_line|#define BUFMGR_MB_POOL_SIZE&t;&t;0x0000440c
 DECL|macro|BUFMGR_MB_RDMA_LOW_WATER
 mdefine_line|#define BUFMGR_MB_RDMA_LOW_WATER&t;0x00004410
 DECL|macro|DEFAULT_MB_RDMA_LOW_WATER
-mdefine_line|#define  DEFAULT_MB_RDMA_LOW_WATER&t; 0x00000040
+mdefine_line|#define  DEFAULT_MB_RDMA_LOW_WATER&t; 0x00000050
+DECL|macro|DEFAULT_MB_RDMA_LOW_WATER_5705
+mdefine_line|#define  DEFAULT_MB_RDMA_LOW_WATER_5705&t; 0x00000000
 DECL|macro|DEFAULT_MB_RDMA_LOW_WATER_JUMBO
 mdefine_line|#define  DEFAULT_MB_RDMA_LOW_WATER_JUMBO 0x00000130
 DECL|macro|BUFMGR_MB_MACRX_LOW_WATER
 mdefine_line|#define BUFMGR_MB_MACRX_LOW_WATER&t;0x00004414
 DECL|macro|DEFAULT_MB_MACRX_LOW_WATER
 mdefine_line|#define  DEFAULT_MB_MACRX_LOW_WATER&t;  0x00000020
+DECL|macro|DEFAULT_MB_MACRX_LOW_WATER_5705
+mdefine_line|#define  DEFAULT_MB_MACRX_LOW_WATER_5705  0x00000010
 DECL|macro|DEFAULT_MB_MACRX_LOW_WATER_JUMBO
 mdefine_line|#define  DEFAULT_MB_MACRX_LOW_WATER_JUMBO 0x00000098
 DECL|macro|BUFMGR_MB_HIGH_WATER
 mdefine_line|#define BUFMGR_MB_HIGH_WATER&t;&t;0x00004418
 DECL|macro|DEFAULT_MB_HIGH_WATER
 mdefine_line|#define  DEFAULT_MB_HIGH_WATER&t;&t; 0x00000060
+DECL|macro|DEFAULT_MB_HIGH_WATER_5705
+mdefine_line|#define  DEFAULT_MB_HIGH_WATER_5705&t; 0x00000060
 DECL|macro|DEFAULT_MB_HIGH_WATER_JUMBO
 mdefine_line|#define  DEFAULT_MB_HIGH_WATER_JUMBO&t; 0x0000017c
 DECL|macro|BUFMGR_RX_MB_ALLOC_REQ
@@ -1590,6 +1757,10 @@ DECL|macro|RDMAC_MODE_SPLIT_ENABLE
 mdefine_line|#define  RDMAC_MODE_SPLIT_ENABLE&t; 0x00000800
 DECL|macro|RDMAC_MODE_SPLIT_RESET
 mdefine_line|#define  RDMAC_MODE_SPLIT_RESET&t;&t; 0x00001000
+DECL|macro|RDMAC_MODE_FIFO_SIZE_128
+mdefine_line|#define  RDMAC_MODE_FIFO_SIZE_128&t; 0x00020000
+DECL|macro|RDMAC_MODE_FIFO_LONG_BURST
+mdefine_line|#define  RDMAC_MODE_FIFO_LONG_BURST&t; 0x00030000
 DECL|macro|RDMAC_STATUS
 mdefine_line|#define RDMAC_STATUS&t;&t;&t;0x00004804
 DECL|macro|RDMAC_STATUS_TGTABORT
@@ -1632,6 +1803,8 @@ DECL|macro|WDMAC_MODE_FIFOOREAD_ENAB
 mdefine_line|#define  WDMAC_MODE_FIFOOREAD_ENAB&t; 0x00000100
 DECL|macro|WDMAC_MODE_LNGREAD_ENAB
 mdefine_line|#define  WDMAC_MODE_LNGREAD_ENAB&t; 0x00000200
+DECL|macro|WDMAC_MODE_RX_ACCEL
+mdefine_line|#define  WDMAC_MODE_RX_ACCEL&t; &t; 0x00000400
 DECL|macro|WDMAC_STATUS
 mdefine_line|#define WDMAC_STATUS&t;&t;&t;0x00004c04
 DECL|macro|WDMAC_STATUS_TGTABORT
@@ -2128,8 +2301,14 @@ DECL|macro|GRC_MISC_CFG_BOARD_ID_5704CIOBE
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5704CIOBE 0x00004000
 DECL|macro|GRC_MISC_CFG_BOARD_ID_5704_A2
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5704_A2&t;0x00008000
+DECL|macro|GRC_MISC_CFG_BOARD_ID_5788
+mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5788&t;0x00010000
+DECL|macro|GRC_MISC_CFG_BOARD_ID_5788M
+mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_5788M&t;0x00018000
 DECL|macro|GRC_MISC_CFG_BOARD_ID_AC91002A1
 mdefine_line|#define  GRC_MISC_CFG_BOARD_ID_AC91002A1 0x00018000
+DECL|macro|GRC_MISC_CFG_KEEP_GPHY_POWER
+mdefine_line|#define  GRC_MISC_CFG_KEEP_GPHY_POWER&t;0x04000000
 DECL|macro|GRC_LOCAL_CTRL
 mdefine_line|#define GRC_LOCAL_CTRL&t;&t;&t;0x00006808
 DECL|macro|GRC_LCLCTRL_INT_ACTIVE
@@ -2375,6 +2554,8 @@ DECL|macro|NIC_SRAM_DATA_CFG_ASF_ENABLE
 mdefine_line|#define  NIC_SRAM_DATA_CFG_ASF_ENABLE&t;&t; 0x00000080
 DECL|macro|NIC_SRAM_DATA_CFG_EEPROM_WP
 mdefine_line|#define  NIC_SRAM_DATA_CFG_EEPROM_WP&t;&t; 0x00000100
+DECL|macro|NIC_SRAM_DATA_CFG_MINI_PCI
+mdefine_line|#define  NIC_SRAM_DATA_CFG_MINI_PCI&t;&t; 0x00001000
 DECL|macro|NIC_SRAM_DATA_CFG_FIBER_WOL
 mdefine_line|#define  NIC_SRAM_DATA_CFG_FIBER_WOL&t;&t; 0x00004000
 DECL|macro|NIC_SRAM_DATA_PHY_ID
@@ -2437,6 +2618,10 @@ DECL|macro|NIC_SRAM_MBUF_POOL_SIZE96
 mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE96&t; 0x00018000
 DECL|macro|NIC_SRAM_MBUF_POOL_SIZE64
 mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE64&t; 0x00010000
+DECL|macro|NIC_SRAM_MBUF_POOL_BASE5705
+mdefine_line|#define  NIC_SRAM_MBUF_POOL_BASE5705&t;0x00010000
+DECL|macro|NIC_SRAM_MBUF_POOL_SIZE5705
+mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE5705&t;0x0000e000
 multiline_comment|/* Currently this is fixed. */
 DECL|macro|PHY_ADDR
 mdefine_line|#define PHY_ADDR&t;&t;0x01
@@ -3644,6 +3829,14 @@ DECL|macro|TG3_FLG2_RESTART_TIMER
 mdefine_line|#define TG3_FLG2_RESTART_TIMER&t;&t;0x00000001
 DECL|macro|TG3_FLG2_SUN_5704
 mdefine_line|#define TG3_FLG2_SUN_5704&t;&t;0x00000002
+DECL|macro|TG3_FLG2_NO_ETH_WIRE_SPEED
+mdefine_line|#define TG3_FLG2_NO_ETH_WIRE_SPEED&t;0x00000004
+DECL|macro|TG3_FLG2_IS_5788
+mdefine_line|#define TG3_FLG2_IS_5788&t;&t;0x00000008
+DECL|macro|TG3_FLG2_MAX_RXPEND_64
+mdefine_line|#define TG3_FLG2_MAX_RXPEND_64&t;&t;0x00000010
+DECL|macro|TG3_FLG2_TSO_CAPABLE
+mdefine_line|#define TG3_FLG2_TSO_CAPABLE&t;&t;0x00000020
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -3778,6 +3971,8 @@ DECL|macro|PHY_ID_BCM5703
 mdefine_line|#define PHY_ID_BCM5703&t;&t;&t;0x60008160
 DECL|macro|PHY_ID_BCM5704
 mdefine_line|#define PHY_ID_BCM5704&t;&t;&t;0x60008190
+DECL|macro|PHY_ID_BCM5705
+mdefine_line|#define PHY_ID_BCM5705&t;&t;&t;0x600081a0
 DECL|macro|PHY_ID_BCM8002
 mdefine_line|#define PHY_ID_BCM8002&t;&t;&t;0x60010140
 DECL|macro|PHY_ID_SERDES
@@ -3806,9 +4001,23 @@ id|board_part_number
 l_int|24
 )braket
 suffix:semicolon
+DECL|member|nic_sram_data_cfg
+id|u32
+id|nic_sram_data_cfg
+suffix:semicolon
+DECL|member|pci_clock_ctrl
+id|u32
+id|pci_clock_ctrl
+suffix:semicolon
+DECL|member|pdev_peer
+r_struct
+id|pci_dev
+op_star
+id|pdev_peer
+suffix:semicolon
 multiline_comment|/* This macro assumes the passed PHY ID is already masked&n;&t; * with PHY_ID_MASK.&n;&t; */
 DECL|macro|KNOWN_PHY_ID
-mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
+mdefine_line|#define KNOWN_PHY_ID(X)&t;&t;&bslash;&n;&t;((X) == PHY_ID_BCM5400 || (X) == PHY_ID_BCM5401 || &bslash;&n;&t; (X) == PHY_ID_BCM5411 || (X) == PHY_ID_BCM5701 || &bslash;&n;&t; (X) == PHY_ID_BCM5703 || (X) == PHY_ID_BCM5704 || &bslash;&n;&t; (X) == PHY_ID_BCM5705 || &bslash;&n;&t; (X) == PHY_ID_BCM8002 || (X) == PHY_ID_SERDES)
 DECL|member|hw_stats
 r_struct
 id|tg3_hw_stats
