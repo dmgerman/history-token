@@ -7885,7 +7885,7 @@ op_le
 id|max_hwif
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -8,-9,-10 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Be VERY CAREFUL changing this: note hardcoded indexes below&n;&t;&t; * -9,-10 : are reserved for future idex calls to ease the hardcoding.&n;&t;&t; */
 r_const
 r_char
 op_star
@@ -7908,7 +7908,7 @@ l_string|&quot;dma&quot;
 comma
 l_string|&quot;ata66&quot;
 comma
-l_string|&quot;minus8&quot;
+l_string|&quot;biostimings&quot;
 comma
 l_string|&quot;minus9&quot;
 comma
@@ -7929,8 +7929,6 @@ comma
 l_string|&quot;ali14xx&quot;
 comma
 l_string|&quot;dc4030&quot;
-comma
-l_string|&quot;biostimings&quot;
 comma
 l_int|NULL
 )brace
@@ -8058,32 +8056,6 @@ c_cond
 id|i
 )paren
 (brace
-r_case
-op_minus
-l_int|19
-suffix:colon
-multiline_comment|/* &quot;biostimings&quot; */
-id|hwif-&gt;drives
-(braket
-l_int|0
-)braket
-dot
-id|autotune
-op_assign
-id|IDE_TUNE_BIOS
-suffix:semicolon
-id|hwif-&gt;drives
-(braket
-l_int|1
-)braket
-dot
-id|autotune
-op_assign
-id|IDE_TUNE_BIOS
-suffix:semicolon
-r_goto
-id|done
-suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 r_case
 op_minus
@@ -8325,13 +8297,34 @@ op_minus
 l_int|9
 suffix:colon
 multiline_comment|/* minus9 */
+r_goto
+id|bad_option
+suffix:semicolon
 r_case
 op_minus
 l_int|8
 suffix:colon
-multiline_comment|/* minus8 */
+multiline_comment|/* &quot;biostimings&quot; */
+id|hwif-&gt;drives
+(braket
+l_int|0
+)braket
+dot
+id|autotune
+op_assign
+id|IDE_TUNE_BIOS
+suffix:semicolon
+id|hwif-&gt;drives
+(braket
+l_int|1
+)braket
+dot
+id|autotune
+op_assign
+id|IDE_TUNE_BIOS
+suffix:semicolon
 r_goto
-id|bad_option
+id|done
 suffix:semicolon
 r_case
 op_minus
