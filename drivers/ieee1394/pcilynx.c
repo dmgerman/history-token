@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -41,12 +42,14 @@ DECL|macro|PRINTD
 mdefine_line|#define PRINTD(level, card, fmt, args...) do {} while (0)
 macro_line|#endif
 multiline_comment|/* Module Parameters */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|skip_eeprom
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -54,7 +57,7 @@ c_func
 (paren
 id|skip_eeprom
 comma
-l_string|&quot;Do not try to read bus info block from serial eeprom, but user generic one (default = 0).&quot;
+l_string|&quot;Use generic bus info block instead of serial eeprom (default = 0).&quot;
 )paren
 suffix:semicolon
 DECL|variable|skip_eeprom
@@ -4480,17 +4483,28 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * do not DMA if count is too small because this will have a serious impact &n; * on performance - the value 2400 was found by experiment and may not work&n; * everywhere as good as here - use mem_mindma option for modules to change &n; */
 DECL|variable|mem_mindma
+r_static
 r_int
 id|mem_mindma
 op_assign
 l_int|2400
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mem_mindma
 comma
-l_string|&quot;h&quot;
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|mem_mindma
+comma
+l_string|&quot;Minimum amount of data required to use DMA&quot;
 )paren
 suffix:semicolon
 DECL|function|mem_dmaread
