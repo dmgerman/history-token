@@ -3776,12 +3776,6 @@ op_logical_and
 op_logical_neg
 id|ctor
 )paren
-op_logical_or
-(paren
-id|align
-OL
-l_int|0
-)paren
 )paren
 (brace
 id|printk
