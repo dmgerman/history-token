@@ -2662,6 +2662,7 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET
 r_if
 c_cond
 (paren
@@ -2694,6 +2695,7 @@ id|arg
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif  /* CONFIG_NET */
 macro_line|#ifdef WIRELESS_EXT
 r_if
 c_cond
