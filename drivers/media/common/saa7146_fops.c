@@ -380,7 +380,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|DEB_EE
+id|DEB_INT
 c_func
 (paren
 (paren
@@ -469,7 +469,7 @@ id|q-&gt;curr
 op_assign
 id|buf
 suffix:semicolon
-id|DEB_D
+id|DEB_INT
 c_func
 (paren
 (paren
@@ -498,7 +498,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEB_D
+id|DEB_INT
 c_func
 (paren
 (paren
@@ -1036,7 +1036,7 @@ c_func
 (paren
 id|dev
 comma
-id|fh
+id|file
 )paren
 suffix:semicolon
 )brace
@@ -1057,7 +1057,7 @@ c_func
 (paren
 id|dev
 comma
-id|fh
+id|file
 )paren
 suffix:semicolon
 )brace
@@ -1169,8 +1169,6 @@ c_func
 (paren
 id|dev
 comma
-id|fh
-comma
 id|file
 )paren
 suffix:semicolon
@@ -1183,8 +1181,6 @@ id|release
 c_func
 (paren
 id|dev
-comma
-id|fh
 comma
 id|file
 )paren
@@ -1741,7 +1737,7 @@ id|isr
 op_assign
 id|status
 suffix:semicolon
-id|DEB_EE
+id|DEB_INT
 c_func
 (paren
 (paren
@@ -1980,6 +1976,32 @@ c_func
 l_string|&quot;dev:%p&bslash;n&quot;
 comma
 id|dev
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* set default values for video parts of the saa7146 */
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|BCS_CTRL
+comma
+l_int|0x80400040
+)paren
+suffix:semicolon
+multiline_comment|/* enable video-port pins */
+id|saa7146_write
+c_func
+(paren
+id|dev
+comma
+id|MC1
+comma
+(paren
+id|MASK_10
+op_or
+id|MASK_26
 )paren
 )paren
 suffix:semicolon

@@ -785,7 +785,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;,uid=%d&quot;
+l_string|&quot;,uid=%u&quot;
 comma
 id|opts-&gt;fs_uid
 )paren
@@ -802,7 +802,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;,gid=%d&quot;
+l_string|&quot;,gid=%u&quot;
 comma
 id|opts-&gt;fs_gid
 )paren
@@ -3566,22 +3566,24 @@ id|msdos_sb_info
 op_star
 id|sbi
 suffix:semicolon
-r_int
+id|u16
 id|logical_sector_size
+suffix:semicolon
+id|u32
+id|total_sectors
+comma
+id|total_clusters
 comma
 id|fat_clusters
 comma
+id|rootdir_sectors
+suffix:semicolon
+r_int
 id|debug
 comma
 id|cp
 comma
 id|first
-suffix:semicolon
-r_int
-r_int
-id|total_sectors
-comma
-id|rootdir_sectors
 suffix:semicolon
 r_int
 r_int
@@ -3916,8 +3918,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -3964,7 +3965,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus logical sector size %d&bslash;n&quot;
+l_string|&quot;FAT: bogus logical sector size %u&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4010,7 +4011,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus sectors per cluster %d&bslash;n&quot;
+l_string|&quot;FAT: bogus sectors per cluster %u&bslash;n&quot;
 comma
 id|sbi-&gt;sec_per_clus
 )paren
@@ -4038,7 +4039,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;FAT: logical sector size too small for device&quot;
-l_string|&quot; (logical sector size = %d)&bslash;n&quot;
+l_string|&quot; (logical sector size = %u)&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4084,7 +4085,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: unable to set blocksize %d&bslash;n&quot;
+l_string|&quot;FAT: unable to set blocksize %u&bslash;n&quot;
 comma
 id|logical_sector_size
 )paren
@@ -4188,7 +4189,8 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t know yet */
 id|sbi-&gt;prev_free
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -4399,8 +4401,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -4420,11 +4421,20 @@ l_int|1
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: bogus directroy-entries per block&bslash;n&quot;
+l_string|&quot;FAT: bogus directroy-entries per block&quot;
+l_string|&quot; (%u)&bslash;n&quot;
+comma
+id|sbi-&gt;dir_entries
 )paren
 suffix:semicolon
 id|brelse
@@ -4464,8 +4474,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-r_int
-r_int
+id|u16
 op_star
 )paren
 op_amp
@@ -4488,7 +4497,7 @@ c_func
 id|b-&gt;total_sect
 )paren
 suffix:semicolon
-id|sbi-&gt;clusters
+id|total_clusters
 op_assign
 (paren
 id|total_sectors
@@ -4508,9 +4517,9 @@ l_int|32
 id|sbi-&gt;fat_bits
 op_assign
 (paren
-id|sbi-&gt;clusters
+id|total_clusters
 OG
-id|MSDOS_FAT12
+id|MAX_FAT12
 )paren
 ques
 c_cond
@@ -4529,20 +4538,58 @@ l_int|8
 op_div
 id|sbi-&gt;fat_bits
 suffix:semicolon
-r_if
-c_cond
+id|total_clusters
+op_assign
+id|min
+c_func
 (paren
-id|sbi-&gt;clusters
-OG
+id|total_clusters
+comma
 id|fat_clusters
 op_minus
 l_int|2
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|total_clusters
+OG
+id|MAX_FAT
+c_func
+(paren
+id|sb
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;FAT: count of clusters too big (%u)&bslash;n&quot;
+comma
+id|total_clusters
+)paren
+suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
+r_goto
+id|out_invalid
+suffix:semicolon
+)brace
 id|sbi-&gt;clusters
 op_assign
-id|fat_clusters
-op_minus
-l_int|2
+id|total_clusters
 suffix:semicolon
 id|brelse
 c_func
@@ -4616,6 +4663,27 @@ id|first
 )paren
 (brace
 multiline_comment|/* bad, reported on pc9800 */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|media
+op_eq
+l_int|0xf0
+op_logical_and
+id|FAT_FIRST_ENT
+c_func
+(paren
+id|sb
+comma
+l_int|0xf8
+)paren
+op_eq
+id|first
+)paren
+(brace
+multiline_comment|/* bad, reported with a MO disk on win95/me */
 )brace
 r_else
 r_if
@@ -4976,6 +5044,8 @@ r_int
 id|free
 comma
 id|nr
+comma
+id|ret
 suffix:semicolon
 r_if
 c_cond
@@ -5061,9 +5131,9 @@ suffix:semicolon
 id|nr
 op_increment
 )paren
-r_if
-c_cond
-(paren
+(brace
+id|ret
+op_assign
 id|fat_access
 c_func
 (paren
@@ -5074,12 +5144,37 @@ comma
 op_minus
 l_int|1
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|unlock_fat
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ret
 op_eq
 id|FAT_ENT_FREE
 )paren
 id|free
 op_increment
 suffix:semicolon
+)brace
 id|MSDOS_SB
 c_func
 (paren
@@ -5998,12 +6093,12 @@ id|dir_per_block_bits
 )paren
 )paren
 (brace
-id|fat_fs_panic
+id|printk
 c_func
 (paren
-id|sb
-comma
-l_string|&quot;unable to read i-node block (i_pos %lld)&quot;
+id|KERN_ERR
+l_string|&quot;FAT: unable to read inode block &quot;
+l_string|&quot;for updating (i_pos %lld)&quot;
 comma
 id|i_pos
 )paren
@@ -6014,6 +6109,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+multiline_comment|/* -EIO */
 suffix:semicolon
 )brace
 id|spin_lock

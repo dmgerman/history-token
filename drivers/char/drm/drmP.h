@@ -1977,7 +1977,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 suffix:semicolon
 r_extern
@@ -2000,7 +2001,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 suffix:semicolon
 r_extern
@@ -2023,7 +2025,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 suffix:semicolon
 r_extern
@@ -2046,7 +2049,8 @@ r_int
 id|address
 comma
 r_int
-id|write_access
+op_star
+id|type
 )paren
 suffix:semicolon
 r_extern

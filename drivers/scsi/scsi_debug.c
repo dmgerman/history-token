@@ -31,7 +31,7 @@ r_char
 op_star
 id|scsi_debug_version_str
 op_assign
-l_string|&quot;Version: 1.70 (20030507)&quot;
+l_string|&quot;Version: 1.71 (20031007)&quot;
 suffix:semicolon
 multiline_comment|/* Additional Sense Code (ASC) used */
 DECL|macro|NO_ADDED_SENSE
@@ -8940,7 +8940,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi_debug: ... built %d host(s)&bslash;n&quot;
+l_string|&quot;scsi_debug_init: built %d host(s)&bslash;n&quot;
 comma
 id|scsi_debug_add_host
 )paren
@@ -9031,6 +9031,32 @@ c_func
 id|scsi_debug_exit
 )paren
 suffix:semicolon
+DECL|function|pseudo_0_release
+r_void
+id|pseudo_0_release
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|SCSI_DEBUG_OPT_NOISE
+op_amp
+id|scsi_debug_opts
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi_debug: pseudo_0_release() called&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 DECL|variable|pseudo_primary
 r_static
 r_struct
@@ -9042,6 +9068,11 @@ dot
 id|bus_id
 op_assign
 l_string|&quot;pseudo_0&quot;
+comma
+dot
+id|release
+op_assign
+id|pseudo_0_release
 comma
 )brace
 suffix:semicolon

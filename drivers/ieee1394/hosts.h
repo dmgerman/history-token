@@ -35,10 +35,6 @@ DECL|member|generation
 id|atomic_t
 id|generation
 suffix:semicolon
-DECL|member|refcount
-id|atomic_t
-id|refcount
-suffix:semicolon
 DECL|member|pending_packets
 r_struct
 id|list_head
@@ -334,7 +330,7 @@ op_star
 id|pointer
 )paren
 suffix:semicolon
-multiline_comment|/* This function shall implement packet transmission based on&n;         * packet-&gt;type.  It shall CRC both parts of the packet (unless&n;         * packet-&gt;type == raw) and do byte-swapping as necessary or instruct&n;         * the hardware to do so.  It can return immediately after the packet&n;         * was queued for sending.  After sending, hpsb_sent_packet() has to be&n;         * called.  Return 0 for failure.&n;         * NOTE: The function must be callable in interrupt context.&n;         */
+multiline_comment|/* This function shall implement packet transmission based on&n;         * packet-&gt;type.  It shall CRC both parts of the packet (unless&n;         * packet-&gt;type == raw) and do byte-swapping as necessary or instruct&n;         * the hardware to do so.  It can return immediately after the packet&n;         * was queued for sending.  After sending, hpsb_sent_packet() has to be&n;         * called.  Return 0 on success, negative errno on failure.&n;         * NOTE: The function must be callable in interrupt context.&n;         */
 DECL|member|transmit_packet
 r_int
 (paren
@@ -421,37 +417,6 @@ id|compare
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|hpsb_hosts
-suffix:semicolon
-r_extern
-r_struct
-id|semaphore
-id|hpsb_hosts_lock
-suffix:semicolon
-multiline_comment|/*&n; * In order to prevent hosts from unloading, use hpsb_ref_host().  This prevents&n; * the host from going away (e.g. makes module unloading of the driver&n; * impossible), but still can not guarantee it (e.g. PC-Card being pulled by the&n; * user).  hpsb_ref_host() returns false if host could not be locked.  If it is&n; * successful, host is valid as a pointer until hpsb_unref_host() (not just&n; * until after remove_host).&n; */
-r_int
-id|hpsb_ref_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_void
-id|hpsb_unref_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
 r_struct
 id|hpsb_host
 op_star
@@ -465,6 +430,11 @@ id|drv
 comma
 r_int
 id|extra
+comma
+r_struct
+id|device
+op_star
+id|dev
 )paren
 suffix:semicolon
 r_void

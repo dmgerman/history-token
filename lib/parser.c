@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/parser.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+multiline_comment|/**&n; * match_one: - Determines if a string matches a simple pattern&n; * @s: the string to examine for presense of the pattern&n; * @p: the string containing the pattern&n; * @args: array of %MAX_OPT_ARGS &amp;substring_t elements. Used to return match&n; * locations.&n; *&n; * Description: Determines if the pattern @p is present in string @s. Can only&n; * match extremely simple token=arg style patterns. If the pattern is found,&n; * the location(s) of the arguments will be returned in the @args array.&n; */
 DECL|function|match_one
 r_static
 r_int
@@ -370,6 +371,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * match_token: - Find a token (and optional args) in a string&n; * @s: the string to examine for token/argument pairs&n; * @table: match_table_t describing the set of allowed option tokens and the&n; * arguments that may be associated with them. Must be terminated with a&n; * &amp;struct match_token whose pattern is set to the NULL pointer.&n; * @args: array of %MAX_OPT_ARGS &amp;substring_t elements. Used to return match&n; * locations.&n; *&n; * Description: Detects which if any of a set of token strings has been passed&n; * to it. Tokens can include up to MAX_OPT_ARGS instances of basic c-style&n; * format identifiers which will be taken into account when matching the&n; * tokens, and whose locations will be returned in the @args array.&n; */
 DECL|function|match_token
 r_int
 id|match_token
@@ -419,6 +421,7 @@ r_return
 id|p-&gt;token
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_number: scan a number in the given base from a substring_t&n; * @s: substring to be scanned&n; * @result: resulting integer on success&n; * @base: base to use when converting string&n; *&n; * Description: Given a &amp;substring_t and a base, attempts to parse the substring&n; * as a number in that base. On success, sets @result to the integer represented&n; * by the string and returns 0. Returns either -ENOMEM or -EINVAL on failure.&n; */
 DECL|function|match_number
 r_static
 r_int
@@ -533,6 +536,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_int: - scan a decimal representation of an integer from a substring_t&n; * @s: substring_t to be scanned&n; * @result: resulting integer on success&n; *&n; * Description: Attempts to parse the &amp;substring_t @s as a decimal integer. On&n; * success, sets @result to the integer represented by the string and returns 0.&n; * Returns either -ENOMEM or -EINVAL on failure.&n; */
 DECL|function|match_int
 r_int
 id|match_int
@@ -559,6 +563,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_octal: - scan an octal representation of an integer from a substring_t&n; * @s: substring_t to be scanned&n; * @result: resulting integer on success&n; *&n; * Description: Attempts to parse the &amp;substring_t @s as an octal integer. On&n; * success, sets @result to the integer represented by the string and returns&n; * 0. Returns either -ENOMEM or -EINVAL on failure.&n; */
 DECL|function|match_octal
 r_int
 id|match_octal
@@ -585,6 +590,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_hex: - scan a hex representation of an integer from a substring_t&n; * @s: substring_t to be scanned&n; * @result: resulting integer on success&n; *&n; * Description: Attempts to parse the &amp;substring_t @s as a hexadecimal integer.&n; * On success, sets @result to the integer represented by the string and&n; * returns 0. Returns either -ENOMEM or -EINVAL on failure.&n; */
 DECL|function|match_hex
 r_int
 id|match_hex
@@ -611,6 +617,7 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_strcpy: - copies the characters from a substring_t to a string&n; * @to: string to copy characters to.&n; * @s: &amp;substring_t to copy&n; *&n; * Description: Copies the set of characters represented by the given&n; * &amp;substring_t @s to the c-style string @to. Caller guarantees that @to is&n; * large enough to hold the characters of @s.&n; */
 DECL|function|match_strcpy
 r_void
 id|match_strcpy
@@ -647,6 +654,7 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * match_strdup: - allocate a new string with the contents of a substring_t&n; * @s: &amp;substring_t to copy&n; *&n; * Description: Allocates and returns a string filled with the contents of&n; * the &amp;substring_t @s. The caller is responsible for freeing the returned&n; * string with kfree().&n; */
 DECL|function|match_strdup
 r_char
 op_star

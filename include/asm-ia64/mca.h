@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/mca_asm.h&gt;
 multiline_comment|/* These are the return codes from all the IA64_MCA specific interfaces */
 DECL|typedef|ia64_mca_return_code_t
 r_typedef
@@ -118,6 +119,52 @@ id|IA64_MCA_RENDEZ_CHECKIN_DONE
 op_assign
 l_int|0x1
 )brace
+suffix:semicolon
+multiline_comment|/* the following data structure is used for TLB error recovery purposes */
+DECL|struct|ia64_mca_tlb_info
+r_extern
+r_struct
+id|ia64_mca_tlb_info
+(brace
+DECL|member|cr_lid
+id|u64
+id|cr_lid
+suffix:semicolon
+DECL|member|percpu_paddr
+id|u64
+id|percpu_paddr
+suffix:semicolon
+DECL|member|ptce_base
+id|u64
+id|ptce_base
+suffix:semicolon
+DECL|member|ptce_count
+id|u32
+id|ptce_count
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|ptce_stride
+id|u32
+id|ptce_stride
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|pal_paddr
+id|u64
+id|pal_paddr
+suffix:semicolon
+DECL|member|pal_base
+id|u64
+id|pal_base
+suffix:semicolon
+)brace
+id|ia64_mca_tlb_list
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 multiline_comment|/* Information maintained by the MC infrastructure */
 DECL|struct|ia64_mc_info_s
@@ -495,16 +542,6 @@ id|ia64_mca_check_errors
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-id|u64
-id|ia64_log_get
-c_func
-(paren
-r_int
-comma
-id|prfunc_t
 )paren
 suffix:semicolon
 DECL|macro|PLATFORM_CALL

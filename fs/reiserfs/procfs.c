@@ -1415,10 +1415,10 @@ c_func
 id|jp_journal_max_batch
 )paren
 comma
-id|DJP
+id|SB_JOURNAL_MAX_COMMIT_AGE
 c_func
 (paren
-id|jp_journal_max_commit_age
+id|sb
 )paren
 comma
 id|DJP

@@ -1963,19 +1963,30 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
+multiline_comment|/* Not all paths will gutter the processor... */
+r_switch
 c_cond
 (paren
 id|code
-op_eq
-l_int|1
 )paren
+(brace
+r_case
+l_int|1
+suffix:colon
 id|transfer_pim_to_trap_frame
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Fall through */
+r_break
+suffix:semicolon
+)brace
 id|show_stack
 c_func
 (paren
@@ -2035,6 +2046,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Gutter the processor! */
 r_for
 c_loop
 (paren
@@ -2446,6 +2458,58 @@ suffix:semicolon
 r_return
 suffix:semicolon
 r_case
+l_int|13
+suffix:colon
+multiline_comment|/* Conditional Trap&n;&t;&t;   The condition succees in an instruction which traps &n;&t;&t;   on condition  */
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+id|si.si_signo
+op_assign
+id|SIGFPE
+suffix:semicolon
+multiline_comment|/* Set to zero, and let the userspace app figure it out from&n;&t;&t;   &t;   the insn pointed to by si_addr */
+id|si.si_code
+op_assign
+l_int|0
+suffix:semicolon
+id|si.si_addr
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;iaoq
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|force_sig_info
+c_func
+(paren
+id|SIGFPE
+comma
+op_amp
+id|si
+comma
+id|current
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+multiline_comment|/* The kernel doesn&squot;t want to handle condition codes */
+r_break
+suffix:semicolon
+r_case
 l_int|14
 suffix:colon
 multiline_comment|/* Assist Exception Trap, i.e. floating point exception. */
@@ -2469,31 +2533,31 @@ suffix:semicolon
 r_return
 suffix:semicolon
 r_case
+l_int|15
+suffix:colon
+multiline_comment|/* Data TLB miss fault/Data page fault */
+multiline_comment|/* Fall through */
+r_case
+l_int|16
+suffix:colon
+multiline_comment|/* Non-access instruction TLB miss fault */
+multiline_comment|/* The instruction TLB entry needed for the target address of the FIC&n;&t;&t;   is absent, and hardware can&squot;t find it, so we get to cleanup */
+multiline_comment|/* Fall through */
+r_case
 l_int|17
 suffix:colon
 multiline_comment|/* Non-access data TLB miss fault/Non-access data page fault */
 multiline_comment|/* TODO: Still need to add slow path emulation code here */
-id|pdc_chassis_send_status
-c_func
-(paren
-id|PDC_CHASSIS_DIRECT_PANIC
-)paren
-suffix:semicolon
+multiline_comment|/* TODO: Understand what is meant by the TODO listed&n;&t;&t;         above this one. (Carlos) */
 id|fault_address
 op_assign
 id|regs-&gt;ior
 suffix:semicolon
-id|parisc_terminate
-c_func
-(paren
-l_string|&quot;Non access data tlb fault!&quot;
-comma
-id|regs
-comma
-id|code
-comma
-id|fault_address
-)paren
+id|fault_space
+op_assign
+id|regs-&gt;isr
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 l_int|18
@@ -2520,10 +2584,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Fall Through */
-r_case
-l_int|15
-suffix:colon
-multiline_comment|/* Data TLB miss fault/Data page fault */
 r_case
 l_int|26
 suffix:colon

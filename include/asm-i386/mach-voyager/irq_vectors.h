@@ -52,6 +52,8 @@ DECL|macro|VIC_CPU_BOOT_CPI
 mdefine_line|#define VIC_CPU_BOOT_CPI&t;&t;VIC_CPI_LEVEL0
 DECL|macro|VIC_CPU_BOOT_ERRATA_CPI
 mdefine_line|#define VIC_CPU_BOOT_ERRATA_CPI&t;&t;(VIC_CPI_LEVEL0 + 8)
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS 256
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS 224
 DECL|macro|NR_IRQ_VECTORS

@@ -2064,22 +2064,22 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%d. %s (%d) at 0x%lx [%s], versions 0x%x, 0x%x, 0x%x&quot;
+l_string|&quot;%d. %s at 0x%lx [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }&quot;
 comma
 op_increment
 id|count
 comma
 id|dev-&gt;name
 comma
-id|dev-&gt;id.hw_type
-comma
 id|dev-&gt;hpa
 comma
 id|hw_path
 comma
-id|dev-&gt;id.hversion
+id|dev-&gt;id.hw_type
 comma
 id|dev-&gt;id.hversion_rev
+comma
+id|dev-&gt;id.hversion
 comma
 id|dev-&gt;id.sversion
 )paren

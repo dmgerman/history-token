@@ -1662,6 +1662,33 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mm
+)paren
+(brace
+multiline_comment|/* We are oopsing. */
+id|do_sparc_fault
+c_func
+(paren
+id|regs
+comma
+id|text_fault
+comma
+id|write
+comma
+id|address
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* P3 Oops already, you bitch */
+)brace
 id|pgdp
 op_assign
 id|pgd_offset
@@ -2288,7 +2315,12 @@ id|sp
 suffix:semicolon
 id|sp
 op_assign
-id|current-&gt;thread.rwbuf_stkptrs
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|rwbuf_stkptrs
 (braket
 l_int|0
 )braket

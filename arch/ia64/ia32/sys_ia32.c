@@ -12573,9 +12573,17 @@ multiline_comment|/* MINSIGSTKSZ is different for ia32 vs ia64. We lie here to p
 r_if
 c_cond
 (paren
+(paren
+id|buf32.ss_flags
+op_ne
+id|SS_DISABLE
+)paren
+op_logical_and
+(paren
 id|buf32.ss_size
 OL
 id|MINSIGSTKSZ_IA32
+)paren
 )paren
 (brace
 id|ret

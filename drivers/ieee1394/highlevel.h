@@ -310,13 +310,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_void
-id|init_hpsb_highlevel
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|highlevel_add_host
 c_func
 (paren
@@ -744,6 +737,14 @@ comma
 r_int
 r_int
 id|key
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize the highlevel system */
+r_void
+id|init_hpsb_highlevel
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* IEEE1394_HIGHLEVEL_H */

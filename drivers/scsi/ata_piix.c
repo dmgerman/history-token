@@ -432,6 +432,11 @@ id|slave_configure
 op_assign
 id|ata_scsi_slave_config
 comma
+dot
+id|bios_param
+op_assign
+id|ata_std_bios_param
+comma
 )brace
 suffix:semicolon
 DECL|variable|piix_pata_ops

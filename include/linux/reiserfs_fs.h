@@ -3674,6 +3674,9 @@ id|j_dev_name
 comma
 r_int
 id|old_format
+comma
+r_int
+r_int
 )paren
 suffix:semicolon
 r_int

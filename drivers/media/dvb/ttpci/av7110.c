@@ -6,7 +6,6 @@ singleline_comment|//#define COM_DEBUG
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -14,7 +13,6 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/byteorder/swabb.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -25,15 +23,15 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
+macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -266,6 +264,13 @@ id|hw_sections
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|rgb_on
+r_static
+r_int
+id|rgb_on
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|av7110_num
 r_int
 id|av7110_num
@@ -277,148 +282,9 @@ mdefine_line|#define FW_CI_LL_SUPPORT(arm_app) ((arm_app) &amp; 0x80000000)
 DECL|macro|FW_VERSION
 mdefine_line|#define FW_VERSION(arm_app)       ((arm_app) &amp; 0x0000FFFF)
 multiline_comment|/****************************************************************************&n; * DEBI functions&n; ****************************************************************************/
+DECL|macro|wait_for_debi_done
+mdefine_line|#define wait_for_debi_done(x) &bslash;&n;       saa7146_wait_for_debi_done(x-&gt;dev) &bslash;&n;
 multiline_comment|/* This DEBI code is based on the Stradis driver &n;   by Nathan Laredo &lt;laredo@gnu.org&gt; */
-DECL|function|wait_for_debi_done
-r_static
-r_int
-id|wait_for_debi_done
-c_func
-(paren
-r_struct
-id|av7110
-op_star
-id|av7110
-)paren
-(brace
-r_struct
-id|saa7146_dev
-op_star
-id|dev
-op_assign
-id|av7110-&gt;dev
-suffix:semicolon
-r_int
-id|start
-suffix:semicolon
-multiline_comment|/* wait for registers to be programmed */
-id|start
-op_assign
-id|jiffies
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|MC2
-)paren
-op_amp
-l_int|2
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|start
-OG
-id|HZ
-op_div
-l_int|20
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%s: timed out while waiting for registers &quot;
-l_string|&quot;getting programmed&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* wait for transfer to complete */
-id|start
-op_assign
-id|jiffies
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|PSR
-)paren
-op_amp
-id|SPCI_DEBI_S
-)paren
-)paren
-r_break
-suffix:semicolon
-id|saa7146_read
-c_func
-(paren
-id|dev
-comma
-id|MC2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|jiffies
-op_minus
-id|start
-OG
-id|HZ
-op_div
-l_int|4
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%s: timed out while waiting for transfer &quot;
-l_string|&quot;completion&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ETIMEDOUT
-suffix:semicolon
-)brace
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|debiwrite
 r_static
 r_int
@@ -1620,16 +1486,7 @@ op_star
 )paren
 id|p2t-&gt;priv
 suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;struct dvb_filter_pes2ts:%p&bslash;n&quot;
-comma
-id|p2t
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_EE((&quot;struct dvb_filter_pes2ts:%p&bslash;n&quot;,p2t));
 r_if
 c_cond
 (paren
@@ -1703,6 +1560,8 @@ comma
 id|buf
 comma
 id|len
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1734,16 +1593,7 @@ op_star
 )paren
 id|priv
 suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dvb_demux_feed:%p&bslash;n&quot;
-comma
-id|dvbdmxfeed
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_EE((&quot;dvb_demux_feed:%p&bslash;n&quot;,dvbdmxfeed));
 id|dvbdmxfeed-&gt;cb
 dot
 id|ts
@@ -4448,36 +4298,14 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;GPIO0 irq %d %d&bslash;n&quot;
-comma
-id|av7110-&gt;debitype
-comma
-id|av7110-&gt;debilen
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//        DEB_D((&quot;GPIO0 irq %d %d&bslash;n&quot;, av7110-&gt;debitype, av7110-&gt;debilen));
 id|print_time
 c_func
 (paren
 l_string|&quot;gpio&quot;
 )paren
 suffix:semicolon
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;GPIO0 irq %02x&bslash;n&quot;
-comma
-id|av7110-&gt;debitype
-op_amp
-l_int|0xff
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//       DEB_D((&quot;GPIO0 irq %02x&bslash;n&quot;, av7110-&gt;debitype&amp;0xff));        
 r_switch
 c_cond
 (paren
@@ -11825,7 +11653,6 @@ l_int|0x00
 comma
 )brace
 suffix:semicolon
-macro_line|#include &quot;av7110_firm.h&quot;
 DECL|function|bootarm
 r_static
 r_int
@@ -12132,12 +11959,9 @@ comma
 id|u32
 op_star
 )paren
-id|Root
+id|av7110-&gt;bin_root
 comma
-r_sizeof
-(paren
-id|Root
-)paren
+id|av7110-&gt;size_root
 )paren
 OL
 l_int|0
@@ -12179,12 +12003,9 @@ id|DEBISWAB
 comma
 id|DPRAM_BASE
 comma
-id|Dpram
+id|av7110-&gt;bin_dpram
 comma
-r_sizeof
-(paren
-id|Dpram
-)paren
+id|av7110-&gt;size_dpram
 )paren
 suffix:semicolon
 id|wait_for_debi_done
@@ -15915,11 +15736,9 @@ OL
 (paren
 id|u32
 )paren
-(paren
 l_int|16
 op_star
 l_float|168.25
-)paren
 )paren
 id|config
 op_assign
@@ -15934,11 +15753,9 @@ OL
 (paren
 id|u32
 )paren
-(paren
 l_int|16
 op_star
 l_float|447.25
-)paren
 )paren
 id|config
 op_assign
@@ -23895,6 +23712,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
+(brace
 id|SetPIDs
 c_func
 (paren
@@ -23911,6 +23729,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|outcom
+c_func
+(paren
+id|av7110
+comma
+id|COMTYPE_PIDFILTER
+comma
+id|FlushTSQueue
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -24848,6 +24679,12 @@ op_star
 id|pci_ext
 )paren
 (brace
+r_const
+r_struct
+id|firmware
+op_star
+id|fw
+suffix:semicolon
 r_struct
 id|av7110
 op_star
@@ -24860,6 +24697,86 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+id|u32
+id|crc
+op_assign
+l_int|0
+comma
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_char
+op_star
+id|ptr
+suffix:semicolon
+id|DEB_EE
+c_func
+(paren
+(paren
+l_string|&quot;dev: %p, av7110: %p&bslash;n&quot;
+comma
+id|dev
+comma
+id|av7110
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* request the av7110 firmware, this will block until someone uploads it */
+id|ret
+op_assign
+id|request_firmware
+c_func
+(paren
+op_amp
+id|fw
+comma
+l_string|&quot;dvb-ttpci-01.fw&quot;
+comma
+op_amp
+id|dev-&gt;pci-&gt;dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_ne
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: cannot request firmware!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|fw-&gt;size
+op_le
+l_int|200000
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: this firmware is way too small.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* prepare the av7110 device struct */
 r_if
 c_cond
 (paren
@@ -24906,6 +24823,309 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* check if the firmware is available */
+id|av7110-&gt;bin_fw
+op_assign
+(paren
+r_int
+r_char
+op_star
+)paren
+id|vmalloc
+c_func
+(paren
+id|fw-&gt;size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|av7110-&gt;bin_fw
+)paren
+(brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;out of memory&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|av7110
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|memcpy
+c_func
+(paren
+id|av7110-&gt;bin_fw
+comma
+id|fw-&gt;data
+comma
+id|fw-&gt;size
+)paren
+suffix:semicolon
+id|av7110-&gt;size_fw
+op_assign
+id|fw-&gt;size
+suffix:semicolon
+multiline_comment|/* check for firmware magic */
+id|ptr
+op_assign
+id|av7110-&gt;bin_fw
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+(braket
+l_int|0
+)braket
+op_ne
+l_char|&squot;A&squot;
+op_logical_or
+id|ptr
+(braket
+l_int|1
+)braket
+op_ne
+l_char|&squot;V&squot;
+op_logical_or
+id|ptr
+(braket
+l_int|2
+)braket
+op_ne
+l_char|&squot;F&squot;
+op_logical_or
+id|ptr
+(braket
+l_int|3
+)braket
+op_ne
+l_char|&squot;W&squot;
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: this is not an av7110 firmware&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fw_error
+suffix:semicolon
+)brace
+id|ptr
+op_add_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* check dpram file */
+id|crc
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|4
+suffix:semicolon
+id|len
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_ge
+l_int|512
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: dpram file is way to big.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fw_error
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|crc
+op_ne
+id|crc32_le
+c_func
+(paren
+l_int|0
+comma
+id|ptr
+comma
+id|len
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: crc32 of dpram file does not match.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fw_error
+suffix:semicolon
+)brace
+id|av7110-&gt;bin_dpram
+op_assign
+id|ptr
+suffix:semicolon
+id|av7110-&gt;size_dpram
+op_assign
+id|len
+suffix:semicolon
+id|ptr
+op_add_assign
+id|len
+suffix:semicolon
+multiline_comment|/* check root file */
+id|crc
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|4
+suffix:semicolon
+id|len
+op_assign
+id|ntohl
+c_func
+(paren
+op_star
+(paren
+id|u32
+op_star
+)paren
+id|ptr
+)paren
+suffix:semicolon
+id|ptr
+op_add_assign
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+op_le
+l_int|200000
+op_logical_or
+id|len
+op_ge
+l_int|300000
+op_logical_or
+id|len
+OG
+(paren
+(paren
+id|av7110-&gt;bin_fw
+op_plus
+id|av7110-&gt;size_fw
+)paren
+op_minus
+id|ptr
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: root file has strange size (%d). aborting.&bslash;n&quot;
+comma
+id|len
+)paren
+suffix:semicolon
+r_goto
+id|fw_error
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|crc
+op_ne
+id|crc32_le
+c_func
+(paren
+l_int|0
+comma
+id|ptr
+comma
+id|len
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-ttpci: crc32 of dpram file does not match.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fw_error
+suffix:semicolon
+)brace
+id|av7110-&gt;bin_root
+op_assign
+id|ptr
+suffix:semicolon
+id|av7110-&gt;size_root
+op_assign
+id|len
+suffix:semicolon
+multiline_comment|/* go on with regular device initialization */
 id|av7110-&gt;card_name
 op_assign
 (paren
@@ -24913,27 +25133,6 @@ r_char
 op_star
 )paren
 id|pci_ext-&gt;ext_priv
-suffix:semicolon
-(paren
-r_struct
-id|av7110
-op_star
-)paren
-id|dev-&gt;ext_priv
-op_assign
-id|av7110
-suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dev: %p, av7110: %p&bslash;n&quot;
-comma
-id|dev
-comma
-id|av7110
-)paren
-)paren
 suffix:semicolon
 id|av7110-&gt;dev
 op_assign
@@ -24943,6 +25142,15 @@ id|saa7146_dev
 op_star
 )paren
 id|dev
+suffix:semicolon
+(paren
+r_struct
+id|av7110
+op_star
+)paren
+id|dev-&gt;ext_priv
+op_assign
+id|av7110
 suffix:semicolon
 id|dvb_register_adapter
 c_func
@@ -24971,9 +25179,10 @@ id|dev
 comma
 l_int|NULL
 comma
-id|SAA7146_I2C_BUS_BIT_RATE_3200
+id|SAA7146_I2C_BUS_BIT_RATE_120
 )paren
 suffix:semicolon
+multiline_comment|/* 275 kHz */
 id|av7110-&gt;i2c_bus
 op_assign
 id|dvb_register_i2c_bus
@@ -25054,7 +25263,7 @@ id|dev
 comma
 id|DD1_INIT
 comma
-l_int|0x02000000
+l_int|0x03000000
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -26152,7 +26361,7 @@ id|dev
 comma
 id|DD1_INIT
 comma
-l_int|0x02000700
+l_int|0x03000700
 )paren
 suffix:semicolon
 id|saa7146_write
@@ -26254,7 +26463,22 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|//saa7146_setgpio(dev, 1, SAA7146_GPIO_OUTHI); // RGB on, SCART pin 16
+r_if
+c_cond
+(paren
+id|rgb_on
+)paren
+id|saa7146_setgpio
+c_func
+(paren
+id|dev
+comma
+l_int|1
+comma
+id|SAA7146_GPIO_OUTHI
+)paren
+suffix:semicolon
+singleline_comment|// RGB on, SCART pin 16
 singleline_comment|//saa7146_setgpio(dev, 3, SAA7146_GPIO_OUTLO); // SCARTpin 8
 )brace
 id|SetVolume
@@ -26425,6 +26649,10 @@ comma
 id|av7110_num
 )paren
 suffix:semicolon
+id|av7110-&gt;device_initialized
+op_assign
+l_int|1
+suffix:semicolon
 id|av7110_num
 op_increment
 suffix:semicolon
@@ -26509,6 +26737,24 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+id|fw_error
+suffix:colon
+id|vfree
+c_func
+(paren
+id|av7110-&gt;bin_fw
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|av7110
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 DECL|function|av7110_detach
 r_static
@@ -26543,6 +26789,18 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|0
+op_eq
+id|av7110-&gt;device_initialized
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|saa7146_unregister_device
 c_func
 (paren
@@ -26688,6 +26946,24 @@ id|dvb_unregister_adapter
 id|av7110-&gt;dvb_adapter
 )paren
 suffix:semicolon
+id|av7110_num
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|av7110-&gt;bin_fw
+)paren
+(brace
+id|vfree
+c_func
+(paren
+id|av7110-&gt;bin_fw
+)paren
+suffix:semicolon
+)brace
 id|kfree
 (paren
 id|av7110
@@ -26696,9 +26972,6 @@ suffix:semicolon
 id|saa-&gt;ext_priv
 op_assign
 l_int|NULL
-suffix:semicolon
-id|av7110_num
-op_decrement
 suffix:semicolon
 r_return
 l_int|0
@@ -26732,18 +27005,7 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-id|DEB_INT
-c_func
-(paren
-(paren
-l_string|&quot;dev: %p, av7110: %p&bslash;n&quot;
-comma
-id|dev
-comma
-id|av7110
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//&t;DEB_INT((&quot;dev: %p, av7110: %p&bslash;n&quot;,dev,av7110));
 r_if
 c_cond
 (paren
@@ -26914,6 +27176,7 @@ dot
 id|v_offset
 op_assign
 l_int|0x18
+multiline_comment|/* 0 */
 comma
 dot
 id|v_field
@@ -27492,7 +27755,7 @@ comma
 dot
 id|flags
 op_assign
-id|SAA7146_EXT_SWAP_ODD_EVEN
+l_int|0
 comma
 dot
 id|stds
@@ -27624,6 +27887,11 @@ dot
 id|name
 op_assign
 l_string|&quot;dvb&bslash;0&quot;
+comma
+dot
+id|flags
+op_assign
+id|SAA7146_I2C_SHORT_DELAY
 comma
 dot
 id|module
@@ -27852,6 +28120,23 @@ c_func
 id|hw_sections
 comma
 l_string|&quot;0 use software section filter, 1 use hardware&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|rgb_on
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|rgb_on
+comma
+l_string|&quot;For Siemens DVB-C cards only: Enable RGB control&quot;
+l_string|&quot; signal on SCART pin 16 to switch SCART video mode from CVBS to RGB&quot;
 )paren
 suffix:semicolon
 eof

@@ -1,4 +1,6 @@
 multiline_comment|/* &n;    VES1820  - Single Chip Cable Channel Receiver driver module&n;               used on the the Siemens DVB-C cards&n;&n;    Copyright (C) 1999 Convergence Integrated Media GmbH &lt;ralph@convergence.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -59,8 +61,25 @@ DECL|macro|GET_TUNER
 mdefine_line|#define GET_TUNER(data) ((u8) (((long) data &gt;&gt; 16) &amp; 0xff))
 DECL|macro|GET_DEMOD_ADDR
 mdefine_line|#define GET_DEMOD_ADDR(data) ((u8) (((long) data &gt;&gt; 24) &amp; 0xff))
+macro_line|#if defined(CONFIG_DBOX2)
+DECL|macro|XIN
+mdefine_line|#define XIN 69600000UL
+DECL|macro|DISABLE_INVERSION
+mdefine_line|#define DISABLE_INVERSION(reg0)&t;&t;do { reg0 &amp;= ~0x20; } while (0)
+DECL|macro|ENABLE_INVERSION
+mdefine_line|#define ENABLE_INVERSION(reg0)&t;&t;do { reg0 |= 0x20; } while (0)
+DECL|macro|HAS_INVERSION
+mdefine_line|#define HAS_INVERSION(reg0)&t;&t;(reg0 &amp; 0x20)
+macro_line|#else&t;/* PCI cards */
 DECL|macro|XIN
 mdefine_line|#define XIN 57840000UL
+DECL|macro|DISABLE_INVERSION
+mdefine_line|#define DISABLE_INVERSION(reg0)&t;&t;do { reg0 |= 0x20; } while (0)
+DECL|macro|ENABLE_INVERSION
+mdefine_line|#define ENABLE_INVERSION(reg0)&t;&t;do { reg0 &amp;= ~0x20; } while (0)
+DECL|macro|HAS_INVERSION
+mdefine_line|#define HAS_INVERSION(reg0)&t;&t;(!(reg0 &amp; 0x20))
+macro_line|#endif
 DECL|macro|FIN
 mdefine_line|#define FIN (XIN &gt;&gt; 4)
 DECL|variable|ves1820_info
@@ -912,10 +931,11 @@ id|INVERSION_ON
 op_eq
 id|inversion
 )paren
+id|ENABLE_INVERSION
+c_func
+(paren
 id|reg0
-op_and_assign
-op_complement
-l_int|0x20
+)paren
 suffix:semicolon
 r_else
 r_if
@@ -925,9 +945,11 @@ id|INVERSION_OFF
 op_eq
 id|inversion
 )paren
+id|DISABLE_INVERSION
+c_func
+(paren
 id|reg0
-op_or_assign
-l_int|0x20
+)paren
 suffix:semicolon
 id|ves1820_writereg
 (paren
@@ -972,10 +994,10 @@ l_int|0x08
 )paren
 )paren
 (brace
-id|dvb_delay
+id|mdelay
 c_func
 (paren
-l_int|10
+l_int|30
 )paren
 suffix:semicolon
 r_if
@@ -1065,6 +1087,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_DBOX2)
+id|ves1820_inittab
+(braket
+l_int|2
+)braket
+op_and_assign
+op_complement
+l_int|0x08
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1749,6 +1781,13 @@ comma
 id|p-&gt;inversion
 )paren
 suffix:semicolon
+multiline_comment|/* yes, this speeds things up: userspace reports lock in about 8 ms&n;&t;   instead of 500 to 1200 ms after calling FE_SET_FRONTEND. */
+id|mdelay
+c_func
+(paren
+l_int|30
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2200,14 +2239,16 @@ l_int|7
 suffix:semicolon
 id|p-&gt;inversion
 op_assign
+id|HAS_INVERSION
+c_func
+(paren
 id|reg0
-op_amp
-l_int|0x20
+)paren
 ques
 c_cond
-id|INVERSION_OFF
-suffix:colon
 id|INVERSION_ON
+suffix:colon
+id|INVERSION_OFF
 suffix:semicolon
 id|p-&gt;u.qam.modulation
 op_assign
@@ -2241,8 +2282,7 @@ l_int|62500
 op_star
 l_int|62500
 suffix:semicolon
-singleline_comment|// To prevent overflow, shift symbol rate first a
-singleline_comment|// couple of bits.
+multiline_comment|/* To prevent overflow, shift symbol rate first a&n;&t;&t;   couple of bits. */
 id|p-&gt;frequency
 op_sub_assign
 (paren
@@ -2446,14 +2486,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
-(paren
-l_string|&quot;DVB: VES1820(%d): unknown PLL, &quot;
-l_string|&quot;please report to &lt;linuxdvb@linuxtv.org&gt;!!&bslash;n&quot;
-comma
-id|i2c-&gt;adapter-&gt;num
-)paren
-suffix:semicolon
 )brace
 r_return
 id|type
@@ -2532,7 +2564,14 @@ l_int|1
 )brace
 )brace
 suffix:semicolon
-id|i2c-&gt;xfer
+r_if
+c_cond
+(paren
+(paren
+id|i2c
+op_member_access_from_pointer
+id|xfer
+c_func
 (paren
 id|i2c
 comma
@@ -2540,6 +2579,19 @@ id|msg
 comma
 l_int|2
 )paren
+op_ne
+l_int|2
+)paren
+op_logical_or
+(paren
+id|pwm
+op_eq
+l_int|0xff
+)paren
+)paren
+id|pwm
+op_assign
+l_int|0x48
 suffix:semicolon
 id|printk
 c_func
@@ -2550,17 +2602,6 @@ id|i2c-&gt;adapter-&gt;num
 comma
 id|pwm
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pwm
-op_eq
-l_int|0xff
-)paren
-id|pwm
-op_assign
-l_int|0x48
 suffix:semicolon
 r_return
 id|pwm
@@ -2778,10 +2819,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|tuner_type
 op_assign
 id|probe_tuner
@@ -2789,13 +2826,6 @@ c_func
 (paren
 id|i2c
 )paren
-)paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond

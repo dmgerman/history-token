@@ -107,6 +107,24 @@ DECL|macro|USB_DT_OTHER_SPEED_CONFIG
 mdefine_line|#define USB_DT_OTHER_SPEED_CONFIG&t;0x07
 DECL|macro|USB_DT_INTERFACE_POWER
 mdefine_line|#define USB_DT_INTERFACE_POWER&t;&t;0x08
+multiline_comment|/* these are from a minor usb 2.0 revision (ECN) */
+DECL|macro|USB_DT_OTG
+mdefine_line|#define USB_DT_OTG&t;&t;&t;0x09
+DECL|macro|USB_DT_DEBUG
+mdefine_line|#define USB_DT_DEBUG&t;&t;&t;0x0a
+DECL|macro|USB_DT_INTERFACE_ASSOCIATION
+mdefine_line|#define USB_DT_INTERFACE_ASSOCIATION&t;0x0b
+multiline_comment|/* conventional codes for class-specific descriptors */
+DECL|macro|USB_DT_CS_DEVICE
+mdefine_line|#define USB_DT_CS_DEVICE&t;&t;0x21
+DECL|macro|USB_DT_CS_CONFIG
+mdefine_line|#define USB_DT_CS_CONFIG&t;&t;0x22
+DECL|macro|USB_DT_CS_STRING
+mdefine_line|#define USB_DT_CS_STRING&t;&t;0x23
+DECL|macro|USB_DT_CS_INTERFACE
+mdefine_line|#define USB_DT_CS_INTERFACE&t;&t;0x24
+DECL|macro|USB_DT_CS_ENDPOINT
+mdefine_line|#define USB_DT_CS_ENDPOINT&t;&t;0x25
 multiline_comment|/* All standard descriptors have these 2 fields at the beginning */
 DECL|struct|usb_descriptor_header
 r_struct
@@ -225,6 +243,8 @@ DECL|macro|USB_CLASS_CSCID
 mdefine_line|#define USB_CLASS_CSCID&t;&t;&t;0x0b&t;/* chip+ smart card */
 DECL|macro|USB_CLASS_CONTENT_SEC
 mdefine_line|#define USB_CLASS_CONTENT_SEC&t;&t;0x0d&t;/* content security */
+DECL|macro|USB_CLASS_VIDEO
+mdefine_line|#define USB_CLASS_VIDEO&t;&t;&t;0x0e
 DECL|macro|USB_CLASS_APP_SPEC
 mdefine_line|#define USB_CLASS_APP_SPEC&t;&t;0xfe
 DECL|macro|USB_CLASS_VENDOR_SPEC
@@ -475,6 +495,84 @@ suffix:semicolon
 DECL|member|bRESERVED
 id|__u8
 id|bRESERVED
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_OTG (from OTG 1.0a supplement) */
+DECL|struct|usb_otg_descriptor
+r_struct
+id|usb_otg_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bmAttributes
+id|__u8
+id|bmAttributes
+suffix:semicolon
+multiline_comment|/* support for HNP, SRP, etc */
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* from usb_otg_descriptor.bmAttributes */
+DECL|macro|USB_OTG_SRP
+mdefine_line|#define USB_OTG_SRP&t;&t;(1 &lt;&lt; 0)
+DECL|macro|USB_OTG_HNP
+mdefine_line|#define USB_OTG_HNP&t;&t;(1 &lt;&lt; 1)&t;/* swap host/device roles */
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
+DECL|struct|usb_interface_assoc_descriptor
+r_struct
+id|usb_interface_assoc_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bFirstInterface
+id|__u8
+id|bFirstInterface
+suffix:semicolon
+DECL|member|bInterfaceCount
+id|__u8
+id|bInterfaceCount
+suffix:semicolon
+DECL|member|bFunctionClass
+id|__u8
+id|bFunctionClass
+suffix:semicolon
+DECL|member|bFunctionSubClass
+id|__u8
+id|bFunctionSubClass
+suffix:semicolon
+DECL|member|bFunctionProtocol
+id|__u8
+id|bFunctionProtocol
+suffix:semicolon
+DECL|member|iFunction
+id|__u8
+id|iFunction
 suffix:semicolon
 )brace
 id|__attribute__

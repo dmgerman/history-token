@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAX_DEPTH
 mdefine_line|#define MAX_DEPTH 16
@@ -723,6 +724,9 @@ id|result
 comma
 r_int
 id|mode
+comma
+r_int
+id|num_targets
 )paren
 (brace
 r_struct
@@ -782,7 +786,26 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* allocate a single nodes worth of targets to begin with */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|num_targets
+)paren
+id|num_targets
+op_assign
+id|KEYS_PER_NODE
+suffix:semicolon
+id|num_targets
+op_assign
+id|dm_round_up
+c_func
+(paren
+id|num_targets
+comma
+id|KEYS_PER_NODE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -791,7 +814,7 @@ c_func
 (paren
 id|t
 comma
-id|KEYS_PER_NODE
+id|num_targets
 )paren
 )paren
 (brace
@@ -2488,6 +2511,46 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|set_default_limits
+r_static
+r_void
+id|set_default_limits
+c_func
+(paren
+r_struct
+id|io_restrictions
+op_star
+id|rs
+)paren
+(brace
+id|rs-&gt;max_sectors
+op_assign
+id|MAX_SECTORS
+suffix:semicolon
+id|rs-&gt;max_phys_segments
+op_assign
+id|MAX_PHYS_SEGMENTS
+suffix:semicolon
+id|rs-&gt;max_hw_segments
+op_assign
+id|MAX_HW_SEGMENTS
+suffix:semicolon
+id|rs-&gt;hardsect_size
+op_assign
+l_int|1
+op_lshift
+id|SECTOR_SHIFT
+suffix:semicolon
+id|rs-&gt;max_segment_size
+op_assign
+id|MAX_SEGMENT_SIZE
+suffix:semicolon
+id|rs-&gt;seg_boundary_mask
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|dm_table_add_target
 r_int
 id|dm_table_add_target
@@ -2566,6 +2629,13 @@ r_sizeof
 op_star
 id|tgt
 )paren
+)paren
+suffix:semicolon
+id|set_default_limits
+c_func
+(paren
+op_amp
+id|tgt-&gt;limits
 )paren
 suffix:semicolon
 id|tgt-&gt;type
@@ -2971,12 +3041,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
-DECL|variable|_event_lock
 r_static
-id|spinlock_t
+id|DECLARE_MUTEX
+c_func
+(paren
 id|_event_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|dm_table_event_callback
 r_void
@@ -3003,7 +3073,7 @@ op_star
 id|context
 )paren
 (brace
-id|spin_lock_irq
+id|down
 c_func
 (paren
 op_amp
@@ -3018,7 +3088,7 @@ id|t-&gt;event_context
 op_assign
 id|context
 suffix:semicolon
-id|spin_unlock_irq
+id|up
 c_func
 (paren
 op_amp
@@ -3037,7 +3107,17 @@ op_star
 id|t
 )paren
 (brace
-id|spin_lock
+multiline_comment|/*&n;&t; * You can no longer call dm_table_event() from interrupt&n;&t; * context, use a bottom half instead.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|down
 c_func
 (paren
 op_amp
@@ -3057,7 +3137,7 @@ c_func
 id|t-&gt;event_context
 )paren
 suffix:semicolon
-id|spin_unlock
+id|up
 c_func
 (paren
 op_amp
