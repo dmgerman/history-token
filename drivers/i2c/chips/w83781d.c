@@ -997,7 +997,7 @@ l_int|8
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_in
-mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_min##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_max##offset); &bslash;&n;} while (0);
+mdefine_line|#define device_create_file_in(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_min##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_in_max##offset); &bslash;&n;} while (0)
 DECL|macro|show_fan_reg
 mdefine_line|#define show_fan_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;FAN_FROM_REG(data-&gt;reg[nr-1], (long)DIV_FROM_REG(data-&gt;fan_div[nr-1]))); &bslash;&n;}
 DECL|variable|fan
@@ -1162,7 +1162,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_fan
-mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_min##offset); &bslash;&n;
+mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_min##offset); &bslash;&n;} while (0)
 DECL|macro|show_temp_reg
 mdefine_line|#define show_temp_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)AS99127_TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, (long)TEMP_FROM_REG(data-&gt;reg)); &bslash;&n;&t;} &bslash;&n;}
 DECL|variable|temp
@@ -1229,7 +1229,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_temp
-mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_max##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_min##offset);
+mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_max##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp_min##offset); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_vid_reg
@@ -1746,7 +1746,7 @@ id|mask
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_beep
-mdefine_line|#define device_create_file_beep(client) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_beep_enable); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_beep_mask);
+mdefine_line|#define device_create_file_beep(client) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_beep_enable); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_beep_mask); &bslash;&n;} while (0)
 multiline_comment|/* w83697hf only has two fans */
 r_static
 id|ssize_t
@@ -2212,7 +2212,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_fan_div
-mdefine_line|#define device_create_file_fan_div(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_div##offset); &bslash;&n;
+mdefine_line|#define device_create_file_fan_div(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_div##offset); &bslash;&n;} while (0)
 multiline_comment|/* w83697hf only has two fans */
 r_static
 id|ssize_t
@@ -2691,9 +2691,9 @@ l_int|4
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm
-mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;
+mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;} while (0)
 DECL|macro|device_create_file_pwmenable
-mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm_enable##offset); &bslash;&n;
+mdefine_line|#define device_create_file_pwmenable(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm_enable##offset); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_sensor_reg
@@ -3057,7 +3057,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_sensor
-mdefine_line|#define device_create_file_sensor(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_sensor##offset); &bslash;&n;
+mdefine_line|#define device_create_file_sensor(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_sensor##offset); &bslash;&n;} while (0)
 macro_line|#ifdef W83781D_RT
 r_static
 id|ssize_t
@@ -3345,7 +3345,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_rt
-mdefine_line|#define device_create_file_rt(client, offset) &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_rt##offset); &bslash;&n;
+mdefine_line|#define device_create_file_rt(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_rt##offset); &bslash;&n;} while (0)
 macro_line|#endif&t;&t;&t;&t;/* ifdef W83781D_RT */
 multiline_comment|/* This function is called when:&n;     * w83781d_driver is inserted (when this module is loaded), for each&n;       available adapter&n;     * when a new adapter is inserted (and w83781d_driver is still present) */
 r_static
