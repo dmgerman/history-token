@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.26 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.27 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *                            IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *    ChangeLog: 11/04/2002 Arnd Bergmann Split s390io.c into multiple files,&n; *&t;&t;&t;&t;&t;  see s390io.c for complete list of&n; * &t;&t;&t;&t;&t;  changes.&n; *               05/06/2002 Cornelia Huck  some cleanups&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -10,6 +10,7 @@ macro_line|#include &quot;airq.h&quot;
 macro_line|#include &quot;cio.h&quot;
 macro_line|#include &quot;cio_debug.h&quot;
 macro_line|#include &quot;ioinfo.h&quot;
+macro_line|#include &quot;chsc.h&quot;
 macro_line|#include &quot;s390io.h&quot; /* FIXME: try to do without this */
 DECL|variable|sync_isc
 r_static
