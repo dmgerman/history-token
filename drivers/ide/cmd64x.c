@@ -3,11 +3,11 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|CMD_DEBUG
 mdefine_line|#define CMD_DEBUG 0
@@ -92,7 +92,7 @@ mdefine_line|#define DTPR1&t;&t;0x7C
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 macro_line|#if 0
 r_static
-id|byte
+id|u8
 id|prefetch_regs
 (braket
 l_int|4
@@ -109,7 +109,7 @@ id|ARTTIM23
 )brace
 suffix:semicolon
 r_static
-id|byte
+id|u8
 id|prefetch_masks
 (braket
 l_int|4
@@ -159,12 +159,12 @@ id|drives
 op_assign
 id|drive-&gt;channel-&gt;drives
 suffix:semicolon
-id|byte
+id|u8
 id|temp_b
 suffix:semicolon
 r_static
 r_const
-id|byte
+id|u8
 id|setup_counts
 (braket
 )braket
@@ -185,7 +185,7 @@ l_int|0xc0
 suffix:semicolon
 r_static
 r_const
-id|byte
+id|u8
 id|recovery_counts
 (braket
 )braket
@@ -228,7 +228,7 @@ l_int|0
 suffix:semicolon
 r_static
 r_const
-id|byte
+id|u8
 id|arttim_regs
 (braket
 l_int|2
@@ -253,7 +253,7 @@ id|ARTTIM23
 suffix:semicolon
 r_static
 r_const
-id|byte
+id|u8
 id|drwtim_regs
 (braket
 l_int|2
@@ -438,7 +438,7 @@ id|slave
 comma
 (paren
 (paren
-id|byte
+id|u8
 )paren
 id|setup_count
 )paren
@@ -467,7 +467,7 @@ id|slave
 )braket
 comma
 (paren
-id|byte
+id|u8
 )paren
 (paren
 (paren
@@ -486,7 +486,7 @@ l_string|&quot;Write %x to %x&bslash;n&quot;
 comma
 (paren
 (paren
-id|byte
+id|u8
 )paren
 id|setup_count
 )paren
@@ -511,7 +511,7 @@ id|cmdprintk
 l_string|&quot;Write %x to %x&bslash;n&quot;
 comma
 (paren
-id|byte
+id|u8
 )paren
 (paren
 (paren
@@ -1699,7 +1699,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -2355,12 +2355,12 @@ c_cond
 id|jack_slap
 )paren
 (brace
-id|byte
+id|u8
 id|dma_intr
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|dma_mask
 op_assign
 (paren
@@ -2372,7 +2372,7 @@ id|ARTTIM23_INTR_CH1
 suffix:colon
 id|CFR_INTR_CH0
 suffix:semicolon
-id|byte
+id|u8
 id|dma_reg
 op_assign
 (paren

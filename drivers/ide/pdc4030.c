@@ -357,7 +357,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|cmd
 )paren
 (brace
@@ -367,7 +367,7 @@ id|timeout
 comma
 id|timer
 suffix:semicolon
-id|byte
+id|u8
 id|status_val
 suffix:semicolon
 id|promise_selectproc

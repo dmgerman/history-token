@@ -404,6 +404,7 @@ id|default_decr
 suffix:semicolon
 )brace
 DECL|function|smp_iSeries_space_timers
+r_static
 r_void
 id|smp_iSeries_space_timers
 c_func
@@ -467,6 +468,19 @@ comma
 id|smp_iSeries_kick_cpu
 comma
 id|smp_iSeries_setup_cpu
+comma
+id|smp_iSeries_space_timers
+comma
+dot
+id|give_timebase
+op_assign
+id|smp_generic_give_timebase
+comma
+dot
+id|take_timebase
+op_assign
+id|smp_generic_take_timebase
+comma
 )brace
 suffix:semicolon
 eof

@@ -511,7 +511,7 @@ id|ctrl
 comma
 id|using_inta
 suffix:semicolon
-id|byte
+id|u8
 id|progif
 suffix:semicolon
 multiline_comment|/* Set a good latency timer and cache line size value. */

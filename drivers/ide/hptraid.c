@@ -378,7 +378,7 @@ c_func
 id|val
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -402,7 +402,7 @@ c_func
 id|val
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp

@@ -64,7 +64,7 @@ id|usb_dev_id
 op_assign
 (brace
 DECL|macro|PEGASUS_DEV
-mdefine_line|#define&t;PEGASUS_DEV(pn, vid, pid, flags)&t;&bslash;&n;&t;{name:pn, vendor:vid, device:pid, private:flags},
+mdefine_line|#define&t;PEGASUS_DEV(pn, vid, pid, flags)&t;&bslash;&n;&t;{.name = pn, .vendor = vid, .device = pid, .private = flags},
 macro_line|#include &quot;pegasus.h&quot;
 DECL|macro|PEGASUS_DEV
 macro_line|#undef&t;PEGASUS_DEV
@@ -89,7 +89,7 @@ id|pegasus_ids
 op_assign
 (brace
 DECL|macro|PEGASUS_DEV
-mdefine_line|#define&t;PEGASUS_DEV(pn, vid, pid, flags) &bslash;&n;&t;{match_flags: USB_DEVICE_ID_MATCH_DEVICE, idVendor:vid, idProduct:pid},
+mdefine_line|#define&t;PEGASUS_DEV(pn, vid, pid, flags) &bslash;&n;&t;{.match_flags = USB_DEVICE_ID_MATCH_DEVICE, .idVendor = vid, .idProduct = pid},
 macro_line|#include &quot;pegasus.h&quot;
 DECL|macro|PEGASUS_DEV
 macro_line|#undef&t;PEGASUS_DEV

@@ -4,6 +4,7 @@ macro_line|#ifndef _PPC_MACHDEP_H
 DECL|macro|_PPC_MACHDEP_H
 mdefine_line|#define _PPC_MACHDEP_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_APUS
 macro_line|#include &lt;asm-m68k/machdep.h&gt;
 macro_line|#endif
@@ -560,7 +561,57 @@ r_int
 id|nr
 )paren
 suffix:semicolon
+DECL|member|space_timers
+r_void
+(paren
+op_star
+id|space_timers
+)paren
+(paren
+r_int
+id|nr
+)paren
+suffix:semicolon
+DECL|member|take_timebase
+r_void
+(paren
+op_star
+id|take_timebase
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|give_timebase
+r_void
+(paren
+op_star
+id|give_timebase
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* Poor default implementations */
+r_extern
+r_void
+id|__devinit
+id|smp_generic_give_timebase
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__devinit
+id|smp_generic_take_timebase
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* _PPC_MACHDEP_H */

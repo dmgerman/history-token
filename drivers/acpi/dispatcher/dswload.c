@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -73,6 +73,7 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 id|walk_state-&gt;parse_flags
 op_or_assign
 id|ACPI_PARSE_EXECUTE
@@ -87,6 +88,7 @@ id|walk_state-&gt;ascending_callback
 op_assign
 id|acpi_ds_exec_end_op
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -332,6 +334,16 @@ id|op-&gt;named.name
 op_assign
 id|node-&gt;name.integer
 suffix:semicolon
+macro_line|#if (defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY))
+id|op-&gt;named.path
+op_assign
+(paren
+id|u8
+op_star
+)paren
+id|path
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Put the Node in the &quot;op&quot; object that the parser uses, so we&n;&t; * can get it again quickly when this scope is closed&n;&t; */
 id|op-&gt;common.node
 op_assign
@@ -430,6 +442,7 @@ id|object_type
 op_assign
 id|walk_state-&gt;op_info-&gt;object_type
 suffix:semicolon
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 r_if
 c_cond
 (paren
@@ -516,6 +529,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1014,9 +1028,11 @@ id|acpi_namespace_node
 op_star
 id|new_node
 suffix:semicolon
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 id|u32
 id|i
 suffix:semicolon
+macro_line|#endif
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_load2_end_op&quot;
@@ -1187,6 +1203,7 @@ c_cond
 id|walk_state-&gt;op_info-&gt;type
 )paren
 (brace
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 r_case
 id|AML_TYPE_CREATE_FIELD
 suffix:colon
@@ -1418,6 +1435,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#endif /* ACPI_NO_METHOD_EXECUTION */
 r_case
 id|AML_TYPE_NAMED_COMPLEX
 suffix:colon
@@ -1492,6 +1510,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 r_case
 id|AML_REGION_OP
 suffix:colon
@@ -1551,6 +1570,7 @@ id|op
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif /* ACPI_NO_METHOD_EXECUTION */
 r_default
 suffix:colon
 multiline_comment|/* All NAMED_COMPLEX opcodes must be handled above */

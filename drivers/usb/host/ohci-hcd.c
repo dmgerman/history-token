@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * History:&n; * &n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 USB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; * $Id: ohci-hcd.c,v 1.9 2002/03/27 20:41:57 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 USB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; * $Id: ohci-hcd.c,v 1.9 2002/03/27 20:41:57 dbrownell Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -27,9 +27,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; should be the hcd state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
+multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Jun-15&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Jul-19&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber &lt;weissg@vienna.at&gt;, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -43,6 +43,27 @@ DECL|macro|OHCI_UNLINK_TIMEOUT
 mdefine_line|#define OHCI_UNLINK_TIMEOUT&t; (HZ / 10)
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#include &quot;ohci.h&quot;
+DECL|function|disable
+r_static
+r_inline
+r_void
+id|disable
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|ohci-&gt;disabled
+op_assign
+l_int|1
+suffix:semicolon
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_HALT
+suffix:semicolon
+)brace
 macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
@@ -109,6 +130,11 @@ id|bustime
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|urb_print
 (paren
@@ -151,23 +177,33 @@ multiline_comment|/* for the private part of the URB we need the number of TDs (
 r_switch
 c_cond
 (paren
-id|usb_pipetype
-(paren
-id|pipe
-)paren
+id|ed-&gt;type
 )paren
 (brace
 r_case
 id|PIPE_CONTROL
 suffix:colon
+multiline_comment|/* td_submit_urb() doesn&squot;t yet handle these */
+r_if
+c_cond
+(paren
+id|urb-&gt;transfer_buffer_length
+OG
+l_int|4096
+)paren
+r_return
+op_minus
+id|EMSGSIZE
+suffix:semicolon
 multiline_comment|/* 1 TD for setup, 1 for ACK, plus ... */
 id|size
 op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
-r_case
-id|PIPE_BULK
+singleline_comment|// case PIPE_INTERRUPT:
+singleline_comment|// case PIPE_BULK:
+r_default
 suffix:colon
 multiline_comment|/* one TD for every 4096 Bytes (can be upto 8K) */
 id|size
@@ -293,16 +329,6 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|PIPE_INTERRUPT
-suffix:colon
-multiline_comment|/* one TD */
-id|size
-op_assign
-l_int|1
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 multiline_comment|/* allocate the private part of the URB */
 id|urb_priv
@@ -357,6 +383,32 @@ op_star
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* don&squot;t submit to a dead HC */
+r_if
+c_cond
+(paren
+id|ohci-&gt;disabled
+op_logical_or
+id|ohci-&gt;sleeping
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 multiline_comment|/* fill the private part of the URB */
 id|urb_priv-&gt;length
 op_assign
@@ -367,14 +419,6 @@ op_assign
 id|ed
 suffix:semicolon
 multiline_comment|/* allocate the TDs (updating hash chains) */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -416,24 +460,13 @@ id|urb_priv-&gt;length
 op_assign
 id|i
 suffix:semicolon
-id|urb_free_priv
-(paren
-id|ohci
-comma
-id|urb_priv
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 )brace
@@ -466,8 +499,8 @@ op_assign
 (paren
 (paren
 id|ed-&gt;state
-op_eq
-id|ED_OPER
+op_ne
+id|ED_IDLE
 )paren
 ques
 c_cond
@@ -520,23 +553,12 @@ OL
 l_int|0
 )paren
 (brace
-id|urb_free_priv
-(paren
-id|ohci
-comma
-id|urb_priv
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+id|retval
+op_assign
 id|bustime
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|usb_claim_bandwidth
@@ -558,15 +580,15 @@ id|urb-&gt;hcpriv
 op_assign
 id|urb_priv
 suffix:semicolon
-multiline_comment|/* link the ed into a chain if is not already */
+multiline_comment|/* schedule the ed if needed */
 r_if
 c_cond
 (paren
 id|ed-&gt;state
-op_ne
-id|ED_OPER
+op_eq
+id|ED_IDLE
 )paren
-id|ep_link
+id|ed_schedule
 (paren
 id|ohci
 comma
@@ -576,7 +598,23 @@ suffix:semicolon
 multiline_comment|/* fill the TDs and link them to the ed; and&n;&t; * enable that part of the schedule, if needed&n;&t; */
 id|td_submit_urb
 (paren
+id|ohci
+comma
 id|urb
+)paren
+suffix:semicolon
+id|fail
+suffix:colon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+id|urb_free_priv
+(paren
+id|ohci
+comma
+id|urb_priv
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -588,7 +626,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * decouple the URB from the HC queues (TDs, urb_priv); it&squot;s&n; * already marked using urb-&gt;status.  reporting is always done&n; * asynchronously, and we might be dealing with an urb that&squot;s&n; * partially transferred, or an ED with other urbs being unlinked.&n; */
@@ -644,7 +682,7 @@ id|urb_priv_t
 op_star
 id|urb_priv
 suffix:semicolon
-multiline_comment|/* flag the urb&squot;s data for deletion in some upcoming&n;&t;&t; * SF interrupt&squot;s delete list processing&n;&t;&t; */
+multiline_comment|/* Unless an IRQ completed the unlink while it was being&n;&t;&t; * handed to us, flag it for unlink and giveback, and force&n;&t;&t; * some upcoming INTR_SF to call finish_unlinks()&n;&t;&t; */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -660,32 +698,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|urb_priv
-op_logical_or
-(paren
-id|urb_priv-&gt;state
-op_eq
-id|URB_DEL
-)paren
 )paren
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|urb_priv-&gt;state
 op_assign
 id|URB_DEL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb_priv-&gt;ed-&gt;state
+op_eq
+id|ED_OPER
+)paren
 id|start_urb_unlink
 (paren
 id|ohci
@@ -693,6 +719,7 @@ comma
 id|urb_priv-&gt;ed
 )paren
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -718,6 +745,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* frees config/altsetting state for endpoints,&n; * including ED memory, dummy TD, and bulk/intr data toggle&n; */
 r_static
 r_void
 DECL|function|ohci_free_config
@@ -763,6 +791,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+macro_line|#ifdef DEBUG
+r_int
+id|rescans
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|rescan
+suffix:colon
 multiline_comment|/* free any eds, and dummy tds, still hanging around */
 id|spin_lock_irqsave
 (paren
@@ -805,23 +842,18 @@ id|ed
 )paren
 r_continue
 suffix:semicolon
-id|ed-&gt;state
-op_and_assign
-op_complement
-id|ED_URB_DEL
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|ohci-&gt;disabled
 op_logical_and
 id|ed-&gt;state
-op_eq
-id|ED_OPER
+op_ne
+id|ED_IDLE
 )paren
 id|ed-&gt;state
 op_assign
-id|ED_UNLINK
+id|ED_IDLE
 suffix:semicolon
 r_switch
 c_cond
@@ -830,13 +862,16 @@ id|ed-&gt;state
 )paren
 (brace
 r_case
-id|ED_NEW
-suffix:colon
-r_break
-suffix:semicolon
-r_case
 id|ED_UNLINK
 suffix:colon
+multiline_comment|/* wait a frame? */
+r_goto
+id|do_rescan
+suffix:semicolon
+r_case
+id|ED_IDLE
+suffix:colon
+multiline_comment|/* fully unlinked */
 id|td_free
 (paren
 id|ohci
@@ -846,11 +881,9 @@ id|ed-&gt;dummy
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-id|ED_OPER
-suffix:colon
 r_default
 suffix:colon
+macro_line|#ifdef DEBUG
 id|err
 (paren
 l_string|&quot;illegal ED %d state in free_config, %d&quot;
@@ -860,12 +893,12 @@ comma
 id|ed-&gt;state
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#endif
+multiline_comment|/* ED_OPER: some driver disconnect() is broken,&n;&t;&t;&t; * it didn&squot;t even start its unlinks much less wait&n;&t;&t;&t; * for their completions.&n;&t;&t;&t; * OTHERWISE:  hcd bug, ed is garbage&n;&t;&t;&t; */
 id|BUG
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|ed_free
 (paren
@@ -882,6 +915,79 @@ id|ohci-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|do_rescan
+suffix:colon
+macro_line|#ifdef DEBUG
+multiline_comment|/* a driver-&gt;disconnect() returned before its unlinks completed? */
+r_if
+c_cond
+(paren
+id|in_interrupt
+(paren
+)paren
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;WARNING: spin in interrupt; driver-&gt;disconnect() bug&quot;
+)paren
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;dev usb-%s-%s ep 0x%x&quot;
+comma
+id|ohci-&gt;hcd.self.bus_name
+comma
+id|udev-&gt;devpath
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
+id|BUG_ON
+(paren
+op_logical_neg
+(paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;intrenable
+)paren
+op_amp
+id|OHCI_INTR_SF
+)paren
+)paren
+suffix:semicolon
+id|BUG_ON
+(paren
+id|rescans
+op_ge
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* HWBUG */
+id|rescans
+op_increment
+suffix:semicolon
+macro_line|#endif
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|wait_ms
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|rescan
 suffix:semicolon
 )brace
 DECL|function|ohci_get_frame
@@ -1405,9 +1511,10 @@ op_logical_neg
 id|udev
 )paren
 (brace
-id|ohci-&gt;disabled
-op_assign
-l_int|1
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_and_assign
@@ -1454,9 +1561,10 @@ id|usb_free_dev
 id|udev
 )paren
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|1
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_and_assign
@@ -1562,10 +1670,12 @@ id|u32
 l_int|0
 )paren
 (brace
-id|ohci-&gt;disabled
-op_increment
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
-id|err
+id|dbg
 (paren
 l_string|&quot;%s device removed!&quot;
 comma
@@ -1605,8 +1715,10 @@ op_amp
 id|OHCI_INTR_UE
 )paren
 (brace
-id|ohci-&gt;disabled
-op_increment
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|err
 (paren

@@ -4094,7 +4094,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;digi_write: TOP: port=%d, count=%d, from_user=%d, in_interrupt=%d&quot;
+l_string|&quot;digi_write: TOP: port=%d, count=%d, from_user=%d, in_interrupt=%ld&quot;
 comma
 id|priv-&gt;dp_port_num
 comma
@@ -6150,7 +6150,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;digi_shutdown: TOP, in_interrupt()=%d&quot;
+l_string|&quot;digi_shutdown: TOP, in_interrupt()=%ld&quot;
 comma
 id|in_interrupt
 c_func

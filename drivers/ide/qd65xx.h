@@ -36,9 +36,9 @@ mdefine_line|#define QD_CONFIG(hwif)&t;&t;((hwif)-&gt;config_data &amp; 0x00ff)
 DECL|macro|QD_CONTROL
 mdefine_line|#define QD_CONTROL(hwif)&t;(((hwif)-&gt;config_data &amp; 0xff00) &gt;&gt; 8)
 DECL|macro|QD_TIMING
-mdefine_line|#define QD_TIMING(drive)&t;(byte)(((drive)-&gt;drive_data) &amp; 0x00ff)
+mdefine_line|#define QD_TIMING(drive)&t;(u8)(((drive)-&gt;drive_data) &amp; 0x00ff)
 DECL|macro|QD_TIMREG
-mdefine_line|#define QD_TIMREG(drive)&t;(byte)((((drive)-&gt;drive_data) &amp; 0xff00) &gt;&gt; 8)
+mdefine_line|#define QD_TIMREG(drive)&t;(u8)((((drive)-&gt;drive_data) &amp; 0xff00) &gt;&gt; 8)
 DECL|macro|QD6500_DEF_DATA
 mdefine_line|#define QD6500_DEF_DATA&t;&t;((QD_TIM1_PORT&lt;&lt;8) | (QD_ID3 ? 0x0c : 0x08))
 DECL|macro|QD6580_DEF_DATA

@@ -917,7 +917,7 @@ suffix:semicolon
 multiline_comment|/* Maximum waiting time */
 multiline_comment|/*&n;&t; *&t;Read position information&n;&t; */
 DECL|member|partition
-id|byte
+id|u8
 id|partition
 suffix:semicolon
 DECL|member|first_frame_position
@@ -940,7 +940,7 @@ multiline_comment|/*&n;&t; *&t;Last error information&n;&t; */
 DECL|member|sense_key
 DECL|member|asc
 DECL|member|ascq
-id|byte
+id|u8
 id|sense_key
 comma
 id|asc
@@ -1944,8 +1944,9 @@ DECL|function|idetape_sense_key_verbose
 r_char
 op_star
 id|idetape_sense_key_verbose
+c_func
 (paren
-id|byte
+id|u8
 id|idetape_sense_key
 )paren
 (brace

@@ -12,11 +12,11 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 multiline_comment|/* When DEBUG is defined it outputs initial PCI config register&n;   values and changes made to them by the driver */
 singleline_comment|// #define DEBUG
@@ -63,7 +63,7 @@ l_int|0x58
 suffix:semicolon
 DECL|function|sis5513_max_config_register
 r_static
-id|byte
+id|u8
 id|sis5513_max_config_register
 c_func
 (paren
@@ -130,15 +130,15 @@ id|info
 r_int
 id|i
 suffix:semicolon
-id|byte
+id|u8
 id|reg_val
 suffix:semicolon
-id|byte
+id|u8
 id|changed
 op_assign
 l_int|0
 suffix:semicolon
-id|byte
+id|u8
 id|max
 op_assign
 id|sis5513_max_config_register
@@ -250,7 +250,7 @@ id|dev
 r_int
 id|i
 suffix:semicolon
-id|byte
+id|u8
 id|max
 op_assign
 id|sis5513_max_config_register
@@ -336,7 +336,7 @@ id|marker
 r_int
 id|i
 suffix:semicolon
-id|byte
+id|u8
 id|max
 op_assign
 id|sis5513_max_config_register
@@ -683,7 +683,7 @@ suffix:semicolon
 multiline_comment|/* Cycle time bits and values vary accross chip dma capabilities&n;   These three arrays hold the register layout and the values to set.&n;   Indexed by chipset_family and (dma_mode - XFER_UDMA_0) */
 DECL|variable|cycle_time_offset
 r_static
-id|byte
+id|u8
 id|cycle_time_offset
 (braket
 )braket
@@ -706,7 +706,7 @@ l_int|0
 suffix:semicolon
 DECL|variable|cycle_time_range
 r_static
-id|byte
+id|u8
 id|cycle_time_range
 (braket
 )braket
@@ -729,7 +729,7 @@ l_int|4
 suffix:semicolon
 DECL|variable|cycle_time_value
 r_static
-id|byte
+id|u8
 id|cycle_time_value
 (braket
 )braket
@@ -1365,7 +1365,7 @@ id|dev
 op_assign
 id|hwif-&gt;pci_dev
 suffix:semicolon
-id|byte
+id|u8
 id|drive_pci
 comma
 id|reg
@@ -1828,7 +1828,7 @@ op_amp
 id|SIS5513_LATENCY
 )paren
 (brace
-id|byte
+id|u8
 id|latency
 op_assign
 (paren
@@ -1862,7 +1862,7 @@ c_cond
 id|host_dev
 )paren
 (brace
-id|byte
+id|u8
 id|reg
 suffix:semicolon
 r_switch

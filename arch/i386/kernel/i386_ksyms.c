@@ -271,13 +271,6 @@ c_func
 id|apm_info
 )paren
 suffix:semicolon
-DECL|variable|gdt
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|gdt
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_IOVIRT
 DECL|variable|__io_virt_debug
 id|EXPORT_SYMBOL

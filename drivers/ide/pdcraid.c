@@ -588,7 +588,7 @@ dot
 id|geom.heads
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp
@@ -612,7 +612,7 @@ dot
 id|geom.sectors
 comma
 (paren
-id|byte
+id|u8
 op_star
 )paren
 op_amp

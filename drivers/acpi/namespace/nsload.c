@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 56 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsload - namespace loading/expanding/contracting procedures&n; *              $Revision: 57 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -11,104 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsload&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
-id|acpi_status
-DECL|function|acpi_ns_load_namespace
-id|acpi_ns_load_namespace
-(paren
-r_void
-)paren
-(brace
-id|acpi_status
-id|status
-suffix:semicolon
-id|ACPI_FUNCTION_TRACE
-(paren
-l_string|&quot;Acpi_load_name_space&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* There must be at least a DSDT installed */
-r_if
-c_cond
-(paren
-id|acpi_gbl_DSDT
-op_eq
-l_int|NULL
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;DSDT is not in memory&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_ACPI_TABLES
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Load the namespace.  The DSDT is required,&n;&t; * but the SSDT and PSDT tables are optional.&n;&t; */
-id|status
-op_assign
-id|acpi_ns_load_table_by_type
-(paren
-id|ACPI_TABLE_DSDT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Ignore exceptions from these */
-(paren
-r_void
-)paren
-id|acpi_ns_load_table_by_type
-(paren
-id|ACPI_TABLE_SSDT
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
-id|acpi_ns_load_table_by_type
-(paren
-id|ACPI_TABLE_PSDT
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT_RAW
-(paren
-(paren
-id|ACPI_DB_OK
-comma
-l_string|&quot;ACPI Namespace successfully loaded at root %p&bslash;n&quot;
-comma
-id|acpi_gbl_root_node
-)paren
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_one_parse_pass&n; *&n; * PARAMETERS:  Pass_number             - 1 or 2&n; *              Table_desc              - The table to be parsed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform one complete parse of an ACPI/AML table.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Ns_one_complete_parse&n; *&n; * PARAMETERS:  Pass_number             - 1 or 2&n; *              Table_desc              - The table to be parsed.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform one complete parse of an ACPI/AML table.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_one_complete_parse
 id|acpi_ns_one_complete_parse
@@ -338,6 +241,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_load_table&n; *&n; * PARAMETERS:  Table_desc      - Descriptor for table to be loaded&n; *              Node            - Owning NS node&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load one ACPI table into the namespace&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_load_table
@@ -855,6 +759,103 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_namespace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load the name space from what ever is pointed to by DSDT.&n; *              (DSDT points to either the BIOS or a buffer.)&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ns_load_namespace
+id|acpi_ns_load_namespace
+(paren
+r_void
+)paren
+(brace
+id|acpi_status
+id|status
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+(paren
+l_string|&quot;Acpi_load_name_space&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* There must be at least a DSDT installed */
+r_if
+c_cond
+(paren
+id|acpi_gbl_DSDT
+op_eq
+l_int|NULL
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;DSDT is not in memory&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_NO_ACPI_TABLES
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Load the namespace.  The DSDT is required,&n;&t; * but the SSDT and PSDT tables are optional.&n;&t; */
+id|status
+op_assign
+id|acpi_ns_load_table_by_type
+(paren
+id|ACPI_TABLE_DSDT
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Ignore exceptions from these */
+(paren
+r_void
+)paren
+id|acpi_ns_load_table_by_type
+(paren
+id|ACPI_TABLE_SSDT
+)paren
+suffix:semicolon
+(paren
+r_void
+)paren
+id|acpi_ns_load_table_by_type
+(paren
+id|ACPI_TABLE_PSDT
+)paren
+suffix:semicolon
+id|ACPI_DEBUG_PRINT_RAW
+(paren
+(paren
+id|ACPI_DB_OK
+comma
+l_string|&quot;ACPI Namespace successfully loaded at root %p&bslash;n&quot;
+comma
+id|acpi_gbl_root_node
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_subtree&n; *&n; * PARAMETERS:  Start_handle        - Handle in namespace where search begins&n; *&n; * RETURNS      Status&n; *&n; * DESCRIPTION: Walks the namespace starting at the given handle and deletes&n; *              all objects, entries, and scopes in the entire subtree.&n; *&n; *              Namespace/Interpreter should be locked or the subsystem should&n; *              be in shutdown before this routine is called.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_delete_subtree
@@ -1084,4 +1085,5 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

@@ -7,14 +7,14 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|PDC202XX_DEBUG_DRIVE_INFO
 mdefine_line|#define PDC202XX_DEBUG_DRIVE_INFO&t;&t;0
@@ -159,7 +159,7 @@ id|pdc_bit_messages
 op_star
 id|msgs
 comma
-id|byte
+id|u8
 id|bits
 )paren
 (brace
@@ -421,7 +421,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -1038,7 +1038,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace
@@ -1752,7 +1752,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -2979,7 +2979,7 @@ op_ne
 id|PCI_CLASS_STORAGE_IDE
 )paren
 (brace
-id|byte
+id|u8
 id|irq
 op_assign
 l_int|0

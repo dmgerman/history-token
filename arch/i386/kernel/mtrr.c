@@ -3502,7 +3502,7 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|num_online_cpus
+id|num_booting_cpus
 c_func
 (paren
 )paren
@@ -3570,7 +3570,7 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|num_online_cpus
+id|num_booting_cpus
 c_func
 (paren
 )paren
@@ -3618,7 +3618,7 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|num_online_cpus
+id|num_booting_cpus
 c_func
 (paren
 )paren

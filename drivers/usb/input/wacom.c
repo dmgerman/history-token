@@ -2145,8 +2145,9 @@ comma
 l_int|0x10
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|0
 )brace
 comma
@@ -2159,8 +2160,9 @@ comma
 l_int|0x20
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|1
 )brace
 comma
@@ -2173,8 +2175,9 @@ comma
 l_int|0x21
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -2187,8 +2190,9 @@ comma
 l_int|0x22
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|3
 )brace
 comma
@@ -2201,8 +2205,9 @@ comma
 l_int|0x23
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|4
 )brace
 comma
@@ -2215,8 +2220,9 @@ comma
 l_int|0x24
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|5
 )brace
 comma
@@ -2229,8 +2235,9 @@ comma
 l_int|0x31
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|6
 )brace
 comma

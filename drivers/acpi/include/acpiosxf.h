@@ -433,6 +433,14 @@ id|va_list
 id|args
 )paren
 suffix:semicolon
+r_void
+id|acpi_os_redirect_output
+(paren
+r_void
+op_star
+id|destination
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Debug input&n; */
 id|u32
 id|acpi_os_get_line

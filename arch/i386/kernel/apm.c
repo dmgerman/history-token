@@ -4524,7 +4524,7 @@ r_if
 c_cond
 (paren
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -4919,7 +4919,7 @@ c_cond
 id|debug
 op_logical_and
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -5180,7 +5180,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -5942,12 +5942,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren
@@ -5996,11 +5995,14 @@ id|pm_active
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up a segment that references the real mode segment 0x40&n;&t; * that extends up to the end of page zero (that we have reserved).&n;&t; * This is for buggy BIOS&squot;s that refer to (real mode) segment 0x40&n;&t; * even though they are called in protected mode.&n;&t; */
+multiline_comment|/*&n;&t; * Set up a segment that references the real mode segment 0x40&n;&t; * that extends up to the end of page zero (that we have reserved).&n;&t; * This is for buggy BIOS&squot;s that refer to (real mode) segment 0x40&n;&t; * even though they are called in protected mode.&n;&t; *&n;&t; * NOTE: on SMP we call into the APM BIOS only on CPU#0, so it&squot;s&n;&t; * enough to modify CPU#0&squot;s GDT.&n;&t; */
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_40
 op_rshift
@@ -6028,7 +6030,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_40
 op_rshift
@@ -6055,7 +6060,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6078,7 +6086,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6101,7 +6112,10 @@ suffix:semicolon
 id|set_base
 c_func
 (paren
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift
@@ -6140,7 +6154,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6163,7 +6180,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6186,7 +6206,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift
@@ -6212,7 +6235,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS
 op_rshift
@@ -6236,7 +6262,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_CS_16
 op_rshift
@@ -6260,7 +6289,10 @@ r_char
 op_star
 )paren
 op_amp
-id|gdt
+id|cpu_gdt_table
+(braket
+l_int|0
+)braket
 (braket
 id|APM_DS
 op_rshift
@@ -6319,11 +6351,10 @@ op_or
 id|SIGCHLD
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: When boot code changes, this will need to be&n;           deactivated when/if a CPU comes up --RR */
 r_if
 c_cond
 (paren
-id|num_online_cpus
+id|num_possible_cpus
 c_func
 (paren
 )paren

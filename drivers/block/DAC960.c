@@ -11265,7 +11265,7 @@ c_func
 id|Request
 )paren
 suffix:semicolon
-id|blkdev_release_request
+id|blk_put_request
 c_func
 (paren
 id|Request

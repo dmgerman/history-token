@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acdebug.h - ACPI/AML debugger&n; *       $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acdebug.h - ACPI/AML debugger&n; *       $Revision: 63 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACDEBUG_H__
 DECL|macro|__ACDEBUG_H__
@@ -319,86 +319,6 @@ op_star
 id|return_value
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * dbdisasm - AML disassembler&n; */
-r_void
-id|acpi_db_display_op
-(paren
-id|acpi_walk_state
-op_star
-id|walk_state
-comma
-id|acpi_parse_object
-op_star
-id|origin
-comma
-id|u32
-id|num_opcodes
-)paren
-suffix:semicolon
-r_void
-id|acpi_db_display_namestring
-(paren
-id|NATIVE_CHAR
-op_star
-id|name
-)paren
-suffix:semicolon
-r_void
-id|acpi_db_display_path
-(paren
-id|acpi_parse_object
-op_star
-id|op
-)paren
-suffix:semicolon
-r_void
-id|acpi_db_display_opcode
-(paren
-id|acpi_walk_state
-op_star
-id|walk_state
-comma
-id|acpi_parse_object
-op_star
-id|op
-)paren
-suffix:semicolon
-r_void
-id|acpi_db_decode_internal_object
-(paren
-id|acpi_operand_object
-op_star
-id|obj_desc
-)paren
-suffix:semicolon
-r_void
-id|acpi_db_decode_node
-(paren
-id|acpi_namespace_node
-op_star
-id|node
-)paren
-suffix:semicolon
-id|u32
-id|acpi_db_block_type
-(paren
-id|acpi_parse_object
-op_star
-id|op
-)paren
-suffix:semicolon
-id|acpi_status
-id|acpi_ps_display_object_pathname
-(paren
-id|acpi_walk_state
-op_star
-id|walk_state
-comma
-id|acpi_parse_object
-op_star
-id|op
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * dbdisply - debug display commands&n; */
 r_void
 id|acpi_db_display_method_info
@@ -503,6 +423,14 @@ id|acpi_db_get_pointer
 r_void
 op_star
 id|target
+)paren
+suffix:semicolon
+r_void
+id|acpi_db_decode_internal_object
+(paren
+id|acpi_operand_object
+op_star
+id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * dbexec - debugger control method execution&n; */

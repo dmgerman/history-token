@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;pcihost.h&quot;
 DECL|macro|OPTI621_MAX_PIO
 mdefine_line|#define OPTI621_MAX_PIO 3
@@ -53,7 +53,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 multiline_comment|/* Store values into drive-&gt;drive_data&n; *&t;second_contr - 0 for primary controller, 1 for secondary&n; *&t;slave_drive - 0 -&gt; pio is for master, 1 -&gt; pio is for slave&n; *&t;pio - PIO mode for selected drive (for other we don&squot;t know)&n; */
@@ -212,7 +212,7 @@ r_void
 id|write_reg
 c_func
 (paren
-id|byte
+id|u8
 id|value
 comma
 r_int
@@ -269,7 +269,7 @@ suffix:semicolon
 )brace
 DECL|function|read_reg
 r_static
-id|byte
+id|u8
 id|read_reg
 c_func
 (paren
@@ -278,7 +278,7 @@ id|reg
 )paren
 multiline_comment|/* Read value from register reg, base of register&n; * is at reg_base (0x1f0 primary, 0x170 secondary,&n; * if not changed by PCI configuration).&n; * This is from setupvic.exe program.&n; */
 (brace
-id|byte
+id|u8
 id|ret
 suffix:semicolon
 id|inw
@@ -534,7 +534,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -543,7 +543,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|pio1
 comma
 id|pio2
@@ -558,7 +558,7 @@ id|ax
 comma
 id|drdy
 suffix:semicolon
-id|byte
+id|u8
 id|cycle1
 comma
 id|cycle2

@@ -5865,16 +5865,12 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|warn
 c_func
 (paren
 l_string|&quot;timeout initializing reports&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|report_enum
 op_assign
 id|hid-&gt;report_enum
@@ -7396,12 +7392,14 @@ id|hid_usb_ids
 op_assign
 (brace
 (brace
+dot
 id|match_flags
-suffix:colon
+op_assign
 id|USB_DEVICE_ID_MATCH_INT_CLASS
 comma
+dot
 id|bInterfaceClass
-suffix:colon
+op_assign
 id|USB_INTERFACE_CLASS_HID
 )brace
 comma

@@ -13,9 +13,10 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1464,7 +1465,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  All hosts that use the 80c ribbon must use this!&n; */
 DECL|function|eighty_ninty_three
-id|byte
+r_int
 id|eighty_ninty_three
 c_func
 (paren
@@ -1475,10 +1476,6 @@ id|drive
 )paren
 (brace
 r_return
-(paren
-(paren
-id|u8
-)paren
 (paren
 (paren
 id|drive-&gt;channel-&gt;udma_four
@@ -1503,7 +1500,6 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Channel lock should be held.&n; */
@@ -1517,7 +1513,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|speed
 )paren
 (brace

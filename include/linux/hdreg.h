@@ -451,18 +451,15 @@ r_struct
 id|hd_geometry
 (brace
 DECL|member|heads
-r_int
-r_char
+id|u8
 id|heads
 suffix:semicolon
 DECL|member|sectors
-r_int
-r_char
+id|u8
 id|sectors
 suffix:semicolon
 DECL|member|cylinders
-r_int
-r_int
+id|u16
 id|cylinders
 suffix:semicolon
 DECL|member|start
@@ -478,18 +475,15 @@ r_struct
 id|hd_big_geometry
 (brace
 DECL|member|heads
-r_int
-r_char
+id|u8
 id|heads
 suffix:semicolon
 DECL|member|sectors
-r_int
-r_char
+id|u8
 id|sectors
 suffix:semicolon
 DECL|member|cylinders
-r_int
-r_int
+id|u32
 id|cylinders
 suffix:semicolon
 DECL|member|start
@@ -580,68 +574,57 @@ r_struct
 id|hd_driveid
 (brace
 DECL|member|config
-r_int
-r_int
+id|u16
 id|config
 suffix:semicolon
 multiline_comment|/* lots of obsolete bit flags */
 DECL|member|cyls
-r_int
-r_int
+id|u16
 id|cyls
 suffix:semicolon
 multiline_comment|/* Obsolete, &quot;physical&quot; cyls */
 DECL|member|reserved2
-r_int
-r_int
+id|u16
 id|reserved2
 suffix:semicolon
 multiline_comment|/* reserved (word 2) */
 DECL|member|heads
-r_int
-r_int
+id|u16
 id|heads
 suffix:semicolon
 multiline_comment|/* Obsolete, &quot;physical&quot; heads */
 DECL|member|track_bytes
-r_int
-r_int
+id|u16
 id|track_bytes
 suffix:semicolon
 multiline_comment|/* unformatted bytes per track */
 DECL|member|sector_bytes
-r_int
-r_int
+id|u16
 id|sector_bytes
 suffix:semicolon
 multiline_comment|/* unformatted bytes per sector */
 DECL|member|sectors
-r_int
-r_int
+id|u16
 id|sectors
 suffix:semicolon
 multiline_comment|/* Obsolete, &quot;physical&quot; sectors per track */
 DECL|member|vendor0
-r_int
-r_int
+id|u16
 id|vendor0
 suffix:semicolon
 multiline_comment|/* vendor unique */
 DECL|member|vendor1
-r_int
-r_int
+id|u16
 id|vendor1
 suffix:semicolon
 multiline_comment|/* vendor unique */
 DECL|member|vendor2
-r_int
-r_int
+id|u16
 id|vendor2
 suffix:semicolon
 multiline_comment|/* Retired vendor unique */
 DECL|member|serial_no
-r_int
-r_char
+id|u8
 id|serial_no
 (braket
 l_int|20
@@ -649,26 +632,22 @@ l_int|20
 suffix:semicolon
 multiline_comment|/* 0 = not_specified */
 DECL|member|buf_type
-r_int
-r_int
+id|u16
 id|buf_type
 suffix:semicolon
 multiline_comment|/* Retired */
 DECL|member|buf_size
-r_int
-r_int
+id|u16
 id|buf_size
 suffix:semicolon
-multiline_comment|/* Retired, 512 byte increments&n;&t;&t;&t;&t;&t; * 0 = not_specified&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Retired, 512 byte increments&n;&t;&t;&t;&t; * 0 = not_specified&n;&t;&t;&t;&t; */
 DECL|member|ecc_bytes
-r_int
-r_int
+id|u16
 id|ecc_bytes
 suffix:semicolon
 multiline_comment|/* for r/w long cmds; 0 = not_specified */
 DECL|member|fw_rev
-r_int
-r_char
+id|u8
 id|fw_rev
 (braket
 l_int|8
@@ -676,7 +655,6 @@ l_int|8
 suffix:semicolon
 multiline_comment|/* 0 = not_specified */
 DECL|member|model
-r_int
 r_char
 id|model
 (braket
@@ -685,189 +663,159 @@ l_int|40
 suffix:semicolon
 multiline_comment|/* 0 = not_specified */
 DECL|member|max_multsect
-r_int
-r_char
+id|u8
 id|max_multsect
 suffix:semicolon
 multiline_comment|/* 0=not_implemented */
 DECL|member|vendor3
-r_int
-r_char
+id|u8
 id|vendor3
 suffix:semicolon
 multiline_comment|/* vendor unique */
 DECL|member|dword_io
-r_int
-r_int
+id|u16
 id|dword_io
 suffix:semicolon
 multiline_comment|/* 0=not_implemented; 1=implemented */
 DECL|member|vendor4
-r_int
-r_char
+id|u8
 id|vendor4
 suffix:semicolon
 multiline_comment|/* vendor unique */
 DECL|member|capability
-r_int
-r_char
+id|u8
 id|capability
 suffix:semicolon
-multiline_comment|/* (upper byte of word 49)&n;&t;&t;&t;&t;&t; *  3:&t;IORDYsup&n;&t;&t;&t;&t;&t; *  2:&t;IORDYsw&n;&t;&t;&t;&t;&t; *  1:&t;LBA&n;&t;&t;&t;&t;&t; *  0:&t;DMA&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (upper byte of word 49)&n;&t;&t;&t;&t; *  3:&t;IORDYsup&n;&t;&t;&t;&t; *  2:&t;IORDYsw&n;&t;&t;&t;&t; *  1:&t;LBA&n;&t;&t;&t;&t; *  0:&t;DMA&n;&t;&t;&t;&t; */
 DECL|member|reserved50
-r_int
-r_int
+id|u16
 id|reserved50
 suffix:semicolon
 multiline_comment|/* reserved (word 50) */
 DECL|member|vendor5
-r_int
-r_char
+id|u8
 id|vendor5
 suffix:semicolon
 multiline_comment|/* Obsolete, vendor unique */
 DECL|member|tPIO
-r_int
-r_char
+id|u8
 id|tPIO
 suffix:semicolon
 multiline_comment|/* Obsolete, 0=slow, 1=medium, 2=fast */
 DECL|member|vendor6
-r_int
-r_char
+id|u8
 id|vendor6
 suffix:semicolon
 multiline_comment|/* Obsolete, vendor unique */
 DECL|member|tDMA
-r_int
-r_char
+id|u8
 id|tDMA
 suffix:semicolon
 multiline_comment|/* Obsolete, 0=slow, 1=medium, 2=fast */
 DECL|member|field_valid
-r_int
-r_int
+id|u16
 id|field_valid
 suffix:semicolon
-multiline_comment|/* (word 53)&n;&t;&t;&t;&t;&t; *  2:&t;ultra_ok&t;word  88&n;&t;&t;&t;&t;&t; *  1:&t;eide_ok&t;&t;words 64-70&n;&t;&t;&t;&t;&t; *  0:&t;cur_ok&t;&t;words 54-58&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 53)&n;&t;&t;&t;&t; *  2:&t;ultra_ok&t;word  88&n;&t;&t;&t;&t; *  1:&t;eide_ok&t;&t;words 64-70&n;&t;&t;&t;&t; *  0:&t;cur_ok&t;&t;words 54-58&n;&t;&t;&t;&t; */
 DECL|member|cur_cyls
-r_int
-r_int
+id|u16
 id|cur_cyls
 suffix:semicolon
 multiline_comment|/* Obsolete, logical cylinders */
 DECL|member|cur_heads
-r_int
-r_int
+id|u16
 id|cur_heads
 suffix:semicolon
 multiline_comment|/* Obsolete, l heads */
 DECL|member|cur_sectors
-r_int
-r_int
+id|u16
 id|cur_sectors
 suffix:semicolon
 multiline_comment|/* Obsolete, l sectors per track */
 DECL|member|cur_capacity0
-r_int
-r_int
+id|u16
 id|cur_capacity0
 suffix:semicolon
 multiline_comment|/* Obsolete, l total sectors on drive */
 DECL|member|cur_capacity1
-r_int
-r_int
+id|u16
 id|cur_capacity1
 suffix:semicolon
 multiline_comment|/* Obsolete, (2 words, misaligned int)     */
 DECL|member|multsect
-r_int
-r_char
+id|u8
 id|multsect
 suffix:semicolon
 multiline_comment|/* current multiple sector count */
 DECL|member|multsect_valid
-r_int
-r_char
+id|u8
 id|multsect_valid
 suffix:semicolon
 multiline_comment|/* when (bit0==1) multsect is ok */
 DECL|member|lba_capacity
-r_int
-r_int
+id|u32
 id|lba_capacity
 suffix:semicolon
 multiline_comment|/* Obsolete, total number of sectors */
 DECL|member|dma_1word
-r_int
-r_int
+id|u16
 id|dma_1word
 suffix:semicolon
 multiline_comment|/* Obsolete, single-word dma info */
 DECL|member|dma_mword
-r_int
-r_int
+id|u16
 id|dma_mword
 suffix:semicolon
 multiline_comment|/* multiple-word dma info */
 DECL|member|eide_pio_modes
-r_int
-r_int
+id|u16
 id|eide_pio_modes
 suffix:semicolon
 multiline_comment|/* bits 0:mode3 1:mode4 */
 DECL|member|eide_dma_min
-r_int
-r_int
+id|u16
 id|eide_dma_min
 suffix:semicolon
 multiline_comment|/* min mword dma cycle time (ns) */
 DECL|member|eide_dma_time
-r_int
-r_int
+id|u16
 id|eide_dma_time
 suffix:semicolon
 multiline_comment|/* recommended mword dma cycle time (ns) */
 DECL|member|eide_pio
-r_int
-r_int
+id|u16
 id|eide_pio
 suffix:semicolon
 multiline_comment|/* min cycle time (ns), no IORDY  */
 DECL|member|eide_pio_iordy
-r_int
-r_int
+id|u16
 id|eide_pio_iordy
 suffix:semicolon
 multiline_comment|/* min cycle time (ns), with IORDY */
 DECL|member|words69_70
-r_int
-r_int
+id|u16
 id|words69_70
 (braket
 l_int|2
 )braket
 suffix:semicolon
-multiline_comment|/* reserved words 69-70&n;&t;&t;&t;&t;&t; * future command overlap and queuing&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* reserved words 69-70&n;&t;&t;&t;&t; * future command overlap and queuing&n;&t;&t;&t;&t; */
 multiline_comment|/* HDIO_GET_IDENTITY currently returns only words 0 through 70 */
 DECL|member|words71_74
-r_int
-r_int
+id|u16
 id|words71_74
 (braket
 l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* reserved words 71-74&n;&t;&t;&t;&t;&t; * for IDENTIFY PACKET DEVICE command&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* reserved words 71-74&n;&t;&t;&t;&t; * for IDENTIFY PACKET DEVICE command&n;&t;&t;&t;&t; */
 DECL|member|queue_depth
-r_int
-r_int
+id|u16
 id|queue_depth
 suffix:semicolon
-multiline_comment|/* (word 75)&n;&t;&t;&t;&t;&t; * 15:5&t;reserved&n;&t;&t;&t;&t;&t; *  4:0&t;Maximum queue depth -1&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 75)&n;&t;&t;&t;&t; * 15:5&t;reserved&n;&t;&t;&t;&t; *  4:0&t;Maximum queue depth -1&n;&t;&t;&t;&t; */
 DECL|member|words76_79
-r_int
-r_int
+id|u16
 id|words76_79
 (braket
 l_int|4
@@ -875,98 +823,82 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* reserved words 76-79 */
 DECL|member|major_rev_num
-r_int
-r_int
+id|u16
 id|major_rev_num
 suffix:semicolon
 multiline_comment|/* (word 80) */
 DECL|member|minor_rev_num
-r_int
-r_int
+id|u16
 id|minor_rev_num
 suffix:semicolon
 multiline_comment|/* (word 81) */
 DECL|member|command_set_1
-r_int
-r_int
+id|u16
 id|command_set_1
 suffix:semicolon
-multiline_comment|/* (word 82) supported&n;&t;&t;&t;&t;&t; * 15:&t;Obsolete&n;&t;&t;&t;&t;&t; * 14:&t;NOP command&n;&t;&t;&t;&t;&t; * 13:&t;READ_BUFFER&n;&t;&t;&t;&t;&t; * 12:&t;WRITE_BUFFER&n;&t;&t;&t;&t;&t; * 11:&t;Obsolete&n;&t;&t;&t;&t;&t; * 10:&t;Host Protected Area&n;&t;&t;&t;&t;&t; *  9:&t;DEVICE Reset&n;&t;&t;&t;&t;&t; *  8:&t;SERVICE Interrupt&n;&t;&t;&t;&t;&t; *  7:&t;Release Interrupt&n;&t;&t;&t;&t;&t; *  6:&t;look-ahead&n;&t;&t;&t;&t;&t; *  5:&t;write cache&n;&t;&t;&t;&t;&t; *  4:&t;PACKET Command&n;&t;&t;&t;&t;&t; *  3:&t;Power Management Feature Set&n;&t;&t;&t;&t;&t; *  2:&t;Removable Feature Set&n;&t;&t;&t;&t;&t; *  1:&t;Security Feature Set&n;&t;&t;&t;&t;&t; *  0:&t;SMART Feature Set&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 82) supported&n;&t;&t;&t;&t; * 15:&t;Obsolete&n;&t;&t;&t;&t; * 14:&t;NOP command&n;&t;&t;&t;&t; * 13:&t;READ_BUFFER&n;&t;&t;&t;&t; * 12:&t;WRITE_BUFFER&n;&t;&t;&t;&t; * 11:&t;Obsolete&n;&t;&t;&t;&t; * 10:&t;Host Protected Area&n;&t;&t;&t;&t; *  9:&t;DEVICE Reset&n;&t;&t;&t;&t; *  8:&t;SERVICE Interrupt&n;&t;&t;&t;&t; *  7:&t;Release Interrupt&n;&t;&t;&t;&t; *  6:&t;look-ahead&n;&t;&t;&t;&t; *  5:&t;write cache&n;&t;&t;&t;&t; *  4:&t;PACKET Command&n;&t;&t;&t;&t; *  3:&t;Power Management Feature Set&n;&t;&t;&t;&t; *  2:&t;Removable Feature Set&n;&t;&t;&t;&t; *  1:&t;Security Feature Set&n;&t;&t;&t;&t; *  0:&t;SMART Feature Set&n;&t;&t;&t;&t; */
 DECL|member|command_set_2
-r_int
-r_int
+id|u16
 id|command_set_2
 suffix:semicolon
-multiline_comment|/* (word 83)&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:&t;FLUSH CACHE EXT&n;&t;&t;&t;&t;&t; * 12:&t;FLUSH CACHE&n;&t;&t;&t;&t;&t; * 11:&t;Device Configuration Overlay&n;&t;&t;&t;&t;&t; * 10:&t;48-bit Address Feature Set&n;&t;&t;&t;&t;&t; *  9:&t;Automatic Acoustic Management&n;&t;&t;&t;&t;&t; *  8:&t;SET MAX security&n;&t;&t;&t;&t;&t; *  7:&t;reserved 1407DT PARTIES&n;&t;&t;&t;&t;&t; *  6:&t;SetF sub-command Power-Up&n;&t;&t;&t;&t;&t; *  5:&t;Power-Up in Standby Feature Set&n;&t;&t;&t;&t;&t; *  4:&t;Removable Media Notification&n;&t;&t;&t;&t;&t; *  3:&t;APM Feature Set&n;&t;&t;&t;&t;&t; *  2:&t;CFA Feature Set&n;&t;&t;&t;&t;&t; *  1:&t;READ/WRITE DMA QUEUED&n;&t;&t;&t;&t;&t; *  0:&t;Download MicroCode&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 83)&n;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t; * 13:&t;FLUSH CACHE EXT&n;&t;&t;&t;&t; * 12:&t;FLUSH CACHE&n;&t;&t;&t;&t; * 11:&t;Device Configuration Overlay&n;&t;&t;&t;&t; * 10:&t;48-bit Address Feature Set&n;&t;&t;&t;&t; *  9:&t;Automatic Acoustic Management&n;&t;&t;&t;&t; *  8:&t;SET MAX security&n;&t;&t;&t;&t; *  7:&t;reserved 1407DT PARTIES&n;&t;&t;&t;&t; *  6:&t;SetF sub-command Power-Up&n;&t;&t;&t;&t; *  5:&t;Power-Up in Standby Feature Set&n;&t;&t;&t;&t; *  4:&t;Removable Media Notification&n;&t;&t;&t;&t; *  3:&t;APM Feature Set&n;&t;&t;&t;&t; *  2:&t;CFA Feature Set&n;&t;&t;&t;&t; *  1:&t;READ/WRITE DMA QUEUED&n;&t;&t;&t;&t; *  0:&t;Download MicroCode&n;&t;&t;&t;&t; */
 DECL|member|cfsse
-r_int
-r_int
+id|u16
 id|cfsse
 suffix:semicolon
-multiline_comment|/* (word 84)&n;&t;&t;&t;&t;&t; * cmd set-feature supported extensions&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 84)&n;&t;&t;&t;&t; * cmd set-feature supported extensions&n;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t; */
 DECL|member|cfs_enable_1
-r_int
-r_int
+id|u16
 id|cfs_enable_1
 suffix:semicolon
-multiline_comment|/* (word 85)&n;&t;&t;&t;&t;&t; * command set-feature enabled&n;&t;&t;&t;&t;&t; * 15:&t;Obsolete&n;&t;&t;&t;&t;&t; * 14:&t;NOP command&n;&t;&t;&t;&t;&t; * 13:&t;READ_BUFFER&n;&t;&t;&t;&t;&t; * 12:&t;WRITE_BUFFER&n;&t;&t;&t;&t;&t; * 11:&t;Obsolete&n;&t;&t;&t;&t;&t; * 10:&t;Host Protected Area&n;&t;&t;&t;&t;&t; *  9:&t;DEVICE Reset&n;&t;&t;&t;&t;&t; *  8:&t;SERVICE Interrupt&n;&t;&t;&t;&t;&t; *  7:&t;Release Interrupt&n;&t;&t;&t;&t;&t; *  6:&t;look-ahead&n;&t;&t;&t;&t;&t; *  5:&t;write cache&n;&t;&t;&t;&t;&t; *  4:&t;PACKET Command&n;&t;&t;&t;&t;&t; *  3:&t;Power Management Feature Set&n;&t;&t;&t;&t;&t; *  2:&t;Removable Feature Set&n;&t;&t;&t;&t;&t; *  1:&t;Security Feature Set&n;&t;&t;&t;&t;&t; *  0:&t;SMART Feature Set&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 85)&n;&t;&t;&t;&t; * command set-feature enabled&n;&t;&t;&t;&t; * 15:&t;Obsolete&n;&t;&t;&t;&t; * 14:&t;NOP command&n;&t;&t;&t;&t; * 13:&t;READ_BUFFER&n;&t;&t;&t;&t; * 12:&t;WRITE_BUFFER&n;&t;&t;&t;&t; * 11:&t;Obsolete&n;&t;&t;&t;&t; * 10:&t;Host Protected Area&n;&t;&t;&t;&t; *  9:&t;DEVICE Reset&n;&t;&t;&t;&t; *  8:&t;SERVICE Interrupt&n;&t;&t;&t;&t; *  7:&t;Release Interrupt&n;&t;&t;&t;&t; *  6:&t;look-ahead&n;&t;&t;&t;&t; *  5:&t;write cache&n;&t;&t;&t;&t; *  4:&t;PACKET Command&n;&t;&t;&t;&t; *  3:&t;Power Management Feature Set&n;&t;&t;&t;&t; *  2:&t;Removable Feature Set&n;&t;&t;&t;&t; *  1:&t;Security Feature Set&n;&t;&t;&t;&t; *  0:&t;SMART Feature Set&n;&t;&t;&t;&t; */
 DECL|member|cfs_enable_2
-r_int
-r_int
+id|u16
 id|cfs_enable_2
 suffix:semicolon
-multiline_comment|/* (word 86)&n;&t;&t;&t;&t;&t; * command set-feature enabled&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:&t;FLUSH CACHE EXT&n;&t;&t;&t;&t;&t; * 12:&t;FLUSH CACHE&n;&t;&t;&t;&t;&t; * 11:&t;Device Configuration Overlay&n;&t;&t;&t;&t;&t; * 10:&t;48-bit Address Feature Set&n;&t;&t;&t;&t;&t; *  9:&t;Automatic Acoustic Management&n;&t;&t;&t;&t;&t; *  8:&t;SET MAX security&n;&t;&t;&t;&t;&t; *  7:&t;reserved 1407DT PARTIES&n;&t;&t;&t;&t;&t; *  6:&t;SetF sub-command Power-Up&n;&t;&t;&t;&t;&t; *  5:&t;Power-Up in Standby Feature Set&n;&t;&t;&t;&t;&t; *  4:&t;Removable Media Notification&n;&t;&t;&t;&t;&t; *  3:&t;APM Feature Set&n;&t;&t;&t;&t;&t; *  2:&t;CFA Feature Set&n;&t;&t;&t;&t;&t; *  1:&t;READ/WRITE DMA QUEUED&n;&t;&t;&t;&t;&t; *  0:&t;Download MicroCode&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 86)&n;&t;&t;&t;&t; * command set-feature enabled&n;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t; * 13:&t;FLUSH CACHE EXT&n;&t;&t;&t;&t; * 12:&t;FLUSH CACHE&n;&t;&t;&t;&t; * 11:&t;Device Configuration Overlay&n;&t;&t;&t;&t; * 10:&t;48-bit Address Feature Set&n;&t;&t;&t;&t; *  9:&t;Automatic Acoustic Management&n;&t;&t;&t;&t; *  8:&t;SET MAX security&n;&t;&t;&t;&t; *  7:&t;reserved 1407DT PARTIES&n;&t;&t;&t;&t; *  6:&t;SetF sub-command Power-Up&n;&t;&t;&t;&t; *  5:&t;Power-Up in Standby Feature Set&n;&t;&t;&t;&t; *  4:&t;Removable Media Notification&n;&t;&t;&t;&t; *  3:&t;APM Feature Set&n;&t;&t;&t;&t; *  2:&t;CFA Feature Set&n;&t;&t;&t;&t; *  1:&t;READ/WRITE DMA QUEUED&n;&t;&t;&t;&t; *  0:&t;Download MicroCode&n;&t;&t;&t;&t; */
 DECL|member|csf_default
-r_int
-r_int
+id|u16
 id|csf_default
 suffix:semicolon
-multiline_comment|/* (word 87)&n;&t;&t;&t;&t;&t; * command set-feature default&n;&t;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 87)&n;&t;&t;&t;&t; * command set-feature default&n;&t;&t;&t;&t; * 15:&t;Shall be ZERO&n;&t;&t;&t;&t; * 14:&t;Shall be ONE&n;&t;&t;&t;&t; * 13:3&t;reserved&n;&t;&t;&t;&t; *  2:&t;Media Serial Number Valid&n;&t;&t;&t;&t; *  1:&t;SMART selt-test supported&n;&t;&t;&t;&t; *  0:&t;SMART error logging&n;&t;&t;&t;&t; */
 DECL|member|dma_ultra
-r_int
-r_int
+id|u16
 id|dma_ultra
 suffix:semicolon
 multiline_comment|/* (word 88) */
 DECL|member|word89
-r_int
-r_int
+id|u16
 id|word89
 suffix:semicolon
 multiline_comment|/* reserved (word 89) */
 DECL|member|word90
-r_int
-r_int
+id|u16
 id|word90
 suffix:semicolon
 multiline_comment|/* reserved (word 90) */
 DECL|member|CurAPMvalues
-r_int
-r_int
+id|u16
 id|CurAPMvalues
 suffix:semicolon
 multiline_comment|/* current APM values */
 DECL|member|word92
-r_int
-r_int
+id|u16
 id|word92
 suffix:semicolon
 multiline_comment|/* reserved (word 92) */
 DECL|member|hw_config
-r_int
-r_int
+id|u16
 id|hw_config
 suffix:semicolon
-multiline_comment|/* hardware config (word 93)&n;&t;&t;&t;&t;&t; * 15:&n;&t;&t;&t;&t;&t; * 14:&n;&t;&t;&t;&t;&t; * 13:&n;&t;&t;&t;&t;&t; * 12:&n;&t;&t;&t;&t;&t; * 11:&n;&t;&t;&t;&t;&t; * 10:&n;&t;&t;&t;&t;&t; *  9:&n;&t;&t;&t;&t;&t; *  8:&n;&t;&t;&t;&t;&t; *  7:&n;&t;&t;&t;&t;&t; *  6:&n;&t;&t;&t;&t;&t; *  5:&n;&t;&t;&t;&t;&t; *  4:&n;&t;&t;&t;&t;&t; *  3:&n;&t;&t;&t;&t;&t; *  2:&n;&t;&t;&t;&t;&t; *  1:&n;&t;&t;&t;&t;&t; *  0:&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* hardware config (word 93)&n;&t;&t;&t;&t; * 15:&n;&t;&t;&t;&t; * 14:&n;&t;&t;&t;&t; * 13:&n;&t;&t;&t;&t; * 12:&n;&t;&t;&t;&t; * 11:&n;&t;&t;&t;&t; * 10:&n;&t;&t;&t;&t; *  9:&n;&t;&t;&t;&t; *  8:&n;&t;&t;&t;&t; *  7:&n;&t;&t;&t;&t; *  6:&n;&t;&t;&t;&t; *  5:&n;&t;&t;&t;&t; *  4:&n;&t;&t;&t;&t; *  3:&n;&t;&t;&t;&t; *  2:&n;&t;&t;&t;&t; *  1:&n;&t;&t;&t;&t; *  0:&n;&t;&t;&t;&t; */
 DECL|member|acoustic
-r_int
-r_int
+id|u16
 id|acoustic
 suffix:semicolon
-multiline_comment|/* (word 94)&n;&t;&t;&t;&t;&t; * 15:8&t;Vendor&squot;s recommended value&n;&t;&t;&t;&t;&t; *  7:0&t;current value&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 94)&n;&t;&t;&t;&t; * 15:8&t;Vendor&squot;s recommended value&n;&t;&t;&t;&t; *  7:0&t;current value&n;&t;&t;&t;&t; */
 DECL|member|words95_99
-r_int
-r_int
+id|u16
 id|words95_99
 (braket
 l_int|5
@@ -974,15 +906,12 @@ l_int|5
 suffix:semicolon
 multiline_comment|/* reserved words 95-99 */
 DECL|member|lba_capacity_2
-r_int
-r_int
-r_int
+id|u64
 id|lba_capacity_2
 suffix:semicolon
 multiline_comment|/* 48-bit total number of sectors */
 DECL|member|words104_125
-r_int
-r_int
+id|u16
 id|words104_125
 (braket
 l_int|22
@@ -990,32 +919,27 @@ l_int|22
 suffix:semicolon
 multiline_comment|/* reserved words 104-125 */
 DECL|member|last_lun
-r_int
-r_int
+id|u16
 id|last_lun
 suffix:semicolon
 multiline_comment|/* (word 126) */
 DECL|member|word127
-r_int
-r_int
+id|u16
 id|word127
 suffix:semicolon
-multiline_comment|/* (word 127) Feature Set&n;&t;&t;&t;&t;&t; * Removable Media Notification&n;&t;&t;&t;&t;&t; * 15:2&t;reserved&n;&t;&t;&t;&t;&t; *  1:0&t;00 = not supported&n;&t;&t;&t;&t;&t; *&t;01 = supported&n;&t;&t;&t;&t;&t; *&t;10 = reserved&n;&t;&t;&t;&t;&t; *&t;11 = reserved&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 127) Feature Set&n;&t;&t;&t;&t; * Removable Media Notification&n;&t;&t;&t;&t; * 15:2&t;reserved&n;&t;&t;&t;&t; *  1:0&t;00 = not supported&n;&t;&t;&t;&t; *&t;01 = supported&n;&t;&t;&t;&t; *&t;10 = reserved&n;&t;&t;&t;&t; *&t;11 = reserved&n;&t;&t;&t;&t; */
 DECL|member|dlf
-r_int
-r_int
+id|u16
 id|dlf
 suffix:semicolon
-multiline_comment|/* (word 128)&n;&t;&t;&t;&t;&t; * device lock function&n;&t;&t;&t;&t;&t; * 15:9&t;reserved&n;&t;&t;&t;&t;&t; *  8&t;security level 1:max 0:high&n;&t;&t;&t;&t;&t; *  7:6&t;reserved&n;&t;&t;&t;&t;&t; *  5&t;enhanced erase&n;&t;&t;&t;&t;&t; *  4&t;expire&n;&t;&t;&t;&t;&t; *  3&t;frozen&n;&t;&t;&t;&t;&t; *  2&t;locked&n;&t;&t;&t;&t;&t; *  1&t;en/disabled&n;&t;&t;&t;&t;&t; *  0&t;capability&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 128)&n;&t;&t;&t;&t; * device lock function&n;&t;&t;&t;&t; * 15:9&t;reserved&n;&t;&t;&t;&t; *  8&t;security level 1:max 0:high&n;&t;&t;&t;&t; *  7:6&t;reserved&n;&t;&t;&t;&t; *  5&t;enhanced erase&n;&t;&t;&t;&t; *  4&t;expire&n;&t;&t;&t;&t; *  3&t;frozen&n;&t;&t;&t;&t; *  2&t;locked&n;&t;&t;&t;&t; *  1&t;en/disabled&n;&t;&t;&t;&t; *  0&t;capability&n;&t;&t;&t;&t; */
 DECL|member|csfo
-r_int
-r_int
+id|u16
 id|csfo
 suffix:semicolon
-multiline_comment|/*  (word 129)&n;&t;&t;&t;&t;&t; * current set features options&n;&t;&t;&t;&t;&t; * 15:4&t;reserved&n;&t;&t;&t;&t;&t; *  3:&t;auto reassign&n;&t;&t;&t;&t;&t; *  2:&t;reverting&n;&t;&t;&t;&t;&t; *  1:&t;read-look-ahead&n;&t;&t;&t;&t;&t; *  0:&t;write cache&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 129)&n;&t;&t;&t;&t; * current set features options&n;&t;&t;&t;&t; * 15:4&t;reserved&n;&t;&t;&t;&t; *  3:&t;auto reassign&n;&t;&t;&t;&t; *  2:&t;reverting&n;&t;&t;&t;&t; *  1:&t;read-look-ahead&n;&t;&t;&t;&t; *  0:&t;write cache&n;&t;&t;&t;&t; */
 DECL|member|words130_155
-r_int
-r_int
+id|u16
 id|words130_155
 (braket
 l_int|26
@@ -1023,14 +947,12 @@ l_int|26
 suffix:semicolon
 multiline_comment|/* reserved vendor words 130-155 */
 DECL|member|word156
-r_int
-r_int
+id|u16
 id|word156
 suffix:semicolon
 multiline_comment|/* reserved vendor word 156 */
 DECL|member|words157_159
-r_int
-r_int
+id|u16
 id|words157_159
 (braket
 l_int|3
@@ -1038,14 +960,12 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* reserved vendor words 157-159 */
 DECL|member|cfa_power
-r_int
-r_int
+id|u16
 id|cfa_power
 suffix:semicolon
-multiline_comment|/* (word 160) CFA Power Mode&n;&t;&t;&t;&t;&t; * 15 word 160 supported&n;&t;&t;&t;&t;&t; * 14 reserved&n;&t;&t;&t;&t;&t; * 13&n;&t;&t;&t;&t;&t; * 12&n;&t;&t;&t;&t;&t; * 11:0&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 160) CFA Power Mode&n;&t;&t;&t;&t; * 15 word 160 supported&n;&t;&t;&t;&t; * 14 reserved&n;&t;&t;&t;&t; * 13&n;&t;&t;&t;&t; * 12&n;&t;&t;&t;&t; * 11:0&n;&t;&t;&t;&t; */
 DECL|member|words161_175
-r_int
-r_int
+id|u16
 id|words161_175
 (braket
 l_int|14
@@ -1053,8 +973,7 @@ l_int|14
 suffix:semicolon
 multiline_comment|/* Reserved for CFA */
 DECL|member|words176_205
-r_int
-r_int
+id|u16
 id|words176_205
 (braket
 l_int|31
@@ -1062,8 +981,7 @@ l_int|31
 suffix:semicolon
 multiline_comment|/* Current Media Serial Number */
 DECL|member|words206_254
-r_int
-r_int
+id|u16
 id|words206_254
 (braket
 l_int|48
@@ -1071,11 +989,10 @@ l_int|48
 suffix:semicolon
 multiline_comment|/* reserved words 206-254 */
 DECL|member|integrity_word
-r_int
-r_int
+id|u16
 id|integrity_word
 suffix:semicolon
-multiline_comment|/* (word 255)&n;&t;&t;&t;&t;&t; * 15:8 Checksum&n;&t;&t;&t;&t;&t; *  7:0 Signature&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* (word 255)&n;&t;&t;&t;&t; * 15:8 Checksum&n;&t;&t;&t;&t; *  7:0 Signature&n;&t;&t;&t;&t; */
 )brace
 id|__attribute__
 c_func
@@ -1085,10 +1002,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * IDE &quot;nice&quot; flags. These are used on a per drive basis to determine&n; * when to be nice and give more bandwidth to the other devices which&n; * share the same IDE bus.&n; */
 DECL|macro|IDE_NICE_DSC_OVERLAP
 mdefine_line|#define IDE_NICE_DSC_OVERLAP&t;(0)&t;/* per the DSC overlap protocol */
-DECL|macro|IDE_NICE_ATAPI_OVERLAP
-mdefine_line|#define IDE_NICE_ATAPI_OVERLAP&t;(1)&t;/* not supported yet */
-macro_line|#endif&t;/* _LINUX_HDREG_H */
+macro_line|#endif
 eof

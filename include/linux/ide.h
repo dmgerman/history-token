@@ -541,12 +541,12 @@ id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
 DECL|member|retry_pio
-id|byte
+id|u8
 id|retry_pio
 suffix:semicolon
 multiline_comment|/* retrying dma capable host in pio */
 DECL|member|state
-id|byte
+id|u8
 id|state
 suffix:semicolon
 multiline_comment|/* retry state */
@@ -668,7 +668,7 @@ id|addressing
 suffix:semicolon
 multiline_comment|/* : 2; 0=28-bit, 1=48-bit, 2=64-bit */
 DECL|member|scsi
-id|byte
+id|u8
 id|scsi
 suffix:semicolon
 multiline_comment|/* 0=default, 1=skip current ide-subdriver for ide-scsi emulation */
@@ -683,47 +683,47 @@ id|status
 suffix:semicolon
 multiline_comment|/* last retrived status value for device */
 DECL|member|ready_stat
-id|byte
+id|u8
 id|ready_stat
 suffix:semicolon
 multiline_comment|/* min status value for drive ready */
 DECL|member|mult_count
-id|byte
+id|u8
 id|mult_count
 suffix:semicolon
 multiline_comment|/* current multiple sector setting */
 DECL|member|bad_wstat
-id|byte
+id|u8
 id|bad_wstat
 suffix:semicolon
 multiline_comment|/* used for ignoring WRERR_STAT */
 DECL|member|nowerr
-id|byte
+id|u8
 id|nowerr
 suffix:semicolon
 multiline_comment|/* used for ignoring WRERR_STAT */
 DECL|member|sect0
-id|byte
+id|u8
 id|sect0
 suffix:semicolon
 multiline_comment|/* offset of first sector for DM6:DDO */
 DECL|member|head
-id|byte
+id|u8
 id|head
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; number of heads */
 DECL|member|sect
-id|byte
+id|u8
 id|sect
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; sectors per track */
 DECL|member|bios_head
-id|byte
+id|u8
 id|bios_head
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO number of heads */
 DECL|member|bios_sect
-id|byte
+id|u8
 id|bios_sect
 suffix:semicolon
 multiline_comment|/* BIOS/fdisk/LILO sectors per track */
@@ -815,37 +815,33 @@ id|crc_count
 suffix:semicolon
 multiline_comment|/* crc counter to reduce drive speed */
 DECL|member|quirk_list
-id|byte
+r_int
 id|quirk_list
 suffix:semicolon
 multiline_comment|/* drive is considered quirky if set for a specific host */
-DECL|member|suspend_reset
-id|byte
-id|suspend_reset
-suffix:semicolon
-multiline_comment|/* drive suspend mode flag, soft-reset recovers */
 DECL|member|current_speed
-id|byte
+id|u8
 id|current_speed
 suffix:semicolon
 multiline_comment|/* current transfer rate set */
 DECL|member|dn
-id|byte
+id|u8
 id|dn
 suffix:semicolon
 multiline_comment|/* now wide spread use */
 DECL|member|wcache
-id|byte
+id|u8
 id|wcache
 suffix:semicolon
 multiline_comment|/* status of write cache */
 DECL|member|acoustic
-id|byte
+id|u8
 id|acoustic
 suffix:semicolon
 multiline_comment|/* acoustic management */
 DECL|member|queue_depth
-id|byte
+r_int
+r_int
 id|queue_depth
 suffix:semicolon
 multiline_comment|/* max queue depth */
@@ -906,7 +902,6 @@ comma
 multiline_comment|/* started and released bus */
 DECL|enumerator|ATA_OP_READY
 id|ATA_OP_READY
-comma
 multiline_comment|/* indicate status poll finished fine */
 DECL|typedef|ide_startstop_t
 )brace
@@ -1117,7 +1112,7 @@ r_struct
 id|ata_device
 op_star
 comma
-id|byte
+id|u8
 id|pio
 )paren
 suffix:semicolon
@@ -1133,7 +1128,7 @@ r_struct
 id|ata_device
 op_star
 comma
-id|byte
+id|u8
 id|pio
 )paren
 suffix:semicolon
@@ -2232,30 +2227,17 @@ r_struct
 id|ata_device
 op_star
 comma
-id|byte
+id|u8
 )paren
 suffix:semicolon
 r_extern
-id|byte
+r_int
 id|eighty_ninty_three
 c_func
 (paren
 r_struct
 id|ata_device
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_stall_queue
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -2273,6 +2255,7 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_spin_wait_hwgroup
 c_func
@@ -2282,8 +2265,10 @@ id|ata_device
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_timer_expiry
+c_func
 (paren
 r_int
 r_int
@@ -2308,16 +2293,20 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|do_ide_request
+c_func
 (paren
 id|request_queue_t
 op_star
 id|q
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_init_subdrivers
+c_func
 (paren
 r_void
 )paren
@@ -2643,7 +2632,6 @@ op_star
 id|drive
 )paren
 (brace
-r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|udma_timeout
@@ -2666,7 +2654,6 @@ op_star
 id|drive
 )paren
 (brace
-r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|udma_irq_lost

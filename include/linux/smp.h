@@ -32,31 +32,37 @@ id|cpu
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Boot processor call to load the other CPU&squot;s&n; */
+multiline_comment|/*&n; * Prepare machine for booting other CPUs.&n; */
 r_extern
 r_void
-id|smp_boot_cpus
+id|smp_prepare_cpus
 c_func
 (paren
-r_void
+r_int
+r_int
+id|max_cpus
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Processor call in. Must hold processors until ..&n; */
+multiline_comment|/*&n; * Bring a CPU up&n; */
 r_extern
-r_void
-id|smp_callin
+r_int
+id|__cpu_up
 c_func
 (paren
-r_void
+r_int
+r_int
+id|cpunum
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Multiprocessors may now schedule&n; */
+multiline_comment|/*&n; * Final polishing of CPUs&n; */
 r_extern
 r_void
-id|smp_commence
+id|smp_cpus_done
 c_func
 (paren
-r_void
+r_int
+r_int
+id|max_cpus
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Call a function on all other processors&n; */
@@ -119,6 +125,41 @@ DECL|macro|MSG_RESCHEDULE
 mdefine_line|#define MSG_RESCHEDULE&t;&t;0x0003&t;/* Reschedule request from master CPU*/
 DECL|macro|MSG_CALL_FUNCTION
 mdefine_line|#define MSG_CALL_FUNCTION       0x0004  /* Call function on all other CPUs */
+r_struct
+id|notifier_block
+suffix:semicolon
+multiline_comment|/* Need to know about CPUs going up/down? */
+r_extern
+r_int
+id|register_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unregister_cpu_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|cpu_up
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#else /* !SMP */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
 DECL|macro|smp_processor_id
@@ -168,6 +209,11 @@ DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;var
 DECL|macro|this_cpu
 mdefine_line|#define this_cpu(var)&t;&t;&t;&t;var
+multiline_comment|/* Need to know about CPUs going up/down? */
+DECL|macro|register_cpu_notifier
+mdefine_line|#define register_cpu_notifier(nb) 0
+DECL|macro|unregister_cpu_notifier
+mdefine_line|#define unregister_cpu_notifier(nb) do { } while(0)
 macro_line|#endif /* !SMP */
 DECL|macro|get_cpu
 mdefine_line|#define get_cpu()&t;&t;({ preempt_disable(); smp_processor_id(); })
