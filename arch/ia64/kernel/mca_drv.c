@@ -34,23 +34,6 @@ op_assign
 l_int|10000
 suffix:semicolon
 multiline_comment|/* from mca.c */
-r_extern
-r_int
-id|ia64_reg_MCA_extension
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ia64_unreg_MCA_extension
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|sal_to_os_handoff_state
 r_static
 id|ia64_mca_sal_to_os_state_t
