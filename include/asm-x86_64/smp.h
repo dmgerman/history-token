@@ -94,14 +94,6 @@ id|cpu
 suffix:semicolon
 r_extern
 r_void
-id|smp_send_reschedule_all
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|smp_invalidate_rcv
 c_func
 (paren
