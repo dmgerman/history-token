@@ -446,24 +446,6 @@ id|page
 suffix:semicolon
 r_static
 r_void
-id|idt77252_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
 id|idt77252_softint
 c_func
 (paren
@@ -13906,7 +13888,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|idt77252_interrupt
 id|idt77252_interrupt
 c_func
@@ -13952,6 +13934,7 @@ id|stat
 )paren
 multiline_comment|/* no interrupt for us */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -14381,6 +14364,9 @@ comma
 op_amp
 id|card-&gt;flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
