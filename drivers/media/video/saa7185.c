@@ -1505,6 +1505,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|kfree
+c_func
+(paren
+id|client
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
