@@ -742,7 +742,7 @@ op_star
 id|t
 )paren
 comma
-id|GFP_NOIO
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
