@@ -162,7 +162,7 @@ DECL|macro|ATTR_RMTVALUE_MAPSIZE
 mdefine_line|#define ATTR_RMTVALUE_MAPSIZE&t;1&t;/* # of map entries at once */
 DECL|macro|ATTR_RMTVALUE_TRANSBLKS
 mdefine_line|#define ATTR_RMTVALUE_TRANSBLKS&t;8&t;/* max # of blks in a transaction */
-macro_line|#if defined(DEBUG)
+macro_line|#if defined(XFS_ATTR_TRACE)
 DECL|variable|xfs_attr_trace_buf
 id|ktrace_t
 op_star

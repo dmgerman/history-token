@@ -470,7 +470,7 @@ op_star
 id|args
 )paren
 suffix:semicolon
-macro_line|#if defined(DEBUG)
+macro_line|#if defined(XFS_DIR_TRACE)
 DECL|variable|xfs_dir_trace_buf
 id|ktrace_t
 op_star

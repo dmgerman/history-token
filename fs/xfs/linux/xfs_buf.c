@@ -7650,6 +7650,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef PAGEBUF_TRACE
+id|ktrace_free
+c_func
+(paren
+id|pagebuf_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
 id|kmem_cache_destroy
 c_func
 (paren
