@@ -1045,9 +1045,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|from-&gt;state
 op_eq
 id|TASK_ZOMBIE
+)paren
+op_logical_or
+(paren
+id|from-&gt;state
+op_eq
+id|TASK_DEAD
+)paren
 )paren
 (brace
 id|os_kill_process

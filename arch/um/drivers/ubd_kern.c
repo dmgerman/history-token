@@ -127,20 +127,24 @@ id|block_device_operations
 id|ubd_blops
 op_assign
 (brace
+dot
 id|open
-suffix:colon
+op_assign
 id|ubd_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|ubd_release
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ubd_ioctl
 comma
+dot
 id|revalidate
-suffix:colon
+op_assign
 id|ubd_revalidate
 comma
 )brace
@@ -180,10 +184,10 @@ id|MAX_DEV
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_UBD_SYNC
 DECL|macro|OPEN_FLAGS
-mdefine_line|#define OPEN_FLAGS ((struct openflags) { r : 1, w : 1, s : 1, c : 0 })
+mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 1, .c = 0 })
 macro_line|#else
 DECL|macro|OPEN_FLAGS
-mdefine_line|#define OPEN_FLAGS ((struct openflags) { r : 1, w : 1, s : 0, c : 0 })
+mdefine_line|#define OPEN_FLAGS ((struct openflags) { .r = 1, .w = 1, .s = 0, .c = 0 })
 macro_line|#endif
 DECL|variable|global_openflags
 r_static
@@ -278,9 +282,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEFAULT_COW
-mdefine_line|#define DEFAULT_COW { &bslash;&n;&t;file:&t;&t;&t;NULL, &bslash;&n;        fd:&t;&t;&t;-1, &bslash;&n;        bitmap:&t;&t;&t;NULL, &bslash;&n;&t;bitmap_offset:&t;&t;0, &bslash;&n;        data_offset:&t;&t;0, &bslash;&n;}
+mdefine_line|#define DEFAULT_COW { &bslash;&n;&t;.file =&t;&t;&t;NULL, &bslash;&n;        .fd =&t;&t;&t;-1, &bslash;&n;        .bitmap =&t;&t;NULL, &bslash;&n;&t;.bitmap_offset =&t;0, &bslash;&n;        .data_offset =&t;&t;0, &bslash;&n;}
 DECL|macro|DEFAULT_UBD
-mdefine_line|#define DEFAULT_UBD { &bslash;&n;&t;file: &t;&t;&t;NULL, &bslash;&n;&t;is_dir:&t;&t;&t;0, &bslash;&n;&t;count:&t;&t;&t;0, &bslash;&n;&t;fd:&t;&t;&t;-1, &bslash;&n;&t;size:&t;&t;&t;-1, &bslash;&n;&t;boot_openflags:&t;&t;OPEN_FLAGS, &bslash;&n;&t;openflags:&t;&t;OPEN_FLAGS, &bslash;&n;&t;real:&t;&t;&t;NULL, &bslash;&n;&t;fake:&t;&t;&t;NULL, &bslash;&n;        cow:&t;&t;&t;DEFAULT_COW, &bslash;&n;}
+mdefine_line|#define DEFAULT_UBD { &bslash;&n;&t;.file = &t;&t;NULL, &bslash;&n;&t;.is_dir =&t;&t;0, &bslash;&n;&t;.count =&t;&t;0, &bslash;&n;&t;.fd =&t;&t;&t;-1, &bslash;&n;&t;.size =&t;&t;&t;-1, &bslash;&n;&t;.boot_openflags =&t;OPEN_FLAGS, &bslash;&n;&t;.openflags =&t;&t;OPEN_FLAGS, &bslash;&n;&t;.real =&t;&t;&t;NULL, &bslash;&n;&t;.fake =&t;&t;&t;NULL, &bslash;&n;        .cow =&t;&t;&t;DEFAULT_COW, &bslash;&n;}
 DECL|variable|ubd_dev
 r_struct
 id|ubd
@@ -353,16 +357,19 @@ id|hd_driveid
 id|ubd_id
 op_assign
 (brace
+dot
 id|cyls
-suffix:colon
+op_assign
 l_int|0
 comma
+dot
 id|heads
-suffix:colon
+op_assign
 l_int|128
 comma
+dot
 id|sectors
-suffix:colon
+op_assign
 l_int|32
 comma
 )brace
@@ -697,8 +704,6 @@ op_star
 id|backing_file
 suffix:semicolon
 r_int
-id|i
-comma
 id|n
 suffix:semicolon
 r_if
@@ -4429,8 +4434,6 @@ id|size
 suffix:semicolon
 r_int
 id|n
-comma
-id|offset
 comma
 id|err
 suffix:semicolon
