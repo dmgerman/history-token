@@ -372,6 +372,8 @@ r_return
 id|SCSI_DISK8_MAJOR
 op_plus
 id|major_idx
+op_minus
+l_int|8
 suffix:semicolon
 r_default
 suffix:colon
