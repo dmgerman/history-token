@@ -2578,12 +2578,6 @@ id|dev
 )paren
 (brace
 r_return
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
 op_logical_neg
 id|test_and_set_bit
 c_func
