@@ -278,9 +278,9 @@ id|ieee1394_device_id
 op_star
 id|id_table
 suffix:semicolon
-multiline_comment|/*&n;&t; * The update function is called when the node has just&n;&t; * survived a bus reset, i.e. it is still present on the bus.&n;&t; * However, it may be necessary to reestablish the connection&n;&t; * or login into the node again, depending on the protocol.&n;&t; */
+multiline_comment|/*&n;&t; * The update function is called when the node has just&n;&t; * survived a bus reset, i.e. it is still present on the bus.&n;&t; * However, it may be necessary to reestablish the connection&n;&t; * or login into the node again, depending on the protocol. If the&n;&t; * probe fails (returns non-zero), we unbind the driver from this&n;&t; * device.&n;&t; */
 DECL|member|update
-r_void
+r_int
 (paren
 op_star
 id|update

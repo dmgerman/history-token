@@ -1491,7 +1491,7 @@ suffix:semicolon
 )brace
 DECL|function|eth1394_update
 r_static
-r_void
+r_int
 id|eth1394_update
 c_func
 (paren
@@ -1539,6 +1539,8 @@ op_logical_neg
 id|hi
 )paren
 r_return
+op_minus
+id|ENOENT
 suffix:semicolon
 id|priv
 op_assign
@@ -1596,6 +1598,8 @@ op_logical_neg
 id|node
 )paren
 r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|node_info
 op_assign
@@ -1665,6 +1669,9 @@ id|priv-&gt;ip_node_list
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|eth1394_id_table
 r_static

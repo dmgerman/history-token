@@ -388,6 +388,39 @@ op_star
 id|host
 )paren
 suffix:semicolon
+r_static
+r_int
+id|sbp2_probe
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sbp2_remove
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|sbp2_update
+c_func
+(paren
+r_struct
+id|unit_directory
+op_star
+id|ud
+)paren
+suffix:semicolon
 DECL|variable|sbp2_highlevel
 r_static
 r_struct
@@ -2086,7 +2119,7 @@ suffix:semicolon
 )brace
 DECL|function|sbp2_update
 r_static
-r_void
+r_int
 id|sbp2_update
 c_func
 (paren
@@ -2103,22 +2136,11 @@ id|scsi_id
 op_assign
 id|ud-&gt;device.driver_data
 suffix:semicolon
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-op_assign
-id|scsi_id-&gt;hi
-suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
 l_string|&quot;sbp2_update&quot;
 )paren
-suffix:semicolon
-id|hi
-op_assign
-id|scsi_id-&gt;hi
 suffix:semicolon
 r_if
 c_cond
@@ -2130,7 +2152,7 @@ id|scsi_id
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * Ok, reconnect has failed. Perhaps we didn&squot;t&n;&t;&t; * reconnect fast enough. Try doing a regular login.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * Ok, reconnect has failed. Perhaps we didn&squot;t&n;&t;&t; * reconnect fast enough. Try doing a regular login, but&n;&t;&t; * first do a logout just in case of any weirdness.&n;&t;&t; */
 id|sbp2_logout_device
 c_func
 (paren
@@ -2147,20 +2169,16 @@ id|scsi_id
 )paren
 )paren
 (brace
-multiline_comment|/* Login failed too, just remove the device. */
+multiline_comment|/* Login failed too, just fail, and the backend&n;&t;&t;&t; * will call our sbp2_remove for us */
 id|SBP2_ERR
 c_func
 (paren
 l_string|&quot;sbp2_reconnect_device failed!&quot;
 )paren
 suffix:semicolon
-id|sbp2_remove_device
-c_func
-(paren
-id|scsi_id
-)paren
-suffix:semicolon
 r_return
+op_minus
+id|EBUSY
 suffix:semicolon
 )brace
 )brace
@@ -2195,6 +2213,9 @@ id|scsi_id
 comma
 id|DID_BUS_BUSY
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This functions is called by the sbp2_probe, for each new device. We now&n; * allocate one scsi host for each scsi_id (unit directory). */
