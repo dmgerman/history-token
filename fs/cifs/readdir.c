@@ -573,7 +573,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;search entry %p began after end of SMB %p old entry is %p&quot;
+l_string|&quot;search entry %p began after end of SMB %p old entry %p&quot;
 comma
 id|new_entry
 comma
@@ -583,7 +583,6 @@ id|old_entry
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_return
 l_int|NULL
 suffix:semicolon
@@ -1170,7 +1169,6 @@ l_string|&quot;freeing SMB ff cache buf on search rewind&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|cifs_buf_release
 c_func
 (paren
@@ -1210,24 +1208,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-)brace
-r_if
-c_cond
-(paren
-id|cifsFile-&gt;srch_inf.endOfSearch
-)paren
-(brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;end of search&quot;
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 )brace
 r_while
 c_loop
@@ -1347,7 +1327,6 @@ id|pos_in_buf
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|current_entry
 op_assign
 id|cifsFile-&gt;srch_inf.srch_entries_start
@@ -1878,19 +1857,7 @@ comma
 id|pqst-&gt;len
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;filldir on %s&quot;
-comma
-id|pqst-&gt;name
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
+multiline_comment|/*&t;cFYI(1,(&quot;filldir on %s&quot;,pqst-&gt;name));  */
 r_return
 id|rc
 suffix:semicolon
@@ -2649,19 +2616,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;readdir2 pos: %lld&quot;
-comma
-id|file-&gt;f_pos
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
+multiline_comment|/*&t;cFYI(1,(&quot;readdir2 pos: %lld&quot;,file-&gt;f_pos)); */
 r_switch
 c_cond
 (paren
@@ -2835,12 +2790,18 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_goto
 id|rddir2_exit
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|current_entry
+op_ne
+l_int|NULL
+)paren
 (brace
 id|cFYI
 c_func
@@ -2855,21 +2816,15 @@ id|file-&gt;f_pos
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|current_entry
-op_eq
-l_int|NULL
-)paren
+r_else
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;current search entry null,exiting&quot;
+l_string|&quot;could not find entry&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2877,17 +2832,13 @@ r_goto
 id|rddir2_exit
 suffix:semicolon
 )brace
-multiline_comment|/* 2) initiate search, */
-multiline_comment|/* 3) seek into search buffer */
-multiline_comment|/* 4) if not found &amp;&amp; later - FindNext */
-multiline_comment|/* else if earlier in search, close search and &n;&t;&t;&t;&t;restart, continuing search till found or EndOfSearch */
 id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;loop through %d times filling dir for net buf start %p&quot;
+l_string|&quot;loop through %d times filling dir for net buf %p&quot;
 comma
 id|num_to_fill
 comma
@@ -2895,7 +2846,6 @@ id|cifsFile-&gt;srch_inf.ntwrk_buf_start
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB removeme BB */
 id|end_of_smb
 op_assign
 id|cifsFile-&gt;srch_inf.ntwrk_buf_start
@@ -2923,23 +2873,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;end of smb %p and tmp_buf %p current_entry %p&quot;
-comma
-id|end_of_smb
-comma
-id|tmp_buf
-comma
-id|current_entry
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* BB removeme BB */
 r_for
 c_loop
 (paren
@@ -3032,7 +2965,6 @@ id|tmp_buf
 )paren
 suffix:semicolon
 multiline_comment|/* BB removeme BB */
-multiline_comment|/* BB fixme save resume key BB */
 id|cifs_save_resume_key
 c_func
 (paren

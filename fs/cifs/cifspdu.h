@@ -1575,7 +1575,7 @@ DECL|member|Data
 r_char
 id|Data
 (braket
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 DECL|typedef|WRITE_REQ
