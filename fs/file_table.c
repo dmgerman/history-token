@@ -1129,4 +1129,12 @@ op_assign
 id|NR_FILE
 suffix:semicolon
 )brace
+multiline_comment|/* Needed by unix.o */
+DECL|variable|files_stat
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|files_stat
+)paren
+suffix:semicolon
 eof
