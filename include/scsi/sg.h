@@ -73,6 +73,7 @@ multiline_comment|/* [i], [*io] points to data transfer memory&n;&t;&t;&t;&t;&t;
 DECL|member|cmdp
 r_int
 r_char
+id|__user
 op_star
 id|cmdp
 suffix:semicolon
