@@ -4893,6 +4893,8 @@ suffix:semicolon
 r_int
 r_int
 id|mapped_addr
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|zsnode
@@ -4900,6 +4902,8 @@ comma
 id|chipid
 comma
 id|cpunode
+comma
+id|bbnode
 suffix:semicolon
 r_if
 c_cond
@@ -4910,8 +4914,6 @@ id|sun4d
 )paren
 (brace
 r_int
-id|bbnode
-comma
 id|walk
 comma
 id|no
@@ -5451,7 +5453,7 @@ comma
 id|chip
 )paren
 suffix:semicolon
-id|promt_halt
+id|prom_halt
 c_func
 (paren
 )paren
@@ -5607,6 +5609,11 @@ op_assign
 id|IORESOURCE_IO
 suffix:semicolon
 r_return
+(paren
+r_struct
+id|zilog_layout
+op_star
+)paren
 id|sbus_ioremap
 c_func
 (paren
