@@ -351,6 +351,9 @@ id|self-&gt;wx_list
 )paren
 suffix:semicolon
 multiline_comment|/* My unique IrLAP device address! */
+multiline_comment|/* We don&squot;t want the broadcast address, neither the NULL address&n;&t; * (most often used to signify &quot;invalid&quot;), and we don&squot;t want an&n;&t; * address already in use (otherwise connect won&squot;t be able&n;&t; * to select the proper link). - Jean II */
+r_do
+(brace
 id|get_random_bytes
 c_func
 (paren
@@ -363,6 +366,36 @@ id|self-&gt;saddr
 )paren
 )paren
 suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|self-&gt;saddr
+op_eq
+l_int|0x0
+)paren
+op_logical_or
+(paren
+id|self-&gt;saddr
+op_eq
+id|BROADCAST
+)paren
+op_logical_or
+(paren
+id|hashbin_find
+c_func
+(paren
+id|irlap
+comma
+id|self-&gt;saddr
+comma
+l_int|NULL
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Copy to the driver */
 id|memcpy
 c_func
 (paren
