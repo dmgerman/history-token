@@ -2589,9 +2589,12 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG
-id|printk
+id|dev_printk
 (paren
 id|KERN_INFO
+comma
+id|dev-&gt;dev
+comma
 l_string|&quot;Product: %s&bslash;n&quot;
 comma
 id|prod_str
@@ -2626,9 +2629,12 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG
-id|printk
+id|dev_printk
 (paren
 id|KERN_INFO
+comma
+id|dev-&gt;dev
+comma
 l_string|&quot;Manufacturer: %s&bslash;n&quot;
 comma
 id|mfgr_str
@@ -3238,10 +3244,12 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* USB device state == configured ... tell the world! */
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;new device strings: Mfr=%d, Product=%d, SerialNumber=%d&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;new device strings: Mfr=%d, Product=%d, SerialNumber=%d&bslash;n&quot;
 comma
 id|dev-&gt;descriptor.iManufacturer
 comma
