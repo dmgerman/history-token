@@ -34,5 +34,7 @@ DECL|macro|BLIST_MS_SKIP_PAGE_3F
 mdefine_line|#define BLIST_MS_SKIP_PAGE_3F&t;0x4000&t;/* do not send ms page 0x3f */
 DECL|macro|BLIST_USE_10_BYTE_MS
 mdefine_line|#define BLIST_USE_10_BYTE_MS&t;0x8000&t;/* use 10 byte ms before 6 byte ms */
+DECL|macro|BLIST_MS_192_BYTES_FOR_3F
+mdefine_line|#define BLIST_MS_192_BYTES_FOR_3F&t;0x10000&t;/*  192 byte ms page 0x3f request */
 macro_line|#endif
 eof

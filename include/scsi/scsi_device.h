@@ -222,6 +222,12 @@ op_star
 id|sdev_target
 suffix:semicolon
 multiline_comment|/* used only for single_lun */
+DECL|member|sdev_bflags
+r_int
+r_int
+id|sdev_bflags
+suffix:semicolon
+multiline_comment|/* black/white flags as also found in&n;&t;&t;&t;&t; * scsi_devinfo.[hc]. For now used only to&n;&t;&t;&t;&t; * pass settings from slave_alloc to scsi&n;&t;&t;&t;&t; * core. */
 DECL|member|writeable
 r_int
 id|writeable
@@ -374,6 +380,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* do not use MODE SENSE page 0x3f */
+DECL|member|use_192_bytes_for_3f
+r_int
+id|use_192_bytes_for_3f
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ask for 192 bytes from page 0x3f */
 DECL|member|no_start_on_add
 r_int
 id|no_start_on_add

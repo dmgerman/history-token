@@ -1886,7 +1886,7 @@ id|bflags
 suffix:semicolon
 id|bflags
 op_assign
-id|sdev-&gt;host-&gt;hostt-&gt;flags
+id|sdev-&gt;sdev_bflags
 suffix:semicolon
 r_if
 c_cond

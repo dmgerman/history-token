@@ -4620,7 +4620,35 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * First attempt: ask for all pages (0x3F), but only 4 bytes.&n;&t; * We have to start carefully: some devices hang if we ask&n;&t; * for more than is available.&n;&t; */
+r_if
+c_cond
+(paren
+id|sdkp-&gt;device-&gt;use_192_bytes_for_3f
+)paren
+(brace
+id|res
+op_assign
+id|sd_do_mode_sense
+c_func
+(paren
+id|SRpnt
+comma
+l_int|0
+comma
+l_int|0x3F
+comma
+id|buffer
+comma
+l_int|192
+comma
+op_amp
+id|data
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * First attempt: ask for all pages (0x3F), but only 4 bytes.&n;&t;&t; * We have to start carefully: some devices hang if we ask&n;&t;&t; * for more than is available.&n;&t;&t; */
 id|res
 op_assign
 id|sd_do_mode_sense
@@ -4640,7 +4668,7 @@ op_amp
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Second attempt: ask for page 0&n;&t; * When only page 0 is implemented, a request for page 3F may return&n;&t; * Sense Key 5: Illegal Request, Sense Code 24: Invalid field in CDB.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Second attempt: ask for page 0 When only page 0 is&n;&t;&t; * implemented, a request for page 3F may return Sense Key&n;&t;&t; * 5: Illegal Request, Sense Code 24: Invalid field in&n;&t;&t; * CDB.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4670,7 +4698,7 @@ op_amp
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Third attempt: ask 255 bytes, as we did earlier.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Third attempt: ask 255 bytes, as we did earlier.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4700,6 +4728,7 @@ op_amp
 id|data
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
