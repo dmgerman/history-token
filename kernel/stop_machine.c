@@ -560,7 +560,7 @@ id|smdata-&gt;done
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for kthread_stop */
-id|__set_current_state
+id|set_current_state
 c_func
 (paren
 id|TASK_INTERRUPTIBLE
@@ -581,7 +581,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__set_current_state
+id|set_current_state
 c_func
 (paren
 id|TASK_INTERRUPTIBLE
