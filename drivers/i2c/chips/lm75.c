@@ -81,11 +81,6 @@ DECL|macro|TEMP_FROM_REG
 mdefine_line|#define TEMP_FROM_REG(val)&t;((((val &amp; 0x7fff) &gt;&gt; 7) * 5) | ((val &amp; 0x8000)?-256:0))
 DECL|macro|TEMP_TO_REG
 mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val&lt;0?(0x200+((val)/5))&lt;&lt;7:(((val) + 2) / 5) &lt;&lt; 7),0,0xffff))
-multiline_comment|/* Initial values */
-DECL|macro|LM75_INIT_TEMP_OS
-mdefine_line|#define LM75_INIT_TEMP_OS&t;600
-DECL|macro|LM75_INIT_TEMP_HYST
-mdefine_line|#define LM75_INIT_TEMP_HYST&t;500
 multiline_comment|/* Each client has this additional data */
 DECL|struct|lm75_data
 r_struct
@@ -998,34 +993,6 @@ id|client
 )paren
 (brace
 multiline_comment|/* Initialize the LM75 chip */
-id|lm75_write_value
-c_func
-(paren
-id|client
-comma
-id|LM75_REG_TEMP_OS
-comma
-id|TEMP_TO_REG
-c_func
-(paren
-id|LM75_INIT_TEMP_OS
-)paren
-)paren
-suffix:semicolon
-id|lm75_write_value
-c_func
-(paren
-id|client
-comma
-id|LM75_REG_TEMP_HYST
-comma
-id|TEMP_TO_REG
-c_func
-(paren
-id|LM75_INIT_TEMP_HYST
-)paren
-)paren
-suffix:semicolon
 id|lm75_write_value
 c_func
 (paren
