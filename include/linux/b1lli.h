@@ -149,7 +149,7 @@ suffix:semicolon
 DECL|macro|AVMB1_LOAD
 mdefine_line|#define&t;AVMB1_LOAD&t;&t;0&t;/* load image to card */
 DECL|macro|AVMB1_ADDCARD
-mdefine_line|#define AVMB1_ADDCARD&t;&t;1&t;/* add a new card */
+mdefine_line|#define AVMB1_ADDCARD&t;&t;1&t;/* add a new card - OBSOLETE */
 DECL|macro|AVMB1_RESETCARD
 mdefine_line|#define AVMB1_RESETCARD&t;&t;2&t;/* reset a card */
 DECL|macro|AVMB1_LOAD_AND_CONFIG

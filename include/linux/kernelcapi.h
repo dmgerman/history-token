@@ -64,7 +64,7 @@ multiline_comment|/* new ioctls &gt;= 10 */
 DECL|macro|KCAPI_CMD_TRACE
 mdefine_line|#define KCAPI_CMD_TRACE&t;&t;10
 DECL|macro|KCAPI_CMD_ADDCARD
-mdefine_line|#define KCAPI_CMD_ADDCARD&t;11&t;/* add card to named driver */
+mdefine_line|#define KCAPI_CMD_ADDCARD&t;11&t;/* OBSOLETE */
 multiline_comment|/* &n; * flag &gt; 2 =&gt; trace also data&n; * flag &amp; 1 =&gt; show trace&n; */
 DECL|macro|KCAPI_TRACE_OFF
 mdefine_line|#define KCAPI_TRACE_OFF&t;&t;&t;0

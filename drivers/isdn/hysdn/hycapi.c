@@ -3306,11 +3306,6 @@ suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
-id|add_card
-suffix:colon
-l_int|0
-comma
-multiline_comment|/* no add_card function */
 )brace
 suffix:semicolon
 multiline_comment|/**********************************************************&n;int hycapi_init()&n;&n;attach the capi-driver to the kernel-capi.&n;&n;***********************************************************/

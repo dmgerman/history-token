@@ -462,23 +462,6 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-DECL|member|add_card
-r_int
-(paren
-op_star
-id|add_card
-)paren
-(paren
-r_struct
-id|capi_driver
-op_star
-id|driver
-comma
-id|capicardparams
-op_star
-id|data
-)paren
-suffix:semicolon
 multiline_comment|/* intitialized by kcapi */
 DECL|member|contr_head
 r_struct
