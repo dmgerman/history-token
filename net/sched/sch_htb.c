@@ -136,11 +136,6 @@ r_struct
 id|gnet_stats_rate_est
 id|rate_est
 suffix:semicolon
-DECL|member|stats_lock
-id|spinlock_t
-op_star
-id|stats_lock
-suffix:semicolon
 DECL|member|xstats
 r_struct
 id|tc_htb_xstats
@@ -7020,15 +7015,6 @@ c_func
 id|cl-&gt;ceil
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_ESTIMATOR
-id|qdisc_kill_estimator
-c_func
-(paren
-op_amp
-id|cl-&gt;stats
-)paren
-suffix:semicolon
-macro_line|#endif
 id|htb_destroy_filters
 (paren
 op_amp
