@@ -2496,7 +2496,7 @@ id|pdev
 suffix:semicolon
 id|err_out
 suffix:colon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

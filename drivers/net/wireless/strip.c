@@ -9868,7 +9868,7 @@ id|strip_info-&gt;magic
 op_assign
 l_int|0
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|strip_info-&gt;dev

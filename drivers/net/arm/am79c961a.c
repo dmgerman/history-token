@@ -3713,7 +3713,7 @@ l_int|0x18
 suffix:semicolon
 id|nodev
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
