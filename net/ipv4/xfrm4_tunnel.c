@@ -251,12 +251,10 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|xfrm4_rcv_encap
+id|xfrm4_rcv
 c_func
 (paren
 id|skb
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
