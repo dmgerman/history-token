@@ -535,9 +535,6 @@ suffix:semicolon
 r_int
 id|len
 suffix:semicolon
-r_int
-id|pg_size
-suffix:semicolon
 r_struct
 id|page_state
 id|ps
@@ -566,15 +563,6 @@ op_amp
 id|i
 )paren
 suffix:semicolon
-id|pg_size
-op_assign
-id|get_page_cache_size
-c_func
-(paren
-)paren
-op_minus
-id|i.bufferram
-suffix:semicolon
 multiline_comment|/*&n;&t; * Tagged format, for easy grepping and expansion.&n;&t; */
 id|len
 op_assign
@@ -586,7 +574,6 @@ comma
 l_string|&quot;MemTotal:     %8lu kB&bslash;n&quot;
 l_string|&quot;MemFree:      %8lu kB&bslash;n&quot;
 l_string|&quot;MemShared:    %8lu kB&bslash;n&quot;
-l_string|&quot;Buffers:      %8lu kB&bslash;n&quot;
 l_string|&quot;Cached:       %8lu kB&bslash;n&quot;
 l_string|&quot;SwapCached:   %8lu kB&bslash;n&quot;
 l_string|&quot;Active:       %8u kB&bslash;n&quot;
@@ -621,13 +608,7 @@ comma
 id|K
 c_func
 (paren
-id|i.bufferram
-)paren
-comma
-id|K
-c_func
-(paren
-id|pg_size
+id|ps.nr_pagecache
 op_minus
 id|swapper_space.nrpages
 )paren
