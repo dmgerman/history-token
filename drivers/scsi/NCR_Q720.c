@@ -786,6 +786,12 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
