@@ -142,7 +142,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(KERN_DEBUG &quot;cpufreq:&quot; msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 multiline_comment|/**&n; *      we can detect a core multipiler from dir0_lsb &n; *      from GX1 datasheet p.56, &n; *&t;   MULT[3:0]:&n; *&t;   0000 = SYSCLK multiplied by 4 (test only)&n; *&t;   0001 = SYSCLK multiplied by 10&n; *&t;   0010 = SYSCLK multiplied by 4&n; *&t;   0011 = SYSCLK multiplied by 6&n; *&t;   0100 = SYSCLK multiplied by 9&n; *&t;   0101 = SYSCLK multiplied by 5&n; *&t;   0110 = SYSCLK multiplied by 7&n; *&t;   0111 = SYSCLK multiplied by 8&n; *              of 33.3MHz&n; **/
 DECL|variable|gx_freq_mult

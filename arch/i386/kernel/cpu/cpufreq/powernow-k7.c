@@ -16,7 +16,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;powernow: &quot;
@@ -292,7 +292,7 @@ id|have_a0
 suffix:semicolon
 macro_line|#ifndef rdmsrl
 DECL|macro|rdmsrl
-mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);&t;&bslash;&n;&t;val = l__;&t;&bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);&t;&bslash;&n;} while(0);
+mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);&t;&bslash;&n;&t;val = l__;&t;&bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);&t;&bslash;&n;} while(0)
 macro_line|#endif
 macro_line|#ifndef wrmsrl
 DECL|function|wrmsrl
