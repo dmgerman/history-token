@@ -1580,9 +1580,22 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|device-&gt;dev
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* XXX: should we call -&gt;remove() here? */
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 id|lp
 op_assign
 id|dev-&gt;priv
