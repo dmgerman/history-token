@@ -461,19 +461,11 @@ id|sys_sigprocmask
 suffix:semicolon
 r_extern
 id|syscall_handler_t
-id|sys_create_module
-suffix:semicolon
-r_extern
-id|syscall_handler_t
 id|sys_init_module
 suffix:semicolon
 r_extern
 id|syscall_handler_t
 id|sys_delete_module
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_get_kernel_syms
 suffix:semicolon
 r_extern
 id|syscall_handler_t
@@ -606,10 +598,6 @@ suffix:semicolon
 r_extern
 id|syscall_handler_t
 id|sys_ni_syscall
-suffix:semicolon
-r_extern
-id|syscall_handler_t
-id|sys_query_module
 suffix:semicolon
 r_extern
 id|syscall_handler_t
@@ -899,9 +887,13 @@ r_extern
 id|syscall_handler_t
 id|sys_remap_file_pages
 suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_set_tid_address
+suffix:semicolon
 macro_line|#if CONFIG_NFSD
 DECL|macro|NFSSERVCTL
-mdefine_line|#define NFSSERVCTL sys_nfsserctl
+mdefine_line|#define NFSSERVCTL sys_nfsservctl
 macro_line|#else
 DECL|macro|NFSSERVCTL
 mdefine_line|#define NFSSERVCTL sys_ni_syscall
@@ -919,7 +911,7 @@ id|syscall_handler_t
 id|um_stime
 suffix:semicolon
 DECL|macro|LAST_GENERIC_SYSCALL
-mdefine_line|#define LAST_GENERIC_SYSCALL __NR_remap_file_pages
+mdefine_line|#define LAST_GENERIC_SYSCALL __NR_set_tid_address
 macro_line|#if LAST_GENERIC_SYSCALL &gt; LAST_ARCH_SYSCALL
 DECL|macro|LAST_SYSCALL
 mdefine_line|#define LAST_SYSCALL LAST_GENERIC_SYSCALL
@@ -1728,7 +1720,7 @@ comma
 id|__NR_create_module
 )braket
 op_assign
-id|sys_create_module
+id|sys_ni_syscall
 comma
 (braket
 id|__NR_init_module
@@ -1746,7 +1738,7 @@ comma
 id|__NR_get_kernel_syms
 )braket
 op_assign
-id|sys_get_kernel_syms
+id|sys_ni_syscall
 comma
 (braket
 id|__NR_quotactl
@@ -1980,7 +1972,7 @@ comma
 id|__NR_query_module
 )braket
 op_assign
-id|sys_query_module
+id|sys_ni_syscall
 comma
 (braket
 id|__NR_poll
@@ -2365,6 +2357,12 @@ id|__NR_remap_file_pages
 )braket
 op_assign
 id|sys_remap_file_pages
+comma
+(braket
+id|__NR_set_tid_address
+)braket
+op_assign
+id|sys_set_tid_address
 comma
 id|ARCH_SYSCALLS
 (braket

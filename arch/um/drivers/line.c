@@ -9,6 +9,7 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;line.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|macro|LINE_BUFSIZE
 mdefine_line|#define LINE_BUFSIZE 4096
