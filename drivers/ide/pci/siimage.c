@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;siimage.h&quot;
 macro_line|#if defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
-macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|variable|siimage_proc
 r_static
@@ -36,6 +35,7 @@ r_static
 r_int
 id|n_siimage_devs
 suffix:semicolon
+macro_line|#endif /* defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
 multiline_comment|/**&n; *&t;pdev_is_sata&t;&t;-&t;check if device is SATA&n; *&t;@pdev:&t;PCI device to check&n; *&t;&n; *&t;Returns true if this is a SATA controller&n; */
 DECL|function|pdev_is_sata
 r_static
@@ -238,6 +238,7 @@ r_return
 id|base
 suffix:semicolon
 )brace
+macro_line|#if defined(DISPLAY_SIIMAGE_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 multiline_comment|/**&n; *&t;print_siimage_get_info&t;-&t;print minimal proc information&n; *&t;@buf: buffer to write into (kernel space)&n; *&t;@dev: PCI device we are describing&n; *&t;@index: Controller number&n; *&n; *&t;Print the basic information for the state of the CMD680/SI3112&n; *&t;channel. We don&squot;t actually dump a lot of information out for&n; *&t;this controller although we could expand it if we needed.&n; */
 DECL|function|print_siimage_get_info
 r_static
