@@ -92,7 +92,7 @@ id|num_dma
 suffix:semicolon
 id|dma-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dma-&gt;running
 op_assign

@@ -866,7 +866,7 @@ id|this_dev-&gt;next
 suffix:semicolon
 id|this_dev-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|this_dev-&gt;parent
 op_assign
@@ -914,7 +914,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func
@@ -2050,7 +2050,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func
@@ -2177,7 +2177,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func

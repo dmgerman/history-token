@@ -653,7 +653,7 @@ id|sbus_dev
 op_star
 id|sdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 r_struct
@@ -666,7 +666,7 @@ id|linux_ebus_device
 op_star
 id|edev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|linux_prom_registers
