@@ -2434,7 +2434,7 @@ comma
 r_struct
 id|urb_priv
 comma
-id|complete_list
+id|urb_list
 )paren
 suffix:semicolon
 id|out

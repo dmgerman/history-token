@@ -744,12 +744,6 @@ id|list_head
 id|queue_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;frame_list_lock */
-DECL|member|complete_list
-r_struct
-id|list_head
-id|complete_list
-suffix:semicolon
-multiline_comment|/* P: uhci-&gt;complete_list_lock */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * spinlocks are used extensively to protect the many lists and data&n; * structures we have. It&squot;s not that pretty, but it&squot;s necessary. We&n; * need to be done with all of the locks (except complete_list_lock) when&n; * we call urb-&gt;complete. I&squot;ve tried to make it simple enough so I don&squot;t&n; * have to spend hours racking my brain trying to figure out if the&n; * locking is safe.&n; *&n; * Here&squot;s the safe locking order to prevent deadlocks:&n; *&n; * #1 uhci-&gt;urb_list_lock&n; * #2 urb-&gt;lock&n; * #3 uhci-&gt;urb_remove_list_lock, uhci-&gt;frame_list_lock, &n; *   uhci-&gt;qh_remove_list_lock&n; * #4 uhci-&gt;complete_list_lock&n; *&n; * If you&squot;re going to grab 2 or more locks at once, ALWAYS grab the lock&n; * at the lowest level FIRST and NEVER grab locks at the same level at the&n; * same time.&n; * &n; * So, if you need uhci-&gt;urb_list_lock, grab it before you grab urb-&gt;lock&n; */
