@@ -2366,6 +2366,13 @@ OL
 l_int|0
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|info-&gt;lock
+)paren
+suffix:semicolon
 id|unlock_page
 c_func
 (paren
