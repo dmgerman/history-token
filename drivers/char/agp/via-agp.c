@@ -1010,7 +1010,7 @@ id|FALSE
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_3_0_enable
+id|agp_generic_agp_enable
 suffix:semicolon
 id|agp_bridge-&gt;configure
 op_assign

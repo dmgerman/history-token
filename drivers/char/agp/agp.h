@@ -960,14 +960,6 @@ id|u32
 id|mode
 )paren
 suffix:semicolon
-r_void
-id|agp_generic_agp_3_0_enable
-c_func
-(paren
-id|u32
-id|mode
-)paren
-suffix:semicolon
 r_int
 id|agp_generic_create_gatt_table
 c_func
@@ -1127,6 +1119,17 @@ id|command
 comma
 r_int
 id|agp_v3
+)paren
+suffix:semicolon
+r_int
+id|agp_3_0_node_enable
+c_func
+(paren
+id|u32
+id|mode
+comma
+id|u32
+id|minor
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
