@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern
 r_void
 id|die
@@ -795,6 +796,29 @@ l_string|&quot;=r&quot;
 id|address
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_PAGE_FAULT
+comma
+l_string|&quot;page fault&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|14
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_OK
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* It&squot;s safe to allow irq&squot;s after cr2 has been saved */
 r_if

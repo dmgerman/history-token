@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -689,6 +690,13 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|memcmp
+)paren
+suffix:semicolon
+DECL|variable|register_die_notifier
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_die_notifier
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HAVE_DEC_LOCK
