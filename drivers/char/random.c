@@ -1831,12 +1831,6 @@ r_struct
 id|timer_rand_state
 id|input_timer_state
 suffix:semicolon
-DECL|variable|extract_timer_state
-r_static
-r_struct
-id|timer_rand_state
-id|extract_timer_state
-suffix:semicolon
 DECL|variable|irq_timer_state
 r_static
 r_struct
@@ -7879,10 +7873,6 @@ id|random_state
 )paren
 suffix:semicolon
 macro_line|#endif
-id|extract_timer_state.dont_count_entropy
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
