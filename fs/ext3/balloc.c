@@ -313,7 +313,7 @@ op_star
 id|n
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 comma
@@ -363,7 +363,7 @@ c_func
 id|n
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 comma
 id|rsv_node
 )paren
@@ -502,7 +502,7 @@ id|goal_in_my_reservation
 c_func
 (paren
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 op_star
 id|rsv
 comma
@@ -612,11 +612,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the reserved window which includes the goal, or the previous one&n; * if the goal is not in any window.&n; * Returns NULL if there are no windows or if all windows start after the goal.&n; */
-DECL|function|search_reserve_window
 r_static
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
+DECL|function|search_reserve_window
 id|search_reserve_window
 c_func
 (paren
@@ -638,7 +638,7 @@ op_assign
 id|root-&gt;rb_node
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 suffix:semicolon
@@ -661,7 +661,7 @@ c_func
 id|n
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 comma
 id|rsv_node
 )paren
@@ -726,7 +726,7 @@ c_func
 id|n
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 comma
 id|rsv_node
 )paren
@@ -736,9 +736,9 @@ r_return
 id|rsv
 suffix:semicolon
 )brace
-DECL|function|rsv_window_add
+DECL|function|ext3_rsv_window_add
 r_void
-id|rsv_window_add
+id|ext3_rsv_window_add
 c_func
 (paren
 r_struct
@@ -747,7 +747,7 @@ op_star
 id|sb
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 )paren
@@ -797,7 +797,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|this
 suffix:semicolon
@@ -821,7 +821,7 @@ c_func
 id|parent
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 comma
 id|rsv_node
 )paren
@@ -899,7 +899,7 @@ op_star
 id|sb
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 )paren
@@ -946,7 +946,7 @@ id|rsv_is_empty
 c_func
 (paren
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 op_star
 id|rsv
 )paren
@@ -983,7 +983,7 @@ id|inode
 )paren
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 op_assign
@@ -2439,7 +2439,7 @@ r_int
 id|goal
 comma
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 op_star
 id|my_rsv
 )paren
@@ -2737,13 +2737,13 @@ multiline_comment|/**&n; * &t;find_next_reservable_window():&n; *&t;&t;find a re
 DECL|function|find_next_reservable_window
 r_static
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|find_next_reservable_window
 c_func
 (paren
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|search_head
 comma
@@ -2765,7 +2765,7 @@ op_star
 id|next
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 comma
@@ -2847,7 +2847,7 @@ c_func
 id|next
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 comma
 id|rsv_node
 )paren
@@ -2894,7 +2894,7 @@ id|alloc_new_reservation
 c_func
 (paren
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|my_rsv
 comma
@@ -2917,7 +2917,7 @@ id|bitmap_bh
 )paren
 (brace
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|search_head
 suffix:semicolon
@@ -2935,7 +2935,7 @@ r_int
 id|reservable_space_start
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|prev_rsv
 suffix:semicolon
@@ -3278,7 +3278,7 @@ op_ne
 id|prev_rsv
 )paren
 (brace
-id|rsv_window_add
+id|ext3_rsv_window_add
 c_func
 (paren
 id|sb
@@ -3348,7 +3348,7 @@ r_int
 id|goal
 comma
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|my_rsv
 comma
@@ -3494,7 +3494,7 @@ l_int|1
 )paren
 (brace
 r_struct
-id|reserve_window
+id|ext3_reserve_window
 id|rsv_copy
 suffix:semicolon
 r_int
@@ -4025,14 +4025,14 @@ op_star
 id|sbi
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|my_rsv
 op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 op_star
 id|rsv
 op_assign

@@ -185,7 +185,7 @@ id|s_rsv_window_root
 suffix:semicolon
 DECL|member|s_rsv_window_head
 r_struct
-id|reserve_window_node
+id|ext3_reserve_window_node
 id|s_rsv_window_head
 suffix:semicolon
 multiline_comment|/* Journaling */
