@@ -1078,7 +1078,7 @@ c_func
 (paren
 l_string|&quot;escd&quot;
 comma
-l_int|0
+id|S_IRUSR
 comma
 id|proc_pnp
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ISA Plug &amp; Play support&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Changelog:&n; *  2000-01-01&t;Added quirks handling for buggy hardware&n; *&t;&t;Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *  2000-06-14&t;Added isapnp_probe_devs() and isapnp_activate_dev()&n; *&t;&t;Christoph Hellwig &lt;hch@infradead.org&gt;&n; *  2001-06-03  Added release_region calls to correspond with&n; *&t;&t;request_region calls when a failure occurs.  Also&n; *&t;&t;added KERN_* constants to printk() calls.&n; *  2001-11-07  Added isapnp_{,un}register_driver calls along the lines&n; *              of the pci driver interface&n; *              Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; */
+multiline_comment|/*&n; *  ISA Plug &amp; Play support&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  Changelog:&n; *  2000-01-01&t;Added quirks handling for buggy hardware&n; *&t;&t;Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *  2000-06-14&t;Added isapnp_probe_devs() and isapnp_activate_dev()&n; *&t;&t;Christoph Hellwig &lt;hch@infradead.org&gt;&n; *  2001-06-03  Added release_region calls to correspond with&n; *&t;&t;request_region calls when a failure occurs.  Also&n; *&t;&t;added KERN_* constants to printk() calls.&n; *  2001-11-07  Added isapnp_{,un}register_driver calls along the lines&n; *              of the pci driver interface&n; *              Kai Germaschewski &lt;kai.germaschewski@gmx.de&gt;&n; *  2002-06-06  Made the use of dma channel 0 configurable &n; *              Gerald Teschl &lt;gerald.teschl@univie.ac.at&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -34,24 +34,6 @@ macro_line|#endif
 macro_line|#if 0
 mdefine_line|#define ISAPNP_DEBUG
 macro_line|#endif
-DECL|variable|pidxr_res
-r_struct
-id|resource
-op_star
-id|pidxr_res
-suffix:semicolon
-DECL|variable|pnpwrp_res
-r_struct
-id|resource
-op_star
-id|pnpwrp_res
-suffix:semicolon
-DECL|variable|isapnp_rdp_res
-r_struct
-id|resource
-op_star
-id|isapnp_rdp_res
-suffix:semicolon
 DECL|variable|isapnp_disable
 r_int
 id|isapnp_disable
@@ -69,6 +51,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* reset all PnP cards (deactivate) */
+DECL|variable|isapnp_allow_dma0
+r_int
+id|isapnp_allow_dma0
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* allow dma 0 during auto activation: -1=off (:default), 0=off (set by user), 1=on */
 DECL|variable|isapnp_skip_pci_scan
 r_int
 id|isapnp_skip_pci_scan
@@ -223,6 +213,22 @@ c_func
 id|isapnp_reset
 comma
 l_string|&quot;ISA Plug &amp; Play reset all cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|isapnp_allow_dma0
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|isapnp_allow_dma0
+comma
+l_string|&quot;Allow dma value 0 during auto activation&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -9371,6 +9377,10 @@ id|idx
 (brace
 r_int
 id|i
+comma
+id|mindma
+op_assign
+l_int|1
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -9378,6 +9388,17 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* Some machines allow DMA 0, but others don&squot;t. In fact on some &n;&t;   boxes DMA 0 is the memory refresh. Play safe */
+r_if
+c_cond
+(paren
+id|isapnp_allow_dma0
+op_eq
+l_int|1
+)paren
+id|mindma
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11945,7 +11966,6 @@ id|card
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 DECL|function|isapnp_free_all_resources
 r_static
 r_void
@@ -11956,49 +11976,31 @@ r_void
 )paren
 (brace
 macro_line|#ifdef ISAPNP_REGION_OK
-r_if
-c_cond
-(paren
-id|pidxr_res
-)paren
-id|release_resource
+id|release_region
 c_func
 (paren
-id|pidxr_res
+id|_PIDXR
+comma
+l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|pnpwrp_res
-)paren
-id|release_resource
+id|release_region
 c_func
 (paren
-id|pnpwrp_res
+id|_PNPWRP
+comma
+l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|isapnp_rdp
-op_ge
-l_int|0x203
-op_logical_and
-id|isapnp_rdp
-op_le
-l_int|0x3ff
-op_logical_and
-id|isapnp_rdp_res
-)paren
-id|release_resource
+id|release_region
 c_func
 (paren
-id|isapnp_rdp_res
+id|isapnp_rdp
+comma
+l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 macro_line|#ifdef CONFIG_PROC_FS
 id|isapnp_proc_done
 c_func
@@ -12042,8 +12044,8 @@ id|list
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif /* MODULE */
 DECL|function|isapnp_announce_device
 r_static
 r_int
@@ -12512,6 +12514,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|isapnp_device_driver.devices
+)paren
+suffix:semicolon
 id|isapnp_for_each_card
 c_func
 (paren
@@ -12703,8 +12712,10 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef ISAPNP_REGION_OK
-id|pidxr_res
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -12714,12 +12725,6 @@ l_int|1
 comma
 l_string|&quot;isapnp index&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pidxr_res
 )paren
 (brace
 id|printk
@@ -12737,8 +12742,10 @@ id|EBUSY
 suffix:semicolon
 )brace
 macro_line|#endif
-id|pnpwrp_res
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -12748,12 +12755,6 @@ l_int|1
 comma
 l_string|&quot;isapnp write&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pnpwrp_res
 )paren
 (brace
 id|printk
@@ -12804,8 +12805,10 @@ id|isapnp_rdp
 op_or_assign
 l_int|3
 suffix:semicolon
-id|isapnp_rdp_res
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -12815,12 +12818,6 @@ l_int|1
 comma
 l_string|&quot;isapnp read&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|isapnp_rdp_res
 )paren
 (brace
 id|printk
@@ -12845,7 +12842,7 @@ macro_line|#endif
 id|release_region
 c_func
 (paren
-id|isapnp_rdp
+id|_PNPWRP
 comma
 l_int|1
 )paren
@@ -12894,9 +12891,22 @@ l_int|0x3ff
 )paren
 )paren
 (brace
-id|isapnp_free_all_resources
+macro_line|#ifdef ISAPNP_REGION_OK
+id|release_region
 c_func
 (paren
+id|_PIDXR
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+id|release_region
+c_func
+(paren
+id|_PNPWRP
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|isapnp_detected
@@ -12914,8 +12924,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|isapnp_rdp_res
-op_assign
 id|request_region
 c_func
 (paren
