@@ -36,7 +36,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|pmdisk_read
+id|swsusp_read
 c_func
 (paren
 r_void
@@ -569,7 +569,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|pmdisk_read
+id|swsusp_read
 c_func
 (paren
 )paren
