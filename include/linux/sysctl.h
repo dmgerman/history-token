@@ -425,6 +425,18 @@ op_assign
 l_int|57
 comma
 multiline_comment|/* int: whether we will panic on an oops */
+DECL|enumerator|KERN_HPPA_PWRSW
+id|KERN_HPPA_PWRSW
+op_assign
+l_int|58
+comma
+multiline_comment|/* int: hppa soft-power enable */
+DECL|enumerator|KERN_HPPA_UNALIGNED
+id|KERN_HPPA_UNALIGNED
+op_assign
+l_int|59
+comma
+multiline_comment|/* int: hppa unaligned-trap enable */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
