@@ -101,7 +101,7 @@ op_amp
 l_int|0x800000
 )paren
 (brace
-multiline_comment|/* This is some variant of a comparison (PerformComparison will&n;&t;sort out which one).  Since most of the other CPRT&n;&t;instructions are oddball cases of some sort or other it makes&n;&t;sense to pull this out into a fast path.  */
+multiline_comment|/* This is some variant of a comparison (PerformComparison will&n;&t;&t;   sort out which one).  Since most of the other CPRT&n;&t;&t;   instructions are oddball cases of some sort or other it makes&n;&t;&t;   sense to pull this out into a fast path.  */
 r_return
 id|PerformComparison
 c_func
@@ -196,7 +196,7 @@ c_func
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#if 0    /* We currently have no use for the FPCR, so there&squot;s no point&n;&t;    in emulating it. */
+macro_line|#if 0&t;&t;/* We currently have no use for the FPCR, so there&squot;s no point&n;&t;&t;&t;&t;   in emulating it. */
 r_case
 id|WFC_CODE
 op_rshift
@@ -578,11 +578,11 @@ r_return
 id|nRc
 suffix:semicolon
 )brace
+DECL|function|PerformComparisonOperation
 r_static
 r_int
 r_int
 id|__inline__
-DECL|function|PerformComparisonOperation
 id|PerformComparisonOperation
 c_func
 (paren
@@ -736,7 +736,7 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-multiline_comment|/* Check for unordered condition and convert all operands to 80-bit&n;      format.&n;      ?? Might be some mileage in avoiding this conversion if possible.&n;      Eg, if both operands are 32-bit, detect this and do a 32-bit&n;      comparison (cheaper than an 80-bit one).  */
+multiline_comment|/* Check for unordered condition and convert all operands to 80-bit&n;&t;   format.&n;&t;   ?? Might be some mileage in avoiding this conversion if possible.&n;&t;   Eg, if both operands are 32-bit, detect this and do a 32-bit&n;&t;   comparison (cheaper than an 80-bit one).  */
 r_switch
 c_cond
 (paren
@@ -1033,7 +1033,7 @@ id|rFm
 suffix:semicolon
 id|unordered
 suffix:colon
-multiline_comment|/* ?? The FPA data sheet is pretty vague about this, in particular&n;      about whether the non-E comparisons can ever raise exceptions.&n;      This implementation is based on a combination of what it says in&n;      the data sheet, observation of how the Acorn emulator actually&n;      behaves (and how programs expect it to) and guesswork.  */
+multiline_comment|/* ?? The FPA data sheet is pretty vague about this, in particular&n;&t;   about whether the non-E comparisons can ever raise exceptions.&n;&t;   This implementation is based on a combination of what it says in&n;&t;   the data sheet, observation of how the Acorn emulator actually&n;&t;   behaves (and how programs expect it to) and guesswork.  */
 id|flags
 op_or_assign
 id|CC_OVERFLOW

@@ -80,7 +80,7 @@ comma
 id|nRc
 suffix:semicolon
 singleline_comment|//printk(&quot;EmulateCPDO(0x%08x)&bslash;n&quot;,opcode);
-multiline_comment|/* Get the destination size.  If not valid let Linux perform&n;      an invalid instruction trap. */
+multiline_comment|/* Get the destination size.  If not valid let Linux perform&n;&t;   an invalid instruction trap. */
 id|nDest
 op_assign
 id|getDestinationSize
@@ -105,7 +105,7 @@ c_func
 id|opcode
 )paren
 suffix:semicolon
-multiline_comment|/* Compare the size of the operands in Fn and Fm.&n;      Choose the largest size and perform operations in that size,&n;      in order to make use of all the precision of the operands. &n;      If Fm is a constant, we just grab a constant of a size &n;      matching the size of the operand in Fn. */
+multiline_comment|/* Compare the size of the operands in Fn and Fm.&n;&t;   Choose the largest size and perform operations in that size,&n;&t;   in order to make use of all the precision of the operands.&n;&t;   If Fm is a constant, we just grab a constant of a size&n;&t;   matching the size of the operand in Fn. */
 r_if
 c_cond
 (paren
@@ -243,7 +243,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* The CPDO functions used to always set the destination type&n;      to be the same as their working size. */
+multiline_comment|/* The CPDO functions used to always set the destination type&n;&t;   to be the same as their working size. */
 r_if
 c_cond
 (paren
@@ -252,7 +252,7 @@ op_ne
 l_int|0
 )paren
 (brace
-multiline_comment|/* If the operation succeeded, check to see if the result in the&n;         destination register is the correct size.  If not force it&n;         to be. */
+multiline_comment|/* If the operation succeeded, check to see if the result in the&n;&t;&t;   destination register is the correct size.  If not force it&n;&t;&t;   to be. */
 id|fpa11-&gt;fType
 (braket
 id|getFd

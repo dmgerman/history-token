@@ -21,7 +21,7 @@ DECL|macro|BIT_LOAD
 mdefine_line|#define BIT_LOAD&t;0x00100000
 multiline_comment|/* masks for load/store */
 DECL|macro|MASK_CPDT
-mdefine_line|#define MASK_CPDT&t;&t;0x0c000000  /* data processing opcode */
+mdefine_line|#define MASK_CPDT&t;&t;0x0c000000&t;/* data processing opcode */
 DECL|macro|MASK_OFFSET
 mdefine_line|#define MASK_OFFSET&t;&t;0x000000ff
 DECL|macro|MASK_TRANSFER_LENGTH
@@ -86,7 +86,7 @@ DECL|macro|MONADIC_INSTRUCTION
 mdefine_line|#define MONADIC_INSTRUCTION(opcode)&t;((opcode &amp; BIT_MONADIC) != 0)
 multiline_comment|/* instruction identification masks */
 DECL|macro|MASK_CPDO
-mdefine_line|#define MASK_CPDO&t;&t;0x0e000000  /* arithmetic opcode */
+mdefine_line|#define MASK_CPDO&t;&t;0x0e000000&t;/* arithmetic opcode */
 DECL|macro|MASK_ARITHMETIC_OPCODE
 mdefine_line|#define MASK_ARITHMETIC_OPCODE&t;0x00f08000
 DECL|macro|MASK_DESTINATION_SIZE
@@ -156,7 +156,7 @@ DECL|macro|NRM_CODE
 mdefine_line|#define NRM_CODE&t;0x00f08000
 multiline_comment|/*&n;===&n;=== Definitions for register transfer and comparison instructions&n;===&n;*/
 DECL|macro|MASK_CPRT
-mdefine_line|#define MASK_CPRT&t;&t;0x0e000010  /* register transfer opcode */
+mdefine_line|#define MASK_CPRT&t;&t;0x0e000010&t;/* register transfer opcode */
 DECL|macro|MASK_CPRT_CODE
 mdefine_line|#define MASK_CPRT_CODE&t;&t;0x00f00000
 DECL|macro|FLT_CODE

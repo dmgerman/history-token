@@ -88,13 +88,13 @@ id|fType
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* type of floating point value held in&n;&t;&t;&t;&t;&t;   floating point registers.  One of none&n;&t;&t;&t;&t;&t;   single, double or extended. */
+multiline_comment|/* type of floating point value held in&n;&t;&t;&t;&t;&t;   floating point registers.  One of&n;&t;&t;&t;&t;&t;   none, single, double or extended. */
 DECL|member|initflag
 multiline_comment|/* 112 */
 r_int
 id|initflag
 suffix:semicolon
-multiline_comment|/* this is special.  The kernel guarantees&n;&t;&t;&t;&t;&t;   to set it to 0 when a thread is launched,&n;&t;&t;&t;&t;&t;   so we can use it to detect whether this&n;&t;&t;&t;&t;&t;   instance of the emulator needs to be&n;&t;&t;&t;&t;&t;   initialised. */
+multiline_comment|/* this is special.  The kernel guarantees&n;&t;&t;&t;&t;   to set it to 0 when a thread is launched,&n;&t;&t;&t;&t;   so we can use it to detect whether this&n;&t;&t;&t;&t;   instance of the emulator needs to be&n;&t;&t;&t;&t;   initialised. */
 DECL|typedef|FPA11
 )brace
 id|FPA11

@@ -198,7 +198,9 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+(paren
 id|nRc
+)paren
 suffix:semicolon
 )brace
 DECL|function|getRegisterCount
@@ -269,7 +271,9 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+(paren
 id|nRc
+)paren
 suffix:semicolon
 )brace
 DECL|function|getRoundingPrecision
@@ -331,7 +335,9 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+(paren
 id|nRc
+)paren
 suffix:semicolon
 )brace
 DECL|function|getDestinationSize
@@ -393,7 +399,9 @@ id|typeNone
 suffix:semicolon
 )brace
 r_return
+(paren
 id|nRc
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* condition code lookup table&n; index into the table is test code: EQ, NE, ... LT, GT, AL, NV&n; bit position in short is condition code: NZCV */

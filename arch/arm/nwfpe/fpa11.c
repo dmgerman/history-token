@@ -124,7 +124,7 @@ op_and_assign
 op_complement
 id|MASK_ROUNDING_MODE
 suffix:semicolon
-macro_line|#endif   
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -142,12 +142,12 @@ id|float_rounding_mode
 op_assign
 id|float_round_nearest_even
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_TO_NEAREST
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -157,12 +157,12 @@ id|float_rounding_mode
 op_assign
 id|float_round_up
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_TO_PLUS_INFINITY
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -172,12 +172,12 @@ id|float_rounding_mode
 op_assign
 id|float_round_down
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_TO_MINUS_INFINITY
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -187,12 +187,12 @@ id|float_rounding_mode
 op_assign
 id|float_round_to_zero
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_TO_ZERO
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 )brace
@@ -223,7 +223,7 @@ op_and_assign
 op_complement
 id|MASK_ROUNDING_PRECISION
 suffix:semicolon
-macro_line|#endif   
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -239,12 +239,12 @@ id|floatx80_rounding_precision
 op_assign
 l_int|32
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_SINGLE
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -254,12 +254,12 @@ id|floatx80_rounding_precision
 op_assign
 l_int|64
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_DOUBLE
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -269,12 +269,12 @@ id|floatx80_rounding_precision
 op_assign
 l_int|80
 suffix:semicolon
-macro_line|#if MAINTAIN_FPCR         
+macro_line|#if MAINTAIN_FPCR
 id|fpa11-&gt;fpcr
 op_or_assign
 id|ROUND_EXTENDED
 suffix:semicolon
-macro_line|#endif         
+macro_line|#endif
 r_break
 suffix:semicolon
 r_default
@@ -458,7 +458,9 @@ suffix:semicolon
 )brace
 )brace
 r_return
+(paren
 id|nRc
+)paren
 suffix:semicolon
 )brace
 macro_line|#if 0

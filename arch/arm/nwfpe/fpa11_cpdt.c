@@ -5,9 +5,9 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpmodule.inl&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|function|loadSingle
 r_static
 r_inline
-DECL|function|loadSingle
 r_void
 id|loadSingle
 c_func
@@ -54,9 +54,9 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
+DECL|function|loadDouble
 r_static
 r_inline
-DECL|function|loadDouble
 r_void
 id|loadDouble
 c_func
@@ -141,9 +141,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* sign &amp; exponent */
 )brace
+DECL|function|loadExtended
 r_static
 r_inline
-DECL|function|loadExtended
 r_void
 id|loadExtended
 c_func
@@ -245,9 +245,9 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* ms bits */
 )brace
+DECL|function|loadMultiple
 r_static
 r_inline
-DECL|function|loadMultiple
 r_void
 id|loadMultiple
 c_func
@@ -433,9 +433,9 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|function|storeSingle
 r_static
 r_inline
-DECL|function|storeSingle
 r_void
 id|storeSingle
 c_func
@@ -544,9 +544,9 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
+DECL|function|storeDouble
 r_static
 r_inline
-DECL|function|storeDouble
 r_void
 id|storeDouble
 c_func
@@ -676,9 +676,9 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lsw */
 )brace
+DECL|function|storeExtended
 r_static
 r_inline
-DECL|function|storeExtended
 r_void
 id|storeExtended
 c_func
@@ -823,9 +823,9 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* msw */
 )brace
+DECL|function|storeMultiple
 r_static
 r_inline
-DECL|function|storeMultiple
 r_void
 id|storeMultiple
 c_func
