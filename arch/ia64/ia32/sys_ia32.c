@@ -15468,6 +15468,11 @@ l_int|NULL
 (brace
 id|events64
 op_assign
+(paren
+r_struct
+id|epoll_event
+op_star
+)paren
 id|__get_free_pages
 c_func
 (paren
@@ -15632,6 +15637,10 @@ id|do_free_pages
 id|free_pages
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|events64
 comma
 id|get_order
