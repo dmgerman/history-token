@@ -72,7 +72,7 @@ id|khz
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|sa11x0_verify_speed
 c_func
 (paren

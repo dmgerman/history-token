@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/* Arthur doesn&squot;t have many signals, and a lot of those that it does&n;   have don&squot;t map easily to any Linux equivalent.  Never mind.  */
@@ -227,27 +226,46 @@ id|exec_domain
 id|arthur_exec_domain
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Arthur&quot;
 comma
-multiline_comment|/* name */
+dot
+id|handler
+op_assign
 id|arthur_lcall7
 comma
+dot
+id|pers_low
+op_assign
 id|PER_RISCOS
 comma
+dot
+id|pers_high
+op_assign
 id|PER_RISCOS
 comma
+dot
+id|signal_map
+op_assign
 id|arthur_to_linux_signals
 comma
+dot
+id|signal_invmap
+op_assign
 id|linux_to_arthur_signals
 comma
+dot
+id|module
+op_assign
 id|THIS_MODULE
 comma
-l_int|NULL
-multiline_comment|/* Nothing after this in the list. */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * We could do with some locking to stop Arthur being removed while&n; * processes are using it.&n; */
 DECL|function|arthur_init
+r_static
 r_int
 id|__init
 id|arthur_init
@@ -266,6 +284,7 @@ id|arthur_exec_domain
 suffix:semicolon
 )brace
 DECL|function|arthur_exit
+r_static
 r_void
 id|__exit
 id|arthur_exit
