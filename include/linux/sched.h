@@ -1229,6 +1229,12 @@ r_int
 r_int
 id|ptrace_message
 suffix:semicolon
+DECL|member|last_siginfo
+id|siginfo_t
+op_star
+id|last_siginfo
+suffix:semicolon
+multiline_comment|/* For ptrace use.  */
 )brace
 suffix:semicolon
 r_extern
@@ -1295,6 +1301,10 @@ DECL|macro|PT_TRACE_CLONE
 mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
 DECL|macro|PT_TRACE_EXEC
 mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
+DECL|macro|PT_TRACE_VFORK_DONE
+mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
+DECL|macro|PT_TRACE_EXIT
+mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
@@ -2788,7 +2798,7 @@ id|lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sig-&gt;siglock.  */
+multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern
 id|FASTCALL
 c_func

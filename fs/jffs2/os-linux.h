@@ -62,7 +62,7 @@ DECL|macro|current_sig_lock
 mdefine_line|#define current_sig_lock current-&gt;sigmask_lock
 macro_line|#else
 DECL|macro|current_sig_lock
-mdefine_line|#define current_sig_lock current-&gt;sig-&gt;siglock
+mdefine_line|#define current_sig_lock current-&gt;sighand-&gt;siglock
 macro_line|#endif
 DECL|function|jffs2_init_inode_info
 r_static
