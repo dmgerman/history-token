@@ -11891,7 +11891,7 @@ suffix:semicolon
 id|dev_t
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -12516,7 +12516,7 @@ c_cond
 (paren
 id|devc-&gt;mixer_minor
 op_eq
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
