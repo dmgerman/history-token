@@ -2,7 +2,7 @@ multiline_comment|/*&n; * include/linux/cpu.h - generic cpu definition&n; *&n; *
 macro_line|#ifndef _LINUX_CPU_H_
 DECL|macro|_LINUX_CPU_H_
 mdefine_line|#define _LINUX_CPU_H_
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|cpu
@@ -39,8 +39,8 @@ op_star
 suffix:semicolon
 r_extern
 r_struct
-r_class
-id|cpu_class
+id|sysdev_class
+id|cpu_sysdev_class
 suffix:semicolon
 multiline_comment|/* Stop CPUs going up and down. */
 r_extern
