@@ -159,8 +159,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-DECL|macro|PARPORT_NEED_GENERIC_OPS
-mdefine_line|#define PARPORT_NEED_GENERIC_OPS
 multiline_comment|/* Define this later. */
 r_struct
 id|parport
@@ -2056,9 +2054,7 @@ id|device
 )paren
 suffix:semicolon
 multiline_comment|/* If PC hardware is the only type supported, we can optimise a bit.  */
-macro_line|#if (defined(CONFIG_PARPORT_PC) || defined(CONFIG_PARPORT_PC_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_ARC) || defined(CONFIG_PARPORT_ARC_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_AMIGA) || defined(CONFIG_PARPORT_AMIGA_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_MFC3) || defined(CONFIG_PARPORT_MFC3_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_ATARI) || defined(CONFIG_PARPORT_ATARI_MODULE)) &amp;&amp; !(defined(CONFIG_USB_USS720) || defined(CONFIG_USB_USS720_MODULE)) &amp;&amp; !(defined(CONFIG_PARPORT_SUNBPP) || defined(CONFIG_PARPORT_SUNBPP_MODULE)) &amp;&amp; !defined(CONFIG_PARPORT_OTHER)
-DECL|macro|PARPORT_NEED_GENERIC_OPS
-macro_line|#undef PARPORT_NEED_GENERIC_OPS
+macro_line|#if !defined(CONFIG_PARPORT_NOT_PC)
 macro_line|#include &lt;linux/parport_pc.h&gt;
 DECL|macro|parport_write_data
 mdefine_line|#define parport_write_data(p,x)            parport_pc_write_data(p,x)
@@ -2080,8 +2076,7 @@ DECL|macro|parport_data_forward
 mdefine_line|#define parport_data_forward(p)            parport_pc_data_forward(p)
 DECL|macro|parport_data_reverse
 mdefine_line|#define parport_data_reverse(p)            parport_pc_data_reverse(p)
-macro_line|#endif
-macro_line|#ifdef PARPORT_NEED_GENERIC_OPS
+macro_line|#else  /*  !CONFIG_PARPORT_NOT_PC  */
 multiline_comment|/* Generic operations vector through the dispatch table. */
 DECL|macro|parport_write_data
 mdefine_line|#define parport_write_data(p,x)            (p)-&gt;ops-&gt;write_data(p,x)
@@ -2103,7 +2098,7 @@ DECL|macro|parport_data_forward
 mdefine_line|#define parport_data_forward(p)            (p)-&gt;ops-&gt;data_forward(p)
 DECL|macro|parport_data_reverse
 mdefine_line|#define parport_data_reverse(p)            (p)-&gt;ops-&gt;data_reverse(p)
-macro_line|#endif
+macro_line|#endif /*  !CONFIG_PARPORT_NOT_PC  */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _PARPORT_H_ */
 eof
