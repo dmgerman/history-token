@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.44 $&t; $Date: 2003/02/18 19:49:02 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/*&n; *  linux/drivers/s390/net/lcs.c&n; *&n; *  Linux for S/390 Lan Channel Station Network Driver&n; *&n; *  Copyright (C)  1999-2001 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;     IBM Corporation&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  DJ Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; *&n; *    $Revision: 1.51 $&t; $Date: 2003/03/28 08:54:40 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -23,7 +22,7 @@ macro_line|#error Cannot compile lcs.c without some net devices switched on.
 macro_line|#endif
 multiline_comment|/**&n; * initialization string for output&n; */
 DECL|macro|VERSION_LCS_C
-mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.44 $&quot;
+mdefine_line|#define VERSION_LCS_C  &quot;$Revision: 1.51 $&quot;
 DECL|variable|__initdata
 r_static
 r_char
@@ -1250,6 +1249,7 @@ op_amp
 id|card-&gt;lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_MULTICAST
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1257,6 +1257,7 @@ op_amp
 id|card-&gt;ipm_list
 )paren
 suffix:semicolon
+macro_line|#endif
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1345,6 +1346,12 @@ id|ipm_list
 suffix:semicolon
 )brace
 macro_line|#endif
+id|kfree
+c_func
+(paren
+id|card-&gt;dev
+)paren
+suffix:semicolon
 multiline_comment|/* Cleanup channels. */
 id|lcs_cleanup_channel
 c_func
@@ -2240,8 +2247,6 @@ id|buffer
 r_int
 id|index
 comma
-id|prevprev
-comma
 id|prev
 comma
 id|next
@@ -2267,20 +2272,6 @@ op_assign
 id|buffer
 op_minus
 id|channel-&gt;iob
-suffix:semicolon
-id|prevprev
-op_assign
-(paren
-id|index
-op_minus
-l_int|1
-)paren
-op_amp
-(paren
-id|LCS_NUM_BUFFS
-op_minus
-l_int|1
-)paren
 suffix:semicolon
 id|prev
 op_assign
@@ -4677,8 +4668,6 @@ id|iob
 suffix:semicolon
 r_int
 id|buf_idx
-comma
-id|io_idx
 suffix:semicolon
 r_int
 id|rc
@@ -4721,17 +4710,9 @@ id|buf_idx
 op_assign
 id|channel-&gt;buf_idx
 suffix:semicolon
-id|io_idx
-op_assign
-id|channel-&gt;io_idx
-suffix:semicolon
 r_while
 c_loop
 (paren
-id|buf_idx
-op_ne
-id|io_idx
-op_logical_and
 id|iob
 (braket
 id|buf_idx
@@ -6157,6 +6138,9 @@ id|lcs_card
 op_star
 id|card
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 id|card
 op_assign
 (paren
@@ -6223,8 +6207,32 @@ comma
 id|card-&gt;dev-&gt;name
 )paren
 suffix:semicolon
-r_return
+multiline_comment|/*Try to reset the card, stop it on failure */
+id|rc
+op_assign
+id|lcs_resetcard
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
 l_int|0
+)paren
+id|rc
+op_assign
+id|lcs_stopcard
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * Kernel Thread helper functions for LGW initiated commands&n; */
@@ -6328,6 +6336,7 @@ comma
 id|SIGCHLD
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_MULTICAST
 r_if
 c_cond
 (paren
@@ -6354,6 +6363,7 @@ comma
 id|SIGCHLD
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/**&n; * Process control frames.&n; */
 r_static
@@ -6913,13 +6923,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: really free the net_device here ?!?
-id|kfree
-c_func
-(paren
-id|card-&gt;dev
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|lcs_stopcard
@@ -6938,8 +6941,6 @@ c_func
 (paren
 l_string|&quot;Try it again!&bslash;n &quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 id|rc
@@ -7009,8 +7010,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|netif_wake_queue
 c_func
 (paren
@@ -7663,6 +7662,10 @@ macro_line|#endif
 id|dev-&gt;get_stats
 op_assign
 id|lcs_getstats
+suffix:semicolon
+id|dev-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|netif_stop_queue
 c_func
