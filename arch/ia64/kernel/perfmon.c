@@ -20946,7 +20946,7 @@ l_int|0UL
 suffix:semicolon
 macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
-id|DRPINT
+id|DPRINT
 c_func
 (paren
 (paren
@@ -21309,7 +21309,7 @@ l_int|0UL
 suffix:semicolon
 macro_line|#ifndef CONFIG_MCKINLEY
 multiline_comment|/*&n;&t;&t; * will replay the PMU interrupt&n;&t;&t; */
-id|DRPINT
+id|DPRINT
 c_func
 (paren
 (paren
