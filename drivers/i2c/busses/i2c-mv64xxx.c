@@ -1806,6 +1806,16 @@ op_assign
 op_amp
 id|mv64xxx_i2c_algo
 suffix:semicolon
+id|drv_data-&gt;adapter.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|drv_data-&gt;adapter
+dot
+r_class
+op_assign
+id|I2C_CLASS_HWMON
+suffix:semicolon
 id|drv_data-&gt;adapter.timeout
 op_assign
 id|pdata-&gt;timeout
