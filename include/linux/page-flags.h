@@ -42,6 +42,8 @@ DECL|macro|PG_direct
 mdefine_line|#define PG_direct&t;&t;16&t;/* -&gt;pte_chain points directly at pte */
 DECL|macro|PG_mappedtodisk
 mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
+DECL|macro|PG_reclaim
+mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be recalimed asap */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -330,6 +332,14 @@ DECL|macro|SetPageMappedToDisk
 mdefine_line|#define SetPageMappedToDisk(page) set_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageMappedToDisk
 mdefine_line|#define ClearPageMappedToDisk(page) clear_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
+DECL|macro|PageReclaim
+mdefine_line|#define PageReclaim(page)&t;test_bit(PG_reclaim, &amp;(page)-&gt;flags)
+DECL|macro|SetPageReclaim
+mdefine_line|#define SetPageReclaim(page)&t;set_bit(PG_reclaim, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageReclaim
+mdefine_line|#define ClearPageReclaim(page)&t;clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageReclaim
+mdefine_line|#define TestClearPageReclaim(page) test_and_clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
 macro_line|#ifdef CONFIG_SWAP
 r_extern

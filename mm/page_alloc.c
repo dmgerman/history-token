@@ -585,6 +585,10 @@ id|PG_active
 op_or
 l_int|1
 op_lshift
+id|PG_reclaim
+op_or
+l_int|1
+op_lshift
 id|PG_writeback
 )paren
 )paren
@@ -1053,6 +1057,10 @@ op_or
 l_int|1
 op_lshift
 id|PG_dirty
+op_or
+l_int|1
+op_lshift
+id|PG_reclaim
 op_or
 l_int|1
 op_lshift
