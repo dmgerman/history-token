@@ -970,7 +970,7 @@ id|early_console_setup
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SGI_L1_SERIAL_CONSOLE
+macro_line|#ifdef CONFIG_SERIAL_SGI_L1_CONSOLE
 (brace
 r_extern
 r_int
