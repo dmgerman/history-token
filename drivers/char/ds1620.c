@@ -826,19 +826,6 @@ r_int
 r_char
 id|cur_temp_degF
 suffix:semicolon
-multiline_comment|/* Can&squot;t seek (pread) on this device */
-r_if
-c_cond
-(paren
-id|ptr
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|cur_temp
 op_assign
 id|cvt_9_to_int
@@ -1414,6 +1401,11 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
+comma
+dot
+id|open
+op_assign
+id|nonseekable_open
 comma
 dot
 id|read

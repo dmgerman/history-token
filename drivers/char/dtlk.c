@@ -379,19 +379,6 @@ l_int|0
 comma
 id|retries
 suffix:semicolon
-multiline_comment|/* Can&squot;t seek (pread) on the DoubleTalk.  */
-r_if
-c_cond
-(paren
-id|ppos
-op_ne
-op_amp
-id|file-&gt;f_pos
-)paren
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
 id|TRACE_TEXT
 c_func
 (paren
@@ -1117,6 +1104,14 @@ id|TRACE_TEXT
 c_func
 (paren
 l_string|&quot;(dtlk_open&quot;
+)paren
+suffix:semicolon
+id|nonseekable_open
+c_func
+(paren
+id|inode
+comma
+id|file
 )paren
 suffix:semicolon
 r_switch
