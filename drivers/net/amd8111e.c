@@ -3321,7 +3321,7 @@ id|lp
 comma
 id|skb
 comma
-id|le16_to_cpy
+id|le16_to_cpu
 c_func
 (paren
 id|lp-&gt;rx_ring
