@@ -171,14 +171,6 @@ op_star
 id|opt
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|pci_iommu_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Allocate and map kernel buffer using consistent mode DMA for a device.&n; * hwdev should be valid struct pci_dev pointer for PCI devices,&n; * NULL for PCI-like buses (ISA, EISA).&n; * Returns non-NULL cpu-view pointer to the buffer if successful and&n; * sets *dma_addrp to the pci side dma address as well, else *dma_addrp&n; * is undefined.&n; */
 r_extern
 r_void

@@ -2,12 +2,8 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 multiline_comment|/* &n; * Dummy IO MMU functions&n; */
-r_extern
-r_int
-r_int
-id|end_pfn
-suffix:semicolon
 DECL|function|pci_alloc_consistent
 r_void
 op_star

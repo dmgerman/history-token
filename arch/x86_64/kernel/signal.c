@@ -2204,10 +2204,6 @@ id|oldset
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|exception_trace
-suffix:semicolon
 DECL|function|signal_fault
 r_void
 id|signal_fault

@@ -23,7 +23,6 @@ r_int
 id|loops
 )paren
 (brace
-macro_line|#ifndef CONFIG_SIMNOW
 r_int
 r_int
 id|bclock
@@ -64,7 +63,6 @@ id|loops
 (brace
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 DECL|function|__const_udelay
 r_inline

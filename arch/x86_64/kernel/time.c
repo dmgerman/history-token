@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
@@ -37,21 +38,6 @@ id|spinlock_t
 id|i8253_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-r_extern
-r_int
-id|using_apic_timer
-suffix:semicolon
-r_extern
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
 suffix:semicolon
 DECL|macro|HPET_HACK_ENABLE_DANGEROUS
 macro_line|#undef HPET_HACK_ENABLE_DANGEROUS

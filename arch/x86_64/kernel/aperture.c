@@ -25,12 +25,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-r_extern
-r_int
-id|no_iommu
-comma
-id|force_mmu
-suffix:semicolon
 multiline_comment|/* This code runs before the PCI subsystem is initialized, so just &n;   access the northbridge directly. */
 DECL|macro|NB_ID_3
 mdefine_line|#define NB_ID_3 (PCI_VENDOR_ID_AMD | (0x1103&lt;&lt;16))

@@ -2434,7 +2434,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;AMD %s&quot;
+l_string|&quot;%s&quot;
 comma
 id|c-&gt;x86_model_id
 )paren

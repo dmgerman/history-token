@@ -1674,7 +1674,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;MCE at EIP %lx ESP %lx&bslash;n&quot;
+l_string|&quot;MCE at RIP %lx RSP %lx&bslash;n&quot;
 comma
 id|regs-&gt;rip
 comma
@@ -1867,11 +1867,6 @@ id|cap
 suffix:semicolon
 r_int
 id|i
-suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|nb
 suffix:semicolon
 r_if
 c_cond

@@ -668,14 +668,6 @@ id|regs-&gt;rsp
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|load_gs_index
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Free current thread data structures etc..&n; */
 DECL|function|exit_thread
 r_void
