@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * Port for PPC64 David Engebretsen, IBM Corp.&n; * Contains common pci routines for ppc64 platform, pSeries and iSeries brands.&n; * &n; * Copyright (C) 2003 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; *   Rework, based on alpha PCI code.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -24,6 +26,13 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
+macro_line|#ifdef DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(fmt...)
+macro_line|#endif
 DECL|variable|pci_probe_only
 r_int
 r_int
@@ -286,8 +295,8 @@ comma
 id|fixup_windbond_82c105
 )paren
 suffix:semicolon
-r_void
 DECL|function|pcibios_resource_to_bus
+r_void
 id|pcibios_resource_to_bus
 c_func
 (paren
@@ -658,11 +667,11 @@ l_int|7
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate pci_controller(phb) initialized common variables.&n; */
+DECL|function|pci_alloc_pci_controller
 r_struct
 id|pci_controller
 op_star
 id|__init
-DECL|function|pci_alloc_pci_controller
 id|pci_alloc_pci_controller
 c_func
 (paren
@@ -784,10 +793,10 @@ id|hose
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Dymnamically allocate pci_controller(phb), initialize common variables.&n; */
+DECL|function|pci_alloc_phb_dynamic
 r_struct
 id|pci_controller
 op_star
-DECL|function|pci_alloc_phb_dynamic
 id|pci_alloc_phb_dynamic
 c_func
 (paren
@@ -1446,10 +1455,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Platform support for /proc/bus/pci/X/Y mmap()s,&n; * modelled on the sparc64 implementation by Dave Miller.&n; *  -- paulus.&n; */
 multiline_comment|/*&n; * Adjust vm_pgoff of VMA such that it is the physical page offset&n; * corresponding to the 32-bit pci bus offset for DEV requested by the user.&n; *&n; * Basically, the user finds the base address for his device which he wishes&n; * to mmap.  They read the 32-bit value from the config space base register,&n; * add whatever PAGE_SIZE multiple offset they wish, and feed this into the&n; * offset parameter of mmap on /proc/bus/pci/XXX for that device.&n; *&n; * Returns negative error code on failure, zero on success.&n; */
+DECL|function|__pci_mmap_make_offset
 r_static
 id|__inline__
 r_int
-DECL|function|__pci_mmap_make_offset
 id|__pci_mmap_make_offset
 c_func
 (paren
@@ -1645,10 +1654,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set vm_flags of VMA, as appropriate for this architecture, for a pci device&n; * mapping.&n; */
+DECL|function|__pci_mmap_set_flags
 r_static
 id|__inline__
 r_void
-DECL|function|__pci_mmap_set_flags
 id|__pci_mmap_set_flags
 c_func
 (paren
@@ -1677,10 +1686,10 @@ id|VM_IO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set vm_page_prot of VMA, as appropriate for this architecture, for a pci&n; * device mapping.&n; */
+DECL|function|__pci_mmap_set_pgprot
 r_static
 id|__inline__
 r_void
-DECL|function|__pci_mmap_set_pgprot
 id|__pci_mmap_set_pgprot
 c_func
 (paren
@@ -2322,6 +2331,22 @@ id|res-&gt;start
 op_assign
 id|pci_addr
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;phb%d: IO 0x%lx -&gt; 0x%lx&bslash;n&quot;
+comma
+id|hose-&gt;global_number
+comma
+id|res-&gt;start
+comma
+id|res-&gt;start
+op_plus
+id|size
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2385,6 +2410,22 @@ suffix:semicolon
 id|res-&gt;start
 op_assign
 id|cpu_phys_addr
+suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;phb%d: MEM 0x%lx -&gt; 0x%lx&bslash;n&quot;
+comma
+id|hose-&gt;global_number
+comma
+id|res-&gt;start
+comma
+id|res-&gt;start
+op_plus
+id|size
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 )brace
 r_break
