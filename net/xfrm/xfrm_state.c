@@ -996,12 +996,6 @@ op_star
 id|x
 )paren
 (brace
-id|xfrm_state_delete_tunnel
-c_func
-(paren
-id|x
-)paren
-suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren

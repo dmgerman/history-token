@@ -1638,6 +1638,12 @@ id|ipcd
 )paren
 r_return
 suffix:semicolon
+id|xfrm_state_delete_tunnel
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
 id|ipcomp_free_data
 c_func
 (paren
