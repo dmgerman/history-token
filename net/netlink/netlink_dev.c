@@ -738,6 +738,8 @@ l_int|13
 )brace
 comma
 )brace
+suffix:semicolon
+DECL|function|make_devfs_entries
 r_static
 r_void
 id|__init
@@ -777,6 +779,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|function|init_netlink
 r_int
 id|__init
 id|init_netlink
@@ -785,6 +788,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren

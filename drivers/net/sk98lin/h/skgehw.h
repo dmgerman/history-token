@@ -316,8 +316,6 @@ multiline_comment|/* VPD Region */
 multiline_comment|/*&t;PCI_VPD_ADR_REG&t;&t;16 bit&t;VPD Address Register */
 DECL|macro|PCI_VPD_FLAG
 mdefine_line|#define&t;PCI_VPD_FLAG&t;(1L&lt;&lt;15)&t;/* Bit 15:&t;starts VPD rd/wd cycle*/
-DECL|macro|PCI_VPD_ADDR
-mdefine_line|#define PCI_VPD_ADDR&t;(0x3fffL&lt;&lt;0)&t;/* Bit 14..0:&t;VPD address */
 multiline_comment|/*&n; *&t;Control Register File:&n; *&t;Bank 0&n; */
 DECL|macro|B0_RAP
 mdefine_line|#define&t;B0_RAP&t;&t;&t;0x0000&t;/*  8 bit&t;Register Address Port */
