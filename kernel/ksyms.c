@@ -2572,6 +2572,8 @@ c_func
 id|set_cpus_allowed
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL
 c_func
