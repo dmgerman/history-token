@@ -10,49 +10,16 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/* kernel_thread */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &quot;msp3400.h&quot;
-multiline_comment|/* Addresses to scan */
-DECL|variable|normal_i2c
-r_static
-r_int
-r_int
-id|normal_i2c
-(braket
-)braket
-op_assign
-(brace
-id|I2C_CLIENT_END
-)brace
-suffix:semicolon
-DECL|variable|normal_i2c_range
-r_static
-r_int
-r_int
-id|normal_i2c_range
-(braket
-)braket
-op_assign
-(brace
-l_int|0x40
-comma
-l_int|0x40
-comma
-id|I2C_CLIENT_END
-)brace
-suffix:semicolon
-id|I2C_CLIENT_INSMOD
-suffix:semicolon
 multiline_comment|/* insmod parameters */
 DECL|variable|debug
 r_static
@@ -134,13 +101,16 @@ DECL|struct|msp3400c
 r_struct
 id|msp3400c
 (brace
+DECL|member|rev1
+DECL|member|rev2
+r_int
+id|rev1
+comma
+id|rev2
+suffix:semicolon
 DECL|member|simple
 r_int
 id|simple
-suffix:semicolon
-DECL|member|nicam
-r_int
-id|nicam
 suffix:semicolon
 DECL|member|mode
 r_int
@@ -239,6 +209,12 @@ id|wake_stereo
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|HAVE_NICAM
+mdefine_line|#define HAVE_NICAM(msp)   (((msp-&gt;rev2&gt;&gt;8) &amp; 0xff) != 00)
+DECL|macro|HAVE_SIMPLE
+mdefine_line|#define HAVE_SIMPLE(msp)  ((msp-&gt;rev1      &amp; 0xff) &gt;= &squot;D&squot;-&squot;@&squot;)
+DECL|macro|HAVE_RADIO
+mdefine_line|#define HAVE_RADIO(msp)   ((msp-&gt;rev1      &amp; 0xff) &gt;= &squot;G&squot;-&squot;@&squot;)
 DECL|macro|MSP3400_MAX
 mdefine_line|#define MSP3400_MAX 4
 DECL|variable|msps
@@ -311,16 +287,56 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* FreeBSD uses this too */
 multiline_comment|/* ---------------------------------------------------------------------- */
 DECL|macro|I2C_MSP3400C
 mdefine_line|#define I2C_MSP3400C       0x80
+DECL|macro|I2C_MSP3400C_ALT
+mdefine_line|#define I2C_MSP3400C_ALT   0x88
 DECL|macro|I2C_MSP3400C_DEM
 mdefine_line|#define I2C_MSP3400C_DEM   0x10
 DECL|macro|I2C_MSP3400C_DFP
 mdefine_line|#define I2C_MSP3400C_DFP   0x12
+multiline_comment|/* Addresses to scan */
+DECL|variable|normal_i2c
+r_static
+r_int
+r_int
+id|normal_i2c
+(braket
+)braket
+op_assign
+(brace
+id|I2C_MSP3400C
+op_rshift
+l_int|1
+comma
+id|I2C_MSP3400C_ALT
+op_rshift
+l_int|1
+comma
+id|I2C_CLIENT_END
+)brace
+suffix:semicolon
+DECL|variable|normal_i2c_range
+r_static
+r_int
+r_int
+id|normal_i2c_range
+(braket
+)braket
+op_assign
+(brace
+id|I2C_CLIENT_END
+comma
+id|I2C_CLIENT_END
+)brace
+suffix:semicolon
+id|I2C_CLIENT_INSMOD
+suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* functions for talking to the MSP3400C Sound processor                   */
 macro_line|#ifndef I2C_M_IGNORE_NAK
@@ -1722,6 +1738,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: scart switch: %s =&gt; %d&bslash;n&quot;
 comma
 id|scart_names
@@ -1948,6 +1965,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: setvolume: mute=%s %d:%d  v=0x%02x b=0x%02x&bslash;n&quot;
 comma
 id|muted
@@ -2062,6 +2080,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: setbass: %d 0x%02x&bslash;n&quot;
 comma
 id|bass
@@ -2120,6 +2139,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: settreble: %d 0x%02x&bslash;n&quot;
 comma
 id|treble
@@ -2175,6 +2195,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: setmode: %d&bslash;n&quot;
 comma
 id|type
@@ -2504,7 +2525,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|msp-&gt;nicam
+id|HAVE_NICAM
+c_func
+(paren
+id|msp
+)paren
 )paren
 (brace
 multiline_comment|/* nicam prescale */
@@ -2544,26 +2569,46 @@ r_char
 op_star
 id|strmode
 (braket
+l_int|16
 )braket
 op_assign
 (brace
-l_string|&quot;0&quot;
+macro_line|#if __GNUC__ &gt;= 3
+(braket
+l_int|0
+dot
+dot
+dot
+l_int|15
+)braket
+op_assign
+l_string|&quot;invalid&quot;
 comma
+macro_line|#endif
+(braket
+id|VIDEO_SOUND_MONO
+)braket
+op_assign
 l_string|&quot;mono&quot;
 comma
+(braket
+id|VIDEO_SOUND_STEREO
+)braket
+op_assign
 l_string|&quot;stereo&quot;
 comma
-l_string|&quot;3&quot;
-comma
+(braket
+id|VIDEO_SOUND_LANG1
+)braket
+op_assign
 l_string|&quot;lang1&quot;
 comma
-l_string|&quot;5&quot;
-comma
-l_string|&quot;6&quot;
-comma
-l_string|&quot;7&quot;
-comma
+(braket
+id|VIDEO_SOUND_LANG2
+)braket
+op_assign
 l_string|&quot;lang2&quot;
+comma
 )brace
 suffix:semicolon
 r_struct
@@ -2601,6 +2646,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: FM setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2674,6 +2720,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: SAT setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2795,6 +2842,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: NICAM setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2830,6 +2878,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: BTSC setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2850,6 +2899,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: extern setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2870,6 +2920,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: FM-Radio setstereo: %s&bslash;n&quot;
 comma
 id|strmode
@@ -2885,6 +2936,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: mono setstereo&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2986,6 +3038,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: setstereo final source/matrix = 0x%x&bslash;n&quot;
 comma
 id|src
@@ -3121,6 +3174,7 @@ id|msp-&gt;second
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: mono sound carrier: %d.%03d MHz&bslash;n&quot;
 comma
 id|msp-&gt;main
@@ -3142,6 +3196,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: main sound carrier: %d.%03d MHz&bslash;n&quot;
 comma
 id|msp-&gt;main
@@ -3172,6 +3227,7 @@ id|MSP_MODE_FM_NICAM2
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: NICAM/FM carrier   : %d.%03d MHz&bslash;n&quot;
 comma
 id|msp-&gt;second
@@ -3197,6 +3253,7 @@ id|MSP_MODE_AM_NICAM
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: NICAM/AM carrier   : %d.%03d MHz&bslash;n&quot;
 comma
 id|msp-&gt;second
@@ -3227,6 +3284,7 @@ id|msp-&gt;second
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: FM-stereo carrier : %d.%03d MHz&bslash;n&quot;
 comma
 id|msp-&gt;second
@@ -3447,6 +3505,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: stereo detect register: %d&bslash;n&quot;
 comma
 id|val
@@ -3521,6 +3580,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: nicam sync=%d, mode=%d&bslash;n&quot;
 comma
 id|val
@@ -3644,6 +3704,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: status=0x%x (pri=%s, sec=%s, %s%s%s)&bslash;n&quot;
 comma
 id|val
@@ -3748,6 +3809,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: watch: stereo %d =&gt; %d&bslash;n&quot;
 comma
 id|msp-&gt;stereo
@@ -3775,6 +3837,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: watch: nicam %d =&gt; %d&bslash;n&quot;
 comma
 id|msp-&gt;nicam_on
@@ -3890,6 +3953,22 @@ id|VIDEO_SOUND_LANG1
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|msp-&gt;stereo
+op_amp
+id|VIDEO_SOUND_LANG2
+)paren
+id|msp3400c_setstereo
+c_func
+(paren
+id|client
+comma
+id|VIDEO_SOUND_LANG2
+)paren
+suffix:semicolon
+r_else
 id|msp3400c_setstereo
 c_func
 (paren
@@ -3976,13 +4055,11 @@ id|val
 comma
 id|this
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|daemonize
 c_func
 (paren
@@ -3993,13 +4070,11 @@ id|msp-&gt;thread
 op_assign
 id|current
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -4083,20 +4158,6 @@ id|current
 r_goto
 id|done
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|VIDEO_MODE_RADIO
-op_eq
-id|msp-&gt;norm
-op_logical_or
-id|MSP_MODE_EXTERN
-op_eq
-id|msp-&gt;mode
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* nothing to do */
 id|msp-&gt;active
 op_assign
 l_int|1
@@ -4158,9 +4219,29 @@ id|MSP_MODE_EXTERN
 op_eq
 id|msp-&gt;mode
 )paren
+(brace
+multiline_comment|/* no carrier scan, just unmute */
+id|printk
+c_func
+(paren
+l_string|&quot;msp3400: thread: no carrier scan&bslash;n&quot;
+)paren
+suffix:semicolon
+id|msp3400c_setvolume
+c_func
+(paren
+id|client
+comma
+id|msp-&gt;muted
+comma
+id|msp-&gt;left
+comma
+id|msp-&gt;right
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
-multiline_comment|/* nothing to do */
+)brace
 id|msp-&gt;restart
 op_assign
 l_int|0
@@ -4655,7 +4736,11 @@ id|max2
 op_eq
 l_int|1
 op_logical_and
-id|msp-&gt;nicam
+id|HAVE_NICAM
+c_func
+(paren
+id|msp
+)paren
 )paren
 (brace
 multiline_comment|/* B/G NICAM */
@@ -4874,7 +4959,11 @@ id|max2
 op_eq
 l_int|0
 op_logical_and
-id|msp-&gt;nicam
+id|HAVE_NICAM
+c_func
+(paren
+id|msp
+)paren
 )paren
 (brace
 multiline_comment|/* D/K NICAM */
@@ -5034,6 +5123,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3400: thread: exit&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5473,13 +5563,11 @@ id|i
 comma
 id|std
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|daemonize
 c_func
 (paren
@@ -5490,13 +5578,11 @@ id|msp-&gt;thread
 op_assign
 id|current
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -5543,6 +5629,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: thread: sleep&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5563,6 +5650,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: thread: wakeup&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5579,15 +5667,6 @@ id|current
 )paren
 r_goto
 id|done
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|msp-&gt;mode
-op_eq
-id|MSP_MODE_EXTERN
-)paren
-r_continue
 suffix:semicolon
 id|msp-&gt;active
 op_assign
@@ -5646,8 +5725,30 @@ id|msp-&gt;mode
 op_eq
 id|MSP_MODE_EXTERN
 )paren
+(brace
+multiline_comment|/* no carrier scan needed, just unmute */
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msp3410: thread: no carrier scan&bslash;n&quot;
+)paren
+suffix:semicolon
+id|msp3400c_setvolume
+c_func
+(paren
+id|client
+comma
+id|msp-&gt;muted
+comma
+id|msp-&gt;left
+comma
+id|msp-&gt;right
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|msp-&gt;restart
 op_assign
 l_int|0
@@ -5812,6 +5913,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: setting mode: %s (0x%04x)&bslash;n&quot;
 comma
 id|modelist
@@ -5916,6 +6018,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: detection still in progress&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5957,6 +6060,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: current mode: %s (0x%04x)&bslash;n&quot;
 comma
 id|modelist
@@ -6019,7 +6123,9 @@ multiline_comment|/* autodetection has failed, let backup */
 id|dprintk
 c_func
 (paren
-l_string|&quot;msp3410: autodetection failed, switching to backup mode: %s (0x%04x)&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;msp3410: autodetection failed,&quot;
+l_string|&quot; switching to backup mode: %s (0x%04x)&bslash;n&quot;
 comma
 id|modelist
 (braket
@@ -6232,6 +6338,33 @@ id|msp-&gt;watch_stereo
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* not needed in theory if HAVE_RADIO(), but&n;&t;&t;&t;   short programming enables carrier mute */
+id|msp3400c_setmode
+c_func
+(paren
+id|client
+comma
+id|MSP_MODE_FM_RADIO
+)paren
+suffix:semicolon
+id|msp3400c_setcarrier
+c_func
+(paren
+id|client
+comma
+id|MSP_CARRIER
+c_func
+(paren
+l_float|10.7
+)paren
+comma
+id|MSP_CARRIER
+c_func
+(paren
+l_float|10.7
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* scart routing */
 id|msp3400c_set_scart
 c_func
@@ -6243,6 +6376,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* radio from SCART_IN2 */
 id|msp3400c_write
 c_func
 (paren
@@ -6279,6 +6414,45 @@ comma
 l_int|0x0220
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* msp34xx does radio decoding */
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x08
+comma
+l_int|0x0020
+)paren
+suffix:semicolon
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x09
+comma
+l_int|0x0020
+)paren
+suffix:semicolon
+id|msp3400c_write
+c_func
+(paren
+id|client
+comma
+id|I2C_MSP3400C_DFP
+comma
+l_int|0x0b
+comma
+l_int|0x0020
+)paren
+suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -6364,6 +6538,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp3410: thread: exit&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6504,6 +6679,12 @@ id|i2c_client
 id|client_template
 op_assign
 (brace
+id|I2C_DEVNAME
+c_func
+(paren
+l_string|&quot;(unset)&quot;
+)paren
+comma
 dot
 id|flags
 op_assign
@@ -6514,17 +6695,6 @@ id|driver
 op_assign
 op_amp
 id|driver
-comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;(unset)&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon
@@ -6563,10 +6733,6 @@ op_star
 id|c
 suffix:semicolon
 r_int
-id|rev1
-comma
-id|rev2
-comma
 id|i
 suffix:semicolon
 id|client_template.adapter
@@ -6787,7 +6953,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|rev1
+id|msp-&gt;rev1
 op_assign
 id|msp3400c_read
 c_func
@@ -6805,9 +6971,9 @@ c_cond
 op_minus
 l_int|1
 op_ne
-id|rev1
+id|msp-&gt;rev1
 )paren
-id|rev2
+id|msp-&gt;rev2
 op_assign
 id|msp3400c_read
 c_func
@@ -6826,17 +6992,17 @@ c_cond
 op_minus
 l_int|1
 op_eq
-id|rev1
+id|msp-&gt;rev1
 )paren
 op_logical_or
 (paren
 l_int|0
 op_eq
-id|rev1
+id|msp-&gt;rev1
 op_logical_and
 l_int|0
 op_eq
-id|rev2
+id|msp-&gt;rev2
 )paren
 )paren
 (brace
@@ -6900,7 +7066,7 @@ comma
 l_string|&quot;MSP34%02d%c-%c%d&quot;
 comma
 (paren
-id|rev2
+id|msp-&gt;rev2
 op_rshift
 l_int|8
 )paren
@@ -6908,7 +7074,7 @@ op_amp
 l_int|0xff
 comma
 (paren
-id|rev1
+id|msp-&gt;rev1
 op_amp
 l_int|0xff
 )paren
@@ -6917,7 +7083,7 @@ l_char|&squot;@&squot;
 comma
 (paren
 (paren
-id|rev1
+id|msp-&gt;rev1
 op_rshift
 l_int|8
 )paren
@@ -6927,31 +7093,10 @@ l_int|0xff
 op_plus
 l_char|&squot;@&squot;
 comma
-id|rev2
+id|msp-&gt;rev2
 op_amp
 l_int|0x1f
 )paren
-suffix:semicolon
-id|msp-&gt;nicam
-op_assign
-(paren
-(paren
-(paren
-id|rev2
-op_rshift
-l_int|8
-)paren
-op_amp
-l_int|0xff
-)paren
-op_ne
-l_int|00
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -6963,19 +7108,12 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* default mode */
-multiline_comment|/* msp-&gt;simple = (((rev2&gt;&gt;8)&amp;0xff) == 0) ? 0 : 1; */
 id|msp-&gt;simple
 op_assign
+id|HAVE_SIMPLE
+c_func
 (paren
-(paren
-id|rev1
-op_amp
-l_int|0xff
-)paren
-op_plus
-l_char|&squot;@&squot;
-OG
-l_char|&squot;C&squot;
+id|msp
 )paren
 suffix:semicolon
 )brace
@@ -7014,18 +7152,56 @@ c_func
 id|KERN_INFO
 l_string|&quot;msp34xx: init: chip=%s&quot;
 comma
-id|c-&gt;dev.name
+id|i2c_clientname
+c_func
+(paren
+id|c
+)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|msp-&gt;nicam
+id|HAVE_NICAM
+c_func
+(paren
+id|msp
+)paren
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot;, has NICAM support&quot;
+l_string|&quot; +nicam&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|HAVE_SIMPLE
+c_func
+(paren
+id|msp
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; +simple&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|HAVE_RADIO
+c_func
+(paren
+id|msp
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; +radio&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -7035,8 +7211,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* startup control thread */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|msp-&gt;notify
 op_assign
 op_amp
@@ -7263,8 +7437,6 @@ c_func
 (paren
 id|client
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -7627,6 +7799,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;msp34xx: switching to radio mode&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7711,6 +7884,7 @@ op_assign
 id|arg
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if
@@ -7737,14 +7911,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|bl_dfp
-)paren
-op_div
-r_sizeof
-(paren
-r_int
 )paren
 suffix:semicolon
 id|i
@@ -8065,6 +8235,10 @@ c_cond
 id|va-&gt;mode
 op_ne
 l_int|0
+op_logical_and
+id|msp-&gt;norm
+op_ne
+id|VIDEO_MODE_RADIO
 )paren
 (brace
 id|msp-&gt;watch_stereo
@@ -8081,6 +8255,8 @@ suffix:semicolon
 id|msp-&gt;stereo
 op_assign
 id|va-&gt;mode
+op_amp
+l_int|0x0f
 suffix:semicolon
 id|msp3400c_setstereo
 c_func
@@ -8088,6 +8264,8 @@ c_func
 id|client
 comma
 id|va-&gt;mode
+op_amp
+l_int|0x0f
 )paren
 suffix:semicolon
 )brace
@@ -8110,12 +8288,6 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;msp34xx: VIDIOCSCHAN&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;msp34xx: switching to TV mode&bslash;n&quot;
 )paren
 suffix:semicolon
 id|msp-&gt;norm
