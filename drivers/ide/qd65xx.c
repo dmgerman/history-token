@@ -8,11 +8,11 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;ata-timing.h&quot;
+macro_line|#include &quot;timing.h&quot;
 macro_line|#include &quot;qd65xx.h&quot;
 multiline_comment|/*&n; * I/O ports are 0x30-0x31 (and 0x32-0x33 for qd6580)&n; *            or 0xb0-0xb1 (and 0xb2-0xb3 for qd6580)&n; *&t;-- qd6500 is a single IDE interface&n; *&t;-- qd6580 is a dual IDE interface&n; *&n; * More research on qd6580 being done by willmore@cig.mot.com (David)&n; * More Information given by Petr Soucek (petr@ryston.cz)&n; * http://www.ryston.cz/petr/vlb&n; */
 multiline_comment|/*&n; * base: Timer1&n; *&n; *&n; * base+0x01: Config (R/O)&n; *&n; * bit 0: ide baseport: 1 = 0x1f0 ; 0 = 0x170 (only useful for qd6500)&n; * bit 1: qd65xx baseport: 1 = 0xb0 ; 0 = 0x30&n; * bit 2: ID3: bus speed: 1 = &lt;=33MHz ; 0 = &gt;33MHz&n; * bit 3: qd6500: 1 = disabled, 0 = enabled&n; *        qd6580: 1&n; * upper nibble:&n; *        qd6500: 1100&n; *        qd6580: either 1010 or 0101&n; *&n; *&n; * base+0x02: Timer2 (qd6580 only)&n; *&n; *&n; * base+0x03: Control (qd6580 only)&n; *&n; * bits 0-3 must always be set 1&n; * bit 4 must be set 1, but is set 0 by dos driver while measuring vlb clock&n; * bit 0 : 1 = Only primary port enabled : channel 0 for hda, channel 1 for hdb&n; *         0 = Primary and Secondary ports enabled : channel 0 for hda &amp; hdb&n; *                                                   channel 1 for hdc &amp; hdd&n; * bit 1 : 1 = only disks on primary port&n; *         0 = disks &amp; ATAPI devices on primary port&n; * bit 2-4 : always 0&n; * bit 5 : status, but of what ?&n; * bit 6 : always set 1 by dos driver&n; * bit 7 : set 1 for non-ATAPI devices on primary port&n; * &t;(maybe read-ahead and post-write buffer ?)&n; */
@@ -33,10 +33,11 @@ r_void
 id|qd_write_reg
 c_func
 (paren
-id|byte
+id|u8
 id|content
 comma
-id|byte
+r_int
+r_int
 id|reg
 )paren
 (brace
@@ -74,12 +75,14 @@ suffix:semicolon
 multiline_comment|/* all CPUs */
 )brace
 DECL|function|qd_read_reg
-id|byte
+r_static
+id|u8
 id|__init
 id|qd_read_reg
 c_func
 (paren
-id|byte
+r_int
+r_int
 id|reg
 )paren
 (brace
@@ -87,7 +90,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|read
 suffix:semicolon
 id|save_flags
@@ -135,7 +138,7 @@ op_star
 id|drive
 )paren
 (brace
-id|byte
+id|u8
 id|index
 op_assign
 (paren
@@ -203,7 +206,7 @@ suffix:semicolon
 multiline_comment|/*&n; * qd6500_compute_timing&n; *&n; * computes the timing value where&n; *&t;lower nibble represents active time,   in count of VLB clocks&n; *&t;upper nibble represents recovery time, in count of VLB clocks&n; */
 DECL|function|qd6500_compute_timing
 r_static
-id|byte
+id|u8
 id|qd6500_compute_timing
 c_func
 (paren
@@ -219,7 +222,7 @@ r_int
 id|recovery_time
 )paren
 (brace
-id|byte
+id|u8
 id|active_cycle
 comma
 id|recovery_cycle
@@ -331,7 +334,7 @@ suffix:semicolon
 multiline_comment|/*&n; * qd6580_compute_timing&n; *&n; * idem for qd6580&n; */
 DECL|function|qd6580_compute_timing
 r_static
-id|byte
+id|u8
 id|qd6580_compute_timing
 c_func
 (paren
@@ -342,7 +345,7 @@ r_int
 id|recovery_time
 )paren
 (brace
-id|byte
+id|u8
 id|active_cycle
 op_assign
 l_int|17
@@ -363,7 +366,7 @@ comma
 l_int|17
 )paren
 suffix:semicolon
-id|byte
+id|u8
 id|recovery_cycle
 op_assign
 l_int|15
@@ -588,7 +591,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|timing
 )paren
 (brace
@@ -659,7 +662,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -756,7 +759,7 @@ id|ata_device
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|pio
 )paren
 (brace
@@ -827,7 +830,7 @@ op_plus
 id|min_t
 c_func
 (paren
-id|byte
+id|u8
 comma
 id|pio
 comma
@@ -1030,10 +1033,10 @@ r_int
 id|port
 )paren
 (brace
-id|byte
+id|u8
 id|savereg
 suffix:semicolon
-id|byte
+id|u8
 id|readreg
 suffix:semicolon
 r_int
@@ -1168,7 +1171,7 @@ r_struct
 id|ata_device
 op_star
 comma
-id|byte
+id|u8
 id|pio
 )paren
 )paren
@@ -1249,7 +1252,7 @@ id|ide_hwifs
 id|unit
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|config
 op_assign
 id|hwif-&gt;config_data
@@ -1440,7 +1443,7 @@ r_int
 id|base
 )paren
 (brace
-id|byte
+id|u8
 id|config
 suffix:semicolon
 r_int
@@ -1603,7 +1606,7 @@ id|QD_CONFIG_QD6580_B
 )paren
 )paren
 (brace
-id|byte
+id|u8
 id|control
 suffix:semicolon
 r_if

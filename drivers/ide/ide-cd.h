@@ -197,7 +197,7 @@ suffix:colon
 l_int|3
 suffix:semicolon
 DECL|member|max_speed
-id|byte
+id|u8
 id|max_speed
 suffix:semicolon
 multiline_comment|/* Max speed of the drive */
@@ -245,7 +245,7 @@ suffix:colon
 l_int|4
 suffix:semicolon
 DECL|member|current_speed
-id|byte
+id|u8
 id|current_speed
 suffix:semicolon
 multiline_comment|/* Current speed of the drive */
@@ -356,7 +356,7 @@ r_struct
 id|atapi_toc_entry
 (brace
 DECL|member|reserved1
-id|byte
+id|u8
 id|reserved1
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
@@ -389,11 +389,11 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|track
-id|byte
+id|u8
 id|track
 suffix:semicolon
 DECL|member|reserved2
-id|byte
+id|u8
 id|reserved2
 suffix:semicolon
 r_union
@@ -498,11 +498,11 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|acdsc_trk
-id|u_char
+id|u8
 id|acdsc_trk
 suffix:semicolon
 DECL|member|acdsc_ind
-id|u_char
+id|u8
 id|acdsc_ind
 suffix:semicolon
 r_union
@@ -589,7 +589,7 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|page_length
-id|byte
+id|u8
 id|page_length
 suffix:semicolon
 macro_line|#if defined(__BIG_ENDIAN_BITFIELD)
@@ -1313,14 +1313,14 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|curlba
-id|byte
+id|u8
 id|curlba
 (braket
 l_int|3
 )braket
 suffix:semicolon
 DECL|member|nslots
-id|byte
+id|u8
 id|nslots
 suffix:semicolon
 DECL|member|slot_tablelen
@@ -1372,7 +1372,7 @@ macro_line|#else
 macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
 macro_line|#endif
 DECL|member|reserved2
-id|byte
+id|u8
 id|reserved2
 (braket
 l_int|3
