@@ -494,6 +494,36 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Ceiling(n / size)&n; */
+DECL|function|dm_div_up
+r_static
+r_inline
+r_int
+r_int
+id|dm_div_up
+c_func
+(paren
+r_int
+r_int
+id|n
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|dm_round_up
+c_func
+(paren
+id|n
+comma
+id|size
+)paren
+op_div
+id|size
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The device-mapper can be driven through one of two interfaces;&n; * ioctl or filesystem, depending which patch you have applied.&n; */
 r_int
 id|dm_interface_init

@@ -91,36 +91,6 @@ id|eventq
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Ceiling(n / size)&n; */
-DECL|function|div_up
-r_static
-r_inline
-r_int
-r_int
-id|div_up
-c_func
-(paren
-r_int
-r_int
-id|n
-comma
-r_int
-r_int
-id|size
-)paren
-(brace
-r_return
-id|dm_round_up
-c_func
-(paren
-id|n
-comma
-id|size
-)paren
-op_div
-id|size
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Similar to ceiling(log_size(n))&n; */
 DECL|function|int_log
 r_static
@@ -153,7 +123,7 @@ l_int|1
 (brace
 id|n
 op_assign
-id|div_up
+id|dm_div_up
 c_func
 (paren
 id|n
@@ -2633,7 +2603,7 @@ id|t-&gt;counts
 id|i
 )braket
 op_assign
-id|div_up
+id|dm_div_up
 c_func
 (paren
 id|t-&gt;counts
@@ -2759,7 +2729,7 @@ suffix:semicolon
 multiline_comment|/* how many indexes will the btree have ? */
 id|leaf_nodes
 op_assign
-id|div_up
+id|dm_div_up
 c_func
 (paren
 id|t-&gt;num_targets
