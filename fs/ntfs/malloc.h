@@ -30,16 +30,13 @@ id|PAGE_SIZE
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|likely
+id|BUG_ON
 c_func
 (paren
+op_logical_neg
 id|size
 )paren
-)paren
-(brace
+suffix:semicolon
 multiline_comment|/* kmalloc() has per-CPU caches so is faster for now. */
 r_return
 id|kmalloc
@@ -50,13 +47,7 @@ comma
 id|GFP_NOFS
 )paren
 suffix:semicolon
-multiline_comment|/* return (void *)__get_free_page(GFP_NOFS |&n;&t;&t;&t;&t;&t;__GFP_HIGHMEM); */
-)brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* return (void *)__get_free_page(GFP_NOFS | __GFP_HIGHMEM); */
 )brace
 r_if
 c_cond
@@ -128,14 +119,15 @@ id|VMALLOC_END
 )paren
 )paren
 (brace
-r_return
 id|kfree
 c_func
 (paren
 id|addr
 )paren
 suffix:semicolon
-multiline_comment|/* return free_page((unsigned long)addr); */
+multiline_comment|/* free_page((unsigned long)addr); */
+r_return
+suffix:semicolon
 )brace
 id|vfree
 c_func
