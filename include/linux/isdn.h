@@ -1153,17 +1153,6 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Misc.-function Timer       */
-DECL|member|drvid
-r_char
-id|drvid
-(braket
-id|ISDN_MAX_DRIVERS
-)braket
-(braket
-l_int|20
-)braket
-suffix:semicolon
-multiline_comment|/* Driver-ID                 */
 DECL|member|profd
 r_struct
 id|task_struct
