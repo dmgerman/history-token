@@ -1819,7 +1819,7 @@ id|sshdr
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * SG_IO wants to know about deferred errors&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * SG_IO wants current and deferred errors&n;&t;&t;&t;&t; */
 r_int
 id|len
 op_assign
@@ -2183,7 +2183,8 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;scsi%d: ERROR on channel %d, id %d, lun %d, CDB: &quot;
+id|KERN_INFO
+l_string|&quot;Volume overflow &lt;%d %d %d %d&gt; CDB: &quot;
 comma
 id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
@@ -2273,7 +2274,9 @@ id|result
 id|printk
 c_func
 (paren
-l_string|&quot;SCSI error : &lt;%d %d %d %d&gt; return code = 0x%x&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;SCSI error : &lt;%d %d %d %d&gt; return code &quot;
+l_string|&quot;= 0x%x&bslash;n&quot;
 comma
 id|cmd-&gt;device-&gt;host-&gt;host_no
 comma
@@ -4699,31 +4702,40 @@ op_amp
 id|DRIVER_SENSE
 )paren
 op_logical_and
-(paren
-(paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x0f
+id|sdev-&gt;removable
 )paren
+(brace
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|scsi_request_normalize_sense
+c_func
+(paren
+id|sreq
+comma
+op_amp
+id|sshdr
+)paren
+)paren
+op_logical_and
+(paren
+(paren
+id|sshdr.sense_key
 op_eq
 id|UNIT_ATTENTION
+)paren
 op_logical_or
 (paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0x0f
-)paren
+id|sshdr.sense_key
 op_eq
 id|NOT_READY
 )paren
-op_logical_and
-id|sdev-&gt;removable
+)paren
 )paren
 (brace
 id|sdev-&gt;changed
@@ -4734,6 +4746,7 @@ id|sreq-&gt;sr_result
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 id|result
 op_assign

@@ -12,6 +12,7 @@ macro_line|#include &lt;scsi/scsi_devinfo.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|ALLOC_FAILURE_MSG
@@ -974,6 +975,10 @@ id|pass
 comma
 id|count
 suffix:semicolon
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
 op_star
 id|bflags
 op_assign
@@ -1146,9 +1151,7 @@ c_cond
 id|sreq-&gt;sr_result
 )paren
 (brace
-multiline_comment|/* not-ready to ready transition or power-on - good */
-multiline_comment|/* dpg: bogus? INQUIRY never returns UNIT_ATTENTION */
-multiline_comment|/* Supposedly, but many buggy devices do so anyway. */
+multiline_comment|/*&n;&t;&t;&t; * not-ready to ready transition [asc/ascq=0x28/0x0]&n;&t;&t;&t; * or power-on, reset [asc/ascq=0x29/0x0], continue.&n;&t;&t;&t; * INQUIRY should not yield UNIT_ATTENTION&n;&t;&t;&t; * but many buggy devices do so anyway. &n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1162,42 +1165,48 @@ op_amp
 id|DRIVER_SENSE
 )paren
 op_logical_and
+id|scsi_request_normalize_sense
+c_func
 (paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
+id|sreq
+comma
 op_amp
-l_int|0xf
+id|sshdr
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|sshdr.sense_key
 op_eq
 id|UNIT_ATTENTION
+)paren
 op_logical_and
 (paren
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|12
-)braket
+(paren
+id|sshdr.asc
 op_eq
 l_int|0x28
+)paren
 op_logical_or
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|12
-)braket
+(paren
+id|sshdr.asc
 op_eq
 l_int|0x29
 )paren
+)paren
 op_logical_and
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|13
-)braket
+(paren
+id|sshdr.ascq
 op_eq
 l_int|0
 )paren
+)paren
 r_continue
 suffix:semicolon
+)brace
 )brace
 r_break
 suffix:semicolon
@@ -2710,6 +2719,10 @@ id|u8
 op_star
 id|data
 suffix:semicolon
+r_struct
+id|scsi_sense_hdr
+id|sshdr
+suffix:semicolon
 multiline_comment|/*&n;&t; * Only support SCSI-3 and up devices if BLIST_NOREPORTLUN is not set.&n;&t; * Also allow SCSI-2 if BLIST_REPORTLUN2 is set and host adapter does&n;&t; * support more than 8 LUNs.&n;&t; */
 r_if
 c_cond
@@ -3026,16 +3039,33 @@ c_cond
 id|sreq-&gt;sr_result
 op_eq
 l_int|0
-op_logical_or
-id|sreq-&gt;sr_sense_buffer
-(braket
-l_int|2
-)braket
+)paren
+r_break
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|scsi_request_normalize_sense
+c_func
+(paren
+id|sreq
+comma
+op_amp
+id|sshdr
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sshdr.sense_key
 op_ne
 id|UNIT_ATTENTION
 )paren
 r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
