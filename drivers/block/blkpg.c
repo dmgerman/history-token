@@ -1192,11 +1192,17 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_else
 r_return
 id|put_user
 c_func
 (paren
+(paren
+id|u64
+)paren
 id|ullval
+op_lshift
+l_int|9
 comma
 (paren
 id|u64
