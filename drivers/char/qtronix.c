@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Qtronix 990P infr
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* &n; * NOTE:  &n; *&n; *&t;This driver has only been tested with the Consumer IR&n; *&t;port of the ITE 8172 system controller.&n; *&n; *&t;You do not need this driver if you are using the ps/2 or&n; *&t;USB adapter that the keyboard ships with.  You only need &n; *&t;this driver if your board has a IR port and the keyboard&n; *&t;data is being sent directly to the IR.  In that case,&n; *&t;you also need some low-level IR support. See it8172_cir.c.&n; *&t;&n; */
 macro_line|#ifdef CONFIG_QTRONIX_KEYBOARD
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -281,6 +282,7 @@ multiline_comment|/* 48 55 */
 suffix:semicolon
 DECL|function|init_qtronix_990P_kbd
 r_void
+id|__init
 id|init_qtronix_990P_kbd
 c_func
 (paren
@@ -2289,5 +2291,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|init_qtronix_990P_kbd
+id|module_init
+c_func
+(paren
+id|init_qtronix_990P_kbd
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
