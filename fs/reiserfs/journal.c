@@ -9585,7 +9585,6 @@ op_amp
 id|reiserfs_commit_thread_done
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_if
 c_cond
 (paren
@@ -9593,16 +9592,12 @@ id|current-&gt;flags
 op_amp
 id|PF_FREEZE
 )paren
-(brace
 id|refrigerator
 c_func
 (paren
 id|PF_IOTHREAD
 )paren
 suffix:semicolon
-)brace
-r_else
-macro_line|#endif
 id|interruptible_sleep_on_timeout
 c_func
 (paren
