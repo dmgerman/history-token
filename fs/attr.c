@@ -690,10 +690,10 @@ c_cond
 (paren
 id|dn_mask
 )paren
-id|inode_dir_notify
+id|dnotify_parent
 c_func
 (paren
-id|dentry-&gt;d_parent-&gt;d_inode
+id|dentry
 comma
 id|dn_mask
 )paren

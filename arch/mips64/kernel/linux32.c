@@ -5193,10 +5193,10 @@ id|ret
 OG
 l_int|0
 )paren
-id|inode_dir_notify
+id|dnotify_parent
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_parent-&gt;d_inode
+id|file-&gt;f_dentry
 comma
 id|DN_ACCESS
 )paren
@@ -5380,10 +5380,10 @@ id|ret
 OG
 l_int|0
 )paren
-id|inode_dir_notify
+id|dnotify_parent
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_parent-&gt;d_inode
+id|file-&gt;f_dentry
 comma
 id|DN_MODIFY
 )paren
