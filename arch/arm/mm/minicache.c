@@ -2,9 +2,11 @@ multiline_comment|/*&n; *  linux/arch/arm/mm/minicache.c&n; *&n; *  Copyright (C
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+multiline_comment|/*&n; * 0xffff8000 to 0xffffffff is reserved for any ARM architecture&n; * specific hacks for copying pages efficiently.&n; */
 DECL|macro|minicache_address
-mdefine_line|#define minicache_address (0xffff2000)
+mdefine_line|#define minicache_address (0xffff8000)
 DECL|macro|minicache_pgprot
 mdefine_line|#define minicache_pgprot __pgprot(L_PTE_PRESENT | L_PTE_YOUNG | &bslash;&n;&t;&t;&t;&t;  L_PTE_CACHEABLE)
 DECL|variable|minicache_pte
@@ -43,12 +45,10 @@ id|minicache_pgprot
 )paren
 )paren
 suffix:semicolon
-id|cpu_tlb_invalidate_page
+id|flush_kern_tlb_page
 c_func
 (paren
 id|minicache_address
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return

@@ -5551,6 +5551,11 @@ id|usb_dec_dev_use
 id|usb_dev
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 )brace
 r_else
 id|spin_unlock_irqrestore
@@ -5917,6 +5922,11 @@ id|urb_priv
 )paren
 suffix:semicolon
 macro_line|#endif
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -7633,6 +7643,14 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* increment the reference count of the urb, as we now also control it */
+id|urb
+op_assign
+id|usb_get_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 id|usb_inc_dev_use
 (paren
 id|urb-&gt;dev
@@ -7717,6 +7735,11 @@ id|usb_dec_dev_use
 id|urb-&gt;dev
 )paren
 suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 id|err
 c_func
 (paren
@@ -7781,6 +7804,11 @@ op_amp
 id|s-&gt;urb_list_lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -8211,6 +8239,11 @@ id|urb_priv
 )paren
 suffix:semicolon
 macro_line|#endif
+id|usb_put_urb
+(paren
+id|urb
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -12617,6 +12650,11 @@ suffix:semicolon
 id|usb_dec_dev_use
 (paren
 id|usb_dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+(paren
+id|urb
 )paren
 suffix:semicolon
 )brace

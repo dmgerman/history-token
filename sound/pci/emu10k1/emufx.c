@@ -171,10 +171,10 @@ multiline_comment|/* 0x07 */
 l_int|NULL
 comma
 multiline_comment|/* 0x08 */
-l_int|NULL
+l_string|&quot;Line/Mic 2 Left&quot;
 comma
 multiline_comment|/* 0x09 */
-l_int|NULL
+l_string|&quot;Line/Mic 2 Right&quot;
 comma
 multiline_comment|/* 0x0a */
 l_int|NULL
@@ -183,10 +183,10 @@ multiline_comment|/* 0x0b */
 l_int|NULL
 comma
 multiline_comment|/* 0x0c */
-l_int|NULL
+l_string|&quot;Aux2 Left&quot;
 comma
 multiline_comment|/* 0x0d */
-l_int|NULL
+l_string|&quot;Aux2 Right&quot;
 comma
 multiline_comment|/* 0x0e */
 l_int|NULL
@@ -314,16 +314,16 @@ l_int|32
 op_assign
 (brace
 multiline_comment|/* 0x00 */
-l_int|NULL
+l_string|&quot;Digital Front Left&quot;
 comma
 multiline_comment|/* 0x01 */
-l_int|NULL
+l_string|&quot;Digital Front Right&quot;
 comma
 multiline_comment|/* 0x02 */
-l_int|NULL
+l_string|&quot;Digital Center&quot;
 comma
 multiline_comment|/* 0x03 */
-l_int|NULL
+l_string|&quot;Digital LEF&quot;
 comma
 multiline_comment|/* 0x04 */
 l_string|&quot;Headphone Left&quot;
@@ -332,10 +332,10 @@ multiline_comment|/* 0x05 */
 l_string|&quot;Headphone Right&quot;
 comma
 multiline_comment|/* 0x06 */
-l_int|NULL
+l_string|&quot;Digital Rear Left&quot;
 comma
 multiline_comment|/* 0x07 */
-l_int|NULL
+l_string|&quot;Digital Rear Right&quot;
 comma
 multiline_comment|/* 0x08 */
 l_string|&quot;Front Left&quot;
@@ -362,16 +362,16 @@ multiline_comment|/* 0x0f */
 l_string|&quot;Rear Right&quot;
 comma
 multiline_comment|/* 0x10 */
-l_int|NULL
+l_string|&quot;AC97 Front Left&quot;
 comma
 multiline_comment|/* 0x11 */
-l_int|NULL
+l_string|&quot;AC97 Front Right&quot;
 comma
 multiline_comment|/* 0x12 */
-l_int|NULL
+l_string|&quot;ADC Caputre Left&quot;
 comma
 multiline_comment|/* 0x13 */
-l_int|NULL
+l_string|&quot;ADC Capture Right&quot;
 comma
 multiline_comment|/* 0x14 */
 l_int|NULL
@@ -380,10 +380,10 @@ multiline_comment|/* 0x15 */
 l_int|NULL
 comma
 multiline_comment|/* 0x16 */
-l_string|&quot;ADC Capture Left&quot;
+l_int|NULL
 comma
 multiline_comment|/* 0x17 */
-l_string|&quot;ADC Capture Right&quot;
+l_int|NULL
 comma
 multiline_comment|/* 0x18 */
 l_int|NULL
@@ -6016,7 +6016,7 @@ l_int|0
 comma
 id|emu-&gt;fx8010.dbg
 op_or
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 )paren
 suffix:semicolon
 r_else
@@ -7041,16 +7041,15 @@ id|capture
 op_assign
 id|playback
 op_plus
-l_int|6
+l_int|10
 suffix:semicolon
-multiline_comment|/* 5+1 channels */
+multiline_comment|/* we reserve 10 voices */
 id|gpr
 op_assign
 id|capture
 op_plus
-l_int|2
+l_int|10
 suffix:semicolon
-multiline_comment|/* so far only a stereo capture */
 id|tmp
 op_assign
 l_int|0x80
@@ -7071,11 +7070,9 @@ op_assign
 l_int|0
 )paren
 op_or
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 )paren
 suffix:semicolon
-DECL|macro|A_C_ZERO
-mdefine_line|#define A_C_ZERO&t;0x0c0
 multiline_comment|/* Wave Playback */
 id|A_OP
 c_func
@@ -7093,7 +7090,7 @@ c_func
 id|playback
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7126,7 +7123,7 @@ op_plus
 l_int|1
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7183,7 +7180,7 @@ op_plus
 l_int|2
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7194,7 +7191,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_PCM_LEFT_REAR
+id|FXBUS_PCM_LEFT
 )paren
 )paren
 suffix:semicolon
@@ -7216,7 +7213,7 @@ op_plus
 l_int|3
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7229,7 +7226,7 @@ comma
 id|A_FXBUS
 c_func
 (paren
-id|FXBUS_PCM_RIGHT_REAR
+id|FXBUS_PCM_RIGHT
 )paren
 )paren
 suffix:semicolon
@@ -7305,7 +7302,7 @@ op_plus
 l_int|4
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7359,7 +7356,7 @@ op_plus
 l_int|5
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7515,7 +7512,7 @@ op_plus
 l_int|0
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7548,7 +7545,7 @@ op_plus
 l_int|1
 )paren
 comma
-id|A_C_ZERO
+id|A_C_00000000
 comma
 id|A_GPR
 c_func
@@ -7688,6 +7685,96 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
+multiline_comment|/* Surround Playback */
+id|A_OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iMAC0
+comma
+id|A_GPR
+c_func
+(paren
+id|playback
+op_plus
+l_int|2
+)paren
+comma
+id|A_C_00000000
+comma
+id|A_GPR
+c_func
+(paren
+id|gpr
+)paren
+comma
+id|A_FXBUS
+c_func
+(paren
+id|FXBUS_PCM_LEFT_REAR
+)paren
+)paren
+suffix:semicolon
+id|A_OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iMAC0
+comma
+id|A_GPR
+c_func
+(paren
+id|playback
+op_plus
+l_int|3
+)paren
+comma
+id|A_C_00000000
+comma
+id|A_GPR
+c_func
+(paren
+id|gpr
+op_plus
+l_int|1
+)paren
+comma
+id|A_FXBUS
+c_func
+(paren
+id|FXBUS_PCM_RIGHT_REAR
+)paren
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Surround Playback Volume&quot;
+comma
+id|gpr
+comma
+l_int|80
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/* Center Playback */
 id|A_OP
 c_func
@@ -7742,7 +7829,7 @@ l_string|&quot;Center Playback Volume&quot;
 comma
 id|gpr
 comma
-l_int|0
+l_int|80
 )paren
 suffix:semicolon
 id|gpr
@@ -7802,7 +7889,7 @@ l_string|&quot;LFE Playback Volume&quot;
 comma
 id|gpr
 comma
-l_int|0
+l_int|80
 )paren
 suffix:semicolon
 id|gpr
@@ -7811,26 +7898,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * inputs&n;&t; */
 DECL|macro|A_ADD_VOLUME_IN
 mdefine_line|#define A_ADD_VOLUME_IN(var,vol,input) &bslash;&n;A_OP(icode, &amp;ptr, iMAC0, A_GPR(var), A_GPR(var), A_GPR(vol), A_EXTIN(input))
-r_if
-c_cond
-(paren
-id|emu-&gt;fx8010.extin_mask
-op_amp
-(paren
-(paren
-l_int|1
-op_lshift
-id|A_EXTIN_AC97_L
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|A_EXTIN_AC97_R
-)paren
-)paren
-)paren
-(brace
 multiline_comment|/* AC&squot;97 Playback Volume */
 id|A_ADD_VOLUME_IN
 c_func
@@ -7923,27 +7990,6 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|emu-&gt;fx8010.extin_mask
-op_amp
-(paren
-(paren
-l_int|1
-op_lshift
-id|A_EXTIN_SPDIF_CD_L
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|A_EXTIN_SPDIF_CD_R
-)paren
-)paren
-)paren
-(brace
 multiline_comment|/* Audigy CD Playback Volume */
 id|A_ADD_VOLUME_IN
 c_func
@@ -8029,21 +8075,202 @@ l_string|&quot;Audigy CD Capture Volume&quot;
 comma
 id|gpr
 comma
-l_int|100
+l_int|0
 )paren
 suffix:semicolon
 id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-)brace
+multiline_comment|/* Line2 Playback Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+comma
+id|gpr
+comma
+id|A_EXTIN_LINE2_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_LINE2_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Line2 Playback Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* Line2 Capture Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+comma
+id|gpr
+comma
+id|A_EXTIN_LINE2_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_LINE2_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Line2 Capture Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* Aux2 Playback Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+comma
+id|gpr
+comma
+id|A_EXTIN_AUX2_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|playback
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_AUX2_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Aux2 Playback Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* Aux2 Capture Volume */
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+comma
+id|gpr
+comma
+id|A_EXTIN_AUX2_L
+)paren
+suffix:semicolon
+id|A_ADD_VOLUME_IN
+c_func
+(paren
+id|capture
+op_plus
+l_int|1
+comma
+id|gpr
+op_plus
+l_int|1
+comma
+id|A_EXTIN_AUX2_R
+)paren
+suffix:semicolon
+id|snd_emu10k1_init_stereo_control
+c_func
+(paren
+op_amp
+id|controls
+(braket
+id|nctl
+op_increment
+)braket
+comma
+l_string|&quot;Aux2 Capture Volume&quot;
+comma
+id|gpr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|gpr
+op_add_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/*&n;&t; * outputs&n;&t; */
 DECL|macro|A_PUT_OUTPUT
-mdefine_line|#define A_PUT_OUTPUT(out,src) A_OP(icode, &amp;ptr, iACC3, A_EXTOUT(out), A_C_ZERO, A_C_ZERO, A_GPR(src))
-DECL|macro|A_PUT_MONO_OUTPUT
-mdefine_line|#define A_PUT_MONO_OUTPUT(out,src) &bslash;&n;&t;if (emu-&gt;fx8010.extout_mask &amp; (1&lt;&lt;(out))) A_PUT_OUTPUT(out,src)
+mdefine_line|#define A_PUT_OUTPUT(out,src) A_OP(icode, &amp;ptr, iACC3, A_EXTOUT(out), A_C_00000000, A_C_00000000, A_GPR(src))
 DECL|macro|A_PUT_STEREO_OUTPUT
-mdefine_line|#define A_PUT_STEREO_OUTPUT(out1,out2,src) &bslash;&n;&t;if (emu-&gt;fx8010.extout_mask &amp; ((1&lt;&lt;(out1))|(1&lt;&lt;(out2)))) {&bslash;&n;&t;&t;A_PUT_OUTPUT(out1,src);&bslash;&n;&t;&t;A_PUT_OUTPUT(out2,src+1);}
+mdefine_line|#define A_PUT_STEREO_OUTPUT(out1,out2,src) &bslash;&n;&t;{A_PUT_OUTPUT(out1,src); A_PUT_OUTPUT(out2,src+1);}
 multiline_comment|/* digital outputs */
 id|A_PUT_STEREO_OUTPUT
 c_func
@@ -8067,7 +8294,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|A_PUT_MONO_OUTPUT
+id|A_PUT_OUTPUT
 c_func
 (paren
 id|A_EXTOUT_CENTER
@@ -8077,7 +8304,7 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-id|A_PUT_MONO_OUTPUT
+id|A_PUT_OUTPUT
 c_func
 (paren
 id|A_EXTOUT_LFE
@@ -8088,12 +8315,13 @@ l_int|5
 )paren
 suffix:semicolon
 multiline_comment|/* analog speakers */
+singleline_comment|//A_PUT_STEREO_OUTPUT(A_EXTOUT_AFRONT_L, A_EXTOUT_AFRONT_R, playback);
 id|A_PUT_STEREO_OUTPUT
 c_func
 (paren
-id|A_EXTOUT_AFRONT_L
+id|A_EXTOUT_AC97_L
 comma
-id|A_EXTOUT_AFRONT_R
+id|A_EXTOUT_AC97_R
 comma
 id|playback
 )paren
@@ -8110,7 +8338,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|A_PUT_MONO_OUTPUT
+id|A_PUT_OUTPUT
 c_func
 (paren
 id|A_EXTOUT_ACENTER
@@ -8120,7 +8348,7 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-id|A_PUT_MONO_OUTPUT
+id|A_PUT_OUTPUT
 c_func
 (paren
 id|A_EXTOUT_ALFE
@@ -14651,7 +14879,7 @@ l_int|0
 comma
 id|emu-&gt;fx8010.dbg
 op_assign
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 )paren
 suffix:semicolon
 r_else
@@ -15928,7 +16156,7 @@ l_int|0
 comma
 id|emu-&gt;fx8010.dbg
 op_or_assign
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 )paren
 suffix:semicolon
 r_else
@@ -16157,7 +16385,7 @@ l_int|0
 comma
 id|emu-&gt;fx8010.dbg
 op_or_assign
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 op_or
 id|addr
 )paren
@@ -16201,7 +16429,7 @@ l_int|0
 comma
 id|emu-&gt;fx8010.dbg
 op_or_assign
-id|A_DBG_SINGLE_STEP_ADDR
+id|A_DBG_SINGLE_STEP
 op_or
 id|A_DBG_STEP_ADDR
 op_or

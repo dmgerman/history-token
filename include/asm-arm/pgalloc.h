@@ -70,6 +70,11 @@ r_int
 op_star
 id|ret
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -117,6 +122,11 @@ id|pgtable_cache_size
 op_decrement
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|pgd_t
@@ -137,6 +147,11 @@ op_star
 id|pgd
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__pgd_next
 c_func
 (paren
@@ -161,6 +176,11 @@ suffix:semicolon
 id|pgtable_cache_size
 op_increment
 suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|pte_alloc_one_fast
 r_static
@@ -184,6 +204,11 @@ r_int
 r_int
 op_star
 id|ret
+suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -227,6 +252,11 @@ id|pgtable_cache_size
 op_decrement
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|pte_t
@@ -247,6 +277,11 @@ op_star
 id|pte
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|__pte_next
 c_func
 (paren
@@ -270,6 +305,11 @@ id|pte
 suffix:semicolon
 id|pgtable_cache_size
 op_increment
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#else&t;/* CONFIG_NO_PGT_CACHE */

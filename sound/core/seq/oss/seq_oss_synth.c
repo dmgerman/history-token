@@ -255,6 +255,7 @@ l_int|NULL
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t malloc synth info&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -391,6 +392,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;no more synth slot&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -529,6 +531,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t unregister synth&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -1611,6 +1611,10 @@ id|emu-&gt;proc_entry
 op_assign
 id|entry
 suffix:semicolon
+id|entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1683,6 +1687,10 @@ suffix:semicolon
 id|emu-&gt;proc_entry_fx8010_gpr
 op_assign
 id|entry
+suffix:semicolon
+id|entry
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1760,6 +1768,10 @@ id|emu-&gt;proc_entry_fx8010_tram_data
 op_assign
 id|entry
 suffix:semicolon
+id|entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1836,6 +1848,10 @@ id|emu-&gt;proc_entry_fx8010_tram_addr
 op_assign
 id|entry
 suffix:semicolon
+id|entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1908,6 +1924,10 @@ suffix:semicolon
 id|emu-&gt;proc_entry_fx8010_code
 op_assign
 id|entry
+suffix:semicolon
+id|entry
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

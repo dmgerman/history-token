@@ -392,6 +392,7 @@ l_int|1
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;too many ports for client %d&bslash;n&quot;
 comma
 id|client-&gt;number

@@ -93,18 +93,9 @@ id|rb_node_t
 id|vm_rb
 suffix:semicolon
 multiline_comment|/*&n;&t; * For areas with an address space and backing store,&n;&t; * one of the address_space-&gt;i_mmap{,shared} lists,&n;&t; * for shm areas, the list of attaches, otherwise unused.&n;&t; */
-DECL|member|vm_next_share
-r_struct
-id|vm_area_struct
-op_star
-id|vm_next_share
-suffix:semicolon
-DECL|member|vm_pprev_share
-r_struct
-id|vm_area_struct
-op_star
-op_star
-id|vm_pprev_share
+DECL|member|shared
+id|list_t
+id|shared
 suffix:semicolon
 multiline_comment|/* Function pointers to deal with this struct. */
 DECL|member|vm_ops

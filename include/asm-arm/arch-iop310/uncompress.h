@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-iop80310/uncompress.h&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_ARCH_IQ80310
 DECL|macro|UART1_BASE
 mdefine_line|#define UART1_BASE    ((volatile unsigned char *)0xfe800000)

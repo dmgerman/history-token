@@ -12041,7 +12041,7 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;es1968: skipping MPU-401 MIDI support..&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12346,9 +12346,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ESS Maestro soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -12371,9 +12372,10 @@ id|snd_es1968_nb
 )paren
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;reboot notifier registration failed; may make noise at shutdown.&bslash;n&quot;
 )paren
 suffix:semicolon

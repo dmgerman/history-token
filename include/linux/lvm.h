@@ -683,11 +683,36 @@ mdefine_line|#define LVM_MAX_ATOMIC_IO&t;512
 DECL|macro|LVM_MAX_SECTORS
 mdefine_line|#define LVM_MAX_SECTORS&t;&t;(LVM_MAX_ATOMIC_IO * 2)
 multiline_comment|/*&n; * Structure Logical Volume (LV) Version 3&n; */
-multiline_comment|/* core */
-DECL|struct|lv_v5
+r_struct
+id|kern_lv_v5
+suffix:semicolon
+r_struct
+id|user_lv_v5
+suffix:semicolon
+DECL|typedef|userlv_t
 r_typedef
 r_struct
-id|lv_v5
+id|user_lv_v5
+id|userlv_t
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|typedef|lv_t
+r_typedef
+r_struct
+id|kern_lv_v5
+id|lv_t
+suffix:semicolon
+macro_line|#else
+DECL|typedef|lv_t
+r_typedef
+r_struct
+id|user_lv_v5
+id|lv_t
+suffix:semicolon
+macro_line|#endif
+DECL|struct|user_lv_v5
+r_struct
+id|user_lv_v5
 (brace
 DECL|member|lv_name
 r_char
@@ -788,20 +813,17 @@ id|lv_read_ahead
 suffix:semicolon
 multiline_comment|/* delta to version 1 starts here */
 DECL|member|lv_snapshot_org
-r_struct
-id|lv_v5
+id|lv_t
 op_star
 id|lv_snapshot_org
 suffix:semicolon
 DECL|member|lv_snapshot_prev
-r_struct
-id|lv_v5
+id|lv_t
 op_star
 id|lv_snapshot_prev
 suffix:semicolon
 DECL|member|lv_snapshot_next
-r_struct
-id|lv_v5
+id|lv_t
 op_star
 id|lv_snapshot_next
 suffix:semicolon
@@ -826,7 +848,17 @@ DECL|member|lv_snapshot_minor
 id|uint
 id|lv_snapshot_minor
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
+)brace
+suffix:semicolon
+DECL|struct|kern_lv_v5
+r_struct
+id|kern_lv_v5
+(brace
+DECL|member|u
+r_struct
+id|user_lv_v5
+id|u
+suffix:semicolon
 DECL|member|lv_iobuf
 r_struct
 id|kiobuf
@@ -883,18 +915,7 @@ DECL|member|lv_allocated_snapshot_le
 id|uint
 id|lv_allocated_snapshot_le
 suffix:semicolon
-macro_line|#else
-DECL|member|dummy
-r_char
-id|dummy
-(braket
-l_int|200
-)braket
-suffix:semicolon
-macro_line|#endif
-DECL|typedef|lv_t
 )brace
-id|lv_t
 suffix:semicolon
 multiline_comment|/* disk */
 DECL|struct|lv_disk_v3
@@ -1501,7 +1522,7 @@ id|lv
 r_return
 id|vg-&gt;pe_size
 op_div
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 suffix:semicolon
 )brace
 DECL|function|LVM_GET_COW_TABLE_ENTRIES_PER_PE
@@ -1525,7 +1546,7 @@ id|chunks
 op_assign
 id|vg-&gt;pe_size
 op_div
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 suffix:semicolon
 id|ulong
 id|entry_size
@@ -1538,7 +1559,7 @@ suffix:semicolon
 id|ulong
 id|chunk_size
 op_assign
-id|lv-&gt;lv_chunk_size
+id|lv-&gt;u.lv_chunk_size
 op_star
 id|SECTOR_SIZE
 suffix:semicolon

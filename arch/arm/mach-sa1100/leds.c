@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/leds.c&n; *&n; * SA1100 LEDs dispatcher&n; * &n; * Copyright (C) 2001 Nicolas Pitre&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;

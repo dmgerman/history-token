@@ -42,7 +42,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -230,7 +230,7 @@ op_xor
 id|LED_MASK
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

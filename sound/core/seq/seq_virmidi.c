@@ -1687,6 +1687,7 @@ suffix:colon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;seq_mode is not set: %d&bslash;n&quot;
 comma
 id|rdev-&gt;seq_mode

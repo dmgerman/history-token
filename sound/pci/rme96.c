@@ -10577,9 +10577,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;No RME Digi96 cards found&bslash;n&quot;
 )paren
 suffix:semicolon

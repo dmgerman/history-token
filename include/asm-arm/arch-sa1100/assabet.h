@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/assabet.h&n; *&n; * 
 macro_line|#ifndef __ASM_ARCH_ASSABET_H
 DECL|macro|__ASM_ARCH_ASSABET_H
 mdefine_line|#define __ASM_ARCH_ASSABET_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* System Configuration Register flags */
 DECL|macro|ASSABET_SCR_SDRAM_LOW
 mdefine_line|#define ASSABET_SCR_SDRAM_LOW&t;(1&lt;&lt;2)&t;/* SDRAM size (low bit) */
@@ -94,7 +95,7 @@ id|set
 suffix:semicolon
 macro_line|#else
 DECL|macro|ASSABET_BCR_frob
-mdefine_line|#define ASSABET_BCR_frob(x)&t;do { } while (0)
+mdefine_line|#define ASSABET_BCR_frob(x,y)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|ASSABET_BCR_set
 mdefine_line|#define ASSABET_BCR_set(x)&t;ASSABET_BCR_frob((x), (x))

@@ -20,6 +20,8 @@ macro_line|#warning GCC 2.95.2 and earlier miscompiles kernels.
 macro_line|#endif
 DECL|macro|OFF_TSK
 mdefine_line|#define OFF_TSK(n) (unsigned long)&amp;(((struct task_struct *)0)-&gt;n)
+DECL|macro|OFF_VMA
+mdefine_line|#define OFF_VMA(n) (unsigned long)&amp;(((struct vm_area_struct *)0)-&gt;n)
 DECL|macro|DEFN
 mdefine_line|#define DEFN(name,off) asm(&quot;&bslash;n#define &quot;name&quot; %0&quot; :: &quot;I&quot; (off))
 DECL|function|func
@@ -30,21 +32,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#error DEFN(&quot;TSK_SIGPENDING&quot;,&t;&t;OFF_TSK(sigpending));
-id|DEFN
-c_func
-(paren
-l_string|&quot;TSK_ADDR_LIMIT&quot;
-comma
-id|OFF_TSK
-c_func
-(paren
-id|addr_limit
-)paren
-)paren
-suffix:semicolon
-macro_line|#error DEFN(&quot;TSK_NEED_RESCHED&quot;,&t;OFF_TSK(need_resched));
-macro_line|#error DEFN(&quot;TSK_PTRACE&quot;,&t;&t;OFF_TSK(ptrace));
 id|DEFN
 c_func
 (paren
@@ -60,40 +47,48 @@ suffix:semicolon
 id|DEFN
 c_func
 (paren
-l_string|&quot;TSS_SAVE&quot;
+l_string|&quot;TSK_ACTIVE_MM&quot;
 comma
 id|OFF_TSK
 c_func
 (paren
-id|thread.save
+id|active_mm
 )paren
 )paren
 suffix:semicolon
 id|DEFN
 c_func
 (paren
-l_string|&quot;TSS_FPESAVE&quot;
+l_string|&quot;VMA_VM_MM&quot;
 comma
-id|OFF_TSK
+id|OFF_VMA
 c_func
 (paren
-id|thread.fpstate.soft.save
+id|vm_mm
 )paren
+)paren
+suffix:semicolon
+id|DEFN
+c_func
+(paren
+l_string|&quot;VMA_VM_FLAGS&quot;
+comma
+id|OFF_VMA
+c_func
+(paren
+id|vm_flags
+)paren
+)paren
+suffix:semicolon
+id|DEFN
+c_func
+(paren
+l_string|&quot;VM_EXEC&quot;
+comma
+id|VM_EXEC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_32
-id|DEFN
-c_func
-(paren
-l_string|&quot;TSS_DOMAIN&quot;
-comma
-id|OFF_TSK
-c_func
-(paren
-id|thread.domain
-)paren
-)paren
-suffix:semicolon
 id|DEFN
 c_func
 (paren

@@ -260,26 +260,10 @@ id|system
 suffix:semicolon
 r_extern
 r_void
-id|sched_task_migrated
+id|migration_init
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|p
-)paren
-suffix:semicolon
-r_extern
 r_void
-id|smp_migrate_task
-c_func
-(paren
-r_int
-id|cpu
-comma
-id|task_t
-op_star
-id|task
 )paren
 suffix:semicolon
 r_extern
@@ -1137,6 +1121,7 @@ mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exe
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
+macro_line|#if CONFIG_SMP
 r_extern
 r_void
 id|set_cpus_allowed
@@ -1151,6 +1136,10 @@ r_int
 id|new_mask
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|set_cpus_allowed
+macro_line|# define set_cpus_allowed(p, new_mask) do { } while (0)
+macro_line|#endif
 r_extern
 r_void
 id|set_user_nice
@@ -1515,27 +1504,6 @@ r_void
 id|FASTCALL
 c_func
 (paren
-id|__wake_up_sync
-c_func
-(paren
-id|wait_queue_head_t
-op_star
-id|q
-comma
-r_int
-r_int
-id|mode
-comma
-r_int
-id|nr
-)paren
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|FASTCALL
-c_func
-(paren
 id|sleep_on
 c_func
 (paren
@@ -1645,20 +1613,12 @@ DECL|macro|wake_up_nr
 mdefine_line|#define wake_up_nr(x, nr)&t;&t;__wake_up((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, nr)
 DECL|macro|wake_up_all
 mdefine_line|#define wake_up_all(x)&t;&t;&t;__wake_up((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0)
-DECL|macro|wake_up_sync
-mdefine_line|#define wake_up_sync(x)&t;&t;&t;__wake_up_sync((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 1)
-DECL|macro|wake_up_sync_nr
-mdefine_line|#define wake_up_sync_nr(x, nr)&t;&t;__wake_up_sync((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, nr)
 DECL|macro|wake_up_interruptible
 mdefine_line|#define wake_up_interruptible(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 1)
 DECL|macro|wake_up_interruptible_nr
 mdefine_line|#define wake_up_interruptible_nr(x, nr)&t;__wake_up((x),TASK_INTERRUPTIBLE, nr)
 DECL|macro|wake_up_interruptible_all
 mdefine_line|#define wake_up_interruptible_all(x)&t;__wake_up((x),TASK_INTERRUPTIBLE, 0)
-DECL|macro|wake_up_interruptible_sync
-mdefine_line|#define wake_up_interruptible_sync(x)&t;__wake_up_sync((x),TASK_INTERRUPTIBLE, 1)
-DECL|macro|wake_up_interruptible_sync_nr
-mdefine_line|#define wake_up_interruptible_sync_nr(x) __wake_up_sync((x),TASK_INTERRUPTIBLE,  nr)
 id|asmlinkage
 r_int
 id|sys_wait4

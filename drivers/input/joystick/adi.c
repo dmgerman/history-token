@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: adi.c,v 1.15 2001/01/09 13:32:39 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: adi.c,v 1.23 2002/01/22 20:26:17 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Logitech ADI joystick family driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,6 +9,24 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Logitech ADI joystick family driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Times, array sizes, flags, ids.&n; */
 DECL|macro|ADI_MAX_START
 mdefine_line|#define ADI_MAX_START&t;&t;200&t;/* Trigger to packet timeout [200us] */
@@ -32,6 +50,8 @@ DECL|macro|ADI_MAX_NAME_LENGTH
 mdefine_line|#define ADI_MAX_NAME_LENGTH&t;48
 DECL|macro|ADI_MAX_CNAME_LENGTH
 mdefine_line|#define ADI_MAX_CNAME_LENGTH&t;16
+DECL|macro|ADI_MAX_PHYS_LENGTH
+mdefine_line|#define ADI_MAX_PHYS_LENGTH&t;32
 DECL|macro|ADI_FLAG_HAT
 mdefine_line|#define ADI_FLAG_HAT&t;&t;0x04
 DECL|macro|ADI_FLAG_10BIT
@@ -510,6 +530,13 @@ r_char
 id|cname
 (braket
 id|ADI_MAX_CNAME_LENGTH
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+id|ADI_MAX_PHYS_LENGTH
 )braket
 suffix:semicolon
 DECL|member|data
@@ -2183,6 +2210,9 @@ r_struct
 id|adi_port
 op_star
 id|port
+comma
+r_int
+id|half
 )paren
 (brace
 r_int
@@ -2238,6 +2268,18 @@ comma
 id|buf
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|adi-&gt;phys
+comma
+l_string|&quot;%s/input%d&quot;
+comma
+id|port-&gt;gameport-&gt;phys
+comma
+id|half
+)paren
+suffix:semicolon
 id|adi-&gt;abs
 op_assign
 id|adi_abs
@@ -2263,6 +2305,10 @@ suffix:semicolon
 id|adi-&gt;dev.name
 op_assign
 id|adi-&gt;name
+suffix:semicolon
+id|adi-&gt;dev.phys
+op_assign
+id|adi-&gt;phys
 suffix:semicolon
 id|adi-&gt;dev.idbus
 op_assign
@@ -2321,8 +2367,9 @@ id|adi-&gt;hats
 op_plus
 (paren
 id|adi-&gt;pad
-OG
-l_int|0
+op_ne
+op_minus
+l_int|1
 )paren
 )paren
 op_star
@@ -2415,8 +2462,9 @@ id|adi-&gt;hats
 op_plus
 (paren
 id|adi-&gt;pad
-OG
-l_int|0
+op_ne
+op_minus
+l_int|1
 )paren
 )paren
 op_star
@@ -2762,6 +2810,8 @@ op_plus
 id|i
 comma
 id|port
+comma
+id|i
 )paren
 suffix:semicolon
 )brace
@@ -2880,14 +2930,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s [%s] on gameport%d.%d&bslash;n&quot;
-comma
-id|port-&gt;adi
-(braket
-id|i
-)braket
-dot
-id|dev.number
+l_string|&quot;input: %s [%s] on %s&bslash;n&quot;
 comma
 id|port-&gt;adi
 (braket
@@ -2903,9 +2946,7 @@ id|i
 dot
 id|cname
 comma
-id|gameport-&gt;number
-comma
-id|i
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -3052,12 +3093,6 @@ id|module_exit
 c_func
 (paren
 id|adi_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

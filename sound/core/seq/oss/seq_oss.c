@@ -879,6 +879,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t register device seq&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -921,6 +922,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;can&squot;t register device music&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1006,6 +1008,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;error unregister device music&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1027,6 +1030,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;error unregister device seq&bslash;n&quot;
 )paren
 suffix:semicolon

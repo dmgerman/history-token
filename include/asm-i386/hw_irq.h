@@ -11,7 +11,7 @@ mdefine_line|#define FIRST_EXTERNAL_VECTOR&t;0x20
 DECL|macro|SYSCALL_VECTOR
 mdefine_line|#define SYSCALL_VECTOR&t;&t;0x80
 multiline_comment|/*&n; * Vectors 0x20-0x2f are used for ISA interrupts.&n; */
-multiline_comment|/*&n; * Special IRQ vectors used by the SMP architecture, 0xf0-0xff&n; *&n; *  some of the following vectors are &squot;rare&squot;, they are merged&n; *  into a single vector (CALL_FUNCTION_VECTOR) to save vector space.&n; *  TLB, reschedule and local APIC vectors are performance-critical.&n; *&n; *  Vectors 0xf0-0xf9 are free (reserved for future Linux use).&n; */
+multiline_comment|/*&n; * Special IRQ vectors used by the SMP architecture, 0xf0-0xff&n; *&n; *  some of the following vectors are &squot;rare&squot;, they are merged&n; *  into a single vector (CALL_FUNCTION_VECTOR) to save vector space.&n; *  TLB, reschedule and local APIC vectors are performance-critical.&n; *&n; *  Vectors 0xf0-0xfa are free (reserved for future Linux use).&n; */
 DECL|macro|SPURIOUS_APIC_VECTOR
 mdefine_line|#define SPURIOUS_APIC_VECTOR&t;0xff
 DECL|macro|ERROR_APIC_VECTOR
@@ -20,10 +20,8 @@ DECL|macro|INVALIDATE_TLB_VECTOR
 mdefine_line|#define INVALIDATE_TLB_VECTOR&t;0xfd
 DECL|macro|RESCHEDULE_VECTOR
 mdefine_line|#define RESCHEDULE_VECTOR&t;0xfc
-DECL|macro|TASK_MIGRATION_VECTOR
-mdefine_line|#define TASK_MIGRATION_VECTOR&t;0xfb
 DECL|macro|CALL_FUNCTION_VECTOR
-mdefine_line|#define CALL_FUNCTION_VECTOR&t;0xfa
+mdefine_line|#define CALL_FUNCTION_VECTOR&t;0xfb
 multiline_comment|/*&n; * Local APIC timer IRQ vector is on a different priority level,&n; * to work around the &squot;lost local interrupt if more than 2 IRQ&n; * sources per level&squot; errata.&n; */
 DECL|macro|LOCAL_TIMER_VECTOR
 mdefine_line|#define LOCAL_TIMER_VECTOR&t;0xef

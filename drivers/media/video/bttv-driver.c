@@ -530,7 +530,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the&n; * area and marking the pages as reserved.&n; */
+multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the area.&n; */
 DECL|function|kvirt_to_pa
 r_static
 r_inline
@@ -602,6 +602,14 @@ r_int
 r_int
 id|adr
 suffix:semicolon
+id|size
+op_assign
+id|PAGE_ALIGN
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
 id|mem
 op_assign
 id|vmalloc_32
@@ -621,7 +629,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;bttv: vmalloc_32(%ld) failed&bslash;n&quot;
+l_string|&quot;bttv: vmalloc_32(%lu) failed&bslash;n&quot;
 comma
 id|size
 )paren
@@ -719,6 +727,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
+r_int
+)paren
 id|size
 OG
 l_int|0
@@ -15127,10 +15138,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;Scan for a Bt848 card, request the irq and map the io memory &n; */
+multiline_comment|/* Can&squot;t be marked __devexit with a reference from bttv_probe.  */
 DECL|function|bttv_remove
 r_static
 r_void
-id|__devexit
 id|bttv_remove
 c_func
 (paren

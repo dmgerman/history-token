@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-iop80310/timex.h&n; *&n; * IOP310 architecture timex specifications&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_ARCH_IQ80310
 macro_line|#ifndef CONFIG_XSCALE_PMU_TIMER
 multiline_comment|/* This is for the on-board timer */

@@ -1338,6 +1338,7 @@ id|frag
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unexpected hw_pointer position (bufid == 0): status: %x offset: %d&bslash;n&quot;
 comma
 id|status
@@ -1395,6 +1396,7 @@ id|frag
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Unexpected hw_pointer position (bufid == 1): status: %x offset: %d&bslash;n&quot;
 comma
 id|status
@@ -8103,9 +8105,10 @@ id|pb_addr
 suffix:semicolon
 macro_line|#endif
 )brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: no buffers available&bslash;n&quot;
 comma
 id|rme9652-&gt;card_name
@@ -8136,12 +8139,8 @@ suffix:semicolon
 multiline_comment|/* Align to bus-space 64K boundary */
 id|cb_bus
 op_assign
-id|cb_addr
-suffix:semicolon
-id|cb_bus
-op_assign
 (paren
-id|cb_bus
+id|cb_addr
 op_plus
 l_int|0xFFFF
 )paren
@@ -8151,12 +8150,8 @@ l_int|0xFFFFl
 suffix:semicolon
 id|pb_bus
 op_assign
-id|pb_addr
-suffix:semicolon
-id|pb_bus
-op_assign
 (paren
-id|pb_bus
+id|pb_addr
 op_plus
 l_int|0xFFFF
 )paren
@@ -8185,38 +8180,26 @@ comma
 id|pb_bus
 )paren
 suffix:semicolon
-macro_line|#if 0 
-singleline_comment|// not all architectures have this macro
 id|rme9652-&gt;capture_buffer
 op_assign
-id|bus_to_virt
-c_func
+id|cb
+op_plus
 (paren
-id|cb_bus
-)paren
-suffix:semicolon
-id|rme9652-&gt;playback_buffer
-op_assign
-id|bus_to_virt
-c_func
-(paren
-id|pb_bus
-)paren
-suffix:semicolon
-macro_line|#else
-id|rme9652-&gt;capture_buffer
-op_add_assign
 id|cb_bus
 op_minus
 id|cb_addr
+)paren
 suffix:semicolon
 id|rme9652-&gt;playback_buffer
-op_add_assign
+op_assign
+id|pb
+op_plus
+(paren
 id|pb_bus
 op_minus
 id|pb_addr
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -11787,9 +11770,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;RME Digi9652/Digi9636: no cards found&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -1,4 +1,5 @@
 multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.com, 1998-1999&n;    (c) Philip Blundell, 1998-1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -12,7 +13,6 @@ multiline_comment|/* XXX */
 macro_line|#include &quot;softfloat.h&quot;
 macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
-macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;fpa11.inl&quot;
 multiline_comment|/* kernel symbols required for signal handling */
 DECL|typedef|PTASK
@@ -159,6 +159,29 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;nwfpe: bad structure size&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|FPREG
+)paren
+op_ne
+l_int|12
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;nwfpe: bad register size&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -360,6 +360,8 @@ DECL|macro|CM_AC3EN1
 mdefine_line|#define CM_AC3EN1&t;&t;0x00100000&t;/* enable AC3: model 037 */
 DECL|macro|CM_SPD24SEL
 mdefine_line|#define CM_SPD24SEL&t;&t;0x00020000&t;/* 24bit spdif: model 037 */
+DECL|macro|CM_SPDIF_INVERSE
+mdefine_line|#define CM_SPDIF_INVERSE&t;0x00010000
 DECL|macro|CM_ADCBITLEN_MASK
 mdefine_line|#define CM_ADCBITLEN_MASK&t;0x0000C000&t;
 DECL|macro|CM_ADCBITLEN_16
@@ -388,6 +390,8 @@ DECL|macro|CM_CH0_SRATE_176K
 mdefine_line|#define CM_CH0_SRATE_176K&t;0x00000200
 DECL|macro|CM_CH0_SRATE_88K
 mdefine_line|#define CM_CH0_SRATE_88K&t;0x00000100
+DECL|macro|CM_SPDIF_INVERSE2
+mdefine_line|#define CM_SPDIF_INVERSE2&t;0x00000080&t;/* model 055? */
 DECL|macro|CM_CH1FMT_MASK
 mdefine_line|#define CM_CH1FMT_MASK&t;&t;0x0000000C
 DECL|macro|CM_CH1FMT_SHIFT
@@ -520,6 +524,8 @@ DECL|macro|CM_SFILENB
 mdefine_line|#define CM_SFILENB&t;&t;0x00001000
 DECL|macro|CM_MMODE_MASK
 mdefine_line|#define CM_MMODE_MASK&t;&t;0x00000E00
+DECL|macro|CM_SPDIF_SELECT
+mdefine_line|#define CM_SPDIF_SELECT&t;&t;0x00000100&t;/* for model &gt; 039 ? */
 DECL|macro|CM_ENCENTER
 mdefine_line|#define CM_ENCENTER&t;&t;0x00000080&t;/* shared with FLINKON? */
 DECL|macro|CM_FLINKON
@@ -757,6 +763,7 @@ suffix:semicolon
 multiline_comment|/* channel (0/1) */
 DECL|member|is_dac
 r_int
+r_int
 id|is_dac
 suffix:semicolon
 multiline_comment|/* is dac? */
@@ -929,6 +936,22 @@ id|can_multi_ch
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|spdif_playback_avail
+r_int
+r_int
+id|spdif_playback_avail
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* spdif ready? */
+DECL|member|spdif_playback_enabled
+r_int
+r_int
+id|spdif_playback_enabled
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* spdif switch enabled? */
 DECL|member|spdif_counter
 r_int
 id|spdif_counter
@@ -4437,6 +4460,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|cm-&gt;spdif_playback_avail
+op_assign
+id|up
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4446,6 +4473,11 @@ id|up
 multiline_comment|/* they are controlled via &quot;IEC958 Output Switch&quot; */
 multiline_comment|/* snd_cmipci_set_bit(cm, CM_REG_LEGACY_CTRL, CM_ENSPDOUT); */
 multiline_comment|/* snd_cmipci_set_bit(cm, CM_REG_FUNCTRL1, CM_SPDO2DAC); */
+r_if
+c_cond
+(paren
+id|cm-&gt;spdif_playback_enabled
+)paren
 id|snd_cmipci_set_bit
 c_func
 (paren
@@ -8743,7 +8775,7 @@ id|CM_VAUXLM_SHIFT
 comma
 id|CM_VAUXRM_SHIFT
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|CMIPCI_MIXER_SW_STEREO
@@ -9334,6 +9366,20 @@ macro_line|#endif
 id|DEFINE_BIT_SWITCH_ARG
 c_func
 (paren
+id|spdif_in_1_2
+comma
+id|CM_REG_MISC_CTRL
+comma
+id|CM_SPDIF_SELECT
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|DEFINE_BIT_SWITCH_ARG
+c_func
+(paren
 id|spdif_enable
 comma
 id|CM_REG_LEGACY_CTRL
@@ -9451,9 +9497,23 @@ c_func
 (paren
 id|spdi_phase
 comma
-id|CM_REG_MISC
+id|CM_REG_CHFORMAT
 comma
-l_int|0x04
+id|CM_SPDIF_INVERSE
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|DEFINE_BIT_SWITCH_ARG
+c_func
+(paren
+id|spdi_phase2
+comma
+id|CM_REG_CHFORMAT
+comma
+id|CM_SPDIF_INVERSE2
 comma
 l_int|0
 comma
@@ -9640,6 +9700,16 @@ op_star
 id|ucontrol
 )paren
 (brace
+id|cmipci_t
+op_star
+id|chip
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
 r_int
 id|changed
 suffix:semicolon
@@ -9668,6 +9738,63 @@ comma
 op_amp
 id|cmipci_switch_arg_spdo2dac
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|changed
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;spdif_playback_avail
+)paren
+id|snd_cmipci_set_bit
+c_func
+(paren
+id|chip
+comma
+id|CM_REG_FUNCTRL1
+comma
+id|CM_PLAYBACK_SPDF
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|chip-&gt;spdif_playback_avail
+)paren
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|chip
+comma
+id|CM_REG_FUNCTRL1
+comma
+id|CM_PLAYBACK_SPDF
+)paren
+suffix:semicolon
+)brace
+)brace
+id|chip-&gt;spdif_playback_enabled
+op_assign
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_return
 id|changed
@@ -9817,14 +9944,6 @@ comma
 id|spdi_monitor
 )paren
 comma
-id|DEFINE_MIXER_SWITCH
-c_func
-(paren
-l_string|&quot;IEC958 In Phase Inverse&quot;
-comma
-id|spdi_phase
-)paren
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* only for model 033/037 */
@@ -9845,9 +9964,17 @@ comma
 id|spdif_dac_out
 )paren
 comma
+id|DEFINE_MIXER_SWITCH
+c_func
+(paren
+l_string|&quot;IEC958 In Phase Inverse&quot;
+comma
+id|spdi_phase
+)paren
+comma
 )brace
 suffix:semicolon
-multiline_comment|/* only for model 039 */
+multiline_comment|/* only for model 039 or later */
 DECL|variable|__devinitdata
 r_static
 id|snd_kcontrol_new_t
@@ -9863,6 +9990,22 @@ c_func
 l_string|&quot;Line-In As Bass&quot;
 comma
 id|line_bass
+)paren
+comma
+id|DEFINE_MIXER_SWITCH
+c_func
+(paren
+l_string|&quot;IEC958 In Select&quot;
+comma
+id|spdif_in_1_2
+)paren
+comma
+id|DEFINE_MIXER_SWITCH
+c_func
+(paren
+l_string|&quot;IEC958 In Phase Inverse&quot;
+comma
+id|spdi_phase2
 )paren
 comma
 )brace
@@ -10284,7 +10427,7 @@ OL
 id|num_controls
 c_func
 (paren
-id|snd_cmipci_extra_mixer_switches
+id|snd_cmipci_old_mixer_switches
 )paren
 suffix:semicolon
 id|idx
@@ -11779,10 +11922,11 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;no OPL device at 0x%lx&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;cmipci: no OPL device at 0x%lx&bslash;n&quot;
 comma
 id|iosynth
 )paren
@@ -11812,10 +11956,11 @@ id|cm-&gt;opl3hwdep
 OL
 l_int|0
 )paren
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;cannot create OPL3 hwdep&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;cmipci: cannot create OPL3 hwdep&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -11990,9 +12135,10 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;cmipci: no UART401 device at 0x%lx&bslash;n&quot;
 comma
 id|iomidi
@@ -12410,9 +12556,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;C-Media PCI soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

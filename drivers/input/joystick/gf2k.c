@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: gf2k.c,v 1.12 2000/06/04 14:53:44 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: gf2k.c,v 1.19 2002/01/22 20:27:43 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * Genius Flight 2000 joystick driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -8,6 +8,24 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Genius Flight 2000 joystick driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|GF2K_START
 mdefine_line|#define GF2K_START&t;&t;400&t;/* The time we wait for the first bit [400 us] */
 DECL|macro|GF2K_STROBE
@@ -441,6 +459,13 @@ DECL|member|length
 r_int
 r_char
 id|length
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1572,9 +1597,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;gf2k.c: Not yet supported joystick on gameport%d. [id: %d type:%s]&bslash;n&quot;
+l_string|&quot;gf2k.c: Not yet supported joystick on %s. [id: %d type:%s]&bslash;n&quot;
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 comma
 id|gf2k-&gt;id
 comma
@@ -1595,6 +1620,16 @@ r_goto
 id|fail2
 suffix:semicolon
 )brace
+id|sprintf
+c_func
+(paren
+id|gf2k-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|gameport-&gt;phys
+)paren
+suffix:semicolon
 id|gf2k-&gt;length
 op_assign
 id|gf2k_lens
@@ -1639,6 +1674,10 @@ id|gf2k_names
 (braket
 id|gf2k-&gt;id
 )braket
+suffix:semicolon
+id|gf2k-&gt;dev.phys
+op_assign
+id|gf2k-&gt;phys
 suffix:semicolon
 id|gf2k-&gt;dev.idbus
 op_assign
@@ -1920,16 +1959,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on gameport%d.0&bslash;n&quot;
-comma
-id|gf2k-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|gf2k_names
 (braket
 id|gf2k-&gt;id
 )braket
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 r_return
@@ -2058,12 +2095,6 @@ id|module_exit
 c_func
 (paren
 id|gf2k_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

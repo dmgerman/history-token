@@ -113,13 +113,6 @@ macro_line|#ifdef CONFIG_SMP
 id|BUILD_SMP_INTERRUPT
 c_func
 (paren
-id|task_migration_interrupt
-comma
-id|TASK_MIGRATION_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
 id|reschedule_interrupt
 comma
 id|RESCHEDULE_VECTOR
@@ -1424,15 +1417,6 @@ c_func
 id|RESCHEDULE_VECTOR
 comma
 id|reschedule_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for task migration */
-id|set_intr_gate
-c_func
-(paren
-id|TASK_MIGRATION_VECTOR
-comma
-id|task_migration_interrupt
 )paren
 suffix:semicolon
 multiline_comment|/* IPI for invalidation */

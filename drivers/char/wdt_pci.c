@@ -1554,7 +1554,7 @@ suffix:semicolon
 DECL|function|wdtpci_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|wdtpci_remove_one
 (paren
 r_struct
@@ -1663,7 +1663,11 @@ id|wdtpci_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|wdtpci_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

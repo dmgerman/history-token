@@ -20,8 +20,6 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;These options are experimental&n;&n;#define CS461X_FULL_MAP&n;*/
-DECL|macro|COOKED_MODE
-mdefine_line|#define COOKED_MODE
 macro_line|#ifndef PCI_VENDOR_ID_CIRRUS
 DECL|macro|PCI_VENDOR_ID_CIRRUS
 mdefine_line|#define PCI_VENDOR_ID_CIRRUS            0x1013
@@ -150,6 +148,23 @@ r_int
 r_int
 op_star
 id|ba0
+suffix:semicolon
+DECL|variable|phys
+r_static
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|variable|name
+r_static
+r_char
+id|name
+(braket
+)braket
+op_assign
+l_string|&quot;CS416x Gameport&quot;
 suffix:semicolon
 macro_line|#ifdef CS461X_FULL_MAP
 DECL|variable|ba1_addr
@@ -662,14 +677,9 @@ c_cond
 id|mode
 )paren
 (brace
-macro_line|#ifdef COOKED_MODE
 r_case
 id|GAMEPORT_MODE_COOKED
 suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 r_case
 id|GAMEPORT_MODE_RAW
 suffix:colon
@@ -1012,17 +1022,6 @@ id|ENOMEM
 suffix:semicolon
 )brace
 macro_line|#endif
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CS461x PCI: %lx[%d]&bslash;n&quot;
-comma
-id|ba0_addr
-comma
-id|CS461X_BA0_SIZE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1088,20 +1087,48 @@ id|port-&gt;open
 op_assign
 id|cs461x_gameport_open
 suffix:semicolon
-id|port-&gt;read
-op_assign
-id|cs461x_gameport_read
-suffix:semicolon
 id|port-&gt;trigger
 op_assign
 id|cs461x_gameport_trigger
 suffix:semicolon
-macro_line|#ifdef COOKED_MODE
+id|port-&gt;read
+op_assign
+id|cs461x_gameport_read
+suffix:semicolon
 id|port-&gt;cooked_read
 op_assign
 id|cs461x_gameport_cooked_read
 suffix:semicolon
-macro_line|#endif
+id|sprintf
+c_func
+(paren
+id|phys
+comma
+l_string|&quot;pci%s/gameport0&quot;
+comma
+id|pdev-&gt;slot_name
+)paren
+suffix:semicolon
+id|port-&gt;name
+op_assign
+id|name
+suffix:semicolon
+id|port-&gt;phys
+op_assign
+id|phys
+suffix:semicolon
+id|port-&gt;idbus
+op_assign
+id|BUS_PCI
+suffix:semicolon
+id|port-&gt;idvendor
+op_assign
+id|pdev-&gt;vendor
+suffix:semicolon
+id|port-&gt;idproduct
+op_assign
+id|pdev-&gt;device
+suffix:semicolon
 id|cs461x_pokeBA0
 c_func
 (paren
@@ -1129,9 +1156,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport%d: CS461x Gameport speed %d kHz&bslash;n&quot;
+l_string|&quot;gameport: %s on pci%s speed %d kHz&bslash;n&quot;
 comma
-id|port-&gt;number
+id|name
+comma
+id|pdev-&gt;slot_name
 comma
 id|port-&gt;speed
 )paren
@@ -1169,7 +1198,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;PCI Gameport&quot;
+l_string|&quot;CS461x Gameport&quot;
 comma
 id|id_table
 suffix:colon
@@ -1181,14 +1210,18 @@ id|cs461x_pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|cs461x_pci_remove
+)paren
 comma
 )brace
 suffix:semicolon
-DECL|function|js_cs461x_init
+DECL|function|cs461x_init
 r_int
 id|__init
-id|js_cs461x_init
+id|cs461x_init
 c_func
 (paren
 r_void
@@ -1203,10 +1236,10 @@ id|cs461x_pci_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|js_cs461x_exit
+DECL|function|cs461x_exit
 r_void
 id|__exit
-id|js_cs461x_exit
+id|cs461x_exit
 c_func
 (paren
 r_void
@@ -1220,18 +1253,18 @@ id|cs461x_pci_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|js_cs461x_init
+DECL|variable|cs461x_init
 id|module_init
 c_func
 (paren
-id|js_cs461x_init
+id|cs461x_init
 )paren
 suffix:semicolon
-DECL|variable|js_cs461x_exit
+DECL|variable|cs461x_exit
 id|module_exit
 c_func
 (paren
-id|js_cs461x_exit
+id|cs461x_exit
 )paren
 suffix:semicolon
 eof

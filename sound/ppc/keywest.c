@@ -726,10 +726,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|snd_printk
+id|printk
 c_func
 (paren
-l_string|&quot;No Keywest i2c devices found.&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;pmac: No Keywest i2c devices found.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

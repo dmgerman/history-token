@@ -10,6 +10,7 @@ macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#endif
@@ -486,6 +487,12 @@ id|snd_info_entry
 op_star
 id|entry
 suffix:semicolon
+r_int
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 id|data
 op_assign
 id|snd_magic_cast
@@ -503,6 +510,11 @@ suffix:semicolon
 id|entry
 op_assign
 id|data-&gt;entry
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -527,8 +539,12 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|1
@@ -538,8 +554,12 @@ id|file-&gt;f_pos
 op_add_assign
 id|offset
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|file-&gt;f_pos
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 r_case
 l_int|2
@@ -547,9 +567,8 @@ suffix:colon
 multiline_comment|/* SEEK_END */
 r_default
 suffix:colon
-r_return
-op_minus
-id|EINVAL
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_break
@@ -562,7 +581,9 @@ c_cond
 (paren
 id|entry-&gt;c.ops-&gt;llseek
 )paren
-r_return
+(brace
+id|ret
+op_assign
 id|entry-&gt;c.ops
 op_member_access_from_pointer
 id|llseek
@@ -579,12 +600,27 @@ comma
 id|orig
 )paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
-r_return
+id|ret
+op_assign
 op_minus
 id|ENXIO
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_info_entry_read
@@ -1819,6 +1855,7 @@ id|data-&gt;wbuffer-&gt;error
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;data write error to %s (%i)&bslash;n&quot;
 comma
 id|entry-&gt;name

@@ -4,6 +4,12 @@ DECL|macro|__ASM_PROCINFO_H
 mdefine_line|#define __ASM_PROCINFO_H
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/proc-fns.h&gt;
+r_struct
+id|cpu_tlb_fns
+suffix:semicolon
+r_struct
+id|processor
+suffix:semicolon
 DECL|struct|proc_info_item
 r_struct
 id|proc_info_item
@@ -72,23 +78,23 @@ id|proc_info_item
 op_star
 id|info
 suffix:semicolon
-macro_line|#ifdef MULTI_CPU
 DECL|member|proc
 r_struct
 id|processor
 op_star
 id|proc
 suffix:semicolon
-macro_line|#else
-DECL|member|unused
-r_void
+DECL|member|tlb
+r_struct
+id|cpu_tlb_fns
 op_star
-id|unused
+id|tlb
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
+DECL|macro|PROC_INFO_SZ
+mdefine_line|#define PROC_INFO_SZ&t;40
 DECL|macro|HWCAP_SWP
 mdefine_line|#define HWCAP_SWP&t; 1
 DECL|macro|HWCAP_HALF

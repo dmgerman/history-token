@@ -10,16 +10,10 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MTD_BLOCK_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mtdblock&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST mtdblock_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (device)
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device)
-DECL|macro|DEVICE_NO_RANDOM
-mdefine_line|#define DEVICE_NO_RANDOM
+DECL|macro|LOCAL_END_REQUEST
+mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* for old kernels... */
 macro_line|#ifndef QUEUE_EMPTY
@@ -1013,7 +1007,7 @@ id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1417,7 +1411,7 @@ l_int|1
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1585,7 +1579,7 @@ id|mtdblk
 op_assign
 id|mtdblks
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1599,7 +1593,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1613,6 +1607,16 @@ c_func
 id|__FUNCTION__
 l_string|&quot;: minor out of bound&quot;
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|req-&gt;flags
+op_amp
+id|REQ_CMD
+)paren
+r_goto
+id|end_req
 suffix:semicolon
 r_if
 c_cond
@@ -1636,7 +1640,11 @@ singleline_comment|// Handle the request
 r_switch
 c_cond
 (paren
-id|req-&gt;cmd
+id|rq_data_dir
+c_func
+(paren
+id|CURRENT
+)paren
 )paren
 (brace
 r_int
@@ -1758,12 +1766,34 @@ op_amp
 id|QUEUE-&gt;queue_lock
 )paren
 suffix:semicolon
-id|end_request
+r_if
+c_cond
+(paren
+op_logical_neg
+id|end_that_request_first
 c_func
 (paren
+id|req
+comma
 id|res
+comma
+id|req-&gt;hard_cur_sectors
+)paren
+)paren
+(brace
+id|blkdev_dequeue_request
+c_func
+(paren
+id|req
 )paren
 suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 DECL|variable|leaving
@@ -2020,7 +2050,7 @@ id|mtdblk
 op_assign
 id|mtdblks
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2327,6 +2357,13 @@ id|mtd-&gt;index
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|mtddev_lock
+r_static
+id|spinlock_t
+id|mtddev_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|init_mtdblock
 r_int
 id|__init
@@ -2490,6 +2527,9 @@ id|MAJOR_NR
 comma
 op_amp
 id|mtdblock_request
+comma
+op_amp
+id|mtddev_lock
 )paren
 suffix:semicolon
 id|kernel_thread

@@ -4161,6 +4161,8 @@ suffix:semicolon
 id|cmd-&gt;SCp.buffers_residual
 op_assign
 id|cmd-&gt;use_sg
+op_minus
+l_int|1
 suffix:semicolon
 id|cmd-&gt;SCp.phase
 op_increment

@@ -900,10 +900,6 @@ id|bi_end_io
 c_func
 (paren
 id|sbh
-comma
-id|len
-op_rshift
-l_int|9
 )paren
 suffix:semicolon
 r_return

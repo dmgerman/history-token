@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-shark/keyboard.h&n; * by Alexander Schulz&n; * &n; * Derived from linux/include/asm-arm/arch-ebsa285/keyboard.h&n; * (C) 1998 Russell King&n; * (C) 1998 Phil Blundell&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -99,12 +100,6 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|have_isa_bridge
-)paren
-(brace
 id|k_setkeycode
 op_assign
 id|pckbd_setkeycode
@@ -140,7 +135,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * PC Keyboard specifics&n; */
 multiline_comment|/* resource allocation */

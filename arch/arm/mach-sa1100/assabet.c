@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -181,12 +182,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the IRQ edges&n;&t; */
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
-id|GPIO_GPIO23
+id|IRQ_GPIO23
 comma
-id|GPIO_RISING_EDGE
+id|IRQT_RISING
 )paren
 suffix:semicolon
 multiline_comment|/* UCB1300 */

@@ -4,6 +4,9 @@ mdefine_line|#define __ASM_ARM_SYSTEM_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+r_struct
+id|thread_info
+suffix:semicolon
 multiline_comment|/* information about the system we&squot;re running on */
 r_extern
 r_int
@@ -62,6 +65,9 @@ mdefine_line|#define nop() __asm__ __volatile__(&quot;mov&bslash;tr0,r0&bslash;t
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()    do { } while(0)
 multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.&n; * The `mb&squot; is to tell GCC not to cache `current&squot; across this call.&n; */
+r_struct
+id|thread_info
+suffix:semicolon
 r_extern
 r_struct
 id|task_struct
@@ -70,18 +76,16 @@ id|__switch_to
 c_func
 (paren
 r_struct
-id|task_struct
+id|thread_info
 op_star
-id|prev
 comma
 r_struct
-id|task_struct
+id|thread_info
 op_star
-id|next
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last)&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&bslash;&n;&t;&t;last = __switch_to(prev,next);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define switch_to(prev,next)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t; &t;&t;&t;&t;&t;&bslash;&n;&t;&t;__switch_to(prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;__save_flags_cli(x)

@@ -872,6 +872,14 @@ id|regs
 (brace
 r_extern
 r_void
+id|ret_from_sys_call
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ret_from_fork
 c_func
 (paren
@@ -1009,6 +1017,7 @@ op_assign
 op_star
 id|stack
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 id|childstack-&gt;r26
 op_assign
 (paren
@@ -1017,6 +1026,16 @@ r_int
 )paren
 id|ret_from_fork
 suffix:semicolon
+macro_line|#else
+id|childstack-&gt;r26
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ret_from_sys_call
+suffix:semicolon
+macro_line|#endif
 id|childti-&gt;pcb.usp
 op_assign
 id|usp

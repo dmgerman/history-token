@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/ptrace.c&n; *&n; *  By Ross Biro 1/23/92&n; * edited by Linus Torvalds&n; * ARM modifications Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -16,8 +17,8 @@ DECL|macro|REG_PSR
 mdefine_line|#define REG_PSR&t;16
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
 multiline_comment|/*&n; * Breakpoint SWI instruction: SWI &amp;9F0001&n; */
-DECL|macro|BREAKINST
-mdefine_line|#define BREAKINST&t;0xef9f0001
+DECL|macro|BREAKINST_ARM
+mdefine_line|#define BREAKINST_ARM&t;0xef9f0001
 multiline_comment|/*&n; * Get the address of the live pt_regs for the specified task.&n; * These are saved onto the top kernel stack when the process&n; * is not running.&n; */
 r_static
 r_inline
@@ -675,6 +676,32 @@ r_return
 id|val
 suffix:semicolon
 )brace
+DECL|macro|OP_MASK
+mdefine_line|#define OP_MASK&t;0x01e00000
+DECL|macro|OP_AND
+mdefine_line|#define OP_AND&t;0x00000000
+DECL|macro|OP_EOR
+mdefine_line|#define OP_EOR&t;0x00200000
+DECL|macro|OP_SUB
+mdefine_line|#define OP_SUB&t;0x00400000
+DECL|macro|OP_RSB
+mdefine_line|#define OP_RSB&t;0x00600000
+DECL|macro|OP_ADD
+mdefine_line|#define OP_ADD&t;0x00800000
+DECL|macro|OP_ADC
+mdefine_line|#define OP_ADC&t;0x00a00000
+DECL|macro|OP_SBC
+mdefine_line|#define OP_SBC&t;0x00c00000
+DECL|macro|OP_RSC
+mdefine_line|#define OP_RSC&t;0x00e00000
+DECL|macro|OP_ORR
+mdefine_line|#define OP_ORR&t;0x01800000
+DECL|macro|OP_MOV
+mdefine_line|#define OP_MOV&t;0x01a00000
+DECL|macro|OP_BIC
+mdefine_line|#define OP_BIC&t;0x01c00000
+DECL|macro|OP_MVN
+mdefine_line|#define OP_MVN&t;0x01e00000
 r_static
 r_int
 r_int
@@ -768,7 +795,7 @@ comma
 id|REG_PSR
 )paren
 op_amp
-id|CC_C_BIT
+id|PSR_C_BIT
 ques
 c_cond
 l_int|1
@@ -780,11 +807,11 @@ c_cond
 (paren
 id|insn
 op_amp
-l_int|0x01e00000
+id|OP_MASK
 )paren
 (brace
 r_case
-l_int|0x00000000
+id|OP_AND
 suffix:colon
 id|alt
 op_assign
@@ -795,7 +822,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00200000
+id|OP_EOR
 suffix:colon
 id|alt
 op_assign
@@ -806,7 +833,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00400000
+id|OP_SUB
 suffix:colon
 id|alt
 op_assign
@@ -817,7 +844,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00600000
+id|OP_RSB
 suffix:colon
 id|alt
 op_assign
@@ -828,7 +855,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00800000
+id|OP_ADD
 suffix:colon
 id|alt
 op_assign
@@ -839,7 +866,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00a00000
+id|OP_ADC
 suffix:colon
 id|alt
 op_assign
@@ -852,7 +879,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00c00000
+id|OP_SBC
 suffix:colon
 id|alt
 op_assign
@@ -865,7 +892,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x00e00000
+id|OP_RSC
 suffix:colon
 id|alt
 op_assign
@@ -878,7 +905,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x01800000
+id|OP_ORR
 suffix:colon
 id|alt
 op_assign
@@ -889,7 +916,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x01a00000
+id|OP_MOV
 suffix:colon
 id|alt
 op_assign
@@ -898,7 +925,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x01c00000
+id|OP_BIC
 suffix:colon
 id|alt
 op_assign
@@ -910,7 +937,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|0x01e00000
+id|OP_MVN
 suffix:colon
 id|alt
 op_assign
@@ -1231,6 +1258,7 @@ l_int|0
 id|alt
 op_assign
 id|pc_pointer
+c_func
 (paren
 id|alt
 )paren
@@ -1369,7 +1397,7 @@ id|child
 comma
 id|addr
 comma
-id|BREAKINST
+id|BREAKINST_ARM
 )paren
 suffix:semicolon
 r_if
@@ -1659,7 +1687,7 @@ c_cond
 (paren
 id|tmp
 op_ne
-id|BREAKINST
+id|BREAKINST_ARM
 )paren
 id|printk
 c_func
@@ -1961,15 +1989,22 @@ id|request
 op_eq
 id|PTRACE_SYSCALL
 )paren
-id|child-&gt;ptrace
-op_or_assign
-id|PT_TRACESYS
+id|set_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 r_else
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYS
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -2062,10 +2097,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYS
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -2275,7 +2313,7 @@ op_star
 id|data
 comma
 op_amp
-id|child-&gt;thread.fpstate
+id|child-&gt;thread_info-&gt;fpstate
 comma
 r_sizeof
 (paren
@@ -2335,7 +2373,7 @@ id|__copy_from_user
 c_func
 (paren
 op_amp
-id|child-&gt;thread.fpstate
+id|child-&gt;thread_info-&gt;fpstate
 comma
 (paren
 r_void
@@ -2582,7 +2620,7 @@ id|data
 suffix:semicolon
 id|out_tsk
 suffix:colon
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|child
@@ -2621,20 +2659,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SYSCALL_TRACE
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|current-&gt;ptrace
 op_amp
-(paren
 id|PT_PTRACED
-op_or
-id|PT_TRACESYS
-)paren
-)paren
-op_ne
-(paren
-id|PT_PTRACED
-op_or
-id|PT_TRACESYS
 )paren
 )paren
 r_return

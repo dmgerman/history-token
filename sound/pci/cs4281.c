@@ -510,7 +510,7 @@ mdefine_line|#define BA0_SERC1_SO1EN&t;&t;(1&lt;&lt;0)&t;/* Primary Output Port 
 DECL|macro|BA0_SERC2
 mdefine_line|#define BA0_SERC2&t;&t;0x042c&t;/* Serial Port Configuration 2 */
 DECL|macro|BA0_SERC2_SI1F
-mdefine_line|#define BA0_SERC2_SI1F(x)&t;(((x)&amp;7)&gt;&gt;1) */ Primary Input Port Format */
+mdefine_line|#define BA0_SERC2_SI1F(x)&t;(((x)&amp;7)&gt;&gt;1) /* Primary Input Port Format */
 DECL|macro|BA0_SERC2_AC97
 mdefine_line|#define BA0_SERC2_AC97&t;&t;(1&lt;&lt;1)
 DECL|macro|BA0_SERC2_SI1EN
@@ -7830,9 +7830,10 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;CS4281 soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon

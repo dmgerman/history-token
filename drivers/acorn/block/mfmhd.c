@@ -680,7 +680,7 @@ suffix:semicolon
 id|va_list
 id|ap
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -716,7 +716,7 @@ c_func
 id|fmt
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2727,7 +2727,7 @@ multiline_comment|/* and issue the remainder */
 id|issue_request
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3475,7 +3475,7 @@ l_string|&quot;mfm_request:                 before arg extraction&bslash;n&quot;
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -4800,7 +4800,7 @@ id|EINVAL
 suffix:semicolon
 id|major
 op_assign
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -4808,7 +4808,7 @@ id|dev
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -4819,7 +4819,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5047,7 +5047,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5116,7 +5116,7 @@ id|mfm_info
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5178,7 +5178,7 @@ id|secsize
 r_int
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -5566,7 +5566,7 @@ c_func
 op_amp
 id|mfm_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6007,7 +6007,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -6018,7 +6018,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6044,7 +6044,7 @@ OG
 l_int|1
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -6063,7 +6063,7 @@ id|busy
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -6106,7 +6106,7 @@ id|i
 suffix:semicolon
 id|invalidate_device
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

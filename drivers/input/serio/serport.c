@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: serport.c,v 1.7 2001/05/25 19:00:27 jdeneux Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: serport_old.c,v 1.10 2002/01/24 19:52:57 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This is a module that converts a tty line into a much simpler&n; * &squot;serial io port&squot; abstraction that the input device drivers use.&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -8,6 +8,24 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Input device TTY line discipline&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|struct|serport
 r_struct
 id|serport
@@ -27,7 +45,22 @@ r_struct
 id|serio
 id|serio
 suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|serport_name
+r_char
+id|serport_name
+(braket
+)braket
+op_assign
+l_string|&quot;Serial port&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Callback functions from the serio code.&n; */
 DECL|function|serport_serio_write
@@ -136,6 +169,15 @@ id|serport
 op_star
 id|serport
 suffix:semicolon
+r_char
+id|ttyname
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
@@ -180,6 +222,15 @@ id|serport
 )paren
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|TTY_DO_WRITE_WAKEUP
+comma
+op_amp
+id|tty-&gt;flags
+)paren
+suffix:semicolon
 id|serport-&gt;tty
 op_assign
 id|tty
@@ -187,6 +238,72 @@ suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
 id|serport
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|ttyname
+comma
+id|tty-&gt;driver.name
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|ttyname
+(braket
+id|i
+)braket
+op_ne
+l_int|0
+op_logical_and
+id|ttyname
+(braket
+id|i
+)braket
+op_ne
+l_char|&squot;/&squot;
+suffix:semicolon
+id|i
+op_increment
+)paren
+suffix:semicolon
+id|ttyname
+(braket
+id|i
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|serport-&gt;phys
+comma
+l_string|&quot;%s%d/serio0&quot;
+comma
+id|ttyname
+comma
+id|minor
+c_func
+(paren
+id|tty-&gt;device
+)paren
+op_minus
+id|tty-&gt;driver.minor_start
+)paren
+suffix:semicolon
+id|serport-&gt;serio.name
+op_assign
+id|serport_name
+suffix:semicolon
+id|serport-&gt;serio.phys
+op_assign
+id|serport-&gt;phys
 suffix:semicolon
 id|serport-&gt;serio.type
 op_assign
@@ -447,9 +564,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;serio%d: Serial port %s&bslash;n&quot;
-comma
-id|serport-&gt;serio.number
+l_string|&quot;serio: Serial port %s&bslash;n&quot;
 comma
 id|name
 )paren
@@ -464,9 +579,11 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -487,9 +604,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func
@@ -579,6 +698,38 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|function|serport_ldisc_write_wakeup
+r_static
+r_void
+id|serport_ldisc_write_wakeup
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+r_struct
+id|serport
+op_star
+id|sp
+op_assign
+(paren
+r_struct
+id|serport
+op_star
+)paren
+id|tty-&gt;disc_data
+suffix:semicolon
+id|serio_dev_write_wakeup
+c_func
+(paren
+op_amp
+id|sp-&gt;serio
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The line discipline structure.&n; */
 DECL|variable|serport_ldisc
 r_static
@@ -615,6 +766,9 @@ id|receive_room
 suffix:colon
 id|serport_ldisc_room
 comma
+id|write_wakeup
+suffix:colon
+id|serport_ldisc_write_wakeup
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The functions for insering/removing us as a module.&n; */
@@ -686,12 +840,6 @@ id|module_exit
 c_func
 (paren
 id|serport_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -11,6 +11,7 @@ id|irq_stat
 )braket
 suffix:semicolon
 multiline_comment|/* defined in asm/hardirq.h */
+macro_line|#ifndef __ARCH_IRQ_STAT /* Some architectures can do this more efficiently */ 
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu, member)&t;(irq_stat[cpu].member)
@@ -18,6 +19,7 @@ macro_line|#else
 DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu, member)&t;((void)(cpu), irq_stat[0].member)
 macro_line|#endif&t;
+macro_line|#endif
 multiline_comment|/* arch independent irq_stat fields */
 DECL|macro|softirq_pending
 mdefine_line|#define softirq_pending(cpu)&t;__IRQ_STAT((cpu), __softirq_pending)

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-clps711x/mmu.h&n; *&n; *  
 macro_line|#ifndef __ASM_ARCH_MMU_H
 DECL|macro|__ASM_ARCH_MMU_H
 mdefine_line|#define __ASM_ARCH_MMU_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Task size: 3GB&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0xc0000000UL)

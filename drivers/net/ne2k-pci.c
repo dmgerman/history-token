@@ -3035,7 +3035,11 @@ id|ne2k_pci_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ne2k_pci_remove_one
+)paren
 comma
 id|id_table
 suffix:colon

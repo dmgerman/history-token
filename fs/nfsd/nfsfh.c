@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfsfh.c&n; *&n; * NFS server file handle treatment.&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; * Portions Copyright (C) 1999 G. Allen Morris III &lt;gam3@acm.org&gt;&n; * Extensive rewrite by Neil Brown &lt;neilb@cse.unsw.edu.au&gt; Southern-Spring 1999&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1068,6 +1069,13 @@ id|ENOMEM
 )paren
 suffix:semicolon
 multiline_comment|/* I&squot;m going to assume that if the returned dentry is different, then&n;&t; * it is well connected.  But nobody returns different dentrys do they?&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|child-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
 id|pdentry
 op_assign
 id|child-&gt;d_inode-&gt;i_op
@@ -1078,6 +1086,13 @@ c_func
 id|child-&gt;d_inode
 comma
 id|tdentry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|child-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|d_drop
@@ -1689,6 +1704,11 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1927,6 +1947,7 @@ id|dentry
 )paren
 (brace
 multiline_comment|/* Something wrong.  We need to drop the whole dentry-&gt;result path&n;&t;&t;&t; * whatever it was&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  FIXME: the loop below will do Bad Things(tm) if&n;&t;&t;&t; *  dentry (or one of its ancestors) become attached&n;&t;&t;&t; *  to the tree (e.g. due to VFAT-style alias handling)&n;&t;&t;&t; */
 r_struct
 id|dentry
 op_star
@@ -2030,6 +2051,11 @@ op_amp
 id|sb-&gt;s_nfsd_free_path_sem
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon
@@ -2058,6 +2084,11 @@ op_amp
 id|sb-&gt;s_nfsd_free_path_sem
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -2082,6 +2113,11 @@ c_func
 (paren
 op_amp
 id|sb-&gt;s_nfsd_free_path_sem
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|err_out
@@ -2477,7 +2513,7 @@ op_assign
 id|find_fh_dentry
 c_func
 (paren
-id|exp-&gt;ex_dentry-&gt;d_inode-&gt;i_sb
+id|exp-&gt;ex_dentry-&gt;d_sb
 comma
 id|datap
 comma
@@ -2529,7 +2565,7 @@ op_assign
 id|find_fh_dentry
 c_func
 (paren
-id|exp-&gt;ex_dentry-&gt;d_inode-&gt;i_sb
+id|exp-&gt;ex_dentry-&gt;d_sb
 comma
 id|tfh
 comma
@@ -2753,6 +2789,13 @@ id|tdentry
 op_assign
 id|dentry
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 r_do
 (brace
 id|tdentry
@@ -2769,6 +2812,7 @@ id|tdentry
 r_break
 suffix:semicolon
 multiline_comment|/* executable only by root and we can&squot;t be root */
+multiline_comment|/*&n;&t;&t;&t;&t; * FIXME: permissions check is not that simple&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2860,10 +2904,24 @@ comma
 id|dentry-&gt;d_name.name
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Finally, check access permissions. */
@@ -2951,7 +3009,7 @@ id|super_block
 op_star
 id|sb
 op_assign
-id|dentry-&gt;d_inode-&gt;i_sb
+id|dentry-&gt;d_sb
 suffix:semicolon
 r_if
 c_cond
@@ -3288,7 +3346,7 @@ id|ref_fh-&gt;fh_handle.fh_version
 op_eq
 l_int|0xca
 op_logical_and
-id|parent-&gt;d_inode-&gt;i_sb-&gt;s_op-&gt;dentry_to_fh
+id|dentry-&gt;d_sb-&gt;s_op-&gt;dentry_to_fh
 op_eq
 l_int|NULL
 )paren

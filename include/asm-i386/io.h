@@ -173,6 +173,36 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * bt_ioremap() and bt_iounmap() are for temporary early boot-time&n; * mappings, before the real ioremap() is functional.&n; * A boot-time mapping is currently limited to at most 16 pages.&n; */
+r_extern
+r_void
+op_star
+id|bt_ioremap
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bt_iounmap
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ISA I/O bus memory addresses are 1:1 with the physical address.&n; */
 DECL|macro|isa_virt_to_bus
 mdefine_line|#define isa_virt_to_bus virt_to_phys

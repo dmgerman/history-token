@@ -13,7 +13,4 @@ DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;NR_XS80200_IRQS
 DECL|macro|IRQ_XSCALE_PMU
 mdefine_line|#define&t;IRQ_XSCALE_PMU&t;&t;IRQ_XS80200_PMU
-macro_line|#ifdef CONFIG_XSCALE_ADI_EVB
-multiline_comment|/* Interrupts available on the ADI Eval Board */
-macro_line|#endif
 eof

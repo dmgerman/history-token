@@ -863,7 +863,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|gpio_loc
+id|gpio_lock
 comma
 id|flags
 )paren

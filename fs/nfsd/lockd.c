@@ -179,7 +179,7 @@ op_assign
 id|exp_readlock
 comma
 multiline_comment|/* lock export table for reading */
-id|exp_unlock
+id|exp_readunlock
 comma
 multiline_comment|/* unlock export table */
 id|exp_getclient

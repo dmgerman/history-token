@@ -206,7 +206,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -279,7 +279,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -348,7 +348,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -421,7 +421,7 @@ id|retval
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|bh-&gt;b_rdev
@@ -1043,7 +1043,7 @@ c_func
 op_amp
 id|ataraid_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|ATAMAJOR

@@ -17,6 +17,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|data
@@ -34,6 +35,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|data
@@ -51,6 +53,7 @@ r_int
 r_int
 id|addr
 comma
+r_const
 r_void
 op_star
 id|data

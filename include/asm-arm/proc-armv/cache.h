@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/proc-armv/cache.h&n; *&n; *  Copyright (C) 1999-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;asm/mman.h&gt;
+macro_line|#include &lt;asm/glue.h&gt;
 multiline_comment|/*&n; * This flag is used to indicate that the page pointed to by a pte&n; * is dirty and requires cleaning before returning it to the user.&n; */
 DECL|macro|PG_dcache_dirty
 mdefine_line|#define PG_dcache_dirty PG_arch_1
@@ -207,28 +208,175 @@ mdefine_line|#define clean_dcache_entry(_s)&t;&t;cpu_dcache_clean_entry((unsigne
 multiline_comment|/*&n; * I cache coherency stuff.&n; *&n; * This *is not* just icache.  It is to make data written to memory&n; * consistent such that instructions fetched from the region are what&n; * we expect.&n; *&n; * This generally means that we have to clean out the Dcache and write&n; * buffers, and maybe flush the Icache in the specified range.&n; */
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(_s,_e)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu_icache_invalidate_range((_s), (_e));&t;&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Old ARM MEMC stuff.  This supports the reversed mapping handling that&n; * we have on the older 26-bit machines.  We don&squot;t have a MEMC chip, so...&n; */
-DECL|macro|memc_update_all
-mdefine_line|#define memc_update_all()&t;&t;do { } while (0)
-DECL|macro|memc_update_mm
-mdefine_line|#define memc_update_mm(mm)&t;&t;do { } while (0)
-DECL|macro|memc_update_addr
-mdefine_line|#define memc_update_addr(mm,pte,log)&t;do { } while (0)
-DECL|macro|memc_clear
-mdefine_line|#define memc_clear(mm,physaddr)&t;&t;do { } while (0)
-multiline_comment|/*&n; * TLB flushing.&n; *&n; *  - flush_tlb_all()&t;&t;&t;flushes all processes TLBs&n; *  - flush_tlb_mm(mm)&t;&t;&t;flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr)&t;flushes TLB for specified page&n; *  - flush_tlb_range(vma, start, end)&t;flushes TLB for specified range of pages&n; *&n; * We drain the write buffer in here to ensure that the page tables in ram&n; * are really up to date.  It is more efficient to do this here...&n; */
-multiline_comment|/*&n; * Notes:&n; *  current-&gt;active_mm is the currently active memory description.&n; *  current-&gt;mm == NULL iff we are lazy.&n; */
+multiline_comment|/*&n; *&t;TLB Management&n; *&t;==============&n; *&n; *&t;The arch/arm/mm/tlb-*.S files implement this methods.&n; *&n; *&t;The TLB specific code is expected to perform whatever tests it&n; *&t;needs to determine if it should invalidate the TLB for each&n; *&t;call.  Start addresses are inclusive and end addresses are&n; *&t;exclusive; it is safe to round these addresses down.&n; *&n; *&t;flush_tlb_all()&n; *&n; *&t;&t;Invalidate the entire TLB.&n; *&n; *&t;flush_tlb_mm(mm)&n; *&n; *&t;&t;Invalidate all TLB entries in a particular address&n; *&t;&t;space.&n; *&t;&t;- mm&t;- mm_struct describing address space&n; *&n; *&t;flush_tlb_range(mm,start,end)&n; *&n; *&t;&t;Invalidate a range of TLB entries in the specified&n; *&t;&t;address space.&n; *&t;&t;- mm&t;- mm_struct describing address space&n; *&t;&t;- start - start address (may not be aligned)&n; *&t;&t;- end&t;- end address (exclusive, may not be aligned)&n; *&n; *&t;flush_tlb_page(vaddr,vma)&n; *&n; *&t;&t;Invalidate the specified page in the specified address range.&n; *&t;&t;- vaddr - virtual address (may not be aligned)&n; *&t;&t;- vma&t;- vma_struct describing address range&n; *&n; *&t;flush_kern_tlb_page(kaddr)&n; *&n; *&t;&t;Invalidate the TLB entry for the specified page.  The address&n; *&t;&t;will be in the kernels virtual memory space.  Current uses&n; *&t;&t;only require the D-TLB to be invalidated.&n; *&t;&t;- kaddr - Kernel virtual memory address&n; */
+DECL|struct|cpu_tlb_fns
+r_struct
+id|cpu_tlb_fns
+(brace
+DECL|member|flush_kern_all
+r_void
+(paren
+op_star
+id|flush_kern_all
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|flush_user_mm
+r_void
+(paren
+op_star
+id|flush_user_mm
+)paren
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
+DECL|member|flush_user_range
+r_void
+(paren
+op_star
+id|flush_user_range
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+DECL|member|flush_user_page
+r_void
+(paren
+op_star
+id|flush_user_page
+)paren
+(paren
+r_int
+r_int
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+DECL|member|flush_kern_page
+r_void
+(paren
+op_star
+id|flush_kern_page
+)paren
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Convert calls to our calling convention.&n; */
 DECL|macro|flush_tlb_all
-mdefine_line|#define flush_tlb_all()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cpu_tlb_invalidate_all();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Flush all user virtual address space translations described by `_mm&squot;.&n; *&n; * Currently, this is always called for current-&gt;mm, which should be&n; * the same as current-&gt;active_mm.  This is currently not be called for&n; * the lazy TLB case.&n; */
+mdefine_line|#define flush_tlb_all()&t;&t;&t;__cpu_flush_kern_tlb_all()
 DECL|macro|flush_tlb_mm
-mdefine_line|#define flush_tlb_mm(_mm)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_mm) == current-&gt;active_mm)&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_tlb_invalidate_all();&t;&t;&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Flush the specified range of user virtual address space translations.&n; *&n; * _mm may not be current-&gt;active_mm, but may not be NULL.&n; */
+mdefine_line|#define flush_tlb_mm(mm)&t;&t;__cpu_flush_user_tlb_mm(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(_vma,_start,_end)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_mm)-&gt;vm_mm == current-&gt;active_mm)&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_tlb_invalidate_range((_start), (_end));&t;&bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Flush the specified user virtual address space translation.&n; */
+mdefine_line|#define flush_tlb_range(vma,start,end)&t;__cpu_flush_user_tlb_range(start,end,vma)
 DECL|macro|flush_tlb_page
-mdefine_line|#define flush_tlb_page(_vma,_page)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_vma)-&gt;vm_mm == current-&gt;active_mm)&t;&t;&bslash;&n;&t;&t;&t;cpu_tlb_invalidate_page((_page),&t;&t;&bslash;&n;&t;&t;&t;&t; ((_vma)-&gt;vm_flags &amp; VM_EXEC));&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define flush_tlb_page(vma,vaddr)&t;__cpu_flush_user_tlb_page(vaddr,vma)
+DECL|macro|flush_kern_tlb_page
+mdefine_line|#define flush_kern_tlb_page(kaddr)&t;__cpu_flush_kern_tlb_page(kaddr)
+multiline_comment|/*&n; * Now select the calling method&n; */
+macro_line|#ifdef MULTI_TLB
+r_extern
+r_struct
+id|cpu_tlb_fns
+id|cpu_tlb
+suffix:semicolon
+DECL|macro|__cpu_flush_kern_tlb_all
+mdefine_line|#define __cpu_flush_kern_tlb_all&t;cpu_tlb.flush_kern_all
+DECL|macro|__cpu_flush_user_tlb_mm
+mdefine_line|#define __cpu_flush_user_tlb_mm&t;&t;cpu_tlb.flush_user_mm
+DECL|macro|__cpu_flush_user_tlb_range
+mdefine_line|#define __cpu_flush_user_tlb_range&t;cpu_tlb.flush_user_range
+DECL|macro|__cpu_flush_user_tlb_page
+mdefine_line|#define __cpu_flush_user_tlb_page&t;cpu_tlb.flush_user_page
+DECL|macro|__cpu_flush_kern_tlb_page
+mdefine_line|#define __cpu_flush_kern_tlb_page&t;cpu_tlb.flush_kern_page
+macro_line|#else
+DECL|macro|__cpu_flush_kern_tlb_all
+mdefine_line|#define __cpu_flush_kern_tlb_all&t;__glue(_TLB,_flush_kern_tlb_all)
+DECL|macro|__cpu_flush_user_tlb_mm
+mdefine_line|#define __cpu_flush_user_tlb_mm&t;&t;__glue(_TLB,_flush_user_tlb_mm)
+DECL|macro|__cpu_flush_user_tlb_range
+mdefine_line|#define __cpu_flush_user_tlb_range&t;__glue(_TLB,_flush_user_tlb_range)
+DECL|macro|__cpu_flush_user_tlb_page
+mdefine_line|#define __cpu_flush_user_tlb_page&t;__glue(_TLB,_flush_user_tlb_page)
+DECL|macro|__cpu_flush_kern_tlb_page
+mdefine_line|#define __cpu_flush_kern_tlb_page&t;__glue(_TLB,_flush_kern_tlb_page)
+r_extern
+r_void
+id|__cpu_flush_kern_tlb_all
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpu_flush_user_tlb_mm
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpu_flush_user_tlb_range
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpu_flush_user_tlb_page
+c_func
+(paren
+r_int
+r_int
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpu_flush_kern_tlb_page
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * if PG_dcache_dirty is set for the page, we need to ensure that any&n; * cache entries for the kernels virtual memory range are written&n; * back to the page.&n; */
 r_extern
 r_void
@@ -248,4 +396,13 @@ id|pte_t
 id|pte
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Old ARM MEMC stuff.  This supports the reversed mapping handling that&n; * we have on the older 26-bit machines.  We don&squot;t have a MEMC chip, so...&n; */
+DECL|macro|memc_update_all
+mdefine_line|#define memc_update_all()&t;&t;do { } while (0)
+DECL|macro|memc_update_mm
+mdefine_line|#define memc_update_mm(mm)&t;&t;do { } while (0)
+DECL|macro|memc_update_addr
+mdefine_line|#define memc_update_addr(mm,pte,log)&t;do { } while (0)
+DECL|macro|memc_clear
+mdefine_line|#define memc_clear(mm,physaddr)&t;&t;do { } while (0)
 eof

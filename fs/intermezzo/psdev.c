@@ -3230,7 +3230,7 @@ id|input.name
 comma
 id|input.mode
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|input.major

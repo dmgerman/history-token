@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/drivers/ide/sl82c105.c&n; *&n; * SL82C105/Winbond 553 IDE driver&n; *&n; * Maintainer unknown.&n; *&n; * Drive tuning added from Rebel.com&squot;s kernel sources&n; *  -- Russell King (15/11/98) linux@arm.linux.org.uk&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

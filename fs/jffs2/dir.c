@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: dir.c,v 1.42 2001/05/24 22:24:39 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * The original JFFS, from which the design for JFFS2 was derived,&n; * was designed and implemented by Axis Communications AB.&n; *&n; * The contents of this file are subject to the Red Hat eCos Public&n; * License Version 1.1 (the &quot;Licence&quot;); you may not use this file&n; * except in compliance with the Licence.  You may obtain a copy of&n; * the Licence at http://www.redhat.com/&n; *&n; * Software distributed under the Licence is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.&n; * See the Licence for the specific language governing rights and&n; * limitations under the Licence.&n; *&n; * The Original Code is JFFS2 - Journalling Flash File System, version 2&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the RHEPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the RHEPL or the GPL.&n; *&n; * $Id: dir.c,v 1.45.2.5 2002/02/23 14:31:09 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* For completion */
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
@@ -790,15 +791,12 @@ id|fd-&gt;type
 OL
 l_int|0
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
 id|offset
 op_increment
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 id|up
 c_func
 (paren
@@ -806,6 +804,8 @@ op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|filp-&gt;f_pos
 op_assign
 id|offset
@@ -1397,8 +1397,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -1471,12 +1471,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|jffs2_free_raw_dirent
-c_func
-(paren
-id|rd
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1488,6 +1482,12 @@ id|fd
 )paren
 (brace
 multiline_comment|/* dirent failed to write. Delete the inode normally &n;&t;&t;   as if it were the final unlink() */
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -1514,6 +1514,18 @@ id|fd
 )paren
 suffix:semicolon
 )brace
+id|dir_i-&gt;i_mtime
+op_assign
+id|dir_i-&gt;i_ctime
+op_assign
+id|rd-&gt;mctime
+suffix:semicolon
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 multiline_comment|/* Link the fd into the inode&squot;s list, obsoleting an old&n;&t;   one if necessary. */
 id|jffs2_add_fd_to_list
 c_func
@@ -1746,8 +1758,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -2202,8 +2214,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -2404,6 +2416,19 @@ id|dentry
 (brace
 r_int
 id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|S_ISDIR
+c_func
+(paren
+id|old_dentry-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -2692,6 +2717,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|inode-&gt;i_size
+op_assign
+id|ri-&gt;isize
+op_assign
 id|ri-&gt;dsize
 op_assign
 id|ri-&gt;csize
@@ -3034,8 +3063,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -3108,12 +3137,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|jffs2_free_raw_dirent
-c_func
-(paren
-id|rd
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3125,6 +3148,12 @@ id|fd
 )paren
 (brace
 multiline_comment|/* dirent failed to write. Delete the inode normally &n;&t;&t;   as if it were the final unlink() */
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -3151,6 +3180,18 @@ id|fd
 )paren
 suffix:semicolon
 )brace
+id|dir_i-&gt;i_mtime
+op_assign
+id|dir_i-&gt;i_ctime
+op_assign
+id|rd-&gt;mctime
+suffix:semicolon
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 multiline_comment|/* Link the fd into the inode&squot;s list, obsoleting an old&n;&t;   one if necessary. */
 id|jffs2_add_fd_to_list
 c_func
@@ -3693,8 +3734,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -3767,12 +3808,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|jffs2_free_raw_dirent
-c_func
-(paren
-id|rd
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3784,6 +3819,12 @@ id|fd
 )paren
 (brace
 multiline_comment|/* dirent failed to write. Delete the inode normally &n;&t;&t;   as if it were the final unlink() */
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -3810,6 +3851,18 @@ id|fd
 )paren
 suffix:semicolon
 )brace
+id|dir_i-&gt;i_mtime
+op_assign
+id|dir_i-&gt;i_ctime
+op_assign
+id|rd-&gt;mctime
+suffix:semicolon
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 multiline_comment|/* Link the fd into the inode&squot;s list, obsoleting an old&n;&t;   one if necessary. */
 id|jffs2_add_fd_to_list
 c_func
@@ -4052,21 +4105,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISBLK
+c_func
 (paren
 id|mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFBLK
 op_logical_or
+id|S_ISCHR
+c_func
 (paren
 id|mode
-op_amp
-id|S_IFMT
 )paren
-op_eq
-id|S_IFCHR
 )paren
 (brace
 id|dev
@@ -4551,8 +4600,8 @@ id|dir_i-&gt;i_ino
 suffix:semicolon
 id|rd-&gt;version
 op_assign
-id|dir_f-&gt;highest_version
 op_increment
+id|dir_f-&gt;highest_version
 suffix:semicolon
 id|rd-&gt;ino
 op_assign
@@ -4632,12 +4681,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|jffs2_free_raw_dirent
-c_func
-(paren
-id|rd
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4649,6 +4692,12 @@ id|fd
 )paren
 (brace
 multiline_comment|/* dirent failed to write. Delete the inode normally &n;&t;&t;   as if it were the final unlink() */
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -4675,6 +4724,18 @@ id|fd
 )paren
 suffix:semicolon
 )brace
+id|dir_i-&gt;i_mtime
+op_assign
+id|dir_i-&gt;i_ctime
+op_assign
+id|rd-&gt;mctime
+suffix:semicolon
+id|jffs2_free_raw_dirent
+c_func
+(paren
+id|rd
+)paren
+suffix:semicolon
 multiline_comment|/* Link the fd into the inode&squot;s list, obsoleting an old&n;&t;   one if necessary. */
 id|jffs2_add_fd_to_list
 c_func
@@ -4795,26 +4856,7 @@ c_cond
 id|ret
 )paren
 (brace
-multiline_comment|/* Try to delete the _new_ link to return a clean failure */
-r_int
-id|ret2
-op_assign
-id|jffs2_do_unlink
-c_func
-(paren
-id|new_dir_i
-comma
-id|new_dentry
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret2
-)paren
-(brace
+multiline_comment|/* Oh shit. We really ought to make a single node which can do both atomically */
 r_struct
 id|jffs2_inode_info
 op_star
@@ -4849,11 +4891,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;jffs2_rename(): Link succeeded, unlink failed (old err %d, new err %d). You now have a hard link&bslash;n&quot;
+l_string|&quot;jffs2_rename(): Link succeeded, unlink failed (err %d). You now have a hard link&bslash;n&quot;
 comma
 id|ret
-comma
-id|ret2
 )paren
 suffix:semicolon
 multiline_comment|/* Might as well let the VFS know */
@@ -4872,7 +4912,6 @@ op_amp
 id|old_dentry-&gt;d_inode-&gt;i_count
 )paren
 suffix:semicolon
-)brace
 )brace
 id|unlock_kernel
 c_func

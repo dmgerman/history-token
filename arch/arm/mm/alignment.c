@@ -19,6 +19,34 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+r_extern
+r_void
+id|do_bad_area
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|error_code
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * 32-bit misaligned trap handler (c) 1998 San Mehat (CCC) -July 1998&n; * /proc/sys/debug/alignment, modified and integrated into&n; * Linux 2.1 by Russell King&n; *&n; * Speed optimisations and better fault handling by Russell King.&n; *&n; * *** NOTE ***&n; * This code is not portable to processors with late data abort handling.&n; */
 DECL|macro|CODING_BITS
 mdefine_line|#define CODING_BITS(i)&t;(i &amp; 0x0e000000)
@@ -478,22 +506,30 @@ DECL|macro|TYPE_LDST
 mdefine_line|#define TYPE_LDST&t;2
 DECL|macro|TYPE_DONE
 mdefine_line|#define TYPE_DONE&t;3
-DECL|macro|get8_unaligned_check
-mdefine_line|#define get8_unaligned_check(val,addr,err)&t;&t;&bslash;&n;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&t;ldrb&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;b&t;2b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.long&t;1b, 3b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (val), &quot;=r&quot; (addr)&t;&t;&bslash;&n;&t;: &quot;0&quot; (err), &quot;2&quot; (addr))
-DECL|macro|get8t_unaligned_check
-mdefine_line|#define get8t_unaligned_check(val,addr,err)&t;&t;&bslash;&n;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&t;ldrbt&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;b&t;2b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.long&t;1b, 3b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (val), &quot;=r&quot; (addr)&t;&t;&bslash;&n;&t;: &quot;0&quot; (err), &quot;2&quot; (addr))
+DECL|macro|__get8_unaligned_check
+mdefine_line|#define __get8_unaligned_check(ins,val,addr,err)&t;&bslash;&n;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;1:&t;&quot;ins&quot;&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;3:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;b&t;2b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&quot;&t;.long&t;1b, 3b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (val), &quot;=r&quot; (addr)&t;&t;&bslash;&n;&t;: &quot;0&quot; (err), &quot;2&quot; (addr))
+DECL|macro|__get16_unaligned_check
+mdefine_line|#define __get16_unaligned_check(ins,val,addr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v, a = addr;&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,val,a,err);&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,v,a,err);&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 8;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|get16_unaligned_check
-mdefine_line|#define get16_unaligned_check(val,addr)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v, a = addr;&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(val,a,err);&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 8;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define get16_unaligned_check(val,addr) &bslash;&n;&t;__get16_unaligned_check(&quot;ldrb&quot;,val,addr)
+DECL|macro|get16t_unaligned_check
+mdefine_line|#define get16t_unaligned_check(val,addr) &bslash;&n;&t;__get16_unaligned_check(&quot;ldrbt&quot;,val,addr)
+DECL|macro|__get32_unaligned_check
+mdefine_line|#define __get32_unaligned_check(ins,val,addr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v, a = addr;&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,val,a,err);&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,v,a,err);&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 8;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,v,a,err);&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 16;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get8_unaligned_check(ins,v,a,err);&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 24;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|get32_unaligned_check
+mdefine_line|#define get32_unaligned_check(val,addr) &bslash;&n;&t;__get32_unaligned_check(&quot;ldrb&quot;,val,addr)
+DECL|macro|get32t_unaligned_check
+mdefine_line|#define get32t_unaligned_check(val,addr) &bslash;&n;&t;__get32_unaligned_check(&quot;ldrbt&quot;,val,addr)
+DECL|macro|__put16_unaligned_check
+mdefine_line|#define __put16_unaligned_check(ins,val,addr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v = val, a = addr;&t;&bslash;&n;&t;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;&quot;ins&quot;&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;mov&t;%1, %1, lsr #8&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;&quot;ins&quot;&t;%1, [%2]&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;3b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b, 4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;2b, 4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (v), &quot;=&amp;r&quot; (a)&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (err), &quot;1&quot; (v), &quot;2&quot; (a));&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|put16_unaligned_check
-mdefine_line|#define put16_unaligned_check(val,addr)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v = val, a = addr;&t;&bslash;&n;&t;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;strb&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;mov&t;%1, %1, lsr #8&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;strb&t;%1, [%2]&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;3b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b, 4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;2b, 4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (v), &quot;=&amp;r&quot; (a)&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (err), &quot;1&quot; (v), &quot;2&quot; (a));&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define put16_unaligned_check(val,addr)  &bslash;&n;&t;__put16_unaligned_check(&quot;strb&quot;,val,addr)
+DECL|macro|put16t_unaligned_check
+mdefine_line|#define put16t_unaligned_check(val,addr) &bslash;&n;&t;__put16_unaligned_check(&quot;strbt&quot;,val,addr)
 DECL|macro|__put32_unaligned_check
 mdefine_line|#define __put32_unaligned_check(ins,val,addr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v = val, a = addr;&t;&bslash;&n;&t;&t;__asm__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;&quot;ins&quot;&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;mov&t;%1, %1, lsr #8&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;&quot;ins&quot;&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;mov&t;%1, %1, lsr #8&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;&quot;ins&quot;&t;%1, [%2], #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;mov&t;%1, %1, lsr #8&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;4:&t;&quot;ins&quot;&t;%1, [%2]&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;5:&bslash;n&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;6:&t;mov&t;%0, #1&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;5b&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;3&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b, 6b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;2b, 6b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;3b, 6b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;4b, 6b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=r&quot; (err), &quot;=&amp;r&quot; (v), &quot;=&amp;r&quot; (a)&t;&t;&bslash;&n;&t;&t;: &quot;0&quot; (err), &quot;1&quot; (v), &quot;2&quot; (a));&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-DECL|macro|get32_unaligned_check
-mdefine_line|#define get32_unaligned_check(val,addr)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v, a = addr;&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(val,a,err);&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 8;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 16;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;get8_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 24;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|put32_unaligned_check
 mdefine_line|#define put32_unaligned_check(val,addr)&t; &bslash;&n;&t;__put32_unaligned_check(&quot;strb&quot;, val, addr)
-DECL|macro|get32t_unaligned_check
-mdefine_line|#define get32t_unaligned_check(val,addr)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int err = 0, v, a = addr;&t;&t;&bslash;&n;&t;&t;get8t_unaligned_check(val,a,err);&t;&t;&bslash;&n;&t;&t;get8t_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 8;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;get8t_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 16;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;get8t_unaligned_check(v,a,err);&t;&t;&t;&bslash;&n;&t;&t;val |= v &lt;&lt; 24;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (err)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto fault;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|put32t_unaligned_check
 mdefine_line|#define put32t_unaligned_check(val,addr) &bslash;&n;&t;__put32_unaligned_check(&quot;strbt&quot;, val, addr)
 r_static
@@ -650,6 +686,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_goto
+id|user
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|LDST_L_BIT
 c_func
 (paren
@@ -701,6 +749,75 @@ suffix:semicolon
 )brace
 r_else
 id|put16_unaligned_check
+c_func
+(paren
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+comma
+id|addr
+)paren
+suffix:semicolon
+r_return
+id|TYPE_LDST
+suffix:semicolon
+id|user
+suffix:colon
+r_if
+c_cond
+(paren
+id|LDST_L_BIT
+c_func
+(paren
+id|instr
+)paren
+)paren
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
+id|get16t_unaligned_check
+c_func
+(paren
+id|val
+comma
+id|addr
+)paren
+suffix:semicolon
+multiline_comment|/* signed half-word? */
+r_if
+c_cond
+(paren
+id|instr
+op_amp
+l_int|0x40
+)paren
+id|val
+op_assign
+(paren
+r_int
+r_int
+)paren
+(paren
+(paren
+r_int
+r_int
+)paren
+id|val
+)paren
+suffix:semicolon
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
+r_else
+id|put16t_unaligned_check
 c_func
 (paren
 id|regs-&gt;uregs
@@ -771,6 +888,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|LDST_P_BIT
 c_func
@@ -782,6 +900,13 @@ id|LDST_W_BIT
 c_func
 (paren
 id|instr
+)paren
+)paren
+op_logical_or
+id|user_mode
+c_func
+(paren
+id|regs
 )paren
 )paren
 r_goto
@@ -796,17 +921,27 @@ c_func
 id|instr
 )paren
 )paren
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
 id|get32_unaligned_check
 c_func
 (paren
-id|regs-&gt;uregs
-(braket
-id|rd
-)braket
+id|val
 comma
 id|addr
 )paren
 suffix:semicolon
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
 r_else
 id|put32_unaligned_check
 c_func
@@ -833,17 +968,27 @@ c_func
 id|instr
 )paren
 )paren
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
 id|get32t_unaligned_check
 c_func
 (paren
-id|regs-&gt;uregs
-(braket
-id|rd
-)braket
+id|val
 comma
 id|addr
 )paren
 suffix:semicolon
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
 r_else
 id|put32t_unaligned_check
 c_func
@@ -1047,6 +1192,16 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -1089,7 +1244,29 @@ c_func
 id|instr
 )paren
 )paren
-id|get32_unaligned_check
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
+id|get32t_unaligned_check
+c_func
+(paren
+id|val
+comma
+id|eaddr
+)paren
+suffix:semicolon
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
+r_else
+id|put32t_unaligned_check
 c_func
 (paren
 id|regs-&gt;uregs
@@ -1100,6 +1277,77 @@ comma
 id|eaddr
 )paren
 suffix:semicolon
+id|eaddr
+op_add_assign
+l_int|4
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_for
+c_loop
+(paren
+id|regbits
+op_assign
+id|REGMASK_BITS
+c_func
+(paren
+id|instr
+)paren
+comma
+id|rd
+op_assign
+l_int|0
+suffix:semicolon
+id|regbits
+suffix:semicolon
+id|regbits
+op_rshift_assign
+l_int|1
+comma
+id|rd
+op_add_assign
+l_int|1
+)paren
+r_if
+c_cond
+(paren
+id|regbits
+op_amp
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|LDST_L_BIT
+c_func
+(paren
+id|instr
+)paren
+)paren
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
+id|get32_unaligned_check
+c_func
+(paren
+id|val
+comma
+id|eaddr
+)paren
+suffix:semicolon
+id|regs-&gt;uregs
+(braket
+id|rd
+)braket
+op_assign
+id|val
+suffix:semicolon
+)brace
 r_else
 id|put32_unaligned_check
 c_func
@@ -1116,6 +1364,7 @@ id|eaddr
 op_add_assign
 l_int|4
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

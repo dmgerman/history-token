@@ -291,7 +291,7 @@ op_assign
 l_int|0xf
 suffix:semicolon
 multiline_comment|/* clear status on all timers */
-id|setup_arm_irq
+id|setup_irq
 c_func
 (paren
 id|IRQ_OST0

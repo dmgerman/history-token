@@ -1733,7 +1733,6 @@ multiline_comment|/*&n;* mwave_init is called on module load&n;*&n;* mwave_exit 
 DECL|function|mwave_exit
 r_static
 r_void
-id|__exit
 id|mwave_exit
 c_func
 (paren

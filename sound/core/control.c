@@ -692,6 +692,7 @@ r_else
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;No memory available to allocate event&bslash;n&quot;
 )paren
 suffix:semicolon

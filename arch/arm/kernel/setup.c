@@ -27,6 +27,15 @@ macro_line|#ifndef CONFIG_CMDLINE
 DECL|macro|CONFIG_CMDLINE
 mdefine_line|#define CONFIG_CMDLINE &quot;&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|variable|__cacheline_aligned_in_smp
+id|spinlock_t
+id|kernel_flag
+id|__cacheline_aligned_in_smp
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_FPE_NWFPE) || defined(CONFIG_FPE_FASTFPE)
 DECL|variable|fpe_type
 r_char
@@ -180,6 +189,13 @@ DECL|variable|processor
 r_struct
 id|processor
 id|processor
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MULTI_TLB
+DECL|variable|cpu_tlb
+r_struct
+id|cpu_tlb_fns
+id|cpu_tlb
 suffix:semicolon
 macro_line|#endif
 DECL|variable|aux_device_present
@@ -553,6 +569,7 @@ id|mult
 op_assign
 l_int|2
 op_plus
+(paren
 id|CACHE_M
 c_func
 (paren
@@ -563,6 +580,7 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -821,6 +839,13 @@ id|processor
 op_assign
 op_star
 id|list-&gt;proc
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef MULTI_TLB
+id|cpu_tlb
+op_assign
+op_star
+id|list-&gt;tlb
 suffix:semicolon
 macro_line|#endif
 id|printk
@@ -2538,6 +2563,7 @@ id|mult
 op_assign
 l_int|2
 op_plus
+(paren
 id|CACHE_M
 c_func
 (paren
@@ -2548,6 +2574,7 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 id|seq_printf
 c_func
@@ -2961,9 +2988,9 @@ id|cache_info
 )paren
 ques
 c_cond
-l_string|&quot;separate I,D&quot;
+l_string|&quot;Harvard&quot;
 suffix:colon
-l_string|&quot;unified&quot;
+l_string|&quot;Unified&quot;
 )paren
 suffix:semicolon
 r_if

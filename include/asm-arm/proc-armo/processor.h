@@ -5,9 +5,9 @@ mdefine_line|#define __ASM_PROC_PROCESSOR_H
 macro_line|#include &lt;linux/string.h&gt;
 DECL|macro|KERNEL_STACK_SIZE
 mdefine_line|#define KERNEL_STACK_SIZE 4096
-DECL|struct|context_save_struct
+DECL|struct|cpu_context_save
 r_struct
-id|context_save_struct
+id|cpu_context_save
 (brace
 DECL|member|r4
 r_int
@@ -57,7 +57,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_CSS
-mdefine_line|#define INIT_CSS (struct context_save_struct){ 0, 0, 0, 0, 0, 0, 0, 0, SVC26_MODE }
+mdefine_line|#define INIT_CSS (struct cpu_context_save){ 0, 0, 0, 0, 0, 0, 0, 0, SVC26_MODE }
 r_typedef
 r_struct
 (brace
@@ -247,31 +247,5 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)))[1022])
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)&t;(((unsigned long *)(4096+(unsigned long)(tsk)))[1020])
-multiline_comment|/* Allocation and freeing of basic task resources. */
-multiline_comment|/*&n; * NOTE! The task struct and the stack go together&n; */
-r_extern
-r_int
-r_int
-id|get_page_8k
-c_func
-(paren
-r_int
-id|priority
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|free_page_8k
-c_func
-(paren
-r_int
-r_int
-id|page
-)paren
-suffix:semicolon
-DECL|macro|ll_alloc_task_struct
-mdefine_line|#define ll_alloc_task_struct()&t;((struct task_struct *)get_page_8k(GFP_KERNEL))
-DECL|macro|ll_free_task_struct
-mdefine_line|#define ll_free_task_struct(p)  free_page_8k((unsigned long)(p))
 macro_line|#endif
 eof

@@ -73,6 +73,26 @@ op_minus
 l_int|1
 comma
 macro_line|#endif
+DECL|enumerator|__end_of_permanent_fixed_addresses
+id|__end_of_permanent_fixed_addresses
+comma
+multiline_comment|/* temporary boot-time mappings, used before ioremap() is functional */
+DECL|macro|NR_FIX_BTMAPS
+mdefine_line|#define NR_FIX_BTMAPS&t;16
+DECL|enumerator|FIX_BTMAP_END
+id|FIX_BTMAP_END
+op_assign
+id|__end_of_permanent_fixed_addresses
+comma
+DECL|enumerator|FIX_BTMAP_BEGIN
+id|FIX_BTMAP_BEGIN
+op_assign
+id|FIX_BTMAP_END
+op_plus
+id|NR_FIX_BTMAPS
+op_minus
+l_int|1
+comma
 DECL|enumerator|__end_of_fixed_addresses
 id|__end_of_fixed_addresses
 )brace
@@ -101,10 +121,10 @@ mdefine_line|#define set_fixmap_nocache(idx, phys) &bslash;&n;&t;&t;__set_fixmap
 multiline_comment|/*&n; * used by vmalloc.c.&n; *&n; * Leave one empty page between vmalloc&squot;ed areas and&n; * the start of the fixmap, and leave one page empty&n; * at the top of mem..&n; */
 DECL|macro|FIXADDR_TOP
 mdefine_line|#define FIXADDR_TOP&t;(0xffffe000UL)
-DECL|macro|FIXADDR_SIZE
-mdefine_line|#define FIXADDR_SIZE&t;(__end_of_fixed_addresses &lt;&lt; PAGE_SHIFT)
+DECL|macro|__FIXADDR_SIZE
+mdefine_line|#define __FIXADDR_SIZE&t;(__end_of_permanent_fixed_addresses &lt;&lt; PAGE_SHIFT)
 DECL|macro|FIXADDR_START
-mdefine_line|#define FIXADDR_START&t;(FIXADDR_TOP - FIXADDR_SIZE)
+mdefine_line|#define FIXADDR_START&t;(FIXADDR_TOP - __FIXADDR_SIZE)
 DECL|macro|__fix_to_virt
 mdefine_line|#define __fix_to_virt(x)&t;(FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))
 r_extern

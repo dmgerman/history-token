@@ -53,11 +53,13 @@ DECL|macro|NDEBUG_C400_PWRITE
 mdefine_line|#define NDEBUG_C400_PWRITE&t;0x200000
 DECL|macro|NDEBUG_LISTS
 mdefine_line|#define NDEBUG_LISTS&t;&t;0x400000
+DECL|macro|NDEBUG_ANY
+mdefine_line|#define NDEBUG_ANY&t;&t;0xFFFFFFFFUL
 multiline_comment|/* &n; * The contents of the OUTPUT DATA register are asserted on the bus when&n; * either arbitration is occurring or the phase-indicating signals (&n; * IO, CD, MSG) in the TARGET COMMAND register and the ASSERT DATA&n; * bit in the INITIATOR COMMAND register is set.&n; */
 DECL|macro|OUTPUT_DATA_REG
-mdefine_line|#define OUTPUT_DATA_REG         0       /* wo DATA lines on SCSI bus */
+mdefine_line|#define OUTPUT_DATA_REG         0&t;/* wo DATA lines on SCSI bus */
 DECL|macro|CURRENT_SCSI_DATA_REG
-mdefine_line|#define CURRENT_SCSI_DATA_REG   0       /* ro same */
+mdefine_line|#define CURRENT_SCSI_DATA_REG   0&t;/* ro same */
 DECL|macro|INITIATOR_COMMAND_REG
 mdefine_line|#define INITIATOR_COMMAND_REG&t;1&t;/* rw */
 DECL|macro|ICR_ASSERT_RST
@@ -95,13 +97,13 @@ mdefine_line|#define MR_BLOCK_DMA_MODE&t;0x80&t;/* rw block mode DMA */
 DECL|macro|MR_TARGET
 mdefine_line|#define MR_TARGET&t;&t;0x40&t;/* rw target mode */
 DECL|macro|MR_ENABLE_PAR_CHECK
-mdefine_line|#define MR_ENABLE_PAR_CHECK   0x20&t;/* rw enable parity checking */
+mdefine_line|#define MR_ENABLE_PAR_CHECK&t;0x20&t;/* rw enable parity checking */
 DECL|macro|MR_ENABLE_PAR_INTR
 mdefine_line|#define MR_ENABLE_PAR_INTR&t;0x10&t;/* rw enable bad parity interrupt */
 DECL|macro|MR_ENABLE_EOP_INTR
 mdefine_line|#define MR_ENABLE_EOP_INTR&t;0x08&t;/* rw enable eop interrupt */
 DECL|macro|MR_MONITOR_BSY
-mdefine_line|#define MR_MONITOR_BSY&t;0x04&t;/* rw enable int on unexpected bsy fail */
+mdefine_line|#define MR_MONITOR_BSY&t;&t;0x04&t;/* rw enable int on unexpected bsy fail */
 DECL|macro|MR_DMA_MODE
 mdefine_line|#define MR_DMA_MODE&t;&t;0x02&t;/* rw DMA / pseudo DMA mode */
 DECL|macro|MR_ARBITRATE
@@ -129,7 +131,7 @@ DECL|macro|STATUS_REG
 mdefine_line|#define STATUS_REG&t;&t;4&t;/* ro */
 multiline_comment|/*&n; * Note : a set bit indicates an active signal, driven by us or another &n; * device.&n; */
 DECL|macro|SR_RST
-mdefine_line|#define SR_RST&t;&t;&t;0x80&t;
+mdefine_line|#define SR_RST&t;&t;&t;0x80
 DECL|macro|SR_BSY
 mdefine_line|#define SR_BSY&t;&t;&t;0x40
 DECL|macro|SR_REQ
@@ -181,25 +183,25 @@ multiline_comment|/* Write any value to this register to start an ini mode DMA r
 DECL|macro|START_DMA_INITIATOR_RECEIVE_REG
 mdefine_line|#define START_DMA_INITIATOR_RECEIVE_REG 7&t;/* wo */
 DECL|macro|C400_CONTROL_STATUS_REG
-mdefine_line|#define C400_CONTROL_STATUS_REG NCR53C400_register_offset-8      /* rw */
+mdefine_line|#define C400_CONTROL_STATUS_REG NCR53C400_register_offset-8&t;/* rw */
 DECL|macro|CSR_RESET
-mdefine_line|#define CSR_RESET              0x80    /* wo  Resets 53c400 */
+mdefine_line|#define CSR_RESET              0x80&t;/* wo  Resets 53c400 */
 DECL|macro|CSR_53C80_REG
-mdefine_line|#define CSR_53C80_REG          0x80    /* ro  5380 registers busy */
+mdefine_line|#define CSR_53C80_REG          0x80&t;/* ro  5380 registers busy */
 DECL|macro|CSR_TRANS_DIR
-mdefine_line|#define CSR_TRANS_DIR          0x40    /* rw  Data transfer direction */
+mdefine_line|#define CSR_TRANS_DIR          0x40&t;/* rw  Data transfer direction */
 DECL|macro|CSR_SCSI_BUFF_INTR
-mdefine_line|#define CSR_SCSI_BUFF_INTR     0x20    /* rw  Enable int on transfer ready */
+mdefine_line|#define CSR_SCSI_BUFF_INTR     0x20&t;/* rw  Enable int on transfer ready */
 DECL|macro|CSR_53C80_INTR
-mdefine_line|#define CSR_53C80_INTR         0x10    /* rw  Enable 53c80 interrupts */
+mdefine_line|#define CSR_53C80_INTR         0x10&t;/* rw  Enable 53c80 interrupts */
 DECL|macro|CSR_SHARED_INTR
-mdefine_line|#define CSR_SHARED_INTR        0x08    /* rw  Interrupt sharing */
+mdefine_line|#define CSR_SHARED_INTR        0x08&t;/* rw  Interrupt sharing */
 DECL|macro|CSR_HOST_BUF_NOT_RDY
-mdefine_line|#define CSR_HOST_BUF_NOT_RDY   0x04    /* ro  Is Host buffer ready */
+mdefine_line|#define CSR_HOST_BUF_NOT_RDY   0x04&t;/* ro  Is Host buffer ready */
 DECL|macro|CSR_SCSI_BUF_RDY
-mdefine_line|#define CSR_SCSI_BUF_RDY       0x02    /* ro  SCSI buffer read */
+mdefine_line|#define CSR_SCSI_BUF_RDY       0x02&t;/* ro  SCSI buffer read */
 DECL|macro|CSR_GATED_53C80_IRQ
-mdefine_line|#define CSR_GATED_53C80_IRQ    0x01    /* ro  Last block xferred */
+mdefine_line|#define CSR_GATED_53C80_IRQ    0x01&t;/* ro  Last block xferred */
 macro_line|#if 0
 mdefine_line|#define CSR_BASE CSR_SCSI_BUFF_INTR | CSR_53C80_INTR
 macro_line|#else
@@ -208,13 +210,13 @@ mdefine_line|#define CSR_BASE CSR_53C80_INTR
 macro_line|#endif
 multiline_comment|/* Number of 128-byte blocks to be transferred */
 DECL|macro|C400_BLOCK_COUNTER_REG
-mdefine_line|#define C400_BLOCK_COUNTER_REG   NCR53C400_register_offset-7      /* rw */
+mdefine_line|#define C400_BLOCK_COUNTER_REG   NCR53C400_register_offset-7&t;/* rw */
 multiline_comment|/* Resume transfer after disconnect */
 DECL|macro|C400_RESUME_TRANSFER_REG
-mdefine_line|#define C400_RESUME_TRANSFER_REG NCR53C400_register_offset-6      /* wo */
+mdefine_line|#define C400_RESUME_TRANSFER_REG NCR53C400_register_offset-6&t;/* wo */
 multiline_comment|/* Access to host buffer stack */
 DECL|macro|C400_HOST_BUFFER
-mdefine_line|#define C400_HOST_BUFFER         NCR53C400_register_offset-4      /* rw */
+mdefine_line|#define C400_HOST_BUFFER         NCR53C400_register_offset-4&t;/* rw */
 multiline_comment|/* Note : PHASE_* macros are based on the values of the STATUS register */
 DECL|macro|PHASE_MASK
 mdefine_line|#define PHASE_MASK &t;(SR_MSG | SR_CD | SR_IO)
@@ -234,7 +236,7 @@ DECL|macro|PHASE_UNKNOWN
 mdefine_line|#define PHASE_UNKNOWN&t;&t;0xff
 multiline_comment|/* &n; * Convert status register phase to something we can use to set phase in &n; * the target register so we can get phase mismatch interrupts on DMA &n; * transfers.&n; */
 DECL|macro|PHASE_SR_TO_TCR
-mdefine_line|#define PHASE_SR_TO_TCR(phase) ((phase) &gt;&gt; 2)&t;
+mdefine_line|#define PHASE_SR_TO_TCR(phase) ((phase) &gt;&gt; 2)
 multiline_comment|/*&n; * The internal should_disconnect() function returns these based on the &n; * expected length of a disconnect if a device supports disconnect/&n; * reconnect.&n; */
 DECL|macro|DISCONNECT_NONE
 mdefine_line|#define DISCONNECT_NONE&t;&t;0
@@ -244,7 +246,7 @@ DECL|macro|DISCONNECT_LONG
 mdefine_line|#define DISCONNECT_LONG&t;&t;2
 multiline_comment|/* &n; * These are &quot;special&quot; values for the tag parameter passed to NCR5380_select.&n; */
 DECL|macro|TAG_NEXT
-mdefine_line|#define TAG_NEXT&t;-1 &t;/* Use next free tag */
+mdefine_line|#define TAG_NEXT&t;-1&t;/* Use next free tag */
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE&t;-2&t;/* &n;&t;&t;&t;&t; * Establish I_T_L nexus instead of I_T_L_Q&n;&t;&t;&t;&t; * even on SCSI-II devices.&n;&t;&t;&t;&t; */
 multiline_comment|/*&n; * These are &quot;special&quot; values for the irq and dma_channel fields of the &n; * Scsi_Host structure&n; */
@@ -257,7 +259,7 @@ mdefine_line|#define IRQ_AUTO&t;254
 DECL|macro|DMA_AUTO
 mdefine_line|#define DMA_AUTO&t;254
 DECL|macro|PORT_AUTO
-mdefine_line|#define PORT_AUTO&t;0xffff&t;&t;/* autoprobe io port for 53c400a */
+mdefine_line|#define PORT_AUTO&t;0xffff&t;/* autoprobe io port for 53c400a */
 DECL|macro|FLAG_HAS_LAST_BYTE_SENT
 mdefine_line|#define FLAG_HAS_LAST_BYTE_SENT&t;&t;1&t;/* NCR53c81 or better */
 DECL|macro|FLAG_CHECK_LAST_BYTE_SENT
@@ -356,7 +358,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef USLEEP
 DECL|member|time_expires
 r_int
 r_int
@@ -380,7 +381,6 @@ id|Scsi_Cmnd
 op_star
 id|selecting
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef NCR5380_STATS
 DECL|member|timebase
 r_int
@@ -441,10 +441,17 @@ op_star
 id|first_instance
 suffix:semicolon
 multiline_comment|/* linked list of 5380&squot;s */
+DECL|macro|dprintk
+mdefine_line|#define dprintk(a,b)&t;&t;&t;do {} while(0)
+DECL|macro|NCR5380_dprint
+mdefine_line|#define NCR5380_dprint(a,b)&t;&t;do {} while(0)
+DECL|macro|NCR5380_dprint_phase
+mdefine_line|#define NCR5380_dprint_phase(a,b)&t;do {} while(0)
 macro_line|#if defined(AUTOPROBE_IRQ)
 r_static
 r_int
 id|NCR5380_probe_irq
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -459,6 +466,7 @@ macro_line|#endif
 r_static
 r_void
 id|NCR5380_init
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -472,6 +480,7 @@ suffix:semicolon
 r_static
 r_void
 id|NCR5380_information_transfer
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -483,6 +492,7 @@ macro_line|#ifndef DONT_USE_INTR
 r_static
 r_void
 id|NCR5380_intr
+c_func
 (paren
 r_int
 id|irq
@@ -500,6 +510,7 @@ suffix:semicolon
 r_static
 r_void
 id|do_NCR5380_intr
+c_func
 (paren
 r_int
 id|irq
@@ -518,6 +529,7 @@ macro_line|#endif
 r_static
 r_void
 id|NCR5380_main
+c_func
 (paren
 r_void
 )paren
@@ -525,6 +537,7 @@ suffix:semicolon
 r_static
 r_void
 id|NCR5380_print_options
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -535,6 +548,7 @@ suffix:semicolon
 r_static
 r_void
 id|NCR5380_print_phase
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -545,6 +559,7 @@ suffix:semicolon
 r_static
 r_void
 id|NCR5380_print
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -557,6 +572,7 @@ r_static
 macro_line|#endif
 r_int
 id|NCR5380_abort
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -568,6 +584,7 @@ r_static
 macro_line|#endif
 r_int
 id|NCR5380_reset
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -583,6 +600,7 @@ r_static
 macro_line|#endif
 r_int
 id|NCR5380_queue_command
+c_func
 (paren
 id|Scsi_Cmnd
 op_star
@@ -602,6 +620,7 @@ suffix:semicolon
 r_static
 r_void
 id|NCR5380_reselect
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -612,6 +631,7 @@ suffix:semicolon
 r_static
 r_int
 id|NCR5380_select
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -630,6 +650,7 @@ macro_line|#if defined(PSEUDO_DMA) || defined(REAL_DMA) || defined(REAL_DMA_POLL
 r_static
 r_int
 id|NCR5380_transfer_dma
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -656,6 +677,7 @@ macro_line|#endif
 r_static
 r_int
 id|NCR5380_transfer_pio
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -680,11 +702,13 @@ id|data
 suffix:semicolon
 macro_line|#if (defined(REAL_DMA) || defined(REAL_DMA_POLL))
 macro_line|#if defined(i386) || defined(__alpha__)
+multiline_comment|/**&n; *&t;NCR5380_pc_dma_setup&t;&t;-&t;setup ISA DMA&n; *&t;@instance: adapter to set up&n; *&t;@ptr: block to transfer (virtual address)&n; *&t;@count: number of bytes to transfer&n; *&t;@mode: DMA controller mode to use&n; *&n; *&t;Program the DMA controller ready to perform an ISA DMA transfer&n; *&t;on this chip.&n; *&n; *&t;Locks: takes and releases the ISA DMA lock.&n; */
 DECL|function|NCR5380_pc_dma_setup
 r_static
 id|__inline__
 r_int
 id|NCR5380_pc_dma_setup
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -717,6 +741,10 @@ c_func
 (paren
 id|ptr
 )paren
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -805,13 +833,16 @@ l_int|1
 )paren
 )paren
 id|panic
+c_func
 (paren
 l_string|&quot;scsi%d : attempted unaligned DMA transfer&bslash;n&quot;
 comma
 id|instance-&gt;host_no
 )paren
 suffix:semicolon
-id|cli
+id|flags
+op_assign
+id|claim_dma_lock
 c_func
 (paren
 )paren
@@ -858,20 +889,23 @@ c_func
 id|instance-&gt;dma_channel
 )paren
 suffix:semicolon
-id|sti
+id|release_dma_lock
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;NCR5380_pc_dma_write_setup&t;&t;-&t;setup ISA DMA write&n; *&t;@instance: adapter to set up&n; *&t;@ptr: block to transfer (virtual address)&n; *&t;@count: number of bytes to transfer&n; *&n; *&t;Program the DMA controller ready to perform an ISA DMA write to the&n; *&t;SCSI controller.&n; *&n; *&t;Locks: called routines take and release the ISA DMA lock.&n; */
 DECL|function|NCR5380_pc_dma_write_setup
 r_static
 id|__inline__
 r_int
 id|NCR5380_pc_dma_write_setup
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -890,6 +924,7 @@ id|count
 (brace
 r_return
 id|NCR5380_pc_dma_setup
+c_func
 (paren
 id|instance
 comma
@@ -901,11 +936,13 @@ id|DMA_MODE_WRITE
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;NCR5380_pc_dma_read_setup&t;&t;-&t;setup ISA DMA read&n; *&t;@instance: adapter to set up&n; *&t;@ptr: block to transfer (virtual address)&n; *&t;@count: number of bytes to transfer&n; *&n; *&t;Program the DMA controller ready to perform an ISA DMA read from the&n; *&t;SCSI controller.&n; *&n; *&t;Locks: called routines take and release the ISA DMA lock.&n; */
 DECL|function|NCR5380_pc_dma_read_setup
 r_static
 id|__inline__
 r_int
 id|NCR5380_pc_dma_read_setup
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -924,6 +961,7 @@ id|count
 (brace
 r_return
 id|NCR5380_pc_dma_setup
+c_func
 (paren
 id|instance
 comma
@@ -935,11 +973,13 @@ id|DMA_MODE_READ
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;NCR5380_pc_dma_residual&t;&t;-&t;return bytes left &n; *&t;@instance: adapter&n; *&n; *&t;Reports the number of bytes left over after the DMA was terminated.&n; *&n; *&t;Locks: takes and releases the ISA DMA lock.&n; */
 DECL|function|NCR5380_pc_dma_residual
 r_static
 id|__inline__
 r_int
 id|NCR5380_pc_dma_residual
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -947,11 +987,16 @@ op_star
 id|instance
 )paren
 (brace
-r_register
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
-id|cli
+id|flags
+op_assign
+id|claim_dma_lock
 c_func
 (paren
 )paren
@@ -970,18 +1015,19 @@ c_func
 id|instance-&gt;dma_channel
 )paren
 suffix:semicolon
-id|sti
+id|release_dma_lock
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 r_return
 id|tmp
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(i386) || defined(__alpha__) */
-macro_line|#endif /* defined(REAL_DMA)  */
-macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* ndef ASM */
-macro_line|#endif /* NCR5380_H */
+macro_line|#endif&t;&t;&t;&t;/* defined(i386) || defined(__alpha__) */
+macro_line|#endif&t;&t;&t;&t;/* defined(REAL_DMA)  */
+macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
+macro_line|#endif&t;&t;&t;&t;/* ndef ASM */
+macro_line|#endif&t;&t;&t;&t;/* NCR5380_H */
 eof

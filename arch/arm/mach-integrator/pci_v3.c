@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/pci_v3.c&n; *&n; *  PCI functions for V3 host PCI bridge&n; *&n; *  Copyright (C) 1999 ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -13,19 +14,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
 macro_line|#include &lt;asm/hardware/pci_v3.h&gt;
-r_int
-id|setup_arm_irq
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|irqaction
-op_star
-r_new
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The V3 PCI interface chip in Integrator provides several windows from&n; * local bus memory into the PCI memory areas.   Unfortunately, there&n; * are not really enough windows for our usage, therefore we reuse &n; * one of the windows for access to PCI configuration space.  The&n; * memory map is as follows:&n; * &n; * Local Bus Memory         Usage&n; * &n; * 40000000 - 4FFFFFFF      PCI memory.  256M non-prefetchable&n; * 50000000 - 5FFFFFFF      PCI memory.  256M prefetchable&n; * 60000000 - 60FFFFFF      PCI IO.  16M&n; * 68000000 - 68FFFFFF      PCI Configuration. 16M&n; * &n; * There are three V3 windows, each described by a pair of V3 registers.&n; * These are LB_BASE0/LB_MAP0, LB_BASE1/LB_MAP1 and LB_BASE2/LB_MAP2.&n; * Base0 and Base1 can be used for any type of PCI memory access.   Base2&n; * can be used either for PCI I/O or for I20 accesses.  By default, uHAL&n; * uses this only for PCI IO space.&n; * &n; * PCI Memory is mapped so that assigned addresses in PCI Memory match&n; * local bus memory addresses.  In other words, if a PCI device is assigned&n; * address 80200000 then that address is a valid local bus address as well&n; * as a valid PCI Memory address.  PCI IO addresses are mapped to start&n; * at zero.  This means that local bus address 60000000 maps to PCI IO address&n; * 00000000 and so on.   Device driver writers need to be aware of this &n; * distinction.&n; * &n; * Normally these spaces are mapped using the following base registers:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE1/LB_MAP1&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   68000000 - 68FFFFFF      &n; * &n; * This means that I20 and PCI configuration space accesses will fail.&n; * When PCI configuration accesses are needed (via the uHAL PCI &n; * configuration space primitives) we must remap the spaces as follows:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE0/LB_MAP0&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   68000000 - 68FFFFFF      LB_BASE1/LB_MAP1&n; * &n; * To make this work, the code depends on overlapping windows working.&n; * The V3 chip translates an address by checking its range within &n; * each of the BASE/MAP pairs in turn (in ascending register number&n; * order).  It will use the first matching pair.   So, for example,&n; * if the same address is mapped by both LB_BASE0/LB_MAP0 and&n; * LB_BASE1/LB_MAP1, the V3 will use the translation from &n; * LB_BASE0/LB_MAP0.&n; * &n; * To allow PCI Configuration space access, the code enlarges the&n; * window mapped by LB_BASE0/LB_MAP0 from 256M to 512M.  This occludes&n; * the windows currently mapped by LB_BASE1/LB_MAP1 so that it can&n; * be remapped for use by configuration cycles.&n; * &n; * At the end of the PCI Configuration space accesses, &n; * LB_BASE1/LB_MAP1 is reset to map PCI Memory.  Finally the window&n; * mapped by LB_BASE0/LB_MAP0 is reduced in size from 512M to 256M to&n; * reveal the now restored LB_BASE1/LB_MAP1 window.&n; * &n; * NOTE: We do not set up I2O mapping.  I suspect that this is only&n; * for an intelligent (target) device.  Using I2O disables most of&n; * the mappings into PCI memory.&n; */
 singleline_comment|// V3 access routines
 DECL|macro|v3_writeb
@@ -904,7 +892,7 @@ comma
 suffix:semicolon
 DECL|function|pci_v3_setup_resources
 r_static
-r_void
+r_int
 id|__init
 id|pci_v3_setup_resources
 c_func
@@ -929,12 +917,20 @@ op_amp
 id|non_mem
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: unable to allocate non-prefetchable memory region&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;PCI: unable to allocate non-prefetchable &quot;
+l_string|&quot;memory region&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -948,12 +944,27 @@ op_amp
 id|pre_mem
 )paren
 )paren
+(brace
+id|release_resource
+c_func
+(paren
+op_amp
+id|non_mem
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: unable to allocate prefetchable memory region&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;PCI: unable to allocate prefetchable &quot;
+l_string|&quot;memory region&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * bus-&gt;resource[0] is the IO resource for this bus&n;&t; * bus-&gt;resource[1] is the mem resource for this bus&n;&t; * bus-&gt;resource[2] is the prefetch mem resource for this bus&n;&t; */
 id|resource
 (braket
@@ -978,6 +989,9 @@ l_int|2
 op_assign
 op_amp
 id|pre_mem
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * These don&squot;t seem to be implemented on the Integrator I have, which&n; * means I can&squot;t get additional information on the reason for the pm2fb&n; * problems.  I suppose I&squot;ll just have to mind-meld with the machine. ;)&n; */
@@ -1025,12 +1039,63 @@ op_star
 )paren
 id|pc
 suffix:semicolon
-singleline_comment|//&t;char buf[128];
-singleline_comment|//&t;sprintf(buf, &quot;V3 fault: address=0x%08lx, pc=0x%08lx [%08lx] LBFADDR=%08x LBFCODE=%02x ISTAT=%02x&bslash;n&quot;,
-singleline_comment|//&t;&t;addr, pc, instr, __raw_readl(SC_LBFADDR), __raw_readl(SC_LBFCODE) &amp; 255,
-singleline_comment|//&t;&t;v3_readb(V3_LB_ISTAT));
-singleline_comment|//&t;printk(&quot;%s&quot;, buf);
-singleline_comment|//&t;printascii(buf);
+macro_line|#if 0
+r_char
+id|buf
+(braket
+l_int|128
+)braket
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;V3 fault: address=0x%08lx, pc=0x%08lx [%08lx] LBFADDR=%08x LBFCODE=%02x ISTAT=%02x&bslash;n&quot;
+comma
+id|addr
+comma
+id|pc
+comma
+id|instr
+comma
+id|__raw_readl
+c_func
+(paren
+id|SC_LBFADDR
+)paren
+comma
+id|__raw_readl
+c_func
+(paren
+id|SC_LBFCODE
+)paren
+op_amp
+l_int|255
+comma
+id|v3_readb
+c_func
+(paren
+id|V3_LB_ISTAT
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
+id|printascii
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+macro_line|#endif
 id|v3_writeb
 c_func
 (paren
@@ -1312,40 +1377,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-DECL|variable|v3_int
-r_static
-r_struct
-id|irqaction
-id|v3_int
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;V3&quot;
-comma
-id|handler
-suffix:colon
-id|v3_irq
-comma
-)brace
-suffix:semicolon
-DECL|variable|v3_int2
-r_static
-r_struct
-id|irqaction
-id|v3_int2
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;V3TM&quot;
-comma
-id|handler
-suffix:colon
-id|v3_irq
-comma
-)brace
-suffix:semicolon
 r_extern
 r_int
 (paren
@@ -1365,6 +1396,7 @@ id|regs
 suffix:semicolon
 DECL|function|pci_v3_setup
 r_int
+id|__init
 id|pci_v3_setup
 c_func
 (paren
@@ -1377,11 +1409,20 @@ op_star
 id|sys
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|nr
+op_eq
+l_int|0
 )paren
+id|ret
+op_assign
 id|pci_v3_setup_resources
 c_func
 (paren
@@ -1389,12 +1430,7 @@ id|sys-&gt;resource
 )paren
 suffix:semicolon
 r_return
-id|nr
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|1
+id|ret
 suffix:semicolon
 )brace
 DECL|function|pci_v3_scan_bus
@@ -1443,6 +1479,9 @@ suffix:semicolon
 r_int
 r_int
 id|temp
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * Hook in our fault handler for PCI errors&n;&t; */
 id|external_fault
@@ -1600,6 +1639,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;FIFO_CFG: %04x  FIFO_PRIO: %04x&bslash;n&quot;
 comma
 id|v3_readw
@@ -1687,13 +1727,35 @@ id|SC_PCI
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Grab the PCI error interrupt.&n;&t; */
-id|setup_arm_irq
+id|ret
+op_assign
+id|request_irq
 c_func
 (paren
 id|IRQ_V3INT
 comma
-op_amp
-id|v3_int
+id|v3_irq
+comma
+l_int|0
+comma
+l_string|&quot;V3&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PCI: unable to grab PCI error &quot;
+l_string|&quot;interrupt: %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1718,6 +1780,9 @@ r_void
 r_int
 r_int
 id|pci_cmd
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|pci_cmd
 op_assign
@@ -1752,6 +1817,38 @@ comma
 l_int|0x68
 )paren
 suffix:semicolon
-singleline_comment|//&t;setup_arm_irq(IRQ_LBUSTIMEOUT, &amp;v3_int2);
+macro_line|#if 0
+id|ret
+op_assign
+id|request_irq
+c_func
+(paren
+id|IRQ_LBUSTIMEOUT
+comma
+id|lb_timeout
+comma
+l_int|0
+comma
+l_string|&quot;bus timeout&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PCI: unable to grab local bus timeout &quot;
+l_string|&quot;interrupt: %d&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

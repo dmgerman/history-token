@@ -3066,6 +3066,7 @@ id|timer-&gt;open_list_head
 id|snd_printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;timer 0x%lx is busy?&bslash;n&quot;
 comma
 (paren
@@ -6407,6 +6408,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register system timer (%i)&bslash;n&quot;
 comma
 id|err
@@ -6439,6 +6441,7 @@ l_int|0
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to register timer device (%i)&bslash;n&quot;
 comma
 id|err

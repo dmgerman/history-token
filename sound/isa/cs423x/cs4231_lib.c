@@ -7629,7 +7629,7 @@ suffix:semicolon
 id|kfree_nocheck
 c_func
 (paren
-id|chip-&gt;res_port
+id|chip-&gt;res_cport
 )paren
 suffix:semicolon
 )brace

@@ -455,6 +455,7 @@ id|runtime-&gt;buffer_size
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;BUG: stream = %i, pos = 0x%lx, buffer size = 0x%lx, period size = 0x%lx&bslash;n&quot;
 comma
 id|substream-&gt;stream
@@ -784,6 +785,7 @@ id|runtime-&gt;buffer_size
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;BUG: stream = %i, pos = 0x%lx, buffer size = 0x%lx, period size = 0x%lx&bslash;n&quot;
 comma
 id|substream-&gt;stream

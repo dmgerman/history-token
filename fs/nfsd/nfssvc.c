@@ -65,7 +65,7 @@ id|nfsd_serv
 suffix:semicolon
 DECL|variable|nfsd_busy
 r_static
-r_int
+id|atomic_t
 id|nfsd_busy
 suffix:semicolon
 DECL|variable|nfsd_last_call
@@ -73,6 +73,13 @@ r_static
 r_int
 r_int
 id|nfsd_last_call
+suffix:semicolon
+DECL|variable|nfsd_call_lock
+r_static
+id|spinlock_t
+id|nfsd_call_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|struct|nfsd_list
 r_struct
@@ -128,6 +135,11 @@ r_struct
 id|list_head
 op_star
 id|victim
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -190,6 +202,15 @@ op_logical_neg
 id|nfsd_serv
 )paren
 (brace
+id|atomic_set
+c_func
+(paren
+op_amp
+id|nfsd_busy
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|nfsd_serv
 op_assign
 id|svc_create
@@ -235,7 +256,7 @@ l_int|0
 r_goto
 id|failure
 suffix:semicolon
-macro_line|#if 0&t;/* Don&squot;t even pretend that TCP works. It doesn&squot;t. */
+macro_line|#if CONFIG_NFSD_TCP
 id|error
 op_assign
 id|svc_makesock
@@ -397,6 +418,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -422,6 +448,13 @@ id|diff
 suffix:semicolon
 r_int
 id|decile
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|nfsd_call_lock
+)paren
 suffix:semicolon
 id|prev_call
 op_assign
@@ -493,6 +526,13 @@ id|nfsdstats.th_fullcnt
 op_increment
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|nfsd_call_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the NFS server kernel thread&n; */
 r_static
@@ -579,6 +619,11 @@ op_amp
 id|nfsd_list
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The main request loop&n;&t; */
 r_for
 c_loop
@@ -630,7 +675,11 @@ id|serv
 comma
 id|rqstp
 comma
-id|MAX_SCHEDULE_TIMEOUT
+l_int|5
+op_star
+l_int|60
+op_star
+id|HZ
 )paren
 )paren
 op_eq
@@ -650,11 +699,20 @@ suffix:semicolon
 id|update_thread_usage
 c_func
 (paren
+id|atomic_read
+c_func
+(paren
+op_amp
 id|nfsd_busy
 )paren
+)paren
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|nfsd_busy
-op_increment
+)paren
 suffix:semicolon
 multiline_comment|/* Lock the export hash tables for reading. */
 id|exp_readlock
@@ -710,7 +768,7 @@ id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* Unlock export hash tables */
-id|exp_unlock
+id|exp_readunlock
 c_func
 (paren
 )paren
@@ -718,11 +776,20 @@ suffix:semicolon
 id|update_thread_usage
 c_func
 (paren
+id|atomic_read
+c_func
+(paren
+op_amp
 id|nfsd_busy
 )paren
+)paren
 suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
 id|nfsd_busy
-op_decrement
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -794,6 +861,11 @@ op_assign
 id|signo
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Release lockd */
 id|lockd_down
 c_func

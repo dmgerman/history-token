@@ -1533,9 +1533,10 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|snd_printk
+id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;GUS Classic soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon
