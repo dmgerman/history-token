@@ -1161,6 +1161,11 @@ id|symlink
 op_assign
 id|cifs_symlink
 comma
+dot
+id|mknod
+op_assign
+id|cifs_mknod
+comma
 )brace
 suffix:semicolon
 DECL|variable|cifs_file_inode_ops
@@ -1849,7 +1854,61 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* send oplock break */
+r_if
+c_cond
+(paren
+id|pfile-&gt;private_data
+)paren
+(brace
+id|rc
+op_assign
+id|CIFSSMBLock
+c_func
+(paren
+l_int|0
+comma
+id|pTcon
+comma
+(paren
+(paren
+r_struct
+id|cifsFileInfo
+op_star
+)paren
+id|pfile-&gt;private_data
+)paren
+op_member_access_from_pointer
+id|netfid
+comma
+l_int|0
+multiline_comment|/* len */
+comma
+l_int|0
+multiline_comment|/* offset */
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|LOCKING_ANDX_OPLOCK_RELEASE
+comma
+l_int|0
+multiline_comment|/* wait flag */
+)paren
+suffix:semicolon
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Oplock release rc = %d &quot;
+comma
+id|rc
+)paren
+)paren
+suffix:semicolon
+)brace
 id|write_lock
 c_func
 (paren

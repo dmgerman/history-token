@@ -541,8 +541,10 @@ DECL|macro|__NR_fstatfs64
 mdefine_line|#define __NR_fstatfs64&t;&t;269
 DECL|macro|__NR_tgkill
 mdefine_line|#define __NR_tgkill&t;&t;270
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;271
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 271
+mdefine_line|#define NR_syscalls 272
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

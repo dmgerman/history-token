@@ -373,7 +373,7 @@ id|volume_params
 id|SOUND_MIXER_NRDEVICES
 )braket
 suffix:semicolon
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_mixer
 )braket
@@ -393,11 +393,10 @@ op_logical_neg
 id|card-&gt;is_aps
 )paren
 id|card-&gt;ac97
-dot
+op_member_access_from_pointer
 id|write_mixer
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 id|oss_mixer
@@ -509,7 +508,7 @@ r_else
 (brace
 id|val
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_channel
 )braket
@@ -559,7 +558,7 @@ id|right
 suffix:semicolon
 id|left
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_channel
 )braket
@@ -569,7 +568,7 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_channel
 )braket
@@ -645,7 +644,7 @@ id|right
 suffix:semicolon
 id|left
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_channel
 )braket
@@ -655,7 +654,7 @@ suffix:semicolon
 id|right
 op_assign
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_channel
 )braket

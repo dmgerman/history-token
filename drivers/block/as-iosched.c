@@ -2839,7 +2839,7 @@ id|aic-&gt;seek_total
 op_plus
 l_int|128
 suffix:semicolon
-id|do_div
+id|sector_div
 c_func
 (paren
 id|aic-&gt;seek_mean

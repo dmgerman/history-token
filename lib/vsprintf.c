@@ -535,6 +535,7 @@ id|end
 comma
 r_int
 r_int
+r_int
 id|num
 comma
 r_int

@@ -1702,15 +1702,6 @@ id|ENODATA
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;microcode: unknown ioctl cmd=%d&bslash;n&quot;
-comma
-id|cmd
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL

@@ -1514,7 +1514,7 @@ id|cifsInodeInfo
 op_star
 id|pCifsInode
 suffix:semicolon
-multiline_comment|/* BB Add following logic: &n;&t;&t;&t;  2) look up inode from tcon-&gt;openFileList-&gt;file-&gt;f_dentry-&gt;d_inode&n;&t;&t;&t;  3) flush dirty pages and cached byte range locks and mark inode&n;&t;&t;&t;  4) depending on break type change to r/o caching or no caching&n;                  cifsinode-&gt;clientCanCacheAll = 0&n;              5)  inode-&gt;i_data.a_ops = &amp;cifs_addr_ops_writethrough;&n;&t;&t;&t;  6) send oplock break response to server */
+multiline_comment|/* BB Add following logic to mark inode for write through &n;              &t;&t;    inode-&gt;i_data.a_ops = &amp;cifs_addr_ops_writethrough; */
 id|read_unlock
 c_func
 (paren

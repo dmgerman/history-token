@@ -1149,8 +1149,6 @@ comma
 id|second
 comma
 id|third
-op_or
-id|IPC_64
 comma
 id|fourth
 )paren
@@ -1914,8 +1912,6 @@ c_func
 id|first
 comma
 id|second
-op_or
-id|IPC_64
 comma
 (paren
 r_void
@@ -2988,8 +2984,6 @@ c_func
 id|first
 comma
 id|second
-op_or
-id|IPC_64
 comma
 (paren
 r_struct
@@ -3395,8 +3389,6 @@ c_func
 id|first
 comma
 id|second
-op_or
-id|IPC_64
 comma
 (paren
 r_void

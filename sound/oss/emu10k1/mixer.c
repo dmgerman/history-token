@@ -3047,7 +3047,7 @@ r_int
 r_int
 id|state
 op_assign
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|id
 )braket
@@ -3064,7 +3064,7 @@ id|state
 op_rshift_assign
 l_int|8
 suffix:semicolon
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 op_or_assign
 (paren
 l_int|1
@@ -3073,7 +3073,7 @@ id|id
 )paren
 suffix:semicolon
 )brace
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 op_or_assign
 (paren
 l_int|1
@@ -3094,7 +3094,7 @@ c_func
 (paren
 id|card
 comma
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|id
 )braket
@@ -3102,7 +3102,7 @@ op_amp
 l_int|0xff
 comma
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|id
 )braket
@@ -3128,7 +3128,7 @@ c_func
 (paren
 id|card
 comma
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|id
 )braket
@@ -3136,7 +3136,7 @@ op_amp
 l_int|0xff
 comma
 (paren
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|id
 )braket
@@ -3169,7 +3169,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 op_and_assign
 op_complement
 (paren
@@ -3178,7 +3178,7 @@ op_lshift
 id|id
 )paren
 suffix:semicolon
-id|card-&gt;ac97.stereo_mixers
+id|card-&gt;ac97-&gt;stereo_mixers
 op_or_assign
 id|card-&gt;ac97_stereo_mixers
 suffix:semicolon
@@ -3190,7 +3190,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 op_and_assign
 op_complement
 (paren
@@ -3199,7 +3199,7 @@ op_lshift
 id|id
 )paren
 suffix:semicolon
-id|card-&gt;ac97.supported_mixers
+id|card-&gt;ac97-&gt;supported_mixers
 op_or_assign
 id|card-&gt;ac97_supported_mixers
 suffix:semicolon
@@ -3295,7 +3295,6 @@ l_int|0
 id|emu10k1_ac97_write
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 l_int|0x18
@@ -3308,7 +3307,6 @@ r_else
 id|emu10k1_ac97_write
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 l_int|0x18
@@ -3620,7 +3618,7 @@ suffix:semicolon
 r_int
 id|scale
 suffix:semicolon
-id|card-&gt;ac97.modcnt
+id|card-&gt;ac97-&gt;modcnt
 op_increment
 suffix:semicolon
 r_if
@@ -3685,7 +3683,7 @@ id|left
 op_assign
 l_int|100
 suffix:semicolon
-id|card-&gt;ac97.mixer_state
+id|card-&gt;ac97-&gt;mixer_state
 (braket
 id|oss_mixer
 )braket
@@ -3753,7 +3751,7 @@ id|scale
 op_assign
 l_int|1
 op_lshift
-id|card-&gt;ac97.bit_resolution
+id|card-&gt;ac97-&gt;bit_resolution
 suffix:semicolon
 r_else
 id|scale
@@ -3811,11 +3809,10 @@ id|oss_mixer
 )paren
 )paren
 id|card-&gt;ac97
-dot
+op_member_access_from_pointer
 id|write_mixer
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 id|oss_mixer
@@ -3897,12 +3894,12 @@ id|SOUND_MIXER_INFO
 id|mixer_info
 id|info
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
 comma
-id|card-&gt;ac97.name
+id|card-&gt;ac97-&gt;name
 comma
 r_sizeof
 (paren
@@ -3910,7 +3907,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
@@ -3925,7 +3922,7 @@ id|info.name
 suffix:semicolon
 id|info.modify_counter
 op_assign
-id|card-&gt;ac97.modcnt
+id|card-&gt;ac97-&gt;modcnt
 suffix:semicolon
 r_if
 c_cond
@@ -3993,11 +3990,10 @@ r_else
 id|ret
 op_assign
 id|card-&gt;ac97
-dot
+op_member_access_from_pointer
 id|mixer_ioctl
 c_func
 (paren
-op_amp
 id|card-&gt;ac97
 comma
 id|cmd
@@ -4100,7 +4096,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|card-&gt;ac97.dev_mixer
+id|card-&gt;ac97-&gt;dev_mixer
 op_eq
 id|minor
 )paren

@@ -227,6 +227,7 @@ macro_line|#endif /* VRC5477_AC97_DEBUG */
 DECL|member|codec
 r_struct
 id|ac97_codec
+op_star
 id|codec
 suffix:semicolon
 DECL|member|dacChannels
@@ -1039,7 +1040,6 @@ id|rate
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_LR_ADC_RATE
@@ -1078,7 +1078,6 @@ id|AC97_EXTSTAT_VRA
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_FRONT_DAC_RATE
@@ -1091,7 +1090,6 @@ op_assign
 id|rdcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_PCM_FRONT_DAC_RATE
@@ -3269,7 +3267,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;codec.dev_mixer
+id|s-&gt;codec-&gt;dev_mixer
 op_eq
 id|minor
 )paren
@@ -3381,7 +3379,6 @@ id|ac97_codec
 op_star
 id|codec
 op_assign
-op_amp
 id|s-&gt;codec
 suffix:semicolon
 r_return
@@ -4797,8 +4794,7 @@ op_sub_assign
 id|copyCount
 suffix:semicolon
 id|totalCopyCount
-op_assign
-op_plus
+op_add_assign
 id|copyCount
 suffix:semicolon
 id|avail
@@ -6843,7 +6839,6 @@ r_return
 id|mixdev_ioctl
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|cmd
@@ -8103,7 +8098,6 @@ comma
 id|rdcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|cnt
@@ -8337,23 +8331,30 @@ id|s-&gt;irq
 op_assign
 id|pcidev-&gt;irq
 suffix:semicolon
-id|s-&gt;codec.private_data
+id|s-&gt;codec
+op_assign
+id|ac97_alloc_codec
+c_func
+(paren
+)paren
+suffix:semicolon
+id|s-&gt;codec-&gt;private_data
 op_assign
 id|s
 suffix:semicolon
-id|s-&gt;codec.id
+id|s-&gt;codec-&gt;id
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;codec.codec_read
+id|s-&gt;codec-&gt;codec_read
 op_assign
 id|rdcodec
 suffix:semicolon
-id|s-&gt;codec.codec_write
+id|s-&gt;codec-&gt;codec_write
 op_assign
 id|wrcodec
 suffix:semicolon
-id|s-&gt;codec.codec_wait
+id|s-&gt;codec-&gt;codec_wait
 op_assign
 id|waitcodec
 suffix:semicolon
@@ -8365,10 +8366,7 @@ c_cond
 id|ac97_codec_not_present
 c_func
 (paren
-op_amp
-(paren
 id|s-&gt;codec
-)paren
 )paren
 )paren
 (brace
@@ -8502,7 +8500,7 @@ r_if
 c_cond
 (paren
 (paren
-id|s-&gt;codec.dev_mixer
+id|s-&gt;codec-&gt;dev_mixer
 op_assign
 id|register_sound_mixer
 c_func
@@ -8593,7 +8591,6 @@ op_logical_neg
 id|ac97_probe_codec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 )paren
 )paren
@@ -8610,7 +8607,7 @@ l_string|&quot;driver/%s/%d/ac97&quot;
 comma
 id|VRC5477_AC97_MODULE_NAME
 comma
-id|s-&gt;codec.id
+id|s-&gt;codec-&gt;id
 )paren
 suffix:semicolon
 id|s-&gt;ac97_ps
@@ -8625,7 +8622,6 @@ l_int|NULL
 comma
 id|ac97_read_proc
 comma
-op_amp
 id|s-&gt;codec
 )paren
 suffix:semicolon
@@ -8635,7 +8631,6 @@ multiline_comment|/* Try to enable variable rate audio mode. */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -8643,7 +8638,6 @@ comma
 id|rdcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -8659,7 +8653,6 @@ c_cond
 id|rdcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 id|AC97_EXTENDED_STATUS
@@ -8694,7 +8687,6 @@ multiline_comment|/* let us get the default volumne louder */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x2
@@ -8706,7 +8698,6 @@ multiline_comment|/* master volume, middle */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0xc
@@ -8715,11 +8706,10 @@ l_int|0x10
 )paren
 suffix:semicolon
 multiline_comment|/* phone volume, middle */
-singleline_comment|// wrcodec(&amp;s-&gt;codec, 0xe, 0x10);&t;&t;/* misc volume, middle */
+singleline_comment|// wrcodec(s-&gt;codec, 0xe, 0x10);&t;&t;/* misc volume, middle */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x10
@@ -8731,7 +8721,6 @@ multiline_comment|/* line-in 2 line-out disable */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x18
@@ -8744,7 +8733,6 @@ multiline_comment|/* by default we select line in the input */
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x1a
@@ -8755,7 +8743,6 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x1c
@@ -8766,7 +8753,6 @@ suffix:semicolon
 id|wrcodec
 c_func
 (paren
-op_amp
 id|s-&gt;codec
 comma
 l_int|0x1e
@@ -8830,7 +8816,7 @@ suffix:colon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec.dev_mixer
+id|s-&gt;codec-&gt;dev_mixer
 )paren
 suffix:semicolon
 id|err_dev2
@@ -8877,6 +8863,12 @@ l_int|0
 suffix:semicolon
 id|err_region
 suffix:colon
+id|ac97_release_codec
+c_func
+(paren
+id|codec
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -8979,7 +8971,13 @@ suffix:semicolon
 id|unregister_sound_mixer
 c_func
 (paren
-id|s-&gt;codec.dev_mixer
+id|s-&gt;codec-&gt;dev_mixer
+)paren
+suffix:semicolon
+id|ac97_release_codec
+c_func
+(paren
+id|s-&gt;codec
 )paren
 suffix:semicolon
 id|kfree

@@ -39,6 +39,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH4
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH4
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH4&t;0x24c5
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH5
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH5
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH5&t;0x24d5
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_440MX
 DECL|macro|PCI_DEVICE_ID_INTEL_440MX
 mdefine_line|#define PCI_DEVICE_ID_INTEL_440MX&t;0x7195
@@ -384,6 +388,9 @@ comma
 DECL|enumerator|INTELICH4
 id|INTELICH4
 comma
+DECL|enumerator|INTELICH5
+id|INTELICH5
+comma
 DECL|enumerator|SI7012
 id|SI7012
 comma
@@ -417,6 +424,8 @@ comma
 l_string|&quot;Intel ICH3&quot;
 comma
 l_string|&quot;Intel ICH4&quot;
+comma
+l_string|&quot;Intel ICH5&quot;
 comma
 l_string|&quot;SiS 7012&quot;
 comma
@@ -492,6 +501,13 @@ l_int|0x0003
 )brace
 comma
 multiline_comment|/* INTELICH4 */
+(brace
+l_int|3
+comma
+l_int|0x0003
+)brace
+comma
+multiline_comment|/* INTELICH5 */
 multiline_comment|/*@FIXME to be verified*/
 (brace
 l_int|2
@@ -630,6 +646,22 @@ comma
 l_int|0
 comma
 id|INTELICH4
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH5
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|INTELICH5
 )brace
 comma
 (brace
@@ -960,6 +992,11 @@ multiline_comment|/* The i810 has a certain amount of cross channel interaction&
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+multiline_comment|/* Control AC97 access serialization */
+DECL|member|ac97_lock
+id|spinlock_t
+id|ac97_lock
 suffix:semicolon
 multiline_comment|/* PCI device stuff */
 DECL|member|pci_dev
@@ -1599,7 +1636,7 @@ suffix:semicolon
 multiline_comment|/* i810_set_spdif_output&n; * &n; *  Configure the S/PDIF output transmitter. When we turn on&n; *  S/PDIF, we turn off the analog output. This may not be&n; *  the right thing to do.&n; *&n; *  Assumptions:&n; *     The DSP sample rate must already be set to a supported&n; *     S/PDIF rate (32kHz, 44.1kHz, or 48kHz) or we abort.&n; */
 DECL|function|i810_set_spdif_output
 r_static
-r_void
+r_int
 id|i810_set_spdif_output
 c_func
 (paren
@@ -1621,6 +1658,11 @@ suffix:semicolon
 r_int
 id|aud_reg
 suffix:semicolon
+r_int
+id|r
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|ac97_codec
 op_star
@@ -1635,22 +1677,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|state-&gt;card-&gt;ac97_features
-op_amp
-l_int|4
-)paren
+id|codec-&gt;codec_ops-&gt;digital
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;i810_audio: S/PDIF transmitter not available.&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|state-&gt;card-&gt;ac97_status
 op_and_assign
 op_complement
@@ -1669,29 +1698,18 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Turn off S/PDIF */
-id|aud_reg
-op_assign
-id|i810_ac97_get
+id|codec-&gt;codec_ops
+op_member_access_from_pointer
+id|digital
 c_func
 (paren
 id|codec
 comma
-id|AC97_EXTENDED_STATUS
-)paren
-suffix:semicolon
-id|i810_ac97_set
-c_func
-(paren
-id|codec
+l_int|0
 comma
-id|AC97_EXTENDED_STATUS
+l_int|0
 comma
-(paren
-id|aud_reg
-op_amp
-op_complement
-id|AC97_EA_SPDIF
-)paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* If the volume wasn&squot;t muted before we turned on S/PDIF, unmute it */
@@ -1742,6 +1760,7 @@ id|SPDIF_ON
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|vol
@@ -1760,220 +1779,39 @@ id|vol
 op_amp
 id|VOL_MUTED
 suffix:semicolon
-multiline_comment|/* Set S/PDIF transmitter sample rate */
-id|aud_reg
+id|r
 op_assign
-id|i810_ac97_get
+id|codec-&gt;codec_ops
+op_member_access_from_pointer
+id|digital
 c_func
 (paren
 id|codec
 comma
-id|AC97_SPDIF_CONTROL
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|rate
-)paren
-(brace
-r_case
-l_int|32000
-suffix:colon
-id|aud_reg
-op_assign
-(paren
-id|aud_reg
-op_amp
-id|AC97_SC_SPSR_MASK
-)paren
-op_or
-id|AC97_SC_SPSR_32K
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|44100
-suffix:colon
-id|aud_reg
-op_assign
-(paren
-id|aud_reg
-op_amp
-id|AC97_SC_SPSR_MASK
-)paren
-op_or
-id|AC97_SC_SPSR_44K
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|48000
-suffix:colon
-id|aud_reg
-op_assign
-(paren
-id|aud_reg
-op_amp
-id|AC97_SC_SPSR_MASK
-)paren
-op_or
-id|AC97_SC_SPSR_48K
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;i810_audio: %d sample rate not supported by S/PDIF.&bslash;n&quot;
-comma
-id|rate
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* turn off S/PDIF */
-id|aud_reg
-op_assign
-id|i810_ac97_get
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_STATUS
-)paren
-suffix:semicolon
-id|i810_ac97_set
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_STATUS
-comma
-(paren
-id|aud_reg
-op_amp
-op_complement
-id|AC97_EA_SPDIF
-)paren
-)paren
-suffix:semicolon
-id|state-&gt;card-&gt;ac97_status
-op_and_assign
-op_complement
-id|SPDIF_ON
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|i810_ac97_set
-c_func
-(paren
-id|codec
-comma
-id|AC97_SPDIF_CONTROL
-comma
-id|aud_reg
-)paren
-suffix:semicolon
-id|aud_reg
-op_assign
-id|i810_ac97_get
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_STATUS
-)paren
-suffix:semicolon
-id|aud_reg
-op_assign
-(paren
-id|aud_reg
-op_amp
-id|AC97_EA_SLOT_MASK
-)paren
-op_or
 id|slots
-op_or
-id|AC97_EA_VRA
-op_or
-id|AC97_EA_SPDIF
-suffix:semicolon
-id|i810_ac97_set
-c_func
-(paren
-id|codec
 comma
-id|AC97_EXTENDED_STATUS
+id|rate
 comma
-id|aud_reg
-)paren
-suffix:semicolon
-id|state-&gt;card-&gt;ac97_status
-op_or_assign
-id|SPDIF_ON
-suffix:semicolon
-multiline_comment|/* Check to make sure the configuration is valid */
-id|aud_reg
-op_assign
-id|i810_ac97_get
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_STATUS
+l_int|0
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|aud_reg
-op_amp
-l_int|0x0400
-)paren
+id|r
 )paren
 (brace
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;i810_audio: S/PDIF transmitter configuration not valid (0x%04x).&bslash;n&quot;
-comma
-id|aud_reg
-)paren
+id|state-&gt;card-&gt;ac97_status
+op_or_assign
+id|SPDIF_ON
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* turn off S/PDIF */
-id|i810_ac97_set
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_STATUS
-comma
-(paren
-id|aud_reg
-op_amp
-op_complement
-id|AC97_EA_SPDIF
-)paren
-)paren
-suffix:semicolon
+)brace
+r_else
 id|state-&gt;card-&gt;ac97_status
 op_and_assign
 op_complement
 id|SPDIF_ON
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Mute the analog output */
 multiline_comment|/* Should this only mute the PCM volume??? */
 id|i810_ac97_set
@@ -1991,6 +1829,9 @@ id|VOL_MUTED
 )paren
 suffix:semicolon
 )brace
+r_return
+id|r
+suffix:semicolon
 )brace
 multiline_comment|/* i810_set_dac_channels&n; *&n; *  Configure the codec&squot;s multi-channel DACs&n; *&n; *  The logic is backwards. Setting the bit to 1 turns off the DAC. &n; *&n; *  What about the ICH? We currently configure it using the&n; *  SNDCTL_DSP_CHANNELS ioctl.  If we&squot;re turnning on the DAC, &n; *  does that imply that we want the ICH set to support&n; *  these channels?&n; *  &n; *  TODO:&n; *    vailidate that the codec really supports these DACs&n; *    before turning them on. &n; */
 DECL|function|i810_set_dac_channels
@@ -7486,6 +7327,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|synchronize_irq
+c_func
+(paren
+id|state-&gt;card-&gt;pci_dev-&gt;irq
+)paren
+suffix:semicolon
 id|dmabuf-&gt;ready
 op_assign
 l_int|0
@@ -10692,7 +10539,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* free any read channel allocated earlier */
+multiline_comment|/* make sure we free the record channel allocated above */
 r_if
 c_cond
 (paren
@@ -11463,13 +11310,24 @@ id|card
 op_assign
 id|dev-&gt;private_data
 suffix:semicolon
+id|u16
+id|ret
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|card-&gt;ac97_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|card-&gt;use_mmio
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|i810_ac97_get_mmio
 c_func
 (paren
@@ -11481,7 +11339,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_return
+id|ret
+op_assign
 id|i810_ac97_get_io
 c_func
 (paren
@@ -11491,6 +11350,16 @@ id|reg
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;ac97_lock
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|i810_ac97_set
 r_static
@@ -11516,6 +11385,13 @@ op_star
 id|card
 op_assign
 id|dev-&gt;private_data
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|card-&gt;ac97_lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -11547,6 +11423,13 @@ id|data
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|card-&gt;ac97_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* OSS /dev/mixer file operation methods */
 DECL|function|i810_open_mixdev
@@ -12180,6 +12063,10 @@ c_cond
 id|card-&gt;pci_id
 op_eq
 id|PCI_DEVICE_ID_INTEL_ICH4
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ICH5
 )paren
 op_logical_and
 (paren
@@ -12523,6 +12410,10 @@ c_cond
 id|card-&gt;pci_id
 op_eq
 id|PCI_DEVICE_ID_INTEL_ICH4
+op_logical_or
+id|card-&gt;pci_id
+op_eq
+id|PCI_DEVICE_ID_INTEL_ICH5
 )paren
 op_logical_and
 (paren
@@ -12604,16 +12495,9 @@ c_cond
 (paren
 id|codec
 op_assign
-id|kmalloc
+id|ac97_alloc_codec
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|ac97_codec
-)paren
-comma
-id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -12622,20 +12506,6 @@ l_int|NULL
 r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|codec
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|ac97_codec
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/* initialize some basic codec information, other fields will be filled&n;&t;&t;   in ac97_probe_codec */
 id|codec-&gt;private_data
@@ -12703,7 +12573,7 @@ comma
 id|ac97_id
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
@@ -12734,7 +12604,7 @@ c_cond
 (paren
 id|eid
 op_eq
-l_int|0xFFFFFF
+l_int|0xFFFF
 )paren
 (brace
 id|printk
@@ -12744,7 +12614,7 @@ id|KERN_WARNING
 l_string|&quot;i810_audio: no codec attached ?&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
@@ -12757,76 +12627,19 @@ multiline_comment|/* Check for an AC97 1.0 soft modem (ID1) */
 r_if
 c_cond
 (paren
-id|codec
-op_member_access_from_pointer
-id|codec_read
-c_func
-(paren
-id|codec
-comma
-id|AC97_RESET
-)paren
-op_amp
-l_int|2
+id|codec-&gt;modem
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i810_audio: codec %d is an AC97 1.0 softmodem - skipping.&bslash;n&quot;
+l_string|&quot;i810_audio: codec %d is a softmodem - skipping.&bslash;n&quot;
 comma
 id|ac97_id
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|codec
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* Check for an AC97 2.x soft modem */
-id|codec
-op_member_access_from_pointer
-id|codec_write
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_MODEM_ID
-comma
-l_int|0L
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|codec
-op_member_access_from_pointer
-id|codec_read
-c_func
-(paren
-id|codec
-comma
-id|AC97_EXTENDED_MODEM_ID
-)paren
-op_amp
-l_int|1
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;i810_audio: codec %d is an AC97 2.x softmodem - skipping.&bslash;n&quot;
-comma
-id|ac97_id
-)paren
-suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
@@ -13159,7 +12972,7 @@ id|KERN_ERR
 l_string|&quot;i810_audio: couldn&squot;t register mixer!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
 c_func
 (paren
 id|codec
@@ -13789,6 +13602,13 @@ op_amp
 id|card-&gt;lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|card-&gt;ac97_lock
+)paren
+suffix:semicolon
 id|devs
 op_assign
 id|card
@@ -14308,7 +14128,8 @@ op_member_access_from_pointer
 id|dev_mixer
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
+c_func
 (paren
 id|card-&gt;ac97_codec
 (braket
@@ -14538,7 +14359,8 @@ op_member_access_from_pointer
 id|dev_mixer
 )paren
 suffix:semicolon
-id|kfree
+id|ac97_release_codec
+c_func
 (paren
 id|card-&gt;ac97_codec
 (braket

@@ -313,6 +313,7 @@ macro_line|#endif
 DECL|member|ac97
 r_struct
 id|ac97_codec
+op_star
 id|ac97
 suffix:semicolon
 DECL|member|ac97_supported_mixers

@@ -8787,7 +8787,7 @@ id|SOUND_MIXER_INFO
 id|mixer_info
 id|info
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -8803,7 +8803,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
@@ -8863,7 +8863,7 @@ id|SOUND_OLD_MIXER_INFO
 id|_old_mixer_info
 id|info
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.id
@@ -8879,7 +8879,7 @@ id|info.id
 )paren
 )paren
 suffix:semicolon
-id|strlcpy
+id|strncpy
 c_func
 (paren
 id|info.name
