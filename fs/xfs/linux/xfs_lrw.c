@@ -7358,4 +7358,31 @@ id|mp
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|xfs_quotaino_create_read_only
+id|xfs_quotaino_create_read_only
+c_func
+(paren
+id|xfs_mount_t
+op_star
+id|mp
+)paren
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_NOTE
+comma
+l_string|&quot;XFS: WARNING: &quot;
+l_string|&quot;Quota inode creation required on readonly filesystem.&quot;
+)paren
+suffix:semicolon
+r_return
+id|xfs_is_read_only
+c_func
+(paren
+id|mp
+)paren
+suffix:semicolon
+)brace
 eof
