@@ -760,8 +760,8 @@ id|count
 op_assign
 l_int|100
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|count
 )paren
@@ -782,6 +782,11 @@ comma
 id|irq
 comma
 id|retval
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
