@@ -20427,6 +20427,7 @@ id|np
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|ENXIO
 suffix:semicolon
 )brace

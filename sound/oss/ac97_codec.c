@@ -178,6 +178,17 @@ id|codec
 suffix:semicolon
 r_static
 r_int
+id|ad1886_init
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+)paren
+suffix:semicolon
+r_static
+r_int
 id|eapd_control
 c_func
 (paren
@@ -330,6 +341,20 @@ comma
 id|crystal_digital_control
 )brace
 suffix:semicolon
+DECL|variable|ad1886_ops
+r_static
+r_struct
+id|ac97_ops
+id|ad1886_ops
+op_assign
+(brace
+id|ad1886_init
+comma
+id|eapd_control
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 multiline_comment|/* sorted by vendor/device id */
 r_static
 r_const
@@ -417,7 +442,7 @@ comma
 l_string|&quot;Analog Devices AD1886&quot;
 comma
 op_amp
-id|default_ops
+id|ad1886_ops
 )brace
 comma
 (brace
@@ -4724,6 +4749,38 @@ comma
 l_int|0x2C
 comma
 l_int|0XFFFF
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* &n; *&t;Presario700 workaround &n; * &t;for Jack Sense/SPDIF Register misetting causing&n; *&t;no audible output&n; *&t;by Santiago Nullo 04/05/2002&n; */
+DECL|macro|AC97_AD1886_JACK_SENSE
+mdefine_line|#define AC97_AD1886_JACK_SENSE 0x72
+DECL|function|ad1886_init
+r_static
+r_int
+id|ad1886_init
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+)paren
+(brace
+multiline_comment|/* from AD1886 Specs */
+id|codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|codec
+comma
+id|AC97_AD1886_JACK_SENSE
+comma
+l_int|0x0010
 )paren
 suffix:semicolon
 r_return
