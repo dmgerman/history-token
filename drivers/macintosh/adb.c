@@ -290,12 +290,12 @@ c_func
 id|adb_handler_sem
 )paren
 suffix:semicolon
-DECL|variable|adb_handler_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|adb_handler_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#if 0
 r_static

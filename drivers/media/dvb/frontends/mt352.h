@@ -88,6 +88,20 @@ r_int
 id|ilen
 )paren
 suffix:semicolon
+r_extern
+id|u8
+id|mt352_read
+c_func
+(paren
+r_struct
+id|dvb_frontend
+op_star
+id|fe
+comma
+id|u8
+id|reg
+)paren
+suffix:semicolon
 macro_line|#endif 
 singleline_comment|// MT352_H
 eof

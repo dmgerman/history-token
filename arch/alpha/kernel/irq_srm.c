@@ -6,10 +6,11 @@ macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
 multiline_comment|/*&n; * Is the palcode SMP safe? In other words: can we call cserve_ena/dis&n; * at the same time in multiple CPUs? To be safe I added a spinlock&n; * but it can be removed trivially if the palcode is robust against smp.&n; */
 DECL|variable|srm_irq_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|srm_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_inline

@@ -900,7 +900,7 @@ op_assign
 id|sec-&gt;secbuf_base
 suffix:semicolon
 )brace
-multiline_comment|/* &n;** Losless Section Demux 1.4 by Emard&n;*/
+multiline_comment|/* &n;** Losless Section Demux 1.4.1 by Emard&n;** Valsecchi Patrick:&n;**  - middle of section A  (no PUSI)&n;**  - end of section A and start of section B &n;**    (with PUSI pointing to the start of the second section)&n;**  &n;**  In this case, without feed-&gt;pusi_seen you&squot;ll receive a garbage section&n;**  consisting of the end of section A. Basically because tsfeedp&n;**  is incemented and the use=0 condition is not raised&n;**  when the second packet arrives.&n;**&n;** Fix:&n;** when demux is started, let feed-&gt;pusi_seen = 0 to&n;** prevent initial feeding of garbage from the end of&n;** previous section. When you for the first time see PUSI=1&n;** then set feed-&gt;pusi_seen = 1&n;*/
 DECL|function|dvb_dmx_swfilter_section_copy_dump
 r_static
 r_int
@@ -1103,12 +1103,28 @@ op_complement
 l_int|0
 suffix:semicolon
 multiline_comment|/* dump [secbuf .. secbuf+seclen) */
+r_if
+c_cond
+(paren
+id|feed-&gt;pusi_seen
+)paren
+(brace
 id|dvb_dmx_swfilter_section_feed
 c_func
 (paren
 id|feed
 )paren
 suffix:semicolon
+)brace
+macro_line|#ifdef DVB_DEMUX_SECTION_LOSS_LOG
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;dvb_demux.c pusi not seen, discarding section data&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|sec-&gt;secbufp
 op_add_assign
 id|seclen
@@ -1148,6 +1164,10 @@ id|count
 suffix:semicolon
 r_int
 id|ccok
+comma
+id|dc_i
+op_assign
+l_int|0
 suffix:semicolon
 id|u8
 id|cc
@@ -1201,11 +1221,6 @@ l_int|0x0f
 )paren
 op_eq
 id|cc
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
 suffix:semicolon
 id|feed-&gt;cc
 op_assign
@@ -1214,9 +1229,48 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ccok
-op_eq
+id|buf
+(braket
+l_int|3
+)braket
+op_amp
+l_int|0x20
+)paren
+(brace
+multiline_comment|/* adaption field present, check for discontinuity_indicator */
+r_if
+c_cond
+(paren
+(paren
+id|buf
+(braket
+l_int|4
+)braket
+OG
 l_int|0
+)paren
+op_logical_and
+(paren
+id|buf
+(braket
+l_int|5
+)braket
+op_amp
+l_int|0x80
+)paren
+)paren
+id|dc_i
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ccok
+op_logical_or
+id|dc_i
 )paren
 (brace
 macro_line|#ifdef DVB_DEMUX_SECTION_LOSS_LOG
@@ -1230,6 +1284,11 @@ id|count
 suffix:semicolon
 multiline_comment|/* those bytes under sume circumstances will again be reported&n;&t;&t;** in the following dvb_dmx_swfilter_section_new&n;&t;&t;*/
 macro_line|#endif
+multiline_comment|/* Discontinuity detected. Reset pusi_seen = 0 to&n;&t;&t;** stop feeding of suspicious data until next PUSI=1 arrives&n;&t;&t;*/
+id|feed-&gt;pusi_seen
+op_assign
+l_int|0
+suffix:semicolon
 id|dvb_dmx_swfilter_section_new
 c_func
 (paren
@@ -1313,6 +1372,11 @@ id|before
 comma
 id|before_len
 )paren
+suffix:semicolon
+multiline_comment|/* before start of new section, set pusi_seen = 1 */
+id|feed-&gt;pusi_seen
+op_assign
+l_int|1
 suffix:semicolon
 id|dvb_dmx_swfilter_section_new
 c_func
@@ -3437,12 +3501,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#ifndef NOBUFS
-r_if
-c_cond
-(paren
-id|feed-&gt;buffer
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -3453,7 +3511,6 @@ id|feed-&gt;buffer
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 macro_line|#endif
 id|feed-&gt;state
 op_assign
@@ -4678,12 +4735,6 @@ id|EINVAL
 suffix:semicolon
 )brace
 macro_line|#ifndef NOBUFS
-r_if
-c_cond
-(paren
-id|dvbdmxfeed-&gt;buffer
-)paren
-(brace
 id|vfree
 c_func
 (paren
@@ -4694,7 +4745,6 @@ id|dvbdmxfeed-&gt;buffer
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 macro_line|#endif
 id|dvbdmxfeed-&gt;state
 op_assign
@@ -5623,22 +5673,12 @@ c_func
 id|dmx
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dvbdemux-&gt;filter
-)paren
 id|vfree
 c_func
 (paren
 id|dvbdemux-&gt;filter
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dvbdemux-&gt;feed
-)paren
 id|vfree
 c_func
 (paren

@@ -881,6 +881,13 @@ op_eq
 id|SUSPEND_POWER_DOWN
 )paren
 (brace
+id|ssp_flush
+c_func
+(paren
+op_amp
+id|corgi_ssp_dev
+)paren
+suffix:semicolon
 id|ssp_save_state
 c_func
 (paren

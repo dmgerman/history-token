@@ -13,7 +13,9 @@ macro_line|#ifdef EMU10K1_SEQUENCER
 macro_line|#include &quot;../sound_config.h&quot;
 macro_line|#endif
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|midi_spinlock
 id|__attribute
 c_func
@@ -22,8 +24,7 @@ c_func
 id|unused
 )paren
 )paren
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|init_midi_hdr
 r_static

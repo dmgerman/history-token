@@ -31,12 +31,12 @@ id|u32
 id|arg
 )paren
 suffix:semicolon
-DECL|variable|timod_pagelock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|timod_pagelock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|page
 r_static

@@ -117,12 +117,12 @@ r_char
 id|jazz16_bits
 suffix:semicolon
 multiline_comment|/* I/O relocation bits */
-DECL|variable|jazz16_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|jazz16_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Logitech Soundman Wave specific initialization code&n; */
 macro_line|#ifdef SMW_MIDI0001_INCLUDED

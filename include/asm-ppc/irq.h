@@ -207,6 +207,8 @@ DECL|macro|SIU_INT_SMC1
 mdefine_line|#define&t;SIU_INT_SMC1&t;&t;((uint)0x04+CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_SMC2
 mdefine_line|#define&t;SIU_INT_SMC2&t;&t;((uint)0x05+CPM_IRQ_OFFSET)
+DECL|macro|SIU_INT_USB
+mdefine_line|#define&t;SIU_INT_USB&t;&t;((uint)0x0b+CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER1
 mdefine_line|#define&t;SIU_INT_TIMER1&t;&t;((uint)0x0c+CPM_IRQ_OFFSET)
 DECL|macro|SIU_INT_TIMER2

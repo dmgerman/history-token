@@ -507,21 +507,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|softirq_pending
-c_func
-(paren
-id|cpu
-)paren
-)paren
-id|do_softirq
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* unmasking and bottom half handling is done magically for us. */
 )brace
 multiline_comment|/* this function links in a handler into the chain of handlers for the&n;   given irq, and if the irq has never been registred, the appropriate&n;   handler is entered into the interrupt vector&n;*/
 DECL|function|setup_irq

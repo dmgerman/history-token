@@ -1283,6 +1283,9 @@ r_struct
 id|ps2pp_info
 op_star
 id|model_info
+comma
+r_int
+id|using_ps2pp
 )paren
 (brace
 r_if
@@ -1415,6 +1418,22 @@ suffix:colon
 id|psmouse-&gt;name
 op_assign
 l_string|&quot;TouchPad 3&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/*&n;&t;&t;&t; * Set name to &quot;Mouse&quot; only when using PS2++,&n;&t;&t;&t; * otherwise let other protocols define suitable&n;&t;&t;&t; * name&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|using_ps2pp
+)paren
+id|psmouse-&gt;name
+op_assign
+l_string|&quot;Mouse&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1949,6 +1968,8 @@ c_func
 id|psmouse
 comma
 id|model_info
+comma
+id|use_ps2pp
 )paren
 suffix:semicolon
 )brace

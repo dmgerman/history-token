@@ -396,12 +396,12 @@ l_int|7
 )braket
 suffix:semicolon
 multiline_comment|/* One for each IRQ level (9-15) */
-DECL|variable|aha1542_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|aha1542_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|WAITnexttimeout
 mdefine_line|#define WAITnexttimeout 3000000

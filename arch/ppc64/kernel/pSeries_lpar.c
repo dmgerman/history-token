@@ -1303,12 +1303,12 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-DECL|variable|pSeries_lpar_tlbie_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pSeries_lpar_tlbie_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pSeries_lpar_hpte_remove
 r_static

@@ -56,12 +56,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mca_bh_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mca_bh_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_typedef
 r_enum
@@ -80,7 +80,7 @@ DECL|typedef|mca_type_t
 id|mca_type_t
 suffix:semicolon
 DECL|macro|MAX_PAGE_ISOLATE
-mdefine_line|#define MAX_PAGE_ISOLATE 32
+mdefine_line|#define MAX_PAGE_ISOLATE 1024
 DECL|variable|page_isolate
 r_static
 r_struct

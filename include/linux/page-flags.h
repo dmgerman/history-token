@@ -269,15 +269,6 @@ suffix:semicolon
 multiline_comment|/* pages rotated to tail of the LRU */
 )brace
 suffix:semicolon
-id|DECLARE_PER_CPU
-c_func
-(paren
-r_struct
-id|page_state
-comma
-id|page_states
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|get_page_state
@@ -310,10 +301,23 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__mod_page_state
+c_func
+(paren
+r_int
+id|offset
+comma
+r_int
+r_int
+id|delta
+)paren
+suffix:semicolon
 DECL|macro|read_page_state
 mdefine_line|#define read_page_state(member) &bslash;&n;&t;__read_page_state(offsetof(struct page_state, member))
 DECL|macro|mod_page_state
-mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__get_cpu_var(page_states).member += (delta);&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define mod_page_state(member, delta)&t;&bslash;&n;&t;__mod_page_state(offsetof(struct page_state, member), (delta))
 DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state
@@ -323,7 +327,7 @@ mdefine_line|#define add_page_state(member,delta) mod_page_state(member, (delta)
 DECL|macro|sub_page_state
 mdefine_line|#define sub_page_state(member,delta) mod_page_state(member, 0UL - (delta))
 DECL|macro|mod_page_state_zone
-mdefine_line|#define mod_page_state_zone(zone, member, delta)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long flags;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;local_irq_save(flags);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (is_highmem(zone))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_high += (delta);&bslash;&n;&t;&t;else if (is_normal(zone))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_normal += (delta);&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__get_cpu_var(page_states).member##_dma += (delta);&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define mod_page_state_zone(zone, member, delta)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned offset;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (is_highmem(zone))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;offset = offsetof(struct page_state, member##_high);&t;&bslash;&n;&t;&t;else if (is_normal(zone))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;offset = offsetof(struct page_state, member##_normal);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;offset = offsetof(struct page_state, member##_dma);&t;&bslash;&n;&t;&t;__mod_page_state(offset, (delta));&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Manipulation of page state flags&n; */
 DECL|macro|PageLocked
 mdefine_line|#define PageLocked(page)&t;&t;&bslash;&n;&t;&t;test_bit(PG_locked, &amp;(page)-&gt;flags)

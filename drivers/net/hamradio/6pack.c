@@ -1569,12 +1569,12 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data, because the tty&n; * layer provides no locking at all - thus one cpu could be running&n; * sixpack_receive_buf while another calls sixpack_close, which zeroes&n; * tty-&gt;disc_data and frees the memory that sixpack_receive_buf is using.  The&n; * best way to fix this is to use a rwlock in the tty struct, but for now we&n; * use a single global rwlock for all ttys in ppp line discipline.&n; */
-DECL|variable|disc_data_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|disc_data_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sp_get
 r_static

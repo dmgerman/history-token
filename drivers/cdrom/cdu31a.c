@@ -248,12 +248,12 @@ id|request_queue
 op_star
 id|cdu31a_queue
 suffix:semicolon
-DECL|variable|cdu31a_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cdu31a_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* queue lock */
 DECL|variable|sony_spun_up

@@ -52,10 +52,11 @@ r_int
 )paren
 suffix:semicolon
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|TICK_SIZE
 mdefine_line|#define TICK_SIZE (tick_nsec / 1000)

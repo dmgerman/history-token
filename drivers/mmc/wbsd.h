@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mmc/wbsd.h&n; *&n; *  Copyright (C) 2004 Pierre Ossman, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/drivers/mmc/wbsd.h - Winbond W83L51xD SD/MMC driver&n; *&n; *  Copyright (C) 2004-2005 Pierre Ossman, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 DECL|variable|config_ports
 r_const
 r_int
@@ -215,6 +215,10 @@ DECL|macro|WBSD_FIFOEN_FULL
 mdefine_line|#define WBSD_FIFOEN_FULL&t;0x10
 DECL|macro|WBSD_FIFO_THREMASK
 mdefine_line|#define WBSD_FIFO_THREMASK&t;0x0F
+DECL|macro|WBSD_BLOCK_READ
+mdefine_line|#define WBSD_BLOCK_READ&t;&t;0x80
+DECL|macro|WBSD_BLOCK_WRITE
+mdefine_line|#define WBSD_BLOCK_WRITE&t;0x40
 DECL|macro|WBSD_BUSY
 mdefine_line|#define WBSD_BUSY&t;&t;0x20
 DECL|macro|WBSD_CARDTRAFFIC
@@ -233,9 +237,6 @@ DECL|macro|WBSD_CRC_OK
 mdefine_line|#define WBSD_CRC_OK&t;&t;0x05 /* S010E (00101) */
 DECL|macro|WBSD_CRC_FAIL
 mdefine_line|#define WBSD_CRC_FAIL&t;&t;0x0B /* S101E (01011) */
-multiline_comment|/* 64kB / 512 */
-DECL|macro|NR_SG
-mdefine_line|#define NR_SG&t;&t;&t;128
 DECL|struct|wbsd_host
 r_struct
 id|wbsd_host
@@ -259,15 +260,11 @@ op_star
 id|mrq
 suffix:semicolon
 multiline_comment|/* Current request */
-DECL|member|sg
-r_struct
-id|scatterlist
-id|sg
-(braket
-id|NR_SG
-)braket
+DECL|member|isr
+id|u8
+id|isr
 suffix:semicolon
-multiline_comment|/* SG list */
+multiline_comment|/* Accumulated ISR */
 DECL|member|cur_sg
 r_struct
 id|scatterlist
@@ -281,6 +278,12 @@ r_int
 id|num_sg
 suffix:semicolon
 multiline_comment|/* Number of entries left */
+DECL|member|mapped_sg
+r_void
+op_star
+id|mapped_sg
+suffix:semicolon
+multiline_comment|/* vaddr of mapped sg */
 DECL|member|offset
 r_int
 r_int

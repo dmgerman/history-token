@@ -84,10 +84,11 @@ r_int
 id|time_offset
 suffix:semicolon
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtc_lock
 id|EXPORT_SYMBOL
@@ -308,6 +309,16 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -336,18 +347,6 @@ c_func
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|update_process_times
-c_func
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * update the rtc when needed, this should be performed on the&n;&t;&t; * right fraction of a second. Half or full second ?&n;&t;&t; * Full second works on mk48t59 clocks, others need testing.&n;&t;&t; * Note that this update is basically only used through&n;&t;&t; * the adjtimex system calls. Setting the HW clock in&n;&t;&t; * any other way is a /dev/rtc and userland business.&n;&t;&t; * This is still wrong by -0.5/+1.5 jiffies because of the&n;&t;&t; * timer interrupt resolution and possible delay, but here we&n;&t;&t; * hit a quantization limit which can only be solved by higher&n;&t;&t; * resolution timers and decoupling time management from timer&n;&t;&t; * interrupts. This is also wrong on the clocks&n;&t;&t; * which require being written at the half second boundary.&n;&t;&t; * We should have an rtc call that only sets the minutes and&n;&t;&t; * seconds like on Intel to avoid problems with non UTC clocks.&n;&t;&t; */
 r_if
 c_cond
@@ -461,14 +460,6 @@ id|cpu
 op_assign
 id|jiffy_stamp
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|smp_local_timer_interrupt
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
 r_if
 c_cond
 (paren

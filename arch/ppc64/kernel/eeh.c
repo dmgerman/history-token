@@ -25,12 +25,12 @@ mdefine_line|#define BUID_HI(buid) ((buid) &gt;&gt; 32)
 DECL|macro|BUID_LO
 mdefine_line|#define BUID_LO(buid) ((buid) &amp; 0xffffffff)
 multiline_comment|/* EEH event workqueue setup. */
-DECL|variable|eeh_eventlist_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|eeh_eventlist_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|eeh_eventlist
 id|LIST_HEAD
@@ -114,12 +114,12 @@ id|slot_errbuf
 id|RTAS_ERROR_LOG_MAX
 )braket
 suffix:semicolon
-DECL|variable|slot_errbuf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|slot_errbuf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|eeh_error_buf_size
 r_static

@@ -9326,6 +9326,7 @@ id|recv_msg-&gt;user
 op_logical_and
 id|intf-&gt;null_user_handler
 )paren
+(brace
 id|intf
 op_member_access_from_pointer
 id|null_user_handler
@@ -9336,6 +9337,30 @@ comma
 id|msg
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|intf-&gt;counter_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|intf-&gt;handled_local_responses
+op_increment
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|intf-&gt;counter_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* The user for the message went away, so give up. */
 id|spin_lock_irqsave
 c_func
@@ -9358,6 +9383,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 id|ipmi_free_recv_msg
 c_func
 (paren

@@ -110,16 +110,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID&t;&t;0xFF            /* No processor magic marker */
 DECL|macro|PROC_CHANGE_PENALTY

@@ -453,12 +453,12 @@ l_int|0x2
 suffix:semicolon
 )brace
 multiline_comment|/*&n;************************************************************&n;** Enable/Disable VPP to write to flash&n;************************************************************&n;*/
-DECL|variable|dnpc_spin
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dnpc_spin
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|vpp_counter
 r_static

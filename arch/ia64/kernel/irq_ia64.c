@@ -221,22 +221,6 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|do_IRQ
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|IS_RESCHEDULE
 macro_line|#&t;define IS_RESCHEDULE(vec)&t;(vec == IA64_IPI_RESCHEDULE)
@@ -403,7 +387,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|do_IRQ
+id|__do_IRQ
 c_func
 (paren
 id|local_vector_to_irq
@@ -545,7 +529,7 @@ id|vector
 op_assign
 l_int|0
 suffix:semicolon
-id|do_IRQ
+id|__do_IRQ
 c_func
 (paren
 id|local_vector_to_irq

@@ -2823,6 +2823,20 @@ comma
 id|u64
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ia64_sal_handler_init
+c_func
+(paren
+r_void
+op_star
+id|entry_point
+comma
+r_void
+op_star
+id|gpval
+)paren
+suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_SAL_H */
 eof

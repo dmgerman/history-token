@@ -95,12 +95,12 @@ DECL|macro|BBD_ERR
 mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
 DECL|macro|ICRC_ERR
 mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
-DECL|variable|hd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|hd_queue
 r_static

@@ -24,10 +24,11 @@ id|pnp_global
 )paren
 suffix:semicolon
 DECL|variable|pnp_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pnp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pnp_alloc
 r_void

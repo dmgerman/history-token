@@ -344,12 +344,12 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|frv_dma_channels_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|frv_dma_channels_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|frv_dma_inprogress
 r_int

@@ -1058,10 +1058,9 @@ id|PSR_PIL_0
 r_if
 c_cond
 (paren
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 )paren
 id|do_softirq

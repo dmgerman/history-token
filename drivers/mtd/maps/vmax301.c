@@ -17,12 +17,12 @@ mdefine_line|#define WINDOW_SHIFT 25
 DECL|macro|WINDOW_MASK
 mdefine_line|#define WINDOW_MASK 0x1FFF
 multiline_comment|/* Actually we could use two spinlocks, but we&squot;d have to have&n;   more private space in the struct map_info. We lose a little&n;   performance like this, but we&squot;d probably lose more by having&n;   the extra indirection from having one of the map-&gt;map_priv &n;   fields pointing to yet another private struct.&n;*/
-DECL|variable|vmax301_spin
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|vmax301_spin
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__vmax301_page
 r_static

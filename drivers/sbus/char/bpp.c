@@ -1574,12 +1574,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|bpp_open_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|bpp_open_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Allow only one process to open the device at a time.&n; */
 DECL|function|bpp_open

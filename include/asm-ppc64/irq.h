@@ -156,6 +156,10 @@ r_return
 id|irq
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|distribute_irqs
+suffix:semicolon
 r_struct
 id|irqaction
 suffix:semicolon

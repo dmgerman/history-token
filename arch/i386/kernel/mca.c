@@ -37,12 +37,12 @@ id|MCA_bus
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Motherboard register spinlock. Untested on SMP at the moment, but&n; * are there any MCA SMP boxes?&n; *&n; * Yes - Alan&n; */
-DECL|variable|mca_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Build the status info for the adapter */
 DECL|function|mca_configure_adapter_status

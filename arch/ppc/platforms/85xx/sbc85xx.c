@@ -28,7 +28,6 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/mpc85xx.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/immap_85xx.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;mm/mmu_decl.h&gt;
 macro_line|#include &lt;platforms/85xx/sbc85xx.h&gt;
 DECL|variable|__res

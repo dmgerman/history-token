@@ -34,10 +34,11 @@ mdefine_line|#define PRINT_USER_FAULTS /* (turn this on if you want user faults 
 multiline_comment|/*  dumped to the console via printk)          */
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_DEBUG_SPINLOCK)
 DECL|variable|pa_dbit_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pa_dbit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|function|printbinary
@@ -1733,10 +1734,11 @@ id|offset
 )paren
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|terminate_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|oops_in_progress
 op_assign

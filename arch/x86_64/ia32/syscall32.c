@@ -194,7 +194,7 @@ c_func
 id|syscall32_page
 )paren
 comma
-id|PAGE_KERNEL_VSYSCALL
+id|PAGE_KERNEL_VSYSCALL32
 )paren
 )paren
 suffix:semicolon

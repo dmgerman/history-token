@@ -1079,12 +1079,12 @@ r_int
 id|lvl14_resolution
 suffix:semicolon
 multiline_comment|/* /proc/profile writes can call this, don&squot;t __init it please. */
-DECL|variable|prof_setup_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|prof_setup_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|setup_profiling_timer
 r_int

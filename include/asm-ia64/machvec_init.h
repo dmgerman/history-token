@@ -8,14 +8,6 @@ id|ia64_mv_global_tlb_purge_t
 id|ia64_global_tlb_purge
 suffix:semicolon
 r_extern
-id|ia64_mv_irq_desc
-id|__ia64_irq_desc
-suffix:semicolon
-r_extern
-id|ia64_mv_irq_to_vector
-id|__ia64_irq_to_vector
-suffix:semicolon
-r_extern
 id|ia64_mv_local_vector_to_irq
 id|__ia64_local_vector_to_irq
 suffix:semicolon

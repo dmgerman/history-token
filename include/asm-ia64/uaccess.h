@@ -111,7 +111,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__m
-macro_line|# define __m(x) (*(struct __large_struct *)(x))
+macro_line|# define __m(x) (*(struct __large_struct __user *)(x))
 multiline_comment|/* We need to declare the __ex_table section before we can use it in .xdata.  */
 id|asm
 (paren

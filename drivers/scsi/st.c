@@ -370,12 +370,12 @@ mdefine_line|#define TAPE_MINOR(d, m, n) (((d &amp; ~(255 &gt;&gt; (ST_NBR_MODE_
 multiline_comment|/* Internal ioctl to set both density (uppermost 8 bits) and blocksize (lower&n;   24 bits) */
 DECL|macro|SET_DENS_AND_BLK
 mdefine_line|#define SET_DENS_AND_BLK 0x10001
-DECL|variable|st_dev_arr_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|st_dev_arr_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|st_fixed_buffer_size
 r_static

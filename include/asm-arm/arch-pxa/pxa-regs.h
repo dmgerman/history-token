@@ -805,16 +805,24 @@ DECL|macro|POCR
 mdefine_line|#define POCR&t;&t;__REG(0x40500000)  /* PCM Out Control Register */
 DECL|macro|POCR_FEIE
 mdefine_line|#define POCR_FEIE&t;(1 &lt;&lt; 3)&t;/* FIFO Error Interrupt Enable */
+DECL|macro|POCR_FSRIE
+mdefine_line|#define POCR_FSRIE&t;(1 &lt;&lt; 1)&t;/* FIFO Service Request Interrupt Enable */
 DECL|macro|PICR
 mdefine_line|#define PICR&t;&t;__REG(0x40500004)  /* PCM In Control Register */
 DECL|macro|PICR_FEIE
 mdefine_line|#define PICR_FEIE&t;(1 &lt;&lt; 3)&t;/* FIFO Error Interrupt Enable */
+DECL|macro|PICR_FSRIE
+mdefine_line|#define PICR_FSRIE&t;(1 &lt;&lt; 1)&t;/* FIFO Service Request Interrupt Enable */
 DECL|macro|MCCR
 mdefine_line|#define MCCR&t;&t;__REG(0x40500008)  /* Mic In Control Register */
 DECL|macro|MCCR_FEIE
 mdefine_line|#define MCCR_FEIE&t;(1 &lt;&lt; 3)&t;/* FIFO Error Interrupt Enable */
+DECL|macro|MCCR_FSRIE
+mdefine_line|#define MCCR_FSRIE&t;(1 &lt;&lt; 1)&t;/* FIFO Service Request Interrupt Enable */
 DECL|macro|GCR
 mdefine_line|#define GCR&t;&t;__REG(0x4050000C)  /* Global Control Register */
+DECL|macro|GCR_nDMAEN
+mdefine_line|#define GCR_nDMAEN&t;(1 &lt;&lt; 24)&t;/* non DMA Enable */
 DECL|macro|GCR_CDONE_IE
 mdefine_line|#define GCR_CDONE_IE&t;(1 &lt;&lt; 19)&t;/* Command Done Interrupt Enable */
 DECL|macro|GCR_SDONE_IE
@@ -839,14 +847,24 @@ DECL|macro|POSR
 mdefine_line|#define POSR&t;&t;__REG(0x40500010)  /* PCM Out Status Register */
 DECL|macro|POSR_FIFOE
 mdefine_line|#define POSR_FIFOE&t;(1 &lt;&lt; 4)&t;/* FIFO error */
+DECL|macro|POSR_FSR
+mdefine_line|#define POSR_FSR&t;(1 &lt;&lt; 2)&t;/* FIFO Service Request */
 DECL|macro|PISR
 mdefine_line|#define PISR&t;&t;__REG(0x40500014)  /* PCM In Status Register */
 DECL|macro|PISR_FIFOE
 mdefine_line|#define PISR_FIFOE&t;(1 &lt;&lt; 4)&t;/* FIFO error */
+DECL|macro|PISR_EOC
+mdefine_line|#define PISR_EOC&t;(1 &lt;&lt; 3)&t;/* DMA End-of-Chain (exclusive clear) */
+DECL|macro|PISR_FSR
+mdefine_line|#define PISR_FSR&t;(1 &lt;&lt; 2)&t;/* FIFO Service Request */
 DECL|macro|MCSR
 mdefine_line|#define MCSR&t;&t;__REG(0x40500018)  /* Mic In Status Register */
 DECL|macro|MCSR_FIFOE
 mdefine_line|#define MCSR_FIFOE&t;(1 &lt;&lt; 4)&t;/* FIFO error */
+DECL|macro|MCSR_EOC
+mdefine_line|#define MCSR_EOC&t;(1 &lt;&lt; 3)&t;/* DMA End-of-Chain (exclusive clear) */
+DECL|macro|MCSR_FSR
+mdefine_line|#define MCSR_FSR&t;(1 &lt;&lt; 2)&t;/* FIFO Service Request */
 DECL|macro|GSR
 mdefine_line|#define GSR&t;&t;__REG(0x4050001C)  /* Global Status Register */
 DECL|macro|GSR_CDONE
@@ -869,12 +887,14 @@ DECL|macro|GSR_SCR
 mdefine_line|#define GSR_SCR&t;&t;(1 &lt;&lt; 9)&t;/* Secondary Codec Ready */
 DECL|macro|GSR_PCR
 mdefine_line|#define GSR_PCR&t;&t;(1 &lt;&lt; 8)&t;/*  Primary Codec Ready */
-DECL|macro|GSR_MINT
-mdefine_line|#define GSR_MINT&t;(1 &lt;&lt; 7)&t;/* Mic In Interrupt */
+DECL|macro|GSR_MCINT
+mdefine_line|#define GSR_MCINT&t;(1 &lt;&lt; 7)&t;/* Mic In Interrupt */
 DECL|macro|GSR_POINT
 mdefine_line|#define GSR_POINT&t;(1 &lt;&lt; 6)&t;/* PCM Out Interrupt */
 DECL|macro|GSR_PIINT
 mdefine_line|#define GSR_PIINT&t;(1 &lt;&lt; 5)&t;/* PCM In Interrupt */
+DECL|macro|GSR_ACOFFD
+mdefine_line|#define GSR_ACOFFD&t;(1 &lt;&lt; 3)&t;/* AC-link Shut Off Done */
 DECL|macro|GSR_MOINT
 mdefine_line|#define GSR_MOINT&t;(1 &lt;&lt; 2)&t;/* Modem Out Interrupt */
 DECL|macro|GSR_MIINT
@@ -893,18 +913,28 @@ DECL|macro|MOCR
 mdefine_line|#define MOCR&t;&t;__REG(0x40500100)  /* Modem Out Control Register */
 DECL|macro|MOCR_FEIE
 mdefine_line|#define MOCR_FEIE&t;(1 &lt;&lt; 3)&t;/* FIFO Error */
+DECL|macro|MOCR_FSRIE
+mdefine_line|#define MOCR_FSRIE&t;(1 &lt;&lt; 1)&t;/* FIFO Service Request Interrupt Enable */
 DECL|macro|MICR
 mdefine_line|#define MICR&t;&t;__REG(0x40500108)  /* Modem In Control Register */
 DECL|macro|MICR_FEIE
 mdefine_line|#define MICR_FEIE&t;(1 &lt;&lt; 3)&t;/* FIFO Error */
+DECL|macro|MICR_FSRIE
+mdefine_line|#define MICR_FSRIE&t;(1 &lt;&lt; 1)&t;/* FIFO Service Request Interrupt Enable */
 DECL|macro|MOSR
 mdefine_line|#define MOSR&t;&t;__REG(0x40500110)  /* Modem Out Status Register */
 DECL|macro|MOSR_FIFOE
 mdefine_line|#define MOSR_FIFOE&t;(1 &lt;&lt; 4)&t;/* FIFO error */
+DECL|macro|MOSR_FSR
+mdefine_line|#define MOSR_FSR&t;(1 &lt;&lt; 2)&t;/* FIFO Service Request */
 DECL|macro|MISR
 mdefine_line|#define MISR&t;&t;__REG(0x40500118)  /* Modem In Status Register */
 DECL|macro|MISR_FIFOE
 mdefine_line|#define MISR_FIFOE&t;(1 &lt;&lt; 4)&t;/* FIFO error */
+DECL|macro|MISR_EOC
+mdefine_line|#define MISR_EOC&t;(1 &lt;&lt; 3)&t;/* DMA End-of-Chain (exclusive clear) */
+DECL|macro|MISR_FSR
+mdefine_line|#define MISR_FSR&t;(1 &lt;&lt; 2)&t;/* FIFO Service Request */
 DECL|macro|MODR
 mdefine_line|#define MODR&t;&t;__REG(0x40500140)  /* Modem FIFO Data Register */
 DECL|macro|PAC_REG_BASE

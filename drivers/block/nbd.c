@@ -52,12 +52,12 @@ id|MAX_NBD
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Use just one lock (or at most 1 per NIC). Two arguments for this:&n; * 1. Each NIC is essentially a synchronization point for all servers&n; *    accessed through that NIC so there&squot;s no need to have more locks&n; *    than NICs anyway.&n; * 2. More locks lead to more &quot;Dirty cache line bouncing&quot; which will slow&n; *    down each lock to the point where they&squot;re actually slower than just&n; *    a single lock.&n; * Thanks go to Jens Axboe and Al Viro for their LKML emails explaining this!&n; */
-DECL|variable|nbd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nbd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifndef NDEBUG
 DECL|function|ioctl_cmd_to_ascii

@@ -215,12 +215,12 @@ op_star
 l_int|0xAE000000
 suffix:semicolon
 macro_line|#endif
-DECL|variable|ir_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ir_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * IrDA peripheral bug. You have to read the register&n; * twice to get the right value.&n; */
 DECL|function|read_ir_reg

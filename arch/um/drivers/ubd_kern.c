@@ -363,19 +363,19 @@ suffix:semicolon
 multiline_comment|/*End stuff from ubd_user.h*/
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;uml-blkdev&quot;
-DECL|variable|ubd_io_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ubd_io_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|ubd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ubd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|do_ubd
 r_static
@@ -2861,6 +2861,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|ROUND_BLOCK
+mdefine_line|#define ROUND_BLOCK(n) ((n + ((1 &lt;&lt; 9) - 1)) &amp; (-1 &lt;&lt; 9))
 DECL|function|ubd_add
 r_static
 r_int
@@ -2934,6 +2936,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|dev-&gt;size
+op_assign
+id|ROUND_BLOCK
+c_func
+(paren
+id|dev-&gt;size
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|ubd_new_disk

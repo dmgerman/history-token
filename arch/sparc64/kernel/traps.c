@@ -36,12 +36,12 @@ id|notifier_block
 op_star
 id|sparc64die_chain
 suffix:semicolon
-DECL|variable|die_notifier_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_notifier_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|register_die_notifier
 r_int

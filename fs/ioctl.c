@@ -317,6 +317,7 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * When you add any new common ioctls to the switches above and below&n; * please update compat_sys_ioctl() too.&n; */
 DECL|function|sys_ioctl
 id|asmlinkage
 r_int

@@ -15,12 +15,12 @@ r_int
 id|sb_initialized
 suffix:semicolon
 macro_line|#endif
-DECL|variable|lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|opl3sa_read
 r_static

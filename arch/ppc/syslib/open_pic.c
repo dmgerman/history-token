@@ -2025,12 +2025,12 @@ id|mask
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PM)
-DECL|variable|openpic_setup_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|openpic_setup_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP

@@ -61,19 +61,19 @@ c_func
 id|hl_irqs
 )paren
 suffix:semicolon
-DECL|variable|hl_irqs_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|hl_irqs_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|addr_space_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|addr_space_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* addr_space list will have zero and max already included as bounds */
 DECL|variable|dummy_ops

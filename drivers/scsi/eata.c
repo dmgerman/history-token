@@ -1326,12 +1326,12 @@ id|sha
 id|MAX_BOARDS
 )braket
 suffix:semicolon
-DECL|variable|driver_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|driver_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize num_boards so that ihdlr can work while detect is in progress */
 DECL|variable|num_boards

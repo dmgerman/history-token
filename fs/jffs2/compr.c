@@ -1,11 +1,11 @@
 multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; * Created by Arjan van de Ven &lt;arjanv@redhat.com&gt;&n; *&n; * Copyright (C) 2004 Ferenc Havasi &lt;havasi@inf.u-szeged.hu&gt;,&n; *                    University of Szeged, Hungary&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: compr.c,v 1.42 2004/08/07 21:56:08 dwmw2 Exp $&n; *&n; */
 macro_line|#include &quot;compr.h&quot;
-DECL|variable|jffs2_compressor_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|jffs2_compressor_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Available compressors are on this list */
 r_static

@@ -684,12 +684,12 @@ id|instance
 )braket
 suffix:semicolon
 )brace
-DECL|variable|vfc_dev_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|vfc_dev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|vfc_open
 r_static

@@ -1021,6 +1021,7 @@ op_plus
 id|skb-&gt;len
 )paren
 suffix:semicolon
+multiline_comment|/* disable interrupts while triggering transmit */
 id|spin_lock_irq
 c_func
 (paren
@@ -1532,6 +1533,7 @@ id|fep
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+multiline_comment|/* lock while transmitting */
 id|spin_lock
 c_func
 (paren
@@ -2455,15 +2457,14 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+multiline_comment|/* lock while modifying mii_list */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|fep-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -2545,9 +2546,12 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|fep-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

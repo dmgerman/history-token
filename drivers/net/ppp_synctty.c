@@ -557,12 +557,12 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Routines implementing the synchronous PPP line discipline.&n; */
 multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data,&n; * because the tty layer provides no locking at all - thus one&n; * cpu could be running ppp_synctty_receive while another&n; * calls ppp_synctty_close, which zeroes tty-&gt;disc_data and&n; * frees the memory that ppp_synctty_receive is using.  The best&n; * way to fix this is to use a rwlock in the tty struct, but for now&n; * we use a single global rwlock for all ttys in ppp line discipline.&n; *&n; * FIXME: Fixed in tty_io nowdays.&n; */
-DECL|variable|disc_data_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|disc_data_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sp_get
 r_static

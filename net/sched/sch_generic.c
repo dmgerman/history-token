@@ -136,7 +136,7 @@ op_amp
 id|NETIF_F_LLTX
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * When the driver has LLTX set it does not require any&n;&t;&t; * locking in start_xmit.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * When the driver has LLTX set it does its own locking&n;&t;&t; * in start_xmit. No need to add additional overhead by&n;&t;&t; * locking again. These checks are worth it because&n;&t;&t; * even uncongested locks can be quite expensive.&n;&t;&t; * The driver can do trylock like here too, in case&n;&t;&t; * of lock congestion it should return -1 and the packet&n;&t;&t; * will be requeued.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -148,7 +148,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|spin_trylock_irq
+id|spin_trylock
 c_func
 (paren
 op_amp
@@ -156,6 +156,8 @@ id|dev-&gt;xmit_lock
 )paren
 )paren
 (brace
+id|collision
+suffix:colon
 multiline_comment|/* So, someone grabbed the driver. */
 multiline_comment|/* It may be transient configuration error,&n;&t;&t;&t;&t;   when hard_start_xmit() recurses. We detect&n;&t;&t;&t;&t;   it by checking xmit owner and drop the&n;&t;&t;&t;&t;   packet when deadloop is detected.&n;&t;&t;&t;&t;*/
 r_if
@@ -287,7 +289,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -307,6 +309,27 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|NETDEV_TX_LOCKED
+op_logical_and
+id|nolock
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;queue_lock
+)paren
+suffix:semicolon
+r_goto
+id|collision
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* NETDEV_TX_BUSY - we need to requeue */
 multiline_comment|/* Release the driver */
@@ -322,7 +345,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -392,7 +415,7 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|spin_lock_irq
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -489,7 +512,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irq
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -600,7 +623,7 @@ op_star
 id|dev
 )paren
 (brace
-id|spin_lock_irq
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -613,7 +636,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -633,7 +656,7 @@ op_star
 id|dev
 )paren
 (brace
-id|spin_lock_irq
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -656,7 +679,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_bh
 c_func
 (paren
 op_amp

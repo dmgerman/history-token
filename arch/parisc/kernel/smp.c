@@ -33,10 +33,11 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|kDEBUG
 mdefine_line|#define kDEBUG 0
 DECL|variable|smp_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|smp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|smp_init_current_idle_task
 r_volatile
@@ -911,10 +912,11 @@ r_int
 id|timeout
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_int
 id|retries

@@ -3751,12 +3751,12 @@ id|dirty_space_ids
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|sid_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sid_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|alloc_sid
 r_int

@@ -77,12 +77,12 @@ id|sunis
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|sunis_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sunis_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|ADD_LIMITED
 mdefine_line|#define ADD_LIMITED(s,v) &bslash;&n;    atomic_add((v),&amp;stats-&gt;s); &bslash;&n;    if (atomic_read(&amp;stats-&gt;s) &lt; 0) atomic_set(&amp;stats-&gt;s,INT_MAX);

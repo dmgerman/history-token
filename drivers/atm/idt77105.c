@@ -61,12 +61,12 @@ suffix:semicolon
 multiline_comment|/* storage of MCR reg while signal lost */
 )brace
 suffix:semicolon
-DECL|variable|idt77105_priv_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|idt77105_priv_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|PRIV
 mdefine_line|#define PRIV(dev) ((struct idt77105_priv *) dev-&gt;phy_data)

@@ -91,12 +91,12 @@ op_assign
 l_int|0x0000
 suffix:semicolon
 )brace
-DECL|variable|scoop_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|scoop_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|scoop_gpwr
 r_static

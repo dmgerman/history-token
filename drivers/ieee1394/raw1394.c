@@ -52,12 +52,12 @@ r_static
 r_int
 id|host_count
 suffix:semicolon
-DECL|variable|host_info_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|host_info_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|internal_generation
 r_static

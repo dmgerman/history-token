@@ -316,10 +316,11 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Used to protect the IRQ action lists */
 DECL|variable|irq_action_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_action_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|show_interrupts
 r_int

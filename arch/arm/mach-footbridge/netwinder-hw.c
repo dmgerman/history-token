@@ -164,10 +164,11 @@ DECL|macro|wb977_device_enable
 mdefine_line|#define wb977_device_enable()&t;&t;wb977_wb(0x30, 0x01)
 multiline_comment|/*&n; * This is a lock for accessing ports GP1_IO_BASE and GP2_IO_BASE&n; */
 DECL|variable|gpio_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|gpio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|current_gpio_op
 r_static

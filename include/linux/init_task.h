@@ -11,7 +11,7 @@ mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&t;&bslash;
 DECL|macro|INIT_SIGNALS
 mdefine_line|#define INIT_SIGNALS(sig) {&t;&bslash;&n;&t;.count&t;&t;= ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;.wait_chldexit&t;= __WAIT_QUEUE_HEAD_INITIALIZER(sig.wait_chldexit),&bslash;&n;&t;.shared_pending&t;= { &t;&t;&t;&t;&bslash;&n;&t;&t;.list = LIST_HEAD_INIT(sig.shared_pending.list),&t;&bslash;&n;&t;&t;.signal =  {{0}}}, &bslash;&n;&t;.posix_timers&t; = LIST_HEAD_INIT(sig.posix_timers),&t;&t;&bslash;&n;&t;.rlim&t;&t;= INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_SIGHAND
-mdefine_line|#define INIT_SIGHAND(sighand) {&t;&bslash;&n;&t;.count&t;&t;= ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;.action&t;&t;= { {{NULL,}}, },&t;&t;&bslash;&n;&t;.siglock&t;= SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;}
+mdefine_line|#define INIT_SIGHAND(sighand) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.count&t;&t;= ATOMIC_INIT(1), &t;&t;&t;&t;&bslash;&n;&t;.action&t;&t;= { { { .sa_handler = NULL, } }, },&t;&t;&bslash;&n;&t;.siglock&t;= SPIN_LOCK_UNLOCKED, &t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|group_info

@@ -969,12 +969,12 @@ DECL|macro|SNS_LEN
 mdefine_line|#define SNS_LEN(scp)&t;sizeof((scp)-&gt;sense_buffer)
 macro_line|#ifdef MPTSCSIH_ENABLE_DOMAIN_VALIDATION
 multiline_comment|/*&n; * Domain Validation task structure&n; */
-DECL|variable|dvtaskQ_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dvtaskQ_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dvtaskQ_active
 r_static

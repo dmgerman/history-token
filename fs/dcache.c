@@ -25,12 +25,12 @@ id|sysctl_vfs_cache_pressure
 op_assign
 l_int|100
 suffix:semicolon
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|dcache_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|dcache_lock
+)paren
 suffix:semicolon
 DECL|variable|__cacheline_aligned_in_smp
 id|seqlock_t

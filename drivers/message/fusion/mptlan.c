@@ -413,10 +413,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|bad_naa_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|bad_naa_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

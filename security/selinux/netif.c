@@ -56,12 +56,12 @@ c_func
 id|sel_netif_list
 )paren
 suffix:semicolon
-DECL|variable|sel_netif_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sel_netif_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|sel_netif_hash
 r_static

@@ -54,12 +54,12 @@ DECL|macro|NUM_ROUNDS
 mdefine_line|#define NUM_ROUNDS&t;64&t;/* magic value */
 DECL|macro|NUM_ITERS
 mdefine_line|#define NUM_ITERS&t;5&t;/* likewise */
-DECL|variable|itc_sync_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|itc_sync_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|go
 r_static
@@ -2102,16 +2102,10 @@ multiline_comment|/*&n;&t;&t;&t; * TBD: Enable this when physical removal&n;&t;&
 r_return
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace

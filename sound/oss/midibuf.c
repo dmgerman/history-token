@@ -130,12 +130,12 @@ r_volatile
 r_int
 id|open_devs
 suffix:semicolon
-DECL|variable|lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|DATA_AVAIL
 mdefine_line|#define DATA_AVAIL(q) (q-&gt;len)

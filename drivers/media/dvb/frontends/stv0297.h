@@ -13,6 +13,13 @@ DECL|member|demod_address
 id|u8
 id|demod_address
 suffix:semicolon
+multiline_comment|/* does the &quot;inversion&quot; need inverted? */
+DECL|member|invert
+id|u8
+id|invert
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/* PLL maintenance */
 DECL|member|pll_init
 r_int

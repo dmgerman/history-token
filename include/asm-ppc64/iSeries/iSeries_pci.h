@@ -191,74 +191,8 @@ multiline_comment|/* Frame  1, Card C10          */
 )brace
 suffix:semicolon
 multiline_comment|/************************************************************************/
-multiline_comment|/* Location Data extracted from the VPD list and device info.           */
-multiline_comment|/************************************************************************/
-DECL|struct|LocationDataStruct
-r_struct
-id|LocationDataStruct
-(brace
-multiline_comment|/* Location data structure for device  */
-DECL|member|Bus
-id|u16
-id|Bus
-suffix:semicolon
-multiline_comment|/* iSeries Bus Number              0x00*/
-DECL|member|Board
-id|u16
-id|Board
-suffix:semicolon
-multiline_comment|/* iSeries Board                   0x02*/
-DECL|member|FrameId
-id|u8
-id|FrameId
-suffix:semicolon
-multiline_comment|/* iSeries spcn Frame Id           0x04*/
-DECL|member|PhbId
-id|u8
-id|PhbId
-suffix:semicolon
-multiline_comment|/* iSeries Phb Location            0x05*/
-DECL|member|AgentId
-id|u8
-id|AgentId
-suffix:semicolon
-multiline_comment|/* iSeries AgentId                 0x06*/
-DECL|member|Card
-id|u8
-id|Card
-suffix:semicolon
-DECL|member|CardLocation
-r_char
-id|CardLocation
-(braket
-l_int|4
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|typedef|LocationData
-r_typedef
-r_struct
-id|LocationDataStruct
-id|LocationData
-suffix:semicolon
-DECL|macro|LOCATION_DATA_SIZE
-mdefine_line|#define LOCATION_DATA_SIZE      48
-multiline_comment|/************************************************************************/
 multiline_comment|/* Functions                                                            */
 multiline_comment|/************************************************************************/
-r_extern
-id|LocationData
-op_star
-id|iSeries_GetLocationData
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|PciDev
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|iSeries_Device_Information

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: muldiv.c,v 1.5 1997/12/15 20:07:20 ecd Exp $&n; * muldiv.c: Hardware multiply/division illegal instruction trap&n; *&t;&t;for sun4c/sun4 (which do not have those instructions)&n; *&n; * Copyright (C) 1996 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: muldiv.c,v 1.5 1997/12/15 20:07:20 ecd Exp $&n; * muldiv.c: Hardware multiply/division illegal instruction trap&n; *&t;&t;for sun4c/sun4 (which do not have those instructions)&n; *&n; * Copyright (C) 1996 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * 2004-12-25&t;Krzysztof Helt (krzysztof.h1@wp.pl) &n; *&t;&t;- fixed registers constrains in inline assembly declarations&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -496,6 +496,15 @@ l_string|&quot;=r&quot;
 id|rs2
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|rs1
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|rs2
+)paren
 suffix:colon
 l_string|&quot;o0&quot;
 comma
@@ -583,6 +592,15 @@ l_string|&quot;=r&quot;
 id|rs2
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|rs1
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|rs2
+)paren
 suffix:colon
 l_string|&quot;o0&quot;
 comma
@@ -707,6 +725,16 @@ l_string|&quot;r&quot;
 (paren
 id|regs-&gt;y
 )paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|rs1
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|rs2
+)paren
 suffix:colon
 l_string|&quot;o0&quot;
 comma
@@ -830,6 +858,16 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 id|regs-&gt;y
+)paren
+comma
+l_string|&quot;0&quot;
+(paren
+id|rs1
+)paren
+comma
+l_string|&quot;1&quot;
+(paren
+id|rs2
 )paren
 suffix:colon
 l_string|&quot;o0&quot;

@@ -27,7 +27,7 @@ id|debug
 comma
 r_int
 comma
-l_int|0x644
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -107,11 +107,12 @@ multiline_comment|/* request types */
 r_typedef
 r_enum
 (brace
+multiline_comment|/* something is wrong with this part&n;&t;RTYPE_READ_DW         = (1 &lt;&lt; 6),&n;&t;RTYPE_WRITE_DW_1      = (3 &lt;&lt; 6),&n;&t;RTYPE_READ_V8_MEMORY  = (6 &lt;&lt; 6),&n;&t;RTYPE_WRITE_V8_MEMORY = (7 &lt;&lt; 6),&n;&t;RTYPE_WRITE_V8_FLASH  = (8 &lt;&lt; 6),&n;&t;RTYPE_GENERIC         = (9 &lt;&lt; 6),&n;*/
 DECL|enumerator|RTYPE_READ_DW
 id|RTYPE_READ_DW
 op_assign
 (paren
-l_int|1
+l_int|3
 op_lshift
 l_int|6
 )paren
@@ -120,7 +121,7 @@ DECL|enumerator|RTYPE_WRITE_DW_1
 id|RTYPE_WRITE_DW_1
 op_assign
 (paren
-l_int|3
+l_int|1
 op_lshift
 l_int|6
 )paren
@@ -1407,16 +1408,6 @@ id|i
 op_increment
 )paren
 (brace
-id|deb_info
-c_func
-(paren
-l_string|&quot;initializing and submitting urb no. %d (buf_offset: %d).&bslash;n&quot;
-comma
-id|i
-comma
-id|buffer_offset
-)paren
-suffix:semicolon
 r_int
 id|frame_offset
 op_assign
@@ -1431,6 +1422,16 @@ id|b2c2-&gt;iso_urb
 (braket
 id|i
 )braket
+suffix:semicolon
+id|deb_info
+c_func
+(paren
+l_string|&quot;initializing and submitting urb no. %d (buf_offset: %d).&bslash;n&quot;
+comma
+id|i
+comma
+id|buffer_offset
+)paren
 suffix:semicolon
 id|urb-&gt;dev
 op_assign

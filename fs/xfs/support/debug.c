@@ -18,12 +18,12 @@ l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* keep it off the stack */
-DECL|variable|xfs_err_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|xfs_err_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Translate from CE_FOO to KERN_FOO, err_level(CE_FOO) == KERN_FOO */
 DECL|macro|XFS_MAX_ERR_LEVEL

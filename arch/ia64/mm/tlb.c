@@ -293,10 +293,11 @@ id|nbits
 )paren
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ptcg_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* HW requires global serialization of ptc.ga.  */
 id|spin_lock

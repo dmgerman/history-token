@@ -109,12 +109,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|timebase_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|timebase_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|timebase_upper
 DECL|variable|timebase_lower

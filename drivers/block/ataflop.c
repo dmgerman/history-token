@@ -467,12 +467,12 @@ id|DriveType
 op_assign
 id|TYPE_HD
 suffix:semicolon
-DECL|variable|ataflop_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ataflop_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Array for translating minors into disk formats */
 r_static

@@ -1349,12 +1349,12 @@ DECL|variable|ccall_info
 )brace
 id|ccall_info
 suffix:semicolon
-DECL|variable|cross_call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cross_call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Cross calls must be serialized, at least currently. */
 DECL|function|smp4m_cross_call

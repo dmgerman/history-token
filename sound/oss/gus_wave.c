@@ -431,10 +431,11 @@ r_int
 id|pcm_current_intrflag
 suffix:semicolon
 DECL|variable|gus_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|gus_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 r_int

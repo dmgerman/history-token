@@ -25,12 +25,12 @@ op_assign
 op_amp
 id|default_table
 suffix:semicolon
-DECL|variable|nls_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nls_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Sample implementation from Unicode home page.&n; * http://www.stonehand.com/unicode/standard/fss-utf.html&n; */
 DECL|struct|utf8_table

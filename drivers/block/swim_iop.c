@@ -157,12 +157,12 @@ id|floppy_states
 id|MAX_FLOPPIES
 )braket
 suffix:semicolon
-DECL|variable|swim_iop_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|swim_iop_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|CURRENT
 mdefine_line|#define CURRENT elv_next_request(swim_queue)

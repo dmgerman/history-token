@@ -6,12 +6,12 @@ macro_line|#include &lt;asm/ebcdic.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|variable|cpcmd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cpcmd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|cpcmd_buf
 r_static

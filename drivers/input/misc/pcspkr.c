@@ -49,10 +49,11 @@ id|input_dev
 id|pcspkr_dev
 suffix:semicolon
 DECL|variable|i8253_beep_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|i8253_beep_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pcspkr_event
 r_static

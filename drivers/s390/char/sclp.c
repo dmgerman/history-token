@@ -18,12 +18,12 @@ id|ext_int_info_t
 id|ext_int_info_hwc
 suffix:semicolon
 multiline_comment|/* Lock to protect internal data consistency. */
-DECL|variable|sclp_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sclp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Mask of events that we can receive from the sclp interface. */
 DECL|variable|sclp_receive_mask

@@ -370,12 +370,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This lock guards the sound loader list.&n; */
-DECL|variable|sound_loader_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sound_loader_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Allocate the controlling structure and add it to the sound driver&n; *&t;list. Acquires locks as needed&n; */
 DECL|function|sound_insert_unit

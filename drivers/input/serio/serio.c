@@ -385,12 +385,12 @@ id|SERIO_UNREGISTER_PORT
 comma
 )brace
 suffix:semicolon
-DECL|variable|serio_event_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|serio_event_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* protects serio_event_list */
 r_static

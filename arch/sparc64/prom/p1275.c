@@ -326,10 +326,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This provides SMP safety on the p1275buf. prom_callback() drops this lock&n; * to allow recursuve acquisition.&n; */
 DECL|variable|prom_entry_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|prom_entry_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|p1275_cmd
 r_int

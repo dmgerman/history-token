@@ -166,12 +166,12 @@ op_star
 id|unit
 )paren
 suffix:semicolon
-DECL|variable|ymf_devs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ymf_devs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

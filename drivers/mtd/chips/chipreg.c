@@ -8,12 +8,12 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
-DECL|variable|chip_drvs_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|chip_drvs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

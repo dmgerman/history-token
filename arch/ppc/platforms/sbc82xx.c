@@ -154,12 +154,12 @@ id|sbc82xx_i8259_mask
 op_assign
 l_int|0xff
 suffix:semicolon
-DECL|variable|sbc82xx_i8259_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sbc82xx_i8259_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sbc82xx_i8259_mask_and_ack_irq
 r_static

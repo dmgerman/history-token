@@ -156,12 +156,12 @@ id|nvram_partitions
 l_int|3
 )braket
 suffix:semicolon
-DECL|variable|nv_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nv_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 r_int

@@ -1027,6 +1027,7 @@ op_minus
 l_int|1
 )paren
 (brace
+multiline_comment|/* p-&gt;size includes the guard page, but cpa doesn&squot;t like that */
 id|change_page_attr
 c_func
 (paren
@@ -1040,7 +1041,11 @@ id|p-&gt;phys_addr
 )paren
 )paren
 comma
+(paren
 id|p-&gt;size
+op_minus
+id|PAGE_SIZE
+)paren
 op_rshift
 id|PAGE_SHIFT
 comma

@@ -2706,12 +2706,12 @@ c_func
 id|del_mtd_partitions
 )paren
 suffix:semicolon
-DECL|variable|part_parser_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|part_parser_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

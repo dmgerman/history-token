@@ -4,5 +4,7 @@ DECL|macro|_DVBVERSION_H_
 mdefine_line|#define _DVBVERSION_H_
 DECL|macro|DVB_API_VERSION
 mdefine_line|#define DVB_API_VERSION 3
+DECL|macro|DVB_API_VERSION_MINOR
+mdefine_line|#define DVB_API_VERSION_MINOR 1
 macro_line|#endif /*_DVBVERSION_H_*/
 eof

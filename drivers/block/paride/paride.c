@@ -37,12 +37,12 @@ id|protocols
 id|MAX_PROTOS
 )braket
 suffix:semicolon
-DECL|variable|pi_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pi_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pi_write_regr
 r_void

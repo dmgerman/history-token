@@ -31,12 +31,12 @@ r_int
 r_int
 id|iomapadr
 suffix:semicolon
-DECL|variable|oct5066_spin
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|oct5066_spin
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * We use map_priv_1 to identify which device we are.&n; */
 DECL|function|__oct5066_page

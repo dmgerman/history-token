@@ -257,10 +257,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * List of all pgd&squot;s needed for non-PAE so it can invalidate entries&n; * in both cached and uncached pgd&squot;s; not needed for PAE since the&n; * kernel pmd is shared. If PAE were not to share the pmd a similar&n; * tactic would be needed. This is essentially codepath-based locking&n; * against pageattr.c; it is the unique case in which a valid change&n; * of kernel pagetables can&squot;t be lazily synchronized by vmalloc faults.&n; * vmalloc faults work because attached pagetables are never freed.&n; * If the locking proves to be non-performant, a ticketing scheme with&n; * checks at dup_mmap(), exec(), and other mmlist addition points&n; * could be used. The locking scheme was chosen on the basis of&n; * manfred&squot;s recommendations and having no core impact whatsoever.&n; * -- wli&n; */
 DECL|variable|pgd_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pgd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|pgd_list
 r_struct

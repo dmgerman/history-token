@@ -5385,12 +5385,12 @@ id|channel
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIO
-DECL|variable|sunzilog_serio_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sunzilog_serio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sunzilog_serio_write
 r_static

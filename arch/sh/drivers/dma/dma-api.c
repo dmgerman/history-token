@@ -7,10 +7,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 DECL|variable|dma_spin_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dma_spin_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

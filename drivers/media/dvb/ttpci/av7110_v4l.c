@@ -1440,7 +1440,7 @@ id|dev
 comma
 l_int|1
 comma
-id|SAA7146_GPIO_OUTHI
+id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
 singleline_comment|// TDA9198 pin9(STD)
@@ -3125,7 +3125,7 @@ id|av7110-&gt;dev
 comma
 l_int|1
 comma
-id|SAA7146_GPIO_OUTHI
+id|SAA7146_GPIO_OUTLO
 )paren
 suffix:semicolon
 singleline_comment|// TDA9198 pin9(STD)

@@ -618,12 +618,12 @@ op_star
 id|_job_pool
 suffix:semicolon
 multiline_comment|/*&n; * We maintain three lists of jobs:&n; *&n; * i)   jobs waiting for pages&n; * ii)  jobs that have pages, and are waiting for the io to be issued.&n; * iii) jobs that have completed.&n; *&n; * All three of these are protected by job_lock.&n; */
-DECL|variable|_job_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|_job_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

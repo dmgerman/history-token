@@ -1,8 +1,86 @@
-multiline_comment|/*&n; * dvb-dibusb.h&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * for more information see dvb-dibusb.c .&n; */
+multiline_comment|/*&n; * dvb-dibusb.h&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * for more information see dvb-dibusb-core.c .&n; */
 macro_line|#ifndef __DVB_DIBUSB_H__
 DECL|macro|__DVB_DIBUSB_H__
 mdefine_line|#define __DVB_DIBUSB_H__
+macro_line|#include &lt;linux/input.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &quot;dvb_frontend.h&quot;
+macro_line|#include &quot;dvb_demux.h&quot;
+macro_line|#include &quot;dvb_net.h&quot;
+macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dib3000.h&quot;
+macro_line|#include &quot;mt352.h&quot;
+multiline_comment|/* debug */
+macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level,args...) &bslash;&n;&t;    do { if ((debug &amp; level)) { printk(args); } } while (0)
+DECL|macro|debug_dump
+mdefine_line|#define debug_dump(b,l) if (debug) {&bslash;&n;&t;int i; deb_xfer(&quot;%s: %d &gt; &quot;,__FUNCTION__,l); &bslash;&n;&t;for (i = 0; i &lt; l; i++) deb_xfer(&quot;%02x &quot;, b[i]); &bslash;&n;&t;deb_xfer(&quot;&bslash;n&quot;);&bslash;&n;}
+multiline_comment|/* module parameters - declared in -core.c */
+r_extern
+r_int
+id|debug
+suffix:semicolon
+macro_line|#else
+DECL|macro|dprintk
+mdefine_line|#define dprintk(args...)
+DECL|macro|debug_dump
+mdefine_line|#define debug_dump(b,l)
+macro_line|#endif
+multiline_comment|/* Version information */
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;0.3&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC &quot;Driver for DiBcom based USB Budget DVB-T device&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
+multiline_comment|/* module parameters - declared in -core.c */
+r_extern
+r_int
+id|pid_parse
+suffix:semicolon
+r_extern
+r_int
+id|rc_query_interval
+suffix:semicolon
+DECL|macro|deb_info
+mdefine_line|#define deb_info(args...) dprintk(0x01,args)
+DECL|macro|deb_xfer
+mdefine_line|#define deb_xfer(args...) dprintk(0x02,args)
+DECL|macro|deb_alot
+mdefine_line|#define deb_alot(args...) dprintk(0x04,args)
+DECL|macro|deb_ts
+mdefine_line|#define deb_ts(args...)   dprintk(0x08,args)
+DECL|macro|deb_err
+mdefine_line|#define deb_err(args...)  dprintk(0x10,args)
+DECL|macro|deb_rc
+mdefine_line|#define deb_rc(args...)   dprintk(0x20,args)
+multiline_comment|/* generic log methods - taken from usb.h */
+DECL|macro|err
+mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+DECL|macro|info
+mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+DECL|macro|warn
+mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
+DECL|struct|dibusb_usb_controller
+r_struct
+id|dibusb_usb_controller
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+multiline_comment|/* name of the usb controller */
+DECL|member|cpu_cs_register
+id|u16
+id|cpu_cs_register
+suffix:semicolon
+multiline_comment|/* needs to be restarted, when the firmware has been downloaded. */
+)brace
+suffix:semicolon
 r_typedef
 r_enum
 (brace
@@ -11,323 +89,193 @@ id|DIBUSB1_1
 op_assign
 l_int|0
 comma
-DECL|enumerator|DIBUSB2_0
-id|DIBUSB2_0
-comma
 DECL|enumerator|DIBUSB1_1_AN2235
 id|DIBUSB1_1_AN2235
 comma
-DECL|typedef|dibusb_type
-)brace
-id|dibusb_type
-suffix:semicolon
-DECL|variable|dibusb_fw_filenames1_1
-r_static
-r_const
-r_char
-op_star
-id|dibusb_fw_filenames1_1
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;dvb-dibusb-5.0.0.11.fw&quot;
-)brace
-suffix:semicolon
-DECL|variable|dibusb_fw_filenames1_1_an2235
-r_static
-r_const
-r_char
-op_star
-id|dibusb_fw_filenames1_1_an2235
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;dvb-dibusb-an2235-1.fw&quot;
-)brace
-suffix:semicolon
-DECL|variable|dibusb_fw_filenames2_0
-r_static
-r_const
-r_char
-op_star
-id|dibusb_fw_filenames2_0
-(braket
-)braket
-op_assign
-(brace
-l_string|&quot;dvb-dibusb-6.0.0.5.fw&quot;
-)brace
-suffix:semicolon
-DECL|struct|dibusb_device_parameter
-r_struct
-id|dibusb_device_parameter
-(brace
-DECL|member|type
-id|dibusb_type
-id|type
-suffix:semicolon
-DECL|member|demod_addr
-id|u8
-id|demod_addr
-suffix:semicolon
-DECL|member|fw_filenames
-r_const
-r_char
-op_star
-op_star
-id|fw_filenames
-suffix:semicolon
-DECL|member|usb_controller
-r_const
-r_char
-op_star
-id|usb_controller
-suffix:semicolon
-DECL|member|usb_cpu_csreg
-id|u16
-id|usb_cpu_csreg
-suffix:semicolon
-DECL|member|num_urbs
-r_int
-id|num_urbs
-suffix:semicolon
-DECL|member|urb_buf_size
-r_int
-id|urb_buf_size
-suffix:semicolon
-DECL|member|default_size
-r_int
-id|default_size
-suffix:semicolon
-DECL|member|firmware_bug
-r_int
-id|firmware_bug
-suffix:semicolon
-DECL|member|cmd_pipe
-r_int
-id|cmd_pipe
-suffix:semicolon
-DECL|member|result_pipe
-r_int
-id|result_pipe
-suffix:semicolon
-DECL|member|data_pipe
-r_int
-id|data_pipe
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|variable|dibusb_dev_parm
-r_static
-r_struct
-id|dibusb_device_parameter
-id|dibusb_dev_parm
-(braket
-l_int|3
-)braket
-op_assign
-(brace
-(brace
-dot
-id|type
-op_assign
-id|DIBUSB1_1
-comma
-dot
-id|demod_addr
-op_assign
-l_int|0x10
-comma
-dot
-id|fw_filenames
-op_assign
-id|dibusb_fw_filenames1_1
-comma
-dot
-id|usb_controller
-op_assign
-l_string|&quot;Cypress AN2135&quot;
-comma
-dot
-id|usb_cpu_csreg
-op_assign
-l_int|0x7f92
-comma
-dot
-id|num_urbs
-op_assign
-l_int|3
-comma
-dot
-id|urb_buf_size
-op_assign
-l_int|4096
-comma
-dot
-id|default_size
-op_assign
-l_int|188
-op_star
-l_int|21
-comma
-dot
-id|firmware_bug
-op_assign
-l_int|1
-comma
-dot
-id|cmd_pipe
-op_assign
-l_int|0x01
-comma
-dot
-id|result_pipe
-op_assign
-l_int|0x81
-comma
-dot
-id|data_pipe
-op_assign
-l_int|0x82
-comma
-)brace
-comma
-(brace
-dot
-id|type
-op_assign
+DECL|enumerator|DIBUSB2_0
 id|DIBUSB2_0
 comma
-dot
-id|demod_addr
-op_assign
-l_int|0x18
+DECL|enumerator|UMT2_0
+id|UMT2_0
 comma
-dot
-id|fw_filenames
-op_assign
-id|dibusb_fw_filenames2_0
-comma
-dot
-id|usb_controller
-op_assign
-l_string|&quot;Cypress FX2&quot;
-comma
-dot
-id|usb_cpu_csreg
-op_assign
-l_int|0xe600
-comma
-dot
-id|num_urbs
-op_assign
-l_int|3
-comma
-dot
-id|urb_buf_size
-op_assign
-l_int|40960
-comma
-dot
-id|default_size
-op_assign
-l_int|188
-op_star
-l_int|210
-comma
-dot
-id|firmware_bug
+DECL|typedef|dibusb_class_t
+)brace
+id|dibusb_class_t
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|DIBUSB_TUNER_CABLE_THOMSON
+id|DIBUSB_TUNER_CABLE_THOMSON
 op_assign
 l_int|0
 comma
-dot
-id|cmd_pipe
-op_assign
-l_int|0x01
+DECL|enumerator|DIBUSB_TUNER_COFDM_PANASONIC_ENV57H1XD5
+id|DIBUSB_TUNER_COFDM_PANASONIC_ENV57H1XD5
 comma
-dot
-id|result_pipe
-op_assign
-l_int|0x81
+DECL|enumerator|DIBUSB_TUNER_CABLE_LG_TDTP_E102P
+id|DIBUSB_TUNER_CABLE_LG_TDTP_E102P
 comma
-dot
-id|data_pipe
-op_assign
-l_int|0x86
+DECL|enumerator|DIBUSB_TUNER_COFDM_PANASONIC_ENV77H11D5
+id|DIBUSB_TUNER_COFDM_PANASONIC_ENV77H11D5
 comma
+DECL|typedef|dibusb_tuner_t
 )brace
-comma
+id|dibusb_tuner_t
+suffix:semicolon
+r_typedef
+r_enum
 (brace
-dot
-id|type
+DECL|enumerator|DIBUSB_DIB3000MB
+id|DIBUSB_DIB3000MB
 op_assign
-id|DIBUSB1_1_AN2235
+l_int|0
 comma
-dot
-id|demod_addr
+DECL|enumerator|DIBUSB_DIB3000MC
+id|DIBUSB_DIB3000MC
+comma
+DECL|enumerator|DIBUSB_MT352
+id|DIBUSB_MT352
+comma
+DECL|typedef|dibusb_demodulator_t
+)brace
+id|dibusb_demodulator_t
+suffix:semicolon
+r_typedef
+r_enum
+(brace
+DECL|enumerator|DIBUSB_RC_NO
+id|DIBUSB_RC_NO
 op_assign
-l_int|0x10
+l_int|0
 comma
-dot
-id|fw_filenames
-op_assign
-id|dibusb_fw_filenames1_1_an2235
-comma
-dot
-id|usb_controller
-op_assign
-l_string|&quot;Cypress CY7C64613 (AN2235)&quot;
-comma
-dot
-id|usb_cpu_csreg
-op_assign
-l_int|0x7f92
-comma
-dot
-id|num_urbs
-op_assign
-l_int|3
-comma
-dot
-id|urb_buf_size
-op_assign
-l_int|4096
-comma
-dot
-id|default_size
-op_assign
-l_int|188
-op_star
-l_int|21
-comma
-dot
-id|firmware_bug
+DECL|enumerator|DIBUSB_RC_NEC_PROTOCOL
+id|DIBUSB_RC_NEC_PROTOCOL
 op_assign
 l_int|1
 comma
-dot
-id|cmd_pipe
-op_assign
-l_int|0x01
-comma
-dot
-id|result_pipe
-op_assign
-l_int|0x81
-comma
-dot
-id|data_pipe
-op_assign
-l_int|0x82
-comma
+DECL|typedef|dibusb_remote_t
 )brace
+id|dibusb_remote_t
+suffix:semicolon
+DECL|struct|dibusb_tuner
+r_struct
+id|dibusb_tuner
+(brace
+DECL|member|id
+id|dibusb_tuner_t
+id|id
+suffix:semicolon
+DECL|member|pll_addr
+id|u8
+id|pll_addr
+suffix:semicolon
+multiline_comment|/* tuner i2c address */
 )brace
 suffix:semicolon
-DECL|struct|dibusb_device
+r_extern
 r_struct
-id|dibusb_device
+id|dibusb_tuner
+id|dibusb_tuner
+(braket
+)braket
+suffix:semicolon
+DECL|macro|DIBUSB_POSSIBLE_I2C_ADDR_NUM
+mdefine_line|#define DIBUSB_POSSIBLE_I2C_ADDR_NUM 4
+DECL|struct|dibusb_demod
+r_struct
+id|dibusb_demod
+(brace
+DECL|member|id
+id|dibusb_demodulator_t
+id|id
+suffix:semicolon
+DECL|member|pid_filter_count
+r_int
+id|pid_filter_count
+suffix:semicolon
+multiline_comment|/* counter of the internal pid_filter */
+DECL|member|i2c_addrs
+id|u8
+id|i2c_addrs
+(braket
+id|DIBUSB_POSSIBLE_I2C_ADDR_NUM
+)braket
+suffix:semicolon
+multiline_comment|/* list of possible i2c addresses of the demod */
+)brace
+suffix:semicolon
+DECL|macro|DIBUSB_MAX_TUNER_NUM
+mdefine_line|#define DIBUSB_MAX_TUNER_NUM 2
+DECL|struct|dibusb_device_class
+r_struct
+id|dibusb_device_class
+(brace
+DECL|member|id
+id|dibusb_class_t
+id|id
+suffix:semicolon
+DECL|member|usb_ctrl
+r_const
+r_struct
+id|dibusb_usb_controller
+op_star
+id|usb_ctrl
+suffix:semicolon
+multiline_comment|/* usb controller */
+DECL|member|firmware
+r_const
+r_char
+op_star
+id|firmware
+suffix:semicolon
+multiline_comment|/* valid firmware filenames */
+DECL|member|pipe_cmd
+r_int
+id|pipe_cmd
+suffix:semicolon
+multiline_comment|/* command pipe (read/write) */
+DECL|member|pipe_data
+r_int
+id|pipe_data
+suffix:semicolon
+multiline_comment|/* data pipe */
+DECL|member|urb_count
+r_int
+id|urb_count
+suffix:semicolon
+multiline_comment|/* number of data URBs to be submitted */
+DECL|member|urb_buffer_size
+r_int
+id|urb_buffer_size
+suffix:semicolon
+multiline_comment|/* the size of the buffer for each URB */
+DECL|member|remote_type
+id|dibusb_remote_t
+id|remote_type
+suffix:semicolon
+multiline_comment|/* does this device have a ir-receiver */
+DECL|member|demod
+r_struct
+id|dibusb_demod
+op_star
+id|demod
+suffix:semicolon
+multiline_comment|/* which demodulator is mount */
+DECL|member|tuner
+r_struct
+id|dibusb_tuner
+op_star
+id|tuner
+suffix:semicolon
+multiline_comment|/* which tuner can be found here */
+)brace
+suffix:semicolon
+DECL|macro|DIBUSB_ID_MAX_NUM
+mdefine_line|#define DIBUSB_ID_MAX_NUM 15
+DECL|struct|dibusb_usb_device
+r_struct
+id|dibusb_usb_device
 (brace
 DECL|member|name
 r_const
@@ -335,865 +283,55 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|cold_product_id
-id|u16
-id|cold_product_id
-suffix:semicolon
-DECL|member|warm_product_id
-id|u16
-id|warm_product_id
-suffix:semicolon
-DECL|member|parm
+multiline_comment|/* real name of the box */
+DECL|member|dev_cl
 r_struct
-id|dibusb_device_parameter
+id|dibusb_device_class
 op_star
-id|parm
+id|dev_cl
 suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Vendor IDs */
-DECL|macro|USB_VID_ANCHOR
-mdefine_line|#define USB_VID_ANCHOR&t;&t;&t;&t;&t;&t;0x0547
-DECL|macro|USB_VID_AVERMEDIA
-mdefine_line|#define USB_VID_AVERMEDIA&t;&t;&t;&t;&t;0x14aa
-DECL|macro|USB_VID_COMPRO
-mdefine_line|#define USB_VID_COMPRO&t;&t;&t;&t;&t;&t;0x185b
-DECL|macro|USB_VID_COMPRO_UNK
-mdefine_line|#define USB_VID_COMPRO_UNK&t;&t;&t;&t;&t;0x145f
-DECL|macro|USB_VID_CYPRESS
-mdefine_line|#define USB_VID_CYPRESS&t;&t;&t;&t;&t;&t;0x04b4
-DECL|macro|USB_VID_DIBCOM
-mdefine_line|#define USB_VID_DIBCOM&t;&t;&t;&t;&t;&t;0x10b8
-DECL|macro|USB_VID_EMPIA
-mdefine_line|#define USB_VID_EMPIA&t;&t;&t;&t;&t;&t;0xeb1a
-DECL|macro|USB_VID_GRANDTEC
-mdefine_line|#define USB_VID_GRANDTEC&t;&t;&t;&t;&t;0x5032
-DECL|macro|USB_VID_HYPER_PALTEK
-mdefine_line|#define USB_VID_HYPER_PALTEK&t;&t;&t;&t;0x1025
-DECL|macro|USB_VID_IMC_NETWORKS
-mdefine_line|#define USB_VID_IMC_NETWORKS&t;&t;&t;&t;0x13d3
-DECL|macro|USB_VID_TWINHAN
-mdefine_line|#define USB_VID_TWINHAN&t;&t;&t;&t;&t;&t;0x1822
-DECL|macro|USB_VID_ULTIMA_ELECTRONIC
-mdefine_line|#define USB_VID_ULTIMA_ELECTRONIC&t;&t;&t;0x05d8
-multiline_comment|/* Product IDs */
-DECL|macro|USB_PID_AVERMEDIA_DVBT_USB_COLD
-mdefine_line|#define USB_PID_AVERMEDIA_DVBT_USB_COLD&t;&t;0x0001
-DECL|macro|USB_PID_AVERMEDIA_DVBT_USB_WARM
-mdefine_line|#define USB_PID_AVERMEDIA_DVBT_USB_WARM&t;&t;0x0002
-DECL|macro|USB_PID_COMPRO_DVBU2000_COLD
-mdefine_line|#define USB_PID_COMPRO_DVBU2000_COLD&t;&t;0xd000
-DECL|macro|USB_PID_COMPRO_DVBU2000_WARM
-mdefine_line|#define USB_PID_COMPRO_DVBU2000_WARM&t;&t;0xd001
-DECL|macro|USB_PID_COMPRO_DVBU2000_UNK_COLD
-mdefine_line|#define USB_PID_COMPRO_DVBU2000_UNK_COLD&t;0x010c
-DECL|macro|USB_PID_COMPRO_DVBU2000_UNK_WARM
-mdefine_line|#define USB_PID_COMPRO_DVBU2000_UNK_WARM&t;0x010d
-DECL|macro|USB_PID_DIBCOM_MOD3000_COLD
-mdefine_line|#define USB_PID_DIBCOM_MOD3000_COLD&t;&t;&t;0x0bb8
-DECL|macro|USB_PID_DIBCOM_MOD3000_WARM
-mdefine_line|#define USB_PID_DIBCOM_MOD3000_WARM&t;&t;&t;0x0bb9
-DECL|macro|USB_PID_DIBCOM_MOD3001_COLD
-mdefine_line|#define USB_PID_DIBCOM_MOD3001_COLD&t;&t;&t;0x0bc6
-DECL|macro|USB_PID_DIBCOM_MOD3001_WARM
-mdefine_line|#define USB_PID_DIBCOM_MOD3001_WARM&t;&t;&t;0x0bc7
-DECL|macro|USB_PID_GRANDTEC_DVBT_USB_COLD
-mdefine_line|#define USB_PID_GRANDTEC_DVBT_USB_COLD&t;&t;0x0fa0
-DECL|macro|USB_PID_GRANDTEC_DVBT_USB_WARM
-mdefine_line|#define USB_PID_GRANDTEC_DVBT_USB_WARM&t;&t;0x0fa1
-DECL|macro|USB_PID_KWORLD_VSTREAM_COLD
-mdefine_line|#define USB_PID_KWORLD_VSTREAM_COLD&t;&t;&t;0x17de
-DECL|macro|USB_PID_KWORLD_VSTREAM_WARM
-mdefine_line|#define USB_PID_KWORLD_VSTREAM_WARM&t;&t;&t;0x17df
-DECL|macro|USB_PID_TWINHAN_VP7041_COLD
-mdefine_line|#define USB_PID_TWINHAN_VP7041_COLD&t;&t;&t;0x3201
-DECL|macro|USB_PID_TWINHAN_VP7041_WARM
-mdefine_line|#define USB_PID_TWINHAN_VP7041_WARM&t;&t;&t;0x3202
-DECL|macro|USB_PID_ULTIMA_TVBOX_COLD
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_COLD&t;&t;&t;0x8105
-DECL|macro|USB_PID_ULTIMA_TVBOX_WARM
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_WARM&t;&t;&t;0x8106
-DECL|macro|USB_PID_ULTIMA_TVBOX_AN2235_COLD
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_AN2235_COLD&t;0x8107
-DECL|macro|USB_PID_ULTIMA_TVBOX_AN2235_WARM
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_AN2235_WARM&t;0x8108
-DECL|macro|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_ANCHOR_COLD&t;0x2235
-DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_COLD
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_COLD&t;&t;0x8109
-DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_FX_COLD&t;0x8613
-DECL|macro|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
-mdefine_line|#define USB_PID_ULTIMA_TVBOX_USB2_FX_WARM&t;0x1002
-DECL|macro|USB_PID_UNK_HYPER_PALTEK_COLD
-mdefine_line|#define USB_PID_UNK_HYPER_PALTEK_COLD&t;&t;0x005e
-DECL|macro|USB_PID_UNK_HYPER_PALTEK_WARM
-mdefine_line|#define USB_PID_UNK_HYPER_PALTEK_WARM&t;&t;0x005f
-DECL|macro|USB_PID_YAKUMO_DTT200U_COLD
-mdefine_line|#define USB_PID_YAKUMO_DTT200U_COLD&t;&t;&t;0x0201
-DECL|macro|USB_PID_YAKUMO_DTT200U_WARM
-mdefine_line|#define USB_PID_YAKUMO_DTT200U_WARM&t;&t;&t;0x0301
-DECL|macro|DIBUSB_SUPPORTED_DEVICES
-mdefine_line|#define DIBUSB_SUPPORTED_DEVICES&t;15
-multiline_comment|/* USB Driver stuff */
-DECL|variable|dibusb_devices
-r_static
-r_struct
-id|dibusb_device
-id|dibusb_devices
-(braket
-id|DIBUSB_SUPPORTED_DEVICES
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;TwinhanDTV USB1.1 / Magic Box / HAMA USB1.1 DVB-T device&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_TWINHAN_VP7041_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_TWINHAN_VP7041_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;KWorld V-Stream XPERT DTV - DVB-T USB1.1&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_KWORLD_VSTREAM_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_KWORLD_VSTREAM_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Grandtec USB1.1 DVB-T/DiBcom USB1.1 DVB-T reference design (MOD3000)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_DIBCOM_MOD3000_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_DIBCOM_MOD3000_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Artec T1 USB1.1 TVBOX with AN2135&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Artec T1 USB1.1 TVBOX with AN2235&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_AN2235_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_AN2235_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|2
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Artec T1 USB1.1 TVBOX with AN2235 (misdesigned)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-l_int|0
-comma
-multiline_comment|/* undefined, this design becomes USB_PID_DIBCOM_MOD3000_WARM in warm state */
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|2
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Artec T1 USB2.0 TVBOX (please report the warm ID)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_USB2_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-l_int|0
-comma
-multiline_comment|/* don&squot;t know, it is most likely that the device will get another USB ID in warm state */
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|1
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Artec T1 USB2.0 TVBOX with FX2 IDs (misdesigned, please report the warm ID)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
-comma
-multiline_comment|/* undefined, it could be that the device will get another USB ID in warm state */
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|1
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Compro Videomate DVB-U2000 - DVB-T USB1.1&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_COMPRO_DVBU2000_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_COMPRO_DVBU2000_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Compro Videomate DVB-U2000 - DVB-T USB1.1 (really ?? please report the name!)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_COMPRO_DVBU2000_UNK_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_COMPRO_DVBU2000_UNK_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Unkown USB1.1 DVB-T device ???? please report the name to the author&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_UNK_HYPER_PALTEK_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_UNK_HYPER_PALTEK_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;DiBcom USB2.0 DVB-T reference design (MOD3000P)&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_DIBCOM_MOD3001_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_DIBCOM_MOD3001_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|1
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Grandtec DVB-T USB1.1&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_GRANDTEC_DVBT_USB_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_GRANDTEC_DVBT_USB_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Avermedia AverTV DVBT USB1.1&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_AVERMEDIA_DVBT_USB_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_AVERMEDIA_DVBT_USB_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|0
-)braket
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Yakumo DVB-T mobile USB2.0&quot;
-comma
-dot
-id|cold_product_id
-op_assign
-id|USB_PID_YAKUMO_DTT200U_COLD
-comma
-dot
-id|warm_product_id
-op_assign
-id|USB_PID_YAKUMO_DTT200U_WARM
-comma
-dot
-id|parm
-op_assign
-op_amp
-id|dibusb_dev_parm
-(braket
-l_int|1
-)braket
-comma
-)brace
-)brace
-suffix:semicolon
-multiline_comment|/* USB Driver stuff */
-multiline_comment|/* table of devices that work with this driver */
-DECL|variable|dibusb_table
-r_static
+multiline_comment|/* which dibusb_device_class is this device part of */
+DECL|member|cold_ids
 r_struct
 id|usb_device_id
-id|dibusb_table
+op_star
+id|cold_ids
 (braket
+id|DIBUSB_ID_MAX_NUM
 )braket
-op_assign
-(brace
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_AVERMEDIA
-comma
-id|USB_PID_AVERMEDIA_DVBT_USB_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_AVERMEDIA
-comma
-id|USB_PID_AVERMEDIA_DVBT_USB_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_COMPRO
-comma
-id|USB_PID_COMPRO_DVBU2000_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_COMPRO
-comma
-id|USB_PID_COMPRO_DVBU2000_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_DIBCOM
-comma
-id|USB_PID_DIBCOM_MOD3000_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_DIBCOM
-comma
-id|USB_PID_DIBCOM_MOD3000_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_DIBCOM
-comma
-id|USB_PID_DIBCOM_MOD3001_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_DIBCOM
-comma
-id|USB_PID_DIBCOM_MOD3001_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_EMPIA
-comma
-id|USB_PID_KWORLD_VSTREAM_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_EMPIA
-comma
-id|USB_PID_KWORLD_VSTREAM_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_GRANDTEC
-comma
-id|USB_PID_GRANDTEC_DVBT_USB_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_GRANDTEC
-comma
-id|USB_PID_GRANDTEC_DVBT_USB_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_GRANDTEC
-comma
-id|USB_PID_DIBCOM_MOD3000_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_GRANDTEC
-comma
-id|USB_PID_DIBCOM_MOD3000_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_HYPER_PALTEK
-comma
-id|USB_PID_UNK_HYPER_PALTEK_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_HYPER_PALTEK
-comma
-id|USB_PID_UNK_HYPER_PALTEK_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_IMC_NETWORKS
-comma
-id|USB_PID_TWINHAN_VP7041_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_IMC_NETWORKS
-comma
-id|USB_PID_TWINHAN_VP7041_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_TWINHAN
-comma
-id|USB_PID_TWINHAN_VP7041_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_TWINHAN
-comma
-id|USB_PID_TWINHAN_VP7041_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ULTIMA_ELECTRONIC
-comma
-id|USB_PID_ULTIMA_TVBOX_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ULTIMA_ELECTRONIC
-comma
-id|USB_PID_ULTIMA_TVBOX_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ULTIMA_ELECTRONIC
-comma
-id|USB_PID_ULTIMA_TVBOX_AN2235_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ULTIMA_ELECTRONIC
-comma
-id|USB_PID_ULTIMA_TVBOX_AN2235_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_AVERMEDIA
-comma
-id|USB_PID_YAKUMO_DTT200U_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_AVERMEDIA
-comma
-id|USB_PID_YAKUMO_DTT200U_WARM
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_PID_COMPRO_DVBU2000_UNK_COLD
-comma
-id|USB_VID_COMPRO_UNK
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ULTIMA_ELECTRONIC
-comma
-id|USB_PID_ULTIMA_TVBOX_USB2_COLD
-)paren
-)brace
-comma
-multiline_comment|/*&n; * activate the following define when you have one of the devices and want to&n; * build it from build-2.6 in dvb-kernel&n; */
-singleline_comment|// #define CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
-macro_line|#ifdef CONFIG_DVB_DIBUSB_MISDESIGNED_DEVICES
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ANCHOR
-comma
-id|USB_PID_ULTIMA_TVBOX_ANCHOR_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_CYPRESS
-comma
-id|USB_PID_ULTIMA_TVBOX_USB2_FX_COLD
-)paren
-)brace
-comma
-(brace
-id|USB_DEVICE
-c_func
-(paren
-id|USB_VID_ANCHOR
-comma
-id|USB_PID_ULTIMA_TVBOX_USB2_FX_WARM
-)paren
-)brace
-comma
-macro_line|#endif
-(brace
-)brace
-multiline_comment|/* Terminating entry */
+suffix:semicolon
+multiline_comment|/* list of USB ids when this device is at pre firmware state */
+DECL|member|warm_ids
+r_struct
+id|usb_device_id
+op_star
+id|warm_ids
+(braket
+id|DIBUSB_ID_MAX_NUM
+)braket
+suffix:semicolon
+multiline_comment|/* list of USB ids when this device is at post firmware state */
 )brace
 suffix:semicolon
-id|MODULE_DEVICE_TABLE
-(paren
-id|usb
-comma
-id|dibusb_table
-)paren
+multiline_comment|/* a PID for the pid_filter list, when in use */
+DECL|struct|dibusb_pid
+r_struct
+id|dibusb_pid
+(brace
+DECL|member|index
+r_int
+id|index
 suffix:semicolon
-DECL|macro|DIBUSB_I2C_TIMEOUT
-mdefine_line|#define DIBUSB_I2C_TIMEOUT &t;&t;&t;&t;HZ*5
+DECL|member|pid
+id|u16
+id|pid
+suffix:semicolon
+DECL|member|active
+r_int
+id|active
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|usb_dibusb
 r_struct
 id|usb_dibusb
@@ -1207,9 +345,29 @@ id|udev
 suffix:semicolon
 DECL|member|dibdev
 r_struct
-id|dibusb_device
+id|dibusb_usb_device
 op_star
 id|dibdev
+suffix:semicolon
+DECL|macro|DIBUSB_STATE_INIT
+mdefine_line|#define DIBUSB_STATE_INIT       0x000
+DECL|macro|DIBUSB_STATE_URB_LIST
+mdefine_line|#define DIBUSB_STATE_URB_LIST   0x001
+DECL|macro|DIBUSB_STATE_URB_BUF
+mdefine_line|#define DIBUSB_STATE_URB_BUF    0x002
+DECL|macro|DIBUSB_STATE_URB_SUBMIT
+mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x004 
+DECL|macro|DIBUSB_STATE_DVB
+mdefine_line|#define DIBUSB_STATE_DVB        0x008
+DECL|macro|DIBUSB_STATE_I2C
+mdefine_line|#define DIBUSB_STATE_I2C        0x010
+DECL|macro|DIBUSB_STATE_REMOTE
+mdefine_line|#define DIBUSB_STATE_REMOTE&t;&t;0x020
+DECL|macro|DIBUSB_STATE_PIDLIST
+mdefine_line|#define DIBUSB_STATE_PIDLIST    0x040
+DECL|member|init_state
+r_int
+id|init_state
 suffix:semicolon
 DECL|member|feedcount
 r_int
@@ -1221,8 +379,14 @@ id|pid_parse
 suffix:semicolon
 DECL|member|xfer_ops
 r_struct
-id|dib3000_xfer_ops
+id|dib_fe_xfer_ops
 id|xfer_ops
+suffix:semicolon
+DECL|member|tuner
+r_struct
+id|dibusb_tuner
+op_star
+id|tuner
 suffix:semicolon
 DECL|member|urb_list
 r_struct
@@ -1246,11 +410,6 @@ r_struct
 id|i2c_adapter
 id|i2c_adap
 suffix:semicolon
-DECL|member|i2c_client
-r_struct
-id|i2c_client
-id|i2c_client
-suffix:semicolon
 multiline_comment|/* locking */
 DECL|member|usb_sem
 r_struct
@@ -1262,11 +421,18 @@ r_struct
 id|semaphore
 id|i2c_sem
 suffix:semicolon
-multiline_comment|/* dvb */
-DECL|member|dvb_is_ready
-r_int
-id|dvb_is_ready
+multiline_comment|/* pid filtering */
+DECL|member|pid_list_lock
+id|spinlock_t
+id|pid_list_lock
 suffix:semicolon
+DECL|member|pid_list
+r_struct
+id|dibusb_pid
+op_star
+id|pid_list
+suffix:semicolon
+multiline_comment|/* dvb */
 DECL|member|adapter
 r_struct
 id|dvb_adapter
@@ -1294,6 +460,30 @@ id|dvb_frontend
 op_star
 id|fe
 suffix:semicolon
+DECL|member|fe_sleep
+r_int
+(paren
+op_star
+id|fe_sleep
+)paren
+(paren
+r_struct
+id|dvb_frontend
+op_star
+)paren
+suffix:semicolon
+DECL|member|fe_init
+r_int
+(paren
+op_star
+id|fe_init
+)paren
+(paren
+r_struct
+id|dvb_frontend
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* remote control */
 DECL|member|rc_input_dev
 r_struct
@@ -1311,16 +501,286 @@ id|rc_input_event
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* types of first byte of each buffer */
+multiline_comment|/* commonly used functions in the separated files */
+multiline_comment|/* dvb-dibusb-firmware.c */
+r_int
+id|dibusb_loadfirmware
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+comma
+r_struct
+id|dibusb_usb_device
+op_star
+id|dibdev
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-dibusb-remote.c */
+r_int
+id|dibusb_remote_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_remote_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-dibusb-fe-i2c.c */
+r_int
+id|dibusb_i2c_msg
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+comma
+id|u8
+id|addr
+comma
+id|u8
+op_star
+id|wbuf
+comma
+id|u16
+id|wlen
+comma
+id|u8
+op_star
+id|rbuf
+comma
+id|u16
+id|rlen
+)paren
+suffix:semicolon
+r_int
+id|dibusb_fe_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_fe_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_i2c_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_i2c_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-dibusb-dvb.c */
+r_void
+id|dibusb_urb_complete
+c_func
+(paren
+r_struct
+id|urb
+op_star
+id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|ptregs
+)paren
+suffix:semicolon
+r_int
+id|dibusb_dvb_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_dvb_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-dibusb-usb.c */
+r_int
+id|dibusb_readwrite_usb
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+comma
+id|u8
+op_star
+id|wbuf
+comma
+id|u16
+id|wlen
+comma
+id|u8
+op_star
+id|rbuf
+comma
+id|u16
+id|rlen
+)paren
+suffix:semicolon
+r_int
+id|dibusb_hw_wakeup
+c_func
+(paren
+r_struct
+id|dvb_frontend
+op_star
+)paren
+suffix:semicolon
+r_int
+id|dibusb_hw_sleep
+c_func
+(paren
+r_struct
+id|dvb_frontend
+op_star
+)paren
+suffix:semicolon
+r_int
+id|dibusb_set_streaming_mode
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+comma
+id|u8
+)paren
+suffix:semicolon
+r_int
+id|dibusb_streaming
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|dibusb_urb_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+)paren
+suffix:semicolon
+r_int
+id|dibusb_urb_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* dvb-dibusb-pid.c */
+r_int
+id|dibusb_pid_list_init
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_void
+id|dibusb_pid_list_exit
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+)paren
+suffix:semicolon
+r_int
+id|dibusb_ctrl_pid
+c_func
+(paren
+r_struct
+id|usb_dibusb
+op_star
+id|dib
+comma
+r_struct
+id|dvb_demux_feed
+op_star
+id|dvbdmxfeed
+comma
+r_int
+id|onoff
+)paren
+suffix:semicolon
+multiline_comment|/* i2c and transfer stuff */
+DECL|macro|DIBUSB_I2C_TIMEOUT
+mdefine_line|#define DIBUSB_I2C_TIMEOUT&t;&t;&t;&t;HZ*5
+multiline_comment|/* &n; * protocol of all dibusb related devices&n; */
+multiline_comment|/* &n; * bulk msg to/from endpoint 0x01&n; *&n; * general structure:&n; * request_byte parameter_bytes&n; */
 DECL|macro|DIBUSB_REQ_START_READ
 mdefine_line|#define DIBUSB_REQ_START_READ&t;&t;&t;0x00
 DECL|macro|DIBUSB_REQ_START_DEMOD
 mdefine_line|#define DIBUSB_REQ_START_DEMOD&t;&t;&t;0x01
+multiline_comment|/* &n; * i2c read &n; * bulk write: 0x02 ((7bit i2c_addr &lt;&lt; 1) &amp; 0x01) register_bytes length_word&n; * bulk read:  byte_buffer (length_word bytes)&n; */
 DECL|macro|DIBUSB_REQ_I2C_READ
 mdefine_line|#define DIBUSB_REQ_I2C_READ  &t;&t;&t;0x02
+multiline_comment|/*&n; * i2c write&n; * bulk write: 0x03 (7bit i2c_addr &lt;&lt; 1) register_bytes value_bytes&n; */
 DECL|macro|DIBUSB_REQ_I2C_WRITE
 mdefine_line|#define DIBUSB_REQ_I2C_WRITE &t;&t;&t;0x03
-multiline_comment|/* prefix for reading the current RC key */
+multiline_comment|/* &n; * polling the value of the remote control &n; * bulk write: 0x04&n; * bulk read:  byte_buffer (5 bytes) &n; *&n; * first byte of byte_buffer shows the status (0x00, 0x01, 0x02)&n; */
 DECL|macro|DIBUSB_REQ_POLL_REMOTE
 mdefine_line|#define DIBUSB_REQ_POLL_REMOTE&t;&t;&t;0x04
 DECL|macro|DIBUSB_RC_NEC_EMPTY
@@ -1329,13 +789,13 @@ DECL|macro|DIBUSB_RC_NEC_KEY_PRESSED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_PRESSED&t;&t;0x01
 DECL|macro|DIBUSB_RC_NEC_KEY_REPEATED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_REPEATED&t;&t;0x02
-multiline_comment|/* 0x05 0xXX */
+multiline_comment|/* streaming mode:&n; * bulk write: 0x05 mode_byte &n; *&n; * mode_byte is mostly 0x00&n; */
 DECL|macro|DIBUSB_REQ_SET_STREAMING_MODE
 mdefine_line|#define DIBUSB_REQ_SET_STREAMING_MODE&t;0x05
 multiline_comment|/* interrupt the internal read loop, when blocking */
 DECL|macro|DIBUSB_REQ_INTR_READ
 mdefine_line|#define DIBUSB_REQ_INTR_READ&t;&t;   &t;0x06
-multiline_comment|/* IO control&n; * 0x07 &lt;cmd 1 byte&gt; &lt;param 32 bytes&gt;&n; */
+multiline_comment|/* io control&n; * 0x07 cmd_byte param_bytes&n; *&n; * param_bytes can be up to 32 bytes&n; *&n; * cmd_byte function    parameter name &n; * 0x00     power mode&n; *                      0x00      sleep&n; *                      0x01      wakeup&n; *&n; * 0x01     enable streaming &n; * 0x02     disable streaming&n; *&n; *&n; */
 DECL|macro|DIBUSB_REQ_SET_IOCTL
 mdefine_line|#define DIBUSB_REQ_SET_IOCTL&t;&t;&t;0x07
 multiline_comment|/* IOCTL commands */
@@ -1346,5 +806,10 @@ DECL|macro|DIBUSB_IOCTL_POWER_SLEEP
 mdefine_line|#define DIBUSB_IOCTL_POWER_SLEEP&t;&t;&t;0x00
 DECL|macro|DIBUSB_IOCTL_POWER_WAKEUP
 mdefine_line|#define DIBUSB_IOCTL_POWER_WAKEUP&t;&t;&t;0x01
+multiline_comment|/* modify streaming of the FX2 */
+DECL|macro|DIBUSB_IOCTL_CMD_ENABLE_STREAM
+mdefine_line|#define DIBUSB_IOCTL_CMD_ENABLE_STREAM&t;0x01
+DECL|macro|DIBUSB_IOCTL_CMD_DISABLE_STREAM
+mdefine_line|#define DIBUSB_IOCTL_CMD_DISABLE_STREAM&t;0x02
 macro_line|#endif
 eof

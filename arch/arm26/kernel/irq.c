@@ -35,12 +35,12 @@ r_int
 r_int
 id|irq_err_count
 suffix:semicolon
-DECL|variable|irq_controller_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_controller_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|irq_desc
 r_struct

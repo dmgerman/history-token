@@ -188,12 +188,12 @@ r_struct
 id|timer_list
 id|sppp_keepalive_timer
 suffix:semicolon
-DECL|variable|spppq_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|spppq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* global xmit queue for sending packets while spinlock is held */
 DECL|variable|tx_queue

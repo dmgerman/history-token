@@ -2,31 +2,6 @@ multiline_comment|/*&n; * dib3000mc_priv.h&n; *&n; * Copyright (C) 2004 Patrick 
 macro_line|#ifndef __DIB3000MC_PRIV_H__
 DECL|macro|__DIB3000MC_PRIV_H__
 mdefine_line|#define __DIB3000MC_PRIV_H__
-multiline_comment|/* info and err, taken from usb.h, if there is anything available like by default,&n; * please change !&n; */
-DECL|macro|err
-mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-DECL|macro|info
-mdefine_line|#define info(format, arg...) printk(KERN_INFO &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-DECL|macro|warn
-mdefine_line|#define warn(format, arg...) printk(KERN_WARNING &quot;%s: &quot; format &quot;&bslash;n&quot; , __FILE__ , ## arg)
-singleline_comment|// defines the phase noise algorithm to be used (O:Inhib, 1:CPE on)
-DECL|macro|DEF_PHASE_NOISE_MODE
-mdefine_line|#define DEF_PHASE_NOISE_MODE                0
-singleline_comment|// define Mobille algorithms
-DECL|macro|DEF_MOBILE_MODE
-mdefine_line|#define DEF_MOBILE_MODE      Auto_Reception
-singleline_comment|// defines the tuner type
-DECL|macro|DEF_TUNER_TYPE
-mdefine_line|#define DEF_TUNER_TYPE   TUNER_PANASONIC_ENV57H13D5
-singleline_comment|// defines the impule noise algorithm to be used
-DECL|macro|DEF_IMPULSE_NOISE_MODE
-mdefine_line|#define DEF_IMPULSE_NOISE_MODE      0
-singleline_comment|// defines the MPEG2 data output format
-DECL|macro|DEF_MPEG2_OUTPUT_188
-mdefine_line|#define DEF_MPEG2_OUTPUT_188       0
-singleline_comment|// defines the MPEG2 data output format
-DECL|macro|DEF_OUTPUT_MODE
-mdefine_line|#define DEF_OUTPUT_MODE       MPEG2_PARALLEL_CONTINUOUS_CLOCK
 multiline_comment|/*&n; * Demodulator parameters&n; * reg: 0  1 1  1 11 11 111&n; *         | |  |  |  |  |&n; *         | |  |  |  |  +-- alpha (000=0, 001=1, 010=2, 100=4)&n; *         | |  |  |  +----- constellation (00=QPSK, 01=16QAM, 10=64QAM)&n; *         | |  |  +-------- guard (00=1/32, 01=1/16, 10=1/8, 11=1/4)&n; *         | |  +----------- transmission mode (0=2k, 1=8k)&n; *         | |&n; *         | +-------------- restart autosearch for parameters&n; *         +---------------- restart the demodulator&n; * reg: 181      1 111 1&n; *               |  |  |&n; *               |  |  +- FEC applies for HP or LP (0=LP, 1=HP)&n; *               |  +---- FEC rate (001=1/2, 010=2/3, 011=3/4, 101=5/6, 111=7/8)&n; *               +------- hierarchy on (0=no, 1=yes)&n; */
 multiline_comment|/* demodulator tuning parameter and restart options */
 DECL|macro|DIB3000MC_REG_DEMOD_PARM
@@ -179,7 +154,7 @@ l_int|0xab20
 comma
 l_int|0x1
 comma
-l_int|0xb0b0
+l_int|0xb0d0
 )brace
 suffix:semicolon
 DECL|variable|dib3000mc_reg_bandwidth_general
@@ -343,35 +318,35 @@ op_assign
 (brace
 l_int|0x1294
 comma
-l_int|0xfff8
+l_int|0x1ff8
 )brace
 comma
 multiline_comment|/* mode 0 */
 (brace
 l_int|0x1294
 comma
-l_int|0xfff8
+l_int|0x1ff8
 )brace
 comma
 multiline_comment|/* mode 1 */
 (brace
 l_int|0x1294
 comma
-l_int|0xfff8
+l_int|0x1ff8
 )brace
 comma
 multiline_comment|/* mode 2 */
 (brace
 l_int|0x1294
 comma
-l_int|0xfff8
+l_int|0x1ff8
 )brace
 comma
 multiline_comment|/* mode 3 */
 (brace
 l_int|0x1294
 comma
-l_int|0xfff8
+l_int|0x1ff8
 )brace
 comma
 multiline_comment|/* mode 4 */
@@ -1168,6 +1143,7 @@ DECL|macro|DIB3000MC_REG_FEC_CFG
 mdefine_line|#define DIB3000MC_REG_FEC_CFG&t;&t;&t;(   195)
 DECL|macro|DIB3000MC_FEC_CFG
 mdefine_line|#define DIB3000MC_FEC_CFG&t;&t;&t;&t;(  0x10)
+multiline_comment|/*&n; * reg 206, output mode&n; *              1111 1111&n; *              |||| ||||&n; *              |||| |||+- unk&n; *              |||| ||+-- unk&n; *              |||| |+--- unk (on by default)&n; *              |||| +---- fifo_ctrl (1 = inhibit (flushed), 0 = active (unflushed))&n; *              |||+------ pid_parse (1 = enabled, 0 = disabled)&n; *              ||+------- outp_188  (1 = TS packet size 188, 0 = packet size 204)&n; *              |+-------- unk &n; *              +--------- unk&n; */
 DECL|macro|DIB3000MC_REG_SMO_MODE
 mdefine_line|#define DIB3000MC_REG_SMO_MODE&t;&t;&t;(   206)
 DECL|macro|DIB3000MC_SMO_MODE_DEFAULT
@@ -1175,11 +1151,11 @@ mdefine_line|#define DIB3000MC_SMO_MODE_DEFAULT&t;&t;(1 &lt;&lt; 2)
 DECL|macro|DIB3000MC_SMO_MODE_FIFO_FLUSH
 mdefine_line|#define DIB3000MC_SMO_MODE_FIFO_FLUSH&t;(1 &lt;&lt; 3)
 DECL|macro|DIB3000MC_SMO_MODE_FIFO_UNFLUSH
-mdefine_line|#define DIB3000MC_SMO_MODE_FIFO_UNFLUSH&t;~DIB3000MC_SMO_MODE_FIFO_FLUSH
+mdefine_line|#define DIB3000MC_SMO_MODE_FIFO_UNFLUSH&t;(0xfff7)
 DECL|macro|DIB3000MC_SMO_MODE_PID_PARSE
 mdefine_line|#define DIB3000MC_SMO_MODE_PID_PARSE&t;(1 &lt;&lt; 4)
 DECL|macro|DIB3000MC_SMO_MODE_NO_PID_PARSE
-mdefine_line|#define DIB3000MC_SMO_MODE_NO_PID_PARSE&t;~DIB3000MC_SMO_MODE_PID_PARSE
+mdefine_line|#define DIB3000MC_SMO_MODE_NO_PID_PARSE&t;(0xffef)
 DECL|macro|DIB3000MC_SMO_MODE_188
 mdefine_line|#define DIB3000MC_SMO_MODE_188&t;&t;&t;(1 &lt;&lt; 5)
 DECL|macro|DIB3000MC_SMO_MODE_SLAVE
@@ -1279,7 +1255,7 @@ mdefine_line|#define DIB3000MC_REG_RST_I2C_ADDR&t;&t;(  1024)
 DECL|macro|DIB3000MC_DEMOD_ADDR_ON
 mdefine_line|#define DIB3000MC_DEMOD_ADDR_ON&t;&t;&t;(     1)
 DECL|macro|DIB3000MC_DEMOD_ADDR
-mdefine_line|#define DIB3000MC_DEMOD_ADDR(a)&t;&t;&t;((a &lt;&lt; 3) &amp; 0x03F0)
+mdefine_line|#define DIB3000MC_DEMOD_ADDR(a)&t;&t;&t;((a &lt;&lt; 4) &amp; 0x03F0)
 DECL|macro|DIB3000MC_REG_RESTART
 mdefine_line|#define DIB3000MC_REG_RESTART&t;&t;&t;(  1027)
 DECL|macro|DIB3000MC_RESTART_OFF

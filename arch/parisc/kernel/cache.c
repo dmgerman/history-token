@@ -35,10 +35,11 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_SMP)
 multiline_comment|/* On some machines (e.g. ones with the Merced bus), there can be&n; * only a single PxTLB broadcast at a time; this must be guaranteed&n; * by software.  We put a spinlock around all TLB flushes  to&n; * ensure this.&n; */
 DECL|variable|pa_tlb_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pa_tlb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|pa_tlb_lock
 id|EXPORT_SYMBOL

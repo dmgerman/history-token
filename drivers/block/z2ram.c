@@ -89,12 +89,12 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|z2ram_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|z2ram_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|z2_fops
 r_static

@@ -37,12 +37,12 @@ id|ras_log_buf
 id|RTAS_ERROR_LOG_MAX
 )braket
 suffix:semicolon
-DECL|variable|ras_log_buf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ras_log_buf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|mce_data_buf
 r_char

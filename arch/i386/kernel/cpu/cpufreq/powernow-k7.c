@@ -120,7 +120,7 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
-multiline_comment|/* divide by 1000 to get VID. */
+multiline_comment|/* divide by 1000 to get VCore voltage in V. */
 DECL|variable|mobile_vid_table
 r_static
 r_int
@@ -182,7 +182,7 @@ l_int|1075
 comma
 l_int|1050
 comma
-l_int|1024
+l_int|1025
 comma
 l_int|1000
 comma

@@ -208,6 +208,17 @@ id|p
 suffix:semicolon
 r_extern
 r_void
+id|arch_copy_kprobe
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|arch_remove_kprobe
 c_func
 (paren

@@ -18,12 +18,12 @@ multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 multiline_comment|/* Data structures and variables                                             */
 multiline_comment|/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; */
-DECL|variable|call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|call_data_struct
 r_struct
@@ -78,12 +78,12 @@ op_star
 id|call_data
 suffix:semicolon
 multiline_comment|/*&n; * For flush_cache_all()&n; */
-DECL|variable|flushcache_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|flushcache_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|flushcache_cpumask
 r_static
@@ -122,12 +122,12 @@ r_int
 r_int
 id|flush_va
 suffix:semicolon
-DECL|variable|tlbstate_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tlbstate_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL 0xffffffff

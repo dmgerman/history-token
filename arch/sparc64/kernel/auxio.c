@@ -39,12 +39,12 @@ id|auxio_devtype
 op_assign
 id|AUXIO_TYPE_NODEV
 suffix:semicolon
-DECL|variable|auxio_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|auxio_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__auxio_sbus_set
 r_static

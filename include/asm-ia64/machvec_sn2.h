@@ -31,14 +31,6 @@ id|ia64_mv_tlb_migrate_finish_t
 id|sn_tlb_migrate_finish
 suffix:semicolon
 r_extern
-id|ia64_mv_irq_desc
-id|sn_irq_desc
-suffix:semicolon
-r_extern
-id|ia64_mv_irq_to_vector
-id|sn_irq_to_vector
-suffix:semicolon
-r_extern
 id|ia64_mv_local_vector_to_irq
 id|sn_local_vector_to_irq
 suffix:semicolon
@@ -211,10 +203,6 @@ DECL|macro|platform_readl_relaxed
 mdefine_line|#define platform_readl_relaxed&t;&t;__sn_readl_relaxed
 DECL|macro|platform_readq_relaxed
 mdefine_line|#define platform_readq_relaxed&t;&t;__sn_readq_relaxed
-DECL|macro|platform_irq_desc
-mdefine_line|#define platform_irq_desc&t;&t;sn_irq_desc
-DECL|macro|platform_irq_to_vector
-mdefine_line|#define platform_irq_to_vector&t;&t;sn_irq_to_vector
 DECL|macro|platform_local_vector_to_irq
 mdefine_line|#define platform_local_vector_to_irq&t;sn_local_vector_to_irq
 DECL|macro|platform_pci_get_legacy_mem

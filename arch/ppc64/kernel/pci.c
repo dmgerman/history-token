@@ -431,12 +431,12 @@ op_assign
 id|start
 suffix:semicolon
 )brace
-DECL|variable|hose_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hose_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * pci_controller(phb) initialized common variables.&n; */
 DECL|function|pci_setup_pci_controller

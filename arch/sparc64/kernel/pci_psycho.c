@@ -1406,12 +1406,12 @@ DECL|macro|PSYCHO_STCLINE_VALID
 mdefine_line|#define  PSYCHO_STCLINE_VALID&t; 0x0000000000000002UL&t;/* Valid */
 DECL|macro|PSYCHO_STCLINE_FOFN
 mdefine_line|#define  PSYCHO_STCLINE_FOFN&t; 0x0000000000000001UL&t;/* Fetch Outstanding / Flush Necessary */
-DECL|variable|stc_buf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|stc_buf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|stc_error_buf
 r_static

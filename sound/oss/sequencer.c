@@ -47,12 +47,12 @@ r_static
 r_int
 id|obsolete_api_used
 suffix:semicolon
-DECL|variable|lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Local counts for number of synth and MIDI devices. These are initialized&n; * by the sequencer_open.&n; */
 DECL|variable|max_mididev

@@ -56,9 +56,10 @@ id|ps_nice
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|ps_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ps_spinlock
 id|__attribute__
 c_func
@@ -67,8 +68,7 @@ c_func
 id|unused
 )paren
 )paren
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_WORK

@@ -68,12 +68,12 @@ c_func
 id|kafsasyncd_async_busyq
 )paren
 suffix:semicolon
-DECL|variable|kafsasyncd_async_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kafsasyncd_async_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|kafsasyncd_null_call_attn_func
 r_static

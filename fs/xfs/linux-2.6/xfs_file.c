@@ -20,6 +20,7 @@ macro_line|#include &quot;xfs_dinode.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
+macro_line|#include &quot;xfs_ioctl32.h&quot;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|linvfs_file_vm_ops
@@ -1560,11 +1561,6 @@ id|linvfs_ioctl
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|filp
@@ -1581,6 +1577,13 @@ id|arg
 r_int
 id|error
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|filp-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
 id|vnode_t
 op_star
 id|vp
@@ -1589,11 +1592,6 @@ id|LINVFS_GET_VP
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|VOP_IOCTL
@@ -1625,11 +1623,6 @@ c_func
 id|vp
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* NOTE:  some of the ioctl&squot;s return positive #&squot;s as a&n;&t; *&t;  byte count indicating success, such as&n;&t; *&t;  readlink_by_handle.  So we don&squot;t &quot;sign flip&quot;&n;&t; *&t;  like most other routines.  This means true&n;&t; *&t;  errors need to be returned as a negative value.&n;&t; */
 r_return
 id|error
@@ -1641,11 +1634,6 @@ DECL|function|linvfs_ioctl_invis
 id|linvfs_ioctl_invis
 c_func
 (paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
 r_struct
 id|file
 op_star
@@ -1663,6 +1651,13 @@ id|arg
 r_int
 id|error
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|filp-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
 id|vnode_t
 op_star
 id|vp
@@ -1671,11 +1666,6 @@ id|LINVFS_GET_VP
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1711,11 +1701,6 @@ id|VMODIFY
 c_func
 (paren
 id|vp
-)paren
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* NOTE:  some of the ioctl&squot;s return positive #&squot;s as a&n;&t; *&t;  byte count indicating success, such as&n;&t; *&t;  readlink_by_handle.  So we don&squot;t &quot;sign flip&quot;&n;&t; *&t;  like most other routines.  This means true&n;&t; *&t;  errors need to be returned as a negative value.&n;&t; */
@@ -1862,10 +1847,17 @@ op_assign
 id|linvfs_sendfile
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|linvfs_ioctl
 comma
+macro_line|#ifdef CONFIG_COMPAT
+dot
+id|compat_ioctl
+op_assign
+id|xfs_compat_ioctl
+comma
+macro_line|#endif
 dot
 id|mmap
 op_assign
@@ -1935,10 +1927,17 @@ op_assign
 id|linvfs_sendfile
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|linvfs_ioctl_invis
 comma
+macro_line|#ifdef CONFIG_COMPAT
+dot
+id|compat_ioctl
+op_assign
+id|xfs_compat_invis_ioctl
+comma
+macro_line|#endif
 dot
 id|mmap
 op_assign
@@ -1978,7 +1977,7 @@ op_assign
 id|linvfs_readdir
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|linvfs_ioctl
 comma

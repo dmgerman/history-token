@@ -33,6 +33,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unwind.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#include &quot;entry.h&quot;
 macro_line|#ifdef CONFIG_PERFMON
 macro_line|# include &lt;asm/perfmon.h&gt;
 macro_line|#endif
@@ -2718,7 +2719,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* f0-f31 are always valid so we always return 1 */
 )brace
-id|asmlinkage
 r_int
 DECL|function|sys_execve
 id|sys_execve
@@ -2950,6 +2950,14 @@ r_int
 id|current
 op_plus
 id|IA64_RBS_OFFSET
+suffix:semicolon
+id|regs.sw.pr
+op_assign
+(paren
+l_int|1
+op_lshift
+id|PRED_KERNEL_STACK
+)paren
 suffix:semicolon
 r_return
 id|do_fork

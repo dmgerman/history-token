@@ -3168,9 +3168,12 @@ id|status
 r_return
 id|status
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ec_ecdt-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|ec_ecdt-&gt;global_lock
 op_assign

@@ -31,13 +31,13 @@ DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)
 macro_line|#endif
 multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of its own locking&n; */
-DECL|variable|__pmacdata
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|feature_lock
 id|__pmacdata
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|LOCK
 mdefine_line|#define LOCK(flags)&t;spin_lock_irqsave(&amp;feature_lock, flags);
@@ -216,7 +216,7 @@ id|u3_ht
 suffix:semicolon
 r_extern
 r_struct
-id|pci_dev
+id|device_node
 op_star
 id|k2_skiplist
 (braket
@@ -421,13 +421,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pdev
-op_assign
-l_int|NULL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -438,23 +431,6 @@ l_int|NULL
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-multiline_comment|/* XXX FIXME: We should fix pci_device_from_OF_node here, and&n;&t; * get to a real pci_dev or we&squot;ll get into trouble with PCI&n;&t; * domains the day we get overlapping numbers (like if we ever&n;&t; * decide to show the HT root.&n;&t; * Note that we only get the slot when value is 0. This is called&n;&t; * early during boot with value 1 to enable all devices, at which&n;&t; * point, we don&squot;t yet have probed pci_find_slot, so it would fail&n;&t; * to look for the slot at this point.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-id|pdev
-op_assign
-id|pci_find_slot
-c_func
-(paren
-id|node-&gt;busno
-comma
-id|node-&gt;devfn
-)paren
 suffix:semicolon
 id|LOCK
 c_func
@@ -496,7 +472,7 @@ id|k2_skiplist
 l_int|0
 )braket
 op_assign
-id|pdev
+id|node
 suffix:semicolon
 id|mb
 c_func
@@ -562,14 +538,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|pdev
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* XXX FIXME: We should fix pci_device_from_OF_node here, and&n;&t; * get to a real pci_dev or we&squot;ll get into trouble with PCI&n;&t; * domains the day we get overlapping numbers (like if we ever&n;&t; * decide to show the HT root&n;&t; * Note that we only get the slot when value is 0. This is called&n;&t; * early during boot with value 1 to enable all devices, at which&n;&t; * point, we don&squot;t yet have probed pci_find_slot, so it would fail&n;&t; * to look for the slot at this point.&n;&t; */
 r_if
 c_cond
 (paren
@@ -580,22 +548,6 @@ l_int|NULL
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|value
-)paren
-id|pdev
-op_assign
-id|pci_find_slot
-c_func
-(paren
-id|node-&gt;busno
-comma
-id|node-&gt;devfn
-)paren
 suffix:semicolon
 id|LOCK
 c_func
@@ -637,7 +589,7 @@ id|k2_skiplist
 l_int|1
 )braket
 op_assign
-id|pdev
+id|node
 suffix:semicolon
 id|mb
 c_func

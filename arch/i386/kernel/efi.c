@@ -80,12 +80,12 @@ r_int
 r_int
 id|efi_rt_eflags
 suffix:semicolon
-DECL|variable|efi_rt_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|efi_rt_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|efi_bak_pg_dir_pointer
 r_static

@@ -38,12 +38,12 @@ id|__iomem
 op_star
 id|iomapadr
 suffix:semicolon
-DECL|variable|elan_104nc_spin
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|elan_104nc_spin
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* partition_info gives details on the logical partitions that the split the &n; * single flash device into. If the size if zero we use up to the end of the&n; * device. */
 DECL|variable|partition_info

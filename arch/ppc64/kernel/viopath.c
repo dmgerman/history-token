@@ -65,12 +65,12 @@ id|viopathStatus
 id|HVMAXARCHITECTEDLPS
 )braket
 suffix:semicolon
-DECL|variable|statuslock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|statuslock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * For each kind of event we allocate a buffer that is&n; * guaranteed not to cross a page boundary&n; */
 DECL|variable|__page_aligned

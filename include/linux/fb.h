@@ -1765,6 +1765,32 @@ op_star
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Handle 32bit compat ioctl (optional) */
+DECL|member|fb_compat_ioctl
+r_int
+(paren
+op_star
+id|fb_compat_ioctl
+)paren
+(paren
+r_struct
+id|file
+op_star
+id|f
+comma
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/* perform fb specific mmap */
 DECL|member|fb_mmap
 r_int

@@ -20,10 +20,11 @@ macro_line|#include &quot;irq_impl.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 macro_line|#include &quot;machvec_impl.h&quot;
 DECL|variable|sable_lynx_irq_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sable_lynx_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|irq_swizzle_struct
 r_typedef

@@ -173,7 +173,7 @@ id|mapping
 )paren
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Device private locking: netdev-&gt;xmit_lock protects members used&n; * in TX fast path.&n; * lock protects everything else.  lock nests inside of xmit_lock (ie&n; * xmit_lock must be acquired first if needed).&n; */
+multiline_comment|/*&n; * Device private locking: tx_lock protects members used in TX fast&n; * path (and we use LLTX so upper layers don&squot;t do extra locking).&n; * lock protects everything else.  lock nests inside of tx_lock (ie&n; * tx_lock must be acquired first if needed).&n; */
 DECL|struct|ipoib_dev_priv
 r_struct
 id|ipoib_dev_priv
@@ -324,6 +324,10 @@ r_struct
 id|ipoib_buf
 op_star
 id|rx_ring
+suffix:semicolon
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
 suffix:semicolon
 DECL|member|tx_ring
 r_struct

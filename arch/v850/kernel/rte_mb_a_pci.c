@@ -1137,12 +1137,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Spinlock protecting the above globals.  */
-DECL|variable|mb_sram_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mb_sram_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Allocate a memory block at least SIZE bytes long in the Mother-A SRAM&n;   space.  */
 DECL|function|alloc_mb_sram
@@ -1630,12 +1630,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Spinlock protecting the above globals.  */
-DECL|variable|dma_mappings_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dma_mappings_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|new_dma_mapping
 r_static

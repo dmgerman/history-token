@@ -579,12 +579,12 @@ c_func
 id|machine_power_off
 )paren
 suffix:semicolon
-DECL|variable|sparc_backtrace_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sparc_backtrace_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__show_backtrace
 r_void

@@ -304,10 +304,11 @@ l_string|&quot;i8042_dumbkbd&quot;
 suffix:semicolon
 macro_line|#include &quot;i8042.h&quot;
 DECL|variable|i8042_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|i8042_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|i8042_values
 r_struct

@@ -17,8 +17,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;entry.h&quot;
 macro_line|#include &quot;unwind_i.h&quot;
-DECL|macro|p5
-mdefine_line|#define p5&t;&t;5
 DECL|macro|UNW_LOG_CACHE_SIZE
 mdefine_line|#define UNW_LOG_CACHE_SIZE&t;7&t;/* each unw_script is ~256 bytes in size */
 DECL|macro|UNW_CACHE_SIZE
@@ -9210,7 +9208,7 @@ op_amp
 (paren
 l_int|1UL
 op_lshift
-id|pNonSys
+id|PRED_NON_SYSCALL
 )paren
 )paren
 op_ne
@@ -9508,6 +9506,8 @@ id|info
 r_int
 r_int
 id|ip
+comma
+id|sp
 suffix:semicolon
 r_while
 c_loop
@@ -9562,6 +9562,30 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|unw_get_sp
+c_func
+(paren
+id|info
+comma
+op_amp
+id|sp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sp
+op_ge
+(paren
+r_int
+r_int
+)paren
+id|info-&gt;task
+op_plus
+id|IA64_STK_OFFSET
+)paren
+r_break
+suffix:semicolon
 r_if
 c_cond
 (paren

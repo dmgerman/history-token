@@ -94,12 +94,12 @@ c_func
 id|ide_cfg_sem
 )paren
 suffix:semicolon
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|ide_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|ide_lock
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|variable|ide_scan_direction
@@ -763,19 +763,19 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;drives_lock protects the list of drives, drivers_lock the&n; *&t;list of drivers.  Currently nobody takes both at once.&n; */
-DECL|variable|drives_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|drives_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|drivers_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|drivers_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

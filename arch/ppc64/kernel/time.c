@@ -124,10 +124,11 @@ r_int
 id|processor_freq
 suffix:semicolon
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|tb_to_ns_scale
 r_int

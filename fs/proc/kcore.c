@@ -123,12 +123,12 @@ id|kcore_list
 op_star
 id|kclist
 suffix:semicolon
-DECL|variable|kclist_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|kclist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_void
 DECL|function|kclist_add

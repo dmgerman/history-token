@@ -64,6 +64,7 @@ id|bad_if_strict_pc
 op_assign
 l_string|&quot;+=,; &quot;
 suffix:semicolon
+multiline_comment|/* GEMDOS is less restrictive */
 DECL|variable|bad_if_strict_atari
 r_static
 r_int
@@ -74,9 +75,8 @@ id|bad_if_strict_atari
 op_assign
 l_string|&quot; &quot;
 suffix:semicolon
-multiline_comment|/* GEMDOS is less restrictive */
 DECL|macro|bad_if_strict
-mdefine_line|#define&t;bad_if_strict(opts) ((opts)-&gt;atari ? bad_if_strict_atari : bad_if_strict_pc)
+mdefine_line|#define bad_if_strict(opts) &bslash;&n;&t;((opts)-&gt;atari ? bad_if_strict_atari : bad_if_strict_pc)
 multiline_comment|/***** Formats an MS-DOS file name. Rejects invalid names. */
 DECL|function|msdos_format_name
 r_static
@@ -103,7 +103,7 @@ id|fat_mount_options
 op_star
 id|opts
 )paren
-multiline_comment|/* name is the proposed name, len is its length, res is&n;&t; * the resulting name, opts-&gt;name_check is either (r)elaxed,&n;&t; * (n)ormal or (s)trict, opts-&gt;dotsOK allows dots at the&n;&t; * beginning of name (for hidden files)&n;&t; */
+multiline_comment|/*&n;&t; * name is the proposed name, len is its length, res is&n;&t; * the resulting name, opts-&gt;name_check is either (r)elaxed,&n;&t; * (n)ormal or (s)trict, opts-&gt;dotsOK allows dots at the&n;&t; * beginning of name (for hidden files)&n;&t; */
 (brace
 r_int
 r_char
@@ -162,7 +162,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* disallow names that _really_ start with a dot for MS-DOS, GEMDOS does&n;&t; * not care */
+multiline_comment|/*&n;&t; * disallow names that _really_ start with a dot for MS-DOS,&n;&t; * GEMDOS does not care&n;&t; */
 id|space
 op_assign
 op_logical_neg
@@ -280,10 +280,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*  0xE5 is legal as a first character, but we must substitute 0x05     */
-multiline_comment|/*  because 0xE5 marks deleted files.  Yes, DOS really does this.       */
-multiline_comment|/*  It seems that Microsoft hacked DOS to support non-US characters     */
-multiline_comment|/*  after the 0xE5 character was already in use to mark deleted files.  */
+multiline_comment|/*&n;&t; * 0xE5 is legal as a first character, but we must substitute&n;&t; * 0x05 because 0xE5 marks deleted files.  Yes, DOS really&n;&t; * does this.&n;&t; * It seems that Microsoft hacked DOS to support non-US&n;&t; * characters after the 0xE5 character was already in use to&n;&t; * mark deleted files.&n;&t; */
 r_if
 c_cond
 (paren
@@ -299,12 +296,10 @@ op_eq
 l_int|0xE5
 )paren
 )paren
-(brace
 id|c
 op_assign
 l_int|0x05
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -560,10 +555,8 @@ id|c
 op_eq
 l_char|&squot; &squot;
 suffix:semicolon
-op_star
-id|walk
-op_increment
-op_assign
+r_if
+c_cond
 (paren
 op_logical_neg
 id|opts-&gt;nocase
@@ -576,12 +569,19 @@ id|c
 op_le
 l_char|&squot;z&squot;
 )paren
-ques
-c_cond
+op_star
+id|walk
+op_increment
+op_assign
 id|c
 op_minus
 l_int|32
-suffix:colon
+suffix:semicolon
+r_else
+op_star
+id|walk
+op_increment
+op_assign
 id|c
 suffix:semicolon
 )brace
@@ -865,7 +865,6 @@ op_star
 id|options
 op_assign
 op_amp
-(paren
 id|MSDOS_SB
 c_func
 (paren
@@ -873,7 +872,6 @@ id|dentry-&gt;d_sb
 )paren
 op_member_access_from_pointer
 id|options
-)paren
 suffix:semicolon
 r_int
 r_char
@@ -948,7 +946,6 @@ op_star
 id|options
 op_assign
 op_amp
-(paren
 id|MSDOS_SB
 c_func
 (paren
@@ -956,7 +953,6 @@ id|dentry-&gt;d_sb
 )paren
 op_member_access_from_pointer
 id|options
-)paren
 suffix:semicolon
 r_int
 r_char

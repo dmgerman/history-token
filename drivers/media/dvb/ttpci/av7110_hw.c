@@ -653,10 +653,21 @@ id|BOOTSTATE_BUFFER_EMPTY
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: load_dram(): timeout at block %d&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|dprintk
 c_func
 (paren
@@ -769,10 +780,19 @@ id|BOOTSTATE_BUFFER_EMPTY
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: load_dram(): timeout at last block&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -895,10 +915,19 @@ id|BOOTSTATE_BUFFER_EMPTY
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: load_dram(): timeout after last block&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|iwdebi
 c_func
 (paren
@@ -942,10 +971,19 @@ id|BOOTSTATE_BOOT_COMPLETE
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: load_dram(): final handshake timeout&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1703,10 +1741,20 @@ id|av7110-&gt;size_root
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_bootarm(): &quot;
+l_string|&quot;load_dram() failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|saa7146_setgpio
 c_func
 (paren
@@ -2040,7 +2088,7 @@ l_string|&quot;arm not ready.&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENXIO
 suffix:semicolon
 )brace
 id|start
@@ -2096,7 +2144,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ETIMEDOUT
 suffix:semicolon
 )brace
 )brace
@@ -2168,7 +2216,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ETIMEDOUT
 suffix:semicolon
 )brace
 )brace
@@ -2241,6 +2289,42 @@ l_int|1
 op_assign
 id|OSDQFull
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|COMTYPE_MISC
+suffix:colon
+r_if
+c_cond
+(paren
+id|FW_VERSION
+c_func
+(paren
+id|av7110-&gt;arm_app
+)paren
+op_ge
+l_int|0x261d
+)paren
+(brace
+id|type
+op_assign
+l_string|&quot;MSG&quot;
+suffix:semicolon
+id|flags
+(braket
+l_int|0
+)braket
+op_assign
+id|GPMQOver
+suffix:semicolon
+id|flags
+(braket
+l_int|1
+)braket
+op_assign
+id|GPMQBusy
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -2535,7 +2619,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ETIMEDOUT
 suffix:semicolon
 )brace
 )brace
@@ -2574,7 +2658,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOSPC
 suffix:semicolon
 )brace
 r_else
@@ -2597,7 +2681,7 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOSPC
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2688,9 +2772,12 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: %s(): av7110_send_fw_cmd error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: %s(): av7110_send_fw_cmd error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -2832,7 +2919,10 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: av7110_fw_cmd error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_fw_cmd error %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -3018,7 +3108,10 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: av7110_send_ci_cmd error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_send_ci_cmd error %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -3139,7 +3232,10 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: av7110_fw_request error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_fw_request error %d&bslash;n&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return
@@ -3452,7 +3548,10 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: av7110_fw_query error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_fw_query error %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -3681,6 +3780,8 @@ id|burst
 (brace
 r_int
 id|i
+comma
+id|ret
 suffix:semicolon
 id|u16
 id|buf
@@ -3828,6 +3929,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_assign
 id|av7110_send_fw_cmd
 c_func
 (paren
@@ -3838,10 +3942,14 @@ comma
 l_int|18
 )paren
 )paren
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: av7110_diseqc_send error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: av7110_diseqc_send error %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -4448,7 +4556,10 @@ id|ret
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: WriteText error&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;dvb-ttpci: WriteText error %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_return
@@ -4904,9 +5015,11 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: warning: timeout waiting in %s()&bslash;n&quot;
+l_string|&quot;dvb-ttpci: warning: timeout waiting in LoadBitmap: %d, %d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|ret
+comma
+id|av7110-&gt;bmp_state
 )paren
 suffix:semicolon
 id|av7110-&gt;bmp_state
@@ -5220,6 +5333,16 @@ id|av7110-&gt;bmplen
 op_add_assign
 l_int|1024
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_int|4
+comma
+l_string|&quot;av7110_fw_cmd: LoadBmp size %d&bslash;n&quot;
+comma
+id|av7110-&gt;bmplen
+)paren
+suffix:semicolon
 r_return
 id|av7110_fw_cmd
 c_func
@@ -5295,6 +5418,8 @@ id|av7110-&gt;bmp_state
 op_ne
 id|BMP_LOADING
 comma
+l_int|10
+op_star
 id|HZ
 )paren
 suffix:semicolon
@@ -5314,9 +5439,11 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;dvb-ttpci: warning: timeout waiting in %s()&bslash;n&quot;
+l_string|&quot;dvb-ttpci: warning: timeout waiting in BlitBitmap: %d, %d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|ret
+comma
+id|av7110-&gt;bmp_state
 )paren
 suffix:semicolon
 id|av7110-&gt;bmp_state
@@ -5324,8 +5451,17 @@ op_assign
 id|BMP_NONE
 suffix:semicolon
 r_return
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+ques
+c_cond
 op_minus
-l_int|1
+id|ETIMEDOUT
+suffix:colon
+id|ret
 suffix:semicolon
 )brace
 id|BUG_ON
@@ -5892,6 +6028,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
 id|w
 op_assign
 id|x1
@@ -6019,6 +6158,8 @@ id|i
 op_increment
 )paren
 (brace
+id|rc
+op_assign
 id|LoadBitmap
 c_func
 (paren
@@ -6041,6 +6182,16 @@ comma
 id|data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|rc
+op_assign
 id|BlitBitmap
 c_func
 (paren
@@ -6059,6 +6210,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
 id|data
 op_add_assign
 id|lpb
@@ -6072,6 +6231,8 @@ c_cond
 id|brest
 )paren
 (brace
+id|rc
+op_assign
 id|LoadBitmap
 c_func
 (paren
@@ -6096,6 +6257,16 @@ comma
 id|data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
+suffix:semicolon
+id|rc
+op_assign
 id|BlitBitmap
 c_func
 (paren
@@ -6113,6 +6284,14 @@ id|lpb
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
 suffix:semicolon
 )brace
 id|ReleaseBitmap
@@ -6417,7 +6596,6 @@ id|colors
 op_assign
 (paren
 id|u8
-id|__user
 op_star
 )paren
 id|dc-&gt;data
@@ -6588,6 +6766,8 @@ multiline_comment|/* fall through */
 r_case
 id|OSD_SetBlock
 suffix:colon
+id|ret
+op_assign
 id|OSDSetBlock
 c_func
 (paren

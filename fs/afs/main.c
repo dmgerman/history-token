@@ -147,10 +147,11 @@ id|AFS_CB_HASH_COUNT
 )braket
 suffix:semicolon
 DECL|variable|afs_cb_hash_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|afs_cb_hash_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef AFS_CACHING_SUPPORT
 DECL|variable|afs_cache_ops

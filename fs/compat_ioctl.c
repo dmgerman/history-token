@@ -3162,6 +3162,9 @@ id|u_ifreq64
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t check these user accesses, just let that get trapped&n;&t; * in the ioctl handler instead.&n;&t; */
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3179,7 +3182,14 @@ l_int|0
 comma
 id|IFNAMSIZ
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__put_user
 c_func
 (paren
@@ -3188,6 +3198,10 @@ comma
 op_amp
 id|u_ifreq64-&gt;ifr_ifru.ifru_data
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|sys_ioctl
@@ -12759,6 +12773,9 @@ op_amp
 id|d32-&gt;d_reclen
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -12768,6 +12785,10 @@ id|d-&gt;d_name
 comma
 id|d-&gt;d_reclen
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 id|ret
@@ -13493,6 +13514,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_from_user
 c_func
 (paren
@@ -13508,6 +13532,10 @@ comma
 id|iomem_base
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|__get_user
 c_func
@@ -13612,6 +13640,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -13627,6 +13658,10 @@ comma
 id|iomem_base
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|__put_user
 c_func

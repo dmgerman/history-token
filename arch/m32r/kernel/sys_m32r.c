@@ -86,12 +86,12 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_SMP */
 macro_line|#include &lt;linux/spinlock.h&gt;
-DECL|variable|tas_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|tas_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sys_tas
 id|asmlinkage

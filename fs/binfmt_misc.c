@@ -105,12 +105,12 @@ DECL|typedef|Node
 )brace
 id|Node
 suffix:semicolon
-DECL|variable|entries_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|entries_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|bm_mnt
 r_static

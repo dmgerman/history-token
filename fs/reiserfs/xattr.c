@@ -4755,12 +4755,12 @@ id|LIST_HEAD_INIT
 id|xattr_handlers
 )paren
 suffix:semicolon
-DECL|variable|handler_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|handler_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_struct

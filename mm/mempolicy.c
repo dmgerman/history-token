@@ -4966,6 +4966,10 @@ comma
 id|new2
 )paren
 suffix:semicolon
+id|new2
+op_assign
+l_int|NULL
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

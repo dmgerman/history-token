@@ -11,12 +11,12 @@ id|ACPI_MODULE_NAME
 l_string|&quot;event&quot;
 )paren
 multiline_comment|/* Global vars for handling event proc entry */
-DECL|variable|acpi_system_event_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|acpi_system_event_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|event_is_open
 r_int

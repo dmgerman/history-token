@@ -22,12 +22,12 @@ macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(A...)
 macro_line|#endif
-DECL|variable|rtasd_log_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtasd_log_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtas_log_wait
 id|DECLARE_WAIT_QUEUE_HEAD

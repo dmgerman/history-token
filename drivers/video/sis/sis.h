@@ -1017,16 +1017,6 @@ DECL|member|warncount
 r_int
 id|warncount
 suffix:semicolon
-macro_line|#ifdef SIS_CONFIG_COMPAT
-DECL|member|ioctl32registered
-r_int
-id|ioctl32registered
-suffix:semicolon
-DECL|member|ioctl32vblankregistered
-r_int
-id|ioctl32vblankregistered
-suffix:semicolon
-macro_line|#endif
 DECL|member|sisvga_engine
 r_int
 id|sisvga_engine

@@ -16,10 +16,11 @@ macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
 multiline_comment|/* Used to synchronize acceses to NatSemi SUPER I/O chip configure&n; * operations in asm/ns87303.h&n; */
 DECL|variable|ns87303_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ns87303_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 r_void

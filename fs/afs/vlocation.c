@@ -175,12 +175,12 @@ op_star
 id|afs_vlocation_update
 suffix:semicolon
 multiline_comment|/* VL currently being updated */
-DECL|variable|afs_vlocation_update_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|afs_vlocation_update_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock guarding update queue */
 macro_line|#ifdef AFS_CACHING_SUPPORT

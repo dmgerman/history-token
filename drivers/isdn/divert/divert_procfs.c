@@ -41,12 +41,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* pointer to last entry */
-DECL|variable|divert_info_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|divert_info_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* lock for queue */
 DECL|variable|rd_queue

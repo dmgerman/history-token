@@ -9,6 +9,13 @@ macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|kprobe_mutex
+)paren
+suffix:semicolon
 multiline_comment|/* kprobe_status settings */
 DECL|macro|KPROBE_HIT_ACTIVE
 mdefine_line|#define KPROBE_HIT_ACTIVE&t;0x00000001
@@ -158,11 +165,25 @@ id|p
 )paren
 (brace
 multiline_comment|/* insn: must be on special executable page on x86_64. */
+id|up
+c_func
+(paren
+op_amp
+id|kprobe_mutex
+)paren
+suffix:semicolon
 id|p-&gt;ainsn.insn
 op_assign
 id|get_insn_slot
 c_func
 (paren
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|kprobe_mutex
 )paren
 suffix:semicolon
 r_if
@@ -177,6 +198,21 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|arch_copy_kprobe
+r_void
+id|arch_copy_kprobe
+c_func
+(paren
+r_struct
+id|kprobe
+op_star
+id|p
+)paren
+(brace
 id|memcpy
 c_func
 (paren
@@ -186,9 +222,6 @@ id|p-&gt;addr
 comma
 id|MAX_INSN_SIZE
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|arch_remove_kprobe
@@ -202,10 +235,24 @@ op_star
 id|p
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|kprobe_mutex
+)paren
+suffix:semicolon
 id|free_insn_slot
 c_func
 (paren
 id|p-&gt;ainsn.insn
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|kprobe_mutex
 )paren
 suffix:semicolon
 )brace
@@ -1505,7 +1552,7 @@ r_struct
 id|kprobe_insn_page
 )paren
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1530,7 +1577,7 @@ c_func
 (paren
 id|PAGE_SIZE
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 op_or
 id|__GFP_HIGHMEM
 comma

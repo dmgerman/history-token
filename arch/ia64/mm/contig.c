@@ -668,7 +668,11 @@ op_assign
 r_int
 r_int
 )paren
+id|__pa
+c_func
+(paren
 id|mca_data
+)paren
 suffix:semicolon
 id|mca_data
 op_add_assign

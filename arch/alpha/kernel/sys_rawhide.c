@@ -49,10 +49,11 @@ l_int|4
 )braket
 suffix:semicolon
 DECL|variable|rawhide_irq_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rawhide_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_inline

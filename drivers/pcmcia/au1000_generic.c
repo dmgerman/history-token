@@ -389,12 +389,12 @@ id|au1000_pcmcia_proc_setup
 macro_line|#endif
 )brace
 suffix:semicolon
-DECL|variable|pcmcia_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pcmcia_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|au1000_pcmcia_driver_init
 r_static

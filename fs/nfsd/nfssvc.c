@@ -70,12 +70,12 @@ r_int
 r_int
 id|nfsd_last_call
 suffix:semicolon
-DECL|variable|nfsd_call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nfsd_call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|nfsd_list
 r_struct

@@ -1368,12 +1368,12 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-DECL|variable|cross_call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cross_call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Cross calls must be serialized, at least currently. */
 DECL|function|smp4d_cross_call
@@ -1868,10 +1868,11 @@ r_int
 id|flags
 suffix:semicolon
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|stop_cpu_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

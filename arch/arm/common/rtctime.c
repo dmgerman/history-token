@@ -25,12 +25,12 @@ op_star
 id|rtc_async_queue
 suffix:semicolon
 multiline_comment|/*&n; * rtc_lock protects rtc_irq_data&n; */
-DECL|variable|rtc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtc_irq_data
 r_static

@@ -32,12 +32,12 @@ id|cpufreq_cpu_data
 id|NR_CPUS
 )braket
 suffix:semicolon
-DECL|variable|cpufreq_driver_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cpufreq_driver_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* we keep a copy of all -&gt;add&squot;ed CPU&squot;s struct sys_device here;&n; * as it is only accessed in -&gt;add and -&gt;remove, no lock or reference&n; * count is necessary.&n; */
 DECL|variable|cpu_sys_devices
@@ -323,12 +323,12 @@ id|disable_ratelimit
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|disable_ratelimit_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|disable_ratelimit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|cpufreq_debug_enable_ratelimit
 r_static

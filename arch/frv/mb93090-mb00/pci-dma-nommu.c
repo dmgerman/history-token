@@ -38,12 +38,12 @@ id|len
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|dma_alloc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dma_alloc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

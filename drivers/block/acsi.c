@@ -431,12 +431,12 @@ r_char
 op_star
 id|CurrentBuffer
 suffix:semicolon
-DECL|variable|acsi_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|acsi_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER()&t;mod_timer(&amp;acsi_timer, jiffies + ACSI_TIMEOUT)

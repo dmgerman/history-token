@@ -112,12 +112,12 @@ DECL|macro|TEST_AND_CLEAR_USED
 mdefine_line|#define TEST_AND_CLEAR_USED(pg,off)&t;(test_and_clear_bit(off, &amp;USED_MAP(pg)))
 DECL|macro|SET_USED
 mdefine_line|#define SET_USED(pg,off)&t;&t;(set_bit(off, &amp;USED_MAP(pg)))
-DECL|variable|small_page_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|small_page_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__get_small_page
 r_static

@@ -24,12 +24,12 @@ id|cdev_map
 suffix:semicolon
 DECL|macro|MAX_PROBE_HASH
 mdefine_line|#define MAX_PROBE_HASH 255&t;/* random */
-DECL|variable|chrdevs_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|chrdevs_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|char_device_struct
 r_static
@@ -1269,12 +1269,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|cdev_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cdev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|cdev_get
 r_static

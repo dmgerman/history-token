@@ -64,12 +64,12 @@ c_func
 id|smb_servers
 )paren
 suffix:semicolon
-DECL|variable|servers_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|servers_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|SMBIOD_DATA_READY
 mdefine_line|#define SMBIOD_DATA_READY&t;(1&lt;&lt;0)

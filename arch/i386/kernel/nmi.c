@@ -61,12 +61,12 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * lapic_nmi_owner tracks the ownership of the lapic NMI hardware:&n; * - it may be reserved by some other driver, or not&n; * - when not reserved by some other driver, it may be used for&n; *   the NMI watchdog, or not&n; *&n; * This is maintained separately from nmi_active because the NMI&n; * watchdog may also be driven from the I/O APIC timer.&n; */
-DECL|variable|lapic_nmi_owner_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lapic_nmi_owner_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|lapic_nmi_owner
 r_static
@@ -231,18 +231,23 @@ id|cpu
 op_increment
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* Check cpu_callin_map here because that is set&n;&t;&t;   after the timer is started. */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
+id|cpu_isset
 c_func
 (paren
 id|cpu
+comma
+id|cpu_callin_map
 )paren
 )paren
 r_continue
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -65,12 +65,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/**&n; * ntfs_cb_lock - spinlock which protects ntfs_compression_buffer&n; */
-DECL|variable|ntfs_cb_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ntfs_cb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * allocate_compression_buffers - allocate the decompression buffers&n; *&n; * Caller has to hold the ntfs_lock semaphore.&n; *&n; * Return 0 on success or -ENOMEM if the allocations failed.&n; */
 DECL|function|allocate_compression_buffers

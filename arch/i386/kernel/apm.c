@@ -368,12 +368,12 @@ id|apm_user
 op_star
 id|user_list
 suffix:semicolon
-DECL|variable|user_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|user_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|bad_bios_desc
 r_static

@@ -30,12 +30,12 @@ id|pte_t
 op_star
 id|to_pte
 suffix:semicolon
-DECL|variable|v6_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|v6_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|DCACHE_COLOUR
 mdefine_line|#define DCACHE_COLOUR(vaddr) ((vaddr &amp; (SHMLBA - 1)) &gt;&gt; PAGE_SHIFT)

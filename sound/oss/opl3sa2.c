@@ -3362,12 +3362,12 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PNP */
 multiline_comment|/* End of component functions */
 macro_line|#ifdef CONFIG_PM
-DECL|variable|opl3sa2_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|opl3sa2_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Power Management support functions */
 DECL|function|opl3sa2_suspend

@@ -176,10 +176,11 @@ id|nsbi
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|sun4d_imsk_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sun4d_imsk_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|function|show_sun4d_interrupts

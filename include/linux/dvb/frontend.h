@@ -448,6 +448,12 @@ id|QAM_256
 comma
 DECL|enumerator|QAM_AUTO
 id|QAM_AUTO
+comma
+DECL|enumerator|VSB_8
+id|VSB_8
+comma
+DECL|enumerator|VSB_16
+id|VSB_16
 DECL|typedef|fe_modulation_t
 )brace
 id|fe_modulation_t
@@ -572,6 +578,17 @@ suffix:semicolon
 multiline_comment|/* modulation type (see above) */
 )brace
 suffix:semicolon
+DECL|struct|dvb_vsb_parameters
+r_struct
+id|dvb_vsb_parameters
+(brace
+DECL|member|modulation
+id|fe_modulation_t
+id|modulation
+suffix:semicolon
+multiline_comment|/* modulation type (see above) */
+)brace
+suffix:semicolon
 DECL|struct|dvb_ofdm_parameters
 r_struct
 id|dvb_ofdm_parameters
@@ -617,7 +634,7 @@ DECL|member|frequency
 id|__u32
 id|frequency
 suffix:semicolon
-multiline_comment|/* (absolute) frequency in Hz for QAM/OFDM */
+multiline_comment|/* (absolute) frequency in Hz for QAM/OFDM/ATSC */
 multiline_comment|/* intermediate frequency in kHz for QPSK */
 DECL|member|inversion
 id|fe_spectral_inversion_t
@@ -639,6 +656,11 @@ DECL|member|ofdm
 r_struct
 id|dvb_ofdm_parameters
 id|ofdm
+suffix:semicolon
+DECL|member|vsb
+r_struct
+id|dvb_vsb_parameters
+id|vsb
 suffix:semicolon
 DECL|member|u
 )brace

@@ -1,9 +1,11 @@
 multiline_comment|/*&n; * debug.c - ACPI debug interface to userspace.&n; */
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
+macro_line|#include &lt;acpi/acglobal.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_SYSTEM_COMPONENT
 id|ACPI_MODULE_NAME

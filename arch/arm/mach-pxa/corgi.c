@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &lt;asm/arch/mmc.h&gt;
+macro_line|#include &lt;asm/arch/udc.h&gt;
 macro_line|#include &lt;asm/arch/corgi.h&gt;
 macro_line|#include &lt;asm/hardware/scoop.h&gt;
 macro_line|#include &lt;video/w100fb.h&gt;
@@ -622,6 +623,75 @@ id|corgi_mci_exit
 comma
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * USB Device Controller&n; */
+DECL|function|corgi_udc_command
+r_static
+r_void
+id|corgi_udc_command
+c_func
+(paren
+r_int
+id|cmd
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|PXA2XX_UDC_CMD_CONNECT
+suffix:colon
+id|GPSR
+c_func
+(paren
+id|CORGI_GPIO_USB_PULLUP
+)paren
+op_assign
+id|GPIO_bit
+c_func
+(paren
+id|CORGI_GPIO_USB_PULLUP
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PXA2XX_UDC_CMD_DISCONNECT
+suffix:colon
+id|GPCR
+c_func
+(paren
+id|CORGI_GPIO_USB_PULLUP
+)paren
+op_assign
+id|GPIO_bit
+c_func
+(paren
+id|CORGI_GPIO_USB_PULLUP
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+DECL|variable|__initdata
+r_static
+r_struct
+id|pxa2xx_udc_mach_info
+id|udc_info
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* no connect GPIO; corgi can&squot;t tell connection status */
+dot
+id|udc_command
+op_assign
+id|corgi_udc_command
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -743,6 +813,21 @@ id|corgi_fb_info.phadadj
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|CORGI_GPIO_USB_PULLUP
+op_or
+id|GPIO_OUT
+)paren
+suffix:semicolon
+id|pxa_set_udc_info
+c_func
+(paren
+op_amp
+id|udc_info
+)paren
 suffix:semicolon
 id|pxa_set_mci_info
 c_func

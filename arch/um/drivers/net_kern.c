@@ -25,12 +25,12 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;irq_kern.h&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;uml-netdev&quot;
-DECL|variable|opened_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|opened_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|opened
 id|LIST_HEAD
@@ -1160,12 +1160,12 @@ id|conn
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|variable|devices_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|devices_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|devices
 r_static

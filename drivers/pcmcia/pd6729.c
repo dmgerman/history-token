@@ -105,12 +105,12 @@ comma
 l_string|&quot;interrupts that can be used by PCMCIA cards&quot;
 )paren
 suffix:semicolon
-DECL|variable|port_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|port_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* basic value read/write functions */
 DECL|function|indirect_read

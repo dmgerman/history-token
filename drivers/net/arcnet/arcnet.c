@@ -1365,9 +1365,12 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|lp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 r_return

@@ -91,10 +91,11 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|variable|w1_mlock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|w1_mlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|w1_masters
 id|LIST_HEAD

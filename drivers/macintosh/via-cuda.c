@@ -31,12 +31,12 @@ id|__iomem
 op_star
 id|via
 suffix:semicolon
-DECL|variable|cuda_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cuda_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAC
 DECL|macro|CUDA_IRQ

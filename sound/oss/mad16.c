@@ -24,12 +24,12 @@ r_struct
 id|gameport
 id|gameport
 suffix:semicolon
-DECL|variable|lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|C928
 mdefine_line|#define C928&t;1

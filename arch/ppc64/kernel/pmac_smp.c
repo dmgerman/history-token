@@ -84,12 +84,12 @@ id|device_node
 op_star
 id|pmac_tb_clock_chip_host
 suffix:semicolon
-DECL|variable|timebase_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|timebase_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|timebase
 r_static

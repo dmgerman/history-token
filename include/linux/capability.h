@@ -239,6 +239,10 @@ mdefine_line|#define CAP_MKNOD            27
 multiline_comment|/* Allow taking of leases on files */
 DECL|macro|CAP_LEASE
 mdefine_line|#define CAP_LEASE            28
+DECL|macro|CAP_AUDIT_WRITE
+mdefine_line|#define CAP_AUDIT_WRITE      29
+DECL|macro|CAP_AUDIT_CONTROL
+mdefine_line|#define CAP_AUDIT_CONTROL    30
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* &n; * Bounding set&n; */
 r_extern

@@ -236,12 +236,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-DECL|variable|pcc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pcc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pcc_iorw
 r_void

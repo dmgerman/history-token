@@ -446,12 +446,12 @@ multiline_comment|/* ***********************************************************
 multiline_comment|/* *&t;&t;&t;Port Access Functions&t;&t;&t;      * */
 multiline_comment|/* ******************************************************************** */
 multiline_comment|/* These provide interrupt save 2-step access to the Z8530 registers */
-DECL|variable|iolock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|iolock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Guards paired accesses */
 DECL|function|InReg

@@ -78,12 +78,12 @@ id|disk_name
 )paren
 )brace
 suffix:semicolon
-DECL|variable|viodasd_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|viodasd_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|VIOMAXREQ
 mdefine_line|#define VIOMAXREQ&t;&t;16

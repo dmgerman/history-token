@@ -623,12 +623,12 @@ r_static
 r_int
 id|grab_irq
 suffix:semicolon
-DECL|variable|isa_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|isa_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|ISA_LOCK
 mdefine_line|#define ISA_LOCK(n, f) spin_lock_irqsave(&amp;isa_lock, f)
@@ -800,12 +800,12 @@ suffix:semicolon
 DECL|macro|PCIC_COUNT
 mdefine_line|#define PCIC_COUNT&t;(sizeof(pcic)/sizeof(pcic_t))
 multiline_comment|/*====================================================================*/
-DECL|variable|bus_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|bus_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|i365_get
 r_static

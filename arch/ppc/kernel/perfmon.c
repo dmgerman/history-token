@@ -22,10 +22,11 @@ macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/xmon.h&gt;
 multiline_comment|/* A lock to regulate grabbing the interrupt */
 DECL|variable|perfmon_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|perfmon_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_FSL_BOOKE
 DECL|function|dummy_perf

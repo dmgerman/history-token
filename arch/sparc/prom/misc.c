@@ -16,10 +16,11 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|prom_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|prom_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Reset and reboot the machine with the command &squot;bcommand&squot;. */
 r_void

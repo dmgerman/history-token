@@ -125,12 +125,12 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// XXX Turn that into a sem
-DECL|variable|nv_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nv_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 r_int

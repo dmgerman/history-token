@@ -319,12 +319,12 @@ id|esp
 op_star
 id|espchain
 suffix:semicolon
-DECL|variable|espchain_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|espchain_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|esps_running
 r_static

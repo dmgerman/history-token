@@ -338,12 +338,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* -------- global variables ---------------------------------------- */
-DECL|variable|capidev_list_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|capidev_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD
@@ -353,12 +353,12 @@ id|capidev_list
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_CAPI_MIDDLEWARE
-DECL|variable|capiminor_list_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|capiminor_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

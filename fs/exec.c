@@ -53,12 +53,12 @@ id|linux_binfmt
 op_star
 id|formats
 suffix:semicolon
-DECL|variable|binfmt_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|binfmt_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|register_binfmt
 r_int

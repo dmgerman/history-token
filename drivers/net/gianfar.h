@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fsl_devices.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -25,7 +26,6 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &quot;gianfar_phy.h&quot;
 multiline_comment|/* The maximum number of packets to be handled in one call of gfar_poll */
 DECL|macro|GFAR_DEV_WEIGHT
@@ -1381,9 +1381,24 @@ r_int
 id|rxclean
 suffix:semicolon
 multiline_comment|/* Info structure initialized by board setup code */
+DECL|member|interruptTransmit
+r_int
+r_int
+id|interruptTransmit
+suffix:semicolon
+DECL|member|interruptReceive
+r_int
+r_int
+id|interruptReceive
+suffix:semicolon
+DECL|member|interruptError
+r_int
+r_int
+id|interruptError
+suffix:semicolon
 DECL|member|einfo
 r_struct
-id|ocp_gfar_data
+id|gianfar_platform_data
 op_star
 id|einfo
 suffix:semicolon

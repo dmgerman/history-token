@@ -2135,13 +2135,13 @@ r_int
 id|drq
 )paren
 suffix:semicolon
-DECL|variable|__cacheline_aligned
 r_static
-id|spinlock_t
-id|smc_lock
 id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|smc_lock
+)paren
 suffix:semicolon
 "&f;"
 multiline_comment|/*&n;**++&n;**  FUNCTIONAL DESCRIPTION:&n;**&n;**      This function detects the presence of an SMC37c669 Super I/O&n;**&t;controller.&n;**&n;**  FORMAL PARAMETERS:&n;**&n;**&t;None&n;**&n;**  RETURN VALUE:&n;**&n;**      Returns a pointer to the device if found, otherwise,&n;**&t;the NULL pointer is returned.&n;**&n;**  SIDE EFFECTS:&n;**&n;**      None&n;**&n;**--&n;*/

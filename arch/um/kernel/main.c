@@ -675,6 +675,15 @@ comma
 id|argv
 )paren
 suffix:semicolon
+multiline_comment|/* Disable SIGPROF - I have no idea why libc doesn&squot;t do this or turn&n;&t; * off the profiling time, but UML dies with a SIGPROF just before&n;&t; * exiting when profiling is active.&n;&t; */
+id|change_sig
+c_func
+(paren
+id|SIGPROF
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Reboot */
 r_if
 c_cond

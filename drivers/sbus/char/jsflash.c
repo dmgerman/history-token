@@ -1917,10 +1917,11 @@ r_void
 )paren
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_struct
 id|jsflash

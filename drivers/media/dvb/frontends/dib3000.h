@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * public header file of the frontend drivers for mobile DVB-T demodulators&n; * DiBcom 3000-MB and DiBcom 3000-MC/P (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
+multiline_comment|/*&n; * public header file of the frontend drivers for mobile DVB-T demodulators&n; * DiBcom 3000-MB and DiBcom 3000-MC/P (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * based on GPL code from DibCom, which has&n; *&n; * Copyright (C) 2004 Amaury Demol for DiBcom (ademol@dibcom.fr)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * Acknowledgements&n; *&n; *  Amaury Demol (ademol@dibcom.fr) from DiBcom for providing specs and driver&n; *  sources, on which this driver (and the dvb-dibusb) are based.&n; *&n; * see Documentation/dvb/README.dibusb for more information&n; *&n; */
 macro_line|#ifndef DIB3000_H
 DECL|macro|DIB3000_H
 mdefine_line|#define DIB3000_H
@@ -12,12 +12,20 @@ DECL|member|demod_address
 id|u8
 id|demod_address
 suffix:semicolon
-multiline_comment|/* The i2c address of the PLL */
+multiline_comment|/* PLL maintenance and the i2c address of the PLL */
 DECL|member|pll_addr
 id|u8
+(paren
+op_star
 id|pll_addr
+)paren
+(paren
+r_struct
+id|dvb_frontend
+op_star
+id|fe
+)paren
 suffix:semicolon
-multiline_comment|/* PLL maintenance */
 DECL|member|pll_init
 r_int
 (paren
@@ -29,6 +37,12 @@ r_struct
 id|dvb_frontend
 op_star
 id|fe
+comma
+id|u8
+id|pll_buf
+(braket
+l_int|5
+)braket
 )paren
 suffix:semicolon
 DECL|member|pll_set
@@ -47,13 +61,19 @@ r_struct
 id|dvb_frontend_parameters
 op_star
 id|params
+comma
+id|u8
+id|pll_buf
+(braket
+l_int|5
+)braket
 )paren
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|dib3000_xfer_ops
+DECL|struct|dib_fe_xfer_ops
 r_struct
-id|dib3000_xfer_ops
+id|dib_fe_xfer_ops
 (brace
 multiline_comment|/* pid and transfer handling is done in the demodulator */
 DECL|member|pid_parse
@@ -101,10 +121,32 @@ op_star
 id|fe
 comma
 r_int
+id|index
+comma
+r_int
 id|pid
 comma
 r_int
 id|onoff
+)paren
+suffix:semicolon
+DECL|member|tuner_pass_ctrl
+r_int
+(paren
+op_star
+id|tuner_pass_ctrl
+)paren
+(paren
+r_struct
+id|dvb_frontend
+op_star
+id|fe
+comma
+r_int
+id|onoff
+comma
+id|u8
+id|pll_ctrl
 )paren
 suffix:semicolon
 )brace
@@ -128,7 +170,7 @@ op_star
 id|i2c
 comma
 r_struct
-id|dib3000_xfer_ops
+id|dib_fe_xfer_ops
 op_star
 id|xfer_ops
 )paren
@@ -152,7 +194,7 @@ op_star
 id|i2c
 comma
 r_struct
-id|dib3000_xfer_ops
+id|dib_fe_xfer_ops
 op_star
 id|xfer_ops
 )paren

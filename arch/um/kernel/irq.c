@@ -78,7 +78,7 @@ comma
 l_string|&quot;           &quot;
 )paren
 suffix:semicolon
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|j
@@ -168,7 +168,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#else
-id|for_each_cpu
+id|for_each_online_cpu
 c_func
 (paren
 id|j
@@ -449,12 +449,12 @@ c_func
 id|reactivate_fd
 )paren
 suffix:semicolon
-DECL|variable|irq_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|irq_lock
 r_int

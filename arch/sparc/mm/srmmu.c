@@ -138,12 +138,12 @@ DECL|variable|viking_mxcc_present
 r_int
 id|viking_mxcc_present
 suffix:semicolon
-DECL|variable|srmmu_context_spinlock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|srmmu_context_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|is_hypersparc
 r_int

@@ -1030,12 +1030,12 @@ id|ub_hostv
 id|UB_MAX_HOSTS
 )braket
 suffix:semicolon
-DECL|variable|ub_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ub_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Locks globals and -&gt;openc */
 multiline_comment|/*&n; * The SCSI command tracing procedures.&n; */
