@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
+multiline_comment|/* linux/arch/arm/mach-bast/dma.c&n; *&n; * (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 DMA core&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  10-Nov-2004 BJD  Use sys_device and sysdev_class for power management&n; *  08-Aug-2004 BJD  Apply rmk&squot;s suggestions&n; *  21-Jul-2004 BJD  Ported to linux 2.6&n; *  12-Jul-2004 BJD  Finished re-write and change of API&n; *  06-Jul-2004 BJD  Rewrote dma code to try and cope with various problems&n; *  23-May-2003 BJD  Created file&n; *  19-Aug-2003 BJD  Cleanup, header fix, added URL&n; *&n; * This file is based on the Sangwook Lee/Samsung patches, re-written due&n; * to various ommisions from the code (such as flexible dma configuration)&n; * for use with the BAST system board.&n; *&n; * The re-write is pretty much complete, and should be good enough for any&n; * possible DMA function&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_S3C2410_DMA_DEBUG
 DECL|macro|DEBUG
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -3114,6 +3115,128 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* system device class */
+macro_line|#ifdef CONFIG_PM
+DECL|function|s3c2410_dma_suspend
+r_static
+r_int
+id|s3c2410_dma_suspend
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+(brace
+id|s3c2410_dma_chan_t
+op_star
+id|cp
+op_assign
+id|container_of
+c_func
+(paren
+id|dev
+comma
+id|s3c2410_dma_chan_t
+comma
+id|dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;suspending dma channel %d&bslash;n&quot;
+comma
+id|cp-&gt;number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dma_rdreg
+c_func
+(paren
+id|cp
+comma
+id|S3C2410_DMA_DMASKTRIG
+)paren
+op_amp
+id|S3C2410_DMASKTRIG_ON
+)paren
+(brace
+multiline_comment|/* the dma channel is still working, which is probably&n;&t;&t; * a bad thing to do over suspend/resume. We stop the&n;&t;&t; * channel and assume that the client is either going to&n;&t;&t; * retry after resume, or that it is broken.&n;&t;&t; */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;dma: stopping channel %d due to suspend&bslash;n&quot;
+comma
+id|cp-&gt;number
+)paren
+suffix:semicolon
+id|s3c2410_dma_dostop
+c_func
+(paren
+id|cp
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|s3c2410_dma_resume
+r_static
+r_int
+id|s3c2410_dma_resume
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|s3c2410_dma_suspend
+mdefine_line|#define s3c2410_dma_suspend NULL
+DECL|macro|s3c2410_dma_resume
+mdefine_line|#define s3c2410_dma_resume  NULL
+macro_line|#endif /* CONFIG_PM */
+DECL|variable|dma_sysclass
+r_static
+r_struct
+id|sysdev_class
+id|dma_sysclass
+op_assign
+(brace
+id|set_kset_name
+c_func
+(paren
+l_string|&quot;s3c24xx-dma&quot;
+)paren
+comma
+dot
+id|suspend
+op_assign
+id|s3c2410_dma_suspend
+comma
+dot
+id|resume
+op_assign
+id|s3c2410_dma_resume
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* initialisation code */
 DECL|function|s3c2410_init_dma
 r_static
@@ -3125,12 +3248,15 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|channel
-suffix:semicolon
 id|s3c2410_dma_chan_t
 op_star
 id|cp
+suffix:semicolon
+r_int
+id|channel
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|printk
 c_func
@@ -3166,6 +3292,34 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|sysdev_class_register
+c_func
+(paren
+op_amp
+id|dma_sysclass
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;dma sysclass registration failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|err
 suffix:semicolon
 )brace
 r_for
@@ -3242,6 +3396,25 @@ l_int|1
 op_lshift
 l_int|18
 suffix:semicolon
+multiline_comment|/* register system device */
+id|cp-&gt;dev.cls
+op_assign
+op_amp
+id|dma_sysclass
+suffix:semicolon
+id|cp-&gt;dev.id
+op_assign
+id|channel
+suffix:semicolon
+id|ret
+op_assign
+id|sysdev_register
+c_func
+(paren
+op_amp
+id|cp-&gt;dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3257,6 +3430,21 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|err
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|dma_base
+)paren
+suffix:semicolon
+id|dma_base
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|s3c2410_init_dma
