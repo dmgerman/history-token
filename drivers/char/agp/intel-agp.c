@@ -40,9 +40,9 @@ l_int|4
 )brace
 suffix:semicolon
 DECL|macro|AGP_DCACHE_MEMORY
-mdefine_line|#define AGP_DCACHE_MEMORY 1
+mdefine_line|#define AGP_DCACHE_MEMORY&t;1
 DECL|macro|AGP_PHYS_MEMORY
-mdefine_line|#define AGP_PHYS_MEMORY   2
+mdefine_line|#define AGP_PHYS_MEMORY&t;&t;2
 DECL|variable|intel_i810_masks
 r_static
 r_struct
@@ -946,11 +946,9 @@ id|pg_count
 op_ne
 l_int|1
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 r_new
 op_assign
 id|agp_create_memory
@@ -966,11 +964,9 @@ r_new
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|addr
@@ -1151,6 +1147,7 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|intel_i810_setup
+r_static
 r_int
 id|__init
 id|intel_i810_setup
@@ -2392,6 +2389,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|intel_i830_setup
+r_static
 r_int
 id|__init
 id|intel_i830_setup
@@ -5806,6 +5804,11 @@ id|pci_dev
 op_star
 id|i810_dev
 suffix:semicolon
+id|u8
+id|cap_ptr
+op_assign
+l_int|0
+suffix:semicolon
 id|agp_bridge.dev
 op_assign
 id|dev
@@ -5987,7 +5990,7 @@ suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_INTEL_82815_MC
 suffix:colon
-multiline_comment|/* The i815 can operate either as an i810 style&n;&t;    * integrated device, or as an AGP4X motherboard.&n;&t;    *&n;&t;    * This only addresses the first mode:&n;&t;    */
+multiline_comment|/* The i815 can operate either as an i810 style&n;&t;&t; * integrated device, or as an AGP4X motherboard.&n;&t;&t; *&n;&t;&t; * This only addresses the first mode:&n;&t;&t; */
 id|i810_dev
 op_assign
 id|pci_find_device
@@ -6201,9 +6204,8 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|cap_ptr
+op_assign
 id|pci_find_capability
 c_func
 (paren
@@ -6211,12 +6213,35 @@ id|dev
 comma
 id|PCI_CAP_ID_AGP
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cap_ptr
 op_eq
 l_int|0
 )paren
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|agp_bridge.capndx
+op_assign
+id|cap_ptr
+suffix:semicolon
+multiline_comment|/* Fill in the mode register */
+id|pci_read_config_dword
+c_func
+(paren
+id|agp_bridge.dev
+comma
+id|agp_bridge.capndx
+op_plus
+l_int|4
+comma
+op_amp
+id|agp_bridge.mode
+)paren
 suffix:semicolon
 multiline_comment|/* probe for known chipsets */
 r_return
@@ -6230,6 +6255,7 @@ suffix:semicolon
 DECL|function|agp_intel_probe
 r_static
 r_int
+id|__init
 id|agp_intel_probe
 (paren
 r_struct
@@ -6334,6 +6360,7 @@ suffix:semicolon
 DECL|variable|agp_intel_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_intel_pci_driver
 op_assign
