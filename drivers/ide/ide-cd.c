@@ -9619,6 +9619,37 @@ id|close_tray
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Some drives used by Apple don&squot;t advertise audio play&n;&t; * but they do support reading TOC &amp; audio datas&n;&t; */
+r_if
+c_cond
+(paren
+id|strcmp
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;MATSHITADVD-ROM SR-8187&quot;
+)paren
+op_eq
+l_int|0
+op_logical_or
+id|strcmp
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;MATSHITADVD-ROM SR-8186&quot;
+)paren
+op_eq
+l_int|0
+)paren
+id|CDROM_CONFIG_FLAGS
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|audio_play
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#if ! STANDARD_ATAPI
 r_if
 c_cond

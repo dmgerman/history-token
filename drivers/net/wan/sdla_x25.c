@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;&t;/* Experimental delay */
 macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#else
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/if.h&gt;

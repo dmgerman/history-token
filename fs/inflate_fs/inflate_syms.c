@@ -65,4 +65,10 @@ c_func
 id|zlib_fs_inflateSyncPoint
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

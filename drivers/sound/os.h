@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef __alpha__
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

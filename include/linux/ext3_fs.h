@@ -14,9 +14,9 @@ DECL|macro|EXT3_DEFAULT_PREALLOC_BLOCKS
 mdefine_line|#define EXT3_DEFAULT_PREALLOC_BLOCKS&t;8
 multiline_comment|/*&n; * The second extended file system version&n; */
 DECL|macro|EXT3FS_DATE
-mdefine_line|#define EXT3FS_DATE&t;&t;&quot;06 Nov 2001&quot;
+mdefine_line|#define EXT3FS_DATE&t;&t;&quot;02 Dec 2001&quot;
 DECL|macro|EXT3FS_VERSION
-mdefine_line|#define EXT3FS_VERSION&t;&t;&quot;2.4-0.9.15&quot;
+mdefine_line|#define EXT3FS_VERSION&t;&t;&quot;2.4-0.9.16&quot;
 multiline_comment|/*&n; * Debug code&n; */
 macro_line|#ifdef EXT3FS_DEBUG
 DECL|macro|ext3_debug
@@ -1086,14 +1086,6 @@ mdefine_line|#define EXT3_DIR_ROUND&t;&t;&t;(EXT3_DIR_PAD - 1)
 DECL|macro|EXT3_DIR_REC_LEN
 mdefine_line|#define EXT3_DIR_REC_LEN(name_len)&t;(((name_len) + 8 + EXT3_DIR_ROUND) &amp; &bslash;&n;&t;&t;&t;&t;&t; ~EXT3_DIR_ROUND)
 macro_line|#ifdef __KERNEL__
-multiline_comment|/* Filesize hard limits for 64-bit file offsets */
-r_extern
-r_int
-r_int
-id|ext3_max_sizes
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Describe an inode&squot;s exact location on disk and in memory&n; */
 DECL|struct|ext3_iloc
 r_struct
@@ -1126,18 +1118,6 @@ DECL|macro|ATTRIB_NORET
 macro_line|# define ATTRIB_NORET  __attribute__((noreturn))
 DECL|macro|NORET_AND
 macro_line|# define NORET_AND     noreturn,
-multiline_comment|/* acl.c */
-r_extern
-r_int
-id|ext3_permission
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* balloc.c */
 r_extern
 r_int
@@ -1252,19 +1232,6 @@ op_star
 id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* bitmap.c */
-r_extern
-r_int
-r_int
-id|ext3_count_free
-(paren
-r_struct
-id|buffer_head
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* dir.c */
 r_extern
 r_int
@@ -1291,7 +1258,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* file.c */
 multiline_comment|/* fsync.c */
 r_extern
 r_int
@@ -1368,6 +1334,18 @@ id|ext3_check_inodes_bitmap
 r_struct
 id|super_block
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|ext3_count_free
+(paren
+r_struct
+id|buffer_head
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* inode.c */
@@ -1520,6 +1498,15 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ext3_truncate
+(paren
+r_struct
+id|inode
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* ioctl.c */
 r_extern
 r_int
@@ -1541,11 +1528,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* namei.c */
-r_extern
-r_struct
-id|inode_operations
-id|ext3_dir_inode_operations
-suffix:semicolon
 r_extern
 r_int
 id|ext3_orphan_add
@@ -1816,16 +1798,6 @@ id|statfs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* truncate.c */
-r_extern
-r_void
-id|ext3_truncate
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
 DECL|macro|ext3_std_error
 mdefine_line|#define ext3_std_error(sb, errno)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((errno))&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__ext3_std_error((sb), __FUNCTION__, (errno));&t;&bslash;&n;} while (0)
 r_extern
@@ -1868,16 +1840,23 @@ r_struct
 id|file_operations
 id|ext3_file_operations
 suffix:semicolon
+multiline_comment|/* inode.c */
+r_extern
+r_struct
+id|address_space_operations
+id|ext3_aops
+suffix:semicolon
+multiline_comment|/* namei.c */
+r_extern
+r_struct
+id|inode_operations
+id|ext3_dir_inode_operations
+suffix:semicolon
 multiline_comment|/* symlink.c */
 r_extern
 r_struct
 id|inode_operations
 id|ext3_fast_symlink_inode_operations
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|ext3_aops
 suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_EXT3_FS_H */

@@ -81,6 +81,16 @@ r_int
 id|pic_mode
 suffix:semicolon
 r_extern
+r_int
+id|smp_num_siblings
+suffix:semicolon
+r_extern
+r_int
+id|cpu_sibling_map
+(braket
+)braket
+suffix:semicolon
+r_extern
 r_void
 id|smp_flush_tlb
 c_func

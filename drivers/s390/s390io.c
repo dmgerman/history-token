@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/s390io.c&n; *   S/390 common I/O routines&n; *&n; *  S390 version&n; *    Copyright (C) 1999, 2000 IBM Deutschland Entwicklung GmbH,&n; *                             IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *    ChangeLog: 01/07/2001 Blacklist cleanup (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *               01/04/2001 Holger Smolinski (smolinsk@de.ibm.com)&n; *                          Fixed lost interrupts and do_adapter_IO&n; *               xx/xx/xxxx nnn          multiple changes not reflected&n; *               03/12/2001 Ingo Adlung  blacklist= - changed to cio_ignore=  &n; *               03/14/2001 Ingo Adlung  disable interrupts before start_IO&n; *                                        in Path Group processing &n; *                                       decrease retry2 on busy while &n; *                                        disabling sync_isc; reset isc_cnt&n; *                                        on io error during sync_isc enablement&n; *               05/09/2001 Cornelia Huck added exploitation of debug feature&n; *               05/16/2001 Cornelia Huck added /proc/deviceinfo/&lt;devno&gt;/&n; *               05/22/2001 Cornelia Huck added /proc/cio_ignore&n; *                                        un-ignore blacklisted devices by piping &n; *                                        to /proc/cio_ignore&n; *               xx/xx/xxxx some bugfixes &amp; cleanups&n; *               08/02/2001 Cornelia Huck not already known devices can be blacklisted&n; *                                        by piping to /proc/cio_ignore&n; */
+multiline_comment|/*&n; *  drivers/s390/s390io.c&n; *   S/390 common I/O routines&n; *&n; *  S390 version&n; *    Copyright (C) 1999, 2000 IBM Deutschland Entwicklung GmbH,&n; *                             IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com) &n; *    ChangeLog: 01/07/2001 Blacklist cleanup (djbarrow@de.ibm.com,barrow_dj@yahoo.com)&n; *               01/04/2001 Holger Smolinski (smolinsk@de.ibm.com)&n; *                          Fixed lost interrupts and do_adapter_IO&n; *               xx/xx/xxxx nnn          multiple changes not reflected&n; *               03/12/2001 Ingo Adlung  blacklist= - changed to cio_ignore=  &n; *               03/14/2001 Ingo Adlung  disable interrupts before start_IO&n; *                                        in Path Group processing &n; *                                       decrease retry2 on busy while &n; *                                        disabling sync_isc; reset isc_cnt&n; *                                        on io error during sync_isc enablement&n; *               05/09/2001 Cornelia Huck added exploitation of debug feature&n; *               05/16/2001 Cornelia Huck added /proc/deviceinfo/&lt;devno&gt;/&n; *               05/22/2001 Cornelia Huck added /proc/cio_ignore&n; *                                        un-ignore blacklisted devices by piping &n; *                                        to /proc/cio_ignore&n; *               xx/xx/xxxx some bugfixes &amp; cleanups&n; *               08/02/2001 Cornelia Huck not already known devices can be blacklisted&n; *                                        by piping to /proc/cio_ignore&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -244,6 +244,7 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_void
 id|s390_redo_validation
@@ -252,6 +253,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|s390_validate_subchannel
@@ -342,6 +344,7 @@ r_int
 id|irq
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_static
 r_int
 id|chan_proc_init
@@ -350,6 +353,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#endif 
 r_static
 r_inline
 r_void
@@ -2961,6 +2965,7 @@ comma
 id|cio_notoper_setup
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|cio_proc_devinfo_setup
 r_static
 r_int
@@ -3015,6 +3020,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;cio_proc_devinfo_setup: invalid parameter &squot;%s&squot;&bslash;n&quot;
 comma
 id|parm
@@ -3033,6 +3039,7 @@ comma
 id|cio_proc_devinfo_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * register for adapter interrupts&n; *&n; * With HiperSockets the zSeries architecture provides for&n; *  means of adapter interrups, pseudo I/O interrupts that are&n; *  not tied to an I/O subchannel, but to an adapter. However,&n; *  it doesn&squot;t disclose the info how to enable/disable them, but&n; *  to recognize them only. Perhaps we should consider them&n; *  being shared interrupts, and thus build a linked list&n; *  of adapter handlers ... to be evaluated ...&n; */
 DECL|function|s390_register_adapter_interrupt
 r_int
@@ -15605,6 +15612,7 @@ id|pdevreg
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -15630,6 +15638,7 @@ id|devno
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 )brace
 id|irq
@@ -21268,6 +21277,7 @@ id|irq
 op_member_access_from_pointer
 id|nopfunc
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS&t;&t;&t;&t;&t; 
 multiline_comment|/* remove procfs entry */
 r_if
 c_cond
@@ -21280,6 +21290,7 @@ c_func
 id|dev_no
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * If the device has gone&n;&t;&t;&t;&t;&t; *  call not oper handler        &t;&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
@@ -21428,6 +21439,7 @@ id|pdevreg
 suffix:semicolon
 )brace
 multiline_comment|/* endif */
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* add new procfs entry */
 r_if
 c_cond
@@ -21454,6 +21466,7 @@ id|devno
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/*&n;&t;&t;&t;&t;&t; * ... it is and was operational, but&n;&t;&t;&t;&t;&t; *      the devno may have changed&n;&t;&t;&t;&t;&t; */
 r_else
@@ -21483,6 +21496,7 @@ l_int|NULL
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_PROC_FS
 r_int
 id|devno_old
 op_assign
@@ -21493,6 +21507,7 @@ id|irq
 op_member_access_from_pointer
 id|devno
 suffix:semicolon
+macro_line|#endif
 id|ioinfo
 (braket
 id|irq
@@ -21506,6 +21521,7 @@ comma
 id|DEVSTAT_REVALIDATE
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* remove old entry, add new */
 r_if
 c_cond
@@ -21531,10 +21547,12 @@ id|devno
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/* endif */
 )brace
 multiline_comment|/* endif */
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* get rid of dead procfs entries */
 r_if
 c_cond
@@ -21546,6 +21564,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* endif */
 r_break
@@ -22054,6 +22073,7 @@ c_func
 id|cio_debug_init
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* &n; * Display info on subchannels in /proc/subchannels. &n; * Adapted from procfs stuff in dasd.c by Cornelia Huck, 02/28/01.      &n; */
 r_typedef
 r_struct
@@ -24228,6 +24248,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Error, could not allocate procfs structure!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -24257,6 +24278,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Error, could not allocate procfs structure!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -24278,6 +24300,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Error, could not allocate procfs structure!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -25117,6 +25140,7 @@ suffix:semicolon
 macro_line|#ifdef CIO_DEBUG_IO
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;/proc/cio_ignore: &squot;%s&squot;&bslash;n&quot;
 comma
 id|buffer
@@ -25666,6 +25690,7 @@ id|cio_irq_proc_init
 )paren
 suffix:semicolon
 multiline_comment|/* end of procfs stuff */
+macro_line|#endif
 DECL|function|s390_get_schib
 id|schib_t
 op_star

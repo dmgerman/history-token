@@ -5660,12 +5660,21 @@ c_cond
 op_logical_neg
 id|journal
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EXT3-fs: Could not load journal inode&bslash;n&quot;
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren
 id|journal_inode
 )paren
 suffix:semicolon
+)brace
 r_return
 id|journal
 suffix:semicolon
@@ -6130,6 +6139,8 @@ id|es-&gt;s_journal_dev
 suffix:semicolon
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|really_read_only
@@ -6329,6 +6340,8 @@ comma
 id|EXT3_FEATURE_INCOMPAT_RECOVER
 )paren
 )paren
+id|err
+op_assign
 id|journal_wipe
 c_func
 (paren
@@ -6338,6 +6351,12 @@ op_logical_neg
 id|really_read_only
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|err
+)paren
 id|err
 op_assign
 id|journal_load
@@ -7672,6 +7691,18 @@ id|ext3_fs_type
 suffix:semicolon
 )brace
 id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Remy Card, Stephen Tweedie, Andrew Morton, Andreas Dilger, Theodore Ts&squot;o and others&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Second Extended Filesystem with journaling extensions&quot;
+)paren
 suffix:semicolon
 id|MODULE_LICENSE
 c_func

@@ -1019,6 +1019,17 @@ id|BLIST_SPARSELUN
 comma
 singleline_comment|// Chaparral G7324 RAID
 (brace
+l_string|&quot;CNSi&quot;
+comma
+l_string|&quot;G8324&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+)brace
+comma
+singleline_comment|// Chaparral G8324 RAID
+(brace
 l_string|&quot;Zzyzx&quot;
 comma
 l_string|&quot;RocketStor 500S&quot;
@@ -1063,6 +1074,26 @@ comma
 l_string|&quot;HP&quot;
 comma
 l_string|&quot;NetRAID-4M&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;ADAPTEC&quot;
+comma
+l_string|&quot;AACRAID&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;ADAPTEC&quot;
+comma
+l_string|&quot;Adaptec 5400S&quot;
 comma
 l_string|&quot;*&quot;
 comma

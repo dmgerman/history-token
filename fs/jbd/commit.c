@@ -98,6 +98,10 @@ r_int
 id|flags
 suffix:semicolon
 r_int
+id|err
+suffix:semicolon
+r_int
+r_int
 id|blocknr
 suffix:semicolon
 r_char
@@ -1012,6 +1016,22 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|descriptor
+)paren
+(brace
+id|__journal_abort_hard
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|bh
 op_assign
 id|jh2bh
@@ -1130,14 +1150,33 @@ id|BJ_LogCtl
 suffix:semicolon
 )brace
 multiline_comment|/* Where is the buffer to be written? */
-id|blocknr
+id|err
 op_assign
 id|journal_next_log_block
 c_func
 (paren
 id|journal
+comma
+op_amp
+id|blocknr
 )paren
 suffix:semicolon
+multiline_comment|/* If the block mapping failed, just abandon the buffer&n;&t;&t;   and repeat this loop: we&squot;ll fall into the&n;&t;&t;   refile-on-abort condition above. */
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|__journal_abort_hard
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* Bump b_count to prevent truncate from stumbling over&n;                   the shadowed buffer!  @@@ This can go if we ever get&n;                   rid of the BJ_IO/BJ_Shadow pairing of buffers. */
 id|atomic_inc
 c_func
@@ -1817,7 +1856,6 @@ comma
 l_string|&quot;JBD: commit phase 6&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Done it all: now write the commit record.  We should have&n;&t; * cleaned up our previous buffers by now, so if we are in abort&n;&t; * mode we can now just skip the rest of the journal write&n;&t; * entirely. */
 r_if
 c_cond
 (paren
@@ -1830,6 +1868,7 @@ id|journal
 r_goto
 id|skip_commit
 suffix:semicolon
+multiline_comment|/* Done it all: now write the commit record.  We should have&n;&t; * cleaned up our previous buffers by now, so if we are in abort&n;&t; * mode we can now just skip the rest of the journal write&n;&t; * entirely. */
 id|descriptor
 op_assign
 id|journal_get_descriptor_buffer
@@ -1838,6 +1877,23 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|descriptor
+)paren
+(brace
+id|__journal_abort_hard
+c_func
+(paren
+id|journal
+)paren
+suffix:semicolon
+r_goto
+id|skip_commit
+suffix:semicolon
+)brace
 multiline_comment|/* AKPM: buglet - add `i&squot; to tmp! */
 r_for
 c_loop

@@ -5057,8 +5057,9 @@ ques
 c_cond
 id|GFP_ATOMIC
 suffix:colon
-id|GFP_KERNEL
+id|GFP_NOIO
 suffix:semicolon
+multiline_comment|/* might be used for nfs */
 singleline_comment|// some devices want funky USB-level framing, for
 singleline_comment|// win32 driver (usually) and/or hardware quirks
 r_if

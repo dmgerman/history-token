@@ -726,7 +726,8 @@ comma
 id|ino
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|bad_inode
 suffix:semicolon
 )brace
 id|raw_inode
@@ -761,7 +762,8 @@ id|inode-&gt;i_dev
 )paren
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|bad_inode
 suffix:semicolon
 )brace
 multiline_comment|/* SystemV FS: kludge permissions if ino==SYSV_ROOT_INO ?? */
@@ -950,6 +952,18 @@ id|inode
 comma
 id|rdev
 )paren
+suffix:semicolon
+r_return
+suffix:semicolon
+id|bad_inode
+suffix:colon
+id|make_bad_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 DECL|function|sysv_update_inode

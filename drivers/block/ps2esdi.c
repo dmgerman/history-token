@@ -4618,7 +4618,8 @@ l_int|1
 id|spin_lock_irqsave
 c_func
 (paren
-id|ps2esdi_LOCK
+op_amp
+id|ps2esdi_lock
 comma
 id|flags
 )paren
@@ -4642,7 +4643,8 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|ps2esdi_LOCK
+op_amp
+id|ps2esdi_lock
 comma
 id|flags
 )paren

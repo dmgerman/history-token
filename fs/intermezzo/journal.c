@@ -4612,7 +4612,7 @@ c_func
 (paren
 id|D_JOURNAL
 comma
-l_string|&quot;reading prefix: off %ld, size %d&bslash;n&quot;
+l_string|&quot;reading prefix: off %ld, size %Zd&bslash;n&quot;
 comma
 (paren
 r_int

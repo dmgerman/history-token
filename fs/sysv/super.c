@@ -1555,6 +1555,12 @@ c_cond
 (paren
 op_logical_neg
 id|root_inode
+op_logical_or
+id|is_bad_inode
+c_func
+(paren
+id|root_inode
+)paren
 )paren
 (brace
 id|printk

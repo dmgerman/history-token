@@ -26560,7 +26560,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -26574,7 +26574,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -26651,7 +26651,7 @@ id|done_list
 id|NCR_LOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren
@@ -26665,7 +26665,7 @@ suffix:semicolon
 id|NCR_UNLOCK_SCSI_DONE
 c_func
 (paren
-id|np
+id|done_list-&gt;host
 comma
 id|flags
 )paren

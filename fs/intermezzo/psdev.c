@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/termios.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
@@ -529,7 +530,7 @@ id|count
 id|printk
 c_func
 (paren
-l_string|&quot;psdev_write: too much cnt: %d, cnt: %d, &quot;
+l_string|&quot;psdev_write: too much cnt: %d, cnt: %Zd, &quot;
 l_string|&quot;opc: %d, uniq: %d.&bslash;n&quot;
 comma
 id|req-&gt;rq_bufsize
@@ -666,7 +667,7 @@ c_func
 (paren
 id|D_PSDEV
 comma
-l_string|&quot;count %d&bslash;n&quot;
+l_string|&quot;count %Zd&bslash;n&quot;
 comma
 id|count
 )paren
@@ -772,7 +773,7 @@ id|req-&gt;rq_bufsize
 (brace
 id|printk
 (paren
-l_string|&quot;psdev_read: buffer too small, read %d of %d bytes&bslash;n&quot;
+l_string|&quot;psdev_read: buffer too small, read %Zd of %d bytes&bslash;n&quot;
 comma
 id|count
 comma
@@ -1004,7 +1005,7 @@ id|error
 id|printk
 c_func
 (paren
-l_string|&quot;psdev: can&squot;t copy %d bytes from %p to %p&bslash;n&quot;
+l_string|&quot;psdev: can&squot;t copy %Zd bytes from %p to %p&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -1828,7 +1829,7 @@ c_func
 (paren
 id|D_PSDEV
 comma
-l_string|&quot;get_kmlsize: size = %d&bslash;n&quot;
+l_string|&quot;get_kmlsize: size = %Zd&bslash;n&quot;
 comma
 id|size
 )paren
@@ -2511,7 +2512,7 @@ id|error
 id|printk
 c_func
 (paren
-l_string|&quot;psdev: can&squot;t copyin %d bytes from %p to %p&bslash;n&quot;
+l_string|&quot;psdev: can&squot;t copyin %Zd bytes from %p to %p&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -5205,7 +5206,7 @@ c_func
 (paren
 id|D_PSDEV
 comma
-l_string|&quot;valid are 0x%x - 0x%x, 0x%x - 0x%x &bslash;n&quot;
+l_string|&quot;valid are 0x%Zx - 0x%Zx, 0x%Zx - 0x%Zx &bslash;n&quot;
 comma
 id|PRESTO_GETMOUNT
 comma
@@ -6606,18 +6607,12 @@ c_func
 (paren
 id|D_UPCALL
 comma
-l_string|&quot;..process %d woken up by Lento for req at 0x%x, data at %x&bslash;n&quot;
+l_string|&quot;..process %d woken up by Lento for req at 0x%p, data at %p&bslash;n&quot;
 comma
 id|current-&gt;pid
 comma
-(paren
-r_int
-)paren
 id|req
 comma
-(paren
-r_int
-)paren
 id|req-&gt;rq_data
 )paren
 suffix:semicolon

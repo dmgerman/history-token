@@ -89,6 +89,8 @@ DECL|macro|MSR_K7_EVNTSEL0
 mdefine_line|#define MSR_K7_EVNTSEL0&t;&t;&t;0xC0010000
 DECL|macro|MSR_K7_PERFCTR0
 mdefine_line|#define MSR_K7_PERFCTR0&t;&t;&t;0xC0010004
+DECL|macro|MSR_K7_HWCR
+mdefine_line|#define MSR_K7_HWCR&t;&t;&t;0xC0010015
 multiline_comment|/* Centaur-Hauls/IDT defined MSRs. */
 DECL|macro|MSR_IDT_FCR1
 mdefine_line|#define MSR_IDT_FCR1&t;&t;&t;0x107

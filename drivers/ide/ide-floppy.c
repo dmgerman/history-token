@@ -8379,6 +8379,7 @@ id|failed
 op_increment
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* We must remove proc entries defined in this module.&n;&t;&t;   Otherwise we oops while accessing these entries */
 r_if
 c_cond
@@ -8393,6 +8394,7 @@ comma
 id|idefloppy_proc
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|ide_unregister_module
 c_func

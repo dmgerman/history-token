@@ -321,7 +321,7 @@ mdefine_line|#define J_ASSERT_JH(jh, expr)&t;J_ASSERT(expr)
 macro_line|#endif
 macro_line|#else
 DECL|macro|J_ASSERT
-mdefine_line|#define J_ASSERT(assert)
+mdefine_line|#define J_ASSERT(assert)&t;do { } while (0)
 macro_line|#endif&t;&t;/* JBD_ASSERTIONS */
 DECL|enum|jbd_state_bits
 r_enum
@@ -978,13 +978,15 @@ id|journal_t
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_int
 r_int
 id|journal_next_log_block
 c_func
 (paren
 id|journal_t
+op_star
+comma
+r_int
+r_int
 op_star
 )paren
 suffix:semicolon
@@ -1530,10 +1532,20 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|__journal_abort
+id|__journal_abort_hard
 (paren
 id|journal_t
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__journal_abort_soft
+(paren
+id|journal_t
+op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1572,17 +1584,18 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-r_int
 id|journal_bmap
 c_func
 (paren
 id|journal_t
 op_star
-id|journal
 comma
 r_int
 r_int
-id|blocknr
+comma
+r_int
+r_int
+op_star
 )paren
 suffix:semicolon
 r_extern
@@ -1592,7 +1605,6 @@ c_func
 (paren
 id|journal_t
 op_star
-id|journal
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * journal_head management&n; */

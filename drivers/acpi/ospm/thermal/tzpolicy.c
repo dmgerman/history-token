@@ -4,6 +4,7 @@ multiline_comment|/*&n; * TBD: 1. Support performance-limit control for non-proc
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;acpi.h&gt;
 macro_line|#include &lt;bm.h&gt;
 macro_line|#include &quot;tz.h&quot;

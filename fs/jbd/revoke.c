@@ -1577,6 +1577,14 @@ c_func
 id|journal
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|descriptor
+)paren
+r_return
+suffix:semicolon
 id|header
 op_assign
 (paren

@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;        /* copy_to/from_user */
 macro_line|#include &lt;linux/init.h&gt;         /* __initfunc et al. */
 macro_line|#include &lt;../drivers/net/syncppp.h&gt;
 macro_line|#else
+macro_line|#include &lt;asm/segment.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#endif
 DECL|macro|KMEM_SAFETYZONE
 mdefine_line|#define KMEM_SAFETYZONE 8

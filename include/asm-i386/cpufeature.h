@@ -61,6 +61,8 @@ DECL|macro|X86_FEATURE_XMM2
 mdefine_line|#define X86_FEATURE_XMM2&t;(0*32+26) /* Streaming SIMD Extensions-2 */
 DECL|macro|X86_FEATURE_SELFSNOOP
 mdefine_line|#define X86_FEATURE_SELFSNOOP&t;(0*32+27) /* CPU self snoop */
+DECL|macro|X86_FEATURE_HT
+mdefine_line|#define X86_FEATURE_HT&t;&t;(0*32+28) /* Hyper-Threading */
 DECL|macro|X86_FEATURE_ACC
 mdefine_line|#define X86_FEATURE_ACC&t;&t;(0*32+29) /* Automatic clock control */
 DECL|macro|X86_FEATURE_IA64

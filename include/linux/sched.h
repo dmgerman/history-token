@@ -1150,6 +1150,8 @@ DECL|macro|PF_MEMDIE
 mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
+DECL|macro|PF_NOIO
+mdefine_line|#define PF_NOIO&t;&t;0x00004000&t;/* avoid generating further I/O */
 DECL|macro|PF_USEDFPU
 mdefine_line|#define PF_USEDFPU&t;0x00100000&t;/* task used FPU this quantum (SMP) */
 multiline_comment|/*&n; * Ptrace flags&n; */

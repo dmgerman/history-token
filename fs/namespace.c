@@ -60,6 +60,14 @@ op_star
 id|sb
 )paren
 suffix:semicolon
+r_int
+id|__init
+id|init_rootfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|mount_hashtable
 r_static
 r_struct

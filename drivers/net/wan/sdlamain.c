@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/inetdevice.h&gt;
 DECL|macro|netdevice_t
 mdefine_line|#define netdevice_t struct device 
 macro_line|#else
+macro_line|#include &lt;asm/segment.h&gt;
 DECL|macro|devinet_ioctl
 mdefine_line|#define devinet_ioctl(x,y) dev_ioctl(x,y)
 DECL|macro|netdevice_t
