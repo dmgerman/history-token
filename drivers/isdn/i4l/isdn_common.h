@@ -267,6 +267,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
+r_struct
+id|list_head
+id|isdn_net_devs
+suffix:semicolon
+r_extern
 r_int
 id|isdn_get_free_slot
 c_func

@@ -809,11 +809,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* device bounded to ippp device ? */
-id|isdn_net_dev
+r_struct
+id|list_head
 op_star
-id|net_dev
-op_assign
-id|dev-&gt;netdev
+id|l
 suffix:semicolon
 r_char
 id|exclusive
@@ -832,19 +831,36 @@ comma
 id|ISDN_MAX_CHANNELS
 )paren
 suffix:semicolon
-r_while
-c_loop
+multiline_comment|/* step through net devices to find exclusive minors */
+id|list_for_each
+c_func
 (paren
-id|net_dev
+id|l
+comma
+op_amp
+id|isdn_net_devs
 )paren
 (brace
-multiline_comment|/* step through net devices to find exclusive minors */
+id|isdn_net_dev
+op_star
+id|p
+op_assign
+id|list_entry
+c_func
+(paren
+id|l
+comma
+id|isdn_net_dev
+comma
+id|global_list
+)paren
+suffix:semicolon
 id|isdn_net_local
 op_star
 id|lp
 op_assign
 op_amp
-id|net_dev-&gt;local
+id|p-&gt;local
 suffix:semicolon
 r_if
 c_cond
@@ -859,10 +875,6 @@ id|lp-&gt;pppbind
 )braket
 op_assign
 l_int|1
-suffix:semicolon
-id|net_dev
-op_assign
-id|net_dev-&gt;next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * search a free device / slot&n;&t;&t; */
