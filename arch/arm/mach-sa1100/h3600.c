@@ -1239,7 +1239,7 @@ id|h3600_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual&t;       physical    length      domain&t;  r  w&t;c  b */
+multiline_comment|/* virtual&t;       physical    length      type */
 (brace
 id|H3600_EGPIO_VIRT
 comma
@@ -1247,15 +1247,7 @@ l_int|0x49000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* EGPIO 0&t;&t; CS#5 */
@@ -1266,15 +1258,7 @@ l_int|0x10000000
 comma
 l_int|0x02800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* static memory bank 2  CS#2 */
@@ -1285,19 +1269,9 @@ l_int|0x40000000
 comma
 l_int|0x00800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* static memory bank 4  CS#4 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|h3600_map_io
@@ -1319,6 +1293,12 @@ id|iotable_init
 c_func
 (paren
 id|h3600_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|h3600_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart_fns

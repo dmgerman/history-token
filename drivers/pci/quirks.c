@@ -1598,8 +1598,7 @@ id|PCI_FIXUP_FINAL
 comma
 id|PCI_VENDOR_ID_VIA
 comma
-l_int|0x3112
-multiline_comment|/* Not out yet ? */
+id|PCI_DEVICE_ID_VIA_8361
 comma
 id|quirk_vialatency
 )brace

@@ -290,6 +290,8 @@ op_amp
 id|rtas_log_lock
 )paren
 suffix:semicolon
+id|error
+op_assign
 id|copy_to_user
 c_func
 (paren
@@ -299,9 +301,11 @@ id|tmp
 comma
 id|count
 )paren
-suffix:semicolon
-id|error
-op_assign
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 id|count
 suffix:semicolon
 id|out

@@ -108,14 +108,6 @@ id|sa1100fb_lcd_power
 op_assign
 id|freebird_lcd_power
 suffix:semicolon
-id|set_GPIO_IRQ_edge
-c_func
-(paren
-id|GPIO_FREEBIRD_UCB1300
-comma
-id|GPIO_RISING_EDGE
-)paren
-suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -138,7 +130,7 @@ id|freebird_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -146,15 +138,7 @@ l_int|0x12000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Board Control Register */
@@ -165,18 +149,8 @@ l_int|0x19000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|freebird_map_io
@@ -198,6 +172,12 @@ id|iotable_init
 c_func
 (paren
 id|freebird_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|freebird_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

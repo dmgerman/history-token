@@ -126,15 +126,6 @@ id|kmem_cache_t
 op_star
 id|ntfs_attr_ctx_cache
 suffix:semicolon
-multiline_comment|/* The little endian Unicode string $I30 as a global constant. */
-r_extern
-r_const
-id|uchar_t
-id|I30
-(braket
-l_int|5
-)braket
-suffix:semicolon
 multiline_comment|/* The various operations structs defined throughout the driver files. */
 r_extern
 r_struct
@@ -494,26 +485,6 @@ c_func
 r_const
 id|s64
 id|time
-)paren
-suffix:semicolon
-multiline_comment|/* From fs/ntfs/dir.c */
-r_extern
-id|u64
-id|ntfs_lookup_inode_by_name
-c_func
-(paren
-id|ntfs_inode
-op_star
-id|dir_ni
-comma
-r_const
-id|uchar_t
-op_star
-id|uname
-comma
-r_const
-r_int
-id|uname_len
 )paren
 suffix:semicolon
 multiline_comment|/* From fs/ntfs/unistr.c */

@@ -2329,6 +2329,15 @@ l_int|0
 )brace
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmp
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|tmp-&gt;d_parent
 op_assign
 id|tmp

@@ -65,7 +65,7 @@ id|cerf_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual&t; physical    length&t; domain     r  w  c  b */
+multiline_comment|/* virtual&t; physical    length&t; type */
 (brace
 l_int|0xf0000000
 comma
@@ -73,19 +73,11 @@ l_int|0x08000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* Crystal Ethernet Chip */
 macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
+comma
 (brace
 l_int|0xf1000000
 comma
@@ -93,15 +85,7 @@ l_int|0x40000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* CPLD Chip */
@@ -112,15 +96,7 @@ l_int|0x10000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* CerfPDA Bluetooth */
@@ -131,20 +107,10 @@ l_int|0x18000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* CerfPDA Serial */
 macro_line|#endif
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|cerf_map_io
@@ -166,6 +132,12 @@ id|iotable_init
 c_func
 (paren
 id|cerf_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|cerf_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

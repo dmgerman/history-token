@@ -151,7 +151,7 @@ id|huw_webpanel_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -159,15 +159,7 @@ l_int|0xc1fb8000
 comma
 l_int|0x00048000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Parameter */
@@ -178,19 +170,9 @@ l_int|0x18000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* Paules CS3, write only */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|huw_webpanel_map_io
@@ -212,6 +194,12 @@ id|iotable_init
 c_func
 (paren
 id|huw_webpanel_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|huw_webpanel_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

@@ -1377,9 +1377,9 @@ id|statfs
 suffix:colon
 id|simple_statfs
 comma
-id|put_inode
+id|drop_inode
 suffix:colon
-id|force_delete
+id|generic_delete_inode
 comma
 )brace
 suffix:semicolon

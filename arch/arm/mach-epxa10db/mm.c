@@ -1,11 +1,8 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-epxa10db/mm.c&n; *&n; *  MM routines for Altera&squot;a Epxa10db board&n; *&n; *  Copyright (C) 2001 Altera Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 multiline_comment|/* Page table mapping for I/O region */
@@ -30,11 +27,7 @@ id|EXC_REGISTERS_BASE
 comma
 id|SZ_16K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -48,11 +41,7 @@ id|EXC_PLD_BLOCK0_BASE
 comma
 id|SZ_16K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -66,11 +55,7 @@ id|EXC_PLD_BLOCK1_BASE
 comma
 id|SZ_16K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -84,11 +69,7 @@ id|EXC_PLD_BLOCK2_BASE
 comma
 id|SZ_16K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -102,11 +83,7 @@ id|EXC_PLD_BLOCK3_BASE
 comma
 id|SZ_16K
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -120,14 +97,8 @@ id|EXC_EBI_BLOCK0_BASE
 comma
 id|SZ_16M
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|epxa10db_map_io
@@ -143,6 +114,12 @@ id|iotable_init
 c_func
 (paren
 id|epxa10db_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|epxa10db_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

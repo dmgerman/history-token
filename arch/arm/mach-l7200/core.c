@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-lusl7200.c&n; *&n; *  Copyright (C) 2000 Steve Hill (sjhill@cotw.com)&n; *&n; *  Extra MM routines for L7200 architecture&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -178,15 +179,7 @@ id|IO_START
 comma
 id|IO_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -196,15 +189,7 @@ id|IO_START_2
 comma
 id|IO_SIZE_2
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -214,15 +199,7 @@ id|AUX_START
 comma
 id|AUX_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -232,15 +209,7 @@ id|FLASH1_START
 comma
 id|FLASH1_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -250,18 +219,8 @@ id|FLASH2_START
 comma
 id|FLASH2_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|l7200_map_io
@@ -278,6 +237,12 @@ id|iotable_init
 c_func
 (paren
 id|l7200_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|l7200_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

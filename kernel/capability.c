@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997  Andrew Main &lt;zefram@fysh.org&gt;&n; * Integrated into 2.1.97+,  Andrew G. Morgan &lt;morgan@transmeta.com&gt;&n; */
+multiline_comment|/*&n; * linux/kernel/capability.c&n; *&n; * Copyright (C) 1997  Andrew Main &lt;zefram@fysh.org&gt;&n; *&n; * Integrated into 2.1.97+,  Andrew G. Morgan &lt;morgan@transmeta.com&gt;&n; * 30 May 2002:&t;Cleanup, Robert M. Love &lt;rml@tech9.net&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|securebits
@@ -14,7 +14,7 @@ id|cap_bset
 op_assign
 id|CAP_INIT_EFF_SET
 suffix:semicolon
-multiline_comment|/* Note: never hold tasklist_lock while spinning for this one */
+multiline_comment|/*&n; * This global lock protects task-&gt;cap_* for all tasks including current.&n; * Locking rule: acquire this prior to tasklist_lock.&n; */
 DECL|variable|task_capability_lock
 id|spinlock_t
 id|task_capability_lock
@@ -22,6 +22,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * For sys_getproccap() and sys_setproccap(), any of the three&n; * capability set pointers may be NULL -- indicating that that set is&n; * uninteresting and/or not to be changed.&n; */
+multiline_comment|/*&n; * sys_capget - get the capabilities of a given process.&n; */
 DECL|function|sys_capget
 id|asmlinkage
 r_int
@@ -36,15 +37,17 @@ id|dataptr
 )paren
 (brace
 r_int
-id|error
-comma
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|pid_t
 id|pid
 suffix:semicolon
 id|__u32
 id|version
 suffix:semicolon
-r_struct
-id|task_struct
+id|task_t
 op_star
 id|target
 suffix:semicolon
@@ -68,11 +71,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -80,32 +78,26 @@ id|version
 op_ne
 id|_LINUX_CAPABILITY_VERSION
 )paren
-(brace
-id|version
-op_assign
-id|_LINUX_CAPABILITY_VERSION
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|put_user
 c_func
 (paren
-id|version
+id|_LINUX_CAPABILITY_VERSION
 comma
 op_amp
 id|header-&gt;version
 )paren
 )paren
-id|error
-op_assign
+r_return
 op_minus
 id|EFAULT
 suffix:semicolon
 r_return
-id|error
+op_minus
+id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -133,10 +125,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|error
-op_assign
-l_int|0
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -144,16 +132,6 @@ op_amp
 id|task_capability_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pid
-op_logical_and
-id|pid
-op_ne
-id|current-&gt;pid
-)paren
-(brace
 id|read_lock
 c_func
 (paren
@@ -169,33 +147,22 @@ c_func
 id|pid
 )paren
 suffix:semicolon
-multiline_comment|/* identify target of query */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|target
 )paren
-id|error
+(brace
+id|ret
 op_assign
 op_minus
 id|ESRCH
 suffix:semicolon
-)brace
-r_else
-(brace
-id|target
-op_assign
-id|current
+r_goto
+id|out
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
-)paren
-(brace
 id|data.permitted
 op_assign
 id|cap_t
@@ -220,14 +187,8 @@ c_func
 id|target-&gt;cap_effective
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|target
-op_ne
-id|current
-)paren
+id|out
+suffix:colon
 id|read_unlock
 c_func
 (paren
@@ -246,12 +207,8 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|error
-)paren
-(brace
-r_if
-c_cond
-(paren
+id|ret
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -268,14 +225,14 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
-id|error
+id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* set capabilities for all processes in a given process group */
+multiline_comment|/*&n; * cap_set_pg - set capabilities for all processes in a given process&n; * group.  We call this holding task_capability_lock and tasklist_lock.&n; */
 DECL|function|cap_set_pg
 r_static
+r_inline
 r_void
 id|cap_set_pg
 c_func
@@ -296,18 +253,9 @@ op_star
 id|permitted
 )paren
 (brace
-r_struct
-id|task_struct
+id|task_t
 op_star
 id|target
-suffix:semicolon
-multiline_comment|/* FIXME: do we need to have a write lock here..? */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
 suffix:semicolon
 id|for_each_task
 c_func
@@ -340,17 +288,11 @@ op_star
 id|permitted
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/* set capabilities for all processes other than 1 and self */
+multiline_comment|/*&n; * cap_set_all - set capabilities for all processes other than init&n; * and self.  We call this holding task_capability_lock and tasklist_lock.&n; */
 DECL|function|cap_set_all
 r_static
+r_inline
 r_void
 id|cap_set_all
 c_func
@@ -368,20 +310,10 @@ op_star
 id|permitted
 )paren
 (brace
-r_struct
-id|task_struct
+id|task_t
 op_star
 id|target
 suffix:semicolon
-multiline_comment|/* FIXME: do we need to have a write lock here..? */
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-multiline_comment|/* ALL means everyone other than self or &squot;init&squot; */
 id|for_each_task
 c_func
 (paren
@@ -417,15 +349,8 @@ op_star
 id|permitted
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/*&n; * The restrictions on setting capabilities are specified as:&n; *&n; * [pid is for the &squot;target&squot; task.  &squot;current&squot; is the calling task.]&n; *&n; * I: any raised capabilities must be a subset of the (old current) Permitted&n; * P: any raised capabilities must be a subset of the (old current) permitted&n; * E: must be set to a subset of (new target) Permitted&n; */
+multiline_comment|/*&n; * sys_capset - set capabilities for a given process, all processes, or all&n; * processes in a given process group.&n; *&n; * The restrictions on setting capabilities are specified as:&n; *&n; * [pid is for the &squot;target&squot; task.  &squot;current&squot; is the calling task.]&n; *&n; * I: any raised capabilities must be a subset of the (old current) permitted&n; * P: any raised capabilities must be a subset of the (old current) permitted&n; * E: must be set to a subset of (new target) permitted&n; */
 DECL|function|sys_capset
 id|asmlinkage
 r_int
@@ -450,14 +375,14 @@ suffix:semicolon
 id|__u32
 id|version
 suffix:semicolon
-r_struct
-id|task_struct
+id|task_t
 op_star
 id|target
 suffix:semicolon
 r_int
-id|error
-comma
+id|ret
+suffix:semicolon
+id|pid_t
 id|pid
 suffix:semicolon
 r_if
@@ -483,18 +408,13 @@ id|version
 op_ne
 id|_LINUX_CAPABILITY_VERSION
 )paren
-(brace
-id|version
-op_assign
-id|_LINUX_CAPABILITY_VERSION
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|put_user
 c_func
 (paren
-id|version
+id|_LINUX_CAPABILITY_VERSION
 comma
 op_amp
 id|header-&gt;version
@@ -508,7 +428,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -593,16 +512,18 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
 op_amp
 id|task_capability_lock
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 r_if
@@ -617,13 +538,6 @@ op_ne
 id|current-&gt;pid
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
 id|target
 op_assign
 id|find_task_by_pid
@@ -632,7 +546,6 @@ c_func
 id|pid
 )paren
 suffix:semicolon
-multiline_comment|/* identify target of query */
 r_if
 c_cond
 (paren
@@ -640,7 +553,7 @@ op_logical_neg
 id|target
 )paren
 (brace
-id|error
+id|ret
 op_assign
 op_minus
 id|ESRCH
@@ -651,12 +564,15 @@ suffix:semicolon
 )brace
 )brace
 r_else
-(brace
 id|target
 op_assign
 id|current
 suffix:semicolon
-)brace
+id|ret
+op_assign
+op_minus
+id|EPERM
+suffix:semicolon
 multiline_comment|/* verify restrictions on target&squot;s new Inheritable set */
 r_if
 c_cond
@@ -676,11 +592,9 @@ id|current-&gt;cap_permitted
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* verify restrictions on target&squot;s new Permitted set */
 r_if
 c_cond
@@ -700,11 +614,9 @@ id|current-&gt;cap_permitted
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 multiline_comment|/* verify the _new_Effective_ is a subset of the _new_Permitted_ */
 r_if
 c_cond
@@ -718,13 +630,10 @@ comma
 id|permitted
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
-multiline_comment|/* having verified that the proposed changes are legal,&n;           we now put them into effect. */
-id|error
+id|ret
 op_assign
 l_int|0
 suffix:semicolon
@@ -776,13 +685,9 @@ op_amp
 id|permitted
 )paren
 suffix:semicolon
-r_goto
-id|spin_out
-suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* FIXME: do we need to have a write lock here..? */
 id|target-&gt;cap_effective
 op_assign
 id|effective
@@ -798,14 +703,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-r_if
-c_cond
-(paren
-id|target
-op_ne
-id|current
-)paren
-(brace
 id|read_unlock
 c_func
 (paren
@@ -813,9 +710,6 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-)brace
-id|spin_out
-suffix:colon
 id|spin_unlock
 c_func
 (paren
@@ -824,7 +718,7 @@ id|task_capability_lock
 )paren
 suffix:semicolon
 r_return
-id|error
+id|ret
 suffix:semicolon
 )brace
 eof

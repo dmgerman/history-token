@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * direct.c - Low-level direct PCI config space access&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Functions for accessing PCI configuration space with type 1 accesses&n; */
 DECL|macro|PCI_CONF1_ADDRESS

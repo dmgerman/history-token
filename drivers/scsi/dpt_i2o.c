@@ -4867,7 +4867,7 @@ comma
 id|current
 )paren
 suffix:semicolon
-id|wq_write_lock_irqsave
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
@@ -4886,7 +4886,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|wq_write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4970,7 +4970,7 @@ id|pHba-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
-id|wq_write_lock_irq
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -4987,7 +4987,7 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|wq_write_unlock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp

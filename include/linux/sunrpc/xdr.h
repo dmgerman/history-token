@@ -471,7 +471,6 @@ id|xdr_buf
 op_star
 comma
 r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -484,7 +483,6 @@ id|xdr_buf
 op_star
 comma
 r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -496,20 +494,6 @@ r_struct
 id|xdr_buf
 op_star
 comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|xdr_zero_buf
-c_func
-(paren
-r_struct
-id|xdr_buf
-op_star
-comma
-r_int
 r_int
 )paren
 suffix:semicolon

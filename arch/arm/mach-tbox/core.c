@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/mm-tbox.c&n; *&n; *  Copyright (C) 1998, 1999, 2000 Phil Blundell&n; *  Copyright (C) 1998-1999 Russell King&n; *&n; *  Extra MM routines for the Tbox architecture&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -225,18 +226,8 @@ id|IO_START
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|tbox_map_io
@@ -253,6 +244,12 @@ id|iotable_init
 c_func
 (paren
 id|tbox_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|tbox_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

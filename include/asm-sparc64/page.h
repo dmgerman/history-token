@@ -54,6 +54,9 @@ id|page
 suffix:semicolon
 DECL|macro|clear_page
 mdefine_line|#define clear_page(X)&t;_clear_page((void *)(X))
+r_struct
+id|page
+suffix:semicolon
 r_extern
 r_void
 id|clear_user_page
@@ -61,11 +64,16 @@ c_func
 (paren
 r_void
 op_star
-id|page
+id|addr
 comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|page
 )paren
 suffix:semicolon
 r_extern
@@ -84,6 +92,11 @@ comma
 r_int
 r_int
 id|vaddr
+comma
+r_struct
+id|page
+op_star
+id|topage
 )paren
 suffix:semicolon
 multiline_comment|/* GROSS, defining this makes gcc pass these types as aggregates,&n; * and thus on the stack, turn this crap off... -DaveM&n; */

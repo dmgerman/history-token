@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &quot;volume.h&quot;
+macro_line|#include &quot;types.h&quot;
 multiline_comment|/*&n; * Constant endianness conversion defines.&n; */
 DECL|macro|const_le16_to_cpu
 mdefine_line|#define const_le16_to_cpu(x)&t;__constant_le16_to_cpu(x)
@@ -1222,7 +1222,7 @@ multiline_comment|/*&n; * File attribute flags (32-bit).&n; */
 r_typedef
 r_enum
 (brace
-multiline_comment|/*&n;&t; * These flags are only presnt in the STANDARD_INFORMATION attribute&n;&t; * (in the field file_attributes).&n;&t; */
+multiline_comment|/*&n;&t; * These flags are only present in the STANDARD_INFORMATION attribute&n;&t; * (in the field file_attributes).&n;&t; */
 DECL|enumerator|FILE_ATTR_READONLY
 id|FILE_ATTR_READONLY
 op_assign

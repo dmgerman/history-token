@@ -29,6 +29,17 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+r_extern
+r_void
+id|signal_wake_up
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|t
+)paren
+suffix:semicolon
 DECL|variable|software_suspend_enabled
 r_int
 r_char
@@ -154,7 +165,6 @@ id|resume_device
 suffix:semicolon
 multiline_comment|/* Local variables that should not be affected by save */
 DECL|variable|__nosavedata
-r_static
 r_int
 r_int
 id|nr_copy_pages
@@ -171,7 +181,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travels through memory not to&n;   collide with anything.&n; */
 DECL|variable|__nosavedata
-r_static
 id|suspend_pagedir_t
 op_star
 id|pagedir_nosave
@@ -181,8 +190,8 @@ l_int|NULL
 suffix:semicolon
 DECL|variable|pagedir_save
 r_static
-r_int
-r_int
+id|suspend_pagedir_t
+op_star
 id|pagedir_save
 suffix:semicolon
 DECL|variable|__nosavedata
@@ -696,10 +705,6 @@ id|PAGE_SIZE
 suffix:semicolon
 id|sh-&gt;suspend_pagedir
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|pagedir_nosave
 suffix:semicolon
 r_if
@@ -727,6 +732,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is our sync function. With this solution we probably won&squot;t sleep&n; * but that should not be a problem since tasks are stopped..&n; */
 DECL|function|do_suspend_sync
 r_static
+r_inline
 r_void
 id|do_suspend_sync
 c_func
@@ -734,38 +740,12 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
 id|blk_run_queues
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#error this is broken, FIXME
-r_if
-c_cond
-(paren
-op_logical_neg
-id|TQ_ACTIVE
-c_func
-(paren
-id|tq_disk
-)paren
-)paren
-r_break
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Hm, tq_disk is not empty after run_task_queue&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
+macro_line|#warning This might be broken. We need to somehow wait for data to reach the disk
 )brace
 multiline_comment|/* We memorize in swapfile_used what swap devices are used for suspension */
 DECL|macro|SWAPFILE_UNUSED
@@ -1348,9 +1328,6 @@ r_int
 r_int
 id|address
 suffix:semicolon
-id|kdev_t
-id|suspend_device
-suffix:semicolon
 id|PRINTS
 c_func
 (paren
@@ -1458,8 +1435,11 @@ suffix:semicolon
 (brace
 r_int
 id|dummy1
-comma
-id|dummy2
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|suspend_file
 suffix:semicolon
 id|get_swaphandle_info
 c_func
@@ -1470,7 +1450,7 @@ op_amp
 id|dummy1
 comma
 op_amp
-id|suspend_device
+id|suspend_file
 )paren
 suffix:semicolon
 )brace
@@ -3202,7 +3182,6 @@ multiline_comment|/* NOTREACHED */
 )brace
 multiline_comment|/*&n; * Magic happens here&n; */
 DECL|function|do_magic_resume_1
-r_static
 r_void
 id|do_magic_resume_1
 c_func
@@ -3243,7 +3222,6 @@ suffix:semicolon
 multiline_comment|/* We do not want some readahead with DMA to corrupt our memory, right?&n;&t;&t;&t;   Do it with disabled interrupts for best effect. That way, if some&n;&t;&t;&t;   driver scheduled DMA, we have good chance for DMA to finish ;-). */
 )brace
 DECL|function|do_magic_resume_2
-r_static
 r_void
 id|do_magic_resume_2
 c_func
@@ -3286,6 +3264,10 @@ suffix:semicolon
 id|free_suspend_pagedir
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|pagedir_save
 )paren
 suffix:semicolon
@@ -3346,7 +3328,6 @@ multiline_comment|/* Hmm, is this the problem? */
 macro_line|#endif
 )brace
 DECL|function|do_magic_suspend_1
-r_static
 r_void
 id|do_magic_suspend_1
 c_func
@@ -3373,7 +3354,6 @@ id|suspend_pagedir_lock
 suffix:semicolon
 )brace
 DECL|function|do_magic_suspend_2
-r_static
 r_void
 id|do_magic_suspend_2
 c_func
@@ -4417,6 +4397,7 @@ id|__init
 id|name_to_kdev_t
 c_func
 (paren
+r_const
 r_char
 op_star
 id|line
@@ -4506,7 +4487,11 @@ c_func
 (paren
 l_string|&quot;Resuming from device %x&bslash;n&quot;
 comma
+id|kdev_t_to_nr
+c_func
+(paren
 id|resume_device
+)paren
 )paren
 suffix:semicolon
 DECL|macro|READTO

@@ -6453,9 +6453,9 @@ id|delete_inode
 suffix:colon
 id|shmem_delete_inode
 comma
-id|put_inode
+id|drop_inode
 suffix:colon
-id|force_delete
+id|generic_delete_inode
 comma
 id|put_super
 suffix:colon

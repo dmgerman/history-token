@@ -1396,7 +1396,7 @@ id|current-&gt;fsgid
 op_assign
 id|current-&gt;gid
 suffix:semicolon
-multiline_comment|/* Clear the capabilities if we switch to a non-root user */
+multiline_comment|/*&n;&t; * Clear the capabilities if we switch to a non-root user&n;&t; *&n;&t; * FIXME: There is a race here against sys_capset.  The&n;&t; * capabilities can change yet we will restore the old&n;&t; * value below.  We should hold task_capabilities_lock,&n;&t; * but we cannot because user_path_walk can sleep.&n;&t; */
 r_if
 c_cond
 (paren

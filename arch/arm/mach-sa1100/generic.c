@@ -332,7 +332,7 @@ c_func
 id|sa1100fb_lcd_power
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Common I/O mapping:&n; *&n; * Typically, static virtual address mappings are as follow:&n; *&n; * 0xe8000000-0xefffffff:&t;flash memory (especially when multiple flash&n; * &t;&t;&t;&t;banks need to be mapped contigously)&n; * 0xf0000000-0xf3ffffff:&t;miscellaneous stuff (CPLDs, etc.)&n; * 0xf4000000-0xf4ffffff:&t;SA-1111&n; * 0xf5000000-0xf5ffffff:&t;reserved (used by cache flushing area)&n; * 0xf6000000-0xfffeffff:&t;reserved (internal SA1100 IO defined above)&n; * 0xffff0000-0xffff0fff:&t;SA1100 exception vectors&n; * 0xffff2000-0xffff2fff:&t;Minicache copy_user_page area&n; *&n; * Below 0xe8000000 is reserved for vm allocation.&n; *&n; * The machine specific code must provide the extra mapping beside the&n; * default mapping provided here.&n; */
+multiline_comment|/*&n; * Common I/O mapping:&n; *&n; * Typically, static virtual address mappings are as follow:&n; *&n; * 0xf0000000-0xf3ffffff:&t;miscellaneous stuff (CPLDs, etc.)&n; * 0xf4000000-0xf4ffffff:&t;SA-1111&n; * 0xf5000000-0xf5ffffff:&t;reserved (used by cache flushing area)&n; * 0xf6000000-0xfffeffff:&t;reserved (internal SA1100 IO defined above)&n; * 0xffff0000-0xffff0fff:&t;SA1100 exception vectors&n; * 0xffff2000-0xffff2fff:&t;Minicache copy_user_page area&n; *&n; * Below 0xe8000000 is reserved for vm allocation.&n; *&n; * The machine specific code must provide the extra mapping beside the&n; * default mapping provided here.&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -343,7 +343,7 @@ id|standard_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf8000000
 comma
@@ -351,15 +351,7 @@ l_int|0x80000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* PCM */
@@ -370,15 +362,7 @@ l_int|0x90000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* SCM */
@@ -389,15 +373,7 @@ l_int|0xa0000000
 comma
 l_int|0x00100000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* MER */
@@ -408,19 +384,9 @@ l_int|0xb0000000
 comma
 l_int|0x00200000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* LCD + DMA */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|sa1100_map_io
@@ -436,6 +402,12 @@ id|iotable_init
 c_func
 (paren
 id|standard_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|standard_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

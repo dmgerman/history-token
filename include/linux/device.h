@@ -408,6 +408,17 @@ id|drv
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|remove_driver
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|driver_for_each_dev
 c_func

@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; */
+multiline_comment|/*&n; * SA1100 Power Management Routines&n; *&n; * Copyright (c) 2001 Cliff Brake &lt;cbrake@accelent.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License.&n; *&n; * History:&n; *&n; * 2001-02-06:&t;Cliff Brake         Initial code&n; *&n; * 2001-02-25:&t;Sukjae Cho &lt;sjcho@east.isi.edu&gt; &amp;&n; * &t;&t;Chester Kuo &lt;chester@linux.org.tw&gt;&n; * &t;&t;&t;Save more value for the resume function! Support&n; * &t;&t;&t;Bitsy/Assabet/Freebird board&n; *&n; * 2001-08-29:&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;&t;&t;Cleaned up, pushed platform dependent stuff&n; * &t;&t;&t;in the platform specific files.&n; *&n; * 2002-05-27:&t;Nicolas Pitre&t;Killed sleep.h and the kmalloced save array.&n; * &t;&t;&t;&t;Storage is local on the stack now.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -13,7 +12,6 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
-macro_line|#include &quot;sleep.h&quot;
 multiline_comment|/*&n; * Debug macros&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -33,23 +31,70 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-op_star
-id|sleep_save
-suffix:semicolon
-multiline_comment|/* virtual address */
-r_extern
-r_int
-r_int
-id|sleep_save_p
-suffix:semicolon
-multiline_comment|/* physical address */
 DECL|macro|SAVE
 mdefine_line|#define SAVE(x)&t;&t;sleep_save[SLEEP_SAVE_##x] = x
 DECL|macro|RESTORE
 mdefine_line|#define RESTORE(x)&t;x = sleep_save[SLEEP_SAVE_##x]
+multiline_comment|/*&n; * List of global SA11x0 peripheral registers to preserve.&n; * More ones like CP and general purpose register values are preserved&n; * on the stack and then the stack pointer is stored last in sleep.S.&n; */
+DECL|enumerator|SLEEP_SAVE_SP
+r_enum
+(brace
+id|SLEEP_SAVE_SP
+op_assign
+l_int|0
+comma
+DECL|enumerator|SLEEP_SAVE_OSCR
+DECL|enumerator|SLEEP_SAVE_OIER
+id|SLEEP_SAVE_OSCR
+comma
+id|SLEEP_SAVE_OIER
+comma
+DECL|enumerator|SLEEP_SAVE_OSMR0
+DECL|enumerator|SLEEP_SAVE_OSMR1
+DECL|enumerator|SLEEP_SAVE_OSMR2
+DECL|enumerator|SLEEP_SAVE_OSMR3
+id|SLEEP_SAVE_OSMR0
+comma
+id|SLEEP_SAVE_OSMR1
+comma
+id|SLEEP_SAVE_OSMR2
+comma
+id|SLEEP_SAVE_OSMR3
+comma
+DECL|enumerator|SLEEP_SAVE_GPDR
+DECL|enumerator|SLEEP_SAVE_GRER
+DECL|enumerator|SLEEP_SAVE_GFER
+DECL|enumerator|SLEEP_SAVE_GAFR
+id|SLEEP_SAVE_GPDR
+comma
+id|SLEEP_SAVE_GRER
+comma
+id|SLEEP_SAVE_GFER
+comma
+id|SLEEP_SAVE_GAFR
+comma
+DECL|enumerator|SLEEP_SAVE_PPDR
+DECL|enumerator|SLEEP_SAVE_PPSR
+DECL|enumerator|SLEEP_SAVE_PPAR
+DECL|enumerator|SLEEP_SAVE_PSDR
+id|SLEEP_SAVE_PPDR
+comma
+id|SLEEP_SAVE_PPSR
+comma
+id|SLEEP_SAVE_PPAR
+comma
+id|SLEEP_SAVE_PSDR
+comma
+DECL|enumerator|SLEEP_SAVE_ICMR
+id|SLEEP_SAVE_ICMR
+comma
+DECL|enumerator|SLEEP_SAVE_Ser1SDCR0
+id|SLEEP_SAVE_Ser1SDCR0
+comma
+DECL|enumerator|SLEEP_SAVE_SIZE
+id|SLEEP_SAVE_SIZE
+)brace
+suffix:semicolon
 DECL|function|pm_do_suspend
 r_int
 id|pm_do_suspend
@@ -58,39 +103,12 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* set up pointer to sleep parameters */
-id|sleep_save
-op_assign
-id|kmalloc
-c_func
-(paren
-id|SLEEP_SAVE_SIZE
-op_star
-r_sizeof
-(paren
 r_int
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
+r_int
 id|sleep_save
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-id|sleep_save_p
-op_assign
-id|virt_to_phys
-c_func
-(paren
-id|sleep_save
-)paren
+(braket
+id|SLEEP_SAVE_SIZE
+)braket
 suffix:semicolon
 id|cli
 c_func
@@ -388,11 +406,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kfree
-(paren
-id|sleep_save
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Restore the CPU frequency settings.&n;&t; */
 macro_line|#ifdef CONFIG_CPU_FREQ
 id|cpufreq_restore
@@ -403,6 +416,25 @@ suffix:semicolon
 macro_line|#endif
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|sleep_phys_sp
+r_int
+r_int
+id|sleep_phys_sp
+c_func
+(paren
+r_void
+op_star
+id|sp
+)paren
+(brace
+r_return
+id|virt_to_phys
+c_func
+(paren
+id|sp
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SYSCTL

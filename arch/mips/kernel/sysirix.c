@@ -4718,11 +4718,7 @@ op_star
 id|tv
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|retval
-op_assign
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -4743,9 +4739,6 @@ op_minus
 id|EFAULT
 suffix:colon
 l_int|0
-suffix:semicolon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|macro|IRIX_MAP_AUTOGROW

@@ -4757,6 +4757,9 @@ id|udi.PRIM_type
 op_assign
 id|T_UNITDATA_IND
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -4764,6 +4767,10 @@ id|udi.SRC_length
 comma
 id|ctl_len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|udi.SRC_offset
 op_assign
@@ -4778,6 +4785,9 @@ id|udi.OPT_offset
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -4791,7 +4801,7 @@ r_sizeof
 id|udi
 )paren
 )paren
-suffix:semicolon
+op_logical_or
 id|put_user
 c_func
 (paren
@@ -4804,6 +4814,10 @@ id|udi.SRC_length
 comma
 id|ctl_len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|SOLD
 c_func
@@ -4813,6 +4827,10 @@ l_string|&quot;udi done&quot;
 suffix:semicolon
 )brace
 r_else
+(brace
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -4820,7 +4838,12 @@ l_int|0
 comma
 id|ctl_len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|put_user
 c_func
 (paren

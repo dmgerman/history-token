@@ -5618,6 +5618,9 @@ id|data.physical
 op_assign
 id|dev_priv-&gt;overlay_physical
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -5635,6 +5638,10 @@ r_sizeof
 id|data
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0

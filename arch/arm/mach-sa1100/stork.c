@@ -1108,26 +1108,7 @@ id|stork_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
-(brace
-l_int|0xe8000000
-comma
-l_int|0x00000000
-comma
-l_int|0x02000000
-comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Flash bank 0 */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 id|STORK_VM_BASE_CS1
 comma
@@ -1135,15 +1116,7 @@ id|STORK_VM_OFF_CS1
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* EGPIO 0 */
@@ -1154,15 +1127,7 @@ l_int|0x10000000
 comma
 l_int|0x02800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* static memory bank 2 */
@@ -1173,19 +1138,9 @@ l_int|0x40000000
 comma
 l_int|0x00800000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* static memory bank 4 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 r_int
@@ -1206,6 +1161,12 @@ id|iotable_init
 c_func
 (paren
 id|stork_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|stork_io_desc
+)paren
 )paren
 suffix:semicolon
 id|sa1100_register_uart

@@ -1083,10 +1083,6 @@ id|i
 comma
 id|err
 op_assign
-l_int|0
-suffix:semicolon
-id|err
-op_or_assign
 id|__get_user
 c_func
 (paren

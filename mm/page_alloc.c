@@ -24,22 +24,26 @@ DECL|variable|nr_swap_pages
 r_int
 id|nr_swap_pages
 suffix:semicolon
-DECL|variable|inactive_list
-r_struct
-id|list_head
-id|inactive_list
-suffix:semicolon
 DECL|variable|active_list
-r_struct
-id|list_head
+id|LIST_HEAD
+c_func
+(paren
 id|active_list
+)paren
+suffix:semicolon
+DECL|variable|inactive_list
+id|LIST_HEAD
+c_func
+(paren
+id|inactive_list
+)paren
 suffix:semicolon
 DECL|variable|pgdat_list
 id|pg_data_t
 op_star
 id|pgdat_list
 suffix:semicolon
-multiline_comment|/* Used to look up the address of the struct zone encoded in page-&gt;zone */
+multiline_comment|/*&n; * Used by page_zone() to look up the address of the struct zone whose&n; * id is encoded in the upper bits of page-&gt;flags&n; */
 DECL|variable|zone_table
 id|zone_t
 op_star
@@ -128,21 +132,6 @@ l_int|255
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Free_page() adds the page to the free lists. This is optimized for&n; * fast normal cases (no error jumps taken normally).&n; *&n; * The way to optimize jumps for gcc-2.2.2 is to:&n; *  - select the &quot;normal&quot; case and put it inside the if () { XXX }&n; *  - no else-statements if you can avoid them&n; *&n; * With the above two rules, you get a straight-line execution path&n; * for the normal case, giving better asm-code.&n; */
-DECL|macro|memlist_init
-mdefine_line|#define memlist_init(x) INIT_LIST_HEAD(x)
-DECL|macro|memlist_add_head
-mdefine_line|#define memlist_add_head list_add
-DECL|macro|memlist_add_tail
-mdefine_line|#define memlist_add_tail list_add_tail
-DECL|macro|memlist_del
-mdefine_line|#define memlist_del list_del
-DECL|macro|memlist_entry
-mdefine_line|#define memlist_entry list_entry
-DECL|macro|memlist_next
-mdefine_line|#define memlist_next(x) ((x)-&gt;next)
-DECL|macro|memlist_prev
-mdefine_line|#define memlist_prev(x) ((x)-&gt;prev)
 multiline_comment|/*&n; * Temporary debugging check.&n; */
 DECL|macro|BAD_RANGE
 mdefine_line|#define BAD_RANGE(zone, page)&t;&t;&t;&t;&t;&t;&bslash;&n;(&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((page) - mem_map) &gt;= ((zone)-&gt;zone_start_mapnr+(zone)-&gt;size))&t;&bslash;&n;&t;|| (((page) - mem_map) &lt; (zone)-&gt;zone_start_mapnr)&t;&t;&bslash;&n;&t;|| ((zone) != page_zone(page))&t;&t;&t;&t;&t;&bslash;&n;)
@@ -482,7 +471,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|memlist_del
+id|list_del
 c_func
 (paren
 op_amp
@@ -505,7 +494,7 @@ op_and_assign
 id|mask
 suffix:semicolon
 )brace
-id|memlist_add_head
+id|list_add
 c_func
 (paren
 op_amp
@@ -647,7 +636,7 @@ id|size
 op_rshift_assign
 l_int|1
 suffix:semicolon
-id|memlist_add_head
+id|list_add
 c_func
 (paren
 op_amp
@@ -790,11 +779,7 @@ id|area-&gt;free_list
 suffix:semicolon
 id|curr
 op_assign
-id|memlist_next
-c_func
-(paren
-id|head
-)paren
+id|head-&gt;next
 suffix:semicolon
 r_if
 c_cond
@@ -810,7 +795,7 @@ id|index
 suffix:semicolon
 id|page
 op_assign
-id|memlist_entry
+id|list_entry
 c_func
 (paren
 id|curr
@@ -837,7 +822,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|memlist_del
+id|list_del
 c_func
 (paren
 id|curr
@@ -2934,11 +2919,7 @@ suffix:semicolon
 (brace
 id|curr
 op_assign
-id|memlist_next
-c_func
-(paren
-id|curr
-)paren
+id|curr-&gt;next
 suffix:semicolon
 r_if
 c_cond
@@ -3453,20 +3434,6 @@ comma
 id|realtotalpages
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|active_list
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|inactive_list
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Some architectures (with lots of mem and discontinous memory&n;&t; * maps) have to search for a good mem_map area:&n;&t; * For discontigmem, the conceptual mem map array starts from &n;&t; * PAGE_OFFSET, we need to align the actual array onto a mem map &n;&t; * boundary, so that MAP_NR works.&n;&t; */
 id|map_size
 op_assign
@@ -3893,7 +3860,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|memlist_init
+id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
@@ -3944,7 +3911,7 @@ r_int
 r_int
 id|bitmap_size
 suffix:semicolon
-id|memlist_init
+id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp

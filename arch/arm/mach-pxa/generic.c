@@ -233,7 +233,7 @@ id|standard_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf6000000
 comma
@@ -241,15 +241,7 @@ l_int|0x20000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* PCMCIA0 IO */
@@ -260,15 +252,7 @@ l_int|0x30000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* PCMCIA1 IO */
@@ -279,15 +263,7 @@ l_int|0x40000000
 comma
 l_int|0x01400000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Devs */
@@ -298,15 +274,7 @@ l_int|0x44000000
 comma
 l_int|0x00200000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LCD */
@@ -317,19 +285,9 @@ l_int|0x48000000
 comma
 l_int|0x00200000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* Mem Ctl */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|pxa_map_io
@@ -345,6 +303,12 @@ id|iotable_init
 c_func
 (paren
 id|standard_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|standard_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

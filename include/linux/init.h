@@ -39,8 +39,8 @@ DECL|macro|__define_initcall
 mdefine_line|#define __define_initcall(level,fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.initcall&quot; level &quot;.init&quot;))) = fn
 DECL|macro|core_initcall
 mdefine_line|#define core_initcall(fn)&t;&t;__define_initcall(&quot;1&quot;,fn)
-DECL|macro|unused_initcall
-mdefine_line|#define unused_initcall(fn)&t;&t;__define_initcall(&quot;2&quot;,fn)
+DECL|macro|postcore_initcall
+mdefine_line|#define postcore_initcall(fn)&t;&t;__define_initcall(&quot;2&quot;,fn)
 DECL|macro|arch_initcall
 mdefine_line|#define arch_initcall(fn)&t;&t;__define_initcall(&quot;3&quot;,fn)
 DECL|macro|subsys_initcall
@@ -166,8 +166,8 @@ DECL|macro|__setup
 mdefine_line|#define __setup(str,func) /* nothing */
 DECL|macro|core_initcall
 mdefine_line|#define core_initcall(fn)&t;&t;module_init(fn)
-DECL|macro|unused_initcall
-mdefine_line|#define unused_initcall(fn)&t;&t;module_init(fn)
+DECL|macro|postcore_initcall
+mdefine_line|#define postcore_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|arch_initcall
 mdefine_line|#define arch_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|subsys_initcall

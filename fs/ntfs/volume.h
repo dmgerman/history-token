@@ -3,49 +3,34 @@ macro_line|#ifndef _LINUX_NTFS_VOLUME_H
 DECL|macro|_LINUX_NTFS_VOLUME_H
 mdefine_line|#define _LINUX_NTFS_VOLUME_H
 macro_line|#include &quot;types.h&quot;
-multiline_comment|/* These are used to determine which inode names are returned by readdir(). */
+multiline_comment|/*&n; * Defined bits for the flags field in the ntfs_volume structure.&n; */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|SHOW_SYSTEM
-id|SHOW_SYSTEM
-op_assign
-l_int|1
+DECL|enumerator|NV_ShowSystemFiles
+id|NV_ShowSystemFiles
 comma
-DECL|enumerator|SHOW_WIN32
-id|SHOW_WIN32
-op_assign
-l_int|2
+multiline_comment|/* 1: Return system files in ntfs_readdir(). */
+DECL|enumerator|NV_CaseSensitive
+id|NV_CaseSensitive
 comma
-DECL|enumerator|SHOW_DOS
-id|SHOW_DOS
-op_assign
-l_int|4
-comma
-DECL|enumerator|SHOW_POSIX
-id|SHOW_POSIX
-op_assign
-id|SHOW_WIN32
-op_or
-id|SHOW_DOS
-comma
-DECL|enumerator|SHOW_ALL
-id|SHOW_ALL
-op_assign
-id|SHOW_SYSTEM
-op_or
-id|SHOW_POSIX
-comma
-DECL|typedef|READDIR_OPTIONS
+multiline_comment|/* 1: Treat file names as case sensitive and&n;&t;&t;&t;&t;      create filenames in the POSIX namespace.&n;&t;&t;&t;&t;      Otherwise be case insensitive and create&n;&t;&t;&t;&t;      file names in WIN32 namespace. */
+DECL|typedef|ntfs_volume_flags
 )brace
-id|READDIR_OPTIONS
+id|ntfs_volume_flags
 suffix:semicolon
-DECL|macro|RHideSystemFiles
-mdefine_line|#define RHideSystemFiles(x)&t;(!((x) &amp; SHOW_SYSTEM))
-DECL|macro|RHideLongNames
-mdefine_line|#define RHideLongNames(x)&t;(!((x) &amp; SHOW_WIN32))
-DECL|macro|RHideDosNames
-mdefine_line|#define RHideDosNames(x)&t;(!((x) &amp; SHOW_DOS))
+DECL|macro|NVolShowSystemFiles
+mdefine_line|#define NVolShowSystemFiles(n_vol)&t;test_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
+DECL|macro|NVolSetShowSystemFiles
+mdefine_line|#define NVolSetShowSystemFiles(n_vol)&t;set_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
+DECL|macro|NVolClearShowSystemFiles
+mdefine_line|#define NVolClearShowSystemFiles(n_vol)&t;clear_bit(NV_ShowSystemFiles,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
+DECL|macro|NVolCaseSensitive
+mdefine_line|#define NVolCaseSensitive(n_vol)&t;test_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
+DECL|macro|NVolSetCaseSensitive
+mdefine_line|#define NVolSetCaseSensitive(n_vol)&t;set_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
+DECL|macro|NVolClearCaseSensitive
+mdefine_line|#define NVolClearCaseSensitive(n_vol)&t;clear_bit(NV_CaseSensitive,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&amp;(n_vol)-&gt;flags)
 multiline_comment|/*&n; * The NTFS in memory super block structure.&n; */
 r_typedef
 r_struct
@@ -65,6 +50,12 @@ id|nr_blocks
 suffix:semicolon
 multiline_comment|/* Number of NTFS_BLOCK_SIZE bytes&n;&t;&t;&t;&t;&t;   sized blocks on the device. */
 multiline_comment|/* Configuration provided by user at mount time. */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Miscellaneous flags, see above. */
 DECL|member|uid
 id|uid_t
 id|uid
@@ -85,11 +76,6 @@ id|mode_t
 id|dmask
 suffix:semicolon
 multiline_comment|/* The mask for directory&n;&t;&t;&t;&t;&t;   permissions. */
-DECL|member|readdir_opts
-id|READDIR_OPTIONS
-id|readdir_opts
-suffix:semicolon
-multiline_comment|/* Namespace of inode names to show. */
 DECL|member|mft_zone_multiplier
 id|u8
 id|mft_zone_multiplier

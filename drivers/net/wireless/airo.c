@@ -428,28 +428,6 @@ macro_line|#ifndef RUN_AT
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies+(x))
 macro_line|#endif
-macro_line|#ifndef PDE
-DECL|function|PDE
-r_static
-r_inline
-r_struct
-id|proc_dir_entry
-op_star
-id|PDE
-c_func
-(paren
-r_const
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-id|inode-&gt;u.generic_ip
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* These variables are for insmod, since it seems that the rates&n;   can only be set in setup_card.  Rates should be a comma separated&n;   (no spaces) list of rates (up to 8). */
 DECL|variable|rates
 r_static
@@ -2042,7 +2020,7 @@ DECL|macro|AIROGSTATSD32
 mdefine_line|#define AIROGSTATSD32&t;&t;10
 multiline_comment|/* Leave gap of 40 commands after AIROGSTATSD32 for future */
 DECL|macro|AIROPCAP
-mdefine_line|#define AIROPCAP               &t;AIROGSTATSD32 + 40
+mdefine_line|#define AIROPCAP&t;&t;AIROGSTATSD32 + 40
 DECL|macro|AIROPVLIST
 mdefine_line|#define AIROPVLIST              AIROPCAP      + 1
 DECL|macro|AIROPSLIST
@@ -2751,6 +2729,7 @@ id|spinlock_t
 id|aux_lock
 suffix:semicolon
 DECL|member|flags
+r_int
 r_int
 id|flags
 suffix:semicolon

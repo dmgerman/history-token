@@ -1739,7 +1739,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ATA: 100%% native mode on irq&bslash;n&quot;
+l_string|&quot;ATA: 100%% native mode on irq %s&bslash;n&quot;
 comma
 id|__irq_itoa
 c_func

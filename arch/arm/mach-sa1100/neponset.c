@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/neponset.c&n; *&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -13,7 +14,9 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
+macro_line|#include &lt;asm/arch/neponset.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
+macro_line|#include &lt;asm/sizes.h&gt;
 macro_line|#include &quot;sa1111.h&quot;
 DECL|variable|neponset_device
 r_static
@@ -683,23 +686,15 @@ id|neponset_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length type */
 (brace
 l_int|0xf3000000
 comma
 l_int|0x10000000
 comma
-l_int|0x00100000
+id|SZ_1M
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* System Registers */
@@ -708,21 +703,11 @@ l_int|0xf4000000
 comma
 l_int|0x40000000
 comma
-l_int|0x00100000
+id|SZ_1M
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* SA-1111 */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|neponset_map_io
@@ -738,6 +723,12 @@ id|iotable_init
 c_func
 (paren
 id|neponset_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|neponset_io_desc
+)paren
 )paren
 suffix:semicolon
 )brace

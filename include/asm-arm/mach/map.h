@@ -18,44 +18,26 @@ r_int
 r_int
 id|length
 suffix:semicolon
-DECL|member|domain
+DECL|member|type
 r_int
-id|domain
-suffix:colon
-l_int|4
-comma
-DECL|member|prot_read
-id|prot_read
-suffix:colon
-l_int|1
-comma
-DECL|member|prot_write
-id|prot_write
-suffix:colon
-l_int|1
-comma
-DECL|member|cacheable
-id|cacheable
-suffix:colon
-l_int|1
-comma
-DECL|member|bufferable
-id|bufferable
-suffix:colon
-l_int|1
-comma
-DECL|member|last
-id|last
-suffix:colon
-l_int|1
+r_int
+id|type
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|LAST_DESC
-mdefine_line|#define LAST_DESC &bslash;&n;  { last: 1 }
 r_struct
 id|meminfo
 suffix:semicolon
+DECL|macro|MT_DEVICE
+mdefine_line|#define MT_DEVICE&t;0
+DECL|macro|MT_CACHECLEAN
+mdefine_line|#define MT_CACHECLEAN&t;1
+DECL|macro|MT_MINICLEAN
+mdefine_line|#define MT_MINICLEAN&t;2
+DECL|macro|MT_VECTORS
+mdefine_line|#define MT_VECTORS&t;3
+DECL|macro|MT_MEMORY
+mdefine_line|#define MT_MEMORY&t;4
 r_extern
 r_void
 id|create_memmap_holes
@@ -84,6 +66,8 @@ c_func
 r_struct
 id|map_desc
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

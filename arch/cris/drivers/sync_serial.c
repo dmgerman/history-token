@@ -3295,6 +3295,9 @@ id|ports
 id|dev
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3304,6 +3307,10 @@ id|buf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|port-&gt;outp
 op_assign
@@ -3554,6 +3561,9 @@ id|ppos
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3563,6 +3573,10 @@ id|buf
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|add_wait_queue
 c_func
@@ -3857,6 +3871,9 @@ id|avail
 suffix:colon
 id|count
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3866,6 +3883,10 @@ id|start
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 multiline_comment|/* Disable interrupts while updating readp */
 id|save_flags

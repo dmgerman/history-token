@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Exceptions for specific devices. Usually work-arounds for fatal design flaws.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|function|pci_fixup_i450nx
 r_static
@@ -725,6 +726,36 @@ comma
 id|PCI_DEVICE_ID_INTEL_82371AB_3
 comma
 id|pci_fixup_piix4_acpi
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801CA_10
+comma
+id|pci_fixup_ide_trash
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801CA_11
+comma
+id|pci_fixup_ide_trash
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801DB_9
+comma
+id|pci_fixup_ide_trash
 )brace
 comma
 (brace

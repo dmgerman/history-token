@@ -10,6 +10,7 @@ mdefine_line|#define PSCHED_CPU &t;&t;3
 DECL|macro|PSCHED_CLOCK_SOURCE
 mdefine_line|#define PSCHED_CLOCK_SOURCE&t;PSCHED_JIFFIES
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;
 macro_line|#ifdef CONFIG_X86_TSC
@@ -837,7 +838,7 @@ mdefine_line|#define PSCHED_JSCALE 0
 macro_line|#endif
 DECL|macro|PSCHED_EXPORTLIST_2
 mdefine_line|#define PSCHED_EXPORTLIST_2
-macro_line|#if ~0UL == 0xFFFFFFFF
+macro_line|#if BITS_PER_LONG &lt;= 32
 DECL|macro|PSCHED_WATCHER
 mdefine_line|#define PSCHED_WATCHER unsigned long
 r_extern

@@ -218,9 +218,9 @@ mdefine_line|#define get_thread_info(ti)&t;get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti)&t;put_task_struct((ti)-&gt;task)
 DECL|macro|thread_saved_pc
-mdefine_line|#define thread_saved_pc(tsk)&t;(pc_pointer((tsk)-&gt;thread_info-&gt;cpu_context.pc))
+mdefine_line|#define thread_saved_pc(tsk)&t;&bslash;&n;&t;((unsigned long)(pc_pointer((tsk)-&gt;thread_info-&gt;cpu_context.pc)))
 DECL|macro|thread_saved_fp
-mdefine_line|#define thread_saved_fp(tsk)&t;((tsk)-&gt;thread_info-&gt;cpu_context.fp)
+mdefine_line|#define thread_saved_fp(tsk)&t;&bslash;&n;&t;((unsigned long)((tsk)-&gt;thread_info-&gt;cpu_context.fp))
 macro_line|#else /* !__ASSEMBLY__ */
 DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;0

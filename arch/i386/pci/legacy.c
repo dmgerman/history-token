@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * legacy.c - traditional, old school PCI bus probing&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/*&n; * Discover remaining PCI buses in case there are peer host bridges.&n; * We use the number of last PCI bus provided by the PCI BIOS.&n; */

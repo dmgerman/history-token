@@ -838,6 +838,9 @@ id|n
 op_assign
 id|count
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -850,6 +853,10 @@ id|ppos
 comma
 id|n
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 op_star
 id|ppos

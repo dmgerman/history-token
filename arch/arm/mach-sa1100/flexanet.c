@@ -377,7 +377,7 @@ id|flexanet_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 (brace
 l_int|0xf0000000
 comma
@@ -385,15 +385,7 @@ l_int|0x10000000
 comma
 l_int|0x00001000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Board Control Register */
@@ -404,15 +396,7 @@ l_int|0x18000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Ethernet controller */
@@ -423,15 +407,7 @@ l_int|0x40000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* Instrument boards */
@@ -442,19 +418,9 @@ l_int|0x48000000
 comma
 l_int|0x01000000
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
 multiline_comment|/* External peripherals */
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|flexanet_map_io
@@ -476,6 +442,12 @@ id|iotable_init
 c_func
 (paren
 id|flexanet_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|flexanet_io_desc
+)paren
 )paren
 suffix:semicolon
 id|flexanet_serial_init

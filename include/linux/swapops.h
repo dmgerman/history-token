@@ -2,7 +2,7 @@ multiline_comment|/*&n; * swapcache pages are stored in the swapper_space radix 
 DECL|macro|SWP_TYPE_SHIFT
 mdefine_line|#define SWP_TYPE_SHIFT(e)&t;(sizeof(e.val) * 8 - MAX_SWAPFILES_SHIFT)
 DECL|macro|SWP_OFFSET_MASK
-mdefine_line|#define SWP_OFFSET_MASK(e)&t;((1 &lt;&lt; SWP_TYPE_SHIFT(e)) - 1)
+mdefine_line|#define SWP_OFFSET_MASK(e)&t;((1UL &lt;&lt; SWP_TYPE_SHIFT(e)) - 1)
 multiline_comment|/*&n; * Store a type+offset into a swp_entry_t in an arch-independent format&n; */
 DECL|function|swp_entry
 r_static
@@ -24,6 +24,10 @@ suffix:semicolon
 id|ret.val
 op_assign
 (paren
+(paren
+r_int
+r_int
+)paren
 id|type
 op_lshift
 id|SWP_TYPE_SHIFT

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/idp.c&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; *&n; *  Copyright (c) 2001 Cliff Brake, Accelent Systems Inc.&n; *&n; *  2001-09-13: Cliff Brake &lt;cbrake@accelent.com&gt;&n; *              Initial code&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -170,7 +171,7 @@ id|idp_io_desc
 id|__initdata
 op_assign
 (brace
-multiline_comment|/* virtual     physical    length      domain     r  w  c  b */
+multiline_comment|/* virtual     physical    length      type */
 macro_line|#ifndef PXA_IDP_REV02
 (brace
 id|IDP_CTRL_PORT_BASE
@@ -179,15 +180,7 @@ id|IDP_CTRL_PORT_PHYS
 comma
 id|IDP_CTRL_PORT_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 macro_line|#endif
@@ -198,15 +191,7 @@ id|IDP_IDE_PHYS
 comma
 id|IDP_IDE_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -216,15 +201,7 @@ id|IDP_ETH_PHYS
 comma
 id|IDP_ETH_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -234,15 +211,7 @@ id|IDP_COREVOLT_PHYS
 comma
 id|IDP_COREVOLT_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
 comma
 (brace
@@ -252,18 +221,8 @@ id|IDP_CPLD_PHYS
 comma
 id|IDP_CPLD_SIZE
 comma
-id|DOMAIN_IO
-comma
-l_int|0
-comma
-l_int|1
-comma
-l_int|0
-comma
-l_int|0
+id|MT_DEVICE
 )brace
-comma
-id|LAST_DESC
 )brace
 suffix:semicolon
 DECL|function|idp_map_io
@@ -285,6 +244,12 @@ id|iotable_init
 c_func
 (paren
 id|idp_io_desc
+comma
+id|ARRAY_SIZE
+c_func
+(paren
+id|idp_io_desc
+)paren
 )paren
 suffix:semicolon
 id|set_GPIO_IRQ_edge
