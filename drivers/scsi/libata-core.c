@@ -6090,8 +6090,6 @@ l_string|&quot;CRD-8400B&quot;
 comma
 l_string|&quot;CRD-8480B&quot;
 comma
-l_string|&quot;CRD-8480C&quot;
-comma
 l_string|&quot;CRD-8482B&quot;
 comma
 l_string|&quot;CRD-84&quot;
