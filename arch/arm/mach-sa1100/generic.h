@@ -137,4 +137,17 @@ r_int
 id|nr
 )paren
 suffix:semicolon
+r_struct
+id|irda_platform_data
+suffix:semicolon
+r_void
+id|sa11x0_set_irda_data
+c_func
+(paren
+r_struct
+id|irda_platform_data
+op_star
+id|irda
+)paren
+suffix:semicolon
 eof
