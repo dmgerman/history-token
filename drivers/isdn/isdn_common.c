@@ -10865,14 +10865,6 @@ id|k
 (brace
 id|devfs_unregister
 (paren
-id|dev-&gt;devfs_handle_isdnX
-(braket
-id|k
-)braket
-)paren
-suffix:semicolon
-id|devfs_unregister
-(paren
 id|dev-&gt;devfs_handle_isdnctrlX
 (braket
 id|k
@@ -11079,8 +11071,6 @@ r_int
 id|dummy
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|isdn_unregister_devfs
 r_static
@@ -11092,8 +11082,6 @@ r_int
 id|dummy
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|isdn_init_devfs
 r_static
@@ -11104,8 +11092,6 @@ c_func
 r_void
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|isdn_cleanup_devfs
 r_static
@@ -11116,8 +11102,6 @@ c_func
 r_void
 )paren
 (brace
-r_return
-suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_DEVFS_FS */
 multiline_comment|/*&n; * Allocate and initialize all data, register modem-devices&n; */
