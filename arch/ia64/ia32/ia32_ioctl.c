@@ -53,6 +53,7 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/if_tun.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/ncp_fs.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/rfcomm.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
