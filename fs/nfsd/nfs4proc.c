@@ -3247,6 +3247,11 @@ op_amp
 id|op-&gt;u.lock
 )paren
 suffix:semicolon
+id|op-&gt;replay
+op_assign
+op_amp
+id|op-&gt;u.lock.lk_stateowner-&gt;so_replay
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -3756,7 +3761,7 @@ id|status
 op_assign
 id|op-&gt;status
 op_assign
-id|NFS_OK
+id|op-&gt;replay-&gt;rp_status
 suffix:semicolon
 )brace
 r_else

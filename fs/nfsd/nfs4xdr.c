@@ -11040,12 +11040,13 @@ c_func
 id|op-&gt;opnum
 )paren
 suffix:semicolon
-id|WRITE32
-c_func
-(paren
-id|NFS_OK
-)paren
+op_star
+id|p
+op_increment
+op_assign
+id|rp-&gt;rp_status
 suffix:semicolon
+multiline_comment|/* already xdr&squot;ed */
 id|ADJUST_ARGS
 c_func
 (paren
