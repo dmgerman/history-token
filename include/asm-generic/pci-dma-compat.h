@@ -76,6 +76,8 @@ comma
 id|size
 comma
 id|dma_handle
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace

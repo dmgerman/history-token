@@ -3,7 +3,7 @@ DECL|macro|_ASM_I386_DMA_MAPPING_H
 mdefine_line|#define _ASM_I386_DMA_MAPPING_H
 macro_line|#include &lt;asm/cache.h&gt;
 DECL|macro|dma_alloc_noncoherent
-mdefine_line|#define dma_alloc_noncoherent(d, s, h) dma_alloc_coherent(d, s, h)
+mdefine_line|#define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
 DECL|macro|dma_free_noncoherent
 mdefine_line|#define dma_free_noncoherent(d, s, v, h) dma_free_coherent(d, s, v, h)
 r_void
@@ -22,6 +22,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 suffix:semicolon
 r_void

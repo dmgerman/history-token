@@ -1945,6 +1945,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_void
@@ -1980,7 +1983,7 @@ op_star
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|flag
 comma
 id|get_order
 c_func

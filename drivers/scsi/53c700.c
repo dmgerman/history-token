@@ -387,6 +387,8 @@ id|TOTAL_MEM_SIZE
 comma
 op_amp
 id|pScript
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

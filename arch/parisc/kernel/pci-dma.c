@@ -1556,6 +1556,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_int
@@ -1600,7 +1603,7 @@ op_assign
 id|__get_free_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|flag
 comma
 id|order
 )paren
@@ -2271,6 +2274,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_return
@@ -2295,6 +2301,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_void
@@ -2311,7 +2320,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|flag
 )paren
 suffix:semicolon
 r_if

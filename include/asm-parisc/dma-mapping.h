@@ -43,6 +43,9 @@ comma
 id|dma_addr_t
 op_star
 id|iova
+comma
+r_int
+id|flag
 )paren
 suffix:semicolon
 DECL|member|alloc_noncoherent
@@ -64,6 +67,9 @@ comma
 id|dma_addr_t
 op_star
 id|iova
+comma
+r_int
+id|flag
 )paren
 suffix:semicolon
 DECL|member|free_consistent
@@ -278,6 +284,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_return
@@ -291,6 +300,8 @@ comma
 id|size
 comma
 id|dma_handle
+comma
+id|flag
 )paren
 suffix:semicolon
 )brace
@@ -313,6 +324,9 @@ comma
 id|dma_addr_t
 op_star
 id|dma_handle
+comma
+r_int
+id|flag
 )paren
 (brace
 r_return
@@ -326,6 +340,8 @@ comma
 id|size
 comma
 id|dma_handle
+comma
+id|flag
 )paren
 suffix:semicolon
 )brace
