@@ -563,7 +563,7 @@ c_func
 id|major
 )paren
 suffix:semicolon
-id|write_lock
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -674,7 +674,7 @@ op_assign
 id|cd
 suffix:semicolon
 )brace
-id|write_unlock
+id|write_unlock_irq
 c_func
 (paren
 op_amp
@@ -769,7 +769,7 @@ c_func
 id|major
 )paren
 suffix:semicolon
-id|write_lock
+id|write_lock_irq
 c_func
 (paren
 op_amp
@@ -876,7 +876,7 @@ id|cd
 )paren
 suffix:semicolon
 )brace
-id|write_unlock
+id|write_unlock_irq
 c_func
 (paren
 op_amp
