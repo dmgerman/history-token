@@ -4761,6 +4761,11 @@ r_int
 id|bmp_pos
 op_amp
 (paren
+r_int
+r_int
+r_int
+)paren
+(paren
 (paren
 id|PAGE_CACHE_SIZE
 op_star
@@ -5426,6 +5431,11 @@ r_int
 )paren
 id|ia_start
 op_plus
+(paren
+r_int
+r_int
+r_int
+)paren
 (paren
 (paren
 id|u8
