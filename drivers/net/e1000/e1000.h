@@ -66,6 +66,23 @@ DECL|macro|E1000_ERR
 mdefine_line|#define E1000_ERR(args...) printk(KERN_ERR &quot;e1000: &quot; args)
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
+multiline_comment|/* How many descriptors for TX and RX ? */
+DECL|macro|E1000_DEFAULT_TXD
+mdefine_line|#define E1000_DEFAULT_TXD                  256
+DECL|macro|E1000_MAX_TXD
+mdefine_line|#define E1000_MAX_TXD                      256
+DECL|macro|E1000_MIN_TXD
+mdefine_line|#define E1000_MIN_TXD                       80
+DECL|macro|E1000_MAX_82544_TXD
+mdefine_line|#define E1000_MAX_82544_TXD               4096
+DECL|macro|E1000_DEFAULT_RXD
+mdefine_line|#define E1000_DEFAULT_RXD                  256
+DECL|macro|E1000_MAX_RXD
+mdefine_line|#define E1000_MAX_RXD                      256
+DECL|macro|E1000_MIN_RXD
+mdefine_line|#define E1000_MIN_RXD                       80
+DECL|macro|E1000_MAX_82544_RXD
+mdefine_line|#define E1000_MAX_82544_RXD               4096
 multiline_comment|/* Supported Rx Buffer Sizes */
 DECL|macro|E1000_RXBUFFER_2048
 mdefine_line|#define E1000_RXBUFFER_2048  2048

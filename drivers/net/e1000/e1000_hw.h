@@ -1077,6 +1077,9 @@ id|mc_addr_count
 comma
 r_uint32
 id|pad
+comma
+r_uint32
+id|rar_used_count
 )paren
 suffix:semicolon
 r_uint32
@@ -1318,7 +1321,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 )paren
 suffix:semicolon
@@ -1344,7 +1348,8 @@ id|e1000_hw
 op_star
 id|hw
 comma
-r_uint32
+r_int
+r_int
 id|port
 comma
 r_uint32
@@ -2844,7 +2849,8 @@ id|e1000_ffe_config
 id|ffe_config_state
 suffix:semicolon
 DECL|member|io_base
-r_uint32
+r_int
+r_int
 id|io_base
 suffix:semicolon
 DECL|member|phy_id
@@ -3020,6 +3026,10 @@ suffix:semicolon
 DECL|member|get_link_status
 id|boolean_t
 id|get_link_status
+suffix:semicolon
+DECL|member|serdes_link_down
+id|boolean_t
+id|serdes_link_down
 suffix:semicolon
 DECL|member|tbi_compatibility_en
 id|boolean_t
@@ -3559,6 +3569,8 @@ DECL|macro|E1000_RCTL_PMCF
 mdefine_line|#define E1000_RCTL_PMCF           0x00800000    /* pass MAC control frames */
 DECL|macro|E1000_RCTL_BSEX
 mdefine_line|#define E1000_RCTL_BSEX           0x02000000    /* Buffer size extension */
+DECL|macro|E1000_RCTL_SECRC
+mdefine_line|#define E1000_RCTL_SECRC          0x04000000    /* Strip Ethernet CRC */
 multiline_comment|/* Receive Descriptor */
 DECL|macro|E1000_RDT_DELAY
 mdefine_line|#define E1000_RDT_DELAY 0x0000ffff      /* Delay timer (1=1024us) */
