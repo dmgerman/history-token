@@ -896,6 +896,12 @@ c_func
 id|hc-&gt;md
 )paren
 suffix:semicolon
+id|free_cell
+c_func
+(paren
+id|hc
+)paren
+suffix:semicolon
 )brace
 DECL|function|dm_hash_remove_all
 r_void
