@@ -2558,7 +2558,10 @@ comma
 (paren
 r_int
 )paren
-id|linux_num_cpus
+id|num_possible_cpus
+c_func
+(paren
+)paren
 comma
 (paren
 r_int

@@ -10,34 +10,6 @@ macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
-multiline_comment|/* PROM provided per-processor information we need&n; * to start them all up.&n; */
-DECL|struct|prom_cpuinfo
-r_struct
-id|prom_cpuinfo
-(brace
-DECL|member|prom_node
-r_int
-id|prom_node
-suffix:semicolon
-DECL|member|mid
-r_int
-id|mid
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_int
-id|linux_num_cpus
-suffix:semicolon
-multiline_comment|/* number of CPUs probed  */
-r_extern
-r_struct
-id|prom_cpuinfo
-id|linux_cpus
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
