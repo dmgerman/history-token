@@ -667,6 +667,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|bdi-&gt;memory_backed
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|wbc-&gt;nonblocking
 op_logical_and
 id|bdi_write_congested
