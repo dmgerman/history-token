@@ -14,6 +14,7 @@ suffix:semicolon
 r_struct
 id|file_operations
 suffix:semicolon
+multiline_comment|/* This is duplicated from user-space so&n; * must be kept in sync :(&n; */
 DECL|enum|oprofile_cpu
 r_enum
 id|oprofile_cpu
@@ -32,6 +33,28 @@ id|OPROFILE_CPU_ATHLON
 comma
 DECL|enumerator|OPROFILE_CPU_TIMER
 id|OPROFILE_CPU_TIMER
+comma
+DECL|enumerator|OPROFILE_UNUSED1
+id|OPROFILE_UNUSED1
+comma
+multiline_comment|/* 2.4&squot;s RTC mode */
+DECL|enumerator|OPROFILE_CPU_P4
+id|OPROFILE_CPU_P4
+comma
+DECL|enumerator|OPROFILE_CPU_IA64
+id|OPROFILE_CPU_IA64
+comma
+DECL|enumerator|OPROFILE_CPU_IA64_1
+id|OPROFILE_CPU_IA64_1
+comma
+DECL|enumerator|OPROFILE_CPU_IA64_2
+id|OPROFILE_CPU_IA64_2
+comma
+DECL|enumerator|OPROFILE_CPU_HAMMER
+id|OPROFILE_CPU_HAMMER
+comma
+DECL|enumerator|OPROFILE_CPU_P4_HT2
+id|OPROFILE_CPU_P4_HT2
 )brace
 suffix:semicolon
 multiline_comment|/* Operations structure to be filled in */
