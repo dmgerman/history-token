@@ -20,13 +20,6 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
 macro_line|#endif
-macro_line|#ifdef DEBUG
-DECL|macro|SCSI_TIMEOUT
-mdefine_line|#define SCSI_TIMEOUT (5*HZ)
-macro_line|#else
-DECL|macro|SCSI_TIMEOUT
-mdefine_line|#define SCSI_TIMEOUT (2*HZ)
-macro_line|#endif
 r_struct
 id|Scsi_Host
 suffix:semicolon

@@ -48,6 +48,8 @@ DECL|macro|TRACE_ISP
 mdefine_line|#define TRACE_ISP &t;&t;0 
 DECL|macro|DEFAULT_LOOP_COUNT
 mdefine_line|#define DEFAULT_LOOP_COUNT&t;1000000000
+DECL|macro|ISP_TIMEOUT
+mdefine_line|#define ISP_TIMEOUT (2*HZ)
 multiline_comment|/* End Configuration section ************************************************ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if TRACE_ISP
@@ -5663,7 +5665,7 @@ OG
 (paren
 l_int|2
 op_star
-id|SCSI_TIMEOUT
+id|ISP_TIMEOUT
 )paren
 )paren
 (brace

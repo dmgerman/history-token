@@ -13,20 +13,15 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
-macro_line|#ifdef DEBUG
 DECL|macro|SENSE_TIMEOUT
-mdefine_line|#define SENSE_TIMEOUT SCSI_TIMEOUT
-macro_line|#else
-DECL|macro|SENSE_TIMEOUT
-mdefine_line|#define SENSE_TIMEOUT (10*HZ)
-macro_line|#endif
+mdefine_line|#define SENSE_TIMEOUT&t;&t;(10*HZ)
 DECL|macro|START_UNIT_TIMEOUT
-mdefine_line|#define START_UNIT_TIMEOUT (30*HZ)
+mdefine_line|#define START_UNIT_TIMEOUT&t;(30*HZ)
 multiline_comment|/*&n; * These should *probably* be handled by the host itself.&n; * Since it is allowed to sleep, it probably should.&n; */
 DECL|macro|BUS_RESET_SETTLE_TIME
-mdefine_line|#define BUS_RESET_SETTLE_TIME   10*HZ
+mdefine_line|#define BUS_RESET_SETTLE_TIME   (10*HZ)
 DECL|macro|HOST_RESET_SETTLE_TIME
-mdefine_line|#define HOST_RESET_SETTLE_TIME  10*HZ
+mdefine_line|#define HOST_RESET_SETTLE_TIME  (10*HZ)
 multiline_comment|/* called with shost-&gt;host_lock held */
 DECL|function|scsi_eh_wakeup
 r_void
