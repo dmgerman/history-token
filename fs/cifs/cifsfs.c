@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/cifsfs.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   Common Internet FileSystem (CIFS) client&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   fs/cifs/cifsfs.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   Common Internet FileSystem (CIFS) client&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/* Note that BB means BUGBUG (ie something to fix eventually) */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -244,14 +244,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|cifs_sb-&gt;local_nls
-op_assign
-id|load_nls_default
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* needed for ASCII cp to Unicode converts */
 id|rc
 op_assign
 id|cifs_mount
@@ -2279,16 +2271,6 @@ id|dummyarg
 )paren
 (brace
 r_struct
-id|list_head
-op_star
-id|tmp
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|tmp1
-suffix:semicolon
-r_struct
 id|oplock_q_entry
 op_star
 id|oplock_item
@@ -2336,36 +2318,53 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|100
+l_int|39
 op_star
 id|HZ
 )paren
 suffix:semicolon
-multiline_comment|/* BB add missing code */
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
-id|list_for_each_safe
+r_if
+c_cond
+(paren
+id|list_empty
 c_func
 (paren
-id|tmp
-comma
-id|tmp1
-comma
 op_amp
 id|GlobalOplock_Q
 )paren
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|GlobalMid_Lock
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|39
+op_star
+id|HZ
+)paren
+suffix:semicolon
+)brace
+r_else
 (brace
 id|oplock_item
 op_assign
 id|list_entry
 c_func
 (paren
-id|tmp
+id|GlobalOplock_Q.next
 comma
 r_struct
 id|oplock_q_entry
@@ -2397,7 +2396,7 @@ c_func
 id|oplock_item
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -2494,25 +2493,16 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-id|write_lock
-c_func
-(paren
-op_amp
-id|GlobalMid_Lock
-)paren
-suffix:semicolon
 )brace
 r_else
-r_break
-suffix:semicolon
-)brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -2642,7 +2632,7 @@ id|RW_LOCK_UNLOCKED
 suffix:semicolon
 id|GlobalMid_Lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|rc
 op_assign
