@@ -1480,6 +1480,26 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|function|ax25_put_route
+r_static
+r_inline
+r_void
+id|ax25_put_route
+c_func
+(paren
+id|ax25_route
+op_star
+id|ax25_rt
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|ax25_rt-&gt;ref
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* ax25_std_in.c */
 r_extern
 r_int

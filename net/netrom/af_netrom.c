@@ -3013,11 +3013,6 @@ op_amp
 id|O_NONBLOCK
 )paren
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EWOULDBLOCK
