@@ -1308,22 +1308,6 @@ id|neigh_parms
 op_star
 )paren
 suffix:semicolon
-DECL|member|accept_fastpath
-r_int
-(paren
-op_star
-id|accept_fastpath
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-comma
-r_struct
-id|dst_entry
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_NETPOLL
 DECL|member|netpoll_rx
 r_int
