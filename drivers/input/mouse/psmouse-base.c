@@ -871,7 +871,7 @@ id|psmouse-&gt;state
 op_assign
 id|PSMOUSE_IGNORE
 suffix:semicolon
-id|serio_rescan
+id|serio_reconnect
 c_func
 (paren
 id|serio
