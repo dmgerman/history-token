@@ -66,10 +66,6 @@ id|cl_ident
 id|NFSCLNT_IDMAX
 )braket
 suffix:semicolon
-DECL|member|cl_idlen
-r_int
-id|cl_idlen
-suffix:semicolon
 DECL|member|cl_naddr
 r_int
 id|cl_naddr

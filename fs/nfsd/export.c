@@ -3376,10 +3376,6 @@ comma
 id|ncp-&gt;cl_ident
 )paren
 suffix:semicolon
-id|clp-&gt;cl_idlen
-op_assign
-id|ilen
-suffix:semicolon
 )brace
 multiline_comment|/* Allocate hash buckets */
 r_for
