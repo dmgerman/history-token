@@ -26,8 +26,10 @@ r_struct
 id|xfs_mount
 suffix:semicolon
 multiline_comment|/*&n; * Macros, structures, prototypes for internal log manager use.&n; */
-DECL|macro|XLOG_NUM_ICLOGS
-mdefine_line|#define XLOG_NUM_ICLOGS&t;&t;2
+DECL|macro|XLOG_MIN_ICLOGS
+mdefine_line|#define XLOG_MIN_ICLOGS&t;&t;2
+DECL|macro|XLOG_MED_ICLOGS
+mdefine_line|#define XLOG_MED_ICLOGS&t;&t;4
 DECL|macro|XLOG_MAX_ICLOGS
 mdefine_line|#define XLOG_MAX_ICLOGS&t;&t;8
 DECL|macro|XLOG_CALLBACK_SIZE
