@@ -466,7 +466,7 @@ suffix:semicolon
 multiline_comment|/* int128 for 128-255 ms (Max.) */
 )brace
 DECL|macro|hcd_to_uhci
-mdefine_line|#define hcd_to_uhci(hcd_ptr) list_entry(hcd_ptr, struct uhci_hcd, hcd)
+mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
 DECL|struct|uhci_hcd
 r_struct
@@ -477,18 +477,8 @@ r_struct
 id|usb_hcd
 id|hcd
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* procfs */
-DECL|member|num
-r_int
-id|num
-suffix:semicolon
 DECL|member|proc_entry
 r_struct
 id|proc_dir_entry
@@ -497,19 +487,10 @@ id|proc_entry
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Grabbed from PCI */
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
 DECL|member|io_addr
 r_int
 r_int
 id|io_addr
-suffix:semicolon
-DECL|member|io_size
-r_int
-r_int
-id|io_size
 suffix:semicolon
 DECL|member|qh_pool
 r_struct
@@ -619,13 +600,6 @@ id|list_head
 id|complete_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;complete_list_lock */
-DECL|member|rh_dev
-r_struct
-id|usb_device
-op_star
-id|rh_dev
-suffix:semicolon
-multiline_comment|/* Root hub */
 DECL|member|rh_numports
 r_int
 id|rh_numports
