@@ -9266,7 +9266,7 @@ id|bh
 id|submit_bh
 c_func
 (paren
-id|READ
+id|rw
 comma
 id|bh
 )paren
