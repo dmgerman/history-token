@@ -20118,6 +20118,10 @@ id|acb-&gt;scsi_host
 op_assign
 id|scsi_host
 suffix:semicolon
+id|acb-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
 multiline_comment|/* initialise the adapter and everything we need */
 r_if
 c_cond
