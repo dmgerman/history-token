@@ -843,14 +843,14 @@ id|zoran
 op_star
 id|zr
 suffix:semicolon
-multiline_comment|/* Random maximum */
 r_if
 c_cond
 (paren
 id|count
 OG
-l_int|256
+l_int|32768
 )paren
+multiline_comment|/* Stupidity filter */
 r_return
 op_minus
 id|EINVAL
