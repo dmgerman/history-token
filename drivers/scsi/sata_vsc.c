@@ -899,6 +899,16 @@ op_assign
 id|ata_bmdma_start
 comma
 dot
+id|bmdma_stop
+op_assign
+id|ata_bmdma_stop
+comma
+dot
+id|bmdma_status
+op_assign
+id|ata_bmdma_status
+comma
+dot
 id|qc_prep
 op_assign
 id|ata_qc_prep
@@ -1106,6 +1116,11 @@ r_int
 r_int
 id|base
 suffix:semicolon
+r_int
+id|pci_dev_busy
+op_assign
+l_int|0
+suffix:semicolon
 r_void
 op_star
 id|mmio_base
@@ -1185,9 +1200,15 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|pci_dev_busy
+op_assign
+l_int|1
+suffix:semicolon
 r_goto
 id|err_out
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Use 32 bit DMA mask, because 64 bit address support is poor.&n;&t; */
 id|rc
 op_assign
@@ -1508,6 +1529,12 @@ id|pdev
 suffix:semicolon
 id|err_out
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_dev_busy
+)paren
 id|pci_disable_device
 c_func
 (paren

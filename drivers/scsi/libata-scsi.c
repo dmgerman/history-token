@@ -2755,6 +2755,12 @@ r_return
 suffix:semicolon
 id|err_out
 suffix:colon
+id|ata_qc_free
+c_func
+(paren
+id|qc
+)paren
+suffix:semicolon
 id|ata_bad_cdb
 c_func
 (paren

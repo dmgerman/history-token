@@ -319,15 +319,15 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_sock
-id|tp
+id|tcp_options_received
+id|tmp_opt
 suffix:semicolon
 r_int
 id|paws_reject
 op_assign
 l_int|0
 suffix:semicolon
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
@@ -355,7 +355,7 @@ c_func
 id|skb
 comma
 op_amp
-id|tp
+id|tmp_opt
 comma
 l_int|0
 )paren
@@ -363,14 +363,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 )paren
 (brace
-id|tp.ts_recent
+id|tmp_opt.ts_recent
 op_assign
 id|tw-&gt;tw_ts_recent
 suffix:semicolon
-id|tp.ts_recent_stamp
+id|tmp_opt.ts_recent_stamp
 op_assign
 id|tw-&gt;tw_ts_recent_stamp
 suffix:semicolon
@@ -380,7 +380,7 @@ id|tcp_paws_check
 c_func
 (paren
 op_amp
-id|tp
+id|tmp_opt
 comma
 id|th-&gt;rst
 )paren
@@ -565,7 +565,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 )paren
 (brace
 id|tw-&gt;tw_ts_recent_stamp
@@ -574,7 +574,7 @@ id|xtime.tv_sec
 suffix:semicolon
 id|tw-&gt;tw_ts_recent
 op_assign
-id|tp.rcv_tsval
+id|tmp_opt.rcv_tsval
 suffix:semicolon
 )brace
 multiline_comment|/* I am shamed, but failed to make it more elegant.&n;&t;&t; * Yes, it is direct reference to IP, which is impossible&n;&t;&t; * to generalize to IPv6. Taking into account that IPv6&n;&t;&t; * do not undertsnad recycling in any case, it not&n;&t;&t; * a big problem in practice. --ANK */
@@ -702,12 +702,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 )paren
 (brace
 id|tw-&gt;tw_ts_recent
 op_assign
-id|tp.rcv_tsval
+id|tmp_opt.rcv_tsval
 suffix:semicolon
 id|tw-&gt;tw_ts_recent_stamp
 op_assign
@@ -755,7 +755,7 @@ id|tw-&gt;tw_rcv_nxt
 )paren
 op_logical_or
 (paren
-id|tp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_logical_and
 (paren
 id|s32
@@ -763,7 +763,7 @@ id|s32
 (paren
 id|tw-&gt;tw_ts_recent
 op_minus
-id|tp.rcv_tsval
+id|tmp_opt.rcv_tsval
 )paren
 OL
 l_int|0
@@ -1051,7 +1051,7 @@ c_cond
 (paren
 id|sysctl_tcp_tw_recycle
 op_logical_and
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 )paren
 id|recycle_ok
 op_assign
@@ -1157,7 +1157,7 @@ id|sk-&gt;sk_reuse
 suffix:semicolon
 id|tw-&gt;tw_rcv_wscale
 op_assign
-id|tp-&gt;rcv_wscale
+id|tp-&gt;rx_opt.rcv_wscale
 suffix:semicolon
 id|atomic_set
 c_func
@@ -1190,11 +1190,11 @@ id|tp
 suffix:semicolon
 id|tw-&gt;tw_ts_recent
 op_assign
-id|tp-&gt;ts_recent
+id|tp-&gt;rx_opt.ts_recent
 suffix:semicolon
 id|tw-&gt;tw_ts_recent_stamp
 op_assign
-id|tp-&gt;ts_recent_stamp
+id|tp-&gt;rx_opt.ts_recent_stamp
 suffix:semicolon
 id|tw_dead_node_init
 c_func
@@ -2952,15 +2952,15 @@ id|req-&gt;rcv_isn
 op_plus
 l_int|1
 suffix:semicolon
-id|newtp-&gt;saw_tstamp
+id|newtp-&gt;rx_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
-id|newtp-&gt;dsack
+id|newtp-&gt;rx_opt.dsack
 op_assign
 l_int|0
 suffix:semicolon
-id|newtp-&gt;eff_sacks
+id|newtp-&gt;rx_opt.eff_sacks
 op_assign
 l_int|0
 suffix:semicolon
@@ -2968,7 +2968,7 @@ id|newtp-&gt;probes_out
 op_assign
 l_int|0
 suffix:semicolon
-id|newtp-&gt;num_sacks
+id|newtp-&gt;rx_opt.num_sacks
 op_assign
 l_int|0
 suffix:semicolon
@@ -3070,7 +3070,7 @@ id|newsk-&gt;sk_owner
 op_assign
 l_int|NULL
 suffix:semicolon
-id|newtp-&gt;tstamp_ok
+id|newtp-&gt;rx_opt.tstamp_ok
 op_assign
 id|req-&gt;tstamp_ok
 suffix:semicolon
@@ -3078,7 +3078,7 @@ r_if
 c_cond
 (paren
 (paren
-id|newtp-&gt;sack_ok
+id|newtp-&gt;rx_opt.sack_ok
 op_assign
 id|req-&gt;sack_ok
 )paren
@@ -3091,7 +3091,7 @@ c_cond
 (paren
 id|sysctl_tcp_fack
 )paren
-id|newtp-&gt;sack_ok
+id|newtp-&gt;rx_opt.sack_ok
 op_or_assign
 l_int|2
 suffix:semicolon
@@ -3108,30 +3108,30 @@ id|newtp-&gt;rcv_wnd
 op_assign
 id|req-&gt;rcv_wnd
 suffix:semicolon
-id|newtp-&gt;wscale_ok
+id|newtp-&gt;rx_opt.wscale_ok
 op_assign
 id|req-&gt;wscale_ok
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|newtp-&gt;wscale_ok
+id|newtp-&gt;rx_opt.wscale_ok
 )paren
 (brace
-id|newtp-&gt;snd_wscale
+id|newtp-&gt;rx_opt.snd_wscale
 op_assign
 id|req-&gt;snd_wscale
 suffix:semicolon
-id|newtp-&gt;rcv_wscale
+id|newtp-&gt;rx_opt.rcv_wscale
 op_assign
 id|req-&gt;rcv_wscale
 suffix:semicolon
 )brace
 r_else
 (brace
-id|newtp-&gt;snd_wscale
+id|newtp-&gt;rx_opt.snd_wscale
 op_assign
-id|newtp-&gt;rcv_wscale
+id|newtp-&gt;rx_opt.rcv_wscale
 op_assign
 l_int|0
 suffix:semicolon
@@ -3154,7 +3154,7 @@ c_func
 id|skb-&gt;h.th-&gt;window
 )paren
 op_lshift
-id|newtp-&gt;snd_wscale
+id|newtp-&gt;rx_opt.snd_wscale
 suffix:semicolon
 id|newtp-&gt;max_window
 op_assign
@@ -3163,14 +3163,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|newtp-&gt;tstamp_ok
+id|newtp-&gt;rx_opt.tstamp_ok
 )paren
 (brace
-id|newtp-&gt;ts_recent
+id|newtp-&gt;rx_opt.ts_recent
 op_assign
 id|req-&gt;ts_recent
 suffix:semicolon
-id|newtp-&gt;ts_recent_stamp
+id|newtp-&gt;rx_opt.ts_recent_stamp
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
@@ -3187,7 +3187,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|newtp-&gt;ts_recent_stamp
+id|newtp-&gt;rx_opt.ts_recent_stamp
 op_assign
 l_int|0
 suffix:semicolon
@@ -3215,7 +3215,7 @@ id|skb-&gt;len
 op_minus
 id|newtp-&gt;tcp_header_len
 suffix:semicolon
-id|newtp-&gt;mss_clamp
+id|newtp-&gt;rx_opt.mss_clamp
 op_assign
 id|req-&gt;mss
 suffix:semicolon
@@ -3326,15 +3326,15 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|tcp_sock
-id|ttp
+id|tcp_options_received
+id|tmp_opt
 suffix:semicolon
 r_struct
 id|sock
 op_star
 id|child
 suffix:semicolon
-id|ttp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_assign
 l_int|0
 suffix:semicolon
@@ -3360,7 +3360,7 @@ c_func
 id|skb
 comma
 op_amp
-id|ttp
+id|tmp_opt
 comma
 l_int|0
 )paren
@@ -3368,15 +3368,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ttp.saw_tstamp
+id|tmp_opt.saw_tstamp
 )paren
 (brace
-id|ttp.ts_recent
+id|tmp_opt.ts_recent
 op_assign
 id|req-&gt;ts_recent
 suffix:semicolon
 multiline_comment|/* We do not store true stamp, but it is not required,&n;&t;&t;&t; * it can be estimated (approximately)&n;&t;&t;&t; * from another data.&n;&t;&t;&t; */
-id|ttp.ts_recent_stamp
+id|tmp_opt.ts_recent_stamp
 op_assign
 id|xtime.tv_sec
 op_minus
@@ -3396,7 +3396,7 @@ id|tcp_paws_check
 c_func
 (paren
 op_amp
-id|ttp
+id|tmp_opt
 comma
 id|th-&gt;rst
 )paren
@@ -3553,7 +3553,7 @@ multiline_comment|/* In sequence, PAWS is OK. */
 r_if
 c_cond
 (paren
-id|ttp.saw_tstamp
+id|tmp_opt.saw_tstamp
 op_logical_and
 op_logical_neg
 id|after
@@ -3574,7 +3574,7 @@ l_int|1
 )paren
 id|req-&gt;ts_recent
 op_assign
-id|ttp.rcv_tsval
+id|tmp_opt.rcv_tsval
 suffix:semicolon
 r_if
 c_cond
@@ -3590,14 +3590,14 @@ op_eq
 id|req-&gt;rcv_isn
 )paren
 (brace
-multiline_comment|/* Truncate SYN, it is out of window starting&n;&t;&t;   at req-&gt;rcv_isn+1. */
+multiline_comment|/* Truncate SYN, it is out of window starting&n;&t;&t;&t;   at req-&gt;rcv_isn+1. */
 id|flg
 op_and_assign
 op_complement
 id|TCP_FLAG_SYN
 suffix:semicolon
 )brace
-multiline_comment|/* RFC793: &quot;second check the RST bit&quot; and&n;&t; *&t;   &quot;fourth, check the SYN bit&quot;&n;&t; */
+multiline_comment|/* RFC793: &quot;second check the RST bit&quot; and&n;&t;&t; *&t;   &quot;fourth, check the SYN bit&quot;&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3612,7 +3612,7 @@ id|TCP_FLAG_SYN
 r_goto
 id|embryonic_reset
 suffix:semicolon
-multiline_comment|/* ACK sequence verified above, just make sure ACK is&n;&t; * set.  If ACK not set, just silently drop the packet.&n;&t; */
+multiline_comment|/* ACK sequence verified above, just make sure ACK is&n;&t;&t; * set.  If ACK not set, just silently drop the packet.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3653,7 +3653,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* OK, ACK is valid, create big socket and&n;&t; * feed this segment to it. It will repeat all&n;&t; * the tests. THIS SEGMENT MUST MOVE SOCKET TO&n;&t; * ESTABLISHED STATE. If it will be dropped after&n;&t; * socket is created, wait for troubles.&n;&t; */
+multiline_comment|/* OK, ACK is valid, create big socket and&n;&t;&t; * feed this segment to it. It will repeat all&n;&t;&t; * the tests. THIS SEGMENT MUST MOVE SOCKET TO&n;&t;&t; * ESTABLISHED STATE. If it will be dropped after&n;&t;&t; * socket is created, wait for troubles.&n;&t;&t; */
 id|child
 op_assign
 id|tp-&gt;af_specific

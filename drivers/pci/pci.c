@@ -804,7 +804,7 @@ id|pmc
 op_amp
 id|PCI_PM_CAP_VER_MASK
 )paren
-op_ne
+OG
 l_int|2
 )paren
 (brace

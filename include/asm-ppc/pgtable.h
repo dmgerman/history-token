@@ -1116,7 +1116,6 @@ id|old
 suffix:semicolon
 id|old
 op_assign
-(paren
 id|pte_update
 c_func
 (paren
@@ -1125,9 +1124,6 @@ comma
 id|_PAGE_ACCESSED
 comma
 l_int|0
-)paren
-op_amp
-id|_PAGE_ACCESSED
 )paren
 suffix:semicolon
 macro_line|#if _PAGE_HASHPTE != 0
@@ -1146,7 +1142,11 @@ id|ptep
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 id|old
+op_amp
+id|_PAGE_ACCESSED
+)paren
 op_ne
 l_int|0
 suffix:semicolon

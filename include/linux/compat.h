@@ -11,6 +11,9 @@ macro_line|#include &lt;asm/compat.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
 mdefine_line|#define compat_jiffies_to_clock_t(x)&t;&bslash;&n;&t;&t;(((unsigned long)(x) * COMPAT_USER_HZ) / HZ)
+r_struct
+id|rusage
+suffix:semicolon
 DECL|struct|compat_itimerspec
 r_struct
 id|compat_itimerspec
