@@ -265,8 +265,8 @@ suffix:semicolon
 r_static
 r_int
 id|__init
-DECL|function|zalon_scsi_callback
-id|zalon_scsi_callback
+DECL|function|zalon_probe
+id|zalon_probe
 c_func
 (paren
 r_struct
@@ -530,11 +530,9 @@ c_cond
 op_logical_neg
 id|host
 )paren
-(brace
 r_goto
 id|fail
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -737,7 +735,7 @@ comma
 dot
 id|probe
 op_assign
-id|zalon_scsi_callback
+id|zalon_probe
 comma
 dot
 id|remove
