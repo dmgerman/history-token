@@ -2242,9 +2242,15 @@ id|data
 id|request_module
 c_func
 (paren
-l_string|&quot;char-major-%d&quot;
+l_string|&quot;char-major-%d-%d&quot;
 comma
 id|MAJOR
+c_func
+(paren
+id|dev
+)paren
+comma
+id|MINOR
 c_func
 (paren
 id|dev
