@@ -649,10 +649,8 @@ id|cciss_scsi_cmd_stack_elem_t
 op_star
 id|CMD_STACK_SIZE
 suffix:semicolon
-singleline_comment|// We use NULL as first arg to pci_alloc_consistent so we can be
-singleline_comment|// sure that we get addresses that will fit through the 32 bit
-singleline_comment|// command register, (our DMA mask says we can do 64 bit DMA, which
-singleline_comment|// we, can, just not for commands.)
+singleline_comment|// pci_alloc_consistent guarentees 32-bit DMA address will
+singleline_comment|// be used
 id|stk-&gt;pool
 op_assign
 (paren
@@ -663,7 +661,12 @@ op_star
 id|pci_alloc_consistent
 c_func
 (paren
-l_int|NULL
+id|hba
+(braket
+id|ctlr
+)braket
+op_member_access_from_pointer
+id|pdev
 comma
 id|size
 comma
@@ -837,11 +840,15 @@ id|cciss_scsi_cmd_stack_elem_t
 op_star
 id|CMD_STACK_SIZE
 suffix:semicolon
-singleline_comment|// About NULL, see note above near pci_alloc_consistent&t;
 id|pci_free_consistent
 c_func
 (paren
-l_int|NULL
+id|hba
+(braket
+id|ctlr
+)braket
+op_member_access_from_pointer
+id|pdev
 comma
 id|size
 comma

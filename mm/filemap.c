@@ -8213,7 +8213,7 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|vma-&gt;vm_mm
+id|vma
 comma
 id|end
 op_minus
@@ -8283,7 +8283,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|vma-&gt;vm_mm
+id|vma
 comma
 id|end
 op_minus
@@ -9824,7 +9824,7 @@ suffix:semicolon
 id|zap_page_range
 c_func
 (paren
-id|vma-&gt;vm_mm
+id|vma
 comma
 id|start
 comma

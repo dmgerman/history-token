@@ -30,7 +30,7 @@ mdefine_line|#define QD_CONFIG_QD6580_B&t;0x50
 DECL|macro|QD_CONTR_SEC_DISABLED
 mdefine_line|#define QD_CONTR_SEC_DISABLED&t;0x01
 DECL|macro|QD_ID3
-mdefine_line|#define QD_ID3&t;&t;&t;(config &amp; QD_CONFIG_ID3)
+mdefine_line|#define QD_ID3&t;&t;&t;((config &amp; QD_CONFIG_ID3)!=0)
 DECL|macro|QD_CONFIG
 mdefine_line|#define QD_CONFIG(hwif)&t;&t;((hwif)-&gt;config_data &amp; 0x00ff)
 DECL|macro|QD_CONTROL
@@ -43,6 +43,8 @@ DECL|macro|QD6500_DEF_DATA
 mdefine_line|#define QD6500_DEF_DATA&t;&t;((QD_TIM1_PORT&lt;&lt;8) | (QD_ID3 ? 0x0c : 0x08))
 DECL|macro|QD6580_DEF_DATA
 mdefine_line|#define QD6580_DEF_DATA&t;&t;((QD_TIM1_PORT&lt;&lt;8) | (QD_ID3 ? 0x0a : 0x00))
+DECL|macro|QD6580_DEF_DATA2
+mdefine_line|#define QD6580_DEF_DATA2&t;((QD_TIM2_PORT&lt;&lt;8) | (QD_ID3 ? 0x0a : 0x00))
 DECL|macro|QD_DEF_CONTR
 mdefine_line|#define QD_DEF_CONTR&t;&t;(0x40 | ((control &amp; 0x02) ? 0x9f : 0x1f))
 DECL|macro|QD_TESTVAL

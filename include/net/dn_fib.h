@@ -460,7 +460,6 @@ id|count
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|member|dump
 r_int
 (paren
@@ -484,7 +483,6 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|member|data
 r_int
 r_char
@@ -762,7 +760,6 @@ id|res
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * rtnetlink interface&n; */
-macro_line|#ifdef CONFIG_RTNETLINK
 r_extern
 r_int
 id|dn_fib_rtm_delroute
@@ -875,7 +872,6 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|macro|DN_NUM_TABLES
 mdefine_line|#define DN_NUM_TABLES 255
 DECL|macro|DN_MIN_TABLE

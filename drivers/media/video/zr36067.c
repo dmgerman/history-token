@@ -17814,6 +17814,11 @@ id|do_zoran_mmap
 c_func
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|zoran
 op_star
 id|zr
@@ -18069,6 +18074,8 @@ c_cond
 (paren
 id|remap_page_range
 (paren
+id|vma
+comma
 id|start
 comma
 id|page
@@ -18270,6 +18277,8 @@ c_cond
 (paren
 id|remap_page_range
 (paren
+id|vma
+comma
 id|start
 comma
 id|page
@@ -18324,6 +18333,11 @@ id|zoran_mmap
 c_func
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|video_device
 op_star
 id|dev
@@ -18365,6 +18379,8 @@ op_assign
 id|do_zoran_mmap
 c_func
 (paren
+id|vma
+comma
 id|zr
 comma
 id|adr

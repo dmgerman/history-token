@@ -13,11 +13,11 @@ r_typedef
 r_struct
 id|free_pte_ctx
 (brace
-DECL|member|mm
+DECL|member|vma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 suffix:semicolon
 DECL|member|nr
 r_int
@@ -62,9 +62,9 @@ id|tlb_gather_mmu
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 )paren
 (brace
 id|mmu_gather_t
@@ -80,9 +80,16 @@ c_func
 )paren
 )braket
 suffix:semicolon
-id|tlb-&gt;mm
-op_assign
+r_struct
+id|mm_struct
+op_star
 id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
+id|tlb-&gt;vma
+op_assign
+id|vma
 suffix:semicolon
 multiline_comment|/* Use fast mode if there is only one user of this mm (this process) */
 id|tlb-&gt;nr
@@ -115,7 +122,7 @@ suffix:semicolon
 multiline_comment|/* void tlb_remove_page(mmu_gather_t *tlb, pte_t *ptep, unsigned long addr)&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
 DECL|macro|tlb_remove_page
 mdefine_line|#define tlb_remove_page(ctxp, pte, addr) do {&bslash;&n;&t;&t;/* Handle the common case fast, first. */&bslash;&n;&t;&t;if ((ctxp)-&gt;nr == ~0UL) {&bslash;&n;&t;&t;&t;__free_pte(*(pte));&bslash;&n;&t;&t;&t;pte_clear((pte));&bslash;&n;&t;&t;&t;break;&bslash;&n;&t;&t;}&bslash;&n;&t;&t;if (!(ctxp)-&gt;nr) &bslash;&n;&t;&t;&t;(ctxp)-&gt;start_addr = (addr);&bslash;&n;&t;&t;(ctxp)-&gt;ptes[(ctxp)-&gt;nr++] = ptep_get_and_clear(pte);&bslash;&n;&t;&t;(ctxp)-&gt;end_addr = (addr) + PAGE_SIZE;&bslash;&n;&t;&t;if ((ctxp)-&gt;nr &gt;= FREE_PTE_NR)&bslash;&n;&t;&t;&t;tlb_finish_mmu((ctxp), 0, 0);&bslash;&n;&t;} while (0)
-multiline_comment|/* tlb_finish_mmu&n; *&t;Called at the end of the shootdown operation to free up any resources&n; *&t;that were required.  The page talbe lock is still held at this point.&n; */
+multiline_comment|/* tlb_finish_mmu&n; *&t;Called at the end of the shootdown operation to free up any resources&n; *&t;that were required.  The page table lock is still held at this point.&n; */
 DECL|function|tlb_finish_mmu
 r_static
 r_inline
@@ -156,7 +163,7 @@ l_int|0UL
 id|flush_tlb_range
 c_func
 (paren
-id|ctx-&gt;mm
+id|ctx-&gt;vma
 comma
 id|start
 comma
@@ -182,7 +189,7 @@ id|nr
 id|flush_tlb_range
 c_func
 (paren
-id|ctx-&gt;mm
+id|ctx-&gt;vma
 comma
 id|ctx-&gt;start_addr
 comma
@@ -225,11 +232,11 @@ multiline_comment|/* The uniprocessor functions are quite simple and are inline 
 DECL|typedef|mmu_gather_t
 r_typedef
 r_struct
-id|mm_struct
+id|vm_area_struct
 id|mmu_gather_t
 suffix:semicolon
 DECL|macro|tlb_gather_mmu
-mdefine_line|#define tlb_gather_mmu(mm)&t;(mm)
+mdefine_line|#define tlb_gather_mmu(vma)&t;(vma)
 DECL|macro|tlb_finish_mmu
 mdefine_line|#define tlb_finish_mmu(tlb, start, end)&t;flush_tlb_range(tlb, start, end)
 DECL|macro|tlb_remove_page

@@ -2442,7 +2442,7 @@ c_cond
 (paren
 id|id-&gt;dma_ultra
 op_amp
-l_int|0x002F
+l_int|0x003F
 )paren
 (brace
 multiline_comment|/* Force if Capable UltraDMA */

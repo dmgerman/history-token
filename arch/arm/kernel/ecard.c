@@ -721,6 +721,10 @@ op_star
 id|mm
 )paren
 (brace
+r_struct
+id|vm_area_struct
+id|vma
+suffix:semicolon
 multiline_comment|/* We want to set up the page tables for the following mapping:&n;&t; *  Virtual&t;Physical&n;&t; *  0x03000000&t;0x03000000&n;&t; *  0x03010000&t;unmapped&n;&t; *  0x03210000&t;0x03210000&n;&t; *  0x03400000&t;unmapped&n;&t; *  0x08000000&t;0x08000000&n;&t; *  0x10000000&t;unmapped&n;&t; *&n;&t; * FIXME: we don&squot;t follow this 100% yet.&n;&t; */
 id|pgd_t
 op_star
@@ -825,10 +829,15 @@ op_add_assign
 id|PGDIR_SIZE
 suffix:semicolon
 )brace
+id|vma.vm_mm
+op_assign
+id|mm
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|mm
+op_amp
+id|vma
 comma
 id|IO_START
 comma
@@ -840,7 +849,8 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|mm
+op_amp
+id|vma
 comma
 id|EASI_START
 comma

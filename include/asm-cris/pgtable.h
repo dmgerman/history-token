@@ -11,7 +11,7 @@ mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end)&t;do { } while (0)
+mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
 DECL|macro|flush_page_to_ram
@@ -22,7 +22,7 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)          do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)               do { } while (0)
-multiline_comment|/*&n; * TLB flushing (implemented in arch/cris/mm/tlb.c):&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *&n; */
+multiline_comment|/*&n; * TLB flushing (implemented in arch/cris/mm/tlb.c):&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *&n; */
 r_extern
 r_void
 id|flush_tlb_all
@@ -63,9 +63,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int

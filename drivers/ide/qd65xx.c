@@ -1,5 +1,5 @@
-multiline_comment|/*&n; *  linux/drivers/ide/qd65xx.c&t;&t;Version 0.06&t;Aug 3, 2000&n; *&n; *  Copyright (C) 1996-2000  Linus Torvalds &amp; author (see below)&n; */
-multiline_comment|/*&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;added dos driver&squot;s list&n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; * &t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; */
+multiline_comment|/*&n; *  linux/drivers/ide/qd65xx.c&t;&t;Version 0.07&t;Sep 30, 2001&n; *&n; *  Copyright (C) 1996-2001  Linus Torvalds &amp; author (see below)&n; */
+multiline_comment|/*&n; *  Version 0.03&t;Cleaned auto-tune, added probe&n; *  Version 0.04&t;Added second channel tuning&n; *  Version 0.05&t;Enhanced tuning ; added qd6500 support&n; *  Version 0.06&t;Added dos driver&squot;s list&n; *  Version 0.07&t;Second channel bug fix &n; *&n; * QDI QD6500/QD6580 EIDE controller fast support&n; *&n; * Please set local bus speed using kernel parameter idebus&n; * &t;for example, &quot;idebus=33&quot; stands for 33Mhz VLbus&n; * To activate controller support, use &quot;ide0=qd65xx&quot;&n; * To enable tuning, use &quot;ide0=autotune&quot;&n; * To enable second channel tuning (qd6580 only), use &quot;ide1=autotune&quot;&n; */
 multiline_comment|/*&n; * Rewritten from the work of Colten Edwards &lt;pje120@cs.usask.ca&gt; by&n; * Samuel Thibault &lt;samuel.thibault@fnac.net&gt;&n; */
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
 macro_line|#include &quot;qd65xx.h&quot;
 multiline_comment|/*&n; * I/O ports are 0x30-0x31 (and 0x32-0x33 for qd6580)&n; *            or 0xb0-0xb1 (and 0xb2-0xb3 for qd6580)&n; *&t;-- qd6500 is a single IDE interface&n; *&t;-- qd6580 is a dual IDE interface&n; *&n; * More research on qd6580 being done by willmore@cig.mot.com (David)&n; * More Information given by Petr Soucek (petr@ryston.cz)&n; * http://www.ryston.cz/petr/vlb&n; */
-multiline_comment|/*&n; * base: Timer1&n; *&n; *&n; * base+0x01: Config (R/O)&n; *&n; * bit 0: ide baseport: 1 = 0x1f0 ; 0 = 0x170 (only useful for qd6500)&n; * bit 1: qd65xx baseport: 1 = 0xb0 ; 0 = 0x30&n; * bit 2: ID3: bus speed: 1 = &lt;=33MHz ; 0 = &gt;33MHz&n; * bit 3: qd6500: 1 = disabled, 0 = enabled&n; *        qd6580: 1&n; * upper nibble:&n; *        qd6500: 1100&n; *        qd6580: either 1010 or 0101&n; *&n; * base+0x02: Timer2 (qd6580 only)&n; *&n; *&n; * base+0x03: Control (qd6580 only)&n; *&n; * bits 0-3 must always be set 1&n; * bit 4 must be set 1, but is set 0 by dos driver while measuring vlb clock&n; * bit 0 : 1 = Only primary port enabled : channel 0 for hda, channel 1 for hdb&n; *         0 = Primary and Secondary ports enabled : channel 0 for hda &amp; hdb&n; *                                                   channel 1 for hdc &amp; hdd&n; * bit 1 : 1 = only disks on primary port&n; *         0 = disks &amp; ATAPI devices on primary port&n; * bit 2-4 : always 0&n; * bit 5 : status, but of what ?&n; * bit 6 : always set 1 by dos driver&n; * bit 7 : set 1 for non-ATAPI devices on primary port&n; * &t;(maybe read-ahead and post-write buffer ?)&n; */
+multiline_comment|/*&n; * base: Timer1&n; *&n; *&n; * base+0x01: Config (R/O)&n; *&n; * bit 0: ide baseport: 1 = 0x1f0 ; 0 = 0x170 (only useful for qd6500)&n; * bit 1: qd65xx baseport: 1 = 0xb0 ; 0 = 0x30&n; * bit 2: ID3: bus speed: 1 = &lt;=33MHz ; 0 = &gt;33MHz&n; * bit 3: qd6500: 1 = disabled, 0 = enabled&n; *        qd6580: 1&n; * upper nibble:&n; *        qd6500: 1100&n; *        qd6580: either 1010 or 0101&n; *&n; *&n; * base+0x02: Timer2 (qd6580 only)&n; *&n; *&n; * base+0x03: Control (qd6580 only)&n; *&n; * bits 0-3 must always be set 1&n; * bit 4 must be set 1, but is set 0 by dos driver while measuring vlb clock&n; * bit 0 : 1 = Only primary port enabled : channel 0 for hda, channel 1 for hdb&n; *         0 = Primary and Secondary ports enabled : channel 0 for hda &amp; hdb&n; *                                                   channel 1 for hdc &amp; hdd&n; * bit 1 : 1 = only disks on primary port&n; *         0 = disks &amp; ATAPI devices on primary port&n; * bit 2-4 : always 0&n; * bit 5 : status, but of what ?&n; * bit 6 : always set 1 by dos driver&n; * bit 7 : set 1 for non-ATAPI devices on primary port&n; * &t;(maybe read-ahead and post-write buffer ?)&n; */
 DECL|variable|timings
 r_static
 r_int
@@ -223,7 +223,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -240,7 +240,7 @@ c_func
 (paren
 id|active_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -263,7 +263,7 @@ c_func
 (paren
 id|recovery_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -289,7 +289,7 @@ c_func
 (paren
 id|active_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -312,7 +312,7 @@ c_func
 (paren
 id|recovery_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -362,7 +362,7 @@ c_func
 (paren
 id|active_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -386,7 +386,7 @@ c_func
 (paren
 id|recovery_time
 op_star
-id|system_bus_clock
+id|ide_system_bus_speed
 c_func
 (paren
 )paren
@@ -1668,6 +1668,11 @@ id|j
 dot
 id|drive_data
 op_assign
+id|i
+ques
+c_cond
+id|QD6580_DEF_DATA2
+suffix:colon
 id|QD6580_DEF_DATA
 suffix:semicolon
 id|ide_hwifs

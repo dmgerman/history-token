@@ -853,7 +853,7 @@ suffix:semicolon
 id|_flush_tlb_range
 c_func
 (paren
-id|fd-&gt;mm
+id|fd-&gt;vma
 comma
 id|fd-&gt;addr1
 comma
@@ -867,9 +867,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -905,9 +905,9 @@ r_struct
 id|flush_tlb_data
 id|fd
 suffix:semicolon
-id|fd.mm
+id|fd.vma
 op_assign
-id|mm
+id|vma
 suffix:semicolon
 id|fd.addr1
 op_assign

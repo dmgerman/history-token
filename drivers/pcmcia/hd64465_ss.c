@@ -2327,6 +2327,10 @@ comma
 id|psize
 )paren
 suffix:semicolon
+macro_line|#error This does not work.  Firstly remap_page_range() uses current-&gt;mm for
+macro_line|#error the address space, which is wrong for kernel mappings.  remap_page_range
+macro_line|#error also does flush_{cache,tlb}_range() which ONLY works for user mappings.
+macro_line|#error Next, remap_page_range() now wants to take a vm_area_struct arg.
 id|remap_page_range
 c_func
 (paren

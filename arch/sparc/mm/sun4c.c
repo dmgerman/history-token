@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun4c.c,v 1.210 2001/11/13 03:27:47 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@samba.org)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: sun4c.c,v 1.212 2001/12/21 04:56:15 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@samba.org)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 DECL|macro|NR_TASK_BUCKETS
 mdefine_line|#define NR_TASK_BUCKETS 512
 macro_line|#include &lt;linux/config.h&gt;
@@ -5572,12 +5572,23 @@ id|__u32
 id|sun4c_lockarea
 c_func
 (paren
+id|page_address
+c_func
+(paren
 id|sg
 (braket
 id|sz
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 comma
 id|sg
 (braket
@@ -6173,9 +6184,9 @@ id|sun4c_flush_cache_range_hw
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -6186,6 +6197,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 id|new_ctx
 op_assign
@@ -6702,9 +6720,9 @@ id|sun4c_flush_cache_range_sw
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -6715,6 +6733,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 id|new_ctx
 op_assign
@@ -7366,9 +7391,9 @@ id|sun4c_flush_tlb_range_hw
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -7379,6 +7404,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 id|new_ctx
 op_assign
@@ -7776,9 +7808,9 @@ id|sun4c_flush_tlb_range_sw
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -7789,6 +7821,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 id|new_ctx
 op_assign

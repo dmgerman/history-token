@@ -1187,7 +1187,6 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|tbf_dump
 r_static
 r_int
@@ -1336,7 +1335,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|tbf_qdisc_ops
 r_struct
 id|Qdisc_ops
@@ -1371,10 +1369,8 @@ id|tbf_destroy
 comma
 id|tbf_change
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|tbf_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 DECL|struct|video_device
 r_struct
 id|video_device
@@ -149,6 +150,11 @@ op_star
 id|mmap
 )paren
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_struct
 id|video_device
 op_star

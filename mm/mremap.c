@@ -412,9 +412,9 @@ id|move_page_tables
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -429,6 +429,13 @@ r_int
 id|len
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 r_int
 id|offset
@@ -438,7 +445,7 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|old_addr
 comma
@@ -482,7 +489,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|old_addr
 comma
@@ -500,7 +507,7 @@ suffix:colon
 id|flush_cache_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|new_addr
 comma
@@ -537,7 +544,7 @@ suffix:semicolon
 id|zap_page_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|new_addr
 comma
@@ -907,7 +914,7 @@ op_logical_neg
 id|move_page_tables
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|new_addr
 comma

@@ -950,9 +950,9 @@ r_void
 id|flush_tlb_range
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -963,6 +963,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_int
 r_char
 id|seg

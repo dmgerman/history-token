@@ -869,9 +869,9 @@ id|r5432_flush_cache_range_d32i32
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -882,6 +882,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_if
 c_cond
 (paren

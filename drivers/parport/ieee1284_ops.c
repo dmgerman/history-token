@@ -1602,6 +1602,8 @@ op_complement
 id|PARPORT_CONTROL_STROBE
 op_or
 id|PARPORT_CONTROL_INIT
+op_or
+id|PARPORT_CONTROL_AUTOFD
 )paren
 suffix:semicolon
 id|parport_write_control

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.29 2001/10/20 12:38:51 davem Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.30 2001/12/21 04:56:17 davem Exp $ */
 macro_line|#ifndef _SPARC64_PGALLOC_H
 DECL|macro|_SPARC64_PGALLOC_H
 mdefine_line|#define _SPARC64_PGALLOC_H
@@ -12,8 +12,22 @@ multiline_comment|/* Cache and TLB flush operations. */
 multiline_comment|/* These are the same regardless of whether this is an SMP kernel or not. */
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(__mm) &bslash;&n;&t;do { if ((__mm) == current-&gt;mm) flushw_user(); } while(0)
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end) &bslash;&n;&t;flush_cache_mm(mm)
+r_extern
+r_void
+id|flush_cache_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, page) &bslash;&n;&t;flush_cache_mm((vma)-&gt;vm_mm)
 multiline_comment|/* This is unnecessary on the SpitFire since D-CACHE is write-through. */
@@ -82,9 +96,27 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|flush_dcache_page_all
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|smp_flush_dcache_page_impl
 mdefine_line|#define smp_flush_dcache_page_impl(page,cpu) flush_dcache_page_impl(page)
+DECL|macro|flush_dcache_page_all
+mdefine_line|#define flush_dcache_page_all(mm,page) flush_dcache_page_impl(page)
 macro_line|#endif
 r_extern
 r_void
@@ -197,7 +229,7 @@ mdefine_line|#define flush_tlb_all()&t;&t;__flush_tlb_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(__mm) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) &bslash;&n;&t;__flush_tlb_mm(CTX_HWBITS((__mm)-&gt;context), SECONDARY_CONTEXT); &bslash;&n;} while(0)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(__mm, start, end) &bslash;&n;do { if(CTX_VALID((__mm)-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__mm)-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
+mdefine_line|#define flush_tlb_range(__vma, start, end) &bslash;&n;do { if(CTX_VALID((__vma)-&gt;vm_mm-&gt;context)) { &bslash;&n;&t;unsigned long __start = (start)&amp;PAGE_MASK; &bslash;&n;&t;unsigned long __end = PAGE_ALIGN(end); &bslash;&n;&t;__flush_tlb_range(CTX_HWBITS((__vma)-&gt;vm_mm-&gt;context), __start, &bslash;&n;&t;&t;&t;  SECONDARY_CONTEXT, __end, PAGE_SIZE, &bslash;&n;&t;&t;&t;  (__end - __start)); &bslash;&n;     } &bslash;&n;} while(0)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;do { struct mm_struct *__mm = (vma)-&gt;vm_mm; &bslash;&n;     if(CTX_VALID(__mm-&gt;context)) &bslash;&n;&t;__flush_tlb_page(CTX_HWBITS(__mm-&gt;context), (page)&amp;PAGE_MASK, &bslash;&n;&t;&t;&t; SECONDARY_CONTEXT); &bslash;&n;} while(0)
 macro_line|#else /* CONFIG_SMP */
@@ -234,9 +266,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -269,7 +301,7 @@ mdefine_line|#define flush_tlb_all()&t;&t;smp_flush_tlb_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;smp_flush_tlb_mm(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(mm, start, end) &bslash;&n;&t;smp_flush_tlb_range(mm, start, end)
+mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;smp_flush_tlb_range(vma, start, end)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, page) &bslash;&n;&t;smp_flush_tlb_page((vma)-&gt;vm_mm, page)
 macro_line|#endif /* ! CONFIG_SMP */
@@ -360,10 +392,20 @@ suffix:colon
 id|VPTE_BASE_CHEETAH
 )paren
 suffix:semicolon
+(brace
+r_struct
+id|vm_area_struct
+id|vma
+suffix:semicolon
+id|vma.vm_mm
+op_assign
+id|mm
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|mm
+op_amp
+id|vma
 comma
 id|vpte_base
 op_plus
@@ -390,6 +432,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|macro|VPTE_BASE_SPITFIRE
 macro_line|#undef VPTE_BASE_SPITFIRE

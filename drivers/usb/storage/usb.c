@@ -975,23 +975,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This thread doesn&squot;t need any user-level access,&n;&t; * so get rid of all our resources..&n;&t; */
-id|exit_files
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
-id|current-&gt;files
-op_assign
-id|init_task.files
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|current-&gt;files-&gt;count
-)paren
-suffix:semicolon
 id|daemonize
 c_func
 (paren

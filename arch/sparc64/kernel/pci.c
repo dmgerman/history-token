@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pci.c,v 1.36 2001/10/06 00:38:25 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: pci.c,v 1.39 2002/01/05 01:13:43 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1924,6 +1924,11 @@ r_int
 id|io_remap_page_range
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from
@@ -2017,6 +2022,8 @@ op_assign
 id|io_remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 (paren

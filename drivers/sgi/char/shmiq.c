@@ -1234,6 +1234,8 @@ id|error
 op_assign
 id|vmap_page_range
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|size

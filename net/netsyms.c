@@ -279,6 +279,13 @@ c_func
 id|sock_alloc_send_skb
 )paren
 suffix:semicolon
+DECL|variable|sock_alloc_send_pskb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sock_alloc_send_pskb
+)paren
+suffix:semicolon
 DECL|variable|sock_init_data
 id|EXPORT_SYMBOL
 c_func
@@ -1884,7 +1891,6 @@ id|secure_ipv6_id
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_NETLINK
 DECL|variable|netlink_set_err
 id|EXPORT_SYMBOL
 c_func
@@ -1950,8 +1956,6 @@ id|netlink_post
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|variable|rtattr_parse
 id|EXPORT_SYMBOL
 c_func
@@ -2015,7 +2019,6 @@ c_func
 id|neigh_dump_info
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|dev_set_allmulti
 id|EXPORT_SYMBOL
 c_func
@@ -2605,7 +2608,6 @@ c_func
 id|tcf_police_destroy
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|variable|tcf_police_dump
 id|EXPORT_SYMBOL
 c_func
@@ -2613,7 +2615,6 @@ c_func
 id|tcf_police_dump
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_CLS

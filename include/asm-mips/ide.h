@@ -418,6 +418,95 @@ DECL|typedef|select_t
 )brace
 id|select_t
 suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#ifdef __MIPSEB__
+DECL|member|HOB
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 48-bit address ordering */
+DECL|member|reserved456
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|SRST
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host soft reset bit */
+DECL|member|nIEN
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device INTRQ to host */
+DECL|member|bit0
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device INTRQ to host */
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host soft reset bit */
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ATA-2 thingy */
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 48-bit address ordering */
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|control_t
+)brace
+id|control_t
+suffix:semicolon
 DECL|function|ide_request_irq
 r_static
 id|__inline__

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;&t;INETPEER - A storage for permanent information about peers&n; *&n; *  Version:&t;$Id: inetpeer.h,v 1.1 2000/01/06 00:41:51 davem Exp $&n; *&n; *  Authors:&t;Andrey V. Savochkin &lt;saw@msu.ru&gt;&n; */
+multiline_comment|/*&n; *&t;&t;INETPEER - A storage for permanent information about peers&n; *&n; *  Version:&t;$Id: inetpeer.h,v 1.2 2002/01/12 07:54:56 davem Exp $&n; *&n; *  Authors:&t;Andrey V. Savochkin &lt;saw@msu.ru&gt;&n; */
 macro_line|#ifndef _NET_INETPEER_H
 DECL|macro|_NET_INETPEER_H
 mdefine_line|#define _NET_INETPEER_H
@@ -108,7 +108,7 @@ id|inet_peer_unused_tailp
 suffix:semicolon
 multiline_comment|/* can be called from BH context or outside */
 DECL|function|inet_putpeer
-r_extern
+r_static
 r_inline
 r_void
 id|inet_putpeer
@@ -175,7 +175,7 @@ id|inet_peer_idlock
 suffix:semicolon
 multiline_comment|/* can be called with or without local BH being disabled */
 DECL|function|inet_getid
-r_extern
+r_static
 r_inline
 id|__u16
 id|inet_getid

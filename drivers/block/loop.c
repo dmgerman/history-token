@@ -2267,12 +2267,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|exit_files
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren

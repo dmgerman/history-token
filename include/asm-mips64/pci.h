@@ -231,6 +231,19 @@ r_int
 id|direction
 )paren
 suffix:semicolon
+multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;&bslash;&n;&t;dma_addr_t ADDR_NAME;
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)&t;&t;&bslash;&n;&t;__u32 LEN_NAME;
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;ADDR_NAME)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;ADDR_NAME) = (VAL))
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
 macro_line|#else /* CONFIG_MAPPED_PCI_IO  */
 multiline_comment|/*&n; * Map a single buffer of the indicated size for DMA in streaming mode.&n; * The 32-bit bus address to use is returned.&n; *&n; * Once the device is given the dma address, the device owns this memory&n; * until either pci_unmap_single or pci_dma_sync_single is performed.&n; */
 DECL|function|pci_map_single
@@ -327,6 +340,19 @@ c_func
 suffix:semicolon
 multiline_comment|/* Nothing to do */
 )brace
+multiline_comment|/* pci_unmap_{page,single} is a nop so... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do { } while (0)
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
 multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 DECL|function|pci_map_sg
 r_static

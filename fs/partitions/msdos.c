@@ -8,7 +8,36 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 macro_line|#include &lt;linux/ide.h&gt;&t;/* IDE xlate */
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
+macro_line|#elif defined(CONFIG_BLK_DEV_IDE_MODULE)
+macro_line|#include &lt;linux/module.h&gt;
+DECL|variable|ide_xlate_1024_hook
+r_int
+(paren
+op_star
+id|ide_xlate_1024_hook
+)paren
+(paren
+id|kdev_t
+comma
+r_int
+comma
+r_int
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+DECL|variable|ide_xlate_1024_hook
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ide_xlate_1024_hook
+)paren
+suffix:semicolon
+DECL|macro|ide_xlate_1024
+mdefine_line|#define ide_xlate_1024 ide_xlate_1024_hook
+macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;check.h&quot;
 macro_line|#include &quot;msdos.h&quot;
@@ -2033,7 +2062,7 @@ op_star
 id|bdev
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 id|Sector
 id|sect
 suffix:semicolon
@@ -2068,6 +2097,17 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_MODULE
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ide_xlate_1024
+)paren
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * The i386 partition handling programs very often&n;&t; * make partitions end on cylinder boundaries.&n;&t; * There is no need to do so, and Linux fdisk doesnt always&n;&t; * do this, and Windows NT on Alpha doesnt do this either,&n;&t; * but still, this helps to guess #heads.&n;&t; */
 id|data
 op_assign
@@ -2419,7 +2459,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
+macro_line|#endif /* defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE) */
 r_return
 l_int|1
 suffix:semicolon

@@ -730,6 +730,8 @@ op_member_access_from_pointer
 id|mmap
 c_func
 (paren
+id|vma
+comma
 id|vfl
 comma
 (paren

@@ -5245,7 +5245,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|neigh_delete
 r_int
 id|neigh_delete
@@ -6852,8 +6851,7 @@ id|GFP_ATOMIC
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* CONFIG_ARPD */
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|struct|neigh_sysctl_table
 r_struct

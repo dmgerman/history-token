@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&t;Forwarding Information Database&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_fib.c,v 1.24 2001/06/05 11:36:55 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&t;Forwarding Information Database&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_fib.c,v 1.25 2001/10/31 21:55:55 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1285,7 +1285,6 @@ op_amp
 id|rt-&gt;rt6i_ref
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|inet6_rt_notify
 c_func
 (paren
@@ -1294,7 +1293,6 @@ comma
 id|rt
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rt6_stats.fib_rt_entries
 op_increment
 suffix:semicolon
@@ -3127,7 +3125,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 id|inet6_rt_notify
 c_func
 (paren
@@ -3136,7 +3133,6 @@ comma
 id|rt
 )paren
 suffix:semicolon
-macro_line|#endif
 id|rt6_release
 c_func
 (paren

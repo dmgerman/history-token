@@ -5226,7 +5226,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|ide_lock
 )paren
 suffix:semicolon
 )brace
@@ -5761,7 +5761,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|ide_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Check if this is a media bay with an IDE device or not&n;&t;&t;&t; * a media bay.&n;&t;&t;&t; */
@@ -6040,7 +6040,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|ide_lock
 comma
 id|flags
 )paren
@@ -6075,7 +6075,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|io_request_lock
+id|ide_lock
 comma
 id|flags
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: envctrl.c,v 1.24 2001/10/08 22:19:51 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
+multiline_comment|/* $Id: envctrl.c,v 1.25 2002/01/15 09:01:26 davem Exp $&n; * envctrl.c: Temperature and Fan monitoring on Machines providing it.&n; *&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 2000  Vinh Truong    (vinh.truong@eng.sun.com)&n; * VT - The implementation is to support Sun Microelectronics (SME) platform&n; *      environment monitoring.  SME platforms use pcf8584 as the i2c bus &n; *      controller to access pcf8591 (8-bit A/D and D/A converter) and &n; *      pcf8571 (256 x 8-bit static low-voltage RAM with I2C-bus interface).&n; *      At board level, it follows SME Firmware I2C Specification. Reference:&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8584P&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8574AP&n; * &t;http://www-eu2.semiconductors.com/pip/PCF8591P&n; *&n; * EB - Added support for CP1500 Global Address and PS/Voltage monitoring.&n; * &t;&t;Eric Brower &lt;ebrower@usa.net&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2696,18 +2696,18 @@ id|CHANNEL_DESC_SZ
 suffix:semicolon
 r_int
 id|i
-comma
-id|len
-comma
-id|j
 op_assign
 l_int|0
+comma
+id|len
 suffix:semicolon
 r_char
 op_star
-id|ptr
+id|pos
+op_assign
+id|chnls_desc
 suffix:semicolon
-multiline_comment|/* Firmware describe channels into a stream separated by a &squot;&bslash;0&squot;.&n;&t; * Replace all &squot;&bslash;0&squot; with a space.&n;&t; */
+multiline_comment|/* Firmware describe channels into a stream separated by a &squot;&bslash;0&squot;. */
 id|len
 op_assign
 id|prom_getproperty
@@ -2722,79 +2722,52 @@ comma
 id|CHANNEL_DESC_SZ
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|chnls_desc
 (braket
-id|i
+id|CHANNEL_DESC_SZ
+op_minus
+l_int|1
 )braket
-op_eq
+op_assign
 l_char|&squot;&bslash;0&squot;
-)paren
-id|chnls_desc
-(braket
-id|i
-)braket
-op_assign
-l_char|&squot; &squot;
-suffix:semicolon
-)brace
-id|ptr
-op_assign
-id|strtok
-c_func
-(paren
-id|chnls_desc
-comma
-l_string|&quot; &quot;
-)paren
 suffix:semicolon
 r_while
 c_loop
 (paren
-id|ptr
-op_ne
-l_int|NULL
+id|len
+OG
+l_int|0
 )paren
 (brace
+r_int
+id|l
+op_assign
+id|strlen
+c_func
+(paren
+id|pos
+)paren
+op_plus
+l_int|1
+suffix:semicolon
 id|envctrl_set_mon
 c_func
 (paren
 id|pchild
 comma
-id|ptr
+id|pos
 comma
-id|j
-)paren
-suffix:semicolon
-id|ptr
-op_assign
-id|strtok
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-id|j
+id|i
 op_increment
+)paren
+suffix:semicolon
+id|len
+op_sub_assign
+id|l
+suffix:semicolon
+id|pos
+op_add_assign
+id|l
 suffix:semicolon
 )brace
 multiline_comment|/* Get optional properties. */

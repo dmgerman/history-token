@@ -984,7 +984,6 @@ r_return
 id|p-&gt;action
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|tcf_police_dump
 r_int
 id|tcf_police_dump
@@ -1153,5 +1152,4 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

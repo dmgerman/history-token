@@ -11534,6 +11534,8 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|virt_to_phys

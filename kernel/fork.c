@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2852,6 +2853,33 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;policy
+op_eq
+id|SCHED_OTHER
+)paren
+id|p-&gt;prio
+op_assign
+id|MAX_PRIO
+op_minus
+l_int|1
+op_minus
+(paren
+(paren
+id|MAX_PRIO
+op_minus
+l_int|1
+op_minus
+id|p-&gt;prio
+)paren
+op_star
+l_int|1
+)paren
+op_div
+l_int|3
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, add it to the run-queues and make it&n;&t; * visible to the rest of the system.&n;&t; *&n;&t; * Let it rip!&n;&t; */
 id|retval

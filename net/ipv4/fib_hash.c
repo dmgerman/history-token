@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 FIB: lookup engine and maintenance routines.&n; *&n; * Version:&t;$Id: fib_hash.c,v 1.12 1999/08/31 07:03:27 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 FIB: lookup engine and maintenance routines.&n; *&n; * Version:&t;$Id: fib_hash.c,v 1.13 2001/10/31 21:55:54 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1743,7 +1743,6 @@ macro_line|#else
 DECL|macro|FIB_SCAN_TOS
 mdefine_line|#define FIB_SCAN_TOS(f, fp, key, tos) &bslash;&n;for ( ; ((f) = *(fp)) != NULL &amp;&amp; fn_key_eq((f)-&gt;fn_key, (key)) &amp;&amp; &bslash;&n;     (f)-&gt;fn_tos == (tos) ; (fp) = &amp;(f)-&gt;fn_next)
 macro_line|#endif
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_void
 id|rtmsg_fib
@@ -1769,10 +1768,6 @@ id|netlink_skb_parms
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|rtmsg_fib
-mdefine_line|#define rtmsg_fib(a, b, c, d, e, f)
-macro_line|#endif
 r_static
 r_int
 DECL|function|fn_hash_insert
@@ -3536,8 +3531,7 @@ id|n
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_RTNETLINK
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|fn_hash_dump_bucket
@@ -3689,7 +3683,7 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|fn_hash_dump_zone
@@ -4211,7 +4205,6 @@ id|MSG_DONTWAIT
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifdef CONFIG_IP_MULTIPLE_TABLES
 DECL|function|fib_hash_init
 r_struct
@@ -4324,12 +4317,10 @@ id|tb-&gt;tb_select_default
 op_assign
 id|fn_hash_select_default
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|tb-&gt;tb_dump
 op_assign
 id|fn_hash_dump
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|tb-&gt;tb_get_info
 op_assign

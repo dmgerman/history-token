@@ -834,6 +834,8 @@ multiline_comment|/* FIXME: save graphics context here, dump it to rendering&n;&
 id|remove_mapping
 c_func
 (paren
+id|vma
+comma
 id|cards
 (braket
 id|board
@@ -879,6 +881,8 @@ suffix:semicolon
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|virt_add
 comma
 id|phys_add

@@ -682,9 +682,9 @@ r_void
 id|flush_tlb_range
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -716,7 +716,7 @@ macro_line|#ifdef CONFIG_SMP
 id|flush_tlb_range
 c_func
 (paren
-id|vma-&gt;vm_mm
+id|vma
 comma
 (paren
 id|addr
@@ -784,6 +784,10 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|vm_area_struct
+id|vma
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -805,10 +809,15 @@ c_func
 l_string|&quot;flush_tlb_pgtables: can&squot;t flush across regions!!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|vma.vm_mm
+op_assign
+id|mm
+suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|mm
+op_amp
+id|vma
 comma
 id|ia64_thash
 c_func
@@ -831,7 +840,7 @@ mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end)&t;do { } while (0)
+mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
 DECL|macro|flush_page_to_ram

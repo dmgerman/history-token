@@ -1,14 +1,8 @@
-multiline_comment|/*  $Id: modutil.c,v 1.9 2001/08/14 22:10:56 davem Exp $&n; *  arch/sparc64/mm/modutil.c&n; *&n; *  Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Based upon code written by Linus Torvalds and others.&n; */
+multiline_comment|/*  $Id: modutil.c,v 1.11 2001/12/05 06:05:35 davem Exp $&n; *  arch/sparc64/mm/modutil.c&n; *&n; *  Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *  Based upon code written by Linus Torvalds and others.&n; */
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|macro|MODULES_VADDR
-mdefine_line|#define  MODULES_VADDR&t;0x0000000001000000ULL  /* Where to map modules */
-DECL|macro|MODULES_LEN
-mdefine_line|#define  MODULES_LEN&t;0x000000007f000000ULL
-DECL|macro|MODULES_END
-mdefine_line|#define  MODULES_END&t;0x0000000080000000ULL
 DECL|variable|modvmlist
 r_static
 r_struct

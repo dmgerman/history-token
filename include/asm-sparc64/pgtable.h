@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.152 2001/11/12 09:43:39 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.155 2001/12/21 04:56:17 davem Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -9,6 +9,25 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+multiline_comment|/* The kernel image occupies 0x4000000 to 0x1000000 (4MB --&gt; 16MB).&n; * The page copy blockops use 0x1000000 to 0x18000000 (16MB --&gt; 24MB).&n; * The PROM resides in an area spanning 0xf0000000 to 0x100000000.&n; * The vmalloc area spans 0x140000000 to 0x200000000.&n; * There is a single static kernel PMD which maps from 0x0 to address&n; * 0x400000000.&n; */
+DECL|macro|TLBTEMP_BASE
+mdefine_line|#define&t;TLBTEMP_BASE&t;&t;0x0000000001000000
+DECL|macro|MODULES_VADDR
+mdefine_line|#define MODULES_VADDR&t;&t;0x0000000002000000
+DECL|macro|MODULES_LEN
+mdefine_line|#define MODULES_LEN&t;&t;0x000000007e000000
+DECL|macro|MODULES_END
+mdefine_line|#define MODULES_END&t;&t;0x0000000080000000
+DECL|macro|VMALLOC_START
+mdefine_line|#define VMALLOC_START&t;&t;0x0000000140000000
+DECL|macro|VMALLOC_VMADDR
+mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
+DECL|macro|VMALLOC_END
+mdefine_line|#define VMALLOC_END&t;&t;0x0000000200000000
+DECL|macro|LOW_OBP_ADDRESS
+mdefine_line|#define LOW_OBP_ADDRESS&t;&t;0x00000000f0000000
+DECL|macro|HI_OBP_ADDRESS
+mdefine_line|#define HI_OBP_ADDRESS&t;&t;0x0000000100000000
 multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
 multiline_comment|/*&n; * Given a virtual address, the lowest PAGE_SHIFT bits determine offset&n; * into the page; the next higher PAGE_SHIFT-3 bits determine the pte#&n; * in the proper pagetable (the -3 is from the 8 byte ptes, and each page&n; * table is a single page long). The next higher PMD_BITS determine pmd# &n; * in the proper pmdtable (where we must have PMD_BITS &lt;= (PAGE_SHIFT-2) &n; * since the pmd entries are 4 bytes, and each pmd page is a single page &n; * long). Finally, the higher few bits determine pgde#.&n; */
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
@@ -47,17 +66,6 @@ DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD)))
 DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
-multiline_comment|/* NOTE: TLB miss handlers depend heavily upon where this is. */
-DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;0x0000000140000000UL
-DECL|macro|VMALLOC_VMADDR
-mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
-DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&t;0x0000000200000000UL
-DECL|macro|LOW_OBP_ADDRESS
-mdefine_line|#define LOW_OBP_ADDRESS&t;&t;0xf0000000UL
-DECL|macro|HI_OBP_ADDRESS
-mdefine_line|#define HI_OBP_ADDRESS&t;&t;0x100000000UL
 DECL|macro|pte_ERROR
 mdefine_line|#define pte_ERROR(e)&t;__builtin_trap()
 DECL|macro|pmd_ERROR
@@ -456,10 +464,6 @@ r_int
 op_star
 )paren
 suffix:semicolon
-DECL|macro|LOW_OBP_ADDRESS
-mdefine_line|#define LOW_OBP_ADDRESS&t;&t;0xf0000000UL
-DECL|macro|HI_OBP_ADDRESS
-mdefine_line|#define HI_OBP_ADDRESS&t;&t;0x100000000UL
 r_extern
 id|__inline__
 r_int
@@ -614,6 +618,11 @@ r_int
 id|io_remap_page_range
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from

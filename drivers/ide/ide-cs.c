@@ -664,10 +664,10 @@ r_int
 id|idecs_register
 (paren
 r_int
-id|io_base
+id|arg1
 comma
 r_int
-id|ctl_base
+id|arg2
 comma
 r_int
 id|irq
@@ -685,12 +685,12 @@ comma
 (paren
 id|ide_ioreg_t
 )paren
-id|io_base
+id|arg1
 comma
 (paren
 id|ide_ioreg_t
 )paren
-id|ctl_base
+id|arg2
 comma
 l_int|NULL
 )paren
@@ -703,7 +703,7 @@ id|hw.chipset
 op_assign
 id|ide_pci
 suffix:semicolon
-singleline_comment|// this enables IRQ sharing w/ PCI irqs
+multiline_comment|/* this enables IRQ sharing w/ PCI irqs */
 r_return
 id|ide_register_hw
 c_func
@@ -1352,22 +1352,6 @@ comma
 id|link-&gt;io.NumPorts2
 )paren
 suffix:semicolon
-multiline_comment|/* disable drive interrupts during IDE probe */
-r_if
-c_cond
-(paren
-id|ctl_base
-)paren
-(brace
-id|outb
-c_func
-(paren
-l_int|0x02
-comma
-id|ctl_base
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* retry registration in case device is still spinning up */
 r_for
 c_loop
@@ -1384,6 +1368,20 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ctl_base
+)paren
+id|outb
+c_func
+(paren
+l_int|0x02
+comma
+id|ctl_base
+)paren
+suffix:semicolon
+multiline_comment|/* Set nIEN = disable device interrupts */
 id|hd
 op_assign
 id|idecs_register
@@ -1413,6 +1411,21 @@ op_eq
 l_int|0x20
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ctl_base
+)paren
+id|outb
+c_func
+(paren
+l_int|0x02
+comma
+id|ctl_base
+op_plus
+l_int|0x10
+)paren
+suffix:semicolon
 id|hd
 op_assign
 id|idecs_register

@@ -24,7 +24,7 @@ mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end)&t;do { } while (0)
+mdefine_line|#define flush_cache_range(vma, start, end)&t;do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;do { } while (0)
 DECL|macro|flush_page_to_ram
@@ -487,9 +487,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -503,7 +503,7 @@ id|end
 id|flush_tlb_mm
 c_func
 (paren
-id|mm
+id|vma-&gt;vm_mm
 )paren
 suffix:semicolon
 )brace
@@ -545,7 +545,7 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int

@@ -303,7 +303,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_int
 id|tfilter_notify
@@ -2204,7 +2203,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|tc_filter_init
 r_int
 id|__init
@@ -2214,7 +2212,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_struct
 id|rtnetlink_link
 op_star
@@ -2277,7 +2274,6 @@ op_assign
 id|tc_dump_tfilter
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|macro|INIT_TC_FILTER
 mdefine_line|#define INIT_TC_FILTER(name) { &bslash;&n;          extern struct tcf_proto_ops cls_##name##_ops; &bslash;&n;          register_tcf_proto_ops(&amp;cls_##name##_ops); &bslash;&n;&t;}
 macro_line|#ifdef CONFIG_NET_CLS_U32

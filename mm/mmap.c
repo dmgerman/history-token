@@ -2397,7 +2397,7 @@ multiline_comment|/* Undo any partial mapping done by a device driver. */
 id|zap_page_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|vma-&gt;vm_start
 comma
@@ -4055,7 +4055,7 @@ suffix:semicolon
 id|zap_page_range
 c_func
 (paren
-id|mm
+id|mpnt
 comma
 id|st
 comma
@@ -4765,7 +4765,7 @@ suffix:semicolon
 id|zap_page_range
 c_func
 (paren
-id|mm
+id|mpnt
 comma
 id|start
 comma

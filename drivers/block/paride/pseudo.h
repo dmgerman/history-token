@@ -337,9 +337,11 @@ c_func
 (paren
 )paren
 op_logical_or
+id|time_after_eq
+c_func
 (paren
 id|jiffies
-op_ge
+comma
 id|ps_timeout
 )paren
 )paren
@@ -463,9 +465,11 @@ c_func
 (paren
 )paren
 op_logical_or
+id|time_after_eq
+c_func
 (paren
 id|jiffies
-op_ge
+comma
 id|ps_timeout
 )paren
 )paren

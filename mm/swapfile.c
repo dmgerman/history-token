@@ -3743,7 +3743,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|IS_ERR
+c_func
+(paren
+id|swap_file
+)paren
 )paren
 r_goto
 id|bad_swap_2
@@ -3751,6 +3755,11 @@ suffix:semicolon
 id|p-&gt;swap_file
 op_assign
 id|swap_file
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond

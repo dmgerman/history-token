@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.68 2001/09/01 00:31:50 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.69 2001/10/31 21:55:54 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -6933,7 +6933,6 @@ id|ADDR_CHECK_FREQUENCY
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_int
 DECL|function|inet6_rtm_deladdr
@@ -7954,7 +7953,6 @@ comma
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
 DECL|function|ipv6_ifa_notify
 r_static
 r_void
@@ -7970,7 +7968,6 @@ op_star
 id|ifp
 )paren
 (brace
-macro_line|#ifdef CONFIG_RTNETLINK
 id|inet6_ifa_notify
 c_func
 (paren
@@ -7983,7 +7980,6 @@ comma
 id|ifp
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -9053,7 +9049,6 @@ op_amp
 id|addr_chk_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtnetlink_links
 (braket
 id|PF_INET6
@@ -9061,7 +9056,6 @@ id|PF_INET6
 op_assign
 id|inet6_rtnetlink_table
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 id|addrconf_sysctl.sysctl_header
 op_assign
@@ -9111,7 +9105,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtnetlink_links
 (braket
 id|PF_INET6
@@ -9119,7 +9112,6 @@ id|PF_INET6
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 id|addrconf_sysctl_unregister
 c_func

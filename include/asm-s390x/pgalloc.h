@@ -768,7 +768,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This establishes kernel virtual mappings (e.g., as a result of a&n; * vmalloc call).  Since s390-esame uses a separate kernel page table,&n; * there is nothing to do here... :)&n; */
 DECL|macro|set_pgdir
 mdefine_line|#define set_pgdir(vmaddr, entry)&t;do { } while(0)
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs &n; *    called only from vmalloc/vfree&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs &n; *    called only from vmalloc/vfree&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
 multiline_comment|/*&n; * S/390 has three ways of flushing TLBs&n; * &squot;ptlb&squot; does a flush of the local processor&n; * &squot;csp&squot; flushes the TLBs on all PUs of a SMP&n; * &squot;ipte&squot; invalidates a pte in a page table and flushes that out of&n; * the TLBs of all PUs of a SMP&n; */
 DECL|macro|local_flush_tlb
 mdefine_line|#define local_flush_tlb() &bslash;&n;do {  __asm__ __volatile__(&quot;ptlb&quot;: : :&quot;memory&quot;); } while (0)
@@ -856,9 +856,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -1080,9 +1080,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -1096,7 +1096,7 @@ id|end
 id|__flush_tlb_mm
 c_func
 (paren
-id|mm
+id|vma-&gt;vm_mm
 )paren
 suffix:semicolon
 )brace

@@ -54,6 +54,14 @@ l_string|&quot;TEX&quot;
 suffix:semicolon
 multiline_comment|/* TeX */
 multiline_comment|/*&n; * fat_fs_panic reports a severe file system problem and sets the file system&n; * read-only. The file system can be made writable again by remounting it.&n; */
+DECL|variable|panic_msg
+r_static
+r_char
+id|panic_msg
+(braket
+l_int|512
+)braket
+suffix:semicolon
 DECL|function|fat_fs_panic
 r_void
 id|fat_fs_panic
@@ -67,11 +75,44 @@ comma
 r_const
 r_char
 op_star
-id|msg
+id|fmt
+comma
+dot
+dot
+dot
 )paren
 (brace
 r_int
 id|not_ro
+suffix:semicolon
+id|va_list
+id|args
+suffix:semicolon
+id|va_start
+(paren
+id|args
+comma
+id|fmt
+)paren
+suffix:semicolon
+id|vsnprintf
+(paren
+id|panic_msg
+comma
+r_sizeof
+(paren
+id|panic_msg
+)paren
+comma
+id|fmt
+comma
+id|args
+)paren
+suffix:semicolon
+id|va_end
+(paren
+id|args
+)paren
 suffix:semicolon
 id|not_ro
 op_assign
@@ -94,11 +135,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Filesystem panic (dev %s).&bslash;n  %s&bslash;n&quot;
+l_string|&quot;FAT: Filesystem panic (dev %s)&bslash;n&quot;
+l_string|&quot;    %s&bslash;n&quot;
 comma
 id|s-&gt;s_id
 comma
-id|msg
+id|panic_msg
 )paren
 suffix:semicolon
 r_if
@@ -109,7 +151,7 @@ id|not_ro
 id|printk
 c_func
 (paren
-l_string|&quot;  File system has been set read-only&bslash;n&quot;
+l_string|&quot;    File system has been set read-only&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -336,7 +378,8 @@ id|printk
 c_func
 (paren
 l_string|&quot;FAT: Did not find valid FSINFO signature.&bslash;n&quot;
-l_string|&quot;Found signature1 0x%x signature2 0x%x sector=%ld.&bslash;n&quot;
+l_string|&quot;     Found signature1 0x%08x signature2 0x%08x&quot;
+l_string|&quot; (sector = %lu)&bslash;n&quot;
 comma
 id|CF_LE_L
 c_func
@@ -359,9 +402,9 @@ op_member_access_from_pointer
 id|fsinfo_sector
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+r_else
+(brace
 id|fsinfo-&gt;free_clusters
 op_assign
 id|CF_LE_L
@@ -384,6 +427,7 @@ comma
 id|bh
 )paren
 suffix:semicolon
+)brace
 id|fat_brelse
 c_func
 (paren
@@ -2268,6 +2312,10 @@ id|count
 comma
 id|cluster
 suffix:semicolon
+r_int
+r_int
+id|dir_size
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -2278,6 +2326,10 @@ id|start
 )paren
 suffix:semicolon
 macro_line|#endif
+id|dir_size
+op_assign
+l_int|0
+suffix:semicolon
 r_do
 (brace
 r_for
@@ -2352,6 +2404,40 @@ l_int|0
 )paren
 r_return
 id|cluster
+suffix:semicolon
+)brace
+id|dir_size
+op_add_assign
+l_int|1
+op_lshift
+id|MSDOS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|cluster_bits
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dir_size
+OG
+id|FAT_MAX_DIR_SIZE
+)paren
+(brace
+id|fat_fs_panic
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Directory %d: &quot;
+l_string|&quot;exceeded the maximum size of directory&quot;
+comma
+id|start
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.135 2002/01/11 08:45:38 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.136 2002/01/14 09:49:52 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10585,7 +10585,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-l_int|64
+id|sg_io64.mx_sb_len
 comma
 id|GFP_KERNEL
 )paren
@@ -10606,16 +10606,37 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|memset
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 id|sg_io64.sbp
 comma
-l_int|0
-comma
-l_int|64
+(paren
+r_void
+op_star
 )paren
+id|A
+c_func
+(paren
+id|sbp32
+)paren
+comma
+id|sg_io64.mx_sb_len
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|err
 op_or_assign
 id|__get_user
@@ -10906,7 +10927,7 @@ id|sbp32
 comma
 id|sg_io64.sbp
 comma
-l_int|64
+id|sg_io64.mx_sb_len
 )paren
 suffix:semicolon
 r_if

@@ -2224,7 +2224,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|gred_dump
 r_static
 r_int
@@ -2659,7 +2658,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|gred_destroy
 r_static
 r_void
@@ -2758,10 +2756,8 @@ comma
 id|gred_change
 comma
 multiline_comment|/* change */
-macro_line|#ifdef CONFIG_RTNETLINK
 id|gred_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

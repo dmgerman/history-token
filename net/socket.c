@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
+macro_line|#include &lt;linux/netlink.h&gt;
+macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -18,11 +20,7 @@ macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_NET)
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 r_static
@@ -6669,7 +6667,7 @@ id|sock_fs_type
 suffix:semicolon
 multiline_comment|/* The real protocol initialization is performed when&n;&t; *  do_initcalls is run.  &n;&t; */
 multiline_comment|/*&n;&t; * The netlink device handler may be needed early.&n;&t; */
-macro_line|#ifdef  CONFIG_RTNETLINK
+macro_line|#ifdef CONFIG_NET
 id|rtnetlink_init
 c_func
 (paren

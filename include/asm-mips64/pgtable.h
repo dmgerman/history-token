@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
-multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(mm, start, end) flushes a range of pages&n; *  - flush_page_to_ram(page) write back kernel page to ram&n; */
+multiline_comment|/* Cache flushing:&n; *&n; *  - flush_cache_all() flushes entire cache&n; *  - flush_cache_mm(mm) flushes the specified mm context&squot;s cache lines&n; *  - flush_cache_page(mm, vmaddr) flushes a single page&n; *  - flush_cache_range(vma, start, end) flushes a range of pages&n; *  - flush_page_to_ram(page) write back kernel page to ram&n; */
 r_extern
 r_void
 (paren
@@ -31,9 +31,9 @@ id|_flush_cache_range
 )paren
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -82,7 +82,7 @@ macro_line|#ifndef CONFIG_CPU_R10000
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;_flush_cache_mm(mm)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm,start,end)&t;_flush_cache_range(mm,start,end)
+mdefine_line|#define flush_cache_range(vma,start,end) _flush_cache_range(vma,start,end)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,page)&t;_flush_cache_page(vma, page)
 DECL|macro|flush_page_to_ram
@@ -105,7 +105,7 @@ suffix:semicolon
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;do { } while(0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm,start,end)&t;do { } while(0)
+mdefine_line|#define flush_cache_range(vma,start,end) do { } while(0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,page)&t;do { } while(0)
 DECL|macro|flush_page_to_ram

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Generic socket support routines. Memory allocators, socket lock/release&n; *&t;&t;handler for protocols to use and generic option handler.&n; *&n; *&n; * Version:&t;$Id: sock.c,v 1.112 2001/07/27 09:54:48 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Alan Cox, &lt;A.Cox@swansea.ac.uk&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;: &t;Numerous verify_area() problems&n; *&t;&t;Alan Cox&t;:&t;Connecting on a connecting socket&n; *&t;&t;&t;&t;&t;now returns an error for tcp.&n; *&t;&t;Alan Cox&t;:&t;sock-&gt;protocol is set correctly.&n; *&t;&t;&t;&t;&t;and is not sometimes left as 0.&n; *&t;&t;Alan Cox&t;:&t;connect handles icmp errors on a&n; *&t;&t;&t;&t;&t;connect properly. Unfortunately there&n; *&t;&t;&t;&t;&t;is a restart syscall nasty there. I&n; *&t;&t;&t;&t;&t;can&squot;t match BSD without hacking the C&n; *&t;&t;&t;&t;&t;library. Ideas urgently sought!&n; *&t;&t;Alan Cox&t;:&t;Disallow bind() to addresses that are&n; *&t;&t;&t;&t;&t;not ours - especially broadcast ones!!&n; *&t;&t;Alan Cox&t;:&t;Socket 1024 _IS_ ok for users. (fencepost)&n; *&t;&t;Alan Cox&t;:&t;sock_wfree/sock_rfree don&squot;t destroy sockets,&n; *&t;&t;&t;&t;&t;instead they leave that for the DESTROY timer.&n; *&t;&t;Alan Cox&t;:&t;Clean up error flag in accept&n; *&t;&t;Alan Cox&t;:&t;TCP ack handling is buggy, the DESTROY timer&n; *&t;&t;&t;&t;&t;was buggy. Put a remove_sock() in the handler&n; *&t;&t;&t;&t;&t;for memory when we hit 0. Also altered the timer&n; *&t;&t;&t;&t;&t;code. The ACK stuff can wait and needs major &n; *&t;&t;&t;&t;&t;TCP layer surgery.&n; *&t;&t;Alan Cox&t;:&t;Fixed TCP ack bug, removed remove sock&n; *&t;&t;&t;&t;&t;and fixed timer/inet_bh race.&n; *&t;&t;Alan Cox&t;:&t;Added zapped flag for TCP&n; *&t;&t;Alan Cox&t;:&t;Move kfree_skb into skbuff.c and tidied up surplus code&n; *&t;&t;Alan Cox&t;:&t;for new sk_buff allocations wmalloc/rmalloc now call alloc_skb&n; *&t;&t;Alan Cox&t;:&t;kfree_s calls now are kfree_skbmem so we can track skb resources&n; *&t;&t;Alan Cox&t;:&t;Supports socket option broadcast now as does udp. Packet and raw need fixing.&n; *&t;&t;Alan Cox&t;:&t;Added RCVBUF,SNDBUF size setting. It suddenly occurred to me how easy it was so...&n; *&t;&t;Rick Sladkey&t;:&t;Relaxed UDP rules for matching packets.&n; *&t;&t;C.E.Hawkins&t;:&t;IFF_PROMISC/SIOCGHWADDR support&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Fixed connect() taking signals I think.&n; *&t;&t;Alan Cox&t;:&t;SO_LINGER supported&n; *&t;&t;Alan Cox&t;:&t;Error reporting fixes&n; *&t;&t;Anonymous&t;:&t;inet_create tidied up (sk-&gt;reuse setting)&n; *&t;&t;Alan Cox&t;:&t;inet sockets don&squot;t set sk-&gt;type!&n; *&t;&t;Alan Cox&t;:&t;Split socket option code&n; *&t;&t;Alan Cox&t;:&t;Callbacks&n; *&t;&t;Alan Cox&t;:&t;Nagle flag for Charles &amp; Johannes stuff&n; *&t;&t;Alex&t;&t;:&t;Removed restriction on inet fioctl&n; *&t;&t;Alan Cox&t;:&t;Splitting INET from NET core&n; *&t;&t;Alan Cox&t;:&t;Fixed bogus SO_TYPE handling in getsockopt()&n; *&t;&t;Adam Caldwell&t;:&t;Missing return in SO_DONTROUTE/SO_DEBUG code&n; *&t;&t;Alan Cox&t;:&t;Split IP from generic code&n; *&t;&t;Alan Cox&t;:&t;New kfree_skbmem()&n; *&t;&t;Alan Cox&t;:&t;Make SO_DEBUG superuser only.&n; *&t;&t;Alan Cox&t;:&t;Allow anyone to clear SO_DEBUG&n; *&t;&t;&t;&t;&t;(compatibility fix)&n; *&t;&t;Alan Cox&t;:&t;Added optimistic memory grabbing for AF_UNIX throughput.&n; *&t;&t;Alan Cox&t;:&t;Allocator for a socket is settable.&n; *&t;&t;Alan Cox&t;:&t;SO_ERROR includes soft errors.&n; *&t;&t;Alan Cox&t;:&t;Allow NULL arguments on some SO_ opts&n; *&t;&t;Alan Cox&t;: &t;Generic socket allocation to make hooks&n; *&t;&t;&t;&t;&t;easier (suggested by Craig Metz).&n; *&t;&t;Michael Pall&t;:&t;SO_ERROR returns positive errno again&n; *              Steve Whitehouse:       Added default destructor to free&n; *                                      protocol private data.&n; *              Steve Whitehouse:       Added various other default routines&n; *                                      common to several socket families.&n; *              Chris Evans     :       Call suser() check last on F_SETOWN&n; *&t;&t;Jay Schulist&t;:&t;Added SO_ATTACH_FILTER and SO_DETACH_FILTER.&n; *&t;&t;Andi Kleen&t;:&t;Add sock_kmalloc()/sock_kfree_s()&n; *&t;&t;Andi Kleen&t;:&t;Fix write_space callback&n; *&t;&t;Chris Evans&t;:&t;Security fixes - signedness again&n; *&t;&t;Arnaldo C. Melo :       cleanups, use skb_queue_purge&n; *&n; * To Fix:&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Generic socket support routines. Memory allocators, socket lock/release&n; *&t;&t;handler for protocols to use and generic option handler.&n; *&n; *&n; * Version:&t;$Id: sock.c,v 1.116 2001/11/08 04:20:06 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Alan Cox, &lt;A.Cox@swansea.ac.uk&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;: &t;Numerous verify_area() problems&n; *&t;&t;Alan Cox&t;:&t;Connecting on a connecting socket&n; *&t;&t;&t;&t;&t;now returns an error for tcp.&n; *&t;&t;Alan Cox&t;:&t;sock-&gt;protocol is set correctly.&n; *&t;&t;&t;&t;&t;and is not sometimes left as 0.&n; *&t;&t;Alan Cox&t;:&t;connect handles icmp errors on a&n; *&t;&t;&t;&t;&t;connect properly. Unfortunately there&n; *&t;&t;&t;&t;&t;is a restart syscall nasty there. I&n; *&t;&t;&t;&t;&t;can&squot;t match BSD without hacking the C&n; *&t;&t;&t;&t;&t;library. Ideas urgently sought!&n; *&t;&t;Alan Cox&t;:&t;Disallow bind() to addresses that are&n; *&t;&t;&t;&t;&t;not ours - especially broadcast ones!!&n; *&t;&t;Alan Cox&t;:&t;Socket 1024 _IS_ ok for users. (fencepost)&n; *&t;&t;Alan Cox&t;:&t;sock_wfree/sock_rfree don&squot;t destroy sockets,&n; *&t;&t;&t;&t;&t;instead they leave that for the DESTROY timer.&n; *&t;&t;Alan Cox&t;:&t;Clean up error flag in accept&n; *&t;&t;Alan Cox&t;:&t;TCP ack handling is buggy, the DESTROY timer&n; *&t;&t;&t;&t;&t;was buggy. Put a remove_sock() in the handler&n; *&t;&t;&t;&t;&t;for memory when we hit 0. Also altered the timer&n; *&t;&t;&t;&t;&t;code. The ACK stuff can wait and needs major &n; *&t;&t;&t;&t;&t;TCP layer surgery.&n; *&t;&t;Alan Cox&t;:&t;Fixed TCP ack bug, removed remove sock&n; *&t;&t;&t;&t;&t;and fixed timer/inet_bh race.&n; *&t;&t;Alan Cox&t;:&t;Added zapped flag for TCP&n; *&t;&t;Alan Cox&t;:&t;Move kfree_skb into skbuff.c and tidied up surplus code&n; *&t;&t;Alan Cox&t;:&t;for new sk_buff allocations wmalloc/rmalloc now call alloc_skb&n; *&t;&t;Alan Cox&t;:&t;kfree_s calls now are kfree_skbmem so we can track skb resources&n; *&t;&t;Alan Cox&t;:&t;Supports socket option broadcast now as does udp. Packet and raw need fixing.&n; *&t;&t;Alan Cox&t;:&t;Added RCVBUF,SNDBUF size setting. It suddenly occurred to me how easy it was so...&n; *&t;&t;Rick Sladkey&t;:&t;Relaxed UDP rules for matching packets.&n; *&t;&t;C.E.Hawkins&t;:&t;IFF_PROMISC/SIOCGHWADDR support&n; *&t;Pauline Middelink&t;:&t;identd support&n; *&t;&t;Alan Cox&t;:&t;Fixed connect() taking signals I think.&n; *&t;&t;Alan Cox&t;:&t;SO_LINGER supported&n; *&t;&t;Alan Cox&t;:&t;Error reporting fixes&n; *&t;&t;Anonymous&t;:&t;inet_create tidied up (sk-&gt;reuse setting)&n; *&t;&t;Alan Cox&t;:&t;inet sockets don&squot;t set sk-&gt;type!&n; *&t;&t;Alan Cox&t;:&t;Split socket option code&n; *&t;&t;Alan Cox&t;:&t;Callbacks&n; *&t;&t;Alan Cox&t;:&t;Nagle flag for Charles &amp; Johannes stuff&n; *&t;&t;Alex&t;&t;:&t;Removed restriction on inet fioctl&n; *&t;&t;Alan Cox&t;:&t;Splitting INET from NET core&n; *&t;&t;Alan Cox&t;:&t;Fixed bogus SO_TYPE handling in getsockopt()&n; *&t;&t;Adam Caldwell&t;:&t;Missing return in SO_DONTROUTE/SO_DEBUG code&n; *&t;&t;Alan Cox&t;:&t;Split IP from generic code&n; *&t;&t;Alan Cox&t;:&t;New kfree_skbmem()&n; *&t;&t;Alan Cox&t;:&t;Make SO_DEBUG superuser only.&n; *&t;&t;Alan Cox&t;:&t;Allow anyone to clear SO_DEBUG&n; *&t;&t;&t;&t;&t;(compatibility fix)&n; *&t;&t;Alan Cox&t;:&t;Added optimistic memory grabbing for AF_UNIX throughput.&n; *&t;&t;Alan Cox&t;:&t;Allocator for a socket is settable.&n; *&t;&t;Alan Cox&t;:&t;SO_ERROR includes soft errors.&n; *&t;&t;Alan Cox&t;:&t;Allow NULL arguments on some SO_ opts&n; *&t;&t;Alan Cox&t;: &t;Generic socket allocation to make hooks&n; *&t;&t;&t;&t;&t;easier (suggested by Craig Metz).&n; *&t;&t;Michael Pall&t;:&t;SO_ERROR returns positive errno again&n; *              Steve Whitehouse:       Added default destructor to free&n; *                                      protocol private data.&n; *              Steve Whitehouse:       Added various other default routines&n; *                                      common to several socket families.&n; *              Chris Evans     :       Call suser() check last on F_SETOWN&n; *&t;&t;Jay Schulist&t;:&t;Added SO_ATTACH_FILTER and SO_DETACH_FILTER.&n; *&t;&t;Andi Kleen&t;:&t;Add sock_kmalloc()/sock_kfree_s()&n; *&t;&t;Andi Kleen&t;:&t;Fix write_space callback&n; *&t;&t;Chris Evans&t;:&t;Security fixes - signedness again&n; *&t;&t;Arnaldo C. Melo :       cleanups, use skb_queue_purge&n; *&n; * To Fix:&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -19,21 +19,16 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
-macro_line|#include &lt;net/arp.h&gt;
-macro_line|#include &lt;net/route.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/raw.h&gt;
-macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#ifdef CONFIG_FILTER
 macro_line|#include &lt;linux/filter.h&gt;
+macro_line|#endif
+macro_line|#ifdef CONFIG_INET
+macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#endif
 multiline_comment|/* Run time adjustable parameters. */
 DECL|variable|sysctl_wmem_max
@@ -2376,11 +2371,11 @@ id|timeo
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Generic send/receive buffer handlers&n; */
-DECL|function|sock_alloc_send_skb
+DECL|function|sock_alloc_send_pskb
 r_struct
 id|sk_buff
 op_star
-id|sock_alloc_send_skb
+id|sock_alloc_send_pskb
 c_func
 (paren
 r_struct
@@ -2390,7 +2385,11 @@ id|sk
 comma
 r_int
 r_int
-id|size
+id|header_len
+comma
+r_int
+r_int
+id|data_len
 comma
 r_int
 id|noblock
@@ -2400,9 +2399,6 @@ op_star
 id|errcode
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 r_struct
 id|sk_buff
 op_star
@@ -2410,6 +2406,9 @@ id|skb
 suffix:semicolon
 r_int
 id|timeo
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|timeo
 op_assign
@@ -2427,12 +2426,6 @@ c_loop
 l_int|1
 )paren
 (brace
-r_int
-r_int
-id|try_size
-op_assign
-id|size
-suffix:semicolon
 id|err
 op_assign
 id|sock_error
@@ -2451,7 +2444,6 @@ l_int|0
 r_goto
 id|failure
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;We should send SIGPIPE in these cases according to&n;&t;&t; *&t;1003.1g draft 6.4. If we (the user) did a shutdown()&n;&t;&t; *&t;call however we should not. &n;&t;&t; *&n;&t;&t; *&t;Note: This routine isnt just used for datagrams and&n;&t;&t; *&t;anyway some datagram protocols have a notion of&n;&t;&t; *&t;close down.&n;&t;&t; */
 id|err
 op_assign
 op_minus
@@ -2485,7 +2477,7 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-id|try_size
+id|header_len
 comma
 id|sk-&gt;allocation
 )paren
@@ -2495,8 +2487,150 @@ c_cond
 (paren
 id|skb
 )paren
+(brace
+r_int
+id|npages
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* No pages, we&squot;re done... */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|data_len
+)paren
 r_break
 suffix:semicolon
+id|npages
+op_assign
+(paren
+id|data_len
+op_plus
+(paren
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|skb-&gt;truesize
+op_add_assign
+id|data_len
+suffix:semicolon
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|nr_frags
+op_assign
+id|npages
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|npages
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+suffix:semicolon
+id|skb_frag_t
+op_star
+id|frag
+suffix:semicolon
+id|page
+op_assign
+id|alloc_pages
+c_func
+(paren
+id|sk-&gt;allocation
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOBUFS
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|failure
+suffix:semicolon
+)brace
+id|frag
+op_assign
+op_amp
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|frags
+(braket
+id|i
+)braket
+suffix:semicolon
+id|frag-&gt;page
+op_assign
+id|page
+suffix:semicolon
+id|frag-&gt;page_offset
+op_assign
+l_int|0
+suffix:semicolon
+id|frag-&gt;size
+op_assign
+(paren
+id|data_len
+op_ge
+id|PAGE_SIZE
+ques
+c_cond
+id|PAGE_SIZE
+suffix:colon
+id|data_len
+)paren
+suffix:semicolon
+id|data_len
+op_sub_assign
+id|PAGE_SIZE
+suffix:semicolon
+)brace
+multiline_comment|/* Full success... */
+r_break
+suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus
@@ -2506,7 +2640,6 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; *&t;This means we have too many buffers for this socket already.&n;&t;&t; */
 id|set_bit
 c_func
 (paren
@@ -2592,6 +2725,46 @@ id|err
 suffix:semicolon
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|sock_alloc_send_skb
+r_struct
+id|sk_buff
+op_star
+id|sock_alloc_send_skb
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+id|noblock
+comma
+r_int
+op_star
+id|errcode
+)paren
+(brace
+r_return
+id|sock_alloc_send_pskb
+c_func
+(paren
+id|sk
+comma
+id|size
+comma
+l_int|0
+comma
+id|noblock
+comma
+id|errcode
+)paren
 suffix:semicolon
 )brace
 DECL|function|__lock_sock

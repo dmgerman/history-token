@@ -2661,7 +2661,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|route4_dump
 r_static
 r_int
@@ -2972,7 +2971,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|cls_route4_ops
 r_struct
 id|tcf_proto_ops
@@ -2999,11 +2997,7 @@ id|route4_delete
 comma
 id|route4_walk
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|route4_dump
-macro_line|#else
-l_int|NULL
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

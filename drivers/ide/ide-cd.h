@@ -22,8 +22,10 @@ macro_line|#endif
 multiline_comment|/************************************************************************/
 DECL|macro|SECTOR_BITS
 mdefine_line|#define SECTOR_BITS &t;&t;9
+macro_line|#ifndef SECTOR_SIZE
 DECL|macro|SECTOR_SIZE
 mdefine_line|#define SECTOR_SIZE&t;&t;(1 &lt;&lt; SECTOR_BITS)
+macro_line|#endif
 DECL|macro|SECTORS_PER_FRAME
 mdefine_line|#define SECTORS_PER_FRAME&t;(CD_FRAMESIZE &gt;&gt; SECTOR_BITS)
 DECL|macro|SECTOR_BUFFER_SIZE

@@ -5710,7 +5710,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|cbq_dump_rate
 r_static
 id|__inline__
@@ -6757,7 +6756,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|cbq_graft
 r_static
 r_int
@@ -9038,10 +9036,8 @@ id|cbq_bind_filter
 comma
 id|cbq_unbind_filter
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|cbq_dump_class
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|cbq_qdisc_ops
@@ -9080,10 +9076,8 @@ comma
 l_int|NULL
 multiline_comment|/* cbq_change */
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|cbq_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

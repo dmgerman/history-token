@@ -2888,6 +2888,8 @@ c_cond
 id|io_remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|off
@@ -3030,6 +3032,8 @@ c_cond
 id|io_remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|off

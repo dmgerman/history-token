@@ -1820,7 +1820,6 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dsmark_dump_class
 r_static
 r_int
@@ -2145,7 +2144,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|dsmark_class_ops
 r_static
 r_struct
@@ -2183,11 +2181,9 @@ multiline_comment|/* bind_tcf */
 id|dsmark_put
 comma
 multiline_comment|/* unbind_tcf */
-macro_line|#ifdef CONFIG_RTNETLINK
 id|dsmark_dump_class
 comma
 multiline_comment|/* dump */
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|dsmark_qdisc_ops
@@ -2235,10 +2231,8 @@ multiline_comment|/* destroy */
 l_int|NULL
 comma
 multiline_comment|/* change */
-macro_line|#ifdef CONFIG_RTNETLINK
 id|dsmark_dump
 multiline_comment|/* dump */
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

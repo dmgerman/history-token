@@ -385,7 +385,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end) do { &bslash;&n;                __flush_dcache_range(start, (unsigned long)end - (unsigned long)start); &bslash;&n;                __flush_icache_range(start, (unsigned long)end - (unsigned long)start); &bslash;&n;} while(0)
+mdefine_line|#define flush_cache_range(vma, start, end) do { &bslash;&n;                __flush_dcache_range(start, (unsigned long)end - (unsigned long)start); &bslash;&n;                __flush_icache_range(start, (unsigned long)end - (unsigned long)start); &bslash;&n;} while(0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr) do { &bslash;&n;                __flush_dcache_range(vmaddr, PAGE_SIZE); &bslash;&n;                __flush_icache_range(vmaddr, PAGE_SIZE); &bslash;&n;} while(0)
 DECL|macro|flush_page_to_ram
@@ -768,9 +768,9 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -784,7 +784,7 @@ id|end
 id|__flush_tlb_range
 c_func
 (paren
-id|mm-&gt;context
+id|vma-&gt;vm_mm-&gt;context
 comma
 id|start
 comma

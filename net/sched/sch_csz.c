@@ -2291,7 +2291,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|csz_dump
 r_static
 r_int
@@ -2417,7 +2416,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|csz_graft
 r_static
 r_int
@@ -3024,7 +3022,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|csz_dump_class
 r_static
 r_int
@@ -3236,7 +3233,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|csz_walk
 r_static
 r_void
@@ -3432,10 +3428,8 @@ id|csz_bind
 comma
 id|csz_put
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|csz_dump_class
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|csz_qdisc_ops
@@ -3474,10 +3468,8 @@ comma
 l_int|NULL
 multiline_comment|/* csz_change */
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|csz_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

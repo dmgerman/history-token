@@ -122,9 +122,6 @@ DECL|macro|MEMCPYTOIO_WRITEL
 mdefine_line|#define MEMCPYTOIO_WRITEL
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef __sparc__
-macro_line|#error &quot;Sorry, I have no idea how to do this on sparc... There is mapioaddr... With bus_type parameter...&quot;
-macro_line|#endif
 macro_line|#if defined(__m68k__)
 DECL|macro|MAP_BUSTOVIRT
 mdefine_line|#define MAP_BUSTOVIRT

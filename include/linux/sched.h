@@ -311,77 +311,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The default fd array needs to be at least BITS_PER_LONG,&n; * as this is the granularity returned by copy_fdset().&n; */
-DECL|macro|NR_OPEN_DEFAULT
-mdefine_line|#define NR_OPEN_DEFAULT BITS_PER_LONG
 r_struct
 r_namespace
 suffix:semicolon
-multiline_comment|/*&n; * Open file table structure&n; */
-DECL|struct|files_struct
-r_struct
-id|files_struct
-(brace
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
-DECL|member|file_lock
-id|rwlock_t
-id|file_lock
-suffix:semicolon
-multiline_comment|/* Protects all the below members.  Nests inside tsk-&gt;alloc_lock */
-DECL|member|max_fds
-r_int
-id|max_fds
-suffix:semicolon
-DECL|member|max_fdset
-r_int
-id|max_fdset
-suffix:semicolon
-DECL|member|next_fd
-r_int
-id|next_fd
-suffix:semicolon
-DECL|member|fd
-r_struct
-id|file
-op_star
-op_star
-id|fd
-suffix:semicolon
-multiline_comment|/* current fd array */
-DECL|member|close_on_exec
-id|fd_set
-op_star
-id|close_on_exec
-suffix:semicolon
-DECL|member|open_fds
-id|fd_set
-op_star
-id|open_fds
-suffix:semicolon
-DECL|member|close_on_exec_init
-id|fd_set
-id|close_on_exec_init
-suffix:semicolon
-DECL|member|open_fds_init
-id|fd_set
-id|open_fds_init
-suffix:semicolon
-DECL|member|fd_array
-r_struct
-id|file
-op_star
-id|fd_array
-(braket
-id|NR_OPEN_DEFAULT
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|INIT_FILES
-mdefine_line|#define INIT_FILES &bslash;&n;{ &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;count:&t;&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;file_lock:&t;RW_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;max_fds:&t;NR_OPEN_DEFAULT, &t;&t;&bslash;&n;&t;max_fdset:&t;__FD_SETSIZE, &t;&t;&t;&bslash;&n;&t;next_fd:&t;0, &t;&t;&t;&t;&bslash;&n;&t;fd:&t;&t;&amp;init_files.fd_array[0], &t;&bslash;&n;&t;close_on_exec:&t;&amp;init_files.close_on_exec_init, &bslash;&n;&t;open_fds:&t;&amp;init_files.open_fds_init, &t;&bslash;&n;&t;close_on_exec_init: { { 0, } }, &t;&t;&bslash;&n;&t;open_fds_init:&t;{ { 0, } }, &t;&t;&t;&bslash;&n;&t;fd_array:&t;{ NULL, } &t;&t;&t;&bslash;&n;}
 multiline_comment|/* Maximum number of active map areas.. This is a random (large) number */
 DECL|macro|MAX_MAP_COUNT
 mdefine_line|#define MAX_MAP_COUNT&t;(65536)
@@ -525,8 +457,6 @@ r_extern
 r_int
 id|mmlist_nr
 suffix:semicolon
-DECL|macro|INIT_MM
-mdefine_line|#define INIT_MM(name) &bslash;&n;{&t;&t;&t; &t;&t;&t;&t;&bslash;&n;&t;mm_rb:&t;&t;RB_ROOT,&t;&t;&t;&bslash;&n;&t;pgd:&t;&t;swapper_pg_dir, &t;&t;&bslash;&n;&t;mm_users:&t;ATOMIC_INIT(2), &t;&t;&bslash;&n;&t;mm_count:&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;mmap_sem:&t;__RWSEM_INITIALIZER(name.mmap_sem), &bslash;&n;&t;page_table_lock: SPIN_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;mmlist:&t;&t;LIST_HEAD_INIT(name.mmlist),&t;&bslash;&n;}
 DECL|struct|signal_struct
 r_struct
 id|signal_struct
@@ -549,8 +479,6 @@ id|siglock
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|INIT_SIGNALS
-mdefine_line|#define INIT_SIGNALS {&t;&bslash;&n;&t;count:&t;&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;action:&t;&t;{ {{0,}}, }, &t;&t;&t;&bslash;&n;&t;siglock:&t;SPIN_LOCK_UNLOCKED &t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Some day this will be a full-fledged user tracking system..&n; */
 DECL|struct|user_struct
 r_struct
@@ -1189,25 +1117,21 @@ DECL|macro|MAX_PRIO
 mdefine_line|#define MAX_PRIO&t;(MAX_RT_PRIO+40)
 DECL|macro|DEF_USER_NICE
 mdefine_line|#define DEF_USER_NICE&t;0
-multiline_comment|/*&n; * Scales user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 24 ... 63 (MAX_PRIO-1) ]&n; *&n; * User-nice value of -20 == static priority 24, and&n; * user-nice value 19 == static priority 63. The lower&n; * the priority value, the higher the task&squot;s priority.&n; *&n; * Note that while static priority cannot go below 24,&n; * the priority of a process can go as low as 0.&n; */
-DECL|macro|NICE_TO_PRIO
-mdefine_line|#define NICE_TO_PRIO(n)&t;(MAX_PRIO-1 + (n) - 19)
-DECL|macro|DEF_PRIO
-mdefine_line|#define DEF_PRIO NICE_TO_PRIO(DEF_USER_NICE)
-multiline_comment|/*&n; * Default timeslice is 90 msecs, maximum is 150 msecs.&n; * Minimum timeslice is 20 msecs.&n; */
+multiline_comment|/*&n; * Default timeslice is 80 msecs, maximum is 160 msecs.&n; * Minimum timeslice is 10 msecs.&n; */
 DECL|macro|MIN_TIMESLICE
-mdefine_line|#define MIN_TIMESLICE&t;( 20 * HZ / 1000)
+mdefine_line|#define MIN_TIMESLICE&t;(10 * HZ / 1000)
 DECL|macro|MAX_TIMESLICE
-mdefine_line|#define MAX_TIMESLICE&t;(150 * HZ / 1000)
+mdefine_line|#define MAX_TIMESLICE&t;(160 * HZ / 1000)
 DECL|macro|USER_PRIO
 mdefine_line|#define USER_PRIO(p) ((p)-MAX_RT_PRIO)
 DECL|macro|MAX_USER_PRIO
 mdefine_line|#define MAX_USER_PRIO (USER_PRIO(MAX_PRIO))
-multiline_comment|/*&n; * PRIO_TO_TIMESLICE scales priority values [ 100 ... 139  ]&n; * to initial time slice values [ MAX_TIMESLICE (150 msec) ... 2 ]&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; */
-DECL|macro|PRIO_TO_TIMESLICE
-mdefine_line|#define PRIO_TO_TIMESLICE(p) &bslash;&n;&t;((( (MAX_USER_PRIO-1-USER_PRIO(p))*(MAX_TIMESLICE-MIN_TIMESLICE) + &bslash;&n;&t;&t;MAX_USER_PRIO-1) / MAX_USER_PRIO) + MIN_TIMESLICE)
-DECL|macro|RT_PRIO_TO_TIMESLICE
-mdefine_line|#define RT_PRIO_TO_TIMESLICE(p) &bslash;&n;&t;((( (MAX_RT_PRIO-(p)-1)*(MAX_TIMESLICE-MIN_TIMESLICE) + &bslash;&n;&t;&t;&t;MAX_RT_PRIO-1) / MAX_RT_PRIO) + MIN_TIMESLICE)
+DECL|macro|DEF_PRIO
+mdefine_line|#define DEF_PRIO&t;(MAX_RT_PRIO + MAX_USER_PRIO / 3)
+DECL|macro|NICE_TO_PRIO
+mdefine_line|#define NICE_TO_PRIO(n) (MAX_PRIO-1 + (n) - 19)
+DECL|macro|NICE_TO_TIMESLICE
+mdefine_line|#define NICE_TO_TIMESLICE(n)   (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (19 - (n))) / 39)
 r_extern
 r_void
 id|set_cpus_allowed
@@ -1251,9 +1175,6 @@ r_struct
 id|exec_domain
 id|default_exec_domain
 suffix:semicolon
-multiline_comment|/*&n; *  INIT_TASK is used to set up the first task table, touch at&n; * your own risk!. Base=0, limit=0x1fffff (=2MB)&n; */
-DECL|macro|INIT_TASK
-mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    __nice:&t;&t;DEF_USER_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;LIST_HEAD_INIT(tsk.run_list),&t;&t;&t;&bslash;&n;    time_slice:&t;&t;PRIO_TO_TIMESLICE(DEF_PRIO),&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifndef INIT_TASK_SIZE
 DECL|macro|INIT_TASK_SIZE
 macro_line|# define INIT_TASK_SIZE&t;2048*sizeof(long)

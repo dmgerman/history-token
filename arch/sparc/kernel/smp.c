@@ -637,9 +637,9 @@ id|smp_flush_cache_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -650,6 +650,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -689,7 +696,7 @@ comma
 r_int
 r_int
 )paren
-id|mm
+id|vma
 comma
 id|start
 comma
@@ -700,7 +707,7 @@ suffix:semicolon
 id|local_flush_cache_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|start
 comma
@@ -715,9 +722,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -728,6 +735,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -767,7 +781,7 @@ comma
 r_int
 r_int
 )paren
-id|mm
+id|vma
 comma
 id|start
 comma
@@ -778,7 +792,7 @@ suffix:semicolon
 id|local_flush_tlb_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|start
 comma

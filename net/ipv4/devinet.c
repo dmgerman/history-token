@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;NET3&t;IP device support routines.&n; *&n; *&t;Version: $Id: devinet.c,v 1.43 2001/09/26 22:52:58 davem Exp $&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;Changes:&n; *&t;        Alexey Kuznetsov:&t;pa_* fields are replaced with ifaddr lists.&n; *&t;&t;Cyrus Durgin:&t;&t;updated for kmod&n; *&t;&t;Matthias Andree:&t;in devinet_ioctl, compare label and &n; *&t;&t;&t;&t;&t;address (4.4BSD alias style support),&n; *&t;&t;&t;&t;&t;fall back to comparing just the label&n; *&t;&t;&t;&t;&t;if no match found.&n; */
+multiline_comment|/*&n; *&t;NET3&t;IP device support routines.&n; *&n; *&t;Version: $Id: devinet.c,v 1.44 2001/10/31 21:55:54 davem Exp $&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Derived from the IP parts of dev.c 1.0.19&n; * &t;&t;Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&n; *&t;Additional Authors:&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;Changes:&n; *&t;        Alexey Kuznetsov:&t;pa_* fields are replaced with ifaddr lists.&n; *&t;&t;Cyrus Durgin:&t;&t;updated for kmod&n; *&t;&t;Matthias Andree:&t;in devinet_ioctl, compare label and &n; *&t;&t;&t;&t;&t;address (4.4BSD alias style support),&n; *&t;&t;&t;&t;&t;fall back to comparing just the label&n; *&t;&t;&t;&t;&t;if no match found.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -67,7 +67,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_void
 id|rtmsg_ifa
@@ -81,10 +80,6 @@ id|in_ifaddr
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|rtmsg_ifa
-mdefine_line|#define rtmsg_ifa(a,b)&t;do { } while(0)
-macro_line|#endif
 DECL|variable|inetaddr_chain
 r_static
 r_struct
@@ -1417,7 +1412,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_int
 DECL|function|inet_rtm_deladdr
 id|inet_rtm_deladdr
@@ -1996,7 +1990,6 @@ id|ifa
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* &n; *&t;Determine a default network mask, based on the IP address. &n; */
 DECL|function|inet_abc_len
 r_static
@@ -3854,7 +3847,6 @@ id|inetdev_event
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|inet_fill_ifaddr
 r_static
 r_int
@@ -4652,7 +4644,6 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|function|inet_forward_change
 r_void
@@ -5615,7 +5606,6 @@ op_amp
 id|ip_netdev_notifier
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtnetlink_links
 (braket
 id|PF_INET
@@ -5623,7 +5613,6 @@ id|PF_INET
 op_assign
 id|inet_rtnetlink_table
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 id|devinet_sysctl.sysctl_header
 op_assign

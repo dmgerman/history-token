@@ -1139,7 +1139,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dn_fib_dump_info
 r_static
 r_int
@@ -2223,10 +2222,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#else /* no CONFIG_RTNETLINK */
-DECL|macro|dn_rtmsg_fib
-mdefine_line|#define dn_rtmsg_fib(event,f,z,tb_id,nlh,req)
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|function|dn_fib_table_insert
 r_static
 r_int
@@ -4442,12 +4437,10 @@ op_assign
 id|dn_fib_table_get_info
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_RTNETLINK
 id|t-&gt;dump
 op_assign
 id|dn_fib_table_dump
 suffix:semicolon
-macro_line|#endif
 id|dn_fib_tables
 (braket
 id|n

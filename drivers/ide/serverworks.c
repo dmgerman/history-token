@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/ide/serverworks.c&t;&t;Version 0.2&t;17 Oct 2000&n; *&n; *  Copyright (C) 2000 Cobalt Networks, Inc. &lt;asun@cobalt.com&gt;&n; *  May be copied or modified under the terms of the GNU General Public License&n; *&n; *  interface borrowed from alim15x3.c:&n; *  Copyright (C) 1998-2000 Michel Aubry, Maintainer&n; *  Copyright (C) 1998-2000 Andrzej Krzysztofowicz, Maintainer&n; *&n; *  Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  IDE support for the ServerWorks OSB4 IDE chipset&n; *&n; * here&squot;s the default lspci:&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0211 (prog-if 8a [Master SecP PriP])&n; *&t;Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR+ FastB2B-&n; *&t;Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *&t;Latency: 255&n; *&t;Region 4: I/O ports at c200&n; * 00: 66 11 11 02 05 01 00 02 00 8a 01 01 00 ff 80 00&n; * 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 20: 01 c2 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 99 99 99 99 ff ff ff ff 0c 0c 00 00 00 00 00 00&n; * 50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92) (prog-if 8a [Master SecP PriP])&n; *         Subsystem: ServerWorks: Unknown device 0212&n; *         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B-&n; *         Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *         Latency: 64, cache line size 08&n; *         Region 0: I/O ports at 01f0&n; *         Region 1: I/O ports at 03f4&n; *         Region 2: I/O ports at 0170&n; *         Region 3: I/O ports at 0374&n; *         Region 4: I/O ports at 08b0&n; *         Region 5: I/O ports at 1000&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92)&n; * 00: 66 11 12 02 05 00 00 02 92 8a 01 01 08 40 80 00&n; * 10: f1 01 00 00 f5 03 00 00 71 01 00 00 75 03 00 00&n; * 20: b1 08 00 00 01 10 00 00 00 00 00 00 66 11 12 02&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 4f 4f 4f 4f 20 ff ff ff f0 50 44 44 00 00 00 00&n; * 50: 00 00 00 00 07 00 44 02 0f 04 03 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; *&n; */
+multiline_comment|/*&n; * linux/drivers/ide/serverworks.c&t;&t;Version 0.3&t;26 Oct 2001&n; *&n; * May be copied or modified under the terms of the GNU General Public License&n; *&n; * Copyright (C) 1998-2000 Michel Aubry&n; * Copyright (C) 1998-2000 Andrzej Krzysztofowicz&n; * Copyright (C) 1998-2000 Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Portions copyright (c) 2001 Sun Microsystems&n; *&n; *&n; * RCC/ServerWorks IDE driver for Linux&n; *&n; *   OSB4: `Open South Bridge&squot; IDE Interface (fn 1)&n; *         supports UDMA mode 2 (33 MB/s)&n; *&n; *   CSB5: `Champion South Bridge&squot; IDE Interface (fn 1)&n; *         all revisions support UDMA mode 4 (66 MB/s)&n; *         revision A2.0 and up support UDMA mode 5 (100 MB/s)&n; *&n; *         *** The CSB5 does not provide ANY register ***&n; *         *** to detect 80-conductor cable presence. ***&n; *&n; *&n; * here&squot;s the default lspci:&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0211 (prog-if 8a [Master SecP PriP])&n; *&t;Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR+ FastB2B-&n; *&t;Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *&t;Latency: 255&n; *&t;Region 4: I/O ports at c200&n; * 00: 66 11 11 02 05 01 00 02 00 8a 01 01 00 ff 80 00&n; * 10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 20: 01 c2 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 99 99 99 99 ff ff ff ff 0c 0c 00 00 00 00 00 00&n; * 50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92) (prog-if 8a [Master SecP PriP])&n; *         Subsystem: ServerWorks: Unknown device 0212&n; *         Control: I/O+ Mem- BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B-&n; *         Status: Cap- 66Mhz- UDF- FastB2B- ParErr- DEVSEL=medium &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR-&n; *         Latency: 64, cache line size 08&n; *         Region 0: I/O ports at 01f0&n; *         Region 1: I/O ports at 03f4&n; *         Region 2: I/O ports at 0170&n; *         Region 3: I/O ports at 0374&n; *         Region 4: I/O ports at 08b0&n; *         Region 5: I/O ports at 1000&n; *&n; * 00:0f.1 IDE interface: ServerWorks: Unknown device 0212 (rev 92)&n; * 00: 66 11 12 02 05 00 00 02 92 8a 01 01 08 40 80 00&n; * 10: f1 01 00 00 f5 03 00 00 71 01 00 00 75 03 00 00&n; * 20: b1 08 00 00 01 10 00 00 00 00 00 00 66 11 12 02&n; * 30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 40: 4f 4f 4f 4f 20 ff ff ff f0 50 44 44 00 00 00 00&n; * 50: 00 00 00 00 07 00 44 02 0f 04 03 00 00 00 00 00&n; * 60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * 90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; * f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,10 +10,10 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ide_modes.h&quot;
-DECL|macro|SVWKS_DEBUG_DRIVE_INFO
-mdefine_line|#define SVWKS_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|DISPLAY_SVWKS_TIMINGS
-mdefine_line|#define DISPLAY_SVWKS_TIMINGS
+mdefine_line|#define DISPLAY_SVWKS_TIMINGS&t;1
+DECL|macro|SVWKS_DEBUG_DRIVE_INFO
+macro_line|#undef SVWKS_DEBUG_DRIVE_INFO
 macro_line|#if defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -23,6 +23,13 @@ r_struct
 id|pci_dev
 op_star
 id|bmide_dev
+suffix:semicolon
+DECL|variable|svwks_revision
+r_static
+id|byte
+id|svwks_revision
+op_assign
+l_int|0
 suffix:semicolon
 r_static
 r_int
@@ -120,6 +127,8 @@ comma
 id|reg56
 suffix:semicolon
 id|u8
+id|reg54
+comma
 id|c0
 op_assign
 l_int|0
@@ -127,8 +136,6 @@ comma
 id|c1
 op_assign
 l_int|0
-comma
-id|reg54
 suffix:semicolon
 id|pci_read_config_dword
 c_func
@@ -230,13 +237,16 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n                                ServerWorks CSB5 Chipset.&bslash;n&quot;
+l_string|&quot;&bslash;n                            &quot;
+l_string|&quot;ServerWorks CSB5 Chipset (rev %02x)&bslash;n&quot;
+comma
+id|svwks_revision
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PCI_DEVICE_ID_SERVERWORKS_OSB4
+id|PCI_DEVICE_ID_SERVERWORKS_OSB4IDE
 suffix:colon
 id|p
 op_add_assign
@@ -245,7 +255,10 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n                                ServerWorks OSB4 Chipset.&bslash;n&quot;
+l_string|&quot;&bslash;n                            &quot;
+l_string|&quot;ServerWorks OSB4 Chipset (rev %02x)&bslash;n&quot;
+comma
+id|svwks_revision
 )paren
 suffix:semicolon
 r_break
@@ -259,9 +272,12 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;&bslash;n                                ServerWorks 0x%04x Chipset.&bslash;n&quot;
+l_string|&quot;&bslash;n                            &quot;
+l_string|&quot;ServerWorks %04x Chipset (rev %02x)&bslash;n&quot;
 comma
 id|bmide_dev-&gt;device
+comma
+id|svwks_revision
 )paren
 suffix:semicolon
 r_break
@@ -277,20 +293,6 @@ comma
 l_string|&quot;------------------------------- General Status ---------------------------------&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;                                     : %s&bslash;n&quot;
-comma
-l_string|&quot;str&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|p
 op_add_assign
 id|sprintf
@@ -999,30 +1001,6 @@ suffix:colon
 l_string|&quot;?&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|bmide_dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
-)paren
-id|p
-op_add_assign
-id|sprintf
-(paren
-id|p
-comma
-l_string|&quot;PIO  enabled:   %s                %s               %s                 %s&bslash;n&quot;
-comma
-r_if
-c_cond
-(paren
-id|bmide_dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_SERVERWORKS_OSB4
-)paren
-macro_line|#endif
 id|p
 op_add_assign
 id|sprintf
@@ -1309,13 +1287,8 @@ suffix:semicolon
 multiline_comment|/* =&gt; must be less than 4k! */
 )brace
 macro_line|#endif  /* defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS) */
-DECL|variable|svwks_revision
-r_static
-id|byte
-id|svwks_revision
-op_assign
-l_int|0
-suffix:semicolon
+DECL|macro|SVWKS_CSB5_REVISION_NEW
+mdefine_line|#define SVWKS_CSB5_REVISION_NEW&t;0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
 DECL|variable|svwks_proc
 id|byte
 id|svwks_proc
@@ -1874,7 +1847,7 @@ id|pio_timing
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if OSB4_DEBUG_DRIVE_INFO
+macro_line|#if SVWKS_DEBUG_DRIVE_INFO
 id|printk
 c_func
 (paren
@@ -1891,7 +1864,7 @@ comma
 id|drive-&gt;dn
 )paren
 suffix:semicolon
-macro_line|#endif /* OSB4_DEBUG_DRIVE_INFO */
+macro_line|#endif /* SVWKS_DEBUG_DRIVE_INFO */
 r_if
 c_cond
 (paren
@@ -1965,7 +1938,6 @@ id|speed
 OG
 id|XFER_PIO_4
 )paren
-(brace
 id|outb
 c_func
 (paren
@@ -1992,9 +1964,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|outb
 c_func
 (paren
@@ -2022,7 +1992,6 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 id|err
 op_assign
@@ -2118,7 +2087,6 @@ id|drive-&gt;id-&gt;eide_pio_iordy
 OG
 l_int|0
 )paren
-(brace
 r_for
 c_loop
 (paren
@@ -2141,9 +2109,7 @@ id|xfer_pio
 op_decrement
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|xfer_pio
 op_assign
 (paren
@@ -2193,7 +2159,6 @@ l_int|0x01
 suffix:colon
 id|xfer_pio
 suffix:semicolon
-)brace
 id|timing
 op_assign
 (paren
@@ -2401,9 +2366,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|byte
-id|speed
-suffix:semicolon
 r_int
 id|ultra66
 op_assign
@@ -2418,20 +2380,24 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/* need specs to figure out if osb4 is capable of ata/66/100 */
 r_int
 id|ultra100
 op_assign
 (paren
-id|dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+id|ultra66
+op_logical_and
+id|svwks_revision
+op_ge
+id|SVWKS_CSB5_REVISION_NEW
 )paren
 ques
 c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+id|byte
+id|speed
 suffix:semicolon
 r_if
 c_cond
@@ -2765,7 +2731,7 @@ c_cond
 (paren
 id|id-&gt;dma_ultra
 op_amp
-l_int|0x002F
+l_int|0x003F
 )paren
 (brace
 multiline_comment|/* Force if Capable UltraDMA */
@@ -2975,6 +2941,154 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+r_case
+id|ide_dma_end
+suffix:colon
+(brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
+r_int
+r_int
+id|dma_base
+op_assign
+id|hwif-&gt;dma_base
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inb
+c_func
+(paren
+id|dma_base
+op_plus
+l_int|0x02
+)paren
+op_amp
+l_int|1
+)paren
+(brace
+macro_line|#if 0&t;&t;
+r_int
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Curious - OSB4 thinks the DMA is still running.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|10
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|inb
+c_func
+(paren
+id|dma_base
+op_plus
+l_int|0x02
+)paren
+op_amp
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;OSB4 now finished.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;&t;
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Serverworks OSB4 in impossible state.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Disable UDMA or if you are using Seagate then try switching disk types&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;on this controller. Please report this event to osb4-bug@ide.cabal.tm&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#if 0&t;&t;
+multiline_comment|/* Panic might sys_sync -&gt; death by corrupt disk */
+id|panic
+c_func
+(paren
+l_string|&quot;OSB4: continuing might cause disk corruption.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;OSB4: continuing might cause disk corruption.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;&t;&t;&t;
+)brace
+multiline_comment|/* and drop through */
+)brace
 r_default
 suffix:colon
 r_break
@@ -3011,8 +3125,12 @@ id|name
 (brace
 r_int
 r_int
-id|reg64
+id|reg
 suffix:semicolon
+id|byte
+id|btr
+suffix:semicolon
+multiline_comment|/* save revision id to determine DMA capability */
 id|pci_read_config_byte
 c_func
 (paren
@@ -3024,6 +3142,18 @@ op_amp
 id|svwks_revision
 )paren
 suffix:semicolon
+multiline_comment|/* force Master Latency Timer value to 64 PCICLKs */
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_LATENCY_TIMER
+comma
+l_int|0x40
+)paren
+suffix:semicolon
+multiline_comment|/* OSB4 : South Bridge and IDE */
 r_if
 c_cond
 (paren
@@ -3044,6 +3174,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|isa_dev
+)paren
+(brace
 id|pci_read_config_dword
 c_func
 (paren
@@ -3052,31 +3188,20 @@ comma
 l_int|0x64
 comma
 op_amp
-id|reg64
+id|reg
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: reg64 == 0x%08x&bslash;n&quot;
-comma
-id|name
-comma
-id|reg64
-)paren
-suffix:semicolon
-macro_line|#endif
-singleline_comment|//&t;&t;reg64 &amp;= ~0x0000A000;
-singleline_comment|//#ifdef CONFIG_SMP
-singleline_comment|//&t;&t;reg64 |= 0x00008000;
-singleline_comment|//#endif
-multiline_comment|/* Assume the APIC was set up properly by the BIOS for now . If it&n;&t;   wasnt we need to do a fix up _way_ earlier. Bits 15,10,3 control&n;&t;   APIC enable, routing and decode */
-id|reg64
+id|reg
 op_and_assign
 op_complement
 l_int|0x00002000
 suffix:semicolon
+multiline_comment|/* disable 600ns interrupt mask */
+id|reg
+op_or_assign
+l_int|0x00004000
+suffix:semicolon
+multiline_comment|/* enable UDMA/33 support */
 id|pci_write_config_dword
 c_func
 (paren
@@ -3084,20 +3209,62 @@ id|isa_dev
 comma
 l_int|0x64
 comma
-id|reg64
+id|reg
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* setup CSB5 : South Bridge and IDE */
+r_else
+r_if
+c_cond
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+)paren
+(brace
+multiline_comment|/* setup the UDMA Control register&n;&t;&t; *&n;&t;&t; * 1. clear bit 6 to enable DMA&n;&t;&t; * 2. enable DMA modes with bits 0-1&n;&t;&t; *      00 : legacy&n;&t;&t; *      01 : udma2&n;&t;&t; *      10 : udma2/udma4&n;&t;&t; *      11 : udma2/udma4/udma5&n;&t;&t; */
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+l_int|0x5A
+comma
+op_amp
+id|btr
+)paren
+suffix:semicolon
+id|btr
+op_and_assign
+op_complement
+l_int|0x40
+suffix:semicolon
+id|btr
+op_or_assign
+(paren
+id|svwks_revision
+op_ge
+id|SVWKS_CSB5_REVISION_NEW
+)paren
+ques
+c_cond
+l_int|0x3
+suffix:colon
+l_int|0x2
+suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
 id|dev
 comma
-id|PCI_LATENCY_TIMER
+l_int|0x5A
 comma
-l_int|0x40
+id|btr
 )paren
 suffix:semicolon
+)brace
 macro_line|#if defined(DISPLAY_SVWKS_TIMINGS) &amp;&amp; defined(CONFIG_PROC_FS)
 r_if
 c_cond
@@ -3184,11 +3351,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ata66_svwks
+multiline_comment|/* Sun Cobalt Alpine hardware avoids the 80-pin cable&n; * detect issue by attaching the drives directly to the board.&n; * This check follows the Dell precedent (how scary is that?!)&n; *&n; * WARNING: this only works on Alpine hardware!&n; */
+DECL|function|ata66_svwks_cobalt
+r_static
 r_int
 r_int
 id|__init
-id|ata66_svwks
+id|ata66_svwks_cobalt
 (paren
 id|ide_hwif_t
 op_star
@@ -3207,10 +3376,82 @@ c_cond
 (paren
 id|dev-&gt;subsystem_vendor
 op_eq
+id|PCI_VENDOR_ID_SUN
+op_logical_and
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_SERVERWORKS
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_SERVERWORKS_CSB5IDE
+)paren
+r_return
+(paren
+(paren
+l_int|1
+op_lshift
+(paren
+id|hwif-&gt;channel
+op_plus
+l_int|14
+)paren
+)paren
+op_amp
+id|dev-&gt;subsystem_device
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ata66_svwks
+r_int
+r_int
+id|__init
+id|ata66_svwks
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|dev
+op_assign
+id|hwif-&gt;pci_dev
+suffix:semicolon
+multiline_comment|/* Dell PowerEdge */
+r_if
+c_cond
+(paren
+id|dev-&gt;subsystem_vendor
+op_eq
 id|PCI_VENDOR_ID_DELL
 )paren
 r_return
 id|ata66_svwks_dell
+(paren
+id|hwif
+)paren
+suffix:semicolon
+multiline_comment|/* Cobalt Alpine */
+r_if
+c_cond
+(paren
+id|dev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_SUN
+)paren
+r_return
+id|ata66_svwks_cobalt
 (paren
 id|hwif
 )paren
@@ -3276,8 +3517,6 @@ suffix:semicolon
 id|hwif-&gt;autodma
 op_assign
 l_int|0
-suffix:semicolon
-r_return
 suffix:semicolon
 macro_line|#else /* CONFIG_BLK_DEV_IDEDMA */
 r_if

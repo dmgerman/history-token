@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IP multicast routing support for mrouted 3.6/3.8&n; *&n; *&t;&t;(c) 1995 Alan Cox, &lt;alan@redhat.com&gt;&n; *&t;  Linux Consultancy and Custom Driver Development&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Version: $Id: ipmr.c,v 1.64 2001/09/18 22:29:09 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Michael Chastain&t;:&t;Incorrect size of copying.&n; *&t;Alan Cox&t;&t;:&t;Added the cache manager code&n; *&t;Alan Cox&t;&t;:&t;Fixed the clone/copy bug and device race.&n; *&t;Mike McLagan&t;&t;:&t;Routing by source&n; *&t;Malcolm Beattie&t;&t;:&t;Buffer handling fixes.&n; *&t;Alexey Kuznetsov&t;:&t;Double buffer free and other fixes.&n; *&t;SVR Anand&t;&t;:&t;Fixed several multicast bugs and problems.&n; *&t;Alexey Kuznetsov&t;:&t;Status, optimisations and more.&n; *&t;Brad Parker&t;&t;:&t;Better behaviour on mrouted upcall&n; *&t;&t;&t;&t;&t;overflow.&n; *      Carlos Picoto           :       PIMv1 Support&n; *&t;Pavlin Ivanov Radoslavov:&t;PIMv2 Registers must checksum only PIM header&n; *&t;&t;&t;&t;&t;Relax this requrement to work with older peers.&n; *&n; */
+multiline_comment|/*&n; *&t;IP multicast routing support for mrouted 3.6/3.8&n; *&n; *&t;&t;(c) 1995 Alan Cox, &lt;alan@redhat.com&gt;&n; *&t;  Linux Consultancy and Custom Driver Development&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Version: $Id: ipmr.c,v 1.65 2001/10/31 21:55:54 davem Exp $&n; *&n; *&t;Fixes:&n; *&t;Michael Chastain&t;:&t;Incorrect size of copying.&n; *&t;Alan Cox&t;&t;:&t;Added the cache manager code&n; *&t;Alan Cox&t;&t;:&t;Fixed the clone/copy bug and device race.&n; *&t;Mike McLagan&t;&t;:&t;Routing by source&n; *&t;Malcolm Beattie&t;&t;:&t;Buffer handling fixes.&n; *&t;Alexey Kuznetsov&t;:&t;Double buffer free and other fixes.&n; *&t;SVR Anand&t;&t;:&t;Fixed several multicast bugs and problems.&n; *&t;Alexey Kuznetsov&t;:&t;Status, optimisations and more.&n; *&t;Brad Parker&t;&t;:&t;Better behaviour on mrouted upcall&n; *&t;&t;&t;&t;&t;overflow.&n; *      Carlos Picoto           :       PIMv1 Support&n; *&t;Pavlin Ivanov Radoslavov:&t;PIMv2 Registers must checksum only PIM header&n; *&t;&t;&t;&t;&t;Relax this requrement to work with older peers.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -967,7 +967,6 @@ id|c-&gt;mfc_un.unres.unresolved
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_if
 c_cond
 (paren
@@ -1060,7 +1059,6 @@ id|MSG_DONTWAIT
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|kfree_skb
 c_func
 (paren
@@ -1916,7 +1914,6 @@ id|uc-&gt;mfc_un.unres.unresolved
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_if
 c_cond
 (paren
@@ -2048,7 +2045,6 @@ id|MSG_DONTWAIT
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|ip_mr_forward
 c_func
 (paren
@@ -6459,7 +6455,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_int
 DECL|function|ipmr_fill_mroute
@@ -6917,7 +6912,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS&t;
 multiline_comment|/*&n; *&t;The /proc interfaces to multicast routing /proc/ip_mr_cache /proc/ip_mr_vif&n; */
 DECL|function|ipmr_vif_info

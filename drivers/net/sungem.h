@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.10 2001/11/29 03:57:33 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.11 2002/01/12 07:19:55 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -1082,6 +1082,10 @@ id|tx_skbs
 (braket
 id|RX_RING_SIZE
 )braket
+suffix:semicolon
+DECL|member|msg_enable
+id|u32
+id|msg_enable
 suffix:semicolon
 DECL|member|net_stats
 r_struct

@@ -1533,7 +1533,6 @@ id|dn_fib_rules_event
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dn_fib_fill_rule
 r_static
 r_int
@@ -1871,7 +1870,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|function|dn_fib_rules_init
 r_void
 id|__init

@@ -1904,6 +1904,7 @@ multiline_comment|/**&n; * cleanup_crc32(): frees crc32 data when no longer need
 DECL|function|cleanup_crc32
 r_static
 r_void
+id|__exit
 id|cleanup_crc32
 c_func
 (paren

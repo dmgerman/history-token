@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunbmac.c,v 1.28 2001/10/21 06:35:29 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunbmac.c,v 1.30 2002/01/15 06:48:55 davem Exp $&n; * sunbmac.c: Driver for Sparc BigMAC 100baseT ethernet adapters.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4850,12 +4850,6 @@ id|addrs
 suffix:semicolon
 r_int
 id|i
-comma
-id|j
-comma
-id|bit
-comma
-id|byte
 suffix:semicolon
 id|u32
 id|tmp

@@ -5,6 +5,11 @@ r_void
 id|remove_mapping
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|task_struct
 op_star
 id|task

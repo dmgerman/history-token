@@ -95,9 +95,9 @@ id|flush_cache_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -111,7 +111,7 @@ id|end
 r_if
 c_cond
 (paren
-id|mm
+id|vma-&gt;vm_mm
 op_eq
 id|current-&gt;mm
 )paren

@@ -1874,7 +1874,7 @@ id|m64n_xl
 comma
 l_int|230
 comma
-l_int|120
+l_int|100
 comma
 id|M64F_GT
 op_or
@@ -7418,6 +7418,8 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 op_plus
 id|page
@@ -10442,8 +10444,7 @@ id|atyfb_name
 suffix:semicolon
 id|info-&gt;fb_info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|info-&gt;fb_info.fbops
 op_assign

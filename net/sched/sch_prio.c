@@ -1028,7 +1028,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|prio_dump
 r_static
 r_int
@@ -1122,7 +1121,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|prio_graft
 r_static
 r_int
@@ -1499,7 +1497,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|prio_dump_class
 r_static
 r_int
@@ -1576,7 +1573,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|prio_walk
 r_static
 r_void
@@ -1748,10 +1744,8 @@ id|prio_bind
 comma
 id|prio_put
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|prio_dump_class
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|prio_qdisc_ops
@@ -1789,10 +1783,8 @@ id|prio_destroy
 comma
 id|prio_tune
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|prio_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

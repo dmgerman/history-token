@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: semantics.&n; *&n; * Version:&t;$Id: fib_semantics.c,v 1.17 2000/08/19 23:22:56 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IPv4 Forwarding Information Base: semantics.&n; *&n; * Version:&t;$Id: fib_semantics.c,v 1.19 2002/01/12 07:54:56 davem Exp $&n; *&n; * Authors:&t;Alexey Kuznetsov, &lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -332,7 +332,7 @@ id|fib_info_lock
 suffix:semicolon
 )brace
 DECL|function|nh_comp
-r_extern
+r_static
 id|__inline__
 r_int
 id|nh_comp
@@ -422,7 +422,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|fib_find_info
-r_extern
+r_static
 id|__inline__
 r_struct
 id|fib_info
@@ -2541,7 +2541,6 @@ id|res-&gt;scope
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 r_int
 DECL|function|fib_dump_info
 id|fib_dump_info
@@ -3023,7 +3022,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifndef CONFIG_IP_NOSIOCRT
 r_int
 DECL|function|fib_convert_rtentry

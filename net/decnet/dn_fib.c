@@ -31,7 +31,6 @@ DECL|macro|change_nexthops
 mdefine_line|#define change_nexthops(fi) { int nhsel; struct dn_fib_nh *nh;&bslash;&n;&t;for(nhsel = 0, nh = (struct dn_fib_nh *)((fi)-&gt;fib_nh); nhsel &lt; (fi)-&gt;fib_nhs; nh++, nhsel++)
 DECL|macro|endfor_nexthops
 mdefine_line|#define endfor_nexthops(fi) }
-macro_line|#ifdef CONFIG_RTNETLINK
 r_extern
 r_int
 id|dn_cache_dump
@@ -48,7 +47,6 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|variable|dn_fib_info_list
 r_static
 r_struct
@@ -1832,7 +1830,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dn_fib_check_attr
 r_static
 r_int
@@ -2352,7 +2349,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|function|dn_fib_sync_down
 r_int
 id|dn_fib_sync_down

@@ -208,6 +208,19 @@ c_func
 suffix:semicolon
 multiline_comment|/* Nothing to do */
 )brace
+multiline_comment|/* pci_unmap_{page,single} is a nop so... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do { } while (0)
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
 multiline_comment|/*&n; * Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 DECL|function|pci_map_sg
 r_extern

@@ -588,8 +588,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-op_amp
-id|init_mm
+l_int|NULL
 comma
 id|vaddr
 comma
@@ -616,8 +615,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-op_amp
-id|init_mm
+l_int|NULL
 comma
 id|vaddr
 comma

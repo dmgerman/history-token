@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgalloc.h,v 1.15 2001/10/18 09:06:37 davem Exp $ */
+multiline_comment|/* $Id: pgalloc.h,v 1.16 2001/12/21 04:56:17 davem Exp $ */
 macro_line|#ifndef _SPARC_PGALLOC_H
 DECL|macro|_SPARC_PGALLOC_H
 mdefine_line|#define _SPARC_PGALLOC_H
@@ -37,7 +37,7 @@ comma
 id|local_flush_cache_range
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int
@@ -65,7 +65,7 @@ mdefine_line|#define local_flush_cache_all() BTFIXUP_CALL(local_flush_cache_all)
 DECL|macro|local_flush_cache_mm
 mdefine_line|#define local_flush_cache_mm(mm) BTFIXUP_CALL(local_flush_cache_mm)(mm)
 DECL|macro|local_flush_cache_range
-mdefine_line|#define local_flush_cache_range(mm,start,end) BTFIXUP_CALL(local_flush_cache_range)(mm,start,end)
+mdefine_line|#define local_flush_cache_range(vma,start,end) BTFIXUP_CALL(local_flush_cache_range)(vma,start,end)
 DECL|macro|local_flush_cache_page
 mdefine_line|#define local_flush_cache_page(vma,addr) BTFIXUP_CALL(local_flush_cache_page)(vma,addr)
 id|BTFIXUPDEF_CALL
@@ -96,7 +96,7 @@ comma
 id|local_flush_tlb_range
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int
@@ -124,7 +124,7 @@ mdefine_line|#define local_flush_tlb_all() BTFIXUP_CALL(local_flush_tlb_all)()
 DECL|macro|local_flush_tlb_mm
 mdefine_line|#define local_flush_tlb_mm(mm) BTFIXUP_CALL(local_flush_tlb_mm)(mm)
 DECL|macro|local_flush_tlb_range
-mdefine_line|#define local_flush_tlb_range(mm,start,end) BTFIXUP_CALL(local_flush_tlb_range)(mm,start,end)
+mdefine_line|#define local_flush_tlb_range(vma,start,end) BTFIXUP_CALL(local_flush_tlb_range)(vma,start,end)
 DECL|macro|local_flush_tlb_page
 mdefine_line|#define local_flush_tlb_page(vma,addr) BTFIXUP_CALL(local_flush_tlb_page)(vma,addr)
 id|BTFIXUPDEF_CALL
@@ -180,9 +180,9 @@ id|smp_flush_cache_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -233,9 +233,9 @@ id|smp_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -315,7 +315,7 @@ comma
 id|flush_cache_range
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int
@@ -343,7 +343,7 @@ mdefine_line|#define flush_cache_all() BTFIXUP_CALL(flush_cache_all)()
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm) BTFIXUP_CALL(flush_cache_mm)(mm)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm,start,end) BTFIXUP_CALL(flush_cache_range)(mm,start,end)
+mdefine_line|#define flush_cache_range(vma,start,end) BTFIXUP_CALL(flush_cache_range)(vma,start,end)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,addr) BTFIXUP_CALL(flush_cache_page)(vma,addr)
 DECL|macro|flush_icache_range
@@ -376,7 +376,7 @@ comma
 id|flush_tlb_range
 comma
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int
@@ -426,7 +426,7 @@ mdefine_line|#define flush_tlb_all() BTFIXUP_CALL(flush_tlb_all)()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm) BTFIXUP_CALL(flush_tlb_mm)(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(mm,start,end) BTFIXUP_CALL(flush_tlb_range)(mm,start,end)
+mdefine_line|#define flush_tlb_range(vma,start,end) BTFIXUP_CALL(flush_tlb_range)(vma,start,end)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma,addr) BTFIXUP_CALL(flush_tlb_page)(vma,addr)
 id|BTFIXUPDEF_CALL

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  arch/s390/kernel/init_task.c&n; *&n; *  S390 version&n; *&n; *  Derived from &quot;arch/i386/kernel/init_task.c&quot;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/init_task.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|init_mmap

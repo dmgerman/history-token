@@ -298,6 +298,11 @@ DECL|function|remove_mapping
 id|remove_mapping
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|task_struct
 op_star
 id|task
@@ -338,7 +343,7 @@ id|start
 suffix:semicolon
 id|flush_cache_range
 (paren
-id|task-&gt;mm
+id|vma
 comma
 id|beg
 comma
@@ -380,7 +385,7 @@ suffix:semicolon
 )brace
 id|flush_tlb_range
 (paren
-id|task-&gt;mm
+id|vma
 comma
 id|beg
 comma
@@ -824,6 +829,11 @@ r_int
 DECL|function|vmap_page_range
 id|vmap_page_range
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from
@@ -877,7 +887,7 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|beg
 comma
@@ -961,7 +971,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|beg
 comma

@@ -110,6 +110,11 @@ r_void
 id|remove_mapping
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|task_struct
 op_star
 comma
@@ -134,6 +139,11 @@ r_extern
 r_int
 id|vmap_page_range
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from

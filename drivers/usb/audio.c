@@ -1180,6 +1180,11 @@ id|dmabuf_mmap
 c_func
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|dmabuf
 op_star
 id|db
@@ -1284,6 +1289,8 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|start
 comma
 id|virt_to_phys
@@ -13420,6 +13427,8 @@ op_assign
 id|dmabuf_mmap
 c_func
 (paren
+id|vma
+comma
 id|db
 comma
 id|vma-&gt;vm_start

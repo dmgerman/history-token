@@ -3,9 +3,10 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/*&n; * We query CMOS about hard disks : it could be that we have a SCSI/ESDI/etc&n; * controller that is BIOS compatible with ST-506, and thus showing up in our&n; * BIOS table, but not register compatible, and therefore not present in CMOS.&n; *&n; * Furthermore, we will assume that our ST-506 drives &lt;if any&gt; are the primary&n; * drives in the system -- the ones reflected as drive 1 or 2.  The first&n; * drive is stored in the high nibble of CMOS byte 0x12, the second in the low&n; * nibble.  This will be either a 4 bit drive type or 0xf indicating use byte&n; * 0x19 for an 8 bit type, drive 1, 0x1a for drive 2 in CMOS.  A non-zero value&n; * means we have an AT controller hard disk for that drive.&n; *&n; * Of course, there is no guarantee that either drive is actually on the&n; * &quot;primary&quot; IDE interface, but we don&squot;t bother trying to sort that out here.&n; * If a drive is not actually on the primary interface, then these parameters&n; * will be ignored.  This results in the user having to supply the logical&n; * drive geometry as a boot parameter for each drive not on the primary i/f.&n; */
 multiline_comment|/*&n; * The only &quot;perfect&quot; way to handle this would be to modify the setup.[cS] code&n; * to do BIOS calls Int13h/Fn08h and Int13h/Fn48h to get all of the drive info&n; * for us during initialization.  I have the necessary docs -- any takers?  -ml&n; */
-multiline_comment|/*&n; * I did this, but it doesnt work - there is no reasonable way to find the&n; * correspondence between the BIOS numbering of the disks and the Linux&n; * numbering. -aeb&n; *&n; * The code below is bad. One of the problems is that drives 1 and 2&n; * may be SCSI disks (even when IDE disks are present), so that&n; * the geometry we read here from BIOS is attributed to the wrong disks.&n; * Consequently, also the former &quot;drive-&gt;present = 1&quot; below was a mistake.&n; *&n; * Eventually the entire routine below should be removed.&n; */
+multiline_comment|/*&n; * I did this, but it doesnt work - there is no reasonable way to find the&n; * correspondence between the BIOS numbering of the disks and the Linux&n; * numbering. -aeb&n; *&n; * The code below is bad. One of the problems is that drives 1 and 2&n; * may be SCSI disks (even when IDE disks are present), so that&n; * the geometry we read here from BIOS is attributed to the wrong disks.&n; * Consequently, also the former &quot;drive-&gt;present = 1&quot; below was a mistake.&n; *&n; * Eventually the entire routine below should be removed.&n; *&n; * 17-OCT-2000 rjohnson@analogic.com Added spin-locks for reading CMOS&n; * chip.&n; */
 DECL|function|probe_cmos_for_drives
 r_void
 id|probe_cmos_for_drives
@@ -241,7 +242,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
+macro_line|#endif /* CONFIG_BLK_DEV_IDE */
+macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 r_extern
 id|ide_drive_t
 op_star
@@ -720,5 +722,5 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDE */
+macro_line|#endif /* defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE) */
 eof

@@ -726,7 +726,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -743,7 +742,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1348,7 +1346,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -1365,7 +1362,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|sc-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -3195,7 +3191,7 @@ id|SCpnt-&gt;result
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;spin_lock(&amp;SCpnt-&gt;host-&gt;host_lock);&t;*/
+multiline_comment|/*&t;&t;&t;spin_lock(SCpnt-&gt;host-&gt;host_lock);&t;*/
 id|SCpnt
 op_member_access_from_pointer
 id|scsi_done
@@ -3204,7 +3200,7 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;spin_unlock(&amp;SCpnt-&gt;host-&gt;host_lock);&t;*/
+multiline_comment|/*&t;&t;&t;spin_unlock(SCpnt-&gt;host-&gt;host_lock);&t;*/
 r_return
 l_int|0
 suffix:semicolon
@@ -4755,7 +4751,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4772,7 +4767,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4856,7 +4850,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -4873,7 +4866,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5149,7 +5141,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5166,7 +5157,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5440,7 +5430,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -5457,7 +5446,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -6314,7 +6302,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -6331,7 +6318,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -6540,7 +6526,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags
@@ -6557,7 +6542,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|SCpnt-&gt;host-&gt;host_lock
 comma
 id|flags

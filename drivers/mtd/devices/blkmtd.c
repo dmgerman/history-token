@@ -996,12 +996,6 @@ op_amp
 id|tsk-&gt;sigmask_lock
 )paren
 suffix:semicolon
-id|exit_sighand
-c_func
-(paren
-id|tsk
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1011,7 +1011,6 @@ macro_line|#endif
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|ingress_dump
 r_static
 r_int
@@ -1088,7 +1087,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|ingress_class_ops
 r_static
 r_struct
@@ -1126,11 +1124,9 @@ multiline_comment|/* bind_tcf */
 id|ingress_put
 comma
 multiline_comment|/* unbind_tcf */
-macro_line|#ifdef CONFIG_RTNETLINK
 l_int|NULL
 comma
 multiline_comment|/* dump */
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|ingress_qdisc_ops
@@ -1178,11 +1174,9 @@ multiline_comment|/* destroy */
 l_int|NULL
 comma
 multiline_comment|/* change */
-macro_line|#ifdef CONFIG_RTNETLINK
 id|ingress_dump
 comma
 multiline_comment|/* dump */
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

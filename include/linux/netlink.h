@@ -9,6 +9,8 @@ DECL|macro|NETLINK_USERSOCK
 mdefine_line|#define NETLINK_USERSOCK&t;2&t;/* Reserved for user mode socket protocols &t;*/
 DECL|macro|NETLINK_FIREWALL
 mdefine_line|#define NETLINK_FIREWALL&t;3&t;/* Firewalling hook&t;&t;&t;&t;*/
+DECL|macro|NETLINK_TCPDIAG
+mdefine_line|#define NETLINK_TCPDIAG&t;&t;4&t;/* TCP socket monitoring&t;&t;&t;*/
 DECL|macro|NETLINK_ARPD
 mdefine_line|#define NETLINK_ARPD&t;&t;8
 DECL|macro|NETLINK_ROUTE6

@@ -54,12 +54,12 @@ mdefine_line|#define DISABLE_IRQ_NOSYNC&t;0
 macro_line|#endif
 multiline_comment|/*&n; * IDE_DRIVE_CMD is used to implement many features of the hdparm utility&n; */
 DECL|macro|IDE_DRIVE_CMD
-mdefine_line|#define IDE_DRIVE_CMD&t;&t;99&t;/* (magic) undef to reduce kernel size*/
-multiline_comment|/*&n; * IDE_DRIVE_TASK is used to implement many features needed for raw tasks&n; */
+mdefine_line|#define IDE_DRIVE_CMD&t;&t;&t;99&t;/* (magic) undef to reduce kernel size*/
 DECL|macro|IDE_DRIVE_TASK
-mdefine_line|#define IDE_DRIVE_TASK&t;&t;98
-DECL|macro|IDE_DRIVE_CMD_AEB
-mdefine_line|#define IDE_DRIVE_CMD_AEB&t;98
+mdefine_line|#define IDE_DRIVE_TASK&t;&t;&t;98
+multiline_comment|/*&n; * IDE_DRIVE_TASKFILE is used to implement many features needed for raw tasks&n; */
+DECL|macro|IDE_DRIVE_TASKFILE
+mdefine_line|#define IDE_DRIVE_TASKFILE&t;&t;97
 multiline_comment|/*&n; *  &quot;No user-serviceable parts&quot; beyond this point  :)&n; *****************************************************************************/
 DECL|typedef|byte
 r_typedef
@@ -114,6 +114,24 @@ DECL|macro|IDE_FEATURE_OFFSET
 mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
 DECL|macro|IDE_COMMAND_OFFSET
 mdefine_line|#define IDE_COMMAND_OFFSET&t;IDE_STATUS_OFFSET
+DECL|macro|IDE_DATA_OFFSET_HOB
+mdefine_line|#define IDE_DATA_OFFSET_HOB&t;(0)
+DECL|macro|IDE_ERROR_OFFSET_HOB
+mdefine_line|#define IDE_ERROR_OFFSET_HOB&t;(1)
+DECL|macro|IDE_NSECTOR_OFFSET_HOB
+mdefine_line|#define IDE_NSECTOR_OFFSET_HOB&t;(2)
+DECL|macro|IDE_SECTOR_OFFSET_HOB
+mdefine_line|#define IDE_SECTOR_OFFSET_HOB&t;(3)
+DECL|macro|IDE_LCYL_OFFSET_HOB
+mdefine_line|#define IDE_LCYL_OFFSET_HOB&t;(4)
+DECL|macro|IDE_HCYL_OFFSET_HOB
+mdefine_line|#define IDE_HCYL_OFFSET_HOB&t;(5)
+DECL|macro|IDE_SELECT_OFFSET_HOB
+mdefine_line|#define IDE_SELECT_OFFSET_HOB&t;(6)
+DECL|macro|IDE_CONTROL_OFFSET_HOB
+mdefine_line|#define IDE_CONTROL_OFFSET_HOB&t;(7)
+DECL|macro|IDE_FEATURE_OFFSET_HOB
+mdefine_line|#define IDE_FEATURE_OFFSET_HOB&t;IDE_ERROR_OFFSET_HOB
 DECL|macro|IDE_DATA_REG
 mdefine_line|#define IDE_DATA_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_DATA_OFFSET])
 DECL|macro|IDE_ERROR_REG
@@ -134,6 +152,24 @@ DECL|macro|IDE_CONTROL_REG
 mdefine_line|#define IDE_CONTROL_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|IDE_IRQ_REG
 mdefine_line|#define IDE_IRQ_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_IRQ_OFFSET])
+DECL|macro|IDE_DATA_REG_HOB
+mdefine_line|#define IDE_DATA_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_DATA_OFFSET])
+DECL|macro|IDE_ERROR_REG_HOB
+mdefine_line|#define IDE_ERROR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_ERROR_OFFSET])
+DECL|macro|IDE_NSECTOR_REG_HOB
+mdefine_line|#define IDE_NSECTOR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_NSECTOR_OFFSET])
+DECL|macro|IDE_SECTOR_REG_HOB
+mdefine_line|#define IDE_SECTOR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_SECTOR_OFFSET])
+DECL|macro|IDE_LCYL_REG_HOB
+mdefine_line|#define IDE_LCYL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_LCYL_OFFSET])
+DECL|macro|IDE_HCYL_REG_HOB
+mdefine_line|#define IDE_HCYL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_HCYL_OFFSET])
+DECL|macro|IDE_SELECT_REG_HOB
+mdefine_line|#define IDE_SELECT_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_SELECT_OFFSET])
+DECL|macro|IDE_STATUS_REG_HOB
+mdefine_line|#define IDE_STATUS_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_STATUS_OFFSET])
+DECL|macro|IDE_CONTROL_REG_HOB
+mdefine_line|#define IDE_CONTROL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|IDE_FEATURE_REG
 mdefine_line|#define IDE_FEATURE_REG&t;&t;IDE_ERROR_REG
 DECL|macro|IDE_COMMAND_REG
@@ -180,14 +216,26 @@ DECL|macro|PARTN_MASK
 mdefine_line|#define PARTN_MASK&t;((1&lt;&lt;PARTN_BITS)-1)&t;/* a useful bit mask */
 DECL|macro|MAX_DRIVES
 mdefine_line|#define MAX_DRIVES&t;2&t;/* per interface; 2 assumed by lots of code */
+DECL|macro|CASCADE_DRIVES
+mdefine_line|#define CASCADE_DRIVES&t;8&t;/* per interface; 8|2 assumed by lots of code */
+DECL|macro|SECTOR_SIZE
+mdefine_line|#define SECTOR_SIZE&t;512
 DECL|macro|SECTOR_WORDS
-mdefine_line|#define SECTOR_WORDS&t;(512 / 4)&t;/* number of 32bit words per sector */
+mdefine_line|#define SECTOR_WORDS&t;(SECTOR_SIZE / 4)&t;/* number of 32bit words per sector */
 DECL|macro|IDE_LARGE_SEEK
 mdefine_line|#define IDE_LARGE_SEEK(b1,b2,t)&t;(((b1) &gt; (b2) + (t)) || ((b2) &gt; (b1) + (t)))
 DECL|macro|IDE_MIN
 mdefine_line|#define IDE_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
 DECL|macro|IDE_MAX
 mdefine_line|#define IDE_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
+macro_line|#ifndef SPLIT_WORD
+DECL|macro|SPLIT_WORD
+macro_line|#  define SPLIT_WORD(W,HB,LB) ((HB)=(W&gt;&gt;8), (LB)=(W-((W&gt;&gt;8)&lt;&lt;8)))
+macro_line|#endif
+macro_line|#ifndef MAKE_WORD
+DECL|macro|MAKE_WORD
+macro_line|#  define MAKE_WORD(W,HB,LB) ((W)=((HB&lt;&lt;8)+LB))
+macro_line|#endif
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
 mdefine_line|#define WAIT_DRQ&t;(5*HZ/100)&t;/* 50msec - spec allows up to 20ms */
@@ -199,7 +247,7 @@ DECL|macro|WAIT_READY
 mdefine_line|#define WAIT_READY&t;(3*HZ/100)&t;/* 30msec - should be instantaneous */
 macro_line|#endif /* CONFIG_APM || CONFIG_APM_MODULE */
 DECL|macro|WAIT_PIDENTIFY
-mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?)&n;&t;&t;&t;&t;            if all ATAPI CD is closed at boot */
+mdefine_line|#define WAIT_PIDENTIFY&t;(10*HZ)&t;/* 10sec  - should be less than 3ms (?), if all ATAPI CD is closed at boot */
 DECL|macro|WAIT_WORSTCASE
 mdefine_line|#define WAIT_WORSTCASE&t;(30*HZ)&t;/* 30sec  - worst case when spinning up */
 DECL|macro|WAIT_CMD
@@ -216,6 +264,8 @@ DECL|macro|SELECT_READ_WRITE
 mdefine_line|#define SELECT_READ_WRITE(hwif,drive,func)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;rwproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;hwif-&gt;rwproc(drive,func);&t;&t;&t;&bslash;&n;}
 DECL|macro|QUIRK_LIST
 mdefine_line|#define QUIRK_LIST(hwif,drive)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (hwif-&gt;quirkproc)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drive)-&gt;quirk_list = hwif-&gt;quirkproc(drive);&t;&bslash;&n;}
+DECL|macro|HOST
+mdefine_line|#define HOST(hwif,chipset)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ((hwif)-&gt;chipset == chipset) ? 1 : 0;&t;&t;&bslash;&n;}
 DECL|macro|IDE_DEBUG
 mdefine_line|#define IDE_DEBUG(lineno) &bslash;&n;&t;printk(&quot;%s,%s,line=%d&bslash;n&quot;, __FILE__, __FUNCTION__, (lineno))
 multiline_comment|/*&n; * Check for an interrupt and acknowledge the interrupt status&n; */
@@ -396,18 +446,26 @@ macro_line|#ifndef HAVE_ARCH_OUT_BYTE
 macro_line|#ifdef REALLY_FAST_IO
 DECL|macro|OUT_BYTE
 mdefine_line|#define OUT_BYTE(b,p)          outb((b),(p))
+DECL|macro|OUT_WORD
+mdefine_line|#define OUT_WORD(w,p)          outw((w),(p))
 macro_line|#else
 DECL|macro|OUT_BYTE
 mdefine_line|#define OUT_BYTE(b,p)          outb_p((b),(p))
+DECL|macro|OUT_WORD
+mdefine_line|#define OUT_WORD(w,p)          outw_p((w),(p))
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifndef HAVE_ARCH_IN_BYTE
 macro_line|#ifdef REALLY_FAST_IO
 DECL|macro|IN_BYTE
-mdefine_line|#define IN_BYTE(p)             (byte)inb_p(p)
+mdefine_line|#define IN_BYTE(p)             (byte)inb(p)
+DECL|macro|IN_WORD
+mdefine_line|#define IN_WORD(p)             (short)inw(p)
 macro_line|#else
 DECL|macro|IN_BYTE
-mdefine_line|#define IN_BYTE(p)             (byte)inb(p)
+mdefine_line|#define IN_BYTE(p)             (byte)inb_p(p)
+DECL|macro|IN_WORD
+mdefine_line|#define IN_WORD(p)             (short)inw_p(p)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
@@ -685,6 +743,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
+DECL|member|addressing
+r_int
+id|addressing
+suffix:semicolon
+multiline_comment|/* : 2; 0=28-bit, 1=48-bit, 2=64-bit */
 DECL|member|scsi
 id|byte
 id|scsi
@@ -746,7 +809,8 @@ id|sect0
 suffix:semicolon
 multiline_comment|/* offset of first sector for DM6:DDO */
 DECL|member|usage
-id|byte
+r_int
+r_int
 id|usage
 suffix:semicolon
 multiline_comment|/* current &quot;open()&quot; count for drive */
@@ -786,6 +850,13 @@ DECL|member|capacity
 r_int
 r_int
 id|capacity
+suffix:semicolon
+multiline_comment|/* total number of sectors */
+DECL|member|capacity48
+r_int
+r_int
+r_int
+id|capacity48
 suffix:semicolon
 multiline_comment|/* total number of sectors */
 DECL|member|drive_data
@@ -910,6 +981,16 @@ id|byte
 id|dn
 suffix:semicolon
 multiline_comment|/* now wide spread use */
+DECL|member|wcache
+id|byte
+id|wcache
+suffix:semicolon
+multiline_comment|/* status of write cache */
+DECL|member|acoustic
+id|byte
+id|acoustic
+suffix:semicolon
+multiline_comment|/* acoustic management */
 DECL|member|failures
 r_int
 r_int
@@ -1135,8 +1216,7 @@ r_int
 id|ide_busproc_t
 )paren
 (paren
-r_struct
-id|hwif_s
+id|ide_drive_t
 op_star
 comma
 r_int
@@ -1492,11 +1572,37 @@ DECL|typedef|ide_startstop_t
 id|ide_startstop_t
 suffix:semicolon
 multiline_comment|/*&n; *  internal ide interrupt handler type&n; */
+DECL|typedef|ide_pre_handler_t
+r_typedef
+id|ide_startstop_t
+(paren
+id|ide_pre_handler_t
+)paren
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 DECL|typedef|ide_handler_t
 r_typedef
 id|ide_startstop_t
 (paren
 id|ide_handler_t
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ide_post_handler_t
+r_typedef
+id|ide_startstop_t
+(paren
+id|ide_post_handler_t
 )paren
 (paren
 id|ide_drive_t
@@ -1583,6 +1689,7 @@ DECL|typedef|ide_hwgroup_t
 )brace
 id|ide_hwgroup_t
 suffix:semicolon
+multiline_comment|/* structure attached to the request for IDE_TASK_CMDS */
 multiline_comment|/*&n; * configurable drive settings&n; */
 DECL|macro|TYPE_INT
 mdefine_line|#define TYPE_INT&t;0
@@ -1832,6 +1939,28 @@ r_void
 )paren
 suffix:semicolon
 r_void
+id|recreate_proc_ide_device
+c_func
+(paren
+id|ide_hwif_t
+op_star
+comma
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_void
+id|destroy_proc_ide_device
+c_func
+(paren
+id|ide_hwif_t
+op_star
+comma
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_void
 id|destroy_proc_ide_drives
 c_func
 (paren
@@ -1901,6 +2030,28 @@ r_typedef
 r_int
 (paren
 id|ide_cleanup_proc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ide_standby_proc
+r_typedef
+r_int
+(paren
+id|ide_standby_proc
+)paren
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ide_flushcache_proc
+r_typedef
+r_int
+(paren
+id|ide_flushcache_proc
 )paren
 (paren
 id|ide_drive_t
@@ -2123,6 +2274,16 @@ id|ide_cleanup_proc
 op_star
 id|cleanup
 suffix:semicolon
+DECL|member|standby
+id|ide_standby_proc
+op_star
+id|standby
+suffix:semicolon
+DECL|member|flushcache
+id|ide_flushcache_proc
+op_star
+id|flushcache
+suffix:semicolon
 DECL|member|do_request
 id|ide_do_request_proc
 op_star
@@ -2290,70 +2451,12 @@ op_star
 id|hwgroup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is used for (nearly) all data transfers from/to the IDE interface&n; * FIXME for 2.5, to a pointer pass verses memcpy........&n; */
-r_void
-id|ide_input_data
+r_int
+id|drive_is_ready
 (paren
 id|ide_drive_t
 op_star
 id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|wcount
-)paren
-suffix:semicolon
-r_void
-id|ide_output_data
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|wcount
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * This is used for (nearly) all ATAPI data transfers from/to the IDE interface&n; * FIXME for 2.5, to a pointer pass verses memcpy........&n; */
-r_void
-id|atapi_input_bytes
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|bytecount
-)paren
-suffix:semicolon
-r_void
-id|atapi_output_bytes
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-r_int
-id|bytecount
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
@@ -2414,7 +2517,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; */
 r_void
 id|ide_cmd
-c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2662,7 +2764,7 @@ id|ide_action_t
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_CMD).&n; */
+multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_CMD).&n; * stat/err are used only when (HWGROUP(drive)-&gt;rq-&gt;cmd == IDE_DRIVE_TASK_MASK).&n; */
 r_void
 id|ide_end_drive_cmd
 (paren
@@ -2677,7 +2779,7 @@ id|byte
 id|err
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Issue ATA command and wait for completion.&n; */
+multiline_comment|/*&n; * Issue ATA command and wait for completion. use for implementing commands in kernel&n; */
 r_int
 id|ide_wait_cmd
 (paren
@@ -2714,6 +2816,482 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+DECL|struct|ide_task_s
+r_typedef
+r_struct
+id|ide_task_s
+(brace
+DECL|member|tfRegister
+id|task_ioreg_t
+id|tfRegister
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|hobRegister
+id|task_ioreg_t
+id|hobRegister
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|tf_out_flags
+id|ide_reg_valid_t
+id|tf_out_flags
+suffix:semicolon
+DECL|member|tf_in_flags
+id|ide_reg_valid_t
+id|tf_in_flags
+suffix:semicolon
+DECL|member|data_phase
+r_int
+id|data_phase
+suffix:semicolon
+DECL|member|command_type
+r_int
+id|command_type
+suffix:semicolon
+DECL|member|prehandler
+id|ide_pre_handler_t
+op_star
+id|prehandler
+suffix:semicolon
+DECL|member|handler
+id|ide_handler_t
+op_star
+id|handler
+suffix:semicolon
+DECL|member|posthandler
+id|ide_post_handler_t
+op_star
+id|posthandler
+suffix:semicolon
+DECL|member|special
+r_void
+op_star
+id|special
+suffix:semicolon
+multiline_comment|/* valid_t generally */
+DECL|member|rq
+r_struct
+id|request
+op_star
+id|rq
+suffix:semicolon
+multiline_comment|/* copy of request */
+DECL|member|block
+r_int
+r_int
+id|block
+suffix:semicolon
+multiline_comment|/* copy of block */
+DECL|typedef|ide_task_t
+)brace
+id|ide_task_t
+suffix:semicolon
+r_void
+id|ata_input_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|wcount
+)paren
+suffix:semicolon
+r_void
+id|ata_output_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|wcount
+)paren
+suffix:semicolon
+r_void
+id|atapi_input_bytes
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|bytecount
+)paren
+suffix:semicolon
+r_void
+id|atapi_output_bytes
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|bytecount
+)paren
+suffix:semicolon
+r_void
+id|taskfile_input_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|wcount
+)paren
+suffix:semicolon
+r_void
+id|taskfile_output_data
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_void
+op_star
+id|buffer
+comma
+r_int
+r_int
+id|wcount
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * taskfile io for disks for now...&n; */
+id|ide_startstop_t
+id|do_rw_taskfile
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|ide_task_t
+op_star
+id|task
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Builds request from ide_ioctl&n; */
+r_void
+id|do_taskfile
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|hd_drive_task_hdr
+op_star
+id|taskfile
+comma
+r_struct
+id|hd_drive_hob_hdr
+op_star
+id|hobfile
+comma
+id|ide_handler_t
+op_star
+id|handler
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
+singleline_comment|// ide_startstop_t flagged_taskfile (ide_drive_t *drive, ide_task_t *task);
+id|ide_startstop_t
+id|set_multmode_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|set_geometry_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|recal_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|task_no_data_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|task_in_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|task_mulin_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|pre_task_out_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|task_out_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|task_mulout_intr
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_void
+id|ide_init_drive_taskfile
+(paren
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+r_int
+id|ide_wait_taskfile
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|hd_drive_task_hdr
+op_star
+id|taskfile
+comma
+r_struct
+id|hd_drive_hob_hdr
+op_star
+id|hobfile
+comma
+id|byte
+op_star
+id|buf
+)paren
+suffix:semicolon
+r_int
+id|ide_raw_taskfile
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|ide_task_t
+op_star
+id|cmd
+comma
+id|byte
+op_star
+id|buf
+)paren
+suffix:semicolon
+id|ide_pre_handler_t
+op_star
+id|ide_pre_handler_parser
+(paren
+r_struct
+id|hd_drive_task_hdr
+op_star
+id|taskfile
+comma
+r_struct
+id|hd_drive_hob_hdr
+op_star
+id|hobfile
+)paren
+suffix:semicolon
+id|ide_handler_t
+op_star
+id|ide_handler_parser
+(paren
+r_struct
+id|hd_drive_task_hdr
+op_star
+id|taskfile
+comma
+r_struct
+id|hd_drive_hob_hdr
+op_star
+id|hobfile
+)paren
+suffix:semicolon
+multiline_comment|/* Expects args is a full set of TF registers and parses the command type */
+r_int
+id|ide_cmd_type_parser
+(paren
+id|ide_task_t
+op_star
+id|args
+)paren
+suffix:semicolon
+r_int
+id|ide_taskfile_ioctl
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_int
+id|ide_cmd_ioctl
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_int
+id|ide_task_ioctl
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PKT_TASK_IOCTL
+r_int
+id|pkt_taskfile_ioctl
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PKT_TASK_IOCTL */
 r_void
 id|ide_delay_50ms
 (paren
@@ -2750,14 +3328,9 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
-id|cmd
-comma
-id|byte
-id|nsect
-comma
-id|byte
-id|feature
+id|ide_task_t
+op_star
+id|args
 )paren
 suffix:semicolon
 r_int
@@ -2786,14 +3359,9 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
-id|cmd
-comma
-id|byte
-id|nsect
-comma
-id|byte
-id|feature
+id|ide_task_t
+op_star
+id|args
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; */
@@ -2801,19 +3369,6 @@ r_int
 id|ide_system_bus_speed
 (paren
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * ide_multwrite() transfers a block of up to mcount sectors of data&n; * to a drive as part of a disk multwrite operation.&n; */
-r_int
-id|ide_multwrite
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|mcount
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * idedisk_input_data() is a wrapper around ide_input_data() which copes&n; * with byte-swapping the input data if required.&n; */
@@ -2926,6 +3481,14 @@ id|generic_subdriver_entries
 )braket
 suffix:semicolon
 macro_line|#endif
+r_int
+id|ide_reinit_drive
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 macro_line|#ifdef _IDE_C
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 r_int
@@ -2937,6 +3500,14 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDE */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_int
+id|idedisk_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_int
 id|idedisk_init
 (paren
 r_void
@@ -2944,6 +3515,14 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
 macro_line|#ifdef CONFIG_BLK_DEV_IDECD
+r_int
+id|ide_cdrom_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 r_int
 id|ide_cdrom_init
 (paren
@@ -2953,6 +3532,14 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
 macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
 r_int
+id|idetape_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_int
 id|idetape_init
 (paren
 r_void
@@ -2961,6 +3548,14 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
 r_int
+id|idefloppy_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+r_int
 id|idefloppy_init
 (paren
 r_void
@@ -2968,6 +3563,14 @@ r_void
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
+r_int
+id|idescsi_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
 r_int
 id|idescsi_init
 (paren
@@ -3192,6 +3795,22 @@ id|hwif_unregister
 id|ide_hwif_t
 op_star
 id|hwif
+)paren
+suffix:semicolon
+r_void
+id|export_ide_init_queue
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+suffix:semicolon
+id|byte
+id|export_probe_for_drive
+(paren
+id|ide_drive_t
+op_star
+id|drive
 )paren
 suffix:semicolon
 r_extern

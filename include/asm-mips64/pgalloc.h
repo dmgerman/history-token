@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_PGALLOC_H
 DECL|macro|_ASM_PGALLOC_H
 mdefine_line|#define _ASM_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLB entries&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB entries&n; *  - flush_tlb_page(mm, vmaddr) flushes a single page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
+multiline_comment|/* TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLB entries&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB entries&n; *  - flush_tlb_page(vma, vmaddr) flushes a single page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *  - flush_tlb_pgtables(mm, start, end) flushes a range of page tables&n; */
 r_extern
 r_void
 (paren
@@ -35,9 +35,9 @@ id|_flush_tlb_range
 )paren
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -71,7 +71,7 @@ mdefine_line|#define flush_tlb_all()&t;&t;&t;_flush_tlb_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;&t;_flush_tlb_mm(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(mm,vmaddr,end)&t;_flush_tlb_range(mm, vmaddr, end)
+mdefine_line|#define flush_tlb_range(vma,vmaddr,end)&t;_flush_tlb_range(vma, vmaddr, end)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma,page)&t;_flush_tlb_page(vma, page)
 macro_line|#else /* CONFIG_SMP */
@@ -99,7 +99,7 @@ id|flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
 comma
 r_int

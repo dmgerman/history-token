@@ -515,7 +515,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|fifo_dump
 r_static
 r_int
@@ -595,7 +594,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|pfifo_qdisc_ops
 r_struct
 id|Qdisc_ops
@@ -630,10 +628,8 @@ l_int|NULL
 comma
 id|fifo_init
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|fifo_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|bfifo_qdisc_ops
@@ -670,10 +666,8 @@ l_int|NULL
 comma
 id|fifo_init
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|fifo_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 eof

@@ -51,9 +51,9 @@ id|local_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -135,9 +135,9 @@ id|local_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -203,9 +203,9 @@ id|local_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -270,7 +270,7 @@ mdefine_line|#define flush_cache_all()&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, a, b)&t;do { } while (0)
+mdefine_line|#define flush_cache_range(vma, a, b)&t;do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, p)&t;do { } while (0)
 DECL|macro|flush_icache_page

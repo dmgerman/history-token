@@ -5773,10 +5773,14 @@ r_if
 c_cond
 (paren
 id|Cmnd-&gt;use_sg
-op_eq
+op_ne
 l_int|0
 )paren
-(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|iqd
 op_assign
 (paren
@@ -5788,23 +5792,6 @@ op_star
 id|Cmnd-&gt;buffer
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|iqd
-op_assign
-(paren
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
-id|Cmnd-&gt;request_buffer
-)paren
-op_member_access_from_pointer
-id|address
-suffix:semicolon
-)brace
 multiline_comment|/* tags handled in midlayer */
 multiline_comment|/* enable sync mode? */
 r_if
@@ -7145,7 +7132,6 @@ l_int|NULL
 id|spin_lock
 c_func
 (paren
-op_amp
 id|qpti-&gt;qhost-&gt;host_lock
 )paren
 suffix:semicolon
@@ -7187,7 +7173,6 @@ suffix:semicolon
 id|spin_unlock
 c_func
 (paren
-op_amp
 id|qpti-&gt;qhost-&gt;host_lock
 )paren
 suffix:semicolon

@@ -245,6 +245,19 @@ c_func
 suffix:semicolon
 multiline_comment|/* nothing to do */
 )brace
+multiline_comment|/* pci_unmap_{page,single} is a nop so... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;do { } while (0)
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;(0)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;do { } while (0)
 multiline_comment|/*&n; * pci_{map,unmap}_single_page maps a kernel page to a dma_addr_t. identical&n; * to pci_map_single, but takes a struct page instead of a virtual address&n; */
 DECL|function|pci_map_page
 r_static

@@ -2545,6 +2545,11 @@ id|vicam_v4l_mmap
 c_func
 (paren
 r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
 id|video_device
 op_star
 id|dev
@@ -2685,6 +2690,8 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|start
 comma
 id|page

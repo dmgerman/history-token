@@ -64,6 +64,65 @@ DECL|typedef|select_t
 )brace
 id|select_t
 suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+DECL|member|bit0
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|nIEN
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device INTRQ to host */
+DECL|member|SRST
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host soft reset bit */
+DECL|member|bit3
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ATA-2 thingy */
+DECL|member|reserved456
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|HOB
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 48-bit address ordering */
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|control_t
+)brace
+id|control_t
+suffix:semicolon
 DECL|macro|ide_request_irq
 mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)&t;do {} while (0)
 DECL|macro|ide_free_irq

@@ -707,6 +707,8 @@ c_cond
 id|remap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|offset
@@ -1537,7 +1539,7 @@ suffix:semicolon
 id|zap_page_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|addr
 comma
@@ -1547,6 +1549,8 @@ suffix:semicolon
 id|zeromap_page_range
 c_func
 (paren
+id|vma
+comma
 id|addr
 comma
 id|count
@@ -1886,6 +1890,8 @@ c_cond
 id|zeromap_page_range
 c_func
 (paren
+id|vma
+comma
 id|vma-&gt;vm_start
 comma
 id|vma-&gt;vm_end

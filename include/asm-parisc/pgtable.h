@@ -33,9 +33,9 @@ DECL|macro|cache_clear
 mdefine_line|#define cache_clear(paddr, len)&t;&t;&t;do { } while (0)
 multiline_comment|/*&n; * cache_push() semantics: Write back any dirty cache data in the given area,&n; * and invalidate the range in the instruction cache. It needs not (but may)&n; * invalidate those entries also in the data cache. The range is defined by a&n; * _physical_ address.&n; */
 DECL|macro|cache_push
-mdefine_line|#define cache_push(paddr, len) &bslash;&n;&t;do { &bslash;&n;&t;&t;unsigned long vaddr = phys_to_virt(paddr); &bslash;&n;&t;&t;flush_cache_range(&amp;init_mm, vaddr, vaddr + len); &bslash;&n;&t;} while(0)
+mdefine_line|#define cache_push(paddr, len) &bslash;&n;&t;do { &bslash;&n;&t;&t;unsigned long vaddr = phys_to_virt(paddr); &bslash;&n;&t;&t;flush_cache_range(0, vaddr, vaddr + len); &bslash;&n;&t;} while(0)
 DECL|macro|cache_push_v
-mdefine_line|#define cache_push_v(vaddr, len) &bslash;&n;&t;&t;&t;flush_cache_range(&amp;init_mm, vaddr, vaddr + len)
+mdefine_line|#define cache_push_v(vaddr, len) &bslash;&n;&t;&t;&t;flush_cache_range(0, vaddr, vaddr + len)
 multiline_comment|/*&n; * kern_addr_valid(ADDR) tests if ADDR is pointing to valid kernel&n; * memory.  For the return value to be meaningful, ADDR must be &gt;=&n; * PAGE_OFFSET.  This operation can be relatively expensive (e.g.,&n; * require a hash-, or multi-level tree-lookup or something of that&n; * sort) but it guarantees to return TRUE only if accessing the page&n; * at that address does not cause an error.  Note that there may be&n; * addresses for which kern_addr_valid() returns FALSE even though an&n; * access would not cause an error (e.g., this is typically true for&n; * memory mapped I/O regions.&n; *&n; * XXX Need to implement this for parisc.&n; */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)

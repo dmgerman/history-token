@@ -504,6 +504,19 @@ DECL|macro|pci_map_sg
 mdefine_line|#define pci_map_sg(p, sg, n, d)&t;&t;hppa_dma_ops-&gt;map_sg(p, sg, n, d)
 DECL|macro|pci_unmap_sg
 mdefine_line|#define pci_unmap_sg(p, sg, n, d)&t;hppa_dma_ops-&gt;unmap_sg(p, sg, n, d)
+multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
+DECL|macro|DECLARE_PCI_UNMAP_ADDR
+mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;&bslash;&n;&t;dma_addr_t ADDR_NAME;
+DECL|macro|DECLARE_PCI_UNMAP_LEN
+mdefine_line|#define DECLARE_PCI_UNMAP_LEN(LEN_NAME)&t;&t;&bslash;&n;&t;__u32 LEN_NAME;
+DECL|macro|pci_unmap_addr
+mdefine_line|#define pci_unmap_addr(PTR, ADDR_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;ADDR_NAME)
+DECL|macro|pci_unmap_addr_set
+mdefine_line|#define pci_unmap_addr_set(PTR, ADDR_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;ADDR_NAME) = (VAL))
+DECL|macro|pci_unmap_len
+mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
+DECL|macro|pci_unmap_len_set
+mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
 multiline_comment|/* For U2/Astro/Ike based platforms (which are fully I/O coherent)&n;** dma_sync is a NOP. Let&squot;s keep the performance path short here.&n;*/
 DECL|macro|pci_dma_sync_single
 mdefine_line|#define pci_dma_sync_single(p, a, s, d)&t;{ if (hppa_dma_ops-&gt;dma_sync_single) &bslash;&n;&t;hppa_dma_ops-&gt;dma_sync_single(p, a, s, d); &bslash;&n;&t;}

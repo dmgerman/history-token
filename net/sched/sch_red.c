@@ -1121,7 +1121,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|red_copy_xstats
 r_int
 id|red_copy_xstats
@@ -1318,7 +1317,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|red_destroy
 r_static
 r_void
@@ -1368,10 +1366,8 @@ id|red_destroy
 comma
 id|red_change
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|red_dump
 comma
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

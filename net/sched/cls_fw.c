@@ -1416,7 +1416,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|fw_dump
 r_static
 r_int
@@ -1643,7 +1642,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|cls_fw_ops
 r_struct
 id|tcf_proto_ops
@@ -1670,11 +1668,7 @@ id|fw_delete
 comma
 id|fw_walk
 comma
-macro_line|#ifdef CONFIG_RTNETLINK
 id|fw_dump
-macro_line|#else
-l_int|NULL
-macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

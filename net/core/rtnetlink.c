@@ -26,7 +26,6 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
@@ -166,7 +165,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|variable|rtnl
 r_struct
 id|sock
@@ -182,12 +180,6 @@ id|rtnetlink_links
 id|NPROTO
 )braket
 suffix:semicolon
-DECL|macro|_S
-mdefine_line|#define _S&t;1&t;/* superuser privileges required */
-DECL|macro|_X
-mdefine_line|#define _X&t;2&t;/* exclusive access to tables required */
-DECL|macro|_G
-mdefine_line|#define _G&t;4&t;/* GET request */
 DECL|variable|rtm_min
 r_static
 r_const
@@ -2547,5 +2539,4 @@ op_assign
 id|link_rtnetlink_table
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

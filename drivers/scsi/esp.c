@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: esp.c,v 1.100 2001/12/11 04:55:48 davem Exp $&n; * esp.c:  EnhancedScsiProcessor Sun SCSI driver code.&n; *&n; * Copyright (C) 1995, 1998 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: esp.c,v 1.101 2002/01/15 06:48:55 davem Exp $&n; * esp.c:  EnhancedScsiProcessor Sun SCSI driver code.&n; *&n; * Copyright (C) 1995, 1998 David S. Miller (davem@caip.rutgers.edu)&n; */
 multiline_comment|/* TODO:&n; *&n; * 1) Maybe disable parity checking in config register one for SCSI1&n; *    targets.  (Gilmore says parity error on the SBus can lock up&n; *    old sun4c&squot;s)&n; * 2) Add support for DMA2 pipelining.&n; * 3) Add tagged queueing.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7776,7 +7776,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -7833,7 +7832,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -7981,7 +7979,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -8014,7 +8011,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -8039,7 +8035,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -8249,7 +8244,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -8267,7 +8261,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -17817,7 +17810,6 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags
@@ -17878,7 +17870,6 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-op_amp
 id|esp-&gt;ehost-&gt;host_lock
 comma
 id|flags

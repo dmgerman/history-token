@@ -192,27 +192,6 @@ c_func
 id|exit_mm
 )paren
 suffix:semicolon
-DECL|variable|exit_files
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|exit_files
-)paren
-suffix:semicolon
-DECL|variable|exit_fs
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|exit_fs
-)paren
-suffix:semicolon
-DECL|variable|exit_sighand
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|exit_sighand
-)paren
-suffix:semicolon
 multiline_comment|/* internal kernel memory management */
 DECL|variable|_alloc_pages
 id|EXPORT_SYMBOL

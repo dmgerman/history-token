@@ -2037,7 +2037,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_SHORTNAME_INFO
-mdefine_line|#define INIT_SHORTNAME_INFO(x)&t;do {&t;&t;&bslash;&n;&t;(x)-&gt;lower = 1;&t;&t;&t;&t;&bslash;&n;&t;(x)-&gt;upper = 1;&t;&t;&t;&t;&bslash;&n;&t;(x)-&gt;valid = 1;&t;&t;&t;&t;&bslash;&n;} while (0);
+mdefine_line|#define INIT_SHORTNAME_INFO(x)&t;do {&t;&t;&bslash;&n;&t;(x)-&gt;lower = 1;&t;&t;&t;&t;&bslash;&n;&t;(x)-&gt;upper = 1;&t;&t;&t;&t;&bslash;&n;&t;(x)-&gt;valid = 1;&t;&t;&t;&t;&bslash;&n;} while (0)
 r_static
 r_inline
 r_int

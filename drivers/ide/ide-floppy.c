@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * linux/drivers/ide/ide-floppy.c&t;Version 0.97.sv&t;Jan 14 2001&n; *&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; * Copyright (C) 2000 - 2001 Paul Bristow &lt;paul@paulbristow.net&gt;&n; */
-multiline_comment|/*&n; * IDE ATAPI floppy driver.&n; *&n; * The driver currently doesn&squot;t have any fancy features, just the bare&n; * minimum read/write support.&n; *&n; * This driver supports the following IDE floppy drives:&n; *&n; * LS-120 SuperDisk&n; * Iomega Zip 100/250&n; * Iomega PC Card Clik!/PocketZip&n; *&n; * Many thanks to Lode Leroy &lt;Lode.Leroy@www.ibase.be&gt;, who tested so many&n; * ALPHA patches to this driver on an EASYSTOR LS-120 ATAPI floppy drive.&n; *&n; * Ver 0.1   Oct 17 96   Initial test version, mostly based on ide-tape.c.&n; * Ver 0.2   Oct 31 96   Minor changes.&n; * Ver 0.3   Dec  2 96   Fixed error recovery bug.&n; * Ver 0.4   Jan 26 97   Add support for the HDIO_GETGEO ioctl.&n; * Ver 0.5   Feb 21 97   Add partitions support.&n; *                       Use the minimum of the LBA and CHS capacities.&n; *                       Avoid hwgroup-&gt;rq == NULL on the last irq.&n; *                       Fix potential null dereferencing with DEBUG_LOG.&n; * Ver 0.8   Dec  7 97   Increase irq timeout from 10 to 50 seconds.&n; *                       Add media write-protect detection.&n; *                       Issue START command only if TEST UNIT READY fails.&n; *                       Add work-around for IOMEGA ZIP revision 21.D.&n; *                       Remove idefloppy_get_capabilities().&n; * Ver 0.9   Jul  4 99   Fix a bug which might have caused the number of&n; *                        bytes requested on each interrupt to be zero.&n; *                        Thanks to &lt;shanos@es.co.nz&gt; for pointing this out.&n; * Ver 0.9.sv Jan 6 01   Sam Varshavchik &lt;mrsam@courier-mta.com&gt;&n; *                       Implement low level formatting.  Reimplemented&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, since we need the srfp&n; *                       bit.  My LS-120 drive barfs on&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, but maybe it&squot;s just me.&n; *                       Compromise by not reporting a failure to get this&n; *                       mode page.  Implemented four IOCTLs in order to&n; *                       implement formatting.  IOCTls begin with 0x4600,&n; *                       0x46 is &squot;F&squot; as in Format.&n; *            Jan 9 01   Userland option to select format verify.&n; *                       Added PC_SUPPRESS_ERROR flag - some idefloppy drives&n; *                       do not implement IDEFLOPPY_CAPABILITIES_PAGE, and&n; *                       return a sense error.  Suppress error reporting in&n; *                       this particular case in order to avoid spurious&n; *                       errors in syslog.  The culprit is&n; *                       idefloppy_get_capability_page(), so move it to&n; *                       idefloppy_begin_format() so that it&squot;s not used&n; *                       unless absolutely necessary.&n; *                       If drive does not support format progress indication&n; *                       monitor the dsc bit in the status register.&n; *                       Also, O_NDELAY on open will allow the device to be&n; *                       opened without a disk available.  This can be used to&n; *                       open an unformatted disk, or get the device capacity.&n; * Ver 0.91  Dec 11 99   Added IOMEGA Clik! drive support by &n; *     &t;&t;   &lt;paul@paulbristow.net&gt;&n; * Ver 0.92  Oct 22 00   Paul Bristow became official maintainer for this &n; *           &t;&t;   driver.  Included Powerbook internal zip kludge.&n; * Ver 0.93  Oct 24 00   Fixed bugs for Clik! drive&n; *                        no disk on insert and disk change now works&n; * Ver 0.94  Oct 27 00   Tidied up to remove strstr(Clik) everywhere&n; * Ver 0.95  Nov  7 00   Brought across to kernel 2.4&n; * Ver 0.96  Jan  7 01   Actually in line with release version of 2.4.0&n; *                       including set_bit patch from Rusty Russel&n; * Ver 0.97  Jul 22 01   Merge 0.91-0.96 onto 0.9.sv for ac series&n; * Ver 0.97.sv Aug 3 01  Backported from 2.4.7-ac3&n; */
+multiline_comment|/*&n; * IDE ATAPI floppy driver.&n; *&n; * The driver currently doesn&squot;t have any fancy features, just the bare&n; * minimum read/write support.&n; *&n; * This driver supports the following IDE floppy drives:&n; *&n; * LS-120 SuperDisk&n; * Iomega Zip 100/250&n; * Iomega PC Card Clik!/PocketZip&n; *&n; * Many thanks to Lode Leroy &lt;Lode.Leroy@www.ibase.be&gt;, who tested so many&n; * ALPHA patches to this driver on an EASYSTOR LS-120 ATAPI floppy drive.&n; *&n; * Ver 0.1   Oct 17 96   Initial test version, mostly based on ide-tape.c.&n; * Ver 0.2   Oct 31 96   Minor changes.&n; * Ver 0.3   Dec  2 96   Fixed error recovery bug.&n; * Ver 0.4   Jan 26 97   Add support for the HDIO_GETGEO ioctl.&n; * Ver 0.5   Feb 21 97   Add partitions support.&n; *                       Use the minimum of the LBA and CHS capacities.&n; *                       Avoid hwgroup-&gt;rq == NULL on the last irq.&n; *                       Fix potential null dereferencing with DEBUG_LOG.&n; * Ver 0.8   Dec  7 97   Increase irq timeout from 10 to 50 seconds.&n; *                       Add media write-protect detection.&n; *                       Issue START command only if TEST UNIT READY fails.&n; *                       Add work-around for IOMEGA ZIP revision 21.D.&n; *                       Remove idefloppy_get_capabilities().&n; * Ver 0.9   Jul  4 99   Fix a bug which might have caused the number of&n; *                        bytes requested on each interrupt to be zero.&n; *                        Thanks to &lt;shanos@es.co.nz&gt; for pointing this out.&n; * Ver 0.9.sv Jan 6 01   Sam Varshavchik &lt;mrsam@courier-mta.com&gt;&n; *                       Implement low level formatting.  Reimplemented&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, since we need the srfp&n; *                       bit.  My LS-120 drive barfs on&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, but maybe it&squot;s just me.&n; *                       Compromise by not reporting a failure to get this&n; *                       mode page.  Implemented four IOCTLs in order to&n; *                       implement formatting.  IOCTls begin with 0x4600,&n; *                       0x46 is &squot;F&squot; as in Format.&n; *            Jan 9 01   Userland option to select format verify.&n; *                       Added PC_SUPPRESS_ERROR flag - some idefloppy drives&n; *                       do not implement IDEFLOPPY_CAPABILITIES_PAGE, and&n; *                       return a sense error.  Suppress error reporting in&n; *                       this particular case in order to avoid spurious&n; *                       errors in syslog.  The culprit is&n; *                       idefloppy_get_capability_page(), so move it to&n; *                       idefloppy_begin_format() so that it&squot;s not used&n; *                       unless absolutely necessary.&n; *                       If drive does not support format progress indication&n; *                       monitor the dsc bit in the status register.&n; *                       Also, O_NDELAY on open will allow the device to be&n; *                       opened without a disk available.  This can be used to&n; *                       open an unformatted disk, or get the device capacity.&n; * Ver 0.91  Dec 11 99   Added IOMEGA Clik! drive support by &n; *     &t;&t;   &lt;paul@paulbristow.net&gt;&n; * Ver 0.92  Oct 22 00   Paul Bristow became official maintainer for this &n; *           &t;&t;   driver.  Included Powerbook internal zip kludge.&n; * Ver 0.93  Oct 24 00   Fixed bugs for Clik! drive&n; *                        no disk on insert and disk change now works&n; * Ver 0.94  Oct 27 00   Tidied up to remove strstr(Clik) everywhere&n; * Ver 0.95  Nov  7 00   Brought across to kernel 2.4&n; * Ver 0.96  Jan  7 01   Actually in line with release version of 2.4.0&n; *                       including set_bit patch from Rusty Russel&n; * Ver 0.97  Jul 22 01   Merge 0.91-0.96 onto 0.9.sv for ac series&n; * Ver 0.97.sv Aug 3 01  Backported from 2.4.7-ac3&n; * Ver 0.98  Oct 26 01   Split idefloppy_transfer_pc into two pieces to&n; *                        fix a lost interrupt problem. It appears the busy&n; *                        bit was being deasserted by my IOMEGA ATAPI ZIP 100&n; *                        drive before the drive was actually ready.&n; * Ver 0.98a Oct 29 01   Expose delay value so we can play.&n; */
 DECL|macro|IDEFLOPPY_VERSION
-mdefine_line|#define IDEFLOPPY_VERSION &quot;0.97.sv&quot;
+mdefine_line|#define IDEFLOPPY_VERSION &quot;0.98a&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -570,6 +570,11 @@ id|asc
 comma
 id|ascq
 suffix:semicolon
+DECL|member|ticks
+id|byte
+id|ticks
+suffix:semicolon
+multiline_comment|/* delay this long before sending packet command */
 DECL|member|progress_indication
 r_int
 id|progress_indication
@@ -616,6 +621,8 @@ DECL|typedef|idefloppy_floppy_t
 )brace
 id|idefloppy_floppy_t
 suffix:semicolon
+DECL|macro|IDEFLOPPY_TICKS_DELAY
+mdefine_line|#define IDEFLOPPY_TICKS_DELAY&t;3&t;/* default delay for ZIP 100 */
 multiline_comment|/*&n; *&t;Floppy flag bits values.&n; */
 DECL|macro|IDEFLOPPY_DRQ_INTERRUPT
 mdefine_line|#define IDEFLOPPY_DRQ_INTERRUPT&t;&t;0&t;/* DRQ interrupt device */
@@ -627,6 +634,8 @@ DECL|macro|IDEFLOPPY_FORMAT_IN_PROGRESS
 mdefine_line|#define&t;IDEFLOPPY_FORMAT_IN_PROGRESS&t;3&t;/* Format in progress */
 DECL|macro|IDEFLOPPY_CLIK_DRIVE
 mdefine_line|#define IDEFLOPPY_CLIK_DRIVE&t;        4       /* Avoid commands not supported in Clik drive */
+DECL|macro|IDEFLOPPY_ZIP_DRIVE
+mdefine_line|#define IDEFLOPPY_ZIP_DRIVE&t;&t;5&t;/* Requires BH algorithm for packets */
 multiline_comment|/*&n; *&t;ATAPI floppy drive packet commands&n; */
 DECL|macro|IDEFLOPPY_FORMAT_UNIT_CMD
 mdefine_line|#define IDEFLOPPY_FORMAT_UNIT_CMD&t;0x04
@@ -3393,6 +3402,7 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * This is the original routine that did the packet transfer.&n; * It fails at high speeds on the Iomega ZIP drive, so there&squot;s a slower version&n; * for that drive below. The algorithm is chosen based on drive type&n; */
 DECL|function|idefloppy_transfer_pc
 r_static
 id|ide_startstop_t
@@ -3499,6 +3509,138 @@ r_return
 id|ide_started
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * What we have here is a classic case of a top half / bottom half&n; * interrupt service routine. In interrupt mode, the device sends&n; * an interrupt to signal it&squot;s ready to receive a packet. However,&n; * we need to delay about 2-3 ticks before issuing the packet or we&n; * gets in trouble.&n; *&n; * So, follow carefully. transfer_pc1 is called as an interrupt (or&n; * directly). In either case, when the device says it&squot;s ready for a &n; * packet, we schedule the packet transfer to occur about 2-3 ticks&n; * later in transfer_pc2.&n; */
+DECL|function|idefloppy_transfer_pc2
+r_static
+r_int
+id|idefloppy_transfer_pc2
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|idefloppy_floppy_t
+op_star
+id|floppy
+op_assign
+id|drive-&gt;driver_data
+suffix:semicolon
+id|atapi_output_bytes
+(paren
+id|drive
+comma
+id|floppy-&gt;pc-&gt;c
+comma
+l_int|12
+)paren
+suffix:semicolon
+multiline_comment|/* Send the actual packet */
+r_return
+id|IDEFLOPPY_WAIT_CMD
+suffix:semicolon
+multiline_comment|/* Timeout for the packet command */
+)brace
+DECL|function|idefloppy_transfer_pc1
+r_static
+id|ide_startstop_t
+id|idefloppy_transfer_pc1
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|idefloppy_floppy_t
+op_star
+id|floppy
+op_assign
+id|drive-&gt;driver_data
+suffix:semicolon
+id|ide_startstop_t
+id|startstop
+suffix:semicolon
+id|idefloppy_ireason_reg_t
+id|ireason
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_wait_stat
+(paren
+op_amp
+id|startstop
+comma
+id|drive
+comma
+id|DRQ_STAT
+comma
+id|BUSY_STAT
+comma
+id|WAIT_READY
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;ide-floppy: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|startstop
+suffix:semicolon
+)brace
+id|ireason.all
+op_assign
+id|IN_BYTE
+(paren
+id|IDE_IREASON_REG
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ireason.b.cod
+op_logical_or
+id|ireason.b.io
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;ide-floppy: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|ide_do_reset
+(paren
+id|drive
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* &n;&t; * The following delay solves a problem with ATAPI Zip 100 drives where the&n;&t; * Busy flag was apparently being deasserted before the unit was ready to&n;&t; * receive data. This was happening on a 1200 MHz Athlon system. 10/26/01&n;&t; * 25msec is too short, 40 and 50msec work well. idefloppy_pc_intr will &n;&t; * not be actually used until after the packet is moved in about 50 msec.&n;&t; */
+id|ide_set_handler
+(paren
+id|drive
+comma
+op_amp
+id|idefloppy_pc_intr
+comma
+multiline_comment|/* service routine for packet command */
+id|floppy-&gt;ticks
+comma
+multiline_comment|/* wait this long before &quot;failing&quot; */
+op_amp
+id|idefloppy_transfer_pc2
+)paren
+suffix:semicolon
+multiline_comment|/* fail == transfer_pc2 */
+r_return
+id|ide_started
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;Issue a packet command&n; */
 DECL|function|idefloppy_issue_pc
 r_static
@@ -3527,6 +3669,10 @@ r_int
 id|dma_ok
 op_assign
 l_int|0
+suffix:semicolon
+id|ide_handler_t
+op_star
+id|pkt_xfer_routine
 suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_BUGS
 r_if
@@ -3855,6 +4001,35 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+multiline_comment|/* Can we transfer the packet when we get the interrupt or wait? */
+r_if
+c_cond
+(paren
+id|test_bit
+(paren
+id|IDEFLOPPY_ZIP_DRIVE
+comma
+op_amp
+id|floppy-&gt;flags
+)paren
+)paren
+(brace
+id|pkt_xfer_routine
+op_assign
+op_amp
+id|idefloppy_transfer_pc1
+suffix:semicolon
+multiline_comment|/* wait */
+)brace
+r_else
+(brace
+id|pkt_xfer_routine
+op_assign
+op_amp
+id|idefloppy_transfer_pc
+suffix:semicolon
+multiline_comment|/* immediate */
+)brace
 r_if
 c_cond
 (paren
@@ -3871,8 +4046,7 @@ id|ide_set_handler
 (paren
 id|drive
 comma
-op_amp
-id|idefloppy_transfer_pc
+id|pkt_xfer_routine
 comma
 id|IDEFLOPPY_WAIT_CMD
 comma
@@ -3901,7 +4075,10 @@ id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
 r_return
-id|idefloppy_transfer_pc
+(paren
+op_star
+id|pkt_xfer_routine
+)paren
 (paren
 id|drive
 )paren
@@ -8192,20 +8369,15 @@ macro_line|#else
 DECL|macro|idefloppy_proc
 mdefine_line|#define&t;idefloppy_proc&t;NULL
 macro_line|#endif&t;/* CONFIG_PROC_FS */
-DECL|function|idefloppy_reinit
-r_static
 r_int
 id|idefloppy_reinit
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idefloppy_driver
 r_static
@@ -8240,6 +8412,14 @@ comma
 id|cleanup
 suffix:colon
 id|idefloppy_cleanup
+comma
+id|standby
+suffix:colon
+l_int|NULL
+comma
+id|flushcache
+suffix:colon
+l_int|NULL
 comma
 id|do_request
 suffix:colon
@@ -8313,6 +8493,195 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+DECL|function|idefloppy_reinit
+r_int
+id|idefloppy_reinit
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+id|idefloppy_floppy_t
+op_star
+id|floppy
+suffix:semicolon
+r_int
+id|failed
+op_assign
+l_int|0
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|drive
+op_assign
+id|ide_scan_devices
+(paren
+id|ide_floppy
+comma
+id|idefloppy_driver.name
+comma
+l_int|NULL
+comma
+id|failed
+op_increment
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idefloppy_identify_device
+(paren
+id|drive
+comma
+id|drive-&gt;id
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;ide-floppy: %s: not supported by this version of ide-floppy&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|drive-&gt;scsi
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ide-floppy: passing drive %s to ide-scsi emulation.&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|floppy
+op_assign
+(paren
+id|idefloppy_floppy_t
+op_star
+)paren
+id|kmalloc
+(paren
+r_sizeof
+(paren
+id|idefloppy_floppy_t
+)paren
+comma
+id|GFP_KERNEL
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;ide-floppy: %s: Can&squot;t allocate a floppy structure&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ide_register_subdriver
+(paren
+id|drive
+comma
+op_amp
+id|idefloppy_driver
+comma
+id|IDE_SUBDRIVER_VERSION
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;ide-floppy: %s: Failed to register the driver with ide.c&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+(paren
+id|floppy
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_increment
+suffix:semicolon
+id|idefloppy_setup
+(paren
+id|drive
+comma
+id|floppy
+)paren
+suffix:semicolon
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_decrement
+suffix:semicolon
+id|failed
+op_decrement
+suffix:semicolon
+)brace
+id|ide_register_module
+c_func
+(paren
+op_amp
+id|idefloppy_module
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -8562,12 +8931,30 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_increment
+suffix:semicolon
 id|idefloppy_setup
 (paren
 id|drive
 comma
 id|floppy
 )paren
+suffix:semicolon
+id|DRIVER
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|busy
+op_decrement
 suffix:semicolon
 id|failed
 op_decrement

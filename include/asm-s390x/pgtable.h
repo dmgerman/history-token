@@ -35,7 +35,7 @@ mdefine_line|#define flush_cache_all()                       do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)                      do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end)       do { } while (0)
+mdefine_line|#define flush_cache_range(vma, start, end)      do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma, vmaddr)           do { } while (0)
 DECL|macro|flush_page_to_ram

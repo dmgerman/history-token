@@ -321,6 +321,11 @@ r_void
 id|change_protection
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|start
@@ -356,7 +361,7 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|beg
 comma
@@ -434,7 +439,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|beg
 comma
@@ -1376,6 +1381,8 @@ suffix:semicolon
 id|change_protection
 c_func
 (paren
+id|vma
+comma
 id|start
 comma
 id|end

@@ -22,12 +22,15 @@ DECL|macro|MSDOS_DPS_BITS
 mdefine_line|#define MSDOS_DPS_BITS&t;4 /* log2(MSDOS_DPS) */
 DECL|macro|MSDOS_DIR_BITS
 mdefine_line|#define MSDOS_DIR_BITS&t;5 /* log2(sizeof(struct msdos_dir_entry)) */
+multiline_comment|/* directory limit */
+DECL|macro|FAT_MAX_DIR_ENTRIES
+mdefine_line|#define FAT_MAX_DIR_ENTRIES&t;(65536)
+DECL|macro|FAT_MAX_DIR_SIZE
+mdefine_line|#define FAT_MAX_DIR_SIZE&t;(FAT_MAX_DIR_ENTRIES &lt;&lt; MSDOS_DIR_BITS)
 DECL|macro|MSDOS_SUPER_MAGIC
 mdefine_line|#define MSDOS_SUPER_MAGIC 0x4d44 /* MD */
 DECL|macro|FAT_CACHE
 mdefine_line|#define FAT_CACHE    8 /* FAT cache size */
-DECL|macro|MSDOS_MAX_EXTRA
-mdefine_line|#define MSDOS_MAX_EXTRA&t;3 /* tolerate up to that number of clusters which are&n;&t;&t;&t;     inaccessible because the FAT is too short */
 DECL|macro|ATTR_RO
 mdefine_line|#define ATTR_RO      1  /* read-only */
 DECL|macro|ATTR_HIDDEN
@@ -56,14 +59,6 @@ DECL|macro|CASE_LOWER_BASE
 mdefine_line|#define CASE_LOWER_BASE 8&t;/* base is lower case */
 DECL|macro|CASE_LOWER_EXT
 mdefine_line|#define CASE_LOWER_EXT  16&t;/* extension is lower case */
-DECL|macro|SCAN_ANY
-mdefine_line|#define SCAN_ANY     0  /* either hidden or not */
-DECL|macro|SCAN_HID
-mdefine_line|#define SCAN_HID     1  /* only hidden */
-DECL|macro|SCAN_NOTHID
-mdefine_line|#define SCAN_NOTHID  2  /* only not hidden */
-DECL|macro|SCAN_NOTANY
-mdefine_line|#define SCAN_NOTANY  3  /* test name, then use SCAN_HID or SCAN_NOTHID */
 DECL|macro|DELETED_FLAG
 mdefine_line|#define DELETED_FLAG 0xe5 /* marks file as deleted when in name[0] */
 DECL|macro|IS_FREE
@@ -100,7 +95,7 @@ mdefine_line|#define FAT_FSINFO_SIG1&t;&t;0x41615252
 DECL|macro|FAT_FSINFO_SIG2
 mdefine_line|#define FAT_FSINFO_SIG2&t;&t;0x61417272
 DECL|macro|IS_FSINFO
-mdefine_line|#define IS_FSINFO(x)&t;&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t; &bslash;&n;&t;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
+mdefine_line|#define IS_FSINFO(x)&t;(CF_LE_L((x)-&gt;signature1) == FAT_FSINFO_SIG1&t;&bslash;&n;&t;&t;&t; &amp;&amp; CF_LE_L((x)-&gt;signature2) == FAT_FSINFO_SIG2)
 multiline_comment|/*&n; * Inode flags&n; */
 DECL|macro|FAT_BINARY_FL
 mdefine_line|#define FAT_BINARY_FL&t;&t;0x00000001 /* File contains binary data */
@@ -466,9 +461,6 @@ suffix:semicolon
 multiline_comment|/* ino for the file */
 )brace
 suffix:semicolon
-multiline_comment|/* Determine whether this FS has kB-aligned data. */
-DECL|macro|MSDOS_CAN_BMAP
-mdefine_line|#define MSDOS_CAN_BMAP(mib) (!(((mib)-&gt;cluster_size &amp; 1) || &bslash;&n;    ((mib)-&gt;data_start &amp; 1)))
 multiline_comment|/* Convert attribute bits and a mask to the UNIX mode. */
 DECL|macro|MSDOS_MKMODE
 mdefine_line|#define MSDOS_MKMODE(a,m) (m &amp; (a &amp; ATTR_RO ? S_IRUGO|S_IXUGO : S_IRWXUGO))
@@ -1327,7 +1319,11 @@ comma
 r_const
 r_char
 op_star
-id|msg
+id|fmt
+comma
+dot
+dot
+dot
 )paren
 suffix:semicolon
 r_extern

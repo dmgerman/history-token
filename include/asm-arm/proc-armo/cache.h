@@ -4,7 +4,7 @@ mdefine_line|#define flush_cache_all()&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_mm
 mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;do { } while (0)
 DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm,start,end)&t;&t;do { } while (0)
+mdefine_line|#define flush_cache_range(vma,start,end)&t;do { } while (0)
 DECL|macro|flush_cache_page
 mdefine_line|#define flush_cache_page(vma,vmaddr)&t;&t;do { } while (0)
 DECL|macro|flush_page_to_ram
@@ -28,13 +28,13 @@ mdefine_line|#define flush_icache_page(vma,page)&t;&t;do { } while (0)
 multiline_comment|/* DAG: ARM3 will flush cache on MEMC updates anyway? so don&squot;t bother */
 DECL|macro|clean_cache_area
 mdefine_line|#define clean_cache_area(_start,_size) do { } while (0)
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; */
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; */
 DECL|macro|flush_tlb_all
 mdefine_line|#define flush_tlb_all()&t;&t;&t;&t;memc_update_all()
 DECL|macro|flush_tlb_mm
 mdefine_line|#define flush_tlb_mm(mm)&t;&t;&t;memc_update_mm(mm)
 DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range(mm,start,end)&t;&t;&bslash;&n;&t;&t;do { memc_update_mm(mm); (void)(start); (void)(end); } while (0)
+mdefine_line|#define flush_tlb_range(vma,start,end)&t;&t;&bslash;&n;&t;&t;do { memc_update_mm(vma-&gt;vm_mm); (void)(start); (void)(end); } while (0)
 DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, vmaddr)&t;&t;do { } while (0)
 multiline_comment|/*&n; * The following handle the weird MEMC chip&n; */

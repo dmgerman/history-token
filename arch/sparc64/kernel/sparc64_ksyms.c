@@ -447,6 +447,11 @@ r_int
 id|io_remap_page_range
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from

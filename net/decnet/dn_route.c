@@ -4190,7 +4190,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dn_rt_fill_info
 r_static
 r_int
@@ -5200,7 +5199,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|decnet_cache_get_info
 r_static

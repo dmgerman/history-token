@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: generic.c,v 1.17 2001/04/09 04:08:06 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
+multiline_comment|/* $Id: generic.c,v 1.18 2001/12/21 04:56:15 davem Exp $&n; * generic.c: Generic Sparc mm routines that are not dependent upon&n; *            MMU type but are Sparc specific.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -595,6 +595,11 @@ r_int
 id|io_remap_page_range
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from
@@ -642,7 +647,7 @@ id|mm_struct
 op_star
 id|mm
 op_assign
-id|current-&gt;mm
+id|vma-&gt;vm_mm
 suffix:semicolon
 id|prot
 op_assign
@@ -669,7 +674,7 @@ suffix:semicolon
 id|flush_cache_range
 c_func
 (paren
-id|mm
+id|vma
 comma
 id|beg
 comma
@@ -771,7 +776,7 @@ suffix:semicolon
 id|flush_tlb_range
 c_func
 (paren
-id|current-&gt;mm
+id|vma
 comma
 id|beg
 comma

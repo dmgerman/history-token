@@ -11,8 +11,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/af_unix.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/* Internal data structures and random procedures: */
@@ -350,19 +350,33 @@ comma
 id|s
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *&t;If all instances of the descriptor are not&n;&t;&t; *&t;in flight we are in use.&n;&t;&t; */
+r_int
+id|open_count
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; *&t;If all instances of the descriptor are not&n;&t;&t; *&t;in flight we are in use.&n;&t;&t; *&n;&t;&t; *&t;Special case: when socket s is embrion, it may be&n;&t;&t; *&t;hashed but still not in queue of listening socket.&n;&t;&t; *&t;In this case (see unix_create1()) we set artificial&n;&t;&t; *&t;negative inflight counter to close race window.&n;&t;&t; *&t;It is trick of course and dirty one.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|s-&gt;socket
 op_logical_and
 id|s-&gt;socket-&gt;file
-op_logical_and
+)paren
+(brace
+id|open_count
+op_assign
 id|file_count
 c_func
 (paren
 id|s-&gt;socket-&gt;file
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|open_count
 OG
 id|atomic_read
 c_func
@@ -371,14 +385,12 @@ op_amp
 id|s-&gt;protinfo.af_unix.inflight
 )paren
 )paren
-(brace
 id|maybe_unmark_and_push
 c_func
 (paren
 id|s
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; *&t;Mark phase &n;&t; */
 r_while

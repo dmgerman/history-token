@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;mmu_decl.h&quot;
-multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(mm, start, end) flushes a range of pages&n; *&n; * since the hardware hash table functions as an extension of the&n; * tlb as far as the linux tables are concerned, flush it too.&n; *    -- Cort&n; */
+multiline_comment|/*&n; * TLB flushing:&n; *&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *&n; * since the hardware hash table functions as an extension of the&n; * tlb as far as the linux tables are concerned, flush it too.&n; *    -- Cort&n; */
 multiline_comment|/*&n; * Flush all tlb/hash table entries (except perhaps for those&n; * mapping RAM starting at PAGE_OFFSET, since they never change).&n; */
 r_void
 DECL|function|local_flush_tlb_all
@@ -15,13 +15,22 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|vm_area_struct
+id|vma
+suffix:semicolon
 multiline_comment|/* aargh!!! */
 multiline_comment|/*&n;&t; * Just flush the kernel part of the address space, that&squot;s&n;&t; * all that the current callers of this require.&n;&t; * Eventually I hope to persuade the powers that be that&n;&t; * we can and should dispense with flush_tlb_all().&n;&t; *  -- paulus.&n;&t; */
+id|vma.vm_mm
+op_assign
+op_amp
+id|init_mm
+suffix:semicolon
 id|local_flush_tlb_range
 c_func
 (paren
 op_amp
-id|init_mm
+id|vma
 comma
 id|TASK_SIZE
 comma
@@ -95,7 +104,7 @@ id|mp-&gt;vm_next
 id|local_flush_tlb_range
 c_func
 (paren
-id|mm
+id|mp
 comma
 id|mp-&gt;vm_start
 comma
@@ -104,16 +113,27 @@ id|mp-&gt;vm_end
 suffix:semicolon
 )brace
 r_else
+(brace
+r_struct
+id|vm_area_struct
+id|vma
+suffix:semicolon
+id|vma.vm_mm
+op_assign
+id|mm
+suffix:semicolon
 id|local_flush_tlb_range
 c_func
 (paren
-id|mm
+op_amp
+id|vma
 comma
 l_int|0
 comma
 id|TASK_SIZE
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_SMP
 id|smp_send_tlb_invalidate
 c_func
@@ -259,9 +279,9 @@ id|local_flush_tlb_range
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
 comma
 r_int
 r_int
@@ -272,6 +292,13 @@ r_int
 id|end
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|vma-&gt;vm_mm
+suffix:semicolon
 id|pmd_t
 op_star
 id|pmd

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunqe.c,v 1.53 2001/12/21 00:54:31 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sunqe.c,v 1.55 2002/01/15 06:48:55 davem Exp $&n; * sunqe.c: Sparc QuadEthernet 10baseT SBUS card driver.&n; *          Once again I am out to prove that every ethernet&n; *          controller out there can be most efficiently programmed&n; *          if you make it look like a LANCE.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
 DECL|variable|version
 r_static
 r_char
@@ -2764,12 +2764,6 @@ id|addrs
 suffix:semicolon
 r_int
 id|i
-comma
-id|j
-comma
-id|bit
-comma
-id|byte
 suffix:semicolon
 id|u32
 id|crc

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.109 2001/11/13 00:49:32 davem Exp $ */
+multiline_comment|/* $Id: pgtable.h,v 1.110 2001/12/21 04:56:17 davem Exp $ */
 macro_line|#ifndef _SPARC_PGTABLE_H
 DECL|macro|_SPARC_PGTABLE_H
 mdefine_line|#define _SPARC_PGTABLE_H
@@ -1598,6 +1598,11 @@ r_int
 id|io_remap_page_range
 c_func
 (paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
 r_int
 r_int
 id|from

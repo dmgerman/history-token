@@ -143,7 +143,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 r_static
 r_void
 id|rtmsg_ifa
@@ -158,7 +157,6 @@ op_star
 id|ifa
 )paren
 suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|dn_eth_up
@@ -1686,7 +1684,6 @@ id|ifap
 op_assign
 id|ifa1-&gt;ifa_next
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtmsg_ifa
 c_func
 (paren
@@ -1695,7 +1692,6 @@ comma
 id|ifa1
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 r_if
 c_cond
 (paren
@@ -1749,7 +1745,6 @@ id|dn_db-&gt;ifa_list
 op_assign
 id|ifa
 suffix:semicolon
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtmsg_ifa
 c_func
 (paren
@@ -1758,7 +1753,6 @@ comma
 id|ifa
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 r_return
 l_int|0
 suffix:semicolon
@@ -2260,7 +2254,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|function|dn_dev_by_index
 r_static
 r_struct
@@ -3223,7 +3216,6 @@ r_return
 id|skb-&gt;len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|function|dn_send_endnode_hello
 r_static
 r_void
@@ -5608,7 +5600,6 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#ifdef CONFIG_RTNETLINK
 DECL|variable|dnet_rtnetlink_table
 r_static
 r_struct
@@ -5825,7 +5816,6 @@ comma
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 DECL|function|dn_dev_init
 r_void
 id|__init
@@ -5850,7 +5840,6 @@ id|dnet_gifconf
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_DECNET_SIOCGIFCONF */
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtnetlink_links
 (braket
 id|PF_DECnet
@@ -5858,7 +5847,6 @@ id|PF_DECnet
 op_assign
 id|dnet_rtnetlink_table
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_create
 c_func
@@ -5916,7 +5904,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_RTNETLINK
 id|rtnetlink_links
 (braket
 id|PF_DECnet
@@ -5924,7 +5911,6 @@ id|PF_DECnet
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif /* CONFIG_RTNETLINK */
 macro_line|#ifdef CONFIG_DECNET_SIOCGIFCONF
 id|unregister_gifconf
 c_func

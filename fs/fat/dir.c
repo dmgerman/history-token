@@ -3205,7 +3205,6 @@ l_int|11
 )paren
 )paren
 (brace
-multiline_comment|/*&t;&t;inum = fat_parent_ino(inode,0); */
 id|inum
 op_assign
 id|filp-&gt;f_dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
@@ -4316,6 +4315,29 @@ op_minus
 l_int|1
 )paren
 (brace
+multiline_comment|/* check the maximum size of directory */
+r_if
+c_cond
+(paren
+id|curr
+op_ge
+id|FAT_MAX_DIR_SIZE
+)paren
+(brace
+id|fat_brelse
+c_func
+(paren
+id|sb
+comma
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSPC
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4407,6 +4429,7 @@ id|new_bh
 )paren
 suffix:semicolon
 r_do
+(brace
 id|fat_get_entry
 c_func
 (paren
@@ -4422,6 +4445,7 @@ comma
 id|ino
 )paren
 suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
