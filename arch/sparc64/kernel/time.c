@@ -90,6 +90,545 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|variable|tick_ops
+r_struct
+id|sparc64_tick_ops
+op_star
+id|tick_ops
+suffix:semicolon
+DECL|function|tick_disable_protection
+r_static
+r_void
+id|tick_disable_protection
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Set things up so user can access tick register for profiling&n;&t; * purposes.  Also workaround BB_ERRATA_1 by doing a dummy&n;&t; * read back of %tick after writing it.&n;&t; */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; sllx&t;%%g1, 32, %%g1&bslash;n&quot;
+l_string|&quot;&t;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;rd&t;%%tick, %%g2&bslash;n&quot;
+l_string|&quot;&t;add&t;%%g2, 6, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;wrpr&t;%%g2, 0, %%tick&bslash;n&quot;
+l_string|&quot;&t;rdpr&t;%%tick, %%g0&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+multiline_comment|/* no inputs */
+suffix:colon
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|tick_init_tick
+r_static
+r_void
+id|tick_init_tick
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+id|tick_disable_protection
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
+l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
+l_string|&quot;&t; add&t;%%g1, %0, %%g1&bslash;n&quot;
+l_string|&quot;&t;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&t;wr&t;%%g1, 0x0, %%tick_cmpr&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%tick_cmpr, %%g0&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|offset
+)paren
+suffix:colon
+l_string|&quot;g1&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|tick_get_tick
+r_static
+r_int
+r_int
+id|tick_get_tick
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%tick, %0&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;%0, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|tick_get_compare
+r_static
+r_int
+r_int
+id|tick_get_compare
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%tick_cmpr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;mov&t;%0, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|tick_add_compare
+r_static
+r_int
+r_int
+id|tick_add_compare
+c_func
+(paren
+r_int
+r_int
+id|adj
+)paren
+(brace
+r_int
+r_int
+id|new_compare
+suffix:semicolon
+multiline_comment|/* Workaround for Spitfire Errata (#54 I think??), I discovered&n;&t; * this via Sun BugID 4008234, mentioned in Solaris-2.5.1 patch&n;&t; * number 103640.&n;&t; *&n;&t; * On Blackbird writes to %tick_cmpr can fail, the&n;&t; * workaround seems to be to execute the wr instruction&n;&t; * at the start of an I-cache line, and perform a dummy&n;&t; * read back from %tick_cmpr right after writing to it. -DaveM&n;&t; */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%tick_cmpr, %0&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0, %%tick_cmpr&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%tick_cmpr, %%g0&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|new_compare
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|adj
+)paren
+)paren
+suffix:semicolon
+r_return
+id|new_compare
+suffix:semicolon
+)brace
+DECL|function|tick_add_tick
+r_static
+r_int
+r_int
+id|tick_add_tick
+c_func
+(paren
+r_int
+r_int
+id|adj
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_int
+r_int
+id|new_tick
+comma
+id|tmp
+suffix:semicolon
+multiline_comment|/* Also need to handle Blackbird bug here too. */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%tick, %0&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %2, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wrpr&t;%0, 0, %%tick&bslash;n&bslash;t&quot;
+l_string|&quot;ba,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; add&t;%0, %3, %1&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%1, 0, %%tick_cmpr&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%tick_cmpr, %%g0&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|new_tick
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|adj
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|offset
+)paren
+)paren
+suffix:semicolon
+r_return
+id|new_tick
+suffix:semicolon
+)brace
+DECL|variable|tick_operations
+r_static
+r_struct
+id|sparc64_tick_ops
+id|tick_operations
+op_assign
+(brace
+dot
+id|init_tick
+op_assign
+id|tick_init_tick
+comma
+dot
+id|get_tick
+op_assign
+id|tick_get_tick
+comma
+dot
+id|get_compare
+op_assign
+id|tick_get_compare
+comma
+dot
+id|add_tick
+op_assign
+id|tick_add_tick
+comma
+dot
+id|add_compare
+op_assign
+id|tick_add_compare
+comma
+dot
+id|softint_mask
+op_assign
+l_int|1UL
+op_lshift
+l_int|0
+comma
+)brace
+suffix:semicolon
+DECL|function|stick_init_tick
+r_static
+r_void
+id|stick_init_tick
+c_func
+(paren
+r_int
+r_int
+id|offset
+)paren
+(brace
+id|tick_disable_protection
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Let the user get at STICK too. */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
+l_string|&quot;&t;sllx&t;%%g1, 32, %%g1&bslash;n&quot;
+l_string|&quot;&t;rd&t;%%asr24, %%g2&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
+l_string|&quot;&t;wr&t;%%g2, 0, %%asr24&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+multiline_comment|/* no inputs */
+suffix:colon
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;&t;rd&t;%%asr24, %%g1&bslash;n&quot;
+l_string|&quot;&t;add&t;%%g1, %0, %%g1&bslash;n&quot;
+l_string|&quot;&t;wr&t;%%g1, 0x0, %%asr25&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|offset
+)paren
+suffix:colon
+l_string|&quot;g1&quot;
+)paren
+suffix:semicolon
+)brace
+DECL|function|stick_get_tick
+r_static
+r_int
+r_int
+id|stick_get_tick
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%asr24, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|stick_get_compare
+r_static
+r_int
+r_int
+id|stick_get_compare
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%asr25, %0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+DECL|function|stick_add_tick
+r_static
+r_int
+r_int
+id|stick_add_tick
+c_func
+(paren
+r_int
+r_int
+id|adj
+comma
+r_int
+r_int
+id|offset
+)paren
+(brace
+r_int
+r_int
+id|new_tick
+comma
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%asr24, %0&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %2, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0, %%asr24&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %3, %1&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%1, 0, %%asr25&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|new_tick
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|adj
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|offset
+)paren
+)paren
+suffix:semicolon
+r_return
+id|new_tick
+suffix:semicolon
+)brace
+DECL|function|stick_add_compare
+r_static
+r_int
+r_int
+id|stick_add_compare
+c_func
+(paren
+r_int
+r_int
+id|adj
+)paren
+(brace
+r_int
+r_int
+id|new_compare
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;rd&t;%%asr25, %0&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%0, %1, %0&bslash;n&bslash;t&quot;
+l_string|&quot;wr&t;%0, 0, %%asr25&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|new_compare
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|adj
+)paren
+)paren
+suffix:semicolon
+r_return
+id|new_compare
+suffix:semicolon
+)brace
+DECL|variable|stick_operations
+r_static
+r_struct
+id|sparc64_tick_ops
+id|stick_operations
+op_assign
+(brace
+dot
+id|init_tick
+op_assign
+id|stick_init_tick
+comma
+dot
+id|get_tick
+op_assign
+id|stick_get_tick
+comma
+dot
+id|get_compare
+op_assign
+id|stick_get_compare
+comma
+dot
+id|add_tick
+op_assign
+id|stick_add_tick
+comma
+dot
+id|add_compare
+op_assign
+id|stick_add_compare
+comma
+dot
+id|softint_mask
+op_assign
+l_int|1UL
+op_lshift
+l_int|16
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; *&n; * NOTE: On SUN5 systems the ticker interrupt comes in using 2&n; *       interrupts, one at level14 and one with softint bit 0.&n; */
 DECL|variable|timer_tick_offset
 r_int
@@ -505,72 +1044,25 @@ id|PSTATE_IE
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Workaround for Spitfire Errata (#54 I think??), I discovered&n;&t;&t; * this via Sun BugID 4008234, mentioned in Solaris-2.5.1 patch&n;&t;&t; * number 103640.&n;&t;&t; *&n;&t;&t; * On Blackbird writes to %tick_cmpr can fail, the&n;&t;&t; * workaround seems to be to execute the wr instruction&n;&t;&t; * at the start of an I-cache line, and perform a dummy&n;&t;&t; * read back from %tick_cmpr right after writing to it. -DaveM&n;&t;&t; *&n;&t;&t; * Just to be anal we add a workaround for Spitfire&n;&t;&t; * Errata 50 by preventing pipeline bypasses on the&n;&t;&t; * final read of the %tick register into a compare&n;&t;&t; * instruction.  The Errata 50 description states&n;&t;&t; * that %tick is not prone to this bug, but I am not&n;&t;&t; * taking any chances.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SPARC64_USE_STICK
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;rd&t;%%tick_cmpr, %0&bslash;n&quot;
-l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
-l_string|&quot;&t; add&t;%0, %2, %0&bslash;n&quot;
-l_string|&quot;&t;.align&t;64&bslash;n&quot;
-l_string|&quot;1: &t;wr&t;%0, 0, %%tick_cmpr&bslash;n&quot;
-l_string|&quot;&t;rd&t;%%tick_cmpr, %%g0&bslash;n&quot;
-l_string|&quot;&t;rd&t;%%tick, %1&bslash;n&quot;
-l_string|&quot;&t;mov&t;%1, %1&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
 id|timer_tick_compare
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|ticks
-)paren
-suffix:colon
-l_string|&quot;r&quot;
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|add_compare
+c_func
 (paren
 id|timer_tick_offset
 )paren
-)paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|__asm__
-id|__volatile__
+id|ticks
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|get_tick
 c_func
 (paren
-l_string|&quot;&t;rd&t;%%asr25, %0&bslash;n&quot;
-l_string|&quot;&t;add&t;%0, %2, %0&bslash;n&quot;
-l_string|&quot;&t;wr&t;%0, 0, %%asr25&bslash;n&quot;
-l_string|&quot;&t;rd&t;%%asr24, %1&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|timer_tick_compare
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|ticks
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_offset
-)paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Restore PSTATE_IE. */
 id|__asm__
 id|__volatile__
@@ -634,53 +1126,17 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only keep timer_tick_offset uptodate, but don&squot;t set TICK_CMPR.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SPARC64_USE_STICK
-)paren
-(brace
-id|__asm__
-id|__volatile__
+id|timer_tick_compare
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|get_compare
 c_func
 (paren
-l_string|&quot;&t;rd&t;%%tick_cmpr, %0&bslash;n&quot;
-l_string|&quot;&t;add&t;%0, %1, %0&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|timer_tick_compare
 )paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+op_plus
 id|timer_tick_offset
-)paren
-)paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;rd&t;%%asr25, %0&bslash;n&quot;
-l_string|&quot;&t;add&t;%0, %1, %0&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|timer_tick_compare
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_offset
-)paren
-)paren
-suffix:semicolon
-)brace
 id|timer_check_rtc
 c_func
 (paren
@@ -2761,7 +3217,8 @@ suffix:semicolon
 multiline_comment|/* This is gets the master TICK_INT timer going. */
 DECL|function|sparc64_init_timers
 r_static
-r_void
+r_int
+r_int
 id|sparc64_init_timers
 c_func
 (paren
@@ -2780,21 +3237,13 @@ r_struct
 id|pt_regs
 op_star
 )paren
-comma
-r_int
-r_int
-op_star
-id|clock
 )paren
 (brace
 r_int
 r_int
 id|pstate
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|timer_tick_offset
+comma
+id|clock
 suffix:semicolon
 r_int
 id|node
@@ -2814,10 +3263,16 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-op_logical_neg
-id|SPARC64_USE_STICK
+id|tlb_type
+op_eq
+id|spitfire
 )paren
 (brace
+id|tick_ops
+op_assign
+op_amp
+id|tick_operations
+suffix:semicolon
 id|node
 op_assign
 id|linux_cpus
@@ -2827,7 +3282,6 @@ l_int|0
 dot
 id|prom_node
 suffix:semicolon
-op_star
 id|clock
 op_assign
 id|prom_getint
@@ -2841,11 +3295,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|tick_ops
+op_assign
+op_amp
+id|stick_operations
+suffix:semicolon
 id|node
 op_assign
 id|prom_root_node
 suffix:semicolon
-op_star
 id|clock
 op_assign
 id|prom_getint
@@ -2859,7 +3317,6 @@ suffix:semicolon
 )brace
 id|timer_tick_offset
 op_assign
-op_star
 id|clock
 op_div
 id|HZ
@@ -2935,101 +3392,14 @@ id|PSTATE_IE
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set things up so user can access tick register for profiling&n;&t; * purposes.  Also workaround BB_ERRATA_1 by doing a dummy&n;&t; * read back of %tick after writing it.&n;&t; */
-id|__asm__
-id|__volatile__
+id|tick_ops
+op_member_access_from_pointer
+id|init_tick
 c_func
-(paren
-l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
-l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
-l_string|&quot;&t; sllx&t;%%g1, 32, %%g1&bslash;n&quot;
-l_string|&quot;&t;.align&t;64&bslash;n&quot;
-l_string|&quot;1:&t;rd&t;%%tick, %%g2&bslash;n&quot;
-l_string|&quot;&t;add&t;%%g2, 6, %%g2&bslash;n&quot;
-l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
-l_string|&quot;&t;wrpr&t;%%g2, 0, %%tick&bslash;n&quot;
-l_string|&quot;&t;rdpr&t;%%tick, %%g0&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-multiline_comment|/* no inputs */
-suffix:colon
-l_string|&quot;g1&quot;
-comma
-l_string|&quot;g2&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Workaround for Spitfire Errata (#54 I think??), I discovered&n;&t; * this via Sun BugID 4008234, mentioned in Solaris-2.5.1 patch&n;&t; * number 103640.&n;&t; *&n;&t; * On Blackbird writes to %tick_cmpr can fail, the&n;&t; * workaround seems to be to execute the wr instruction&n;&t; * at the start of an I-cache line, and perform a dummy&n;&t; * read back from %tick_cmpr right after writing to it. -DaveM&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SPARC64_USE_STICK
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
-l_string|&quot;&t;ba,pt&t;%%xcc, 1f&bslash;n&quot;
-l_string|&quot;&t; add&t;%%g1, %0, %%g1&bslash;n&quot;
-l_string|&quot;&t;.align&t;64&bslash;n&quot;
-l_string|&quot;1:&t;wr&t;%%g1, 0x0, %%tick_cmpr&bslash;n&quot;
-l_string|&quot;&t;rd&t;%%tick_cmpr, %%g0&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
 (paren
 id|timer_tick_offset
 )paren
-suffix:colon
-l_string|&quot;g1&quot;
-)paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Let the user get at STICK too. */
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;sethi&t;%%hi(0x80000000), %%g1&bslash;n&quot;
-l_string|&quot;&t;sllx&t;%%g1, 32, %%g1&bslash;n&quot;
-l_string|&quot;&t;rd&t;%%asr24, %%g2&bslash;n&quot;
-l_string|&quot;&t;andn&t;%%g2, %%g1, %%g2&bslash;n&quot;
-l_string|&quot;&t;wr&t;%%g2, 0, %%asr24&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-multiline_comment|/* no inputs */
-suffix:colon
-l_string|&quot;g1&quot;
-comma
-l_string|&quot;g2&quot;
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;rd&t;%%asr24, %%g1&bslash;n&quot;
-l_string|&quot;&t;add&t;%%g1, %0, %%g1&bslash;n&quot;
-l_string|&quot;&t;wr&t;%%g1, 0x0, %%asr25&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_offset
-)paren
-suffix:colon
-l_string|&quot;g1&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Restore PSTATE_IE. */
 id|__asm__
 id|__volatile__
@@ -3050,6 +3420,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+id|clock
+suffix:semicolon
 )brace
 DECL|function|time_init
 r_void
@@ -3060,18 +3433,14 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* clock_probe() is now done at end of [se]bus_init on sparc64&n;&t; * so that sbus, fhc and ebus bus information is probed and&n;&t; * available.&n;&t; */
 r_int
 r_int
 id|clock
-suffix:semicolon
+op_assign
 id|sparc64_init_timers
 c_func
 (paren
 id|timer_interrupt
-comma
-op_amp
-id|clock
 )paren
 suffix:semicolon
 id|timer_ticks_per_usec_quotient
@@ -3105,72 +3474,22 @@ r_void
 r_int
 r_int
 id|ticks
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SPARC64_USE_STICK
-)paren
-(brace
-id|__asm__
-id|__volatile__
+op_assign
+id|tick_ops
+op_member_access_from_pointer
+id|get_tick
 c_func
 (paren
-l_string|&quot;&t;rd&t;%%tick, %%g1&bslash;n&quot;
-l_string|&quot;&t;add&t;%1, %%g1, %0&bslash;n&quot;
-l_string|&quot;&t;sub&t;%0, %2, %0&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|ticks
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_offset
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_compare
-)paren
-suffix:colon
-l_string|&quot;g1&quot;
-comma
-l_string|&quot;g2&quot;
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;rd&t;%%asr24, %%g1&bslash;n&bslash;t&quot;
-l_string|&quot;add&t;%1, %%g1, %0&bslash;n&bslash;t&quot;
-l_string|&quot;sub&t;%0, %2, %0&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
 id|ticks
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
+op_add_assign
 id|timer_tick_offset
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|timer_tick_compare
-)paren
-suffix:colon
-l_string|&quot;g1&quot;
-)paren
 suffix:semicolon
-)brace
+id|ticks
+op_sub_assign
+id|timer_tick_compare
+suffix:semicolon
 r_return
 (paren
 id|ticks

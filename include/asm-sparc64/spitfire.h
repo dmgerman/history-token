@@ -64,8 +64,6 @@ r_enum
 id|ultra_tlb_layout
 id|tlb_type
 suffix:semicolon
-DECL|macro|SPARC64_USE_STICK
-mdefine_line|#define SPARC64_USE_STICK&t;(tlb_type != spitfire)
 DECL|macro|CHEETAH_HIGHEST_LOCKED_TLBENT
 mdefine_line|#define CHEETAH_HIGHEST_LOCKED_TLBENT&t;(16 - 1)
 DECL|macro|L1DCACHE_SIZE
