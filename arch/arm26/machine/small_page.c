@@ -241,7 +241,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -336,7 +336,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|order-&gt;queue
@@ -499,7 +499,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 comma
 op_amp
 id|order-&gt;queue
@@ -553,7 +553,7 @@ id|list_del_init
 c_func
 (paren
 op_amp
-id|page-&gt;list
+id|page-&gt;lru
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
