@@ -18,6 +18,14 @@ macro_line|#else
 DECL|macro|__deprecated
 mdefine_line|#define __deprecated
 macro_line|#endif
+multiline_comment|/*&n; * Allow us to avoid &squot;defined but not used&squot; warnings on functions and data,&n; * as well as force them to be emitted to the assembly file.&n; *&n; * As of gcc 3.3, static functions that are not marked with attribute((used))&n; * may be elided from the assembly file.  As of gcc 3.3, static data not so&n; * marked will not be elided, but this may change in a future gcc version.&n; *&n; * In prior versions of gcc, such functions and data would be emitted, but&n; * would be warned about except with attribute((unused)).&n; */
+macro_line|#if __GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 3 || __GNUC__ &gt; 3
+DECL|macro|__attribute_used__
+mdefine_line|#define __attribute_used__&t;__attribute__((__used__))
+macro_line|#else
+DECL|macro|__attribute_used__
+mdefine_line|#define __attribute_used__&t;__attribute__((__unused__))
+macro_line|#endif
 multiline_comment|/* This macro obfuscates arithmetic on a variable address so that gcc&n;   shouldn&squot;t recognize the original var, and make assumptions about it */
 DECL|macro|RELOC_HIDE
 mdefine_line|#define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;    __asm__ (&quot;&quot; : &quot;=g&quot;(__ptr) : &quot;0&quot;(ptr));&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
