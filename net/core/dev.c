@@ -5545,6 +5545,9 @@ id|i
 OL
 id|pos
 suffix:semicolon
+op_increment
+id|i
+comma
 id|dev
 op_assign
 id|dev-&gt;next
