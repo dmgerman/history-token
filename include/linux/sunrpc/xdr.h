@@ -127,6 +127,12 @@ DECL|macro|rpc_autherr_rejectedverf
 mdefine_line|#define&t;rpc_autherr_rejectedverf __constant_htonl(RPC_AUTH_REJECTEDVERF)
 DECL|macro|rpc_autherr_tooweak
 mdefine_line|#define&t;rpc_autherr_tooweak&t;__constant_htonl(RPC_AUTH_TOOWEAK)
+DECL|macro|rpcsec_gsserr_credproblem
+mdefine_line|#define&t;rpcsec_gsserr_credproblem&t;__constant_htonl(RPCSEC_GSS_CREDPROBLEM)
+DECL|macro|rpcsec_gsserr_ctxproblem
+mdefine_line|#define&t;rpcsec_gsserr_ctxproblem&t;__constant_htonl(RPCSEC_GSS_CTXPROBLEM)
+DECL|macro|rpc_autherr_oldseqnum
+mdefine_line|#define&t;rpc_autherr_oldseqnum&t;__constant_htonl(101)
 multiline_comment|/*&n; * Miscellaneous XDR helper functions&n; */
 id|u32
 op_star

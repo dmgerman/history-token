@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 DECL|macro|RPC_SLACK_SPACE
-mdefine_line|#define RPC_SLACK_SPACE&t;&t;512&t;/* total overkill */
+mdefine_line|#define RPC_SLACK_SPACE&t;&t;(1024)&t;/* total overkill */
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_CALL

@@ -5,10 +5,15 @@ mdefine_line|#define _LINUX_SUNRPC_AUTH_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
+macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
+macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* size of the nodename buffer */
 DECL|macro|UNX_MAXNODENAME
 mdefine_line|#define UNX_MAXNODENAME&t;32
+multiline_comment|/* Maximum size (in bytes) of an rpc credential or verifier */
+DECL|macro|RPC_MAX_AUTH_SIZE
+mdefine_line|#define RPC_MAX_AUTH_SIZE (400)
 multiline_comment|/* Work around the lack of a VFS credential */
 DECL|struct|auth_cred
 r_struct
@@ -150,6 +155,11 @@ op_star
 id|au_ops
 suffix:semicolon
 multiline_comment|/* operations */
+DECL|member|au_flavor
+id|rpc_authflavor_t
+id|au_flavor
+suffix:semicolon
+multiline_comment|/* pseudoflavor (note may&n;&t;&t;&t;&t;&t;&t; * differ from the flavor in&n;&t;&t;&t;&t;&t;&t; * au_ops-&gt;au_flavor in gss&n;&t;&t;&t;&t;&t;&t; * case) */
 multiline_comment|/* per-flavor data */
 )brace
 suffix:semicolon
@@ -184,6 +194,8 @@ id|create
 r_struct
 id|rpc_clnt
 op_star
+comma
+id|rpc_authflavor_t
 )paren
 suffix:semicolon
 DECL|member|destroy
@@ -207,6 +219,10 @@ op_star
 id|crcreate
 )paren
 (paren
+r_struct
+id|rpc_auth
+op_star
+comma
 r_struct
 id|auth_cred
 op_star
@@ -315,6 +331,13 @@ id|rpc_authops
 id|authdes_ops
 suffix:semicolon
 macro_line|#endif
+id|u32
+id|pseudoflavor_to_flavor
+c_func
+(paren
+id|rpc_authflavor_t
+)paren
+suffix:semicolon
 r_int
 id|rpcauth_register
 c_func

@@ -73,6 +73,9 @@ r_struct
 id|rpc_clnt
 op_star
 id|clnt
+comma
+id|rpc_authflavor_t
+id|flavor
 )paren
 (brace
 r_struct
@@ -185,6 +188,11 @@ DECL|function|unx_create_cred
 id|unx_create_cred
 c_func
 (paren
+r_struct
+id|rpc_auth
+op_star
+id|auth
+comma
 r_struct
 id|auth_cred
 op_star
@@ -930,7 +938,7 @@ c_cond
 (paren
 id|size
 OG
-l_int|400
+id|RPC_MAX_AUTH_SIZE
 )paren
 (brace
 id|printk
