@@ -2784,14 +2784,14 @@ id|paca
 id|i
 )braket
 dot
-id|lpQueuePtr
+id|lpqueue_ptr
 op_assign
 id|paca
 (braket
 l_int|0
 )braket
 dot
-id|lpQueuePtr
+id|lpqueue_ptr
 suffix:semicolon
 id|printk
 c_func

@@ -556,7 +556,7 @@ c_func
 )paren
 )braket
 dot
-id|xLpPaca
+id|lppaca
 suffix:semicolon
 id|ptr
 (braket

@@ -521,7 +521,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|lpEvent_count
+id|lpevent_count
 op_add_assign
 id|numIntsProcessed
 suffix:semicolon

@@ -2222,7 +2222,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xLpPaca.xDynHvPhysicalProcIndex
+id|lppaca.xDynHvPhysicalProcIndex
 suffix:semicolon
 id|systemcfg-&gt;iCacheL1Size
 op_assign
@@ -2662,7 +2662,7 @@ c_func
 (paren
 )paren
 op_member_access_from_pointer
-id|xLpPaca.xDynHvPhysicalProcIndex
+id|lppaca.xDynHvPhysicalProcIndex
 suffix:semicolon
 multiline_comment|/* Add an eye catcher and the systemcfg layout version number */
 id|strcpy

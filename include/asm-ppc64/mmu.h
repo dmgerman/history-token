@@ -312,29 +312,6 @@ DECL|typedef|SLBE
 )brace
 id|SLBE
 suffix:semicolon
-multiline_comment|/*&n; * This structure is used in paca.h where the layout depends on the &n; * size being 24B.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|real
-r_int
-r_int
-id|real
-suffix:semicolon
-DECL|member|virt
-r_int
-r_int
-id|virt
-suffix:semicolon
-DECL|member|next_round_robin
-r_int
-r_int
-id|next_round_robin
-suffix:semicolon
-DECL|typedef|STAB
-)brace
-id|STAB
-suffix:semicolon
 multiline_comment|/* Hardware Page Table Entry */
 DECL|macro|HPTES_PER_GROUP
 mdefine_line|#define HPTES_PER_GROUP 8

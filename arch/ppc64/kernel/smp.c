@@ -351,11 +351,6 @@ id|np
 comma
 id|i
 suffix:semicolon
-r_struct
-id|ItLpPaca
-op_star
-id|lpPaca
-suffix:semicolon
 id|np
 op_assign
 l_int|0
@@ -375,19 +370,15 @@ op_increment
 id|i
 )paren
 (brace
-id|lpPaca
-op_assign
+r_if
+c_cond
+(paren
 id|paca
 (braket
 id|i
 )braket
 dot
-id|xLpPacaPtr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lpPaca-&gt;xDynProcStatus
+id|lppaca.xDynProcStatus
 OL
 l_int|2
 )paren
@@ -442,11 +433,6 @@ id|np
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|ItLpPaca
-op_star
-id|lpPaca
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -462,19 +448,15 @@ op_increment
 id|i
 )paren
 (brace
-id|lpPaca
-op_assign
+r_if
+c_cond
+(paren
 id|paca
 (braket
 id|i
 )braket
 dot
-id|xLpPacaPtr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lpPaca-&gt;xDynProcStatus
+id|lppaca.xDynProcStatus
 OL
 l_int|2
 )paren
@@ -499,11 +481,6 @@ r_int
 id|nr
 )paren
 (brace
-r_struct
-id|ItLpPaca
-op_star
-id|lpPaca
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -517,31 +494,27 @@ id|NR_CPUS
 )paren
 suffix:semicolon
 multiline_comment|/* Verify that our partition has a processor nr */
-id|lpPaca
-op_assign
+r_if
+c_cond
+(paren
 id|paca
 (braket
 id|nr
 )braket
 dot
-id|xLpPacaPtr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lpPaca-&gt;xDynProcStatus
+id|lppaca.xDynProcStatus
 op_ge
 l_int|2
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
+multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the cpu_start field to become non-zero&n;&t; * After we set cpu_start, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
 id|paca
 (braket
 id|nr
 )braket
 dot
-id|xProcStart
+id|cpu_start
 op_assign
 l_int|1
 suffix:semicolon
@@ -987,7 +960,7 @@ id|paca
 id|cpu
 )braket
 dot
-id|xProcStart
+id|cpu_start
 op_assign
 l_int|0
 suffix:semicolon
@@ -1345,7 +1318,7 @@ id|paca
 id|lcpu
 )braket
 dot
-id|xCurrent-&gt;thread_info-&gt;preempt_count
+id|__current-&gt;thread_info-&gt;preempt_count
 op_assign
 l_int|0
 suffix:semicolon
@@ -1355,7 +1328,7 @@ id|paca
 id|lcpu
 )braket
 dot
-id|xStab_data.next_round_robin
+id|stab_next_rr
 op_assign
 l_int|0
 suffix:semicolon
@@ -1365,7 +1338,7 @@ id|paca
 id|lcpu
 )braket
 dot
-id|xHwProcNum
+id|hw_cpu_id
 op_assign
 id|pcpu
 suffix:semicolon
@@ -1655,13 +1628,13 @@ id|nr
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start&n;&t; */
+multiline_comment|/*&n;&t; * The processor is currently spinning, waiting for the&n;&t; * cpu_start field to become non-zero After we set cpu_start,&n;&t; * the processor will continue on to secondary_start&n;&t; */
 id|paca
 (braket
 id|nr
 )braket
 dot
-id|xProcStart
+id|cpu_start
 op_assign
 l_int|1
 suffix:semicolon
@@ -1753,15 +1726,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Register the Virtual Processor Area (VPA) */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;register_vpa: cpu 0x%x&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
 id|flags
 op_assign
 l_int|1UL
@@ -1772,16 +1736,6 @@ op_minus
 l_int|18
 )paren
 suffix:semicolon
-id|paca
-(braket
-id|cpu
-)braket
-dot
-id|xLpPaca.xSLBCount
-op_assign
-l_int|64
-suffix:semicolon
-multiline_comment|/* SLB restore highwater mark */
 id|register_vpa
 c_func
 (paren
@@ -1803,7 +1757,7 @@ id|paca
 id|cpu
 )braket
 dot
-id|xLpPaca
+id|lppaca
 )paren
 )paren
 )paren
@@ -3053,7 +3007,7 @@ id|paca
 id|cpu
 )braket
 dot
-id|xCurrent
+id|__current
 op_assign
 id|p
 suffix:semicolon
@@ -3224,7 +3178,7 @@ id|paca
 id|boot_cpuid
 )braket
 dot
-id|xCurrent
+id|__current
 op_assign
 id|current
 suffix:semicolon
@@ -3351,7 +3305,7 @@ id|paca
 id|cpu
 )braket
 dot
-id|xStab_data.virt
+id|stab_addr
 op_assign
 (paren
 r_int
@@ -3364,7 +3318,7 @@ id|paca
 id|cpu
 )braket
 dot
-id|xStab_data.real
+id|stab_real
 op_assign
 id|virt_to_abs
 c_func
@@ -3594,15 +3548,6 @@ id|take_timebase
 c_func
 (paren
 )paren
-suffix:semicolon
-id|get_paca
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|yielded
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if

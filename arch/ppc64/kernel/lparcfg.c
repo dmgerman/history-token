@@ -352,7 +352,7 @@ op_assign
 r_int
 )paren
 (paren
-id|lpaca-&gt;xLpPacaPtr-&gt;xSharedProc
+id|lpaca-&gt;lppaca.xSharedProc
 )paren
 suffix:semicolon
 id|n

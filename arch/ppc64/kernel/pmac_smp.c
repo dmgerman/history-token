@@ -339,7 +339,7 @@ id|paca
 id|nr
 )braket
 dot
-id|xProcStart
+id|cpu_start
 op_assign
 l_int|1
 suffix:semicolon
