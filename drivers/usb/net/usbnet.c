@@ -11893,6 +11893,27 @@ id|ax8817x_info
 comma
 )brace
 comma
+(brace
+singleline_comment|// Surecom EP-1427X-2
+id|USB_DEVICE
+(paren
+l_int|0x1189
+comma
+l_int|0x0893
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
+comma
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_EPSON2888
 (brace
