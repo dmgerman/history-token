@@ -7702,11 +7702,6 @@ id|el3_private
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|el3_private
-op_star
-)paren
 id|el3_root_dev-&gt;priv
 suffix:semicolon
 id|next_dev
