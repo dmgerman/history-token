@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
