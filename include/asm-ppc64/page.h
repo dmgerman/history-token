@@ -7,8 +7,10 @@ macro_line|#ifdef __ASSEMBLY__
 DECL|macro|ASM_CONST
 mdefine_line|#define ASM_CONST(x) x
 macro_line|#else
+DECL|macro|__ASM_CONST
+mdefine_line|#define __ASM_CONST(x) x##UL
 DECL|macro|ASM_CONST
-mdefine_line|#define ASM_CONST(x) x##UL
+mdefine_line|#define ASM_CONST(x) __ASM_CONST(x)
 macro_line|#endif
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
