@@ -76,6 +76,10 @@ DECL|macro|PORTATEC_VENDOR_ID
 mdefine_line|#define PORTATEC_VENDOR_ID&t;0x0961
 DECL|macro|PORTATEC_PRODUCT_ID
 mdefine_line|#define PORTATEC_PRODUCT_ID&t;0x0010
+DECL|macro|ROVER_VENDOR_ID
+mdefine_line|#define ROVER_VENDOR_ID&t;&t;0x047b
+DECL|macro|ROVER_P5_ID
+mdefine_line|#define ROVER_P5_ID&t;&t;0x3000
 DECL|macro|SAGEM_VENDOR_ID
 mdefine_line|#define SAGEM_VENDOR_ID&t;&t;0x5e04
 DECL|macro|SAGEM_WIRELESS_ID
@@ -88,8 +92,12 @@ DECL|macro|TOSHIBA_VENDOR_ID
 mdefine_line|#define TOSHIBA_VENDOR_ID&t;0x0930
 DECL|macro|TOSHIBA_PRODUCT_ID
 mdefine_line|#define TOSHIBA_PRODUCT_ID&t;0x0700
+DECL|macro|TOSHIBA_E310_ID
+mdefine_line|#define TOSHIBA_E310_ID&t;&t;0x0705
 DECL|macro|TOSHIBA_E740_ID
 mdefine_line|#define TOSHIBA_E740_ID&t;&t;0x0706
+DECL|macro|TOSHIBA_E335_ID
+mdefine_line|#define TOSHIBA_E335_ID&t;&t;0x0707
 DECL|macro|HTC_VENDOR_ID
 mdefine_line|#define HTC_VENDOR_ID&t;&t;0x0bb4
 DECL|macro|HTC_PRODUCT_ID

@@ -163,7 +163,11 @@ id|err
 (paren
 l_string|&quot;Found HC with no IRQ.  Check BIOS/PCI %s setup!&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -266,7 +270,11 @@ id|err
 (paren
 l_string|&quot;init %s fail, %d&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|retval
 )paren
@@ -440,7 +448,11 @@ id|err
 (paren
 l_string|&quot;init %s fail, %d&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|retval
 )paren
@@ -471,7 +483,11 @@ id|dev
 suffix:semicolon
 id|hcd-&gt;self.bus_name
 op_assign
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|hcd-&gt;product_desc
 op_assign
