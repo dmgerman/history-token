@@ -4010,9 +4010,7 @@ op_assign
 id|pcmcia_suspend_card
 c_func
 (paren
-id|s-&gt;handle
-comma
-l_int|NULL
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_break
@@ -4025,9 +4023,7 @@ op_assign
 id|pcmcia_resume_card
 c_func
 (paren
-id|s-&gt;handle
-comma
-l_int|NULL
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_break
@@ -4040,9 +4036,7 @@ op_assign
 id|pcmcia_eject_card
 c_func
 (paren
-id|s-&gt;handle
-comma
-l_int|NULL
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_break
@@ -4055,9 +4049,7 @@ op_assign
 id|pcmcia_insert_card
 c_func
 (paren
-id|s-&gt;handle
-comma
-l_int|NULL
+id|s-&gt;parent
 )paren
 suffix:semicolon
 r_break
