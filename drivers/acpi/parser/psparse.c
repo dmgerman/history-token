@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 133 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *              $Revision: 134 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Parse the AML and build an operation tree as most interpreters,&n; * like Perl, do.  Parsing is done by hand rather than with a YACC&n; * generated parser to tightly constrain stack and dynamic memory&n; * usage.  At the same time, parsing is kept flexible and the code&n; * fairly compact by parsing based on a list of AML opcode&n; * templates in Aml_op_info[]&n; */
 macro_line|#include &quot;acpi.h&quot;
@@ -1152,15 +1152,14 @@ id|status
 op_assign
 id|acpi_ps_get_next_arg
 (paren
+id|walk_state
+comma
 id|parser_state
 comma
 id|GET_CURRENT_ARG_TYPE
 (paren
 id|walk_state-&gt;arg_types
 )paren
-comma
-op_amp
-id|walk_state-&gt;arg_count
 comma
 op_amp
 id|arg
@@ -1327,7 +1326,7 @@ op_eq
 id|AML_REGION_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Defer final parsing of an Operation_region body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse it correctly (i.e., there may be method&n;&t;&t;&t;&t;&t; * calls within the Term_arg elements of the body.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * However, we must continue parsing because&n;&t;&t;&t;&t;&t; * the opregion is not a standalone package --&n;&t;&t;&t;&t;&t; * we don&squot;t know where the end is at this point.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * (Length is unknown until parse of the body complete)&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Defer final parsing of an Operation_region body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse it correctly (i.e., there may be method&n;&t;&t;&t;&t;&t; * calls within the Term_arg elements of the body.)&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * However, we must continue parsing because&n;&t;&t;&t;&t;&t; * the opregion is not a standalone package --&n;&t;&t;&t;&t;&t; * we don&squot;t know where the end is at this point.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * (Length is unknown until parse of the body complete)&n;&t;&t;&t;&t;&t; */
 id|op-&gt;named.data
 op_assign
 id|aml_op_start
@@ -1559,12 +1558,11 @@ id|status
 op_assign
 id|acpi_ps_get_next_namepath
 (paren
+id|walk_state
+comma
 id|parser_state
 comma
 id|op
-comma
-op_amp
-id|walk_state-&gt;arg_count
 comma
 l_int|1
 )paren
@@ -1578,39 +1576,9 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* NOT_FOUND is an error only if we are actually executing a method */
-r_if
-c_cond
-(paren
-(paren
-(paren
-(paren
-id|walk_state-&gt;parse_flags
-op_amp
-id|ACPI_PARSE_MODE_MASK
-)paren
-op_eq
-id|ACPI_PARSE_EXECUTE
-)paren
-op_logical_and
-(paren
-id|status
-op_eq
-id|AE_NOT_FOUND
-)paren
-)paren
-op_logical_or
-(paren
-id|status
-op_ne
-id|AE_NOT_FOUND
-)paren
-)paren
-(brace
 r_goto
 id|close_this_op
 suffix:semicolon
-)brace
 )brace
 id|walk_state-&gt;arg_types
 op_assign
@@ -1648,15 +1616,14 @@ id|status
 op_assign
 id|acpi_ps_get_next_arg
 (paren
+id|walk_state
+comma
 id|parser_state
 comma
 id|GET_CURRENT_ARG_TYPE
 (paren
 id|walk_state-&gt;arg_types
 )paren
-comma
-op_amp
-id|walk_state-&gt;arg_count
 comma
 op_amp
 id|arg
@@ -1671,45 +1638,9 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* NOT_FOUND is an error only if we are actually executing a method */
-r_if
-c_cond
-(paren
-(paren
-(paren
-(paren
-id|walk_state-&gt;parse_flags
-op_amp
-id|ACPI_PARSE_MODE_MASK
-)paren
-op_eq
-id|ACPI_PARSE_EXECUTE
-)paren
-op_logical_and
-(paren
-id|status
-op_eq
-id|AE_NOT_FOUND
-)paren
-op_logical_and
-(paren
-id|op-&gt;common.aml_opcode
-op_ne
-id|AML_COND_REF_OF_OP
-)paren
-)paren
-op_logical_or
-(paren
-id|status
-op_ne
-id|AE_NOT_FOUND
-)paren
-)paren
-(brace
 r_goto
 id|close_this_op
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
