@@ -113,6 +113,7 @@ id|addr_list
 suffix:semicolon
 DECL|member|fcp_buffer
 id|u8
+id|__user
 op_star
 id|fcp_buffer
 suffix:semicolon
@@ -123,6 +124,7 @@ id|listen_channels
 suffix:semicolon
 DECL|member|iso_buffer
 id|quadlet_t
+id|__user
 op_star
 id|iso_buffer
 suffix:semicolon

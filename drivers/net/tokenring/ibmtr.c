@@ -24,6 +24,7 @@ DECL|macro|TR_FILTERNONUI
 mdefine_line|#define TR_FILTERNONUI&t;1
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/ibmtr.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;

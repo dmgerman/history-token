@@ -180,7 +180,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|EFI_ATTR
-mdefine_line|#define EFI_ATTR(_name, _mode, _show, _store) &bslash;&n;struct subsys_attribute efi_attr_##_name = { &bslash;&n;&t;.attr {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE}, &bslash;&n;&t;.show = _show, &bslash;&n;&t;.store = _store, &bslash;&n;};
+mdefine_line|#define EFI_ATTR(_name, _mode, _show, _store) &bslash;&n;struct subsys_attribute efi_attr_##_name = { &bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE}, &bslash;&n;&t;.show = _show, &bslash;&n;&t;.store = _store, &bslash;&n;};
 DECL|macro|EFIVAR_ATTR
 mdefine_line|#define EFIVAR_ATTR(_name, _mode, _show, _store) &bslash;&n;struct efivar_attribute efivar_attr_##_name = { &bslash;&n;&t;.attr = {.name = __stringify(_name), .mode = _mode, .owner = THIS_MODULE}, &bslash;&n;&t;.show = _show, &bslash;&n;&t;.store = _store, &bslash;&n;};
 DECL|macro|VAR_SUBSYS_ATTR

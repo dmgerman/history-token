@@ -4815,7 +4815,6 @@ id|block_done
 suffix:semicolon
 )brace
 DECL|function|zlib_deflate_workspacesize
-r_extern
 r_int
 id|zlib_deflate_workspacesize
 c_func
