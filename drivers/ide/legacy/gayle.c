@@ -289,6 +289,10 @@ suffix:semicolon
 id|hw_regs_t
 id|hw
 suffix:semicolon
+id|ide_hwif_t
+op_star
+id|hwif
+suffix:semicolon
 r_int
 id|index
 suffix:semicolon
@@ -435,7 +439,7 @@ id|irqport
 comma
 id|ack_intr
 comma
-singleline_comment|//&t;&t;&t;gaule_iops,
+singleline_comment|//&t;&t;&t;&amp;gayle_iops,
 id|IRQ_AMIGA_PORTS
 )paren
 suffix:semicolon
@@ -447,7 +451,8 @@ c_func
 op_amp
 id|hw
 comma
-l_int|NULL
+op_amp
+id|hwif
 )paren
 suffix:semicolon
 r_if
@@ -459,6 +464,10 @@ op_minus
 l_int|1
 )paren
 (brace
+id|hwif-&gt;mmio
+op_assign
+l_int|2
+suffix:semicolon
 r_switch
 c_cond
 (paren
