@@ -2944,7 +2944,6 @@ id|dilinelock-&gt;index
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef _STILL_TO_PORT
 multiline_comment|/*&n;&t; * copy inline data from in-memory inode to on-disk inode:&n;&t; * 128 byte slot granularity&n;&t; */
 r_if
 c_cond
@@ -2957,6 +2956,7 @@ comma
 id|ip
 )paren
 )paren
+(brace
 id|lv
 op_assign
 (paren
@@ -2991,8 +2991,7 @@ c_func
 op_amp
 id|dp-&gt;di_inlineea
 comma
-op_amp
-id|ip-&gt;i_inlineea
+id|jfs_ip-&gt;i_inline_ea
 comma
 id|INODESLOTSIZE
 )paren
@@ -3009,7 +3008,6 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 multiline_comment|/*&n;&t; *      lock/copy inode base: 128 byte slot granularity&n;&t; */
 singleline_comment|// baseDinode:
 id|lv
@@ -3220,12 +3218,6 @@ id|ipimap
 )paren
 op_member_access_from_pointer
 id|i_imap
-suffix:semicolon
-id|s64
-id|xaddr
-suffix:semicolon
-id|s64
-id|xlen
 suffix:semicolon
 id|pxd_t
 id|freepxd
@@ -4261,31 +4253,7 @@ id|iagp-&gt;inoext
 id|extno
 )braket
 suffix:semicolon
-id|xaddr
-op_assign
-id|addressPXD
-c_func
-(paren
-op_amp
-id|iagp-&gt;inoext
-(braket
-id|extno
-)braket
-)paren
-suffix:semicolon
-id|xlen
-op_assign
-id|lengthPXD
-c_func
-(paren
-op_amp
-id|iagp-&gt;inoext
-(braket
-id|extno
-)braket
-)paren
-suffix:semicolon
-id|invalidate_metapages
+id|invalidate_pxd_metapages
 c_func
 (paren
 id|JFS_SBI
@@ -4296,9 +4264,7 @@ id|ip-&gt;i_sb
 op_member_access_from_pointer
 id|direct_inode
 comma
-id|xaddr
-comma
-id|xlen
+id|freepxd
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      update iag list(s) (careful update step 2)&n;&t; */
@@ -10767,7 +10733,6 @@ c_func
 id|dip-&gt;di_acltype
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We may only need to do this for &quot;special&quot; inodes (dmap, imap)&n;&t; */
 r_if
 c_cond
 (paren
@@ -10795,7 +10760,6 @@ id|dip-&gt;di_rdev
 )paren
 )paren
 suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
@@ -10823,8 +10787,13 @@ r_else
 r_if
 c_cond
 (paren
-op_logical_neg
-id|S_ISFIFO
+id|S_ISREG
+c_func
+(paren
+id|ip-&gt;i_mode
+)paren
+op_logical_or
+id|S_ISLNK
 c_func
 (paren
 id|ip-&gt;i_mode
@@ -10844,6 +10813,19 @@ l_int|288
 )paren
 suffix:semicolon
 )brace
+r_else
+id|memcpy
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;i_inline_ea
+comma
+op_amp
+id|dip-&gt;di_inlineea
+comma
+l_int|128
+)paren
+suffix:semicolon
 multiline_comment|/* Zero the in-memory-only stuff */
 id|jfs_ip-&gt;cflag
 op_assign

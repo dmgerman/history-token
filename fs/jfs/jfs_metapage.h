@@ -284,23 +284,25 @@ id|mp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine uses hash to explicitly find small number of pages&n; */
+multiline_comment|/*&n; * This routines invalidate all pages for an extent.&n; */
 r_extern
 r_void
-id|invalidate_metapages
+id|__invalidate_metapages
 c_func
 (paren
 r_struct
 id|inode
 op_star
 comma
-r_int
-r_int
+id|s64
 comma
-r_int
 r_int
 )paren
 suffix:semicolon
+DECL|macro|invalidate_pxd_metapages
+mdefine_line|#define invalidate_pxd_metapages(ip, pxd) &bslash;&n;&t;__invalidate_metapages((ip), addressPXD(&amp;(pxd)), lengthPXD(&amp;(pxd)))
+DECL|macro|invalidate_dxd_metapages
+mdefine_line|#define invalidate_dxd_metapages(ip, dxd) &bslash;&n;&t;__invalidate_metapages((ip), addressDXD(&amp;(dxd)), lengthDXD(&amp;(dxd)))
 multiline_comment|/*&n; * This one uses mp_list to invalidate all pages for an inode&n; */
 r_extern
 r_void

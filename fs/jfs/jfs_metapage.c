@@ -2439,9 +2439,9 @@ l_string|&quot;release_metapage: done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|invalidate_metapages
+DECL|function|__invalidate_metapages
 r_void
-id|invalidate_metapages
+id|__invalidate_metapages
 c_func
 (paren
 r_struct
@@ -2449,11 +2449,9 @@ id|inode
 op_star
 id|ip
 comma
-r_int
-r_int
+id|s64
 id|addr
 comma
-r_int
 r_int
 id|len
 )paren
