@@ -2,6 +2,7 @@ multiline_comment|/* &n; *  FiberChannel transport specific attributes exported 
 macro_line|#ifndef SCSI_TRANSPORT_FC_H
 DECL|macro|SCSI_TRANSPORT_FC_H
 mdefine_line|#define SCSI_TRANSPORT_FC_H
+macro_line|#include &lt;linux/config.h&gt;
 r_struct
 id|scsi_transport_template
 suffix:semicolon
@@ -30,10 +31,91 @@ DECL|macro|fc_node_name
 mdefine_line|#define fc_node_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;node_name)
 DECL|macro|fc_port_name
 mdefine_line|#define fc_port_name(x)&t;(((struct fc_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;port_name)
-r_extern
+multiline_comment|/* The functions by which the transport class and the driver communicate */
+DECL|struct|fc_function_template
+r_struct
+id|fc_function_template
+(brace
+DECL|member|get_port_id
+r_void
+(paren
+op_star
+id|get_port_id
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_node_name
+r_void
+(paren
+op_star
+id|get_node_name
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+DECL|member|get_port_name
+r_void
+(paren
+op_star
+id|get_port_name
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* The driver sets these to tell the transport class it&n;&t; * wants the attributes displayed in sysfs.  If the show_ flag&n;&t; * is not set, the attribute will be private to the transport&n;&t; * class */
+DECL|member|show_port_id
+r_int
+r_int
+id|show_port_id
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_node_name
+r_int
+r_int
+id|show_node_name
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|show_port_name
+r_int
+r_int
+id|show_port_name
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Private Attributes */
+)brace
+suffix:semicolon
 r_struct
 id|scsi_transport_template
-id|fc_transport_template
+op_star
+id|fc_attach_transport
+c_func
+(paren
+r_struct
+id|fc_function_template
+op_star
+)paren
+suffix:semicolon
+r_void
+id|fc_release_transport
+c_func
+(paren
+r_struct
+id|scsi_transport_template
+op_star
+)paren
 suffix:semicolon
 macro_line|#endif /* SCSI_TRANSPORT_FC_H */
 eof

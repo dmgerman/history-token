@@ -183,7 +183,7 @@ multiline_comment|/*&n; * DRIVER_VER&n; */
 DECL|macro|IPS_VERSION_HIGH
 mdefine_line|#define IPS_VERSION_HIGH        &quot;7.00&quot;
 DECL|macro|IPS_VERSION_LOW
-mdefine_line|#define IPS_VERSION_LOW         &quot;.00 &quot;
+mdefine_line|#define IPS_VERSION_LOW         &quot;.15 &quot;
 macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__x86_64__)
 macro_line|#warning &quot;This driver has only been tested on the x86/ia64/x86_64 platforms&quot;
 macro_line|#endif
@@ -659,6 +659,12 @@ comma
 l_string|&quot;ServeRAID 6M&quot;
 comma
 l_string|&quot;ServeRAID 6i&quot;
+comma
+l_string|&quot;ServeRAID 7t&quot;
+comma
+l_string|&quot;ServeRAID 7k&quot;
+comma
+l_string|&quot;ServeRAID 7M&quot;
 )brace
 suffix:semicolon
 DECL|variable|ips_notifier
@@ -9532,6 +9538,24 @@ suffix:colon
 id|ha-&gt;ad_type
 op_assign
 id|IPS_ADTYPE_SERVERAID6I
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IPS_SUBDEVICEID_7k
+suffix:colon
+id|ha-&gt;ad_type
+op_assign
+id|IPS_ADTYPE_SERVERAID7k
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IPS_SUBDEVICEID_7M
+suffix:colon
+id|ha-&gt;ad_type
+op_assign
+id|IPS_ADTYPE_SERVERAID7M
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -26384,6 +26408,12 @@ id|ad_type
 (brace
 r_case
 id|IPS_ADTYPE_SERVERAID6M
+suffix:colon
+r_case
+id|IPS_ADTYPE_SERVERAID7k
+suffix:colon
+r_case
+id|IPS_ADTYPE_SERVERAID7M
 suffix:colon
 r_if
 c_cond

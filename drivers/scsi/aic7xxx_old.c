@@ -33246,6 +33246,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;   * PCI-bus probe.&n;   */
 (brace
+r_static
 r_struct
 (brace
 r_int

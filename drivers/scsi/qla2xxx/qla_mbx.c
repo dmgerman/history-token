@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
+multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
 macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
 r_static
@@ -6068,7 +6068,7 @@ comma
 r_uint8
 id|loop_id
 comma
-r_void
+id|link_stat_t
 op_star
 id|ret_buf
 comma
@@ -6355,46 +6355,55 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* copy over data */
-id|memcpy
+multiline_comment|/* copy over data -- firmware data is LE. */
+id|ret_buf-&gt;link_fail_cnt
+op_assign
+id|le32_to_cpu
 c_func
 (paren
-id|ret_buf
-comma
-id|stat_buf
-comma
-r_sizeof
-(paren
-id|link_stat_t
-)paren
+id|stat_buf-&gt;link_fail_cnt
 )paren
 suffix:semicolon
-id|DEBUG
+id|ret_buf-&gt;loss_sync_cnt
+op_assign
+id|le32_to_cpu
 c_func
 (paren
-id|printk
-c_func
-(paren
-l_string|&quot;qla2x00_get_link_status(%ld): stat dump: &quot;
-l_string|&quot;fail_cnt=%d loss_sync=%d loss_sig=%d seq_err=%d &quot;
-l_string|&quot;inval_xmt_word=%d inval_crc=%d.&bslash;n&quot;
-comma
-id|ha-&gt;host_no
-comma
-id|stat_buf-&gt;link_fail_cnt
-comma
 id|stat_buf-&gt;loss_sync_cnt
-comma
+)paren
+suffix:semicolon
+id|ret_buf-&gt;loss_sig_cnt
+op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|stat_buf-&gt;loss_sig_cnt
-comma
+)paren
+suffix:semicolon
+id|ret_buf-&gt;prim_seq_err_cnt
+op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|stat_buf-&gt;prim_seq_err_cnt
-comma
+)paren
+suffix:semicolon
+id|ret_buf-&gt;inval_xmit_word_cnt
+op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|stat_buf-&gt;inval_xmit_word_cnt
-comma
+)paren
+suffix:semicolon
+id|ret_buf-&gt;inval_crc_cnt
+op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|stat_buf-&gt;inval_crc_cnt
 )paren
 suffix:semicolon
-)paren
 id|DEBUG11
 c_func
 (paren

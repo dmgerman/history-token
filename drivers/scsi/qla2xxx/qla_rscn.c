@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
+multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
 macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
 multiline_comment|/**&n; * IO descriptor handle definitions.&n; *&n; * Signature form:&n; *&n; *&t;|31------28|27-------------------12|11-------0|&n; *&t;|   Type   |   Rolling Signature   |   Index  |&n; *&t;|----------|-----------------------|----------|&n; *&n; **/
@@ -838,7 +838,7 @@ id|iodesc-&gt;ha-&gt;dpc_flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * qla2x00_add_iodesc_timer() - Add and start a timer for an IO descriptor.&n; * @iodesc: io descriptor&n; *&n; * NOTE:&n; * The firmware shall timeout an outstanding mailbox IOCB in 2 * R_A_TOV (in&n; * tenths of a second).  The driver will wait 2.5 * R_A_TOV before scheduling&n; * a recovery (big hammer).&n; */
+multiline_comment|/**&n; * qla2x00_add_iodesc_timer() - Add and start a timer for an IO descriptor.&n; * @iodesc: io descriptor&n; *&n; * NOTE:&n; * The firmware shall timeout an outstanding mailbox IOCB in 2 * R_A_TOV (in&n; * tenths of a second) after it hits the wire.  But, if there are any request&n; * resource contraints (i.e. during heavy I/O), exchanges can be held off for&n; * at most R_A_TOV.  Therefore, the driver will wait 4 * R_A_TOV before&n; * scheduling a recovery (big hammer).&n; */
 r_static
 r_inline
 r_void
@@ -859,17 +859,9 @@ suffix:semicolon
 id|timeout
 op_assign
 (paren
-(paren
 id|iodesc-&gt;ha-&gt;r_a_tov
 op_star
-l_int|2
-)paren
-op_plus
-(paren
-id|iodesc-&gt;ha-&gt;r_a_tov
-op_div
-l_int|2
-)paren
+l_int|4
 )paren
 op_div
 l_int|10

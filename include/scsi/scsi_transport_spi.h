@@ -83,6 +83,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Precompensation enabled */
+multiline_comment|/* Private Fields */
 DECL|member|dv_pending
 r_int
 r_int
@@ -91,6 +92,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Internal flag */
+DECL|member|dv_sem
+r_struct
+id|semaphore
+id|dv_sem
+suffix:semicolon
+multiline_comment|/* semaphore to serialise dv */
 )brace
 suffix:semicolon
 multiline_comment|/* accessor functions */
