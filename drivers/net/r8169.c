@@ -4659,10 +4659,16 @@ comma
 id|DMA_64BIT_MASK
 )paren
 )paren
+(brace
 id|tp-&gt;cp_cmd
 op_or_assign
 id|PCIDAC
 suffix:semicolon
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_HIGHDMA
+suffix:semicolon
+)brace
 r_else
 (brace
 id|rc
