@@ -10554,14 +10554,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|i
-op_assign
-id|GET_FB_IDX
-c_func
-(paren
-id|p-&gt;info.node
-)paren
-suffix:semicolon
 id|tmp
 op_assign
 (paren
@@ -10585,7 +10577,11 @@ c_func
 (paren
 l_string|&quot;fb%u: %s frame buffer; %uMB vram; chip version %u&bslash;n&quot;
 comma
-id|i
+id|minor
+c_func
+(paren
+id|p-&gt;info.node
+)paren
 comma
 id|p-&gt;fix.id
 comma

@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64461.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|variable|__initdata
 r_static
 r_struct
@@ -87,12 +86,6 @@ id|pseudo_palette
 (braket
 l_int|17
 )braket
-suffix:semicolon
-DECL|variable|display
-r_static
-r_struct
-id|display
-id|display
 suffix:semicolon
 DECL|variable|fb_info
 r_struct
@@ -426,21 +419,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
-dot
 id|fb_check_var
 op_assign
 id|hitfb_check_var
@@ -469,6 +447,11 @@ dot
 id|fb_imageblit
 op_assign
 id|cfb_imageblit
+comma
+dot
+id|fb_cursor
+op_assign
+id|cfb_cursor
 comma
 )brace
 suffix:semicolon
@@ -606,36 +589,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fb_info.modename
-comma
-id|fb_info.fix.id
-)paren
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.disp
-op_assign
-op_amp
-id|display
-suffix:semicolon
-id|fb_info.changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|fb_info.switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|fb_info.screen_base
 op_assign
 (paren
@@ -668,19 +621,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|gen_set_var
-c_func
-(paren
-op_amp
-id|fb_info.var
-comma
-op_minus
-l_int|1
-comma
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -703,7 +643,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node
