@@ -415,6 +415,10 @@ multiline_comment|/* Update the sending count */
 id|a-&gt;xmit_count
 op_increment
 suffix:semicolon
+id|a-&gt;last_sent
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 multiline_comment|/* This runs under aarp_lock and in softint context, so only atomic memory&n; * allocations can be used. */
 DECL|function|aarp_send_reply
