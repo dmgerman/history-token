@@ -2202,7 +2202,7 @@ id|free_it
 op_assign
 id|next
 suffix:semicolon
-multiline_comment|/* Old fragmnet is completely overridden with&n;&t;&t;&t; * new one drop it.&n;&t;&t;&t; */
+multiline_comment|/* Old fragment is completely overridden with&n;&t;&t;&t; * new one drop it.&n;&t;&t;&t; */
 id|next
 op_assign
 id|next-&gt;next
