@@ -574,7 +574,7 @@ c_func
 op_amp
 id|dev-&gt;dev
 comma
-l_string|&quot;: %s not removed&bslash;n&quot;
+l_string|&quot;%s not removed&bslash;n&quot;
 comma
 id|chip-&gt;i2c_bus
 (braket
@@ -902,7 +902,7 @@ c_func
 op_amp
 id|dev-&gt;dev
 comma
-l_string|&quot;: %s failed&bslash;n&quot;
+l_string|&quot;%s failed&bslash;n&quot;
 comma
 id|bus-&gt;adap.name
 )paren
