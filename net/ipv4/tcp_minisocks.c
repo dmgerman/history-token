@@ -2432,13 +2432,11 @@ id|tcp_opt
 op_star
 id|newtp
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_struct
 id|sk_filter
 op_star
 id|filter
 suffix:semicolon
-macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -2579,7 +2577,6 @@ id|newsk-&gt;write_space
 op_assign
 id|tcp_write_space
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 r_if
 c_cond
 (paren
@@ -2599,7 +2596,6 @@ comma
 id|filter
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

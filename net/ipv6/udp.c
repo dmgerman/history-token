@@ -2629,7 +2629,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_FILTER)
 r_if
 c_cond
 (paren
@@ -2685,7 +2684,6 @@ op_assign
 id|CHECKSUM_UNNECESSARY
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
