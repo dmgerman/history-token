@@ -757,7 +757,7 @@ id|pi
 )paren
 )paren
 OG
-id|len
+id|count
 )paren
 r_return
 op_minus
