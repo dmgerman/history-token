@@ -1328,7 +1328,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|127
+l_int|128
 suffix:semicolon
 id|i
 op_increment
