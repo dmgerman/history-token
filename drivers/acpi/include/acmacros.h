@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acmacros.h - C macros for the entire subsystem.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACMACROS_H__
 DECL|macro|__ACMACROS_H__
 mdefine_line|#define __ACMACROS_H__
@@ -42,7 +42,7 @@ multiline_comment|/*&n; * Full 64-bit address/integer on both 32-bit and 64-bit 
 DECL|macro|ACPI_LODWORD
 mdefine_line|#define ACPI_LODWORD(l)                 ((u32)(u64)(l))
 DECL|macro|ACPI_HIDWORD
-mdefine_line|#define ACPI_HIDWORD(l)                 ((u32)(((*(uint64_struct *)(void *)(&amp;l))).hi))
+mdefine_line|#define ACPI_HIDWORD(l)                 ((u32)(((*(struct uint64_struct *)(void *)(&amp;l))).hi))
 DECL|macro|ACPI_GET_ADDRESS
 mdefine_line|#define ACPI_GET_ADDRESS(a)             (a)
 DECL|macro|ACPI_STORE_ADDRESS
@@ -201,14 +201,14 @@ DECL|macro|ACPI_REGISTER_PREPARE_BITS
 mdefine_line|#define ACPI_REGISTER_PREPARE_BITS(val, pos, mask)      ((val &lt;&lt; pos) &amp; mask)
 DECL|macro|ACPI_REGISTER_INSERT_VALUE
 mdefine_line|#define ACPI_REGISTER_INSERT_VALUE(reg, pos, mask, val)  reg = (reg &amp; (~(mask))) | ACPI_REGISTER_PREPARE_BITS(val, pos, mask)
-multiline_comment|/*&n; * An acpi_namespace_node * can appear in some contexts,&n; * where a pointer to an acpi_operand_object  can also&n; * appear.  This macro is used to distinguish them.&n; *&n; * The &quot;Descriptor&quot; field is the first field in both structures.&n; */
+multiline_comment|/*&n; * An struct acpi_namespace_node * can appear in some contexts,&n; * where a pointer to an union acpi_operand_object    can also&n; * appear.  This macro is used to distinguish them.&n; *&n; * The &quot;Descriptor&quot; field is the first field in both structures.&n; */
 DECL|macro|ACPI_GET_DESCRIPTOR_TYPE
-mdefine_line|#define ACPI_GET_DESCRIPTOR_TYPE(d)     (((acpi_descriptor *)(void *)(d))-&gt;descriptor_id)
+mdefine_line|#define ACPI_GET_DESCRIPTOR_TYPE(d)     (((union acpi_descriptor *)(void *)(d))-&gt;descriptor_id)
 DECL|macro|ACPI_SET_DESCRIPTOR_TYPE
-mdefine_line|#define ACPI_SET_DESCRIPTOR_TYPE(d,t)   (((acpi_descriptor *)(void *)(d))-&gt;descriptor_id = t)
+mdefine_line|#define ACPI_SET_DESCRIPTOR_TYPE(d,t)   (((union acpi_descriptor *)(void *)(d))-&gt;descriptor_id = t)
 multiline_comment|/* Macro to test the object type */
 DECL|macro|ACPI_GET_OBJECT_TYPE
-mdefine_line|#define ACPI_GET_OBJECT_TYPE(d)         (((acpi_operand_object *)(void *)(d))-&gt;common.type)
+mdefine_line|#define ACPI_GET_OBJECT_TYPE(d)         (((union acpi_operand_object *)(void *)(d))-&gt;common.type)
 multiline_comment|/* Macro to check the table flags for SINGLE or MULTIPLE tables are allowed */
 DECL|macro|ACPI_IS_SINGLE_TABLE
 mdefine_line|#define ACPI_IS_SINGLE_TABLE(x)         (((x) &amp; 0x01) == ACPI_TABLE_SINGLE ? 1 : 0)
@@ -315,7 +315,7 @@ DECL|macro|ACPI_MODULE_NAME
 mdefine_line|#define ACPI_MODULE_NAME(name)               static char ACPI_UNUSED_VAR *_THIS_MODULE = name;
 multiline_comment|/*&n; * Function entry tracing.&n; * The first parameter should be the procedure name as a quoted string.  This is declared&n; * as a local string (&quot;_proc_name) so that it can be also used by the function exit macros below.&n; */
 DECL|macro|ACPI_FUNCTION_NAME
-mdefine_line|#define ACPI_FUNCTION_NAME(a)           acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
+mdefine_line|#define ACPI_FUNCTION_NAME(a)           struct acpi_debug_print_info _dbg;     &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.component_id = _COMPONENT; &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.proc_name   = a;           &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;_dbg.module_name = _THIS_MODULE;
 DECL|macro|ACPI_FUNCTION_TRACE
 mdefine_line|#define ACPI_FUNCTION_TRACE(a)          ACPI_FUNCTION_NAME(a)&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;acpi_ut_trace(__LINE__,&amp;_dbg)
 DECL|macro|ACPI_FUNCTION_TRACE_PTR

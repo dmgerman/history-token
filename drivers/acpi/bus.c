@@ -1843,6 +1843,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_object
 id|arg
 op_assign
@@ -1850,6 +1851,7 @@ op_assign
 id|ACPI_TYPE_INTEGER
 )brace
 suffix:semicolon
+r_struct
 id|acpi_object_list
 id|arg_list
 op_assign
@@ -2013,6 +2015,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign

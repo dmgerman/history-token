@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsmethod - Parser/Interpreter interface - control method parsing&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -24,14 +24,17 @@ id|obj_handle
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|op
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -39,6 +42,7 @@ suffix:semicolon
 id|acpi_owner_id
 id|owner_id
 suffix:semicolon
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -73,6 +77,7 @@ l_string|&quot;**** Parsing [%4.4s] **** named_obj=%p&bslash;n&quot;
 comma
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -89,6 +94,7 @@ multiline_comment|/* Extract the method object from the method Node */
 id|node
 op_assign
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -303,6 +309,7 @@ l_string|&quot;**** [%4.4s] Parsed **** named_obj=%p Op=%p&bslash;n&quot;
 comma
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -333,14 +340,17 @@ id|acpi_status
 DECL|function|acpi_ds_begin_method_execution
 id|acpi_ds_begin_method_execution
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|calling_method_node
@@ -428,14 +438,17 @@ id|acpi_status
 DECL|function|acpi_ds_call_control_method
 id|acpi_ds_call_control_method
 (paren
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|this_walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -444,14 +457,17 @@ id|op
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_struct
 id|acpi_walk_state
 op_star
 id|next_walk_state
@@ -800,10 +816,12 @@ id|acpi_status
 DECL|function|acpi_ds_restart_control_method
 id|acpi_ds_restart_control_method
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|return_desc
@@ -902,15 +920,18 @@ id|acpi_status
 DECL|function|acpi_ds_terminate_control_method
 id|acpi_ds_terminate_control_method
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -67,6 +67,7 @@ op_logical_and
 (paren
 (paren
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
@@ -135,16 +136,19 @@ id|acpi_ex_resolve_operands
 id|u16
 id|opcode
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|stack_ptr
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -165,6 +169,7 @@ id|u32
 id|arg_types
 suffix:semicolon
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
@@ -311,6 +316,7 @@ id|object_type
 op_assign
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acglobal.h - Declarations for global variables&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGLOBAL_H__
 DECL|macro|__ACGLOBAL_H__
 mdefine_line|#define __ACGLOBAL_H__
@@ -40,13 +40,14 @@ id|acpi_gbl_rsdt_table_count
 suffix:semicolon
 DECL|variable|acpi_gbl_RSDP
 id|ACPI_EXTERN
+r_struct
 id|rsdp_descriptor
 op_star
 id|acpi_gbl_RSDP
 suffix:semicolon
 DECL|variable|acpi_gbl_XSDT
 id|ACPI_EXTERN
-id|xsdt_descriptor
+id|XSDT_DESCRIPTOR
 op_star
 id|acpi_gbl_XSDT
 suffix:semicolon
@@ -58,6 +59,7 @@ id|acpi_gbl_FADT
 suffix:semicolon
 DECL|variable|acpi_gbl_DSDT
 id|ACPI_EXTERN
+r_struct
 id|acpi_table_header
 op_star
 id|acpi_gbl_DSDT
@@ -70,6 +72,7 @@ id|acpi_gbl_FACS
 suffix:semicolon
 DECL|variable|acpi_gbl_common_fACS
 id|ACPI_EXTERN
+r_struct
 id|acpi_common_facs
 id|acpi_gbl_common_fACS
 suffix:semicolon
@@ -87,6 +90,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Since there may be multiple SSDTs and PSDTS, a single pointer is not&n; * sufficient; Therefore, there isn&squot;t one!&n; */
 multiline_comment|/*&n; * ACPI Table info arrays&n; */
 r_extern
+r_struct
 id|acpi_table_desc
 id|acpi_gbl_acpi_tables
 (braket
@@ -94,7 +98,8 @@ id|NUM_ACPI_TABLES
 )braket
 suffix:semicolon
 r_extern
-id|ACPI_TABLE_SUPPORT
+r_struct
+id|acpi_table_support
 id|acpi_gbl_acpi_table_data
 (braket
 id|NUM_ACPI_TABLES
@@ -103,6 +108,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Predefined mutex objects.  This array contains the&n; * actual OS mutex handles, indexed by the local ACPI_MUTEX_HANDLEs.&n; * (The table maps local handles to the real OS handles)&n; */
 DECL|variable|acpi_gbl_acpi_mutex_info
 id|ACPI_EXTERN
+r_struct
 id|acpi_mutex_info
 id|acpi_gbl_acpi_mutex_info
 (braket
@@ -112,6 +118,7 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_memory_lists
 id|ACPI_EXTERN
+r_struct
 id|acpi_memory_list
 id|acpi_gbl_memory_lists
 (braket
@@ -120,11 +127,13 @@ id|ACPI_NUM_MEM_LISTS
 suffix:semicolon
 DECL|variable|acpi_gbl_drv_notify
 id|ACPI_EXTERN
+r_struct
 id|acpi_object_notify_handler
 id|acpi_gbl_drv_notify
 suffix:semicolon
 DECL|variable|acpi_gbl_sys_notify
 id|ACPI_EXTERN
+r_struct
 id|acpi_object_notify_handler
 id|acpi_gbl_sys_notify
 suffix:semicolon
@@ -135,6 +144,7 @@ id|acpi_gbl_init_handler
 suffix:semicolon
 DECL|variable|acpi_gbl_breakpoint_walk
 id|ACPI_EXTERN
+r_struct
 id|acpi_walk_state
 op_star
 id|acpi_gbl_breakpoint_walk
@@ -246,6 +256,7 @@ id|ACPI_S_STATE_COUNT
 suffix:semicolon
 r_extern
 r_const
+r_struct
 id|acpi_opcode_info
 id|acpi_gbl_aml_op_info
 (braket
@@ -273,11 +284,13 @@ mdefine_line|#define NUM_PREDEFINED_NAMES            9
 macro_line|#endif
 DECL|variable|acpi_gbl_root_node_struct
 id|ACPI_EXTERN
+r_struct
 id|acpi_namespace_node
 id|acpi_gbl_root_node_struct
 suffix:semicolon
 DECL|variable|acpi_gbl_root_node
 id|ACPI_EXTERN
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_gbl_root_node
@@ -292,6 +305,7 @@ id|NUM_NS_TYPES
 suffix:semicolon
 r_extern
 r_const
+r_struct
 id|acpi_predefined_names
 id|acpi_gbl_pre_defined_names
 (braket
@@ -333,6 +347,7 @@ macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * Interpreter globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_current_walk_list
 id|ACPI_EXTERN
+r_struct
 id|acpi_thread_state
 op_star
 id|acpi_gbl_current_walk_list
@@ -346,12 +361,14 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Parser globals&n; *&n; ****************************************************************************/
 DECL|variable|acpi_gbl_parsed_namespace_root
 id|ACPI_EXTERN
+r_union
 id|acpi_parse_object
 op_star
 id|acpi_gbl_parsed_namespace_root
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Hardware globals&n; *&n; ****************************************************************************/
 r_extern
+r_struct
 id|acpi_bit_register_info
 id|acpi_gbl_bit_register_info
 (braket
@@ -370,6 +387,7 @@ id|acpi_gbl_sleep_type_b
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event and GPE globals&n; *&n; ****************************************************************************/
 r_extern
+r_struct
 id|acpi_fixed_event_info
 id|acpi_gbl_fixed_event_info
 (braket
@@ -378,6 +396,7 @@ id|ACPI_NUM_FIXED_EVENTS
 suffix:semicolon
 DECL|variable|acpi_gbl_fixed_event_handlers
 id|ACPI_EXTERN
+r_struct
 id|acpi_fixed_event_handler
 id|acpi_gbl_fixed_event_handlers
 (braket
@@ -401,18 +420,21 @@ id|acpi_gbl_gpe_number_max
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_register_info
 id|ACPI_EXTERN
+r_struct
 id|acpi_gpe_register_info
 op_star
 id|acpi_gbl_gpe_register_info
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_number_info
 id|ACPI_EXTERN
+r_struct
 id|acpi_gpe_number_info
 op_star
 id|acpi_gbl_gpe_number_info
 suffix:semicolon
 DECL|variable|acpi_gbl_gpe_block_info
 id|ACPI_EXTERN
+r_struct
 id|acpi_gpe_block_info
 id|acpi_gbl_gpe_block_info
 (braket
@@ -422,6 +444,7 @@ suffix:semicolon
 multiline_comment|/*&n; * GPE translation table&n; * Indexed by the GPE number, returns a valid index into the global GPE tables.&n; *&n; * This table is needed because the GPE numbers supported by block 1 do not&n; * have to be contiguous with the GPE numbers supported by block 0.&n; */
 DECL|variable|acpi_gbl_gpe_number_to_index
 id|ACPI_EXTERN
+r_struct
 id|acpi_gpe_index_info
 op_star
 id|acpi_gbl_gpe_number_to_index
@@ -553,12 +576,14 @@ id|acpi_gbl_db_console_debug_level
 suffix:semicolon
 DECL|variable|acpi_gbl_db_table_ptr
 id|ACPI_EXTERN
+r_struct
 id|acpi_table_header
 op_star
 id|acpi_gbl_db_table_ptr
 suffix:semicolon
 DECL|variable|acpi_gbl_db_scope_node
 id|ACPI_EXTERN
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_gbl_db_scope_node

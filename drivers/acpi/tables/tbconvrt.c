@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbconvrt - ACPI Table conversion utilities&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
@@ -13,10 +13,12 @@ id|u32
 DECL|function|acpi_tb_get_table_count
 id|acpi_tb_get_table_count
 (paren
+r_struct
 id|rsdp_descriptor
 op_star
 id|RSDP
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|RSDT
@@ -65,6 +67,7 @@ id|RSDT-&gt;length
 op_minus
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -78,6 +81,7 @@ id|acpi_status
 DECL|function|acpi_tb_convert_to_xsdt
 id|acpi_tb_convert_to_xsdt
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -89,7 +93,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|xsdt_descriptor
+id|XSDT_DESCRIPTOR
 op_star
 id|new_table
 suffix:semicolon
@@ -114,6 +118,7 @@ id|u64
 op_plus
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 suffix:semicolon
@@ -147,6 +152,7 @@ id|table_info-&gt;pointer
 comma
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -191,7 +197,8 @@ id|i
 comma
 (paren
 (paren
-id|RSDT_DESCRIPTOR_REV1
+r_struct
+id|rsdt_descriptor_rev1
 op_star
 )paren
 id|table_info-&gt;pointer
@@ -213,7 +220,7 @@ id|i
 op_assign
 (paren
 (paren
-id|xsdt_descriptor
+id|XSDT_DESCRIPTOR
 op_star
 )paren
 id|table_info-&gt;pointer
@@ -236,6 +243,7 @@ multiline_comment|/* Point the table descriptor to the new table */
 id|table_info-&gt;pointer
 op_assign
 (paren
+r_struct
 id|acpi_table_header
 op_star
 )paren
@@ -261,10 +269,12 @@ r_void
 DECL|function|acpi_tb_convert_fadt1
 id|acpi_tb_convert_fadt1
 (paren
+r_struct
 id|fadt_descriptor_rev2
 op_star
 id|local_fadt
 comma
+r_struct
 id|fadt_descriptor_rev1
 op_star
 id|original_fadt
@@ -281,6 +291,7 @@ id|original_fadt
 comma
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev1
 )paren
 )paren
@@ -401,10 +412,12 @@ r_void
 DECL|function|acpi_tb_convert_fadt2
 id|acpi_tb_convert_fadt2
 (paren
+r_struct
 id|fadt_descriptor_rev2
 op_star
 id|local_fadt
 comma
+r_struct
 id|fadt_descriptor_rev2
 op_star
 id|original_fadt
@@ -419,6 +432,7 @@ id|original_fadt
 comma
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev2
 )paren
 )paren
@@ -619,10 +633,12 @@ id|acpi_tb_convert_table_fadt
 r_void
 )paren
 (brace
+r_struct
 id|fadt_descriptor_rev2
 op_star
 id|local_fadt
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -639,6 +655,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev2
 )paren
 )paren
@@ -665,6 +682,7 @@ id|acpi_gbl_FADT-&gt;header.length
 OL
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev1
 )paren
 )paren
@@ -699,6 +717,7 @@ id|acpi_gbl_FADT-&gt;header.length
 OL
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev2
 )paren
 )paren
@@ -784,6 +803,7 @@ multiline_comment|/* Install the new table */
 id|table_desc-&gt;pointer
 op_assign
 (paren
+r_struct
 id|acpi_table_header
 op_star
 )paren
@@ -797,6 +817,7 @@ id|table_desc-&gt;length
 op_assign
 r_sizeof
 (paren
+r_struct
 id|fadt_descriptor_rev2
 )paren
 suffix:semicolon
@@ -838,6 +859,7 @@ id|acpi_status
 DECL|function|acpi_tb_build_common_facs
 id|acpi_tb_build_common_facs
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info

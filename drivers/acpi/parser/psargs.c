@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -15,6 +15,7 @@ id|u32
 DECL|function|acpi_ps_get_next_package_length
 id|acpi_ps_get_next_package_length
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -206,6 +207,7 @@ op_star
 DECL|function|acpi_ps_get_next_package_end
 id|acpi_ps_get_next_package_end
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -251,6 +253,7 @@ op_star
 DECL|function|acpi_ps_get_next_namestring
 id|acpi_ps_get_next_namestring
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -396,14 +399,17 @@ id|acpi_status
 DECL|function|acpi_ps_get_next_namepath
 id|acpi_ps_get_next_namepath
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -416,6 +422,7 @@ r_char
 op_star
 id|path
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|name_op
@@ -425,14 +432,17 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|method_desc
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+r_union
 id|acpi_generic_state
 id|scope_info
 suffix:semicolon
@@ -720,6 +730,7 @@ r_void
 DECL|function|acpi_ps_get_next_simple_arg
 id|acpi_ps_get_next_simple_arg
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -727,6 +738,7 @@ comma
 id|u32
 id|arg_type
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|arg
@@ -923,11 +935,13 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_next_field&n; *&n; * PARAMETERS:  parser_state        - Current parser state object&n; *&n; * RETURN:      A newly allocated FIELD op&n; *&n; * DESCRIPTION: Get next field (named_field, reserved_field, or access_field)&n; *&n; ******************************************************************************/
+r_union
 id|acpi_parse_object
 op_star
 DECL|function|acpi_ps_get_next_field
 id|acpi_ps_get_next_field
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -943,6 +957,7 @@ comma
 id|parser_state-&gt;aml_start
 )paren
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|field
@@ -1126,10 +1141,12 @@ id|acpi_status
 DECL|function|acpi_ps_get_next_arg
 id|acpi_ps_get_next_arg
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -1137,24 +1154,28 @@ comma
 id|u32
 id|arg_type
 comma
+r_union
 id|acpi_parse_object
 op_star
 op_star
 id|return_arg
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|prev
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|field

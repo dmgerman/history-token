@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -9,6 +9,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;nsalloc&quot;
 )paren
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_create_node&n; *&n; * PARAMETERS:  acpi_name       - Name of the new node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create a namespace node&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_create_node
@@ -18,6 +19,7 @@ id|u32
 id|name
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -33,6 +35,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_namespace_node
 )paren
 )paren
@@ -87,19 +90,23 @@ r_void
 DECL|function|acpi_ns_delete_node
 id|acpi_ns_delete_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|prev_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|next_node
@@ -342,15 +349,18 @@ r_void
 DECL|function|acpi_ns_install_node
 id|acpi_ns_install_node
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 comma
 multiline_comment|/* Parent */
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -365,11 +375,13 @@ id|owner_id
 op_assign
 id|TABLE_ID_DSDT
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
 macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
+r_struct
 id|acpi_namespace_node
 op_star
 id|previous_child_node
@@ -625,15 +637,18 @@ r_void
 DECL|function|acpi_ns_delete_children
 id|acpi_ns_delete_children
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|next_node
@@ -772,11 +787,13 @@ r_void
 DECL|function|acpi_ns_delete_namespace_subtree
 id|acpi_ns_delete_namespace_subtree
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|child_node
@@ -900,15 +917,18 @@ r_void
 DECL|function|acpi_ns_remove_reference
 id|acpi_ns_remove_reference
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|this_node
@@ -975,10 +995,12 @@ id|u16
 id|owner_id
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|child_node
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|deletion_node
@@ -986,6 +1008,7 @@ suffix:semicolon
 id|u32
 id|level
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node

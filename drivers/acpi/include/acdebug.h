@@ -1,12 +1,11 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acdebug.h - ACPI/AML debugger&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACDEBUG_H__
 DECL|macro|__ACDEBUG_H__
 mdefine_line|#define __ACDEBUG_H__
 DECL|macro|ACPI_DEBUG_BUFFER_SIZE
 mdefine_line|#define ACPI_DEBUG_BUFFER_SIZE  4196
 DECL|struct|command_info
-r_typedef
 r_struct
 id|command_info
 (brace
@@ -21,12 +20,9 @@ id|u8
 id|min_args
 suffix:semicolon
 multiline_comment|/* Minimum arguments required */
-DECL|typedef|COMMAND_INFO
 )brace
-id|COMMAND_INFO
 suffix:semicolon
 DECL|struct|argument_info
-r_typedef
 r_struct
 id|argument_info
 (brace
@@ -36,9 +32,7 @@ op_star
 id|name
 suffix:semicolon
 multiline_comment|/* Argument Name */
-DECL|typedef|ARGUMENT_INFO
 )brace
-id|ARGUMENT_INFO
 suffix:semicolon
 DECL|macro|PARAM_LIST
 mdefine_line|#define PARAM_LIST(pl)                  pl
@@ -67,10 +61,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_db_single_step
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -107,10 +103,12 @@ r_char
 op_star
 id|location
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -119,6 +117,7 @@ suffix:semicolon
 r_void
 id|acpi_db_set_method_call_breakpoint
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -131,6 +130,7 @@ r_char
 op_star
 id|statements
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -323,6 +323,7 @@ multiline_comment|/*&n; * dbdisply - debug display commands&n; */
 r_void
 id|acpi_db_display_method_info
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -343,6 +344,7 @@ suffix:semicolon
 r_void
 id|acpi_db_decode_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -351,10 +353,12 @@ suffix:semicolon
 r_void
 id|acpi_db_display_result_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -371,10 +375,12 @@ suffix:semicolon
 r_void
 id|acpi_db_display_internal_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -407,10 +413,12 @@ suffix:semicolon
 r_void
 id|acpi_db_display_argument_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -419,6 +427,7 @@ suffix:semicolon
 r_void
 id|acpi_db_dump_parser_descriptor
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -436,6 +445,7 @@ suffix:semicolon
 r_void
 id|acpi_db_decode_internal_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -477,10 +487,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_db_execute_method
 (paren
+r_struct
 id|acpi_db_method_info
 op_star
 id|info
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|return_obj
@@ -489,6 +501,7 @@ suffix:semicolon
 r_void
 id|acpi_db_execute_setup
 (paren
+r_struct
 id|acpi_db_method_info
 op_star
 id|info
@@ -517,7 +530,8 @@ r_char
 op_star
 id|user_argument
 comma
-id|ARGUMENT_INFO
+r_struct
+id|argument_info
 op_star
 id|arguments
 )paren
@@ -525,6 +539,7 @@ suffix:semicolon
 id|acpi_status
 id|ae_local_load_table
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_ptr
@@ -592,10 +607,12 @@ r_char
 op_star
 id|input_buffer
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -616,6 +633,7 @@ id|acpi_db_user_commands
 r_char
 id|prompt
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -669,6 +687,7 @@ multiline_comment|/*&n; * dbstats - Generation and display of ACPI table statist
 r_void
 id|acpi_db_generate_statistics
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|root
@@ -713,6 +732,7 @@ suffix:semicolon
 r_void
 id|acpi_db_enumerate_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -736,6 +756,7 @@ suffix:semicolon
 r_void
 id|acpi_db_dump_object
 (paren
+r_union
 id|acpi_object
 op_star
 id|obj_desc
@@ -755,11 +776,13 @@ suffix:semicolon
 id|acpi_status
 id|acpi_db_second_pass_parse
 (paren
+r_union
 id|acpi_parse_object
 op_star
 id|root
 )paren
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|acpi_db_local_ns_lookup

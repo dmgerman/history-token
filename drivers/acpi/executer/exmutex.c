@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
@@ -13,11 +13,13 @@ r_void
 DECL|function|acpi_ex_unlink_mutex
 id|acpi_ex_unlink_mutex
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 )paren
 (brace
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
@@ -77,15 +79,18 @@ r_void
 DECL|function|acpi_ex_link_mutex
 id|acpi_ex_link_mutex
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|list_head
@@ -126,14 +131,17 @@ id|acpi_status
 DECL|function|acpi_ex_acquire_mutex
 id|acpi_ex_acquire_mutex
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|time_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -292,10 +300,12 @@ id|acpi_status
 DECL|function|acpi_ex_release_mutex
 id|acpi_ex_release_mutex
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -473,17 +483,20 @@ r_void
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes
 (paren
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|next
 op_assign
 id|thread-&gt;acquired_mutex_list
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|this

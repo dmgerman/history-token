@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
 mdefine_line|#define __ACLOCAL_H__
@@ -95,7 +95,6 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Table for the global mutexes */
 DECL|struct|acpi_mutex_info
-r_typedef
 r_struct
 id|acpi_mutex_info
 (brace
@@ -111,9 +110,7 @@ DECL|member|owner_id
 id|u32
 id|owner_id
 suffix:semicolon
-DECL|typedef|acpi_mutex_info
 )brace
-id|acpi_mutex_info
 suffix:semicolon
 multiline_comment|/* This owner ID means that the mutex is not in use (unlocked) */
 DECL|macro|ACPI_MUTEX_NOT_ACQUIRED
@@ -173,7 +170,6 @@ id|acpi_interpreter_mode
 suffix:semicolon
 multiline_comment|/*&n; * The Node describes a named object that appears in the AML&n; * An acpi_node is used to store Nodes.&n; *&n; * data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|union|acpi_name_union
-r_typedef
 r_union
 id|acpi_name_union
 (brace
@@ -188,14 +184,11 @@ id|ascii
 l_int|4
 )braket
 suffix:semicolon
-DECL|typedef|acpi_name_union
 )brace
-id|acpi_name_union
 suffix:semicolon
-DECL|struct|acpi_node
-r_typedef
+DECL|struct|acpi_namespace_node
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 (brace
 DECL|member|descriptor
 id|u8
@@ -212,27 +205,28 @@ id|u16
 id|owner_id
 suffix:semicolon
 DECL|member|name
+r_union
 id|acpi_name_union
 id|name
 suffix:semicolon
 multiline_comment|/* ACPI Name, always 4 chars per ACPI spec */
 DECL|member|object
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|object
 suffix:semicolon
 multiline_comment|/* Pointer to attached ACPI object (optional) */
 DECL|member|child
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 op_star
 id|child
 suffix:semicolon
 multiline_comment|/* first child */
 DECL|member|peer
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 op_star
 id|peer
 suffix:semicolon
@@ -246,9 +240,7 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|typedef|acpi_namespace_node
 )brace
-id|acpi_namespace_node
 suffix:semicolon
 DECL|macro|ACPI_ENTRY_NOT_FOUND
 mdefine_line|#define ACPI_ENTRY_NOT_FOUND            NULL
@@ -271,7 +263,6 @@ DECL|macro|ANOBJ_IS_BIT_OFFSET
 mdefine_line|#define ANOBJ_IS_BIT_OFFSET             0x80
 multiline_comment|/*&n; * ACPI Table Descriptor.  One per ACPI table&n; */
 DECL|struct|acpi_table_desc
-r_typedef
 r_struct
 id|acpi_table_desc
 (brace
@@ -294,6 +285,7 @@ op_star
 id|installed_desc
 suffix:semicolon
 DECL|member|pointer
+r_struct
 id|acpi_table_header
 op_star
 id|pointer
@@ -335,12 +327,11 @@ DECL|member|loaded_into_namespace
 id|u8
 id|loaded_into_namespace
 suffix:semicolon
-DECL|typedef|acpi_table_desc
 )brace
-id|acpi_table_desc
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_find_context
 r_struct
+id|acpi_find_context
 (brace
 DECL|member|search_for
 r_char
@@ -357,25 +348,24 @@ id|u32
 op_star
 id|count
 suffix:semicolon
-DECL|typedef|acpi_find_context
 )brace
-id|acpi_find_context
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_ns_search_data
 r_struct
+id|acpi_ns_search_data
 (brace
 DECL|member|node
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-DECL|typedef|acpi_ns_search_data
 )brace
-id|acpi_ns_search_data
 suffix:semicolon
 multiline_comment|/*&n; * Predefined Namespace items&n; */
-r_typedef
+DECL|struct|acpi_predefined_names
 r_struct
+id|acpi_predefined_names
 (brace
 DECL|member|name
 r_char
@@ -391,9 +381,7 @@ r_char
 op_star
 id|val
 suffix:semicolon
-DECL|typedef|acpi_predefined_names
 )brace
-id|acpi_predefined_names
 suffix:semicolon
 multiline_comment|/* Object types used during package copies */
 DECL|macro|ACPI_COPY_TYPE_SIMPLE
@@ -402,7 +390,6 @@ DECL|macro|ACPI_COPY_TYPE_PACKAGE
 mdefine_line|#define ACPI_COPY_TYPE_PACKAGE          1
 multiline_comment|/* Info structure used to convert external&lt;-&gt;internal namestrings */
 DECL|struct|acpi_namestring_info
-r_typedef
 r_struct
 id|acpi_namestring_info
 (brace
@@ -437,30 +424,33 @@ DECL|member|fully_qualified
 id|u8
 id|fully_qualified
 suffix:semicolon
-DECL|typedef|acpi_namestring_info
 )brace
-id|acpi_namestring_info
 suffix:semicolon
 multiline_comment|/* Field creation info */
-r_typedef
+DECL|struct|acpi_create_field_info
 r_struct
+id|acpi_create_field_info
 (brace
 DECL|member|region_node
+r_struct
 id|acpi_namespace_node
 op_star
 id|region_node
 suffix:semicolon
 DECL|member|field_node
+r_struct
 id|acpi_namespace_node
 op_star
 id|field_node
 suffix:semicolon
 DECL|member|register_node
+r_struct
 id|acpi_namespace_node
 op_star
 id|register_node
 suffix:semicolon
 DECL|member|data_register_node
+r_struct
 id|acpi_namespace_node
 op_star
 id|data_register_node
@@ -489,16 +479,16 @@ DECL|member|field_type
 id|u8
 id|field_type
 suffix:semicolon
-DECL|typedef|acpi_create_field_info
 )brace
-id|acpi_create_field_info
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Event typedefs and structs&n; *&n; ****************************************************************************/
 multiline_comment|/* Information about each GPE register block */
-r_typedef
+DECL|struct|acpi_gpe_block_info
 r_struct
+id|acpi_gpe_block_info
 (brace
 DECL|member|block_address
+r_struct
 id|acpi_generic_address
 op_star
 id|block_address
@@ -511,20 +501,21 @@ DECL|member|block_base_number
 id|u8
 id|block_base_number
 suffix:semicolon
-DECL|typedef|acpi_gpe_block_info
 )brace
-id|acpi_gpe_block_info
 suffix:semicolon
 multiline_comment|/* Information about a particular GPE register pair */
-r_typedef
+DECL|struct|acpi_gpe_register_info
 r_struct
+id|acpi_gpe_register_info
 (brace
 DECL|member|status_address
+r_struct
 id|acpi_generic_address
 id|status_address
 suffix:semicolon
 multiline_comment|/* Address of status reg */
 DECL|member|enable_address
+r_struct
 id|acpi_generic_address
 id|enable_address
 suffix:semicolon
@@ -549,19 +540,19 @@ id|u8
 id|base_gpe_number
 suffix:semicolon
 multiline_comment|/* Base GPE number for this register */
-DECL|typedef|acpi_gpe_register_info
 )brace
-id|acpi_gpe_register_info
 suffix:semicolon
 DECL|macro|ACPI_GPE_LEVEL_TRIGGERED
 mdefine_line|#define ACPI_GPE_LEVEL_TRIGGERED        1
 DECL|macro|ACPI_GPE_EDGE_TRIGGERED
 mdefine_line|#define ACPI_GPE_EDGE_TRIGGERED         2
 multiline_comment|/* Information about each particular GPE level */
-r_typedef
+DECL|struct|acpi_gpe_number_info
 r_struct
+id|acpi_gpe_number_info
 (brace
 DECL|member|method_node
+r_struct
 id|acpi_namespace_node
 op_star
 id|method_node
@@ -587,24 +578,22 @@ DECL|member|bit_mask
 id|u8
 id|bit_mask
 suffix:semicolon
-DECL|typedef|acpi_gpe_number_info
 )brace
-id|acpi_gpe_number_info
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_gpe_index_info
 r_struct
+id|acpi_gpe_index_info
 (brace
 DECL|member|number_index
 id|u8
 id|number_index
 suffix:semicolon
-DECL|typedef|acpi_gpe_index_info
 )brace
-id|acpi_gpe_index_info
 suffix:semicolon
 multiline_comment|/* Information about each particular fixed event */
-r_typedef
+DECL|struct|acpi_fixed_event_handler
 r_struct
+id|acpi_fixed_event_handler
 (brace
 DECL|member|handler
 id|acpi_event_handler
@@ -617,12 +606,11 @@ op_star
 id|context
 suffix:semicolon
 multiline_comment|/* Context to be passed to handler */
-DECL|typedef|acpi_fixed_event_handler
 )brace
-id|acpi_fixed_event_handler
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_fixed_event_info
 r_struct
+id|acpi_fixed_event_info
 (brace
 DECL|member|status_register_id
 id|u8
@@ -640,13 +628,12 @@ DECL|member|enable_bit_mask
 id|u16
 id|enable_bit_mask
 suffix:semicolon
-DECL|typedef|acpi_fixed_event_info
 )brace
-id|acpi_fixed_event_info
 suffix:semicolon
 multiline_comment|/* Information used during field processing */
-r_typedef
+DECL|struct|acpi_field_info
 r_struct
+id|acpi_field_info
 (brace
 DECL|member|skip_field
 id|u8
@@ -660,9 +647,7 @@ DECL|member|pkg_length
 id|u32
 id|pkg_length
 suffix:semicolon
-DECL|typedef|acpi_field_info
 )brace
-id|acpi_field_info
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Generic &quot;state&quot; object for stacks&n; *&n; ****************************************************************************/
 DECL|macro|ACPI_CONTROL_NORMAL
@@ -683,53 +668,46 @@ r_struct
 id|acpi_obj_mutex
 suffix:semicolon
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 suffix:semicolon
 DECL|macro|ACPI_STATE_COMMON
-mdefine_line|#define ACPI_STATE_COMMON                  /* Two 32-bit fields and a pointer */&bslash;&n;&t;u8                      data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;      &bslash;&n;&t;u16                     value;      &bslash;&n;&t;u16                     state;      &bslash;&n;&t;u16                     reserved;   &bslash;&n;&t;void                    *next;      &bslash;&n;
+mdefine_line|#define ACPI_STATE_COMMON                  /* Two 32-bit fields and a pointer */&bslash;&n;&t;u8                                  data_type;          /* To differentiate various internal objs */&bslash;&n;&t;u8                                  flags;      &bslash;&n;&t;u16                                 value;      &bslash;&n;&t;u16                                 state;      &bslash;&n;&t;u16                                 reserved;   &bslash;&n;&t;void                                *next;      &bslash;&n;
 DECL|struct|acpi_common_state
-r_typedef
 r_struct
 id|acpi_common_state
 (brace
 id|ACPI_STATE_COMMON
-DECL|typedef|acpi_common_state
 )brace
-id|acpi_common_state
 suffix:semicolon
 multiline_comment|/*&n; * Update state - used to traverse complex objects such as packages&n; */
 DECL|struct|acpi_update_state
-r_typedef
 r_struct
 id|acpi_update_state
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|object
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|object
 suffix:semicolon
-DECL|typedef|acpi_update_state
 )brace
-id|acpi_update_state
 suffix:semicolon
 multiline_comment|/*&n; * Pkg state - used to traverse nested package structures&n; */
 DECL|struct|acpi_pkg_state
-r_typedef
 r_struct
 id|acpi_pkg_state
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|source_object
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|source_object
 suffix:semicolon
 DECL|member|dest_object
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|dest_object
 suffix:semicolon
@@ -752,20 +730,17 @@ DECL|member|index
 id|u16
 id|index
 suffix:semicolon
-DECL|typedef|acpi_pkg_state
 )brace
-id|acpi_pkg_state
 suffix:semicolon
 multiline_comment|/*&n; * Control state - one per if/else and while constructs.&n; * Allows nesting of these constructs&n; */
 DECL|struct|acpi_control_state
-r_typedef
 r_struct
 id|acpi_control_state
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|predicate_op
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|predicate_op
 suffix:semicolon
@@ -785,35 +760,30 @@ DECL|member|opcode
 id|u16
 id|opcode
 suffix:semicolon
-DECL|typedef|acpi_control_state
 )brace
-id|acpi_control_state
 suffix:semicolon
 multiline_comment|/*&n; * Scope state - current scope during namespace lookups&n; */
 DECL|struct|acpi_scope_state
-r_typedef
 r_struct
 id|acpi_scope_state
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|node
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
-DECL|typedef|acpi_scope_state
 )brace
-id|acpi_scope_state
 suffix:semicolon
 DECL|struct|acpi_pscope_state
-r_typedef
 r_struct
 id|acpi_pscope_state
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|op
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|op
 suffix:semicolon
@@ -840,13 +810,10 @@ id|u32
 id|arg_count
 suffix:semicolon
 multiline_comment|/* Number of fixed arguments */
-DECL|typedef|acpi_pscope_state
 )brace
-id|acpi_pscope_state
 suffix:semicolon
 multiline_comment|/*&n; * Thread state - one per thread across multiple walk states.  Multiple walk&n; * states are created when there are nested control methods executing.&n; */
 DECL|struct|acpi_thread_state
-r_typedef
 r_struct
 id|acpi_thread_state
 (brace
@@ -860,7 +827,7 @@ suffix:semicolon
 multiline_comment|/* Head of list of walk_states for this thread */
 DECL|member|acquired_mutex_list
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|acquired_mutex_list
 suffix:semicolon
@@ -875,20 +842,17 @@ id|u16
 id|current_sync_level
 suffix:semicolon
 multiline_comment|/* Mutex Sync (nested acquire) level */
-DECL|typedef|acpi_thread_state
 )brace
-id|acpi_thread_state
 suffix:semicolon
 multiline_comment|/*&n; * Result values - used to accumulate the results of nested&n; * AML arguments&n; */
 DECL|struct|acpi_result_values
-r_typedef
 r_struct
 id|acpi_result_values
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|obj_desc
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|obj_desc
 (braket
@@ -903,9 +867,7 @@ DECL|member|last_insert
 id|u8
 id|last_insert
 suffix:semicolon
-DECL|typedef|acpi_result_values
 )brace
-id|acpi_result_values
 suffix:semicolon
 r_typedef
 DECL|typedef|acpi_parse_downwards
@@ -921,7 +883,7 @@ op_star
 id|walk_state
 comma
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 op_star
 id|out_op
@@ -943,71 +905,75 @@ id|walk_state
 suffix:semicolon
 multiline_comment|/*&n; * Notify info - used to pass info to the deferred notify&n; * handler/dispatcher.&n; */
 DECL|struct|acpi_notify_info
-r_typedef
 r_struct
 id|acpi_notify_info
 (brace
 id|ACPI_STATE_COMMON
 DECL|member|node
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
 DECL|member|handler_obj
 r_union
-id|acpi_operand_obj
+id|acpi_operand_object
 op_star
 id|handler_obj
 suffix:semicolon
-DECL|typedef|acpi_notify_info
 )brace
-id|acpi_notify_info
 suffix:semicolon
 multiline_comment|/* Generic state is union of structs above */
-DECL|union|acpi_gen_state
-r_typedef
+DECL|union|acpi_generic_state
 r_union
-id|acpi_gen_state
+id|acpi_generic_state
 (brace
 DECL|member|common
+r_struct
 id|acpi_common_state
 id|common
 suffix:semicolon
 DECL|member|control
+r_struct
 id|acpi_control_state
 id|control
 suffix:semicolon
 DECL|member|update
+r_struct
 id|acpi_update_state
 id|update
 suffix:semicolon
 DECL|member|scope
+r_struct
 id|acpi_scope_state
 id|scope
 suffix:semicolon
 DECL|member|parse_scope
+r_struct
 id|acpi_pscope_state
 id|parse_scope
 suffix:semicolon
 DECL|member|pkg
+r_struct
 id|acpi_pkg_state
 id|pkg
 suffix:semicolon
 DECL|member|thread
+r_struct
 id|acpi_thread_state
 id|thread
 suffix:semicolon
 DECL|member|results
+r_struct
 id|acpi_result_values
 id|results
 suffix:semicolon
 DECL|member|notify
+r_struct
 id|acpi_notify_info
 id|notify
 suffix:semicolon
-DECL|typedef|acpi_generic_state
 )brace
-id|acpi_generic_state
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Interpreter typedefs and structs&n; *&n; ****************************************************************************/
 r_typedef
@@ -1027,7 +993,6 @@ suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Parser typedefs and structs&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * AML opcode, name, and argument layout&n; */
 DECL|struct|acpi_opcode_info
-r_typedef
 r_struct
 id|acpi_opcode_info
 (brace
@@ -1069,14 +1034,11 @@ id|u8
 id|type
 suffix:semicolon
 multiline_comment|/* Opcode type */
-DECL|typedef|acpi_opcode_info
 )brace
-id|acpi_opcode_info
 suffix:semicolon
-DECL|union|acpi_parse_val
-r_typedef
+DECL|union|acpi_parse_value
 r_union
-id|acpi_parse_val
+id|acpi_parse_value
 (brace
 DECL|member|integer
 id|acpi_integer
@@ -1084,6 +1046,7 @@ id|integer
 suffix:semicolon
 multiline_comment|/* integer constant (Up to 64 bits) */
 DECL|member|integer64
+r_struct
 id|uint64_struct
 id|integer64
 suffix:semicolon
@@ -1128,17 +1091,15 @@ suffix:semicolon
 multiline_comment|/* NULL terminated string */
 DECL|member|arg
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
 multiline_comment|/* arguments and contained ops */
-DECL|typedef|acpi_parse_value
 )brace
-id|acpi_parse_value
 suffix:semicolon
 DECL|macro|ACPI_PARSE_COMMON
-mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_obj    *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_obj    *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                      disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                      disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;char                    aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
+mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                                  data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                                  flags;          /* Type of Op */&bslash;&n;&t;u16                                 aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                                 aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_object             *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_object             *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                                  disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                                  disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;char                                aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;   /* NON-DEBUG members below: */&bslash;&n;&t;struct acpi_namespace_node          *node;          /* for use by interpreter */&bslash;&n;&t;union acpi_parse_value              value;          /* Value or args associated with the opcode */&bslash;&n;
 DECL|macro|ACPI_DASM_BUFFER
 mdefine_line|#define ACPI_DASM_BUFFER        0x00
 DECL|macro|ACPI_DASM_RESOURCE
@@ -1152,21 +1113,17 @@ mdefine_line|#define ACPI_DASM_EISAID        0x04
 DECL|macro|ACPI_DASM_MATCHOP
 mdefine_line|#define ACPI_DASM_MATCHOP       0x05
 multiline_comment|/*&n; * generic operation (for example:  If, While, Store)&n; */
-DECL|struct|acpi_parseobj_common
-r_typedef
+DECL|struct|acpi_parse_obj_common
 r_struct
-id|acpi_parseobj_common
+id|acpi_parse_obj_common
 (brace
 id|ACPI_PARSE_COMMON
-DECL|typedef|acpi_parse_obj_common
 )brace
-id|acpi_parse_obj_common
 suffix:semicolon
 multiline_comment|/*&n; * Extended Op for named ops (Scope, Method, etc.), deferred ops (Methods and op_regions),&n; * and bytelists.&n; */
-DECL|struct|acpi_parseobj_named
-r_typedef
+DECL|struct|acpi_parse_obj_named
 r_struct
-id|acpi_parseobj_named
+id|acpi_parse_obj_named
 (brace
 id|ACPI_PARSE_COMMON
 DECL|member|path
@@ -1190,26 +1147,23 @@ id|u32
 id|name
 suffix:semicolon
 multiline_comment|/* 4-byte name or zero if no name */
-DECL|typedef|acpi_parse_obj_named
 )brace
-id|acpi_parse_obj_named
 suffix:semicolon
 multiline_comment|/* The parse node is the fundamental element of the parse tree */
-DECL|struct|acpi_parseobj_asl
-r_typedef
+DECL|struct|acpi_parse_obj_asl
 r_struct
-id|acpi_parseobj_asl
+id|acpi_parse_obj_asl
 (brace
 id|ACPI_PARSE_COMMON
 DECL|member|child
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|child
 suffix:semicolon
 DECL|member|parent_method
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|parent_method
 suffix:semicolon
@@ -1310,34 +1264,31 @@ id|parse_op_name
 l_int|12
 )braket
 suffix:semicolon
-DECL|typedef|acpi_parse_obj_asl
 )brace
-id|acpi_parse_obj_asl
 suffix:semicolon
-DECL|union|acpi_parse_obj
-r_typedef
+DECL|union|acpi_parse_object
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 (brace
 DECL|member|common
+r_struct
 id|acpi_parse_obj_common
 id|common
 suffix:semicolon
 DECL|member|named
+r_struct
 id|acpi_parse_obj_named
 id|named
 suffix:semicolon
 DECL|member|asl
+r_struct
 id|acpi_parse_obj_asl
 id|asl
 suffix:semicolon
-DECL|typedef|acpi_parse_object
 )brace
-id|acpi_parse_object
 suffix:semicolon
 multiline_comment|/*&n; * Parse state - one state per parser invocation and each control&n; * method.&n; */
 DECL|struct|acpi_parse_state
-r_typedef
 r_struct
 id|acpi_parse_state
 (brace
@@ -1377,33 +1328,31 @@ suffix:semicolon
 multiline_comment|/* current package end */
 DECL|member|start_op
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|start_op
 suffix:semicolon
 multiline_comment|/* root of parse tree */
 DECL|member|start_node
 r_struct
-id|acpi_node
+id|acpi_namespace_node
 op_star
 id|start_node
 suffix:semicolon
 DECL|member|scope
 r_union
-id|acpi_gen_state
+id|acpi_generic_state
 op_star
 id|scope
 suffix:semicolon
 multiline_comment|/* current scope */
 DECL|member|start_scope
 r_union
-id|acpi_parse_obj
+id|acpi_parse_object
 op_star
 id|start_scope
 suffix:semicolon
-DECL|typedef|acpi_parse_state
 )brace
-id|acpi_parse_state
 suffix:semicolon
 multiline_comment|/* Parse object flags */
 DECL|macro|ACPI_PARSEOP_GENERIC
@@ -1428,8 +1377,9 @@ mdefine_line|#define ACPI_PARSEOP_SPECIAL                    0x10
 multiline_comment|/*****************************************************************************&n; *&n; * Hardware (ACPI registers) and PNP&n; *&n; ****************************************************************************/
 DECL|macro|PCI_ROOT_HID_STRING
 mdefine_line|#define PCI_ROOT_HID_STRING         &quot;PNP0A03&quot;
-r_typedef
+DECL|struct|acpi_bit_register_info
 r_struct
+id|acpi_bit_register_info
 (brace
 DECL|member|parent_register
 id|u8
@@ -1443,9 +1393,7 @@ DECL|member|access_bit_mask
 id|u16
 id|access_bit_mask
 suffix:semicolon
-DECL|typedef|acpi_bit_register_info
 )brace
-id|acpi_bit_register_info
 suffix:semicolon
 multiline_comment|/*&n; * Register IDs&n; * These are the full ACPI registers&n; */
 DECL|macro|ACPI_REGISTER_PM1_STATUS
@@ -1598,8 +1546,9 @@ mdefine_line|#define ACPI_RDESC_TYPE_QWORD_ADDRESS_SPACE     0x8A
 multiline_comment|/* String version of device HIDs and UIDs */
 DECL|macro|ACPI_DEVICE_ID_LENGTH
 mdefine_line|#define ACPI_DEVICE_ID_LENGTH                   0x09
-r_typedef
+DECL|struct|acpi_device_id
 r_struct
+id|acpi_device_id
 (brace
 DECL|member|buffer
 r_char
@@ -1608,18 +1557,15 @@ id|buffer
 id|ACPI_DEVICE_ID_LENGTH
 )braket
 suffix:semicolon
-DECL|typedef|acpi_device_id
 )brace
-id|acpi_device_id
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Miscellaneous&n; *&n; ****************************************************************************/
 DECL|macro|ACPI_ASCII_ZERO
 mdefine_line|#define ACPI_ASCII_ZERO                      0x30
 multiline_comment|/*****************************************************************************&n; *&n; * Debugger&n; *&n; ****************************************************************************/
-DECL|struct|dbmethodinfo
-r_typedef
+DECL|struct|acpi_db_method_info
 r_struct
-id|dbmethodinfo
+id|acpi_db_method_info
 (brace
 DECL|member|thread_gate
 id|acpi_handle
@@ -1651,9 +1597,21 @@ id|pathname
 l_int|128
 )braket
 suffix:semicolon
-DECL|typedef|acpi_db_method_info
 )brace
-id|acpi_db_method_info
+suffix:semicolon
+DECL|struct|acpi_integrity_info
+r_struct
+id|acpi_integrity_info
+(brace
+DECL|member|nodes
+id|u32
+id|nodes
+suffix:semicolon
+DECL|member|objects
+id|u32
+id|objects
+suffix:semicolon
+)brace
 suffix:semicolon
 DECL|macro|ACPI_DB_REDIRECTABLE_OUTPUT
 mdefine_line|#define ACPI_DB_REDIRECTABLE_OUTPUT  0x01
@@ -1662,8 +1620,9 @@ mdefine_line|#define ACPI_DB_CONSOLE_OUTPUT       0x02
 DECL|macro|ACPI_DB_DUPLICATE_OUTPUT
 mdefine_line|#define ACPI_DB_DUPLICATE_OUTPUT     0x03
 multiline_comment|/*****************************************************************************&n; *&n; * Debug&n; *&n; ****************************************************************************/
-r_typedef
+DECL|struct|acpi_debug_print_info
 r_struct
+id|acpi_debug_print_info
 (brace
 DECL|member|component_id
 id|u32
@@ -1679,9 +1638,7 @@ r_char
 op_star
 id|module_name
 suffix:semicolon
-DECL|typedef|acpi_debug_print_info
 )brace
-id|acpi_debug_print_info
 suffix:semicolon
 multiline_comment|/* Entry for a memory allocation (debug only) */
 DECL|macro|ACPI_MEM_MALLOC
@@ -1691,17 +1648,15 @@ mdefine_line|#define ACPI_MEM_CALLOC                      1
 DECL|macro|ACPI_MAX_MODULE_NAME
 mdefine_line|#define ACPI_MAX_MODULE_NAME                 16
 DECL|macro|ACPI_COMMON_DEBUG_MEM_HEADER
-mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block *previous; &bslash;&n;&t;struct acpi_debug_mem_block *next; &bslash;&n;&t;u32                         size; &bslash;&n;&t;u32                         component; &bslash;&n;&t;u32                         line; &bslash;&n;&t;char                        module[ACPI_MAX_MODULE_NAME]; &bslash;&n;&t;u8                          alloc_type;
-r_typedef
+mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block         *previous; &bslash;&n;&t;struct acpi_debug_mem_block         *next; &bslash;&n;&t;u32                                 size; &bslash;&n;&t;u32                                 component; &bslash;&n;&t;u32                                 line; &bslash;&n;&t;char                                module[ACPI_MAX_MODULE_NAME]; &bslash;&n;&t;u8                                  alloc_type;
+DECL|struct|acpi_debug_mem_header
 r_struct
+id|acpi_debug_mem_header
 (brace
 id|ACPI_COMMON_DEBUG_MEM_HEADER
-DECL|typedef|acpi_debug_mem_header
 )brace
-id|acpi_debug_mem_header
 suffix:semicolon
 DECL|struct|acpi_debug_mem_block
-r_typedef
 r_struct
 id|acpi_debug_mem_block
 (brace
@@ -1710,9 +1665,7 @@ DECL|member|user_space
 id|u64
 id|user_space
 suffix:semicolon
-DECL|typedef|acpi_debug_mem_block
 )brace
-id|acpi_debug_mem_block
 suffix:semicolon
 DECL|macro|ACPI_MEM_LIST_GLOBAL
 mdefine_line|#define ACPI_MEM_LIST_GLOBAL            0
@@ -1734,8 +1687,9 @@ DECL|macro|ACPI_MEM_LIST_MAX
 mdefine_line|#define ACPI_MEM_LIST_MAX               6
 DECL|macro|ACPI_NUM_MEM_LISTS
 mdefine_line|#define ACPI_NUM_MEM_LISTS              7
-r_typedef
+DECL|struct|acpi_memory_list
 r_struct
+id|acpi_memory_list
 (brace
 DECL|member|list_head
 r_void
@@ -1786,9 +1740,7 @@ op_star
 id|list_name
 suffix:semicolon
 macro_line|#endif
-DECL|typedef|acpi_memory_list
 )brace
-id|acpi_memory_list
 suffix:semicolon
 macro_line|#endif /* __ACLOCAL_H__ */
 eof

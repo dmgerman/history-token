@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -18,6 +18,7 @@ r_void
 DECL|function|acpi_ex_dump_operand
 id|acpi_ex_dump_operand
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -32,6 +33,7 @@ suffix:semicolon
 id|u32
 id|length
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -142,6 +144,7 @@ id|obj_desc
 comma
 r_sizeof
 (paren
+r_union
 id|acpi_operand_object
 )paren
 )paren
@@ -802,6 +805,7 @@ r_void
 DECL|function|acpi_ex_dump_operands
 id|acpi_ex_dump_operands
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -832,6 +836,7 @@ id|line_number
 id|acpi_native_uint
 id|i
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -1060,6 +1065,7 @@ r_void
 DECL|function|acpi_ex_dump_node
 id|acpi_ex_dump_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -1182,6 +1188,7 @@ r_void
 DECL|function|acpi_ex_dump_object_descriptor
 id|acpi_ex_dump_object_descriptor
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -1242,6 +1249,7 @@ id|ACPI_DESC_TYPE_NAMED
 id|acpi_ex_dump_node
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -1256,6 +1264,7 @@ l_string|&quot;&bslash;nAttached Object (%p):&bslash;n&quot;
 comma
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -1269,6 +1278,7 @@ id|acpi_ex_dump_object_descriptor
 (paren
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
