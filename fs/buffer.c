@@ -3064,7 +3064,7 @@ id|buffer_mapping-&gt;private_lock
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Create the appropriate buffers when given a page for data area and&n; * the size of each buffer.. Use the bh-&gt;b_this_page linked list to&n; * follow the buffers created.  Return NULL if unable to create more&n; * buffers.&n; * The async flag is used to differentiate async IO (paging, swapping)&n; * from ordinary buffer allocations, and only async requests are allowed&n; * to sleep waiting for buffer heads. &n; */
+multiline_comment|/*&n; * Create the appropriate buffers when given a page for data area and&n; * the size of each buffer.. Use the bh-&gt;b_this_page linked list to&n; * follow the buffers created.  Return NULL if unable to create more&n; * buffers.&n; *&n; * The retry flag is used to differentiate async IO (paging, swapping)&n; * which may not fail from ordinary buffer allocations.&n; */
 r_static
 r_struct
 id|buffer_head
@@ -3083,7 +3083,7 @@ r_int
 id|size
 comma
 r_int
-id|async
+id|retry
 )paren
 (brace
 r_struct
@@ -3124,7 +3124,6 @@ op_assign
 id|alloc_buffer_head
 c_func
 (paren
-id|async
 )paren
 suffix:semicolon
 r_if
@@ -3227,7 +3226,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|async
+id|retry
 )paren
 r_return
 l_int|NULL
@@ -8972,8 +8971,7 @@ op_star
 id|alloc_buffer_head
 c_func
 (paren
-r_int
-id|async
+r_void
 )paren
 (brace
 r_return

@@ -632,8 +632,7 @@ op_star
 id|alloc_buffer_head
 c_func
 (paren
-r_int
-id|async
+r_void
 )paren
 suffix:semicolon
 r_void
