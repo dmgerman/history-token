@@ -4383,6 +4383,7 @@ multiline_comment|/* Wait until we have enough socket memory. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sock_writeable
 c_func
 (paren

@@ -221,6 +221,10 @@ l_int|1
 multiline_comment|/*&t;ICMP_PREC_CUTOFF&t;*/
 )brace
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_ip_default_ttl
+suffix:semicolon
 multiline_comment|/* Control parameters for ECHO replies. */
 DECL|variable|sysctl_icmp_echo_ignore_all
 r_int
@@ -919,6 +923,10 @@ id|inet-&gt;tos
 op_assign
 id|skb-&gt;nh.iph-&gt;tos
 suffix:semicolon
+id|inet-&gt;ttl
+op_assign
+id|sysctl_ip_default_ttl
+suffix:semicolon
 id|daddr
 op_assign
 id|ipc.addr
@@ -1388,6 +1396,16 @@ op_member_access_from_pointer
 id|tos
 op_assign
 id|tos
+suffix:semicolon
+id|inet_sk
+c_func
+(paren
+id|icmp_socket-&gt;sk
+)paren
+op_member_access_from_pointer
+id|ttl
+op_assign
+id|sysctl_ip_default_ttl
 suffix:semicolon
 id|ipc.addr
 op_assign
@@ -2641,8 +2659,6 @@ r_struct
 id|icmphdr
 op_star
 id|icmph
-op_assign
-id|skb-&gt;h.icmph
 suffix:semicolon
 r_struct
 id|rtable
@@ -2755,6 +2771,10 @@ id|icmphdr
 )paren
 r_goto
 id|error
+suffix:semicolon
+id|icmph
+op_assign
+id|skb-&gt;h.icmph
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;18 is the highest &squot;known&squot; ICMP type. Anything else is a mystery&n;&t; *&n;&t; *&t;RFC 1122: 3.2.2  Unknown ICMP messages types MUST be silently discarded.&n;&t; */
 r_if

@@ -2247,6 +2247,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;dst cache overflow&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2597,6 +2598,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Neighbour table overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2636,6 +2638,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;rt_cache @%02x: %u.%u.%u.%u&quot;
 comma
 id|hash
@@ -10995,6 +10998,7 @@ l_int|256
 op_star
 r_sizeof
 (paren
+r_struct
 id|ip_rt_acct
 )paren
 op_star
@@ -11185,6 +11189,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;IP: routing cache hash table of %u buckets, %ldKbytes&bslash;n&quot;
 comma
 id|rt_hash_mask

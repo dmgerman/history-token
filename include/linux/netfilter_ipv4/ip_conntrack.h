@@ -4,6 +4,7 @@ mdefine_line|#define _IP_CONNTRACK_H
 multiline_comment|/* Connection state tracking for netfilter.  This is separated from,&n;   but required by, the NAT layer; it can also be used by an iptables&n;   extension. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|ip_conntrack_info
 r_enum
 id|ip_conntrack_info
@@ -99,16 +100,55 @@ macro_line|#else
 DECL|macro|IP_NF_ASSERT
 mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
+macro_line|#endif
+multiline_comment|/* Add protocol helper include file here */
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
 DECL|struct|ip_conntrack_expect
 r_struct
 id|ip_conntrack_expect
 (brace
-multiline_comment|/* Internal linked list */
+multiline_comment|/* Internal linked list (global expectation list) */
 DECL|member|list
 r_struct
 id|list_head
 id|list
 suffix:semicolon
+multiline_comment|/* expectation list for this master */
+DECL|member|expected_list
+r_struct
+id|list_head
+id|expected_list
+suffix:semicolon
+multiline_comment|/* The conntrack of the master connection */
+DECL|member|expectant
+r_struct
+id|ip_conntrack
+op_star
+id|expectant
+suffix:semicolon
+multiline_comment|/* The conntrack of the sibling connection, set after&n;&t; * expectation arrived */
+DECL|member|sibling
+r_struct
+id|ip_conntrack
+op_star
+id|sibling
+suffix:semicolon
+multiline_comment|/* Tuple saved for conntrack */
+DECL|member|ct_tuple
+r_struct
+id|ip_conntrack_tuple
+id|ct_tuple
+suffix:semicolon
+multiline_comment|/* Timer function; deletes the expectation. */
+DECL|member|timeout
+r_struct
+id|timer_list
+id|timeout
+suffix:semicolon
+multiline_comment|/* Data filled out by the conntrack helpers follow: */
 multiline_comment|/* We expect this tuple, with the following mask */
 DECL|member|tuple
 DECL|member|mask
@@ -132,20 +172,39 @@ op_star
 r_new
 )paren
 suffix:semicolon
-multiline_comment|/* The conntrack we are part of (set iff we&squot;re live) */
-DECL|member|expectant
+multiline_comment|/* At which sequence number did this expectation occur */
+DECL|member|seq
+id|u_int32_t
+id|seq
+suffix:semicolon
+r_union
+(brace
+multiline_comment|/* insert conntrack helper private data (expect) here */
+DECL|member|exp_ftp_info
 r_struct
-id|ip_conntrack
-op_star
-id|expectant
+id|ip_ct_ftp_expect
+id|exp_ftp_info
+suffix:semicolon
+DECL|member|exp_irc_info
+r_struct
+id|ip_ct_irc_expect
+id|exp_irc_info
+suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+r_union
+(brace
+multiline_comment|/* insert nat helper private data (expect) here */
+DECL|member|nat
+)brace
+id|nat
+suffix:semicolon
+macro_line|#endif
+DECL|member|help
+)brace
+id|help
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
-macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
-macro_line|#endif
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_irc.h&gt;
 DECL|struct|ip_conntrack
 r_struct
 id|ip_conntrack
@@ -179,15 +238,22 @@ id|timer_list
 id|timeout
 suffix:semicolon
 multiline_comment|/* If we&squot;re expecting another related connection, this will be&n;           in expected linked list */
-DECL|member|expected
+DECL|member|sibling_list
 r_struct
-id|ip_conntrack_expect
-id|expected
+id|list_head
+id|sibling_list
 suffix:semicolon
-multiline_comment|/* If we were expected by another connection, this will be it */
+multiline_comment|/* Current number of expected connections */
+DECL|member|expecting
+r_int
+r_int
+id|expecting
+suffix:semicolon
+multiline_comment|/* If we were expected by an expectation, this will be it */
 DECL|member|master
 r_struct
-id|nf_ct_info
+id|ip_conntrack_expect
+op_star
 id|master
 suffix:semicolon
 multiline_comment|/* Helper, if any. */
@@ -225,14 +291,15 @@ id|proto
 suffix:semicolon
 r_union
 (brace
+multiline_comment|/* insert conntrack helper private data (master) here */
 DECL|member|ct_ftp_info
 r_struct
-id|ip_ct_ftp
+id|ip_ct_ftp_master
 id|ct_ftp_info
 suffix:semicolon
 DECL|member|ct_irc_info
 r_struct
-id|ip_ct_irc
+id|ip_ct_irc_master
 id|ct_irc_info
 suffix:semicolon
 DECL|member|help
@@ -267,6 +334,9 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IP_NF_NAT_NEEDED */
 )brace
 suffix:semicolon
+multiline_comment|/* get master conntrack via master expectation */
+DECL|macro|master_ct
+mdefine_line|#define master_ct(conntr) (conntr-&gt;master ? conntr-&gt;master-&gt;expectant : NULL)
 multiline_comment|/* Alter reply tuple (maybe alter helper).  If it&squot;s already taken,&n;   return 0 and don&squot;t do alteration. */
 r_extern
 r_int
