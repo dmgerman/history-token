@@ -2724,7 +2724,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;KERN_INFO Intel MultiProcessor Specification v1.%d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Intel MultiProcessor Specification v1.%d&bslash;n&quot;
 comma
 id|mpf-&gt;mpf_specification
 )paren
