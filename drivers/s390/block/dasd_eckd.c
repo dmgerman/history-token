@@ -5709,7 +5709,7 @@ op_minus
 id|EIO
 )paren
 (brace
-multiline_comment|/* Request got an eror or has been timed out. */
+multiline_comment|/* Request got an error or has been timed out. */
 id|dasd_eckd_release
 c_func
 (paren
@@ -5875,7 +5875,7 @@ op_minus
 id|EIO
 )paren
 (brace
-multiline_comment|/* Request got an eror or has been timed out. */
+multiline_comment|/* Request got an error or has been timed out. */
 id|dasd_eckd_release
 c_func
 (paren
