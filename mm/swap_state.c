@@ -21,6 +21,11 @@ op_assign
 id|swap_writepage
 comma
 dot
+id|sync_page
+op_assign
+id|block_sync_page
+comma
+dot
 id|set_page_dirty
 op_assign
 id|__set_page_dirty_nobuffers
