@@ -3389,10 +3389,22 @@ r_char
 op_star
 id|timetype
 suffix:semicolon
+multiline_comment|/*&n;&t; * AMD systems with more than one CPU don&squot;t have fully synchronized&n;&t; * TSCs. Always use HPET gettimeofday for these, although it is slower.&n;&t; * Intel SMP systems usually have synchronized TSCs, so use always&n;&t; * the TSC.&n;&t; *&n;&t; * Exceptions:&n;&t; * IBM Summit. Will need to be special cased later.&n; &t; * AMD dual core may also not need HPET. Check me.&n;&t; */
 r_if
 c_cond
 (paren
 id|vxtime.hpet_address
+op_logical_and
+id|num_online_cpus
+c_func
+(paren
+)paren
+OG
+l_int|1
+op_logical_and
+id|boot_cpu_data.x86_vendor
+op_eq
+id|X86_VENDOR_AMD
 )paren
 (brace
 id|timetype
@@ -3422,6 +3434,11 @@ r_else
 (brace
 id|timetype
 op_assign
+id|vxtime.hpet_address
+ques
+c_cond
+l_string|&quot;HPET/TSC&quot;
+suffix:colon
 l_string|&quot;PIT/TSC&quot;
 suffix:semicolon
 id|vxtime.mode
