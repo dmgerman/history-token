@@ -469,8 +469,8 @@ r_struct
 id|ipmi_system_interface_addr
 id|addr
 suffix:semicolon
-op_star
-id|send_heartbeat_now
+r_int
+id|hbnow
 op_assign
 l_int|0
 suffix:semicolon
@@ -535,8 +535,7 @@ id|WDOG_TIMEOUT_NONE
 )paren
 (brace
 multiline_comment|/* In ipmi 1.0, setting the timer stops the watchdog, we&n;&t;&t;   need to start it back up again. */
-op_star
-id|send_heartbeat_now
+id|hbnow
 op_assign
 l_int|1
 suffix:semicolon
@@ -705,17 +704,35 @@ id|rv
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|send_heartbeat_now
+)paren
+op_star
+id|send_heartbeat_now
+op_assign
+id|hbnow
+suffix:semicolon
 r_return
 id|rv
 suffix:semicolon
 )brace
+multiline_comment|/* Parameters to ipmi_set_timeout */
+DECL|macro|IPMI_SET_TIMEOUT_NO_HB
+mdefine_line|#define IPMI_SET_TIMEOUT_NO_HB&t;&t;&t;0
+DECL|macro|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
+mdefine_line|#define IPMI_SET_TIMEOUT_HB_IF_NECESSARY&t;1
+DECL|macro|IPMI_SET_TIMEOUT_FORCE_HB
+mdefine_line|#define IPMI_SET_TIMEOUT_FORCE_HB&t;&t;2
 DECL|function|ipmi_set_timeout
 r_static
 r_int
 id|ipmi_set_timeout
 c_func
 (paren
-r_void
+r_int
+id|do_heartbeat
 )paren
 (brace
 r_int
@@ -775,8 +792,25 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+id|do_heartbeat
+op_eq
+id|IPMI_SET_TIMEOUT_FORCE_HB
+)paren
+op_logical_or
+(paren
+(paren
 id|send_heartbeat_now
 )paren
+op_logical_and
+(paren
+id|do_heartbeat
+op_eq
+id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
+)paren
+)paren
+)paren
+(brace
 id|rv
 op_assign
 id|ipmi_heartbeat
@@ -784,6 +818,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|rv
@@ -841,7 +876,7 @@ op_assign
 id|dummy_recv_free
 )brace
 suffix:semicolon
-multiline_comment|/* Special call, doesn&squot;t claim any locks.  This is only to be called&n;   at panic or halt time, in run-to-completion mode, when the caller&n;   is the only CPU and the only thing that will be going IPMI&n;   calls. */
+multiline_comment|/* Special call, doesn&squot;t claim any locks.  This is only to be called&n;   at panic or halt time, in run-to-completion mode, when the caller&n;   is the only CPU and the only thing that will be going is these IPMI&n;   calls. */
 DECL|function|panic_halt_ipmi_set_timeout
 r_static
 r_void
@@ -929,6 +964,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
 )paren
 suffix:semicolon
 )brace
@@ -1118,9 +1154,11 @@ r_return
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_FORCE_HB
 )paren
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -1136,6 +1174,7 @@ r_return
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
 )paren
 suffix:semicolon
 )brace
@@ -1502,6 +1541,7 @@ r_return
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
 )paren
 suffix:semicolon
 r_case
@@ -1579,6 +1619,7 @@ r_return
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_HB_IF_NECESSARY
 )paren
 suffix:semicolon
 r_case
@@ -1672,6 +1713,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_NO_HB
 )paren
 suffix:semicolon
 id|ipmi_start_timer_on_heartbeat
@@ -1694,6 +1736,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_FORCE_HB
 )paren
 suffix:semicolon
 )brace
@@ -2226,6 +2269,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_NO_HB
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;
@@ -2438,11 +2482,6 @@ comma
 id|POLL_IN
 )paren
 suffix:semicolon
-multiline_comment|/* On some machines, the heartbeat will give&n;&t;&t;&t;   an error and not work unless we re-enable&n;&t;&t;&t;   the timer.   So do so. */
-id|pretimeout_since_last_heartbeat
-op_assign
-l_int|1
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -2452,6 +2491,11 @@ id|ipmi_read_lock
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* On some machines, the heartbeat will give&n;&t;   an error and not work unless we re-enable&n;&t;   the timer.   So do so. */
+id|pretimeout_since_last_heartbeat
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 DECL|variable|ipmi_hndlrs
 r_static
@@ -2618,6 +2662,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_FORCE_HB
 )paren
 suffix:semicolon
 id|printk
@@ -2671,6 +2716,11 @@ c_func
 (paren
 l_string|&quot;IPMI watchdog pre-timeout&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* On some machines, the heartbeat will give&n;&t;   an error and not work unless we re-enable&n;&t;   the timer.   So do so. */
+id|pretimeout_since_last_heartbeat
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 id|NOTIFY_DONE
@@ -3492,6 +3542,7 @@ suffix:semicolon
 id|ipmi_set_timeout
 c_func
 (paren
+id|IPMI_SET_TIMEOUT_NO_HB
 )paren
 suffix:semicolon
 multiline_comment|/* Wait to make sure the message makes it out.  The lower layer has&n;&t;   pointers to our buffers, we want to make sure they are done before&n;&t;   we release our memory. */
@@ -3940,7 +3991,7 @@ c_func
 (paren
 id|option
 comma
-l_string|&quot;preop_none&quot;
+l_string|&quot;preop_give_data&quot;
 )paren
 op_eq
 l_int|0
