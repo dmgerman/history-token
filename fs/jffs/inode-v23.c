@@ -6805,7 +6805,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* jffs_file_write()  */
 r_static
-id|ssize_t
+r_int
 DECL|function|jffs_prepare_write
 id|jffs_prepare_write
 c_func
@@ -6862,7 +6862,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* jffs_prepare_write() */
 r_static
-id|ssize_t
+r_int
 DECL|function|jffs_commit_write
 id|jffs_commit_write
 c_func
