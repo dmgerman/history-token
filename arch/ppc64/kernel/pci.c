@@ -1457,14 +1457,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x40
-comma
-l_string|&quot;PCI Probe&quot;
-)paren
-suffix:semicolon
+singleline_comment|//ppc64_boot_msg(0x40, &quot;PCI Probe&quot;);
 id|printk
 c_func
 (paren
@@ -1644,14 +1637,7 @@ comma
 l_string|&quot;PCI: Probing PCI hardware done.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x41
-comma
-l_string|&quot;PCI Done&quot;
-)paren
-suffix:semicolon
+singleline_comment|//ppc64_boot_msg(0x41, &quot;PCI Done&quot;);
 )brace
 DECL|variable|pcibios_init
 id|subsys_initcall
