@@ -2478,7 +2478,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@dev: Device whose IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
+multiline_comment|/**&n; *&t;ata_dev_id_string - Convert IDENTIFY DEVICE page into string&n; *&t;@dev: Device whose IDENTIFY DEVICE results we will examine&n; *&t;@s: string into which data is output&n; *&t;@ofs: offset into identify device page&n; *&t;@len: length of string to return. must be an even number.&n; *&n; *&t;The strings in the IDENTIFY DEVICE page are broken up into&n; *&t;16-bit chunks.  Run through the string, and output each&n; *&t;8-bit chunk linearly, regardless of platform.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|ata_dev_id_string
 r_void
 id|ata_dev_id_string
@@ -2557,54 +2557,6 @@ op_sub_assign
 l_int|2
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/**&n; *&t;ata_dev_parse_strings - Store useful IDENTIFY DEVICE page strings&n; *&t;@dev: Device whose IDENTIFY DEVICE page info we use&n; *&n; *&t;We store &squot;vendor&squot; and &squot;product&squot; strings read from the device,&n; *&t;for later use in the SCSI simulator&squot;s INQUIRY data.&n; *&n; *&t;Set these strings here, in the case of &squot;product&squot;, using&n; *&t;data read from the ATA IDENTIFY DEVICE page.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
-DECL|function|ata_dev_parse_strings
-r_static
-r_void
-id|ata_dev_parse_strings
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|dev
-)paren
-(brace
-m_assert
-(paren
-id|dev
-op_member_access_from_pointer
-r_class
-op_eq
-id|ATA_DEV_ATA
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|dev-&gt;vendor
-comma
-l_string|&quot;ATA     &quot;
-comma
-l_int|8
-)paren
-suffix:semicolon
-id|ata_dev_id_string
-c_func
-(paren
-id|dev
-comma
-id|dev-&gt;product
-comma
-id|ATA_ID_PROD_OFS
-comma
-r_sizeof
-(paren
-id|dev-&gt;product
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;__ata_dev_select - Select device 0/1 on ATA bus&n; *&t;@ap: ATA channel to manipulate&n; *&t;@device: ATA device (numbered from zero) to select&n; *&n; *&t;Use the method defined in the ATA specification to&n; *&t;make either device 0, or device 1, active on the&n; *&t;ATA channel.&n; *&n; *&t;LOCKING:&n; *&t;caller.&n; */
 DECL|function|__ata_dev_select
@@ -3453,12 +3405,6 @@ id|err_out_nosup
 suffix:semicolon
 )brace
 id|ata_dump_id
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|ata_dev_parse_strings
 c_func
 (paren
 id|dev
@@ -12559,6 +12505,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|ata_host_intr
+)paren
+suffix:semicolon
+DECL|variable|ata_dev_id_string
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|ata_dev_id_string
 )paren
 suffix:semicolon
 eof

@@ -935,24 +935,6 @@ r_int
 r_int
 id|udma_mode
 suffix:semicolon
-DECL|member|vendor
-r_int
-r_char
-id|vendor
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* space-padded, not ASCIIZ */
-DECL|member|product
-r_int
-r_char
-id|product
-(braket
-l_int|32
-)braket
-suffix:semicolon
-multiline_comment|/* WARNING: shorter than&n;&t;&t;&t;&t;&t;&t; * ATAPI7 spec size, 40 ASCII&n;&t;&t;&t;&t;&t;&t; * characters&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* cache info about current transfer mode */
 DECL|member|xfer_protocol
 id|u8
@@ -1872,6 +1854,30 @@ r_struct
 id|ata_queued_cmd
 op_star
 id|qc
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_dev_id_string
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|dev
+comma
+r_int
+r_char
+op_star
+id|s
+comma
+r_int
+r_int
+id|ofs
+comma
+r_int
+r_int
+id|len
 )paren
 suffix:semicolon
 r_extern

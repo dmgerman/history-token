@@ -56,6 +56,11 @@ id|ATA_ID_PROD_OFS
 op_assign
 l_int|27
 comma
+DECL|enumerator|ATA_ID_FW_REV_OFS
+id|ATA_ID_FW_REV_OFS
+op_assign
+l_int|23
+comma
 DECL|enumerator|ATA_ID_SERNO_OFS
 id|ATA_ID_SERNO_OFS
 op_assign
@@ -852,6 +857,8 @@ DECL|macro|ata_id_has_lba
 mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_has_dma
 mdefine_line|#define ata_id_has_dma(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 9))
+DECL|macro|ata_id_removeable
+mdefine_line|#define ata_id_removeable(dev)&t;((dev)-&gt;id[0] &amp; (1 &lt;&lt; 7))
 DECL|macro|ata_id_u32
 mdefine_line|#define ata_id_u32(dev,n)&t;&bslash;&n;&t;(((u32) (dev)-&gt;id[(n) + 1] &lt;&lt; 16) | ((u32) (dev)-&gt;id[(n)]))
 DECL|macro|ata_id_u64
