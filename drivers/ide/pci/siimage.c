@@ -7,7 +7,10 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;siimage.h&quot;
+DECL|macro|SIIMAGE_VIRTUAL_DMAPIO
+macro_line|#undef SIIMAGE_VIRTUAL_DMAPIO
+DECL|macro|SIIMAGE_LARGE_DMA
+macro_line|#undef SIIMAGE_LARGE_DMA
 multiline_comment|/**&n; *&t;pdev_is_sata&t;&t;-&t;check if device is SATA&n; *&t;@pdev:&t;PCI device to check&n; *&t;&n; *&t;Returns true if this is a SATA controller&n; */
 DECL|function|pdev_is_sata
 r_static
@@ -4526,6 +4529,39 @@ op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
 )brace
+DECL|macro|DECLARE_SII_DEV
+mdefine_line|#define DECLARE_SII_DEV(name_str)&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.name&t;&t;= name_str,&t;&t;&bslash;&n;&t;&t;.init_chipset&t;= init_chipset_siimage,&t;&bslash;&n;&t;&t;.init_iops&t;= init_iops_siimage,&t;&bslash;&n;&t;&t;.init_hwif&t;= init_hwif_siimage,&t;&bslash;&n;&t;&t;.channels&t;= 2,&t;&t;&t;&bslash;&n;&t;&t;.autodma&t;= AUTODMA,&t;&t;&bslash;&n;&t;&t;.bootable&t;= ON_BOARD,&t;&t;&bslash;&n;&t;}
+DECL|variable|__devinitdata
+r_static
+id|ide_pci_device_t
+id|siimage_chipsets
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+multiline_comment|/* 0 */
+id|DECLARE_SII_DEV
+c_func
+(paren
+l_string|&quot;SiI680&quot;
+)paren
+comma
+multiline_comment|/* 1 */
+id|DECLARE_SII_DEV
+c_func
+(paren
+l_string|&quot;SiI3112 Serial ATA&quot;
+)paren
+comma
+multiline_comment|/* 2 */
+id|DECLARE_SII_DEV
+c_func
+(paren
+l_string|&quot;Adaptec AAR-1210SA&quot;
+)paren
+)brace
+suffix:semicolon
 multiline_comment|/**&n; *&t;siimage_init_one&t;-&t;pci layer discovery entry&n; *&t;@dev: PCI device&n; *&t;@id: ident table entry&n; *&n; *&t;Called by the PCI code when it finds an SI680 or SI3112 controller.&n; *&t;We then use the IDE PCI generic helper to do most of the work.&n; */
 DECL|function|siimage_init_one
 r_static
