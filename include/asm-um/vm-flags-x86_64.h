@@ -25,9 +25,15 @@ r_int
 r_int
 id|vm_force_exec32
 suffix:semicolon
+macro_line|#ifdef TIF_IA32
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_data_default_flags32 : &bslash;&n;&t;  vm_data_default_flags)
 DECL|macro|VM_STACK_DEFAULT_FLAGS
 mdefine_line|#define VM_STACK_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_stack_flags32 : vm_stack_flags)
+macro_line|#endif
+DECL|macro|VM_DATA_DEFAULT_FLAGS
+mdefine_line|#define VM_DATA_DEFAULT_FLAGS vm_data_default_flags
+DECL|macro|VM_STACK_DEFAULT_FLAGS
+mdefine_line|#define VM_STACK_DEFAULT_FLAGS vm_stack_flags
 macro_line|#endif
 eof
