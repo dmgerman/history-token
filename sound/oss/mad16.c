@@ -2013,6 +2013,7 @@ id|i
 )paren
 )paren
 )paren
+suffix:semicolon
 r_else
 id|DDB
 c_func
@@ -2319,6 +2320,7 @@ id|i
 )paren
 )paren
 )paren
+suffix:semicolon
 r_else
 id|DDB
 c_func
