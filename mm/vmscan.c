@@ -1994,9 +1994,6 @@ r_struct
 id|page_state
 op_star
 id|ps
-comma
-r_int
-id|priority
 )paren
 (brace
 r_int
@@ -2781,9 +2778,6 @@ r_struct
 id|page_state
 op_star
 id|ps
-comma
-r_int
-id|priority
 )paren
 (brace
 r_int
@@ -2880,8 +2874,6 @@ comma
 id|count
 comma
 id|ps
-comma
-id|priority
 )paren
 suffix:semicolon
 )brace
@@ -3050,8 +3042,6 @@ op_amp
 id|nr_mapped
 comma
 id|ps
-comma
-id|priority
 )paren
 suffix:semicolon
 op_star
@@ -3593,8 +3583,6 @@ op_amp
 id|nr_mapped
 comma
 id|ps
-comma
-id|priority
 )paren
 suffix:semicolon
 r_if
