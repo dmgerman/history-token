@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-vr1000.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Machine support for Thorcom VR1000 board. Designed for Thorcom by&n; * Simtec Electronics, http://www.simtec.co.uk/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB Power control&n; *     04-Sep-2004 BJD  Added new uart init, and io init&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     06-Aug-2004 BJD  Fixed call to time initialisation&n; *     05-Apr-2004 BJD  Copied to make mach-vr1000.c&n; *     18-Oct-2004 BJD  Updated board struct&n; *     04-Nov-2004 BJD  Clock and serial configuration update&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 macro_line|#include &quot;usb-simtec.h&quot;
@@ -493,14 +494,69 @@ DECL|macro|ULCON
 mdefine_line|#define ULCON S3C2410_LCON_CS8 | S3C2410_LCON_PNONE | S3C2410_LCON_STOPB
 DECL|macro|UFCON
 mdefine_line|#define UFCON S3C2410_UFCON_RXTRIG8 | S3C2410_UFCON_FIFOMODE
-multiline_comment|/* base baud rate for all our UARTs */
-DECL|variable|vr1000_serial_clock
+multiline_comment|/* uart clock source(s) */
+DECL|variable|vr1000_serial_clocks
 r_static
-r_int
-r_int
-id|vr1000_serial_clock
+r_struct
+id|s3c24xx_uart_clksrc
+id|vr1000_serial_clocks
+(braket
+)braket
 op_assign
-l_int|3692307
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;uclk&quot;
+comma
+dot
+id|divisor
+op_assign
+l_int|1
+comma
+dot
+id|min_baud
+op_assign
+l_int|0
+comma
+dot
+id|max_baud
+op_assign
+l_int|0
+comma
+)brace
+comma
+(braket
+l_int|1
+)braket
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;pclk&quot;
+comma
+dot
+id|divisor
+op_assign
+l_int|1
+comma
+dot
+id|min_baud
+op_assign
+l_int|0
+comma
+dot
+id|max_baud
+op_assign
+l_float|0.
+)brace
+)brace
 suffix:semicolon
 DECL|variable|vr1000_uartcfgs
 r_static
@@ -527,12 +583,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|vr1000_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -546,6 +596,20 @@ dot
 id|ufcon
 op_assign
 id|UFCON
+comma
+dot
+id|clocks
+op_assign
+id|vr1000_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|vr1000_serial_clocks
+)paren
 comma
 )brace
 comma
@@ -565,12 +629,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|vr1000_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -584,6 +642,20 @@ dot
 id|ufcon
 op_assign
 id|UFCON
+comma
+dot
+id|clocks
+op_assign
+id|vr1000_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|vr1000_serial_clocks
+)paren
 comma
 )brace
 comma
@@ -604,12 +676,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|vr1000_serial_clock
-comma
-dot
 id|ucon
 op_assign
 id|UCON
@@ -623,6 +689,20 @@ dot
 id|ufcon
 op_assign
 id|UFCON
+comma
+dot
+id|clocks
+op_assign
+id|vr1000_serial_clocks
+comma
+dot
+id|clocks_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|vr1000_serial_clocks
+)paren
 comma
 )brace
 )brace
@@ -655,6 +735,33 @@ id|s3c_device_iis
 comma
 )brace
 suffix:semicolon
+DECL|variable|vr1000_clocks
+r_static
+r_struct
+id|clk
+op_star
+id|vr1000_clocks
+(braket
+)braket
+op_assign
+(brace
+op_amp
+id|s3c24xx_dclk0
+comma
+op_amp
+id|s3c24xx_dclk1
+comma
+op_amp
+id|s3c24xx_clkout0
+comma
+op_amp
+id|s3c24xx_clkout1
+comma
+op_amp
+id|s3c24xx_uclk
+comma
+)brace
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -676,6 +783,21 @@ c_func
 (paren
 id|vr1000_devices
 )paren
+comma
+dot
+id|clocks
+op_assign
+id|vr1000_clocks
+comma
+dot
+id|clocks_count
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|vr1000_clocks
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|function|vr1000_map_io
@@ -687,6 +809,42 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* initialise clock sources */
+id|s3c24xx_dclk0.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+id|s3c24xx_dclk0.rate
+op_assign
+l_int|12
+op_star
+l_int|1000
+op_star
+l_int|1000
+suffix:semicolon
+id|s3c24xx_dclk1.parent
+op_assign
+l_int|NULL
+suffix:semicolon
+id|s3c24xx_dclk1.rate
+op_assign
+l_int|3692307
+suffix:semicolon
+id|s3c24xx_clkout0.parent
+op_assign
+op_amp
+id|s3c24xx_dclk0
+suffix:semicolon
+id|s3c24xx_clkout1.parent
+op_assign
+op_amp
+id|s3c24xx_dclk1
+suffix:semicolon
+id|s3c24xx_uclk.parent
+op_assign
+op_amp
+id|s3c24xx_clkout1
+suffix:semicolon
 id|s3c24xx_init_io
 c_func
 (paren
