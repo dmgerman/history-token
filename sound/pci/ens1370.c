@@ -2022,7 +2022,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
-l_string|&quot;codec write timeout at 0x%lx [0x%lx]&bslash;n&quot;
+l_string|&quot;codec write timeout at 0x%lx [0x%x]&bslash;n&quot;
 comma
 id|ES_REG
 c_func
@@ -2421,7 +2421,7 @@ l_int|10
 id|snd_printk
 c_func
 (paren
-l_string|&quot;codec read timeout (final) at 0x%lx, reg = 0x%x [0x%lx]&bslash;n&quot;
+l_string|&quot;codec read timeout (final) at 0x%lx, reg = 0x%x [0x%x]&bslash;n&quot;
 comma
 id|ES_REG
 c_func
@@ -2469,7 +2469,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
-l_string|&quot;es1371: codec read timeout at 0x%lx [0x%lx]&bslash;n&quot;
+l_string|&quot;es1371: codec read timeout at 0x%lx [0x%x]&bslash;n&quot;
 comma
 id|ES_REG
 c_func
