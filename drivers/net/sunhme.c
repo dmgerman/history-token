@@ -13480,6 +13480,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|busdev
+op_eq
+l_int|NULL
+op_logical_or
 id|busdev-&gt;vendor
 op_ne
 id|PCI_VENDOR_ID_DEC

@@ -4720,6 +4720,14 @@ op_star
 id|hw
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
