@@ -64,7 +64,6 @@ DECL|macro|nth_page
 mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
 multiline_comment|/*&n; * Linux kernel virtual memory manager primitives.&n; * The idea being to have a &quot;virtual&quot; mm in the same way&n; * we have a virtual fs - giving a cleaner interface to the&n; * mm details, and allowing different kinds of memory mappings&n; * (from shared memory to executable loading to arbitrary&n; * mmap() functions).&n; */
 multiline_comment|/*&n; * This struct defines a memory VMM memory area. There is one of these&n; * per VM-area/task.  A VM area is any part of the process virtual memory&n; * space that has a special rule for the page-fault handlers (ie a shared&n; * library, the executable area etc).&n; */
-macro_line|#ifdef CONFIG_MMU
 DECL|struct|vm_area_struct
 r_struct
 id|vm_area_struct
@@ -187,6 +186,13 @@ op_star
 id|vm_private_data
 suffix:semicolon
 multiline_comment|/* was vm_pte (shared mem) */
+macro_line|#ifndef CONFIG_MMU
+DECL|member|vm_usage
+id|atomic_t
+id|vm_usage
+suffix:semicolon
+multiline_comment|/* refcount (VMAs shared if !MMU) */
+macro_line|#endif
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|vm_policy
 r_struct
@@ -198,63 +204,14 @@ multiline_comment|/* NUMA policy for the VMA */
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|struct|vm_area_struct
+multiline_comment|/*&n; * This struct defines the per-mm list of VMAs for uClinux. If CONFIG_MMU is&n; * disabled, then there&squot;s a single shared list of VMAs maintained by the&n; * system, and mm&squot;s subscribe to these individually&n; */
+DECL|struct|vm_list_struct
 r_struct
-id|vm_area_struct
-(brace
-DECL|member|vm_link
-r_struct
-id|list_head
-id|vm_link
-suffix:semicolon
-multiline_comment|/* system object list */
-DECL|member|vm_usage
-id|atomic_t
-id|vm_usage
-suffix:semicolon
-multiline_comment|/* count of refs */
-DECL|member|vm_start
-r_int
-r_int
-id|vm_start
-suffix:semicolon
-DECL|member|vm_end
-r_int
-r_int
-id|vm_end
-suffix:semicolon
-DECL|member|vm_page_prot
-id|pgprot_t
-id|vm_page_prot
-suffix:semicolon
-multiline_comment|/* access permissions of this VMA */
-DECL|member|vm_flags
-r_int
-r_int
-id|vm_flags
-suffix:semicolon
-DECL|member|vm_pgoff
-r_int
-r_int
-id|vm_pgoff
-suffix:semicolon
-DECL|member|vm_file
-r_struct
-id|file
-op_star
-id|vm_file
-suffix:semicolon
-multiline_comment|/* file or device mapped */
-)brace
-suffix:semicolon
-DECL|struct|mm_tblock_struct
-r_struct
-id|mm_tblock_struct
+id|vm_list_struct
 (brace
 DECL|member|next
 r_struct
-id|mm_tblock_struct
+id|vm_list_struct
 op_star
 id|next
 suffix:semicolon
@@ -266,10 +223,11 @@ id|vma
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifndef CONFIG_MMU
 r_extern
 r_struct
-id|list_head
-id|nommu_vma_list
+id|rb_root
+id|nommu_vma_tree
 suffix:semicolon
 r_extern
 r_struct

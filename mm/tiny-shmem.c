@@ -379,13 +379,11 @@ id|vma-&gt;vm_file
 op_assign
 id|file
 suffix:semicolon
-macro_line|#ifdef CONFIG_MMU
 id|vma-&gt;vm_ops
 op_assign
 op_amp
 id|generic_file_vm_ops
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
