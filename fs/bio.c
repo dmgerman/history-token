@@ -1208,13 +1208,19 @@ id|nr_pages
 suffix:semicolon
 id|nr_pages
 op_assign
-id|q-&gt;max_sectors
-op_rshift
 (paren
-id|PAGE_SHIFT
-op_minus
+(paren
+id|q-&gt;max_sectors
+op_lshift
 l_int|9
 )paren
+op_plus
+id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 r_if
 c_cond
@@ -1308,7 +1314,7 @@ id|BIO_CLONED
 )paren
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1318,7 +1324,7 @@ op_ge
 id|bio-&gt;bi_max_vecs
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1336,7 +1342,7 @@ OG
 id|q-&gt;max_sectors
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * we might loose a segment or two here, but rather that than&n;&t; * make this too complex.&n;&t; */
 id|retry_segments
@@ -1380,7 +1386,7 @@ c_cond
 id|retried_segments
 )paren
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 id|bio-&gt;bi_flags
 op_and_assign
@@ -1425,7 +1431,12 @@ r_if
 c_cond
 (paren
 id|q-&gt;merge_bvec_fn
-op_logical_and
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * merge_bvec_fn() returns number of bytes it can accept&n;&t;&t; * at this offset&n;&t;&t; */
+r_if
+c_cond
+(paren
 id|q
 op_member_access_from_pointer
 id|merge_bvec_fn
@@ -1437,6 +1448,8 @@ id|bio
 comma
 id|bvec
 )paren
+OL
+id|len
 )paren
 (brace
 id|bvec-&gt;bv_page
@@ -1452,8 +1465,9 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
+)brace
 )brace
 id|bio-&gt;bi_vcnt
 op_increment
@@ -1469,7 +1483,7 @@ op_add_assign
 id|len
 suffix:semicolon
 r_return
-l_int|0
+id|len
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * bio_endio - end I/O on a bio&n; * @bio:&t;bio&n; * @bytes_done:&t;number of bytes completed&n; * @error:&t;error, if any&n; *&n; * Description:&n; *   bio_endio() will end I/O @bytes_done number of bytes. This may be just&n; *   a partial part of the bio, or it may be the whole bio. bio_endio() is&n; *   the preferred way to end I/O on a bio, it takes care of decrementing&n; *   bi_size and clearing BIO_UPTODATE on error. @error is 0 on success, and&n; *   and one of the established -Exxxx (-EIO, for instance) error values in&n; *   case something went wrong.&n; **/
