@@ -601,6 +601,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|add_to_page_cache
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_to_page_cache
+)paren
+suffix:semicolon
 DECL|function|add_to_page_cache_lru
 r_int
 id|add_to_page_cache_lru
