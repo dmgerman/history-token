@@ -14002,7 +14002,7 @@ c_func
 (paren
 id|IEEE1394_RAW1394_DEV
 comma
-l_int|16
+l_int|1
 )paren
 suffix:semicolon
 id|cdev_del
