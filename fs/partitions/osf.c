@@ -291,7 +291,6 @@ c_func
 id|state
 comma
 id|slot
-op_increment
 comma
 id|le32_to_cpu
 c_func
@@ -305,6 +304,9 @@ c_func
 id|partition-&gt;p_size
 )paren
 )paren
+suffix:semicolon
+id|slot
+op_increment
 suffix:semicolon
 )brace
 id|printk
