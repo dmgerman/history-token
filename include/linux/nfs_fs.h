@@ -219,8 +219,6 @@ DECL|macro|NFS_INO_INVALID_DATA
 mdefine_line|#define NFS_INO_INVALID_DATA&t;0x0010&t;&t;/* cached data is invalid */
 DECL|macro|NFS_INO_INVALID_ATIME
 mdefine_line|#define NFS_INO_INVALID_ATIME&t;0x0020&t;&t;/* cached atime is invalid */
-DECL|macro|NFS_INO_FAKE_ROOT
-mdefine_line|#define NFS_INO_FAKE_ROOT&t;0x0080&t;&t;/* root inode placeholder */
 DECL|function|NFS_I
 r_static
 r_inline
@@ -281,8 +279,6 @@ DECL|macro|NFS_REVALIDATING
 mdefine_line|#define NFS_REVALIDATING(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_REVALIDATING)
 DECL|macro|NFS_STALE
 mdefine_line|#define NFS_STALE(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_STALE)
-DECL|macro|NFS_FAKE_ROOT
-mdefine_line|#define NFS_FAKE_ROOT(inode)&t;&t;(NFS_FLAGS(inode) &amp; NFS_INO_FAKE_ROOT)
 DECL|macro|NFS_FILEID
 mdefine_line|#define NFS_FILEID(inode)&t;&t;(NFS_I(inode)-&gt;fileid)
 DECL|function|nfs_caches_unstable

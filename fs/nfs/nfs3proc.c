@@ -313,9 +313,9 @@ op_star
 id|fhandle
 comma
 r_struct
-id|nfs_fattr
+id|nfs_fsinfo
 op_star
-id|fattr
+id|info
 )paren
 (brace
 r_int
@@ -324,10 +324,12 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS call  getroot&bslash;n&quot;
+l_string|&quot;%s: call  fsinfo&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-id|fattr-&gt;valid
+id|info-&gt;fattr-&gt;valid
 op_assign
 l_int|0
 suffix:semicolon
@@ -336,13 +338,13 @@ op_assign
 id|rpc_call
 c_func
 (paren
-id|server-&gt;client
+id|server-&gt;client_sys
 comma
-id|NFS3PROC_GETATTR
+id|NFS3PROC_FSINFO
 comma
 id|fhandle
 comma
-id|fattr
+id|info
 comma
 l_int|0
 )paren
@@ -350,9 +352,51 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS reply getroot&bslash;n&quot;
+l_string|&quot;%s: reply fsinfo %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|info-&gt;fattr-&gt;valid
+op_amp
+id|NFS_ATTR_FATTR
+)paren
+)paren
+(brace
+id|status
+op_assign
+id|rpc_call
+c_func
+(paren
+id|server-&gt;client_sys
+comma
+id|NFS3PROC_GETATTR
+comma
+id|fhandle
+comma
+id|info-&gt;fattr
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: reply getattr %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|status
+)paren
+suffix:semicolon
+)brace
 r_return
 id|status
 suffix:semicolon
