@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
@@ -54,10 +54,12 @@ id|FALSE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_register_index&n; *&n; * PARAMETERS:  gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
-id|u32
-DECL|function|acpi_ev_get_gpe_register_index
-id|acpi_ev_get_gpe_register_index
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_register_info&n; *&n; * PARAMETERS:  gpe_number      - Raw GPE number&n; *&n; * RETURN:      Pointer to the info struct for this GPE register.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
+r_struct
+id|acpi_gpe_register_info
+op_star
+DECL|function|acpi_ev_get_gpe_register_info
+id|acpi_ev_get_gpe_register_info
 (paren
 id|u32
 id|gpe_number
@@ -73,12 +75,15 @@ id|acpi_gbl_gpe_number_max
 (brace
 r_return
 (paren
-id|ACPI_GPE_INVALID
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
 r_return
 (paren
+op_amp
+id|acpi_gbl_gpe_register_info
+(braket
 id|ACPI_DIV_8
 (paren
 id|acpi_gbl_gpe_number_to_index
@@ -88,6 +93,47 @@ id|gpe_number
 dot
 id|number_index
 )paren
+)braket
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_number_info&n; *&n; * PARAMETERS:  gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the number index (index into the GPE number info table)&n; *              associated with this GPE.&n; *&n; ******************************************************************************/
+r_struct
+id|acpi_gpe_number_info
+op_star
+DECL|function|acpi_ev_get_gpe_number_info
+id|acpi_ev_get_gpe_number_info
+(paren
+id|u32
+id|gpe_number
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|gpe_number
+OG
+id|acpi_gbl_gpe_number_max
+)paren
+(brace
+r_return
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+op_amp
+id|acpi_gbl_gpe_number_info
+(braket
+id|acpi_gbl_gpe_number_to_index
+(braket
+id|gpe_number
+)braket
+dot
+id|number_index
+)braket
 )paren
 suffix:semicolon
 )brace

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
 macro_line|#include &lt;acpi/acevents.h&gt;
@@ -1073,8 +1073,10 @@ id|context
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|gpe_number_index
+r_struct
+id|acpi_gpe_number_info
+op_star
+id|gpe_number_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -1096,9 +1098,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that we have a valid GPE number */
-id|gpe_number_index
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1106,9 +1108,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1143,12 +1144,7 @@ multiline_comment|/* Make sure that there isn&squot;t a handler there already */
 r_if
 c_cond
 (paren
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|handler
+id|gpe_number_info-&gt;handler
 )paren
 (brace
 id|status
@@ -1160,30 +1156,15 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Install the handler */
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|handler
+id|gpe_number_info-&gt;handler
 op_assign
 id|handler
 suffix:semicolon
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|context
+id|gpe_number_info-&gt;context
 op_assign
 id|context
 suffix:semicolon
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|type
+id|gpe_number_info-&gt;type
 op_assign
 (paren
 id|u8
@@ -1249,8 +1230,10 @@ id|handler
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
-id|gpe_number_index
+r_struct
+id|acpi_gpe_number_info
+op_star
+id|gpe_number_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -1272,9 +1255,9 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Ensure that we have a valid GPE number */
-id|gpe_number_index
+id|gpe_number_info
 op_assign
-id|acpi_ev_get_gpe_number_index
+id|acpi_ev_get_gpe_number_info
 (paren
 id|gpe_number
 )paren
@@ -1282,9 +1265,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|gpe_number_index
-op_eq
-id|ACPI_GPE_INVALID
+op_logical_neg
+id|gpe_number_info
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1342,12 +1324,7 @@ multiline_comment|/* Make sure that the installed handler is the same */
 r_if
 c_cond
 (paren
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|handler
+id|gpe_number_info-&gt;handler
 op_ne
 id|handler
 )paren
@@ -1369,21 +1346,11 @@ id|cleanup
 suffix:semicolon
 )brace
 multiline_comment|/* Remove the handler */
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|handler
+id|gpe_number_info-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
-id|acpi_gbl_gpe_number_info
-(braket
-id|gpe_number_index
-)braket
-dot
-id|context
+id|gpe_number_info-&gt;context
 op_assign
 l_int|NULL
 suffix:semicolon
