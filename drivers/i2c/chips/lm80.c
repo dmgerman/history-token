@@ -444,8 +444,6 @@ DECL|variable|lm80_id
 r_static
 r_int
 id|lm80_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
 DECL|variable|lm80_driver

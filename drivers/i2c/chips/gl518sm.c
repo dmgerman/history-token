@@ -467,8 +467,6 @@ DECL|variable|gl518_id
 r_static
 r_int
 id|gl518_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show

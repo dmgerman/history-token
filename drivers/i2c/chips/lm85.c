@@ -1178,8 +1178,6 @@ DECL|variable|lm85_id
 r_static
 r_int
 id|lm85_id
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* 4 Fans */
 DECL|function|show_fan
