@@ -7998,10 +7998,10 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|fsync_dev
+id|fsync_bdev
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 suffix:semicolon
 r_if

@@ -1204,12 +1204,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_increment
 id|port-&gt;open_count
 suffix:semicolon
@@ -1476,12 +1470,6 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -1550,12 +1538,6 @@ id|serial
 r_return
 suffix:semicolon
 )brace
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 op_decrement
 id|port-&gt;open_count
 suffix:semicolon
@@ -1651,12 +1633,6 @@ id|priv-&gt;bytes_out
 )paren
 suffix:semicolon
 )brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* klsi_105_close */
 multiline_comment|/* We need to write a complete 64-byte data block and encode the&n; * number actually sent in the first double-byte, LSB-order. That &n; * leaves at most 62 bytes of payload.&n; */
@@ -1725,13 +1701,6 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
-multiline_comment|/* to lock against someone else trying to&n;&t;&t;&t;&t;   take an URB we just selected from the pool */
 r_while
 c_loop
 (paren
@@ -1920,12 +1889,6 @@ id|size
 )paren
 )paren
 (brace
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
@@ -2065,12 +2028,6 @@ suffix:semicolon
 )brace
 m_exit
 suffix:colon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|priv-&gt;bytes_out
 op_add_assign
 id|bytes_sent
@@ -3869,24 +3826,10 @@ comma
 id|port-&gt;number
 )paren
 suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
 id|usb_unlink_urb
 (paren
 id|port-&gt;read_urb
 )paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|klsi_105_unthrottle
@@ -3910,12 +3853,6 @@ id|__FUNCTION__
 l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
-)paren
-suffix:semicolon
-id|down
-(paren
-op_amp
-id|port-&gt;sem
 )paren
 suffix:semicolon
 id|port-&gt;read_urb-&gt;dev
@@ -3945,14 +3882,6 @@ l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|port-&gt;sem
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|klsi_105_init

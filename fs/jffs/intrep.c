@@ -1611,8 +1611,10 @@ DECL|function|jffs_create_control
 id|jffs_create_control
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 (brace
 r_struct
@@ -1777,7 +1779,7 @@ c_func
 (paren
 id|c
 comma
-id|dev
+id|sb-&gt;s_dev
 )paren
 )paren
 )paren
@@ -2240,7 +2242,7 @@ op_assign
 id|jffs_create_control
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 )paren
 )paren
@@ -2311,7 +2313,7 @@ op_assign
 id|jffs_create_control
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 )paren
 )paren
@@ -7809,9 +7811,6 @@ id|node_offset
 comma
 id|__u32
 id|max_size
-comma
-id|kdev_t
-id|dev
 )paren
 (brace
 r_struct
@@ -8133,8 +8132,6 @@ comma
 id|size
 op_minus
 id|read_data
-comma
-id|f-&gt;c-&gt;sb-&gt;s_dev
 )paren
 )paren
 OL

@@ -2516,11 +2516,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_struct
@@ -3080,10 +3075,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine system bus clock.&n; */
 id|via_clock
 op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
+id|system_bus_speed
 op_star
 l_int|1000
 suffix:semicolon

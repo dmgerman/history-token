@@ -73,16 +73,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -1777,14 +1767,6 @@ op_star
 id|chipset_table
 )paren
 (brace
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1809,7 +1791,7 @@ id|byte
 )paren
 (paren
 (paren
-id|bus_speed
+id|system_bus_speed
 op_le
 l_int|33
 )paren
@@ -1840,14 +1822,6 @@ op_star
 id|chipset_table
 )paren
 (brace
-r_int
-id|bus_speed
-op_assign
-id|system_bus_clock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1872,7 +1846,7 @@ id|byte
 )paren
 (paren
 (paren
-id|bus_speed
+id|system_bus_speed
 op_le
 l_int|33
 )paren
@@ -2523,17 +2497,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
-(paren
-(paren
-r_int
-)paren
 id|ide_dma_off_quietly
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2865,9 +2834,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 (paren
@@ -3749,11 +3718,6 @@ r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_if
@@ -3789,7 +3753,7 @@ c_func
 (paren
 l_string|&quot;%s: ROM enabled at 0x%08lx&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 comma
 id|dev-&gt;resource
 (braket

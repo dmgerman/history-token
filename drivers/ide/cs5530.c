@@ -57,16 +57,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -1136,16 +1126,12 @@ r_int
 r_int
 id|__init
 id|pci_init_cs5530
+c_func
 (paren
 r_struct
 id|pci_dev
 op_star
 id|dev
-comma
-r_const
-r_char
-op_star
-id|name
 )paren
 (brace
 r_struct
@@ -1245,7 +1231,7 @@ c_func
 (paren
 l_string|&quot;%s: unable to locate PCI MASTER function&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1264,7 +1250,7 @@ c_func
 (paren
 l_string|&quot;%s: unable to locate CS5530 LEGACY function&bslash;n&quot;
 comma
-id|name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
