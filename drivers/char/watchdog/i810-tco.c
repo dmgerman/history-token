@@ -446,9 +446,6 @@ c_cond
 id|tco_expect_close
 op_eq
 l_int|42
-op_logical_and
-op_logical_neg
-id|nowayout
 )paren
 (brace
 id|tco_timer_stop
@@ -531,9 +528,17 @@ c_cond
 id|len
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago... */
 id|tco_expect_close
 op_assign
 l_int|0
@@ -587,6 +592,7 @@ id|tco_expect_close
 op_assign
 l_int|42
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* someone wrote to us, we should reload the timer */
 id|tco_timer_reload
