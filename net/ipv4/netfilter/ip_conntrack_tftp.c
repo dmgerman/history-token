@@ -39,7 +39,6 @@ r_static
 r_int
 id|ports_c
 suffix:semicolon
-macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
 c_func
 (paren
@@ -62,7 +61,6 @@ comma
 l_string|&quot;port numbers of tftp servers&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#if 0
 mdefine_line|#define DEBUGP(format, args...) printk(&quot;%s:%s:&quot; format, &bslash;&n;                                       __FILE__, __FUNCTION__ , ## args)
 macro_line|#else
