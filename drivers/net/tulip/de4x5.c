@@ -1277,7 +1277,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|de4x5_interrupt
 c_func
 (paren
@@ -4256,6 +4256,12 @@ id|version
 suffix:semicolon
 )brace
 multiline_comment|/* The DE4X5-specific entries in the device structure. */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
@@ -4657,8 +4663,6 @@ id|DE4X5_SIGR
 )paren
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 id|status
 suffix:semicolon
@@ -5511,7 +5515,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n;** The DE4X5 interrupt handler. &n;** &n;** I/O Read/Writes through intermediate PCI bridges are never &squot;posted&squot;,&n;** so that the asserted interrupt always has some real data to work with -&n;** if these I/O accesses are ever changed to memory accesses, ensure the&n;** STS write is read immediately to complete the transaction if the adapter&n;** is not on bus 0. Lost interrupts can still occur when the PCI bus load&n;** is high and descriptor status bits cannot be set before the associated&n;** interrupt is asserted and this routine entered.&n;*/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|de4x5_interrupt
 id|de4x5_interrupt
 c_func
@@ -5558,6 +5562,12 @@ suffix:semicolon
 id|u_long
 id|iobase
 suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5574,6 +5584,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -5675,6 +5686,10 @@ id|lp-&gt;irq_mask
 r_break
 suffix:semicolon
 multiline_comment|/* All done */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5771,6 +5786,7 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -5840,6 +5856,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -7089,8 +7110,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 multiline_comment|/* Put the adapter to sleep to save power */
 id|yawn

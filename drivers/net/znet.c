@@ -274,7 +274,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|znet_interrupt
 c_func
 (paren
@@ -2275,7 +2275,7 @@ suffix:semicolon
 multiline_comment|/* The ZNET interrupt handler. */
 DECL|function|znet_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|znet_interrupt
 c_func
 (paren
@@ -2314,6 +2314,11 @@ id|boguscnt
 op_assign
 l_int|20
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2332,6 +2337,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock
@@ -2458,6 +2464,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2680,6 +2690,11 @@ id|znet-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|znet_rx

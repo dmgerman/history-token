@@ -769,7 +769,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pcnet32_interrupt
 c_func
 (paren
@@ -2897,6 +2897,12 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;priv
 op_assign
 id|lp
@@ -4192,8 +4198,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5217,7 +5221,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The PCNET32 interrupt handler. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|pcnet32_interrupt
 id|pcnet32_interrupt
 c_func
@@ -5282,6 +5286,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -5845,6 +5850,9 @@ c_func
 op_amp
 id|lp-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
@@ -6643,8 +6651,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -287,7 +287,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|rio_interrupt
 (paren
 r_int
@@ -3502,7 +3502,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|rio_interrupt
 id|rio_interrupt
 (paren
@@ -3541,6 +3541,11 @@ r_int
 id|cnt
 op_assign
 id|max_intrloop
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -3591,6 +3596,10 @@ OL
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/* Processing received packets */
 r_if
@@ -3693,6 +3702,13 @@ op_plus
 id|CountDown
 )paren
 suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -3732,6 +3748,7 @@ id|tx_use
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_int
 id|flag
 op_assign

@@ -2442,7 +2442,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Process interrupts&n; *&n; *&t;dev, priv will always refer to the 0th device in Multi-NIC mode.&n; */
 DECL|function|dgrs_intr
 r_static
-r_void
+id|irqreturn_t
 id|dgrs_intr
 c_func
 (paren
@@ -2771,6 +2771,9 @@ id|PLX_LCL2PCI_DOORBELL
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Download the board firmware&n; */

@@ -1094,7 +1094,8 @@ macro_line|#endif
 DECL|function|phy_interrupt
 r_static
 r_inline
-r_void
+r_int
+r_int
 id|phy_interrupt
 (paren
 r_struct
@@ -1189,12 +1190,18 @@ op_plus
 id|CSR12
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|tulip_interrupt
-r_void
+id|irqreturn_t
 id|tulip_interrupt
 c_func
 (paren
@@ -1285,6 +1292,12 @@ id|work_count
 op_assign
 id|tulip_max_interrupt_work
 suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Let&squot;s see whether the interrupt really is for us */
 id|csr5
 op_assign
@@ -1303,6 +1316,8 @@ id|tp-&gt;flags
 op_amp
 id|HAS_PHY_IRQ
 )paren
+id|handled
+op_assign
 id|phy_interrupt
 (paren
 id|dev
@@ -1324,6 +1339,11 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 id|tp-&gt;nir
 op_increment
@@ -2598,6 +2618,9 @@ op_plus
 id|CSR5
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 eof

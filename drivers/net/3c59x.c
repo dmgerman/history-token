@@ -3536,7 +3536,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|vortex_interrupt
 c_func
 (paren
@@ -3554,7 +3554,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|boomerang_interrupt
 c_func
 (paren
@@ -11125,9 +11125,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 multiline_comment|/*&n; * This is the ISR for the vortex series chips.&n; * full_bus_master_tx == 0 &amp;&amp; full_bus_master_rx == 0&n; */
-DECL|function|vortex_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|vortex_interrupt
 id|vortex_interrupt
 c_func
 (paren
@@ -11173,6 +11173,11 @@ r_int
 id|work_done
 op_assign
 id|max_interrupt_work
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -11225,6 +11230,10 @@ r_goto
 id|handler_exit
 suffix:semicolon
 multiline_comment|/* No interrupt: shared IRQs cause this */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11665,11 +11674,18 @@ op_amp
 id|vp-&gt;lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the ISR for the boomerang series chips.&n; * full_bus_master_tx == 1 &amp;&amp; full_bus_master_rx == 1&n; */
-DECL|function|boomerang_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|boomerang_interrupt
 id|boomerang_interrupt
 c_func
 (paren
@@ -11715,6 +11731,9 @@ r_int
 id|work_done
 op_assign
 id|max_interrupt_work
+suffix:semicolon
+r_int
+id|handled
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -11765,10 +11784,16 @@ id|IntLatch
 op_eq
 l_int|0
 )paren
+(brace
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|handler_exit
 suffix:semicolon
 multiline_comment|/* No interrupt: shared IRQs can cause this */
+)brace
 r_if
 c_cond
 (paren
@@ -11792,10 +11817,18 @@ id|KERN_DEBUG
 l_string|&quot;boomerang_interrupt(1): status = 0xffff&bslash;n&quot;
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|handler_exit
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12369,6 +12402,13 @@ c_func
 (paren
 op_amp
 id|vp-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
