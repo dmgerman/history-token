@@ -1814,6 +1814,49 @@ id|rq2-&gt;lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NUMA
+DECL|function|cpus_to_balance
+r_static
+r_inline
+r_int
+r_int
+id|cpus_to_balance
+c_func
+(paren
+r_int
+id|this_cpu
+)paren
+(brace
+r_return
+id|__node_to_cpu_mask
+c_func
+(paren
+id|__cpu_to_node
+c_func
+(paren
+id|this_cpu
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_NUMA */
+DECL|function|cpus_to_balance
+r_static
+r_inline
+r_int
+r_int
+id|cpus_to_balance
+c_func
+(paren
+r_int
+id|this_cpu
+)paren
+(brace
+r_return
+id|cpu_online_map
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_NUMA */
 macro_line|#if CONFIG_SMP
 multiline_comment|/*&n; * double_lock_balance - lock the busiest runqueue&n; *&n; * this_rq is locked already. Recalculate nr_running if we have to&n; * drop the runqueue lock.&n; */
 DECL|function|double_lock_balance
@@ -1929,7 +1972,7 @@ r_return
 id|nr_running
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * find_busiest_queue - find the busiest runqueue.&n; */
+multiline_comment|/*&n; * find_busiest_queue - find the busiest runqueue among the cpus in cpumask.&n; */
 DECL|function|find_busiest_queue
 r_static
 r_inline
@@ -1951,6 +1994,10 @@ comma
 r_int
 op_star
 id|imbalance
+comma
+r_int
+r_int
+id|cpumask
 )paren
 (brace
 r_int
@@ -2023,10 +2070,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
-c_func
 (paren
+(paren
+l_int|1UL
+op_lshift
 id|i
+)paren
+op_amp
+id|cpumask
 )paren
 )paren
 r_continue
@@ -2328,6 +2379,12 @@ id|idle
 comma
 op_amp
 id|imbalance
+comma
+id|cpus_to_balance
+c_func
+(paren
+id|this_cpu
+)paren
 )paren
 suffix:semicolon
 r_if
