@@ -4956,6 +4956,7 @@ id|dst
 )paren
 (brace
 r_return
+op_logical_neg
 id|xfrm_bundle_ok
 c_func
 (paren
