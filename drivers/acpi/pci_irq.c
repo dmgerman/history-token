@@ -867,6 +867,7 @@ id|entry-&gt;irq
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * current thinking is that acpi_pci_irq_derive() adds no value&n; * and should be deleted, so warn if it actually does something.&n; */
 r_static
 r_int
 DECL|function|acpi_pci_irq_derive
@@ -991,11 +992,23 @@ id|ACPI_DEBUG_PRINT
 c_func
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_WARN
 comma
-l_string|&quot;Derived IRQ %d&bslash;n&quot;
+l_string|&quot;Derive IRQ %d for device %s from %s&bslash;n&quot;
 comma
 id|irq
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
+comma
+id|pci_name
+c_func
+(paren
+id|bridge
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1130,6 +1143,19 @@ id|dev-&gt;devfn
 comma
 id|pin
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Check if the device has an IRQ,&n;&t; * Hotplug devices may get IRQs by scanning&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq
+op_logical_and
+id|dev-&gt;irq
+)paren
+id|irq
+op_assign
+id|dev-&gt;irq
 suffix:semicolon
 multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to derive an IRQ from the&n;&t; * device&squot;s parent bridge.&n;&t; */
 r_if

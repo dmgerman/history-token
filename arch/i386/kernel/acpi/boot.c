@@ -43,6 +43,16 @@ DECL|variable|acpi_strict
 r_int
 id|acpi_strict
 suffix:semicolon
+DECL|variable|__initdata
+id|acpi_interrupt_flags
+id|acpi_sci_flags
+id|__initdata
+suffix:semicolon
+DECL|variable|__initdata
+r_int
+id|acpi_sci_override_gsi
+id|__initdata
+suffix:semicolon
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|variable|__initdata
 r_static
@@ -636,6 +646,89 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Parse Interrupt Source Override for the ACPI SCI&n; */
+r_static
+r_void
+DECL|function|acpi_parse_sci_int_src_ovr
+id|acpi_parse_sci_int_src_ovr
+c_func
+(paren
+id|u8
+id|bus_irq
+comma
+id|u16
+id|polarity
+comma
+id|u16
+id|trigger
+comma
+id|u32
+id|global_irq
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|trigger
+op_eq
+l_int|0
+)paren
+multiline_comment|/* compatible SCI trigger is level */
+id|trigger
+op_assign
+l_int|3
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|polarity
+op_eq
+l_int|0
+)paren
+multiline_comment|/* compatible SCI polarity is low */
+id|polarity
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* Command-line over-ride via acpi_sci= */
+r_if
+c_cond
+(paren
+id|acpi_sci_flags.trigger
+)paren
+id|trigger
+op_assign
+id|acpi_sci_flags.trigger
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_sci_flags.polarity
+)paren
+id|polarity
+op_assign
+id|acpi_sci_flags.polarity
+suffix:semicolon
+id|mp_override_legacy_irq
+c_func
+(paren
+id|bus_irq
+comma
+id|polarity
+comma
+id|trigger
+comma
+id|global_irq
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * stash over-ride to indicate we&squot;ve been here&n;&t; * and for later update of acpi_fadt&n;&t; */
+id|acpi_sci_override_gsi
+op_assign
+id|global_irq
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 r_static
 r_int
 id|__init
@@ -679,6 +772,30 @@ c_func
 id|header
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|intsrc-&gt;bus_irq
+op_eq
+id|acpi_fadt.sci_int
+)paren
+(brace
+id|acpi_parse_sci_int_src_ovr
+c_func
+(paren
+id|intsrc-&gt;bus_irq
+comma
+id|intsrc-&gt;flags.polarity
+comma
+id|intsrc-&gt;flags.trigger
+comma
+id|intsrc-&gt;global_irq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|mp_override_legacy_irq
 (paren
 id|intsrc-&gt;bus_irq
@@ -744,14 +861,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_X86_IO_APIC */
 macro_line|#ifdef&t;CONFIG_ACPI_BUS
-multiline_comment|/*&n; * &quot;acpi_pic_sci=level&quot; (current default)&n; * programs the PIC-mode SCI to Level Trigger.&n; * (NO-OP if the BIOS set Level Trigger already)&n; *&n; * If a PIC-mode SCI is not recognized or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_pic_sci=edge&quot;&n; * (NO-OP if the BIOS set Edge Trigger already)&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
-DECL|variable|acpi_pic_sci_trigger
-r_static
-r_int
-id|__initdata
-id|acpi_pic_sci_trigger
-suffix:semicolon
-multiline_comment|/* 0: level, 1: edge */
+multiline_comment|/*&n; * acpi_pic_sci_set_trigger()&n; * &n; * use ELCR to set PIC-mode trigger type for SCI&n; *&n; * If a PIC-mode SCI is not recognized or gives spurious IRQ7&squot;s&n; * it may require Edge Trigger -- use &quot;acpi_sci=edge&quot;&n; *&n; * Port 0x4d0-4d1 are ECLR1 and ECLR2, the Edge/Level Control Registers&n; * for the 8259 PIC.  bit[n] = 1 means irq[n] is Level, otherwise Edge.&n; * ECLR1 is IRQ&squot;s 0-7 (IRQ 0, 1, 2 must be 0)&n; * ECLR2 is IRQ&squot;s 8-15 (IRQ 8, 13 must be 0)&n; */
 r_void
 id|__init
 DECL|function|acpi_pic_sci_set_trigger
@@ -761,6 +871,9 @@ c_func
 r_int
 r_int
 id|irq
+comma
+id|u16
+id|trigger
 )paren
 (brace
 r_int
@@ -826,8 +939,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|acpi_pic_sci_trigger
+id|trigger
+op_eq
+l_int|3
 )paren
 (brace
 id|printk
@@ -859,7 +973,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|acpi_pic_sci_trigger
+id|trigger
+op_eq
+l_int|1
 )paren
 (brace
 id|printk
@@ -872,7 +988,8 @@ id|outb
 c_func
 (paren
 id|val
-op_or
+op_amp
+op_complement
 id|mask
 comma
 id|port
@@ -887,104 +1004,6 @@ l_string|&quot; Trigger.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_int
-id|__init
-DECL|function|acpi_pic_sci_setup
-id|acpi_pic_sci_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|str
-op_logical_and
-op_star
-id|str
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-id|str
-comma
-l_string|&quot;level&quot;
-comma
-l_int|5
-)paren
-op_eq
-l_int|0
-)paren
-id|acpi_pic_sci_trigger
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* force level trigger */
-r_if
-c_cond
-(paren
-id|strncmp
-c_func
-(paren
-id|str
-comma
-l_string|&quot;edge&quot;
-comma
-l_int|4
-)paren
-op_eq
-l_int|0
-)paren
-id|acpi_pic_sci_trigger
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* force edge trigger */
-id|str
-op_assign
-id|strchr
-c_func
-(paren
-id|str
-comma
-l_char|&squot;,&squot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|str
-)paren
-id|str
-op_add_assign
-id|strspn
-c_func
-(paren
-id|str
-comma
-l_string|&quot;, &bslash;t&quot;
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;acpi_pic_sci=&quot;
-comma
-id|acpi_pic_sci_setup
-)paren
-suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BUS */
 macro_line|#ifdef CONFIG_X86_IO_APIC
 multiline_comment|/* deprecated in favor of acpi_gsi_to_irq */
@@ -1359,8 +1378,6 @@ macro_line|#else
 DECL|macro|acpi_parse_hpet
 mdefine_line|#define&t;acpi_parse_hpet&t;NULL
 macro_line|#endif
-multiline_comment|/* detect the location of the ACPI PM Timer */
-macro_line|#ifdef CONFIG_X86_PM_TIMER
 r_extern
 id|u32
 id|pmtmr_ioport
@@ -1422,6 +1439,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef&t;CONFIG_ACPI_INTERPRETER
+multiline_comment|/* initialize sci_int early for INT_SRC_OVR MADT parsing */
+id|acpi_fadt.sci_int
+op_assign
+id|fadt-&gt;sci_int
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+multiline_comment|/* detect the location of the ACPI PM Timer */
 r_if
 c_cond
 (paren
@@ -1469,14 +1495,11 @@ comma
 id|pmtmr_ioport
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|acpi_parse_fadt
-mdefine_line|#define&t;acpi_parse_fadt&t;NULL
-macro_line|#endif
 r_int
 r_int
 id|__init
@@ -1845,6 +1868,25 @@ r_return
 id|count
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If BIOS did not supply an INT_SRC_OVR for the SCI&n;&t; * pretend we got one so we can set the SCI flags.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_sci_override_gsi
+)paren
+id|acpi_parse_sci_int_src_ovr
+c_func
+(paren
+id|acpi_fadt.sci_int
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|acpi_fadt.sci_int
+)paren
+suffix:semicolon
 id|count
 op_assign
 id|acpi_table_parse_madt
@@ -2083,18 +2125,19 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Process the Multiple APIC Description Table (MADT), if present&n;&t; */
-id|acpi_process_madt
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * set sci_int and PM timer address&n;&t; */
 id|acpi_table_parse
 c_func
 (paren
 id|ACPI_FADT
 comma
 id|acpi_parse_fadt
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Process the Multiple APIC Description Table (MADT), if present&n;&t; */
+id|acpi_process_madt
+c_func
+(paren
 )paren
 suffix:semicolon
 id|acpi_table_parse
