@@ -1831,6 +1831,10 @@ id|class_dev-&gt;class_data
 op_assign
 id|net
 suffix:semicolon
+id|net-&gt;last_stats
+op_assign
+id|net-&gt;get_stats
+suffix:semicolon
 id|strlcpy
 c_func
 (paren
@@ -1896,10 +1900,6 @@ r_goto
 id|out_unreg
 suffix:semicolon
 )brace
-id|net-&gt;last_stats
-op_assign
-id|net-&gt;get_stats
-suffix:semicolon
 r_if
 c_cond
 (paren
