@@ -81,8 +81,7 @@ op_star
 r_int
 r_int
 comma
-r_int
-r_int
+id|cpumask_t
 )paren
 )paren
 id|lsapic_noop
