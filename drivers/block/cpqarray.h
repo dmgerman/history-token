@@ -341,7 +341,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IDA_LOCK
-mdefine_line|#define IDA_LOCK(i)&t;(&amp;hba[i]-&gt;queue)
+mdefine_line|#define IDA_LOCK(i)&t;(&amp;hba[i]-&gt;lock)
 macro_line|#endif
 macro_line|#endif /* CPQARRAY_H */
 eof
