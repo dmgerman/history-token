@@ -955,7 +955,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 r_while
@@ -967,7 +967,7 @@ l_int|1
 id|up
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|req
@@ -981,7 +981,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 r_if
@@ -1078,7 +1078,7 @@ suffix:semicolon
 id|up
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|nbd_end_request
@@ -1090,7 +1090,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 )brace
@@ -1099,7 +1099,7 @@ suffix:colon
 id|up
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 )brace
@@ -1217,7 +1217,7 @@ id|up
 c_func
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|nbd_end_request
@@ -1230,7 +1230,7 @@ id|down
 c_func
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 )brace
@@ -1410,7 +1410,7 @@ suffix:semicolon
 id|down
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|list_add
@@ -1435,7 +1435,7 @@ multiline_comment|/* Why does this block?         */
 id|up
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -1621,7 +1621,7 @@ id|down
 c_func
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|nbd_clear_que
@@ -1646,7 +1646,7 @@ id|up
 c_func
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|printk
@@ -1665,7 +1665,7 @@ id|up
 c_func
 (paren
 op_amp
-id|lo-&gt;queue_lock
+id|lo-&gt;tx_lock
 )paren
 suffix:semicolon
 id|file
@@ -2338,7 +2338,7 @@ id|nbd_dev
 id|i
 )braket
 dot
-id|queue_lock
+id|tx_lock
 )paren
 suffix:semicolon
 id|nbd_blksizes
