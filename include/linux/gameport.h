@@ -36,7 +36,7 @@ id|phys
 suffix:semicolon
 DECL|member|id
 r_struct
-id|input_devinfo
+id|input_id
 id|id
 suffix:semicolon
 DECL|member|io

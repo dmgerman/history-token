@@ -41,9 +41,9 @@ multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|EV_VERSION
 mdefine_line|#define EV_VERSION&t;&t;0x010000
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
-DECL|struct|input_devinfo
+DECL|struct|input_id
 r_struct
-id|input_devinfo
+id|input_id
 (brace
 DECL|member|bustype
 id|__u16
@@ -66,7 +66,7 @@ suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
-mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_devinfo)&t;/* get device ID */
+mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_id)&t;/* get device ID */
 DECL|macro|EVIOCGREP
 mdefine_line|#define EVIOCGREP&t;&t;_IOR(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
 DECL|macro|EVIOCSREP
@@ -91,6 +91,8 @@ DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
 mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */
+DECL|macro|EVIOCSABS
+mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, int[5])&t;&t;/* set abs value/limits */
 DECL|macro|EVIOCSFF
 mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
@@ -1332,7 +1334,7 @@ id|uniq
 suffix:semicolon
 DECL|member|id
 r_struct
-id|input_devinfo
+id|input_id
 id|id
 suffix:semicolon
 DECL|member|evbit
@@ -1738,7 +1740,7 @@ id|flags
 suffix:semicolon
 DECL|member|id
 r_struct
-id|input_devinfo
+id|input_id
 id|id
 suffix:semicolon
 DECL|member|evbit

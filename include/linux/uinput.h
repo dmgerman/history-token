@@ -96,7 +96,7 @@ id|UINPUT_MAX_NAME_SIZE
 suffix:semicolon
 DECL|member|id
 r_struct
-id|input_devinfo
+id|input_id
 id|id
 suffix:semicolon
 DECL|member|ff_effects_max
