@@ -5968,26 +5968,6 @@ c_cond
 (paren
 id|attr
 op_amp
-id|ATTR_REPARSE
-)paren
-(brace
-op_star
-id|pobject_type
-op_assign
-id|DT_LNK
-suffix:semicolon
-multiline_comment|/* BB can this and S_IFREG or S_IFDIR be set as in Windows? */
-id|tmp_inode-&gt;i_mode
-op_or_assign
-id|S_IFLNK
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|attr
-op_amp
 id|ATTR_DIRECTORY
 )paren
 (brace
@@ -6019,6 +5999,8 @@ id|tmp_inode-&gt;i_mode
 op_or_assign
 id|S_IFDIR
 suffix:semicolon
+multiline_comment|/* we no longer mark these because we could not follow them */
+multiline_comment|/*        } else if (attr &amp; ATTR_REPARSE) {&n;                *pobject_type = DT_LNK;&n;                tmp_inode-&gt;i_mode |= S_IFLNK;*/
 )brace
 r_else
 (brace
