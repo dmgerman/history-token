@@ -2536,10 +2536,6 @@ id|urbp-&gt;urb
 op_assign
 id|urb
 suffix:semicolon
-id|urbp-&gt;dev
-op_assign
-id|urb-&gt;dev
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
