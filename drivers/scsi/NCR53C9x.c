@@ -7542,15 +7542,10 @@ l_string|&quot;&bslash;r&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#if 0
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7946,7 +7941,7 @@ l_string|&quot;done! &bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#if 0
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

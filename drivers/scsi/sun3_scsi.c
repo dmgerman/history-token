@@ -1143,15 +1143,10 @@ c_cond
 id|default_instance
 )paren
 (brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|NCR5380_print_status
@@ -1160,7 +1155,7 @@ c_func
 id|default_instance
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
