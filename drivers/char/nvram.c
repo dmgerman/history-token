@@ -908,7 +908,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|EINVAL
+id|ENOTTY
 suffix:semicolon
 )brace
 )brace
