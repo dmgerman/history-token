@@ -199,6 +199,11 @@ DECL|member|cc
 r_int
 id|cc
 suffix:semicolon
+DECL|member|pusi_seen
+r_int
+id|pusi_seen
+suffix:semicolon
+multiline_comment|/* prevents feeding of garbage from previous section */
 DECL|member|peslen
 id|u16
 id|peslen
