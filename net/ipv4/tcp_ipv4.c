@@ -6128,6 +6128,25 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|tp.saw_tstamp
+op_logical_and
+op_logical_neg
+id|tp.rcv_tsval
+)paren
+(brace
+multiline_comment|/* Some OSes (unknown ones, but I see them on web server, which&n;&t;&t; * contains information interesting only for windows&squot;&n;&t;&t; * users) do not send their stamp in SYN. It is easy case.&n;&t;&t; * We simply do not advertise TS support.&n;&t;&t; */
+id|tp.saw_tstamp
+op_assign
+l_int|0
+suffix:semicolon
+id|tp.tstamp_ok
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|tp.tstamp_ok
 op_assign
 id|tp.saw_tstamp
