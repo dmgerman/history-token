@@ -4744,8 +4744,8 @@ multiline_comment|/* -----------------------------------------------------------
 r_struct
 id|capi_ctr
 op_star
-DECL|function|drivercb_attach_ctr
-id|drivercb_attach_ctr
+DECL|function|attach_capi_ctr
+id|attach_capi_ctr
 c_func
 (paren
 r_struct
@@ -4996,10 +4996,16 @@ r_return
 id|card
 suffix:semicolon
 )brace
-DECL|function|drivercb_detach_ctr
-r_static
+DECL|variable|attach_capi_ctr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|attach_capi_ctr
+)paren
+suffix:semicolon
+DECL|function|detach_capi_ctr
 r_int
-id|drivercb_detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 r_struct
@@ -5089,6 +5095,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|detach_capi_ctr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|detach_capi_ctr
+)paren
+suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 multiline_comment|/* fallback if no driver read_proc function defined by driver */
 DECL|function|driver_read_proc
@@ -5212,23 +5225,8 @@ id|off
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|di
-r_static
-r_struct
-id|capi_driver_interface
-id|di
-op_assign
-(brace
-id|drivercb_attach_ctr
-comma
-id|drivercb_detach_ctr
-comma
-)brace
-suffix:semicolon
 DECL|function|attach_capi_driver
-r_struct
-id|capi_driver_interface
-op_star
+r_void
 id|attach_capi_driver
 c_func
 (paren
@@ -5353,11 +5351,14 @@ op_assign
 id|driver
 suffix:semicolon
 )brace
-r_return
-op_amp
-id|di
-suffix:semicolon
 )brace
+DECL|variable|attach_capi_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|attach_capi_driver
+)paren
+suffix:semicolon
 DECL|function|detach_capi_driver
 r_void
 id|detach_capi_driver
@@ -5419,6 +5420,13 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|variable|detach_capi_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|detach_capi_driver
+)paren
+suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 multiline_comment|/* -------- CAPI2.0 Interface ---------------------------------- */
 multiline_comment|/* ------------------------------------------------------------- */
@@ -8011,6 +8019,13 @@ op_amp
 id|avmb1_interface
 suffix:semicolon
 )brace
+DECL|variable|attach_capi_interface
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|attach_capi_interface
+)paren
+suffix:semicolon
 DECL|function|detach_capi_interface
 r_int
 id|detach_capi_interface
@@ -8049,16 +8064,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* ------------------------------------------------------------- */
-multiline_comment|/* -------- Init &amp; Cleanup ------------------------------------- */
-multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|attach_capi_interface
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|attach_capi_interface
-)paren
-suffix:semicolon
 DECL|variable|detach_capi_interface
 id|EXPORT_SYMBOL
 c_func
@@ -8066,20 +8071,9 @@ c_func
 id|detach_capi_interface
 )paren
 suffix:semicolon
-DECL|variable|attach_capi_driver
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|attach_capi_driver
-)paren
-suffix:semicolon
-DECL|variable|detach_capi_driver
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|detach_capi_driver
-)paren
-suffix:semicolon
+multiline_comment|/* ------------------------------------------------------------- */
+multiline_comment|/* -------- Init &amp; Cleanup ------------------------------------- */
+multiline_comment|/* ------------------------------------------------------------- */
 multiline_comment|/*&n; * init / exit functions&n; */
 DECL|function|kcapi_init
 r_static

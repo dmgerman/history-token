@@ -359,9 +359,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|hy_di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|ctrl
@@ -3252,33 +3250,12 @@ id|KERN_NOTICE
 l_string|&quot;HYSDN: Attaching capi-driver&bslash;n&quot;
 )paren
 suffix:semicolon
-id|hy_di
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hy_di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYCAPI: failed to attach capi_driver&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -3731,9 +3708,7 @@ suffix:semicolon
 )brace
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|hy_di
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 op_amp

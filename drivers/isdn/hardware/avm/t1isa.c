@@ -42,14 +42,6 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|di
-r_static
-r_struct
-id|capi_driver_interface
-op_star
-id|di
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|hema_irq_table
 r_static
 r_int
@@ -1780,9 +1772,7 @@ c_func
 id|port
 )paren
 suffix:semicolon
-id|di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|ctrl
@@ -2205,9 +2195,7 @@ id|card-&gt;port
 suffix:semicolon
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|di
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 id|driver
@@ -2742,36 +2730,12 @@ comma
 id|driver-&gt;revision
 )paren
 suffix:semicolon
-id|di
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed to attach capi_driver&bslash;n&quot;
-comma
-id|driver-&gt;name
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return

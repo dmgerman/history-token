@@ -110,14 +110,6 @@ l_string|&quot;0-1i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|di
-r_static
-r_struct
-id|capi_driver_interface
-op_star
-id|di
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
 r_static
 r_void
 id|c4_dispatch_tx
@@ -4767,9 +4759,7 @@ c_cond
 id|cinfo-&gt;capi_ctrl
 )paren
 (brace
-id|di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|cinfo-&gt;capi_ctrl
@@ -6304,9 +6294,7 @@ id|i
 suffix:semicolon
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|di
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 id|driver
@@ -6356,9 +6344,7 @@ id|card-&gt;ctrlinfo
 id|i
 )braket
 suffix:semicolon
-id|di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|cinfo-&gt;capi_ctrl
@@ -6687,37 +6673,12 @@ comma
 id|driver-&gt;revision
 )paren
 suffix:semicolon
-id|di
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed to attach capi_driver&bslash;n&quot;
-comma
-id|driver-&gt;name
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
