@@ -2524,6 +2524,12 @@ c_func
 id|acard-&gt;pci
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|acard-&gt;pci
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_card_als4000_probe
 r_static
@@ -2661,6 +2667,12 @@ c_func
 l_string|&quot;architecture does not support 24bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -2683,9 +2695,17 @@ l_string|&quot;ALS4000&quot;
 OL
 l_int|0
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 id|gcr
 op_assign
 id|pci_resource_start
@@ -2757,6 +2777,12 @@ l_int|NULL
 )paren
 (brace
 id|pci_release_regions
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|pci

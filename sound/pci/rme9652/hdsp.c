@@ -3303,6 +3303,10 @@ op_and_assign
 id|HDSP_BufferPositionMask
 suffix:semicolon
 id|position
+op_div_assign
+l_int|4
+suffix:semicolon
+id|position
 op_and_assign
 (paren
 id|hdsp-&gt;period_bytes
@@ -5451,6 +5455,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|snd_hdsp_midi_output
+r_static
 id|snd_rawmidi_ops_t
 id|snd_hdsp_midi_output
 op_assign
@@ -5473,6 +5478,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|snd_hdsp_midi_input
+r_static
 id|snd_rawmidi_ops_t
 id|snd_hdsp_midi_input
 op_assign
@@ -12712,6 +12718,7 @@ op_assign
 id|HDSP_ADAT_SYNC_CHECK
 suffix:semicolon
 DECL|function|snd_hdsp_create_controls
+r_static
 r_int
 id|snd_hdsp_create_controls
 c_func
@@ -15103,6 +15110,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hdsp_midi_tasklet
+r_static
 r_void
 id|hdsp_midi_tasklet
 c_func
@@ -22431,6 +22439,12 @@ c_cond
 id|hdsp-&gt;port
 )paren
 id|pci_release_regions
+c_func
+(paren
+id|hdsp-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|hdsp-&gt;pci

@@ -107,6 +107,34 @@ op_star
 id|trident
 )paren
 suffix:semicolon
+r_static
+r_void
+id|snd_trident_clear_voices
+c_func
+(paren
+id|trident_t
+op_star
+id|trident
+comma
+r_int
+r_int
+id|v_min
+comma
+r_int
+r_int
+id|v_max
+)paren
+suffix:semicolon
+r_static
+r_int
+id|snd_trident_free
+c_func
+(paren
+id|trident_t
+op_star
+id|trident
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *  common I/O routines&n; */
 macro_line|#if 0
 r_static
@@ -2820,6 +2848,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_convert_rate&n;&n;   Description: This routine converts rate in HZ to hardware delta value.&n;  &n;   Paramters:   trident - pointer to target device class for 4DWave.&n;                rate - Real or Virtual channel number.&n;  &n;   Returns:     Delta value.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_convert_rate
+r_static
 r_int
 r_int
 id|snd_trident_convert_rate
@@ -2973,6 +3002,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_spurious_threshold&n;&n;   Description: This routine converts rate in HZ to spurious threshold.&n;  &n;   Paramters:   trident - pointer to target device class for 4DWave.&n;                rate - Real or Virtual channel number.&n;  &n;   Returns:     Delta value.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_spurious_threshold
+r_static
 r_int
 r_int
 id|snd_trident_spurious_threshold
@@ -3023,6 +3053,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_control_mode&n;&n;   Description: This routine returns a control mode for a PCM channel.&n;  &n;   Paramters:   trident - pointer to target device class for 4DWave.&n;                substream  - PCM substream&n;  &n;   Returns:     Control value.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_control_mode
+r_static
 r_int
 r_int
 id|snd_trident_control_mode
@@ -3130,6 +3161,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_allocate_pcm_mem&n;  &n;   Description: Allocate PCM ring buffer for given substream&n;  &n;   Parameters:  substream  - PCM substream class&n;&t;&t;hw_params  - hardware parameters&n;  &n;   Returns:     Error status&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_allocate_pcm_mem
+r_static
 r_int
 id|snd_trident_allocate_pcm_mem
 c_func
@@ -3253,6 +3285,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_allocate_evoice&n;  &n;   Description: Allocate extra voice as interrupt generator&n;  &n;   Parameters:  substream  - PCM substream class&n;&t;&t;hw_params  - hardware parameters&n;  &n;   Returns:     Error status&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_allocate_evoice
+r_static
 r_int
 id|snd_trident_allocate_evoice
 c_func
@@ -15730,6 +15763,12 @@ c_func
 l_string|&quot;architecture does not support 30bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -15758,10 +15797,18 @@ id|trident
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|trident-&gt;device
 op_assign
 (paren
@@ -15887,6 +15934,12 @@ id|kfree
 c_func
 (paren
 id|trident
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return
@@ -16253,6 +16306,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_free&n;  &n;   Description: This routine will free the device specific class for&n;            q    the 4DWave card. &n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_free
+r_static
 r_int
 id|snd_trident_free
 c_func
@@ -16420,6 +16474,12 @@ id|trident
 )paren
 suffix:semicolon
 id|pci_release_regions
+c_func
+(paren
+id|trident-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|trident-&gt;pci
@@ -17052,7 +17112,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_attach_synthesizer, snd_trident_detach_synthesizer&n;  &n;   Description: Attach/detach synthesizer hooks&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
+multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_attach_synthesizer&n;  &n;   Description: Attach synthesizer hooks&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_attach_synthesizer
 r_int
 id|snd_trident_attach_synthesizer
@@ -17110,41 +17170,6 @@ id|trident-&gt;seq_dev
 )paren
 op_assign
 id|trident
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|snd_trident_detach_synthesizer
-r_int
-id|snd_trident_detach_synthesizer
-c_func
-(paren
-id|trident_t
-op_star
-id|trident
-)paren
-(brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
-r_if
-c_cond
-(paren
-id|trident-&gt;seq_dev
-)paren
-(brace
-id|snd_device_free
-c_func
-(paren
-id|trident-&gt;card
-comma
-id|trident-&gt;seq_dev
-)paren
-suffix:semicolon
-id|trident-&gt;seq_dev
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -17529,6 +17554,7 @@ id|voice
 suffix:semicolon
 )brace
 DECL|function|snd_trident_clear_voices
+r_static
 r_void
 id|snd_trident_clear_voices
 c_func
@@ -17827,6 +17853,12 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|pci_disable_device
+c_func
+(paren
+id|trident-&gt;pci
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -18033,13 +18065,6 @@ c_func
 id|snd_trident_write_voice_regs
 )paren
 suffix:semicolon
-DECL|variable|snd_trident_clear_voices
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_trident_clear_voices
-)paren
-suffix:semicolon
 multiline_comment|/* trident_memory.c symbols */
 DECL|variable|snd_trident_synth_alloc
 id|EXPORT_SYMBOL
@@ -18053,13 +18078,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_trident_synth_free
-)paren
-suffix:semicolon
-DECL|variable|snd_trident_synth_bzero
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_trident_synth_bzero
 )paren
 suffix:semicolon
 DECL|variable|snd_trident_synth_copy_from_user

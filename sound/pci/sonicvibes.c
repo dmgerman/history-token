@@ -1230,8 +1230,8 @@ r_return
 id|value
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_sonicvibes_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_sonicvibes_debug
 c_func
@@ -6842,6 +6842,12 @@ c_func
 id|sonic-&gt;pci
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|sonic-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -6985,6 +6991,12 @@ c_func
 l_string|&quot;architecture does not support 24bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -7013,10 +7025,18 @@ id|sonic
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|spin_lock_init
 c_func
 (paren
@@ -7059,6 +7079,12 @@ id|kfree
 c_func
 (paren
 id|sonic
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return

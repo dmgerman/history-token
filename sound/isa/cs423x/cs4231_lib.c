@@ -464,6 +464,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|snd_cs4231_outm
+r_static
 r_void
 id|snd_cs4231_outm
 c_func
@@ -1194,8 +1195,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_cs4231_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_cs4231_debug
 c_func
@@ -1948,10 +1949,6 @@ suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
-r_int
-r_int
-id|time
-suffix:semicolon
 id|snd_cs4231_busy_wait
 c_func
 (paren
@@ -2180,17 +2177,10 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* in 10 ms increments, check condition, up to 250 ms */
 id|timeout
 op_assign
-id|HZ
-op_div
-l_int|4
-op_div
-l_int|2
-suffix:semicolon
-id|time
-op_assign
-l_int|2
+l_int|25
 suffix:semicolon
 r_while
 c_loop
@@ -2206,33 +2196,6 @@ op_amp
 id|CS4231_CALIB_IN_PROGRESS
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|time
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|time
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time
-OG
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|time
-op_assign
-l_int|2
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2251,6 +2214,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 )brace
 macro_line|#if 0
 id|printk
@@ -2262,17 +2231,10 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* in 10 ms increments, check condition, up to 100 ms */
 id|timeout
 op_assign
-id|HZ
-op_div
 l_int|10
-op_div
-l_int|2
-suffix:semicolon
-id|time
-op_assign
-l_int|2
 suffix:semicolon
 r_while
 c_loop
@@ -2292,33 +2254,6 @@ op_amp
 id|CS4231_INIT
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|time
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|time
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|time
-OG
-l_int|0
-)paren
-r_continue
-suffix:semicolon
-id|time
-op_assign
-l_int|2
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2338,6 +2273,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 )brace
 macro_line|#if 0
 id|printk
@@ -5976,6 +5917,7 @@ suffix:semicolon
 macro_line|#endif /* LEGACY_SUPPORT */
 multiline_comment|/*&n;&n; */
 DECL|function|snd_cs4231_probe
+r_static
 r_int
 id|snd_cs4231_probe
 c_func
@@ -11021,13 +10963,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_cs4231_in
-)paren
-suffix:semicolon
-DECL|variable|snd_cs4231_outm
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_cs4231_outm
 )paren
 suffix:semicolon
 DECL|variable|snd_cs4236_ext_out

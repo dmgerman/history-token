@@ -2522,19 +2522,6 @@ id|chip
 id|u16
 id|reg
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|reg
 op_assign
 id|__maestro_read
@@ -2585,15 +2572,6 @@ comma
 id|reg
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 DECL|function|snd_es1968_bob_start
 r_static
@@ -2611,10 +2589,6 @@ id|prescale
 suffix:semicolon
 r_int
 id|divide
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* compute ideal interrupt frequency for buffer size &amp; play rate */
 multiline_comment|/* first, find best prescaler value to match freq */
@@ -2753,15 +2727,6 @@ l_int|1
 id|divide
 op_decrement
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|__maestro_write
 c_func
 (paren
@@ -2816,15 +2781,6 @@ l_int|0x17
 )paren
 op_or
 l_int|1
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -10543,6 +10499,12 @@ comma
 id|ACPI_D3
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -10587,6 +10549,12 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* restore all our config */
 id|pci_enable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
+id|pci_set_master
 c_func
 (paren
 id|chip-&gt;pci
@@ -10767,6 +10735,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|pci_release_regions
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|chip-&gt;pci
@@ -11000,6 +10974,12 @@ c_func
 l_string|&quot;architecture does not support 28bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -11027,10 +11007,18 @@ c_cond
 op_logical_neg
 id|chip
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 multiline_comment|/* Set Vars */
 id|chip-&gt;type
 op_assign
@@ -11141,6 +11129,12 @@ id|kfree
 c_func
 (paren
 id|chip
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return

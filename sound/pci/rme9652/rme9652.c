@@ -6587,6 +6587,7 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|function|snd_rme9652_create_controls
+r_static
 r_int
 id|snd_rme9652_create_controls
 c_func
@@ -7764,6 +7765,12 @@ c_cond
 id|rme9652-&gt;port
 )paren
 id|pci_release_regions
+c_func
+(paren
+id|rme9652-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|rme9652-&gt;pci

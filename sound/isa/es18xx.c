@@ -837,6 +837,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_es18xx_mixer_write
+r_static
 r_inline
 r_void
 id|snd_es18xx_mixer_write
@@ -911,6 +912,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|snd_es18xx_mixer_read
+r_static
 r_inline
 r_int
 id|snd_es18xx_mixer_read
@@ -7778,6 +7780,7 @@ id|pcm
 suffix:semicolon
 )brace
 DECL|function|snd_es18xx_pcm
+r_static
 r_int
 id|__devinit
 id|snd_es18xx_pcm
