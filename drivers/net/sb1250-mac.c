@@ -1,5 +1,7 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
-multiline_comment|/*&n;  This driver is designed for the Broadcom BCM12500 SOC chip&squot;s built-in&n;  Ethernet controllers.&n;  &n;  The author may be reached as mpl@broadcom.com&n;*/
+multiline_comment|/*&n; * Copyright (C) 2001,2002,2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n;  This driver is designed for the Broadcom SiByte SOC built-in&n;  Ethernet controllers.&n;  &n;  Written by Mitch Lichtenberg at Broadcom Corp.&n;*/
+DECL|macro|CONFIG_SBMAC_COALESCE
+mdefine_line|#define CONFIG_SBMAC_COALESCE
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -9,6 +11,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1 normal messages, 0 quiet .. 7 verbose. */
+DECL|variable|noisy_mii
+r_static
+r_int
+id|noisy_mii
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* mii status msgs */
 multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;*/
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 3&t;&t;/* More are supported, limit only on options */
@@ -52,6 +62,22 @@ l_int|1
 )brace
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+DECL|variable|int_pktcnt
+r_static
+r_int
+id|int_pktcnt
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|int_timeout
+r_static
+r_int
+id|int_timeout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Operational parameters that usually are not changed. */
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
@@ -67,20 +93,19 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
+macro_line|#include &lt;asm/cache.h&gt;
 multiline_comment|/* This is only here until the firmware is ready.  In that case,&n;   the firmware leaves the ethernet address in the register for us. */
-macro_line|#ifdef CONFIG_SWARM_STANDALONE
+macro_line|#ifdef CONFIG_SIBYTE_STANDALONE
 DECL|macro|SBMAC_ETH0_HWADDR
 mdefine_line|#define SBMAC_ETH0_HWADDR &quot;40:00:00:00:01:00&quot;
 DECL|macro|SBMAC_ETH1_HWADDR
@@ -97,25 +122,33 @@ id|version1
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;sb1250-mac.c:1.00 1/11/2001 Written by Mitch Lichtenberg (mpl@broadcom.com)&bslash;n&quot;
+l_string|&quot;sb1250-mac.c:1.00 1/11/2001 Written by Mitch Lichtenberg&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Mitch Lichtenberg (mpl@broadcom.com)&quot;
+l_string|&quot;Mitch Lichtenberg (Broadcom Corp.)&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Broadcom BCM12500 SOC GB Ethernet driver&quot;
+l_string|&quot;Broadcom SiByte SOC GB Ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
 id|debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|noisy_mii
 comma
 l_string|&quot;i&quot;
 )paren
@@ -148,27 +181,36 @@ id|MAX_UNITS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|int_pktcnt
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|int_timeout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_defs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_mac.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_dma.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
+macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
+macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 multiline_comment|/**********************************************************************&n; *  Simple types&n; ********************************************************************* */
 DECL|typedef|sbmac_port_t
 r_typedef
 r_int
 r_int
 id|sbmac_port_t
-suffix:semicolon
-DECL|typedef|sbmac_physaddr_t
-r_typedef
-r_uint64
-id|sbmac_physaddr_t
-suffix:semicolon
-DECL|typedef|sbmac_enetaddr_t
-r_typedef
-r_uint64
-id|sbmac_enetaddr_t
 suffix:semicolon
 DECL|enumerator|sbmac_speed_auto
 DECL|enumerator|sbmac_speed_10
@@ -245,22 +287,12 @@ suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  Macros&n; ********************************************************************* */
 DECL|macro|SBDMA_NEXTBUF
 mdefine_line|#define SBDMA_NEXTBUF(d,f) ((((d)-&gt;f+1) == (d)-&gt;sbdma_dscrtable_end) ? &bslash;&n;&t;&t;&t;  (d)-&gt;sbdma_dscrtable : (d)-&gt;f+1)
-DECL|macro|CACHELINESIZE
-mdefine_line|#define CACHELINESIZE 32
 DECL|macro|NUMCACHEBLKS
-mdefine_line|#define NUMCACHEBLKS(x) (((x)+CACHELINESIZE-1)/CACHELINESIZE)
-DECL|macro|KMALLOC
-mdefine_line|#define KMALLOC(x) kmalloc((x),GFP_KERNEL)
-DECL|macro|KFREE
-mdefine_line|#define KFREE(x) kfree(x)
-DECL|macro|KVTOPHYS
-mdefine_line|#define KVTOPHYS(x) virt_to_bus((void *)(x))
+mdefine_line|#define NUMCACHEBLKS(x) (((x)+SMP_CACHE_BYTES-1)/SMP_CACHE_BYTES)
 DECL|macro|SBMAC_READCSR
-mdefine_line|#define SBMAC_READCSR(t)    (in64((unsigned long)(t)))
+mdefine_line|#define SBMAC_READCSR(t)&t;in64((unsigned long)t)
 DECL|macro|SBMAC_WRITECSR
-mdefine_line|#define SBMAC_WRITECSR(t,v) (out64(v, (unsigned long)(t)))
-DECL|macro|PKSEG1
-mdefine_line|#define PKSEG1(x) ((sbmac_port_t) KSEG1ADDR(x))
+mdefine_line|#define SBMAC_WRITECSR(t,v)&t;out64(v, (unsigned long)t)
 DECL|macro|SBMAC_MAX_TXDESCR
 mdefine_line|#define SBMAC_MAX_TXDESCR&t;32
 DECL|macro|SBMAC_MAX_RXDESCR
@@ -270,7 +302,8 @@ mdefine_line|#define ETHER_ALIGN&t;2
 DECL|macro|ETHER_ADDR_LEN
 mdefine_line|#define ETHER_ADDR_LEN&t;6
 DECL|macro|ENET_PACKET_SIZE
-mdefine_line|#define ENET_PACKET_SIZE&t;1518
+mdefine_line|#define ENET_PACKET_SIZE&t;1518 
+multiline_comment|/*#define ENET_PACKET_SIZE&t;9216 */
 multiline_comment|/**********************************************************************&n; *  DMA Descriptor structure&n; ********************************************************************* */
 DECL|struct|sbdmadscr_s
 r_typedef
@@ -294,12 +327,6 @@ r_typedef
 r_int
 r_int
 id|paddr_t
-suffix:semicolon
-DECL|typedef|vaddr_t
-r_typedef
-r_int
-r_int
-id|vaddr_t
 suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  DMA Controller structure&n; ********************************************************************* */
 DECL|struct|sbmacdma_s
@@ -330,6 +357,18 @@ r_int
 id|sbdma_maxdescr
 suffix:semicolon
 multiline_comment|/* total # of descriptors in ring */
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+DECL|member|sbdma_int_pktcnt
+r_int
+id|sbdma_int_pktcnt
+suffix:semicolon
+multiline_comment|/* # descriptors rx/tx before interrupt*/
+DECL|member|sbdma_int_timeout
+r_int
+id|sbdma_int_timeout
+suffix:semicolon
+multiline_comment|/* # usec rx/tx interrupt */
+macro_line|#endif
 DECL|member|sbdma_config0
 id|sbmac_port_t
 id|sbdma_config0
@@ -461,7 +500,8 @@ l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t; * Controller-specific things&n;&t; */
 DECL|member|sbm_base
-id|sbmac_port_t
+r_int
+r_int
 id|sbm_base
 suffix:semicolon
 multiline_comment|/* MAC&squot;s base address */
@@ -526,7 +566,8 @@ id|sbm_fc
 suffix:semicolon
 multiline_comment|/* current flow control setting */
 DECL|member|sbm_hwaddr
-id|u_char
+r_int
+r_char
 id|sbm_hwaddr
 (braket
 id|ETHER_ADDR_LEN
@@ -540,6 +581,14 @@ multiline_comment|/* for now, only use channel 0 */
 DECL|member|sbm_rxdma
 id|sbmacdma_t
 id|sbm_rxdma
+suffix:semicolon
+DECL|member|rx_hw_checksum
+r_int
+id|rx_hw_checksum
+suffix:semicolon
+DECL|member|sbe_idx
+r_int
+id|sbe_idx
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -577,6 +626,9 @@ c_func
 id|sbmacdma_t
 op_star
 id|d
+comma
+r_int
+id|rxtx
 )paren
 suffix:semicolon
 r_static
@@ -718,7 +770,6 @@ r_int
 id|onoff
 )paren
 suffix:semicolon
-multiline_comment|/*static void sbmac_init_and_start(struct sbmac_softc *sc);*/
 r_static
 r_uint64
 id|sbmac_addr2reg
@@ -784,6 +835,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|idx
 )paren
 suffix:semicolon
 r_static
@@ -985,6 +1039,14 @@ id|regval
 )paren
 suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  Globals&n; ********************************************************************* */
+DECL|variable|sbmac_orig_hwaddr
+r_static
+r_uint64
+id|sbmac_orig_hwaddr
+(braket
+id|MAX_UNITS
+)braket
+suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  MDIO constants&n; ********************************************************************* */
 DECL|macro|MII_COMMAND_START
 mdefine_line|#define&t;MII_COMMAND_START&t;0x01
@@ -1015,9 +1077,9 @@ mdefine_line|#define BMCR_COLTEST   0x0080
 DECL|macro|BMCR_SPEED1
 mdefine_line|#define BMCR_SPEED1    0x0040
 DECL|macro|BMCR_SPEED1000
-mdefine_line|#define BMCR_SPEED1000 (BMCR_SPEED1|BMCR_SPEED0)
+mdefine_line|#define BMCR_SPEED1000&t;BMCR_SPEED1
 DECL|macro|BMCR_SPEED100
-mdefine_line|#define BMCR_SPEED100  (BMCR_SPEED0)
+mdefine_line|#define BMCR_SPEED100&t;BMCR_SPEED0
 DECL|macro|BMCR_SPEED10
 mdefine_line|#define BMCR_SPEED10 &t;0
 DECL|macro|BMSR_100BT4
@@ -1200,6 +1262,10 @@ DECL|macro|MII_ANLPAR
 mdefine_line|#define&t;MII_ANLPAR&t;0x05&t;/* Autonegotiation lnk partner abilities (rw) */
 DECL|macro|M_MAC_MDIO_DIR_OUTPUT
 mdefine_line|#define M_MAC_MDIO_DIR_OUTPUT&t;0&t;&t;/* for clarity */
+DECL|macro|ENABLE
+mdefine_line|#define ENABLE &t;&t;1
+DECL|macro|DISABLE
+mdefine_line|#define DISABLE&t;&t;0
 multiline_comment|/**********************************************************************&n; *  SBMAC_MII_SYNC(s)&n; *  &n; *  Synchronize with the MII - send a pattern of bits to the MII&n; *  that will guarantee that it is ready to accept a command.&n; *  &n; *  Input parameters: &n; *  &t;   s - sbmac structure&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
 DECL|function|sbmac_mii_sync
 r_static
@@ -1745,12 +1811,400 @@ id|d-&gt;sbdma_txdir
 op_assign
 id|txrx
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* RMON clearing */
+id|s-&gt;sbe_idx
+op_assign
+(paren
+id|s-&gt;sbm_base
+op_minus
+id|A_MAC_BASE_0
+)paren
+op_div
+id|MAC_SPACING
+suffix:semicolon
+macro_line|#endif
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_BYTES
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_COLLISIONS
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_LATE_COL
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_EX_COL
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_FCS_ERROR
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_ABORT
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_BAD
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_GOOD
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_RUNT
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_TX_OVERSIZE
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_BYTES
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_MCAST
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_BCAST
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_BAD
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_GOOD
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_RUNT
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_OVERSIZE
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_FCS_ERROR
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_LENGTH_ERROR
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_CODE_ERROR
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|A_MAC_REGISTER
+c_func
+(paren
+id|s-&gt;sbe_idx
+comma
+id|R_MAC_RMON_RX_ALIGN_ERROR
+)paren
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * initialize register pointers &n;&t; */
 id|d-&gt;sbdma_config0
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_DMA_REGISTER
@@ -1761,14 +2215,10 @@ comma
 id|chan
 comma
 id|R_MAC_DMA_CONFIG0
-)paren
 )paren
 suffix:semicolon
 id|d-&gt;sbdma_config1
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_DMA_REGISTER
@@ -1778,15 +2228,11 @@ id|txrx
 comma
 id|chan
 comma
-id|R_MAC_DMA_CONFIG0
-)paren
+id|R_MAC_DMA_CONFIG1
 )paren
 suffix:semicolon
 id|d-&gt;sbdma_dscrbase
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_DMA_REGISTER
@@ -1798,13 +2244,9 @@ id|chan
 comma
 id|R_MAC_DMA_DSCR_BASE
 )paren
-)paren
 suffix:semicolon
 id|d-&gt;sbdma_dscrcnt
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_DMA_REGISTER
@@ -1816,13 +2258,9 @@ id|chan
 comma
 id|R_MAC_DMA_DSCR_CNT
 )paren
-)paren
 suffix:semicolon
 id|d-&gt;sbdma_curdscr
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_DMA_REGISTER
@@ -1833,7 +2271,6 @@ comma
 id|chan
 comma
 id|R_MAC_DMA_CUR_DSCRADDR
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate memory for the ring&n;&t; */
@@ -1847,7 +2284,7 @@ op_assign
 id|sbdmadscr_t
 op_star
 )paren
-id|KMALLOC
+id|kmalloc
 c_func
 (paren
 id|d-&gt;sbdma_maxdescr
@@ -1856,6 +2293,8 @@ r_sizeof
 (paren
 id|sbdmadscr_t
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|memset
@@ -1881,7 +2320,7 @@ id|d-&gt;sbdma_maxdescr
 suffix:semicolon
 id|d-&gt;sbdma_dscrtable_phys
 op_assign
-id|KVTOPHYS
+id|virt_to_phys
 c_func
 (paren
 id|d-&gt;sbdma_dscrtable
@@ -1896,7 +2335,7 @@ id|sk_buff
 op_star
 op_star
 )paren
-id|KMALLOC
+id|kmalloc
 c_func
 (paren
 id|d-&gt;sbdma_maxdescr
@@ -1907,6 +2346,8 @@ r_struct
 id|sk_buff
 op_star
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|memset
@@ -1926,8 +2367,47 @@ op_star
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+multiline_comment|/*&n;&t; * Setup Rx/Tx DMA coalescing defaults&n;&t; */
+r_if
+c_cond
+(paren
+id|int_pktcnt
+)paren
+(brace
+id|d-&gt;sbdma_int_pktcnt
+op_assign
+id|int_pktcnt
+suffix:semicolon
 )brace
-multiline_comment|/**********************************************************************&n; *  SBDMA_CHANNEL_START(d)&n; *  &n; *  Initialize the hardware registers for a DMA channel.&n; *  &n; *  Input parameters: &n; *  &t;   d - DMA channel to init (context must be previously init&squot;d&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
+r_else
+(brace
+id|d-&gt;sbdma_int_pktcnt
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|int_timeout
+)paren
+(brace
+id|d-&gt;sbdma_int_timeout
+op_assign
+id|int_timeout
+suffix:semicolon
+)brace
+r_else
+(brace
+id|d-&gt;sbdma_int_timeout
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+multiline_comment|/**********************************************************************&n; *  SBDMA_CHANNEL_START(d)&n; *  &n; *  Initialize the hardware registers for a DMA channel.&n; *  &n; *  Input parameters: &n; *  &t;   d - DMA channel to init (context must be previously init&squot;d&n; *         rxtx - DMA_RX or DMA_TX depending on what type of channel&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
 DECL|function|sbdma_channel_start
 r_static
 r_void
@@ -1937,23 +2417,56 @@ c_func
 id|sbmacdma_t
 op_star
 id|d
+comma
+r_int
+id|rxtx
 )paren
 (brace
 multiline_comment|/*&n;&t; * Turn on the DMA channel&n;&t; */
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
 id|SBMAC_WRITECSR
 c_func
 (paren
 id|d-&gt;sbdma_config1
 comma
+id|V_DMA_INT_TIMEOUT
+c_func
+(paren
+id|d-&gt;sbdma_int_timeout
+)paren
+op_or
 l_int|0
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|d-&gt;sbdma_dscrbase
+id|d-&gt;sbdma_config0
 comma
-id|d-&gt;sbdma_dscrtable_phys
+id|M_DMA_EOP_INT_EN
+op_or
+id|V_DMA_RINGSZ
+c_func
+(paren
+id|d-&gt;sbdma_maxdescr
+)paren
+op_or
+id|V_DMA_INT_PKTCNT
+c_func
+(paren
+id|d-&gt;sbdma_int_pktcnt
+)paren
+op_or
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#else
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|d-&gt;sbdma_config1
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1970,6 +2483,15 @@ op_or
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|d-&gt;sbdma_dscrbase
+comma
+id|d-&gt;sbdma_dscrtable_phys
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize ring pointers&n;&t; */
 id|d-&gt;sbdma_addptr
 op_assign
@@ -1978,6 +2500,53 @@ suffix:semicolon
 id|d-&gt;sbdma_remptr
 op_assign
 id|d-&gt;sbdma_dscrtable
+suffix:semicolon
+)brace
+multiline_comment|/**********************************************************************&n; *  SBDMA_CHANNEL_STOP(d)&n; *  &n; *  Initialize the hardware registers for a DMA channel.&n; *  &n; *  Input parameters: &n; *  &t;   d - DMA channel to init (context must be previously init&squot;d&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
+DECL|function|sbdma_channel_stop
+r_static
+r_void
+id|sbdma_channel_stop
+c_func
+(paren
+id|sbmacdma_t
+op_star
+id|d
+)paren
+(brace
+multiline_comment|/*&n;&t; * Turn off the DMA channel&n;&t; */
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|d-&gt;sbdma_config1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|d-&gt;sbdma_dscrbase
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|d-&gt;sbdma_config0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Zero ring pointers&n;&t; */
+id|d-&gt;sbdma_addptr
+op_assign
+l_int|0
+suffix:semicolon
+id|d-&gt;sbdma_remptr
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|sbdma_align_skb
@@ -2110,7 +2679,7 @@ op_minus
 id|ENOSPC
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Allocate a sk_buff if we don&squot;t already have one.  &n;&t; * If we do have an sk_buff, reset it so that it&squot;s empty.&n;&t; *&n;&t; * Note: sk_buffs don&squot;t seem to be guaranteed to have any sort&n;&t; * of alignment when they are allocated.  Therefore, allocate enough&n;&t; * extra space to make sure that:&n;&t; *&n;&t; *    1. the data does not start in the middle of a cache line.&n;&t; *    2. The data does not end in the middle of a cache line&n;&t; * &t;  3. The buffer can be aligned such that the IP addresses are &n;&t; *       naturally aligned.&n;&t; *&n;&t; *  Remember, the SB1250&squot;s MAC writes whole cache lines at a time,&n;&t; *  without reading the old contents first.  So, if the sk_buff&squot;s&n;&t; *  data portion starts in the middle of a cache line, the SB1250&n;&t; *  DMA will trash the beginning (and ending) portions.&n;&t; */
+multiline_comment|/* &n;&t; * Allocate a sk_buff if we don&squot;t already have one.  &n;&t; * If we do have an sk_buff, reset it so that it&squot;s empty.&n;&t; *&n;&t; * Note: sk_buffs don&squot;t seem to be guaranteed to have any sort&n;&t; * of alignment when they are allocated.  Therefore, allocate enough&n;&t; * extra space to make sure that:&n;&t; *&n;&t; *    1. the data does not start in the middle of a cache line.&n;&t; *    2. The data does not end in the middle of a cache line&n;&t; *    3. The buffer can be aligned such that the IP addresses are &n;&t; *       naturally aligned.&n;&t; *&n;&t; *  Remember, the SOCs MAC writes whole cache lines at a time,&n;&t; *  without reading the old contents first.  So, if the sk_buff&squot;s&n;&t; *  data portion starts in the middle of a cache line, the SOC&n;&t; *  DMA will trash the beginning (and ending) portions.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2126,7 +2695,7 @@ c_func
 (paren
 id|ENET_PACKET_SIZE
 op_plus
-id|CACHELINESIZE
+id|SMP_CACHE_BYTES
 op_star
 l_int|2
 op_plus
@@ -2160,7 +2729,7 @@ c_func
 (paren
 id|sb_new
 comma
-id|CACHELINESIZE
+id|SMP_CACHE_BYTES
 comma
 id|ETHER_ALIGN
 )paren
@@ -2177,12 +2746,37 @@ id|sb_new
 op_assign
 id|sb
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * nothing special to reinit buffer, it&squot;s already aligned&n;&t;&t; * and sb-&gt;tail already points to a good place.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * nothing special to reinit buffer, it&squot;s already aligned&n;&t;&t; * and sb-&gt;data already points to a good place.&n;&t;&t; */
 )brace
 multiline_comment|/*&n;&t; * fill in the descriptor &n;&t; */
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+multiline_comment|/*&n;&t; * Do not interrupt per DMA transfer.&n;&t; */
 id|dsc-&gt;dscr_a
 op_assign
-id|KVTOPHYS
+id|virt_to_phys
+c_func
+(paren
+id|sb_new-&gt;tail
+)paren
+op_or
+id|V_DMA_DSCRA_A_SIZE
+c_func
+(paren
+id|NUMCACHEBLKS
+c_func
+(paren
+id|pktsize
+op_plus
+id|ETHER_ALIGN
+)paren
+)paren
+op_or
+l_int|0
+suffix:semicolon
+macro_line|#else
+id|dsc-&gt;dscr_a
+op_assign
+id|virt_to_phys
 c_func
 (paren
 id|sb_new-&gt;tail
@@ -2202,6 +2796,7 @@ id|ETHER_ALIGN
 op_or
 id|M_DMA_DSCRA_INTERRUPT
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* receiving: no options */
 id|dsc-&gt;dscr_b
 op_assign
@@ -2307,7 +2902,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * fill in the descriptor.  Note that the number of cache&n;&t; * blocks in the descriptor is the number of blocks&n;&t; * *spanned*, so we need to add in the offset (if any)&n;&t; * while doing the calculation.&n;&t; */
 id|phys
 op_assign
-id|KVTOPHYS
+id|virt_to_phys
 c_func
 (paren
 id|sb-&gt;data
@@ -2324,7 +2919,7 @@ op_plus
 id|phys
 op_amp
 (paren
-id|CACHELINESIZE
+id|SMP_CACHE_BYTES
 op_minus
 l_int|1
 )paren
@@ -2341,8 +2936,10 @@ c_func
 id|ncb
 )paren
 op_or
+macro_line|#ifndef CONFIG_SBMAC_COALESCE
 id|M_DMA_DSCRA_INTERRUPT
 op_or
+macro_line|#endif
 id|M_DMA_ETHTX_SOP
 suffix:semicolon
 multiline_comment|/* transmitting: set outbound options and length */
@@ -2637,15 +3234,6 @@ id|M_DMA_ETHRX_BAD
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Set length into the packet&n;&t;&t;&t; */
-id|skb_put
-c_func
-(paren
-id|sb
-comma
-id|len
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Add a new buffer to replace the old one.  If we fail&n;&t;&t;&t; * to allocate a buffer, we&squot;re going to drop this&n;&t;&t;&t; * packet and put it right back on the receive ring.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -2662,6 +3250,9 @@ op_minus
 id|ENOBUFS
 )paren
 (brace
+id|sc-&gt;sbm_stats.rx_dropped
+op_increment
+suffix:semicolon
 id|sbdma_add_rcvbuffer
 c_func
 (paren
@@ -2674,7 +3265,16 @@ multiline_comment|/* re-add old buffer */
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;     * Buffer has been replaced on the receive ring.&n;&t;&t;&t;     * Pass the buffer to the kernel&n;&t;&t;&t;     */
+multiline_comment|/*&n;&t;&t;&t;&t; * Set length into the packet&n;&t;&t;&t;&t; */
+id|skb_put
+c_func
+(paren
+id|sb
+comma
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Buffer has been replaced on the&n;&t;&t;&t;&t; * receive ring.  Pass the buffer to&n;&t;&t;&t;&t; * the kernel */
 id|sc-&gt;sbm_stats.rx_bytes
 op_add_assign
 id|len
@@ -2692,6 +3292,56 @@ comma
 id|d-&gt;sbdma_eth-&gt;sbm_dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sc-&gt;rx_hw_checksum
+op_eq
+id|ENABLE
+)paren
+(brace
+multiline_comment|/* if the ip checksum is good&n;&t;&t;&t;&t;&t;   indicate in skb.  else set&n;&t;&t;&t;&t;&t;   CHECKSUM_NONE as device&n;&t;&t;&t;&t;&t;   failed to checksum the&n;&t;&t;&t;&t;&t;   packet */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|dsc-&gt;dscr_b
+)paren
+op_or
+id|M_DMA_ETHRX_BADTCPCS
+)paren
+op_logical_or
+(paren
+(paren
+id|dsc-&gt;dscr_a
+)paren
+op_or
+id|M_DMA_ETHRX_BADIP4CS
+)paren
+)paren
+(brace
+id|sb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;hw checksum fail .&bslash;n&quot;
+)paren
+suffix:semicolon
+id|sb-&gt;ip_summed
+op_assign
+id|CHECKSUM_UNNECESSARY
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* rx_hw_checksum */
 id|netif_rx
 c_func
 (paren
@@ -2703,6 +3353,9 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Packet was mangled somehow.  Just drop it and&n;&t;&t;&t; * put it back on the receive ring.&n;&t;&t;&t; */
+id|sc-&gt;sbm_stats.rx_errors
+op_increment
+suffix:semicolon
 id|sbdma_add_rcvbuffer
 c_func
 (paren
@@ -2787,7 +3440,7 @@ op_minus
 id|d-&gt;sbdma_dscrtable
 suffix:semicolon
 (brace
-multiline_comment|/* XXX This is gross, ugly, and only here because justin hacked it&n;&t;&t;&t;   in to fix a problem without really understanding it. &n;&t;&t;&t;   &n;&t;&t;&t;   It seems that, for whatever reason, this routine is invoked immediately upon the enabling of interrupts.&n;&t;&t;&t;   So then the Read below returns zero, making hwidx a negative number, and anti-hilarity&n;&t;&t;&t;   ensues.&n;&t;&t;&t;   &n;&t;&t;&t;   I&squot;m guessing there&squot;s a proper fix involving clearing out interrupt state from old packets&n;&t;&t;&t;   before enabling interrupts, but I&squot;m not sure.  &n;&n;&t;&t;&t;   Anyways, this hack seems to work, and is Good Enough for 11 PM.  :)&n;&t;&t;&t;   &n;&t;&t;&t;   -Justin&n;&t;&t;&t;*/
+multiline_comment|/* XXX This is gross, ugly, and only here&n;&t;&t;&t; * because justin hacked it in to fix a&n;&t;&t;&t; * problem without really understanding it.&n;&t;&t;&t; * &n;&t;&t;&t; * It seems that, for whatever reason, this&n;&t;&t;&t; * routine is invoked immediately upon the&n;&t;&t;&t; * enabling of interrupts.  So then the Read&n;&t;&t;&t; * below returns zero, making hwidx a negative&n;&t;&t;&t; * number, and anti-hilarity ensues.&n;&t;&t;&t; * &n;&t;&t;&t; * I&squot;m guessing there&squot;s a proper fix involving&n;&t;&t;&t; * clearing out interrupt state from old&n;&t;&t;&t; * packets before enabling interrupts, but I&squot;m&n;&t;&t;&t; * not sure.&n;&t;&t;&t; *&n;&t;&t;&t; * Anyways, this hack seems to work, and is&n;&t;&t;&t; * Good Enough for 11 PM.  :)&n;&t;&t;&t; * &n;&t;&t;&t; * -Justin&n;&t;&t;&t; */
 r_uint64
 id|tmp
 op_assign
@@ -2927,83 +3580,51 @@ id|s
 multiline_comment|/* &n;&t; * figure out the addresses of some ports &n;&t; */
 id|s-&gt;sbm_macenable
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_ENABLE
-)paren
 suffix:semicolon
 id|s-&gt;sbm_maccfg
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_CFG
-)paren
 suffix:semicolon
 id|s-&gt;sbm_fifocfg
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_THRSH_CFG
-)paren
 suffix:semicolon
 id|s-&gt;sbm_framecfg
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_FRAMECFG
-)paren
 suffix:semicolon
 id|s-&gt;sbm_rxfilter
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_ADFILTER_CFG
-)paren
 suffix:semicolon
 id|s-&gt;sbm_isr
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_STATUS
-)paren
 suffix:semicolon
 id|s-&gt;sbm_imr
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_INT_MASK
-)paren
 suffix:semicolon
 id|s-&gt;sbm_mdio
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_MDIO
-)paren
 suffix:semicolon
 id|s-&gt;sbm_phys
 (braket
@@ -3110,7 +3731,7 @@ c_cond
 id|d-&gt;sbdma_dscrtable
 )paren
 (brace
-id|KFREE
+id|kfree
 c_func
 (paren
 id|d-&gt;sbdma_dscrtable
@@ -3127,7 +3748,7 @@ c_cond
 id|d-&gt;sbdma_ctxtable
 )paren
 (brace
-id|KFREE
+id|kfree
 c_func
 (paren
 id|d-&gt;sbdma_ctxtable
@@ -3198,6 +3819,8 @@ id|framecfg
 suffix:semicolon
 r_int
 id|idx
+comma
+id|th_value
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t do this if running&n;&t; */
 r_if
@@ -3244,6 +3867,23 @@ id|M_MAC_SS_EN
 op_or
 l_int|0
 suffix:semicolon
+multiline_comment|/* &n;&t; * Be sure that RD_THRSH+WR_THRSH &lt;= 32 for pass1 pars&n;&t; * and make sure that RD_THRSH + WR_THRSH &lt;=128 for pass2 and above&n;&t; * Use a larger RD_THRSH for gigabit&n;&t; */
+r_if
+c_cond
+(paren
+id|periph_rev
+op_ge
+l_int|2
+)paren
+id|th_value
+op_assign
+l_int|64
+suffix:semicolon
+r_else
+id|th_value
+op_assign
+l_int|28
+suffix:semicolon
 id|fifo
 op_assign
 id|V_MAC_TX_WR_THRSH
@@ -3253,10 +3893,25 @@ l_int|4
 )paren
 op_or
 multiline_comment|/* Must be &squot;4&squot; or &squot;8&squot; */
+(paren
+(paren
+id|s-&gt;sbm_speed
+op_eq
+id|sbmac_speed_1000
+)paren
+ques
+c_cond
+id|V_MAC_TX_RD_THRSH
+c_func
+(paren
+id|th_value
+)paren
+suffix:colon
 id|V_MAC_TX_RD_THRSH
 c_func
 (paren
 l_int|4
+)paren
 )paren
 op_or
 id|V_MAC_TX_RL_THRSH
@@ -3307,13 +3962,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Clear out the hash address map &n;&t; */
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_HASH_BASE
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3349,13 +4000,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Clear out the exact-match table&n;&t; */
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_ADDR_BASE
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3391,13 +4038,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Clear out the DMA Channel mapping table registers&n;&t; */
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_CHUP0_BASE
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3432,13 +4075,9 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_CHLO0_BASE
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3482,13 +4121,9 @@ id|s-&gt;sbm_hwaddr
 suffix:semicolon
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_ADDR_BASE
-)paren
 suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
@@ -3500,16 +4135,12 @@ id|reg
 suffix:semicolon
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|s-&gt;sbm_base
 op_plus
 id|R_MAC_ETHERNET_ADDR
-)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SB1_PASS_1_WORKAROUNDS
-multiline_comment|/*&n;&t; * Pass1 SB1250s do not receive packets addressed to the&n;&t; * destination address in the R_MAC_ETHERNET_ADDR register.&n;&t; * Set the value to zero.&n;&t; */
+multiline_comment|/*&n;&t; * Pass1 SOCs do not receive packets addressed to the&n;&t; * destination address in the R_MAC_ETHERNET_ADDR register.&n;&t; * Set the value to zero.&n;&t; */
 id|SBMAC_WRITECSR
 c_func
 (paren
@@ -3577,6 +4208,8 @@ op_amp
 (paren
 id|s-&gt;sbm_rxdma
 )paren
+comma
+id|DMA_RX
 )paren
 suffix:semicolon
 id|sbdma_channel_start
@@ -3586,6 +4219,8 @@ op_amp
 (paren
 id|s-&gt;sbm_txdma
 )paren
+comma
+id|DMA_TX
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Configure the speed, duplex, and flow control&n;&t; */
@@ -3632,6 +4267,35 @@ op_or
 id|M_MAC_TX_ENABLE
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SBMAC_COALESCE
+multiline_comment|/*&n;&t; * Accept any TX interrupt and EOP count/timer RX interrupts on ch 0&n;&t; */
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|s-&gt;sbm_imr
+comma
+(paren
+(paren
+id|M_MAC_INT_EOP_COUNT
+op_or
+id|M_MAC_INT_EOP_TIMER
+)paren
+op_lshift
+id|S_MAC_TX_CH0
+)paren
+op_or
+(paren
+(paren
+id|M_MAC_INT_EOP_COUNT
+op_or
+id|M_MAC_INT_EOP_TIMER
+)paren
+op_lshift
+id|S_MAC_RX_CH0
+)paren
+)paren
+suffix:semicolon
+macro_line|#else
 multiline_comment|/*&n;&t; * Accept any kind of interrupt on TX and RX DMA channel 0&n;&t; */
 id|SBMAC_WRITECSR
 c_func
@@ -3651,6 +4315,7 @@ id|S_MAC_RX_CH0
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* &n;&t; * Enable receiving unicasts and broadcasts &n;&t; */
 id|SBMAC_WRITECSR
 c_func
@@ -3706,9 +4371,6 @@ op_star
 id|s
 )paren
 (brace
-r_uint64
-id|ctl
-suffix:semicolon
 multiline_comment|/* don&squot;t do this if already stopped */
 r_if
 c_cond
@@ -3739,35 +4401,37 @@ suffix:semicolon
 multiline_comment|/* Turn off ticker */
 multiline_comment|/* XXX */
 multiline_comment|/* turn off receiver and transmitter */
-id|ctl
-op_assign
-id|SBMAC_READCSR
-c_func
-(paren
-id|s-&gt;sbm_macenable
-)paren
-suffix:semicolon
-id|ctl
-op_and_assign
-op_complement
-(paren
-id|M_MAC_RXDMA_EN0
-op_or
-id|M_MAC_TXDMA_EN0
-)paren
-suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
 id|s-&gt;sbm_macenable
 comma
-id|ctl
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;re stopped now. */
 id|s-&gt;sbm_state
 op_assign
 id|sbmac_state_off
+suffix:semicolon
+multiline_comment|/*&n;&t; * Stop DMA channels (rings should be ok now)&n;&t; */
+id|sbdma_channel_stop
+c_func
+(paren
+op_amp
+(paren
+id|s-&gt;sbm_rxdma
+)paren
+)paren
+suffix:semicolon
+id|sbdma_channel_stop
+c_func
+(paren
+op_amp
+(paren
+id|s-&gt;sbm_txdma
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Empty the receive and transmit rings */
 id|sbdma_emptyring
@@ -3933,11 +4597,11 @@ id|reg
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
-multiline_comment|/**********************************************************************&n; *  SBMAC_INIT_AND_START(sc)&n; *  &n; *  Stop the channel and restart it.  This is generally used&n; *  when we have to do something to the channel that requires&n; *  a swift kick.&n; *  &n; *  Input parameters: &n; *  &t;   sc - softc&n; ********************************************************************* */
+multiline_comment|/**********************************************************************&n; *  SBMAC_SETIPHDR_OFFSET(sc,onoff)&n; *  &n; *  Set the iphdr offset as 15 assuming ethernet encapsulation&n; *  &n; *  Input parameters: &n; *  &t;   sc - softc&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
+DECL|function|sbmac_set_iphdr_offset
 r_static
 r_void
-id|sbmac_init_and_start
+id|sbmac_set_iphdr_offset
 c_func
 (paren
 r_struct
@@ -3946,42 +4610,68 @@ op_star
 id|sc
 )paren
 (brace
-r_int
-r_int
-id|flags
+r_uint64
+id|reg
 suffix:semicolon
-id|spin_lock_irqsave
+multiline_comment|/* Hard code the off set to 15 for now */
+id|reg
+op_assign
+id|SBMAC_READCSR
 c_func
 (paren
-op_amp
-(paren
-id|sc-&gt;sbm_lock
-)paren
-comma
-id|flags
+id|sc-&gt;sbm_rxfilter
 )paren
 suffix:semicolon
-id|sbmac_set_channel_state
+id|reg
+op_and_assign
+op_complement
+id|M_MAC_IPHDR_OFFSET
+op_or
+id|V_MAC_IPHDR_OFFSET
 c_func
 (paren
-id|sc
-comma
-id|sbmac_state_on
+l_int|15
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|SBMAC_WRITECSR
 c_func
 (paren
-op_amp
-(paren
-id|sc-&gt;sbm_lock
-)paren
+id|sc-&gt;sbm_rxfilter
 comma
-id|flags
+id|reg
 )paren
+suffix:semicolon
+multiline_comment|/* read system identification to determine revision */
+r_if
+c_cond
+(paren
+id|periph_rev
+op_ge
+l_int|2
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: enabling TCP rcv checksum&bslash;n&quot;
+comma
+id|sc-&gt;sbm_dev-&gt;name
+)paren
+suffix:semicolon
+id|sc-&gt;rx_hw_checksum
+op_assign
+id|ENABLE
 suffix:semicolon
 )brace
-macro_line|#endif
+r_else
+(brace
+id|sc-&gt;rx_hw_checksum
+op_assign
+id|DISABLE
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/**********************************************************************&n; *  SBMAC_ADDR2REG(ptr)&n; *  &n; *  Convert six bytes into the 64-bit register value that&n; *  we typically write into the SBMAC&squot;s address/mcast registers&n; *  &n; *  Input parameters: &n; *  &t;   ptr - pointer to 6 bytes&n; *  &t;   &n; *  Return value:&n; *  &t;   register value&n; ********************************************************************* */
 DECL|function|sbmac_addr2reg
 r_static
@@ -4470,7 +5160,7 @@ suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  SBMAC_INTR()&n; *  &n; *  Interrupt handler for MAC interrupts&n; *  &n; *  Input parameters: &n; *  &t;   MAC structure&n; *  &t;   &n; *  Return value:&n; *  &t;   nothing&n; ********************************************************************* */
 DECL|function|sbmac_intr
 r_static
-r_void
+id|irqreturn_t
 id|sbmac_intr
 c_func
 (paren
@@ -4528,7 +5218,7 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Read the ISR (this clears the bits in the real register)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Read the ISR (this clears the bits in the real&n;&t;&t; * register, except for counter addr)&n;&t;&t; */
 id|isr
 op_assign
 id|SBMAC_READCSR
@@ -4536,6 +5226,9 @@ c_func
 (paren
 id|sc-&gt;sbm_isr
 )paren
+op_amp
+op_complement
+id|M_MAC_COUNTER_ADDR
 suffix:semicolon
 r_if
 c_cond
@@ -4576,6 +5269,7 @@ id|sc-&gt;sbm_txdma
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Receives on channel 0&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It&squot;s important to test all the bits (or at least the&n;&t;&t; * EOP_SEEN bit) when deciding to do the RX process&n;&t;&t; * particularly when coalescing, to make sure we&n;&t;&t; * take care of the following:&n;&t;&t; *&n;&t;&t; * If you have some packets waiting (have been received&n;&t;&t; * but no interrupt) and get a TX interrupt before&n;&t;&t; * the RX timer or counter expires, reading the ISR&n;&t;&t; * above will clear the timer and counter, and you&n;&t;&t; * won&squot;t get another interrupt until a packet shows&n;&t;&t; * up to start the timer again.  Testing&n;&t;&t; * EOP_SEEN here takes care of this case.&n;&t;&t; * (EOP_SEEN is part of M_MAC_INT_CHANNEL &lt;&lt; S_MAC_RX_CH0)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4669,6 +5363,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sc-&gt;sbm_lock
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
 id|dev-&gt;trans_start
 op_assign
@@ -4736,9 +5440,6 @@ op_increment
 (brace
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|sc-&gt;sbm_base
 op_plus
 id|R_MAC_ADDR_BASE
@@ -4749,7 +5450,6 @@ op_star
 r_sizeof
 (paren
 r_uint64
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -4779,9 +5479,6 @@ op_increment
 (brace
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|sc-&gt;sbm_base
 op_plus
 id|R_MAC_HASH_BASE
@@ -4792,7 +5489,6 @@ op_star
 r_sizeof
 (paren
 r_uint64
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -4900,9 +5596,6 @@ id|mclist-&gt;dmi_addr
 suffix:semicolon
 id|port
 op_assign
-id|PKSEG1
-c_func
-(paren
 id|sc-&gt;sbm_base
 op_plus
 id|R_MAC_ADDR_BASE
@@ -4913,7 +5606,6 @@ op_star
 r_sizeof
 (paren
 r_uint64
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -5068,7 +5760,8 @@ r_char
 op_star
 id|str
 comma
-id|u_char
+r_int
+r_char
 op_star
 id|hwaddr
 )paren
@@ -5226,6 +5919,49 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|sb1250_change_mtu
+r_static
+r_int
+id|sb1250_change_mtu
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|_dev
+comma
+r_int
+id|new_mtu
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|new_mtu
+OG
+id|ENET_PACKET_SIZE
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|_dev-&gt;mtu
+op_assign
+id|new_mtu
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;changing the mtu to %d&bslash;n&quot;
+comma
+id|new_mtu
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/**********************************************************************&n; *  SBMAC_INIT(dev)&n; *  &n; *  Attach routine - init hardware and hook ourselves into linux&n; *  &n; *  Input parameters: &n; *  &t;   dev - net_device structure&n; *  &t;   &n; *  Return value:&n; *  &t;   status&n; ********************************************************************* */
 DECL|function|sbmac_init
 r_static
@@ -5237,6 +5973,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|idx
 )paren
 (brace
 r_struct
@@ -5244,7 +5983,8 @@ id|sbmac_softc
 op_star
 id|sc
 suffix:semicolon
-id|u_char
+r_int
+r_char
 op_star
 id|eaddr
 suffix:semicolon
@@ -5252,7 +5992,7 @@ r_uint64
 id|ea_reg
 suffix:semicolon
 r_int
-id|idx
+id|i
 suffix:semicolon
 id|sc
 op_assign
@@ -5266,14 +6006,19 @@ suffix:semicolon
 multiline_comment|/* Determine controller base address */
 id|sc-&gt;sbm_base
 op_assign
+id|KSEG1ADDR
+c_func
 (paren
-id|sbmac_port_t
-)paren
 id|dev-&gt;base_addr
+)paren
 suffix:semicolon
 id|sc-&gt;sbm_dev
 op_assign
 id|dev
+suffix:semicolon
+id|sc-&gt;sbe_idx
+op_assign
+id|idx
 suffix:semicolon
 id|eaddr
 op_assign
@@ -5285,25 +6030,17 @@ op_assign
 id|SBMAC_READCSR
 c_func
 (paren
-id|PKSEG1
-c_func
-(paren
 id|sc-&gt;sbm_base
 op_plus
 id|R_MAC_ETHERNET_ADDR
-)paren
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|PKSEG1
-c_func
-(paren
 id|sc-&gt;sbm_base
 op_plus
 id|R_MAC_ETHERNET_ADDR
-)paren
 comma
 l_int|0
 )paren
@@ -5311,21 +6048,21 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|idx
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|idx
+id|i
 OL
 l_int|6
 suffix:semicolon
-id|idx
+id|i
 op_increment
 )paren
 (brace
 id|eaddr
 (braket
-id|idx
+id|i
 )braket
 op_assign
 (paren
@@ -5345,26 +6082,26 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|idx
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|idx
+id|i
 OL
 l_int|6
 suffix:semicolon
-id|idx
+id|i
 op_increment
 )paren
 (brace
 id|dev-&gt;dev_addr
 (braket
-id|idx
+id|i
 )braket
 op_assign
 id|eaddr
 (braket
-id|idx
+id|i
 )braket
 suffix:semicolon
 )brace
@@ -5373,7 +6110,7 @@ id|sc-&gt;sbm_buffersize
 op_assign
 id|ENET_PACKET_SIZE
 op_plus
-id|CACHELINESIZE
+id|SMP_CACHE_BYTES
 op_star
 l_int|2
 op_plus
@@ -5386,20 +6123,16 @@ c_func
 id|sc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Display Ethernet address (this is called during the config process&n;&t; * so we need to finish off the config message that was being displayed)&n;&t; */
+multiline_comment|/*&n;&t; * Display Ethernet address (this is called during the config&n;&t; * process so we need to finish off the config message that&n;&t; * was being displayed)&n;&t; */
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: SB1250 Ethernet at 0x%08lX, address: %02X-%02X-%02X-%02X-%02X-%02X&bslash;n&quot;
+l_string|&quot;%s: SiByte Ethernet at 0x%08lX, address: %02X-%02X-%02X-%02X-%02X-%02X&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-(paren
-r_int
-r_int
-)paren
-id|sc-&gt;sbm_base
+id|dev-&gt;base_addr
 comma
 id|eaddr
 (braket
@@ -5479,6 +6212,17 @@ suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
+suffix:semicolon
+id|dev-&gt;change_mtu
+op_assign
+id|sb1250_change_mtu
+suffix:semicolon
+multiline_comment|/* This is needed for PASS2 for Rx H/W checksum feature */
+id|sbmac_set_iphdr_offset
+c_func
+(paren
+id|sc
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -5563,7 +6307,7 @@ c_func
 (paren
 id|sc
 comma
-l_int|1
+id|noisy_mii
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Turn on the channel&n;&t; */
@@ -6231,7 +6975,7 @@ c_func
 (paren
 id|sc
 comma
-l_int|1
+id|noisy_mii
 )paren
 )paren
 (brace
@@ -6243,7 +6987,7 @@ op_ne
 id|sbmac_state_off
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * something changed, restart the channel&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * something changed, restart the channel&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6790,6 +7534,9 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|irq
+suffix:semicolon
 id|sbmac_set_channel_state
 c_func
 (paren
@@ -6847,17 +7594,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure there is no irq-handler running on a different CPU. */
+id|irq
+op_assign
+id|dev-&gt;irq
+suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
-id|dev-&gt;irq
+id|irq
 )paren
 suffix:semicolon
 id|free_irq
 c_func
 (paren
-id|dev-&gt;irq
+id|irq
 comma
 id|dev
 )paren
@@ -6940,7 +7690,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|PKSEG1
+id|KSEG1ADDR
 c_func
 (paren
 id|port
@@ -6956,7 +7706,7 @@ op_assign
 id|SBMAC_READCSR
 c_func
 (paren
-id|PKSEG1
+id|KSEG1ADDR
 c_func
 (paren
 id|port
@@ -7011,6 +7761,9 @@ suffix:semicolon
 id|sbmac_port_t
 id|port
 suffix:semicolon
+r_int
+id|chip_max_units
+suffix:semicolon
 multiline_comment|/*&n;&t; * For bringup when not using the firmware, we can pre-fill&n;&t; * the MAC addresses using the environment variables&n;&t; * specified in this file (or maybe from the config file?)&n;&t; */
 macro_line|#ifdef SBMAC_ETH0_HWADDR
 id|sbmac_setup_hwaddr
@@ -7043,6 +7796,63 @@ id|SBMAC_ETH2_HWADDR
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Walk through the Ethernet controllers and find&n;&t; * those who have their MAC addresses set.&n;&t; */
+r_switch
+c_cond
+(paren
+id|soc_type
+)paren
+(brace
+r_case
+id|K_SYS_SOC_TYPE_BCM1250
+suffix:colon
+r_case
+id|K_SYS_SOC_TYPE_BCM1250_ALT
+suffix:colon
+id|chip_max_units
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|K_SYS_SOC_TYPE_BCM1120
+suffix:colon
+r_case
+id|K_SYS_SOC_TYPE_BCM1125
+suffix:colon
+r_case
+id|K_SYS_SOC_TYPE_BCM1125H
+suffix:colon
+r_case
+id|K_SYS_SOC_TYPE_BCM1250_ALT2
+suffix:colon
+multiline_comment|/* Hybrid */
+id|chip_max_units
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|chip_max_units
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chip_max_units
+OG
+id|MAX_UNITS
+)paren
+id|chip_max_units
+op_assign
+id|MAX_UNITS
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7052,7 +7862,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|MAX_UNITS
+id|chip_max_units
 suffix:semicolon
 id|idx
 op_increment
@@ -7068,13 +7878,15 @@ id|idx
 )paren
 suffix:semicolon
 multiline_comment|/*&t;&n;&t;&t; * The R_MAC_ETHERNET_ADDR register will be set to some nonzero&n;&t;&t; * value for us by the firmware if we&squot;re going to use this MAC.&n;&t;&t; * If we find a zero, skip this MAC.&n;&t;&t; */
-r_if
-c_cond
-(paren
+id|sbmac_orig_hwaddr
+(braket
+id|idx
+)braket
+op_assign
 id|SBMAC_READCSR
 c_func
 (paren
-id|PKSEG1
+id|KSEG1ADDR
 c_func
 (paren
 id|port
@@ -7082,10 +7894,28 @@ op_plus
 id|R_MAC_ETHERNET_ADDR
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbmac_orig_hwaddr
+(braket
+id|idx
+)braket
 op_eq
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;sbmac: not configuring MAC at &quot;
+l_string|&quot;%lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -7110,9 +7940,20 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-r_break
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
-multiline_comment|/* problems, get out now. */
+multiline_comment|/* return ENOMEM */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;sbmac: configuring MAC at %lx&bslash;n&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|K_INT_MAC_0
@@ -7132,6 +7973,8 @@ id|sbmac_init
 c_func
 (paren
 id|dev
+comma
+id|macidx
 )paren
 suffix:semicolon
 id|dev_sbmac
@@ -7167,6 +8010,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+suffix:semicolon
+id|sbmac_port_t
+id|port
 suffix:semicolon
 r_for
 c_loop
@@ -7231,14 +8077,33 @@ c_func
 id|sc
 )paren
 suffix:semicolon
-id|KFREE
+)brace
+id|port
+op_assign
+id|A_MAC_CHANNEL_BASE
 c_func
 (paren
-id|sc
+id|idx
 )paren
 suffix:semicolon
-)brace
-id|KFREE
+id|SBMAC_WRITECSR
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|port
+op_plus
+id|R_MAC_ETHERNET_ADDR
+)paren
+comma
+id|sbmac_orig_hwaddr
+(braket
+id|idx
+)braket
+)paren
+suffix:semicolon
+id|kfree
 c_func
 (paren
 id|dev

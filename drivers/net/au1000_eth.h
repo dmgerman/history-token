@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *&n; * Alchemy Semi Au1000 ethernet driver include file&n; *&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * &n; */
+multiline_comment|/*&n; * Alchemy Semi Au1000 ethernet driver include file&n; *&n; * Author: Pete Popov &lt;ppopov@mvista.com&gt;&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NUM_INTERFACES
 mdefine_line|#define NUM_INTERFACES 2
 DECL|macro|MAC_IOSIZE
@@ -163,7 +164,7 @@ mdefine_line|#define MII_AUX_F100     0x0004
 DECL|macro|MII_AUX_ANEG
 mdefine_line|#define MII_AUX_ANEG     0x0008
 DECL|macro|MII_FDX_LED
-mdefine_line|#define MII_FDX_LED      0x8000
+mdefine_line|#define MII_FDX_LED&t; 0x8000
 DECL|struct|mii_phy
 r_typedef
 r_struct
@@ -405,6 +406,13 @@ r_volatile
 id|tx_dma_t
 op_star
 id|tx_dma_ring
+(braket
+id|NUM_TX_DMA
+)braket
+suffix:semicolon
+DECL|member|tx_len
+r_int
+id|tx_len
 (braket
 id|NUM_TX_DMA
 )braket

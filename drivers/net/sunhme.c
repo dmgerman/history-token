@@ -11552,20 +11552,6 @@ op_eq
 id|ETHTOOL_SSET
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_NET_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EPERM
-suffix:semicolon
 multiline_comment|/* Verify the settings we care about. */
 r_if
 c_cond
