@@ -138,6 +138,7 @@ id|sk_buff
 op_star
 id|dest
 comma
+r_const
 r_int
 r_char
 op_star
@@ -168,6 +169,7 @@ r_int
 id|is_valid_ether_addr
 c_func
 (paren
+r_const
 id|u8
 op_star
 id|addr
