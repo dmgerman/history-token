@@ -3980,6 +3980,11 @@ suffix:semicolon
 r_int
 id|possible_inq_resp_len
 suffix:semicolon
+op_star
+id|bflags
+op_assign
+l_int|0
+suffix:semicolon
 id|repeat_inquiry
 suffix:colon
 id|SCSI_LOG_SCAN_BUS
@@ -4154,17 +4159,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get any flags for this device.&n;&t; *&n;&t; * XXX add a bflags to Scsi_Device, and replace the corresponding&n;&t; * bit fields in Scsi_Device, so bflags need not be passed as an&n;&t; * argument.&n;&t; */
-id|BUG_ON
-c_func
-(paren
-id|bflags
-op_eq
-l_int|NULL
-)paren
-suffix:semicolon
 op_star
 id|bflags
-op_assign
+op_or_assign
 id|scsi_get_device_flags
 c_func
 (paren
@@ -4350,14 +4347,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi scan: %d byte inquiry failed with code %d.  Consider BLIST_INQUIRY_36 for this device&bslash;n&quot;
+l_string|&quot;scsi scan: %d byte inquiry failed&quot;
+l_string|&quot; with code %d.  Consider BLIST_INQUIRY_36 for&quot;
+l_string|&quot; this device&bslash;n&quot;
+comma
+id|possible_inq_resp_len
 comma
 id|sreq-&gt;sr_result
 )paren
 suffix:semicolon
 op_star
 id|bflags
-op_or_assign
+op_assign
 id|BLIST_INQUIRY_36
 suffix:semicolon
 r_goto
