@@ -14,7 +14,7 @@ DECL|macro|BRLVGER_BUZZ
 mdefine_line|#define BRLVGER_BUZZ&t;&t;4
 multiline_comment|/* Number of supported devices, and range of covered minors */
 DECL|macro|MAX_NR_BRLVGER_DEVS
-mdefine_line|#define MAX_NR_BRLVGER_DEVS&t;2
+mdefine_line|#define MAX_NR_BRLVGER_DEVS&t;4
 multiline_comment|/* Base minor for the char devices */
 DECL|macro|BRLVGER_MINOR
 mdefine_line|#define BRLVGER_MINOR&t;&t;128
