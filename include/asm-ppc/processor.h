@@ -1600,6 +1600,11 @@ r_int
 r_int
 id|vrsave
 suffix:semicolon
+DECL|member|used_vr
+r_int
+id|used_vr
+suffix:semicolon
+multiline_comment|/* set if process has used altivec */
 macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 suffix:semicolon

@@ -254,6 +254,20 @@ id|vscr
 )paren
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|THREAD_USED_VR
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_struct
+comma
+id|used_vr
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
 multiline_comment|/* Interrupt register frame */
 id|DEFINE
@@ -1032,7 +1046,7 @@ id|dsisr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* The PowerPC 400-class processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.  For critical interrupts we use them to&n;&t; * hold SRR0 and SRR1.&n;&t; */
+multiline_comment|/* The PowerPC 400-class &amp; Book-E processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.  For critical interrupts we use them to&n;&t; * hold SRR0 and SRR1.&n;&t; */
 id|DEFINE
 c_func
 (paren
