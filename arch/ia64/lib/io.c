@@ -346,6 +346,7 @@ id|__ia64_readq
 (paren
 id|addr
 )paren
+suffix:semicolon
 )brace
 multiline_comment|/* define aliases: */
 id|asm

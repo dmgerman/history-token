@@ -872,31 +872,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|sal_platform_features
-op_amp
-id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Synchronize the ITC with the BP&n;&t;&t; */
-id|Dprintk
-c_func
-(paren
-l_string|&quot;Going to syncup ITC with BP.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ia64_sync_itc
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|ia64_init_itm
 c_func
@@ -951,6 +926,31 @@ id|local_cpu_data-&gt;loops_per_jiffy
 op_assign
 id|loops_per_jiffy
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sal_platform_features
+op_amp
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Synchronize the ITC with the BP.  Need to do this after irqs are&n;&t;&t; * enabled because ia64_sync_itc() calls smp_call_function_single(), which&n;&t;&t; * calls spin_unlock_bh(), which calls spin_unlock_bh(), which calls&n;&t;&t; * local_bh_enable(), which bugs out if irqs are not enabled...&n;&t;&t; */
+id|Dprintk
+c_func
+(paren
+l_string|&quot;Going to syncup ITC with BP.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ia64_sync_itc
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit
 c_func
