@@ -2604,6 +2604,11 @@ op_logical_neg
 id|disk
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bdput
 c_func
 (paren
