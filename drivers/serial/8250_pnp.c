@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/serial_8250_pnp.c&n; *&n; *  Probe module for 8250/16550-type ISAPNP serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: serial_8250_pnp.c,v 1.9 2002/02/18 19:20:29 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/8250_pnp.c&n; *&n; *  Probe module for 8250/16550-type ISAPNP serial ports.&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Russell King, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License.&n; *&n; *  $Id: 8250_pnp.c,v 1.10 2002/07/21 21:32:30 rmk Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
-macro_line|#include &quot;serial_8250.h&quot;
+macro_line|#include &quot;8250.h&quot;
 DECL|struct|pnpbios_device_id
 r_struct
 id|pnpbios_device_id

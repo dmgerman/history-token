@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/serial_anakin.c&n; *&n; *  Based on driver for AMBA serial ports, by ARM Limited,&n; *  Deep Blue Solutions Ltd., Linus Torvalds and Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; *  Copyright (C) 2001 Blue Mug, Inc. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   20-Apr-2001 TTC&t;Created&n; *   05-May-2001 W/TTC&t;Updated for serial_core.c&n; *   27-Jun-2001 jonm&t;Minor changes; add mctrl support, switch to &n; *   &t;&t;&t;SA_INTERRUPT. Works reliably now. No longer requires&n; *   &t;&t;&t;changes to the serial_core API.&n; *&n; *  $Id: serial_anakin.c,v 1.27 2002/07/20 17:10:03 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/anakin.c&n; *&n; *  Based on driver for AMBA serial ports, by ARM Limited,&n; *  Deep Blue Solutions Ltd., Linus Torvalds and Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; *  Copyright (C) 2001 Blue Mug, Inc. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   20-Apr-2001 TTC&t;Created&n; *   05-May-2001 W/TTC&t;Updated for serial_core.c&n; *   27-Jun-2001 jonm&t;Minor changes; add mctrl support, switch to &n; *   &t;&t;&t;SA_INTERRUPT. Works reliably now. No longer requires&n; *   &t;&t;&t;changes to the serial_core API.&n; *&n; *  $Id: anakin.c,v 1.28 2002/07/21 21:32:30 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2146,7 +2146,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: Anakin driver $Revision: 1.27 $&bslash;n&quot;
+l_string|&quot;Serial: Anakin driver $Revision: 1.28 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret

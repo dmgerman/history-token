@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/serial_amba.c&n; *&n; *  Driver for AMBA serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: serial_amba.c,v 1.35 2002/07/21 08:57:55 rmk Exp $&n; *&n; * This is a generic driver for ARM AMBA-type serial ports.  They&n; * have a lot of 16550-like features, but are not register compatable.&n; * Note that although they do have CTS, DCD and DSR inputs, they do&n; * not have an RI input, nor do they have DTR or RTS outputs.  If&n; * required, these have to be supplied via some other means (eg, GPIO)&n; * and hooked into this driver.&n; */
+multiline_comment|/*&n; *  linux/drivers/char/amba.c&n; *&n; *  Driver for AMBA serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: amba.c,v 1.36 2002/07/21 21:32:30 rmk Exp $&n; *&n; * This is a generic driver for ARM AMBA-type serial ports.  They&n; * have a lot of 16550-like features, but are not register compatable.&n; * Note that although they do have CTS, DCD and DSR inputs, they do&n; * not have an RI input, nor do they have DTR or RTS outputs.  If&n; * required, these have to be supplied via some other means (eg, GPIO)&n; * and hooked into this driver.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2818,7 +2818,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: AMBA driver $Revision: 1.35 $&bslash;n&quot;
+l_string|&quot;Serial: AMBA driver $Revision: 1.36 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
@@ -2950,7 +2950,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;ARM AMBA serial port driver $Revision: 1.35 $&quot;
+l_string|&quot;ARM AMBA serial port driver $Revision: 1.36 $&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

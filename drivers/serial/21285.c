@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/serial_21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: serial_21285.c,v 1.32 2002/07/21 08:57:55 rmk Exp $&n; */
+multiline_comment|/*&n; * linux/drivers/char/21285.c&n; *&n; * Driver for the serial port on the 21285 StrongArm-110 core logic chip.&n; *&n; * Based on drivers/char/serial.c&n; *&n; *  $Id: 21285.c,v 1.33 2002/07/21 21:32:29 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2050,7 +2050,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: 21285 driver $Revision: 1.32 $&bslash;n&quot;
+l_string|&quot;Serial: 21285 driver $Revision: 1.33 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|serial21285_setup_ports
@@ -2141,7 +2141,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.32 $&quot;
+l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.33 $&quot;
 )paren
 suffix:semicolon
 eof
