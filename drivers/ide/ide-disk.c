@@ -5786,6 +5786,8 @@ id|id-&gt;cfs_enable_2
 op_amp
 l_int|0x0400
 )paren
+op_logical_and
+id|id-&gt;lba_capacity_2
 suffix:semicolon
 )brace
 DECL|function|idedisk_check_hpa
