@@ -626,7 +626,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|niccy_interrupt
 id|niccy_interrupt
 c_func
@@ -684,6 +684,7 @@ id|PCI_IRQ_ASSERT
 )paren
 multiline_comment|/* IRQ not for us (shared) */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outl
 c_func
@@ -696,6 +697,7 @@ id|PCI_IRQ_CTRL_REG
 )paren
 suffix:semicolon
 )brace
+r_return
 id|hscxisac_irq
 c_func
 (paren

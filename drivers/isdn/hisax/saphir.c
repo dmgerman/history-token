@@ -613,7 +613,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|saphir_interrupt
 id|saphir_interrupt
 c_func
@@ -638,6 +638,11 @@ id|cs
 op_assign
 id|dev_id
 suffix:semicolon
+id|irqreturn_t
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|hscxisac_irq
 c_func
 (paren
@@ -660,6 +665,9 @@ l_int|1
 op_star
 id|HZ
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_static

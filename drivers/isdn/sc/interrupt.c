@@ -3,6 +3,7 @@ macro_line|#include &quot;includes.h&quot;
 macro_line|#include &quot;hardware.h&quot;
 macro_line|#include &quot;message.h&quot;
 macro_line|#include &quot;card.h&quot;
+macro_line|#include &lt;linux/interrupt.h&gt;
 r_extern
 r_int
 id|indicate_status
@@ -142,7 +143,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * &n; */
 DECL|function|interrupt_handler
-r_void
+id|irqreturn_t
 id|interrupt_handler
 c_func
 (paren
@@ -196,6 +197,7 @@ id|card
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|pr_debug
@@ -1120,6 +1122,9 @@ id|card
 op_member_access_from_pointer
 id|devicename
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 eof

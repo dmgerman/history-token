@@ -115,7 +115,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * IRQ handler.&n; *&n; * If a message comes from the board we read it, construct a sk_buff containing&n; * the message and we queue the sk_buff on the board&squot;s receive queue, and we&n; * trigger the execution of the board&squot;s receive task queue.&n; *&n; * If a message ack comes from the board we can go on and send a new message,&n; * so we trigger the execution of the board&squot;s send task queue.&n; *&n; * &t;irq: the irq number&n; * &t;dev_id: the registered board to the irq&n; * &t;regs: not used.&n; */
 DECL|function|tpam_irq
-r_void
+id|irqreturn_t
 id|tpam_irq
 c_func
 (paren
@@ -317,6 +317,7 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* build the skb_header */
@@ -487,6 +488,7 @@ l_string|&quot;waiting too long...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -574,6 +576,7 @@ id|card-&gt;recv_tq
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -608,10 +611,10 @@ op_amp
 id|card-&gt;send_tq
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-multiline_comment|/* not reached */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Run the board&squot;s receive task queue, dispatching each message on the queue,&n; * to its treatment function.&n; *&n; * &t;card: the board.&n; */
 DECL|function|tpam_recv_tq

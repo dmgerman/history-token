@@ -220,7 +220,7 @@ id|cs
 )paren
 suffix:semicolon
 )brace
-r_void
+id|irqreturn_t
 DECL|function|ipac_irq
 id|ipac_irq
 c_func
@@ -483,6 +483,9 @@ op_amp
 id|cs-&gt;lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_int
 DECL|function|ipac_setup
@@ -534,6 +537,9 @@ l_string|&quot;HiSax: IPAC version %#x&bslash;n&quot;
 comma
 id|val
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

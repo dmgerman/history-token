@@ -1,4 +1,5 @@
 multiline_comment|/* $Id: ipac.h,v 1.5.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * IPAC specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|IPAC_CONF
 mdefine_line|#define IPAC_CONF&t;0xC0
@@ -40,7 +41,7 @@ op_star
 id|cs
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|ipac_irq
 c_func
 (paren

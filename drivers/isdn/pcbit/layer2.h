@@ -3,6 +3,7 @@ multiline_comment|/*&n; * 19991203 - Fernando Carvalho - takion@superbofh.org&n;
 macro_line|#ifndef LAYER2_H
 DECL|macro|LAYER2_H
 mdefine_line|#define LAYER2_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|BANK1
 mdefine_line|#define BANK1 0x0000U /* PC -&gt; Board */
@@ -186,7 +187,7 @@ id|hdr_len
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|pcbit_irq_handler
 c_func
 (paren

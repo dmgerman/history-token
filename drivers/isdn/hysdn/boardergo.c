@@ -17,7 +17,7 @@ multiline_comment|/***************************************************/
 multiline_comment|/* The cards interrupt handler. Called from system */
 multiline_comment|/***************************************************/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ergo_interrupt
 id|ergo_interrupt
 c_func
@@ -60,6 +60,7 @@ op_logical_neg
 id|card
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* error -&gt; spurious interrupt */
 r_if
@@ -69,6 +70,7 @@ op_logical_neg
 id|card-&gt;irq_enabled
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* other device interrupting or irq switched off */
 id|save_flags
@@ -108,6 +110,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* restore old state */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* no interrupt requested by E1 */
 )brace
@@ -150,6 +153,9 @@ c_func
 (paren
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* ergo_interrupt */
