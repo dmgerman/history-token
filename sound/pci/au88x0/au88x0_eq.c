@@ -12,6 +12,8 @@ DECL|macro|VORTEX_EQ_SOURCE
 mdefine_line|#define VORTEX_EQ_SOURCE (VORTEX_EQ_BASE + 0x430)
 DECL|macro|VORTEX_EQ_CTRL
 mdefine_line|#define VORTEX_EQ_CTRL   (VORTEX_EQ_BASE + 0x440)
+DECL|macro|VORTEX_BAND_COEFF_SIZE
+mdefine_line|#define VORTEX_BAND_COEFF_SIZE 0x30
 multiline_comment|/* CEqHw.s */
 DECL|function|vortex_EqHw_SetTimeConsts
 r_static
@@ -1827,7 +1829,7 @@ op_star
 id|vortex
 comma
 id|u16
-id|a
+id|peaks
 (braket
 )braket
 )paren
@@ -1842,20 +1844,21 @@ id|vortex-&gt;eq.this04
 )paren
 suffix:semicolon
 r_int
-id|ebx
+id|i
 suffix:semicolon
+multiline_comment|/* set left peaks */
 r_for
 c_loop
 (paren
-id|ebx
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|ebx
+id|i
 OL
 id|eqhw-&gt;this04
 suffix:semicolon
-id|ebx
+id|i
 op_increment
 )paren
 (brace
@@ -1866,13 +1869,13 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b024
 op_plus
-id|ebx
+id|i
 op_star
-l_int|0x30
+id|VORTEX_BAND_COEFF_SIZE
 comma
-id|a
+id|peaks
 (braket
-id|ebx
+id|i
 )braket
 )paren
 suffix:semicolon
@@ -1884,7 +1887,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3cc
 comma
-id|a
+id|peaks
 (braket
 id|eqhw-&gt;this04
 )braket
@@ -1897,7 +1900,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3d8
 comma
-id|a
+id|peaks
 (braket
 id|eqhw-&gt;this04
 op_plus
@@ -1905,18 +1908,19 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* set right peaks */
 r_for
 c_loop
 (paren
-id|ebx
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|ebx
+id|i
 OL
 id|eqhw-&gt;this04
 suffix:semicolon
-id|ebx
+id|i
 op_increment
 )paren
 (brace
@@ -1927,13 +1931,13 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b204
 op_plus
-id|ebx
+id|i
 op_star
-l_int|0x30
+id|VORTEX_BAND_COEFF_SIZE
 comma
-id|a
+id|peaks
 (braket
-id|ebx
+id|i
 op_plus
 (paren
 id|eqhw-&gt;this04
@@ -1951,7 +1955,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3e4
 comma
-id|a
+id|peaks
 (braket
 l_int|2
 op_plus
@@ -1970,7 +1974,7 @@ id|vortex-&gt;mmio
 comma
 l_int|0x2b3f0
 comma
-id|a
+id|peaks
 (braket
 l_int|3
 op_plus
