@@ -187,6 +187,7 @@ id|eregs
 suffix:semicolon
 multiline_comment|/***************************************************************** Detection */
 DECL|function|mca_esp_detect
+r_static
 r_int
 id|mca_esp_detect
 c_func
@@ -736,6 +737,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************* Release */
 DECL|function|mca_esp_release
+r_static
 r_int
 id|mca_esp_release
 c_func
