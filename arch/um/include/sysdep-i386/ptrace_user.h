@@ -37,6 +37,10 @@ DECL|macro|FP_FRAME_SIZE
 mdefine_line|#define FP_FRAME_SIZE (27)
 DECL|macro|FPX_FRAME_SIZE
 mdefine_line|#define FPX_FRAME_SIZE (128)
+DECL|macro|MAX_REG_OFFSET
+mdefine_line|#define MAX_REG_OFFSET (FRAME_SIZE_OFFSET)
+DECL|macro|MAX_REG_NR
+mdefine_line|#define MAX_REG_NR (FRAME_SIZE)
 macro_line|#ifdef PTRACE_GETREGS
 DECL|macro|UM_HAVE_GETREGS
 mdefine_line|#define UM_HAVE_GETREGS
