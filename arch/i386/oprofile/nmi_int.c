@@ -184,6 +184,7 @@ op_amp
 id|msrs-&gt;controls
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_for
@@ -433,6 +434,7 @@ op_assign
 op_amp
 id|msrs-&gt;controls
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -769,6 +771,7 @@ op_star
 id|root
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon

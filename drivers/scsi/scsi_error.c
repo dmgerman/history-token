@@ -4131,6 +4131,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_bus_device_reset
 c_func
 (paren
@@ -4144,6 +4145,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_bus_reset
 c_func
 (paren
@@ -4157,6 +4159,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_host_reset
 c_func
 (paren
