@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * jazz_esp.c: Driver for SCSI chip on Mips Magnum Boards (JAZZ architecture)&n; *&n; * Copyright (C) 1997 Thomas Bogendoerfer (tsbogend@alpha.franken.de)&n; *&n; * jazz_esp is based on David S. Miller&squot;s ESP driver and cyber_esp&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -39,7 +40,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -162,7 +164,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -176,7 +179,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -190,7 +194,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -204,7 +209,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -213,7 +219,8 @@ r_static
 r_void
 id|dma_advance_sg
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -251,11 +258,13 @@ suffix:semicolon
 multiline_comment|/* This is where all commands are put&n;&t;&t;&t;&t; * before they are trasfered to the ESP chip&n;&t;&t;&t;&t; * via PIO.&n;&t;&t;&t;&t; */
 multiline_comment|/***************************************************************** Detection */
 DECL|function|jazz_esp_detect
+r_static
 r_int
 id|jazz_esp_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -455,7 +464,7 @@ op_assign
 id|vdma_alloc
 c_func
 (paren
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|cmd_buffer
@@ -618,7 +627,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1013,7 +1023,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1023,7 +1034,7 @@ op_assign
 id|vdma_alloc
 c_func
 (paren
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|sp-&gt;SCp.buffer
@@ -1057,7 +1068,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1068,13 +1080,13 @@ op_assign
 id|sp-&gt;SCp.buffers_residual
 suffix:semicolon
 r_struct
-id|mmu_sglist
+id|scatterlist
 op_star
 id|sg
 op_assign
 (paren
 r_struct
-id|mmu_sglist
+id|scatterlist
 op_star
 )paren
 id|sp-&gt;SCp.buffer
@@ -1092,12 +1104,15 @@ id|sg
 id|sz
 )braket
 dot
-id|dvma_addr
+id|dma_address
 op_assign
 id|vdma_alloc
 c_func
 (paren
-id|PHYSADDR
+id|CPHYSADDR
+c_func
+(paren
+id|page_address
 c_func
 (paren
 id|sg
@@ -1105,7 +1120,15 @@ id|sg
 id|sz
 )braket
 dot
-id|addr
+id|page
+)paren
+op_plus
+id|sg
+(braket
+id|sz
+)braket
+dot
+id|offset
 )paren
 comma
 id|sg
@@ -1113,7 +1136,7 @@ id|sg
 id|sz
 )braket
 dot
-id|len
+id|length
 )paren
 suffix:semicolon
 id|sz
@@ -1127,11 +1150,7 @@ r_char
 op_star
 )paren
 (paren
-(paren
-r_int
-r_int
-)paren
-id|sp-&gt;SCp.buffer-&gt;dvma_address
+id|sp-&gt;SCp.buffer-&gt;dma_address
 )paren
 suffix:semicolon
 )brace
@@ -1145,7 +1164,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1167,7 +1187,8 @@ id|NCR_ESP
 op_star
 id|esp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1180,13 +1201,13 @@ op_minus
 l_int|1
 suffix:semicolon
 r_struct
-id|mmu_sglist
+id|scatterlist
 op_star
 id|sg
 op_assign
 (paren
 r_struct
-id|mmu_sglist
+id|scatterlist
 op_star
 )paren
 id|sp-&gt;buffer
@@ -1207,7 +1228,7 @@ id|sg
 id|sz
 )braket
 dot
-id|dvma_addr
+id|dma_address
 )paren
 suffix:semicolon
 id|sz
@@ -1220,7 +1241,8 @@ r_static
 r_void
 id|dma_advance_sg
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|sp
 )paren
@@ -1232,11 +1254,7 @@ r_char
 op_star
 )paren
 (paren
-(paren
-r_int
-r_int
-)paren
-id|sp-&gt;SCp.buffer-&gt;dvma_address
+id|sp-&gt;SCp.buffer-&gt;dma_address
 )paren
 suffix:semicolon
 )brace
@@ -1294,7 +1312,8 @@ macro_line|#endif
 )brace
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -1306,7 +1325,6 @@ comma
 dot
 id|proc_info
 op_assign
-op_amp
 id|esp_proc_info
 comma
 dot
@@ -1381,4 +1399,5 @@ id|DISABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 eof
