@@ -2085,14 +2085,13 @@ id|RATE
 )paren
 )paren
 suffix:semicolon
-id|val
-op_or_assign
+r_if
+c_cond
 (paren
 id|old
-op_amp
-l_int|0xf0
+op_ne
+id|val
 )paren
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -2107,6 +2106,7 @@ id|RATE
 )paren
 )paren
 suffix:semicolon
+r_else
 r_if
 c_cond
 (paren
