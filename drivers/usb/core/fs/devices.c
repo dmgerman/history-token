@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;hcd.h&quot;
+macro_line|#include &quot;../hcd.h&quot;
 DECL|macro|MAX_TOPO_LEVEL
 mdefine_line|#define MAX_TOPO_LEVEL&t;&t;6
 multiline_comment|/* Define ALLOW_SERIAL_NUMBER if you want to see the serial number of devices */

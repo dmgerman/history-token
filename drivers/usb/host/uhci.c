@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;hcd.h&quot;
+macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &quot;uhci.h&quot;
 macro_line|#include &lt;linux/pm.h&gt;
 multiline_comment|/*&n; * Version Information&n; */

@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &quot;CDCEther.h&quot;
+macro_line|#include &quot;cdc-ether.h&quot;
 DECL|variable|version
 r_static
 r_const
