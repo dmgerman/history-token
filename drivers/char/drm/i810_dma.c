@@ -51,10 +51,6 @@ id|u32
 op_star
 id|temp
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 r_int
@@ -927,8 +923,6 @@ r_if
 c_cond
 (paren
 id|dev_priv-&gt;hw_status_page
-op_ne
-l_int|0UL
 )paren
 (brace
 id|pci_free_consistent
@@ -938,10 +932,6 @@ id|dev-&gt;pdev
 comma
 id|PAGE_SIZE
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 id|dev_priv-&gt;dma_status_page
@@ -1718,10 +1708,6 @@ suffix:semicolon
 multiline_comment|/* Program Hardware Status Page */
 id|dev_priv-&gt;hw_status_page
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|pci_alloc_consistent
 c_func
 (paren
@@ -1736,9 +1722,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev_priv-&gt;hw_status_page
-op_eq
-l_int|0UL
 )paren
 (brace
 id|dev-&gt;dev_private
@@ -1769,10 +1754,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 l_int|0
@@ -4146,10 +4127,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -4515,10 +4492,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -4603,10 +4576,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
@@ -5151,10 +5120,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i810_sarea_t
