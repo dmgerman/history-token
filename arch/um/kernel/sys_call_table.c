@@ -879,6 +879,18 @@ r_extern
 id|syscall_handler_t
 id|sys_lookup_dcookie
 suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_epoll_create
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_epoll_ctl
+suffix:semicolon
+r_extern
+id|syscall_handler_t
+id|sys_epoll_wait
+suffix:semicolon
 macro_line|#if CONFIG_NFSD
 DECL|macro|NFSSERVCTL
 mdefine_line|#define NFSSERVCTL sys_nfsserctl
@@ -899,7 +911,7 @@ id|syscall_handler_t
 id|um_stime
 suffix:semicolon
 DECL|macro|LAST_GENERIC_SYSCALL
-mdefine_line|#define LAST_GENERIC_SYSCALL __NR_lookup_dcookie
+mdefine_line|#define LAST_GENERIC_SYSCALL __NR_sys_epoll_wait
 macro_line|#if LAST_GENERIC_SYSCALL &gt; LAST_ARCH_SYSCALL
 DECL|macro|LAST_SYSCALL
 mdefine_line|#define LAST_SYSCALL LAST_GENERIC_SYSCALL
@@ -2327,6 +2339,24 @@ id|__NR_lookup_dcookie
 )braket
 op_assign
 id|sys_lookup_dcookie
+comma
+(braket
+id|__NR_sys_epoll_create
+)braket
+op_assign
+id|sys_epoll_create
+comma
+(braket
+id|__NR_sys_epoll_ctl
+)braket
+op_assign
+id|sys_epoll_ctl
+comma
+(braket
+id|__NR_sys_epoll_wait
+)braket
+op_assign
+id|sys_epoll_wait
 comma
 id|ARCH_SYSCALLS
 (braket
