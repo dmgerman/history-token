@@ -46,6 +46,20 @@ DECL|macro|IRQ_AP_LBUSTIMEOUT
 mdefine_line|#define IRQ_AP_LBUSTIMEOUT &t;&t;20
 DECL|macro|IRQ_AP_APCINT
 mdefine_line|#define IRQ_AP_APCINT&t;&t;&t;21
+DECL|macro|IRQ_CP_CLCDCINT
+mdefine_line|#define IRQ_CP_CLCDCINT&t;&t;&t;22
+DECL|macro|IRQ_CP_MMCIINT0
+mdefine_line|#define IRQ_CP_MMCIINT0&t;&t;&t;23
+DECL|macro|IRQ_CP_MMCIINT1
+mdefine_line|#define IRQ_CP_MMCIINT1&t;&t;&t;24
+DECL|macro|IRQ_CP_AACIINT
+mdefine_line|#define IRQ_CP_AACIINT&t;&t;&t;25
+DECL|macro|IRQ_CP_CPPLDINT
+mdefine_line|#define IRQ_CP_CPPLDINT&t;&t;&t;26
+DECL|macro|IRQ_CP_ETHINT
+mdefine_line|#define IRQ_CP_ETHINT&t;&t;&t;27
+DECL|macro|IRQ_CP_TSPENINT
+mdefine_line|#define IRQ_CP_TSPENINT&t;&t;&t;28
 DECL|macro|IRQ_PIC_END
 mdefine_line|#define IRQ_PIC_END&t;&t;&t;31
 DECL|macro|IRQ_CIC_START
@@ -58,6 +72,35 @@ DECL|macro|IRQ_CM_COMMTX
 mdefine_line|#define IRQ_CM_COMMTX&t;&t;&t;34
 DECL|macro|IRQ_CIC_END
 mdefine_line|#define IRQ_CIC_END&t;&t;&t;34
+multiline_comment|/*&n; * IntegratorCP only&n; */
+DECL|macro|IRQ_SIC_START
+mdefine_line|#define IRQ_SIC_START&t;&t;&t;35
+DECL|macro|IRQ_SIC_CP_SOFTINT
+mdefine_line|#define IRQ_SIC_CP_SOFTINT&t;&t;35
+DECL|macro|IRQ_SIC_CP_RI0
+mdefine_line|#define IRQ_SIC_CP_RI0&t;&t;&t;36
+DECL|macro|IRQ_SIC_CP_RI1
+mdefine_line|#define IRQ_SIC_CP_RI1&t;&t;&t;37
+DECL|macro|IRQ_SIC_CP_CARDIN
+mdefine_line|#define IRQ_SIC_CP_CARDIN&t;&t;38
+DECL|macro|IRQ_SIC_CP_LMINT0
+mdefine_line|#define IRQ_SIC_CP_LMINT0&t;&t;39
+DECL|macro|IRQ_SIC_CP_LMINT1
+mdefine_line|#define IRQ_SIC_CP_LMINT1&t;&t;40
+DECL|macro|IRQ_SIC_CP_LMINT2
+mdefine_line|#define IRQ_SIC_CP_LMINT2&t;&t;41
+DECL|macro|IRQ_SIC_CP_LMINT3
+mdefine_line|#define IRQ_SIC_CP_LMINT3&t;&t;42
+DECL|macro|IRQ_SIC_CP_LMINT4
+mdefine_line|#define IRQ_SIC_CP_LMINT4&t;&t;43
+DECL|macro|IRQ_SIC_CP_LMINT5
+mdefine_line|#define IRQ_SIC_CP_LMINT5&t;&t;44
+DECL|macro|IRQ_SIC_CP_LMINT6
+mdefine_line|#define IRQ_SIC_CP_LMINT6&t;&t;45
+DECL|macro|IRQ_SIC_CP_LMINT7
+mdefine_line|#define IRQ_SIC_CP_LMINT7&t;&t;46
+DECL|macro|IRQ_SIC_END
+mdefine_line|#define IRQ_SIC_END&t;&t;&t;46
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS                         47
 eof
