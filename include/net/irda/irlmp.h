@@ -373,9 +373,10 @@ id|discovery_t
 id|discovery_rsp
 suffix:semicolon
 multiline_comment|/* Discovery response to use by IrLAP */
-DECL|member|free_lsap_sel
+multiline_comment|/* Last lsap picked automatically by irlmp_find_free_slsap() */
+DECL|member|last_lsap_sel
 r_int
-id|free_lsap_sel
+id|last_lsap_sel
 suffix:semicolon
 DECL|member|discovery_timer
 r_struct
