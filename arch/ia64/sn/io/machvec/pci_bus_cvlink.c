@@ -3488,6 +3488,12 @@ c_func
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * This is needed to avoid bounce limit checks in the blk layer&n;&t; */
+id|ia64_max_iommu_merge_mask
+op_assign
+op_complement
+id|PAGE_MASK
+suffix:semicolon
 multiline_comment|/*&n;&t; * set pci_raw_ops, etc.&n;&t; */
 id|sn_pci_fixup
 c_func
