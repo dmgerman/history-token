@@ -338,6 +338,14 @@ op_star
 id|scmd
 )paren
 (brace
+id|scsi_log_completion
+c_func
+(paren
+id|scmd
+comma
+id|TIMEOUT
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -370,22 +378,6 @@ id|__LINE__
 )paren
 suffix:semicolon
 )brace
-id|SCSI_LOG_TIMEOUT
-c_func
-(paren
-l_int|3
-comma
-id|printk
-c_func
-(paren
-l_string|&quot;Command timed out busy=%d failed=%d&bslash;n&quot;
-comma
-id|scmd-&gt;device-&gt;host-&gt;host_busy
-comma
-id|scmd-&gt;device-&gt;host-&gt;host_failed
-)paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_block_when_processing_errors - Prevent cmds from being queued.&n; * @sdev:&t;Device on which we are performing recovery.&n; *&n; * Description:&n; *     We block until the host is out of error recovery, and then check to&n; *     see whether the host or the device is offline.&n; *&n; * Return value:&n; *     0 when dev was taken offline by error recovery. 1 OK to proceed.&n; **/
 DECL|function|scsi_block_when_processing_errors
@@ -1100,6 +1092,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|scsi_log_send
+c_func
+(paren
+id|scmd
+)paren
+suffix:semicolon
 id|host-&gt;hostt
 op_member_access_from_pointer
 id|queuecommand
@@ -1123,6 +1121,14 @@ c_func
 (paren
 op_amp
 id|sem
+)paren
+suffix:semicolon
+id|scsi_log_completion
+c_func
+(paren
+id|scmd
+comma
+id|SUCCESS
 )paren
 suffix:semicolon
 id|scmd-&gt;device-&gt;host-&gt;eh_action
