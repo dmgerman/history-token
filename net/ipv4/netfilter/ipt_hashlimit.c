@@ -327,13 +327,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-id|MUST_BE_LOCKED
-c_func
-(paren
-op_amp
-id|ht-&gt;lock
-)paren
-suffix:semicolon
 id|ent
 op_assign
 id|LIST_FIND
@@ -536,13 +529,6 @@ op_star
 id|ent
 )paren
 (brace
-id|MUST_BE_LOCKED
-c_func
-(paren
-op_amp
-id|ht-&gt;lock
-)paren
-suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -992,7 +978,7 @@ id|ht-&gt;cfg.max
 )paren
 suffix:semicolon
 multiline_comment|/* lock hash table and iterate over it */
-id|LOCK_BH
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1061,7 +1047,7 @@ id|dh
 suffix:semicolon
 )brace
 )brace
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -1766,7 +1752,7 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
-id|LOCK_BH
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -1827,7 +1813,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -1880,7 +1866,7 @@ c_func
 id|hinfo-&gt;cfg.avg
 )paren
 suffix:semicolon
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -1923,7 +1909,7 @@ id|dh-&gt;rateinfo.credit
 op_sub_assign
 id|dh-&gt;rateinfo.cost
 suffix:semicolon
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -1934,7 +1920,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -2223,7 +2209,7 @@ r_int
 op_star
 id|bucket
 suffix:semicolon
-id|LOCK_BH
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -2410,7 +2396,7 @@ c_func
 id|bucket
 )paren
 suffix:semicolon
-id|UNLOCK_BH
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
