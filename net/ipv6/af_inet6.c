@@ -81,7 +81,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|raw6_proc_exit
 c_func
 (paren
@@ -129,7 +129,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|ipv6_misc_proc_exit
 c_func
 (paren
