@@ -108,23 +108,6 @@ id|pci_num_controllers
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Given an 8-bit PCI bus number, this yields the&n; * controlling PBM module info.&n; *&n; * Some explanation is in order here.  The Linux APIs for&n; * the PCI subsystem require that the configuration space&n; * types are enough to signify PCI configuration space&n; * accesses correctly.  This gives us 8-bits for the bus&n; * number, however we have multiple PCI controllers on&n; * UltraSparc systems.&n; *&n; * So what we do is give the PCI busses under each controller&n; * a unique portion of the 8-bit PCI bus number space.&n; * Therefore one can obtain the controller from the bus&n; * number.  For example, say PSYCHO PBM-A a subordinate bus&n; * space of 0 to 4, and PBM-B has a space of 0 to 2.  PBM-A&n; * will use 0 to 4, and PBM-B will use 5 to 7.&n; */
-DECL|variable|pci_bus2pbm
-r_struct
-id|pci_pbm_info
-op_star
-id|pci_bus2pbm
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|variable|pci_highest_busnum
-r_int
-r_char
-id|pci_highest_busnum
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* At boot time the user can give the kernel a command&n; * line option which controls if and how PCI devices&n; * are reordered at PCI bus probing time.&n; */
 DECL|variable|pci_device_reorder
 r_int
@@ -1505,7 +1488,6 @@ op_amp
 id|pbm-&gt;mem_space
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE: This can get called before we&squot;ve fixed up pdev-&gt;sysdata. */
 DECL|function|pci_claim_resource
 r_int
 id|pci_claim_resource
@@ -1525,10 +1507,7 @@ id|pci_pbm_info
 op_star
 id|pbm
 op_assign
-id|pci_bus2pbm
-(braket
-id|pdev-&gt;bus-&gt;number
-)braket
+id|pdev-&gt;bus-&gt;sysdata
 suffix:semicolon
 r_struct
 id|resource
@@ -2181,10 +2160,7 @@ id|pci_pbm_info
 op_star
 id|pbm
 op_assign
-id|pci_bus2pbm
-(braket
-id|pdev-&gt;bus-&gt;number
-)braket
+id|pdev-&gt;bus-&gt;sysdata
 suffix:semicolon
 r_struct
 id|resource
@@ -2275,10 +2251,7 @@ id|pci_pbm_info
 op_star
 id|pbm
 op_assign
-id|pci_bus2pbm
-(braket
-id|pdev-&gt;bus-&gt;number
-)braket
+id|pdev-&gt;bus-&gt;sysdata
 suffix:semicolon
 r_struct
 id|resource
