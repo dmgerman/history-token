@@ -78,12 +78,6 @@ r_int
 id|mmu_cr4_features
 suffix:semicolon
 multiline_comment|/*&n; * Bus types ..&n; */
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-suffix:semicolon
-macro_line|#endif
 DECL|variable|MCA_bus
 r_int
 id|MCA_bus
