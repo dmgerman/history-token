@@ -5574,9 +5574,11 @@ op_amp
 id|IOC_IN
 )paren
 (brace
-id|err
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -5585,11 +5587,6 @@ id|uarg
 comma
 id|size
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
 (brace
 id|ds_dbg
@@ -5599,11 +5596,13 @@ l_int|3
 comma
 l_string|&quot;ds_ioctl(): verify_read = %d&bslash;n&quot;
 comma
-id|err
+op_minus
+id|EFAULT
 )paren
 suffix:semicolon
 r_return
-id|err
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 )brace
@@ -5615,9 +5614,11 @@ op_amp
 id|IOC_OUT
 )paren
 (brace
-id|err
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -5626,11 +5627,6 @@ id|uarg
 comma
 id|size
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
 )paren
 (brace
 id|ds_dbg
@@ -5640,11 +5636,13 @@ l_int|3
 comma
 l_string|&quot;ds_ioctl(): verify_write = %d&bslash;n&quot;
 comma
-id|err
+op_minus
+id|EFAULT
 )paren
 suffix:semicolon
 r_return
-id|err
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 )brace

@@ -2432,7 +2432,7 @@ suffix:semicolon
 )brace
 id|result
 op_assign
-id|verify_area
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2444,6 +2444,12 @@ r_sizeof
 id|Scsi_FCTargAddress
 )paren
 )paren
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond

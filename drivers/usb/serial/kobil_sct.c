@@ -2736,9 +2736,11 @@ r_case
 id|TCGETS
 suffix:colon
 singleline_comment|// 0x5401
-id|result
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -2751,17 +2753,12 @@ r_struct
 id|termios
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - port %d Error in verify_area&quot;
+l_string|&quot;%s - port %d Error in access_ok&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2769,7 +2766,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 r_return
-id|result
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_if
@@ -2825,9 +2823,11 @@ op_minus
 id|ENOTTY
 suffix:semicolon
 )brace
-id|result
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_READ
@@ -2840,17 +2840,12 @@ r_struct
 id|termios
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - port %d Error in verify_area&quot;
+l_string|&quot;%s - port %d Error in access_ok&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2858,7 +2853,8 @@ id|port-&gt;number
 )paren
 suffix:semicolon
 r_return
-id|result
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_if

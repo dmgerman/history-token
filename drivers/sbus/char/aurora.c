@@ -9579,9 +9579,6 @@ c_func
 id|port
 )paren
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
 macro_line|#ifdef AURORA_DEBUG
 id|printk
 c_func
@@ -9590,9 +9587,11 @@ l_string|&quot;aurora_get_serial_info: start&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|error
-op_assign
-id|verify_area
+r_if
+c_cond
+(paren
+op_logical_neg
+id|access_ok
 c_func
 (paren
 id|VERIFY_WRITE
@@ -9608,14 +9607,10 @@ r_sizeof
 id|tmp
 )paren
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 id|memset
 c_func
