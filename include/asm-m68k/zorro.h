@@ -142,5 +142,5 @@ DECL|macro|z_iounmap
 mdefine_line|#define z_iounmap iounmap
 DECL|macro|z_ioremap
 mdefine_line|#define z_ioremap z_remap_nocache_ser
-macro_line|#endif /* _ASM_ZORRO_H */
+macro_line|#endif /* _ASM_M68K_ZORRO_H */
 eof

@@ -26,6 +26,7 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt; /* for HDIO_GETGEO */
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -931,7 +932,6 @@ r_char
 op_star
 id|errblk
 comma
-r_int
 r_struct
 id|acsi_info_struct
 op_star

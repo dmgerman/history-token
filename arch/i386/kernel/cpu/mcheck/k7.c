@@ -93,7 +93,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -396,6 +396,16 @@ op_assign
 id|l
 op_amp
 l_int|0xff
+suffix:semicolon
+multiline_comment|/* Clear status for MC index 0 separately, we don&squot;t touch CTL,&n;&t; * as some Athlons cause spurious MCEs when its enabled. */
+id|wrmsr
+(paren
+id|MSR_IA32_MC0_STATUS
+comma
+l_int|0x0
+comma
+l_int|0x0
+)paren
 suffix:semicolon
 r_for
 c_loop

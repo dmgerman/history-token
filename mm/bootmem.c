@@ -545,7 +545,7 @@ c_func
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * We &squot;merge&squot; subsequent allocations to save space. We might &squot;lose&squot;&n; * some fraction of a page if allocations cannot be satisfied due to&n; * size constraints on boxes where there is physical RAM space&n; * fragmentation - in these cases * (mostly large memory boxes) this&n; * is not a problem.&n; *&n; * On low memory boxes we get it right in 100% of the cases.&n; *&n; * alignment has to be a power of 2 value.&n; *&n; * NOTE:  This function is _not_ reenetrant.&n; */
+multiline_comment|/*&n; * We &squot;merge&squot; subsequent allocations to save space. We might &squot;lose&squot;&n; * some fraction of a page if allocations cannot be satisfied due to&n; * size constraints on boxes where there is physical RAM space&n; * fragmentation - in these cases (mostly large memory boxes) this&n; * is not a problem.&n; *&n; * On low memory boxes we get it right in 100% of the cases.&n; *&n; * alignment has to be a power of 2 value.&n; *&n; * NOTE:  This function is _not_ reenetrant.&n; */
 r_static
 r_void
 op_star
