@@ -848,6 +848,10 @@ DECL|enumerator|NETREG_UNREGISTERED
 id|NETREG_UNREGISTERED
 comma
 multiline_comment|/* completed unregister todo */
+DECL|enumerator|NETREG_RELEASED
+id|NETREG_RELEASED
+comma
+multiline_comment|/* called free_netdev */
 DECL|member|reg_state
 )brace
 id|reg_state
@@ -1616,6 +1620,17 @@ suffix:semicolon
 r_extern
 r_int
 id|unregister_netdevice
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|free_netdev
 c_func
 (paren
 r_struct

@@ -8717,7 +8717,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* When net_device&squot;s are persistent, this will be fatal. */
-id|WARN_ON
+id|BUG_ON
 c_func
 (paren
 id|dev-&gt;reg_state
@@ -9167,7 +9167,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* The sequence is:&n; *&n; *&t;rtnl_lock();&n; *&t;...&n; *&t;register_netdevice(x1);&n; *&t;register_netdevice(x2);&n; *&t;...&n; *&t;unregister_netdevice(y1);&n; *&t;unregister_netdevice(y2);&n; *      ...&n; *&t;rtnl_unlock();&n; *&n; * We are invoked by rtnl_unlock() after it drops the semaphore.&n; * This allows us to deal with problems:&n; * 1) We can create/delete sysfs objects which invoke hotplug&n; *    without deadlocking with linkwatch via keventd.&n; * 2) Since we run with the RTNL semaphore not held, we can sleep&n; *    safely in order to wait for the netdev refcnt to drop to zero.&n; */
+multiline_comment|/* The sequence is:&n; *&n; *&t;rtnl_lock();&n; *&t;...&n; *&t;register_netdevice(x1);&n; *&t;register_netdevice(x2);&n; *&t;...&n; *&t;unregister_netdevice(y1);&n; *&t;unregister_netdevice(y2);&n; *      ...&n; *&t;rtnl_unlock();&n; *&t;free_netdev(y1);&n; *&t;free_netdev(y2);&n; *&n; * We are invoked by rtnl_unlock() after it drops the semaphore.&n; * This allows us to deal with problems:&n; * 1) We can create/delete sysfs objects which invoke hotplug&n; *    without deadlocking with linkwatch via keventd.&n; * 2) Since we run with the RTNL semaphore not held, we can sleep&n; *    safely in order to wait for the netdev refcnt to drop to zero.&n; */
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -9298,7 +9298,7 @@ suffix:semicolon
 r_case
 id|NETREG_UNREGISTERING
 suffix:colon
-id|class_device_unregister
+id|class_device_del
 c_func
 (paren
 op_amp
@@ -9386,6 +9386,57 @@ c_func
 (paren
 op_amp
 id|net_todo_run_mutex
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;free_netdev - free network device&n; *&t;@dev: device&n; *&n; *&t;This function does the last stage of destroying an allocated device &n; * &t;interface. The reference to the device object is released.  &n; *&t;If this is the last reference then it will be freed.&n; */
+DECL|function|free_netdev
+r_void
+id|free_netdev
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/*  Compatiablity with error handling in drivers */
+r_if
+c_cond
+(paren
+id|dev-&gt;reg_state
+op_eq
+id|NETREG_UNINITIALIZED
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|BUG_ON
+c_func
+(paren
+id|dev-&gt;reg_state
+op_ne
+id|NETREG_UNREGISTERED
+)paren
+suffix:semicolon
+id|dev-&gt;reg_state
+op_assign
+id|NETREG_RELEASED
+suffix:semicolon
+multiline_comment|/* will free via class release */
+id|class_device_put
+c_func
+(paren
+op_amp
+id|dev-&gt;class_dev
 )paren
 suffix:semicolon
 )brace
