@@ -474,7 +474,11 @@ op_assign
 id|kdev_to_mddev
 c_func
 (paren
-id|bio-&gt;bi_dev
+id|to_kdev_t
+c_func
+(paren
+id|bio-&gt;bi_bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 r_if

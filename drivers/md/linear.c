@@ -603,9 +603,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 op_assign
-id|tmp_dev-&gt;dev
+id|tmp_dev-&gt;bdev
 suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign
