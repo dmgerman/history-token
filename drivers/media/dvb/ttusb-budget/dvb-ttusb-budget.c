@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * TTUSB DVB driver&n; *&n; * Copyright (c) 2002 Holger Waechtler &lt;holger@convergence.de&gt;&n; * Copyright (c) 2003 Felix Domke &lt;tmbinc@elitedvb.net&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation; either version 2 of&n; *&t;the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -181,7 +180,7 @@ r_int
 id|insync
 suffix:semicolon
 DECL|member|cc
-id|u16
+r_int
 id|cc
 suffix:semicolon
 multiline_comment|/* MuxCounter - will increment on EVERY MUX PACKET */
@@ -2854,9 +2853,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|cc
 op_ne
 id|ttusb-&gt;cc
+)paren
+op_logical_and
+(paren
+id|ttusb-&gt;cc
+op_ne
+op_minus
+l_int|1
+)paren
 )paren
 id|printk
 c_func
@@ -3789,7 +3797,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_ATOMIC
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 )brace
@@ -4046,6 +4054,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|ttusb-&gt;cc
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|ttusb-&gt;insync
 op_assign
 l_int|0
@@ -4103,6 +4116,10 @@ suffix:semicolon
 id|urb-&gt;transfer_flags
 op_assign
 id|URB_ISO_ASAP
+suffix:semicolon
+id|urb-&gt;interval
+op_assign
+l_int|1
 suffix:semicolon
 id|urb-&gt;number_of_packets
 op_assign
@@ -4675,14 +4692,6 @@ op_star
 id|ttusb
 )paren
 (brace
-id|usb_set_configuration
-c_func
-(paren
-id|ttusb-&gt;dev
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|usb_set_interface
 c_func
 (paren
@@ -5002,6 +5011,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+op_ne
+l_int|1
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|ttusb
@@ -5142,6 +5162,8 @@ op_amp
 id|ttusb-&gt;adapter
 comma
 l_string|&quot;Technotrend/Hauppauge Nova-USB&quot;
+comma
+id|THIS_MODULE
 )paren
 suffix:semicolon
 id|dvb_register_i2c_bus
@@ -5418,14 +5440,6 @@ c_func
 id|ttusb
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|devfs_remove
-c_func
-(paren
-id|TTUSB_BUDGET_NAME
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ttusb-&gt;dvb_demux.dmx
 dot
 id|close
