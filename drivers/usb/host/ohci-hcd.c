@@ -2955,6 +2955,10 @@ comma
 l_string|&quot;restart complete&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_RUNNING
+suffix:semicolon
 )brace
 r_return
 l_int|0
