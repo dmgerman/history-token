@@ -400,6 +400,16 @@ id|limit
 op_lshift_assign
 l_int|24
 suffix:semicolon
+id|limit
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|24
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren

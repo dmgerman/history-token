@@ -485,12 +485,47 @@ id|init_tss
 op_plus
 id|cpu
 suffix:semicolon
-id|printk
+id|set_tss_desc
 c_func
 (paren
-l_string|&quot;Should fix processor context!&bslash;n&quot;
+id|cpu
+comma
+id|t
 )paren
 suffix:semicolon
+multiline_comment|/* This just modifies memory; should not be neccessary. But... This is neccessary, because 386 hardware has concept of busy TSS or some similar stupidity. */
+(paren
+(paren
+r_struct
+id|n_desc_struct
+op_star
+)paren
+op_amp
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|GDT_ENTRY_TSS
+)braket
+)paren
+op_member_access_from_pointer
+id|b
+op_and_assign
+l_int|0xfffffdff
+suffix:semicolon
+id|syscall_init
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* This sets MSR_*STAR and related */
+id|load_TR_desc
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* This does ltr */
 id|load_LDT
 c_func
 (paren

@@ -648,7 +648,7 @@ r_int
 id|bytecount
 )paren
 (brace
-multiline_comment|/* Arbitary number */
+multiline_comment|/* Arbitrary number */
 multiline_comment|/* x86-64 default LDT is all zeros */
 r_if
 c_cond

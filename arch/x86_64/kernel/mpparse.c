@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Intel Multiprocessor Specificiation 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;Maciej W. Rozycki&t;:&t;Bits for default MP configurations&n; *&t;&t;Paul Diefenbaugh:&t;Added full ACPI support&n; */
+multiline_comment|/*&n; *&t;Intel Multiprocessor Specification 1.1 and 1.4&n; *&t;compliant MP-table parsing routines.&n; *&n; *&t;(c) 1995 Alan Cox, Building #3 &lt;alan@redhat.com&gt;&n; *&t;(c) 1998, 1999, 2000 Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; *&t;Fixes&n; *&t;&t;Erich Boleyn&t;:&t;MP v1.4 and additional changes.&n; *&t;&t;Alan Cox&t;:&t;Added EBDA scanning&n; *&t;&t;Ingo Molnar&t;:&t;various cleanups and rewrites&n; *&t;Maciej W. Rozycki&t;:&t;Bits for default MP configurations&n; *&t;&t;Paul Diefenbaugh:&t;Added full ACPI support&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -3267,7 +3267,7 @@ id|ioapic
 dot
 id|mpc_apicid
 suffix:semicolon
-multiline_comment|/* &n;&t; * Use the default configuration for the IRQs 0-15.  These may be&n;&t; * overriden by (MADT) interrupt source override entries.&n;&t; */
+multiline_comment|/* &n;&t; * Use the default configuration for the IRQs 0-15.  These may be&n;&t; * overridden by (MADT) interrupt source override entries.&n;&t; */
 r_for
 c_loop
 (paren
