@@ -412,10 +412,76 @@ op_assign
 l_int|10037
 comma
 multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_OPENMODE
+id|NFSERR_OPENMODE
+op_assign
+l_int|10038
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BADOWNER
+id|NFSERR_BADOWNER
+op_assign
+l_int|10039
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BADCHAR
+id|NFSERR_BADCHAR
+op_assign
+l_int|10040
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BADNAME
+id|NFSERR_BADNAME
+op_assign
+l_int|10041
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_BAD_RANGE
+id|NFSERR_BAD_RANGE
+op_assign
+l_int|10042
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_LOCK_NOTSUPP
+id|NFSERR_LOCK_NOTSUPP
+op_assign
+l_int|10043
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_OP_ILLEGAL
+id|NFSERR_OP_ILLEGAL
+op_assign
+l_int|10044
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_DEADLOCK
+id|NFSERR_DEADLOCK
+op_assign
+l_int|10045
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_FILE_OPEN
+id|NFSERR_FILE_OPEN
+op_assign
+l_int|10046
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_ADMIN_REVOKED
+id|NFSERR_ADMIN_REVOKED
+op_assign
+l_int|10047
+comma
+multiline_comment|/*       v4 */
+DECL|enumerator|NFSERR_CB_PATH_DOWN
+id|NFSERR_CB_PATH_DOWN
+op_assign
+l_int|10048
+comma
+multiline_comment|/*       v4 */
 DECL|enumerator|NFSERR_REPLAY_ME
 id|NFSERR_REPLAY_ME
 op_assign
-l_int|10038
+l_int|10049
 multiline_comment|/*       v4 */
 )brace
 suffix:semicolon
