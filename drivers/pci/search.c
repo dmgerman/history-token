@@ -360,7 +360,7 @@ c_func
 id|tmp
 comma
 op_amp
-id|bus-&gt;children
+id|bus-&gt;devices
 )paren
 (brace
 id|dev
