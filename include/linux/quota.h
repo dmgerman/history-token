@@ -348,8 +348,6 @@ r_struct
 id|dqstats
 id|dqstats
 suffix:semicolon
-DECL|macro|NR_DQHASH
-mdefine_line|#define NR_DQHASH 43            /* Just an arbitrary number */
 DECL|macro|DQ_MOD_B
 mdefine_line|#define DQ_MOD_B&t;0&t;/* dquot modified since read */
 DECL|macro|DQ_BLKS_B
@@ -370,7 +368,7 @@ id|dquot
 (brace
 DECL|member|dq_hash
 r_struct
-id|list_head
+id|hlist_node
 id|dq_hash
 suffix:semicolon
 multiline_comment|/* Hash list in memory */
