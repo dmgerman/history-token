@@ -8836,6 +8836,11 @@ suffix:semicolon
 r_int
 id|name_len
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -8948,7 +8953,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|12
 op_plus
@@ -9038,9 +9043,9 @@ c_func
 id|TRANS2_FIND_FIRST
 )paren
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -9050,7 +9055,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalDataCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -9103,14 +9108,14 @@ suffix:semicolon
 multiline_comment|/* BB what should we set this to? BB */
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
@@ -9262,6 +9267,11 @@ suffix:semicolon
 r_int
 id|name_len
 suffix:semicolon
+id|__u16
+id|params
+comma
+id|byte_count
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -9374,7 +9384,7 @@ id|name_len
 )paren
 suffix:semicolon
 )brace
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_assign
 l_int|12
 op_plus
@@ -9428,9 +9438,9 @@ id|pSMB-&gt;Reserved2
 op_assign
 l_int|0
 suffix:semicolon
-id|pSMB-&gt;ByteCount
+id|byte_count
 op_assign
-id|pSMB-&gt;TotalParameterCount
+id|params
 op_plus
 l_int|1
 multiline_comment|/* pad */
@@ -9440,7 +9450,7 @@ op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;TotalParameterCount
+id|params
 )paren
 suffix:semicolon
 id|pSMB-&gt;ParameterCount
@@ -9572,14 +9582,14 @@ suffix:semicolon
 multiline_comment|/* BB what should we set this to? It is not clear if it matters BB */
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
-id|pSMB-&gt;ByteCount
+id|byte_count
 suffix:semicolon
 id|pSMB-&gt;ByteCount
 op_assign
 id|cpu_to_le16
 c_func
 (paren
-id|pSMB-&gt;ByteCount
+id|byte_count
 )paren
 suffix:semicolon
 id|rc
