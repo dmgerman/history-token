@@ -177,6 +177,9 @@ singleline_comment|// enable Cisco extensions
 macro_line|#ifdef CISCO_EXT
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#endif
+multiline_comment|/* Hack to do some power saving */
+DECL|macro|POWER_ON_DOWN
+mdefine_line|#define POWER_ON_DOWN
 multiline_comment|/* As you can see this list is HUGH!&n;   I really don&squot;t know what a lot of these counts are about, but they&n;   are all here for completeness.  If the IGNLABEL macro is put in&n;   infront of the label, that statistic will not be included in the list&n;   of statistics in the /proc filesystem */
 DECL|macro|IGNLABEL
 mdefine_line|#define IGNLABEL 0&amp;(int)
@@ -2836,11 +2839,13 @@ r_int
 id|flags
 suffix:semicolon
 DECL|macro|FLAG_PROMISC
-mdefine_line|#define FLAG_PROMISC   IFF_PROMISC
+mdefine_line|#define FLAG_PROMISC   IFF_PROMISC&t;/* 0x100 - include/linux/if.h */
 DECL|macro|FLAG_RADIO_OFF
-mdefine_line|#define FLAG_RADIO_OFF 0x02
+mdefine_line|#define FLAG_RADIO_OFF 0x02&t;&t;/* User disabling of MAC */
+DECL|macro|FLAG_RADIO_DOWN
+mdefine_line|#define FLAG_RADIO_DOWN 0x08&t;&t;/* ifup/ifdown disabling of MAC */
 DECL|macro|FLAG_LOCKED
-mdefine_line|#define FLAG_LOCKED    2
+mdefine_line|#define FLAG_LOCKED    2&t;&t;/* 0x04 - use as a bit offset */
 DECL|macro|FLAG_FLASHING
 mdefine_line|#define FLAG_FLASHING  0x10
 DECL|macro|FLAG_802_11
@@ -4475,9 +4480,6 @@ c_cond
 id|info-&gt;need_commit
 )paren
 (brace
-id|Resp
-id|rsp
-suffix:semicolon
 id|disable_MAC
 c_func
 (paren
@@ -4490,15 +4492,6 @@ c_func
 id|info
 )paren
 suffix:semicolon
-id|enable_MAC
-c_func
-(paren
-id|info
-comma
-op_amp
-id|rsp
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -4507,10 +4500,27 @@ id|info-&gt;wifidev
 op_ne
 id|dev
 )paren
+(brace
+multiline_comment|/* Power on the MAC controller (which may have been disabled) */
+id|info-&gt;flags
+op_and_assign
+op_complement
+id|FLAG_RADIO_DOWN
+suffix:semicolon
 id|enable_interrupts
 c_func
 (paren
 id|info
+)paren
+suffix:semicolon
+)brace
+id|enable_MAC
+c_func
+(paren
+id|info
+comma
+op_amp
+id|rsp
 )paren
 suffix:semicolon
 id|netif_start_queue
@@ -6011,12 +6021,27 @@ id|ai-&gt;wifidev
 op_ne
 id|dev
 )paren
+(brace
+macro_line|#ifdef POWER_ON_DOWN
+multiline_comment|/* Shut power to the card. The idea is that the user can save&n;&t;&t; * power when he doesn&squot;t need the card with &quot;ifconfig down&quot;.&n;&t;&t; * That&squot;s the method that is most friendly towards the network&n;&t;&t; * stack (i.e. the network stack won&squot;t try to broadcast&n;&t;&t; * anything on the interface and routes are gone. Jean II */
+id|ai-&gt;flags
+op_or_assign
+id|FLAG_RADIO_DOWN
+suffix:semicolon
+id|disable_MAC
+c_func
+(paren
+id|ai
+)paren
+suffix:semicolon
+macro_line|#endif
 id|disable_interrupts
 c_func
 (paren
 id|ai
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8920,12 +8945,17 @@ suffix:semicolon
 id|Cmd
 id|cmd
 suffix:semicolon
+multiline_comment|/* FLAG_RADIO_OFF : Radio disabled via /proc or Wireless Extensions&n;&t; * FLAG_RADIO_DOWN : Radio disabled via &quot;ifconfig ethX down&quot;&n;&t; * Note : we could try to use !netif_running(dev) in enable_MAC()&n;&t; * instead of this flag, but I don&squot;t trust it *within* the&n;&t; * open/close functions, and testing both flags together is&n;&t; * &quot;cheaper&quot; - Jean II */
 r_if
 c_cond
 (paren
 id|ai-&gt;flags
 op_amp
+(paren
 id|FLAG_RADIO_OFF
+op_or
+id|FLAG_RADIO_DOWN
+)paren
 )paren
 r_return
 id|SUCCESS
@@ -27737,6 +27767,13 @@ op_star
 id|comp
 )paren
 (brace
+r_struct
+id|airo_info
+op_star
+id|ai
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_int
 id|ridcode
 suffix:semicolon
