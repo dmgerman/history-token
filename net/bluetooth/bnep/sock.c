@@ -75,8 +75,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -637,8 +635,6 @@ id|sock-&gt;ops
 op_assign
 op_amp
 id|bnep_sock_ops
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|sock-&gt;state
 op_assign
