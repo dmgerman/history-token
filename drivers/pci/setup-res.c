@@ -9,15 +9,6 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|DEBUG_CONFIG
-mdefine_line|#define DEBUG_CONFIG 0
-macro_line|#if DEBUG_CONFIG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)     printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 r_static
 r_void
 DECL|function|pci_update_resource
@@ -63,10 +54,9 @@ comma
 id|res
 )paren
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;  got res [%lx:%lx] bus [%lx:%lx] flags %lx for &quot;
 l_string|&quot;BAR %d of %s&bslash;n&quot;
 comma
@@ -304,10 +294,9 @@ op_and_assign
 op_complement
 id|IORESOURCE_UNSET
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;PCI: moved device %s resource %d (%lx) to %x&bslash;n&quot;
 comma
 id|pci_name

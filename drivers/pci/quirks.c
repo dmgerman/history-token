@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 multiline_comment|/* Deal with broken BIOS&squot;es that neglect to enable passive release,&n;   which can cause problems in combination with the 82441FX/PPro MTRRs */
 DECL|function|quirk_passive_release
 r_static

@@ -1,19 +1,11 @@
 multiline_comment|/*&n; *&t;$Id: pci.c,v 1.91 1999/01/21 13:34:01 davem Exp $&n; *&n; *&t;PCI Bus Services, see include/linux/pci.h for further explanation.&n; *&n; *&t;Copyright 1993 -- 1997 Drew Eckhardt, Frederic Potter,&n; *&t;David Mosberger-Tang&n; *&n; *&t;Copyright 1997 -- 2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;&t;/* isa_dma_bridge_buggy */
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 multiline_comment|/**&n; * pci_bus_max_busnr - returns maximum PCI bus number of given bus&squot; children&n; * @bus: pointer to PCI bus structure to search&n; *&n; * Given a PCI bus, returns the highest PCI bus number present in the set&n; * including the given PCI bus and its list of child PCI buses.&n; */
 r_int
 r_char
@@ -2001,7 +1993,7 @@ id|PCI_COMMAND_MASTER
 )paren
 )paren
 (brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Enabling bus mastering for device %s&bslash;n&quot;
@@ -2230,7 +2222,7 @@ id|PCI_COMMAND_INVALIDATE
 )paren
 )paren
 (brace
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Enabling Mem-Wr-Inval for device %s&bslash;n&quot;

@@ -1,15 +1,7 @@
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;pci.h&quot;
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif
 DECL|function|pci_hotplug
 r_int
 id|pci_hotplug
@@ -345,7 +337,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Scanning bus %04x:%02x&bslash;n&quot;
@@ -508,7 +500,7 @@ id|result
 op_assign
 l_int|0
 suffix:semicolon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Scanning bridge %s&bslash;n&quot;
@@ -706,7 +698,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DBG
+id|pr_debug
 c_func
 (paren
 l_string|&quot;PCI: Scanning device %s&bslash;n&quot;
