@@ -4924,6 +4924,13 @@ id|card
 op_assign
 id|p-&gt;chip-&gt;card
 suffix:semicolon
+id|down_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4948,6 +4955,13 @@ c_func
 id|card
 comma
 id|p-&gt;qsound_space
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
 )paren
 suffix:semicolon
 multiline_comment|/* cancel pending transfer of QSound parameters */
@@ -5134,6 +5148,8 @@ c_func
 id|entry
 comma
 id|p
+comma
+l_int|1024
 comma
 id|info_read
 )paren

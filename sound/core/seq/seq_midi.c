@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Generic MIDI synth driver for ALSA sequencer&n; *   Copyright (c) 1998 by Frank van de Pol &lt;fvdpol@home.nl&gt;&n; *                         Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   Generic MIDI synth driver for ALSA sequencer&n; *   Copyright (c) 1998 by Frank van de Pol &lt;fvdpol@coil.demon.nl&gt;&n; *                         Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/* &n;Possible options for midisynth module:&n;&t;- automatic opening of midi ports on first received event or subscription&n;&t;  (close will be performed when client leaves)&n;*/
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;sound/initval.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Frank van de Pol &lt;fvdpol@home.nl&gt;, Jaroslav Kysela &lt;perex@suse.cz&gt;&quot;
+l_string|&quot;Frank van de Pol &lt;fvdpol@coil.demon.nl&gt;, Jaroslav Kysela &lt;perex@suse.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
