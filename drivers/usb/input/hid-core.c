@@ -3982,7 +3982,6 @@ id|len
 OL
 id|size
 )paren
-(brace
 id|dbg
 c_func
 (paren
@@ -3995,11 +3994,6 @@ comma
 id|size
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
