@@ -640,7 +640,7 @@ r_int
 r_int
 id|saved_auxv
 (braket
-l_int|40
+l_int|42
 )braket
 suffix:semicolon
 multiline_comment|/* for /proc/PID/auxv */
