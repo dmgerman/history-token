@@ -830,11 +830,7 @@ macro_line|# define XFS_STATS_DEC(count)
 DECL|macro|XFS_STATS_ADD
 macro_line|# define XFS_STATS_ADD(count, inc)
 macro_line|#endif&t;/* !CONFIG_PROC_FS */
-multiline_comment|/* juggle IRIX device numbers - still used in ondisk structures */
-macro_line|#ifndef __KERNEL__
-DECL|macro|MKDEV
-mdefine_line|#define MKDEV(major, minor)&t;makedev(major, minor)
-macro_line|#endif
+multiline_comment|/*&n; * Juggle IRIX device numbers - still used in ondisk structures&n; */
 DECL|macro|XFS_DEV_BITSMAJOR
 mdefine_line|#define XFS_DEV_BITSMAJOR&t;14
 DECL|macro|XFS_DEV_BITSMINOR
