@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;&t;&t;/* for sysctl_local_port_range[] */
 macro_line|#include &lt;net/tcp.h&gt;&t;&t;/* struct or_callable used in sock_rcv_skb */
@@ -6737,12 +6738,99 @@ id|devnull
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|tty_struct
+op_star
+id|tty
+op_assign
+id|current-&gt;signal-&gt;tty
+suffix:semicolon
 r_int
 id|j
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tty
+)paren
+(brace
+id|file_list_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|file
+op_assign
+id|list_entry
+c_func
+(paren
+id|tty-&gt;tty_files.next
+comma
+id|typeof
+c_func
+(paren
+op_star
+id|file
+)paren
+comma
+id|f_list
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|file
+)paren
+(brace
+multiline_comment|/* Revalidate access to controlling tty.&n;&t;&t;&t;   Use inode_has_perm on the tty inode directly rather&n;&t;&t;&t;   than using file_has_perm, as this particular open&n;&t;&t;&t;   file may belong to another process and we are only&n;&t;&t;&t;   interested in the inode-based check here. */
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|file-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode_has_perm
+c_func
+(paren
+id|current
+comma
+id|inode
+comma
+id|FILE__READ
+op_or
+id|FILE__WRITE
+comma
+l_int|NULL
+comma
+l_int|NULL
+)paren
+)paren
+(brace
+multiline_comment|/* Reset controlling tty. */
+id|current-&gt;signal-&gt;tty
+op_assign
+l_int|NULL
+suffix:semicolon
+id|current-&gt;signal-&gt;tty_old_pgrp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|file_list_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Revalidate access to inherited open files. */
 id|AVC_AUDIT_DATA_INIT
 c_func
 (paren
