@@ -3255,7 +3255,6 @@ op_assign
 id|list_entry
 c_func
 (paren
-op_amp
 id|mddev-&gt;disks.next
 comma
 id|mdk_rdev_t
@@ -4150,19 +4149,6 @@ c_func
 (paren
 op_amp
 id|rdev-&gt;same_set
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rdev-&gt;faulty
-op_logical_and
-id|rdev-&gt;sb
-)paren
-id|free_disk_sb
-c_func
-(paren
-id|rdev
 )paren
 suffix:semicolon
 r_return
