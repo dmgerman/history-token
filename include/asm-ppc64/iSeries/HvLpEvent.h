@@ -175,6 +175,9 @@ id|hdlr
 )paren
 suffix:semicolon
 singleline_comment|// Unregister a handler for an event type
+singleline_comment|//  This call will sleep until the handler being removed is guaranteed to
+singleline_comment|//  be no longer executing on any CPU. Do not call with locks held.
+singleline_comment|//
 singleline_comment|//  returns 0 on success
 singleline_comment|//  Unregister will fail if there are any paths open for the type
 r_extern
