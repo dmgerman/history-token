@@ -6168,6 +6168,13 @@ c_cond
 (paren
 op_logical_neg
 (paren
+id|tp-&gt;tg3_flags
+op_amp
+id|TG3_FLAG_10_100_ONLY
+)paren
+op_logical_and
+op_logical_neg
+(paren
 id|gig_ctrl
 op_amp
 (paren
