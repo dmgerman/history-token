@@ -159,6 +159,8 @@ id|ret
 suffix:semicolon
 id|u64
 id|dma_mask
+comma
+id|cdma_mask
 suffix:semicolon
 r_int
 r_int
@@ -184,6 +186,10 @@ id|dma_handle
 suffix:semicolon
 id|dma_mask
 op_assign
+id|hwdev-&gt;dma_mask
+suffix:semicolon
+id|cdma_mask
+op_assign
 id|hwdev-&gt;consistent_dma_mask
 suffix:semicolon
 id|mask
@@ -193,7 +199,18 @@ r_int
 r_int
 )paren
 id|dma_mask
+op_logical_and
+(paren
+r_int
+r_int
+)paren
+id|cdma_mask
 suffix:semicolon
+id|hwdev-&gt;dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* do without masking */
 id|hwdev-&gt;consistent_dma_mask
 op_assign
 l_int|0xffffffff
@@ -211,9 +228,14 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-id|hwdev-&gt;consistent_dma_mask
+id|hwdev-&gt;dma_mask
 op_assign
 id|dma_mask
+suffix:semicolon
+multiline_comment|/* restore */
+id|hwdev-&gt;consistent_dma_mask
+op_assign
+id|cdma_mask
 suffix:semicolon
 multiline_comment|/* restore */
 r_if
@@ -2777,6 +2799,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci
+comma
+id|dev-&gt;dma_mask
+)paren
+OL
+l_int|0
+op_logical_or
 id|pci_set_consistent_dma_mask
 c_func
 (paren

@@ -2730,6 +2730,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|pci
+comma
+id|emu-&gt;dma_mask
+)paren
+OL
+l_int|0
+op_logical_or
 id|pci_set_consistent_dma_mask
 c_func
 (paren

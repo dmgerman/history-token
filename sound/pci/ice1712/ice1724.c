@@ -9612,14 +9612,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-id|pci_set_consistent_dma_mask
-c_func
-(paren
-id|pci
-comma
-l_int|0xffffffff
-)paren
-suffix:semicolon
 id|ice
 op_assign
 id|snd_magic_kcalloc
