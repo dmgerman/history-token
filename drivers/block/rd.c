@@ -649,7 +649,7 @@ id|READ
 id|flush_dcache_page
 c_func
 (paren
-id|page
+id|sbh-&gt;b_page
 )paren
 suffix:semicolon
 )brace
