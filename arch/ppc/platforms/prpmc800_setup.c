@@ -498,18 +498,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Resolves the open_pic.c build without including i8259.c */
-DECL|function|i8259_poll
-r_int
-id|i8259_poll
-c_func
-(paren
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_static
 r_void
 id|__init

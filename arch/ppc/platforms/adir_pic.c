@@ -387,7 +387,10 @@ DECL|function|adir_get_irq
 id|adir_get_irq
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -419,9 +422,10 @@ id|ADIR_IRQ_VT82C686_INTR
 )paren
 id|irq
 op_assign
-id|i8259_poll
+id|i8259_irq
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
 r_return

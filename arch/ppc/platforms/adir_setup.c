@@ -489,11 +489,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-id|boot_mem_size
-suffix:semicolon
 r_static
 r_int
 r_int

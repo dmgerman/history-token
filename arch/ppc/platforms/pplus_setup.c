@@ -570,25 +570,6 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_int
-DECL|function|pplus_get_irq
-id|pplus_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_return
-id|i8259_poll
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
 r_void
 id|__init
 DECL|function|pplus_init_IRQ
@@ -1597,7 +1578,7 @@ suffix:semicolon
 multiline_comment|/* this gets changed later on if we have an OpenPIC -- Cort */
 id|ppc_md.get_irq
 op_assign
-id|pplus_get_irq
+id|i8259_irq
 suffix:semicolon
 id|ppc_md.init
 op_assign

@@ -666,9 +666,10 @@ id|SANDPOINT_SIO_IRQ
 (brace
 id|cascade_irq
 op_assign
-id|i8259_poll
+id|i8259_irq
 c_func
 (paren
+id|regs
 )paren
 suffix:semicolon
 r_if

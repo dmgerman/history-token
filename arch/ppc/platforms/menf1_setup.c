@@ -344,25 +344,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|menf1_get_irq
-r_static
-r_int
-id|menf1_get_irq
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_return
-id|i8259_poll
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Set BAT 3 to map 0xF0000000.&n; */
 r_static
 id|__inline__
@@ -711,7 +692,7 @@ id|menf1_init_IRQ
 suffix:semicolon
 id|ppc_md.get_irq
 op_assign
-id|menf1_get_irq
+id|i8259_irq
 suffix:semicolon
 id|ppc_md.find_end_of_memory
 op_assign
