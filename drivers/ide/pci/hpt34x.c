@@ -748,7 +748,6 @@ id|pio
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * This allows the configuration of ide_pci chipset registers&n; * for cards that learn about the drive&squot;s UDMA, DMA, PIO capabilities&n; * after the drive is reported by the OS.  Initally for designed for&n; * HPT343 UDMA chipset by HighPoint|Triones Technologies, Inc.&n; */
 DECL|function|config_chipset_for_dma
 r_static
@@ -1057,7 +1056,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * If the BIOS does not set the IO base addaress to XX00, 343 will fail.&n; */
 DECL|macro|HPT34X_PCI_INIT_REG
 mdefine_line|#define&t;HPT34X_PCI_INIT_REG&t;&t;0x80
@@ -1472,7 +1470,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -1515,7 +1512,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_hpt34x
 r_static
