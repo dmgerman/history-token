@@ -135,6 +135,7 @@ id|vcc_sklist_lock
 suffix:semicolon
 )brace
 DECL|function|vcc_remove_socket
+r_static
 r_void
 id|vcc_remove_socket
 c_func
@@ -298,13 +299,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|vcc_insert_socket
-)paren
-suffix:semicolon
-DECL|variable|vcc_remove_socket
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vcc_remove_socket
 )paren
 suffix:semicolon
 DECL|function|vcc_sock_destruct

@@ -916,7 +916,7 @@ id|qdisc
 op_logical_and
 id|qdisc-&gt;flags
 op_amp
-id|TCQ_F_INGRES
+id|TCQ_F_INGRESS
 )paren
 (brace
 id|oqdisc
@@ -1092,7 +1092,7 @@ id|q
 op_logical_and
 id|q-&gt;flags
 op_amp
-id|TCQ_F_INGRES
+id|TCQ_F_INGRESS
 )paren
 (brace
 op_star
@@ -1483,7 +1483,7 @@ id|TC_H_INGRESS
 )paren
 id|sch-&gt;flags
 op_or_assign
-id|TCQ_F_INGRES
+id|TCQ_F_INGRESS
 suffix:semicolon
 id|sch-&gt;ops
 op_assign
