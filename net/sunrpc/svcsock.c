@@ -3566,9 +3566,29 @@ id|len
 OL
 id|want
 )paren
-r_return
-l_int|0
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;svc: short recvfrom while reading record length (%d of %lu)&bslash;n&quot;
+comma
+id|len
+comma
+id|want
+)paren
 suffix:semicolon
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+multiline_comment|/* record header not complete */
+)brace
 id|svsk-&gt;sk_reclen
 op_assign
 id|ntohl
