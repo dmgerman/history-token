@@ -1147,12 +1147,14 @@ id|atmdev_ops
 id|sigd_dev_ops
 op_assign
 (brace
+dot
 id|close
-suffix:colon
+op_assign
 id|sigd_close
 comma
+dot
 id|send
-suffix:colon
+op_assign
 id|sigd_send
 )brace
 suffix:semicolon

@@ -1,11 +1,9 @@
-multiline_comment|/* $Id: zs.h,v 1.3 1999/09/21 14:38:18 davem Exp $&n; * zs.h: Definitions for the Sparc Zilog serial driver.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
-macro_line|#ifndef _ZS_H
-DECL|macro|_ZS_H
-mdefine_line|#define _ZS_H
-multiline_comment|/* Just one channel */
-DECL|struct|sun_zschannel
+macro_line|#ifndef _SUNZILOG_H
+DECL|macro|_SUNZILOG_H
+mdefine_line|#define _SUNZILOG_H
+DECL|struct|zilog_channel
 r_struct
-id|sun_zschannel
+id|zilog_channel
 (brace
 DECL|member|control
 r_volatile
@@ -13,11 +11,11 @@ r_int
 r_char
 id|control
 suffix:semicolon
-DECL|member|pad1
+DECL|member|__pad1
 r_volatile
 r_int
 r_char
-id|pad1
+id|__pad1
 suffix:semicolon
 DECL|member|data
 r_volatile
@@ -25,407 +23,32 @@ r_int
 r_char
 id|data
 suffix:semicolon
-DECL|member|pad2
+DECL|member|__pad2
 r_volatile
 r_int
 r_char
-id|pad2
+id|__pad2
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* The address space layout for each zs chip.  Yes they are&n; * backwards.&n; */
-DECL|struct|sun_zslayout
+DECL|struct|zilog_layout
 r_struct
-id|sun_zslayout
+id|zilog_layout
 (brace
 DECL|member|channelB
 r_struct
-id|sun_zschannel
+id|zilog_channel
 id|channelB
 suffix:semicolon
 DECL|member|channelA
 r_struct
-id|sun_zschannel
+id|zilog_channel
 id|channelA
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|NUM_ZSREGS
 mdefine_line|#define NUM_ZSREGS    16
-DECL|struct|serial_struct
-r_struct
-id|serial_struct
-(brace
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|line
-r_int
-id|line
-suffix:semicolon
-DECL|member|port
-r_int
-id|port
-suffix:semicolon
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-DECL|member|xmit_fifo_size
-r_int
-id|xmit_fifo_size
-suffix:semicolon
-DECL|member|custom_divisor
-r_int
-id|custom_divisor
-suffix:semicolon
-DECL|member|baud_base
-r_int
-id|baud_base
-suffix:semicolon
-DECL|member|close_delay
-r_int
-r_int
-id|close_delay
-suffix:semicolon
-DECL|member|reserved_char
-r_char
-id|reserved_char
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|hub6
-r_int
-id|hub6
-suffix:semicolon
-DECL|member|closing_wait
-r_int
-r_int
-id|closing_wait
-suffix:semicolon
-multiline_comment|/* time to wait before closing */
-DECL|member|closing_wait2
-r_int
-r_int
-id|closing_wait2
-suffix:semicolon
-multiline_comment|/* no longer used... */
-DECL|member|reserved
-r_int
-id|reserved
-(braket
-l_int|4
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * For the close wait times, 0 means wait forever for serial port to&n; * flush its output.  65535 means don&squot;t wait at all.&n; */
-DECL|macro|ZILOG_CLOSING_WAIT_INF
-mdefine_line|#define ZILOG_CLOSING_WAIT_INF&t;0
-DECL|macro|ZILOG_CLOSING_WAIT_NONE
-mdefine_line|#define ZILOG_CLOSING_WAIT_NONE&t;65535
-multiline_comment|/*&n; * Definitions for ZILOG_struct (and serial_struct) flags field&n; */
-DECL|macro|ZILOG_HUP_NOTIFY
-mdefine_line|#define ZILOG_HUP_NOTIFY 0x0001 /* Notify getty on hangups and closes &n;&t;&t;&t;&t;   on the callout port */
-DECL|macro|ZILOG_FOURPORT
-mdefine_line|#define ZILOG_FOURPORT  0x0002&t;/* Set OU1, OUT2 per AST Fourport settings */
-DECL|macro|ZILOG_SAK
-mdefine_line|#define ZILOG_SAK&t;0x0004&t;/* Secure Attention Key (Orange book) */
-DECL|macro|ZILOG_SPLIT_TERMIOS
-mdefine_line|#define ZILOG_SPLIT_TERMIOS 0x0008 /* Separate termios for dialin/callout */
-DECL|macro|ZILOG_SPD_MASK
-mdefine_line|#define ZILOG_SPD_MASK&t;0x0030
-DECL|macro|ZILOG_SPD_HI
-mdefine_line|#define ZILOG_SPD_HI&t;0x0010&t;/* Use 76800 instead of 38400 bps */
-DECL|macro|ZILOG_SPD_CUST
-mdefine_line|#define ZILOG_SPD_CUST&t;0x0030  /* Use user-specified divisor */
-DECL|macro|ZILOG_SKIP_TEST
-mdefine_line|#define ZILOG_SKIP_TEST&t;0x0040 /* Skip UART test during autoconfiguration */
-DECL|macro|ZILOG_AUTO_IRQ
-mdefine_line|#define ZILOG_AUTO_IRQ  0x0080 /* Do automatic IRQ during autoconfiguration */
-DECL|macro|ZILOG_SESSION_LOCKOUT
-mdefine_line|#define ZILOG_SESSION_LOCKOUT 0x0100 /* Lock out cua opens based on session */
-DECL|macro|ZILOG_PGRP_LOCKOUT
-mdefine_line|#define ZILOG_PGRP_LOCKOUT    0x0200 /* Lock out cua opens based on pgrp */
-DECL|macro|ZILOG_CALLOUT_NOHUP
-mdefine_line|#define ZILOG_CALLOUT_NOHUP   0x0400 /* Don&squot;t do hangups for cua device */
-DECL|macro|ZILOG_FLAGS
-mdefine_line|#define ZILOG_FLAGS&t;0x0FFF&t;/* Possible legal ZILOG flags */
-DECL|macro|ZILOG_USR_MASK
-mdefine_line|#define ZILOG_USR_MASK 0x0430&t;/* Legal flags that non-privileged&n;&t;&t;&t;&t; * users can set or reset */
-multiline_comment|/* Internal flags used only by kernel/chr_drv/serial.c */
-DECL|macro|ZILOG_INITIALIZED
-mdefine_line|#define ZILOG_INITIALIZED&t;0x80000000 /* Serial port was initialized */
-DECL|macro|ZILOG_CALLOUT_ACTIVE
-mdefine_line|#define ZILOG_CALLOUT_ACTIVE&t;0x40000000 /* Call out device is active */
-DECL|macro|ZILOG_NORMAL_ACTIVE
-mdefine_line|#define ZILOG_NORMAL_ACTIVE&t;0x20000000 /* Normal device is active */
-DECL|macro|ZILOG_BOOT_AUTOCONF
-mdefine_line|#define ZILOG_BOOT_AUTOCONF&t;0x10000000 /* Autoconfigure port on bootup */
-DECL|macro|ZILOG_CLOSING
-mdefine_line|#define ZILOG_CLOSING&t;&t;0x08000000 /* Serial port is closing */
-DECL|macro|ZILOG_CTS_FLOW
-mdefine_line|#define ZILOG_CTS_FLOW&t;&t;0x04000000 /* Do CTS flow control */
-DECL|macro|ZILOG_CHECK_CD
-mdefine_line|#define ZILOG_CHECK_CD&t;&t;0x02000000 /* i.e., CLOCAL */
-multiline_comment|/* Software state per channel */
-macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; * &n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
-DECL|struct|sun_serial
-r_struct
-id|sun_serial
-(brace
-DECL|member|zs_next
-r_struct
-id|sun_serial
-op_star
-id|zs_next
-suffix:semicolon
-multiline_comment|/* For IRQ servicing chain */
-DECL|member|zs_channel
-r_struct
-id|sun_zschannel
-op_star
-id|zs_channel
-suffix:semicolon
-multiline_comment|/* Channel registers */
-DECL|member|read_reg_zero
-r_int
-r_char
-id|read_reg_zero
-suffix:semicolon
-DECL|member|soft_carrier
-r_char
-id|soft_carrier
-suffix:semicolon
-multiline_comment|/* Use soft carrier on this channel */
-DECL|member|cons_keyb
-r_char
-id|cons_keyb
-suffix:semicolon
-multiline_comment|/* Channel runs the keyboard */
-DECL|member|cons_mouse
-r_char
-id|cons_mouse
-suffix:semicolon
-multiline_comment|/* Channel runs the mouse */
-DECL|member|break_abort
-r_char
-id|break_abort
-suffix:semicolon
-multiline_comment|/* Is serial console in, so process brk/abrt */
-DECL|member|kgdb_channel
-r_char
-id|kgdb_channel
-suffix:semicolon
-multiline_comment|/* Kgdb is running on this channel */
-DECL|member|is_cons
-r_char
-id|is_cons
-suffix:semicolon
-multiline_comment|/* Is this our console. */
-DECL|member|channelA
-r_char
-id|channelA
-suffix:semicolon
-multiline_comment|/* This is channel A. */
-DECL|member|parity_mask
-r_char
-id|parity_mask
-suffix:semicolon
-multiline_comment|/* Mask out parity bits in data register. */
-multiline_comment|/* We need to know the current clock divisor&n;&t; * to read the bps rate the chip has currently&n;&t; * loaded.&n;&t; */
-DECL|member|clk_divisor
-r_int
-r_char
-id|clk_divisor
-suffix:semicolon
-multiline_comment|/* May be 1, 16, 32, or 64 */
-DECL|member|zs_baud
-r_int
-id|zs_baud
-suffix:semicolon
-multiline_comment|/* Current write register values */
-DECL|member|curregs
-r_int
-r_char
-id|curregs
-(braket
-id|NUM_ZSREGS
-)braket
-suffix:semicolon
-DECL|member|change_needed
-r_char
-id|change_needed
-suffix:semicolon
-DECL|member|magic
-r_int
-id|magic
-suffix:semicolon
-DECL|member|baud_base
-r_int
-id|baud_base
-suffix:semicolon
-DECL|member|port
-r_int
-id|port
-suffix:semicolon
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* defined in tty.h */
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-multiline_comment|/* UART type */
-DECL|member|tty
-r_struct
-id|tty_struct
-op_star
-id|tty
-suffix:semicolon
-DECL|member|read_status_mask
-r_int
-id|read_status_mask
-suffix:semicolon
-DECL|member|ignore_status_mask
-r_int
-id|ignore_status_mask
-suffix:semicolon
-DECL|member|timeout
-r_int
-id|timeout
-suffix:semicolon
-DECL|member|xmit_fifo_size
-r_int
-id|xmit_fifo_size
-suffix:semicolon
-DECL|member|custom_divisor
-r_int
-id|custom_divisor
-suffix:semicolon
-DECL|member|x_char
-r_int
-id|x_char
-suffix:semicolon
-multiline_comment|/* xon/xoff character */
-DECL|member|close_delay
-r_int
-id|close_delay
-suffix:semicolon
-DECL|member|closing_wait
-r_int
-r_int
-id|closing_wait
-suffix:semicolon
-DECL|member|closing_wait2
-r_int
-r_int
-id|closing_wait2
-suffix:semicolon
-DECL|member|event
-r_int
-r_int
-id|event
-suffix:semicolon
-DECL|member|last_active
-r_int
-r_int
-id|last_active
-suffix:semicolon
-DECL|member|line
-r_int
-id|line
-suffix:semicolon
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-multiline_comment|/* # of fd on device */
-DECL|member|blocked_open
-r_int
-id|blocked_open
-suffix:semicolon
-multiline_comment|/* # of blocked opens */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process */
-DECL|member|xmit_buf
-r_int
-r_char
-op_star
-id|xmit_buf
-suffix:semicolon
-DECL|member|xmit_head
-r_int
-id|xmit_head
-suffix:semicolon
-DECL|member|xmit_tail
-r_int
-id|xmit_tail
-suffix:semicolon
-DECL|member|xmit_cnt
-r_int
-id|xmit_cnt
-suffix:semicolon
-DECL|member|tqueue
-r_struct
-id|tq_struct
-id|tqueue
-suffix:semicolon
-DECL|member|tqueue_hangup
-r_struct
-id|tq_struct
-id|tqueue_hangup
-suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
-suffix:semicolon
-DECL|member|open_wait
-id|wait_queue_head_t
-id|open_wait
-suffix:semicolon
-DECL|member|close_wait
-id|wait_queue_head_t
-id|close_wait
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|SERIAL_MAGIC
-mdefine_line|#define SERIAL_MAGIC 0x5301
-multiline_comment|/*&n; * The size of the serial xmit buffer is 1 page, or 4096 bytes&n; */
-DECL|macro|SERIAL_XMIT_SIZE
-mdefine_line|#define SERIAL_XMIT_SIZE 4096
-multiline_comment|/*&n; * Events are used to schedule things to happen at timer-interrupt&n; * time, instead of at rs interrupt time.&n; */
-DECL|macro|RS_EVENT_WRITE_WAKEUP
-mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;0
-macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Conversion routines to/from brg time constants from/to bits&n; * per second.&n; */
 DECL|macro|BRG_TO_BPS
 mdefine_line|#define BRG_TO_BPS(brg, freq) ((freq) / 2 / ((brg) + 2))
@@ -565,6 +188,8 @@ DECL|macro|X32CLK
 mdefine_line|#define&t;X32CLK&t;&t;0x80&t;/* x32 clock mode */
 DECL|macro|X64CLK
 mdefine_line|#define&t;X64CLK&t;&t;0xC0&t;/* x64 clock mode */
+DECL|macro|XCLK_MASK
+mdefine_line|#define XCLK_MASK&t;0xC0
 multiline_comment|/* Write Register 5 */
 DECL|macro|TxCRC_ENAB
 mdefine_line|#define&t;TxCRC_ENAB&t;0x1&t;/* Tx CRC Enable */
@@ -798,5 +423,5 @@ DECL|macro|ZS_CLEARSTAT
 mdefine_line|#define ZS_CLEARSTAT(channel)   do { sbus_writeb(RES_EXT_INT, &amp;channel-&gt;control); &bslash;&n;&t;&t;&t;&t;     udelay(5); } while(0)
 DECL|macro|ZS_CLEARFIFO
 mdefine_line|#define ZS_CLEARFIFO(channel)   do { sbus_readb(&amp;channel-&gt;data); &bslash;&n;&t;&t;&t;&t;     udelay(2); &bslash;&n;&t;&t;&t;&t;     sbus_readb(&amp;channel-&gt;data); &bslash;&n;&t;&t;&t;&t;     udelay(2); &bslash;&n;&t;&t;&t;&t;     sbus_readb(&amp;channel-&gt;data); &bslash;&n;&t;&t;&t;&t;     udelay(2); } while(0)
-macro_line|#endif /* !(_ZS_H) */
+macro_line|#endif /* _SUNZILOG_H */
 eof

@@ -99,8 +99,9 @@ id|notifier_block
 id|vlan_notifier_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|vlan_device_event
 comma
 )brace
@@ -129,25 +130,29 @@ id|packet_type
 id|vlan_packet_type
 op_assign
 (brace
+dot
 id|type
-suffix:colon
+op_assign
 id|__constant_htons
 c_func
 (paren
 id|ETH_P_8021Q
 )paren
 comma
+dot
 id|dev
-suffix:colon
+op_assign
 l_int|NULL
 comma
+dot
 id|func
-suffix:colon
+op_assign
 id|vlan_skb_recv
 comma
 multiline_comment|/* VLAN receive method */
+dot
 id|data
-suffix:colon
+op_assign
 (paren
 r_void
 op_star
@@ -158,8 +163,9 @@ l_int|1
 )paren
 comma
 multiline_comment|/* Set here &squot;(void *)1&squot; when this code can SHARE SKBs */
+dot
 id|next
-suffix:colon
+op_assign
 l_int|NULL
 )brace
 suffix:semicolon

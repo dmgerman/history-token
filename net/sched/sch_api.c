@@ -5400,6 +5400,14 @@ id|cbq
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_NET_SCH_HTB
+id|INIT_QDISC
+c_func
+(paren
+id|htb
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_SCH_CSZ
 id|INIT_QDISC
 c_func

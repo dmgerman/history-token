@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -79,7 +80,6 @@ multiline_comment|/* orig-video-points */
 )brace
 suffix:semicolon
 multiline_comment|/* Typing sync at the prom prompt calls the function pointed to by&n; * the sync callback which I set to the following function.&n; * This should sync all filesystems and return, for now it just&n; * prints out pretty messages and returns.&n; */
-macro_line|#if CONFIG_SUN_CONSOLE
 DECL|variable|prom_palette
 r_void
 (paren
@@ -90,7 +90,6 @@ id|prom_palette
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|prom_keyboard
 r_void
 (paren
@@ -146,22 +145,26 @@ id|console
 id|prom_console
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;prom&quot;
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|prom_console_write
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|CON_CONSDEV
 op_or
 id|CON_ENABLED
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
@@ -239,15 +242,10 @@ multiline_comment|/*&n;&t; * The callback can be invoked on the cpu that first d
 id|irq_exit
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
 )paren
 suffix:semicolon
-id|save_and_cli
+multiline_comment|/* XXX Revisit the locking here someday.  This is a debugging&n;&t; * XXX feature so it isnt all that critical.  -DaveM&n;&t; */
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -337,7 +335,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -347,7 +345,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1237,7 +1235,7 @@ op_amp
 id|prom_entry_lock
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1247,12 +1245,6 @@ multiline_comment|/*&n;&t; * Restore in-interrupt status for a resume from obp.&
 id|irq_enter
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1282,7 +1274,6 @@ DECL|macro|BOOTME_SINGLE
 mdefine_line|#define BOOTME_SINGLE 0x2
 DECL|macro|BOOTME_KGDB
 mdefine_line|#define BOOTME_KGDB   0x4
-macro_line|#ifdef CONFIG_SUN_CONSOLE
 DECL|variable|__initdata
 r_static
 r_int
@@ -1291,7 +1282,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Exported for mm/init.c:paging_init. */
 DECL|variable|cmdline_memory_size
 r_int
@@ -1307,20 +1297,24 @@ id|console
 id|prom_debug_console
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;debug&quot;
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|prom_console_write
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|CON_PRINTBUFFER
 comma
+dot
 id|index
-suffix:colon
+op_assign
 op_minus
 l_int|1
 comma
@@ -1624,7 +1618,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_SUN_CONSOLE
 r_if
 c_cond
 (paren
@@ -1758,7 +1751,6 @@ suffix:semicolon
 )brace
 )brace
 r_else
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2848,22 +2840,99 @@ id|seq_operations
 id|cpuinfo_op
 op_assign
 (brace
+dot
 id|start
-suffix:colon
+op_assign
 id|c_start
 comma
+dot
 id|next
-suffix:colon
+op_assign
 id|c_next
 comma
+dot
 id|stop
-suffix:colon
+op_assign
 id|c_stop
 comma
+dot
 id|show
-suffix:colon
+op_assign
 id|show_cpuinfo
 comma
 )brace
+suffix:semicolon
+r_extern
+r_int
+id|stop_a_enabled
+suffix:semicolon
+DECL|function|sun_do_break
+r_void
+id|sun_do_break
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|stop_a_enabled
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|flush_user_windows
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prom_cmdline
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+multiline_comment|/* Because we use the generic input layer keyboard drivers for&n; * everything, this PC sysrq translation table is all we need.&n; */
+DECL|variable|kbd_sysrq_xlate
+r_int
+r_char
+id|kbd_sysrq_xlate
+(braket
+l_int|128
+)braket
+op_assign
+l_string|&quot;&bslash;000&bslash;0331234567890-=&bslash;177&bslash;t&quot;
+multiline_comment|/* 0x00 - 0x0f */
+l_string|&quot;qwertyuiop[]&bslash;r&bslash;000as&quot;
+multiline_comment|/* 0x10 - 0x1f */
+l_string|&quot;dfghjkl;&squot;`&bslash;000&bslash;&bslash;zxcv&quot;
+multiline_comment|/* 0x20 - 0x2f */
+l_string|&quot;bnm,./&bslash;000*&bslash;000 &bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&quot;
+multiline_comment|/* 0x30 - 0x3f */
+l_string|&quot;&bslash;206&bslash;207&bslash;210&bslash;211&bslash;212&bslash;000&bslash;000789-456+1&quot;
+multiline_comment|/* 0x40 - 0x4f */
+l_string|&quot;230&bslash;177&bslash;000&bslash;000&bslash;213&bslash;214&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
+multiline_comment|/* 0x50 - 0x5f */
+l_string|&quot;&bslash;r&bslash;000/&quot;
+suffix:semicolon
+multiline_comment|/* 0x60 - 0x6f */
+macro_line|#endif
+DECL|variable|serial_console
+r_int
+id|serial_console
+suffix:semicolon
+DECL|variable|stop_a_enabled
+r_int
+id|stop_a_enabled
+op_assign
+l_int|1
 suffix:semicolon
 eof

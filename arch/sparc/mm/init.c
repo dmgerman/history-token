@@ -22,6 +22,7 @@ macro_line|#include &lt;asm/vac-ops.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/vaddrs.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;&t;/* bug in asm-generic/tlb.h: check_pgt_cache */
 macro_line|#include &lt;asm/tlb.h&gt;
 DECL|variable|mmu_gathers
 id|mmu_gather_t
@@ -108,7 +109,7 @@ id|pgprot_t
 id|kmap_prot
 suffix:semicolon
 DECL|macro|kmap_get_fixed_pte
-mdefine_line|#define kmap_get_fixed_pte(vaddr) &bslash;&n;&t;pte_offset(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
+mdefine_line|#define kmap_get_fixed_pte(vaddr) &bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))
 DECL|function|kmap_init
 r_void
 id|__init
@@ -192,6 +193,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
+macro_line|#if 0 /* undefined pgtable_cache_size, pgd_cache_size */
 id|printk
 c_func
 (paren
@@ -221,6 +223,7 @@ id|pgd_cache_size
 )paren
 suffix:semicolon
 macro_line|#endif&t;
+macro_line|#endif
 )brace
 r_extern
 id|pgprot_t
@@ -1281,6 +1284,43 @@ id|PAGE_SHIFT
 suffix:semicolon
 r_return
 id|max_pfn
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * check_pgt_cache&n; *&n; * This is called at the end of unmapping of VMA (zap_page_range),&n; * to rescan the page cache for architecture specific things,&n; * presumably something like sun4/sun4c PMEGs. Most architectures&n; * define check_pgt_cache empty.&n; *&n; * We simply copy the 2.4 implementation for now.&n; */
+DECL|variable|pgt_cache_water
+r_int
+id|pgt_cache_water
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+l_int|25
+comma
+l_int|50
+)brace
+suffix:semicolon
+DECL|function|check_pgt_cache
+r_void
+id|check_pgt_cache
+c_func
+(paren
+r_void
+)paren
+(brace
+id|do_check_pgt_cache
+c_func
+(paren
+id|pgt_cache_water
+(braket
+l_int|0
+)braket
+comma
+id|pgt_cache_water
+(braket
+l_int|1
+)braket
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * paging_init() sets up the page tables: We call the MMU specific&n; * init routine based upon the Sun model type on the Sparc.&n; *&n; */

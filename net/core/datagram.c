@@ -470,12 +470,14 @@ id|iovec
 id|iov
 op_assign
 (brace
+dot
 id|iov_base
-suffix:colon
+op_assign
 id|to
 comma
+dot
 id|iov_len
-suffix:colon
+op_assign
 id|size
 comma
 )brace

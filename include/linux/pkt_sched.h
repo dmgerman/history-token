@@ -540,6 +540,128 @@ id|grio
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* HTB section */
+DECL|macro|TC_HTB_NUMPRIO
+mdefine_line|#define TC_HTB_NUMPRIO&t;&t;8
+DECL|macro|TC_HTB_MAXDEPTH
+mdefine_line|#define TC_HTB_MAXDEPTH&t;&t;8
+DECL|macro|TC_HTB_PROTOVER
+mdefine_line|#define TC_HTB_PROTOVER&t;&t;3 /* the same as HTB and TC&squot;s major */
+DECL|struct|tc_htb_opt
+r_struct
+id|tc_htb_opt
+(brace
+DECL|member|rate
+r_struct
+id|tc_ratespec
+id|rate
+suffix:semicolon
+DECL|member|ceil
+r_struct
+id|tc_ratespec
+id|ceil
+suffix:semicolon
+DECL|member|buffer
+id|__u32
+id|buffer
+suffix:semicolon
+DECL|member|cbuffer
+id|__u32
+id|cbuffer
+suffix:semicolon
+DECL|member|quantum
+id|__u32
+id|quantum
+suffix:semicolon
+DECL|member|level
+id|__u32
+id|level
+suffix:semicolon
+multiline_comment|/* out only */
+DECL|member|prio
+id|__u32
+id|prio
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|tc_htb_glob
+r_struct
+id|tc_htb_glob
+(brace
+DECL|member|version
+id|__u32
+id|version
+suffix:semicolon
+multiline_comment|/* to match HTB/TC */
+DECL|member|rate2quantum
+id|__u32
+id|rate2quantum
+suffix:semicolon
+multiline_comment|/* bps-&gt;quantum divisor */
+DECL|member|defcls
+id|__u32
+id|defcls
+suffix:semicolon
+multiline_comment|/* default class number */
+DECL|member|debug
+id|__u32
+id|debug
+suffix:semicolon
+multiline_comment|/* debug flags */
+multiline_comment|/* stats */
+DECL|member|direct_pkts
+id|__u32
+id|direct_pkts
+suffix:semicolon
+multiline_comment|/* count of non shapped packets */
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|TCA_HTB_UNSPEC
+id|TCA_HTB_UNSPEC
+comma
+DECL|enumerator|TCA_HTB_PARMS
+id|TCA_HTB_PARMS
+comma
+DECL|enumerator|TCA_HTB_INIT
+id|TCA_HTB_INIT
+comma
+DECL|enumerator|TCA_HTB_CTAB
+id|TCA_HTB_CTAB
+comma
+DECL|enumerator|TCA_HTB_RTAB
+id|TCA_HTB_RTAB
+comma
+)brace
+suffix:semicolon
+DECL|struct|tc_htb_xstats
+r_struct
+id|tc_htb_xstats
+(brace
+DECL|member|lends
+id|__u32
+id|lends
+suffix:semicolon
+DECL|member|borrows
+id|__u32
+id|borrows
+suffix:semicolon
+DECL|member|giants
+id|__u32
+id|giants
+suffix:semicolon
+multiline_comment|/* too big packets (rate will not be accurate) */
+DECL|member|tokens
+id|__u32
+id|tokens
+suffix:semicolon
+DECL|member|ctokens
+id|__u32
+id|ctokens
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* CBQ section */
 DECL|macro|TC_CBQ_MAXPRIO
 mdefine_line|#define TC_CBQ_MAXPRIO&t;&t;8

@@ -1698,18 +1698,6 @@ r_case
 id|dvmahme
 suffix:colon
 multiline_comment|/* This is the HME DVMA gate array. */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* I really hate this chip. */
 id|sbus_writel
 c_func
 (paren
@@ -1840,12 +1828,6 @@ comma
 id|esp-&gt;dregs
 op_plus
 id|DMA_ADDR
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 r_break
