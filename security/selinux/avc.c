@@ -1914,6 +1914,10 @@ id|denied
 comma
 id|audited
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|denied
 op_assign
 id|requested
@@ -1989,11 +1993,13 @@ c_func
 r_return
 suffix:semicolon
 multiline_comment|/* prevent overlapping printks */
-id|spin_lock_irq
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|avc_log_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|printk
@@ -2677,11 +2683,13 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irq
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|avc_log_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
