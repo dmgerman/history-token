@@ -1270,8 +1270,6 @@ multiline_comment|/*&t;PCI_VPD_NITEM&t;&t; 8 bit (ML)&t;Next Item Ptr */
 multiline_comment|/*&t;PCI_VPD_ADR_REG&t;&t;16 bit (ML)&t;VPD Address Register */
 DECL|macro|PCI_VPD_FLAG
 mdefine_line|#define&t;PCI_VPD_FLAG&t;(1&lt;&lt;15)&t;&t;/* Bit 15&t;starts VPD rd/wd cycle*/
-DECL|macro|PCI_VPD_ADDR
-mdefine_line|#define PCI_VPD_ADDR&t;(0x3fff&lt;&lt;0)&t;/* Bit  0..14&t;VPD address */
 multiline_comment|/*&t;PCI_VPD_DAT_REG&t;&t;32 bit (ML)&t;VPD Data Register */
 multiline_comment|/*&n; *&t;Control Register File:&n; *&t;Bank 0&n; */
 DECL|macro|B0_RAP
