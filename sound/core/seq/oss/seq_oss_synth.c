@@ -119,12 +119,12 @@ comma
 multiline_comment|/* name */
 )brace
 suffix:semicolon
-DECL|variable|register_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|register_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * prototypes&n; */
 r_static

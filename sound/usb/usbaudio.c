@@ -14402,6 +14402,12 @@ suffix:colon
 r_case
 id|QUIRK_MIDI_MIDIMAN
 suffix:colon
+r_case
+id|QUIRK_MIDI_NOVATION
+suffix:colon
+r_case
+id|QUIRK_MIDI_MOTU
+suffix:colon
 r_return
 id|snd_usb_create_midi_interface
 c_func
@@ -14481,6 +14487,12 @@ id|chip
 comma
 id|iface
 )paren
+suffix:semicolon
+r_case
+id|QUIRK_IGNORE_INTERFACE
+suffix:colon
+r_return
+l_int|0
 suffix:semicolon
 r_default
 suffix:colon

@@ -24,12 +24,12 @@ DECL|macro|SNDRV_SEQ_LFLG_OUTPUT
 mdefine_line|#define SNDRV_SEQ_LFLG_OUTPUT&t;0x0002
 DECL|macro|SNDRV_SEQ_LFLG_OPEN
 mdefine_line|#define SNDRV_SEQ_LFLG_OPEN&t;(SNDRV_SEQ_LFLG_INPUT|SNDRV_SEQ_LFLG_OUTPUT)
-DECL|variable|clients_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|clients_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DECLARE_MUTEX
@@ -9332,11 +9332,6 @@ id|snd_seq_ioctl
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -9360,9 +9355,6 @@ op_star
 )paren
 id|file-&gt;private_data
 suffix:semicolon
-r_int
-id|err
-suffix:semicolon
 id|snd_assert
 c_func
 (paren
@@ -9375,14 +9367,7 @@ op_minus
 id|ENXIO
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: need to unlock BKL to allow preemption */
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|err
-op_assign
+r_return
 id|snd_seq_do_ioctl
 c_func
 (paren
@@ -9398,15 +9383,13 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|err
-suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_COMPAT
+macro_line|#include &quot;seq_compat.c&quot;
+macro_line|#else
+DECL|macro|snd_seq_ioctl_compat
+mdefine_line|#define snd_seq_ioctl_compat&t;NULL
+macro_line|#endif
 multiline_comment|/* -------------------------------------------------------- */
 multiline_comment|/* exported to kernel modules */
 DECL|function|snd_seq_create_kernel_client
@@ -10774,9 +10757,14 @@ op_assign
 id|snd_seq_poll
 comma
 dot
-id|ioctl
+id|unlocked_ioctl
 op_assign
 id|snd_seq_ioctl
+comma
+dot
+id|compat_ioctl
+op_assign
+id|snd_seq_ioctl_compat
 comma
 )brace
 suffix:semicolon

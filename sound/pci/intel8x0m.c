@@ -56,9 +56,24 @@ id|index
 id|SNDRV_CARDS
 )braket
 op_assign
-id|SNDRV_DEFAULT_IDX
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+op_minus
+l_int|2
+)brace
 suffix:semicolon
-multiline_comment|/* Index 0-MAX */
+multiline_comment|/* Exclude the first card */
 DECL|variable|id
 r_static
 r_char
@@ -4931,8 +4946,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -4998,10 +5012,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|intel8x0_t

@@ -19,12 +19,12 @@ id|queue_list
 id|SNDRV_SEQ_MAX_QUEUES
 )braket
 suffix:semicolon
-DECL|variable|queue_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|queue_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* number of queues allocated */
 DECL|variable|num_queues

@@ -6668,7 +6668,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Playback */
+multiline_comment|/* Synth Playback */
 id|A_OP
 c_func
 (paren
@@ -6759,7 +6759,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Music Playback Volume&quot;
+l_string|&quot;Synth Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -6860,7 +6860,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Capture */
+multiline_comment|/* Synth Capture */
 id|A_OP
 c_func
 (paren
@@ -6951,7 +6951,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Music Capture Volume&quot;
+l_string|&quot;Synth Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -10036,6 +10036,50 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* EFX capture - capture the 16 EXTINs */
+r_for
+c_loop
+(paren
+id|z
+op_assign
+l_int|0
+suffix:semicolon
+id|z
+OL
+l_int|16
+suffix:semicolon
+id|z
+op_increment
+)paren
+(brace
+id|A_OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|A_FXBUS2
+c_func
+(paren
+id|z
+)paren
+comma
+id|A_C_00000000
+comma
+id|A_C_00000000
+comma
+id|A_EXTIN
+c_func
+(paren
+id|z
+)paren
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * ok, set up done..&n;&t; */
 r_if
 c_cond
@@ -12704,7 +12748,7 @@ id|gpr
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Music Playback Volume */
+multiline_comment|/* Synth Playback Volume */
 r_for
 c_loop
 (paren
@@ -12748,7 +12792,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Playback Volume&quot;
+l_string|&quot;Synth Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -12759,7 +12803,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Capture Volume + Switch */
+multiline_comment|/* Synth Capture Volume + Switch */
 r_for
 c_loop
 (paren
@@ -12828,7 +12872,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Capture Volume&quot;
+l_string|&quot;Synth Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -12843,7 +12887,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Capture Switch&quot;
+l_string|&quot;Synth Capture Switch&quot;
 comma
 id|gpr
 op_plus
@@ -16443,6 +16487,159 @@ comma
 id|C_00000000
 )paren
 suffix:semicolon
+multiline_comment|/* EFX capture - capture the 16 EXTINS */
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|FXBUS2
+c_func
+(paren
+l_int|14
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+comma
+id|EXTIN
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|FXBUS2
+c_func
+(paren
+l_int|15
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+comma
+id|EXTIN
+c_func
+(paren
+l_int|1
+)paren
+)paren
+suffix:semicolon
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|FXBUS2
+c_func
+(paren
+l_int|0
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+comma
+id|EXTIN
+c_func
+(paren
+l_int|2
+)paren
+)paren
+suffix:semicolon
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|FXBUS2
+c_func
+(paren
+l_int|3
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+comma
+id|EXTIN
+c_func
+(paren
+l_int|3
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Dont connect anything to FXBUS2 1 and 2.  These are shared with &n;&t; * Center/LFE on the SBLive 5.1.  The kX driver only changes the &n;&t; * routing when it detects an SBLive 5.1.&n;&t; *&n;&t; * Since only 14 of the 16 EXTINs are used, this is not a big problem.  &n;&t; * We route AC97L and R to FX capture 14 and 15, SPDIF CD in to FX capture &n;&t; * 0 and 3, then the rest of the EXTINs to the corresponding FX capture &n;&t; * channel.&n;&t; */
+r_for
+c_loop
+(paren
+id|z
+op_assign
+l_int|4
+suffix:semicolon
+id|z
+OL
+l_int|14
+suffix:semicolon
+id|z
+op_increment
+)paren
+(brace
+id|OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iACC3
+comma
+id|FXBUS2
+c_func
+(paren
+id|z
+)paren
+comma
+id|C_00000000
+comma
+id|C_00000000
+comma
+id|EXTIN
+c_func
+(paren
+id|z
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

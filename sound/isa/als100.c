@@ -690,7 +690,7 @@ l_int|2
 dot
 id|id
 comma
-id|acard-&gt;devmpu
+id|acard-&gt;dev
 )paren
 suffix:semicolon
 id|pdev
