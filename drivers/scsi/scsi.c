@@ -2686,6 +2686,10 @@ c_cond
 id|sdev-&gt;sdev_state
 op_eq
 id|SDEV_DEL
+op_logical_or
+id|sdev-&gt;sdev_state
+op_eq
+id|SDEV_CANCEL
 )paren
 r_return
 op_minus
