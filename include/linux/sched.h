@@ -347,7 +347,8 @@ id|mmap
 suffix:semicolon
 multiline_comment|/* list of VMAs */
 DECL|member|mm_rb
-id|rb_root_t
+r_struct
+id|rb_root
 id|mm_rb
 suffix:semicolon
 DECL|member|mmap_cache
@@ -1209,6 +1210,8 @@ DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
 DECL|macro|PF_SYNC
 mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
+DECL|macro|PF_FSTRANS
+mdefine_line|#define PF_FSTRANS&t;0x00100000&t;/* inside a filesystem transaction */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001

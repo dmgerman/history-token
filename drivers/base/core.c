@@ -312,10 +312,6 @@ id|drv
 op_assign
 id|dev-&gt;driver
 suffix:semicolon
-id|dev-&gt;driver
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -338,6 +334,10 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|dev-&gt;driver
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

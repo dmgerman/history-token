@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.123 2002/06/20 13:28:16 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.133 2002/09/05 22:30:09 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTBASE_H_INCLUDED
@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2002 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.01.06&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.02.01.01&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.01.06&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.02.01.01&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -718,10 +718,17 @@ id|u8
 id|raidVolume
 suffix:semicolon
 multiline_comment|/* set, if RAID Volume */
+macro_line|#ifdef ABORT_FIX
+DECL|member|numAborts
+id|u8
+id|numAborts
+suffix:semicolon
+macro_line|#else
 DECL|member|rsvd
 id|u8
 id|rsvd
 suffix:semicolon
+macro_line|#endif
 DECL|member|rsvd1raid
 id|u16
 id|rsvd1raid
@@ -900,6 +907,8 @@ DECL|macro|MPT_TARGET_FLAGS_VALID_SENSE
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_SENSE&t;0x04
 DECL|macro|MPT_TARGET_FLAGS_Q_YES
 mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
+DECL|macro|MPT_TARGET_FLAGS_VALID_56
+mdefine_line|#define MPT_TARGET_FLAGS_VALID_56&t;0x10
 DECL|macro|MPT_TARGET_NO_NEGO_WIDE
 mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
 DECL|macro|MPT_TARGET_NO_NEGO_SYNC
@@ -1100,8 +1109,8 @@ DECL|macro|MPT_SCSICFG_NEED_DV
 mdefine_line|#define MPT_SCSICFG_NEED_DV&t;&t;0x02&t;/* Schedule DV */
 DECL|macro|MPT_SCSICFG_DV_PENDING
 mdefine_line|#define MPT_SCSICFG_DV_PENDING&t;&t;0x04&t;/* DV on this physical id pending */
-DECL|macro|MPT_SCSICFG_DV_DONE
-mdefine_line|#define MPT_SCSICFG_DV_DONE&t;&t;0x08&t;/* DV on this physical id complete */
+DECL|macro|MPT_SCSICFG_DV_NOT_DONE
+mdefine_line|#define MPT_SCSICFG_DV_NOT_DONE&t;&t;0x08&t;/* DV has not been performed */
 DECL|macro|MPT_SCSICFG_BLK_NEGO
 mdefine_line|#define MPT_SCSICFG_BLK_NEGO&t;&t;0x10&t;/* WriteSDP1 with WDTR and SDTR disabled */
 multiline_comment|/* Args passed to writeSDP1: */
@@ -1583,11 +1592,16 @@ id|u8
 id|upload_fw
 suffix:semicolon
 multiline_comment|/* If set, do a fw upload */
+DECL|member|reload_fw
+id|u8
+id|reload_fw
+suffix:semicolon
+multiline_comment|/* Force a FW Reload on next reset */
 DECL|member|pad1
 id|u8
 id|pad1
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 DECL|typedef|MPT_ADAPTER
@@ -1763,6 +1777,13 @@ mdefine_line|#define dsgprintk(x)  printk x
 macro_line|#else
 DECL|macro|dsgprintk
 mdefine_line|#define dsgprintk(x)
+macro_line|#endif
+macro_line|#if defined(MPT_DEBUG_DL) || defined(MPT_DEBUG)
+DECL|macro|ddlprintk
+mdefine_line|#define ddlprintk(x)  printk x
+macro_line|#else
+DECL|macro|ddlprintk
+mdefine_line|#define ddlprintk(x)
 macro_line|#endif
 macro_line|#ifdef MPT_DEBUG_DV
 DECL|macro|ddvprintk

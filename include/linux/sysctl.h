@@ -522,6 +522,11 @@ op_assign
 l_int|17
 comma
 multiline_comment|/* percent of RAM to allow overcommit in */
+DECL|enumerator|VM_PAGEBUF
+id|VM_PAGEBUF
+op_assign
+l_int|18
+multiline_comment|/* struct: Control pagebuf parameters */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */
@@ -2051,6 +2056,12 @@ op_assign
 l_int|16
 comma
 multiline_comment|/* disc quota usage statistics */
+DECL|enumerator|FS_XFS
+id|FS_XFS
+op_assign
+l_int|17
+comma
+multiline_comment|/* struct: control xfs parameters */
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/fs/quota/ */
