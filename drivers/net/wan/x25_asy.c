@@ -813,7 +813,7 @@ op_assign
 id|lapb_data_received
 c_func
 (paren
-id|sl
+id|skb-&gt;dev
 comma
 id|skb
 )paren
@@ -1284,7 +1284,7 @@ op_assign
 id|lapb_connect_request
 c_func
 (paren
-id|sl
+id|dev
 )paren
 )paren
 op_ne
@@ -1323,7 +1323,7 @@ op_assign
 id|lapb_disconnect_request
 c_func
 (paren
-id|sl
+id|dev
 )paren
 )paren
 op_ne
@@ -1371,7 +1371,7 @@ op_assign
 id|lapb_data_request
 c_func
 (paren
-id|sl
+id|dev
 comma
 id|skb
 )paren
@@ -1411,9 +1411,10 @@ r_int
 id|x25_asy_data_indication
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -1440,9 +1441,10 @@ r_void
 id|x25_asy_data_transmit
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -1455,7 +1457,7 @@ id|x25_asy
 op_star
 id|sl
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock
 c_func
@@ -1552,9 +1554,10 @@ r_void
 id|x25_asy_connected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -1565,7 +1568,7 @@ id|x25_asy
 op_star
 id|sl
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -1655,9 +1658,10 @@ r_void
 id|x25_asy_disconnected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -1668,7 +1672,7 @@ id|x25_asy
 op_star
 id|sl
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -2050,7 +2054,7 @@ op_assign
 id|lapb_unregister
 c_func
 (paren
-id|sl
+id|dev
 )paren
 )paren
 op_ne
