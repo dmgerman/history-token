@@ -6442,7 +6442,7 @@ id|child
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* make sure the single step/take-branch tra bits are not set: */
+multiline_comment|/* make sure the single step/taken-branch trap bits are not set: */
 id|child_psr-&gt;ss
 op_assign
 l_int|0
