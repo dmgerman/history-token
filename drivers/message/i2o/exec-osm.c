@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;Executive OSM&n; *&n; * &t;Copyright (C) 1999-2002&t;Red Hat Software&n; *&n; *&t;Written by Alan Cox, Building Number Three Ltd&n; *&n; *&t;This program is free software; you can redistribute it and/or modify it&n; *&t;under the terms of the GNU General Public License as published by the&n; *&t;Free Software Foundation; either version 2 of the License, or (at your&n; *&t;option) any later version.&n; *&n; *&t;A lot of the I2O message side code from this is taken from the Red&n; *&t;Creek RCPCI45 adapter driver by Red Creek Communications&n; *&n; *&t;Fixes/additions:&n; *&t;&t;Philipp Rumpf&n; *&t;&t;Juha Siev&#xfffd;nen &lt;Juha.Sievanen@cs.Helsinki.FI&gt;&n; *&t;&t;Auvo H&#xfffd;kkinen &lt;Auvo.Hakkinen@cs.Helsinki.FI&gt;&n; *&t;&t;Deepak Saxena &lt;deepak@plexity.net&gt;&n; *&t;&t;Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; *&t;&t;Alan Cox &lt;alan@redhat.com&gt;:&n; *&t;&t;&t;Ported to Linux 2.5.&n; *&t;&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;:&n; *&t;&t;&t;Minor fixes for 2.6.&n; *&t;&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;:&n; *&t;&t;&t;Support for sysfs included.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|variable|i2o_exec_driver
 r_struct
 id|i2o_driver
@@ -356,12 +357,12 @@ c_cond
 op_logical_neg
 id|iwait-&gt;complete
 )paren
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|timeout
 op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 id|finish_wait
