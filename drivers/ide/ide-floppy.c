@@ -1749,7 +1749,7 @@ id|KERN_INFO
 l_string|&quot;Reached idefloppy_end_request&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDEFLOPPY_DEBUG_LOG */
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -1829,13 +1829,20 @@ id|rq-&gt;errors
 op_assign
 id|error
 suffix:semicolon
-id|ide_end_drive_cmd
+id|blkdev_dequeue_request
+c_func
 (paren
-id|drive
-comma
 id|rq
-comma
-l_int|0
+)paren
+suffix:semicolon
+id|drive-&gt;rq
+op_assign
+l_int|NULL
+suffix:semicolon
+id|end_that_request_last
+c_func
+(paren
+id|rq
 )paren
 suffix:semicolon
 r_return

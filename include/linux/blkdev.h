@@ -212,9 +212,6 @@ id|__REQ_QUEUED
 comma
 multiline_comment|/* uses queueing */
 multiline_comment|/*&n;&t; * for ATA/ATAPI devices&n;&t; */
-DECL|enumerator|__REQ_DRIVE_CMD
-id|__REQ_DRIVE_CMD
-comma
 DECL|enumerator|__REQ_DRIVE_ACB
 id|__REQ_DRIVE_ACB
 comma
@@ -256,8 +253,6 @@ DECL|macro|REQ_DONTPREP
 mdefine_line|#define REQ_DONTPREP&t;(1 &lt;&lt; __REQ_DONTPREP)
 DECL|macro|REQ_QUEUED
 mdefine_line|#define REQ_QUEUED&t;(1 &lt;&lt; __REQ_QUEUED)
-DECL|macro|REQ_DRIVE_CMD
-mdefine_line|#define REQ_DRIVE_CMD&t;(1 &lt;&lt; __REQ_DRIVE_CMD)
 DECL|macro|REQ_DRIVE_ACB
 mdefine_line|#define REQ_DRIVE_ACB&t;(1 &lt;&lt; __REQ_DRIVE_ACB)
 DECL|macro|REQ_PC

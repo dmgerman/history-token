@@ -2400,7 +2400,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|taskfile-&gt;command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren
@@ -2707,7 +2707,7 @@ l_int|0x0f
 op_or
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 (paren
 id|rq_data_dir

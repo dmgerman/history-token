@@ -402,9 +402,9 @@ multiline_comment|/* all of the bits together */
 r_struct
 (brace
 macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
-DECL|member|XXX_head
+DECL|member|head
 r_int
-id|XXX_head
+id|head
 suffix:colon
 l_int|4
 suffix:semicolon
@@ -416,9 +416,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* drive select number: 0/1 */
-DECL|member|XXX_bit5
+DECL|member|bit5
 r_int
-id|XXX_bit5
+id|bit5
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -430,9 +430,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* using LBA instead of CHS */
-DECL|member|XXX_bit7
+DECL|member|bit7
 r_int
-id|XXX_bit7
+id|bit7
 suffix:colon
 l_int|1
 suffix:semicolon
@@ -2233,8 +2233,6 @@ comma
 r_struct
 id|request
 op_star
-comma
-id|u8
 )paren
 suffix:semicolon
 DECL|struct|ata_taskfile
@@ -2251,6 +2249,11 @@ r_struct
 id|hd_drive_task_hdr
 id|hobfile
 suffix:semicolon
+DECL|member|cmd
+id|u8
+id|cmd
+suffix:semicolon
+multiline_comment|/* actual ATA command */
 DECL|member|command_type
 r_int
 id|command_type

@@ -91,11 +91,6 @@ c_func
 id|drive
 comma
 id|rq
-comma
-id|GET_ERR
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -309,7 +304,7 @@ id|rq-&gt;special
 op_assign
 id|args
 suffix:semicolon
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
@@ -1377,7 +1372,7 @@ id|args.taskfile.feature
 op_assign
 l_int|0x01
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
@@ -1495,7 +1490,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_EN_WCACHE
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1550,7 +1545,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_DIS_RI
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1606,7 +1601,7 @@ id|args.taskfile.feature
 op_assign
 id|SETFEATURES_EN_SI
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1912,7 +1907,7 @@ macro_line|#endif
 id|OUT_BYTE
 c_func
 (paren
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren

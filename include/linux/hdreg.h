@@ -99,10 +99,6 @@ DECL|struct|hd_drive_task_hdr
 r_struct
 id|hd_drive_task_hdr
 (brace
-DECL|member|data
-id|u8
-id|data
-suffix:semicolon
 DECL|member|feature
 id|u8
 id|feature
@@ -126,11 +122,6 @@ suffix:semicolon
 DECL|member|device_head
 id|u8
 id|device_head
-suffix:semicolon
-multiline_comment|/* FXIME: Consider moving this out from here. */
-DECL|member|command
-id|u8
-id|command
 suffix:semicolon
 )brace
 id|__attribute__

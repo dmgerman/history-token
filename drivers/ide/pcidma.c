@@ -2252,6 +2252,7 @@ l_int|1
 )paren
 )paren
 (brace
+multiline_comment|/* FIXME: this should never happen */
 r_struct
 id|ata_taskfile
 op_star
@@ -2262,7 +2263,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|args-&gt;taskfile.command
+id|args-&gt;cmd
 comma
 id|IDE_COMMAND_REG
 )paren

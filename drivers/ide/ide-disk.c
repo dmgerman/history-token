@@ -564,7 +564,7 @@ id|args.taskfile.device_head
 op_or_assign
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|get_command
 c_func
@@ -788,7 +788,7 @@ id|args.taskfile.device_head
 op_or_assign
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|get_command
 c_func
@@ -1049,7 +1049,7 @@ id|args.hobfile.device_head
 op_assign
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|get_command
 c_func
@@ -1476,7 +1476,7 @@ id|args
 )paren
 )paren
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_DOORLOCK
 suffix:semicolon
@@ -1548,12 +1548,12 @@ id|drive-&gt;id-&gt;cfs_enable_2
 op_amp
 l_int|0x2400
 )paren
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_FLUSH_CACHE_EXT
 suffix:semicolon
 r_else
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_FLUSH_CACHE
 suffix:semicolon
@@ -1633,7 +1633,7 @@ id|args
 )paren
 )paren
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_DOORUNLOCK
 suffix:semicolon
@@ -1799,7 +1799,7 @@ id|args.taskfile.sector_count
 op_assign
 id|arg
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETMULT
 suffix:semicolon
@@ -1933,7 +1933,7 @@ id|SETFEATURES_EN_WCACHE
 suffix:colon
 id|SETFEATURES_DIS_WCACHE
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -1991,7 +1991,7 @@ id|args
 )paren
 )paren
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_STANDBYNOW1
 suffix:semicolon
@@ -2061,7 +2061,7 @@ id|args.taskfile.sector_count
 op_assign
 id|arg
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
@@ -2499,7 +2499,7 @@ id|args.taskfile.device_head
 op_assign
 l_int|0x40
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_READ_NATIVE_MAX
 suffix:semicolon
@@ -2522,7 +2522,7 @@ r_if
 c_cond
 (paren
 (paren
-id|args.taskfile.command
+id|args.cmd
 op_amp
 l_int|0x01
 )paren
@@ -2605,7 +2605,7 @@ id|args.taskfile.device_head
 op_assign
 l_int|0x40
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_READ_NATIVE_MAX_EXT
 suffix:semicolon
@@ -2628,7 +2628,7 @@ r_if
 c_cond
 (paren
 (paren
-id|args.taskfile.command
+id|args.cmd
 op_amp
 l_int|0x01
 )paren
@@ -2774,7 +2774,7 @@ l_int|0x0f
 op_or
 l_int|0x40
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SET_MAX
 suffix:semicolon
@@ -2797,7 +2797,7 @@ r_if
 c_cond
 (paren
 (paren
-id|args.taskfile.command
+id|args.cmd
 op_amp
 l_int|0x01
 )paren
@@ -2909,7 +2909,7 @@ id|args.taskfile.device_head
 op_assign
 l_int|0x40
 suffix:semicolon
-id|args.taskfile.command
+id|args.cmd
 op_assign
 id|WIN_SET_MAX_EXT
 suffix:semicolon
@@ -2960,7 +2960,7 @@ r_if
 c_cond
 (paren
 (paren
-id|args.taskfile.command
+id|args.cmd
 op_amp
 l_int|0x01
 )paren
