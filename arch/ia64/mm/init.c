@@ -1287,16 +1287,6 @@ id|zones_size
 id|MAX_NR_ZONES
 )braket
 suffix:semicolon
-id|clear_page
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ZERO_PAGE_ADDR
-)paren
-suffix:semicolon
 multiline_comment|/* initialize mem_map[] */
 id|memset
 c_func
