@@ -434,6 +434,21 @@ id|uptodate
 )paren
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+(paren
+id|bio-&gt;bi_rw
+op_amp
+(paren
+l_int|1
+op_lshift
+id|BIO_RW_AHEAD
+)paren
+)paren
+op_eq
+l_int|0
+)paren
 (brace
 multiline_comment|/*&n;&t;&t; * oops, IO error:&n;&t;&t; */
 r_char
@@ -478,6 +493,15 @@ id|mp_bh
 )paren
 suffix:semicolon
 )brace
+r_else
+id|multipath_end_bh_io
+c_func
+(paren
+id|mp_bh
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|rdev_dec_pending
 c_func
 (paren
