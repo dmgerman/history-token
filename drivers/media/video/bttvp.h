@@ -11,10 +11,11 @@ macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
+macro_line|#include &lt;media/video-buf.h&gt;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &quot;bt848.h&quot;
 macro_line|#include &quot;bttv.h&quot;
-macro_line|#include &quot;video-buf.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
 macro_line|#ifdef __KERNEL__
 DECL|macro|FORMAT_FLAGS_DITHER
 mdefine_line|#define FORMAT_FLAGS_DITHER       0x01

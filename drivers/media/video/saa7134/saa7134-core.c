@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
-macro_line|#include &quot;tuner.h&quot;
 id|MODULE_DESCRIPTION
 c_func
 (paren

@@ -888,9 +888,9 @@ mdefine_line|#define&t;IMISS&t;SPRN_IMISS&t;/* Instruction TLB Miss Register */
 DECL|macro|IMMR
 mdefine_line|#define&t;IMMR&t;SPRN_IMMR      &t;/* PPC 860/821 Internal Memory Map Register */
 DECL|macro|L2CR
-mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* PPC 750 L2 control register */
+mdefine_line|#define&t;L2CR&t;SPRN_L2CR    &t;/* Classic PPC L2 cache control register */
 DECL|macro|L3CR
-mdefine_line|#define&t;L3CR&t;SPRN_L3CR    &t;/* PPC 7450 L3 Cache control register */
+mdefine_line|#define&t;L3CR&t;SPRN_L3CR&t;/* PPC 745x L3 cache control register */
 DECL|macro|LR
 mdefine_line|#define&t;LR&t;SPRN_LR
 DECL|macro|PVR
@@ -1113,8 +1113,17 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
-DECL|macro|prepare_to_copy
-mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
+r_extern
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Create a new kernel thread.&n; */
 r_extern
 r_int

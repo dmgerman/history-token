@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;bttvp.h&quot;
-macro_line|#include &quot;tuner.h&quot;
 DECL|variable|bttv_num
 r_int
 id|bttv_num

@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
-macro_line|#include &quot;tuner.h&quot;
+macro_line|#include &lt;media/tuner.h&gt;
 DECL|variable|debug
 r_static
 r_int

@@ -177,11 +177,6 @@ id|mddev_t
 op_star
 id|mddev
 suffix:semicolon
-DECL|member|thread
-id|mdk_thread_t
-op_star
-id|thread
-suffix:semicolon
 DECL|member|disks
 r_struct
 id|disk_info
@@ -272,13 +267,6 @@ multiline_comment|/* release of inactive stripes blocked,&n;&t;&t;&t;&t;&t;&t;&t
 DECL|member|device_lock
 id|spinlock_t
 id|device_lock
-suffix:semicolon
-DECL|member|thread_name
-r_char
-id|thread_name
-(braket
-id|MD_THREAD_NAME_MAX
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon

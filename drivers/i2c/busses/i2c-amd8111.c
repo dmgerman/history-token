@@ -1574,6 +1574,12 @@ id|smbus-&gt;adapter.algo_data
 op_assign
 id|smbus
 suffix:semicolon
+multiline_comment|/* set up the driverfs linkage to our parent device */
+id|smbus-&gt;adapter.dev.parent
+op_assign
+op_amp
+id|dev-&gt;dev
+suffix:semicolon
 id|error
 op_assign
 id|i2c_add_adapter
@@ -1691,7 +1697,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;amd8111 smbus 2.0&quot;
+l_string|&quot;amd8111 smbus&quot;
 comma
 dot
 id|id_table

@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
-macro_line|#include &quot;tuner.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|variable|video_debug
 r_static

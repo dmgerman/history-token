@@ -345,6 +345,8 @@ DECL|macro|MSR_VIA_FCR
 mdefine_line|#define MSR_VIA_FCR&t;&t;&t;0x1107
 DECL|macro|MSR_VIA_LONGHAUL
 mdefine_line|#define MSR_VIA_LONGHAUL&t;&t;0x110a
+DECL|macro|MSR_VIA_RNG
+mdefine_line|#define MSR_VIA_RNG&t;&t;&t;0x110b
 DECL|macro|MSR_VIA_BCR2
 mdefine_line|#define MSR_VIA_BCR2&t;&t;&t;0x1147
 multiline_comment|/* Transmeta defined MSRs */

@@ -13,7 +13,7 @@ macro_line|# include &quot;linux/page-flags.h&quot;
 DECL|macro|TryLockPage
 macro_line|# define TryLockPage TestSetPageLocked
 macro_line|#endif
-macro_line|#include &quot;video-buf.h&quot;
+macro_line|#include &lt;media/video-buf.h&gt;
 DECL|variable|debug
 r_static
 r_int

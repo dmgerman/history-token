@@ -4,8 +4,8 @@ DECL|macro|__ASM_I386_CPUFEATURE_H
 mdefine_line|#define __ASM_I386_CPUFEATURE_H
 macro_line|#include &lt;linux/bitops.h&gt;
 DECL|macro|NCAPINTS
-mdefine_line|#define NCAPINTS&t;4&t;/* Currently we have 4 32-bit words worth of info */
-multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001, word 0 */
+mdefine_line|#define NCAPINTS&t;6&t;/* Currently we have 6 32-bit words worth of info */
+multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (edx), word 0 */
 DECL|macro|X86_FEATURE_FPU
 mdefine_line|#define X86_FEATURE_FPU&t;&t;(0*32+ 0) /* Onboard FPU */
 DECL|macro|X86_FEATURE_VME
@@ -96,6 +96,10 @@ DECL|macro|X86_FEATURE_CYRIX_ARR
 mdefine_line|#define X86_FEATURE_CYRIX_ARR&t;(3*32+ 2) /* Cyrix ARRs (= MTRRs) */
 DECL|macro|X86_FEATURE_CENTAUR_MCR
 mdefine_line|#define X86_FEATURE_CENTAUR_MCR&t;(3*32+ 3) /* Centaur MCRs (= MTRRs) */
+multiline_comment|/* Intel-defined CPU features, CPUID level 0x00000001 (ecx), word 4 */
+multiline_comment|/* VIA/Cyrix/Centaur-defined CPU features, CPUID level 0xC0000001, word 5 */
+DECL|macro|X86_FEATURE_XSTORE
+mdefine_line|#define X86_FEATURE_XSTORE&t;(5*32+ 2) /* on-CPU RNG present (xstore insn) */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)&t;&t;test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has
@@ -138,6 +142,8 @@ DECL|macro|cpu_has_cyrix_arr
 mdefine_line|#define cpu_has_cyrix_arr&t;boot_cpu_has(X86_FEATURE_CYRIX_ARR)
 DECL|macro|cpu_has_centaur_mcr
 mdefine_line|#define cpu_has_centaur_mcr&t;boot_cpu_has(X86_FEATURE_CENTAUR_MCR)
+DECL|macro|cpu_has_xstore
+mdefine_line|#define cpu_has_xstore&t;&t;boot_cpu_has(X86_FEATURE_XSTORE)
 macro_line|#endif /* __ASM_I386_CPUFEATURE_H */
 multiline_comment|/* &n; * Local Variables:&n; * mode:c&n; * comment-column:42&n; * End:&n; */
 eof

@@ -1111,14 +1111,6 @@ comma
 id|wait
 )paren
 suffix:semicolon
-multiline_comment|/* Lock file against concurrent access */
-id|down
-c_func
-(paren
-op_amp
-id|file-&gt;f_sema
-)paren
-suffix:semicolon
 multiline_comment|/* Get existing block (in case client is busy-waiting) */
 id|block
 op_assign
@@ -1138,6 +1130,14 @@ id|FL_LOCKD
 suffix:semicolon
 id|again
 suffix:colon
+multiline_comment|/* Lock file against concurrent access */
+id|down
+c_func
+(paren
+op_amp
+id|file-&gt;f_sema
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1274,6 +1274,7 @@ id|nlm_deadlock
 suffix:semicolon
 )brace
 multiline_comment|/* If we don&squot;t have a block, create and initialize it. Then&n;&t; * retry because we may have slept in kmalloc. */
+multiline_comment|/* We have to release f_sema as nlmsvc_create_block may try to&n;&t; * to claim it while doing host garbage collection */
 r_if
 c_cond
 (paren
@@ -1282,6 +1283,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|file-&gt;f_sema
+)paren
+suffix:semicolon
 id|dprintk
 c_func
 (paren

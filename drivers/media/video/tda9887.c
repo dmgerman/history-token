@@ -6,8 +6,8 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &quot;id.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 multiline_comment|/* Chips:&n;   TDA9885 (PAL, NTSC)&n;   TDA9886 (PAL, SECAM, NTSC)&n;   TDA9887 (PAL, SECAM, NTSC, FM Radio)&n;&n;   found on:&n;   - Pinnacle PCTV (Jul.2002 Version with MT2032, bttv)&n;      TDA9887 (world), TDA9885 (USA)&n;      Note: OP2 of tda988x must be set to 1, else MT2032 is disabled!&n;   - KNC One TV-Station RDS (saa7134)&n;*/
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c

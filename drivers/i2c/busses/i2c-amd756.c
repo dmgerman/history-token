@@ -1465,6 +1465,12 @@ id|amd756_ioport
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* set up the driverfs linkage to our parent device */
+id|amd756_adapter.dev.parent
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 id|sprintf
 c_func
 (paren
