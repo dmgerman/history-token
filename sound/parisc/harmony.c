@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  Harmony chipset driver&n; *&n; *&t;This is a sound driver for ASP&squot;s and Lasi&squot;s Harmony sound chip&n; *&t;and is unlikely to be used for anything other than on a HP PA-RISC.&n; *&n; *&t;Harmony is found in HP 712s, 715/new and many other GSC based machines.&n; *&t;On older 715 machines you&squot;ll find the technically identical chip &n; *&t;called &squot;Vivace&squot;. Both Harmony and Vicace are supported by this driver.&n; *&n; *  this ALSA driver is based on OSS driver by:&n; *&t;Copyright 2000 (c) Linuxcare Canada, Alex deVries &lt;alex@linuxcare.com&gt;&n; *&t;Copyright 2000-2002 (c) Helge Deller &lt;deller@gmx.de&gt;&n; *&t;Copyright 2001 (c) Matthieu Delahaye &lt;delahaym@esiee.fr&gt;&n; *&n; * TODO:&n; * - use generic DMA interface and ioremap()/iounmap()&n; * - capture is still untested (and probaby non-working)&n; * - spin locks&n; * - implement non-consistent DMA pages&n; * - implement gain meter&n; * - module parameters&n; * - correct cleaning sequence&n; * - better error checking&n; * - try to have a better quality.&n; *   &n; */
-multiline_comment|/*&n; * Harmony chipset &squot;modus operandi&squot;.&n; * - This chipset is found in some HP 32bit workstations, like 712, or B132 class.&n; * most of controls are done through registers. Register are found at a fixed offset&n; * from the hard physical adress, given in struct dev by register_parisc_driver.&n; *&n; * Playback and recording use 4kb pages (dma or not, depending on the machine).&n; *&n; * Most of PCM playback &amp; capture is done through interrupt. When harmony needs&n; * a new buffer to put recorded data or read played PCM, it sends an interrupt.&n; * Bits 2 and 10 of DSTATUS register are &squot;1&squot; when harmony needs respectively&n; * a new page for recording and playing. &n; * Interrupt are disabled/enabled by writing to bit 32 of DSTATUS. &n; * Adresses of next page to be played is put in PNXTADD register, next page&n; * to be recorded is put in RNXTADD. There is 2 read-only registers, PCURADD and &n; * RCURADD that provides adress of current page.&n; * &n; * Harmony has no way to controll full duplex or half duplex mode. It means&n; * that we always need to provide adresses of playback and capture data, even&n; * when this is not needed. That&squot;s why we statically alloc one graveyard&n; * buffer (to put recorded data in play-only mode) and a silence buffer.&n; * &n; * Bitrate, number of channels and data format are controlled with&n; * the CNTL register.&n; *&n; * Mixer work is done through one register (GAINCTL). Only input gain,&n; * output attenuation and general attenuation control is provided. There is&n; * also controls for enabling/disabling internal speaker and line&n; * input.&n; *&n; * Buffers used by this driver are all DMA consistent. Since harmony is&n; * not &quot;real&quot; pci device, we use a fake struct pci_dev for&n; * pci_alloc_consistent().&n; * (note that some machines -712 for ex.- don&squot;t implement DMA consistent&n; * memory, so we will need to use kmalloc instead)&n; */
+multiline_comment|/*&n; * Harmony chipset &squot;modus operandi&squot;.&n; * - This chipset is found in some HP 32bit workstations, like 712, or B132 class.&n; * most of controls are done through registers. Register are found at a fixed offset&n; * from the hard physical adress, given in struct dev by register_parisc_driver.&n; *&n; * Playback and recording use 4kb pages (dma or not, depending on the machine).&n; *&n; * Most of PCM playback &amp; capture is done through interrupt. When harmony needs&n; * a new buffer to put recorded data or read played PCM, it sends an interrupt.&n; * Bits 2 and 10 of DSTATUS register are &squot;1&squot; when harmony needs respectively&n; * a new page for recording and playing. &n; * Interrupt are disabled/enabled by writing to bit 32 of DSTATUS. &n; * Adresses of next page to be played is put in PNXTADD register, next page&n; * to be recorded is put in RNXTADD. There is 2 read-only registers, PCURADD and &n; * RCURADD that provides adress of current page.&n; * &n; * Harmony has no way to controll full duplex or half duplex mode. It means&n; * that we always need to provide adresses of playback and capture data, even&n; * when this is not needed. That&squot;s why we statically alloc one graveyard&n; * buffer (to put recorded data in play-only mode) and a silence buffer.&n; * &n; * Bitrate, number of channels and data format are controlled with&n; * the CNTL register.&n; *&n; * Mixer work is done through one register (GAINCTL). Only input gain,&n; * output attenuation and general attenuation control is provided. There is&n; * also controls for enabling/disabling internal speaker and line&n; * input.&n; *&n; * Buffers used by this driver are all DMA consistent.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -355,13 +355,12 @@ DECL|member|cap_total
 r_int
 id|cap_total
 suffix:semicolon
-DECL|member|fake_pci_dev
+DECL|member|pa_dev
 r_struct
-id|pci_dev
+id|parisc_device
 op_star
-id|fake_pci_dev
+id|pa_dev
 suffix:semicolon
-multiline_comment|/* The fake pci_dev needed for &n;&t;&t;&t;&t;&t;pci_* functions under ccio. */
 multiline_comment|/* the graveyard buffer is used as recording buffer when playback, &n;&t; * because harmony always want a buffer to put recorded data */
 DECL|member|graveyard_addr
 r_int
@@ -2590,12 +2589,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/*&n;&t; * harmony is not &quot;real&quot; pci, but we need a pci_dev&n;&t; * to alloc PCI DMA pages&n;&t; */
-id|substream-&gt;runtime-&gt;dma_private
-op_assign
-id|harmony-&gt;fake_pci_dev
-suffix:semicolon
-singleline_comment|//&t;substream-&gt;dma_type = SNDRV_PCM_DMA_TYPE_PCI;
 id|harmony-&gt;playback_substream
 op_assign
 id|substream
@@ -2671,12 +2664,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-multiline_comment|/*&n;&t; * harmony is not &quot;real&quot; pci, but we need a pci_dev&n;&t; * to alloc PCI DMA pages&n;&t; */
-id|substream-&gt;runtime-&gt;dma_private
-op_assign
-id|harmony-&gt;fake_pci_dev
-suffix:semicolon
-singleline_comment|//&t;substream-&gt;dma_type = SNDRV_PCM_DMA_TYPE_PCI;
 id|harmony-&gt;capture_substream
 op_assign
 id|substream
@@ -2855,12 +2842,6 @@ op_star
 id|hw_params
 )paren
 (brace
-id|snd_pcm_runtime_t
-op_star
-id|runtime
-op_assign
-id|substream-&gt;runtime
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -2891,7 +2872,7 @@ comma
 r_int
 r_int
 )paren
-id|runtime-&gt;dma_addr
+id|substream-&gt;runtime-&gt;dma_addr
 )paren
 suffix:semicolon
 r_return
@@ -3154,11 +3135,8 @@ id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
 id|harmony-&gt;dma_dev.dev
 op_assign
-id|snd_dma_pci_data
-c_func
-(paren
-id|harmony-&gt;fake_pci_dev
-)paren
+op_amp
+id|harmony-&gt;pa_dev-&gt;dev
 suffix:semicolon
 id|harmony-&gt;graveyard_addr
 op_assign
@@ -3226,11 +3204,8 @@ id|pcm
 comma
 id|SNDRV_DMA_TYPE_DEV
 comma
-id|snd_dma_pci_data
-c_func
-(paren
-id|harmony-&gt;fake_pci_dev
-)paren
+op_amp
+id|harmony-&gt;pa_dev-&gt;dev
 comma
 l_int|64
 op_star
@@ -3977,6 +3952,10 @@ id|harmony-&gt;card
 op_assign
 id|card
 suffix:semicolon
+id|harmony-&gt;pa_dev
+op_assign
+id|pa_dev
+suffix:semicolon
 multiline_comment|/* Set the HPA of harmony */
 id|harmony-&gt;hpa
 op_assign
@@ -4111,15 +4090,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* a fake pci_dev is needed for pci_* functions under ccio */
-id|harmony-&gt;fake_pci_dev
-op_assign
-id|ccio_get_fake
-c_func
-(paren
-id|pa_dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
