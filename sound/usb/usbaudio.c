@@ -10839,7 +10839,7 @@ id|quirk
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -10879,7 +10879,13 @@ c_cond
 (paren
 id|quirk-&gt;ifnum
 op_ge
-id|config-&gt;bNumInterfaces
+id|get_cfg_desc
+c_func
+(paren
+id|config
+)paren
+op_member_access_from_pointer
+id|bNumInterfaces
 )paren
 r_continue
 suffix:semicolon

@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &lt;sound/pcm_params.h&gt;
@@ -2893,6 +2894,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/*&n; * beep stuff&n; */
 multiline_comment|/*&n; * Stuff for outputting a beep.  The values range from -327 to +327&n; * so we can multiply by an amplitude in the range 0..100 to get a&n; * signed short value to put in the output buffer.&n; */
 DECL|variable|beep_wform
@@ -4513,6 +4515,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* beep stuff */
 DECL|function|snd_pmac_dbdma_reset
 r_static
 r_void
