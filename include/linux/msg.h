@@ -200,6 +200,11 @@ id|msg_msgseg
 op_star
 id|next
 suffix:semicolon
+DECL|member|security
+r_void
+op_star
+id|security
+suffix:semicolon
 multiline_comment|/* the actual message follows immediately */
 )brace
 suffix:semicolon
