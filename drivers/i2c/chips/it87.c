@@ -2505,13 +2505,6 @@ id|name
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
-r_const
-r_char
-op_star
-id|client_name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_int
 id|is_isa
 op_assign
@@ -2933,12 +2926,8 @@ id|name
 op_assign
 l_string|&quot;it87&quot;
 suffix:semicolon
-id|client_name
-op_assign
-l_string|&quot;IT87 chip&quot;
-suffix:semicolon
 )brace
-multiline_comment|/* else if (kind == it8712) {&n;&t;&t;name = &quot;it8712&quot;;&n;&t;&t;client_name = &quot;IT87-J chip&quot;;&n;&t;} */
+multiline_comment|/* else if (kind == it8712) {&n;&t;&t;name = &quot;it8712&quot;;&n;&t;} */
 r_else
 (brace
 id|dev_dbg

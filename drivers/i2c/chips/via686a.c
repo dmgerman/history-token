@@ -3449,7 +3449,7 @@ id|client_name
 (braket
 )braket
 op_assign
-l_string|&quot;via686a chip&quot;
+l_string|&quot;via686a&quot;
 suffix:semicolon
 id|u16
 id|val

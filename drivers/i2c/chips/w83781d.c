@@ -3812,7 +3812,7 @@ id|w83781d
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83781D subclient&quot;
+l_string|&quot;w83781d subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3824,7 +3824,7 @@ id|w83782d
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83782D subclient&quot;
+l_string|&quot;w83782d subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3836,7 +3836,7 @@ id|w83783s
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83783S subclient&quot;
+l_string|&quot;w83783s subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3848,7 +3848,7 @@ id|w83627hf
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83627HF subclient&quot;
+l_string|&quot;w83627hf subclient&quot;
 suffix:semicolon
 r_else
 r_if
@@ -3860,7 +3860,7 @@ id|as99127f
 )paren
 id|client_name
 op_assign
-l_string|&quot;AS99127F subclient&quot;
+l_string|&quot;as99127f subclient&quot;
 suffix:semicolon
 r_else
 id|client_name
@@ -4907,7 +4907,7 @@ id|w83781d
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83781D chip&quot;
+l_string|&quot;w83781d&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4921,7 +4921,7 @@ id|w83782d
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83782D chip&quot;
+l_string|&quot;w83782d&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4935,7 +4935,7 @@ id|w83783s
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83783S chip&quot;
+l_string|&quot;w83783s&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4956,12 +4956,12 @@ l_int|0x90
 )paren
 id|client_name
 op_assign
-l_string|&quot;W83627THF chip&quot;
+l_string|&quot;w83627thf&quot;
 suffix:semicolon
 r_else
 id|client_name
 op_assign
-l_string|&quot;W83627HF chip&quot;
+l_string|&quot;w83627hf&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4975,7 +4975,7 @@ id|as99127f
 (brace
 id|client_name
 op_assign
-l_string|&quot;AS99127F chip&quot;
+l_string|&quot;as99127f&quot;
 suffix:semicolon
 )brace
 r_else
@@ -4989,7 +4989,7 @@ id|w83697hf
 (brace
 id|client_name
 op_assign
-l_string|&quot;W83697HF chip&quot;
+l_string|&quot;w83697hf&quot;
 suffix:semicolon
 )brace
 r_else
