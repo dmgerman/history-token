@@ -864,24 +864,7 @@ suffix:semicolon
 id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
-multiline_comment|/* capability check */
-r_if
-c_cond
-(paren
-id|policy-&gt;cpu
-op_ne
-l_int|0
-)paren
-multiline_comment|/* FIXME: better support for SMT in cpufreq core. Up until then, it&squot;s better to register only one CPU */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/* only run on CPU to be set, or on its sibling */
-id|cpus_allowed
-op_assign
-id|current-&gt;cpus_allowed
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|policy-&gt;cpus
 op_assign
@@ -891,6 +874,10 @@ id|policy-&gt;cpu
 )braket
 suffix:semicolon
 macro_line|#endif
+id|cpus_allowed
+op_assign
+id|current-&gt;cpus_allowed
+suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
