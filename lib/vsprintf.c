@@ -2583,12 +2583,7 @@ c_func
 (paren
 id|buf
 comma
-(paren
-op_complement
-l_int|0U
-)paren
-op_rshift
-l_int|1
+id|INT_MAX
 comma
 id|fmt
 comma
@@ -2639,10 +2634,12 @@ id|fmt
 suffix:semicolon
 id|i
 op_assign
-id|vsprintf
+id|vsnprintf
 c_func
 (paren
 id|buf
+comma
+id|INT_MAX
 comma
 id|fmt
 comma
