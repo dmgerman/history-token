@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -872,14 +871,7 @@ id|serio_event_list
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 id|PF_FREEZE

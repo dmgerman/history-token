@@ -2095,7 +2095,7 @@ mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FLUSHER
 mdefine_line|#define PF_FLUSHER&t;0x00002000&t;/* responsible for disk writeback */
 DECL|macro|PF_FREEZE
-mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task should be frozen for suspend */
+mdefine_line|#define PF_FREEZE&t;0x00004000&t;/* this task is being frozen for suspend now */
 DECL|macro|PF_NOFREEZE
 mdefine_line|#define PF_NOFREEZE&t;0x00008000&t;/* this thread should not be frozen */
 DECL|macro|PF_FROZEN
