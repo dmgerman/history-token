@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 58 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psargs - Parse AML opcode arguments&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -188,6 +188,11 @@ l_int|3
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Can&squot;t get here, only 2 bits / 4 cases */
+r_break
+suffix:semicolon
 )brace
 id|return_VALUE
 (paren
@@ -262,9 +267,6 @@ id|end
 op_assign
 id|parser_state-&gt;aml
 suffix:semicolon
-id|u32
-id|length
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ps_get_next_namestring&quot;
@@ -323,7 +325,7 @@ suffix:semicolon
 r_case
 id|AML_DUAL_NAME_PREFIX
 suffix:colon
-multiline_comment|/* two name segments */
+multiline_comment|/* Two name segments */
 id|end
 op_add_assign
 l_int|9
@@ -333,11 +335,14 @@ suffix:semicolon
 r_case
 id|AML_MULTI_NAME_PREFIX_OP
 suffix:colon
-multiline_comment|/* multiple name segments */
-id|length
-op_assign
+multiline_comment|/* Multiple name segments, 4 chars each */
+id|end
+op_add_assign
+l_int|2
+op_plus
 (paren
-id|u32
+(paren
+id|ACPI_SIZE
 )paren
 id|ACPI_GET8
 (paren
@@ -347,19 +352,13 @@ l_int|1
 )paren
 op_star
 l_int|4
-suffix:semicolon
-id|end
-op_add_assign
-l_int|2
-op_plus
-id|length
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* single name segment */
-multiline_comment|/* assert (Acpi_ps_is_lead (GET8 (End))); */
+multiline_comment|/* Single name segment */
 id|end
 op_add_assign
 l_int|4
@@ -453,7 +452,7 @@ comma
 id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
@@ -503,7 +502,7 @@ id|op
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_METHOD_OP
 )paren
@@ -523,7 +522,7 @@ c_cond
 (paren
 id|count
 op_logical_and
-id|count-&gt;opcode
+id|count-&gt;common.aml_opcode
 op_eq
 id|AML_BYTE_OP
 )paren
@@ -549,12 +548,12 @@ comma
 id|AML_INT_METHODCALL_OP
 )paren
 suffix:semicolon
-id|name_op-&gt;value.name
+id|name_op-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
 multiline_comment|/* Point METHODCALL/NAME to the METHOD Node */
-id|name_op-&gt;node
+id|name_op-&gt;common.node
 op_assign
 (paren
 id|acpi_namespace_node
@@ -575,7 +574,7 @@ op_assign
 (paren
 id|u32
 )paren
-id|count-&gt;value.integer
+id|count-&gt;common.value.integer
 op_amp
 id|METHOD_FLAGS_ARG_COUNT
 suffix:semicolon
@@ -595,7 +594,7 @@ comma
 id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
@@ -677,20 +676,14 @@ comma
 id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|method_call
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Lookup the name in the internal namespace&n;&t;&t; */
+multiline_comment|/*&n;&t; * Lookup the name in the internal namespace&n;&t; */
 id|scope_info.scope.node
 op_assign
 l_int|NULL
@@ -710,7 +703,7 @@ op_assign
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Lookup object.  We don&squot;t want to add anything new to the namespace&n;&t;&t; * here, however.  So we use MODE_EXECUTE.  Allow searching of the&n;&t;&t; * parent tree, but don&squot;t open a new scope -- we just want to lookup the&n;&t;&t; * object  (MUST BE mode EXECUTE to perform upsearch)&n;&t;&t; */
+multiline_comment|/*&n;&t; * Lookup object.  We don&squot;t want to add anything new to the namespace&n;&t; * here, however.  So we use MODE_EXECUTE.  Allow searching of the&n;&t; * parent tree, but don&squot;t open a new scope -- we just want to lookup the&n;&t; * object  (MUST BE mode EXECUTE to perform upsearch)&n;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -789,12 +782,12 @@ comma
 id|AML_INT_METHODCALL_OP
 )paren
 suffix:semicolon
-id|name_op-&gt;value.name
+id|name_op-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
 multiline_comment|/* Point METHODCALL/NAME to the METHOD Node */
-id|name_op-&gt;node
+id|name_op-&gt;common.node
 op_assign
 id|method_node
 suffix:semicolon
@@ -834,8 +827,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Else this is normal named object reference.&n;&t;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t;&t; * (See code below)&n;&t;&t;&t; */
-)brace
+multiline_comment|/*&n;&t;&t; * Else this is normal named object reference.&n;&t;&t; * Just init the NAMEPATH object with the pathname.&n;&t;&t; * (See code below)&n;&t;&t; */
 )brace
 multiline_comment|/*&n;&t; * Either we didn&squot;t find the object in the namespace, or the object is&n;&t; * something other than a control method.  Just initialize the Op with the&n;&t; * pathname.&n;&t; */
 id|acpi_ps_init_op
@@ -845,7 +837,7 @@ comma
 id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 op_assign
 id|path
 suffix:semicolon
@@ -893,7 +885,7 @@ comma
 id|AML_BYTE_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.integer
+id|arg-&gt;common.value.integer
 op_assign
 (paren
 id|u32
@@ -922,7 +914,7 @@ multiline_comment|/* Get 2 bytes from the AML stream */
 id|ACPI_MOVE_UNALIGNED16_TO_32
 (paren
 op_amp
-id|arg-&gt;value.integer
+id|arg-&gt;common.value.integer
 comma
 id|parser_state-&gt;aml
 )paren
@@ -947,7 +939,7 @@ multiline_comment|/* Get 4 bytes from the AML stream */
 id|ACPI_MOVE_UNALIGNED32_TO_32
 (paren
 op_amp
-id|arg-&gt;value.integer
+id|arg-&gt;common.value.integer
 comma
 id|parser_state-&gt;aml
 )paren
@@ -972,7 +964,7 @@ multiline_comment|/* Get 8 bytes from the AML stream */
 id|ACPI_MOVE_UNALIGNED64_TO_64
 (paren
 op_amp
-id|arg-&gt;value.integer
+id|arg-&gt;common.value.integer
 comma
 id|parser_state-&gt;aml
 )paren
@@ -993,7 +985,7 @@ comma
 id|AML_STRING_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.string
+id|arg-&gt;common.value.string
 op_assign
 (paren
 r_char
@@ -1034,11 +1026,24 @@ comma
 id|AML_INT_NAMEPATH_OP
 )paren
 suffix:semicolon
-id|arg-&gt;value.name
+id|arg-&gt;common.value.name
 op_assign
 id|acpi_ps_get_next_namestring
 (paren
 id|parser_state
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Invalid Arg_type %X&bslash;n&quot;
+comma
+id|arg_type
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -1061,9 +1066,12 @@ id|parser_state
 id|u32
 id|aml_offset
 op_assign
+id|ACPI_PTR_DIFF
+(paren
 id|parser_state-&gt;aml
-op_minus
+comma
 id|parser_state-&gt;aml_start
+)paren
 suffix:semicolon
 id|acpi_parse_object
 op_star
@@ -1134,10 +1142,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|field
 )paren
 (brace
-id|field-&gt;aml_offset
+id|return_PTR
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+id|field-&gt;common.aml_offset
 op_assign
 id|aml_offset
 suffix:semicolon
@@ -1172,7 +1187,7 @@ op_add_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* Get the length which is encoded as a package length */
-id|field-&gt;value.size
+id|field-&gt;common.value.size
 op_assign
 id|acpi_ps_get_next_package_length
 (paren
@@ -1185,7 +1200,7 @@ r_case
 id|AML_INT_RESERVEDFIELD_OP
 suffix:colon
 multiline_comment|/* Get the length which is encoded as a package length */
-id|field-&gt;value.size
+id|field-&gt;common.value.size
 op_assign
 id|acpi_ps_get_next_package_length
 (paren
@@ -1197,8 +1212,8 @@ suffix:semicolon
 r_case
 id|AML_INT_ACCESSFIELD_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Get Access_type and Access_attrib and merge into the field Op&n;&t;&t;&t; * Access_type is first operand, Access_attribute is second&n;&t;&t;&t; */
-id|field-&gt;value.integer32
+multiline_comment|/*&n;&t;&t; * Get Access_type and Access_attrib and merge into the field Op&n;&t;&t; * Access_type is first operand, Access_attribute is second&n;&t;&t; */
+id|field-&gt;common.value.integer32
 op_assign
 (paren
 id|ACPI_GET8
@@ -1212,7 +1227,7 @@ suffix:semicolon
 id|parser_state-&gt;aml
 op_increment
 suffix:semicolon
-id|field-&gt;value.integer32
+id|field-&gt;common.value.integer32
 op_or_assign
 id|ACPI_GET8
 (paren
@@ -1224,7 +1239,11 @@ op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
-)brace
+r_default
+suffix:colon
+multiline_comment|/* Opcode was set in previous switch */
+r_break
+suffix:semicolon
 )brace
 id|return_PTR
 (paren
@@ -1382,7 +1401,7 @@ c_cond
 id|prev
 )paren
 (brace
-id|prev-&gt;next
+id|prev-&gt;common.next
 op_assign
 id|field
 suffix:semicolon
@@ -1433,23 +1452,16 @@ id|arg
 )paren
 (brace
 multiline_comment|/* fill in bytelist data */
-id|arg-&gt;value.size
+id|arg-&gt;common.value.size
 op_assign
+id|ACPI_PTR_DIFF
 (paren
 id|parser_state-&gt;pkg_end
-op_minus
+comma
 id|parser_state-&gt;aml
 )paren
 suffix:semicolon
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg
-)paren
-op_member_access_from_pointer
-id|data
+id|arg-&gt;named.data
 op_assign
 id|parser_state-&gt;aml
 suffix:semicolon
@@ -1574,6 +1586,19 @@ op_assign
 id|ACPI_VAR_ARGS
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Invalid Arg_type: %X&bslash;n&quot;
+comma
+id|arg_type
+)paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

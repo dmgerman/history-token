@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 61 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -200,12 +200,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|rsdt_size
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|ACPI_SIZE
 id|table_size
 suffix:semicolon
 id|u32
@@ -405,6 +405,13 @@ id|cleanup
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Get the RSDT and validate it */
+id|acpi_tb_get_rsdt_address
+(paren
+op_amp
+id|address
+)paren
+suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -416,21 +423,14 @@ id|acpi_gbl_RSDP
 comma
 id|ACPI_HIDWORD
 (paren
-id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+id|address.pointer.value
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|acpi_gbl_RSDP-&gt;rsdt_physical_address
+id|address.pointer.value
 )paren
 )paren
-)paren
-suffix:semicolon
-multiline_comment|/* Get the RSDT and validate it */
-id|acpi_tb_get_rsdt_address
-(paren
-op_amp
-id|address
 )paren
 suffix:semicolon
 id|status
@@ -695,7 +695,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* TBD: Move to a new file */
-macro_line|#ifndef _IA16
+macro_line|#if ACPI_MACHINE_WIDTH != 16
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_find_root_pointer&n; *&n; * PARAMETERS:  **Rsdp_address          - Where to place the RSDP address&n; *              Flags                   - Logical/Physical addressing&n; *&n; * RETURN:      Status, Physical address of the RSDP&n; *&n; * DESCRIPTION: Find the RSDP&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_find_root_pointer
@@ -1001,9 +1001,10 @@ id|LO_RSDP_WINDOW_BASE
 suffix:semicolon
 id|phys_addr
 op_add_assign
+id|ACPI_PTR_DIFF
 (paren
 id|mem_rover
-op_minus
+comma
 id|table_ptr
 )paren
 suffix:semicolon
@@ -1082,9 +1083,10 @@ id|HI_RSDP_WINDOW_BASE
 suffix:semicolon
 id|phys_addr
 op_add_assign
+id|ACPI_PTR_DIFF
 (paren
 id|mem_rover
-op_minus
+comma
 id|table_ptr
 )paren
 suffix:semicolon

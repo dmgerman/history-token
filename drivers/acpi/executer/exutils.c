@@ -1,15 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exutils - interpreter/scanner utilities&n; *              $Revision: 98 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * DEFINE_AML_GLOBALS is tested in amlcode.h&n; * to determine whether certain global names should be &quot;defined&quot; or only&n; * &quot;declared&quot; in the current compilation.  This enhances maintainability&n; * by enabling a single header file to embody all knowledge of the names&n; * in question.&n; *&n; * Exactly one module of any executable should #define DEFINE_GLOBALS&n; * before #including the header files which use this convention.  The&n; * names in question will be defined and initialized in that module,&n; * and declared as extern in all other modules which #include those&n; * header files.&n; */
 DECL|macro|DEFINE_AML_GLOBALS
 mdefine_line|#define DEFINE_AML_GLOBALS
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -51,7 +48,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Fatal - Could not acquire interpreter lock&bslash;n&quot;
+l_string|&quot;Could not acquire interpreter mutex&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -85,6 +82,23 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_EXECUTE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not release interpreter mutex&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 id|return_VOID
 suffix:semicolon
 )brace
@@ -178,9 +192,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|walk_state-&gt;method_node-&gt;flags
-op_amp
-id|ANOBJ_DATA_WIDTH_32
+id|acpi_gbl_integer_byte_width
+op_eq
+l_int|4
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t; * Truncate the value to 32 bits by zeroing out the upper 32-bit field&n;&t;&t; */
@@ -271,7 +285,7 @@ id|locked
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_global_lock&n; *&n; * PARAMETERS:  Locked_by_me    - Return value from corresponding call to&n; *                                Acquire_global_lock.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release the global lock if it is locked.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ex_release_global_lock
 id|acpi_ex_release_global_lock
 (paren
@@ -279,6 +293,9 @@ id|u8
 id|locked_by_me
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_release_global_lock&quot;
@@ -292,16 +309,31 @@ id|locked_by_me
 )paren
 (brace
 multiline_comment|/* OK, now release the lock */
+id|status
+op_assign
 id|acpi_ev_release_global_lock
 (paren
 )paren
 suffix:semicolon
-)brace
-id|return_ACPI_STATUS
+r_if
+c_cond
 (paren
-id|AE_OK
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+multiline_comment|/* Report the error, but there isn&squot;t much else we can do */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not release ACPI Global Lock&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
+)brace
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_digits_needed&n; *&n; * PARAMETERS:  Value           - Value to be represented&n; *              Base            - Base of representation&n; *&n; * RETURN:      the number of digits needed to represent Value in Base&n; *&n; ******************************************************************************/
 id|u32
@@ -317,61 +349,56 @@ id|base
 (brace
 id|u32
 id|num_digits
-op_assign
-l_int|0
+suffix:semicolon
+id|acpi_integer
+id|current_value
+suffix:semicolon
+id|acpi_integer
+id|quotient
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ex_digits_needed&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|base
-OL
-l_int|1
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_digits_needed: Internal error - Invalid base&bslash;n&quot;
-)paren
-)paren
+multiline_comment|/*&n;&t; * acpi_integer is unsigned, so we don&squot;t worry about a &squot;-&squot;&n;&t; */
+id|current_value
+op_assign
+id|value
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * acpi_integer is unsigned, which is why we don&squot;t worry about a &squot;-&squot;&n;&t;&t; */
-r_for
-c_loop
-(paren
 id|num_digits
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
+r_while
+c_loop
 (paren
+id|current_value
+)paren
+(brace
+(paren
+r_void
+)paren
 id|acpi_ut_short_divide
 (paren
 op_amp
-id|value
+id|current_value
 comma
 id|base
 comma
 op_amp
-id|value
+id|quotient
 comma
 l_int|NULL
 )paren
-)paren
 suffix:semicolon
-op_increment
 id|num_digits
-)paren
-(brace
+op_increment
 suffix:semicolon
-)brace
+id|current_value
+op_assign
+id|quotient
+suffix:semicolon
 )brace
 id|return_VALUE
 (paren
@@ -379,100 +406,8 @@ id|num_digits
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    ntohl&n; *&n; * PARAMETERS:  Value           - Value to be converted&n; *&n; * DESCRIPTION: Convert a 32-bit value to big-endian (swap the bytes)&n; *&n; ******************************************************************************/
-r_static
-id|u32
-DECL|function|_ntohl
-id|_ntohl
-(paren
-id|u32
-id|value
-)paren
-(brace
-r_union
-(brace
-id|u32
-id|value
-suffix:semicolon
-id|u8
-id|bytes
-(braket
-l_int|4
-)braket
-suffix:semicolon
-)brace
-id|out
-suffix:semicolon
-r_union
-(brace
-id|u32
-id|value
-suffix:semicolon
-id|u8
-id|bytes
-(braket
-l_int|4
-)braket
-suffix:semicolon
-)brace
-id|in
-suffix:semicolon
-id|ACPI_FUNCTION_ENTRY
-(paren
-)paren
-suffix:semicolon
-id|in.value
-op_assign
-id|value
-suffix:semicolon
-id|out.bytes
-(braket
-l_int|0
-)braket
-op_assign
-id|in.bytes
-(braket
-l_int|3
-)braket
-suffix:semicolon
-id|out.bytes
-(braket
-l_int|1
-)braket
-op_assign
-id|in.bytes
-(braket
-l_int|2
-)braket
-suffix:semicolon
-id|out.bytes
-(braket
-l_int|2
-)braket
-op_assign
-id|in.bytes
-(braket
-l_int|1
-)braket
-suffix:semicolon
-id|out.bytes
-(braket
-l_int|3
-)braket
-op_assign
-id|in.bytes
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_return
-(paren
-id|out.value
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_eisa_id_to_string&n; *&n; * PARAMETERS:  Numeric_id      - EISA ID to be converted&n; *              Out_string      - Where to put the converted string (8 bytes)&n; *&n; * DESCRIPTION: Convert a numeric EISA ID to string representation&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ex_eisa_id_to_string
 id|acpi_ex_eisa_id_to_string
 (paren
@@ -485,16 +420,16 @@ id|out_string
 )paren
 (brace
 id|u32
-id|id
+id|eisa_id
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* swap to big-endian to get contiguous bits */
-id|id
+multiline_comment|/* Swap ID to big-endian to get contiguous bits */
+id|eisa_id
 op_assign
-id|_ntohl
+id|acpi_ut_dword_byte_swap
 (paren
 id|numeric_id
 )paren
@@ -512,7 +447,7 @@ l_char|&squot;@&squot;
 op_plus
 (paren
 (paren
-id|id
+id|eisa_id
 op_rshift
 l_int|26
 )paren
@@ -534,7 +469,7 @@ l_char|&squot;@&squot;
 op_plus
 (paren
 (paren
-id|id
+id|eisa_id
 op_rshift
 l_int|21
 )paren
@@ -556,7 +491,7 @@ l_char|&squot;@&squot;
 op_plus
 (paren
 (paren
-id|id
+id|eisa_id
 op_rshift
 l_int|16
 )paren
@@ -572,7 +507,10 @@ l_int|3
 op_assign
 id|acpi_ut_hex_to_ascii_char
 (paren
-id|id
+(paren
+id|acpi_integer
+)paren
+id|eisa_id
 comma
 l_int|12
 )paren
@@ -584,7 +522,10 @@ l_int|4
 op_assign
 id|acpi_ut_hex_to_ascii_char
 (paren
-id|id
+(paren
+id|acpi_integer
+)paren
+id|eisa_id
 comma
 l_int|8
 )paren
@@ -596,7 +537,10 @@ l_int|5
 op_assign
 id|acpi_ut_hex_to_ascii_char
 (paren
-id|id
+(paren
+id|acpi_integer
+)paren
+id|eisa_id
 comma
 l_int|4
 )paren
@@ -608,7 +552,10 @@ l_int|6
 op_assign
 id|acpi_ut_hex_to_ascii_char
 (paren
-id|id
+(paren
+id|acpi_integer
+)paren
+id|eisa_id
 comma
 l_int|0
 )paren
@@ -620,14 +567,9 @@ l_int|7
 op_assign
 l_int|0
 suffix:semicolon
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_unsigned_integer_to_string&n; *&n; * PARAMETERS:  Value           - Value to be converted&n; *              Out_string      - Where to put the converted string (8 bytes)&n; *&n; * RETURN:      Convert a number to string representation&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ex_unsigned_integer_to_string
 id|acpi_ex_unsigned_integer_to_string
 (paren
@@ -647,6 +589,9 @@ id|digits_needed
 suffix:semicolon
 id|u32
 id|remainder
+suffix:semicolon
+id|acpi_integer
+id|quotient
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -683,6 +628,9 @@ id|count
 op_decrement
 )paren
 (brace
+(paren
+r_void
+)paren
 id|acpi_ut_short_divide
 (paren
 op_amp
@@ -691,7 +639,7 @@ comma
 l_int|10
 comma
 op_amp
-id|value
+id|quotient
 comma
 op_amp
 id|remainder
@@ -713,11 +661,11 @@ op_plus
 id|remainder
 )paren
 suffix:semicolon
-)brace
-r_return
-(paren
-id|AE_OK
-)paren
+"&bslash;"
+id|value
+op_assign
+id|quotient
 suffix:semicolon
+)brace
 )brace
 eof

@@ -1,11 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: pswalk - Parser routines to walk parsed op tree(s)&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_PARSER
 id|ACPI_MODULE_NAME
@@ -98,11 +95,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * No more children, this Op is complete.  Save Next and Parent&n;&t;&t; * in case the Op object gets deleted by the callback routine&n;&t;&t; */
 id|next
 op_assign
-id|op-&gt;next
+id|op-&gt;common.next
 suffix:semicolon
 id|parent
 op_assign
-id|op-&gt;parent
+id|op-&gt;common.parent
 suffix:semicolon
 id|walk_state-&gt;op
 op_assign
@@ -112,12 +109,12 @@ id|walk_state-&gt;op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 id|walk_state-&gt;opcode
 op_assign
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 suffix:semicolon
 id|status
 op_assign
@@ -197,11 +194,11 @@ id|parent
 multiline_comment|/* We are moving up the tree, therefore this parent Op is complete */
 id|grand_parent
 op_assign
-id|parent-&gt;parent
+id|parent-&gt;common.parent
 suffix:semicolon
 id|next
 op_assign
-id|parent-&gt;next
+id|parent-&gt;common.next
 suffix:semicolon
 id|walk_state-&gt;op
 op_assign
@@ -211,12 +208,12 @@ id|walk_state-&gt;op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|parent-&gt;opcode
+id|parent-&gt;common.aml_opcode
 )paren
 suffix:semicolon
 id|walk_state-&gt;opcode
 op_assign
-id|parent-&gt;opcode
+id|parent-&gt;common.aml_opcode
 suffix:semicolon
 id|status
 op_assign
@@ -339,6 +336,9 @@ id|ACPI_THREAD_STATE
 op_star
 id|thread
 suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ps_delete_parse_tree&quot;
@@ -428,6 +428,8 @@ c_loop
 id|walk_state-&gt;next_op
 )paren
 (brace
+id|status
+op_assign
 id|acpi_ps_get_next_walk_op
 (paren
 id|walk_state
@@ -437,15 +439,28 @@ comma
 id|acpi_ps_delete_completed_op
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* We are done with this walk */
 id|acpi_ut_delete_generic_state
 (paren
+id|ACPI_CAST_PTR
 (paren
 id|acpi_generic_state
-op_star
-)paren
+comma
 id|thread
+)paren
 )paren
 suffix:semicolon
 id|acpi_ds_delete_walk_state

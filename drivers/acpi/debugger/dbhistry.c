@@ -1,15 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dbhistry - debugger HISTORY command&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dbhistry - debugger HISTORY command&n; *              $Revision: 24 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acdispat.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
@@ -44,6 +36,7 @@ DECL|typedef|HISTORY_INFO
 id|HISTORY_INFO
 suffix:semicolon
 DECL|variable|acpi_gbl_history_buffer
+r_static
 id|HISTORY_INFO
 id|acpi_gbl_history_buffer
 (braket
@@ -51,24 +44,28 @@ id|HISTORY_SIZE
 )braket
 suffix:semicolon
 DECL|variable|acpi_gbl_lo_history
+r_static
 id|u16
 id|acpi_gbl_lo_history
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|acpi_gbl_num_history
+r_static
 id|u16
 id|acpi_gbl_num_history
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|acpi_gbl_next_history_index
+r_static
 id|u16
 id|acpi_gbl_next_history_index
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|acpi_gbl_next_cmd_num
+r_static
 id|u32
 id|acpi_gbl_next_cmd_num
 op_assign

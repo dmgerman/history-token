@@ -1,15 +1,11 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 79 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbcmds - debug commands and output routines&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
@@ -20,6 +16,7 @@ l_string|&quot;dbcmds&quot;
 )paren
 multiline_comment|/*&n; * Arguments for the Objects command&n; * These object types map directly to the ACPI_TYPES&n; */
 DECL|variable|acpi_db_object_types
+r_static
 id|ARGUMENT_INFO
 id|acpi_db_object_types
 (braket
@@ -154,8 +151,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Object is a Node [%4.4s]&bslash;n&quot;
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 )brace
@@ -177,8 +173,7 @@ l_string|&quot;Reference at Node-&gt;Object %p [%4.4s]&bslash;n&quot;
 comma
 id|node
 comma
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 )brace
@@ -218,6 +213,9 @@ l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* Search all nodes in namespace */
+(paren
+r_void
+)paren
 id|acpi_walk_namespace
 (paren
 id|ACPI_TYPE_ANY
@@ -523,7 +521,7 @@ c_cond
 (paren
 id|address
 op_le
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 (brace
 id|acpi_os_printf
@@ -532,7 +530,7 @@ l_string|&quot;Breakpoint %X is beyond current address %X&bslash;n&quot;
 comma
 id|address
 comma
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 suffix:semicolon
 )brace
@@ -951,6 +949,9 @@ id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 multiline_comment|/* Translate name to an Named object */
 id|node
 op_assign
@@ -983,6 +984,8 @@ r_case
 id|ACPI_TYPE_THERMAL
 suffix:colon
 multiline_comment|/* Send the notify */
+id|status
+op_assign
 id|acpi_ev_queue_notify_request
 (paren
 id|node
@@ -990,6 +993,21 @@ comma
 id|value
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not queue notify&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_default
@@ -1037,6 +1055,9 @@ suffix:semicolon
 id|acpi_operand_object
 op_star
 id|obj_desc
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 multiline_comment|/* Validate Type_arg */
 id|ACPI_STRUPR
@@ -1165,7 +1186,7 @@ c_cond
 (paren
 id|index
 OG
-id|MTH_NUM_ARGS
+id|MTH_MAX_ARG
 )paren
 (brace
 id|acpi_os_printf
@@ -1178,6 +1199,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ds_store_object_to_local
 (paren
 id|AML_ARG_OP
@@ -1189,6 +1212,18 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|obj_desc
 op_assign
 id|walk_state-&gt;arguments
@@ -1223,7 +1258,7 @@ c_cond
 (paren
 id|index
 OG
-id|MTH_NUM_LOCALS
+id|MTH_MAX_LOCAL
 )paren
 (brace
 id|acpi_os_printf
@@ -1236,6 +1271,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|status
+op_assign
 id|acpi_ds_store_object_to_local
 (paren
 id|AML_LOCAL_OP
@@ -1247,6 +1284,18 @@ comma
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 id|obj_desc
 op_assign
 id|walk_state-&gt;local_variables
@@ -1460,6 +1509,11 @@ id|obj_desc-&gt;buffer.length
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Ignore other object types */
+r_break
+suffix:semicolon
 )brace
 )brace
 id|acpi_os_printf
@@ -1540,6 +1594,9 @@ id|ACPI_DB_REDIRECTABLE_OUTPUT
 )paren
 suffix:semicolon
 multiline_comment|/* Walk the namespace from the root */
+(paren
+r_void
+)paren
 id|acpi_walk_namespace
 (paren
 id|type
@@ -1648,22 +1705,13 @@ id|i
 op_ne
 (paren
 (paren
-id|NATIVE_CHAR
-op_star
-)paren
-(paren
-op_amp
-(paren
-(paren
 id|acpi_namespace_node
 op_star
 )paren
 id|obj_handle
 )paren
 op_member_access_from_pointer
-id|name
-)paren
-)paren
+id|name.ascii
 (braket
 id|i
 )braket
@@ -1779,6 +1827,9 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Walk the namespace from the root */
+(paren
+r_void
+)paren
 id|acpi_walk_namespace
 (paren
 id|ACPI_TYPE_ANY
@@ -1988,7 +2039,7 @@ op_star
 id|object_arg
 )paren
 (brace
-macro_line|#ifndef _IA16
+macro_line|#if ACPI_MACHINE_WIDTH != 16
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -2223,11 +2274,12 @@ r_else
 (brace
 id|acpi_rs_dump_resource_list
 (paren
+id|ACPI_CAST_PTR
 (paren
 id|acpi_resource
-op_star
-)paren
+comma
 id|acpi_gbl_db_buffer
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2359,11 +2411,12 @@ r_else
 (brace
 id|acpi_rs_dump_resource_list
 (paren
+id|ACPI_CAST_PTR
 (paren
 id|acpi_resource
-op_star
-)paren
+comma
 id|acpi_gbl_db_buffer
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2377,6 +2430,227 @@ suffix:semicolon
 r_return
 suffix:semicolon
 macro_line|#endif
+)brace
+r_typedef
+r_struct
+(brace
+DECL|member|nodes
+id|u32
+id|nodes
+suffix:semicolon
+DECL|member|objects
+id|u32
+id|objects
+suffix:semicolon
+DECL|typedef|ACPI_INTEGRITY_INFO
+)brace
+id|ACPI_INTEGRITY_INFO
+suffix:semicolon
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_integrity_walk&n; *&n; * PARAMETERS:  Callback from Walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Examine one NS node for valid values.&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_db_integrity_walk
+id|acpi_db_integrity_walk
+(paren
+id|acpi_handle
+id|obj_handle
+comma
+id|u32
+id|nesting_level
+comma
+r_void
+op_star
+id|context
+comma
+r_void
+op_star
+op_star
+id|return_value
+)paren
+(brace
+id|ACPI_INTEGRITY_INFO
+op_star
+id|info
+op_assign
+(paren
+id|ACPI_INTEGRITY_INFO
+op_star
+)paren
+id|context
+suffix:semicolon
+id|acpi_namespace_node
+op_star
+id|node
+op_assign
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_handle
+suffix:semicolon
+id|acpi_operand_object
+op_star
+id|object
+suffix:semicolon
+id|info-&gt;nodes
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|node
+)paren
+op_ne
+id|ACPI_DESC_TYPE_NAMED
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Invalid Descriptor Type for Node %p, Type = %X&bslash;n&quot;
+comma
+id|node
+comma
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|node
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|node-&gt;type
+OG
+id|INTERNAL_TYPE_MAX
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Invalid Object Type for Node %p, Type = %X&bslash;n&quot;
+comma
+id|node
+comma
+id|node-&gt;type
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ut_valid_acpi_name
+(paren
+id|node-&gt;name.integer
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Invalid Acpi_name for Node %p&bslash;n&quot;
+comma
+id|node
+)paren
+suffix:semicolon
+)brace
+id|object
+op_assign
+id|acpi_ns_get_attached_object
+(paren
+id|node
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|object
+)paren
+(brace
+id|info-&gt;objects
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
+op_ne
+id|ACPI_DESC_TYPE_OPERAND
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Invalid Descriptor Type for Object %p, Type = %X&bslash;n&quot;
+comma
+id|object
+comma
+id|ACPI_GET_DESCRIPTOR_TYPE
+(paren
+id|object
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_check_integrity&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Check entire namespace for data structure integrity&n; *&n; ******************************************************************************/
+r_void
+DECL|function|acpi_db_check_integrity
+id|acpi_db_check_integrity
+(paren
+r_void
+)paren
+(brace
+id|ACPI_INTEGRITY_INFO
+id|info
+op_assign
+(brace
+l_int|0
+comma
+l_int|0
+)brace
+suffix:semicolon
+multiline_comment|/* Search all nodes in namespace */
+(paren
+r_void
+)paren
+id|acpi_walk_namespace
+(paren
+id|ACPI_TYPE_ANY
+comma
+id|ACPI_ROOT_OBJECT
+comma
+id|ACPI_UINT32_MAX
+comma
+id|acpi_db_integrity_walk
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|info
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|acpi_os_printf
+(paren
+l_string|&quot;Verified %d namespace nodes with %d Objects&bslash;n&quot;
+comma
+id|info.nodes
+comma
+id|info.objects
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* ENABLE_DEBUGGER */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 59 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 63 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
@@ -111,8 +111,10 @@ DECL|macro|AE_BAD_VALUE
 mdefine_line|#define AE_BAD_VALUE                    (acpi_status) (0x0004 | AE_CODE_ACPI_TABLES)
 DECL|macro|AE_TABLE_NOT_SUPPORTED
 mdefine_line|#define AE_TABLE_NOT_SUPPORTED          (acpi_status) (0x0005 | AE_CODE_ACPI_TABLES)
+DECL|macro|AE_INVALID_TABLE_LENGTH
+mdefine_line|#define AE_INVALID_TABLE_LENGTH         (acpi_status) (0x0006 | AE_CODE_ACPI_TABLES)
 DECL|macro|AE_CODE_TBL_MAX
-mdefine_line|#define AE_CODE_TBL_MAX                 0x0005
+mdefine_line|#define AE_CODE_TBL_MAX                 0x0006
 multiline_comment|/*&n; * AML exceptions.  These are caused by problems with&n; * the actual AML byte stream&n; */
 DECL|macro|AE_AML_ERROR
 mdefine_line|#define AE_AML_ERROR                    (acpi_status) (0x0001 | AE_CODE_AML)
@@ -170,8 +172,14 @@ DECL|macro|AE_AML_REGISTER_LIMIT
 mdefine_line|#define AE_AML_REGISTER_LIMIT           (acpi_status) (0x001B | AE_CODE_AML)
 DECL|macro|AE_AML_NO_WHILE
 mdefine_line|#define AE_AML_NO_WHILE                 (acpi_status) (0x001C | AE_CODE_AML)
+DECL|macro|AE_AML_ALIGNMENT
+mdefine_line|#define AE_AML_ALIGNMENT                (acpi_status) (0x001D | AE_CODE_AML)
+DECL|macro|AE_AML_NO_RESOURCE_END_TAG
+mdefine_line|#define AE_AML_NO_RESOURCE_END_TAG      (acpi_status) (0x001E | AE_CODE_AML)
+DECL|macro|AE_AML_BAD_RESOURCE_VALUE
+mdefine_line|#define AE_AML_BAD_RESOURCE_VALUE       (acpi_status) (0x001F | AE_CODE_AML)
 DECL|macro|AE_CODE_AML_MAX
-mdefine_line|#define AE_CODE_AML_MAX                 0x001C
+mdefine_line|#define AE_CODE_AML_MAX                 0x001F
 multiline_comment|/*&n; * Internal exceptions used for control&n; */
 DECL|macro|AE_CTRL_RETURN_VALUE
 mdefine_line|#define AE_CTRL_RETURN_VALUE            (acpi_status) (0x0001 | AE_CODE_CONTROL)
@@ -309,6 +317,8 @@ comma
 l_string|&quot;AE_BAD_VALUE&quot;
 comma
 l_string|&quot;AE_TABLE_NOT_SUPPORTED&quot;
+comma
+l_string|&quot;AE_INVALID_TABLE_LENGTH&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_aml
@@ -375,6 +385,12 @@ comma
 l_string|&quot;AE_AML_REGISTER_LIMIT&quot;
 comma
 l_string|&quot;AE_AML_NO_WHILE&quot;
+comma
+l_string|&quot;AE_AML_ALIGNMENT&quot;
+comma
+l_string|&quot;AE_AML_NO_RESOURCE_END_TAG&quot;
+comma
+l_string|&quot;AE_AML_BAD_RESOURCE_VALUE&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_ctrl

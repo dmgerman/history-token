@@ -1,15 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 39 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbexec - debugger control method execution&n; *              $Revision: 41 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acdispat.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DEBUGGER
@@ -18,6 +10,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;dbexec&quot;
 )paren
 DECL|variable|acpi_gbl_db_method_info
+r_static
 id|acpi_db_method_info
 id|acpi_gbl_db_method_info
 suffix:semicolon
@@ -648,6 +641,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Signal our completion */
+id|status
+op_assign
 id|acpi_os_signal_semaphore
 (paren
 id|info-&gt;thread_gate
@@ -655,6 +650,21 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not signal debugger semaphore&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_create_execution_threads&n; *&n; * PARAMETERS:  Num_threads_arg         - Number of threads to create&n; *              Num_loops_arg           - Loop count for the thread(s)&n; *              Method_name_arg         - Control method to execute&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create threads to execute method(s)&n; *&n; ******************************************************************************/
 r_void
@@ -823,6 +833,8 @@ id|i
 op_increment
 )paren
 (brace
+id|status
+op_assign
 id|acpi_os_queue_for_execution
 (paren
 id|OSD_PRIORITY_MED
@@ -833,6 +845,18 @@ op_amp
 id|acpi_gbl_db_method_info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Wait for all threads to complete */
 id|i
@@ -862,6 +886,9 @@ op_decrement
 suffix:semicolon
 )brace
 multiline_comment|/* Cleanup and exit */
+(paren
+r_void
+)paren
 id|acpi_os_delete_semaphore
 (paren
 id|thread_gate

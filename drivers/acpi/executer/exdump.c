@@ -1,10 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 147 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 153 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;actables.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
@@ -14,261 +13,8 @@ l_string|&quot;exdump&quot;
 )paren
 multiline_comment|/*&n; * The following routines are used for debug output only&n; */
 macro_line|#if defined(ACPI_DEBUG) || defined(ENABLE_DEBUGGER)
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_show_hex_value&n; *&n; * PARAMETERS:  Byte_count          - Number of bytes to print (1, 2, or 4)&n; *              *Aml_start            - Address in AML stream of bytes to print&n; *              Interpreter_mode    - Current running mode (load1/Load2/Exec)&n; *              Lead_space          - # of spaces to print ahead of value&n; *                                    0 =&gt; none ahead but one behind&n; *&n; * DESCRIPTION: Print Byte_count byte(s) starting at Aml_start as a single&n; *              value, in hex.  If Byte_count &gt; 1 or the value printed is &gt; 9, also&n; *              print in decimal.&n; *&n; ****************************************************************************/
-r_void
-DECL|function|acpi_ex_show_hex_value
-id|acpi_ex_show_hex_value
-(paren
-id|u32
-id|byte_count
-comma
-id|u8
-op_star
-id|aml_start
-comma
-id|u32
-id|lead_space
-)paren
-(brace
-id|u32
-id|value
-suffix:semicolon
-multiline_comment|/*  Value retrieved from AML stream */
-id|u32
-id|show_decimal_value
-suffix:semicolon
-id|u32
-id|length
-suffix:semicolon
-multiline_comment|/*  Length of printed field */
-id|u8
-op_star
-id|current_aml_ptr
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Pointer to current byte of AML value    */
-id|ACPI_FUNCTION_TRACE
-(paren
-l_string|&quot;Ex_show_hex_value&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-id|ACPI_LV_LOAD
-op_amp
-id|acpi_dbg_level
-)paren
-op_logical_and
-(paren
-id|_COMPONENT
-op_amp
-id|acpi_dbg_layer
-)paren
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|aml_start
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_show_hex_value: null pointer&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * AML numbers are always stored little-endian,&n;&t; * even if the processor is big-endian.&n;&t; */
-r_for
-c_loop
-(paren
-id|current_aml_ptr
-op_assign
-id|aml_start
-op_plus
-id|byte_count
-comma
-id|value
-op_assign
-l_int|0
-suffix:semicolon
-id|current_aml_ptr
-OG
-id|aml_start
-suffix:semicolon
-)paren
-(brace
-id|value
-op_assign
-(paren
-id|value
-op_lshift
-l_int|8
-)paren
-op_plus
-(paren
-id|u32
-)paren
-op_star
-op_decrement
-id|current_aml_ptr
-suffix:semicolon
-)brace
-id|length
-op_assign
-id|lead_space
-op_star
-id|byte_count
-op_plus
-l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|byte_count
-OG
-l_int|1
-)paren
-(brace
-id|length
-op_add_assign
-(paren
-id|byte_count
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
-id|show_decimal_value
-op_assign
-(paren
-id|byte_count
-OG
-l_int|1
-op_logical_or
-id|value
-OG
-l_int|9
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|show_decimal_value
-)paren
-(brace
-id|length
-op_add_assign
-l_int|3
-op_plus
-id|acpi_ex_digits_needed
-(paren
-id|value
-comma
-l_int|10
-)paren
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|length
-op_assign
-id|lead_space
-suffix:semicolon
-id|length
-suffix:semicolon
-op_decrement
-id|length
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|byte_count
-op_decrement
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot;%02x&quot;
-comma
-op_star
-id|aml_start
-op_increment
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|byte_count
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|show_decimal_value
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; [%d]&quot;
-comma
-id|value
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-id|lead_space
-)paren
-(brace
-id|acpi_os_printf
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-)brace
-id|acpi_os_printf
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|return_VOID
-suffix:semicolon
-)brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_operand&n; *&n; * PARAMETERS:  *Obj_desc         - Pointer to entry to be dumped&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dump an operand object&n; *&n; ****************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ex_dump_operand
 id|acpi_ex_dump_operand
 (paren
@@ -288,6 +34,14 @@ id|length
 suffix:semicolon
 id|u32
 id|i
+suffix:semicolon
+id|acpi_operand_object
+op_star
+op_star
+id|element
+suffix:semicolon
+id|u16
+id|element_index
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
@@ -313,9 +67,6 @@ id|acpi_dbg_layer
 )paren
 (brace
 r_return
-(paren
-id|AE_OK
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -332,9 +83,6 @@ l_string|&quot;Null stack entry ptr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
-id|AE_OK
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -367,9 +115,6 @@ id|ACPI_LV_EXEC
 )paren
 suffix:semicolon
 r_return
-(paren
-id|AE_OK
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -380,7 +125,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|obj_desc
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -405,9 +150,6 @@ id|acpi_operand_object
 )paren
 suffix:semicolon
 r_return
-(paren
-id|AE_OK
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*  Obj_desc is a valid object */
@@ -617,7 +359,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;Reference.Node-&gt;Name %X&bslash;n&quot;
 comma
-id|obj_desc-&gt;reference.node-&gt;name
+id|obj_desc-&gt;reference.node-&gt;name.integer
 )paren
 suffix:semicolon
 r_break
@@ -794,14 +536,6 @@ OG
 l_int|1
 )paren
 (brace
-id|acpi_operand_object
-op_star
-op_star
-id|element
-suffix:semicolon
-id|u16
-id|element_index
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1124,7 +858,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*  unknown Obj_desc-&gt;Common.Type value   */
+multiline_comment|/* Unknown Obj_desc-&gt;Common.Type value */
 id|acpi_os_printf
 (paren
 l_string|&quot;Unknown Type %X&bslash;n&quot;
@@ -1136,9 +870,6 @@ r_break
 suffix:semicolon
 )brace
 r_return
-(paren
-id|AE_OK
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_operands&n; *&n; * PARAMETERS:  Interpreter_mode     - Load or Exec&n; *              *Ident              - Identification&n; *              Num_levels          - # of stack entries to dump above line&n; *              *Note               - Output notation&n; *&n; * DESCRIPTION: Dump the object stack&n; *&n; ****************************************************************************/
@@ -1236,7 +967,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Dump the stack starting at the top, working down */
+multiline_comment|/* Dump the operand stack starting at the top */
 r_for
 c_loop
 (paren
@@ -1263,22 +994,12 @@ id|operands
 id|i
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
 id|acpi_ex_dump_operand
 (paren
 op_star
 id|obj_desc
 )paren
-)paren
-)paren
-(brace
-r_break
 suffix:semicolon
-)brace
 )brace
 id|ACPI_DEBUG_PRINT
 (paren
@@ -1379,7 +1100,7 @@ id|ACPI_PHYSICAL_ADDRESS
 id|value
 )paren
 (brace
-macro_line|#ifdef _IA16
+macro_line|#if ACPI_MACHINE_WIDTH == 16
 id|acpi_os_printf
 (paren
 l_string|&quot;%20s : %p&bslash;n&quot;
@@ -1462,12 +1183,7 @@ l_string|&quot;%20s : %4.4s&bslash;n&quot;
 comma
 l_string|&quot;Name&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 )paren
 suffix:semicolon
 id|acpi_ex_out_string
@@ -1595,7 +1311,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|obj_desc
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 id|acpi_os_printf
@@ -1645,7 +1361,7 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;%20s : %X%8.8X&bslash;n&quot;
+l_string|&quot;%20s : %8.8X%8.8X&bslash;n&quot;
 comma
 l_string|&quot;Value&quot;
 comma
@@ -1735,7 +1451,7 @@ l_int|0
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_package Contents:&bslash;n&quot;
+l_string|&quot;&bslash;nPackage Contents:&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -2016,10 +1732,13 @@ comma
 id|obj_desc-&gt;processor.length
 )paren
 suffix:semicolon
-id|acpi_ex_out_integer
+id|acpi_ex_out_address
 (paren
 l_string|&quot;Address&quot;
 comma
+(paren
+id|ACPI_PHYSICAL_ADDRESS
+)paren
 id|obj_desc-&gt;processor.address
 )paren
 suffix:semicolon
@@ -2227,6 +1946,11 @@ comma
 id|obj_desc-&gt;index_field.data_obj
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All object types covered above */
 r_break
 suffix:semicolon
 )brace

@@ -1,12 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 55 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dbxface - AML Debugger external interfaces&n; *              $Revision: 59 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acparser.h&quot;
-macro_line|#include &quot;acevents.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acdebug.h&quot;
 macro_line|#ifdef ENABLE_DEBUGGER
 DECL|macro|_COMPONENT
@@ -65,7 +60,7 @@ op_logical_and
 (paren
 id|walk_state-&gt;method_breakpoint
 op_le
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 )paren
 (brace
@@ -75,7 +70,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;***Break*** at AML offset %X&bslash;n&quot;
 comma
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 suffix:semicolon
 id|acpi_gbl_cm_single_step
@@ -101,7 +96,7 @@ op_logical_and
 (paren
 id|walk_state-&gt;user_breakpoint
 op_eq
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 )paren
 (brace
@@ -109,7 +104,7 @@ id|acpi_os_printf
 (paren
 l_string|&quot;***User_breakpoint*** at AML offset %X&bslash;n&quot;
 comma
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 suffix:semicolon
 id|acpi_gbl_cm_single_step
@@ -129,7 +124,7 @@ multiline_comment|/*&n;&t; * Check if this is an opcode that we are interested i
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEDFIELD_OP
 )paren
@@ -157,6 +152,11 @@ r_return
 (paren
 id|AE_OK
 )paren
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* All other opcodes -- continue */
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Under certain debug conditions, display this opcode and its operands&n;&t; */
@@ -214,9 +214,9 @@ id|ACPI_LV_FUNCTIONS
 suffix:semicolon
 id|next
 op_assign
-id|op-&gt;next
+id|op-&gt;common.next
 suffix:semicolon
-id|op-&gt;next
+id|op-&gt;common.next
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -226,7 +226,7 @@ id|op
 suffix:semicolon
 id|parent_op
 op_assign
-id|op-&gt;parent
+id|op-&gt;common.parent
 suffix:semicolon
 r_if
 c_cond
@@ -259,13 +259,13 @@ r_if
 c_cond
 (paren
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_IF_OP
 )paren
 op_logical_or
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_WHILE_OP
 )paren
@@ -280,7 +280,7 @@ suffix:semicolon
 )brace
 id|parent_op
 op_assign
-id|parent_op-&gt;parent
+id|parent_op-&gt;common.parent
 suffix:semicolon
 )brace
 )brace
@@ -296,31 +296,31 @@ r_if
 c_cond
 (paren
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_IF_OP
 )paren
 op_logical_or
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_ELSE_OP
 )paren
 op_logical_or
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_SCOPE_OP
 )paren
 op_logical_or
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_METHOD_OP
 )paren
 op_logical_or
 (paren
-id|parent_op-&gt;opcode
+id|parent_op-&gt;common.aml_opcode
 op_eq
 id|AML_WHILE_OP
 )paren
@@ -335,7 +335,7 @@ id|parent_op
 suffix:semicolon
 id|parent_op
 op_assign
-id|parent_op-&gt;parent
+id|parent_op-&gt;common.parent
 suffix:semicolon
 )brace
 )brace
@@ -354,13 +354,13 @@ r_if
 c_cond
 (paren
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_IF_OP
 )paren
 op_logical_or
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_WHILE_OP
 )paren
@@ -391,7 +391,7 @@ r_else
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_ELSE_OP
 )paren
@@ -403,7 +403,7 @@ l_string|&quot;Predicate = [False], ELSE block was executed&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Restore everything */
-id|op-&gt;next
+id|op-&gt;common.next
 op_assign
 id|next
 suffix:semicolon
@@ -441,7 +441,7 @@ id|acpi_gbl_step_to_next_call
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_ne
 id|AML_INT_METHODCALL_OP
 )paren
@@ -463,7 +463,7 @@ multiline_comment|/*&n;&t; * If the next opcode is a method call, we will &quot;
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_METHODCALL_OP
 )paren
@@ -589,6 +589,9 @@ id|ACPI_DEBUGGER_EXECUTE_PROMPT
 suffix:semicolon
 )brace
 multiline_comment|/* Get the user input line */
+(paren
+r_void
+)paren
 id|acpi_os_get_line
 (paren
 id|acpi_gbl_db_line_buf
@@ -616,13 +619,16 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_db_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Init and start debugger&n; *&n; ******************************************************************************/
-r_int
+id|acpi_status
 DECL|function|acpi_db_initialize
 id|acpi_db_initialize
 (paren
 r_void
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 multiline_comment|/* Init globals */
 id|acpi_gbl_db_buffer
 op_assign
@@ -685,7 +691,9 @@ id|acpi_gbl_db_buffer
 )paren
 (brace
 r_return
-l_int|0
+(paren
+id|AE_NO_MEMORY
+)paren
 suffix:semicolon
 )brace
 id|ACPI_MEMSET
@@ -726,17 +734,63 @@ id|DEBUGGER_MULTI_THREADED
 )paren
 (brace
 multiline_comment|/* These were created with one unit, grab it */
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_DEBUG_CMD_COMPLETE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not get debugger mutex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_ut_acquire_mutex
 (paren
 id|ACPI_MTX_DEBUG_CMD_READY
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not get debugger mutex&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Create the debug execution thread to execute commands */
+id|status
+op_assign
 id|acpi_os_queue_for_execution
 (paren
 l_int|0
@@ -746,6 +800,26 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_os_printf
+(paren
+l_string|&quot;Could not start debugger thread&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -769,7 +843,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-l_int|0
+id|AE_OK
 )paren
 suffix:semicolon
 )brace

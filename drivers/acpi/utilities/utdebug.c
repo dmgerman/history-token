@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 97 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utdebug - Debug print routines&n; *              $Revision: 103 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -7,13 +7,16 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utdebug&quot;
 )paren
+macro_line|#ifdef ACPI_DEBUG
 DECL|variable|acpi_gbl_prev_thread_id
+r_static
 id|u32
 id|acpi_gbl_prev_thread_id
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
 DECL|variable|acpi_gbl_fn_entry_str
+r_static
 r_char
 op_star
 id|acpi_gbl_fn_entry_str
@@ -21,13 +24,13 @@ op_assign
 l_string|&quot;----Entry&quot;
 suffix:semicolon
 DECL|variable|acpi_gbl_fn_exit_str
+r_static
 r_char
 op_star
 id|acpi_gbl_fn_exit_str
 op_assign
 l_string|&quot;----Exit-&quot;
 suffix:semicolon
-macro_line|#ifdef ACPI_DEBUG
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_init_stack_ptr_trace&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Save the current stack pointer&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ut_init_stack_ptr_trace
@@ -192,7 +195,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Display the module name, current line number, thread ID (if requested),&n;&t; * current procedure nesting level, and the current procedure name&n;&t; */
 id|acpi_os_printf
 (paren
-l_string|&quot;%8s-%04d &quot;
+l_string|&quot;%8s-%04ld &quot;
 comma
 id|dbg_info-&gt;module_name
 comma
@@ -209,7 +212,7 @@ id|acpi_dbg_level
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;[%04X] &quot;
+l_string|&quot;[%04lX] &quot;
 comma
 id|thread_id
 comma
@@ -221,7 +224,7 @@ suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot;[%02d] %-22.22s: &quot;
+l_string|&quot;[%02ld] %-22.22s: &quot;
 comma
 id|acpi_gbl_nesting_level
 comma
@@ -658,12 +661,12 @@ id|u32
 id|component_id
 )paren
 (brace
-id|u32
+id|NATIVE_UINT
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|NATIVE_UINT
 id|j
 suffix:semicolon
 id|u32
@@ -718,7 +721,7 @@ suffix:semicolon
 )brace
 id|acpi_os_printf
 (paren
-l_string|&quot;&bslash;n_offset Value&bslash;n&quot;
+l_string|&quot;&bslash;nOffset Value&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Nasty little dump buffer routine!&n;&t; */

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 53 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 56 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -67,7 +67,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Pass the Byte_stream_buffer into a module that can calculate&n;&t; * the buffer size needed for the linked list&n;&t; */
 id|status
 op_assign
-id|acpi_rs_calculate_list_length
+id|acpi_rs_get_list_length
 (paren
 id|byte_stream_start
 comma
@@ -86,6 +86,9 @@ l_string|&quot;Status=%X List_size_needed=%X&bslash;n&quot;
 comma
 id|status
 comma
+(paren
+id|u32
+)paren
 id|list_size_needed
 )paren
 )paren
@@ -166,6 +169,9 @@ l_string|&quot;Output_buffer %p Length %X&bslash;n&quot;
 comma
 id|output_buffer-&gt;pointer
 comma
+(paren
+id|u32
+)paren
 id|output_buffer-&gt;length
 )paren
 )paren
@@ -254,7 +260,7 @@ multiline_comment|/* Params already validated, so we don&squot;t re-validate her
 multiline_comment|/*&n;&t; * Get the required buffer length&n;&t; */
 id|status
 op_assign
-id|acpi_rs_calculate_pci_routing_table_length
+id|acpi_rs_get_pci_routing_table_length
 (paren
 id|package_object
 comma
@@ -284,6 +290,9 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;Buffer_size_needed = %X&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|buffer_size_needed
 )paren
 )paren
@@ -328,11 +337,12 @@ id|output_buffer-&gt;pointer
 suffix:semicolon
 id|user_prt
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_pci_routing_table
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -356,11 +366,12 @@ id|user_prt-&gt;length
 suffix:semicolon
 id|user_prt
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_pci_routing_table
-op_star
-)paren
+comma
 id|buffer
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Fill in the Length field with the information we have at this point.&n;&t;&t; * The minus four is to subtract the size of the u8 Source[4] member&n;&t;&t; * because it is added below.&n;&t;&t; */
 id|user_prt-&gt;length
@@ -587,7 +598,6 @@ id|acpi_ns_handle_to_pathname
 (paren
 (paren
 id|acpi_handle
-op_star
 )paren
 id|node
 comma
@@ -753,6 +763,9 @@ l_string|&quot;Output_buffer %p Length %X&bslash;n&quot;
 comma
 id|output_buffer-&gt;pointer
 comma
+(paren
+id|u32
+)paren
 id|output_buffer-&gt;length
 )paren
 )paren
@@ -804,7 +817,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Params already validated, so we don&squot;t re-validate here&n;&t; *&n;&t; * Pass the Linked_list_buffer into a module that calculates&n;&t; * the buffer size needed for the byte stream.&n;&t; */
 id|status
 op_assign
-id|acpi_rs_calculate_byte_stream_length
+id|acpi_rs_get_byte_stream_length
 (paren
 id|linked_list_buffer
 comma
@@ -819,6 +832,9 @@ id|ACPI_DB_INFO
 comma
 l_string|&quot;Byte_stream_size_needed=%X, %s&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|byte_stream_size_needed
 comma
 id|acpi_format_exception
@@ -904,6 +920,9 @@ l_string|&quot;Output_buffer %p Length %X&bslash;n&quot;
 comma
 id|output_buffer-&gt;pointer
 comma
+(paren
+id|u32
+)paren
 id|output_buffer-&gt;length
 )paren
 )paren

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 90 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswexec - Dispatcher method execution callbacks;&n; *                        dispatch to interpreter.&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -15,6 +15,7 @@ l_string|&quot;dswexec&quot;
 )paren
 multiline_comment|/*&n; * Dispatch table for opcode classes&n; */
 DECL|variable|acpi_gbl_op_type_dispatch
+r_static
 id|ACPI_EXECUTE_OP
 id|acpi_gbl_op_type_dispatch
 (braket
@@ -398,16 +399,16 @@ id|walk_state-&gt;op
 op_assign
 id|op
 suffix:semicolon
+id|walk_state-&gt;opcode
+op_assign
+id|op-&gt;common.aml_opcode
+suffix:semicolon
 id|walk_state-&gt;op_info
 op_assign
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
-suffix:semicolon
-id|walk_state-&gt;opcode
-op_assign
-id|op-&gt;opcode
 suffix:semicolon
 r_if
 c_cond
@@ -434,11 +435,28 @@ id|op
 )paren
 )paren
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ds_scope_stack_pop
 (paren
 id|walk_state
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_if
@@ -515,7 +533,7 @@ multiline_comment|/* We want to send namepaths to the load code */
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -593,7 +611,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_REGION_OP
 )paren
@@ -709,7 +727,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Unknown opcode %X&bslash;n&quot;
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 )paren
 suffix:semicolon
@@ -721,7 +739,7 @@ suffix:semicolon
 )brace
 id|first_arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 multiline_comment|/* Init the walk state */
 id|walk_state-&gt;num_operands
@@ -994,6 +1012,20 @@ comma
 id|op
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+id|status
+op_assign
 id|acpi_ds_result_stack_pop
 (paren
 id|walk_state
@@ -1024,7 +1056,7 @@ suffix:semicolon
 multiline_comment|/* Next_op points to first argument op */
 id|next_op
 op_assign
-id|next_op-&gt;next
+id|next_op-&gt;common.next
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Get the method&squot;s arguments and put them on the operand stack&n;&t;&t;&t; */
 id|status
@@ -1140,7 +1172,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|op-&gt;parent-&gt;opcode
+id|op-&gt;common.parent-&gt;common.aml_opcode
 )paren
 (brace
 r_case
@@ -1156,7 +1188,7 @@ op_assign
 r_void
 op_star
 )paren
-id|op-&gt;parent-&gt;node
+id|op-&gt;common.parent-&gt;common.node
 suffix:semicolon
 id|walk_state-&gt;num_operands
 op_assign
@@ -1168,9 +1200,9 @@ id|acpi_ds_create_node
 (paren
 id|walk_state
 comma
-id|op-&gt;parent-&gt;node
+id|op-&gt;common.parent-&gt;common.node
 comma
-id|op-&gt;parent
+id|op-&gt;common.parent
 )paren
 suffix:semicolon
 r_if
@@ -1186,6 +1218,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Fall through */
+multiline_comment|/*lint -fallthrough */
 r_case
 id|AML_INT_EVAL_SUBTREE_OP
 suffix:colon
@@ -1199,7 +1232,7 @@ id|op
 comma
 id|acpi_ns_get_attached_object
 (paren
-id|op-&gt;parent-&gt;node
+id|op-&gt;common.parent-&gt;common.node
 )paren
 )paren
 suffix:semicolon
@@ -1279,7 +1312,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_REGION_OP
 )paren
@@ -1376,7 +1409,7 @@ id|op_class
 comma
 id|op_type
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 id|op
 )paren

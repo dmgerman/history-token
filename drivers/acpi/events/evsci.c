@@ -1,8 +1,6 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: evsci - System Control Interrupt configuration and&n; *                      legacy to ACPI mode state transition functions&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: evsci - System Control Interrupt configuration and&n; *                      legacy to ACPI mode state transition functions&n; *              $Revision: 86 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EVENTS
@@ -27,6 +25,12 @@ id|interrupt_handled
 op_assign
 id|ACPI_INTERRUPT_NOT_HANDLED
 suffix:semicolon
+id|u32
+id|value
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
@@ -34,16 +38,38 @@ l_string|&quot;Ev_sci_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure that ACPI is enabled by checking SCI_EN.  Note that we are&n;&t; * required to treat the SCI interrupt as sharable, level, active low.&n;&t; */
+id|status
+op_assign
+id|acpi_get_register
+(paren
+id|ACPI_BITREG_SCI_ENABLE
+comma
+op_amp
+id|value
+comma
+id|ACPI_MTX_DO_NOT_LOCK
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_return
+(paren
+id|ACPI_INTERRUPT_NOT_HANDLED
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|acpi_hw_bit_register_read
-(paren
-id|ACPI_BITREG_SCI_ENABLE
-comma
-id|ACPI_MTX_DO_NOT_LOCK
-)paren
+id|value
 )paren
 (brace
 multiline_comment|/* ACPI is not enabled;  this interrupt cannot be for us */
@@ -119,12 +145,17 @@ id|acpi_ev_remove_sci_handler
 r_void
 )paren
 (brace
+id|acpi_status
+id|status
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Ev_remove_sci_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Just let the OS remove the handler and disable the level */
+id|status
+op_assign
 id|acpi_os_remove_interrupt_handler
 (paren
 (paren
@@ -137,7 +168,7 @@ id|acpi_ev_sci_handler
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|AE_OK
+id|status
 )paren
 suffix:semicolon
 )brace

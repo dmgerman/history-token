@@ -1,10 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 84 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 86 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
 DECL|macro|_COMPONENT
@@ -59,7 +57,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Needed Region, found type %x %s&bslash;n&quot;
+l_string|&quot;Needed Region, found type %X (%s)&bslash;n&quot;
 comma
 id|rgn_desc-&gt;common.type
 comma
@@ -142,21 +140,11 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Field [%4.4s] access width (%d bytes) too large for region [%4.4s] (length %X)&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;common_field.node-&gt;name
+id|obj_desc-&gt;common_field.node-&gt;name.ascii
 comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|rgn_desc-&gt;region.node-&gt;name
+id|rgn_desc-&gt;region.node-&gt;name.ascii
 comma
 id|rgn_desc-&gt;region.length
 )paren
@@ -171,12 +159,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Field [%4.4s] Base+Offset+Width %X+%X+%X is beyond end of region [%4.4s] (length %X)&bslash;n&quot;
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|obj_desc-&gt;common_field.node-&gt;name
+id|obj_desc-&gt;common_field.node-&gt;name.ascii
 comma
 id|obj_desc-&gt;common_field.base_byte_offset
 comma
@@ -184,12 +167,7 @@ id|field_datum_byte_offset
 comma
 id|obj_desc-&gt;common_field.access_byte_width
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|rgn_desc-&gt;region.node-&gt;name
+id|rgn_desc-&gt;region.node-&gt;name.ascii
 comma
 id|rgn_desc-&gt;region.length
 )paren
@@ -437,9 +415,9 @@ c_cond
 id|value
 op_ge
 (paren
+(paren
 id|acpi_integer
 )paren
-(paren
 l_int|1
 op_lshift
 id|obj_desc-&gt;common_field.bit_length
@@ -636,6 +614,9 @@ id|acpi_ex_register_overflow
 (paren
 id|obj_desc-&gt;bank_field.bank_obj
 comma
+(paren
+id|acpi_integer
+)paren
 id|obj_desc-&gt;bank_field.value
 )paren
 )paren
@@ -678,7 +659,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Now that the Bank has been selected, fall through to the&n;&t;&t; * Region_field case and write the datum to the Operation Region&n;&t;&t; */
-multiline_comment|/* No break; ! */
+multiline_comment|/*lint -fallthrough */
 r_case
 id|INTERNAL_TYPE_REGION_FIELD
 suffix:colon
@@ -733,6 +714,9 @@ id|acpi_ex_register_overflow
 (paren
 id|obj_desc-&gt;index_field.index_obj
 comma
+(paren
+id|acpi_integer
+)paren
 id|obj_desc-&gt;index_field.value
 )paren
 )paren
@@ -955,7 +939,7 @@ c_cond
 (paren
 id|mask
 op_ne
-id|ACPI_UINT32_MAX
+id|ACPI_INTEGER_MAX
 )paren
 (brace
 multiline_comment|/* Decode the update rule */
@@ -1052,7 +1036,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Write_with_update_rule: Unknown Update_rule setting: %x&bslash;n&quot;
+l_string|&quot;Write_with_update_rule: Unknown Update_rule setting: %X&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.field_flags
@@ -1253,6 +1237,11 @@ id|offset
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Should not get here */
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  Merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              Byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
@@ -1380,6 +1369,11 @@ id|merged_datum
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Should not get here */
+r_break
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_extract_from_field&n; *&n; * PARAMETERS:  *Obj_desc           - Field to be read&n; *              *Value              - Where to store value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value of the given field&n; *&n; ******************************************************************************/
@@ -1482,7 +1476,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Byte_len=%x, Datum_len=%x, Byte_gran=%x&bslash;n&quot;
+l_string|&quot;Byte_len=%X, Datum_len=%X, Byte_gran=%X&bslash;n&quot;
 comma
 id|byte_field_length
 comma
@@ -1864,7 +1858,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Byte_len=%x, Datum_len=%x, Byte_gran=%x&bslash;n&quot;
+l_string|&quot;Byte_len=%X, Datum_len=%X, Byte_gran=%X&bslash;n&quot;
 comma
 id|byte_field_length
 comma

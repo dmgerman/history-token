@@ -1,10 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 10 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmutex - ASL Mutex Acquire/Release functions&n; *              $Revision: 13 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;achware.h&quot;
-macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -380,7 +377,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_release_all_mutexes&n; *&n; * PARAMETERS:  *Mutex_list           - Head of the mutex list&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Release all mutexes in the list&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ex_release_all_mutexes
 id|acpi_ex_release_all_mutexes
 (paren
@@ -398,6 +395,9 @@ suffix:semicolon
 id|acpi_operand_object
 op_star
 id|this
+suffix:semicolon
+id|acpi_status
+id|status
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -431,21 +431,30 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Release the mutex */
+id|status
+op_assign
 id|acpi_ex_system_release_mutex
 (paren
 id|this
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* Mark mutex unowned */
 id|this-&gt;mutex.owner_thread
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-r_return
-(paren
-id|AE_OK
-)paren
-suffix:semicolon
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 17 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 19 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -6,15 +6,19 @@ mdefine_line|#define __ACSTRUCT_H__
 multiline_comment|/*****************************************************************************&n; *&n; * Tree walking typedefs and structs&n; *&n; ****************************************************************************/
 multiline_comment|/*&n; * Walk state - current state of a parse tree walk.  Used for both a leisurely stroll through&n; * the tree (for whatever reason), and for control method execution.&n; */
 DECL|macro|ACPI_NEXT_OP_DOWNWARD
-mdefine_line|#define ACPI_NEXT_OP_DOWNWARD    1
+mdefine_line|#define ACPI_NEXT_OP_DOWNWARD       1
 DECL|macro|ACPI_NEXT_OP_UPWARD
-mdefine_line|#define ACPI_NEXT_OP_UPWARD      2
+mdefine_line|#define ACPI_NEXT_OP_UPWARD         2
 DECL|macro|ACPI_WALK_NON_METHOD
-mdefine_line|#define ACPI_WALK_NON_METHOD     0
+mdefine_line|#define ACPI_WALK_NON_METHOD        0
 DECL|macro|ACPI_WALK_METHOD
-mdefine_line|#define ACPI_WALK_METHOD         1
+mdefine_line|#define ACPI_WALK_METHOD            1
 DECL|macro|ACPI_WALK_METHOD_RESTART
-mdefine_line|#define ACPI_WALK_METHOD_RESTART 2
+mdefine_line|#define ACPI_WALK_METHOD_RESTART    2
+DECL|macro|ACPI_WALK_CONST_REQUIRED
+mdefine_line|#define ACPI_WALK_CONST_REQUIRED    3
+DECL|macro|ACPI_WALK_CONST_OPTIONAL
+mdefine_line|#define ACPI_WALK_CONST_OPTIONAL    4
 DECL|struct|acpi_walk_state
 r_typedef
 r_struct
@@ -271,6 +275,10 @@ id|acpi_init_walk_info
 DECL|member|method_count
 id|u16
 id|method_count
+suffix:semicolon
+DECL|member|device_count
+id|u16
+id|device_count
 suffix:semicolon
 DECL|member|op_region_count
 id|u16

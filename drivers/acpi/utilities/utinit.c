@@ -1,7 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utinit - Common ACPI subsystem initialization&n; *              $Revision: 112 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;achware.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acevents.h&quot;
 DECL|macro|_COMPONENT
@@ -30,7 +29,7 @@ id|offset
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Invalid FADT value %s=%lX at offset %lX FADT=%p&bslash;n&quot;
+l_string|&quot;Invalid FADT value %s=%X at offset %X FADT=%p&bslash;n&quot;
 comma
 id|register_name
 comma
@@ -307,7 +306,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_subsystem_shutdown&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Shutdown the various subsystems.  Don&squot;t delete the mutex&n; *              objects here -- because the AML debugger may be still running.&n; *&n; ******************************************************************************/
-id|acpi_status
+r_void
 DECL|function|acpi_ut_subsystem_shutdown
 id|acpi_ut_subsystem_shutdown
 (paren
@@ -335,10 +334,7 @@ l_string|&quot;ACPI Subsystem is already terminated&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Subsystem appears active, go ahead and shut it down */
@@ -371,6 +367,9 @@ id|acpi_ut_terminate
 )paren
 suffix:semicolon
 multiline_comment|/* Purge the local caches */
+(paren
+r_void
+)paren
 id|acpi_purge_cached_objects
 (paren
 )paren
@@ -385,10 +384,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
-id|return_ACPI_STATUS
-(paren
-id|AE_OK
-)paren
+id|return_VOID
 suffix:semicolon
 )brace
 eof

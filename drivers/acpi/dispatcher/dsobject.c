@@ -1,10 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *              $Revision: 99 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_DISPATCHER
@@ -49,20 +48,10 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|u8
-id|table_revision
-suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
 l_string|&quot;Ds_init_one_object&quot;
 )paren
-suffix:semicolon
-id|info-&gt;object_count
-op_increment
-suffix:semicolon
-id|table_revision
-op_assign
-id|info-&gt;table_desc-&gt;pointer-&gt;revision
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are only interested in objects owned by the table that&n;&t; * was just loaded&n;&t; */
 r_if
@@ -87,6 +76,9 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+id|info-&gt;object_count
+op_increment
+suffix:semicolon
 multiline_comment|/* And even then, we are only interested in a few object types */
 id|type
 op_assign
@@ -104,11 +96,49 @@ id|type
 r_case
 id|ACPI_TYPE_REGION
 suffix:colon
+id|status
+op_assign
 id|acpi_ds_initialize_region
 (paren
 id|obj_handle
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Region %p [%4.4s] - Init failure, %s&bslash;n&quot;
+comma
+id|obj_handle
+comma
+(paren
+(paren
+id|acpi_namespace_node
+op_star
+)paren
+id|obj_handle
+)paren
+op_member_access_from_pointer
+id|name.ascii
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|info-&gt;op_region_count
 op_increment
 suffix:semicolon
@@ -141,11 +171,11 @@ l_string|&quot;.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Set the execution data width (32 or 64) based upon the&n;&t;&t; * revision number of the parent ACPI table.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Set the execution data width (32 or 64) based upon the&n;&t;&t; * revision number of the parent ACPI table.&n;&t;&t; * TBD: This is really for possible future support of integer width&n;&t;&t; * on a per-table basis. Currently, we just use a global for the width.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|table_revision
+id|info-&gt;table_desc-&gt;pointer-&gt;revision
 op_eq
 l_int|1
 )paren
@@ -190,11 +220,6 @@ comma
 id|obj_handle
 comma
 (paren
-r_char
-op_star
-)paren
-op_amp
-(paren
 (paren
 id|acpi_namespace_node
 op_star
@@ -202,7 +227,7 @@ op_star
 id|obj_handle
 )paren
 op_member_access_from_pointer
-id|name
+id|name.ascii
 comma
 id|acpi_format_exception
 (paren
@@ -233,6 +258,14 @@ id|obj_handle
 op_member_access_from_pointer
 id|object-&gt;method.owning_id
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_DEVICE
+suffix:colon
+id|info-&gt;device_count
+op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -303,6 +336,10 @@ id|info.object_count
 op_assign
 l_int|0
 suffix:semicolon
+id|info.device_count
+op_assign
+l_int|0
+suffix:semicolon
 id|info.table_desc
 op_assign
 id|table_desc
@@ -340,9 +377,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed! %x&bslash;n&quot;
+l_string|&quot;Walk_namespace failed, %s&bslash;n&quot;
 comma
+id|acpi_format_exception
+(paren
 id|status
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -352,22 +392,17 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_OK
 comma
-l_string|&quot;&bslash;n%d Control Methods found and parsed (%d nodes total)&bslash;n&quot;
+l_string|&quot;&bslash;nTable [%4.4s] - %hd Objects with %hd Devices %hd Methods %hd Regions&bslash;n&quot;
 comma
-id|info.method_count
+id|table_desc-&gt;pointer-&gt;signature
 comma
 id|info.object_count
-)paren
-)paren
-suffix:semicolon
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;%d Control Methods found&bslash;n&quot;
+id|info.device_count
 comma
 id|info.method_count
+comma
+id|info.op_region_count
 )paren
 )paren
 suffix:semicolon
@@ -376,7 +411,9 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;%d Op Regions found&bslash;n&quot;
+l_string|&quot;%hd Methods, %hd Regions&bslash;n&quot;
+comma
+id|info.method_count
 comma
 id|info.op_region_count
 )paren
@@ -477,27 +514,11 @@ l_int|0
 suffix:semicolon
 id|obj_desc-&gt;buffer.aml_start
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 suffix:semicolon
 id|obj_desc-&gt;buffer.aml_length
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
+id|op-&gt;named.length
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -518,27 +539,11 @@ l_int|0
 suffix:semicolon
 id|obj_desc-&gt;package.aml_start
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|data
+id|op-&gt;named.data
 suffix:semicolon
 id|obj_desc-&gt;package.aml_length
 op_assign
-(paren
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|op
-)paren
-op_member_access_from_pointer
-id|length
+id|op-&gt;named.length
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -547,7 +552,7 @@ id|ACPI_TYPE_INTEGER
 suffix:colon
 id|obj_desc-&gt;integer.value
 op_assign
-id|op-&gt;value.integer
+id|op-&gt;common.value.integer
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -556,13 +561,13 @@ id|ACPI_TYPE_STRING
 suffix:colon
 id|obj_desc-&gt;string.pointer
 op_assign
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 suffix:semicolon
 id|obj_desc-&gt;string.length
 op_assign
 id|ACPI_STRLEN
 (paren
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The string is contained in the ACPI table, don&squot;t ever try&n;&t;&t; * to delete it&n;&t;&t; */
@@ -626,7 +631,7 @@ multiline_comment|/* Constants, Literals, etc.. */
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -634,7 +639,7 @@ id|AML_INT_NAMEPATH_OP
 multiline_comment|/* Node was saved in Op */
 id|obj_desc-&gt;reference.node
 op_assign
-id|op-&gt;node
+id|op-&gt;common.node
 suffix:semicolon
 )brace
 id|obj_desc-&gt;reference.opcode
@@ -653,7 +658,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unimplemented data type: %x&bslash;n&quot;
+l_string|&quot;Unimplemented data type: %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;common.type
 )paren
@@ -706,7 +711,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 op_eq
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -716,7 +721,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|op-&gt;node
+id|op-&gt;common.node
 )paren
 (brace
 id|status
@@ -725,7 +730,7 @@ id|acpi_ns_lookup
 (paren
 id|walk_state-&gt;scope_info
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 comma
 id|ACPI_TYPE_ANY
 comma
@@ -744,7 +749,7 @@ op_star
 )paren
 op_amp
 (paren
-id|op-&gt;node
+id|op-&gt;common.node
 )paren
 )paren
 suffix:semicolon
@@ -769,11 +774,13 @@ id|name
 op_assign
 l_int|NULL
 suffix:semicolon
+id|status
+op_assign
 id|acpi_ns_externalize_name
 (paren
 id|ACPI_UINT32_MAX
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 comma
 l_int|NULL
 comma
@@ -784,7 +791,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|name
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
 )paren
 (brace
 id|ACPI_REPORT_WARNING
@@ -794,7 +804,7 @@ l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
 comma
 id|name
 comma
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 )paren
 suffix:semicolon
@@ -811,9 +821,9 @@ id|ACPI_REPORT_WARNING
 (paren
 l_string|&quot;Reference %s at AML %X not found&bslash;n&quot;
 comma
-id|op-&gt;value.string
+id|op-&gt;common.value.string
 comma
-id|op-&gt;aml_offset
+id|op-&gt;common.aml_offset
 )paren
 )paren
 suffix:semicolon
@@ -843,7 +853,7 @@ id|acpi_ut_create_internal_object
 (paren
 id|acpi_ps_get_opcode_info
 (paren
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 )paren
 )paren
 op_member_access_from_pointer
@@ -871,7 +881,7 @@ id|walk_state
 comma
 id|op
 comma
-id|op-&gt;opcode
+id|op-&gt;common.aml_opcode
 comma
 op_amp
 id|obj_desc
@@ -938,7 +948,7 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
-id|acpi_parse2_object
+id|acpi_parse_object
 op_star
 id|byte_list
 suffix:semicolon
@@ -997,16 +1007,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Second arg is the buffer data (optional) Byte_list can be either&n;&t; * individual bytes or a string initializer.  In either case, a&n;&t; * Byte_list appears in the AML.&n;&t; */
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 multiline_comment|/* skip first arg */
 id|byte_list
 op_assign
-(paren
-id|acpi_parse2_object
-op_star
-)paren
-id|arg-&gt;next
+id|arg-&gt;named.next
 suffix:semicolon
 r_if
 c_cond
@@ -1017,7 +1023,7 @@ id|byte_list
 r_if
 c_cond
 (paren
-id|byte_list-&gt;opcode
+id|byte_list-&gt;common.aml_opcode
 op_ne
 id|AML_INT_BYTELIST_OP
 )paren
@@ -1029,7 +1035,7 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Expecting bytelist, got AML opcode %X in op %p&bslash;n&quot;
 comma
-id|byte_list-&gt;opcode
+id|byte_list-&gt;common.aml_opcode
 comma
 id|byte_list
 )paren
@@ -1048,7 +1054,7 @@ suffix:semicolon
 )brace
 id|byte_list_length
 op_assign
-id|byte_list-&gt;value.integer32
+id|byte_list-&gt;common.value.integer32
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The buffer length (number of bytes) will be the larger of:&n;&t; * 1) The specified buffer length and&n;&t; * 2) The length of the initializer byte list&n;&t; */
@@ -1131,7 +1137,7 @@ id|ACPI_MEMCPY
 (paren
 id|obj_desc-&gt;buffer.pointer
 comma
-id|byte_list-&gt;data
+id|byte_list-&gt;named.data
 comma
 id|byte_list_length
 )paren
@@ -1141,7 +1147,7 @@ id|obj_desc-&gt;buffer.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 (paren
 id|acpi_namespace_node
@@ -1210,19 +1216,19 @@ suffix:semicolon
 multiline_comment|/* Find the parent of a possibly nested package */
 id|parent
 op_assign
-id|op-&gt;parent
+id|op-&gt;common.parent
 suffix:semicolon
 r_while
 c_loop
 (paren
 (paren
-id|parent-&gt;opcode
+id|parent-&gt;common.aml_opcode
 op_eq
 id|AML_PACKAGE_OP
 )paren
 op_logical_or
 (paren
-id|parent-&gt;opcode
+id|parent-&gt;common.aml_opcode
 op_eq
 id|AML_VAR_PACKAGE_OP
 )paren
@@ -1230,7 +1236,7 @@ id|AML_VAR_PACKAGE_OP
 (brace
 id|parent
 op_assign
-id|parent-&gt;parent
+id|parent-&gt;common.parent
 suffix:semicolon
 )brace
 id|obj_desc
@@ -1275,7 +1281,7 @@ suffix:semicolon
 )brace
 id|obj_desc-&gt;package.node
 op_assign
-id|parent-&gt;node
+id|parent-&gt;common.node
 suffix:semicolon
 )brace
 id|obj_desc-&gt;package.count
@@ -1289,11 +1295,11 @@ l_int|0
 suffix:semicolon
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 r_while
 c_loop
@@ -1306,7 +1312,7 @@ op_increment
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The package length (number of elements) will be the greater&n;&t; * of the specified length and the length of the initializer list&n;&t; */
@@ -1329,6 +1335,9 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
+(paren
+id|ACPI_SIZE
+)paren
 id|obj_desc-&gt;package.count
 op_plus
 l_int|1
@@ -1366,11 +1375,11 @@ l_int|0
 suffix:semicolon
 id|arg
 op_assign
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 r_while
 c_loop
@@ -1381,7 +1390,7 @@ id|arg
 r_if
 c_cond
 (paren
-id|arg-&gt;opcode
+id|arg-&gt;common.aml_opcode
 op_eq
 id|AML_INT_RETURN_VALUE_OP
 )paren
@@ -1392,11 +1401,12 @@ id|obj_desc-&gt;package.elements
 id|i
 )braket
 op_assign
+id|ACPI_CAST_PTR
 (paren
 id|acpi_operand_object
-op_star
+comma
+id|arg-&gt;common.node
 )paren
-id|arg-&gt;node
 suffix:semicolon
 )brace
 r_else
@@ -1422,14 +1432,14 @@ op_increment
 suffix:semicolon
 id|arg
 op_assign
-id|arg-&gt;next
+id|arg-&gt;common.next
 suffix:semicolon
 )brace
 id|obj_desc-&gt;package.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
-id|op-&gt;node
+id|op-&gt;common.node
 op_assign
 (paren
 id|acpi_namespace_node
@@ -1495,7 +1505,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 )paren
 (brace
 multiline_comment|/* No arguments, there is nothing to do */
@@ -1512,7 +1522,7 @@ id|acpi_ds_build_internal_object
 (paren
 id|walk_state
 comma
-id|op-&gt;value.arg
+id|op-&gt;common.value.arg
 comma
 op_amp
 id|obj_desc

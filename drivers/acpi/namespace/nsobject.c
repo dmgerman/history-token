@@ -1,10 +1,7 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 80 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 82 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
-macro_line|#include &quot;acinterp.h&quot;
-macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_NAMESPACE
 id|ACPI_MODULE_NAME
@@ -260,19 +257,8 @@ id|obj_desc
 comma
 id|node
 comma
-(paren
-r_char
-op_star
+id|node-&gt;name.ascii
 )paren
-op_amp
-id|node-&gt;name
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Must increment the new value&squot;s reference count&n;&t; * (if it is an internal object)&n;&t; */
-id|acpi_ut_add_reference
-(paren
-id|obj_desc
 )paren
 suffix:semicolon
 multiline_comment|/* Detach an existing attached object if present */
@@ -288,7 +274,19 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Handle objects with multiple descriptors - walk&n;&t; * to the end of the descriptor list&n;&t; */
+r_if
+c_cond
+(paren
+id|obj_desc
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Must increment the new value&squot;s reference count&n;&t;&t; * (if it is an internal object)&n;&t;&t; */
+id|acpi_ut_add_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Handle objects with multiple descriptors - walk&n;&t;&t; * to the end of the descriptor list&n;&t;&t; */
 id|last_obj_desc
 op_assign
 id|obj_desc
@@ -309,6 +307,7 @@ id|last_obj_desc-&gt;common.next_object
 op_assign
 id|node-&gt;object
 suffix:semicolon
+)brace
 id|node-&gt;type
 op_assign
 (paren
@@ -378,7 +377,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|obj_desc
 )paren
 op_eq
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 (brace
 id|node-&gt;object
@@ -417,12 +416,7 @@ l_string|&quot;Node %p [%4.4s] Object %p&bslash;n&quot;
 comma
 id|node
 comma
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|node-&gt;name
+id|node-&gt;name.ascii
 comma
 id|obj_desc
 )paren
@@ -490,7 +484,7 @@ id|ACPI_GET_DESCRIPTOR_TYPE
 id|node-&gt;object
 )paren
 op_ne
-id|ACPI_DESC_TYPE_INTERNAL
+id|ACPI_DESC_TYPE_OPERAND
 )paren
 op_logical_and
 (paren

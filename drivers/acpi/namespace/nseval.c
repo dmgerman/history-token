@@ -1,7 +1,6 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 112 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 114 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
-macro_line|#include &quot;amlcode.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -668,20 +667,11 @@ op_assign
 id|local_return_object
 suffix:semicolon
 )brace
-multiline_comment|/* Map AE_RETURN_VALUE to AE_OK, we are done with it */
-r_if
-c_cond
-(paren
-id|status
-op_eq
-id|AE_CTRL_RETURN_VALUE
-)paren
-(brace
+multiline_comment|/* Map AE_CTRL_RETURN_VALUE to AE_OK, we are done with it */
 id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * Namespace was unlocked by the handling Acpi_ns* function,&n;&t; * so we just return&n;&t; */
 id|return_ACPI_STATUS
@@ -776,7 +766,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Method at AML address %p Length %x&bslash;n&quot;
+l_string|&quot;Method at AML address %p Length %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;method.aml_start
 op_plus
@@ -874,9 +864,11 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|acpi_operand_object
+id|acpi_namespace_node
 op_star
-id|obj_desc
+id|resolved_node
+op_assign
+id|node
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
@@ -884,14 +876,6 @@ l_string|&quot;Ns_get_object_value&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Objects require additional resolution steps (e.g., the&n;&t; * Node may be a field that must be read, etc.) -- we can&squot;t just grab&n;&t; * the object out of the node.&n;&t; */
-id|obj_desc
-op_assign
-(paren
-id|acpi_operand_object
-op_star
-)paren
-id|node
-suffix:semicolon
 multiline_comment|/*&n;&t; * Use Resolve_node_to_value() to get the associated value. This call&n;&t; * always deletes Obj_desc (allocated above).&n;&t; *&n;&t; * NOTE: we can get away with passing in NULL for a walk state&n;&t; * because Obj_desc is guaranteed to not be a reference to either&n;&t; * a method local or a method argument (because this interface can only be&n;&t; * called from the Acpi_evaluate external interface, never called from&n;&t; * a running control method.)&n;&t; *&n;&t; * Even though we do not directly invoke the interpreter&n;&t; * for this, we must enter it because we could access an opregion.&n;&t; * The opregion access code assumes that the interpreter&n;&t; * is locked.&n;&t; *&n;&t; * We must release the namespace lock before entering the&n;&t; * intepreter.&n;&t; */
 id|status
 op_assign
@@ -934,18 +918,13 @@ id|status
 op_assign
 id|acpi_ex_resolve_node_to_value
 (paren
-(paren
-id|acpi_namespace_node
-op_star
-op_star
-)paren
 op_amp
-id|obj_desc
+id|resolved_node
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If Acpi_ex_resolve_node_to_value() succeeded, the return value was&n;&t;&t; * placed in Obj_desc.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If Acpi_ex_resolve_node_to_value() succeeded, the return value was&n;&t;&t; * placed in Resolved_node.&n;&t;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren
@@ -966,7 +945,12 @@ suffix:semicolon
 op_star
 id|return_obj_desc
 op_assign
-id|obj_desc
+id|ACPI_CAST_PTR
+(paren
+id|acpi_operand_object
+comma
+id|resolved_node
+)paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -975,8 +959,7 @@ id|ACPI_DB_NAMES
 comma
 l_string|&quot;Returning obj %p&bslash;n&quot;
 comma
-op_star
-id|return_obj_desc
+id|resolved_node
 )paren
 )paren
 suffix:semicolon
