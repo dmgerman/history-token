@@ -119,6 +119,11 @@ r_struct
 id|tc_stats
 id|stats
 suffix:semicolon
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|next
 r_struct
 id|atm_flow_data

@@ -1942,6 +1942,39 @@ id|cmm_init
 r_void
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
+multiline_comment|/* Prevent logical cpu 0 from being set offline. */
+id|rc
+op_assign
+id|smp_get_cpu
+c_func
+(paren
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;CMM: unable to reserve cpu 0&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_CMM_PROC
 id|cmm_sysctl_header
 op_assign
@@ -2048,6 +2081,13 @@ id|cmm_smsg_target
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Allow logical cpu 0 to be set offline again. */
+id|smp_put_cpu
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|variable|cmm_init
 id|module_init

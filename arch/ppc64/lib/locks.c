@@ -10,6 +10,9 @@ macro_line|#ifndef CONFIG_SPINLINE
 multiline_comment|/*&n; * On a system with shared processors (that is, where a physical&n; * processor is multiplexed between several virtual processors),&n; * there is no point spinning on a lock if the holder of the lock&n; * isn&squot;t currently scheduled on a physical processor.  Instead&n; * we detect this situation and ask the hypervisor to give the&n; * rest of our timeslice to the lock holder.&n; *&n; * So that we can tell which virtual processor is holding a lock,&n; * we put 0x80000000 | smp_processor_id() in the lock when it is&n; * held.  Conveniently, we have a word in the paca that holds this&n; * value.&n; */
 multiline_comment|/* waiting for a spinlock... */
 macro_line|#if defined(CONFIG_PPC_SPLPAR) || defined(CONFIG_PPC_ISERIES)
+multiline_comment|/* We only yield to the hypervisor if we are in shared processor mode */
+DECL|macro|SHARED_PROCESSOR
+mdefine_line|#define SHARED_PROCESSOR (get_paca()-&gt;lppaca.xSharedProc)
 DECL|function|__spin_yield
 r_void
 id|__spin_yield
@@ -137,6 +140,8 @@ macro_line|#endif
 macro_line|#else /* SPLPAR || ISERIES */
 DECL|macro|__spin_yield
 mdefine_line|#define __spin_yield(x)&t;barrier()
+DECL|macro|SHARED_PROCESSOR
+mdefine_line|#define SHARED_PROCESSOR&t;0
 macro_line|#endif
 multiline_comment|/*&n; * This returns the old value in the lock, so we succeeded&n; * in getting the lock if the return value is 0.&n; */
 DECL|function|__spin_trylock
@@ -267,6 +272,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SHARED_PROCESSOR
+)paren
 id|__spin_yield
 c_func
 (paren
@@ -360,6 +370,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SHARED_PROCESSOR
+)paren
 id|__spin_yield
 c_func
 (paren
@@ -414,10 +429,27 @@ c_loop
 (paren
 id|lock-&gt;lock
 )paren
+(brace
+id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SHARED_PROCESSOR
+)paren
 id|__spin_yield
 c_func
 (paren
 id|lock
+)paren
+suffix:semicolon
+)brace
+id|HMT_medium
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -671,6 +703,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SHARED_PROCESSOR
+)paren
 id|__rw_yield
 c_func
 (paren
@@ -874,6 +911,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SHARED_PROCESSOR
+)paren
 id|__rw_yield
 c_func
 (paren

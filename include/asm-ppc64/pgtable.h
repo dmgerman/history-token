@@ -1259,6 +1259,7 @@ id|ptep
 comma
 l_string|&quot;m&quot;
 (paren
+op_star
 id|ptep
 )paren
 comma

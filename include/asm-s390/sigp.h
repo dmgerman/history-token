@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/sigp.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *&n; *  sigp.h by D.J. Barrow (c) IBM 1999&n; *  contains routines / structures for signalling other S/390 processors in an&n; *  SMP configuration.&n; */
+multiline_comment|/*&n; *  include/asm-s390/sigp.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Heiko Carstens (heiko.carstens@de.ibm.com)&n; *&n; *  sigp.h by D.J. Barrow (c) IBM 1999&n; *  contains routines / structures for signalling other S/390 processors in an&n; *  SMP configuration.&n; */
 macro_line|#ifndef __SIGP__
 DECL|macro|__SIGP__
 mdefine_line|#define __SIGP__
@@ -134,19 +134,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifndef __s390x__
 l_string|&quot;    sr     1,1&bslash;n&quot;
 multiline_comment|/* parameter=0 in gpr 1 */
 l_string|&quot;    sigp   1,%1,0(%2)&bslash;n&quot;
 l_string|&quot;    ipm    %0&bslash;n&quot;
 l_string|&quot;    srl    %0,28&bslash;n&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;    sgr    1,1&bslash;n&quot;
-multiline_comment|/* parameter=0 in gpr 1 */
-l_string|&quot;    sigp   1,%1,0(%2)&bslash;n&quot;
-l_string|&quot;    ipm    %0&bslash;n&quot;
-l_string|&quot;    srl    %0,28&quot;
-macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -185,8 +177,7 @@ DECL|function|signal_processor_p
 id|signal_processor_p
 c_func
 (paren
-r_int
-r_int
+id|__u32
 id|parameter
 comma
 id|__u16
@@ -203,19 +194,11 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifndef __s390x__
 l_string|&quot;    lr     1,%1&bslash;n&quot;
 multiline_comment|/* parameter in gpr 1 */
 l_string|&quot;    sigp   1,%2,0(%3)&bslash;n&quot;
 l_string|&quot;    ipm    %0&bslash;n&quot;
 l_string|&quot;    srl    %0,28&bslash;n&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;    lgr    1,%1&bslash;n&quot;
-multiline_comment|/* parameter in gpr 1 */
-l_string|&quot;    sigp   1,%2,0(%3)&bslash;n&quot;
-l_string|&quot;    ipm    %0&bslash;n&quot;
-l_string|&quot;    srl    %0,28&bslash;n&quot;
-macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -259,13 +242,11 @@ DECL|function|signal_processor_ps
 id|signal_processor_ps
 c_func
 (paren
-r_int
-r_int
+id|__u32
 op_star
 id|statusptr
 comma
-r_int
-r_int
+id|__u32
 id|parameter
 comma
 id|__u16
@@ -282,25 +263,14 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-macro_line|#ifndef __s390x__
 l_string|&quot;    sr     2,2&bslash;n&quot;
-multiline_comment|/* clear status so it doesn&squot;t contain rubbish if not saved. */
+multiline_comment|/* clear status */
 l_string|&quot;    lr     3,%2&bslash;n&quot;
 multiline_comment|/* parameter in gpr 3 */
 l_string|&quot;    sigp   2,%3,0(%4)&bslash;n&quot;
 l_string|&quot;    st     2,%1&bslash;n&quot;
 l_string|&quot;    ipm    %0&bslash;n&quot;
 l_string|&quot;    srl    %0,28&bslash;n&quot;
-macro_line|#else /* __s390x__ */
-l_string|&quot;    sgr    2,2&bslash;n&quot;
-multiline_comment|/* clear status so it doesn&squot;t contain rubbish if not saved. */
-l_string|&quot;    lgr    3,%2&bslash;n&quot;
-multiline_comment|/* parameter in gpr 3 */
-l_string|&quot;    sigp   2,%3,0(%4)&bslash;n&quot;
-l_string|&quot;    stg    2,%1&bslash;n&quot;
-l_string|&quot;    ipm    %0&bslash;n&quot;
-l_string|&quot;    srl    %0,28&bslash;n&quot;
-macro_line|#endif /* __s390x__ */
 suffix:colon
 l_string|&quot;=d&quot;
 (paren

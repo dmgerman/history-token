@@ -539,6 +539,11 @@ r_struct
 id|tc_stats
 id|stats
 suffix:semicolon
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 DECL|member|q_rcu
 r_struct
 id|rcu_head
@@ -1020,6 +1025,11 @@ r_struct
 id|tc_stats
 id|stats
 suffix:semicolon
+DECL|member|stats_lock
+id|spinlock_t
+op_star
+id|stats_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
@@ -1028,7 +1038,7 @@ mdefine_line|#define ACT_P_CREATED 1
 DECL|macro|ACT_P_DELETED
 mdefine_line|#define ACT_P_DELETED 1
 DECL|macro|tca_gen
-mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct tc_stats stats; &bslash;&n;&t;spinlock_t lock
+mdefine_line|#define tca_gen(name) &bslash;&n;struct tcf_##name *next; &bslash;&n;&t;u32 index; &bslash;&n;&t;int refcnt; &bslash;&n;&t;int bindcnt; &bslash;&n;&t;u32 capab; &bslash;&n;&t;int action; &bslash;&n;&t;struct tcf_t tm; &bslash;&n;&t;struct tc_stats stats; &bslash;&n;&t;spinlock_t *stats_lock; &bslash;&n;&t;spinlock_t lock
 DECL|struct|tc_action
 r_struct
 id|tc_action
@@ -1503,6 +1513,10 @@ r_struct
 id|tc_stats
 op_star
 id|st
+comma
+id|spinlock_t
+op_star
+id|lock
 )paren
 suffix:semicolon
 r_extern
@@ -1791,6 +1805,10 @@ r_struct
 id|tc_stats
 op_star
 id|stats
+comma
+id|spinlock_t
+op_star
+id|stats_lock
 comma
 r_struct
 id|rtattr

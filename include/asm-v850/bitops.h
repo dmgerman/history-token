@@ -88,7 +88,7 @@ mdefine_line|#define __test_and_change_bit(nr, addr)&t;__tns_bit_op (&quot;not1&
 DECL|macro|test_and_change_bit
 mdefine_line|#define test_and_change_bit(nr, addr)&t;__tns_atomic_bit_op (&quot;not1&quot;, nr, addr)
 DECL|macro|__const_test_bit
-mdefine_line|#define __const_test_bit(nr, addr)&t;&t;&t;&t;&t;&bslash;&n;  ({ int __test_bit_res;&t;&t;&t;&t;&t;&t;&bslash;&n;     __asm__ (&quot;tst1 (%1 - 0x123), %2; setf nz, %0&quot;&t;&t;&t;&bslash;&n;&t;      : &quot;=r&quot; (__test_bit_res)&t;&t;&t;&t;&t;&bslash;&n;&t;      : &quot;g&quot; (((nr) &amp; 0x7) + 0x123),&t;&t;&t;&t;&bslash;&n;                &quot;m&quot; (*((const char *)(addr) + ((nr) &gt;&gt; 3))));&t;&t;&bslash;&n;     __test_bit_res;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  })
+mdefine_line|#define __const_test_bit(nr, addr)&t;&t;&t;&t;&t;      &bslash;&n;  ({ int __test_bit_res;&t;&t;&t;&t;&t;&t;      &bslash;&n;     __asm__ __volatile__ (&quot;tst1 (%1 - 0x123), %2; setf nz, %0&quot;&t;&t;      &bslash;&n;&t;&t;&t;   : &quot;=r&quot; (__test_bit_res)&t;&t;&t;      &bslash;&n;&t;&t;&t;   : &quot;g&quot; (((nr) &amp; 0x7) + 0x123),&t;&t;      &bslash;&n;&t;&t;&t;     &quot;m&quot; (*((const char *)(addr) + ((nr) &gt;&gt; 3))));    &bslash;&n;     __test_bit_res;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;  })
 DECL|function|__test_bit
 r_extern
 id|__inline__
@@ -108,6 +108,7 @@ r_int
 id|res
 suffix:semicolon
 id|__asm__
+id|__volatile__
 (paren
 l_string|&quot;tst1 %1, [%2]; setf nz, %0&quot;
 suffix:colon

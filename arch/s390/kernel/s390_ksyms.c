@@ -15,9 +15,6 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#ifdef CONFIG_IP_MULTICAST
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_VIRT_TIMER
-macro_line|#include &lt;asm/timer.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * memory management&n; */
 DECL|variable|_oi_bitmap
 id|EXPORT_SYMBOL_NOVERS
@@ -154,44 +151,6 @@ c_func
 id|empty_zero_page
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * virtual CPU timer&n; */
-macro_line|#ifdef CONFIG_VIRT_TIMER
-DECL|variable|init_virt_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_virt_timer
-)paren
-suffix:semicolon
-DECL|variable|add_virt_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_virt_timer
-)paren
-suffix:semicolon
-DECL|variable|add_virt_timer_periodic
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|add_virt_timer_periodic
-)paren
-suffix:semicolon
-DECL|variable|mod_virt_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mod_virt_timer
-)paren
-suffix:semicolon
-DECL|variable|del_virt_timer
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|del_virt_timer
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * misc.&n; */
 DECL|variable|machine_flags
 id|EXPORT_SYMBOL

@@ -2875,7 +2875,7 @@ id|RADEON_PP_TEX_SIZE_2
 comma
 l_int|2
 comma
-l_string|&quot;RADEON_PP_TEX_SIZE_1&quot;
+l_string|&quot;RADEON_PP_TEX_SIZE_2&quot;
 )brace
 comma
 (brace

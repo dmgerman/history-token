@@ -91,15 +91,17 @@ mdefine_line|#define attr_underline(s) &bslash;&n;&t;((s) &amp; 0x400)
 DECL|macro|attr_blink
 mdefine_line|#define attr_blink(s) &bslash;&n;&t;((s) &amp; 0x8000)
 multiline_comment|/*&n;     *  Scroll Method&n;     */
-multiline_comment|/* There are several methods fbcon can use to move text around the screen:&n; *&n; * + use the hardware engine to move the text&n; *    (hw-accelerated copyarea() and fillrect())&n; * + use hardware-supported panning on a large virtual screen&n; * + amifb can not only pan, but also wrap the display by N lines&n; *    (i.e. visible line i = physical line (i+N) % yres).&n; * + read what&squot;s already rendered on the screen and&n; *     write it in a different place (this is cfb_copyarea())&n; * + re-render the text to the screen&n; *&n; * Whether to use wrapping or panning can only be figured out at&n; * runtime (when we know whether our font height is a multiple&n; * of the pan/wrap step)&n; *&n; */
-DECL|macro|SCROLL_ACCEL
-mdefine_line|#define SCROLL_ACCEL&t;0x001
-DECL|macro|SCROLL_PAN
-mdefine_line|#define SCROLL_PAN&t;0x002
-DECL|macro|SCROLL_WRAP
-mdefine_line|#define SCROLL_WRAP&t;0x003
+multiline_comment|/* There are several methods fbcon can use to move text around the screen:&n; *&n; *                     Operation   Pan    Wrap&n; *---------------------------------------------&n; * SCROLL_MOVE         copyarea    No     No&n; * SCROLL_PAN_MOVE     copyarea    Yes    No&n; * SCROLL_WRAP_MOVE    copyarea    No     Yes&n; * SCROLL_REDRAW       imageblit   No     No&n; * SCROLL_PAN_REDRAW   imageblit   Yes    No&n; * SCROLL_WRAP_REDRAW  imageblit   No     Yes&n; *&n; * (SCROLL_WRAP_REDRAW is not implemented yet)&n; *&n; * In general, fbcon will choose the best scrolling&n; * method based on the rule below:&n; *&n; * Pan/Wrap &gt; accel imageblit &gt; accel copyarea &gt;&n; * soft imageblit &gt; (soft copyarea)&n; *&n; * Exception to the rule: Pan + accel copyarea is&n; * preferred over Pan + accel imageblit.&n; *&n; * The above is typical for PCI/AGP cards. Unless&n; * overridden, fbcon will never use soft copyarea.&n; *&n; * If you need to override the above rule, set the&n; * appropriate flags in fb_info-&gt;flags.  For example,&n; * to prefer copyarea over imageblit, set&n; * FBINFO_READS_FAST.&n; *&n; * Other notes:&n; * + use the hardware engine to move the text&n; *    (hw-accelerated copyarea() and fillrect())&n; * + use hardware-supported panning on a large virtual screen&n; * + amifb can not only pan, but also wrap the display by N lines&n; *    (i.e. visible line i = physical line (i+N) % yres).&n; * + read what&squot;s already rendered on the screen and&n; *     write it in a different place (this is cfb_copyarea())&n; * + re-render the text to the screen&n; *&n; * Whether to use wrapping or panning can only be figured out at&n; * runtime (when we know whether our font height is a multiple&n; * of the pan/wrap step)&n; *&n; */
+DECL|macro|SCROLL_MOVE
+mdefine_line|#define SCROLL_MOVE&t;   0x001
+DECL|macro|SCROLL_PAN_MOVE
+mdefine_line|#define SCROLL_PAN_MOVE&t;   0x002
+DECL|macro|SCROLL_WRAP_MOVE
+mdefine_line|#define SCROLL_WRAP_MOVE   0x003
 DECL|macro|SCROLL_REDRAW
-mdefine_line|#define SCROLL_REDRAW&t;0x004
+mdefine_line|#define SCROLL_REDRAW&t;   0x004
+DECL|macro|SCROLL_PAN_REDRAW
+mdefine_line|#define SCROLL_PAN_REDRAW  0x005
 r_extern
 r_int
 id|fb_console_init

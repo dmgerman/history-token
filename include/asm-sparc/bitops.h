@@ -1906,6 +1906,7 @@ r_int
 id|find_next_bit
 c_func
 (paren
+r_const
 r_int
 r_int
 op_star
@@ -1918,6 +1919,7 @@ r_int
 id|offset
 )paren
 (brace
+r_const
 r_int
 r_int
 op_star
@@ -2007,6 +2009,9 @@ r_return
 id|num
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_first_bit - find the first set bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first set bit, not the number of the byte&n; * containing a bit.&n; */
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(addr, size) &bslash;&n;&t;find_next_bit((addr), (size), 0)
 multiline_comment|/*&n; */
 DECL|function|test_le_bit
 r_static

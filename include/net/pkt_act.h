@@ -1143,6 +1143,8 @@ c_func
 op_amp
 id|p-&gt;stats
 comma
+id|p-&gt;stats_lock
+comma
 id|est
 )paren
 suffix:semicolon

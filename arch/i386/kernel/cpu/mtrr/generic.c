@@ -37,14 +37,11 @@ id|def_type
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|smp_changes_mask
 r_static
 r_int
 r_int
 id|smp_changes_mask
-id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mtrr_state
 r_struct

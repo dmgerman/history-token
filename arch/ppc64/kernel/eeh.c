@@ -39,6 +39,11 @@ r_static
 r_int
 id|ibm_read_slot_reset_state
 suffix:semicolon
+DECL|variable|ibm_slot_error_detail
+r_static
+r_int
+id|ibm_slot_error_detail
+suffix:semicolon
 DECL|variable|eeh_subsystem_enabled
 r_static
 r_int
@@ -56,6 +61,28 @@ DECL|variable|eeh_opts_last
 r_static
 r_int
 id|eeh_opts_last
+suffix:semicolon
+multiline_comment|/* Buffer for reporting slot-error-detail rtas calls */
+DECL|variable|slot_errbuf
+r_static
+r_int
+r_char
+id|slot_errbuf
+(braket
+id|RTAS_ERROR_LOG_MAX
+)braket
+suffix:semicolon
+DECL|variable|slot_errbuf_lock
+r_static
+id|spinlock_t
+id|slot_errbuf_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|eeh_error_buf_size
+r_static
+r_int
+id|eeh_error_buf_size
 suffix:semicolon
 multiline_comment|/* System monitoring statistics */
 r_static
@@ -1216,21 +1243,6 @@ id|rets
 l_int|2
 )braket
 suffix:semicolon
-r_static
-id|spinlock_t
-id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-multiline_comment|/* dont want this on the stack */
-r_static
-r_int
-r_char
-id|slot_err_buf
-(braket
-id|RTAS_ERROR_LOG_MAX
-)braket
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1332,30 +1344,6 @@ r_return
 id|val
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure we aren&squot;t ISA */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|dn-&gt;type
-comma
-l_string|&quot;isa&quot;
-)paren
-)paren
-(brace
-id|pci_dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-r_return
-id|val
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1425,13 +1413,13 @@ l_int|2
 )paren
 (brace
 r_int
-id|slot_err_ret
+id|log_event
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|slot_errbuf_lock
 comma
 id|flags
 )paren
@@ -1439,23 +1427,19 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|slot_err_buf
+id|slot_errbuf
 comma
 l_int|0
 comma
-id|RTAS_ERROR_LOG_MAX
+id|eeh_error_buf_size
 )paren
 suffix:semicolon
-id|slot_err_ret
+id|log_event
 op_assign
 id|rtas_call
 c_func
 (paren
-id|rtas_token
-c_func
-(paren
-l_string|&quot;ibm,slot-error-detail&quot;
-)paren
+id|ibm_slot_error_detail
 comma
 l_int|8
 comma
@@ -1481,13 +1465,13 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|__pa
+id|virt_to_phys
 c_func
 (paren
-id|slot_err_buf
+id|slot_errbuf
 )paren
 comma
-id|RTAS_ERROR_LOG_MAX
+id|eeh_error_buf_size
 comma
 l_int|2
 multiline_comment|/* Permanent Error */
@@ -1496,14 +1480,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|slot_err_ret
+id|log_event
 op_eq
 l_int|0
 )paren
 id|log_error
 c_func
 (paren
-id|slot_err_buf
+id|slot_errbuf
 comma
 id|ERR_TYPE_RTAS_LOG
 comma
@@ -1515,7 +1499,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|slot_errbuf_lock
 comma
 id|flags
 )paren
@@ -1627,6 +1611,10 @@ r_int
 r_int
 id|buid_lo
 suffix:semicolon
+DECL|member|force_off
+r_int
+id|force_off
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Enable eeh for the given device node. */
@@ -1732,6 +1720,10 @@ suffix:semicolon
 r_int
 id|enable
 suffix:semicolon
+id|dn-&gt;eeh_mode
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1801,6 +1793,30 @@ l_int|0x0302
 r_return
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* There is nothing to check on PCI to ISA bridges */
+r_if
+c_cond
+(paren
+id|dn-&gt;type
+op_logical_and
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|dn-&gt;type
+comma
+l_string|&quot;isa&quot;
+)paren
+)paren
+(brace
+id|dn-&gt;eeh_mode
+op_or_assign
+id|EEH_MODE_NOCHECK
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Now decide if we are going to &quot;Disable&quot; EEH checking&n;&t; * for this device.  We still run with the EEH hardware active,&n;&t; * but we won&squot;t be checking for ff&squot;s.  This means a driver&n;&t; * could return bad data (very bad!), an interrupt handler could&n;&t; * hang waiting on status bits that won&squot;t change, etc.&n;&t; * But there are a few cases like display devices that make sense.&n;&t; */
 id|enable
 op_assign
@@ -1856,7 +1872,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;EEH: %s user requested to run &quot;
-l_string|&quot;without EEH.&bslash;n&quot;
+l_string|&quot;without EEH checking.&bslash;n&quot;
 comma
 id|dn-&gt;full_name
 )paren
@@ -1872,14 +1888,13 @@ c_cond
 (paren
 op_logical_neg
 id|enable
+op_logical_or
+id|info-&gt;force_off
 )paren
 (brace
 id|dn-&gt;eeh_mode
-op_assign
+op_or_assign
 id|EEH_MODE_NOCHECK
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* This device may already have an EEH parent. */
@@ -1999,9 +2014,11 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;EEH: %s: could not enable EEH, rtas_call failed.&bslash;n&quot;
+l_string|&quot;EEH: %s: could not enable EEH, rtas_call failed; rc=%d&bslash;n&quot;
 comma
 id|dn-&gt;full_name
+comma
+id|ret
 )paren
 suffix:semicolon
 )brace
@@ -2022,7 +2039,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize EEH by trying to enable it for all of the adapters in the system.&n; * As a side effect we can determine here if eeh is supported at all.&n; * Note that we leave EEH on so failed config cycles won&squot;t cause a machine&n; * check.  If a user turns off EEH for a particular adapter they are really&n; * telling Linux to ignore errors.&n; *&n; * We should probably distinguish between &quot;ignore errors&quot; and &quot;turn EEH off&quot;&n; * but for now disabling EEH for adapters is mostly to work around drivers that&n; * directly access mmio space (without using the macros).&n; *&n; * The eeh-force-off option does literally what it says, so if Linux must&n; * avoid enabling EEH this must be done.&n; */
+multiline_comment|/*&n; * Initialize EEH by trying to enable it for all of the adapters in the system.&n; * As a side effect we can determine here if eeh is supported at all.&n; * Note that we leave EEH on so failed config cycles won&squot;t cause a machine&n; * check.  If a user turns off EEH for a particular adapter they are really&n; * telling Linux to ignore errors.  Some hardware (e.g. POWER5) won&squot;t&n; * grant access to a slot if EEH isn&squot;t enabled, and so we always enable&n; * EEH for all slots/all devices.&n; *&n; * The eeh-force-off option disables EEH checking globally, for all slots.&n; * Even if force-off is set, the EEH hardware is still enabled, so that&n; * newer systems can boot.&n; */
 DECL|function|eeh_init
 r_void
 id|__init
@@ -2036,6 +2053,9 @@ r_struct
 id|device_node
 op_star
 id|phb
+comma
+op_star
+id|np
 suffix:semicolon
 r_struct
 id|eeh_early_enable_info
@@ -2053,6 +2073,37 @@ comma
 l_string|&quot;eeh-force-off&quot;
 )paren
 suffix:semicolon
+id|init_pci_config_tokens
+c_func
+(paren
+)paren
+suffix:semicolon
+id|np
+op_assign
+id|of_find_node_by_path
+c_func
+(paren
+l_string|&quot;/rtas&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|np
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEH: RTAS not found !&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|ibm_set_eeh_option
 op_assign
 id|rtas_token
@@ -2077,6 +2128,14 @@ c_func
 l_string|&quot;ibm,read-slot-reset-state&quot;
 )paren
 suffix:semicolon
+id|ibm_slot_error_detail
+op_assign
+id|rtas_token
+c_func
+(paren
+l_string|&quot;ibm,slot-error-detail&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2085,6 +2144,56 @@ op_eq
 id|RTAS_UNKNOWN_SERVICE
 )paren
 r_return
+suffix:semicolon
+id|eeh_error_buf_size
+op_assign
+id|rtas_token
+c_func
+(paren
+l_string|&quot;rtas-error-log-max&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|eeh_error_buf_size
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+(brace
+id|eeh_error_buf_size
+op_assign
+l_int|1024
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|eeh_error_buf_size
+OG
+id|RTAS_ERROR_LOG_MAX
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEH: rtas-error-log-max is bigger than allocated &quot;
+l_string|&quot;buffer ! (%d vs %d)&quot;
+comma
+id|eeh_error_buf_size
+comma
+id|RTAS_ERROR_LOG_MAX
+)paren
+suffix:semicolon
+id|eeh_error_buf_size
+op_assign
+id|RTAS_ERROR_LOG_MAX
+suffix:semicolon
+)brace
+id|info.force_off
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2100,15 +2209,12 @@ l_string|&quot;EEH: WARNING: PCI Enhanced I/O Error &quot;
 l_string|&quot;Handling is user disabled&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|info.force_off
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Enable EEH for all adapters.  Note that eeh requires buid&squot;s */
-id|init_pci_config_tokens
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2191,6 +2297,7 @@ c_cond
 (paren
 id|eeh_subsystem_enabled
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -2198,6 +2305,17 @@ id|KERN_INFO
 l_string|&quot;EEH: PCI Enhanced I/O Error Handling Enabled&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;EEH: disabled PCI Enhanced I/O Error Handling&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * eeh_add_device_early - enable EEH for the indicated device_node&n; * @dn: device node for which to set up EEH&n; *&n; * This routine must be used to perform EEH initialization for PCI&n; * devices that were added after system boot (e.g. hotplug, dlpar).&n; * This routine must be called before any i/o is performed to the&n; * adapter (inluding any config-space i/o).&n; * Whether this actually enables EEH or not for this device depends&n; * on the CEC architecture, type of the device, on earlier boot&n; * command-line arguments &amp; etc.&n; */
 DECL|function|eeh_add_device_early

@@ -456,6 +456,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

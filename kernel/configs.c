@@ -28,6 +28,7 @@ r_char
 id|IKCONFIG_VERSION
 (braket
 )braket
+id|__attribute_used__
 id|__initdata
 op_assign
 l_string|&quot;0.7&quot;

@@ -1457,6 +1457,10 @@ r_if
 c_cond
 (paren
 id|conn
+op_logical_and
+id|conn-&gt;state
+op_eq
+id|BT_CONNECT
 )paren
 (brace
 id|conn-&gt;state
@@ -2042,7 +2046,7 @@ suffix:semicolon
 id|num_rsp
 op_decrement
 )paren
-id|inquiry_cache_update
+id|hci_inquiry_cache_update
 c_func
 (paren
 id|hdev
@@ -2175,7 +2179,7 @@ suffix:semicolon
 id|info
 op_increment
 suffix:semicolon
-id|inquiry_cache_update
+id|hci_inquiry_cache_update
 c_func
 (paren
 id|hdev

@@ -4,6 +4,7 @@ mdefine_line|#define _ASMi386_SIGNAL_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
 r_struct
 id|siginfo
@@ -171,16 +172,37 @@ mdefine_line|#define SIG_UNBLOCK        1&t;/* for unblocking signals */
 DECL|macro|SIG_SETMASK
 mdefine_line|#define SIG_SETMASK        2&t;/* for setting the signal mask */
 multiline_comment|/* Type of a signal handler.  */
-DECL|typedef|__sighandler_t
+DECL|typedef|__signalfn_t
 r_typedef
 r_void
-(paren
-op_star
-id|__sighandler_t
-)paren
+id|__signalfn_t
+c_func
 (paren
 r_int
 )paren
+suffix:semicolon
+DECL|typedef|__sighandler_t
+r_typedef
+id|__signalfn_t
+id|__user
+op_star
+id|__sighandler_t
+suffix:semicolon
+DECL|typedef|__restorefn_t
+r_typedef
+r_void
+id|__restorefn_t
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|typedef|__sigrestore_t
+r_typedef
+id|__restorefn_t
+id|__user
+op_star
+id|__sigrestore_t
 suffix:semicolon
 DECL|macro|SIG_DFL
 mdefine_line|#define SIG_DFL&t;((__sighandler_t)0)&t;/* default signal handling */
@@ -207,14 +229,8 @@ r_int
 id|sa_flags
 suffix:semicolon
 DECL|member|sa_restorer
-r_void
-(paren
-op_star
+id|__sigrestore_t
 id|sa_restorer
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -232,14 +248,8 @@ r_int
 id|sa_flags
 suffix:semicolon
 DECL|member|sa_restorer
-r_void
-(paren
-op_star
+id|__sigrestore_t
 id|sa_restorer
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|member|sa_mask
 id|sigset_t
@@ -325,6 +335,7 @@ id|sigaltstack
 (brace
 DECL|member|ss_sp
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon

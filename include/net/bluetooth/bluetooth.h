@@ -30,6 +30,8 @@ DECL|macro|BTPROTO_CMTP
 mdefine_line|#define BTPROTO_CMTP&t;5
 DECL|macro|BTPROTO_HIDP
 mdefine_line|#define BTPROTO_HIDP&t;6
+DECL|macro|BTPROTO_AVDTP
+mdefine_line|#define BTPROTO_AVDTP&t;7
 DECL|macro|SOL_HCI
 mdefine_line|#define SOL_HCI&t;&t;0
 DECL|macro|SOL_L2CAP

@@ -293,13 +293,6 @@ id|OPENPIC_MAX_PROCESSORS
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_volatile
-r_struct
-id|OpenPIC
-op_star
-id|OpenPIC
-suffix:semicolon
 multiline_comment|/*&n; *  Current Task Priority Register&n; */
 DECL|macro|OPENPIC_CURRENT_TASK_PRIORITY_MASK
 mdefine_line|#define OPENPIC_CURRENT_TASK_PRIORITY_MASK&t;0x0000000f

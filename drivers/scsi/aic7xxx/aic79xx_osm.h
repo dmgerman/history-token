@@ -2323,6 +2323,7 @@ DECL|function|ahd_list_lockinit
 id|ahd_list_lockinit
 c_func
 (paren
+r_void
 )paren
 (brace
 id|spin_lock_init

@@ -733,7 +733,11 @@ op_logical_or
 (paren
 id|vma-&gt;vm_flags
 op_amp
+(paren
+id|VM_NONLINEAR
+op_or
 id|VM_RESERVED
+)paren
 )paren
 )paren
 op_logical_and

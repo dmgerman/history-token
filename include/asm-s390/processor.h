@@ -762,6 +762,34 @@ l_string|&quot;1&quot;
 suffix:semicolon
 macro_line|#endif /* __s390x__ */
 )brace
+multiline_comment|/*&n; * CPU idle notifier chain.&n; */
+DECL|macro|CPU_IDLE
+mdefine_line|#define CPU_IDLE&t;0
+DECL|macro|CPU_NOT_IDLE
+mdefine_line|#define CPU_NOT_IDLE&t;1
+r_struct
+id|notifier_block
+suffix:semicolon
+r_int
+id|register_idle_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_idle_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif                                 /* __ASM_S390_PROCESSOR_H           */
 eof
