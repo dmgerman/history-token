@@ -5693,7 +5693,15 @@ r_else
 (brace
 id|up-&gt;serio.type
 op_or_assign
+(paren
 id|SERIO_SUN
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+)paren
 suffix:semicolon
 id|up-&gt;serio.name
 op_assign
