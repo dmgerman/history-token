@@ -3878,7 +3878,7 @@ op_increment
 )paren
 id|sb-&gt;dev_roles
 (braket
-id|max_dev
+id|i
 )braket
 op_assign
 id|cpu_to_le16
