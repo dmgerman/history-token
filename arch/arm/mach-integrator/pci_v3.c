@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
 macro_line|#include &lt;asm/hardware/pci_v3.h&gt;
-multiline_comment|/*&n; * The V3 PCI interface chip in Integrator provides several windows from&n; * local bus memory into the PCI memory areas.   Unfortunately, there&n; * are not really enough windows for our usage, therefore we reuse &n; * one of the windows for access to PCI configuration space.  The&n; * memory map is as follows:&n; * &n; * Local Bus Memory         Usage&n; * &n; * 40000000 - 4FFFFFFF      PCI memory.  256M non-prefetchable&n; * 50000000 - 5FFFFFFF      PCI memory.  256M prefetchable&n; * 60000000 - 60FFFFFF      PCI IO.  16M&n; * 68000000 - 68FFFFFF      PCI Configuration. 16M&n; * &n; * There are three V3 windows, each described by a pair of V3 registers.&n; * These are LB_BASE0/LB_MAP0, LB_BASE1/LB_MAP1 and LB_BASE2/LB_MAP2.&n; * Base0 and Base1 can be used for any type of PCI memory access.   Base2&n; * can be used either for PCI I/O or for I20 accesses.  By default, uHAL&n; * uses this only for PCI IO space.&n; * &n; * PCI Memory is mapped so that assigned addresses in PCI Memory match&n; * local bus memory addresses.  In other words, if a PCI device is assigned&n; * address 80200000 then that address is a valid local bus address as well&n; * as a valid PCI Memory address.  PCI IO addresses are mapped to start&n; * at zero.  This means that local bus address 60000000 maps to PCI IO address&n; * 00000000 and so on.   Device driver writers need to be aware of this &n; * distinction.&n; * &n; * Normally these spaces are mapped using the following base registers:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE1/LB_MAP1&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   68000000 - 68FFFFFF      &n; * &n; * This means that I20 and PCI configuration space accesses will fail.&n; * When PCI configuration accesses are needed (via the uHAL PCI &n; * configuration space primitives) we must remap the spaces as follows:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE0/LB_MAP0&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   68000000 - 68FFFFFF      LB_BASE1/LB_MAP1&n; * &n; * To make this work, the code depends on overlapping windows working.&n; * The V3 chip translates an address by checking its range within &n; * each of the BASE/MAP pairs in turn (in ascending register number&n; * order).  It will use the first matching pair.   So, for example,&n; * if the same address is mapped by both LB_BASE0/LB_MAP0 and&n; * LB_BASE1/LB_MAP1, the V3 will use the translation from &n; * LB_BASE0/LB_MAP0.&n; * &n; * To allow PCI Configuration space access, the code enlarges the&n; * window mapped by LB_BASE0/LB_MAP0 from 256M to 512M.  This occludes&n; * the windows currently mapped by LB_BASE1/LB_MAP1 so that it can&n; * be remapped for use by configuration cycles.&n; * &n; * At the end of the PCI Configuration space accesses, &n; * LB_BASE1/LB_MAP1 is reset to map PCI Memory.  Finally the window&n; * mapped by LB_BASE0/LB_MAP0 is reduced in size from 512M to 256M to&n; * reveal the now restored LB_BASE1/LB_MAP1 window.&n; * &n; * NOTE: We do not set up I2O mapping.  I suspect that this is only&n; * for an intelligent (target) device.  Using I2O disables most of&n; * the mappings into PCI memory.&n; */
+multiline_comment|/*&n; * The V3 PCI interface chip in Integrator provides several windows from&n; * local bus memory into the PCI memory areas.   Unfortunately, there&n; * are not really enough windows for our usage, therefore we reuse &n; * one of the windows for access to PCI configuration space.  The&n; * memory map is as follows:&n; * &n; * Local Bus Memory         Usage&n; * &n; * 40000000 - 4FFFFFFF      PCI memory.  256M non-prefetchable&n; * 50000000 - 5FFFFFFF      PCI memory.  256M prefetchable&n; * 60000000 - 60FFFFFF      PCI IO.  16M&n; * 61000000 - 61FFFFFF      PCI Configuration. 16M&n; * &n; * There are three V3 windows, each described by a pair of V3 registers.&n; * These are LB_BASE0/LB_MAP0, LB_BASE1/LB_MAP1 and LB_BASE2/LB_MAP2.&n; * Base0 and Base1 can be used for any type of PCI memory access.   Base2&n; * can be used either for PCI I/O or for I20 accesses.  By default, uHAL&n; * uses this only for PCI IO space.&n; * &n; * Normally these spaces are mapped using the following base registers:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE1/LB_MAP1&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   61000000 - 61FFFFFF&n; * &n; * This means that I20 and PCI configuration space accesses will fail.&n; * When PCI configuration accesses are needed (via the uHAL PCI &n; * configuration space primitives) we must remap the spaces as follows:&n; * &n; * Usage Local Bus Memory         Base/Map registers used&n; * &n; * Mem   40000000 - 4FFFFFFF      LB_BASE0/LB_MAP0&n; * Mem   50000000 - 5FFFFFFF      LB_BASE0/LB_MAP0&n; * IO    60000000 - 60FFFFFF      LB_BASE2/LB_MAP2&n; * Cfg   61000000 - 61FFFFFF      LB_BASE1/LB_MAP1&n; * &n; * To make this work, the code depends on overlapping windows working.&n; * The V3 chip translates an address by checking its range within &n; * each of the BASE/MAP pairs in turn (in ascending register number&n; * order).  It will use the first matching pair.   So, for example,&n; * if the same address is mapped by both LB_BASE0/LB_MAP0 and&n; * LB_BASE1/LB_MAP1, the V3 will use the translation from &n; * LB_BASE0/LB_MAP0.&n; * &n; * To allow PCI Configuration space access, the code enlarges the&n; * window mapped by LB_BASE0/LB_MAP0 from 256M to 512M.  This occludes&n; * the windows currently mapped by LB_BASE1/LB_MAP1 so that it can&n; * be remapped for use by configuration cycles.&n; * &n; * At the end of the PCI Configuration space accesses, &n; * LB_BASE1/LB_MAP1 is reset to map PCI Memory.  Finally the window&n; * mapped by LB_BASE0/LB_MAP0 is reduced in size from 512M to 256M to&n; * reveal the now restored LB_BASE1/LB_MAP1 window.&n; * &n; * NOTE: We do not set up I2O mapping.  I suspect that this is only&n; * for an intelligent (target) device.  Using I2O disables most of&n; * the mappings into PCI memory.&n; */
 singleline_comment|// V3 access routines
 DECL|macro|v3_writeb
 mdefine_line|#define v3_writeb(o,v) __raw_writeb(v, PCI_V3_VADDR + (unsigned int)(o))
@@ -39,11 +39,11 @@ suffix:semicolon
 DECL|macro|PCI_BUS_NONMEM_START
 mdefine_line|#define PCI_BUS_NONMEM_START&t;0x00000000
 DECL|macro|PCI_BUS_NONMEM_SIZE
-mdefine_line|#define PCI_BUS_NONMEM_SIZE&t;0x10000000
+mdefine_line|#define PCI_BUS_NONMEM_SIZE&t;SZ_256M
 DECL|macro|PCI_BUS_PREMEM_START
-mdefine_line|#define PCI_BUS_PREMEM_START&t;0x10000000
+mdefine_line|#define PCI_BUS_PREMEM_START&t;PCI_BUS_NONMEM_START + PCI_BUS_NONMEM_SIZE
 DECL|macro|PCI_BUS_PREMEM_SIZE
-mdefine_line|#define PCI_BUS_PREMEM_SIZE&t;0x10000000
+mdefine_line|#define PCI_BUS_PREMEM_SIZE&t;SZ_256M
 macro_line|#if PCI_BUS_NONMEM_START &amp; 0x000fffff
 macro_line|#error PCI_BUS_NONMEM_START must be megabyte aligned
 macro_line|#endif
@@ -835,13 +835,13 @@ l_string|&quot;PCI non-prefetchable&quot;
 comma
 id|start
 suffix:colon
-l_int|0x40000000
+id|PHYS_PCI_MEM_BASE
 op_plus
 id|PCI_BUS_NONMEM_START
 comma
 id|end
 suffix:colon
-l_int|0x40000000
+id|PHYS_PCI_MEM_BASE
 op_plus
 id|PCI_BUS_NONMEM_START
 op_plus
@@ -868,13 +868,13 @@ l_string|&quot;PCI prefetchable&quot;
 comma
 id|start
 suffix:colon
-l_int|0x40000000
+id|PHYS_PCI_MEM_BASE
 op_plus
 id|PCI_BUS_PREMEM_START
 comma
 id|end
 suffix:colon
-l_int|0x40000000
+id|PHYS_PCI_MEM_BASE
 op_plus
 id|PCI_BUS_PREMEM_START
 op_plus
@@ -982,14 +982,7 @@ op_assign
 op_amp
 id|non_mem
 suffix:semicolon
-id|resource
-(braket
-l_int|2
-)braket
-op_assign
-op_amp
-id|pre_mem
-suffix:semicolon
+singleline_comment|//&t;resource[2] = &amp;pre_mem;
 r_return
 l_int|1
 suffix:semicolon
@@ -1424,7 +1417,7 @@ l_int|0
 (brace
 id|sys-&gt;mem_offset
 op_assign
-l_int|0x40000000
+id|PHYS_PCI_MEM_BASE
 suffix:semicolon
 id|ret
 op_assign
