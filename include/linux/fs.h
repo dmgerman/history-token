@@ -1538,6 +1538,16 @@ r_void
 op_star
 id|private_data
 suffix:semicolon
+multiline_comment|/* Used by fs/eventpoll.c to link all the hooks to this file */
+DECL|member|f_ep_links
+r_struct
+id|list_head
+id|f_ep_links
+suffix:semicolon
+DECL|member|f_ep_lock
+id|spinlock_t
+id|f_ep_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

@@ -1298,7 +1298,7 @@ id|name
 r_char
 id|dirname
 (braket
-l_int|10
+l_int|16
 )braket
 suffix:semicolon
 id|dvb_adapter_t
@@ -1415,7 +1415,7 @@ c_func
 (paren
 id|dirname
 comma
-l_string|&quot;adapter%d&quot;
+l_string|&quot;dvb/adapter%d&quot;
 comma
 id|num
 )paren
@@ -1425,7 +1425,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|dvb_devfs_handle
+l_int|NULL
 comma
 id|dirname
 comma

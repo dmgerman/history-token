@@ -4929,10 +4929,6 @@ id|devname
 l_int|64
 )braket
 suffix:semicolon
-r_extern
-id|devfs_handle_t
-id|scsi_devfs_handle
-suffix:semicolon
 id|sdev
 op_assign
 id|scsi_alloc_sdev
@@ -5348,7 +5344,7 @@ c_func
 (paren
 id|devname
 comma
-l_string|&quot;host%d/bus%d/target%d/lun%d&quot;
+l_string|&quot;scsi/host%d/bus%d/target%d/lun%d&quot;
 comma
 id|sdev-&gt;host-&gt;host_no
 comma
@@ -5379,7 +5375,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-id|scsi_devfs_handle
+l_int|NULL
 comma
 id|devname
 comma

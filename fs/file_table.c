@@ -155,6 +155,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|ep_init_file_struct
+c_func
+(paren
+id|f
+)paren
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
@@ -328,6 +334,12 @@ id|filp
 )paren
 )paren
 suffix:semicolon
+id|ep_init_file_struct
+c_func
+(paren
+id|filp
+)paren
+suffix:semicolon
 id|filp-&gt;f_mode
 op_assign
 id|mode
@@ -439,6 +451,7 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+multiline_comment|/*&n;&t; * The function ep_notify_file_close() should be the first called&n;&t; * in the file cleanup chain.&n;&t; */
 id|ep_notify_file_close
 c_func
 (paren

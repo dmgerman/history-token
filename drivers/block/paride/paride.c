@@ -310,8 +310,8 @@ id|cont
 r_void
 )paren
 )paren
-macro_line|#ifdef CONFIG_PARPORT
 (brace
+macro_line|#ifdef CONFIG_PARPORT
 r_int
 r_int
 id|flags
@@ -328,37 +328,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pi-&gt;pardev
-op_logical_or
-op_logical_neg
+op_logical_and
 id|parport_claim
 c_func
 (paren
 id|pi-&gt;pardev
 )paren
 )paren
-(brace
-id|pi-&gt;claimed
-op_assign
-l_int|1
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|pi_spinlock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|cont
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 id|pi-&gt;claim_cont
 op_assign
@@ -373,17 +350,29 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-)brace
-macro_line|#else
-(brace
+id|pi-&gt;claimed
+op_assign
+l_int|1
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pi_spinlock
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
 id|cont
 c_func
 (paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|variable|pi_do_claimed
 id|EXPORT_SYMBOL
 c_func
@@ -420,11 +409,13 @@ c_cond
 id|pi-&gt;pardev
 )paren
 id|wait_event
+c_func
 (paren
 id|pi-&gt;parq
 comma
 op_logical_neg
 id|parport_claim
+c_func
 (paren
 (paren
 r_struct
@@ -471,7 +462,7 @@ id|pi-&gt;pardev
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 )brace
 DECL|function|pi_connect
 r_void
@@ -605,7 +596,7 @@ comma
 id|pi-&gt;reserved
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_PARPORT */
+macro_line|#endif&t;&t;&t;&t;/* !CONFIG_PARPORT */
 id|pi-&gt;proto
 op_member_access_from_pointer
 id|release_proto
@@ -920,11 +911,9 @@ id|k
 )braket
 )paren
 )paren
-(brace
 id|k
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1057,6 +1046,7 @@ suffix:semicolon
 id|port
 op_assign
 id|parport_find_base
+c_func
 (paren
 id|pi-&gt;port
 )paren
@@ -1095,6 +1085,7 @@ id|pi
 )paren
 suffix:semicolon
 id|parport_put_port
+c_func
 (paren
 id|port
 )paren
@@ -1647,6 +1638,7 @@ l_int|0
 )braket
 )paren
 id|request_module
+c_func
 (paren
 l_string|&quot;paride_protocol&quot;
 )paren
@@ -1881,7 +1873,6 @@ r_if
 c_cond
 (paren
 id|pi_probe_unit
-c_func
 (paren
 id|pi
 comma
@@ -1974,7 +1965,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_PARPORT */
+macro_line|#endif&t;&t;&t;&t;/* !CONFIG_PARPORT */
 r_if
 c_cond
 (paren
