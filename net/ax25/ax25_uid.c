@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Split from af_ax25.c.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -34,6 +35,13 @@ id|ax25_uid_assoc
 op_star
 id|ax25_uid_list
 suffix:semicolon
+DECL|variable|ax25_uid_lock
+r_static
+id|rwlock_t
+id|ax25_uid_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|ax25_uid_policy
 r_int
 id|ax25_uid_policy
@@ -53,6 +61,19 @@ id|uid
 id|ax25_uid_assoc
 op_star
 id|ax25_uid
+suffix:semicolon
+id|ax25_address
+op_star
+id|res
+op_assign
+l_int|NULL
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -77,11 +98,23 @@ id|ax25_uid-&gt;uid
 op_eq
 id|uid
 )paren
-r_return
+(brace
+id|res
+op_assign
 op_amp
 id|ax25_uid-&gt;call
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
@@ -109,7 +142,7 @@ id|ax25_uid
 suffix:semicolon
 r_int
 r_int
-id|flags
+id|res
 suffix:semicolon
 r_switch
 c_cond
@@ -120,6 +153,18 @@ id|cmd
 r_case
 id|SIOCAX25GETUID
 suffix:colon
+id|res
+op_assign
+op_minus
+id|ENOENT
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -151,13 +196,24 @@ id|ax25_uid-&gt;call
 op_eq
 l_int|0
 )paren
-r_return
+(brace
+id|res
+op_assign
 id|ax25_uid-&gt;uid
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
+)brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
 r_return
-op_minus
-id|ENOENT
+id|res
 suffix:semicolon
 r_case
 id|SIOCAX25ADDUID
@@ -233,15 +289,11 @@ id|ax25_uid-&gt;call
 op_assign
 id|sax-&gt;sax25_call
 suffix:semicolon
-id|save_flags
+id|write_lock
 c_func
 (paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 id|ax25_uid-&gt;next
@@ -252,10 +304,11 @@ id|ax25_uid_list
 op_assign
 id|ax25_uid
 suffix:semicolon
-id|restore_flags
+id|write_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 r_return
@@ -277,6 +330,13 @@ id|CAP_NET_ADMIN
 r_return
 op_minus
 id|EPERM
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -309,8 +369,10 @@ id|ax25_uid-&gt;call
 op_eq
 l_int|0
 )paren
+(brace
 r_break
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -319,21 +381,19 @@ id|ax25_uid
 op_eq
 l_int|NULL
 )paren
+(brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOENT
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -350,10 +410,11 @@ id|ax25_uid_list
 op_assign
 id|s-&gt;next
 suffix:semicolon
-id|restore_flags
+id|write_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -390,10 +451,11 @@ id|s-&gt;next
 op_assign
 id|ax25_uid-&gt;next
 suffix:semicolon
-id|restore_flags
+id|write_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 id|kfree
@@ -411,10 +473,11 @@ op_assign
 id|s-&gt;next
 suffix:semicolon
 )brace
-id|restore_flags
+id|write_unlock
 c_func
 (paren
-id|flags
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 r_return
@@ -474,9 +537,11 @@ id|begin
 op_assign
 l_int|0
 suffix:semicolon
-id|cli
+id|read_lock
 c_func
 (paren
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 id|len
@@ -563,9 +628,11 @@ id|length
 r_break
 suffix:semicolon
 )brace
-id|sti
+id|read_unlock
 c_func
 (paren
+op_amp
+id|ax25_uid_lock
 )paren
 suffix:semicolon
 op_star
@@ -616,6 +683,15 @@ id|s
 comma
 op_star
 id|ax25_uid
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
+id|ax25_uid
 op_assign
 id|ax25_uid_list
 suffix:semicolon
@@ -642,5 +718,16 @@ id|s
 )paren
 suffix:semicolon
 )brace
+id|ax25_uid_list
+op_assign
+l_int|NULL
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|ax25_uid_lock
+)paren
+suffix:semicolon
 )brace
 eof

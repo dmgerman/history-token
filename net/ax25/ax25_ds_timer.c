@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;AX.25 036&t;Jonathan(G4KLX)&t;Cloned from ax25_timer.c.&n; *&t;&t;&t;Joerg(DL1BKE)&t;Added DAMA Slave Timeout timer&n; *&t;AX.25 037&t;Jonathan(G4KLX)&t;New timer architecture.&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Joerg Reuter DL1BKE (jreuter@yaina.de)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -29,7 +30,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;Add DAMA slave timeout timer to timer list.&n; *&t;Unlike the connection based timers the timeout function gets &n; *&t;triggered every second. Please note that NET_AX25_DAMA_SLAVE_TIMEOUT&n; *&t;(aka /proc/sys/net/ax25/{dev}/dama_slave_timeout) is still in&n; *&t;1/10th of a second.&n; */
+multiline_comment|/*&n; *&t;Add DAMA slave timeout timer to timer list.&n; *&t;Unlike the connection based timers the timeout function gets&n; *&t;triggered every second. Please note that NET_AX25_DAMA_SLAVE_TIMEOUT&n; *&t;(aka /proc/sys/net/ax25/{dev}/dama_slave_timeout) is still in&n; *&t;1/10th of a second.&n; */
 DECL|function|ax25_ds_add_timer
 r_static
 r_void
@@ -200,6 +201,13 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -253,6 +261,13 @@ id|ETIMEDOUT
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_bh
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+)paren
+suffix:semicolon
 id|ax25_dev_dama_off
 c_func
 (paren
@@ -279,7 +294,7 @@ id|ax25-&gt;state
 r_case
 id|AX25_STATE_0
 suffix:colon
-multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
+multiline_comment|/* Magic here: If we listen() and a new link dies before it&n;&t;&t;   is accepted() it isn&squot;t &squot;dead&squot; so doesn&squot;t get removed. */
 r_if
 c_cond
 (paren
@@ -312,7 +327,7 @@ suffix:semicolon
 r_case
 id|AX25_STATE_3
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Check the state of the receive buffer.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Check the state of the receive buffer.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -489,7 +504,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* dl1bke 960114: The DAMA protocol requires to send data and SABM/DISC&n; *                within the poll of any connected channel. Remember &n; *                that we are not allowed to send anything unless we&n; *                get polled by the Master.&n; *&n; *                Thus we&squot;ll have to do parts of our T1 handling in&n; *                ax25_enquiry_response().&n; */
+multiline_comment|/* dl1bke 960114: The DAMA protocol requires to send data and SABM/DISC&n; *                within the poll of any connected channel. Remember&n; *                that we are not allowed to send anything unless we&n; *                get polled by the Master.&n; *&n; *                Thus we&squot;ll have to do parts of our T1 handling in&n; *                ax25_enquiry_response().&n; */
 DECL|function|ax25_ds_t1_timeout
 r_void
 id|ax25_ds_t1_timeout
