@@ -2521,11 +2521,11 @@ c_func
 id|schedule_timeout
 )paren
 suffix:semicolon
-DECL|variable|sys_sched_yield
+DECL|variable|yield
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sys_sched_yield
+id|yield
 )paren
 suffix:semicolon
 DECL|variable|__cond_resched

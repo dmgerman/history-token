@@ -1190,16 +1190,13 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-id|asmlinkage
-r_int
-id|sys_sched_yield
+r_void
+id|yield
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|macro|yield
-mdefine_line|#define yield() sys_sched_yield()
 multiline_comment|/*&n; * The default (Linux) execution domain.&n; */
 r_extern
 r_struct

@@ -1664,12 +1664,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|yield
 c_func
 (paren
