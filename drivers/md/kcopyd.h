@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software&n; *&n; * This file is released under the GPL.&n; *&n; * Kcopyd provides a simple interface for copying an area of one&n; * block-device to one or more other block-devices, with an asynchronous&n; * completion notification.&n; */
 macro_line|#ifndef DM_KCOPYD_H
 DECL|macro|DM_KCOPYD_H
 mdefine_line|#define DM_KCOPYD_H

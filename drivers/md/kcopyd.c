@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2002 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2002 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; *&n; * Kcopyd provides a simple interface for copying an area of one&n; * block-device to one or more other block-devices, with an asynchronous&n; * completion notification.&n; */
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
