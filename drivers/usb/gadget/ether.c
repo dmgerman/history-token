@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/uts.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -167,6 +168,10 @@ r_int
 id|rndis
 suffix:colon
 l_int|1
+suffix:semicolon
+DECL|member|cdc_filter
+id|u16
+id|cdc_filter
 suffix:semicolon
 DECL|member|todo
 r_int
@@ -348,6 +353,58 @@ c_func
 id|iProduct
 comma
 l_string|&quot;USB Product string&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* initial value, changed by &quot;ifconfig usb0 hw ether xx:xx:xx:xx:xx:xx&quot; */
+DECL|variable|dev_addr
+r_static
+r_char
+op_star
+id|__initdata
+id|dev_addr
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dev_addr
+comma
+id|charp
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|iProduct
+comma
+l_string|&quot;Device Ethernet Address&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* this address is invisible to ifconfig */
+DECL|variable|host_addr
+r_static
+r_char
+op_star
+id|__initdata
+id|host_addr
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|host_addr
+comma
+id|charp
+comma
+id|S_IRUGO
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|host_addr
+comma
+l_string|&quot;Host Ethernet Address&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -3426,6 +3483,11 @@ id|eth_reset_config
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* default:  pass all packets, no multicast filtering */
+id|dev-&gt;cdc_filter
+op_assign
+l_int|0x000f
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4047,11 +4109,30 @@ suffix:semicolon
 )brace
 multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; * section 3.6.2.1 table 4 has ACM requests; RNDIS requires the&n; * encapsulated command mechanism.&n; */
 DECL|macro|CDC_SEND_ENCAPSULATED_COMMAND
-mdefine_line|#define CDC_SEND_ENCAPSULATED_COMMAND&t;0x00&t;/* optional */
+mdefine_line|#define CDC_SEND_ENCAPSULATED_COMMAND&t;&t;0x00&t;/* optional */
 DECL|macro|CDC_GET_ENCAPSULATED_RESPONSE
-mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;0x01&t;/* optional */
+mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;&t;0x01&t;/* optional */
+DECL|macro|CDC_SET_ETHERNET_MULTICAST_FILTERS
+mdefine_line|#define CDC_SET_ETHERNET_MULTICAST_FILTERS&t;0x40&t;/* optional */
+DECL|macro|CDC_SET_ETHERNET_PM_PATTERN_FILTER
+mdefine_line|#define CDC_SET_ETHERNET_PM_PATTERN_FILTER&t;0x41&t;/* optional */
+DECL|macro|CDC_GET_ETHERNET_PM_PATTERN_FILTER
+mdefine_line|#define CDC_GET_ETHERNET_PM_PATTERN_FILTER&t;0x42&t;/* optional */
 DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
-mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;0x43&t;/* required */
+mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;&t;0x43&t;/* required */
+DECL|macro|CDC_GET_ETHERNET_STATISTIC
+mdefine_line|#define CDC_GET_ETHERNET_STATISTIC&t;&t;0x44&t;/* optional */
+multiline_comment|/* table 62; bits in cdc_filter */
+DECL|macro|CDC_PACKET_TYPE_PROMISCUOUS
+mdefine_line|#define&t;CDC_PACKET_TYPE_PROMISCUOUS&t;&t;(1 &lt;&lt; 0)
+DECL|macro|CDC_PACKET_TYPE_ALL_MULTICAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_ALL_MULTICAST&t;&t;(1 &lt;&lt; 1) /* no filter */
+DECL|macro|CDC_PACKET_TYPE_DIRECTED
+mdefine_line|#define&t;CDC_PACKET_TYPE_DIRECTED&t;&t;(1 &lt;&lt; 2)
+DECL|macro|CDC_PACKET_TYPE_BROADCAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_BROADCAST&t;&t;(1 &lt;&lt; 3)
+DECL|macro|CDC_PACKET_TYPE_MULTICAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_MULTICAST&t;&t;(1 &lt;&lt; 4) /* filtered */
 macro_line|#ifdef CONFIG_USB_ETH_RNDIS
 DECL|function|rndis_response_complete
 r_static
@@ -4840,7 +4921,11 @@ comma
 id|ctrl-&gt;wValue
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE: table 62 has 5 filter bits to reduce traffic,&n;&t;&t; * and we &quot;must&quot; support multicast and promiscuous.&n;&t;&t; * this NOP implements a bad filter...&n;&t;&t; */
+multiline_comment|/* NOTE: table 62 has 5 filter bits to reduce traffic,&n;&t;&t; * and we &quot;must&quot; support multicast and promiscuous.&n;&t;&t; * this NOP implements a bad filter (always promisc)&n;&t;&t; */
+id|dev-&gt;cdc_filter
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
 id|value
 op_assign
 l_int|0
@@ -6594,6 +6679,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* FIXME check dev-&gt;cdc_filter to decide whether to send this,&n;&t; * instead of acting as if CDC_PACKET_TYPE_PROMISCUOUS were&n;&t; * always set.  RNDIS has the same kind of outgoing filter.&n;&t; */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -7491,6 +7577,178 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|function|nibble
+r_static
+id|u8
+id|__init
+id|nibble
+(paren
+r_int
+r_char
+id|c
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|likely
+(paren
+id|isdigit
+(paren
+id|c
+)paren
+)paren
+)paren
+r_return
+id|c
+op_minus
+l_char|&squot;0&squot;
+suffix:semicolon
+id|c
+op_assign
+id|toupper
+(paren
+id|c
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+(paren
+id|isxdigit
+(paren
+id|c
+)paren
+)paren
+)paren
+r_return
+l_int|10
+op_plus
+id|c
+op_minus
+l_char|&squot;A&squot;
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|get_ether_addr
+r_static
+r_void
+id|__init
+id|get_ether_addr
+(paren
+r_const
+r_char
+op_star
+id|str
+comma
+id|u8
+op_star
+id|dev_addr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|str
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_int
+r_char
+id|num
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|str
+op_eq
+l_char|&squot;.&squot;
+)paren
+op_logical_or
+(paren
+op_star
+id|str
+op_eq
+l_char|&squot;:&squot;
+)paren
+)paren
+(brace
+id|str
+op_increment
+suffix:semicolon
+)brace
+id|num
+op_assign
+id|nibble
+c_func
+(paren
+op_star
+id|str
+op_increment
+)paren
+op_lshift
+l_int|4
+suffix:semicolon
+id|num
+op_or_assign
+(paren
+id|nibble
+c_func
+(paren
+op_star
+id|str
+op_increment
+)paren
+)paren
+suffix:semicolon
+id|dev_addr
+(braket
+id|i
+)braket
+op_assign
+id|num
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|is_valid_ether_addr
+(paren
+id|dev_addr
+)paren
+)paren
+r_return
+suffix:semicolon
+)brace
+id|random_ether_addr
+c_func
+(paren
+id|dev_addr
+)paren
+suffix:semicolon
+)brace
 r_static
 r_int
 id|__init
@@ -8222,15 +8480,15 @@ id|dev-&gt;zlp
 op_assign
 id|zlp
 suffix:semicolon
-multiline_comment|/* FIXME make these addresses configurable with module params.&n;&t; * also the manufacturer and product strings.&n;&t; */
-multiline_comment|/* one random address for the gadget device ... both of these could&n;&t; * reasonably come from an id prom or a module parameter.&n;&t; */
-id|random_ether_addr
+multiline_comment|/* Module params for these addresses should come from ID proms.&n;&t; * The host side address is used with CDC and RNDIS, and commonly&n;&t; * end ups in a persistent config database.&n;&t; */
+id|get_ether_addr
 c_func
 (paren
+id|dev_addr
+comma
 id|net-&gt;dev_addr
 )paren
 suffix:semicolon
-multiline_comment|/* ... another address for the host, on the other end of the&n;&t; * link, gets exported through CDC (see CDC spec table 41)&n;&t; * and RNDIS.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8239,9 +8497,11 @@ op_logical_or
 id|rndis
 )paren
 (brace
-id|random_ether_addr
+id|get_ether_addr
 c_func
 (paren
+id|host_addr
+comma
 id|dev-&gt;host_mac
 )paren
 suffix:semicolon

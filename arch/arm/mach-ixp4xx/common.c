@@ -492,7 +492,7 @@ r_if
 c_cond
 (paren
 id|line
-OG
+op_ge
 l_int|0
 )paren
 id|gpio_line_isr_clear

@@ -472,7 +472,7 @@ id|ohci-&gt;next_statechange
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|5
 )paren
@@ -1014,7 +1014,7 @@ id|ohci-&gt;next_statechange
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|250
 )paren

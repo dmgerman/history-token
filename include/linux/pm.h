@@ -604,11 +604,11 @@ DECL|struct|dev_pm_info
 r_struct
 id|dev_pm_info
 (brace
-macro_line|#ifdef&t;CONFIG_PM
 DECL|member|power_state
 id|u32
 id|power_state
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_PM
 DECL|member|saved_state
 id|u8
 op_star

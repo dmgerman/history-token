@@ -30,17 +30,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-op_star
-id|shpchprm_get_slot
-c_func
-(paren
-r_struct
-id|slot
-op_star
-id|slot
-)paren
-suffix:semicolon
 r_int
 id|shpchprm_find_available_resources
 c_func

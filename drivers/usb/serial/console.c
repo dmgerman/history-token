@@ -378,12 +378,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|serial_paranoia_check
-(paren
 id|serial
-comma
-id|__FUNCTION__
-)paren
+op_eq
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* no device is connected yet, sorry :( */

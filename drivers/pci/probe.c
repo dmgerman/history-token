@@ -940,7 +940,8 @@ id|dev-&gt;transparent
 id|printk
 c_func
 (paren
-l_string|&quot;Transparent bridge - %s&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;PCI: Transparent bridge - %s&bslash;n&quot;
 comma
 id|pci_name
 c_func

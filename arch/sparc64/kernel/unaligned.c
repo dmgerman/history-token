@@ -866,6 +866,7 @@ multiline_comment|/* This is just to make gcc think die_if_kernel does return...
 DECL|function|unaligned_panic
 r_static
 r_void
+id|__attribute_used__
 id|unaligned_panic
 c_func
 (paren

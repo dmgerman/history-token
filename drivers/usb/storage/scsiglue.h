@@ -4,7 +4,7 @@ DECL|macro|_SCSIGLUE_H_
 mdefine_line|#define _SCSIGLUE_H_
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;usb.h&quot;
 r_extern
 r_void

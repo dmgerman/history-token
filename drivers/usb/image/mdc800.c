@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * copyright (C) 1999/2000 by Henning Zabel &lt;henning@uni-paderborn.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-multiline_comment|/*&n; *&t;USB-Kernel Driver for the Mustek MDC800 Digital Camera&n; *&t;(c) 1999/2000 Henning Zabel &lt;henning@uni-paderborn.de&gt;&n; *&n; *&n; * The driver brings the USB functions of the MDC800 to Linux.&n; * To use the Camera you must support the USB Protocoll of the camera&n; * to the Kernel Node.&n; * The Driver uses a misc device Node. Create it with :&n; * mknod /dev/mustek c 180 32&n; *&n; * The driver supports only one camera.&n; * &n; * Fix: mdc800 used sleep_on and slept with io_lock held.&n; * Converted sleep_on to waitqueues with schedule_timeout and made io_lock&n; * a semaphore from a spinlock.&n; * by Oliver Neukum &lt;520047054719-0001@t-online.de&gt;&n; * (02/12/2001)&n; * &n; * Identify version on module load.&n; * (08/04/2001) gb&n; *&n; * version 0.7.5&n; * Fixed potential SMP races with Spinlocks.&n; * Thanks to Oliver Neukum &lt;oliver.neukum@lrz.uni-muenchen.de&gt; who &n; * noticed the race conditions.&n; * (30/10/2000)&n; *&n; * Fixed: Setting urb-&gt;dev before submitting urb.&n; * by Greg KH &lt;greg@kroah.com&gt;&n; * (13/10/2000)&n; *&n; * version 0.7.3&n; * bugfix : The mdc800-&gt;state field gets set to READY after the&n; * the diconnect function sets it to NOT_CONNECTED. This makes the&n; * driver running like the camera is connected and causes some&n; * hang ups.&n; *&n; * version 0.7.1&n; * MOD_INC and MOD_DEC are changed in usb_probe to prevent load/unload&n; * problems when compiled as Module.&n; * (04/04/2000)&n; *&n; * The mdc800 driver gets assigned the USB Minor 32-47. The Registration&n; * was updated to use these values.&n; * (26/03/2000)&n; *&n; * The Init und Exit Module Function are updated.&n; * (01/03/2000)&n; *&n; * version 0.7.0&n; * Rewrite of the driver : The driver now uses URB&squot;s. The old stuff&n; * has been removed.&n; *&n; * version 0.6.0&n; * Rewrite of this driver: The Emulation of the rs232 protocoll&n; * has been removed from the driver. A special executeCommand function&n; * for this driver is included to gphoto.&n; * The driver supports two kind of communication to bulk endpoints.&n; * Either with the dev-&gt;bus-&gt;ops-&gt;bulk... or with callback function.&n; * (09/11/1999)&n; *&n; * version 0.5.0:&n; * first Version that gets a version number. Most of the needed&n; * functions work.&n; * (20/10/1999)&n; */
+multiline_comment|/*&n; *&t;USB-Kernel Driver for the Mustek MDC800 Digital Camera&n; *&t;(c) 1999/2000 Henning Zabel &lt;henning@uni-paderborn.de&gt;&n; *&n; *&n; * The driver brings the USB functions of the MDC800 to Linux.&n; * To use the Camera you must support the USB Protocoll of the camera&n; * to the Kernel Node.&n; * The Driver uses a misc device Node. Create it with :&n; * mknod /dev/mustek c 180 32&n; *&n; * The driver supports only one camera.&n; * &n; * Fix: mdc800 used sleep_on and slept with io_lock held.&n; * Converted sleep_on to waitqueues with schedule_timeout and made io_lock&n; * a semaphore from a spinlock.&n; * by Oliver Neukum &lt;oliver@neukum.name&gt;&n; * (02/12/2001)&n; * &n; * Identify version on module load.&n; * (08/04/2001) gb&n; *&n; * version 0.7.5&n; * Fixed potential SMP races with Spinlocks.&n; * Thanks to Oliver Neukum &lt;oliver@neukum.name&gt; who &n; * noticed the race conditions.&n; * (30/10/2000)&n; *&n; * Fixed: Setting urb-&gt;dev before submitting urb.&n; * by Greg KH &lt;greg@kroah.com&gt;&n; * (13/10/2000)&n; *&n; * version 0.7.3&n; * bugfix : The mdc800-&gt;state field gets set to READY after the&n; * the diconnect function sets it to NOT_CONNECTED. This makes the&n; * driver running like the camera is connected and causes some&n; * hang ups.&n; *&n; * version 0.7.1&n; * MOD_INC and MOD_DEC are changed in usb_probe to prevent load/unload&n; * problems when compiled as Module.&n; * (04/04/2000)&n; *&n; * The mdc800 driver gets assigned the USB Minor 32-47. The Registration&n; * was updated to use these values.&n; * (26/03/2000)&n; *&n; * The Init und Exit Module Function are updated.&n; * (01/03/2000)&n; *&n; * version 0.7.0&n; * Rewrite of the driver : The driver now uses URB&squot;s. The old stuff&n; * has been removed.&n; *&n; * version 0.6.0&n; * Rewrite of this driver: The Emulation of the rs232 protocoll&n; * has been removed from the driver. A special executeCommand function&n; * for this driver is included to gphoto.&n; * The driver supports two kind of communication to bulk endpoints.&n; * Either with the dev-&gt;bus-&gt;ops-&gt;bulk... or with callback function.&n; * (09/11/1999)&n; *&n; * version 0.5.0:&n; * first Version that gets a version number. Most of the needed&n; * functions work.&n; * (20/10/1999)&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -719,6 +719,9 @@ comma
 id|current
 )paren
 suffix:semicolon
+r_int
+id|timeout
+suffix:semicolon
 id|mdc800-&gt;camera_request_ready
 op_assign
 l_int|1
@@ -741,14 +744,6 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mdc800-&gt;irq_woken
-)paren
-(brace
-r_int
 id|timeout
 op_assign
 id|msec
@@ -760,9 +755,18 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|mdc800-&gt;irq_woken
+op_logical_and
 id|timeout
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -770,7 +774,6 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
-)brace
 )brace
 id|remove_wait_queue
 c_func
@@ -1872,6 +1875,9 @@ id|ptr
 op_assign
 id|buf
 suffix:semicolon
+r_int
+id|timeout
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -2060,20 +2066,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mdc800-&gt;downloaded
-)paren
-(brace
-r_int
 id|timeout
 op_assign
 id|TO_DOWNLOAD_GET_READY
@@ -2085,9 +2077,18 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|mdc800-&gt;downloaded
+op_logical_and
 id|timeout
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -2095,7 +2096,6 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
-)brace
 )brace
 id|set_current_state
 c_func
@@ -2428,6 +2428,9 @@ l_int|8
 r_int
 id|answersize
 suffix:semicolon
+r_int
+id|timeout
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2521,20 +2524,6 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mdc800-&gt;written
-)paren
-(brace
-r_int
 id|timeout
 op_assign
 id|TO_WRITE_GET_READY
@@ -2546,9 +2535,18 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|mdc800-&gt;written
+op_logical_and
 id|timeout
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -2556,7 +2554,6 @@ id|schedule_timeout
 id|timeout
 )paren
 suffix:semicolon
-)brace
 )brace
 id|set_current_state
 c_func

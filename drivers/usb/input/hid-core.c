@@ -6234,8 +6234,20 @@ DECL|macro|USB_DEVICE_ID_KBGEAR_JAMSTUDIO
 mdefine_line|#define USB_DEVICE_ID_KBGEAR_JAMSTUDIO  0x1001
 DECL|macro|USB_VENDOR_ID_AIPTEK
 mdefine_line|#define USB_VENDOR_ID_AIPTEK&t;&t;0x08ca
-DECL|macro|USB_DEVICE_ID_AIPTEK_6000
-mdefine_line|#define USB_DEVICE_ID_AIPTEK_6000&t;0x0020
+DECL|macro|USB_DEVICE_ID_AIPTEK_01
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_01&t;&t;0x0001
+DECL|macro|USB_DEVICE_ID_AIPTEK_10
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_10&t;&t;0x0010
+DECL|macro|USB_DEVICE_ID_AIPTEK_20
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_20&t;&t;0x0020
+DECL|macro|USB_DEVICE_ID_AIPTEK_21
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_21&t;&t;0x0021
+DECL|macro|USB_DEVICE_ID_AIPTEK_22
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_22&t;&t;0x0022
+DECL|macro|USB_DEVICE_ID_AIPTEK_23
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_23&t;&t;0x0023
+DECL|macro|USB_DEVICE_ID_AIPTEK_24
+mdefine_line|#define USB_DEVICE_ID_AIPTEK_24&t;&t;0x0024
 DECL|macro|USB_VENDOR_ID_GRIFFIN
 mdefine_line|#define USB_VENDOR_ID_GRIFFIN&t;&t;0x077d
 DECL|macro|USB_DEVICE_ID_POWERMATE
@@ -6351,7 +6363,55 @@ op_assign
 (brace
 id|USB_VENDOR_ID_AIPTEK
 comma
-id|USB_DEVICE_ID_AIPTEK_6000
+id|USB_DEVICE_ID_AIPTEK_01
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_10
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_20
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_21
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_22
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_23
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_AIPTEK
+comma
+id|USB_DEVICE_ID_AIPTEK_24
 comma
 id|HID_QUIRK_IGNORE
 )brace
