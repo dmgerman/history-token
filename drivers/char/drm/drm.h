@@ -18,8 +18,8 @@ DECL|macro|DRM_IOC_READWRITE
 mdefine_line|#define DRM_IOC_READWRITE&t;_IOC_READ|_IOC_WRITE
 DECL|macro|DRM_IOC
 mdefine_line|#define DRM_IOC(dir, group, nr, size) _IOC(dir, group, nr, size)
-macro_line|#elif defined(__FreeBSD__) || defined(__NetBSD__)
-macro_line|#if defined(__FreeBSD__) &amp;&amp; defined(XFree86Server)
+macro_line|#elif defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+macro_line|#if defined(__FreeBSD__) &amp;&amp; defined(IN_MODULE)
 multiline_comment|/* Prevent name collision when including sys/ioccom.h */
 DECL|macro|ioctl
 macro_line|#undef ioctl
@@ -176,6 +176,31 @@ suffix:semicolon
 DECL|typedef|drm_tex_region_t
 )brace
 id|drm_tex_region_t
+suffix:semicolon
+multiline_comment|/**&n; * Hardware lock.&n; *&n; * The lock structure is a simple cache-line aligned integer.  To avoid&n; * processor bus contention on a multiprocessor system, there should not be any&n; * other data stored in the same cache line.&n; */
+DECL|struct|drm_hw_lock
+r_typedef
+r_struct
+id|drm_hw_lock
+(brace
+DECL|member|lock
+id|__volatile__
+r_int
+r_int
+id|lock
+suffix:semicolon
+multiline_comment|/**&lt; lock variable */
+DECL|member|padding
+r_char
+id|padding
+(braket
+l_int|60
+)braket
+suffix:semicolon
+multiline_comment|/**&lt; Pad to cache line */
+DECL|typedef|drm_hw_lock_t
+)brace
+id|drm_hw_lock_t
 suffix:semicolon
 multiline_comment|/**&n; * DRM_IOCTL_VERSION ioctl argument type.&n; * &n; * &bslash;sa drmGetVersion().&n; */
 DECL|struct|drm_version

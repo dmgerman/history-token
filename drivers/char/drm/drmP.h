@@ -814,31 +814,6 @@ DECL|typedef|drm_buf_entry_t
 )brace
 id|drm_buf_entry_t
 suffix:semicolon
-multiline_comment|/**&n; * Hardware lock.&n; *&n; * The lock structure is a simple cache-line aligned integer.  To avoid&n; * processor bus contention on a multiprocessor system, there should not be any&n; * other data stored in the same cache line.&n; */
-DECL|struct|drm_hw_lock
-r_typedef
-r_struct
-id|drm_hw_lock
-(brace
-DECL|member|lock
-id|__volatile__
-r_int
-r_int
-id|lock
-suffix:semicolon
-multiline_comment|/**&lt; lock variable */
-DECL|member|padding
-r_char
-id|padding
-(braket
-l_int|60
-)braket
-suffix:semicolon
-multiline_comment|/**&lt; Pad to cache line */
-DECL|typedef|drm_hw_lock_t
-)brace
-id|drm_hw_lock_t
-suffix:semicolon
 multiline_comment|/** File private data */
 DECL|struct|drm_file
 r_typedef

@@ -3473,7 +3473,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __HAVE_PCI_DMA */
-macro_line|#ifdef __HAVE_SG
+macro_line|#if __HAVE_SG
 DECL|function|addbufs_sg
 r_int
 id|DRM
