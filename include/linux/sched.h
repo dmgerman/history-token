@@ -848,10 +848,15 @@ r_int
 r_int
 id|sleep_avg
 suffix:semicolon
-DECL|member|last_run
+DECL|member|timestamp
 r_int
 r_int
-id|last_run
+r_int
+id|timestamp
+suffix:semicolon
+DECL|member|activated
+r_int
+id|activated
 suffix:semicolon
 DECL|member|policy
 r_int
@@ -1482,6 +1487,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_extern
+r_int
+r_int
+r_int
+id|sched_clock
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 r_extern
 r_void

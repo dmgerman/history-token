@@ -3826,9 +3826,12 @@ id|current-&gt;time_slice
 op_rshift_assign
 l_int|1
 suffix:semicolon
-id|p-&gt;last_run
+id|p-&gt;timestamp
 op_assign
-id|jiffies
+id|sched_clock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
