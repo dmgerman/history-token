@@ -2207,9 +2207,10 @@ r_goto
 id|timeout
 suffix:semicolon
 )brace
-id|yield
+id|msleep
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2323,9 +2324,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|yield
+id|msleep
 c_func
 (paren
+l_int|1
 )paren
 suffix:semicolon
 )brace
