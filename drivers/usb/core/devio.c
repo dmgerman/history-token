@@ -6060,10 +6060,8 @@ r_else
 r_if
 c_cond
 (paren
-id|driver-&gt;owner
-op_logical_and
 op_logical_neg
-id|try_inc_mod_count
+id|try_module_get
 (paren
 id|driver-&gt;owner
 )paren
@@ -6097,12 +6095,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|put_module
 (paren
 id|driver-&gt;owner
 )paren
