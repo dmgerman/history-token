@@ -665,14 +665,9 @@ DECL|struct|udp6_sock
 r_struct
 id|udp6_sock
 (brace
-DECL|member|inet
-r_struct
-id|inet_sock
-id|inet
-suffix:semicolon
 DECL|member|udp
 r_struct
-id|udp_opt
+id|udp_sock
 id|udp
 suffix:semicolon
 DECL|member|inet6

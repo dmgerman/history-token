@@ -1378,7 +1378,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -1423,7 +1423,7 @@ op_star
 id|sk
 comma
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 )paren
@@ -1851,7 +1851,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -2705,7 +2705,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -3712,7 +3712,7 @@ l_int|1
 suffix:semicolon
 macro_line|#else
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -4032,7 +4032,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -5029,7 +5029,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
@@ -5236,7 +5236,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|udp_opt
+id|udp_sock
 op_star
 id|up
 op_assign
