@@ -416,5 +416,10 @@ op_star
 id|info
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|subsystem
+id|pci_hotplug_slots_subsys
+suffix:semicolon
 macro_line|#endif
 eof
