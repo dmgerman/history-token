@@ -528,6 +528,12 @@ op_assign
 l_int|18
 comma
 multiline_comment|/* int: Number of available Huge Pages */
+DECL|enumerator|VM_SWAPPINESS
+id|VM_SWAPPINESS
+op_assign
+l_int|19
+comma
+multiline_comment|/* Tendency to steal mapped memory */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

@@ -479,6 +479,10 @@ r_int
 id|nr_pages
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|vm_swappiness
+suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
 r_int
 id|swap_readpage
