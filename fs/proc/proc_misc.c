@@ -2083,7 +2083,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|i
-op_le
+OL
 id|NR_IRQS
 suffix:semicolon
 id|i
