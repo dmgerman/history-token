@@ -80,8 +80,7 @@ op_star
 id|_do_idle
 )paren
 (paren
-r_int
-id|mode
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Processor architecture specific&n;&t; */
@@ -309,7 +308,7 @@ mdefine_line|#define cpu_proc_fin()&t;&t;&t;&t;processor._proc_fin()
 DECL|macro|cpu_reset
 mdefine_line|#define cpu_reset(addr)&t;&t;&t;&t;processor.reset(addr)
 DECL|macro|cpu_do_idle
-mdefine_line|#define cpu_do_idle(mode)&t;&t;&t;processor._do_idle(mode)
+mdefine_line|#define cpu_do_idle()&t;&t;&t;&t;processor._do_idle()
 DECL|macro|cpu_cache_clean_invalidate_all
 mdefine_line|#define cpu_cache_clean_invalidate_all()&t;processor.cache.clean_invalidate_all()
 DECL|macro|cpu_cache_clean_invalidate_range

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-arc/system.h&n; *&n; *  Copyright (C) 1996-1999 Russell King and Dave Gilbert&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func
@@ -8,19 +9,6 @@ c_func
 r_void
 )paren
 (brace
-r_while
-c_loop
-(paren
-op_logical_neg
-id|need_resched
-c_func
-(paren
-)paren
-op_logical_and
-op_logical_neg
-id|hlt_counter
-)paren
-suffix:semicolon
 )brace
 DECL|function|arch_reset
 r_static

@@ -4,6 +4,7 @@ DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func
@@ -11,7 +12,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* fixme: this needs to be cleaned up (converted from ASM code) --rmk */
 op_star
 (paren
 r_int

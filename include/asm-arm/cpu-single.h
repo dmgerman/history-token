@@ -89,8 +89,7 @@ r_int
 id|cpu_do_idle
 c_func
 (paren
-r_int
-id|mode
+r_void
 )paren
 suffix:semicolon
 r_extern

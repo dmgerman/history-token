@@ -2,10 +2,10 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-anakin/system.h&n; *&n; * 
 macro_line|#ifndef __ASM_ARCH_SYSTEM_H
 DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H
+DECL|function|arch_idle
 r_static
 r_inline
 r_void
-DECL|function|arch_idle
 id|arch_idle
 c_func
 (paren

@@ -5,6 +5,7 @@ mdefine_line|#define __ASM_ARCH_SYSTEM_H
 macro_line|#include &lt;asm/hardware/clps7111.h&gt;
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func
