@@ -26,13 +26,16 @@ id|elf_aux_hwcap
 suffix:semicolon
 DECL|variable|vsyscall_ehdr
 r_int
+r_int
 id|vsyscall_ehdr
 suffix:semicolon
 DECL|variable|vsyscall_end
 r_int
+r_int
 id|vsyscall_end
 suffix:semicolon
 DECL|variable|__kernel_vsyscall
+r_int
 r_int
 id|__kernel_vsyscall
 suffix:semicolon

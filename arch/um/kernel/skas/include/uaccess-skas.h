@@ -5,7 +5,7 @@ mdefine_line|#define __SKAS_UACCESS_H
 macro_line|#include &quot;asm/errno.h&quot;
 macro_line|#include &quot;asm/fixmap.h&quot;
 DECL|macro|access_ok_skas
-mdefine_line|#define access_ok_skas(type, addr, size) &bslash;&n;&t;((segment_eq(get_fs(), KERNEL_DS)) || &bslash;&n;&t; (((unsigned long) (addr) &lt; TASK_SIZE) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) + (size) &lt;= TASK_SIZE)) || &bslash;&n;&t; ((type == VERIFY_READ ) &amp;&amp; &bslash;&n;&t;  (size &lt;= (FIXADDR_USER_END - FIXADDR_USER_START)) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) &gt;= FIXADDR_USER_START) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) + (size) &lt;= FIXADDR_USER_END)))
+mdefine_line|#define access_ok_skas(type, addr, size) &bslash;&n;&t;((segment_eq(get_fs(), KERNEL_DS)) || &bslash;&n;&t; (((unsigned long) (addr) &lt; TASK_SIZE) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) + (size) &lt;= TASK_SIZE)) || &bslash;&n;&t; ((type == VERIFY_READ ) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) &gt;= FIXADDR_USER_START) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) + (size) &lt;= FIXADDR_USER_END) &amp;&amp; &bslash;&n;&t;  ((unsigned long) (addr) + (size) &gt;= (unsigned long)(addr))))
 DECL|function|verify_area_skas
 r_static
 r_inline
