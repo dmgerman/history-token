@@ -78,6 +78,11 @@ id|this_id
 op_assign
 l_int|7
 comma
+dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE
