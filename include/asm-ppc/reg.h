@@ -573,6 +573,21 @@ DECL|macro|SPRN_VRSAVE
 mdefine_line|#define SPRN_VRSAVE&t;0x100&t;/* Vector Register Save Register */
 DECL|macro|SPRN_XER
 mdefine_line|#define SPRN_XER&t;0x001&t;/* Fixed Point Exception Register */
+multiline_comment|/* Bit definitions for MMCR0 and PMC1 / PMC2. */
+DECL|macro|MMCR0_PMC1_CYCLES
+mdefine_line|#define MMCR0_PMC1_CYCLES&t;(1 &lt;&lt; 7)
+DECL|macro|MMCR0_PMC1_ICACHEMISS
+mdefine_line|#define MMCR0_PMC1_ICACHEMISS&t;(5 &lt;&lt; 7)
+DECL|macro|MMCR0_PMC1_DTLB
+mdefine_line|#define MMCR0_PMC1_DTLB&t;&t;(6 &lt;&lt; 7)
+DECL|macro|MMCR0_PMC2_DCACHEMISS
+mdefine_line|#define MMCR0_PMC2_DCACHEMISS&t;0x6
+DECL|macro|MMCR0_PMC2_CYCLES
+mdefine_line|#define MMCR0_PMC2_CYCLES&t;0x1
+DECL|macro|MMCR0_PMC2_ITLB
+mdefine_line|#define MMCR0_PMC2_ITLB&t;&t;0x7
+DECL|macro|MMCR0_PMC2_LOADMISSTIME
+mdefine_line|#define MMCR0_PMC2_LOADMISSTIME&t;0x5
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */
 DECL|macro|CTR
 mdefine_line|#define CTR&t;SPRN_CTR&t;/* Counter Register */
