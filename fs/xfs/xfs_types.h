@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_TYPES_H__
 DECL|macro|__XFS_TYPES_H__
 mdefine_line|#define __XFS_TYPES_H__
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n; * POSIX Extensions&n; */
 DECL|typedef|uchar_t
 r_typedef
@@ -83,6 +84,18 @@ r_int
 r_int
 id|__uint64_t
 suffix:semicolon
+DECL|enumerator|B_FALSE
+DECL|enumerator|B_TRUE
+DECL|typedef|boolean_t
+r_typedef
+r_enum
+(brace
+id|B_FALSE
+comma
+id|B_TRUE
+)brace
+id|boolean_t
+suffix:semicolon
 DECL|typedef|prid_t
 r_typedef
 id|__int64_t
@@ -124,44 +137,27 @@ r_typedef
 id|__u32
 id|xfs_dev_t
 suffix:semicolon
-DECL|struct|xfs_dirent
+DECL|typedef|timespec_t
 r_typedef
 r_struct
-id|xfs_dirent
+id|timespec
+id|timespec_t
+suffix:semicolon
+r_typedef
+r_struct
 (brace
-multiline_comment|/* data from readdir() */
-DECL|member|d_ino
-id|xfs_ino_t
-id|d_ino
-suffix:semicolon
-multiline_comment|/* inode number of entry */
-DECL|member|d_off
-id|xfs_off_t
-id|d_off
-suffix:semicolon
-multiline_comment|/* offset of disk directory entry */
-DECL|member|d_reclen
+DECL|member|__u_bits
 r_int
-r_int
-id|d_reclen
-suffix:semicolon
-multiline_comment|/* length of this record */
-DECL|member|d_name
 r_char
-id|d_name
+id|__u_bits
 (braket
-l_int|1
+l_int|16
 )braket
 suffix:semicolon
-multiline_comment|/* name of file */
-DECL|typedef|xfs_dirent_t
+DECL|typedef|uuid_t
 )brace
-id|xfs_dirent_t
+id|uuid_t
 suffix:semicolon
-DECL|macro|DIRENTBASESIZE
-mdefine_line|#define DIRENTBASESIZE&t;&t;(((xfs_dirent_t *)0)-&gt;d_name - (char *)0)
-DECL|macro|DIRENTSIZE
-mdefine_line|#define DIRENTSIZE(namelen)&t;&bslash;&n;&t;((DIRENTBASESIZE + (namelen) + &bslash;&n;&t;&t;sizeof(xfs_off_t)) &amp; ~(sizeof(xfs_off_t) - 1))
 multiline_comment|/* __psint_t is the same size as a pointer */
 macro_line|#if (BITS_PER_LONG == 32)
 DECL|typedef|__psint_t

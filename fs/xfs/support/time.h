@@ -4,12 +4,6 @@ DECL|macro|__XFS_SUPPORT_TIME_H__
 mdefine_line|#define __XFS_SUPPORT_TIME_H__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-DECL|typedef|timespec_t
-r_typedef
-r_struct
-id|timespec
-id|timespec_t
-suffix:semicolon
 DECL|function|delay
 r_static
 r_inline

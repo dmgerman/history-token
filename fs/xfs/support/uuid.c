@@ -219,7 +219,7 @@ id|uuid
 )paren
 suffix:semicolon
 )brace
-id|boolean_t
+r_int
 DECL|function|uuid_is_nil
 id|uuid_is_nil
 c_func
@@ -285,7 +285,7 @@ id|B_TRUE
 suffix:semicolon
 multiline_comment|/* is nil */
 )brace
-id|boolean_t
+r_int
 DECL|function|uuid_equal
 id|uuid_equal
 c_func

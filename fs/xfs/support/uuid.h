@@ -2,33 +2,6 @@ multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPPORT_UUID_H__
 DECL|macro|__XFS_SUPPORT_UUID_H__
 mdefine_line|#define __XFS_SUPPORT_UUID_H__
-r_typedef
-r_enum
-(brace
-DECL|enumerator|B_FALSE
-id|B_FALSE
-comma
-DECL|enumerator|B_TRUE
-id|B_TRUE
-DECL|typedef|boolean_t
-)brace
-id|boolean_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|__u_bits
-r_int
-r_char
-id|__u_bits
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|typedef|uuid_t
-)brace
-id|uuid_t
-suffix:semicolon
 r_void
 id|uuid_create_nil
 c_func
@@ -38,7 +11,7 @@ op_star
 id|uuid
 )paren
 suffix:semicolon
-id|boolean_t
+r_int
 id|uuid_is_nil
 c_func
 (paren
@@ -47,7 +20,7 @@ op_star
 id|uuid
 )paren
 suffix:semicolon
-id|boolean_t
+r_int
 id|uuid_equal
 c_func
 (paren
