@@ -3980,6 +3980,8 @@ suffix:semicolon
 r_int
 id|possible_inq_resp_len
 suffix:semicolon
+id|repeat_inquiry
+suffix:colon
 id|SCSI_LOG_SCAN_BUS
 c_func
 (paren
@@ -4342,8 +4344,26 @@ c_cond
 (paren
 id|sreq-&gt;sr_result
 )paren
-r_return
+(brace
+multiline_comment|/* if the longer inquiry has failed, flag the device&n;&t;&t;&t; * as only accepting 36 byte inquiries and retry the&n;&t;&t;&t; * 36 byte inquiry */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;scsi scan: %d byte inquiry failed with code %d.  Consider BLIST_INQUIRY_36 for this device&bslash;n&quot;
+comma
+id|sreq-&gt;sr_result
+)paren
 suffix:semicolon
+op_star
+id|bflags
+op_or_assign
+id|BLIST_INQUIRY_36
+suffix:semicolon
+r_goto
+id|repeat_inquiry
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * The INQUIRY can change, this means the length can change.&n;&t;&t; */
 id|possible_inq_resp_len
 op_assign
