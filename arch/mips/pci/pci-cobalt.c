@@ -1150,7 +1150,7 @@ comma
 (brace
 id|PCI_FIXUP_HEADER
 comma
-id|PCI_VENDOR_ID_GALILEO
+id|PCI_VENDOR_ID_MARVELL
 comma
 id|PCI_ANY_ID
 comma

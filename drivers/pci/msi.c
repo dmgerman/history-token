@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/pci/msi.c&n; */
+multiline_comment|/*&n; * File:&t;msi.c&n; * Purpose:&t;PCI Message Signaled Interrupt (MSI)&n; *&n; * Copyright (C) 2003-2004 Intel&n; * Copyright (C) Tom Long Nguyen (tom.l.nguyen@intel.com)&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

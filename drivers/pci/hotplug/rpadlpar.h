@@ -1,0 +1,42 @@
+multiline_comment|/*&n; * Interface for Dynamic Logical Partitioning of I/O Slots on&n; * RPA-compliant PPC64 platform.&n; *&n; * John Rose &lt;johnrose@austin.ibm.com&gt;&n; * October 2003&n; *&n; * Copyright (C) 2003 IBM.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+macro_line|#ifndef _RPADLPAR_IO_H_
+DECL|macro|_RPADLPAR_IO_H_
+mdefine_line|#define _RPADLPAR_IO_H_
+r_extern
+r_int
+id|dlpar_sysfs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|dlpar_sysfs_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dlpar_add_slot
+c_func
+(paren
+r_char
+op_star
+id|drc_name
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dlpar_remove_slot
+c_func
+(paren
+r_char
+op_star
+id|drc_name
+)paren
+suffix:semicolon
+macro_line|#endif
+eof
