@@ -58,14 +58,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|init_modules
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|sock_init
 c_func
 (paren
