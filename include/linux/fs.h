@@ -573,7 +573,6 @@ DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 multiline_comment|/* #include &lt;linux/umsdos_fs_i.h&gt; */
-macro_line|#include &lt;linux/romfs_fs_i.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -1190,12 +1189,6 @@ id|i_generation
 suffix:semicolon
 r_union
 (brace
-multiline_comment|/* struct umsdos_inode_info&t;umsdos_i; */
-DECL|member|romfs_i
-r_struct
-id|romfs_inode_info
-id|romfs_i
-suffix:semicolon
 DECL|member|generic_ip
 r_void
 op_star
