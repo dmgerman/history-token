@@ -169,6 +169,13 @@ id|fh
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
+r_struct
+id|bttv
+op_star
+id|btv
+op_assign
+id|fh-&gt;btv
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -191,6 +198,14 @@ l_int|2
 op_star
 l_int|2048
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;setup: lines=%d&bslash;n&quot;
+comma
+id|fh-&gt;lines
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -210,6 +225,10 @@ r_struct
 id|videobuf_buffer
 op_star
 id|vb
+comma
+r_enum
+id|v4l2_field
+id|field
 )paren
 (brace
 r_struct
@@ -320,10 +339,14 @@ id|buf-&gt;vb.state
 op_assign
 id|STATE_PREPARED
 suffix:semicolon
+id|buf-&gt;vb.field
+op_assign
+id|field
+suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;buf prepare %p: top=%p bottom=%p&bslash;n&quot;
+l_string|&quot;buf prepare %p: top=%p bottom=%p field=%s&bslash;n&quot;
 comma
 id|vb
 comma
@@ -332,6 +355,11 @@ id|buf-&gt;top
 comma
 op_amp
 id|buf-&gt;bottom
+comma
+id|v4l2_field_names
+(braket
+id|buf-&gt;vb.field
+)braket
 )paren
 suffix:semicolon
 r_return

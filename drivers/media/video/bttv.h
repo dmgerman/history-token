@@ -149,6 +149,8 @@ DECL|macro|BTTV_RV605
 mdefine_line|#define BTTV_RV605          0x4a
 DECL|macro|BTTV_WINDVR
 mdefine_line|#define BTTV_WINDVR         0x4c
+DECL|macro|BTTV_KWORLD
+mdefine_line|#define BTTV_KWORLD         0x4e
 DECL|macro|BTTV_HAUPPAUGEPVR
 mdefine_line|#define BTTV_HAUPPAUGEPVR   0x50
 DECL|macro|BTTV_GVBCTV5PCI
@@ -177,6 +179,12 @@ DECL|macro|BTTV_OSPREY2000
 mdefine_line|#define BTTV_OSPREY2000     0x5c
 DECL|macro|BTTV_IDS_EAGLE
 mdefine_line|#define BTTV_IDS_EAGLE      0x5d
+DECL|macro|BTTV_PINNACLESAT
+mdefine_line|#define BTTV_PINNACLESAT    0x5e
+DECL|macro|BTTV_FORMAC_PROTV
+mdefine_line|#define BTTV_FORMAC_PROTV   0x5f
+DECL|macro|BTTV_EURESYS_PICOLO
+mdefine_line|#define BTTV_EURESYS_PICOLO 0x61
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -226,6 +234,11 @@ DECL|macro|WINVIEW_PT2254_DATA
 mdefine_line|#define WINVIEW_PT2254_DATA 0x20
 DECL|macro|WINVIEW_PT2254_STROBE
 mdefine_line|#define WINVIEW_PT2254_STROBE 0x80
+multiline_comment|/* digital_mode */
+DECL|macro|DIGITAL_MODE_VIDEO
+mdefine_line|#define DIGITAL_MODE_VIDEO 1
+DECL|macro|DIGITAL_MODE_CAMERA
+mdefine_line|#define DIGITAL_MODE_CAMERA 2
 r_struct
 id|bttv
 suffix:semicolon
@@ -254,6 +267,11 @@ DECL|member|svhs
 r_int
 id|svhs
 suffix:semicolon
+DECL|member|digital_mode
+r_int
+id|digital_mode
+suffix:semicolon
+singleline_comment|// DIGITAL_MODE_CAMERA or DIGITAL_MODE_VIDEO
 DECL|member|gpiomask
 id|u32
 id|gpiomask
@@ -493,6 +511,7 @@ r_int
 op_star
 id|type
 comma
+r_int
 r_int
 op_star
 id|cardid
