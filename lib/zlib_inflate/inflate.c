@@ -400,7 +400,7 @@ macro_line|#undef NEEDBYTE
 DECL|macro|NEXTBYTE
 macro_line|#undef NEXTBYTE
 DECL|macro|NEEDBYTE
-mdefine_line|#define NEEDBYTE {if(z-&gt;avail_in==0)goto empty;r=f;}
+mdefine_line|#define NEEDBYTE {if(z-&gt;avail_in==0)goto empty;r=trv;}
 DECL|macro|NEXTBYTE
 mdefine_line|#define NEXTBYTE (z-&gt;avail_in--,z-&gt;total_in++,*z-&gt;next_in++)
 DECL|function|zlib_inflate
