@@ -115,9 +115,7 @@ id|buf
 comma
 id|len
 comma
-id|HZ
-op_star
-l_int|5
+l_int|5000
 )paren
 suffix:semicolon
 id|dbg
