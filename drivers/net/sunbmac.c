@@ -5336,11 +5336,9 @@ suffix:semicolon
 multiline_comment|/* Get a new device struct for this interface. */
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 r_struct
@@ -5381,16 +5379,6 @@ comma
 id|version
 )paren
 suffix:semicolon
-multiline_comment|/* Report what we have found to the user. */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: BigMAC 100baseT Ethernet &quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 (paren
@@ -5412,11 +5400,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
-c_func
-(paren
-l_string|&quot;%2.2x%c&quot;
-comma
 id|dev-&gt;dev_addr
 (braket
 id|i
@@ -5426,22 +5409,6 @@ id|idprom-&gt;id_ethaddr
 (braket
 id|i
 )braket
-comma
-id|i
-op_eq
-l_int|5
-ques
-c_cond
-l_char|&squot; &squot;
-suffix:colon
-l_char|&squot;:&squot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Setup softc, with backpointers to QEC and BigMAC SBUS device structs. */
 id|bp
@@ -5908,6 +5875,27 @@ id|dev-&gt;dma
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;BIGMAC: Cannot register device.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fail_and_cleanup
+suffix:semicolon
+)brace
 multiline_comment|/* Put us into the list of instances attached for later driver&n;&t; * exit.&n;&t; */
 id|bp-&gt;next_module
 op_assign
@@ -5916,6 +5904,55 @@ suffix:semicolon
 id|root_bigmac_dev
 op_assign
 id|bp
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: BigMAC 100baseT Ethernet &quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|6
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%2.2x%c&quot;
+comma
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+comma
+id|i
+op_eq
+l_int|5
+ques
+c_cond
+l_char|&squot; &squot;
+suffix:colon
+l_char|&squot;:&squot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -6000,7 +6037,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* This also frees the co-located &squot;dev-&gt;priv&squot; */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
