@@ -159,6 +159,13 @@ l_string|&quot;AudigyLS [SB0310]&quot;
 )brace
 comma
 (brace
+l_int|0x10051102
+comma
+l_string|&quot;AudigyLS [SB0310b]&quot;
+)brace
+comma
+multiline_comment|/* Unknown AudigyLS that also says SB0310 on it */
+(brace
 l_int|0x10061102
 comma
 l_string|&quot;Live! 7.1 24bit [SB0410]&quot;
@@ -4208,7 +4215,7 @@ c_func
 (paren
 id|pci
 comma
-l_int|0x0fffffff
+l_int|0xffffffffUL
 )paren
 OL
 l_int|0
@@ -4218,7 +4225,7 @@ c_func
 (paren
 id|pci
 comma
-l_int|0x0fffffff
+l_int|0xffffffffUL
 )paren
 OL
 l_int|0
@@ -4228,7 +4235,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;error to set 28bit mask DMA&bslash;n&quot;
+l_string|&quot;error to set 32bit mask DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_disable_device
