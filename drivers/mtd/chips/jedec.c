@@ -1,4 +1,4 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.20 2004/07/12 14:03:01 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.21 2004/08/09 13:19:43 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -4023,14 +4023,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr

@@ -1819,10 +1819,12 @@ id|vma-&gt;vm_file
 op_ne
 l_int|NULL
 )paren
-id|set_thread_flag
+id|set_thread_fault_code
 c_func
 (paren
-id|TIF_BLKCOMMIT
+id|fault_code
+op_or
+id|FAULT_CODE_BLKCOMMIT
 )paren
 suffix:semicolon
 )brace
@@ -2058,12 +2060,6 @@ id|set_thread_fault_code
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-id|clear_thread_flag
-c_func
-(paren
-id|TIF_BLKCOMMIT
 )paren
 suffix:semicolon
 id|current_thread_info

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.32 2003/05/21 15:15:07 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
+multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.33 2004/08/09 13:19:44 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -173,17 +173,8 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-(paren
-op_star
-(paren
-id|instr-&gt;callback
-)paren
-)paren
+id|mtd_erase_callback
+c_func
 (paren
 id|instr
 )paren

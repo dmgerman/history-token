@@ -1878,7 +1878,7 @@ l_int|NULL
 r_return
 id|skb-&gt;len
 suffix:semicolon
-id|read_lock
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -2240,7 +2240,7 @@ id|cl
 suffix:semicolon
 id|out
 suffix:colon
-id|read_unlock
+id|read_unlock_bh
 c_func
 (paren
 op_amp

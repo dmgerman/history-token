@@ -4806,7 +4806,9 @@ id|output_page
 op_assign
 id|ei_local-&gt;tx_start_page
 op_plus
-id|TX_1X_PAGES
+id|TX_PAGES
+op_div
+l_int|2
 suffix:semicolon
 id|ei_local-&gt;tx2
 op_assign
