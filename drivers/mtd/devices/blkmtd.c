@@ -5109,22 +5109,12 @@ suffix:semicolon
 multiline_comment|/* get the block device */
 id|bdev
 op_assign
-id|bdget
+id|open_by_devnum
 c_func
 (paren
 id|rdev
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|blkdev_get
-c_func
-(paren
-id|bdev
 comma
-id|mode
-comma
-l_int|0
+id|FMODE_READ
 comma
 id|BDEV_RAW
 )paren
@@ -5132,7 +5122,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
+id|IS_ERR
+c_func
+(paren
+id|bdev
+)paren
 )paren
 r_return
 l_int|1

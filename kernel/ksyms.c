@@ -945,6 +945,13 @@ c_func
 id|close_bdev_excl
 )paren
 suffix:semicolon
+DECL|variable|open_by_devnum
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|open_by_devnum
+)paren
+suffix:semicolon
 DECL|variable|__brelse
 id|EXPORT_SYMBOL
 c_func
