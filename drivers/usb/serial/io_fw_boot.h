@@ -11,10 +11,9 @@ singleline_comment|//Image structure definition
 macro_line|#if !defined(DEFINED_EDGE_FIRMWARE_IMAGE_RECORD)
 DECL|macro|DEFINED_EDGE_FIRMWARE_IMAGE_RECORD
 mdefine_line|#define DEFINED_EDGE_FIRMWARE_IMAGE_RECORD
-DECL|struct|_EDGE_FIRMWARE_IMAGE_RECORD
-r_typedef
+DECL|struct|edge_firmware_image_record
 r_struct
-id|_EDGE_FIRMWARE_IMAGE_RECORD
+id|edge_firmware_image_record
 (brace
 DECL|member|ExtAddr
 r_int
@@ -39,18 +38,11 @@ id|Data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|EDGE_FIRMWARE_IMAGE_RECORD
-DECL|typedef|PEDGE_FIRMWARE_IMAGE_RECORD
 )brace
-id|EDGE_FIRMWARE_IMAGE_RECORD
-comma
-op_star
-id|PEDGE_FIRMWARE_IMAGE_RECORD
 suffix:semicolon
-DECL|struct|_EDGE_FIRMWARE_VERSION_INFO
-r_typedef
+DECL|struct|edge_firmware_version_info
 r_struct
-id|_EDGE_FIRMWARE_VERSION_INFO
+id|edge_firmware_version_info
 (brace
 DECL|member|MajorVersion
 r_int
@@ -67,13 +59,7 @@ r_int
 r_int
 id|BuildNumber
 suffix:semicolon
-DECL|typedef|EDGE_FIRMWARE_VERSION_INFO
-DECL|typedef|PEDGE_FIRMWARE_VERSION_INFO
 )brace
-id|EDGE_FIRMWARE_VERSION_INFO
-comma
-op_star
-id|PEDGE_FIRMWARE_VERSION_INFO
 suffix:semicolon
 macro_line|#endif
 macro_line|#if !defined(IMAGE_ARRAY_NAME)
@@ -14498,7 +14484,8 @@ comma
 suffix:semicolon
 DECL|variable|IMAGE_VERSION_NAME
 r_static
-id|EDGE_FIRMWARE_VERSION_INFO
+r_struct
+id|edge_firmware_version_info
 id|IMAGE_VERSION_NAME
 op_assign
 (brace
