@@ -1118,7 +1118,22 @@ suffix:semicolon
 multiline_comment|/*&n; * Global Function Prototypes in qla_isr.c source file.&n; */
 r_extern
 id|irqreturn_t
-id|qla2x00_intr_handler
+id|qla2100_intr_handler
+c_func
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
+r_extern
+id|irqreturn_t
+id|qla2300_intr_handler
 c_func
 (paren
 r_int
