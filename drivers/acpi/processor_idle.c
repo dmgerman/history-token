@@ -2672,7 +2672,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;active state:            %d&bslash;n&quot;
+l_string|&quot;active state:            C%d&bslash;n&quot;
 l_string|&quot;max_cstate:              C%d&bslash;n&quot;
 l_string|&quot;bus master activity:     %08x&bslash;n&quot;
 comma
@@ -2718,7 +2718,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;   %c%d:                  &quot;
+l_string|&quot;   %cC%d:                  &quot;
 comma
 (paren
 op_amp
@@ -2839,7 +2839,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;promotion[%d] &quot;
+l_string|&quot;promotion[C%d] &quot;
 comma
 (paren
 id|pr-&gt;power.states
@@ -2859,7 +2859,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;promotion[-] &quot;
+l_string|&quot;promotion[--] &quot;
 )paren
 suffix:semicolon
 r_if
@@ -2877,7 +2877,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;demotion[%d] &quot;
+l_string|&quot;demotion[C%d] &quot;
 comma
 (paren
 id|pr-&gt;power.states
@@ -2897,7 +2897,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;demotion[-] &quot;
+l_string|&quot;demotion[--] &quot;
 )paren
 suffix:semicolon
 id|seq_printf
@@ -3179,7 +3179,7 @@ id|valid
 id|printk
 c_func
 (paren
-l_string|&quot; %d[C%d]&quot;
+l_string|&quot; C%d[C%d]&quot;
 comma
 id|i
 comma
