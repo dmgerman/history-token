@@ -1421,6 +1421,19 @@ id|object
 id|return_VOID
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ALLOCATIONS
+comma
+l_string|&quot;Obj %p Current Refs=%X [To Be Incremented]&bslash;n&quot;
+comma
+id|object
+comma
+id|object-&gt;common.reference_count
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Increment the reference count */
 (paren
 r_void
@@ -1492,7 +1505,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ALLOCATIONS
 comma
-l_string|&quot;Obj %p Refs=%X&bslash;n&quot;
+l_string|&quot;Obj %p Current Refs=%X [To Be Decremented]&bslash;n&quot;
 comma
 id|object
 comma

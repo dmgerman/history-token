@@ -1306,7 +1306,20 @@ id|acpi_exception_handler
 )paren
 (paren
 id|acpi_status
-id|status
+id|aml_status
+comma
+id|acpi_name
+id|name
+comma
+id|u16
+id|opcode
+comma
+id|u32
+id|aml_offset
+comma
+r_void
+op_star
+id|context
 )paren
 suffix:semicolon
 multiline_comment|/* Address Spaces (For Operation Regions) */

@@ -1413,11 +1413,9 @@ id|acpi_status
 id|acpi_ut_divide
 (paren
 id|acpi_integer
-op_star
 id|in_dividend
 comma
 id|acpi_integer
-op_star
 id|in_divisor
 comma
 id|acpi_integer
@@ -1433,7 +1431,6 @@ id|acpi_status
 id|acpi_ut_short_divide
 (paren
 id|acpi_integer
-op_star
 id|in_dividend
 comma
 id|u32
@@ -1477,6 +1474,9 @@ op_star
 id|ret_integer
 )paren
 suffix:semicolon
+multiline_comment|/* Values for Base above (16=Hex, 10=Decimal) */
+DECL|macro|ACPI_ANY_BASE
+mdefine_line|#define ACPI_ANY_BASE        0
 r_char
 op_star
 id|acpi_ut_strupr

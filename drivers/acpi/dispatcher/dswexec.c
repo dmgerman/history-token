@@ -1553,6 +1553,14 @@ op_assign
 id|acpi_gbl_exception_handler
 (paren
 id|status
+comma
+id|walk_state-&gt;method_node-&gt;name.integer
+comma
+id|walk_state-&gt;opcode
+comma
+id|walk_state-&gt;aml_offset
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|acpi_ex_enter_interpreter

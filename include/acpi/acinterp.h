@@ -81,8 +81,8 @@ op_star
 op_star
 id|result_desc
 comma
-id|u16
-id|opcode
+id|u32
+id|flags
 )paren
 suffix:semicolon
 id|acpi_status
@@ -98,9 +98,6 @@ id|acpi_operand_object
 op_star
 op_star
 id|result_desc
-comma
-id|u16
-id|opcode
 )paren
 suffix:semicolon
 id|acpi_status
@@ -119,12 +116,9 @@ id|result_desc
 comma
 id|u32
 id|type
-comma
-id|u16
-id|opcode
 )paren
 suffix:semicolon
-multiline_comment|/* Types for String conversion */
+multiline_comment|/* Types for -&gt;String conversion */
 DECL|macro|ACPI_EXPLICIT_BYTE_COPY
 mdefine_line|#define ACPI_EXPLICIT_BYTE_COPY         0x00000000
 DECL|macro|ACPI_EXPLICIT_CONVERT_HEX

@@ -470,7 +470,7 @@ comma
 op_amp
 id|local_operand1
 comma
-id|walk_state-&gt;opcode
+l_int|16
 )paren
 suffix:semicolon
 r_break
@@ -488,8 +488,6 @@ op_amp
 id|local_operand1
 comma
 id|ACPI_IMPLICIT_CONVERT_HEX
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -505,8 +503,6 @@ id|operand1
 comma
 op_amp
 id|local_operand1
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1123,7 +1119,7 @@ comma
 op_amp
 id|local_operand1
 comma
-id|opcode
+l_int|16
 )paren
 suffix:semicolon
 r_break
@@ -1141,8 +1137,6 @@ op_amp
 id|local_operand1
 comma
 id|ACPI_IMPLICIT_CONVERT_HEX
-comma
-id|opcode
 )paren
 suffix:semicolon
 r_break
@@ -1158,8 +1152,6 @@ id|operand1
 comma
 op_amp
 id|local_operand1
-comma
-id|opcode
 )paren
 suffix:semicolon
 r_break

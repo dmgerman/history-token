@@ -306,7 +306,6 @@ id|status
 op_assign
 id|acpi_ut_divide
 (paren
-op_amp
 id|operand
 (braket
 l_int|0
@@ -314,7 +313,6 @@ l_int|0
 op_member_access_from_pointer
 id|integer.value
 comma
-op_amp
 id|operand
 (braket
 l_int|1
@@ -598,7 +596,6 @@ id|status
 op_assign
 id|acpi_ut_divide
 (paren
-op_amp
 id|operand
 (braket
 l_int|0
@@ -606,7 +603,6 @@ l_int|0
 op_member_access_from_pointer
 id|integer.value
 comma
-op_amp
 id|operand
 (braket
 l_int|1
@@ -653,35 +649,11 @@ id|AML_TO_STRING_OP
 suffix:colon
 multiline_comment|/* to_string (Buffer, Length, Result) (ACPI 2.0) */
 multiline_comment|/*&n;&t;&t; * Input object is guaranteed to be a buffer at this point (it may have&n;&t;&t; * been converted.)  Copy the raw buffer data to a new object of type String.&n;&t;&t; */
-multiline_comment|/* Get the length of the new string */
+multiline_comment|/*&n;&t;&t; * Get the length of the new string. It is the smallest of:&n;&t;&t; * 1) Length of the input buffer&n;&t;&t; * 2) Max length as specified in the to_string operator&n;&t;&t; * 3) Length of input buffer up to a zero byte (null terminator)&n;&t;&t; *&n;&t;&t; * NOTE: A length of zero is ok, and will create a zero-length, null&n;&t;&t; *       terminated string.&n;&t;&t; */
 id|length
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|operand
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|integer.value
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* Handle optional length value */
-id|operand
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|integer.value
-op_assign
-id|ACPI_INTEGER_MAX
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -723,7 +695,6 @@ id|length
 id|length
 op_increment
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -739,6 +710,7 @@ suffix:semicolon
 r_goto
 id|cleanup
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Allocate a new string (Length + 1 for null terminator) */
 id|return_desc

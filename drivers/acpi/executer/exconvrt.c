@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new Integer object is returned&n; *              Opcode          - AML opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new Integer object is returned&n; *              Flags           - Used for string conversion&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_integer
 id|acpi_ex_convert_to_integer
@@ -25,8 +25,8 @@ op_star
 op_star
 id|result_desc
 comma
-id|u16
-id|opcode
+id|u32
+id|flags
 )paren
 (brace
 r_union
@@ -137,7 +137,7 @@ id|obj_desc
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Convert string to an integer - the string must be hexadecimal&n;&t;&t; * as per the ACPI specification&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Convert string to an integer - for most cases, the string must be&n;&t;&t; * hexadecimal as per the ACPI specification.  The only exception (as&n;&t;&t; * of ACPI 3.0) is that the to_integer() operator allows both decimal&n;&t;&t; * and hexadecimal strings (hex prefixed with &quot;0x&quot;).&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ut_strtoul64
@@ -148,7 +148,7 @@ op_star
 )paren
 id|pointer
 comma
-l_int|16
+id|flags
 comma
 op_amp
 id|result
@@ -246,31 +246,6 @@ id|return_desc-&gt;integer.value
 op_assign
 id|result
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
-r_if
-c_cond
-(paren
-op_star
-id|result_desc
-op_eq
-id|obj_desc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|opcode
-op_ne
-id|AML_STORE_OP
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
-)brace
 op_star
 id|result_desc
 op_assign
@@ -282,7 +257,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new buffer object is returned&n; *              Opcode          - AML opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new buffer object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_buffer
 id|acpi_ex_convert_to_buffer
@@ -297,9 +272,6 @@ id|acpi_operand_object
 op_star
 op_star
 id|result_desc
-comma
-id|u16
-id|opcode
 )paren
 (brace
 r_union
@@ -446,31 +418,6 @@ id|return_desc-&gt;common.flags
 op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
-r_if
-c_cond
-(paren
-op_star
-id|result_desc
-op_eq
-id|obj_desc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|opcode
-op_ne
-id|AML_STORE_OP
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
-)brace
 op_star
 id|result_desc
 op_assign
@@ -626,7 +573,6 @@ r_void
 )paren
 id|acpi_ut_short_divide
 (paren
-op_amp
 id|digit
 comma
 l_int|10
@@ -787,7 +733,7 @@ id|k
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the string object is returned&n; *              Type            - String flags (base and conversion type)&n; *              Opcode          - AML opcode&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the string object is returned&n; *              Type            - String flags (base and conversion type)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_string
 id|acpi_ex_convert_to_string
@@ -805,9 +751,6 @@ id|result_desc
 comma
 id|u32
 id|type
-comma
-id|u16
-id|opcode
 )paren
 (brace
 r_union
@@ -948,6 +891,10 @@ id|acpi_gbl_integer_byte_width
 )paren
 suffix:semicolon
 multiline_comment|/* Null terminate at the correct place */
+id|return_desc-&gt;string.length
+op_assign
+id|string_length
+suffix:semicolon
 id|new_buf
 (braket
 id|string_length
@@ -1055,7 +1002,7 @@ id|new_buf
 op_assign
 id|return_desc-&gt;buffer.pointer
 suffix:semicolon
-multiline_comment|/* Convert buffer bytes to hex or decimal values (separated by commas) */
+multiline_comment|/*&n;&t;&t;&t; * Convert buffer bytes to hex or decimal values&n;&t;&t;&t; * (separated by commas)&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -1126,31 +1073,6 @@ id|return_ACPI_STATUS
 id|AE_TYPE
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
-r_if
-c_cond
-(paren
-op_star
-id|result_desc
-op_eq
-id|obj_desc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|opcode
-op_ne
-id|AML_STORE_OP
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
 )brace
 op_star
 id|result_desc
@@ -1309,7 +1231,7 @@ id|source_desc
 comma
 id|result_desc
 comma
-id|walk_state-&gt;opcode
+l_int|16
 )paren
 suffix:semicolon
 r_break
@@ -1327,8 +1249,6 @@ comma
 id|result_desc
 comma
 id|ACPI_IMPLICIT_CONVERT_HEX
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1344,8 +1264,6 @@ id|acpi_ex_convert_to_buffer
 id|source_desc
 comma
 id|result_desc
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break

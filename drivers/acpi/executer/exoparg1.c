@@ -12,8 +12,8 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg1&quot;
 )paren
-multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_0A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current state (contains AML opcode)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Type 1 monadic operator with numeric operand on&n; *              object stack&n; *&n; ******************************************************************************/
+multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (0 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_0A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current state (contains AML opcode)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute operator with no operands, one return value&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_0A_0T_1R
 id|acpi_ex_opcode_0A_0T_1R
@@ -804,7 +804,6 @@ r_void
 )paren
 id|acpi_ut_short_divide
 (paren
-op_amp
 id|digit
 comma
 l_int|10
@@ -1072,8 +1071,6 @@ op_amp
 id|return_desc
 comma
 id|ACPI_EXPLICIT_CONVERT_DECIMAL
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1095,8 +1092,6 @@ op_amp
 id|return_desc
 comma
 id|ACPI_EXPLICIT_CONVERT_HEX
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1116,8 +1111,6 @@ l_int|0
 comma
 op_amp
 id|return_desc
-comma
-id|walk_state-&gt;opcode
 )paren
 suffix:semicolon
 r_break
@@ -1138,7 +1131,7 @@ comma
 op_amp
 id|return_desc
 comma
-id|walk_state-&gt;opcode
+id|ACPI_ANY_BASE
 )paren
 suffix:semicolon
 r_break
