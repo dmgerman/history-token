@@ -129,7 +129,7 @@ r_static
 r_int
 id|use_both_schemes
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|module_param
 c_func
