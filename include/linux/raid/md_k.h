@@ -721,9 +721,20 @@ id|recovery_cp
 suffix:semicolon
 DECL|member|safemode
 r_int
+r_int
 id|safemode
 suffix:semicolon
 multiline_comment|/* if set, update &quot;clean&quot; superblock&n;&t;&t;&t;&t;&t;&t;&t; * when no writes pending.&n;&t;&t;&t;&t;&t;&t;&t; */
+DECL|member|safemode_delay
+r_int
+r_int
+id|safemode_delay
+suffix:semicolon
+DECL|member|safemode_timer
+r_struct
+id|timer_list
+id|safemode_timer
+suffix:semicolon
 DECL|member|writes_pending
 id|atomic_t
 id|writes_pending
