@@ -1893,6 +1893,28 @@ op_star
 id|sc
 )paren
 (brace
+id|request_queue_t
+op_star
+id|q
+suffix:semicolon
+multiline_comment|/* I don&squot;t think queue can be NULL. But... Stolen from sx8.c */
+r_if
+c_cond
+(paren
+(paren
+id|q
+op_assign
+id|sc-&gt;disk-&gt;queue
+)paren
+op_ne
+l_int|NULL
+)paren
+id|blk_cleanup_queue
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we zero disk-&gt;private_data BEFORE put_disk, we have to check&n;&t; * for NULL all over the place in open, release, check_media and&n;&t; * revalidate, because the block level semaphore is well inside the&n;&t; * put_disk. But we cannot zero after the call, because *disk is gone.&n;&t; * The sd.c is blatantly racy in this area.&n;&t; */
 multiline_comment|/* disk-&gt;private_data = NULL; */
 id|put_disk
@@ -7891,12 +7913,6 @@ id|disk
 op_assign
 id|sc-&gt;disk
 suffix:semicolon
-id|request_queue_t
-op_star
-id|q
-op_assign
-id|disk-&gt;queue
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -8030,18 +8046,7 @@ c_func
 id|disk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|q
-)paren
-id|blk_cleanup_queue
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We really expect blk_cleanup_queue() to wait, so no amount&n;&t; * of paranoya is too much.&n;&t; *&n;&t; * Taking a lock on a structure which is about to be freed&n;&t; * is very nonsensual. Here it is largely a way to do a debug freeze,&n;&t; * and a bracket which shows where the nonsensual code segment ends.&n;&t; *&n;&t; * Testing for -EINPROGRESS is always a bug, so we are bending&n;&t; * the rules a little.&n;&t; */
+multiline_comment|/*&n;&t; * Taking a lock on a structure which is about to be freed&n;&t; * is very nonsensual. Here it is largely a way to do a debug freeze,&n;&t; * and a bracket which shows where the nonsensual code segment ends.&n;&t; *&n;&t; * Testing for -EINPROGRESS is always a bug, so we are bending&n;&t; * the rules a little.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
