@@ -1,4 +1,4 @@
-multiline_comment|/************************************************************************&n; * s2io.c: A Linux PCI-X Ethernet driver for S2IO 10GbE Server NIC&n; * Copyright(c) 2002-2005 S2IO Technologies&n;&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License (GPL), incorporated herein by reference.&n; * Drivers based on or derived from this code fall under the GPL and must&n; * retain the authorship, copyright and license notice.  This file is not&n; * a complete program and may only be used when the entire operating&n; * system is licensed under the GPL.&n; * See the file COPYING in this distribution for more information.&n; *&n; * Credits:&n; * Jeff Garzik&t;&t;: For pointing out the improper error condition &n; *&t;&t;&t;  check in the s2io_xmit routine and also some &n; * &t;&t;&t;  issues in the Tx watch dog function. Also for&n; *&t;&t;&t;  patiently answering all those innumerable &n; *&t;&t;&t;  questions regaring the 2.6 porting issues.&n; * Stephen Hemminger&t;: Providing proper 2.6 porting mechanism for some&n; *&t;&t;&t;  macros available only in 2.6 Kernel.&n; * Francois Romieu&t;: For pointing out all code part that were &n; *&t;&t;&t;  deprecated and also styling related comments.&n; * Grant Grundler&t;: For helping me get rid of some Architecture &n; *&t;&t;&t;  dependent code.&n; * Christopher Hellwig&t;: Some more 2.6 specific issues in the driver.&n; *&t;&t;&t;  &t;&n; * The module loadable parameters that are supported by the driver and a brief&n; * explaination of all the variables.&n; * rx_ring_num : This can be used to program the number of receive rings used &n; * in the driver.  &t;&t;&t;&t;&t;&n; * rx_ring_len: This defines the number of descriptors each ring can have. This &n; * is also an array of size 8.&n; * tx_fifo_num: This defines the number of Tx FIFOs thats used int the driver.&n; * tx_fifo_len: This too is an array of 8. Each element defines the number of &n; * Tx descriptors that can be associated with each corresponding FIFO.&n; * in PCI Configuration space.&n; ************************************************************************/
+multiline_comment|/************************************************************************&n; * s2io.c: A Linux PCI-X Ethernet driver for S2IO 10GbE Server NIC&n; * Copyright(c) 2002-2005 Neterion Inc.&n;&n; * This software may be used and distributed according to the terms of&n; * the GNU General Public License (GPL), incorporated herein by reference.&n; * Drivers based on or derived from this code fall under the GPL and must&n; * retain the authorship, copyright and license notice.  This file is not&n; * a complete program and may only be used when the entire operating&n; * system is licensed under the GPL.&n; * See the file COPYING in this distribution for more information.&n; *&n; * Credits:&n; * Jeff Garzik&t;&t;: For pointing out the improper error condition &n; *&t;&t;&t;  check in the s2io_xmit routine and also some &n; * &t;&t;&t;  issues in the Tx watch dog function. Also for&n; *&t;&t;&t;  patiently answering all those innumerable &n; *&t;&t;&t;  questions regaring the 2.6 porting issues.&n; * Stephen Hemminger&t;: Providing proper 2.6 porting mechanism for some&n; *&t;&t;&t;  macros available only in 2.6 Kernel.&n; * Francois Romieu&t;: For pointing out all code part that were &n; *&t;&t;&t;  deprecated and also styling related comments.&n; * Grant Grundler&t;: For helping me get rid of some Architecture &n; *&t;&t;&t;  dependent code.&n; * Christopher Hellwig&t;: Some more 2.6 specific issues in the driver.&n; *&t;&t;&t;  &t;&n; * The module loadable parameters that are supported by the driver and a brief&n; * explaination of all the variables.&n; * rx_ring_num : This can be used to program the number of receive rings used &n; * in the driver.  &t;&t;&t;&t;&t;&n; * rx_ring_len: This defines the number of descriptors each ring can have. This &n; * is also an array of size 8.&n; * tx_fifo_num: This defines the number of Tx FIFOs thats used int the driver.&n; * tx_fifo_len: This too is an array of 8. Each element defines the number of &n; * Tx descriptors that can be associated with each corresponding FIFO.&n; * in PCI Configuration space.&n; ************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -41,7 +41,7 @@ id|s2io_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;Version 1.7.5.1&quot;
+l_string|&quot;Version 1.7.7.1&quot;
 suffix:semicolon
 multiline_comment|/* &n; * Cards with following subsystem_id have a link state indication&n; * problem, 600B, 600C, 600D, 640B, 640C and 640D.&n; * macro below identifies these cards given the subsystem_id.&n; */
 DECL|macro|CARDS_WITH_FAULTY_LINK_INDICATORS
@@ -654,6 +654,26 @@ comma
 id|PCI_VENDOR_ID_S2IO
 comma
 id|PCI_DEVICE_ID_S2IO_UNI
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_S2IO
+comma
+id|PCI_DEVICE_ID_HERC_WIN
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_S2IO
+comma
+id|PCI_DEVICE_ID_HERC_UNI
 comma
 id|PCI_ANY_ID
 comma
@@ -18386,7 +18406,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Raghavendra Koushik &lt;raghavendra.koushik@s2io.com&gt;&quot;
+l_string|&quot;Raghavendra Koushik &lt;raghavendra.koushik@neterion.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
