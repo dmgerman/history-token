@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb.h&quot;
