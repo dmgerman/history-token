@@ -5081,6 +5081,8 @@ c_func
 (paren
 l_int|512
 comma
+id|GFP_KERNEL
+op_or
 id|GFP_DMA
 )paren
 suffix:semicolon
