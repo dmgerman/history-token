@@ -4392,8 +4392,12 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;ring rptr: offset=0x%08x handle=0x%08lx&bslash;n&quot;
+l_string|&quot;ring rptr: offset=0x%08lx handle=0x%08lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|entry-&gt;busaddr
 (braket
 id|page_ofs

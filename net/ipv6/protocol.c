@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
@@ -22,6 +21,13 @@ id|inet6_protos
 (braket
 id|MAX_INET_PROTOS
 )braket
+suffix:semicolon
+DECL|variable|inet6_proto_lock
+r_static
+id|spinlock_t
+id|inet6_proto_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|inet6_add_protocol
 r_int
@@ -51,10 +57,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet6_proto_lock
 )paren
 suffix:semicolon
 r_if
@@ -86,10 +93,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet6_proto_lock
 )paren
 suffix:semicolon
 r_return
@@ -125,10 +133,11 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet6_proto_lock
 )paren
 suffix:semicolon
 r_if
@@ -162,10 +171,16 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|inet6_proto_lock
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -632,57 +632,43 @@ r_int
 id|huft_build
 c_func
 (paren
-id|b
-comma
-id|n
-comma
-id|s
-comma
-id|d
-comma
-id|e
-comma
-id|t
-comma
-id|m
-)paren
 r_int
 op_star
 id|b
-suffix:semicolon
+comma
 multiline_comment|/* code lengths in bits (all assumed &lt;= BMAX) */
 r_int
 id|n
-suffix:semicolon
+comma
 multiline_comment|/* number of codes (assumed &lt;= N_MAX) */
 r_int
 id|s
-suffix:semicolon
+comma
 multiline_comment|/* number of simple-valued codes (0..s-1) */
 r_const
 id|ush
 op_star
 id|d
-suffix:semicolon
+comma
 multiline_comment|/* list of base values for non-simple codes */
 r_const
 id|ush
 op_star
 id|e
-suffix:semicolon
+comma
 multiline_comment|/* list of extra bits for non-simple codes */
 r_struct
 id|huft
 op_star
 op_star
 id|t
-suffix:semicolon
+comma
 multiline_comment|/* result: starting table */
 r_int
 op_star
 id|m
-suffix:semicolon
 multiline_comment|/* maximum lookup bits, returns actual */
+)paren
 multiline_comment|/* Given a list of code lengths and a maximum table size, make a set of&n;   tables to decode that set of codes.  Return zero on success, one if&n;   the given code set is incomplete (the tables are still built in this&n;   case), two if the input is invalid (all zero length codes or an&n;   oversubscribed set of lengths), and three if not enough memory. */
 (brace
 r_int
@@ -1847,14 +1833,12 @@ r_int
 id|huft_free
 c_func
 (paren
-id|t
-)paren
 r_struct
 id|huft
 op_star
 id|t
-suffix:semicolon
 multiline_comment|/* table to free */
+)paren
 multiline_comment|/* Free the malloc&squot;ed tables built by huft_build(), which makes a linked&n;   list of the tables it made, with the links in a dummy first entry of&n;   each table. */
 (brace
 r_register
@@ -1918,29 +1902,26 @@ r_int
 id|inflate_codes
 c_func
 (paren
-id|tl
-comma
-id|td
-comma
-id|bl
-comma
-id|bd
-)paren
 r_struct
 id|huft
 op_star
 id|tl
 comma
+multiline_comment|/* literal/length decoder tables */
+r_struct
+id|huft
 op_star
 id|td
-suffix:semicolon
-multiline_comment|/* literal/length and distance decoder tables */
+comma
+multiline_comment|/* distance decoder tables */
 r_int
 id|bl
 comma
+multiline_comment|/* number of bits decoded by tl[] */
+r_int
 id|bd
-suffix:semicolon
-multiline_comment|/* number of bits decoded by tl[] and td[] */
+multiline_comment|/* number of bits decoded by td[] */
+)paren
 multiline_comment|/* inflate (decompress) the codes in a deflated (compressed) block.&n;   Return an error code or zero if it all goes ok. */
 (brace
 r_register
@@ -2524,6 +2505,7 @@ r_int
 id|inflate_stored
 c_func
 (paren
+r_void
 )paren
 multiline_comment|/* &quot;decompress&quot; an inflated type 0 (stored) block. */
 (brace
@@ -2712,6 +2694,7 @@ r_int
 id|inflate_fixed
 c_func
 (paren
+r_void
 )paren
 multiline_comment|/* decompress an inflated type 1 (fixed Huffman codes) block.  We should&n;   either replace this with a custom decoder, or at least precompute the&n;   Huffman tables. */
 (brace
@@ -2980,6 +2963,7 @@ r_int
 id|inflate_dynamic
 c_func
 (paren
+r_void
 )paren
 multiline_comment|/* decompress an inflated type 2 (dynamic Huffman codes) block. */
 (brace
@@ -3842,13 +3826,11 @@ r_int
 id|inflate_block
 c_func
 (paren
-id|e
-)paren
 r_int
 op_star
 id|e
-suffix:semicolon
 multiline_comment|/* last block flag */
+)paren
 multiline_comment|/* decompress an inflated block */
 (brace
 r_int
@@ -3987,6 +3969,7 @@ r_int
 id|inflate
 c_func
 (paren
+r_void
 )paren
 multiline_comment|/* decompress an inflated entry */
 (brace

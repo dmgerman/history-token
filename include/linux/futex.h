@@ -15,6 +15,7 @@ id|sys_futex
 c_func
 (paren
 id|u32
+id|__user
 op_star
 id|uaddr
 comma
@@ -26,6 +27,7 @@ id|val
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|utime
 )paren

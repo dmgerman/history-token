@@ -460,31 +460,10 @@ id|th-&gt;pmc
 l_int|14
 )braket
 suffix:semicolon
-op_star
-id|val
-op_or_assign
-l_int|1UL
-op_lshift
-l_int|2
-suffix:semicolon
-multiline_comment|/* bit 2 must always be 1 */
 id|check_case1
 op_assign
 l_int|1
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|9
-suffix:colon
-op_star
-id|val
-op_or_assign
-l_int|1UL
-op_lshift
-l_int|2
-suffix:semicolon
-multiline_comment|/* bit 2 must always be 1 */
 r_break
 suffix:semicolon
 r_case

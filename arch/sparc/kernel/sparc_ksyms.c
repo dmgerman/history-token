@@ -553,7 +553,7 @@ c_func
 id|mstk48t02_regs
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SUN_AUXIO
+macro_line|#ifdef CONFIG_SUN_AUXIO
 DECL|variable|set_auxio
 id|EXPORT_SYMBOL
 c_func
@@ -700,7 +700,7 @@ id|mmu_release_scsi_one
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SBUS
+macro_line|#ifdef CONFIG_SBUS
 DECL|variable|sbus_root
 id|EXPORT_SYMBOL
 c_func
@@ -793,7 +793,7 @@ id|sbus_ioremap
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|ebus_chain
 id|EXPORT_SYMBOL
 c_func

@@ -1,6 +1,78 @@
 macro_line|#ifndef __ASM_ALPHA_ELF_H
 DECL|macro|__ASM_ALPHA_ELF_H
 mdefine_line|#define __ASM_ALPHA_ELF_H
+multiline_comment|/*&n; * Alpha ELF relocation types&n; */
+DECL|macro|R_ALPHA_NONE
+mdefine_line|#define R_ALPHA_NONE            0       /* No reloc */
+DECL|macro|R_ALPHA_REFLONG
+mdefine_line|#define R_ALPHA_REFLONG         1       /* Direct 32 bit */
+DECL|macro|R_ALPHA_REFQUAD
+mdefine_line|#define R_ALPHA_REFQUAD         2       /* Direct 64 bit */
+DECL|macro|R_ALPHA_GPREL32
+mdefine_line|#define R_ALPHA_GPREL32         3       /* GP relative 32 bit */
+DECL|macro|R_ALPHA_LITERAL
+mdefine_line|#define R_ALPHA_LITERAL         4       /* GP relative 16 bit w/optimization */
+DECL|macro|R_ALPHA_LITUSE
+mdefine_line|#define R_ALPHA_LITUSE          5       /* Optimization hint for LITERAL */
+DECL|macro|R_ALPHA_GPDISP
+mdefine_line|#define R_ALPHA_GPDISP          6       /* Add displacement to GP */
+DECL|macro|R_ALPHA_BRADDR
+mdefine_line|#define R_ALPHA_BRADDR          7       /* PC+4 relative 23 bit shifted */
+DECL|macro|R_ALPHA_HINT
+mdefine_line|#define R_ALPHA_HINT            8       /* PC+4 relative 16 bit shifted */
+DECL|macro|R_ALPHA_SREL16
+mdefine_line|#define R_ALPHA_SREL16          9       /* PC relative 16 bit */
+DECL|macro|R_ALPHA_SREL32
+mdefine_line|#define R_ALPHA_SREL32          10      /* PC relative 32 bit */
+DECL|macro|R_ALPHA_SREL64
+mdefine_line|#define R_ALPHA_SREL64          11      /* PC relative 64 bit */
+DECL|macro|R_ALPHA_GPRELHIGH
+mdefine_line|#define R_ALPHA_GPRELHIGH       17      /* GP relative 32 bit, high 16 bits */
+DECL|macro|R_ALPHA_GPRELLOW
+mdefine_line|#define R_ALPHA_GPRELLOW        18      /* GP relative 32 bit, low 16 bits */
+DECL|macro|R_ALPHA_GPREL16
+mdefine_line|#define R_ALPHA_GPREL16         19      /* GP relative 16 bit */
+DECL|macro|R_ALPHA_COPY
+mdefine_line|#define R_ALPHA_COPY            24      /* Copy symbol at runtime */
+DECL|macro|R_ALPHA_GLOB_DAT
+mdefine_line|#define R_ALPHA_GLOB_DAT        25      /* Create GOT entry */
+DECL|macro|R_ALPHA_JMP_SLOT
+mdefine_line|#define R_ALPHA_JMP_SLOT        26      /* Create PLT entry */
+DECL|macro|R_ALPHA_RELATIVE
+mdefine_line|#define R_ALPHA_RELATIVE        27      /* Adjust by program base */
+DECL|macro|R_ALPHA_BRSGP
+mdefine_line|#define R_ALPHA_BRSGP&t;&t;28
+DECL|macro|R_ALPHA_TLSGD
+mdefine_line|#define R_ALPHA_TLSGD           29
+DECL|macro|R_ALPHA_TLS_LDM
+mdefine_line|#define R_ALPHA_TLS_LDM         30
+DECL|macro|R_ALPHA_DTPMOD64
+mdefine_line|#define R_ALPHA_DTPMOD64        31
+DECL|macro|R_ALPHA_GOTDTPREL
+mdefine_line|#define R_ALPHA_GOTDTPREL       32
+DECL|macro|R_ALPHA_DTPREL64
+mdefine_line|#define R_ALPHA_DTPREL64        33
+DECL|macro|R_ALPHA_DTPRELHI
+mdefine_line|#define R_ALPHA_DTPRELHI        34
+DECL|macro|R_ALPHA_DTPRELLO
+mdefine_line|#define R_ALPHA_DTPRELLO        35
+DECL|macro|R_ALPHA_DTPREL16
+mdefine_line|#define R_ALPHA_DTPREL16        36
+DECL|macro|R_ALPHA_GOTTPREL
+mdefine_line|#define R_ALPHA_GOTTPREL        37
+DECL|macro|R_ALPHA_TPREL64
+mdefine_line|#define R_ALPHA_TPREL64         38
+DECL|macro|R_ALPHA_TPRELHI
+mdefine_line|#define R_ALPHA_TPRELHI         39
+DECL|macro|R_ALPHA_TPRELLO
+mdefine_line|#define R_ALPHA_TPRELLO         40
+DECL|macro|R_ALPHA_TPREL16
+mdefine_line|#define R_ALPHA_TPREL16         41
+DECL|macro|SHF_ALPHA_GPREL
+mdefine_line|#define SHF_ALPHA_GPREL&t;&t;0x10000000
+multiline_comment|/* Legal values for e_flags field of Elf64_Ehdr.  */
+DECL|macro|EF_ALPHA_32BIT
+mdefine_line|#define EF_ALPHA_32BIT&t;&t;1&t;/* All addresses are below 2GB */
 multiline_comment|/*&n; * ELF register definitions..&n; */
 multiline_comment|/*&n; * The OSF/1 version of &lt;sys/procfs.h&gt; makes gregset_t 46 entries long.&n; * I have no idea why that is so.  For now, we just leave it at 33&n; * (32 general regs + processor status word). &n; */
 DECL|macro|ELF_NGREG

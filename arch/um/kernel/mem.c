@@ -453,7 +453,7 @@ op_assign
 r_new
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 multiline_comment|/* Changed during early boot */
 DECL|variable|kmap_pte
 id|pte_t
@@ -1606,7 +1606,7 @@ comma
 id|swapper_pg_dir
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 id|init_highmem
 c_func
 (paren

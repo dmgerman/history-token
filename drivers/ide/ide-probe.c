@@ -2928,7 +2928,7 @@ op_logical_neg
 id|hwif-&gt;mate-&gt;present
 )paren
 op_logical_and
-macro_line|#if CONFIG_BLK_DEV_PDC4030
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 (paren
 id|hwif-&gt;chipset
 op_ne
@@ -4583,6 +4583,10 @@ c_cond
 id|drive-&gt;media
 op_eq
 id|ide_cdrom
+op_logical_or
+id|drive-&gt;media
+op_eq
+id|ide_optical
 )paren
 (paren
 r_void

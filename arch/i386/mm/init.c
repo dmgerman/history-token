@@ -74,7 +74,7 @@ id|pmd_t
 op_star
 id|pmd_table
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 id|pmd_table
 op_assign
 (paren
@@ -719,7 +719,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_HIGHMEM
+macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap_pte
 id|pte_t
 op_star
@@ -1031,7 +1031,7 @@ id|pgd_base
 op_assign
 id|swapper_pg_dir
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 r_int
 id|i
 suffix:semicolon
@@ -1143,7 +1143,7 @@ c_func
 id|pgd_base
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 multiline_comment|/*&n;&t; * Add low memory identity-mappings - SMP needs it when&n;&t; * starting up on an AP from real-mode. In the non-PAE&n;&t; * case we already have these mappings through head.S.&n;&t; * All user-space mappings are explicitly cleared after&n;&t; * SMP startup.&n;&t; */
 id|pgd_base
 (braket
@@ -1182,7 +1182,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 id|set_pgd
 c_func
 (paren
@@ -1362,7 +1362,7 @@ c_func
 id|swapper_pg_dir
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 multiline_comment|/*&n;&t; * We will bail out later - printk doesn&squot;t work right now so&n;&t; * the user would just see a hanging kernel.&n;&t; */
 r_if
 c_cond
@@ -1843,7 +1843,7 @@ l_int|10
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 r_if
 c_cond
 (paren
@@ -1878,7 +1878,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#if CONFIG_X86_PAE
+macro_line|#ifdef CONFIG_X86_PAE
 DECL|variable|pae_pgd_cachep
 r_struct
 id|kmem_cache_s

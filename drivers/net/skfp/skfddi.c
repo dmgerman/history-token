@@ -2131,6 +2131,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* set in fddi_setup() */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize remaining device structure information */
 id|fddi_setup
 c_func
@@ -2999,8 +3005,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Clear local multicast address tables */
 id|mac_clear_multicast
 c_func
@@ -3145,8 +3149,6 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 (paren
 l_int|0

@@ -696,6 +696,7 @@ id|fault_in_pages_writeable
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|uaddr
 comma
@@ -726,6 +727,7 @@ l_int|0
 )paren
 (brace
 r_char
+id|__user
 op_star
 id|end
 op_assign
@@ -783,6 +785,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|uaddr
 comma
@@ -821,6 +824,7 @@ l_int|0
 (brace
 r_const
 r_char
+id|__user
 op_star
 id|end
 op_assign

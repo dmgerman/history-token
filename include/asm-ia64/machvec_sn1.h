@@ -47,36 +47,36 @@ id|ia64_mv_outl_t
 id|sn1_outl
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_alloc_consistent
-id|sn1_pci_alloc_consistent
+id|ia64_mv_dma_alloc_coherent
+id|sn1_dma_alloc_coherent
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_free_consistent
-id|sn1_pci_free_consistent
+id|ia64_mv_dma_free_coherent
+id|sn1_dma_free_coherent
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_map_single
-id|sn1_pci_map_single
+id|ia64_mv_dma_map_single
+id|sn1_dma_map_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_unmap_single
-id|sn1_pci_unmap_single
+id|ia64_mv_dma_unmap_single
+id|sn1_dma_unmap_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_map_sg
-id|sn1_pci_map_sg
+id|ia64_mv_dma_map_sg
+id|sn1_dma_map_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_unmap_sg
-id|sn1_pci_unmap_sg
+id|ia64_mv_dma_unmap_sg
+id|sn1_dma_unmap_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_sync_single
-id|sn1_pci_dma_sync_single
+id|ia64_mv_dma_sync_single
+id|sn1_dma_sync_single
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_sync_sg
-id|sn1_pci_dma_sync_sg
+id|ia64_mv_dma_sync_sg
+id|sn1_dma_sync_sg
 suffix:semicolon
 multiline_comment|/*&n; * This stuff has dual use!&n; *&n; * For a generic kernel, the macros are used to initialize the&n; * platform&squot;s machvec structure.  When compiling a non-generic kernel,&n; * the macros are used directly.&n; */
 DECL|macro|platform_name
@@ -103,23 +103,23 @@ DECL|macro|platform_outw
 mdefine_line|#define platform_outw&t;&t;sn1_outw
 DECL|macro|platform_outl
 mdefine_line|#define platform_outl&t;&t;sn1_outl
-DECL|macro|platform_pci_dma_init
-mdefine_line|#define platform_pci_dma_init&t;machvec_noop
-DECL|macro|platform_pci_alloc_consistent
-mdefine_line|#define platform_pci_alloc_consistent&t;sn1_pci_alloc_consistent
-DECL|macro|platform_pci_free_consistent
-mdefine_line|#define platform_pci_free_consistent&t;sn1_pci_free_consistent
-DECL|macro|platform_pci_map_single
-mdefine_line|#define platform_pci_map_single&t;&t;sn1_pci_map_single
-DECL|macro|platform_pci_unmap_single
-mdefine_line|#define platform_pci_unmap_single&t;sn1_pci_unmap_single
-DECL|macro|platform_pci_map_sg
-mdefine_line|#define platform_pci_map_sg&t;&t;sn1_pci_map_sg
-DECL|macro|platform_pci_unmap_sg
-mdefine_line|#define platform_pci_unmap_sg&t;&t;sn1_pci_unmap_sg
-DECL|macro|platform_pci_dma_sync_single
-mdefine_line|#define platform_pci_dma_sync_single&t;sn1_pci_dma_sync_single
-DECL|macro|platform_pci_dma_sync_sg
-mdefine_line|#define platform_pci_dma_sync_sg&t;sn1_pci_dma_sync_sg
+DECL|macro|platform_dma_init
+mdefine_line|#define platform_dma_init&t;machvec_noop
+DECL|macro|platform_dma_alloc_coherent
+mdefine_line|#define platform_dma_alloc_coherent&t;sn1_dma_alloc_coherent
+DECL|macro|platform_dma_free_coherent
+mdefine_line|#define platform_dma_free_coherent&t;sn1_dma_free_coherent
+DECL|macro|platform_dma_map_single
+mdefine_line|#define platform_dma_map_single&t;&t;sn1_dma_map_single
+DECL|macro|platform_dma_unmap_single
+mdefine_line|#define platform_dma_unmap_single&t;sn1_dma_unmap_single
+DECL|macro|platform_dma_map_sg
+mdefine_line|#define platform_dma_map_sg&t;&t;sn1_dma_map_sg
+DECL|macro|platform_dma_unmap_sg
+mdefine_line|#define platform_dma_unmap_sg&t;&t;sn1_dma_unmap_sg
+DECL|macro|platform_dma_sync_single
+mdefine_line|#define platform_dma_sync_single&t;sn1_dma_sync_single
+DECL|macro|platform_dma_sync_sg
+mdefine_line|#define platform_dma_sync_sg&t;&t;sn1_dma_sync_sg
 macro_line|#endif /* _ASM_IA64_MACHVEC_SN1_h */
 eof

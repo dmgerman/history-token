@@ -39,7 +39,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_SGIWD93
+macro_line|#ifdef CONFIG_SCSI_SGIWD93
 id|reset_wd33c93
 c_func
 (paren
@@ -73,7 +73,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_SGIWD93
+macro_line|#ifdef CONFIG_SCSI_SGIWD93
 id|reset_wd33c93
 c_func
 (paren
@@ -108,7 +108,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_SGIWD93
+macro_line|#ifdef CONFIG_SCSI_SGIWD93
 id|reset_wd33c93
 c_func
 (paren
@@ -142,7 +142,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_SGIWD93
+macro_line|#ifdef CONFIG_SCSI_SGIWD93
 id|reset_wd33c93
 c_func
 (paren
@@ -176,7 +176,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_SGIWD93
+macro_line|#ifdef CONFIG_SCSI_SGIWD93
 id|reset_wd33c93
 c_func
 (paren

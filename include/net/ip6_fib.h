@@ -498,6 +498,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|rtattr
 )paren
 suffix:semicolon
 r_extern
@@ -514,6 +518,10 @@ r_struct
 id|nlmsghdr
 op_star
 id|nlh
+comma
+r_void
+op_star
+id|rtattr
 )paren
 suffix:semicolon
 r_extern

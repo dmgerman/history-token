@@ -94,7 +94,7 @@ DECL|macro|RTA_DATA
 mdefine_line|#define RTA_DATA(rta)   ((void*)(((char*)(rta)) + RTA_LENGTH(0)))
 DECL|macro|RTA_PAYLOAD
 mdefine_line|#define RTA_PAYLOAD(rta) ((int)((rta)-&gt;rta_len) - RTA_LENGTH(0))
-multiline_comment|/******************************************************************************&n; *&t;&t;Definitions used in routing table administation.&n; ****/
+multiline_comment|/******************************************************************************&n; *&t;&t;Definitions used in routing table administration.&n; ****/
 DECL|struct|rtmsg
 r_struct
 id|rtmsg
@@ -214,11 +214,11 @@ DECL|macro|RTPROT_BOOT
 mdefine_line|#define RTPROT_BOOT&t;3&t;/* Route installed during boot&t;&t;*/
 DECL|macro|RTPROT_STATIC
 mdefine_line|#define RTPROT_STATIC&t;4&t;/* Route installed by administrator&t;*/
-multiline_comment|/* Values of protocol &gt;= RTPROT_STATIC are not interpreted by kernel;&n;   they just passed from user and back as is.&n;   It will be used by hypothetical multiple routing daemons.&n;   Note that protocol values should be standardized in order to&n;   avoid conflicts.&n; */
+multiline_comment|/* Values of protocol &gt;= RTPROT_STATIC are not interpreted by kernel;&n;   they are just passed from user and back as is.&n;   It will be used by hypothetical multiple routing daemons.&n;   Note that protocol values should be standardized in order to&n;   avoid conflicts.&n; */
 DECL|macro|RTPROT_GATED
 mdefine_line|#define RTPROT_GATED&t;8&t;/* Apparently, GateD */
 DECL|macro|RTPROT_RA
-mdefine_line|#define RTPROT_RA&t;9&t;/* RDISC/ND router advertisments */
+mdefine_line|#define RTPROT_RA&t;9&t;/* RDISC/ND router advertisements */
 DECL|macro|RTPROT_MRT
 mdefine_line|#define RTPROT_MRT&t;10&t;/* Merit MRT */
 DECL|macro|RTPROT_ZEBRA
@@ -342,15 +342,18 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
+DECL|enumerator|RTA_HOPLIMIT
+id|RTA_HOPLIMIT
+comma
 )brace
 suffix:semicolon
 DECL|macro|RTA_MAX
-mdefine_line|#define RTA_MAX RTA_SESSION
+mdefine_line|#define RTA_MAX RTA_HOPLIMIT
 DECL|macro|RTM_RTA
 mdefine_line|#define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
 DECL|macro|RTM_PAYLOAD
 mdefine_line|#define RTM_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct rtmsg))
-multiline_comment|/* RTM_MULTIPATH --- array of struct rtnexthop.&n; *&n; * &quot;struct rtnexthop&quot; describres all necessary nexthop information,&n; * i.e. parameters of path to a destination via this nextop.&n; *&n; * At the moment it is impossible to set different prefsrc, mtu, window&n; * and rtt for different paths from multipath.&n; */
+multiline_comment|/* RTM_MULTIPATH --- array of struct rtnexthop.&n; *&n; * &quot;struct rtnexthop&quot; describes all necessary nexthop information,&n; * i.e. parameters of path to a destination via this nexthop.&n; *&n; * At the moment it is impossible to set different prefsrc, mtu, window&n; * and rtt for different paths from multipath.&n; */
 DECL|struct|rtnexthop
 r_struct
 id|rtnexthop
@@ -852,7 +855,7 @@ DECL|macro|IFLA_RTA
 mdefine_line|#define IFLA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct ifinfomsg))))
 DECL|macro|IFLA_PAYLOAD
 mdefine_line|#define IFLA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct ifinfomsg))
-multiline_comment|/* ifi_flags.&n;&n;   IFF_* flags.&n;&n;   The only change is:&n;   IFF_LOOPBACK, IFF_BROADCAST and IFF_POINTOPOINT are&n;   more not changeable by user. They describe link media&n;   characteristics and set by device driver.&n;&n;   Comments:&n;   - Combination IFF_BROADCAST|IFF_POINTOPOINT is invalid&n;   - If neiher of these three flags are set;&n;     the interface is NBMA.&n;&n;   - IFF_MULTICAST does not mean anything special:&n;   multicasts can be used on all not-NBMA links.&n;   IFF_MULTICAST means that this media uses special encapsulation&n;   for multicast frames. Apparently, all IFF_POINTOPOINT and&n;   IFF_BROADCAST devices are able to use multicasts too.&n; */
+multiline_comment|/* ifi_flags.&n;&n;   IFF_* flags.&n;&n;   The only change is:&n;   IFF_LOOPBACK, IFF_BROADCAST and IFF_POINTOPOINT are&n;   more not changeable by user. They describe link media&n;   characteristics and set by device driver.&n;&n;   Comments:&n;   - Combination IFF_BROADCAST|IFF_POINTOPOINT is invalid&n;   - If neither of these three flags are set;&n;     the interface is NBMA.&n;&n;   - IFF_MULTICAST does not mean anything special:&n;   multicasts can be used on all not-NBMA links.&n;   IFF_MULTICAST means that this media uses special encapsulation&n;   for multicast frames. Apparently, all IFF_POINTOPOINT and&n;   IFF_BROADCAST devices are able to use multicasts too.&n; */
 multiline_comment|/* IFLA_LINK.&n;   For usual devices it is equal ifi_index.&n;   If it is a &quot;virtual interface&quot; (f.e. tunnel), ifi_link&n;   can point to real physical interface (f.e. for bandwidth calculations),&n;   or maybe 0, what means, that real media is unknown (usual&n;   for IPIP tunnels, when route to endpoint is allowed to change)&n; */
 multiline_comment|/*****************************************************************&n; *&t;&t;Traffic control messages.&n; ****/
 DECL|struct|tcmsg

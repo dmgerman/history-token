@@ -105,6 +105,11 @@ id|proc_dev_atm_operations
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|read
 op_assign
 id|proc_dev_atm_read
@@ -118,6 +123,11 @@ id|file_operations
 id|proc_spec_atm_operations
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|read
 op_assign

@@ -1,6 +1,7 @@
 macro_line|#ifndef _NET_DN_FIB_H
 DECL|macro|_NET_DN_FIB_H
 mdefine_line|#define _NET_DN_FIB_H
+multiline_comment|/* WARNING: The ordering of these elements must match ordering&n; *          of RTA_* rtnetlink attribute numbers.&n; */
 DECL|struct|dn_kern_rta
 r_struct
 id|dn_kern_rta
@@ -59,8 +60,7 @@ op_star
 id|rta_protoinfo
 suffix:semicolon
 DECL|member|rta_flow
-r_int
-r_char
+id|u32
 op_star
 id|rta_flow
 suffix:semicolon
@@ -69,6 +69,17 @@ r_struct
 id|rta_cacheinfo
 op_star
 id|rta_ci
+suffix:semicolon
+DECL|member|rta_sess
+r_struct
+id|rta_session
+op_star
+id|rta_sess
+suffix:semicolon
+DECL|member|rta_hoplimit
+id|u8
+op_star
+id|rta_hoplimit
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -418,31 +429,6 @@ op_star
 id|t
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|get_info
-r_int
-(paren
-op_star
-id|get_info
-)paren
-(paren
-r_struct
-id|dn_fib_table
-op_star
-id|table
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|first
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 DECL|member|dump
 r_int
 (paren
@@ -970,6 +956,10 @@ id|dn_fib_tables
 )braket
 suffix:semicolon
 macro_line|#else /* Endnode */
+DECL|macro|dn_fib_init
+mdefine_line|#define dn_fib_init() (0)
+DECL|macro|dn_fib_cleanup
+mdefine_line|#define dn_fib_cleanup() (0)
 DECL|macro|dn_fib_lookup
 mdefine_line|#define dn_fib_lookup(fl, res) (-ESRCH)
 DECL|macro|dn_fib_info_put

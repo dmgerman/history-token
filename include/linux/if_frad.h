@@ -501,10 +501,14 @@ id|name
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|dlci_ioctl_set
+c_func
+(paren
 r_int
 (paren
 op_star
-id|dlci_ioctl_hook
+id|hook
 )paren
 (paren
 r_int
@@ -512,6 +516,7 @@ r_int
 comma
 r_void
 op_star
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

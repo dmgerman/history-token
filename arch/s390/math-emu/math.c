@@ -86,7 +86,7 @@ id|__u16
 op_star
 id|location
 suffix:semicolon
-macro_line|#if CONFIG_SYSCTL
+macro_line|#ifdef CONFIG_SYSCTL
 r_if
 c_cond
 (paren

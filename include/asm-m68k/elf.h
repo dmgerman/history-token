@@ -5,6 +5,53 @@ multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+multiline_comment|/*&n; * 68k ELF relocation types&n; */
+DECL|macro|R_68K_NONE
+mdefine_line|#define R_68K_NONE&t;0
+DECL|macro|R_68K_32
+mdefine_line|#define R_68K_32&t;1
+DECL|macro|R_68K_16
+mdefine_line|#define R_68K_16&t;2
+DECL|macro|R_68K_8
+mdefine_line|#define R_68K_8&t;&t;3
+DECL|macro|R_68K_PC32
+mdefine_line|#define R_68K_PC32&t;4
+DECL|macro|R_68K_PC16
+mdefine_line|#define R_68K_PC16&t;5
+DECL|macro|R_68K_PC8
+mdefine_line|#define R_68K_PC8&t;6
+DECL|macro|R_68K_GOT32
+mdefine_line|#define R_68K_GOT32&t;7
+DECL|macro|R_68K_GOT16
+mdefine_line|#define R_68K_GOT16&t;8
+DECL|macro|R_68K_GOT8
+mdefine_line|#define R_68K_GOT8&t;9
+DECL|macro|R_68K_GOT32O
+mdefine_line|#define R_68K_GOT32O&t;10
+DECL|macro|R_68K_GOT16O
+mdefine_line|#define R_68K_GOT16O&t;11
+DECL|macro|R_68K_GOT8O
+mdefine_line|#define R_68K_GOT8O&t;12
+DECL|macro|R_68K_PLT32
+mdefine_line|#define R_68K_PLT32&t;13
+DECL|macro|R_68K_PLT16
+mdefine_line|#define R_68K_PLT16&t;14
+DECL|macro|R_68K_PLT8
+mdefine_line|#define R_68K_PLT8&t;15
+DECL|macro|R_68K_PLT32O
+mdefine_line|#define R_68K_PLT32O&t;16
+DECL|macro|R_68K_PLT16O
+mdefine_line|#define R_68K_PLT16O&t;17
+DECL|macro|R_68K_PLT8O
+mdefine_line|#define R_68K_PLT8O&t;18
+DECL|macro|R_68K_COPY
+mdefine_line|#define R_68K_COPY&t;19
+DECL|macro|R_68K_GLOB_DAT
+mdefine_line|#define R_68K_GLOB_DAT&t;20
+DECL|macro|R_68K_JMP_SLOT
+mdefine_line|#define R_68K_JMP_SLOT&t;21
+DECL|macro|R_68K_RELATIVE
+mdefine_line|#define R_68K_RELATIVE&t;22
 DECL|typedef|elf_greg_t
 r_typedef
 r_int

@@ -827,9 +827,9 @@ multiline_comment|/* Encryption algorithms */
 DECL|macro|SADB_EALG_NONE
 mdefine_line|#define SADB_EALG_NONE&t;&t;&t;0
 DECL|macro|SADB_EALG_DESCBC
-mdefine_line|#define SADB_EALG_DESCBC&t;&t;1
+mdefine_line|#define SADB_EALG_DESCBC&t;&t;2
 DECL|macro|SADB_EALG_3DESCBC
-mdefine_line|#define SADB_EALG_3DESCBC&t;&t;2
+mdefine_line|#define SADB_EALG_3DESCBC&t;&t;3
 DECL|macro|SADB_X_EALG_CASTCBC
 mdefine_line|#define SADB_X_EALG_CASTCBC&t;&t;6
 DECL|macro|SADB_X_EALG_BLOWFISHCBC

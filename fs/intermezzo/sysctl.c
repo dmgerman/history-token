@@ -1257,7 +1257,7 @@ op_star
 id|total_entries
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren

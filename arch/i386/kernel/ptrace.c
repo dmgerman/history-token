@@ -493,6 +493,7 @@ id|idx
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
 id|user_desc
 )paren
@@ -654,6 +655,7 @@ id|idx
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
 id|user_desc
 )paren
@@ -1979,6 +1981,7 @@ c_func
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 )paren
 id|data
@@ -2037,6 +2040,7 @@ comma
 (paren
 r_struct
 id|user_i387_struct
+id|__user
 op_star
 )paren
 id|data
@@ -2105,6 +2109,7 @@ c_func
 (paren
 r_struct
 id|user_fxsr_struct
+id|__user
 op_star
 )paren
 id|data
@@ -2165,6 +2170,7 @@ comma
 (paren
 r_struct
 id|user_fxsr_struct
+id|__user
 op_star
 )paren
 id|data
@@ -2188,6 +2194,7 @@ comma
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 )paren
 id|data
@@ -2210,6 +2217,7 @@ comma
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 )paren
 id|data

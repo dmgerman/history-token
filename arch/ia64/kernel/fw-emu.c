@@ -81,7 +81,7 @@ l_int|8
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_HP_SIM
+macro_line|#if defined(CONFIG_IA64_HP_SIM) || defined(CONFIG_IA64_GENERIC)
 multiline_comment|/* Simulator system calls: */
 DECL|macro|SSC_EXIT
 mdefine_line|#define SSC_EXIT&t;66
@@ -601,7 +601,7 @@ op_star
 id|tc
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_HP_SIM
+macro_line|#if defined(CONFIG_IA64_HP_SIM) || defined(CONFIG_IA64_GENERIC)
 r_struct
 (brace
 r_int
@@ -701,7 +701,7 @@ op_star
 id|data
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_HP_SIM
+macro_line|#if defined(CONFIG_IA64_HP_SIM) || defined(CONFIG_IA64_GENERIC)
 id|ssc
 c_func
 (paren

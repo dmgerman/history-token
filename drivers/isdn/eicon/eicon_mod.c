@@ -853,7 +853,7 @@ suffix:semicolon
 r_case
 id|EICON_BUS_MCA
 suffix:colon
-macro_line|#if CONFIG_MCA
+macro_line|#ifdef CONFIG_MCA
 r_if
 c_cond
 (paren
@@ -3966,7 +3966,7 @@ id|Type
 )paren
 (brace
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_ISA
-macro_line|#if CONFIG_MCA /* only needed for MCA */
+macro_line|#ifdef CONFIG_MCA /* only needed for MCA */
 r_case
 id|EICON_CTYPE_S
 suffix:colon
@@ -6329,7 +6329,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_PCI&t;
+macro_line|#ifdef CONFIG_PCI&t;
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI
 id|card_t
 op_star
@@ -6428,7 +6428,7 @@ id|last
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_PCI&t;
+macro_line|#ifdef CONFIG_PCI&t;
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI
 id|pCard
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * AGPGART module version 0.99&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART module version 0.100&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_H
 DECL|macro|_AGP_BACKEND_H
 mdefine_line|#define _AGP_BACKEND_H 1
@@ -17,122 +17,8 @@ id|chipset_type
 DECL|enumerator|NOT_SUPPORTED
 id|NOT_SUPPORTED
 comma
-DECL|enumerator|INTEL_GENERIC
-id|INTEL_GENERIC
-comma
-DECL|enumerator|INTEL_LX
-id|INTEL_LX
-comma
-DECL|enumerator|INTEL_BX
-id|INTEL_BX
-comma
-DECL|enumerator|INTEL_GX
-id|INTEL_GX
-comma
-DECL|enumerator|INTEL_I810
-id|INTEL_I810
-comma
-DECL|enumerator|INTEL_I815
-id|INTEL_I815
-comma
-DECL|enumerator|INTEL_I820
-id|INTEL_I820
-comma
-DECL|enumerator|INTEL_I830_M
-id|INTEL_I830_M
-comma
-DECL|enumerator|INTEL_I845_G
-id|INTEL_I845_G
-comma
-DECL|enumerator|INTEL_I855_PM
-id|INTEL_I855_PM
-comma
-DECL|enumerator|INTEL_I865_G
-id|INTEL_I865_G
-comma
-DECL|enumerator|INTEL_I840
-id|INTEL_I840
-comma
-DECL|enumerator|INTEL_I845
-id|INTEL_I845
-comma
-DECL|enumerator|INTEL_I850
-id|INTEL_I850
-comma
-DECL|enumerator|INTEL_I860
-id|INTEL_I860
-comma
-DECL|enumerator|INTEL_460GX
-id|INTEL_460GX
-comma
-DECL|enumerator|INTEL_E7505
-id|INTEL_E7505
-comma
-DECL|enumerator|VIA_GENERIC
-id|VIA_GENERIC
-comma
-DECL|enumerator|SIS_GENERIC
-id|SIS_GENERIC
-comma
-DECL|enumerator|AMD_GENERIC
-id|AMD_GENERIC
-comma
-DECL|enumerator|AMD_IRONGATE
-id|AMD_IRONGATE
-comma
-DECL|enumerator|AMD_761
-id|AMD_761
-comma
-DECL|enumerator|AMD_762
-id|AMD_762
-comma
-DECL|enumerator|AMD_8151
-id|AMD_8151
-comma
-DECL|enumerator|ALI_M1541
-id|ALI_M1541
-comma
-DECL|enumerator|ALI_M1621
-id|ALI_M1621
-comma
-DECL|enumerator|ALI_M1631
-id|ALI_M1631
-comma
-DECL|enumerator|ALI_M1632
-id|ALI_M1632
-comma
-DECL|enumerator|ALI_M1641
-id|ALI_M1641
-comma
-DECL|enumerator|ALI_M1644
-id|ALI_M1644
-comma
-DECL|enumerator|ALI_M1647
-id|ALI_M1647
-comma
-DECL|enumerator|ALI_M1651
-id|ALI_M1651
-comma
-DECL|enumerator|ALI_M1671
-id|ALI_M1671
-comma
-DECL|enumerator|ALI_GENERIC
-id|ALI_GENERIC
-comma
-DECL|enumerator|SVWRKS_HE
-id|SVWRKS_HE
-comma
-DECL|enumerator|SVWRKS_LE
-id|SVWRKS_LE
-comma
-DECL|enumerator|SVWRKS_GENERIC
-id|SVWRKS_GENERIC
-comma
-DECL|enumerator|HP_ZX1
-id|HP_ZX1
-comma
-DECL|enumerator|ALPHA_CORE_AGP
-id|ALPHA_CORE_AGP
+DECL|enumerator|SUPPORTED
+id|SUPPORTED
 comma
 )brace
 suffix:semicolon
@@ -212,7 +98,7 @@ DECL|typedef|agp_kern_info
 )brace
 id|agp_kern_info
 suffix:semicolon
-multiline_comment|/* &n; * The agp_memory structure has information&n; * about the block of agp memory allocated.&n; * A caller may manipulate the next and prev&n; * pointers to link each allocated item into&n; * a list.  These pointers are ignored by the &n; * backend.  Everything else should never be&n; * written to, but the caller may read any of&n; * the items to detrimine the status of this&n; * block of agp memory.&n; * &n; */
+multiline_comment|/* &n; * The agp_memory structure has information about the block of agp memory&n; * allocated.  A caller may manipulate the next and prev pointers to link&n; * each allocated item into a list.  These pointers are ignored by the backend.&n; * Everything else should never be written to, but the caller may read any of&n; * the items to detrimine the status of this block of agp memory. &n; */
 DECL|struct|_agp_memory
 r_typedef
 r_struct
@@ -283,7 +169,6 @@ id|agp_memory
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_free_memory :&n; * &n; * This function frees memory associated with&n; * an agp_memory pointer.  It is the only function&n; * that can be called when the backend is not owned&n; * by the caller.  (So it can free memory on client&n; * death.)&n; * &n; * It takes an agp_memory pointer as an argument.&n; * &n; */
 r_extern
 id|agp_memory
 op_star
@@ -295,7 +180,6 @@ comma
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_allocate_memory :&n; * &n; * This function allocates a group of pages of&n; * a certain type.&n; * &n; * It takes a size_t argument of the number of pages, and&n; * an u32 argument of the type of memory to be allocated.  &n; * Every agp bridge device will allow you to allocate &n; * AGP_NORMAL_MEMORY which maps to physical ram.  Any other&n; * type is device dependent.&n; * &n; * It returns NULL whenever memory is unavailable.&n; * &n; */
 r_extern
 r_int
 id|agp_copy_info
@@ -305,7 +189,6 @@ id|agp_kern_info
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_copy_info :&n; * &n; * This function copies information about the&n; * agp bridge device and the state of the agp&n; * backend into an agp_kern_info pointer.&n; * &n; * It takes an agp_kern_info pointer as an&n; * argument.  The caller should insure that&n; * this pointer is valid.&n; * &n; */
 r_extern
 r_int
 id|agp_bind_memory
@@ -317,7 +200,6 @@ comma
 id|off_t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_bind_memory :&n; * &n; * This function binds an agp_memory structure&n; * into the graphics aperture translation table.&n; * &n; * It takes an agp_memory pointer and an offset into&n; * the graphics aperture translation table as arguments&n; * &n; * It returns -EINVAL if the pointer == NULL.&n; * It returns -EBUSY if the area of the table&n; * requested is already in use.&n; * &n; */
 r_extern
 r_int
 id|agp_unbind_memory
@@ -327,7 +209,6 @@ id|agp_memory
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * agp_unbind_memory :&n; * &n; * This function removes an agp_memory structure&n; * from the graphics aperture translation table.&n; * &n; * It takes an agp_memory pointer as an argument.&n; * &n; * It returns -EINVAL if this piece of agp_memory&n; * is not currently bound to the graphics aperture&n; * translation table or if the agp_memory &n; * pointer == NULL&n; * &n; */
 r_extern
 r_void
 id|agp_enable
@@ -336,7 +217,6 @@ c_func
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * agp_enable :&n; * &n; * This function initializes the agp point-to-point&n; * connection.&n; * &n; * It takes an agp mode register as an argument&n; * &n; */
 r_extern
 r_int
 id|agp_backend_acquire
@@ -345,7 +225,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_backend_acquire :&n; * &n; * This Function attempts to acquire the agp&n; * backend.&n; * &n; * returns -EBUSY if agp is in use,&n; * returns 0 if the caller owns the agp backend&n; */
 r_extern
 r_void
 id|agp_backend_release
@@ -354,7 +233,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * agp_backend_release :&n; * &n; * This Function releases the lock on the agp&n; * backend.&n; * &n; * The caller must insure that the graphics&n; * aperture translation table is read for use&n; * by another entity.  (Ensure that all memory&n; * it bound is unbound.)&n; * &n; */
+multiline_comment|/*&n; * Interface between drm and agp code.  When agp initializes, it makes&n; * the below structure available via inter_module_register(), drm might&n; * use it.  Keith Owens &lt;kaos@ocs.com.au&gt; 28 Oct 2000.&n; */
 r_typedef
 r_struct
 (brace
@@ -457,6 +336,5 @@ id|drm_agp_t
 op_star
 id|drm_agp_p
 suffix:semicolon
-multiline_comment|/*&n; * Interface between drm and agp code.  When agp initializes, it makes&n; * the above structure available via inter_module_register(), drm might&n; * use it.  Keith Owens &lt;kaos@ocs.com.au&gt; 28 Oct 2000.&n; */
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_H */
 eof

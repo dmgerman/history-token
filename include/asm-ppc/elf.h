@@ -5,6 +5,84 @@ multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+multiline_comment|/* PowerPC relocations defined by the ABIs */
+DECL|macro|R_PPC_NONE
+mdefine_line|#define R_PPC_NONE&t;&t;0
+DECL|macro|R_PPC_ADDR32
+mdefine_line|#define R_PPC_ADDR32&t;&t;1&t;/* 32bit absolute address */
+DECL|macro|R_PPC_ADDR24
+mdefine_line|#define R_PPC_ADDR24&t;&t;2&t;/* 26bit address, 2 bits ignored.  */
+DECL|macro|R_PPC_ADDR16
+mdefine_line|#define R_PPC_ADDR16&t;&t;3&t;/* 16bit absolute address */
+DECL|macro|R_PPC_ADDR16_LO
+mdefine_line|#define R_PPC_ADDR16_LO&t;&t;4&t;/* lower 16bit of absolute address */
+DECL|macro|R_PPC_ADDR16_HI
+mdefine_line|#define R_PPC_ADDR16_HI&t;&t;5&t;/* high 16bit of absolute address */
+DECL|macro|R_PPC_ADDR16_HA
+mdefine_line|#define R_PPC_ADDR16_HA&t;&t;6&t;/* adjusted high 16bit */
+DECL|macro|R_PPC_ADDR14
+mdefine_line|#define R_PPC_ADDR14&t;&t;7&t;/* 16bit address, 2 bits ignored */
+DECL|macro|R_PPC_ADDR14_BRTAKEN
+mdefine_line|#define R_PPC_ADDR14_BRTAKEN&t;8
+DECL|macro|R_PPC_ADDR14_BRNTAKEN
+mdefine_line|#define R_PPC_ADDR14_BRNTAKEN&t;9
+DECL|macro|R_PPC_REL24
+mdefine_line|#define R_PPC_REL24&t;&t;10&t;/* PC relative 26 bit */
+DECL|macro|R_PPC_REL14
+mdefine_line|#define R_PPC_REL14&t;&t;11&t;/* PC relative 16 bit */
+DECL|macro|R_PPC_REL14_BRTAKEN
+mdefine_line|#define R_PPC_REL14_BRTAKEN&t;12
+DECL|macro|R_PPC_REL14_BRNTAKEN
+mdefine_line|#define R_PPC_REL14_BRNTAKEN&t;13
+DECL|macro|R_PPC_GOT16
+mdefine_line|#define R_PPC_GOT16&t;&t;14
+DECL|macro|R_PPC_GOT16_LO
+mdefine_line|#define R_PPC_GOT16_LO&t;&t;15
+DECL|macro|R_PPC_GOT16_HI
+mdefine_line|#define R_PPC_GOT16_HI&t;&t;16
+DECL|macro|R_PPC_GOT16_HA
+mdefine_line|#define R_PPC_GOT16_HA&t;&t;17
+DECL|macro|R_PPC_PLTREL24
+mdefine_line|#define R_PPC_PLTREL24&t;&t;18
+DECL|macro|R_PPC_COPY
+mdefine_line|#define R_PPC_COPY&t;&t;19
+DECL|macro|R_PPC_GLOB_DAT
+mdefine_line|#define R_PPC_GLOB_DAT&t;&t;20
+DECL|macro|R_PPC_JMP_SLOT
+mdefine_line|#define R_PPC_JMP_SLOT&t;&t;21
+DECL|macro|R_PPC_RELATIVE
+mdefine_line|#define R_PPC_RELATIVE&t;&t;22
+DECL|macro|R_PPC_LOCAL24PC
+mdefine_line|#define R_PPC_LOCAL24PC&t;&t;23
+DECL|macro|R_PPC_UADDR32
+mdefine_line|#define R_PPC_UADDR32&t;&t;24
+DECL|macro|R_PPC_UADDR16
+mdefine_line|#define R_PPC_UADDR16&t;&t;25
+DECL|macro|R_PPC_REL32
+mdefine_line|#define R_PPC_REL32&t;&t;26
+DECL|macro|R_PPC_PLT32
+mdefine_line|#define R_PPC_PLT32&t;&t;27
+DECL|macro|R_PPC_PLTREL32
+mdefine_line|#define R_PPC_PLTREL32&t;&t;28
+DECL|macro|R_PPC_PLT16_LO
+mdefine_line|#define R_PPC_PLT16_LO&t;&t;29
+DECL|macro|R_PPC_PLT16_HI
+mdefine_line|#define R_PPC_PLT16_HI&t;&t;30
+DECL|macro|R_PPC_PLT16_HA
+mdefine_line|#define R_PPC_PLT16_HA&t;&t;31
+DECL|macro|R_PPC_SDAREL16
+mdefine_line|#define R_PPC_SDAREL16&t;&t;32
+DECL|macro|R_PPC_SECTOFF
+mdefine_line|#define R_PPC_SECTOFF&t;&t;33
+DECL|macro|R_PPC_SECTOFF_LO
+mdefine_line|#define R_PPC_SECTOFF_LO&t;34
+DECL|macro|R_PPC_SECTOFF_HI
+mdefine_line|#define R_PPC_SECTOFF_HI&t;35
+DECL|macro|R_PPC_SECTOFF_HA
+mdefine_line|#define R_PPC_SECTOFF_HA&t;36
+multiline_comment|/* Keep this the last entry.  */
+DECL|macro|R_PPC_NUM
+mdefine_line|#define R_PPC_NUM&t;&t;37
 DECL|macro|ELF_NGREG
 mdefine_line|#define ELF_NGREG&t;48&t;/* includes nip, msr, lr, etc. */
 DECL|macro|ELF_NFPREG

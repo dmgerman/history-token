@@ -51,6 +51,8 @@ DECL|macro|PFM_FL_SYSTEM_WIDE
 mdefine_line|#define PFM_FL_SYSTEM_WIDE&t; 0x08&t;/* create a system wide context */
 DECL|macro|PFM_FL_EXCL_IDLE
 mdefine_line|#define PFM_FL_EXCL_IDLE         0x20   /* exclude idle task from system wide session */
+DECL|macro|PFM_FL_UNSECURE
+mdefine_line|#define PFM_FL_UNSECURE&t;&t; 0x40   /* allow unsecure monitoring for non self-monitoring task */
 multiline_comment|/*&n; * PMC flags&n; */
 DECL|macro|PFM_REGFL_OVFL_NOTIFY
 mdefine_line|#define PFM_REGFL_OVFL_NOTIFY&t;0x1&t;/* send notification on overflow */
@@ -298,7 +300,7 @@ multiline_comment|/*&n; * Define the version numbers for both perfmon as a whole
 DECL|macro|PFM_VERSION_MAJ
 mdefine_line|#define PFM_VERSION_MAJ&t;&t;1U
 DECL|macro|PFM_VERSION_MIN
-mdefine_line|#define PFM_VERSION_MIN&t;&t;3U
+mdefine_line|#define PFM_VERSION_MIN&t;&t;4U
 DECL|macro|PFM_VERSION
 mdefine_line|#define PFM_VERSION&t;&t;(((PFM_VERSION_MAJ&amp;0xffff)&lt;&lt;16)|(PFM_VERSION_MIN &amp; 0xffff))
 DECL|macro|PFM_SMPL_VERSION_MAJ

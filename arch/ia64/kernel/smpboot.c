@@ -472,6 +472,13 @@ id|master_time_stamp
 comma
 id|bound
 suffix:semicolon
+r_extern
+r_void
+id|ia64_cpu_local_tick
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_ITC_SYNC
 r_struct
 (brace
@@ -770,6 +777,39 @@ comma
 id|rt
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Check whether we sync&squot;d the itc ahead of the next timer interrupt.  If so, just&n;&t; * reset it.&n;&t; */
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+comma
+id|local_cpu_data-&gt;itm_next
+)paren
+)paren
+(brace
+id|Dprintk
+c_func
+(paren
+l_string|&quot;CPU %d: oops, jumped a timer tick; resetting timer.&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|ia64_cpu_local_tick
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Ideally sets up per-cpu profiling hooks.  Doesn&squot;t do much now...&n; */
 r_static
@@ -872,31 +912,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|sal_platform_features
-op_amp
-id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Synchronize the ITC with the BP&n;&t;&t; */
-id|Dprintk
-c_func
-(paren
-l_string|&quot;Going to syncup ITC with BP.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ia64_sync_itc
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|ia64_init_itm
 c_func
@@ -951,6 +966,31 @@ id|local_cpu_data-&gt;loops_per_jiffy
 op_assign
 id|loops_per_jiffy
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sal_platform_features
+op_amp
+id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Synchronize the ITC with the BP.  Need to do this after irqs are&n;&t;&t; * enabled because ia64_sync_itc() calls smp_call_function_single(), which&n;&t;&t; * calls spin_unlock_bh(), which calls spin_unlock_bh(), which calls&n;&t;&t; * local_bh_enable(), which bugs out if irqs are not enabled...&n;&t;&t; */
+id|Dprintk
+c_func
+(paren
+l_string|&quot;Going to syncup ITC with BP.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ia64_sync_itc
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
 id|set_bit
 c_func
@@ -1259,12 +1299,54 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+r_int
+id|__init
+DECL|function|decay
+id|decay
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_int
+id|ticks
+suffix:semicolon
+id|get_option
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|ticks
+)paren
+suffix:semicolon
+id|cache_decay_ticks
+op_assign
+id|ticks
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;decay=&quot;
+comma
+id|decay
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * # of ticks an idle task is considered cache-hot.  Highly application-dependent.  There&n; * are apps out there which are known to suffer significantly with values &gt;= 4.&n; */
 DECL|variable|cache_decay_ticks
 r_int
 r_int
 id|cache_decay_ticks
+op_assign
+l_int|10
 suffix:semicolon
-multiline_comment|/* # of ticks an idle task is considered cache-hot */
+multiline_comment|/* equal to MIN_TIMESLICE */
 r_static
 r_void
 DECL|function|smp_tune_scheduling
@@ -1273,11 +1355,6 @@ id|smp_tune_scheduling
 r_void
 )paren
 (brace
-id|cache_decay_ticks
-op_assign
-l_int|10
-suffix:semicolon
-multiline_comment|/* XXX base this on PAL info and cache-bandwidth estimate */
 id|printk
 c_func
 (paren

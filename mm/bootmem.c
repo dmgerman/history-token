@@ -1450,7 +1450,6 @@ r_int
 id|size
 )paren
 (brace
-r_return
 id|free_bootmem_core
 c_func
 (paren
@@ -1561,7 +1560,6 @@ r_int
 id|size
 )paren
 (brace
-r_return
 id|free_bootmem_core
 c_func
 (paren

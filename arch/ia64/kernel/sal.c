@@ -480,7 +480,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The first byte of each entry type contains the type desciptor.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The first byte of each entry type contains the type descriptor.&n;&t;&t; */
 r_switch
 c_cond
 (paren

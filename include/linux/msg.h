@@ -302,6 +302,7 @@ id|msqid
 comma
 r_struct
 id|msgbuf
+id|__user
 op_star
 id|msgp
 comma
@@ -321,6 +322,7 @@ id|msqid
 comma
 r_struct
 id|msgbuf
+id|__user
 op_star
 id|msgp
 comma
@@ -346,6 +348,7 @@ id|cmd
 comma
 r_struct
 id|msqid_ds
+id|__user
 op_star
 id|buf
 )paren

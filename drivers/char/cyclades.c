@@ -9412,8 +9412,6 @@ r_int
 r_int
 id|page
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -9434,8 +9432,6 @@ id|line
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -9457,8 +9453,6 @@ OL
 l_int|0
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -9582,8 +9576,6 @@ l_string|&quot;cyc:Cyclades-Z firmware not yet loaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -10388,8 +10380,6 @@ id|filp
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|CY_UNLOCK
 c_func
 (paren
@@ -10486,8 +10476,6 @@ c_cond
 id|info-&gt;count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|CY_UNLOCK
 c_func
 (paren
@@ -11020,8 +11008,6 @@ l_string|&quot; cyc:cy_close done&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|CY_UNLOCK
 c_func
 (paren
@@ -24336,6 +24322,10 @@ suffix:semicolon
 id|cy_serial_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|cy_serial_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|cy_serial_driver.driver_name
 op_assign

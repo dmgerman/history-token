@@ -70,10 +70,14 @@ DECL|macro|EHCI_TUNE_MULT_TT
 mdefine_line|#define&t;EHCI_TUNE_MULT_TT&t;1
 DECL|macro|EHCI_TUNE_FLS
 mdefine_line|#define&t;EHCI_TUNE_FLS&t;&t;2&t;/* (small) 256 frame schedule */
-DECL|macro|EHCI_WATCHDOG_JIFFIES
-mdefine_line|#define EHCI_WATCHDOG_JIFFIES&t;(HZ/100)&t;/* arbitrary; ~10 msec */
+DECL|macro|EHCI_IAA_JIFFIES
+mdefine_line|#define EHCI_IAA_JIFFIES&t;(HZ/100)&t;/* arbitrary; ~10 msec */
+DECL|macro|EHCI_IO_JIFFIES
+mdefine_line|#define EHCI_IO_JIFFIES&t;&t;(HZ/10)&t;&t;/* io watchdog &gt; irq_thresh */
 DECL|macro|EHCI_ASYNC_JIFFIES
 mdefine_line|#define EHCI_ASYNC_JIFFIES&t;(HZ/20)&t;&t;/* async idle timeout */
+DECL|macro|EHCI_SHRINK_JIFFIES
+mdefine_line|#define EHCI_SHRINK_JIFFIES&t;(HZ/200)&t;/* async qh unlink delay */
 multiline_comment|/* Initial IRQ latency:  lower than default */
 DECL|variable|log2_irq_thresh
 r_static
@@ -576,43 +580,18 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|ehci_work
-(paren
-id|ehci
-comma
-l_int|NULL
-)paren
-suffix:semicolon
+multiline_comment|/* stop async processing after it&squot;s idled a bit */
 r_if
 c_cond
 (paren
-id|ehci-&gt;reclaim
-op_logical_and
-op_logical_neg
-id|timer_pending
+id|test_bit
 (paren
-op_amp
-id|ehci-&gt;watchdog
-)paren
-)paren
-id|mod_timer
-(paren
-op_amp
-id|ehci-&gt;watchdog
+id|TIMER_ASYNC_OFF
 comma
-id|jiffies
-op_plus
-id|EHCI_WATCHDOG_JIFFIES
+op_amp
+id|ehci-&gt;actions
 )paren
-suffix:semicolon
-multiline_comment|/* stop async processing after it&squot;s idled a while */
-r_else
-r_if
-c_cond
-(paren
-id|ehci-&gt;async_idle
 )paren
-(brace
 id|start_unlink_async
 (paren
 id|ehci
@@ -620,11 +599,14 @@ comma
 id|ehci-&gt;async
 )paren
 suffix:semicolon
-id|ehci-&gt;async_idle
-op_assign
-l_int|0
+multiline_comment|/* ehci could run by timer, without IRQs ... */
+id|ehci_work
+(paren
+id|ehci
+comma
+l_int|NULL
+)paren
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -2108,6 +2090,13 @@ op_star
 id|regs
 )paren
 (brace
+id|timer_action_done
+(paren
+id|ehci
+comma
+id|TIMER_IO_WATCHDOG
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2140,6 +2129,29 @@ id|scan_periodic
 id|ehci
 comma
 id|regs
+)paren
+suffix:semicolon
+multiline_comment|/* the IO watchdog guards against hardware or driver bugs that&n;&t; * misplace IRQs, and should let us run completely without IRQs.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|ehci-&gt;async-&gt;qh_next.ptr
+op_ne
+l_int|0
+)paren
+op_logical_or
+(paren
+id|ehci-&gt;periodic_sched
+op_ne
+l_int|0
+)paren
+)paren
+id|timer_action
+(paren
+id|ehci
+comma
+id|TIMER_IO_WATCHDOG
 )paren
 suffix:semicolon
 )brace

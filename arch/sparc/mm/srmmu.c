@@ -6766,7 +6766,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SUN_IO
+macro_line|#ifdef CONFIG_SUN_IO
 id|srmmu_allocate_ptable_skeleton
 c_func
 (paren

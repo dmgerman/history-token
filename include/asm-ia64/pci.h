@@ -82,25 +82,7 @@ id|pci_dev
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Dynamic DMA mapping API.  See Documentation/DMA-mapping.txt for details.&n; */
-DECL|macro|pci_alloc_consistent
-mdefine_line|#define pci_alloc_consistent&t;&t;platform_pci_alloc_consistent
-DECL|macro|pci_free_consistent
-mdefine_line|#define pci_free_consistent&t;&t;platform_pci_free_consistent
-DECL|macro|pci_map_single
-mdefine_line|#define pci_map_single&t;&t;&t;platform_pci_map_single
-DECL|macro|pci_unmap_single
-mdefine_line|#define pci_unmap_single&t;&t;platform_pci_unmap_single
-DECL|macro|pci_map_sg
-mdefine_line|#define pci_map_sg&t;&t;&t;platform_pci_map_sg
-DECL|macro|pci_unmap_sg
-mdefine_line|#define pci_unmap_sg&t;&t;&t;platform_pci_unmap_sg
-DECL|macro|pci_dma_sync_single
-mdefine_line|#define pci_dma_sync_single&t;&t;platform_pci_dma_sync_single
-DECL|macro|pci_dma_sync_sg
-mdefine_line|#define pci_dma_sync_sg&t;&t;&t;platform_pci_dma_sync_sg
-DECL|macro|pci_dma_supported
-mdefine_line|#define pci_dma_supported&t;&t;platform_pci_dma_supported
+macro_line|#include &lt;asm-generic/pci-dma-compat.h&gt;
 multiline_comment|/* pci_unmap_{single,page} is not a nop, thus... */
 DECL|macro|DECLARE_PCI_UNMAP_ADDR
 mdefine_line|#define DECLARE_PCI_UNMAP_ADDR(ADDR_NAME)&t;&bslash;&n;&t;dma_addr_t ADDR_NAME;
@@ -114,21 +96,17 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
-DECL|macro|pci_map_page
-mdefine_line|#define pci_map_page(dev,pg,off,size,dir)&t;&t;&t;&t;&bslash;&n;&t;pci_map_single((dev), page_address(pg) + (off), (size), (dir))
-DECL|macro|pci_unmap_page
-mdefine_line|#define pci_unmap_page(dev,dma_addr,size,dir)&t;&t;&t;&t;&bslash;&n;&t;pci_unmap_single((dev), (dma_addr), (size), (dir))
 multiline_comment|/* The ia64 platform always supports 64-bit addressing. */
 DECL|macro|pci_dac_dma_supported
-mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;(1)
+mdefine_line|#define pci_dac_dma_supported(pci_dev, mask)&t;&t;(1)
 DECL|macro|pci_dac_page_to_dma
-mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;((dma_addr_t) page_to_bus(pg) + (off))
+mdefine_line|#define pci_dac_page_to_dma(dev,pg,off,dir)&t;&t;((dma_addr_t) page_to_bus(pg) + (off))
 DECL|macro|pci_dac_dma_to_page
-mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;(virt_to_page(bus_to_virt(dma_addr)))
+mdefine_line|#define pci_dac_dma_to_page(dev,dma_addr)&t;&t;(virt_to_page(bus_to_virt(dma_addr)))
 DECL|macro|pci_dac_dma_to_offset
-mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;((dma_addr) &amp; ~PAGE_MASK)
+mdefine_line|#define pci_dac_dma_to_offset(dev,dma_addr)&t;&t;((dma_addr) &amp; ~PAGE_MASK)
 DECL|macro|pci_dac_dma_sync_single
-mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { /* nothing */ } while (0)
+mdefine_line|#define pci_dac_dma_sync_single(dev,dma_addr,len,dir)&t;do { mb(); } while (0)
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_controller_num
 mdefine_line|#define pci_controller_num(PDEV)&t;(0)
@@ -160,6 +138,21 @@ r_int
 id|write_combine
 )paren
 suffix:semicolon
+DECL|struct|pci_window
+r_struct
+id|pci_window
+(brace
+DECL|member|resource
+r_struct
+id|resource
+id|resource
+suffix:semicolon
+DECL|member|offset
+id|u64
+id|offset
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|pci_controller
 r_struct
 id|pci_controller
@@ -178,9 +171,16 @@ DECL|member|segment
 r_int
 id|segment
 suffix:semicolon
-DECL|member|mem_offset
-id|u64
-id|mem_offset
+DECL|member|windows
+r_int
+r_int
+id|windows
+suffix:semicolon
+DECL|member|window
+r_struct
+id|pci_window
+op_star
+id|window
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -4508,7 +4508,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -4972,6 +4972,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5794,7 +5795,7 @@ id|PAGE_CACHE_SHIFT
 op_plus
 id|offset
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -5813,6 +5814,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5931,6 +5933,7 @@ id|read_actor_t
 id|actor
 comma
 r_void
+id|__user
 op_star
 id|target
 )paren
@@ -6849,6 +6852,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -6927,6 +6931,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

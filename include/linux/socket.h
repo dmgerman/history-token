@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/socket.h&gt;&t;&t;&t;/* arch-dependent defines&t;*/
 macro_line|#include &lt;linux/sockios.h&gt;&t;&t;/* the SIOCxxx I/O controls&t;*/
 macro_line|#include &lt;linux/uio.h&gt;&t;&t;&t;/* iovec support&t;&t;*/
 macro_line|#include &lt;linux/types.h&gt;&t;&t;/* pid_t&t;&t;&t;*/
+macro_line|#include &lt;linux/compiler.h&gt;&t;&t;/* __user&t;&t;&t;*/
 DECL|typedef|sa_family_t
 r_typedef
 r_int
@@ -516,6 +517,7 @@ id|fd
 comma
 r_struct
 id|msghdr
+id|__user
 op_star
 id|msg
 comma
@@ -534,6 +536,7 @@ id|fd
 comma
 r_struct
 id|msghdr
+id|__user
 op_star
 id|msg
 comma
@@ -729,10 +732,12 @@ r_int
 id|klen
 comma
 r_void
+id|__user
 op_star
 id|uaddr
 comma
 r_int
+id|__user
 op_star
 id|ulen
 )paren
@@ -743,6 +748,7 @@ id|move_addr_to_kernel
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|uaddr
 comma

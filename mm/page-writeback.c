@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
@@ -594,7 +593,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-id|CHECK_EMERGENCY_SYNC
 r_for
 c_loop
 (paren
@@ -723,6 +721,8 @@ suffix:semicolon
 id|nr_pages
 op_assign
 id|ps.nr_dirty
+op_plus
+id|ps.nr_unstable
 suffix:semicolon
 )brace
 r_return

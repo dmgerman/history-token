@@ -159,6 +159,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -374,6 +375,19 @@ op_star
 suffix:semicolon
 r_int
 id|single_release
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
+r_int
+id|seq_release_private
 c_func
 (paren
 r_struct

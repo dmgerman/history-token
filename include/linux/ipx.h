@@ -43,7 +43,7 @@ suffix:semicolon
 multiline_comment|/* 16 byte fill */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;So we can fit the extra info for SIOCSIFADDR into the address nicely&n; */
+multiline_comment|/*&n; * So we can fit the extra info for SIOCSIFADDR into the address nicely&n; */
 DECL|macro|sipx_special
 mdefine_line|#define sipx_special&t;sipx_port
 DECL|macro|sipx_action
@@ -193,10 +193,10 @@ suffix:semicolon
 DECL|macro|SIOCAIPXITFCRT
 mdefine_line|#define SIOCAIPXITFCRT&t;&t;(SIOCPROTOPRIVATE)
 DECL|macro|SIOCAIPXPRISLT
-mdefine_line|#define SIOCAIPXPRISLT&t;&t;(SIOCPROTOPRIVATE+1)
+mdefine_line|#define SIOCAIPXPRISLT&t;&t;(SIOCPROTOPRIVATE + 1)
 DECL|macro|SIOCIPXCFGDATA
-mdefine_line|#define SIOCIPXCFGDATA&t;&t;(SIOCPROTOPRIVATE+2)
+mdefine_line|#define SIOCIPXCFGDATA&t;&t;(SIOCPROTOPRIVATE + 2)
 DECL|macro|SIOCIPXNCPCONN
-mdefine_line|#define SIOCIPXNCPCONN&t;&t;(SIOCPROTOPRIVATE+3)
-macro_line|#endif /* def _IPX_H_ */
+mdefine_line|#define SIOCIPXNCPCONN&t;&t;(SIOCPROTOPRIVATE + 3)
+macro_line|#endif /* _IPX_H_ */
 eof

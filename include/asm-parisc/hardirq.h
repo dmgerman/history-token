@@ -86,7 +86,7 @@ DECL|macro|hardirq_endlock
 mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
-macro_line|#if CONFIG_PREEMPT
+macro_line|#ifdef CONFIG_PREEMPT
 macro_line|# error CONFIG_PREEMT currently not supported.
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t; BUG()

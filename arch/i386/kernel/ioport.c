@@ -325,25 +325,6 @@ op_assign
 id|bitmap
 suffix:semicolon
 )brace
-id|tss
-op_assign
-id|init_tss
-op_plus
-id|get_cpu
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bitmap
-)paren
-id|tss-&gt;bitmap
-op_assign
-id|IO_BITMAP_OFFSET
-suffix:semicolon
-multiline_comment|/* Activate it in the TSS */
 multiline_comment|/*&n;&t; * do it in the per-thread copy and in the TSS ...&n;&t; */
 id|set_bitmap
 c_func
@@ -358,6 +339,24 @@ op_logical_neg
 id|turn_on
 )paren
 suffix:semicolon
+id|tss
+op_assign
+id|init_tss
+op_plus
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tss-&gt;bitmap
+op_eq
+id|IO_BITMAP_OFFSET
+)paren
+(brace
+multiline_comment|/* already active? */
 id|set_bitmap
 c_func
 (paren
@@ -371,6 +370,25 @@ op_logical_neg
 id|turn_on
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|memcpy
+c_func
+(paren
+id|tss-&gt;io_bitmap
+comma
+id|t-&gt;ts_io_bitmap
+comma
+id|IO_BITMAP_BYTES
+)paren
+suffix:semicolon
+id|tss-&gt;bitmap
+op_assign
+id|IO_BITMAP_OFFSET
+suffix:semicolon
+multiline_comment|/* Activate it in the TSS */
+)brace
 id|put_cpu
 c_func
 (paren

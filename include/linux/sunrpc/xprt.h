@@ -555,7 +555,7 @@ suffix:semicolon
 DECL|macro|XPRT_CONNECT
 mdefine_line|#define XPRT_CONNECT&t;0
 DECL|macro|xprt_connected
-mdefine_line|#define xprt_connected(xp)&t;&t;(!(xp)-&gt;stream || test_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
+mdefine_line|#define xprt_connected(xp)&t;&t;(test_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_set_connected
 mdefine_line|#define xprt_set_connected(xp)&t;&t;(set_bit(XPRT_CONNECT, &amp;(xp)-&gt;sockstate))
 DECL|macro|xprt_test_and_set_connected

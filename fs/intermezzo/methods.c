@@ -383,7 +383,7 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if CONFIG_EXT2_FS
+macro_line|#ifdef CONFIG_EXT2_FS
 id|ops-&gt;o_trops
 op_assign
 op_amp

@@ -465,6 +465,7 @@ id|semid
 comma
 r_struct
 id|sembuf
+id|__user
 op_star
 id|sops
 comma
@@ -500,6 +501,7 @@ id|semid
 comma
 r_struct
 id|sembuf
+id|__user
 op_star
 id|sops
 comma
@@ -509,6 +511,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 id|timeout
 )paren

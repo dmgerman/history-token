@@ -22,6 +22,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
+macro_line|#include &lt;asm/suspend.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
 r_extern
 id|spinlock_t
@@ -2913,12 +2914,22 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|save_processor_state
+c_func
+(paren
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_SUSPEND
+)paren
+suffix:semicolon
+id|restore_processor_state
+c_func
+(paren
 )paren
 suffix:semicolon
 id|write_seqlock_irq

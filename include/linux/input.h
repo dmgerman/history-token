@@ -2122,22 +2122,6 @@ op_star
 id|file
 )paren
 suffix:semicolon
-multiline_comment|/* will go away once devfs_register gets sanitized */
-r_void
-id|input_register_minor
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-r_int
-id|minor
-comma
-r_int
-id|minor_base
-)paren
-suffix:semicolon
 r_void
 id|input_event
 c_func

@@ -22,7 +22,8 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_rcv_lookup
 c_func
@@ -51,7 +52,8 @@ op_star
 id|transportp
 )paren
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|__sctp_rcv_lookup_endpoint
 c_func
@@ -214,17 +216,20 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|rcvr
 suffix:semicolon
@@ -235,7 +240,8 @@ id|transport
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -670,14 +676,12 @@ id|ret
 suffix:semicolon
 id|bad_packet
 suffix:colon
-macro_line|#if 0 /* FIXME */
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpInErrs
+id|SctpChecksumErrors
 )paren
 suffix:semicolon
-macro_line|#endif /* FIXME*/
 id|discard_it
 suffix:colon
 id|kfree_skb
@@ -747,7 +751,8 @@ op_star
 id|skb
 )paren
 (brace
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 id|chunk
 suffix:semicolon
@@ -760,7 +765,8 @@ multiline_comment|/* One day chunk will live inside the skb, but for&n;&t; * now
 id|chunk
 op_assign
 (paren
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
 )paren
 id|skb
@@ -1026,7 +1032,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Look for an association that matches the incoming ICMP error &n;&t; * packet.&n;&t; */
+multiline_comment|/* Look for an association that matches the incoming ICMP error&n;&t; * packet.&n;&t; */
 id|asoc
 op_assign
 id|__sctp_lookup_association
@@ -1049,7 +1055,7 @@ op_logical_neg
 id|asoc
 )paren
 (brace
-multiline_comment|/* If there is no matching association, see if it matches any&n;&t;&t; * endpoint. This may happen for an ICMP error generated in &n;&t;&t; * response to an INIT_ACK. &n;&t;&t; */
+multiline_comment|/* If there is no matching association, see if it matches any&n;&t;&t; * endpoint. This may happen for an ICMP error generated in&n;&t;&t; * response to an INIT_ACK.&n;&t;&t; */
 id|ep
 op_assign
 id|__sctp_rcv_lookup_endpoint
@@ -1302,11 +1308,13 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -1422,7 +1430,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Warning:  The sock lock is held.  Remember to call &n;&t; * sctp_err_finish!&n;&t; */
+multiline_comment|/* Warning:  The sock lock is held.  Remember to call&n;&t; * sctp_err_finish!&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1722,17 +1730,20 @@ r_void
 id|__sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
 (brace
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 op_star
 id|epp
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
@@ -1816,7 +1827,8 @@ r_void
 id|sctp_hash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -1844,7 +1856,8 @@ r_void
 id|__sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -1853,7 +1866,8 @@ id|sctp_hashbucket_t
 op_star
 id|head
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
@@ -1924,7 +1938,8 @@ r_void
 id|sctp_unhash_endpoint
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 )paren
@@ -1948,7 +1963,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up an endpoint. */
 DECL|function|__sctp_rcv_lookup_endpoint
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|__sctp_rcv_lookup_endpoint
 c_func
@@ -1964,11 +1980,13 @@ id|sctp_hashbucket_t
 op_star
 id|head
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2086,7 +2104,8 @@ r_void
 id|sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2114,17 +2133,20 @@ r_void
 id|__sctp_hash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
 (brace
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 op_star
 id|epp
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
@@ -2211,7 +2233,8 @@ r_void
 id|sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2239,7 +2262,8 @@ r_void
 id|__sctp_unhash_established
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 )paren
@@ -2248,7 +2272,8 @@ id|sctp_hashbucket_t
 op_star
 id|head
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
@@ -2317,7 +2342,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up an association. */
 DECL|function|__sctp_lookup_association
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_lookup_association
 c_func
@@ -2345,11 +2371,13 @@ id|sctp_hashbucket_t
 op_star
 id|head
 suffix:semicolon
-id|sctp_endpoint_common_t
+r_struct
+id|sctp_ep_common
 op_star
 id|epb
 suffix:semicolon
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2472,7 +2500,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look up an association. BH-safe. */
 DECL|function|sctp_lookup_association
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|sctp_lookup_association
 c_func
@@ -2496,7 +2525,8 @@ op_star
 id|transportp
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2545,7 +2575,8 @@ op_star
 id|paddr
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2596,7 +2627,8 @@ suffix:semicolon
 multiline_comment|/*&n; * SCTP Implementors Guide, 2.18 Handling of address&n; * parameters within the INIT or INIT-ACK.&n; *&n; * D) When searching for a matching TCB upon reception of an INIT&n; *    or INIT-ACK chunk the receiver SHOULD use not only the&n; *    source address of the packet (containing the INIT or&n; *    INIT-ACK) but the receiver SHOULD also use all valid&n; *    address parameters contained within the chunk.&n; *&n; * 2.18.3 Solution description&n; *&n; * This new text clearly specifies to an implementor the need&n; * to look within the INIT or INIT-ACK. Any implementation that&n; * does not do this, may not be able to establish associations&n; * in certain circumstances.&n; *&n; */
 DECL|function|__sctp_rcv_init_lookup
 r_static
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_rcv_init_lookup
 c_func
@@ -2619,7 +2651,8 @@ op_star
 id|transportp
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon
@@ -2770,7 +2803,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Lookup an association for an inbound skb. */
 DECL|function|__sctp_rcv_lookup
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|__sctp_rcv_lookup
 c_func
@@ -2799,7 +2833,8 @@ op_star
 id|transportp
 )paren
 (brace
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 suffix:semicolon

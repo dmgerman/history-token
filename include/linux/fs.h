@@ -289,6 +289,7 @@ mdefine_line|#define FIGETBSZ   _IO(0x00,2)&t;/* get the block size used for bma
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+multiline_comment|/* Used to be a macro which just called the function, now just a function */
 r_extern
 r_void
 id|update_atime
@@ -298,8 +299,6 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-DECL|macro|UPDATE_ATIME
-mdefine_line|#define UPDATE_ATIME(inode) update_atime (inode)
 r_extern
 r_void
 id|inode_init
@@ -2408,6 +2407,7 @@ id|count
 suffix:semicolon
 DECL|member|buf
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -2801,6 +2801,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -4426,6 +4427,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -5165,6 +5167,43 @@ c_func
 (paren
 r_int
 id|wait
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|emergency_sync
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|emergency_remount
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|do_remount_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|flags
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|force
 )paren
 suffix:semicolon
 r_extern
@@ -6011,6 +6050,7 @@ id|kiocb
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6029,6 +6069,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -6145,6 +6186,7 @@ comma
 id|read_actor_t
 comma
 r_void
+id|__user
 op_star
 )paren
 suffix:semicolon

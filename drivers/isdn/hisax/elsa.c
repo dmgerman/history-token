@@ -5973,7 +5973,7 @@ op_eq
 id|ISDN_CTYPE_ELSA_PCI
 )paren
 (brace
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren

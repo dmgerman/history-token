@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#ifdef DEBUG_PACKET

@@ -692,6 +692,9 @@ suffix:semicolon
 r_struct
 id|backing_dev_info
 suffix:semicolon
+r_struct
+id|reclaim_state
+suffix:semicolon
 multiline_comment|/* POSIX.1b interval timer structure. */
 DECL|struct|k_itimer
 r_struct
@@ -985,12 +988,14 @@ suffix:semicolon
 multiline_comment|/* for vfork() */
 DECL|member|set_child_tid
 r_int
+id|__user
 op_star
 id|set_child_tid
 suffix:semicolon
 multiline_comment|/* CLONE_CHILD_SETTID */
 DECL|member|clear_child_tid
 r_int
+id|__user
 op_star
 id|clear_child_tid
 suffix:semicolon
@@ -1292,6 +1297,13 @@ DECL|member|journal_info
 r_void
 op_star
 id|journal_info
+suffix:semicolon
+multiline_comment|/* VM state */
+DECL|member|reclaim_state
+r_struct
+id|reclaim_state
+op_star
+id|reclaim_state
 suffix:semicolon
 DECL|member|proc_dentry
 r_struct
@@ -2039,9 +2051,11 @@ c_func
 (paren
 r_const
 id|stack_t
+id|__user
 op_star
 comma
 id|stack_t
+id|__user
 op_star
 comma
 r_int
@@ -2444,9 +2458,11 @@ r_int
 r_int
 comma
 r_int
+id|__user
 op_star
 comma
 r_int
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -21,8 +21,6 @@ multiline_comment|/* OC12 link rate: 622080000 bps&n;&t;&t;&t;   SONET overhead:
 DECL|macro|ATM_DS3_PCR
 mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
 multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
-DECL|macro|ATM_PDU_OVHD
-mdefine_line|#define ATM_PDU_OVHD&t;0&t;/* number of bytes to charge against buffer&n;&t;&t;&t;&t;   quota per PDU */
 DECL|macro|atm_sk
 mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;protinfo)
 DECL|macro|ATM_SD
@@ -120,13 +118,16 @@ multiline_comment|/* enable or disable single-copy */
 DECL|macro|ATM_SETBACKEND
 mdefine_line|#define ATM_SETBACKEND&t;_IOW(&squot;a&squot;,ATMIOC_SPECIAL+2,atm_backend_t)
 multiline_comment|/* set backend handler */
+DECL|macro|ATM_NEWBACKENDIF
+mdefine_line|#define ATM_NEWBACKENDIF _IOW(&squot;a&squot;,ATMIOC_SPECIAL+3,atm_backend_t)
+multiline_comment|/* use backend to make new if */
 multiline_comment|/*&n; * These are backend handkers that can be set via the ATM_SETBACKEND call&n; * above.  In the future we may support dynamic loading of these - for now,&n; * they&squot;re just being used to share the ATMIOC_BACKEND ioctls&n; */
 DECL|macro|ATM_BACKEND_RAW
 mdefine_line|#define ATM_BACKEND_RAW&t;&t;0&t;
 DECL|macro|ATM_BACKEND_PPP
 mdefine_line|#define ATM_BACKEND_PPP&t;&t;1&t;/* PPPoATM - RFC2364 */
-DECL|macro|ATM_BACKEND_BR_2684
-mdefine_line|#define ATM_BACKEND_BR_2684&t;2&t;/* Bridged RFC1483/2684 */
+DECL|macro|ATM_BACKEND_BR2684
+mdefine_line|#define ATM_BACKEND_BR2684&t;2&t;/* Bridged RFC1483/2684 */
 multiline_comment|/* for ATM_GETTYPE */
 DECL|macro|ATM_ITFTYP_LEN
 mdefine_line|#define ATM_ITFTYP_LEN&t;8&t;/* maximum length of interface type name */
@@ -448,28 +449,6 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* optional */
-DECL|member|alloc_tx
-r_struct
-id|sk_buff
-op_star
-(paren
-op_star
-id|alloc_tx
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
-multiline_comment|/* TX allocation routine - can be */
-multiline_comment|/* modified by protocol or by driver.*/
-multiline_comment|/* NOTE: this interface will change */
 DECL|member|push_oam
 r_int
 (paren
@@ -575,17 +554,6 @@ op_star
 id|vcc
 )paren
 suffix:semicolon
-DECL|member|listenq
-r_struct
-id|sk_buff_head
-id|listenq
-suffix:semicolon
-DECL|member|backlog_quota
-r_int
-id|backlog_quota
-suffix:semicolon
-multiline_comment|/* number of connection requests we */
-multiline_comment|/* can still accept */
 DECL|member|reply
 r_int
 id|reply
@@ -1074,25 +1042,6 @@ r_int
 id|flags
 )paren
 suffix:semicolon
-DECL|member|free_rx_skb
-r_void
-(paren
-op_star
-id|free_rx_skb
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/* @@@ temporary hack */
 DECL|member|proc_read
 r_int
 (paren
@@ -1199,11 +1148,6 @@ op_star
 id|vcc
 suffix:semicolon
 multiline_comment|/* ATM VCC */
-DECL|member|iovcnt
-r_int
-id|iovcnt
-suffix:semicolon
-multiline_comment|/* 0 for &quot;normal&quot; operation */
 DECL|member|atm_options
 r_int
 r_int
@@ -1337,8 +1281,6 @@ id|atomic_add
 c_func
 (paren
 id|truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;rmem_alloc
@@ -1365,8 +1307,6 @@ id|atomic_sub
 c_func
 (paren
 id|truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;rmem_alloc
@@ -1391,6 +1331,7 @@ id|size
 )paren
 (brace
 r_return
+(paren
 id|size
 op_plus
 id|atomic_read
@@ -1399,8 +1340,7 @@ c_func
 op_amp
 id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
-op_plus
-id|ATM_PDU_OVHD
+)paren
 OL
 id|vcc-&gt;sk-&gt;sndbuf
 suffix:semicolon

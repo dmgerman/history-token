@@ -125,6 +125,18 @@ DECL|typedef|swp_entry_t
 )brace
 id|swp_entry_t
 suffix:semicolon
+multiline_comment|/*&n; * current-&gt;reclaim_state points to one of these when a task is running&n; * memory reclaim&n; */
+DECL|struct|reclaim_state
+r_struct
+id|reclaim_state
+(brace
+DECL|member|reclaimed_slab
+r_int
+r_int
+id|reclaimed_slab
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 r_struct
 id|address_space

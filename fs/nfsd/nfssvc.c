@@ -277,7 +277,7 @@ l_int|0
 r_goto
 id|failure
 suffix:semicolon
-macro_line|#if CONFIG_NFSD_TCP
+macro_line|#ifdef CONFIG_NFSD_TCP
 id|error
 op_assign
 id|svc_makesock

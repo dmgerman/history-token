@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 r_struct
 id|request_queue
@@ -29,23 +30,25 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
+DECL|macro|BLKDEV_MIN_RQ
+mdefine_line|#define BLKDEV_MIN_RQ&t;4
+DECL|macro|BLKDEV_MAX_RQ
+mdefine_line|#define BLKDEV_MAX_RQ&t;128
 DECL|struct|request_list
 r_struct
 id|request_list
 (brace
 DECL|member|count
 r_int
-r_int
 id|count
+(braket
+l_int|2
+)braket
 suffix:semicolon
-DECL|member|free
-r_struct
-id|list_head
-id|free
-suffix:semicolon
-DECL|member|wait
-id|wait_queue_head_t
-id|wait
+DECL|member|rq_pool
+id|mempool_t
+op_star
+id|rq_pool
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -531,9 +534,6 @@ DECL|member|rq
 r_struct
 id|request_list
 id|rq
-(braket
-l_int|2
-)braket
 suffix:semicolon
 DECL|member|request_fn
 id|request_fn_proc
@@ -751,7 +751,7 @@ DECL|macro|BLK_BOUNCE_ANY
 mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((u64)blk_max_pfn &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
 mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
-macro_line|#if CONFIG_MMU
+macro_line|#ifdef CONFIG_MMU
 r_extern
 r_int
 id|init_emergency_isa_pool
@@ -896,19 +896,6 @@ id|request_queue_t
 op_star
 comma
 r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|request
-op_star
-id|__blk_get_request
-c_func
-(paren
-id|request_queue_t
-op_star
 comma
 r_int
 )paren

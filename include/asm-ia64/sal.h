@@ -578,7 +578,7 @@ id|SAL_MC_PARAM_RENDEZ_INT
 op_assign
 l_int|1
 comma
-multiline_comment|/* Rendezevous interrupt */
+multiline_comment|/* Rendezvous interrupt */
 DECL|enumerator|SAL_MC_PARAM_RENDEZ_WAKEUP
 id|SAL_MC_PARAM_RENDEZ_WAKEUP
 op_assign

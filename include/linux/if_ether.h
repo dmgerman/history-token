@@ -64,6 +64,10 @@ DECL|macro|ETH_P_PPP_DISC
 mdefine_line|#define ETH_P_PPP_DISC&t;0x8863&t;&t;/* PPPoE discovery messages     */
 DECL|macro|ETH_P_PPP_SES
 mdefine_line|#define ETH_P_PPP_SES&t;0x8864&t;&t;/* PPPoE session messages&t;*/
+DECL|macro|ETH_P_MPLS_UC
+mdefine_line|#define ETH_P_MPLS_UC&t;0x8847&t;&t;/* MPLS Unicast traffic&t;&t;*/
+DECL|macro|ETH_P_MPLS_MC
+mdefine_line|#define ETH_P_MPLS_MC&t;0x8848&t;&t;/* MPLS Multicast traffic&t;*/
 DECL|macro|ETH_P_ATMMPOA
 mdefine_line|#define ETH_P_ATMMPOA&t;0x884c&t;&t;/* MultiProtocol Over ATM&t;*/
 DECL|macro|ETH_P_ATMFATE

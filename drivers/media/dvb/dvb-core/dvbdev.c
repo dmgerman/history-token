@@ -623,12 +623,6 @@ id|type
 id|u32
 id|id
 suffix:semicolon
-r_char
-id|name
-(braket
-l_int|20
-)braket
-suffix:semicolon
 r_struct
 id|dvb_device
 op_star
@@ -768,32 +762,12 @@ op_amp
 id|adap-&gt;device_list
 )paren
 suffix:semicolon
-id|sprintf
+id|devfs_mk_cdev
 c_func
 (paren
-id|name
-comma
-l_string|&quot;dvb/adapter%d%s%d&quot;
-comma
-id|adap-&gt;num
-comma
-id|dnames
-(braket
-id|type
-)braket
-comma
-id|id
-)paren
-suffix:semicolon
-id|devfs_register
+id|MKDEV
 c_func
 (paren
-l_int|NULL
-comma
-id|name
-comma
-l_int|0
-comma
 id|DVB_MAJOR
 comma
 id|nums2minor
@@ -805,6 +779,7 @@ id|type
 comma
 id|id
 )paren
+)paren
 comma
 id|S_IFCHR
 op_or
@@ -812,19 +787,31 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-id|dvbdev-&gt;fops
+l_string|&quot;dvb/adapter%d/%s%d&quot;
 comma
-id|dvbdev
+id|adap-&gt;num
+comma
+id|dnames
+(braket
+id|type
+)braket
+comma
+id|id
 )paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;DVB: register adapter%d/%s @ minor: %i (0x%02x)&bslash;n&quot;
+l_string|&quot;DVB: register adapter%d/%s%d @ minor: %i (0x%02x)&bslash;n&quot;
 comma
 id|adap-&gt;num
 comma
-id|name
+id|dnames
+(braket
+id|type
+)braket
+comma
+id|id
 comma
 id|nums2minor
 c_func
@@ -871,7 +858,7 @@ id|dvbdev
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;dvb/adapter%d%s%d&quot;
+l_string|&quot;dvb/adapter%d/%s%d&quot;
 comma
 id|dvbdev-&gt;adapter-&gt;num
 comma
@@ -1217,7 +1204,6 @@ c_func
 l_string|&quot;dvb&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_DVB_DEVFS_ONLY
 r_if
 c_cond
 (paren
@@ -1246,7 +1232,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1261,7 +1246,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_DVB_DEVFS_ONLY
 id|unregister_chrdev
 c_func
 (paren
@@ -1270,7 +1254,6 @@ comma
 l_string|&quot;DVB&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|devfs_remove
 c_func
 (paren

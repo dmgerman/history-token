@@ -6709,13 +6709,11 @@ DECL|function|read_brdctl
 id|read_brdctl
 c_func
 (paren
-id|ahc
-)paren
 r_struct
 id|ahc_softc
 op_star
 id|ahc
-suffix:semicolon
+)paren
 (brace
 r_uint8
 id|brdctl

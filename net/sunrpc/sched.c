@@ -3813,7 +3813,7 @@ comma
 id|t-&gt;tk_pid
 comma
 (paren
-id|t-&gt;tk_msg.rpc_proc-&gt;p_proc
+id|t-&gt;tk_msg.rpc_proc
 ques
 c_cond
 id|t-&gt;tk_msg.rpc_proc-&gt;p_proc
@@ -3828,7 +3828,14 @@ id|t-&gt;tk_status
 comma
 id|t-&gt;tk_client
 comma
+(paren
+id|t-&gt;tk_client
+ques
+c_cond
 id|t-&gt;tk_client-&gt;cl_prog
+suffix:colon
+l_int|0
+)paren
 comma
 id|t-&gt;tk_rqstp
 comma

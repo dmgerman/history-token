@@ -2231,7 +2231,7 @@ c_func
 id|cached_page
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -2657,7 +2657,7 @@ op_plus
 id|retval
 suffix:semicolon
 )brace
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|filp-&gt;f_dentry-&gt;d_inode
@@ -2780,6 +2780,7 @@ op_star
 id|iocb
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2848,6 +2849,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3058,6 +3060,7 @@ id|read_actor_t
 id|actor
 comma
 r_void
+id|__user
 op_star
 id|target
 )paren
@@ -4508,7 +4511,7 @@ r_return
 op_minus
 id|ENOEXEC
 suffix:semicolon
-id|UPDATE_ATIME
+id|update_atime
 c_func
 (paren
 id|inode
@@ -5254,6 +5257,7 @@ id|offset
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5377,6 +5381,7 @@ id|bytes
 )paren
 (brace
 r_char
+id|__user
 op_star
 id|buf
 op_assign
@@ -6161,6 +6166,7 @@ r_int
 id|seg
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -7000,6 +7006,7 @@ id|iocb
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -7037,6 +7044,7 @@ id|iov_base
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf
@@ -7115,6 +7123,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -7146,6 +7155,7 @@ id|iov_base
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|buf

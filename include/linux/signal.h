@@ -688,6 +688,7 @@ id|do_sigpending
 c_func
 (paren
 r_void
+id|__user
 op_star
 comma
 r_int

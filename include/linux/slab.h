@@ -64,14 +64,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|kmem_cache_sizes_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 id|kmem_cache_t
 op_star
 id|kmem_find_general_cachep

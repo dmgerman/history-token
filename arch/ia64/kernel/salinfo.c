@@ -88,7 +88,7 @@ op_assign
 initialization_block
 suffix:semicolon
 DECL|macro|NR_SALINFO_ENTRIES
-mdefine_line|#define NR_SALINFO_ENTRIES (sizeof(salinfo_entries)/sizeof(salinfo_entry_t))
+mdefine_line|#define NR_SALINFO_ENTRIES ARRAY_SIZE(salinfo_entries)
 multiline_comment|/*&n; * One for each feature and one more for the directory entry...&n; */
 DECL|variable|salinfo_proc_entries
 r_static

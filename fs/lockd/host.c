@@ -768,28 +768,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|uid_t
-id|saved_fsuid
-op_assign
-id|current-&gt;fsuid
-suffix:semicolon
-id|kernel_cap_t
-id|saved_cap
-op_assign
-id|current-&gt;cap_effective
-suffix:semicolon
-multiline_comment|/* Create RPC socket as root user so we get a priv port */
-id|current-&gt;fsuid
-op_assign
-l_int|0
-suffix:semicolon
-id|cap_raise
-(paren
-id|current-&gt;cap_effective
-comma
-id|CAP_NET_BIND_SERVICE
-)paren
-suffix:semicolon
 id|xprt
 op_assign
 id|xprt_create_proto
@@ -802,14 +780,6 @@ id|host-&gt;h_addr
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|current-&gt;fsuid
-op_assign
-id|saved_fsuid
-suffix:semicolon
-id|current-&gt;cap_effective
-op_assign
-id|saved_cap
 suffix:semicolon
 r_if
 c_cond
@@ -877,6 +847,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* No congestion control for NLM */
+id|xprt-&gt;resvport
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* NLM requires a reserved port */
 id|host-&gt;h_rpcclnt
 op_assign
 id|clnt
@@ -1104,7 +1079,9 @@ id|host-&gt;h_next
 )paren
 id|host-&gt;h_expires
 op_assign
-l_int|0
+id|jiffies
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Then, perform a garbage collection pass */
@@ -1319,6 +1296,20 @@ id|host-&gt;h_expires
 )paren
 )paren
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;nlm_gc_hosts skipping %s (cnt %d use %d exp %ld)&bslash;n&quot;
+comma
+id|host-&gt;h_name
+comma
+id|host-&gt;h_count
+comma
+id|host-&gt;h_inuse
+comma
+id|host-&gt;h_expires
+)paren
+suffix:semicolon
 id|q
 op_assign
 op_amp

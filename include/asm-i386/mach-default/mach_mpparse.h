@@ -47,7 +47,7 @@ id|translation
 DECL|function|mps_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|mps_oem_check
 c_func
 (paren
@@ -65,12 +65,15 @@ op_star
 id|productid
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Hook from generic ACPI tables.c */
 DECL|function|acpi_madt_oem_check
 r_static
 r_inline
-r_void
+r_int
 id|acpi_madt_oem_check
 c_func
 (paren
@@ -83,6 +86,9 @@ op_star
 id|oem_table_id
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#endif /* __ASM_MACH_MPPARSE_H */
 eof
