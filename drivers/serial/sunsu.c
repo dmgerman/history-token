@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
@@ -12,11 +13,12 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef CONFIG_SERIO
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -26,8 +28,12 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#ifdef CONFIG_SPARC64
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#endif
+multiline_comment|/* #if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ) */
+macro_line|#if defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
-macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &quot;suncore.h&quot;
 multiline_comment|/* We are on a NS PC87303 clocked with 24.0 MHz, which results&n; * in a UART clock of 1.8462 MHz.&n; */
 DECL|macro|SU_BASE_BAUD
@@ -261,6 +267,12 @@ r_enum
 id|su_type
 id|su_type
 suffix:semicolon
+DECL|member|type_probed
+r_int
+r_int
+id|type_probed
+suffix:semicolon
+multiline_comment|/* XXX Stupid */
 DECL|member|port_node
 r_int
 id|port_node
@@ -1297,6 +1309,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|up-&gt;port.cons
+op_ne
+l_int|NULL
+op_logical_and
 id|up-&gt;port.line
 op_eq
 id|up-&gt;port.cons-&gt;index
@@ -1364,6 +1380,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|up-&gt;port.cons
+op_ne
+l_int|NULL
+op_logical_and
 id|up-&gt;port.line
 op_eq
 id|up-&gt;port.cons-&gt;index
@@ -3960,6 +3980,33 @@ r_int
 id|flags
 )paren
 (brace
+r_struct
+id|uart_sunsu_port
+op_star
+id|up
+op_assign
+(paren
+r_struct
+id|uart_sunsu_port
+op_star
+)paren
+id|port
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|UART_CONFIG_TYPE
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * We are supposed to call autoconfig here, but this requires&n;&t;&t; * splitting all the OBP probing crap from the UART probing.&n;&t;&t; * We&squot;ll do it when we kill sunsu.c altogether.&n;&t;&t; */
+id|port-&gt;type
+op_assign
+id|up-&gt;type_probed
+suffix:semicolon
+multiline_comment|/* XXX */
+)brace
 )brace
 r_static
 r_int
@@ -4411,6 +4458,10 @@ id|up-&gt;su_type
 )paren
 r_return
 suffix:semicolon
+id|up-&gt;type_probed
+op_assign
+id|PORT_UNKNOWN
+suffix:semicolon
 id|up-&gt;port.iotype
 op_assign
 id|SERIAL_IO_MEM
@@ -4438,12 +4489,23 @@ op_eq
 id|up-&gt;port_node
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * The EBus is broken on sparc; it delivers&n;&t;&t;&t;&t; * virtual addresses in resources. Oh well...&n;&t;&t;&t;&t; * This is correct on sparc64, though.&n;&t;&t;&t;&t; */
 id|up-&gt;port.membase
 op_assign
 (paren
 r_char
 op_star
 )paren
+id|dev-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * This is correct on both architectures.&n;&t;&t;&t;&t; */
+id|up-&gt;port.mapbase
+op_assign
 id|dev-&gt;resource
 (braket
 l_int|0
@@ -4487,12 +4549,17 @@ op_eq
 id|up-&gt;port_node
 )paren
 (brace
+multiline_comment|/* Same on sparc64. Cool architecure... */
 id|up-&gt;port.membase
 op_assign
 (paren
 r_char
 op_star
 )paren
+id|isa_dev-&gt;resource.start
+suffix:semicolon
+id|up-&gt;port.mapbase
+op_assign
 id|isa_dev-&gt;resource.start
 suffix:semicolon
 id|up-&gt;irq
@@ -4579,6 +4646,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|up-&gt;port.mapbase
+op_assign
+id|reg0.phys_addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5219,6 +5290,11 @@ id|PORT_UNKNOWN
 r_goto
 id|out
 suffix:semicolon
+id|up-&gt;type_probed
+op_assign
+id|up-&gt;port.type
+suffix:semicolon
+multiline_comment|/* XXX */
 multiline_comment|/*&n;&t; * Reset the UART.&n;&t; */
 macro_line|#ifdef CONFIG_SERIAL_8250_RSA
 r_if
@@ -6186,6 +6262,10 @@ id|SU_PORT_KBD
 )paren
 r_continue
 suffix:semicolon
+id|up-&gt;port.flags
+op_or_assign
+id|ASYNC_BOOT_AUTOCONF
+suffix:semicolon
 id|up-&gt;port.type
 op_assign
 id|PORT_UNKNOWN
@@ -6259,10 +6339,6 @@ l_int|0
 )paren
 r_return
 id|ret
-suffix:semicolon
-id|instance
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -6951,15 +7027,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 multiline_comment|/*&n;&t; * Console must be initiated after the generic initialization.&n;&t; */
-id|sunsu_reg.cons
-op_assign
-op_amp
-id|sunsu_cons
-suffix:semicolon
-id|sunsu_reg.nr
-op_assign
-id|scan.devices
-suffix:semicolon
 id|sunsu_serial_init
 c_func
 (paren
