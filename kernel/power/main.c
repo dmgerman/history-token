@@ -454,6 +454,27 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+multiline_comment|/* Suspend is hard to get right on SMP. */
+r_if
+c_cond
+(paren
+id|num_online_cpus
+c_func
+(paren
+)paren
+op_ne
+l_int|1
+)paren
+(brace
+id|error
+op_assign
+op_minus
+id|EPERM
+suffix:semicolon
+r_goto
+id|Unlock
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
