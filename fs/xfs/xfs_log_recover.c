@@ -5597,8 +5597,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
+(paren
 id|flags
 op_amp
 id|XFS_BLI_CANCEL
