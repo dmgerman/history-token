@@ -691,6 +691,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_struct
+id|statfs
+suffix:semicolon
 multiline_comment|/* alloc.c */
 r_int
 id|hpfs_chk_sectors
