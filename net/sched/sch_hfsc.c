@@ -314,6 +314,16 @@ id|u64
 id|cl_cvtmax
 suffix:semicolon
 multiline_comment|/* max child&squot;s vt in the last period */
+DECL|member|cl_cvtoff
+id|u64
+id|cl_cvtoff
+suffix:semicolon
+multiline_comment|/* cumulative cvtmax of all periods */
+DECL|member|cl_pcvtoff
+id|u64
+id|cl_pcvtoff
+suffix:semicolon
+multiline_comment|/* parent&squot;s cvtoff at initalization&n;&t;&t;&t;&t;&t;   time */
 DECL|member|cl_rsc
 r_struct
 id|internal_sc
@@ -2342,9 +2352,6 @@ r_struct
 id|hfsc_class
 op_star
 id|max_cl
-comma
-op_star
-id|p
 suffix:semicolon
 r_struct
 id|rb_node
@@ -2477,28 +2484,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * first child for a new parent backlog period.&n;&t;&t;&t;&t; * add parent&squot;s cvtmax to vtoff of children&n;&t;&t;&t;&t; * to make a new vt (vtoff + vt) larger than&n;&t;&t;&t;&t; * the vt in the last period for all children.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * first child for a new parent backlog period.&n;&t;&t;&t;&t; * add parent&squot;s cvtmax to cvtoff to make a new&n;&t;&t;&t;&t; * vt (vtoff + vt) larger than the vt in the&n;&t;&t;&t;&t; * last period for all children.&n;&t;&t;&t;&t; */
 id|vt
 op_assign
 id|cl-&gt;cl_parent-&gt;cl_cvtmax
 suffix:semicolon
-id|list_for_each_entry
-c_func
-(paren
-id|p
-comma
-op_amp
-id|cl-&gt;cl_parent-&gt;children
-comma
-id|siblings
-)paren
-id|p-&gt;cl_vtoff
+id|cl-&gt;cl_parent-&gt;cl_cvtoff
 op_add_assign
 id|vt
-suffix:semicolon
-id|cl-&gt;cl_vt
-op_assign
-l_int|0
 suffix:semicolon
 id|cl-&gt;cl_parent-&gt;cl_cvtmax
 op_assign
@@ -2508,7 +2501,17 @@ id|cl-&gt;cl_parent-&gt;cl_cvtmin
 op_assign
 l_int|0
 suffix:semicolon
+id|cl-&gt;cl_vt
+op_assign
+l_int|0
+suffix:semicolon
 )brace
+id|cl-&gt;cl_vtoff
+op_assign
+id|cl-&gt;cl_parent-&gt;cl_cvtoff
+op_minus
+id|cl-&gt;cl_pcvtoff
+suffix:semicolon
 multiline_comment|/* update the virtual curve */
 id|vt
 op_assign
@@ -4354,6 +4357,10 @@ c_func
 (paren
 id|parent
 )paren
+suffix:semicolon
+id|cl-&gt;cl_pcvtoff
+op_assign
+id|parent-&gt;cl_cvtoff
 suffix:semicolon
 id|sch_tree_unlock
 c_func
@@ -6459,6 +6466,14 @@ op_assign
 l_int|0
 suffix:semicolon
 id|cl-&gt;cl_cvtmax
+op_assign
+l_int|0
+suffix:semicolon
+id|cl-&gt;cl_cvtoff
+op_assign
+l_int|0
+suffix:semicolon
+id|cl-&gt;cl_pcvtoff
 op_assign
 l_int|0
 suffix:semicolon
