@@ -363,6 +363,11 @@ op_assign
 id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 macro_line|#ifdef USE_ACPI_PNP
+DECL|variable|acpi_driver_registered
+r_static
+r_int
+id|acpi_driver_registered
+suffix:semicolon
 DECL|struct|mpu401_resources
 r_struct
 id|mpu401_resources
@@ -1173,9 +1178,29 @@ r_int
 id|dev
 comma
 id|cards
+suffix:semicolon
+macro_line|#ifdef USE_ACPI_PNP
+id|cards
+op_assign
+id|acpi_bus_register_driver
+c_func
+(paren
+op_amp
+id|snd_mpu401_acpi_driver
+)paren
+suffix:semicolon
+id|acpi_driver_registered
+op_assign
+id|cards
+op_ge
+l_int|0
+suffix:semicolon
+macro_line|#else
+id|cards
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1211,8 +1236,7 @@ id|acpipnp
 id|dev
 )braket
 op_logical_and
-op_logical_neg
-id|acpi_disabled
+id|acpi_driver_registered
 )paren
 r_continue
 suffix:semicolon
@@ -1234,23 +1258,6 @@ id|cards
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef USE_ACPI_PNP
-r_if
-c_cond
-(paren
-op_logical_neg
-id|acpi_disabled
-)paren
-id|cards
-op_add_assign
-id|acpi_bus_register_driver
-c_func
-(paren
-op_amp
-id|snd_mpu401_acpi_driver
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1271,8 +1278,7 @@ macro_line|#ifdef USE_ACPI_PNP
 r_if
 c_cond
 (paren
-op_logical_neg
-id|acpi_disabled
+id|acpi_driver_registered
 )paren
 id|acpi_bus_unregister_driver
 c_func
@@ -1308,8 +1314,7 @@ macro_line|#ifdef USE_ACPI_PNP
 r_if
 c_cond
 (paren
-op_logical_neg
-id|acpi_disabled
+id|acpi_driver_registered
 )paren
 id|acpi_bus_unregister_driver
 c_func
