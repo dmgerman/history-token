@@ -782,6 +782,11 @@ comma
 id|u32
 op_star
 id|fsidv
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 (brace
 r_struct
@@ -863,6 +868,8 @@ id|svc_expkey_cache
 comma
 op_amp
 id|ek-&gt;h
+comma
+id|reqp
 )paren
 )paren
 )paren
@@ -1029,6 +1036,8 @@ comma
 l_int|0
 comma
 id|fsidv
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1073,6 +1082,8 @@ comma
 l_int|1
 comma
 id|fsidv
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1095,6 +1106,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 (brace
 r_struct
@@ -1154,6 +1170,8 @@ id|svc_export_cache
 comma
 op_amp
 id|exp-&gt;h
+comma
+id|reqp
 )paren
 )paren
 id|exp
@@ -1185,6 +1203,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 (brace
 id|svc_export
@@ -1208,6 +1231,8 @@ comma
 id|mnt
 comma
 id|dentry
+comma
+id|reqp
 )paren
 suffix:semicolon
 r_while
@@ -1236,6 +1261,8 @@ comma
 id|mnt
 comma
 id|dentry
+comma
+id|reqp
 )paren
 suffix:semicolon
 )brace
@@ -1789,6 +1816,8 @@ comma
 id|nd.mnt
 comma
 id|nd.dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* must make sure there wont be an ex_fsid clash */
@@ -2522,6 +2551,8 @@ comma
 id|nd.mnt
 comma
 id|nd.dentry
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3533,6 +3564,8 @@ id|svc_export_cache
 comma
 op_amp
 id|exp-&gt;h
+comma
+l_int|NULL
 )paren
 )paren
 r_return

@@ -1083,6 +1083,9 @@ id|ip_map_cache
 comma
 op_amp
 id|ipm-&gt;h
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 )paren
 (brace
@@ -1557,6 +1560,9 @@ id|ip_map_cache
 comma
 op_amp
 id|ipm-&gt;h
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 )paren
 (brace

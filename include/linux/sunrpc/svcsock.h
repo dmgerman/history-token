@@ -68,11 +68,19 @@ DECL|macro|SK_DEAD
 mdefine_line|#define&t;SK_DEAD&t;&t;6&t;&t;&t;/* socket closed */
 DECL|macro|SK_CHNGBUF
 mdefine_line|#define&t;SK_CHNGBUF&t;7&t;&t;&t;/* need to change snd/rcv buffer sizes */
+DECL|macro|SK_DEFERRED
+mdefine_line|#define&t;SK_DEFERRED&t;8&t;&t;&t;/* request on sk_deferred */
 DECL|member|sk_reserved
 r_int
 id|sk_reserved
 suffix:semicolon
 multiline_comment|/* space on outq that is reserved */
+DECL|member|sk_deferred
+r_struct
+id|list_head
+id|sk_deferred
+suffix:semicolon
+multiline_comment|/* deferred requests that need to&n;&t;&t;&t;&t;&t;&t; * be revisted */
 DECL|member|sk_recvfrom
 r_int
 (paren

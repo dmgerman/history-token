@@ -114,6 +114,74 @@ id|entries
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* this must be embedded in any request structure that&n; * identifies an object that will want a callback on&n; * a cache fill&n; */
+DECL|struct|cache_req
+r_struct
+id|cache_req
+(brace
+DECL|member|defer
+r_struct
+id|cache_deferred_req
+op_star
+(paren
+op_star
+id|defer
+)paren
+(paren
+r_struct
+id|cache_req
+op_star
+id|req
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* this must be embedded in a deferred_request that is being&n; * delayed awaiting cache-fill&n; */
+DECL|struct|cache_deferred_req
+r_struct
+id|cache_deferred_req
+(brace
+DECL|member|hash
+r_struct
+id|list_head
+id|hash
+suffix:semicolon
+multiline_comment|/* on hash chain */
+DECL|member|recent
+r_struct
+id|list_head
+id|recent
+suffix:semicolon
+multiline_comment|/* on fifo */
+DECL|member|item
+r_struct
+id|cache_head
+op_star
+id|item
+suffix:semicolon
+multiline_comment|/* cache item we wait on */
+DECL|member|recv_time
+id|time_t
+id|recv_time
+suffix:semicolon
+DECL|member|revisit
+r_void
+(paren
+op_star
+id|revisit
+)paren
+(paren
+r_struct
+id|cache_deferred_req
+op_star
+id|req
+comma
+r_int
+id|too_many
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * just like a template in C++, this macro does cache lookup&n; * for us.&n; * The function is passed some sort of HANDLE from which a cache_detail&n; * structure can be determined (via SETUP, DETAIL), a template&n; * cache entry (type RTN*), and a &quot;set&quot; flag.  Using the HASHFN and the &n; * TEST, the function will try to find a matching cache entry in the cache.&n; * If &quot;set&quot; == 0 :&n; *    If an entry is found, it is returned&n; *    If no entry is found, a new non-VALID entry is created.&n; * If &quot;set&quot; == 1 :&n; *    If no entry is found a new one is inserted with data from &quot;template&quot;&n; *    If a non-CACHE_VALID entry is found, it is updated from template using UPDATE&n; *    If a CACHE_VALID entry is found, a new entry is swapped in with data&n; *       from &quot;template&quot;&n; * If set == 2, we UPDATE, but don&squot;t swap. i.e. update in place&n; *&n; * If the passed handle has the CACHE_NEGATIVE flag set, then UPDATE is not&n; * run but insteead CACHE_NEGATIVE is set in any new item.&n;&n; *  In any case, the new entry is returned with a reference count.&n; *&n; *    &n; * RTN is a struct type for a cache entry&n; * MEMBER is the member of the cache which is cache_head, which must be first&n; * FNAME is the name for the function&t;&n; * ARGS are arguments to function and must contain RTN *item, int set.  May&n; *   also contain something to be usedby SETUP or DETAIL to find cache_detail.&n; * SETUP  locates the cache detail and makes it available as...&n; * DETAIL identifies the cache detail, possibly set up by SETUP&n; * HASHFN returns a hash value of the cache entry &quot;item&quot;&n; * TEST  tests if &quot;tmp&quot; matches &quot;item&quot;&n; * INIT copies key information from &quot;item&quot; to &quot;new&quot;&n; * UPDATE copies content information from &quot;item&quot; to &quot;tmp&quot;&n; */
 DECL|macro|DefineCacheLookup
 mdefine_line|#define DefineCacheLookup(RTN,MEMBER,FNAME,ARGS,SETUP,DETAIL,HASHFN,TEST,INIT,UPDATE)&t;&bslash;&n;RTN *FNAME ARGS&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;RTN *tmp, *new=NULL;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct cache_head **hp, **head;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SETUP;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n; retry:&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;head = &amp;(DETAIL)-&gt;hash_table[HASHFN];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (set||new) write_lock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&t;&t;&t;&bslash;&n;&t;else read_lock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for(hp=head; *hp != NULL; hp = &amp;tmp-&gt;MEMBER.next) {&t;&t;&t;&t;&bslash;&n;&t;&t;tmp = container_of(*hp, RTN, MEMBER);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (TEST) { /* found a match */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;atomic_inc(&amp;tmp-&gt;MEMBER.refcnt);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (set) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;if (set!= 2 &amp;&amp; test_bit(CACHE_VALID, &amp;tmp-&gt;MEMBER.flags))&bslash;&n;&t;&t;&t;&t;{ /* need to swap in new */&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;RTN *t2;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;if (!new) break;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;new-&gt;MEMBER.next = tmp-&gt;MEMBER.next;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;*head = &amp;new-&gt;MEMBER;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;tmp-&gt;MEMBER.next = NULL;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;set_bit(CACHE_HASHED, &amp;new-&gt;MEMBER.flags);&t;&bslash;&n;&t;&t;&t;&t;&t;clear_bit(CACHE_HASHED, &amp;tmp-&gt;MEMBER.flags);&t;&bslash;&n;&t;&t;&t;&t;&t;t2 = tmp; tmp = new; new = t2;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;if (test_bit(CACHE_NEGATIVE,  &amp;item-&gt;MEMBER.flags))&t;&bslash;&n;&t;&t;&t;&t;&t; set_bit(CACHE_NEGATIVE, &amp;tmp-&gt;MEMBER.flags);&t;&bslash;&n;&t;&t;&t;&t;else {UPDATE;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (set||new) write_unlock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&bslash;&n;&t;&t;&t;else read_unlock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (set)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;cache_fresh(DETAIL, &amp;tmp-&gt;MEMBER, item-&gt;MEMBER.expiry_time); &bslash;&n;&t;&t;&t;if (new) (DETAIL)-&gt;cache_put(&amp;new-&gt;MEMBER, DETAIL);&t;&t;&bslash;&n;&t;&t;&t;return tmp;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Didn&squot;t find anything */&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (new) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;new-&gt;MEMBER.next = *head;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*head = &amp;new-&gt;MEMBER;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(DETAIL)-&gt;entries ++;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_bit(CACHE_HASHED, &amp;new-&gt;MEMBER.flags);&t;&t;&t;&t;&bslash;&n;&t;&t;if (set) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;tmp = new;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (test_bit(CACHE_NEGATIVE, &amp;item-&gt;MEMBER.flags))&t;&t;&bslash;&n;&t;&t;&t;&t;set_bit(CACHE_NEGATIVE, &amp;tmp-&gt;MEMBER.flags);&t;&t;&bslash;&n;&t;&t;&t;else {UPDATE;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (set||new) write_unlock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&t;&t;&bslash;&n;&t;else read_unlock(&amp;(DETAIL)-&gt;hash_lock);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (new &amp;&amp; set)&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cache_fresh(DETAIL, &amp;new-&gt;MEMBER, item-&gt;MEMBER.expiry_time);&t;&t;&bslash;&n;&t;if (new)&t;&t;&t;&t;       &t;&t;&t;&t;&t;&bslash;&n;&t;&t;return new;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;new = kmalloc(sizeof(*new), GFP_KERNEL);&t;&t;&t;&t;&t;&bslash;&n;&t;if (new) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;cache_init(&amp;new-&gt;MEMBER);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;atomic_inc(&amp;new-&gt;MEMBER.refcnt);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;INIT;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tmp = new;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;goto retry;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return NULL;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
@@ -121,6 +189,33 @@ DECL|macro|DefineSimpleCacheLookup
 mdefine_line|#define DefineSimpleCacheLookup(STRUCT)&t;&bslash;&n;&t;DefineCacheLookup(struct STRUCT, h, STRUCT##_lookup, (struct STRUCT *item, int set), /*no setup */,&t;&bslash;&n;&t;&t;&t;  &amp; STRUCT##_cache, STRUCT##_hash(item), STRUCT##_match(item, tmp),&bslash;&n;&t;&t;&t;  STRUCT##_init(new, item), STRUCT##_update(tmp, item))
 DECL|macro|cache_for_each
 mdefine_line|#define cache_for_each(pos, detail, index, member) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;for (({read_lock(&amp;(detail)-&gt;hash_lock); index = (detail)-&gt;hash_size;}) ;&t;&t;&bslash;&n;&t;     ({if (index==0)read_unlock(&amp;(detail)-&gt;hash_lock); index--;});&t;&t;&t;&bslash;&n;&t;&t;)&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (pos = container_of((detail)-&gt;hash_table[index], typeof(*pos), member);&t;&bslash;&n;&t;&t;     &amp;pos-&gt;member;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     pos = container_of(pos-&gt;member.next, typeof(*pos), member))
+r_extern
+r_void
+id|cache_defer_req
+c_func
+(paren
+r_struct
+id|cache_req
+op_star
+id|req
+comma
+r_struct
+id|cache_head
+op_star
+id|item
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cache_revisit_request
+c_func
+(paren
+r_struct
+id|cache_head
+op_star
+id|item
+)paren
+suffix:semicolon
 DECL|function|cache_get
 r_static
 r_inline
@@ -263,6 +358,11 @@ r_struct
 id|cache_head
 op_star
 id|h
+comma
+r_struct
+id|cache_req
+op_star
+id|rqstp
 )paren
 suffix:semicolon
 r_extern

@@ -204,6 +204,13 @@ op_star
 id|rq_skbuff
 suffix:semicolon
 multiline_comment|/* fast recv inet buffer */
+DECL|member|rq_deferred
+r_struct
+id|svc_deferred_req
+op_star
+id|rq_deferred
+suffix:semicolon
+multiline_comment|/* deferred request we are replaying */
 DECL|member|rq_defbuf
 r_struct
 id|svc_buf
@@ -278,6 +285,12 @@ r_int
 id|rq_reserved
 suffix:semicolon
 multiline_comment|/* space on socket outq&n;&t;&t;&t;&t;&t;&t; * reserved for this request&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq_chandle
+r_struct
+id|cache_req
+id|rq_chandle
+suffix:semicolon
+multiline_comment|/* handle passed to caches for &n;&t;&t;&t;&t;&t;&t; * request delaying &n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Catering to nfsd */
 DECL|member|rq_client
 r_struct
@@ -305,6 +318,51 @@ id|wait_queue_head_t
 id|rq_wait
 suffix:semicolon
 multiline_comment|/* synchronization */
+)brace
+suffix:semicolon
+DECL|struct|svc_deferred_req
+r_struct
+id|svc_deferred_req
+(brace
+DECL|member|serv
+r_struct
+id|svc_serv
+op_star
+id|serv
+suffix:semicolon
+DECL|member|prot
+id|u32
+id|prot
+suffix:semicolon
+multiline_comment|/* protocol (UDP or TCP) */
+DECL|member|addr
+r_struct
+id|sockaddr_in
+id|addr
+suffix:semicolon
+DECL|member|svsk
+r_struct
+id|svc_sock
+op_star
+id|svsk
+suffix:semicolon
+multiline_comment|/* where reply must go */
+DECL|member|handle
+r_struct
+id|cache_deferred_req
+id|handle
+suffix:semicolon
+DECL|member|argslen
+r_int
+id|argslen
+suffix:semicolon
+DECL|member|args
+id|u32
+id|args
+(braket
+l_int|0
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * RPC program&n; */

@@ -184,6 +184,11 @@ comma
 id|u32
 op_star
 id|fsidv
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 suffix:semicolon
 r_struct
@@ -206,6 +211,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 suffix:semicolon
 r_struct
@@ -228,6 +238,11 @@ r_struct
 id|dentry
 op_star
 id|dentry
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 suffix:semicolon
 r_int
@@ -355,6 +370,11 @@ comma
 id|u32
 op_star
 id|fsidv
+comma
+r_struct
+id|cache_req
+op_star
+id|reqp
 )paren
 (brace
 r_struct
@@ -370,6 +390,8 @@ comma
 id|fsid_type
 comma
 id|fsidv
+comma
+id|reqp
 )paren
 suffix:semicolon
 r_if
@@ -428,6 +450,8 @@ id|svc_export_cache
 comma
 op_amp
 id|exp-&gt;h
+comma
+id|reqp
 )paren
 )paren
 )paren

@@ -436,6 +436,9 @@ comma
 id|fh-&gt;fh_fsid_type
 comma
 id|datap
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 id|datap
@@ -498,6 +501,9 @@ comma
 l_int|0
 comma
 id|tfh
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 )brace

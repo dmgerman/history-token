@@ -352,6 +352,9 @@ comma
 id|mnt
 comma
 id|dentry
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 r_if
@@ -507,6 +510,9 @@ comma
 id|mnt
 comma
 id|mounts
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 r_if
