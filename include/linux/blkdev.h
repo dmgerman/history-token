@@ -924,19 +924,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ll_10byte_cmd_build
-c_func
-(paren
-id|request_queue_t
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * get ready for proper ref counting&n; */
 DECL|macro|blk_put_queue
 mdefine_line|#define blk_put_queue(q)&t;do { } while (0)

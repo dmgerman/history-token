@@ -450,9 +450,21 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-id|INIT_REQUEST
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+)paren
+(brace
+id|CLEAR_INTR
 suffix:semicolon
-multiline_comment|/* if (QUEUE_EMPTY) return; */
+r_return
+suffix:semicolon
+)brace
 id|req
 op_assign
 id|CURRENT

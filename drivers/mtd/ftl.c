@@ -5112,8 +5112,21 @@ suffix:semicolon
 r_do
 (brace
 singleline_comment|//&t;    sti();
-id|INIT_REQUEST
+r_if
+c_cond
+(paren
+id|blk_queue_empty
+c_func
+(paren
+id|QUEUE
+)paren
+)paren
+(brace
+id|CLEAR_INTR
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|minor
 op_assign
 id|minor
