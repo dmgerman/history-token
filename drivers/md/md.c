@@ -28,7 +28,8 @@ r_static
 r_void
 id|autostart_arrays
 (paren
-r_void
+r_int
+id|part
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6024,7 +6025,6 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|mdp_major
-r_static
 r_int
 id|mdp_major
 op_assign
@@ -7414,7 +7414,8 @@ r_void
 id|autorun_devices
 c_func
 (paren
-r_void
+r_int
+id|part
 )paren
 (brace
 r_struct
@@ -7581,6 +7582,24 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|part
+)paren
+id|dev
+op_assign
+id|MKDEV
+c_func
+(paren
+id|mdp_major
+comma
+id|rdev0-&gt;preferred_minor
+op_lshift
+id|MdpMinorShift
+)paren
+suffix:semicolon
+r_else
 id|dev
 op_assign
 id|MKDEV
@@ -8079,6 +8098,7 @@ multiline_comment|/*&n;&t; * possibly return codes&n;&t; */
 id|autorun_devices
 c_func
 (paren
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -10066,6 +10086,7 @@ suffix:semicolon
 id|autostart_arrays
 c_func
 (paren
+id|arg
 )paren
 suffix:semicolon
 r_goto
@@ -15162,7 +15183,8 @@ r_void
 id|autostart_arrays
 c_func
 (paren
-r_void
+r_int
+id|part
 )paren
 (brace
 r_char
@@ -15280,6 +15302,7 @@ suffix:semicolon
 id|autorun_devices
 c_func
 (paren
+id|part
 )paren
 suffix:semicolon
 )brace
