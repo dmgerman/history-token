@@ -1076,6 +1076,52 @@ id|errno
 suffix:semicolon
 )brace
 )brace
+DECL|variable|force_sysemu_disabled
+r_static
+r_int
+id|force_sysemu_disabled
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|nosysemu_cmd_param
+r_static
+r_int
+id|__init
+id|nosysemu_cmd_param
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_int
+op_star
+id|add
+)paren
+(brace
+id|force_sysemu_disabled
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__uml_setup
+c_func
+(paren
+l_string|&quot;nosysemu&quot;
+comma
+id|nosysemu_cmd_param
+comma
+l_string|&quot;nosysemu&bslash;n&quot;
+l_string|&quot;    Turns off syscall emulation patch for ptrace (SYSEMU) on.&bslash;n&quot;
+l_string|&quot;    SYSEMU is a performance-patch introduced by Laurent Vivier. It changes&bslash;n&quot;
+l_string|&quot;    behaviour of ptrace() and helps reducing host context switch rate.&bslash;n&quot;
+l_string|&quot;    To make it working, you need a kernel patch for your host, too.&bslash;n&quot;
+l_string|&quot;    See http://perso.wanadoo.fr/laurent.vivier/UML/ for further information.&bslash;n&quot;
+)paren
+suffix:semicolon
 DECL|function|check_ptrace
 r_void
 id|__init
@@ -1281,7 +1327,6 @@ c_func
 l_string|&quot;OK&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef PTRACE_SYSEMU
 id|printk
 c_func
 (paren
@@ -1446,16 +1491,33 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|force_sysemu_disabled
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;OK&bslash;n&quot;
+l_string|&quot;found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|use_sysemu
 op_assign
 l_int|1
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;found but disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -1476,7 +1538,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|# endif /* PTRACE_SYSEMU */
 )brace
 DECL|function|run_kernel_thread
 r_int
