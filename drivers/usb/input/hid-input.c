@@ -3201,6 +3201,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|type
+op_ne
+id|EV_LED
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|offset
 op_assign
