@@ -255,11 +255,11 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;can&squot;t start %s&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;can&squot;t start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ohci_stop
@@ -329,11 +329,11 @@ op_ne
 id|OHCI_USB_OPER
 )paren
 (brace
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;can&squot;t suspend %s (state is %s)&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;can&squot;t suspend (state is %s)&bslash;n&quot;
 comma
 id|hcfs2string
 (paren
@@ -349,11 +349,11 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* act as if usb suspend can always be used */
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s: suspend to %d&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend to %d&bslash;n&quot;
 comma
 id|state
 )paren
@@ -513,11 +513,11 @@ id|OHCI_CTRL_HCFS
 r_case
 id|OHCI_USB_RESET
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;reset ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;reset ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -525,11 +525,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_RESUME
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;resume ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;resume ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -537,11 +537,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_OPER
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspend-&gt;operational ?&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend-&gt;operational ?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -549,11 +549,11 @@ suffix:semicolon
 r_case
 id|OHCI_USB_SUSPEND
 suffix:colon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s suspended&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspended&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -727,11 +727,11 @@ r_case
 id|OHCI_USB_RESET
 suffix:colon
 singleline_comment|// lost power
-id|info
+id|ohci_info
 (paren
-l_string|&quot;USB restart: %s&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;USB restart&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -751,11 +751,11 @@ r_case
 id|OHCI_USB_RESUME
 suffix:colon
 singleline_comment|// remote wakeup
-id|info
+id|ohci_info
 (paren
-l_string|&quot;USB continue: %s from %s wakeup&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;USB continue from %s wakeup&bslash;n&quot;
 comma
 (paren
 id|temp
@@ -824,11 +824,11 @@ op_ne
 id|OHCI_USB_RESUME
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;controller %s won&squot;t resume&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;controller won&squot;t resume&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ohci-&gt;disabled
@@ -1021,9 +1021,11 @@ id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
 singleline_comment|// ohci_dump_status (ohci);
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;sleeping = %d, disabled = %d&quot;
+id|ohci
+comma
+l_string|&quot;sleeping = %d, disabled = %d&bslash;n&quot;
 comma
 id|ohci-&gt;sleeping
 comma
@@ -1034,11 +1036,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|warn
+id|ohci_warn
 (paren
-l_string|&quot;odd PCI resume for %s&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;odd PCI resume&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1274,10 +1276,14 @@ id|ohci_hcd_pci_init
 r_void
 )paren
 (brace
-id|dbg
+id|printk
 (paren
+id|KERN_DEBUG
+l_string|&quot;%s: &quot;
 id|DRIVER_INFO
-l_string|&quot; (PCI)&quot;
+l_string|&quot; (PCI)&bslash;n&quot;
+comma
+id|hcd_name
 )paren
 suffix:semicolon
 r_if
@@ -1292,9 +1298,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|dbg
+id|printk
 (paren
-l_string|&quot;block sizes: ed %d td %d&quot;
+id|KERN_DEBUG
+l_string|&quot;%s: block sizes: ed %d td %d&bslash;n&quot;
+comma
+id|hcd_name
 comma
 r_sizeof
 (paren

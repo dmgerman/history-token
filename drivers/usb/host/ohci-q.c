@@ -358,12 +358,11 @@ id|ed
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef OHCI_VERBOSE_DEBUG
-id|dbg
+id|ohci_vdbg
 (paren
-l_string|&quot;%s: link %sed %p branch %d [%dus.], interval %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;link %sed %p branch %d [%dus.], interval %d&bslash;n&quot;
 comma
 (paren
 id|ed-&gt;hwINFO
@@ -385,7 +384,6 @@ comma
 id|ed-&gt;interval
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -750,9 +748,9 @@ OL
 l_int|0
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
 l_string|&quot;ERR %d, interval %d msecs, load %d&bslash;n&quot;
 comma
@@ -2950,10 +2948,9 @@ id|toggle
 suffix:semicolon
 )brace
 multiline_comment|/* help for troubleshooting: */
-id|dev_dbg
+id|ohci_dbg
 (paren
-op_amp
-id|urb-&gt;dev-&gt;dev
+id|ohci
 comma
 l_string|&quot;urb %p usb-%s-%s ep-%d-%s cc %d --&gt; status %d&bslash;n&quot;
 comma
@@ -3071,11 +3068,11 @@ op_logical_neg
 id|td
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s bad entry %8x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;bad entry %8x&bslash;n&quot;
 comma
 id|td_dma
 )paren

@@ -268,9 +268,9 @@ r_void
 id|ohci_dump_intr_mask
 (paren
 r_struct
-id|device
+id|ohci_hcd
 op_star
-id|dev
+id|ohci
 comma
 r_char
 op_star
@@ -280,9 +280,9 @@ id|__u32
 id|mask
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|dev
+id|ohci
 comma
 l_string|&quot;%s: 0x%08x%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
@@ -397,9 +397,9 @@ r_void
 id|maybe_print_eds
 (paren
 r_struct
-id|device
+id|ohci_hcd
 op_star
-id|dev
+id|ohci
 comma
 r_char
 op_star
@@ -414,9 +414,9 @@ c_cond
 (paren
 id|value
 )paren
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|dev
+id|ohci
 comma
 l_string|&quot;%s %08x&bslash;n&quot;
 comma
@@ -490,13 +490,6 @@ id|regs
 op_assign
 id|controller-&gt;regs
 suffix:semicolon
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-id|controller-&gt;hcd.controller
-suffix:semicolon
 id|__u32
 id|temp
 suffix:semicolon
@@ -510,9 +503,9 @@ id|regs-&gt;revision
 op_amp
 l_int|0xff
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;OHCI %d.%d, %s legacy support registers&bslash;n&quot;
 comma
@@ -550,9 +543,9 @@ op_amp
 id|regs-&gt;control
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;control: 0x%08x%s%s%s HCFS=%s%s%s%s%s CBSR=%d&bslash;n&quot;
 comma
@@ -655,9 +648,9 @@ op_amp
 id|regs-&gt;cmdstatus
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;cmdstatus: 0x%08x SOC=%d%s%s%s%s&bslash;n&quot;
 comma
@@ -718,7 +711,7 @@ l_string|&quot;&quot;
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;intrstatus&quot;
 comma
@@ -731,7 +724,7 @@ id|regs-&gt;intrstatus
 suffix:semicolon
 id|ohci_dump_intr_mask
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;intrenable&quot;
 comma
@@ -743,10 +736,9 @@ id|regs-&gt;intrenable
 )paren
 suffix:semicolon
 singleline_comment|// intrdisable always same as intrenable
-singleline_comment|// ohci_dump_intr_mask (dev, &quot;intrdisable&quot;, readl (&amp;regs-&gt;intrdisable));
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_periodcurrent&quot;
 comma
@@ -759,7 +751,7 @@ id|regs-&gt;ed_periodcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_controlhead&quot;
 comma
@@ -772,7 +764,7 @@ id|regs-&gt;ed_controlhead
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_controlcurrent&quot;
 comma
@@ -785,7 +777,7 @@ id|regs-&gt;ed_controlcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_bulkhead&quot;
 comma
@@ -798,7 +790,7 @@ id|regs-&gt;ed_bulkhead
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;ed_bulkcurrent&quot;
 comma
@@ -811,7 +803,7 @@ id|regs-&gt;ed_bulkcurrent
 suffix:semicolon
 id|maybe_print_eds
 (paren
-id|dev
+id|controller
 comma
 l_string|&quot;donehead&quot;
 comma
@@ -878,9 +870,9 @@ c_cond
 id|verbose
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;roothub.a: %08x POTPGT=%d%s%s%s%s%s NDP=%d&bslash;n&quot;
 comma
@@ -963,9 +955,9 @@ id|roothub_b
 id|controller
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;roothub.b: %08x PPCM=%04x DR=%04x&bslash;n&quot;
 comma
@@ -993,9 +985,9 @@ id|roothub_status
 id|controller
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;roothub.status: %08x%s%s%s%s%s%s&bslash;n&quot;
 comma
@@ -1120,9 +1112,9 @@ r_int
 id|verbose
 )paren
 (brace
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;OHCI controller state&bslash;n&quot;
 )paren
@@ -1138,9 +1130,9 @@ c_cond
 (paren
 id|controller-&gt;hcca
 )paren
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|controller-&gt;hcd.controller
+id|controller
 comma
 l_string|&quot;hcca frame #%04x&bslash;n&quot;
 comma
@@ -1180,6 +1172,11 @@ r_static
 r_void
 id|ohci_dump_td
 (paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
 r_char
 op_star
 id|label
@@ -1199,8 +1196,10 @@ op_amp
 id|td-&gt;hwINFO
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;%s td %p%s; urb %p index %d; hw next td %08x&quot;
 comma
 id|label
@@ -1342,8 +1341,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     info %08x CC=%x %s DI=%d %s %s&quot;
 comma
 id|tmp
@@ -1395,8 +1396,10 @@ op_amp
 id|td-&gt;hwBE
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     cbp %08x be %08x (len %d)&quot;
 comma
 id|cbp
@@ -1423,8 +1426,10 @@ r_else
 r_int
 id|i
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     info %08x CC=%x FC=%d DI=%d SF=%04x&quot;
 comma
 id|tmp
@@ -1456,8 +1461,10 @@ op_amp
 l_int|0x0000ffff
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;     bp0 %08x be %08x&quot;
 comma
 id|le32_to_cpup
@@ -1514,8 +1521,10 @@ l_int|12
 op_amp
 l_int|0x0f
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;       psw [%d] = %2x, CC=%x %s=%d&quot;
 comma
 id|i
@@ -1585,11 +1594,11 @@ id|type
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s: %s, ed %p state 0x%x type %s; next ed %08x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;%s, ed %p state 0x%x type %s; next ed %08x&bslash;n&quot;
 comma
 id|label
 comma
@@ -1641,8 +1650,10 @@ r_break
 suffix:semicolon
 multiline_comment|/* else from TDs ... control */
 )brace
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;  info %08x MAX=%d%s%s%s%s EP=%d%s DEV=%d&quot;
 comma
 id|le32_to_cpu
@@ -1726,8 +1737,10 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
+id|ohci
+comma
 l_string|&quot;  tds: head %08x %s%s tail %08x%s&quot;
 comma
 id|tmp
@@ -1813,6 +1826,8 @@ id|td_list
 suffix:semicolon
 id|ohci_dump_td
 (paren
+id|ohci
+comma
 l_string|&quot;  -&gt;&quot;
 comma
 id|td

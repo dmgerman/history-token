@@ -96,7 +96,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|dbg_port
-mdefine_line|#define dbg_port(hc,label,num,value) &bslash;&n;&t;dev_dbg (hc-&gt;hcd.controller, &bslash;&n;&t;&t;&quot;%s roothub.portstatus [%d] &quot; &bslash;&n;&t;&t;&quot;= 0x%08x%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;, &bslash;&n;&t;&t;label, num, temp, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRSC) ? &quot; PRSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_OCIC) ? &quot; OCIC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSSC) ? &quot; PSSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PESC) ? &quot; PESC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CSC) ? &quot; CSC&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_LSDA) ? &quot; LSDA&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PPS) ? &quot; PPS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRS) ? &quot; PRS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_POCI) ? &quot; POCI&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSS) ? &quot; PSS&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_PES) ? &quot; PES&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CCS) ? &quot; CCS&quot; : &quot;&quot; &bslash;&n;&t;&t;);
+mdefine_line|#define dbg_port(hc,label,num,value) &bslash;&n;&t;ohci_dbg (hc, &bslash;&n;&t;&t;&quot;%s roothub.portstatus [%d] &quot; &bslash;&n;&t;&t;&quot;= 0x%08x%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;, &bslash;&n;&t;&t;label, num, temp, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRSC) ? &quot; PRSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_OCIC) ? &quot; OCIC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSSC) ? &quot; PSSC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PESC) ? &quot; PESC&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CSC) ? &quot; CSC&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_LSDA) ? &quot; LSDA&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PPS) ? &quot; PPS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PRS) ? &quot; PRS&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_POCI) ? &quot; POCI&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_PSS) ? &quot; PSS&quot; : &quot;&quot;, &bslash;&n; &t;&t;&bslash;&n;&t;&t;(temp &amp; RH_PS_PES) ? &quot; PES&quot; : &quot;&quot;, &bslash;&n;&t;&t;(temp &amp; RH_PS_CCS) ? &quot; CCS&quot; : &quot;&quot; &bslash;&n;&t;&t;);
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* build &quot;status change&quot; packet (one or two bytes) from HC registers */
 r_static
@@ -163,11 +163,11 @@ r_return
 op_minus
 id|ESHUTDOWN
 suffix:semicolon
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s bogus NDP=%d, rereads as NDP=%d&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;bogus NDP=%d, rereads as NDP=%d&bslash;n&quot;
 comma
 id|ports
 comma

@@ -404,9 +404,9 @@ op_assign
 id|td-&gt;td_hash
 suffix:semicolon
 r_else
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|hc-&gt;hcd.controller
+id|hc
 comma
 l_string|&quot;bad hash for td %p&bslash;n&quot;
 comma

@@ -810,19 +810,32 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s-%s ed %p (#%d) not unlinked; disconnect() bug? %d&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;dev %s ep%d-%s linked; disconnect() bug?&bslash;n&quot;
 comma
 id|udev-&gt;devpath
 comma
-id|ed
-comma
+(paren
 id|i
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x0f
 comma
-id|ed-&gt;state
+(paren
+id|i
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;out&quot;
+suffix:colon
+l_string|&quot;in&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ED_OPER: some driver disconnect() is broken,&n;&t;&t;&t; * it didn&squot;t even start its unlinks much less wait&n;&t;&t;&t; * for their completions.&n;&t;&t;&t; * OTHERWISE:  hcd bug, ed is garbage&n;&t;&t;&t; *&n;&t;&t;&t; * ... we can&squot;t recycle this memory in either case,&n;&t;&t;&t; * so just leak it to avoid oopsing.&n;&t;&t;&t; */
@@ -859,15 +872,32 @@ id|in_interrupt
 )paren
 )paren
 (brace
-id|warn
+id|ohci_warn
 (paren
-l_string|&quot;disconnect() bug for dev usb-%s-%s ep 0x%x&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;driver disconnect() bug %s ep%d-%s&bslash;n&quot;
 comma
 id|udev-&gt;devpath
 comma
+(paren
 id|i
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x0f
+comma
+(paren
+id|i
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;out&quot;
+suffix:colon
+l_string|&quot;in&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1113,11 +1143,11 @@ op_eq
 l_int|0
 )paren
 (brace
-id|dev_err
+id|ohci_err
 (paren
-id|ohci-&gt;hcd.controller
+id|ohci
 comma
-l_string|&quot;USB HC reset timed out!&quot;
+l_string|&quot;USB HC reset timed out!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1296,11 +1326,11 @@ id|ohci-&gt;regs-&gt;periodicstart
 )paren
 )paren
 (brace
-id|err
+id|ohci_err
 (paren
-l_string|&quot;%s init err&quot;
+id|ohci
 comma
-id|ohci-&gt;hcd.self.bus_name
+l_string|&quot;init err&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1651,11 +1681,11 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
-id|dbg
+id|ohci_dbg
 (paren
-l_string|&quot;%s device removed!&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;device removed!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1682,7 +1712,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-singleline_comment|// dbg (&quot;Interrupt: %x frame: %x&quot;, ints, le16_to_cpu (ohci-&gt;hcca-&gt;frame_no));
 r_if
 c_cond
 (paren
@@ -1696,11 +1725,11 @@ id|disable
 id|ohci
 )paren
 suffix:semicolon
-id|err
+id|ohci_err
 (paren
-l_string|&quot;OHCI Unrecoverable Error, %s disabled&quot;
+id|ohci
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;OHCI Unrecoverable Error, disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// e.g. due to PCI Master/Target Abort
@@ -1846,9 +1875,9 @@ id|hcd_to_ohci
 id|hcd
 )paren
 suffix:semicolon
-id|dev_dbg
+id|ohci_dbg
 (paren
-id|hcd-&gt;controller
+id|ohci
 comma
 l_string|&quot;stop %s controller%s&bslash;n&quot;
 comma
