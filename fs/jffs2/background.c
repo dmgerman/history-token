@@ -1,12 +1,11 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.33 2002/11/12 09:44:30 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: background.c,v 1.38 2003/05/26 09:50:38 dwmw2 Exp $&n; *&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt; /* recalc_sigpending() */
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
@@ -40,7 +39,7 @@ op_star
 id|c
 )paren
 (brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -68,7 +67,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -226,7 +225,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -263,7 +262,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -511,7 +510,7 @@ l_string|&quot;jffs2_garbage_collect_thread(): SIGKILL received.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -522,7 +521,7 @@ id|c-&gt;gc_task
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -651,6 +650,9 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+r_uint32
+id|dirty
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -676,6 +678,17 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* dirty_size contains blocks on erase_pending_list&n;&t; * those blocks are counted in c-&gt;nr_erasing_blocks.&n;&t; * If one block is actually erased, it is not longer counted as dirty_space&n;&t; * but it is counted in c-&gt;nr_erasing_blocks, so we add it and subtract it&n;&t; * with c-&gt;nr_erasing_blocks * c-&gt;sector_size again.&n;&t; * Blocks on erasable_list are counted as dirty_size, but not in c-&gt;nr_erasing_blocks&n;&t; * This helps us to force gc and pick eventually a clean block to spread the load.&n;&t; */
+id|dirty
+op_assign
+id|c-&gt;dirty_size
+op_plus
+id|c-&gt;erasing_size
+op_minus
+id|c-&gt;nr_erasing_blocks
+op_star
+id|c-&gt;sector_size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -686,7 +699,7 @@ OL
 id|JFFS2_RESERVED_BLOCKS_GCTRIGGER
 op_logical_and
 (paren
-id|c-&gt;dirty_size
+id|dirty
 OG
 id|c-&gt;sector_size
 )paren

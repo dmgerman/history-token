@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.74 2002/11/12 09:37:39 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: super.c,v 1.79 2003/05/27 22:35:42 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
@@ -149,7 +148,7 @@ op_eq
 id|SLAB_CTOR_CONSTRUCTOR
 )paren
 (brace
-id|init_MUTEX
+id|init_MUTEX_LOCKED
 c_func
 (paren
 op_amp
@@ -347,11 +346,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|jffs2_get_sb_mtd
 r_static
 r_struct
 id|super_block
 op_star
-DECL|function|jffs2_get_sb_mtd
 id|jffs2_get_sb_mtd
 c_func
 (paren
@@ -589,11 +588,11 @@ r_return
 id|sb
 suffix:semicolon
 )brace
+DECL|function|jffs2_get_sb_mtdnr
 r_static
 r_struct
 id|super_block
 op_star
-DECL|function|jffs2_get_sb_mtdnr
 id|jffs2_get_sb_mtdnr
 c_func
 (paren
@@ -678,11 +677,11 @@ id|mtd
 )paren
 suffix:semicolon
 )brace
+DECL|function|jffs2_get_sb
 r_static
 r_struct
 id|super_block
 op_star
-DECL|function|jffs2_get_sb
 id|jffs2_get_sb
 c_func
 (paren
