@@ -1353,6 +1353,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|buffer_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|vfs_caches_init
 c_func
 (paren

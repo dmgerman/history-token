@@ -1273,7 +1273,7 @@ r_do
 (brace
 id|new_bh
 op_assign
-id|get_unused_buffer_head
+id|alloc_buffer_head
 c_func
 (paren
 l_int|0
@@ -1290,7 +1290,7 @@ id|printk
 (paren
 id|KERN_NOTICE
 id|__FUNCTION__
-l_string|&quot;: ENOMEM at get_unused_buffer_head, &quot;
+l_string|&quot;: ENOMEM at alloc_buffer_head, &quot;
 l_string|&quot;trying again.&bslash;n&quot;
 )paren
 suffix:semicolon

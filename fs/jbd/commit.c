@@ -1630,7 +1630,7 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
-id|put_unused_buffer_head
+id|free_buffer_head
 c_func
 (paren
 id|bh
