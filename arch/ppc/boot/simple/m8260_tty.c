@@ -1,7 +1,8 @@
 multiline_comment|/* Minimal serial functions needed to send messages out the serial&n; * port on SMC1.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
-macro_line|#include &lt;asm/cpm_8260.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 DECL|variable|no_print
 id|uint
 id|no_print
@@ -84,17 +85,17 @@ op_star
 id|rbdf
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -106,10 +107,10 @@ suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 id|cp
 op_assign
@@ -714,7 +715,7 @@ op_star
 id|sup
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
@@ -726,10 +727,10 @@ suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 macro_line|#ifdef SCC_CONSOLE
 id|sup
@@ -880,7 +881,7 @@ op_star
 id|sup
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
@@ -892,10 +893,10 @@ suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 macro_line|#ifdef SCC_CONSOLE
 id|sup
@@ -1064,17 +1065,17 @@ op_star
 id|sup
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|ip
 suffix:semicolon
 id|ip
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 macro_line|#ifdef SCC_CONSOLE
 id|sup
