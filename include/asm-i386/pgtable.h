@@ -42,6 +42,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 DECL|macro|__flush_tlb
 mdefine_line|#define __flush_tlb()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int tmpreg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;movl %%cr3, %0;  # flush TLB &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;&quot;movl %0, %%cr3;              &bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&t;: &quot;=r&quot; (tmpreg)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;:: &quot;memory&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Global pages have to be flushed a bit differently. Not a real&n; * performance problem because this does not happen often.&n; */

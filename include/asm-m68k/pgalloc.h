@@ -229,6 +229,8 @@ DECL|macro|flush_dcache_page
 mdefine_line|#define flush_dcache_page(page)&t;&t;&t;do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)              do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/* Push n pages at kernel virtual address and clear the icache */
 multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
 DECL|function|flush_icache_range

@@ -30,6 +30,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)          do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)               do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len) do { } while (0)
 multiline_comment|/*&n; * TLB flushing (implemented in arch/cris/mm/tlb.c):&n; *&n; *  - flush_tlb() flushes the current mm struct TLBs&n; *  - flush_tlb_all() flushes all processes TLBs&n; *  - flush_tlb_mm(mm) flushes the specified mm context TLB&squot;s&n; *  - flush_tlb_page(vma, vmaddr) flushes one page&n; *  - flush_tlb_range(vma, start, end) flushes a range of pages&n; *&n; */
 r_extern
 r_void

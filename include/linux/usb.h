@@ -2677,14 +2677,14 @@ DECL|macro|PIPE_DEVEP_MASK
 mdefine_line|#define PIPE_DEVEP_MASK&t;&t;0x0007ff00
 multiline_comment|/* The D0/D1 toggle bits */
 DECL|macro|usb_gettoggle
-mdefine_line|#define usb_gettoggle(dev, ep, out) (((dev)-&gt;toggle[out] &gt;&gt; ep) &amp; 1)
+mdefine_line|#define usb_gettoggle(dev, ep, out) (((dev)-&gt;toggle[out] &gt;&gt; (ep)) &amp; 1)
 DECL|macro|usb_dotoggle
-mdefine_line|#define&t;usb_dotoggle(dev, ep, out)  ((dev)-&gt;toggle[out] ^= (1 &lt;&lt; ep))
+mdefine_line|#define&t;usb_dotoggle(dev, ep, out)  ((dev)-&gt;toggle[out] ^= (1 &lt;&lt; (ep)))
 DECL|macro|usb_settoggle
-mdefine_line|#define usb_settoggle(dev, ep, out, bit) ((dev)-&gt;toggle[out] = ((dev)-&gt;toggle[out] &amp; ~(1 &lt;&lt; ep)) | ((bit) &lt;&lt; ep))
+mdefine_line|#define usb_settoggle(dev, ep, out, bit) ((dev)-&gt;toggle[out] = ((dev)-&gt;toggle[out] &amp; ~(1 &lt;&lt; (ep))) | ((bit) &lt;&lt; (ep)))
 multiline_comment|/* Endpoint halt control/status */
 DECL|macro|usb_endpoint_out
-mdefine_line|#define usb_endpoint_out(ep_dir)&t;(((ep_dir &gt;&gt; 7) &amp; 1) ^ 1)
+mdefine_line|#define usb_endpoint_out(ep_dir)&t;((((ep_dir) &gt;&gt; 7) &amp; 1) ^ 1)
 DECL|macro|usb_endpoint_halt
 mdefine_line|#define usb_endpoint_halt(dev, ep, out) ((dev)-&gt;halted[out] |= (1 &lt;&lt; (ep)))
 DECL|macro|usb_endpoint_running

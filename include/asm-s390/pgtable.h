@@ -46,6 +46,8 @@ DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(start, end)          do { } while (0)
 DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)               do { } while (0)
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
 multiline_comment|/*&n; * The S390 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma, address, pte)     do { } while (0)

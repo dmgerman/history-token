@@ -131,14 +131,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* We need to flush the userspace icache after setting breakpoints in&n;   ptrace.  I don&squot;t think it&squot;s needed in do_swap_page, or do_no_page,&n;   but I don&squot;t know how to get rid of it either.&n;&n;   Instead of indiscriminately using imb, take advantage of the fact&n;   that icache entries are tagged with the ASN and load a new mm context.  */
+multiline_comment|/* We need to flush the userspace icache after setting breakpoints in&n;   ptrace.&n;&n;   Instead of indiscriminately using imb, take advantage of the fact&n;   that icache entries are tagged with the ASN and load a new mm context.  */
 multiline_comment|/* ??? Ought to use this in arch/alpha/kernel/signal.c too.  */
 macro_line|#ifndef CONFIG_SMP
 r_static
 r_inline
 r_void
-DECL|function|flush_icache_page
-id|flush_icache_page
+DECL|function|flush_icache_user_range
+id|flush_icache_user_range
 c_func
 (paren
 r_struct
@@ -150,6 +150,13 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|len
 )paren
 (brace
 r_if
@@ -196,7 +203,7 @@ suffix:semicolon
 macro_line|#else
 r_extern
 r_void
-id|flush_icache_page
+id|flush_icache_user_range
 c_func
 (paren
 r_struct
@@ -208,9 +215,19 @@ r_struct
 id|page
 op_star
 id|page
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* this is used only in do_no_page and do_swap_page */
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page(vma, page)&t;flush_icache_user_range((vma), (page), 0, 0)
 multiline_comment|/*&n; * Flush just one page in the current TLB set.&n; * We need to be very careful about the icache here, there&n; * is no way to invalidate a specific icache page..&n; */
 id|__EXTERN_INLINE
 r_void
