@@ -14,6 +14,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;hcd.h&quot;&t;/* for usbcore internals */
 macro_line|#include &quot;usb.h&quot;
@@ -1996,6 +1998,91 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|function|usb_try_string_workarounds
+r_static
+r_void
+id|usb_try_string_workarounds
+c_func
+(paren
+r_int
+r_char
+op_star
+id|buf
+comma
+r_int
+op_star
+id|length
+)paren
+(brace
+r_int
+id|newlength
+comma
+id|oldlength
+op_assign
+op_star
+id|length
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|newlength
+op_assign
+l_int|2
+suffix:semicolon
+id|newlength
+op_plus
+l_int|1
+OL
+id|oldlength
+suffix:semicolon
+id|newlength
+op_add_assign
+l_int|2
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+id|isprint
+c_func
+(paren
+id|buf
+(braket
+id|newlength
+)braket
+)paren
+op_logical_or
+id|buf
+(braket
+id|newlength
+op_plus
+l_int|1
+)braket
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newlength
+OG
+l_int|2
+)paren
+(brace
+id|buf
+(braket
+l_int|0
+)braket
+op_assign
+id|newlength
+suffix:semicolon
+op_star
+id|length
+op_assign
+id|newlength
+suffix:semicolon
+)brace
+)brace
 DECL|function|usb_string_sub
 r_static
 r_int
@@ -2047,7 +2134,7 @@ c_cond
 (paren
 id|rc
 OL
-l_int|0
+l_int|2
 )paren
 (brace
 id|rc
@@ -2098,9 +2185,33 @@ c_cond
 (paren
 id|rc
 op_ge
-l_int|0
+l_int|2
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+(braket
+l_int|0
+)braket
+op_logical_and
+op_logical_neg
+id|buf
+(braket
+l_int|1
+)braket
+)paren
+id|usb_try_string_workarounds
+c_func
+(paren
+id|buf
+comma
+op_amp
+id|rc
+)paren
+suffix:semicolon
 multiline_comment|/* There might be extra junk at the end of the descriptor */
 r_if
 c_cond
@@ -2119,6 +2230,18 @@ id|buf
 l_int|0
 )braket
 suffix:semicolon
+id|rc
+op_assign
+id|rc
+op_minus
+(paren
+id|rc
+op_amp
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* force a multiple of two */
+)brace
 r_if
 c_cond
 (paren
@@ -2128,10 +2251,18 @@ l_int|2
 )paren
 id|rc
 op_assign
+(paren
+id|rc
+OL
+l_int|0
+ques
+c_cond
+id|rc
+suffix:colon
 op_minus
 id|EINVAL
+)paren
 suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -2422,6 +2553,34 @@ suffix:semicolon
 id|err
 op_assign
 id|idx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tbuf
+(braket
+l_int|1
+)braket
+op_ne
+id|USB_DT_STRING
+)paren
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;wrong descriptor type %02x for string %d (&bslash;&quot;%s&bslash;&quot;)&bslash;n&quot;
+comma
+id|tbuf
+(braket
+l_int|1
+)braket
+comma
+id|index
+comma
+id|buf
+)paren
 suffix:semicolon
 id|errout
 suffix:colon
@@ -3519,7 +3678,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_reset_configuration - lightweight device reset&n; * @dev: the device whose configuration is being reset&n; *&n; * This issues a standard SET_CONFIGURATION request to the device using&n; * the current configuration.  The effect is to reset most USB-related&n; * state in the device, including interface altsettings (reset to zero),&n; * endpoint halts (cleared), and data toggle (only for bulk and interrupt&n; * endpoints).  Other usbcore state is unchanged, including bindings of&n; * usb device drivers to interfaces.&n; *&n; * Because this affects multiple interfaces, avoid using this with composite&n; * (multi-interface) devices.  Instead, the driver for each interface may&n; * use usb_set_interface() on the interfaces it claims.  Resetting the whole&n; * configuration would affect other drivers&squot; interfaces.&n; *&n; * Returns zero on success, else a negative error code.&n; */
+multiline_comment|/**&n; * usb_reset_configuration - lightweight device reset&n; * @dev: the device whose configuration is being reset&n; *&n; * This issues a standard SET_CONFIGURATION request to the device using&n; * the current configuration.  The effect is to reset most USB-related&n; * state in the device, including interface altsettings (reset to zero),&n; * endpoint halts (cleared), and data toggle (only for bulk and interrupt&n; * endpoints).  Other usbcore state is unchanged, including bindings of&n; * usb device drivers to interfaces.&n; *&n; * Because this affects multiple interfaces, avoid using this with composite&n; * (multi-interface) devices.  Instead, the driver for each interface may&n; * use usb_set_interface() on the interfaces it claims.  Resetting the whole&n; * configuration would affect other drivers&squot; interfaces.&n; *&n; * The caller must own the device lock.&n; *&n; * Returns zero on success, else a negative error code.&n; */
 DECL|function|usb_reset_configuration
 r_int
 id|usb_reset_configuration
@@ -3552,7 +3711,7 @@ r_return
 op_minus
 id|EHOSTUNREACH
 suffix:semicolon
-multiline_comment|/* caller must own dev-&gt;serialize (config won&squot;t change)&n;&t; * and the usb bus readlock (so driver bindings are stable);&n;&t; * so calls during probe() are fine&n;&t; */
+multiline_comment|/* caller must have locked the device and must own&n;&t; * the usb bus readlock (so driver bindings are stable);&n;&t; * calls during probe() are fine&n;&t; */
 r_for
 c_loop
 (paren
@@ -3778,7 +3937,7 @@ id|intf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt(), caller holds dev-&gt;serialize&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * and must not hold the driver model lock for USB; usb device driver&n; * probe() methods may not use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
+multiline_comment|/*&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt(), caller owns the device lock&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * must own the device lock, and must not hold the driver model&squot;s USB&n; * bus rwsem; usb device driver probe() methods cannot use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
 DECL|function|usb_set_configuration
 r_int
 id|usb_set_configuration
@@ -3818,7 +3977,6 @@ id|n
 comma
 id|nintf
 suffix:semicolon
-multiline_comment|/* dev-&gt;serialize guards all config changes */
 r_for
 c_loop
 (paren

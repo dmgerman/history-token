@@ -1867,6 +1867,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|p-&gt;device
+op_assign
+op_amp
+id|dp-&gt;dev
+suffix:semicolon
 id|init_chips
 c_func
 (paren

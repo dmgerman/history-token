@@ -9283,6 +9283,12 @@ c_func
 id|to_clean
 )paren
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren

@@ -212,6 +212,18 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|r4k_cur
 op_add_assign
 id|r4k_offset
@@ -373,6 +385,18 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|time_elapsed
 op_sub_assign
 id|MATCH20_INC
@@ -424,6 +448,18 @@ id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* increment jiffies by one */
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 multiline_comment|/* When we wakeup from sleep, we have to &quot;catch up&quot; on all of the&n; * timer ticks we have missed.&n; */

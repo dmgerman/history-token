@@ -7881,8 +7881,8 @@ id|agp_intel_resume
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* intel_agp_init() must not be declared static for explicit&n;   early initialization to work (ie i810fb) */
 DECL|function|agp_intel_init
+r_static
 r_int
 id|__init
 id|agp_intel_init
@@ -7891,26 +7891,6 @@ c_func
 r_void
 )paren
 (brace
-r_static
-r_int
-id|agp_initialised
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|agp_initialised
-op_eq
-l_int|1
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|agp_initialised
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 id|pci_module_init
 c_func

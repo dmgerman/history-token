@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_struct
-id|key
+id|reiserfs_key
 id|MIN_KEY
 suffix:semicolon
 r_static
@@ -186,7 +186,7 @@ id|entry_num
 suffix:semicolon
 r_const
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|rkey
 suffix:semicolon

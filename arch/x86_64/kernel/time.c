@@ -1521,6 +1521,18 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * In the SMP case we use the local APIC timer interrupt to do the profiling,&n; * except when we simulate SMP mode on a uniprocessor system, in that case we&n; * have to call the local interrupt handler.&n; */
 macro_line|#ifndef CONFIG_X86_LOCAL_APIC
 id|profile_tick

@@ -124,6 +124,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|add_taint
+c_func
+(paren
+id|TAINT_MACHINE_CHECK
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace

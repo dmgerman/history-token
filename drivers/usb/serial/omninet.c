@@ -537,13 +537,13 @@ id|serial-&gt;port
 l_int|1
 )braket
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|wport-&gt;write_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|port-&gt;read_urb

@@ -5517,13 +5517,6 @@ id|old_rootmnt
 suffix:semicolon
 )brace
 )brace
-DECL|variable|set_fs_root
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_fs_root
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Replace the fs-&gt;{pwdmnt,pwd} with {mnt,dentry}. Put the old values.&n; * It can block. Requires the big lock held.&n; */
 DECL|function|set_fs_pwd
 r_void
@@ -5614,13 +5607,6 @@ id|old_pwdmnt
 suffix:semicolon
 )brace
 )brace
-DECL|variable|set_fs_pwd
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_fs_pwd
-)paren
-suffix:semicolon
 DECL|function|chroot_fs_refs
 r_static
 r_void

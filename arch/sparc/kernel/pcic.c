@@ -3172,6 +3172,18 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|write_sequnlock
 c_func
 (paren

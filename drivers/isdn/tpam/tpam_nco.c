@@ -245,7 +245,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_ACreateNCOReq): phone=%s&bslash;n&quot;
@@ -613,7 +613,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_ADestroyNCOReq): ncoid=%lu&bslash;n&quot;
@@ -728,7 +728,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_CConnectReq): ncoid=%lu, called=%s, hdlc=%d&bslash;n&quot;
@@ -1048,7 +1048,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_CConnectRsp): ncoid=%lu&bslash;n&quot;
@@ -1155,7 +1155,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_CDisconnectReq): ncoid=%lu&bslash;n&quot;
@@ -1262,7 +1262,7 @@ id|u8
 op_star
 id|tlv
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_CDisconnectRsp): ncoid=%lu&bslash;n&quot;
@@ -1386,7 +1386,7 @@ r_void
 op_star
 id|p
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(build_U3DataReq): &quot;
@@ -1751,7 +1751,7 @@ op_star
 id|status
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_ACreateNCOCnf): status=%d&bslash;n&quot;
@@ -1794,7 +1794,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_ACreateNCOCnf): ncoid=%lu, status=%d&bslash;n&quot;
@@ -1871,7 +1871,7 @@ op_star
 id|status
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_ADestroyNCOCnf): status=%d&bslash;n&quot;
@@ -1914,7 +1914,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_ADestroyNCOCnf): ncoid=%lu, status=%d&bslash;n&quot;
@@ -1980,7 +1980,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_CConnectCnf): ncoid=%lu&bslash;n&quot;
@@ -2220,7 +2220,7 @@ comma
 id|PHONE_MAXIMUMSIZE
 )paren
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_CConnectInd): &quot;
@@ -2331,7 +2331,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_CDisconnectCnf): ncoid=%lu, causetopuf=%lu&bslash;n&quot;
@@ -2435,7 +2435,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_CDisconnectInd): ncoid=%lu, causetopuf=%lu&bslash;n&quot;
@@ -2539,7 +2539,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_U3ReadyToReceiveInd): ncoid=%lu, ready=%d&bslash;n&quot;
@@ -2664,7 +2664,7 @@ id|data
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(parse_U3DataInd): ncoid=%lu, datalen=%d&bslash;n&quot;

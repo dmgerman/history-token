@@ -189,6 +189,14 @@ DECL|macro|ENOMEDIUM
 mdefine_line|#define ENOMEDIUM&t;159&t;/* No medium found */
 DECL|macro|EMEDIUMTYPE
 mdefine_line|#define EMEDIUMTYPE&t;160&t;/* Wrong medium type */
+DECL|macro|ENOKEY
+mdefine_line|#define&t;ENOKEY&t;&t;161&t;/* Required key not available */
+DECL|macro|EKEYEXPIRED
+mdefine_line|#define&t;EKEYEXPIRED&t;162&t;/* Key has expired */
+DECL|macro|EKEYREVOKED
+mdefine_line|#define&t;EKEYREVOKED&t;163&t;/* Key has been revoked */
+DECL|macro|EKEYREJECTED
+mdefine_line|#define&t;EKEYREJECTED&t;164&t;/* Key was rejected by service */
 DECL|macro|EDQUOT
 mdefine_line|#define EDQUOT&t;&t;1133&t;/* Quota exceeded */
 macro_line|#ifdef __KERNEL__

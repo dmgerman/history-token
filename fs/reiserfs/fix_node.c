@@ -533,7 +533,7 @@ l_int|0
 )paren
 (brace
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 suffix:semicolon
@@ -4608,7 +4608,7 @@ op_star
 id|ih
 suffix:semicolon
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|r_key
 op_assign

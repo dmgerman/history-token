@@ -1396,12 +1396,14 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|inode
 comma
 id|mask
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -1191,8 +1191,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/* in UP mode, update_process_times() is invoked by do_timer() */
 id|update_process_times
 c_func
 (paren
@@ -1203,7 +1201,6 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * High-level timer interrupt service routines.  This function&n; * is set as irqaction-&gt;handler and is invoked through do_IRQ.&n; */
 DECL|function|timer_interrupt

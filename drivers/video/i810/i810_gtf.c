@@ -1275,11 +1275,13 @@ comma
 id|blank_e
 suffix:semicolon
 id|u8
+id|__iomem
 op_star
 id|mmio
 op_assign
 id|par-&gt;mmio_start_virtual
-comma
+suffix:semicolon
+id|u8
 id|msr
 op_assign
 l_int|0

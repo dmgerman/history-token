@@ -2,5 +2,5 @@ multiline_comment|/* include/asm-arm/arch-lh7a40x/timex.h&n; *&n; *  Copyright (
 macro_line|#include &lt;asm/arch/constants.h&gt;
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;&t;(PLL_CLOCK/6/16)
-multiline_comment|/*&n;#define CLOCK_TICK_RATE&t;&t;3686400&n;#define CLOCK_TICK_FACTOR&t;80&n;*/
+multiline_comment|/*&n;#define CLOCK_TICK_RATE&t;&t;3686400&n;*/
 eof

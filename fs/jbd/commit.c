@@ -1981,10 +1981,13 @@ id|BJ_Forget
 )paren
 suffix:semicolon
 multiline_comment|/* Wake up any transactions which were waiting for this&n;&t;&t;   IO to complete */
-id|wake_up_buffer
+id|wake_up_bit
 c_func
 (paren
-id|bh
+op_amp
+id|bh-&gt;b_state
+comma
+id|BH_Unshadow
 )paren
 suffix:semicolon
 id|JBUFFER_TRACE

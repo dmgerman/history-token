@@ -406,11 +406,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|shmem_file_setup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|shmem_file_setup
-)paren
-suffix:semicolon
 eof

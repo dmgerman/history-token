@@ -628,6 +628,7 @@ DECL|member|exec_vm
 DECL|member|stack_vm
 DECL|member|reserved_vm
 DECL|member|def_flags
+DECL|member|nr_ptes
 r_int
 r_int
 id|exec_vm
@@ -637,6 +638,8 @@ comma
 id|reserved_vm
 comma
 id|def_flags
+comma
+id|nr_ptes
 suffix:semicolon
 DECL|member|saved_auxv
 r_int
@@ -913,6 +916,22 @@ r_int
 id|locked_shm
 suffix:semicolon
 multiline_comment|/* How many pages of mlocked shm ? */
+macro_line|#ifdef CONFIG_KEYS
+DECL|member|uid_keyring
+r_struct
+id|key
+op_star
+id|uid_keyring
+suffix:semicolon
+multiline_comment|/* UID specific keyring */
+DECL|member|session_keyring
+r_struct
+id|key
+op_star
+id|session_keyring
+suffix:semicolon
+multiline_comment|/* UID&squot;s default session keyring */
+macro_line|#endif
 multiline_comment|/* Hash table maintenance information */
 DECL|member|uidhash_list
 r_struct
@@ -1799,6 +1818,29 @@ id|user_struct
 op_star
 id|user
 suffix:semicolon
+macro_line|#ifdef CONFIG_KEYS
+DECL|member|session_keyring
+r_struct
+id|key
+op_star
+id|session_keyring
+suffix:semicolon
+multiline_comment|/* keyring inherited over fork */
+DECL|member|process_keyring
+r_struct
+id|key
+op_star
+id|process_keyring
+suffix:semicolon
+multiline_comment|/* keyring private to this process (CLONE_THREAD) */
+DECL|member|thread_keyring
+r_struct
+id|key
+op_star
+id|thread_keyring
+suffix:semicolon
+multiline_comment|/* keyring private to this thread */
+macro_line|#endif
 DECL|member|used_math
 r_int
 r_int
@@ -1928,7 +1970,7 @@ DECL|member|self_exec_id
 id|u32
 id|self_exec_id
 suffix:semicolon
-multiline_comment|/* Protection of (de-)allocation: mm, files, fs, tty */
+multiline_comment|/* Protection of (de-)allocation: mm, files, fs, tty, keyrings */
 DECL|member|alloc_lock
 id|spinlock_t
 id|alloc_lock
@@ -2801,20 +2843,6 @@ id|pid_t
 suffix:semicolon
 r_extern
 r_int
-id|kill_sl_info
-c_func
-(paren
-r_int
-comma
-r_struct
-id|siginfo
-op_star
-comma
-id|pid_t
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|kill_proc_info
 c_func
 (paren
@@ -3563,7 +3591,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info, -&gt;comm and&n; * synchronises with wait4().&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
+multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace, -&gt;group_info, -&gt;comm, keyring&n; * subscriptions and synchronises with wait4().  Also used in procfs.&n; *&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline

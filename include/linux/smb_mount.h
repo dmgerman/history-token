@@ -57,6 +57,14 @@ DECL|macro|SMB_MOUNT_CASE
 mdefine_line|#define SMB_MOUNT_CASE&t;&t;0x0008&t;/* Be case sensitive */
 DECL|macro|SMB_MOUNT_UNICODE
 mdefine_line|#define SMB_MOUNT_UNICODE&t;0x0010&t;/* Server talks unicode */
+DECL|macro|SMB_MOUNT_UID
+mdefine_line|#define SMB_MOUNT_UID&t;&t;0x0020  /* Use user specified uid */
+DECL|macro|SMB_MOUNT_GID
+mdefine_line|#define SMB_MOUNT_GID&t;&t;0x0040  /* Use user specified gid */
+DECL|macro|SMB_MOUNT_FMODE
+mdefine_line|#define SMB_MOUNT_FMODE&t;&t;0x0080  /* Use user specified file mode */
+DECL|macro|SMB_MOUNT_DMODE
+mdefine_line|#define SMB_MOUNT_DMODE&t;&t;0x0100  /* Use user specified dir mode */
 DECL|struct|smb_mount_data_kernel
 r_struct
 id|smb_mount_data_kernel

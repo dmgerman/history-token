@@ -31,20 +31,13 @@ id|files_stat
 )paren
 suffix:semicolon
 multiline_comment|/* Needed by unix.o */
-multiline_comment|/* public *and* exported. Not pretty! */
+multiline_comment|/* public. Not pretty! */
 DECL|variable|files_lock
 id|spinlock_t
 id|__cacheline_aligned_in_smp
 id|files_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|variable|files_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|files_lock
-)paren
 suffix:semicolon
 DECL|variable|filp_count_lock
 r_static
@@ -762,13 +755,6 @@ id|file
 suffix:semicolon
 )brace
 )brace
-DECL|variable|put_filp
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|put_filp
-)paren
-suffix:semicolon
 DECL|function|file_move
 r_void
 id|file_move

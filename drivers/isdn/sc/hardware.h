@@ -135,9 +135,6 @@ mdefine_line|#define PRI_PARTNO&t;&quot;72-030&quot;
 DECL|macro|PRI_FEATURES
 mdefine_line|#define PRI_FEATURES&t;ISDN_FEATURE_L2_HDLC | ISDN_FEATURE_L3_TRANS;
 multiline_comment|/*&n; * Some handy macros&n; */
-multiline_comment|/* Return the number of jiffies in a given number of msecs */
-DECL|macro|milliseconds
-mdefine_line|#define milliseconds(x)&t;(((x)*HZ)/1000)
 multiline_comment|/* Determine if a channel number is valid for the adapter */
 DECL|macro|IS_VALID_CHANNEL
 mdefine_line|#define IS_VALID_CHANNEL(y,x)&t;((x&gt;0) &amp;&amp; (x &lt;= sc_adapter[y]-&gt;channels))

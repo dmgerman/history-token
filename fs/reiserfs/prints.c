@@ -115,7 +115,7 @@ op_star
 id|le_offset
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -278,7 +278,7 @@ op_star
 id|le_type
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -368,7 +368,7 @@ op_star
 id|buf
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 )paren
@@ -1116,7 +1116,7 @@ c_func
 id|args
 comma
 r_struct
-id|key
+id|reiserfs_key
 op_star
 )paren
 )paren
@@ -2037,7 +2037,7 @@ id|last
 )paren
 (brace
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 suffix:semicolon

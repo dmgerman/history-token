@@ -3918,6 +3918,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|fbinfo-&gt;device
+op_assign
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
 r_return
 id|pvr2fb_common_init
 c_func

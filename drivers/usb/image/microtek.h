@@ -76,6 +76,12 @@ id|usb_device
 op_star
 id|usb_dev
 suffix:semicolon
+DECL|member|usb_intf
+r_struct
+id|usb_interface
+op_star
+id|usb_intf
+suffix:semicolon
 multiline_comment|/* Endpoint addresses */
 DECL|member|ep_out
 id|u8

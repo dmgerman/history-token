@@ -277,7 +277,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* caller owns root-&gt;serialize, and should reset/reinit on error */
+multiline_comment|/* caller has locked the root hub, and should reset/reinit on error */
 DECL|function|ehci_hub_resume
 r_static
 r_int

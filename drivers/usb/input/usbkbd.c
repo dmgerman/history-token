@@ -1302,7 +1302,7 @@ op_logical_neg
 op_decrement
 id|kbd-&gt;open
 )paren
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kbd-&gt;irq
@@ -2235,7 +2235,7 @@ c_cond
 id|kbd
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kbd-&gt;irq

@@ -3,6 +3,7 @@ macro_line|#ifdef NTFS_RW
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;bitmap.h&quot;
 macro_line|#include &quot;debug.h&quot;
+macro_line|#include &quot;aops.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * __ntfs_bitmap_set_bits_in_run - set a run of bits in a bitmap to a value&n; * @vi:&t;&t;&t;vfs inode describing the bitmap&n; * @start_bit:&t;&t;first bit to set&n; * @count:&t;&t;number of bits to set&n; * @value:&t;&t;value to set the bits to (i.e. 0 or 1)&n; * @is_rollback:&t;if TRUE this is a rollback operation&n; *&n; * Set @count bits starting at bit @start_bit in the bitmap described by the&n; * vfs inode @vi to @value, where @value is either 0 or 1.&n; *&n; * @is_rollback should always be FALSE, it is for internal use to rollback&n; * errors.  You probably want to use ntfs_bitmap_set_bits_in_run() instead.&n; *&n; * Return 0 on success and -errno on error.&n; */
 DECL|function|__ntfs_bitmap_set_bits_in_run

@@ -3,6 +3,8 @@ macro_line|#ifndef _LINUX_NTFS_DIR_H
 DECL|macro|_LINUX_NTFS_DIR_H
 mdefine_line|#define _LINUX_NTFS_DIR_H
 macro_line|#include &quot;layout.h&quot;
+macro_line|#include &quot;inode.h&quot;
+macro_line|#include &quot;types.h&quot;
 multiline_comment|/*&n; * ntfs_name is used to return the file name to the caller of&n; * ntfs_lookup_inode_by_name() in order for the caller (namei.c::ntfs_lookup())&n; * to be able to deal with dcache aliasing issues.&n; */
 r_typedef
 r_struct

@@ -293,7 +293,7 @@ c_func
 id|panic
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietary module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
+multiline_comment|/**&n; *&t;print_tainted - return a string to represent the kernel taint state.&n; *&n; *  &squot;P&squot; - Proprietary module has been loaded.&n; *  &squot;F&squot; - Module has been forcibly loaded.&n; *  &squot;S&squot; - SMP with CPUs not designed for SMP.&n; *  &squot;R&squot; - User forced a module unload.&n; *  &squot;M&squot; - Machine had a machine check experience.&n; *  &squot;B&squot; - System has hit bad_page.&n; *&n; *&t;The string is overwritten by the next call to print_taint().&n; */
 DECL|function|print_tainted
 r_const
 r_char
@@ -327,7 +327,7 @@ r_sizeof
 id|buf
 )paren
 comma
-l_string|&quot;Tainted: %c%c%c&quot;
+l_string|&quot;Tainted: %c%c%c%c%c%c&quot;
 comma
 id|tainted
 op_amp
@@ -355,6 +355,33 @@ c_cond
 l_char|&squot;S&squot;
 suffix:colon
 l_char|&squot; &squot;
+comma
+id|tainted
+op_amp
+id|TAINT_FORCED_RMMOD
+ques
+c_cond
+l_char|&squot;R&squot;
+suffix:colon
+l_char|&squot; &squot;
+comma
+id|tainted
+op_amp
+id|TAINT_MACHINE_CHECK
+ques
+c_cond
+l_char|&squot;M&squot;
+suffix:colon
+l_char|&squot; &squot;
+comma
+id|tainted
+op_amp
+id|TAINT_BAD_PAGE
+ques
+c_cond
+l_char|&squot;B&squot;
+suffix:colon
+l_char|&squot; &squot;
 )paren
 suffix:semicolon
 )brace
@@ -376,4 +403,25 @@ r_return
 id|buf
 suffix:semicolon
 )brace
+DECL|function|add_taint
+r_void
+id|add_taint
+c_func
+(paren
+r_int
+id|flag
+)paren
+(brace
+id|tainted
+op_or_assign
+id|flag
+suffix:semicolon
+)brace
+DECL|variable|add_taint
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|add_taint
+)paren
+suffix:semicolon
 eof

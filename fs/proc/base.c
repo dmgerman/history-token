@@ -2364,12 +2364,14 @@ id|nd
 r_if
 c_cond
 (paren
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|inode
 comma
 id|mask
+comma
+l_int|NULL
 )paren
 op_ne
 l_int|0

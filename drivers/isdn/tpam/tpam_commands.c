@@ -159,7 +159,7 @@ r_int
 r_int
 id|argp
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command) card=%d, command=%d&bslash;n&quot;
@@ -279,7 +279,7 @@ l_int|0
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command): &quot;
@@ -375,7 +375,7 @@ id|c-&gt;arg
 suffix:semicolon
 r_default
 suffix:colon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command): &quot;
@@ -413,7 +413,7 @@ id|arg
 id|tpam_dsp_ioctl
 id|tdl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_ioctl_dspload): card=%d&bslash;n&quot;
@@ -513,7 +513,7 @@ id|arg
 id|tpam_dsp_ioctl
 id|tdl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_ioctl_dspsave): card=%d&bslash;n&quot;
@@ -624,7 +624,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_ioctl_dsprun): card=%d&bslash;n&quot;
@@ -1070,7 +1070,7 @@ suffix:semicolon
 id|isdn_ctrl
 id|ctrl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_dial): card=%d, channel=%lu, phone=%s&bslash;n&quot;
@@ -1227,7 +1227,7 @@ id|u8
 id|proto
 )paren
 (brace
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_setl2): card=%d, channel=%lu, proto=%d&bslash;n&quot;
@@ -1323,7 +1323,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_acceptd): card=%d, channel=%lu&bslash;n&quot;
@@ -1423,7 +1423,7 @@ id|channel
 id|isdn_ctrl
 id|ctrl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_acceptb): card=%d, channel=%lu&bslash;n&quot;
@@ -1500,7 +1500,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_hangup): card=%d, channel=%lu&bslash;n&quot;
@@ -1581,7 +1581,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_command_proceed): card=%d, channel=%lu&bslash;n&quot;
@@ -1679,7 +1679,7 @@ suffix:semicolon
 id|u32
 id|finallen
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_writebuf_skb): &quot;
@@ -1996,7 +1996,7 @@ suffix:semicolon
 id|u32
 id|channel
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_ACreateNCOCnf): card=%d&bslash;n&quot;
@@ -2136,7 +2136,7 @@ suffix:semicolon
 id|u32
 id|channel
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_ADestroyNCOCnf): card=%d&bslash;n&quot;
@@ -2252,7 +2252,7 @@ suffix:semicolon
 id|isdn_ctrl
 id|ctrl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CConnectCnf): card=%d&bslash;n&quot;
@@ -2392,7 +2392,7 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CConnectInd): card=%d&bslash;n&quot;
@@ -2566,7 +2566,7 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* call accepted, link layer will send us a ACCEPTD &n;&t;&t;&t; * command later */
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CConnectInd): &quot;
@@ -2584,7 +2584,7 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* call denied, we build and send a CDisconnectReq */
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CConnectInd): &quot;
@@ -2651,7 +2651,7 @@ suffix:semicolon
 id|isdn_ctrl
 id|ctrl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CDisconnectInd): card=%d&bslash;n&quot;
@@ -2811,7 +2811,7 @@ suffix:semicolon
 id|isdn_ctrl
 id|ctrl
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_CDisconnectCnf): card=%d&bslash;n&quot;
@@ -2952,7 +2952,7 @@ id|sk_buff
 op_star
 id|result
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_U3DataInd): card=%d, datalen=%d&bslash;n&quot;
@@ -3327,7 +3327,7 @@ suffix:semicolon
 id|u8
 id|ready
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_recv_U3ReadyToReceiveInd): card=%d&bslash;n&quot;
@@ -3440,7 +3440,7 @@ op_star
 )paren
 id|parm
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_statcallb_run)&bslash;n&quot;
@@ -3492,7 +3492,7 @@ id|tpam_statcallb_data
 op_star
 id|ds
 suffix:semicolon
-id|dprintk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;TurboPAM(tpam_statcallb): card=%d&bslash;n&quot;

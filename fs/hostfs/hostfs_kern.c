@@ -4207,12 +4207,14 @@ id|err
 (brace
 id|err
 op_assign
-id|vfs_permission
+id|generic_permission
 c_func
 (paren
 id|ino
 comma
 id|desired
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

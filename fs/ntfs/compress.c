@@ -2,6 +2,9 @@ multiline_comment|/**&n; * compress.c - NTFS kernel compressed attributes handli
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;inode.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_compression_constants - enum of constants used in the compression code&n; */
 r_typedef
@@ -1893,7 +1896,7 @@ op_increment
 suffix:semicolon
 id|lcn
 op_assign
-id|ntfs_vcn_to_lcn
+id|ntfs_rl_vcn_to_lcn
 c_func
 (paren
 id|rl
@@ -1905,9 +1908,6 @@ suffix:semicolon
 r_else
 id|lcn
 op_assign
-(paren
-id|LCN
-)paren
 id|LCN_RL_NOT_MAPPED
 suffix:semicolon
 id|ntfs_debug
@@ -3317,7 +3317,7 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;ntfs_vcn_to_lcn() failed. Cannot read &quot;
+l_string|&quot;ntfs_rl_vcn_to_lcn() failed. Cannot read &quot;
 l_string|&quot;compression block.&quot;
 )paren
 suffix:semicolon

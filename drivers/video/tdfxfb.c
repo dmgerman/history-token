@@ -649,13 +649,6 @@ op_assign
 l_int|1
 suffix:semicolon
 singleline_comment|// not implemented (yet)
-DECL|variable|inverse
-r_static
-r_int
-id|inverse
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
@@ -5223,12 +5216,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-id|banshee_wait_idle
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Screen-to-Screen BitBlt 2D command (for the bmove fb op.) &n; */
 DECL|function|tdfxfb_copyarea
@@ -5469,12 +5456,6 @@ id|sy
 op_lshift
 l_int|16
 )paren
-)paren
-suffix:semicolon
-id|banshee_wait_idle
-c_func
-(paren
-id|info
 )paren
 suffix:semicolon
 )brace
@@ -5946,12 +5927,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|banshee_wait_idle
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_3DFX_ACCEL */
 macro_line|#ifdef TDFX_HARDWARE_CURSOR
@@ -7696,30 +7671,6 @@ id|this_opt
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strcmp
-c_func
-(paren
-id|this_opt
-comma
-l_string|&quot;inverse&quot;
-)paren
-)paren
-(brace
-id|inverse
-op_assign
-l_int|1
-suffix:semicolon
-id|fb_invert_cmaps
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
 r_if
 c_cond
 (paren

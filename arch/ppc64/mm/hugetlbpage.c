@@ -929,6 +929,9 @@ c_func
 id|pmd
 )paren
 suffix:semicolon
+id|mm-&gt;nr_ptes
+op_decrement
+suffix:semicolon
 id|dec_page_state
 c_func
 (paren

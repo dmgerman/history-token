@@ -4,11 +4,15 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
-macro_line|#include &quot;ntfs.h&quot;
+macro_line|#include &quot;aops.h&quot;
 macro_line|#include &quot;dir.h&quot;
+macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;inode.h&quot;
 macro_line|#include &quot;attrib.h&quot;
+macro_line|#include &quot;malloc.h&quot;
+macro_line|#include &quot;mft.h&quot;
 macro_line|#include &quot;time.h&quot;
+macro_line|#include &quot;ntfs.h&quot;
 multiline_comment|/**&n; * ntfs_test_inode - compare two (possibly fake) inodes for equality&n; * @vi:&t;&t;vfs inode which to test&n; * @na:&t;&t;ntfs attribute which is being tested with&n; *&n; * Compare the ntfs attribute embedded in the ntfs specific part of the vfs&n; * inode @vi for equality with the ntfs attribute @na.&n; *&n; * If searching for the normal file/directory inode, set @na-&gt;type to AT_UNUSED.&n; * @na-&gt;name and @na-&gt;name_len are then ignored.&n; *&n; * Return 1 if the attributes match and 0 if not.&n; *&n; * NOTE: This function runs with the inode_lock spin lock held so it is not&n; * allowed to sleep.&n; */
 DECL|function|ntfs_test_inode
 r_int
@@ -1048,7 +1052,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * __ntfs_init_inode - initialize ntfs specific part of an inode&n; * @sb:&t;&t;super block of mounted volume&n; * @ni:&t;&t;freshly allocated ntfs inode which to initialize&n; *&n; * Initialize an ntfs inode to defaults.&n; *&n; * NOTE: ni-&gt;mft_no, ni-&gt;state, ni-&gt;type, ni-&gt;name, and ni-&gt;name_len are left&n; * untouched. Make sure to initialize them elsewhere.&n; *&n; * Return zero on success and -ENOMEM on error.&n; */
 DECL|function|__ntfs_init_inode
-r_static
 r_void
 id|__ntfs_init_inode
 c_func
@@ -1096,7 +1099,7 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|init_runlist
+id|ntfs_init_runlist
 c_func
 (paren
 op_amp
@@ -1126,7 +1129,7 @@ id|ni-&gt;attr_list
 op_assign
 l_int|NULL
 suffix:semicolon
-id|init_runlist
+id|ntfs_init_runlist
 c_func
 (paren
 op_amp
@@ -1171,52 +1174,6 @@ suffix:semicolon
 id|ni-&gt;ext.base_ntfs_ino
 op_assign
 l_int|NULL
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-DECL|function|ntfs_init_big_inode
-r_static
-r_inline
-r_void
-id|ntfs_init_big_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|vi
-)paren
-(brace
-id|ntfs_inode
-op_star
-id|ni
-op_assign
-id|NTFS_I
-c_func
-(paren
-id|vi
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering.&quot;
-)paren
-suffix:semicolon
-id|__ntfs_init_inode
-c_func
-(paren
-id|vi-&gt;i_sb
-comma
-id|ni
-)paren
-suffix:semicolon
-id|ni-&gt;mft_no
-op_assign
-id|vi-&gt;i_ino
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|ntfs_new_extent_inode
@@ -1813,6 +1770,26 @@ id|m-&gt;link_count
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * FIXME: Reparse points can have the directory bit set even though&n;&t; * they would be S_IFLNK. Need to deal with this further below when we&n;&t; * implement reparse points / symbolic links but it will do for now.&n;&t; * Also if not a directory, it could be something else, rather than&n;&t; * a regular file. But again, will do for now.&n;&t; */
+multiline_comment|/* Everyone gets all permissions. */
+id|vi-&gt;i_mode
+op_or_assign
+id|S_IRWXUGO
+suffix:semicolon
+multiline_comment|/* If read-only, noone gets write permissions. */
+r_if
+c_cond
+(paren
+id|IS_RDONLY
+c_func
+(paren
+id|vi
+)paren
+)paren
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|S_IWUGO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1824,6 +1801,12 @@ id|MFT_RECORD_IS_DIRECTORY
 id|vi-&gt;i_mode
 op_or_assign
 id|S_IFDIR
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Apply the directory permissions mask set in the mount&n;&t;&t; * options.&n;&t;&t; */
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|vol-&gt;dmask
 suffix:semicolon
 multiline_comment|/* Things break without this kludge! */
 r_if
@@ -1839,10 +1822,18 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|vi-&gt;i_mode
 op_or_assign
 id|S_IFREG
 suffix:semicolon
+multiline_comment|/* Apply the file permissions mask set in the mount options. */
+id|vi-&gt;i_mode
+op_and_assign
+op_complement
+id|vol-&gt;fmask
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Find the standard information attribute in the mft record. At this&n;&t; * stage we haven&squot;t setup the attribute list stuff yet, so this could&n;&t; * in fact fail if the standard information is in an extent record, but&n;&t; * I don&squot;t think this actually ever happens.&n;&t; */
 id|err
 op_assign
@@ -2151,7 +2142,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Setup the runlist. No need for locking as we have&n;&t;&t;&t; * exclusive access to the inode at this time.&n;&t;&t;&t; */
 id|ni-&gt;attr_list_rl.rl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -3201,34 +3192,6 @@ suffix:semicolon
 )brace
 id|skip_large_dir_stuff
 suffix:colon
-multiline_comment|/* Everyone gets read and scan permissions. */
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IRUGO
-op_or
-id|S_IXUGO
-suffix:semicolon
-multiline_comment|/* If not read-only, set write permissions. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_RDONLY
-c_func
-(paren
-id|vi
-)paren
-)paren
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IWUGO
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Apply the directory permissions mask set in the mount&n;&t;&t; * options.&n;&t;&t; */
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|vol-&gt;dmask
-suffix:semicolon
 multiline_comment|/* Setup the operations for this inode. */
 id|vi-&gt;i_op
 op_assign
@@ -3239,11 +3202,6 @@ id|vi-&gt;i_fop
 op_assign
 op_amp
 id|ntfs_dir_ops
-suffix:semicolon
-id|vi-&gt;i_mapping-&gt;a_ops
-op_assign
-op_amp
-id|ntfs_mst_aops
 suffix:semicolon
 )brace
 r_else
@@ -3678,32 +3636,6 @@ id|ctx
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Everyone gets all permissions. */
-id|vi-&gt;i_mode
-op_or_assign
-id|S_IRWXUGO
-suffix:semicolon
-multiline_comment|/* If read-only, noone gets write permissions. */
-r_if
-c_cond
-(paren
-id|IS_RDONLY
-c_func
-(paren
-id|vi
-)paren
-)paren
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|S_IWUGO
-suffix:semicolon
-multiline_comment|/* Apply the file permissions mask set in the mount options. */
-id|vi-&gt;i_mode
-op_and_assign
-op_complement
-id|vol-&gt;fmask
-suffix:semicolon
 multiline_comment|/* Setup the operations for this inode. */
 id|vi-&gt;i_op
 op_assign
@@ -3715,12 +3647,27 @@ op_assign
 op_amp
 id|ntfs_file_ops
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|NInoMstProtected
+c_func
+(paren
+id|ni
+)paren
+)paren
+id|vi-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|ntfs_mst_aops
+suffix:semicolon
+r_else
 id|vi-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|ntfs_aops
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * The number of 512-byte blocks used on disk (for stat). This is in so&n;&t; * far inaccurate as it doesn&squot;t account for any named streams or other&n;&t; * special non-resident attributes, but that is how Windows works, too,&n;&t; * so we are at least consistent with Windows, if not entirely&n;&t; * consistent with the Linux Way. Doing it the Linux Way would cause a&n;&t; * significant slowdown as it would involve iterating over all&n;&t; * attributes in the mft record and adding the allocated/compressed&n;&t; * sizes of all non-resident attributes present to give us the Linux&n;&t; * correct size that should go into i_blocks (after division by 512).&n;&t; */
 r_if
 c_cond
@@ -5734,7 +5681,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we decompress_mapping_pairs() including the implied&n; * ntfs_merge_runlists().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
+multiline_comment|/**&n; * ntfs_read_inode_mount - special read_inode for mount time use only&n; * @vi:&t;&t;inode to read&n; *&n; * Read inode FILE_MFT at mount time, only called with super_block lock&n; * held from within the read_super() code path.&n; *&n; * This function exists because when it is called the page cache for $MFT/$DATA&n; * is not initialized and hence we cannot get at the contents of mft records&n; * by calling map_mft_record*().&n; *&n; * Further it needs to cope with the circular references problem, i.e. cannot&n; * load any attributes other than $ATTRIBUTE_LIST until $DATA is loaded, because&n; * we do not know where the other extent mft records are yet and again, because&n; * we cannot call map_mft_record*() yet.  Obviously this applies only when an&n; * attribute list is actually present in $MFT inode.&n; *&n; * We solve these problems by starting with the $DATA attribute before anything&n; * else and iterating using ntfs_attr_lookup($DATA) over all extents.  As each&n; * extent is found, we ntfs_mapping_pairs_decompress() including the implied&n; * ntfs_runlists_merge().  Each step of the iteration necessarily provides&n; * sufficient information for the next step to complete.&n; *&n; * This should work but there are two possible pit falls (see inline comments&n; * below), but only time will tell if they are real pits or just smoke...&n; */
 DECL|function|ntfs_read_inode_mount
 r_int
 id|ntfs_read_inode_mount
@@ -6079,7 +6026,7 @@ multiline_comment|/* Provides readpage() and sync_page() for map_mft_record(). *
 id|vi-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
-id|ntfs_mft_aops
+id|ntfs_mst_aops
 suffix:semicolon
 id|ctx
 op_assign
@@ -6295,7 +6242,7 @@ suffix:semicolon
 multiline_comment|/* Setup the runlist. */
 id|ni-&gt;attr_list_rl.rl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -6795,7 +6742,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Decompress the mapping pairs array of this extent and merge&n;&t;&t; * the result into the existing runlist. No need for locking&n;&t;&t; * as we have exclusive access to the inode at this time and we&n;&t;&t; * are a mount in progress task, too.&n;&t;&t; */
 id|nrl
 op_assign
-id|decompress_mapping_pairs
+id|ntfs_mapping_pairs_decompress
 c_func
 (paren
 id|vol
@@ -6820,8 +6767,9 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;decompress_mapping_pairs() failed with &quot;
-l_string|&quot;error code %ld. $MFT is corrupt.&quot;
+l_string|&quot;ntfs_mapping_pairs_decompress() &quot;
+l_string|&quot;failed with error code %ld.  $MFT is &quot;
+l_string|&quot;corrupt.&quot;
 comma
 id|PTR_ERR
 c_func
@@ -7006,12 +6954,6 @@ id|vi-&gt;i_fop
 op_assign
 op_amp
 id|ntfs_empty_file_ops
-suffix:semicolon
-multiline_comment|/* Put back our special address space operations. */
-id|vi-&gt;i_mapping-&gt;a_ops
-op_assign
-op_amp
-id|ntfs_mft_aops
 suffix:semicolon
 )brace
 multiline_comment|/* Get the lowest vcn for the next extent. */
@@ -7223,7 +7165,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_put_inode - handler for when the inode reference count is decremented&n; * @vi:&t;&t;vfs inode&n; *&n; * The VFS calls ntfs_put_inode() every time the inode reference count (i_count)&n; * is about to be decremented (but before the decrement itself.&n; *&n; * If the inode @vi is a directory with two references, one of which is being&n; * dropped, we need to put the attribute inode for the directory index bitmap,&n; * if it is present, otherwise the directory inode would remain pinned for&n; * ever.&n; *&n; * If the inode @vi is an index inode with only one reference which is being&n; * dropped, we need to put the attribute inode for the index bitmap, if it is&n; * present, otherwise the index inode would disappear and the attribute inode&n; * for the index bitmap would no longer be referenced from anywhere and thus it&n; * would remain pinned for ever.&n; */
+multiline_comment|/**&n; * ntfs_put_inode - handler for when the inode reference count is decremented&n; * @vi:&t;&t;vfs inode&n; *&n; * The VFS calls ntfs_put_inode() every time the inode reference count (i_count)&n; * is about to be decremented (but before the decrement itself.&n; *&n; * If the inode @vi is a directory with two references, one of which is being&n; * dropped, we need to put the attribute inode for the directory index bitmap,&n; * if it is present, otherwise the directory inode would remain pinned for&n; * ever.&n; */
 DECL|function|ntfs_put_inode
 r_void
 id|ntfs_put_inode
@@ -7235,10 +7177,6 @@ op_star
 id|vi
 )paren
 (brace
-id|ntfs_inode
-op_star
-id|ni
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7247,8 +7185,51 @@ c_func
 (paren
 id|vi-&gt;i_mode
 )paren
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|vi-&gt;i_count
+)paren
+op_eq
+l_int|2
 )paren
 (brace
+id|ntfs_inode
+op_star
+id|ni
+op_assign
+id|NTFS_I
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|NInoIndexAllocPresent
+c_func
+(paren
+id|ni
+)paren
+)paren
+(brace
+r_struct
+id|inode
+op_star
+id|bvi
+op_assign
+l_int|NULL
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|vi-&gt;i_sem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7262,100 +7243,40 @@ op_eq
 l_int|2
 )paren
 (brace
-id|ni
+id|bvi
 op_assign
-id|NTFS_I
-c_func
-(paren
-id|vi
-)paren
+id|ni-&gt;itype.index.bmp_ino
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|NInoIndexAllocPresent
-c_func
-(paren
-id|ni
+id|bvi
 )paren
-op_logical_and
-id|ni-&gt;itype.index.bmp_ino
-)paren
-(brace
-id|iput
-c_func
-(paren
-id|ni-&gt;itype.index.bmp_ino
-)paren
-suffix:semicolon
 id|ni-&gt;itype.index.bmp_ino
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-)brace
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|atomic_read
+id|up
 c_func
 (paren
 op_amp
-id|vi-&gt;i_count
-)paren
-op_ne
-l_int|1
-)paren
-r_return
-suffix:semicolon
-id|ni
-op_assign
-id|NTFS_I
-c_func
-(paren
-id|vi
+id|vi-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|NInoAttr
-c_func
-(paren
-id|ni
+id|bvi
 )paren
-op_logical_and
-(paren
-id|ni-&gt;type
-op_eq
-id|AT_INDEX_ALLOCATION
-)paren
-op_logical_and
-id|NInoIndexAllocPresent
-c_func
-(paren
-id|ni
-)paren
-op_logical_and
-id|ni-&gt;itype.index.bmp_ino
-)paren
-(brace
 id|iput
 c_func
 (paren
-id|ni-&gt;itype.index.bmp_ino
+id|bvi
 )paren
 suffix:semicolon
-id|ni-&gt;itype.index.bmp_ino
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
-r_return
-suffix:semicolon
+)brace
 )brace
 DECL|function|__ntfs_clear_inode
 r_void
@@ -7583,6 +7504,42 @@ c_func
 id|vi
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If the inode @vi is an index inode we need to put the attribute&n;&t; * inode for the index bitmap, if it is present, otherwise the index&n;&t; * inode would disappear and the attribute inode for the index bitmap&n;&t; * would no longer be referenced from anywhere and thus it would remain&n;&t; * pinned for ever.&n;&t; */
+r_if
+c_cond
+(paren
+id|NInoAttr
+c_func
+(paren
+id|ni
+)paren
+op_logical_and
+(paren
+id|ni-&gt;type
+op_eq
+id|AT_INDEX_ALLOCATION
+)paren
+op_logical_and
+id|NInoIndexAllocPresent
+c_func
+(paren
+id|ni
+)paren
+op_logical_and
+id|ni-&gt;itype.index.bmp_ino
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|ni-&gt;itype.index.bmp_ino
+)paren
+suffix:semicolon
+id|ni-&gt;itype.index.bmp_ino
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 macro_line|#ifdef NTFS_RW
 r_if
 c_cond
@@ -7934,7 +7891,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We don&squot;t support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
+multiline_comment|/**&n; * ntfs_truncate - called when the i_size of an ntfs inode is changed&n; * @vi:&t;&t;inode for which the i_size was changed&n; *&n; * We do not support i_size changes yet.&n; *&n; * The kernel guarantees that @vi is a regular file (S_ISREG() is true) and&n; * that the change is allowed.&n; *&n; * This implies for us that @vi is a file inode rather than a directory, index,&n; * or attribute inode as well as that @vi is a base inode.&n; *&n; * Called with -&gt;i_sem held.  In all but one case -&gt;i_alloc_sem is held for&n; * writing.  The only case where -&gt;i_alloc_sem is not held is&n; * mm/filemap.c::generic_file_buffered_write() where vmtruncate() is called&n; * with the current i_size as the offset which means that it is a noop as far&n; * as ntfs_truncate() is concerned.&n; */
 DECL|function|ntfs_truncate
 r_void
 id|ntfs_truncate
@@ -7966,6 +7923,24 @@ id|m
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|NInoAttr
+c_func
+(paren
+id|ni
+)paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|ni-&gt;nr_extents
+OL
+l_int|0
+)paren
 suffix:semicolon
 id|m
 op_assign
@@ -8753,7 +8728,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If we just modified the standard information attribute we need to&n;&t; * mark the mft record it is in dirty.  We do this manually so that&n;&t; * mark_inode_dirty() is not called which would redirty the inode and&n;&t; * hence result in an infinite loop of trying to write the inode.&n;&t; * There is no need to mark the base inode nor the base mft record&n;&t; * dirty, since we are going to write this mft record below in any case&n;&t; * and the base mft record may actually not have been modified so it&n;&t; * might not need to be written out.&n;&t; */
+multiline_comment|/*&n;&t; * If we just modified the standard information attribute we need to&n;&t; * mark the mft record it is in dirty.  We do this manually so that&n;&t; * mark_inode_dirty() is not called which would redirty the inode and&n;&t; * hence result in an infinite loop of trying to write the inode.&n;&t; * There is no need to mark the base inode nor the base mft record&n;&t; * dirty, since we are going to write this mft record below in any case&n;&t; * and the base mft record may actually not have been modified so it&n;&t; * might not need to be written out.&n;&t; * NOTE: It is not a problem when the inode for $MFT itself is being&n;&t; * written out as mark_ntfs_record_dirty() will only set I_DIRTY_PAGES&n;&t; * on the $MFT inode and hence ntfs_write_inode() will not be&n;&t; * re-invoked because of it which in turn is ok since the dirtied mft&n;&t; * record will be cleaned and written out to disk below, i.e. before&n;&t; * this function returns.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8766,10 +8741,12 @@ c_func
 id|ctx-&gt;ntfs_ino
 )paren
 )paren
-id|__set_page_dirty_nobuffers
+id|mark_ntfs_record_dirty
 c_func
 (paren
 id|ctx-&gt;ntfs_ino-&gt;page
+comma
+id|ctx-&gt;ntfs_ino-&gt;page_ofs
 )paren
 suffix:semicolon
 id|ntfs_attr_put_search_ctx

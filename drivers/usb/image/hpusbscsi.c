@@ -478,7 +478,7 @@ op_member_access_from_pointer
 id|host
 )paren
 r_goto
-id|out_unlink_controlurb
+id|out_kill_controlurb
 suffix:semicolon
 r_new
 op_member_access_from_pointer
@@ -542,9 +542,9 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out_unlink_controlurb
+id|out_kill_controlurb
 suffix:colon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 r_new
@@ -621,7 +621,7 @@ c_func
 id|desc-&gt;host
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|desc-&gt;controlurb
@@ -1215,13 +1215,13 @@ id|KERN_DEBUG
 l_string|&quot;Requested is canceled.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hpusbscsi-&gt;dataurb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|hpusbscsi-&gt;controlurb

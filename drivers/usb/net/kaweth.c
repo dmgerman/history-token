@@ -2385,9 +2385,10 @@ id|int_callback
 comma
 id|kaweth
 comma
-l_int|8
+l_int|250
 )paren
 suffix:semicolon
+multiline_comment|/* overriding the descriptor */
 id|kaweth-&gt;irq_urb-&gt;transfer_dma
 op_assign
 id|kaweth-&gt;intbufferhandle
@@ -2412,7 +2413,7 @@ c_cond
 id|res
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
@@ -2469,13 +2470,13 @@ id|kaweth-&gt;status
 op_or_assign
 id|KAWETH_STATUS_CLOSING
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;irq_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
@@ -2487,13 +2488,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* a scheduled work may have resubmitted,&n;&t;   we hit them again */
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;irq_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
@@ -4487,13 +4488,13 @@ id|kaweth-&gt;removed
 op_assign
 l_int|1
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;irq_urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|kaweth-&gt;rx_urb
@@ -4806,12 +4807,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -4821,6 +4816,12 @@ op_logical_neg
 id|awd.done
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeout
 op_assign
 id|schedule_timeout
@@ -4829,19 +4830,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
 )brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
@@ -4866,7 +4855,7 @@ c_func
 l_string|&quot;usb_control/bulk_msg: timeout&quot;
 )paren
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb
