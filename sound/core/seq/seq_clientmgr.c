@@ -4310,11 +4310,7 @@ r_void
 op_star
 id|ptr
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|A
+id|compat_ptr
 c_func
 (paren
 id|event.data.raw32.d
