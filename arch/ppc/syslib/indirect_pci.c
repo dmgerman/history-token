@@ -107,7 +107,7 @@ l_int|0x80000000
 op_or
 (paren
 (paren
-id|dev-&gt;bus-&gt;number
+id|bus-&gt;number
 op_minus
 id|hose-&gt;bus_offset
 )paren
@@ -116,7 +116,7 @@ l_int|16
 )paren
 op_or
 (paren
-id|dev-&gt;devfn
+id|devfn
 op_lshift
 l_int|8
 )paren
@@ -298,7 +298,7 @@ l_int|0x80000000
 op_or
 (paren
 (paren
-id|dev-&gt;bus-&gt;number
+id|bus-&gt;number
 op_minus
 id|hose-&gt;bus_offset
 )paren
@@ -307,7 +307,7 @@ l_int|16
 )paren
 op_or
 (paren
-id|dev-&gt;devfn
+id|devfn
 op_lshift
 l_int|8
 )paren
