@@ -2836,6 +2836,23 @@ id|scn-&gt;isopen
 op_assign
 l_int|0
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|name
+comma
+r_sizeof
+(paren
+id|name
+)paren
+comma
+id|scanner_class.name
+comma
+id|intf-&gt;minor
+op_minus
+id|scanner_class.minor_base
+)paren
+suffix:semicolon
 id|info
 (paren
 l_string|&quot;USB scanner device (0x%04x/0x%04x) now attached to %s&quot;
