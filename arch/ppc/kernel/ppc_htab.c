@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -51,36 +52,6 @@ id|buffer
 comma
 r_int
 id|count
-comma
-id|loff_t
-op_star
-id|ppos
-)paren
-suffix:semicolon
-r_int
-id|proc_dol2crvec
-c_func
-(paren
-id|ctl_table
-op_star
-id|table
-comma
-r_int
-id|write
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_void
-id|__user
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|lenp
 comma
 id|loff_t
 op_star
@@ -2198,4 +2169,75 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SYSCTL
+multiline_comment|/*&n; * Register our sysctl.&n; */
+DECL|variable|htab_ctl_table
+r_static
+id|ctl_table
+id|htab_ctl_table
+(braket
+)braket
+op_assign
+initialization_block
+suffix:semicolon
+DECL|variable|htab_sysctl_root
+r_static
+id|ctl_table
+id|htab_sysctl_root
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|1
+comma
+l_string|&quot;kernel&quot;
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0755
+comma
+id|htab_ctl_table
+comma
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+comma
+)brace
+suffix:semicolon
+r_static
+r_int
+id|__init
+DECL|function|register_ppc_htab_sysctl
+id|register_ppc_htab_sysctl
+c_func
+(paren
+r_void
+)paren
+(brace
+id|register_sysctl_table
+c_func
+(paren
+id|htab_sysctl_root
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|register_ppc_htab_sysctl
+id|__initcall
+c_func
+(paren
+id|register_ppc_htab_sysctl
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
