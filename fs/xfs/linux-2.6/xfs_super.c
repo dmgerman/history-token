@@ -119,6 +119,17 @@ id|args-&gt;flags
 op_or_assign
 id|XFSMNT_NOATIME
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_SYNCHRONOUS
+)paren
+id|args-&gt;flags
+op_or_assign
+id|XFSMNT_WSYNC
+suffix:semicolon
 multiline_comment|/* Default to 32 bit inodes on Linux all the time */
 id|args-&gt;flags
 op_or_assign
