@@ -2066,7 +2066,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-DECL|function|dscc4_rx_reset
+macro_line|#if 0
 r_static
 r_void
 id|dscc4_rx_reset
@@ -2173,7 +2173,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|dscc4_tx_reset
+macro_line|#endif
+macro_line|#if 0
 r_static
 r_void
 id|dscc4_tx_reset
@@ -2290,6 +2291,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* TODO: (ab)use this function to refill a completely depleted RX ring. */
 DECL|function|dscc4_rx_skb
 r_static
@@ -4636,8 +4638,6 @@ comma
 id|IMR
 )paren
 suffix:semicolon
-id|err_free_ring
-suffix:colon
 id|scc_patchl
 c_func
 (paren
@@ -8977,6 +8977,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifndef MODULE
 DECL|function|dscc4_setup
 r_static
 r_int
@@ -9046,6 +9047,7 @@ comma
 id|dscc4_setup
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|dscc4_pci_tbl
 r_static
 r_struct
