@@ -4993,7 +4993,7 @@ suffix:semicolon
 id|__u32
 id|limit
 suffix:semicolon
-multiline_comment|/*&n;&t; * TCP Westwood&n;         * Here limit is evaluated as BWestimation*RTTmin (for obtaining it&n;&t; * in packets we use mss_cache). If CONFIG_TCP_WESTWOOD is not defined&n;&t; * westwood_bw_rttmin() returns 0. In such case snd_ssthresh is still&n;&t; * used as usual. It prevents other strange cases in which BWE*RTTmin&n;&t; * could assume value 0. It should not happen but...&n;&t; */
+multiline_comment|/*&n;&t; * TCP Westwood&n;&t; * Here limit is evaluated as BWestimation*RTTmin (for obtaining it&n;&t; * in packets we use mss_cache). If sysctl_tcp_westwood is off&n;&t; * tcp_westwood_bw_rttmin() returns 0. In such case snd_ssthresh is&n;&t; * still used as usual. It prevents other strange cases in which&n;&t; * BWE*RTTmin could assume value 0. It should not happen but...&n;&t; */
 r_if
 c_cond
 (paren
