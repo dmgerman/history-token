@@ -4,25 +4,10 @@ mdefine_line|#define __KERNEL__
 macro_line|#include &quot;ppc32-types.h&quot;
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-r_void
-id|memmove
-c_func
-(paren
-r_void
-op_star
-id|dst
-comma
-r_void
-op_star
-id|im
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
 r_extern
 r_void
 op_star

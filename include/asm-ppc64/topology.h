@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASM_PPC64_TOPOLOGY_H
 DECL|macro|_ASM_PPC64_TOPOLOGY_H
 mdefine_line|#define _ASM_PPC64_TOPOLOGY_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|function|cpu_to_node
