@@ -2,6 +2,8 @@ macro_line|#ifndef _ASM_H8300_UNISTD_H_
 DECL|macro|_ASM_H8300_UNISTD_H_
 mdefine_line|#define _ASM_H8300_UNISTD_H_
 multiline_comment|/*&n; * This file contains the system call numbers.&n; */
+DECL|macro|__NR_restart_syscall
+mdefine_line|#define __NR_restart_syscall      0
 DECL|macro|__NR_exit
 mdefine_line|#define __NR_exit&t;&t;  1
 DECL|macro|__NR_fork
