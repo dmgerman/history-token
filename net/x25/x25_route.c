@@ -40,6 +40,7 @@ r_int
 id|x25_add_route
 c_func
 (paren
+r_struct
 id|x25_address
 op_star
 id|address
@@ -302,6 +303,7 @@ r_int
 id|x25_del_route
 c_func
 (paren
+r_struct
 id|x25_address
 op_star
 id|address
@@ -509,6 +511,7 @@ op_star
 id|x25_get_route
 c_func
 (paren
+r_struct
 id|x25_address
 op_star
 id|addr

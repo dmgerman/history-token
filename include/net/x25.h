@@ -163,6 +163,7 @@ op_star
 id|next
 suffix:semicolon
 DECL|member|address
+r_struct
 id|x25_address
 id|address
 suffix:semicolon
@@ -235,6 +236,7 @@ r_struct
 (brace
 DECL|member|source_addr
 DECL|member|dest_addr
+r_struct
 id|x25_address
 id|source_addr
 comma
@@ -387,9 +389,11 @@ r_int
 r_char
 op_star
 comma
+r_struct
 id|x25_address
 op_star
 comma
+r_struct
 id|x25_address
 op_star
 )paren
@@ -403,9 +407,11 @@ r_int
 r_char
 op_star
 comma
+r_struct
 id|x25_address
 op_star
 comma
+r_struct
 id|x25_address
 op_star
 )paren
@@ -837,6 +843,7 @@ op_star
 id|x25_get_route
 c_func
 (paren
+r_struct
 id|x25_address
 op_star
 )paren
