@@ -113,11 +113,59 @@ DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;__virt_to_phys((unsigned long)(x))
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)__phys_to_virt((unsigned long)(x)))
-multiline_comment|/*&n; * Virtual &lt;-&gt; DMA view memory address translations&n; * Again, these are *only* valid on the kernel direct mapped RAM&n; * memory.  Use of these is *deprecated*.&n; */
-DECL|macro|virt_to_bus
-mdefine_line|#define virt_to_bus(x)&t;&t;(__virt_to_bus((unsigned long)(x)))
-DECL|macro|bus_to_virt
-mdefine_line|#define bus_to_virt(x)&t;&t;((void *)(__bus_to_virt((unsigned long)(x))))
+multiline_comment|/*&n; * Virtual &lt;-&gt; DMA view memory address translations&n; * Again, these are *only* valid on the kernel direct mapped RAM&n; * memory.  Use of these is *deprecated* (and that doesn&squot;t mean&n; * use the __ prefixed forms instead.)  See dma-mapping.h.&n; */
+DECL|function|virt_to_bus
+r_static
+r_inline
+id|__deprecated
+r_int
+r_int
+id|virt_to_bus
+c_func
+(paren
+r_void
+op_star
+id|x
+)paren
+(brace
+r_return
+id|__virt_to_bus
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|x
+)paren
+suffix:semicolon
+)brace
+DECL|function|bus_to_virt
+r_static
+r_inline
+id|__deprecated
+r_void
+op_star
+id|bus_to_virt
+c_func
+(paren
+r_int
+r_int
+id|x
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+id|__bus_to_virt
+c_func
+(paren
+id|x
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Conversion between a struct page and a physical address.&n; *&n; * Note: when converting an unknown physical address to a&n; * struct page, the resulting pointer must be validated&n; * using VALID_PAGE().  It must return an invalid struct page&n; * for any physical address not corresponding to a system&n; * RAM address.&n; *&n; *  page_to_pfn(page)&t;convert a struct page * to a PFN number&n; *  pfn_to_page(pfn)&t;convert a _valid_ PFN number to struct page *&n; *  pfn_valid(pfn)&t;indicates whether a PFN number is valid&n; *&n; *  virt_to_page(k)&t;convert a _valid_ virtual address to struct page *&n; *  virt_addr_valid(k)&t;indicates whether a virtual address is valid&n; */
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_pfn
@@ -155,11 +203,11 @@ mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT
 multiline_comment|/*&n; * Optional device DMA address remapping. Do _not_ use directly!&n; * We should really eliminate virt_to_bus() here - it&squot;s deprecated.&n; */
 macro_line|#ifndef __arch_page_to_dma
 DECL|macro|page_to_dma
-mdefine_line|#define page_to_dma(dev, page)&t;&t;((dma_addr_t)__virt_to_bus(page_address(page)))
+mdefine_line|#define page_to_dma(dev, page)&t;&t;((dma_addr_t)__virt_to_bus((unsigned long)page_address(page)))
 DECL|macro|dma_to_virt
 mdefine_line|#define dma_to_virt(dev, addr)&t;&t;(__bus_to_virt(addr))
 DECL|macro|virt_to_dma
-mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__virt_to_bus(addr))
+mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__virt_to_bus((unsigned long)(addr)))
 macro_line|#else
 DECL|macro|page_to_dma
 mdefine_line|#define page_to_dma(dev, page)&t;&t;(__arch_page_to_dma(dev, page))

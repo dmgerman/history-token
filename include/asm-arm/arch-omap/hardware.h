@@ -185,41 +185,43 @@ DECL|macro|IRQ_ISR_REG_OFFSET
 mdefine_line|#define IRQ_ISR_REG_OFFSET&t;0x9c
 DECL|macro|IRQ_ILR0_REG_OFFSET
 mdefine_line|#define IRQ_ILR0_REG_OFFSET&t;0x1c
+DECL|macro|IRQ_GMR_REG_OFFSET
+mdefine_line|#define IRQ_GMR_REG_OFFSET&t;0xa0
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Traffic controller memory interface&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|TCMIF_BASE
 mdefine_line|#define TCMIF_BASE&t;&t;0xfffecc00
-DECL|macro|IMIF_PRIO
-mdefine_line|#define IMIF_PRIO&t;&t;(TCMIF_BASE + 0x00)
-DECL|macro|EMIFS_PRIO
-mdefine_line|#define EMIFS_PRIO&t;&t;(TCMIF_BASE + 0x04)
-DECL|macro|EMIFF_PRIO
-mdefine_line|#define EMIFF_PRIO&t;&t;(TCMIF_BASE + 0x08)
-DECL|macro|EMIFS_CONFIG
-mdefine_line|#define EMIFS_CONFIG&t;&t;(TCMIF_BASE + 0x0c)
-DECL|macro|EMIFS_CS0_CONFIG
-mdefine_line|#define EMIFS_CS0_CONFIG&t;(TCMIF_BASE + 0x10)
-DECL|macro|EMIFS_CS1_CONFIG
-mdefine_line|#define EMIFS_CS1_CONFIG&t;(TCMIF_BASE + 0x14)
-DECL|macro|EMIFS_CS2_CONFIG
-mdefine_line|#define EMIFS_CS2_CONFIG&t;(TCMIF_BASE + 0x18)
-DECL|macro|EMIFS_CS3_CONFIG
-mdefine_line|#define EMIFS_CS3_CONFIG&t;(TCMIF_BASE + 0x1c)
-DECL|macro|EMIFF_SDRAM_CONFIG
-mdefine_line|#define EMIFF_SDRAM_CONFIG&t;(TCMIF_BASE + 0x20)
-DECL|macro|EMIFF_MRS
-mdefine_line|#define EMIFF_MRS&t;&t;(TCMIF_BASE + 0x24)
-DECL|macro|TC_TIMEOUT1
-mdefine_line|#define TC_TIMEOUT1&t;&t;(TCMIF_BASE + 0x28)
-DECL|macro|TC_TIMEOUT2
-mdefine_line|#define TC_TIMEOUT2&t;&t;(TCMIF_BASE + 0x2c)
-DECL|macro|TC_TIMEOUT3
-mdefine_line|#define TC_TIMEOUT3&t;&t;(TCMIF_BASE + 0x30)
-DECL|macro|TC_ENDIANISM
-mdefine_line|#define TC_ENDIANISM&t;&t;(TCMIF_BASE + 0x34)
-DECL|macro|EMIFF_SDRAM_CONFIG_2
-mdefine_line|#define EMIFF_SDRAM_CONFIG_2&t;(TCMIF_BASE + 0x3c)
-DECL|macro|EMIF_CFG_DYNAMIC_WS
-mdefine_line|#define EMIF_CFG_DYNAMIC_WS&t;(TCMIF_BASE + 0x40)
+DECL|macro|IMIF_PRIO_REG
+mdefine_line|#define IMIF_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x00)
+DECL|macro|EMIFS_PRIO_REG
+mdefine_line|#define EMIFS_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x04)
+DECL|macro|EMIFF_PRIO_REG
+mdefine_line|#define EMIFF_PRIO_REG&t;&t;__REG32(TCMIF_BASE + 0x08)
+DECL|macro|EMIFS_CONFIG_REG
+mdefine_line|#define EMIFS_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x0c)
+DECL|macro|EMIFS_CS0_CONFIG_REG
+mdefine_line|#define EMIFS_CS0_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x10)
+DECL|macro|EMIFS_CS1_CONFIG_REG
+mdefine_line|#define EMIFS_CS1_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x14)
+DECL|macro|EMIFS_CS2_CONFIG_REG
+mdefine_line|#define EMIFS_CS2_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x18)
+DECL|macro|EMIFS_CS3_CONFIG_REG
+mdefine_line|#define EMIFS_CS3_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x1c)
+DECL|macro|EMIFF_SDRAM_CONFIG_REG
+mdefine_line|#define EMIFF_SDRAM_CONFIG_REG&t;__REG32(TCMIF_BASE + 0x20)
+DECL|macro|EMIFF_MRS_REG
+mdefine_line|#define EMIFF_MRS_REG&t;&t;__REG32(TCMIF_BASE + 0x24)
+DECL|macro|TC_TIMEOUT1_REG
+mdefine_line|#define TC_TIMEOUT1_REG&t;&t;__REG32(TCMIF_BASE + 0x28)
+DECL|macro|TC_TIMEOUT2_REG
+mdefine_line|#define TC_TIMEOUT2_REG&t;&t;__REG32(TCMIF_BASE + 0x2c)
+DECL|macro|TC_TIMEOUT3_REG
+mdefine_line|#define TC_TIMEOUT3_REG&t;&t;__REG32(TCMIF_BASE + 0x30)
+DECL|macro|TC_ENDIANISM_REG
+mdefine_line|#define TC_ENDIANISM_REG&t;__REG32(TCMIF_BASE + 0x34)
+DECL|macro|EMIFF_SDRAM_CONFIG_2_REG
+mdefine_line|#define EMIFF_SDRAM_CONFIG_2_REG __REG32(TCMIF_BASE + 0x3c)
+DECL|macro|EMIF_CFG_DYNAMIC_WS_REG
+mdefine_line|#define EMIF_CFG_DYNAMIC_WS_REG&t;__REG32(TCMIF_BASE + 0x40)
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * System control registers&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|MOD_CONF_CTRL_0
 mdefine_line|#define MOD_CONF_CTRL_0&t;&t;0xfffe1080
@@ -334,6 +336,8 @@ DECL|macro|OMAP_ID_1710
 mdefine_line|#define OMAP_ID_1710&t;&t;0x35F7
 DECL|macro|OMAP_ID_5912
 mdefine_line|#define OMAP_ID_5912&t;&t;0x358C
+DECL|macro|OMAP_ID_1611
+mdefine_line|#define OMAP_ID_1611            0x358C
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;
 DECL|macro|cpu_is_omap730
@@ -352,14 +356,17 @@ mdefine_line|#define cpu_is_omap1510()&t;0
 macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_OMAP1610
 macro_line|#include &quot;omap1610.h&quot;
-DECL|macro|cpu_is_omap1710
-mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1710)
-multiline_comment|/* Detect 1710 as 1610 for now */
 DECL|macro|cpu_is_omap1610
-mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1610 &bslash;&n;&t;&t;&t;&t;|| cpu_is_omap1710())
+mdefine_line|#define cpu_is_omap1610()&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1610) || &bslash;&n;&t;&t;&t;&t;(((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1611)
 macro_line|#else
 DECL|macro|cpu_is_omap1610
 mdefine_line|#define cpu_is_omap1610()&t;0
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1710
+macro_line|#include &quot;omap1610.h&quot;
+DECL|macro|cpu_is_omap1710
+mdefine_line|#define cpu_is_omap1710()       (((OMAP_ID_REG &gt;&gt; ID_SHIFT) &amp; ID_MASK) == OMAP_ID_1710)
+macro_line|#else
 DECL|macro|cpu_is_omap1710
 mdefine_line|#define cpu_is_omap1710()&t;0
 macro_line|#endif
@@ -383,7 +390,6 @@ macro_line|#include &quot;board-perseus2.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MACH_OMAP_H3
 macro_line|#include &quot;board-h3.h&quot;
-macro_line|#error &quot;Support for H3 board not yet implemented.&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MACH_OMAP_H4
 macro_line|#include &quot;board-h4.h&quot;

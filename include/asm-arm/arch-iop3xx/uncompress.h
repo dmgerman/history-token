@@ -1,11 +1,8 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/arch-iop80310/uncompress.h&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/arch-iop3xx/uncompress.h&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#ifdef CONFIG_ARCH_IQ80310
-DECL|macro|UART2_BASE
-mdefine_line|#define UART2_BASE    ((volatile unsigned char *)IQ80310_UART2)
-macro_line|#elif defined(CONFIG_ARCH_IQ80321)
+macro_line|#if defined(CONFIG_ARCH_IQ80321)
 DECL|macro|UART2_BASE
 mdefine_line|#define UART2_BASE    ((volatile unsigned char *)IQ80321_UART1)
 macro_line|#endif

@@ -1251,6 +1251,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialise the bootmem allocator for all nodes.  This is called&n; * early during the architecture specific initialisation.&n; */
 DECL|function|bootmem_init
+r_static
 r_void
 id|__init
 id|bootmem_init
@@ -1459,18 +1460,14 @@ id|phys_initrd_size
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|map_pg
 op_ne
 id|bootmap_pfn
 op_plus
 id|bootmap_pages
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1498,6 +1495,12 @@ id|zero_page
 suffix:semicolon
 r_int
 id|node
+suffix:semicolon
+id|bootmem_init
+c_func
+(paren
+id|mi
+)paren
 suffix:semicolon
 id|memcpy
 c_func

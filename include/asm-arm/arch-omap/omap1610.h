@@ -22,6 +22,11 @@ DECL|macro|OMAP1610_DSPREG_SIZE
 mdefine_line|#define OMAP1610_DSPREG_SIZE&t;SZ_128K
 DECL|macro|OMAP1610_DSPREG_START
 mdefine_line|#define OMAP1610_DSPREG_START&t;0xE1000000
+multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Memory used by power management&n; * ----------------------------------------------------------------------------&n; */
+DECL|macro|OMAP1610_SRAM_IDLE_SUSPEND
+mdefine_line|#define OMAP1610_SRAM_IDLE_SUSPEND&t;(OMAP1610_SRAM_BASE + OMAP1610_SRAM_SIZE - 0x200)
+DECL|macro|OMAP1610_SRAM_API_SUSPEND
+mdefine_line|#define OMAP1610_SRAM_API_SUSPEND&t;(OMAP1610_SRAM_IDLE_SUSPEND + 0x100)
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Interrupts&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_IH2_0_BASE
 mdefine_line|#define OMAP_IH2_0_BASE&t;&t;(0xfffe0000)

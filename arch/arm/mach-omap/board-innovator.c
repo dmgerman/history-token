@@ -10,7 +10,17 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
+macro_line|#include &lt;asm/arch/usb.h&gt;
 macro_line|#include &quot;common.h&quot;
+r_extern
+r_void
+id|__init
+id|omap_init_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_OMAP1510
 r_extern
 r_int
@@ -85,12 +95,12 @@ op_assign
 dot
 id|start
 op_assign
-id|INT_ETHER
+id|OMAP1510_INT_ETHER
 comma
 dot
 id|end
 op_assign
-id|INT_ETHER
+id|OMAP1510_INT_ETHER
 comma
 dot
 id|flags
@@ -321,7 +331,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|fpga_init_irq
+id|omap1510_fpga_init_irq
 c_func
 (paren
 )paren
@@ -329,6 +339,103 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_usb_config
+id|innovator1510_usb_config
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* has usb host and device, but no Mini-AB port */
+dot
+id|register_host
+op_assign
+l_int|1
+comma
+dot
+id|register_dev
+op_assign
+l_int|1
+comma
+multiline_comment|/* Assume bad Innovator wiring; Use internal host only with custom cable */
+dot
+id|hmc_mode
+op_assign
+l_int|16
+comma
+dot
+id|pins
+(braket
+l_int|0
+)braket
+op_assign
+l_int|2
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_usb_config
+id|h2_usb_config
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* usb1 has a Mini-AB port and external isp1301 transceiver */
+dot
+id|otg
+op_assign
+l_int|2
+comma
+macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
+dot
+id|hmc_mode
+op_assign
+l_int|19
+comma
+singleline_comment|// 0:host(off) 1:dev|otg 2:disabled
+singleline_comment|// .hmc_mode&t;= 21,&t;// 0:host(off) 1:dev(loopback) 2:host(loopback)
+macro_line|#elif&t;defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
+multiline_comment|/* NONSTANDARD CABLE NEEDED (B-to-Mini-B) */
+dot
+id|hmc_mode
+op_assign
+l_int|20
+comma
+singleline_comment|// 1:dev|otg(off) 1:host 2:disabled
+macro_line|#endif
+dot
+id|pins
+(braket
+l_int|1
+)braket
+op_assign
+l_int|3
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
+DECL|variable|innovator_config
+r_static
+r_struct
+id|omap_board_config_kernel
+id|innovator_config
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|OMAP_TAG_USB
+comma
+l_int|NULL
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|innovator_init
 r_static
 r_void
@@ -367,7 +474,8 @@ macro_line|#ifdef CONFIG_ARCH_OMAP1610
 r_if
 c_cond
 (paren
-id|cpu_is_omap1610
+op_logical_neg
+id|cpu_is_omap1510
 c_func
 (paren
 )paren
@@ -387,6 +495,58 @@ id|innovator1610_devices
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1510
+r_if
+c_cond
+(paren
+id|cpu_is_omap1510
+c_func
+(paren
+)paren
+)paren
+id|innovator_config
+(braket
+l_int|0
+)braket
+dot
+id|data
+op_assign
+op_amp
+id|innovator1510_usb_config
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_OMAP1610
+r_if
+c_cond
+(paren
+id|cpu_is_omap1610
+c_func
+(paren
+)paren
+)paren
+id|innovator_config
+(braket
+l_int|0
+)braket
+dot
+id|data
+op_assign
+op_amp
+id|h2_usb_config
+suffix:semicolon
+macro_line|#endif
+id|omap_board_config
+op_assign
+id|innovator_config
+suffix:semicolon
+id|omap_board_config_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|innovator_config
+)paren
+suffix:semicolon
 )brace
 DECL|function|innovator_map_io
 r_static
@@ -463,7 +623,8 @@ macro_line|#ifdef CONFIG_ARCH_OMAP1610
 r_if
 c_cond
 (paren
-id|cpu_is_omap1610
+op_logical_neg
+id|cpu_is_omap1510
 c_func
 (paren
 )paren
@@ -520,15 +681,15 @@ c_func
 (paren
 id|innovator_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|omap_init_time
-)paren
 id|INIT_MACHINE
 c_func
 (paren
 id|innovator_init
+)paren
+id|INITTIME
+c_func
+(paren
+id|omap_init_time
 )paren
 id|MACHINE_END
 eof

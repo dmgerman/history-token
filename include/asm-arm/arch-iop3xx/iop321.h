@@ -13,7 +13,7 @@ mdefine_line|#define&t;IOP321_PCI_IO_BASE&t;&t;0x90000000
 DECL|macro|IOP321_PCI_IO_SIZE
 mdefine_line|#define&t;IOP321_PCI_IO_SIZE&t;&t;0x00010000
 DECL|macro|IOP321_PCI_MEM_BASE
-mdefine_line|#define IOP321_PCI_MEM_BASE&t;&t;0x40000000
+mdefine_line|#define IOP321_PCI_MEM_BASE&t;&t;0x80000000
 DECL|macro|IOP321_PCI_MEM_SIZE
 mdefine_line|#define IOP321_PCI_MEM_SIZE&t;&t;0x40000000
 multiline_comment|/*&n; * IOP321 chipset registers&n; */

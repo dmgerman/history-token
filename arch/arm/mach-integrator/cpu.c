@@ -210,8 +210,7 @@ r_int
 id|relation
 )paren
 (brace
-r_int
-r_int
+id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
 r_int
@@ -241,9 +240,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -509,8 +510,7 @@ r_int
 id|cpu
 )paren
 (brace
-r_int
-r_int
+id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
 r_int
@@ -533,9 +533,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|BUG_ON

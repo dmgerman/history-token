@@ -611,7 +611,7 @@ r_volatile
 id|last_jiffy_time
 suffix:semicolon
 DECL|macro|CLOCK_TICKS_PER_USEC
-mdefine_line|#define CLOCK_TICKS_PER_USEC&t;(CLOCK_TICK_RATE / USEC_PER_SEC)
+mdefine_line|#define CLOCK_TICKS_PER_USEC&t;((CLOCK_TICK_RATE + USEC_PER_SEC/2) / USEC_PER_SEC)
 multiline_comment|/* IRQs are disabled before entering here from do_gettimeofday() */
 DECL|function|ixp4xx_gettimeoffset
 r_static

@@ -10,20 +10,6 @@ DECL|macro|OMAP1510_SRAM_SIZE
 mdefine_line|#define OMAP1510_SRAM_SIZE&t;(SZ_128K + SZ_64K)
 DECL|macro|OMAP1510_SRAM_START
 mdefine_line|#define OMAP1510_SRAM_START&t;0x20000000
-DECL|macro|OMAP1510_MCBSP1_BASE
-mdefine_line|#define OMAP1510_MCBSP1_BASE&t;0xE1011000
-DECL|macro|OMAP1510_MCBSP1_SIZE
-mdefine_line|#define OMAP1510_MCBSP1_SIZE&t;SZ_4K
-DECL|macro|OMAP1510_MCBSP1_START
-mdefine_line|#define OMAP1510_MCBSP1_START&t;0xE1011000
-DECL|macro|OMAP1510_MCBSP2_BASE
-mdefine_line|#define OMAP1510_MCBSP2_BASE&t;0xFFFB1000
-DECL|macro|OMAP1510_MCBSP3_BASE
-mdefine_line|#define OMAP1510_MCBSP3_BASE&t;0xE1017000
-DECL|macro|OMAP1510_MCBSP3_SIZE
-mdefine_line|#define OMAP1510_MCBSP3_SIZE&t;SZ_4K
-DECL|macro|OMAP1510_MCBSP3_START
-mdefine_line|#define OMAP1510_MCBSP3_START&t;0xE1017000
 DECL|macro|OMAP1510_DSP_BASE
 mdefine_line|#define OMAP1510_DSP_BASE&t;0xE0000000
 DECL|macro|OMAP1510_DSP_SIZE
@@ -36,5 +22,10 @@ DECL|macro|OMAP1510_DSPREG_SIZE
 mdefine_line|#define OMAP1510_DSPREG_SIZE&t;SZ_128K
 DECL|macro|OMAP1510_DSPREG_START
 mdefine_line|#define OMAP1510_DSPREG_START&t;0xE1000000
+multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * Memory used by power management&n; * ----------------------------------------------------------------------------&n; */
+DECL|macro|OMAP1510_SRAM_IDLE_SUSPEND
+mdefine_line|#define OMAP1510_SRAM_IDLE_SUSPEND&t;(OMAP1510_SRAM_BASE + OMAP1510_SRAM_SIZE - 0x200)
+DECL|macro|OMAP1510_SRAM_API_SUSPEND
+mdefine_line|#define OMAP1510_SRAM_API_SUSPEND&t;(OMAP1510_SRAM_IDLE_SUSPEND + 0x100)
 macro_line|#endif /*  __ASM_ARCH_OMAP1510_H */
 eof
