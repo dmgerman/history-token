@@ -41,7 +41,7 @@ id|s2io_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;Version 1.0&quot;
+l_string|&quot;Version 1.7.5.1&quot;
 suffix:semicolon
 DECL|macro|LINK_IS_UP
 mdefine_line|#define LINK_IS_UP(val64) (!(val64 &amp; (ADAPTER_STATUS_RMAC_REMOTE_FAULT | &bslash;&n;&t;&t;&t;&t;      ADAPTER_STATUS_RMAC_LOCAL_FAULT)))
@@ -148,83 +148,161 @@ id|ETH_GSTRING_LEN
 )braket
 op_assign
 (brace
+(brace
 l_string|&quot;tmac_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_data_octets&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_drop_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_mcst_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_bcst_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_pause_ctrl_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_any_err_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_vld_ip_octets&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_vld_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_drop_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_icmp&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_rst_tcp&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_tcp&quot;
+)brace
 comma
+(brace
 l_string|&quot;tmac_udp&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_vld_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_data_octets&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_fcs_err_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_drop_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_vld_mcst_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_vld_bcst_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_in_rng_len_err_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_long_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_pause_ctrl_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_discarded_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_usized_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_osized_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_frag_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_jabber_frms&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_ip_octets&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_hdr_err_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_drop_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_icmp&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_tcp&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_udp&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_err_drp_udp&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_pause_cnt&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_accepted_ip&quot;
+)brace
 comma
+(brace
 l_string|&quot;rmac_err_tcp&quot;
+)brace
 comma
 )brace
 suffix:semicolon
@@ -236,7 +314,7 @@ DECL|macro|S2IO_TEST_LEN
 mdefine_line|#define S2IO_TEST_LEN&t;sizeof(s2io_gstrings) / ETH_GSTRING_LEN
 DECL|macro|S2IO_STRINGS_LEN
 mdefine_line|#define S2IO_STRINGS_LEN&t;S2IO_TEST_LEN * ETH_GSTRING_LEN
-multiline_comment|/* Constants to be programmed into the Xena&squot;s registers to configure&n; * the XAUI.&n; */
+multiline_comment|/* &n; * Constants to be programmed into the Xena&squot;s registers, to configure&n; * the XAUI.&n; */
 DECL|macro|SWITCH_SIGN
 mdefine_line|#define SWITCH_SIGN&t;0xA5A5A5A5A5A5A5A5ULL
 DECL|macro|END_SIGN
@@ -347,7 +425,7 @@ comma
 id|END_SIGN
 )brace
 suffix:semicolon
-multiline_comment|/* Constants for Fixing the MacAddress problem seen mostly on&n; * Alpha machines.&n; */
+multiline_comment|/* &n; * Constants for Fixing the MacAddress problem seen mostly on&n; * Alpha machines.&n; */
 DECL|variable|fix_mac
 r_static
 id|u64
@@ -464,8 +542,6 @@ DECL|variable|latency_timer
 r_static
 id|u8
 id|latency_timer
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* &n; * S2IO device table.&n; * This table lists all the devices that this driver supports. &n; */
 DECL|variable|__devinitdata
@@ -541,11 +617,11 @@ id|s2io_rem_nic
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*  &n; *  Input Arguments: &n; *  Device private variable.&n; *  Return Value: &n; *  SUCCESS on success and an appropriate -ve value on failure.&n; *  Description: &n; *  The function allocates the all memory areas shared &n; *  between the NIC and the driver. This includes Tx descriptors, &n; *  Rx descriptors and the statistics block.&n; */
-DECL|function|initSharedMem
+multiline_comment|/**&n; * init_shared_mem - Allocation and Initialization of Memory&n; * @nic: Device private variable.&n; * Description: The function allocates all the memory areas shared &n; * between the NIC and the driver. This includes Tx descriptors, &n; * Rx descriptors and the statistics block.&n; */
+DECL|function|init_shared_mem
 r_static
 r_int
-id|initSharedMem
+id|init_shared_mem
 c_func
 (paren
 r_struct
@@ -622,7 +698,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -630,12 +706,12 @@ op_increment
 (brace
 id|size
 op_add_assign
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 suffix:semicolon
 )brace
 r_if
@@ -684,7 +760,7 @@ r_sizeof
 id|TxD_t
 )paren
 op_star
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 )paren
 suffix:semicolon
 id|mac_control-&gt;txd_list_mem
@@ -759,7 +835,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -799,12 +875,12 @@ id|i
 dot
 id|fifo_len
 op_assign
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_minus
 l_int|1
 suffix:semicolon
@@ -824,24 +900,24 @@ id|i
 dot
 id|fifo_len
 op_assign
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_minus
 l_int|1
 suffix:semicolon
 id|tmp_p_addr
 op_add_assign
 (paren
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_star
 (paren
 r_sizeof
@@ -850,18 +926,18 @@ id|TxD_t
 )paren
 )paren
 op_star
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 )paren
 suffix:semicolon
 id|tmp_v_addr
 op_add_assign
 (paren
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_star
 (paren
 r_sizeof
@@ -870,7 +946,7 @@ id|TxD_t
 )paren
 )paren
 op_star
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 )paren
 suffix:semicolon
 )brace
@@ -888,7 +964,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -897,12 +973,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_mod
 (paren
 id|MAX_RXDS_PER_BLOCK
@@ -945,24 +1021,24 @@ suffix:semicolon
 )brace
 id|size
 op_add_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 suffix:semicolon
 id|nic-&gt;block_count
 (braket
 id|i
 )braket
 op_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_div
 (paren
 id|MAX_RXDS_PER_BLOCK
@@ -975,12 +1051,12 @@ id|nic-&gt;pkt_cnt
 id|i
 )braket
 op_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_minus
 id|nic-&gt;block_count
 (braket
@@ -988,23 +1064,6 @@ id|i
 )braket
 suffix:semicolon
 )brace
-id|size
-op_assign
-(paren
-id|size
-op_star
-(paren
-r_sizeof
-(paren
-id|RxD_t
-)paren
-)paren
-)paren
-suffix:semicolon
-id|mac_control-&gt;rxd_ring_mem_sz
-op_assign
-id|size
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1014,7 +1073,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -1045,12 +1104,12 @@ id|i
 dot
 id|ring_len
 op_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_minus
 l_int|1
 suffix:semicolon
@@ -1079,23 +1138,23 @@ id|i
 dot
 id|ring_len
 op_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_minus
 l_int|1
 suffix:semicolon
 id|blk_cnt
 op_assign
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_div
 (paren
 id|MAX_RXDS_PER_BLOCK
@@ -1155,7 +1214,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-multiline_comment|/* In case of failure, freeSharedMem() &n;&t;&t;&t;&t; * is called, which should free any &n;&t;&t;&t;&t; * memory that was alloced till the &n;&t;&t;&t;&t; * failure happened.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * In case of failure, free_shared_mem() &n;&t;&t;&t;&t; * is called, which should free any &n;&t;&t;&t;&t; * memory that was alloced till the &n;&t;&t;&t;&t; * failure happened.&n;&t;&t;&t;&t; */
 id|nic-&gt;rx_blocks
 (braket
 id|i
@@ -1341,7 +1400,7 @@ op_logical_neg
 id|mac_control-&gt;stats_mem
 )paren
 (brace
-multiline_comment|/* In case of failure, freeSharedMem() is called, which &n;&t;&t; * should free any memory that was alloced till the &n;&t;&t; * failure happened.&n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * In case of failure, free_shared_mem() is called, which &n;&t;&t; * should free any memory that was alloced till the &n;&t;&t; * failure happened.&n;&t;&t; */
 r_return
 op_minus
 id|ENOMEM
@@ -1355,7 +1414,7 @@ id|tmp_v_addr
 op_assign
 id|mac_control-&gt;stats_mem
 suffix:semicolon
-id|mac_control-&gt;StatsInfo
+id|mac_control-&gt;stats_info
 op_assign
 (paren
 id|StatInfo_t
@@ -1394,11 +1453,11 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  Device peivate variable.&n; *  Return Value: &n; *  NONE&n; *  Description: &n; *  This function is to free all memory locations allocated by&n; *  the initSharedMem() function and return it to the kernel.&n; */
-DECL|function|freeSharedMem
+multiline_comment|/**  &n; * free_shared_mem - Free the allocated Memory &n; * @nic:  Device private variable.&n; * Description: This function is to free all memory locations allocated by&n; * the init_shared_mem() function and return it to the kernel.&n; */
+DECL|function|free_shared_mem
 r_static
 r_void
-id|freeSharedMem
+id|free_shared_mem
 c_func
 (paren
 r_struct
@@ -1493,7 +1552,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -1588,11 +1647,11 @@ id|mac_control-&gt;stats_mem_phy
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device peivate variable&n; *  Return Value: &n; *  SUCCESS on success and &squot;-1&squot; on failure (endian settings incorrect).&n; *  Description: &n; *  The function sequentially configures every block &n; *  of the H/W from their reset values. &n; */
-DECL|function|initNic
+multiline_comment|/**  &n; *  init_nic - Initialization of hardware &n; *  @nic: device peivate variable&n; *  Description: The function sequentially configures every block &n; *  of the H/W from their reset values. &n; *  Return Value:  SUCCESS on success and &n; *  &squot;-1&squot; on failure (endian settings incorrect).&n; */
+DECL|function|init_nic
 r_static
 r_int
-id|initNic
+id|init_nic
 c_func
 (paren
 r_struct
@@ -1671,9 +1730,9 @@ op_assign
 op_amp
 id|nic-&gt;config
 suffix:semicolon
-multiline_comment|/*  Set proper endian settings and verify the same by &n;&t; *  reading the PIF Feed-back register.&n;&t; */
+multiline_comment|/* &n;&t; * Set proper endian settings and verify the same by &n;&t; * reading the PIF Feed-back register.&n;&t; */
 macro_line|#ifdef  __BIG_ENDIAN
-multiline_comment|/* The device by default set to a big endian format, so &n;&t; * a big endian driver need not set anything.&n;&t; */
+multiline_comment|/*&n;&t; * The device by default set to a big endian format, so &n;&t; * a big endian driver need not set anything.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -1729,7 +1788,7 @@ id|bar0-&gt;swapper_ctrl
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* Initially we enable all bits to make it accessible by &n;&t; * the driver, then we selectively enable only those bits &n;&t; * that we want to set.&n;&t; */
+multiline_comment|/* &n;&t; * Initially we enable all bits to make it accessible by &n;&t; * the driver, then we selectively enable only those bits &n;&t; * that we want to set.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -1793,7 +1852,7 @@ id|bar0-&gt;swapper_ctrl
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Verifying if endian settings are accurate by reading &n;&t; * a feedback register.&n;&t; */
+multiline_comment|/* &n;&t; * Verifying if endian settings are accurate by &n;&t; * reading a feedback register.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -1968,7 +2027,7 @@ op_amp
 id|bar0-&gt;rmac_max_pyld_len
 )paren
 suffix:semicolon
-multiline_comment|/* Configuring the XAUI Interface of Xena. &n;&t; *****************************************&n;&t; * To Configure the Xena&squot;s XAUI, one has to write a series &n;&t; * of 64 bit values into two registers in a particular &n;&t; * sequence. Hence a macro &squot;SWITCH_SIGN&squot; has been defined &n;&t; * which will be defined in the array of configuration values &n;&t; * (default_dtx_cfg &amp; default_mdio_cfg) at appropriate places &n;&t; * to switch writing from one regsiter to another. We continue &n;&t; * writing these values until we encounter the &squot;END_SIGN&squot; macro.&n;&t; * For example, After making a series of 21 writes into &n;&t; * dtx_control register the &squot;SWITCH_SIGN&squot; appears and hence we &n;&t; * start writing into mdio_control until we encounter END_SIGN.&n;&t; */
+multiline_comment|/* &n;&t; * Configuring the XAUI Interface of Xena. &n;&t; * ***************************************&n;&t; * To Configure the Xena&squot;s XAUI, one has to write a series &n;&t; * of 64 bit values into two registers in a particular &n;&t; * sequence. Hence a macro &squot;SWITCH_SIGN&squot; has been defined &n;&t; * which will be defined in the array of configuration values &n;&t; * (default_dtx_cfg &amp; default_mdio_cfg) at appropriate places &n;&t; * to switch writing from one regsiter to another. We continue &n;&t; * writing these values until we encounter the &squot;END_SIGN&squot; macro.&n;&t; * For example, After making a series of 21 writes into &n;&t; * dtx_control register the &squot;SWITCH_SIGN&squot; appears and hence we &n;&t; * start writing into mdio_control until we encounter END_SIGN.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2173,7 +2232,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -2184,12 +2243,12 @@ op_or_assign
 id|vBIT
 c_func
 (paren
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_minus
 l_int|1
 comma
@@ -2209,12 +2268,12 @@ op_or
 id|vBIT
 c_func
 (paren
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoPriority
+id|fifo_priority
 comma
 (paren
 (paren
@@ -2235,7 +2294,7 @@ c_cond
 id|i
 op_eq
 (paren
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 op_minus
 l_int|1
 )paren
@@ -2428,7 +2487,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -2439,12 +2498,12 @@ op_or_assign
 id|vBIT
 c_func
 (paren
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|RingPriority
+id|ring_priority
 comma
 (paren
 l_int|5
@@ -2469,7 +2528,7 @@ op_amp
 id|bar0-&gt;rx_queue_priority
 )paren
 suffix:semicolon
-multiline_comment|/* Allocating equal share of memory to all the configured &n;&t; * Rings.&n;&t; */
+multiline_comment|/* &n;&t; * Allocating equal share of memory to all the &n;&t; * configured Rings.&n;&t; */
 id|val64
 op_assign
 l_int|0
@@ -2483,7 +2542,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -2503,11 +2562,11 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 op_plus
 l_int|64
 op_mod
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2528,7 +2587,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2549,7 +2608,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2570,7 +2629,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2591,7 +2650,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2612,7 +2671,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2633,7 +2692,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2654,7 +2713,7 @@ op_assign
 (paren
 l_int|64
 op_div
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 suffix:semicolon
 id|val64
@@ -2678,7 +2737,7 @@ op_amp
 id|bar0-&gt;rx_queue_cfg
 )paren
 suffix:semicolon
-multiline_comment|/* Initializing the Tx round robin registers to 0.&n;&t; * Filling Tx and Rx round robin registers as per the &n;&t; * number of FIFOs and Rings is still TODO.&n;&t; */
+multiline_comment|/* &n;&t; * Initializing the Tx round robin registers to 0.&n;&t; * Filling Tx and Rx round robin registers as per the &n;&t; * number of FIFOs and Rings is still TODO.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -2724,7 +2783,7 @@ op_amp
 id|bar0-&gt;tx_w_round_robin_4
 )paren
 suffix:semicolon
-multiline_comment|/* Disable Rx steering. Hard coding all packets be steered to&n;&t; * Queue 0 for now. &n;&t; * TODO*/
+multiline_comment|/* &n;&t; * TODO&n;&t; * Disable Rx steering. Hard coding all packets be steered to&n;&t; * Queue 0 for now. &n;&t; */
 r_if
 c_cond
 (paren
@@ -2764,7 +2823,7 @@ op_rshift
 (paren
 id|i
 op_mod
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 )paren
 )paren
 suffix:semicolon
@@ -2891,7 +2950,7 @@ op_amp
 id|bar0-&gt;stat_cfg
 )paren
 suffix:semicolon
-multiline_comment|/* Initializing the sampling rate for the device to calculate the&n;&t; * bandwidth utilization.&n;&t; */
+multiline_comment|/* &n;&t; * Initializing the sampling rate for the device to calculate the&n;&t; * bandwidth utilization.&n;&t; */
 id|val64
 op_assign
 id|MAC_TX_LINK_UTIL_VAL
@@ -2915,7 +2974,7 @@ op_amp
 id|bar0-&gt;mac_link_util
 )paren
 suffix:semicolon
-multiline_comment|/* Initializing the Transmit and Receive Traffic Interrupt &n;&t; * Scheme.&n;&t; */
+multiline_comment|/* &n;&t; * Initializing the Transmit and Receive Traffic Interrupt &n;&t; * Scheme.&n;&t; */
 multiline_comment|/* TTI Initialization */
 id|val64
 op_assign
@@ -3004,7 +3063,7 @@ op_amp
 id|bar0-&gt;tti_command_mem
 )paren
 suffix:semicolon
-multiline_comment|/* Once the operation completes, the Strobe bit of the command&n;&t; * register will be reset. We poll for this particular condition&n;&t; * We wait for a maximum of 500ms for the operation to complete,&n;&t; * if it&squot;s not complete by then we return error.&n;&t; */
+multiline_comment|/* &n;&t; * Once the operation completes, the Strobe bit of the command&n;&t; * register will be reset. We poll for this particular condition&n;&t; * We wait for a maximum of 500ms for the operation to complete,&n;&t; * if it&squot;s not complete by then we return error.&n;&t; */
 id|time
 op_assign
 l_int|0
@@ -3167,7 +3226,7 @@ op_amp
 id|bar0-&gt;rti_command_mem
 )paren
 suffix:semicolon
-multiline_comment|/* Once the operation completes, the Strobe bit of the command&n;&t; * register will be reset. We poll for this particular condition&n;&t; * We wait for a maximum of 500ms for the operation to complete,&n;&t; * if it&squot;s not complete by then we return error.&n;&t; */
+multiline_comment|/* &n;&t; * Once the operation completes, the Strobe bit of the command&n;&t; * register will be reset. We poll for this particular condition&n;&t; * We wait for a maximum of 500ms for the operation to complete,&n;&t; * if it&squot;s not complete by then we return error.&n;&t; */
 id|time
 op_assign
 l_int|0
@@ -3242,7 +3301,7 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Initializing proper values as Pause threshold into all &n;&t; * the 8 Queues on Rx side.&n;&t; */
+multiline_comment|/* &n;&t; * Initializing proper values as Pause threshold into all &n;&t; * the 8 Queues on Rx side.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -3358,11 +3417,11 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable,&n; *  A mask indicating which Intr block must be modified and,&n; *  A flag indicating whether to enable or disable the Intrs.&n; *  Return Value: &n; *  NONE.&n; *  Description: &n; *  This function will either disable or enable the interrupts &n; *  depending on the flag argument. The mask argument can be used to &n; *  enable/disable any Intr block. &n; */
-DECL|function|en_dis_able_NicIntrs
+multiline_comment|/**  &n; *  en_dis_able_nic_intrs - Enable or Disable the interrupts &n; *  @nic: device private variable,&n; *  @mask: A mask indicating which Intr block must be modified and,&n; *  @flag: A flag indicating whether to enable or disable the Intrs.&n; *  Description: This function will either disable or enable the interrupts&n; *  depending on the flag argument. The mask argument can be used to &n; *  enable/disable any Intr block. &n; *  Return Value: NONE.&n; */
+DECL|function|en_dis_able_nic_intrs
 r_static
 r_void
-id|en_dis_able_NicIntrs
+id|en_dis_able_nic_intrs
 c_func
 (paren
 r_struct
@@ -3456,7 +3515,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/*  Disabled all PCIX, Flash, MDIO, IIC and GPIO&n;&t;&t;&t; *  interrupts for now. &n;&t;&t;&t; * TODO */
+multiline_comment|/*  &n;&t;&t;&t; * Disabled all PCIX, Flash, MDIO, IIC and GPIO&n;&t;&t;&t; * interrupts for now. &n;&t;&t;&t; * TODO &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3466,7 +3525,7 @@ op_amp
 id|bar0-&gt;pic_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/*  No MSI Support is available presently, so TTI and&n;&t;&t;&t; * RTI interrupts are also disabled.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * No MSI Support is available presently, so TTI and&n;&t;&t;&t; * RTI interrupts are also disabled.&n;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -3477,7 +3536,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable PIC Intrs in the general intr mask register &n;&t;&t;&t; */
+multiline_comment|/*  &n;&t;&t;&t; * Disable PIC Intrs in the general &n;&t;&t;&t; * intr mask register &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3521,7 +3580,7 @@ op_amp
 id|TX_DMA_INTR
 )paren
 (brace
-multiline_comment|/*  Enable TxDMA Intrs in the general intr mask register */
+multiline_comment|/* Enable TxDMA Intrs in the general intr mask register */
 id|val64
 op_assign
 id|TXDMA_INT_M
@@ -3562,14 +3621,16 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* Disable all interrupts other than PFC interrupt in &n;&t;&t;&t; * DMA level.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Keep all interrupts other than PFC interrupt &n;&t;&t;&t; * and PCC interrupt disabled in DMA level.&n;&t;&t;&t; */
 id|val64
 op_assign
 id|DISABLE_ALL_INTRS
 op_amp
-(paren
 op_complement
+(paren
 id|TXDMA_PFC_INT_M
+op_or
+id|TXDMA_PCC_INT_M
 )paren
 suffix:semicolon
 id|writeq
@@ -3581,7 +3642,7 @@ op_amp
 id|bar0-&gt;txdma_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* Enable only the MISC error 1 interrupt in PFC block &n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Enable only the MISC error 1 interrupt in PFC block &n;&t;&t;&t; */
 id|val64
 op_assign
 id|DISABLE_ALL_INTRS
@@ -3600,6 +3661,25 @@ op_amp
 id|bar0-&gt;pfc_err_mask
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t;&t;&t; * Enable only the FB_ECC error interrupt in PCC block &n;&t;&t;&t; */
+id|val64
+op_assign
+id|DISABLE_ALL_INTRS
+op_amp
+(paren
+op_complement
+id|PCC_FB_ECC_ERR
+)paren
+suffix:semicolon
+id|writeq
+c_func
+(paren
+id|val64
+comma
+op_amp
+id|bar0-&gt;pcc_err_mask
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3610,7 +3690,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable TxDMA Intrs in the general intr mask &n;&t;&t;&t; *  register */
+multiline_comment|/* &n;&t;&t;&t; * Disable TxDMA Intrs in the general intr mask &n;&t;&t;&t; * register &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3703,7 +3783,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* All RxDMA block interrupts are disabled for now &n;&t;&t;&t; * TODO */
+multiline_comment|/* &n;&t;&t;&t; * All RxDMA block interrupts are disabled for now &n;&t;&t;&t; * TODO &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3723,7 +3803,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable RxDMA Intrs in the general intr mask &n;&t;&t;&t; *  register */
+multiline_comment|/*  &n;&t;&t;&t; * Disable RxDMA Intrs in the general intr mask &n;&t;&t;&t; * register &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3813,7 +3893,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* All MAC block error interrupts are disabled for now &n;&t;&t;&t; * except the link status change interrupt.&n;&t;&t;&t; * TODO*/
+multiline_comment|/* &n;&t;&t;&t; * All MAC block error interrupts are disabled for now &n;&t;&t;&t; * except the link status change interrupt.&n;&t;&t;&t; * TODO&n;&t;&t;&t; */
 id|val64
 op_assign
 id|MAC_INT_STATUS_RMAC_INT
@@ -3884,7 +3964,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable MAC Intrs in the general intr mask register &n;&t;&t;&t; */
+multiline_comment|/*  &n;&t;&t;&t; * Disable MAC Intrs in the general intr mask register &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -3982,7 +4062,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* All XGXS block error interrupts are disabled for now&n;&t;&t;&t; *  TODO */
+multiline_comment|/* &n;&t;&t;&t; * All XGXS block error interrupts are disabled for now&n;&t;&t;&t; * TODO &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4002,7 +4082,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable MC Intrs in the general intr mask register &n;&t;&t;&t; */
+multiline_comment|/*  &n;&t;&t;&t; * Disable MC Intrs in the general intr mask register &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4085,7 +4165,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* All MC block error interrupts are disabled for now&n;&t;&t;&t; * TODO */
+multiline_comment|/* &n;&t;&t;&t; * All MC block error interrupts are disabled for now&n;&t;&t;&t; * TODO &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4105,7 +4185,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable MC Intrs in the general intr mask register&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Disable MC Intrs in the general intr mask register&n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4188,7 +4268,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-multiline_comment|/* Enable all the Tx side interrupts */
+multiline_comment|/* &n;&t;&t;&t; * Enable all the Tx side interrupts&n;&t;&t;&t; * writing 0 Enables all 64 TX interrupt levels &n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4198,7 +4278,6 @@ op_amp
 id|bar0-&gt;tx_traffic_mask
 )paren
 suffix:semicolon
-multiline_comment|/* &squot;0&squot; Enables &n;&t;&t;&t;&t;&t;&t;&t;&t; * all 64 TX &n;&t;&t;&t;&t;&t;&t;&t;&t; * interrupt &n;&t;&t;&t;&t;&t;&t;&t;&t; * levels.&n;&t;&t;&t;&t;&t;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -4209,7 +4288,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable Tx Traffic Intrs in the general intr mask &n;&t;&t;&t; *  register.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Disable Tx Traffic Intrs in the general intr mask &n;&t;&t;&t; * register.&n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4292,6 +4371,7 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
+multiline_comment|/* writing 0 Enables all 8 RX interrupt levels */
 id|writeq
 c_func
 (paren
@@ -4301,7 +4381,6 @@ op_amp
 id|bar0-&gt;rx_traffic_mask
 )paren
 suffix:semicolon
-multiline_comment|/* &squot;0&squot; Enables &n;&t;&t;&t;&t;&t;&t;&t;&t; * all 8 RX &n;&t;&t;&t;&t;&t;&t;&t;&t; * interrupt &n;&t;&t;&t;&t;&t;&t;&t;&t; * levels.&n;&t;&t;&t;&t;&t;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -4312,7 +4391,7 @@ op_eq
 id|DISABLE_INTRS
 )paren
 (brace
-multiline_comment|/*  Disable Rx Traffic Intrs in the general intr mask &n;&t;&t;&t; *  register.&n;&t;&t;&t; */
+multiline_comment|/*  &n;&t;&t;&t; * Disable Rx Traffic Intrs in the general intr mask &n;&t;&t;&t; * register.&n;&t;&t;&t; */
 id|writeq
 c_func
 (paren
@@ -4347,7 +4426,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *   val64 - Value read from adapter status register.&n; *   flag - indicates if the adapter enable bit was ever written once before.&n; *  Return Value: &n; *   void.&n; *  Description: &n; *   Returns whether the H/W is ready to go or not. Depending on whether &n; *   adapter enable bit was written or not the comparison differs and the &n; *   calling function passes the input argument flag to indicate this.&n; */
+multiline_comment|/**  &n; *  verify_xena_quiescence - Checks whether the H/W is ready &n; *  @val64 :  Value read from adapter status register.&n; *  @flag : indicates if the adapter enable bit was ever written once&n; *  before.&n; *  Description: Returns whether the H/W is ready to go or not. Depending&n; *  on whether adapter enable bit was written or not the comparison &n; *  differs and the calling function passes the input argument flag to&n; *  indicate this.&n; *  Return: 1 If xena is quiescence &n; *          0 If Xena is not quiescence&n; */
 DECL|function|verify_xena_quiescence
 r_static
 r_int
@@ -4487,10 +4566,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * New procedure to clear mac address reading  problems on Alpha platforms&n; *&n; */
-DECL|function|FixMacAddress
+multiline_comment|/**&n; * fix_mac_address -  Fix for Mac addr problem on Alpha platforms&n; * @sp: Pointer to device specifc structure&n; * Description : &n; * New procedure to clear mac address reading  problems on Alpha platforms&n; *&n; */
+DECL|function|fix_mac_address
 r_void
-id|FixMacAddress
+id|fix_mac_address
 c_func
 (paren
 id|nic_t
@@ -4551,11 +4630,11 @@ id|bar0-&gt;gpio_control
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable.&n; *  Return Value: &n; *  SUCCESS on success and -1 on failure.&n; *  Description: &n; *  This function actually turns the device on. Before this &n; *  function is called, all Registers are configured from their reset states &n; *  and shared memory is allocated but the NIC is still quiescent. On &n; *  calling this function, the device interrupts are cleared and the NIC is&n; *  literally switched on by writing into the adapter control register.&n; */
-DECL|function|startNic
+multiline_comment|/**&n; *  start_nic - Turns the device on   &n; *  @nic : device private variable.&n; *  Description: &n; *  This function actually turns the device on. Before this  function is &n; *  called,all Registers are configured from their reset states &n; *  and shared memory is allocated but the NIC is still quiescent. On &n; *  calling this function, the device interrupts are cleared and the NIC is&n; *  literally switched on by writing into the adapter control register.&n; *  Return Value: &n; *  SUCCESS on success and -1 on failure.&n; */
+DECL|function|start_nic
 r_static
 r_int
-id|startNic
+id|start_nic
 c_func
 (paren
 r_struct
@@ -4624,7 +4703,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -4682,7 +4761,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Enabling MC-RLDRAM. After enabling the device, we timeout&n;&t; * for around 100ms, which is approximately the time required&n;&t; * for the device to be ready for operation.&n;&t; */
+multiline_comment|/* &n;&t; * Enabling MC-RLDRAM. After enabling the device, we timeout&n;&t; * for around 100ms, which is approximately the time required&n;&t; * for the device to be ready for operation.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -4755,7 +4834,7 @@ op_amp
 id|bar0-&gt;adapter_control
 )paren
 suffix:semicolon
-multiline_comment|/* Clearing any possible Link state change interrupts that &n;&t; * could have popped up just before Enabling the card.&n;&t; */
+multiline_comment|/* &n;&t; * Clearing any possible Link state change interrupts that &n;&t; * could have popped up just before Enabling the card.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -4779,7 +4858,7 @@ op_amp
 id|bar0-&gt;mac_rmac_err_reg
 )paren
 suffix:semicolon
-multiline_comment|/* Verify if the device is ready to be enabled, if so enable &n;&t; * it.&n;&t; */
+multiline_comment|/* &n;&t; * Verify if the device is ready to be enabled, if so enable &n;&t; * it.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -4842,7 +4921,7 @@ id|TX_MAC_INTR
 op_or
 id|RX_MAC_INTR
 suffix:semicolon
-id|en_dis_able_NicIntrs
+id|en_dis_able_nic_intrs
 c_func
 (paren
 id|nic
@@ -4852,7 +4931,7 @@ comma
 id|ENABLE_INTRS
 )paren
 suffix:semicolon
-multiline_comment|/* With some switches, link might be already up at this point.&n;&t; * Because of this weird behavior, when we enable laser, &n;&t; * we may not get link. We need to handle this. We cannot &n;&t; * figure out which switch is misbehaving. So we are forced to &n;&t; * make a global change. &n;&t; */
+multiline_comment|/* &n;&t; * With some switches, link might be already up at this point.&n;&t; * Because of this weird behavior, when we enable laser, &n;&t; * we may not get link. We need to handle this. We cannot &n;&t; * figure out which switch is misbehaving. So we are forced to &n;&t; * make a global change. &n;&t; */
 multiline_comment|/* Enabling Laser. */
 id|val64
 op_assign
@@ -4944,7 +5023,7 @@ multiline_comment|/* &n;&t; * Here we are performing soft reset on XGXS to &n;&t
 id|writeq
 c_func
 (paren
-l_int|0x8007051500000000ULL
+l_int|0x80010515001E0000ULL
 comma
 op_amp
 id|bar0-&gt;dtx_control
@@ -4957,12 +5036,18 @@ c_func
 (paren
 op_amp
 id|bar0-&gt;dtx_control
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|50
 )paren
 suffix:semicolon
 id|writeq
 c_func
 (paren
-l_int|0x80070515000000E0ULL
+l_int|0x80010515001E00E0ULL
 comma
 op_amp
 id|bar0-&gt;dtx_control
@@ -4975,6 +5060,12 @@ c_func
 (paren
 op_amp
 id|bar0-&gt;dtx_control
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|50
 )paren
 suffix:semicolon
 id|writeq
@@ -4995,14 +5086,20 @@ op_amp
 id|bar0-&gt;dtx_control
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *   nic - device private variable.&n; *  Return Value: &n; *   void.&n; *  Description: &n; *   Free all queued Tx buffers.&n; */
-DECL|function|freeTxBuffers
+multiline_comment|/** &n; *  free_tx_buffers - Free all queued Tx buffers &n; *  @nic : device private variable.&n; *  Description: &n; *  Free all queued Tx buffers.&n; *  Return Value: void &n;*/
+DECL|function|free_tx_buffers
 r_void
-id|freeTxBuffers
+id|free_tx_buffers
 c_func
 (paren
 r_struct
@@ -5032,13 +5129,6 @@ id|i
 comma
 id|j
 suffix:semicolon
-macro_line|#if DEBUG_ON
-r_int
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|mac_info_t
 op_star
 id|mac_control
@@ -5047,6 +5137,11 @@ r_struct
 id|config_param
 op_star
 id|config
+suffix:semicolon
+r_int
+id|cnt
+op_assign
+l_int|0
 suffix:semicolon
 id|mac_control
 op_assign
@@ -5067,7 +5162,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -5082,12 +5177,12 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_minus
 l_int|1
 suffix:semicolon
@@ -5103,26 +5198,11 @@ id|i
 )braket
 op_plus
 (paren
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 op_star
 id|j
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|txdp-&gt;Control_1
-op_amp
-id|TXD_LIST_OWN_XENA
-)paren
-)paren
-(brace
-multiline_comment|/* If owned by host, ignore */
-r_continue
-suffix:semicolon
-)brace
 id|skb
 op_assign
 (paren
@@ -5148,32 +5228,22 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|DBG_PRINT
+id|memset
 c_func
 (paren
-id|ERR_DBG
+id|txdp
 comma
-l_string|&quot;%s: NULL skb &quot;
+l_int|0
 comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|DBG_PRINT
-c_func
+r_sizeof
 (paren
-id|ERR_DBG
-comma
-l_string|&quot;in Tx Int&bslash;n&quot;
+id|TxD_t
+)paren
 )paren
 suffix:semicolon
-r_return
+r_continue
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_ON
-id|cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|dev_kfree_skb
 c_func
 (paren
@@ -5193,8 +5263,10 @@ id|TxD_t
 )paren
 )paren
 suffix:semicolon
+id|cnt
+op_increment
+suffix:semicolon
 )brace
-macro_line|#if DEBUG_ON
 id|DBG_PRINT
 c_func
 (paren
@@ -5209,14 +5281,13 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *   nic - device private variable.&n; *  Return Value: &n; *   void.&n; *  Description: &n; *   This function does exactly the opposite of what the startNic() &n; *   function does. This function is called to stop &n; *   the device.&n; */
-DECL|function|stopNic
+multiline_comment|/**  &n; *   stop_nic -  To stop the nic  &n; *   @nic ; device private variable.&n; *   Description: &n; *   This function does exactly the opposite of what the start_nic() &n; *   function does. This function is called to stop the device.&n; *   Return Value:&n; *   void.&n; */
+DECL|function|stop_nic
 r_static
 r_void
-id|stopNic
+id|stop_nic
 c_func
 (paren
 r_struct
@@ -5276,7 +5347,7 @@ id|TX_MAC_INTR
 op_or
 id|RX_MAC_INTR
 suffix:semicolon
-id|en_dis_able_NicIntrs
+id|en_dis_able_nic_intrs
 c_func
 (paren
 id|nic
@@ -5296,7 +5367,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -5338,7 +5409,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable&n; *  Return Value: &n; *  SUCCESS on success or an appropriate -ve value on failure.&n; *  Description: &n; *  The function allocates Rx side skbs and puts the physical&n; *  address of these buffers into the RxD buffer pointers, so that the NIC&n; *  can DMA the received frame into these locations.&n; *  The NIC supports 3 receive modes, viz&n; *  1. single buffer,&n; *  2. three buffer and&n; *  3. Five buffer modes.&n; *  Each mode defines how many fragments the received frame will be split &n; *  up into by the NIC. The frame is split into L3 header, L4 Header, &n; *  L4 payload in three buffer mode and in 5 buffer mode, L4 payload itself &n; *  is split into 3 fragments. As of now only single buffer mode is supported.&n; */
+multiline_comment|/**  &n; *  fill_rx_buffers - Allocates the Rx side skbs &n; *  @nic:  device private variable&n; *  @ring_no: ring number &n; *  Description: &n; *  The function allocates Rx side skbs and puts the physical&n; *  address of these buffers into the RxD buffer pointers, so that the NIC&n; *  can DMA the received frame into these locations.&n; *  The NIC supports 3 receive modes, viz&n; *  1. single buffer,&n; *  2. three buffer and&n; *  3. Five buffer modes.&n; *  Each mode defines how many fragments the received frame will be split &n; *  up into by the NIC. The frame is split into L3 header, L4 Header, &n; *  L4 payload in three buffer mode and in 5 buffer mode, L4 payload itself&n; *  is split into 3 fragments. As of now only single buffer mode is&n; *  supported.&n; *   Return Value:&n; *  SUCCESS on success or an appropriate -ve value on failure.&n; */
 DECL|function|fill_rx_buffers
 r_int
 id|fill_rx_buffers
@@ -5548,6 +5619,26 @@ l_int|1
 op_plus
 id|off1
 suffix:semicolon
+id|offset
+op_assign
+id|block_no
+op_star
+(paren
+id|MAX_RXDS_PER_BLOCK
+)paren
+op_plus
+id|off
+suffix:semicolon
+id|offset1
+op_assign
+id|block_no1
+op_star
+(paren
+id|MAX_RXDS_PER_BLOCK
+)paren
+op_plus
+id|off1
+suffix:semicolon
 id|rxdp
 op_assign
 id|nic-&gt;rx_blocks
@@ -5655,7 +5746,6 @@ id|offset
 op_assign
 id|off
 suffix:semicolon
-multiline_comment|/*rxdp = nic-&gt;rx_blocks[ring_no][block_no].&n;&t;&t;&t;   block_virt_addr + off; */
 id|rxdp
 op_assign
 (paren
@@ -5847,11 +5937,11 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable.&n; *  Return Value: &n; *  NONE.&n; *  Description: &n; *  This function will free all Rx buffers allocated by host.&n; */
-DECL|function|freeRxBuffers
+multiline_comment|/**&n; *  free_rx_buffers - Frees all Rx buffers   &n; *  @sp: device private variable.&n; *  Description: &n; *  This function will free all Rx buffers allocated by host.&n; *  Return Value:&n; *  NONE.&n; */
+DECL|function|free_rx_buffers
 r_static
 r_void
-id|freeRxBuffers
+id|free_rx_buffers
 c_func
 (paren
 r_struct
@@ -5919,7 +6009,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -5938,12 +6028,12 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|i
 )braket
 dot
-id|NumRxd
+id|num_rxd
 suffix:semicolon
 id|j
 op_increment
@@ -6146,7 +6236,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  Input Argument: &n; *   dev - pointer to the device structure.&n; *   budget - The number of packets that were budgeted to be processed during&n; *   one pass through the &squot;Poll&quot; function.&n; *  Return value:&n; *   0 on success and 1 if there are No Rx packets to be processed.&n; *  Description:&n; *   Comes into picture only if NAPI support has been incorporated. It does&n; *   the same thing that rxIntrHandler does, but not in a interrupt context&n; *   also It will process only a given number of packets.&n; */
+multiline_comment|/**&n; * s2io_poll - Rx interrupt handler for NAPI support&n; * @dev : pointer to the device structure.&n; * @budget : The number of packets that were budgeted to be processed &n; * during  one pass through the &squot;Poll&quot; function.&n; * Description:&n; * Comes into picture only if NAPI support has been incorporated. It does&n; * the same thing that rx_intr_handler does, but not in a interrupt context&n; * also It will process only a given number of packets.&n; * Return value:&n; * 0 on success and 1 if there are No Rx packets to be processed.&n; */
 macro_line|#ifdef CONFIG_S2IO_NAPI
 DECL|function|s2io_poll
 r_static
@@ -6275,7 +6365,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -6491,7 +6581,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|rxOsmHandler
+id|rx_osm_handler
 c_func
 (paren
 id|nic
@@ -6561,7 +6651,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -6590,7 +6680,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Re enable the Rx interrupts. */
-id|en_dis_able_NicIntrs
+id|en_dis_able_nic_intrs
 c_func
 (paren
 id|nic
@@ -6614,7 +6704,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -6641,11 +6731,11 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#else
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable.&n; *  Return Value: &n; *  NONE.&n; *  Description: &n; * If the interrupt is because of a received frame or if the &n; *  receive ring contains fresh as yet un-processed frames, this function is&n; *  called. It picks out the RxD at which place the last Rx processing had &n; *  stopped and sends the skb to the OSM&squot;s Rx handler and then increments &n; *  the offset.&n; */
-DECL|function|rxIntrHandler
+multiline_comment|/**  &n; *  rx_intr_handler - Rx interrupt handler&n; *  @nic: device private variable.&n; *  Description: &n; *  If the interrupt is because of a received frame or if the &n; *  receive ring contains fresh as yet un-processed frames,this function is&n; *  called. It picks out the RxD at which place the last Rx processing had &n; *  stopped and sends the skb to the OSM&squot;s Rx handler and then increments &n; *  the offset.&n; *  Return Value:&n; *  NONE.&n; */
+DECL|function|rx_intr_handler
 r_static
 r_void
-id|rxIntrHandler
+id|rx_intr_handler
 c_func
 (paren
 r_struct
@@ -6703,6 +6793,10 @@ r_int
 id|i
 comma
 id|block_no
+comma
+id|pkt_cnt
+op_assign
+l_int|0
 suffix:semicolon
 id|mac_info_t
 op_star
@@ -6723,12 +6817,7 @@ op_assign
 op_amp
 id|nic-&gt;config
 suffix:semicolon
-macro_line|#if DEBUG_ON
-id|nic-&gt;rxint_cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* rx_traffic_int reg is an R1 register, hence we read and write back &n; * the samevalue in the register to clear it.&n; */
+multiline_comment|/* &n;&t; * rx_traffic_int reg is an R1 register, hence we read and write back &n;&t; * the samevalue in the register to clear it.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -6756,7 +6845,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -6954,7 +7043,7 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-id|rxOsmHandler
+id|rx_osm_handler
 c_func
 (paren
 id|nic
@@ -7000,15 +7089,18 @@ id|offset
 op_assign
 id|offset_info.offset
 suffix:semicolon
+id|pkt_cnt
+op_increment
+suffix:semicolon
 )brace
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable&n; *  Return Value: &n; *  NONE&n; *  Description: &n; *  If an interrupt was raised to indicate DMA complete of the &n; *  Tx packet, this function is called. It identifies the last TxD whose buffer&n; *  was freed and frees all skbs whose data have already DMA&squot;ed into the NICs&n; *  internal memory.&n; */
-DECL|function|txIntrHandler
+multiline_comment|/**  &n; *  tx_intr_handler - Transmit interrupt handler&n; *  @nic : device private variable&n; *  Description: &n; *  If an interrupt was raised to indicate DMA complete of the &n; *  Tx packet, this function is called. It identifies the last TxD &n; *  whose buffer was freed and frees all skbs whose data have already &n; *  DMA&squot;ed into the NICs internal memory.&n; *  Return Value:&n; *  NONE&n; */
+DECL|function|tx_intr_handler
 r_static
 r_void
-id|txIntrHandler
+id|tx_intr_handler
 c_func
 (paren
 r_struct
@@ -7076,16 +7168,6 @@ id|config_param
 op_star
 id|config
 suffix:semicolon
-macro_line|#if DEBUG_ON
-r_int
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
-id|nic-&gt;txint_cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|mac_control
 op_assign
 op_amp
@@ -7096,7 +7178,7 @@ op_assign
 op_amp
 id|nic-&gt;config
 suffix:semicolon
-multiline_comment|/* tx_traffic_int reg is an R1 register, hence we read and write &n;&t; * back the samevalue in the register to clear it.&n;&t; */
+multiline_comment|/* &n;&t; * tx_traffic_int reg is an R1 register, hence we read and write &n;&t; * back the samevalue in the register to clear it.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -7124,7 +7206,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -7152,7 +7234,7 @@ id|i
 )braket
 op_plus
 (paren
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 op_star
 id|offset_info.offset
 )paren
@@ -7371,7 +7453,7 @@ r_sizeof
 id|TxD_t
 )paren
 op_star
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 )paren
 )paren
 suffix:semicolon
@@ -7383,15 +7465,6 @@ id|nic-&gt;stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-macro_line|#if DEBUG_ON
-id|nic-&gt;txpkt_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
-id|cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|dev_kfree_skb_irq
 c_func
 (paren
@@ -7415,7 +7488,7 @@ id|i
 )braket
 op_plus
 (paren
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 op_star
 id|offset_info.offset
 )paren
@@ -7430,20 +7503,6 @@ op_assign
 id|offset_info.offset
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_ON
-id|DBG_PRINT
-c_func
-(paren
-id|INTR_DBG
-comma
-l_string|&quot;%s: freed %d Tx Pkts&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|cnt
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 id|spin_lock
 c_func
@@ -7475,11 +7534,11 @@ id|nic-&gt;tx_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  &n; *  Input Arguments: &n; *  device private variable&n; *  Return Value: &n; *  NONE&n; *  Description: &n; *  If the interrupt was neither because of Rx packet or Tx &n; *  complete, this function is called. If the interrupt was to indicate a loss&n; *  of link, the OSM link status handler is invoked for any other alarm &n; *  interrupt the block that raised the interrupt is displayed and a H/W reset &n; *  is issued.&n; */
-DECL|function|alarmIntrHandler
+multiline_comment|/**  &n; *  alarm_intr_handler - Alarm Interrrupt handler&n; *  @nic: device private variable&n; *  Description: If the interrupt was neither because of Rx packet or Tx &n; *  complete, this function is called. If the interrupt was to indicate&n; *  a loss of link, the OSM link status handler is invoked for any other &n; *  alarm interrupt the block that raised the interrupt is displayed &n; *  and a H/W reset is issued.&n; *  Return Value:&n; *  NONE&n;*/
+DECL|function|alarm_intr_handler
 r_static
 r_void
-id|alarmIntrHandler
+id|alarm_intr_handler
 c_func
 (paren
 r_struct
@@ -7546,7 +7605,7 @@ id|nic-&gt;set_link_task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Handling SERR errors by stopping device Xmit queue and forcing &n;&t; * a H/W reset.&n;&t; */
+multiline_comment|/* In case of a serious error, the device will be Reset. */
 id|val64
 op_assign
 id|readq
@@ -7589,12 +7648,12 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Other type of interrupts are not being handled now,  TODO*/
+multiline_comment|/* Other type of interrupts are not being handled now,  TODO */
 )brace
-multiline_comment|/*&n; *  Input Argument: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  Return value:&n; *   SUCCESS on success and FAILURE on failure.&n; *  Description:&n; *   Function that waits for a command to Write into RMAC ADDR DATA registers &n; *   to be completed and returns either success or error depending on whether &n; *   the command was complete or not. &n; */
-DECL|function|waitForCmdComplete
+multiline_comment|/** &n; *  wait_for_cmd_complete - waits for a command to complete.&n; *  @sp : private member of the device structure, which is a pointer to the &n; *  s2io_nic structure.&n; *  Description: Function that waits for a command to Write into RMAC &n; *  ADDR DATA registers to be completed and returns either success or &n; *  error depending on whether the command was complete or not. &n; *  Return value:&n; *   SUCCESS on success and FAILURE on failure.&n; */
+DECL|function|wait_for_cmd_complete
 r_int
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|nic_t
@@ -7703,7 +7762,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  Return value:&n; *   void.&n; *  Description:&n; *   Function to Reset the card. This function then also restores the previously&n; *   saved PCI configuration space registers as the card reset also resets the&n; *   Configration space.&n; */
+multiline_comment|/** &n; *  s2io_reset - Resets the card. &n; *  @sp : private member of the device structure.&n; *  Description: Function to Reset the card. This function then also&n; *  restores the previously saved PCI configuration space registers as &n; *  the card reset also resets the configuration space.&n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_reset
 r_void
 id|s2io_reset
@@ -7743,7 +7802,7 @@ op_amp
 id|bar0-&gt;sw_reset
 )paren
 suffix:semicolon
-multiline_comment|/* At this stage, if the PCI write is indeed completed, the &n;&t; * card is reset and so is the PCI Config space of the device. &n;&t; * So a read cannot be issued at this stage on any of the &n;&t; * registers to ensure the write into &quot;sw_reset&quot; register&n;&t; * has gone through.&n;&t; * Question: Is there any system call that will explicitly force&n;&t; * all the write commands still pending on the bus to be pushed&n;&t; * through?&n;&t; * As of now I&squot;am just giving a 250ms delay and hoping that the&n;&t; * PCI write to sw_reset register is done by this time.&n;&t; */
+multiline_comment|/* &n;&t; * At this stage, if the PCI write is indeed completed, the &n;&t; * card is reset and so is the PCI Config space of the device. &n;&t; * So a read cannot be issued at this stage on any of the &n;&t; * registers to ensure the write into &quot;sw_reset&quot; register&n;&t; * has gone through.&n;&t; * Question: Is there any system call that will explicitly force&n;&t; * all the write commands still pending on the bus to be pushed&n;&t; * through?&n;&t; * As of now I&squot;am just giving a 250ms delay and hoping that the&n;&t; * PCI write to sw_reset register is done by this time.&n;&t; */
 id|set_current_state
 c_func
 (paren
@@ -7856,7 +7915,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  Return value:&n; *  SUCCESS on success and FAILURE on failure.&n; *  Description:&n; * Function to set the swapper control on the card correctly depending on the&n; * &squot;endianness&squot; of the system.&n; */
+multiline_comment|/**&n; *  s2io_set_swapper - to set the swapper controle on the card &n; *  @sp : private member of the device structure, &n; *  pointer to the s2io_nic structure.&n; *  Description: Function to set the swapper control on the card &n; *  correctly depending on the &squot;endianness&squot; of the system.&n; *  Return value:&n; *  SUCCESS on success and FAILURE on failure.&n; */
 DECL|function|s2io_set_swapper
 r_int
 id|s2io_set_swapper
@@ -7887,9 +7946,9 @@ suffix:semicolon
 id|u64
 id|val64
 suffix:semicolon
-multiline_comment|/*  Set proper endian settings and verify the same by reading the PIF &n; *  Feed-back register.&n; */
+multiline_comment|/* &n;&t; * Set proper endian settings and verify the same by reading&n;&t; * the PIF Feed-back register.&n;&t; */
 macro_line|#ifdef  __BIG_ENDIAN
-multiline_comment|/* The device by default set to a big endian format, so a big endian &n; * driver need not set anything.&n; */
+multiline_comment|/* &n;&t; * The device by default set to a big endian format, so a &n;&t; * big endian driver need not set anything.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -7945,7 +8004,7 @@ id|bar0-&gt;swapper_ctrl
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* Initially we enable all bits to make it accessible by the driver,&n; * then we selectively enable only those bits that we want to set.&n; */
+multiline_comment|/* &n;&t; * Initially we enable all bits to make it accessible by the&n;&t; * driver, then we selectively enable only those bits that &n;&t; * we want to set.&n;&t; */
 id|writeq
 c_func
 (paren
@@ -8009,7 +8068,7 @@ id|bar0-&gt;swapper_ctrl
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*  Verifying if endian settings are accurate by reading a feedback&n; *  register.&n; */
+multiline_comment|/* &n;&t; * Verifying if endian settings are accurate by reading a &n;&t; * feedback register.&n;&t; */
 id|val64
 op_assign
 id|readq
@@ -8062,7 +8121,7 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* ********************************************************* *&n; * Functions defined below concern the OS part of the driver *&n; * ********************************************************* */
-multiline_comment|/*&n; *  Input Argument: &n; *  dev - pointer to the device structure.&n; *  Return value:&n; *  &squot;0&squot; on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; *  Description:&n; *  This function is the open entry point of the driver. It mainly calls a&n; *  function to allocate Rx buffers and inserts them into the buffer&n; *  descriptors and then enables the Rx part of the NIC. &n; */
+multiline_comment|/**  &n; *  s2io-open - open entry point of the driver&n; *  @dev : pointer to the device structure.&n; *  Description:&n; *  This function is the open entry point of the driver. It mainly calls a&n; *  function to allocate Rx buffers and inserts them into the buffer&n; *  descriptors and then enables the Rx part of the NIC. &n; *  Return value:&n; *  0 on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; */
 DECL|function|s2io_open
 r_int
 id|s2io_open
@@ -8100,7 +8159,7 @@ id|config_param
 op_star
 id|config
 suffix:semicolon
-multiline_comment|/* Make sure you have link off by default every time Nic is initialized*/
+multiline_comment|/* &n;&t; * Make sure you have link off by default every time &n;&t; * Nic is initialized&n;&t; */
 id|netif_carrier_off
 c_func
 (paren
@@ -8111,11 +8170,11 @@ id|sp-&gt;last_link_state
 op_assign
 id|LINK_DOWN
 suffix:semicolon
-multiline_comment|/*  Initialize the H/W I/O registers */
+multiline_comment|/* Initialize the H/W I/O registers */
 r_if
 c_cond
 (paren
-id|initNic
+id|init_nic
 c_func
 (paren
 id|sp
@@ -8139,7 +8198,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*  After proper initialization of H/W, register ISR */
+multiline_comment|/* After proper initialization of H/W, register ISR */
 id|err
 op_assign
 id|request_irq
@@ -8218,14 +8277,14 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*  Setting its receive mode */
+multiline_comment|/* Setting its receive mode */
 id|s2io_set_multicast
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*  Initializing the Rx buffers. For now we are considering only 1 Rx ring&n; * and initializing buffers into 1016 RxDs or 8 Rx blocks&n; */
+multiline_comment|/* &n;&t; * Initializing the Rx buffers. For now we are considering only 1 &n;&t; * Rx ring and initializing buffers into 1016 RxDs or 8 Rx blocks&n;&t; */
 id|mac_control
 op_assign
 op_amp
@@ -8245,7 +8304,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -8291,7 +8350,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|freeRxBuffers
+id|free_rx_buffers
 c_func
 (paren
 id|sp
@@ -8323,7 +8382,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  Enable tasklet for the device */
+multiline_comment|/* Enable tasklet for the device */
 id|tasklet_init
 c_func
 (paren
@@ -8339,11 +8398,11 @@ r_int
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*  Enable Rx Traffic and interrupts on the NIC */
+multiline_comment|/* Enable Rx Traffic and interrupts on the NIC */
 r_if
 c_cond
 (paren
-id|startNic
+id|start_nic
 c_func
 (paren
 id|sp
@@ -8381,7 +8440,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|freeRxBuffers
+id|free_rx_buffers
 c_func
 (paren
 id|sp
@@ -8407,7 +8466,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev - device pointer.&n; *  Return value:&n; *  &squot;0&squot; on success and an appropriate (-)ve integer as defined in errno.h&n; *  file on failure.&n; *  Description:&n; *  This is the stop entry point of the driver. It needs to undo exactly&n; *  whatever was done by the open entry point, thus it&squot;s usually referred to&n; *  as the close function. Among other things this function mainly stops the&n; *  Rx side of the NIC and frees all the Rx buffers in the Rx rings.&n; */
+multiline_comment|/**&n; *  s2io_close -close entry point of the driver&n; *  @dev : device pointer.&n; *  Description:&n; *  This is the stop entry point of the driver. It needs to undo exactly&n; *  whatever was done by the open entry point,thus it&squot;s usually referred to&n; *  as the close function.Among other things this function mainly stops the&n; *  Rx side of the NIC and frees all the Rx buffers in the Rx rings.&n; *  Return value:&n; *  0 on success and an appropriate (-)ve integer as defined in errno.h&n; *  file on failure.&n; */
 DECL|function|s2io_close
 r_int
 id|s2io_close
@@ -8460,7 +8519,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* disable Tx and Rx traffic on the NIC */
-id|stopNic
+id|stop_nic
 c_func
 (paren
 id|sp
@@ -8473,7 +8532,7 @@ op_amp
 id|sp-&gt;isr_lock
 )paren
 suffix:semicolon
-multiline_comment|/* If the device tasklet is running, wait till its done before killing it */
+multiline_comment|/* &n;&t; * If the device tasklet is running, wait till its done &n;&t; * before killing it &n;&t; */
 r_while
 c_loop
 (paren
@@ -8610,14 +8669,14 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Free all Tx Buffers waiting for transmission */
-id|freeTxBuffers
+id|free_tx_buffers
 c_func
 (paren
 id|sp
 )paren
 suffix:semicolon
 multiline_comment|/*  Free all Rx buffers allocated by host */
-id|freeRxBuffers
+id|free_rx_buffers
 c_func
 (paren
 id|sp
@@ -8632,7 +8691,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  skb - the socket buffer containing the Tx data.&n; *  dev - device pointer.&n; *  Return value:&n; *  &squot;0&squot; on success &amp; 1 on failure. &n; *  NOTE: when device cant queue the pkt, just the trans_start variable will&n; *  not be upadted.&n; *  Description:&n; *  This function is the Tx entry point of the driver. S2IO NIC supports&n; *  certain protocol assist features on Tx side, namely  CSO, S/G, LSO.&n; */
+multiline_comment|/**&n; *  s2io_xmit - Tx entry point of te driver&n; *  @skb : the socket buffer containing the Tx data.&n; *  @dev : device pointer.&n; *  Description :&n; *  This function is the Tx entry point of the driver. S2IO NIC supports&n; *  certain protocol assist features on Tx side, namely  CSO, S/G, LSO.&n; *  NOTE: when device cant queue the pkt,just the trans_start variable will&n; *  not be upadted.&n; *  Return value:&n; *  0 on success &amp; 1 on failure.&n; */
 DECL|function|s2io_xmit
 r_int
 id|s2io_xmit
@@ -8702,6 +8761,16 @@ id|config_param
 op_star
 id|config
 suffix:semicolon
+id|XENA_dev_config_t
+op_star
+id|bar0
+op_assign
+(paren
+id|XENA_dev_config_t
+op_star
+)paren
+id|sp-&gt;bar0
+suffix:semicolon
 id|mac_control
 op_assign
 op_amp
@@ -8759,7 +8828,7 @@ id|queue
 op_assign
 id|x
 op_mod
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 )brace
 id|off
@@ -8788,7 +8857,7 @@ id|offset
 suffix:semicolon
 id|txd_len
 op_assign
-id|mac_control-&gt;txdl_len
+id|config-&gt;max_txds
 suffix:semicolon
 id|txdp
 op_assign
@@ -8798,7 +8867,7 @@ id|queue
 )braket
 op_plus
 (paren
-id|config-&gt;MaxTxDs
+id|config-&gt;max_txds
 op_star
 id|off
 )paren
@@ -8957,7 +9026,7 @@ suffix:semicolon
 )brace
 id|txdp-&gt;Control_2
 op_or_assign
-id|config-&gt;TxIntrType
+id|config-&gt;tx_intr_type
 suffix:semicolon
 id|txdp-&gt;Control_1
 op_or_assign
@@ -9111,6 +9180,16 @@ op_amp
 id|tx_fifo-&gt;List_Control
 )paren
 suffix:semicolon
+multiline_comment|/* Perform a PCI read to flush previous writes */
+id|val64
+op_assign
+id|readq
+c_func
+(paren
+op_amp
+id|bar0-&gt;general_int_status
+)paren
+suffix:semicolon
 id|off
 op_increment
 suffix:semicolon
@@ -9187,7 +9266,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  irq: the irq of the device.&n; *  dev_id: a void pointer to the dev structure of the NIC.&n; *  ptregs: pointer to the registers pushed on the stack.&n; *  Return value:&n; *  void.&n; *  Description:&n; *  This function is the ISR handler of the device. It identifies the reason &n; *  for the interrupt and calls the relevant service routines.&n; *  As a contongency measure, this ISR allocates the recv buffers, if their &n; *  numbers are below the panic value which is presently set to 25% of the&n; *  original number of rcv buffers allocated.&n; */
+multiline_comment|/**&n; *  s2io_isr - ISR handler of the device .&n; *  @irq: the irq of the device.&n; *  @dev_id: a void pointer to the dev structure of the NIC.&n; *  @pt_regs: pointer to the registers pushed on the stack.&n; *  Description:  This function is the ISR handler of the device. It &n; *  identifies the reason for the interrupt and calls the relevant &n; *  service routines. As a contongency measure, this ISR allocates the &n; *  recv buffers, if their numbers are below the panic value which is&n; *  presently set to 25% of the original number of rcv buffers allocated.&n; *  Return value:&n; *   IRQ_HANDLED: will be returned if IRQ was handled by this routine &n; *   IRQ_NONE: will be returned if interrupt is not from our device&n; */
 DECL|function|s2io_isr
 r_static
 id|irqreturn_t
@@ -9270,7 +9349,7 @@ op_amp
 id|sp-&gt;isr_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Identify the cause for interrupt and call the appropriate&n;&t; * interrupt handler. Causes for the interrupt could be;&n;&t; * 1. Rx of packet.&n;&t; * 2. Tx complete.&n;&t; * 3. Link down.&n;&t; * 4. Error in any functional blocks of the NIC. &n;&t; */
+multiline_comment|/* &n;&t; * Identify the cause for interrupt and call the appropriate&n;&t; * interrupt handler. Causes for the interrupt could be;&n;&t; * 1. Rx of packet.&n;&t; * 2. Tx complete.&n;&t; * 3. Link down.&n;&t; * 4. Error in any functional blocks of the NIC. &n;&t; */
 id|reason
 op_assign
 id|readq
@@ -9299,7 +9378,7 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-multiline_comment|/* Mask the interrupts on the NIC */
+multiline_comment|/* Mask the Interrupts on the NIC. */
 id|general_mask
 op_assign
 id|readq
@@ -9318,11 +9397,6 @@ op_amp
 id|bar0-&gt;general_int_mask
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_ON
-id|sp-&gt;int_cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* If Intr is because of Tx Traffic */
 r_if
 c_cond
@@ -9332,7 +9406,7 @@ op_amp
 id|GEN_INTR_TXTRAFFIC
 )paren
 (brace
-id|txIntrHandler
+id|tx_intr_handler
 c_func
 (paren
 id|sp
@@ -9349,7 +9423,7 @@ op_amp
 id|GEN_ERROR_INTR
 )paren
 )paren
-id|alarmIntrHandler
+id|alarm_intr_handler
 c_func
 (paren
 id|sp
@@ -9374,7 +9448,7 @@ id|dev
 )paren
 )paren
 (brace
-id|en_dis_able_NicIntrs
+id|en_dis_able_nic_intrs
 c_func
 (paren
 id|sp
@@ -9384,7 +9458,7 @@ comma
 id|DISABLE_INTRS
 )paren
 suffix:semicolon
-multiline_comment|/* We retake the snap shot of the general interrupt &n;&t;&t;&t; * register.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Here we take a snap shot of the general &n;&t;&t;&t; * Intr Register.&n;&t;&t;&t; */
 id|general_mask
 op_assign
 id|readq
@@ -9412,7 +9486,7 @@ op_amp
 id|GEN_INTR_RXTRAFFIC
 )paren
 (brace
-id|rxIntrHandler
+id|rx_intr_handler
 c_func
 (paren
 id|sp
@@ -9420,7 +9494,7 @@ id|sp
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* If the Rx buffer count is below the panic threshold then reallocate the&n; * buffers from the interrupt handler itself, else schedule a tasklet to &n; * reallocate the buffers.&n; */
+multiline_comment|/* &n;&t; * If the Rx buffer count is below the panic threshold then &n;&t; * reallocate the buffers from the interrupt handler itself, &n;&t; * else schedule a tasklet to reallocate the buffers.&n;&t; */
 macro_line|#if 1
 (brace
 r_int
@@ -9435,7 +9509,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -9488,7 +9562,7 @@ suffix:semicolon
 id|DBG_PRINT
 c_func
 (paren
-id|ERR_DBG
+id|INTR_DBG
 comma
 l_string|&quot;%s: Rx BD hit &quot;
 comma
@@ -9498,7 +9572,7 @@ suffix:semicolon
 id|DBG_PRINT
 c_func
 (paren
-id|ERR_DBG
+id|INTR_DBG
 comma
 l_string|&quot;PANIC levels&bslash;n&quot;
 )paren
@@ -9572,7 +9646,9 @@ op_star
 )paren
 (paren
 op_amp
-id|sp-&gt;tasklet_status
+id|sp
+op_member_access_from_pointer
+id|tasklet_status
 )paren
 )paren
 suffix:semicolon
@@ -9617,7 +9693,7 @@ id|sp-&gt;task
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Unmask all the previously enabled interrupts on the NIC */
+multiline_comment|/* Unmask all previously enabled interrupts on the NIC. */
 id|writeq
 c_func
 (paren
@@ -9638,7 +9714,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev - pointer to the device structure.&n; *  Return value:&n; *  pointer to the updated net_device_stats structure.&n; *  Description:&n; *  This function updates the device statistics structure in the s2io_nic &n; *  structure and returns a pointer to the same.&n; */
+multiline_comment|/**&n; *  s2io_get_stats - Updates the device statistics structure. &n; *  @dev : pointer to the device structure.&n; *  Description:&n; *  This function updates the device statistics structure in the s2io_nic &n; *  structure and returns a pointer to the same.&n; *  Return value:&n; *  pointer to the updated net_device_stats structure.&n; */
 DECL|function|s2io_get_stats
 r_struct
 id|net_device_stats
@@ -9679,19 +9755,19 @@ id|sp-&gt;config
 suffix:semicolon
 id|sp-&gt;stats.tx_errors
 op_assign
-id|mac_control-&gt;StatsInfo-&gt;tmac_any_err_frms
+id|mac_control-&gt;stats_info-&gt;tmac_any_err_frms
 suffix:semicolon
 id|sp-&gt;stats.rx_errors
 op_assign
-id|mac_control-&gt;StatsInfo-&gt;rmac_drop_frms
+id|mac_control-&gt;stats_info-&gt;rmac_drop_frms
 suffix:semicolon
 id|sp-&gt;stats.multicast
 op_assign
-id|mac_control-&gt;StatsInfo-&gt;rmac_vld_mcst_frms
+id|mac_control-&gt;stats_info-&gt;rmac_vld_mcst_frms
 suffix:semicolon
 id|sp-&gt;stats.rx_length_errors
 op_assign
-id|mac_control-&gt;StatsInfo-&gt;rmac_long_frms
+id|mac_control-&gt;stats_info-&gt;rmac_long_frms
 suffix:semicolon
 r_return
 (paren
@@ -9700,7 +9776,7 @@ id|sp-&gt;stats
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev - pointer to the device structure&n; *  Return value:&n; *  void.&n; *  Description:&n; *  This function is a driver entry point which gets called by the kernel &n; *  whenever multicast addresses must be enabled/disabled. This also gets &n; *  called to set/reset promiscuous mode. Depending on the deivce flag, we&n; *  determine, if multicast address must be enabled or if promiscuous mode&n; *  is to be disabled etc.&n; */
+multiline_comment|/**&n; *  s2io_set_multicast - entry point for multicast address enable/disable.&n; *  @dev : pointer to the device structure&n; *  Description:&n; *  This function is a driver entry point which gets called by the kernel &n; *  whenever multicast addresses must be enabled/disabled. This also gets &n; *  called to set/reset promiscuous mode. Depending on the deivce flag, we&n; *  determine, if multicast address must be enabled or if promiscuous mode&n; *  is to be disabled etc.&n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_set_multicast
 r_static
 r_void
@@ -9831,7 +9907,7 @@ id|bar0-&gt;rmac_addr_cmd_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Wait till command completes */
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -9897,7 +9973,7 @@ id|bar0-&gt;rmac_addr_cmd_mem
 )paren
 suffix:semicolon
 multiline_comment|/* Wait till command completes */
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -10268,7 +10344,7 @@ multiline_comment|/* Wait for command completes */
 r_if
 c_cond
 (paren
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -10402,7 +10478,7 @@ multiline_comment|/* Wait for command completes */
 r_if
 c_cond
 (paren
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -10433,7 +10509,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev - pointer to the device structure.&n; *  new_mac - a uchar pointer to the new mac address which is to be set.&n; *  Return value:&n; *  SUCCESS on success and an appropriate (-)ve integer as defined in errno.h&n; *  file on failure.&n; *  Description:&n; *  This procedure will program the Xframe to receive frames with new&n; *  Mac Address&n; */
+multiline_comment|/**&n; *  s2io_set_mac_addr - Programs the Xframe mac address &n; *  @dev : pointer to the device structure.&n; *  @addr: a uchar pointer to the new mac address which is to be set.&n; *  Description : This procedure will program the Xframe to receive &n; *  frames with new Mac Address&n; *  Return value: SUCCESS on success and an appropriate (-)ve integer &n; *  as defined in errno.h file on failure.&n; */
 DECL|function|s2io_set_mac_addr
 r_int
 id|s2io_set_mac_addr
@@ -10542,7 +10618,7 @@ multiline_comment|/* Wait till command completes */
 r_if
 c_cond
 (paren
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -10567,7 +10643,7 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  info - pointer to the structure with parameters given by ethtool to set&n; *  link information.&n; * Return value:&n; *  0 on success.&n; * Description:&n; *  The function sets different link parameters provided by the user onto &n; *  the NIC.&n; */
+multiline_comment|/**&n; * s2io_ethtool_sset - Sets different link parameters. &n; * @sp : private member of the device structure, which is a pointer to the  * s2io_nic structure.&n; * @info: pointer to the structure with parameters given by ethtool to set&n; * link information.&n; * Description:&n; * The function sets different link parameters provided by the user onto &n; * the NIC.&n; * Return value:&n; * 0 on success.&n;*/
 DECL|function|s2io_ethtool_sset
 r_static
 r_int
@@ -10635,7 +10711,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  info - pointer to the structure with parameters given by ethtool to return&n; *  link information.&n; * Return value:&n; *  void&n; * Description:&n; *  Returns link specefic information like speed, duplex etc.. to ethtool.&n; */
+multiline_comment|/**&n; * s2io_ethtol_gset - Return link specific information. &n; * @sp : private member of the device structure, pointer to the&n; *      s2io_nic structure.&n; * @info : pointer to the structure with parameters given by ethtool&n; * to return link information.&n; * Description:&n; * Returns link specific information like speed, duplex etc.. to ethtool.&n; * Return value :&n; * return 0 on success.&n; */
 DECL|function|s2io_ethtool_gset
 r_int
 id|s2io_ethtool_gset
@@ -10719,7 +10795,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  info - pointer to the structure with parameters given by ethtool to return&n; *  driver information.&n; * Return value:&n; *  void&n; * Description:&n; *  Returns driver specefic information like name, version etc.. to ethtool.&n; */
+multiline_comment|/**&n; * s2io_ethtool_gdrvinfo - Returns driver specific information. &n; * @sp : private member of the device structure, which is a pointer to the &n; * s2io_nic structure.&n; * @info : pointer to the structure with parameters given by ethtool to&n; * return driver information.&n; * Description:&n; * Returns driver specefic information like name, version etc.. to ethtool.&n; * Return value:&n; *  void&n; */
 DECL|function|s2io_ethtool_gdrvinfo
 r_static
 r_void
@@ -10806,7 +10882,7 @@ op_assign
 id|S2IO_STAT_LEN
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  regs - pointer to the structure with parameters given by ethtool for &n; *  dumping the registers.&n; *  reg_space - The input argumnet into which all the registers are dumped.&n; * Return value:&n; *  void&n; * Description:&n; *  Dumps the entire register space of xFrame NIC into the user given buffer &n; *  area.&n; */
+multiline_comment|/**&n; *  s2io_ethtool_gregs - dumps the entire space of Xfame into the buffer.&n; *  @sp: private member of the device structure, which is a pointer to the &n; *  s2io_nic structure.&n; *  @regs : pointer to the structure with parameters given by ethtool for &n; *  dumping the registers.&n; *  @reg_space: The input argumnet into which all the registers are dumped.&n; *  Description:&n; *  Dumps the entire register space of xFrame NIC into the user given&n; *  buffer area.&n; * Return value :&n; * void .&n;*/
 DECL|function|s2io_ethtool_gregs
 r_static
 r_void
@@ -10907,7 +10983,7 @@ l_int|8
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  data - address of the private member of the device structure, which &n; *  is a pointer to the s2io_nic structure, provided as an u32.&n; * Return value:&n; *  void&n; * Description:&n; *  This is actually the timer function that alternates the adapter LED bit&n; *  of the adapter control bit to set/reset every time on invocation.&n; *  The timer is set for 1/2 a second, hence tha NIC blinks once every second.&n; */
+multiline_comment|/**&n; *  s2io_phy_id  - timer function that alternates adapter LED.&n; *  @data : address of the private member of the device structure, which &n; *  is a pointer to the s2io_nic structure, provided as an u32.&n; * Description: This is actually the timer function that alternates the &n; * adapter LED bit of the adapter control bit to set/reset every time on &n; * invocation. The timer is set for 1/2 a second, hence tha NIC blinks &n; *  once every second.&n;*/
 DECL|function|s2io_phy_id
 r_static
 r_void
@@ -11025,7 +11101,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  id - pointer to the structure with identification parameters given by &n; *  ethtool.&n; * Return value:&n; *  int , returns &squot;0&squot; on success&n; * Description:&n; *  Used to physically identify the NIC on the system. The Link LED will blink&n; *  for a time specified by the user for identification.&n; *  NOTE: The Link has to be Up to be able to blink the LED. Hence &n; *  identification is possible only if it&squot;s link is up.&n; */
+multiline_comment|/**&n; * s2io_ethtool_idnic - To physically identify the nic on the system.&n; * @sp : private member of the device structure, which is a pointer to the&n; * s2io_nic structure.&n; * @id : pointer to the structure with identification parameters given by &n; * ethtool.&n; * Description: Used to physically identify the NIC on the system.&n; * The Link LED will blink for a time specified by the user for &n; * identification.&n; * NOTE: The Link has to be Up to be able to blink the LED. Hence &n; * identification is possible only if it&squot;s link is up.&n; * Return value:&n; * int , returns 0 on success&n; */
 DECL|function|s2io_ethtool_idnic
 r_static
 r_int
@@ -11188,7 +11264,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  ep - pointer to the structure with pause parameters given by ethtool.&n; * Return value:&n; *  void&n; * Description:&n; *  Returns the Pause frame generation and reception capability of the NIC.&n; */
+multiline_comment|/**&n; * s2io_ethtool_getpause_data -Pause frame frame generation and reception.&n; * @sp : private member of the device structure, which is a pointer to the  * s2io_nic structure.&n; * @ep : pointer to the structure with pause parameters given by ethtool.&n; * Description:&n; * Returns the Pause frame generation and reception capability of the NIC.&n; * Return value:&n; *  void&n; */
 DECL|function|s2io_ethtool_getpause_data
 r_static
 r_void
@@ -11261,7 +11337,7 @@ op_assign
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; * sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; * ep - pointer to the structure with pause parameters given by ethtool.&n; * Return value:&n; * int, returns &squot;0&squot; on Success&n; * Description:&n; * It can be used to set or reset Pause frame generation or reception support &n; * of the NIC.&n; */
+multiline_comment|/**&n; * s2io_ethtool-setpause_data -  set/reset pause frame generation.&n; * @sp : private member of the device structure, which is a pointer to the &n; *      s2io_nic structure.&n; * @ep : pointer to the structure with pause parameters given by ethtool.&n; * Description:&n; * It can be used to set or reset Pause frame generation or reception&n; * support of the NIC.&n; * Return value:&n; * int, returns 0 on Success&n; */
 DECL|function|s2io_ethtool_setpause_data
 r_int
 id|s2io_ethtool_setpause_data
@@ -11349,13 +11425,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  off - offset at which the data must be written&n; * Return value:&n; *  -1 on failure and the value read from the Eeprom if successful.&n; * Description:&n; *  Will read 4 bytes of data from the user given offset and return the &n; *  read data.&n; * NOTE: Will allow to read only part of the EEPROM visible through the&n; * &t; I2C bus.&n; */
+multiline_comment|/**&n; * read_eeprom - reads 4 bytes of data from user given offset.&n; * @sp : private member of the device structure, which is a pointer to the &n; *      s2io_nic structure.&n; * @off : offset at which the data must be written&n; * @data : Its an output parameter where the data read at the given&n; * &t;offset is stored.&n; * Description:&n; * Will read 4 bytes of data from the user given offset and return the &n; * read data.&n; * NOTE: Will allow to read only part of the EEPROM visible through the&n; *   I2C bus.&n; * Return value:&n; *  -1 on failure and 0 on success.&n; */
 DECL|macro|S2IO_DEV_ID
 mdefine_line|#define S2IO_DEV_ID&t;&t;5
-DECL|function|readEeprom
+DECL|function|read_eeprom
 r_static
 id|u32
-id|readEeprom
+id|read_eeprom
 c_func
 (paren
 id|nic_t
@@ -11482,11 +11558,11 @@ r_return
 id|data
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  off - offset at which the data must be written&n; *  data - The data that is to be written&n; *  cnt - Number of bytes of the data that are actually to be written into &n; *  the Eeprom. (max of 3)&n; * Return value:&n; *  &squot;0&squot; on success, -1 on failure.&n; * Description:&n; *  Actually writes the relevant part of the data value into the Eeprom&n; *  through the I2C bus.&n; */
-DECL|function|writeEeprom
+multiline_comment|/**&n; *  write_eeprom - actually writes the relevant part of the data value.&n; *  @sp : private member of the device structure, which is a pointer to the&n; *       s2io_nic structure.&n; *  @off : offset at which the data must be written&n; *  @data : The data that is to be written&n; *  @cnt : Number of bytes of the data that are actually to be written into &n; *  the Eeprom. (max of 3)&n; * Description:&n; *  Actually writes the relevant part of the data value into the Eeprom&n; *  through the I2C bus.&n; * Return value:&n; *  0 on success, -1 on failure.&n; */
+DECL|function|write_eeprom
 r_static
 r_int
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|nic_t
@@ -11629,61 +11705,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * A helper function used to invert the 4 byte u32 data field&n; * byte by byte. This will be used by the Read Eeprom function&n; * for display purposes.&n; */
-DECL|function|inv
-id|u32
-id|inv
-c_func
-(paren
-id|u32
-id|data
-)paren
-(brace
-r_static
-id|u32
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|data
-)paren
-(brace
-id|u8
-id|c
-op_assign
-id|data
-suffix:semicolon
-id|ret
-op_assign
-(paren
-(paren
-id|ret
-op_lshift
-l_int|8
-)paren
-op_plus
-id|c
-)paren
-suffix:semicolon
-id|data
-op_rshift_assign
-l_int|8
-suffix:semicolon
-id|inv
-c_func
-(paren
-id|data
-)paren
-suffix:semicolon
-)brace
-r_return
-id|ret
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  eeprom - pointer to the user level structure provided by ethtool, &n; *   containing all relevant information.&n; *  data_buf - user defined value to be written into Eeprom.&n; * Return value:&n; *  int  &squot;0&squot; on success&n; * Description:&n; *  Reads the values stored in the Eeprom at given offset for a given length.&n; *  Stores these values int the input argument data buffer &squot;data_buf&squot; and&n; *  returns these to the caller (ethtool.)&n; */
+multiline_comment|/**&n; *  s2io_ethtool_geeprom  - reads the value stored in the Eeprom.&n; *  @sp : private member of the device structure, which is a pointer to the *       s2io_nic structure.&n; *  @eeprom : pointer to the user level structure provided by ethtool, &n; *  containing all relevant information.&n; *  @data_buf : user defined value to be written into Eeprom.&n; *  Description: Reads the values stored in the Eeprom at given offset&n; *  for a given length. Stores these values int the input argument data&n; *  buffer &squot;data_buf&squot; and returns these to the caller (ethtool.)&n; *  Return value:&n; *  int  0 on success&n; */
 DECL|function|s2io_ethtool_geeprom
 r_int
 id|s2io_ethtool_geeprom
@@ -11764,7 +11786,7 @@ l_int|4
 (brace
 id|data
 op_assign
-id|readEeprom
+id|read_eeprom
 c_func
 (paren
 id|sp
@@ -11797,7 +11819,7 @@ suffix:semicolon
 )brace
 id|valid
 op_assign
-id|inv
+id|INV
 c_func
 (paren
 id|data
@@ -11823,7 +11845,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  eeprom - pointer to the user level structure provided by ethtool, &n; *   containing all relevant information.&n; *  data_buf - user defined value to be written into Eeprom.&n; * Return value:&n; *  &squot;0&squot; on success, -EFAULT on failure.&n; * Description:&n; *  Tries to write the user provided value in the Eeprom, at the offset&n; *  given by the user.&n; */
+multiline_comment|/**&n; *  s2io_ethtool_seeprom - tries to write the user provided value in Eeprom&n; *  @sp : private member of the device structure, which is a pointer to the&n; *  s2io_nic structure.&n; *  @eeprom : pointer to the user level structure provided by ethtool, &n; *  containing all relevant information.&n; *  @data_buf ; user defined value to be written into Eeprom.&n; *  Description:&n; *  Tries to write the user provided value in the Eeprom, at the offset&n; *  given by the user.&n; *  Return value:&n; *  0 on success, -EFAULT on failure.&n; */
 DECL|function|s2io_ethtool_seeprom
 r_static
 r_int
@@ -11950,7 +11972,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -11999,11 +12021,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  &squot;0&squot; on success.&n; * Description:&n; *  Read and write into all clock domains. The NIC has 3 clock domains,&n; *  see that registers in all the three regions are accessible.&n; */
-DECL|function|s2io_registerTest
+multiline_comment|/**&n; * s2io_register_test - reads and writes into all clock domains. &n; * @sp : private member of the device structure, which is a pointer to the &n; * s2io_nic structure.&n; * @data : variable that returns the result of each of the test conducted b&n; * by the driver.&n; * Description:&n; * Read and write into all clock domains. The NIC has 3 clock domains,&n; * see that registers in all the three regions are accessible.&n; * Return value:&n; * 0 on success.&n; */
+DECL|function|s2io_register_test
 r_static
 r_int
-id|s2io_registerTest
+id|s2io_register_test
 c_func
 (paren
 id|nic_t
@@ -12250,11 +12272,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  &squot;0&squot; on success.&n; * Description:&n; *  Verify that EEPROM in the xena can be programmed using I2C_CONTROL &n; *  register.&n; */
-DECL|function|s2io_eepromTest
+multiline_comment|/**&n; * s2io_eeprom_test - to verify that EEprom in the xena can be programmed. &n; * @sp : private member of the device structure, which is a pointer to the&n; * s2io_nic structure.&n; * @data:variable that returns the result of each of the test conducted by&n; * the driver.&n; * Description:&n; * Verify that EEPROM in the xena can be programmed using I2C_CONTROL &n; * register.&n; * Return value:&n; * 0 on success.&n; */
+DECL|function|s2io_eeprom_test
 r_static
 r_int
-id|s2io_eepromTest
+id|s2io_eeprom_test
 c_func
 (paren
 id|nic_t
@@ -12278,7 +12300,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12298,7 +12320,7 @@ multiline_comment|/* Test Write at offset 4f0 */
 r_if
 c_cond
 (paren
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12320,12 +12342,12 @@ c_cond
 (paren
 id|ret_data
 op_assign
-id|readEeprom
+id|read_eeprom
 c_func
 (paren
 id|sp
 comma
-l_int|0x4f0
+l_int|0x4F0
 )paren
 )paren
 OL
@@ -12347,7 +12369,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Reset the EEPROM data go FFFF */
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12364,7 +12386,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12384,7 +12406,7 @@ multiline_comment|/* Test Write Request at offset 0x7fc */
 r_if
 c_cond
 (paren
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12406,7 +12428,7 @@ c_cond
 (paren
 id|ret_data
 op_assign
-id|readEeprom
+id|read_eeprom
 c_func
 (paren
 id|sp
@@ -12433,7 +12455,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Reset the EEPROM data go FFFF */
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12450,7 +12472,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12471,7 +12493,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12492,7 +12514,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12513,7 +12535,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|writeEeprom
+id|write_eeprom
 c_func
 (paren
 id|sp
@@ -12538,11 +12560,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  &squot;0&squot; on success and -1 on failure.&n; * Description:&n; *  This invokes the MemBist test of the card. We give around&n; *  2 secs time for the Test to complete. If it&squot;s still not complete&n; *  within this peiod, we consider that the test failed. &n; */
-DECL|function|s2io_bistTest
+multiline_comment|/**&n; * s2io_bist_test - invokes the MemBist test of the card .&n; * @sp : private member of the device structure, which is a pointer to the &n; * s2io_nic structure.&n; * @data:variable that returns the result of each of the test conducted by &n; * the driver.&n; * Description:&n; * This invokes the MemBist test of the card. We give around&n; * 2 secs time for the Test to complete. If it&squot;s still not complete&n; * within this peiod, we consider that the test failed. &n; * Return value:&n; * 0 on success and -1 on failure.&n; */
+DECL|function|s2io_bist_test
 r_static
 r_int
-id|s2io_bistTest
+id|s2io_bist_test
 c_func
 (paren
 id|nic_t
@@ -12662,11 +12684,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  &squot;0&squot; on success.&n; * Description:&n; *  The function verifies the link state of the NIC and updates the input &n; *  argument &squot;data&squot; appropriately.&n; */
-DECL|function|s2io_linkTest
+multiline_comment|/**&n; * s2io-link_test - verifies the link state of the nic  &n; * @sp ; private member of the device structure, which is a pointer to the &n; * s2io_nic structure.&n; * @data: variable that returns the result of each of the test conducted by&n; * the driver.&n; * Description:&n; * The function verifies the link state of the NIC and updates the input &n; * argument &squot;data&squot; appropriately.&n; * Return value:&n; * 0 on success.&n; */
+DECL|function|s2io_link_test
 r_static
 r_int
-id|s2io_linkTest
+id|s2io_link_test
 c_func
 (paren
 id|nic_t
@@ -12716,11 +12738,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  &squot;0&squot; on success.&n; * Description:&n; *  This is one of the offline test that tests the read and write &n; *  access to the RldRam chip on the NIC.&n; */
-DECL|function|s2io_rldramTest
+multiline_comment|/**&n; * s2io_rldram_test - offline test for access to the RldRam chip on the NIC &n; * @sp - private member of the device structure, which is a pointer to the  &n; * s2io_nic structure.&n; * @data - variable that returns the result of each of the test &n; * conducted by the driver.&n; * Description:&n; *  This is one of the offline test that tests the read and write &n; *  access to the RldRam chip on the NIC.&n; * Return value:&n; *  0 on success.&n; */
+DECL|function|s2io_rldram_test
 r_static
 r_int
-id|s2io_rldramTest
+id|s2io_rldram_test
 c_func
 (paren
 id|nic_t
@@ -13157,7 +13179,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Input Argument/s: &n; *  sp - private member of the device structure, which is a pointer to the &n; *   &t;s2io_nic structure.&n; *  ethtest - pointer to a ethtool command specific structure that will be&n; *  &t;returned to the user.&n; *  data - variable that returns the result of each of the test conducted by &n; *  &t;the driver.&n; * Return value:&n; *  SUCCESS on success and an appropriate -1 on failure.&n; * Description:&n; *  This function conducts 6 tests ( 4 offline and 2 online) to determine&n; *  &t;the health of the card.&n; */
+multiline_comment|/**&n; *  s2io_ethtool_test - conducts 6 tsets to determine the health of card.&n; *  @sp : private member of the device structure, which is a pointer to the&n; *  s2io_nic structure.&n; *  @ethtest : pointer to a ethtool command specific structure that will be&n; *  returned to the user.&n; *  @data : variable that returns the result of each of the test &n; * conducted by the driver.&n; * Description:&n; *  This function conducts 6 tests ( 4 offline and 2 online) to determine&n; *  the health of the card.&n; * Return value:&n; *  void&n; */
 DECL|function|s2io_ethtool_test
 r_static
 r_void
@@ -13232,7 +13254,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s2io_registerTest
+id|s2io_register_test
 c_func
 (paren
 id|sp
@@ -13263,7 +13285,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s2io_rldramTest
+id|s2io_rldram_test
 c_func
 (paren
 id|sp
@@ -13294,7 +13316,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s2io_eepromTest
+id|s2io_eeprom_test
 c_func
 (paren
 id|sp
@@ -13313,7 +13335,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s2io_bistTest
+id|s2io_bist_test
 c_func
 (paren
 id|sp
@@ -13412,7 +13434,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s2io_linkTest
+id|s2io_link_test
 c_func
 (paren
 id|sp
@@ -13494,7 +13516,7 @@ id|StatInfo_t
 op_star
 id|stat_info
 op_assign
-id|sp-&gt;mac_control.StatsInfo
+id|sp-&gt;mac_control.stats_info
 suffix:semicolon
 id|tmp_stats
 (braket
@@ -14132,7 +14154,7 @@ op_assign
 id|s2io_get_ethtool_stats
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev -   Device pointer.&n; *  ifr -   An IOCTL specefic structure, that can contain a pointer to&n; *      a proprietary structure used to pass information to the driver.&n; *  cmd -   This is used to distinguish between the different commands that&n; *      can be passed to the IOCTL functions.&n; *  Return value:&n; *  &squot;0&squot; on success and an appropriate (-)ve integer as defined in errno.h&n; *  file on failure.&n; *  Description:&n; *  This function has support for ethtool, adding multiple MAC addresses on &n; *  the NIC and some DBG commands for the util tool.&n; */
+multiline_comment|/**&n; *  s2io_ioctl - Entry point for the Ioctl &n; *  @dev :  Device pointer.&n; *  @ifr :  An IOCTL specefic structure, that can contain a pointer to&n; *  a proprietary structure used to pass information to the driver.&n; *  @cmd :  This is used to distinguish between the different commands that&n; *  can be passed to the IOCTL functions.&n; *  Description:&n; *  This function has support for ethtool, adding multiple MAC addresses on &n; *  the NIC and some DBG commands for the util tool.&n; *  Return value:&n; *  Currently the IOCTL supports no operations, hence by default this&n; *  function returns OP NOT SUPPORTED value.&n; */
 DECL|function|s2io_ioctl
 r_int
 id|s2io_ioctl
@@ -14157,7 +14179,7 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *   dev - device pointer.&n; *   new_mtu - the new MTU size for the device.&n; *  Return value:&n; *   &squot;0&squot; on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; *  Description:&n; *   A driver entry point to change MTU size for the device. Before changing&n; *   the MTU the device must be stopped.&n; */
+multiline_comment|/**&n; *  s2io_change_mtu - entry point to change MTU size for the device.&n; *   @dev : device pointer.&n; *   @new_mtu : the new MTU size for the device.&n; *   Description: A driver entry point to change MTU size for the device.&n; *   Before changing the MTU the device must be stopped.&n; *  Return value:&n; *   0 on success and an appropriate (-)ve integer as defined in errno.h&n; *   file on failure.&n; */
 DECL|function|s2io_change_mtu
 r_int
 id|s2io_change_mtu
@@ -14286,7 +14308,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev_adr - address of the device structure in dma_addr_t format.&n; *  Return value:&n; *  void.&n; *  Description:&n; *  This is the tasklet or the bottom half of the ISR. This is&n; *  an extension of the ISR which is scheduled by the scheduler to be run &n; *  when the load on the CPU is low. All low priority tasks of the ISR can&n; *  be pushed into the tasklet. For now the tasklet is used only to &n; *  replenish the Rx buffers in the Rx buffer descriptors.&n; */
+multiline_comment|/**&n; *  s2io_tasklet - Bottom half of the ISR.&n; *  @dev_adr : address of the device structure in dma_addr_t format.&n; *  Description:&n; *  This is the tasklet or the bottom half of the ISR. This is&n; *  an extension of the ISR which is scheduled by the scheduler to be run &n; *  when the load on the CPU is low. All low priority tasks of the ISR can&n; *  be pushed into the tasklet. For now the tasklet is used only to &n; *  replenish the Rx buffers in the Rx buffer descriptors.&n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_tasklet
 r_static
 r_void
@@ -14356,7 +14378,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -14399,7 +14421,7 @@ comma
 l_string|&quot;memory in tasklet&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
 r_else
@@ -14424,7 +14446,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
 )brace
@@ -14446,7 +14468,7 @@ id|sp-&gt;tasklet_status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Description:&n; * &n; */
+multiline_comment|/**&n; * s2io_set_link - Set the LInk status&n; * @data: long pointer to device private structue&n; * Description: Sets the link status for the adapter&n; */
 DECL|function|s2io_set_link
 r_static
 r_void
@@ -14491,7 +14513,7 @@ id|val64
 comma
 id|err_reg
 suffix:semicolon
-multiline_comment|/* Allow a small delay for the NICs self initiated &n;&t; * cleanup to complete.&n;&t; */
+multiline_comment|/* &n;&t; * Allow a small delay for the NICs self initiated &n;&t; * cleanup to complete.&n;&t; */
 id|set_current_state
 c_func
 (paren
@@ -14527,7 +14549,7 @@ id|nic-&gt;device_enabled_once
 )paren
 )paren
 (brace
-multiline_comment|/* Acknowledge interrupt and clear the R1 register */
+multiline_comment|/* Acknowledge Intr and clear R1 register. */
 id|err_reg
 op_assign
 id|readq
@@ -14717,7 +14739,7 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Description:&n; * This function is scheduled to be run by the s2io_tx_watchdog&n; * function after 0.5 secs to reset the NIC. The idea is to reduce &n; * the run time of the watch dog routine which is run holding a&n; * spin lock.&n; */
+multiline_comment|/** &n; * s2io_restart_nic - Resets the NIC.&n; * @data : long pointer to the device private structure&n; * Description:&n; * This function is scheduled to be run by the s2io_tx_watchdog&n; * function after 0.5 secs to reset the NIC. The idea is to reduce &n; * the run time of the watch dog routine which is run holding a&n; * spin lock.&n; */
 DECL|function|s2io_restart_nic
 r_static
 r_void
@@ -14774,7 +14796,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *  dev - device pointer.&n; *  Return value:&n; *  void&n; *  Description:&n; *  This function is triggered if the Tx Queue is stopped&n; *  for a pre-defined amount of time when the Interface is still up.&n; *  If the Interface is jammed in such a situation, the hardware is&n; *  reset (by s2io_close) and restarted again (by s2io_open) to&n; *  overcome any problem that might have been caused in the hardware.&n; */
+multiline_comment|/** &n; *  s2io_tx_watchdog - Watchdog for transmit side. &n; *  @dev : Pointer to net device structure&n; *  Description:&n; *  This function is triggered if the Tx Queue is stopped&n; *  for a pre-defined amount of time when the Interface is still up.&n; *  If the Interface is jammed in such a situation, the hardware is&n; *  reset (by s2io_close) and restarted again (by s2io_open) to&n; *  overcome any problem that might have been caused in the hardware.&n; *  Return value:&n; *  void&n; */
 DECL|function|s2io_tx_watchdog
 r_static
 r_void
@@ -14812,11 +14834,11 @@ id|sp-&gt;rst_timer_task
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  Input Argument/s: &n; *   sp - private member of the device structure, which is a pointer to the &n; *   s2io_nic structure.&n; *   skb - the socket buffer pointer.&n; *   len - length of the packet&n; *   cksum - FCS checksum of the frame.&n; *  ring_no - the ring from which this RxD was extracted.&n; *  Return value:&n; *   SUCCESS on success and -1 on failure.&n; *  Description: &n; *   This function is called by the Tx interrupt serivce routine to perform &n; *   some OS related operations on the SKB before passing it to the upper&n; *   layers. It mainly checks if the checksum is OK, if so adds it to the&n; *   SKBs cksum variable, increments the Rx packet count and passes the SKB&n; *   to the upper layer. If the checksum is wrong, it increments the Rx&n; *   packet error count, frees the SKB and returns error.&n; */
-DECL|function|rxOsmHandler
+multiline_comment|/**&n; *   rx_osm_handler - To perform some OS related operations on SKB.&n; *   @sp: private member of the device structure,pointer to s2io_nic structure.&n; *   @skb : the socket buffer pointer.&n; *   @len : length of the packet&n; *   @cksum : FCS checksum of the frame.&n; *   @ring_no : the ring from which this RxD was extracted.&n; *   Description: &n; *   This function is called by the Tx interrupt serivce routine to perform&n; *   some OS related operations on the SKB before passing it to the upper&n; *   layers. It mainly checks if the checksum is OK, if so adds it to the&n; *   SKBs cksum variable, increments the Rx packet count and passes the SKB&n; *   to the upper layer. If the checksum is wrong, it increments the Rx&n; *   packet error count, frees the SKB and returns error.&n; *   Return value:&n; *   SUCCESS on success and -1 on failure.&n; */
+DECL|function|rx_osm_handler
 r_static
 r_int
-id|rxOsmHandler
+id|rx_osm_handler
 c_func
 (paren
 id|nic_t
@@ -14915,7 +14937,7 @@ id|L4_CKSUM_OK
 )paren
 )paren
 (brace
-multiline_comment|/* NIC verifies if the Checksum of the received&n;&t;&t;&t; * frame is Ok or not and accordingly returns&n;&t;&t;&t; * a flag in the RxD.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * NIC verifies if the Checksum of the received&n;&t;&t;&t; * frame is Ok or not and accordingly returns&n;&t;&t;&t; * a flag in the RxD.&n;&t;&t;&t; */
 id|skb-&gt;ip_summed
 op_assign
 id|CHECKSUM_UNNECESSARY
@@ -14978,11 +15000,6 @@ id|dev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
-macro_line|#if DEBUG_ON
-id|sp-&gt;rxpkt_cnt
-op_increment
-suffix:semicolon
-macro_line|#endif
 id|sp-&gt;rx_pkt_count
 op_increment
 suffix:semicolon
@@ -14990,10 +15007,6 @@ id|sp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
 id|sp-&gt;stats.rx_bytes
-op_add_assign
-id|len
-suffix:semicolon
-id|sp-&gt;rxpkt_bytes
 op_add_assign
 id|len
 suffix:semicolon
@@ -15015,9 +15028,9 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|check_for_txSpace
+DECL|function|check_for_tx_space
 r_int
-id|check_for_txSpace
+id|check_for_tx_space
 c_func
 (paren
 id|nic_t
@@ -15048,7 +15061,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|sp-&gt;config.TxFIFONum
+id|sp-&gt;config.tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
@@ -15111,7 +15124,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n;*  Input Argument/s: &n;*   sp - private member of the device structure, which is a pointer to the &n;*   s2io_nic structure.&n;*   link - inidicates whether link is UP/DOWN.&n;*  Return value:&n;*   void.&n;*  Description:&n;*   This function stops/starts the Tx queue depending on whether the link&n;*   status of the NIC is is down or up. This is called by the Alarm interrupt &n;*  handler whenever a link change interrupt comes up. &n;*/
+multiline_comment|/**&n; *  s2io_link - stops/starts the Tx queue.&n; *  @sp : private member of the device structure, which is a pointer to the&n; *  s2io_nic structure.&n; *  @link : inidicates whether link is UP/DOWN.&n; *  Description:&n; *  This function stops/starts the Tx queue depending on whether the link&n; *  status of the NIC is is down or up. This is called by the Alarm &n; *  interrupt handler whenever a link change interrupt comes up. &n; *  Return value:&n; *  void.&n; */
 DECL|function|s2io_link
 r_void
 id|s2io_link
@@ -15197,7 +15210,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_for_txSpace
+id|check_for_tx_space
 c_func
 (paren
 id|sp
@@ -15206,7 +15219,7 @@ op_eq
 id|TRUE
 )paren
 (brace
-multiline_comment|/* Don&squot;t wake the queue, if we know there&n;&t;&t;&t;&t; * are no free TxDs available.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Dont wake the queue if we know there&n;&t;&t;&t;&t; * are no free TxDs available.&n;&t;&t;&t;&t; */
 id|netif_wake_queue
 c_func
 (paren
@@ -15221,7 +15234,7 @@ op_assign
 id|link
 suffix:semicolon
 )brace
-multiline_comment|/*&n;*  Input Argument/s: &n;*   pdev - structure containing the PCI related information of the device.&n;*  Return value:&n;*   returns the revision ID of the device.&n;*  Description:&n;*   Function to identify the Revision ID of xena.&n;*/
+multiline_comment|/**&n; *  get_xena_rev_id - to identify revision ID of xena. &n; *  @pdev : PCI Dev structure&n; *  Description:&n; *  Function to identify the Revision ID of xena.&n; *  Return value:&n; *  returns the revision ID of the device.&n; */
 DECL|function|get_xena_rev_id
 r_int
 id|get_xena_rev_id
@@ -15262,7 +15275,7 @@ r_return
 id|id
 suffix:semicolon
 )brace
-multiline_comment|/*&n;*  Input Argument/s: &n;*   sp - private member of the device structure, which is a pointer to the &n;*   s2io_nic structure.&n;*  Return value:&n;*   void&n;*  Description:&n;*   This function initializes a few of the PCI and PCI-X configuration registers&n;*   with recommended values.&n;*/
+multiline_comment|/**&n; *  s2io_init_pci -Initialization of PCI and PCI-X configuration registers . &n; *  @sp : private member of the device structure, which is a pointer to the &n; *  s2io_nic structure.&n; *  Description:&n; *  This function initializes a few of the PCI and PCI-X configuration registers&n; *  with recommended values.&n; *  Return value:&n; *  void&n; */
 DECL|function|s2io_init_pci
 r_static
 r_void
@@ -15414,10 +15427,10 @@ id|sp-&gt;pcix_cmd
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Setting Maximum outstanding splits to two for now. */
+multiline_comment|/*  Setting Maximum outstanding splits based on system type. */
 id|sp-&gt;pcix_cmd
 op_and_assign
-l_int|0xFF1F
+l_int|0xFF8F
 suffix:semicolon
 id|sp-&gt;pcix_cmd
 op_or_assign
@@ -15575,7 +15588,7 @@ l_int|1
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;*  Input Argument/s: &n;*   pdev - structure containing the PCI related information of the device.&n;*   pre -  the List of PCI devices supported by the driver listed in s2io_tbl.&n;*  Return value:&n;*   returns &squot;0&squot; on success and negative on failure.&n;*  Description:&n;*  The function initializes an adapter identified by the pci_dec structure.&n;*  All OS related initialization including memory and device structure and &n;*  initlaization of the device private variable is done. Also the swapper &n;*  control register is initialized to enable read and write into the I/O &n;*  registers of the device.&n;*  &n;*/
+multiline_comment|/**&n; *  s2io_init_nic - Initialization of the adapter . &n; *  @pdev : structure containing the PCI related information of the device.&n; *  @pre: List of PCI devices supported by the driver listed in s2io_tbl.&n; *  Description:&n; *  The function initializes an adapter identified by the pci_dec structure.&n; *  All OS related initialization including memory and device structure and &n; *  initlaization of the device private variable is done. Also the swapper &n; *  control register is initialized to enable read and write into the I/O &n; *  registers of the device.&n; *  Return value:&n; *  returns 0 on success and negative on failure.&n; */
 r_static
 r_int
 id|__devinit
@@ -15937,7 +15950,7 @@ c_func
 id|sp
 )paren
 suffix:semicolon
-multiline_comment|/* Setting the device configuration parameters.&n;&t; * Most of these parameters can be specified by the user during &n;&t; * module insertion as they are module loadable parameters. If &n;&t; * these parameters are not not specified during load time, they &n;&t; * are initialized with default values.&n;&t; */
+multiline_comment|/* &n;&t; * Setting the device configuration parameters.&n;&t; * Most of these parameters can be specified by the user during &n;&t; * module insertion as they are module loadable parameters. If &n;&t; * these parameters are not not specified during load time, they &n;&t; * are initialized with default values.&n;&t; */
 id|mac_control
 op_assign
 op_amp
@@ -15949,7 +15962,7 @@ op_amp
 id|sp-&gt;config
 suffix:semicolon
 multiline_comment|/* Tx side parameters. */
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 op_assign
 id|fifo_num
 ques
@@ -16055,30 +16068,30 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|cnt
 op_increment
 )paren
 (brace
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|cnt
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_assign
 id|fifo_len
 (braket
 id|cnt
 )braket
 suffix:semicolon
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|cnt
 )braket
 dot
-id|FifoPriority
+id|fifo_priority
 op_assign
 id|cnt
 suffix:semicolon
@@ -16086,26 +16099,26 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 l_int|0
 )braket
 dot
-id|FifoLen
+id|fifo_len
 op_assign
 id|DEFAULT_FIFO_LEN
 suffix:semicolon
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 l_int|0
 )braket
 dot
-id|FifoPriority
+id|fifo_priority
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|config-&gt;TxIntrType
+id|config-&gt;tx_intr_type
 op_assign
 id|TXD_INT_TYPE_UTILZ
 suffix:semicolon
@@ -16118,39 +16131,18 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;TxFIFONum
+id|config-&gt;tx_fifo_num
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|config-&gt;TxCfg
+id|config-&gt;tx_cfg
 (braket
 id|i
 )braket
 dot
-id|FifoLen
-OL
-l_int|65
-)paren
-(brace
-id|config-&gt;TxIntrType
-op_assign
-id|TXD_INT_TYPE_PER_LIST
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-id|config-&gt;TxCfg
-(braket
-l_int|0
-)braket
-dot
-id|fNoSnoop
+id|f_no_snoop
 op_assign
 (paren
 id|NO_SNOOP_TXD
@@ -16158,16 +16150,33 @@ op_or
 id|NO_SNOOP_TXD_BUFFER
 )paren
 suffix:semicolon
-id|config-&gt;MaxTxDs
+r_if
+c_cond
+(paren
+id|config-&gt;tx_cfg
+(braket
+id|i
+)braket
+dot
+id|fifo_len
+OL
+l_int|65
+)paren
+(brace
+id|config-&gt;tx_intr_type
+op_assign
+id|TXD_INT_TYPE_PER_LIST
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|config-&gt;max_txds
 op_assign
 id|MAX_SKB_FRAGS
 suffix:semicolon
-id|config-&gt;TxFlow
-op_assign
-id|TRUE
-suffix:semicolon
 multiline_comment|/* Rx side parameters. */
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 op_assign
 id|ring_num
 ques
@@ -16197,30 +16206,30 @@ l_int|0
 suffix:semicolon
 id|cnt
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|cnt
 op_increment
 )paren
 (brace
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|cnt
 )braket
 dot
-id|NumRxd
+id|num_rxd
 op_assign
 id|ring_len
 (braket
 id|cnt
 )braket
 suffix:semicolon
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 id|cnt
 )braket
 dot
-id|RingPriority
+id|ring_priority
 op_assign
 id|cnt
 suffix:semicolon
@@ -16228,81 +16237,55 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-id|id
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|id
-op_assign
-id|get_xena_rev_id
-c_func
-(paren
-id|pdev
-)paren
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 l_int|0
 )braket
 dot
-id|NumRxd
-op_assign
-id|LARGE_RXD_CNT
-suffix:semicolon
-)brace
-r_else
-(brace
-id|config-&gt;RxCfg
-(braket
-l_int|0
-)braket
-dot
-id|NumRxd
+id|num_rxd
 op_assign
 id|SMALL_RXD_CNT
 suffix:semicolon
-)brace
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
 l_int|0
 )braket
 dot
-id|RingPriority
+id|ring_priority
 op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|config-&gt;RxCfg
-(braket
+r_for
+c_loop
+(paren
+id|i
+op_assign
 l_int|0
+suffix:semicolon
+id|i
+OL
+id|config-&gt;rx_ring_num
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|config-&gt;rx_cfg
+(braket
+id|i
 )braket
 dot
-id|RingOrg
+id|ring_org
 op_assign
 id|RING_ORG_BUFF1
 suffix:semicolon
-id|config-&gt;RxCfg
+id|config-&gt;rx_cfg
 (braket
-l_int|0
+id|i
 )braket
 dot
-id|RxdThresh
-op_assign
-id|DEFAULT_RXD_THRESHOLD
-suffix:semicolon
-id|config-&gt;RxCfg
-(braket
-l_int|0
-)braket
-dot
-id|fNoSnoop
+id|f_no_snoop
 op_assign
 (paren
 id|NO_SNOOP_RXD
@@ -16310,37 +16293,8 @@ op_or
 id|NO_SNOOP_RXD_BUFFER
 )paren
 suffix:semicolon
-id|config-&gt;RxCfg
-(braket
-l_int|0
-)braket
-dot
-id|RxD_BackOff_Interval
-op_assign
-id|TBD
-suffix:semicolon
-id|config-&gt;RxFlow
-op_assign
-id|TRUE
-suffix:semicolon
-multiline_comment|/* Miscellaneous parameters. */
-id|config-&gt;RxVLANEnable
-op_assign
-id|TRUE
-suffix:semicolon
-id|config-&gt;MTU
-op_assign
-id|MAX_MTU_VLAN
-suffix:semicolon
-id|config-&gt;JumboEnable
-op_assign
-id|FALSE
-suffix:semicolon
+)brace
 multiline_comment|/*  Setting Mac Control parameters */
-id|mac_control-&gt;txdl_len
-op_assign
-id|MAX_SKB_FRAGS
-suffix:semicolon
 id|mac_control-&gt;rmac_pause_time
 op_assign
 l_int|0
@@ -16355,7 +16309,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|config-&gt;RxRingNum
+id|config-&gt;rx_ring_num
 suffix:semicolon
 id|i
 op_increment
@@ -16376,7 +16330,7 @@ multiline_comment|/*  initialize the shared memory used by the NIC and the host 
 r_if
 c_cond
 (paren
-id|initSharedMem
+id|init_shared_mem
 c_func
 (paren
 id|sp
@@ -16573,6 +16527,7 @@ op_assign
 op_amp
 id|s2io_change_mtu
 suffix:semicolon
+macro_line|#ifdef SET_ETHTOOL_OPS
 id|SET_ETHTOOL_OPS
 c_func
 (paren
@@ -16582,6 +16537,7 @@ op_amp
 id|netdev_ethtool_ops
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * will use eth_mac_addr() for  dev-&gt;set_mac_address&n;&t; * mac address will be set every time dev-&gt;open() is called&n;&t; */
 macro_line|#ifdef CONFIG_S2IO_NAPI
 id|dev-&gt;poll
@@ -16590,7 +16546,7 @@ id|s2io_poll
 suffix:semicolon
 id|dev-&gt;weight
 op_assign
-l_int|128
+l_int|90
 suffix:semicolon
 multiline_comment|/* For now. */
 macro_line|#endif
@@ -16720,11 +16676,11 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_goto
-id|set_swap_failed
+id|register_failed
 suffix:semicolon
 )brace
 multiline_comment|/* Fix for all &quot;FFs&quot; MAC address problems observed on Alpha platforms */
-id|FixMacAddress
+id|fix_mac_address
 c_func
 (paren
 id|sp
@@ -16736,7 +16692,7 @@ c_func
 id|sp
 )paren
 suffix:semicolon
-multiline_comment|/* Setting swapper control on the NIC, so the MAC address can be read.&n;&t; */
+multiline_comment|/*&n;&t; * Setting swapper control on the NIC, so the MAC address can be read.&n;&t; */
 r_if
 c_cond
 (paren
@@ -16761,7 +16717,7 @@ r_goto
 id|set_swap_failed
 suffix:semicolon
 )brace
-multiline_comment|/*  MAC address initialization.&n;&t; *  For now only one mac address will be read and used.&n;&t; */
+multiline_comment|/*  &n;&t; * MAC address initialization.&n;&t; * For now only one mac address will be read and used.&n;&t; */
 id|bar0
 op_assign
 (paren
@@ -16793,7 +16749,7 @@ op_amp
 id|bar0-&gt;rmac_addr_cmd_mem
 )paren
 suffix:semicolon
-id|waitForCmdComplete
+id|wait_for_cmd_complete
 c_func
 (paren
 id|sp
@@ -16829,7 +16785,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16844,7 +16800,7 @@ id|ETH_ALEN
 )paren
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16861,7 +16817,7 @@ id|u8
 id|mac_up
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16880,7 +16836,7 @@ op_rshift
 l_int|8
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16899,7 +16855,7 @@ op_rshift
 l_int|16
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16918,7 +16874,7 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16937,7 +16893,7 @@ op_rshift
 l_int|16
 )paren
 suffix:semicolon
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16963,7 +16919,7 @@ id|INIT_DBG
 comma
 l_string|&quot;DEFAULT MAC ADDR:0x%02x-%02x-%02x-%02x-%02x-%02x&bslash;n&quot;
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16973,7 +16929,7 @@ id|mac_addr
 l_int|0
 )braket
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16983,7 +16939,7 @@ id|mac_addr
 l_int|1
 )braket
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -16993,7 +16949,7 @@ id|mac_addr
 l_int|2
 )braket
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -17003,7 +16959,7 @@ id|mac_addr
 l_int|3
 )braket
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -17013,7 +16969,7 @@ id|mac_addr
 l_int|4
 )braket
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 (braket
 l_int|0
 )braket
@@ -17034,7 +16990,7 @@ c_func
 (paren
 id|dev-&gt;dev_addr
 comma
-id|sp-&gt;defMacAddr
+id|sp-&gt;def_mac_addr
 comma
 id|ETH_ALEN
 )paren
@@ -17056,17 +17012,17 @@ id|spin_lock_init
 c_func
 (paren
 op_amp
-id|sp-&gt;isr_lock
+id|sp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
 op_amp
-id|sp-&gt;tx_lock
+id|sp-&gt;isr_lock
 )paren
 suffix:semicolon
-multiline_comment|/* SXE-002: Configure link and activity LED to init state &n;&t; * on driver load. &n;&t; */
+multiline_comment|/* &n;&t; * SXE-002: Configure link and activity LED to init state &n;&t; * on driver load. &n;&t; */
 id|subid
 op_assign
 id|sp-&gt;pdev-&gt;subsystem_device
@@ -17139,7 +17095,12 @@ id|bar0-&gt;gpio_control
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Make Link state as off at this point, when the Link change &n;&t; * interrupt comes the state will be automatically changed to &n;&t; * the right state.&n;&t; */
+id|sp-&gt;rx_csum
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Rx chksum verify enabled by default */
+multiline_comment|/* &n;&t; * Make Link state as off at this point, when the Link change &n;&t; * interrupt comes the state will be automatically changed to &n;&t; * the right state.&n;&t; */
 id|netif_carrier_off
 c_func
 (paren
@@ -17150,11 +17111,6 @@ id|sp-&gt;last_link_state
 op_assign
 id|LINK_DOWN
 suffix:semicolon
-id|sp-&gt;rx_csum
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Rx chksum verify enabled by default */
 r_return
 l_int|0
 suffix:semicolon
@@ -17186,7 +17142,7 @@ id|bar0_remap_failed
 suffix:colon
 id|mem_alloc_failed
 suffix:colon
-id|freeSharedMem
+id|free_shared_mem
 c_func
 (paren
 id|sp
@@ -17225,7 +17181,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/*&n;*  Input Argument/s: &n;*   pdev - structure containing the PCI related information of the device.&n;*  Return value:&n;*  void&n;*  Description:&n;*  This function is called by the Pci subsystem to release a PCI device &n;*  and free up all resource held up by the device. This could be in response &n;*  to a Hot plug event or when the driver is to be removed from memory.&n;*/
+multiline_comment|/**&n; * s2io_rem_nic - Free the PCI device &n; * @pdev: structure containing the PCI related information of the device.&n; * Description: This function is called by the Pci subsystem to release a &n; * PCI device and free up all resource held up by the device. This could&n; * be in response to a Hot plug event or when the driver is to be removed &n; * from memory.&n; */
 DECL|function|s2io_rem_nic
 r_static
 r_void
@@ -17282,7 +17238,13 @@ id|sp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|freeSharedMem
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|free_shared_mem
 c_func
 (paren
 id|sp
@@ -17320,12 +17282,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|free_netdev
 c_func
 (paren
@@ -17333,6 +17289,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * s2io_starter - Entry point for the driver&n; * Description: This function is the entry point for the driver. It verifies&n; * the module loadable parameters and initializes PCI configuration space.&n; */
 DECL|function|s2io_starter
 r_int
 id|__init
@@ -17351,6 +17308,7 @@ id|s2io_driver
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * s2io_closer - Cleanup routine for the driver &n; * Description: This function is the cleanup routine for the driver. It unregist * ers the driver.&n; */
 DECL|function|s2io_closer
 r_void
 id|s2io_closer
