@@ -64,6 +64,17 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
+DECL|macro|HAVE_ARCH_PCI_MWI
+mdefine_line|#define HAVE_ARCH_PCI_MWI 1
+r_extern
+r_int
+id|pcibios_prep_mwi
+(paren
+r_struct
+id|pci_dev
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Dynamic DMA mapping API.  See Documentation/DMA-mapping.txt for details.&n; */
 DECL|macro|pci_alloc_consistent
 mdefine_line|#define pci_alloc_consistent&t;&t;platform_pci_alloc_consistent

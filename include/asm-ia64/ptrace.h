@@ -867,10 +867,10 @@ mdefine_line|#define PT_AUR_EC&t;66
 multiline_comment|/*&n; * The numbers chosen here are somewhat arbitrary but absolutely MUST&n; * not overlap with any of the number assigned in &lt;linux/ptrace.h&gt;.&n; */
 DECL|macro|PTRACE_SINGLEBLOCK
 mdefine_line|#define PTRACE_SINGLEBLOCK&t;12&t;/* resume execution until next branch */
-DECL|macro|PTRACE_GETSIGINFO
-mdefine_line|#define PTRACE_GETSIGINFO&t;13&t;/* get child&squot;s siginfo structure */
-DECL|macro|PTRACE_SETSIGINFO
-mdefine_line|#define PTRACE_SETSIGINFO&t;14&t;/* set child&squot;s siginfo structure */
+DECL|macro|PTRACE_OLD_GETSIGINFO
+mdefine_line|#define PTRACE_OLD_GETSIGINFO&t;13&t;/* (replaced by PTRACE_GETSIGINFO in &lt;linux/ptrace.h&gt;)  */
+DECL|macro|PTRACE_OLD_SETSIGINFO
+mdefine_line|#define PTRACE_OLD_SETSIGINFO&t;14&t;/* (replaced by PTRACE_SETSIGINFO in &lt;linux/ptrace.h&gt;)  */
 DECL|macro|PTRACE_GETREGS
 mdefine_line|#define PTRACE_GETREGS&t;&t;18&t;/* get all registers (pt_all_user_regs) in one shot */
 DECL|macro|PTRACE_SETREGS
