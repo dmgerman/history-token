@@ -4017,7 +4017,7 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-macro_line|#ifdef SNDRV_DEBUGq_MCE
+macro_line|#ifdef SNDRV_DEBUG_MCE
 id|snd_printk
 c_func
 (paren
