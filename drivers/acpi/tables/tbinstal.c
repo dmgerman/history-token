@@ -471,13 +471,18 @@ id|flags
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Only one table allowed, and a table has alread been installed&n;&t;&t; *  at this location, so return an error.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Only one table allowed, and a table has alread been installed&n;&t;&t; * at this location, so return an error.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|list_head-&gt;next
 )paren
 (brace
+id|ACPI_MEM_FREE
+(paren
+id|table_desc
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_ALREADY_EXISTS

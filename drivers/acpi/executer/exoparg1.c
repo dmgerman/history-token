@@ -1501,6 +1501,7 @@ r_case
 id|AML_TYPE_OP
 suffix:colon
 multiline_comment|/* object_type (source_object) */
+multiline_comment|/*&n;&t;&t; * Note: The operand is not resolved at this point because we want to&n;&t;&t; * get the associated object, not its value.  For example, we don&squot;t want&n;&t;&t; * to resolve a field_unit to its value, we want the actual field_unit&n;&t;&t; * object.&n;&t;&t; */
 multiline_comment|/* Get the type of the base object */
 id|status
 op_assign
@@ -1565,6 +1566,7 @@ r_case
 id|AML_SIZE_OF_OP
 suffix:colon
 multiline_comment|/* size_of (source_object) */
+multiline_comment|/*&n;&t;&t; * Note: The operand is not resolved at this point because we want to&n;&t;&t; * get the associated object, not its value.&n;&t;&t; */
 multiline_comment|/* Get the base object */
 id|status
 op_assign
@@ -1597,13 +1599,22 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Type is guaranteed to be a buffer, string, or package at this&n;&t;&t; * point (even if the original operand was an object reference, it&n;&t;&t; * will be resolved and typechecked during operand resolution.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The type of the base object must be integer, buffer, string, or&n;&t;&t; * package.  All others are not supported.&n;&t;&t; *&n;&t;&t; * NOTE: Integer is not specifically supported by the ACPI spec,&n;&t;&t; * but is supported implicitly via implicit operand conversion.&n;&t;&t; * rather than bother with conversion, we just use the byte width&n;&t;&t; * global (4 or 8 bytes).&n;&t;&t; */
 r_switch
 c_cond
 (paren
 id|type
 )paren
 (brace
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+id|value
+op_assign
+id|acpi_gbl_integer_byte_width
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER
 suffix:colon
@@ -1638,7 +1649,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;size_of, Not Buf/Str/Pkg - found type %s&bslash;n&quot;
+l_string|&quot;size_of - Operand is not Buf/Int/Str/Pkg - found type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
