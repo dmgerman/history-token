@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * drivers/base/power/main.c - Where the driver meets power management.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; *&n; *&n; * The driver model core calls device_pm_add() when a device is registered.&n; * This will intialize the embedded device_pm_info object in the device&n; * and add it to the list of power-controlled devices. sysfs entries for&n; * controlling device power management will also be added.&n; *&n; * A different set of lists than the global subsystem list are used to &n; * keep track of power info because we use different lists to hold &n; * devices based on what stage of the power management process they &n; * are in. The power domain dependencies may also differ from the &n; * ancestral dependencies that the subsystem list maintains.&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &quot;power.h&quot;
 DECL|variable|dpm_active
