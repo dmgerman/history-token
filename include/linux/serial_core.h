@@ -77,6 +77,13 @@ DECL|macro|PORT_MAC_ZILOG
 mdefine_line|#define PORT_MAC_ZILOG&t;50&t;/* m68k : not yet implemented */
 DECL|macro|PORT_PMAC_ZILOG
 mdefine_line|#define PORT_PMAC_ZILOG&t;51
+multiline_comment|/* SH-SCI */
+DECL|macro|PORT_SCI
+mdefine_line|#define PORT_SCI&t;52
+DECL|macro|PORT_SCIF
+mdefine_line|#define PORT_SCIF&t;53
+DECL|macro|PORT_IRDA
+mdefine_line|#define PORT_IRDA&t;54
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
