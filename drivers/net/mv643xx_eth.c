@@ -2350,9 +2350,6 @@ r_int
 r_int
 id|size
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/* Stop RX Queues */
 id|mv_write
 c_func
@@ -2878,35 +2875,6 @@ comma
 id|MV643XX_TX_COAL
 )paren
 suffix:semicolon
-multiline_comment|/* wait up to 1 second for link to come up */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|10
-op_logical_and
-op_logical_neg
-id|eth_port_link_is_up
-c_func
-(paren
-id|port_num
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|msleep
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-multiline_comment|/* sleep 1/10 second */
 id|netif_start_queue
 c_func
 (paren
