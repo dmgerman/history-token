@@ -223,7 +223,7 @@ id|addr
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -241,7 +241,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mace_dma_intr
 c_func
 (paren
@@ -2356,7 +2356,7 @@ singleline_comment|//&t;volatile struct mace *mb = mp-&gt;mace;
 multiline_comment|/*&n; * Process the chip interrupt&n; */
 DECL|function|mace_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mace_interrupt
 c_func
 (paren
@@ -2450,6 +2450,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|mace_tx_timeout
 r_static
@@ -2658,7 +2661,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The PSC has passed us a DMA interrupt event.&n; */
 DECL|function|mace_dma_intr
 r_static
-r_void
+id|irqreturn_t
 id|mace_dma_intr
 c_func
 (paren
@@ -2742,6 +2745,7 @@ l_int|0x60000000
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * Process the read queue&n;&t; */
 id|status
@@ -2929,6 +2933,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func

@@ -504,7 +504,7 @@ id|c
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|bionet_intr
 id|bionet_intr
 c_func
@@ -523,6 +523,7 @@ id|fp
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
