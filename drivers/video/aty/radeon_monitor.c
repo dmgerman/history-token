@@ -322,6 +322,7 @@ op_assign
 id|MT_CRT
 suffix:semicolon
 r_else
+(brace
 r_if
 c_cond
 (paren
@@ -332,8 +333,9 @@ id|pmt
 comma
 l_string|&quot;NONE&quot;
 )paren
+op_ne
+l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -347,10 +349,6 @@ r_return
 id|MT_NONE
 suffix:semicolon
 )brace
-r_else
-r_return
-id|MT_NONE
-suffix:semicolon
 r_for
 c_loop
 (paren
