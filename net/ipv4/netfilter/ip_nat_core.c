@@ -3802,7 +3802,7 @@ id|dir
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Mapping the inner packet is just like a normal&n;&t;&t;   packet, except it was never src/dst reversed, so&n;&t;&t;   where we would normally apply a dst manip, we apply&n;&t;&t;   a src, and vice versa. */
+multiline_comment|/* Mapping the inner packet is just like a normal packet, except&n;&t;&t; * it was never src/dst reversed, so where we would normally&n;&t;&t; * apply a dst manip, we apply a src, and vice versa. */
 r_if
 c_cond
 (paren
@@ -3812,10 +3812,11 @@ id|i
 )braket
 dot
 id|hooknum
-op_eq
+op_ne
 id|hooknum
 )paren
-(brace
+r_continue
+suffix:semicolon
 id|DEBUGP
 c_func
 (paren
@@ -3903,8 +3904,8 @@ id|maniptype
 r_goto
 id|unlock_fail
 suffix:semicolon
-multiline_comment|/* Outer packet needs to have IP header NATed like&n;&t;                   it&squot;s a reply. */
-multiline_comment|/* Use mapping to map outer packet: 0 give no&n;                           per-proto mapping */
+multiline_comment|/* Outer packet needs to have IP header NATed like&n;                   it&squot;s a reply. */
+multiline_comment|/* Use mapping to map outer packet: 0 give no&n;                          per-proto mapping */
 id|DEBUGP
 c_func
 (paren
@@ -3968,7 +3969,6 @@ id|maniptype
 r_goto
 id|unlock_fail
 suffix:semicolon
-)brace
 )brace
 id|READ_UNLOCK
 c_func
