@@ -618,7 +618,7 @@ id|joydev
 id|devfs_remove
 c_func
 (paren
-l_string|&quot;js%d&quot;
+l_string|&quot;input/js%d&quot;
 comma
 id|joydev-&gt;minor
 )paren
@@ -2676,7 +2676,7 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-l_string|&quot;js%d&quot;
+l_string|&quot;input/js%d&quot;
 comma
 id|minor
 )paren
