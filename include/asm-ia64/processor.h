@@ -1661,7 +1661,7 @@ mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|macro|PREFETCH_STRIDE
-mdefine_line|#define PREFETCH_STRIDE 256
+mdefine_line|#define PREFETCH_STRIDE&t;&t;&t;L1_CACHE_BYTES
 r_static
 r_inline
 r_void
