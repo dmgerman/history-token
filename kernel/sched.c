@@ -983,14 +983,14 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|schedstat_inc
-macro_line|# define schedstat_inc(rq, field)&t;rq-&gt;field++;
+macro_line|# define schedstat_inc(rq, field)&t;do { (rq)-&gt;field++; } while (0)
 DECL|macro|schedstat_add
-macro_line|# define schedstat_add(rq, field, amt)&t;rq-&gt;field += amt;
+macro_line|# define schedstat_add(rq, field, amt)&t;do { (rq)-&gt;field += (amt); } while (0)
 macro_line|#else /* !CONFIG_SCHEDSTATS */
 DECL|macro|schedstat_inc
-macro_line|# define schedstat_inc(rq, field)&t;do { } while (0);
+macro_line|# define schedstat_inc(rq, field)&t;do { } while (0)
 DECL|macro|schedstat_add
-macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0);
+macro_line|# define schedstat_add(rq, field, amt)&t;do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
 r_static
