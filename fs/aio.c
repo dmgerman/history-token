@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;An async IO implementation for Linux&n; *&t;Written by Benjamin LaHaise &lt;bcrl@redhat.com&gt;&n; *&n; *&t;Implements an efficient asynchronous io interface.&n; *&n; *&t;Copyright 2000, 2001, 2002 Red Hat, Inc.  All Rights Reserved.&n; *&n; *&t;See ../COPYING for licensing terms.&n; */
+multiline_comment|/*&n; *&t;An async IO implementation for Linux&n; *&t;Written by Benjamin LaHaise &lt;bcrl@kvack.org&gt;&n; *&n; *&t;Implements an efficient asynchronous io interface.&n; *&n; *&t;Copyright 2000, 2001, 2002 Red Hat, Inc.  All Rights Reserved.&n; *&n; *&t;See ../COPYING for licensing terms.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

@@ -9181,7 +9181,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Benjamin LaHaise &lt;bcrl@redhat.com&gt;&quot;
+l_string|&quot;Benjamin LaHaise &lt;bcrl@kvack.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

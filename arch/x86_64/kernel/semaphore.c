@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * x86_64 semaphore implementation.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; *&n; * Portions Copyright 1999 Red Hat, Inc.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * rw semaphores implemented November 1999 by Benjamin LaHaise &lt;bcrl@redhat.com&gt;&n; */
+multiline_comment|/*&n; * x86_64 semaphore implementation.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; *&n; * Portions Copyright 1999 Red Hat, Inc.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * rw semaphores implemented November 1999 by Benjamin LaHaise &lt;bcrl@kvack.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
