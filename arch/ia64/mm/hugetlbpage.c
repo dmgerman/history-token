@@ -2048,15 +2048,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-r_extern
-r_int
-id|htlbzone_pages
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|htlbpage_freelist
-suffix:semicolon
 r_if
 c_cond
 (paren
