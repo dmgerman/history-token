@@ -13,7 +13,7 @@ multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.1&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000-MB DVB-T demodulator driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000M-B DVB-T demodulator driver&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
 macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
@@ -1215,7 +1215,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|deb_info
+id|deb_setf
 c_func
 (paren
 l_string|&quot;search_state after autosearch %d after %d checks&bslash;n&quot;
@@ -1322,6 +1322,12 @@ id|dib3000_state
 op_star
 )paren
 id|fe-&gt;demodulator_priv
+suffix:semicolon
+id|deb_info
+c_func
+(paren
+l_string|&quot;dib3000mb is getting up.&bslash;n&quot;
+)paren
 suffix:semicolon
 id|wr
 c_func
@@ -2634,7 +2640,7 @@ op_or
 id|FE_HAS_LOCK
 )paren
 suffix:semicolon
-id|deb_info
+id|deb_getf
 c_func
 (paren
 l_string|&quot;actual status is %2x&bslash;n&quot;
@@ -2644,42 +2650,6 @@ id|stat
 )paren
 suffix:semicolon
 id|deb_getf
-c_func
-(paren
-l_string|&quot;tps %x %x %x %x %x&bslash;n&quot;
-comma
-id|rd
-c_func
-(paren
-id|DIB3000MB_REG_TPS_1
-)paren
-comma
-id|rd
-c_func
-(paren
-id|DIB3000MB_REG_TPS_2
-)paren
-comma
-id|rd
-c_func
-(paren
-id|DIB3000MB_REG_TPS_3
-)paren
-comma
-id|rd
-c_func
-(paren
-id|DIB3000MB_REG_TPS_4
-)paren
-comma
-id|rd
-c_func
-(paren
-id|DIB3000MB_REG_TPS_5
-)paren
-)paren
-suffix:semicolon
-id|deb_info
 c_func
 (paren
 l_string|&quot;autoval: tps: %d, qam: %d, hrch: %d, alpha: %d, hp: %d, lp: %d, guard: %d, fft: %d cell: %d&bslash;n&quot;
@@ -2797,13 +2767,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Amaury:&n; * signal strength is measured with dBm (power compared to mW)&n; * the standard range is -90dBm(low power) to -10 dBm (strong power),&n; * but the calibration is done for -100 dBm to 0dBm&n; */
-DECL|macro|DIB3000MB_AGC_REF_dBm
-mdefine_line|#define DIB3000MB_AGC_REF_dBm&t;&t;-14
-DECL|macro|DIB3000MB_GAIN_SLOPE_dBm
-mdefine_line|#define DIB3000MB_GAIN_SLOPE_dBm&t;100
-DECL|macro|DIB3000MB_GAIN_DELTA_dBm
-mdefine_line|#define DIB3000MB_GAIN_DELTA_dBm&t;-2
+multiline_comment|/* see dib3000-watch dvb-apps for exact calcuations of signal_strength and snr */
 DECL|function|dib3000mb_read_signal_strength
 r_static
 r_int
@@ -2832,7 +2796,6 @@ op_star
 )paren
 id|fe-&gt;demodulator_priv
 suffix:semicolon
-multiline_comment|/* TODO log10&n;&t;u16 sigpow = rd(DIB3000MB_REG_SIGNAL_POWER),&n;&t;&t;n_agc_power = rd(DIB3000MB_REG_AGC_POWER),&n;&t;&t;rf_power = rd(DIB3000MB_REG_RF_POWER);&n;&t;double rf_power_dBm, ad_power_dBm, minar_power_dBm;&n;&n;&t;if (n_agc_power == 0 )&n;&t;&t;n_agc_power = 1 ;&n;&n;&t;ad_power_dBm    = 10 * log10 ( (float)n_agc_power / (float)(1&lt;&lt;16) );&n;&t;minor_power_dBm = ad_power_dBm - DIB3000MB_AGC_REF_dBm;&n;&t;rf_power_dBm = (-DIB3000MB_GAIN_SLOPE_dBm * (float)rf_power / (float)(1&lt;&lt;16) +&n;&t;&t;&t;DIB3000MB_GAIN_DELTA_dBm) + minor_power_dBm;&n;&t;// relative rf_power&n;&t;*strength = (u16) ((rf_power_dBm + 100) / 100 * 0xffff);&n;*/
 op_star
 id|strength
 op_assign
@@ -2850,7 +2813,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Amaury:&n; * snr is the signal quality measured in dB.&n; * snr = 10*log10(signal power / noise power)&n; * the best quality is near 35dB (cable transmission &amp; good modulator)&n; * the minimum without errors depend of transmission parameters&n; * some indicative values are given in en300744 Annex A&n; * ex : 16QAM 2/3 (Gaussian)  = 11.1 dB&n; *&n; * If SNR is above 20dB, BER should be always 0.&n; * choose 0dB as the minimum&n; */
 DECL|function|dib3000mb_read_snr
 r_static
 r_int
@@ -2911,7 +2873,6 @@ c_func
 id|DIB3000MB_REG_NOISE_POWER_LSB
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;float snr_dBm=0;&n;&n;&t;if (sigpow &gt; 0 &amp;&amp; icipow &gt; 0)&n;&t;&t;snr_dBm = 10.0 * log10( (float) (sigpow&lt;&lt;8) / (float)icipow )  ;&n;&t;else if (sigpow &gt; 0)&n;&t;&t;snr_dBm = 35;&n;&n;&t;*snr = (u16) ((snr_dBm / 35) * 0xffff);&n;*/
 op_star
 id|snr
 op_assign
@@ -3002,6 +2963,12 @@ id|dib3000_state
 op_star
 )paren
 id|fe-&gt;demodulator_priv
+suffix:semicolon
+id|deb_info
+c_func
+(paren
+l_string|&quot;dib3000mb is going to bed.&bslash;n&quot;
+)paren
 suffix:semicolon
 id|wr
 c_func

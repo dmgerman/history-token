@@ -13,7 +13,7 @@ multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.1&quot;
 DECL|macro|DRIVER_DESC
-mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000-MC DVB-T demodulator driver&quot;
+mdefine_line|#define DRIVER_DESC &quot;DiBcom 3000M-C DVB-T demodulator driver&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
 macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
