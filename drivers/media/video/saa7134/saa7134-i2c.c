@@ -1605,12 +1605,6 @@ c_func
 l_string|&quot;saa7134 internal&quot;
 )paren
 comma
-dot
-id|id
-op_assign
-op_minus
-l_int|1
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
