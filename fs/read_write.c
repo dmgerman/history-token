@@ -1423,7 +1423,7 @@ id|vector
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* BSD readv/writev returns EINVAL if one of the iov_len&n;&t;   values &lt; 0 or tot_len overflowed a 32-bit integer. -ink */
+multiline_comment|/*&n;&t; * Single unix specification:&n;&t; * We should -EINVAL if an element length is not &gt;= 0 and fitting an ssize_t&n;&t; * The total length is fitting an ssize_t&n;&t; *&n;&t; * Be careful here because iov_len is a size_t not an ssize_t&n;&t; */
 id|tot_len
 op_assign
 l_int|0
@@ -1448,14 +1448,17 @@ id|i
 op_increment
 )paren
 (brace
-r_int
+id|ssize_t
 id|tmp
 op_assign
 id|tot_len
 suffix:semicolon
-r_int
+id|ssize_t
 id|len
 op_assign
+(paren
+id|ssize_t
+)paren
 id|iov
 (braket
 id|i
@@ -1470,12 +1473,10 @@ id|len
 OL
 l_int|0
 )paren
+multiline_comment|/* size_t not fitting an ssize_t .. */
 r_goto
 id|out
 suffix:semicolon
-(paren
-id|u32
-)paren
 id|tot_len
 op_add_assign
 id|len
@@ -1486,14 +1487,8 @@ c_cond
 id|tot_len
 OL
 id|tmp
-op_logical_or
-id|tot_len
-OL
-(paren
-id|u32
 )paren
-id|len
-)paren
+multiline_comment|/* maths overflow on the ssize_t */
 r_goto
 id|out
 suffix:semicolon
