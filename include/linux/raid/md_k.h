@@ -468,11 +468,6 @@ id|list_head
 id|same_set
 suffix:semicolon
 multiline_comment|/* RAID devices within the same set */
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
-multiline_comment|/* Device number */
 DECL|member|size
 r_int
 r_int
@@ -923,20 +918,6 @@ id|mddev
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|mdk_rdev_t
-op_star
-id|find_rdev
-c_func
-(paren
-id|mddev_t
-op_star
-id|mddev
-comma
-id|kdev_t
-id|dev
-)paren
-suffix:semicolon
 r_extern
 id|mdk_rdev_t
 op_star
