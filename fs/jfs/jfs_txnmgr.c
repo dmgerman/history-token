@@ -3505,12 +3505,20 @@ id|COMMIT_DELETE
 op_eq
 l_int|0
 )paren
-id|fsync_inode_data_buffers
+(brace
+id|filemap_fdatasync
 c_func
 (paren
-id|ip
+id|ip-&gt;i_mapping
 )paren
 suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|ip-&gt;i_mapping
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Mark inode as not dirty.  It will still be on the dirty&n;&t;&t; * inode list, but we&squot;ll know not to commit it again unless&n;&t;&t; * it gets marked dirty again&n;&t;&t; */
 id|clear_cflag
 c_func

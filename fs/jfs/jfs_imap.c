@@ -910,10 +910,16 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * write out dirty pages of imap&n;&t; */
-id|fsync_inode_data_buffers
+id|filemap_fdatasync
 c_func
 (paren
-id|ipimap
+id|ipimap-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|ipimap-&gt;i_mapping
 )paren
 suffix:semicolon
 id|diWriteSpecial
@@ -2073,10 +2079,16 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|fsync_inode_data_buffers
+id|filemap_fdatasync
 c_func
 (paren
-id|ip
+id|ip-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|ip-&gt;i_mapping
 )paren
 suffix:semicolon
 id|truncate_inode_pages

@@ -76,14 +76,6 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|rc
-op_assign
-id|fsync_inode_data_buffers
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
