@@ -29,6 +29,9 @@ macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+DECL|macro|__KERNEL_SYSCALLS__
+mdefine_line|#define __KERNEL_SYSCALLS__
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
@@ -763,6 +766,34 @@ id|consistent_sync
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|open
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|open
+)paren
+suffix:semicolon
+DECL|variable|read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|read
+)paren
+suffix:semicolon
+DECL|variable|lseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lseek
+)paren
+suffix:semicolon
+DECL|variable|close
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|close
+)paren
+suffix:semicolon
 DECL|variable|start_thread
 id|EXPORT_SYMBOL
 c_func
