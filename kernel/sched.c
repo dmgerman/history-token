@@ -7021,6 +7021,9 @@ comma
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|smp_processor_id
 c_func
 (paren
