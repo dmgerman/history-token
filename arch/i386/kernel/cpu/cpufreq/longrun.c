@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longrun.c,v 1.22 2003/02/10 17:31:50 db Exp $&n; *&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longrun.c,v 1.25 2003/02/28 16:03:50 db Exp $&n; *&n; * (C) 2002 - 2003  Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -822,16 +822,6 @@ c_func
 id|policy
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|longrun_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
-op_assign
-id|longrun_low_freq
-suffix:semicolon
-multiline_comment|/* dummy value */
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: longhaul.c,v 1.86 2003/02/12 13:59:11 davej Exp $&n; *&n; *  (C) 2001  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: longhaul.c,v 1.87 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2001  Dave Jones. &lt;davej@suse.de&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 3 different versions of Longhaul.&n; *&n; *  +---------------------+----------+---------------------------------+&n; *  | Marketing name      | Codename | longhaul version / features.    |&n; *  +---------------------+----------+---------------------------------+&n; *  |  Samuel/CyrixIII    |   C5A    | v1 : multipliers only           |&n; *  |  Samuel2/C3         | C3E/C5B  | v1 : multiplier only            |&n; *  |  Ezra               |   C5C    | v2 : multipliers &amp; voltage      |&n; *  |  Ezra-T             | C5M/C5N  | v3 : multipliers, voltage &amp; FSB |&n; *  +---------------------+----------+---------------------------------+&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -2825,45 +2825,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_int
-id|longhaul_cpu_init
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-)paren
-suffix:semicolon
-DECL|variable|longhaul_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|longhaul_driver
-op_assign
-(brace
-dot
-id|verify
-op_assign
-id|longhaul_verify
-comma
-dot
-id|target
-op_assign
-id|longhaul_target
-comma
-dot
-id|init
-op_assign
-id|longhaul_cpu_init
-comma
-dot
-id|name
-op_assign
-l_string|&quot;longhaul&quot;
-comma
-)brace
-suffix:semicolon
 DECL|function|longhaul_cpu_init
 r_static
 r_int
@@ -3179,11 +3140,7 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|CPUFREQ_ETERNAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|longhaul_driver.cpu_cur_freq
-(braket
-l_int|0
-)braket
+id|policy-&gt;cur
 op_assign
 (paren
 r_int
@@ -3203,7 +3160,6 @@ op_star
 l_int|100
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func
@@ -3214,6 +3170,35 @@ id|longhaul_table
 )paren
 suffix:semicolon
 )brace
+DECL|variable|longhaul_driver
+r_static
+r_struct
+id|cpufreq_driver
+id|longhaul_driver
+op_assign
+(brace
+dot
+id|verify
+op_assign
+id|longhaul_verify
+comma
+dot
+id|target
+op_assign
+id|longhaul_target
+comma
+dot
+id|init
+op_assign
+id|longhaul_cpu_init
+comma
+dot
+id|name
+op_assign
+l_string|&quot;longhaul&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|longhaul_init
 r_static
 r_int

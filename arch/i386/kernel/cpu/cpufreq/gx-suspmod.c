@@ -51,12 +51,6 @@ DECL|macro|PWRSVE_ISA
 mdefine_line|#define PWRSVE_ISA             (1&lt;&lt;3)  /* stop ISA clock  */
 DECL|macro|PWRSVE
 mdefine_line|#define PWRSVE                 (1&lt;&lt;4)  /* active idle */
-DECL|variable|gx_suspmod_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|gx_suspmod_driver
-suffix:semicolon
 DECL|struct|gxfreq_params
 r_struct
 id|gxfreq_params
@@ -1274,15 +1268,10 @@ id|policy-&gt;max
 op_assign
 id|maxfreq
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|gx_suspmod_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|curfreq
 suffix:semicolon
-macro_line|#endif
 id|policy-&gt;policy
 op_assign
 id|CPUFREQ_POLICY_PERFORMANCE

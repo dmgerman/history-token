@@ -12,12 +12,6 @@ DECL|macro|REG_CSCIR
 mdefine_line|#define REG_CSCIR 0x22 &t;&t;/* Chip Setup and Control Index Register    */
 DECL|macro|REG_CSCDR
 mdefine_line|#define REG_CSCDR 0x23&t;&t;/* Chip Setup and Control Data  Register    */
-DECL|variable|elanfreq_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|elanfreq_driver
-suffix:semicolon
 multiline_comment|/* Module parameter */
 DECL|variable|max_freq
 r_static
@@ -686,18 +680,13 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|CPUFREQ_ETERNAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|elanfreq_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|elanfreq_get_cpu_frequency
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func

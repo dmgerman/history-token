@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.46 2003/01/20 17:31:47 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.48 2003/02/22 10:23:46 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,12 +10,6 @@ macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|POWERNOW_IOPORT
 mdefine_line|#define POWERNOW_IOPORT 0xfff0         /* it doesn&squot;t matter where, as long&n;&t;&t;&t;&t;&t;  as it is unused */
-DECL|variable|powernow_k6_driver
-r_static
-r_struct
-id|cpufreq_driver
-id|powernow_k6_driver
-suffix:semicolon
 DECL|variable|busfreq
 r_static
 r_int
@@ -616,17 +610,12 @@ id|policy-&gt;cpuinfo.transition_latency
 op_assign
 id|CPUFREQ_ETERNAL
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-id|powernow_k6_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|busfreq
 op_star
 id|max_multiplier
 suffix:semicolon
-macro_line|#endif
 r_return
 id|cpufreq_frequency_table_cpuinfo
 c_func
