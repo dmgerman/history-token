@@ -2752,6 +2752,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|smp_call_function
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function
+)paren
+suffix:semicolon
 DECL|function|smp_call_function_interrupt
 r_void
 id|smp_call_function_interrupt

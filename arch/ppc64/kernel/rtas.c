@@ -40,6 +40,13 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
+DECL|variable|rtas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas
+)paren
+suffix:semicolon
 DECL|variable|rtas_err_buf
 r_char
 id|rtas_err_buf

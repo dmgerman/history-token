@@ -1992,6 +1992,13 @@ op_star
 op_assign
 id|dummy_perf
 suffix:semicolon
+DECL|variable|perf_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|perf_irq
+)paren
+suffix:semicolon
 r_void
 DECL|function|PerformanceMonitorException
 id|PerformanceMonitorException
