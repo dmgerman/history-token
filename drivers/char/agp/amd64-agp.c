@@ -297,7 +297,7 @@ c_func
 (paren
 id|tmp
 op_amp
-l_int|0xffffff0000000ffc
+l_int|0xffffff0000000ffcULL
 )paren
 suffix:semicolon
 id|pte
@@ -305,7 +305,7 @@ op_assign
 (paren
 id|tmp
 op_amp
-l_int|0x000000ff00000000
+l_int|0x000000ff00000000ULL
 )paren
 op_rshift
 l_int|28
@@ -315,7 +315,7 @@ op_or_assign
 (paren
 id|tmp
 op_amp
-l_int|0x00000000fffff000
+l_int|0x00000000fffff000ULL
 )paren
 suffix:semicolon
 id|pte
