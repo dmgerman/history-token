@@ -7953,13 +7953,11 @@ id|daddr
 comma
 l_int|0
 comma
-id|RT_TOS
+id|RT_CONN_FLAGS
 c_func
 (paren
-id|inet-&gt;tos
+id|sk
 )paren
-op_or
-id|sk-&gt;sk_localroute
 comma
 id|sk-&gt;sk_bound_dev_if
 comma
