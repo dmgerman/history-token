@@ -5,10 +5,6 @@ multiline_comment|/*   Copyright (C) 2003 Peter Milne, D-TACQ Solutions Ltd&n; *
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;   With acknowledgements to i2c-algo-ibm_ocp.c by &n;   Ian DaSilva, MontaVista Software, Inc. idasilva@mvista.com&n;&n;   And i2c-algo-pcf.c, which was created by Simon G. Vogl and Hans Berglund:&n;&n;     Copyright (C) 1995-1997 Simon G. Vogl, 1998-2000 Hans Berglund&n;   &n;   And which acknowledged Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;,&n;   Frodo Looijaard &lt;frodol@dds.nl&gt;, Martin Bailey&lt;mbailey@littlefeet-inc.com&gt;&n;&n;  ---------------------------------------------------------------------------*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;

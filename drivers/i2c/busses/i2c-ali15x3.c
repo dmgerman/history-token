@@ -2,10 +2,6 @@ multiline_comment|/*&n;    ali15x3.c - Part of lm_sensors, Linux kernel modules 
 multiline_comment|/*&n;    This is the driver for the SMB Host controller on&n;    Acer Labs Inc. (ALI) M1541 and M1543C South Bridges.&n;&n;    The M1543C is a South bridge for desktop systems.&n;    The M1533 is a South bridge for portable systems.&n;    They are part of the following ALI chipsets:&n;       &quot;Aladdin Pro 2&quot;: Includes the M1621 Slot 1 North bridge&n;       with AGP and 100MHz CPU Front Side bus&n;       &quot;Aladdin V&quot;: Includes the M1541 Socket 7 North bridge&n;       with AGP and 100MHz CPU Front Side bus&n;       &quot;Aladdin IV&quot;: Includes the M1541 Socket 7 North bridge&n;       with host bus up to 83.3 MHz.&n;    For an overview of these chips see http://www.acerlabs.com&n;&n;    The M1533/M1543C devices appear as FOUR separate devices&n;    on the PCI bus. An output of lspci will show something similar&n;    to the following:&n;&n;&t;00:02.0 USB Controller: Acer Laboratories Inc. M5237&n;&t;00:03.0 Bridge: Acer Laboratories Inc. M7101&n;&t;00:07.0 ISA bridge: Acer Laboratories Inc. M1533&n;&t;00:0f.0 IDE interface: Acer Laboratories Inc. M5229&n;&n;    The SMB controller is part of the 7101 device, which is an&n;    ACPI-compliant Power Management Unit (PMU).&n;&n;    The whole 7101 device has to be enabled for the SMB to work.&n;    You can&squot;t just enable the SMB alone.&n;    The SMB and the ACPI have separate I/O spaces.&n;    We make sure that the SMB is enabled. We leave the ACPI alone.&n;&n;    This driver controls the SMB Host only.&n;    The SMB Slave controller on the M15X3 is not enabled.&n;&n;    This driver does not use interrupts.&n;*/
 multiline_comment|/* Note: we assume there can only be one ALI15X3, with one SMBus interface */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -2,10 +2,6 @@ multiline_comment|/*&n;    i2c-ali1535.c - Part of lm_sensors, Linux kernel modu
 multiline_comment|/*&n;    This is the driver for the SMB Host controller on&n;    Acer Labs Inc. (ALI) M1535 South Bridge.&n;&n;    The M1535 is a South bridge for portable systems.&n;    It is very similar to the M15x3 South bridges also produced&n;    by Acer Labs Inc.  Some of the registers within the part&n;    have moved and some have been redefined slightly. Additionally,&n;    the sequencing of the SMBus transactions has been modified&n;    to be more consistent with the sequencing recommended by&n;    the manufacturer and observed through testing.  These&n;    changes are reflected in this driver and can be identified&n;    by comparing this driver to the i2c-ali15x3 driver.&n;    For an overview of these chips see http://www.acerlabs.com&n;&n;    The SMB controller is part of the 7101 device, which is an&n;    ACPI-compliant Power Management Unit (PMU).&n;&n;    The whole 7101 device has to be enabled for the SMB to work.&n;    You can&squot;t just enable the SMB alone.&n;    The SMB and the ACPI have separate I/O spaces.&n;    We make sure that the SMB is enabled. We leave the ACPI alone.&n;&n;    This driver controls the SMB Host only.&n;&n;    This driver does not use interrupts.&n;*/
 multiline_comment|/* Note: we assume there can only be one ALI1535, with one SMBus interface */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

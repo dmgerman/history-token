@@ -1,9 +1,5 @@
 multiline_comment|/*&n; * drivers/i2c/i2c-adap-ixp42x.c&n; *&n; * Intel&squot;s IXP42x XScale NPU chipsets (IXP420, 421, 422, 425) do not have&n; * an on board I2C controller but provide 16 GPIO pins that are often&n; * used to create an I2C bus. This driver provides an i2c_adapter &n; * interface that plugs in under algo_bit and drives the GPIO pins&n; * as instructed by the alogorithm driver.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; *&n; * Copyright (c) 2003-2004 MontaVista Software Inc.&n; *&n; * This file is licensed under the terms of the GNU General Public &n; * License version 2. This program is licensed &quot;as is&quot; without any &n; * warranty of any kind, whether express or implied.&n; *&n; * NOTE: Since different platforms will use different GPIO pins for&n; *       I2C, this driver uses an IXP42x-specific platform_data&n; *       pointer to pass the GPIO numbers to the driver. This &n; *       allows us to support all the different IXP42x platforms&n; *       w/o having to put #ifdefs in this driver.&n; *&n; *       See arch/arm/mach-ixp42x/ixdp425.c for an example of building a &n; *       device list and filling in the ixp42x_i2c_pins data structure &n; *       that is passed as the platform_data to this driver.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
