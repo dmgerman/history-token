@@ -852,6 +852,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* enable rirb dma and response irq */
+macro_line|#ifdef USE_CORB_RIRB
 id|azx_writeb
 c_func
 (paren
@@ -860,12 +861,22 @@ comma
 id|RIRBCTL
 comma
 id|ICH6_RBCTL_DMA_EN
-macro_line|#ifdef USE_CORB_RIRB
 op_or
 id|ICH6_RBCTL_IRQ_EN
-macro_line|#endif
 )paren
 suffix:semicolon
+macro_line|#else
+id|azx_writeb
+c_func
+(paren
+id|chip
+comma
+id|RIRBCTL
+comma
+id|ICH6_RBCTL_DMA_EN
+)paren
+suffix:semicolon
+macro_line|#endif
 id|chip-&gt;rirb.rp
 op_assign
 id|chip-&gt;rirb.cmds
