@@ -2,8 +2,11 @@ multiline_comment|/*&n; * mv64340.h - MV-64340 Internal registers definition fil
 macro_line|#ifndef __ASM_MV64340_H
 DECL|macro|__ASM_MV64340_H
 mdefine_line|#define __ASM_MV64340_H
+macro_line|#ifdef __MIPS__
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/marvell.h&gt;
+macro_line|#endif
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/****************************************/
 multiline_comment|/* Processor Address Space              */
 multiline_comment|/****************************************/
@@ -1653,6 +1656,124 @@ r_int
 r_int
 id|base
 )paren
+suffix:semicolon
+multiline_comment|/* MPSC Platform Device, Driver Data (Shared register regions) */
+DECL|macro|MPSC_SHARED_NAME
+mdefine_line|#define&t;MPSC_SHARED_NAME&t;&t;&quot;mpsc_shared&quot;
+DECL|macro|MPSC_ROUTING_BASE_ORDER
+mdefine_line|#define&t;MPSC_ROUTING_BASE_ORDER&t;&t;0
+DECL|macro|MPSC_SDMA_INTR_BASE_ORDER
+mdefine_line|#define&t;MPSC_SDMA_INTR_BASE_ORDER&t;1
+DECL|macro|MPSC_ROUTING_REG_BLOCK_SIZE
+mdefine_line|#define MPSC_ROUTING_REG_BLOCK_SIZE&t;0x000c
+DECL|macro|MPSC_SDMA_INTR_REG_BLOCK_SIZE
+mdefine_line|#define MPSC_SDMA_INTR_REG_BLOCK_SIZE&t;0x0084
+DECL|struct|mpsc_shared_pd_dd
+r_struct
+id|mpsc_shared_pd_dd
+(brace
+DECL|member|mrr_val
+id|u32
+id|mrr_val
+suffix:semicolon
+DECL|member|rcrr_val
+id|u32
+id|rcrr_val
+suffix:semicolon
+DECL|member|tcrr_val
+id|u32
+id|tcrr_val
+suffix:semicolon
+DECL|member|intr_cause_val
+id|u32
+id|intr_cause_val
+suffix:semicolon
+DECL|member|intr_mask_val
+id|u32
+id|intr_mask_val
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* MPSC Platform Device, Driver Data */
+DECL|macro|MPSC_CTLR_NAME
+mdefine_line|#define&t;MPSC_CTLR_NAME&t;&t;&t;&quot;mpsc&quot;
+DECL|macro|MPSC_BASE_ORDER
+mdefine_line|#define&t;MPSC_BASE_ORDER&t;&t;&t;0
+DECL|macro|MPSC_SDMA_BASE_ORDER
+mdefine_line|#define&t;MPSC_SDMA_BASE_ORDER&t;&t;1
+DECL|macro|MPSC_BRG_BASE_ORDER
+mdefine_line|#define&t;MPSC_BRG_BASE_ORDER&t;&t;2
+DECL|macro|MPSC_REG_BLOCK_SIZE
+mdefine_line|#define MPSC_REG_BLOCK_SIZE&t;&t;0x0038
+DECL|macro|MPSC_SDMA_REG_BLOCK_SIZE
+mdefine_line|#define MPSC_SDMA_REG_BLOCK_SIZE&t;0x0c18
+DECL|macro|MPSC_BRG_REG_BLOCK_SIZE
+mdefine_line|#define MPSC_BRG_REG_BLOCK_SIZE&t;&t;0x0008
+DECL|struct|mpsc_pd_dd
+r_struct
+id|mpsc_pd_dd
+(brace
+DECL|member|mirror_regs
+id|u8
+id|mirror_regs
+suffix:semicolon
+DECL|member|cache_mgmt
+id|u8
+id|cache_mgmt
+suffix:semicolon
+DECL|member|max_idle
+id|u8
+id|max_idle
+suffix:semicolon
+DECL|member|default_baud
+r_int
+id|default_baud
+suffix:semicolon
+DECL|member|default_bits
+r_int
+id|default_bits
+suffix:semicolon
+DECL|member|default_parity
+r_int
+id|default_parity
+suffix:semicolon
+DECL|member|default_flow
+r_int
+id|default_flow
+suffix:semicolon
+DECL|member|chr_1_val
+id|u32
+id|chr_1_val
+suffix:semicolon
+DECL|member|chr_2_val
+id|u32
+id|chr_2_val
+suffix:semicolon
+DECL|member|chr_10_val
+id|u32
+id|chr_10_val
+suffix:semicolon
+DECL|member|mpcr_val
+id|u32
+id|mpcr_val
+suffix:semicolon
+DECL|member|bcr_val
+id|u32
+id|bcr_val
+suffix:semicolon
+DECL|member|brg_can_tune
+id|u8
+id|brg_can_tune
+suffix:semicolon
+DECL|member|brg_clk_src
+id|u8
+id|brg_clk_src
+suffix:semicolon
+DECL|member|brg_clk_freq
+id|u32
+id|brg_clk_freq
+suffix:semicolon
+)brace
 suffix:semicolon
 macro_line|#endif /* __ASM_MV64340_H */
 eof

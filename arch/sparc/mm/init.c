@@ -1732,14 +1732,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|highmem_start_page
-op_assign
-id|pfn_to_page
-c_func
-(paren
-id|highstart_pfn
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

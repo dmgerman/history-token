@@ -294,6 +294,12 @@ comma
 id|UM_KERN_PAGE_SIZE
 )paren
 suffix:semicolon
+id|os_close_file
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
 )brace
 DECL|variable|have_devanon
 r_static

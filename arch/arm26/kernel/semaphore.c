@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  ARM semaphore implementation, taken from&n; *&n; *  i386 semaphore implementation.&n; *&n; *  (C) Copyright 1999 Linus Torvalds&n; *  (C) Copyright 2003 Ian Molton (ARM26 mods)&n; *&n; *  Modified for ARM by Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -438,7 +439,35 @@ multiline_comment|/*&n; * The semaphore operations have a special calling sequen
 id|asm
 c_func
 (paren
-l_string|&quot;&t;.section .sched.text&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&quot;
+l_string|&quot;&t;.section .sched.text , #alloc, #execinstr&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_failed&t;&t;&t;&bslash;n&bslash;&n;__down_failed:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_interruptible_failed&t;&bslash;n&bslash;&n;__down_interruptible_failed:&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_interruptible&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__down_trylock_failed&t;&t;&bslash;n&bslash;&n;__down_trylock_failed:&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__down_trylock&t;&t;&t;&bslash;n&bslash;&n;&t;mov&t;ip, r0&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.align&t;5&t;&t;&t;&t;&bslash;n&bslash;&n;&t;.globl&t;__up_wakeup&t;&t;&t;&bslash;n&bslash;&n;__up_wakeup:&t;&t;&t;&t;&t;&bslash;n&bslash;&n;&t;stmfd&t;sp!, {r0 - r3, lr}&t;&t;&bslash;n&bslash;&n;&t;mov&t;r0, ip&t;&t;&t;&t;&bslash;n&bslash;&n;&t;bl&t;__up&t;&t;&t;&t;&bslash;n&bslash;&n;&t;ldmfd&t;sp!, {r0 - r3, pc}^&t;&t;&bslash;n&bslash;&n;&t;&quot;
+)paren
+suffix:semicolon
+DECL|variable|__down_failed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_failed
+)paren
+suffix:semicolon
+DECL|variable|__down_interruptible_failed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_interruptible_failed
+)paren
+suffix:semicolon
+DECL|variable|__down_trylock_failed
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__down_trylock_failed
+)paren
+suffix:semicolon
+DECL|variable|__up_wakeup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__up_wakeup
 )paren
 suffix:semicolon
 eof

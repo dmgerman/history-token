@@ -889,25 +889,23 @@ DECL|macro|BOOKE_PAGESZ_1TB
 mdefine_line|#define BOOKE_PAGESZ_1TB&t;15
 multiline_comment|/*&n; * Freescale Book-E MMU support&n; */
 DECL|macro|MAS0_TLBSEL
-mdefine_line|#define MAS0_TLBSEL&t;0x10000000
+mdefine_line|#define MAS0_TLBSEL(x)&t;((x &lt;&lt; 28) &amp; 0x30000000)
 DECL|macro|MAS0_ESEL
-mdefine_line|#define MAS0_ESEL&t;0x000F0000
+mdefine_line|#define MAS0_ESEL(x)&t;((x &lt;&lt; 16) &amp; 0x0FFF0000)
 DECL|macro|MAS0_NV
-mdefine_line|#define MAS0_NV&t;&t;0x00000001
+mdefine_line|#define MAS0_NV&t;&t;0x00000FFF
 DECL|macro|MAS1_VALID
 mdefine_line|#define MAS1_VALID &t;0x80000000
 DECL|macro|MAS1_IPROT
 mdefine_line|#define MAS1_IPROT&t;0x40000000
 DECL|macro|MAS1_TID
-mdefine_line|#define MAS1_TID &t;0x03FF0000
+mdefine_line|#define MAS1_TID(x)&t;((x &lt;&lt; 16) &amp; 0x3FFF0000)
 DECL|macro|MAS1_TS
 mdefine_line|#define MAS1_TS&t;&t;0x00001000
 DECL|macro|MAS1_TSIZE
-mdefine_line|#define MAS1_TSIZE(x)&t;(x &lt;&lt; 8)
+mdefine_line|#define MAS1_TSIZE(x)&t;((x &lt;&lt; 8) &amp; 0x00000F00)
 DECL|macro|MAS2_EPN
 mdefine_line|#define MAS2_EPN&t;0xFFFFF000
-DECL|macro|MAS2_SHAREN
-mdefine_line|#define MAS2_SHAREN&t;0x00000200
 DECL|macro|MAS2_X0
 mdefine_line|#define MAS2_X0&t;&t;0x00000040
 DECL|macro|MAS2_X1
@@ -945,13 +943,11 @@ mdefine_line|#define MAS3_UR&t;&t;0x00000002
 DECL|macro|MAS3_SR
 mdefine_line|#define MAS3_SR&t;&t;0x00000001
 DECL|macro|MAS4_TLBSELD
-mdefine_line|#define MAS4_TLBSELD&t;0x10000000
+mdefine_line|#define MAS4_TLBSELD(x) MAS0_TLBSEL(x)
 DECL|macro|MAS4_TIDDSEL
-mdefine_line|#define MAS4_TIDDSEL&t;0x00030000
-DECL|macro|MAS4_DSHAREN
-mdefine_line|#define MAS4_DSHAREN&t;0x00001000
+mdefine_line|#define MAS4_TIDDSEL&t;0x000F0000
 DECL|macro|MAS4_TSIZED
-mdefine_line|#define MAS4_TSIZED(x)&t;(x &lt;&lt; 8)
+mdefine_line|#define MAS4_TSIZED(x)&t;MAS1_TSIZE(x)
 DECL|macro|MAS4_X0D
 mdefine_line|#define MAS4_X0D&t;0x00000040
 DECL|macro|MAS4_X1D
@@ -966,10 +962,16 @@ DECL|macro|MAS4_GD
 mdefine_line|#define MAS4_GD&t;&t;0x00000002
 DECL|macro|MAS4_ED
 mdefine_line|#define MAS4_ED&t;&t;0x00000001
-DECL|macro|MAS6_SPID
-mdefine_line|#define MAS6_SPID&t;0x00FF0000
+DECL|macro|MAS6_SPID0
+mdefine_line|#define MAS6_SPID0&t;0x3FFF0000
+DECL|macro|MAS6_SPID1
+mdefine_line|#define MAS6_SPID1&t;0x00007FFE
 DECL|macro|MAS6_SAS
 mdefine_line|#define MAS6_SAS&t;0x00000001
+DECL|macro|MAS6_SPID
+mdefine_line|#define MAS6_SPID&t;MAS6_SPID0
+DECL|macro|MAS7_RPN
+mdefine_line|#define MAS7_RPN&t;0xFFFFFFFF
 macro_line|#endif /* _PPC_MMU_H_ */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -39,9 +39,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|PageHighMem
+c_func
+(paren
 id|page
-OL
-id|highmem_start_page
+)paren
 )paren
 r_return
 id|page_address

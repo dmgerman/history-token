@@ -951,6 +951,17 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+r_extern
+r_void
+id|noexec_setup
+c_func
+(paren
+r_const
+r_char
+op_star
+id|str
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_HIGHPTE)
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + pte_index(address))

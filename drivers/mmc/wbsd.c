@@ -647,13 +647,6 @@ op_star
 id|data
 )paren
 (brace
-r_struct
-id|request
-op_star
-id|req
-op_assign
-id|data-&gt;req
-suffix:semicolon
 multiline_comment|/*&n;&t; * Get info. about SG list from data structure.&n;&t; */
 id|host-&gt;cur_sg
 op_assign

@@ -172,9 +172,7 @@ mdefine_line|#define DCRN_UIC1_BASE&t;0x0D0
 DECL|macro|DCRN_CPC0_EPRCSR
 mdefine_line|#define DCRN_CPC0_EPRCSR 0x0F3
 DECL|macro|UIC0_UIC1NC
-mdefine_line|#define UIC0_UIC1NC      30&t;/* UIC1 non-critical interrupt */
-DECL|macro|UIC0_UIC1CR
-mdefine_line|#define UIC0_UIC1CR      31&t;/* UIC1 critical interrupt */
+mdefine_line|#define UIC0_UIC1NC&t;0x00000002
 DECL|macro|CHR1_CETE
 mdefine_line|#define CHR1_CETE&t;0x00000004&t;/* CPU external timer enable */
 DECL|macro|UIC0
@@ -185,8 +183,6 @@ DECL|macro|NR_UICS
 macro_line|#undef NR_UICS
 DECL|macro|NR_UICS
 mdefine_line|#define NR_UICS&t;2
-DECL|macro|UIC_CASCADE_MASK
-mdefine_line|#define UIC_CASCADE_MASK 0x0003&t;/* bits 30 &amp; 31 */
 multiline_comment|/* EMAC DCRN&squot;s FIXME: armin */
 DECL|macro|DCRN_MALRXCTP2R
 mdefine_line|#define DCRN_MALRXCTP2R(base)&t;((base) + 0x42)&t;/* Channel Rx 2 Channel Table Pointer */

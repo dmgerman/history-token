@@ -413,7 +413,7 @@ mdefine_line|#define pte_pfn(x)&t;&t;(pte_val(x) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pte_page
 mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
 DECL|macro|pfn_pte
-mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
+mdefine_line|#define pfn_pte(pfn, prot)&t;__pte(((pte_t)(pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot))
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, prot)&t;pfn_pte(page_to_pfn(page), prot)
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
@@ -1566,8 +1566,94 @@ suffix:semicolon
 multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is arch dependent */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
+macro_line|#ifdef CONFIG_PHYS_64BIT
+r_extern
+r_int
+id|remap_pfn_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|from
+comma
+r_int
+r_int
+id|paddr
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
+DECL|function|io_remap_page_range
+r_static
+r_inline
+r_int
+id|io_remap_page_range
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|vaddr
+comma
+r_int
+r_int
+id|paddr
+comma
+r_int
+r_int
+id|size
+comma
+id|pgprot_t
+id|prot
+)paren
+(brace
+id|phys_addr_t
+id|paddr64
+op_assign
+id|fixup_bigphys_addr
+c_func
+(paren
+id|paddr
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+id|remap_pfn_range
+c_func
+(paren
+id|vma
+comma
+id|vaddr
+comma
+id|paddr64
+op_rshift
+id|PAGE_SHIFT
+comma
+id|size
+comma
+id|prot
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range(vma, vaddr, paddr, size, prot)&t;&t;&bslash;&n;&t;&t;remap_pfn_range(vma, vaddr, (paddr) &gt;&gt; PAGE_SHIFT, size, prot)
+macro_line|#endif
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)

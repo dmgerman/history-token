@@ -5,34 +5,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
-macro_line|#include &quot;frame_user.h&quot;
-DECL|function|sc_size
-r_int
-id|sc_size
-c_func
-(paren
-r_void
-op_star
-id|data
-)paren
-(brace
-r_struct
-id|arch_frame_data
-op_star
-id|arch
-op_assign
-id|data
-suffix:semicolon
-r_return
-r_sizeof
-(paren
-r_struct
-id|sigcontext
-)paren
-op_plus
-id|arch-&gt;fpstate_size
-suffix:semicolon
-)brace
 DECL|function|sc_to_sc
 r_void
 id|sc_to_sc
@@ -59,17 +31,6 @@ id|from
 op_assign
 id|from_ptr
 suffix:semicolon
-r_int
-id|size
-op_assign
-r_sizeof
-(paren
-op_star
-id|to
-)paren
-op_plus
-id|signal_frame_sc.common.arch.fpstate_size
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -77,7 +38,17 @@ id|to
 comma
 id|from
 comma
-id|size
+r_sizeof
+(paren
+op_star
+id|to
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|_fpstate
+)paren
 )paren
 suffix:semicolon
 r_if

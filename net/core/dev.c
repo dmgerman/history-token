@@ -3033,6 +3033,9 @@ op_increment
 r_if
 c_cond
 (paren
+id|PageHighMem
+c_func
+(paren
 id|skb_shinfo
 c_func
 (paren
@@ -3045,8 +3048,7 @@ id|i
 )braket
 dot
 id|page
-op_ge
-id|highmem_start_page
+)paren
 )paren
 r_return
 l_int|1

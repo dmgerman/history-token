@@ -71,24 +71,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* This is done because to allow SIGSEGV to be delivered inside a SEGV&n;&t; * handler.  This can happen in copy_user, and if SEGV is disabled,&n;&t; * the process will die.&n;&t; */
-r_if
-c_cond
-(paren
-id|sig
-op_eq
-id|SIGSEGV
-)paren
-(brace
-id|change_sig
-c_func
-(paren
-id|SIGSEGV
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|r
 op_assign
 op_amp

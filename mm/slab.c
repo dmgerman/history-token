@@ -42,8 +42,14 @@ DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size()&t;L1_CACHE_BYTES
 macro_line|#endif
 macro_line|#ifndef ARCH_KMALLOC_MINALIGN
+multiline_comment|/*&n; * Enforce a minimum alignment for the kmalloc caches.&n; * Usually, the kmalloc caches are cache_line_size() aligned, except when&n; * DEBUG and FORCED_DEBUG are enabled, then they are BYTES_PER_WORD aligned.&n; * Some archs want to perform DMA into kmalloc caches and need a guaranteed&n; * alignment larger than BYTES_PER_WORD. ARCH_KMALLOC_MINALIGN allows that.&n; * Note that this flag disables some debug features.&n; */
 DECL|macro|ARCH_KMALLOC_MINALIGN
 mdefine_line|#define ARCH_KMALLOC_MINALIGN 0
+macro_line|#endif
+macro_line|#ifndef ARCH_SLAB_MINALIGN
+multiline_comment|/*&n; * Enforce a minimum alignment for all caches.&n; * Intended for archs that get misalignment faults even for BYTES_PER_WORD&n; * aligned buffers. Includes ARCH_KMALLOC_MINALIGN.&n; * If possible: Do not enable this flag for CONFIG_DEBUG_SLAB, it disables&n; * some debug features.&n; */
+DECL|macro|ARCH_SLAB_MINALIGN
+mdefine_line|#define ARCH_SLAB_MINALIGN 0
 macro_line|#endif
 macro_line|#ifndef ARCH_KMALLOC_FLAGS
 DECL|macro|ARCH_KMALLOC_FLAGS
@@ -3868,6 +3874,8 @@ r_int
 id|left_over
 comma
 id|slab_size
+comma
+id|ralign
 suffix:semicolon
 id|kmem_cache_t
 op_star
@@ -4073,25 +4081,39 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Check that size is in terms of words.  This is needed to avoid&n;&t; * unaligned accesses for some archs when redzoning is used, and makes&n;&t; * sure any on-slab bufctl&squot;s are also correctly aligned.&n;&t; */
 r_if
 c_cond
 (paren
-id|align
+id|size
+op_amp
+(paren
+id|BYTES_PER_WORD
+op_minus
+l_int|1
+)paren
 )paren
 (brace
-multiline_comment|/* combinations of forced alignment and advanced debugging is&n;&t;&t; * not yet implemented.&n;&t;&t; */
-id|flags
+id|size
+op_add_assign
+(paren
+id|BYTES_PER_WORD
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|size
 op_and_assign
 op_complement
 (paren
-id|SLAB_RED_ZONE
-op_or
-id|SLAB_STORE_USER
+id|BYTES_PER_WORD
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
+multiline_comment|/* calculate out the final buffer alignment: */
+multiline_comment|/* 1) arch recommendation: can be overridden for debug */
 r_if
 c_cond
 (paren
@@ -4100,8 +4122,8 @@ op_amp
 id|SLAB_HWCACHE_ALIGN
 )paren
 (brace
-multiline_comment|/* Default alignment: as specified by the arch code.&n;&t;&t;&t; * Except if an object is really small, then squeeze multiple&n;&t;&t;&t; * into one cacheline.&n;&t;&t;&t; */
-id|align
+multiline_comment|/* Default alignment: as specified by the arch code.&n;&t;&t; * Except if an object is really small, then squeeze multiple&n;&t;&t; * objects into one cacheline.&n;&t;&t; */
+id|ralign
 op_assign
 id|cache_line_size
 c_func
@@ -4113,23 +4135,87 @@ c_loop
 (paren
 id|size
 op_le
-id|align
+id|ralign
 op_div
 l_int|2
 )paren
-id|align
+id|ralign
 op_div_assign
 l_int|2
 suffix:semicolon
 )brace
 r_else
 (brace
-id|align
+id|ralign
 op_assign
 id|BYTES_PER_WORD
 suffix:semicolon
 )brace
+multiline_comment|/* 2) arch mandated alignment: disables debug if necessary */
+r_if
+c_cond
+(paren
+id|ralign
+OL
+id|ARCH_SLAB_MINALIGN
+)paren
+(brace
+id|ralign
+op_assign
+id|ARCH_SLAB_MINALIGN
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ralign
+OG
+id|BYTES_PER_WORD
+)paren
+id|flags
+op_and_assign
+op_complement
+(paren
+id|SLAB_RED_ZONE
+op_or
+id|SLAB_STORE_USER
+)paren
+suffix:semicolon
 )brace
+multiline_comment|/* 3) caller mandated alignment: disables debug if necessary */
+r_if
+c_cond
+(paren
+id|ralign
+OL
+id|align
+)paren
+(brace
+id|ralign
+op_assign
+id|align
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ralign
+OG
+id|BYTES_PER_WORD
+)paren
+id|flags
+op_and_assign
+op_complement
+(paren
+id|SLAB_RED_ZONE
+op_or
+id|SLAB_STORE_USER
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* 4) Store it. Note that the debug code below can reduce&n;&t; *    the alignment to BYTES_PER_WORD.&n;&t; */
+id|align
+op_assign
+id|ralign
+suffix:semicolon
 multiline_comment|/* Get cache&squot;s description obj. */
 id|cachep
 op_assign
@@ -4168,37 +4254,6 @@ id|kmem_cache_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Check that size is in terms of words.  This is needed to avoid&n;&t; * unaligned accesses for some archs when redzoning is used, and makes&n;&t; * sure any on-slab bufctl&squot;s are also correctly aligned.&n;&t; */
-r_if
-c_cond
-(paren
-id|size
-op_amp
-(paren
-id|BYTES_PER_WORD
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-id|size
-op_add_assign
-(paren
-id|BYTES_PER_WORD
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|size
-op_and_assign
-op_complement
-(paren
-id|BYTES_PER_WORD
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
 macro_line|#if DEBUG
 id|cachep-&gt;reallen
 op_assign

@@ -168,8 +168,12 @@ DECL|macro|FIXADDR_TOP
 mdefine_line|#define FIXADDR_TOP&t;((unsigned long)__FIXADDR_TOP)
 DECL|macro|__FIXADDR_SIZE
 mdefine_line|#define __FIXADDR_SIZE&t;(__end_of_permanent_fixed_addresses &lt;&lt; PAGE_SHIFT)
+DECL|macro|__FIXADDR_BOOT_SIZE
+mdefine_line|#define __FIXADDR_BOOT_SIZE&t;(__end_of_fixed_addresses &lt;&lt; PAGE_SHIFT)
 DECL|macro|FIXADDR_START
-mdefine_line|#define FIXADDR_START&t;(FIXADDR_TOP - __FIXADDR_SIZE)
+mdefine_line|#define FIXADDR_START&t;&t;(FIXADDR_TOP - __FIXADDR_SIZE)
+DECL|macro|FIXADDR_BOOT_START
+mdefine_line|#define FIXADDR_BOOT_START&t;(FIXADDR_TOP - __FIXADDR_BOOT_SIZE)
 DECL|macro|__fix_to_virt
 mdefine_line|#define __fix_to_virt(x)&t;(FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))
 DECL|macro|__virt_to_fix

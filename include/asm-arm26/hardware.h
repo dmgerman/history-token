@@ -91,6 +91,7 @@ DECL|macro|IOEB_PSCLR
 mdefine_line|#define IOEB_PSCLR&t;&t;(IOEB_BASE + 0x58)
 DECL|macro|IOEB_MONTYPE
 mdefine_line|#define IOEB_MONTYPE&t;&t;(IOEB_BASE + 0x70)
+singleline_comment|//FIXME - These adresses are weird - ISTR some weirdo address shifting stuff was going on here...
 DECL|macro|IO_EC_IOC_BASE
 mdefine_line|#define IO_EC_IOC_BASE&t;&t;0x80090000
 DECL|macro|IO_EC_MEMC_BASE

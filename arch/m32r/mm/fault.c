@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/mm/fault.c&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto, and H. Kondo&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1995  Linus Torvalds&n; */
-multiline_comment|/* $Id$ */
+multiline_comment|/*&n; *  linux/arch/m32r/mm/fault.c&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto, and H. Kondo&n; *  Copyright (c) 2004  Naoto Sugai, NIIBE Yutaka&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -144,6 +143,14 @@ id|loglevel_save
 suffix:semicolon
 )brace
 multiline_comment|/*======================================================================*&n; * do_page_fault()&n; *======================================================================*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * ARGUMENT:&n; *  regs       : M32R SP reg.&n; *  error_code : See below&n; *  address    : M32R MMU MDEVA reg. (Operand ACE)&n; *             : M32R BPC reg. (Instruction ACE)&n; *&n; * error_code :&n; *  bit 0 == 0 means no page found, 1 means protection fault&n; *  bit 1 == 0 means read, 1 means write&n; *  bit 2 == 0 means kernel, 1 means user-mode&n; *  bit 3 == 0 means data, 1 means instruction&n; *======================================================================*/
+DECL|macro|ACE_PROTECTION
+mdefine_line|#define ACE_PROTECTION&t;&t;1
+DECL|macro|ACE_WRITE
+mdefine_line|#define ACE_WRITE&t;&t;2
+DECL|macro|ACE_USERMODE
+mdefine_line|#define ACE_USERMODE&t;&t;4
+DECL|macro|ACE_INSTRUCTION
+mdefine_line|#define ACE_INSTRUCTION&t;&t;8
 DECL|function|do_page_fault
 id|asmlinkage
 r_void
@@ -212,7 +219,7 @@ id|info.si_code
 op_assign
 id|SEGV_MAPERR
 suffix:semicolon
-multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; *&n;&t; * This verifies that the fault happens in kernel space&n;&t; * (error_code &amp; 4) == 0, and that the fault was not a&n;&t; * protection error (error_code &amp; 1) == 0.&n;&t; */
+multiline_comment|/*&n;&t; * We fault-in kernel-space virtual memory on-demand. The&n;&t; * &squot;reference&squot; page table is init_mm.pgd.&n;&t; *&n;&t; * NOTE! We MUST NOT take any locks for this case. We may&n;&t; * be in an interrupt or a critical region, and should&n;&t; * only copy the information from the master page table,&n;&t; * nothing more.&n;&t; *&n;&t; * This verifies that the fault happens in kernel space&n;&t; * (error_code &amp; ACE_USERMODE) == 0, and that the fault was not a&n;&t; * protection error (error_code &amp; ACE_PROTECTION) == 0.&n;&t; */
 r_if
 c_cond
 (paren
@@ -224,7 +231,7 @@ op_logical_neg
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 )paren
 r_goto
@@ -268,7 +275,7 @@ c_cond
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 op_eq
 l_int|0
@@ -339,7 +346,7 @@ c_cond
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * accessing the stack below &quot;spu&quot; is always a bug.&n;&t;&t; * The &quot;+ 4&quot; is there due to the push instruction&n;&t;&t; * doing pre-decrement on the stack and that&n;&t;&t; * doesn&squot;t show up until later..&n;&t;&t; */
@@ -387,7 +394,11 @@ c_cond
 (paren
 id|error_code
 op_amp
-l_int|3
+(paren
+id|ACE_WRITE
+op_or
+id|ACE_PROTECTION
+)paren
 )paren
 (brace
 r_default
@@ -397,7 +408,7 @@ suffix:colon
 multiline_comment|/* 3: write, present */
 multiline_comment|/* fall through */
 r_case
-l_int|2
+id|ACE_WRITE
 suffix:colon
 multiline_comment|/* write, not present */
 r_if
@@ -419,7 +430,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|1
+id|ACE_PROTECTION
 suffix:colon
 multiline_comment|/* read, present */
 r_case
@@ -444,6 +455,26 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * For instruction access exception, check if the area is executable&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|error_code
+op_amp
+id|ACE_INSTRUCTION
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_EXEC
+)paren
+)paren
+r_goto
+id|bad_area
+suffix:semicolon
 id|survive
 suffix:colon
 multiline_comment|/*&n;&t; * If for any reason at all we couldn&squot;t handle the fault,&n;&t; * make sure we exit gracefully rather than endlessly redo&n;&t; * the fault.&n;&t; */
@@ -454,11 +485,11 @@ id|address
 op_amp
 id|PAGE_MASK
 )paren
-op_or
+suffix:semicolon
+id|set_thread_fault_code
+c_func
 (paren
 id|error_code
-op_amp
-l_int|8
 )paren
 suffix:semicolon
 r_switch
@@ -513,6 +544,12 @@ c_func
 )paren
 suffix:semicolon
 )brace
+id|set_thread_fault_code
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 id|up_read
 c_func
 (paren
@@ -540,7 +577,7 @@ c_cond
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 (brace
 id|tsk-&gt;thread.address
@@ -809,7 +846,7 @@ c_cond
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 id|do_exit
 c_func
@@ -837,7 +874,7 @@ op_logical_neg
 (paren
 id|error_code
 op_amp
-l_int|4
+id|ACE_USERMODE
 )paren
 )paren
 r_goto
@@ -1043,7 +1080,7 @@ op_or
 (paren
 id|error_code
 op_amp
-l_int|8
+id|ACE_INSTRUCTION
 )paren
 suffix:semicolon
 id|update_mmu_cache
@@ -1108,9 +1145,12 @@ suffix:semicolon
 r_int
 id|inst
 op_assign
-id|vaddr
+id|get_thread_fault_code
+c_func
+(paren
+)paren
 op_amp
-l_int|8
+id|ACE_INSTRUCTION
 suffix:semicolon
 r_int
 id|i

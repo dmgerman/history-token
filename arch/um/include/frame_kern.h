@@ -2,8 +2,10 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#ifndef __FRAME_KERN_H_
 DECL|macro|__FRAME_KERN_H_
 mdefine_line|#define __FRAME_KERN_H_
-macro_line|#include &quot;frame.h&quot;
-macro_line|#include &quot;sysdep/frame_kern.h&quot;
+DECL|macro|_S
+mdefine_line|#define _S(nr) (1&lt;&lt;((nr)-1))
+DECL|macro|_BLOCKABLE
+mdefine_line|#define _BLOCKABLE (~(_S(SIGKILL) | _S(SIGSTOP)))
 r_extern
 r_int
 id|setup_signal_stack_sc

@@ -15,7 +15,6 @@ macro_line|#include &quot;skas.h&quot;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;tlb.h&quot;
-macro_line|#include &quot;frame.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
@@ -743,11 +742,6 @@ id|start_userspace
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-id|capture_signal_stack
-c_func
-(paren
 )paren
 suffix:semicolon
 id|init_new_thread_signals

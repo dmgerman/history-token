@@ -431,6 +431,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Kill off a ptraced child by all means available.  kill it normally first,&n; * then PTRACE_KILL it, then PTRACE_CONT it in case it&squot;s in a run state from&n; * which it can&squot;t exit directly.&n; */
 DECL|function|os_kill_ptraced_process
 r_void
 id|os_kill_ptraced_process
@@ -443,10 +444,26 @@ r_int
 id|reap_child
 )paren
 (brace
+id|kill
+c_func
+(paren
+id|pid
+comma
+id|SIGKILL
+)paren
+suffix:semicolon
 id|ptrace
 c_func
 (paren
 id|PTRACE_KILL
+comma
+id|pid
+)paren
+suffix:semicolon
+id|ptrace
+c_func
+(paren
+id|PTRACE_CONT
 comma
 id|pid
 )paren

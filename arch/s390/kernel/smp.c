@@ -1961,8 +1961,8 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|pfault_token
+r_void
+id|pfault_fini
 c_func
 (paren
 r_void
@@ -2089,6 +2089,18 @@ c_func
 id|p
 )paren
 )paren
+suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|init_mm.mm_count
+)paren
+suffix:semicolon
+id|p-&gt;active_mm
+op_assign
+op_amp
+id|init_mm
 suffix:semicolon
 id|current_set
 (braket
@@ -2656,6 +2668,14 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PFAULT
+multiline_comment|/* Disable pfault pseudo page faults on this cpu. */
+id|pfault_fini
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* disable all external interrupts */
 id|cr_parms.start_ctl
 op_assign

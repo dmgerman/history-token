@@ -275,7 +275,6 @@ c_cond
 (paren
 id|data-&gt;announce
 )paren
-(brace
 (paren
 op_star
 id|data-&gt;announce
@@ -286,7 +285,6 @@ comma
 id|data-&gt;dev
 )paren
 suffix:semicolon
-)brace
 r_return
 id|fd
 suffix:semicolon

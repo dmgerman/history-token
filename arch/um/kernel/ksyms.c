@@ -186,6 +186,13 @@ c_func
 id|find_iomem
 )paren
 suffix:semicolon
+DECL|variable|end_iomem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|end_iomem
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODE_TT
 DECL|variable|strncpy_from_user_tt
 id|EXPORT_SYMBOL

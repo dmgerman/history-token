@@ -1023,6 +1023,8 @@ id|pgprot_t
 id|pgprot
 )paren
 suffix:semicolon
+DECL|macro|pte_set_val
+mdefine_line|#define pte_set_val(p, phys, prot) pte_val(p) = (phys | pgprot_val(prot))
 DECL|function|pte_modify
 r_static
 r_inline
