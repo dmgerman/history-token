@@ -316,6 +316,16 @@ op_assign
 id|points
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|p-&gt;flags
+op_amp
+id|PF_SWAPOFF
+)paren
+r_return
+id|p
+suffix:semicolon
 )brace
 id|while_each_thread
 c_func

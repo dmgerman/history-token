@@ -2498,7 +2498,11 @@ id|VC_MEDIUMRAW
 op_logical_and
 id|value
 op_ne
+id|KVAL
+c_func
+(paren
 id|K_SAK
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -5395,7 +5399,7 @@ id|tty
 )paren
 op_logical_and
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren

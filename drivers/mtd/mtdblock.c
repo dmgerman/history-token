@@ -14,8 +14,6 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mtdblock&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (device)
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_static
@@ -2092,44 +2090,6 @@ id|MTD_ABSENT
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|sprintf
-c_func
-(paren
-id|name
-comma
-id|DEVICE_NAME
-l_string|&quot;/%d&quot;
-comma
-id|mtd-&gt;index
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|name
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|MTD_BLOCK_MAJOR
-comma
-id|mtd-&gt;index
-comma
-id|S_IFBLK
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|mtd_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
 id|disk
 op_assign
 id|alloc_disk
@@ -2163,6 +2123,16 @@ c_func
 id|disk-&gt;disk_name
 comma
 l_string|&quot;mtdblock%d&quot;
+comma
+id|mtd-&gt;index
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|disk-&gt;devfs_name
+comma
+l_string|&quot;mtdblock/%d&quot;
 comma
 id|mtd-&gt;index
 )paren
@@ -2228,15 +2198,6 @@ op_eq
 id|MTD_ABSENT
 )paren
 r_return
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;/%d&quot;
-comma
-id|mtd-&gt;index
-)paren
 suffix:semicolon
 r_if
 c_cond

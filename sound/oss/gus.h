@@ -8,7 +8,7 @@ r_int
 id|num
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|gusintr
 c_func
 (paren

@@ -1332,7 +1332,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;vfree  -  release memory allocated by vmalloc()&n; *&n; *&t;@addr:&t;&t;memory base address&n; *&n; *&t;Free the virtually continguos memory area starting at @addr, as&n; *&t;obtained from vmalloc(), vmalloc_32() or __vmalloc().&n; *&n; *&t;May not be called in interrupt context.&n; */
+multiline_comment|/**&n; *&t;vfree  -  release memory allocated by vmalloc()&n; *&n; *&t;@addr:&t;&t;memory base address&n; *&n; *&t;Free the virtually contiguous memory area starting at @addr, as&n; *&t;obtained from vmalloc(), vmalloc_32() or __vmalloc().&n; *&n; *&t;May not be called in interrupt context.&n; */
 DECL|function|vfree
 r_void
 id|vfree
@@ -1361,7 +1361,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;vunmap  -  release virtual mapping obtained by vmap()&n; *&n; *&t;@addr:&t;&t;memory base address&n; *&n; *&t;Free the virtually continguos memory area starting at @addr,&n; *&t;which was created from the page array passed to vmap().&n; *&n; *&t;May not be called in interrupt context.&n; */
+multiline_comment|/**&n; *&t;vunmap  -  release virtual mapping obtained by vmap()&n; *&n; *&t;@addr:&t;&t;memory base address&n; *&n; *&t;Free the virtually contiguous memory area starting at @addr,&n; *&t;which was created from the page array passed to vmap().&n; *&n; *&t;May not be called in interrupt context.&n; */
 DECL|function|vunmap
 r_void
 id|vunmap
@@ -1390,7 +1390,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;vmap  -  map an array of pages into virtually continguos space&n; *&n; *&t;@pages:&t;&t;array of page pointers&n; *&t;@count:&t;&t;number of pages to map&n; *&n; *&t;Maps @count pages from @pages into continguos kernel virtual&n; *&t;space.&n; */
+multiline_comment|/**&n; *&t;vmap  -  map an array of pages into virtually contiguous space&n; *&n; *&t;@pages:&t;&t;array of page pointers&n; *&t;@count:&t;&t;number of pages to map&n; *&t;@flags:&t;&t;vm_area-&gt;flags&n; *&t;@prot:&t;&t;page protection for the mapping&n; *&n; *&t;Maps @count pages from @pages into contiguous kernel virtual&n; *&t;space.&n; */
 DECL|function|vmap
 r_void
 op_star
@@ -1406,6 +1406,13 @@ comma
 r_int
 r_int
 id|count
+comma
+r_int
+r_int
+id|flags
+comma
+id|pgprot_t
+id|prot
 )paren
 (brace
 r_struct
@@ -1434,7 +1441,7 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 comma
-id|VM_MAP
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1454,7 +1461,7 @@ c_func
 (paren
 id|area
 comma
-id|PAGE_KERNEL
+id|prot
 comma
 op_amp
 id|pages
@@ -1475,7 +1482,7 @@ r_return
 id|area-&gt;addr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__vmalloc  -  allocate virtually continguos memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&t;@gfp_mask:&t;flags for the page level allocator&n; *&t;@prot:&t;&t;protection mask for the allocated pages&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator with @gfp_mask flags.  Map them into continguos&n; *&t;kernel virtual space, using a pagetable protection of @prot.&n; */
+multiline_comment|/**&n; *&t;__vmalloc  -  allocate virtually contiguous memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&t;@gfp_mask:&t;flags for the page level allocator&n; *&t;@prot:&t;&t;protection mask for the allocated pages&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator with @gfp_mask flags.  Map them into contiguous&n; *&t;kernel virtual space, using a pagetable protection of @prot.&n; */
 DECL|function|__vmalloc
 r_void
 op_star
@@ -1711,7 +1718,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;vmalloc  -  allocate virtually continguos memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator and map them into continguos kernel virtual space.&n; *&n; *&t;For tight cotrol over page level allocator and protection flags&n; *&t;use __vmalloc() instead.&n; */
+multiline_comment|/**&n; *&t;vmalloc  -  allocate virtually contiguous memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough pages to cover @size from the page level&n; *&t;allocator and map them into contiguous kernel virtual space.&n; *&n; *&t;For tight cotrol over page level allocator and protection flags&n; *&t;use __vmalloc() instead.&n; */
 DECL|function|vmalloc
 r_void
 op_star
@@ -1737,7 +1744,7 @@ id|PAGE_KERNEL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;vmalloc_32  -  allocate virtually continguos memory (32bit addressable)&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough 32bit PA addressable pages to cover @size from the&n; *&t;page level allocator and map them into continguos kernel virtual space.&n; */
+multiline_comment|/**&n; *&t;vmalloc_32  -  allocate virtually contiguous memory (32bit addressable)&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough 32bit PA addressable pages to cover @size from the&n; *&t;page level allocator and map them into contiguous kernel virtual space.&n; */
 DECL|function|vmalloc_32
 r_void
 op_star

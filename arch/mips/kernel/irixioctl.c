@@ -187,11 +187,11 @@ id|tp
 r_if
 c_cond
 (paren
-id|tp-&gt;driver.type
+id|tp-&gt;driver-&gt;type
 op_eq
 id|TTY_DRIVER_TYPE_PTY
 op_logical_and
-id|tp-&gt;driver.subtype
+id|tp-&gt;driver-&gt;subtype
 op_eq
 id|PTY_TYPE_MASTER
 )paren

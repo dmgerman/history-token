@@ -160,7 +160,7 @@ id|acpi_os_write_port
 id|acpi_gbl_FADT-&gt;smi_cmd
 comma
 (paren
-id|acpi_integer
+id|u32
 )paren
 id|acpi_gbl_FADT-&gt;acpi_enable
 comma
@@ -189,7 +189,7 @@ id|acpi_os_write_port
 id|acpi_gbl_FADT-&gt;smi_cmd
 comma
 (paren
-id|acpi_integer
+id|u32
 )paren
 id|acpi_gbl_FADT-&gt;acpi_disable
 comma

@@ -478,9 +478,11 @@ op_star
 id|file
 comma
 r_int
+r_int
 op_star
 id|count
 comma
+r_int
 r_int
 op_star
 id|size

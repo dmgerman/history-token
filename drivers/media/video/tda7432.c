@@ -691,10 +691,6 @@ r_int
 id|addr
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 (brace

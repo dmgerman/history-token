@@ -376,7 +376,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sunkbd_interrupt() is called by the low level driver when a character&n; * is received.&n; */
 DECL|function|sunkbd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunkbd_interrupt
 c_func
 (paren
@@ -423,7 +423,8 @@ op_assign
 id|data
 suffix:semicolon
 multiline_comment|/* The keyboard sends 0xff 0xff 0xID on powerup */
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -439,7 +440,8 @@ id|sunkbd-&gt;layout
 op_assign
 id|data
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_switch
@@ -463,7 +465,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 id|SUNKBD_RET_LAYOUT
@@ -473,13 +475,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 id|SUNKBD_RET_ALLUP
 suffix:colon
 multiline_comment|/* All keys released */
-r_return
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -558,6 +560,11 @@ l_string|&quot;pressed&quot;
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * sunkbd_event() handles events from the input module.&n; */
 DECL|function|sunkbd_event

@@ -443,11 +443,7 @@ id|DEVICE_NAME_SIZE
 comma
 id|name
 comma
-id|minor
-c_func
-(paren
 id|minfo-&gt;fbcon.node
-)paren
 )paren
 suffix:semicolon
 id|b-&gt;adapter.data

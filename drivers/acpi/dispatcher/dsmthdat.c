@@ -46,7 +46,7 @@ id|i
 op_increment
 )paren
 (brace
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|walk_state-&gt;arguments
@@ -118,7 +118,7 @@ id|i
 op_increment
 )paren
 (brace
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|walk_state-&gt;local_variables

@@ -3333,7 +3333,7 @@ DECL|macro|bogon
 macro_line|#undef bogon
 DECL|macro|NUM_SYSIO_OFFSETS
 mdefine_line|#define NUM_SYSIO_OFFSETS (sizeof(sysio_irq_offsets) / sizeof(sysio_irq_offsets[0]))
-multiline_comment|/* Convert Interrupt Mapping register pointer to assosciated&n; * Interrupt Clear register pointer, SYSIO specific version.&n; */
+multiline_comment|/* Convert Interrupt Mapping register pointer to associated&n; * Interrupt Clear register pointer, SYSIO specific version.&n; */
 DECL|macro|SYSIO_ICLR_UNUSED0
 mdefine_line|#define SYSIO_ICLR_UNUSED0&t;0x3400UL
 DECL|macro|SYSIO_ICLR_SLOT0
@@ -3659,7 +3659,7 @@ DECL|macro|SYSIO_UEAFSR_RESV2
 mdefine_line|#define  SYSIO_UEAFSR_RESV2&t;0x0000001fffffffff /* Reserved                     */
 DECL|function|sysio_ue_handler
 r_static
-r_void
+id|irqreturn_t
 id|sysio_ue_handler
 c_func
 (paren
@@ -3943,6 +3943,9 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|SYSIO_CE_AFSR
 mdefine_line|#define SYSIO_CE_AFSR&t;0x0040UL
@@ -3974,7 +3977,7 @@ DECL|macro|SYSIO_CEAFSR_RESV2
 mdefine_line|#define  SYSIO_CEAFSR_RESV2&t;0x0000001fffffffff /* Reserved                     */
 DECL|function|sysio_ce_handler
 r_static
-r_void
+id|irqreturn_t
 id|sysio_ce_handler
 c_func
 (paren
@@ -4266,6 +4269,9 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|SYSIO_SBUS_AFSR
 mdefine_line|#define SYSIO_SBUS_AFSR&t;&t;0x2010UL
@@ -4297,7 +4303,7 @@ DECL|macro|SYSIO_SBAFSR_RESV3
 mdefine_line|#define  SYSIO_SBAFSR_RESV3&t;0x0000001fffffffff /* Reserved                     */
 DECL|function|sysio_sbus_error_handler
 r_static
-r_void
+id|irqreturn_t
 id|sysio_sbus_error_handler
 c_func
 (paren
@@ -4584,6 +4590,9 @@ l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* XXX check iommu/strbuf for further error status XXX */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|macro|ECC_CONTROL
 mdefine_line|#define ECC_CONTROL&t;0x0020UL
@@ -4939,7 +4948,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Align on E$ line boundry. */
+multiline_comment|/* Align on E$ line boundary. */
 id|iommu
 op_assign
 (paren

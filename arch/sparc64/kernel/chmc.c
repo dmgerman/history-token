@@ -780,7 +780,7 @@ r_else
 r_int
 id|dimm
 suffix:semicolon
-multiline_comment|/* Multi-bit error, we just dump out all the&n;&t;&t; * dimm labels assosciated with this bank.&n;&t;&t; */
+multiline_comment|/* Multi-bit error, we just dump out all the&n;&t;&t; * dimm labels associated with this bank.&n;&t;&t; */
 r_for
 c_loop
 (paren

@@ -169,7 +169,7 @@ id|dev
 suffix:semicolon
 multiline_comment|/* Dispatch from interrupts. */
 r_static
-r_void
+id|irqreturn_t
 id|de600_interrupt
 c_func
 (paren

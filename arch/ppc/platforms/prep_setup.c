@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
@@ -234,7 +234,7 @@ DECL|macro|cached_A1
 mdefine_line|#define cached_A1&t;(((char *)(ppc_cached_irq_mask))[2])
 multiline_comment|/* for the mac fs */
 DECL|variable|boot_dev
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_CS4232 
@@ -3573,8 +3573,8 @@ r_static
 r_int
 r_int
 id|__prep
-DECL|function|prep_irq_cannonicalize
-id|prep_irq_cannonicalize
+DECL|function|prep_irq_canonicalize
+id|prep_irq_canonicalize
 c_func
 (paren
 id|u_int
@@ -4233,9 +4233,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* set in prep_setup_arch() */
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|prep_irq_cannonicalize
+id|prep_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

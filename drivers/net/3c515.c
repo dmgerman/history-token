@@ -1530,7 +1530,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|corkscrew_interrupt
 c_func
 (paren
@@ -5964,7 +5964,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|corkscrew_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|corkscrew_interrupt
 c_func
 (paren
@@ -6771,6 +6771,9 @@ id|dev-&gt;name
 comma
 id|status
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|corkscrew_rx

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#include &quot;br_private_stp.h&quot;
-multiline_comment|/* called under ioctl_lock or bridge lock */
+multiline_comment|/* called under bridge lock */
 DECL|function|br_is_root_bridge
 r_int
 id|br_is_root_bridge
@@ -65,7 +65,7 @@ id|p-&gt;port_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* called under ioctl_lock or bridge lock */
+multiline_comment|/* called under bridge lock */
 DECL|function|br_get_port
 r_struct
 id|net_bridge_port
@@ -87,16 +87,15 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -108,10 +107,6 @@ id|port_no
 )paren
 r_return
 id|p
-suffix:semicolon
-id|p
-op_assign
-id|p-&gt;next
 suffix:semicolon
 )brace
 r_return
@@ -365,16 +360,15 @@ id|root_port
 op_assign
 l_int|0
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -391,10 +385,6 @@ id|root_port
 id|root_port
 op_assign
 id|p-&gt;port_no
-suffix:semicolon
-id|p
-op_assign
-id|p-&gt;next
 suffix:semicolon
 )brace
 id|br-&gt;root_port
@@ -899,16 +889,15 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -929,10 +918,6 @@ c_func
 (paren
 id|p
 )paren
-suffix:semicolon
-id|p
-op_assign
-id|p-&gt;next
 suffix:semicolon
 )brace
 )brace
@@ -1214,16 +1199,15 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -1244,10 +1228,6 @@ c_func
 (paren
 id|p
 )paren
-suffix:semicolon
-id|p
-op_assign
-id|p-&gt;next
 suffix:semicolon
 )brace
 )brace
@@ -1501,16 +1481,15 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|p
-op_assign
-id|br-&gt;port_list
-suffix:semicolon
-r_while
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|p
-op_ne
-l_int|NULL
+comma
+op_amp
+id|br-&gt;port_list
+comma
+id|list
 )paren
 (brace
 r_if
@@ -1587,10 +1566,6 @@ id|p
 suffix:semicolon
 )brace
 )brace
-id|p
-op_assign
-id|p-&gt;next
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* called under bridge lock */
@@ -1617,7 +1592,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* lock-safe */
+multiline_comment|/* called under bridge lock */
 DECL|function|br_received_config_bpdu
 r_void
 id|br_received_config_bpdu
@@ -1642,25 +1617,9 @@ suffix:semicolon
 r_int
 id|was_root
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p-&gt;state
-op_eq
-id|BR_STATE_DISABLED
-)paren
-r_return
-suffix:semicolon
 id|br
 op_assign
 id|p-&gt;br
-suffix:semicolon
-id|read_lock
-c_func
-(paren
-op_amp
-id|br-&gt;lock
-)paren
 suffix:semicolon
 id|was_root
 op_assign
@@ -1805,15 +1764,8 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|br-&gt;lock
-)paren
-suffix:semicolon
 )brace
-multiline_comment|/* lock-safe */
+multiline_comment|/* called under bridge lock */
 DECL|function|br_received_tcn_bpdu
 r_void
 id|br_received_tcn_bpdu
@@ -1825,20 +1777,9 @@ op_star
 id|p
 )paren
 (brace
-id|read_lock
-c_func
-(paren
-op_amp
-id|p-&gt;br-&gt;lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;state
-op_ne
-id|BR_STATE_DISABLED
-op_logical_and
 id|br_is_designated_port
 c_func
 (paren
@@ -1872,12 +1813,5 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
-c_func
-(paren
-op_amp
-id|p-&gt;br-&gt;lock
-)paren
-suffix:semicolon
 )brace
 eof

@@ -3,6 +3,7 @@ multiline_comment|/*&n; * $Log: NCR5380.h,v $&n; */
 macro_line|#ifndef NCR5380_H
 DECL|macro|NCR5380_H
 mdefine_line|#define NCR5380_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|NCR5380_PUBLIC_RELEASE
 mdefine_line|#define NCR5380_PUBLIC_RELEASE 7
 DECL|macro|NCR53C400_PUBLIC_RELEASE
@@ -250,8 +251,8 @@ mdefine_line|#define TAG_NEXT&t;-1&t;/* Use next free tag */
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE&t;-2&t;/* &n;&t;&t;&t;&t; * Establish I_T_L nexus instead of I_T_L_Q&n;&t;&t;&t;&t; * even on SCSI-II devices.&n;&t;&t;&t;&t; */
 multiline_comment|/*&n; * These are &quot;special&quot; values for the irq and dma_channel fields of the &n; * Scsi_Host structure&n; */
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE&t;255
+DECL|macro|SCSI_IRQ_NONE
+mdefine_line|#define SCSI_IRQ_NONE&t;255
 DECL|macro|DMA_NONE
 mdefine_line|#define DMA_NONE&t;255
 DECL|macro|IRQ_AUTO
@@ -502,7 +503,7 @@ id|instance
 suffix:semicolon
 macro_line|#ifndef DONT_USE_INTR
 r_static
-r_void
+id|irqreturn_t
 id|NCR5380_intr
 c_func
 (paren

@@ -732,7 +732,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|hp100_interrupt
 c_func
 (paren
@@ -9647,7 +9647,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  hardware interrupt handling&n; */
 DECL|function|hp100_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|hp100_interrupt
 c_func
 (paren
@@ -9702,6 +9702,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -9801,6 +9802,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* We&squot;re only interested in those interrupts we really enabled. */
@@ -10050,6 +10052,9 @@ id|hp100_ints_on
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  some misc functions&n; */

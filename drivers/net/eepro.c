@@ -385,7 +385,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|eepro_interrupt
 c_func
 (paren
@@ -3929,8 +3929,6 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4191,7 +4189,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&t;The typical workload of the driver:&n;&t;Handle the network interface interrupts. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|eepro_interrupt
 id|eepro_interrupt
 c_func
@@ -4236,6 +4234,11 @@ id|boguscount
 op_assign
 l_int|20
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4253,6 +4256,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -4320,6 +4324,10 @@ op_decrement
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4445,6 +4453,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|eepro_close
@@ -4581,8 +4594,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Update the statistics here. What statistics? */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

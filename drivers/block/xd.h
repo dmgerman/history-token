@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_XD_H
 DECL|macro|_LINUX_XD_H
 mdefine_line|#define _LINUX_XD_H
 multiline_comment|/*&n; * This file contains the definitions for the IO ports and errors etc. for XT hard disk controllers (at least the DTC 5150X).&n; *&n; * Author: Pat Mackinlay, pat@it.com.au&n; * Date: 29/09/92&n; *&n; * Revised: 01/01/93, ...&n; *&n; * Ref: DTC 5150X Controller Specification (thanks to Kevin Fowler, kevinf@agora.rain.com)&n; * Also thanks to: Salvador Abreu, Dave Thaler, Risto Kankkunen and Wim Van Dorst.&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* XT hard disk controller registers */
 DECL|macro|XD_DATA
 mdefine_line|#define XD_DATA&t;&t;(xd_iobase + 0x00)&t;/* data RW register */
@@ -285,8 +286,9 @@ id|drive
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|xd_interrupt_handler
+c_func
 (paren
 r_int
 id|irq

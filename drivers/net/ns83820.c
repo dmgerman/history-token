@@ -1020,6 +1020,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|flags
 op_assign
 l_int|0
@@ -2146,6 +2147,7 @@ r_int
 id|i
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|dprintk
@@ -2434,6 +2436,7 @@ comma
 op_star
 id|desc
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -4580,7 +4583,7 @@ id|isr
 suffix:semicolon
 DECL|function|ns83820_irq
 r_static
-r_void
+id|irqreturn_t
 id|ns83820_irq
 c_func
 (paren
@@ -4644,6 +4647,9 @@ id|dev
 comma
 id|isr
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|ns83820_do_isr
@@ -5344,6 +5350,7 @@ comma
 op_star
 id|desc
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -396,7 +396,7 @@ r_void
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|wd_interrupt
 c_func
 (paren
@@ -959,8 +959,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -982,8 +980,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1445,7 +1441,7 @@ macro_line|#endif /* ifdef WD_DEBUG */
 )brace
 DECL|function|wd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|wd_interrupt
 c_func
 (paren
@@ -1514,6 +1510,7 @@ id|wd_dev.lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|wd_fops

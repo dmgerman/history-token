@@ -6898,7 +6898,7 @@ suffix:semicolon
 )brace
 DECL|function|falcon_vbl_switcher
 r_static
-r_void
+id|irqreturn_t
 id|falcon_vbl_switcher
 c_func
 (paren
@@ -7090,6 +7090,9 @@ op_assign
 id|current_par.hw.falcon.line_offset
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|falcon_pan_display
 r_static
@@ -12660,10 +12663,6 @@ id|fb_info.changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp
@@ -12813,11 +12812,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device, using %dK of video memory&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|fb_info.modename
 comma

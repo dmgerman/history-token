@@ -436,7 +436,7 @@ l_int|0x2000
 suffix:semicolon
 multiline_comment|/* 8k FIFO for&n;&t;&t;&t;&t;&t;&t;pre-tmc18c30 chips */
 r_static
-r_void
+id|irqreturn_t
 id|do_fdomain_16x0_intr
 c_func
 (paren
@@ -3980,7 +3980,7 @@ macro_line|#endif
 )brace
 DECL|function|do_fdomain_16x0_intr
 r_static
-r_void
+id|irqreturn_t
 id|do_fdomain_16x0_intr
 c_func
 (paren
@@ -4031,6 +4031,7 @@ l_int|0
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* It is our IRQ */
@@ -4067,6 +4068,7 @@ id|current_SC
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Abort calls my_done, so we do nothing here. */
@@ -4086,7 +4088,7 @@ l_string|&quot;scsi: &lt;fdomain&gt; Interrupt after abort, ignoring&bslash;n&qu
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;      return; */
+multiline_comment|/*&n;      return IRQ_HANDLED; */
 )brace
 macro_line|#if DEBUG_RACE
 op_increment
@@ -4154,6 +4156,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|current_SC-&gt;SCp.phase
@@ -4211,6 +4214,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -4285,6 +4289,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -4339,6 +4344,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* current_SC-&gt;SCp.phase == in_other: this is the body of the routine */
@@ -5258,6 +5264,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|fdomain_16x0_queue

@@ -1236,9 +1236,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-(paren
-r_void
-)paren
 id|acpi_os_delete_lock
 (paren
 id|acpi_gbl_gpe_lock

@@ -3,6 +3,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -694,6 +695,11 @@ id|requeue
 op_assign
 id|noop_requeue
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|variable|noop_qdisc
@@ -765,6 +771,11 @@ dot
 id|requeue
 op_assign
 id|noop_requeue
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
@@ -1230,6 +1241,11 @@ id|reset
 op_assign
 id|pfifo_fast_reset
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|qdisc_create_dflt
@@ -1528,6 +1544,12 @@ id|destroy
 c_func
 (paren
 id|qdisc
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|ops-&gt;owner
 )paren
 suffix:semicolon
 r_if

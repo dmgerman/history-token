@@ -62,7 +62,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|el_interrupt
 c_func
 (paren

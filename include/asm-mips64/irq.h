@@ -27,11 +27,11 @@ mdefine_line|#define FAST_IRQ_TO_LEVEL(i)&t;((i) + LEAST_LEVEL)
 DECL|macro|LEVEL_TO_IRQ
 mdefine_line|#define LEVEL_TO_IRQ(c, l) &bslash;&n;&t;&t;&t;(node_level_to_irq[CPUID_TO_COMPACT_NODEID(c)][(l)])
 macro_line|#ifdef CONFIG_I8259
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 r_inline
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int
@@ -54,8 +54,8 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(irq) (irq)&t;/* Sane hardware, sane code ... */
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(irq) (irq)&t;/* Sane hardware, sane code ... */
 macro_line|#endif
 r_struct
 id|irqaction

@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
@@ -6706,7 +6705,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|map
@@ -6768,7 +6767,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|map
@@ -7028,7 +7027,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|map
@@ -7157,7 +7156,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|map
@@ -17651,7 +17650,7 @@ suffix:semicolon
 )brace
 DECL|function|cs4281_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cs4281_interrupt
 c_func
 (paren
@@ -17759,6 +17758,7 @@ l_string|&quot;cs4281: cs4281_interrupt(): returning not cs4281 interrupt.&bslas
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -17834,6 +17834,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|// **************************************************************************

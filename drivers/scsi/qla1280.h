@@ -4269,7 +4269,7 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|qla1280_intr_handler
 c_func
 (paren

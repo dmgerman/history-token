@@ -12,12 +12,6 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
-DECL|variable|usb_devfs_handle
-r_static
-id|devfs_handle_t
-id|usb_devfs_handle
-suffix:semicolon
-multiline_comment|/* /dev/usb dir. */
 DECL|macro|MAX_USB_MINORS
 mdefine_line|#define MAX_USB_MINORS&t;256
 DECL|variable|usb_minors
@@ -245,8 +239,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|usb_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -265,10 +257,10 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|usb_devfs_handle
+l_string|&quot;usb&quot;
 )paren
 suffix:semicolon
 id|unregister_chrdev

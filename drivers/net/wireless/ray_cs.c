@@ -1845,6 +1845,12 @@ comma
 l_string|&quot;ray_cs ray_attach calling ether_setup.)&bslash;n&quot;
 )paren
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|ether_setup
 c_func
 (paren
@@ -7885,8 +7891,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -7930,8 +7934,6 @@ id|link
 )paren
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -8125,8 +8127,6 @@ l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* In here, we should stop the hardware (stop card from beeing active)&n;     * and set local-&gt;card_status to CARD_AWAITING_PARAM, so that while the&n;     * card is closed we can chage its configuration.&n;     * Probably also need a COR reset to get sane state - Jean II */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

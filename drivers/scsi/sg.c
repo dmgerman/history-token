@@ -32,6 +32,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -14929,6 +14930,13 @@ DECL|macro|PRINT_PROC
 mdefine_line|#define PRINT_PROC(fmt,args...)                                 &bslash;&n;    do {                                                        &bslash;&n;&t;*len += sprintf(buffer + *len, fmt, ##args);            &bslash;&n;&t;if (*begin + *len &gt; offset + size)                      &bslash;&n;&t;    return 0;                                           &bslash;&n;&t;if (*begin + *len &lt; offset) {                           &bslash;&n;&t;    *begin += *len;                                     &bslash;&n;&t;    *len = 0;                                           &bslash;&n;&t;}                                                       &bslash;&n;    } while(0)
 DECL|macro|SG_PROC_READ_FN
 mdefine_line|#define SG_PROC_READ_FN(infofp)                                 &bslash;&n;    do {                                                        &bslash;&n;&t;int len = 0;                                            &bslash;&n;&t;off_t begin = 0;                                        &bslash;&n;&t;*eof = infofp(buffer, &amp;len, &amp;begin, offset, size);      &bslash;&n;&t;if (offset &gt;= (begin + len))                            &bslash;&n;&t;    return 0;                                           &bslash;&n;&t;*start = buffer + offset - begin;&t;&t;&t;&bslash;&n;&t;return (size &lt; (begin + len - offset)) ?                &bslash;&n;&t;&t;&t;&t;size : begin + len - offset;    &bslash;&n;    } while(0)
+multiline_comment|/* this should _really_ be private to the scsi midlayer.  But&n;   /proc/scsi/sg is an established name, so.. */
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_scsi
+suffix:semicolon
 r_static
 r_int
 DECL|function|sg_proc_init

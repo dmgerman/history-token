@@ -2886,7 +2886,7 @@ l_int|0x0f
 suffix:semicolon
 )brace
 DECL|function|snd_es1688_interrupt
-r_void
+id|irqreturn_t
 id|snd_es1688_interrupt
 c_func
 (paren
@@ -2915,6 +2915,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_if
@@ -2958,6 +2959,9 @@ id|DATA_AVAIL
 )paren
 suffix:semicolon
 multiline_comment|/* ack interrupt */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_es1688_playback_pointer
 r_static

@@ -391,9 +391,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_X25
 macro_line|#  include &lt;linux/concap.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEVFS_FS
-macro_line|#  include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/isdnif.h&gt;
 DECL|macro|ISDN_DRVIOCTL_MASK
 mdefine_line|#define ISDN_DRVIOCTL_MASK       0x7f  /* Mask for Device-ioctl */

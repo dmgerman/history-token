@@ -652,6 +652,6 @@ DECL|macro|BUSPHASE_STATUS
 mdefine_line|#define BUSPHASE_STATUS      ( BUSMON_STATUS      &amp; BUSMON_PHASE_MASK )
 DECL|macro|BUSPHASE_SELECT
 mdefine_line|#define BUSPHASE_SELECT      ( BUSMON_SEL | BUSMON_IO )
-macro_line|#endif _NSP32_H
+macro_line|#endif&t;/* _NSP32_H */
 multiline_comment|/* end */
 eof

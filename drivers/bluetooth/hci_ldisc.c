@@ -372,7 +372,7 @@ suffix:semicolon
 id|len
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -567,10 +567,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -932,10 +932,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -1233,10 +1233,10 @@ op_amp
 id|tty-&gt;flags
 )paren
 op_logical_and
-id|tty-&gt;driver.unthrottle
+id|tty-&gt;driver-&gt;unthrottle
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|unthrottle
 c_func
 (paren

@@ -404,7 +404,7 @@ suffix:semicolon
 )brace
 singleline_comment|// ----------------------------------------------------------------------
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fcclassic_irq
 id|fcclassic_irq
 c_func
@@ -527,6 +527,9 @@ id|adapter-&gt;isac
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 singleline_comment|// ----------------------------------------------------------------------
 r_static

@@ -1020,7 +1020,7 @@ multiline_comment|/*&n; * Note that on a 486, we don&squot;t want to do a SIGFPE
 multiline_comment|/*&n; * =PC9800NOTE= In NEC PC-9800, we use irq8 instead of irq13!&n; */
 DECL|function|math_error_irq
 r_static
-r_void
+id|irqreturn_t
 id|math_error_irq
 c_func
 (paren
@@ -1065,6 +1065,7 @@ op_logical_neg
 id|boot_cpu_data.hard_math
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|math_error
 c_func
@@ -1075,6 +1076,9 @@ op_star
 )paren
 id|regs-&gt;eip
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * New motherboards sometimes make IRQ 13 be a PCI interrupt,&n; * so allow interrupt sharing.&n; */

@@ -793,7 +793,7 @@ id|AML_WORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 2 bytes from the AML stream */
-id|ACPI_MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|arg-&gt;common.value.integer
@@ -818,7 +818,7 @@ id|AML_DWORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 4 bytes from the AML stream */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|arg-&gt;common.value.integer
@@ -843,7 +843,7 @@ id|AML_QWORD_OP
 )paren
 suffix:semicolon
 multiline_comment|/* Get 8 bytes from the AML stream */
-id|ACPI_MOVE_UNALIGNED64_TO_64
+id|ACPI_MOVE_64_TO_64
 (paren
 op_amp
 id|arg-&gt;common.value.integer
@@ -1052,7 +1052,7 @@ r_case
 id|AML_INT_NAMEDFIELD_OP
 suffix:colon
 multiline_comment|/* Get the 4-character name */
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|name
@@ -1098,7 +1098,7 @@ r_case
 id|AML_INT_ACCESSFIELD_OP
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Get access_type and access_attrib and merge into the field Op&n;&t;&t; * access_type is first operand, access_attribute is second&n;&t;&t; */
-id|field-&gt;common.value.integer32
+id|field-&gt;common.value.integer
 op_assign
 (paren
 id|ACPI_GET8
@@ -1112,7 +1112,7 @@ suffix:semicolon
 id|parser_state-&gt;aml
 op_increment
 suffix:semicolon
-id|field-&gt;common.value.integer32
+id|field-&gt;common.value.integer
 op_or_assign
 id|ACPI_GET8
 (paren

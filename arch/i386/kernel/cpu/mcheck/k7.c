@@ -412,20 +412,6 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Don&squot;t enable northbridge MCE by default on Hammer */
-r_if
-c_cond
-(paren
-id|boot_cpu_data.x86_model
-op_eq
-l_int|15
-op_logical_and
-id|i
-op_eq
-l_int|4
-)paren
-r_continue
-suffix:semicolon
 id|wrmsr
 (paren
 id|MSR_IA32_MC0_CTL

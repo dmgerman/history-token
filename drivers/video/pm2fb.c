@@ -14015,10 +14015,6 @@ comma
 id|permedia2_name
 )paren
 suffix:semicolon
-id|fb_info.gen.info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.gen.info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -14128,11 +14124,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s (%s), using %uK of video memory.&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.gen.info.node
-)paren
 comma
 id|board_table
 (braket

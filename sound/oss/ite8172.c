@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2096,7 +2095,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
@@ -2273,7 +2272,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -2562,7 +2561,7 @@ suffix:semicolon
 multiline_comment|/* hold spinlock for the following! */
 DECL|function|it8172_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|it8172_interrupt
 c_func
 (paren
@@ -2657,8 +2656,18 @@ id|ISC_PCI
 )paren
 )paren
 )paren
-r_return
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+)paren
 suffix:semicolon
+r_return
+id|IRQ_NONE
+suffix:semicolon
+)brace
 multiline_comment|/* clear audio interrupts first */
 id|outb
 c_func
@@ -3044,6 +3053,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

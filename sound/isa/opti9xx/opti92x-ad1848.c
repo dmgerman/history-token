@@ -4704,7 +4704,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|snd_opti93x_interrupt
-r_void
+id|irqreturn_t
 id|snd_opti93x_interrupt
 c_func
 (paren
@@ -4733,6 +4733,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -4808,6 +4809,9 @@ comma
 id|STATUS
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|snd_opti93x_playback

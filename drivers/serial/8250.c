@@ -3965,7 +3965,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the serial driver&squot;s interrupt routine.&n; *&n; * Arjan thinks the old way was overly complex, so it got simplified.&n; * Alan disagrees, saying that need the complexity to handle the weird&n; * nature of ISA shared interrupts.  (This is a special exception.)&n; *&n; * In order to handle ISA shared interrupts properly, we need to check&n; * that all ports have been serviced, and therefore the ISA interrupt&n; * line has been de-asserted.&n; *&n; * This means we need to loop through all ports. checking that they&n; * don&squot;t have an interrupt pending.&n; */
 DECL|function|serial8250_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|serial8250_interrupt
 c_func
 (paren
@@ -4159,6 +4159,10 @@ c_func
 (paren
 l_string|&quot;end.&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really ours? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * To support ISA shared interrupts, we need to have one interrupt&n; * handler that ensures that the IRQ line has been deasserted&n; * before returning.  Failing to do this will result in the IRQ&n; * line being stuck active, and, since ISA irqs are edge triggered,&n; * no more IRQs will be seen.&n; */
@@ -7713,7 +7717,7 @@ id|port
 suffix:semicolon
 id|up-&gt;port.irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|old_serial_port
@@ -8150,30 +8154,6 @@ id|ier
 )paren
 suffix:semicolon
 )brace
-DECL|function|serial8250_console_device
-r_static
-id|kdev_t
-id|serial8250_console_device
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|co
-)paren
-(brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
-id|co-&gt;index
-)paren
-suffix:semicolon
-)brace
 DECL|function|serial8250_console_setup
 r_static
 r_int
@@ -8287,6 +8267,11 @@ id|flow
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|uart_driver
+id|serial8250_reg
+suffix:semicolon
 DECL|variable|serial8250_console
 r_static
 r_struct
@@ -8307,7 +8292,7 @@ comma
 dot
 id|device
 op_assign
-id|serial8250_console_device
+id|uart_console_device
 comma
 dot
 id|setup
@@ -8324,6 +8309,12 @@ id|index
 op_assign
 op_minus
 l_int|1
+comma
+dot
+id|data
+op_assign
+op_amp
+id|serial8250_reg
 comma
 )brace
 suffix:semicolon
@@ -8387,13 +8378,13 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 comma
 macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;ttyS&quot;
 comma
 macro_line|#endif
 dot

@@ -984,11 +984,18 @@ id|request_fast_irq
 )paren
 suffix:semicolon
 macro_line|#if CONFIG_SUN_AUXIO
-DECL|variable|auxio_register
+DECL|variable|auxio_set_led
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|auxio_register
+id|auxio_set_led
+)paren
+suffix:semicolon
+DECL|variable|auxio_set_lte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|auxio_set_lte
 )paren
 suffix:semicolon
 macro_line|#endif

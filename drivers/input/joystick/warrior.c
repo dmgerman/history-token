@@ -496,7 +496,7 @@ suffix:semicolon
 multiline_comment|/*&n; * warrior_interrupt() is called by the low level driver when characters&n; * are ready for us. We then buffer them for further processing, or call the&n; * packet processing routine.&n; */
 DECL|function|warrior_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|warrior_interrupt
 c_func
 (paren
@@ -612,6 +612,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * warrior_disconnect() is the opposite of warrior_connect()&n; */
 DECL|function|warrior_disconnect

@@ -402,7 +402,11 @@ id|tp-&gt;reg_window
 id|window
 )braket
 comma
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window
+)paren
 )paren
 )paren
 (brace

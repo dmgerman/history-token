@@ -3367,7 +3367,7 @@ id|waveartist_set_channels
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|waveartist_intr
 id|waveartist_intr
 c_func
@@ -3571,6 +3571,9 @@ c_func
 op_amp
 id|waveartist_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------------------------------------------------------------&n; * Mixer stuff&n; */

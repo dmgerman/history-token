@@ -5,6 +5,7 @@ mdefine_line|#define _SPARC_IRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;     /* For NR_CPUS */
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;     /* For SUN4M_NCPUS */
 macro_line|#include &lt;asm/btfixup.h&gt;
 DECL|macro|__irq_ino
@@ -26,8 +27,8 @@ DECL|macro|__irq_itoa
 mdefine_line|#define __irq_itoa(irq) BTFIXUP_CALL(__irq_itoa)(irq)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS    16
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(irq)&t;(irq)
 multiline_comment|/* Dave Redman (djhr@tadpole.co.uk)&n; * changed these to function pointers.. it saves cycles and will allow&n; * the irq dependencies to be split into different files at a later date&n; * sun4c_irq.c, sun4m_irq.c etc so we could reduce the kernel size.&n; * Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Changed these to btfixup entities... It saves cycles :)&n; */
 id|BTFIXUPDEF_CALL
 c_func
@@ -122,7 +123,7 @@ op_star
 id|sparc_init_timers
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|lvl10_irq
@@ -144,7 +145,7 @@ r_void
 id|claim_ticker14
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|irq_handler
@@ -216,7 +217,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

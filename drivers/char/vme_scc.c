@@ -471,7 +471,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|scc_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|scc_driver.name
@@ -607,7 +607,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|scc_callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|scc_callout_driver.name
@@ -3643,13 +3643,7 @@ id|filp
 r_int
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|SCC_MINOR_BASE
+id|tty-&gt;index
 suffix:semicolon
 r_int
 id|retval
@@ -4166,7 +4160,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -4656,7 +4650,9 @@ suffix:semicolon
 )brace
 DECL|function|scc_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|scc_console_device
 c_func
 (paren
@@ -4664,18 +4660,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-id|SCC_MINOR_BASE
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|scc_driver
 suffix:semicolon
 )brace
 DECL|function|scc_console_setup

@@ -48,7 +48,7 @@ id|card
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|nm256_interrupt
 (paren
 r_int
@@ -65,7 +65,7 @@ id|dummy
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|nm256_interrupt_zx
 (paren
 r_int
@@ -1882,7 +1882,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Handle a potential interrupt for the device referred to by DEV_ID. &n; *&n; * I don&squot;t like the cut-n-paste job here either between the two routines,&n; * but there are sufficient differences between the two interrupt handlers&n; * that parameterizing it isn&squot;t all that great either.  (Could use a macro,&n; * I suppose...yucky bleah.)&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|nm256_interrupt
 id|nm256_interrupt
 (paren
@@ -1920,6 +1920,11 @@ id|badintrcount
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1943,6 +1948,7 @@ l_string|&quot;NM256: Bad card pointer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|status
@@ -1975,6 +1981,10 @@ l_int|1000
 )paren
 (brace
 multiline_comment|/*&n;&t;     * I&squot;m not sure if the best thing is to stop the card from&n;&t;     * playing or just release the interrupt (after all, we&squot;re in&n;&t;     * a bad situation, so doing fancy stuff may not be such a good&n;&t;     * idea).&n;&t;     *&n;&t;     * I worry about the card engine continuing to play noise&n;&t;     * over and over, however--that could become a very&n;&t;     * obnoxious problem.  And we know that when this usually&n;&t;     * happens things are fairly safe, it just means the user&squot;s&n;&t;     * inserted a PCMCIA card and someone&squot;s spamming us with IRQ 9s.&n;&t;     */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2001,6 +2011,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 id|badintrcount
@@ -2016,6 +2031,10 @@ op_amp
 id|NM_PLAYBACK_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2047,6 +2066,10 @@ op_amp
 id|NM_RECORD_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2080,6 +2103,10 @@ id|NM_MISC_INT_1
 (brace
 id|u8
 id|cbyte
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|status
 op_and_assign
@@ -2146,6 +2173,10 @@ id|NM_MISC_INT_2
 id|u8
 id|cbyte
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2197,6 +2228,10 @@ c_cond
 id|status
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -2214,10 +2249,17 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle a potential interrupt for the device referred to by DEV_ID.&n; * This handler is for the 256ZX, and is very similar to the non-ZX&n; * routine.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|nm256_interrupt_zx
 id|nm256_interrupt_zx
 (paren
@@ -2255,6 +2297,11 @@ id|badintrcount
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2278,6 +2325,7 @@ l_string|&quot;NM256: Bad card pointer&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|status
@@ -2316,6 +2364,10 @@ l_string|&quot;NM256: Releasing interrupt, over 1000 invalid interrupts&bslash;n
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;     * I&squot;m not sure if the best thing is to stop the card from&n;&t;     * playing or just release the interrupt (after all, we&squot;re in&n;&t;     * a bad situation, so doing fancy stuff may not be such a good&n;&t;     * idea).&n;&t;     *&n;&t;     * I worry about the card engine continuing to play noise&n;&t;     * over and over, however--that could become a very&n;&t;     * obnoxious problem.  And we know that when this usually&n;&t;     * happens things are fairly safe, it just means the user&squot;s&n;&t;     * inserted a PCMCIA card and someone&squot;s spamming us with &n;&t;     * IRQ 9s.&n;&t;     */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2342,6 +2394,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 id|badintrcount
@@ -2357,6 +2414,10 @@ op_amp
 id|NM2_PLAYBACK_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2388,6 +2449,10 @@ op_amp
 id|NM2_RECORD_INT
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2421,6 +2486,10 @@ id|NM2_MISC_INT_1
 (brace
 id|u8
 id|cbyte
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|status
 op_and_assign
@@ -2476,6 +2545,10 @@ id|NM2_MISC_INT_2
 id|u8
 id|cbyte
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|status
 op_and_assign
 op_complement
@@ -2527,6 +2600,10 @@ c_cond
 id|status
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -2544,6 +2621,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* &n; * Request our interrupt.&n; */
 r_static

@@ -381,17 +381,10 @@ id|driver.driver_name
 op_assign
 l_string|&quot;ircomm&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|driver.name
-op_assign
-l_string|&quot;ircomm%d&quot;
-suffix:semicolon
-macro_line|#else
 id|driver.name
 op_assign
 l_string|&quot;ircomm&quot;
 suffix:semicolon
-macro_line|#endif
 id|driver.major
 op_assign
 id|IRCOMM_TTY_MAJOR
@@ -928,7 +921,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -1136,7 +1129,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|self-&gt;open_count
 )paren
@@ -1327,7 +1320,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|self-&gt;open_count
 )paren
@@ -1397,7 +1390,7 @@ id|__FILE__
 comma
 id|__LINE__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|self-&gt;open_count
 )paren
@@ -1464,13 +1457,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -1707,7 +1694,7 @@ l_string|&quot;%s(), %s%d, count = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|tty-&gt;driver.name
+id|tty-&gt;driver-&gt;name
 comma
 id|self-&gt;line
 comma
@@ -2178,10 +2165,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren

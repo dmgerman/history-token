@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -603,7 +603,7 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|adir_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
 l_int|NULL
 suffix:semicolon

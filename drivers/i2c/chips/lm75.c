@@ -15,7 +15,7 @@ id|normal_i2c
 )braket
 op_assign
 (brace
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )brace
 suffix:semicolon
 DECL|variable|normal_i2c_range
@@ -31,7 +31,7 @@ l_int|0x48
 comma
 l_int|0x4f
 comma
-id|SENSORS_I2C_END
+id|I2C_CLIENT_END
 )brace
 suffix:semicolon
 DECL|variable|normal_isa
@@ -43,7 +43,7 @@ id|normal_isa
 )braket
 op_assign
 (brace
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 DECL|variable|normal_isa_range
@@ -55,7 +55,7 @@ id|normal_isa_range
 )braket
 op_assign
 (brace
-id|SENSORS_ISA_END
+id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/* Insmod parameters */

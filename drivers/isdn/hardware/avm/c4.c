@@ -3317,7 +3317,7 @@ suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|c4_handle_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|c4_handle_interrupt
 c_func
 (paren
@@ -3366,6 +3366,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|printk
 c_func
@@ -3434,6 +3435,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|status
@@ -3451,6 +3453,7 @@ op_logical_neg
 id|status
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|c4outmeml
 c_func
@@ -3585,10 +3588,13 @@ id|card
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|c4_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|c4_interrupt
 c_func
 (paren
@@ -3611,6 +3617,7 @@ id|card
 op_assign
 id|devptr
 suffix:semicolon
+r_return
 id|c4_handle_interrupt
 c_func
 (paren

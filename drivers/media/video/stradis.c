@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2464,7 +2463,7 @@ suffix:semicolon
 )brace
 DECL|function|saa7146_irq
 r_static
-r_void
+id|irqreturn_t
 id|saa7146_irq
 c_func
 (paren
@@ -2501,6 +2500,11 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|count
 op_assign
 l_int|0
@@ -2536,7 +2540,11 @@ c_cond
 op_logical_neg
 id|astat
 )paren
-r_return
+r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|saawrite
 c_func
@@ -3453,6 +3461,13 @@ id|saa-&gt;nr
 suffix:semicolon
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|ibm_send_command
 r_static

@@ -3693,7 +3693,7 @@ suffix:semicolon
 )brace
 DECL|function|b44_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|b44_interrupt
 c_func
 (paren
@@ -3733,6 +3733,11 @@ id|istat
 comma
 id|imask
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3769,6 +3774,10 @@ c_cond
 id|istat
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3832,6 +3841,13 @@ op_amp
 id|bp-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

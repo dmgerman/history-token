@@ -104,7 +104,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -121,7 +121,7 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -261,7 +261,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -388,7 +388,7 @@ id|u16
 )paren
 id|linked_list-&gt;data.io.min_base_address
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -408,7 +408,7 @@ id|u16
 )paren
 id|linked_list-&gt;data.io.max_base_address
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -532,7 +532,7 @@ id|u16
 )paren
 id|linked_list-&gt;data.fixed_io.base_address
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma

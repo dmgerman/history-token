@@ -20,7 +20,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &quot;se401.h&quot;
 DECL|variable|flickerless
@@ -298,7 +297,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|vmalloc_to_page
@@ -371,7 +370,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|vmalloc_to_page

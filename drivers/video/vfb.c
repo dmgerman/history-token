@@ -1449,10 +1449,6 @@ id|fb_info.screen_base
 op_assign
 id|videomemory
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp
@@ -1550,11 +1546,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: Virtual frame buffer device, using %ldK of video memory&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|videomemorysize
 op_rshift

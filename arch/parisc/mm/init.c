@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;&t;&t;/* for hppa_dma_ops and pcxl_dma_ops */
-macro_line|#include &lt;linux/blk.h&gt;          /* for initrd_start and initrd_end */
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -685,14 +685,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* __LP64__ */
-macro_line|#if 1
-multiline_comment|/* KLUGE! this really belongs in kernel/resource.c! */
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-macro_line|#endif
 id|sysram_resource_count
 op_assign
 id|npmem_ranges

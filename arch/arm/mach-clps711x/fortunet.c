@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/arch/arm/mach-clps711x/fortunet.c&n; *&n; *  De
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;

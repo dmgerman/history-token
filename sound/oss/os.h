@@ -34,7 +34,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 DECL|macro|FALSE
 mdefine_line|#define FALSE&t;0

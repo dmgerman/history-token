@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -4949,7 +4950,7 @@ suffix:semicolon
 )brace
 DECL|function|intr
 r_static
-r_void
+id|irqreturn_t
 id|intr
 c_func
 (paren
@@ -5067,6 +5068,9 @@ id|JQS_wHead
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|dev_fileops
 r_static

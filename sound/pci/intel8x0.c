@@ -3197,7 +3197,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_intel8x0_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_intel8x0_interrupt
 c_func
 (paren
@@ -3226,6 +3226,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 id|ichdev_t
@@ -3277,6 +3278,7 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* ack first */
@@ -3339,6 +3341,9 @@ id|ichdev
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM part&n; */
 DECL|function|snd_intel8x0_pcm_trigger

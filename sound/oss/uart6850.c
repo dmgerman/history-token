@@ -258,7 +258,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|m6850intr
-r_void
+r_static
+id|irqreturn_t
 id|m6850intr
 c_func
 (paren
@@ -287,6 +288,9 @@ id|uart6850_input_loop
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;It looks like there is no input interrupts in the UART mode. Let&squot;s try&n; *&t;polling.&n; */

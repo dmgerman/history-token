@@ -6,15 +6,14 @@ mdefine_line|#define SCSI_NCR_DRIVER_NAME&t;&quot;ncr53c8xx-3.4.3b-20010512&quot
 DECL|macro|SCSI_NCR_DEBUG_FLAGS
 mdefine_line|#define SCSI_NCR_DEBUG_FLAGS&t;(0)
 multiline_comment|/*==========================================================&n;**&n;**      Include files&n;**&n;**==========================================================&n;*/
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,17)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,17)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#elif LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
@@ -30,9 +29,8 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,35)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,35)
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif
 macro_line|#ifndef&t;__init
@@ -43,7 +41,7 @@ macro_line|#ifndef&t;__initdata
 DECL|macro|__initdata
 mdefine_line|#define&t;__initdata
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,1,92)
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
 macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
@@ -91,7 +89,7 @@ macro_line|#include &quot;zalon.h&quot;
 macro_line|#endif
 macro_line|#include &quot;ncr53c8xx.h&quot;
 multiline_comment|/*&n;**&t;Donnot compile integrity checking code for Linux-2.3.0 &n;**&t;and above since SCSI data structures are not ready yet.&n;*/
-multiline_comment|/* #if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,0) */
+multiline_comment|/* #if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0) */
 macro_line|#if 0
 mdefine_line|#define&t;SCSI_NCR_INTEGRITY_CHECKING
 macro_line|#endif
@@ -230,7 +228,7 @@ multiline_comment|/*&n;**&t;Other definitions&n;*/
 DECL|macro|ScsiResult
 mdefine_line|#define ScsiResult(host_code, scsi_code) (((host_code) &lt;&lt; 16) + ((scsi_code) &amp; 0x7f))
 r_static
-r_void
+id|irqreturn_t
 id|ncr53c8xx_intr
 c_func
 (paren
@@ -1213,7 +1211,7 @@ id|done_list
 suffix:semicolon
 multiline_comment|/* Commands waiting for done()  */
 multiline_comment|/* callback to be invoked.      */
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,93)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
@@ -9775,7 +9773,7 @@ op_assign
 id|SCSI_NCR_MAX_LUN
 suffix:semicolon
 macro_line|#ifndef SCSI_NCR_IOMAPPED
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,29)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,29)
 id|instance-&gt;base
 op_assign
 (paren
@@ -10140,7 +10138,7 @@ suffix:colon
 id|SA_SHIRQ
 )paren
 op_or
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,2,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,2,0)
 (paren
 (paren
 id|driver_setup.irqm
@@ -13454,7 +13452,7 @@ id|np-&gt;settle_time
 )paren
 (brace
 r_return
-id|SCSI_RESET_PUNT
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start the reset process.&n; * The script processor is then assumed to be stopped.&n; * Commands will now be queued in the waiting list until a settle &n; * delay of 2 seconds will be completed.&n; */
@@ -13587,7 +13585,7 @@ id|cmd
 suffix:semicolon
 )brace
 r_return
-id|SCSI_RESET_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================&n;**&n;**&n;**&t;Abort an SCSI command.&n;**&t;This is called from the generic SCSI driver.&n;**&n;**&n;**==========================================================&n;*/
@@ -26860,7 +26858,7 @@ suffix:semicolon
 multiline_comment|/*&n;**   Linux entry point of the interrupt handler.&n;**   Since linux versions &gt; 1.3.70, we trust the kernel for &n;**   passing the internal host descriptor as &squot;dev_id&squot;.&n;**   Otherwise, we scan the host list and call the interrupt &n;**   routine for each host that uses this IRQ.&n;*/
 DECL|function|ncr53c8xx_intr
 r_static
-r_void
+id|irqreturn_t
 id|ncr53c8xx_intr
 c_func
 (paren
@@ -26984,6 +26982,9 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;**   Linux entry point of the timer handler&n;*/
 DECL|function|ncr53c8xx_timeout
@@ -27077,30 +27078,15 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;**   Linux entry point of reset() function&n;*/
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
-DECL|function|ncr53c8xx_reset
+DECL|function|ncr53c8xx_bus_reset
 r_int
-id|ncr53c8xx_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_int
-r_int
-id|reset_flags
-)paren
-macro_line|#else
-r_int
-id|ncr53c8xx_reset
+id|ncr53c8xx_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|cmd
 )paren
-macro_line|#endif
 (brace
 id|ncb_p
 id|np
@@ -27127,31 +27113,6 @@ id|Scsi_Cmnd
 op_star
 id|done_list
 suffix:semicolon
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
-id|printk
-c_func
-(paren
-l_string|&quot;ncr53c8xx_reset: pid=%lu reset_flags=%x serial_number=%ld serial_number_at_timeout=%ld&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-comma
-id|reset_flags
-comma
-id|cmd-&gt;serial_number
-comma
-id|cmd-&gt;serial_number_at_timeout
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;ncr53c8xx_reset: command pid %lu&bslash;n&quot;
-comma
-id|cmd-&gt;pid
-)paren
-suffix:semicolon
-macro_line|#endif
 id|NCR_LOCK_NCB
 c_func
 (paren
@@ -27160,27 +27121,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to just ignore reset requests in some situations.&n;&t; */
-macro_line|#if defined SCSI_RESET_NOT_RUNNING
-r_if
-c_cond
-(paren
-id|cmd-&gt;serial_number
-op_ne
-id|cmd-&gt;serial_number_at_timeout
-)paren
-(brace
-id|sts
-op_assign
-id|SCSI_RESET_NOT_RUNNING
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n;&t; * If the mid-level driver told us reset is synchronous, it seems &n;&t; * that we must call the done() callback for the involved command, &n;&t; * even if this command was not queued to the low-level driver, &n;&t; * before returning SCSI_RESET_SUCCESS.&n;&t; */
-macro_line|#if defined SCSI_RESET_SYNCHRONOUS &amp;&amp; defined SCSI_RESET_ASYNCHRONOUS
+multiline_comment|/*&n;&t; * If the mid-level driver told us reset is synchronous, it seems &n;&t; * that we must call the done() callback for the involved command, &n;&t; * even if this command was not queued to the low-level driver, &n;&t; * before returning SUCCESS.&n;&t; */
 id|sts
 op_assign
 id|ncr_reset_bus
@@ -27190,49 +27131,9 @@ id|np
 comma
 id|cmd
 comma
-(paren
-id|reset_flags
-op_amp
-(paren
-id|SCSI_RESET_SYNCHRONOUS
-op_or
-id|SCSI_RESET_ASYNCHRONOUS
-)paren
-)paren
-op_eq
-id|SCSI_RESET_SYNCHRONOUS
+l_int|1
 )paren
 suffix:semicolon
-macro_line|#else
-id|sts
-op_assign
-id|ncr_reset_bus
-c_func
-(paren
-id|np
-comma
-id|cmd
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Since we always reset the controller, when we return success, &n;&t; * we add this information to the return code.&n;&t; */
-macro_line|#if defined SCSI_RESET_HOST_RESET
-r_if
-c_cond
-(paren
-id|sts
-op_eq
-id|SCSI_RESET_SUCCESS
-)paren
-id|sts
-op_or_assign
-id|SCSI_RESET_HOST_RESET
-suffix:semicolon
-macro_line|#endif
-id|out
-suffix:colon
 id|done_list
 op_assign
 id|np-&gt;done_list
@@ -29189,7 +29090,7 @@ suffix:semicolon
 multiline_comment|/*=========================================================================&n;**&t;End of proc file system stuff&n;**=========================================================================&n;*/
 macro_line|#endif
 multiline_comment|/*==========================================================&n;**&n;**&t;/proc directory entry.&n;**&n;**==========================================================&n;*/
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 DECL|variable|proc_scsi_ncr53c8xx
 r_static
 r_struct
@@ -29223,7 +29124,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
-macro_line|# if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,1,30)
+macro_line|# if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_PARM
 c_func
 (paren
@@ -29253,7 +29154,7 @@ id|str
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,13)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,13)
 macro_line|#ifndef MODULE
 id|__setup
 c_func
@@ -29628,7 +29529,7 @@ id|tpnt
 (brace
 multiline_comment|/*&n;&t;**    Initialize driver general stuff.&n;&t;*/
 macro_line|#ifdef SCSI_NCR_PROC_INFO_SUPPORT
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,27)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,27)
 id|tpnt-&gt;proc_dir
 op_assign
 op_amp
@@ -29705,10 +29606,10 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,0) || defined(MODULE)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0) || defined(MODULE)
 macro_line|#ifdef ENABLE_SCSI_ZALON
 DECL|variable|driver_template
 id|Scsi_Host_Template
@@ -29739,6 +29640,16 @@ dot
 id|queuecommand
 op_assign
 id|ncr53c8xx_queue_command
+comma
+dot
+id|slave_configure
+op_assign
+id|ncr53c8xx_slave_configure
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|ncr53c8xx_bus_reset
 comma
 dot
 id|can_queue

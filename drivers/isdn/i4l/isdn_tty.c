@@ -4385,8 +4385,9 @@ id|modem_info
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -4406,19 +4407,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_tty: null info_struct for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;isdn_tty: null info_struct for %s in %s&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -4439,19 +4430,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;isdn_tty: bad magic for modem struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;isdn_tty: bad magic for modem struct %s in %s&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -5000,7 +4981,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_write&quot;
 )paren
@@ -5551,7 +5532,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_write_room&quot;
 )paren
@@ -5617,7 +5598,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_chars_in_buffer&quot;
 )paren
@@ -5703,7 +5684,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_flush_buffer&quot;
 )paren
@@ -5794,7 +5775,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_flush_chars&quot;
 )paren
@@ -5855,7 +5836,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_throttle&quot;
 )paren
@@ -5915,7 +5896,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_unthrottle&quot;
 )paren
@@ -6562,7 +6543,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_ioctl&quot;
 )paren
@@ -7052,7 +7033,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|ISDN_SERIAL_TYPE_CALLOUT
 )paren
@@ -7480,13 +7461,7 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -7515,7 +7490,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_open&quot;
 )paren
@@ -7529,11 +7504,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;isdn_tty_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;isdn_tty_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;count
 )paren
@@ -7628,7 +7601,7 @@ id|ISDN_ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|ISDN_SERIAL_TYPE_NORMAL
 )paren
@@ -7729,7 +7702,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_close&quot;
 )paren
@@ -7969,10 +7942,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -8101,7 +8074,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;isdn_tty_hangup&quot;
 )paren

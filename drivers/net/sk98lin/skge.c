@@ -131,7 +131,7 @@ id|SK_BOOL
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|SkGeIsr
 c_func
 (paren
@@ -149,7 +149,7 @@ id|ptregs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|SkGeIsrOnePort
 c_func
 (paren
@@ -924,6 +924,12 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -4226,7 +4232,7 @@ multiline_comment|/* PortReInitBmu */
 multiline_comment|/****************************************************************************&n; *&n; *&t;SkGeIsr - handle adapter interrupts&n; *&n; * Description:&n; *&t;The interrupt routine is called when the network adapter&n; *&t;generates an interrupt. It may also be called if another device&n; *&t;shares this interrupt vector with the driver.&n; *&n; * Returns: N/A&n; *&n; */
 DECL|function|SkGeIsr
 r_static
-r_void
+id|irqreturn_t
 id|SkGeIsr
 c_func
 (paren
@@ -4300,6 +4306,7 @@ l_int|0
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_while
@@ -5111,13 +5118,14 @@ id|IRQ_MASK
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeIsr */
 multiline_comment|/****************************************************************************&n; *&n; *&t;SkGeIsrOnePort - handle adapter interrupts for single port adapter&n; *&n; * Description:&n; *&t;The interrupt routine is called when the network adapter&n; *&t;generates an interrupt. It may also be called if another device&n; *&t;shares this interrupt vector with the driver.&n; *&t;This is the same as above, but handles only one port.&n; *&n; * Returns: N/A&n; *&n; */
 DECL|function|SkGeIsrOnePort
 r_static
-r_void
+id|irqreturn_t
 id|SkGeIsrOnePort
 c_func
 (paren
@@ -5191,6 +5199,7 @@ l_int|0
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_while
@@ -5672,6 +5681,7 @@ id|IRQ_MASK
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* SkGeIsrOnePort */
@@ -6170,8 +6180,6 @@ id|pNet-&gt;Up
 op_assign
 l_int|1
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6636,8 +6644,6 @@ suffix:semicolon
 id|pNet-&gt;Up
 op_assign
 l_int|0
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 (paren

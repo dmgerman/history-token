@@ -5698,7 +5698,7 @@ suffix:semicolon
 )brace
 DECL|function|ftape_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ftape_interrupt
 c_func
 (paren
@@ -5727,6 +5727,11 @@ op_assign
 op_star
 id|fdc.hook
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|TRACE_FUN
 c_func
 (paren
@@ -5744,6 +5749,10 @@ c_cond
 id|handler
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|handler
 c_func
 (paren
@@ -5761,7 +5770,12 @@ l_string|&quot;Unexpected ftape interrupt&quot;
 )paren
 suffix:semicolon
 )brace
-id|TRACE_EXIT
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|fdc_grab_irq_and_dma

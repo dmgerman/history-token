@@ -1862,7 +1862,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|ax-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1925,7 +1925,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|ax-&gt;mkiss-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2069,7 +2069,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -2284,7 +2284,7 @@ id|dev-&gt;name
 comma
 (paren
 id|ax-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren
@@ -2913,10 +2913,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren

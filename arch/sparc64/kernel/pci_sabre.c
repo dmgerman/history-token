@@ -2832,7 +2832,7 @@ suffix:semicolon
 )brace
 DECL|function|sabre_ue_intr
 r_static
-r_void
+id|irqreturn_t
 id|sabre_ue_intr
 c_func
 (paren
@@ -2926,6 +2926,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|sabre_write
 c_func
@@ -3123,10 +3124,13 @@ comma
 id|afar
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sabre_ce_intr
 r_static
-r_void
+id|irqreturn_t
 id|sabre_ce_intr
 c_func
 (paren
@@ -3216,6 +3220,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|sabre_write
 c_func
@@ -3381,10 +3386,13 @@ c_func
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sabre_pcierr_intr
 r_static
-r_void
+id|irqreturn_t
 id|sabre_pcierr_intr
 c_func
 (paren
@@ -3484,6 +3492,7 @@ op_logical_neg
 id|error_bits
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|sabre_write
 c_func
@@ -3807,6 +3816,9 @@ id|p-&gt;pbm_B.pci_bus
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* XXX What about PowerFail/PowerManagement??? -DaveM */
 DECL|macro|SABRE_UE_INO

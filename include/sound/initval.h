@@ -170,7 +170,7 @@ macro_line|#ifdef SNDRV_LEGACY_FIND_FREE_IRQ
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|function|snd_legacy_empty_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|snd_legacy_empty_irq_handler
 c_func
 (paren
@@ -187,6 +187,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_legacy_find_free_irq
 r_static

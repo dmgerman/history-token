@@ -4259,7 +4259,7 @@ suffix:semicolon
 )brace
 DECL|function|bigmac_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|bigmac_interrupt
 c_func
 (paren
@@ -4388,6 +4388,9 @@ c_func
 (paren
 id|bp
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|bigmac_open

@@ -16,7 +16,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -2665,7 +2664,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
@@ -3024,7 +3023,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -3876,7 +3875,7 @@ suffix:semicolon
 )brace
 DECL|function|sv_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sv_interrupt
 c_func
 (paren
@@ -3937,6 +3936,7 @@ id|SV_CSTAT_MIDI
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -3963,6 +3963,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|sv_midi_timer

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -1608,7 +1608,7 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|ev64260_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
 l_int|NULL
 suffix:semicolon

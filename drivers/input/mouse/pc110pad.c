@@ -88,7 +88,7 @@ l_string|&quot;isa15e0/input0&quot;
 suffix:semicolon
 DECL|function|pc110pad_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pc110pad_interrupt
 c_func
 (paren
@@ -172,6 +172,7 @@ OL
 l_int|3
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|input_regs
 c_func
@@ -275,6 +276,9 @@ suffix:semicolon
 id|pc110pad_count
 op_assign
 l_int|0
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|pc110pad_close

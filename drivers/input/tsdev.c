@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifndef CONFIG_INPUT_TSDEV_SCREEN_X
 DECL|macro|CONFIG_INPUT_TSDEV_SCREEN_X
 mdefine_line|#define CONFIG_INPUT_TSDEV_SCREEN_X&t;240
@@ -60,10 +61,6 @@ DECL|member|handle
 r_struct
 id|input_handle
 id|handle
-suffix:semicolon
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -359,6 +356,40 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|tsdev_free
+r_static
+r_void
+id|tsdev_free
+c_func
+(paren
+r_struct
+id|tsdev
+op_star
+id|tsdev
+)paren
+(brace
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;input/ts%d&quot;
+comma
+id|tsdev-&gt;minor
+)paren
+suffix:semicolon
+id|tsdev_table
+(braket
+id|tsdev-&gt;minor
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|tsdev
+)paren
+suffix:semicolon
+)brace
 DECL|function|tsdev_release
 r_static
 r_int
@@ -414,7 +445,6 @@ c_cond
 (paren
 id|list-&gt;tsdev-&gt;exist
 )paren
-(brace
 id|input_close_device
 c_func
 (paren
@@ -422,29 +452,13 @@ op_amp
 id|list-&gt;tsdev-&gt;handle
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
-id|input_unregister_minor
-c_func
-(paren
-id|list-&gt;tsdev-&gt;devfs
-)paren
-suffix:semicolon
-id|tsdev_table
-(braket
-id|list-&gt;tsdev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|kfree
+id|tsdev_free
 c_func
 (paren
 id|list-&gt;tsdev
 )paren
 suffix:semicolon
-)brace
 )brace
 id|kfree
 c_func
@@ -1359,8 +1373,6 @@ id|minor
 op_assign
 id|tsdev
 suffix:semicolon
-id|tsdev-&gt;devfs
-op_assign
 id|input_register_minor
 c_func
 (paren
@@ -1422,27 +1434,12 @@ id|tsdev-&gt;wait
 suffix:semicolon
 )brace
 r_else
-(brace
-id|input_unregister_minor
-c_func
-(paren
-id|tsdev-&gt;devfs
-)paren
-suffix:semicolon
-id|tsdev_table
-(braket
-id|tsdev-&gt;minor
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|kfree
+id|tsdev_free
 c_func
 (paren
 id|tsdev
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|variable|tsdev_ids
 r_static

@@ -1243,7 +1243,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|xircom_interrupt
 c_func
 (paren
@@ -1366,6 +1366,7 @@ id|attempts
 op_assign
 l_int|200
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -5044,7 +5045,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|xircom_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|xircom_interrupt
 c_func
 (paren
@@ -5086,6 +5087,11 @@ comma
 id|work_budget
 op_assign
 id|max_interrupt_work
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|spin_lock
 (paren
@@ -5170,6 +5176,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -5717,6 +5727,13 @@ id|spin_unlock
 (paren
 op_amp
 id|tp-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
@@ -7100,6 +7117,7 @@ l_int|0
 op_amp
 l_int|0x1f
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

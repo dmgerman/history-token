@@ -539,8 +539,6 @@ id|master-&gt;slaves
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|teql_qdisc_init
 r_static
@@ -795,8 +793,6 @@ id|FMASK
 )paren
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1620,8 +1616,6 @@ op_amp
 id|m-&gt;dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1643,8 +1637,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1899,6 +1891,11 @@ id|dump
 op_assign
 l_int|NULL
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 comma
 )brace
@@ -1972,6 +1969,13 @@ suffix:semicolon
 id|the_master.dev.init
 op_assign
 id|teql_master_init
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
+id|the_master.dev
+)paren
 suffix:semicolon
 id|err
 op_assign

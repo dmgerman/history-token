@@ -3,7 +3,6 @@ multiline_comment|/*************************************************************
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -6898,7 +6897,7 @@ multiline_comment|/* hardware is in words */
 )brace
 multiline_comment|/*&n; *&t;Meet Bob, the timer...&n; */
 r_static
-r_void
+id|irqreturn_t
 id|ess_interrupt
 c_func
 (paren
@@ -8192,7 +8191,7 @@ multiline_comment|/*&t;&t;&t;&t;printk(&quot;waking up DAC count: %d sw: %d hw: 
 )brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ess_interrupt
 id|ess_interrupt
 c_func
@@ -8250,6 +8249,7 @@ l_int|0x1A
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outw
 c_func
@@ -8555,6 +8555,9 @@ id|s-&gt;lock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|variable|invalid_magic
@@ -13934,7 +13937,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -14025,7 +14028,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page

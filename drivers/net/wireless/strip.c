@@ -2230,7 +2230,7 @@ id|baudcode
 suffix:semicolon
 multiline_comment|/* Set the new baud setting */
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|set_termios
 c_func
 (paren
@@ -3227,6 +3227,9 @@ id|i
 op_increment
 )paren
 (brace
+id|MetricomNode
+id|node
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3236,7 +3239,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|MetricomNode
 id|node
 op_assign
 id|table-&gt;node
@@ -4353,7 +4355,7 @@ id|strip_info-&gt;user_baud
 suffix:semicolon
 )brace
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -4431,7 +4433,7 @@ r_int
 id|num_written
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -10303,10 +10305,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
@@ -8276,6 +8275,14 @@ comma
 l_string|&quot;optcd&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|optcd_disk-&gt;devfs_name
+comma
+l_string|&quot;optcd&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8471,30 +8478,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|devfs_register
-(paren
-l_int|NULL
-comma
-l_string|&quot;optcd&quot;
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|MAJOR_NR
-comma
-l_int|0
-comma
-id|S_IFBLK
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|opt_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -8550,12 +8533,6 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;optcd&quot;
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren

@@ -1849,7 +1849,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|snd_sb16dsp_interrupt
-r_void
+id|irqreturn_t
 id|snd_sb16dsp_interrupt
 c_func
 (paren
@@ -1878,6 +1878,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -2112,6 +2113,9 @@ id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&n; */
 DECL|function|snd_sb16_playback_pointer

@@ -99,11 +99,6 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* USB device */
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device */
 DECL|member|sem
 r_struct
 id|semaphore
@@ -257,14 +252,6 @@ c_func
 l_string|&quot;dev=0x%p&quot;
 comma
 id|usblp-&gt;dev
-)paren
-suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;devfs=0x%p&quot;
-comma
-id|usblp-&gt;devfs
 )paren
 suffix:semicolon
 id|dbg
@@ -1295,9 +1282,11 @@ op_star
 id|usblp
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 (paren
-id|usblp-&gt;devfs
+l_string|&quot;usb/lp%d&quot;
+comma
+id|usblp-&gt;minor
 )paren
 suffix:semicolon
 id|usb_deregister_dev
@@ -3642,8 +3631,6 @@ comma
 id|usblp-&gt;minor
 )paren
 suffix:semicolon
-id|usblp-&gt;devfs
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -3651,7 +3638,7 @@ l_int|NULL
 comma
 id|name
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|USB_MAJOR
 comma

@@ -2119,7 +2119,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|function|new_user
+macro_line|#if 0
 r_static
 r_int
 id|new_user
@@ -2148,7 +2148,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|user_left
 r_static
 r_void
 id|user_left
@@ -2166,6 +2165,7 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|variable|initialized
 r_static
 r_int
@@ -2521,7 +2521,7 @@ suffix:semicolon
 )brace
 DECL|function|kcs_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|kcs_irq_handler
 c_func
 (paren
@@ -2618,6 +2618,9 @@ id|kcs_info-&gt;kcs_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|handlers

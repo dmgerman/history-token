@@ -213,7 +213,7 @@ suffix:semicolon
 DECL|macro|MAX_IRQS
 mdefine_line|#define MAX_IRQS&t;10
 r_extern
-r_void
+id|irqreturn_t
 id|interrupt_handler
 c_func
 (paren

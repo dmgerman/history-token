@@ -698,7 +698,7 @@ mdefine_line|#define H2DEV(x) cpu_to_le32(x)
 DECL|macro|DEV2H
 mdefine_line|#define DEV2H(x) le32_to_cpu(x)
 r_static
-r_void
+id|irqreturn_t
 id|do_interrupt_handler
 c_func
 (paren
@@ -9569,7 +9569,7 @@ suffix:semicolon
 )brace
 DECL|function|do_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|do_interrupt_handler
 c_func
 (paren
@@ -9653,6 +9653,9 @@ id|host_lock
 comma
 id|spin_flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|u14_34f_release

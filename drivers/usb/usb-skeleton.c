@@ -129,11 +129,6 @@ op_star
 id|interface
 suffix:semicolon
 multiline_comment|/* the interface for this device */
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device node */
 DECL|member|minor
 r_int
 r_char
@@ -1908,7 +1903,7 @@ comma
 id|dev-&gt;minor
 )paren
 suffix:semicolon
-id|dev-&gt;devfs
+id|devfs
 op_assign
 id|devfs_register
 c_func
@@ -2073,9 +2068,12 @@ op_assign
 id|dev-&gt;minor
 suffix:semicolon
 multiline_comment|/* remove our devfs node */
-id|devfs_unregister
+id|devfs_remove
+c_func
 (paren
-id|dev-&gt;devfs
+l_string|&quot;usb/skel%d&quot;
+comma
+id|dev-&gt;minor
 )paren
 suffix:semicolon
 multiline_comment|/* give back our dynamic minor */

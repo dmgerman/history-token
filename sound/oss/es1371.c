@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3456,7 +3455,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
@@ -3643,7 +3642,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -4805,7 +4804,7 @@ suffix:semicolon
 )brace
 DECL|function|es1371_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|es1371_interrupt
 c_func
 (paren
@@ -4862,6 +4861,7 @@ l_int|0x80000000
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4949,6 +4949,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

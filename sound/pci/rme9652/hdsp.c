@@ -12883,7 +12883,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|snd_hdsp_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|snd_hdsp_interrupt
 c_func
 (paren
@@ -12978,6 +12979,7 @@ id|midi1
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|hdsp_write
@@ -13142,6 +13144,9 @@ c_func
 op_amp
 id|hdsp-&gt;midi_tasklet
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_hdsp_hw_pointer

@@ -1429,7 +1429,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_ad1816a_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_ad1816a_interrupt
 c_func
 (paren
@@ -1458,6 +1458,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -1564,6 +1565,9 @@ c_func
 op_amp
 id|chip-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|snd_ad1816a_playback

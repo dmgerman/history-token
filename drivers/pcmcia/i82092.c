@@ -890,7 +890,7 @@ r_return
 id|val
 suffix:semicolon
 )brace
-DECL|function|indirect_read16
+macro_line|#if 0
 r_static
 r_int
 r_int
@@ -1002,6 +1002,7 @@ r_return
 id|tmp
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|indirect_write
 r_static
 r_void
@@ -1555,7 +1556,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|i82092aa_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|i82092aa_interrupt
 c_func
 (paren
@@ -1577,6 +1578,11 @@ id|i
 suffix:semicolon
 r_int
 id|loopcount
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|handled
 op_assign
 l_int|0
 suffix:semicolon
@@ -1687,6 +1693,10 @@ l_int|NULL
 )paren
 multiline_comment|/* no way to handle events */
 r_continue
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 id|events
 op_assign
@@ -1824,6 +1834,13 @@ multiline_comment|/* no more events to handle */
 r_break
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 multiline_comment|/*&t;leave(&quot;i82092aa_interrupt&quot;);*/
 )brace
 multiline_comment|/* socket functions */

@@ -7674,7 +7674,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|typhoon_interrupt
 id|typhoon_interrupt
 c_func
@@ -7731,6 +7731,7 @@ id|intr_status
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|writel
@@ -7788,6 +7789,9 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -9449,7 +9453,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 r_static
 r_int
 DECL|function|typhoon_resume
@@ -11047,7 +11051,7 @@ c_func
 id|typhoon_remove_one
 )paren
 comma
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 dot
 id|suspend
 op_assign

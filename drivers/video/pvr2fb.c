@@ -821,7 +821,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pvr2fb_interrupt
 c_func
 (paren
@@ -3940,7 +3940,7 @@ suffix:semicolon
 )brace
 DECL|function|pvr2fb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pvr2fb_interrupt
 c_func
 (paren
@@ -4015,6 +4015,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Determine the cable type and initialize the cable output format.  Don&squot;t do&n; * anything if the cable type has been overidden (via &quot;cable:XX&quot;).&n; */
 DECL|macro|PCTRA
@@ -4217,10 +4220,6 @@ suffix:semicolon
 id|fb_info.changevar
 op_assign
 l_int|NULL
-suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
 suffix:semicolon
 id|fb_info.fbops
 op_assign
@@ -4425,11 +4424,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device, using %ldk/%ldk of video memory&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|fb_info.modename
 comma
@@ -4447,11 +4442,7 @@ c_func
 (paren
 l_string|&quot;fb%d: Mode %dx%d-%d pitch = %ld cable: %s video output: %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|var.xres
 comma

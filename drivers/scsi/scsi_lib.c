@@ -753,7 +753,7 @@ op_assign
 id|cmd-&gt;old_underflow
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called for single_lun devices on IO completion. Clear starget_sdev_user,&n; * and call __blk_run_queue for all the scsi_devices on the target -&n; * including current_sdev first.&n; *&n; * Called with *no* scsi locks held.&n; */
+multiline_comment|/*&n; * Called for single_lun devices on IO completion. Clear starget_sdev_user,&n; * and call blk_run_queue for all the scsi_devices on the target -&n; * including current_sdev first.&n; *&n; * Called with *no* scsi locks held.&n; */
 DECL|function|scsi_single_lun_run
 r_static
 r_void
@@ -774,8 +774,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-comma
-id|flags2
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -804,27 +802,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Call __blk_run_queue for all LUNs on the target, starting with&n;&t; * current_sdev. We race with others (to set starget_sdev_user),&n;&t; * but in most cases, we will be first. Ideally, each LU on the&n;&t; * target would get some limited time or requests on the target.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|current_sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags2
-)paren
-suffix:semicolon
-id|__blk_run_queue
+multiline_comment|/*&n;&t; * Call blk_run_queue for all LUNs on the target, starting with&n;&t; * current_sdev. We race with others (to set starget_sdev_user),&n;&t; * but in most cases, we will be first. Ideally, each LU on the&n;&t; * target would get some limited time or requests on the target.&n;&t; */
+id|blk_run_queue
 c_func
 (paren
 id|current_sdev-&gt;request_queue
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|current_sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags2
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -871,30 +853,12 @@ id|current_sdev-&gt;same_target_siblings
 comma
 id|same_target_siblings
 )paren
-(brace
-id|spin_lock_irqsave
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags2
-)paren
-suffix:semicolon
-id|__blk_run_queue
+id|blk_run_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags2
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Function:    scsi_queue_next_request()&n; *&n; * Purpose:     Handle post-processing of completed commands.&n; *&n; * Arguments:   cmd&t;- command that may need to be requeued.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       After command completion, there may be blocks left&n; *              over which weren&squot;t finished by the previous command&n; *              this can be for a number of reasons - the main one is&n; *              that a medium error occurred, and the sectors after&n; *              the bad block need to be re-read.&n; *&n; *              If cmd is NULL, it means that the previous command&n; *              was completely finished, and we should simply start&n; *              a new command, if possible.&n; *&n; *&t;&t;This is where a lot of special case code has begun to&n; *&t;&t;accumulate.  It doesn&squot;t really affect readability or&n; *&t;&t;anything, but it might be considered architecturally&n; *&t;&t;inelegant.  If more of these special cases start to&n; *&t;&t;accumulate, I am thinking along the lines of implementing&n; *&t;&t;an atexit() like technology that gets run when commands&n; *&t;&t;complete.  I am not convinced that it is worth the&n; *&t;&t;added overhead, however.  Right now as things stand,&n; *&t;&t;there are simple conditional checks, and most hosts&n; *&t;&t;would skip past.&n; *&n; *&t;&t;Another possible solution would be to tailor different&n; *&t;&t;handler functions, sort of like what we did in scsi_merge.c.&n; *&t;&t;This is probably a better solution, but the number of different&n; *&t;&t;permutations grows as 2**N, and if too many more special cases&n; *&t;&t;get added, we start to get screwed.&n; */
 DECL|function|scsi_queue_next_request
@@ -1055,7 +1019,7 @@ id|shost-&gt;can_queue
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * As long as shost is accepting commands and we have&n;&t;&t; * starved queues, call __blk_run_queue. scsi_request_fn&n;&t;&t; * drops the queue_lock and can add us back to the&n;&t;&t; * starved_list.&n;&t;&t; *&n;&t;&t; * host_lock protects the starved_list and starved_entry.&n;&t;&t; * scsi_request_fn must get the host_lock before checking&n;&t;&t; * or modifying starved_list or starved_entry.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * As long as shost is accepting commands and we have&n;&t;&t; * starved queues, call blk_run_queue. scsi_request_fn&n;&t;&t; * drops the queue_lock and can add us back to the&n;&t;&t; * starved_list.&n;&t;&t; *&n;&t;&t; * host_lock protects the starved_list and starved_entry.&n;&t;&t; * scsi_request_fn must get the host_lock before checking&n;&t;&t; * or modifying starved_list or starved_entry.&n;&t;&t; */
 id|sdev
 op_assign
 id|list_entry
@@ -1084,26 +1048,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|__blk_run_queue
+id|blk_run_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1141,26 +1089,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|__blk_run_queue
+id|blk_run_queue
 c_func
 (paren
 id|q
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1875,7 +1807,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;use_sg is %d&bslash;n &quot;
+l_string|&quot;use_sg is %d&bslash;n&quot;
 comma
 id|cmd-&gt;use_sg
 )paren

@@ -2126,11 +2126,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: valkyrie frame buffer device&bslash;n&quot;
 comma
-id|GET_FB_IDX
-c_func
-(paren
 id|p-&gt;info.node
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3302,10 +3298,6 @@ id|info-&gt;modename
 comma
 id|p-&gt;fix.id
 )paren
-suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
 suffix:semicolon
 id|info-&gt;fbops
 op_assign

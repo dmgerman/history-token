@@ -23,14 +23,6 @@ mdefine_line|#define down_write down
 DECL|macro|up_write
 mdefine_line|#define up_write up
 macro_line|#endif
-macro_line|#ifndef LockPage
-DECL|macro|LockPage
-mdefine_line|#define LockPage(page)&t;&t;set_bit(PG_locked, &amp;(page)-&gt;flags)
-macro_line|#endif
-macro_line|#ifndef UnlockPage
-DECL|macro|UnlockPage
-mdefine_line|#define UnlockPage(page)&t;unlock_page(page)
-macro_line|#endif
 DECL|function|i830_print_status_page
 r_static
 r_inline
@@ -59,10 +51,6 @@ id|u32
 op_star
 id|temp
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 r_int
@@ -354,30 +342,12 @@ op_assign
 id|i830_mmap_buffers
 comma
 dot
-id|read
-op_assign
-id|DRM
-c_func
-(paren
-id|read
-)paren
-comma
-dot
 id|fasync
 op_assign
 id|DRM
 c_func
 (paren
 id|fasync
-)paren
-comma
-dot
-id|poll
-op_assign
-id|DRM
-c_func
-(paren
-id|poll
 )paren
 comma
 )brace
@@ -616,16 +586,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
 (paren
-r_int
-r_int
-)paren
 id|buf_priv
 op_member_access_from_pointer
 r_virtual
-OG
-op_minus
-l_int|1024UL
+)paren
 )paren
 (brace
 multiline_comment|/* Real error */
@@ -637,13 +604,13 @@ l_string|&quot;mmap error&bslash;n&quot;
 suffix:semicolon
 id|retcode
 op_assign
+id|PTR_ERR
+c_func
 (paren
-r_int
-r_int
-)paren
 id|buf_priv
 op_member_access_from_pointer
 r_virtual
+)paren
 suffix:semicolon
 id|buf_priv
 op_member_access_from_pointer
@@ -942,8 +909,6 @@ r_if
 c_cond
 (paren
 id|dev_priv-&gt;hw_status_page
-op_ne
-l_int|0UL
 )paren
 (brace
 id|pci_free_consistent
@@ -953,10 +918,6 @@ id|dev-&gt;pdev
 comma
 id|PAGE_SIZE
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 id|dev_priv-&gt;dma_status_page
@@ -1046,6 +1007,13 @@ id|buf_priv
 op_assign
 id|buf-&gt;dev_private
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|buf_priv-&gt;kernel_virtual
+op_logical_and
+id|buf-&gt;total
+)paren
 id|DRM
 c_func
 (paren
@@ -1826,10 +1794,6 @@ suffix:semicolon
 multiline_comment|/* Program Hardware Status Page */
 id|dev_priv-&gt;hw_status_page
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|pci_alloc_consistent
 c_func
 (paren
@@ -1844,9 +1808,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev_priv-&gt;hw_status_page
-op_eq
-l_int|0UL
 )paren
 (brace
 id|dev-&gt;dev_private
@@ -1877,10 +1840,6 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 comma
 l_int|0
@@ -1891,7 +1850,7 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;hw status page @ %lx&bslash;n&quot;
+l_string|&quot;hw status page @ %p&bslash;n&quot;
 comma
 id|dev_priv-&gt;hw_status_page
 )paren
@@ -1901,15 +1860,7 @@ c_func
 (paren
 l_int|0x02080
 comma
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|dev_priv-&gt;hw_status_page
-)paren
+id|dev_priv-&gt;dma_status_page
 )paren
 suffix:semicolon
 id|DRM_DEBUG
@@ -6262,10 +6213,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i830_sarea_t
@@ -6807,10 +6754,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i830_sarea_t
@@ -6895,10 +6838,6 @@ id|u32
 op_star
 id|hw_status
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|dev_priv-&gt;hw_status_page
 suffix:semicolon
 id|drm_i830_sarea_t

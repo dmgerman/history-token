@@ -1781,7 +1781,7 @@ id|chan
 suffix:semicolon
 )brace
 )brace
-r_void
+id|irqreturn_t
 DECL|function|pcbit_irq_handler
 id|pcbit_irq_handler
 c_func
@@ -1835,6 +1835,7 @@ l_string|&quot;pcbit_irq_handler: wrong device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1851,6 +1852,7 @@ l_string|&quot;pcbit: reentering interrupt hander&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|dev-&gt;interrupt
@@ -1892,6 +1894,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1923,6 +1926,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -1942,6 +1946,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|ack_seq
@@ -2042,6 +2047,9 @@ id|dev-&gt;sh_mem
 op_plus
 id|BANK4
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -63,13 +64,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|input_register_minor
-)paren
-suffix:semicolon
-DECL|variable|input_unregister_minor
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|input_unregister_minor
 )paren
 suffix:semicolon
 DECL|variable|input_open_device
@@ -141,11 +135,6 @@ id|input_table
 (braket
 l_int|8
 )braket
-suffix:semicolon
-DECL|variable|input_devfs_handle
-r_static
-id|devfs_handle_t
-id|input_devfs_handle
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|proc_bus_input_dir
@@ -2486,7 +2475,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|input_register_minor
-id|devfs_handle_t
+r_void
 id|input_register_minor
 c_func
 (paren
@@ -2517,7 +2506,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-r_return
 id|devfs_register
 c_func
 (paren
@@ -2529,9 +2517,9 @@ l_int|0
 comma
 id|INPUT_MAJOR
 comma
-id|minor
-op_plus
 id|minor_base
+op_plus
+id|minor
 comma
 id|S_IFCHR
 op_or
@@ -2543,22 +2531,6 @@ op_amp
 id|input_fops
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-)brace
-DECL|function|input_unregister_minor
-r_void
-id|input_unregister_minor
-c_func
-(paren
-id|devfs_handle_t
-id|handle
-)paren
-(brace
-id|devfs_unregister
-c_func
-(paren
-id|handle
 )paren
 suffix:semicolon
 )brace
@@ -3297,8 +3269,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|input_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
@@ -3345,10 +3315,10 @@ id|proc_bus
 )paren
 suffix:semicolon
 macro_line|#endif
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|input_devfs_handle
+l_string|&quot;input&quot;
 )paren
 suffix:semicolon
 r_if

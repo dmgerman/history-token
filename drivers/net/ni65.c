@@ -501,7 +501,7 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ni65_interrupt
 c_func
 (paren
@@ -944,8 +944,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1070,8 +1068,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2170,6 +2166,12 @@ suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|ioaddr
+suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -3902,7 +3904,7 @@ multiline_comment|/* -&gt;Error */
 multiline_comment|/*&n; * interrupt handler&n; */
 DECL|function|ni65_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ni65_interrupt
 c_func
 (paren
@@ -4512,6 +4514,7 @@ id|CSR0_INEA
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have received an Xmit-Interrupt ..&n; * send a new packet if necessary&n; */

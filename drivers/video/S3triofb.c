@@ -2746,10 +2746,6 @@ id|fb_info.modename
 )paren
 )paren
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus
@@ -2831,11 +2827,7 @@ c_func
 (paren
 l_string|&quot;fb%d: S3 Trio frame buffer device on %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|dp-&gt;full_name
 )paren

@@ -62,7 +62,7 @@ id|doing_pdma
 suffix:semicolon
 DECL|function|floppy_hardint
 r_static
-r_void
+id|irqreturn_t
 id|floppy_hardint
 c_func
 (paren
@@ -114,7 +114,7 @@ c_cond
 op_logical_neg
 id|doing_pdma
 )paren
-(brace
+r_return
 id|floppy_interrupt
 c_func
 (paren
@@ -125,9 +125,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 macro_line|#ifdef TRACE_FLPY_INT
 r_if
 c_cond
@@ -350,6 +347,7 @@ l_int|0x20
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -412,6 +410,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef TRACE_FLPY_INT
@@ -427,6 +426,9 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|fd_disable_dma
 r_static

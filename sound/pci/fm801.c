@@ -2152,7 +2152,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_fm801_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_fm801_interrupt
 c_func
 (paren
@@ -2181,6 +2181,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -2222,6 +2223,7 @@ op_logical_neg
 id|status
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* ack first */
 id|outw
@@ -2442,6 +2444,9 @@ id|FM801_IRQ_VOLUME
 )paren
 suffix:semicolon
 multiline_comment|/* TODO */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|variable|snd_fm801_playback
 r_static

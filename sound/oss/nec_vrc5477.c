@@ -19,7 +19,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -2988,7 +2987,7 @@ suffix:semicolon
 )brace
 DECL|function|vrc5477_ac97_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|vrc5477_ac97_interrupt
 c_func
 (paren
@@ -3187,6 +3186,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/linux_logo.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -2992,7 +2993,7 @@ suffix:semicolon
 multiline_comment|/* Return if no suitable logo was found */
 id|fb_logo.logo
 op_assign
-id|find_logo
+id|fb_find_logo
 c_func
 (paren
 id|info-&gt;var.bits_per_pixel
@@ -3472,16 +3473,12 @@ id|clen
 comma
 l_string|&quot;%d %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 (paren
 op_star
 id|fi
 )paren
 op_member_access_from_pointer
 id|node
-)paren
 comma
 (paren
 op_star
@@ -5911,13 +5908,7 @@ r_break
 suffix:semicolon
 id|fb_info-&gt;node
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|FB_MAJOR
-comma
 id|i
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6057,11 +6048,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|minor
-c_func
-(paren
 id|fb_info-&gt;node
-)paren
 suffix:semicolon
 r_if
 c_cond

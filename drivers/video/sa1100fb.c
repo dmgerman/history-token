@@ -5349,7 +5349,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  sa1100fb_handle_irq: Handle &squot;LCD DONE&squot; interrupts.&n; */
 DECL|function|sa1100fb_handle_irq
 r_static
-r_void
+id|irqreturn_t
 id|sa1100fb_handle_irq
 c_func
 (paren
@@ -5402,6 +5402,9 @@ suffix:semicolon
 id|LCSR
 op_assign
 id|lcsr
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This function must be called from task context only, since it will&n; * sleep when disabling the LCD controller, or if we get two contending&n; * processes trying to alter state.&n; */
@@ -6346,10 +6349,6 @@ suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|fbi-&gt;fb.node
-op_assign
-id|NODEV
 suffix:semicolon
 id|fbi-&gt;fb.monspecs
 op_assign

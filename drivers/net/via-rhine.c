@@ -1374,7 +1374,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|via_rhine_interrupt
 c_func
 (paren
@@ -5422,7 +5422,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|via_rhine_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|via_rhine_interrupt
 c_func
 (paren
@@ -5457,6 +5457,11 @@ id|boguscnt
 op_assign
 id|max_interrupt_work
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -5475,6 +5480,10 @@ id|dev
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
 r_if
 c_cond
@@ -5705,6 +5714,13 @@ id|ioaddr
 op_plus
 id|IntrStatus
 )paren
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
@@ -7319,6 +7335,26 @@ suffix:semicolon
 id|rx_mode
 op_assign
 l_int|0x1C
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|ioaddr
+op_plus
+id|MulticastFilter0
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|ioaddr
+op_plus
+id|MulticastFilter1
+)paren
 suffix:semicolon
 )brace
 r_else

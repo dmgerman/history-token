@@ -1514,9 +1514,11 @@ c_func
 id|s-&gt;cis_virt
 )paren
 suffix:semicolon
-id|s-&gt;cis_used
-op_assign
-l_int|0
+id|destroy_cis_cache
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1581,9 +1583,11 @@ c_func
 id|s-&gt;cis_virt
 )paren
 suffix:semicolon
-id|s-&gt;cis_used
-op_assign
-l_int|0
+id|destroy_cis_cache
+c_func
+(paren
+id|s
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -2481,6 +2485,9 @@ id|s
 id|resource_map_t
 op_star
 id|m
+comma
+op_star
+id|n
 suffix:semicolon
 r_static
 r_int
@@ -2520,8 +2527,13 @@ id|mem_db
 suffix:semicolon
 id|m
 op_assign
-id|m-&gt;next
+id|n
 )paren
+(brace
+id|n
+op_assign
+id|m-&gt;next
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2537,6 +2549,7 @@ id|s
 )paren
 r_break
 suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -2930,7 +2943,7 @@ multiline_comment|/*============================================================
 macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|fake_irq
 r_static
-r_void
+id|irqreturn_t
 id|fake_irq
 c_func
 (paren
@@ -2947,6 +2960,9 @@ op_star
 id|r
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|check_irq
 r_static
@@ -3529,17 +3545,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CARDBUS
-id|cb_release_cis_mem
-c_func
-(paren
-id|socket_table
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_break

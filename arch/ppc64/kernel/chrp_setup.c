@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -142,7 +142,7 @@ id|fwnmi_active
 suffix:semicolon
 multiline_comment|/* TRUE if an FWNMI handler is present */
 DECL|variable|boot_dev
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 DECL|variable|virtPython0Facilities

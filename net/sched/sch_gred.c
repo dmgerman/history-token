@@ -1426,8 +1426,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* probably need to clear all the table DP entries as well */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2225,8 +2223,6 @@ id|table-&gt;initd
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2751,8 +2747,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|variable|gred_qdisc_ops
 r_struct
@@ -2828,6 +2822,11 @@ dot
 id|dump
 op_assign
 id|gred_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

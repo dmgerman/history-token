@@ -56,46 +56,6 @@ op_star
 id|disk
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image */
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-DECL|macro|INITRD_MINOR
-mdefine_line|#define INITRD_MINOR 250 /* shouldn&squot;t collide with /dev/ram* too soon ... */
-r_extern
-r_int
-r_int
-id|initrd_start
-comma
-id|initrd_end
-suffix:semicolon
-r_extern
-r_int
-id|initrd_below_start_ok
-suffix:semicolon
-multiline_comment|/* 1 if it is not an error if initrd_start &lt; memory_start */
-r_void
-id|initrd_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
-macro_line|#endif
 multiline_comment|/*&n; * end_request() and friends. Must be called with the request queue spinlock&n; * acquired. All functions called within end_request() _must_be_ atomic.&n; *&n; * Several drivers define their own end_request and call&n; * end_that_request_first() and end_that_request_last()&n; * for parts of the original function. This prevents&n; * code duplication in drivers.&n; */
 r_extern
 r_int
@@ -133,6 +93,20 @@ c_func
 r_struct
 id|request
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|end_request
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|req
+comma
+r_int
+id|uptodate
 )paren
 suffix:semicolon
 r_struct
@@ -191,58 +165,5 @@ id|req
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * If we have our own end_request, we do not want to include this mess&n; */
-macro_line|#ifndef LOCAL_END_REQUEST
-DECL|function|end_request
-r_static
-r_inline
-r_void
-id|end_request
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|req
-comma
-r_int
-id|uptodate
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|end_that_request_first
-c_func
-(paren
-id|req
-comma
-id|uptodate
-comma
-id|req-&gt;hard_cur_sectors
-)paren
-)paren
-r_return
-suffix:semicolon
-id|add_disk_randomness
-c_func
-(paren
-id|req-&gt;rq_disk
-)paren
-suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|req
-)paren
-suffix:semicolon
-id|end_that_request_last
-c_func
-(paren
-id|req
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* !LOCAL_END_REQUEST */
 macro_line|#endif /* _BLK_H */
 eof

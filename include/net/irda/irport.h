@@ -206,7 +206,7 @@ id|__u32
 id|speed
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|irport_interrupt
 c_func
 (paren

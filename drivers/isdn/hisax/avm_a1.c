@@ -459,7 +459,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|avm_a1_interrupt
 id|avm_a1_interrupt
 c_func
@@ -489,6 +489,11 @@ id|val
 comma
 id|sval
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -516,6 +521,10 @@ op_ne
 l_int|0x7
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -708,6 +717,13 @@ c_func
 (paren
 op_amp
 id|cs-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

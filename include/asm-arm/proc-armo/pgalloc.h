@@ -96,7 +96,7 @@ id|_PAGE_TABLE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We use the old 2.5.5-rmk1 hack for this.&n; * This is not truely correct, but should be functional.&n; */
+multiline_comment|/*&n; * We use the old 2.5.5-rmk1 hack for this.&n; * This is not truly correct, but should be functional.&n; */
 DECL|macro|pte_alloc_one
 mdefine_line|#define pte_alloc_one(mm,addr)&t;((struct page *)pte_alloc_one_kernel(mm,addr))
 DECL|macro|pte_free

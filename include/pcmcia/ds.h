@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_DS_H
 DECL|macro|_LINUX_DS_H
 mdefine_line|#define _LINUX_DS_H
 macro_line|#include &lt;pcmcia/bulkmem.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 DECL|struct|tuple_parse_t
 r_typedef
@@ -231,6 +230,7 @@ mdefine_line|#define DS_UNBIND_REQUEST&t;&t;_IOW (&squot;d&squot;, 63, bind_info
 DECL|macro|DS_BIND_MTD
 mdefine_line|#define DS_BIND_MTD&t;&t;&t;_IOWR(&squot;d&squot;, 64, mtd_info_t)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|dev_node_t
 r_typedef
 r_struct

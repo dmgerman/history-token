@@ -23,8 +23,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-multiline_comment|/*&n;  * for crizappy mmap()&n;  */
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &quot;maestro3.h&quot;
 DECL|macro|M_DEBUG
 mdefine_line|#define M_DEBUG 1
@@ -4670,7 +4668,7 @@ suffix:semicolon
 )brace
 DECL|function|m3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|m3_interrupt
 c_func
 (paren
@@ -4732,6 +4730,7 @@ l_int|0xff
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* presumably acking the ints? */
@@ -4752,6 +4751,7 @@ id|c-&gt;in_suspend
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * ack an assp int if its running&n;     * and has an int pending&n;     */
@@ -4857,6 +4857,9 @@ l_int|0x1A
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|variable|invalid_magic
@@ -8580,7 +8583,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -8734,7 +8737,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page

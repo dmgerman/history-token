@@ -10,7 +10,7 @@ DECL|macro|__GFP_DMA
 mdefine_line|#define __GFP_DMA&t;0x01
 DECL|macro|__GFP_HIGHMEM
 mdefine_line|#define __GFP_HIGHMEM&t;0x02
-multiline_comment|/* Action modifiers - doesn&squot;t change the zoning */
+multiline_comment|/*&n; * Action modifiers - doesn&squot;t change the zoning&n; *&n; * __GFP_REPEAT: Try hard to allocate the memory, but the allocation attempt&n; * _might_ fail.  This depends upon the particular VM implementation.&n; *&n; * __GFP_NOFAIL: The VM implementation _must_ retry infinitely: the caller&n; * cannot handle allocation failures.&n; *&n; * __GFP_NORETRY: The VM implementation must not retry indefinitely.&n; */
 DECL|macro|__GFP_WAIT
 mdefine_line|#define __GFP_WAIT&t;0x10&t;/* Can wait and reschedule? */
 DECL|macro|__GFP_HIGH
@@ -23,6 +23,12 @@ DECL|macro|__GFP_COLD
 mdefine_line|#define __GFP_COLD&t;0x100&t;/* Cache-cold page required */
 DECL|macro|__GFP_NOWARN
 mdefine_line|#define __GFP_NOWARN&t;0x200&t;/* Suppress page allocation failure warning */
+DECL|macro|__GFP_REPEAT
+mdefine_line|#define __GFP_REPEAT&t;0x400&t;/* Retry the allocation.  Might fail */
+DECL|macro|__GFP_NOFAIL
+mdefine_line|#define __GFP_NOFAIL&t;0x800&t;/* Retry for ever.  Cannot fail */
+DECL|macro|__GFP_NORETRY
+mdefine_line|#define __GFP_NORETRY&t;0x1000&t;/* Do not retry.  Might fail */
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_NOIO

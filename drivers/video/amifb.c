@@ -2100,7 +2100,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|amifb_interrupt
 c_func
 (paren
@@ -8280,10 +8280,6 @@ op_assign
 l_int|90
 suffix:semicolon
 )brace
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp
@@ -8638,11 +8634,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device, using %dK of video memory&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|fb_info.fix.id
 comma
@@ -8792,7 +8784,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * VBlank Display Interrupt&n;&t; */
 DECL|function|amifb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|amifb_interrupt
 c_func
 (paren
@@ -8924,6 +8916,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* --------------------------- Hardware routines --------------------------- */
 multiline_comment|/*&n;&t; * Get the video params out of `var&squot;. If a value doesn&squot;t fit, round&n;&t; * it up, if it&squot;s too big, return -EINVAL.&n;&t; */

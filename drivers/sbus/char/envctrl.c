@@ -2394,8 +2394,6 @@ id|file-&gt;private_data
 op_assign
 l_int|0
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2418,8 +2416,6 @@ op_star
 id|file
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

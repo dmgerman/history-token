@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 singleline_comment|// #define DEBUG
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.4.11&quot;
@@ -2109,11 +2108,6 @@ id|usb_device
 op_star
 id|scn_dev
 suffix:semicolon
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
-multiline_comment|/* devfs device */
 DECL|member|scn_irq
 r_struct
 id|urb

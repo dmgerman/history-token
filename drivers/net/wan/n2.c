@@ -663,6 +663,9 @@ suffix:colon
 id|TX422_PORT0
 )paren
 suffix:semicolon
+r_int
+id|result
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -678,7 +681,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 multiline_comment|/* rmmod in progress */
-r_int
 id|result
 op_assign
 id|hdlc_open

@@ -21,12 +21,9 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/i2c-old.h&gt;
-DECL|macro|MAP_NR
-mdefine_line|#define     MAP_NR(x)       virt_to_page(x)
 DECL|macro|ZORAN_HARDWARE
 mdefine_line|#define     ZORAN_HARDWARE  VID_HARDWARE_ZR36067
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -526,10 +523,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -824,10 +821,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1136,10 +1133,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1251,10 +1248,10 @@ l_int|4
 op_lshift
 l_int|1
 suffix:semicolon
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|mem
@@ -1423,10 +1420,10 @@ id|off
 op_add_assign
 id|PAGE_SIZE
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 (paren
 id|mem
 op_plus
@@ -1507,10 +1504,10 @@ id|j
 )paren
 r_break
 suffix:semicolon
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 (paren
 id|bus_to_virt
 (paren
@@ -12326,7 +12323,7 @@ multiline_comment|/********** End RESTART code ***********/
 )brace
 DECL|function|zoran_irq
 r_static
-r_void
+id|irqreturn_t
 id|zoran_irq
 c_func
 (paren
@@ -12359,6 +12356,11 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|zr
 op_assign
@@ -12455,6 +12457,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -12497,6 +12500,10 @@ id|astat
 r_break
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13156,6 +13163,13 @@ op_amp
 id|zr-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

@@ -1867,6 +1867,10 @@ c_func
 id|pb-&gt;pb_pages
 comma
 id|page_count
+comma
+id|VM_MAP
+comma
+id|PAGE_KERNEL
 )paren
 suffix:semicolon
 r_if

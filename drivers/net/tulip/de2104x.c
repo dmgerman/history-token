@@ -2133,7 +2133,7 @@ suffix:semicolon
 )brace
 DECL|function|de_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|de_interrupt
 (paren
 r_int
@@ -2197,6 +2197,7 @@ l_int|0xFFFF
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -2368,6 +2369,9 @@ id|pci_status
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|de_tx
 r_static

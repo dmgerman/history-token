@@ -288,7 +288,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|uart401intr
-r_void
+id|irqreturn_t
 id|uart401intr
 c_func
 (paren
@@ -327,6 +327,7 @@ l_string|&quot;uart401: bad devc&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -343,6 +344,9 @@ c_func
 (paren
 id|devc
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

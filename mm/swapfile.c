@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/mm/swapfile.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -9,7 +10,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -1151,7 +1151,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page
@@ -1416,7 +1416,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page
@@ -2415,6 +2415,24 @@ id|i
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINTR
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/* &n;&t;&t; * Get a page for the entry, using the existing swap&n;&t;&t; * cache page if there is one.  Otherwise, get a clean&n;&t;&t; * page and read the swap into it. &n;&t;&t; */
 id|swap_map
 op_assign
@@ -2980,7 +2998,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.  Interruptible check on&n;&t;&t; * signal_pending() would be nice, but changes the spec?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killing&n;&t;&t; * interactive performance.&n;&t;&t; */
 id|cond_resched
 c_func
 (paren
@@ -3977,11 +3995,6 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-id|err
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3990,6 +4003,42 @@ OL
 l_int|0
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|swap_list_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|out_dput
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vm_enough_memory
+c_func
+(paren
+id|p-&gt;pages
+)paren
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|p-&gt;pages
+)paren
+suffix:semicolon
+r_else
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|swap_list_unlock
 c_func
 (paren
@@ -4056,6 +4105,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SWAPOFF
+suffix:semicolon
 id|err
 op_assign
 id|try_to_unuse
@@ -4063,6 +4116,11 @@ c_func
 (paren
 id|type
 )paren
+suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SWAPOFF
 suffix:semicolon
 r_if
 c_cond

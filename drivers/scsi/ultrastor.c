@@ -576,7 +576,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_ultrastor_interrupt
 c_func
 (paren
@@ -4284,7 +4284,7 @@ macro_line|#endif
 )brace
 DECL|function|do_ultrastor_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|do_ultrastor_interrupt
 c_func
 (paren
@@ -4337,6 +4337,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|MODULE_LICENSE

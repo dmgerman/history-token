@@ -3919,7 +3919,6 @@ r_sizeof
 (paren
 r_struct
 r_namespace
-op_star
 )paren
 comma
 id|GFP_KERNEL

@@ -922,7 +922,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sermouse_interrupt() handles incoming characters, either gathering them into&n; * packets or passing them to the command routine as command output.&n; */
 DECL|function|sermouse_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sermouse_interrupt
 c_func
 (paren
@@ -1004,6 +1004,9 @@ id|data
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sermouse_disconnect() cleans up after we don&squot;t want talk&n; * to the mouse anymore.&n; */

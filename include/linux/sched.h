@@ -1365,7 +1365,9 @@ DECL|macro|PF_FSTRANS
 mdefine_line|#define PF_FSTRANS&t;0x00020000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
 mdefine_line|#define PF_KSWAPD&t;0x00040000&t;/* I am kswapd */
-macro_line|#if CONFIG_SMP
+DECL|macro|PF_SWAPOFF
+mdefine_line|#define PF_SWAPOFF&t;0x00080000&t;/* I am in swapoff */
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
 id|set_cpus_allowed

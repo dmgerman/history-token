@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/pil.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/* You should not mess with this directly. That&squot;s the job of irq.c.&n; *&n; * If you make changes here, please update hand coded assembler of&n; * SBUS/floppy interrupt handler in entry.S -DaveM&n; *&n; * This is currently one DCACHE line, two buckets per L2 cache&n; * line.  Keep this in mind please.&n; */
@@ -191,8 +192,8 @@ suffix:semicolon
 )brace
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS    16
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(irq)&t;(irq)
 r_extern
 r_void
 id|disable_irq
@@ -308,7 +309,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

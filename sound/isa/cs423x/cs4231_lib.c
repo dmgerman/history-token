@@ -5639,7 +5639,7 @@ op_increment
 suffix:semicolon
 )brace
 DECL|function|snd_cs4231_interrupt
-r_void
+id|irqreturn_t
 id|snd_cs4231_interrupt
 c_func
 (paren
@@ -5668,6 +5668,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -5826,6 +5827,9 @@ c_func
 op_amp
 id|chip-&gt;reg_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef LEGACY_SUPPORT

@@ -176,21 +176,6 @@ multiline_comment|/* release */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|fs3270_devfs_dir
-r_static
-id|devfs_handle_t
-id|fs3270_devfs_dir
-suffix:semicolon
-DECL|variable|fs3270_devfs_tub
-r_static
-id|devfs_handle_t
-id|fs3270_devfs_tub
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|tty_fops
-suffix:semicolon
 DECL|function|fs3270_devfs_register
 r_void
 id|fs3270_devfs_register
@@ -262,7 +247,7 @@ l_int|0
 comma
 id|tubp-&gt;minor
 comma
-id|fs3270_devfs_dir
+l_int|NULL
 comma
 id|name
 )paren
@@ -343,17 +328,12 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|fs3270_devfs_dir
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;3270&quot;
 )paren
 suffix:semicolon
-id|fs3270_devfs_tub
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -379,7 +359,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|fs3270_major
 op_assign
 id|IBM_FS3270_MAJOR
@@ -406,20 +385,18 @@ op_minus
 l_int|1
 )paren
 (brace
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|fs3270_devfs_tub
+l_string|&quot;3270&quot;
 )paren
 suffix:semicolon
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|fs3270_devfs_dir
+l_string|&quot;3270/tub&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|unregister_chrdev
 c_func
 (paren

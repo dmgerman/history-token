@@ -219,15 +219,6 @@ c_func
 id|sound_mutex
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-op_assign
-l_int|NULL
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_KMOD
 multiline_comment|/**&n; * snd_request_card - try to load the card module&n; * @card: the card number&n; *&n; * Tries to load the module &quot;snd-card-X&quot; for the given card number&n; * via KMOD.  Returns immediately if already loaded.&n; */
 DECL|function|snd_request_card
@@ -1421,46 +1412,12 @@ r_return
 id|err
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DEVFS_FS
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0)
-id|devfs_handle
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;snd&quot;
-comma
-l_int|3
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,67)
-id|devfs_handle
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-l_int|NULL
-comma
-l_string|&quot;snd&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#else
-id|devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;snd&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1686,14 +1643,12 @@ comma
 id|major
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|devfs_handle
+l_string|&quot;snd&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|module_init
 c_func

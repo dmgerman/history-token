@@ -2022,7 +2022,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Interrupt handler&n; */
 DECL|function|snd_via82xx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_via82xx_interrupt
 c_func
 (paren
@@ -2051,6 +2051,7 @@ comma
 id|dev_id
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_int
@@ -2119,6 +2120,7 @@ c_cond
 id|chip-&gt;rmidi
 )paren
 multiline_comment|/* check mpu401 interrupt */
+r_return
 id|snd_mpu401_uart_interrupt
 c_func
 (paren
@@ -2130,6 +2132,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// _skip_sgd:
@@ -2244,6 +2247,9 @@ c_func
 op_amp
 id|chip-&gt;reg_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  PCM callbacks&n; */

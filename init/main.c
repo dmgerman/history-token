@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

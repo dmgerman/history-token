@@ -8802,10 +8802,6 @@ id|par-&gt;fb
 dot
 r_virtual
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp
@@ -8966,11 +8962,7 @@ l_string|&quot;I810FB: Video RAM   : %dK&bslash;n&quot;
 l_string|&quot;I810FB: Monitor     : H: %d-%d KHz V: %d-%d Hz&bslash;n&quot;
 l_string|&quot;I810FB: Mode        : %dx%d-%dbpp@%dHz&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|i810_pci_list
 (braket

@@ -3779,7 +3779,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function iriap_watchdog_timer_expired (data)&n; *&n; *    Query has taken to long time, so abort&n; *&n; */
+multiline_comment|/*&n; * Function iriap_watchdog_timer_expired (data)&n; *&n; *    Query has taken too long time, so abort&n; *&n; */
 DECL|function|iriap_watchdog_timer_expired
 r_void
 id|iriap_watchdog_timer_expired
