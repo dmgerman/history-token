@@ -277,11 +277,9 @@ id|driverfs_dev_arr
 suffix:semicolon
 multiline_comment|/* support driverfs hierarchy */
 DECL|member|flags
-r_char
-op_star
+r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* one per physical disc */
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */

@@ -58,13 +58,6 @@ id|de_arr
 id|DASD_PER_MAJOR
 )braket
 suffix:semicolon
-DECL|member|flags
-r_char
-id|flags
-(braket
-id|DASD_PER_MAJOR
-)braket
-suffix:semicolon
 DECL|member|names
 r_char
 id|names
@@ -364,12 +357,6 @@ suffix:semicolon
 id|disk-&gt;de_arr
 op_assign
 id|mi-&gt;de_arr
-op_plus
-id|i
-suffix:semicolon
-id|disk-&gt;flags
-op_assign
-id|mi-&gt;flags
 op_plus
 id|i
 suffix:semicolon
