@@ -1612,7 +1612,10 @@ suffix:semicolon
 r_int
 id|cpu
 op_assign
-l_int|0
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* Mask all interrupts */
 id|local_irq_save
@@ -1621,19 +1624,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|cpu
-op_assign
-id|cpu_logical_id
-c_func
-(paren
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ia64_mc_info.imi_rendez_checkin
 (braket
 id|cpu
