@@ -5,6 +5,7 @@ mdefine_line|#define ALI_IRCC_H
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* SIR Register */
 multiline_comment|/* Usr definition of linux/serial_reg.h */
@@ -410,6 +411,14 @@ id|iobuff_t
 id|rx_buff
 suffix:semicolon
 multiline_comment|/* Receive buffer */
+DECL|member|tx_buff_dma
+id|dma_addr_t
+id|tx_buff_dma
+suffix:semicolon
+DECL|member|rx_buff_dma
+id|dma_addr_t
+id|rx_buff_dma
+suffix:semicolon
 DECL|member|ier
 id|__u8
 id|ier

@@ -3,6 +3,7 @@ macro_line|#ifndef W83977AF_IR_H
 DECL|macro|W83977AF_IR_H
 mdefine_line|#define W83977AF_IR_H
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* Flags for configuration register CRF0 */
 DECL|macro|ENBNKSEL
 mdefine_line|#define ENBNKSEL&t;0x01
@@ -300,6 +301,14 @@ id|iobuff_t
 id|rx_buff
 suffix:semicolon
 multiline_comment|/* Receive buffer */
+DECL|member|tx_buff_dma
+id|dma_addr_t
+id|tx_buff_dma
+suffix:semicolon
+DECL|member|rx_buff_dma
+id|dma_addr_t
+id|rx_buff_dma
+suffix:semicolon
 multiline_comment|/* Note : currently locking is *very* incomplete, but this&n;&t; * will get you started. Check in nsc-ircc.c for a proper&n;&t; * locking strategy. - Jean II */
 DECL|member|lock
 id|spinlock_t

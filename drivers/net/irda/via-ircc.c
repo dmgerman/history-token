@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -1799,18 +1800,17 @@ suffix:semicolon
 multiline_comment|/* Allocate memory if needed */
 id|self-&gt;rx_buff.head
 op_assign
-(paren
-id|__u8
-op_star
-)paren
-id|kmalloc
+id|dma_alloc_coherent
 c_func
 (paren
+l_int|NULL
+comma
 id|self-&gt;rx_buff.truesize
 comma
+op_amp
+id|self-&gt;rx_buff_dma
+comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -1842,18 +1842,17 @@ id|self-&gt;rx_buff.truesize
 suffix:semicolon
 id|self-&gt;tx_buff.head
 op_assign
-(paren
-id|__u8
-op_star
-)paren
-id|kmalloc
+id|dma_alloc_coherent
 c_func
 (paren
+l_int|NULL
+comma
 id|self-&gt;tx_buff.truesize
 comma
+op_amp
+id|self-&gt;tx_buff_dma
+comma
 id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -1998,18 +1997,30 @@ l_int|0
 suffix:semicolon
 id|err_out4
 suffix:colon
-id|kfree
+id|dma_free_coherent
 c_func
 (paren
+l_int|NULL
+comma
+id|self-&gt;tx_buff.truesize
+comma
 id|self-&gt;tx_buff.head
+comma
+id|self-&gt;tx_buff_dma
 )paren
 suffix:semicolon
 id|err_out3
 suffix:colon
-id|kfree
+id|dma_free_coherent
 c_func
 (paren
+l_int|NULL
+comma
+id|self-&gt;rx_buff.truesize
+comma
 id|self-&gt;rx_buff.head
+comma
+id|self-&gt;rx_buff_dma
 )paren
 suffix:semicolon
 id|err_out2
@@ -2127,10 +2138,16 @@ c_cond
 (paren
 id|self-&gt;tx_buff.head
 )paren
-id|kfree
+id|dma_free_coherent
 c_func
 (paren
+l_int|NULL
+comma
+id|self-&gt;tx_buff.truesize
+comma
 id|self-&gt;tx_buff.head
+comma
+id|self-&gt;tx_buff_dma
 )paren
 suffix:semicolon
 r_if
@@ -2138,10 +2155,16 @@ c_cond
 (paren
 id|self-&gt;rx_buff.head
 )paren
-id|kfree
+id|dma_free_coherent
 c_func
 (paren
+l_int|NULL
+comma
+id|self-&gt;rx_buff.truesize
+comma
 id|self-&gt;rx_buff.head
+comma
+id|self-&gt;rx_buff_dma
 )paren
 suffix:semicolon
 id|dev_self
@@ -3759,7 +3782,7 @@ c_func
 (paren
 id|self-&gt;io.dma
 comma
-id|self-&gt;tx_buff.data
+id|self-&gt;tx_buff_dma
 comma
 id|self-&gt;tx_buff.len
 comma
@@ -4164,12 +4187,22 @@ c_func
 (paren
 id|self-&gt;io.dma
 comma
+(paren
+(paren
+id|u8
+op_star
+)paren
 id|self-&gt;tx_fifo.queue
 (braket
 id|self-&gt;tx_fifo.ptr
 )braket
 dot
 id|start
+op_minus
+id|self-&gt;tx_buff.head
+)paren
+op_plus
+id|self-&gt;tx_buff_dma
 comma
 id|self-&gt;tx_fifo.queue
 (braket
@@ -4574,7 +4607,7 @@ c_func
 (paren
 id|self-&gt;io.dma2
 comma
-id|self-&gt;rx_buff.data
+id|self-&gt;rx_buff_dma
 comma
 id|self-&gt;rx_buff.truesize
 comma

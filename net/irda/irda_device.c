@@ -1754,8 +1754,7 @@ c_func
 r_int
 id|channel
 comma
-r_char
-op_star
+id|dma_addr_t
 id|buffer
 comma
 r_int
@@ -1801,11 +1800,7 @@ c_func
 (paren
 id|channel
 comma
-id|isa_virt_to_bus
-c_func
-(paren
 id|buffer
-)paren
 )paren
 suffix:semicolon
 id|set_dma_count
