@@ -22,8 +22,6 @@ DECL|macro|CRC32_REMAINDER
 mdefine_line|#define CRC32_REMAINDER CBF43926
 DECL|macro|CRC32_INITIAL
 mdefine_line|#define CRC32_INITIAL 0xffffffff
-DECL|macro|CRC32
-mdefine_line|#define CRC32(c,crc) (crc32tab[((size_t)(crc&gt;&gt;24) ^ (c)) &amp; 0xff] ^ (((crc) &lt;&lt; 8)))
 DECL|variable|crc32tab
 r_int
 r_int
@@ -677,8 +675,6 @@ id|crc
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|macro|crc32
-mdefine_line|#define crc32( crc, mem, len) calc_crc(mem, len, crc);
 multiline_comment|/* initialization routines. not used at the moment&n; * I will avoid these as long as possible !!&n; */
 DECL|function|open_atmsar
 r_int
