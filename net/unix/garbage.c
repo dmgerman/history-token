@@ -17,12 +17,13 @@ macro_line|#include &lt;net/af_unix.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/* Internal data structures and random procedures: */
 DECL|macro|GC_HEAD
-mdefine_line|#define GC_HEAD&t;&t;((unix_socket *)(-1))
+mdefine_line|#define GC_HEAD&t;&t;((struct sock *)(-1))
 DECL|macro|GC_ORPHAN
-mdefine_line|#define GC_ORPHAN&t;((unix_socket *)(-3))
+mdefine_line|#define GC_ORPHAN&t;((struct sock *)(-3))
 DECL|variable|gc_current
 r_static
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|gc_current
 op_assign
@@ -41,7 +42,8 @@ l_int|0
 suffix:semicolon
 DECL|function|unix_get_socket
 r_static
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|unix_get_socket
 c_func
@@ -52,7 +54,8 @@ op_star
 id|filp
 )paren
 (brace
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|u_sock
 op_assign
@@ -123,7 +126,8 @@ op_star
 id|fp
 )paren
 (brace
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|s
 op_assign
@@ -172,7 +176,8 @@ op_star
 id|fp
 )paren
 (brace
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|s
 op_assign
@@ -214,7 +219,8 @@ multiline_comment|/*&n; *&t;Garbage Collector Support Functions&n; */
 DECL|function|pop_stack
 r_static
 r_inline
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|pop_stack
 c_func
@@ -222,7 +228,8 @@ c_func
 r_void
 )paren
 (brace
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|p
 op_assign
@@ -264,7 +271,8 @@ r_void
 id|maybe_unmark_and_push
 c_func
 (paren
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|x
 )paren
@@ -323,7 +331,8 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|s
 suffix:semicolon
@@ -443,7 +452,8 @@ c_func
 )paren
 )paren
 (brace
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|x
 op_assign
@@ -452,7 +462,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|sk
 suffix:semicolon

@@ -23,12 +23,6 @@ op_star
 id|fp
 )paren
 suffix:semicolon
-DECL|typedef|unix_socket
-r_typedef
-r_struct
-id|sock
-id|unix_socket
-suffix:semicolon
 r_extern
 r_void
 id|unix_gc
@@ -60,7 +54,8 @@ suffix:semicolon
 DECL|function|first_unix_socket
 r_static
 r_inline
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|first_unix_socket
 c_func
@@ -125,7 +120,8 @@ suffix:semicolon
 DECL|function|next_unix_socket
 r_static
 r_inline
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|next_unix_socket
 c_func
@@ -134,7 +130,8 @@ r_int
 op_star
 id|i
 comma
-id|unix_socket
+r_struct
+id|sock
 op_star
 id|s
 )paren
