@@ -489,7 +489,7 @@ mdefine_line|#define HP_CCSR_LENGTH 0x21
 DECL|macro|HP_CCSR_TYPE
 mdefine_line|#define HP_CCSR_TYPE 0x2
 DECL|macro|HP_CCSR_GUID
-mdefine_line|#define HP_CCSR_GUID &bslash;&n;    ((efi_guid_t) { 0x69e9adf9, 0x924f, 0xab5f, { 0xf6, 0x4a, 0x24, 0xd2, 0x01, 0x37, 0x0e, 0xad }})
+mdefine_line|#define HP_CCSR_GUID EFI_GUID(0x69e9adf9, 0x924f, 0xab5f,&t;&t;&t;&bslash;&n;&t;&t;&t;      0xf6, 0x4a, 0x24, 0xd2, 0x01, 0x37, 0x0e, 0xad)
 r_extern
 id|acpi_status
 id|acpi_get_crs
@@ -1951,6 +1951,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Drivers should ioremap what they need, but we have to do&n;&t; * it here, too, so PCI config accesses work.&n;&t; */
 id|dev-&gt;mapped_csrs
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren

@@ -1208,10 +1208,16 @@ suffix:semicolon
 )brace
 id|ia64_iobase
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
 id|phys_iobase
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP

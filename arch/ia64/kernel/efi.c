@@ -997,8 +997,9 @@ id|mask
 id|printk
 c_func
 (paren
+l_string|&quot;%s: no need to install ITR for PAL code&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: no need to install ITR for PAL code&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
