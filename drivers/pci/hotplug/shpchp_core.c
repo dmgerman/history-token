@@ -807,6 +807,9 @@ r_struct
 id|slot
 op_star
 id|old_slot
+comma
+op_star
+id|next_slot
 suffix:semicolon
 id|old_slot
 op_assign
@@ -822,6 +825,10 @@ c_loop
 id|old_slot
 )paren
 (brace
+id|next_slot
+op_assign
+id|old_slot-&gt;next
+suffix:semicolon
 id|pci_hp_deregister
 c_func
 (paren
@@ -830,7 +837,7 @@ id|old_slot-&gt;hotplug_slot
 suffix:semicolon
 id|old_slot
 op_assign
-id|old_slot-&gt;next
+id|next_slot
 suffix:semicolon
 )brace
 )brace
