@@ -129,16 +129,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|el3_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|at1500_probe
 c_func
 (paren
@@ -951,14 +941,6 @@ id|isa_probes
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_EL3&t;&t;/* ISA, EISA, MCA 3c5x9 */
-(brace
-id|el3_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_HP100 &t;&t;/* ISA, EISA &amp; PCI */
 (brace
 id|hp100_probe
