@@ -3485,17 +3485,19 @@ r_struct
 id|us_data
 op_star
 id|ss
-op_assign
-id|usb_get_intfdata
-c_func
-(paren
-id|intf
-)paren
 suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ss
+op_assign
+id|usb_get_intfdata
+c_func
+(paren
+id|intf
 )paren
 suffix:semicolon
 id|usb_set_intfdata
@@ -3506,23 +3508,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* this is the odd case -- we disconnected but weren&squot;t using it */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ss
-)paren
-(brace
-id|US_DEBUGP
+multiline_comment|/* serious error -- we&squot;re attempting to disconnect an interface but&n;&t; * cannot locate the local data structure&n;&t; */
+id|BUG_ON
 c_func
 (paren
-l_string|&quot;-- device was not in use&bslash;n&quot;
+id|ss
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+multiline_comment|/* TODO: set devices offline -- need host lock for this */
 multiline_comment|/* lock device access -- no need to unlock, as we&squot;re going away */
 id|down
 c_func
@@ -3533,6 +3528,8 @@ id|ss-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* TODO: complete all pending commands with&n;&t; * cmd-&gt;result = DID_ERROR &lt;&lt; 16 */
+multiline_comment|/* TODO: somehow, wait for the device to&n;&t; * be &squot;idle&squot; (tasklet completion) */
 multiline_comment|/* remove the pointer to the data structure we were using */
 (paren
 r_struct
@@ -3671,6 +3668,16 @@ id|ss-&gt;extra
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* up the semaphore so auto-code-checkers won&squot;t complain about&n;&t; * the down/up imbalance */
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|ss-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* free the structure itself */
 id|kfree
 (paren
