@@ -1403,7 +1403,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tsk-&gt;user_vm_lock
+id|tsk-&gt;user_tid
 )paren
 multiline_comment|/*&n;&t;&t; * We dont check the error code - if userspace has&n;&t;&t; * not set up a proper pointer then tough luck.&n;&t;&t; */
 id|put_user
@@ -1411,7 +1411,7 @@ c_func
 (paren
 l_int|0UL
 comma
-id|tsk-&gt;user_vm_lock
+id|tsk-&gt;user_tid
 )paren
 suffix:semicolon
 )brace
