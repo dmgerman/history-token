@@ -2968,6 +2968,30 @@ id|old_custom_divisor
 op_ne
 id|port-&gt;custom_divisor
 )paren
+(brace
+multiline_comment|/* If they&squot;re setting up a custom divisor or speed,&n;&t;&t;&t; * instead of clearing it, then bitch about it. No&n;&t;&t;&t; * need to rate-limit; it&squot;s CAP_SYS_ADMIN only. */
+r_if
+c_cond
+(paren
+id|port-&gt;flags
+op_amp
+id|UPF_SPD_MASK
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;%s sets custom speed on %s%d. This is deprecated.&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|info-&gt;tty-&gt;driver.name
+comma
+id|info-&gt;port-&gt;line
+)paren
+suffix:semicolon
+)brace
 id|uart_change_speed
 c_func
 (paren
@@ -2976,6 +3000,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 id|retval
