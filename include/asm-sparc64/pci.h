@@ -526,21 +526,23 @@ op_star
 id|bus
 )paren
 suffix:semicolon
-r_extern
+DECL|function|pci_proc_domain
+r_static
+r_inline
 r_int
-id|pci_name_bus
+id|pci_proc_domain
 c_func
 (paren
-r_char
-op_star
-id|name
-comma
 r_struct
 id|pci_bus
 op_star
 id|bus
 )paren
+(brace
+r_return
+l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/* Platform support for /proc/bus/pci/X/Y mmap()s. */
 DECL|macro|HAVE_PCI_MMAP
 mdefine_line|#define HAVE_PCI_MMAP

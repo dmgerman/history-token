@@ -141,7 +141,7 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
-multiline_comment|/* for pdev-&gt;slot_name */
+multiline_comment|/* for pci_name(pdev) */
 DECL|member|rx_in
 r_int
 id|rx_in
@@ -203,25 +203,6 @@ id|dev
 )paren
 op_member_access_from_pointer
 id|priv
-suffix:semicolon
-)brace
-DECL|function|card_name
-r_static
-r_inline
-r_const
-r_char
-op_star
-id|card_name
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-r_return
-id|pdev-&gt;slot_name
 suffix:semicolon
 )brace
 DECL|function|get_status
@@ -300,7 +281,7 @@ id|KERN_CRIT
 l_string|&quot;wanXL %s: pci_map_single() returned memory&quot;
 l_string|&quot; at 0x%LX!&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -794,7 +775,7 @@ id|KERN_CRIT
 l_string|&quot;wanXL %s: received packet for&quot;
 l_string|&quot; nonexistent port&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|card-&gt;pdev
@@ -2714,7 +2695,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;wanXL %s: unable to allocate memory&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -2803,7 +2784,7 @@ id|KERN_DEBUG
 l_string|&quot;wanXL %s: pci_alloc_consistent() returned memory&quot;
 l_string|&quot; at 0x%LX&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -2931,7 +2912,7 @@ id|KERN_WARNING
 l_string|&quot;wanXL %s: timeout waiting for&quot;
 l_string|&quot; PUTS to complete&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -2976,7 +2957,7 @@ id|KERN_WARNING
 l_string|&quot;wanXL %s: PUTS test 0x%X&quot;
 l_string|&quot; failed&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3054,7 +3035,7 @@ id|KERN_WARNING
 l_string|&quot;wanXL %s: no enough on-board RAM&quot;
 l_string|&quot; (%u bytes detected, %u bytes required)&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3105,7 +3086,7 @@ id|KERN_WARNING
 l_string|&quot;wanXL %s: unable to Set Byte Swap&quot;
 l_string|&quot; Mode&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3339,7 +3320,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;wanXL %s: unable to Abort and Jump&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3422,7 +3403,7 @@ id|KERN_WARNING
 l_string|&quot;wanXL %s: timeout while initializing card&quot;
 l_string|&quot;firmware&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3452,7 +3433,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;wanXL %s: at 0x%X, %u KB of RAM at 0x%X, irq %u&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3494,7 +3475,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;wanXL %s: could not allocate IRQ%i.&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3572,7 +3553,7 @@ id|KERN_ERR
 l_string|&quot;wanXL %s: unable to allocate&quot;
 l_string|&quot; memory&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3678,7 +3659,7 @@ id|KERN_ERR
 l_string|&quot;wanXL %s: unable to register hdlc&quot;
 l_string|&quot; device&bslash;n&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev
@@ -3712,7 +3693,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;wanXL %s: port&quot;
 comma
-id|card_name
+id|pci_name
 c_func
 (paren
 id|pdev

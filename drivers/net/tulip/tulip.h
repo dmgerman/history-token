@@ -1944,7 +1944,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: tulip_stop_rxtx() failed&bslash;n&quot;
 comma
-id|tp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|tp-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 )brace

@@ -318,7 +318,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;PCI: moved device %s resource %d (%lx) to %x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|resno
 comma
@@ -333,7 +337,7 @@ id|PCI_REGION_FLAG_MASK
 suffix:semicolon
 )brace
 r_int
-id|__init
+id|__devinit
 DECL|function|pci_claim_resource
 id|pci_claim_resource
 c_func
