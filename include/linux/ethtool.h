@@ -567,39 +567,39 @@ multiline_comment|/* CMDs currently supported */
 DECL|macro|ETHTOOL_GSET
 mdefine_line|#define ETHTOOL_GSET&t;&t;0x00000001 /* Get settings. */
 DECL|macro|ETHTOOL_SSET
-mdefine_line|#define ETHTOOL_SSET&t;&t;0x00000002 /* Set settings, privileged. */
+mdefine_line|#define ETHTOOL_SSET&t;&t;0x00000002 /* Set settings. */
 DECL|macro|ETHTOOL_GDRVINFO
 mdefine_line|#define ETHTOOL_GDRVINFO&t;0x00000003 /* Get driver info. */
 DECL|macro|ETHTOOL_GREGS
-mdefine_line|#define ETHTOOL_GREGS&t;&t;0x00000004 /* Get NIC registers, privileged. */
+mdefine_line|#define ETHTOOL_GREGS&t;&t;0x00000004 /* Get NIC registers. */
 DECL|macro|ETHTOOL_GWOL
 mdefine_line|#define ETHTOOL_GWOL&t;&t;0x00000005 /* Get wake-on-lan options. */
 DECL|macro|ETHTOOL_SWOL
-mdefine_line|#define ETHTOOL_SWOL&t;&t;0x00000006 /* Set wake-on-lan options, priv. */
+mdefine_line|#define ETHTOOL_SWOL&t;&t;0x00000006 /* Set wake-on-lan options. */
 DECL|macro|ETHTOOL_GMSGLVL
 mdefine_line|#define ETHTOOL_GMSGLVL&t;&t;0x00000007 /* Get driver message level */
 DECL|macro|ETHTOOL_SMSGLVL
-mdefine_line|#define ETHTOOL_SMSGLVL&t;&t;0x00000008 /* Set driver msg level, priv. */
+mdefine_line|#define ETHTOOL_SMSGLVL&t;&t;0x00000008 /* Set driver msg level. */
 DECL|macro|ETHTOOL_NWAY_RST
-mdefine_line|#define ETHTOOL_NWAY_RST&t;0x00000009 /* Restart autonegotiation, priv. */
+mdefine_line|#define ETHTOOL_NWAY_RST&t;0x00000009 /* Restart autonegotiation. */
 DECL|macro|ETHTOOL_GLINK
 mdefine_line|#define ETHTOOL_GLINK&t;&t;0x0000000a /* Get link status (ethtool_value) */
 DECL|macro|ETHTOOL_GEEPROM
 mdefine_line|#define ETHTOOL_GEEPROM&t;&t;0x0000000b /* Get EEPROM data */
 DECL|macro|ETHTOOL_SEEPROM
-mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data, priv. */
+mdefine_line|#define ETHTOOL_SEEPROM&t;&t;0x0000000c /* Set EEPROM data. */
 DECL|macro|ETHTOOL_GCOALESCE
 mdefine_line|#define ETHTOOL_GCOALESCE&t;0x0000000e /* Get coalesce config */
 DECL|macro|ETHTOOL_SCOALESCE
-mdefine_line|#define ETHTOOL_SCOALESCE&t;0x0000000f /* Set coalesce config, priv. */
+mdefine_line|#define ETHTOOL_SCOALESCE&t;0x0000000f /* Set coalesce config. */
 DECL|macro|ETHTOOL_GRINGPARAM
 mdefine_line|#define ETHTOOL_GRINGPARAM&t;0x00000010 /* Get ring parameters */
 DECL|macro|ETHTOOL_SRINGPARAM
-mdefine_line|#define ETHTOOL_SRINGPARAM&t;0x00000011 /* Set ring parameters, priv. */
+mdefine_line|#define ETHTOOL_SRINGPARAM&t;0x00000011 /* Set ring parameters. */
 DECL|macro|ETHTOOL_GPAUSEPARAM
 mdefine_line|#define ETHTOOL_GPAUSEPARAM&t;0x00000012 /* Get pause parameters */
 DECL|macro|ETHTOOL_SPAUSEPARAM
-mdefine_line|#define ETHTOOL_SPAUSEPARAM&t;0x00000013 /* Set pause parameters, priv. */
+mdefine_line|#define ETHTOOL_SPAUSEPARAM&t;0x00000013 /* Set pause parameters. */
 DECL|macro|ETHTOOL_GRXCSUM
 mdefine_line|#define ETHTOOL_GRXCSUM&t;&t;0x00000014 /* Get RX hw csum enable (ethtool_value) */
 DECL|macro|ETHTOOL_SRXCSUM
@@ -611,9 +611,9 @@ mdefine_line|#define ETHTOOL_STXCSUM&t;&t;0x00000017 /* Set TX hw csum enable (e
 DECL|macro|ETHTOOL_GSG
 mdefine_line|#define ETHTOOL_GSG&t;&t;0x00000018 /* Get scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value) */
 DECL|macro|ETHTOOL_SSG
-mdefine_line|#define ETHTOOL_SSG&t;&t;0x00000019 /* Set scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value), priv. */
+mdefine_line|#define ETHTOOL_SSG&t;&t;0x00000019 /* Set scatter-gather enable&n;&t;&t;&t;&t;&t;    * (ethtool_value). */
 DECL|macro|ETHTOOL_TEST
-mdefine_line|#define ETHTOOL_TEST&t;&t;0x0000001a /* execute NIC self-test, priv. */
+mdefine_line|#define ETHTOOL_TEST&t;&t;0x0000001a /* execute NIC self-test. */
 DECL|macro|ETHTOOL_GSTRINGS
 mdefine_line|#define ETHTOOL_GSTRINGS&t;0x0000001b /* get specified string set */
 DECL|macro|ETHTOOL_PHYS_ID
@@ -650,6 +650,8 @@ DECL|macro|SUPPORTED_FIBRE
 mdefine_line|#define SUPPORTED_FIBRE&t;&t;&t;(1 &lt;&lt; 10)
 DECL|macro|SUPPORTED_BNC
 mdefine_line|#define SUPPORTED_BNC&t;&t;&t;(1 &lt;&lt; 11)
+DECL|macro|SUPPORTED_10000baseT_Full
+mdefine_line|#define SUPPORTED_10000baseT_Full&t;(1 &lt;&lt; 12)
 multiline_comment|/* Indicates what features are advertised by the interface. */
 DECL|macro|ADVERTISED_10baseT_Half
 mdefine_line|#define ADVERTISED_10baseT_Half&t;&t;(1 &lt;&lt; 0)
@@ -675,14 +677,18 @@ DECL|macro|ADVERTISED_FIBRE
 mdefine_line|#define ADVERTISED_FIBRE&t;&t;(1 &lt;&lt; 10)
 DECL|macro|ADVERTISED_BNC
 mdefine_line|#define ADVERTISED_BNC&t;&t;&t;(1 &lt;&lt; 11)
+DECL|macro|ADVERTISED_10000baseT_Full
+mdefine_line|#define ADVERTISED_10000baseT_Full&t;(1 &lt;&lt; 12)
 multiline_comment|/* The following are all involved in forcing a particular link&n; * mode for the device for setting things.  When getting the&n; * devices settings, these indicate the current mode and whether&n; * it was foced up into this mode or autonegotiated.&n; */
-multiline_comment|/* The forced speed, 10Mb, 100Mb, gigabit. */
+multiline_comment|/* The forced speed, 10Mb, 100Mb, gigabit, 10GbE. */
 DECL|macro|SPEED_10
 mdefine_line|#define SPEED_10&t;&t;10
 DECL|macro|SPEED_100
 mdefine_line|#define SPEED_100&t;&t;100
 DECL|macro|SPEED_1000
 mdefine_line|#define SPEED_1000&t;&t;1000
+DECL|macro|SPEED_10000
+mdefine_line|#define SPEED_10000&t;&t;10000
 multiline_comment|/* Duplex, half or full. */
 DECL|macro|DUPLEX_HALF
 mdefine_line|#define DUPLEX_HALF&t;&t;0x00

@@ -93,14 +93,9 @@ l_int|1
 )braket
 op_assign
 (brace
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
+dot
+id|lock
+op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 )brace

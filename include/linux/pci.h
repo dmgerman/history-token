@@ -873,23 +873,6 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|pci_bus_b
 mdefine_line|#define pci_bus_b(n) list_entry(n, struct pci_bus, node)
-r_extern
-r_struct
-id|list_head
-id|pci_root_buses
-suffix:semicolon
-multiline_comment|/* list of all known PCI buses */
-r_extern
-r_struct
-id|list_head
-id|pci_devices
-suffix:semicolon
-multiline_comment|/* list of all devices */
-r_extern
-r_struct
-id|bus_type
-id|pci_bus_type
-suffix:semicolon
 multiline_comment|/*&n; * Error values that may be returned by PCI functions.&n; */
 DECL|macro|PCIBIOS_SUCCESSFUL
 mdefine_line|#define PCIBIOS_SUCCESSFUL&t;&t;0x00
@@ -1146,30 +1129,33 @@ DECL|macro|to_pci_driver
 mdefine_line|#define&t;to_pci_driver(drv) container_of(drv,struct pci_driver, driver)
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
-DECL|function|pci_present
-r_static
-r_inline
+r_extern
+r_struct
+id|bus_type
+id|pci_bus_type
+suffix:semicolon
+multiline_comment|/* Do NOT directly access these two variables, unless you are arch specific pci&n; * code, or pci core code. */
+r_extern
+r_struct
+id|list_head
+id|pci_root_buses
+suffix:semicolon
+multiline_comment|/* list of all known PCI buses */
+r_extern
+r_struct
+id|list_head
+id|pci_devices
+suffix:semicolon
+multiline_comment|/* list of all devices */
+DECL|macro|pci_for_each_bus
+mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_int
 id|pci_present
 c_func
 (paren
 r_void
 )paren
-(brace
-r_return
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|pci_devices
-)paren
 suffix:semicolon
-)brace
-DECL|macro|pci_for_each_dev_reverse
-mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
-DECL|macro|pci_for_each_bus
-mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_void
 id|pcibios_fixup_bus
 c_func
@@ -1432,6 +1418,26 @@ r_struct
 id|pci_dev
 op_star
 id|pci_find_device
+(paren
+r_int
+r_int
+id|vendor
+comma
+r_int
+r_int
+id|device
+comma
+r_const
+r_struct
+id|pci_dev
+op_star
+id|from
+)paren
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pci_find_device_reverse
 (paren
 r_int
 r_int

@@ -4203,12 +4203,14 @@ op_star
 id|time_interpolator
 suffix:semicolon
 DECL|variable|time_interpolator_list
+r_static
 r_struct
 id|time_interpolator
 op_star
 id|time_interpolator_list
 suffix:semicolon
 DECL|variable|time_interpolator_lock
+r_static
 id|spinlock_t
 id|time_interpolator_lock
 op_assign

@@ -663,6 +663,14 @@ comma
 id|list
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hidinput-&gt;report
+)paren
+r_continue
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -672,7 +680,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hidinput-&gt;maxfield
+id|hidinput-&gt;report-&gt;maxfield
 suffix:semicolon
 id|i
 op_increment
@@ -680,7 +688,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|hidinput-&gt;fields
+id|hidinput-&gt;report-&gt;field
 (braket
 id|i
 )braket
@@ -3262,6 +3270,8 @@ r_int
 id|i
 comma
 id|j
+comma
+id|k
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -3320,11 +3330,26 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|k
+op_assign
+id|HID_INPUT_REPORT
+suffix:semicolon
+id|k
+op_le
+id|HID_OUTPUT_REPORT
+suffix:semicolon
+id|k
+op_increment
+)paren
+(brace
 id|report_enum
 op_assign
 id|hid-&gt;report_enum
 op_plus
-id|HID_INPUT_REPORT
+id|k
 suffix:semicolon
 id|list
 op_assign
@@ -3527,14 +3552,10 @@ op_amp
 id|HID_QUIRK_MULTI_INPUT
 )paren
 (brace
-multiline_comment|/* This will leave hidinput NULL, so that it&n;&t;&t;&t; * allocates another one if we have more inputs on&n;&t;&t;&t; * the same interface. Some devices (e.g. Happ&squot;s&n;&t;&t;&t; * UGCI) cram a lot of unrelated inputs into the&n;&t;&t;&t; * same interface. */
-id|hidinput-&gt;fields
+multiline_comment|/* This will leave hidinput NULL, so that it&n;&t;&t;&t;&t; * allocates another one if we have more inputs on&n;&t;&t;&t;&t; * the same interface. Some devices (e.g. Happ&squot;s&n;&t;&t;&t;&t; * UGCI) cram a lot of unrelated inputs into the&n;&t;&t;&t;&t; * same interface. */
+id|hidinput-&gt;report
 op_assign
-id|report-&gt;field
-suffix:semicolon
-id|hidinput-&gt;maxfield
-op_assign
-id|report-&gt;maxfield
+id|report
 suffix:semicolon
 id|input_register_device
 c_func
@@ -3552,6 +3573,7 @@ id|list
 op_assign
 id|list-&gt;next
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* This only gets called when we are a single-input (most of the&n;&t; * time). IOW, not a HID_QUIRK_MULTI_INPUT. The hid_ff_init() is&n;&t; * only useful in this case, and not for multi-input quirks. */
 r_if

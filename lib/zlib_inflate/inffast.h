@@ -3,9 +3,6 @@ multiline_comment|/* WARNING: this file should *not* be used by applications. It
 r_extern
 r_int
 id|zlib_inflate_fast
-id|OF
-c_func
-(paren
 (paren
 id|uInt
 comma
@@ -21,7 +18,6 @@ id|inflate_blocks_statef
 op_star
 comma
 id|z_streamp
-)paren
 )paren
 suffix:semicolon
 eof

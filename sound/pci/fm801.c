@@ -4877,6 +4877,19 @@ id|CODEC_CTRL
 )paren
 )paren
 suffix:semicolon
+id|inw
+c_func
+(paren
+id|FM801_REG
+c_func
+(paren
+id|chip
+comma
+id|CODEC_CTRL
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* flush posting data */
 id|udelay
 c_func
 (paren

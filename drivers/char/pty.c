@@ -1397,17 +1397,14 @@ id|pty_driver.driver_name
 op_assign
 l_string|&quot;pty_master&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|pty_driver.name
-op_assign
-l_string|&quot;pty/m&quot;
-suffix:semicolon
-macro_line|#else
 id|pty_driver.name
 op_assign
 l_string|&quot;pty&quot;
 suffix:semicolon
-macro_line|#endif
+id|pty_driver.devfs_name
+op_assign
+l_string|&quot;pty/m&quot;
+suffix:semicolon
 id|pty_driver.major
 op_assign
 id|PTY_MASTER_MAJOR
@@ -1528,17 +1525,14 @@ id|pty_slave_driver.proc_entry
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|pty_slave_driver.name
-op_assign
-l_string|&quot;pty/s&quot;
-suffix:semicolon
-macro_line|#else
 id|pty_slave_driver.name
 op_assign
 l_string|&quot;ttyp&quot;
 suffix:semicolon
-macro_line|#endif
+id|pty_slave_driver.devfs_name
+op_assign
+l_string|&quot;pty/s&quot;
+suffix:semicolon
 id|pty_slave_driver.subtype
 op_assign
 id|PTY_TYPE_SLAVE

@@ -773,26 +773,8 @@ op_star
 id|pt
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|force_successful_syscall_return
-id|force_successful_syscall_return
-(paren
-r_void
-)paren
-(brace
-id|ia64_task_regs
-c_func
-(paren
-id|current
-)paren
-op_member_access_from_pointer
-id|r8
-op_assign
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|force_successful_syscall_return
+mdefine_line|#define force_successful_syscall_return()&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_task_regs(current)-&gt;r8 = 0;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* !__KERNEL__ */
 multiline_comment|/* pt_all_user_regs is used for PTRACE_GETREGS PTRACE_SETREGS */
 DECL|struct|pt_all_user_regs

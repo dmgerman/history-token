@@ -4087,9 +4087,13 @@ l_int|1
 (brace
 id|pdev2
 op_assign
-id|pci_peek_next_dev
+id|pci_find_device
 c_func
 (paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
 id|pdev
 )paren
 suffix:semicolon

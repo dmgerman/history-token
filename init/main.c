@@ -1062,14 +1062,19 @@ comma
 id|SMP_CACHE_BYTES
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MODULES
 r_if
 c_cond
 (paren
-op_logical_neg
 id|size
+OL
+id|PERCPU_ENOUGH_ROOM
 )paren
-r_return
+id|size
+op_assign
+id|PERCPU_ENOUGH_ROOM
 suffix:semicolon
+macro_line|#endif
 id|ptr
 op_assign
 id|alloc_bootmem
@@ -1115,7 +1120,9 @@ id|ptr
 comma
 id|__per_cpu_start
 comma
-id|size
+id|__per_cpu_end
+op_minus
+id|__per_cpu_start
 )paren
 suffix:semicolon
 )brace
@@ -1302,6 +1309,11 @@ c_func
 (paren
 op_amp
 id|command_line
+)paren
+suffix:semicolon
+id|setup_per_zone_pages_min
+c_func
+(paren
 )paren
 suffix:semicolon
 id|setup_per_cpu_areas

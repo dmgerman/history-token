@@ -485,6 +485,66 @@ suffix:semicolon
 multiline_comment|/**&n; * for_each_zone - helper macro to iterate over all memory zones&n; * @zone - pointer to struct zone variable&n; *&n; * The user only needs to declare the zone variable, for_each_zone&n; * fills it in. This basically means for_each_zone() is an&n; * easier to read version of this piece of code:&n; *&n; * for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;node_next)&n; * &t;for (i = 0; i &lt; MAX_NR_ZONES; ++i) {&n; * &t;&t;struct zone * z = pgdat-&gt;node_zones + i;&n; * &t;&t;...&n; * &t;}&n; * }&n; */
 DECL|macro|for_each_zone
 mdefine_line|#define for_each_zone(zone) &bslash;&n;&t;for (zone = pgdat_list-&gt;node_zones; zone; zone = next_zone(zone))
+multiline_comment|/**&n; * is_highmem - helper function to quickly check if a struct zone is a &n; *              highmem zone or not.  This is an attempt to keep references&n; *              to ZONE_{DMA/NORMAL/HIGHMEM/etc} in general code to a minimum.&n; * @zone - pointer to struct zone variable&n; */
+DECL|function|is_highmem
+r_static
+r_inline
+r_int
+id|is_highmem
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|zone
+)paren
+(brace
+r_return
+(paren
+id|zone
+op_minus
+id|zone-&gt;zone_pgdat-&gt;node_zones
+op_eq
+id|ZONE_HIGHMEM
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* These two functions are used to setup the per zone pages min values */
+r_struct
+id|ctl_table
+suffix:semicolon
+r_struct
+id|file
+suffix:semicolon
+r_int
+id|min_free_kbytes_sysctl_handler
+c_func
+(paren
+r_struct
+id|ctl_table
+op_star
+comma
+r_int
+comma
+r_struct
+id|file
+op_star
+comma
+r_void
+op_star
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_per_zone_pages_min
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|MAX_NR_MEMBLKS
 mdefine_line|#define MAX_NR_MEMBLKS&t;BITS_PER_LONG /* Max number of Memory Blocks */
@@ -492,7 +552,7 @@ macro_line|#else /* !CONFIG_NUMA */
 DECL|macro|MAX_NR_MEMBLKS
 mdefine_line|#define MAX_NR_MEMBLKS&t;1
 macro_line|#endif /* CONFIG_NUMA */
-macro_line|#include &lt;asm/topology.h&gt;
+macro_line|#include &lt;linux/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
 mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(smp_processor_id()))

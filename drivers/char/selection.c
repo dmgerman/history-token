@@ -388,11 +388,6 @@ id|currcons
 op_assign
 id|fg_console
 suffix:semicolon
-id|unblank_screen
-c_func
-(paren
-)paren
-suffix:semicolon
 id|poke_blanked_console
 c_func
 (paren

@@ -4260,7 +4260,7 @@ id|snd_pcm_action_pause
 comma
 id|substream
 comma
-l_int|0
+id|push
 )paren
 suffix:semicolon
 )brace

@@ -79,9 +79,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -245,25 +243,6 @@ id|pcDriver_name
 op_assign
 l_string|&quot;ip2&quot;
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
-DECL|variable|pcTty
-r_static
-r_char
-op_star
-id|pcTty
-op_assign
-l_string|&quot;tts/F%d&quot;
-suffix:semicolon
-macro_line|#else
-DECL|variable|pcTty
-r_static
-r_char
-op_star
-id|pcTty
-op_assign
-l_string|&quot;ttyF&quot;
-suffix:semicolon
-macro_line|#endif
 DECL|variable|pcIpl
 r_static
 r_char
@@ -1624,15 +1603,12 @@ r_int
 id|firmsize
 )paren
 (brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 r_int
+id|i
+comma
 id|j
 comma
 id|box
-suffix:semicolon
-macro_line|#endif
-r_int
-id|i
 suffix:semicolon
 r_int
 id|err
@@ -2626,7 +2602,11 @@ id|THIS_MODULE
 suffix:semicolon
 id|ip2_tty_driver.name
 op_assign
-id|pcTty
+l_string|&quot;ttyF&quot;
+suffix:semicolon
+id|ip2_tty_driver.devfs_name
+op_assign
+l_string|&quot;tts/F&quot;
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,1,0)
 id|ip2_tty_driver.driver_name
@@ -2674,19 +2654,12 @@ id|HUPCL
 op_or
 id|CLOCAL
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 id|ip2_tty_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
-macro_line|#else
-id|ip2_tty_driver.flags
-op_assign
-id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-macro_line|#endif
 id|ip2_tty_driver.refcount
 op_assign
 op_amp
@@ -2906,7 +2879,6 @@ id|i
 r_continue
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_DEVFS_FS
 r_if
 c_cond
 (paren
@@ -3046,7 +3018,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

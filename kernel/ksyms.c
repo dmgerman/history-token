@@ -228,18 +228,18 @@ id|kfree
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|kmalloc_percpu
+DECL|variable|__alloc_percpu
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|kmalloc_percpu
+id|__alloc_percpu
 )paren
 suffix:semicolon
-DECL|variable|kfree_percpu
+DECL|variable|free_percpu
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|kfree_percpu
+id|free_percpu
 )paren
 suffix:semicolon
 DECL|variable|percpu_counter_mod
