@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;ICP Wafer 5823 Single Board Computer WDT driver for Linux 2.4.x&n; *      http://www.icpamerica.com/wafer_5823.php&n; *      May also work on other similar models&n; *&n; *&t;(c) Copyright 2002 Justin Cormack &lt;justin@street-vision.com&gt;&n; *&n; *      Release 0.02&n; *&n; *&t;Based on advantechwdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; */
+multiline_comment|/*&n; *&t;ICP Wafer 5823 Single Board Computer WDT driver&n; *      http://www.icpamerica.com/wafer_5823.php&n; *      May also work on other similar models&n; *&n; *&t;(c) Copyright 2002 Justin Cormack &lt;justin@street-vision.com&gt;&n; *&n; *      Release 0.02&n; *&n; *&t;Based on advantechwdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -11,6 +11,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|WATCHDOG_NAME
+mdefine_line|#define WATCHDOG_NAME &quot;Wafer 5823 WDT&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX WATCHDOG_NAME &quot;: &quot;
+DECL|macro|WD_TIMO
+mdefine_line|#define WD_TIMO 60&t;&t;&t;/* 60 sec default timeout */
 DECL|variable|wafwdt_is_open
 r_static
 r_int
@@ -34,8 +40,6 @@ DECL|macro|WDT_START
 mdefine_line|#define WDT_START 0x443
 DECL|macro|WDT_STOP
 mdefine_line|#define WDT_STOP 0x843
-DECL|macro|WD_TIMO
-mdefine_line|#define WD_TIMO 60&t;&t;/* 1 minute */
 DECL|variable|wd_margin
 r_static
 r_int
@@ -328,6 +332,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;Wafer 5823 WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_int
@@ -580,6 +585,7 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
+id|PFX
 l_string|&quot;WDT device closed unexpectedly.  WDT will not stop!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -646,6 +652,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|llseek
+op_assign
+id|no_llseek
+comma
+dot
 id|write
 op_assign
 id|wafwdt_write
@@ -689,9 +700,10 @@ id|fops
 op_assign
 op_amp
 id|wafwdt_fops
+comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off. &n; */
+multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
 DECL|variable|wafwdt_notifier
 r_static
 r_struct
@@ -713,6 +725,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|wafwdt_init
@@ -729,6 +742,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
+id|PFX
 l_string|&quot;WDT driver for Wafer 5823 single board computer initialising.&bslash;n&quot;
 )paren
 suffix:semicolon
