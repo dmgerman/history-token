@@ -1025,6 +1025,8 @@ comma
 id|u32
 comma
 id|u8
+comma
+id|u8
 )paren
 suffix:semicolon
 r_void
@@ -1903,6 +1905,34 @@ comma
 id|bdp-&gt;device-&gt;name
 )paren
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;&t;
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: Last command (%x/%x) &quot;
+l_string|&quot;timeout&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|bdp-&gt;last_cmd
+comma
+id|bdp-&gt;last_sub_cmd
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: Current simple command (%x) &quot;
+l_string|&quot;can&squot;t be executed&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|scb_cmd_low
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
 r_return
 l_bool|false
 suffix:semicolon
@@ -1915,6 +1945,16 @@ comma
 id|scb_cmd_low
 )paren
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;
+id|bdp-&gt;last_cmd
+op_assign
+id|scb_cmd_low
+suffix:semicolon
+id|bdp-&gt;last_sub_cmd
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif&t;
 r_return
 l_bool|true
 suffix:semicolon
@@ -1982,6 +2022,9 @@ id|phys_addr
 comma
 id|u8
 id|cmd
+comma
+id|u8
+id|sub_cmd
 )paren
 (brace
 r_if
@@ -1995,6 +2038,36 @@ id|bdp
 )paren
 )paren
 (brace
+macro_line|#ifdef E100_CU_DEBUG&t;&t;
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: Last command (%x/%x) &quot;
+l_string|&quot;timeout&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|bdp-&gt;last_cmd
+comma
+id|bdp-&gt;last_sub_cmd
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: Current complex command &quot;
+l_string|&quot;(%x/%x) can&squot;t be executed&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|cmd
+comma
+id|sub_cmd
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
 r_return
 l_bool|false
 suffix:semicolon
@@ -2009,6 +2082,16 @@ comma
 id|cmd
 )paren
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;
+id|bdp-&gt;last_cmd
+op_assign
+id|cmd
+suffix:semicolon
+id|bdp-&gt;last_sub_cmd
+op_assign
+id|sub_cmd
+suffix:semicolon
+macro_line|#endif&t;
 r_return
 l_bool|true
 suffix:semicolon
@@ -2131,12 +2214,12 @@ r_return
 l_bool|false
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e100_dis_intr - disable interrupts&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine disables interrupts at the hardware, by setting&n; * the M (mask) bit in the adapter&squot;s CSR SCB command word.&n; */
+multiline_comment|/**&n; * e100_disable_clear_intr - disable and clear/ack interrupts&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine disables interrupts at the hardware, by setting&n; * the M (mask) bit in the adapter&squot;s CSR SCB command word.&n; * It also clear/ack interrupts.&n; */
 r_static
 r_inline
 r_void
-DECL|function|e100_dis_intr
-id|e100_dis_intr
+DECL|function|e100_disable_clear_intr
+id|e100_disable_clear_intr
 c_func
 (paren
 r_struct
@@ -2145,6 +2228,9 @@ op_star
 id|bdp
 )paren
 (brace
+id|u16
+id|intr_status
+suffix:semicolon
 multiline_comment|/* Disable interrupts on our PCI board by setting the mask bit */
 id|writeb
 c_func
@@ -2155,16 +2241,32 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_cmd_hi
 )paren
 suffix:semicolon
+id|intr_status
+op_assign
 id|readw
 c_func
 (paren
 op_amp
-(paren
 id|bdp-&gt;scb-&gt;scb_status
 )paren
+suffix:semicolon
+multiline_comment|/* ack and clear intrs */
+id|writew
+c_func
+(paren
+id|intr_status
+comma
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
-multiline_comment|/* flushes last write, read-safe */
+id|readw
+c_func
+(paren
+op_amp
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_set_intr_mask - set interrupts&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine sets interrupts at the hardware, by resetting&n; * the M (mask) bit in the adapter&squot;s CSR SCB command word&n; */
 r_static
@@ -3981,6 +4083,8 @@ comma
 l_int|0
 comma
 id|SCB_CUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 (brace
@@ -4005,6 +4109,8 @@ comma
 l_int|0
 comma
 id|SCB_RUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 (brace
@@ -4977,7 +5083,8 @@ r_return
 l_bool|false
 suffix:semicolon
 )brace
-id|e100_dis_intr
+multiline_comment|/* Interrupts are enabled after device reset */
+id|e100_disable_clear_intr
 c_func
 (paren
 id|bdp
@@ -5119,6 +5226,8 @@ comma
 l_int|0
 comma
 id|SCB_CUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 r_return
@@ -5136,6 +5245,8 @@ comma
 l_int|0
 comma
 id|SCB_RUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
 r_return
@@ -6099,6 +6210,28 @@ id|bdp
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG
+r_if
+c_cond
+(paren
+id|e100_cu_unknown_state
+c_func
+(paren
+id|bdp
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: CU unknown state in e100_watchdog&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif&t;
 r_if
 c_cond
 (paren
@@ -6324,6 +6457,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
 id|netif_stop_queue
 c_func
 (paren
@@ -6804,28 +6946,11 @@ l_int|0xffff
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* disable intr before we ack &amp; after identifying the intr as ours */
-id|e100_dis_intr
+multiline_comment|/* disable and ack intr */
+id|e100_disable_clear_intr
 c_func
 (paren
 id|bdp
-)paren
-suffix:semicolon
-id|writew
-c_func
-(paren
-id|intr_status
-comma
-op_amp
-id|bdp-&gt;scb-&gt;scb_status
-)paren
-suffix:semicolon
-multiline_comment|/* ack intrs */
-id|readw
-c_func
-(paren
-op_amp
-id|bdp-&gt;scb-&gt;scb_status
 )paren
 suffix:semicolon
 multiline_comment|/* the device is closed, don&squot;t continue or else bad things may happen. */
@@ -8285,7 +8410,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Changed for 82558 enhancement */
 multiline_comment|/**&n; * e100_start_cu - start the adapter&squot;s CU&n; * @bdp: atapter&squot;s private data struct&n; * @tcb: TCB to be transmitted&n; *&n; * This routine issues a CU Start or CU Resume command to the 82558/9.&n; * This routine was added because the prepare_ext_xmit_buff takes advantage&n; * of the 82558/9&squot;s Dynamic TBD chaining feature and has to start the CU as&n; * soon as the first TBD is ready. &n; *&n; * e100_start_cu must be called while holding the tx_lock ! &n; */
-r_void
+id|u8
 DECL|function|e100_start_cu
 id|e100_start_cu
 c_func
@@ -8303,6 +8428,11 @@ id|tcb
 r_int
 r_int
 id|lock_flag
+suffix:semicolon
+id|u8
+id|ret
+op_assign
+l_bool|true
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -8451,6 +8581,8 @@ id|tcb-&gt;tcb_phys
 )paren
 comma
 id|SCB_CUC_START
+comma
+id|CB_TRANSMIT
 )paren
 )paren
 (brace
@@ -8478,6 +8610,10 @@ comma
 id|SCB_CUC_START
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_bool|false
+suffix:semicolon
 )brace
 id|bdp-&gt;next_cu_cmd
 op_assign
@@ -8501,6 +8637,9 @@ id|bdp-&gt;bd_lock
 comma
 id|lock_flag
 )paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* ====================================================================== */
@@ -8595,8 +8734,9 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* disable interrupts since the&squot;re now enabled */
-id|e100_dis_intr
+multiline_comment|/* disable interrupts since they are enabled */
+multiline_comment|/* after device reset during selftest        */
+id|e100_disable_clear_intr
 c_func
 (paren
 id|bdp
@@ -8918,6 +9058,8 @@ comma
 id|rx_struct-&gt;dma_addr
 comma
 id|SCB_RUC_START
+comma
+l_int|0
 )paren
 )paren
 (brace
@@ -9128,6 +9270,8 @@ comma
 id|bdp-&gt;stat_cnt_phys
 comma
 id|SCB_CUC_DUMP_ADDR
+comma
+l_int|0
 )paren
 )paren
 r_return
@@ -9552,6 +9696,9 @@ id|rc
 op_assign
 l_bool|true
 suffix:semicolon
+id|u8
+id|sub_cmd
+suffix:semicolon
 id|ntcb_hdr
 op_assign
 (paren
@@ -9561,6 +9708,14 @@ op_star
 id|command-&gt;non_tx_cmd
 suffix:semicolon
 multiline_comment|/* get hdr of non tcb cmd */
+id|sub_cmd
+op_assign
+id|cpu_to_le16
+c_func
+(paren
+id|ntcb_hdr-&gt;cb_cmd
+)paren
+suffix:semicolon
 multiline_comment|/* Set the Command Block to be the last command block */
 id|ntcb_hdr-&gt;cb_cmd
 op_or_assign
@@ -9717,6 +9872,8 @@ comma
 id|command-&gt;dma_addr
 comma
 id|SCB_CUC_START
+comma
+id|sub_cmd
 )paren
 )paren
 (brace
@@ -9823,6 +9980,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef E100_CU_DEBUG&t;&t;&t;
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: non-TX command (%x) &quot;
+l_string|&quot;timeout&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|sub_cmd
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;
 id|rc
 op_assign
 l_bool|false
@@ -9963,12 +10134,22 @@ l_int|20
 suffix:semicolon
 )brace
 multiline_comment|/* Mask off our interrupt line -- its unmasked after reset */
-id|e100_dis_intr
+id|e100_disable_clear_intr
 c_func
 (paren
 id|bdp
 )paren
 suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;
+id|bdp-&gt;last_cmd
+op_assign
+l_int|0
+suffix:semicolon
+id|bdp-&gt;last_sub_cmd
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif&t;
 )brace
 multiline_comment|/**&n; * e100_load_microcode - Download microsocde to controller.&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This routine downloads microcode on to the controller. This&n; * microcode is available for the 82558/9, 82550. Currently the&n; * microcode handles interrupt bundling and TCO workaround.&n; *&n; * Returns:&n; *      true: if successfull&n; *      false: otherwise&n; */
 r_static
@@ -11215,32 +11396,17 @@ id|CB_STATUS_COMPLETE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Procedure:   e100_hw_reset_recover&n; *&n; * Description: This routine will recover the hw after reset.&n; *&n; * Arguments:&n; *      bdp - Ptr to this card&squot;s e100_bdconfig structure&n; *        reset_cmd - s/w reset or selective reset. &n; *&n; * Returns:&n; *        true upon success&n; *        false upon failure&n; */
+multiline_comment|/* &n; * Procedure:   e100_configure_device&n; *&n; * Description: This routine will configure device&n; *&n; * Arguments:&n; *      bdp - Ptr to this card&squot;s e100_bdconfig structure&n; *&n; * Returns:&n; *        true upon success&n; *        false upon failure&n; */
 r_int
 r_char
-DECL|function|e100_hw_reset_recover
-id|e100_hw_reset_recover
+DECL|function|e100_configure_device
+id|e100_configure_device
 c_func
 (paren
 r_struct
 id|e100_private
 op_star
 id|bdp
-comma
-id|u32
-id|reset_cmd
-)paren
-(brace
-id|bdp-&gt;last_tcb
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reset_cmd
-op_eq
-id|PORT_SOFTWARE_RESET
 )paren
 (brace
 multiline_comment|/*load CU &amp; RU base */
@@ -11256,13 +11422,13 @@ comma
 l_int|0
 comma
 id|SCB_CUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
-(brace
 r_return
 l_bool|false
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11272,12 +11438,10 @@ c_func
 id|bdp
 )paren
 )paren
-(brace
 id|bdp-&gt;flags
 op_or_assign
 id|DF_UCODE_LOADED
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11290,13 +11454,13 @@ comma
 l_int|0
 comma
 id|SCB_RUC_LOAD_BASE
+comma
+l_int|0
 )paren
 )paren
-(brace
 r_return
 l_bool|false
 suffix:semicolon
-)brace
 multiline_comment|/* Issue the load dump counters address command */
 r_if
 c_cond
@@ -11310,13 +11474,13 @@ comma
 id|bdp-&gt;stat_cnt_phys
 comma
 id|SCB_CUC_DUMP_ADDR
+comma
+l_int|0
 )paren
 )paren
-(brace
 r_return
 l_bool|false
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11334,7 +11498,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;e100: e100_hw_reset_recover: &quot;
+l_string|&quot;e100: e100_configure_device: &quot;
 l_string|&quot;setup iaaddr failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11348,8 +11512,9 @@ c_func
 id|bdp-&gt;device
 )paren
 suffix:semicolon
-multiline_comment|/* Change for 82558 enhancement */
-multiline_comment|/* If 82558/9 and if the user has enabled flow control, set up * the&n;&t;&t; * Flow Control Reg. in the CSR */
+multiline_comment|/* Change for 82558 enhancement                                */
+multiline_comment|/* If 82558/9 and if the user has enabled flow control, set up */
+multiline_comment|/* flow Control Reg. in the CSR                                */
 r_if
 c_cond
 (paren
@@ -11384,7 +11549,6 @@ op_amp
 id|bdp-&gt;scb-&gt;scb_ext.d101_scb.scb_fc_xon_xoff
 )paren
 suffix:semicolon
-)brace
 )brace
 id|e100_force_config
 c_func
@@ -11440,12 +11604,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|e100_hw_reset_recover
+id|e100_configure_device
 c_func
 (paren
 id|bdp
-comma
-id|cmd
 )paren
 )paren
 id|printk
@@ -15118,6 +15280,13 @@ id|restart
 op_assign
 l_bool|true
 suffix:semicolon
+id|cb_header_t
+op_star
+id|non_tx_cmd
+suffix:semicolon
+id|u8
+id|sub_cmd
+suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
@@ -15253,6 +15422,52 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|non_tx_cmd
+op_assign
+(paren
+id|cb_header_t
+op_star
+)paren
+id|active_command-&gt;non_tx_cmd
+suffix:semicolon
+id|sub_cmd
+op_assign
+id|CB_CMD_MASK
+op_amp
+id|le16_to_cpu
+c_func
+(paren
+id|non_tx_cmd-&gt;cb_cmd
+)paren
+suffix:semicolon
+macro_line|#ifdef E100_CU_DEBUG&t;&t;&t;
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|non_tx_cmd-&gt;cb_status
+op_amp
+id|__constant_cpu_to_le16
+c_func
+(paren
+id|CB_STATUS_COMPLETE
+)paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;e100: %s: Queued &quot;
+l_string|&quot;command (%x) timeout&bslash;n&quot;
+comma
+id|bdp-&gt;device-&gt;name
+comma
+id|sub_cmd
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;
 id|list_del
 c_func
 (paren
@@ -15345,6 +15560,18 @@ comma
 id|list_elem
 )paren
 suffix:semicolon
+id|sub_cmd
+op_assign
+(paren
+(paren
+id|cb_header_t
+op_star
+)paren
+id|active_command-&gt;non_tx_cmd
+)paren
+op_member_access_from_pointer
+id|cb_cmd
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -15362,6 +15589,8 @@ comma
 id|active_command-&gt;dma_addr
 comma
 id|SCB_CUC_START
+comma
+id|sub_cmd
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -15786,11 +16015,6 @@ id|bdp
 op_assign
 id|netdev-&gt;priv
 suffix:semicolon
-id|u8
-id|full_reset
-op_assign
-l_bool|false
-suffix:semicolon
 id|pci_set_power_state
 c_func
 (paren
@@ -15818,29 +16042,13 @@ comma
 id|bdp-&gt;pci_state
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bdp-&gt;wolopts
-op_amp
-(paren
-id|WAKE_UCAST
-op_or
-id|WAKE_ARP
-)paren
-)paren
-(brace
-id|full_reset
-op_assign
-l_bool|true
-suffix:semicolon
-)brace
+multiline_comment|/* Also do device full reset because device was in D3 state */
 id|e100_deisolate_driver
 c_func
 (paren
 id|bdp
 comma
-id|full_reset
+l_bool|true
 )paren
 suffix:semicolon
 r_return
@@ -16327,4 +16535,56 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+macro_line|#ifdef E100_CU_DEBUG
+r_int
+r_char
+DECL|function|e100_cu_unknown_state
+id|e100_cu_unknown_state
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+(brace
+id|u8
+id|scb_cmd_low
+suffix:semicolon
+id|u16
+id|scb_status
+suffix:semicolon
+id|scb_cmd_low
+op_assign
+id|bdp-&gt;scb-&gt;scb_cmd_low
+suffix:semicolon
+id|scb_status
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|bdp-&gt;scb-&gt;scb_status
+)paren
+suffix:semicolon
+multiline_comment|/* If CU is active and executing unknown cmd */
+r_if
+c_cond
+(paren
+id|scb_status
+op_amp
+id|SCB_CUS_ACTIVE
+op_logical_and
+id|scb_cmd_low
+op_amp
+id|SCB_CUC_UNKNOWN
+)paren
+r_return
+l_bool|true
+suffix:semicolon
+r_else
+r_return
+l_bool|false
+suffix:semicolon
+)brace
+macro_line|#endif
 eof
