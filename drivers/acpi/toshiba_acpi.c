@@ -889,9 +889,9 @@ id|file
 op_star
 id|file
 comma
-id|__user
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
