@@ -18786,24 +18786,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_KMOD
-macro_line|#ifdef CONFIG_VIDEO_CPIA_PP_MODULE
-id|request_module
-c_func
-(paren
-l_string|&quot;cpia_pp&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_CPIA_USB_MODULE
-id|request_module
-c_func
-(paren
-l_string|&quot;cpia_usb&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;/* CONFIG_KMOD */
 macro_line|#ifdef CONFIG_VIDEO_CPIA_PP
 id|cpia_pp_init
 c_func
