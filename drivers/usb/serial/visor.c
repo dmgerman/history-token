@@ -2015,6 +2015,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|num_ports
 suffix:semicolon
 )brace
@@ -2248,6 +2251,9 @@ r_private
 (brace
 id|num_ports
 op_assign
+(paren
+r_int
+)paren
 (paren
 r_int
 )paren
