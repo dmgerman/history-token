@@ -447,6 +447,10 @@ suffix:semicolon
 multiline_comment|/* Create the ELF interpreter info */
 id|elf_info
 op_assign
+(paren
+id|elf_addr_t
+op_star
+)paren
 id|current-&gt;mm-&gt;saved_auxv
 suffix:semicolon
 DECL|macro|NEW_AUX_ENT
@@ -614,16 +618,32 @@ id|u_platform
 )paren
 suffix:semicolon
 )brace
-id|NEW_AUX_ENT
-c_func
-(paren
-id|AT_NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
 DECL|macro|NEW_AUX_ENT
 macro_line|#undef NEW_AUX_ENT
+multiline_comment|/* AT_NULL is zero; clear the rest too */
+id|memset
+c_func
+(paren
+op_amp
+id|elf_info
+(braket
+id|ei_index
+)braket
+comma
+l_int|0
+comma
+r_sizeof
+id|current-&gt;mm-&gt;saved_auxv
+op_minus
+id|ei_index
+op_star
+r_sizeof
+id|elf_info
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
 id|sp
 op_assign
 id|STACK_ADD
@@ -5149,6 +5169,10 @@ id|thread_status_size
 op_assign
 l_int|0
 suffix:semicolon
+id|elf_addr_t
+op_star
+id|auxv
+suffix:semicolon
 multiline_comment|/*&n;&t; * We no longer stop all VM operations.&n;&t; * &n;&t; * This is because those proceses that could possibly change map_count or&n;&t; * the mmap / vma pages are now blocked in do_exit on current finishing&n;&t; * this core dump.&n;&t; *&n;&t; * Only ptrace can touch these memory addresses, but it doesn&squot;t change&n;&t; * the map_count or the pages allocated.  So no possibility of crashing&n;&t; * exists while dumping the mm-&gt;vm_next areas to the core file.&n;&t; */
 multiline_comment|/* alloc memory for large data structures: too large to be on stack */
 id|elf
@@ -5519,6 +5543,14 @@ id|numnote
 op_assign
 l_int|3
 suffix:semicolon
+id|auxv
+op_assign
+(paren
+id|elf_addr_t
+op_star
+)paren
+id|current-&gt;mm-&gt;saved_auxv
+suffix:semicolon
 id|i
 op_assign
 l_int|0
@@ -5531,7 +5563,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|current-&gt;mm-&gt;saved_auxv
+id|auxv
 (braket
 id|i
 op_minus
@@ -5558,12 +5590,11 @@ comma
 id|i
 op_star
 r_sizeof
-id|current-&gt;mm-&gt;saved_auxv
-(braket
-l_int|0
-)braket
+(paren
+id|elf_addr_t
+)paren
 comma
-id|current-&gt;mm-&gt;saved_auxv
+id|auxv
 )paren
 suffix:semicolon
 multiline_comment|/* Try to dump the FPU. */
