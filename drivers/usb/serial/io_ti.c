@@ -5789,7 +5789,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|MAP_FLAG
-mdefine_line|#define MAP_FLAG(flagUmp, flagUart)    &bslash;&n;&t;if (ti_lsr &amp; flagUmp) lsr |= flagUart;
+mdefine_line|#define MAP_FLAG(flagUmp, flagUart)    &bslash;&n;&t;if (ti_lsr &amp; flagUmp) &bslash;&n;&t;&t;lsr |= flagUart;
 id|MAP_FLAG
 c_func
 (paren

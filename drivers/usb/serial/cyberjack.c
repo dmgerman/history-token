@@ -1586,12 +1586,10 @@ id|priv-&gt;rdtodo
 OL
 l_int|0
 )paren
-(brace
 id|priv-&gt;rdtodo
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren

@@ -3216,6 +3216,7 @@ c_loop
 id|n
 op_decrement
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -3228,6 +3229,7 @@ id|value
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
