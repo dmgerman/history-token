@@ -9,6 +9,8 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/cs4231.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
+DECL|macro|SNDRV_GET_ID
+mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/sscape_ioctl.h&gt;
 DECL|macro|chip_t
@@ -5723,16 +5725,12 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|get_option
+id|get_id
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|id
 (braket
@@ -5744,16 +5742,12 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|get_option
+id|get_option_long
 c_func
 (paren
 op_amp
 id|str
 comma
-(paren
-r_int
-op_star
-)paren
 op_amp
 id|port
 (braket
