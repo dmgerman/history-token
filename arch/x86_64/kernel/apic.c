@@ -3221,7 +3221,7 @@ suffix:semicolon
 multiline_comment|/* Here is what the APIC error bits mean:&n;&t;   0: Send CS error&n;&t;   1: Receive CS error&n;&t;   2: Send accept error&n;&t;   3: Receive accept error&n;&t;   4: Reserved&n;&t;   5: Send illegal vector&n;&t;   6: Received illegal vector&n;&t;   7: Illegal register address&n;&t;*/
 id|printk
 (paren
-id|KERN_INFO
+id|KERN_DEBUG
 l_string|&quot;APIC error on CPU%d: %02x(%02x)&bslash;n&quot;
 comma
 id|smp_processor_id
