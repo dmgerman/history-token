@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/small_page.c&n; *&n; *  Copyright (C) 1996  Russell King&n; *  Copyright (C) 2003  Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   26/01/1996&t;RMK&t;Cleaned up various areas to make little more generic&n; *   07/02/1999&t;RMK&t;Support added for 16K and 32K page sizes&n; *&t;&t;&t;containing 8K blocks&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/mm/small_page.c&n; *&n; *  Copyright (C) 1996  Russell King&n; *  Copyright (C) 2003  Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   26/01/1996&t;RMK&t;Cleaned up various areas to make little more generic&n; *   07/02/1999&t;RMK&t;Support added for 16K and 32K page sizes&n; *&t;&t;&t;containing 8K blocks&n; *   23/05/2004 IM&t;Fixed to use struct page-&gt;lru (thanks wli)&n; *&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|macro|PEDANTIC
 mdefine_line|#define PEDANTIC
-multiline_comment|/*&n; * Requirement:&n; *  We need to be able to allocate naturally aligned memory of finer&n; *  granularity than the page size.  This is typically used for the&n; *  second level page tables on 32-bit ARMs.&n; *&n; * Theory:&n; *  We &quot;misuse&quot; the Linux memory management system.  We use alloc_page&n; *  to allocate a page and then mark it as reserved.  The Linux memory&n; *  management system will then ignore the &quot;offset&quot;, &quot;next_hash&quot; and&n; *  &quot;pprev_hash&quot; entries in the mem_map for this page.&n; *&n; *  We then use a bitstring in the &quot;offset&quot; field to mark which segments&n; *  of the page are in use, and manipulate this as required during the&n; *  allocation and freeing of these small pages.&n; *&n; *  We also maintain a queue of pages being used for this purpose using&n; *  the &quot;next_hash&quot; and &quot;pprev_hash&quot; entries of mem_map;&n; */
+multiline_comment|/*&n; * Requirement:&n; *  We need to be able to allocate naturally aligned memory of finer&n; *  granularity than the page size.  This is typically used for the&n; *  second level page tables on 32-bit ARMs.&n; *&n; * FIXME - this comment is *out of date*&n; * Theory:&n; *  We &quot;misuse&quot; the Linux memory management system.  We use alloc_page&n; *  to allocate a page and then mark it as reserved.  The Linux memory&n; *  management system will then ignore the &quot;offset&quot;, &quot;next_hash&quot; and&n; *  &quot;pprev_hash&quot; entries in the mem_map for this page.&n; *&n; *  We then use a bitstring in the &quot;offset&quot; field to mark which segments&n; *  of the page are in use, and manipulate this as required during the&n; *  allocation and freeing of these small pages.&n; *&n; *  We also maintain a queue of pages being used for this purpose using&n; *  the &quot;next_hash&quot; and &quot;pprev_hash&quot; entries of mem_map;&n; */
 DECL|struct|order
 r_struct
 id|order
@@ -181,7 +181,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|again

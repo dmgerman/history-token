@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/oldlatches.c&n; *&n; *  Copyright (C) David Alan Gilbert 1995/1996,2000&n; *  Copyright (C) Ian Molton 2003&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Support for the latches on the old Archimedes which control the floppy,&n; *  hard disc and printer&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/latches.c&n; *&n; *  Copyright (C) David Alan Gilbert 1995/1996,2000&n; *  Copyright (C) Ian Molton 2003&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Support for the latches on the old Archimedes which control the floppy,&n; *  hard disc and printer&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
