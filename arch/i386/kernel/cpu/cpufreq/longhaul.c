@@ -1485,6 +1485,7 @@ suffix:semicolon
 DECL|function|longhaul_cpu_init
 r_static
 r_int
+id|__init
 id|longhaul_cpu_init
 (paren
 r_struct
