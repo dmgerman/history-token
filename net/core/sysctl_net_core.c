@@ -64,6 +64,10 @@ r_extern
 r_int
 id|sysctl_optmem_max
 suffix:semicolon
+r_extern
+r_int
+id|sysctl_somaxconn
+suffix:semicolon
 macro_line|#ifdef CONFIG_NET_DIVERT
 r_extern
 r_char
@@ -688,6 +692,43 @@ id|proc_dostring
 comma
 macro_line|#endif /* CONFIG_NET_DIVERT */
 macro_line|#endif /* CONFIG_NET */
+(brace
+dot
+id|ctl_name
+op_assign
+id|NET_CORE_SOMAXCONN
+comma
+dot
+id|procname
+op_assign
+l_string|&quot;somaxconn&quot;
+comma
+dot
+id|data
+op_assign
+op_amp
+id|sysctl_somaxconn
+comma
+dot
+id|maxlen
+op_assign
+r_sizeof
+(paren
+r_int
+)paren
+comma
+dot
+id|mode
+op_assign
+l_int|0644
+comma
+dot
+id|proc_handler
+op_assign
+op_amp
+id|proc_dointvec
+)brace
+comma
 (brace
 dot
 id|ctl_name
