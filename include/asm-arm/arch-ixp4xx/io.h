@@ -1035,6 +1035,7 @@ c_func
 id|u32
 id|io_addr
 comma
+r_const
 id|u8
 op_star
 id|vaddr
@@ -1145,6 +1146,7 @@ c_func
 id|u32
 id|io_addr
 comma
+r_const
 id|u16
 op_star
 id|vaddr
@@ -1209,6 +1211,7 @@ c_func
 id|u32
 id|io_addr
 comma
+r_const
 id|u32
 op_star
 id|vaddr
