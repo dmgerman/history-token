@@ -26,11 +26,12 @@ DECL|macro|CHKINFO
 mdefine_line|#define CHKINFO(ret)
 macro_line|#endif
 multiline_comment|/* Description of the hardware layout */
-DECL|variable|hga_vram_base
+DECL|variable|hga_vram
 r_static
-r_int
-r_int
-id|hga_vram_base
+r_void
+id|__iomem
+op_star
+id|hga_vram
 suffix:semicolon
 multiline_comment|/* Base of video memory */
 DECL|variable|hga_vram_len
@@ -519,10 +520,10 @@ id|fillchar
 op_ne
 l_int|0xbf
 )paren
-id|isa_memset_io
+id|memset_io
 c_func
 (paren
-id|hga_vram_base
+id|hga_vram
 comma
 id|fillchar
 comma
@@ -918,7 +919,7 @@ op_star
 id|info
 )paren
 (brace
-multiline_comment|/*&n;&t;unsigned long dest = hga_vram_base;&n;&t;char *logo = linux_logo_bw;&n;&t;int x, y;&n;&t;&n;&t;for (y = 134; y &lt; 134 + 80 ; y++) * this needs some cleanup *&n;&t;&t;for (x = 0; x &lt; 10 ; x++)&n;&t;&t;&t;isa_writeb(~*(logo++),(dest + HGA_ROWADDR(y) + x + 40));&n;*/
+multiline_comment|/*&n;&t;void __iomem *dest = hga_vram;&n;&t;char *logo = linux_logo_bw;&n;&t;int x, y;&n;&t;&n;&t;for (y = 134; y &lt; 134 + 80 ; y++) * this needs some cleanup *&n;&t;&t;for (x = 0; x &lt; 10 ; x++)&n;&t;&t;&t;writeb(~*(logo++),(dest + HGA_ROWADDR(y) + x + 40));&n;*/
 )brace
 DECL|function|hga_pan
 r_static
@@ -1068,10 +1069,12 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|p
 comma
+op_star
 id|q
 suffix:semicolon
 r_int
@@ -1080,13 +1083,19 @@ id|p_save
 comma
 id|q_save
 suffix:semicolon
-id|hga_vram_base
-op_assign
-l_int|0xb0000
-suffix:semicolon
 id|hga_vram_len
 op_assign
 l_int|0x08000
+suffix:semicolon
+id|hga_vram
+op_assign
+id|ioremap
+c_func
+(paren
+l_int|0xb0000
+comma
+id|hga_vram_len
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1125,17 +1134,17 @@ suffix:semicolon
 multiline_comment|/* do a memory check */
 id|p
 op_assign
-id|hga_vram_base
+id|hga_vram
 suffix:semicolon
 id|q
 op_assign
-id|hga_vram_base
+id|hga_vram
 op_plus
 l_int|0x01000
 suffix:semicolon
 id|p_save
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|p
@@ -1143,13 +1152,13 @@ id|p
 suffix:semicolon
 id|q_save
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|q
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0xaa55
@@ -1160,7 +1169,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|p
@@ -1171,7 +1180,7 @@ l_int|0xaa55
 id|count
 op_increment
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x55aa
@@ -1182,7 +1191,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|p
@@ -1193,7 +1202,7 @@ l_int|0x55aa
 id|count
 op_increment
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|p_save
@@ -2055,6 +2064,17 @@ id|KERN_INFO
 l_string|&quot;hgafb: HGA card not detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hga_vram
+)paren
+id|iounmap
+c_func
+(paren
+id|hga_vram
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -2075,11 +2095,11 @@ l_int|1024
 suffix:semicolon
 id|hga_fix.smem_start
 op_assign
-id|VGA_MAP_MEM
-c_func
 (paren
-id|hga_vram_base
+r_int
+r_int
 )paren
+id|hga_vram
 suffix:semicolon
 id|hga_fix.smem_len
 op_assign
@@ -2126,12 +2146,7 @@ id|hgafb_ops
 suffix:semicolon
 id|fb_info.screen_base
 op_assign
-(paren
-r_char
-id|__iomem
-op_star
-)paren
-id|hga_fix.smem_start
+id|hga_vram
 suffix:semicolon
 r_if
 c_cond
@@ -2145,10 +2160,18 @@ id|fb_info
 OL
 l_int|0
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+id|hga_vram
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2206,6 +2229,12 @@ c_func
 (paren
 op_amp
 id|fb_info
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|hga_vram
 )paren
 suffix:semicolon
 r_if
