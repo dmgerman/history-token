@@ -246,19 +246,6 @@ op_star
 id|mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set a PMD (handling IMP bit 4)&n;&t;&t; */
-DECL|member|flush_pmd
-r_void
-(paren
-op_star
-id|flush_pmd
-)paren
-(paren
-id|pmd_t
-op_star
-id|pmdp
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set a PTE&n;&t;&t; */
 DECL|member|set_pte
 r_void
@@ -328,8 +315,6 @@ DECL|macro|cpu_icache_invalidate_page
 mdefine_line|#define cpu_icache_invalidate_page(vp)&t;&t;processor.icache.invalidate_page(vp)
 DECL|macro|cpu_set_pgd
 mdefine_line|#define cpu_set_pgd(pgd,mm)&t;&t;&t;processor.pgtable.set_pgd(pgd,mm)
-DECL|macro|cpu_flush_pmd
-mdefine_line|#define cpu_flush_pmd(pmdp)&t;&t;&t;processor.pgtable.flush_pmd(pmdp)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte(ptep, pte)&t;&t;&t;processor.pgtable.set_pte(ptep, pte)
 DECL|macro|cpu_switch_mm

@@ -1056,7 +1056,7 @@ id|pte_t
 )paren
 )paren
 suffix:semicolon
-id|cpu_flush_pmd
+id|flush_pmd_entry
 c_func
 (paren
 id|pmdp
