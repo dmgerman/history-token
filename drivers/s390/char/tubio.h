@@ -858,7 +858,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef spin_trylock_irqsave
 DECL|macro|spin_trylock_irqsave
-mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;int success; &bslash;&n;&t;local_save_flags(flags); &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;success = spin_trylock(lock); &bslash;&n;&t;if (success == 0) &bslash;&n;&t;&t;local_irq_restore(flags); &bslash;&n;&t;success; &bslash;&n;})
+mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;int success; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;success = spin_trylock(lock); &bslash;&n;&t;if (success == 0) &bslash;&n;&t;&t;local_irq_restore(flags); &bslash;&n;&t;success; &bslash;&n;})
 macro_line|#endif /* if not spin_trylock_irqsave */
 macro_line|#ifndef s390irq_spin_trylock_irqsave
 DECL|macro|s390irq_spin_trylock_irqsave

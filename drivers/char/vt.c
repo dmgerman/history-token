@@ -177,18 +177,13 @@ l_int|1193180
 op_div
 id|hz
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 singleline_comment|// FIXME: is this safe?
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|del_timer
 c_func
 (paren

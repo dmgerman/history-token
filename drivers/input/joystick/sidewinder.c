@@ -670,18 +670,13 @@ id|sched
 op_assign
 l_int|0
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Quiet, please */
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|gameport_trigger
 c_func
 (paren
@@ -1112,15 +1107,10 @@ id|i
 comma
 id|t
 suffix:semicolon
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|local_irq_disable
-c_func
-(paren
 )paren
 suffix:semicolon
 id|i

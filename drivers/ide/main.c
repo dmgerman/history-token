@@ -4177,18 +4177,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|local_save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if 0
 r_if
 c_cond
@@ -4205,18 +4193,9 @@ op_member_access_from_pointer
 id|owner
 )paren
 )paren
-(brace
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 r_return
 l_int|1
 suffix:semicolon
-)brace
 macro_line|#endif
 r_if
 c_cond
@@ -4232,18 +4211,9 @@ c_func
 id|drive
 )paren
 )paren
-(brace
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 r_return
 l_int|1
 suffix:semicolon
-)brace
 macro_line|#if defined(CONFIG_BLK_DEV_ISAPNP) &amp;&amp; defined(CONFIG_ISAPNP) &amp;&amp; defined(MODULE)
 id|pnpide_init
 c_func
@@ -4256,13 +4226,6 @@ id|drive-&gt;driver
 op_assign
 l_int|NULL
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-singleline_comment|// FIXME: is this safe?
 r_return
 l_int|0
 suffix:semicolon

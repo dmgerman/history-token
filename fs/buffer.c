@@ -96,24 +96,12 @@ c_func
 l_string|&quot;Pass this trace through ksymoops for reporting&bslash;n&quot;
 )paren
 suffix:semicolon
-(brace
-r_extern
-r_void
-id|show_stack
-c_func
-(paren
-r_int
-op_star
-id|esp
-)paren
-suffix:semicolon
 id|show_stack
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 DECL|variable|__buffer_error
