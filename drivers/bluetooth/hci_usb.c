@@ -28,7 +28,7 @@ macro_line|#undef  BT_DMP
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP( A... )
 macro_line|#endif
-macro_line|#ifndef CONFIG_BT_USB_ZERO_PACKET
+macro_line|#ifndef CONFIG_BT_HCIUSB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
 macro_line|#undef  URB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
@@ -398,7 +398,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|__fill_isoc_desc
 r_static
 r_void
@@ -944,7 +944,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|hci_usb_isoc_rx_submit
 r_static
 r_int
@@ -1266,7 +1266,7 @@ c_func
 id|husb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
@@ -2129,7 +2129,7 @@ id|_urb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|hci_usb_send_isoc
 r_static
 r_inline
@@ -2375,7 +2375,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 multiline_comment|/* Process SCO queue */
 id|q
 op_assign
@@ -2683,7 +2683,7 @@ op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|HCI_SCODATA_PKT
 suffix:colon
@@ -2899,7 +2899,7 @@ id|EILSEQ
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|HCI_SCODATA_PKT
 suffix:colon
@@ -3210,7 +3210,7 @@ op_eq
 id|HCI_SCODATA_PKT
 )paren
 (brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_int
 id|i
 suffix:semicolon
@@ -3955,7 +3955,7 @@ id|ep
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|USB_ENDPOINT_XFER_ISOC
 suffix:colon
@@ -4045,7 +4045,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
@@ -4160,7 +4160,7 @@ id|husb-&gt;ctrl_req
 op_assign
 id|HCI_CTRL_REQ
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
