@@ -38,6 +38,16 @@ id|_stext
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|hash_page_sync
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef HAVE_BATS
 r_extern
 r_int
@@ -321,6 +331,13 @@ op_star
 id|pte
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+id|hash_page_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|free_page
 c_func
 (paren
@@ -343,6 +360,13 @@ op_star
 id|pte
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
+id|hash_page_sync
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|__free_page
 c_func
 (paren
