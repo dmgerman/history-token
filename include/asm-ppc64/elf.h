@@ -222,5 +222,137 @@ suffix:semicolon
 multiline_comment|/*&n; * The requirements here are:&n; * - keep the final alignment of sp (sp &amp; 0xf)&n; * - make sure the 32-bit value at the first 16 byte aligned position of&n; *   AUXV is greater than 16 for glibc compatibility.&n; *   AT_IGNOREPPC is used for that.&n; * - for compatibility with glibc ARCH_DLINFO must always be defined on PPC,&n; *   even if DLINFO_ARCH_ITEMS goes to zero or is undefined.&n; */
 DECL|macro|ARCH_DLINFO
 mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* Handle glibc compatibility. */&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;/* Cache size items */&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_DCACHEBSIZE, dcache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_ICACHEBSIZE, icache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_UCACHEBSIZE, ucache_bsize);&t;&t;&t;&bslash;&n; } while (0)
+multiline_comment|/* PowerPC64 relocations defined by the ABIs */
+DECL|macro|R_PPC64_NONE
+mdefine_line|#define R_PPC64_NONE    R_PPC_NONE
+DECL|macro|R_PPC64_ADDR32
+mdefine_line|#define R_PPC64_ADDR32  R_PPC_ADDR32  /* 32bit absolute address.  */
+DECL|macro|R_PPC64_ADDR24
+mdefine_line|#define R_PPC64_ADDR24  R_PPC_ADDR24  /* 26bit address, word aligned.  */
+DECL|macro|R_PPC64_ADDR16
+mdefine_line|#define R_PPC64_ADDR16  R_PPC_ADDR16  /* 16bit absolute address. */
+DECL|macro|R_PPC64_ADDR16_LO
+mdefine_line|#define R_PPC64_ADDR16_LO R_PPC_ADDR16_LO /* lower 16bits of abs. address.  */
+DECL|macro|R_PPC64_ADDR16_HI
+mdefine_line|#define R_PPC64_ADDR16_HI R_PPC_ADDR16_HI /* high 16bits of abs. address. */
+DECL|macro|R_PPC64_ADDR16_HA
+mdefine_line|#define R_PPC64_ADDR16_HA R_PPC_ADDR16_HA /* adjusted high 16bits.  */
+DECL|macro|R_PPC64_ADDR14
+mdefine_line|#define R_PPC64_ADDR14 R_PPC_ADDR14   /* 16bit address, word aligned.  */
+DECL|macro|R_PPC64_ADDR14_BRTAKEN
+mdefine_line|#define R_PPC64_ADDR14_BRTAKEN  R_PPC_ADDR14_BRTAKEN
+DECL|macro|R_PPC64_ADDR14_BRNTAKEN
+mdefine_line|#define R_PPC64_ADDR14_BRNTAKEN R_PPC_ADDR14_BRNTAKEN
+DECL|macro|R_PPC64_REL24
+mdefine_line|#define R_PPC64_REL24   R_PPC_REL24 /* PC relative 26 bit, word aligned.  */
+DECL|macro|R_PPC64_REL14
+mdefine_line|#define R_PPC64_REL14   R_PPC_REL14 /* PC relative 16 bit. */
+DECL|macro|R_PPC64_REL14_BRTAKEN
+mdefine_line|#define R_PPC64_REL14_BRTAKEN   R_PPC_REL14_BRTAKEN
+DECL|macro|R_PPC64_REL14_BRNTAKEN
+mdefine_line|#define R_PPC64_REL14_BRNTAKEN  R_PPC_REL14_BRNTAKEN
+DECL|macro|R_PPC64_GOT16
+mdefine_line|#define R_PPC64_GOT16     R_PPC_GOT16
+DECL|macro|R_PPC64_GOT16_LO
+mdefine_line|#define R_PPC64_GOT16_LO  R_PPC_GOT16_LO
+DECL|macro|R_PPC64_GOT16_HI
+mdefine_line|#define R_PPC64_GOT16_HI  R_PPC_GOT16_HI
+DECL|macro|R_PPC64_GOT16_HA
+mdefine_line|#define R_PPC64_GOT16_HA  R_PPC_GOT16_HA
+DECL|macro|R_PPC64_COPY
+mdefine_line|#define R_PPC64_COPY      R_PPC_COPY
+DECL|macro|R_PPC64_GLOB_DAT
+mdefine_line|#define R_PPC64_GLOB_DAT  R_PPC_GLOB_DAT
+DECL|macro|R_PPC64_JMP_SLOT
+mdefine_line|#define R_PPC64_JMP_SLOT  R_PPC_JMP_SLOT
+DECL|macro|R_PPC64_RELATIVE
+mdefine_line|#define R_PPC64_RELATIVE  R_PPC_RELATIVE
+DECL|macro|R_PPC64_UADDR32
+mdefine_line|#define R_PPC64_UADDR32   R_PPC_UADDR32
+DECL|macro|R_PPC64_UADDR16
+mdefine_line|#define R_PPC64_UADDR16   R_PPC_UADDR16
+DECL|macro|R_PPC64_REL32
+mdefine_line|#define R_PPC64_REL32     R_PPC_REL32
+DECL|macro|R_PPC64_PLT32
+mdefine_line|#define R_PPC64_PLT32     R_PPC_PLT32
+DECL|macro|R_PPC64_PLTREL32
+mdefine_line|#define R_PPC64_PLTREL32  R_PPC_PLTREL32
+DECL|macro|R_PPC64_PLT16_LO
+mdefine_line|#define R_PPC64_PLT16_LO  R_PPC_PLT16_LO
+DECL|macro|R_PPC64_PLT16_HI
+mdefine_line|#define R_PPC64_PLT16_HI  R_PPC_PLT16_HI
+DECL|macro|R_PPC64_PLT16_HA
+mdefine_line|#define R_PPC64_PLT16_HA  R_PPC_PLT16_HA
+DECL|macro|R_PPC64_SECTOFF
+mdefine_line|#define R_PPC64_SECTOFF     R_PPC_SECTOFF
+DECL|macro|R_PPC64_SECTOFF_LO
+mdefine_line|#define R_PPC64_SECTOFF_LO  R_PPC_SECTOFF_LO
+DECL|macro|R_PPC64_SECTOFF_HI
+mdefine_line|#define R_PPC64_SECTOFF_HI  R_PPC_SECTOFF_HI
+DECL|macro|R_PPC64_SECTOFF_HA
+mdefine_line|#define R_PPC64_SECTOFF_HA  R_PPC_SECTOFF_HA
+DECL|macro|R_PPC64_ADDR30
+mdefine_line|#define R_PPC64_ADDR30          37  /* word30 (S + A - P) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_ADDR64
+mdefine_line|#define R_PPC64_ADDR64          38  /* doubleword64 S + A.  */
+DECL|macro|R_PPC64_ADDR16_HIGHER
+mdefine_line|#define R_PPC64_ADDR16_HIGHER   39  /* half16 #higher(S + A).  */
+DECL|macro|R_PPC64_ADDR16_HIGHERA
+mdefine_line|#define R_PPC64_ADDR16_HIGHERA  40  /* half16 #highera(S + A).  */
+DECL|macro|R_PPC64_ADDR16_HIGHEST
+mdefine_line|#define R_PPC64_ADDR16_HIGHEST  41  /* half16 #highest(S + A).  */
+DECL|macro|R_PPC64_ADDR16_HIGHESTA
+mdefine_line|#define R_PPC64_ADDR16_HIGHESTA 42  /* half16 #highesta(S + A). */
+DECL|macro|R_PPC64_UADDR64
+mdefine_line|#define R_PPC64_UADDR64     43  /* doubleword64 S + A.  */
+DECL|macro|R_PPC64_REL64
+mdefine_line|#define R_PPC64_REL64       44  /* doubleword64 S + A - P.  */
+DECL|macro|R_PPC64_PLT64
+mdefine_line|#define R_PPC64_PLT64       45  /* doubleword64 L + A.  */
+DECL|macro|R_PPC64_PLTREL64
+mdefine_line|#define R_PPC64_PLTREL64    46  /* doubleword64 L + A - P.  */
+DECL|macro|R_PPC64_TOC16
+mdefine_line|#define R_PPC64_TOC16       47  /* half16* S + A - .TOC.  */
+DECL|macro|R_PPC64_TOC16_LO
+mdefine_line|#define R_PPC64_TOC16_LO    48  /* half16 #lo(S + A - .TOC.).  */
+DECL|macro|R_PPC64_TOC16_HI
+mdefine_line|#define R_PPC64_TOC16_HI    49  /* half16 #hi(S + A - .TOC.).  */
+DECL|macro|R_PPC64_TOC16_HA
+mdefine_line|#define R_PPC64_TOC16_HA    50  /* half16 #ha(S + A - .TOC.).  */
+DECL|macro|R_PPC64_TOC
+mdefine_line|#define R_PPC64_TOC         51  /* doubleword64 .TOC. */
+DECL|macro|R_PPC64_PLTGOT16
+mdefine_line|#define R_PPC64_PLTGOT16    52  /* half16* M + A.  */
+DECL|macro|R_PPC64_PLTGOT16_LO
+mdefine_line|#define R_PPC64_PLTGOT16_LO 53  /* half16 #lo(M + A).  */
+DECL|macro|R_PPC64_PLTGOT16_HI
+mdefine_line|#define R_PPC64_PLTGOT16_HI 54  /* half16 #hi(M + A).  */
+DECL|macro|R_PPC64_PLTGOT16_HA
+mdefine_line|#define R_PPC64_PLTGOT16_HA 55  /* half16 #ha(M + A).  */
+DECL|macro|R_PPC64_ADDR16_DS
+mdefine_line|#define R_PPC64_ADDR16_DS      56 /* half16ds* (S + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_ADDR16_LO_DS
+mdefine_line|#define R_PPC64_ADDR16_LO_DS   57 /* half16ds  #lo(S + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_GOT16_DS
+mdefine_line|#define R_PPC64_GOT16_DS       58 /* half16ds* (G + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_GOT16_LO_DS
+mdefine_line|#define R_PPC64_GOT16_LO_DS    59 /* half16ds  #lo(G + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_PLT16_LO_DS
+mdefine_line|#define R_PPC64_PLT16_LO_DS    60 /* half16ds  #lo(L + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_SECTOFF_DS
+mdefine_line|#define R_PPC64_SECTOFF_DS     61 /* half16ds* (R + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_SECTOFF_LO_DS
+mdefine_line|#define R_PPC64_SECTOFF_LO_DS  62 /* half16ds  #lo(R + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_TOC16_DS
+mdefine_line|#define R_PPC64_TOC16_DS       63 /* half16ds* (S + A - .TOC.) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_TOC16_LO_DS
+mdefine_line|#define R_PPC64_TOC16_LO_DS    64 /* half16ds  #lo(S + A - .TOC.) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_PLTGOT16_DS
+mdefine_line|#define R_PPC64_PLTGOT16_DS    65 /* half16ds* (M + A) &gt;&gt; 2.  */
+DECL|macro|R_PPC64_PLTGOT16_LO_DS
+mdefine_line|#define R_PPC64_PLTGOT16_LO_DS 66 /* half16ds  #lo(M + A) &gt;&gt; 2.  */
+multiline_comment|/* Keep this the last entry.  */
+DECL|macro|R_PPC64_NUM
+mdefine_line|#define R_PPC64_NUM&t;&t;67
 macro_line|#endif /* __PPC64_ELF_H */
 eof
