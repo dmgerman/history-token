@@ -151,31 +151,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Patch submitted by Alessandro Fracchetti &lt;al.fracchetti@tin.it&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0482
-comma
-l_int|0x0105
-comma
-l_int|0x0100
-comma
-l_int|0x0100
-comma
-l_string|&quot;Kyocera&quot;
-comma
-l_string|&quot;Finecam L3&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Patch submitted by Philipp Friedrich &lt;philipp@void.at&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -251,7 +226,7 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
-multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; */
+multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; * and Alessandro Fracchetti &lt;al.fracchetti@tin.it&gt;&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
