@@ -738,23 +738,13 @@ suffix:semicolon
 id|gfp_flags
 op_assign
 id|GFP_KERNEL
-suffix:semicolon
-id|gfp_flags
-op_or_assign
+op_or
 id|__GFP_NORETRY
-suffix:semicolon
 multiline_comment|/* don&squot;t trigger OOM-killer */
-r_if
-c_cond
-(paren
-id|pg
-OG
-l_int|0
-)paren
-id|gfp_flags
-op_or_assign
+op_or
 id|__GFP_NOWARN
 suffix:semicolon
+multiline_comment|/* no stack trace print - this call is non-critical */
 id|res
 op_assign
 id|dma_alloc_coherent
