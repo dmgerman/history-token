@@ -565,6 +565,10 @@ id|x-&gt;props.reqid
 op_assign
 id|p-&gt;reqid
 suffix:semicolon
+id|x-&gt;props.family
+op_assign
+id|p-&gt;family
+suffix:semicolon
 id|x-&gt;props.saddr
 op_assign
 id|x-&gt;sel.saddr
@@ -1095,6 +1099,10 @@ suffix:semicolon
 id|p-&gt;reqid
 op_assign
 id|x-&gt;props.reqid
+suffix:semicolon
+id|p-&gt;family
+op_assign
+id|x-&gt;props.family
 suffix:semicolon
 id|p-&gt;seq
 op_assign
@@ -2339,7 +2347,10 @@ id|xp-&gt;flags
 op_assign
 id|p-&gt;flags
 suffix:semicolon
-multiline_comment|/* XXX xp-&gt;family = p-&gt;family; */
+id|xp-&gt;family
+op_assign
+id|p-&gt;family
+suffix:semicolon
 multiline_comment|/* XXX xp-&gt;share = p-&gt;share; */
 )brace
 DECL|function|copy_to_user_policy
@@ -2417,9 +2428,8 @@ id|xp-&gt;index
 suffix:semicolon
 id|p-&gt;family
 op_assign
-id|AF_INET
+id|xp-&gt;family
 suffix:semicolon
-multiline_comment|/* XXX xp-&gt;family */
 id|p-&gt;dir
 op_assign
 id|dir

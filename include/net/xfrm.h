@@ -89,6 +89,10 @@ DECL|member|reqid
 id|u16
 id|reqid
 suffix:semicolon
+DECL|member|family
+id|u16
+id|family
+suffix:semicolon
 DECL|member|saddr
 id|xfrm_address_t
 id|saddr
@@ -425,6 +429,10 @@ r_struct
 id|dst_entry
 op_star
 id|bundles
+suffix:semicolon
+DECL|member|family
+id|__u16
+id|family
 suffix:semicolon
 DECL|member|action
 id|__u8
