@@ -2677,6 +2677,26 @@ op_minus
 id|ERANGE
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|udest-&gt;l_threshold
+OG
+id|udest-&gt;u_threshold
+)paren
+(brace
+id|IP_VS_ERR
+c_func
+(paren
+l_string|&quot;ip_vs_add_dest(): lower threshold is higher than &quot;
+l_string|&quot;upper threshold&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ERANGE
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Check if the dest already exists in the list&n;&t; */
 id|dest
 op_assign
@@ -2995,7 +3015,27 @@ l_int|0
 id|IP_VS_ERR
 c_func
 (paren
-l_string|&quot;ip_vs_add_dest(): server weight less than zero&bslash;n&quot;
+l_string|&quot;ip_vs_edit_dest(): server weight less than zero&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ERANGE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|udest-&gt;l_threshold
+OG
+id|udest-&gt;u_threshold
+)paren
+(brace
+id|IP_VS_ERR
+c_func
+(paren
+l_string|&quot;ip_vs_edit_dest(): lower threshold is higher than &quot;
+l_string|&quot;upper threshold&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

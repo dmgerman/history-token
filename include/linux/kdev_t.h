@@ -165,6 +165,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+DECL|macro|print_dev_t
+mdefine_line|#define print_dev_t(buffer, dev)&t;&t;&t;&t;&t;&bslash;&n;&t;sprintf((buffer), &quot;%u:%u&bslash;n&quot;, MAJOR(dev), MINOR(dev))
+DECL|macro|format_dev_t
+mdefine_line|#define format_dev_t(buffer, dev)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sprintf(buffer, &quot;%u:%u&quot;, MAJOR(dev), MINOR(dev));&t;&bslash;&n;&t;&t;buffer;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 macro_line|#else /* __KERNEL__ */
 multiline_comment|/*&n;Some programs want their definitions of MAJOR and MINOR and MKDEV&n;from the kernel sources. These must be the externally visible ones.&n;*/
 DECL|macro|MAJOR

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
@@ -1024,6 +1025,23 @@ suffix:semicolon
 id|iph
 op_assign
 id|top_iph
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;props.mode
+op_logical_and
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+)paren
+id|IP_ECN_clear
+c_func
+(paren
+id|iph
+)paren
 suffix:semicolon
 id|iph-&gt;tot_len
 op_assign

@@ -1611,7 +1611,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: IRQ %d is illegal!&bslash;n&quot;
+l_string|&quot;%s: IRQ %d is invalid!&bslash;n&quot;
 comma
 id|modname
 comma
@@ -1657,7 +1657,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: CPU clock %u is illegal!&bslash;n&quot;
+l_string|&quot;%s: CPU clock %u is invalid!&bslash;n&quot;
 comma
 id|modname
 comma
@@ -1739,7 +1739,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: memory address 0x%lX is illegal!&bslash;n&quot;
+l_string|&quot;%s: memory address 0x%lX is invalid!&bslash;n&quot;
 comma
 id|modname
 comma

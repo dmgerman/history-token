@@ -3142,6 +3142,11 @@ r_struct
 id|list_head
 op_star
 id|p
+comma
+r_struct
+id|usb_driver
+op_star
+id|driver
 )paren
 (brace
 id|snd_usb_midi_t
@@ -3161,6 +3166,14 @@ comma
 id|snd_usb_midi_t
 comma
 id|list
+)paren
+suffix:semicolon
+id|usb_driver_release_interface
+c_func
+(paren
+id|driver
+comma
+id|umidi-&gt;iface
 )paren
 suffix:semicolon
 r_for

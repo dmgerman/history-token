@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 95, 96, 97, 98, 99, 2000, 01, 02, 03 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 2001 Silicon Graphics, Inc.&n; */
-macro_line|#ifndef __ASM_CACHEFLUSH_H
-DECL|macro|__ASM_CACHEFLUSH_H
-mdefine_line|#define __ASM_CACHEFLUSH_H
+macro_line|#ifndef _ASM_CACHEFLUSH_H
+DECL|macro|_ASM_CACHEFLUSH_H
+mdefine_line|#define _ASM_CACHEFLUSH_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Keep includes the same across arches.  */
 macro_line|#include &lt;linux/mm.h&gt;
@@ -167,5 +167,5 @@ DECL|macro|SetPageDcacheDirty
 mdefine_line|#define SetPageDcacheDirty(page)&t;&bslash;&n;&t;set_bit(PG_dcache_dirty, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageDcacheDirty
 mdefine_line|#define ClearPageDcacheDirty(page)&t;&bslash;&n;&t;clear_bit(PG_dcache_dirty, &amp;(page)-&gt;flags)
-macro_line|#endif /* __ASM_CACHEFLUSH_H */
+macro_line|#endif /* _ASM_CACHEFLUSH_H */
 eof

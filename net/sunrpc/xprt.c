@@ -20,7 +20,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Local variables&n; */
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPC_DEBUG_DATA

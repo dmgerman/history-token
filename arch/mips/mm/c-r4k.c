@@ -7,14 +7,15 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/cacheops.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/r4kcache.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/war.h&gt;
-multiline_comment|/* Primary cache parameters. */
 DECL|variable|icache_size
 DECL|variable|dcache_size
 DECL|variable|scache_size
@@ -27,25 +28,6 @@ id|dcache_size
 comma
 id|scache_size
 suffix:semicolon
-DECL|variable|icache_way_size
-DECL|variable|dcache_way_size
-DECL|variable|scache_way_size
-r_int
-r_int
-id|icache_way_size
-comma
-id|dcache_way_size
-comma
-id|scache_way_size
-suffix:semicolon
-DECL|variable|scache_size
-r_static
-r_int
-r_int
-id|scache_size
-suffix:semicolon
-macro_line|#include &lt;asm/cacheops.h&gt;
-macro_line|#include &lt;asm/r4kcache.h&gt;
 r_extern
 r_void
 id|andes_clear_page
@@ -2571,7 +2553,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 )paren
 (brace
 r_case
@@ -2875,6 +2857,9 @@ id|CPU_R4400SC
 suffix:colon
 r_case
 id|CPU_R4400MC
+suffix:colon
+r_case
+id|CPU_R4300
 suffix:colon
 id|icache_size
 op_assign
@@ -3567,13 +3552,13 @@ l_string|&quot;Improper R4000SC processor configuration detected&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* compute a couple of other cache variables */
-id|icache_way_size
+id|c-&gt;icache.waysize
 op_assign
 id|icache_size
 op_div
 id|c-&gt;icache.ways
 suffix:semicolon
-id|dcache_way_size
+id|c-&gt;dcache.waysize
 op_assign
 id|dcache_size
 op_div
@@ -3603,18 +3588,18 @@ multiline_comment|/*&n;&t; * R10000 and R12000 P-caches are odd in a positive wa
 r_if
 c_cond
 (paren
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 op_ne
 id|CPU_R10000
 op_logical_and
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 op_ne
 id|CPU_R12000
 )paren
 r_if
 c_cond
 (paren
-id|dcache_way_size
+id|c-&gt;dcache.waysize
 OG
 id|PAGE_SIZE
 )paren
@@ -3988,11 +3973,6 @@ id|addr
 op_sub_assign
 id|begin
 suffix:semicolon
-id|c
-op_assign
-op_amp
-id|current_cpu_data
-suffix:semicolon
 id|scache_size
 op_assign
 id|addr
@@ -4151,12 +4131,20 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|cpuinfo_mips
+op_star
+id|c
+op_assign
+op_amp
+id|current_cpu_data
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|current_cpu_data.dcache.linesz
+id|c-&gt;dcache.linesz
 OG
-id|current_cpu_data.scache.linesz
+id|c-&gt;scache.linesz
 )paren
 id|panic
 c_func
@@ -4167,11 +4155,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 op_eq
 id|CPU_R10000
 op_logical_or
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 op_eq
 id|CPU_R12000
 )paren
@@ -4190,7 +4178,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|current_cpu_data.scache.linesz
+id|c-&gt;scache.linesz
 )paren
 (brace
 r_case
@@ -4314,7 +4302,7 @@ multiline_comment|/*&n;&t; * Do the probing thing on R4000SC and R4400SC process
 r_switch
 c_cond
 (paren
-id|current_cpu_data.cputype
+id|c-&gt;cputype
 )paren
 (brace
 r_case
@@ -4470,18 +4458,18 @@ r_if
 c_cond
 (paren
 (paren
-id|current_cpu_data.isa_level
+id|c-&gt;isa_level
 op_eq
 id|MIPS_CPU_ISA_M32
 op_logical_or
-id|current_cpu_data.isa_level
+id|c-&gt;isa_level
 op_eq
 id|MIPS_CPU_ISA_M64
 )paren
 op_logical_and
 op_logical_neg
 (paren
-id|current_cpu_data.scache.flags
+id|c-&gt;scache.flags
 op_amp
 id|MIPS_CACHE_NOT_PRESENT
 )paren
@@ -4490,6 +4478,23 @@ id|panic
 c_func
 (paren
 l_string|&quot;Dunno how to handle MIPS32 / MIPS64 second level cache&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* compute a couple of other cache variables */
+id|c-&gt;scache.waysize
+op_assign
+id|scache_size
+op_div
+id|c-&gt;scache.ways
+suffix:semicolon
+id|c-&gt;scache.sets
+op_assign
+id|scache_size
+op_div
+(paren
+id|c-&gt;scache.linesz
+op_star
+id|c-&gt;scache.ways
 )paren
 suffix:semicolon
 id|printk
@@ -4509,7 +4514,7 @@ comma
 id|c-&gt;scache.linesz
 )paren
 suffix:semicolon
-id|current_cpu_data.options
+id|c-&gt;options
 op_or_assign
 id|MIPS_CPU_SUBSET_CACHES
 suffix:semicolon
@@ -4585,6 +4590,14 @@ r_extern
 r_char
 id|except_vec2_generic
 suffix:semicolon
+r_struct
+id|cpuinfo_mips
+op_star
+id|c
+op_assign
+op_amp
+id|current_cpu_data
+suffix:semicolon
 multiline_comment|/* Default cache error handler for R4000 and R5000 family */
 id|memcpy
 c_func
@@ -4642,13 +4655,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current_cpu_data.dcache.sets
+id|c-&gt;dcache.sets
 op_star
-id|current_cpu_data.dcache.ways
+id|c-&gt;dcache.ways
 OG
 id|PAGE_SIZE
 )paren
-id|current_cpu_data.dcache.flags
+id|c-&gt;dcache.flags
 op_or_assign
 id|MIPS_CACHE_ALIASES
 suffix:semicolon
@@ -4661,9 +4674,9 @@ c_func
 r_int
 r_int
 comma
-id|current_cpu_data.dcache.sets
+id|c-&gt;dcache.sets
 op_star
-id|current_cpu_data.dcache.linesz
+id|c-&gt;dcache.linesz
 op_minus
 l_int|1
 comma

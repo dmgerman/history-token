@@ -14428,7 +14428,7 @@ id|ESPLOG
 c_func
 (paren
 (paren
-l_string|&quot;esp%d: illegal command&bslash;n&quot;
+l_string|&quot;esp%d: invalid command&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 )paren

@@ -1,7 +1,5 @@
-multiline_comment|/* $Id: kbd-jazz.c,v 1.1 1998/10/28 12:38:10 ralf Exp $&n; *&n; * Low-level hardware access stuff for Jazz family machines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Low-level hardware access stuff for Jazz family machines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/pc_keyb.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 DECL|macro|jazz_kh
 mdefine_line|#define jazz_kh ((keyboard_hardware *) JAZZ_KEYBOARD_ADDRESS)

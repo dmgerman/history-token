@@ -1,12 +1,9 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Waldorf GMBH&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2001, 2002, 2003 Ralf Baechle&n; * Copyright (C) 1996 Paul M. Antoine&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 Waldorf GMBH&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2001, 2002, 2003 Ralf Baechle&n; * Copyright (C) 1996 Paul M. Antoine&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PROCESSOR_H
 DECL|macro|_ASM_PROCESSOR_H
 mdefine_line|#define _ASM_PROCESSOR_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;asm/isadep.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
+multiline_comment|/*&n; * Return current * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l;})
 macro_line|#ifndef __ASSEMBLY__
@@ -14,8 +11,11 @@ macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
-macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#if defined(CONFIG_SGI_IP27)
+macro_line|#include &lt;asm/sn/types.h&gt;
+macro_line|#include &lt;asm/sn/intr_public.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * Descriptor for a cache&n; */
 DECL|struct|cache_desc
 r_struct
@@ -26,16 +26,25 @@ r_int
 r_int
 id|linesz
 suffix:semicolon
+multiline_comment|/* Size of line in bytes */
 DECL|member|ways
 r_int
 r_int
 id|ways
 suffix:semicolon
+multiline_comment|/* Number of ways */
 DECL|member|sets
 r_int
 r_int
 id|sets
 suffix:semicolon
+multiline_comment|/* Number of lines per set */
+DECL|member|waysize
+r_int
+r_int
+id|waysize
+suffix:semicolon
+multiline_comment|/* Bytes per way */
 DECL|member|waybit
 r_int
 r_int
@@ -47,7 +56,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* Flags describingcache properties */
+multiline_comment|/* Flags describing cache properties */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Flag definitions&n; */
@@ -73,6 +82,63 @@ r_int
 r_int
 id|asid_cache
 suffix:semicolon
+macro_line|#if defined(CONFIG_SGI_IP27)
+DECL|member|p_cpuid
+id|cpuid_t
+id|p_cpuid
+suffix:semicolon
+multiline_comment|/* PROM assigned cpuid */
+DECL|member|p_nodeid
+id|cnodeid_t
+id|p_nodeid
+suffix:semicolon
+multiline_comment|/* my node ID in compact-id-space */
+DECL|member|p_nasid
+id|nasid_t
+id|p_nasid
+suffix:semicolon
+multiline_comment|/* my node ID in numa-as-id-space */
+DECL|member|p_slice
+r_int
+r_char
+id|p_slice
+suffix:semicolon
+multiline_comment|/* Physical position on node board */
+DECL|member|p_intmasks
+id|hub_intmasks_t
+id|p_intmasks
+suffix:semicolon
+multiline_comment|/* SN0 per-CPU interrupt masks */
+macro_line|#endif
+macro_line|#if 0
+r_int
+r_int
+id|loops_per_sec
+suffix:semicolon
+r_int
+r_int
+id|ipi_count
+suffix:semicolon
+r_int
+r_int
+id|irq_attempt
+(braket
+id|NR_IRQS
+)braket
+suffix:semicolon
+r_int
+r_int
+id|smp_local_irq_count
+suffix:semicolon
+r_int
+r_int
+id|prof_multiplier
+suffix:semicolon
+r_int
+r_int
+id|prof_counter
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Capability and feature descriptor structure for MIPS CPU&n;&t; */
 DECL|member|options
 r_int
@@ -131,7 +197,7 @@ id|__attribute__
 c_func
 (paren
 (paren
-id|__aligned__
+id|aligned
 c_func
 (paren
 id|SMP_CACHE_BYTES
@@ -166,8 +232,14 @@ DECL|macro|cpu_has_mcheck
 mdefine_line|#define cpu_has_mcheck&t;&t;(cpu_data[0].options &amp; MIPS_CPU_MCHECK)
 DECL|macro|cpu_has_ejtag
 mdefine_line|#define cpu_has_ejtag&t;&t;(cpu_data[0].options &amp; MIPS_CPU_EJTAG)
+multiline_comment|/* no FPU exception; never set on 64-bit */
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|cpu_has_nofpuex
+mdefine_line|#define cpu_has_nofpuex&t;&t;0
+macro_line|#else
 DECL|macro|cpu_has_nofpuex
 mdefine_line|#define cpu_has_nofpuex&t;&t;(cpu_data[0].options &amp; MIPS_CPU_NOFPUEX)
+macro_line|#endif
 DECL|macro|cpu_has_llsc
 mdefine_line|#define cpu_has_llsc&t;&t;(cpu_data[0].options &amp; MIPS_CPU_LLSC)
 DECL|macro|cpu_has_vtag_icache
@@ -176,8 +248,13 @@ DECL|macro|cpu_has_dc_aliases
 mdefine_line|#define cpu_has_dc_aliases&t;(cpu_data[0].dcache.flags &amp; MIPS_CACHE_ALIASES)
 DECL|macro|cpu_has_ic_fills_f_dc
 mdefine_line|#define cpu_has_ic_fills_f_dc&t;(cpu_data[0].dcache.flags &amp; MIPS_CACHE_IC_F_DC)
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|cpu_has_64bits
+mdefine_line|#define cpu_has_64bits&t;&t;1
+macro_line|#else
 DECL|macro|cpu_has_64bits
 mdefine_line|#define cpu_has_64bits&t;&t;(cpu_data[0].isa_level &amp; MIPS_CPU_ISA_64BIT)
+macro_line|#endif
 DECL|macro|cpu_has_subset_pcaches
 mdefine_line|#define cpu_has_subset_pcaches&t;(cpu_data[0].options &amp; MIPS_CPU_SUBSET_CACHES)
 r_extern
@@ -237,56 +314,68 @@ DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro
 mdefine_line|#define MCA_bus__is_a_macro /* for versions in ksyms.c */
-multiline_comment|/*&n; * User space process size: 2GB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.  TASK_SIZE&n; * for a 64 bit kernel expandable to 8192EB, of which the current MIPS&n; * implementations will &quot;only&quot; be able to use 1TB ...&n; */
+macro_line|#ifdef CONFIG_MIPS32
+multiline_comment|/*&n; * User space process size: 2GB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.&n; */
 DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE&t;(0x7fff8000UL)
-multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
+mdefine_line|#define TASK_SIZE&t;0x7fff8000UL
+multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+multiline_comment|/*&n; * User space process size: 1TB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.  TASK_SIZE&n; * is limited to 1TB by the R4000 architecture; R10000 and better can&n; * support 16TB; the architectural reserve for future expansion is&n; * 8192EB ...&n; */
+DECL|macro|TASK_SIZE32
+mdefine_line|#define TASK_SIZE32&t;0x7fff8000UL
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE&t;0x10000000000UL
+multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
+DECL|macro|TASK_UNMAPPED_BASE
+mdefine_line|#define TASK_UNMAPPED_BASE&t;((current-&gt;thread.mflags &amp; MF_32BIT_ADDR) ? &bslash;&n;&t;PAGE_ALIGN(TASK_SIZE32 / 3) : PAGE_ALIGN(TASK_SIZE / 3))
+macro_line|#endif
 multiline_comment|/*&n; * Size of io_bitmap in longwords: 32 is ports 0-0x3ff.&n; */
 DECL|macro|IO_BITMAP_SIZE
 mdefine_line|#define IO_BITMAP_SIZE&t;32
 DECL|macro|NUM_FPU_REGS
 mdefine_line|#define NUM_FPU_REGS&t;32
-DECL|struct|mips_fpu_hard_struct
-r_struct
-id|mips_fpu_hard_struct
-(brace
-DECL|member|fp_regs
-r_float
-id|fp_regs
-(braket
-id|NUM_FPU_REGS
-)braket
-suffix:semicolon
-DECL|member|control
-r_int
-r_int
-id|control
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * It would be nice to add some more fields for emulator statistics, but there&n; * are a number of fixed offsets in offset.h and elsewhere that would have to&n; * be recalculated by hand.  So the additional information will be private to&n; * the FPU emulator for now.  See asm-mips/fpu_emulator.h.&n; */
 DECL|typedef|fpureg_t
 r_typedef
 id|u64
 id|fpureg_t
 suffix:semicolon
-DECL|struct|mips_fpu_soft_struct
+DECL|struct|mips_fpu_hard_struct
 r_struct
-id|mips_fpu_soft_struct
+id|mips_fpu_hard_struct
 (brace
-DECL|member|regs
+DECL|member|fpr
 id|fpureg_t
-id|regs
+id|fpr
 (braket
 id|NUM_FPU_REGS
 )braket
 suffix:semicolon
-DECL|member|sr
+DECL|member|fcr31
 r_int
 r_int
-id|sr
+id|fcr31
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * It would be nice to add some more fields for emulator statistics, but there&n; * are a number of fixed offsets in offset.h and elsewhere that would have to&n; * be recalculated by hand.  So the additional information will be private to&n; * the FPU emulator for now.  See asm-mips/fpu_emulator.h.&n; */
+DECL|struct|mips_fpu_soft_struct
+r_struct
+id|mips_fpu_soft_struct
+(brace
+DECL|member|fpr
+id|fpureg_t
+id|fpr
+(braket
+id|NUM_FPU_REGS
+)braket
+suffix:semicolon
+DECL|member|fcr31
+r_int
+r_int
+id|fcr31
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -401,9 +490,13 @@ r_int
 id|trap_no
 suffix:semicolon
 DECL|macro|MF_FIXADE
-mdefine_line|#define MF_FIXADE 1&t;&t;&t;/* Fix address errors in software */
+mdefine_line|#define MF_FIXADE&t;1&t;&t;/* Fix address errors in software */
 DECL|macro|MF_LOGADE
-mdefine_line|#define MF_LOGADE 2&t;&t;&t;/* Log address errors to syslog */
+mdefine_line|#define MF_LOGADE&t;2&t;&t;/* Log address errors to syslog */
+DECL|macro|MF_32BIT_REGS
+mdefine_line|#define MF_32BIT_REGS&t;4&t;&t;/* also implies 16/32 fprs */
+DECL|macro|MF_32BIT_ADDR
+mdefine_line|#define MF_32BIT_ADDR&t;8&t;&t;/* 32-bit address space (o32/n32) */
 DECL|member|mflags
 r_int
 r_int
@@ -422,13 +515,22 @@ id|irix_oldctx
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MF_ABI_MASK
+mdefine_line|#define MF_ABI_MASK&t;(MF_32BIT_REGS | MF_32BIT_ADDR)
+DECL|macro|MF_O32
+mdefine_line|#define MF_O32&t;&t;(MF_32BIT_REGS | MF_32BIT_ADDR)
+DECL|macro|MF_N32
+mdefine_line|#define MF_N32&t;&t;MF_32BIT_ADDR
+DECL|macro|MF_N64
+mdefine_line|#define MF_N64&t;&t;0
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  { &bslash;&n;        /* &bslash;&n;         * saved main processor registers &bslash;&n;         */ &bslash;&n;&t;0, 0, 0, 0, 0, 0, 0, 0, &bslash;&n;&t;               0, 0, 0, &bslash;&n;&t;/* &bslash;&n;&t; * saved cp0 stuff &bslash;&n;&t; */ &bslash;&n;&t;0, &bslash;&n;&t;/* &bslash;&n;&t; * saved fpu/fpu emulator stuff &bslash;&n;&t; */ &bslash;&n;&t;INIT_FPU, &bslash;&n;&t;/* &bslash;&n;&t; * Other stuff associated with the process &bslash;&n;&t; */ &bslash;&n;&t;0, 0, 0, 0, &bslash;&n;&t;/* &bslash;&n;&t; * For now the default is to fix address errors &bslash;&n;&t; */ &bslash;&n;&t;MF_FIXADE, 0, 0 &bslash;&n;}
 macro_line|#ifdef __KERNEL__
-DECL|macro|KERNEL_STACK_SIZE
-mdefine_line|#define KERNEL_STACK_SIZE 8192
 macro_line|#ifndef __ASSEMBLY__
+r_struct
+id|task_struct
+suffix:semicolon
 multiline_comment|/* Free all resources held by a thread. */
 DECL|macro|release_thread
 mdefine_line|#define release_thread(thread) do { } while(0)
@@ -466,9 +568,9 @@ id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|t
+id|tsk
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
@@ -491,9 +593,6 @@ r_int
 id|sp
 )paren
 suffix:semicolon
-r_struct
-id|task_struct
-suffix:semicolon
 r_int
 r_int
 id|get_wchan
@@ -508,7 +607,7 @@ suffix:semicolon
 DECL|macro|__PT_REG
 mdefine_line|#define __PT_REG(reg) ((long)&amp;((struct pt_regs *)0)-&gt;reg - sizeof(struct pt_regs))
 DECL|macro|__KSTK_TOS
-mdefine_line|#define __KSTK_TOS(tsk) ((unsigned long)(tsk-&gt;thread_info) + KERNEL_STACK_SIZE - 32)
+mdefine_line|#define __KSTK_TOS(tsk) ((unsigned long)(tsk-&gt;thread_info) + THREAD_SIZE - 32)
 DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk) (*(unsigned long *)(__KSTK_TOS(tsk) + __PT_REG(cp0_epc)))
 DECL|macro|KSTK_ESP

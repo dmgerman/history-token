@@ -6698,9 +6698,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Try again after 10ms. */
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 (paren

@@ -145,6 +145,13 @@ id|s
 op_assign
 id|e-&gt;stats
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+)paren
+suffix:semicolon
 id|n_conns
 op_assign
 id|s-&gt;conns
@@ -365,6 +372,13 @@ l_int|0xF
 )paren
 op_rshift
 l_int|5
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|s-&gt;lock
+)paren
 suffix:semicolon
 )brace
 id|read_unlock

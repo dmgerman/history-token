@@ -15,6 +15,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
+macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
@@ -1643,6 +1644,12 @@ DECL|member|amp_gpio
 r_int
 id|amp_gpio
 suffix:semicolon
+multiline_comment|/* midi */
+DECL|member|rmidi
+id|snd_rawmidi_t
+op_star
+id|rmidi
+suffix:semicolon
 multiline_comment|/* pcm streams */
 DECL|member|num_substreams
 r_int
@@ -2050,6 +2057,8 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * lowlevel functions&n; */
+DECL|macro|big_mdelay
+mdefine_line|#define big_mdelay(msec) do {&bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);&bslash;&n;&t;schedule_timeout(((msec) * HZ) / 1000);&bslash;&n;} while (0)
 DECL|function|snd_m3_outw
 r_inline
 r_static
@@ -2289,7 +2298,7 @@ op_amp
 op_complement
 id|REGB_STOP_CLOCK
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|10
@@ -4624,6 +4633,10 @@ c_func
 id|subs
 )paren
 suffix:semicolon
+r_int
+r_int
+id|ptr
+suffix:semicolon
 id|m3_dma_t
 op_star
 id|s
@@ -4645,12 +4658,15 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-r_return
-id|bytes_to_frames
+id|spin_lock
 c_func
 (paren
-id|subs-&gt;runtime
-comma
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
+id|ptr
+op_assign
 id|snd_m3_get_pointer
 c_func
 (paren
@@ -4660,6 +4676,21 @@ id|s
 comma
 id|subs
 )paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
+r_return
+id|bytes_to_frames
+c_func
+(paren
+id|subs-&gt;runtime
+comma
+id|ptr
 )paren
 suffix:semicolon
 )brace
@@ -4817,7 +4848,7 @@ c_func
 (paren
 id|chip-&gt;iobase
 op_plus
-l_int|0x1A
+id|HOST_INT_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -4830,18 +4861,6 @@ l_int|0xff
 r_return
 id|IRQ_NONE
 suffix:semicolon
-multiline_comment|/* presumably acking the ints? */
-id|outw
-c_func
-(paren
-id|status
-comma
-id|chip-&gt;iobase
-op_plus
-l_int|0x1A
-)paren
-suffix:semicolon
-multiline_comment|/*if (in_suspend)&n;&t;&t;return IRQ_NONE;*/
 multiline_comment|/*&n;&t; * ack an assp int if its running&n;&t; * and has an int pending&n;&t; */
 r_if
 c_cond
@@ -4958,22 +4977,38 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* XXX is this needed? */
+macro_line|#if 0 /* TODO: not supported yet */
 r_if
 c_cond
 (paren
+(paren
 id|status
 op_amp
-l_int|0x40
+id|MPU401_INT_PENDING
 )paren
-id|outb
+op_logical_and
+id|chip-&gt;rmidi
+)paren
+id|snd_mpu401_uart_interrupt
 c_func
 (paren
-l_int|0x40
+id|irq
 comma
-id|chip-&gt;iobase
-op_plus
-l_int|0x1A
+id|chip-&gt;rmidi-&gt;private_data
+comma
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* ack ints */
+id|snd_m3_outw
+c_func
+(paren
+id|chip
+comma
+id|HOST_INT_STATUS
+comma
+id|status
 )paren
 suffix:semicolon
 r_return
@@ -6313,9 +6348,6 @@ c_func
 id|m3_t
 op_star
 id|chip
-comma
-r_int
-id|busywait
 )paren
 (brace
 id|u16
@@ -6474,21 +6506,6 @@ op_plus
 id|GPIO_DIRECTION
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|busywait
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-id|delay1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|set_current_state
 c_func
 (paren
@@ -6507,7 +6524,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-)brace
 id|outw
 c_func
 (paren
@@ -6548,21 +6564,6 @@ op_plus
 id|GPIO_MASK
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|busywait
-)paren
-(brace
-id|mdelay
-c_func
-(paren
-id|delay2
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|set_current_state
 c_func
 (paren
@@ -6581,7 +6582,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6637,7 +6637,7 @@ op_plus
 id|RING_BUS_CTRL_A
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|20
@@ -6653,7 +6653,7 @@ op_plus
 id|RING_BUS_CTRL_A
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|50
@@ -10134,10 +10134,51 @@ suffix:semicolon
 id|u32
 id|n
 suffix:semicolon
+id|u16
+id|w
+suffix:semicolon
 id|u8
 id|t
 suffix:semicolon
 multiline_comment|/* makes as much sense as &squot;n&squot;, no? */
+id|pci_read_config_word
+c_func
+(paren
+id|pcidev
+comma
+id|PCI_LEGACY_AUDIO_CTRL
+comma
+op_amp
+id|w
+)paren
+suffix:semicolon
+id|w
+op_and_assign
+op_complement
+(paren
+id|SOUND_BLASTER_ENABLE
+op_or
+id|FM_SYNTHESIS_ENABLE
+op_or
+id|MPU401_IO_ENABLE
+op_or
+id|MPU401_IRQ_ENABLE
+op_or
+id|ALIAS_10BIT_IO
+op_or
+id|DISABLE_LEGACY
+)paren
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pcidev
+comma
+id|PCI_LEGACY_AUDIO_CTRL
+comma
+id|w
+)paren
+suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
@@ -10337,6 +10378,8 @@ id|outw
 c_func
 (paren
 id|ASSP_INT_ENABLE
+op_or
+id|MPU401_INT_ENABLE
 comma
 id|io
 op_plus
@@ -10457,6 +10500,24 @@ c_func
 id|chip-&gt;substreams
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|chip-&gt;iobase_res
+)paren
+(brace
+id|snd_m3_outw
+c_func
+(paren
+id|chip
+comma
+id|HOST_INT_CTRL
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* disable ints */
 )brace
 macro_line|#ifdef CONFIG_PM
 r_if
@@ -10580,7 +10641,7 @@ c_func
 id|chip-&gt;pcm
 )paren
 suffix:semicolon
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|10
@@ -10765,8 +10826,6 @@ id|snd_m3_ac97_reset
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* restore dsp image */
@@ -10883,7 +10942,6 @@ id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef PCI_OLD_SUSPEND
 DECL|function|snd_m3_suspend
 r_static
 r_int
@@ -10971,82 +11029,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|snd_m3_suspend
-r_static
-r_void
-id|snd_m3_suspend
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci
-)paren
-(brace
-id|m3_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|pci
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|m3_suspend
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-DECL|function|snd_m3_resume
-r_static
-r_void
-id|snd_m3_resume
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pci
-)paren
-(brace
-id|m3_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|m3_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|pci
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|m3_resume
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* callback */
 DECL|function|snd_m3_set_power_state
 r_static
@@ -11580,8 +11562,6 @@ id|snd_m3_ac97_reset
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_m3_assp_init
@@ -12115,6 +12095,48 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#if 0 /* TODO: not supported yet */
+multiline_comment|/* TODO enable midi irq and i/o */
+id|err
+op_assign
+id|snd_mpu401_uart_new
+c_func
+(paren
+id|chip-&gt;card
+comma
+l_int|0
+comma
+id|MPU401_HW_MPU401
+comma
+id|chip-&gt;iobase
+op_plus
+id|MPU401_DATA_PORT
+comma
+l_int|1
+comma
+id|chip-&gt;irq
+comma
+l_int|0
+comma
+op_amp
+id|chip-&gt;rmidi
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;maestro3: no midi support.&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|pci_set_drvdata
 c_func
 (paren

@@ -256,7 +256,7 @@ op_assign
 id|CPU_SH7729
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * SH-3 doesn&squot;t have seperate caches&n;&t;&t; */
+multiline_comment|/*&n;&t; * SH-3 doesn&squot;t have separate caches&n;&t;&t; */
 id|cpu_data-&gt;dcache.flags
 op_or_assign
 id|SH_CACHE_COMBINED

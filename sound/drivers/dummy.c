@@ -73,6 +73,14 @@ mdefine_line|#define USE_CHANNELS_MAX&t;2
 mdefine_line|#define USE_PERIODS_MIN&t;&t;2
 mdefine_line|#define USE_PERIODS_MAX&t;&t;255
 macro_line|#endif
+macro_line|#if 0 /* simple AC97 bridge (intel8x0) with 48kHz AC97 only codec */
+mdefine_line|#define USE_FORMATS&t;&t;SNDRV_PCM_FMTBIT_S16_LE
+mdefine_line|#define USE_CHANNELS_MIN&t;2
+mdefine_line|#define USE_CHANNELS_MAX&t;2
+mdefine_line|#define USE_RATE&t;&t;SNDRV_PCM_RATE_48000
+mdefine_line|#define USE_RATE_MIN&t;&t;48000
+mdefine_line|#define USE_RATE_MAX&t;&t;48000
+macro_line|#endif
 multiline_comment|/* defaults */
 macro_line|#ifndef MAX_BUFFER_SIZE
 DECL|macro|MAX_BUFFER_SIZE
@@ -81,6 +89,14 @@ macro_line|#endif
 macro_line|#ifndef USE_FORMATS
 DECL|macro|USE_FORMATS
 mdefine_line|#define USE_FORMATS &t;&t;(SNDRV_PCM_FMTBIT_U8 | SNDRV_PCM_FMTBIT_S16_LE)
+macro_line|#endif
+macro_line|#ifndef USE_RATE
+DECL|macro|USE_RATE
+mdefine_line|#define USE_RATE&t;&t;SNDRV_PCM_RATE_CONTINUOUS | SNDRV_PCM_RATE_8000_48000
+DECL|macro|USE_RATE_MIN
+mdefine_line|#define USE_RATE_MIN&t;&t;5500
+DECL|macro|USE_RATE_MAX
+mdefine_line|#define USE_RATE_MAX&t;&t;48000
 macro_line|#endif
 macro_line|#ifndef USE_CHANNELS_MIN
 DECL|macro|USE_CHANNELS_MIN
@@ -1077,19 +1093,17 @@ comma
 dot
 id|rates
 op_assign
-id|SNDRV_PCM_RATE_CONTINUOUS
-op_or
-id|SNDRV_PCM_RATE_8000_48000
+id|USE_RATE
 comma
 dot
 id|rate_min
 op_assign
-l_int|5500
+id|USE_RATE_MIN
 comma
 dot
 id|rate_max
 op_assign
-l_int|48000
+id|USE_RATE_MAX
 comma
 dot
 id|channels_min
@@ -1158,19 +1172,17 @@ comma
 dot
 id|rates
 op_assign
-id|SNDRV_PCM_RATE_CONTINUOUS
-op_or
-id|SNDRV_PCM_RATE_8000_48000
+id|USE_RATE
 comma
 dot
 id|rate_min
 op_assign
-l_int|5500
+id|USE_RATE_MIN
 comma
 dot
 id|rate_max
 op_assign
-l_int|48000
+id|USE_RATE_MAX
 comma
 dot
 id|channels_min

@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  L2 Cache constants and macros&t;&t;File: sb1250_l2c.h&n;    *  &n;    *  This module contains constants useful for manipulating the&n;    *  level 2 cache.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  L2 Cache constants and macros&t;&t;File: sb1250_l2c.h&n;    *  &n;    *  This module contains constants useful for manipulating the&n;    *  level 2 cache.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_L2C_H
 DECL|macro|_SB1250_L2C_H
 mdefine_line|#define _SB1250_L2C_H
@@ -91,7 +91,7 @@ DECL|macro|L2C_ENTRIES_PER_WAY
 mdefine_line|#define L2C_ENTRIES_PER_WAY       4096
 DECL|macro|L2C_NUM_WAYS
 mdefine_line|#define L2C_NUM_WAYS              4
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 multiline_comment|/*&n; * L2 Read Misc. register (A_L2_READ_MISC)&n; */
 DECL|macro|S_L2C_MISC_NO_WAY
 mdefine_line|#define S_L2C_MISC_NO_WAY&t;&t;10
@@ -121,6 +121,6 @@ DECL|macro|M_L2C_MISC_SCACHE_DISABLE_R
 mdefine_line|#define M_L2C_MISC_SCACHE_DISABLE_R&t;_SB_MAKEMASK1(1)
 DECL|macro|M_L2C_MISC_SCACHE_DISABLE_L
 mdefine_line|#define M_L2C_MISC_SCACHE_DISABLE_L&t;_SB_MAKEMASK1(0)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 macro_line|#endif
 eof

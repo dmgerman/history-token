@@ -806,6 +806,11 @@ id|semaphore
 id|i_shared_sem
 suffix:semicolon
 multiline_comment|/* protect both above lists */
+DECL|member|truncate_count
+id|atomic_t
+id|truncate_count
+suffix:semicolon
+multiline_comment|/* Cover race condition with truncate */
 DECL|member|dirtied_when
 r_int
 r_int
@@ -6708,6 +6713,8 @@ r_struct
 id|file_operations
 id|generic_ro_fops
 suffix:semicolon
+DECL|macro|special_file
+mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
 r_extern
 r_int
 id|vfs_readlink

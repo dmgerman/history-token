@@ -291,17 +291,13 @@ DECL|macro|FR_BIT
 mdefine_line|#define FR_BIT 0
 macro_line|#endif
 DECL|macro|SIFROMREG
-mdefine_line|#define SIFROMREG(si,x)&t;((si) = &bslash;&n;&t;&t;&t;(xcp-&gt;cp0_status &amp; FR_BIT) || !(x &amp; 1) ? &bslash;&n;&t;&t;&t;(int)ctx-&gt;regs[x] : &bslash;&n;&t;&t;&t;(int)(ctx-&gt;regs[x &amp; ~1] &gt;&gt; 32 ))
+mdefine_line|#define SIFROMREG(si,x)&t;((si) = &bslash;&n;&t;&t;&t;(xcp-&gt;cp0_status &amp; FR_BIT) || !(x &amp; 1) ? &bslash;&n;&t;&t;&t;(int)ctx-&gt;fpr[x] : &bslash;&n;&t;&t;&t;(int)(ctx-&gt;fpr[x &amp; ~1] &gt;&gt; 32 ))
 DECL|macro|SITOREG
-mdefine_line|#define SITOREG(si,x)&t;(ctx-&gt;regs[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)] = &bslash;&n;&t;&t;&t;(xcp-&gt;cp0_status &amp; FR_BIT) || !(x &amp; 1) ? &bslash;&n;&t;&t;&t;ctx-&gt;regs[x &amp; ~1] &gt;&gt; 32 &lt;&lt; 32 | (u32)(si) : &bslash;&n;&t;&t;&t;ctx-&gt;regs[x &amp; ~1] &lt;&lt; 32 &gt;&gt; 32 | (u64)(si) &lt;&lt; 32)
+mdefine_line|#define SITOREG(si,x)&t;(ctx-&gt;fpr[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)] = &bslash;&n;&t;&t;&t;(xcp-&gt;cp0_status &amp; FR_BIT) || !(x &amp; 1) ? &bslash;&n;&t;&t;&t;ctx-&gt;fpr[x &amp; ~1] &gt;&gt; 32 &lt;&lt; 32 | (u32)(si) : &bslash;&n;&t;&t;&t;ctx-&gt;fpr[x &amp; ~1] &lt;&lt; 32 &gt;&gt; 32 | (u64)(si) &lt;&lt; 32)
 DECL|macro|DIFROMREG
-mdefine_line|#define DIFROMREG(di,x)&t;((di) = &bslash;&n;&t;&t;&t;ctx-&gt;regs[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)])
+mdefine_line|#define DIFROMREG(di,x)&t;((di) = &bslash;&n;&t;&t;&t;ctx-&gt;fpr[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)])
 DECL|macro|DITOREG
-mdefine_line|#define DITOREG(di,x)&t;(ctx-&gt;regs[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)] &bslash;&n;&t;&t;&t;= (di))
-DECL|macro|DIFROMREG
-mdefine_line|#define DIFROMREG(di,x)&t;((di) = &bslash;&n;&t;&t;&t;ctx-&gt;regs[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)])
-DECL|macro|DITOREG
-mdefine_line|#define DITOREG(di,x)&t;(ctx-&gt;regs[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)] &bslash;&n;&t;&t;&t;= (di))
+mdefine_line|#define DITOREG(di,x)&t;(ctx-&gt;fpr[x &amp; ~((xcp-&gt;cp0_status &amp; FR_BIT) == 0)] &bslash;&n;&t;&t;&t;= (di))
 DECL|macro|SPFROMREG
 mdefine_line|#define SPFROMREG(sp,x)&t;SIFROMREG((sp).bits,x)
 DECL|macro|SPTOREG
@@ -1030,7 +1026,7 @@ id|FPCREG_CSR
 (brace
 id|value
 op_assign
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 suffix:semicolon
 macro_line|#ifdef CSRTRACE
 id|printk
@@ -1169,7 +1165,7 @@ id|value
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_assign
 id|value
 suffix:semicolon
@@ -1177,7 +1173,7 @@ multiline_comment|/* copy new rounding mode and&n;&t;&t;&t;&t;   flush bit to ie
 id|ieee754_csr.nod
 op_assign
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 l_int|0x1000000
 )paren
@@ -1198,12 +1194,12 @@ r_if
 c_cond
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_rshift
 l_int|5
 )paren
 op_amp
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|FPU_CSR_ALL_E
 )paren
@@ -1237,7 +1233,7 @@ suffix:semicolon
 macro_line|#if __mips &gt;= 4
 id|cond
 op_assign
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|fpucondbit
 (braket
@@ -1253,7 +1249,7 @@ suffix:semicolon
 macro_line|#else
 id|cond
 op_assign
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|FPU_CSR_COND
 suffix:semicolon
@@ -1576,7 +1572,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|cond
 )paren
@@ -2324,10 +2320,10 @@ id|FPU_CSR_INV_X
 op_or
 id|FPU_CSR_INV_S
 suffix:semicolon
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_assign
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 op_complement
 id|FPU_CSR_ALL_X
@@ -2340,7 +2336,7 @@ c_cond
 (paren
 id|ieee754_csr.nod
 )paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_or_assign
 l_int|0x1000000
 suffix:semicolon
@@ -2348,17 +2344,17 @@ r_if
 c_cond
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_rshift
 l_int|5
 )paren
 op_amp
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|FPU_CSR_ALL_E
 )paren
 (brace
-multiline_comment|/*printk (&quot;SIGFPE: fpu csr = %08x&bslash;n&quot;,&n;&t;&t;&t;&t;   ctx-&gt;sr); */
+multiline_comment|/*printk (&quot;SIGFPE: fpu csr = %08x&bslash;n&quot;,&n;&t;&t;&t;&t;   ctx-&gt;fcr31); */
 r_return
 id|SIGFPE
 suffix:semicolon
@@ -2910,7 +2906,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|cond
 )paren
@@ -3734,7 +3730,7 @@ c_cond
 (paren
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|cond
 )paren
@@ -4448,7 +4444,7 @@ op_assign
 id|ieee754sp_flong
 c_func
 (paren
-id|ctx-&gt;regs
+id|ctx-&gt;fpr
 (braket
 id|MIPSInst_FS
 c_func
@@ -4474,7 +4470,7 @@ op_assign
 id|ieee754dp_flong
 c_func
 (paren
-id|ctx-&gt;regs
+id|ctx-&gt;fpr
 (braket
 id|MIPSInst_FS
 c_func
@@ -4508,10 +4504,10 @@ id|SIGILL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Update the fpu CSR register for this operation.&n;&t; * If an exception is required, generate a tidy SIGFPE exception,&n;&t; * without updating the result register.&n;&t; * Note: cause exception bits do not accumulate, they are rewritten&n;&t; * for each op; only the flag/sticky bits accumulate.&n;&t; */
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_assign
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 op_complement
 id|FPU_CSR_ALL_X
@@ -4523,17 +4519,17 @@ r_if
 c_cond
 (paren
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_rshift
 l_int|5
 )paren
 op_amp
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 id|FPU_CSR_ALL_E
 )paren
 (brace
-multiline_comment|/*printk (&quot;SIGFPE: fpu csr = %08x&bslash;n&quot;,ctx-&gt;sr); */
+multiline_comment|/*printk (&quot;SIGFPE: fpu csr = %08x&bslash;n&quot;,ctx-&gt;fcr31); */
 r_return
 id|SIGFPE
 suffix:semicolon
@@ -4575,12 +4571,12 @@ c_cond
 (paren
 id|rv.w
 )paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_or_assign
 id|cond
 suffix:semicolon
 r_else
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_and_assign
 op_complement
 id|cond
@@ -4753,7 +4749,7 @@ multiline_comment|/* Update ieee754_csr. Only relevant if we have a&n;&t;&t;&t; 
 id|ieee754_csr.nod
 op_assign
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 l_int|0x1000000
 )paren
@@ -4764,7 +4760,7 @@ id|ieee754_csr.rm
 op_assign
 id|ieee_rm
 (braket
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_amp
 l_int|0x3
 )braket
@@ -4772,7 +4768,7 @@ suffix:semicolon
 id|ieee754_csr.cx
 op_assign
 (paren
-id|ctx-&gt;sr
+id|ctx-&gt;fcr31
 op_rshift
 l_int|12
 )paren

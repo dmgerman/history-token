@@ -358,6 +358,13 @@ c_func
 id|high_memory
 )paren
 suffix:semicolon
+DECL|variable|invalidate_mmap_range
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|invalidate_mmap_range
+)paren
+suffix:semicolon
 DECL|variable|vmtruncate
 id|EXPORT_SYMBOL
 c_func
@@ -845,6 +852,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|truncate_inode_pages
+)paren
+suffix:semicolon
+DECL|variable|install_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|install_page
 )paren
 suffix:semicolon
 DECL|variable|fsync_bdev

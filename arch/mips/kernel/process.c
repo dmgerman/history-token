@@ -1,13 +1,14 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999, 2000 by Ralf Baechle and others.&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/sys.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
@@ -20,7 +21,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
@@ -107,26 +107,57 @@ r_int
 id|sp
 )paren
 (brace
+r_int
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* New thread loses kernel privileges. */
+id|status
+op_assign
 id|regs-&gt;cp0_status
-op_and_assign
+op_amp
 op_complement
 (paren
 id|ST0_CU0
 op_or
-id|ST0_KSU
-op_or
 id|ST0_CU1
+op_or
+id|KU_MASK
 )paren
 suffix:semicolon
-id|regs-&gt;cp0_status
+macro_line|#ifdef CONFIG_MIPS64
+id|status
+op_and_assign
+op_complement
+id|ST0_FR
+suffix:semicolon
+id|status
+op_or_assign
+(paren
+id|current-&gt;thread.mflags
+op_amp
+id|MF_32BIT_REGS
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+id|ST0_FR
+suffix:semicolon
+macro_line|#endif
+id|status
 op_or_assign
 id|KU_USER
+suffix:semicolon
+id|regs-&gt;cp0_status
+op_assign
+id|status
 suffix:semicolon
 id|current-&gt;used_math
 op_assign
 l_int|0
 suffix:semicolon
-id|loose_fpu
+id|lose_fpu
 c_func
 (paren
 )paren
@@ -224,7 +255,7 @@ r_int
 )paren
 id|ti
 op_plus
-id|KERNEL_STACK_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|32
 suffix:semicolon
@@ -270,31 +301,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Clear error flag */
+macro_line|#ifdef CONFIG_BINFMT_IRIX
 r_if
 c_cond
 (paren
 id|current-&gt;personality
-op_eq
+op_ne
 id|PER_LINUX
 )paren
-(brace
-id|childregs-&gt;regs
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Child gets zero as return value */
-id|regs-&gt;regs
-(braket
-l_int|2
-)braket
-op_assign
-id|p-&gt;pid
-suffix:semicolon
-)brace
-r_else
 (brace
 multiline_comment|/* Under IRIX things are a little different. */
 id|childregs-&gt;regs
@@ -324,6 +338,25 @@ l_int|3
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
+(brace
+id|childregs-&gt;regs
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Child gets zero as return value */
+id|regs-&gt;regs
+(braket
+l_int|2
+)braket
+op_assign
+id|p-&gt;pid
 suffix:semicolon
 )brace
 r_if
@@ -400,8 +433,6 @@ op_complement
 id|ST0_CU2
 op_or
 id|ST0_CU1
-op_or
-id|KU_MASK
 )paren
 suffix:semicolon
 id|childregs-&gt;cp0_status
@@ -411,6 +442,14 @@ op_complement
 id|ST0_CU2
 op_or
 id|ST0_CU1
+)paren
+suffix:semicolon
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|p
+comma
+id|TIF_USEDFPU
 )paren
 suffix:semicolon
 id|p-&gt;set_child_tid
@@ -489,21 +528,23 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;.set&t;noreorder&t;&bslash;n&quot;
-l_string|&quot;&t;move    $6, $sp&t;&t;&bslash;n&quot;
-l_string|&quot;&t;move    $4, %5&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li      $2, %1&t;&t;&bslash;n&quot;
+l_string|&quot;&t;move&t;$6, $sp&t;&t;&bslash;n&quot;
+l_string|&quot;&t;move&t;$4, %5&t;&t;&bslash;n&quot;
+l_string|&quot;&t;li&t;$2, %1&t;&t;&bslash;n&quot;
 l_string|&quot;&t;syscall&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;beq     $6, $sp, 1f&t;&bslash;n&quot;
-l_string|&quot;&t; subu    $sp, 32&t;&bslash;n&quot;
-l_string|&quot;&t;jalr    %4&t;&t;&bslash;n&quot;
-l_string|&quot;&t; move    $4, %3&t;&t;&bslash;n&quot;
-l_string|&quot;&t;move    $4, $2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;li      $2, %2&t;&t;&bslash;n&quot;
+l_string|&quot;&t;beq&t;$6, $sp, 1f&t;&bslash;n&quot;
+macro_line|#ifdef CONFIG_MIPS32&t;/* On o32 the caller has to create the stackframe */
+l_string|&quot;&t;subu&t;$sp, 32&t;&t;&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;&t;move&t;$4, %3&t;&t;&bslash;n&quot;
+l_string|&quot;&t;jalr&t;%4&t;&t;&bslash;n&quot;
+l_string|&quot;&t;move&t;$4, $2&t;&t;&bslash;n&quot;
+l_string|&quot;&t;li&t;$2, %2&t;&t;&bslash;n&quot;
 l_string|&quot;&t;syscall&t;&t;&t;&bslash;n&quot;
-l_string|&quot;1:&t;addiu   $sp, 32&t;&t;&bslash;n&quot;
-l_string|&quot;&t;move    %0, $2&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;reorder&quot;
+macro_line|#ifdef CONFIG_MIPS32&t;/* On o32 the caller has to deallocate the stackframe */
+l_string|&quot;&t;addiu&t;$sp, 32&t;&t;&bslash;n&quot;
+macro_line|#endif
+l_string|&quot;1:&t;move&t;%0, $2&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -717,16 +758,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+macro_line|#ifdef CONFIG_MIPS32
 id|ip-&gt;i_format.opcode
 op_eq
 id|sw_op
 op_logical_and
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|ip-&gt;i_format.opcode
+op_eq
+id|sd_op
+op_logical_and
+macro_line|#endif
 id|ip-&gt;i_format.rs
 op_eq
 l_int|29
 )paren
 (brace
-multiline_comment|/* sw $ra, offset($sp) */
+multiline_comment|/* sw / sd $ra, offset($sp) */
 r_if
 c_cond
 (paren
@@ -755,7 +804,7 @@ r_int
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sw $s8, offset($sp) */
+multiline_comment|/* sw / sd $s8, offset($sp) */
 r_if
 c_cond
 (paren
@@ -889,6 +938,7 @@ id|wait_for_completion
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
 r_int
 r_int
@@ -896,9 +946,9 @@ id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|t
+id|tsk
 )paren
 (brace
 r_extern
@@ -908,6 +958,14 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_struct
+id|thread_struct
+op_star
+id|t
+op_assign
+op_amp
+id|tsk-&gt;thread
 suffix:semicolon
 multiline_comment|/* New born processes are a special case */
 r_if
@@ -1019,8 +1077,7 @@ op_assign
 id|thread_saved_pc
 c_func
 (paren
-op_amp
-id|p-&gt;thread
+id|p
 )paren
 suffix:semicolon
 r_if
@@ -1034,11 +1091,9 @@ id|pc
 op_ge
 id|last_sched
 )paren
-(brace
-r_return
-id|pc
+r_goto
+id|out
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1168,8 +1223,8 @@ id|frame
 id|wait_for_completion_frame.pc_offset
 )braket
 suffix:semicolon
-r_return
-id|pc
+r_goto
+id|out
 suffix:semicolon
 id|schedule_timeout_caller
 suffix:colon
@@ -1245,6 +1300,22 @@ id|sleep_on_timeout_frame.pc_offset
 )braket
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+macro_line|#ifdef CONFIG_MIPS64
+r_if
+c_cond
+(paren
+id|current-&gt;thread.mflags
+op_amp
+id|MF_32BIT_REGS
+)paren
+multiline_comment|/* Kludge for 32-bit ps  */
+id|pc
+op_and_assign
+l_int|0xffffffffUL
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pc
 suffix:semicolon

@@ -1,9 +1,12 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1998, 1999, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_SIGINFO_H
 DECL|macro|_ASM_SIGINFO_H
 mdefine_line|#define _ASM_SIGINFO_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 4)
+DECL|macro|SI_PAD_SIZE
+mdefine_line|#define SI_PAD_SIZE&t;((SI_MAX_SIZE/sizeof(int)) - 4)
 DECL|macro|HAVE_ARCH_SIGINFO_T
 mdefine_line|#define HAVE_ARCH_SIGINFO_T
 DECL|macro|HAVE_ARCH_SIGEVENT_T
@@ -15,8 +18,7 @@ r_struct
 id|siginfo
 suffix:semicolon
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
-multiline_comment|/* The sigval union matches IRIX 32/n32 ABIs for binary compatibility. */
-multiline_comment|/* This structure matches IRIX 32/n32 ABIs for binary compatibility but&n;   has Linux extensions.  */
+multiline_comment|/* This structure matches the 32/n32 ABIs for source compatibility but&n;   has Linux extensions.  */
 DECL|struct|siginfo
 r_typedef
 r_struct
@@ -131,11 +133,20 @@ suffix:semicolon
 multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
 r_struct
 (brace
+macro_line|#ifdef CONFIG_MIPS32
 DECL|member|_band
 r_int
 id|_band
 suffix:semicolon
 multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|member|_band
+r_int
+id|_band
+suffix:semicolon
+multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
+macro_line|#endif
 DECL|member|_fd
 r_int
 id|_fd
@@ -215,6 +226,200 @@ DECL|typedef|siginfo_t
 )brace
 id|siginfo_t
 suffix:semicolon
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT)
+macro_line|#include &lt;linux/compat.h&gt;
+DECL|macro|SI_PAD_SIZE32
+mdefine_line|#define SI_PAD_SIZE32   ((SI_MAX_SIZE/sizeof(int)) - 3)
+DECL|union|sigval32
+r_typedef
+r_union
+id|sigval32
+(brace
+DECL|member|sival_int
+r_int
+id|sival_int
+suffix:semicolon
+DECL|member|sival_ptr
+id|s32
+id|sival_ptr
+suffix:semicolon
+DECL|typedef|sigval_t32
+)brace
+id|sigval_t32
+suffix:semicolon
+DECL|struct|siginfo32
+r_typedef
+r_struct
+id|siginfo32
+(brace
+DECL|member|si_signo
+r_int
+id|si_signo
+suffix:semicolon
+DECL|member|si_code
+r_int
+id|si_code
+suffix:semicolon
+DECL|member|si_errno
+r_int
+id|si_errno
+suffix:semicolon
+r_union
+(brace
+DECL|member|_pad
+r_int
+id|_pad
+(braket
+id|SI_PAD_SIZE32
+)braket
+suffix:semicolon
+multiline_comment|/* kill() */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_kill
+)brace
+id|_kill
+suffix:semicolon
+multiline_comment|/* SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_utime
+id|compat_clock_t
+id|_utime
+suffix:semicolon
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_stime
+id|compat_clock_t
+id|_stime
+suffix:semicolon
+DECL|member|_sigchld
+)brace
+id|_sigchld
+suffix:semicolon
+multiline_comment|/* IRIX SIGCHLD */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_utime
+id|compat_clock_t
+id|_utime
+suffix:semicolon
+DECL|member|_status
+r_int
+id|_status
+suffix:semicolon
+multiline_comment|/* exit code */
+DECL|member|_stime
+id|compat_clock_t
+id|_stime
+suffix:semicolon
+DECL|member|_irix_sigchld
+)brace
+id|_irix_sigchld
+suffix:semicolon
+multiline_comment|/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+r_struct
+(brace
+DECL|member|_addr
+id|s32
+id|_addr
+suffix:semicolon
+multiline_comment|/* faulting insn/memory ref. */
+DECL|member|_sigfault
+)brace
+id|_sigfault
+suffix:semicolon
+multiline_comment|/* SIGPOLL, SIGXFSZ (To do ...)  */
+r_struct
+(brace
+DECL|member|_band
+r_int
+id|_band
+suffix:semicolon
+multiline_comment|/* POLL_IN, POLL_OUT, POLL_MSG */
+DECL|member|_fd
+r_int
+id|_fd
+suffix:semicolon
+DECL|member|_sigpoll
+)brace
+id|_sigpoll
+suffix:semicolon
+multiline_comment|/* POSIX.1b timers */
+r_struct
+(brace
+DECL|member|_timer1
+r_int
+r_int
+id|_timer1
+suffix:semicolon
+DECL|member|_timer2
+r_int
+r_int
+id|_timer2
+suffix:semicolon
+DECL|member|_timer
+)brace
+id|_timer
+suffix:semicolon
+multiline_comment|/* POSIX.1b signals */
+r_struct
+(brace
+DECL|member|_pid
+id|compat_pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* sender&squot;s pid */
+DECL|member|_uid
+id|compat_uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_sigval
+id|sigval_t32
+id|_sigval
+suffix:semicolon
+DECL|member|_rt
+)brace
+id|_rt
+suffix:semicolon
+DECL|member|_sifields
+)brace
+id|_sifields
+suffix:semicolon
+DECL|typedef|siginfo_t32
+)brace
+id|siginfo_t32
+suffix:semicolon
+macro_line|#endif /* defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT) */
 multiline_comment|/*&n; * si_code values&n; * Again these have been choosen to be IRIX compatible.&n; */
 DECL|macro|SI_ASYNCIO
 macro_line|#undef SI_ASYNCIO

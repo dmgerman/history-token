@@ -5,6 +5,7 @@ mdefine_line|#define __ARCH_DESC_H
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 singleline_comment|// 8 byte segment descriptor

@@ -744,9 +744,9 @@ suffix:semicolon
 )brace
 DECL|macro|IS_KSEG1
 mdefine_line|#define IS_KSEG1(addr) (((unsigned long)(addr) &amp; ~0x1fffffffUL) == KSEG1)
-DECL|function|iounmap
+DECL|function|__iounmap
 r_void
-id|iounmap
+id|__iounmap
 c_func
 (paren
 r_void
@@ -841,11 +841,11 @@ c_func
 id|__ioremap
 )paren
 suffix:semicolon
-DECL|variable|iounmap
+DECL|variable|__iounmap
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|iounmap
+id|__iounmap
 )paren
 suffix:semicolon
 eof

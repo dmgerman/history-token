@@ -1,11 +1,10 @@
-multiline_comment|/*&n; *  linux/arch/mips/jazz/process.c&n; *&n; *  Reset a Jazz machine.&n; *&n; *  $Id:$&n; */
+multiline_comment|/*&n; * Reset a Jazz machine.&n; */
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 DECL|function|kb_wait
 r_static
 r_inline
@@ -21,6 +20,16 @@ r_int
 id|start
 op_assign
 id|jiffies
+suffix:semicolon
+r_int
+r_int
+id|timeout
+op_assign
+id|start
+op_plus
+id|HZ
+op_div
+l_int|2
 suffix:semicolon
 r_do
 (brace
@@ -40,14 +49,12 @@ l_int|0x02
 r_return
 suffix:semicolon
 )brace
-r_while
-c_loop
+id|time_before_eq
+c_func
 (paren
 id|jiffies
-op_minus
-id|start
-OL
-l_int|50
+comma
+id|timeout
 )paren
 suffix:semicolon
 )brace

@@ -258,54 +258,6 @@ l_int|12
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_mdelay
-r_static
-r_void
-id|do_mdelay
-c_func
-(paren
-r_int
-id|msec
-comma
-r_int
-id|can_schedule
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|can_schedule
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|msec
-op_star
-id|HZ
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-r_else
-id|mdelay
-c_func
-(paren
-id|msec
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/* Recalibrate chip */
 DECL|function|screamer_recalibrate
@@ -317,9 +269,6 @@ c_func
 id|pmac_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 r_if
@@ -353,12 +302,10 @@ op_eq
 l_int|0x1
 )paren
 multiline_comment|/* delay for broken crystal part */
-id|do_mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|750
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 id|snd_pmac_awacs_write_noreg
@@ -409,7 +356,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|screamer_recalibrate
-mdefine_line|#define screamer_recalibrate(chip, can_schedule) /* NOP */
+mdefine_line|#define screamer_recalibrate(chip) /* NOP */
 macro_line|#endif
 multiline_comment|/*&n; * additional callback to set the pcm format&n; */
 DECL|function|snd_pmac_awacs_set_format
@@ -3223,9 +3170,6 @@ c_func
 id|pmac_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_pmac_awacs_write_noreg
@@ -3388,12 +3332,10 @@ l_string|&quot;PowerBook3,2&quot;
 )paren
 )paren
 (brace
-id|do_mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|100
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|snd_pmac_awacs_write_reg
@@ -3412,12 +3354,10 @@ op_complement
 id|MASK_PAROUT
 )paren
 suffix:semicolon
-id|do_mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|300
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3425,8 +3365,6 @@ id|awacs_restore_all_regs
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -3462,8 +3400,6 @@ id|screamer_recalibrate
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef PMAC_AMP_AVAIL
@@ -4030,8 +3966,6 @@ id|awacs_restore_all_regs
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|chip-&gt;manufacturer
@@ -4053,8 +3987,6 @@ id|screamer_recalibrate
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|chip-&gt;revision

@@ -568,7 +568,14 @@ id|n
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Insert the root user immediately - init already runs with this */
+multiline_comment|/* Insert the root user immediately (init already runs as root) */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|uidhash_lock
+)paren
+suffix:semicolon
 id|uid_hash_insert
 c_func
 (paren
@@ -580,6 +587,13 @@ c_func
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|uidhash_lock
 )paren
 suffix:semicolon
 r_return

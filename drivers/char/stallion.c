@@ -13967,11 +13967,6 @@ id|S_IRUSR
 op_or
 id|S_IWUSR
 comma
-op_amp
-id|stl_fsiomem
-comma
-l_int|NULL
-comma
 l_string|&quot;staliomem/%d&quot;
 comma
 id|i

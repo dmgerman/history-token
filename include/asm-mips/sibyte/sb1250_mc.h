@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Memory Controller constants              File: sb1250_mc.h       &n;    *  &n;    *  This module contains constants and macros useful for&n;    *  programming the memory controller.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Memory Controller constants              File: sb1250_mc.h       &n;    *  &n;    *  This module contains constants and macros useful for&n;    *  programming the memory controller.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_MC_H
 DECL|macro|_SB1250_MC_H
 mdefine_line|#define _SB1250_MC_H
@@ -225,10 +225,10 @@ DECL|macro|G_MC_ADDR_DRIVE
 mdefine_line|#define G_MC_ADDR_DRIVE(x)           _SB_GETVALUE(x,S_MC_ADDR_DRIVE,M_MC_ADDR_DRIVE)
 DECL|macro|V_MC_ADDR_DRIVE_DEFAULT
 mdefine_line|#define V_MC_ADDR_DRIVE_DEFAULT      V_MC_ADDR_DRIVE(0x0)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_MC_REF_DISABLE
 mdefine_line|#define M_MC_REF_DISABLE             _SB_MAKEMASK1(30)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|M_MC_DLL_BYPASS
 mdefine_line|#define M_MC_DLL_BYPASS              _SB_MAKEMASK1(31)
 DECL|macro|S_MC_DQI_SKEW
@@ -365,12 +365,12 @@ DECL|macro|V_MC_DRAM_TYPE_SGRAM
 mdefine_line|#define V_MC_DRAM_TYPE_SGRAM        V_MC_DRAM_TYPE(K_MC_DRAM_TYPE_SGRAM)
 DECL|macro|M_MC_EXTERNALDECODE
 mdefine_line|#define M_MC_EXTERNALDECODE&t;    _SB_MAKEMASK1(35)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_MC_PRE_ON_A8
 mdefine_line|#define M_MC_PRE_ON_A8              _SB_MAKEMASK1(36)
 DECL|macro|M_MC_RAM_WITH_A13
 mdefine_line|#define M_MC_RAM_WITH_A13           _SB_MAKEMASK1(38)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * SDRAM Timing Register  (Table 6-15)&n; */
 DECL|macro|M_MC_w2rIDLE_TWOCYCLES
 mdefine_line|#define M_MC_w2rIDLE_TWOCYCLES&t;  _SB_MAKEMASK1(60)

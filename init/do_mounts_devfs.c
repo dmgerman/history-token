@@ -255,7 +255,7 @@ suffix:semicolon
 id|size
 op_le
 (paren
-l_int|1
+id|PAGE_SIZE
 op_lshift
 id|MAX_ORDER
 )paren

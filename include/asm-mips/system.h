@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; * Copyright (C) 1996 by Paul M. Antoine&n; * Copyright (C) 1994 - 1999 by Ralf Baechle&n; *&n; * Changed set_except_vector declaration to allow return of previous&n; * vector address value - necessary for &quot;borrowing&quot; vectors.&n; *&n; * Kevin D. Kissell, kevink@mips.org and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 95, 96, 97, 98, 99, 2003 by Ralf Baechle&n; * Copyright (C) 1996 by Paul M. Antoine&n; * Copyright (C) 1999 Silicon Graphics&n; * Kevin D. Kissell, kevink@mips.org and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_SYSTEM_H
 DECL|macro|_ASM_SYSTEM_H
 mdefine_line|#define _ASM_SYSTEM_H
@@ -22,7 +22,7 @@ l_string|&quot;.endm&quot;
 )paren
 suffix:semicolon
 DECL|function|local_irq_enable
-r_extern
+r_static
 r_inline
 r_void
 id|local_irq_enable
@@ -64,7 +64,7 @@ l_string|&quot;.endm&quot;
 )paren
 suffix:semicolon
 DECL|function|local_irq_disable
-r_extern
+r_static
 r_inline
 r_void
 id|local_irq_disable
@@ -232,10 +232,9 @@ id|task_struct
 suffix:semicolon
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last) &bslash;&n;do { &bslash;&n;&t;(last) = resume(prev, next, next-&gt;thread_info); &bslash;&n;} while(0)
-multiline_comment|/*&n; * For 32 and 64 bit operands we can take advantage of ll and sc.&n; * FIXME: This doesn&squot;t work for R3000 machines.&n; */
 DECL|function|xchg_u32
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|xchg_u32
@@ -251,6 +250,9 @@ r_int
 id|val
 )paren
 (brace
+id|__u32
+id|retval
+suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_HAS_LLSC
 r_int
 r_int
@@ -273,7 +275,7 @@ l_string|&quot;.set&bslash;tpop&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
-id|val
+id|retval
 )paren
 comma
 l_string|&quot;=m&quot;
@@ -301,15 +303,10 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
-r_return
-id|val
-suffix:semicolon
 macro_line|#else
 r_int
 r_int
 id|flags
-comma
-id|retval
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -334,20 +331,142 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* implies memory barrier  */
+macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
-macro_line|#endif /* Processor-dependent optimization */
 )brace
+macro_line|#ifdef CONFIG_MIPS64
+DECL|function|xchg_u64
+r_static
+r_inline
+id|__u64
+id|xchg_u64
+c_func
+(paren
+r_volatile
+id|__u64
+op_star
+id|m
+comma
+id|__u64
+r_int
+id|val
+)paren
+(brace
+id|__u64
+id|retval
+suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_HAS_LLDSCD
+r_int
+r_int
+id|dummy
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;.set&bslash;tpush&bslash;t&bslash;t&bslash;t&bslash;t# xchg_u64&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnoreorder&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tnomacro&bslash;n&bslash;t&quot;
+l_string|&quot;lld&bslash;t%0, %3&bslash;n&quot;
+l_string|&quot;1:&bslash;tmove&bslash;t%2, %z4&bslash;n&bslash;t&quot;
+l_string|&quot;scd&bslash;t%2, %1&bslash;n&bslash;t&quot;
+l_string|&quot;beqzl&bslash;t%2, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; lld&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;sync&bslash;n&bslash;t&quot;
+l_string|&quot;.set&bslash;tpop&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|retval
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|m
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|dummy
+)paren
+suffix:colon
+l_string|&quot;R&quot;
+(paren
+op_star
+id|m
+)paren
+comma
+l_string|&quot;Jr&quot;
+(paren
+id|val
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|retval
+op_assign
+op_star
+id|m
+suffix:semicolon
+op_star
+id|m
+op_assign
+id|val
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* implies memory barrier  */
+macro_line|#endif
+r_return
+id|retval
+suffix:semicolon
+)brace
+macro_line|#else
+r_extern
+id|__u64
+id|__xchg_u64_unsupported_on_32bit_kernels
+c_func
+(paren
+r_volatile
+id|__u64
+op_star
+id|m
+comma
+id|__u64
+id|val
+)paren
+suffix:semicolon
+DECL|macro|xchg_u64
+mdefine_line|#define xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
+macro_line|#endif
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))
 DECL|macro|tas
 mdefine_line|#define tas(ptr) (xchg((ptr),1))
-r_static
-id|__inline__
-r_int
-r_int
 DECL|function|__xchg
+r_static
+r_inline
+r_int
+r_int
 id|__xchg
 c_func
 (paren
@@ -375,6 +494,18 @@ l_int|4
 suffix:colon
 r_return
 id|xchg_u32
+c_func
+(paren
+id|ptr
+comma
+id|x
+)paren
+suffix:semicolon
+r_case
+l_int|8
+suffix:colon
+r_return
+id|xchg_u64
 c_func
 (paren
 id|ptr

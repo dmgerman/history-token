@@ -18,6 +18,14 @@ DECL|macro|MT312_SYS_CLK
 mdefine_line|#define MT312_SYS_CLK&t;&t;90000000UL&t;/* 90 MHz */
 DECL|macro|MT312_PLL_CLK
 mdefine_line|#define MT312_PLL_CLK&t;&t;10000000UL&t;/* 10 MHz */
+multiline_comment|/* number of active frontends */
+DECL|variable|mt312_count
+r_static
+r_int
+id|mt312_count
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|mt312_info
 r_static
 r_struct
@@ -237,9 +245,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_ne
 l_int|2
+)paren
+op_logical_and
+(paren
+id|mt312_count
+op_ne
+l_int|0
+)paren
 )paren
 (brace
 id|printk
@@ -3719,7 +3735,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+(paren
+id|ret
+op_assign
 id|dvb_register_frontend
 c_func
 (paren
@@ -3739,6 +3760,18 @@ comma
 op_amp
 id|mt312_info
 )paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
+id|mt312_count
+op_increment
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|mt312_detach
@@ -3760,6 +3793,14 @@ id|mt312_ioctl
 comma
 id|i2c
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mt312_count
+)paren
+id|mt312_count
+op_decrement
 suffix:semicolon
 )brace
 DECL|function|mt312_module_init

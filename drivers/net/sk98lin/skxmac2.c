@@ -1,23 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skxmac2.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.61 $&n; * Date:&t;$Date: 2001/02/09 15:40:59 $&n; * Purpose:&t;Contains functions to initialize the XMAC II&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skxmac2.c,v $&n; *&t;Revision 1.61  2001/02/09 15:40:59  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.60  2001/02/07 15:02:01  cgoos&n; *&t;Added workaround for Fujitsu switch link down.&n; *&t;&n; *&t;Revision 1.59  2001/01/10 09:38:06  cgoos&n; *&t;Fixed Broadcom C0/A1 Id check for workaround.&n; *&t;&n; *&t;Revision 1.58  2000/11/29 11:30:38  cgoos&n; *&t;Changed DEBUG sections with NW output to xDEBUG&n; *&t;&n; *&t;Revision 1.57  2000/11/27 12:40:40  rassmann&n; *&t;Suppressing preamble after first access to BCom, not before (#10556).&n; *&t;&n; *&t;Revision 1.56  2000/11/09 12:32:48  rassmann&n; *&t;Renamed variables.&n; *&t;&n; *&t;Revision 1.55  2000/11/09 11:30:10  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&t;&n; *&t;Revision 1.54  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.53  2000/07/27 12:22:11  gklug&n; *&t;fix: possible endless loop in XmHardRst.&n; *&t;&n; *&t;Revision 1.52  2000/05/22 08:48:31  malthoff&n; *&t;Fix: #10523 errata valid for all BCOM PHYs.&n; *&t;&n; *&t;Revision 1.51  2000/05/17 12:52:18  malthoff&n; *&t;Fixes BCom link errata (#10523).&n; *&t;&n; *&t;Revision 1.50  1999/11/22 13:40:14  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.49  1999/11/22 08:12:13  malthoff&n; *&t;Add workaround for power consumption feature of BCom C0 chip.&n; *&t;&n; *&t;Revision 1.48  1999/11/16 08:39:01  malthoff&n; *&t;Fix: MDIO preamble suppression is port dependent.&n; *&t;&n; *&t;Revision 1.47  1999/08/27 08:55:35  malthoff&n; *&t;1000BT: Optimizing MDIO transfer by oppressing MDIO preamble.&n; *&t;&n; *&t;Revision 1.46  1999/08/13 11:01:12  malthoff&n; *&t;Fix for 1000BT: pFlowCtrlMode was not set correctly.&n; *&t;&n; *&t;Revision 1.45  1999/08/12 19:18:28  malthoff&n; *&t;1000BT Fixes: Do not owerwrite XM_MMU_CMD.&n; *&t;Do not execute BCOM A1 workaround for B1 chips.&n; *&t;Fix pause frame setting.&n; *&t;Always set PHY_B_AC_TX_TST in PHY_BCOM_AUX_CTRL.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:23:48  cgoos&n; *&t;Fixed setting of PHY interrupt mask in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 15:22:17  cgoos&n; *&t;Added some debug output.&n; *&t;Disabled XMac GP0 interrupt for external PHYs.&n; *&t;&n; *&t;Revision 1.42  1999/08/02 08:39:23  malthoff&n; *&t;BCOM PHY: TX LED: To get the mono flop behaviour it is required&n; *&t;to set the LED Traffic Mode bit in PHY_BCOM_P_EXT_CTRL.&n; *&t;&n; *&t;Revision 1.41  1999/07/30 06:54:31  malthoff&n; *&t;Add temp. workarounds for the BCOM Phy revision A1.&n; *&t;&n; *&t;Revision 1.40  1999/06/01 07:43:26  cgoos&n; *&t;Changed Link Mode Status in SkXmAutoNegDone... from FULL/HALF to&n; *&t;AUTOFULL/AUTOHALF.&n; *&t;&n; *&t;Revision 1.39  1999/05/19 07:29:51  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.38  1999/04/08 14:35:10  malthoff&n; *&t;Add code for enabling signal detect. Enabling signal detect is disabled.&n; *&t;&n; *&t;Revision 1.37  1999/03/12 13:42:54  malthoff&n; *&t;Add: Jumbo Frame Support.&n; *&t;Add: Receive modes SK_LENERR_OK_ON/OFF and&n; *&t;SK_BIG_PK_OK_ON/OFF in SkXmSetRxCmd().&n; *&t;&n; *&t;Revision 1.36  1999/03/08 10:10:55  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&n; *&t;Revision 1.35  1999/02/22 15:16:41  malthoff&n; *&t;Remove some compiler warnings.&n; *&n; *&t;Revision 1.34  1999/01/22 09:19:59  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&n; *&t;Revision 1.33  1998/12/11 15:19:11  gklug&n; *&t;chg: lipa autoneg stati&n; *&t;chg: debug messages&n; *&t;chg: do NOT use spurious XmIrq&n; *&n; *&t;Revision 1.32  1998/12/10 11:08:44  malthoff&n; *&t;bug fix: pAC has been used for IOs in SkXmHardRst().&n; *&t;SkXmInitPhy() is also called for the Diag in SkXmInitMac().&n; *&n; *&t;Revision 1.31  1998/12/10 10:39:11  gklug&n; *&t;fix: do 4 RESETS of the XMAC at the beginning&n; *&t;fix: dummy read interrupt source register BEFORE initializing the Phy&n; *&t;add: debug messages&n; *&t;fix: Linkpartners autoneg capability cannot be shown by TX_PAGE interrupt&n; *&n; *&t;Revision 1.30  1998/12/07 12:18:32  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.29  1998/12/07 07:12:29  gklug&n; *&t;fix: if page is received the link is  down.&n; *&n; *&t;Revision 1.28  1998/12/01 10:12:47  gklug&n; *&t;chg: if spurious IRQ from XMAC encountered, save it&n; *&n; *&t;Revision 1.27  1998/11/26 07:33:38  gklug&n; *&t;add: InitPhy call is now in XmInit function&n; *&n; *&t;Revision 1.26  1998/11/18 13:38:24  malthoff&n; *&t;&squot;Imsk&squot; is also unused in SkXmAutoNegDone.&n; *&n; *&t;Revision 1.25  1998/11/18 13:28:01  malthoff&n; *&t;Remove unused variable &squot;Reg&squot; in SkXmAutoNegDone().&n; *&n; *&t;Revision 1.24  1998/11/18 13:18:45  gklug&n; *&t;add: workaround for xmac errata #1&n; *&t;add: detect Link Down also when Link partner requested config&n; *&t;chg: XMIrq is only used when link is up&n; *&n; *&t;Revision 1.23  1998/11/04 07:07:04  cgoos&n; *&t;Added function SkXmRxTxEnable.&n; *&n; *&t;Revision 1.22  1998/10/30 07:35:54  gklug&n; *&t;fix: serve LinkDown interrupt when link is already down&n; *&n; *&t;Revision 1.21  1998/10/29 15:32:03  gklug&n; *&t;fix: Link Down signaling&n; *&n; *&t;Revision 1.20  1998/10/29 11:17:27  gklug&n; *&t;fix: AutoNegDone bug&n; *&n; *&t;Revision 1.19  1998/10/29 10:14:43  malthoff&n; *&t;Add endainesss comment for reading/writing MAC addresses.&n; *&n; *&t;Revision 1.18  1998/10/28 07:48:55  cgoos&n; *&t;Fix: ASS somtimes signaled although link is up.&n; *&n; *&t;Revision 1.17  1998/10/26 07:55:39  malthoff&n; *&t;Fix in SkXmInitPauseMd(): Pause Mode&n; *&t;was disabled and not enabled.&n; *&t;Fix in SkXmAutoNegDone(): Checking Mode bits&n; *&t;always failed, becaues of some missing braces.&n; *&n; *&t;Revision 1.16  1998/10/22 09:46:52  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.15  1998/10/21 05:51:37  gklug&n; *&t;add: para DoLoop to InitPhy function for loopback set-up&n; *&n; *&t;Revision 1.14  1998/10/16 10:59:23  malthoff&n; *&t;Remove Lint warning for dummy reads.&n; *&n; *&t;Revision 1.13  1998/10/15 14:01:20  malthoff&n; *&t;Fix: SkXmAutoNegDone() is (int) but does not return a value.&n; *&n; *&t;Revision 1.12  1998/10/14 14:45:04  malthoff&n; *&t;Remove SKERR_SIRQ_E0xx and SKERR_SIRQ_E0xxMSG by&n; *&t;SKERR_HWI_Exx and SKERR_HWI_E0xxMSG to be independent&n; *&t;from the Sirq module.&n; *&n; *&t;Revision 1.11  1998/10/14 13:59:01  gklug&n; *&t;add: InitPhy function&n; *&n; *&t;Revision 1.10  1998/10/14 11:20:57  malthoff&n; *&t;Make SkXmAutoNegDone() public, because it&squot;s&n; *&t;used in diagnostics, too.&n; *&t;The Link Up event to the RLMT is issued in&n; *&t;SkXmIrq(). SkXmIrq() is not available in&n; *&t;diagnostics. Use PHY_READ when reading&n; *&t;PHY registers.&n; *&n; *&t;Revision 1.9  1998/10/14 05:50:10  cgoos&n; *&t;Added definition for Para.&n; *&n; *&t;Revision 1.8  1998/10/14 05:41:28  gklug&n; *&t;add: Xmac IRQ&n; *&t;add: auto negotiation done function&n; *&n; *&t;Revision 1.7  1998/10/09 06:55:20  malthoff&n; *&t;The configuration of the XMACs Tx Request Threshold&n; *&t;depends from the drivers port usage now. The port&n; *&t;usage is configured in GIPortUsage.&n; *&n; *&t;Revision 1.6  1998/10/05 07:48:00  malthoff&n; *&t;minor changes&n; *&n; *&t;Revision 1.5  1998/10/01 07:03:54  gklug&n; *&t;add: dummy function for XMAC ISR&n; *&n; *&t;Revision 1.4  1998/09/30 12:37:44  malthoff&n; *&t;Add SkXmSetRxCmd() and related code.&n; *&n; *&t;Revision 1.3  1998/09/28 13:26:40  malthoff&n; *&t;Add SkXmInitMac(), SkXmInitDupMd(), and SkXmInitPauseMd()&n; *&n; *&t;Revision 1.2  1998/09/16 14:34:21  malthoff&n; *&t;Add SkXmClrExactAddr(), SkXmClrSrcCheck(),&n; *&t;SkXmClrHashAddr(), SkXmFlushTxFifo(),&n; *&t;SkXmFlushRxFifo(), and SkXmHardRst().&n; *&t;Finish Coding of SkXmSoftRst().&n; *&t;The sources may be compiled now.&n; *&n; *&t;Revision 1.1  1998/09/04 10:05:56  malthoff&n; *&t;Created.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skxmac2.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.99 $&n; * Date:&t;$Date: 2003/07/11 12:19:33 $&n; * Purpose:&t;Contains functions to initialize the MACs and PHYs&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skxmac2.c,v $&n; *&t;Revision 1.99  2003/07/11 12:19:33  rschmidt&n; *&t;Reduced init values for Master &amp; Slave downshift counters to&n; *&t;minimum values.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.98  2003/07/04 12:53:56  rschmidt&n; *&t;Changed setting of downshift feature in SkGmInitPhyMarv().&n; *&t;Enabled downshift feature only for para &squot;Speed&squot; set to &squot;Auto&squot;.&n; *&t;Changed init values for Master &amp; Slave downshift counters.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.97  2003/05/28 15:53:47  rschmidt&n; *&t;Removed setting of Yukon PHY&squot;s &squot;force link good&squot; in loopback mode.&n; *&t;Replaced call pFnMacOverflow() with SkXmOverflowStatus() resp.&n; *&t;SkGmOverflowStatus().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.96  2003/05/13 17:37:11  mkarl&n; *&t;Removed calls to PNMI for SLIM driver.&n; *&t;Added SK_FAR for PXE.&n; *&t;Separated code pathes not used for SLIM driver.&n; *&t;Some further separations for YUKON and GENESIS.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.95  2003/05/06 13:09:53  rschmidt&n; *&t;Changed init sequence for auto-negotiation disabled in SkGmInitMac().&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.94  2003/04/10 14:36:40  rschmidt&n; *&t;Fixed define for debug code in SkGmInitPhyMarv().&n; *&t;&n; *&t;Revision 1.93  2003/04/08 16:58:16  rschmidt&n; *&t;Changed initialisation of GMAC and GPHY for disabling&n; *&t;Flow-Control with parameter &squot;none&squot; (Bug Id #10769).&n; *&t;Changed init for blinking active LED and normal duplex LED&n; *&t;depending on value from GILedBlinkCtrl (LED Blink Control).&n; *&t;Added control for Link100 LED.&n; *&t;Changed handling for different PhyTypes for source code&n; *&t;portability to PXE, UNDI.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.92  2003/03/31 07:12:33  mkarl&n; *&t;Restore PHY_MARV_AUNE_ADV after writing to GM_GP_CTRL in order to make&n; *&t;auto-negotiation of limited flow-control possible.&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.91  2003/02/05 15:09:34  rschmidt&n; *&t;Removed setting of &squot;Collision Test&squot;-bit in SkGmInitPhyMarv().&n; *&t;Disabled auto-update for speed, duplex and flow-control when&n; *&t;auto-negotiation is not enabled (Bug Id #10766).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/01/29 13:35:19  rschmidt&n; *&t;Increment Rx FIFO Overflow counter only in DEBUG-mode.&n; *&t;Corrected define for blinking active LED.&n; *&t;&n; *&t;Revision 1.89  2003/01/28 16:37:45  rschmidt&n; *&t;Changed init for blinking active LED&n; *&t;&n; *&t;Revision 1.88  2003/01/28 10:09:38  rschmidt&n; *&t;Added debug outputs in SkGmInitMac().&n; *&t;Added customized init of LED registers in SkGmInitPhyMarv(),&n; *&t;for blinking active LED (#ifdef ACT_LED_BLINK) and&n; *&t;for normal duplex LED (#ifdef DUP_LED_NORMAL).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.87  2002/12/10 14:39:05  rschmidt&n; *&t;Improved initialization of GPHY in SkGmInitPhyMarv().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2002/12/09 15:01:12  rschmidt&n; *&t;Added setup of Ext. PHY Specific Ctrl Reg (downshift feature).&n; *&t;&n; *&t;Revision 1.85  2002/12/05 14:09:16  rschmidt&n; *&t;Improved avoiding endless loop in SkGmPhyRead(), SkGmPhyWrite().&n; *&t;Added additional advertising for 10Base-T when 100Base-T is selected.&n; *&t;Added case SK_PHY_MARV_FIBER for YUKON Fiber adapter.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2002/11/15 12:50:09  rschmidt&n; *&t;Changed SkGmCableDiagStatus() when getting results.&n; *&t;&n; *&t;Revision 1.83  2002/11/13 10:28:29  rschmidt&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.82  2002/11/13 09:20:46  rschmidt&n; *&t;Replaced for(..) with do {} while (...) in SkXmUpdateStats().&n; *&t;Replaced 2 macros GM_IN16() with 1 GM_IN32() in SkGmMacStatistic().&n; *&t;Added SkGmCableDiagStatus() for Virtual Cable Test (VCT).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.81  2002/10/28 14:28:08  rschmidt&n; *&t;Changed MAC address setup for GMAC in SkGmInitMac().&n; *&t;Optimized handling of counter overflow IRQ in SkGmOverflowStatus().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/10/14 15:29:44  rschmidt&n; *&t;Corrected disabling of all PHY IRQs.&n; *&t;Added WA for deviation #16 (address used for pause packets).&n; *&t;Set Pause Mode in SkMacRxTxEnable() only for Genesis.&n; *&t;Added IRQ and counter for Receive FIFO Overflow in DEBUG-mode.&n; *&t;SkXmTimeStamp() replaced by SkMacTimeStamp().&n; *&t;Added clearing of GMAC Tx FIFO Underrun IRQ in SkGmIrq().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/10 15:55:36  mkarl&n; *&t;changes for PLinkSpeedUsed&n; *&t;&n; *&t;Revision 1.78  2002/09/12 09:39:51  rwahl&n; *&t;Removed deactivate code for SIRQ overflow event separate for TX/RX.&n; *&t;&n; *&t;Revision 1.77  2002/09/09 12:26:37  mkarl&n; *&t;added handling for Yukon to SkXmTimeStamp&n; *&t;&n; *&t;Revision 1.76  2002/08/21 16:41:16  rschmidt&n; *&t;Added bit GPC_ENA_XC (Enable MDI crossover) in HWCFG_MODE.&n; *&t;Added forced speed settings in SkGmInitPhyMarv().&n; *&t;Added settings of full/half duplex capabilities for YUKON Fiber.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.75  2002/08/16 15:12:01  rschmidt&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Added function SkMacHashing() for ADDR-Module.&n; *&t;Removed functions SkXmClrSrcCheck(), SkXmClrHashAddr() (calls replaced&n; *&t;with macros).&n; *&t;Removed functions SkGmGetMuxConfig().&n; *&t;Added HWCFG_MODE init for YUKON Fiber.&n; *&t;Changed initialization of GPHY in SkGmInitPhyMarv().&n; *&t;Changed check of parameter in SkXmMacStatistic().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.74  2002/08/12 14:00:17  rschmidt&n; *&t;Replaced usage of Broadcom PHY Ids with defines.&n; *&t;Corrected error messages in SkGmMacStatistic().&n; *&t;Made SkMacPromiscMode() public for ADDR-Modul.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.73  2002/08/08 16:26:24  rschmidt&n; *&t;Improved reset sequence for YUKON in SkGmHardRst() and SkGmInitMac().&n; *&t;Replaced XMAC Rx High Watermark init value with SK_XM_RX_HI_WM.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.72  2002/07/24 15:11:19  rschmidt&n; *&t;Fixed wrong placement of parenthesis.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.71  2002/07/23 16:05:18  rschmidt&n; *&t;Added global functions for PHY: SkGePhyRead(), SkGePhyWrite().&n; *&t;Fixed Tx Counter Overflow IRQ (Bug ID #10730).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.70  2002/07/18 14:27:27  rwahl&n; *&t;Fixed syntax error.&n; *&t;&n; *&t;Revision 1.69  2002/07/17 17:08:47  rwahl&n; *&t;Fixed check in SkXmMacStatistic().&n; *&t;&n; *&t;Revision 1.68  2002/07/16 07:35:24  rwahl&n; *&t;Removed check for cleared mib counter in SkGmResetCounter().&n; *&t;&n; *&t;Revision 1.67  2002/07/15 18:35:56  rwahl&n; *&t;Added SkXmUpdateStats(), SkGmUpdateStats(), SkXmMacStatistic(),&n; *&t;  SkGmMacStatistic(), SkXmResetCounter(), SkGmResetCounter(),&n; *&t;  SkXmOverflowStatus(), SkGmOverflowStatus().&n; *&t;Changes to SkXmIrq() &amp; SkGmIrq(): Combined SIRQ Overflow for both&n; *&t;  RX &amp; TX.&n; *&t;Changes to SkGmInitMac(): call to SkGmResetCounter().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.66  2002/07/15 15:59:30  rschmidt&n; *&t;Added PHY Address in SkXmPhyRead(), SkXmPhyWrite().&n; *&t;Added MIB Clear Counter in SkGmInitMac().&n; *&t;Added Duplex and Flow-Control settings.&n; *&t;Reset all Multicast filtering Hash reg. in SkGmInitMac().&n; *&t;Added new function: SkGmGetMuxConfig().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.65  2002/06/10 09:35:39  rschmidt&n; *&t;Replaced C++ comments (//).&n; *&t;Added #define VCPU around VCPUwaitTime.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.64  2002/06/05 08:41:10  rschmidt&n; *&t;Added function for XMAC2: SkXmTimeStamp().&n; *&t;Added function for YUKON: SkGmSetRxCmd().&n; *&t;Changed SkGmInitMac() resp. SkGmHardRst().&n; *&t;Fixed wrong variable in SkXmAutoNegLipaXmac() (debug mode).&n; *&t;SkXmRxTxEnable() replaced by SkMacRxTxEnable().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.63  2002/04/25 13:04:44  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Use of #ifdef OTHER_PHY to eliminate code for unused Phy types.&n; *&t;Macros for XMAC PHY access PHY_READ(), PHY_WRITE() replaced&n; *&t;by functions SkXmPhyRead(), SkXmPhyWrite();&n; *&t;Removed use of PRxCmd to setup XMAC.&n; *&t;Added define PHY_B_AS_PAUSE_MSK for BCom Pause Res.&n; *&t;Added setting of XM_RX_DIS_CEXT in SkXmInitMac().&n; *&t;Removed status parameter from MAC IRQ handler SkMacIrq(),&n; *&t;SkXmIrq() and SkGmIrq().&n; *&t;SkXmAutoNegLipa...() for ext. Phy replaced by SkMacAutoNegLipaPhy().&n; *&t;Added SkMac...() functions to handle both XMAC and GMAC.&n; *&t;Added functions for YUKON: SkGmHardRst(), SkGmSoftRst(),&n; *&t;SkGmSetRxTxEn(), SkGmIrq(), SkGmInitMac(), SkGmInitPhyMarv(),&n; *&t;SkGmAutoNegDoneMarv(), SkGmPhyRead(), SkGmPhyWrite().&n; *&t;Changes for V-CPU support.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.62  2001/08/06 09:50:14  rschmidt&n; *&t;Workaround BCOM Errata #1 for the C5 type.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.61  2001/02/09 15:40:59  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.60  2001/02/07 15:02:01  cgoos&n; *&t;Added workaround for Fujitsu switch link down.&n; *&t;&n; *&t;Revision 1.59  2001/01/10 09:38:06  cgoos&n; *&t;Fixed Broadcom C0/A1 Id check for workaround.&n; *&t;&n; *&t;Revision 1.58  2000/11/29 11:30:38  cgoos&n; *&t;Changed DEBUG sections with NW output to xDEBUG&n; *&t;&n; *&t;Revision 1.57  2000/11/27 12:40:40  rassmann&n; *&t;Suppressing preamble after first access to BCom, not before (#10556).&n; *&t;&n; *&t;Revision 1.56  2000/11/09 12:32:48  rassmann&n; *&t;Renamed variables.&n; *&t;&n; *&t;Revision 1.55  2000/11/09 11:30:10  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&t;&n; *&t;Revision 1.54  2000/10/02 14:10:27  rassmann&n; *&t;Reading BCOM PHY after releasing reset until it returns a valid value.&n; *&t;&n; *&t;Revision 1.53  2000/07/27 12:22:11  gklug&n; *&t;fix: possible endless loop in XmHardRst.&n; *&t;&n; *&t;Revision 1.52  2000/05/22 08:48:31  malthoff&n; *&t;Fix: #10523 errata valid for all BCOM PHYs.&n; *&t;&n; *&t;Revision 1.51  2000/05/17 12:52:18  malthoff&n; *&t;Fixes BCom link errata (#10523).&n; *&t;&n; *&t;Revision 1.50  1999/11/22 13:40:14  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.49  1999/11/22 08:12:13  malthoff&n; *&t;Add workaround for power consumption feature of BCom C0 chip.&n; *&t;&n; *&t;Revision 1.48  1999/11/16 08:39:01  malthoff&n; *&t;Fix: MDIO preamble suppression is port dependent.&n; *&t;&n; *&t;Revision 1.47  1999/08/27 08:55:35  malthoff&n; *&t;1000BT: Optimizing MDIO transfer by oppressing MDIO preamble.&n; *&t;&n; *&t;Revision 1.46  1999/08/13 11:01:12  malthoff&n; *&t;Fix for 1000BT: pFlowCtrlMode was not set correctly.&n; *&t;&n; *&t;Revision 1.45  1999/08/12 19:18:28  malthoff&n; *&t;1000BT Fixes: Do not owerwrite XM_MMU_CMD.&n; *&t;Do not execute BCOM A1 workaround for B1 chips.&n; *&t;Fix pause frame setting.&n; *&t;Always set PHY_B_AC_TX_TST in PHY_BCOM_AUX_CTRL.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:23:48  cgoos&n; *&t;Fixed setting of PHY interrupt mask in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 15:22:17  cgoos&n; *&t;Added some debug output.&n; *&t;Disabled XMac GP0 interrupt for external PHYs.&n; *&t;&n; *&t;Revision 1.42  1999/08/02 08:39:23  malthoff&n; *&t;BCOM PHY: TX LED: To get the mono flop behaviour it is required&n; *&t;to set the LED Traffic Mode bit in PHY_BCOM_P_EXT_CTRL.&n; *&t;&n; *&t;Revision 1.41  1999/07/30 06:54:31  malthoff&n; *&t;Add temp. workarounds for the BCOM Phy revision A1.&n; *&t;&n; *&t;Revision 1.40  1999/06/01 07:43:26  cgoos&n; *&t;Changed Link Mode Status in SkXmAutoNegDone... from FULL/HALF to&n; *&t;AUTOFULL/AUTOHALF.&n; *&t;&n; *&t;Revision 1.39  1999/05/19 07:29:51  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.38  1999/04/08 14:35:10  malthoff&n; *&t;Add code for enabling signal detect. Enabling signal detect is disabled.&n; *&t;&n; *&t;Revision 1.37  1999/03/12 13:42:54  malthoff&n; *&t;Add: Jumbo Frame Support.&n; *&t;Add: Receive modes SK_LENERR_OK_ON/OFF and&n; *&t;SK_BIG_PK_OK_ON/OFF in SkXmSetRxCmd().&n; *&t;&n; *&t;Revision 1.36  1999/03/08 10:10:55  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&n; *&t;Revision 1.35  1999/02/22 15:16:41  malthoff&n; *&t;Remove some compiler warnings.&n; *&n; *&t;Revision 1.34  1999/01/22 09:19:59  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&n; *&t;Revision 1.33  1998/12/11 15:19:11  gklug&n; *&t;chg: lipa autoneg stati&n; *&t;chg: debug messages&n; *&t;chg: do NOT use spurious XmIrq&n; *&n; *&t;Revision 1.32  1998/12/10 11:08:44  malthoff&n; *&t;bug fix: pAC has been used for IOs in SkXmHardRst().&n; *&t;SkXmInitPhy() is also called for the Diag in SkXmInitMac().&n; *&n; *&t;Revision 1.31  1998/12/10 10:39:11  gklug&n; *&t;fix: do 4 RESETS of the XMAC at the beginning&n; *&t;fix: dummy read interrupt source register BEFORE initializing the Phy&n; *&t;add: debug messages&n; *&t;fix: Linkpartners autoneg capability cannot be shown by TX_PAGE interrupt&n; *&n; *&t;Revision 1.30  1998/12/07 12:18:32  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&n; *&t;Revision 1.29  1998/12/07 07:12:29  gklug&n; *&t;fix: if page is received the link is  down.&n; *&n; *&t;Revision 1.28  1998/12/01 10:12:47  gklug&n; *&t;chg: if spurious IRQ from XMAC encountered, save it&n; *&n; *&t;Revision 1.27  1998/11/26 07:33:38  gklug&n; *&t;add: InitPhy call is now in XmInit function&n; *&n; *&t;Revision 1.26  1998/11/18 13:38:24  malthoff&n; *&t;&squot;Imsk&squot; is also unused in SkXmAutoNegDone.&n; *&n; *&t;Revision 1.25  1998/11/18 13:28:01  malthoff&n; *&t;Remove unused variable &squot;Reg&squot; in SkXmAutoNegDone().&n; *&n; *&t;Revision 1.24  1998/11/18 13:18:45  gklug&n; *&t;add: workaround for xmac errata #1&n; *&t;add: detect Link Down also when Link partner requested config&n; *&t;chg: XMIrq is only used when link is up&n; *&n; *&t;Revision 1.23  1998/11/04 07:07:04  cgoos&n; *&t;Added function SkXmRxTxEnable.&n; *&n; *&t;Revision 1.22  1998/10/30 07:35:54  gklug&n; *&t;fix: serve LinkDown interrupt when link is already down&n; *&n; *&t;Revision 1.21  1998/10/29 15:32:03  gklug&n; *&t;fix: Link Down signaling&n; *&n; *&t;Revision 1.20  1998/10/29 11:17:27  gklug&n; *&t;fix: AutoNegDone bug&n; *&n; *&t;Revision 1.19  1998/10/29 10:14:43  malthoff&n; *&t;Add endainesss comment for reading/writing MAC addresses.&n; *&n; *&t;Revision 1.18  1998/10/28 07:48:55  cgoos&n; *&t;Fix: ASS somtimes signaled although link is up.&n; *&n; *&t;Revision 1.17  1998/10/26 07:55:39  malthoff&n; *&t;Fix in SkXmInitPauseMd(): Pause Mode&n; *&t;was disabled and not enabled.&n; *&t;Fix in SkXmAutoNegDone(): Checking Mode bits&n; *&t;always failed, becaues of some missing braces.&n; *&n; *&t;Revision 1.16  1998/10/22 09:46:52  gklug&n; *&t;fix SysKonnectFileId typo&n; *&n; *&t;Revision 1.15  1998/10/21 05:51:37  gklug&n; *&t;add: para DoLoop to InitPhy function for loopback set-up&n; *&n; *&t;Revision 1.14  1998/10/16 10:59:23  malthoff&n; *&t;Remove Lint warning for dummy reads.&n; *&n; *&t;Revision 1.13  1998/10/15 14:01:20  malthoff&n; *&t;Fix: SkXmAutoNegDone() is (int) but does not return a value.&n; *&n; *&t;Revision 1.12  1998/10/14 14:45:04  malthoff&n; *&t;Remove SKERR_SIRQ_E0xx and SKERR_SIRQ_E0xxMSG by&n; *&t;SKERR_HWI_Exx and SKERR_HWI_E0xxMSG to be independent&n; *&t;from the Sirq module.&n; *&n; *&t;Revision 1.11  1998/10/14 13:59:01  gklug&n; *&t;add: InitPhy function&n; *&n; *&t;Revision 1.10  1998/10/14 11:20:57  malthoff&n; *&t;Make SkXmAutoNegDone() public, because it&squot;s&n; *&t;used in diagnostics, too.&n; *&t;The Link Up event to the RLMT is issued in SkXmIrq().&n; *  SkXmIrq() is not available in diagnostics.&n; *  Use PHY_READ when reading PHY registers.&n; *&n; *&t;Revision 1.9  1998/10/14 05:50:10  cgoos&n; *&t;Added definition for Para.&n; *&n; *&t;Revision 1.8  1998/10/14 05:41:28  gklug&n; *&t;add: Xmac IRQ&n; *&t;add: auto-negotiation done function&n; *&n; *&t;Revision 1.7  1998/10/09 06:55:20  malthoff&n; *&t;The configuration of the XMACs Tx Request Threshold&n; *&t;depends from the drivers port usage now. The port&n; *&t;usage is configured in GIPortUsage.&n; *&n; *&t;Revision 1.6  1998/10/05 07:48:00  malthoff&n; *&t;minor changes&n; *&n; *&t;Revision 1.5  1998/10/01 07:03:54  gklug&n; *&t;add: dummy function for XMAC ISR&n; *&n; *&t;Revision 1.4  1998/09/30 12:37:44  malthoff&n; *&t;Add SkXmSetRxCmd() and related code.&n; *&n; *&t;Revision 1.3  1998/09/28 13:26:40  malthoff&n; *&t;Add SkXmInitMac(), SkXmInitDupMd(), and SkXmInitPauseMd()&n; *&n; *&t;Revision 1.2  1998/09/16 14:34:21  malthoff&n; *&t;Add SkXmClrExactAddr(), SkXmClrSrcCheck(),&n; *&t;SkXmClrHashAddr(), SkXmFlushTxFifo(),&n; *&t;SkXmFlushRxFifo(), and SkXmHardRst().&n; *&t;Finish Coding of SkXmSoftRst().&n; *&t;The sources may be compiled now.&n; *&n; *&t;Revision 1.1  1998/09/04 10:05:56  malthoff&n; *&t;Created.&n; *&n; *&n; ******************************************************************************/
 macro_line|#include &quot;h/skdrv1st.h&quot;
-macro_line|#include &quot;h/xmac_ii.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;
-multiline_comment|/* defines ********************************************************************/
 multiline_comment|/* typedefs *******************************************************************/
-multiline_comment|/* global variables ***********************************************************/
-multiline_comment|/* local variables ************************************************************/
-DECL|variable|SysKonnectFileId
-r_static
-r_const
-r_char
-id|SysKonnectFileId
-(braket
-)braket
-op_assign
-l_string|&quot;@(#)$Id: skxmac2.c,v 1.61 2001/02/09 15:40:59 rassmann Exp $ (C) SK &quot;
-suffix:semicolon
 multiline_comment|/* BCOM PHY magic pattern list */
 DECL|struct|s_PhyHack
 r_typedef
@@ -38,6 +24,20 @@ DECL|typedef|BCOM_HACK
 )brace
 id|BCOM_HACK
 suffix:semicolon
+multiline_comment|/* local variables ************************************************************/
+macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
+DECL|variable|SysKonnectFileId
+r_static
+r_const
+r_char
+id|SysKonnectFileId
+(braket
+)braket
+op_assign
+l_string|&quot;@(#) $Id: skxmac2.c,v 1.99 2003/07/11 12:19:33 rschmidt Exp $ (C) Marvell.&quot;
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef GENESIS
 DECL|variable|BcomRegA1Hack
 id|BCOM_HACK
 id|BcomRegA1Hack
@@ -174,7 +174,9 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* function prototypes ********************************************************/
+macro_line|#ifdef GENESIS
 r_static
 r_void
 id|SkXmInitPhyXmac
@@ -194,35 +196,6 @@ r_static
 r_void
 id|SkXmInitPhyBcom
 c_func
-(paren
-id|SK_AC
-op_star
-comma
-id|SK_IOC
-comma
-r_int
-comma
-id|SK_BOOL
-)paren
-suffix:semicolon
-r_static
-r_void
-id|SkXmInitPhyLone
-c_func
-(paren
-id|SK_AC
-op_star
-comma
-id|SK_IOC
-comma
-r_int
-comma
-id|SK_BOOL
-)paren
-suffix:semicolon
-r_static
-r_void
-id|SkXmInitPhyNat
 (paren
 id|SK_AC
 op_star
@@ -260,6 +233,67 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_static
+r_void
+id|SkGmInitPhyMarv
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
+r_static
+r_int
+id|SkGmAutoNegDoneMarv
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+)paren
+suffix:semicolon
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+r_static
+r_void
+id|SkXmInitPhyLone
+c_func
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
+r_static
+r_void
+id|SkXmInitPhyNat
+(paren
+id|SK_AC
+op_star
+comma
+id|SK_IOC
+comma
+r_int
+comma
+id|SK_BOOL
+)paren
+suffix:semicolon
 r_static
 r_int
 id|SkXmAutoNegDoneLone
@@ -285,8 +319,1213 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSetRxCmd() - Modify the value of the XMACs Rx Command Register&n; *&n; * Description:&n; *&t;The features&n; *&t; o FCS stripping,&t;&t;&t;SK_STRIP_FCS_ON/OFF&n; *&t; o pad byte stripping,&t;&t;&t;SK_STRIP_PAD_ON/OFF&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_LENERR_OK_ON/OFF&n; *&t;   status for inrange length error&n; *&t;   frames, and&n; *&t; o don&squot;t set XMR_FS_ERR in frame&t;SK_BIG_PK_OK_ON/OFF&n; *&t;   status for frames &gt; 1514 bytes&n; *&n; *&t;for incomming packets may be enabled/disabled by this function.&n; *&t;Additional modes may be added later.&n; *&t;Multiple modes can be enabled/disabled at the same time.&n; *&t;The new configuration is stored into the HWAC port configuration&n; *&t;and is written to the Receive Command register immediatlely.&n; *&t;The new configuration is saved over any SkGePortStop() and&n; *&t;SkGeInitPort() calls. The configured value will be overwritten&n; *&t;when SkGeInit(Level 0) is executed.&n; *&n; * Returns:&n; *&t;nothing&n; */
+macro_line|#endif /* OTHER_PHY */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmPhyRead() - Read from XMAC PHY register&n; *&n; * Description:&t;reads a 16-bit word from XMAC PHY or ext. PHY&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkXmPhyRead
+r_void
+id|SkXmPhyRead
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+id|SK_FAR
+op_star
+id|pVal
+)paren
+multiline_comment|/* Pointer to Value */
+(brace
+id|SK_U16
+id|Mmu
+suffix:semicolon
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* write the PHY register&squot;s address */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_PHY_ADDR
+comma
+id|PhyReg
+op_or
+id|pPrt-&gt;PhyAddr
+)paren
+suffix:semicolon
+multiline_comment|/* get the PHY register&squot;s value */
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_PHY_DATA
+comma
+id|pVal
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_XMAC
+)paren
+(brace
+r_do
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Mmu
+)paren
+suffix:semicolon
+multiline_comment|/* wait until &squot;Ready&squot; is set */
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|Mmu
+op_amp
+id|XM_MMU_PHY_RDY
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* get the PHY register&squot;s value */
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_PHY_DATA
+comma
+id|pVal
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkXmPhyRead */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmPhyWrite() - Write to XMAC PHY register&n; *&n; * Description:&t;writes a 16-bit word to XMAC PHY or ext. PHY&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkXmPhyWrite
+r_void
+id|SkXmPhyWrite
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+id|Val
+)paren
+multiline_comment|/* Value */
+(brace
+id|SK_U16
+id|Mmu
+suffix:semicolon
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_XMAC
+)paren
+(brace
+r_do
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Mmu
+)paren
+suffix:semicolon
+multiline_comment|/* wait until &squot;Busy&squot; is cleared */
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|Mmu
+op_amp
+id|XM_MMU_PHY_BUSY
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* write the PHY register&squot;s address */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_PHY_ADDR
+comma
+id|PhyReg
+op_or
+id|pPrt-&gt;PhyAddr
+)paren
+suffix:semicolon
+multiline_comment|/* write the PHY register&squot;s value */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_PHY_DATA
+comma
+id|Val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_XMAC
+)paren
+(brace
+r_do
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Mmu
+)paren
+suffix:semicolon
+multiline_comment|/* wait until &squot;Busy&squot; is cleared */
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|Mmu
+op_amp
+id|XM_MMU_PHY_BUSY
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkXmPhyWrite */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmPhyRead() - Read from GPHY register&n; *&n; * Description:&t;reads a 16-bit word from GPHY through MDIO&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmPhyRead
+r_void
+id|SkGmPhyRead
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+id|SK_FAR
+op_star
+id|pVal
+)paren
+multiline_comment|/* Pointer to Value */
+(brace
+id|SK_U16
+id|Ctrl
+suffix:semicolon
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|u_long
+id|SimCyle
+suffix:semicolon
+id|u_long
+id|SimLowTime
+suffix:semicolon
+id|VCPUgetTime
+c_func
+(paren
+op_amp
+id|SimCyle
+comma
+op_amp
+id|SimLowTime
+)paren
+suffix:semicolon
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;SkGmPhyRead(%u), SimCyle=%u, SimLowTime=%u&bslash;n&quot;
+comma
+id|PhyReg
+comma
+id|SimCyle
+comma
+id|SimLowTime
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* set PHY-Register offset and &squot;Read&squot; OpCode (= 1) */
+op_star
+id|pVal
+op_assign
+(paren
+id|SK_U16
+)paren
+(paren
+id|GM_SMI_CT_PHY_AD
+c_func
+(paren
+id|pPrt-&gt;PhyAddr
+)paren
+op_or
+id|GM_SMI_CT_REG_AD
+c_func
+(paren
+id|PhyReg
+)paren
+op_or
+id|GM_SMI_CT_OP_RD
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+op_star
+id|pVal
+)paren
+suffix:semicolon
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* additional check for MDC/MDIO activity */
+r_if
+c_cond
+(paren
+(paren
+id|Ctrl
+op_amp
+id|GM_SMI_CT_BUSY
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+op_star
+id|pVal
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+op_star
+id|pVal
+op_or_assign
+id|GM_SMI_CT_BUSY
+suffix:semicolon
+r_do
+(brace
+macro_line|#ifdef VCPU
+id|VCPUwaitTime
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* wait until &squot;ReadValid&squot; is set */
+)brace
+r_while
+c_loop
+(paren
+id|Ctrl
+op_eq
+op_star
+id|pVal
+)paren
+suffix:semicolon
+multiline_comment|/* get the PHY register&squot;s value */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_DATA
+comma
+id|pVal
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCPUgetTime
+c_func
+(paren
+op_amp
+id|SimCyle
+comma
+op_amp
+id|SimLowTime
+)paren
+suffix:semicolon
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;VCPUgetTime(), SimCyle=%u, SimLowTime=%u&bslash;n&quot;
+comma
+id|SimCyle
+comma
+id|SimLowTime
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+)brace
+multiline_comment|/* SkGmPhyRead */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmPhyWrite() - Write to GPHY register&n; *&n; * Description:&t;writes a 16-bit word to GPHY through MDIO&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmPhyWrite
+r_void
+id|SkGmPhyWrite
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+id|Val
+)paren
+multiline_comment|/* Value */
+(brace
+id|SK_U16
+id|Ctrl
+suffix:semicolon
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|SK_U32
+id|DWord
+suffix:semicolon
+id|u_long
+id|SimCyle
+suffix:semicolon
+id|u_long
+id|SimLowTime
+suffix:semicolon
+id|VCPUgetTime
+c_func
+(paren
+op_amp
+id|SimCyle
+comma
+op_amp
+id|SimLowTime
+)paren
+suffix:semicolon
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;SkGmPhyWrite(Reg=%u, Val=0x%04x), SimCyle=%u, SimLowTime=%u&bslash;n&quot;
+comma
+id|PhyReg
+comma
+id|Val
+comma
+id|SimCyle
+comma
+id|SimLowTime
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* write the PHY register&squot;s value */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_DATA
+comma
+id|Val
+)paren
+suffix:semicolon
+multiline_comment|/* set PHY-Register offset and &squot;Write&squot; OpCode (= 0) */
+id|Val
+op_assign
+id|GM_SMI_CT_PHY_AD
+c_func
+(paren
+id|pPrt-&gt;PhyAddr
+)paren
+op_or
+id|GM_SMI_CT_REG_AD
+c_func
+(paren
+id|PhyReg
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+id|Val
+)paren
+suffix:semicolon
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* additional check for MDC/MDIO activity */
+r_if
+c_cond
+(paren
+(paren
+id|Ctrl
+op_amp
+id|GM_SMI_CT_BUSY
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
+id|Val
+op_or_assign
+id|GM_SMI_CT_BUSY
+suffix:semicolon
+r_do
+(brace
+macro_line|#ifdef VCPU
+multiline_comment|/* read Timer value */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|B2_TI_VAL
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+id|VCPUwaitTime
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SMI_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+multiline_comment|/* wait until &squot;Busy&squot; is cleared */
+)brace
+r_while
+c_loop
+(paren
+id|Ctrl
+op_eq
+id|Val
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCPUgetTime
+c_func
+(paren
+op_amp
+id|SimCyle
+comma
+op_amp
+id|SimLowTime
+)paren
+suffix:semicolon
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;VCPUgetTime(), SimCyle=%u, SimLowTime=%u&bslash;n&quot;
+comma
+id|SimCyle
+comma
+id|SimLowTime
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+)brace
+multiline_comment|/* SkGmPhyWrite */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef SK_DIAG
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePhyRead() - Read from PHY register&n; *&n; * Description:&t;calls a read PHY routine dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGePhyRead
+r_void
+id|SkGePhyRead
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+op_star
+id|pVal
+)paren
+multiline_comment|/* Pointer to Value */
+(brace
+r_void
+(paren
+op_star
+id|r_func
+)paren
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+r_int
+id|Port
+comma
+r_int
+id|Reg
+comma
+id|SK_U16
+op_star
+id|pVal
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|r_func
+op_assign
+id|SkXmPhyRead
+suffix:semicolon
+)brace
+r_else
+(brace
+id|r_func
+op_assign
+id|SkGmPhyRead
+suffix:semicolon
+)brace
+id|r_func
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PhyReg
+comma
+id|pVal
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGePhyRead */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGePhyWrite() - Write to PHY register&n; *&n; * Description:&t;calls a write PHY routine dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGePhyWrite
+r_void
+id|SkGePhyWrite
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* I/O Context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|PhyReg
+comma
+multiline_comment|/* Register Address (Offset) */
+id|SK_U16
+id|Val
+)paren
+multiline_comment|/* Value */
+(brace
+r_void
+(paren
+op_star
+id|w_func
+)paren
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+r_int
+id|Port
+comma
+r_int
+id|Reg
+comma
+id|SK_U16
+id|Val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|w_func
+op_assign
+id|SkXmPhyWrite
+suffix:semicolon
+)brace
+r_else
+(brace
+id|w_func
+op_assign
+id|SkGmPhyWrite
+suffix:semicolon
+)brace
+id|w_func
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PhyReg
+comma
+id|Val
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGePhyWrite */
+macro_line|#endif /* SK_DIAG */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacPromiscMode() - Enable / Disable Promiscuous Mode&n; *&n; * Description:&n; *   enables / disables promiscuous mode by setting Mode Register (XMAC) or&n; *   Receive Control Register (GMAC) dep. on board type   &t;&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacPromiscMode
+r_void
+id|SkMacPromiscMode
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|Enable
+)paren
+multiline_comment|/* Enable / Disable */
+(brace
+macro_line|#ifdef YUKON
+id|SK_U16
+id|RcReg
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef GENESIS
+id|SK_U32
+id|MdReg
+suffix:semicolon
+macro_line|#endif&t;
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|MdReg
+)paren
+suffix:semicolon
+multiline_comment|/* enable or disable promiscuous mode */
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|MdReg
+op_or_assign
+id|XM_MD_ENA_PROM
+suffix:semicolon
+)brace
+r_else
+(brace
+id|MdReg
+op_and_assign
+op_complement
+id|XM_MD_ENA_PROM
+suffix:semicolon
+)brace
+multiline_comment|/* setup Mode Register */
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+op_amp
+id|RcReg
+)paren
+suffix:semicolon
+multiline_comment|/* enable or disable unicast and multicast filtering */
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|RcReg
+op_and_assign
+op_complement
+(paren
+id|GM_RXCR_UCF_ENA
+op_or
+id|GM_RXCR_MCF_ENA
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|RcReg
+op_or_assign
+(paren
+id|GM_RXCR_UCF_ENA
+op_or
+id|GM_RXCR_MCF_ENA
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* setup Receive Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+id|RcReg
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacPromiscMode*/
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacHashing() - Enable / Disable Hashing&n; *&n; * Description:&n; *   enables / disables hashing by setting Mode Register (XMAC) or&n; *   Receive Control Register (GMAC) dep. on board type&t;&t;&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacHashing
+r_void
+id|SkMacHashing
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|Enable
+)paren
+multiline_comment|/* Enable / Disable */
+(brace
+macro_line|#ifdef YUKON
+id|SK_U16
+id|RcReg
+suffix:semicolon
+macro_line|#endif&t;
+macro_line|#ifdef GENESIS
+id|SK_U32
+id|MdReg
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|MdReg
+)paren
+suffix:semicolon
+multiline_comment|/* enable or disable hashing */
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|MdReg
+op_or_assign
+id|XM_MD_ENA_HASH
+suffix:semicolon
+)brace
+r_else
+(brace
+id|MdReg
+op_and_assign
+op_complement
+id|XM_MD_ENA_HASH
+suffix:semicolon
+)brace
+multiline_comment|/* setup Mode Register */
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+op_amp
+id|RcReg
+)paren
+suffix:semicolon
+multiline_comment|/* enable or disable multicast filtering */
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|RcReg
+op_or_assign
+id|GM_RXCR_MCF_ENA
+suffix:semicolon
+)brace
+r_else
+(brace
+id|RcReg
+op_and_assign
+op_complement
+id|GM_RXCR_MCF_ENA
+suffix:semicolon
+)brace
+multiline_comment|/* setup Receive Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+id|RcReg
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacHashing*/
+macro_line|#ifdef SK_DIAG
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSetRxCmd() - Modify the value of the XMAC&squot;s Rx Command Register&n; *&n; * Description:&n; *&t;The features&n; *&t; - FCS stripping,&t;&t;&t;&t;&t;SK_STRIP_FCS_ON/OFF&n; *&t; - pad byte stripping,&t;&t;&t;&t;SK_STRIP_PAD_ON/OFF&n; *&t; - don&squot;t set XMR_FS_ERR in status&t;SK_LENERR_OK_ON/OFF&n; *&t;   for inrange length error frames&n; *&t; - don&squot;t set XMR_FS_ERR in status&t;SK_BIG_PK_OK_ON/OFF&n; *&t;   for frames &gt; 1514 bytes&n; *   - enable Rx of own packets         SK_SELF_RX_ON/OFF&n; *&n; *&t;for incoming packets may be enabled/disabled by this function.&n; *&t;Additional modes may be added later.&n; *&t;Multiple modes can be enabled/disabled at the same time.&n; *&t;The new configuration is written to the Rx Command register immediately.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmSetRxCmd
+r_static
 r_void
 id|SkXmSetRxCmd
 c_func
@@ -303,30 +1542,34 @@ multiline_comment|/* IO context */
 r_int
 id|Port
 comma
-multiline_comment|/* The XMAC to handle with belongs to this Port */
+multiline_comment|/* Port Index (MAC_1 + n) */
 r_int
 id|Mode
 )paren
 multiline_comment|/* Mode is SK_STRIP_FCS_ON/OFF, SK_STRIP_PAD_ON/OFF,&n;&t;&t;&t;&t;&t;   SK_LENERR_OK_ON/OFF, or SK_BIG_PK_OK_ON/OFF */
 (brace
-id|SK_GEPORT
-op_star
-id|pPrt
+id|SK_U16
+id|OldRxCmd
 suffix:semicolon
 id|SK_U16
-id|OldRxMode
+id|RxCmd
 suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
 id|Port
-)braket
+comma
+id|XM_RX_CMD
+comma
+op_amp
+id|OldRxCmd
+)paren
 suffix:semicolon
-id|OldRxMode
+id|RxCmd
 op_assign
-id|pPrt-&gt;PRxCmd
+id|OldRxCmd
 suffix:semicolon
 r_switch
 c_cond
@@ -343,7 +1586,7 @@ id|SK_STRIP_FCS_OFF
 r_case
 id|SK_STRIP_FCS_ON
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_or_assign
 id|XM_RX_STRIP_FCS
 suffix:semicolon
@@ -352,7 +1595,7 @@ suffix:semicolon
 r_case
 id|SK_STRIP_FCS_OFF
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_and_assign
 op_complement
 id|XM_RX_STRIP_FCS
@@ -375,7 +1618,7 @@ id|SK_STRIP_PAD_OFF
 r_case
 id|SK_STRIP_PAD_ON
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_or_assign
 id|XM_RX_STRIP_PAD
 suffix:semicolon
@@ -384,7 +1627,7 @@ suffix:semicolon
 r_case
 id|SK_STRIP_PAD_OFF
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_and_assign
 op_complement
 id|XM_RX_STRIP_PAD
@@ -407,7 +1650,7 @@ id|SK_LENERR_OK_OFF
 r_case
 id|SK_LENERR_OK_ON
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_or_assign
 id|XM_RX_LENERR_OK
 suffix:semicolon
@@ -416,7 +1659,7 @@ suffix:semicolon
 r_case
 id|SK_LENERR_OK_OFF
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_and_assign
 op_complement
 id|XM_RX_LENERR_OK
@@ -439,7 +1682,7 @@ id|SK_BIG_PK_OK_OFF
 r_case
 id|SK_BIG_PK_OK_ON
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_or_assign
 id|XM_RX_BIG_PK_OK
 suffix:semicolon
@@ -448,7 +1691,7 @@ suffix:semicolon
 r_case
 id|SK_BIG_PK_OK_OFF
 suffix:colon
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 op_and_assign
 op_complement
 id|XM_RX_BIG_PK_OK
@@ -456,13 +1699,45 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Write the new mode to the receive command register if required */
+r_switch
+c_cond
+(paren
+id|Mode
+op_amp
+(paren
+id|SK_SELF_RX_ON
+op_or
+id|SK_SELF_RX_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_SELF_RX_ON
+suffix:colon
+id|RxCmd
+op_or_assign
+id|XM_RX_SELF_RX
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_SELF_RX_OFF
+suffix:colon
+id|RxCmd
+op_and_assign
+op_complement
+id|XM_RX_SELF_RX
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Write the new mode to the Rx command register if required */
 r_if
 c_cond
 (paren
-id|OldRxMode
+id|OldRxCmd
 op_ne
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 )paren
 (brace
 id|XM_OUT16
@@ -474,12 +1749,398 @@ id|Port
 comma
 id|XM_RX_CMD
 comma
-id|pPrt-&gt;PRxCmd
+id|RxCmd
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* SkXmSetRxCmd*/
+multiline_comment|/* SkXmSetRxCmd */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmSetRxCmd() - Modify the value of the GMAC&squot;s Rx Control Register&n; *&n; * Description:&n; *&t;The features&n; *&t; - FCS (CRC) stripping,&t;&t;&t;&t;SK_STRIP_FCS_ON/OFF&n; *&t; - don&squot;t set GMR_FS_LONG_ERR&t;&t;SK_BIG_PK_OK_ON/OFF&n; *&t;   for frames &gt; 1514 bytes&n; *   - enable Rx of own packets         SK_SELF_RX_ON/OFF&n; *&n; *&t;for incoming packets may be enabled/disabled by this function.&n; *&t;Additional modes may be added later.&n; *&t;Multiple modes can be enabled/disabled at the same time.&n; *&t;The new configuration is written to the Rx Command register immediately.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmSetRxCmd
+r_static
+r_void
+id|SkGmSetRxCmd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|Mode
+)paren
+multiline_comment|/* Mode is SK_STRIP_FCS_ON/OFF, SK_STRIP_PAD_ON/OFF,&n;&t;&t;&t;&t;&t;   SK_LENERR_OK_ON/OFF, or SK_BIG_PK_OK_ON/OFF */
+(brace
+id|SK_U16
+id|OldRxCmd
+suffix:semicolon
+id|SK_U16
+id|RxCmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|Mode
+op_amp
+(paren
+id|SK_STRIP_FCS_ON
+op_or
+id|SK_STRIP_FCS_OFF
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+op_amp
+id|OldRxCmd
+)paren
+suffix:semicolon
+id|RxCmd
+op_assign
+id|OldRxCmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|Mode
+op_amp
+id|SK_STRIP_FCS_ON
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|RxCmd
+op_or_assign
+id|GM_RXCR_CRC_DIS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|RxCmd
+op_and_assign
+op_complement
+id|GM_RXCR_CRC_DIS
+suffix:semicolon
+)brace
+multiline_comment|/* Write the new mode to the Rx control register if required */
+r_if
+c_cond
+(paren
+id|OldRxCmd
+op_ne
+id|RxCmd
+)paren
+(brace
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+id|RxCmd
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|Mode
+op_amp
+(paren
+id|SK_BIG_PK_OK_ON
+op_or
+id|SK_BIG_PK_OK_OFF
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SERIAL_MODE
+comma
+op_amp
+id|OldRxCmd
+)paren
+suffix:semicolon
+id|RxCmd
+op_assign
+id|OldRxCmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|Mode
+op_amp
+id|SK_BIG_PK_OK_ON
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|RxCmd
+op_or_assign
+id|GM_SMOD_JUMBO_ENA
+suffix:semicolon
+)brace
+r_else
+(brace
+id|RxCmd
+op_and_assign
+op_complement
+id|GM_SMOD_JUMBO_ENA
+suffix:semicolon
+)brace
+multiline_comment|/* Write the new mode to the Rx control register if required */
+r_if
+c_cond
+(paren
+id|OldRxCmd
+op_ne
+id|RxCmd
+)paren
+(brace
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SERIAL_MODE
+comma
+id|RxCmd
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/* SkGmSetRxCmd */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacSetRxCmd() - Modify the value of the MAC&squot;s Rx Control Register&n; *&n; * Description:&t;modifies the MAC&squot;s Rx Control reg. dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacSetRxCmd
+r_void
+id|SkMacSetRxCmd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|Mode
+)paren
+multiline_comment|/* Rx Mode */
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|SkXmSetRxCmd
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|Mode
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|SkGmSetRxCmd
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|Mode
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkMacSetRxCmd */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacCrcGener() - Enable / Disable CRC Generation&n; *&n; * Description:&t;enables / disables CRC generation dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacCrcGener
+r_void
+id|SkMacCrcGener
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|Enable
+)paren
+multiline_comment|/* Enable / Disable */
+(brace
+id|SK_U16
+id|Word
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_TX_CMD
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|Word
+op_and_assign
+op_complement
+id|XM_TX_NO_CRC
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Word
+op_or_assign
+id|XM_TX_NO_CRC
+suffix:semicolon
+)brace
+multiline_comment|/* setup Tx Command Register */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_TX_CMD
+comma
+id|Word
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_CTRL
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|Word
+op_and_assign
+op_complement
+id|GM_TXCR_CRC_DIS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Word
+op_or_assign
+id|GM_TXCR_CRC_DIS
+suffix:semicolon
+)brace
+multiline_comment|/* setup Tx Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_CTRL
+comma
+id|Word
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkMacCrcGener*/
+macro_line|#endif /* SK_DIAG */
+macro_line|#ifdef GENESIS
 multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmClrExactAddr() - Clear Exact Match Address Registers&n; *&n; * Description:&n; *&t;All Exact Match Address registers of the XMAC &squot;Port&squot; will be&n; *&t;cleared starting with &squot;StartNum&squot; up to (and including) the&n; *&t;Exact Match address number of &squot;StopNum&squot;.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmClrExactAddr
 r_void
@@ -498,7 +2159,7 @@ multiline_comment|/* IO context */
 r_int
 id|Port
 comma
-multiline_comment|/* The XMAC to handle with belongs to this Port */
+multiline_comment|/* Port Index (MAC_1 + n) */
 r_int
 id|StartNum
 comma
@@ -600,11 +2261,11 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkXmClrExactAddr */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmClrSrcCheck() - Clear Source Check Address Register&n; *&n; * Description:&n; *&t;The Source Check Address Register of the XMAC &squot;Port&squot; number&n; *&t;will be cleared.&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmClrSrcCheck
-r_static
+macro_line|#endif /* GENESIS */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacFlushTxFifo() - Flush the MAC&squot;s transmit FIFO&n; *&n; * Description:&n; *&t;Flush the transmit FIFO of the MAC specified by the index &squot;Port&squot;&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacFlushTxFifo
 r_void
-id|SkXmClrSrcCheck
+id|SkMacFlushTxFifo
 c_func
 (paren
 id|SK_AC
@@ -619,42 +2280,64 @@ multiline_comment|/* IO context */
 r_int
 id|Port
 )paren
-multiline_comment|/* The XMAC to handle with belongs to this Port (MAC_1 + n) */
+multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
-id|SK_U16
-id|ZeroAddr
-(braket
-l_int|3
-)braket
-op_assign
-(brace
-l_int|0x0000
-comma
-l_int|0x0000
-comma
-l_int|0x0000
-)brace
+macro_line|#ifdef GENESIS
+id|SK_U32
+id|MdReg
 suffix:semicolon
-id|XM_OUTHASH
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN32
 c_func
 (paren
 id|IoC
 comma
 id|Port
 comma
-id|XM_SRC_CHK
+id|XM_MODE
 comma
 op_amp
-id|ZeroAddr
+id|MdReg
+)paren
+suffix:semicolon
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+op_or
+id|XM_MD_FTF
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmClrSrcCheck */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmClrHashAddr() - Clear Hash Address Registers&n; *&n; * Description:&n; *&t;The Hash Address Register of the XMAC &squot;Port&squot; will be cleared.&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmClrHashAddr
-r_static
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* no way to flush the FIFO we have to issue a reset */
+multiline_comment|/* TBD */
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacFlushTxFifo */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacFlushRxFifo() - Flush the MAC&squot;s receive FIFO&n; *&n; * Description:&n; *&t;Flush the receive FIFO of the MAC specified by the index &squot;Port&squot;&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacFlushRxFifo
 r_void
-id|SkXmClrHashAddr
+id|SkMacFlushRxFifo
 c_func
 (paren
 id|SK_AC
@@ -669,7 +2352,81 @@ multiline_comment|/* IO context */
 r_int
 id|Port
 )paren
-multiline_comment|/* The XMAC to handle with belongs to this Port (MAC_1 + n) */
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+macro_line|#ifdef GENESIS
+id|SK_U32
+id|MdReg
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|MdReg
+)paren
+suffix:semicolon
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+op_or
+id|XM_MD_FRF
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* no way to flush the FIFO we have to issue a reset */
+multiline_comment|/* TBD */
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacFlushRxFifo */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSoftRst() - Do a XMAC software reset&n; *&n; * Description:&n; *&t;The PHY registers should not be destroyed during this&n; *&t;kind of software reset. Therefore the XMAC Software Reset&n; *&t;(XM_GP_RES_MAC bit in XM_GP_PORT) must not be used!&n; *&n; *&t;The software reset is done by&n; *&t;&t;- disabling the Rx and Tx state machine,&n; *&t;&t;- resetting the statistics module,&n; *&t;&t;- clear all other significant XMAC Mode,&n; *&t;&t;  Command, and Control Registers&n; *&t;&t;- clearing the Hash Register and the&n; *&t;&t;  Exact Match Address registers, and&n; *&t;&t;- flushing the XMAC&squot;s Rx and Tx FIFOs.&n; *&n; * Note:&n; *&t;Another requirement when stopping the XMAC is to&n; *&t;avoid sending corrupted frames on the network.&n; *&t;Disabling the Tx state machine will NOT interrupt&n; *&t;the currently transmitted frame. But we must take care&n; *&t;that the Tx FIFO is cleared AFTER the current frame&n; *&t;is complete sent to the network.&n; *&n; *&t;It takes about 12ns to send a frame with 1538 bytes.&n; *&t;One PCI clock goes at least 15ns (66MHz). Therefore&n; *&t;after reading XM_GP_PORT back, we are sure that the&n; *&t;transmitter is disabled AND idle. And this means&n; *&t;we may flush the transmit FIFO now.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkXmSoftRst
+r_static
+r_void
+id|SkXmSoftRst
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
 id|SK_U16
 id|ZeroAddr
@@ -687,197 +2444,6 @@ comma
 l_int|0x0000
 )brace
 suffix:semicolon
-id|XM_OUTHASH
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_HSM
-comma
-op_amp
-id|ZeroAddr
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* SkXmClrHashAddr*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmFlushTxFifo() - Flush the XMACs transmit FIFO&n; *&n; * Description:&n; *&t;Flush the transmit FIFO of the XMAC specified by the index &squot;Port&squot;&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmFlushTxFifo
-r_void
-id|SkXmFlushTxFifo
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-)paren
-multiline_comment|/* The XMAC to handle with belongs to this Port (MAC_1 + n) */
-(brace
-id|SK_U32
-id|MdReg
-suffix:semicolon
-id|XM_IN32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-op_amp
-id|MdReg
-)paren
-suffix:semicolon
-id|MdReg
-op_or_assign
-id|XM_MD_FTF
-suffix:semicolon
-id|XM_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-id|MdReg
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* SkXmFlushTxFifo */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmFlushRxFifo() - Flush the XMACs receive FIFO&n; *&n; * Description:&n; *&t;Flush the receive FIFO of the XMAC specified by the index &squot;Port&squot;&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmFlushRxFifo
-r_void
-id|SkXmFlushRxFifo
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-)paren
-multiline_comment|/* The XMAC to handle with belongs to this Port (MAC_1 + n) */
-(brace
-id|SK_U32
-id|MdReg
-suffix:semicolon
-id|XM_IN32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-op_amp
-id|MdReg
-)paren
-suffix:semicolon
-id|MdReg
-op_or_assign
-id|XM_MD_FRF
-suffix:semicolon
-id|XM_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-id|MdReg
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* SkXmFlushRxFifo*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSoftRst() - Do a XMAC software reset&n; *&n; * Description:&n; *&t;The PHY registers should not be destroyed during this&n; *&t;kind of software reset. Therefore the XMAC Software Reset&n; *&t;(XM_GP_RES_MAC bit in XM_GP_PORT) must not be used!&n; *&n; *&t;The software reset is done by&n; *&t;&t;- disabling the Rx and Tx state maschine,&n; *&t;&t;- reseting the statistics module,&n; *&t;&t;- clear all other significant XMAC Mode,&n; *&t;&t;  Command, and Control Registers&n; *&t;&t;- clearing the Hash Register and the&n; *&t;&t;  Exact Match Address registers, and&n; *&t;&t;- flushing the XMAC&squot;s Rx and Tx FIFOs.&n; *&n; * Note:&n; *&t;Another requirement when stopping the XMAC is to&n; *&t;avoid sending corrupted frames on the network.&n; *&t;Disabling the Tx state maschine will NOT interrupt&n; *&t;the currently transmitted frame. But we must take care&n; *&t;that the tx FIFO is cleared AFTER the current frame&n; *&t;is complete sent to the network.&n; *&n; *&t;It takes about 12ns to send a frame with 1538 bytes.&n; *&t;One PCI clock goes at least 15ns (66MHz). Therefore&n; *&t;after reading XM_GP_PORT back, we are sure that the&n; *&t;transmitter is disabled AND idle. And this means&n; *&t;we may flush the transmit FIFO now.&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmSoftRst
-r_void
-id|SkXmSoftRst
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-)paren
-multiline_comment|/* port to stop (MAC_1 + n) */
-(brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-id|SK_U16
-id|Word
-suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-suffix:semicolon
-multiline_comment|/* disable the receiver and transmitter */
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
-id|Word
-)paren
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-id|Word
-op_amp
-op_complement
-(paren
-id|XM_MMU_ENA_RX
-op_or
-id|XM_MMU_ENA_TX
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* reset the statistics module */
 id|XM_OUT32
 c_func
@@ -891,7 +2457,7 @@ comma
 id|XM_GP_RES_STAT
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * clear all other significant XMAC Mode,&n;&t; * Command, and Control Registers&n;&t; */
+multiline_comment|/* disable all XMAC IRQs */
 id|XM_OUT16
 c_func
 (paren
@@ -904,7 +2470,6 @@ comma
 l_int|0xffff
 )paren
 suffix:semicolon
-multiline_comment|/* disable all IRQs */
 id|XM_OUT32
 c_func
 (paren
@@ -914,7 +2479,7 @@ id|Port
 comma
 id|XM_MODE
 comma
-l_int|0x00000000
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear Mode Reg */
@@ -927,7 +2492,7 @@ id|Port
 comma
 id|XM_TX_CMD
 comma
-l_int|0x0000
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* reset TX CMD Reg */
@@ -940,7 +2505,7 @@ id|Port
 comma
 id|XM_RX_CMD
 comma
-l_int|0x0000
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* reset RX CMD Reg */
@@ -959,12 +2524,12 @@ id|PhyType
 r_case
 id|SK_PHY_BCOM
 suffix:colon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -975,34 +2540,11 @@ l_int|0xffff
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
-id|PHY_WRITE
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_LONE_INT_ENAB
-comma
-l_int|0x0
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_NAT
-suffix:colon
-multiline_comment|/* todo: National&n;&t;&t;&t; PHY_WRITE(IoC, pPrt, Port, PHY_NAT_INT_MASK, &n;&t;&t;&t;&t;0xffff); */
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* clear the Hash Register */
-id|SkXmClrHashAddr
+id|SkXmPhyWrite
 c_func
 (paren
 id|pAC
@@ -1010,6 +2552,34 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|PHY_LONE_INT_ENAB
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_NAT
+suffix:colon
+multiline_comment|/* todo: National&n;&t;&t;&t; SkXmPhyWrite(pAC, IoC, Port, PHY_NAT_INT_MASK, 0xffff); */
+r_break
+suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
+)brace
+multiline_comment|/* clear the Hash Register */
+id|XM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_HSM
+comma
+op_amp
+id|ZeroAddr
 )paren
 suffix:semicolon
 multiline_comment|/* clear the Exact Match Address registers */
@@ -1027,50 +2597,25 @@ comma
 l_int|15
 )paren
 suffix:semicolon
-id|SkXmClrSrcCheck
+multiline_comment|/* clear the Source Check Address registers */
+id|XM_OUTHASH
 c_func
 (paren
-id|pAC
-comma
 id|IoC
 comma
 id|Port
+comma
+id|XM_SRC_CHK
+comma
+op_amp
+id|ZeroAddr
 )paren
-suffix:semicolon
-multiline_comment|/* flush the XMAC&squot;s Rx and Tx FIFOs */
-id|SkXmFlushTxFifo
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-)paren
-suffix:semicolon
-id|SkXmFlushRxFifo
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-)paren
-suffix:semicolon
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PState
-op_assign
-id|SK_PRT_STOP
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmSoftRst*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmHardRst() - Do a XMAC hardware reset&n; *&n; * Description:&n; *&t;The XMAC of the specified &squot;Port&squot; and all connected devices&n; *&t;(PHY and SERDES) will receive a reset signal on its *Reset&n; *&t;pins.&n; *&t;External PHYs must be reset be clearing a bit in the GPIO&n; *&t;register (Timing requirements: Broadcom: 400ns, Level One:&n; *&t;none, National: 80ns).&n; *&n; * ATTENTION:&n; * &t;It is absolutely necessary to reset the SW_RST Bit first&n; *&t;before calling this function.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/* SkXmSoftRst */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmHardRst() - Do a XMAC hardware reset&n; *&n; * Description:&n; *&t;The XMAC of the specified &squot;Port&squot; and all connected devices&n; *&t;(PHY and SERDES) will receive a reset signal on its *Reset pins.&n; *&t;External PHYs must be reset be clearing a bit in the GPIO register&n; *  (Timing requirements: Broadcom: 400ns, Level One: none, National: 80ns).&n; *&n; * ATTENTION:&n; * &t;It is absolutely necessary to reset the SW_RST Bit first&n; *&t;before calling this function.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmHardRst
+r_static
 r_void
 id|SkXmHardRst
 c_func
@@ -1087,7 +2632,7 @@ multiline_comment|/* IO context */
 r_int
 id|Port
 )paren
-multiline_comment|/* port to stop (MAC_1 + n) */
+multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
 id|SK_U32
 id|Reg
@@ -1116,8 +2661,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* TX_MFF_CTRL1 is a 32 bit register but only the lowest 16 */
-multiline_comment|/* bit contains buttoms to press */
+multiline_comment|/* TX_MFF_CTRL1 has 32 bits, but only the lowest 16 bits are used */
 id|SK_OUT16
 c_func
 (paren
@@ -1131,9 +2675,6 @@ comma
 id|TX_MFF_CTRL1
 )paren
 comma
-(paren
-id|SK_U16
-)paren
 id|MFF_CLR_MAC_RST
 )paren
 suffix:semicolon
@@ -1143,13 +2684,11 @@ l_int|0
 suffix:semicolon
 r_do
 (brace
-id|TOut
-op_increment
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|TOut
+op_increment
 OG
 l_int|10000
 )paren
@@ -1171,9 +2710,6 @@ comma
 id|TX_MFF_CTRL1
 )paren
 comma
-(paren
-id|SK_U16
-)paren
 id|MFF_SET_MAC_RST
 )paren
 suffix:semicolon
@@ -1289,6 +2825,351 @@ id|Reg
 )paren
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* SkXmHardRst */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmSoftRst() - Do a GMAC software reset&n; *&n; * Description:&n; *&t;The GPHY registers should not be destroyed during this&n; *&t;kind of software reset.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmSoftRst
+r_static
+r_void
+id|SkGmSoftRst
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_U16
+id|EmptyHash
+(braket
+l_int|4
+)braket
+op_assign
+(brace
+l_int|0x0000
+comma
+l_int|0x0000
+comma
+l_int|0x0000
+comma
+l_int|0x0000
+)brace
+suffix:semicolon
+id|SK_U16
+id|RxCtrl
+suffix:semicolon
+multiline_comment|/* reset the statistics module */
+multiline_comment|/* disable all GMAC IRQs */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_IRQ_MSK
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* disable all PHY IRQs */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_INT_MASK
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* clear the Hash Register */
+id|GM_OUTHASH
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_MC_ADDR_H1
+comma
+id|EmptyHash
+)paren
+suffix:semicolon
+multiline_comment|/* Enable Unicast and Multicast filtering */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+op_amp
+id|RxCtrl
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|RxCtrl
+op_or
+id|GM_RXCR_UCF_ENA
+op_or
+id|GM_RXCR_MCF_ENA
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmSoftRst */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmHardRst() - Do a GMAC hardware reset&n; *&n; * Description:&n; *&n; * ATTENTION:&n; * &t;It is absolutely necessary to reset the SW_RST Bit first&n; *&t;before calling this function.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmHardRst
+r_static
+r_void
+id|SkGmHardRst
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+multiline_comment|/* set GPHY Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GPHY_CTRL
+)paren
+comma
+id|GPC_RST_SET
+)paren
+suffix:semicolon
+multiline_comment|/* set GMAC Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_RST_SET
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmHardRst */
+macro_line|#endif /* YUKON */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacSoftRst() - Do a MAC software reset&n; *&n; * Description:&t;calls a MAC software reset routine dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacSoftRst
+r_void
+id|SkMacSoftRst
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* disable receiver and transmitter */
+id|SkMacRxTxDisable
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|SkXmSoftRst
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|SkGmSoftRst
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+multiline_comment|/* flush the MAC&squot;s Rx and Tx FIFOs */
+id|SkMacFlushTxFifo
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+id|SkMacFlushRxFifo
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+id|pPrt-&gt;PState
+op_assign
+id|SK_PRT_STOP
+suffix:semicolon
+)brace
+multiline_comment|/* SkMacSoftRst */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacHardRst() - Do a MAC hardware reset&n; *&n; * Description:&t;calls a MAC hardware reset routine dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacHardRst
+r_void
+id|SkMacHardRst
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|SkXmHardRst
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|SkGmHardRst
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
 id|pAC-&gt;GIni.GP
 (braket
 id|Port
@@ -1299,8 +3180,9 @@ op_assign
 id|SK_PRT_RESET
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmHardRst */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitMac() - Initialize the XMAC II&n; *&n; * Description:&n; *&t;Initialize all the XMAC of the specified port.&n; *&t;The XMAC must be reset or stopped before calling this function.&n; *&n; * Note:&n; *&t;The XMAC&squot;s Rx and Tx state machine is still disabled when returning.&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/* SkMacHardRst */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitMac() - Initialize the XMAC II&n; *&n; * Description:&n; *&t;Initialize the XMAC of the specified port.&n; *&t;The XMAC must be reset or stopped before calling this function.&n; *&n; * Note:&n; *&t;The XMAC&squot;s Rx and Tx state machine is still disabled when returning.&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitMac
 r_void
 id|SkXmInitMac
@@ -1332,9 +3214,6 @@ id|i
 suffix:semicolon
 id|SK_U16
 id|SWord
-suffix:semicolon
-id|SK_U16
-id|PhyId
 suffix:semicolon
 id|pPrt
 op_assign
@@ -1374,12 +3253,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|SWord
 op_amp
-(paren
-id|SK_U16
-)paren
 id|MFF_SET_MAC_RST
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* PState does not match HW state */
@@ -1395,7 +3275,7 @@ comma
 id|SKERR_HWI_E006MSG
 )paren
 suffix:semicolon
-multiline_comment|/* Correct it. */
+multiline_comment|/* Correct it */
 id|pPrt-&gt;PState
 op_assign
 id|SK_PRT_RESET
@@ -1424,13 +3304,10 @@ comma
 id|TX_MFF_CTRL1
 )paren
 comma
-(paren
-id|SK_U16
-)paren
 id|MFF_CLR_MAC_RST
 )paren
 suffix:semicolon
-multiline_comment|/* Ensure that XMAC reset release is done (errata from LReinbold?). */
+multiline_comment|/* Ensure that XMAC reset release is done (errata from LReinbold?) */
 id|SK_IN16
 c_func
 (paren
@@ -1448,16 +3325,11 @@ op_amp
 id|SWord
 )paren
 suffix:semicolon
-multiline_comment|/* Clear PHY reset. */
+multiline_comment|/* Clear PHY reset */
 r_if
 c_cond
 (paren
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PhyType
+id|pPrt-&gt;PhyType
 op_ne
 id|SK_PHY_XMAC
 )paren
@@ -1483,25 +3355,25 @@ l_int|0
 (brace
 id|Reg
 op_or_assign
+(paren
 id|GP_DIR_0
-suffix:semicolon
-multiline_comment|/* Set to output. */
-id|Reg
-op_or_assign
+op_or
 id|GP_IO_0
+)paren
 suffix:semicolon
+multiline_comment|/* set to output */
 )brace
 r_else
 (brace
 id|Reg
 op_or_assign
+(paren
 id|GP_DIR_2
-suffix:semicolon
-multiline_comment|/* Set to output. */
-id|Reg
-op_or_assign
+op_or
 id|GP_IO_2
+)paren
 suffix:semicolon
+multiline_comment|/* set to output */
 )brace
 id|SK_OUT32
 c_func
@@ -1513,7 +3385,7 @@ comma
 id|Reg
 )paren
 suffix:semicolon
-multiline_comment|/* Enable GMII interface. */
+multiline_comment|/* Enable GMII interface */
 id|XM_OUT16
 c_func
 (paren
@@ -1526,94 +3398,22 @@ comma
 id|XM_HW_GMII_MD
 )paren
 suffix:semicolon
-id|PHY_READ
+multiline_comment|/* read Id from external PHY (all have the same address) */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_XMAC_ID1
 comma
 op_amp
-id|PhyId
+id|pPrt-&gt;PhyId1
 )paren
 suffix:semicolon
-macro_line|#ifdef xDEBUG
-r_if
-c_cond
-(paren
-id|SWord
-op_eq
-l_int|0xFFFF
-)paren
-(brace
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-r_do
-(brace
-id|PHY_READ
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_XMAC_ID1
-comma
-op_amp
-id|SWord
-)paren
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-multiline_comment|/* Limit retries; else machine may hang. */
-)brace
-r_while
-c_loop
-(paren
-id|SWord
-op_eq
-l_int|0xFFFF
-op_logical_and
-id|i
-OL
-l_int|500000
-)paren
-suffix:semicolon
-id|CMSMPrintString
-c_func
-(paren
-id|pAC-&gt;pConfigTable
-comma
-id|MSG_TYPE_RUNTIME_INFO
-comma
-l_string|&quot;ID1 is %x after %d reads.&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|SWord
-comma
-(paren
-r_void
-op_star
-)paren
-id|i
-)paren
-suffix:semicolon
-multiline_comment|/* Trigger PCI analyzer */
-multiline_comment|/* SK_IN32(IoC, 0x012c, &amp;Reg); */
-)brace
-macro_line|#endif&t;/* DEBUG */
 multiline_comment|/*&n;&t;&t;&t; * Optimize MDIO transfer by suppressing preamble.&n;&t;&t;&t; * Must be done AFTER first access to BCOM chip.&n;&t;&t;&t; */
 id|XM_IN16
 c_func
@@ -1645,13 +3445,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PhyId
+id|pPrt-&gt;PhyId1
 op_eq
-l_int|0x6044
+id|PHY_BCOM_ID1_C0
 )paren
 (brace
-multiline_comment|/* Workaround BCOM Errata for the C0 type. */
-multiline_comment|/* Write magic patterns to reserved registers. */
+multiline_comment|/*&n;&t;&t;&t;&t; * Workaround BCOM Errata for the C0 type.&n;&t;&t;&t;&t; * Write magic patterns to reserved registers.&n;&t;&t;&t;&t; */
 id|i
 op_assign
 l_int|0
@@ -1669,12 +3468,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -1702,13 +3501,12 @@ r_else
 r_if
 c_cond
 (paren
-id|PhyId
+id|pPrt-&gt;PhyId1
 op_eq
-l_int|0x6041
+id|PHY_BCOM_ID1_A1
 )paren
 (brace
-multiline_comment|/* Workaround BCOM Errata for the A1 type. */
-multiline_comment|/* Write magic patterns to reserved registers. */
+multiline_comment|/*&n;&t;&t;&t;&t; * Workaround BCOM Errata for the A1 type.&n;&t;&t;&t;&t; * Write magic patterns to reserved registers.&n;&t;&t;&t;&t; */
 id|i
 op_assign
 l_int|0
@@ -1726,12 +3524,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -1755,14 +3553,13 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Workaround BCOM Errata (#10523) for all BCom PHYs. */
-multiline_comment|/* Disable Power Management after reset. */
-id|PHY_READ
+multiline_comment|/*&n;&t;&t;&t; * Workaround BCOM Errata (#10523) for all BCom PHYs.&n;&t;&t;&t; * Disable Power Management after reset.&n;&t;&t;&t; */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -1772,96 +3569,28 @@ op_amp
 id|SWord
 )paren
 suffix:semicolon
-macro_line|#ifdef xDEBUG
-r_if
-c_cond
-(paren
-id|SWord
-op_eq
-l_int|0xFFFF
-)paren
-(brace
-id|i
-op_assign
-l_int|1
-suffix:semicolon
-r_do
-(brace
-id|PHY_READ
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_BCOM_AUX_CTRL
 comma
-op_amp
-id|SWord
-)paren
-suffix:semicolon
-id|i
-op_increment
-suffix:semicolon
-multiline_comment|/* Limit retries; else machine may hang. */
-)brace
-r_while
-c_loop
 (paren
-id|SWord
-op_eq
-l_int|0xFFFF
-op_logical_and
-id|i
-OL
-l_int|500000
+id|SK_U16
 )paren
-suffix:semicolon
-id|CMSMPrintString
-c_func
 (paren
-id|pAC-&gt;pConfigTable
-comma
-id|MSG_TYPE_RUNTIME_INFO
-comma
-l_string|&quot;AUX_CTRL is %x after %d reads.&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|SWord
-comma
-(paren
-r_void
-op_star
-)paren
-id|i
-)paren
-suffix:semicolon
-multiline_comment|/* Trigger PCI analyzer */
-multiline_comment|/* SK_IN32(IoC, 0x012c, &amp;Reg); */
-)brace
-macro_line|#endif&t;/* DEBUG */
-id|PHY_WRITE
-c_func
-(paren
-id|IoC
-comma
-id|pPrt
-comma
-id|Port
-comma
-id|PHY_BCOM_AUX_CTRL
-comma
 id|SWord
 op_or
 id|PHY_B_AC_DIS_PM
 )paren
+)paren
 suffix:semicolon
-multiline_comment|/* PHY LED initialization is done in SkGeXmitLED(), not here. */
+multiline_comment|/* PHY LED initialization is done in SkGeXmitLED() */
 )brace
 multiline_comment|/* Dummy read the Interrupt source register */
 id|XM_IN16
@@ -1877,8 +3606,8 @@ op_amp
 id|SWord
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The autonegotiation process starts immediately after&n;&t;&t; * clearing the reset. The autonegotiation process should be&n;&t;&t; * started by the SIRQ, therefore stop it here immediately.&n;&t;&t; */
-id|SkXmInitPhy
+multiline_comment|/*&n;&t;&t; * The auto-negotiation process starts immediately after&n;&t;&t; * clearing the reset. The auto-negotiation process should be&n;&t;&t; * started by the SIRQ, therefore stop it here immediately.&n;&t;&t; */
+id|SkMacInitPhy
 c_func
 (paren
 id|pAC
@@ -1890,13 +3619,13 @@ comma
 id|SK_FALSE
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#ifdef TEST_ONLY
 multiline_comment|/* temp. code: enable signal detect */
 multiline_comment|/* WARNING: do not override GMII setting above */
 id|XM_OUT16
 c_func
 (paren
-id|pAC
+id|IoC
 comma
 id|Port
 comma
@@ -1907,7 +3636,7 @@ id|XM_HW_COM4SIG
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n;&t; * configure the XMACs Station Address&n;&t; * B2_MAC_2 = xx xx xx xx xx x1 is programed to XMAC A&n;&t; * B2_MAC_3 = xx xx xx xx xx x2 is programed to XMAC B&n;&t; */
+multiline_comment|/*&n;&t; * configure the XMACs Station Address&n;&t; * B2_MAC_2 = xx xx xx xx xx x1 is programmed to XMAC A&n;&t; * B2_MAC_3 = xx xx xx xx xx x2 is programmed to XMAC B&n;&t; */
 r_for
 c_loop
 (paren
@@ -1980,9 +3709,15 @@ id|Port
 comma
 id|XM_RX_HI_WM
 comma
-l_int|0x05aa
+id|SK_XM_RX_HI_WM
 )paren
 suffix:semicolon
+multiline_comment|/* Configure Tx Request Threshold */
+id|SWord
+op_assign
+id|SK_XM_THR_SL
+suffix:semicolon
+multiline_comment|/* for single port */
 r_if
 c_cond
 (paren
@@ -2000,55 +3735,31 @@ id|pAC-&gt;GIni.GIPortUsage
 r_case
 id|SK_RED_LINK
 suffix:colon
-multiline_comment|/* Configure Tx Request Threshold for red. link */
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_TX_THR
-comma
+id|SWord
+op_assign
 id|SK_XM_THR_REDL
-)paren
 suffix:semicolon
+multiline_comment|/* redundant link */
 r_break
 suffix:semicolon
 r_case
 id|SK_MUL_LINK
 suffix:colon
-multiline_comment|/* Configure Tx Request Threshold for load bal. */
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_TX_THR
-comma
+id|SWord
+op_assign
 id|SK_XM_THR_MULL
-)paren
 suffix:semicolon
+multiline_comment|/* load balancing */
 r_break
 suffix:semicolon
 r_case
 id|SK_JUMBO_LINK
 suffix:colon
-multiline_comment|/* Configure Tx Request Threshold for jumbo frames */
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_TX_THR
-comma
+id|SWord
+op_assign
 id|SK_XM_THR_JUMBO
-)paren
 suffix:semicolon
+multiline_comment|/* jumbo frames */
 r_break
 suffix:semicolon
 r_default
@@ -2069,9 +3780,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_else
-(brace
-multiline_comment|/* Configure Tx Request Threshold for single port */
 id|XM_OUT16
 c_func
 (paren
@@ -2081,11 +3789,10 @@ id|Port
 comma
 id|XM_TX_THR
 comma
-id|SK_XM_THR_SL
+id|SWord
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * setup register defaults for the Rx Command Register&n;&t; *&t;- Enable Automatic Frame Padding on Tx side&n;&t; */
+multiline_comment|/* setup register defaults for the Tx Command Register */
 id|XM_OUT16
 c_func
 (paren
@@ -2098,7 +3805,40 @@ comma
 id|XM_TX_AUTO_PAD
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * setup register defaults for the Rx Command Register,&n;&t; * program value of PRxCmd&n;&t; */
+multiline_comment|/* setup register defaults for the Rx Command Register */
+id|SWord
+op_assign
+id|XM_RX_STRIP_FCS
+op_or
+id|XM_RX_LENERR_OK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIPortUsage
+op_eq
+id|SK_JUMBO_LINK
+)paren
+(brace
+id|SWord
+op_or_assign
+id|XM_RX_BIG_PK_OK
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_HALF
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * If in manual half duplex mode the other side might be in&n;&t;&t; * full duplex mode, so ignore if a carrier extension is not seen&n;&t;&t; * on frames received&n;&t;&t; */
+id|SWord
+op_or_assign
+id|XM_RX_DIS_CEXT
+suffix:semicolon
+)brace
 id|XM_OUT16
 c_func
 (paren
@@ -2108,10 +3848,10 @@ id|Port
 comma
 id|XM_RX_CMD
 comma
-id|pPrt-&gt;PRxCmd
+id|SWord
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * setup register defaults for the Mode Register&n;&t; *&t;- Don&squot;t strip error frames to avoid Store &amp; Forward&n;&t; *&t;  on the rx side.&n;&t; *&t;- Enable &squot;Check Station Address&squot; bit&n;&t; *&t;- Enable &squot;Check Address Array&squot; bit&n;&t; */
+multiline_comment|/*&n;&t; * setup register defaults for the Mode Register&n;&t; *&t;- Don&squot;t strip error frames to avoid Store &amp; Forward&n;&t; *&t;  on the Rx side.&n;&t; *&t;- Enable &squot;Check Station Address&squot; bit&n;&t; *&t;- Enable &squot;Check Address Array&squot; bit&n;&t; */
 id|XM_OUT32
 c_func
 (paren
@@ -2151,14 +3891,961 @@ id|XMT_DEF_MSK
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do NOT init XMAC interrupt mask here.&n;&t; * All interrupts remain disable until link comes up!&n;&t; */
+multiline_comment|/*&n;&t; * Any additional configuration changes may be done now.&n;&t; * The last action is to enable the Rx and Tx state machine.&n;&t; * This should be done after the auto-negotiation process&n;&t; * has been completed successfully.&n;&t; */
+)brace
+multiline_comment|/* SkXmInitMac */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmInitMac() - Initialize the GMAC&n; *&n; * Description:&n; *&t;Initialize the GMAC of the specified port.&n; *&t;The GMAC must be reset or stopped before calling this function.&n; *&n; * Note:&n; *&t;The GMAC&squot;s Rx and Tx state machine is still disabled when returning.&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmInitMac
+r_void
+id|SkGmInitMac
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|SK_U16
+id|SWord
+suffix:semicolon
+id|SK_U32
+id|DWord
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PState
+op_eq
+id|SK_PRT_STOP
+)paren
+(brace
+multiline_comment|/* Port State: SK_PRT_STOP */
+multiline_comment|/* Verify that the reset bit is cleared */
+id|SK_IN32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|DWord
+op_amp
+id|GMC_RST_SET
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* PState does not match HW state */
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+comma
+id|SKERR_HWI_E006
+comma
+id|SKERR_HWI_E006MSG
+)paren
+suffix:semicolon
+multiline_comment|/* Correct it */
 id|pPrt-&gt;PState
 op_assign
-id|SK_PRT_INIT
+id|SK_PRT_RESET
 suffix:semicolon
-multiline_comment|/*&n;&t; * Any additional configuration changes may be done now.&n;&t; * The last action is to enable the rx and tx state machine.&n;&t; * This should be done after the autonegotiation process&n;&t; * has been completed successfully.&n;&t; */
 )brace
-multiline_comment|/* SkXmInitMac*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitDupMd() - Initialize the XMACs Duplex Mode&n; *&n; * Description:&n; *&t;This function initilaizes the XMACs Duplex Mode.&n; *&t;It should be called after successfully finishing&n; *&t;the Autonegotiation Process&n; *&n; * Returns:&n; *&t;nothing&n; */
+)brace
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PState
+op_eq
+id|SK_PRT_RESET
+)paren
+(brace
+multiline_comment|/* set GPHY Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GPHY_CTRL
+)paren
+comma
+id|GPC_RST_SET
+)paren
+suffix:semicolon
+multiline_comment|/* set GMAC Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_RST_SET
+)paren
+suffix:semicolon
+macro_line|#ifdef XXX
+multiline_comment|/* clear GMAC Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_RST_CLR
+)paren
+suffix:semicolon
+multiline_comment|/* set GMAC Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_RST_SET
+)paren
+suffix:semicolon
+macro_line|#endif /* XXX */
+multiline_comment|/* set HWCFG_MODE */
+id|DWord
+op_assign
+id|GPC_INT_POL_HI
+op_or
+id|GPC_DIS_FC
+op_or
+id|GPC_DIS_SLEEP
+op_or
+id|GPC_ENA_XC
+op_or
+id|GPC_ANEG_ADV_ALL_M
+op_or
+id|GPC_ENA_PAUSE
+op_or
+(paren
+id|pAC-&gt;GIni.GICopperType
+ques
+c_cond
+id|GPC_HWCFG_GMII_COP
+suffix:colon
+id|GPC_HWCFG_GMII_FIB
+)paren
+suffix:semicolon
+multiline_comment|/* set GPHY Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GPHY_CTRL
+)paren
+comma
+id|DWord
+op_or
+id|GPC_RST_SET
+)paren
+suffix:semicolon
+multiline_comment|/* release GPHY Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GPHY_CTRL
+)paren
+comma
+id|DWord
+op_or
+id|GPC_RST_CLR
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCpuWait
+c_func
+(paren
+l_int|9000
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+multiline_comment|/* clear GMAC Control reset */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_PAUSE_ON
+op_or
+id|GMC_RST_CLR
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCpuWait
+c_func
+(paren
+l_int|2000
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+multiline_comment|/* Auto-negotiation ? */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_HALF
+op_logical_or
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_FULL
+)paren
+(brace
+multiline_comment|/* Auto-negotiation disabled */
+multiline_comment|/* get General Purpose Control */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+multiline_comment|/* disable auto-update for speed, duplex and flow-control */
+id|SWord
+op_or_assign
+id|GM_GPCR_AU_ALL_DIS
+suffix:semicolon
+multiline_comment|/* setup General Purpose Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+id|SWord
+)paren
+suffix:semicolon
+id|SWord
+op_assign
+id|GM_GPCR_AU_ALL_DIS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|SWord
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* speed settings */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+)paren
+(brace
+r_case
+id|SK_LSPEED_AUTO
+suffix:colon
+r_case
+id|SK_LSPEED_1000MBPS
+suffix:colon
+id|SWord
+op_or_assign
+id|GM_GPCR_SPEED_1000
+op_or
+id|GM_GPCR_SPEED_100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_100MBPS
+suffix:colon
+id|SWord
+op_or_assign
+id|GM_GPCR_SPEED_100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_10MBPS
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* duplex settings */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_ne
+id|SK_LMODE_HALF
+)paren
+(brace
+multiline_comment|/* set full duplex */
+id|SWord
+op_or_assign
+id|GM_GPCR_DUP_FULL
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PFlowCtrlMode
+)paren
+(brace
+r_case
+id|SK_FLOW_MODE_NONE
+suffix:colon
+multiline_comment|/* set Pause Off */
+id|SK_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|GMAC_CTRL
+)paren
+comma
+id|GMC_PAUSE_OFF
+)paren
+suffix:semicolon
+multiline_comment|/* disable Tx &amp; Rx flow-control */
+id|SWord
+op_or_assign
+id|GM_GPCR_FC_TX_DIS
+op_or
+id|GM_GPCR_FC_RX_DIS
+op_or
+id|GM_GPCR_AU_FCT_DIS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_LOC_SEND
+suffix:colon
+multiline_comment|/* disable Rx flow-control */
+id|SWord
+op_or_assign
+id|GM_GPCR_FC_RX_DIS
+op_or
+id|GM_GPCR_AU_FCT_DIS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_SYMMETRIC
+suffix:colon
+r_case
+id|SK_FLOW_MODE_SYM_OR_REM
+suffix:colon
+multiline_comment|/* enable Tx &amp; Rx flow-control */
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* setup General Purpose Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+id|SWord
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read the Interrupt Source Register */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_IRQ_SRC
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#ifndef VCPU
+multiline_comment|/* read Id from PHY */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_ID1
+comma
+op_amp
+id|pPrt-&gt;PhyId1
+)paren
+suffix:semicolon
+id|SkGmInitPhyMarv
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|SK_FALSE
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+)brace
+(paren
+r_void
+)paren
+id|SkGmResetCounter
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+multiline_comment|/* setup Transmit Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_CTRL
+comma
+id|GM_TXCR_COL_THR
+)paren
+suffix:semicolon
+multiline_comment|/* setup Receive Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_CTRL
+comma
+id|GM_RXCR_UCF_ENA
+op_or
+id|GM_RXCR_MCF_ENA
+op_or
+id|GM_RXCR_CRC_DIS
+)paren
+suffix:semicolon
+multiline_comment|/* setup Transmit Flow Control Register */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_FLOW_CTRL
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+multiline_comment|/* setup Transmit Parameter Register */
+macro_line|#ifdef VCPU
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_PARAM
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|SWord
+op_assign
+(paren
+id|SK_U16
+)paren
+(paren
+id|JAM_LEN_VAL
+c_func
+(paren
+l_int|3
+)paren
+op_or
+id|JAM_IPG_VAL
+c_func
+(paren
+l_int|11
+)paren
+op_or
+id|IPG_JAM_DATA
+c_func
+(paren
+l_int|26
+)paren
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_PARAM
+comma
+id|SWord
+)paren
+suffix:semicolon
+multiline_comment|/* configure the Serial Mode Register */
+macro_line|#ifdef VCPU
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SERIAL_MODE
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|SWord
+op_assign
+id|GM_SMOD_VLAN_ENA
+op_or
+id|IPG_VAL_FAST_ETH
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIPortUsage
+op_eq
+id|SK_JUMBO_LINK
+)paren
+(brace
+multiline_comment|/* enable jumbo mode (Max. Frame Length = 9018) */
+id|SWord
+op_or_assign
+id|GM_SMOD_JUMBO_ENA
+suffix:semicolon
+)brace
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_SERIAL_MODE
+comma
+id|SWord
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * configure the GMACs Station Addresses&n;&t; * in PROM you can find our addresses at:&n;&t; * B2_MAC_1 = xx xx xx xx xx x0 virtual address&n;&t; * B2_MAC_2 = xx xx xx xx xx x1 is programmed to GMAC A&n;&t; * B2_MAC_3 = xx xx xx xx xx x2 is reserved for DualPort&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The following 2 statements are together endianess&n;&t;&t; * independent. Remember this when changing.&n;&t;&t; */
+multiline_comment|/* physical address: will be used for pause frames */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+(paren
+id|B2_MAC_2
+op_plus
+id|Port
+op_star
+l_int|8
+op_plus
+id|i
+op_star
+l_int|2
+)paren
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#ifdef WA_DEV_16
+multiline_comment|/* WA for deviation #16 */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_eq
+id|CHIP_ID_YUKON
+op_logical_and
+id|pAC-&gt;GIni.GIChipRev
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* swap the address bytes */
+id|SWord
+op_assign
+(paren
+(paren
+id|SWord
+op_amp
+l_int|0xff00
+)paren
+op_rshift
+l_int|8
+)paren
+op_or
+(paren
+(paren
+id|SWord
+op_amp
+l_int|0x00ff
+)paren
+op_lshift
+l_int|8
+)paren
+suffix:semicolon
+multiline_comment|/* write to register in reversed order */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+(paren
+id|GM_SRC_ADDR_1L
+op_plus
+(paren
+l_int|2
+op_minus
+id|i
+)paren
+op_star
+l_int|4
+)paren
+comma
+id|SWord
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+(paren
+id|GM_SRC_ADDR_1L
+op_plus
+id|i
+op_star
+l_int|4
+)paren
+comma
+id|SWord
+)paren
+suffix:semicolon
+)brace
+macro_line|#else&t;&t;
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+(paren
+id|GM_SRC_ADDR_1L
+op_plus
+id|i
+op_star
+l_int|4
+)paren
+comma
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#endif /* WA_DEV_16 */
+multiline_comment|/* virtual address: will be used for data */
+id|SK_IN16
+c_func
+(paren
+id|IoC
+comma
+(paren
+id|B2_MAC_1
+op_plus
+id|Port
+op_star
+l_int|8
+op_plus
+id|i
+op_star
+l_int|2
+)paren
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+(paren
+id|GM_SRC_ADDR_2L
+op_plus
+id|i
+op_star
+l_int|4
+)paren
+comma
+id|SWord
+)paren
+suffix:semicolon
+multiline_comment|/* reset Multicast filtering Hash registers 1-3 */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_MC_ADDR_H1
+op_plus
+l_int|4
+op_star
+id|i
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* reset Multicast filtering Hash register 4 */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_MC_ADDR_H4
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* enable interrupt mask for counter overflows */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_IRQ_MSK
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_IRQ_MSK
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TR_IRQ_MSK
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* read General Purpose Status */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_STAT
+comma
+op_amp
+id|SWord
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;MAC Stat Reg=0x%04X&bslash;n&quot;
+comma
+id|SWord
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef SK_DIAG
+id|c_print
+c_func
+(paren
+l_string|&quot;MAC Stat Reg=0x%04X&bslash;n&quot;
+comma
+id|SWord
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_DIAG */
+)brace
+multiline_comment|/* SkGmInitMac */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitDupMd() - Initialize the XMACs Duplex Mode&n; *&n; * Description:&n; *&t;This function initializes the XMACs Duplex Mode.&n; *&t;It should be called after successfully finishing&n; *&t;the Auto-negotiation Process&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitDupMd
 r_void
 id|SkXmInitDupMd
@@ -2196,7 +4883,7 @@ r_case
 id|SK_LMODE_STAT_HALF
 suffix:colon
 multiline_comment|/* Configuration Actions for Half Duplex Mode */
-multiline_comment|/*&n;&t;&t; * XM_BURST = default value. We are propable not quick&n;&t;&t; * &t;enough at the &squot;XMAC&squot; bus to burst 8kB.&n;&t;&t; *&t;The XMAC stopps bursting if no transmit frames&n;&t;&t; *&t;are available or the burst limit is exceeded.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XM_BURST = default value. We are probable not quick&n;&t;&t; * &t;enough at the &squot;XMAC&squot; bus to burst 8kB.&n;&t;&t; *&t;The XMAC stops bursting if no transmit frames&n;&t;&t; *&t;are available or the burst limit is exceeded.&n;&t;&t; */
 multiline_comment|/* XM_TX_RT_LIM = default value (15) */
 multiline_comment|/* XM_TX_STIME = default value (0xff = 4096 bit times) */
 r_break
@@ -2233,7 +4920,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* SkXmInitDupMd */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPauseMd() - initialize the Pause Mode to be used for this port&n; *&n; * Description:&n; *&t;This function initilaizes the Pause Mode which should&n; *&t;be used for this port.&n; *&t;It should be called after successfully finishing&n; *&t;the Autonegotiation Process&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPauseMd() - initialize the Pause Mode to be used for this port&n; *&n; * Description:&n; *&t;This function initializes the Pause Mode which should&n; *&t;be used for this port.&n; *&t;It should be called after successfully finishing&n; *&t;the Auto-negotiation Process&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitPauseMd
 r_void
 id|SkXmInitPauseMd
@@ -2271,6 +4958,19 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2284,51 +4984,21 @@ id|SK_FLOW_STAT_LOC_SEND
 )paren
 (brace
 multiline_comment|/* Disable Pause Frame Reception */
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
 id|Word
-)paren
-suffix:semicolon
-id|XM_OUT16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-id|Word
-op_or
+op_or_assign
 id|XM_MMU_IGN_PF
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * enabling pause frame reception is required for 1000BT &n;&t;&t; * because the XMAC is not reset if the link is going down&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * enabling pause frame reception is required for 1000BT&n;&t;&t; * because the XMAC is not reset if the link is going down&n;&t;&t; */
 multiline_comment|/* Enable Pause Frame Reception */
-id|XM_IN16
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MMU_CMD
-comma
-op_amp
 id|Word
-)paren
+op_and_assign
+op_complement
+id|XM_MMU_IGN_PF
 suffix:semicolon
+)brace
 id|XM_OUT16
 c_func
 (paren
@@ -2339,12 +5009,21 @@ comma
 id|XM_MMU_CMD
 comma
 id|Word
-op_amp
-op_complement
-id|XM_MMU_IGN_PF
 )paren
 suffix:semicolon
-)brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|DWord
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2357,7 +5036,7 @@ op_eq
 id|SK_FLOW_STAT_LOC_SEND
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Configure Pause Frame Generation&n;&t;&t; * Use internal and external Pause Frame Generation.&n;&t;&t; * Sending pause frames is edge triggert. Send a&n;&t;&t; * Pause frame with the maximum pause time if&n;&t;&t; * internal oder external FIFO full condition&n;&t;&t; * occurs. Send a zero pause time frame to&n;&t;&t; * start transmission again.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Configure Pause Frame Generation&n;&t;&t; * Use internal and external Pause Frame Generation.&n;&t;&t; * Sending pause frames is edge triggered.&n;&t;&t; * Send a Pause frame with the maximum pause time if&n;&t;&t; * internal oder external FIFO full condition occurs.&n;&t;&t; * Send a zero pause time frame to re-start transmission.&n;&t;&t; */
 multiline_comment|/* XM_PAUSE_DA = &squot;010000C28001&squot; (default) */
 multiline_comment|/* XM_MAC_PTIME = 0xffff (maximum) */
 multiline_comment|/* remember this value is defined in big endian (!) */
@@ -2374,32 +5053,9 @@ l_int|0xffff
 )paren
 suffix:semicolon
 multiline_comment|/* Set Pause Mode in Mode Register */
-id|XM_IN32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-op_amp
 id|DWord
-)paren
-suffix:semicolon
-id|XM_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-id|DWord
-op_or
+op_or_assign
 id|XM_PAUSE_MODE
-)paren
 suffix:semicolon
 multiline_comment|/* Set Pause Mode in MAC Rx FIFO */
 id|SK_OUT16
@@ -2421,35 +5077,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * disable pause frame generation is required for 1000BT &n;&t;&t; * because the XMAC is not reset if the link is going down&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * disable pause frame generation is required for 1000BT&n;&t;&t; * because the XMAC is not reset if the link is going down&n;&t;&t; */
 multiline_comment|/* Disable Pause Mode in Mode Register */
-id|XM_IN32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-op_amp
 id|DWord
-)paren
-suffix:semicolon
-id|XM_OUT32
-c_func
-(paren
-id|IoC
-comma
-id|Port
-comma
-id|XM_MODE
-comma
-id|DWord
-op_amp
+op_and_assign
 op_complement
 id|XM_PAUSE_MODE
-)paren
 suffix:semicolon
 multiline_comment|/* Disable Pause Mode in MAC Rx FIFO */
 id|SK_OUT16
@@ -2469,122 +5102,21 @@ id|MFF_DIS_PAUSE
 )paren
 suffix:semicolon
 )brace
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|DWord
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* SkXmInitPauseMd*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhy() - Initialize the XMAC II Phy registers&n; *&n; * Description:&n; *&t;Initialize all the XMACs Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmInitPhy
-r_void
-id|SkXmInitPhy
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-comma
-multiline_comment|/* Port Index (MAC_1 + n) */
-id|SK_BOOL
-id|DoLoop
-)paren
-multiline_comment|/* Should a Phy LOOback be set-up? */
-(brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|pPrt-&gt;PhyType
-)paren
-(brace
-r_case
-id|SK_PHY_XMAC
-suffix:colon
-id|SkXmInitPhyXmac
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-comma
-id|DoLoop
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_BCOM
-suffix:colon
-id|SkXmInitPhyBcom
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-comma
-id|DoLoop
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_LONE
-suffix:colon
-id|SkXmInitPhyLone
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-comma
-id|DoLoop
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SK_PHY_NAT
-suffix:colon
-id|SkXmInitPhyNat
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-comma
-id|DoLoop
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* SkXmInitPhy*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyXmac() - Initialize the XMAC II Phy registers&n; *&n; * Description:&n; *&t;Initialize all the XMACs Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyXmac() - Initialize the XMAC Phy registers&n; *&n; * Description:&t;initializes all the XMACs Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitPhyXmac
 r_static
 r_void
@@ -2607,7 +5139,7 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 id|SK_BOOL
 id|DoLoop
 )paren
-multiline_comment|/* Should a Phy LOOback be set-up? */
+multiline_comment|/* Should a Phy LoopBack be set-up? */
 (brace
 id|SK_GEPORT
 op_star
@@ -2624,7 +5156,11 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-multiline_comment|/* Autonegotiation ? */
+id|Ctrl
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Auto-negotiation ? */
 r_if
 c_cond
 (paren
@@ -2647,28 +5183,27 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyXmac: no autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyXmac: no auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* No Autonegiotiation */
 multiline_comment|/* Set DuplexMode in Config register */
-id|Ctrl
-op_assign
+r_if
+c_cond
 (paren
 id|pPrt-&gt;PLinkMode
 op_eq
 id|SK_LMODE_FULL
-ques
-c_cond
-id|PHY_CT_DUP_MD
-suffix:colon
-l_int|0
 )paren
+(brace
+id|Ctrl
+op_or_assign
+id|PHY_CT_DUP_MD
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Do NOT enable Autonegotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
+)brace
+multiline_comment|/*&n;&t;&t; * Do NOT enable Auto-negotiation here. This would hold&n;&t;&t; * the link down because no IDLEs are transmitted&n;&t;&t; */
 )brace
 r_else
 (brace
@@ -2682,17 +5217,13 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyXmac: with autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyXmac: with auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set Autonegotiation advertisement */
-id|Ctrl
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* Set Auto-negotiation advertisement */
 multiline_comment|/* Set Full/half duplex capabilities */
 r_switch
 c_cond
@@ -2806,12 +5337,12 @@ id|SKERR_HWI_E016MSG
 suffix:semicolon
 )brace
 multiline_comment|/* Write AutoNeg Advertisement Register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -2820,7 +5351,7 @@ comma
 id|Ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* Restart Autonegotiation */
+multiline_comment|/* Restart Auto-negotiation */
 id|Ctrl
 op_assign
 id|PHY_CT_ANE
@@ -2841,12 +5372,12 @@ id|PHY_CT_LOOP
 suffix:semicolon
 )brace
 multiline_comment|/* Write to the Phy control register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -2856,8 +5387,8 @@ id|Ctrl
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmInitPhyXmac*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyBcom() - Initialize the Broadcom Phy registers&n; *&n; * Description:&n; *&t;Initialize all the Broadcom Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/* SkXmInitPhyXmac */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyBcom() - Initialize the Broadcom Phy registers&n; *&n; * Description:&t;initializes all the Broadcom Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitPhyBcom
 r_static
 r_void
@@ -2880,7 +5411,7 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 id|SK_BOOL
 id|DoLoop
 )paren
-multiline_comment|/* Should a Phy LOOback be set-up? */
+multiline_comment|/* Should a Phy LoopBack be set-up? */
 (brace
 id|SK_GEPORT
 op_star
@@ -2903,7 +5434,7 @@ id|Ctrl5
 suffix:semicolon
 id|Ctrl1
 op_assign
-id|PHY_B_CT_SP1000
+id|PHY_CT_SP1000
 suffix:semicolon
 id|Ctrl2
 op_assign
@@ -2956,7 +5487,7 @@ id|PHY_B_1000C_MSC
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Autonegotiation ? */
+multiline_comment|/* Auto-negotiation ? */
 r_if
 c_cond
 (paren
@@ -2979,13 +5510,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyBcom: no autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyBcom: no auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* No Autonegiotiation */
 multiline_comment|/* Set DuplexMode in Config register */
 id|Ctrl1
 op_or_assign
@@ -3000,7 +5530,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Determine Master/Slave manually if not already done. */
+multiline_comment|/* Determine Master/Slave manually if not already done */
 r_if
 c_cond
 (paren
@@ -3015,7 +5545,7 @@ id|PHY_B_1000C_MSE
 suffix:semicolon
 multiline_comment|/* set it to Slave */
 )brace
-multiline_comment|/*&n;&t;&t; * Do NOT enable Autonegotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Do NOT enable Auto-negotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
 )brace
 r_else
 (brace
@@ -3029,13 +5559,18 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyBcom: with autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyBcom: with auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set Autonegotiation advertisement */
+multiline_comment|/* Set Auto-negotiation advertisement */
+multiline_comment|/*&n;&t;&t; * Workaround BCOM Errata #1 for the C5 type.&n;&t;&t; * 1000Base-T Link Acquisition Failure in Slave Mode&n;&t;&t; * Set Repeater/DTE bit 10 of the 1000Base-T Control Register&n;&t;&t; */
+id|Ctrl2
+op_or_assign
+id|PHY_B_1000C_RD
+suffix:semicolon
 multiline_comment|/* Set Full/half duplex capabilities */
 r_switch
 c_cond
@@ -3148,7 +5683,7 @@ id|SKERR_HWI_E016MSG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Restart Autonegotiation */
+multiline_comment|/* Restart Auto-negotiation */
 id|Ctrl1
 op_or_assign
 id|PHY_CT_ANE
@@ -3159,12 +5694,12 @@ suffix:semicolon
 multiline_comment|/* Initialize LED register here? */
 multiline_comment|/* No. Please do it in SkDgXmitLed() (if required) and swap&n;&t;   init order of LEDs and XMAC. (MAl) */
 multiline_comment|/* Write 1000Base-T Control Register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3183,19 +5718,19 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;1000Base-T Control Reg = %x&bslash;n&quot;
+l_string|&quot;1000B-T Ctrl Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl2
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* Write AutoNeg Advertisement Register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3214,7 +5749,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg Advertisment Reg = %x&bslash;n&quot;
+l_string|&quot;Auto-Neg.Adv.Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl3
 )paren
@@ -3240,7 +5775,7 @@ op_eq
 id|SK_JUMBO_LINK
 )paren
 (brace
-multiline_comment|/* configure fifo to high latency for xmission of ext. packets*/
+multiline_comment|/* configure FIFO to high latency for transmission of ext. packets */
 id|Ctrl4
 op_or_assign
 id|PHY_B_PEC_HIGH_LA
@@ -3250,12 +5785,12 @@ id|Ctrl5
 op_or_assign
 id|PHY_B_AC_LONG_PACK
 suffix:semicolon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3266,12 +5801,12 @@ id|Ctrl5
 suffix:semicolon
 )brace
 multiline_comment|/* Configure LED Traffic Mode and Jumbo Frame usage if specified */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3281,12 +5816,12 @@ id|Ctrl4
 )paren
 suffix:semicolon
 multiline_comment|/* Write to the Phy control register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3305,7 +5840,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PHY Control Reg = %x&bslash;n&quot;
+l_string|&quot;PHY Control Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl1
 )paren
@@ -3313,7 +5848,1414 @@ id|Ctrl1
 suffix:semicolon
 )brace
 multiline_comment|/* SkXmInitPhyBcom */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyLone() - Initialize the Level One Phy registers&n; *&n; * Description:&n; *&t;Initialize all the Level One Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmInitPhyMarv() - Initialize the Marvell Phy registers&n; *&n; * Description:&t;initializes all the Marvell Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmInitPhyMarv
+r_static
+r_void
+id|SkGmInitPhyMarv
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|DoLoop
+)paren
+multiline_comment|/* Should a Phy LoopBack be set-up? */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|SK_U16
+id|PhyCtrl
+suffix:semicolon
+id|SK_U16
+id|C1000BaseT
+suffix:semicolon
+id|SK_U16
+id|AutoNegAdv
+suffix:semicolon
+id|SK_U16
+id|ExtPhyCtrl
+suffix:semicolon
+id|SK_U16
+id|LedCtrl
+suffix:semicolon
+id|SK_BOOL
+id|AutoNeg
+suffix:semicolon
+macro_line|#if defined(SK_DIAG) || defined(DEBUG)
+id|SK_U16
+id|PhyStat
+suffix:semicolon
+id|SK_U16
+id|PhyStat1
+suffix:semicolon
+id|SK_U16
+id|PhySpecStat
+suffix:semicolon
+macro_line|#endif /* SK_DIAG || DEBUG */
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* Auto-negotiation ? */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_HALF
+op_logical_or
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_FULL
+)paren
+(brace
+id|AutoNeg
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|AutoNeg
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;InitPhyMarv: Port %d, auto-negotiation %s&bslash;n&quot;
+comma
+id|Port
+comma
+id|AutoNeg
+ques
+c_cond
+l_string|&quot;ON&quot;
+suffix:colon
+l_string|&quot;OFF&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCPUprintf
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;SkGmInitPhyMarv(), Port=%u, DoLoop=%u&bslash;n&quot;
+comma
+id|Port
+comma
+id|DoLoop
+)paren
+suffix:semicolon
+macro_line|#else /* VCPU */
+r_if
+c_cond
+(paren
+id|DoLoop
+)paren
+(brace
+multiline_comment|/* Set &squot;MAC Power up&squot;-bit, set Manual MDI configuration */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_CTRL
+comma
+id|PHY_M_PC_MAC_POW_UP
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|AutoNeg
+op_logical_and
+id|pPrt-&gt;PLinkSpeed
+op_eq
+id|SK_LSPEED_AUTO
+)paren
+(brace
+multiline_comment|/* Read Ext. PHY Specific Control */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_CTRL
+comma
+op_amp
+id|ExtPhyCtrl
+)paren
+suffix:semicolon
+id|ExtPhyCtrl
+op_and_assign
+op_complement
+(paren
+id|PHY_M_EC_M_DSC_MSK
+op_or
+id|PHY_M_EC_S_DSC_MSK
+op_or
+id|PHY_M_EC_MAC_S_MSK
+)paren
+suffix:semicolon
+id|ExtPhyCtrl
+op_or_assign
+id|PHY_M_EC_MAC_S
+c_func
+(paren
+id|MAC_TX_CLK_25_MHZ
+)paren
+op_or
+id|PHY_M_EC_M_DSC
+c_func
+(paren
+l_int|0
+)paren
+op_or
+id|PHY_M_EC_S_DSC
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_CTRL
+comma
+id|ExtPhyCtrl
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Ext. PHY Ctrl=0x%04X&bslash;n&quot;
+comma
+id|ExtPhyCtrl
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Read PHY Control */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CTRL
+comma
+op_amp
+id|PhyCtrl
+)paren
+suffix:semicolon
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_RESET
+suffix:semicolon
+multiline_comment|/* Assert software reset */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CTRL
+comma
+id|PhyCtrl
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+id|PhyCtrl
+op_assign
+l_int|0
+multiline_comment|/* PHY_CT_COL_TST */
+suffix:semicolon
+id|C1000BaseT
+op_assign
+l_int|0
+suffix:semicolon
+id|AutoNegAdv
+op_assign
+id|PHY_SEL_TYPE
+suffix:semicolon
+multiline_comment|/* manually Master/Slave ? */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PMSMode
+op_ne
+id|SK_MS_MODE_AUTO
+)paren
+(brace
+multiline_comment|/* enable Manual Master/Slave */
+id|C1000BaseT
+op_or_assign
+id|PHY_M_1000C_MSE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PMSMode
+op_eq
+id|SK_MS_MODE_MASTER
+)paren
+(brace
+id|C1000BaseT
+op_or_assign
+id|PHY_M_1000C_MSC
+suffix:semicolon
+multiline_comment|/* set it to Master */
+)brace
+)brace
+multiline_comment|/* Auto-negotiation ? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|AutoNeg
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+op_eq
+id|SK_LMODE_FULL
+)paren
+(brace
+multiline_comment|/* Set Full Duplex Mode */
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_DUP_MD
+suffix:semicolon
+)brace
+multiline_comment|/* Set Master/Slave manually if not already done */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PMSMode
+op_eq
+id|SK_MS_MODE_AUTO
+)paren
+(brace
+id|C1000BaseT
+op_or_assign
+id|PHY_M_1000C_MSE
+suffix:semicolon
+multiline_comment|/* set it to Slave */
+)brace
+multiline_comment|/* Set Speed */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+)paren
+(brace
+r_case
+id|SK_LSPEED_AUTO
+suffix:colon
+r_case
+id|SK_LSPEED_1000MBPS
+suffix:colon
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_SP1000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_100MBPS
+suffix:colon
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_SP100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_10MBPS
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E019
+comma
+id|SKERR_HWI_E019MSG
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|DoLoop
+)paren
+(brace
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_RESET
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Do NOT enable Auto-negotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
+)brace
+r_else
+(brace
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_ANE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GICopperType
+)paren
+(brace
+multiline_comment|/* Set Speed capabilities */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+)paren
+(brace
+r_case
+id|SK_LSPEED_AUTO
+suffix:colon
+id|C1000BaseT
+op_or_assign
+id|PHY_M_1000C_AHD
+op_or
+id|PHY_M_1000C_AFD
+suffix:semicolon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_100_FD
+op_or
+id|PHY_M_AN_100_HD
+op_or
+id|PHY_M_AN_10_FD
+op_or
+id|PHY_M_AN_10_HD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_1000MBPS
+suffix:colon
+id|C1000BaseT
+op_or_assign
+id|PHY_M_1000C_AHD
+op_or
+id|PHY_M_1000C_AFD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_100MBPS
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_100_FD
+op_or
+id|PHY_M_AN_100_HD
+op_or
+id|PHY_M_AN_10_FD
+op_or
+id|PHY_M_AN_10_HD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LSPEED_10MBPS
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_10_FD
+op_or
+id|PHY_M_AN_10_HD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E019
+comma
+id|SKERR_HWI_E019MSG
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Set Full/half duplex capabilities */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+)paren
+(brace
+r_case
+id|SK_LMODE_AUTOHALF
+suffix:colon
+id|C1000BaseT
+op_and_assign
+op_complement
+id|PHY_M_1000C_AFD
+suffix:semicolon
+id|AutoNegAdv
+op_and_assign
+op_complement
+(paren
+id|PHY_M_AN_100_FD
+op_or
+id|PHY_M_AN_10_FD
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LMODE_AUTOFULL
+suffix:colon
+id|C1000BaseT
+op_and_assign
+op_complement
+id|PHY_M_1000C_AHD
+suffix:semicolon
+id|AutoNegAdv
+op_and_assign
+op_complement
+(paren
+id|PHY_M_AN_100_HD
+op_or
+id|PHY_M_AN_10_HD
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LMODE_AUTOBOTH
+suffix:colon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E015
+comma
+id|SKERR_HWI_E015MSG
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Set Auto-negotiation advertisement */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PFlowCtrlMode
+)paren
+(brace
+r_case
+id|SK_FLOW_MODE_NONE
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_B_P_NO_PAUSE
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_LOC_SEND
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_B_P_ASYM_MD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_SYMMETRIC
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_B_P_SYM_MD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_SYM_OR_REM
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_B_P_BOTH_MD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E016
+comma
+id|SKERR_HWI_E016MSG
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* special defines for FIBER (88E1011S only) */
+multiline_comment|/* Set Full/half duplex capabilities */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PLinkMode
+)paren
+(brace
+r_case
+id|SK_LMODE_AUTOHALF
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_1000X_AHD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LMODE_AUTOFULL
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_1000X_AFD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_LMODE_AUTOBOTH
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_AN_1000X_AHD
+op_or
+id|PHY_M_AN_1000X_AFD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E015
+comma
+id|SKERR_HWI_E015MSG
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Set Auto-negotiation advertisement */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PFlowCtrlMode
+)paren
+(brace
+r_case
+id|SK_FLOW_MODE_NONE
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_P_NO_PAUSE_X
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_LOC_SEND
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_P_ASYM_MD_X
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_SYMMETRIC
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_P_SYM_MD_X
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_FLOW_MODE_SYM_OR_REM
+suffix:colon
+id|AutoNegAdv
+op_or_assign
+id|PHY_M_P_BOTH_MD_X
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+op_or
+id|SK_ERRCL_INIT
+comma
+id|SKERR_HWI_E016
+comma
+id|SKERR_HWI_E016MSG
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|DoLoop
+)paren
+(brace
+multiline_comment|/* Restart Auto-negotiation */
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_RE_CFG
+suffix:semicolon
+)brace
+)brace
+macro_line|#ifdef VCPU
+multiline_comment|/*&n;&t; * E-mail from Gu Lin (08-03-2002):&n;&t; */
+multiline_comment|/* Program PHY register 30 as 16&squot;h0708 for simulation speed up */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0x0700
+multiline_comment|/* 0x0708 */
+)paren
+suffix:semicolon
+id|VCpuWait
+c_func
+(paren
+l_int|2000
+)paren
+suffix:semicolon
+macro_line|#else /* VCPU */
+multiline_comment|/* Write 1000Base-T Control Register */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_1000T_CTRL
+comma
+id|C1000BaseT
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;1000B-T Ctrl=0x%04X&bslash;n&quot;
+comma
+id|C1000BaseT
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Write AutoNeg Advertisement Register */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_AUNE_ADV
+comma
+id|AutoNegAdv
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Auto-Neg.Ad.=0x%04X&bslash;n&quot;
+comma
+id|AutoNegAdv
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+r_if
+c_cond
+(paren
+id|DoLoop
+)paren
+(brace
+multiline_comment|/* Set the PHY Loopback bit */
+id|PhyCtrl
+op_or_assign
+id|PHY_CT_LOOP
+suffix:semicolon
+macro_line|#ifdef XXX
+multiline_comment|/* Program PHY register 16 as 16&squot;h0400 to force link good */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_CTRL
+comma
+id|PHY_M_PC_FL_GOOD
+)paren
+suffix:semicolon
+macro_line|#endif /* XXX */
+macro_line|#ifndef VCPU
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+op_ne
+id|SK_LSPEED_AUTO
+)paren
+(brace
+multiline_comment|/* Write Ext. PHY Specific Control */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+(paren
+id|pPrt-&gt;PLinkSpeed
+op_plus
+l_int|2
+)paren
+op_lshift
+l_int|4
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* VCPU */
+)brace
+macro_line|#ifdef TEST_ONLY
+r_else
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkSpeed
+op_eq
+id|SK_LSPEED_10MBPS
+)paren
+(brace
+multiline_comment|/* Write PHY Specific Control */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_CTRL
+comma
+id|PHY_M_PC_EN_DET_MSK
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* Write to the PHY Control register */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CTRL
+comma
+id|PhyCtrl
+)paren
+suffix:semicolon
+macro_line|#ifdef VCPU
+id|VCpuWait
+c_func
+(paren
+l_int|2000
+)paren
+suffix:semicolon
+macro_line|#else
+id|LedCtrl
+op_assign
+id|PHY_M_LED_PULS_DUR
+c_func
+(paren
+id|PULS_170MS
+)paren
+op_or
+id|PHY_M_LED_BLINK_RT
+c_func
+(paren
+id|BLINK_84MS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pAC-&gt;GIni.GILedBlinkCtrl
+op_amp
+id|SK_ACT_LED_BLINK
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|LedCtrl
+op_or_assign
+id|PHY_M_LEDC_RX_CTRL
+op_or
+id|PHY_M_LEDC_TX_CTRL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|pAC-&gt;GIni.GILedBlinkCtrl
+op_amp
+id|SK_DUP_LED_NORMAL
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|LedCtrl
+op_or_assign
+id|PHY_M_LEDC_DP_CTRL
+suffix:semicolon
+)brace
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_LED_CTRL
+comma
+id|LedCtrl
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pAC-&gt;GIni.GILedBlinkCtrl
+op_amp
+id|SK_LED_LINK100_ON
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* only in forced 100Mbps mode */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|AutoNeg
+op_logical_and
+id|pPrt-&gt;PLinkSpeed
+op_eq
+id|SK_LSPEED_100MBPS
+)paren
+(brace
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_LED_OVER
+comma
+id|PHY_M_LED_MO_100
+c_func
+(paren
+id|MO_LED_ON
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#ifdef SK_DIAG
+id|c_print
+c_func
+(paren
+l_string|&quot;Set PHY Ctrl=0x%04X&bslash;n&quot;
+comma
+id|PhyCtrl
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;Set 1000 B-T=0x%04X&bslash;n&quot;
+comma
+id|C1000BaseT
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;Set Auto-Neg=0x%04X&bslash;n&quot;
+comma
+id|AutoNegAdv
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;Set Ext Ctrl=0x%04X&bslash;n&quot;
+comma
+id|ExtPhyCtrl
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_DIAG */
+macro_line|#if defined(SK_DIAG) || defined(DEBUG)
+multiline_comment|/* Read PHY Control */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CTRL
+comma
+op_amp
+id|PhyCtrl
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PHY Ctrl Reg.=0x%04X&bslash;n&quot;
+comma
+id|PhyCtrl
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read 1000Base-T Control Register */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_1000T_CTRL
+comma
+op_amp
+id|C1000BaseT
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;1000B-T Ctrl =0x%04X&bslash;n&quot;
+comma
+id|C1000BaseT
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read AutoNeg Advertisement Register */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_AUNE_ADV
+comma
+op_amp
+id|AutoNegAdv
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Auto-Neg. Ad.=0x%04X&bslash;n&quot;
+comma
+id|AutoNegAdv
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read Ext. PHY Specific Control */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_CTRL
+comma
+op_amp
+id|ExtPhyCtrl
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Ext. PHY Ctrl=0x%04X&bslash;n&quot;
+comma
+id|ExtPhyCtrl
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read PHY Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_STAT
+comma
+op_amp
+id|PhyStat
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PHY Stat Reg.=0x%04X&bslash;n&quot;
+comma
+id|PhyStat
+)paren
+)paren
+suffix:semicolon
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_STAT
+comma
+op_amp
+id|PhyStat1
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PHY Stat Reg.=0x%04X&bslash;n&quot;
+comma
+id|PhyStat1
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Read PHY Specific Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_STAT
+comma
+op_amp
+id|PhySpecStat
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PHY Spec Stat=0x%04X&bslash;n&quot;
+comma
+id|PhySpecStat
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_DIAG || DEBUG */
+macro_line|#ifdef SK_DIAG
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY Ctrl Reg=0x%04X&bslash;n&quot;
+comma
+id|PhyCtrl
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY 1000 Reg=0x%04X&bslash;n&quot;
+comma
+id|C1000BaseT
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY AnAd Reg=0x%04X&bslash;n&quot;
+comma
+id|AutoNegAdv
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;Ext Ctrl Reg=0x%04X&bslash;n&quot;
+comma
+id|ExtPhyCtrl
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY Stat Reg=0x%04X&bslash;n&quot;
+comma
+id|PhyStat
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY Stat Reg=0x%04X&bslash;n&quot;
+comma
+id|PhyStat1
+)paren
+suffix:semicolon
+id|c_print
+c_func
+(paren
+l_string|&quot;PHY Spec Reg=0x%04X&bslash;n&quot;
+comma
+id|PhySpecStat
+)paren
+suffix:semicolon
+macro_line|#endif /* SK_DIAG */
+macro_line|#endif /* VCPU */
+)brace
+multiline_comment|/* SkGmInitPhyMarv */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyLone() - Initialize the Level One Phy registers&n; *&n; * Description:&t;initializes all the Level One Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitPhyLone
 r_static
 r_void
@@ -3336,7 +7278,7 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 id|SK_BOOL
 id|DoLoop
 )paren
-multiline_comment|/* Should a Phy LOOback be set-up? */
+multiline_comment|/* Should a Phy LoopBack be set-up? */
 (brace
 id|SK_GEPORT
 op_star
@@ -3353,7 +7295,7 @@ id|Ctrl3
 suffix:semicolon
 id|Ctrl1
 op_assign
-id|PHY_L_CT_SP1000
+id|PHY_CT_SP1000
 suffix:semicolon
 id|Ctrl2
 op_assign
@@ -3398,7 +7340,7 @@ id|PHY_L_1000C_MSC
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Autonegotiation ? */
+multiline_comment|/* Auto-negotiation ? */
 r_if
 c_cond
 (paren
@@ -3412,20 +7354,6 @@ id|SK_LMODE_FULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * level one spec say: &quot;1000Mbps: manual mode not allowed&quot;&n;&t;&t; * but lets see what happens...&n;&t;&t; */
-id|SK_ERR_LOG
-c_func
-(paren
-id|pAC
-comma
-id|SK_ERRCL_SW
-op_or
-id|SK_ERRCL_INIT
-comma
-l_int|0
-comma
-l_string|&quot;Level One PHY only works with Autoneg&quot;
-)paren
-suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -3436,13 +7364,12 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyLone: no autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyLone: no auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* No Autonegiotiation */
 multiline_comment|/* Set DuplexMode in Config register */
 id|Ctrl1
 op_assign
@@ -3457,7 +7384,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Determine Master/Slave manually if not already done. */
+multiline_comment|/* Determine Master/Slave manually if not already done */
 r_if
 c_cond
 (paren
@@ -3472,7 +7399,7 @@ id|PHY_L_1000C_MSE
 suffix:semicolon
 multiline_comment|/* set it to Slave */
 )brace
-multiline_comment|/*&n;&t;&t; * Do NOT enable Autonegotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Do NOT enable Auto-negotiation here. This would hold&n;&t;&t; * the link down because no IDLES are transmitted&n;&t;&t; */
 )brace
 r_else
 (brace
@@ -3486,13 +7413,13 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;InitPhyLone: with autonegotiation Port %d&bslash;n&quot;
+l_string|&quot;InitPhyLone: with auto-negotiation Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set Autonegotiation advertisement */
+multiline_comment|/* Set Auto-negotiation advertisement */
 multiline_comment|/* Set Full/half duplex capabilities */
 r_switch
 c_cond
@@ -3605,7 +7532,7 @@ id|SKERR_HWI_E016MSG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Restart Autonegotiation */
+multiline_comment|/* Restart Auto-negotiation */
 id|Ctrl1
 op_assign
 id|PHY_CT_ANE
@@ -3613,15 +7540,13 @@ op_or
 id|PHY_CT_RE_CFG
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize LED register here ? */
-multiline_comment|/* No. Please do it in SkDgXmitLed() (if required) and swap&n;&t;   init order of LEDs and XMAC. (MAl) */
 multiline_comment|/* Write 1000Base-T Control Register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3640,19 +7565,19 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;1000Base-T Control Reg = %x&bslash;n&quot;
+l_string|&quot;1000B-T Ctrl Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl2
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* Write AutoNeg Advertisement Register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3671,7 +7596,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg Advertisment Reg = %x&bslash;n&quot;
+l_string|&quot;Auto-Neg.Adv.Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl3
 )paren
@@ -3689,23 +7614,13 @@ op_or_assign
 id|PHY_CT_LOOP
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pAC-&gt;GIni.GIPortUsage
-op_eq
-id|SK_JUMBO_LINK
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * nothing to do for Level one.&n;&t;&t; * PHY supports frames up to 10k.&n;&t;&t; */
-)brace
 multiline_comment|/* Write to the Phy control register */
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -3724,15 +7639,15 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;PHY Control Reg = %x&bslash;n&quot;
+l_string|&quot;PHY Control Reg=0x%04X&bslash;n&quot;
 comma
 id|Ctrl1
 )paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmInitPhyLone*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyNat() - Initialize the National Phy registers&n; *&n; * Description:&n; *&t;Initialize all the National Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+multiline_comment|/* SkXmInitPhyLone */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmInitPhyNat() - Initialize the National Phy registers&n; *&n; * Description:&t;initializes all the National Phy registers&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
 DECL|function|SkXmInitPhyNat
 r_static
 r_void
@@ -3755,15 +7670,16 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 id|SK_BOOL
 id|DoLoop
 )paren
-multiline_comment|/* Should a Phy LOOback be set-up? */
+multiline_comment|/* Should a Phy LoopBack be set-up? */
 (brace
 multiline_comment|/* todo: National */
 )brace
-multiline_comment|/* SkXmInitPhyNat*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegLipaXmac() - Decides whether Link Partner could do autoneg&n; *&n; *&t;This function analyses the Interrupt status word. If any of the&n; *&t;Autonegotiating interrupt bits are set, the PLipaAutoNeg variable&n; *&t;is set true.&n; */
-DECL|function|SkXmAutoNegLipaXmac
+multiline_comment|/* SkXmInitPhyNat */
+macro_line|#endif /* OTHER_PHY */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacInitPhy() - Initialize the PHY registers&n; *&n; * Description:&t;calls the Init PHY routines dep. on board type&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacInitPhy
 r_void
-id|SkXmAutoNegLipaXmac
+id|SkMacInitPhy
 c_func
 (paren
 id|SK_AC
@@ -3779,10 +7695,10 @@ r_int
 id|Port
 comma
 multiline_comment|/* Port Index (MAC_1 + n) */
-id|SK_U16
-id|IStatus
+id|SK_BOOL
+id|DoLoop
 )paren
-multiline_comment|/* Interrupt Status word to analyse */
+multiline_comment|/* Should a Phy LoopBack be set-up? */
 (brace
 id|SK_GEPORT
 op_star
@@ -3796,317 +7712,23 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
+macro_line|#ifdef GENESIS
 r_if
 c_cond
 (paren
-id|pPrt-&gt;PLipaAutoNeg
-op_ne
-id|SK_LIPA_AUTO
-op_logical_and
-(paren
-id|IStatus
-op_amp
-(paren
-id|XM_IS_LIPA_RC
-op_or
-id|XM_IS_RX_PAGE
-op_or
-id|XM_IS_AND
+id|pAC-&gt;GIni.GIGenesis
 )paren
-)paren
-)paren
-(brace
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNegLipa: AutoNeg detected on port %d %x&bslash;n&quot;
-comma
-id|Port
-comma
-id|IStatus
-)paren
-)paren
-suffix:semicolon
-id|pPrt-&gt;PLipaAutoNeg
-op_assign
-id|SK_LIPA_AUTO
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* SkXmAutoNegLipaXmac*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegLipaBcom() - Decides whether Link Partner could do autoneg&n; *&n; *&t;This function analyses the PHY status word. If any of the&n; *&t;Autonegotiating bits are set, The PLipaAutoNeg variable&n; *&t;is set true.&n; */
-DECL|function|SkXmAutoNegLipaBcom
-r_void
-id|SkXmAutoNegLipaBcom
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-comma
-multiline_comment|/* Port Index (MAC_1 + n) */
-id|SK_U16
-id|PhyStat
-)paren
-multiline_comment|/* PHY Status word to analyse */
-(brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLipaAutoNeg
-op_ne
-id|SK_LIPA_AUTO
-op_logical_and
-(paren
-id|PhyStat
-op_amp
-id|PHY_ST_AN_OVER
-)paren
-)paren
-(brace
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNegLipa: AutoNeg detected on port %d %x&bslash;n&quot;
-comma
-id|Port
-comma
-id|PhyStat
-)paren
-)paren
-suffix:semicolon
-id|pPrt-&gt;PLipaAutoNeg
-op_assign
-id|SK_LIPA_AUTO
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* SkXmAutoNegLipaBcom*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegLipaLone() - Decides whether Link Partner could do autoneg&n; *&n; *&t;This function analyses the PHY status word. If any of the&n; *&t;Autonegotiating bits are set, The PLipaAutoNeg variable&n; *&t;is set true.&n; */
-DECL|function|SkXmAutoNegLipaLone
-r_void
-id|SkXmAutoNegLipaLone
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-comma
-multiline_comment|/* Port Index (MAC_1 + n) */
-id|SK_U16
-id|PhyStat
-)paren
-multiline_comment|/* PHY Status word to analyse */
-(brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLipaAutoNeg
-op_ne
-id|SK_LIPA_AUTO
-op_logical_and
-(paren
-id|PhyStat
-op_amp
-(paren
-id|PHY_ST_AN_OVER
-)paren
-)paren
-)paren
-(brace
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNegLipa: AutoNeg detected on port %d %x&bslash;n&quot;
-comma
-id|Port
-comma
-id|PhyStat
-)paren
-)paren
-suffix:semicolon
-id|pPrt-&gt;PLipaAutoNeg
-op_assign
-id|SK_LIPA_AUTO
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* SkXmAutoNegLipaLone*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegLipaNat() - Decides whether Link Partner could do autoneg&n; *&n; *&t;This function analyses the PHY status word. If any of the&n; *&t;Autonegotiating bits are set, The PLipaAutoNeg variable&n; *&t;is set true.&n; */
-DECL|function|SkXmAutoNegLipaNat
-r_void
-id|SkXmAutoNegLipaNat
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-comma
-multiline_comment|/* Port Index (MAC_1 + n) */
-id|SK_U16
-id|PhyStat
-)paren
-multiline_comment|/* PHY Status word to analyse */
-(brace
-id|SK_GEPORT
-op_star
-id|pPrt
-suffix:semicolon
-id|pPrt
-op_assign
-op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PLipaAutoNeg
-op_ne
-id|SK_LIPA_AUTO
-op_logical_and
-(paren
-id|PhyStat
-op_amp
-(paren
-id|PHY_ST_AN_OVER
-)paren
-)paren
-)paren
-(brace
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNegLipa: AutoNeg detected on port %d %x&bslash;n&quot;
-comma
-id|Port
-comma
-id|PhyStat
-)paren
-)paren
-suffix:semicolon
-id|pPrt-&gt;PLipaAutoNeg
-op_assign
-id|SK_LIPA_AUTO
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* SkXmAutoNegLipaNat*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDone() - Auto negotiation handling&n; *&n; * Description:&n; *&t;This function handles the autonegotiation if the Done bit is set.&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&t;o This function is public because it is used in the diagnostics&n; *&t;  tool, too.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
-DECL|function|SkXmAutoNegDone
-r_int
-id|SkXmAutoNegDone
-c_func
-(paren
-id|SK_AC
-op_star
-id|pAC
-comma
-multiline_comment|/* adapter context */
-id|SK_IOC
-id|IoC
-comma
-multiline_comment|/* IO context */
-r_int
-id|Port
-)paren
-multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
 r_switch
 c_cond
 (paren
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PhyType
+id|pPrt-&gt;PhyType
 )paren
 (brace
 r_case
 id|SK_PHY_XMAC
 suffix:colon
-r_return
-(paren
-id|SkXmAutoNegDoneXmac
+id|SkXmInitPhyXmac
 c_func
 (paren
 id|pAC
@@ -4114,15 +7736,16 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|DoLoop
 )paren
-)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|SK_PHY_BCOM
 suffix:colon
-r_return
-(paren
-id|SkXmAutoNegDoneBcom
+id|SkXmInitPhyBcom
 c_func
 (paren
 id|pAC
@@ -4130,15 +7753,17 @@ comma
 id|IoC
 comma
 id|Port
-)paren
+comma
+id|DoLoop
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
-r_return
-(paren
-id|SkXmAutoNegDoneLone
+id|SkXmInitPhyLone
 c_func
 (paren
 id|pAC
@@ -4146,15 +7771,16 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|DoLoop
 )paren
-)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_case
 id|SK_PHY_NAT
 suffix:colon
-r_return
-(paren
-id|SkXmAutoNegDoneNat
+id|SkXmInitPhyNat
 c_func
 (paren
 id|pAC
@@ -4162,18 +7788,41 @@ comma
 id|IoC
 comma
 id|Port
-)paren
+comma
+id|DoLoop
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
 )brace
-r_return
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
 (paren
-id|SK_AND_OTHER
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|SkGmInitPhyMarv
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|DoLoop
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmAutoNegDone*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneXmac() - Auto negotiation handling&n; *&n; * Description:&n; *&t;This function handles the autonegotiation if the Done bit is set.&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacInitPhy */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneXmac() - Auto-negotiation handling&n; *&n; * Description:&n; *&t;This function handles the auto-negotiation if the Done bit is set.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
 DECL|function|SkXmAutoNegDoneXmac
 r_static
 r_int
@@ -4216,8 +7865,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNegDoneXmac&quot;
-l_string|&quot;Port %d&bslash;n&quot;
+l_string|&quot;AutoNegDoneXmac, Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -4232,12 +7880,12 @@ id|Port
 )braket
 suffix:semicolon
 multiline_comment|/* Get PHY parameters */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4247,12 +7895,12 @@ op_amp
 id|LPAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4265,9 +7913,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|LPAb
 op_amp
 id|PHY_X_AN_RFB
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* At least one of the remote fault bit is set */
@@ -4293,9 +7945,7 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OTHER
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Check Duplex mismatch */
@@ -4355,7 +8005,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNegFail: Duplex mode mismatch port %d&bslash;n&quot;
+l_string|&quot;AutoNegFail: Duplex mode mismatch Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -4366,9 +8016,7 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_DUP_CAP
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Check PAUSE mismatch */
@@ -4392,6 +8040,8 @@ id|LPAb
 op_amp
 id|PHY_X_P_SYM_MD
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Symmetric PAUSE */
@@ -4454,29 +8104,16 @@ op_assign
 id|SK_FLOW_STAT_NONE
 suffix:semicolon
 )brace
-multiline_comment|/* We checked everything and may now enable the link */
-id|pPrt-&gt;PAutoNegFail
+id|pPrt-&gt;PLinkSpeedUsed
 op_assign
-id|SK_FALSE
-suffix:semicolon
-id|SkXmRxTxEnable
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-)paren
+id|SK_LSPEED_STAT_1000MBPS
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OK
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmAutoNegDoneXmac*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneBcom() - Auto negotiation handling&n; *&n; * Description:&n; *&t;This function handles the autonegotiation if the Done bit is set.&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+multiline_comment|/* SkXmAutoNegDoneXmac */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneBcom() - Auto-negotiation handling&n; *&n; * Description:&n; *&t;This function handles the auto-negotiation if the Done bit is set.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
 DECL|function|SkXmAutoNegDoneBcom
 r_static
 r_int
@@ -4509,7 +8146,7 @@ id|SK_U16
 id|AuxStat
 suffix:semicolon
 multiline_comment|/* Auxiliary Status */
-macro_line|#if 0
+macro_line|#ifdef TEST_ONLY
 l_int|01
 op_minus
 id|Sep
@@ -4549,13 +8186,13 @@ id|pAC-&gt;GIni.GP
 id|Port
 )braket
 suffix:semicolon
-multiline_comment|/* Get PHY parameters. */
-id|PHY_READ
+multiline_comment|/* Get PHY parameters */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4565,7 +8202,7 @@ op_amp
 id|LPAb
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#ifdef TEST_ONLY
 l_int|01
 op_minus
 id|Sep
@@ -4576,12 +8213,12 @@ suffix:semicolon
 suffix:colon
 suffix:semicolon
 suffix:colon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4592,12 +8229,12 @@ id|ResAb
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* 0 */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4610,12 +8247,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|LPAb
 op_amp
 id|PHY_B_AN_RF
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* Remote fault bit is set: Error. */
+multiline_comment|/* Remote fault bit is set: Error */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4637,19 +8278,17 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OTHER
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* Check Duplex mismatch. */
+multiline_comment|/* Check Duplex mismatch */
 r_if
 c_cond
 (paren
 (paren
 id|AuxStat
 op_amp
-id|PHY_B_AS_AN_RES
+id|PHY_B_AS_AN_RES_MSK
 )paren
 op_eq
 id|PHY_B_RES_1000FD
@@ -4667,7 +8306,7 @@ c_cond
 (paren
 id|AuxStat
 op_amp
-id|PHY_B_AS_AN_RES
+id|PHY_B_AS_AN_RES_MSK
 )paren
 op_eq
 id|PHY_B_RES_1000HD
@@ -4680,7 +8319,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Error. */
+multiline_comment|/* Error */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4691,7 +8330,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNegFail: Duplex mode mismatch port %d&bslash;n&quot;
+l_string|&quot;AutoNegFail: Duplex mode mismatch Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -4702,12 +8341,10 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_DUP_CAP
-)paren
 suffix:semicolon
 )brace
-macro_line|#if 0
+macro_line|#ifdef TEST_ONLY
 l_int|01
 op_minus
 id|Sep
@@ -4718,16 +8355,19 @@ suffix:semicolon
 suffix:colon
 suffix:semicolon
 suffix:colon
-multiline_comment|/* Check Master/Slave resolution. */
+multiline_comment|/* Check Master/Slave resolution */
 r_if
 c_cond
+(paren
 (paren
 id|ResAb
 op_amp
 id|PHY_B_1000S_MSF
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* Error. */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4738,7 +8378,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;Master/Slave Fault port %d&bslash;n&quot;
+l_string|&quot;Master/Slave Fault Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -4753,57 +8393,42 @@ op_assign
 id|SK_MS_STAT_FAULT
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OTHER
-)paren
 suffix:semicolon
 )brace
-r_else
-r_if
-c_cond
+id|pPrt-&gt;PMSStatus
+op_assign
+(paren
 (paren
 id|ResAb
 op_amp
 id|PHY_B_1000S_MSR
 )paren
-(brace
-id|pPrt-&gt;PMSStatus
-op_assign
+op_ne
+l_int|0
+)paren
+ques
+c_cond
 id|SK_MS_STAT_MASTER
-suffix:semicolon
-)brace
-r_else
-(brace
-id|pPrt-&gt;PMSStatus
-op_assign
+suffix:colon
 id|SK_MS_STAT_SLAVE
 suffix:semicolon
-)brace
 macro_line|#endif&t;/* 0 */
-multiline_comment|/* Check PAUSE mismatch. */
-multiline_comment|/* We are NOT using chapter 4.23 of the Xaqti manual. */
-multiline_comment|/* We are using IEEE 802.3z/D5.0 Table 37-4. */
+multiline_comment|/* Check PAUSE mismatch ??? */
+multiline_comment|/* We are using IEEE 802.3z/D5.0 Table 37-4 */
 r_if
 c_cond
 (paren
 (paren
 id|AuxStat
 op_amp
-(paren
-id|PHY_B_AS_PRR
-op_or
-id|PHY_B_AS_PRT
-)paren
+id|PHY_B_AS_PAUSE_MSK
 )paren
 op_eq
-(paren
-id|PHY_B_AS_PRR
-op_or
-id|PHY_B_AS_PRT
-)paren
+id|PHY_B_AS_PAUSE_MSK
 )paren
 (brace
-multiline_comment|/* Symmetric PAUSE. */
+multiline_comment|/* Symmetric PAUSE */
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
 id|SK_FLOW_STAT_SYMMETRIC
@@ -4816,17 +8441,13 @@ c_cond
 (paren
 id|AuxStat
 op_amp
-(paren
-id|PHY_B_AS_PRR
-op_or
-id|PHY_B_AS_PRT
-)paren
+id|PHY_B_AS_PAUSE_MSK
 )paren
 op_eq
 id|PHY_B_AS_PRR
 )paren
 (brace
-multiline_comment|/* Enable PAUSE receive, disable PAUSE transmit. */
+multiline_comment|/* Enable PAUSE receive, disable PAUSE transmit */
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
 id|SK_FLOW_STAT_REM_SEND
@@ -4839,17 +8460,13 @@ c_cond
 (paren
 id|AuxStat
 op_amp
-(paren
-id|PHY_B_AS_PRR
-op_or
-id|PHY_B_AS_PRT
-)paren
+id|PHY_B_AS_PAUSE_MSK
 )paren
 op_eq
 id|PHY_B_AS_PRT
 )paren
 (brace
-multiline_comment|/* Disable PAUSE receive, enable PAUSE transmit. */
+multiline_comment|/* Disable PAUSE receive, enable PAUSE transmit */
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
 id|SK_FLOW_STAT_LOC_SEND
@@ -4857,18 +8474,86 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* PAUSE mismatch -&gt; no PAUSE. */
+multiline_comment|/* PAUSE mismatch -&gt; no PAUSE */
 id|pPrt-&gt;PFlowCtrlStatus
 op_assign
 id|SK_FLOW_STAT_NONE
 suffix:semicolon
 )brace
-multiline_comment|/* We checked everything and may now enable the link. */
-id|pPrt-&gt;PAutoNegFail
+id|pPrt-&gt;PLinkSpeedUsed
 op_assign
-id|SK_FALSE
+id|SK_LSPEED_STAT_1000MBPS
 suffix:semicolon
-id|SkXmRxTxEnable
+r_return
+id|SK_AND_OK
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmAutoNegDoneBcom */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmAutoNegDoneMarv() - Auto-negotiation handling&n; *&n; * Description:&n; *&t;This function handles the auto-negotiation if the Done bit is set.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+DECL|function|SkGmAutoNegDoneMarv
+r_static
+r_int
+id|SkGmAutoNegDoneMarv
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|SK_U16
+id|LPAb
+suffix:semicolon
+multiline_comment|/* Link Partner Ability */
+id|SK_U16
+id|ResAb
+suffix:semicolon
+multiline_comment|/* Resolved Ability */
+id|SK_U16
+id|AuxStat
+suffix:semicolon
+multiline_comment|/* Auxiliary Status */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNegDoneMarv, Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+multiline_comment|/* Get PHY parameters */
+id|SkGmPhyRead
 c_func
 (paren
 id|pAC
@@ -4876,16 +8561,325 @@ comma
 id|IoC
 comma
 id|Port
+comma
+id|PHY_MARV_AUNE_LP
+comma
+op_amp
+id|LPAb
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|LPAb
+op_amp
+id|PHY_M_AN_RF
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNegFail: Remote fault bit set Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|pPrt-&gt;PAutoNegFail
+op_assign
+id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
-id|SK_AND_OK
-)paren
+id|SK_AND_OTHER
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmAutoNegDoneBcom*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneLone() - Auto negotiation handling&n; *&n; * Description:&n; *&t;This function handles the autonegotiation if the Done bit is set.&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_1000T_STAT
+comma
+op_amp
+id|ResAb
+)paren
+suffix:semicolon
+multiline_comment|/* Check Master/Slave resolution */
+r_if
+c_cond
+(paren
+(paren
+id|ResAb
+op_amp
+id|PHY_B_1000S_MSF
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Master/Slave Fault Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|pPrt-&gt;PAutoNegFail
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pPrt-&gt;PMSStatus
+op_assign
+id|SK_MS_STAT_FAULT
+suffix:semicolon
+r_return
+id|SK_AND_OTHER
+suffix:semicolon
+)brace
+id|pPrt-&gt;PMSStatus
+op_assign
+(paren
+(paren
+id|ResAb
+op_amp
+id|PHY_B_1000S_MSR
+)paren
+op_ne
+l_int|0
+)paren
+ques
+c_cond
+(paren
+id|SK_U8
+)paren
+id|SK_MS_STAT_MASTER
+suffix:colon
+(paren
+id|SK_U8
+)paren
+id|SK_MS_STAT_SLAVE
+suffix:semicolon
+multiline_comment|/* Read PHY Specific Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_PHY_STAT
+comma
+op_amp
+id|AuxStat
+)paren
+suffix:semicolon
+multiline_comment|/* Check Speed &amp; Duplex resolved */
+r_if
+c_cond
+(paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_SPDUP_RES
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNegFail: Speed &amp; Duplex not resolved, Port %d&bslash;n&quot;
+comma
+id|Port
+)paren
+)paren
+suffix:semicolon
+id|pPrt-&gt;PAutoNegFail
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pPrt-&gt;PLinkModeStatus
+op_assign
+id|SK_LMODE_STAT_UNKNOWN
+suffix:semicolon
+r_return
+id|SK_AND_DUP_CAP
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_FULL_DUP
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|pPrt-&gt;PLinkModeStatus
+op_assign
+id|SK_LMODE_STAT_AUTOFULL
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pPrt-&gt;PLinkModeStatus
+op_assign
+id|SK_LMODE_STAT_AUTOHALF
+suffix:semicolon
+)brace
+multiline_comment|/* Check PAUSE mismatch ??? */
+multiline_comment|/* We are using IEEE 802.3z/D5.0 Table 37-4 */
+r_if
+c_cond
+(paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_PAUSE_MSK
+)paren
+op_eq
+id|PHY_M_PS_PAUSE_MSK
+)paren
+(brace
+multiline_comment|/* Symmetric PAUSE */
+id|pPrt-&gt;PFlowCtrlStatus
+op_assign
+id|SK_FLOW_STAT_SYMMETRIC
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_PAUSE_MSK
+)paren
+op_eq
+id|PHY_M_PS_RX_P_EN
+)paren
+(brace
+multiline_comment|/* Enable PAUSE receive, disable PAUSE transmit */
+id|pPrt-&gt;PFlowCtrlStatus
+op_assign
+id|SK_FLOW_STAT_REM_SEND
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_PAUSE_MSK
+)paren
+op_eq
+id|PHY_M_PS_TX_P_EN
+)paren
+(brace
+multiline_comment|/* Disable PAUSE receive, enable PAUSE transmit */
+id|pPrt-&gt;PFlowCtrlStatus
+op_assign
+id|SK_FLOW_STAT_LOC_SEND
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* PAUSE mismatch -&gt; no PAUSE */
+id|pPrt-&gt;PFlowCtrlStatus
+op_assign
+id|SK_FLOW_STAT_NONE
+suffix:semicolon
+)brace
+multiline_comment|/* set used link speed */
+r_switch
+c_cond
+(paren
+(paren
+r_int
+)paren
+(paren
+id|AuxStat
+op_amp
+id|PHY_M_PS_SPEED_MSK
+)paren
+)paren
+(brace
+r_case
+(paren
+r_int
+)paren
+id|PHY_M_PS_SPEED_1000
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_1000MBPS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PHY_M_PS_SPEED_100
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_100MBPS
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|pPrt-&gt;PLinkSpeedUsed
+op_assign
+id|SK_LSPEED_STAT_10MBPS
+suffix:semicolon
+)brace
+r_return
+id|SK_AND_OK
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmAutoNegDoneMarv */
+macro_line|#endif /* YUKON */
+macro_line|#ifdef OTHER_PHY
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneLone() - Auto-negotiation handling&n; *&n; * Description:&n; *&t;This function handles the auto-negotiation if the Done bit is set.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
 DECL|function|SkXmAutoNegDoneLone
 r_static
 r_int
@@ -4932,8 +8926,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNegDoneLone&quot;
-l_string|&quot;Port %d&bslash;n&quot;
+l_string|&quot;AutoNegDoneLone, Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -4948,12 +8941,12 @@ id|Port
 )braket
 suffix:semicolon
 multiline_comment|/* Get PHY parameters */
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4963,12 +8956,12 @@ op_amp
 id|LPAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4978,12 +8971,12 @@ op_amp
 id|ResAb
 )paren
 suffix:semicolon
-id|PHY_READ
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -4996,9 +8989,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|LPAb
 op_amp
 id|PHY_L_AN_RF
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Remote fault bit is set */
@@ -5024,18 +9021,20 @@ op_assign
 id|SK_TRUE
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OTHER
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Check Duplex mismatch */
 r_if
 c_cond
 (paren
+(paren
 id|QuickStat
 op_amp
 id|PHY_L_QS_DUP_MOD
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|pPrt-&gt;PLinkModeStatus
@@ -5054,11 +9053,13 @@ multiline_comment|/* Check Master/Slave resolution */
 r_if
 c_cond
 (paren
+(paren
 id|ResAb
 op_amp
-(paren
 id|PHY_L_1000S_MSF
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Error */
@@ -5072,7 +9073,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;Master/Slave Fault port %d&bslash;n&quot;
+l_string|&quot;Master/Slave Fault Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -5087,9 +9088,7 @@ op_assign
 id|SK_MS_STAT_FAULT
 suffix:semicolon
 r_return
-(paren
 id|SK_AND_OTHER
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -5114,7 +9113,6 @@ id|SK_MS_STAT_SLAVE
 suffix:semicolon
 )brace
 multiline_comment|/* Check PAUSE mismatch */
-multiline_comment|/* We are NOT using chapter 4.23 of the Xaqti manual */
 multiline_comment|/* We are using IEEE 802.3z/D5.0 Table 37-4 */
 multiline_comment|/* we must manually resolve the abilities here */
 id|pPrt-&gt;PFlowCtrlStatus
@@ -5175,8 +9173,8 @@ id|QuickStat
 op_amp
 id|PHY_L_QS_PAUSE
 )paren
-op_eq
-id|PHY_L_QS_PAUSE
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Symmetric PAUSE */
@@ -5221,8 +9219,8 @@ id|QuickStat
 op_amp
 id|PHY_L_QS_PAUSE
 )paren
-op_eq
-id|PHY_L_QS_PAUSE
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Symmetric PAUSE */
@@ -5250,29 +9248,12 @@ id|SKERR_HWI_E016MSG
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We checked everything and may now enable the link */
-id|pPrt-&gt;PAutoNegFail
-op_assign
-id|SK_FALSE
-suffix:semicolon
-id|SkXmRxTxEnable
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-)paren
-suffix:semicolon
 r_return
-(paren
 id|SK_AND_OK
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* SkXmAutoNegDoneLone */
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneNat() - Auto negotiation handling&n; *&n; * Description:&n; *&t;This function handles the autonegotiation if the Done bit is set.&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&t;o This function is public because it is used in the diagnostics&n; *&t;  tool, too.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegDoneNat() - Auto-negotiation handling&n; *&n; * Description:&n; *&t;This function handles the auto-negotiation if the Done bit is set.&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
 DECL|function|SkXmAutoNegDoneNat
 r_static
 r_int
@@ -5295,16 +9276,582 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 (brace
 multiline_comment|/* todo: National */
 r_return
-(paren
 id|SK_AND_OK
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmAutoNegDoneNat */
+macro_line|#endif /* OTHER_PHY */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacAutoNegDone() - Auto-negotiation handling&n; *&n; * Description:&t;calls the auto-negotiation done routines dep. on board type&n; *&n; * Returns:&n; *&t;SK_AND_OK&t;o.k.&n; *&t;SK_AND_DUP_CAP &t;Duplex capability error happened&n; *&t;SK_AND_OTHER &t;Other error happened&n; */
+DECL|function|SkMacAutoNegDone
+r_int
+id|SkMacAutoNegDone
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+r_int
+id|Rtv
+suffix:semicolon
+id|Rtv
+op_assign
+id|SK_AND_OK
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+)paren
+(brace
+r_case
+id|SK_PHY_XMAC
+suffix:colon
+id|Rtv
+op_assign
+id|SkXmAutoNegDoneXmac
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_BCOM
+suffix:colon
+id|Rtv
+op_assign
+id|SkXmAutoNegDoneBcom
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#ifdef OTHER_PHY
+r_case
+id|SK_PHY_LONE
+suffix:colon
+id|Rtv
+op_assign
+id|SkXmAutoNegDoneLone
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_NAT
+suffix:colon
+id|Rtv
+op_assign
+id|SkXmAutoNegDoneNat
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
+r_default
+suffix:colon
+r_return
+id|SK_AND_OTHER
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|Rtv
+op_assign
+id|SkGmAutoNegDoneMarv
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmAutoNegDoneNat*/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmRxTxEnable() - Enable RxTx activity if port is up&n; *&n; * Description:&n; *&n; * Note:&n; *&t;o The XMACs interrupt source register is NOT read here.&n; *&n; * Returns:&n; *&t;0&t;o.k.&n; *&t;!= 0&t;Error happened&n; */
-DECL|function|SkXmRxTxEnable
+macro_line|#endif /* YUKON */
+r_if
+c_cond
+(paren
+id|Rtv
+op_ne
+id|SK_AND_OK
+)paren
+(brace
+r_return
+id|Rtv
+suffix:semicolon
+)brace
+multiline_comment|/* We checked everything and may now enable the link */
+id|pPrt-&gt;PAutoNegFail
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|SkMacRxTxEnable
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+r_return
+id|SK_AND_OK
+suffix:semicolon
+)brace
+multiline_comment|/* SkMacAutoNegDone */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSetRxTxEn() - Special Set Rx/Tx Enable and some features in XMAC&n; *&n; * Description:&n; *  sets MAC or PHY LoopBack and Duplex Mode in the MMU Command Reg.&n; *  enables Rx/Tx&n; *&n; * Returns: N/A&n; */
+DECL|function|SkXmSetRxTxEn
+r_static
+r_void
+id|SkXmSetRxTxEn
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
 r_int
-id|SkXmRxTxEnable
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|Para
+)paren
+multiline_comment|/* Parameter to set: MAC or PHY LoopBack, Duplex Mode */
+(brace
+id|SK_U16
+id|Word
+suffix:semicolon
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|Para
+op_amp
+(paren
+id|SK_MAC_LOOPB_ON
+op_or
+id|SK_MAC_LOOPB_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_MAC_LOOPB_ON
+suffix:colon
+id|Word
+op_or_assign
+id|XM_MMU_MAC_LB
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_MAC_LOOPB_OFF
+suffix:colon
+id|Word
+op_and_assign
+op_complement
+id|XM_MMU_MAC_LB
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|Para
+op_amp
+(paren
+id|SK_PHY_LOOPB_ON
+op_or
+id|SK_PHY_LOOPB_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_PHY_LOOPB_ON
+suffix:colon
+id|Word
+op_or_assign
+id|XM_MMU_GMII_LOOP
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_LOOPB_OFF
+suffix:colon
+id|Word
+op_and_assign
+op_complement
+id|XM_MMU_GMII_LOOP
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|Para
+op_amp
+(paren
+id|SK_PHY_FULLD_ON
+op_or
+id|SK_PHY_FULLD_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_PHY_FULLD_ON
+suffix:colon
+id|Word
+op_or_assign
+id|XM_MMU_GMII_FD
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_FULLD_OFF
+suffix:colon
+id|Word
+op_and_assign
+op_complement
+id|XM_MMU_GMII_FD
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+id|Word
+op_or
+id|XM_MMU_ENA_RX
+op_or
+id|XM_MMU_ENA_TX
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read to ensure writing */
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmSetRxTxEn */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmSetRxTxEn() - Special Set Rx/Tx Enable and some features in GMAC&n; *&n; * Description:&n; *  sets MAC LoopBack and Duplex Mode in the General Purpose Control Reg.&n; *  enables Rx/Tx&n; *&n; * Returns: N/A&n; */
+DECL|function|SkGmSetRxTxEn
+r_static
+r_void
+id|SkGmSetRxTxEn
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|Para
+)paren
+multiline_comment|/* Parameter to set: MAC LoopBack, Duplex Mode */
+(brace
+id|SK_U16
+id|Ctrl
+suffix:semicolon
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|Para
+op_amp
+(paren
+id|SK_MAC_LOOPB_ON
+op_or
+id|SK_MAC_LOOPB_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_MAC_LOOPB_ON
+suffix:colon
+id|Ctrl
+op_or_assign
+id|GM_GPCR_LOOP_ENA
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_MAC_LOOPB_OFF
+suffix:colon
+id|Ctrl
+op_and_assign
+op_complement
+id|GM_GPCR_LOOP_ENA
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|Para
+op_amp
+(paren
+id|SK_PHY_FULLD_ON
+op_or
+id|SK_PHY_FULLD_OFF
+)paren
+)paren
+(brace
+r_case
+id|SK_PHY_FULLD_ON
+suffix:colon
+id|Ctrl
+op_or_assign
+id|GM_GPCR_DUP_FULL
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_FULLD_OFF
+suffix:colon
+id|Ctrl
+op_and_assign
+op_complement
+id|GM_GPCR_DUP_FULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|Ctrl
+op_or
+id|GM_GPCR_RX_ENA
+op_or
+id|GM_GPCR_TX_ENA
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read to ensure writing */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|Ctrl
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmSetRxTxEn */
+macro_line|#endif /* YUKON */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacSetRxTxEn() - Special Set Rx/Tx Enable and parameters&n; *&n; * Description:&t;calls the Special Set Rx/Tx Enable routines dep. on board type&n; *&n; * Returns: N/A&n; */
+DECL|function|SkMacSetRxTxEn
+r_void
+id|SkMacSetRxTxEn
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+r_int
+id|Para
+)paren
+(brace
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|SkXmSetRxTxEn
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|Para
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|SkGmSetRxTxEn
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|Para
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacSetRxTxEn */
+macro_line|#endif /* !SK_SLIM */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacRxTxEnable() - Enable Rx/Tx activity if port is up&n; *&n; * Description:&t;enables Rx/Tx dep. on board type&n; *&n; * Returns:&n; *&t;0&t;o.k.&n; *&t;!= 0&t;Error happened&n; */
+DECL|function|SkMacRxTxEnable
+r_int
+id|SkMacRxTxEnable
 c_func
 (paren
 id|SK_AC
@@ -5328,14 +9875,16 @@ suffix:semicolon
 id|SK_U16
 id|Reg
 suffix:semicolon
-multiline_comment|/* 16bit register value */
+multiline_comment|/* 16-bit register value */
 id|SK_U16
 id|IntMask
 suffix:semicolon
-multiline_comment|/* XMac interrupt mask */
+multiline_comment|/* MAC interrupt mask */
+macro_line|#ifdef GENESIS
 id|SK_U16
 id|SWord
 suffix:semicolon
+macro_line|#endif
 id|pPrt
 op_assign
 op_amp
@@ -5353,9 +9902,7 @@ id|pPrt-&gt;PHWLinkUp
 (brace
 multiline_comment|/* The Hardware link is NOT up */
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -5378,15 +9925,21 @@ op_logical_and
 id|pPrt-&gt;PAutoNegFail
 )paren
 (brace
-multiline_comment|/* Autonegotiation is not done or failed */
+multiline_comment|/* Auto-negotiation is not done or failed */
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set Dup Mode and Pause Mode */
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* set Duplex Mode and Pause Mode */
 id|SkXmInitDupMd
+c_func
 (paren
 id|pAC
 comma
@@ -5396,6 +9949,7 @@ id|Port
 )paren
 suffix:semicolon
 id|SkXmInitPauseMd
+c_func
 (paren
 id|pAC
 comma
@@ -5404,27 +9958,30 @@ comma
 id|Port
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the Interrupt Mask Register. Default IRQs are...&n;&t; *&t;- Link Asynchronous Event&n;&t; *&t;- Link Partner requests config&n;&t; *&t;- Auto Negotiation Done&n;&t; *&t;- Rx Counter Event Overflow&n;&t; *&t;- Tx Counter Event Overflow&n;&t; *&t;- Transmit FIFO Underrun&n;&t; */
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PhyType
-op_eq
-id|SK_PHY_XMAC
-)paren
-(brace
+multiline_comment|/*&n;&t;&t; * Initialize the Interrupt Mask Register. Default IRQs are...&n;&t;&t; *&t;- Link Asynchronous Event&n;&t;&t; *&t;- Link Partner requests config&n;&t;&t; *&t;- Auto Negotiation Done&n;&t;&t; *&t;- Rx Counter Event Overflow&n;&t;&t; *&t;- Tx Counter Event Overflow&n;&t;&t; *&t;- Transmit FIFO Underrun&n;&t;&t; */
 id|IntMask
 op_assign
 id|XM_DEF_MSK
 suffix:semicolon
-)brace
-r_else
+macro_line|#ifdef DEBUG
+multiline_comment|/* add IRQ for Receive FIFO Overflow */
+id|IntMask
+op_and_assign
+op_complement
+id|XM_IS_RXF_OV
+suffix:semicolon
+macro_line|#endif /* DEBUG */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_XMAC
+)paren
 (brace
 multiline_comment|/* disable GP0 interrupt bit */
 id|IntMask
-op_assign
-id|XM_DEF_MSK
-op_or
+op_or_assign
 id|XM_IS_INP_ASS
 suffix:semicolon
 )brace
@@ -5440,7 +9997,7 @@ comma
 id|IntMask
 )paren
 suffix:semicolon
-multiline_comment|/* RX/TX enable */
+multiline_comment|/* get MMU Command Reg. */
 id|XM_IN16
 c_func
 (paren
@@ -5472,6 +10029,7 @@ id|SK_LMODE_STAT_AUTOFULL
 )paren
 )paren
 (brace
+multiline_comment|/* set to Full Duplex */
 id|Reg
 op_or_assign
 id|XM_MMU_GMII_FD
@@ -5486,14 +10044,13 @@ id|pPrt-&gt;PhyType
 r_case
 id|SK_PHY_BCOM
 suffix:colon
-multiline_comment|/* Workaround BCOM Errata (#10523) for all BCom Phys */
-multiline_comment|/* Enable Power Management after link up */
-id|PHY_READ
+multiline_comment|/*&n;&t;&t;&t; * Workaround BCOM Errata (#10523) for all BCom Phys&n;&t;&t;&t; * Enable Power Management after link up&n;&t;&t;&t; */
+id|SkXmPhyRead
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5503,48 +10060,57 @@ op_amp
 id|SWord
 )paren
 suffix:semicolon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_BCOM_AUX_CTRL
 comma
+(paren
+id|SK_U16
+)paren
+(paren
 id|SWord
 op_amp
 op_complement
 id|PHY_B_AC_DIS_PM
 )paren
+)paren
 suffix:semicolon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
 id|PHY_BCOM_INT_MASK
 comma
+(paren
+id|SK_U16
+)paren
 id|PHY_B_DEF_MSK
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef OTHER_PHY
 r_case
 id|SK_PHY_LONE
 suffix:colon
-id|PHY_WRITE
+id|SkXmPhyWrite
 c_func
 (paren
-id|IoC
+id|pAC
 comma
-id|pPrt
+id|IoC
 comma
 id|Port
 comma
@@ -5558,11 +10124,13 @@ suffix:semicolon
 r_case
 id|SK_PHY_NAT
 suffix:colon
-multiline_comment|/* todo National:&n;&t;&t;PHY_WRITE(IoC, pPrt, Port, PHY_NAT_INT_MASK, &n;&t;&t;&t;PHY_N_DEF_MSK); */
+multiline_comment|/* todo National:&n;&t;&t;&t;SkXmPhyWrite(pAC, IoC, Port, PHY_NAT_INT_MASK, PHY_N_DEF_MSK); */
 multiline_comment|/* no interrupts possible from National ??? */
 r_break
 suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
 )brace
+multiline_comment|/* enable Rx/Tx */
 id|XM_OUT16
 c_func
 (paren
@@ -5579,18 +10147,663 @@ op_or
 id|XM_MMU_ENA_TX
 )paren
 suffix:semicolon
-r_return
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
 (paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Initialize the Interrupt Mask Register. Default IRQs are...&n;&t;&t; *&t;- Rx Counter Event Overflow&n;&t;&t; *&t;- Tx Counter Event Overflow&n;&t;&t; *&t;- Transmit FIFO Underrun&n;&t;&t; */
+id|IntMask
+op_assign
+id|GMAC_DEF_MSK
+suffix:semicolon
+macro_line|#ifdef DEBUG
+multiline_comment|/* add IRQ for Receive FIFO Overrun */
+id|IntMask
+op_or_assign
+id|GM_IS_RX_FF_OR
+suffix:semicolon
+macro_line|#endif /* DEBUG */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_IRQ_MSK
+comma
+(paren
+id|SK_U8
+)paren
+id|IntMask
+)paren
+suffix:semicolon
+multiline_comment|/* get General Purpose Control */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|Reg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLinkModeStatus
+op_eq
+id|SK_LMODE_STAT_FULL
+op_logical_or
+id|pPrt-&gt;PLinkModeStatus
+op_eq
+id|SK_LMODE_STAT_AUTOFULL
+)paren
+(brace
+multiline_comment|/* set to Full Duplex */
+id|Reg
+op_or_assign
+id|GM_GPCR_DUP_FULL
+suffix:semicolon
+)brace
+multiline_comment|/* enable Rx/Tx */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|Reg
+op_or
+id|GM_GPCR_RX_ENA
+op_or
+id|GM_GPCR_TX_ENA
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifndef VCPU
+multiline_comment|/* Enable all PHY interrupts */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_INT_MASK
+comma
+(paren
+id|SK_U16
+)paren
+id|PHY_M_DEF_MSK
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+)brace
+macro_line|#endif /* YUKON */
+r_return
 l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkMacRxTxEnable */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacRxTxDisable() - Disable Receiver and Transmitter&n; *&n; * Description:&t;disables Rx/Tx dep. on board type&n; *&n; * Returns: N/A&n; */
+DECL|function|SkMacRxTxDisable
+r_void
+id|SkMacRxTxDisable
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_U16
+id|Word
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+id|Word
+op_amp
+op_complement
+(paren
+id|XM_MMU_ENA_RX
+op_or
+id|XM_MMU_ENA_TX
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read to ensure writing */
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MMU_CMD
+comma
+op_amp
+id|Word
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* SkXmRxTxEnable*/
-macro_line|#ifndef SK_DIAG
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmIrq() - Interrupt service routine&n; *&n; * Description:&n; *&t;Services an Interrupt of the XMAC II&n; *&n; * Note:&n; *&t;The XMACs interrupt source register is NOT read here.&n; *&t;With an external PHY, some interrupt bits are not meaningfull&n; *&t;any more:&n; *&t;- LinkAsyncEvent (bit #14)              XM_IS_LNK_AE&n; *&t;- LinkPartnerReqConfig (bit #10)&t;XM_IS_LIPA_RC&n; *&t;- Page Received (bit #9)&t;&t;XM_IS_RX_PAGE&n; *&t;- NextPageLoadedForXmt (bit #8)&t;&t;XM_IS_TX_PAGE&n; *&t;- AutoNegDone (bit #7)&t;&t;&t;XM_IS_AND&n; *&t;Also probably not valid any more is the GP0 input bit:&n; *&t;- GPRegisterBit0set&t;&t;&t;XM_IS_INP_ASS&n; *&n; * Returns:&n; *&t;nothing&n; */
-DECL|function|SkXmIrq
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|Word
+op_amp
+op_complement
+(paren
+id|GM_GPCR_RX_ENA
+op_or
+id|GM_GPCR_TX_ENA
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* dummy read to ensure writing */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_GP_CTRL
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacRxTxDisable */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacIrqDisable() - Disable IRQ from MAC&n; *&n; * Description:&t;sets the IRQ-mask to disable IRQ dep. on board type&n; *&n; * Returns: N/A&n; */
+DECL|function|SkMacIrqDisable
 r_void
-id|SkXmIrq
+id|SkMacIrqDisable
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* Adapter Context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+macro_line|#ifdef GENESIS
+id|SK_U16
+id|Word
+suffix:semicolon
+macro_line|#endif
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* disable all XMAC IRQs */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_IMSK
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+multiline_comment|/* Disable all PHY interrupts */
+r_switch
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+)paren
+(brace
+r_case
+id|SK_PHY_BCOM
+suffix:colon
+multiline_comment|/* Make sure that PHY is initialized */
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PState
+op_ne
+id|SK_PRT_RESET
+)paren
+(brace
+multiline_comment|/* NOT allowed if BCOM is in RESET state */
+multiline_comment|/* Workaround BCOM Errata (#10523) all BCom */
+multiline_comment|/* Disable Power Management if link is down */
+id|SkXmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_BCOM_AUX_CTRL
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+id|SkXmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_BCOM_AUX_CTRL
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|Word
+op_or
+id|PHY_B_AC_DIS_PM
+)paren
+)paren
+suffix:semicolon
+id|SkXmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_BCOM_INT_MASK
+comma
+l_int|0xffff
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+macro_line|#ifdef OTHER_PHY
+r_case
+id|SK_PHY_LONE
+suffix:colon
+id|SkXmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_LONE_INT_ENAB
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SK_PHY_NAT
+suffix:colon
+multiline_comment|/* todo: National&n;&t;&t;&t;&t;SkXmPhyWrite(pAC, IoC, Port, PHY_NAT_INT_MASK, 0xffff); */
+r_break
+suffix:semicolon
+macro_line|#endif /* OTHER_PHY */
+)brace
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* disable all GMAC IRQs */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_IRQ_MSK
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#ifndef VCPU
+multiline_comment|/* Disable all PHY interrupts */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_INT_MASK
+comma
+l_int|0
+)paren
+suffix:semicolon
+macro_line|#endif /* VCPU */
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacIrqDisable */
+macro_line|#ifdef SK_DIAG
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmSendCont() - Enable / Disable Send Continuous Mode&n; *&n; * Description:&t;enable / disable Send Continuous Mode on XMAC&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkXmSendCont
+r_void
+id|SkXmSendCont
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|Enable
+)paren
+multiline_comment|/* Enable / Disable */
+(brace
+id|SK_U32
+id|MdReg
+suffix:semicolon
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|MdReg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|MdReg
+op_or_assign
+id|XM_MD_TX_CONT
+suffix:semicolon
+)brace
+r_else
+(brace
+id|MdReg
+op_and_assign
+op_complement
+id|XM_MD_TX_CONT
+suffix:semicolon
+)brace
+multiline_comment|/* setup Mode Register */
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmSendCont */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacTimeStamp() - Enable / Disable Time Stamp&n; *&n; * Description:&t;enable / disable Time Stamp generation for Rx packets&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacTimeStamp
+r_void
+id|SkMacTimeStamp
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|Enable
+)paren
+multiline_comment|/* Enable / Disable */
+(brace
+id|SK_U32
+id|MdReg
+suffix:semicolon
+id|SK_U8
+id|TimeCtrl
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+op_amp
+id|MdReg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|MdReg
+op_or_assign
+id|XM_MD_ATS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|MdReg
+op_and_assign
+op_complement
+id|XM_MD_ATS
+suffix:semicolon
+)brace
+multiline_comment|/* setup Mode Register */
+id|XM_OUT32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_MODE
+comma
+id|MdReg
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|Enable
+)paren
+(brace
+id|TimeCtrl
+op_assign
+id|GMT_ST_START
+op_or
+id|GMT_ST_CLR_IRQ
+suffix:semicolon
+)brace
+r_else
+(brace
+id|TimeCtrl
+op_assign
+id|GMT_ST_STOP
+op_or
+id|GMT_ST_CLR_IRQ
+suffix:semicolon
+)brace
+multiline_comment|/* Start/Stop Time Stamp Timer */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_TI_ST_CTRL
+comma
+id|TimeCtrl
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkMacTimeStamp*/
+macro_line|#else /* !SK_DIAG */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmAutoNegLipaXmac() - Decides whether Link Partner could do auto-neg&n; *&n; *&t;This function analyses the Interrupt status word. If any of the&n; *&t;Auto-negotiating interrupt bits are set, the PLipaAutoNeg variable&n; *&t;is set true.&n; */
+DECL|function|SkXmAutoNegLipaXmac
+r_void
+id|SkXmAutoNegLipaXmac
 c_func
 (paren
 id|SK_AC
@@ -5609,17 +10822,11 @@ multiline_comment|/* Port Index (MAC_1 + n) */
 id|SK_U16
 id|IStatus
 )paren
-multiline_comment|/* Interrupt status read from the XMAC */
+multiline_comment|/* Interrupt Status word to analyse */
 (brace
 id|SK_GEPORT
 op_star
 id|pPrt
-suffix:semicolon
-id|SK_EVPARA
-id|Para
-suffix:semicolon
-id|SK_U16
-id|IStatus2
 suffix:semicolon
 id|pPrt
 op_assign
@@ -5632,31 +10839,190 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pPrt-&gt;PhyType
+id|pPrt-&gt;PLipaAutoNeg
 op_ne
-id|SK_PHY_XMAC
-)paren
-(brace
-multiline_comment|/* mask bits that are not used with ext. PHY */
-id|IStatus
-op_and_assign
-op_complement
+id|SK_LIPA_AUTO
+op_logical_and
 (paren
-id|XM_IS_LNK_AE
-op_or
+id|IStatus
+op_amp
+(paren
 id|XM_IS_LIPA_RC
 op_or
 id|XM_IS_RX_PAGE
 op_or
-id|XM_IS_TX_PAGE
-op_or
 id|XM_IS_AND
-op_or
-id|XM_IS_INP_ASS
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNegLipa: AutoNeg detected on Port %d, IStatus=0x%04X&bslash;n&quot;
+comma
+id|Port
+comma
+id|IStatus
+)paren
 )paren
 suffix:semicolon
+id|pPrt-&gt;PLipaAutoNeg
+op_assign
+id|SK_LIPA_AUTO
+suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * LinkPartner Autonegable?&n;&t; */
+)brace
+multiline_comment|/* SkXmAutoNegLipaXmac */
+macro_line|#endif /* GENESIS */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacAutoNegLipaPhy() - Decides whether Link Partner could do auto-neg&n; *&n; *&t;This function analyses the PHY status word.&n; *  If any of the Auto-negotiating bits are set, the PLipaAutoNeg variable&n; *&t;is set true.&n; */
+DECL|function|SkMacAutoNegLipaPhy
+r_void
+id|SkMacAutoNegLipaPhy
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_U16
+id|PhyStat
+)paren
+multiline_comment|/* PHY Status word to analyse */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PLipaAutoNeg
+op_ne
+id|SK_LIPA_AUTO
+op_logical_and
+(paren
+id|PhyStat
+op_amp
+id|PHY_ST_AN_OVER
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;AutoNegLipa: AutoNeg detected on Port %d, PhyStat=0x%04X&bslash;n&quot;
+comma
+id|Port
+comma
+id|PhyStat
+)paren
+)paren
+suffix:semicolon
+id|pPrt-&gt;PLipaAutoNeg
+op_assign
+id|SK_LIPA_AUTO
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* SkMacAutoNegLipaPhy */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmIrq() - Interrupt Service Routine&n; *&n; * Description:&t;services an Interrupt Request of the XMAC&n; *&n; * Note:&n; *&t;With an external PHY, some interrupt bits are not meaningfull any more:&n; *&t;- LinkAsyncEvent (bit #14)              XM_IS_LNK_AE&n; *&t;- LinkPartnerReqConfig (bit #10)&t;XM_IS_LIPA_RC&n; *&t;- Page Received (bit #9)&t;&t;XM_IS_RX_PAGE&n; *&t;- NextPageLoadedForXmt (bit #8)&t;&t;XM_IS_TX_PAGE&n; *&t;- AutoNegDone (bit #7)&t;&t;&t;XM_IS_AND&n; *&t;Also probably not valid any more is the GP0 input bit:&n; *&t;- GPRegisterBit0set&t;&t;&t;XM_IS_INP_ASS&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkXmIrq
+r_void
+id|SkXmIrq
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|SK_EVPARA
+id|Para
+suffix:semicolon
+id|SK_U16
+id|IStatus
+suffix:semicolon
+multiline_comment|/* Interrupt status read from the XMAC */
+id|SK_U16
+id|IStatus2
+suffix:semicolon
+macro_line|#ifdef SK_SLIM
+id|SK_U64
+id|OverflowStatus
+suffix:semicolon
+macro_line|#endif&t;
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_ISRC
+comma
+op_amp
+id|IStatus
+)paren
+suffix:semicolon
+multiline_comment|/* LinkPartner Auto-negable? */
 r_if
 c_cond
 (paren
@@ -5678,6 +11044,27 @@ id|IStatus
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* mask bits that are not used with ext. PHY */
+id|IStatus
+op_and_assign
+op_complement
+(paren
+id|XM_IS_LNK_AE
+op_or
+id|XM_IS_LIPA_RC
+op_or
+id|XM_IS_RX_PAGE
+op_or
+id|XM_IS_TX_PAGE
+op_or
+id|XM_IS_AND
+op_or
+id|XM_IS_INP_ASS
+)paren
+suffix:semicolon
+)brace
 id|SK_DBG_MSG
 c_func
 (paren
@@ -5688,7 +11075,7 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;XmacIrq Port %d Isr %x&bslash;n&quot;
+l_string|&quot;XmacIrq Port %d Isr 0x%04X&bslash;n&quot;
 comma
 id|Port
 comma
@@ -5714,7 +11101,7 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;SkXmIrq: spurious interrupt on port %d&bslash;n&quot;
+l_string|&quot;SkXmIrq: spurious interrupt on Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -5726,9 +11113,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_INP_ASS
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* Reread ISR Register if link is not in sync */
@@ -5755,7 +11146,7 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;SkXmIrq: Link async. Double check port %d %x %x&bslash;n&quot;
+l_string|&quot;SkXmIrq: Link async. Double check Port %d 0x%04X 0x%04X&bslash;n&quot;
 comma
 id|Port
 comma
@@ -5778,19 +11169,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_LNK_AE
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* not used GP0 is used instead */
+multiline_comment|/* not used, GP0 is used instead */
 )brace
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_TX_ABORT
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* not used */
@@ -5798,15 +11197,20 @@ multiline_comment|/* not used */
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_FRC_INT
 )paren
+op_ne
+l_int|0
+)paren
 (brace
-multiline_comment|/* not used. use ASIC IRQ instead if needed */
+multiline_comment|/* not used, use ASIC IRQ instead if needed */
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|IStatus
 op_amp
@@ -5817,6 +11221,9 @@ id|XM_IS_LIPA_RC
 op_or
 id|XM_IS_RX_PAGE
 )paren
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SkHWLinkDown
@@ -5861,12 +11268,7 @@ comma
 id|IoC
 comma
 op_amp
-id|pAC-&gt;GIni.GP
-(braket
-id|Port
-)braket
-dot
-id|PWaTimer
+id|pPrt-&gt;PWaTimer
 comma
 id|SK_WA_INA_TIME
 comma
@@ -5881,29 +11283,41 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_RX_PAGE
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* not used */
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|IStatus
 op_amp
 id|XM_IS_TX_PAGE
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/* not used */
 )brace
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_AND
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 id|SK_DBG_MSG
@@ -5916,7 +11330,7 @@ comma
 id|SK_DBGCAT_IRQ
 comma
 (paren
-l_string|&quot;SkXmIrq: AND on link that is up port %d&bslash;n&quot;
+l_string|&quot;SkXmIrq: AND on link that is up Port %d&bslash;n&quot;
 comma
 id|Port
 )paren
@@ -5925,63 +11339,52 @@ suffix:semicolon
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|IStatus
 op_amp
 id|XM_IS_TSC_OV
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/* not used */
 )brace
+multiline_comment|/* Combined Tx &amp; Rx Counter Overflow SIRQ Event */
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
+(paren
 id|XM_IS_RXC_OV
-)paren
-(brace
-id|Para.Para32
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-id|SK_U32
-)paren
-id|Port
-suffix:semicolon
-id|Para.Para32
-(braket
-l_int|1
-)braket
-op_assign
-(paren
-id|SK_U32
-)paren
-id|IStatus
-suffix:semicolon
-id|SkPnmiEvent
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|SK_PNMI_EVT_SIRQ_OVERFLOW
-comma
-id|Para
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|IStatus
-op_amp
+op_or
 id|XM_IS_TXC_OV
 )paren
+)paren
+op_ne
+l_int|0
+)paren
 (brace
+macro_line|#ifdef SK_SLIM
+id|SkXmOverflowStatus
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|IStatus
+comma
+op_amp
+id|OverflowStatus
+)paren
+suffix:semicolon
+macro_line|#else
 id|Para.Para32
 (braket
 l_int|0
@@ -6014,23 +11417,37 @@ comma
 id|Para
 )paren
 suffix:semicolon
+macro_line|#endif /* SK_SLIM */
 )brace
 r_if
 c_cond
+(paren
 (paren
 id|IStatus
 op_amp
 id|XM_IS_RXF_OV
 )paren
+op_ne
+l_int|0
+)paren
 (brace
 multiline_comment|/* normal situation -&gt; no effect */
+macro_line|#ifdef DEBUG
+id|pPrt-&gt;PRxOverCnt
+op_increment
+suffix:semicolon
+macro_line|#endif /* DEBUG */
 )brace
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_TXF_UR
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 multiline_comment|/* may NOT happen -&gt; error log */
@@ -6050,9 +11467,271 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|IStatus
 op_amp
 id|XM_IS_TX_COMP
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* not served here */
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|XM_IS_RX_COMP
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* not served here */
+)brace
+)brace
+multiline_comment|/* SkXmIrq */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmIrq() - Interrupt Service Routine&n; *&n; * Description:&t;services an Interrupt Request of the GMAC&n; *&n; * Note:&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkGmIrq
+r_void
+id|SkGmIrq
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|SK_U8
+id|IStatus
+suffix:semicolon
+multiline_comment|/* Interrupt status */
+macro_line|#ifdef SK_SLIM
+id|SK_U64
+id|OverflowStatus
+suffix:semicolon
+macro_line|#else
+id|SK_EVPARA
+id|Para
+suffix:semicolon
+macro_line|#endif&t;
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+id|SK_IN8
+c_func
+(paren
+id|IoC
+comma
+id|GMAC_IRQ_SRC
+comma
+op_amp
+id|IStatus
+)paren
+suffix:semicolon
+macro_line|#ifdef XXX
+multiline_comment|/* LinkPartner Auto-negable? */
+id|SkMacAutoNegLipaPhy
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|IStatus
+)paren
+suffix:semicolon
+macro_line|#endif /* XXX */
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_IRQ
+comma
+(paren
+l_string|&quot;GmacIrq Port %d Isr 0x%04X&bslash;n&quot;
+comma
+id|Port
+comma
+id|IStatus
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Combined Tx &amp; Rx Counter Overflow SIRQ Event */
+r_if
+c_cond
+(paren
+id|IStatus
+op_amp
+(paren
+id|GM_IS_RX_CO_OV
+op_or
+id|GM_IS_TX_CO_OV
+)paren
+)paren
+(brace
+multiline_comment|/* these IRQs will be cleared by reading GMACs register */
+macro_line|#ifdef SK_SLIM
+id|SkGmOverflowStatus
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|IStatus
+comma
+op_amp
+id|OverflowStatus
+)paren
+suffix:semicolon
+macro_line|#else
+id|Para.Para32
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+id|Port
+suffix:semicolon
+id|Para.Para32
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SK_U32
+)paren
+id|IStatus
+suffix:semicolon
+id|SkPnmiEvent
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|SK_PNMI_EVT_SIRQ_OVERFLOW
+comma
+id|Para
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;
+)brace
+r_if
+c_cond
+(paren
+id|IStatus
+op_amp
+id|GM_IS_RX_FF_OR
+)paren
+(brace
+multiline_comment|/* clear GMAC Rx FIFO Overrun IRQ */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|RX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_CLI_RX_FO
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG
+id|pPrt-&gt;PRxOverCnt
+op_increment
+suffix:semicolon
+macro_line|#endif /* DEBUG */
+)brace
+r_if
+c_cond
+(paren
+id|IStatus
+op_amp
+id|GM_IS_TX_FF_UR
+)paren
+(brace
+multiline_comment|/* clear GMAC Tx FIFO Underrun IRQ */
+id|SK_OUT8
+c_func
+(paren
+id|IoC
+comma
+id|MR_ADDR
+c_func
+(paren
+id|Port
+comma
+id|TX_GMF_CTRL_T
+)paren
+comma
+(paren
+id|SK_U8
+)paren
+id|GMF_CLI_TX_FU
+)paren
+suffix:semicolon
+multiline_comment|/* may NOT happen -&gt; error log */
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_SIRQ_E020
+comma
+id|SKERR_SIRQ_E020MSG
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|IStatus
+op_amp
+id|GM_IS_TX_COMPL
 )paren
 (brace
 multiline_comment|/* not served here */
@@ -6062,13 +11741,1209 @@ c_cond
 (paren
 id|IStatus
 op_amp
-id|XM_IS_RX_COMP
+id|GM_IS_RX_COMPL
 )paren
 (brace
 multiline_comment|/* not served here */
 )brace
 )brace
-multiline_comment|/* SkXmIrq*/
+multiline_comment|/* SkGmIrq */
+macro_line|#endif /* YUKON */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkMacIrq() - Interrupt Service Routine for MAC&n; *&n; * Description:&t;calls the Interrupt Service Routine dep. on board type&n; *&n; * Returns:&n; *&t;nothing&n; */
+DECL|function|SkMacIrq
+r_void
+id|SkMacIrq
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+macro_line|#ifdef GENESIS
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIGenesis
+)paren
+(brace
+multiline_comment|/* IRQ from XMAC */
+id|SkXmIrq
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIYukon
+)paren
+(brace
+multiline_comment|/* IRQ from GMAC */
+id|SkGmIrq
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* YUKON */
+)brace
+multiline_comment|/* SkMacIrq */
 macro_line|#endif /* !SK_DIAG */
+macro_line|#ifdef GENESIS
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmUpdateStats() - Force the XMAC to output the current statistic&n; *&n; * Description:&n; *&t;The XMAC holds its statistic internally. To obtain the current&n; *&t;values a command must be sent so that the statistic data will&n; *&t;be written to a predefined memory area on the adapter.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkXmUpdateStats
+r_int
+id|SkXmUpdateStats
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|SK_U16
+id|StatReg
+suffix:semicolon
+r_int
+id|WaitIndex
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+id|WaitIndex
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Send an update command to XMAC specified */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_STAT_CMD
+comma
+id|XM_SC_SNP_TXC
+op_or
+id|XM_SC_SNP_RXC
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * It is an auto-clearing register. If the command bits&n;&t; * went to zero again, the statistics are transferred.&n;&t; * Normally the command should be executed immediately.&n;&t; * But just to be sure we execute a loop.&n;&t; */
+r_do
+(brace
+id|XM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_STAT_CMD
+comma
+op_amp
+id|StatReg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|WaitIndex
+OG
+l_int|10
+)paren
+(brace
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_HW
+comma
+id|SKERR_HWI_E021
+comma
+id|SKERR_HWI_E021MSG
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+)brace
+r_while
+c_loop
+(paren
+(paren
+id|StatReg
+op_amp
+(paren
+id|XM_SC_SNP_TXC
+op_or
+id|XM_SC_SNP_RXC
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmUpdateStats */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmMacStatistic() - Get XMAC counter value&n; *&n; * Description:&n; *&t;Gets the 32bit counter value. Except for the octet counters&n; *&t;the lower 32bit are counted in hardware and the upper 32bit&n; *&t;must be counted in software by monitoring counter overflow interrupts.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkXmMacStatistic
+r_int
+id|SkXmMacStatistic
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_U16
+id|StatAddr
+comma
+multiline_comment|/* MIB counter base address */
+id|SK_U32
+id|SK_FAR
+op_star
+id|pVal
+)paren
+multiline_comment|/* ptr to return statistic value */
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|StatAddr
+OL
+id|XM_TXF_OK
+)paren
+op_logical_or
+(paren
+id|StatAddr
+OG
+id|XM_RXF_MAX_SZ
+)paren
+)paren
+(brace
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+comma
+id|SKERR_HWI_E022
+comma
+id|SKERR_HWI_E022MSG
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|StatAddr
+comma
+id|pVal
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmMacStatistic */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmResetCounter() - Clear MAC statistic counter&n; *&n; * Description:&n; *&t;Force the XMAC to clear its statistic counter.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkXmResetCounter
+r_int
+id|SkXmResetCounter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_STAT_CMD
+comma
+id|XM_SC_CLR_RXC
+op_or
+id|XM_SC_CLR_TXC
+)paren
+suffix:semicolon
+multiline_comment|/* Clear two times according to Errata #3 */
+id|XM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_STAT_CMD
+comma
+id|XM_SC_CLR_RXC
+op_or
+id|XM_SC_CLR_TXC
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmResetCounter */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkXmOverflowStatus() - Gets the status of counter overflow interrupt&n; *&n; * Description:&n; *&t;Checks the source causing an counter overflow interrupt. On success the&n; *&t;resulting counter overflow status is written to &lt;pStatus&gt;, whereas the&n; *&t;upper dword stores the XMAC ReceiveCounterEvent register and the lower&n; *&t;dword the XMAC TransmitCounterEvent register.&n; *&n; * Note:&n; *&t;For XMAC the interrupt source is a self-clearing register, so the source&n; *&t;must be checked only once. SIRQ module does another check to be sure&n; *&t;that no interrupt get lost during process time.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkXmOverflowStatus
+r_int
+id|SkXmOverflowStatus
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_U16
+id|IStatus
+comma
+multiline_comment|/* Interupt Status from MAC */
+id|SK_U64
+id|SK_FAR
+op_star
+id|pStatus
+)paren
+multiline_comment|/* ptr for return overflow status value */
+(brace
+id|SK_U64
+id|Status
+suffix:semicolon
+multiline_comment|/* Overflow status */
+id|SK_U32
+id|RegVal
+suffix:semicolon
+id|Status
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|XM_IS_RXC_OV
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_RX_CNT_EV
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal
+op_lshift
+l_int|32
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|XM_IS_TXC_OV
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|XM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|XM_TX_CNT_EV
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal
+suffix:semicolon
+)brace
+op_star
+id|pStatus
+op_assign
+id|Status
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkXmOverflowStatus */
+macro_line|#endif /* GENESIS */
+macro_line|#ifdef YUKON
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmUpdateStats() - Force the GMAC to output the current statistic&n; *&n; * Description:&n; *&t;Empty function for GMAC. Statistic data is accessible in direct way.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkGmUpdateStats
+r_int
+id|SkGmUpdateStats
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmMacStatistic() - Get GMAC counter value&n; *&n; * Description:&n; *&t;Gets the 32bit counter value. Except for the octet counters&n; *&t;the lower 32bit are counted in hardware and the upper 32bit&n; *&t;must be counted in software by monitoring counter overflow interrupts.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkGmMacStatistic
+r_int
+id|SkGmMacStatistic
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_U16
+id|StatAddr
+comma
+multiline_comment|/* MIB counter base address */
+id|SK_U32
+id|SK_FAR
+op_star
+id|pVal
+)paren
+multiline_comment|/* ptr to return statistic value */
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|StatAddr
+OL
+id|GM_RXF_UC_OK
+)paren
+op_logical_or
+(paren
+id|StatAddr
+OG
+id|GM_TXE_FIFO_UR
+)paren
+)paren
+(brace
+id|SK_ERR_LOG
+c_func
+(paren
+id|pAC
+comma
+id|SK_ERRCL_SW
+comma
+id|SKERR_HWI_E022
+comma
+id|SKERR_HWI_E022MSG
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;SkGmMacStat: wrong MIB counter 0x%04X&bslash;n&quot;
+comma
+id|StatAddr
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|GM_IN32
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|StatAddr
+comma
+id|pVal
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmMacStatistic */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmResetCounter() - Clear MAC statistic counter&n; *&n; * Description:&n; *&t;Force GMAC to clear its statistic counter.&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkGmResetCounter
+r_int
+id|SkGmResetCounter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+)paren
+multiline_comment|/* Port Index (MAC_1 + n) */
+(brace
+id|SK_U16
+id|Reg
+suffix:semicolon
+multiline_comment|/* Phy Address Register */
+id|SK_U16
+id|Word
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_PHY_ADDR
+comma
+op_amp
+id|Reg
+)paren
+suffix:semicolon
+multiline_comment|/* set MIB Clear Counter Mode */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_PHY_ADDR
+comma
+id|Reg
+op_or
+id|GM_PAR_MIB_CLR
+)paren
+suffix:semicolon
+multiline_comment|/* read all MIB Counters with Clear Mode set */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|GM_MIB_CNT_SIZE
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* the reset is performed only when the lower 16 bits are read */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_MIB_CNT_BASE
+op_plus
+l_int|8
+op_star
+id|i
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* clear MIB Clear Counter Mode */
+id|GM_OUT16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_PHY_ADDR
+comma
+id|Reg
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmResetCounter */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmOverflowStatus() - Gets the status of counter overflow interrupt&n; *&n; * Description:&n; *&t;Checks the source causing an counter overflow interrupt. On success the&n; *&t;resulting counter overflow status is written to &lt;pStatus&gt;, whereas the&n; *&t;the following bit coding is used:&n; *&t;63:56 - unused&n; *&t;55:48 - TxRx interrupt register bit7:0&n; *&t;32:47 - Rx interrupt register&n; *&t;31:24 - unused&n; *&t;23:16 - TxRx interrupt register bit15:8&n; *&t;15:0  - Tx interrupt register&n; *&n; * Returns:&n; *&t;0:  success&n; *&t;1:  something went wrong&n; */
+DECL|function|SkGmOverflowStatus
+r_int
+id|SkGmOverflowStatus
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_U16
+id|IStatus
+comma
+multiline_comment|/* Interupt Status from MAC */
+id|SK_U64
+id|SK_FAR
+op_star
+id|pStatus
+)paren
+multiline_comment|/* ptr for return overflow status value */
+(brace
+id|SK_U64
+id|Status
+suffix:semicolon
+multiline_comment|/* Overflow status */
+id|SK_U16
+id|RegVal
+suffix:semicolon
+id|Status
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|GM_IS_RX_CO_OV
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* this register is self-clearing after read */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_RX_IRQ_SRC
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal
+op_lshift
+l_int|32
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|IStatus
+op_amp
+id|GM_IS_TX_CO_OV
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* this register is self-clearing after read */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TX_IRQ_SRC
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+id|RegVal
+suffix:semicolon
+)brace
+multiline_comment|/* this register is self-clearing after read */
+id|GM_IN16
+c_func
+(paren
+id|IoC
+comma
+id|Port
+comma
+id|GM_TR_IRQ_SRC
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+multiline_comment|/* Rx overflow interrupt register bits (LoByte)*/
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+(paren
+(paren
+id|SK_U8
+)paren
+id|RegVal
+)paren
+op_lshift
+l_int|48
+suffix:semicolon
+multiline_comment|/* Tx overflow interrupt register bits (HiByte)*/
+id|Status
+op_or_assign
+(paren
+id|SK_U64
+)paren
+(paren
+id|RegVal
+op_rshift
+l_int|8
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+op_star
+id|pStatus
+op_assign
+id|Status
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmOverflowStatus */
+macro_line|#ifndef SK_SLIM
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkGmCableDiagStatus() - Starts / Gets status of cable diagnostic test&n; *&n; * Description:&n; *  starts the cable diagnostic test if &squot;StartTest&squot; is true&n; *  gets the results if &squot;StartTest&squot; is true&n; *&n; * NOTE:&t;this test is meaningful only when link is down&n; *&t;&n; * Returns:&n; *&t;0:  success&n; *&t;1:&t;no YUKON copper&n; *&t;2:&t;test in progress&n; */
+DECL|function|SkGmCableDiagStatus
+r_int
+id|SkGmCableDiagStatus
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* adapter context */
+id|SK_IOC
+id|IoC
+comma
+multiline_comment|/* IO context */
+r_int
+id|Port
+comma
+multiline_comment|/* Port Index (MAC_1 + n) */
+id|SK_BOOL
+id|StartTest
+)paren
+multiline_comment|/* flag for start / get result */
+(brace
+r_int
+id|i
+suffix:semicolon
+id|SK_U16
+id|RegVal
+suffix:semicolon
+id|SK_GEPORT
+op_star
+id|pPrt
+suffix:semicolon
+id|pPrt
+op_assign
+op_amp
+id|pAC-&gt;GIni.GP
+(braket
+id|Port
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PhyType
+op_ne
+id|SK_PHY_MARV_COPPER
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|StartTest
+)paren
+(brace
+multiline_comment|/* only start the cable test */
+r_if
+c_cond
+(paren
+(paren
+id|pPrt-&gt;PhyId1
+op_amp
+id|PHY_I1_REV_MSK
+)paren
+OL
+l_int|4
+)paren
+(brace
+multiline_comment|/* apply TDR workaround from Marvell */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|29
+comma
+l_int|0x001e
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0xcc00
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0xc800
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0xc400
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0xc000
+)paren
+suffix:semicolon
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+l_int|30
+comma
+l_int|0xc100
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* set address to 0 for MDI[0] */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_ADR
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Read Cable Diagnostic Reg */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CABLE_DIAG
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+multiline_comment|/* start Cable Diagnostic Test */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CABLE_DIAG
+comma
+(paren
+id|SK_U16
+)paren
+(paren
+id|RegVal
+op_or
+id|PHY_M_CABD_ENA_TEST
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* Read Cable Diagnostic Reg */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CABLE_DIAG
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;PHY Cable Diag.=0x%04X&bslash;n&quot;
+comma
+id|RegVal
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|RegVal
+op_amp
+id|PHY_M_CABD_ENA_TEST
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* test is running */
+r_return
+l_int|2
+suffix:semicolon
+)brace
+multiline_comment|/* get the test results */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|4
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* set address to i for MDI[i] */
+id|SkGmPhyWrite
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_EXT_ADR
+comma
+(paren
+id|SK_U16
+)paren
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* get Cable Diagnostic values */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_CABLE_DIAG
+comma
+op_amp
+id|RegVal
+)paren
+suffix:semicolon
+id|pPrt-&gt;PMdiPairLen
+(braket
+id|i
+)braket
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+id|RegVal
+op_amp
+id|PHY_M_CABD_DIST_MSK
+)paren
+suffix:semicolon
+id|pPrt-&gt;PMdiPairSts
+(braket
+id|i
+)braket
+op_assign
+(paren
+id|SK_U8
+)paren
+(paren
+(paren
+id|RegVal
+op_amp
+id|PHY_M_CABD_STAT_MSK
+)paren
+op_rshift
+l_int|13
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* SkGmCableDiagStatus */
+macro_line|#endif /* !SK_SLIM */
+macro_line|#endif /* YUKON */
 multiline_comment|/* End of file */
 eof

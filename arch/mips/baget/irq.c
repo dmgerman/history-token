@@ -654,13 +654,7 @@ l_string|&quot;%2d: %8d %c %s&quot;
 comma
 id|i
 comma
-id|kstat_cpu
-c_func
-(paren
-l_int|0
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|i
 )braket
@@ -787,6 +781,8 @@ c_func
 (paren
 id|cpu
 )paren
+dot
+id|irqs
 (braket
 id|irq
 )braket

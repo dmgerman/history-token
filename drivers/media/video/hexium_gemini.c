@@ -7,7 +7,7 @@ r_static
 r_int
 id|debug
 op_assign
-l_int|255
+l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -27,6 +27,7 @@ l_string|&quot;debug verbosity&quot;
 suffix:semicolon
 multiline_comment|/* global variables */
 DECL|variable|hexium_num
+r_static
 r_int
 id|hexium_num
 op_assign
@@ -1685,6 +1686,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|hexium_init_module
+r_static
 r_int
 id|__init
 id|hexium_init_module
@@ -1724,6 +1726,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hexium_cleanup_module
+r_static
 r_void
 id|__exit
 id|hexium_cleanup_module

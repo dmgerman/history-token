@@ -17,25 +17,4 @@ DECL|macro|LASAT_UART_REGS_SHIFT_200
 mdefine_line|#define LASAT_UART_REGS_SHIFT_200&t;3
 DECL|macro|LASATINT_UART_200
 mdefine_line|#define LASATINT_UART_200&t;&t;13
-macro_line|#if defined(CONFIG_LASAT_100)
-DECL|macro|LASAT_BASE_BAUD
-mdefine_line|#define LASAT_BASE_BAUD&t;&t;LASAT_BASE_BAUD_200
-DECL|macro|LASAT_UART_REGS_BASE
-mdefine_line|#define LASAT_UART_REGS_BASE&t;LASAT_UART_REGS_BASE_200
-DECL|macro|LASAT_UART_REGS_SHIFT
-mdefine_line|#define LASAT_UART_REGS_SHIFT&t;LASAT_UART_REGS_SHIFT_200
-DECL|macro|LASATINT_UART
-mdefine_line|#define LASATINT_UART&t;&t;LASAT_UART_REGS_SHIFT_200
-macro_line|#elif defined(CONFIG_LASAT_200)
-DECL|macro|LASAT_BASE_BAUD
-mdefine_line|#define LASAT_BASE_BAUD&t;&t;LASAT_BASE_BAUD_200
-DECL|macro|LASAT_UART_REGS_BASE
-mdefine_line|#define LASAT_UART_REGS_BASE&t;LASAT_UART_REGS_BASE_200
-DECL|macro|LASAT_UART_REGS_SHIFT
-mdefine_line|#define LASAT_UART_REGS_SHIFT&t;LASAT_UART_REGS_SHIFT_200
-DECL|macro|LASATINT_UART
-mdefine_line|#define LASATINT_UART&t;&t;LASAT_UART_REGS_SHIFT_200
-macro_line|#else
-macro_line|#error Select a Lasat board in the configuration menu
-macro_line|#endif
 eof

@@ -89,17 +89,17 @@ l_int|24
 suffix:semicolon
 )brace
 DECL|macro|readb
-mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) (addr)); __v; })
+mdefine_line|#define readb(addr) &bslash;&n;    ({ unsigned char __v = (*(volatile unsigned char *) (addr &amp; 0x00ffffff)); __v; })
 DECL|macro|readw
-mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr)); __v; })
+mdefine_line|#define readw(addr) &bslash;&n;    ({ unsigned short __v = (*(volatile unsigned short *) (addr &amp; 0x00ffffff)); __v; })
 DECL|macro|readl
-mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr)); __v; })
+mdefine_line|#define readl(addr) &bslash;&n;    ({ unsigned int __v = (*(volatile unsigned int *) (addr &amp; 0x00ffffff)); __v; })
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) (addr)) = (b))
+mdefine_line|#define writeb(b,addr) (void)((*(volatile unsigned char *) (addr &amp; 0x00ffffff)) = (b))
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) (addr)) = (b))
+mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) (addr &amp; 0x00ffffff)) = (b))
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) (addr)) = (b))
+mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) (addr &amp; 0x00ffffff)) = (b))
 multiline_comment|/*&n; * The following are some defines we need for MTD with our&n; * COBRA5272 board.&n; * Because I don&squot;t know if they break something I have&n; * #ifdef&squot;d them.&n; * (020325 - hede)&n; */
 macro_line|#ifdef CONFIG_senTec
 DECL|macro|__raw_readb
@@ -529,7 +529,7 @@ mdefine_line|#define insw(a,b,l) io_insw(a,b,l)
 DECL|macro|insl
 mdefine_line|#define insl(a,b,l) io_insl(a,b,l)
 DECL|macro|IO_SPACE_LIMIT
-mdefine_line|#define IO_SPACE_LIMIT 0xffff
+mdefine_line|#define IO_SPACE_LIMIT 0xffffff
 multiline_comment|/* Values for nocacheflag and cmode */
 DECL|macro|IOMAP_FULL_CACHING
 mdefine_line|#define IOMAP_FULL_CACHING&t;&t;0

@@ -1,23 +1,26 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 DECL|macro|SBPROF_TB_DEBUG
 mdefine_line|#define SBPROF_TB_DEBUG 0
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smplock.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 macro_line|#include &lt;asm/sibyte/trace_prof.h&gt;
+DECL|macro|DEVNAME
+mdefine_line|#define DEVNAME &quot;bcm1250_tbprof&quot;
 DECL|variable|sbp
 r_static
 r_struct
@@ -27,13 +30,10 @@ suffix:semicolon
 DECL|macro|TB_FULL
 mdefine_line|#define TB_FULL (sbp.next_tb_sample == MAX_TB_SAMPLES)
 multiline_comment|/************************************************************************&n; * Support for ZBbus sampling using the trace buffer&n; *&n; * We use the SCD performance counter interrupt, caused by a Zclk counter&n; * overflow, to trigger the start of tracing.&n; *&n; * We set the trace buffer to sample everything and freeze on&n; * overflow.&n; *&n; * We map the interrupt for trace_buffer_freeze to handle it on CPU 0.&n; *&n; ************************************************************************/
-multiline_comment|/* 100 samples per second on a 500 Mhz 1250 (default) */
 DECL|variable|tb_period
 r_static
 id|u_int64_t
 id|tb_period
-op_assign
-l_int|2500000ULL
 suffix:semicolon
 DECL|function|arm_tb
 r_static
@@ -58,8 +58,13 @@ l_int|40
 op_minus
 id|tb_period
 suffix:semicolon
+id|u_int64_t
+id|tb_options
+op_assign
+id|M_SCD_TRACE_CFG_FREEZE_FULL
+suffix:semicolon
 multiline_comment|/* Generate an SCD_PERFCNT interrupt in TB_PERIOD Zclks to&n;&t;   trigger start of trace.  XXX vary sampling period */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -71,7 +76,7 @@ id|A_SCD_PERF_CNT_1
 suffix:semicolon
 id|scdperfcnt
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -80,7 +85,7 @@ id|A_SCD_PERF_CNT_CFG
 )paren
 suffix:semicolon
 multiline_comment|/* Unfortunately, in Pass 2 we must clear all counters to knock down&n;&t;   a previous interrupt request.  This means that bus profiling&n;&t;   requires ALL of the SCD perf counters. */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -109,7 +114,7 @@ op_plus
 id|A_SCD_PERF_CNT_CFG
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|next
@@ -120,7 +125,7 @@ id|A_SCD_PERF_CNT_1
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the trace buffer */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -130,15 +135,17 @@ op_plus
 id|A_SCD_TRACE_CFG
 )paren
 suffix:semicolon
-id|out64
-c_func
-(paren
-id|M_SCD_TRACE_CFG_FREEZE_FULL
 macro_line|#if 0 &amp;&amp; defined(M_SCD_TRACE_CFG_FORCECNT)
 multiline_comment|/* XXXKW may want to expose control to the data-collector */
-op_or
+id|tb_options
+op_or_assign
 id|M_SCD_TRACE_CFG_FORCECNT
+suffix:semicolon
 macro_line|#endif
+id|__raw_writeq
+c_func
+(paren
+id|tb_options
 comma
 id|KSEG1
 op_plus
@@ -152,7 +159,7 @@ suffix:semicolon
 )brace
 DECL|function|sbprof_tb_intr
 r_static
-r_void
+id|irqreturn_t
 id|sbprof_tb_intr
 c_func
 (paren
@@ -203,7 +210,7 @@ op_increment
 )braket
 suffix:semicolon
 multiline_comment|/* Read out trace */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_START_READ
@@ -251,7 +258,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -267,7 +274,7 @@ op_minus
 l_int|2
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -283,7 +290,7 @@ op_minus
 l_int|3
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -299,7 +306,7 @@ op_minus
 l_int|4
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -315,7 +322,7 @@ op_minus
 l_int|5
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -331,7 +338,7 @@ op_minus
 l_int|6
 )braket
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -359,7 +366,7 @@ l_string|&quot;: tb_intr shutdown&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -405,7 +412,7 @@ l_string|&quot;: tb_intr full&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TRACE_CFG_RESET
@@ -442,10 +449,13 @@ id|sbp.tb_read
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sbprof_pc_intr
 r_static
-r_void
+id|irqreturn_t
 id|sbprof_pc_intr
 c_func
 (paren
@@ -468,6 +478,9 @@ c_func
 id|DEVNAME
 l_string|&quot;: unexpected pc_intr&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|function|sbprof_zbprof_start
@@ -544,7 +557,7 @@ suffix:semicolon
 multiline_comment|/* Make sure there isn&squot;t a perf-cnt interrupt waiting */
 id|scdperfcnt
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1
@@ -553,7 +566,7 @@ id|A_SCD_PERF_CNT_CFG
 )paren
 suffix:semicolon
 multiline_comment|/* Disable and clear counters, override SRC_1 */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -617,7 +630,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 multiline_comment|/* I need the core to mask these, but the interrupt mapper to&n;&t;   pass them through.  I am exploiting my knowledge that&n;&t;   cp0_status masks out IP[5]. krw */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|K_INT_MAP_I3
@@ -640,7 +653,7 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize address traps */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -650,7 +663,7 @@ op_plus
 id|A_ADDR_TRAP_UP_0
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -660,7 +673,7 @@ op_plus
 id|A_ADDR_TRAP_UP_1
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -670,7 +683,7 @@ op_plus
 id|A_ADDR_TRAP_UP_2
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -680,7 +693,7 @@ op_plus
 id|A_ADDR_TRAP_UP_3
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -690,7 +703,7 @@ op_plus
 id|A_ADDR_TRAP_DOWN_0
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -700,7 +713,7 @@ op_plus
 id|A_ADDR_TRAP_DOWN_1
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -710,7 +723,7 @@ op_plus
 id|A_ADDR_TRAP_DOWN_2
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -720,7 +733,7 @@ op_plus
 id|A_ADDR_TRAP_DOWN_3
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -730,7 +743,7 @@ op_plus
 id|A_ADDR_TRAP_CFG_0
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -740,7 +753,7 @@ op_plus
 id|A_ADDR_TRAP_CFG_1
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -750,7 +763,7 @@ op_plus
 id|A_ADDR_TRAP_CFG_2
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -762,7 +775,7 @@ id|A_ADDR_TRAP_CFG_3
 suffix:semicolon
 multiline_comment|/* Initialize Trace Event 0-7 */
 singleline_comment|//&t;&t;&t;&t;when interrupt
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TREVT_INTERRUPT
@@ -772,7 +785,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_0
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -782,7 +795,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_1
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -792,7 +805,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_2
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -802,7 +815,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_3
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -812,7 +825,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_4
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -822,7 +835,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_5
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -832,7 +845,7 @@ op_plus
 id|A_SCD_TRACE_EVENT_6
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -844,7 +857,7 @@ id|A_SCD_TRACE_EVENT_7
 suffix:semicolon
 multiline_comment|/* Initialize Trace Sequence 0-7 */
 singleline_comment|//&t;&t;&t;&t;     Start on event 0 (interrupt)
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|V_SCD_TRSEQ_FUNC_START
@@ -857,7 +870,7 @@ id|A_SCD_TRACE_SEQUENCE_0
 )paren
 suffix:semicolon
 singleline_comment|//&t;&t;&t;  dsamp when d used | asamp when a used
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TRSEQ_ASAMPLE
@@ -871,7 +884,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_1
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -881,7 +894,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_2
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -891,7 +904,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_3
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -901,7 +914,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_4
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -911,7 +924,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_5
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -921,7 +934,7 @@ op_plus
 id|A_SCD_TRACE_SEQUENCE_6
 )paren
 suffix:semicolon
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -932,7 +945,7 @@ id|A_SCD_TRACE_SEQUENCE_7
 )paren
 suffix:semicolon
 multiline_comment|/* Now indicate the PERF_CNT interrupt as a trace-relevant interrupt */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -1095,7 +1108,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1214,7 +1227,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1601,89 +1614,6 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-DECL|variable|devfs_handle
-r_static
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
-DECL|macro|UNDEF
-mdefine_line|#define UNDEF 0
-DECL|variable|pll_div_to_mhz
-r_static
-r_int
-r_int
-r_int
-id|pll_div_to_mhz
-(braket
-l_int|32
-)braket
-op_assign
-(brace
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-l_int|200
-comma
-l_int|250
-comma
-l_int|300
-comma
-l_int|350
-comma
-l_int|400
-comma
-l_int|450
-comma
-l_int|500
-comma
-l_int|550
-comma
-l_int|600
-comma
-l_int|650
-comma
-l_int|700
-comma
-l_int|750
-comma
-l_int|800
-comma
-l_int|850
-comma
-l_int|900
-comma
-l_int|950
-comma
-l_int|1000
-comma
-l_int|1050
-comma
-l_int|1100
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-comma
-id|UNDEF
-)brace
-suffix:semicolon
 DECL|function|sbprof_tb_init
 r_static
 r_int
@@ -1694,14 +1624,10 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
-id|pll_div
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|SBPROF_TB_MAJOR
@@ -1728,84 +1654,16 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|devfs_handle
-op_assign
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|DEVNAME
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|SBPROF_TB_MAJOR
-comma
-l_int|0
-comma
-id|S_IFCHR
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-op_amp
-id|sbprof_tb_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|sbp.open
 op_assign
 l_int|0
 suffix:semicolon
-id|pll_div
-op_assign
-id|pll_div_to_mhz
-(braket
-id|G_SYS_PLL_DIV
-c_func
-(paren
-id|in64
-c_func
-(paren
-id|KSEG1
-op_plus
-id|A_SCD_SYSTEM_CFG
-)paren
-)paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pll_div
-op_ne
-id|UNDEF
-)paren
-(brace
 id|tb_period
 op_assign
-(paren
-id|pll_div
-op_div
-l_int|2
-)paren
+id|zbbus_mhz
 op_star
-l_int|10000
+l_int|10000LL
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|DEVNAME
-l_string|&quot;: strange PLL divide&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
@@ -1830,18 +1688,12 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|SBPROF_TB_MAJOR
 comma
 id|DEVNAME
-)paren
-suffix:semicolon
-id|devfs_unregister
-c_func
-(paren
-id|devfs_handle
 )paren
 suffix:semicolon
 )brace

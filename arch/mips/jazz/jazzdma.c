@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -19,6 +20,13 @@ r_static
 r_int
 r_int
 id|vdma_pagetable_start
+suffix:semicolon
+DECL|variable|vdma_lock
+r_static
+id|spinlock_t
+id|vdma_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Debug stuff&n; */
 DECL|macro|vdma_debug
@@ -41,15 +49,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_int
-r_int
-id|paddr
-op_assign
-l_int|0
-suffix:semicolon
 id|VDMA_PGTBL_ENTRY
 op_star
 id|pgtbl
@@ -59,6 +58,15 @@ id|VDMA_PGTBL_ENTRY
 op_star
 )paren
 id|vdma_pagetable_start
+suffix:semicolon
+r_int
+r_int
+id|paddr
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 r_for
 c_loop
@@ -214,26 +222,19 @@ id|vdma_pagetable_start
 suffix:semicolon
 r_int
 id|first
-suffix:semicolon
-r_int
+comma
 id|last
-suffix:semicolon
-r_int
+comma
 id|pages
-suffix:semicolon
-r_int
-r_int
+comma
 id|frame
-suffix:semicolon
-r_int
-r_int
-id|laddr
-suffix:semicolon
-r_int
+comma
 id|i
 suffix:semicolon
 r_int
 r_int
+id|laddr
+comma
 id|flags
 suffix:semicolon
 multiline_comment|/* check arguments */
@@ -293,9 +294,12 @@ id|VDMA_ERROR
 suffix:semicolon
 multiline_comment|/* invalid physical address */
 )brace
-id|save_and_cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|vdma_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -351,9 +355,12 @@ id|VDMA_PGTBL_ENTRIES
 )paren
 (brace
 multiline_comment|/* nothing free */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|vdma_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -486,6 +493,7 @@ OG
 l_int|1
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;vdma_alloc: Allocated %d pages starting from %08lx&bslash;n&quot;
 comma
@@ -605,9 +613,12 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|vdma_lock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -1,7 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.26 $&n; * Date:&t;$Date: 2000/06/13 08:00:01 $&n; * Purpose:&t;Shared software to read and write VPD data&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.c,v $&n; *&t;Revision 1.26  2000/06/13 08:00:01  mkarl&n; *&t;additional cast to avoid compile problems in 64 bit environment&n; *&t;&n; *&t;Revision 1.25  1999/11/22 13:39:32  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.24  1999/03/11 14:25:49  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.23  1999/01/11 15:13:11  gklug&n; *&t;fix: syntax error&n; *&t;&n; *&t;Revision 1.22  1998/10/30 06:41:15  gklug&n; *&t;rmv: WARNING&n; *&t;&n; *&t;Revision 1.21  1998/10/29 07:15:14  gklug&n; *&t;fix: Write Stream function needs verify.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:05:08  gklug&n; *&t;chg: no DEBUG in VpdMayWrite&n; *&t;&n; *&t;Revision 1.19  1998/10/28 15:56:11  gklug&n; *&t;fix: Return len at end of ReadStream&n; *&t;fix: Write even less than 4 bytes correctly&n; *&t;&n; *&t;Revision 1.18  1998/10/28 09:00:47  gklug&n; *&t;fix: unreferenced local vars&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:25:45  gklug&n; *&t;fix: WARNING&n; *&t;&n; *&t;Revision 1.16  1998/10/28 08:17:30  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.15  1998/10/28 07:50:32  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.14  1998/10/28 07:20:38  gklug&n; *&t;chg: Interface functions to use IoC as parameter as well&n; *&t;fix: VpdRead/WriteDWord now return SK_U32&n; *&t;chg: VPD_IN/OUT names conform to SK_IN/OUT&n; *&t;add: usage of VPD_IN/OUT8 macros&n; *&t;add: VpdRead/Write Stream functions to r/w a stream of data&n; *&t;fix: VpdTransferBlock swapped illeagal&n; *&t;add: VpdMayWrite&n; *&t;&n; *&t;Revision 1.13  1998/10/22 10:02:37  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.12  1998/10/20 10:01:01  gklug&n; *&t;fix: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.11  1998/10/15 12:51:48  malthoff&n; *&t;Remove unrequired parameter p in vpd_setup_para().&n; *&t;&n; *&t;Revision 1.10  1998/10/08 14:52:43  malthoff&n; *&t;Remove CvsId by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 07:33:52  malthoff&n; *&t;remove memcmp() by SK_MEMCMP and&n; *&t;memcpy() by SK_MEMCPY() to be&n; *&t;independent from the &squot;C&squot; Standard Library.&n; *&t;&n; *&t;Revision 1.8  1998/08/19 12:52:35  malthoff&n; *&t;compiler fix: use SK_VPD_KEY instead of S_VPD.&n; *&t;&n; *&t;Revision 1.7  1998/08/19 08:14:01  gklug&n; *&t;fix: remove struct keyword as much as possible from the c-code (see CCC)&n; *&t;&n; *&t;Revision 1.6  1998/08/18 13:03:58  gklug&n; *&t;SkOsGetTime now returns SK_U64&n; *&t;&n; *&t;Revision 1.5  1998/08/18 08:17:29  malthoff&n; *&t;Ensure we issue a VPD read in vpd_read_dword().&n; *&t;Discard all VPD keywords other than Vx or Yx, where&n; *&t;x is &squot;0..9&squot; or &squot;A..Z&squot;.&n; *&t;&n; *&t;Revision 1.4  1998/07/03 14:52:19  malthoff&n; *&t;Add category SK_DBGCAT_FATAL to some debug macros.&n; *&t;bug fix: correct the keyword name check in vpd_write().&n; *&t;&n; *&t;Revision 1.3  1998/06/26 11:16:53  malthoff&n; *&t;Correct the modified File Identifier.&n; *&t;&n; *&t;Revision 1.2  1998/06/26 11:13:43  malthoff&n; *&t;Modify the File Identifier.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:11:08  malthoff&n; *&t;Created, Tests with AIX were performed successfully&n; *&t;&n; *&n; ******************************************************************************/
-multiline_comment|/*&n;&t;Please refer skvpd.txt for information how to include this module&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skvpd.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.37 $&n; * Date:&t;$Date: 2003/01/13 10:42:45 $&n; * Purpose:&t;Shared software to read and write VPD data&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skvpd.c,v $&n; *&t;Revision 1.37  2003/01/13 10:42:45  rschmidt&n; *&t;Replaced check for PCI device Id from YUKON with GENESIS&n; *&t;to set the VPD size in VpdInit()&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.36  2002/11/14 15:16:56  gheinig&n; *&t;Added const specifier to key and buf parameters for VpdPara, VpdRead&n; *&t;and VpdWrite for Diag 7 GUI&n; *&t;&n; *&t;Revision 1.35  2002/10/21 14:31:59  gheinig&n; *&t;Took out CVS web garbage at head of file&n; *&t;&n; *&t;Revision 1.34  2002/10/21 11:47:24  gheinig&n; *&t;Reverted to version 1.32 due to unwanted commit&n; *&t;&n; *&t;Revision 1.32  2002/10/14 16:04:29  rschmidt&n; *&t;Added saving of VPD ROM Size from PCI_OUR_REG_2&n; *&t;Avoid reading of PCI_OUR_REG_2 in VpdTransferBlock()&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.31  2002/09/10 09:21:32  mkarl&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis&n; *&t;&n; *&t;Revision 1.30  2002/09/09 14:43:03  mkarl&n; *&t;changes for diagnostics in order to read VPD data before the adapter&n; *&t;has been initialized&n; *&t;editorial changes&n; *&t;&n; *&t;Revision 1.29  2002/07/26 13:20:43  mkarl&n; *&t;added Yukon support&n; *&t;save size of VPD in pAC-&gt;vpd.vpd_size&n; *&t;&n; *&t;Revision 1.28  2002/04/02 15:31:47  afischer&n; *&t;Bug fix in VpdWait()&n; *&t;&n; *&t;Revision 1.27  2000/08/10 11:29:06  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;Removed unused function VpdWriteDword() (#if 0).&n; *&t;Made VpdReadKeyword() available for SKDIAG only.&n; *&t;&n; *&t;Revision 1.26  2000/06/13 08:00:01  mkarl&n; *&t;additional cast to avoid compile problems in 64 bit environment&n; *&t;&n; *&t;Revision 1.25  1999/11/22 13:39:32  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.24  1999/03/11 14:25:49  malthoff&n; *&t;Replace __STDC__ with SK_KR_PROTO.&n; *&t;&n; *&t;Revision 1.23  1999/01/11 15:13:11  gklug&n; *&t;fix: syntax error&n; *&t;&n; *&t;Revision 1.22  1998/10/30 06:41:15  gklug&n; *&t;rmv: WARNING&n; *&t;&n; *&t;Revision 1.21  1998/10/29 07:15:14  gklug&n; *&t;fix: Write Stream function needs verify.&n; *&t;&n; *&t;Revision 1.20  1998/10/28 18:05:08  gklug&n; *&t;chg: no DEBUG in VpdMayWrite&n; *&t;&n; *&t;Revision 1.19  1998/10/28 15:56:11  gklug&n; *&t;fix: Return len at end of ReadStream&n; *&t;fix: Write even less than 4 bytes correctly&n; *&t;&n; *&t;Revision 1.18  1998/10/28 09:00:47  gklug&n; *&t;fix: unreferenced local vars&n; *&t;&n; *&t;Revision 1.17  1998/10/28 08:25:45  gklug&n; *&t;fix: WARNING&n; *&t;&n; *&t;Revision 1.16  1998/10/28 08:17:30  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.15  1998/10/28 07:50:32  gklug&n; *&t;fix: typo&n; *&t;&n; *&t;Revision 1.14  1998/10/28 07:20:38  gklug&n; *&t;chg: Interface functions to use IoC as parameter as well&n; *&t;fix: VpdRead/WriteDWord now returns SK_U32&n; *&t;chg: VPD_IN/OUT names conform to SK_IN/OUT&n; *&t;add: usage of VPD_IN/OUT8 macros&n; *&t;add: VpdRead/Write Stream functions to r/w a stream of data&n; *&t;fix: VpdTransferBlock swapped illegal&n; *&t;add: VpdMayWrite&n; *&t;&n; *&t;Revision 1.13  1998/10/22 10:02:37  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.12  1998/10/20 10:01:01  gklug&n; *&t;fix: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.11  1998/10/15 12:51:48  malthoff&n; *&t;Remove unrequired parameter p in vpd_setup_para().&n; *&t;&n; *&t;Revision 1.10  1998/10/08 14:52:43  malthoff&n; *&t;Remove CvsId by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.9  1998/09/16 07:33:52  malthoff&n; *&t;replace memcmp() by SK_MEMCMP and&n; *&t;memcpy() by SK_MEMCPY() to be&n; *&t;independent from the &squot;C&squot; Standard Library.&n; *&t;&n; *&t;Revision 1.8  1998/08/19 12:52:35  malthoff&n; *&t;compiler fix: use SK_VPD_KEY instead of S_VPD.&n; *&t;&n; *&t;Revision 1.7  1998/08/19 08:14:01  gklug&n; *&t;fix: remove struct keyword as much as possible from the C-code (see CCC)&n; *&t;&n; *&t;Revision 1.6  1998/08/18 13:03:58  gklug&n; *&t;SkOsGetTime now returns SK_U64&n; *&t;&n; *&t;Revision 1.5  1998/08/18 08:17:29  malthoff&n; *&t;Ensure we issue a VPD read in vpd_read_dword().&n; *&t;Discard all VPD keywords other than Vx or Yx, where&n; *&t;x is &squot;0..9&squot; or &squot;A..Z&squot;.&n; *&t;&n; *&t;Revision 1.4  1998/07/03 14:52:19  malthoff&n; *&t;Add category SK_DBGCAT_FATAL to some debug macros.&n; *&t;bug fix: correct the keyword name check in vpd_write().&n; *&t;&n; *&t;Revision 1.3  1998/06/26 11:16:53  malthoff&n; *&t;Correct the modified File Identifier.&n; *&t;&n; *&t;Revision 1.2  1998/06/26 11:13:43  malthoff&n; *&t;Modify the File Identifier.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 14:11:08  malthoff&n; *&t;Created, Tests with AIX were performed successfully&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/*&n;&t;Please refer skvpd.txt for infomation how to include this module&n; */
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -10,7 +10,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#)$Id: skvpd.c,v 1.26 2000/06/13 08:00:01 mkarl Exp $ (C) SK&quot;
+l_string|&quot;@(#)$Id: skvpd.c,v 1.37 2003/01/13 10:42:45 rschmidt Exp $ (C) SK&quot;
 suffix:semicolon
 macro_line|#include &quot;h/skdrv1st.h&quot;
 macro_line|#include &quot;h/sktypes.h&quot;
@@ -28,6 +28,7 @@ id|SK_AC
 op_star
 id|pAC
 comma
+r_const
 r_char
 op_star
 id|key
@@ -47,7 +48,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* SK_KR_PROTO */
-multiline_comment|/*&n; * waits for a completetion of a VPD transfer&n; * The VPD transfer must complete within SK_TICKS_PER_SEC/16&n; *&n; * returns&t;0:&t;success, transfer completes&n; *&t;&t;error&t;exit(9) with a error message&n; */
+multiline_comment|/*&n; * waits for a completion of a VPD transfer&n; * The VPD transfer must complete within SK_TICKS_PER_SEC/16&n; *&n; * returns&t;0:&t;success, transfer completes&n; *&t;&t;error&t;exit(9) with a error message&n; */
 DECL|function|VpdWait
 r_static
 r_int
@@ -84,7 +85,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd wait for %s&bslash;n&quot;
+l_string|&quot;VPD wait for %s&bslash;n&quot;
 comma
 id|event
 ques
@@ -117,18 +118,9 @@ op_minus
 id|start_time
 OG
 id|SK_TICKS_PER_SEC
-op_div
-l_int|16
 )paren
 (brace
-id|VPD_STOP
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-)paren
-suffix:semicolon
+multiline_comment|/* Bug fix AF: Thu Mar 28 2002&n;&t;&t;&t; * Do not call: VPD_STOP(pAC, IoC);&n;&t;&t;&t; * A pending VPD read cycle can not be aborted by writing&n;&t;&t;&t; * VPD_WRITE to the PCI_VPD_ADR_REG (VPD address register).&n;&t;&t;&t; * Although the write threshold in the OUR-register protects&n;&t;&t;&t; * VPD read only space from being overwritten this does not&n;&t;&t;&t; * protect a VPD read from being `converted` into a VPD write&n;&t;&t;&t; * operation (on the fly). As a consequence the VPD_STOP would&n;&t;&t;&t; * delete VPD read only data. In case of any problems with the&n;&t;&t;&t; * I2C bus we exit the loop here. The I2C read operation can&n;&t;&t;&t; * not be aborted except by a reset (-&gt;LR).&n;&t;&t;&t; */
 id|SK_DBG_MSG
 c_func
 (paren
@@ -141,14 +133,12 @@ op_or
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;ERROR:vpd wait timeout&bslash;n&quot;
+l_string|&quot;ERROR:VPD wait timeout&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|VPD_IN16
@@ -201,11 +191,10 @@ id|event
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
+macro_line|#ifdef SKDIAG
 multiline_comment|/*&n; * Read the dword at address &squot;addr&squot; from the VPD EEPROM.&n; *&n; * Needed Time:&t;MIN 1,3 ms&t;MAX 2,6 ms&n; *&n; * Note: The DWord is returned in the endianess of the machine the routine&n; *       is running on.&n; *&n; * Returns the data read.&n; */
 DECL|function|VpdReadDWord
 id|SK_U32
@@ -240,7 +229,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd read dword at 0x%x&bslash;n&quot;
+l_string|&quot;VPD read dword at 0x%x&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -309,20 +298,19 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd read dword data = 0x%x&bslash;n&quot;
+l_string|&quot;VPD read dword data = 0x%x&bslash;n&quot;
 comma
 id|Rtv
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 id|Rtv
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;Write the dword &squot;data&squot; at address &squot;addr&squot; into the VPD EEPROM, and&n;&t;verify that the data is written.&n;&n; Needed Time:&n;&n;.&t;&t;&t;&t;MIN&t;&t;MAX&n;. -------------------------------------------------------------------&n;. write&t;&t;&t;&t;1.8 ms&t;&t;3.6 ms&n;. internal write cyles&t;&t;0.7 ms&t;&t;7.0 ms&n;. -------------------------------------------------------------------&n;. over all program time&t; &t;2.5 ms&t;&t;10.6 ms&n;. read&t;&t;&t;&t;1.3 ms&t;&t;2.6 ms&n;. -------------------------------------------------------------------&n;. over all &t;&t;&t;3.8 ms&t;&t;13.2 ms&n;.&n;&n;&n; Returns&t;0:&t;success&n;&t;&t;1:&t;error,&t;I2C transfer does not terminate&n;&t;&t;2:&t;error,&t;data verify error&n;&n; */
-macro_line|#if 0 /* Unused at the moment */
+macro_line|#endif&t;/* SKDIAG */
+macro_line|#if 0
+multiline_comment|/*&n;&t;Write the dword &squot;data&squot; at address &squot;addr&squot; into the VPD EEPROM, and&n;&t;verify that the data is written.&n;&n; Needed Time:&n;&n;.&t;&t;&t;&t;MIN&t;&t;MAX&n;. -------------------------------------------------------------------&n;. write&t;&t;&t;&t;1.8 ms&t;&t;3.6 ms&n;. internal write cyles&t;&t;0.7 ms&t;&t;7.0 ms&n;. -------------------------------------------------------------------&n;. over all program time&t; &t;2.5 ms&t;&t;10.6 ms&n;. read&t;&t;&t;&t;1.3 ms&t;&t;2.6 ms&n;. -------------------------------------------------------------------&n;. over all &t;&t;&t;3.8 ms&t;&t;13.2 ms&n;.&n;&n;&n; Returns&t;0:&t;success&n;&t;&t;&t;1:&t;error,&t;I2C transfer does not terminate&n;&t;&t;&t;2:&t;error,&t;data verify error&n;&n; */
 r_static
 r_int
 id|VpdWriteDWord
@@ -358,7 +346,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd write dword at addr 0x%x, data = 0x%x&bslash;n&quot;
+l_string|&quot;VPD write dword at addr 0x%x, data = 0x%x&bslash;n&quot;
 comma
 id|addr
 comma
@@ -435,9 +423,7 @@ l_string|&quot;Write Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -475,18 +461,15 @@ l_string|&quot;Data Verify Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
-macro_line|#endif
+multiline_comment|/* VpdWriteDWord */
+macro_line|#endif&t;/* 0 */
 multiline_comment|/*&n; *&t;Read one Stream of &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
 DECL|function|VpdWriteStream
 r_static
@@ -606,7 +589,7 @@ comma
 id|AdrReg
 )paren
 suffix:semicolon
-multiline_comment|/* ignore return code here */
+multiline_comment|/* Wait for termination */
 id|Rtv
 op_assign
 id|VpdWait
@@ -628,9 +611,7 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 id|i
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -756,7 +737,6 @@ l_string|&quot;Write Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 id|i
 op_minus
 (paren
@@ -765,7 +745,6 @@ op_mod
 r_sizeof
 (paren
 id|SK_U32
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -825,7 +804,6 @@ l_string|&quot;Verify Timed Out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 id|i
 op_minus
 (paren
@@ -834,7 +812,6 @@ op_mod
 r_sizeof
 (paren
 id|SK_U32
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -1033,7 +1010,7 @@ comma
 id|AdrReg
 )paren
 suffix:semicolon
-multiline_comment|/* ignore return code here */
+multiline_comment|/* Wait for termination */
 id|Rtv
 op_assign
 id|VpdWait
@@ -1055,9 +1032,7 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 id|i
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1088,12 +1063,10 @@ id|buf
 suffix:semicolon
 )brace
 r_return
-(paren
 id|Len
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Read ore wirtes &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
+multiline_comment|/*&n; *&t;Read ore writes &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
 DECL|function|VpdTransferBlock
 r_static
 r_int
@@ -1134,9 +1107,6 @@ multiline_comment|/* Return value */
 r_int
 id|vpd_rom_size
 suffix:semicolon
-id|SK_U32
-id|our_reg2
-suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -1147,7 +1117,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd %s block, addr = 0x%x, len = %d&bslash;n&quot;
+l_string|&quot;VPD %s block, addr = 0x%x, len = %d&bslash;n&quot;
 comma
 id|dir
 ques
@@ -1170,36 +1140,11 @@ op_eq
 l_int|0
 )paren
 r_return
-(paren
 l_int|0
-)paren
-suffix:semicolon
-id|VPD_IN32
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|PCI_OUR_REG_2
-comma
-op_amp
-id|our_reg2
-)paren
 suffix:semicolon
 id|vpd_rom_size
 op_assign
-l_int|256
-op_lshift
-(paren
-(paren
-id|our_reg2
-op_amp
-id|PCI_VPD_ROM_SZ
-)paren
-op_rshift
-l_int|14
-)paren
+id|pAC-&gt;vpd.rom_size
 suffix:semicolon
 r_if
 c_cond
@@ -1234,9 +1179,7 @@ l_int|4
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1317,9 +1260,7 @@ id|len
 suffix:semicolon
 )brace
 r_return
-(paren
 id|Rtv
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef SKDIAG
@@ -1353,7 +1294,6 @@ id|len
 multiline_comment|/* number of bytes to read */
 (brace
 r_return
-(paren
 id|VpdTransferBlock
 c_func
 (paren
@@ -1368,7 +1308,6 @@ comma
 id|len
 comma
 id|VPD_READ
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1402,7 +1341,6 @@ id|len
 multiline_comment|/* number of bytes to write */
 (brace
 r_return
-(paren
 id|VpdTransferBlock
 c_func
 (paren
@@ -1417,7 +1355,6 @@ comma
 id|len
 comma
 id|VPD_WRITE
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1453,6 +1390,15 @@ r_int
 r_char
 id|x
 suffix:semicolon
+r_int
+id|vpd_size
+suffix:semicolon
+id|SK_U16
+id|dev_id
+suffix:semicolon
+id|SK_U32
+id|our_reg2
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -1467,6 +1413,108 @@ l_string|&quot;VpdInit .. &quot;
 )paren
 )paren
 suffix:semicolon
+id|VPD_IN16
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PCI_DEVICE_ID
+comma
+op_amp
+id|dev_id
+)paren
+suffix:semicolon
+id|VPD_IN32
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|PCI_OUR_REG_2
+comma
+op_amp
+id|our_reg2
+)paren
+suffix:semicolon
+id|pAC-&gt;vpd.rom_size
+op_assign
+l_int|256
+op_lshift
+(paren
+(paren
+id|our_reg2
+op_amp
+id|PCI_VPD_ROM_SZ
+)paren
+op_rshift
+l_int|14
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * this function might get used before the hardware is initialized&n;&t; * therefore we cannot always trust in GIChipId&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|pAC-&gt;vpd.v.vpd_status
+op_amp
+id|VPD_VALID
+)paren
+op_eq
+l_int|0
+op_logical_and
+id|dev_id
+op_ne
+id|VPD_DEV_ID_GENESIS
+)paren
+op_logical_or
+(paren
+(paren
+id|pAC-&gt;vpd.v.vpd_status
+op_amp
+id|VPD_VALID
+)paren
+op_ne
+l_int|0
+op_logical_and
+op_logical_neg
+id|pAC-&gt;GIni.GIGenesis
+)paren
+)paren
+(brace
+multiline_comment|/* for Yukon the VPD size is always 256 */
+id|vpd_size
+op_assign
+id|VPD_SIZE_YUKON
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Genesis uses the maximum ROM size up to 512 for VPD */
+r_if
+c_cond
+(paren
+id|pAC-&gt;vpd.rom_size
+OG
+id|VPD_SIZE_GENESIS
+)paren
+(brace
+id|vpd_size
+op_assign
+id|VPD_SIZE_GENESIS
+suffix:semicolon
+)brace
+r_else
+(brace
+id|vpd_size
+op_assign
+id|pAC-&gt;vpd.rom_size
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* read the VPD data into the VPD buffer */
 r_if
 c_cond
@@ -1482,12 +1530,12 @@ id|pAC-&gt;vpd.vpd_buf
 comma
 l_int|0
 comma
-id|VPD_SIZE
+id|vpd_size
 comma
 id|VPD_READ
 )paren
 op_ne
-id|VPD_SIZE
+id|vpd_size
 )paren
 (brace
 id|SK_DBG_MSG
@@ -1505,11 +1553,13 @@ l_string|&quot;Block Read Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
+id|pAC-&gt;vpd.vpd_size
+op_assign
+id|vpd_size
+suffix:semicolon
 multiline_comment|/* find the end tag of the RO area */
 r_if
 c_cond
@@ -1548,9 +1598,7 @@ l_string|&quot;Encoding Error: RV Tag not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1562,7 +1610,7 @@ id|r-&gt;p_len
 OG
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 )paren
@@ -1584,9 +1632,7 @@ l_string|&quot;Encoding Error: Invalid VPD struct size&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|pAC-&gt;vpd.v.vpd_free_ro
@@ -1615,7 +1661,7 @@ op_le
 (paren
 r_int
 )paren
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 op_minus
@@ -1659,9 +1705,7 @@ l_string|&quot;VPD Checksum Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* find and check the end tag of the RW area */
@@ -1702,9 +1746,7 @@ l_string|&quot;Encoding Error: RV Tag not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1714,7 +1756,7 @@ id|r-&gt;p_val
 OL
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 )paren
@@ -1736,9 +1778,7 @@ l_string|&quot;Encoding Error: Invalid VPD struct size&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|pAC-&gt;vpd.v.vpd_free_rw
@@ -1746,10 +1786,19 @@ op_assign
 id|r-&gt;p_len
 suffix:semicolon
 multiline_comment|/* everything seems to be ok */
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIChipId
+op_ne
+l_int|0
+)paren
+(brace
 id|pAC-&gt;vpd.v.vpd_status
 op_or_assign
 id|VPD_VALID
 suffix:semicolon
+)brace
 id|SK_DBG_MSG
 c_func
 (paren
@@ -1769,12 +1818,10 @@ id|pAC-&gt;vpd.v.vpd_free_rw
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;find the Keyword &squot;key&squot; in the VPD buffer and fills the&n; *&t;parameter sturct &squot;p&squot; with its values&n; *&n; * returns&t;*p&t;success&n; *&t;&t;0:&t;parameter was not found or VPD encoding error&n; */
+multiline_comment|/*&n; *&t;find the Keyword &squot;key&squot; in the VPD buffer and fills the&n; *&t;parameter struct &squot;p&squot; with it&squot;s values&n; *&n; * returns&t;*p&t;success&n; *&t;&t;0:&t;parameter was not found or VPD encoding error&n; */
 DECL|function|vpd_find_para
 r_static
 id|SK_VPD_PARA
@@ -1787,6 +1834,7 @@ op_star
 id|pAC
 comma
 multiline_comment|/* common data base */
+r_const
 r_char
 op_star
 id|key
@@ -1802,7 +1850,7 @@ r_char
 op_star
 id|v
 suffix:semicolon
-multiline_comment|/* points to vpd buffer */
+multiline_comment|/* points to VPD buffer */
 r_int
 id|max
 suffix:semicolon
@@ -1825,7 +1873,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd find para %s .. &quot;
+l_string|&quot;VPD find para %s .. &quot;
 comma
 id|key
 )paren
@@ -1863,9 +1911,7 @@ id|RES_ID
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1915,9 +1961,7 @@ id|p-&gt;p_len
 )paren
 suffix:semicolon
 r_return
-(paren
 id|p
-)paren
 suffix:semicolon
 )brace
 id|v
@@ -1988,9 +2032,7 @@ id|p-&gt;p_len
 )paren
 suffix:semicolon
 r_return
-(paren
 id|p
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* exit when reaching the &quot;RW&quot; Tag or the maximum of itera. */
@@ -2133,11 +2175,9 @@ l_string|&quot;Key/Len Encoding error&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* DEBUG */
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Move &squot;n&squot; bytes. Begin with the last byte if &squot;n&squot; is &gt; 0,&n; *&t;Start with the last byte if n is &lt; 0.&n; *&n; * returns nothing&n; */
@@ -2264,11 +2304,13 @@ r_void
 id|vpd_insert_key
 c_func
 (paren
+r_const
 r_char
 op_star
 id|key
 comma
 multiline_comment|/* keyword to insert */
+r_const
 r_char
 op_star
 id|buf
@@ -2365,6 +2407,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|vpd_size
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -2375,7 +2420,7 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd modify endtag at 0x%x = &squot;%c%c&squot;&bslash;n&quot;
+l_string|&quot;VPD modify endtag at 0x%x = &squot;%c%c&squot;&bslash;n&quot;
 comma
 id|etp
 comma
@@ -2390,6 +2435,10 @@ l_int|1
 )braket
 )paren
 )paren
+suffix:semicolon
+id|vpd_size
+op_assign
+id|pAC-&gt;vpd.vpd_size
 suffix:semicolon
 id|p
 op_assign
@@ -2444,9 +2493,7 @@ l_string|&quot;Encoding Error: invalid end tag&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -2456,7 +2503,7 @@ id|etp
 OG
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 )paren
@@ -2471,7 +2518,7 @@ r_char
 (paren
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_minus
 id|etp
 op_minus
@@ -2508,7 +2555,7 @@ r_char
 (paren
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 op_minus
@@ -2540,7 +2587,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 op_minus
@@ -2593,9 +2640,7 @@ op_decrement
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Insert a VPD keyword into the VPD buffer.&n; *&n; *&t;The keyword &squot;key&squot; is inserted at the position &squot;ip&squot; in the&n; *&t;VPD buffer.&n; *&t;The keywords behind the input position will&n; *&t;be moved. The VPD end tag &quot;RV&quot; or &quot;RW&quot; is generated again.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;2:&t;value string was cut&n; *&t;&t;4:&t;VPD full, keyword was not written&n; *&t;&t;6:&t;fatal VPD error&n; *&n; */
@@ -2609,11 +2654,13 @@ op_star
 id|pAC
 comma
 multiline_comment|/* common data base */
+r_const
 r_char
 op_star
 id|key
 comma
 multiline_comment|/* keyword to insert */
+r_const
 r_char
 op_star
 id|buf
@@ -2661,6 +2708,9 @@ r_int
 id|found
 suffix:semicolon
 multiline_comment|/* additinoal bytes if the keyword was found */
+r_int
+id|vpd_size
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -2671,13 +2721,17 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;vpd setup para key = %s, val = %s&bslash;n&quot;
+l_string|&quot;VPD setup para key = %s, val = %s&bslash;n&quot;
 comma
 id|key
 comma
 id|buf
 )paren
 )paren
+suffix:semicolon
+id|vpd_size
+op_assign
+id|pAC-&gt;vpd.vpd_size
 suffix:semicolon
 id|rtv
 op_assign
@@ -2705,7 +2759,7 @@ op_assign
 id|pAC-&gt;vpd.vpd_buf
 op_plus
 (paren
-id|VPD_SIZE
+id|vpd_size
 op_minus
 id|free
 op_minus
@@ -2727,7 +2781,7 @@ op_assign
 id|pAC-&gt;vpd.vpd_buf
 op_plus
 (paren
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 op_minus
@@ -2893,9 +2947,7 @@ l_string|&quot;VPD Buffer Overflow, keyword not written&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|4
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* cut it again */
@@ -2994,18 +3046,14 @@ l_string|&quot;VPD Encoding Error&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|rtv
-)paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done.&n; *&n; * return:&t;A pointer to the vpd_status structure. The structure contain&n; *&t;&t;this fields.&n; */
+multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done.&n; *&n; * return:&t;A pointer to the vpd_status structure. The structure contains&n; *&t;&t;this fields.&n; */
 DECL|function|VpdStat
 id|SK_VPD_STATUS
 op_star
@@ -3025,12 +3073,13 @@ multiline_comment|/* IO Context */
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 (paren
@@ -3046,10 +3095,8 @@ id|IoC
 suffix:semicolon
 )brace
 r_return
-(paren
 op_amp
 id|pAC-&gt;vpd.v
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the VPD&n; *&t;buffer if not already done.&n; *&t;Scan the VPD buffer for VPD keywords and create the VPD&n; *&t;keyword list by copying the keywords to &squot;buf&squot;, all after&n; *&t;each other and terminated with a &squot;&bslash;0&squot;.&n; *&n; * Exceptions:&t;o The Resource Type ID String (product name) is called &quot;Name&quot;&n; *&t;&t;o The VPD end tags &squot;RV&squot; and &squot;RW&squot; are not listed&n; *&n; *&t;The number of copied keywords is counted in &squot;elements&squot;.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;2:&t;buffer overfull, one or more keywords are missing&n; *&t;&t;6:&t;fatal VPD error&n; *&n; *&t;example values after returning:&n; *&n; *&t;&t;buf =&t;&quot;Name&bslash;0PN&bslash;0EC&bslash;0MN&bslash;0SN&bslash;0CP&bslash;0VF&bslash;0VL&bslash;0YA&bslash;0&quot;&n; *&t;&t;*len =&t;&t;30&n; *&t;&t;*elements =&t; 9&n; */
@@ -3100,7 +3147,7 @@ comma
 id|SK_DBGCAT_RX
 comma
 (paren
-l_string|&quot;list vpd keys .. &quot;
+l_string|&quot;list VPD keys .. &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3112,12 +3159,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -3154,9 +3202,7 @@ l_string|&quot;VPD Init Error, terminated&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3256,9 +3302,7 @@ l_string|&quot;buffer overflow&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
 id|v
@@ -3429,9 +3473,7 @@ l_string|&quot;buffer overflow&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|2
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3455,9 +3497,7 @@ op_assign
 id|n
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done. Search for the VPD keyword&n; *&t;&squot;key&squot; and copy its value to &squot;buf&squot;. Add a terminating &squot;&bslash;0&squot;.&n; *&t;If the value does not fit into the buffer cut it after&n; *&t;&squot;len&squot; - 1 bytes.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;1:&t;keyword not found&n; *&t;&t;2:&t;value string was cut&n; *&t;&t;3:&t;VPD transfer timeout&n; *&t;&t;6:&t;fatal VPD error&n; */
@@ -3475,6 +3515,7 @@ id|SK_IOC
 id|IoC
 comma
 multiline_comment|/* IO Context */
+r_const
 r_char
 op_star
 id|key
@@ -3507,7 +3548,7 @@ comma
 id|SK_DBGCAT_RX
 comma
 (paren
-l_string|&quot;vpd read %s .. &quot;
+l_string|&quot;VPD read %s .. &quot;
 comma
 id|key
 )paren
@@ -3516,12 +3557,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -3553,14 +3595,12 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd init error&bslash;n&quot;
+l_string|&quot;VPD init error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -3581,6 +3621,8 @@ op_amp
 id|vp
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -3690,15 +3732,11 @@ l_string|&quot;not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Check whether a given key may be written&n; *&n; * returns&n; *&t;SK_TRUE&t;&t;Yes it may be written&n; *&t;SK_FALSE&t;No it may be written&n; */
@@ -3761,15 +3799,11 @@ l_int|2
 )paren
 (brace
 r_return
-(paren
 id|SK_FALSE
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|SK_TRUE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the VPD&n; *&t;buffer if not already done. Insert/overwrite the keyword &squot;key&squot;&n; *&t;in the VPD buffer. Cut the keyword value if it does not fit&n; *&t;into the VPD read / write area.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;2:&t;value string was cut&n; *&t;&t;3:&t;VPD transfer timeout&n; *&t;&t;4:&t;VPD full, keyword was not written&n; *&t;&t;5:&t;keyword cannot be written&n; *&t;&t;6:&t;fatal VPD error&n; */
@@ -3787,11 +3821,13 @@ id|SK_IOC
 id|IoC
 comma
 multiline_comment|/* IO Context */
+r_const
 r_char
 op_star
 id|key
 comma
 multiline_comment|/* keyword to write (allowed values &quot;Yx&quot;, &quot;Vx&quot;) */
+r_const
 r_char
 op_star
 id|buf
@@ -3801,7 +3837,7 @@ multiline_comment|/* buffer where the keyword value can be read from */
 r_int
 id|len
 suffix:semicolon
-multiline_comment|/* lenght of the keyword to write */
+multiline_comment|/* length of the keyword to write */
 r_int
 id|rtv
 suffix:semicolon
@@ -3819,7 +3855,7 @@ comma
 id|SK_DBGCAT_TX
 comma
 (paren
-l_string|&quot;vpd write %s = %s&bslash;n&quot;
+l_string|&quot;VPD write %s = %s&bslash;n&quot;
 comma
 id|key
 comma
@@ -3889,20 +3925,19 @@ l_string|&quot;illegal key tag, keyword not written&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|5
-)paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -3929,14 +3964,12 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd init error&bslash;n&quot;
+l_string|&quot;VPD init error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -4022,20 +4055,16 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd write error&bslash;n&quot;
+l_string|&quot;VPD write error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 id|rtv2
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 id|rtv
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the&n; *&t;VPD buffer if not already done. Remove the VPD keyword&n; *&t;&squot;key&squot; from the VPD buffer.&n; *&t;Only the keywords in the read/write area can be deleted.&n; *&t;Keywords in the read only area cannot be deleted.&n; *&n; * returns&t;0:&t;success, keyword was removed&n; *&t;&t;1:&t;keyword not found&n; *&t;&t;5:&t;keyword cannot be deleted&n; *&t;&t;6:&t;fatal VPD error&n; */
@@ -4069,6 +4098,13 @@ r_char
 op_star
 id|etp
 suffix:semicolon
+r_int
+id|vpd_size
+suffix:semicolon
+id|vpd_size
+op_assign
+id|pAC-&gt;vpd.vpd_size
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4079,7 +4115,7 @@ comma
 id|SK_DBGCAT_TX
 comma
 (paren
-l_string|&quot;vpd delete key %s&bslash;n&quot;
+l_string|&quot;VPD delete key %s&bslash;n&quot;
 comma
 id|key
 )paren
@@ -4088,12 +4124,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -4120,14 +4157,12 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd init error&bslash;n&quot;
+l_string|&quot;VPD init error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -4148,6 +4183,8 @@ op_amp
 id|vp
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if
@@ -4157,7 +4194,7 @@ id|p-&gt;p_val
 OL
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 )paren
@@ -4178,9 +4215,7 @@ l_string|&quot;cannot delete RO keyword&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|5
-)paren
 suffix:semicolon
 )brace
 id|etp
@@ -4188,7 +4223,7 @@ op_assign
 id|pAC-&gt;vpd.vpd_buf
 op_plus
 (paren
-id|VPD_SIZE
+id|vpd_size
 op_minus
 id|pAC-&gt;vpd.v.vpd_free_rw
 op_minus
@@ -4252,14 +4287,12 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd encoding error&bslash;n&quot;
+l_string|&quot;VPD encoding error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|6
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -4280,15 +4313,11 @@ l_string|&quot;keyword not found&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;If the VPD buffer contains valid data write the VPD&n; *&t;read/write area back to the VPD EEPROM.&n; *&n; * returns&t;0:&t;success&n; *&t;&t;3:&t;VPD transfer timeout&n; */
@@ -4307,6 +4336,13 @@ id|IoC
 )paren
 multiline_comment|/* IO Context */
 (brace
+r_int
+id|vpd_size
+suffix:semicolon
+id|vpd_size
+op_assign
+id|pAC-&gt;vpd.vpd_size
+suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -4317,16 +4353,20 @@ comma
 id|SK_DBGCAT_TX
 comma
 (paren
-l_string|&quot;vpd update .. &quot;
+l_string|&quot;VPD update .. &quot;
 )paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
+)paren
+op_ne
+l_int|0
 )paren
 (brace
 r_if
@@ -4341,22 +4381,22 @@ id|IoC
 comma
 id|pAC-&gt;vpd.vpd_buf
 op_plus
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 comma
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 comma
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 comma
 id|VPD_WRITE
 )paren
 op_ne
-id|VPD_SIZE
+id|vpd_size
 op_div
 l_int|2
 )paren
@@ -4376,9 +4416,7 @@ l_string|&quot;transfer timed out&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|3
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -4397,9 +4435,7 @@ l_string|&quot;done&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Read the contents of the VPD EEPROM and copy it to the VPD buffer&n; *&t;if not already done. If the keyword &quot;VF&quot; is not present it will be&n; *&t;created and the error log message will be stored to this keyword.&n; *&t;If &quot;VF&quot; is not present the error log message will be stored to the&n; *&t;keyword &quot;VL&quot;. &quot;VL&quot; will created or overwritten if &quot;VF&quot; is present.&n; *&t;The VPD read/write area is saved to the VPD EEPROM.&n; *&n; * returns nothing, errors will be ignored.&n; */
@@ -4443,7 +4479,7 @@ comma
 id|SK_DBGCAT_TX
 comma
 (paren
-l_string|&quot;vpd error log msg %s&bslash;n&quot;
+l_string|&quot;VPD error log msg %s&bslash;n&quot;
 comma
 id|msg
 )paren
@@ -4452,12 +4488,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 (paren
 id|pAC-&gt;vpd.v.vpd_status
 op_amp
 id|VPD_VALID
 )paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
@@ -4484,7 +4521,7 @@ comma
 id|SK_DBGCAT_ERR
 comma
 (paren
-l_string|&quot;vpd init error&bslash;n&quot;
+l_string|&quot;VPD init error&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4531,6 +4568,8 @@ op_amp
 id|vf
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 (brace
 id|SK_DBG_MSG

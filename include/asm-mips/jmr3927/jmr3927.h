@@ -243,7 +243,7 @@ mdefine_line|#define jmr3927_isac_reg_out(d, a)&t;((*(volatile unsigned char *)(
 DECL|macro|jmr3927_isac_reg_in
 mdefine_line|#define jmr3927_isac_reg_in(a)&t;&t;(*(volatile unsigned char *)(a))
 DECL|function|jmr3927_have_isac
-r_extern
+r_static
 r_inline
 r_int
 id|jmr3927_have_isac

@@ -1,12 +1,11 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skaddr.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.24 $&n; * Date:&t;$Date: 2001/01/22 13:41:34 $&n; * Purpose:&t;Header file for Address Management (MC, UC, Prom).&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skaddr.h,v $&n; *&t;Revision 1.24  2001/01/22 13:41:34  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.23  2000/08/10 11:27:50  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;&n; *&t;Revision 1.22  2000/08/07 11:10:40  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.21  2000/05/04 09:39:59  rassmann&n; *&t;Editorial changes.&n; *&t;Corrected multicast address hashing.&n; *&t;&n; *&t;Revision 1.20  1999/11/22 13:46:14  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Allowing overwrite for SK_ADDR_EQUAL.&n; *&t;&n; *&t;Revision 1.19  1999/05/28 10:56:07  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.18  1999/04/06 17:22:04  rassmann&n; *&t;Added private &quot;ActivePort&quot;.&n; *&t;&n; *&t;Revision 1.17  1999/01/14 16:18:19  rassmann&n; *&t;Corrected multicast initialization.&n; *&t;&n; *&t;Revision 1.16  1999/01/04 10:30:36  rassmann&n; *&t;SkAddrOverride only possible after SK_INIT_IO phase.&n; *&t;&n; *&t;Revision 1.15  1998/12/29 13:13:11  rassmann&n; *&t;An address override is now preserved in the SK_INIT_IO phase.&n; *&t;All functions return an int now.&n; *&t;Extended parameter checking.&n; *&t;&n; *&t;Revision 1.14  1998/11/24 12:39:45  rassmann&n; *&t;Reserved multicast entry for BPDU address.&n; *&t;13 multicast entries left for protocol.&n; *&t;&n; *&t;Revision 1.13  1998/11/13 17:24:32  rassmann&n; *&t;Changed return value of SkAddrOverride to int.&n; *&t;&n; *&t;Revision 1.12  1998/11/13 16:56:19  rassmann&n; *&t;Added macro SK_ADDR_COMPARE.&n; *&t;Changed return type of SkAddrOverride to SK_BOOL.&n; *&t;&n; *&t;Revision 1.11  1998/10/28 18:16:35  rassmann&n; *&t;Avoiding I/Os before SK_INIT_RUN level.&n; *&t;Aligning InexactFilter.&n; *&t;&n; *&t;Revision 1.10  1998/10/22 11:39:10  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;&n; *&t;Revision 1.9  1998/10/15 15:15:49  rassmann&n; *&t;Changed Flags Parameters from SK_U8 to int.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.8  1998/09/24 19:15:12  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.7  1998/09/18 20:22:13  rassmann&n; *&t;Added HW access.&n; *&t;&n; *&t;Revision 1.6  1998/09/04 19:40:20  rassmann&n; *&t;Interface enhancements.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 12:40:57  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.4  1998/09/04 12:14:13  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.3  1998/09/02 16:56:40  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:09  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:31:08  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skaddr.h&n; * Project:&t;Gigabit Ethernet Adapters, ADDR-Modul&n; * Version:&t;$Revision: 1.29 $&n; * Date:&t;$Date: 2003/05/13 16:57:24 $&n; * Purpose:&t;Header file for Address Management (MC, UC, Prom).&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skaddr.h,v $&n; *&t;Revision 1.29  2003/05/13 16:57:24  mkarl&n; *&t;Changes for SLIM driver.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.28  2003/04/15 09:33:22  tschilli&n; *&t;Copyright messages changed.&n; *&t;&n; *&t;Revision 1.27  2003/04/14 15:55:11  tschilli&n; *&t;&quot;#error C++ is not yet supported.&quot; removed.&n; *&t;&n; *&t;Revision 1.26  2002/11/15 07:24:42  tschilli&n; *&t;SK_ADDR_EQUAL macro fixed.&n; *&t;&n; *&t;Revision 1.25  2002/06/10 13:55:18  tschilli&n; *&t;Changes for handling YUKON.&n; *&t;All changes are internally and not visible to the programmer&n; *&t;using this module.&n; *&t;&n; *&t;Revision 1.24  2001/01/22 13:41:34  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.23  2000/08/10 11:27:50  rassmann&n; *&t;Editorial changes.&n; *&t;Preserving 32-bit alignment in structs for the adapter context.&n; *&t;&n; *&t;Revision 1.22  2000/08/07 11:10:40  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.21  2000/05/04 09:39:59  rassmann&n; *&t;Editorial changes.&n; *&t;Corrected multicast address hashing.&n; *&t;&n; *&t;Revision 1.20  1999/11/22 13:46:14  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Allowing overwrite for SK_ADDR_EQUAL.&n; *&t;&n; *&t;Revision 1.19  1999/05/28 10:56:07  rassmann&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.18  1999/04/06 17:22:04  rassmann&n; *&t;Added private &quot;ActivePort&quot;.&n; *&t;&n; *&t;Revision 1.17  1999/01/14 16:18:19  rassmann&n; *&t;Corrected multicast initialization.&n; *&t;&n; *&t;Revision 1.16  1999/01/04 10:30:36  rassmann&n; *&t;SkAddrOverride only possible after SK_INIT_IO phase.&n; *&t;&n; *&t;Revision 1.15  1998/12/29 13:13:11  rassmann&n; *&t;An address override is now preserved in the SK_INIT_IO phase.&n; *&t;All functions return an int now.&n; *&t;Extended parameter checking.&n; *&t;&n; *&t;Revision 1.14  1998/11/24 12:39:45  rassmann&n; *&t;Reserved multicast entry for BPDU address.&n; *&t;13 multicast entries left for protocol.&n; *&t;&n; *&t;Revision 1.13  1998/11/13 17:24:32  rassmann&n; *&t;Changed return value of SkAddrOverride to int.&n; *&t;&n; *&t;Revision 1.12  1998/11/13 16:56:19  rassmann&n; *&t;Added macro SK_ADDR_COMPARE.&n; *&t;Changed return type of SkAddrOverride to SK_BOOL.&n; *&t;&n; *&t;Revision 1.11  1998/10/28 18:16:35  rassmann&n; *&t;Avoiding I/Os before SK_INIT_RUN level.&n; *&t;Aligning InexactFilter.&n; *&t;&n; *&t;Revision 1.10  1998/10/22 11:39:10  rassmann&n; *&t;Corrected signed/unsigned mismatches.&n; *&t;&n; *&t;Revision 1.9  1998/10/15 15:15:49  rassmann&n; *&t;Changed Flags Parameters from SK_U8 to int.&n; *&t;Checked with lint.&n; *&t;&n; *&t;Revision 1.8  1998/09/24 19:15:12  rassmann&n; *&t;Code cleanup.&n; *&t;&n; *&t;Revision 1.7  1998/09/18 20:22:13  rassmann&n; *&t;Added HW access.&n; *&t;&n; *&t;Revision 1.6  1998/09/04 19:40:20  rassmann&n; *&t;Interface enhancements.&n; *&t;&n; *&t;Revision 1.5  1998/09/04 12:40:57  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.4  1998/09/04 12:14:13  rassmann&n; *&t;Interface cleanup.&n; *&t;&n; *&t;Revision 1.3  1998/09/02 16:56:40  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.2  1998/08/27 14:26:09  rassmann&n; *&t;Updated interface.&n; *&t;&n; *&t;Revision 1.1  1998/08/21 08:31:08  rassmann&n; *&t;First public version.&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This module is intended to manage multicast addresses and promiscuous mode&n; * on GEnesis adapters.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;skdrv1st.h&quot;&n; *&t;...&n; *&t;&quot;sktypes.h&quot;&n; *&t;&quot;skqueue.h&quot;&n; *&t;&quot;skaddr.h&quot;&n; *&t;...&n; *&t;&quot;skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKADDR_H
 DECL|macro|__INC_SKADDR_H
 mdefine_line|#define __INC_SKADDR_H
 macro_line|#ifdef __cplusplus
-macro_line|#error C++ is not yet supported.
 r_extern
 l_string|&quot;C&quot;
 (brace
@@ -20,7 +19,7 @@ multiline_comment|/* ----- Common return values ----- */
 DECL|macro|SK_ADDR_SUCCESS
 mdefine_line|#define SK_ADDR_SUCCESS&t;&t;&t;&t;0&t;/* Function returned successfully. */
 DECL|macro|SK_ADDR_ILLEGAL_PORT
-mdefine_line|#define SK_ADDR_ILLEGAL_PORT&t;&t;100&t;/* Port number too high. */
+mdefine_line|#define SK_ADDR_ILLEGAL_PORT&t;&t;&t;100&t;/* Port number too high. */
 DECL|macro|SK_ADDR_TOO_EARLY
 mdefine_line|#define SK_ADDR_TOO_EARLY&t;&t;&t;101&t;/* Function called too early. */
 multiline_comment|/* ----- Clear/Add flag bits ----- */
@@ -80,6 +79,7 @@ mdefine_line|#define SK_PROM_MODE_ALL_MC&t;&t;&t;2&t;/* Receive all multicast fr
 multiline_comment|/* #define SK_PROM_MODE_NON_LLC&t;&t;4 */
 multiline_comment|/* Receive all non-LLC frames. */
 multiline_comment|/* Macros */
+macro_line|#ifdef OLD_STUFF
 macro_line|#ifndef SK_ADDR_EQUAL
 multiline_comment|/*&n; * &quot;&amp;&quot; instead of &quot;&amp;&amp;&quot; allows better optimization on IA-64.&n; * The replacement is safe here, as all bytes exist.&n; */
 macro_line|#ifndef SK_ADDR_DWORD_COMPARE
@@ -88,6 +88,16 @@ mdefine_line|#define SK_ADDR_EQUAL(A1,A2)&t;( &bslash;&n;&t;(((SK_U8 *)(A1))[5] 
 macro_line|#else&t;/* SK_ADDR_DWORD_COMPARE */
 DECL|macro|SK_ADDR_EQUAL
 mdefine_line|#define SK_ADDR_EQUAL(A1,A2)&t;( &bslash;&n;&t;(*(SK_U32 *)&amp;(((SK_U8 *)(A1))[2]) == *(SK_U32 *)&amp;(((SK_U8 *)(A2))[2])) &amp; &bslash;&n;&t;(*(SK_U32 *)&amp;(((SK_U8 *)(A1))[0]) == *(SK_U32 *)&amp;(((SK_U8 *)(A2))[0])))
+macro_line|#endif&t;/* SK_ADDR_DWORD_COMPARE */
+macro_line|#endif&t;/* SK_ADDR_EQUAL */
+macro_line|#endif /* 0 */
+macro_line|#ifndef SK_ADDR_EQUAL
+macro_line|#ifndef SK_ADDR_DWORD_COMPARE
+DECL|macro|SK_ADDR_EQUAL
+mdefine_line|#define SK_ADDR_EQUAL(A1,A2)&t;( &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[5] == ((SK_U8 SK_FAR *)(A2))[5]) &amp; &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[4] == ((SK_U8 SK_FAR *)(A2))[4]) &amp; &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[3] == ((SK_U8 SK_FAR *)(A2))[3]) &amp; &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[2] == ((SK_U8 SK_FAR *)(A2))[2]) &amp; &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[1] == ((SK_U8 SK_FAR *)(A2))[1]) &amp; &bslash;&n;&t;(((SK_U8 SK_FAR *)(A1))[0] == ((SK_U8 SK_FAR *)(A2))[0]))
+macro_line|#else&t;/* SK_ADDR_DWORD_COMPARE */
+DECL|macro|SK_ADDR_EQUAL
+mdefine_line|#define SK_ADDR_EQUAL(A1,A2)&t;( &bslash;&n;&t;(*(SK_U16 SK_FAR *)&amp;(((SK_U8 SK_FAR *)(A1))[4]) == &bslash;&n;&t;*(SK_U16 SK_FAR *)&amp;(((SK_U8 SK_FAR *)(A2))[4])) &amp;&amp; &bslash;&n;&t;(*(SK_U32 SK_FAR *)&amp;(((SK_U8 SK_FAR *)(A1))[0]) == &bslash;&n;&t;*(SK_U32 SK_FAR *)&amp;(((SK_U8 SK_FAR *)(A2))[0])))
 macro_line|#endif&t;/* SK_ADDR_DWORD_COMPARE */
 macro_line|#endif&t;/* SK_ADDR_EQUAL */
 multiline_comment|/* typedefs *******************************************************************/
@@ -199,6 +209,16 @@ id|SK_FILTER64
 id|InexactFilter
 suffix:semicolon
 multiline_comment|/* For 64-bit hash register. */
+DECL|member|InexactRlmtFilter
+id|SK_FILTER64
+id|InexactRlmtFilter
+suffix:semicolon
+multiline_comment|/* For 64-bit hash register. */
+DECL|member|InexactDrvFilter
+id|SK_FILTER64
+id|InexactDrvFilter
+suffix:semicolon
+multiline_comment|/* For 64-bit hash register. */
 DECL|typedef|SK_ADDR_PORT
 )brace
 id|SK_ADDR_PORT
@@ -305,7 +325,91 @@ id|Flags
 suffix:semicolon
 r_extern
 r_int
+id|SkAddrXmacMcClear
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+r_int
+id|Flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkAddrGmacMcClear
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+r_int
+id|Flags
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|SkAddrMcAdd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+id|SK_MAC_ADDR
+op_star
+id|pMc
+comma
+r_int
+id|Flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkAddrXmacMcAdd
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+id|SK_MAC_ADDR
+op_star
+id|pMc
+comma
+r_int
+id|Flags
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkAddrGmacMcAdd
 c_func
 (paren
 id|SK_AC
@@ -344,6 +448,38 @@ id|PortNumber
 suffix:semicolon
 r_extern
 r_int
+id|SkAddrXmacMcUpdate
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkAddrGmacMcUpdate
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|SkAddrOverride
 c_func
 (paren
@@ -358,6 +494,7 @@ id|SK_U32
 id|PortNumber
 comma
 id|SK_MAC_ADDR
+id|SK_FAR
 op_star
 id|pNewAddr
 comma
@@ -386,6 +523,45 @@ id|NewPromMode
 suffix:semicolon
 r_extern
 r_int
+id|SkAddrXmacPromiscuousChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+r_int
+id|NewPromMode
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|SkAddrGmacPromiscuousChange
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+id|SK_IOC
+id|IoC
+comma
+id|SK_U32
+id|PortNumber
+comma
+r_int
+id|NewPromMode
+)paren
+suffix:semicolon
+macro_line|#ifndef SK_SLIM
+r_extern
+r_int
 id|SkAddrSwap
 c_func
 (paren
@@ -403,6 +579,7 @@ id|SK_U32
 id|ToPortNumber
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#else&t;/* defined(SK_KR_PROTO)) */
 multiline_comment|/* Non-ANSI/C++ compliant function prototypes */
 macro_line|#error KR-style prototypes are not yet provided.

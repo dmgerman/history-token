@@ -1,11 +1,10 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2001 by Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2001, 2003 by Ralf Baechle&n; * Copyright (C) 1999, 2000, 2001 Silicon Graphics, Inc.&n; */
 macro_line|#ifndef _ASM_PGALLOC_H
 DECL|macro|_ASM_PGALLOC_H
 mdefine_line|#define _ASM_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 DECL|function|pmd_populate_kernel
 r_static
 r_inline
@@ -35,11 +34,11 @@ comma
 id|__pmd
 c_func
 (paren
-id|__pa
-c_func
 (paren
-id|pte
+r_int
+r_int
 )paren
+id|pte
 )paren
 )paren
 suffix:semicolon
@@ -75,31 +74,19 @@ id|__pmd
 c_func
 (paren
 (paren
-(paren
-r_int
 r_int
 r_int
 )paren
-id|page_to_pfn
+id|page_address
 c_func
 (paren
 id|pte
-)paren
-op_lshift
-(paren
-r_int
-r_int
-r_int
-)paren
-id|PAGE_SHIFT
 )paren
 )paren
 )paren
 suffix:semicolon
 )brace
-DECL|macro|pgd_populate
-mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
-multiline_comment|/*&n; * Initialize new page directory with pointers to invalid ptes&n; */
+multiline_comment|/*&n; * Initialize a new pgd / pmd table with invalid pointers.&n; */
 r_extern
 r_void
 id|pgd_init
@@ -108,6 +95,20 @@ c_func
 r_int
 r_int
 id|page
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pmd_init
+c_func
+(paren
+r_int
+r_int
+id|page
+comma
+r_int
+r_int
+id|pagetable
 )paren
 suffix:semicolon
 DECL|function|pgd_alloc
@@ -127,6 +128,11 @@ id|mm
 id|pgd_t
 op_star
 id|ret
+comma
+op_star
+id|init
+suffix:semicolon
+id|ret
 op_assign
 (paren
 id|pgd_t
@@ -139,9 +145,6 @@ id|GFP_KERNEL
 comma
 id|PGD_ORDER
 )paren
-comma
-op_star
-id|init
 suffix:semicolon
 r_if
 c_cond
@@ -171,6 +174,7 @@ id|ret
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|ret
 op_plus
@@ -250,12 +254,14 @@ op_assign
 id|pte_t
 op_star
 )paren
-id|__get_free_page
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+comma
+id|PTE_ORDER
 )paren
 suffix:semicolon
 r_if
@@ -297,22 +303,6 @@ id|page
 op_star
 id|pte
 suffix:semicolon
-macro_line|#if CONFIG_HIGHPTE
-id|pte
-op_assign
-id|alloc_pages
-c_func
-(paren
-id|GFP_KERNEL
-op_or
-id|__GFP_HIGHMEM
-op_or
-id|__GFP_REPEAT
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#else
 id|pte
 op_assign
 id|alloc_pages
@@ -322,10 +312,9 @@ id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
 comma
-l_int|0
+id|PTE_ORDER
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -353,7 +342,7 @@ op_star
 id|pte
 )paren
 (brace
-id|free_page
+id|free_pages
 c_func
 (paren
 (paren
@@ -361,6 +350,8 @@ r_int
 r_int
 )paren
 id|pte
+comma
+id|PTE_ORDER
 )paren
 suffix:semicolon
 )brace
@@ -377,22 +368,144 @@ op_star
 id|pte
 )paren
 (brace
-id|__free_page
+id|__free_pages
 c_func
 (paren
 id|pte
+comma
+id|PTE_ORDER
 )paren
 suffix:semicolon
 )brace
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte)&t;&t;tlb_remove_page((tlb),(pte))
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|pgd_populate
+mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
 multiline_comment|/*&n; * allocating and freeing a pmd is trivial: the 1-entry pmd is&n; * inside the pgd, so has no extra memory associated with it.&n; */
 DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
-DECL|macro|__pmd_free_tlb
-mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|pgd_populate
+mdefine_line|#define pgd_populate(mm, pgd, pmd)&t;set_pgd(pgd, __pgd(pmd))
+DECL|function|pmd_alloc_one
+r_static
+r_inline
+id|pmd_t
+op_star
+id|pmd_alloc_one
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+id|pmd_t
+op_star
+id|pmd
+suffix:semicolon
+id|pmd
+op_assign
+(paren
+id|pmd_t
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
+comma
+id|PMD_ORDER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmd
+)paren
+id|pmd_init
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pmd
+comma
+(paren
+r_int
+r_int
+)paren
+id|invalid_pte_table
+)paren
+suffix:semicolon
+r_return
+id|pmd
+suffix:semicolon
+)brace
+DECL|function|pmd_free
+r_static
+r_inline
+r_void
+id|pmd_free
+c_func
+(paren
+id|pmd_t
+op_star
+id|pmd
+)paren
+(brace
+id|free_pages
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|pmd
+comma
+id|PMD_ORDER
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
+r_extern
+id|pte_t
+id|kptbl
+(braket
+(paren
+id|PAGE_SIZE
+op_lshift
+id|PGD_ORDER
+)paren
+op_div
+r_sizeof
+(paren
+id|pte_t
+)paren
+)braket
+suffix:semicolon
+r_extern
+id|pmd_t
+id|kpmdtbl
+(braket
+id|PTRS_PER_PMD
+)braket
+suffix:semicolon
 DECL|macro|check_pgt_cache
 mdefine_line|#define check_pgt_cache()&t;do { } while (0)
 macro_line|#endif /* _ASM_PGALLOC_H */

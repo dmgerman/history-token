@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * kgdb debug routines for swarm board.&n; *&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * kgdb debug routines for SiByte boards.&n; *&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 multiline_comment|/* -------------------- BEGINNING OF CONFIG --------------------- */
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_uart.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/*&n; * We use the second serial port for kgdb traffic.&n; * &t;115200, 8, N, 1.&n; */
 DECL|macro|BAUD_RATE
@@ -27,20 +27,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* 0: need to be init&squot;ed by kgdb */
 multiline_comment|/* -------------------- END OF CONFIG --------------------- */
-DECL|macro|duart_out
-mdefine_line|#define&t;duart_out(reg, val)&t;out64(val, KSEG1 + A_DUART_CHANREG(1,reg))
-DECL|macro|duart_in
-mdefine_line|#define duart_in(reg)&t;&t;in64(KSEG1 + A_DUART_CHANREG(1,reg))
 r_extern
-r_void
-id|set_async_breakpoint
-c_func
-(paren
 r_int
-r_int
-id|epc
-)paren
+id|kgdb_port
 suffix:semicolon
+DECL|macro|duart_out
+mdefine_line|#define&t;duart_out(reg, val)&t;csr_out32(val, KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
+DECL|macro|duart_in
+mdefine_line|#define duart_in(reg)&t;&t;csr_in32(KSEG1 + A_DUART_CHANREG(kgdb_port,reg))
 r_void
 id|putDebugChar
 c_func

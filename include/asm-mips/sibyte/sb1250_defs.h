@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Global constants and macros&t;&t;File: sb1250_defs.h&t;&n;    *  &n;    *  This file contains macros and definitions used by the other&n;    *  include files.&n;    *&n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  Global constants and macros&t;&t;File: sb1250_defs.h&t;&n;    *  &n;    *  This file contains macros and definitions used by the other&n;    *  include files.&n;    *&n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_DEFS_H
 DECL|macro|_SB1250_DEFS_H
 mdefine_line|#define _SB1250_DEFS_H
@@ -13,12 +13,12 @@ DECL|macro|SIBYTE_HDR_FMASK_1250_PASS1
 mdefine_line|#define&t;SIBYTE_HDR_FMASK_1250_PASS1&t;&t;0x0000001
 DECL|macro|SIBYTE_HDR_FMASK_1250_PASS2
 mdefine_line|#define&t;SIBYTE_HDR_FMASK_1250_PASS2&t;&t;0x0000002
+DECL|macro|SIBYTE_HDR_FMASK_1250_PASS3
+mdefine_line|#define&t;SIBYTE_HDR_FMASK_1250_PASS3&t;&t;0x0000004
 DECL|macro|SIBYTE_HDR_FMASK_112x_ALL
 mdefine_line|#define&t;SIBYTE_HDR_FMASK_112x_ALL&t;&t;0x0000f00
 DECL|macro|SIBYTE_HDR_FMASK_112x_PASS1
 mdefine_line|#define&t;SIBYTE_HDR_FMASK_112x_PASS1&t;&t;0x0000100
-DECL|macro|SIBYTE_HDR_FMASK_112x_PASS3
-mdefine_line|#define SIBYTE_HDR_FMASK_112x_PASS3&t;&t;0x0000200
 multiline_comment|/* Bit mask for chip/revision.  (use _ALL for all revisions of a chip).  */
 DECL|macro|SIBYTE_HDR_FMASK
 mdefine_line|#define&t;SIBYTE_HDR_FMASK(chip, pass)&t;&t;&t;&t;&t;&bslash;&n;    (SIBYTE_HDR_FMASK_ ## chip ## _ ## pass)
@@ -81,7 +81,7 @@ mdefine_line|#define _SB_GETVALUE(v,n,m) ((_SB_MAKE64(v) &amp; _SB_MAKE64(m)) &g
 DECL|macro|_SB_GETVALUE_32
 mdefine_line|#define _SB_GETVALUE_32(v,n,m) ((_SB_MAKE32(v) &amp; _SB_MAKE32(m)) &gt;&gt; _SB_MAKE32(n))
 multiline_comment|/*&n; * Macros to read/write on-chip registers&n; * XXX should we do the PHYS_TO_K1 here?&n; */
-macro_line|#if !defined(__ASSEMBLER__)
+macro_line|#if defined(__mips64) &amp;&amp; !defined(__ASSEMBLER__)
 DECL|macro|SBWRITECSR
 mdefine_line|#define SBWRITECSR(csr,val) *((volatile uint64_t *) PHYS_TO_K1(csr)) = (val)
 DECL|macro|SBREADCSR

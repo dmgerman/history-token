@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id$&n; *&n; * Ocelot Board Register Definitions&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; *&n; */
+multiline_comment|/*&n; * Ocelot Board Register Definitions&n; *&n; * (C) 2001 Red Hat, Inc.&n; *&n; * GPL&squot;d&n; */
 macro_line|#ifndef __MOMENCO_OCELOT_PLD_H__
 DECL|macro|__MOMENCO_OCELOT_PLD_H__
 mdefine_line|#define __MOMENCO_OCELOT_PLD_H__

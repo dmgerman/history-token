@@ -153,7 +153,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|do_page_cache_readahead
+id|force_page_cache_readahead
 c_func
 (paren
 id|mapping

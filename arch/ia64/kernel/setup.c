@@ -1374,6 +1374,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|find_memory
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* Initialize the ACPI boot-time table parser */
 id|acpi_table_init
@@ -1398,11 +1403,6 @@ suffix:semicolon
 multiline_comment|/* happens, e.g., with the Ski simulator */
 macro_line|# endif
 macro_line|#endif /* CONFIG_APCI_BOOT */
-id|find_memory
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* process SAL system table: */
 id|ia64_sal_init
 c_func

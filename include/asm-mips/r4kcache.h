@@ -308,7 +308,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|dcache_way_size
+id|current_cpu_data.dcache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -532,7 +532,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|icache_way_size
+id|current_cpu_data.icache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -756,7 +756,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|scache_way_size
+id|current_cpu_data.scache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -982,7 +982,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|dcache_way_size
+id|current_cpu_data.dcache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -1206,7 +1206,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|icache_way_size
+id|current_cpu_data.icache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -1430,7 +1430,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|scache_way_size
+id|current_cpu_data.scache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -1656,7 +1656,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|icache_way_size
+id|current_cpu_data.icache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -1880,7 +1880,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|scache_way_size
+id|current_cpu_data.scache.waysize
 suffix:semicolon
 r_int
 r_int
@@ -2106,7 +2106,7 @@ id|end
 op_assign
 id|start
 op_plus
-id|scache_way_size
+id|current_cpu_data.scache.waysize
 suffix:semicolon
 r_int
 r_int

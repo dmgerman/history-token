@@ -1,22 +1,23 @@
-multiline_comment|/*&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172/QED5231 board setup.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * BRIEF MODULE DESCRIPTION&n; *&t;IT8172/QED5231 board setup.&n; *&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
+macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/it8172/it8172.h&gt;
 macro_line|#include &lt;asm/it8712.h&gt;
-macro_line|#ifdef CONFIG_PC_KEYB
-macro_line|#include &lt;asm/keyboard.h&gt;
-macro_line|#endif
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_PROM_CONSOLE)
 r_extern
 r_void
@@ -40,18 +41,8 @@ suffix:semicolon
 macro_line|#endif
 r_extern
 r_struct
-id|rtc_ops
-id|it8172_rtc_ops
-suffix:semicolon
-r_extern
-r_struct
 id|resource
 id|ioport_resource
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|mips_io_port_base
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDE
 r_extern
@@ -67,11 +58,6 @@ id|ide_ops
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PC_KEYB
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
 r_int
 id|init_8712_keyboard
 c_func
@@ -130,6 +116,48 @@ id|it8172_power_off
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|board_time_init
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|board_timer_setup
+)paren
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|it8172_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|it8172_timer_setup
+c_func
+(paren
+r_struct
+id|irqaction
+op_star
+id|irq
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IT8172_REVC
@@ -411,17 +439,20 @@ l_string|&quot; console=ttyS0,115200&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;  
-id|clear_cp0_status
+macro_line|#endif
+id|clear_c0_status
 c_func
 (paren
 id|ST0_FR
 )paren
 suffix:semicolon
-id|rtc_ops
+id|board_time_init
 op_assign
-op_amp
-id|it8172_rtc_ops
+id|it8172_time_init
+suffix:semicolon
+id|board_timer_setup
+op_assign
+id|it8172_timer_setup
 suffix:semicolon
 id|_machine_restart
 op_assign
@@ -435,10 +466,12 @@ id|_machine_power_off
 op_assign
 id|it8172_power_off
 suffix:semicolon
-multiline_comment|/*&n;&t;* IO/MEM resources. &n;&t;*&n;&t;* revisit this area.&n;&t;*/
-id|mips_io_port_base
-op_assign
+multiline_comment|/*&n;&t;* IO/MEM resources.&n;&t;*&n;&t;* revisit this area.&n;&t;*/
+id|set_io_port_base
+c_func
+(paren
 id|KSEG1
+)paren
 suffix:semicolon
 id|ioport_resource.start
 op_assign
@@ -493,7 +526,7 @@ id|dsr
 op_or_assign
 id|IT_PM_DSR_ACSB
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IT8172
 id|dsr
 op_and_assign
@@ -908,7 +941,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IT8172_SCR1 */
 )brace
 macro_line|#ifdef CONFIG_PC_KEYB
-multiline_comment|/*&n; * According to the ITE Special BIOS Note for waking up the &n; * keyboard controller...&n; */
+multiline_comment|/*&n; * According to the ITE Special BIOS Note for waking up the&n; * keyboard controller...&n; */
 DECL|function|init_8712_keyboard
 r_int
 id|init_8712_keyboard

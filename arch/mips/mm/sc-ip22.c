@@ -390,7 +390,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;R4600/R5000 SCACHE size %ldK, linesize 32 bytes.&bslash;n&quot;
+l_string|&quot;R4600/R5000 SCACHE size %dK, linesize 32 bytes.&bslash;n&quot;
 comma
 id|size
 op_rshift

@@ -1,5 +1,6 @@
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_REMOTE_DEBUG)
+macro_line|#if defined(CONFIG_KGDB)
+macro_line|#include &lt;asm/serial.h&gt; /* For the serial port location and base baud */
 multiline_comment|/* --- CONFIG --- */
 DECL|typedef|uint8
 r_typedef
@@ -54,9 +55,9 @@ multiline_comment|/* ----------------------------------------------------- */
 multiline_comment|/* === CONFIG === */
 multiline_comment|/* [jsun] we use the second serial port for kdb */
 DECL|macro|BASE
-mdefine_line|#define         BASE                    0xbd000020
+mdefine_line|#define         BASE                    OCELOT_SERIAL1_BASE
 DECL|macro|MAX_BAUD
-mdefine_line|#define         MAX_BAUD                115200
+mdefine_line|#define         MAX_BAUD                OCELOT_BASE_BAUD
 multiline_comment|/* === END OF CONFIG === */
 DECL|macro|REG_OFFSET
 mdefine_line|#define         REG_OFFSET              4
@@ -278,7 +279,7 @@ suffix:semicolon
 id|debugInit
 c_func
 (paren
-id|UART16550_BAUD_9600
+id|UART16550_BAUD_38400
 comma
 id|UART16550_DATA_8BIT
 comma

@@ -25,9 +25,12 @@ DECL|macro|AT_SYSINFO
 mdefine_line|#define AT_SYSINFO 32
 DECL|macro|AT_SYSINFO_EHDR
 mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
-macro_line|#if 0 /* disabled for now because the code has still problems */
-mdefine_line|#define ARCH_DLINFO do {  &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (u32)(u64)VSYSCALL32_VSYSCALL); &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL32_BASE);    &bslash;&n;} while(0)
-macro_line|#endif
+DECL|variable|sysctl_vsyscall32
+r_int
+id|sysctl_vsyscall32
+suffix:semicolon
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO do {  &bslash;&n;&t;if (sysctl_vsyscall32) { &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, (u32)(u64)VSYSCALL32_VSYSCALL); &bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO_EHDR, VSYSCALL32_BASE);    &bslash;&n;&t;}&t;&bslash;&n;} while(0)
 r_struct
 id|file
 suffix:semicolon
@@ -403,6 +406,11 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+comma
+r_struct
+id|pt_regs
+op_star
+id|xregs
 comma
 id|elf_fpregset_t
 op_star

@@ -2450,7 +2450,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Ignoring attempt to register illegal socket type %d.&bslash;n&quot;
+l_string|&quot;Ignoring attempt to register invalid socket type %d.&bslash;n&quot;
 comma
 id|p-&gt;type
 )paren

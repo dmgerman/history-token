@@ -661,6 +661,8 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+DECL|macro|big_mdelay
+mdefine_line|#define big_mdelay(msec) do {&bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);&bslash;&n;&t;schedule_timeout(((msec) * HZ + 999) / 1000);&bslash;&n;} while (0)
 macro_line|#ifndef PMAC_SUPPORT_PCM_BEEP
 DECL|macro|snd_pmac_attach_beep
 mdefine_line|#define snd_pmac_attach_beep(chip) 0

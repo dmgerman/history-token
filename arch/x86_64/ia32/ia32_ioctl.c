@@ -3226,6 +3226,11 @@ c_func
 (paren
 id|BNEPGETCONNINFO
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|FIOQSIZE
+)paren
 multiline_comment|/* And these ioctls need translation */
 id|HANDLE_IOCTL
 c_func

@@ -30,7 +30,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|platfrom_gettod
+id|platform_gettod
 c_func
 (paren
 r_int

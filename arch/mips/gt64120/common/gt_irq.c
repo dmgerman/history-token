@@ -36,7 +36,7 @@ op_star
 id|isr_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Hooks IRQ handler to the system. When the system is interrupted&n; * the interrupt service routine is called.&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters &n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH. &n; * bit_num   - Indicates which bit number in the cause register&n; * isr_ptr   - Pointer to the interrupt service routine&n; */
+multiline_comment|/*&n; * Hooks IRQ handler to the system. When the system is interrupted&n; * the interrupt service routine is called.&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters&n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.&n; * bit_num   - Indicates which bit number in the cause register&n; * isr_ptr   - Pointer to the interrupt service routine&n; */
 DECL|function|hook_irq_handler
 r_void
 id|hook_irq_handler
@@ -66,7 +66,7 @@ op_assign
 id|isr_ptr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Enables the IRQ on Galileo Chip&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters &n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.&n; * bit_num   - Indicates which bit number in the cause register&n; *&n; * Outputs :&n; * 1 if succesful, 0 if failure&n; */
+multiline_comment|/*&n; * Enables the IRQ on Galileo Chip&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters&n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.&n; * bit_num   - Indicates which bit number in the cause register&n; *&n; * Outputs :&n; * 1 if succesful, 0 if failure&n; */
 DECL|function|enable_galileo_irq
 r_int
 id|enable_galileo_irq
@@ -126,7 +126,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Disables the IRQ on Galileo Chip&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters &n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.&n; * bit_num   - Indicates which bit number in the cause register&n; *&n; * Outputs :&n; * 1 if succesful, 0 if failure&n; */
+multiline_comment|/*&n; * Disables the IRQ on Galileo Chip&n; *&n; * Inputs :&n; * int_cause - The interrupt cause number. In EVB64120 two parameters&n; *             are declared, INT_CAUSE_MAIN and INT_CAUSE_HIGH.&n; * bit_num   - Indicates which bit number in the cause register&n; *&n; * Outputs :&n; * 1 if succesful, 0 if failure&n; */
 DECL|function|disable_galileo_irq
 r_int
 id|disable_galileo_irq

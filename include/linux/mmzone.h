@@ -188,7 +188,12 @@ c_func
 (paren
 id|_pad2_
 )paren
+multiline_comment|/*&n;&t; * measure of scanning intensity for this zone. It is calculated&n;&t; * as exponentially decaying average of the scanning priority&n;&t; * required to free enough pages in this zone&n;&t; * (zone_adj_pressure()).&n;&t; *&n;&t; *     0                    --- low pressure&n;&t; *&n;&t; *     (DEF_PRIORITY &lt;&lt; 10) --- high pressure&n;&t; */
+r_int
+id|pressure
+suffix:semicolon
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
+DECL|member|free_area
 r_struct
 id|free_area
 id|free_area

@@ -14330,7 +14330,7 @@ id|XE_BAD_PHASE
 suffix:colon
 id|printk
 (paren
-l_string|&quot;illegal scsi phase (4/5).&bslash;n&quot;
+l_string|&quot;invalid scsi phase (4/5).&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdebug.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.10 $&n; * Date:&t;$Date: 1999/11/22 13:47:40 $&n; * Purpose:&t;SK specific DEBUG support&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;$Log: skdebug.h,v $&n; *&t;Revision 1.10  1999/11/22 13:47:40  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.9  1999/09/14 14:02:43  rwahl&n; *&t;Added SK_DBGMOD_PECP.&n; *&t;&n; *&t;Revision 1.8  1998/11/25 08:31:54  gklug&n; *&t;fix: no C++ comments allowed in common sources&n; *&t;&n; *&t;Revision 1.7  1998/11/24 16:47:24  swolf&n; *&t;Driver may now define its own SK_DBG_MSG() (eg. in &quot;h/skdrv1st.h&quot;).&n; *&t;&n; *&t;Revision 1.6  1998/10/28 10:23:55  rassmann&n; *&t;ADDED SK_DBGMOD_ADDR.&n; *&t;&n; *&t;Revision 1.5  1998/10/22 09:43:55  gklug&n; *&t;add: CSUM module&n; *&t;&n; *&t;Revision 1.4  1998/10/01 07:54:44  gklug&n; *&t;add: PNMI debug module&n; *&t;&n; *&t;Revision 1.3  1998/09/18 08:32:34  afischer&n; *&t;Macros changed according ssr-spec.:&n; *&t;&t;SK_DBG_MODCHK -&gt; SK_DBG_CHKMOD&n; *&t;&t;SK_DBG_CATCHK -&gt; SK_DBG_CHKCAT&n; *&t;&n; *&t;Revision 1.2  1998/07/03 14:38:25  malthoff&n; *&t;Add category SK_DBGCAT_FATAL.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 13:39:01  malthoff&n; *&t;created.&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdebug.h&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.14 $&n; * Date:&t;$Date: 2003/05/13 17:26:00 $&n; * Purpose:&t;SK specific DEBUG support&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;$Log: skdebug.h,v $&n; *&t;Revision 1.14  2003/05/13 17:26:00  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.13  2003/03/31 07:16:39  mkarl&n; *&t;Corrected Copyright.&n; *&t;&n; *&t;Revision 1.12  2002/07/15 15:37:13  rschmidt&n; *&t;Power Management support&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.11  2002/04/25 11:04:39  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.10  1999/11/22 13:47:40  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.9  1999/09/14 14:02:43  rwahl&n; *&t;Added SK_DBGMOD_PECP.&n; *&t;&n; *&t;Revision 1.8  1998/11/25 08:31:54  gklug&n; *&t;fix: no C++ comments allowed in common sources&n; *&t;&n; *&t;Revision 1.7  1998/11/24 16:47:24  swolf&n; *&t;Driver may now define its own SK_DBG_MSG() (eg. in &quot;h/skdrv1st.h&quot;).&n; *&t;&n; *&t;Revision 1.6  1998/10/28 10:23:55  rassmann&n; *&t;ADDED SK_DBGMOD_ADDR.&n; *&t;&n; *&t;Revision 1.5  1998/10/22 09:43:55  gklug&n; *&t;add: CSUM module&n; *&t;&n; *&t;Revision 1.4  1998/10/01 07:54:44  gklug&n; *&t;add: PNMI debug module&n; *&t;&n; *&t;Revision 1.3  1998/09/18 08:32:34  afischer&n; *&t;Macros changed according ssr-spec.:&n; *&t;&t;SK_DBG_MODCHK -&gt; SK_DBG_CHKMOD&n; *&t;&t;SK_DBG_CATCHK -&gt; SK_DBG_CHKCAT&n; *&t;&n; *&t;Revision 1.2  1998/07/03 14:38:25  malthoff&n; *&t;Add category SK_DBGCAT_FATAL.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 13:39:01  malthoff&n; *&t;created.&n; *&t;&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKDEBUG_H
 DECL|macro|__INC_SKDEBUG_H
 mdefine_line|#define __INC_SKDEBUG_H
@@ -20,37 +20,39 @@ mdefine_line|#define SK_DBGMOD_MERR&t;0x00000001L&t;/* general module error indi
 DECL|macro|SK_DBGMOD_HWM
 mdefine_line|#define SK_DBGMOD_HWM&t;0x00000002L&t;/* Hardware init module */
 DECL|macro|SK_DBGMOD_RLMT
-mdefine_line|#define&t;SK_DBGMOD_RLMT&t;0x00000004L&t;/* RLMT module */
+mdefine_line|#define SK_DBGMOD_RLMT&t;0x00000004L&t;/* RLMT module */
 DECL|macro|SK_DBGMOD_VPD
-mdefine_line|#define&t;SK_DBGMOD_VPD&t;0x00000008L&t;/* VPD module */
+mdefine_line|#define SK_DBGMOD_VPD&t;0x00000008L&t;/* VPD module */
 DECL|macro|SK_DBGMOD_I2C
-mdefine_line|#define&t;SK_DBGMOD_I2C&t;0x00000010L&t;/* I2C module */
+mdefine_line|#define SK_DBGMOD_I2C&t;0x00000010L&t;/* I2C module */
 DECL|macro|SK_DBGMOD_PNMI
-mdefine_line|#define&t;SK_DBGMOD_PNMI&t;0x00000020L&t;/* PNMI module */
+mdefine_line|#define SK_DBGMOD_PNMI&t;0x00000020L&t;/* PNMI module */
 DECL|macro|SK_DBGMOD_CSUM
-mdefine_line|#define&t;SK_DBGMOD_CSUM&t;0x00000040L&t;/* CSUM module */
+mdefine_line|#define SK_DBGMOD_CSUM&t;0x00000040L&t;/* CSUM module */
 DECL|macro|SK_DBGMOD_ADDR
-mdefine_line|#define&t;SK_DBGMOD_ADDR&t;0x00000080L&t;/* ADDR module */
+mdefine_line|#define SK_DBGMOD_ADDR&t;0x00000080L&t;/* ADDR module */
 DECL|macro|SK_DBGMOD_PECP
 mdefine_line|#define SK_DBGMOD_PECP&t;0x00000100L&t;/* PECP module */
+DECL|macro|SK_DBGMOD_POWM
+mdefine_line|#define SK_DBGMOD_POWM&t;0x00000200L&t;/* Power Management module */
 multiline_comment|/* Debug events */
 DECL|macro|SK_DBGCAT_INIT
-mdefine_line|#define&t;SK_DBGCAT_INIT&t;0x00000001L&t;/* module/driver initialization */
+mdefine_line|#define SK_DBGCAT_INIT&t;0x00000001L&t;/* module/driver initialization */
 DECL|macro|SK_DBGCAT_CTRL
-mdefine_line|#define&t;SK_DBGCAT_CTRL&t;0x00000002L&t;/* controlling: add/rmv MCA/MAC&n;&t;&t;&t;&t;&t; * and other controls (IOCTL)&n;&t;&t;&t;&t;&t; */
+mdefine_line|#define SK_DBGCAT_CTRL&t;0x00000002L&t;/* controlling devices */
 DECL|macro|SK_DBGCAT_ERR
-mdefine_line|#define&t;SK_DBGCAT_ERR&t;0x00000004L&t;/* error handling paths */
+mdefine_line|#define SK_DBGCAT_ERR&t;0x00000004L&t;/* error handling paths */
 DECL|macro|SK_DBGCAT_TX
-mdefine_line|#define&t;SK_DBGCAT_TX&t;0x00000008L&t;/* transmit path */
+mdefine_line|#define SK_DBGCAT_TX&t;0x00000008L&t;/* transmit path */
 DECL|macro|SK_DBGCAT_RX
-mdefine_line|#define&t;SK_DBGCAT_RX&t;0x00000010L&t;/* receive path */
+mdefine_line|#define SK_DBGCAT_RX&t;0x00000010L&t;/* receive path */
 DECL|macro|SK_DBGCAT_IRQ
-mdefine_line|#define&t;SK_DBGCAT_IRQ&t;0x00000020L&t;/* general IRQ handling */
+mdefine_line|#define SK_DBGCAT_IRQ&t;0x00000020L&t;/* general IRQ handling */
 DECL|macro|SK_DBGCAT_QUEUE
-mdefine_line|#define&t;SK_DBGCAT_QUEUE&t;0x00000040L&t;/* any queue management */
+mdefine_line|#define SK_DBGCAT_QUEUE&t;0x00000040L&t;/* any queue management */
 DECL|macro|SK_DBGCAT_DUMP
-mdefine_line|#define&t;SK_DBGCAT_DUMP&t;0x00000080L&t;/* large data output e.g. hex dump */
+mdefine_line|#define SK_DBGCAT_DUMP&t;0x00000080L&t;/* large data output e.g. hex dump */
 DECL|macro|SK_DBGCAT_FATAL
-mdefine_line|#define&t;SK_DBGCAT_FATAL&t;0x00000100L&t;/* large data output e.g. hex dump */
+mdefine_line|#define SK_DBGCAT_FATAL&t;0x00000100L&t;/* fatal error */
 macro_line|#endif&t;/* __INC_SKDEBUG_H */
 eof

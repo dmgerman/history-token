@@ -128,6 +128,15 @@ id|swapper_space.i_shared_sem
 )paren
 comma
 dot
+id|truncate_count
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+comma
+dot
 id|private_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED

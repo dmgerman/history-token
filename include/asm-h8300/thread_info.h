@@ -86,7 +86,7 @@ l_string|&quot;=&amp;r&quot;
 id|ti
 )paren
 suffix:colon
-l_string|&quot;r&quot;
+l_string|&quot;g&quot;
 (paren
 op_complement
 (paren

@@ -3624,9 +3624,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;chip_type
+id|chip-&gt;revision
 op_eq
-id|TYPE_VIA8233A
+id|VIA_REV_8233A
 )paren
 id|rbits
 op_assign
@@ -3950,9 +3950,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;chip_type
+id|chip-&gt;revision
 op_eq
-id|TYPE_VIA8233A
+id|VIA_REV_8233A
 )paren
 id|slots
 op_assign
@@ -4972,9 +4972,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;chip_type
+id|chip-&gt;revision
 op_eq
-id|TYPE_VIA8233A
+id|VIA_REV_8233A
 )paren
 id|snd_pcm_hw_constraint_list
 c_func

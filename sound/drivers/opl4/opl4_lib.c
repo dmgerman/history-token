@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Functions for accessing OPL4 devices&n; * Copyright (c
 macro_line|#include &quot;opl4_local.h&quot;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -658,7 +659,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 DECL|function|snd_opl4_seq_dev_free
 r_static
 r_void
@@ -1172,7 +1173,7 @@ id|opl4
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 id|opl4-&gt;seq_client
 op_assign
 op_minus

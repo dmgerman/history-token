@@ -301,7 +301,7 @@ mdefine_line|#define stack_smp_processor_id() 0
 DECL|macro|safe_smp_processor_id
 mdefine_line|#define safe_smp_processor_id() 0
 DECL|macro|for_each_cpu
-mdefine_line|#define for_each_cpu(x) (x)=0;
+mdefine_line|#define for_each_cpu(x,mask) (void)(mask), (x)=0;
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(x) (x)
 macro_line|#else

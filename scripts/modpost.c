@@ -1397,6 +1397,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+macro_line|#ifdef STT_REGISTER
 r_if
 c_cond
 (paren
@@ -1424,6 +1425,7 @@ id|STT_REGISTER
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren

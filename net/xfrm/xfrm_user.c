@@ -812,6 +812,10 @@ id|x-&gt;props.saddr
 op_assign
 id|p-&gt;saddr
 suffix:semicolon
+id|x-&gt;props.flags
+op_assign
+id|p-&gt;flags
+suffix:semicolon
 )brace
 DECL|function|xfrm_state_construct
 r_static
@@ -1401,6 +1405,10 @@ suffix:semicolon
 id|p-&gt;family
 op_assign
 id|x-&gt;props.family
+suffix:semicolon
+id|p-&gt;flags
+op_assign
+id|x-&gt;props.flags
 suffix:semicolon
 id|p-&gt;seq
 op_assign

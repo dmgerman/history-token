@@ -98,6 +98,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|rtctimer_freq
+r_static
 r_int
 id|rtctimer_freq
 op_assign
@@ -591,5 +592,49 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE
+multiline_comment|/* format is: snd-rtctimer=freq */
+DECL|function|rtctimer_setup
+r_static
+r_int
+id|__init
+id|rtctimer_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+(paren
+r_void
+)paren
+(paren
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|rtctimer_freq
+)paren
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;snd-rtctimer=&quot;
+comma
+id|rtctimer_setup
+)paren
+suffix:semicolon
+macro_line|#endif /* ifndef MODULE */
 macro_line|#endif /* CONFIG_RTC || CONFIG_RTC_MODULE */
 eof

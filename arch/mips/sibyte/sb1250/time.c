@@ -9,11 +9,11 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 DECL|macro|IMR_IP2_VAL
 mdefine_line|#define IMR_IP2_VAL&t;K_INT_MAP_I0
 DECL|macro|IMR_IP3_VAL
@@ -89,7 +89,7 @@ id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* Map the timer interrupt to ip[4] of this cpu */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|IMR_IP4_VAL
@@ -113,7 +113,7 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* the general purpose timer ticks at 1 Mhz independent if the rest of the system */
 multiline_comment|/* Disable the timer and set up the count */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 l_int|0
@@ -129,18 +129,13 @@ id|R_SCD_TIMER_CFG
 )paren
 )paren
 suffix:semicolon
-id|out64
+macro_line|#ifdef CONFIG_SIMULATION
+id|__raw_writeq
 c_func
 (paren
-macro_line|#ifndef CONFIG_SIMULATION
-l_int|1000000
-op_div
-id|HZ
-macro_line|#else
 l_int|50000
 op_div
 id|HZ
-macro_line|#endif
 comma
 id|KSEG1
 op_plus
@@ -153,8 +148,28 @@ id|R_SCD_TIMER_INIT
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+id|__raw_writeq
+c_func
+(paren
+l_int|1000000
+op_div
+id|HZ
+comma
+id|KSEG1
+op_plus
+id|A_SCD_TIMER_REGISTER
+c_func
+(paren
+id|cpu
+comma
+id|R_SCD_TIMER_INIT
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Set the timer running */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 id|M_SCD_TIMER_ENABLE
@@ -199,6 +214,21 @@ op_star
 id|regs
 )paren
 (brace
+r_extern
+id|asmlinkage
+r_void
+id|ll_local_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 r_int
 id|cpu
 op_assign
@@ -214,20 +244,8 @@ id|K_INT_TIMER_0
 op_plus
 id|cpu
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
-(braket
-id|irq
-)braket
-op_increment
-suffix:semicolon
 multiline_comment|/* Reset the timer */
-id|out64
+id|____raw_writeq
 c_func
 (paren
 id|M_SCD_TIMER_ENABLE
@@ -287,7 +305,7 @@ r_int
 r_int
 id|count
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|KSEG1

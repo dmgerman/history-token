@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Linux ioctl() stuff.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 2001 by Ralf Baechle&n; */
-macro_line|#ifndef __ASM_MIPS_IOCTL_H
-DECL|macro|__ASM_MIPS_IOCTL_H
-mdefine_line|#define __ASM_MIPS_IOCTL_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 96, 99, 2001 Ralf Baechle&n; */
+macro_line|#ifndef _ASM_IOCTL_H
+DECL|macro|_ASM_IOCTL_H
+mdefine_line|#define _ASM_IOCTL_H
 multiline_comment|/*&n; * The original linux ioctl numbering scheme was just a general&n; * &quot;anything goes&quot; setup, where more or less random numbers were&n; * assigned.  Sorry, I was clueless when I started out on this.&n; *&n; * On the alpha, we&squot;ll try to clean it up a bit, using a more sane&n; * ioctl numbering, and also trying to be compatible with OSF/1 in&n; * the process. I&squot;d like to clean it up for the i386 as well, but&n; * it&squot;s so painful recognizing both the new and the old numbers..&n; *&n; * The same applies for for the MIPS ABI; in fact even the macros&n; * from Linux/Alpha fit almost perfectly.&n; */
 DECL|macro|_IOC_NRBITS
 mdefine_line|#define _IOC_NRBITS&t;8
@@ -27,6 +27,9 @@ DECL|macro|_IOC_SIZESHIFT
 mdefine_line|#define _IOC_SIZESHIFT&t;(_IOC_TYPESHIFT+_IOC_TYPEBITS)
 DECL|macro|_IOC_DIRSHIFT
 mdefine_line|#define _IOC_DIRSHIFT&t;(_IOC_SIZESHIFT+_IOC_SIZEBITS)
+multiline_comment|/*&n; * We to additionally limit parameters to a maximum 255 bytes.&n; */
+DECL|macro|_IOC_SLMASK
+mdefine_line|#define _IOC_SLMASK&t;0xff
 multiline_comment|/*&n; * Direction bits _IOC_NONE could be 0, but OSF/1 gives it a bit.&n; * And this turns out useful to catch old ioctl numbers in header&n; * files for us.&n; */
 DECL|macro|_IOC_NONE
 mdefine_line|#define _IOC_NONE&t;1U
@@ -74,5 +77,5 @@ DECL|macro|IOCSIZE_MASK
 mdefine_line|#define IOCSIZE_MASK&t;(_IOC_SIZEMASK &lt;&lt; _IOC_SIZESHIFT)
 DECL|macro|IOCSIZE_SHIFT
 mdefine_line|#define IOCSIZE_SHIFT&t;(_IOC_SIZESHIFT)
-macro_line|#endif /* __ASM_MIPS_IOCTL_H */
+macro_line|#endif /* _ASM_IOCTL_H */
 eof

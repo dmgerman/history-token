@@ -17628,7 +17628,7 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;scsi%d : illegal instruction&bslash;n&quot;
+l_string|&quot;scsi%d : invalid instruction&bslash;n&quot;
 comma
 id|host-&gt;host_no
 )paren

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Lin
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
@@ -84,12 +85,14 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1477,7 +1480,7 @@ id|wdtpci_fops
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 DECL|variable|temp_miscdev
 r_static
 r_struct
@@ -1737,7 +1740,7 @@ r_goto
 id|out_misc
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 id|ret
 op_assign
 id|misc_register
@@ -1775,7 +1778,7 @@ suffix:colon
 r_return
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_WDT_501
+macro_line|#ifdef CONFIG_WDT_501_PCI
 id|out_rbt
 suffix:colon
 id|unregister_reboot_notifier

@@ -1,6 +1,7 @@
 macro_line|#ifndef _IP_CONNTRACK_CORE_H
 DECL|macro|_IP_CONNTRACK_CORE_H
 mdefine_line|#define _IP_CONNTRACK_CORE_H
+macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 multiline_comment|/* This header is used to share core functionality between the&n;   standalone connection tracking module, and the compatibility layer&squot;s use&n;   of connection tracking. */
 r_extern
