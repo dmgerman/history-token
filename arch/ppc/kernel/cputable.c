@@ -291,6 +291,18 @@ macro_line|#else
 DECL|macro|CPU_FTR_COMMON
 mdefine_line|#define CPU_FTR_COMMON                  0
 macro_line|#endif
+multiline_comment|/* The powersave features NAP &amp; DOZE seems to confuse BDI when&n;   debugging. So if a BDI is used, disable theses&n; */
+macro_line|#ifndef CONFIG_BDI_SWITCH
+DECL|macro|CPU_FTR_MAYBE_CAN_DOZE
+mdefine_line|#define CPU_FTR_MAYBE_CAN_DOZE&t;CPU_FTR_CAN_DOZE
+DECL|macro|CPU_FTR_MAYBE_CAN_NAP
+mdefine_line|#define CPU_FTR_MAYBE_CAN_NAP&t;CPU_FTR_CAN_NAP
+macro_line|#else
+DECL|macro|CPU_FTR_MAYBE_CAN_DOZE
+mdefine_line|#define CPU_FTR_MAYBE_CAN_DOZE&t;0
+DECL|macro|CPU_FTR_MAYBE_CAN_NAP
+mdefine_line|#define CPU_FTR_MAYBE_CAN_NAP&t;0
+macro_line|#endif
 DECL|variable|cpu_specs
 r_struct
 id|cpu_spec
@@ -339,11 +351,11 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -366,11 +378,11 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -393,11 +405,11 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -528,7 +540,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -536,7 +548,7 @@ id|CPU_FTR_L2CR
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -559,7 +571,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -569,7 +581,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -592,7 +604,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -602,7 +614,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -625,7 +637,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -635,7 +647,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -658,7 +670,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -668,7 +680,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -691,7 +703,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -701,7 +713,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_DUAL_PLL_750FX
 op_or
@@ -728,7 +740,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -738,7 +750,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_NO_DPM
 comma
@@ -763,7 +775,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -773,7 +785,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_DUAL_PLL_750FX
 op_or
@@ -798,7 +810,7 @@ l_string|&quot;750GX&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -808,7 +820,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_DUAL_PLL_750FX
 op_or
@@ -835,7 +847,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -845,7 +857,7 @@ id|CPU_FTR_TAU
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 comma
@@ -868,7 +880,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -878,7 +890,7 @@ id|CPU_FTR_ALTIVEC_COMP
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
@@ -903,7 +915,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -915,7 +927,7 @@ id|CPU_FTR_ALTIVEC_COMP
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
@@ -940,7 +952,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
@@ -952,7 +964,7 @@ id|CPU_FTR_ALTIVEC_COMP
 op_or
 id|CPU_FTR_HPTE_TABLE
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
@@ -1016,7 +1028,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1059,7 +1071,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1139,7 +1151,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1184,7 +1196,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1227,7 +1239,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1272,7 +1284,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1317,7 +1329,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1360,7 +1372,7 @@ id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_L2CR
 op_or
@@ -1399,7 +1411,7 @@ id|CPU_FTR_COMMON
 op_or
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 comma
@@ -1422,11 +1434,11 @@ l_string|&quot;G2_LE&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
-id|CPU_FTR_CAN_DOZE
+id|CPU_FTR_MAYBE_CAN_DOZE
 op_or
 id|CPU_FTR_USE_TB
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 op_or
 id|CPU_FTR_HAS_HIGH_BATS
 comma
@@ -1621,7 +1633,7 @@ id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_ALTIVEC_COMP
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
@@ -1654,7 +1666,7 @@ id|CPU_FTR_HPTE_TABLE
 op_or
 id|CPU_FTR_ALTIVEC_COMP
 op_or
-id|CPU_FTR_CAN_NAP
+id|CPU_FTR_MAYBE_CAN_NAP
 comma
 id|COMMON_PPC
 op_or
@@ -1679,7 +1691,7 @@ l_int|0x00500000
 comma
 l_string|&quot;8xx&quot;
 comma
-multiline_comment|/* CPU_FTR_CAN_DOZE is possible, if the 8xx code is there.... */
+multiline_comment|/* CPU_FTR_MAYBE_CAN_DOZE is possible,&n;&t;&t; * if the 8xx code is there.... */
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB
@@ -2178,7 +2190,7 @@ l_int|0x80200000
 comma
 l_string|&quot;e500&quot;
 comma
-multiline_comment|/* xxx - galak: add CPU_FTR_CAN_DOZE */
+multiline_comment|/* xxx - galak: add CPU_FTR_MAYBE_CAN_DOZE */
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
 id|CPU_FTR_USE_TB

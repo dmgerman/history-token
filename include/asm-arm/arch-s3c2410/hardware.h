@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/hardware.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - hardware&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  21-May-2003 BJD  Created file&n; *  06-Jun-2003 BJD  Added CPU frequency settings&n; *  03-Sep-2003 BJD  Linux v2.6 support&n; *  12-Mar-2004 BJD  Fixed include protection, fixed type of clock vars&n; *  14-Sep-2004 BJD  Added misccr and getpin to gpio&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/hardware.h&n; *&n; * (c) 2003 Simtec Electronics&n; *  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - hardware&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  21-May-2003 BJD  Created file&n; *  06-Jun-2003 BJD  Added CPU frequency settings&n; *  03-Sep-2003 BJD  Linux v2.6 support&n; *  12-Mar-2004 BJD  Fixed include protection, fixed type of clock vars&n; *  14-Sep-2004 BJD  Added misccr and getpin to gpio&n; *  01-Oct-2004 BJD  Added the new gpio functions&n;*/
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 DECL|macro|__ASM_ARCH_HARDWARE_H
 mdefine_line|#define __ASM_ARCH_HARDWARE_H
@@ -33,6 +33,28 @@ comma
 r_int
 r_int
 id|function
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|s3c2410_gpio_getcfg
+c_func
+(paren
+r_int
+r_int
+id|pin
+)paren
+suffix:semicolon
+multiline_comment|/* s3c2410_gpio_getirq&n; *&n; * turn the given pin number into the corresponding IRQ number&n; *&n; * returns:&n; *&t;&lt; 0 = no interrupt for this pin&n; *&t;&gt;=0 = interrupt number for the pin&n;*/
+r_extern
+r_int
+id|s3c2410_gpio_getirq
+c_func
+(paren
+r_int
+r_int
+id|pin
 )paren
 suffix:semicolon
 multiline_comment|/* s3c2410_gpio_pullup&n; *&n; * configure the pull-up control on the given pin&n; *&n; * to = 1 =&gt; disable the pull-up&n; *      0 =&gt; enable the pull-up&n; *&n; * eg;&n; *&n; *   s3c2410_gpio_pullup(S3C2410_GPB0, 0);&n; *   s3c2410_gpio_pullup(S3C2410_GPE8, 0);&n;*/
