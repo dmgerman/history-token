@@ -41,10 +41,6 @@ op_star
 comma
 r_char
 op_star
-comma
-r_int
-comma
-id|loff_t
 )paren
 suffix:semicolon
 DECL|member|store
@@ -65,10 +61,6 @@ comma
 r_const
 r_char
 op_star
-comma
-r_int
-comma
-id|loff_t
 )paren
 suffix:semicolon
 )brace

@@ -43,7 +43,7 @@ DECL|macro|REPORT_URL
 mdefine_line|#define REPORT_URL &quot;http:
 singleline_comment|//domsch.com/linux/edd30/results.html&quot;
 DECL|macro|left
-mdefine_line|#define left (count - (p - buf) - 1)
+mdefine_line|#define left (PAGE_SIZE - (p - buf) - 1)
 DECL|struct|edd_device
 r_struct
 id|edd_device
@@ -86,12 +86,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 suffix:semicolon
 DECL|member|test
@@ -229,12 +223,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -279,10 +267,6 @@ c_func
 id|dev
 comma
 id|buf
-comma
-id|count
-comma
-id|off
 )paren
 suffix:semicolon
 r_return
@@ -548,12 +532,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -587,8 +565,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -827,12 +803,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -866,8 +836,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -1262,12 +1230,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -1350,8 +1312,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -1874,12 +1834,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -1910,8 +1864,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -1954,12 +1906,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -1990,8 +1936,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -2104,12 +2048,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -2140,8 +2078,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -2322,12 +2258,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -2358,8 +2288,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -2402,12 +2330,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -2438,8 +2360,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -2482,12 +2402,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -2518,8 +2432,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return
@@ -2562,12 +2474,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -2598,8 +2504,6 @@ id|info
 op_logical_or
 op_logical_neg
 id|buf
-op_logical_or
-id|off
 )paren
 (brace
 r_return

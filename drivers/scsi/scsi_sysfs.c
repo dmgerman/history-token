@@ -21,26 +21,12 @@ comma
 r_char
 op_star
 id|page
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
 id|Scsi_Host
 op_star
 id|shost
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|off
-)paren
-r_return
-l_int|0
 suffix:semicolon
 id|shost
 op_assign
@@ -65,7 +51,7 @@ c_func
 (paren
 id|page
 comma
-id|count
+l_int|20
 comma
 l_string|&quot;scsi%d&bslash;n&quot;
 comma
@@ -404,16 +390,16 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * show_function: macro to create an attr function that can be used to&n; * show a non-bit field.&n; */
 DECL|macro|show_function
-mdefine_line|#define show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##field (struct device *dev, char *buf, size_t count, loff_t off)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;if (off)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return snprintf (buf, count, format_string, sdev-&gt;field);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
+mdefine_line|#define show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_##field (struct device *dev, char *buf)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return snprintf (buf, 20, format_string, sdev-&gt;field);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 multiline_comment|/*&n; * sdev_rd_attr: macro to create a function and attribute variable for a&n; * read only field.&n; */
 DECL|macro|sdev_rd_attr
 mdefine_line|#define sdev_rd_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, show_##field, NULL)
 multiline_comment|/*&n; * sdev_rd_attr: create a function and attribute variable for a&n; * read/write field.&n; */
 DECL|macro|sdev_rw_attr
-mdefine_line|#define sdev_rw_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_##field (struct device *dev, const char *buf, size_t count, loff_t off)&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (off)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;return snscanf (buf, count, format_string, &amp;sdev-&gt;field);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, show_##field, store_##field)
+mdefine_line|#define sdev_rw_attr(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;show_function(field, format_string)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_##field (struct device *dev, const char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&t;&bslash;&n;&t;snscanf (buf, 20, format_string, &amp;sdev-&gt;field);&t;&t;&t;&bslash;&n;&t;return strlen(buf);&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, show_##field, store_##field)
 multiline_comment|/*&n; * sdev_rd_attr: create a function and attribute variable for a&n; * read/write bit field.&n; */
 DECL|macro|sdev_rw_attr_bit
-mdefine_line|#define sdev_rw_attr_bit(field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_function(field, &quot;%d&bslash;n&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_##field (struct device *dev, const char *buf, size_t count, loff_t off)&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (off)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = scsi_sdev_check_buf_bit(buf);&t;&t;&t;&t;&bslash;&n;&t;if (ret &gt;= 0)&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&bslash;&n;&t;&t;sdev-&gt;field = ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = count;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, show_##field, store_##field)
+mdefine_line|#define sdev_rw_attr_bit(field)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_function(field, &quot;%d&bslash;n&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;store_##field (struct device *dev, const char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = scsi_sdev_check_buf_bit(buf);&t;&t;&t;&t;&bslash;&n;&t;if (ret &gt;= 0)&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;sdev = to_scsi_device(dev);&t;&t;&t;&t;&bslash;&n;&t;&t;sdev-&gt;field = ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ret = strlen(buf);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO | S_IWUSR, show_##field, store_##field)
 multiline_comment|/*&n; * scsi_sdev_check_buf_bit: return 0 if buf is &quot;0&quot;, return 1 if buf is &quot;1&quot;,&n; * else return -EINVAL.&n; */
 DECL|function|scsi_sdev_check_buf_bit
 r_static
