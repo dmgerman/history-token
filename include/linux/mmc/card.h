@@ -127,9 +127,11 @@ id|state
 suffix:semicolon
 multiline_comment|/* (our) card state */
 DECL|macro|MMC_STATE_PRESENT
-mdefine_line|#define MMC_STATE_PRESENT&t;(1&lt;&lt;0)
+mdefine_line|#define MMC_STATE_PRESENT&t;(1&lt;&lt;0)&t;&t;/* present in sysfs */
 DECL|macro|MMC_STATE_DEAD
-mdefine_line|#define MMC_STATE_DEAD&t;&t;(1&lt;&lt;1)
+mdefine_line|#define MMC_STATE_DEAD&t;&t;(1&lt;&lt;1)&t;&t;/* device no longer in stack */
+DECL|macro|MMC_STATE_BAD
+mdefine_line|#define MMC_STATE_BAD&t;&t;(1&lt;&lt;2)&t;&t;/* unrecognised device */
 DECL|member|raw_cid
 id|u32
 id|raw_cid
@@ -160,10 +162,18 @@ suffix:semicolon
 multiline_comment|/* card specific */
 )brace
 suffix:semicolon
-DECL|macro|mmc_card_dead
-mdefine_line|#define mmc_card_dead(c)&t;((c)-&gt;state &amp; MMC_STATE_DEAD)
 DECL|macro|mmc_card_present
 mdefine_line|#define mmc_card_present(c)&t;((c)-&gt;state &amp; MMC_STATE_PRESENT)
+DECL|macro|mmc_card_dead
+mdefine_line|#define mmc_card_dead(c)&t;((c)-&gt;state &amp; MMC_STATE_DEAD)
+DECL|macro|mmc_card_bad
+mdefine_line|#define mmc_card_bad(c)&t;&t;((c)-&gt;state &amp; MMC_STATE_BAD)
+DECL|macro|mmc_card_set_present
+mdefine_line|#define mmc_card_set_present(c)&t;((c)-&gt;state |= MMC_STATE_PRESENT)
+DECL|macro|mmc_card_set_dead
+mdefine_line|#define mmc_card_set_dead(c)&t;((c)-&gt;state |= MMC_STATE_DEAD)
+DECL|macro|mmc_card_set_bad
+mdefine_line|#define mmc_card_set_bad(c)&t;((c)-&gt;state |= MMC_STATE_BAD)
 DECL|macro|mmc_card_name
 mdefine_line|#define mmc_card_name(c)&t;((c)-&gt;cid.prod_name)
 DECL|macro|mmc_card_id

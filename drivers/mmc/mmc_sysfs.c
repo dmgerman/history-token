@@ -39,7 +39,7 @@ id|card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This currently matches any MMC driver to any MMC card - drivers&n; * themselves make the decision whether to drive this card in their&n; * probe method.&n; */
+multiline_comment|/*&n; * This currently matches any MMC driver to any MMC card - drivers&n; * themselves make the decision whether to drive this card in their&n; * probe method.  However, we force &quot;bad&quot; cards to fail.&n; */
 DECL|function|mmc_bus_match
 r_static
 r_int
@@ -57,8 +57,24 @@ op_star
 id|drv
 )paren
 (brace
+r_struct
+id|mmc_card
+op_star
+id|card
+op_assign
+id|dev_to_mmc_card
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
-l_int|1
+op_logical_neg
+id|mmc_card_bad
+c_func
+(paren
+id|card
+)paren
 suffix:semicolon
 )brace
 r_static
