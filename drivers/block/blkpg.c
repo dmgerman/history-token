@@ -951,7 +951,7 @@ r_return
 id|blk_set_readahead
 c_func
 (paren
-id|dev
+id|bdev
 comma
 id|arg
 )paren
@@ -979,7 +979,7 @@ c_func
 id|blk_get_readahead
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 (paren

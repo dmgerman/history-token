@@ -6408,7 +6408,7 @@ op_assign
 id|blk_get_readahead
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 op_star
 l_int|512

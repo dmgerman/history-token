@@ -1044,8 +1044,10 @@ r_int
 id|blk_set_readahead
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 id|sectors
@@ -1056,8 +1058,10 @@ r_int
 id|blk_get_readahead
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 suffix:semicolon
 r_extern
