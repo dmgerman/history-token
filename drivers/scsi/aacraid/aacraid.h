@@ -1,7 +1,6 @@
 singleline_comment|//#define dprintk(x) printk x
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x)
-macro_line|#include &quot;compat.h&quot;
 multiline_comment|/*------------------------------------------------------------------------------&n; *              D E F I N E S&n; *----------------------------------------------------------------------------*/
 DECL|macro|MAXIMUM_NUM_CONTAINERS
 mdefine_line|#define MAXIMUM_NUM_CONTAINERS&t;31
@@ -3391,8 +3390,7 @@ id|u32
 id|divisor
 )paren
 (brace
-macro_line|#ifdef CONFIG_LBD
-id|do_div
+id|sector_div
 c_func
 (paren
 id|capacity
@@ -3400,12 +3398,6 @@ comma
 id|divisor
 )paren
 suffix:semicolon
-macro_line|#else
-id|capacity
-op_div_assign
-id|divisor
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|u32

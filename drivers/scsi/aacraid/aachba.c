@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR&t;/* For DEVICE_NR() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -4229,26 +4227,11 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* claim compliance to SCSI-2 */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strstr
-c_func
-(paren
-id|UTS_RELEASE
-comma
-l_string|&quot;BOOT&quot;
-)paren
-)paren
-(brace
-singleline_comment|// If this is not a RH driver disk kernel
 id|inq_data_ptr-&gt;inqd_dtq
 op_assign
 l_int|0x80
 suffix:semicolon
 multiline_comment|/* set RMB bit to one indicating that the medium is removable */
-)brace
 id|inq_data_ptr-&gt;inqd_rdf
 op_assign
 l_int|2

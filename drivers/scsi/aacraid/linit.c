@@ -34,14 +34,12 @@ c_func
 l_string|&quot;Supports Dell PERC2, 2/Si, 3/Si, 3/Di, Adaptec Advanced Raid Products, and HP NetRAID-4M devices. http://domsch.com/linux/ or http://linux.adaptec.com&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE  &gt; KERNEL_VERSION(2,4,7)   
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
