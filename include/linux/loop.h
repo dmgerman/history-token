@@ -237,8 +237,6 @@ DECL|macro|LO_FLAGS_DO_BMAP
 mdefine_line|#define LO_FLAGS_DO_BMAP&t;1
 DECL|macro|LO_FLAGS_READ_ONLY
 mdefine_line|#define LO_FLAGS_READ_ONLY&t;2
-DECL|macro|LO_FLAGS_BH_REMAP
-mdefine_line|#define LO_FLAGS_BH_REMAP&t;4
 macro_line|#include &lt;asm/posix_types.h&gt;&t;/* for __kernel_old_dev_t */
 macro_line|#include &lt;asm/types.h&gt;&t;&t;/* for __u64 */
 multiline_comment|/* Backwards compatibility version */
