@@ -1564,6 +1564,12 @@ op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
+id|release_sysfs_dirent
+c_func
+(paren
+id|cursor
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

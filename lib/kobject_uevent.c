@@ -747,6 +747,7 @@ op_assign
 op_amp
 id|null_hotplug_ops
 suffix:semicolon
+multiline_comment|/* If this kobj does not belong to a kset,&n;&t;   try to find a parent that does. */
 r_if
 c_cond
 (paren
