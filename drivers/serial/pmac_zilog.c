@@ -1336,17 +1336,17 @@ id|SYNC_HUNT
 id|uap-&gt;port.icount.dsr
 op_increment
 suffix:semicolon
-multiline_comment|/* The Zilog just gives us an interrupt when DCD/CTS/etc. change.&n;&t;&t; * But it does not tell us which bit has changed, we have to keep&n;&t;&t; * track of this ourselves.&n;&t;&t; */
+multiline_comment|/* The Zilog just gives us an interrupt when DCD/CTS/etc. change.&n;&t;&t; * But it does not tell us which bit has changed, we have to keep&n;&t;&t; * track of this ourselves.&n;&t;&t; * The CTS input is inverted for some reason.  -- paulus&n;&t;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|status
-op_amp
-id|DCD
-)paren
 op_xor
 id|uap-&gt;prev_status
+)paren
+op_amp
+id|DCD
 )paren
 id|uart_handle_dcd_change
 c_func
@@ -1366,11 +1366,11 @@ c_cond
 (paren
 (paren
 id|status
-op_amp
-id|CTS
-)paren
 op_xor
 id|uap-&gt;prev_status
+)paren
+op_amp
+id|CTS
 )paren
 id|uart_handle_cts_change
 c_func
@@ -1378,6 +1378,7 @@ c_func
 op_amp
 id|uap-&gt;port
 comma
+op_logical_neg
 (paren
 id|status
 op_amp
@@ -2395,9 +2396,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|status
 op_amp
 id|CTS
+)paren
 )paren
 id|ret
 op_or_assign
