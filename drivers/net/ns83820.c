@@ -1,6 +1,6 @@
-DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.14&quot;
-multiline_comment|/* ns83820.c by Benjamin LaHaise &lt;bcrl@redhat.com&gt;&n; *&n; * $Revision: 1.34.2.8 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011117&t;0.14 - ethtool GDRVINFO, GLINK support&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
+DECL|macro|_VERSION
+mdefine_line|#define _VERSION &quot;0.15&quot;
+multiline_comment|/* ns83820.c by Benjamin LaHaise &lt;bcrl@redhat.com&gt; with contributions.&n; *&n; * $Revision: 1.34.2.12 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
 singleline_comment|//#define dprintk&t;&t;printk
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)&t;&t;do { } while (0)
@@ -28,34 +28,30 @@ DECL|macro|Dprintk
 mdefine_line|#define&t;Dprintk&t;&t;&t;dprintk
 macro_line|#ifdef CONFIG_HIGHMEM64G
 DECL|macro|USE_64BIT_ADDR
-mdefine_line|#define USE_64BIT_ADDR
+mdefine_line|#define USE_64BIT_ADDR&t;&quot;+&quot;
 macro_line|#elif defined(__ia64__)
 DECL|macro|USE_64BIT_ADDR
-mdefine_line|#define USE_64BIT_ADDR
+mdefine_line|#define USE_64BIT_ADDR&t;&quot;+&quot;
 macro_line|#endif
 multiline_comment|/* Tell davem to fix the pci dma api.  Grrr. */
 multiline_comment|/* stolen from acenic.c */
-macro_line|#ifdef CONFIG_HIGHMEM
+macro_line|#if 0 
+singleline_comment|//def CONFIG_HIGHMEM
 macro_line|#if defined(CONFIG_X86)
-DECL|macro|DMAADDR_OFFSET
 mdefine_line|#define DMAADDR_OFFSET  0
 macro_line|#if defined(CONFIG_HIGHMEM64G)
-DECL|typedef|dmaaddr_high_t
 r_typedef
 id|u64
 id|dmaaddr_high_t
 suffix:semicolon
 macro_line|#else
-DECL|typedef|dmaaddr_high_t
 r_typedef
 id|u32
 id|dmaaddr_high_t
 suffix:semicolon
 macro_line|#endif
 macro_line|#elif defined(CONFIG_PPC)
-DECL|macro|DMAADDR_OFFSET
 mdefine_line|#define DMAADDR_OFFSET PCI_DRAM_OFFSET
-DECL|typedef|dmaaddr_high_t
 r_typedef
 r_int
 r_int
@@ -65,7 +61,6 @@ macro_line|#endif
 r_static
 r_inline
 id|dmaaddr_high_t
-DECL|function|pci_map_single_high
 id|pci_map_single_high
 c_func
 (paren
@@ -168,6 +163,13 @@ id|dir
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#if defined(USE_64BIT_ADDR)
+DECL|macro|VERSION
+mdefine_line|#define&t;VERSION&t;_VERSION USE_64BIT_ADDR
+macro_line|#else
+DECL|macro|VERSION
+mdefine_line|#define&t;VERSION&t;_VERSION
 macro_line|#endif
 multiline_comment|/* tunables */
 DECL|macro|RX_BUF_SIZE
@@ -303,6 +305,8 @@ DECL|macro|CFG_TBI_EN
 mdefine_line|#define CFG_TBI_EN&t;0x01000000
 DECL|macro|CFG_MODE_1000
 mdefine_line|#define CFG_MODE_1000&t;0x00400000
+DECL|macro|CFG_AUTO_1000
+mdefine_line|#define CFG_AUTO_1000&t;0x00200000
 DECL|macro|CFG_PINT_CTL
 mdefine_line|#define CFG_PINT_CTL&t;0x001c0000
 DECL|macro|CFG_PINT_DUPSTS
@@ -487,6 +491,54 @@ DECL|macro|VDR
 mdefine_line|#define VDR&t;&t;0xc4
 DECL|macro|CCSR
 mdefine_line|#define CCSR&t;&t;0xcc
+DECL|macro|TBICR
+mdefine_line|#define TBICR&t;&t;0xe0
+DECL|macro|TBISR
+mdefine_line|#define TBISR&t;&t;0xe4
+DECL|macro|TANAR
+mdefine_line|#define TANAR&t;&t;0xe8
+DECL|macro|TANLPAR
+mdefine_line|#define TANLPAR&t;&t;0xec
+DECL|macro|TANER
+mdefine_line|#define TANER&t;&t;0xf0
+DECL|macro|TESR
+mdefine_line|#define TESR&t;&t;0xf4
+DECL|macro|TBICR_MR_AN_ENABLE
+mdefine_line|#define TBICR_MR_AN_ENABLE&t;0x00001000
+DECL|macro|TBICR_MR_RESTART_AN
+mdefine_line|#define TBICR_MR_RESTART_AN&t;0x00000200
+DECL|macro|TBISR_MR_LINK_STATUS
+mdefine_line|#define TBISR_MR_LINK_STATUS&t;0x00000020
+DECL|macro|TBISR_MR_AN_COMPLETE
+mdefine_line|#define TBISR_MR_AN_COMPLETE&t;0x00000004
+DECL|macro|TANAR_PS2
+mdefine_line|#define TANAR_PS2 &t;&t;0x00000100
+DECL|macro|TANAR_PS1
+mdefine_line|#define TANAR_PS1 &t;&t;0x00000080
+DECL|macro|TANAR_HALF_DUP
+mdefine_line|#define TANAR_HALF_DUP &t;&t;0x00000040
+DECL|macro|TANAR_FULL_DUP
+mdefine_line|#define TANAR_FULL_DUP &t;&t;0x00000020
+DECL|macro|GPIOR_GP5_OE
+mdefine_line|#define GPIOR_GP5_OE&t;&t;0x00000200
+DECL|macro|GPIOR_GP4_OE
+mdefine_line|#define GPIOR_GP4_OE&t;&t;0x00000100
+DECL|macro|GPIOR_GP3_OE
+mdefine_line|#define GPIOR_GP3_OE&t;&t;0x00000080
+DECL|macro|GPIOR_GP2_OE
+mdefine_line|#define GPIOR_GP2_OE&t;&t;0x00000040
+DECL|macro|GPIOR_GP1_OE
+mdefine_line|#define GPIOR_GP1_OE&t;&t;0x00000020
+DECL|macro|GPIOR_GP3_OUT
+mdefine_line|#define GPIOR_GP3_OUT&t;&t;0x00000004
+DECL|macro|GPIOR_GP1_OUT
+mdefine_line|#define GPIOR_GP1_OUT&t;&t;0x00000001
+DECL|macro|LINK_AUTONEGOTIATE
+mdefine_line|#define LINK_AUTONEGOTIATE&t;0x01
+DECL|macro|LINK_DOWN
+mdefine_line|#define LINK_DOWN&t;&t;0x02
+DECL|macro|LINK_UP
+mdefine_line|#define LINK_UP&t;&t;&t;0x04
 DECL|macro|__kick_rx
 mdefine_line|#define __kick_rx(dev)&t;writel(CR_RXE, dev-&gt;base + CR)
 DECL|macro|kick_rx
@@ -637,6 +689,10 @@ DECL|member|ee
 r_struct
 id|eeprom
 id|ee
+suffix:semicolon
+DECL|member|linkstate
+r_int
+id|linkstate
 suffix:semicolon
 DECL|member|tx_lock
 id|spinlock_t
@@ -825,21 +881,33 @@ id|desc
 l_int|0
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|link
+)paren
 suffix:semicolon
 id|desc
 (braket
 l_int|1
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|buf
+)paren
 suffix:semicolon
 id|desc
 (braket
 l_int|3
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|extsts
+)paren
 suffix:semicolon
 id|mb
 c_func
@@ -851,7 +919,11 @@ id|desc
 l_int|2
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|cmdsts
+)paren
 suffix:semicolon
 )brace
 DECL|macro|build_rx_desc
@@ -1032,6 +1104,9 @@ op_star
 id|DESC_SIZE
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dev-&gt;rx_info.phy_descs
 op_plus
 (paren
@@ -1040,6 +1115,7 @@ op_star
 id|DESC_SIZE
 op_star
 l_int|4
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1356,6 +1432,8 @@ comma
 l_string|&quot;1000&quot;
 comma
 l_string|&quot;1000(?)&quot;
+comma
+l_string|&quot;1000F&quot;
 )brace
 suffix:semicolon
 id|u32
@@ -1363,18 +1441,19 @@ id|cfg
 comma
 id|new_cfg
 suffix:semicolon
-id|new_cfg
-op_assign
-id|dev-&gt;CFG_cache
-op_amp
-op_complement
-(paren
-id|CFG_SB
-op_or
-id|CFG_MODE_1000
-op_or
-id|CFG_SPDSTS
-)paren
+id|u32
+id|tbisr
+comma
+id|tanar
+comma
+id|tanlpar
+suffix:semicolon
+r_int
+id|speed
+comma
+id|fullduplex
+comma
+id|newlinkstate
 suffix:semicolon
 id|cfg
 op_assign
@@ -1387,6 +1466,275 @@ id|CFG
 )paren
 op_xor
 id|SPDSTS_POLARITY
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;CFG_cache
+op_amp
+id|CFG_TBI_EN
+)paren
+(brace
+multiline_comment|/* we have an optical transceiver */
+id|tbisr
+op_assign
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TBISR
+)paren
+suffix:semicolon
+id|tanar
+op_assign
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TANAR
+)paren
+suffix:semicolon
+id|tanlpar
+op_assign
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TANLPAR
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;phy_intr: tbisr=%08x, tanar=%08x, tanlpar=%08x&bslash;n&quot;
+comma
+id|tbisr
+comma
+id|tanar
+comma
+id|tanlpar
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|fullduplex
+op_assign
+(paren
+id|tanlpar
+op_amp
+id|TANAR_FULL_DUP
+)paren
+op_logical_and
+(paren
+id|tanar
+op_amp
+id|TANAR_FULL_DUP
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* both of us are full duplex */
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TXCFG
+)paren
+op_or
+id|TXCFG_CSI
+op_or
+id|TXCFG_HBI
+op_or
+id|TXCFG_ATP
+comma
+id|dev-&gt;base
+op_plus
+id|TXCFG
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|RXCFG
+)paren
+op_or
+id|RXCFG_RX_FD
+comma
+id|dev-&gt;base
+op_plus
+id|RXCFG
+)paren
+suffix:semicolon
+multiline_comment|/* Light up full duplex LED */
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+op_or
+id|GPIOR_GP1_OUT
+comma
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|tanlpar
+op_amp
+id|TANAR_HALF_DUP
+)paren
+op_logical_and
+(paren
+id|tanar
+op_amp
+id|TANAR_HALF_DUP
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|tanlpar
+op_amp
+id|TANAR_FULL_DUP
+)paren
+op_logical_and
+(paren
+id|tanar
+op_amp
+id|TANAR_HALF_DUP
+)paren
+)paren
+op_logical_or
+(paren
+(paren
+id|tanlpar
+op_amp
+id|TANAR_HALF_DUP
+)paren
+op_logical_and
+(paren
+id|tanar
+op_amp
+id|TANAR_FULL_DUP
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/* one or both of us are half duplex */
+id|writel
+c_func
+(paren
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TXCFG
+)paren
+op_amp
+op_complement
+(paren
+id|TXCFG_CSI
+op_or
+id|TXCFG_HBI
+)paren
+)paren
+op_or
+id|TXCFG_ATP
+comma
+id|dev-&gt;base
+op_plus
+id|TXCFG
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|RXCFG
+)paren
+op_amp
+op_complement
+id|RXCFG_RX_FD
+comma
+id|dev-&gt;base
+op_plus
+id|RXCFG
+)paren
+suffix:semicolon
+multiline_comment|/* Turn off full duplex LED */
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+op_amp
+op_complement
+id|GPIOR_GP1_OUT
+comma
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+suffix:semicolon
+)brace
+id|speed
+op_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* 1000F */
+)brace
+r_else
+(brace
+multiline_comment|/* we have a copper transceiver */
+id|new_cfg
+op_assign
+id|dev-&gt;CFG_cache
+op_amp
+op_complement
+(paren
+id|CFG_SB
+op_or
+id|CFG_MODE_1000
+op_or
+id|CFG_SPDSTS
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1455,12 +1803,50 @@ id|cfg
 op_amp
 id|CFG_SPDSTS
 suffix:semicolon
-r_if
-c_cond
+id|speed
+op_assign
+(paren
+(paren
+id|cfg
+op_div
+id|CFG_SPDSTS0
+)paren
+op_amp
+l_int|3
+)paren
+suffix:semicolon
+id|fullduplex
+op_assign
+(paren
+id|cfg
+op_amp
+id|CFG_DUPSTS
+)paren
+suffix:semicolon
+)brace
+id|newlinkstate
+op_assign
 (paren
 id|cfg
 op_amp
 id|CFG_LNKSTS
+)paren
+ques
+c_cond
+id|LINK_UP
+suffix:colon
+id|LINK_DOWN
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newlinkstate
+op_amp
+id|LINK_UP
+op_logical_and
+id|dev-&gt;linkstate
+op_ne
+id|newlinkstate
 )paren
 (brace
 id|netif_start_queue
@@ -1477,24 +1863,6 @@ op_amp
 id|dev-&gt;net_dev
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|netif_stop_queue
-c_func
-(paren
-op_amp
-id|dev-&gt;net_dev
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|cfg
-op_amp
-id|CFG_LNKSTS
-)paren
 id|printk
 c_func
 (paren
@@ -1505,22 +1873,10 @@ id|dev-&gt;net_dev.name
 comma
 id|speeds
 (braket
-(paren
-(paren
-id|cfg
-op_div
-id|CFG_SPDSTS0
-)paren
-op_amp
-l_int|3
-)paren
+id|speed
 )braket
 comma
-(paren
-id|cfg
-op_amp
-id|CFG_DUPSTS
-)paren
+id|fullduplex
 ques
 c_cond
 l_string|&quot;full&quot;
@@ -1528,7 +1884,27 @@ suffix:colon
 l_string|&quot;half&quot;
 )paren
 suffix:semicolon
+)brace
 r_else
+r_if
+c_cond
+(paren
+id|newlinkstate
+op_amp
+id|LINK_DOWN
+op_logical_and
+id|dev-&gt;linkstate
+op_ne
+id|newlinkstate
+)paren
+(brace
+id|netif_stop_queue
+c_func
+(paren
+op_amp
+id|dev-&gt;net_dev
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1537,6 +1913,11 @@ l_string|&quot;%s: link now down.&bslash;n&quot;
 comma
 id|dev-&gt;net_dev.name
 )paren
+suffix:semicolon
+)brace
+id|dev-&gt;linkstate
+op_assign
+id|newlinkstate
 suffix:semicolon
 )brace
 DECL|function|ns83820_setup_rx
@@ -2097,10 +2478,14 @@ op_amp
 (paren
 id|cmdsts
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc
 (braket
 id|CMDSTS
 )braket
+)paren
 )paren
 )paren
 op_logical_and
@@ -2119,23 +2504,25 @@ suffix:semicolon
 id|u32
 id|extsts
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc
 (braket
 id|EXTSTS
 )braket
+)paren
 suffix:semicolon
 id|dmaaddr_high_t
 id|bufptr
 op_assign
-op_star
-(paren
-id|hw_addr_t
-op_star
-)paren
+id|le32_to_cpu
+c_func
 (paren
 id|desc
-op_plus
+(braket
 id|BUFPTR
+)braket
 )paren
 suffix:semicolon
 id|dprintk
@@ -2151,10 +2538,14 @@ c_func
 (paren
 l_string|&quot;link: %08x&bslash;n&quot;
 comma
+id|cpu_to_le32
+c_func
+(paren
 id|desc
 (braket
 id|LINK
 )braket
+)paren
 )paren
 suffix:semicolon
 id|dprintk
@@ -2162,10 +2553,7 @@ c_func
 (paren
 l_string|&quot;extsts: %08x&bslash;n&quot;
 comma
-id|desc
-(braket
-id|EXTSTS
-)braket
+id|extsts
 )paren
 suffix:semicolon
 id|skb
@@ -2225,7 +2613,8 @@ op_amp
 id|cmdsts
 )paren
 (brace
-macro_line|#ifndef __i386__
+macro_line|#if 0 
+singleline_comment|//ndef __i386__
 r_struct
 id|sk_buff
 op_star
@@ -2258,7 +2647,8 @@ comma
 id|len
 )paren
 suffix:semicolon
-macro_line|#ifndef __i386__&t;/* I hate the network stack sometimes */
+macro_line|#if 0 
+singleline_comment|//ndef __i386__&t;/* I hate the network stack sometimes */
 id|tmp
 op_assign
 id|__dev_alloc_skb
@@ -2391,7 +2781,8 @@ id|skb
 id|dev-&gt;stats.rx_dropped
 op_increment
 suffix:semicolon
-macro_line|#ifndef __i386__
+macro_line|#if 0 
+singleline_comment|//ndef __i386__
 id|done
 suffix:colon
 suffix:semicolon
@@ -2549,10 +2940,14 @@ id|tx_done_idx
 comma
 id|dev-&gt;tx_free_idx
 comma
+id|le32_to_cpu
+c_func
+(paren
 id|desc
 (braket
 id|CMDSTS
 )braket
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -2571,10 +2966,14 @@ op_amp
 (paren
 id|cmdsts
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|desc
 (braket
 id|CMDSTS
 )braket
+)paren
 )paren
 )paren
 )paren
@@ -2626,10 +3025,7 @@ id|tx_done_idx
 comma
 id|dev-&gt;tx_free_idx
 comma
-id|desc
-(braket
-id|CMDSTS
-)braket
+id|cmdsts
 )paren
 suffix:semicolon
 id|skb
@@ -2665,15 +3061,13 @@ c_func
 (paren
 id|dev-&gt;pci_dev
 comma
-op_star
-(paren
-id|hw_addr_t
-op_star
-)paren
+id|le32_to_cpu
+c_func
 (paren
 id|desc
-op_plus
+(braket
 id|BUFPTR
+)braket
 )paren
 comma
 id|skb-&gt;len
@@ -2707,7 +3101,11 @@ id|desc
 id|CMDSTS
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|barrier
 c_func
@@ -3282,7 +3680,7 @@ macro_line|#endif
 id|dprintk
 c_func
 (paren
-l_string|&quot;frag[%3u]: %4u @ 0x%x%08Lx&bslash;n&quot;
+l_string|&quot;frag[%3u]: %4u @ 0x%08Lx&bslash;n&quot;
 comma
 id|free_idx
 comma
@@ -3311,6 +3709,9 @@ id|desc
 id|LINK
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dev-&gt;tx_phy_descs
 op_plus
 (paren
@@ -3320,26 +3721,29 @@ id|DESC_SIZE
 op_star
 l_int|4
 )paren
+)paren
 suffix:semicolon
-op_star
-(paren
-id|hw_addr_t
-op_star
-)paren
-(paren
 id|desc
-op_plus
+(braket
 id|BUFPTR
-)paren
+)braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|buf
+)paren
 suffix:semicolon
 id|desc
 (braket
 id|EXTSTS
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|extsts
+)paren
 suffix:semicolon
 id|cmdsts
 op_assign
@@ -3383,7 +3787,11 @@ id|desc
 id|CMDSTS
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|cmdsts
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3419,7 +3827,7 @@ id|dev-&gt;pci_dev
 comma
 id|frag-&gt;page
 comma
-l_int|0
+id|frag-&gt;page_offset
 comma
 id|frag-&gt;size
 comma
@@ -3476,7 +3884,11 @@ id|first_desc
 id|CMDSTS
 )braket
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 id|CMDSTS_OWN
+)paren
 suffix:semicolon
 id|dev-&gt;tx_free_idx
 op_assign
@@ -3729,6 +4141,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 op_amp
 id|ethcmd
@@ -3764,6 +4177,7 @@ id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info.driver
 comma
@@ -3771,6 +4185,7 @@ l_string|&quot;ns83820&quot;
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info.version
 comma
@@ -3778,6 +4193,7 @@ id|VERSION
 )paren
 suffix:semicolon
 id|strcpy
+c_func
 (paren
 id|info.bus_info
 comma
@@ -3788,6 +4204,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 id|useraddr
 comma
@@ -4197,29 +4614,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ISR_RXSOVR
 op_amp
 id|isr
 )paren
+)paren
+(brace
 id|Dprintk
 c_func
 (paren
-l_string|&quot;overrun&bslash;n&quot;
+l_string|&quot;overrun: rxsovr&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dev-&gt;stats.rx_over_errors
+op_increment
+suffix:semicolon
+)brace
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|ISR_RXORN
 op_amp
 id|isr
 )paren
+)paren
+(brace
 id|Dprintk
 c_func
 (paren
-l_string|&quot;overrun&bslash;n&quot;
+l_string|&quot;overrun: rxorn&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dev-&gt;stats.rx_over_errors
+op_increment
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4688,14 +5123,8 @@ id|i
 op_increment
 )paren
 (brace
-op_star
-(paren
-id|hw_addr_t
-op_star
-)paren
-(paren
 id|dev-&gt;tx_descs
-op_plus
+(braket
 (paren
 id|i
 op_star
@@ -4703,8 +5132,11 @@ id|DESC_SIZE
 )paren
 op_plus
 id|LINK
-)paren
+)braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dev-&gt;tx_phy_descs
 op_plus
 (paren
@@ -4720,6 +5152,7 @@ op_star
 id|DESC_SIZE
 op_star
 l_int|4
+)paren
 suffix:semicolon
 )brace
 id|dev-&gt;tx_idx
@@ -4873,6 +5306,7 @@ id|i
 )paren
 suffix:semicolon
 macro_line|#else
+multiline_comment|/* Read from the perfect match memory: this is loaded by&n;&t;&t; * the chip from the EEPROM via the EELOAD self test.&n;&t;&t; */
 id|writel
 c_func
 (paren
@@ -5389,6 +5823,21 @@ r_goto
 id|out_unmap
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+op_amp
+id|dev-&gt;net_dev
+)paren
+)paren
+(brace
+r_goto
+id|out_unmap
+suffix:semicolon
+)brace
 id|dev-&gt;net_dev.open
 op_assign
 id|ns83820_open
@@ -5550,7 +5999,7 @@ id|CFG_PCI64_DET
 id|printk
 c_func
 (paren
-l_string|&quot;%s: enabling 64 bit PCI.&bslash;n&quot;
+l_string|&quot;%s: enabling 64 bit PCI addressing.&bslash;n&quot;
 comma
 id|dev-&gt;net_dev.name
 )paren
@@ -5561,17 +6010,14 @@ id|CFG_T64ADDR
 op_or
 id|CFG_DATA64_EN
 suffix:semicolon
+macro_line|#if defined(USE_64BIT_ADDR)
+id|dev-&gt;net_dev.features
+op_or_assign
+id|NETIF_F_HIGHDMA
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: disabling 64 bit PCI.&bslash;n&quot;
-comma
-id|dev-&gt;net_dev.name
-)paren
-suffix:semicolon
 id|dev-&gt;CFG_cache
 op_and_assign
 op_complement
@@ -5581,7 +6027,6 @@ op_or
 id|CFG_DATA64_EN
 )paren
 suffix:semicolon
-)brace
 id|dev-&gt;CFG_cache
 op_and_assign
 (paren
@@ -5627,27 +6072,101 @@ id|dev-&gt;CFG_cache
 op_or_assign
 id|CFG_M64ADDR
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;using 64 bit addressing&bslash;n&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef __LITTLE_ENDIAN
+multiline_comment|/* Big endian mode does not seem to do what the docs suggest */
 id|dev-&gt;CFG_cache
 op_and_assign
 op_complement
 id|CFG_BEM
 suffix:semicolon
-macro_line|#elif defined(__BIG_ENDIAN)
+multiline_comment|/* setup optical transceiver if we have one */
+r_if
+c_cond
+(paren
+id|dev-&gt;CFG_cache
+op_amp
+id|CFG_TBI_EN
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: enabling optical transceiver&bslash;n&quot;
+comma
+id|dev-&gt;net_dev.name
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+op_or
+l_int|0x3e8
+comma
+id|dev-&gt;base
+op_plus
+id|GPIOR
+)paren
+suffix:semicolon
+multiline_comment|/* setup auto negotiation feature advertisement */
+id|writel
+c_func
+(paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|TANAR
+)paren
+op_or
+id|TANAR_HALF_DUP
+op_or
+id|TANAR_FULL_DUP
+comma
+id|dev-&gt;base
+op_plus
+id|TANAR
+)paren
+suffix:semicolon
+multiline_comment|/* start auto negotiation */
+id|writel
+c_func
+(paren
+id|TBICR_MR_AN_ENABLE
+op_or
+id|TBICR_MR_RESTART_AN
+comma
+id|dev-&gt;base
+op_plus
+id|TBICR
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|TBICR_MR_AN_ENABLE
+comma
+id|dev-&gt;base
+op_plus
+id|TBICR
+)paren
+suffix:semicolon
+id|dev-&gt;linkstate
+op_assign
+id|LINK_AUTONEGOTIATE
+suffix:semicolon
 id|dev-&gt;CFG_cache
 op_or_assign
-id|CFG_BEM
+id|CFG_MODE_1000
 suffix:semicolon
-macro_line|#else
-macro_line|#error This driver only works for big or little endian!!!
-macro_line|#endif
+)brace
 id|writel
 c_func
 (paren
@@ -5846,22 +6365,41 @@ op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
 macro_line|#endif
-id|register_netdev
-c_func
-(paren
-op_amp
-id|dev-&gt;net_dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: ns83820.c v&quot;
+l_string|&quot;%s: ns83820 v&quot;
 id|VERSION
-l_string|&quot;: DP83820 %02x:%02x:%02x:%02x:%02x:%02x pciaddr=0x%08lx irq=%d rev 0x%x&bslash;n&quot;
+l_string|&quot;: DP83820 v%u.%u: %02x:%02x:%02x:%02x:%02x:%02x io=0x%08lx irq=%d f=%s&bslash;n&quot;
 comma
 id|dev-&gt;net_dev.name
+comma
+(paren
+r_int
+)paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|SRR
+)paren
+op_rshift
+l_int|8
+comma
+(paren
+r_int
+)paren
+id|readl
+c_func
+(paren
+id|dev-&gt;base
+op_plus
+id|SRR
+)paren
+op_amp
+l_int|0xff
 comma
 id|dev-&gt;net_dev.dev_addr
 (braket
@@ -5898,15 +6436,15 @@ comma
 id|pci_dev-&gt;irq
 comma
 (paren
-r_int
+id|dev-&gt;net_dev.features
+op_amp
+id|NETIF_F_HIGHDMA
 )paren
-id|readl
-c_func
-(paren
-id|dev-&gt;base
-op_plus
-id|SRR
-)paren
+ques
+c_cond
+l_string|&quot;sg&quot;
+suffix:colon
+l_string|&quot;h,sg&quot;
 )paren
 suffix:semicolon
 r_return
