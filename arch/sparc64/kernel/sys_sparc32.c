@@ -1002,12 +1002,12 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-id|tv32
+id|i
 comma
 r_sizeof
 (paren
 op_star
-id|tv32
+id|i
 )paren
 )paren
 op_logical_or
