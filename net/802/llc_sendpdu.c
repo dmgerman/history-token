@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * NET&t;&t;An implementation of the IEEE 802.2 LLC protocol for the&n; *&t;&t;LINUX operating system.  LLC is implemented as a set of &n; *&t;&t;state machines and callbacks for higher networking layers.&n; *&n; *&t;&t;llc_sendpdu(), llc_sendipdu(), resend() + queue handling code&n; *&n; *&t;&t;Written by Tim Alpaerts, Tim_Alpaerts@toyota-motor-europe.com&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes&n; *&t;&t;Alan Cox&t;:&t;Chainsawed into Linux format, style&n; *&t;&t;&t;&t;&t;Added llc_ to function names&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/p8022.h&gt;

@@ -25,7 +25,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;inia100.h&quot;
 DECL|variable|driver_template
 r_static

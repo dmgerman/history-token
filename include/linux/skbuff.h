@@ -413,7 +413,7 @@ DECL|macro|SK_RMEM_MAX
 mdefine_line|#define SK_RMEM_MAX&t;65535
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; *&t;Handling routines are only of interest to the kernel&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_void

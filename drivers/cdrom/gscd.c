@@ -12,7 +12,7 @@ DECL|macro|NO_FUTURE_WORK
 mdefine_line|#define  NO_FUTURE_WORK
 multiline_comment|/*------------------------*/
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

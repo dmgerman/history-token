@@ -3,6 +3,8 @@ multiline_comment|/* Written 1998-2000 by Werner Almesberger, EPFL ICA */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt; /* for pkt_sched */
 macro_line|#include &lt;linux/rtnetlink.h&gt;

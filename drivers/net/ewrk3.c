@@ -1,13 +1,4 @@
 multiline_comment|/*  ewrk3.c: A DIGITAL EtherWORKS 3 ethernet driver for Linux.&n;&n;   Written 1994 by David C. Davies.&n;&n;   Copyright 1994 Digital Equipment Corporation.&n;&n;   This software may be used and distributed according to the terms of&n;   the GNU General Public License, incorporated herein by reference.&n;&n;   This driver is written for the Digital Equipment Corporation series&n;   of EtherWORKS ethernet cards:&n;&n;   DE203 Turbo (BNC)&n;   DE204 Turbo (TP)&n;   DE205 Turbo (TP BNC)&n;&n;   The driver has been tested on a relatively busy  network using the DE205&n;   card and benchmarked with &squot;ttcp&squot;: it transferred 16M  of data at 975kB/s&n;   (7.8Mb/s) to a DECstation 5000/200.&n;&n;   The author may be reached at davies@maniac.ultranet.com.&n;&n;   =========================================================================&n;   This driver has been written  substantially  from scratch, although  its&n;   inheritance of style and stack interface from &squot;depca.c&squot; and in turn from&n;   Donald Becker&squot;s &squot;lance.c&squot; should be obvious.&n;&n;   The  DE203/4/5 boards  all  use a new proprietary   chip in place of the&n;   LANCE chip used in prior cards  (DEPCA, DE100, DE200/1/2, DE210, DE422).&n;   Use the depca.c driver in the standard distribution  for the LANCE based&n;   cards from DIGITAL; this driver will not work with them.&n;&n;   The DE203/4/5 cards have 2  main modes: shared memory  and I/O only. I/O&n;   only makes  all the card accesses through  I/O transactions and  no high&n;   (shared)  memory is used. This  mode provides a &gt;48% performance penalty&n;   and  is deprecated in this  driver,  although allowed to provide initial&n;   setup when hardstrapped.&n;&n;   The shared memory mode comes in 3 flavours: 2kB, 32kB and 64kB. There is&n;   no point in using any mode other than the 2kB  mode - their performances&n;   are virtually identical, although the driver has  been tested in the 2kB&n;   and 32kB modes. I would suggest you uncomment the line:&n;&n;   FORCE_2K_MODE;&n;&n;   to allow the driver to configure the card as a  2kB card at your current&n;   base  address, thus leaving more  room to clutter  your  system box with&n;   other memory hungry boards.&n;&n;   As many ISA  and EISA cards  can be supported  under this driver  as you&n;   wish, limited primarily  by the available IRQ lines,  rather than by the&n;   available I/O addresses  (24 ISA,  16 EISA).   I have  checked different&n;   configurations of  multiple  depca cards and  ewrk3 cards  and have  not&n;   found a problem yet (provided you have at least depca.c v0.38) ...&n;&n;   The board IRQ setting   must be at  an unused  IRQ which is  auto-probed&n;   using  Donald  Becker&squot;s autoprobe  routines.   All  these cards   are at&n;   {5,10,11,15}.&n;&n;   No 16MB memory  limitation should exist with this  driver as DMA is  not&n;   used and the common memory area is in low memory on the network card (my&n;   current system has 20MB and I&squot;ve not had problems yet).&n;&n;   The ability to load  this driver as a  loadable module has been included&n;   and used  extensively during the  driver development (to save those long&n;   reboot sequences). To utilise this ability, you have to do 8 things:&n;&n;   0) have a copy of the loadable modules code installed on your system.&n;   1) copy ewrk3.c from the  /linux/drivers/net directory to your favourite&n;   temporary directory.&n;   2) edit the  source code near  line 1898 to reflect  the I/O address and&n;   IRQ you&squot;re using.&n;   3) compile  ewrk3.c, but include -DMODULE in  the command line to ensure&n;   that the correct bits are compiled (see end of source code).&n;   4) if you are wanting to add a new  card, goto 5. Otherwise, recompile a&n;   kernel with the ewrk3 configuration turned off and reboot.&n;   5) insmod ewrk3.o&n;   [Alan Cox: Changed this so you can insmod ewrk3.o irq=x io=y]&n;   6) run the net startup bits for your new eth?? interface manually&n;   (usually /etc/rc.inet[12] at boot time).&n;   7) enjoy!&n;&n;   Note that autoprobing is not allowed in loadable modules - the system is&n;   already up and running and you&squot;re messing with interrupts.&n;&n;   To unload a module, turn off the associated interface&n;   &squot;ifconfig eth?? down&squot; then &squot;rmmod ewrk3&squot;.&n;&n;   Promiscuous   mode has been  turned  off  in this driver,   but  all the&n;   multicast  address bits  have been   turned on. This  improved the  send&n;   performance on a busy network by about 13%.&n;&n;   Ioctl&squot;s have now been provided (primarily because  I wanted to grab some&n;   packet size statistics). They  are patterned after &squot;plipconfig.c&squot; from a&n;   suggestion by Alan Cox.  Using these  ioctls, you can enable promiscuous&n;   mode, add/delete multicast  addresses, change the hardware address,  get&n;   packet size distribution statistics and muck around with the control and&n;   status register. I&squot;ll add others if and when the need arises.&n;&n;   TO DO:&n;   ------&n;&n;&n;   Revision History&n;   ----------------&n;&n;   Version   Date        Description&n;&n;   0.1     26-aug-94   Initial writing. ALPHA code release.&n;   0.11    31-aug-94   Fixed: 2k mode memory base calc.,&n;   LeMAC version calc.,&n;   IRQ vector assignments during autoprobe.&n;   0.12    31-aug-94   Tested working on LeMAC2 (DE20[345]-AC) card.&n;   Fixed up MCA hash table algorithm.&n;   0.20     4-sep-94   Added IOCTL functionality.&n;   0.21    14-sep-94   Added I/O mode.&n;   0.21axp 15-sep-94   Special version for ALPHA AXP Linux V1.0.&n;   0.22    16-sep-94   Added more IOCTLs &amp; tidied up.&n;   0.23    21-sep-94   Added transmit cut through.&n;   0.24    31-oct-94   Added uid checks in some ioctls.&n;   0.30     1-nov-94   BETA code release.&n;   0.31     5-dec-94   Added check/allocate region code.&n;   0.32    16-jan-95   Broadcast packet fix.&n;   0.33    10-Feb-95   Fix recognition bug reported by &lt;bkm@star.rl.ac.uk&gt;.&n;   0.40    27-Dec-95   Rationalise MODULE and autoprobe code.&n;   Rewrite for portability &amp; updated.&n;   ALPHA support from &lt;jestabro@amt.tay1.dec.com&gt;&n;   Added verify_area() calls in ewrk3_ioctl() from&n;   suggestion by &lt;heiko@colossus.escape.de&gt;.&n;   Add new multicasting code.&n;   0.41    20-Jan-96   Fix IRQ set up problem reported by&n;   &lt;kenneth@bbs.sas.ntu.ac.sg&gt;.&n;   0.42    22-Apr-96      Fix alloc_device() bug &lt;jari@markkus2.fimr.fi&gt;&n;   0.43    16-Aug-96      Update alloc_device() to conform to de4x5.c&n;&n;   =========================================================================&n; */
-DECL|variable|version
-r_static
-r_const
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;ewrk3.c:v0.43 96/8/16 davies@maniac.ultranet.com&bslash;n&quot;
-suffix:semicolon
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,7 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -32,6 +23,17 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &quot;ewrk3.h&quot;
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|version
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;ewrk3.c:v0.43a 2001/02/04 davies@maniac.ultranet.com&bslash;n&quot;
+suffix:semicolon
 macro_line|#ifdef EWRK3_DEBUG
 DECL|variable|ewrk3_debug
 r_static
@@ -202,11 +204,6 @@ id|u_char
 id|hard_strapped
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow a full open */
-DECL|member|lock
-id|u_char
-id|lock
-suffix:semicolon
-multiline_comment|/* Lock the page register */
 DECL|member|txc
 id|u_char
 id|txc
@@ -218,6 +215,10 @@ op_star
 id|mctbl
 suffix:semicolon
 multiline_comment|/* Pointer to the multicast table */
+DECL|member|hw_lock
+id|spinlock_t
+id|hw_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;   ** Force the EtherWORKS 3 card to be in 2kB MODE&n; */
@@ -1715,6 +1716,13 @@ id|lp-&gt;hard_strapped
 op_assign
 id|hard_strapped
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 id|lp-&gt;mPage
 op_assign
 l_int|64
@@ -2502,11 +2510,6 @@ id|EWRK3_FMQ
 suffix:semicolon
 multiline_comment|/* to the Free Memory Queue */
 )brace
-id|lp-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Ensure there are no locks */
 id|START_EWRK3
 suffix:semicolon
 multiline_comment|/* Enable the TX and/or RX */
@@ -2600,7 +2603,6 @@ DECL|function|ewrk3_queue_pkt
 r_static
 r_int
 id|ewrk3_queue_pkt
-c_func
 (paren
 r_struct
 id|sk_buff
@@ -2630,47 +2632,73 @@ id|iobase
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-id|u_char
-id|icr
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-macro_line|#error &quot;This needs spinlocks&quot;
-macro_line|#endif
-id|DISABLE_IRQs
-suffix:semicolon
-multiline_comment|/* So that the page # remains correct */
-multiline_comment|/*&n;&t;   ** Get a free page from the FMQ when resources are available&n;&t; */
-r_if
-c_cond
-(paren
-id|inb
-c_func
-(paren
-id|EWRK3_FMQC
-)paren
-OG
-l_int|0
-)paren
-(brace
 id|u_long
 id|buf
 op_assign
 l_int|0
 suffix:semicolon
 id|u_char
+id|icr
+suffix:semicolon
+id|u_char
 id|page
 suffix:semicolon
+id|spin_lock_irq
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
+id|DISABLE_IRQs
+suffix:semicolon
+multiline_comment|/* if no resources available, exit, request packet be queued */
+r_if
+c_cond
+(paren
+id|inb
+(paren
+id|EWRK3_FMQC
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: ewrk3_queue_pkt(): No free resources...&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: ewrk3_queue_pkt(): CSR: %02x ICR: %02x FMQC: %02x&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|inb
+(paren
+id|EWRK3_CSR
+)paren
+comma
+id|inb
+(paren
+id|EWRK3_ICR
+)paren
+comma
+id|inb
+(paren
+id|EWRK3_FMQC
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; ** Get a free page from the FMQ&n;&t; */
 r_if
 c_cond
 (paren
@@ -2678,36 +2706,29 @@ c_cond
 id|page
 op_assign
 id|inb
-c_func
 (paren
 id|EWRK3_FMQ
 )paren
 )paren
-OL
+op_ge
 id|lp-&gt;mPage
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;   ** Set up shared memory window and pointer into the window&n;&t;&t;&t; */
-r_while
-c_loop
+id|printk
 (paren
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
+l_string|&quot;ewrk3_queue_pkt(): Invalid free memory page (%d).&bslash;n&quot;
 comma
 (paren
-r_void
-op_star
+id|u_char
 )paren
-op_amp
-id|lp-&gt;lock
-)paren
-op_ne
-l_int|0
+id|page
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for lock to free */
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; ** Set up shared memory window and pointer into the window&n;&t; */
 r_if
 c_cond
 (paren
@@ -2717,7 +2738,6 @@ id|IO_ONLY
 )paren
 (brace
 id|outb
-c_func
 (paren
 id|page
 comma
@@ -2739,7 +2759,6 @@ op_assign
 id|lp-&gt;shmem_base
 suffix:semicolon
 id|outb
-c_func
 (paren
 id|page
 comma
@@ -2776,7 +2795,6 @@ id|lp-&gt;shmem_base
 )paren
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 id|page
@@ -2817,7 +2835,6 @@ id|lp-&gt;shmem_base
 )paren
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 id|page
@@ -2831,13 +2848,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|status
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|printk
-c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: Oops - your private data area is hosed!&bslash;n&quot;
@@ -2845,15 +2856,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-)brace
-r_if
-c_cond
+id|BUG
 (paren
-op_logical_neg
-id|status
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;   ** Set up the buffer control structures and copy the data from&n;&t;&t;&t;&t;   ** the socket buffer to the shared memory .&n;&t;&t;&t;&t; */
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; ** Set up the buffer control structures and copy the data from&n;&t; ** the socket buffer to the shared memory .&n;&t; */
 r_if
 c_cond
 (paren
@@ -2872,7 +2880,6 @@ op_assign
 id|skb-&gt;data
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 r_char
@@ -2889,7 +2896,6 @@ id|EWRK3_DATA
 )paren
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 r_char
@@ -2904,7 +2910,6 @@ id|EWRK3_DATA
 )paren
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 r_char
@@ -2923,7 +2928,6 @@ id|EWRK3_DATA
 )paren
 suffix:semicolon
 id|outb
-c_func
 (paren
 (paren
 r_char
@@ -2949,7 +2953,6 @@ op_increment
 )paren
 (brace
 id|outb
-c_func
 (paren
 op_star
 id|p
@@ -2960,7 +2963,6 @@ id|EWRK3_DATA
 suffix:semicolon
 )brace
 id|outb
-c_func
 (paren
 id|page
 comma
@@ -2972,7 +2974,6 @@ multiline_comment|/* Start sending pkt */
 r_else
 (brace
 id|isa_writeb
-c_func
 (paren
 (paren
 r_char
@@ -2994,7 +2995,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 id|isa_writeb
-c_func
 (paren
 (paren
 r_char
@@ -3020,7 +3020,6 @@ id|lp-&gt;txc
 )paren
 (brace
 id|isa_writeb
-c_func
 (paren
 (paren
 r_char
@@ -3047,7 +3046,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 id|isa_writeb
-c_func
 (paren
 l_int|0x04
 comma
@@ -3060,7 +3058,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 id|isa_writeb
-c_func
 (paren
 l_int|0x00
 comma
@@ -3073,7 +3070,6 @@ id|skb-&gt;len
 suffix:semicolon
 multiline_comment|/* Write the XCT flag */
 id|isa_memcpy_toio
-c_func
 (paren
 id|buf
 comma
@@ -3084,7 +3080,6 @@ id|PRELOAD
 suffix:semicolon
 multiline_comment|/* Write PRELOAD bytes */
 id|outb
-c_func
 (paren
 id|page
 comma
@@ -3093,7 +3088,6 @@ id|EWRK3_TQ
 suffix:semicolon
 multiline_comment|/* Start sending pkt */
 id|isa_memcpy_toio
-c_func
 (paren
 id|buf
 op_plus
@@ -3109,7 +3103,6 @@ id|PRELOAD
 )paren
 suffix:semicolon
 id|isa_writeb
-c_func
 (paren
 l_int|0xff
 comma
@@ -3125,7 +3118,6 @@ multiline_comment|/* Write the XCT flag */
 r_else
 (brace
 id|isa_writeb
-c_func
 (paren
 (paren
 r_char
@@ -3148,7 +3140,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 id|isa_writeb
-c_func
 (paren
 l_int|0x04
 comma
@@ -3161,7 +3152,6 @@ op_add_assign
 l_int|1
 suffix:semicolon
 id|isa_memcpy_toio
-c_func
 (paren
 id|buf
 comma
@@ -3172,7 +3162,6 @@ id|skb-&gt;len
 suffix:semicolon
 multiline_comment|/* Write data bytes */
 id|outb
-c_func
 (paren
 id|page
 comma
@@ -3182,6 +3171,14 @@ suffix:semicolon
 multiline_comment|/* Start sending pkt */
 )brace
 )brace
+id|ENABLE_IRQs
+suffix:semicolon
+id|spin_unlock_irq
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 id|lp-&gt;stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
@@ -3191,108 +3188,41 @@ op_assign
 id|jiffies
 suffix:semicolon
 id|dev_kfree_skb
-c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* return unused page to the free memory queue */
-id|outb
-c_func
-(paren
-id|page
-comma
-id|EWRK3_FMQ
-)paren
-suffix:semicolon
-)brace
-id|lp-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* unlock the page register */
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;ewrk3_queue_pkt(): Invalid free memory page (%d).&bslash;n&quot;
-comma
-(paren
-id|u_char
-)paren
-id|page
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: ewrk3_queue_pkt(): No free resources...&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: ewrk3_queue_pkt(): CSR: %02x ICR: %02x FMQC: %02x&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|inb
-c_func
-(paren
-id|EWRK3_CSR
-)paren
-comma
-id|inb
-c_func
-(paren
-id|EWRK3_ICR
-)paren
-comma
-id|inb
-c_func
-(paren
-id|EWRK3_FMQC
-)paren
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Check for free resources: clear &squot;tbusy&squot; if there are some */
+multiline_comment|/* Check for free resources: stop Tx queue if there are none */
 r_if
 c_cond
 (paren
 id|inb
-c_func
 (paren
 id|EWRK3_FMQC
 )paren
-OG
+op_eq
 l_int|0
 )paren
-(brace
-id|netif_wake_queue
-c_func
+id|netif_stop_queue
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
+r_return
+l_int|0
+suffix:semicolon
+id|err_out
+suffix:colon
 id|ENABLE_IRQs
 suffix:semicolon
+id|spin_unlock_irq
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 r_return
-id|status
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;   ** The EWRK3 interrupt handler.&n; */
@@ -3360,6 +3290,13 @@ id|EWRK3_CSR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; ** Mask the EWRK3 board interrupts and turn on the LED&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 id|DISABLE_IRQs
 suffix:semicolon
 id|cr
@@ -3483,6 +3420,13 @@ id|EWRK3_CR
 suffix:semicolon
 id|ENABLE_IRQs
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 )brace
 DECL|function|ewrk3_rx
 r_static
@@ -3522,14 +3466,6 @@ l_int|0
 suffix:semicolon
 id|u_char
 id|page
-comma
-id|tmpPage
-op_assign
-l_int|0
-comma
-id|tmpLock
-op_assign
-l_int|0
 suffix:semicolon
 id|u_long
 id|buf
@@ -3567,61 +3503,6 @@ id|lp-&gt;mPage
 )paren
 (brace
 multiline_comment|/* Get next entry&squot;s buffer page */
-multiline_comment|/*&n;&t;&t;&t;   ** Preempt any process using the current page register. Check for&n;&t;&t;&t;   ** an existing lock to reduce time taken in I/O transactions.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|tmpLock
-op_assign
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|lp-&gt;lock
-)paren
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-multiline_comment|/* Assert lock */
-r_if
-c_cond
-(paren
-id|lp-&gt;shmem_length
-op_eq
-id|IO_ONLY
-)paren
-(brace
-multiline_comment|/* Get existing page */
-id|tmpPage
-op_assign
-id|inb
-c_func
-(paren
-id|EWRK3_IOPR
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|tmpPage
-op_assign
-id|inb
-c_func
-(paren
-id|EWRK3_MPR
-)paren
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/*&n;&t;&t;&t;   ** Set up shared memory window and pointer into the window&n;&t;&t;&t; */
 r_if
 c_cond
@@ -4250,48 +4131,6 @@ comma
 id|EWRK3_FMQ
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmpLock
-)paren
-(brace
-multiline_comment|/* If a lock was preempted */
-r_if
-c_cond
-(paren
-id|lp-&gt;shmem_length
-op_eq
-id|IO_ONLY
-)paren
-(brace
-multiline_comment|/* Replace old page */
-id|outb
-c_func
-(paren
-id|tmpPage
-comma
-id|EWRK3_IOPR
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|outb
-c_func
-(paren
-id|tmpPage
-comma
-id|EWRK3_MPR
-)paren
-suffix:semicolon
-)brace
-)brace
-id|lp-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Unlock the page register */
 )brace
 r_else
 (brace
@@ -4846,26 +4685,13 @@ id|poly
 op_assign
 id|CRC_POLYNOMIAL_LE
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|test_and_set_bit
+id|spin_lock_irq
 c_func
 (paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
 op_amp
-id|lp-&gt;lock
-)paren
-op_ne
-l_int|0
+id|lp-&gt;hw_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for lock to free */
 r_if
 c_cond
 (paren
@@ -5341,12 +5167,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|lp-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Unlock the page register */
-r_return
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;   ** ISA bus I/O device probe&n; */
@@ -7815,26 +7641,13 @@ r_case
 id|EWRK3_GET_MCA
 suffix:colon
 multiline_comment|/* Get the multicast address table */
-r_while
-c_loop
-(paren
-id|test_and_set_bit
+id|spin_lock_irq
 c_func
 (paren
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
 op_amp
-id|lp-&gt;lock
-)paren
-op_ne
-l_int|0
+id|lp-&gt;hw_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for lock to free */
 r_if
 c_cond
 (paren
@@ -7918,6 +7731,13 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|lp-&gt;hw_lock
+)paren
+suffix:semicolon
 id|ioc-&gt;len
 op_assign
 (paren
@@ -7939,20 +7759,11 @@ comma
 id|ioc-&gt;len
 )paren
 )paren
-(brace
 id|status
 op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|lp-&gt;lock
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Unlock the page register */
 r_break
 suffix:semicolon
 r_case

@@ -1,7 +1,7 @@
 singleline_comment|// $Id: vmax301.c,v 1.15 2000/11/27 08:50:22 dwmw2 Exp $
 multiline_comment|/* ######################################################################&n;&n;   Tempustech VMAX SBC301 MTD Driver.&n;  &n;   The VMAx 301 is a SBC based on . It&n;   comes with three builtin AMD 29F016B flash chips and a socket for SRAM or&n;   more flash. Each unit has it&squot;s own 8k mapping into a settable region &n;   (0xD8000). There are two 8k mappings for each MTD, the first is always set&n;   to the lower 8k of the device the second is paged. Writing a 16 bit page&n;   value to anywhere in the first 8k will cause the second 8k to page around.&n;&n;   To boot the device a bios extension must be installed into the first 8k &n;   of flash that is smart enough to copy itself down, page in the rest of &n;   itself and begin executing.&n;   &n;   ##################################################################### */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/spinlock.h&gt;

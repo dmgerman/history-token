@@ -27,7 +27,7 @@ mdefine_line|#define DEVICE_NO_RANDOM
 DECL|macro|TIMEOUT_VALUE
 mdefine_line|#define TIMEOUT_VALUE (6 * HZ)
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|variable|max_loop
 r_static
 r_int

@@ -481,6 +481,7 @@ c_func
 id|__direct_map_size
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|pci_alloc_consistent
 id|EXPORT_SYMBOL
 c_func
@@ -530,6 +531,7 @@ c_func
 id|pci_dma_supported
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func

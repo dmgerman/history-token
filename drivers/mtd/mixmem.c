@@ -1,6 +1,6 @@
 multiline_comment|/* &n; * mixmem - a block device driver for flash rom found on the &n; *          piggyback board of the multi-purpose mixcom card&n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt; &n; *&n; * Copyright (c) 1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 81 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -430,12 +430,15 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|status
-op_assign
-id|AE_BAD_PARAMETER
+id|acpi_cm_release_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
 suffix:semicolon
-r_goto
-id|unlock_and_exit
+r_return
+(paren
+id|AE_BAD_PARAMETER
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Two major cases here:&n;&t; * 1) The object is an actual control method -- execute it.&n;&t; * 2) The object is not a method -- just return it&squot;s current&n;&t; *      value&n;&t; *&n;&t; * In both cases, the namespace is unlocked by the&n;&t; *  Acpi_ns* procedure&n;&t; */
@@ -522,18 +525,6 @@ r_return
 id|status
 )paren
 suffix:semicolon
-id|unlock_and_exit
-suffix:colon
-id|acpi_cm_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-r_return
-(paren
-id|status
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_execute_control_method&n; *&n; * PARAMETERS:  Method_node     - The object/method&n; *              **Params            - List of parameters to pass to the method,&n; *                                    terminated by NULL.  Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **Return_obj_desc   - List of result objects to be returned&n; *                                    from the method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute the requested method passing the given parameters&n; *&n; * MUTEX:       Assumes namespace is locked&n; *&n; ******************************************************************************/
 id|ACPI_STATUS
@@ -562,6 +553,12 @@ id|ACPI_OPERAND_OBJECT
 op_star
 id|obj_desc
 suffix:semicolon
+multiline_comment|/*&n;&t; * Unlock the namespace before execution.  This allows namespace access&n;&t; * via the external Acpi* interfaces while a method is being executed.&n;&t; * However, any namespace deletion must acquire both the namespace and&n;&t; * interpreter locks to ensure that no thread is using the portion of the&n;&t; * namespace that is being deleted.&n;&t; */
+id|acpi_cm_release_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
+suffix:semicolon
 multiline_comment|/* Verify that there is a method associated with this object */
 id|obj_desc
 op_assign
@@ -586,13 +583,7 @@ id|AE_ERROR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Unlock the namespace before execution.  This allows namespace access&n;&t; * via the external Acpi* interfaces while a method is being executed.&n;&t; * However, any namespace deletion must acquire both the namespace and&n;&t; * interpreter locks to ensure that no thread is using the portion of the&n;&t; * namespace that is being deleted.&n;&t; */
-id|acpi_cm_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Excecute the method via the interpreter&n;&t; */
+multiline_comment|/*&n;&t; * Execute the method via the interpreter&n;&t; */
 id|status
 op_assign
 id|acpi_aml_execute_method

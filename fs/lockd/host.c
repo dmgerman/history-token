@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * linux/fs/lockd/host.c&n; *&n; * Management for NLM peer hosts. The nlm_host struct is shared&n; * between client and server implementation. The only reason to&n; * do so is to reduce code bloat.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;

@@ -1,7 +1,7 @@
 multiline_comment|/* &n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.15 2000/07/13 12:40:46 scote1 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt; &n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;

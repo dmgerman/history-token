@@ -1,7 +1,9 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Acpi_rs_calculate_byte_stream_length&n; *                       Acpi_rs_calculate_list_length&n; *              $Revision: 18 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Acpi_rs_calculate_byte_stream_length&n; *                       Acpi_rs_calculate_list_length&n; *              $Revision: 21 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
+macro_line|#include &quot;amlcode.h&quot;
+macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
 id|MODULE_NAME
@@ -1215,6 +1217,10 @@ id|structure_size
 op_assign
 id|RESOURCE_LENGTH
 suffix:semicolon
+id|byte_stream_buffer_length
+op_assign
+id|bytes_parsed
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1365,6 +1371,7 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|ACPI_TYPE_STRING
 op_eq
 (paren
@@ -1373,6 +1380,31 @@ id|sub_object_list
 )paren
 op_member_access_from_pointer
 id|common.type
+)paren
+op_logical_or
+(paren
+(paren
+id|INTERNAL_TYPE_REFERENCE
+op_eq
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+op_logical_and
+(paren
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|reference.op_code
+op_eq
+id|AML_NAMEPATH_OP
+)paren
+)paren
 )paren
 (brace
 id|name_found
@@ -1396,7 +1428,7 @@ r_sizeof
 id|PCI_ROUTING_TABLE
 )paren
 op_minus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Was a String type found?&n;&t;&t; */
@@ -1408,7 +1440,20 @@ op_eq
 id|name_found
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The length String.Length field includes the&n;&t;&t;&t; * terminating NULL&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ACPI_TYPE_STRING
+op_eq
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|common.type
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * The length String.Length field includes the&n;&t;&t;&t;&t; * terminating NULL&n;&t;&t;&t;&t; */
 id|temp_size_needed
 op_add_assign
 (paren
@@ -1418,6 +1463,22 @@ id|sub_object_list
 op_member_access_from_pointer
 id|string.length
 suffix:semicolon
+)brace
+r_else
+(brace
+id|temp_size_needed
+op_add_assign
+id|acpi_ns_get_pathname_length
+(paren
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|reference.node
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -1447,11 +1508,6 @@ op_star
 id|buffer_size_needed
 op_assign
 id|temp_size_needed
-op_plus
-r_sizeof
-(paren
-id|PCI_ROUTING_TABLE
-)paren
 suffix:semicolon
 r_return
 (paren

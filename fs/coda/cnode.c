@@ -875,7 +875,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* check if this inode is linked to a cnode */
 id|cii
 op_assign
 id|ITOC
@@ -884,6 +883,31 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+multiline_comment|/* The inode might already be purged due to memory pressure */
+r_if
+c_cond
+(paren
+id|coda_fideq
+c_func
+(paren
+op_amp
+id|cii-&gt;c_fid
+comma
+op_amp
+id|NullFID
+)paren
+)paren
+(brace
+id|iput
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* we shouldn&squot;t have inode collisions anymore */
 r_if
 c_cond

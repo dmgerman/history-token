@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;../fat/msbuffer.h&quot;
 DECL|macro|DEBUG_LEVEL
 mdefine_line|#define DEBUG_LEVEL 0

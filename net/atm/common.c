@@ -21,6 +21,7 @@ macro_line|#include &lt;net/sock.h&gt;&t;&t;/* struct sock */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 macro_line|#include &lt;linux/atmlec.h&gt;
 macro_line|#include &quot;lec.h&quot;
@@ -1857,6 +1858,18 @@ c_cond
 id|size
 suffix:colon
 id|skb-&gt;len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|size
+)paren
+multiline_comment|/* Not fit ?  Report it... */
+id|m-&gt;msg_flags
+op_or_assign
+id|MSG_TRUNC
 suffix:semicolon
 r_if
 c_cond

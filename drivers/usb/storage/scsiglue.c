@@ -3,7 +3,7 @@ macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/*&n; * kernel thread actions&n; */
 DECL|macro|US_ACT_COMMAND
 mdefine_line|#define US_ACT_COMMAND&t;&t;1

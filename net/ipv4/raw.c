@@ -2,6 +2,7 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

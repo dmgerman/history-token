@@ -1,7 +1,7 @@
 multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_ccwstuff.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/dasd.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;dasd_types.h&quot;

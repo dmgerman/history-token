@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -942,11 +942,49 @@ c_cond
 op_logical_neg
 id|type
 )paren
-multiline_comment|/* HP weirdness */
+(brace
+multiline_comment|/* no type, so if target exists, assume same as that,&n;&t;&t;&t; * else assume a file */
+r_if
+c_cond
+(paren
+id|inode
+)paren
+(brace
+id|type
+op_assign
+id|inode-&gt;i_mode
+op_amp
+id|S_IFMT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+op_eq
+id|S_IFCHR
+op_logical_or
+id|type
+op_eq
+id|S_IFBLK
+)paren
+(brace
+multiline_comment|/* reserve rdev for later checking */
+id|attr-&gt;ia_size
+op_assign
+id|inode-&gt;i_rdev
+suffix:semicolon
+id|attr-&gt;ia_valid
+op_or_assign
+id|ATTR_SIZE
+suffix:semicolon
+)brace
+)brace
+r_else
 id|type
 op_assign
 id|S_IFREG
 suffix:semicolon
+)brace
 )brace
 r_else
 r_if

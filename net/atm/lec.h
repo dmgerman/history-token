@@ -265,7 +265,7 @@ r_void
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ATM LAN Emulation supports both LLC &amp; Dix Ethernet EtherType&n; * frames. &n; * 1. Dix Ethernet EtherType frames encoded by placing EtherType&n; *    field in h_type field. Data follows immediatelly after header.&n; * 2. LLC Data frames whose total length, including LLC field and data,&n; *    but not padding required to meet the minimum data frame length, &n; *    is less than 1536(0x0600) MUST be encoded by placing that length&n; *    in the the h_type field. The LLC field follows header immediatelly.&n; * 3. LLC data frames longer than this maximum MUST be encoded by placing&n; *    the value 0 in the h_type field.&n; *&n; */
+multiline_comment|/*&n; * ATM LAN Emulation supports both LLC &amp; Dix Ethernet EtherType&n; * frames. &n; * 1. Dix Ethernet EtherType frames encoded by placing EtherType&n; *    field in h_type field. Data follows immediatelly after header.&n; * 2. LLC Data frames whose total length, including LLC field and data,&n; *    but not padding required to meet the minimum data frame length, &n; *    is less than 1536(0x0600) MUST be encoded by placing that length&n; *    in the h_type field. The LLC field follows header immediatelly.&n; * 3. LLC data frames longer than this maximum MUST be encoded by placing&n; *    the value 0 in the h_type field.&n; *&n; */
 multiline_comment|/* Hash table size */
 DECL|macro|LEC_ARP_TABLE_SIZE
 mdefine_line|#define LEC_ARP_TABLE_SIZE 16
@@ -556,5 +556,5 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-macro_line|#endif _LEC_H_
+macro_line|#endif /* _LEC_H_ */
 eof

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * drivers/sbus/char/vfc_i2c.c&n; *&n; * Driver for the V
 multiline_comment|/* NOTE: It seems to me that the documentation regarding the&n;pcd8584t/pcf8584 does not show the correct way to address the i2c bus.&n;Based on the information on the I2C bus itself and the remainder of&n;the Phillips docs the following algorithims apper to be correct.  I am&n;fairly certain that the flowcharts in the phillips docs are wrong. */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/prep_nvram.c&n; *&n; *  Copyright (C) 1998  Corey Minyard&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * linux/include/linux/hfs_sysdep.h&n; *&n; * Copyright (
 macro_line|#ifndef _HFS_SYSDEP_H
 DECL|macro|_HFS_SYSDEP_H
 mdefine_line|#define _HFS_SYSDEP_H
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

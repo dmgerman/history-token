@@ -1149,6 +1149,11 @@ id|cpu_callout_map
 )paren
 r_break
 suffix:semicolon
+id|rep_nop
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond

@@ -356,7 +356,7 @@ macro_line|#ifdef CONFIG_SMP
 DECL|macro|tasklet_trylock
 mdefine_line|#define tasklet_trylock(t) (!test_and_set_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state))
 DECL|macro|tasklet_unlock_wait
-mdefine_line|#define tasklet_unlock_wait(t) while (test_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state)) { /* NOTHING */ }
+mdefine_line|#define tasklet_unlock_wait(t) while (test_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state)) { barrier(); }
 DECL|macro|tasklet_unlock
 mdefine_line|#define tasklet_unlock(t) clear_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state)
 macro_line|#else

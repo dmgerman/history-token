@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.4 2001/01/19 04:51:48 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private.h,v 1.5 2001/02/05 06:03:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _BR_PRIVATE_H
 DECL|macro|_BR_PRIVATE_H
 mdefine_line|#define _BR_PRIVATE_H
@@ -362,6 +362,7 @@ l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* br.c */
+r_extern
 r_void
 id|br_dec_use_count
 c_func
@@ -369,6 +370,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_inc_use_count
 c_func
@@ -377,6 +379,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* br_device.c */
+r_extern
 r_void
 id|br_dev_setup
 c_func
@@ -388,6 +391,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* br_fdb.c */
+r_extern
 r_void
 id|br_fdb_changeaddr
 c_func
@@ -403,6 +407,7 @@ op_star
 id|newaddr
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_fdb_cleanup
 c_func
@@ -413,6 +418,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_fdb_delete_by_port
 c_func
@@ -428,6 +434,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|net_bridge_fdb_entry
 op_star
@@ -445,6 +452,7 @@ op_star
 id|addr
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_fdb_put
 c_func
@@ -455,6 +463,7 @@ op_star
 id|ent
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_fdb_get_entries
 c_func
@@ -476,6 +485,7 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_fdb_insert
 c_func
@@ -500,6 +510,7 @@ id|is_local
 )paren
 suffix:semicolon
 multiline_comment|/* br_forward.c */
+r_extern
 r_void
 id|br_forward
 c_func
@@ -515,6 +526,7 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_flood
 c_func
@@ -534,6 +546,7 @@ id|clone
 )paren
 suffix:semicolon
 multiline_comment|/* br_if.c */
+r_extern
 r_int
 id|br_add_bridge
 c_func
@@ -543,6 +556,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_del_bridge
 c_func
@@ -552,6 +566,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_add_if
 c_func
@@ -567,6 +582,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_del_if
 c_func
@@ -582,6 +598,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_get_bridge_ifindices
 c_func
@@ -594,6 +611,7 @@ r_int
 id|num
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_get_port_ifindices
 c_func
@@ -609,6 +627,7 @@ id|ifindices
 )paren
 suffix:semicolon
 multiline_comment|/* br_input.c */
+r_extern
 r_void
 id|br_handle_frame
 c_func
@@ -620,6 +639,7 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* br_ioctl.c */
+r_extern
 r_void
 id|br_call_ioctl_atomic
 c_func
@@ -634,6 +654,7 @@ r_void
 )paren
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_ioctl
 c_func
@@ -660,6 +681,7 @@ r_int
 id|arg2
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_ioctl_deviceless_stub
 c_func
@@ -670,6 +692,7 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp.c */
+r_extern
 r_int
 id|br_is_root_bridge
 c_func
@@ -680,6 +703,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_struct
 id|net_bridge_port
 op_star
@@ -695,6 +719,7 @@ r_int
 id|port_no
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_init_port
 c_func
@@ -705,6 +730,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 id|port_id
 id|br_make_port_id
 c_func
@@ -715,6 +741,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_become_designated_port
 c_func
@@ -726,6 +753,7 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp_if.c */
+r_extern
 r_void
 id|br_stp_enable_bridge
 c_func
@@ -736,6 +764,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_disable_bridge
 c_func
@@ -746,6 +775,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_enable_port
 c_func
@@ -756,6 +786,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_disable_port
 c_func
@@ -766,6 +797,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_recalculate_bridge_id
 c_func
@@ -776,6 +808,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_set_bridge_priority
 c_func
@@ -789,6 +822,7 @@ r_int
 id|newprio
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_set_port_priority
 c_func
@@ -802,6 +836,7 @@ r_int
 id|newprio
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_stp_set_path_cost
 c_func
@@ -816,6 +851,7 @@ id|path_cost
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp_bpdu.c */
+r_extern
 r_void
 id|br_stp_handle_bpdu
 c_func

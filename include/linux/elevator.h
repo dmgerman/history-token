@@ -1,8 +1,6 @@
 macro_line|#ifndef _LINUX_ELEVATOR_H
 DECL|macro|_LINUX_ELEVATOR_H
 mdefine_line|#define _LINUX_ELEVATOR_H
-DECL|macro|ELEVATOR_DEBUG
-mdefine_line|#define ELEVATOR_DEBUG
 DECL|typedef|elevator_fn
 r_typedef
 r_void
@@ -309,7 +307,7 @@ multiline_comment|/*&n; * This is used in the elevator algorithm.  We don&squot;
 DECL|macro|IN_ORDER
 mdefine_line|#define IN_ORDER(s1,s2)&t;&t;&t;&t;&bslash;&n;&t;((((s1)-&gt;rq_dev == (s2)-&gt;rq_dev &amp;&amp;&t;&bslash;&n;&t;   (s1)-&gt;sector &lt; (s2)-&gt;sector)) ||&t;&bslash;&n;&t; (s1)-&gt;rq_dev &lt; (s2)-&gt;rq_dev)
 DECL|macro|BHRQ_IN_ORDER
-mdefine_line|#define BHRQ_IN_ORDER(bh, rq)&t;&t;&t;&bslash;&n;&t;(((bh)-&gt;b_rdev == (rq)-&gt;rq_dev &amp;&amp;&t;&bslash;&n;&t;  (bh)-&gt;b_rsector &lt; (rq)-&gt;sector))
+mdefine_line|#define BHRQ_IN_ORDER(bh, rq)&t;&t;&t;&bslash;&n;&t;((((bh)-&gt;b_rdev == (rq)-&gt;rq_dev &amp;&amp;&t;&bslash;&n;&t;   (bh)-&gt;b_rsector &lt; (rq)-&gt;sector)) ||&t;&bslash;&n;&t; (bh)-&gt;b_rdev &lt; (rq)-&gt;rq_dev)
 DECL|function|elevator_request_latency
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acinterp.h - Interpreter subcomponent prototypes and defines&n; *       $Revision: 92 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACINTERP_H__
 DECL|macro|__ACINTERP_H__
@@ -1092,22 +1092,6 @@ comma
 id|NATIVE_CHAR
 op_star
 id|out_string
-)paren
-suffix:semicolon
-id|ACPI_STATUS
-id|acpi_aml_build_copy_internal_package_object
-(paren
-id|ACPI_OPERAND_OBJECT
-op_star
-id|source_obj
-comma
-id|ACPI_OPERAND_OBJECT
-op_star
-id|dest_obj
-comma
-id|ACPI_WALK_STATE
-op_star
-id|walk_state
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * amregion - default Op_region handlers&n; */

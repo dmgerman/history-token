@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* MODULE */
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;

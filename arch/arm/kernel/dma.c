@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/dma.c&n; *&n; *  Copyright (C) 1995-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Front-end to the DMA handling.  This handles the allocation/freeing&n; *  of DMA channels, and provides a unified interface to the machines&n; *  DMA facilities.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

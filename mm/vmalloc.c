@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/mm/vmalloc.c&n; *&n; *  Copyright (C) 1993  Linus Torvalds&n; *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999&n; *  SMP-safe vmalloc/vfree/ioremap, Tigran Aivazian &lt;tigran@veritas.com&gt;, May 2000&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;

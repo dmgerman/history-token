@@ -26,7 +26,7 @@ macro_line|#endif /* verions &lt; v2.1.0 */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= ASC_LINUX_VERSION(1,3,0)
 macro_line|#include &lt;linux/proc_fs.h&gt;

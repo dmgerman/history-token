@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 DECL|struct|scan_keyboard
 r_struct

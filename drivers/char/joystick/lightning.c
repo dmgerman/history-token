@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|L4_PORT
 mdefine_line|#define L4_PORT&t;&t;&t;0x201
 DECL|macro|L4_SELECT_ANALOG

@@ -80,5 +80,5 @@ DECL|macro|I2C_PCF_INTREG
 mdefine_line|#define I2C_PCF_INTREG&t;I2C_PCF_ES2
 DECL|macro|I2C_PCF_CLKREG
 mdefine_line|#define I2C_PCF_CLKREG&t;I2C_PCF_ES1
-macro_line|#endif I2C_PCF8584_H
+macro_line|#endif /* I2C_PCF8584_H */
 eof

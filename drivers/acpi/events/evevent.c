@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 33 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evevent - Fixed and General Purpose Acpi_event&n; *                          handling and dispatch&n; *              $Revision: 34 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -22,7 +22,7 @@ r_void
 id|ACPI_STATUS
 id|status
 suffix:semicolon
-multiline_comment|/* Make sure we&squot;ve got ACPI tables */
+multiline_comment|/* Make sure we have ACPI tables */
 r_if
 c_cond
 (paren
@@ -1560,7 +1560,7 @@ id|acpi_gbl_gpe_info
 id|gpe_number
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Edge-Triggered?&n;&t;&t; * ---------------&n;&t;&t; * If edge-triggered, clear the GPE status bit now.  Note that&n;&t;&t; * level-triggered events are cleared after the GPE is serviced.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Edge-Triggered?&n;&t; * ---------------&n;&t; * If edge-triggered, clear the GPE status bit now.  Note that&n;&t; * level-triggered events are cleared after the GPE is serviced.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1610,7 +1610,7 @@ id|gpe_number
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Method Handler (e.g. _Exx/_Lxx)?&n;&t;&t; */
+multiline_comment|/*&n;&t; * Method Handler (e.g. _Exx/_Lxx)?&n;&t; */
 r_else
 r_if
 c_cond
@@ -1642,7 +1642,7 @@ id|gpe_number
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Shoudn&squot;t occur, but if it does report an error. Note that&n;&t;&t;&t;&t;&t;&t; * the GPE will remain disabled until the ACPI Core Subsystem&n;&t;&t;&t;&t;&t;&t; * is restarted, or the handler is removed/reinstalled.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Shoudn&squot;t occur, but if it does report an error. Note that&n;&t;&t;&t; * the GPE will remain disabled until the ACPI Core Subsystem&n;&t;&t;&t; * is restarted, or the handler is removed/reinstalled.&n;&t;&t;&t; */
 id|REPORT_ERROR
 (paren
 (paren
@@ -1654,7 +1654,7 @@ id|gpe_number
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * No Handler? Report an error and leave the GPE disabled.&n;&t;&t; */
+multiline_comment|/*&n;&t; * No Handler? Report an error and leave the GPE disabled.&n;&t; */
 r_else
 (brace
 id|REPORT_ERROR

@@ -1,9 +1,10 @@
 multiline_comment|/*&n; *  linux/kernel/exit.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#endif

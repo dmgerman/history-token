@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/isofs/joliet.c&n; *&n; *  (C) 1996 Gordon Chaffee&n; *&n; *  Joliet: Microsoft&squot;s Unicode extensions to iso9660&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/iso_fs.h&gt;
 multiline_comment|/*&n; * Convert Unicode 16 to UTF8 or ASCII.&n; */
 r_static

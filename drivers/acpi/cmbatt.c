@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  cmbatt.c - Control Method Battery driver&n; *&n; *  Copyright (C) 2000 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-multiline_comment|/*&n; * Changes:&n; * Brendan Burns &lt;bburns@wso.williams.edu&gt; 2000-11-15&n; * - added proc battery interface&n; * - parse returned data from _BST and _BIF&n; * Andy Grover &lt;andrew.grover@intel.com&gt; 2000-12-8&n; * - improved proc interface&n; */
+multiline_comment|/*&n; * Changes:&n; * Brendan Burns &lt;bburns@wso.williams.edu&gt; 2000-11-15&n; * - added proc battery interface&n; * - parse returned data from _BST and _BIF&n; * Andy Grover &lt;andrew.grover@intel.com&gt; 2000-12-8&n; * - improved proc interface&n; * Pavel Machek &lt;pavel@suse.cz&gt; 2001-1-31&n; * - fixed oops on NULLs in return from _BIF&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -23,6 +23,8 @@ DECL|macro|MAX_CM_BATTERIES
 mdefine_line|#define MAX_CM_BATTERIES&t;0x8
 DECL|macro|MAX_BATT_STRLEN
 mdefine_line|#define MAX_BATT_STRLEN&t;&t;0x20
+DECL|macro|Xstrncpy
+mdefine_line|#define Xstrncpy(a, b, c) if (b) strncpy(a,b,c); else strncpy(a, &quot;unknown&quot;, c)
 DECL|struct|cmbatt_info
 r_struct
 id|cmbatt_info
@@ -559,8 +561,6 @@ l_int|8
 dot
 id|integer.value
 suffix:semicolon
-DECL|macro|Xstrncpy
-mdefine_line|#define Xstrncpy(a, b, c) if (b) strncpy(a,b,c); else strncpy(a, &quot;unknown&quot;, c);
 multiline_comment|/* BUG: trailing NULL issue */
 id|Xstrncpy
 c_func
@@ -1003,7 +1003,7 @@ r_if
 c_cond
 (paren
 id|info-&gt;last_full_capacity
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1013,18 +1013,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Unknown last full capacity&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Last Full Capacity %x %s /hr&bslash;n&quot;
+l_string|&quot;Last Full Capacity: %d %sh&bslash;n&quot;
 comma
 id|info-&gt;last_full_capacity
 comma
@@ -1040,7 +1029,7 @@ r_if
 c_cond
 (paren
 id|info-&gt;design_capacity
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1050,18 +1039,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Unknown Design Capacity&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Design Capacity %x %s /hr&bslash;n&quot;
+l_string|&quot;Design Capacity:    %d %sh&bslash;n&quot;
 comma
 id|info-&gt;design_capacity
 comma
@@ -1085,7 +1063,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Secondary Battery Technology&bslash;n&quot;
+l_string|&quot;Battery Technology: Secondary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -1096,14 +1074,14 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Primary Battery Technology&bslash;n&quot;
+l_string|&quot;Battery Technology: Primary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|info-&gt;design_voltage
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1113,18 +1091,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Unknown Design Voltage&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Design Voltage %x mV&bslash;n&quot;
+l_string|&quot;Design Voltage:     %d mV&bslash;n&quot;
 comma
 id|info-&gt;design_voltage
 )paren
@@ -1136,9 +1103,16 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Design Capacity Warning %d&bslash;n&quot;
+l_string|&quot;Design Capacity Warning:    %d %sh&bslash;n&quot;
 comma
 id|info-&gt;design_capacity_warning
+comma
+id|batt_list
+(braket
+id|batt_num
+)braket
+dot
+id|power_unit
 )paren
 suffix:semicolon
 id|p
@@ -1148,9 +1122,16 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Design Capacity Low %d&bslash;n&quot;
+l_string|&quot;Design Capacity Low:        %d %sh&bslash;n&quot;
 comma
 id|info-&gt;design_capacity_low
+comma
+id|batt_list
+(braket
+id|batt_num
+)braket
+dot
+id|power_unit
 )paren
 suffix:semicolon
 id|p
@@ -1160,7 +1141,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery Capacity Granularity 1 %d&bslash;n&quot;
+l_string|&quot;Battery Capacity Granularity 1: %d&bslash;n&quot;
 comma
 id|info-&gt;battery_capacity_granularity_1
 )paren
@@ -1172,7 +1153,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery Capacity Granularity 2 %d&bslash;n&quot;
+l_string|&quot;Battery Capacity Granularity 2: %d&bslash;n&quot;
 comma
 id|info-&gt;battery_capacity_granularity_2
 )paren
@@ -1184,7 +1165,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;model number %s&bslash;nserial number %s&bslash;nbattery type %s&bslash;nOEM info %s&bslash;n&quot;
+l_string|&quot;Model number; %s&bslash;nSerial number: %s&bslash;nBattery type: %s&bslash;nOEM info: %s&bslash;n&quot;
 comma
 id|info-&gt;model_number
 comma
@@ -1346,12 +1327,6 @@ r_goto
 id|end
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;getting batt status&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1390,18 +1365,20 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Remaining Capacity: %x&bslash;n&quot;
+l_string|&quot;Battery discharging:        %s&bslash;n&quot;
 comma
-id|status.remaining_capacity
-)paren
-suffix:semicolon
-r_if
-c_cond
 (paren
 id|status.state
 op_amp
 l_int|0x1
 )paren
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+)paren
+suffix:semicolon
 id|p
 op_add_assign
 id|sprintf
@@ -1409,16 +1386,20 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery discharging&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
+l_string|&quot;Battery charging:           %s&bslash;n&quot;
+comma
 (paren
 id|status.state
 op_amp
 l_int|0x2
 )paren
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+)paren
+suffix:semicolon
 id|p
 op_add_assign
 id|sprintf
@@ -1426,31 +1407,25 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery charging&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
+l_string|&quot;Battery critically low:     %s&bslash;n&quot;
+comma
 (paren
 id|status.state
 op_amp
 l_int|0x4
 )paren
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Battery critically low&bslash;n&quot;
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|status.present_rate
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1460,27 +1435,23 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery rate unknown&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Battery rate %x&bslash;n&quot;
+l_string|&quot;Battery rate:               %d %s&bslash;n&quot;
 comma
 id|status.present_rate
+comma
+id|batt_list
+(braket
+id|batt_num
+)braket
+dot
+id|power_unit
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|status.remaining_capacity
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1490,18 +1461,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery capacity unknown&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Battery capacity %x %s&bslash;n&quot;
+l_string|&quot;Battery capacity:           %d %sh&bslash;n&quot;
 comma
 id|status.remaining_capacity
 comma
@@ -1517,7 +1477,7 @@ r_if
 c_cond
 (paren
 id|status.present_voltage
-op_eq
+op_ne
 id|ACPI_BATT_UNKNOWN
 )paren
 id|p
@@ -1527,18 +1487,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;Battery voltage unknown&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;Battery voltage %x volts&bslash;n&quot;
+l_string|&quot;Battery voltage:            %d mV&bslash;n&quot;
 comma
 id|status.present_voltage
 )paren

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/net/sunrpc/rpcclnt.c&n; *&n; *  This file conta
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;

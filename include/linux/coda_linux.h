@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/sched.h&gt; 
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;&t;&t;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

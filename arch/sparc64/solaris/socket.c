@@ -2,7 +2,7 @@ multiline_comment|/* $Id: socket.c,v 1.4 2000/11/18 02:11:00 davem Exp $&n; * so
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

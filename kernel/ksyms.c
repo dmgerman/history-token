@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Herein lies all the functions/variables that are &quot;exported&quot; for linkage&n; * with dynamically loaded kernel modules.&n; *&t;&t;&t;Jon.&n; *&n; * - Stacked module support and unified symbol table added (June 1994)&n; * - External symbol table support added (December 1994)&n; * - Versions on symbols added (December 1994)&n; *   by Bjorn Ekwall &lt;bj0rn@blox.se&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
@@ -35,6 +35,7 @@ macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#endif

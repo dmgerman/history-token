@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    Copyright 1994 Digital Equipment Corporation.&n;&n;    This software may be used and distributed according to  the terms of the&n;    GNU Public License, incorporated herein by reference.&n;&n;    The author may    be  reached as davies@wanton.lkg.dec.com  or   Digital&n;    Equipment Corporation, 550 King Street, Littleton MA 01460.&n;&n;    =========================================================================&n;*/
+multiline_comment|/*&n;    Copyright 1994 Digital Equipment Corporation.&n;&n;    This software may be used and distributed according to  the terms of the&n;    GNU General Public License, incorporated herein by reference.&n;&n;    The author may    be  reached as davies@wanton.lkg.dec.com  or   Digital&n;    Equipment Corporation, 550 King Street, Littleton MA 01460.&n;&n;    =========================================================================&n;*/
 multiline_comment|/*&n;** DC21040 CSR&lt;1..15&gt; Register Address Map&n;*/
 DECL|macro|DE4X5_BMR
 mdefine_line|#define DE4X5_BMR    iobase+(0x000 &lt;&lt; lp-&gt;bus)  /* Bus Mode Register */

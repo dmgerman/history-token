@@ -2,10 +2,11 @@ multiline_comment|/*&n; *  linux/fs/pipe.c&n; *&n; *  Copyright (C) 1991, 1992, 
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 multiline_comment|/*&n; * We use a start+len construction, which provides full use of the &n; * allocated memory.&n; * -- Florian Coosmann (FGC)&n; * &n; * Reads with count = 0 should always return 0.&n; * -- Julian Bradfield 1999-06-07.&n; */
 multiline_comment|/* Drop the inode semaphore and wait for a pipe event, atomically */
 DECL|function|pipe_wait

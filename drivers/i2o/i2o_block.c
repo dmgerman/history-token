@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;

@@ -2,7 +2,7 @@ multiline_comment|/*&n;  $Id: fore200e.c,v 1.5 2000/04/14 10:10:34 davem Exp $&n
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

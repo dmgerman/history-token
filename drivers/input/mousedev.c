@@ -6,7 +6,7 @@ DECL|macro|MOUSEDEV_MINORS
 mdefine_line|#define MOUSEDEV_MINORS&t;&t;32
 DECL|macro|MOUSEDEV_MIX
 mdefine_line|#define MOUSEDEV_MIX&t;&t;31
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

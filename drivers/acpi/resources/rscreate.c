@@ -1,7 +1,9 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Acpi_rs_create_resource_list&n; *                         Acpi_rs_create_pci_routing_table&n; *                         Acpi_rs_create_byte_stream&n; *              $Revision: 24 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Acpi_rs_create_resource_list&n; *                         Acpi_rs_create_pci_routing_table&n; *                         Acpi_rs_create_byte_stream&n; *              $Revision: 25 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
+macro_line|#include &quot;amlcode.h&quot;
+macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          RESOURCE_MANAGER
 id|MODULE_NAME
@@ -222,6 +224,10 @@ id|user_prt
 op_assign
 l_int|NULL
 suffix:semicolon
+id|ACPI_NAMESPACE_NODE
+op_star
+id|node
+suffix:semicolon
 id|ACPI_STATUS
 id|status
 suffix:semicolon
@@ -312,7 +318,7 @@ op_star
 )paren
 id|buffer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Fill in the Length field with the information we&n;&t;&t;&t; * have at this point.&n;&t;&t;&t; * The minus one is to subtract the size of the&n;&t;&t;&t; * u8 Source[1] member because it is added below.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Fill in the Length field with the information we&n;&t;&t;&t; * have at this point.&n;&t;&t;&t; * The minus four is to subtract the size of the&n;&t;&t;&t; * u8 Source[4] member because it is added below.&n;&t;&t;&t; */
 id|user_prt-&gt;length
 op_assign
 (paren
@@ -321,7 +327,7 @@ r_sizeof
 id|PCI_ROUTING_TABLE
 )paren
 op_minus
-l_int|1
+l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Dereference the sub-package&n;&t;&t;&t; */
@@ -335,7 +341,7 @@ id|sub_object_list
 op_assign
 id|package_element-&gt;package.elements
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Dereference the Address&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 1) First subobject:  Dereference the Address&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -349,7 +355,7 @@ op_member_access_from_pointer
 id|common.type
 )paren
 (brace
-id|user_prt-&gt;data.address
+id|user_prt-&gt;address
 op_assign
 (paren
 op_star
@@ -367,7 +373,7 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Dereference the Pin&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 2) Second subobject: Dereference the Pin&n;&t;&t;&t; */
 id|sub_object_list
 op_increment
 suffix:semicolon
@@ -384,7 +390,7 @@ op_member_access_from_pointer
 id|common.type
 )paren
 (brace
-id|user_prt-&gt;data.pin
+id|user_prt-&gt;pin
 op_assign
 (paren
 id|u32
@@ -405,15 +411,13 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Dereference the Source Name&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 3) Third subobject: Dereference the Source Name&n;&t;&t;&t; */
 id|sub_object_list
 op_increment
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
-id|ACPI_TYPE_STRING
-op_eq
 (paren
 op_star
 id|sub_object_list
@@ -422,9 +426,71 @@ op_member_access_from_pointer
 id|common.type
 )paren
 (brace
+r_case
+id|INTERNAL_TYPE_REFERENCE
+suffix:colon
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|reference.op_code
+op_ne
+id|AML_NAMEPATH_OP
+)paren
+(brace
+r_return
+(paren
+id|AE_BAD_DATA
+)paren
+suffix:semicolon
+)brace
+id|node
+op_assign
+(paren
+op_star
+id|sub_object_list
+)paren
+op_member_access_from_pointer
+id|reference.node
+suffix:semicolon
+multiline_comment|/* TBD: use *remaining* length of the buffer! */
+id|status
+op_assign
+id|acpi_ns_handle_to_pathname
+(paren
+(paren
+id|ACPI_HANDLE
+op_star
+)paren
+id|node
+comma
+id|output_buffer_length
+comma
+id|user_prt-&gt;source
+)paren
+suffix:semicolon
+id|user_prt-&gt;length
+op_add_assign
+id|STRLEN
+(paren
+id|user_prt-&gt;source
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* include null terminator */
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
 id|STRCPY
 (paren
-id|user_prt-&gt;data.source
+id|user_prt-&gt;source
 comma
 (paren
 op_star
@@ -444,24 +510,13 @@ id|sub_object_list
 op_member_access_from_pointer
 id|string.length
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If this is a number, then the Source Name&n;&t;&t;&t;&t; * is NULL, since the entire buffer was zeroed&n;&t;&t;&t;&t; * out, we can leave this alone.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
+r_break
+suffix:semicolon
+r_case
 id|ACPI_TYPE_INTEGER
-op_eq
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|common.type
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Add to the Length field the length of&n;&t;&t;&t;&t;&t; * the u32 NULL&n;&t;&t;&t;&t;&t; */
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * If this is a number, then the Source Name&n;&t;&t;&t;&t; * is NULL, since the entire buffer was zeroed&n;&t;&t;&t;&t; * out, we can leave this alone.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Add to the Length field the length of&n;&t;&t;&t;&t; * the u32 NULL&n;&t;&t;&t;&t; */
 id|user_prt-&gt;length
 op_add_assign
 r_sizeof
@@ -469,15 +524,17 @@ r_sizeof
 id|u32
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_return
 (paren
 id|AE_BAD_DATA
 )paren
 suffix:semicolon
-)brace
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* Now align the current length */
 id|user_prt-&gt;length
@@ -487,7 +544,7 @@ id|ROUND_UP_TO_64_bITS
 id|user_prt-&gt;length
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Dereference the Source Index&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 4) Fourth subobject: Dereference the Source Index&n;&t;&t;&t; */
 id|sub_object_list
 op_increment
 suffix:semicolon
@@ -504,7 +561,7 @@ op_member_access_from_pointer
 id|common.type
 )paren
 (brace
-id|user_prt-&gt;data.source_index
+id|user_prt-&gt;source_index
 op_assign
 (paren
 id|u32

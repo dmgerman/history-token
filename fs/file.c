@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/fs/open.c&n; *&n; *  Copyright (C) 1998-1999, S
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/*&n; * Allocate an fd array, using kmalloc or vmalloc.&n; * Note: the array isn&squot;t cleared at allocation time.&n; */

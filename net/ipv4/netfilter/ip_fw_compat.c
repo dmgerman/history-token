@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/compat_firewall.h&gt;
@@ -876,7 +877,7 @@ id|optval
 comma
 r_void
 op_star
-id|user
+id|m
 comma
 r_int
 r_int
@@ -906,6 +907,13 @@ r_int
 id|len
 )paren
 (brace
+multiline_comment|/* MAX of:&n;&t;   2.2: sizeof(struct ip_fwtest) (~14x4 + 3x4 = 17x4)&n;&t;   2.2: sizeof(struct ip_fwnew) (~1x4 + 15x4 + 3x4 + 3x4 = 22x4)&n;&t;   2.0: sizeof(struct ip_fw) (~25x4)&n;&n;&t;   We can&squot;t include both 2.0 and 2.2 headers, they conflict.&n;&t;   Hence, 200 is a good number. --RR */
+r_char
+id|tmp_fw
+(braket
+l_int|200
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -920,6 +928,42 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+r_sizeof
+(paren
+id|tmp_fw
+)paren
+op_logical_or
+id|len
+OL
+l_int|1
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|tmp_fw
+comma
+id|user
+comma
+id|len
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
 r_return
 op_minus
 id|ip_fw_ctl
@@ -927,7 +971,8 @@ c_func
 (paren
 id|optval
 comma
-id|user
+op_amp
+id|tmp_fw
 comma
 id|len
 )paren

@@ -1,13 +1,13 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acgcc.h - GCC specific defines, etc.&n; *       $Revision: 4 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acgcc.h - GCC specific defines, etc.&n; *       $Revision: 5 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACGCC_H__
 DECL|macro|__ACGCC_H__
 mdefine_line|#define __ACGCC_H__
-DECL|macro|COMPILER_DEPENDENT_UINT64
-mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long long
 macro_line|#ifdef __ia64__
 DECL|macro|_IA64
 mdefine_line|#define _IA64
+DECL|macro|COMPILER_DEPENDENT_UINT64
+mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long
 multiline_comment|/* Single threaded */
 DECL|macro|ACPI_APPLICATION
 mdefine_line|#define ACPI_APPLICATION
@@ -35,6 +35,8 @@ DECL|macro|ACPI_RELEASE_GLOBAL_LOCK
 mdefine_line|#define ACPI_RELEASE_GLOBAL_LOCK(GLptr, Acq) &bslash;&n;&t;do { &bslash;&n;&t;__asm__ volatile (&quot;1:  ld4      r29=%1&bslash;n&quot; &bslash;&n;&t;&t;&quot;;;&bslash;n&quot;                  &bslash;&n;&t;&t;&quot;mov    ar.ccv=r29&bslash;n&quot;   &bslash;&n;&t;&t;&quot;mov    r2=r29&bslash;n&quot;       &bslash;&n;&t;&t;&quot;and    r29=-4,r29&bslash;n&quot;   &bslash;&n;&t;&t;&quot;;;&bslash;n&quot;                  &bslash;&n;&t;&t;&quot;cmpxchg4.acq   r30=%1,r29,ar.ccv&bslash;n&quot; &bslash;&n;&t;&t;&quot;;;&bslash;n&quot;                  &bslash;&n;&t;&t;&quot;cmp.eq p6,p7=r2,r30&bslash;n&quot; &bslash;&n;&t;&t;&quot;(p7) br.dpnt.few 1b&bslash;n&quot; &bslash;&n;&t;&t;&quot;and    %0=1,r2&bslash;n&quot;      &bslash;&n;&t;&t;&quot;;;&bslash;n&quot;                  &bslash;&n;&t;&t;:&quot;=r&quot;(Acq):&quot;m&quot;(GLptr):&quot;r2&quot;,&quot;r29&quot;,&quot;r30&quot;,&quot;memory&quot;); &bslash;&n;&t;} while (0)
 multiline_comment|/*! [End] no source code translation !*/
 macro_line|#else /* DO IA32 */
+DECL|macro|COMPILER_DEPENDENT_UINT64
+mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long long
 DECL|macro|ACPI_ASM_MACROS
 mdefine_line|#define ACPI_ASM_MACROS
 DECL|macro|causeinterrupt

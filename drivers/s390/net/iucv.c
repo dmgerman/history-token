@@ -6,7 +6,7 @@ macro_line|#endif
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;              /* printk()                         */
-macro_line|#include &lt;linux/malloc.h&gt;              /* kmalloc()                        */
+macro_line|#include &lt;linux/slab.h&gt;              /* kmalloc()                        */
 macro_line|#include &lt;linux/errno.h&gt;               /* error codes                      */
 macro_line|#include &lt;linux/types.h&gt;               /* size_t                           */
 macro_line|#include &lt;linux/interrupt.h&gt;           /* mark_bh                          */

@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/umsdos_fs.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 DECL|macro|UMSDOS_SPECIAL_DIRFPOS
 mdefine_line|#define UMSDOS_SPECIAL_DIRFPOS&t;3

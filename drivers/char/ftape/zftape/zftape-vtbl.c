@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *      Copyright (c) 1995-1997 Claus-Justus Heine &n;&n; This program is free software; you can redistribute it and/or&n; modify it under the terms of the GNU General Public License as&n; published by the Free Software Foundation; either version 2, or (at&n; your option) any later version.&n; &n; This program is distributed in the hope that it will be useful, but&n; WITHOUT ANY WARRANTY; without even the implied warranty of&n; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; General Public License for more details.&n; &n; You should have received a copy of the GNU General Public License&n; along with this program; see the file COPYING.  If not, write to&n; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139,&n; USA.&n;&n; *&n; * $Source: /homes/cvs/ftape-stacked/ftape/zftape/zftape-vtbl.c,v $&n; * $Revision: 1.7.6.1 $&n; * $Date: 1997/11/24 13:48:31 $&n; *&n; *      This file defines a volume table as defined in various QIC&n; *      standards.&n; * &n; *      This is a minimal implementation, just allowing ordinary DOS&n; *      :( prgrams to identify the cartridge as used.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;linux/zftape.h&gt;
 macro_line|#include &quot;../zftape/zftape-init.h&quot;

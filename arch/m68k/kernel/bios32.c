@@ -11,7 +11,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n; * PCI support for Linux/m68k. Currently only the Hades is supported.&n; *&n; * The support for PCI bridges in the DEC Alpha version has&n; * been removed in this version.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;

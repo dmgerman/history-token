@@ -135,7 +135,7 @@ mdefine_line|#define kunmap_atomic(page,idx)&t;&t;kunmap(page)
 DECL|macro|bh_kmap
 mdefine_line|#define bh_kmap(bh)&t;((bh)-&gt;b_data)
 DECL|macro|bh_kunmap
-mdefine_line|#define bh_kunmap(bh)&t;do { } while (0);
+mdefine_line|#define bh_kunmap(bh)&t;do { } while (0)
 macro_line|#endif /* CONFIG_HIGHMEM */
 multiline_comment|/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
 DECL|function|clear_user_highpage

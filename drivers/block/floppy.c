@@ -50,7 +50,7 @@ multiline_comment|/*&n; * 1998/1/21 -- Richard Gooch &lt;rgooch@atnf.csiro.au&gt
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;

@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ipc.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt; /* for sanity check... */
 macro_line|#include &lt;asm/swift.h&gt; /* for cache flushing. */

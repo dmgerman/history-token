@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound_q40.c&n; *&n; *  Q40 DMA Sound Driver&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and credits&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;

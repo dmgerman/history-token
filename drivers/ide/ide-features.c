@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
@@ -767,6 +767,24 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|id
+)paren
+(brace
+id|__restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* local CPU only */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|ide_input_data
 c_func
 (paren

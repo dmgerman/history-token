@@ -2,7 +2,7 @@ multiline_comment|/*&n; * linux/fs/lockd/svcshare.c&n; *&n; * Management of DOS 
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/lockd/lockd.h&gt;

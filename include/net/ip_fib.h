@@ -1418,5 +1418,5 @@ id|res-&gt;r
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif  _NET_FIB_H
+macro_line|#endif  /* _NET_FIB_H */
 eof

@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifndef MODULE
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#endif /* MODULE */

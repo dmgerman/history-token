@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/nfs/proc.c&n; *&n; *  Copyright (C) 1992, 1993, 1994  Rick Sladkey&n; *&n; *  OS-independent nfs remote procedure call functions&n; *&n; *  Tuned by Alan Cox &lt;A.Cox@swansea.ac.uk&gt; for &gt;3K buffers&n; *  so at last we can have decent(ish) throughput off a &n; *  Sun server.&n; *&n; *  Coding optimized and cleaned up by Florian La Roche.&n; *  Note: Error returns are optimized for NFS_OK, which isn&squot;t translated via&n; *  nfs_stat_to_errno(), but happens to be already the right return code.&n; *&n; *  Also, the code currently doesn&squot;t check the size of the packet, when&n; *  it decodes the packet.&n; *&n; *  Feel free to fix it and mail me the diffs if it worries you.&n; *&n; *  Completely rewritten to support the new RPC call interface;&n; *  rewrote and moved the entire XDR stuff to xdr.c&n; *  --Olaf Kirch June 1996&n; *&n; *  The code below initializes all auto variables explicitly, otherwise&n; *  it will fail to work as a module (gcc generates a memset call for an&n; *  incomplete struct).&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;

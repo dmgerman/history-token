@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 62 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: cmxface - External interfaces for &quot;global&quot; ACPI functions&n; *              $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -276,8 +276,11 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* TBD: workaround. Old Lions don&squot;t enable properly */
-multiline_comment|/*return (Status);*/
+r_return
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * Note:&n;&t; * We must have the hardware AND events initialized before we can execute&n;&t; * ANY control methods SAFELY.  Any control method can require ACPI hardware&n;&t; * support, so the hardware MUST be initialized before execution!&n;&t; */
@@ -314,7 +317,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Initialize all device objects in the namespace&n;&t; * This runs the _STA, _INI, and _HID methods, and detects&n;&t; * the PCI root bus(es)&n;&t; */
+multiline_comment|/*&n;&t; * Initialize all device objects in the namespace&n;&t; * This runs the _STA and _INI methods.&n;&t; */
 r_if
 c_cond
 (paren
@@ -330,9 +333,6 @@ id|status
 op_assign
 id|acpi_ns_initialize_devices
 (paren
-id|flags
-op_amp
-id|ACPI_NO_PCI_INIT
 )paren
 suffix:semicolon
 r_if
@@ -351,7 +351,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Initialize the objects that remain unitialized.  This&n;&t; * runs the executable AML that is part of the declaration of Op_regions&n;&t; * and Fields.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the objects that remain uninitialized.  This&n;&t; * runs the executable AML that is part of the declaration of Op_regions&n;&t; * and Fields.&n;&t; */
 r_if
 c_cond
 (paren

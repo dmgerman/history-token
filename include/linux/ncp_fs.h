@@ -418,7 +418,7 @@ mdefine_line|#define NCP_SERVER(inode)&t;NCP_SBP((inode)-&gt;i_sb)
 DECL|macro|NCP_FINFO
 mdefine_line|#define NCP_FINFO(inode)&t;(&amp;((inode)-&gt;u.ncpfs_i))
 macro_line|#ifdef DEBUG_NCP_MALLOC
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 r_extern
 r_int
 id|ncp_malloced

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  Syncookies implementation for the Linux kernel&n; *&n
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SYN_COOKIES) 
 macro_line|#include &lt;linux/tcp.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 r_extern

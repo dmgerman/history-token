@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * drivers/input/adbhid.c&n; *&n; * ADB HID driver for Power Macintosh computers.&n; *&n; * Adapted from drivers/macintosh/mac_keyb.c by Franz Sirl&n; * (see that file for its authors and contributors).&n; *&n; * Copyright (C) 2000 Franz Sirl.&n; *&n; * Adapted to ADB changes and support for more devices by&n; * Benjamin Herrenschmidt. Adapted from code in MkLinux&n; * and reworked.&n; * &n; * Supported devices:&n; *&n; * - Standard 1 button mouse&n; * - All standard Apple Extended protocol (handler ID 4)&n; * - mouseman and trackman mice &amp; trackballs &n; * - PowerBook Trackpad (default setup: enable tapping)&n; * - MicroSpeed mouse &amp; trackball (needs testing)&n; * - CH Products Trackball Pro (needs testing)&n; * - Contour Design (Contour Mouse)&n; * - Hunter digital (NoHandsMouse)&n; * - Kensignton TurboMouse 5 (needs testing)&n; * - Mouse Systems A3 mice and trackballs &lt;aidan@kublai.com&gt;&n; * - MacAlly 2-buttons mouse (needs testing) &lt;pochini@denise.shiny.it&gt;&n; *&n; * To do:&n; *&n; * Improve Kensington support.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/input.h&gt;

@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -5785,6 +5785,13 @@ comma
 id|sts
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -6184,6 +6191,10 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Update stats */
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|lp-&gt;stats.rx_packets
 op_increment
 suffix:semicolon

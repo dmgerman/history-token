@@ -6,7 +6,7 @@ macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;sddr09.h&quot;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|short_pack
 mdefine_line|#define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))&lt;&lt;8 ) )
 DECL|macro|LSB_of

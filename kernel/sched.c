@@ -3516,22 +3516,24 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86
-multiline_comment|/* This is very useful, but only works on x86 right now */
+macro_line|#if defined(CONFIG_X86) || defined(CONFIG_SPARC64)
+multiline_comment|/* This is very useful, but only works on x86 and sparc64 right now */
 (brace
 r_extern
 r_void
-id|show_trace
+id|show_trace_task
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|task_struct
+op_star
+id|tsk
 )paren
 suffix:semicolon
-id|show_trace
+id|show_trace_task
 c_func
 (paren
-id|p-&gt;thread.esp
+id|p
 )paren
 suffix:semicolon
 )brace

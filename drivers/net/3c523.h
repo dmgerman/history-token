@@ -2,7 +2,7 @@ macro_line|#ifndef _3c523_INCLUDE_
 DECL|macro|_3c523_INCLUDE_
 mdefine_line|#define _3c523_INCLUDE_
 multiline_comment|/*&n;&t;This is basically a hacked version of ni52.h, for the 3c523&n;&t;Etherlink/MC.&n;*/
-multiline_comment|/*&n; * Intel i82586 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same Gnu Public License that covers that work.&n; *&n; * Copyright 1995 by Chris Beauregard (cpbeaure@undergrad.math.uwaterloo.ca)&n; *&n; * See 3c523.c for details.&n; *&n; * $Header: /home/chrisb/linux-1.2.13-3c523/drivers/net/RCS/3c523.h,v 1.6 1996/01/20 05:09:00 chrisb Exp chrisb $&n; */
+multiline_comment|/*&n; * Intel i82586 Ethernet definitions&n; *&n; * This is an extension to the Linux operating system, and is covered by the&n; * same GNU General Public License that covers that work.&n; *&n; * Copyright 1995 by Chris Beauregard (cpbeaure@undergrad.math.uwaterloo.ca)&n; *&n; * See 3c523.c for details.&n; *&n; * $Header: /home/chrisb/linux-1.2.13-3c523/drivers/net/RCS/3c523.h,v 1.6 1996/01/20 05:09:00 chrisb Exp chrisb $&n; */
 multiline_comment|/*&n; * where to find the System Configuration Pointer (SCP)&n; */
 DECL|macro|SCP_DEFAULT_ADDRESS
 mdefine_line|#define SCP_DEFAULT_ADDRESS 0xfffff4

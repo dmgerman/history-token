@@ -7,7 +7,7 @@ multiline_comment|/* $Id: i2c-core.c,v 1.58 2000/10/29 22:57:38 frodo Exp $ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -5634,7 +5634,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-macro_line|#ifdef CONFIG_I2C_CHARDEV
 r_extern
 r_int
 id|i2c_dev_init
@@ -5643,8 +5642,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ALGOBIT
 r_extern
 r_int
 id|i2c_algo_bit_init
@@ -5653,8 +5650,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_BITLP
 r_extern
 r_int
 id|i2c_bitlp_init
@@ -5663,8 +5658,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_BITELV
 r_extern
 r_int
 id|i2c_bitelv_init
@@ -5673,8 +5666,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_BITVELLE
 r_extern
 r_int
 id|i2c_bitvelle_init
@@ -5683,8 +5674,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_BITVIA
 r_extern
 r_int
 id|i2c_bitvia_init
@@ -5693,8 +5682,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_ALGOPCF
 r_extern
 r_int
 id|i2c_algo_pcf_init
@@ -5703,8 +5690,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_I2C_PCFISA
 r_extern
 r_int
 id|i2c_pcfisa_init
@@ -5713,7 +5698,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* This is needed for automatic patch generation: sensors code starts here */
 multiline_comment|/* This is needed for automatic patch generation: sensors code ends here   */
 DECL|function|i2c_init_all

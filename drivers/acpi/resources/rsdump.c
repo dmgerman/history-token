@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions do dump out the resource structures.&n; *              $Revision: 15 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsdump - Functions do dump out the resource structures.&n; *              $Revision: 16 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -1899,28 +1899,28 @@ id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;t&bslash;t_address: %X&bslash;n&quot;
 comma
-id|prt_element-&gt;data.address
+id|prt_element-&gt;address
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;t&bslash;t_pin: %X&bslash;n&quot;
 comma
-id|prt_element-&gt;data.pin
+id|prt_element-&gt;pin
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;t&bslash;t_source: %s&bslash;n&quot;
 comma
-id|prt_element-&gt;data.source
+id|prt_element-&gt;source
 )paren
 suffix:semicolon
 id|acpi_os_printf
 (paren
 l_string|&quot;&bslash;t&bslash;t_source_index: %X&bslash;n&quot;
 comma
-id|prt_element-&gt;data.source_index
+id|prt_element-&gt;source_index
 )paren
 suffix:semicolon
 id|buffer

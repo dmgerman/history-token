@@ -5522,7 +5522,7 @@ r_return
 id|LinkUp
 suffix:semicolon
 )brace
-macro_line|#include &quot;linux/malloc.h&quot;
+macro_line|#include &quot;linux/slab.h&quot;
 singleline_comment|// Dynamic memory allocation alignment routines
 singleline_comment|// HP&squot;s Tachyon Fibre Channel Controller chips require
 singleline_comment|// certain memory queues and register pointers to be aligned

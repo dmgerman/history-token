@@ -3,7 +3,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;&n;Purpose:&n;&n;Userspace() hands all requests in the queue to the userspace-daemon, if&n;such beast exists.&n;&n;Return value:&n;&t;The number of requests that changed status&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;

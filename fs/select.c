@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * This file contains the procedures for the handling of select and poll&n; *&n; * Created for Linux based loosely upon Mathius Lattner&squot;s minix&n; * patches by Peter MacDonald. Heavily edited by Linus.&n; *&n; *  4 February 1994&n; *     COFF/ELF binary emulation. If the process has the STICKY_TIMEOUTS&n; *     flag set in its personality we do *not* modify the given timeout&n; *     parameter to reflect time remaining.&n; *&n; *  24 January 2000&n; *     Changed sys_poll()/do_poll() to use PAGE_SIZE chunk-based allocation &n; *     of fds to overcome nfds &lt; 16390 descriptors limit (Tigran Aivazian).&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

@@ -1908,7 +1908,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ACPI: found EC @ (0x%02x,0x%02x,gpe %d GL %d)&bslash;n&quot;
+l_string|&quot;ACPI: found EC @ (0x%02x,0x%02x,GPE %d GL %d)&bslash;n&quot;
 comma
 id|ec_cxt-&gt;data_port
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 4 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwtimer.c - ACPI Power Management Timer Interface&n; *              $Revision: 5 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -156,7 +156,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * -------------------&n;&t; * Handle timer rollovers on 24- versus 32-bit timers.&n;&t; */
+multiline_comment|/*&n;&t; * Compute Tick Delta:&n;&t; * -------------------&n;&t; * Handle (max one) timer rollovers on 24- versus 32-bit timers.&n;&t; */
 r_if
 c_cond
 (paren
@@ -193,12 +193,18 @@ id|acpi_gbl_FADT-&gt;tmr_val_ext
 id|delta_ticks
 op_assign
 (paren
+(paren
+(paren
 l_int|0x00FFFFFF
 op_minus
 id|start_ticks
 )paren
 op_plus
 id|end_ticks
+)paren
+op_amp
+l_int|0x00FFFFFF
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* 32-bit Timer */
@@ -215,6 +221,19 @@ op_plus
 id|end_ticks
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+op_star
+id|time_elapsed
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Compute Duration:&n;&t; * -----------------&n;&t; * Since certain compilers (gcc/Linux, argh!) don&squot;t support 64-bit&n;&t; * divides in kernel-space we have to do some trickery to preserve&n;&t; * accuracy while using 32-bit math.&n;&t; *&n;&t; * TODO: Change to use 64-bit math when supported.&n;&t; *&n;&t; * The process is as follows:&n;&t; *  1. Compute the number of seconds by dividing Delta Ticks by&n;&t; *     the timer frequency.&n;&t; *  2. Compute the number of milliseconds in the remainder from step #1&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  3. Compute the number of microseconds in the remainder from step #2&n;&t; *     by multiplying by 1000 and then dividing by the timer frequency.&n;&t; *  4. Add the results from steps 1, 2, and 3 to get the total duration.&n;&t; *&n;&t; * Example: The time elapsed for Delta_ticks = 0xFFFFFFFF should be&n;&t; *          1199864031 microseconds.  This is computed as follows:&n;&t; *          Step #1: Seconds = 1199; Remainder = 3092840&n;&t; *          Step #2: Milliseconds = 864; Remainder = 113120&n;&t; *          Step #3: Microseconds = 31; Remainder = &lt;don&squot;t care!&gt;&n;&t; */
 multiline_comment|/* Step #1 */

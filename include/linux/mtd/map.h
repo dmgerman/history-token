@@ -6,7 +6,7 @@ mdefine_line|#define __LINUX_MTD_MAP_H__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* The map stuff is very simple. You fill in your struct map_info with&n;   a handful of routines for accessing the device, making sure they handle&n;   paging etc. correctly if your device needs it. Then you pass it off&n;   to a chip driver which deals with a mapped device - generally either&n;   do_cfi_probe() or do_ram_probe(), either of which will return a &n;   struct mtd_info if they liked what they saw. At which point, you&n;   fill in the mtd-&gt;module with your own module address, and register &n;   it.&n;   &n;   The mtd-&gt;priv field will point to the struct map_info, and any further&n;   private data required by the chip driver is linked from the &n;   mtd-&gt;priv-&gt;fldrv_priv field. This allows the map driver to get at &n;   the destructor function map-&gt;fldrv_destroy() when it&squot;s tired&n;   of living.&n;*/
 DECL|struct|map_info
 r_struct

@@ -4,7 +4,7 @@ singleline_comment|//#define DEBUG_LOCKS
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/hpfs_fs.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;

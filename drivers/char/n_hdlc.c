@@ -19,7 +19,7 @@ DECL|macro|VERSION
 mdefine_line|#define VERSION(major,minor,patch) (((((major)&lt;&lt;8)+(minor))&lt;&lt;8)+(patch))
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;&t;/* used in new tty drivers */

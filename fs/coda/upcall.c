@@ -2651,6 +2651,7 @@ id|VC_MAXDATASIZE
 (brace
 id|error
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -2754,6 +2755,7 @@ id|data-&gt;vi.in_size
 (brace
 id|error
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
@@ -2832,6 +2834,7 @@ id|data-&gt;vi.out_size
 suffix:semicolon
 id|error
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -2882,6 +2885,7 @@ id|data-&gt;vi.out_size
 (brace
 id|error
 op_assign
+op_minus
 id|EINVAL
 suffix:semicolon
 r_goto

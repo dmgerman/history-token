@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/nfs/unlink.c&n; *&n; * nfs sillydelete handling&n; *&n; * NOTE: we rely on holding the BKL for list manipulation protection.&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * NET&t;&t;An implementation of the IEEE 802.2 LLC protocol for the&n; *&t;&t;LINUX operating system.  LLC is implemented as a set of &n; *&t;&t;state machines and callbacks for higher networking layers.&n; *&n; *&t;&t;Class 2 llc algorithm.&n; *&t;&t;Pseudocode interpreter, transition table lookup,&n; *&t;&t;&t;data_request &amp; indicate primitives...&n; *&n; *&t;&t;Code for initialization, termination, registration and &n; *&t;&t;MAC layer glue.&n; *&n; *&t;&t;Copyright Tim Alpaerts, &n; *&t;&t;&t;&lt;Tim_Alpaerts@toyota-motor-europe.com&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes&n; *&t;&t;Alan Cox&t;:&t;Chainsawed into Linux format&n; *&t;&t;&t;&t;&t;Modified to use llc_ names&n; *&t;&t;&t;&t;&t;Changed callbacks&n; *&n; *&t;This file must be processed by sed before it can be compiled.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/p8022.h&gt;
@@ -233,8 +233,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1978,8 +1977,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 )brace
 id|pc
 op_increment

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * raid5.c : Multiple Devices driver for Linux&n; *&t;   
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/raid/raid5.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -1813,7 +1813,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;end_read_request %lu/%d,  %d, count: %d, uptodate %d.&bslash;n&quot;
+l_string|&quot;end_read_request %lu/%d, count: %d, uptodate %d.&bslash;n&quot;
 comma
 id|sh-&gt;sector
 comma
@@ -3264,13 +3264,6 @@ id|sh-&gt;bh_cache
 id|pd_idx
 )braket
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|conf-&gt;device_lock
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -3487,11 +3480,6 @@ id|chosen
 id|i
 )braket
 suffix:semicolon
-id|check_xor
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon
@@ -3501,13 +3489,6 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|conf-&gt;device_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3563,16 +3544,6 @@ r_char
 op_star
 id|bdata
 suffix:semicolon
-id|mark_buffer_clean
-c_func
-(paren
-id|chosen
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-multiline_comment|/* NO FIXME */
 id|bdata
 op_assign
 id|bh_kmap
@@ -3818,6 +3789,13 @@ comma
 id|sh-&gt;sector
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|sh-&gt;lock
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3892,6 +3870,13 @@ c_func
 (paren
 op_amp
 id|conf-&gt;device_lock
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|sh-&gt;lock
 )paren
 suffix:semicolon
 id|PRINTK
@@ -4070,7 +4055,7 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;check %d: state %lx read %p write %p written %p&bslash;n&quot;
+l_string|&quot;check %d: state 0x%lx read %p write %p written %p&bslash;n&quot;
 comma
 id|i
 comma
@@ -4314,13 +4299,6 @@ op_plus
 id|to_write
 )paren
 (brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|conf-&gt;device_lock
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4387,6 +4365,13 @@ dot
 id|operational
 )paren
 (brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|conf-&gt;device_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4427,8 +4412,6 @@ op_assign
 id|bh
 suffix:semicolon
 )brace
-)brace
-)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -4436,6 +4419,8 @@ op_amp
 id|conf-&gt;device_lock
 )paren
 suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -4593,13 +4578,6 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|conf-&gt;device_lock
-)paren
-suffix:semicolon
 id|wbh
 op_assign
 id|sh-&gt;bh_written
@@ -4613,13 +4591,6 @@ id|i
 )braket
 op_assign
 l_int|NULL
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|conf-&gt;device_lock
-)paren
 suffix:semicolon
 r_while
 c_loop
@@ -5772,24 +5743,6 @@ l_int|1
 id|bh-&gt;b_dev
 op_assign
 id|conf-&gt;spare-&gt;dev
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|action
-(braket
-id|i
-)braket
-op_eq
-id|READ
-op_plus
-l_int|1
-)paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 r_else
 id|skip

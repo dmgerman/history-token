@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amstorob - AML Interpreter object store support, store to object&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amstorob - AML Interpreter object store support, store to object&n; *              $Revision: 23 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -47,6 +47,40 @@ id|length
 op_assign
 id|source_desc-&gt;buffer.length
 suffix:semicolon
+multiline_comment|/*&n;&t; * If target is a buffer of length zero, allocate a new&n;&t; * buffer of the proper length&n;&t; */
+r_if
+c_cond
+(paren
+id|target_desc-&gt;buffer.length
+op_eq
+l_int|0
+)paren
+(brace
+id|target_desc-&gt;buffer.pointer
+op_assign
+id|acpi_cm_allocate
+(paren
+id|length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|target_desc-&gt;buffer.pointer
+)paren
+(brace
+r_return
+(paren
+id|AE_NO_MEMORY
+)paren
+suffix:semicolon
+)brace
+id|target_desc-&gt;buffer.length
+op_assign
+id|length
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Buffer is a static allocation,&n;&t; * only place what will fit in the buffer.&n;&t; */
 r_if
 c_cond
@@ -195,10 +229,6 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|target_desc-&gt;string.length
-op_assign
-id|length
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -212,6 +242,10 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+id|target_desc-&gt;string.length
+op_assign
+id|length
+suffix:semicolon
 id|MEMCPY
 c_func
 (paren

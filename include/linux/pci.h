@@ -2005,7 +2005,7 @@ id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 )brace
 DECL|macro|_PCI_NOP
-mdefine_line|#define _PCI_NOP(o,s,t) &bslash;&n;&t;static inline int pcibios_##o##_config_##s## (u8 bus, u8 dfn, u8 where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; } &bslash;&n;&t;static inline int pci_##o##_config_##s## (struct pci_dev *dev, int where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; }
+mdefine_line|#define _PCI_NOP(o,s,t) &bslash;&n;&t;static inline int pcibios_##o##_config_##s (u8 bus, u8 dfn, u8 where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; } &bslash;&n;&t;static inline int pci_##o##_config_##s (struct pci_dev *dev, int where, t val) &bslash;&n;&t;&t;{ return PCIBIOS_FUNC_NOT_SUPPORTED; }
 DECL|macro|_PCI_NOP_ALL
 mdefine_line|#define _PCI_NOP_ALL(o,x)&t;_PCI_NOP(o,byte,u8 x) &bslash;&n;&t;&t;&t;&t;_PCI_NOP(o,word,u16 x) &bslash;&n;&t;&t;&t;&t;_PCI_NOP(o,dword,u32 x)
 id|_PCI_NOP_ALL

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 163 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *       $Revision: 165 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
@@ -382,10 +382,8 @@ DECL|macro|ACPI_NO_ACPI_ENABLE
 mdefine_line|#define ACPI_NO_ACPI_ENABLE             0x08
 DECL|macro|ACPI_NO_DEVICE_INIT
 mdefine_line|#define ACPI_NO_DEVICE_INIT             0x10
-DECL|macro|ACPI_NO_PCI_INIT
-mdefine_line|#define ACPI_NO_PCI_INIT                0x20
 DECL|macro|ACPI_NO_OBJECT_INIT
-mdefine_line|#define ACPI_NO_OBJECT_INIT             0x40
+mdefine_line|#define ACPI_NO_OBJECT_INIT             0x20
 multiline_comment|/*&n; * Sleep state constants&n; */
 DECL|macro|ACPI_STATE_S0
 mdefine_line|#define ACPI_STATE_S0                   (u8) 0
@@ -1918,18 +1916,24 @@ mdefine_line|#define RESOURCE_LENGTH_NO_DATA         8
 DECL|macro|NEXT_RESOURCE
 mdefine_line|#define NEXT_RESOURCE(res)    (RESOURCE*)((u8*) res + res-&gt;length)
 multiline_comment|/*&n; * END: Definitions for Resource Attributes&n; */
-multiline_comment|/*&n; * Definitions for PCI Routing tables&n; */
+DECL|struct|pci_routing_table
 r_typedef
 r_struct
+id|pci_routing_table
 (brace
-DECL|member|address
-id|ACPI_INTEGER
-id|address
+DECL|member|length
+id|u32
+id|length
 suffix:semicolon
 DECL|member|pin
 id|u32
 id|pin
 suffix:semicolon
+DECL|member|address
+id|ACPI_INTEGER
+id|address
+suffix:semicolon
+multiline_comment|/* here for 64-bit alignment */
 DECL|member|source_index
 id|u32
 id|source_index
@@ -1938,26 +1942,10 @@ DECL|member|source
 id|NATIVE_CHAR
 id|source
 (braket
-l_int|1
+l_int|4
 )braket
 suffix:semicolon
-DECL|typedef|PRT_ENTRY
-)brace
-id|PRT_ENTRY
-suffix:semicolon
-DECL|struct|_prt_tag
-r_typedef
-r_struct
-id|_prt_tag
-(brace
-DECL|member|length
-id|u32
-id|length
-suffix:semicolon
-DECL|member|data
-id|PRT_ENTRY
-id|data
-suffix:semicolon
+multiline_comment|/* pad to 64 bits so sizeof() works in all cases */
 DECL|typedef|PCI_ROUTING_TABLE
 )brace
 id|PCI_ROUTING_TABLE

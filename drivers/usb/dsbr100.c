@@ -2,7 +2,7 @@ multiline_comment|/* A driver for the D-Link DSB-R100 USB radio.  The R100 plugs
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;

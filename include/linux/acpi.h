@@ -101,12 +101,11 @@ mdefine_line|#define ACPI_TMR_VAL_EXT 0x00000100
 DECL|macro|ACPI_TMR_MASK
 mdefine_line|#define ACPI_TMR_MASK&t; 0x00ffffff
 DECL|macro|ACPI_TMR_HZ
-mdefine_line|#define ACPI_TMR_HZ&t; 3580000 /* 3.58 MHz */
-multiline_comment|/* strangess to avoid integer overflow */
+mdefine_line|#define ACPI_TMR_HZ&t; 3579545 /* 3.58 MHz */
+DECL|macro|ACPI_TMR_KHZ
+mdefine_line|#define ACPI_TMR_KHZ&t; (ACPI_TMR_HZ / 1000)
 DECL|macro|ACPI_MICROSEC_TO_TMR_TICKS
-mdefine_line|#define ACPI_MICROSEC_TO_TMR_TICKS(val) &bslash;&n;  (((val) * (ACPI_TMR_HZ / 10000)) / 100)
-DECL|macro|ACPI_TMR_TICKS_TO_MICROSEC
-mdefine_line|#define ACPI_TMR_TICKS_TO_MICROSEC(ticks) &bslash;&n;  (((ticks) * 100) / (ACPI_TMR_HZ / 10000))
+mdefine_line|#define ACPI_MICROSEC_TO_TMR_TICKS(val) &bslash;&n;  (((val) * (ACPI_TMR_KHZ)) / 1000)
 multiline_comment|/* PM2_CNT flags */
 DECL|macro|ACPI_ARB_DIS
 mdefine_line|#define ACPI_ARB_DIS 0x01
@@ -207,6 +206,15 @@ id|ACPI_C2_TIME
 comma
 DECL|enumerator|ACPI_C3_TIME
 id|ACPI_C3_TIME
+comma
+DECL|enumerator|ACPI_C1_COUNT
+id|ACPI_C1_COUNT
+comma
+DECL|enumerator|ACPI_C2_COUNT
+id|ACPI_C2_COUNT
+comma
+DECL|enumerator|ACPI_C3_COUNT
+id|ACPI_C3_COUNT
 comma
 DECL|enumerator|ACPI_S0_SLP_TYP
 id|ACPI_S0_SLP_TYP

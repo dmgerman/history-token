@@ -1692,9 +1692,6 @@ op_star
 id|insert_here
 )paren
 (brace
-r_int
-id|major
-suffix:semicolon
 id|drive_stat_acct
 c_func
 (paren

@@ -6111,9 +6111,9 @@ l_string|&quot;IO-APIC + timer doesn&squot;t work! pester mingo@redhat.com&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the old PIC in all cases:&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; * - IRQ13 is the FPU error IRQ, and may be connected&n; *   directly from the FPU to the old PIC. Linux doesn&squot;t&n; *   really care, because Linux doesn&squot;t want to use IRQ13&n; *   anyway (exception 16 is the proper FPU error signal)&n; *&n; * Additionally, something is definitely wrong with irq9&n; * on PIIX4 boards.&n; */
+multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the old PIC in all cases:&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; * - There used to be IRQ13 here as well, but all&n; *   MPS-compliant must not use it for FPU coupling and we&n; *   want to use exception 16 anyway.  And there are&n; *   systems who connect it to an I/O APIC for other uses.&n; *   Thus we don&squot;t mark it special any longer.&n; *&n; * Additionally, something is definitely wrong with irq9&n; * on PIIX4 boards.&n; */
 DECL|macro|PIC_IRQS
-mdefine_line|#define PIC_IRQS&t;((1&lt;&lt;2)|(1&lt;&lt;13))
+mdefine_line|#define PIC_IRQS&t;(1&lt;&lt;2)
 DECL|function|setup_IO_APIC
 r_void
 id|__init

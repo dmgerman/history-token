@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private_stp.h,v 1.2 2000/10/30 22:03:20 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;Linux ethernet bridge&n; *&n; *&t;Authors:&n; *&t;Lennert Buytenhek&t;&t;&lt;buytenh@gnu.org&gt;&n; *&n; *&t;$Id: br_private_stp.h,v 1.3 2001/02/05 06:03:47 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; */
 macro_line|#ifndef _BR_PRIVATE_STP_H
 DECL|macro|_BR_PRIVATE_STP_H
 mdefine_line|#define _BR_PRIVATE_STP_H
@@ -57,6 +57,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* br_stp.c */
+r_extern
 r_void
 id|br_become_root_bridge
 c_func
@@ -67,6 +68,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_config_bpdu_generation
 c_func
@@ -76,6 +78,7 @@ id|net_bridge
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_configuration_update
 c_func
@@ -85,6 +88,7 @@ id|net_bridge
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_is_designated_port
 c_func
@@ -95,6 +99,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|br_is_root_bridge
 c_func
@@ -105,6 +110,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_port_state_selection
 c_func
@@ -114,6 +120,7 @@ id|net_bridge
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_received_config_bpdu
 c_func
@@ -129,6 +136,7 @@ op_star
 id|bpdu
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_received_tcn_bpdu
 c_func
@@ -139,6 +147,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_tick
 c_func
@@ -148,6 +157,7 @@ r_int
 id|__data
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_transmit_config
 c_func
@@ -158,6 +168,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_transmit_tcn
 c_func
@@ -168,6 +179,7 @@ op_star
 id|br
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_topology_change_detection
 c_func
@@ -179,6 +191,7 @@ id|br
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp_bpdu.c */
+r_extern
 r_void
 id|br_send_config_bpdu
 c_func
@@ -192,6 +205,7 @@ id|br_config_bpdu
 op_star
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|br_send_tcn_bpdu
 c_func

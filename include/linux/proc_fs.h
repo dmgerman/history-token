@@ -2,7 +2,7 @@ macro_line|#ifndef _LINUX_PROC_FS_H
 DECL|macro|_LINUX_PROC_FS_H
 mdefine_line|#define _LINUX_PROC_FS_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/*&n; * The proc filesystem constants/structures&n; */
 multiline_comment|/*&n; * Offset of the first process in the /proc root directory..&n; */
 DECL|macro|FIRST_PROCESS_ENTRY

@@ -63,7 +63,7 @@ multiline_comment|/* Note that *all* calls to CMOS_READ and CMOS_WRITE must be d
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
@@ -1594,6 +1594,8 @@ comma
 l_string|&quot;3.5&squot;&squot; 720k&quot;
 comma
 l_string|&quot;3.5&squot;&squot; 1.44M&quot;
+comma
+l_string|&quot;3.5&squot;&squot; 2.88M&quot;
 comma
 l_string|&quot;3.5&squot;&squot; 2.88M&quot;
 )brace

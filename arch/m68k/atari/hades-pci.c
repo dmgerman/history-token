@@ -10,7 +10,7 @@ DECL|macro|DBG_DEVS
 macro_line|# define DBG_DEVS(args)
 macro_line|#endif
 macro_line|#if defined(CONFIG_PCI) &amp;&amp; defined(CONFIG_HADES)
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/atarihw.h&gt;

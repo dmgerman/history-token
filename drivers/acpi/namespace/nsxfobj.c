@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 78 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfobj - Public interfaces to the ACPI subsystem&n; *                         ACPI Object oriented interfaces&n; *              $Revision: 80 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -209,7 +209,7 @@ op_increment
 (brace
 id|status
 op_assign
-id|acpi_cm_build_internal_object
+id|acpi_cm_copy_eobject_to_iobject
 (paren
 op_amp
 id|param_objects-&gt;pointer
@@ -431,7 +431,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; *  We have enough space for the object, build it&n;&t;&t;&t;&t;&t;&t; */
 id|status
 op_assign
-id|acpi_cm_build_external_object
+id|acpi_cm_copy_iobject_to_eobject
 (paren
 id|return_obj
 comma
@@ -1027,6 +1027,11 @@ id|acpi_ns_convert_handle_to_entry
 id|obj_handle
 )paren
 suffix:semicolon
+id|acpi_cm_release_mutex
+(paren
+id|ACPI_MTX_NAMESPACE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1034,22 +1039,12 @@ op_logical_neg
 id|node
 )paren
 (brace
-id|acpi_cm_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
 r_return
 (paren
 id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-id|acpi_cm_release_mutex
-(paren
-id|ACPI_MTX_NAMESPACE
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Run _STA to determine if device is present&n;&t; */
 id|status
 op_assign

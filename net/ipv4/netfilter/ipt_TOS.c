@@ -76,7 +76,7 @@ op_ne
 id|tosinfo-&gt;tos
 )paren
 (brace
-id|u_int8_t
+id|u_int16_t
 id|diffs
 (braket
 l_int|2
@@ -87,7 +87,13 @@ id|diffs
 l_int|0
 )braket
 op_assign
+id|htons
+c_func
+(paren
 id|iph-&gt;tos
+)paren
+op_xor
+l_int|0xFFFF
 suffix:semicolon
 id|iph-&gt;tos
 op_assign
@@ -104,7 +110,11 @@ id|diffs
 l_int|1
 )braket
 op_assign
+id|htons
+c_func
+(paren
 id|iph-&gt;tos
+)paren
 suffix:semicolon
 id|iph-&gt;check
 op_assign

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &quot;adapter.h&quot;

@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/umsdos_fs.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|UMSDOS_DIR_LOCK
 mdefine_line|#define UMSDOS_DIR_LOCK
 macro_line|#ifdef UMSDOS_DIR_LOCK

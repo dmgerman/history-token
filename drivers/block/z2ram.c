@@ -2,7 +2,7 @@ multiline_comment|/*&n;** z2ram - Amiga pseudo-driver to access 16bit-RAM in Zor
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR    Z2RAM_MAJOR
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

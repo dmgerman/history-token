@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * linux/fs/lockd/svc4proc.c&n; *&n; * Lockd server procedures. We don&squot;t implement the NLM_*_RES &n; * procedures because we don&squot;t use the async procedures.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;

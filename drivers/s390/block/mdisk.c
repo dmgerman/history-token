@@ -18,7 +18,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;              /* printk()                         */
-macro_line|#include &lt;linux/malloc.h&gt;              /* kmalloc()                        */
+macro_line|#include &lt;linux/slab.h&gt;              /* kmalloc()                        */
 macro_line|#include &lt;linux/vmalloc.h&gt;             /* vmalloc()                        */
 macro_line|#include &lt;linux/fs.h&gt;                  /* everything...                    */
 macro_line|#include &lt;linux/errno.h&gt;               /* error codes                      */

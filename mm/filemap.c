@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *&t;linux/mm/filemap.c&n; *&n; * Copyright (C) 1994-1999  Linus Torvalds&n; */
 multiline_comment|/*&n; * This file handles the generic file mmap semantics used by&n; * most &quot;normal&quot; filesystems (but you don&squot;t /have/ to use this:&n; * the NFS filesystem used to do this differently, for example)&n; */
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
@@ -1561,7 +1561,7 @@ id|start_idx
 comma
 id|end_idx
 comma
-id|writeout_one_page
+id|waitfor_one_page
 )paren
 suffix:semicolon
 id|retval

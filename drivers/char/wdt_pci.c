@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/watchdog.h&gt;
 DECL|macro|WDT_IS_PCI
 mdefine_line|#define WDT_IS_PCI
 macro_line|#include &quot;wd501p.h&quot;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

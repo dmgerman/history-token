@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: audio.c,v 1.56 2000/10/19 00:50:02 davem Exp $&n; * drivers/sbus/audio/audio.c&n; *&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; * Copyright 1997,1998,1999 Derrick J. Brashear (shadow@dementia.org)&n; * Copyright 1997 Brent Baccala (baccala@freesoft.org)&n; * &n; * Mixer code adapted from code contributed by and&n; * Copyright 1998 Michael Mraka (michael@fi.muni.cz)&n; * and with fixes from Michael Shuey (shuey@ecn.purdue.edu)&n; * The mixer code cheats; Sparc hardware doesn&squot;t generally allow independent&n; * line control, and this fakes it badly.&n; *&n; * SNDCTL_DSP_SETFMT based on code contributed by&n; * Ion Badulescu (ionut@moisil.cs.columbia.edu)&n; *&n; * This is the audio midlayer that sits between the VFS character&n; * devices and the low-level audio hardware device drivers.&n; */
+multiline_comment|/* $Id: audio.c,v 1.57 2001/02/02 08:36:55 davem Exp $&n; * drivers/sbus/audio/audio.c&n; *&n; * Copyright 1996 Thomas K. Dyas (tdyas@noc.rutgers.edu)&n; * Copyright 1997,1998,1999 Derrick J. Brashear (shadow@dementia.org)&n; * Copyright 1997 Brent Baccala (baccala@freesoft.org)&n; * &n; * Mixer code adapted from code contributed by and&n; * Copyright 1998 Michael Mraka (michael@fi.muni.cz)&n; * and with fixes from Michael Shuey (shuey@ecn.purdue.edu)&n; * The mixer code cheats; Sparc hardware doesn&squot;t generally allow independent&n; * line control, and this fakes it badly.&n; *&n; * SNDCTL_DSP_SETFMT based on code contributed by&n; * Ion Badulescu (ionut@moisil.cs.columbia.edu)&n; *&n; * This is the audio midlayer that sits between the VFS character&n; * devices and the low-level audio hardware device drivers.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9,13 +9,13 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/audioio.h&gt;
 DECL|macro|__AUDIO_DEBUG
@@ -2071,7 +2071,7 @@ id|oprintk
 c_func
 (paren
 (paren
-l_string|&quot; for stereo to to %d (bal %d):&quot;
+l_string|&quot; for stereo to do %d (bal %d):&quot;
 comma
 id|i
 comma

@@ -40,7 +40,7 @@ macro_line|#include &quot;aic7xxx/scsi_message.h&quot;
 macro_line|#include &quot;aic7xxx_reg.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;        /* for kmalloc() */
+macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
 macro_line|#include &lt;linux/config.h&gt;        /* for CONFIG_PCI */
 multiline_comment|/*&n; * To generate the correct addresses for the controller to issue&n; * on the bus.  Originally added for DEC Alpha support.&n; */
 DECL|macro|VIRT_TO_BUS

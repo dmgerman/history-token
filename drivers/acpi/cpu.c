@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  cpu.c - Processor handling&n; *&n; *  Copyright (C) 2000 Andrew Henroid&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  cpu.c - Processor handling&n; *&n; *  Copyright (C) 2000 Andrew Henroid&n; *  Copyright (C) 2001 Andrew Grover&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -12,37 +12,56 @@ id|MODULE_NAME
 l_string|&quot;cpu&quot;
 )paren
 DECL|variable|acpi_c2_exit_latency
-r_int
-r_int
+id|u32
 id|acpi_c2_exit_latency
 op_assign
 id|ACPI_INFINITE
 suffix:semicolon
 DECL|variable|acpi_c3_exit_latency
-r_int
-r_int
+id|u32
 id|acpi_c3_exit_latency
 op_assign
 id|ACPI_INFINITE
 suffix:semicolon
 DECL|variable|acpi_c2_enter_latency
-r_int
-r_int
+id|u32
 id|acpi_c2_enter_latency
 op_assign
 id|ACPI_INFINITE
 suffix:semicolon
 DECL|variable|acpi_c3_enter_latency
-r_int
-r_int
+id|u32
 id|acpi_c3_enter_latency
 op_assign
 id|ACPI_INFINITE
 suffix:semicolon
+DECL|variable|acpi_use_idle
+id|u32
+id|acpi_use_idle
+op_assign
+id|TRUE
+suffix:semicolon
+DECL|variable|acpi_c1_count
+id|u32
+id|acpi_c1_count
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|acpi_c2_count
+id|u32
+id|acpi_c2_count
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|acpi_c3_count
+id|u32
+id|acpi_c3_count
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|acpi_pblk
 r_static
-r_int
-r_int
+id|u32
 id|acpi_pblk
 op_assign
 id|ACPI_INVALID
@@ -72,11 +91,21 @@ DECL|variable|acpi_pm_tmr_len
 r_static
 r_int
 id|acpi_pm_tmr_len
+op_assign
+l_int|24
 suffix:semicolon
+DECL|macro|CPU_POWER_STATES
+mdefine_line|#define CPU_POWER_STATES&t;3
 DECL|macro|MAX_C2_LATENCY
 mdefine_line|#define MAX_C2_LATENCY&t;&t;100
 DECL|macro|MAX_C3_LATENCY
 mdefine_line|#define MAX_C3_LATENCY&t;&t;1000
+DECL|macro|ACPI_STATE_C1
+mdefine_line|#define ACPI_STATE_C1&t;&t;0
+DECL|macro|ACPI_STATE_C2
+mdefine_line|#define ACPI_STATE_C2&t;&t;1
+DECL|macro|ACPI_STATE_C3
+mdefine_line|#define ACPI_STATE_C3&t;&t;2
 multiline_comment|/*&n; * Clear busmaster activity flag&n; */
 r_static
 r_inline
@@ -97,7 +126,7 @@ id|ACPI_MTX_LOCK
 comma
 id|BM_STS
 comma
-l_int|0
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -273,36 +302,7 @@ op_assign
 op_amp
 id|acpi_fadt
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fadt
-op_logical_or
-(paren
-id|STRNCMP
-c_func
-(paren
-id|fadt-&gt;header.signature
-comma
-id|ACPI_FADT_SIGNATURE
-comma
-id|ACPI_SIG_LEN
-)paren
-op_ne
-l_int|0
-)paren
-op_logical_or
-op_logical_neg
-id|fadt-&gt;Xpm_tmr_blk.address
-op_logical_or
-op_logical_neg
-id|acpi_pblk
-)paren
-r_goto
-id|not_initialized
-suffix:semicolon
-multiline_comment|/*&n;&t; * start from the previous sleep level..&n;&t; */
+multiline_comment|/*&n;&t; * start from the previous sleep level.&n;&t; * if not initialized, we goto sleep1&n;&t; */
 r_if
 c_cond
 (paren
@@ -418,6 +418,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|acpi_c3_count
+op_increment
+suffix:semicolon
 id|inb
 c_func
 (paren
@@ -458,7 +461,7 @@ OL
 id|acpi_c3_exit_latency
 )paren
 r_goto
-id|sleep2
+id|sleep1
 suffix:semicolon
 )brace
 id|sleep3_with_arbiter
@@ -522,6 +525,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|acpi_c3_count
+op_increment
+suffix:semicolon
 id|inb
 c_func
 (paren
@@ -575,7 +581,7 @@ OL
 id|acpi_c3_exit_latency
 )paren
 r_goto
-id|sleep2
+id|sleep1
 suffix:semicolon
 )brace
 id|sleep2
@@ -646,6 +652,9 @@ id|acpi_read_pm_timer
 c_func
 (paren
 )paren
+suffix:semicolon
+id|acpi_c2_count
+op_increment
 suffix:semicolon
 id|inb
 c_func
@@ -767,6 +776,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|acpi_c1_count
+op_increment
+suffix:semicolon
 id|safe_halt
 c_func
 (paren
@@ -798,34 +810,6 @@ l_int|2
 )paren
 r_goto
 id|sleep2
-suffix:semicolon
-)brace
-id|not_initialized
-suffix:colon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
-id|__cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|safe_halt
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 id|out
@@ -961,9 +945,9 @@ op_assign
 id|ACPI_MICROSEC_TO_TMR_TICKS
 c_func
 (paren
-id|ACPI_TMR_HZ
-op_div
-l_int|1000
+id|acpi_fadt.plvl2_lat
+op_star
+l_int|4
 )paren
 suffix:semicolon
 id|acpi_max_c_state
@@ -1002,7 +986,7 @@ c_func
 (paren
 id|acpi_fadt.plvl3_lat
 op_star
-l_int|5
+l_int|12
 )paren
 suffix:semicolon
 id|acpi_max_c_state
@@ -1023,6 +1007,39 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: plvl2lat=%d plvl3lat=%d&bslash;n&quot;
+comma
+id|acpi_fadt.plvl2_lat
+comma
+id|acpi_fadt.plvl3_lat
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: C2 enter=%d C2 exit=%d&bslash;n&quot;
+comma
+id|acpi_c2_enter_latency
+comma
+id|acpi_c2_exit_latency
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: C3 enter=%d C3 exit=%d&bslash;n&quot;
+comma
+id|acpi_c3_enter_latency
+comma
+id|acpi_c3_exit_latency
+)paren
+suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
@@ -1106,6 +1123,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_use_idle
+)paren
+(brace
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -1124,6 +1147,31 @@ op_assign
 id|acpi_idle
 suffix:semicolon
 macro_line|#endif
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: Using ACPI idle&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: If experiencing system slowness, try adding &bslash;&quot;acpi=no-idle&bslash;&quot; to cmdline&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ACPI: Not using ACPI idle&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -2,8 +2,9 @@ multiline_comment|/*&n; * consolemap.c&n; *&n; * Mapping from internal code (suc
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/consolemap.h&gt;
 macro_line|#include &lt;linux/console_struct.h&gt;

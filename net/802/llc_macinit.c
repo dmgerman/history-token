@@ -2,7 +2,7 @@ multiline_comment|/*&n; * NET&t;&t;An implementation of the IEEE 802.2 LLC proto
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -294,8 +294,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; *&t;All other type 1 pdus ignored for now&n;&t;&t;&t;&t; */
 )brace
 )brace

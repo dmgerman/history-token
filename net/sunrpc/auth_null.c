@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/net/sunrpc/rpcauth_null.c&n; *&n; * AUTH_NULL authentication. Really :-)&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;

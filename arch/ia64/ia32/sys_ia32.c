@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;

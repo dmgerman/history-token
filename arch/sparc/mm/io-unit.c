@@ -2,7 +2,7 @@ multiline_comment|/* $Id: io-unit.c,v 1.22 2000/08/09 00:00:15 davem Exp $&n; * 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;

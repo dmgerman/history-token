@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/read_write.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
-macro_line|#include &lt;linux/malloc.h&gt; 
+macro_line|#include &lt;linux/slab.h&gt; 
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

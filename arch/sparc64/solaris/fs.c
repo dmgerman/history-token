@@ -1,7 +1,7 @@
 multiline_comment|/* $Id: fs.c,v 1.23 2000/08/29 07:01:54 davem Exp $&n; * fs.c: fs related syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; *&n; * 1999-08-19 Implemented solaris F_FREESP (truncate)&n; *            fcntl, by Jason Rappleye (rappleye@ccr.buffalo.edu)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/file.h&gt;

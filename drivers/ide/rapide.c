@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/ide/rapide.c&n; *&n; * Copyright (c) 1996-1998 Russell King.&n; *&n; * Changelog:&n; *  08-06-1996&t;RMK&t;Created&n; *  13-04-1998&t;RMK&t;Added manufacturer and product IDs&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;

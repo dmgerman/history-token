@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/ipc/msg.c&n; * Copyright (C) 1992 Krishna Balasubramanian &n; *&n; * Removed all the remaining kerneld mess&n; * Catch the -EFAULT stuff properly&n; * Use GFP_KERNEL for messages as in 1.2&n; * Fixed up the unchecked user space derefs&n; * Copyright (C) 1998 Alan Cox &amp; Andi Kleen&n; *&n; * /proc/sysvipc/msg support (c) 1999 Dragos Acostachioaie &lt;dragos@iname.com&gt;&n; *&n; * mostly rewritten, threaded and wake-one semantics added&n; * MSGMAX limit removed, sysctl&squot;s added&n; * (c) 1999 Manfred Spraul &lt;manfreds@colorfullife.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;

@@ -2463,14 +2463,6 @@ id|tmp
 op_rshift
 id|I_HASHBITS
 )paren
-op_plus
-(paren
-id|tmp
-op_rshift
-id|I_HASHBITS
-op_star
-l_int|2
-)paren
 suffix:semicolon
 r_return
 id|tmp

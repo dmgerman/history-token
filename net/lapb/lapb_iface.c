@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;LAPB release 002&n; *&n; *&t;This code REQUIRES 2.1.15 or higher/ NET3.038&n; *&n; *&t;This module:&n; *&t;&t;This module is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;History&n; *&t;LAPB 001&t;Jonathan Naylor&t;Started Coding&n; *&t;LAPB 002&t;Jonathan Naylor&t;New timer architecture.&n; *&t;2000-10-29&t;Henner Eisen&t;lapb_data_indication() return status.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_LAPB) || defined(CONFIG_LAPB_MODULE)
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -30,8 +29,7 @@ id|lapb_cb
 op_star
 r_volatile
 id|lapb_list
-op_assign
-l_int|NULL
+multiline_comment|/* = NULL initially */
 suffix:semicolon
 multiline_comment|/*&n; *&t;Free an allocated lapb control block. This is done to centralise&n; *&t;the MOD count code.&n; */
 DECL|function|lapb_free_cb
@@ -1386,6 +1384,18 @@ c_func
 id|lapb_data_received
 )paren
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;NET4: LAPB for Linux. Version 0.01 for NET4.0&bslash;n&quot;
+suffix:semicolon
 DECL|function|lapb_init
 r_static
 r_int
@@ -1399,15 +1409,13 @@ r_void
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;NET4: LAPB for Linux. Version 0.01 for NET4.0&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -1420,7 +1428,6 @@ c_func
 l_string|&quot;The X.25 Link Access Procedure B link layer protocol&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|lapb_init
 id|module_init
 c_func
@@ -1428,5 +1435,4 @@ c_func
 id|lapb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

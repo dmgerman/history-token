@@ -5,7 +5,7 @@ DECL|macro|_LINUX_REISER_FS_H
 mdefine_line|#define _LINUX_REISER_FS_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; *  include/linux/reiser_fs.h&n; *&n; *  Reiser File System constants and structures&n; *&n; */

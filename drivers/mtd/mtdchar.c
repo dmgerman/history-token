@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#ifdef CONFIG_DEVFS_FS
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_static

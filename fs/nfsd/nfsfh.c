@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfsfh.c&n; *&n; * NFS server file handle treatment.&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; * Portions Copyright (C) 1999 G. Allen Morris III &lt;gam3@acm.org&gt;&n; * Extensive rewrite by Neil Brown &lt;neilb@cse.unsw.edu.au&gt; Southern-Spring 1999&n; */
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1870,6 +1870,12 @@ id|dentry
 )paren
 (brace
 multiline_comment|/* we lost a race,  try again&n;&t;&t;&t; */
+id|dput
+c_func
+(paren
+id|pdentry
+)paren
+suffix:semicolon
 id|dput
 c_func
 (paren

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|function|file_ioctl
 r_static
 r_int

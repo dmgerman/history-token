@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/fddidevice.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/fcdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/dst.h&gt;

@@ -37,7 +37,7 @@ macro_line|#include &quot;qla1280.h&quot;
 macro_line|#include &quot;ql12160_fw.h&quot;                     /* ISP RISC code */
 macro_line|#include &quot;ql1280_fw.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;        /* for kmalloc() */
+macro_line|#include &lt;linux/slab.h&gt;        /* for kmalloc() */
 macro_line|#ifndef KERNEL_VERSION
 DECL|macro|KERNEL_VERSION
 macro_line|#  define KERNEL_VERSION(x,y,z) (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))

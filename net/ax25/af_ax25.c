@@ -7107,9 +7107,14 @@ id|net_proto_family
 id|ax25_family_ops
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_AX25
 comma
+id|create
+suffix:colon
 id|ax25_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|ax25_proto_ops
@@ -7206,17 +7211,17 @@ id|packet_type
 id|ax25_packet_type
 op_assign
 (brace
-l_int|0
+id|type
+suffix:colon
+id|__constant_htons
+c_func
+(paren
+id|ETH_P_AX25
+)paren
 comma
-multiline_comment|/* MUTTER ntohs(ETH_P_AX25),*/
-l_int|0
-comma
-multiline_comment|/* copy */
+id|func
+suffix:colon
 id|ax25_kiss_rcv
-comma
-l_int|NULL
-comma
-l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -7227,9 +7232,10 @@ id|notifier_block
 id|ax25_dev_notifier
 op_assign
 (brace
+id|notifier_call
+suffix:colon
 id|ax25_device_event
 comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|ax25_encapsulate
@@ -7351,6 +7357,18 @@ c_func
 id|ax25_display_timer
 )paren
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_const
+r_char
+id|banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;NET4: G4KLX/GW4PTS AX.25 for Linux. Version 0.37 for Linux NET4.0&bslash;n&quot;
+suffix:semicolon
 DECL|function|ax25_init
 r_static
 r_int
@@ -7366,14 +7384,6 @@ c_func
 (paren
 op_amp
 id|ax25_family_ops
-)paren
-suffix:semicolon
-id|ax25_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_AX25
 )paren
 suffix:semicolon
 id|dev_add_pack
@@ -7428,8 +7438,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;NET4: G4KLX/GW4PTS AX.25 for Linux. Version 0.37 for Linux NET4.0&bslash;n&quot;
+id|banner
 )paren
 suffix:semicolon
 r_return
@@ -7508,14 +7517,6 @@ c_func
 (paren
 op_amp
 id|ax25_dev_notifier
-)paren
-suffix:semicolon
-id|ax25_packet_type.type
-op_assign
-id|htons
-c_func
-(paren
-id|ETH_P_AX25
 )paren
 suffix:semicolon
 id|dev_remove_pack

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * The DSP56001 Device Driver, saviour of the Free World(tm)&n; *&n; * Authors: Fredrik Noring   &lt;noring@nocrew.org&gt;&n; *          lars brinkhoff   &lt;lars@nocrew.org&gt;&n; *          Tomas Berndtsson &lt;tomas@nocrew.org&gt;&n; *&n; * First version May 1996&n; *&n; * History:&n; *  97-01-29   Tomas Berndtsson,&n; *               Integrated with Linux 2.1.21 kernel sources.&n; *  97-02-15   Tomas Berndtsson,&n; *               Fixed for kernel 2.1.26&n; *&n; * BUGS:&n; *  Hmm... there must be something here :)&n; *&n; * Copyright (C) 1996,1997 Fredrik Noring, lars brinkhoff &amp; Tomas Berndtsson&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;&t;/* for kmalloc() and kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;/* for kmalloc() and kfree() */
 macro_line|#include &lt;linux/sched.h&gt;&t;/* for struct wait_queue etc */
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

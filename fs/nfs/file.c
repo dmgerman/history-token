@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NET4:&t;Implementation of BSD Unix domain sockets.&n; *&n; * Authors:&t;Alan Cox, &lt;alan.cox@linux.org&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Version:&t;$Id: af_unix.c,v 1.109 2001/01/06 00:42:23 davem Exp $&n; *&n; * Fixes:&n; *&t;&t;Linus Torvalds&t;:&t;Assorted bug cures.&n; *&t;&t;Niibe Yutaka&t;:&t;async I/O support.&n; *&t;&t;Carsten Paeth&t;:&t;PF_UNIX check, address fixes.&n; *&t;&t;Alan Cox&t;:&t;Limit size of allocated blocks.&n; *&t;&t;Alan Cox&t;:&t;Fixed the stupid socketpair bug.&n; *&t;&t;Alan Cox&t;:&t;BSD compatibility fine tuning.&n; *&t;&t;Alan Cox&t;:&t;Fixed a bug in connect when interrupted.&n; *&t;&t;Alan Cox&t;:&t;Sorted out a proper draft version of&n; *&t;&t;&t;&t;&t;file descriptor passing hacked up from&n; *&t;&t;&t;&t;&t;Mike Shaver&squot;s work.&n; *&t;&t;Marty Leisner&t;:&t;Fixes to fd passing&n; *&t;&t;Nick Nevin&t;:&t;recvmsg bugfix.&n; *&t;&t;Alan Cox&t;:&t;Started proper garbage collector&n; *&t;&t;Heiko EiBfeldt&t;:&t;Missing verify_area check&n; *&t;&t;Alan Cox&t;:&t;Started POSIXisms&n; *&t;&t;Andreas Schwab&t;:&t;Replace inode by dentry for proper&n; *&t;&t;&t;&t;&t;reference counting&n; *&t;&t;Kirk Petersen&t;:&t;Made this a module&n; *&t;    Christoph Rohland&t;:&t;Elegant non-blocking accept/connect algorithm.&n; *&t;&t;&t;&t;&t;Lots of bug fixes.&n; *&t;     Alexey Kuznetosv&t;:&t;Repaired (I hope) bugs introduces&n; *&t;&t;&t;&t;&t;by above two patches.&n; *&t;     Andrea Arcangeli&t;:&t;If possible we block in connect(2)&n; *&t;&t;&t;&t;&t;if the max backlog of the listen socket&n; *&t;&t;&t;&t;&t;is been reached. This won&squot;t break&n; *&t;&t;&t;&t;&t;old apps and it will avoid huge amount&n; *&t;&t;&t;&t;&t;of socks hashed (this for unix_gc()&n; *&t;&t;&t;&t;&t;performances reasons).&n; *&t;&t;&t;&t;&t;Security fix that limits the max&n; *&t;&t;&t;&t;&t;number of socks to 2*max_files and&n; *&t;&t;&t;&t;&t;the number of skb queueable in the&n; *&t;&t;&t;&t;&t;dgram receiver.&n; *&t;&t;Artur Skawina   :&t;Hash function optimizations&n; *&t;     Alexey Kuznetsov   :&t;Full scale SMP. Lot of bugs are introduced 8)&n; *&t;      Malcolm Beattie   :&t;Set peercred for socketpair&n; *&t;     Michal Ostrowski   :       Module initialization cleanup.&n; *&n; *&n; * Known differences from reference BSD that was tested:&n; *&n; *&t;[TO FIX]&n; *&t;ECONNREFUSED is not returned from one end of a connected() socket to the&n; *&t;&t;other the moment one end closes.&n; *&t;fstat() doesn&squot;t return st_dev=NODEV, and give the blksize as high water mark&n; *&t;&t;and a fake inode identifier (nor the BSD first socket fstat twice bug).&n; *&t;[NOT TO FIX]&n; *&t;accept() returns a path name even if the connecting socket has closed&n; *&t;&t;in the meantime (BSD loses the path and gives up).&n; *&t;accept() returns 0 length path for an unbound connector. BSD returns 16&n; *&t;&t;and a null first byte in the path (but not for gethost/peername - BSD bug ??)&n; *&t;socketpair(...SOCK_RAW..) doesn&squot;t panic the kernel.&n; *&t;BSD af_unix apparently has connect forgetting to block properly.&n; *&t;&t;(need to check this with the POSIX spec in detail)&n; *&n; * Differences from 2.0.0-11-... (ANK)&n; *&t;Bug fixes and improvements.&n; *&t;&t;- client shutdown killed server socket.&n; *&t;&t;- removed all useless cli/sti pairs.&n; *&n; *&t;Semantic changes/extensions.&n; *&t;&t;- generic control message passing.&n; *&t;&t;- SCM_CREDENTIALS control message.&n; *&t;&t;- &quot;Abstract&quot; (not FS based) socket bindings.&n; *&t;&t;  Abstract names are sequences of bytes (not zero terminated)&n; *&t;&t;  started by 0, so that this name space does not intersect&n; *&t;&t;  with BSD names.&n; */
+multiline_comment|/*&n; * NET4:&t;Implementation of BSD Unix domain sockets.&n; *&n; * Authors:&t;Alan Cox, &lt;alan.cox@linux.org&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; * Version:&t;$Id: af_unix.c,v 1.111 2001/02/02 11:37:28 davem Exp $&n; *&n; * Fixes:&n; *&t;&t;Linus Torvalds&t;:&t;Assorted bug cures.&n; *&t;&t;Niibe Yutaka&t;:&t;async I/O support.&n; *&t;&t;Carsten Paeth&t;:&t;PF_UNIX check, address fixes.&n; *&t;&t;Alan Cox&t;:&t;Limit size of allocated blocks.&n; *&t;&t;Alan Cox&t;:&t;Fixed the stupid socketpair bug.&n; *&t;&t;Alan Cox&t;:&t;BSD compatibility fine tuning.&n; *&t;&t;Alan Cox&t;:&t;Fixed a bug in connect when interrupted.&n; *&t;&t;Alan Cox&t;:&t;Sorted out a proper draft version of&n; *&t;&t;&t;&t;&t;file descriptor passing hacked up from&n; *&t;&t;&t;&t;&t;Mike Shaver&squot;s work.&n; *&t;&t;Marty Leisner&t;:&t;Fixes to fd passing&n; *&t;&t;Nick Nevin&t;:&t;recvmsg bugfix.&n; *&t;&t;Alan Cox&t;:&t;Started proper garbage collector&n; *&t;&t;Heiko EiBfeldt&t;:&t;Missing verify_area check&n; *&t;&t;Alan Cox&t;:&t;Started POSIXisms&n; *&t;&t;Andreas Schwab&t;:&t;Replace inode by dentry for proper&n; *&t;&t;&t;&t;&t;reference counting&n; *&t;&t;Kirk Petersen&t;:&t;Made this a module&n; *&t;    Christoph Rohland&t;:&t;Elegant non-blocking accept/connect algorithm.&n; *&t;&t;&t;&t;&t;Lots of bug fixes.&n; *&t;     Alexey Kuznetosv&t;:&t;Repaired (I hope) bugs introduces&n; *&t;&t;&t;&t;&t;by above two patches.&n; *&t;     Andrea Arcangeli&t;:&t;If possible we block in connect(2)&n; *&t;&t;&t;&t;&t;if the max backlog of the listen socket&n; *&t;&t;&t;&t;&t;is been reached. This won&squot;t break&n; *&t;&t;&t;&t;&t;old apps and it will avoid huge amount&n; *&t;&t;&t;&t;&t;of socks hashed (this for unix_gc()&n; *&t;&t;&t;&t;&t;performances reasons).&n; *&t;&t;&t;&t;&t;Security fix that limits the max&n; *&t;&t;&t;&t;&t;number of socks to 2*max_files and&n; *&t;&t;&t;&t;&t;the number of skb queueable in the&n; *&t;&t;&t;&t;&t;dgram receiver.&n; *&t;&t;Artur Skawina   :&t;Hash function optimizations&n; *&t;     Alexey Kuznetsov   :&t;Full scale SMP. Lot of bugs are introduced 8)&n; *&t;      Malcolm Beattie   :&t;Set peercred for socketpair&n; *&t;     Michal Ostrowski   :       Module initialization cleanup.&n; *&n; *&n; * Known differences from reference BSD that was tested:&n; *&n; *&t;[TO FIX]&n; *&t;ECONNREFUSED is not returned from one end of a connected() socket to the&n; *&t;&t;other the moment one end closes.&n; *&t;fstat() doesn&squot;t return st_dev=NODEV, and give the blksize as high water mark&n; *&t;&t;and a fake inode identifier (nor the BSD first socket fstat twice bug).&n; *&t;[NOT TO FIX]&n; *&t;accept() returns a path name even if the connecting socket has closed&n; *&t;&t;in the meantime (BSD loses the path and gives up).&n; *&t;accept() returns 0 length path for an unbound connector. BSD returns 16&n; *&t;&t;and a null first byte in the path (but not for gethost/peername - BSD bug ??)&n; *&t;socketpair(...SOCK_RAW..) doesn&squot;t panic the kernel.&n; *&t;BSD af_unix apparently has connect forgetting to block properly.&n; *&t;&t;(need to check this with the POSIX spec in detail)&n; *&n; * Differences from 2.0.0-11-... (ANK)&n; *&t;Bug fixes and improvements.&n; *&t;&t;- client shutdown killed server socket.&n; *&t;&t;- removed all useless cli/sti pairs.&n; *&n; *&t;Semantic changes/extensions.&n; *&t;&t;- generic control message passing.&n; *&t;&t;- SCM_CREDENTIALS control message.&n; *&t;&t;- &quot;Abstract&quot; (not FS based) socket bindings.&n; *&t;&t;  Abstract names are sequences of bytes (not zero terminated)&n; *&t;&t;  started by 0, so that this name space does not intersect&n; *&t;&t;  with BSD names.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -16,7 +16,7 @@ macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -5249,7 +5249,7 @@ id|sk-&gt;sndbuf
 op_div
 l_int|2
 op_minus
-l_int|16
+l_int|64
 )paren
 id|size
 op_assign
@@ -5257,7 +5257,30 @@ id|sk-&gt;sndbuf
 op_div
 l_int|2
 op_minus
-l_int|16
+l_int|64
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+OG
+(paren
+l_int|128
+op_star
+l_int|1024
+)paren
+op_div
+l_int|2
+)paren
+id|size
+op_assign
+(paren
+l_int|128
+op_star
+l_int|1024
+)paren
+op_div
+l_int|2
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Keep to page sized kmalloc()&squot;s as various people&n;&t;&t; *&t;have suggested. Big mallocs stress the vm too&n;&t;&t; *&t;much.&n;&t;&t; */
 r_if

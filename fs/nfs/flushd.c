@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * linux/fs/nfs/flushd.c&n; *&n; * For each NFS mount, there is a separate cache object that contains&n; * a hash table of all clusters. With this cache, an async RPC task&n; * (`flushd&squot;) is associated, which wakes up occasionally to inspect&n; * its list of dirty buffers.&n; * (Note that RPC tasks aren&squot;t kernel threads. Take a look at the&n; * rpciod code to understand what they are).&n; *&n; * Inside the cache object, we also maintain a count of the current number&n; * of dirty pages, which may not exceed a certain threshold.&n; * (FIXME: This threshold should be configurable).&n; *&n; * The code is streamlined for what I think is the prevalent case for&n; * NFS traffic, which is sequential write access without concurrent&n; * access by different processes.&n; *&n; * Copyright (C) 1996, 1997, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; *&n; * Rewritten 6/3/2000 by Trond Myklebust&n; * Copyright (C) 1999, 2000, Trond Myklebust &lt;trond.myklebust@fys.uio.no&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

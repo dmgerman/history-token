@@ -4,7 +4,7 @@ multiline_comment|/*&n; * This program is free software; you can redistribute it
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 DECL|macro|GRIP_MODE_GPP

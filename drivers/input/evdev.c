@@ -7,7 +7,7 @@ mdefine_line|#define EVDEV_MINORS&t;&t;32
 DECL|macro|EVDEV_BUFFER_SIZE
 mdefine_line|#define EVDEV_BUFFER_SIZE&t;64
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;

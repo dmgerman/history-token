@@ -305,15 +305,11 @@ r_static
 id|ctl_table
 op_star
 id|ax25_table
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|ax25_table_size
 r_static
 r_int
 id|ax25_table_size
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ax25_dir_table
 r_static

@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/dio.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;                         /* kmalloc() */
+macro_line|#include &lt;linux/slab.h&gt;                         /* kmalloc() */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;                           /* hwreg_present() */
 macro_line|#include &lt;asm/io.h&gt;                               /* readb() */

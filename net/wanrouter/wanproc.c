@@ -1,10 +1,10 @@
-multiline_comment|/*****************************************************************************&n;* wanproc.c&t;WAN Router Module. /proc filesystem interface.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;access to the router using Linux /proc filesystem.&n;*&n;* Author: &t;Gideon Hack&t;&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.2.X kernels.&n;* Jun 29, 1997&t;Alan Cox&t;Merged with 1.0.3 vendor code&n;* Jan 29, 1997&t;Gene Kozin&t;v1.0.1. Implemented /proc read routines&n;* Jan 30, 1997&t;Alan Cox&t;Hacked around for 2.1&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;*****************************************************************************/
+multiline_comment|/*****************************************************************************&n;* wanproc.c&t;WAN Router Module. /proc filesystem interface.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;access to the router using Linux /proc filesystem.&n;*&n;* Author: &t;Gideon Hack&t;&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jan 20, 2001  Arnaldo C.Melo  Fix leak on error in router_proc_read, cleanups&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.2.X kernels.&n;* Jun 29, 1997&t;Alan Cox&t;Merged with 1.0.3 vendor code&n;* Jan 29, 1997&t;Gene Kozin&t;v1.0.1. Implemented /proc read routines&n;* Jan 30, 1997&t;Alan Cox&t;Hacked around for 2.1&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;*****************************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline mem*, str* functions */
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __init et al. */
@@ -20,45 +20,8 @@ macro_line|#ifndef&t;min
 DECL|macro|min
 mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
 macro_line|#endif
-macro_line|#ifndef&t;max
-DECL|macro|max
-mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
-macro_line|#endif
 DECL|macro|PROC_BUFSZ
 mdefine_line|#define&t;PROC_BUFSZ&t;4000&t;/* buffer size for printing proc info */
-multiline_comment|/****** Data Types **********************************************************/
-DECL|struct|wan_stat_entry
-r_typedef
-r_struct
-id|wan_stat_entry
-(brace
-DECL|member|next
-r_struct
-id|wan_stat_entry
-op_star
-id|next
-suffix:semicolon
-DECL|member|description
-r_char
-op_star
-id|description
-suffix:semicolon
-multiline_comment|/* description string */
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* -&gt; data */
-DECL|member|data_type
-r_int
-id|data_type
-suffix:semicolon
-multiline_comment|/* data type */
-DECL|typedef|wan_stat_entry_t
-)brace
-id|wan_stat_entry_t
-suffix:semicolon
 multiline_comment|/****** Function Prototypes *************************************************/
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Proc filesystem interface */
@@ -161,8 +124,8 @@ id|len
 )paren
 suffix:semicolon
 multiline_comment|/* Miscellaneous */
-multiline_comment|/*&n; *&t;Structures for interfacing with the /proc filesystem.&n; *&t;Router creates its own directory /proc/net/router with the folowing&n; *&t;entries:&n; *&t;config&t;&t;device configuration&n; *&t;status&t;&t;global device statistics&n; *&t;&lt;device&gt;&t;entry for each WAN device&n; */
-multiline_comment|/*&n; *&t;Generic /proc/net/router/&lt;file&gt; file and inode operations &n; */
+multiline_comment|/*&n; *&t;Structures for interfacing with the /proc filesystem.&n; *&t;Router creates its own directory /proc/net/wanrouter with the folowing&n; *&t;entries:&n; *&t;config&t;&t;device configuration&n; *&t;status&t;&t;global device statistics&n; *&t;&lt;device&gt;&t;entry for each WAN device&n; */
+multiline_comment|/*&n; *&t;Generic /proc/net/wanrouter/&lt;file&gt; file and inode operations &n; */
 DECL|variable|router_fops
 r_static
 r_struct
@@ -189,7 +152,7 @@ id|router_proc_perms
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;/proc/net/router/&lt;device&gt; file operations&n; */
+multiline_comment|/*&n; *&t;/proc/net/wanrouter/&lt;device&gt; file operations&n; */
 DECL|variable|wandev_fops
 r_static
 r_struct
@@ -207,7 +170,7 @@ id|wanrouter_ioctl
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;/proc/net/router &n; */
+multiline_comment|/*&n; *&t;/proc/net/wanrouter &n; */
 DECL|variable|proc_router
 r_static
 r_struct
@@ -680,9 +643,13 @@ id|len
 )paren
 )paren
 (brace
-r_return
+id|len
+op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|file-&gt;f_pos
@@ -695,6 +662,8 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren

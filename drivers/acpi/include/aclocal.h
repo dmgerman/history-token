@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 100 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 104 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -569,6 +569,48 @@ DECL|typedef|ACPI_UPDATE_STATE
 )brace
 id|ACPI_UPDATE_STATE
 suffix:semicolon
+multiline_comment|/*&n; * Pkg state - used to traverse nested package structures&n; */
+DECL|struct|acpi_pkg_state
+r_typedef
+r_struct
+id|acpi_pkg_state
+(brace
+id|ACPI_STATE_COMMON
+DECL|member|source_object
+r_union
+id|acpi_operand_obj
+op_star
+id|source_object
+suffix:semicolon
+DECL|member|dest_object
+r_union
+id|acpi_operand_obj
+op_star
+id|dest_object
+suffix:semicolon
+DECL|member|walk_state
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+suffix:semicolon
+DECL|member|this_target_obj
+r_void
+op_star
+id|this_target_obj
+suffix:semicolon
+DECL|member|num_packages
+id|u32
+id|num_packages
+suffix:semicolon
+DECL|member|index
+id|u16
+id|index
+suffix:semicolon
+DECL|typedef|ACPI_PKG_STATE
+)brace
+id|ACPI_PKG_STATE
+suffix:semicolon
 multiline_comment|/*&n; * Control state - one per if/else and while constructs.&n; * Allows nesting of these constructs&n; */
 DECL|struct|acpi_control_state
 r_typedef
@@ -700,6 +742,10 @@ suffix:semicolon
 DECL|member|parse_scope
 id|ACPI_PSCOPE_STATE
 id|parse_scope
+suffix:semicolon
+DECL|member|pkg
+id|ACPI_PKG_STATE
+id|pkg
 suffix:semicolon
 DECL|member|results
 id|ACPI_RESULT_VALUES
@@ -1227,10 +1273,6 @@ r_typedef
 r_struct
 id|acpi_device_walk_info
 (brace
-DECL|member|flags
-id|u32
-id|flags
-suffix:semicolon
 DECL|member|device_count
 id|u16
 id|device_count

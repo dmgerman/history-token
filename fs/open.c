@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))

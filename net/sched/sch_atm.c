@@ -2,6 +2,8 @@ multiline_comment|/* net/sched/sch_atm.c - ATM VC selection &quot;queueing disci
 multiline_comment|/* Written 1998-2000 by Werner Almesberger, EPFL ICA */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;

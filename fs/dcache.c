@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -995,10 +995,8 @@ op_amp
 id|dentry_unused
 )paren
 suffix:semicolon
-id|count
-op_decrement
-suffix:semicolon
-r_continue
+r_goto
+id|next
 suffix:semicolon
 )brace
 id|dentry_stat.nr_unused
@@ -1026,6 +1024,8 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
+id|next
+suffix:colon
 r_if
 c_cond
 (paren
@@ -2104,14 +2104,6 @@ op_xor
 id|hash
 op_rshift
 id|D_HASHBITS
-)paren
-op_xor
-(paren
-id|hash
-op_rshift
-id|D_HASHBITS
-op_star
-l_int|2
 )paren
 suffix:semicolon
 r_return

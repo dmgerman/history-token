@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 5 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: hwsleep.c - ACPI Hardware Sleep/Wake Interface&n; *              $Revision: 7 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000, 2001 R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -342,8 +342,11 @@ id|SLP_TYPE_X_MASK
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* the old version was disabling interrupts. let&squot;s try it without&n;&t; * and see how that works&n;&t; */
-multiline_comment|/*disable();*/
+id|disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|acpi_hw_register_write
 c_func
 (paren
@@ -364,7 +367,28 @@ comma
 id|PM1_bcontrol
 )paren
 suffix:semicolon
-multiline_comment|/*enable();*/
+id|acpi_hw_register_write
+c_func
+(paren
+id|ACPI_MTX_LOCK
+comma
+id|PM1_CONTROL
+comma
+(paren
+l_int|1
+op_lshift
+id|acpi_hw_get_bit_shift
+(paren
+id|SLP_EN_MASK
+)paren
+)paren
+)paren
+suffix:semicolon
+id|enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|AE_OK
