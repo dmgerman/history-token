@@ -280,10 +280,6 @@ DECL|enumerator|COMMIT_Dirty
 id|COMMIT_Dirty
 comma
 multiline_comment|/* Inode is really dirty */
-DECL|enumerator|COMMIT_Holdlock
-id|COMMIT_Holdlock
-comma
-multiline_comment|/* Hold the IWRITE_LOCK until commit is done */
 DECL|enumerator|COMMIT_Dirtable
 id|COMMIT_Dirtable
 comma
