@@ -2345,7 +2345,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;fasync cache&quot;
+l_string|&quot;fasync_cache&quot;
 comma
 r_sizeof
 (paren

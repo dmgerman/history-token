@@ -7339,7 +7339,7 @@ op_assign
 id|kmem_cache_create
 c_func
 (paren
-l_string|&quot;file lock cache&quot;
+l_string|&quot;file_lock_cache&quot;
 comma
 r_sizeof
 (paren
