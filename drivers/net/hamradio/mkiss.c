@@ -1260,6 +1260,7 @@ suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1377,6 +1378,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1473,6 +1475,7 @@ suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1538,6 +1541,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1583,6 +1587,7 @@ suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1605,6 +1610,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1726,6 +1732,7 @@ suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -1852,6 +1859,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -3268,6 +3276,7 @@ suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -3304,6 +3313,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
@@ -3326,6 +3336,7 @@ suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
+op_amp
 id|ax-&gt;buflock
 )paren
 suffix:semicolon
