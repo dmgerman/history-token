@@ -5,8 +5,13 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Simple VGA output */
+macro_line|#ifdef __i386__
+DECL|macro|VGABASE
+mdefine_line|#define VGABASE&t;&t;(__PAGE_OFFSET + 0xb8000UL)
+macro_line|#else
 DECL|macro|VGABASE
 mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000UL
+macro_line|#endif
 DECL|macro|MAX_YPOS
 mdefine_line|#define MAX_YPOS&t;25
 DECL|macro|MAX_XPOS
