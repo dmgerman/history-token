@@ -1671,6 +1671,8 @@ l_int|42
 comma
 l_int|43
 comma
+l_int|52
+comma
 l_int|73
 comma
 l_int|80
@@ -1686,6 +1688,8 @@ id|logitech_wheel
 )braket
 op_assign
 (brace
+l_int|52
+comma
 l_int|75
 comma
 l_int|76
