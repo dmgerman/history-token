@@ -5590,7 +5590,7 @@ id|cpu_to_le16s
 c_func
 (paren
 op_amp
-id|hubstatus
+id|devstat
 )paren
 suffix:semicolon
 r_if
