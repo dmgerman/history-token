@@ -350,6 +350,9 @@ DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0
 DECL|macro|MCA_bus__is_a_macro
 mdefine_line|#define MCA_bus__is_a_macro
+multiline_comment|/*&n; * User space process size: 512GB - 1GB (default).&n; */
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE&t;(0x0000007fc0000000UL)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|IA32_PAGE_OFFSET
 mdefine_line|#define IA32_PAGE_OFFSET ((current-&gt;personality &amp; ADDR_LIMIT_3GB) ? 0xc0000000 : 0xFFFFe000)
@@ -359,11 +362,6 @@ DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flag(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
-multiline_comment|/*&n; * User space process size: 512GB - 1GB (default).&n; */
-DECL|macro|TASK_SIZE_64
-mdefine_line|#define TASK_SIZE_64&t;(0x0000007fc0000000UL)
-DECL|macro|TASK_SIZE
-mdefine_line|#define TASK_SIZE (test_thread_flag(TIF_IA32) ? IA32_PAGE_OFFSET : TASK_SIZE_64)
 multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
 mdefine_line|#define IO_BITMAP_BITS  65536
@@ -1204,7 +1202,5 @@ DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|cache_line_size
 mdefine_line|#define cache_line_size() (boot_cpu_data.x86_cache_alignment)
-DECL|macro|HAVE_ARCH_PICK_MMAP_LAYOUT
-mdefine_line|#define HAVE_ARCH_PICK_MMAP_LAYOUT
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof
