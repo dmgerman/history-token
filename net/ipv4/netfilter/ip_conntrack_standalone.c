@@ -689,6 +689,13 @@ id|finished
 suffix:semicolon
 )brace
 multiline_comment|/* Now iterate through expecteds. */
+id|READ_LOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_expect_tuple_lock
+)paren
+suffix:semicolon
 id|list_for_each
 c_func
 (paren
@@ -753,10 +760,19 @@ op_assign
 id|last_len
 suffix:semicolon
 r_goto
-id|finished
+id|finished_expects
 suffix:semicolon
 )brace
 )brace
+id|finished_expects
+suffix:colon
+id|READ_UNLOCK
+c_func
+(paren
+op_amp
+id|ip_conntrack_expect_tuple_lock
+)paren
+suffix:semicolon
 id|finished
 suffix:colon
 id|READ_UNLOCK
