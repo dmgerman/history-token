@@ -204,7 +204,6 @@ macro_line|#include &lt;asm/sibyte/sb1250_mac.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_dma.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 multiline_comment|/**********************************************************************&n; *  Simple types&n; ********************************************************************* */
 DECL|typedef|sbmac_port_t
 r_typedef
@@ -290,9 +289,9 @@ mdefine_line|#define SBDMA_NEXTBUF(d,f) ((((d)-&gt;f+1) == (d)-&gt;sbdma_dscrtab
 DECL|macro|NUMCACHEBLKS
 mdefine_line|#define NUMCACHEBLKS(x) (((x)+SMP_CACHE_BYTES-1)/SMP_CACHE_BYTES)
 DECL|macro|SBMAC_READCSR
-mdefine_line|#define SBMAC_READCSR(t)&t;in64((unsigned long)t)
+mdefine_line|#define SBMAC_READCSR(t)&t;__raw_readq((unsigned long)t)
 DECL|macro|SBMAC_WRITECSR
-mdefine_line|#define SBMAC_WRITECSR(t,v)&t;out64(v, (unsigned long)t)
+mdefine_line|#define SBMAC_WRITECSR(t,v)&t;__raw_writeq(v, (unsigned long)t)
 DECL|macro|SBMAC_MAX_TXDESCR
 mdefine_line|#define SBMAC_MAX_TXDESCR&t;32
 DECL|macro|SBMAC_MAX_RXDESCR
@@ -1285,6 +1284,19 @@ suffix:semicolon
 r_uint64
 id|bits
 suffix:semicolon
+r_int
+id|mac_mdio_genc
+suffix:semicolon
+id|mac_mdio_genc
+op_assign
+id|SBMAC_READCSR
+c_func
+(paren
+id|s-&gt;sbm_mdio
+)paren
+op_amp
+id|M_MAC_GENC
+suffix:semicolon
 id|bits
 op_assign
 id|M_MAC_MDIO_DIR_OUTPUT
@@ -1297,6 +1309,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|bits
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 r_for
@@ -1322,6 +1336,8 @@ comma
 id|bits
 op_or
 id|M_MAC_MDC
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1330,6 +1346,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|bits
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 )brace
@@ -1364,6 +1382,19 @@ r_int
 r_int
 id|curmask
 suffix:semicolon
+r_int
+id|mac_mdio_genc
+suffix:semicolon
+id|mac_mdio_genc
+op_assign
+id|SBMAC_READCSR
+c_func
+(paren
+id|s-&gt;sbm_mdio
+)paren
+op_amp
+id|M_MAC_GENC
+suffix:semicolon
 id|bits
 op_assign
 id|M_MAC_MDIO_DIR_OUTPUT
@@ -1374,6 +1405,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|bits
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|curmask
@@ -1424,6 +1457,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|bits
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1434,6 +1469,8 @@ comma
 id|bits
 op_or
 id|M_MAC_MDC
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1442,6 +1479,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|bits
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|curmask
@@ -1478,6 +1517,9 @@ id|error
 suffix:semicolon
 r_int
 id|regval
+suffix:semicolon
+r_int
+id|mac_mdio_genc
 suffix:semicolon
 multiline_comment|/*&n;&t; * Synchronize ourselves so that the PHY knows the next&n;&t; * thing coming down is a command&n;&t; */
 id|sbmac_mii_sync
@@ -1527,6 +1569,16 @@ comma
 l_int|5
 )paren
 suffix:semicolon
+id|mac_mdio_genc
+op_assign
+id|SBMAC_READCSR
+c_func
+(paren
+id|s-&gt;sbm_mdio
+)paren
+op_amp
+id|M_MAC_GENC
+suffix:semicolon
 multiline_comment|/* &n;&t; * Switch the port around without a clock transition.&n;&t; */
 id|SBMAC_WRITECSR
 c_func
@@ -1534,6 +1586,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_INPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Send out a clock pulse to signal we want the status&n;&t; */
@@ -1545,6 +1599,8 @@ comma
 id|M_MAC_MDIO_DIR_INPUT
 op_or
 id|M_MAC_MDC
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1553,6 +1609,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_INPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * If an error occurred, the PHY will signal &squot;1&squot; back&n;&t; */
@@ -1575,6 +1633,8 @@ comma
 id|M_MAC_MDIO_DIR_INPUT
 op_or
 id|M_MAC_MDC
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1583,6 +1643,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_INPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|regval
@@ -1640,6 +1702,8 @@ comma
 id|M_MAC_MDIO_DIR_INPUT
 op_or
 id|M_MAC_MDC
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 id|SBMAC_WRITECSR
@@ -1648,6 +1712,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_INPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 )brace
@@ -1658,6 +1724,8 @@ c_func
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_OUTPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 r_if
@@ -1697,6 +1765,9 @@ r_int
 id|regval
 )paren
 (brace
+r_int
+id|mac_mdio_genc
+suffix:semicolon
 id|sbmac_mii_sync
 c_func
 (paren
@@ -1763,12 +1834,24 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+id|mac_mdio_genc
+op_assign
+id|SBMAC_READCSR
+c_func
+(paren
+id|s-&gt;sbm_mdio
+)paren
+op_amp
+id|M_MAC_GENC
+suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
 id|s-&gt;sbm_mdio
 comma
 id|M_MAC_MDIO_DIR_OUTPUT
+op_or
+id|mac_mdio_genc
 )paren
 suffix:semicolon
 )brace
@@ -1827,7 +1910,7 @@ macro_line|#endif
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1845,7 +1928,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1863,7 +1946,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1881,7 +1964,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1899,7 +1982,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1917,7 +2000,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1935,7 +2018,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1953,7 +2036,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1971,7 +2054,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -1989,7 +2072,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2007,7 +2090,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2025,7 +2108,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2043,7 +2126,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2061,7 +2144,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2079,7 +2162,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2097,7 +2180,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2115,7 +2198,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2133,7 +2216,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2151,7 +2234,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2169,7 +2252,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -2187,7 +2270,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|A_MAC_REGISTER
@@ -3274,7 +3357,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Buffer has been replaced on the&n;&t;&t;&t;&t; * receive ring.  Pass the buffer to&n;&t;&t;&t;&t; * the kernel */
+multiline_comment|/*&n;&t;&t;&t;&t; * Buffer has been replaced on the&n;&t;&t;&t;&t; * receive ring.  Pass the buffer to&n;&t;&t;&t;&t; * the kernel&n;&t;&t;&t;&t; */
 id|sc-&gt;sbm_stats.rx_bytes
 op_add_assign
 id|len
@@ -3292,6 +3375,7 @@ comma
 id|d-&gt;sbdma_eth-&gt;sbm_dev
 )paren
 suffix:semicolon
+multiline_comment|/* Check hw IPv4/TCP checksum if supported */
 r_if
 c_cond
 (paren
@@ -3300,48 +3384,42 @@ op_eq
 id|ENABLE
 )paren
 (brace
-multiline_comment|/* if the ip checksum is good&n;&t;&t;&t;&t;&t;   indicate in skb.  else set&n;&t;&t;&t;&t;&t;   CHECKSUM_NONE as device&n;&t;&t;&t;&t;&t;   failed to checksum the&n;&t;&t;&t;&t;&t;   packet */
 r_if
 c_cond
 (paren
-(paren
-(paren
-id|dsc-&gt;dscr_b
-)paren
-op_or
-id|M_DMA_ETHRX_BADTCPCS
-)paren
-op_logical_or
+op_logical_neg
 (paren
 (paren
 id|dsc-&gt;dscr_a
 )paren
-op_or
+op_amp
 id|M_DMA_ETHRX_BADIP4CS
 )paren
+op_logical_and
+op_logical_neg
+(paren
+(paren
+id|dsc-&gt;dscr_a
 )paren
+op_amp
+id|M_DMA_ETHRX_BADTCPCS
+)paren
+)paren
+(brace
+id|sb-&gt;ip_summed
+op_assign
+id|CHECKSUM_UNNECESSARY
+suffix:semicolon
+multiline_comment|/* don&squot;t need to set sb-&gt;csum */
+)brace
+r_else
 (brace
 id|sb-&gt;ip_summed
 op_assign
 id|CHECKSUM_NONE
 suffix:semicolon
 )brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;hw checksum fail .&bslash;n&quot;
-)paren
-suffix:semicolon
-id|sb-&gt;ip_summed
-op_assign
-id|CHECKSUM_UNNECESSARY
-suffix:semicolon
 )brace
-)brace
-multiline_comment|/* rx_hw_checksum */
 id|netif_rx
 c_func
 (paren
@@ -3439,27 +3517,6 @@ id|d-&gt;sbdma_remptr
 op_minus
 id|d-&gt;sbdma_dscrtable
 suffix:semicolon
-(brace
-multiline_comment|/* XXX This is gross, ugly, and only here&n;&t;&t;&t; * because justin hacked it in to fix a&n;&t;&t;&t; * problem without really understanding it.&n;&t;&t;&t; * &n;&t;&t;&t; * It seems that, for whatever reason, this&n;&t;&t;&t; * routine is invoked immediately upon the&n;&t;&t;&t; * enabling of interrupts.  So then the Read&n;&t;&t;&t; * below returns zero, making hwidx a negative&n;&t;&t;&t; * number, and anti-hilarity ensues.&n;&t;&t;&t; * &n;&t;&t;&t; * I&squot;m guessing there&squot;s a proper fix involving&n;&t;&t;&t; * clearing out interrupt state from old&n;&t;&t;&t; * packets before enabling interrupts, but I&squot;m&n;&t;&t;&t; * not sure.&n;&t;&t;&t; *&n;&t;&t;&t; * Anyways, this hack seems to work, and is&n;&t;&t;&t; * Good Enough for 11 PM.  :)&n;&t;&t;&t; * &n;&t;&t;&t; * -Justin&n;&t;&t;&t; */
-r_uint64
-id|tmp
-op_assign
-id|SBMAC_READCSR
-c_func
-(paren
-id|d-&gt;sbdma_curdscr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|tmp
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
 id|hwidx
 op_assign
 (paren
@@ -3468,7 +3525,11 @@ r_int
 (paren
 (paren
 (paren
-id|tmp
+id|SBMAC_READCSR
+c_func
+(paren
+id|d-&gt;sbdma_curdscr
+)paren
 op_amp
 id|M_DMA_CURDSCR_ADDR
 )paren
@@ -3482,7 +3543,6 @@ id|sbdmadscr_t
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * If they&squot;re the same, that means we&squot;ve processed all&n;&t;&t; * of the descriptors up to (but not including) the one that&n;&t;&t; * the hardware is working on right now.&n;&t;&t; */
 r_if
 c_cond
@@ -6004,7 +6064,7 @@ suffix:semicolon
 multiline_comment|/* Determine controller base address */
 id|sc-&gt;sbm_base
 op_assign
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|dev-&gt;base_addr
@@ -6121,48 +6181,6 @@ c_func
 id|sc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Display Ethernet address (this is called during the config&n;&t; * process so we need to finish off the config message that&n;&t; * was being displayed)&n;&t; */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: SiByte Ethernet at 0x%08lX, address: %02X-%02X-%02X-%02X-%02X-%02X&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dev-&gt;base_addr
-comma
-id|eaddr
-(braket
-l_int|0
-)braket
-comma
-id|eaddr
-(braket
-l_int|1
-)braket
-comma
-id|eaddr
-(braket
-l_int|2
-)braket
-comma
-id|eaddr
-(braket
-l_int|3
-)braket
-comma
-id|eaddr
-(braket
-l_int|4
-)braket
-comma
-id|eaddr
-(braket
-l_int|5
-)braket
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Set up Linux device callins&n;&t; */
 id|spin_lock_init
 c_func
@@ -6229,6 +6247,56 @@ c_cond
 (paren
 id|err
 )paren
+r_goto
+id|out_uninit
+suffix:semicolon
+multiline_comment|/*&n;&t; * Display Ethernet address (this is called during the config&n;&t; * process so we need to finish off the config message that&n;&t; * was being displayed)&n;&t; */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: SiByte Ethernet at 0x%08lX, address: %02X:%02X:%02X:%02X:%02X:%02X&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dev-&gt;base_addr
+comma
+id|eaddr
+(braket
+l_int|0
+)braket
+comma
+id|eaddr
+(braket
+l_int|1
+)braket
+comma
+id|eaddr
+(braket
+l_int|2
+)braket
+comma
+id|eaddr
+(braket
+l_int|3
+)braket
+comma
+id|eaddr
+(braket
+l_int|4
+)braket
+comma
+id|eaddr
+(braket
+l_int|5
+)braket
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+id|out_uninit
+suffix:colon
 id|sbmac_uninitctx
 c_func
 (paren
@@ -6282,7 +6350,13 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * map/route interrupt &n;&t; */
+multiline_comment|/* &n;&t; * map/route interrupt (clear status first, in case something&n;&t; * weird is pending; we haven&squot;t initialized the mac registers&n;&t; * yet)&n;&t; */
+id|SBMAC_READCSR
+c_func
+(paren
+id|sc-&gt;sbm_isr
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7690,7 +7764,7 @@ suffix:semicolon
 id|SBMAC_WRITECSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|port
@@ -7706,7 +7780,7 @@ op_assign
 id|SBMAC_READCSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|port
@@ -7873,7 +7947,7 @@ op_assign
 id|SBMAC_READCSR
 c_func
 (paren
-id|KSEG1ADDR
+id|IOADDR
 c_func
 (paren
 id|port
@@ -8022,9 +8096,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|idx
-suffix:semicolon
 r_struct
 id|net_device
 op_star
@@ -8032,6 +8103,9 @@ id|dev
 suffix:semicolon
 id|sbmac_port_t
 id|port
+suffix:semicolon
+r_int
+id|idx
 suffix:semicolon
 r_for
 c_loop
@@ -8061,7 +8135,8 @@ c_cond
 op_logical_neg
 id|dev
 )paren
-(brace
+r_continue
+suffix:semicolon
 r_struct
 id|sbmac_softc
 op_star
@@ -8091,7 +8166,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|variable|sbmac_init_module
