@@ -752,6 +752,7 @@ id|__u32
 id|word
 comma
 r_int
+r_int
 id|shift
 )paren
 (brace
@@ -784,6 +785,7 @@ c_func
 id|__u32
 id|word
 comma
+r_int
 r_int
 id|shift
 )paren
