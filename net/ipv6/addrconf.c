@@ -3281,7 +3281,7 @@ c_func
 op_amp
 id|addr
 comma
-l_int|10
+l_int|64
 comma
 id|dev
 comma
@@ -4973,7 +4973,7 @@ id|IFF_POINTOPOINT
 )paren
 id|plen
 op_assign
-l_int|10
+l_int|64
 suffix:semicolon
 r_else
 id|plen
@@ -5210,7 +5210,7 @@ id|idev
 comma
 id|addr
 comma
-l_int|10
+l_int|64
 comma
 id|IFA_LINK
 comma
