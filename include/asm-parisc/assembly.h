@@ -32,6 +32,8 @@ DECL|macro|LDREGM
 mdefine_line|#define LDREGM&t;ldwm
 DECL|macro|STREGM
 mdefine_line|#define STREGM&t;stwm
+DECL|macro|SHRREG
+mdefine_line|#define SHRREG  shr
 DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;20
 DECL|macro|FRAME_SIZE
