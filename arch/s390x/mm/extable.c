@@ -130,11 +130,6 @@ r_int
 id|addr
 )paren
 (brace
-r_struct
-id|list_head
-op_star
-id|i
-suffix:semicolon
 r_int
 r_int
 id|ret

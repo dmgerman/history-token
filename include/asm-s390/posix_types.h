@@ -171,15 +171,15 @@ macro_line|#endif
 DECL|macro|__FD_SET
 macro_line|#undef  __FD_SET
 DECL|macro|__FD_SET
-mdefine_line|#define __FD_SET(fd,fdsetp)  set_bit(fd,fdsetp)
+mdefine_line|#define __FD_SET(fd,fdsetp)  set_bit(fd,fdsetp-&gt;fds_bits)
 DECL|macro|__FD_CLR
 macro_line|#undef  __FD_CLR
 DECL|macro|__FD_CLR
-mdefine_line|#define __FD_CLR(fd,fdsetp)  clear_bit(fd,fdsetp)
+mdefine_line|#define __FD_CLR(fd,fdsetp)  clear_bit(fd,fdsetp-&gt;fds_bits)
 DECL|macro|__FD_ISSET
 macro_line|#undef  __FD_ISSET
 DECL|macro|__FD_ISSET
-mdefine_line|#define __FD_ISSET(fd,fdsetp)  test_bit(fd,fdsetp)
+mdefine_line|#define __FD_ISSET(fd,fdsetp)  test_bit(fd,fdsetp-&gt;fds_bits)
 DECL|macro|__FD_ZERO
 macro_line|#undef  __FD_ZERO
 DECL|macro|__FD_ZERO
