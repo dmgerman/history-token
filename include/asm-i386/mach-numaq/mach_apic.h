@@ -9,6 +9,10 @@ DECL|macro|no_balance_irq
 mdefine_line|#define no_balance_irq (1)
 DECL|macro|esr_disable
 mdefine_line|#define esr_disable (1)
+DECL|macro|INT_DELIVERY_MODE
+mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
+DECL|macro|INT_DEST_MODE
+mdefine_line|#define INT_DEST_MODE 0     /* physical delivery on LOCAL quad */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used

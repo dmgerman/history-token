@@ -34,6 +34,10 @@ DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;((cpu_online_map &lt; 0xf)?cpu_online_map:0xf)
+DECL|macro|INT_DELIVERY_MODE
+mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
+DECL|macro|INT_DEST_MODE
+mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID     (0x0f)
 DECL|macro|check_apicid_used

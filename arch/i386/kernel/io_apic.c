@@ -2668,11 +2668,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3061,7 +3061,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We use logical delivery to get the timer IRQ&n;&t; * to the first CPU.&n;&t; */
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.mask
 op_assign
@@ -3074,7 +3074,7 @@ id|TARGET_CPUS
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.polarity
 op_assign
@@ -7579,11 +7579,11 @@ id|entry
 suffix:semicolon
 id|entry.delivery_mode
 op_assign
-id|dest_LowestPrio
+id|INT_DELIVERY_MODE
 suffix:semicolon
 id|entry.dest_mode
 op_assign
-id|INT_DELIVERY_MODE
+id|INT_DEST_MODE
 suffix:semicolon
 id|entry.dest.logical.logical_dest
 op_assign

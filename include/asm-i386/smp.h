@@ -18,13 +18,6 @@ macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifdef CONFIG_X86_NUMAQ
-DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE 0     /* physical delivery on LOCAL quad */
-macro_line|#else
-DECL|macro|INT_DELIVERY_MODE
-mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery broadcast to all procs */
-macro_line|#endif
 DECL|macro|BAD_APICID
 mdefine_line|#define BAD_APICID 0xFFu
 macro_line|#ifdef CONFIG_SMP

@@ -77,6 +77,10 @@ DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(x86_summit ? APIC_DFR_CLUSTER : APIC_DFR_FLAT)
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;(x86_summit ? XAPIC_DEST_CPUS_MASK : cpu_online_map)
+DECL|macro|INT_DELIVERY_MODE
+mdefine_line|#define INT_DELIVERY_MODE dest_Fixed
+DECL|macro|INT_DEST_MODE
+mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID     (x86_summit ? 0xFF : 0x0F)
 DECL|macro|check_apicid_used
