@@ -2689,6 +2689,9 @@ id|type
 comma
 r_int
 id|protocol
+comma
+r_int
+id|kern
 )paren
 (brace
 r_return
@@ -2713,6 +2716,9 @@ id|type
 comma
 r_int
 id|protocol
+comma
+r_int
+id|kern
 )paren
 (brace
 r_return

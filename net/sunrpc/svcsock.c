@@ -5798,7 +5798,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET

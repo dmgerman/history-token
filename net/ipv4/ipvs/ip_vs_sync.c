@@ -1728,7 +1728,7 @@ multiline_comment|/* First create a socket */
 r_if
 c_cond
 (paren
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET
@@ -1894,7 +1894,7 @@ multiline_comment|/* First create a socket */
 r_if
 c_cond
 (paren
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_INET

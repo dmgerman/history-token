@@ -377,7 +377,7 @@ id|EBUSY
 suffix:semicolon
 id|err
 op_assign
-id|sock_create
+id|sock_create_kern
 c_func
 (paren
 id|PF_NETLINK
