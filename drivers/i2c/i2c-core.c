@@ -160,8 +160,9 @@ id|file_operations
 id|i2cproc_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|i2cproc_bus_read
 comma
 )brace
