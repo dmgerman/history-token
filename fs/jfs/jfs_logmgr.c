@@ -2862,13 +2862,13 @@ r_goto
 id|externalLog
 suffix:semicolon
 multiline_comment|/*&n;&t; *      in-line log in host file system&n;&t; *&n;&t; * file system to log have 1-to-1 relationship;&n;&t; */
-id|log-&gt;bdev
-op_assign
-id|sb-&gt;s_bdev
-suffix:semicolon
 id|log-&gt;flag
 op_assign
 id|JFS_INLINELOG
+suffix:semicolon
+id|log-&gt;bdev
+op_assign
+id|sb-&gt;s_bdev
 suffix:semicolon
 id|log-&gt;base
 op_assign
