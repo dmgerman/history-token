@@ -4943,7 +4943,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALL_PPC */
-r_void
+r_static
+r_int
 id|__init
 DECL|function|pcibios_init
 id|pcibios_init
@@ -5120,7 +5121,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|pcibios_init
+id|subsys_initcall
+c_func
+(paren
+id|pcibios_init
+)paren
+suffix:semicolon
 r_int
 r_char
 id|__init
