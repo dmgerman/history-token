@@ -4257,6 +4257,7 @@ op_amp
 id|pppoe_notifier
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -4265,6 +4266,7 @@ comma
 id|proc_net
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|pppoe_init
 id|module_init
