@@ -2774,7 +2774,7 @@ suffix:colon
 id|sock_release
 c_func
 (paren
-id|ipqnl-&gt;socket
+id|ipqnl-&gt;sk_socket
 )paren
 suffix:semicolon
 id|down
