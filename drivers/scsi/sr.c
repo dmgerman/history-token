@@ -14,6 +14,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SCSI_CDROM_MAJOR
+DECL|macro|LOCAL_END_REQUEST
+mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;

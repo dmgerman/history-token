@@ -276,10 +276,6 @@ id|block_device
 op_star
 id|bdev
 suffix:semicolon
-id|kdev_t
-id|rdev
-suffix:semicolon
-multiline_comment|/* it should eventually go away */
 r_int
 id|err
 suffix:semicolon
@@ -385,14 +381,6 @@ op_amp
 id|bdev-&gt;bd_count
 )paren
 suffix:semicolon
-id|rdev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|blkdev_get
@@ -432,10 +420,10 @@ id|out
 suffix:semicolon
 id|sector_size
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|rdev
+id|bdev
 )paren
 suffix:semicolon
 id|raw_devices

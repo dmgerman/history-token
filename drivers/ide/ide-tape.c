@@ -7989,13 +7989,15 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;idetape_do_request is our request handling function.&t;&n; */
+multiline_comment|/*&n; * This is our request handling function.&n; */
 DECL|function|idetape_do_request
 r_static
 id|ide_startstop_t
 id|idetape_do_request
+c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -8004,8 +8006,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace

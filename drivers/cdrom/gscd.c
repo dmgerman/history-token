@@ -3525,7 +3525,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_gscd_request
 comma
 op_amp
 id|gscd_lock

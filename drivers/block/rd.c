@@ -773,7 +773,11 @@ op_assign
 id|minor
 c_func
 (paren
-id|sbh-&gt;bi_dev
+id|to_kdev_t
+c_func
+(paren
+id|sbh-&gt;bi_bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 r_if

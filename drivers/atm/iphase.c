@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/sonet.h&gt;  
 macro_line|#include &lt;linux/skbuff.h&gt;  
 macro_line|#include &lt;linux/time.h&gt;  
-macro_line|#include &lt;linux/sched.h&gt; /* for xtime */  
 macro_line|#include &lt;linux/delay.h&gt;  
 macro_line|#include &lt;linux/uio.h&gt;  
 macro_line|#include &lt;linux/init.h&gt;  
@@ -9157,10 +9156,20 @@ id|cpcs_trailer
 id|printk
 c_func
 (paren
-l_string|&quot;IA:  SDU size over the configured SDU size %d&bslash;n&quot;
+l_string|&quot;IA:  SDU size over (%d) the configured SDU size %d&bslash;n&quot;
+comma
+id|vcc-&gt;qos.txtp.max_sdu
 comma
 id|iadev-&gt;tx_buf_sz
 )paren
+suffix:semicolon
+id|INPH_IA_VCC
+c_func
+(paren
+id|vcc
+)paren
+op_assign
+l_int|NULL
 suffix:semicolon
 id|kfree
 c_func

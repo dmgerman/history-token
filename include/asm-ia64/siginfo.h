@@ -336,8 +336,10 @@ DECL|macro|ILL_BADIADDR
 mdefine_line|#define ILL_BADIADDR&t;(__SI_FAULT|9)&t;/* unimplemented instruction address */
 DECL|macro|__ILL_BREAK
 mdefine_line|#define __ILL_BREAK&t;(__SI_FAULT|10)&t;/* illegal break */
+DECL|macro|__ILL_BNDMOD
+mdefine_line|#define __ILL_BNDMOD&t;(__SI_FAULT|11)&t;/* bundle-update (modification) in progress */
 DECL|macro|NSIGILL
-mdefine_line|#define NSIGILL&t;&t;10
+mdefine_line|#define NSIGILL&t;&t;11
 multiline_comment|/*&n; * SIGFPE si_codes&n; */
 DECL|macro|FPE_INTDIV
 mdefine_line|#define FPE_INTDIV&t;(__SI_FAULT|1)&t;/* integer divide by zero */

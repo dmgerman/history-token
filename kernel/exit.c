@@ -105,6 +105,8 @@ id|unlikely
 c_func
 (paren
 id|proc_dentry
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
@@ -168,6 +170,8 @@ id|unlikely
 c_func
 (paren
 id|proc_dentry
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2621,7 +2625,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__arm__)
 multiline_comment|/*&n; * sys_waitpid() remains for compatibility. waitpid() should be&n; * implemented by calling sys_wait4() from libc.a.&n; */
 DECL|function|sys_waitpid
 id|asmlinkage

@@ -65,8 +65,6 @@ id|mempool_t
 op_star
 id|radix_tree_node_pool
 suffix:semicolon
-multiline_comment|/*&n; * mempool scribbles on the first eight bytes of the managed&n; * memory.  Here we implement a temp workaround for that.&n; */
-macro_line|#include &lt;linux/list.h&gt;
 r_static
 r_inline
 r_struct
@@ -82,13 +80,7 @@ op_star
 id|root
 )paren
 (brace
-r_struct
-id|radix_tree_node
-op_star
-id|ret
-suffix:semicolon
-id|ret
-op_assign
+r_return
 id|mempool_alloc
 c_func
 (paren
@@ -96,28 +88,6 @@ id|radix_tree_node_pool
 comma
 id|root-&gt;gfp_mask
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-id|memset
-c_func
-(paren
-id|ret
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|list_head
-)paren
-)paren
-suffix:semicolon
-r_return
-id|ret
 suffix:semicolon
 )brace
 r_static

@@ -144,13 +144,6 @@ c_func
 id|unregister_cvf_format
 )paren
 suffix:semicolon
-DECL|variable|fat_get_cluster
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|fat_get_cluster
-)paren
-suffix:semicolon
 DECL|variable|fat_dir_ioctl
 id|EXPORT_SYMBOL
 c_func

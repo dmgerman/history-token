@@ -5050,7 +5050,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* __sparc__ */
 macro_line|#endif
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__arm__)
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigprocmask.&n; */
 id|asmlinkage
 r_int
@@ -5137,7 +5137,7 @@ id|old
 suffix:semicolon
 )brace
 macro_line|#endif /* !defined(__alpha__) */
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__mips__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__mips__) &amp;&amp; &bslash;&n;    !defined(__arm__)
 multiline_comment|/*&n; * For backwards compatibility.  Functionality superseded by sigaction.&n; */
 id|asmlinkage
 r_int
@@ -5199,5 +5199,5 @@ r_int
 id|old_sa.sa.sa_handler
 suffix:semicolon
 )brace
-macro_line|#endif /* !alpha &amp;&amp; !__ia64__ &amp;&amp; !defined(__mips__) */
+macro_line|#endif /* !alpha &amp;&amp; !__ia64__ &amp;&amp; !defined(__mips__) &amp;&amp; !defined(__arm__) */
 eof

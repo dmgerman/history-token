@@ -106,7 +106,7 @@ multiline_comment|/*&n; * Here start the assembler entry points for interrupts&n
 DECL|macro|IRQ_NAME
 mdefine_line|#define IRQ_NAME(nr) atari_slow_irq_##nr##_handler(void)
 DECL|macro|BUILD_SLOW_IRQ
-mdefine_line|#define&t;BUILD_SLOW_IRQ(n)&t;&t;&t;&t;&t;&t;   &bslash;&n;asmlinkage void IRQ_NAME(n);&t;&t;&t;&t;&t;&t;   &bslash;&n;/* Dummy function to allow asm with operands.  */&t;&t;&t;   &bslash;&n;void atari_slow_irq_##n##_dummy (void) {&t;&t;&t;&t;   &bslash;&n;__asm__ (__ALIGN_STR &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;SYMBOL_NAME_STR(atari_slow_irq_) #n &quot;_handler:&bslash;t&quot;&t;&t;&t;   &bslash;&n;&quot;&t;addql&t;#1,&quot;SYMBOL_NAME_STR(irq_stat)&quot;+8&bslash;n&quot; /* local_irq_count */  &bslash;&n;&t;SAVE_ALL_INT &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;GET_CURRENT(%%d0) &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;andb&t;#~(1&lt;&lt;(%c3&amp;7)),%a4:w&bslash;n&quot;&t;/* mask this interrupt */&t;   &bslash;&n;&t;/* get old IPL from stack frame */&t;&t;&t;&t;   &bslash;&n;&quot;&t;bfextu&t;%%sp@(%c2){#5,#3},%%d0&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&quot;&t;movew&t;%%sr,%%d1&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;bfins&t;%%d0,%%d1{#21,#3}&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;movew&t;%%d1,%%sr&bslash;n&quot;&t;&t;/* set IPL = previous value */&t;   &bslash;&n;&quot;&t;addql&t;#1,%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;lea&t;%a1,%%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;pea &t;%%sp@&bslash;n&quot;&t;&t;/* push addr of frame */&t;   &bslash;&n;&quot;&t;movel&t;%%a0@(4),%%sp@-&bslash;n&quot;&t;/* push handler data */&t;&t;   &bslash;&n;&quot;&t;pea &t;(%c3+8)&bslash;n&quot;&t;&t;/* push int number */&t;&t;   &bslash;&n;&quot;&t;movel&t;%%a0@,%%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;jbsr&t;%%a0@&bslash;n&quot;&t;&t;/* call the handler */&t;&t;   &bslash;&n;&quot;&t;addql&t;#8,%%sp&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;addql&t;#4,%%sp&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;orw&t;#0x0600,%%sr&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;andw&t;#0xfeff,%%sr&bslash;n&quot;&t;&t;/* set IPL = 6 again */&t;&t;   &bslash;&n;&quot;&t;orb &t;#(1&lt;&lt;(%c3&amp;7)),%a4:w&bslash;n&quot;&t;/* now unmask the int again */&t;   &bslash;&n;&quot;&t;jbra&t;&quot;SYMBOL_NAME_STR(ret_from_interrupt)&quot;&bslash;n&quot;&t;&t;   &bslash;&n;&t; : : &quot;i&quot; (&amp;kstat.irqs[0][n+8]), &quot;i&quot; (&amp;irq_handler[n+8]),&t;   &bslash;&n;&t;     &quot;n&quot; (PT_OFF_SR), &quot;n&quot; (n),&t;&t;&t;&t;&t;   &bslash;&n;&t;     &quot;i&quot; (n &amp; 8 ? (n &amp; 16 ? &amp;tt_mfp.int_mk_a : &amp;mfp.int_mk_a)&t;   &bslash;&n;&t;&t;        : (n &amp; 16 ? &amp;tt_mfp.int_mk_b : &amp;mfp.int_mk_b))&t;   &bslash;&n;);&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;}
+mdefine_line|#define&t;BUILD_SLOW_IRQ(n)&t;&t;&t;&t;&t;&t;   &bslash;&n;asmlinkage void IRQ_NAME(n);&t;&t;&t;&t;&t;&t;   &bslash;&n;/* Dummy function to allow asm with operands.  */&t;&t;&t;   &bslash;&n;void atari_slow_irq_##n##_dummy (void) {&t;&t;&t;&t;   &bslash;&n;__asm__ (__ALIGN_STR &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;atari_slow_irq_&quot; #n &quot;_handler:&bslash;t&quot;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;addql&t;#1,irq_stat+8&bslash;n&quot; /* local_irq_count */&t;&t;&t;   &bslash;&n;&t;SAVE_ALL_INT &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;GET_CURRENT(%%d0) &quot;&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;andb&t;#~(1&lt;&lt;(%c3&amp;7)),%a4:w&bslash;n&quot;&t;/* mask this interrupt */&t;   &bslash;&n;&t;/* get old IPL from stack frame */&t;&t;&t;&t;   &bslash;&n;&quot;&t;bfextu&t;%%sp@(%c2){#5,#3},%%d0&bslash;n&quot;&t;&t;&t;&t;   &bslash;&n;&quot;&t;movew&t;%%sr,%%d1&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;bfins&t;%%d0,%%d1{#21,#3}&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;movew&t;%%d1,%%sr&bslash;n&quot;&t;&t;/* set IPL = previous value */&t;   &bslash;&n;&quot;&t;addql&t;#1,%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;lea&t;%a1,%%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;pea &t;%%sp@&bslash;n&quot;&t;&t;/* push addr of frame */&t;   &bslash;&n;&quot;&t;movel&t;%%a0@(4),%%sp@-&bslash;n&quot;&t;/* push handler data */&t;&t;   &bslash;&n;&quot;&t;pea &t;(%c3+8)&bslash;n&quot;&t;&t;/* push int number */&t;&t;   &bslash;&n;&quot;&t;movel&t;%%a0@,%%a0&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;jbsr&t;%%a0@&bslash;n&quot;&t;&t;/* call the handler */&t;&t;   &bslash;&n;&quot;&t;addql&t;#8,%%sp&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;addql&t;#4,%%sp&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;orw&t;#0x0600,%%sr&bslash;n&quot;&t;&t;&t;&t;&t;&t;   &bslash;&n;&quot;&t;andw&t;#0xfeff,%%sr&bslash;n&quot;&t;&t;/* set IPL = 6 again */&t;&t;   &bslash;&n;&quot;&t;orb &t;#(1&lt;&lt;(%c3&amp;7)),%a4:w&bslash;n&quot;&t;/* now unmask the int again */&t;   &bslash;&n;&quot;&t;jbra&t;ret_from_interrupt&bslash;n&quot;&t;&t;&t;&t;&t;   &bslash;&n;&t; : : &quot;i&quot; (&amp;kstat.irqs[0][n+8]), &quot;i&quot; (&amp;irq_handler[n+8]),&t;   &bslash;&n;&t;     &quot;n&quot; (PT_OFF_SR), &quot;n&quot; (n),&t;&t;&t;&t;&t;   &bslash;&n;&t;     &quot;i&quot; (n &amp; 8 ? (n &amp; 16 ? &amp;tt_mfp.int_mk_a : &amp;mfp.int_mk_a)&t;   &bslash;&n;&t;&t;        : (n &amp; 16 ? &amp;tt_mfp.int_mk_b : &amp;mfp.int_mk_b))&t;   &bslash;&n;);&t;&t;&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;}
 id|BUILD_SLOW_IRQ
 c_func
 (paren
@@ -400,21 +400,17 @@ id|__asm__
 (paren
 id|__ALIGN_STR
 l_string|&quot;&bslash;n&quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|atari_fast_irq_handler
-)paren
 "&quot;"
+id|atari_fast_irq_handler
 suffix:colon
 id|orw
 macro_line|#0x700,%%sr&t;&t;/* disable all interrupts */
-l_string|&quot;SYMBOL_NAME_STR(atari_prio_irq_handler) &quot;
+id|atari_prio_irq_handler
 suffix:colon
 "&bslash;"
 id|t
 id|addql
-macro_line|#1,&quot;SYMBOL_NAME_STR(irq_stat)&quot;+8&bslash;n&quot; /* local_irq_count */
+macro_line|#1,irq_stat+8&bslash;n&quot; /* local_irq_count */
 id|SAVE_ALL_INT
 l_string|&quot;&bslash;n&quot;
 id|GET_CURRENT
@@ -455,7 +451,7 @@ id|a0
 id|addql
 macro_line|#1,%%a0@(%%d0:l:4)
 id|lea
-l_string|&quot;SYMBOL_NAME_STR(irq_handler)&quot;
+id|irq_handler
 comma
 op_mod
 op_mod
@@ -530,12 +526,8 @@ macro_line|#8,%%sp
 id|addql
 macro_line|#4,%%sp
 id|jbra
-"&quot;"
-id|SYMBOL_NAME_STR
-c_func
-(paren
 id|ret_from_interrupt
-)paren
+"&quot;"
 suffix:colon
 suffix:colon
 l_string|&quot;i&quot;
@@ -569,12 +561,8 @@ c_func
 l_string|&quot;.text&bslash;n&quot;
 id|__ALIGN_STR
 l_string|&quot;&bslash;n&quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|falcon_hblhandler
-)paren
 "&quot;"
+id|falcon_hblhandler
 suffix:colon
 id|orw
 macro_line|#0x200,%sp@&t;/* set saved ipl to 2 */

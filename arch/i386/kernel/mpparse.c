@@ -299,6 +299,16 @@ c_cond
 (paren
 id|model
 op_eq
+l_int|0x02
+)paren
+r_return
+l_string|&quot;XEON(tm)&quot;
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|model
+op_eq
 l_int|0x0F
 )paren
 r_return

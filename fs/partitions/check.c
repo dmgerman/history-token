@@ -1069,6 +1069,10 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|bdev-&gt;bd_contains
+op_assign
+id|bdev
+suffix:semicolon
 id|bdev-&gt;bd_inode-&gt;i_size
 op_assign
 (paren

@@ -22263,10 +22263,12 @@ l_int|10
 op_star
 id|HZ
 suffix:semicolon
+id|time_before
+c_func
 (paren
-id|timeout
-OG
 id|jiffies
+comma
+id|timeout
 )paren
 op_logical_and
 (paren
@@ -22297,6 +22299,11 @@ id|TRUE
 suffix:semicolon
 )paren
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|barrier
 c_func
 (paren

@@ -250,10 +250,6 @@ mdefine_line|#define _elv_add_request(q, rq, back, p) do {&t;&t;&t;&t;      &bsl
 DECL|macro|elv_add_request
 mdefine_line|#define elv_add_request(q, rq, back) _elv_add_request((q), (rq), (back), 1)
 macro_line|#if defined(MAJOR_NR) || defined(IDE_DRIVER)
-DECL|macro|DEVICE_ON
-macro_line|#undef DEVICE_ON
-DECL|macro|DEVICE_OFF
-macro_line|#undef DEVICE_OFF
 multiline_comment|/*&n; * Add entries as needed.&n; */
 macro_line|#ifdef IDE_DRIVER
 DECL|macro|DEVICE_NR
@@ -266,14 +262,10 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;ramdisk&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
-DECL|macro|DEVICE_NO_RANDOM
-mdefine_line|#define DEVICE_NO_RANDOM
 macro_line|#elif (MAJOR_NR == Z2RAM_MAJOR)
 multiline_comment|/* Zorro II Ram */
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Z2RAM&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_z2_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == FLOPPY_MAJOR)
@@ -291,37 +283,25 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_floppy
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_fd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device) floppy_off(DEVICE_NR(device))
 macro_line|#elif (MAJOR_NR == HD_MAJOR)
 multiline_comment|/* Hard disk:  timeout is 6 seconds. */
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;hard disk&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_hd
-DECL|macro|TIMEOUT_VALUE
-mdefine_line|#define TIMEOUT_VALUE (6*HZ)
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_hd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;6)
 macro_line|#elif (SCSI_DISK_MAJOR(MAJOR_NR))
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;scsidisk&quot;
-DECL|macro|TIMEOUT_VALUE
-mdefine_line|#define TIMEOUT_VALUE (2*HZ)
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (((major(device) &amp; SD_MAJOR_MASK) &lt;&lt; (8 - 4)) + (minor(device) &gt;&gt; 4))
 multiline_comment|/* Kludge to use the same number for both char and block major numbers */
 macro_line|#elif  (MAJOR_NR == MD_MAJOR) &amp;&amp; defined(MD_DRIVER)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Multiple devices driver&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_md_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == SCSI_TAPE_MAJOR)
@@ -338,10 +318,6 @@ DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_osst
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &amp; 0x7f) 
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device) 
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device) 
 macro_line|#elif (MAJOR_NR == SCSI_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;CD-ROM&quot;
@@ -350,22 +326,16 @@ mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == XT_DISK_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;xt disk&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_xd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#elif (MAJOR_NR == PS2ESDI_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;PS/2 ESDI&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_ps2esdi_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#elif (MAJOR_NR == CDU31A_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;CDU31A&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_cdu31a_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == ACSI_MAJOR) &amp;&amp; (defined(CONFIG_ATARI_ACSI) || defined(CONFIG_ATARI_ACSI_MODULE))
@@ -373,59 +343,43 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;ACSI&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_acsi
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_acsi_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#elif (MAJOR_NR == MITSUMI_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Mitsumi CD-ROM&quot;
 multiline_comment|/* #define DEVICE_INTR do_mcd */
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_mcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MITSUMI_X_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Mitsumi CD-ROM&quot;
 multiline_comment|/* #define DEVICE_INTR do_mcdx */
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_mcdx_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #1&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_sbpcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM2_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #2&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_sbpcd2_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM3_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #3&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_sbpcd3_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MATSUSHITA_CDROM4_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Matsushita CD-ROM controller #4&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_sbpcd4_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == AZTECH_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Aztech CD-ROM&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_aztcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == CDU535_CDROM_MAJOR)
@@ -433,50 +387,36 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;SONY-CDU535&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_cdu535
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_cdu535_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == GOLDSTAR_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Goldstar R420&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_gscd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == CM206_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Philips/LMS CD-ROM cm206&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_cm206_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == OPTICS_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;DOLPHIN 8000AT CD-ROM&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_optcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == SANYO_CDROM_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;Sanyo H94A CD-ROM&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_sjcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == APBLOCK_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;apblock&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST ap_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == DDV_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;ddv&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST ddv_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;PARTN_BITS)
 macro_line|#elif (MAJOR_NR == MFM_ACORN_MAJOR)
@@ -484,57 +424,34 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mfm disk&quot;
 DECL|macro|DEVICE_INTR
 mdefine_line|#define DEVICE_INTR do_mfm
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_mfm_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#elif (MAJOR_NR == NBD_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;nbd&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_nbd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == MDISK_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mdisk&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST mdisk_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
 macro_line|#elif (MAJOR_NR == DASD_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;dasd&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_dasd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#elif (MAJOR_NR == I2O_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;I2O block&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST i2ob_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;4)
 macro_line|#elif (MAJOR_NR == COMPAQ_SMART2_MAJOR)
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;ida&quot;
-DECL|macro|TIMEOUT_VALUE
-mdefine_line|#define TIMEOUT_VALUE (25*HZ)
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_ida_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#endif /* MAJOR_NR == whatever */
-multiline_comment|/* provide DEVICE_xxx defaults, if not explicitly defined&n; * above in the MAJOR_NR==xxx if-elif tree */
-macro_line|#ifndef DEVICE_ON
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device) do {} while (0)
-macro_line|#endif
-macro_line|#ifndef DEVICE_OFF
-DECL|macro|DEVICE_OFF
-mdefine_line|#define DEVICE_OFF(device) do {} while (0)
-macro_line|#endif
 macro_line|#if (MAJOR_NR != SCSI_TAPE_MAJOR) &amp;&amp; (MAJOR_NR != OSST_MAJOR)
 macro_line|#if !defined(IDE_DRIVER)
 macro_line|#ifndef CURRENT
@@ -572,18 +489,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|SET_INTR
 mdefine_line|#define SET_INTR(x) (DEVICE_INTR = (x))
-macro_line|#ifdef DEVICE_REQUEST
-r_static
-r_void
-(paren
-id|DEVICE_REQUEST
-)paren
-(paren
-id|request_queue_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif 
 macro_line|#ifdef DEVICE_INTR
 DECL|macro|CLEAR_INTR
 mdefine_line|#define CLEAR_INTR SET_INTR(NULL)
@@ -594,8 +499,8 @@ macro_line|#endif
 DECL|macro|INIT_REQUEST
 mdefine_line|#define INIT_REQUEST&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (QUEUE_EMPTY) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;CLEAR_INTR;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (major(CURRENT-&gt;rq_dev) != MAJOR_NR) &t;&t;&t;&bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: request list destroyed&quot;);&t;&bslash;&n;&t;if (!CURRENT-&gt;bio)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;panic(DEVICE_NAME &quot;: no bio&quot;);&t;&t;&t;&bslash;&n;
 macro_line|#endif /* !defined(IDE_DRIVER) */
-macro_line|#ifndef LOCAL_END_REQUEST&t;/* If we have our own end_request, we do not want to include this mess */
-macro_line|#if ! SCSI_BLK_MAJOR(MAJOR_NR) &amp;&amp; (MAJOR_NR != COMPAQ_SMART2_MAJOR)
+multiline_comment|/*&n; * If we have our own end_request, we do not want to include this mess&n; */
+macro_line|#ifndef LOCAL_END_REQUEST
 DECL|function|end_request
 r_static
 r_inline
@@ -629,7 +534,6 @@ id|CURRENT-&gt;hard_cur_sectors
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef DEVICE_NO_RANDOM
 id|add_blkdev_randomness
 c_func
 (paren
@@ -638,13 +542,6 @@ c_func
 (paren
 id|req-&gt;rq_dev
 )paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|DEVICE_OFF
-c_func
-(paren
-id|req-&gt;rq_dev
 )paren
 suffix:semicolon
 id|blkdev_dequeue_request
@@ -660,8 +557,7 @@ id|req
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* ! SCSI_BLK_MAJOR(MAJOR_NR) */
-macro_line|#endif /* LOCAL_END_REQUEST */
+macro_line|#endif /* !LOCAL_END_REQUEST */
 macro_line|#endif /* (MAJOR_NR != SCSI_TAPE_MAJOR) */
 macro_line|#endif /* defined(MAJOR_NR) || defined(IDE_DRIVER) */
 macro_line|#endif /* _BLK_H */

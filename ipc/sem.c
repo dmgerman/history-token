@@ -4885,8 +4885,15 @@ op_ne
 l_int|1
 )paren
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/* There&squot;s no need to hold the semundo list lock, as current&n;         * is the last task exiting for this undo list.&n;&t; */
 r_for
 c_loop

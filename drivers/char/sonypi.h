@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;10
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;11
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;linux/sonypi.h&quot;
@@ -297,6 +297,8 @@ DECL|macro|SONYPI_TYPE2_BLUETOOTH_EV
 mdefine_line|#define SONYPI_TYPE2_BLUETOOTH_EV&t;0x08
 DECL|macro|SONYPI_TYPE1_PKEY_EV
 mdefine_line|#define SONYPI_TYPE1_PKEY_EV&t;&t;0x40
+DECL|macro|SONYPI_TYPE2_PKEY_EV
+mdefine_line|#define SONYPI_TYPE2_PKEY_EV&t;&t;0x08
 DECL|macro|SONYPI_BACK_EV
 mdefine_line|#define SONYPI_BACK_EV&t;&t;&t;0x08
 DECL|macro|SONYPI_LID_EV

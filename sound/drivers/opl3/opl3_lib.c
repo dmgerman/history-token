@@ -556,7 +556,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Detect availability of OPL4 (_experimental_). Works probably&n;&t;&t; * only after a cold boot. In addition the OPL4 port&n;&t;&t; * of the chip may not be connected to the PC bus at all.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Detect availability of OPL4. Unfortunately, the OPL4&n;&t;&t; * port of the chip may not be connected to the PC bus.&n;&t;&t; */
 id|snd_assert
 c_func
 (paren
@@ -580,38 +580,30 @@ id|OPL3_RIGHT
 op_or
 id|OPL3_REG_MODE
 comma
-l_int|0x00
-)paren
-suffix:semicolon
-id|opl3
-op_member_access_from_pointer
-id|command
-c_func
-(paren
-id|opl3
-comma
-id|OPL3_RIGHT
-op_or
-id|OPL3_REG_MODE
-comma
 id|OPL3_OPL3_ENABLE
 op_or
 id|OPL3_OPL4_ENABLE
 )paren
 suffix:semicolon
+multiline_comment|/* All OPL4 registers are readable. */
 r_if
 c_cond
 (paren
 id|inb
 c_func
 (paren
-id|opl3-&gt;l_port
+id|opl3-&gt;r_port
+op_plus
+l_int|1
 )paren
 op_eq
-l_int|0x02
+(paren
+id|OPL3_OPL3_ENABLE
+op_or
+id|OPL3_OPL4_ENABLE
+)paren
 )paren
 (brace
-multiline_comment|/* Have a OPL4 */
 id|opl3-&gt;hardware
 op_assign
 id|OPL3_HW_OPL4

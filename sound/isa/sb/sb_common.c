@@ -1125,15 +1125,22 @@ l_int|0
 r_if
 c_cond
 (paren
+id|hardware
+op_ne
+id|SB_HW_ALS100
+op_logical_and
+(paren
 id|dma16
 template_param
 l_int|7
 )paren
+)paren
 (brace
-multiline_comment|/* Vibra has no 16bit DMA - no duplex */
+multiline_comment|/* no duplex */
 id|dma16
 op_assign
-id|dma8
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_else

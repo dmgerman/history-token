@@ -82,6 +82,7 @@ DECL|variable|orig_pci_ops
 r_static
 r_struct
 id|pci_ops
+op_star
 id|orig_pci_ops
 suffix:semicolon
 r_static
@@ -206,9 +207,9 @@ id|dev
 suffix:semicolon
 )brace
 DECL|macro|HP_CFG_RD
-mdefine_line|#define HP_CFG_RD(sz, bits, name) &bslash;&n;static int hp_cfg_read##sz (struct pci_dev *dev, int where, u##bits *value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops.name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_COMMAND: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;*value |= PCI_COMMAND_MEMORY; /* SBA omits this */ &bslash;&n;&t;&t;break; &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (fake_dev-&gt;sizing) &bslash;&n;&t;&t;&t;*value = ~(fake_dev-&gt;csr_size - 1); &bslash;&n;&t;&t;else &bslash;&n;&t;&t;&t;*value = (fake_dev-&gt;csr_base &amp; &bslash;&n;&t;&t;&t;&t;    PCI_BASE_ADDRESS_MEM_MASK) | &bslash;&n;&t;&t;&t;&t;PCI_BASE_ADDRESS_SPACE_MEMORY; &bslash;&n;&t;&t;fake_dev-&gt;sizing = 0; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
+mdefine_line|#define HP_CFG_RD(sz, bits, name) &bslash;&n;static int hp_cfg_read##sz (struct pci_dev *dev, int where, u##bits *value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops-&gt;name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_COMMAND: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;*value |= PCI_COMMAND_MEMORY; /* SBA omits this */ &bslash;&n;&t;&t;break; &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (fake_dev-&gt;sizing) &bslash;&n;&t;&t;&t;*value = ~(fake_dev-&gt;csr_size - 1); &bslash;&n;&t;&t;else &bslash;&n;&t;&t;&t;*value = (fake_dev-&gt;csr_base &amp; &bslash;&n;&t;&t;&t;&t;    PCI_BASE_ADDRESS_MEM_MASK) | &bslash;&n;&t;&t;&t;&t;PCI_BASE_ADDRESS_SPACE_MEMORY; &bslash;&n;&t;&t;fake_dev-&gt;sizing = 0; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;*value = read##sz(fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
 DECL|macro|HP_CFG_WR
-mdefine_line|#define HP_CFG_WR(sz, bits, name) &bslash;&n;static int hp_cfg_write##sz (struct pci_dev *dev, int where, u##bits value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops.name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (value == ~0) &bslash;&n;&t;&t;&t;fake_dev-&gt;sizing = 1; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;write##sz(value, fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
+mdefine_line|#define HP_CFG_WR(sz, bits, name) &bslash;&n;static int hp_cfg_write##sz (struct pci_dev *dev, int where, u##bits value) &bslash;&n;{ &bslash;&n;&t;struct fake_pci_dev *fake_dev; &bslash;&n;&t;if (!(fake_dev = fake_pci_find_slot(dev-&gt;bus-&gt;number, dev-&gt;devfn))) &bslash;&n;&t;&t;return orig_pci_ops-&gt;name(dev, where, value); &bslash;&n;&t;&bslash;&n;&t;switch (where) { &bslash;&n;&t;case PCI_BASE_ADDRESS_0: &bslash;&n;&t;&t;if (value == ~0) &bslash;&n;&t;&t;&t;fake_dev-&gt;sizing = 1; &bslash;&n;&t;&t;break; &bslash;&n;&t;default: &bslash;&n;&t;&t;write##sz(value, fake_dev-&gt;mapped_csrs + where); &bslash;&n;&t;&t;break; &bslash;&n;&t;} &bslash;&n;&t;return PCIBIOS_SUCCESSFUL; &bslash;&n;}
 id|HP_CFG_RD
 c_func
 (paren
@@ -1078,12 +1079,14 @@ id|status
 suffix:semicolon
 id|status
 op_assign
-id|acpi_cf_evaluate_method
+id|acpi_evaluate_integer
 c_func
 (paren
 id|obj
 comma
 id|METHOD_NAME__BBN
+comma
+l_int|NULL
 comma
 op_amp
 id|busnum
@@ -1177,7 +1180,8 @@ r_void
 r_extern
 r_struct
 id|pci_ops
-id|pci_conf
+op_star
+id|pci_root_ops
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make fake PCI devices for the following hardware in the&n;&t; * ACPI namespace.  This makes it more convenient for drivers&n;&t; * because they can claim these devices based on PCI&n;&t; * information, rather than needing to know about ACPI.  The&n;&t; * 64-bit &quot;HPA&quot; space for this hardware is available as BAR&n;&t; * 0/1.&n;&t; *&n;&t; * HWP0001: Single IOC SBA w/o IOC in namespace&n;&t; * HWP0002: LBA device&n;&t; * HWP0003: AGP LBA device&n;&t; */
 id|acpi_get_devices
@@ -1455,10 +1459,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Replace PCI ops, but only if we made fake devices.&n;&t; */
 id|orig_pci_ops
 op_assign
-id|pci_conf
+id|pci_root_ops
 suffix:semicolon
-id|pci_conf
+id|pci_root_ops
 op_assign
+op_amp
 id|hp_pci_conf
 suffix:semicolon
 )brace

@@ -42,6 +42,12 @@ r_struct
 id|sndrv_xferv
 id|snd_xferv_t
 suffix:semicolon
+multiline_comment|/* forward declarations */
+macro_line|#ifdef CONFIG_PCI
+r_struct
+id|pci_dev
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* device allocation stuff */
 DECL|macro|SNDRV_DEV_TYPE_RANGE_SIZE
 mdefine_line|#define SNDRV_DEV_TYPE_RANGE_SIZE&t;&t;0x1000
@@ -1015,9 +1021,6 @@ DECL|macro|snd_free_isa_pages
 mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pages(ptr, size)
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
-r_struct
-id|pci_dev
-suffix:semicolon
 r_void
 op_star
 id|snd_malloc_pci_pages
@@ -1348,7 +1351,7 @@ id|size
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
-r_int
+r_void
 id|snd_verbose_printk
 c_func
 (paren
@@ -1364,40 +1367,86 @@ r_const
 r_char
 op_star
 id|format
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; defined(CONFIG_SND_VERBOSE_PRINTK)
+r_void
+id|snd_verbose_printd
+c_func
+(paren
+r_const
+r_char
+op_star
+id|file
+comma
+r_int
+id|line
+comma
+r_const
+r_char
+op_star
+id|format
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; !defined(CONFIG_SND_VERBOSE_PRINTK)
+r_void
+id|snd_printd
+c_func
+(paren
+r_const
+r_char
+op_star
+id|format
+comma
+dot
+dot
+dot
 )paren
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* --- */
 macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
 DECL|macro|snd_printk
-mdefine_line|#define snd_printk(format, args...) do { &bslash;&n;&t;printk(snd_verbose_printk(__FILE__, __LINE__, format) ? format + 3 : format, ##args); &bslash;&n;} while (0)
+mdefine_line|#define snd_printk(args...) &bslash;&n;&t;snd_verbose_printk(__FILE__, __LINE__, ##args)
 macro_line|#else
 DECL|macro|snd_printk
-mdefine_line|#define snd_printk(format, args...) do { &bslash;&n;&t;printk(format, ##args); &bslash;&n;} while (0)
+mdefine_line|#define snd_printk(args...) &bslash;&n;&t;printk(##args)
 macro_line|#endif
 macro_line|#ifdef CONFIG_SND_DEBUG
 DECL|macro|__ASTRING__
 mdefine_line|#define __ASTRING__(x) #x
+macro_line|#ifdef CONFIG_SND_VERBOSE_PRINTK
 DECL|macro|snd_printd
-mdefine_line|#define snd_printd(format, args...) snd_printk(format, ##args)
+mdefine_line|#define snd_printd(args...) &bslash;&n;&t;snd_verbose_printd(__FILE__, __LINE__, ##args)
+macro_line|#endif
 DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;BUG? (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do {&bslash;&n;&t;if (!(expr)) {&bslash;&n;&t;&t;snd_printk(&quot;ERROR (%s) (called from %p)&bslash;n&quot;, __ASTRING__(expr), __builtin_return_address(0));&bslash;&n;&t;&t;args;&bslash;&n;&t;}&bslash;&n;} while (0)
 macro_line|#else /* !CONFIG_SND_DEBUG */
 DECL|macro|snd_printd
-mdefine_line|#define snd_printd(format, args...)&t;/* nothing */
+mdefine_line|#define snd_printd(args...)&t;/* nothing */
 DECL|macro|snd_assert
-mdefine_line|#define snd_assert(expr, args...)&t;/* nothing */
+mdefine_line|#define snd_assert(args...)&t;/* nothing */
 DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do { if (!(expr)) { args; } } while (0)
 macro_line|#endif /* CONFIG_SND_DEBUG */
 macro_line|#ifdef CONFIG_SND_DEBUG_DETECT
 DECL|macro|snd_printdd
-mdefine_line|#define snd_printdd(format, args...) snd_printk(format, ##args)
+mdefine_line|#define snd_printdd(args...) snd_printk(format, ##args)
 macro_line|#else
 DECL|macro|snd_printdd
-mdefine_line|#define snd_printdd(format, args...) /* nothing */
+mdefine_line|#define snd_printdd(args...) /* nothing */
 macro_line|#endif
 DECL|macro|snd_BUG
 mdefine_line|#define snd_BUG() snd_assert(0, )

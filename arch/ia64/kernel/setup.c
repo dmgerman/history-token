@@ -1386,7 +1386,7 @@ c_func
 (paren
 id|family
 comma
-l_string|&quot;McKinley&quot;
+l_string|&quot;Itanium 2&quot;
 comma
 l_int|9
 )paren
