@@ -34,14 +34,10 @@ multiline_comment|/* enable HT */
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
@@ -1296,6 +1292,8 @@ c_func
 id|ACPI_MADT_LAPIC_ADDR_OVR
 comma
 id|acpi_parse_lapic_addr_ovr
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1332,6 +1330,8 @@ c_func
 id|ACPI_MADT_LAPIC
 comma
 id|acpi_parse_lapic
+comma
+id|MAX_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1385,6 +1385,8 @@ c_func
 id|ACPI_MADT_LAPIC_NMI
 comma
 id|acpi_parse_lapic_nmi
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1459,6 +1461,8 @@ c_func
 id|ACPI_MADT_IOAPIC
 comma
 id|acpi_parse_ioapic
+comma
+id|MAX_IO_APICS
 )paren
 suffix:semicolon
 r_if
@@ -1516,6 +1520,8 @@ c_func
 id|ACPI_MADT_INT_SRC_OVR
 comma
 id|acpi_parse_int_src_ovr
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if
@@ -1547,6 +1553,8 @@ c_func
 id|ACPI_MADT_NMI_SRC
 comma
 id|acpi_parse_nmi_src
+comma
+id|NR_IRQ_VECTORS
 )paren
 suffix:semicolon
 r_if
