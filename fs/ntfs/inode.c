@@ -5172,10 +5172,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_char
-op_star
-id|s
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
