@@ -564,26 +564,6 @@ op_star
 id|iface
 )paren
 suffix:semicolon
-multiline_comment|/* determine if we should include the EzUSB loader functions */
-DECL|macro|USES_EZUSB_FUNCTIONS
-macro_line|#undef USES_EZUSB_FUNCTIONS
-macro_line|#if defined(CONFIG_USB_SERIAL_KEYSPAN_PDA) || defined(CONFIG_USB_SERIAL_KEYSPAN_PDA_MODULE)
-DECL|macro|USES_EZUSB_FUNCTIONS
-mdefine_line|#define USES_EZUSB_FUNCTIONS
-macro_line|#endif
-macro_line|#if defined(CONFIG_USB_SERIAL_XIRCOM) || defined(CONFIG_USB_SERIAL_XIRCOM_MODULE)
-DECL|macro|USES_EZUSB_FUNCTIONS
-mdefine_line|#define USES_EZUSB_FUNCTIONS
-macro_line|#endif
-macro_line|#if defined(CONFIG_USB_SERIAL_KEYSPAN) || defined(CONFIG_USB_SERIAL_KEYSPAN_MODULE)
-DECL|macro|USES_EZUSB_FUNCTIONS
-mdefine_line|#define USES_EZUSB_FUNCTIONS
-macro_line|#endif
-macro_line|#if defined(CONFIG_USB_SERIAL_WHITEHEAT) || defined(CONFIG_USB_SERIAL_WHITEHEAT_MODULE)
-DECL|macro|USES_EZUSB_FUNCTIONS
-mdefine_line|#define USES_EZUSB_FUNCTIONS
-macro_line|#endif
-macro_line|#ifdef USES_EZUSB_FUNCTIONS
 r_extern
 r_int
 id|ezusb_writememory
@@ -622,7 +602,6 @@ r_char
 id|reset_bit
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* USB Serial console functions */
 macro_line|#ifdef CONFIG_USB_SERIAL_CONSOLE
 r_extern
