@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* for capable() */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;asm/efi.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|MODULE_AUTHOR
 c_func

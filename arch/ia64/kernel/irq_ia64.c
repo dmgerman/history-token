@@ -80,31 +80,23 @@ comma
 l_int|0x21
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * GSI to IA-64 vector translation table.&n; */
-DECL|variable|gsi_to_vector_map
-id|__u8
-id|gsi_to_vector_map
-(braket
-l_int|255
-)braket
-suffix:semicolon
 r_int
-DECL|function|ia64_alloc_irq
-id|ia64_alloc_irq
+DECL|function|ia64_alloc_vector
+id|ia64_alloc_vector
 (paren
 r_void
 )paren
 (brace
 r_static
 r_int
-id|next_irq
+id|next_vector
 op_assign
 id|IA64_FIRST_DEVICE_VECTOR
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|next_irq
+id|next_vector
 OG
 id|IA64_LAST_DEVICE_VECTOR
 )paren
@@ -112,11 +104,11 @@ multiline_comment|/* XXX could look for sharable vectors instead of panic&squot;
 id|panic
 c_func
 (paren
-l_string|&quot;ia64_alloc_irq: out of interrupt vectors!&quot;
+l_string|&quot;ia64_alloc_vector: out of interrupt vectors!&quot;
 )paren
 suffix:semicolon
 r_return
-id|next_irq
+id|next_vector
 op_increment
 suffix:semicolon
 )brace

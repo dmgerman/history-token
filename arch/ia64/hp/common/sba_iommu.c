@@ -10,10 +10,10 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;&t;&t;/* ia64_get_itc() */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;&t;&t;/* PAGE_OFFSET */
-macro_line|#include &lt;asm/efi.h&gt;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;SBA&quot;
 macro_line|#ifndef CONFIG_IA64_HP_PROTO
