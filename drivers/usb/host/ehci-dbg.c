@@ -2433,9 +2433,18 @@ id|next
 comma
 id|size
 comma
-l_string|&quot; qh%d/%p&quot;
+l_string|&quot; qh%d-%04x/%p&quot;
 comma
 id|p.qh-&gt;period
+comma
+id|le32_to_cpup
+(paren
+op_amp
+id|p.qh-&gt;hw_info2
+)paren
+multiline_comment|/* uframe masks */
+op_amp
+l_int|0xffff
 comma
 id|p.qh
 )paren
@@ -2448,6 +2457,7 @@ id|next
 op_add_assign
 id|temp
 suffix:semicolon
+multiline_comment|/* don&squot;t repeat what follows this qh */
 r_for
 c_loop
 (paren
@@ -2472,9 +2482,31 @@ id|temp
 )braket
 dot
 id|ptr
-op_eq
+op_ne
 id|p.ptr
 )paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p.qh-&gt;qh_next.ptr
+)paren
+id|temp
+op_assign
+id|snprintf
+(paren
+id|next
+comma
+id|size
+comma
+l_string|&quot; ...&quot;
+)paren
+suffix:semicolon
+id|p.ptr
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2496,6 +2528,70 @@ op_amp
 id|p.qh-&gt;hw_info1
 )paren
 suffix:semicolon
+r_struct
+id|ehci_qtd
+op_star
+id|qtd
+suffix:semicolon
+r_char
+op_star
+id|type
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+multiline_comment|/* count tds, get ep direction */
+id|temp
+op_assign
+l_int|0
+suffix:semicolon
+id|list_for_each_entry
+(paren
+id|qtd
+comma
+op_amp
+id|p.qh-&gt;qtd_list
+comma
+id|qtd_list
+)paren
+(brace
+id|temp
+op_increment
+suffix:semicolon
+r_switch
+c_cond
+(paren
+l_int|0x03
+op_amp
+(paren
+id|le32_to_cpu
+(paren
+id|qtd-&gt;hw_token
+)paren
+op_rshift
+l_int|8
+)paren
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|type
+op_assign
+l_string|&quot;out&quot;
+suffix:semicolon
+r_continue
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|type
+op_assign
+l_string|&quot;in&quot;
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+)brace
 id|temp
 op_assign
 id|snprintf
@@ -2504,7 +2600,8 @@ id|next
 comma
 id|size
 comma
-l_string|&quot; (%cs dev%d ep%d [%d/%d] %d)&quot;
+l_string|&quot; (%c%d ep%d%s &quot;
+l_string|&quot;[%d/%d] q%d p%d)&quot;
 comma
 id|speed_char
 (paren
@@ -2523,9 +2620,13 @@ l_int|8
 op_amp
 l_int|0x000f
 comma
+id|type
+comma
 id|p.qh-&gt;usecs
 comma
 id|p.qh-&gt;c_usecs
+comma
+id|temp
 comma
 l_int|0x7ff
 op_amp
@@ -2536,7 +2637,6 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME TD info too */
 r_if
 c_cond
 (paren

@@ -862,7 +862,11 @@ op_star
 (paren
 id|hcd-&gt;regs
 op_plus
+id|readb
+(paren
+op_amp
 id|ehci-&gt;caps-&gt;length
+)paren
 )paren
 suffix:semicolon
 id|dbg_hcs_params
@@ -1487,11 +1491,6 @@ id|DRIVER_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * From here on, khubd concurrently accesses the root&n;&t; * hub; drivers will be talking to enumerated devices.&n;&t; *&n;&t; * Before this point the HC was idle/ready.  After, khubd&n;&t; * and device drivers may start it running.&n;&t; */
-id|usb_connect
-(paren
-id|udev
-)paren
-suffix:semicolon
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_HIGH
@@ -3191,7 +3190,6 @@ DECL|variable|pci_ids
 r_static
 r_struct
 id|pci_device_id
-id|__devinitdata
 id|pci_ids
 (braket
 )braket

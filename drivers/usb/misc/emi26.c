@@ -1050,7 +1050,6 @@ suffix:semicolon
 )brace
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table
@@ -1188,7 +1187,7 @@ comma
 dot
 id|id_table
 op_assign
-l_int|NULL
+id|id_table
 comma
 )brace
 suffix:semicolon
@@ -1201,14 +1200,13 @@ id|emi26_init
 r_void
 )paren
 (brace
+r_return
 id|usb_register
+c_func
 (paren
 op_amp
 id|emi26_driver
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|emi26_exit

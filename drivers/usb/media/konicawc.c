@@ -1798,7 +1798,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 id|uvd-&gt;iface
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 id|spd_to_iface

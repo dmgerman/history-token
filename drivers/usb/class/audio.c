@@ -7866,7 +7866,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|u-&gt;interface
@@ -8567,7 +8566,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|u-&gt;interface
@@ -15817,7 +15815,6 @@ l_int|0
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|as-&gt;usbout.interface
@@ -15874,7 +15871,6 @@ l_int|0
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|as-&gt;usbin.interface
@@ -16972,7 +16968,6 @@ id|FLG_CONNECTED
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|asifin
@@ -17646,7 +17641,6 @@ id|FLG_CONNECTED
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|asifout
@@ -17696,6 +17690,14 @@ OL
 l_int|1
 )paren
 (brace
+multiline_comment|/* altsetting 0 should never have iso EPs */
+r_if
+c_cond
+(paren
+id|alts-&gt;desc.bAlternateSetting
+op_ne
+l_int|0
+)paren
 id|printk
 c_func
 (paren
@@ -23184,7 +23186,6 @@ suffix:semicolon
 )brace
 id|iface
 op_assign
-op_amp
 id|config-&gt;interface
 (braket
 id|j
@@ -24369,6 +24370,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|result
+op_assign
 id|usb_register
 c_func
 (paren
@@ -24376,6 +24380,13 @@ op_amp
 id|usb_audio_driver
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
 id|info
 c_func
 (paren
@@ -24385,7 +24396,7 @@ id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 DECL|function|usb_audio_cleanup

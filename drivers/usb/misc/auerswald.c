@@ -2499,6 +2499,8 @@ id|bufsize
 (brace
 id|pauerbuf_t
 id|bep
+op_assign
+l_int|NULL
 suffix:semicolon
 id|dbg
 (paren
@@ -2652,6 +2654,12 @@ multiline_comment|/* not enough memory. Free allocated elements */
 id|dbg
 (paren
 l_string|&quot;auerbuf_setup: no more memory&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bep
 )paren
 suffix:semicolon
 id|auerbuf_free_buffers

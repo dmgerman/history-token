@@ -1286,8 +1286,8 @@ c_loop
 (paren
 id|status
 op_logical_and
-op_decrement
 id|frame
+op_decrement
 )paren
 suffix:semicolon
 r_if

@@ -1580,11 +1580,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|usb_connect
-(paren
-id|udev
-)paren
-suffix:semicolon
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_FULL
