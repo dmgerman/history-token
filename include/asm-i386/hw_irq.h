@@ -282,10 +282,6 @@ r_int
 r_int
 id|prof_cpu_mask
 suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROFILING
 r_extern
 r_void

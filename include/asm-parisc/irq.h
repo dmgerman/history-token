@@ -4,6 +4,7 @@ DECL|macro|_ASM_PARISC_IRQ_H
 mdefine_line|#define _ASM_PARISC_IRQ_H
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|CPU_IRQ_REGION
@@ -336,5 +337,67 @@ r_struct
 id|tasklet_struct
 id|power_tasklet
 suffix:semicolon
+r_struct
+id|notifier_block
+suffix:semicolon
+macro_line|#ifdef CONFIG_PROFILING
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|register_profile_notifier
+r_static
+r_inline
+r_int
+id|register_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+DECL|function|unregister_profile_notifier
+r_static
+r_inline
+r_int
+id|unregister_profile_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#endif&t;/* _ASM_PARISC_IRQ_H */
 eof

@@ -2151,6 +2151,8 @@ id|MEMO_PAGE_ORDER
 comma
 op_amp
 id|daddr
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

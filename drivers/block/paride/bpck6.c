@@ -2,10 +2,9 @@ multiline_comment|/*&n;&t;backpack.c (c) 2001 Micro Solutions Inc.&n;&t;&t;Relea
 multiline_comment|/*&n;   This is Ken&squot;s linux wrapper for the PPC library&n;   Version 1.0.0 is the backpack driver for which source is not available&n;   Version 2.0.0 is the first to have source released &n;   Version 2.0.1 is the &quot;Cox-ified&quot; source code &n;   Version 2.0.2 - fixed version string usage, and made ppc functions static &n;*/
 multiline_comment|/* PARAMETERS */
 DECL|variable|verbose
+r_static
 r_int
 id|verbose
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* set this to 1 to see debugging messages and whatnot */
 DECL|macro|BACKPACK_VERSION

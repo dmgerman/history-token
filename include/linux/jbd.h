@@ -295,6 +295,7 @@ mdefine_line|#define JFS_KNOWN_INCOMPAT_FEATURES&t;JFS_FEATURE_INCOMPAT_REVOKE
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 DECL|macro|JBD_ASSERTIONS
 mdefine_line|#define JBD_ASSERTIONS
 macro_line|#ifdef JBD_ASSERTIONS
@@ -2025,11 +2026,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Not all architectures define BUG() */
-macro_line|#ifndef BUG
-DECL|macro|BUG
-mdefine_line|#define BUG() do { &bslash;&n;        printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__); &bslash;&n;&t;* ((char *) 0) = 0; &bslash;&n; } while (0)
-macro_line|#endif /* BUG */
 macro_line|#endif /* __KERNEL__   */
 multiline_comment|/* Comparison functions for transaction IDs: perform comparisons using&n; * modulo arithmetic so that they work over sequence number wraps. */
 DECL|function|tid_gt

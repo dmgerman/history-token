@@ -6,7 +6,6 @@ DECL|macro|_PARISC_KEYBOARD_H
 mdefine_line|#define _PARISC_KEYBOARD_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_VT
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 multiline_comment|/*  These are basically the generic functions / variables.  The only&n; *  unexpected detail is the initialization sequence for the keyboard&n; *  driver is something like this:&n; *&n; *  detect keyboard port&n; *  detect keyboard&n; *  call register_kbd_ops &n; *  wait for init_hw&n; *&n; *  only after init_hw has been called you&squot;re allowed to call&n; *  handle_scancode.  This means you either have to be extremely&n; *  careful or use a global flag or something - I strongly suggest&n; *  the latter.    prumpf */
@@ -90,16 +89,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Keyboard driver resource allocation  */
-DECL|member|kbd_request_region
-r_void
-(paren
-op_star
-id|kbd_request_region
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|kbd_request_irq
 r_int
 (paren
@@ -124,53 +113,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Methods to access the keyboard processor&squot;s I/O registers  */
-DECL|member|kbd_read_input
-r_int
-r_char
-(paren
-op_star
-id|kbd_read_input
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|kbd_write_output
-r_void
-(paren
-op_star
-id|kbd_write_output
-)paren
-(paren
-r_int
-r_char
-id|val
-)paren
-suffix:semicolon
-DECL|member|kbd_write_command
-r_void
-(paren
-op_star
-id|kbd_write_command
-)paren
-(paren
-r_int
-r_char
-id|val
-)paren
-suffix:semicolon
-DECL|member|kbd_read_status
-r_int
-r_char
-(paren
-op_star
-id|kbd_read_status
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|member|sysrq_key
 r_int
 r_char
@@ -183,7 +125,6 @@ op_star
 id|sysrq_xlate
 suffix:semicolon
 )brace
-op_star
 id|kbd_ops
 suffix:semicolon
 DECL|macro|kbd_setkeycode
@@ -203,18 +144,8 @@ mdefine_line|#define SYSRQ_KEY&t;&t;(kbd_ops-&gt;sysrq_key)
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define&t;kbd_sysrq_xlate&t;&t;(kbd_ops-&gt;sysrq_xlate)
 multiline_comment|/* Do the actual calls via kbd_ops vector  */
-DECL|macro|kbd_request_region
-mdefine_line|#define kbd_request_region() &t;kbd_ops-&gt;kbd_request_region()
 DECL|macro|kbd_request_irq
 mdefine_line|#define kbd_request_irq(handler) kbd_ops-&gt;kbd_request_irq(handler)
-DECL|macro|kbd_read_input
-mdefine_line|#define kbd_read_input() &t;kbd_ops-&gt;kbd_read_input()
-DECL|macro|kbd_write_output
-mdefine_line|#define kbd_write_output(val) &t;kbd_ops-&gt;kbd_write_output(val)
-DECL|macro|kbd_write_command
-mdefine_line|#define kbd_write_command(val) &t;kbd_ops-&gt;kbd_write_command(val)
-DECL|macro|kbd_read_status
-mdefine_line|#define kbd_read_status() &t;kbd_ops-&gt;kbd_read_status()
 r_extern
 r_int
 r_char
@@ -243,7 +174,6 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_VT */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMPARISC_KEYBOARD_H */
 eof

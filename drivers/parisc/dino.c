@@ -219,7 +219,11 @@ op_assign
 id|DINO_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|u32
@@ -412,7 +416,11 @@ op_assign
 id|DINO_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|u32
@@ -614,7 +622,7 @@ mdefine_line|#define cpu_to_le8(x) (x)
 DECL|macro|le8_to_cpu
 mdefine_line|#define le8_to_cpu(x) (x)
 DECL|macro|DINO_PORT_IN
-mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;gsc_writel((u32) addr &amp; ~3, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = gsc_read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return le##size##_to_cpu(v); &bslash;&n;}
+mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = gsc_read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return le##size##_to_cpu(v); &bslash;&n;}
 id|DINO_PORT_IN
 c_func
 (paren
@@ -643,7 +651,7 @@ comma
 l_int|0
 )paren
 DECL|macro|DINO_PORT_OUT
-mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which CFG address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;gsc_write##type(cpu_to_le##size(val), d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
+mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;gsc_write##type(cpu_to_le##size(val), d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
 id|DINO_PORT_OUT
 c_func
 (paren
@@ -1387,7 +1395,11 @@ op_assign
 id|DINO_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 r_struct
@@ -1510,7 +1522,7 @@ op_plus
 id|DINO_IO_ADDR_EN
 )paren
 suffix:semicolon
-id|pcibios_assign_unassigned_resources
+id|pci_bus_assign_resources
 c_func
 (paren
 id|bus
@@ -1653,7 +1665,11 @@ op_assign
 id|DINO_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -1677,7 +1693,7 @@ id|bus
 comma
 id|bus-&gt;secondary
 comma
-id|bus-&gt;sysdata
+id|bus-&gt;dev-&gt;platform_data
 )paren
 suffix:semicolon
 multiline_comment|/* Firmware doesn&squot;t set up card-mode dino, so we have to */
@@ -2700,6 +2716,23 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %s&quot;
+comma
+id|name
+comma
+id|version
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2953,18 +2986,25 @@ id|name
 r_return
 l_int|1
 suffix:semicolon
+id|dev-&gt;dev.platform_data
+op_assign
+id|dino_dev
+suffix:semicolon
 multiline_comment|/*&n;&t;** It&squot;s not used to avoid chicken/egg problems&n;&t;** with configuration accessor functions.&n;&t;*/
 id|dino_dev-&gt;hba.hba_bus
 op_assign
-id|pci_scan_bus
+id|pci_scan_bus_parented
 c_func
 (paren
+op_amp
+id|dev-&gt;dev
+comma
 id|dino_dev-&gt;hba.hba_num
 comma
 op_amp
 id|dino_cfg_ops
 comma
-id|dino_dev
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

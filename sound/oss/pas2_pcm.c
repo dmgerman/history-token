@@ -100,7 +100,7 @@ l_int|0
 suffix:semicolon
 r_extern
 id|spinlock_t
-id|lock
+id|pas_lock
 suffix:semicolon
 DECL|function|pcm_set_speed
 r_static
@@ -331,7 +331,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -399,7 +399,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -834,7 +834,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -849,7 +849,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -867,7 +867,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -930,7 +930,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -959,7 +959,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1049,7 +1049,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1206,7 +1206,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1297,7 +1297,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1442,7 +1442,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1470,7 +1470,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -1549,7 +1549,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren

@@ -1318,6 +1318,7 @@ singleline_comment|// selects source as local clock at 48 kHz
 )brace
 suffix:semicolon
 DECL|variable|rc
+r_static
 id|snd_korg1212rc
 id|rc
 suffix:semicolon

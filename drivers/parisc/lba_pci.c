@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
+macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/iosapic.h&gt;&t;/* for iosapic_register() */
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* read/write stuff */
 macro_line|#ifndef TRUE
@@ -814,7 +815,11 @@ op_assign
 id|LBA_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|u32
@@ -1296,7 +1301,11 @@ op_assign
 id|LBA_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|u32
@@ -1744,7 +1753,11 @@ op_assign
 id|LBA_DEV
 c_func
 (paren
-id|bus-&gt;sysdata
+id|parisc_walk_tree
+c_func
+(paren
+id|bus-&gt;dev
+)paren
 )paren
 suffix:semicolon
 r_int
@@ -1765,7 +1778,7 @@ id|bus
 comma
 id|bus-&gt;secondary
 comma
-id|bus-&gt;sysdata
+id|bus-&gt;dev-&gt;platform_data
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Properly Setup MMIO resources for this bus.&n;&t;** pci_alloc_primary_bus() mangles this.&n;&t;*/
@@ -3810,6 +3823,23 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|dev-&gt;dev.name
+comma
+r_sizeof
+(paren
+id|dev-&gt;dev.name
+)paren
+comma
+l_string|&quot;%s version %s&quot;
+comma
+id|MODULE_NAME
+comma
+id|version
+)paren
+suffix:semicolon
 multiline_comment|/* Just in case we find some prototypes... */
 r_if
 c_cond
@@ -3982,23 +4012,26 @@ id|lba_dev
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t;** Tell PCI support another PCI bus was found.&n;&t;** Walks PCI bus for us too.&n;&t;*/
+id|dev-&gt;dev.platform_data
+op_assign
+id|lba_dev
+suffix:semicolon
 id|lba_bus
 op_assign
 id|lba_dev-&gt;hba.hba_bus
 op_assign
-id|pci_scan_bus
+id|pci_scan_bus_parented
 c_func
 (paren
+op_amp
+id|dev-&gt;dev
+comma
 id|lba_dev-&gt;hba.bus_num.start
 comma
 op_amp
 id|lba_cfg_ops
 comma
-(paren
-r_void
-op_star
-)paren
-id|lba_dev
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef __LP64__
@@ -4015,10 +4048,10 @@ multiline_comment|/* assign resources to un-initialized devices */
 id|DBG_PAT
 c_func
 (paren
-l_string|&quot;LBA pcibios_assign_unassigned_resources()&bslash;n&quot;
+l_string|&quot;LBA pci_bus_assign_resources()&bslash;n&quot;
 )paren
 suffix:semicolon
-id|pcibios_assign_unassigned_resources
+id|pci_bus_assign_resources
 c_func
 (paren
 id|lba_bus
@@ -4126,6 +4159,7 @@ dot
 id|probe
 op_assign
 id|lba_driver_callback
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n;** One time initialization to let the world know the LBA was found.&n;** Must be called exactly once before pci_init().&n;*/

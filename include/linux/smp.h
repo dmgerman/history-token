@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 multiline_comment|/*&n; * main cross-CPU interfaces, handles INIT, TLB flush, STOP, etc.&n; * (defined in asm header):&n; */
 multiline_comment|/*&n; * stops all CPUs but the current one:&n; */
 r_extern
@@ -169,7 +170,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#else /* !SMP */
-macro_line|#include &lt;asm/page.h&gt; /* For BUG() */
 multiline_comment|/*&n; *&t;These macros fold the SMP functionality into a single CPU system&n; */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;&t;&t;0

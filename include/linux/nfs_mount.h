@@ -105,6 +105,11 @@ id|nfs3_fh
 id|root
 suffix:semicolon
 multiline_comment|/* 4 */
+DECL|member|pseudoflavor
+r_int
+id|pseudoflavor
+suffix:semicolon
+multiline_comment|/* 4 */
 )brace
 suffix:semicolon
 multiline_comment|/* bits in the flags field */
@@ -130,10 +135,10 @@ DECL|macro|NFS_MOUNT_NONLM
 mdefine_line|#define NFS_MOUNT_NONLM&t;&t;0x0200&t;/* 3 */
 DECL|macro|NFS_MOUNT_BROKEN_SUID
 mdefine_line|#define NFS_MOUNT_BROKEN_SUID&t;0x0400&t;/* 4 */
-macro_line|#if 0
+DECL|macro|NFS_MOUNT_STRICTLOCK
 mdefine_line|#define NFS_MOUNT_STRICTLOCK&t;0x1000&t;/* reserved for NFSv4 */
+DECL|macro|NFS_MOUNT_SECFLAVOUR
 mdefine_line|#define NFS_MOUNT_SECFLAVOUR&t;0x2000&t;/* reserved */
-macro_line|#endif
 DECL|macro|NFS_MOUNT_FLAGMASK
 mdefine_line|#define NFS_MOUNT_FLAGMASK&t;0xFFFF
 macro_line|#endif

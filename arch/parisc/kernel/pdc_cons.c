@@ -125,7 +125,7 @@ r_return
 id|mk_kdev
 c_func
 (paren
-id|PDCCONS_MAJOR
+id|MUX_MAJOR
 comma
 l_int|0
 )paren

@@ -1243,7 +1243,7 @@ id|KERN_WARNING
 id|MODULE_NAME
 l_string|&quot;: hpa not registered for %s&bslash;n&quot;
 comma
-id|pcidev-&gt;name
+id|pcidev-&gt;dev.name
 )paren
 suffix:semicolon
 r_return

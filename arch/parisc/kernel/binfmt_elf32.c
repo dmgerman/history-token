@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
-macro_line|#include &quot;sys32.h&quot;&t;&t;/* struct timeval32 */
+macro_line|#include &lt;linux/compat.h&gt;
 DECL|macro|elf_prstatus
 mdefine_line|#define elf_prstatus elf_prstatus32
 DECL|struct|elf_prstatus32
@@ -61,25 +61,25 @@ id|pr_sid
 suffix:semicolon
 DECL|member|pr_utime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_utime
 suffix:semicolon
 multiline_comment|/* User time */
 DECL|member|pr_stime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_stime
 suffix:semicolon
 multiline_comment|/* System time */
 DECL|member|pr_cutime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cutime
 suffix:semicolon
 multiline_comment|/* Cumulative user time */
 DECL|member|pr_cstime
 r_struct
-id|timeval32
+id|compat_timeval
 id|pr_cstime
 suffix:semicolon
 multiline_comment|/* Cumulative system time */
@@ -178,5 +178,45 @@ mdefine_line|#define ELF_CORE_COPY_REGS(dst, pt)&t;&bslash;&n;&t;memset(dst, 0, 
 multiline_comment|/*&n; * We should probably use this macro to set a flag somewhere to indicate&n; * this is a 32 on 64 process. We could use PER_LINUX_32BIT, or we&n; * could set a processor dependent flag in the thread_struct.&n; */
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) &bslash;&n;&t;current-&gt;personality = PER_LINUX_32BIT
+DECL|macro|jiffies_to_timeval
+mdefine_line|#define jiffies_to_timeval jiffies_to_compat_timeval 
+r_static
+id|__inline__
+r_void
+DECL|function|jiffies_to_compat_timeval
+id|jiffies_to_compat_timeval
+c_func
+(paren
+r_int
+r_int
+id|jiffies
+comma
+r_struct
+id|compat_timeval
+op_star
+id|value
+)paren
+(brace
+id|value-&gt;tv_usec
+op_assign
+(paren
+id|jiffies
+op_mod
+id|HZ
+)paren
+op_star
+(paren
+l_int|1000000L
+op_div
+id|HZ
+)paren
+suffix:semicolon
+id|value-&gt;tv_sec
+op_assign
+id|jiffies
+op_div
+id|HZ
+suffix:semicolon
+)brace
 macro_line|#include &quot;../../../fs/binfmt_elf.c&quot;
 eof

@@ -314,15 +314,24 @@ dot
 id|endm
 macro_line|#ifdef __LP64__
 DECL|macro|LDREG
-mdefine_line|#define LDREG   ldd
+mdefine_line|#define LDREG&t;ldd
 DECL|macro|STREG
-mdefine_line|#define STREG   std
+mdefine_line|#define STREG&t;std
+DECL|macro|LDREGM
+mdefine_line|#define LDREGM&t;ldd,mb
+DECL|macro|STREGM
+mdefine_line|#define STREGM&t;std,ma
 DECL|macro|RP_OFFSET
 mdefine_line|#define RP_OFFSET&t;16
+DECL|macro|FRAME_SIZE
+mdefine_line|#define FRAME_SIZE&t;128
 macro_line|#else
-mdefine_line|#define LDREG   ldw
-mdefine_line|#define STREG   stw
+mdefine_line|#define LDREG&t;ldw
+mdefine_line|#define STREG&t;stw
+mdefine_line|#define LDREGM&t;ldwm
+mdefine_line|#define STREGM&t;stwm
 mdefine_line|#define RP_OFFSET&t;20
+mdefine_line|#define FRAME_SIZE&t;64
 macro_line|#endif
 dot
 id|macro

@@ -37,6 +37,17 @@ id|get_offset
 r_void
 )paren
 suffix:semicolon
+DECL|member|delay
+r_void
+(paren
+op_star
+id|delay
+)paren
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|TICK_SIZE

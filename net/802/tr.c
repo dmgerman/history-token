@@ -102,13 +102,12 @@ DECL|macro|RIF_TABLE_SIZE
 mdefine_line|#define RIF_TABLE_SIZE 32
 multiline_comment|/*&n; *&t;We hash the RIF cache 32 ways. We do after all have to look it&n; *&t;up a lot.&n; */
 DECL|variable|rif_table
+r_static
 id|rif_cache
 id|rif_table
 (braket
 id|RIF_TABLE_SIZE
 )braket
-op_assign
-initialization_block
 suffix:semicolon
 DECL|variable|rif_lock
 r_static

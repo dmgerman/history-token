@@ -64,11 +64,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|dev-&gt;dma_mask
-op_assign
-id|mask
-suffix:semicolon
-multiline_comment|/* save it */
 multiline_comment|/* only support 32-bit devices (ie PCI/GSC) */
 r_return
 (paren

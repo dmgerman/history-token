@@ -6,9 +6,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
+macro_line|#include &lt;linux/sunrpc/rpc_pipe_fs.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 DECL|macro|RPC_SLACK_SPACE
-mdefine_line|#define RPC_SLACK_SPACE&t;&t;512&t;/* total overkill */
+mdefine_line|#define RPC_SLACK_SPACE&t;&t;(1024)&t;/* total overkill */
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_CALL
@@ -410,6 +411,56 @@ comma
 id|xprt-&gt;timeout.to_initval
 )paren
 suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|clnt-&gt;cl_pathname
+comma
+r_sizeof
+(paren
+id|clnt-&gt;cl_pathname
+)paren
+comma
+l_string|&quot;/%s/clnt%p&quot;
+comma
+id|clnt-&gt;cl_protname
+comma
+id|clnt
+)paren
+suffix:semicolon
+id|clnt-&gt;cl_dentry
+op_assign
+id|rpc_mkdir
+c_func
+(paren
+id|clnt-&gt;cl_pathname
+comma
+id|clnt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|clnt-&gt;cl_dentry
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;RPC: Couldn&squot;t create pipefs entry %s&bslash;n&quot;
+comma
+id|clnt-&gt;cl_pathname
+)paren
+suffix:semicolon
+r_goto
+id|out_no_path
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -422,9 +473,20 @@ comma
 id|clnt
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;RPC: Couldn&squot;t create auth handle (flavor %u)&bslash;n&quot;
+comma
+id|flavor
+)paren
+suffix:semicolon
 r_goto
 id|out_no_auth
 suffix:semicolon
+)brace
 multiline_comment|/* save the nodename */
 id|clnt-&gt;cl_nodelen
 op_assign
@@ -474,15 +536,14 @@ id|out
 suffix:semicolon
 id|out_no_auth
 suffix:colon
-id|printk
+id|rpc_rmdir
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;RPC: Couldn&squot;t create auth handle (flavor %u)&bslash;n&quot;
-comma
-id|flavor
+id|clnt-&gt;cl_pathname
 )paren
 suffix:semicolon
+id|out_no_path
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -655,6 +716,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|rpc_rmdir
+c_func
+(paren
+id|clnt-&gt;cl_pathname
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1686,7 +1753,7 @@ id|task-&gt;tk_status
 suffix:semicolon
 id|task-&gt;tk_action
 op_assign
-id|call_encode
+id|call_bind
 suffix:semicolon
 r_if
 c_cond
@@ -1848,10 +1915,6 @@ comma
 id|task-&gt;tk_status
 )paren
 suffix:semicolon
-id|task-&gt;tk_action
-op_assign
-id|call_bind
-suffix:semicolon
 multiline_comment|/* Default buffer setup */
 id|bufsiz
 op_assign
@@ -1992,8 +2055,9 @@ op_minus
 id|EIO
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -2305,6 +2369,39 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+id|task-&gt;tk_status
+op_assign
+id|xprt_prepare_transmit
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task-&gt;tk_status
+OL
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Encode here so that rpcsec_gss can use correct sequence number. */
+id|call_encode
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task-&gt;tk_status
+OL
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|xprt_transmit
 c_func
 (paren
@@ -2314,12 +2411,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|task-&gt;tk_status
+OL
+l_int|0
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|task-&gt;tk_msg.rpc_proc-&gt;p_decode
-op_logical_and
-id|task-&gt;tk_status
-op_ge
-l_int|0
 )paren
 (brace
 id|task-&gt;tk_action
@@ -2858,7 +2960,7 @@ id|RPC_CALL_REALUID
 suffix:semicolon
 id|task-&gt;tk_action
 op_assign
-id|call_encode
+id|call_bind
 suffix:semicolon
 id|task-&gt;tk_suid_retry
 op_decrement
@@ -2958,6 +3060,11 @@ op_star
 id|task
 )paren
 (brace
+r_int
+id|status
+op_assign
+id|task-&gt;tk_status
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -2968,13 +3075,55 @@ comma
 id|task-&gt;tk_status
 )paren
 suffix:semicolon
+id|task-&gt;tk_status
+op_assign
+l_int|0
+suffix:semicolon
+id|task-&gt;tk_action
+op_assign
+id|call_reserve
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|task-&gt;tk_status
-OL
+id|status
+op_ge
 l_int|0
 )paren
+r_return
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|status
+)paren
+(brace
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+id|rpc_delay
+c_func
+(paren
+id|task
+comma
+l_int|3
+op_star
+id|HZ
+)paren
+suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+id|task-&gt;tk_action
+op_assign
+id|call_refresh
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|rpc_exit
 c_func
 (paren
@@ -2984,11 +3133,7 @@ op_minus
 id|EACCES
 )paren
 suffix:semicolon
-r_else
-id|task-&gt;tk_action
-op_assign
-id|call_reserve
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Call header serialization&n; */
 r_static
@@ -3319,7 +3464,7 @@ id|task-&gt;tk_pid
 suffix:semicolon
 id|task-&gt;tk_action
 op_assign
-id|call_encode
+id|call_bind
 suffix:semicolon
 r_return
 l_int|NULL
@@ -3479,7 +3624,7 @@ id|task-&gt;tk_pid
 suffix:semicolon
 id|task-&gt;tk_action
 op_assign
-id|call_encode
+id|call_bind
 suffix:semicolon
 r_return
 l_int|NULL

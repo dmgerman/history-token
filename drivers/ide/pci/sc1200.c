@@ -1992,12 +1992,6 @@ id|u32
 id|state
 )paren
 (brace
-id|ide_hwif_t
-op_star
-id|hwif
-op_assign
-l_int|NULL
-suffix:semicolon
 id|printk
 c_func
 (paren

@@ -112,11 +112,11 @@ suffix:semicolon
 r_int
 id|signalcode
 suffix:semicolon
-multiline_comment|/* need an intermediate copy of float regs because FPU emulation&n;&t; * code expects an artificial last entry which contains zero&n;&t; */
+multiline_comment|/* need an intermediate copy of float regs because FPU emulation&n;&t; * code expects an artificial last entry which contains zero&n;&t; *&n;&t; * also, the passed in fr registers contain one word that defines&n;&t; * the fpu type. the fpu type information is constructed &n;&t; * inside the emulation code&n;&t; */
 id|__u64
 id|frcopy
 (braket
-l_int|33
+l_int|36
 )braket
 suffix:semicolon
 id|memcpy

@@ -254,9 +254,7 @@ id|out
 suffix:semicolon
 id|ret
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|ptrace
+id|security_ptrace
 c_func
 (paren
 id|current-&gt;parent

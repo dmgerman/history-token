@@ -16,9 +16,6 @@ mdefine_line|#define PAGE_OFFSET&t;CONFIG_KERNEL_START
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE&t;PAGE_OFFSET
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/processor.h&gt;&t;/* for BUG definition */
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
 DECL|macro|STRICT_MM_TYPECHECKS
 mdefine_line|#define STRICT_MM_TYPECHECKS
 macro_line|#ifdef STRICT_MM_TYPECHECKS

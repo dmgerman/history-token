@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SUNRPC_SCHED_H_
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 multiline_comment|/*&n; * This is the actual RPC procedure call info.&n; */
 r_struct
 id|rpc_procinfo
@@ -119,6 +120,11 @@ comma
 DECL|member|tk_suid_retry
 id|tk_suid_retry
 suffix:semicolon
+DECL|member|tk_gss_seqno
+id|u32
+id|tk_gss_seqno
+suffix:semicolon
+multiline_comment|/* rpcsec_gss sequence number&n;&t;&t;&t;&t;&t;&t;   used on this request */
 multiline_comment|/*&n;&t; * timeout_fn   to be executed by timer bottom half&n;&t; * callback&t;to be executed after waking up&n;&t; * action&t;next procedure for async tasks&n;&t; * exit&t;&t;exit async task and report to caller&n;&t; */
 DECL|member|tk_timeout_fn
 r_void

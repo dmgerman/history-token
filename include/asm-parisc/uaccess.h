@@ -37,9 +37,9 @@ mdefine_line|#define LDD_KERNEL(ptr)&t;&t;BUG()
 DECL|macro|LDD_USER
 mdefine_line|#define LDD_USER(ptr)&t;&t;BUG()
 DECL|macro|STD_KERNEL
-mdefine_line|#define STD_KERNEL(x, ptr) __put_kernel_asm64(x,ptr)
+mdefine_line|#define STD_KERNEL(x, ptr) __put_kernel_asm64((u32)x,ptr)
 DECL|macro|STD_USER
-mdefine_line|#define STD_USER(x, ptr) __put_user_asm64(x,ptr)
+mdefine_line|#define STD_USER(x, ptr) __put_user_asm64((u32)x,ptr)
 macro_line|#else
 DECL|macro|LDD_KERNEL
 mdefine_line|#define LDD_KERNEL(ptr) __get_kernel_asm(&quot;ldd&quot;,ptr)
@@ -67,19 +67,6 @@ id|skip
 suffix:semicolon
 multiline_comment|/* pcoq skip | r9 clear flag | r8 -EFAULT flag */
 )brace
-suffix:semicolon
-r_extern
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|search_exception_table
-c_func
-(paren
-r_int
-r_int
-id|addr
-)paren
 suffix:semicolon
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x,ptr)                               &bslash;&n;({                                                      &bslash;&n;&t;register long __gu_err __asm__ (&quot;r8&quot;) = 0;      &bslash;&n;&t;register long __gu_val __asm__ (&quot;r9&quot;) = 0;      &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (segment_eq(get_fs(),KERNEL_DS)) {           &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_kernel_asm(&quot;ldb&quot;,ptr); break; &bslash;&n;&t;    case 2: __get_kernel_asm(&quot;ldh&quot;,ptr); break; &bslash;&n;&t;    case 4: __get_kernel_asm(&quot;ldw&quot;,ptr); break; &bslash;&n;&t;    case 8: LDD_KERNEL(ptr); break;&t;&t;&bslash;&n;&t;    default: BUG(); break;                      &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;else {                                          &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_user_asm(&quot;ldb&quot;,ptr); break;   &bslash;&n;&t;    case 2: __get_user_asm(&quot;ldh&quot;,ptr); break;   &bslash;&n;&t;    case 4: __get_user_asm(&quot;ldw&quot;,ptr); break;   &bslash;&n;&t;    case 8: LDD_USER(ptr);  break;&t;&t;&bslash;&n;&t;    default: BUG(); break;                      &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;            &bslash;&n;&t;__gu_err;                                       &bslash;&n;})

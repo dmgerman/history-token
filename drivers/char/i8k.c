@@ -107,12 +107,14 @@ op_assign
 l_string|&quot;?&quot;
 suffix:semicolon
 DECL|variable|force
+r_static
 r_int
 id|force
 op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|power_status
+r_static
 r_int
 id|power_status
 op_assign

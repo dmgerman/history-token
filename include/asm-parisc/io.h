@@ -76,6 +76,7 @@ r_inline
 r_void
 op_star
 id|ioremap_nocache
+c_func
 (paren
 r_int
 r_int
@@ -110,12 +111,14 @@ id|addr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * __raw_ variants have no defined meaning.  on hppa, it means `i was&n; * too lazy to ioremap first&squot;.  kind of like isa_, except that there&squot;s&n; * no additional base address to add on.&n; */
-DECL|function|__raw_readb
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb(a) ___raw_readb((unsigned long)(a))
+DECL|function|___raw_readb
 r_extern
 id|__inline__
 r_int
 r_char
-id|__raw_readb
+id|___raw_readb
 c_func
 (paren
 r_int
@@ -158,12 +161,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|__raw_readw
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw(a) ___raw_readw((unsigned long)(a))
+DECL|function|___raw_readw
 r_extern
 id|__inline__
 r_int
 r_int
-id|__raw_readw
+id|___raw_readw
 c_func
 (paren
 r_int
@@ -206,12 +211,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|__raw_readl
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl(a) ___raw_readl((unsigned long)(a))
+DECL|function|___raw_readl
 r_extern
 id|__inline__
 r_int
 r_int
-id|__raw_readl
+id|___raw_readl
 c_func
 (paren
 r_int
@@ -243,13 +250,15 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|__raw_readq
+DECL|macro|__raw_readq
+mdefine_line|#define __raw_readq(a) ___raw_readq((unsigned long)(a))
+DECL|function|___raw_readq
 r_extern
 id|__inline__
 r_int
 r_int
 r_int
-id|__raw_readq
+id|___raw_readq
 c_func
 (paren
 r_int
@@ -312,11 +321,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|__raw_writeb
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb(a,b) ___raw_writeb(a, (unsigned long)(b))
+DECL|function|___raw_writeb
 r_extern
 id|__inline__
 r_void
-id|__raw_writeb
+id|___raw_writeb
 c_func
 (paren
 r_int
@@ -356,11 +367,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|__raw_writew
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew(a,b) ___raw_writew(a, (unsigned long)(b))
+DECL|function|___raw_writew
 r_extern
 id|__inline__
 r_void
-id|__raw_writew
+id|___raw_writew
 c_func
 (paren
 r_int
@@ -400,11 +413,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|__raw_writel
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(a,b) ___raw_writel(a, (unsigned long)(b))
+DECL|function|___raw_writel
 r_extern
 id|__inline__
 r_void
-id|__raw_writel
+id|___raw_writel
 c_func
 (paren
 r_int
@@ -435,11 +450,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-DECL|function|__raw_writeq
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq(a,b) ___raw_writeq(a, (unsigned long)(b))
+DECL|function|___raw_writeq
 r_extern
 id|__inline__
 r_void
-id|__raw_writeq
+id|___raw_writeq
 c_func
 (paren
 r_int
@@ -514,29 +531,29 @@ DECL|macro|writeq
 mdefine_line|#define writeq(b,addr) (*(volatile u64 *) (addr) = (b))
 macro_line|#else /* !USE_HPPA_IOREMAP */
 DECL|macro|readb
-mdefine_line|#define readb(addr) __raw_readb((unsigned long)(addr))
+mdefine_line|#define readb(addr) __raw_readb(addr)
 DECL|macro|readw
-mdefine_line|#define readw(addr) le16_to_cpu(__raw_readw((unsigned long)(addr)))
+mdefine_line|#define readw(addr) le16_to_cpu(__raw_readw(addr))
 DECL|macro|readl
-mdefine_line|#define readl(addr) le32_to_cpu(__raw_readl((unsigned long)(addr)))
+mdefine_line|#define readl(addr) le32_to_cpu(__raw_readl(addr))
 DECL|macro|readq
-mdefine_line|#define readq(addr) le64_to_cpu(__raw_readq((unsigned long)(addr)))
+mdefine_line|#define readq(addr) le64_to_cpu(__raw_readq(addr))
 DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) __raw_writeb(b,(unsigned long)(addr))
+mdefine_line|#define writeb(b,addr) __raw_writeb(b,addr)
 DECL|macro|writew
-mdefine_line|#define writew(b,addr) __raw_writew(cpu_to_le16(b),(unsigned long)(addr))
+mdefine_line|#define writew(b,addr) __raw_writew(cpu_to_le16(b),addr)
 DECL|macro|writel
-mdefine_line|#define writel(b,addr) __raw_writel(cpu_to_le32(b),(unsigned long)(addr))
+mdefine_line|#define writel(b,addr) __raw_writel(cpu_to_le32(b),addr)
 DECL|macro|writeq
-mdefine_line|#define writeq(b,addr) __raw_writeq(cpu_to_le64(b),(unsigned long)(addr))
+mdefine_line|#define writeq(b,addr) __raw_writeq(cpu_to_le64(b),addr)
 macro_line|#endif /* !USE_HPPA_IOREMAP */
 r_extern
 r_void
-id|memcpy_fromio
+id|__memcpy_fromio
 c_func
 (paren
-r_void
-op_star
+r_int
+r_int
 id|dest
 comma
 r_int
@@ -549,16 +566,15 @@ id|count
 suffix:semicolon
 r_extern
 r_void
-id|memcpy_toio
+id|__memcpy_toio
 c_func
 (paren
 r_int
 r_int
 id|dest
 comma
-r_const
-r_void
-op_star
+r_int
+r_int
 id|src
 comma
 r_int
@@ -567,7 +583,7 @@ id|count
 suffix:semicolon
 r_extern
 r_void
-id|memset_io
+id|__memset_io
 c_func
 (paren
 r_int
@@ -581,6 +597,12 @@ r_int
 id|count
 )paren
 suffix:semicolon
+DECL|macro|memcpy_fromio
+mdefine_line|#define memcpy_fromio(a,b,c) __memcpy_fromio((unsigned long)(a), (unsigned long)(b), (c))
+DECL|macro|memcpy_toio
+mdefine_line|#define memcpy_toio(a,b,c)   __memcpy_toio((unsigned long)(a), (unsigned long)(b), (c))
+DECL|macro|memset_io
+mdefine_line|#define memset_io(a,b,c)     __memset_io((unsigned long)(a), (b), (c))
 multiline_comment|/* Support old drivers which don&squot;t ioremap.&n; * NB this interface is scheduled to disappear in 2.5&n; */
 DECL|macro|EISA_BASE
 mdefine_line|#define EISA_BASE 0xfffffffffc000000UL
@@ -604,17 +626,17 @@ DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c) memcpy_toio(EISA_BASE | (a), (b), (c))
 multiline_comment|/* &n; * These functions support PA-RISC drivers which don&squot;t yet call ioremap().&n; * They will disappear once the last of these drivers is gone.&n; */
 DECL|macro|gsc_readb
-mdefine_line|#define gsc_readb(x) __raw_readb((unsigned long)x)
+mdefine_line|#define gsc_readb(x) __raw_readb(x)
 DECL|macro|gsc_readw
-mdefine_line|#define gsc_readw(x) __raw_readw((unsigned long)x)
+mdefine_line|#define gsc_readw(x) __raw_readw(x)
 DECL|macro|gsc_readl
-mdefine_line|#define gsc_readl(x) __raw_readl((unsigned long)x)
+mdefine_line|#define gsc_readl(x) __raw_readl(x)
 DECL|macro|gsc_writeb
-mdefine_line|#define gsc_writeb(x, y) __raw_writeb(x, (unsigned long)y)
+mdefine_line|#define gsc_writeb(x, y) __raw_writeb(x, y)
 DECL|macro|gsc_writew
-mdefine_line|#define gsc_writew(x, y) __raw_writew(x, (unsigned long)y)
+mdefine_line|#define gsc_writew(x, y) __raw_writew(x, y)
 DECL|macro|gsc_writel
-mdefine_line|#define gsc_writel(x, y) __raw_writel(x, (unsigned long)y)
+mdefine_line|#define gsc_writel(x, y) __raw_writel(x, y)
 multiline_comment|/*&n; * XXX - We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and &n; * just copy it. The net code will then do the checksum later. Presently &n; * only used by some shared memory 8390 Ethernet cards anyway.&n; */
 DECL|macro|eth_io_copy_and_sum
 mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused) &bslash;&n;  memcpy_fromio((skb)-&gt;data,(src),(len))
@@ -975,7 +997,7 @@ multiline_comment|/* IO Port space is :      BBiiii   where BB is HBA number. */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0x00ffffff
 DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { flush_kernel_dcache_range(_start,_size); } while(0)
+mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { flush_kernel_dcache_range(_start,_size); } while (0)
 DECL|macro|dma_cache_wback
 mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { flush_kernel_dcache_range(_start,_size); } while (0)
 DECL|macro|dma_cache_wback_inv

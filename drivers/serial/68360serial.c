@@ -797,7 +797,9 @@ macro_line|#elif defined(CONFIG_CONSOLE_115200)
 DECL|macro|CONSOLE_BAUDRATE
 mdefine_line|#define CONSOLE_BAUDRATE 115200
 macro_line|#else
-macro_line|#error &quot;console baud rate undefined&quot;
+macro_line|#warn &quot;console baud rate undefined&quot;
+DECL|macro|CONSOLE_BAUDRATE
+mdefine_line|#define CONSOLE_BAUDRATE 9600
 macro_line|#endif
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_stop() and rs_start()&n; *&n; * This routines are called before setting or resetting tty-&gt;stopped.&n; * They enable or disable transmitter interrupts, as necessary.&n; * ------------------------------------------------------------&n; */
 DECL|function|rs_360_stop

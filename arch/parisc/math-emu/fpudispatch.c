@@ -4,6 +4,7 @@ DECL|macro|FPUDEBUG
 mdefine_line|#define FPUDEBUG 0
 macro_line|#include &quot;float.h&quot;
 macro_line|#include &quot;types.h&quot;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* #include &lt;sys/debug.h&gt; */
 multiline_comment|/* #include &lt;machine/sys/mdep_private.h&gt; */
 DECL|macro|COPR_INST
@@ -235,6 +236,68 @@ suffix:semicolon
 macro_line|#endif /* _PROTOTYPES&amp;&amp;!_lint */
 DECL|macro|VASSERT
 mdefine_line|#define VASSERT(x)
+DECL|function|parisc_linux_get_fpu_type
+r_static
+r_void
+id|parisc_linux_get_fpu_type
+c_func
+(paren
+id|u_int
+id|fpregs
+(braket
+)braket
+)paren
+(brace
+multiline_comment|/* on pa-linux the fpu type is not filled in by the&n;&t; * caller; it is constructed here  &n;&t; */
+r_if
+c_cond
+(paren
+id|boot_cpu_data.cpu_type
+op_eq
+id|pcxs
+)paren
+id|fpregs
+(braket
+id|FPU_TYPE_FLAG_POS
+)braket
+op_assign
+id|TIMEX_EXTEN_FLAG
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|boot_cpu_data.cpu_type
+op_eq
+id|pcxt
+op_logical_or
+id|boot_cpu_data.cpu_type
+op_eq
+id|pcxt_
+)paren
+id|fpregs
+(braket
+id|FPU_TYPE_FLAG_POS
+)braket
+op_assign
+id|ROLEX_EXTEN_FLAG
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|boot_cpu_data.cpu_type
+op_ge
+id|pcxu
+)paren
+id|fpregs
+(braket
+id|FPU_TYPE_FLAG_POS
+)braket
+op_assign
+id|PA2_0_FPU_FLAG
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * this routine will decode the excepting floating point instruction and&n; * call the approiate emulation routine.&n; * It is called by decode_fpu with the following parameters:&n; * fpudispatch(current_ir, unimplemented_code, 0, &amp;Fpu_register)&n; * where current_ir is the instruction to be emulated,&n; * unimplemented_code is the exception_code that the hardware generated&n; * and &amp;Fpu_register is the address of emulated FP reg 0.&n; */
 id|u_int
 DECL|function|fpudispatch
@@ -274,6 +337,12 @@ r_int
 )paren
 op_eq
 l_int|4
+)paren
+suffix:semicolon
+id|parisc_linux_get_fpu_type
+c_func
+(paren
+id|fpregs
 )paren
 suffix:semicolon
 id|fpu_type_flags

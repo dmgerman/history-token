@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/serial/nb85e_uart.c -- Serial I/O using V850E/NB85E on-chip UART&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * drivers/serial/nb85e_uart.c -- Serial I/O using V850E/NB85E on-chip UART&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -18,11 +18,62 @@ macro_line|#ifndef NB85E_UART_INIT_CFLAGS
 DECL|macro|NB85E_UART_INIT_CFLAGS
 mdefine_line|#define NB85E_UART_INIT_CFLAGS&t;(B115200 | CS8 | CREAD)
 macro_line|#endif
+multiline_comment|/* XXX This should be in a header file.  */
+DECL|macro|NB85E_UART_BRGC_MIN
+mdefine_line|#define NB85E_UART_BRGC_MIN&t;8
 multiline_comment|/* A string used for prefixing printed descriptions; since the same UART&n;   macro is actually used on other chips than the V850E/NB85E.  This must&n;   be a constant string.  */
 macro_line|#ifndef NB85E_UART_CHIP_NAME
 DECL|macro|NB85E_UART_CHIP_NAME
 mdefine_line|#define NB85E_UART_CHIP_NAME &quot;V850E/NB85E&quot;
 macro_line|#endif
+"&f;"
+multiline_comment|/* Helper functions for doing baud-rate/frequency calculations.  */
+multiline_comment|/* Calculate the minimum value for CKSR on this processor.  */
+DECL|function|cksr_min
+r_static
+r_inline
+r_int
+id|cksr_min
+(paren
+r_void
+)paren
+(brace
+r_int
+id|min
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|freq
+op_assign
+id|NB85E_UART_BASE_FREQ
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|freq
+OG
+id|NB85E_UART_CKSR_MAX_FREQ
+)paren
+(brace
+id|freq
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|min
+op_increment
+suffix:semicolon
+)brace
+r_return
+id|min
+suffix:semicolon
+)brace
+multiline_comment|/* Minimum baud rate possible.  */
+DECL|macro|min_baud
+mdefine_line|#define min_baud() &bslash;&n;   ((NB85E_UART_BASE_FREQ &gt;&gt; NB85E_UART_CKSR_MAX) / (2 * 255) + 1)
+multiline_comment|/* Maximum baud rate possible.  The error is quite high at max, though.  */
+DECL|macro|max_baud
+mdefine_line|#define max_baud() &bslash;&n;   ((NB85E_UART_BASE_FREQ &gt;&gt; cksr_min()) / (2 * NB85E_UART_BRGC_MIN))
 "&f;"
 multiline_comment|/* Low-level UART functions.  */
 multiline_comment|/* These masks define which control bits affect TX/RX modes, respectively.  */
@@ -77,8 +128,6 @@ id|baud
 )paren
 (brace
 r_int
-id|cksr_min
-comma
 id|flags
 suffix:semicolon
 r_int
@@ -104,24 +153,6 @@ comma
 id|old_brgen_count
 suffix:semicolon
 multiline_comment|/* Calculate new baud-rate generator config values.  */
-id|cksr_min
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|NB85E_UART_BASE_FREQ
-op_rshift
-id|cksr_min
-)paren
-OG
-id|NB85E_UART_CKSR_MAX_FREQ
-)paren
-id|cksr_min
-op_increment
-suffix:semicolon
 multiline_comment|/* Calculate the log2 clock divider and baud-rate counter values&n;&t;   (note that the UART divides the resulting clock by 2, so&n;&t;   multiply BAUD by 2 here to compensate).  */
 id|calc_counter_params
 (paren
@@ -132,6 +163,9 @@ op_star
 l_int|2
 comma
 id|cksr_min
+c_func
+(paren
+)paren
 comma
 id|NB85E_UART_CKSR_MAX
 comma
@@ -1472,19 +1506,74 @@ op_star
 id|old
 )paren
 (brace
-multiline_comment|/* FIXME: Which termios flags does this driver support? --rmk */
+r_int
+id|cflags
+op_assign
+id|termios-&gt;c_cflag
+suffix:semicolon
+multiline_comment|/* Restrict flags to legal values.  */
+r_if
+c_cond
+(paren
+(paren
+id|cflags
+op_amp
+id|CSIZE
+)paren
+op_ne
+id|CS7
+op_logical_and
+(paren
+id|cflags
+op_amp
+id|CSIZE
+)paren
+op_ne
+id|CS8
+)paren
+multiline_comment|/* The new value of CSIZE is invalid, use the old value.  */
+id|cflags
+op_assign
+(paren
+id|cflags
+op_amp
+op_complement
+id|CSIZE
+)paren
+op_or
+(paren
+id|old-&gt;c_cflag
+op_amp
+id|CSIZE
+)paren
+suffix:semicolon
+id|termios-&gt;c_cflag
+op_assign
+id|cflags
+suffix:semicolon
 id|nb85e_uart_configure
 (paren
 id|port-&gt;line
 comma
-id|termios-&gt;c_cflags
+id|cflags
 comma
 id|uart_get_baud_rate
-c_func
 (paren
 id|port
 comma
 id|termios
+comma
+id|old
+comma
+id|min_baud
+c_func
+(paren
+)paren
+comma
+id|max_baud
+c_func
+(paren
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1794,9 +1883,6 @@ id|chan
 op_increment
 )paren
 (brace
-r_int
-id|cksr_min
-suffix:semicolon
 r_struct
 id|uart_port
 op_star
@@ -1863,32 +1949,16 @@ id|NB85E_UART_BASE_ADDR
 id|chan
 )paren
 suffix:semicolon
-multiline_comment|/* The framework insists on knowing the uart&squot;s master&n;&t;&t;&t;   clock freq, though it doesn&squot;t seem to do anything&n;&t;&t;&t;   useful for us with it.  We must make it at least&n;&t;&t;&t;   higher than (the maximum baud rate * 16), otherwise&n;&t;&t;&t;   the framework will puke during its internal&n;&t;&t;&t;   calculations, and force the baud rate to be 9600.&n;&t;&t;&t;   To be accurate though, just repeat the calculation&n;&t;&t;&t;   we use when actually setting the speed.  */
-id|cksr_min
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|NB85E_UART_BASE_FREQ
-op_rshift
-id|cksr_min
-)paren
-OG
-id|NB85E_UART_CKSR_MAX_FREQ
-)paren
-id|cksr_min
-op_increment
-suffix:semicolon
-multiline_comment|/* The `* 8&squot; means `* 16 / 2&squot;:  16 to account for for&n;&t;&t;&t;   the serial framework&squot;s built-in bias, and 2 because&n;&t;&t;&t;   there&squot;s an additional / 2 in the hardware.  */
+multiline_comment|/* The framework insists on knowing the uart&squot;s master&n;&t;&t;&t;   clock freq, though it doesn&squot;t seem to do anything&n;&t;&t;&t;   useful for us with it.  We must make it at least&n;&t;&t;&t;   higher than (the maximum baud rate * 16), otherwise&n;&t;&t;&t;   the framework will puke during its internal&n;&t;&t;&t;   calculations, and force the baud rate to be 9600.&n;&t;&t;&t;   To be accurate though, just repeat the calculation&n;&t;&t;&t;   we use when actually setting the speed.&n;&n;&t;&t;&t;   The `* 8&squot; means `* 16 / 2&squot;:  16 to account for for&n;&t;&t;&t;   the serial framework&squot;s built-in bias, and 2 because&n;&t;&t;&t;   there&squot;s an additional / 2 in the hardware.  */
 id|port-&gt;uartclk
 op_assign
 (paren
 id|NB85E_UART_BASE_FREQ
 op_rshift
 id|cksr_min
+c_func
+(paren
+)paren
 )paren
 op_star
 l_int|8

@@ -74,11 +74,19 @@ c_func
 id|i8253_lock
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|timer_opts
+id|timer_none
+suffix:semicolon
 DECL|variable|timer
 r_struct
 id|timer_opts
 op_star
 id|timer
+op_assign
+op_amp
+id|timer_none
 suffix:semicolon
 multiline_comment|/*&n; * This version of gettimeofday has microsecond resolution&n; * and better than microsecond precision on fast x86 machines with TSC.&n; */
 DECL|function|do_gettimeofday

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_CPUFREQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
 r_int
 id|cpufreq_register_notifier
@@ -103,6 +104,12 @@ id|cpufreq_cpuinfo
 id|cpuinfo
 suffix:semicolon
 multiline_comment|/* see above */
+DECL|member|intf
+r_struct
+id|intf_data
+id|intf
+suffix:semicolon
+multiline_comment|/* interface data */
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
@@ -204,6 +211,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ DRIVER INTERFACE                     *&n; *********************************************************************/
+DECL|macro|CPUFREQ_NAME_LEN
+mdefine_line|#define CPUFREQ_NAME_LEN 16
 DECL|struct|cpufreq_driver
 r_struct
 id|cpufreq_driver
@@ -241,6 +250,40 @@ id|cpufreq_policy
 op_star
 id|policy
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|CPUFREQ_NAME_LEN
+)braket
+suffix:semicolon
+multiline_comment|/* optional, for the moment */
+DECL|member|init
+r_int
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
+suffix:semicolon
+DECL|member|exit
+r_int
+(paren
+op_star
+m_exit
+)paren
+(paren
+r_struct
+id|cpufreq_policy
+op_star
+id|policy
+)paren
+suffix:semicolon
 multiline_comment|/* 2.4. compatible API */
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 DECL|member|cpu_cur_freq
@@ -255,7 +298,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 r_int
-id|cpufreq_register
+id|cpufreq_register_driver
 c_func
 (paren
 r_struct
@@ -265,12 +308,20 @@ id|driver_data
 )paren
 suffix:semicolon
 r_int
-id|cpufreq_unregister
+id|cpufreq_unregister_driver
 c_func
 (paren
-r_void
+r_struct
+id|cpufreq_driver
+op_star
+id|driver_data
 )paren
 suffix:semicolon
+multiline_comment|/* deprecated */
+DECL|macro|cpufreq_register
+mdefine_line|#define cpufreq_register(x)   cpufreq_register_driver(x)
+DECL|macro|cpufreq_unregister
+mdefine_line|#define cpufreq_unregister(x) cpufreq_unregister_driver(NULL)
 r_void
 id|cpufreq_notify_transition
 c_func

@@ -65,6 +65,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;rmb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;wmb()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;read_barrier_depends()
 macro_line|#else
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;barrier()
@@ -72,6 +74,8 @@ DECL|macro|smp_rmb
 mdefine_line|#define smp_rmb()&t;barrier()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;barrier()
+DECL|macro|smp_read_barrier_depends
+mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x),(ptr),sizeof(*(ptr))))

@@ -431,11 +431,11 @@ suffix:semicolon
 multiline_comment|/* The error recovery thread waits on&n;                                          this. */
 DECL|member|eh_notify
 r_struct
-id|semaphore
+id|completion
 op_star
 id|eh_notify
 suffix:semicolon
-multiline_comment|/* wait for eh to begin */
+multiline_comment|/* wait for eh to begin or end */
 DECL|member|eh_action
 r_struct
 id|semaphore
@@ -451,6 +451,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Indicates the eh thread is awake and active if&n;                                          this is true. */
+DECL|member|eh_kill
+r_int
+r_int
+id|eh_kill
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* set when killing the eh thread */
 DECL|member|host_wait
 id|wait_queue_head_t
 id|host_wait

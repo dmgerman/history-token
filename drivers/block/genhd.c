@@ -499,6 +499,12 @@ c_func
 id|disk
 )paren
 suffix:semicolon
+id|elv_register_queue
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 )brace
 DECL|variable|add_disk
 id|EXPORT_SYMBOL
@@ -525,6 +531,12 @@ op_star
 id|disk
 )paren
 (brace
+id|elv_unregister_queue
+c_func
+(paren
+id|disk
+)paren
+suffix:semicolon
 id|blk_unregister_region
 c_func
 (paren

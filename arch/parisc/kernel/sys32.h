@@ -4,20 +4,6 @@ mdefine_line|#define _PARISC64_KERNEL_SYS32_H
 multiline_comment|/* Call a kernel syscall which will use kernel space instead of user&n; * space for its copy_to/from_user.&n; */
 DECL|macro|KERNEL_SYSCALL
 mdefine_line|#define KERNEL_SYSCALL(ret, syscall, args...) &bslash;&n;{ &bslash;&n;    mm_segment_t old_fs = get_fs(); &bslash;&n;    set_fs(KERNEL_DS); &bslash;&n;    ret = syscall(args); &bslash;&n;    set_fs (old_fs); &bslash;&n;}
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-r_int
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-r_int
-id|tv_usec
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|typedef|__sighandler_t32
 r_typedef
 id|__u32

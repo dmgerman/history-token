@@ -160,6 +160,7 @@ id|get
 )paren
 suffix:semicolon
 DECL|variable|min_turn_times
+r_static
 id|__u32
 id|min_turn_times
 (braket
@@ -185,6 +186,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* us */
 DECL|variable|baud_rates
+r_static
 id|__u32
 id|baud_rates
 (braket
@@ -214,6 +216,7 @@ l_int|16000000
 suffix:semicolon
 multiline_comment|/* bps */
 DECL|variable|data_sizes
+r_static
 id|__u32
 id|data_sizes
 (braket
@@ -235,6 +238,7 @@ l_int|2048
 suffix:semicolon
 multiline_comment|/* bytes */
 DECL|variable|add_bofs
+r_static
 id|__u32
 id|add_bofs
 (braket
@@ -260,6 +264,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* bytes */
 DECL|variable|max_turn_times
+r_static
 id|__u32
 id|max_turn_times
 (braket
@@ -277,6 +282,7 @@ l_int|50
 suffix:semicolon
 multiline_comment|/* ms */
 DECL|variable|link_disc_times
+r_static
 id|__u32
 id|link_disc_times
 (braket
@@ -302,6 +308,7 @@ l_int|40
 suffix:semicolon
 multiline_comment|/* secs */
 DECL|variable|max_line_capacities
+r_static
 id|__u32
 id|max_line_capacities
 (braket
@@ -665,6 +672,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function msb_index (word)&n; *&n; *    Returns index to most significant bit (MSB) in word&n; *&n; */
 DECL|function|msb_index
+r_static
 r_int
 id|msb_index
 (paren

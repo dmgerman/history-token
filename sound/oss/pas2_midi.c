@@ -6,7 +6,7 @@ macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;pas2.h&quot;
 r_extern
 id|spinlock_t
-id|lock
+id|pas_lock
 suffix:semicolon
 DECL|variable|midi_busy
 DECL|variable|input_opened
@@ -145,7 +145,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -170,7 +170,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -255,7 +255,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -394,7 +394,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -425,7 +425,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -465,7 +465,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -487,7 +487,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 comma
 id|flags
 )paren
@@ -791,7 +791,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 )paren
 suffix:semicolon
 multiline_comment|/* called in irq context */
@@ -821,7 +821,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|lock
+id|pas_lock
 )paren
 suffix:semicolon
 )brace

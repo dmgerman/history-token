@@ -1,5 +1,6 @@
 multiline_comment|/* mostly borrowed from kernel/signal.c */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -871,7 +872,7 @@ r_int
 id|ss_flags
 suffix:semicolon
 DECL|member|ss_size
-id|__kernel_size_t32
+id|compat_size_t
 id|ss_size
 suffix:semicolon
 DECL|typedef|stack_t32

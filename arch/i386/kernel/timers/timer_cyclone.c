@@ -627,7 +627,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if 0 /* XXX future work */
+DECL|function|delay_cyclone
 r_static
 r_void
 id|delay_cyclone
@@ -689,7 +689,6 @@ id|loops
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/************************************************************/
 multiline_comment|/* cyclone timer_opts struct */
 DECL|variable|timer_cyclone
@@ -712,6 +711,12 @@ dot
 id|get_offset
 op_assign
 id|get_offset_cyclone
+comma
+dot
+id|delay
+op_assign
+id|delay_cyclone
+comma
 )brace
 suffix:semicolon
 eof
