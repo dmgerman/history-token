@@ -1107,15 +1107,10 @@ id|req-&gt;reply_len
 op_assign
 l_int|0
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1167,7 +1162,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1191,7 +1186,7 @@ id|maciisi_state
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1202,7 +1197,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1418,15 +1413,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -1459,7 +1449,7 @@ c_func
 id|ADB_DELAY
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1509,15 +1499,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|status
@@ -1573,7 +1558,7 @@ id|KERN_ERR
 l_string|&quot;maciisi_interrupt: called without interrupt flag set&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2419,7 +2404,7 @@ id|maciisi_state
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
