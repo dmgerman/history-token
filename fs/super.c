@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_void
 id|get_filesystem
@@ -209,6 +210,14 @@ suffix:semicolon
 id|s-&gt;s_maxbytes
 op_assign
 id|MAX_NON_LFS
+suffix:semicolon
+id|s-&gt;dq_op
+op_assign
+id|sb_dquot_ops
+suffix:semicolon
+id|s-&gt;s_qcop
+op_assign
+id|sb_quotactl_ops
 suffix:semicolon
 )brace
 r_return

@@ -123,6 +123,8 @@ DECL|macro|TIOCGHAYESESP
 mdefine_line|#define TIOCGHAYESESP   0x545E  /* Get Hayes ESP configuration */
 DECL|macro|TIOCSHAYESESP
 mdefine_line|#define TIOCSHAYESESP   0x545F  /* Set Hayes ESP configuration */
+DECL|macro|FIOQSIZE
+mdefine_line|#define FIOQSIZE&t;0x5460
 multiline_comment|/* Used for packet mode */
 DECL|macro|TIOCPKT_DATA
 mdefine_line|#define TIOCPKT_DATA&t;&t; 0
