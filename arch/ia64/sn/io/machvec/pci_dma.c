@@ -1498,7 +1498,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n; * New generic DMA routines just wrap sn2 PCI routines until we&n; * support other bus types (if ever).&n; */
 r_int
 DECL|function|sn_dma_supported
@@ -2172,7 +2171,6 @@ c_func
 id|sn_dma_sync_sg
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 DECL|variable|sn_pci_unmap_single
 id|EXPORT_SYMBOL
 c_func
