@@ -100,8 +100,9 @@ id|e820map
 id|e820
 suffix:semicolon
 r_extern
-r_char
-id|_end
+r_int
+r_int
+id|init_pg_tables_end
 suffix:semicolon
 r_extern
 r_int
@@ -856,12 +857,7 @@ op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
-c_func
-(paren
-op_amp
-id|_end
-)paren
+id|init_pg_tables_end
 )paren
 suffix:semicolon
 id|find_max_pfn
