@@ -16181,7 +16181,7 @@ c_func
 id|response_data-&gt;BlocksAvail
 )paren
 suffix:semicolon
-id|FSData-&gt;f_avail
+id|FSData-&gt;f_bavail
 op_assign
 id|le64_to_cpu
 c_func
