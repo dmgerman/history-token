@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * ohci1394.c - driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Gord Peters &lt;GordPeters@smarttech.com&gt;&n; *              2001      Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * &n; * Things not implemented:&n; * . Async Stream Packets&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; *   added LONG_RESET_ROOT and SHORT_RESET_ROOT for root holdoff --kk&n; */
+multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * . Async Stream Packets Transmit (Receive done via Iso interface)&n; * &n; * Things not implemented:&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; *   added LONG_RESET_ROOT and SHORT_RESET_ROOT for root holdoff --kk&n; */
 multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Andreas Tobler &lt;toa@pop.agri.ch&gt;&n; *  . Updated proc_fs calls&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Removed procfs support since it trashes random mem&n; *  . Config ROM generation&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *  . Reworked code for initiating bus resets&n; *    (long, short, with or without hold-off)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -84,7 +84,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 762 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 801 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -2403,6 +2403,36 @@ op_amp
 l_int|0xFFFF
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|packet-&gt;tcode
+op_eq
+id|TCODE_ISO_DATA
+)paren
+(brace
+multiline_comment|/* Sending an async stream packet */
+id|d-&gt;prg_cpu
+(braket
+id|idx
+)braket
+op_member_access_from_pointer
+id|data
+(braket
+l_int|1
+)braket
+op_assign
+id|packet-&gt;header
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0xFFFF0000
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Sending a normal async request or response */
 id|d-&gt;prg_cpu
 (braket
 id|idx
@@ -2461,6 +2491,7 @@ id|packet-&gt;header
 l_int|3
 )braket
 suffix:semicolon
+)brace
 id|packet_swab
 c_func
 (paren
@@ -2482,6 +2513,34 @@ id|packet-&gt;data_size
 )paren
 (brace
 multiline_comment|/* block transmit */
+r_if
+c_cond
+(paren
+id|packet-&gt;tcode
+op_eq
+id|TCODE_STREAM_DATA
+)paren
+(brace
+id|d-&gt;prg_cpu
+(braket
+id|idx
+)braket
+op_member_access_from_pointer
+id|begin.control
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|DMA_CTL_OUTPUT_MORE
+op_or
+id|DMA_CTL_IMMEDIATE
+op_or
+l_int|0x8
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|d-&gt;prg_cpu
 (braket
 id|idx
@@ -2499,6 +2558,7 @@ op_or
 l_int|0x10
 )paren
 suffix:semicolon
+)brace
 id|d-&gt;prg_cpu
 (braket
 id|idx
@@ -3365,9 +3425,17 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|packet-&gt;tcode
 op_eq
 id|TCODE_ISO_DATA
+)paren
+op_logical_and
+(paren
+id|packet-&gt;type
+op_eq
+id|hpsb_iso
+)paren
 )paren
 (brace
 multiline_comment|/* The legacy IT DMA context is initialized on first&n;&t;&t; * use.  However, the alloc cannot be run from&n;&t;&t; * interrupt context, so we bail out if that is the&n;&t;&t; * case. I don&squot;t see anyone sending ISO packets from&n;&t;&t; * interrupt context anyway... */
@@ -3457,9 +3525,17 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|packet-&gt;tcode
 op_amp
 l_int|0x02
+)paren
+op_logical_and
+(paren
+id|packet-&gt;tcode
+op_ne
+id|TCODE_ISO_DATA
+)paren
 )paren
 id|d
 op_assign
@@ -5218,6 +5294,9 @@ id|blk
 op_increment
 )paren
 (brace
+id|u32
+id|control
+suffix:semicolon
 multiline_comment|/* the DMA descriptor */
 r_struct
 id|dma_cmd
@@ -5260,7 +5339,7 @@ op_eq
 id|BUFFER_FILL_MODE
 )paren
 (brace
-id|cmd-&gt;control
+id|control
 op_assign
 l_int|2
 op_lshift
@@ -5270,7 +5349,7 @@ multiline_comment|/* INPUT_MORE */
 )brace
 r_else
 (brace
-id|cmd-&gt;control
+id|control
 op_assign
 l_int|3
 op_lshift
@@ -5278,7 +5357,7 @@ l_int|28
 suffix:semicolon
 multiline_comment|/* INPUT_LAST */
 )brace
-id|cmd-&gt;control
+id|control
 op_or_assign
 l_int|8
 op_lshift
@@ -5304,7 +5383,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|cmd-&gt;control
+id|control
 op_or_assign
 l_int|3
 op_lshift
@@ -5312,19 +5391,30 @@ l_int|20
 suffix:semicolon
 multiline_comment|/* want interrupt */
 )brace
-id|cmd-&gt;control
+id|control
 op_or_assign
 l_int|3
 op_lshift
 l_int|18
 suffix:semicolon
 multiline_comment|/* enable branch to address */
-id|cmd-&gt;control
+id|control
 op_or_assign
 id|recv-&gt;buf_stride
 suffix:semicolon
+id|cmd-&gt;control
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|control
+)paren
+suffix:semicolon
 id|cmd-&gt;address
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dma_region_offset_to_bus
 c_func
 (paren
@@ -5332,6 +5422,7 @@ op_amp
 id|iso-&gt;data_buf
 comma
 id|buf_offset
+)paren
 )paren
 suffix:semicolon
 id|cmd-&gt;branchAddress
@@ -5341,7 +5432,11 @@ suffix:semicolon
 multiline_comment|/* filled in on next loop */
 id|cmd-&gt;status
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|recv-&gt;buf_stride
+)paren
 suffix:semicolon
 multiline_comment|/* link the previous descriptor to this one */
 r_if
@@ -5353,6 +5448,9 @@ id|prev_branch
 op_star
 id|prev_branch
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dma_prog_region_offset_to_bus
 c_func
 (paren
@@ -5361,13 +5459,10 @@ id|recv-&gt;prog
 comma
 id|prog_offset
 )paren
-suffix:semicolon
-op_star
-id|prev_branch
-op_or_assign
+op_or
 l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* set Z=1 */
 )brace
 id|prev_branch
 op_assign
@@ -6066,13 +6161,20 @@ l_int|0
 suffix:semicolon
 id|next-&gt;control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 suffix:semicolon
 multiline_comment|/* link prev to next */
 id|prev-&gt;branchAddress
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dma_prog_region_offset_to_bus
 c_func
 (paren
@@ -6089,6 +6191,7 @@ id|next_i
 )paren
 op_or
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* Z=1 */
 multiline_comment|/* disable interrupt on previous DMA descriptor, except at intervals */
@@ -6106,9 +6209,13 @@ l_int|0
 (brace
 id|prev-&gt;control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 suffix:semicolon
 multiline_comment|/* enable interrupt */
 )brace
@@ -6116,11 +6223,15 @@ r_else
 (brace
 id|prev-&gt;control
 op_and_assign
+id|cpu_to_le32
+c_func
+(paren
 op_complement
 (paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* disable interrupt */
@@ -6965,14 +7076,22 @@ multiline_comment|/* check the DMA descriptor for new writes to xferStatus */
 id|u16
 id|xferstatus
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|il-&gt;status
+)paren
 op_rshift
 l_int|16
 suffix:semicolon
 id|u16
 id|rescount
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|il-&gt;status
+)paren
 op_amp
 l_int|0xFFFF
 suffix:semicolon
@@ -7715,7 +7834,11 @@ multiline_comment|/* check for new writes to xferStatus */
 id|u16
 id|xferstatus
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|cmd-&gt;output_last.status
+)paren
 op_rshift
 l_int|16
 suffix:semicolon
@@ -7766,7 +7889,11 @@ suffix:semicolon
 multiline_comment|/* parse cycle */
 id|cycle
 op_assign
+id|le32_to_cpu
+c_func
+(paren
 id|cmd-&gt;output_last.status
+)paren
 op_amp
 l_int|0x1FFF
 suffix:semicolon
@@ -7985,7 +8112,11 @@ id|iso_xmit_cmd
 suffix:semicolon
 id|next-&gt;output_more_immediate.control
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x02000008
+)paren
 suffix:semicolon
 multiline_comment|/* ISO packet header is embedded in the OUTPUT_MORE_IMMEDIATE */
 multiline_comment|/* tcode = 0xA, and sy */
@@ -8052,38 +8183,61 @@ suffix:semicolon
 multiline_comment|/* set up the OUTPUT_LAST */
 id|next-&gt;output_last.control
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
 op_lshift
 l_int|28
+)paren
 suffix:semicolon
 id|next-&gt;output_last.control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|1
 op_lshift
 l_int|27
+)paren
 suffix:semicolon
 multiline_comment|/* update timeStamp */
 id|next-&gt;output_last.control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 suffix:semicolon
 multiline_comment|/* want interrupt */
 id|next-&gt;output_last.control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|3
 op_lshift
 l_int|18
+)paren
 suffix:semicolon
 multiline_comment|/* enable branch */
 id|next-&gt;output_last.control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 id|len
+)paren
 suffix:semicolon
 multiline_comment|/* payload bus address */
 id|next-&gt;output_last.address
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dma_region_offset_to_bus
 c_func
 (paren
@@ -8092,12 +8246,16 @@ id|iso-&gt;data_buf
 comma
 id|offset
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* leave branchAddress at zero for now */
 multiline_comment|/* re-write the previous DMA descriptor to chain to this one */
 multiline_comment|/* set prev branch address to point to next (Z=3) */
 id|prev-&gt;output_last.branchAddress
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|dma_prog_region_offset_to_bus
 c_func
 (paren
@@ -8114,6 +8272,7 @@ id|next_i
 )paren
 op_or
 l_int|3
+)paren
 suffix:semicolon
 multiline_comment|/* disable interrupt, unless required by the IRQ interval */
 r_if
@@ -8126,11 +8285,15 @@ id|iso-&gt;irq_interval
 (brace
 id|prev-&gt;output_last.control
 op_and_assign
+id|cpu_to_le32
+c_func
+(paren
 op_complement
 (paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* no interrupt */
@@ -8139,9 +8302,13 @@ r_else
 (brace
 id|prev-&gt;output_last.control
 op_or_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|3
 op_lshift
 l_int|20
+)paren
 suffix:semicolon
 multiline_comment|/* enable interrupt */
 )brace
@@ -15555,7 +15722,8 @@ comma
 dot
 id|class_mask
 op_assign
-l_int|0x00ffffff
+op_complement
+l_int|0
 comma
 dot
 id|vendor
