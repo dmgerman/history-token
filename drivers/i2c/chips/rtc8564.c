@@ -719,10 +719,6 @@ comma
 id|d
 )paren
 suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|rtc8564_driver.id
-suffix:semicolon
 id|new_client-&gt;flags
 op_assign
 id|I2C_CLIENT_ALLOW_USE
@@ -750,16 +746,6 @@ comma
 l_string|&quot;client=%p&quot;
 comma
 id|new_client
-)paren
-suffix:semicolon
-id|_DBG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;client.id=%d&quot;
-comma
-id|new_client-&gt;id
 )paren
 suffix:semicolon
 multiline_comment|/* init ctrl1 reg */

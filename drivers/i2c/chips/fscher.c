@@ -355,12 +355,6 @@ suffix:semicolon
 multiline_comment|/* divider for rps */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|fscher_id
-r_static
-r_int
-id|fscher_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|sysfs_r
 mdefine_line|#define sysfs_r(kind, sub, offset, reg) &bslash;&n;static ssize_t show_##kind##sub (struct fscher_data *, char *, int); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *, char *); &bslash;&n;static ssize_t show_##kind##offset##sub (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct fscher_data *data = fscher_update_device(dev); &bslash;&n;&t;return show_##kind##sub(data, buf, (offset)); &bslash;&n;}
@@ -743,11 +737,6 @@ l_string|&quot;fscher&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|fscher_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

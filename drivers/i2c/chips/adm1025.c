@@ -298,12 +298,6 @@ id|vrm
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|adm1025_id
-r_static
-r_int
-id|adm1025_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_in
 mdefine_line|#define show_in(offset) &bslash;&n;static ssize_t show_in##offset(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct adm1025_data *data = adm1025_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%u&bslash;n&quot;, IN_FROM_REG(data-&gt;in[offset], &bslash;&n;&t;&t;       in_scale[offset])); &bslash;&n;} &bslash;&n;static ssize_t show_in##offset##_min(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct adm1025_data *data = adm1025_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%u&bslash;n&quot;, IN_FROM_REG(data-&gt;in_min[offset], &bslash;&n;&t;&t;       in_scale[offset])); &bslash;&n;} &bslash;&n;static ssize_t show_in##offset##_max(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct adm1025_data *data = adm1025_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%u&bslash;n&quot;, IN_FROM_REG(data-&gt;in_max[offset], &bslash;&n;&t;&t;       in_scale[offset])); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(in##offset##_input, S_IRUGO, show_in##offset, NULL);
@@ -1042,11 +1036,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|adm1025_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

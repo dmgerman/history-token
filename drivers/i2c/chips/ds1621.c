@@ -260,11 +260,6 @@ id|ds1621_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|ds1621_id
-r_static
-r_int
-id|ds1621_id
-suffix:semicolon
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   DS1621 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|ds1621_read_value
 r_static
@@ -855,11 +850,6 @@ l_string|&quot;ds1621&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|ds1621_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

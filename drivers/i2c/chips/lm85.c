@@ -1046,12 +1046,6 @@ id|lm85_detach_client
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Unique ID assigned to each LM85 detected */
-DECL|variable|lm85_id
-r_static
-r_int
-id|lm85_id
-suffix:semicolon
 multiline_comment|/* 4 Fans */
 DECL|function|show_fan
 r_static
@@ -4889,11 +4883,6 @@ id|I2C_NAME_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the remaining client fields */
-id|new_client-&gt;id
-op_assign
-id|lm85_id
-op_increment
-suffix:semicolon
 id|data-&gt;type
 op_assign
 id|kind
@@ -4907,27 +4896,6 @@ c_func
 (paren
 op_amp
 id|data-&gt;update_lock
-)paren
-suffix:semicolon
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Assigning ID %d to %s at %d,0x%02x&bslash;n&quot;
-comma
-id|new_client-&gt;id
-comma
-id|new_client-&gt;name
-comma
-id|i2c_adapter_id
-c_func
-(paren
-id|new_client-&gt;adapter
-)paren
-comma
-id|new_client-&gt;addr
 )paren
 suffix:semicolon
 multiline_comment|/* Tell the I2C layer a new client has arrived */

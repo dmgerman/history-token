@@ -427,12 +427,6 @@ id|u8
 id|value
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm80_id
-r_static
-r_int
-id|lm80_id
-suffix:semicolon
 multiline_comment|/*&n; * Driver data (common to all clients)&n; */
 DECL|variable|lm80_driver
 r_static
@@ -2212,11 +2206,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm80_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

@@ -301,12 +301,6 @@ suffix:semicolon
 multiline_comment|/* bitvector, combined */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm83_id
-r_static
-r_int
-id|lm83_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
 mdefine_line|#define show_temp(suffix, value) &bslash;&n;static ssize_t show_temp_##suffix(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm83_data *data = lm83_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, TEMP_FROM_REG(data-&gt;value)); &bslash;&n;}
@@ -1058,11 +1052,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm83_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

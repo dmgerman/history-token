@@ -300,12 +300,6 @@ suffix:semicolon
 multiline_comment|/* bitvector */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm90_id
-r_static
-r_int
-id|lm90_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show_temp
 mdefine_line|#define show_temp(value, converter) &bslash;&n;static ssize_t show_##value(struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;struct lm90_data *data = lm90_update_device(dev); &bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, converter(data-&gt;value)); &bslash;&n;}
@@ -1270,11 +1264,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm90_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

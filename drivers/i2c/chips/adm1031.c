@@ -344,11 +344,6 @@ id|adm1031_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|adm1031_id
-r_static
-r_int
-id|adm1031_id
-suffix:semicolon
 DECL|function|adm1031_read_value
 r_static
 r_inline
@@ -3641,11 +3636,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|adm1031_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

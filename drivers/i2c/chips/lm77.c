@@ -240,11 +240,6 @@ id|lm77_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|lm77_id
-r_static
-r_int
-id|lm77_id
-suffix:semicolon
 multiline_comment|/* straight from the datasheet */
 DECL|macro|LM77_TEMP_MIN
 mdefine_line|#define LM77_TEMP_MIN (-55000)
@@ -1375,11 +1370,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm77_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

@@ -413,12 +413,6 @@ id|vrm
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|lm87_id
-r_static
-r_int
-id|lm87_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|function|lm87_read_value
 r_static
@@ -2093,11 +2087,6 @@ l_string|&quot;lm87&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm87_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

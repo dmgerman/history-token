@@ -236,10 +236,6 @@ r_struct
 id|semaphore
 id|lock
 suffix:semicolon
-DECL|member|sysctl_id
-r_int
-id|sysctl_id
-suffix:semicolon
 DECL|member|update_lock
 r_struct
 id|semaphore
@@ -385,11 +381,6 @@ comma
 r_int
 id|init
 )paren
-suffix:semicolon
-DECL|variable|smsc47m1_id
-r_static
-r_int
-id|smsc47m1_id
 suffix:semicolon
 DECL|variable|smsc47m1_driver
 r_static
@@ -1773,11 +1764,6 @@ l_string|&quot;smsc47m1&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|smsc47m1_id
-op_increment
 suffix:semicolon
 id|init_MUTEX
 c_func

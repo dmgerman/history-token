@@ -208,14 +208,6 @@ id|temp_over
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|w83l785ts_id
-r_static
-r_int
-id|w83l785ts_id
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|function|show_temp
 r_static
@@ -675,11 +667,6 @@ l_string|&quot;w83l785ts&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|w83l785ts_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign

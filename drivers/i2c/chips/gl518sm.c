@@ -438,12 +438,6 @@ id|gl518_detach_client
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Internal variables&n; */
-DECL|variable|gl518_id
-r_static
-r_int
-id|gl518_id
-suffix:semicolon
 multiline_comment|/*&n; * Sysfs stuff&n; */
 DECL|macro|show
 mdefine_line|#define show(type, suffix, value)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_##suffix(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct gl518_data *data = gl518_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, type##_FROM_REG(data-&gt;value));&t;&bslash;&n;}
@@ -1939,11 +1933,6 @@ l_string|&quot;gl518sm&quot;
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|gl518_id
-op_increment
 suffix:semicolon
 id|data-&gt;type
 op_assign

@@ -240,11 +240,6 @@ id|lm75_detach_client
 comma
 )brace
 suffix:semicolon
-DECL|variable|lm75_id
-r_static
-r_int
-id|lm75_id
-suffix:semicolon
 DECL|macro|show
 mdefine_line|#define show(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct lm75_data *data = lm75_update_device(dev);&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, LM75_TEMP_FROM_REG(data-&gt;value));&t;&bslash;&n;}
 DECL|variable|temp_max
@@ -787,11 +782,6 @@ id|name
 comma
 id|I2C_NAME_SIZE
 )paren
-suffix:semicolon
-id|new_client-&gt;id
-op_assign
-id|lm75_id
-op_increment
 suffix:semicolon
 id|data-&gt;valid
 op_assign
