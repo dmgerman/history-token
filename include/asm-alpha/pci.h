@@ -179,7 +179,7 @@ comma
 id|dma_addr_t
 )paren
 suffix:semicolon
-multiline_comment|/* Map a single buffer of the indicate size for PCI DMA in streaming&n;   mode.  The 32-bit PCI bus mastering address to use is returned.&n;   Once the device is given the dma address, the device owns this memory&n;   until either pci_unmap_single or pci_dma_sync_single_for_cpu is performed.  */
+multiline_comment|/* Map a single buffer of the indicate size for PCI DMA in streaming mode.&n;   The 32-bit PCI bus mastering address to use is returned.  Once the device&n;   is given the dma address, the device owns this memory until either&n;   pci_unmap_single or pci_dma_sync_single_for_cpu is performed.  */
 r_extern
 id|dma_addr_t
 id|pci_map_single
@@ -219,6 +219,24 @@ comma
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* Test for pci_map_single or pci_map_page having generated an error.  */
+r_static
+r_inline
+r_int
+DECL|function|pci_dma_mapping_error
+id|pci_dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+id|dma_addr
+op_eq
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Unmap a single streaming mode DMA translation.  The DMA_ADDR and&n;   SIZE must match what was provided for in a previous pci_map_single&n;   call.  All other usages are undefined.  After this call, reads by&n;   the cpu to the buffer are guaranteed to see whatever the device&n;   wrote there.  */
 r_extern
 r_void
@@ -538,25 +556,22 @@ c_func
 r_struct
 id|pci_dev
 op_star
-id|dev
 comma
 r_struct
 id|pci_bus_region
 op_star
-id|region
 comma
 r_struct
 id|resource
 op_star
-id|res
 )paren
 suffix:semicolon
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index
-DECL|function|pci_name_bus
 r_static
 r_inline
 r_int
+DECL|function|pci_name_bus
 id|pci_name_bus
 c_func
 (paren
@@ -619,10 +634,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pcibios_add_platform_entries
 r_static
 r_inline
 r_void
+DECL|function|pcibios_add_platform_entries
 id|pcibios_add_platform_entries
 c_func
 (paren

@@ -11,6 +11,8 @@ DECL|macro|__ARCH_SI_PREAMBLE_SIZE
 mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE&t;(4 * sizeof(int))
 DECL|macro|__ARCH_SI_TRAPNO
 mdefine_line|#define __ARCH_SI_TRAPNO
+DECL|macro|__ARCH_SI_BAND_T
+mdefine_line|#define __ARCH_SI_BAND_T int
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/compat.h&gt;

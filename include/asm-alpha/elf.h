@@ -200,9 +200,41 @@ mdefine_line|#define ELF_HWCAP  (~amask(-1))
 multiline_comment|/* This yields a string that ld.so will use to load implementation&n;   specific libraries for optimization.  This is more specific in&n;   intent than poking at uname or /proc/cpuinfo.  */
 DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;enum implver_enum i_ = implver();&t;&bslash;&n;&t;( i_ == IMPLVER_EV4 ? &quot;ev4&quot;&t;&t;&bslash;&n;&t;: i_ == IMPLVER_EV5&t;&t;&t;&bslash;&n;&t;  ? (amask(AMASK_BWX) ? &quot;ev5&quot; : &quot;ev56&quot;)&t;&bslash;&n;&t;: amask (AMASK_CIX) ? &quot;ev6&quot; : &quot;ev67&quot;);&t;&bslash;&n;})
+multiline_comment|/* Reserve these numbers for any future use of a VDSO.  */
+macro_line|#if 0
+mdefine_line|#define AT_SYSINFO&t;&t;32
+mdefine_line|#define AT_SYSINFO_EHDR&t;&t;33
+macro_line|#endif
+multiline_comment|/* More complete cache descriptions than AT_[DIU]CACHEBSIZE.  If the&n;   value is -1, then the cache doesn&squot;t exist.  Otherwise:&n;&n;      bit 0-3:&t;  Cache set-associativity; 0 means fully associative.&n;      bit 4-7:&t;  Log2 of cacheline size.&n;      bit 8-31:&t;  Size of the entire cache &gt;&gt; 8.&n;      bit 32-63:  Reserved.&n;*/
+DECL|macro|AT_L1I_CACHESHAPE
+mdefine_line|#define AT_L1I_CACHESHAPE&t;34
+DECL|macro|AT_L1D_CACHESHAPE
+mdefine_line|#define AT_L1D_CACHESHAPE&t;35
+DECL|macro|AT_L2_CACHESHAPE
+mdefine_line|#define AT_L2_CACHESHAPE&t;36
+DECL|macro|AT_L3_CACHESHAPE
+mdefine_line|#define AT_L3_CACHESHAPE&t;37
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(EX, IBCS2)&t;&t;&t;&t;&bslash;&n;&t;set_personality(((EX).e_flags &amp; EF_ALPHA_32BIT)&t;&t;&bslash;&n;&t;   ? PER_LINUX_32BIT : (IBCS2) ? PER_SVR4 : PER_LINUX)
-macro_line|#endif
-macro_line|#endif
+r_extern
+r_int
+id|alpha_l1i_cacheshape
+suffix:semicolon
+r_extern
+r_int
+id|alpha_l1d_cacheshape
+suffix:semicolon
+r_extern
+r_int
+id|alpha_l2_cacheshape
+suffix:semicolon
+r_extern
+r_int
+id|alpha_l3_cacheshape
+suffix:semicolon
+DECL|macro|ARCH_DLINFO
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    NEW_AUX_ENT(AT_L1I_CACHESHAPE, alpha_l1i_cacheshape);&t;&bslash;&n;    NEW_AUX_ENT(AT_L1D_CACHESHAPE, alpha_l1d_cacheshape);&t;&bslash;&n;    NEW_AUX_ENT(AT_L2_CACHESHAPE, alpha_l2_cacheshape);&t;&t;&bslash;&n;    NEW_AUX_ENT(AT_L3_CACHESHAPE, alpha_l3_cacheshape);&t;&t;&bslash;&n;  } while (0)
+macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* __ASM_ALPHA_ELF_H */
 eof

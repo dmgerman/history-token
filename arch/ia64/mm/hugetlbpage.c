@@ -3026,6 +3026,13 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hugetlb_total_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hugetlb_total_pages
+)paren
+suffix:semicolon
 DECL|function|hugetlb_nopage
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.52 2004/03/21 17:26:01 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.54 2004/04/02 18:59:22 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.52 $&quot;
+l_string|&quot;$Revision: 1.54 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -2546,32 +2546,6 @@ op_star
 id|psoft_isr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|psoft_isr
-op_logical_and
-id|psoft_isr-&gt;object
-)paren
-(brace
-id|diva_os_thread_dpc_t
-op_star
-id|pdpc
-op_assign
-(paren
-id|diva_os_thread_dpc_t
-op_star
-)paren
-id|psoft_isr-&gt;object
-suffix:semicolon
-id|tasklet_kill
-c_func
-(paren
-op_amp
-id|pdpc-&gt;divas_task
-)paren
-suffix:semicolon
-)brace
 r_return
 (paren
 l_int|0

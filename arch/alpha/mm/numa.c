@@ -613,27 +613,9 @@ c_func
 l_string|&quot;kernel loaded out of ram&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Zone start phys-addr must be 2^(MAX_ORDER-1) aligned */
+multiline_comment|/* Zone start phys-addr must be 2^(MAX_ORDER-1) aligned.&n;&t;   Note that we round this down, not up - node memory&n;&t;   has much larger alignment than 8Mb, so it&squot;s safe. */
 id|node_min_pfn
-op_assign
-(paren
-id|node_min_pfn
-op_plus
-(paren
-(paren
-l_int|1UL
-op_lshift
-(paren
-id|MAX_ORDER
-op_minus
-l_int|1
-)paren
-)paren
-op_minus
-l_int|1
-)paren
-)paren
-op_amp
+op_and_assign
 op_complement
 (paren
 (paren
