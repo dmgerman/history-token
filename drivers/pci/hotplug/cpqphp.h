@@ -2379,6 +2379,7 @@ r_static
 r_inline
 r_void
 id|return_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2419,6 +2420,7 @@ r_static
 r_inline
 r_void
 id|set_SOGO
+c_func
 (paren
 r_struct
 id|controller
@@ -2465,6 +2467,7 @@ r_static
 r_inline
 r_void
 id|amber_LED_on
+c_func
 (paren
 r_struct
 id|controller
@@ -2512,6 +2515,7 @@ r_static
 r_inline
 r_void
 id|amber_LED_off
+c_func
 (paren
 r_struct
 id|controller
@@ -2560,6 +2564,7 @@ r_static
 r_inline
 r_int
 id|read_amber_LED
+c_func
 (paren
 r_struct
 id|controller
@@ -2605,6 +2610,7 @@ r_static
 r_inline
 r_void
 id|green_LED_on
+c_func
 (paren
 r_struct
 id|controller
@@ -2650,6 +2656,7 @@ r_static
 r_inline
 r_void
 id|green_LED_off
+c_func
 (paren
 r_struct
 id|controller
@@ -2698,6 +2705,7 @@ r_static
 r_inline
 r_void
 id|green_LED_blink
+c_func
 (paren
 r_struct
 id|controller
@@ -2754,6 +2762,7 @@ r_static
 r_inline
 r_void
 id|slot_disable
+c_func
 (paren
 r_struct
 id|controller
@@ -2802,6 +2811,7 @@ r_static
 r_inline
 r_void
 id|slot_enable
+c_func
 (paren
 r_struct
 id|controller
@@ -2849,6 +2859,7 @@ r_static
 r_inline
 id|u8
 id|is_slot_enabled
+c_func
 (paren
 r_struct
 id|controller
@@ -2894,6 +2905,7 @@ r_static
 r_inline
 id|u8
 id|read_slot_enable
+c_func
 (paren
 r_struct
 id|controller
@@ -2917,6 +2929,7 @@ r_static
 r_inline
 id|u8
 id|get_controller_speed
+c_func
 (paren
 r_struct
 id|controller
@@ -3031,6 +3044,7 @@ r_static
 r_inline
 id|u8
 id|get_adapter_speed
+c_func
 (paren
 r_struct
 id|controller
@@ -3120,6 +3134,7 @@ r_static
 r_inline
 r_void
 id|enable_slot_power
+c_func
 (paren
 r_struct
 id|controller
@@ -3167,6 +3182,7 @@ r_static
 r_inline
 r_void
 id|disable_slot_power
+c_func
 (paren
 r_struct
 id|controller
@@ -3215,6 +3231,7 @@ r_static
 r_inline
 r_int
 id|cpq_get_attention_status
+c_func
 (paren
 r_struct
 id|controller
@@ -3248,6 +3265,7 @@ id|ctrl-&gt;slot_device_offset
 suffix:semicolon
 r_return
 id|read_amber_LED
+c_func
 (paren
 id|ctrl
 comma
@@ -3260,6 +3278,7 @@ r_static
 r_inline
 r_int
 id|get_slot_enabled
+c_func
 (paren
 r_struct
 id|controller
@@ -3293,6 +3312,7 @@ id|ctrl-&gt;slot_device_offset
 suffix:semicolon
 r_return
 id|is_slot_enabled
+c_func
 (paren
 id|ctrl
 comma
@@ -3305,6 +3325,7 @@ r_static
 r_inline
 r_int
 id|cpq_get_latch_status
+c_func
 (paren
 r_struct
 id|controller
@@ -3387,6 +3408,7 @@ r_static
 r_inline
 r_int
 id|get_presence_status
+c_func
 (paren
 r_struct
 id|controller
@@ -3478,6 +3500,7 @@ r_static
 r_inline
 r_void
 id|make_slot_name
+c_func
 (paren
 r_char
 op_star
@@ -3493,6 +3516,7 @@ id|slot
 )paren
 (brace
 id|snprintf
+c_func
 (paren
 id|buffer
 comma
@@ -3509,6 +3533,7 @@ r_static
 r_inline
 r_int
 id|wait_for_ctrl_irq
+c_func
 (paren
 r_struct
 id|controller

@@ -3050,6 +3050,7 @@ id|func-&gt;function
 suffix:semicolon
 singleline_comment|// Save the command register
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3067,6 +3068,7 @@ op_assign
 l_int|0x00
 suffix:semicolon
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3079,6 +3081,7 @@ id|command
 suffix:semicolon
 singleline_comment|// Check for Bridge
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -3109,6 +3112,7 @@ op_assign
 l_int|0x00
 suffix:semicolon
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3120,6 +3124,7 @@ id|command
 )paren
 suffix:semicolon
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -3132,6 +3137,7 @@ id|secondary_bus
 )paren
 suffix:semicolon
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -3194,6 +3200,7 @@ id|bus_node
 suffix:semicolon
 singleline_comment|// Save IO base and Limit registers
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -3206,6 +3213,7 @@ id|b_base
 )paren
 suffix:semicolon
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -3295,6 +3303,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Save memory base and Limit registers
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3307,6 +3316,7 @@ id|w_base
 )paren
 suffix:semicolon
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3392,6 +3402,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Save prefetchable memory base and Limit registers
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3404,6 +3415,7 @@ id|w_base
 )paren
 suffix:semicolon
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -3521,6 +3533,7 @@ op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -3532,6 +3545,7 @@ id|temp_register
 )paren
 suffix:semicolon
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -3858,6 +3872,7 @@ l_int|4
 )paren
 (brace
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -3874,6 +3889,7 @@ op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -3885,6 +3901,7 @@ id|temp_register
 )paren
 suffix:semicolon
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma

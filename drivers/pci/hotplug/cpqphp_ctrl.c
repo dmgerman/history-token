@@ -113,6 +113,7 @@ DECL|function|long_delay
 r_static
 r_void
 id|long_delay
+c_func
 (paren
 r_int
 id|delay
@@ -134,6 +135,7 @@ id|delay_sem
 )paren
 suffix:semicolon
 id|init_waitqueue_head
+c_func
 (paren
 op_amp
 id|delay_wait
@@ -178,6 +180,7 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|up
+c_func
 (paren
 op_amp
 id|delay_sem
@@ -394,6 +397,7 @@ r_struct
 id|slot
 op_star
 id|cpqhp_find_slot
+c_func
 (paren
 r_struct
 id|controller
@@ -1071,7 +1075,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sort_by_size&n; *&n; * Sorts nodes on the list by their length.&n; * Smallest first.&n; *&n; */
+multiline_comment|/**&n; * sort_by_size: sort nodes on the list by their length, smallest first.&n; * @head: list to sort&n; *&n; */
 DECL|function|sort_by_size
 r_static
 r_int
@@ -1262,7 +1266,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * sort_by_max_size&n; *&n; * Sorts nodes on the list by their length.&n; * Largest first.&n; *&n; */
+multiline_comment|/**&n; * sort_by_max_size: sort nodes on the list by their length, largest first.&n; * @head: list to sort&n; *&n; */
 DECL|function|sort_by_max_size
 r_static
 r_int
@@ -1453,13 +1457,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_pre_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
+multiline_comment|/**&n; * do_pre_bridge_resource_split: find node of resources that are unused&n; *&n; */
 DECL|function|do_pre_bridge_resource_split
 r_static
 r_struct
 id|pci_resource
 op_star
 id|do_pre_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1735,13 +1740,14 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_bridge_resource_split&n; *&n; *&t;Returns zero or one node of resources that aren&squot;t in use&n; *&n; */
+multiline_comment|/**&n; * do_bridge_resource_split: find one node of resources that aren&squot;t in use&n; *&n; */
 DECL|function|do_bridge_resource_split
 r_static
 r_struct
 id|pci_resource
 op_star
 id|do_bridge_resource_split
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -1936,13 +1942,14 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_io_resource&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length that is not in the&n; * ISA aliasing window.  If it finds a node larger than &quot;size&quot;&n; * it will split it up.&n; *&n; * size must be a power of two.&n; */
+multiline_comment|/**&n; * get_io_resource: find first node of given size not in ISA aliasing window.&n; * @head: list to search&n; * @size: size of node to find, must be a power of two.&n; *&n; * Description: this function sorts the resource list by size and then returns&n; * returns the first node of &quot;size&quot; length that is not in the ISA aliasing&n; * window.  If it finds a node larger than &quot;size&quot; it will split it up.&n; *&n; */
 DECL|function|get_io_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_io_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2263,13 +2270,14 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_max_resource&n; *&n; * Gets the largest node that is at least &quot;size&quot; big from the&n; * list pointed to by head.  It aligns the node on top and bottom&n; * to &quot;size&quot; alignment before returning it.&n; */
+multiline_comment|/**&n; * get_max_resource: get largest node which has at least the given size.&n; * @head: the list to search the node in&n; * @size: the minimum size of the node to find&n; *&n; * Description: Gets the largest node that is at least &quot;size&quot; big from the&n; * list pointed to by head.  It aligns the node on top and bottom&n; * to &quot;size&quot; alignment before returning it.&n; */
 DECL|function|get_max_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_max_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2622,13 +2630,14 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_resource&n; *&n; * this function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; */
+multiline_comment|/**&n; * get_resource: find resource of given size and split up larger ones.&n; * @head: the list to search for resources&n; * @size: the size limit to use&n; *&n; * Description: This function sorts the resource list by size and then&n; * returns the first node of &quot;size&quot; length.  If it finds a node&n; * larger than &quot;size&quot; it will split it up.&n; *&n; * size must be a power of two.&n; */
 DECL|function|get_resource
 r_static
 r_struct
 id|pci_resource
 op_star
 id|get_resource
+c_func
 (paren
 r_struct
 id|pci_resource
@@ -2979,7 +2988,7 @@ r_return
 id|node
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * cpqhp_resource_sort_and_combine&n; *&n; * Sorts all of the nodes in the list in ascending order by&n; * their base addresses.  Also does garbage collection by&n; * combining adjacent nodes.&n; *&n; * returns 0 if success&n; */
+multiline_comment|/**&n; * cpqhp_resource_sort_and_combine: sort nodes by base addresses and clean up.&n; * @head: the list to sort and clean up&n; *&n; * Description: Sorts all of the nodes in the list in ascending order by&n; * their base addresses.  Also does garbage collection by&n; * combining adjacent nodes.&n; *&n; * returns 0 if success&n; */
 DECL|function|cpqhp_resource_sort_and_combine
 r_int
 id|cpqhp_resource_sort_and_combine
@@ -3735,7 +3744,7 @@ r_return
 id|new_slot
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
+multiline_comment|/**&n; * slot_remove - Removes a node from the linked list of slots.&n; * @old_slot: slot to remove&n; *&n; * Returns 0 if successful, !0 otherwise.&n; */
 DECL|function|slot_remove
 r_static
 r_int
@@ -4932,6 +4941,7 @@ id|ctrl-&gt;crit_sect
 suffix:semicolon
 singleline_comment|// turn on board without attaching to the bus
 id|enable_slot_power
+c_func
 (paren
 id|ctrl
 comma
@@ -5044,6 +5054,7 @@ id|ctrl
 suffix:semicolon
 singleline_comment|// Wait for SOBS to be unset
 id|wait_for_ctrl_irq
+c_func
 (paren
 id|ctrl
 )paren
@@ -6165,6 +6176,7 @@ DECL|function|pushbutton_helper_thread
 r_static
 r_void
 id|pushbutton_helper_thread
+c_func
 (paren
 r_int
 r_int
@@ -6302,6 +6314,7 @@ suffix:semicolon
 DECL|function|cpqhp_event_start_thread
 r_int
 id|cpqhp_event_start_thread
+c_func
 (paren
 r_void
 )paren
@@ -6380,6 +6393,7 @@ suffix:semicolon
 DECL|function|cpqhp_event_stop_thread
 r_void
 id|cpqhp_event_stop_thread
+c_func
 (paren
 r_void
 )paren
@@ -6419,6 +6433,7 @@ DECL|function|update_slot_info
 r_static
 r_int
 id|update_slot_info
+c_func
 (paren
 r_struct
 id|controller
@@ -8095,6 +8110,7 @@ l_int|1
 suffix:colon
 singleline_comment|// Do stuff here!
 singleline_comment|// Do that funky LED thing
+multiline_comment|/* so we can restore them later */
 id|save_LED
 op_assign
 id|readl
@@ -8105,7 +8121,6 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-singleline_comment|// so we can restore them later
 id|work_LED
 op_assign
 l_int|0x01010101
@@ -8732,6 +8747,7 @@ id|LED_CONTROL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* put it back the way it was */
 id|writel
 (paren
 id|save_LED
@@ -8741,7 +8757,6 @@ op_plus
 id|LED_CONTROL
 )paren
 suffix:semicolon
-singleline_comment|// put it back the way it was
 id|set_SOGO
 c_func
 (paren
@@ -9100,6 +9115,7 @@ DECL|function|configure_new_function
 r_static
 r_int
 id|configure_new_function
+c_func
 (paren
 r_struct
 id|controller
@@ -9242,6 +9258,7 @@ singleline_comment|// Check for Bridge
 id|rc
 op_assign
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9286,6 +9303,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9349,6 +9367,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9391,6 +9410,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9417,6 +9437,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9438,6 +9459,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9464,6 +9486,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9899,8 +9922,7 @@ id|bus_node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-singleline_comment|// If we have IO resources copy them and fill in the bridge&squot;s
-singleline_comment|// IO range registers
+multiline_comment|/* If we have IO resources copy them and fill in the bridge&squot;s&n;&t;&t; * IO range registers */
 r_if
 c_cond
 (paren
@@ -9935,6 +9957,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9960,6 +9983,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -9984,9 +10008,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// If we have memory resources copy them and fill in the bridge&squot;s
-singleline_comment|// memory range registers.  Otherwise, fill in the range
-singleline_comment|// registers with values that disable them.
+multiline_comment|/* If we have memory resources copy them and fill in the bridge&squot;s&n;&t;&t; * memory range registers.  Otherwise, fill in the range&n;&t;&t; * registers with values that disable them. */
 r_if
 c_cond
 (paren
@@ -10021,6 +10043,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10046,6 +10069,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10066,6 +10090,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10083,6 +10108,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -10104,9 +10130,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-singleline_comment|// If we have prefetchable memory resources copy them and 
-singleline_comment|// fill in the bridge&squot;s memory range registers.  Otherwise,
-singleline_comment|// fill in the range registers with values that disable them.
+multiline_comment|/* If we have prefetchable memory resources copy them and &n;&t;&t; * fill in the bridge&squot;s memory range registers.  Otherwise,&n;&t;&t; * fill in the range registers with values that disable them. */
 r_if
 c_cond
 (paren
@@ -11352,15 +11376,13 @@ op_assign
 id|hold_p_mem_node
 suffix:semicolon
 )brace
-singleline_comment|// We should be configuring an IRQ and the bridge&squot;s base address
-singleline_comment|// registers if it needs them.  Although we have never seen such
-singleline_comment|// a device
+multiline_comment|/* We should be configuring an IRQ and the bridge&squot;s base address&n;&t;&t; * registers if it needs them.  Although we have never seen such&n;&t;&t; * a device */
 singleline_comment|// enable card
 id|command
 op_assign
 l_int|0x0157
 suffix:semicolon
-singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
+multiline_comment|/* = PCI_COMMAND_IO |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MEMORY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MASTER |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_INVALIDATE |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_SERR */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -11379,7 +11401,7 @@ id|command
 op_assign
 l_int|0x07
 suffix:semicolon
-singleline_comment|// = PCI_BRIDGE_CTL_PARITY | PCI_BRIDGE_CTL_SERR | PCI_BRIDGE_CTL_NO_ISA
+multiline_comment|/* = PCI_BRIDGE_CTL_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_BRIDGE_CTL_SERR |&n;&t;&t;&t;&t;&t; *   PCI_BRIDGE_CTL_NO_ISA */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -11856,6 +11878,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -11892,6 +11915,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -12101,6 +12125,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -12119,6 +12144,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -12137,6 +12163,7 @@ suffix:semicolon
 id|rc
 op_assign
 id|pci_bus_write_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -12152,7 +12179,7 @@ id|temp_word
 op_assign
 l_int|0x0157
 suffix:semicolon
-singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
+multiline_comment|/* = PCI_COMMAND_IO |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MEMORY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_MASTER |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_INVALIDATE |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_PARITY |&n;&t;&t;&t;&t;&t; *   PCI_COMMAND_SERR */
 id|rc
 op_assign
 id|pci_bus_write_config_word
@@ -12167,9 +12194,9 @@ id|temp_word
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// End of Not-A-Bridge else
 r_else
 (brace
+singleline_comment|// End of Not-A-Bridge else
 singleline_comment|// It&squot;s some strange type of PCI adapter (Cardbus?)
 r_return
 id|DEVICE_TYPE_NOT_SUPPORTED
