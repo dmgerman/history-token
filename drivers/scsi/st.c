@@ -751,6 +751,23 @@ l_int|NULL
 suffix:semicolon
 )brace
 "&f;"
+DECL|function|tape_name
+r_static
+r_inline
+r_char
+op_star
+id|tape_name
+c_func
+(paren
+id|Scsi_Tape
+op_star
+id|tape
+)paren
+(brace
+r_return
+id|tape-&gt;name
+suffix:semicolon
+)brace
 multiline_comment|/* Convert the result to success code */
 DECL|function|st_chk_result
 r_static
@@ -767,9 +784,6 @@ op_star
 id|SRpnt
 )paren
 (brace
-r_int
-id|dev
-suffix:semicolon
 r_int
 id|result
 op_assign
@@ -793,6 +807,16 @@ op_star
 id|stp
 suffix:semicolon
 )paren
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -850,14 +874,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|SRpnt-&gt;sr_request-&gt;rq_dev
-)paren
-suffix:semicolon
 id|DEB
 c_func
 (paren
@@ -870,9 +886,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
+l_string|&quot;%s: Error: %x, cmd: %x %x %x %x %x %x Len: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 comma
@@ -1007,9 +1023,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Error with sense data: &quot;
+l_string|&quot;%s: Error with sense data: &quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|print_req_sense
@@ -1026,9 +1042,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Error %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
+l_string|&quot;%s: Error %x (sugg. bt 0x%x, driver bt 0x%x, host bt 0x%x).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 comma
@@ -1210,9 +1226,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Recovered %s error (%d).&bslash;n&quot;
+l_string|&quot;%s: Recovered %s error (%d).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|stp
 comma
@@ -1530,12 +1546,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;st%d: Can&squot;t get SCSI request.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t get SCSI request.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 )paren
 suffix:semicolon
@@ -1972,12 +1988,12 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Stepping over filemark %s.&bslash;n&quot;
+l_string|&quot;%s: Stepping over filemark %s.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 comma
 id|forward
@@ -2049,12 +2065,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;st%d: Stepping over filemark %s failed.&bslash;n&quot;
+l_string|&quot;%s: Stepping over filemark %s failed.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 comma
 id|forward
@@ -2143,12 +2159,12 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Async write error (flush) %x.&bslash;n&quot;
+l_string|&quot;%s: Async write error (flush) %x.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 comma
 (paren
@@ -2236,12 +2252,12 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Flushing %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Flushing %d bytes.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 comma
 id|transfer
@@ -2439,12 +2455,12 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;st%d: Error on flush.&bslash;n&quot;
+l_string|&quot;%s: Error on flush.&bslash;n&quot;
 comma
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 )paren
 suffix:semicolon
@@ -2781,13 +2797,14 @@ r_int
 r_int
 id|arg
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -2872,9 +2889,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Can&squot;t set default block size to %d bytes and density %x.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t set default block size to %d bytes and density %x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;default_blksize
 comma
@@ -2920,13 +2937,14 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 )paren
@@ -2946,9 +2964,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: %socking drive door.&bslash;n&quot;
+l_string|&quot;%s: %socking drive door.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|do_lock
 ques
@@ -3503,13 +3521,14 @@ id|ST_partstat
 op_star
 id|STps
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_struct
@@ -3547,9 +3566,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Mode change from %d to %d.&bslash;n&quot;
+l_string|&quot;%s: Mode change from %d to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 comma
@@ -3952,9 +3971,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Block limits %d - %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Block limits %d - %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;min_block
 comma
@@ -3980,9 +3999,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Can&squot;t read block limits.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t read block limits.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -4080,9 +4099,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: No Mode Sense.&bslash;n&quot;
+l_string|&quot;%s: No Mode Sense.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -4114,9 +4133,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Mode sense. Length %d, medium %x, WBS %x, BLL %d&bslash;n&quot;
+l_string|&quot;%s: Mode sense. Length %d, medium %x, WBS %x, BLL %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|STp-&gt;buffer
@@ -4239,9 +4258,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Density %x, tape length: %x, drv buffer: %d&bslash;n&quot;
+l_string|&quot;%s: Density %x, tape length: %x, drv buffer: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;density
 comma
@@ -4364,9 +4383,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Block size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
+l_string|&quot;%s: Block size: %d, buffer size: %d (%d blocks).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;block_size
 comma
@@ -4401,9 +4420,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Write protected&bslash;n&quot;
+l_string|&quot;%s: Write protected&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -4457,9 +4476,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Updating partition number in status.&bslash;n&quot;
+l_string|&quot;%s: Updating partition number in status.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -4564,9 +4583,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Can&squot;t set default drive buffering to %d.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t set default drive buffering to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;default_drvbuffer
 )paren
@@ -4628,6 +4647,10 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
 id|write_lock
 c_func
 (paren
@@ -4674,6 +4697,14 @@ id|ENXIO
 )paren
 suffix:semicolon
 )brace
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4694,9 +4725,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Device already in use.&bslash;n&quot;
+l_string|&quot;%s: Device already in use.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )paren
@@ -4790,9 +4821,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Can&squot;t allocate tape buffer.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t allocate tape buffer.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -4993,6 +5024,27 @@ l_int|0
 comma
 id|result2
 suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
+op_assign
+id|filp-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+id|kdev_t
+id|devt
+op_assign
+id|inode-&gt;i_rdev
+suffix:semicolon
+r_int
+id|dev
+op_assign
+id|TAPE_NR
+c_func
+(paren
+id|devt
+)paren
+suffix:semicolon
 r_int
 r_char
 id|cmd
@@ -5016,20 +5068,9 @@ id|ST_partstat
 op_star
 id|STps
 suffix:semicolon
-r_struct
-id|inode
+r_char
 op_star
-id|inode
-op_assign
-id|filp-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-id|kdev_t
-id|devt
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
-r_int
-id|dev
+id|name
 suffix:semicolon
 r_if
 c_cond
@@ -5044,14 +5085,6 @@ l_int|1
 )paren
 r_return
 l_int|0
-suffix:semicolon
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|devt
-)paren
 suffix:semicolon
 id|read_lock
 c_func
@@ -5092,6 +5125,14 @@ id|STp-&gt;ps
 (braket
 id|STp-&gt;partition
 )braket
+)paren
+suffix:semicolon
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -5156,9 +5197,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: switch_partition at close failed.&bslash;n&quot;
+l_string|&quot;%s: switch_partition at close failed.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -5188,9 +5229,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Number of r/w requests %d, dio used in %d, pages %d (%d).&bslash;n&quot;
+l_string|&quot;%s: Number of r/w requests %d, dio used in %d, pages %d (%d).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;nbr_requests
 comma
@@ -5220,9 +5261,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: File length %ld bytes.&bslash;n&quot;
+l_string|&quot;%s: File length %ld bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 r_int
@@ -5236,9 +5277,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Async write waits %d, finished %d.&bslash;n&quot;
+l_string|&quot;%s: Async write waits %d, finished %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;nbr_waits
 comma
@@ -5401,9 +5442,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;st%d: Error on write filemark.&bslash;n&quot;
+l_string|&quot;%s: Error on write filemark.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -5472,9 +5513,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Buffer flushed, %d EOF(s) written&bslash;n&quot;
+l_string|&quot;%s: Buffer flushed, %d EOF(s) written&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -5952,22 +5993,17 @@ op_logical_neg
 id|STp-&gt;in_use
 )paren
 (brace
-r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Incorrect device.&bslash;n&quot;
+l_string|&quot;%s: Incorrect device.&bslash;n&quot;
 comma
-id|dev
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 )paren
 suffix:semicolon
 id|retval
@@ -6434,6 +6470,10 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -6453,6 +6493,14 @@ c_func
 (paren
 op_amp
 id|st_dev_arr_lock
+)paren
+suffix:semicolon
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -6516,9 +6564,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Write not multiple of tape block size.&bslash;n&quot;
+l_string|&quot;%s: Write not multiple of tape block size.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -6670,9 +6718,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Can&squot;t set default compression.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t set default compression.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -6724,9 +6772,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Async write error (write) %x.&bslash;n&quot;
+l_string|&quot;%s: Async write error (write) %x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STbp-&gt;midlevel_result
 )paren
@@ -7231,9 +7279,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Error on write:&bslash;n&quot;
+l_string|&quot;%s: Error on write:&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -7419,9 +7467,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOM with %d bytes unwritten.&bslash;n&quot;
+l_string|&quot;%s: EOM with %d bytes unwritten.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|transfer
 )paren
@@ -7468,9 +7516,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOM with lost data.&bslash;n&quot;
+l_string|&quot;%s: EOM with lost data.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -7689,18 +7737,19 @@ op_star
 id|STbp
 suffix:semicolon
 r_int
-id|dev
-op_assign
-id|TAPE_NR
-c_func
-(paren
-id|STp-&gt;devt
-)paren
-suffix:semicolon
-r_int
 id|retval
 op_assign
 l_int|0
+suffix:semicolon
+r_char
+op_star
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7951,9 +8000,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
+l_string|&quot;%s: Sense: %2x %2x %2x %2x %2x %2x %2x %2x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -8208,9 +8257,9 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;st%d: Incorrect block size.&bslash;n&quot;
+l_string|&quot;%s: Incorrect block size.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_if
@@ -8263,9 +8312,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: ILI but enough data received %ld %d.&bslash;n&quot;
+l_string|&quot;%s: ILI but enough data received %ld %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|count
 comma
@@ -8361,9 +8410,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOF detected (%d bytes read).&bslash;n&quot;
+l_string|&quot;%s: EOF detected (%d bytes read).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STbp-&gt;buffer_bytes
 )paren
@@ -8427,9 +8476,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOM detected (%d bytes read).&bslash;n&quot;
+l_string|&quot;%s: EOM detected (%d bytes read).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STbp-&gt;buffer_bytes
 )paren
@@ -8448,9 +8497,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Tape error while reading.&bslash;n&quot;
+l_string|&quot;%s: Tape error while reading.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -8487,9 +8536,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Zero returned for first BLANK CHECK after EOF.&bslash;n&quot;
+l_string|&quot;%s: Zero returned for first BLANK CHECK after EOF.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -8636,6 +8685,10 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -8655,6 +8708,14 @@ c_func
 (paren
 op_amp
 id|st_dev_arr_lock
+)paren
+suffix:semicolon
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
 )paren
 suffix:semicolon
 id|STbp
@@ -8800,9 +8861,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
+l_string|&quot;%s: EOF/EOM flag up (%d). Bytes %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STps-&gt;eof
 comma
@@ -9052,9 +9113,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
+l_string|&quot;%s: EOF up (%d). Left %d, needed %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STps-&gt;eof
 comma
@@ -9313,17 +9374,18 @@ id|ST_mode
 op_star
 id|STm
 comma
-r_int
-id|dev
+r_char
+op_star
+id|name
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
+l_string|&quot;%s: Mode %d options: buffer writes: %d, async writes: %d, read ahead: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 comma
@@ -9338,9 +9400,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
+l_string|&quot;%s:    can bsr: %d, two FMs: %d, fast mteom: %d, auto lock: %d,&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;can_bsr
 comma
@@ -9355,9 +9417,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
+l_string|&quot;%s:    defs for wr: %d, no block limits: %d, partitions: %d, s2 log: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;defaults_for_writes
 comma
@@ -9372,9 +9434,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d:    sysv: %d nowait: %d&bslash;n&quot;
+l_string|&quot;%s:    sysv: %d nowait: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;sysv
 comma
@@ -9388,9 +9450,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d:    debugging: %d&bslash;n&quot;
+l_string|&quot;%s:    debugging: %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|debugging
 )paren
@@ -9421,13 +9483,14 @@ id|ST_mode
 op_star
 id|STm
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 id|STm
@@ -9477,9 +9540,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Initialized mode %d definition from mode 0&bslash;n&quot;
+l_string|&quot;%s: Initialized mode %d definition from mode 0&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;current_mode
 )paren
@@ -9662,7 +9725,7 @@ id|STp
 comma
 id|STm
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -9915,7 +9978,7 @@ id|STp
 comma
 id|STm
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -9951,9 +10014,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Write threshold %d too small or too large.&bslash;n&quot;
+l_string|&quot;%s: Write threshold %d too small or too large.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -9973,9 +10036,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Write threshold set to %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Write threshold set to %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -10019,9 +10082,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Default block size disabled.&bslash;n&quot;
+l_string|&quot;%s: Default block size disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -10035,9 +10098,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Default block size set to %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Default block size set to %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;default_blksize
 )paren
@@ -10110,9 +10173,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Long timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;%s: Long timeout set to %d seconds.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|value
@@ -10135,9 +10198,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Normal timeout set to %d seconds.&bslash;n&quot;
+l_string|&quot;%s: Normal timeout set to %d seconds.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 )paren
@@ -10213,9 +10276,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Cleaning request mode %d, mask %02x, value %02x&bslash;n&quot;
+l_string|&quot;%s: Cleaning request mode %d, mask %02x, value %02x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|value
 comma
@@ -10278,9 +10341,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Density default disabled.&bslash;n&quot;
+l_string|&quot;%s: Density default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -10296,9 +10359,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Density default set to %x&bslash;n&quot;
+l_string|&quot;%s: Density default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STm-&gt;default_density
 )paren
@@ -10351,9 +10414,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Drive buffer default disabled.&bslash;n&quot;
+l_string|&quot;%s: Drive buffer default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -10369,9 +10432,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Drive buffer default set to %x&bslash;n&quot;
+l_string|&quot;%s: Drive buffer default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;default_drvbuffer
 )paren
@@ -10420,9 +10483,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Compression default disabled.&bslash;n&quot;
+l_string|&quot;%s: Compression default disabled.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )brace
@@ -10454,9 +10517,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Compression algorithm set to 0x%x.&bslash;n&quot;
+l_string|&quot;%s: Compression algorithm set to 0x%x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;c_algo
 )paren
@@ -10491,9 +10554,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Compression default set to %x&bslash;n&quot;
+l_string|&quot;%s: Compression default set to %x&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|value
@@ -10934,13 +10997,14 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 )paren
@@ -10983,9 +11047,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Compression mode page not supported.&bslash;n&quot;
+l_string|&quot;%s: Compression mode page not supported.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -11012,9 +11076,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Compression state is %d.&bslash;n&quot;
+l_string|&quot;%s: Compression state is %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|b_data
@@ -11059,9 +11123,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Compression not supported.&bslash;n&quot;
+l_string|&quot;%s: Compression not supported.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -11158,9 +11222,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Compression change failed.&bslash;n&quot;
+l_string|&quot;%s: Compression change failed.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -11178,9 +11242,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Compression state changed to %d.&bslash;n&quot;
+l_string|&quot;%s: Compression state changed to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|state
 )paren
@@ -11227,13 +11291,14 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 )paren
@@ -11337,9 +11402,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Enhanced %sload slot %2d.&bslash;n&quot;
+l_string|&quot;%s: Enhanced %sload slot %2d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|cmd
@@ -11406,9 +11471,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Unloading tape.&bslash;n&quot;
+l_string|&quot;%s: Unloading tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_else
@@ -11416,9 +11481,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Loading tape.&bslash;n&quot;
+l_string|&quot;%s: Loading tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 )paren
@@ -11619,13 +11684,14 @@ id|direction
 op_assign
 id|SCSI_DATA_NONE
 suffix:semicolon
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -11761,9 +11827,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape forward over %d filemarks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape forward over %d filemarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -11920,9 +11986,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape backward over %ld filemarks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape backward over %ld filemarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 op_minus
@@ -12014,9 +12080,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape forward %d blocks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape forward %d blocks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -12161,9 +12227,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape backward %ld blocks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape backward %ld blocks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 op_minus
@@ -12247,9 +12313,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape forward %d setmarks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape forward %d setmarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -12397,9 +12463,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing tape backward %ld setmarks.&bslash;n&quot;
+l_string|&quot;%s: Spacing tape backward %ld setmarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 op_minus
@@ -12516,9 +12582,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Writing %d filemarks.&bslash;n&quot;
+l_string|&quot;%s: Writing %d filemarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -12545,9 +12611,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Writing %d setmarks.&bslash;n&quot;
+l_string|&quot;%s: Writing %d setmarks.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|cmd
 (braket
@@ -12631,9 +12697,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Rewinding tape.&bslash;n&quot;
+l_string|&quot;%s: Rewinding tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -12657,9 +12723,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: No op on tape.&bslash;n&quot;
+l_string|&quot;%s: No op on tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -12712,9 +12778,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Retensioning tape.&bslash;n&quot;
+l_string|&quot;%s: Retensioning tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -12796,9 +12862,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Spacing to end of recorded medium.&bslash;n&quot;
+l_string|&quot;%s: Spacing to end of recorded medium.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -12881,9 +12947,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Erasing tape.&bslash;n&quot;
+l_string|&quot;%s: Erasing tape.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -12977,9 +13043,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: Illegal block size.&bslash;n&quot;
+l_string|&quot;%s: Illegal block size.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 r_return
@@ -13245,9 +13311,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Setting block size to %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Setting block size to %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|STp-&gt;buffer
@@ -13295,9 +13361,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Setting density code to %x.&bslash;n&quot;
+l_string|&quot;%s: Setting density code to %x.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 id|STp-&gt;buffer
@@ -13319,9 +13385,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Setting drive buffer code to %d.&bslash;n&quot;
+l_string|&quot;%s: Setting drive buffer code to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 (paren
 (paren
@@ -14191,13 +14257,14 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 )paren
@@ -14360,9 +14427,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Can&squot;t read tape position.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t read tape position.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -14553,9 +14620,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Got tape pos. blk %d part %d.&bslash;n&quot;
+l_string|&quot;%s: Got tape pos. blk %d part %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 op_star
 id|block
@@ -14632,13 +14699,14 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
 suffix:semicolon
 )paren
@@ -14676,9 +14744,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Setting block to %d and partition to %d.&bslash;n&quot;
+l_string|&quot;%s: Setting block to %d and partition to %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|block
 comma
@@ -14771,9 +14839,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Visited block %d for partition %d saved.&bslash;n&quot;
+l_string|&quot;%s: Visited block %d for partition %d saved.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|blk
 comma
@@ -14943,9 +15011,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Trying to change partition from %d to %d&bslash;n&quot;
+l_string|&quot;%s: Trying to change partition from %d to %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|STp-&gt;partition
 comma
@@ -15313,16 +15381,17 @@ suffix:semicolon
 id|DEB
 c_func
 (paren
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
-)paren
+id|STp
 )paren
 suffix:semicolon
+)paren
 r_if
 c_cond
 (paren
@@ -15361,9 +15430,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Can&squot;t read medium partition page.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t read medium partition page.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -15399,9 +15468,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Number of partitions %d.&bslash;n&quot;
+l_string|&quot;%s: Number of partitions %d.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|result
 )paren
@@ -15427,15 +15496,17 @@ r_int
 id|size
 )paren
 (brace
-r_int
-id|dev
+r_char
+op_star
+id|name
 op_assign
-id|TAPE_NR
+id|tape_name
 c_func
 (paren
-id|STp-&gt;devt
+id|STp
 )paren
-comma
+suffix:semicolon
+r_int
 id|result
 suffix:semicolon
 r_int
@@ -15475,9 +15546,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Can&squot;t read partition mode page.&bslash;n&quot;
+l_string|&quot;%s: Can&squot;t read partition mode page.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -15510,9 +15581,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Partition page length is %d bytes.&bslash;n&quot;
+l_string|&quot;%s: Partition page length is %d bytes.&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|bp
 (braket
@@ -15606,9 +15677,9 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;st%d: psd_cnt %d, max.parts %d, nbr_parts %d&bslash;n&quot;
+l_string|&quot;%s: psd_cnt %d, max.parts %d, nbr_parts %d&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|psd_cnt
 comma
@@ -15673,9 +15744,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Formatting tape with one partition.&bslash;n&quot;
+l_string|&quot;%s: Formatting tape with one partition.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -15743,9 +15814,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Formatting tape with two partitions (1 = %d MB).&bslash;n&quot;
+l_string|&quot;%s: Formatting tape with two partitions (1 = %d MB).&bslash;n&quot;
 comma
-id|dev
+id|name
 comma
 id|size
 )paren
@@ -15801,9 +15872,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st%d: Partitioning of tape failed.&bslash;n&quot;
+l_string|&quot;%s: Partitioning of tape failed.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|result
@@ -15884,6 +15955,10 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -15903,6 +15978,14 @@ c_func
 (paren
 op_amp
 id|st_dev_arr_lock
+)paren
+suffix:semicolon
+id|name
+op_assign
+id|tape_name
+c_func
+(paren
+id|STp
 )paren
 suffix:semicolon
 r_if
@@ -15934,9 +16017,9 @@ id|printk
 c_func
 (paren
 id|ST_DEB_MSG
-l_string|&quot;st%d: Incorrect device.&bslash;n&quot;
+l_string|&quot;%s: Incorrect device.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -16122,9 +16205,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
+l_string|&quot;%s: MTSETDRVBUFFER only allowed for root.&bslash;n&quot;
 comma
-id|dev
+id|name
 )paren
 suffix:semicolon
 id|retval
@@ -19670,6 +19753,16 @@ id|Scsi_Tape
 )paren
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|tpnt-&gt;name
+comma
+l_string|&quot;st%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|scsi_tapes
 (braket
 id|i
@@ -20432,9 +20525,13 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Attached scsi tape st%d at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
+l_string|&quot;Attached scsi tape %s at scsi%d, channel %d, id %d, lun %d&bslash;n&quot;
 comma
-id|dev_num
+id|tape_name
+c_func
+(paren
+id|tpnt
+)paren
 comma
 id|SDp-&gt;host-&gt;host_no
 comma
@@ -20449,9 +20546,13 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;st%d: try direct i/o: %s, max page reachable by HBA %lu&bslash;n&quot;
+l_string|&quot;%s: try direct i/o: %s, max page reachable by HBA %lu&bslash;n&quot;
 comma
-id|dev_num
+id|tape_name
+c_func
+(paren
+id|tpnt
+)paren
 comma
 id|tpnt-&gt;try_dio
 ques
