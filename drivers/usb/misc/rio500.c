@@ -543,11 +543,7 @@ c_func
 (paren
 l_string|&quot;Error executing ioctrl. code = %d&quot;
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|result
-)paren
 )paren
 suffix:semicolon
 id|retries
@@ -560,26 +556,14 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;Executed ioctl. Result = %d (data=%04x)&quot;
+l_string|&quot;Executed ioctl. Result = %d (data=%02x)&quot;
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|result
-)paren
 comma
-id|le32_to_cpu
-c_func
-(paren
-op_star
-(paren
-(paren
-r_int
-op_star
-)paren
 id|buffer
-)paren
-)paren
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_if
@@ -857,11 +841,7 @@ c_func
 (paren
 l_string|&quot;Error executing ioctrl. code = %d&quot;
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|result
-)paren
 )paren
 suffix:semicolon
 id|retries
@@ -876,11 +856,7 @@ c_func
 (paren
 l_string|&quot;Executed ioctl. Result = %d&quot;
 comma
-id|le32_to_cpu
-c_func
-(paren
 id|result
-)paren
 )paren
 suffix:semicolon
 id|retries
