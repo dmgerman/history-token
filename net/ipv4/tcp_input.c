@@ -19265,13 +19265,6 @@ c_func
 id|sysctl_tcp_reordering
 )paren
 suffix:semicolon
-DECL|variable|tcp_cwnd_application_limited
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_cwnd_application_limited
-)paren
-suffix:semicolon
 DECL|variable|tcp_parse_options
 id|EXPORT_SYMBOL
 c_func
