@@ -337,7 +337,7 @@ mdefine_line|#define get_page(p)&t;&t;atomic_inc(&amp;(p)-&gt;count)
 DECL|macro|__put_page
 mdefine_line|#define __put_page(p)&t;&t;atomic_dec(&amp;(p)-&gt;count)
 DECL|macro|put_page_testzero
-mdefine_line|#define put_page_testzero(p) &t;atomic_dec_and_test(&amp;(p)-&gt;count)
+mdefine_line|#define put_page_testzero(p)&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BUG_ON(page_count(page) == 0);&t;&t;&bslash;&n;&t;&t;atomic_dec_and_test(&amp;(p)-&gt;count);&t;&bslash;&n;&t;})
 DECL|macro|page_count
 mdefine_line|#define page_count(p)&t;&t;atomic_read(&amp;(p)-&gt;count)
 DECL|macro|set_page_count
