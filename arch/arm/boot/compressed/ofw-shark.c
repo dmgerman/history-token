@@ -14,7 +14,7 @@ op_star
 id|buffer
 )paren
 (brace
-multiline_comment|/* Is there a better address? Also change in mach-shark/arch.c */
+multiline_comment|/* Is there a better address? Also change in mach-shark/core.c */
 r_struct
 id|tag
 op_star
