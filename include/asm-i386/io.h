@@ -14,6 +14,7 @@ mdefine_line|#define XQUAD_PORTIO_BASE 0xfe400000
 DECL|macro|XQUAD_PORTIO_QUAD
 mdefine_line|#define XQUAD_PORTIO_QUAD 0x40000  /* 256k per quad. */
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm-generic/iomap.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/**&n; *&t;virt_to_phys&t;-&t;map virtual addresses to physical&n; *&t;@address: address to remap&n; *&n; *&t;The returned physical address is the physical (CPU) mapping for&n; *&t;the memory address given. It is only valid to use this function on&n; *&t;addresses directly mapped or allocated via kmalloc. &n; *&n; *&t;This function does not give bus mappings for DMA transfers. In&n; *&t;almost all conceivable cases a device driver should not be using&n; *&t;this function&n; */
 DECL|function|virt_to_phys

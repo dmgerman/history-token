@@ -3,7 +3,6 @@ DECL|macro|_X8664_DMA_MAPPING_H
 mdefine_line|#define _X8664_DMA_MAPPING_H 1
 multiline_comment|/*&n; * IOMMU interface. See Documentation/DMA-mapping.txt and DMA-API.txt for&n; * documentation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/swiotlb.h&gt;
