@@ -871,6 +871,21 @@ id|direction
 (brace
 multiline_comment|/* Nothing to do. */
 )brace
+DECL|function|pci_dma_mapping_error
+r_static
+r_inline
+r_int
+id|pci_dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
 DECL|macro|pci_domain_nr
 mdefine_line|#define pci_domain_nr(bus) ((struct pci_controller *)(bus)-&gt;sysdata)-&gt;index

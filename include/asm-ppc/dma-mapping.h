@@ -756,5 +756,20 @@ id|direction
 )paren
 suffix:semicolon
 )brace
+DECL|function|dma_mapping_error
+r_static
+r_inline
+r_int
+id|dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif&t;&t;&t;&t;/* __ASM_PPC_DMA_MAPPING_H */
 eof
