@@ -4,17 +4,16 @@ multiline_comment|/* This is the only thing that needs to be changed to adjust t
 DECL|macro|IXGB_MAX_NIC
 mdefine_line|#define IXGB_MAX_NIC 8
 DECL|macro|OPTION_UNSET
-mdefine_line|#define OPTION_UNSET    -1
+mdefine_line|#define OPTION_UNSET&t;-1
 DECL|macro|OPTION_DISABLED
 mdefine_line|#define OPTION_DISABLED 0
 DECL|macro|OPTION_ENABLED
 mdefine_line|#define OPTION_ENABLED  1
-multiline_comment|/* Module Parameters are always initialized to -1, so that the driver&n; * can tell the difference between no user specified value or the&n; * user asking for the default value.&n; * The true default values are loaded in when ixgb_check_options is called.&n; *&n; * This is a GCC extension to ANSI C.&n; * See the item &quot;Labeled Elements in Initializers&quot; in the section&n; * &quot;Extensions to the C Language Family&quot; of the GCC documentation.&n; */
+multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|IXGB_PARAM_INIT
 mdefine_line|#define IXGB_PARAM_INIT { [0 ... IXGB_MAX_NIC] = OPTION_UNSET }
-multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|IXGB_PARAM
-mdefine_line|#define IXGB_PARAM(X, S) &bslash;&n;static const int __devinitdata X[IXGB_MAX_NIC + 1] = IXGB_PARAM_INIT; &bslash;&n;MODULE_PARM(X, &quot;1-&quot; __MODULE_STRING(IXGB_MAX_NIC) &quot;i&quot;); &bslash;&n;MODULE_PARM_DESC(X, S);
+mdefine_line|#define IXGB_PARAM(X, desc) &bslash;&n;&t;static int __devinitdata X[IXGB_MAX_NIC+1] = IXGB_PARAM_INIT; &bslash;&n;&t;static int num_##X = 0; &bslash;&n;&t;module_param_array_named(X, X, int, &amp;num_##X, 0); &bslash;&n;&t;MODULE_PARM_DESC(X, desc);
 multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 64-4096&n; *&n; * Default Value: 256&n; */
 id|IXGB_PARAM
 c_func
@@ -557,6 +556,14 @@ op_assign
 op_amp
 id|adapter-&gt;tx_ring
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_TxDescriptors
+OG
+id|bd
+)paren
+(brace
 id|tx_ring-&gt;count
 op_assign
 id|TxDescriptors
@@ -574,6 +581,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|tx_ring-&gt;count
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 id|IXGB_ROUNDUP
 c_func
 (paren
@@ -644,6 +659,14 @@ op_assign
 op_amp
 id|adapter-&gt;rx_ring
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxDescriptors
+OG
+id|bd
+)paren
+(brace
 id|rx_ring-&gt;count
 op_assign
 id|RxDescriptors
@@ -661,6 +684,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|rx_ring-&gt;count
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 id|IXGB_ROUNDUP
 c_func
 (paren
@@ -698,6 +729,14 @@ op_assign
 id|OPTION_ENABLED
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_XsumRX
+OG
+id|bd
+)paren
+(brace
 r_int
 id|rx_csum
 op_assign
@@ -720,6 +759,14 @@ id|adapter-&gt;rx_csum
 op_assign
 id|rx_csum
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;rx_csum
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Flow Control */
@@ -811,6 +858,14 @@ id|fc_list
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_FlowControl
+OG
+id|bd
+)paren
+(brace
 r_int
 id|fc
 op_assign
@@ -833,6 +888,14 @@ id|adapter-&gt;hw.fc.type
 op_assign
 id|fc
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;hw.fc.type
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Receive Flow Control High Threshold */
@@ -887,6 +950,14 @@ id|MAX_FCRTH
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxFCHighThresh
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;hw.fc.high_water
 op_assign
 id|RxFCHighThresh
@@ -904,6 +975,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;hw.fc.high_water
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -914,13 +993,14 @@ op_amp
 id|ixgb_fc_rx_pause
 )paren
 )paren
+(brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring RxFCHighThresh when no RxFC&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Receive Flow Control Low Threshold */
@@ -975,6 +1055,14 @@ id|MAX_FCRTL
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxFCLowThresh
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;hw.fc.low_water
 op_assign
 id|RxFCLowThresh
@@ -992,6 +1080,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;hw.fc.low_water
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1002,13 +1098,14 @@ op_amp
 id|ixgb_fc_rx_pause
 )paren
 )paren
+(brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring RxFCLowThresh when no RxFC&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Flow Control Pause Time Request */
@@ -1063,6 +1160,14 @@ id|MAX_FCPAUSE
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_FCReqTimeout
+OG
+id|bd
+)paren
+(brace
 r_int
 id|pause_time
 op_assign
@@ -1081,6 +1186,18 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+id|adapter-&gt;hw.fc.pause_time
+op_assign
+id|pause_time
+suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;hw.fc.pause_time
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1091,17 +1208,14 @@ op_amp
 id|ixgb_fc_rx_pause
 )paren
 )paren
+(brace
 id|printk
-c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Ignoring FCReqTimeout when no RxFC&bslash;n&quot;
 )paren
 suffix:semicolon
-id|adapter-&gt;hw.fc.pause_time
-op_assign
-id|pause_time
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/* high low and spacing check for rx flow control thresholds */
 r_if
@@ -1197,6 +1311,14 @@ id|MAX_RDTR
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;rx_int_delay
 op_assign
 id|RxIntDelay
@@ -1214,6 +1336,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;rx_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Transmit Interrupt Delay */
@@ -1268,6 +1398,14 @@ id|MAX_TIDV
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_TxIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;tx_int_delay
 op_assign
 id|TxIntDelay
@@ -1285,6 +1423,14 @@ op_amp
 id|opt
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;tx_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Transmit Interrupt Delay Enable */
@@ -1314,6 +1460,14 @@ op_assign
 id|OPTION_ENABLED
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_IntDelayEnable
+OG
+id|bd
+)paren
+(brace
 r_int
 id|ide
 op_assign
@@ -1336,6 +1490,14 @@ id|adapter-&gt;tx_int_delay_enable
 op_assign
 id|ide
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;tx_int_delay_enable
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 )brace
 eof
