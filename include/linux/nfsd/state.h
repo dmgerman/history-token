@@ -74,15 +74,6 @@ DECL|macro|ZERO_STATEID
 mdefine_line|#define ZERO_STATEID(stateid)       (!memcmp((stateid), &amp;zerostateid, sizeof(stateid_t)))
 DECL|macro|ONE_STATEID
 mdefine_line|#define ONE_STATEID(stateid)        (!memcmp((stateid), &amp;onestateid, sizeof(stateid_t)))
-multiline_comment|/* Delegation recall states */
-DECL|macro|NFS4_NO_RECALL
-mdefine_line|#define NFS4_NO_RECALL&t;&t;&t;0x000
-DECL|macro|NFS4_RECALL_IN_PROGRESS
-mdefine_line|#define NFS4_RECALL_IN_PROGRESS&t;&t;0x001
-DECL|macro|NFS4_RECALL_COMPLETE
-mdefine_line|#define NFS4_RECALL_COMPLETE&t;&t;0x002
-DECL|macro|NFS4_REAP_DELEG
-mdefine_line|#define NFS4_REAP_DELEG&t;&t;&t;0x004
 DECL|struct|nfs4_cb_recall
 r_struct
 id|nfs4_cb_recall
@@ -145,11 +136,6 @@ id|atomic_t
 id|dl_count
 suffix:semicolon
 multiline_comment|/* ref count */
-DECL|member|dl_state
-id|atomic_t
-id|dl_state
-suffix:semicolon
-multiline_comment|/* recall state */
 DECL|member|dl_client
 r_struct
 id|nfs4_client

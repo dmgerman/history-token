@@ -1929,15 +1929,6 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Success or failure, now we&squot;re either waiting for lease expiration&n;&t; * or deleg_return. */
-id|atomic_set
-c_func
-(paren
-op_amp
-id|dp-&gt;dl_state
-comma
-id|NFS4_RECALL_COMPLETE
-)paren
-suffix:semicolon
 id|nfs4_put_delegation
 c_func
 (paren
