@@ -2982,7 +2982,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec_minmax
+id|lower_zone_protection_sysctl_handler
 comma
 dot
 id|strategy
