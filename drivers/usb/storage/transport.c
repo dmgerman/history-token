@@ -2774,12 +2774,7 @@ id|srb-&gt;serial_number
 suffix:semicolon
 id|bcb.Lun
 op_assign
-id|srb-&gt;cmnd
-(braket
-l_int|1
-)braket
-op_rshift
-l_int|5
+id|srb-&gt;device-&gt;lun
 suffix:semicolon
 r_if
 c_cond
