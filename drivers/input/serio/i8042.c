@@ -186,6 +186,11 @@ comma
 l_string|&quot;Pretend that controller can only read data from keyboard&quot;
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|i8042_dmi_noloop
+suffix:semicolon
 DECL|variable|i8042_noloop
 r_static
 r_int
