@@ -994,6 +994,11 @@ DECL|member|highspeed
 id|u8
 id|highspeed
 suffix:semicolon
+DECL|member|depth
+id|u16
+id|depth
+suffix:semicolon
+multiline_comment|/* depth in uframes */
 DECL|member|td_list
 r_struct
 id|list_head
@@ -1028,6 +1033,10 @@ DECL|member|next_uframe
 r_int
 id|next_uframe
 suffix:semicolon
+DECL|member|splits
+id|u32
+id|splits
+suffix:semicolon
 multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == f(epdesc-&gt;bInterval) and&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
 DECL|member|interval
 id|u8
@@ -1043,6 +1052,10 @@ suffix:semicolon
 DECL|member|maxp
 id|u16
 id|maxp
+suffix:semicolon
+DECL|member|raw_mask
+id|u16
+id|raw_mask
 suffix:semicolon
 DECL|member|bandwidth
 r_int
@@ -1061,7 +1074,11 @@ DECL|member|buf2
 id|u32
 id|buf2
 suffix:semicolon
-multiline_comment|/* ... sITD won&squot;t use buf[012], and needs TT access ... */
+multiline_comment|/* this is used to initialize sITD&squot;s tt info */
+DECL|member|address
+id|u32
+id|address
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
