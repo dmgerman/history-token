@@ -305,7 +305,8 @@ r_int
 id|numnodes
 suffix:semicolon
 r_extern
-id|pg_data_t
+r_struct
+id|pglist_data
 op_star
 id|pgdat_list
 suffix:semicolon
@@ -351,49 +352,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The following two are not meant for general usage. They are here as&n; * prototypes for the discontig memory code.&n; */
-r_struct
-id|page
-suffix:semicolon
-r_extern
-r_void
-id|calculate_totalpages
-(paren
-id|pg_data_t
-op_star
-id|pgdat
-comma
-r_int
-r_int
-op_star
-id|zones_size
-comma
-r_int
-r_int
-op_star
-id|zholes_size
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|free_area_init_core
-c_func
-(paren
-id|pg_data_t
-op_star
-id|pgdat
-comma
-r_int
-r_int
-op_star
-id|zones_size
-comma
-r_int
-r_int
-op_star
-id|zholes_size
-)paren
-suffix:semicolon
 r_void
 id|get_zone_counts
 c_func
@@ -409,17 +367,12 @@ op_star
 id|inactive
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|build_all_zonelists
 c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-id|pg_data_t
-id|contig_page_data
 suffix:semicolon
 multiline_comment|/**&n; * for_each_pgdat - helper macro to iterate over all nodes&n; * @pgdat - pointer to a pg_data_t variable&n; *&n; * Meant to help with common loops of the form&n; * pgdat = pgdat_list;&n; * while(pgdat) {&n; * &t;...&n; * &t;pgdat = pgdat-&gt;pgdat_next;&n; * }&n; */
 DECL|macro|for_each_pgdat
@@ -500,6 +453,11 @@ multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
 mdefine_line|#define numa_node_id()&t;&t;(__cpu_to_node(smp_processor_id()))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
+r_extern
+r_struct
+id|pglist_data
+id|contig_page_data
+suffix:semicolon
 DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
 DECL|macro|NODE_MEM_MAP

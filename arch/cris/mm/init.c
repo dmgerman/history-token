@@ -1309,7 +1309,8 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+op_amp
+id|contig_page_data
 comma
 l_int|0
 comma
