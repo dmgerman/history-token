@@ -109,6 +109,7 @@ mdefine_line|#define TIOCSCLPGKBUF&t;_IOR(SCLP_IOCTL_LETTER, 20, unsigned short)
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|sclp_tty_driver
 suffix:semicolon
 macro_line|#endif&t;/* __SCLP_TTY_H__ */
