@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_TIMEX_H
 DECL|macro|_ASM_IA64_TIMEX_H
 mdefine_line|#define _ASM_IA64_TIMEX_H
-multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 multiline_comment|/*&n; * 2001/01/18 davidm&t;Removed CLOCK_TICK_RATE.  It makes no sense on IA-64.&n; *&t;&t;&t;Also removed cacheflush_time as it&squot;s entirely unused.&n; */
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|typedef|cycles_t
@@ -39,31 +39,5 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ia64_reset_wall_time
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ia64_update_wall_time
-(paren
-r_int
-id|delta_nsec
-)paren
-suffix:semicolon
 macro_line|#endif /* _ASM_IA64_TIMEX_H */
 eof

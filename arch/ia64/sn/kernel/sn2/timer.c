@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/ia64/sn/kernel/sn2/timer.c&n; *&n; * Copyright (C) 2003 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * linux/arch/ia64/sn/kernel/sn2/timer.c&n; *&n; * Copyright (C) 2003 Silicon Graphics, Inc.&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger &lt;davidm@hpl.hp.com&gt;: updated for new timer-interpolation infrastructure&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -20,6 +20,13 @@ r_int
 r_int
 id|last_wall_rtc
 suffix:semicolon
+DECL|variable|rtc_offset
+r_static
+r_int
+r_int
+id|rtc_offset
+suffix:semicolon
+multiline_comment|/* updated only when xtime write-lock is held! */
 DECL|variable|rtc_nsecs_per_cycle
 r_static
 r_int
@@ -41,9 +48,8 @@ r_void
 )paren
 (brace
 r_return
-(paren
-r_int
-)paren
+id|rtc_offset
+op_plus
 (paren
 id|GET_RTC_COUNTER
 c_func
@@ -66,12 +72,59 @@ r_int
 id|delta_nsec
 )paren
 (brace
-id|last_wall_rtc
+r_int
+r_int
+id|rtc_counter
 op_assign
 id|GET_RTC_COUNTER
 c_func
 (paren
 )paren
+suffix:semicolon
+r_int
+r_int
+id|offset
+op_assign
+id|rtc_offset
+op_plus
+(paren
+id|rtc_counter
+op_minus
+id|last_wall_rtc
+)paren
+op_star
+id|rtc_nsecs_per_cycle
+suffix:semicolon
+multiline_comment|/* Be careful about signed/unsigned comparisons here: */
+r_if
+c_cond
+(paren
+id|delta_nsec
+OL
+l_int|0
+op_logical_or
+(paren
+r_int
+r_int
+)paren
+id|delta_nsec
+OL
+id|offset
+)paren
+id|rtc_offset
+op_assign
+id|offset
+op_minus
+id|delta_nsec
+suffix:semicolon
+r_else
+id|rtc_offset
+op_assign
+l_int|0
+suffix:semicolon
+id|last_wall_rtc
+op_assign
+id|rtc_counter
 suffix:semicolon
 )brace
 r_static
@@ -83,6 +136,10 @@ c_func
 r_void
 )paren
 (brace
+id|rtc_offset
+op_assign
+l_int|0
+suffix:semicolon
 id|last_wall_rtc
 op_assign
 id|GET_RTC_COUNTER
