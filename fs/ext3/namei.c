@@ -4196,6 +4196,21 @@ id|bh
 )paren
 (brace
 multiline_comment|/* read error, skip block &amp; hope for the best */
+id|ext3_error
+c_func
+(paren
+id|sb
+comma
+id|__FUNCTION__
+comma
+l_string|&quot;reading directory #%lu &quot;
+l_string|&quot;offset %lu&bslash;n&quot;
+comma
+id|dir-&gt;i_ino
+comma
+id|block
+)paren
+suffix:semicolon
 id|brelse
 c_func
 (paren
@@ -9196,6 +9211,8 @@ id|sb
 suffix:semicolon
 r_int
 id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|sb
 op_assign
@@ -9238,11 +9255,32 @@ id|err
 )paren
 )paren
 (brace
-id|ext3_warning
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|ext3_error
+c_func
 (paren
 id|inode-&gt;i_sb
 comma
-l_string|&quot;empty_dir&quot;
+id|__FUNCTION__
+comma
+l_string|&quot;error %d reading directory #%lu offset 0&quot;
+comma
+id|err
+comma
+id|inode-&gt;i_ino
+)paren
+suffix:semicolon
+r_else
+id|ext3_warning
+c_func
+(paren
+id|inode-&gt;i_sb
+comma
+id|__FUNCTION__
 comma
 l_string|&quot;bad directory (dir #%lu) - no data block&quot;
 comma
@@ -9402,6 +9440,10 @@ id|sb-&gt;s_blocksize
 )paren
 )paren
 (brace
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|brelse
 (paren
 id|bh
@@ -9436,21 +9478,28 @@ op_logical_neg
 id|bh
 )paren
 (brace
-macro_line|#if 0
+r_if
+c_cond
+(paren
+id|err
+)paren
 id|ext3_error
+c_func
 (paren
 id|sb
 comma
-l_string|&quot;empty_dir&quot;
+id|__FUNCTION__
 comma
-l_string|&quot;directory #%lu contains a hole at offset %lu&quot;
+l_string|&quot;error %d reading directory&quot;
+l_string|&quot; #%lu offset %lu&quot;
+comma
+id|err
 comma
 id|inode-&gt;i_ino
 comma
 id|offset
 )paren
 suffix:semicolon
-macro_line|#endif
 id|offset
 op_add_assign
 id|sb-&gt;s_blocksize
@@ -9473,6 +9522,7 @@ c_cond
 (paren
 op_logical_neg
 id|ext3_check_dir_entry
+c_func
 (paren
 l_string|&quot;empty_dir&quot;
 comma
@@ -9486,13 +9536,34 @@ id|offset
 )paren
 )paren
 (brace
-id|brelse
+id|de
+op_assign
 (paren
-id|bh
+r_struct
+id|ext3_dir_entry_2
+op_star
+)paren
+(paren
+id|bh-&gt;b_data
+op_plus
+id|sb-&gt;s_blocksize
 )paren
 suffix:semicolon
-r_return
+id|offset
+op_assign
+(paren
+id|offset
+op_or
+(paren
+id|sb-&gt;s_blocksize
+op_minus
 l_int|1
+)paren
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+r_continue
 suffix:semicolon
 )brace
 r_if
