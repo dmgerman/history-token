@@ -3,7 +3,6 @@ DECL|macro|DAC960_DriverVersion
 mdefine_line|#define DAC960_DriverVersion&t;&t;&t;&quot;2.5.47&quot;
 DECL|macro|DAC960_DriverDate
 mdefine_line|#define DAC960_DriverDate&t;&t;&t;&quot;14 November 2002&quot;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;

@@ -5,8 +5,6 @@ macro_line|#ifndef SCSIHOST_H_INCLUDED
 DECL|macro|SCSIHOST_H_INCLUDED
 mdefine_line|#define SCSIHOST_H_INCLUDED
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-macro_line|#include &quot;linux/version.h&quot;
-multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;SCSI Public stuff...&n; */
 multiline_comment|/*&n; *&t;Try to keep these at 2^N-1&n; */
 DECL|macro|MPT_FC_CAN_QUEUE

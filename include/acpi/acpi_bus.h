@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  acpi_bus.h - ACPI Bus Driver ($Revision: 22 $)&n; *&n
 macro_line|#ifndef __ACPI_BUS_H__
 DECL|macro|__ACPI_BUS_H__
 mdefine_line|#define __ACPI_BUS_H__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 DECL|macro|PREFIX

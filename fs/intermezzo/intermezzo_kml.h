@@ -1,7 +1,6 @@
 macro_line|#ifndef __INTERMEZZO_KML_H
 DECL|macro|__INTERMEZZO_KML_H
 mdefine_line|#define __INTERMEZZO_KML_H
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &quot;intermezzo_journal.h&quot;

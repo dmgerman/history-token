@@ -8,7 +8,6 @@ DECL|macro|PROCNAME_SIZE
 mdefine_line|#define PROCNAME_SIZE 32
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* represents state of an instance reached with /dev/intermezzo */
 multiline_comment|/* communication pending &amp; processing queues */
 DECL|struct|upc_channel

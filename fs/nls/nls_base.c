@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/fs/nls_base.c&n; *&n; * Native language support--charsets and unicode translations.&n; * By Gordon Chaffee 1996, 1997&n; *&n; * Unicode based case conversion 1999 by Wolfram Pienkoss&n; *&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/config.h&gt;

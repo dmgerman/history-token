@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_AUTO_FS_H
 DECL|macro|_LINUX_AUTO_FS_H
 mdefine_line|#define _LINUX_AUTO_FS_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;asm/types.h&gt;

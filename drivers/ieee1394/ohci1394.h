@@ -2,7 +2,6 @@ multiline_comment|/*&n; * ohci1394.h - driver for OHCI 1394 boards&n; * Copyrigh
 macro_line|#ifndef _OHCI1394_H
 DECL|macro|_OHCI1394_H
 mdefine_line|#define _OHCI1394_H
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|OHCI1394_DRIVER_NAME

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * ntfs.h - Defines for NTFS Linux kernel driver. Part of
 macro_line|#ifndef _LINUX_NTFS_H
 DECL|macro|_LINUX_NTFS_H
 mdefine_line|#define _LINUX_NTFS_H
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;

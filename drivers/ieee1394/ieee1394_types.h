@@ -3,7 +3,6 @@ DECL|macro|_IEEE1394_TYPES_H
 mdefine_line|#define _IEEE1394_TYPES_H
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;

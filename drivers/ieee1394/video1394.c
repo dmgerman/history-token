@@ -24,7 +24,6 @@ macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
-macro_line|#include &quot;nodemgr.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;highlevel.h&quot;

@@ -1,5 +1,4 @@
 multiline_comment|/* kafsasyncd.c: AFS asynchronous operation daemon&n; *&n; * Copyright (C) 2002 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; *&n; * The AFS async daemon is used to the following:&n; * - probe &quot;dead&quot; servers to see whether they&squot;ve come back to life yet.&n; * - probe &quot;live&quot; servers that we haven&squot;t talked to for a while to see if they are better&n; *   candidates for serving than what we&squot;re currently using&n; * - poll volume location servers to keep up to date volume location lists&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

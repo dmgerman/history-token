@@ -3,7 +3,6 @@ macro_line|#ifndef _LINUX_AFS_VNODE_H
 DECL|macro|_LINUX_AFS_VNODE_H
 mdefine_line|#define _LINUX_AFS_VNODE_H
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &quot;server.h&quot;
 macro_line|#include &quot;kafstimod.h&quot;
 macro_line|#ifdef __KERNEL__

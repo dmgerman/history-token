@@ -10,9 +10,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &quot;udfend.h&quot;
 DECL|macro|udf_fixed_to_variable
 mdefine_line|#define udf_fixed_to_variable(x) ( ( ( (x) &gt;&gt; 5 ) * 39 ) + ( (x) &amp; 0x0000001F ) )

@@ -1,7 +1,6 @@
 macro_line|#ifndef __PRESTO_JOURNAL_H
 DECL|macro|__PRESTO_JOURNAL_H
 mdefine_line|#define __PRESTO_JOURNAL_H
-macro_line|#include &lt;linux/version.h&gt;
 DECL|struct|journal_prefix
 r_struct
 id|journal_prefix

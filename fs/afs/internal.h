@@ -2,7 +2,6 @@ multiline_comment|/* internal.h: internal AFS stuff&n; *&n; * Copyright (C) 2002
 macro_line|#ifndef AFS_INTERNAL_H
 DECL|macro|AFS_INTERNAL_H
 mdefine_line|#define AFS_INTERNAL_H
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/fs/befs/datastream.c&n; *&n; * Copyright (C) 2001 Will Dyson &lt;will_dyson@pobox.com&gt;&n; *&n; * Based on portions of file.c by Makoto Kato &lt;m_kato@ga2.so-net.ne.jp&gt;&n; *&n; * Many thanks to Dominic Giampaolo, author of &quot;Practical File System&n; * Design with the Be File System&quot;, for such a helpful book.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

@@ -2,7 +2,6 @@ multiline_comment|/*&n; *   fs/cifs/file.c&n; *&n; *   vfs operations that deal 
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
