@@ -1019,6 +1019,7 @@ suffix:semicolon
 r_extern
 r_struct
 id|tty_driver
+op_star
 id|usb_serial_tty_driver
 suffix:semicolon
 multiline_comment|/* Inline functions to check the sanity of a pointer that is passed to us */
