@@ -1051,6 +1051,14 @@ r_int
 r_int
 id|port
 suffix:semicolon
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
 multiline_comment|/* AF_INET and AF_INET6 share common port field. */
 id|port
 op_assign
@@ -1064,12 +1072,10 @@ l_int|0
 op_eq
 id|asoc-&gt;peer.port
 )paren
-(brace
 id|asoc-&gt;peer.port
 op_assign
 id|port
 suffix:semicolon
-)brace
 multiline_comment|/* Check to see if this is a duplicate. */
 id|peer
 op_assign
@@ -1162,6 +1168,8 @@ op_assign
 id|sctp_frag_point
 c_func
 (paren
+id|sp
+comma
 id|asoc-&gt;pmtu
 )paren
 suffix:semicolon
@@ -1223,14 +1231,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
-id|sp
-op_assign
-id|sctp_sk
-c_func
-(paren
-id|asoc-&gt;base.sk
-)paren
-suffix:semicolon
 id|peer-&gt;hb_interval
 op_assign
 id|sp-&gt;paddrparam.spp_hbinterval
@@ -2783,6 +2783,17 @@ c_cond
 id|pmtu
 )paren
 (brace
+r_struct
+id|sctp_opt
+op_star
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
 id|asoc-&gt;pmtu
 op_assign
 id|pmtu
@@ -2792,6 +2803,8 @@ op_assign
 id|sctp_frag_point
 c_func
 (paren
+id|sp
+comma
 id|pmtu
 )paren
 suffix:semicolon

@@ -913,6 +913,10 @@ r_struct
 id|sctp_event_subscribe
 id|subscribe
 suffix:semicolon
+DECL|member|user_frag
+r_int
+id|user_frag
+suffix:semicolon
 DECL|member|autoclose
 id|__u32
 id|autoclose
@@ -928,6 +932,10 @@ suffix:semicolon
 DECL|member|pd_mode
 id|__u8
 id|pd_mode
+suffix:semicolon
+DECL|member|v4mapped
+id|__u8
+id|v4mapped
 suffix:semicolon
 multiline_comment|/* Receive to here while partial delivery is in effect. */
 DECL|member|pd_lobby

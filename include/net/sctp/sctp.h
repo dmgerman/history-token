@@ -1137,11 +1137,22 @@ r_int
 id|sctp_frag_point
 c_func
 (paren
+r_const
+r_struct
+id|sctp_opt
+op_star
+id|sp
+comma
 r_int
 id|pmtu
 )paren
 (brace
+r_int
+id|frag
+op_assign
 id|pmtu
+suffix:semicolon
+id|frag
 op_sub_assign
 id|SCTP_IP_OVERHEAD
 op_plus
@@ -1151,7 +1162,7 @@ r_struct
 id|sctp_data_chunk
 )paren
 suffix:semicolon
-id|pmtu
+id|frag
 op_sub_assign
 r_sizeof
 (paren
@@ -1159,8 +1170,25 @@ r_struct
 id|sctp_sack_chunk
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sp-&gt;user_frag
+)paren
+id|frag
+op_assign
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|frag
+comma
+id|sp-&gt;user_frag
+)paren
+suffix:semicolon
 r_return
-id|pmtu
+id|frag
 suffix:semicolon
 )brace
 multiline_comment|/* Walk through a list of TLV parameters.  Don&squot;t trust the&n; * individual parameter lengths and instead depend on&n; * the chunk length to indicate when to stop.  Make sure&n; * there is room for a param header too.&n; */
@@ -1603,6 +1631,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
+multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
 DECL|function|__sctp_style
@@ -1612,6 +1641,7 @@ r_inline
 id|__sctp_style
 c_func
 (paren
+r_const
 r_struct
 id|sock
 op_star
@@ -1633,6 +1663,7 @@ op_eq
 id|style
 suffix:semicolon
 )brace
+multiline_comment|/* Is the association in this state? */
 DECL|macro|sctp_state
 mdefine_line|#define sctp_state(asoc, state) __sctp_state((asoc), (SCTP_STATE_##state))
 DECL|function|__sctp_state
@@ -1642,6 +1673,7 @@ r_inline
 id|__sctp_state
 c_func
 (paren
+r_const
 r_struct
 id|sctp_association
 op_star
@@ -1657,6 +1689,7 @@ op_eq
 id|state
 suffix:semicolon
 )brace
+multiline_comment|/* Is the socket in this state? */
 DECL|macro|sctp_sstate
 mdefine_line|#define sctp_sstate(sk, state) __sctp_sstate((sk), (SCTP_SS_##state))
 DECL|function|__sctp_sstate
@@ -1666,6 +1699,7 @@ r_inline
 id|__sctp_sstate
 c_func
 (paren
+r_const
 r_struct
 id|sock
 op_star
