@@ -4327,6 +4327,8 @@ suffix:semicolon
 id|msc-&gt;v24_sig
 op_assign
 id|v24_sig
+op_or
+l_int|0x01
 suffix:semicolon
 op_star
 id|ptr
