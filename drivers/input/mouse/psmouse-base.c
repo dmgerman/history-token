@@ -1895,6 +1895,9 @@ id|PSMOUSE_IMEX
 r_if
 c_cond
 (paren
+op_logical_neg
+id|set_properties
+op_logical_or
 id|synaptics_init
 c_func
 (paren
