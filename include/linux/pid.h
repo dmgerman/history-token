@@ -46,7 +46,7 @@ id|task_list
 suffix:semicolon
 DECL|member|hash_chain
 r_struct
-id|list_head
+id|hlist_node
 id|hash_chain
 suffix:semicolon
 )brace
