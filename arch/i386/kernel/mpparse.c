@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_mpparse.h&gt;
+macro_line|#include &lt;bios_ebda.h&gt;
 multiline_comment|/* Have we found an MP table */
 DECL|variable|smp_found_config
 r_int
@@ -3060,14 +3061,46 @@ c_cond
 (paren
 id|mpf-&gt;mpf_physptr
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We cannot access to MPC table to compute&n;&t;&t;&t;&t; * table size yet, as only few megabytes from&n;&t;&t;&t;&t; * the bottom is mapped now.&n;&t;&t;&t;&t; * PC-9800&squot;s MPC table places on the very last&n;&t;&t;&t;&t; * of physical memory; so that simply reserving&n;&t;&t;&t;&t; * PAGE_SIZE from mpg-&gt;mpf_physptr yields BUG()&n;&t;&t;&t;&t; * in reserve_bootmem.&n;&t;&t;&t;&t; */
+r_int
+r_int
+id|size
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
+r_int
+r_int
+id|end
+op_assign
+id|max_low_pfn
+op_star
+id|PAGE_SIZE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mpf-&gt;mpf_physptr
+op_plus
+id|size
+OG
+id|end
+)paren
+id|size
+op_assign
+id|end
+op_minus
+id|mpf-&gt;mpf_physptr
+suffix:semicolon
 id|reserve_bootmem
 c_func
 (paren
 id|mpf-&gt;mpf_physptr
 comma
-id|PAGE_SIZE
+id|size
 )paren
 suffix:semicolon
+)brace
 id|mpf_found
 op_assign
 id|mpf
@@ -3136,22 +3169,16 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * If it is an SMP machine we should know now, unless the&n;&t; * configuration is in an EISA/MCA bus machine with an&n;&t; * extended bios data area.&n;&t; *&n;&t; * there is a real-mode segmented pointer pointing to the&n;&t; * 4K EBDA area at 0x40E, calculate and scan it here.&n;&t; *&n;&t; * NOTE! There are Linux loaders that will corrupt the EBDA&n;&t; * area, and as such this kind of SMP config may be less&n;&t; * trustworthy, simply because the SMP table may have been&n;&t; * stomped on during early boot. These loaders are buggy and&n;&t; * should be fixed.&n;&t; *&n;&t; * MP1.4 SPEC states to only scan first 1K of 4K EBDA.&n;&t; */
 id|address
 op_assign
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-id|phys_to_virt
+id|get_bios_ebda
 c_func
 (paren
-l_int|0x40E
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|address
-op_lshift_assign
-l_int|4
-suffix:semicolon
+)paren
 id|smp_scan_config
 c_func
 (paren

@@ -133,6 +133,10 @@ c_loop
 id|req
 op_assign
 id|elv_next_request
+c_func
+(paren
+id|q
+)paren
 )paren
 op_ne
 l_int|NULL

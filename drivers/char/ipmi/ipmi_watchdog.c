@@ -2487,7 +2487,7 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|down_read
+id|down_write
 c_func
 (paren
 op_amp
@@ -3163,7 +3163,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|action_val
+id|preaction_val
 op_assign
 id|WDOG_PRETIMEOUT_NONE
 suffix:semicolon
@@ -3238,7 +3238,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|action_val
+id|preop_val
 op_assign
 id|WDOG_PREOP_NONE
 suffix:semicolon

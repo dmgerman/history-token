@@ -768,7 +768,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|cached_A1
+id|cached_slave_mask
 comma
 l_int|0xa1
 )paren
@@ -809,7 +809,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|cached_21
+id|cached_master_mask
 comma
 l_int|0x21
 )paren

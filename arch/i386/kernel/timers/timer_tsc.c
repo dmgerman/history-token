@@ -9,6 +9,8 @@ macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* processor.h for distable_tsc flag */
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &quot;io_ports.h&quot;
+macro_line|#include &quot;mach_timer.h&quot;
 DECL|variable|__initdata
 r_int
 id|tsc_disable
@@ -116,6 +118,12 @@ op_rshift
 id|CYC2NS_SCALE_FACTOR
 suffix:semicolon
 )brace
+DECL|variable|count2
+r_static
+r_int
+id|count2
+suffix:semicolon
+multiline_comment|/* counter for mark_offset_tsc() */
 multiline_comment|/* Cached *multiplier* to convert TSC counts to microseconds.&n; * (see the equation below).&n; * Equal to 2^32 * (1 / (clocks per usec) ).&n; * Initialized in time_init.&n; */
 DECL|variable|fast_gettimeoffset_quotient
 r_static
@@ -283,10 +291,6 @@ r_int
 id|count1
 op_assign
 l_int|0
-comma
-id|count2
-op_assign
-id|LATCH
 suffix:semicolon
 r_int
 r_int
@@ -340,7 +344,7 @@ c_func
 (paren
 l_int|0x00
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 multiline_comment|/* latch the count ASAP */
@@ -349,7 +353,7 @@ op_assign
 id|inb_p
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* read the latched count */
@@ -358,7 +362,7 @@ op_or_assign
 id|inb
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 op_lshift
 l_int|8
@@ -580,8 +584,6 @@ id|loops
 suffix:semicolon
 )brace
 multiline_comment|/* ------ Calibrate the TSC ------- &n; * Return 2^32 * (1 / (TSC clocks per usec)) for do_fast_gettimeoffset().&n; * Too much 64-bit arithmetic here to do this cleanly in C, and for&n; * accuracy&squot;s sake we want to keep the overhead on the CTC speaker (channel 2)&n; * output busy loop as low as possible. We avoid reading the CTC registers&n; * directly because of the awkward 8-bit access mechanism of the 82C54&n; * device.&n; */
-DECL|macro|CALIBRATE_LATCH
-mdefine_line|#define CALIBRATE_LATCH&t;(5 * LATCH)
 DECL|macro|CALIBRATE_TIME
 mdefine_line|#define CALIBRATE_TIME&t;(5 * 1000020/HZ)
 DECL|function|calibrate_tsc
@@ -594,58 +596,11 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Set the Gate high, disable speaker */
-id|outb
+id|mach_prepare_counter
 c_func
 (paren
-(paren
-id|inb
-c_func
-(paren
-l_int|0x61
-)paren
-op_amp
-op_complement
-l_int|0x02
-)paren
-op_or
-l_int|0x01
-comma
-l_int|0x61
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now let&squot;s take care of CTC channel 2&n;&t; *&n;&t; * Set the Gate high, program CTC channel 2 for mode 0,&n;&t; * (interrupt on terminal count mode), binary count,&n;&t; * load 5 * LATCH count, (LSB and MSB) to begin countdown.&n;&t; *&n;&t; * Some devices need a delay here.&n;&t; */
-id|outb
-c_func
-(paren
-l_int|0xb0
-comma
-l_int|0x43
-)paren
-suffix:semicolon
-multiline_comment|/* binary, mode 0, LSB/MSB, Ch 2 */
-id|outb_p
-c_func
-(paren
-id|CALIBRATE_LATCH
-op_amp
-l_int|0xff
-comma
-l_int|0x42
-)paren
-suffix:semicolon
-multiline_comment|/* LSB of count */
-id|outb_p
-c_func
-(paren
-id|CALIBRATE_LATCH
-op_rshift
-l_int|8
-comma
-l_int|0x42
-)paren
-suffix:semicolon
-multiline_comment|/* MSB of count */
 (brace
 r_int
 r_int
@@ -671,30 +626,11 @@ comma
 id|starthigh
 )paren
 suffix:semicolon
-id|count
-op_assign
-l_int|0
-suffix:semicolon
-r_do
-(brace
-id|count
-op_increment
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|inb
+id|mach_countup
 c_func
 (paren
-l_int|0x61
-)paren
 op_amp
-l_int|0x20
-)paren
-op_eq
-l_int|0
+id|count
 )paren
 suffix:semicolon
 id|rdtsc
@@ -1078,6 +1014,11 @@ id|CPUFREQ_TRANSITION_NOTIFIER
 )paren
 suffix:semicolon
 macro_line|#endif
+id|count2
+op_assign
+id|LATCH
+suffix:semicolon
+multiline_comment|/* initialize counter for mark_offset_tsc() */
 r_if
 c_cond
 (paren

@@ -17,6 +17,13 @@ id|spinlock_t
 id|i8253_lock
 suffix:semicolon
 macro_line|#include &quot;do_timer.h&quot;
+macro_line|#include &quot;io_ports.h&quot;
+DECL|variable|count_p
+r_static
+r_int
+id|count_p
+suffix:semicolon
+multiline_comment|/* counter in get_offset_pit() */
 DECL|function|init_pit
 r_static
 r_int
@@ -54,6 +61,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;Warning: clock= override failed. Defaulting to PIT&bslash;n&quot;
 )paren
+suffix:semicolon
+id|count_p
+op_assign
+id|LATCH
 suffix:semicolon
 r_return
 l_int|0
@@ -141,13 +152,6 @@ id|flags
 suffix:semicolon
 r_static
 r_int
-id|count_p
-op_assign
-id|LATCH
-suffix:semicolon
-multiline_comment|/* for the first call after boot */
-r_static
-r_int
 r_int
 id|jiffies_p
 op_assign
@@ -173,7 +177,7 @@ c_func
 (paren
 l_int|0x00
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 multiline_comment|/* latch the count ASAP */
@@ -182,7 +186,7 @@ op_assign
 id|inb_p
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 multiline_comment|/* read the latched count */
@@ -196,7 +200,7 @@ op_or_assign
 id|inb_p
 c_func
 (paren
-l_int|0x40
+id|PIT_CH0
 )paren
 op_lshift
 l_int|8
@@ -215,7 +219,7 @@ c_func
 (paren
 l_int|0x34
 comma
-l_int|0x43
+id|PIT_MODE
 )paren
 suffix:semicolon
 id|outb_p
@@ -225,7 +229,7 @@ id|LATCH
 op_amp
 l_int|0xff
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 id|outb
@@ -235,7 +239,7 @@ id|LATCH
 op_rshift
 l_int|8
 comma
-l_int|0x40
+id|PIT_CH0
 )paren
 suffix:semicolon
 id|count

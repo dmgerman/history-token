@@ -1091,7 +1091,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * i8042_open() is called when a port is open by the higher layer.&n; * It allocates the interrupt and enables in in the chip.&n; */
+multiline_comment|/*&n; * i8042_open() is called when a port is open by the higher layer.&n; * It allocates the interrupt and enables it in the chip.&n; */
 DECL|function|i8042_open
 r_static
 r_int
