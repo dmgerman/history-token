@@ -229,23 +229,25 @@ DECL|macro|HID_FEATURE_REPORT
 mdefine_line|#define HID_FEATURE_REPORT&t;2
 multiline_comment|/*&n; * HID device quirks.&n; */
 DECL|macro|HID_QUIRK_INVERT
-mdefine_line|#define HID_QUIRK_INVERT&t;&t;0x001
+mdefine_line|#define HID_QUIRK_INVERT&t;&t;&t;0x001
 DECL|macro|HID_QUIRK_NOTOUCH
-mdefine_line|#define HID_QUIRK_NOTOUCH&t;&t;0x002
+mdefine_line|#define HID_QUIRK_NOTOUCH&t;&t;&t;0x002
 DECL|macro|HID_QUIRK_IGNORE
-mdefine_line|#define HID_QUIRK_IGNORE&t;&t;0x004
+mdefine_line|#define HID_QUIRK_IGNORE&t;&t;&t;0x004
 DECL|macro|HID_QUIRK_NOGET
-mdefine_line|#define HID_QUIRK_NOGET&t;&t;&t;0x008
+mdefine_line|#define HID_QUIRK_NOGET&t;&t;&t;&t;0x008
 DECL|macro|HID_QUIRK_HIDDEV
-mdefine_line|#define HID_QUIRK_HIDDEV&t;&t;0x010
+mdefine_line|#define HID_QUIRK_HIDDEV&t;&t;&t;0x010
 DECL|macro|HID_QUIRK_BADPAD
-mdefine_line|#define HID_QUIRK_BADPAD&t;&t;0x020
+mdefine_line|#define HID_QUIRK_BADPAD&t;&t;&t;0x020
 DECL|macro|HID_QUIRK_MULTI_INPUT
-mdefine_line|#define HID_QUIRK_MULTI_INPUT&t;&t;0x040
-DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK
-mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK&t;0x080
+mdefine_line|#define HID_QUIRK_MULTI_INPUT&t;&t;&t;0x040
+DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_BACK
+mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_BACK&t;0x080
+DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA
+mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_EXTRA&t;0x100
 DECL|macro|HID_QUIRK_2WHEEL_MOUSE_HACK_ON
-mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_ON&t;0x100
+mdefine_line|#define HID_QUIRK_2WHEEL_MOUSE_HACK_ON&t;&t;0x200
 multiline_comment|/*&n; * This is the global environment of the parser. This information is&n; * persistent for main-items. The global environment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
