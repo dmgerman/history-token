@@ -210,7 +210,7 @@ id|bi_enetaddr
 l_int|6
 )braket
 suffix:semicolon
-multiline_comment|/* Ethernet adress */
+multiline_comment|/* Ethernet address */
 DECL|member|bi_ethspeed
 r_int
 r_int

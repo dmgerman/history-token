@@ -5482,7 +5482,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* *************************&n;   * DMA memory management *&n;   *************************/
-multiline_comment|/* Because the Maestro can only take addresses relative to the PCM base adress&n;   register :( */
+multiline_comment|/* Because the Maestro can only take addresses relative to the PCM base address&n;   register :( */
 DECL|function|calc_available_memory_size
 r_static
 r_int

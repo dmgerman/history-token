@@ -915,7 +915,7 @@ comma
 id|retlen
 )paren
 suffix:semicolon
-multiline_comment|/* If wbuf_ofs is not initialized, set it to target adress */
+multiline_comment|/* If wbuf_ofs is not initialized, set it to target address */
 r_if
 c_cond
 (paren

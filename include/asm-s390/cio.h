@@ -278,7 +278,7 @@ DECL|member|flags
 id|__u8
 id|flags
 suffix:semicolon
-multiline_comment|/* flags, like IDA adressing, etc. */
+multiline_comment|/* flags, like IDA addressing, etc. */
 DECL|member|count
 id|__u16
 id|count

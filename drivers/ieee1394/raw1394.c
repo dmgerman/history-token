@@ -909,7 +909,7 @@ suffix:semicolon
 id|host_count
 op_decrement
 suffix:semicolon
-multiline_comment|/* &n;                   FIXME: adressranges should be removed &n;                   and fileinfo states should be initialized&n;                   (including setting generation to &n;                   internal-generation ...)&n;                */
+multiline_comment|/* &n;                   FIXME: addressranges should be removed &n;                   and fileinfo states should be initialized&n;                   (including setting generation to &n;                   internal-generation ...)&n;                */
 )brace
 id|spin_unlock_irqrestore
 c_func

@@ -17,7 +17,7 @@ DECL|macro|MCFMBUS_IRQ_LEVEL
 mdefine_line|#define MCFMBUS_IRQ_LEVEL&t;0x07&t;/*IRQ Level 1*/
 DECL|macro|MCFMBUS_ADDRESS
 mdefine_line|#define MCFMBUS_ADDRESS&t;&t;0x01
-multiline_comment|/*&n;*&t;Define the 5307 MBUS register set adresses&n;*/
+multiline_comment|/*&n;*&t;Define the 5307 MBUS register set addresses&n;*/
 DECL|macro|MCFMBUS_MADR
 mdefine_line|#define MCFMBUS_MADR&t;0x00
 DECL|macro|MCFMBUS_MFDR

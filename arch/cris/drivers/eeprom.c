@@ -2499,7 +2499,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Reads from current adress. */
+multiline_comment|/* Reads from current address. */
 DECL|function|read_from_eeprom
 r_static
 r_int

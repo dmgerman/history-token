@@ -7355,7 +7355,7 @@ id|PARPORT_IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* --- Mode detection ------------------------------------- */
-multiline_comment|/*&n; * Checks for port existence, all ports support SPP MODE&n; * Returns: &n; *         0           :  No parallel port at this adress&n; *  PARPORT_MODE_PCSPP :  SPP port detected &n; *                        (if the user specified an ioport himself,&n; *                         this shall always be the case!)&n; *&n; */
+multiline_comment|/*&n; * Checks for port existence, all ports support SPP MODE&n; * Returns: &n; *         0           :  No parallel port at this address&n; *  PARPORT_MODE_PCSPP :  SPP port detected &n; *                        (if the user specified an ioport himself,&n; *                         this shall always be the case!)&n; *&n; */
 DECL|function|parport_SPP_supported
 r_static
 r_int

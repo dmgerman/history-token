@@ -5402,7 +5402,7 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Send a setup frame for DM9132&n; *&t;This setup frame initilize DM910X addres filter mode&n;*/
+multiline_comment|/*&n; *&t;Send a setup frame for DM9132&n; *&t;This setup frame initilize DM910X address filter mode&n;*/
 DECL|function|dm9132_id_table
 r_static
 r_void
@@ -5633,7 +5633,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Send a setup frame for DM9102/DM9102A&n; *&t;This setup frame initilize DM910X addres filter mode&n; */
+multiline_comment|/*&n; *&t;Send a setup frame for DM9102/DM9102A&n; *&t;This setup frame initilize DM910X address filter mode&n; */
 DECL|function|send_filter_frame
 r_static
 r_void
@@ -6995,7 +6995,7 @@ comma
 id|PHY_DATA_1
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy addres */
+multiline_comment|/* Send Phy address */
 r_for
 c_loop
 (paren
@@ -7028,7 +7028,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register addres */
+multiline_comment|/* Send register address */
 r_for
 c_loop
 (paren
@@ -7236,7 +7236,7 @@ comma
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy addres */
+multiline_comment|/* Send Phy address */
 r_for
 c_loop
 (paren
@@ -7269,7 +7269,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register addres */
+multiline_comment|/* Send register address */
 r_for
 c_loop
 (paren
