@@ -174,13 +174,17 @@ suffix:semicolon
 r_int
 id|hdr_len
 suffix:semicolon
-multiline_comment|/* &n;&t; * Add the 802.2 SNAP header if IP as the IPv4 code calls  &n;&t; * dev-&gt;hard_header directly.&n;&t; */
+multiline_comment|/* &n;&t; * Add the 802.2 SNAP header if IP as the IPv4/IPv6 code calls  &n;&t; * dev-&gt;hard_header directly.&n;&t; */
 r_if
 c_cond
 (paren
 id|type
 op_eq
 id|ETH_P_IP
+op_logical_or
+id|type
+op_eq
+id|ETH_P_IPV6
 op_logical_or
 id|type
 op_eq
@@ -744,6 +748,14 @@ id|ntohs
 c_func
 (paren
 id|ETH_P_IP
+)paren
+op_logical_or
+id|trllc-&gt;ethertype
+op_eq
+id|ntohs
+c_func
+(paren
+id|ETH_P_IPV6
 )paren
 op_logical_or
 id|trllc-&gt;ethertype
