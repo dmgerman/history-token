@@ -9552,6 +9552,14 @@ op_amp
 id|chip-&gt;reg_lock
 )paren
 suffix:semicolon
+id|snd_power_change_state
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_POWER_D3hot
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
