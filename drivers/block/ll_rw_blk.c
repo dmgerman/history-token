@@ -366,6 +366,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * blk_queue_prep_rq - set a prepare_request function for queue&n; * @q:&t;&t;queue&n; * @pfn:&t;prepare_request function&n; *&n; * It&squot;s possible for a queue to register a prepare_request callback which&n; * is invoked before the request is handed to the request_fn. The goal of&n; * the function is to prepare a request for I/O, it can be used to build a&n; * cdb from the request data for instance.&n; *&n; */
 DECL|function|blk_queue_prep_rq
 r_void
 id|blk_queue_prep_rq
@@ -383,6 +384,26 @@ id|pfn
 id|q-&gt;prep_rq_fn
 op_assign
 id|pfn
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * blk_queue_merge_bvec - set a merge_bvec function for queue&n; * @q:&t;&t;queue&n; * @mbfn:&t;merge_bvec_fn&n; *&n; * Usually queues have static limitations on the max sectors or segments that&n; * we can put in a request. Stacking drivers may have some settings that&n; * are dynamic, and thus we have to query the queue whether it is ok to&n; * add a new bio_vec to a bio at a given offset or not. If the block device&n; * has such limitations, it needs to register a merge_bvec_fn to control&n; * the size of bio&squot;s sent to it. Per default now merge_bvec_fn is defined for&n; * a queue, and only the fixed limits are honored.&n; *&n; */
+DECL|function|blk_queue_merge_bvec
+r_void
+id|blk_queue_merge_bvec
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|merge_bvec_fn
+op_star
+id|mbfn
+)paren
+(brace
+id|q-&gt;merge_bvec_fn
+op_assign
+id|mbfn
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * blk_queue_make_request - define an alternate make_request function for a device&n; * @q:  the request queue for the device to be affected&n; * @mfn: the alternate make_request function&n; *&n; * Description:&n; *    The normal way for &amp;struct bios to be passed to a device&n; *    driver is for them to be collected into requests on a request&n; *    queue, and then to allow the device driver to select requests&n; *    off that queue when it is ready.  This works well for many block&n; *    devices. However some block devices (typically virtual devices&n; *    such as md or lvm) do not benefit from the processing on the&n; *    request queue, and are served best by having the requests passed&n; *    directly to them.  This can be achieved by providing a function&n; *    to blk_queue_make_request().&n; *&n; * Caveat:&n; *    The driver that does this *must* be able to deal appropriately&n; *    with buffers in &quot;highmemory&quot;. This can be accomplished by either calling&n; *    bio_kmap() to get a temporary kernel mapping, or by calling&n; *    blk_queue_bounce() to create a buffer in normal memory.&n; **/
@@ -7138,6 +7159,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_queue_prep_rq
+)paren
+suffix:semicolon
+DECL|variable|blk_queue_merge_bvec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_merge_bvec
 )paren
 suffix:semicolon
 DECL|variable|blk_queue_find_tag
