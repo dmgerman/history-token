@@ -6680,6 +6680,7 @@ id|sk-&gt;zapped
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;TCP: double destroy sk=%p&bslash;n&quot;
 comma
 id|sk
@@ -10026,6 +10027,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;TCP: Hash tables configured (established %d bind %d)&bslash;n&quot;
 comma
 id|tcp_ehash_size
