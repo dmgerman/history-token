@@ -80,7 +80,7 @@ mdefine_line|#define EhnMIIwrite     0x0020
 DECL|macro|EhnMIIdataShift
 mdefine_line|#define EhnMIIdataShift 16
 DECL|macro|EhnMIIpmdShift
-mdefine_line|#define EhnMIIpmdShift  6      /* 7016 only */
+mdefine_line|#define EhnMIIpmdShift  6&t;/* 7016 only */
 DECL|macro|EhnMIIregShift
 mdefine_line|#define EhnMIIregShift  11
 DECL|macro|EhnMIIreq
@@ -1208,7 +1208,6 @@ id|i
 OG
 l_int|999
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1217,7 +1216,6 @@ id|PFX
 l_string|&quot;Phy write Error!!!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 r_int
 DECL|function|smdio_read
@@ -1341,7 +1339,6 @@ id|i
 OG
 l_int|999
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1350,7 +1347,6 @@ id|PFX
 l_string|&quot;Phy Read Error!!!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|l
 op_assign
@@ -1362,12 +1358,14 @@ id|GMIIControl
 suffix:semicolon
 r_return
 (paren
+(paren
 id|u16
 )paren
 (paren
 id|l
 op_rshift
 id|EhnMIIdataShift
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1467,10 +1465,8 @@ op_amp
 id|BIT_7
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|udelay
 c_func
 (paren
@@ -2501,7 +2497,6 @@ l_int|0x1c01
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 1000 bps Full Duplex mode. &bslash;n&quot;
 )paren
@@ -2520,7 +2515,6 @@ l_int|0x0c01
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 1000 bps Half Duplex mode. &bslash;n&quot;
 )paren
@@ -2539,7 +2533,6 @@ l_int|0x1801
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 100 bps Full Duplex mode. &bslash;n&quot;
 )paren
@@ -2558,7 +2551,6 @@ l_int|0x0801
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 100 bps Half Duplex mode. &bslash;n&quot;
 )paren
@@ -2577,7 +2569,6 @@ l_int|0x1401
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 10 bps Full Duplex mode. &bslash;n&quot;
 )paren
@@ -2596,7 +2587,6 @@ l_int|0x0401
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;SiS190 Link on 10 bps Half Duplex mode. &bslash;n&quot;
 )paren
