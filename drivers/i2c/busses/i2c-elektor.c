@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;i2c-pcf8584.h&quot;
+macro_line|#include &quot;../i2c-pcf8584.h&quot;
 DECL|macro|DEFAULT_BASE
 mdefine_line|#define DEFAULT_BASE 0x330
 DECL|variable|base
