@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NAND flash simulator.&n; *&n; * Author: Artem B. Bityuckiy &lt;dedekind@oktetlabs.ru&gt;, &lt;dedekind@infradead.org&gt;&n; *&n; * Copyright (C) 2004 Nokia Corporation &n; *&n; * Note: NS means &quot;NAND Simulator&quot;.&n; * Note: Input means input TO flash chip, output means output FROM chip.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any later&n; * version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General&n; * Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * $Id: nandsim.c,v 1.3 2004/11/26 13:00:24 dedekind Exp $&n; */
+multiline_comment|/*&n; * NAND flash simulator.&n; *&n; * Author: Artem B. Bityuckiy &lt;dedekind@oktetlabs.ru&gt;, &lt;dedekind@infradead.org&gt;&n; *&n; * Copyright (C) 2004 Nokia Corporation &n; *&n; * Note: NS means &quot;NAND Simulator&quot;.&n; * Note: Input means input TO flash chip, output means output FROM chip.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any later&n; * version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General&n; * Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA&n; *&n; * $Id: nandsim.c,v 1.7 2004/12/06 11:53:06 dedekind Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -20,7 +20,7 @@ macro_line|#if !defined(CONFIG_NANDSIM_FIRST_ID_BYTE)  || &bslash;&n;    !define
 DECL|macro|CONFIG_NANDSIM_FIRST_ID_BYTE
 mdefine_line|#define CONFIG_NANDSIM_FIRST_ID_BYTE  0x98
 DECL|macro|CONFIG_NANDSIM_SECOND_ID_BYTE
-mdefine_line|#define CONFIG_NANDSIM_SECOND_ID_BYTE 0x36
+mdefine_line|#define CONFIG_NANDSIM_SECOND_ID_BYTE 0x39
 DECL|macro|CONFIG_NANDSIM_THIRD_ID_BYTE
 mdefine_line|#define CONFIG_NANDSIM_THIRD_ID_BYTE  0xFF /* No byte */
 DECL|macro|CONFIG_NANDSIM_FOURTH_ID_BYTE
@@ -387,9 +387,6 @@ comma
 l_string|&quot;Output debug information if not zero&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * There is no macro for 0x30 command which is used in &quot;large page&quot;&n; * devices in standard mtd header, define it here. &n; */
-DECL|macro|NAND_CMD_READ2LP
-mdefine_line|#define NAND_CMD_READ2LP 0x30
 multiline_comment|/* The largest possible page size */
 DECL|macro|NS_LARGEST_PAGE_SIZE
 mdefine_line|#define NS_LARGEST_PAGE_SIZE&t;2048
@@ -398,13 +395,13 @@ DECL|macro|NS_OUTPUT_PREFIX
 mdefine_line|#define NS_OUTPUT_PREFIX &quot;[nandsim]&quot;
 multiline_comment|/* Simulator&squot;s output macros (logging, debugging, warning, error) */
 DECL|macro|NS_LOG
-mdefine_line|#define NS_LOG(args...) &bslash;&n;&t;do { if (log) printk(KERN_INFO NS_OUTPUT_PREFIX &quot; log: &quot; args); } while(0)
+mdefine_line|#define NS_LOG(args...) &bslash;&n;&t;do { if (log) printk(KERN_DEBUG NS_OUTPUT_PREFIX &quot; log: &quot; args); } while(0)
 DECL|macro|NS_DBG
-mdefine_line|#define NS_DBG(args...) &bslash;&n;&t;do { if (dbg) printk(KERN_INFO NS_OUTPUT_PREFIX &quot; debug: &quot; args); } while(0)
+mdefine_line|#define NS_DBG(args...) &bslash;&n;&t;do { if (dbg) printk(KERN_DEBUG NS_OUTPUT_PREFIX &quot; debug: &quot; args); } while(0)
 DECL|macro|NS_WARN
-mdefine_line|#define NS_WARN(args...) &bslash;&n;&t;do { printk(KERN_INFO NS_OUTPUT_PREFIX &quot; warnig: &quot; args); } while(0)
+mdefine_line|#define NS_WARN(args...) &bslash;&n;&t;do { printk(KERN_WARNING NS_OUTPUT_PREFIX &quot; warnig: &quot; args); } while(0)
 DECL|macro|NS_ERR
-mdefine_line|#define NS_ERR(args...) &bslash;&n;&t;do { printk(KERN_INFO NS_OUTPUT_PREFIX &quot; errorr: &quot; args); } while(0)
+mdefine_line|#define NS_ERR(args...) &bslash;&n;&t;do { printk(KERN_ERR NS_OUTPUT_PREFIX &quot; errorr: &quot; args); } while(0)
 multiline_comment|/* Busy-wait delay macros (microseconds, milliseconds) */
 DECL|macro|NS_UDELAY
 mdefine_line|#define NS_UDELAY(us) &bslash;&n;        do { if (do_delays) udelay(us); } while(0)
@@ -430,8 +427,8 @@ DECL|macro|STATE_CMD_READ0
 mdefine_line|#define STATE_CMD_READ0        0x00000001 /* read data from the beginning of page */
 DECL|macro|STATE_CMD_READ1
 mdefine_line|#define STATE_CMD_READ1        0x00000002 /* read data from the second half of page */
-DECL|macro|STATE_CMD_READ2LP
-mdefine_line|#define STATE_CMD_READ2LP      0x00000003 /* read data second command (large page devices) */
+DECL|macro|STATE_CMD_READSTART
+mdefine_line|#define STATE_CMD_READSTART      0x00000003 /* read data second command (large page devices) */
 DECL|macro|STATE_CMD_PAGEPROG
 mdefine_line|#define STATE_CMD_PAGEPROG     0x00000004 /* start page programm */
 DECL|macro|STATE_CMD_READOOB
@@ -1025,7 +1022,7 @@ id|STATE_CMD_READ0
 comma
 id|STATE_ADDR_PAGE
 comma
-id|STATE_CMD_READ2LP
+id|STATE_CMD_READSTART
 op_or
 id|ACTION_CPY
 comma
@@ -1781,10 +1778,10 @@ r_return
 l_string|&quot;STATE_CMD_READOOB&quot;
 suffix:semicolon
 r_case
-id|STATE_CMD_READ2LP
+id|STATE_CMD_READSTART
 suffix:colon
 r_return
-l_string|&quot;STATE_CMD_READ2LP&quot;
+l_string|&quot;STATE_CMD_READSTART&quot;
 suffix:semicolon
 r_case
 id|STATE_CMD_ERASE1
@@ -1920,7 +1917,7 @@ r_case
 id|NAND_CMD_READ0
 suffix:colon
 r_case
-id|NAND_CMD_READ2LP
+id|NAND_CMD_READSTART
 suffix:colon
 r_case
 id|NAND_CMD_PAGEPROG
@@ -1998,10 +1995,10 @@ r_return
 id|STATE_CMD_PAGEPROG
 suffix:semicolon
 r_case
-id|NAND_CMD_READ2LP
+id|NAND_CMD_READSTART
 suffix:colon
 r_return
-id|STATE_CMD_READ2LP
+id|STATE_CMD_READSTART
 suffix:semicolon
 r_case
 id|NAND_CMD_READOOB
