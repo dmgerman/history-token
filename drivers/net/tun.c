@@ -332,10 +332,10 @@ id|dev-&gt;mtu
 op_assign
 l_int|1500
 suffix:semicolon
-multiline_comment|/* Type PPP seems most suitable */
+multiline_comment|/* Zero header length */
 id|dev-&gt;type
 op_assign
-id|ARPHRD_PPP
+id|ARPHRD_NONE
 suffix:semicolon
 id|dev-&gt;flags
 op_assign

@@ -4403,6 +4403,8 @@ op_complement
 id|MSG_DONTWAIT
 op_or
 id|MSG_EOR
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_return

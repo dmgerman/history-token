@@ -1984,6 +1984,16 @@ c_func
 id|this_cpu
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If sync wakeup then subtract the (maximum possible) effect of&n;&t; * the currently running task from the load of the current CPU:&n;&t; */
+r_if
+c_cond
+(paren
+id|sync
+)paren
+id|this_load
+op_sub_assign
+id|SCHED_LOAD_SCALE
+suffix:semicolon
 multiline_comment|/* Don&squot;t pull the task off an idle CPU to a busy one */
 r_if
 c_cond

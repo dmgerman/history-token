@@ -5621,14 +5621,14 @@ op_complement
 id|MSG_DONTWAIT
 op_or
 id|MSG_EOR
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|lock_sock
 c_func
 (paren
