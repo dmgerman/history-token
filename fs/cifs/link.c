@@ -83,7 +83,14 @@ id|pTcon
 op_assign
 id|cifs_sb_target-&gt;tcon
 suffix:semicolon
-multiline_comment|/* No need to check for cross device links since server will do that - BB note DFS case in future though (when we may have to check) */
+multiline_comment|/* No need to check for cross device links since server will do that&n;   BB note DFS case in future though (when we may have to check) */
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|fromName
 op_assign
 id|build_path_from_dentry
@@ -98,6 +105,13 @@ id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -300,12 +314,26 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|direntry-&gt;d_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|direntry-&gt;d_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -564,12 +592,26 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
+)paren
+suffix:semicolon
 id|full_path
 op_assign
 id|build_path_from_dentry
 c_func
 (paren
 id|direntry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|inode-&gt;i_sb-&gt;s_vfs_rename_sem
 )paren
 suffix:semicolon
 r_if
@@ -845,6 +887,8 @@ id|pTcon
 op_assign
 id|cifs_sb-&gt;tcon
 suffix:semicolon
+multiline_comment|/* BB would it be safe against deadlock to grab this sem &n;      even though rename itself grabs the sem and calls lookup? */
+multiline_comment|/*       down(&amp;inode-&gt;i_sb-&gt;s_vfs_rename_sem);*/
 id|full_path
 op_assign
 id|build_path_from_dentry
@@ -853,6 +897,7 @@ c_func
 id|direntry
 )paren
 suffix:semicolon
+multiline_comment|/*       up(&amp;inode-&gt;i_sb-&gt;s_vfs_rename_sem);*/
 r_if
 c_cond
 (paren
