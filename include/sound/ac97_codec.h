@@ -578,6 +578,8 @@ DECL|macro|AC97_SCAP_SKIP_MODEM
 mdefine_line|#define AC97_SCAP_SKIP_MODEM&t;(1&lt;&lt;5)&t;/* skip modem part of codec */
 DECL|macro|AC97_SCAP_INDEP_SDIN
 mdefine_line|#define AC97_SCAP_INDEP_SDIN&t;(1&lt;&lt;6)&t;/* independent SDIN */
+DECL|macro|AC97_SCAP_INV_EAPD
+mdefine_line|#define AC97_SCAP_INV_EAPD&t;(1&lt;&lt;7)&t;/* inverted EAPD */
 multiline_comment|/* ac97-&gt;flags */
 DECL|macro|AC97_HAS_PC_BEEP
 mdefine_line|#define AC97_HAS_PC_BEEP&t;(1&lt;&lt;0)&t;/* force PC Speaker usage */
@@ -1614,6 +1616,10 @@ DECL|enumerator|AC97_TUNE_ALC_JACK
 id|AC97_TUNE_ALC_JACK
 comma
 multiline_comment|/* for Realtek, enable JACK detection */
+DECL|enumerator|AC97_TUNE_INV_EAPD
+id|AC97_TUNE_INV_EAPD
+comma
+multiline_comment|/* inverted EAPD implementation */
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk
