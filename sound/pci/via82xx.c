@@ -375,7 +375,7 @@ c_func
 id|ac97_quirk
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,3}},dialog:list,default:-1&quot;
+l_string|&quot;,allows:{{-1,4}},dialog:list,default:-1&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -4671,9 +4671,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|u8
-id|val
-suffix:semicolon
 id|runtime-&gt;hw
 op_assign
 id|snd_via82xx_hw
@@ -6578,19 +6575,6 @@ op_amp
 op_complement
 id|VIA_REG_CAPTURE_CHANNEL_MIC
 suffix:semicolon
-multiline_comment|/* save the spdif flag for rate filtering */
-id|chip-&gt;spdif_on
-op_assign
-id|ucontrol-&gt;value.integer.value
-(braket
-l_int|0
-)braket
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6820,6 +6804,19 @@ l_int|0
 id|val
 op_or_assign
 id|VIA8233_SPDIF_DX3
+suffix:semicolon
+multiline_comment|/* save the spdif flag for rate filtering */
+id|chip-&gt;spdif_on
+op_assign
+id|ucontrol-&gt;value.integer.value
+(braket
+l_int|0
+)braket
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond
