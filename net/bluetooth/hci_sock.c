@@ -1517,8 +1517,8 @@ r_if
 c_cond
 (paren
 id|len
-OL
-l_int|4
+template_param
+id|HCI_MAX_FRAME_SIZE
 )paren
 r_return
 op_minus

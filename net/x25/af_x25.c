@@ -3765,7 +3765,8 @@ id|MSG_DONTWAIT
 suffix:semicolon
 r_int
 id|size
-comma
+suffix:semicolon
+r_int
 id|qbit
 op_assign
 l_int|0
@@ -4533,7 +4534,8 @@ id|msg-&gt;msg_name
 suffix:semicolon
 r_int
 id|copied
-comma
+suffix:semicolon
+r_int
 id|qbit
 suffix:semicolon
 r_struct
