@@ -3636,6 +3636,12 @@ DECL|macro|TG3_FLAG_SPLIT_MODE
 mdefine_line|#define TG3_FLAG_SPLIT_MODE&t;&t;0x40000000
 DECL|macro|TG3_FLAG_INIT_COMPLETE
 mdefine_line|#define TG3_FLAG_INIT_COMPLETE&t;&t;0x80000000
+DECL|member|tg3_flags2
+id|u32
+id|tg3_flags2
+suffix:semicolon
+DECL|macro|TG3_FLG2_RESTART_TIMER
+mdefine_line|#define TG3_FLG2_RESTART_TIMER&t;&t;0x00000001
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
@@ -3810,6 +3816,11 @@ suffix:semicolon
 DECL|member|stats_mapping
 id|dma_addr_t
 id|stats_mapping
+suffix:semicolon
+DECL|member|reset_task
+r_struct
+id|work_struct
+id|reset_task
 suffix:semicolon
 )brace
 suffix:semicolon
