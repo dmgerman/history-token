@@ -893,9 +893,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_init_resources - Resets a resource table to default values.&n; * @table: pointer to the desired resource table&n; *&n; */
-DECL|function|pnp_init_resources
+DECL|function|pnp_init_resource_table
 r_void
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 r_struct
@@ -906,13 +906,6 @@ id|table
 (brace
 r_int
 id|idx
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|pnp_res_mutex
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1126,19 +1119,12 @@ op_assign
 id|IORESOURCE_AUTO
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|pnp_res_mutex
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * pnp_clean_resources - clears resources that were not manually set&n; * @res - the resources to clean&n; *&n; */
-DECL|function|pnp_clean_resources
+DECL|function|pnp_clean_resource_table
 r_static
 r_void
-id|pnp_clean_resources
+id|pnp_clean_resource_table
 c_func
 (paren
 r_struct
@@ -1468,7 +1454,7 @@ op_amp
 id|pnp_res_mutex
 )paren
 suffix:semicolon
-id|pnp_clean_resources
+id|pnp_clean_resource_table
 c_func
 (paren
 op_amp
@@ -1832,7 +1818,7 @@ l_int|1
 suffix:semicolon
 id|fail
 suffix:colon
-id|pnp_clean_resources
+id|pnp_clean_resource_table
 c_func
 (paren
 op_amp
@@ -2485,7 +2471,7 @@ op_amp
 id|pnp_res_mutex
 )paren
 suffix:semicolon
-id|pnp_clean_resources
+id|pnp_clean_resource_table
 c_func
 (paren
 op_amp
@@ -2592,11 +2578,11 @@ c_func
 id|pnp_resource_change
 )paren
 suffix:semicolon
-DECL|variable|pnp_init_resources
+DECL|variable|pnp_init_resource_table
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|pnp_init_resources
+id|pnp_init_resource_table
 )paren
 suffix:semicolon
 eof

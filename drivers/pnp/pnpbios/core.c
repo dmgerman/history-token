@@ -3766,7 +3766,7 @@ c_cond
 op_logical_neg
 id|dev-&gt;active
 )paren
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 op_amp

@@ -522,7 +522,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Blank the resource table values */
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 id|res
