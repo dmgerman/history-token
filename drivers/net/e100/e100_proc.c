@@ -1381,7 +1381,6 @@ r_static
 r_struct
 id|proc_dir_entry
 op_star
-id|__devinit
 DECL|function|create_proc_rw
 id|create_proc_rw
 c_func
@@ -1498,6 +1497,10 @@ r_struct
 id|e100_private
 op_star
 id|bdp
+comma
+r_char
+op_star
+id|name
 )paren
 (brace
 id|e100_proc_entry
@@ -1530,7 +1533,7 @@ op_assign
 id|strlen
 c_func
 (paren
-id|bdp-&gt;device-&gt;name
+id|bdp-&gt;ifname
 )paren
 suffix:semicolon
 id|strncpy
@@ -1538,7 +1541,7 @@ c_func
 (paren
 id|info
 comma
-id|bdp-&gt;device-&gt;name
+id|bdp-&gt;ifname
 comma
 r_sizeof
 (paren
@@ -1609,7 +1612,7 @@ suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-id|bdp-&gt;device-&gt;name
+id|bdp-&gt;ifname
 comma
 id|adapters_proc_dir
 )paren
@@ -1635,7 +1638,6 @@ c_func
 suffix:semicolon
 )brace
 r_int
-id|__devinit
 DECL|function|e100_create_proc_subdir
 id|e100_create_proc_subdir
 c_func
@@ -1695,7 +1697,7 @@ c_func
 (paren
 id|info
 comma
-id|bdp-&gt;device-&gt;name
+id|bdp-&gt;ifname
 comma
 r_sizeof
 (paren
@@ -1765,7 +1767,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-id|bdp-&gt;device-&gt;name
+id|bdp-&gt;ifname
 comma
 id|S_IFDIR
 comma
@@ -1787,6 +1789,8 @@ id|e100_remove_proc_subdir
 c_func
 (paren
 id|bdp
+comma
+id|bdp-&gt;ifname
 )paren
 suffix:semicolon
 r_return
@@ -1872,6 +1876,8 @@ id|e100_remove_proc_subdir
 c_func
 (paren
 id|bdp
+comma
+id|bdp-&gt;ifname
 )paren
 suffix:semicolon
 r_return

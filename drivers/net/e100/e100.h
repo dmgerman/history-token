@@ -2412,6 +2412,13 @@ l_int|16
 )braket
 suffix:semicolon
 macro_line|#endif
+DECL|member|ifname
+r_char
+id|ifname
+(braket
+id|IFNAMSIZ
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|E100_AUTONEG
