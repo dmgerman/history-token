@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: dmascc.c,v 1.27 2000/06/01 14:46:23 oe1kib Exp $&n; *&n; * Driver for high-speed SCC boards (those with DMA support)&n; * Copyright (C) 1997-2000 Klaus Kudielka&n; *&n; * S5SCC/DMA support by Janko Koleznik S52HI&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Driver for high-speed SCC boards (those with DMA support)&n; * Copyright (C) 1997-2000 Klaus Kudielka&n; *&n; * S5SCC/DMA support by Janko Koleznik S52HI&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -23,11 +23,11 @@ macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &quot;z8530.h&quot;
 multiline_comment|/* Number of buffers per channel */
 DECL|macro|NUM_TX_BUF
-mdefine_line|#define NUM_TX_BUF      2          /* NUM_TX_BUF &gt;= 1 (min. 2 recommended) */
+mdefine_line|#define NUM_TX_BUF      2&t;/* NUM_TX_BUF &gt;= 1 (min. 2 recommended) */
 DECL|macro|NUM_RX_BUF
-mdefine_line|#define NUM_RX_BUF      6          /* NUM_RX_BUF &gt;= 1 (min. 2 recommended) */
+mdefine_line|#define NUM_RX_BUF      6&t;/* NUM_RX_BUF &gt;= 1 (min. 2 recommended) */
 DECL|macro|BUF_SIZE
-mdefine_line|#define BUF_SIZE        1576       /* BUF_SIZE &gt;= mtu + hard_header_len */
+mdefine_line|#define BUF_SIZE        1576&t;/* BUF_SIZE &gt;= mtu + hard_header_len */
 multiline_comment|/* Cards supported */
 DECL|macro|HW_PI
 mdefine_line|#define HW_PI           { &quot;Ottawa PI&quot;, 0x300, 0x20, 0x10, 8, &bslash;&n;                            0, 8, 1843200, 3686400 }
@@ -40,7 +40,7 @@ mdefine_line|#define HW_S5           { &quot;S5SCC/DMA&quot;, 0x200, 0x10, 0x10,
 DECL|macro|HARDWARE
 mdefine_line|#define HARDWARE        { HW_PI, HW_PI2, HW_TWIN, HW_S5 }
 DECL|macro|TMR_0_HZ
-mdefine_line|#define TMR_0_HZ        25600      /* Frequency of timer 0 */
+mdefine_line|#define TMR_0_HZ        25600&t;/* Frequency of timer 0 */
 DECL|macro|TYPE_PI
 mdefine_line|#define TYPE_PI         0
 DECL|macro|TYPE_PI2
@@ -1482,7 +1482,6 @@ c_cond
 (paren
 op_logical_neg
 id|request_region
-c_func
 (paren
 id|base
 (braket
@@ -3858,7 +3857,7 @@ comma
 id|SHDLCE
 )paren
 suffix:semicolon
-multiline_comment|/* The following bits are set (see 2.5.2.1):&n;       - Automatic EOM reset&n;       - Interrupt request if RX FIFO is half full&n;         This bit should be ignored in DMA mode (according to the&n;         documentation), but actually isn&squot;t. The receiver doesn&squot;t work if&n;         it is set. Thus, we have to clear it in DMA mode.&n;       - Interrupt/DMA request if TX FIFO is completely empty&n;         a) If set, the ESCC behaves as if it had no TX FIFO (Z85C30&n;            compatibility).&n;         b) If cleared, DMA requests may follow each other very quickly,&n;            filling up the TX FIFO.&n;            Advantage: TX works even in case of high bus latency.&n;            Disadvantage: Edge-triggered DMA request circuitry may miss&n;                          a request. No more data is delivered, resulting&n;                          in a TX FIFO underrun.&n;         Both PI2 and S5SCC/DMA seem to work fine with TXFIFOE cleared.&n;         The PackeTwin doesn&squot;t. I don&squot;t know about the PI, but let&squot;s&n;&t; assume it behaves like the PI2.&n;    */
+multiline_comment|/* The following bits are set (see 2.5.2.1):&n;&t;&t;   - Automatic EOM reset&n;&t;&t;   - Interrupt request if RX FIFO is half full&n;&t;&t;   This bit should be ignored in DMA mode (according to the&n;&t;&t;   documentation), but actually isn&squot;t. The receiver doesn&squot;t work if&n;&t;&t;   it is set. Thus, we have to clear it in DMA mode.&n;&t;&t;   - Interrupt/DMA request if TX FIFO is completely empty&n;&t;&t;   a) If set, the ESCC behaves as if it had no TX FIFO (Z85C30&n;&t;&t;   compatibility).&n;&t;&t;   b) If cleared, DMA requests may follow each other very quickly,&n;&t;&t;   filling up the TX FIFO.&n;&t;&t;   Advantage: TX works even in case of high bus latency.&n;&t;&t;   Disadvantage: Edge-triggered DMA request circuitry may miss&n;&t;&t;   a request. No more data is delivered, resulting&n;&t;&t;   in a TX FIFO underrun.&n;&t;&t;   Both PI2 and S5SCC/DMA seem to work fine with TXFIFOE cleared.&n;&t;&t;   The PackeTwin doesn&squot;t. I don&squot;t know about the PI, but let&squot;s&n;&t;&t;   assume it behaves like the PI2.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3984,7 +3983,7 @@ op_amp
 l_int|0xFF
 )paren
 suffix:semicolon
-multiline_comment|/* BRG source = SYS CLK; enable BRG; DTR REQ function (required by&n;       PackeTwin, not connected on the PI2); set DPLL source to BRG */
+multiline_comment|/* BRG source = SYS CLK; enable BRG; DTR REQ function (required by&n;&t;&t;   PackeTwin, not connected on the PI2); set DPLL source to BRG */
 id|write_scc
 c_func
 (paren
@@ -4368,7 +4367,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 id|ifr-&gt;ifr_data
 comma
@@ -4423,7 +4421,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 op_amp
 id|priv-&gt;param
@@ -4545,7 +4542,7 @@ suffix:semicolon
 id|priv-&gt;tx_count
 op_increment
 suffix:semicolon
-multiline_comment|/* If we just filled up the last buffer, leave queue stopped.&n;     The higher layers must wait until we have a DMA buffer&n;     to accept the data. */
+multiline_comment|/* If we just filled up the last buffer, leave queue stopped.&n;&t;   The higher layers must wait until we have a DMA buffer&n;&t;   to accept the data. */
 r_if
 c_cond
 (paren
@@ -5569,7 +5566,7 @@ id|is
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Ok, no interrupts pending from this 8530. The INT line should&n;     be inactive now. */
+multiline_comment|/* Ok, no interrupts pending from this 8530. The INT line should&n;&t;   be inactive now. */
 )brace
 DECL|function|scc_isr
 r_static
@@ -5608,7 +5605,7 @@ dot
 id|register_lock
 )paren
 suffix:semicolon
-multiline_comment|/* At this point interrupts are enabled, and the interrupt under service&n;     is already acknowledged, but masked off.&n;&n;     Interrupt processing: We loop until we know that the IRQ line is&n;     low. If another positive edge occurs afterwards during the ISR,&n;     another interrupt will be triggered by the interrupt controller&n;     as soon as the IRQ level is enabled again (see asm/irq.h).&n;&n;     Bottom-half handlers will be processed after scc_isr(). This is&n;     important, since we only have small ringbuffers and want new data&n;     to be fetched/delivered immediately. */
+multiline_comment|/* At this point interrupts are enabled, and the interrupt under service&n;&t;   is already acknowledged, but masked off.&n;&n;&t;   Interrupt processing: We loop until we know that the IRQ line is&n;&t;   low. If another positive edge occurs afterwards during the ISR,&n;&t;   another interrupt will be triggered by the interrupt controller&n;&t;   as soon as the IRQ level is enabled again (see asm/irq.h).&n;&n;&t;   Bottom-half handlers will be processed after scc_isr(). This is&n;&t;   important, since we only have small ringbuffers and want new data&n;&t;   to be fetched/delivered immediately. */
 r_if
 c_cond
 (paren
@@ -5789,7 +5786,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Check special condition for each character. Error reset not necessary.&n;       Same algorithm for SCC and ESCC. See 2.4.7.1 and 2.4.7.4. */
+multiline_comment|/* Check special condition for each character. Error reset not necessary.&n;&t;&t;   Same algorithm for SCC and ESCC. See 2.4.7.1 and 2.4.7.4. */
 r_int
 id|rc
 suffix:semicolon
@@ -5829,7 +5826,9 @@ id|priv-&gt;rx_buf
 id|priv-&gt;rx_head
 )braket
 (braket
-id|priv-&gt;rx_ptr
+id|priv
+op_member_access_from_pointer
+id|rx_ptr
 op_increment
 )braket
 op_assign
@@ -6364,7 +6363,7 @@ id|p
 op_assign
 id|priv-&gt;tx_ptr
 suffix:semicolon
-multiline_comment|/* Suspend TX interrupts if we don&squot;t want to send anything.&n;     See Figure 2-22. */
+multiline_comment|/* Suspend TX interrupts if we don&squot;t want to send anything.&n;&t;   See Figure 2-22. */
 r_if
 c_cond
 (paren
@@ -6515,7 +6514,7 @@ id|priv-&gt;rr0
 op_assign
 id|rr0
 suffix:semicolon
-multiline_comment|/* Transmit underrun (2.4.9.6). We can&squot;t check the TxEOM flag, since&n;     it might have already been cleared again by AUTOEOM. */
+multiline_comment|/* Transmit underrun (2.4.9.6). We can&squot;t check the TxEOM flag, since&n;&t;   it might have already been cleared again by AUTOEOM. */
 r_if
 c_cond
 (paren
