@@ -1,5 +1,9 @@
 multiline_comment|/*&n; *   fs/cifs/cifssmb.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   Contains the routines for constructing the SMB PDUs themselves&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
-multiline_comment|/* SMB/CIFS PDU handling routines here - except for leftovers in connect.c */
+multiline_comment|/* SMB/CIFS PDU handling routines here - except for leftovers in connect.c   */
+multiline_comment|/* These are mostly routines that operate on a pathname, or on a tree id     */
+multiline_comment|/* (mounted volume), but there are eight handle based routines which must be */
+multiline_comment|/* treated slightly different for reconnection purposes since we never want  */
+multiline_comment|/* to reuse a stale file handle and the caller knows the file handle */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
@@ -75,24 +79,72 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* SMBs NegProt, SessSetup, uLogoff do not have tcon yet so&n;&t;   check for tcp and smb session status done differently&n;&t;   for those three - in the calling routine */
 r_if
 c_cond
 (paren
 id|tcon
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|tcon-&gt;ses
+)paren
 op_logical_and
 (paren
-id|tcon-&gt;tidStatus
-op_eq
-id|CifsNeedReconnect
+id|tcon-&gt;ses-&gt;server
 )paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|tcon-&gt;ses
+id|tcon-&gt;ses-&gt;server-&gt;tcpStatus
+op_eq
+id|CifsNeedReconnect
 )paren
 (brace
+multiline_comment|/* Give Demultiplex thread up to 10 seconds to &n;&t;&t;&t;&t;&t;reconnect, should be greater than cifs socket&n;&t;&t;&t;&t;&t;timeout which is 7 seconds */
+id|wait_event_interruptible_timeout
+c_func
+(paren
+id|tcon-&gt;ses-&gt;server-&gt;response_q
+comma
+(paren
+id|tcon-&gt;ses-&gt;server-&gt;tcpStatus
+op_eq
+id|CifsGood
+)paren
+comma
+l_int|10
+op_star
+id|HZ
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;server-&gt;tcpStatus
+op_eq
+id|CifsNeedReconnect
+)paren
+(brace
+r_return
+op_minus
+id|EHOSTDOWN
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* need to prevent multiple threads trying to&n;&t;&t;simultaneously reconnect the same SMB session */
+id|down
+c_func
+(paren
+op_amp
+id|tcon-&gt;ses-&gt;sesSem
+)paren
+suffix:semicolon
 r_struct
 id|nls_table
 op_star
@@ -129,6 +181,12 @@ c_cond
 (paren
 op_logical_neg
 id|rc
+op_logical_and
+(paren
+id|tcon-&gt;tidStatus
+op_eq
+id|CifsNeedReconnect
+)paren
 )paren
 (brace
 id|rc
@@ -147,6 +205,13 @@ comma
 id|nls_codepage
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tcon-&gt;ses-&gt;sesSem
+)paren
+suffix:semicolon
 id|cFYI
 c_func
 (paren
@@ -159,22 +224,18 @@ id|rc
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rc
-)paren
+multiline_comment|/* Remove call to reopen files here - &n;&t;&t;&t;&t;&t;it is safer (and faster) to reopen&n;&t;&t;&t;&t;&t;files as needed in read and write */
+multiline_comment|/* if(!rc)&n;&t;&t;&t;&t;&t;reopen_files(tcon,nls_codepage);*/
+)brace
+r_else
 (brace
-id|reopen_files
+id|up
 c_func
 (paren
-id|tcon
-comma
-id|nls_codepage
+op_amp
+id|tcon-&gt;ses-&gt;sesSem
 )paren
 suffix:semicolon
-)brace
 )brace
 id|unload_nls
 c_func
@@ -184,11 +245,12 @@ id|nls_codepage
 suffix:semicolon
 )brace
 r_else
-id|rc
-op_assign
+(brace
+r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -845,8 +907,6 @@ l_string|&quot;In tree disconnect&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  If last user of the connection and&n;&t; *  connection alive - disconnect it&n;&t; *  If this is the last connection on the server session disconnect it&n;&t; *  (and inside session disconnect we should check if tcp socket needs &n;&t; *  to be freed and kernel thread woken up).&n;&t; */
-id|tdisRetry
-suffix:colon
 r_if
 c_cond
 (paren
@@ -894,6 +954,26 @@ suffix:semicolon
 r_return
 op_minus
 id|EBUSY
+suffix:semicolon
+)brace
+multiline_comment|/* No need to return error on this operation if tid invalidated and &n;&t;closed on server already e.g. due to tcp session crashing */
+r_if
+c_cond
+(paren
+id|tcon-&gt;tidStatus
+op_eq
+id|CifsNeedReconnect
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|tcon-&gt;tconSem
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* BB remove (from server) list of shares - but with smp safety  BB */
@@ -1025,6 +1105,7 @@ op_amp
 id|tcon-&gt;tconSem
 )paren
 suffix:semicolon
+multiline_comment|/* No need to return error on this operation if tid invalidated and &n;&t;closed on server already e.g. due to tcp session crashing */
 r_if
 c_cond
 (paren
@@ -1033,8 +1114,9 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
-r_goto
-id|tdisRetry
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|rc
@@ -1082,8 +1164,6 @@ l_string|&quot;In SMBLogoff for session disconnect&quot;
 )paren
 )paren
 suffix:semicolon
-id|LogoffRetry
-suffix:colon
 r_if
 c_cond
 (paren
@@ -1096,7 +1176,6 @@ op_amp
 id|ses-&gt;sesSem
 )paren
 suffix:semicolon
-multiline_comment|/* check this sem more places */
 r_else
 r_return
 op_minus
@@ -1277,6 +1356,7 @@ op_amp
 id|ses-&gt;sesSem
 )paren
 suffix:semicolon
+multiline_comment|/* if session dead then we do not need to do ulogoff,&n;&t;&t;since server closed smb session, no sense reporting &n;&t;&t;error */
 r_if
 c_cond
 (paren
@@ -1285,8 +1365,9 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
-r_goto
-id|LogoffRetry
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|rc
@@ -2599,8 +2680,6 @@ suffix:semicolon
 r_int
 id|bytes_returned
 suffix:semicolon
-id|readRetry
-suffix:colon
 op_star
 id|nbytes
 op_assign
@@ -2882,17 +2961,7 @@ op_star
 id|pSMB
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|readRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls &n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -2960,8 +3029,6 @@ suffix:semicolon
 r_int
 id|bytes_returned
 suffix:semicolon
-id|writeRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -3204,17 +3271,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|writeRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls &n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -3300,8 +3357,6 @@ l_string|&quot;In CIFSSMBLock&quot;
 )paren
 )paren
 suffix:semicolon
-id|lockRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -3554,17 +3609,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|lockRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls &n;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -3728,7 +3773,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-multiline_comment|/* file will be closed on server if session is dead */
+multiline_comment|/* Since session is dead, file will be closed on server already */
 r_if
 c_cond
 (paren
@@ -3740,11 +3785,9 @@ id|EAGAIN
 (brace
 id|rc
 op_assign
-op_minus
-id|EHOSTDOWN
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* should we fake success? */
 r_return
 id|rc
 suffix:semicolon
@@ -4214,8 +4257,6 @@ l_string|&quot;Rename to File by handle&quot;
 )paren
 )paren
 suffix:semicolon
-id|renameOpenFileRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -4582,17 +4623,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|renameOpenFileRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls&n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -6555,8 +6586,6 @@ id|searchName
 )paren
 )paren
 suffix:semicolon
-id|queryReparseLinkInfoRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -6939,17 +6968,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|queryReparseLinkInfoRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls&n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -8899,8 +8918,6 @@ l_string|&quot;In FindNext&quot;
 )paren
 )paren
 suffix:semicolon
-id|findNextRetry
-suffix:colon
 r_if
 c_cond
 (paren
@@ -9351,17 +9368,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|findNextRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls&n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon
@@ -9415,8 +9422,6 @@ l_string|&quot;In CIFSSMBFindClose&quot;
 )paren
 )paren
 suffix:semicolon
-id|findCloseRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -9520,6 +9525,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
+multiline_comment|/* Since session is dead, search handle closed on server already */
 r_if
 c_cond
 (paren
@@ -9528,8 +9534,9 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
-r_goto
-id|findCloseRetry
+id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|rc
@@ -12424,8 +12431,6 @@ l_string|&quot;SetFileSize (via SetFileInfo)&quot;
 )paren
 )paren
 suffix:semicolon
-id|SetFileSizeRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -12795,17 +12800,7 @@ c_func
 id|pSMB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|SetFileSizeRetry
-suffix:semicolon
+multiline_comment|/* Note: On -EAGAIN error only caller can retry on handle based calls &n;&t;&t;since file handle passed in no longer valid */
 r_return
 id|rc
 suffix:semicolon

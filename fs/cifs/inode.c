@@ -3136,6 +3136,22 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* Do not need reopen and retry on EAGAIN since we will&n;&t;&t;&t;&t;retry by pathname below */
+r_if
+c_cond
+(paren
+id|rc
+op_eq
+op_minus
+id|EAGAIN
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EHOSTDOWN
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 multiline_comment|/* now that we found one valid file handle no&n;&t;&t;&t;&t;sense continuing to loop trying others */
@@ -3626,6 +3642,25 @@ id|O_WRONLY
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|open_file-&gt;invalidHandle
+op_eq
+id|FALSE
+)paren
+(brace
+multiline_comment|/* we found a valid, writeable network file &n;&t;&t;&t;&t;&t;handle to use to try to set the file size */
+id|__u16
+id|nfid
+op_assign
+id|open_file-&gt;netfid
+suffix:semicolon
+id|__u32
+id|npid
+op_assign
+id|open_file-&gt;pid
+suffix:semicolon
 id|read_unlock
 c_func
 (paren
@@ -3648,9 +3683,9 @@ id|pTcon
 comma
 id|attrs-&gt;ia_size
 comma
-id|open_file-&gt;netfid
+id|nfid
 comma
-id|open_file-&gt;pid
+id|npid
 comma
 id|FALSE
 )paren
@@ -3667,9 +3702,11 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Do not need reopen and retry on EAGAIN since we will&n;&t;&t;&t;&t;&t;retry by pathname below */
 r_break
 suffix:semicolon
 multiline_comment|/* now that we found one valid file handle no&n;&t;&t;&t;&t;&t;&t;sense continuing to loop trying others */
+)brace
 )brace
 )brace
 r_if
@@ -3696,6 +3733,7 @@ op_ne
 l_int|0
 )paren
 (brace
+multiline_comment|/* Set file size by pathname rather than by handle either&n;&t;&t;&t;because no valid, writeable file handle for it was found or&n;&t;&t;&t;because there was an error setting it by handle */
 id|rc
 op_assign
 id|CIFSSMBSetEOF

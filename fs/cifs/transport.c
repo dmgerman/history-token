@@ -791,23 +791,6 @@ l_string|&quot;tcp session dead - return to caller to retry&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Give Demultiplex thread up to 10 seconds to reconnect */
-id|wait_event_interruptible_timeout
-c_func
-(paren
-id|ses-&gt;server-&gt;response_q
-comma
-(paren
-id|ses-&gt;server-&gt;tcpStatus
-op_eq
-id|CifsGood
-)paren
-comma
-l_int|10
-op_star
-id|HZ
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EAGAIN

@@ -4197,7 +4197,7 @@ id|csocket
 op_member_access_from_pointer
 id|sk-&gt;sk_rcvtimeo
 op_assign
-l_int|8
+l_int|7
 op_star
 id|HZ
 suffix:semicolon
@@ -5135,6 +5135,13 @@ id|pSesInfo-&gt;linux_uid
 op_assign
 id|volume_info.linux_uid
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|pSesInfo-&gt;sesSem
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|setup_session
@@ -5145,6 +5152,13 @@ comma
 id|pSesInfo
 comma
 id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|pSesInfo-&gt;sesSem
 )paren
 suffix:semicolon
 r_if

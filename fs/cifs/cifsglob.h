@@ -587,6 +587,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* file is marked to close */
+DECL|member|reopenPend
+r_int
+id|reopenPend
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* reopen of file in progress */
 DECL|member|emptyDir
 r_int
 id|emptyDir
