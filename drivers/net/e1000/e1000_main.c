@@ -2772,6 +2772,11 @@ suffix:semicolon
 r_uint32
 id|manc
 suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
