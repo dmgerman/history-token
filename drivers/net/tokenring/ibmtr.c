@@ -3,7 +3,9 @@ multiline_comment|/* change the define of IBMTR_DEBUG_MESSAGES to a nonzero valu
 DECL|macro|IBMTR_DEBUG_MESSAGES
 mdefine_line|#define IBMTR_DEBUG_MESSAGES 0
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#ifdef PCMCIA
+macro_line|#ifdef PCMCIA&t;&t;/* required for ibmtr_cs.c to build */
+DECL|macro|MODULE
+macro_line|#undef MODULE&t;&t;/* yes, really */
 DECL|macro|ENABLE_PAGING
 macro_line|#undef ENABLE_PAGING
 macro_line|#else
