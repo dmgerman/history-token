@@ -63,6 +63,32 @@ id|version
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|input_absinfo
+r_struct
+id|input_absinfo
+(brace
+DECL|member|value
+r_int
+id|value
+suffix:semicolon
+DECL|member|minimum
+r_int
+id|minimum
+suffix:semicolon
+DECL|member|maximum
+r_int
+id|maximum
+suffix:semicolon
+DECL|member|fuzz
+r_int
+id|fuzz
+suffix:semicolon
+DECL|member|flat
+r_int
+id|flat
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
@@ -90,9 +116,9 @@ mdefine_line|#define EVIOCGSND(len)&t;&t;_IOC(_IOC_READ, &squot;E&squot;, 0x1a, 
 DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
-mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */
+mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, struct input_absinfo)&t;&t;/* get abs value/limits */
 DECL|macro|EVIOCSABS
-mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, int[5])&t;&t;/* set abs value/limits */
+mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, struct input_absinfo)&t;&t;/* set abs value/limits */
 DECL|macro|EVIOCSFF
 mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
