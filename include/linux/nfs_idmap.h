@@ -51,6 +51,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* Forward declaration to make this header independent of others */
+r_struct
+id|nfs4_client
+suffix:semicolon
 r_void
 id|nfs_idmap_new
 c_func
