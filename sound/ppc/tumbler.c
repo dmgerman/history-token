@@ -4002,6 +4002,7 @@ comma
 id|devid
 comma
 r_return
+id|IRQ_NONE
 )paren
 suffix:semicolon
 r_if
