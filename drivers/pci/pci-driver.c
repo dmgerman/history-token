@@ -386,12 +386,13 @@ c_cond
 id|pci_dev-&gt;driver
 )paren
 (brace
+multiline_comment|/* We may not call PCI drivers resume at&n;&t;&t;   RESUME_POWER_ON because interrupts are not yet&n;&t;&t;   working at that point. Calling resume at&n;&t;&t;   RESUME_RESTORE_STATE seems like solution. */
 r_if
 c_cond
 (paren
 id|level
 op_eq
-id|RESUME_POWER_ON
+id|RESUME_RESTORE_STATE
 op_logical_and
 id|pci_dev-&gt;driver-&gt;resume
 )paren

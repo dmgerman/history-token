@@ -1690,7 +1690,11 @@ op_assign
 (paren
 id|PAGE_SIZE
 op_minus
+(paren
+id|dio-&gt;bvec-&gt;bv_offset
+op_plus
 id|dio-&gt;bvec-&gt;bv_len
+)paren
 )paren
 op_rshift
 id|blkbits
@@ -2022,9 +2026,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|offset
+id|user_addr
 op_amp
+(paren
 id|PAGE_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 (brace
 id|dio.total_pages
@@ -2035,9 +2043,8 @@ op_sub_assign
 id|PAGE_SIZE
 op_minus
 (paren
-id|offset
+id|user_addr
 op_amp
-op_complement
 (paren
 id|PAGE_SIZE
 op_minus

@@ -26,10 +26,6 @@ op_star
 id|map_mft_record
 c_func
 (paren
-r_const
-r_int
-id|rw
-comma
 id|ntfs_inode
 op_star
 id|ni
@@ -40,10 +36,6 @@ r_void
 id|unmap_mft_record
 c_func
 (paren
-r_const
-r_int
-id|rw
-comma
 id|ntfs_inode
 op_star
 id|ni
@@ -83,8 +75,6 @@ id|ni
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|ni
 )paren
 suffix:semicolon

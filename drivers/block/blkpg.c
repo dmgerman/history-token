@@ -1079,35 +1079,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_case
-id|BLKRRPART
-suffix:colon
-multiline_comment|/* Re-read partition tables */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_return
-id|reread_partitions
-c_func
-(paren
-id|dev
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 r_case
 id|BLKPG
 suffix:colon

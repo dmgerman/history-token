@@ -2,6 +2,7 @@ macro_line|#ifndef _ALPHA_PGALLOC_H
 DECL|macro|_ALPHA_PGALLOC_H
 mdefine_line|#define _ALPHA_PGALLOC_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*      &n; * Allocate and free page tables. The xxx_kernel() versions are&n; * used to allocate a kernel page table - this turns on ASN bits&n; * if any.&n; */
 r_static
 r_inline

@@ -1,7 +1,9 @@
 multiline_comment|/*&n; *&t;$Id: compat.c,v 1.1 1998/02/16 10:35:50 mj Exp $&n; *&n; *&t;PCI Bus Services -- Function For Backward Compatibility&n; *&n; *&t;Copyright 1998--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/* Obsolete functions, these will be going away... */
 r_int
 DECL|function|pcibios_present
 id|pcibios_present
@@ -243,4 +245,67 @@ id|dword
 comma
 r_int
 )paren
+DECL|variable|pcibios_present
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_present
+)paren
+suffix:semicolon
+DECL|variable|pcibios_read_config_byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_read_config_byte
+)paren
+suffix:semicolon
+DECL|variable|pcibios_read_config_word
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_read_config_word
+)paren
+suffix:semicolon
+DECL|variable|pcibios_read_config_dword
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_read_config_dword
+)paren
+suffix:semicolon
+DECL|variable|pcibios_write_config_byte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_write_config_byte
+)paren
+suffix:semicolon
+DECL|variable|pcibios_write_config_word
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_write_config_word
+)paren
+suffix:semicolon
+DECL|variable|pcibios_write_config_dword
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_write_config_dword
+)paren
+suffix:semicolon
+DECL|variable|pcibios_find_class
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_find_class
+)paren
+suffix:semicolon
+DECL|variable|pcibios_find_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcibios_find_device
+)paren
+suffix:semicolon
 eof

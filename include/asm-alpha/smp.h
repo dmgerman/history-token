@@ -87,14 +87,6 @@ r_int
 r_int
 id|ipi_count
 suffix:semicolon
-DECL|member|irq_attempt
-r_int
-r_int
-id|irq_attempt
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 DECL|member|prof_multiplier
 r_int
 r_int
@@ -143,26 +135,6 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY     20
-multiline_comment|/* Map from cpu id to sequential logical cpu number.  This will only&n;   not be idempotent when cpus failed to come on-line.  */
-r_extern
-r_int
-id|__cpu_number_map
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|macro|cpu_number_map
-mdefine_line|#define cpu_number_map(cpu)  __cpu_number_map[cpu]
-multiline_comment|/* The reverse map from sequential logical cpu number to cpu id.  */
-r_extern
-r_int
-id|__cpu_logical_map
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|macro|cpu_logical_map
-mdefine_line|#define cpu_logical_map(cpu)  __cpu_logical_map[cpu]
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id()&t;__hard_smp_processor_id()
 DECL|macro|smp_processor_id
@@ -172,8 +144,18 @@ r_int
 r_int
 id|cpu_present_mask
 suffix:semicolon
+r_extern
+r_int
+id|smp_num_cpus
+suffix:semicolon
 DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map cpu_present_mask
+mdefine_line|#define cpu_online_map&t;&t;cpu_present_mask
+DECL|macro|num_online_cpus
+mdefine_line|#define num_online_cpus()&t;(smp_num_cpus)
+DECL|macro|cpu_online
+mdefine_line|#define cpu_online(cpu)&t;&t;(cpu_present_mask &amp; (1&lt;&lt;(cpu)))
+DECL|macro|cpu_possible
+mdefine_line|#define cpu_possible(cpu)&t;cpu_online(cpu)
 r_extern
 r_int
 id|smp_call_function_on_cpu

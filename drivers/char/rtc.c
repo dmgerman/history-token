@@ -3106,6 +3106,7 @@ id|rtc_dev
 )paren
 )paren
 (brace
+macro_line|#if RTC_IRQ
 id|free_irq
 c_func
 (paren
@@ -3114,6 +3115,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 id|release_region
 c_func
 (paren

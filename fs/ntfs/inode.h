@@ -79,15 +79,10 @@ multiline_comment|/* If state has the NI_NonResident bit set,&n;&t;&t;&t;&t;   t
 multiline_comment|/*&n;&t; * The following fields are only valid for real inodes and extent&n;&t; * inodes.&n;&t; */
 DECL|member|mrec_lock
 r_struct
-id|rw_semaphore
+id|semaphore
 id|mrec_lock
 suffix:semicolon
 multiline_comment|/* Lock for serializing access to the&n;&t;&t;&t;&t;   mft record belonging to this inode. */
-DECL|member|mft_count
-id|atomic_t
-id|mft_count
-suffix:semicolon
-multiline_comment|/* Mapping reference count for book keeping. */
 DECL|member|page
 r_struct
 id|page

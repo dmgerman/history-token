@@ -12,6 +12,8 @@ DECL|macro|HZ
 macro_line|#  define HZ&t;1200
 macro_line|# endif
 macro_line|#endif
+DECL|macro|USER_HZ
+mdefine_line|#define USER_HZ&t;&t;HZ
 DECL|macro|EXEC_PAGESIZE
 mdefine_line|#define EXEC_PAGESIZE&t;8192
 macro_line|#ifndef NGROUPS

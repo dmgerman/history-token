@@ -68,7 +68,7 @@ op_star
 id|FASTCALL
 c_func
 (paren
-id|rwsem_downgrade_write
+id|rwsem_downgrade_wake
 c_func
 (paren
 r_struct

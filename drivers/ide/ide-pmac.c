@@ -7228,10 +7228,10 @@ id|drive
 )paren
 suffix:semicolon
 multiline_comment|/* We kick the VFS too (see fix in ide.c revalidate) */
-id|check_disk_change
+id|__check_disk_change
 c_func
 (paren
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|drive-&gt;channel-&gt;major

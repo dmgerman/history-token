@@ -743,7 +743,7 @@ id|ABRT_ERR
 comma
 id|ICRC_ERR
 comma
-l_string|&quot;bad sectorr&quot;
+l_string|&quot;bad sector&quot;
 )brace
 comma
 (brace
@@ -3907,7 +3907,7 @@ comma
 dot
 id|revalidate
 op_assign
-id|ata_revalidate
+id|ide_revalidate
 )brace
 )brace
 suffix:semicolon

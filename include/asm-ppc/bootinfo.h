@@ -72,6 +72,11 @@ op_star
 id|rec
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|boot_mem_size
+suffix:semicolon
 macro_line|#endif /* CONFIG_APUS */
 macro_line|#endif /* _PPC_BOOTINFO_H */
 macro_line|#endif /* __KERNEL__ */

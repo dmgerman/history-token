@@ -113,10 +113,10 @@ OG
 l_int|1
 ques
 c_cond
-l_int|0UL
+l_int|0U
 suffix:colon
 op_complement
-l_int|0UL
+l_int|0U
 suffix:semicolon
 id|tlb-&gt;fullmm
 op_assign

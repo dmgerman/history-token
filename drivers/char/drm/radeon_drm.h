@@ -90,8 +90,88 @@ DECL|macro|RADEON_EMIT_SE_TCL_OUTPUT_VTX_FMT
 mdefine_line|#define RADEON_EMIT_SE_TCL_OUTPUT_VTX_FMT           19 /* tcl/11 */
 DECL|macro|RADEON_EMIT_SE_TCL_MATERIAL_EMMISSIVE_RED
 mdefine_line|#define RADEON_EMIT_SE_TCL_MATERIAL_EMMISSIVE_RED   20 /* material/17 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_0
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_0                     21 /* tex0/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_1
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_1                     22 /* tex1/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_2
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_2                     23 /* tex2/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_3
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_3                     24 /* tex3/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_4
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_4                     25 /* tex4/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_5
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_5                     26 /* tex5/4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_6
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_6                     27 /* /4 */
+DECL|macro|R200_EMIT_PP_TXCBLEND_7
+mdefine_line|#define R200_EMIT_PP_TXCBLEND_7                     28 /* /4 */
+DECL|macro|R200_EMIT_TCL_LIGHT_MODEL_CTL_0
+mdefine_line|#define R200_EMIT_TCL_LIGHT_MODEL_CTL_0             29 /* tcl/7 */
+DECL|macro|R200_EMIT_TFACTOR_0
+mdefine_line|#define R200_EMIT_TFACTOR_0                         30 /* tf/7 */
+DECL|macro|R200_EMIT_VTX_FMT_0
+mdefine_line|#define R200_EMIT_VTX_FMT_0                         31 /* vtx/5 */
+DECL|macro|R200_EMIT_VAP_CTL
+mdefine_line|#define R200_EMIT_VAP_CTL                           32 /* vap/1 */
+DECL|macro|R200_EMIT_MATRIX_SELECT_0
+mdefine_line|#define R200_EMIT_MATRIX_SELECT_0                   33 /* msl/5 */
+DECL|macro|R200_EMIT_TEX_PROC_CTL_2
+mdefine_line|#define R200_EMIT_TEX_PROC_CTL_2                    34 /* tcg/5 */
+DECL|macro|R200_EMIT_TCL_UCP_VERT_BLEND_CTL
+mdefine_line|#define R200_EMIT_TCL_UCP_VERT_BLEND_CTL            35 /* tcl/1 */
+DECL|macro|R200_EMIT_PP_TXFILTER_0
+mdefine_line|#define R200_EMIT_PP_TXFILTER_0                     36 /* tex0/6 */
+DECL|macro|R200_EMIT_PP_TXFILTER_1
+mdefine_line|#define R200_EMIT_PP_TXFILTER_1                     37 /* tex1/6 */
+DECL|macro|R200_EMIT_PP_TXFILTER_2
+mdefine_line|#define R200_EMIT_PP_TXFILTER_2                     38 /* tex2/6 */
+DECL|macro|R200_EMIT_PP_TXFILTER_3
+mdefine_line|#define R200_EMIT_PP_TXFILTER_3                     39 /* tex3/6 */
+DECL|macro|R200_EMIT_PP_TXFILTER_4
+mdefine_line|#define R200_EMIT_PP_TXFILTER_4                     40 /* tex4/6 */
+DECL|macro|R200_EMIT_PP_TXFILTER_5
+mdefine_line|#define R200_EMIT_PP_TXFILTER_5                     41 /* tex5/6 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_0
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_0                     42 /* tex0/1 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_1
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_1                     43 /* tex1/1 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_2
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_2                     44 /* tex2/1 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_3
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_3                     45 /* tex3/1 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_4
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_4                     46 /* tex4/1 */
+DECL|macro|R200_EMIT_PP_TXOFFSET_5
+mdefine_line|#define R200_EMIT_PP_TXOFFSET_5                     47 /* tex5/1 */
+DECL|macro|R200_EMIT_VTE_CNTL
+mdefine_line|#define R200_EMIT_VTE_CNTL                          48 /* vte/1 */
+DECL|macro|R200_EMIT_OUTPUT_VTX_COMP_SEL
+mdefine_line|#define R200_EMIT_OUTPUT_VTX_COMP_SEL               49 /* vtx/1 */
+DECL|macro|R200_EMIT_PP_TAM_DEBUG3
+mdefine_line|#define R200_EMIT_PP_TAM_DEBUG3                     50 /* tam/1 */
+DECL|macro|R200_EMIT_PP_CNTL_X
+mdefine_line|#define R200_EMIT_PP_CNTL_X                         51 /* cst/1 */
+DECL|macro|R200_EMIT_RB3D_DEPTHXY_OFFSET
+mdefine_line|#define R200_EMIT_RB3D_DEPTHXY_OFFSET               52 /* cst/1 */
+DECL|macro|R200_EMIT_RE_AUX_SCISSOR_CNTL
+mdefine_line|#define R200_EMIT_RE_AUX_SCISSOR_CNTL               53 /* cst/1 */
+DECL|macro|R200_EMIT_RE_SCISSOR_TL_0
+mdefine_line|#define R200_EMIT_RE_SCISSOR_TL_0                   54 /* cst/2 */
+DECL|macro|R200_EMIT_RE_SCISSOR_TL_1
+mdefine_line|#define R200_EMIT_RE_SCISSOR_TL_1                   55 /* cst/2 */
+DECL|macro|R200_EMIT_RE_SCISSOR_TL_2
+mdefine_line|#define R200_EMIT_RE_SCISSOR_TL_2                   56 /* cst/2 */
+DECL|macro|R200_EMIT_SE_VAP_CNTL_STATUS
+mdefine_line|#define R200_EMIT_SE_VAP_CNTL_STATUS                57 /* cst/1 */
+DECL|macro|R200_EMIT_SE_VTX_STATE_CNTL
+mdefine_line|#define R200_EMIT_SE_VTX_STATE_CNTL                 58 /* cst/1 */
+DECL|macro|R200_EMIT_RE_POINTSIZE
+mdefine_line|#define R200_EMIT_RE_POINTSIZE                      59 /* cst/1 */
+DECL|macro|R200_EMIT_TCL_INPUT_VTX_VECTOR_ADDR_0
+mdefine_line|#define R200_EMIT_TCL_INPUT_VTX_VECTOR_ADDR_0       60 /* cst/4 */
 DECL|macro|RADEON_MAX_STATE_PACKETS
-mdefine_line|#define RADEON_MAX_STATE_PACKETS                    21
+mdefine_line|#define RADEON_MAX_STATE_PACKETS                    61
 multiline_comment|/* Commands understood by cmd_buffer ioctl.  More can be added but&n; * obviously these can&squot;t be removed or changed:&n; */
 DECL|macro|RADEON_CMD_PACKET
 mdefine_line|#define RADEON_CMD_PACKET      1 /* emit one of the register packets above */
@@ -105,6 +185,8 @@ DECL|macro|RADEON_CMD_PACKET3
 mdefine_line|#define RADEON_CMD_PACKET3     5 /* emit hw packet */
 DECL|macro|RADEON_CMD_PACKET3_CLIP
 mdefine_line|#define RADEON_CMD_PACKET3_CLIP 6 /* emit hw packet wrapped in cliprects */
+DECL|macro|RADEON_CMD_SCALARS2
+mdefine_line|#define RADEON_CMD_SCALARS2     7 /* r200 stopgap */
 r_typedef
 r_union
 (brace
@@ -118,6 +200,7 @@ DECL|member|cmd_type
 DECL|member|pad0
 DECL|member|pad1
 DECL|member|pad2
+r_int
 r_char
 id|cmd_type
 comma
@@ -137,6 +220,7 @@ DECL|member|cmd_type
 DECL|member|packet_id
 DECL|member|pad0
 DECL|member|pad1
+r_int
 r_char
 id|cmd_type
 comma
@@ -156,6 +240,7 @@ DECL|member|cmd_type
 DECL|member|offset
 DECL|member|stride
 DECL|member|count
+r_int
 r_char
 id|cmd_type
 comma
@@ -175,6 +260,7 @@ DECL|member|cmd_type
 DECL|member|offset
 DECL|member|stride
 DECL|member|count
+r_int
 r_char
 id|cmd_type
 comma
@@ -194,6 +280,7 @@ DECL|member|cmd_type
 DECL|member|buf_idx
 DECL|member|pad0
 DECL|member|pad1
+r_int
 r_char
 id|cmd_type
 comma
@@ -779,6 +866,12 @@ DECL|enumerator|RADEON_CLEANUP_CP
 id|RADEON_CLEANUP_CP
 op_assign
 l_int|0x02
+comma
+DECL|enumerator|RADEON_INIT_R200_CP
+id|RADEON_INIT_R200_CP
+op_assign
+l_int|0x03
+comma
 DECL|member|func
 )brace
 id|func
@@ -1225,6 +1318,12 @@ suffix:semicolon
 multiline_comment|/* 1.3: An ioctl to get parameters that aren&squot;t available to the 3d&n; * client any other way.  &n; */
 DECL|macro|RADEON_PARAM_AGP_BUFFER_OFFSET
 mdefine_line|#define RADEON_PARAM_AGP_BUFFER_OFFSET 0x1
+DECL|macro|RADEON_PARAM_LAST_FRAME
+mdefine_line|#define RADEON_PARAM_LAST_FRAME 0x2
+DECL|macro|RADEON_PARAM_LAST_DISPATCH
+mdefine_line|#define RADEON_PARAM_LAST_DISPATCH 0x3
+DECL|macro|RADEON_PARAM_LAST_CLEAR
+mdefine_line|#define RADEON_PARAM_LAST_CLEAR 0x4
 DECL|struct|drm_radeon_getparam
 r_typedef
 r_struct

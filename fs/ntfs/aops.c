@@ -334,14 +334,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1327,7 +1319,7 @@ r_return
 id|nr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_readpage - fill a @page of a @file with data from the device&n; * @file:&t;open file to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * For non-resident attributes, ntfs_readpage() fills the @page of the open&n; * file @file by calling the ntfs version of the generic block_read_full_page()&n; * function, ntfs_read_block(), which in turn creates and reads in the buffers&n; * associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_readpage() fills @page by copying the&n; * data from the mft record (which at this stage is most likely in memory) and&n; * fills the remainder with zeroes. Thus, in this case, I/O is synchronous, as&n; * even if the mft record is not cached at this point in time, we need to wait&n; * for it to be read in before we can do the copy.&n; *&n; * Return 0 on success and -errno on error.&n; */
+multiline_comment|/**&n; * ntfs_readpage - fill a @page of a @file with data from the device&n; * @file:&t;open file to which the page @page belongs or NULL&n; * @page:&t;page cache page to fill with data&n; *&n; * For non-resident attributes, ntfs_readpage() fills the @page of the open&n; * file @file by calling the ntfs version of the generic block_read_full_page()&n; * function, ntfs_read_block(), which in turn creates and reads in the buffers&n; * associated with the page asynchronously.&n; *&n; * For resident attributes, OTOH, ntfs_readpage() fills @page by copying the&n; * data from the mft record (which at this stage is most likely in memory) and&n; * fills the remainder with zeroes. Thus, in this case, I/O is synchronous, as&n; * even if the mft record is not cached at this point in time, we need to wait&n; * for it to be read in before we can do the copy.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * WARNING: Do not make this function static! It is used by mft.c!&n; */
 DECL|function|ntfs_readpage
 r_int
 id|ntfs_readpage
@@ -1497,14 +1489,12 @@ c_func
 id|base_ntfs_ino
 )paren
 suffix:semicolon
-multiline_comment|/* Map, pin and lock the mft record for reading. */
+multiline_comment|/* Map, pin and lock the mft record. */
 id|mrec
 op_assign
 id|map_mft_record
 c_func
 (paren
-id|READ
-comma
 id|base_ni
 )paren
 suffix:semicolon
@@ -1753,8 +1743,6 @@ suffix:colon
 id|unmap_mft_record
 c_func
 (paren
-id|READ
-comma
 id|base_ni
 )paren
 suffix:semicolon

@@ -1288,6 +1288,50 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * fls: find last bit set.&n; */
+macro_line|#if defined(__alpha_cix__) &amp;&amp; defined(__alpha_fix__)
+DECL|function|fls
+r_static
+r_inline
+r_int
+id|fls
+c_func
+(paren
+r_int
+id|word
+)paren
+(brace
+r_int
+id|result
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;ctlz %1,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|result
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|word
+op_amp
+l_int|0xffffffff
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|64
+op_minus
+id|result
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|fls
+mdefine_line|#define fls&t;generic_fls
+macro_line|#endif
 multiline_comment|/* Compute powers of two for the given integer.  */
 DECL|function|floor_log2
 r_static

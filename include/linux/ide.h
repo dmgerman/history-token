@@ -3251,7 +3251,7 @@ id|drive
 suffix:semicolon
 r_extern
 r_int
-id|ata_revalidate
+id|ide_revalidate
 c_func
 (paren
 id|kdev_t

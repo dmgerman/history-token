@@ -298,14 +298,6 @@ id|arg
 suffix:semicolon
 r_static
 r_int
-id|xd_reread_partitions
-(paren
-id|kdev_t
-id|dev
-)paren
-suffix:semicolon
-r_static
-r_int
 id|xd_readwrite
 (paren
 id|u_char

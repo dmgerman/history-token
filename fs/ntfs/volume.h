@@ -253,6 +253,10 @@ multiline_comment|/*&n; * Defined bits for the flags field in the ntfs_volume st
 r_typedef
 r_enum
 (brace
+DECL|enumerator|NV_Errors
+id|NV_Errors
+comma
+multiline_comment|/* 1: Volume has errors, prevent remount rw. */
 DECL|enumerator|NV_ShowSystemFiles
 id|NV_ShowSystemFiles
 comma
@@ -269,6 +273,11 @@ multiline_comment|/*&n; * Macro tricks to expand the NVolFoo(), NVolSetFoo(), an
 DECL|macro|NVOL_FNS
 mdefine_line|#define NVOL_FNS(flag)&t;&t;&t;&t;&t;&bslash;&n;static inline int NVol##flag(ntfs_volume *vol)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return test_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NVolSet##flag(ntfs_volume *vol)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static inline void NVolClear##flag(ntfs_volume *vol)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;clear_bit(NV_##flag, &amp;(vol)-&gt;flags);&t;&t;&bslash;&n;}
 multiline_comment|/* Emit the ntfs volume bitops functions. */
+id|NVOL_FNS
+c_func
+(paren
+id|Errors
+)paren
 id|NVOL_FNS
 c_func
 (paren

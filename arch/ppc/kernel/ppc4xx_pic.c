@@ -855,6 +855,13 @@ op_or
 id|IRQ_INPROGRESS
 )paren
 )paren
+op_logical_and
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|action
 )paren
 (brace
 id|ppc_cached_irq_mask

@@ -562,7 +562,7 @@ id|n
 )braket
 dot
 id|nr_sects
-op_lshift
+op_rshift
 l_int|1
 comma
 id|disk_name
