@@ -9655,6 +9655,13 @@ op_assign
 id|oldc
 suffix:semicolon
 )brace
+r_else
+id|update_screen
+c_func
+(paren
+id|vc-&gt;vc_num
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
