@@ -13055,9 +13055,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|function|isdn_ppp_setup_dev
+DECL|function|isdn_ppp_setup
 r_int
-id|isdn_ppp_setup_dev
+id|isdn_ppp_setup
 c_func
 (paren
 id|isdn_net_dev
@@ -13065,6 +13065,12 @@ op_star
 id|p
 )paren
 (brace
+id|isdn_other_setup
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 id|p-&gt;dev.type
 op_assign
 id|ARPHRD_PPP

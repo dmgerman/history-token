@@ -1700,9 +1700,9 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-DECL|function|isdn_ciscohdlck_setup_dev
+DECL|function|isdn_ciscohdlck_setup
 r_int
-id|isdn_ciscohdlck_setup_dev
+id|isdn_ciscohdlck_setup
 c_func
 (paren
 id|isdn_net_dev
@@ -1710,6 +1710,12 @@ op_star
 id|p
 )paren
 (brace
+id|isdn_other_setup
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 id|p-&gt;dev.do_ioctl
 op_assign
 id|isdn_ciscohdlck_dev_ioctl

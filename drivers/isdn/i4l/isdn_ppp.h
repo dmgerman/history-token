@@ -42,7 +42,7 @@ op_star
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_PPP
 r_int
-id|isdn_ppp_setup_dev
+id|isdn_ppp_setup
 c_func
 (paren
 id|isdn_net_dev
@@ -106,8 +106,8 @@ macro_line|#else
 r_static
 r_inline
 r_int
-DECL|function|isdn_ppp_setup_dev
-id|isdn_ppp_setup_dev
+DECL|function|isdn_ppp_setup
+id|isdn_ppp_setup
 c_func
 (paren
 id|isdn_net_dev

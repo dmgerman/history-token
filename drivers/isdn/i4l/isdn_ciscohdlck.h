@@ -21,7 +21,7 @@ id|lp
 )paren
 suffix:semicolon
 r_int
-id|isdn_ciscohdlck_setup_dev
+id|isdn_ciscohdlck_setup
 c_func
 (paren
 id|isdn_net_dev
