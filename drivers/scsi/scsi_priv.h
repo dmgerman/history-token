@@ -612,5 +612,10 @@ r_struct
 r_class
 id|shost_class
 suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|scsi_bus_type
+suffix:semicolon
 macro_line|#endif /* _SCSI_PRIV_H */
 eof

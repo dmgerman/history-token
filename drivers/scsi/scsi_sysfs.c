@@ -131,7 +131,6 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|scsi_bus_type
-r_static
 r_struct
 id|bus_type
 id|scsi_bus_type
