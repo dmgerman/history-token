@@ -56,8 +56,31 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|access_ok
-mdefine_line|#define access_ok(type,addr,size)   (1)
+DECL|function|access_ok
+r_static
+r_inline
+r_int
+id|access_ok
+c_func
+(paren
+r_int
+id|type
+comma
+r_const
+r_void
+id|__user
+op_star
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 DECL|macro|verify_area
 mdefine_line|#define verify_area(type,addr,size) (0)
 DECL|macro|put_user
