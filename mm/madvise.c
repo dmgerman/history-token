@@ -106,10 +106,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-id|vma-&gt;vm_raend
-op_assign
-l_int|0
-suffix:semicolon
 id|VM_ClearReadHint
 c_func
 (paren

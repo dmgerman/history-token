@@ -111,12 +111,6 @@ op_star
 id|vm_file
 suffix:semicolon
 multiline_comment|/* File we map to (can be NULL). */
-DECL|member|vm_raend
-r_int
-r_int
-id|vm_raend
-suffix:semicolon
-multiline_comment|/* XXX: put full readahead info here. */
 DECL|member|vm_private_data
 r_void
 op_star

@@ -1162,10 +1162,6 @@ id|vma-&gt;vm_start
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|new_vma-&gt;vm_raend
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
