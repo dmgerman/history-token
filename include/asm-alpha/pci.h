@@ -163,7 +163,7 @@ id|dma_addr_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Free and unmap a consistent DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistent.  SIZE must&n;   be the same as what as passed into pci_alloc_consistent.&n;   References to the memory and mappings assosciated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
+multiline_comment|/* Free and unmap a consistent DMA buffer.  CPU_ADDR and DMA_ADDR must&n;   be values that were returned from pci_alloc_consistent.  SIZE must&n;   be the same as what as passed into pci_alloc_consistent.&n;   References to the memory and mappings associated with CPU_ADDR or&n;   DMA_ADDR past this call are illegal.  */
 r_extern
 r_void
 id|pci_free_consistent
@@ -267,7 +267,7 @@ DECL|macro|pci_unmap_len
 mdefine_line|#define pci_unmap_len(PTR, LEN_NAME)&t;&t;&t;&bslash;&n;&t;((PTR)-&gt;LEN_NAME)
 DECL|macro|pci_unmap_len_set
 mdefine_line|#define pci_unmap_len_set(PTR, LEN_NAME, VAL)&t;&t;&bslash;&n;&t;(((PTR)-&gt;LEN_NAME) = (VAL))
-multiline_comment|/* Map a set of buffers described by scatterlist in streaming mode for&n;   PCI DMA.  This is the scather-gather version of the above&n;   pci_map_single interface.  Here the scatter gather list elements&n;   are each tagged with the appropriate PCI dma address and length.&n;   They are obtained via sg_dma_{address,length}(SG).&n;&n;   NOTE: An implementation may be able to use a smaller number of DMA&n;   address/length pairs than there are SG table elements.  (for&n;   example via virtual mapping capabilities) The routine returns the&n;   number of addr/length pairs actually used, at most nents.&n;&n;   Device ownership issues as mentioned above for pci_map_single are&n;   the same here.  */
+multiline_comment|/* Map a set of buffers described by scatterlist in streaming mode for&n;   PCI DMA.  This is the scatter-gather version of the above&n;   pci_map_single interface.  Here the scatter gather list elements&n;   are each tagged with the appropriate PCI dma address and length.&n;   They are obtained via sg_dma_{address,length}(SG).&n;&n;   NOTE: An implementation may be able to use a smaller number of DMA&n;   address/length pairs than there are SG table elements.  (for&n;   example via virtual mapping capabilities) The routine returns the&n;   number of addr/length pairs actually used, at most nents.&n;&n;   Device ownership issues as mentioned above for pci_map_single are&n;   the same here.  */
 r_extern
 r_int
 id|pci_map_sg
