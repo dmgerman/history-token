@@ -50,6 +50,10 @@ r_extern
 r_int
 id|acpi_noirq
 suffix:semicolon
+r_extern
+r_int
+id|acpi_strict
+suffix:semicolon
 multiline_comment|/* Fixmap pages to reserve for ACPI boot-time tables (see fixmap.h) */
 DECL|macro|FIX_ACPI_PAGES
 mdefine_line|#define FIX_ACPI_PAGES 4

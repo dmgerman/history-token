@@ -25,8 +25,6 @@ DECL|variable|__initdata
 r_int
 id|acpi_noirq
 id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* skip ACPI IRQ initialization */
 DECL|variable|__initdata
@@ -44,6 +42,10 @@ suffix:semicolon
 DECL|variable|acpi_ioapic
 r_int
 id|acpi_ioapic
+suffix:semicolon
+DECL|variable|acpi_strict
+r_int
+id|acpi_strict
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 macro_line|#ifdef CONFIG_ACPI_BOOT
