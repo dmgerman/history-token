@@ -82,7 +82,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#ifdef NTFS_RW
-multiline_comment|/*&n; * flush_dcache_mft_record_page - flush_dcache_page() for mft records&n; * @ni:&t;&t;ntfs inode structure of mft record&n; *&n; * Call flush_dcache_page() for the page in which an mft record resides.&n; *&n; * This must be called every time an mft record is modified, just after the&n; * modification.&n; */
+multiline_comment|/**&n; * flush_dcache_mft_record_page - flush_dcache_page() for mft records&n; * @ni:&t;&t;ntfs inode structure of mft record&n; *&n; * Call flush_dcache_page() for the page in which an mft record resides.&n; *&n; * This must be called every time an mft record is modified, just after the&n; * modification.&n; */
 DECL|function|flush_dcache_mft_record_page
 r_static
 r_inline

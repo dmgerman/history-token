@@ -2647,6 +2647,37 @@ r_int
 id|vol-&gt;mftmirr_lcn
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Work out the size of the mft mirror in number of mft records. If the&n;&t; * cluster size is less than or equal to the size taken by four mft&n;&t; * records, the mft mirror stores the first four mft records. If the&n;&t; * cluster size is bigger than the size taken by four mft records, the&n;&t; * mft mirror contains as many mft records as will fit into one&n;&t; * cluster.&n;&t; */
+r_if
+c_cond
+(paren
+id|vol-&gt;cluster_size
+op_le
+(paren
+l_int|4
+op_lshift
+id|vol-&gt;mft_record_size_bits
+)paren
+)paren
+id|vol-&gt;mftmirr_size
+op_assign
+l_int|4
+suffix:semicolon
+r_else
+id|vol-&gt;mftmirr_size
+op_assign
+id|vol-&gt;cluster_size
+op_rshift
+id|vol-&gt;mft_record_size_bits
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mftmirr_size = %i&quot;
+comma
+id|vol-&gt;mftmirr_size
+)paren
+suffix:semicolon
 id|vol-&gt;serial_no
 op_assign
 id|le64_to_cpu
@@ -5757,7 +5788,7 @@ id|sb-&gt;s_magic
 op_assign
 id|NTFS_SB_MAGIC
 suffix:semicolon
-multiline_comment|/*&n;&t; * Ntfs allows 63 bits for the file size, i.e. correct would be:&n;&t; * &t;sb-&gt;s_maxbytes = ~0ULL &gt;&gt; 1;&n;&t; * But the kernel uses a long as the page cache page index which on&n;&t; * 32-bit architectures is only 32-bits. MAX_LFS_FILESIZE is kernel&n;&t; * defined to the maximum the page cache page index can cope with&n;&t; * without overflowing the index or to 2^63 - 1, whichever is smaller.&n;&t; */
+multiline_comment|/*&n;&t; * Ntfs allows 63 bits for the file size, i.e. correct would be:&n;&t; *&t;sb-&gt;s_maxbytes = ~0ULL &gt;&gt; 1;&n;&t; * But the kernel uses a long as the page cache page index which on&n;&t; * 32-bit architectures is only 32-bits. MAX_LFS_FILESIZE is kernel&n;&t; * defined to the maximum the page cache page index can cope with&n;&t; * without overflowing the index or to 2^63 - 1, whichever is smaller.&n;&t; */
 id|sb-&gt;s_maxbytes
 op_assign
 id|MAX_LFS_FILESIZE
