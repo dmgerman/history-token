@@ -47,7 +47,7 @@ c_func
 (paren
 id|nfs_page_cachep
 comma
-id|SLAB_NOFS
+id|SLAB_KERNEL
 )paren
 suffix:semicolon
 r_if
