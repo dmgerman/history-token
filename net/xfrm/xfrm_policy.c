@@ -1452,6 +1452,7 @@ r_void
 id|xfrm_policy_flush
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct

@@ -14214,6 +14214,7 @@ DECL|function|sg_last_dev
 id|sg_last_dev
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -14895,6 +14896,7 @@ DECL|function|sg_proc_init
 id|sg_proc_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -15039,6 +15041,7 @@ DECL|function|sg_proc_cleanup
 id|sg_proc_cleanup
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

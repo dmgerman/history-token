@@ -6344,6 +6344,7 @@ DECL|function|ahc_linux_get_memsize
 id|ahc_linux_get_memsize
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -6375,6 +6376,7 @@ DECL|function|ahc_linux_next_unit
 id|ahc_linux_next_unit
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
