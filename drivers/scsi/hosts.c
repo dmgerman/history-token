@@ -632,7 +632,7 @@ l_string|&quot;pid=%ld, state=%d, owner=%d.&bslash;n&quot;
 comma
 id|scmd-&gt;request-&gt;rq_status
 comma
-id|scmd-&gt;target
+id|scmd-&gt;device-&gt;id
 comma
 id|scmd-&gt;pid
 comma

@@ -3494,7 +3494,7 @@ id|US_FL_SCM_MULT_TARG
 )paren
 id|bcb.Lun
 op_or_assign
-id|srb-&gt;target
+id|srb-&gt;device-&gt;id
 op_lshift
 l_int|4
 suffix:semicolon

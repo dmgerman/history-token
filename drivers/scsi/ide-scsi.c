@@ -4302,7 +4302,7 @@ id|drive
 op_assign
 id|idescsi_drives
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|idescsi_scsi_t
@@ -4334,7 +4334,7 @@ id|printk
 id|KERN_ERR
 l_string|&quot;ide-scsi: drive id %d not present&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_goto
@@ -4675,7 +4675,7 @@ id|drive
 op_assign
 id|idescsi_drives
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|idescsi_scsi_t
@@ -4818,7 +4818,7 @@ id|drive
 op_assign
 id|idescsi_drives
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|printk

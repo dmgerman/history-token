@@ -2005,9 +2005,9 @@ op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 comma
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|lba
@@ -2286,9 +2286,9 @@ op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 comma
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|lba
@@ -3748,7 +3748,7 @@ multiline_comment|/*&n;&t; *&t;If the bus, target or lun is out of range, return
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 op_ne
 id|scsicmd-&gt;host-&gt;this_id
 )paren
@@ -3757,7 +3757,7 @@ r_if
 c_cond
 (paren
 (paren
-id|scsicmd-&gt;channel
+id|scsicmd-&gt;device-&gt;channel
 op_eq
 l_int|0
 )paren
@@ -3767,13 +3767,13 @@ r_if
 c_cond
 (paren
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 op_ge
 id|AAC_MAX_TARGET
 )paren
 op_logical_or
 (paren
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -3800,9 +3800,9 @@ op_assign
 id|TARGET_LUN_TO_CONTAINER
 c_func
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 comma
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *&t;If the target container doesn&squot;t exist, it may have&n;&t;&t;&t; *&t;been newly created&n;&t;&t;&t; */
@@ -4073,7 +4073,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;INQUIRY command, ID: %d.&bslash;n&quot;
 comma
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -4148,7 +4148,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 op_eq
 id|scsicmd-&gt;host-&gt;this_id
 )paren
@@ -5966,11 +5966,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 OG
 l_int|15
 op_logical_or
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 OG
 l_int|7
 )paren
@@ -6115,7 +6115,7 @@ c_func
 id|aac_logical_to_phys
 c_func
 (paren
-id|scsicmd-&gt;channel
+id|scsicmd-&gt;device-&gt;channel
 )paren
 )paren
 suffix:semicolon
@@ -6124,7 +6124,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|scsicmd-&gt;target
+id|scsicmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|srbcmd-&gt;lun
@@ -6132,7 +6132,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|scsicmd-&gt;lun
+id|scsicmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|srbcmd-&gt;flags

@@ -4148,7 +4148,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 comma
 id|SCSI_Data_NoACK_port
@@ -4209,7 +4209,7 @@ c_cond
 id|fdomain_select
 c_func
 (paren
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 )paren
 )paren
 (brace
@@ -4468,7 +4468,7 @@ c_func
 (paren
 l_string|&quot;scsi: &lt;fdomain&gt; target = %d, command = %x, status = %x&bslash;n&quot;
 comma
-id|current_SC-&gt;target
+id|current_SC-&gt;device-&gt;id
 comma
 id|current_SC-&gt;cmnd
 (braket
@@ -5618,7 +5618,7 @@ l_string|&quot; (%d), target = %d cmnd = 0x%02x pieces = %d size = %u&bslash;n&q
 comma
 id|SCpnt-&gt;SCp.phase
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 op_star
 (paren

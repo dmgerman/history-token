@@ -2756,9 +2756,9 @@ l_string|&quot;host number %d destination target %d, lun %d&bslash;n&quot;
 id|ANDP
 id|cmd-&gt;host-&gt;host_no
 id|ANDP
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 id|ANDP
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|PRINTP

@@ -1801,15 +1801,15 @@ suffix:semicolon
 multiline_comment|/* After SCSI done, call post routine */
 id|pSCB-&gt;SCB_Target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|pSCB-&gt;SCB_Lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|pSCB-&gt;SCB_Ident
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_or
 id|DISC_ALLOW
 suffix:semicolon
@@ -2069,7 +2069,7 @@ multiline_comment|/* Point to Host adapter control block */
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 OG
 l_int|16
 )paren
@@ -2278,7 +2278,7 @@ id|ULONG
 )paren
 id|SCpnt
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|reset_flags
 )paren

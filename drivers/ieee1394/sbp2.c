@@ -8161,7 +8161,7 @@ id|scsi_id
 op_assign
 id|hi-&gt;scsi_id
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * If scsi_id is null, it means there is no device in this slot,&n;&t; * so we should return selection timeout.&n;&t; */
@@ -8191,7 +8191,7 @@ multiline_comment|/*&n;&t; * Until we handle multiple luns, just return selectio
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 (brace
 id|SCpnt-&gt;result
@@ -8886,7 +8886,7 @@ id|scsi_id
 op_assign
 id|hi-&gt;scsi_id
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 r_struct
@@ -9085,7 +9085,7 @@ id|scsi_id
 op_assign
 id|hi-&gt;scsi_id
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|SBP2_ERR

@@ -7360,9 +7360,9 @@ c_func
 (paren
 id|host_data-&gt;ncb
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -11323,7 +11323,7 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|lcb_p
@@ -11331,7 +11331,7 @@ id|lp
 op_assign
 id|tp-&gt;lp
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|ccb_p
@@ -11362,19 +11362,19 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_eq
 id|np-&gt;myaddr
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_ge
 id|MAX_TARGET
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_ge
 id|MAX_LUN
 )paren
@@ -11498,9 +11498,9 @@ id|ncr_get_ccb
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 )paren
@@ -11544,9 +11544,9 @@ id|ncr_setup_tags
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -11556,7 +11556,7 @@ id|idmsg
 op_assign
 id|M_IDENTIFY
 op_or
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 r_if
 c_cond
@@ -12431,7 +12431,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;**&t;select&n;&t;*/
 id|cp-&gt;phys.select.sel_id
 op_assign
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 suffix:semicolon
 id|cp-&gt;phys.select.sel_scntl3
 op_assign
@@ -14241,14 +14241,14 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|lp
 op_assign
 id|tp-&gt;lp
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;We donnot queue more than 1 ccb per target &n;&t;**&t;with negotiation at any time. If this ccb was &n;&t;**&t;used for negotiation, clear this info in the tcb.&n;&t;*/
@@ -14495,9 +14495,9 @@ id|ncr_alloc_lcb
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;**&t;On standard INQUIRY response (EVPD and CmDt &n;&t;&t;**&t;not set), setup logical unit according to &n;&t;&t;**&t;announced capabilities (we need the 1rst 7 bytes).&n;&t;&t;*/
@@ -14545,9 +14545,9 @@ id|ncr_setup_lcb
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 (paren
 r_char
@@ -14599,9 +14599,9 @@ id|ncr_setup_tags
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -16548,7 +16548,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cp-&gt;cmd-&gt;target
+id|cp-&gt;cmd-&gt;device-&gt;id
 op_ne
 id|target
 )paren
@@ -16646,7 +16646,7 @@ m_assert
 id|target
 op_eq
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_amp
 l_int|0xf
 )paren
@@ -17009,7 +17009,7 @@ m_assert
 id|target
 op_eq
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_amp
 l_int|0xf
 )paren
@@ -20593,7 +20593,7 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|lcb_p
@@ -20601,7 +20601,7 @@ id|lp
 op_assign
 id|tp-&gt;lp
 (braket
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|XPT_QUEHEAD
@@ -20782,9 +20782,9 @@ id|ncr_setup_tags
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -20855,7 +20855,7 @@ l_int|0
 op_assign
 id|M_IDENTIFY
 op_or
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|cp-&gt;phys.smsg.addr
 op_assign
@@ -20913,7 +20913,7 @@ id|cp-&gt;sensecmd
 l_int|1
 )braket
 op_assign
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 suffix:semicolon

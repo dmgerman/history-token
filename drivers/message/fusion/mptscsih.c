@@ -2726,7 +2726,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -2960,7 +2960,7 @@ c_func
 (paren
 id|hd
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -3000,7 +3000,7 @@ c_func
 (paren
 id|hd
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break
@@ -3195,7 +3195,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -3416,7 +3416,7 @@ id|hd
 comma
 id|hd-&gt;port
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
 id|pScsiReq-&gt;LUN
 (braket
@@ -5570,9 +5570,9 @@ id|ioc_str
 comma
 l_int|0
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
-id|sc-&gt;lun
+id|sc-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|last_queue_full
@@ -9370,11 +9370,11 @@ id|SCpnt-&gt;host-&gt;hostdata
 suffix:semicolon
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|SCpnt-&gt;scsi_done
 op_assign
@@ -11681,9 +11681,9 @@ id|hd
 comma
 id|MPI_SCSITASKMGMT_TASKTYPE_ABORT_TASK
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|ctx2abort
 comma
@@ -11843,7 +11843,7 @@ id|hd
 comma
 id|MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 l_int|0
 comma
@@ -15422,9 +15422,9 @@ l_string|&quot;%d:%d:%d&quot;
 comma
 id|hd-&gt;ioc-&gt;id
 comma
-id|sc-&gt;target
+id|sc-&gt;device-&gt;id
 comma
-id|sc-&gt;lun
+id|sc-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|thisIo.DevIDStr

@@ -1404,11 +1404,11 @@ mdefine_line|#define ENTER_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Entering %s()
 DECL|macro|LEAVE_INTR
 mdefine_line|#define LEAVE_INTR(x)&t;&t;dprintk(3, &quot;qla1280 : Leaving %s()&bslash;n&quot;, x);
 DECL|macro|SCSI_BUS_32
-mdefine_line|#define SCSI_BUS_32(scp)&t;scp-&gt;channel
+mdefine_line|#define SCSI_BUS_32(scp)&t;scp-&gt;device-&gt;channel
 DECL|macro|SCSI_TCN_32
-mdefine_line|#define SCSI_TCN_32(scp)&t;scp-&gt;target
+mdefine_line|#define SCSI_TCN_32(scp)&t;scp-&gt;device-&gt;id
 DECL|macro|SCSI_LUN_32
-mdefine_line|#define SCSI_LUN_32(scp)&t;scp-&gt;lun
+mdefine_line|#define SCSI_LUN_32(scp)&t;scp-&gt;device-&gt;lun
 multiline_comment|/****************************************************************************/
 multiline_comment|/*  LINUX -  Loadable Module Functions.                                     */
 multiline_comment|/****************************************************************************/

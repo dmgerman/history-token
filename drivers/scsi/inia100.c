@@ -1461,11 +1461,11 @@ suffix:semicolon
 multiline_comment|/* Clear done bit               */
 id|pSCB-&gt;SCB_Target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|pSCB-&gt;SCB_Lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|pSCB-&gt;SCB_Reserved0
 op_assign
@@ -1725,7 +1725,7 @@ suffix:semicolon
 )brace
 id|pSCB-&gt;SCB_Ident
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_or
 id|DISC_ALLOW
 suffix:semicolon
@@ -1970,7 +1970,7 @@ id|pHCB
 comma
 id|SCpnt
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace

@@ -6810,7 +6810,7 @@ mdefine_line|#define REQPNEXT(reqp)       ((REQP) ((reqp)-&gt;host_scribble))
 DECL|macro|REQPNEXTP
 mdefine_line|#define REQPNEXTP(reqp)      ((REQP *) &amp;((reqp)-&gt;host_scribble))
 DECL|macro|REQPTID
-mdefine_line|#define REQPTID(reqp)        ((reqp)-&gt;target)
+mdefine_line|#define REQPTID(reqp)        ((reqp)-&gt;device-&gt;id)
 DECL|macro|REQPTIME
 mdefine_line|#define REQPTIME(reqp)       ((reqp)-&gt;SCp.this_residual)
 DECL|macro|REQTIMESTAMP
@@ -15820,7 +15820,7 @@ id|device
 op_assign
 id|boardp-&gt;device
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 suffix:semicolon
 r_if
@@ -15896,7 +15896,7 @@ suffix:semicolon
 multiline_comment|/*&n;             * Increment monotonically increasing per device successful&n;             * request counter. Wrapping doesn&squot;t matter.&n;             */
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_increment
 suffix:semicolon
@@ -16127,7 +16127,7 @@ suffix:semicolon
 multiline_comment|/*&n;             * Increment monotonically increasing per device successful&n;             * request counter. Wrapping doesn&squot;t matter.&n;             */
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_increment
 suffix:semicolon
@@ -16364,21 +16364,21 @@ op_assign
 id|ASC_TID_TO_TARGET_ID
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|asc_scsi_q.q1.target_lun
 op_assign
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 suffix:semicolon
 id|asc_scsi_q.q2.target_ix
 op_assign
 id|ASC_TIDLUN_TO_IX
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 comma
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|asc_scsi_q.q1.sense_addr
@@ -16411,7 +16411,7 @@ c_cond
 (paren
 id|boardp-&gt;dvc_var.asc_dvc_var.cur_dvc_qng
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 OG
 l_int|0
@@ -16420,7 +16420,7 @@ op_logical_and
 (paren
 id|boardp-&gt;reqcnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_mod
 l_int|255
@@ -16949,11 +16949,11 @@ suffix:semicolon
 )brace
 id|scsiqp-&gt;target_id
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 id|scsiqp-&gt;target_lun
 op_assign
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 suffix:semicolon
 id|scsiqp-&gt;sense_addr
 op_assign
@@ -17814,7 +17814,7 @@ l_int|0
 op_eq
 id|SCSICMD_Inquiry
 op_logical_and
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 op_eq
 l_int|0
 op_logical_and
@@ -17832,7 +17832,7 @@ c_func
 (paren
 id|asc_dvc_varp
 comma
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_amp
 l_int|0x7
 comma
@@ -18067,7 +18067,7 @@ op_amp
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -18087,7 +18087,7 @@ op_or_assign
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -18637,7 +18637,7 @@ op_amp
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 )paren
 op_eq
@@ -18657,7 +18657,7 @@ op_or_assign
 id|ADV_TID_TO_TIDMASK
 c_func
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace
@@ -19592,7 +19592,7 @@ id|ascq
 comma
 id|reqp
 comma
-id|reqp-&gt;target
+id|reqp-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace

@@ -2625,7 +2625,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req_p-&gt;channel
+id|req_p-&gt;device-&gt;channel
 op_ne
 l_int|0
 )paren
@@ -2667,7 +2667,7 @@ id|m
 op_assign
 id|m
 op_lshift
-id|req_p-&gt;target
+id|req_p-&gt;device-&gt;id
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Fake a timeout for missing targets&n;&t; */
 r_if
@@ -3109,7 +3109,7 @@ c_cond
 (paren
 id|dev-&gt;id
 (braket
-id|workrequ-&gt;target
+id|workrequ-&gt;device-&gt;id
 )braket
 dot
 id|curr_req
@@ -3119,7 +3119,7 @@ l_int|0
 (brace
 id|dev-&gt;id
 (braket
-id|workrequ-&gt;target
+id|workrequ-&gt;device-&gt;id
 )braket
 dot
 id|curr_req
@@ -3128,7 +3128,7 @@ id|workrequ
 suffix:semicolon
 id|dev-&gt;last_cmd
 op_assign
-id|workrequ-&gt;target
+id|workrequ-&gt;device-&gt;id
 suffix:semicolon
 r_goto
 id|cmd_subp
@@ -3302,7 +3302,7 @@ l_int|0
 suffix:semicolon
 id|target_id
 op_assign
-id|workrequ-&gt;target
+id|workrequ-&gt;device-&gt;id
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Wide ?&n;&t; */
 id|w
@@ -3434,7 +3434,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|workrequ-&gt;lun
+id|workrequ-&gt;device-&gt;lun
 comma
 id|tmport
 )paren

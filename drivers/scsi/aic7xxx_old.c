@@ -2264,9 +2264,9 @@ suffix:semicolon
 DECL|macro|CTL_OF_SCB
 mdefine_line|#define CTL_OF_SCB(scb) (((scb-&gt;hscb)-&gt;target_channel_lun &gt;&gt; 3) &amp; 0x1),  &bslash;&n;                        (((scb-&gt;hscb)-&gt;target_channel_lun &gt;&gt; 4) &amp; 0xf), &bslash;&n;                        ((scb-&gt;hscb)-&gt;target_channel_lun &amp; 0x07)
 DECL|macro|CTL_OF_CMD
-mdefine_line|#define CTL_OF_CMD(cmd) ((cmd-&gt;channel) &amp; 0x01),  &bslash;&n;                        ((cmd-&gt;target) &amp; 0x0f), &bslash;&n;                        ((cmd-&gt;lun) &amp; 0x07)
+mdefine_line|#define CTL_OF_CMD(cmd) ((cmd-&gt;device-&gt;channel) &amp; 0x01),  &bslash;&n;                        ((cmd-&gt;device-&gt;id) &amp; 0x0f), &bslash;&n;                        ((cmd-&gt;device-&gt;lun) &amp; 0x07)
 DECL|macro|TARGET_INDEX
-mdefine_line|#define TARGET_INDEX(cmd)  ((cmd)-&gt;target | ((cmd)-&gt;channel &lt;&lt; 3))
+mdefine_line|#define TARGET_INDEX(cmd)  ((cmd)-&gt;device-&gt;id | ((cmd)-&gt;device-&gt;channel &lt;&lt; 3))
 multiline_comment|/*&n; * A nice little define to make doing our printks a little easier&n; */
 DECL|macro|WARN_LEAD
 mdefine_line|#define WARN_LEAD KERN_WARNING &quot;(scsi%d:%d:%d:%d) &quot;
@@ -14454,7 +14454,7 @@ l_int|1
 )braket
 op_assign
 (paren
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 )paren
@@ -17798,15 +17798,15 @@ id|aic_dev
 suffix:semicolon
 id|target
 op_assign
-id|scb-&gt;cmd-&gt;target
+id|scb-&gt;cmd-&gt;device-&gt;id
 suffix:semicolon
 id|channel
 op_assign
-id|scb-&gt;cmd-&gt;channel
+id|scb-&gt;cmd-&gt;device-&gt;channel
 suffix:semicolon
 id|lun
 op_assign
-id|scb-&gt;cmd-&gt;lun
+id|scb-&gt;cmd-&gt;device-&gt;lun
 suffix:semicolon
 id|reply
 op_assign
@@ -21813,11 +21813,11 @@ c_func
 (paren
 id|p
 comma
-id|scb-&gt;cmd-&gt;target
+id|scb-&gt;cmd-&gt;device-&gt;id
 comma
-id|scb-&gt;cmd-&gt;channel
+id|scb-&gt;cmd-&gt;device-&gt;channel
 comma
-id|scb-&gt;cmd-&gt;lun
+id|scb-&gt;cmd-&gt;device-&gt;lun
 comma
 id|MSG_EXT_WDTR_BUS_8_BIT
 comma
@@ -21839,9 +21839,9 @@ id|p
 comma
 l_int|NULL
 comma
-id|scb-&gt;cmd-&gt;target
+id|scb-&gt;cmd-&gt;device-&gt;id
 comma
-id|scb-&gt;cmd-&gt;channel
+id|scb-&gt;cmd-&gt;device-&gt;channel
 comma
 l_int|0
 comma
@@ -23093,11 +23093,11 @@ c_func
 (paren
 id|p
 comma
-id|scb-&gt;cmd-&gt;target
+id|scb-&gt;cmd-&gt;device-&gt;id
 comma
-id|scb-&gt;cmd-&gt;channel
+id|scb-&gt;cmd-&gt;device-&gt;channel
 comma
-id|scb-&gt;cmd-&gt;lun
+id|scb-&gt;cmd-&gt;device-&gt;lun
 comma
 id|scb-&gt;hscb-&gt;tag
 )paren
@@ -37987,7 +37987,7 @@ id|hscb-&gt;target_channel_lun
 op_assign
 (paren
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_lshift
 l_int|4
 )paren
@@ -37997,7 +37997,7 @@ l_int|0xF0
 op_or
 (paren
 (paren
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_amp
 l_int|0x01
 )paren
@@ -38006,7 +38006,7 @@ l_int|3
 )paren
 op_or
 (paren
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_amp
 l_int|0x07
 )paren
@@ -38984,7 +38984,7 @@ suffix:semicolon
 )brace
 id|channel
 op_assign
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 suffix:semicolon
 multiline_comment|/*&n;     * Send a Device Reset Message:&n;     * The target that is holding up the bus may not be the same as&n;     * the one that triggered this timeout (different commands have&n;     * different timeout lengths).  Our strategy here is to queue an&n;     * abort message to the timed out target if it is disconnected.&n;     * Otherwise, if we have an active target we stuff the message buffer&n;     * with an abort message and assert ATN in the hopes that the target&n;     * will let go of the bus and go to the mesgout phase.  If this&n;     * fails, we&squot;ll get another timeout a few seconds later which will&n;     * attempt a bus reset.&n;     */
 id|saved_scbptr
@@ -39246,11 +39246,11 @@ c_func
 (paren
 id|p
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|hscb-&gt;tag
 comma
@@ -39963,11 +39963,11 @@ c_func
 (paren
 id|p
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|scb-&gt;hscb-&gt;tag
 comma
@@ -40879,7 +40879,7 @@ c_func
 (paren
 id|p
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 comma
 id|TRUE
 )paren
@@ -40897,7 +40897,7 @@ c_func
 (paren
 id|p
 comma
-id|cmd-&gt;channel
+id|cmd-&gt;device-&gt;channel
 op_xor
 l_int|0x01
 comma

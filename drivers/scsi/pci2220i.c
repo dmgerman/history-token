@@ -8564,7 +8564,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information
@@ -8682,9 +8682,9 @@ id|printk
 (paren
 l_string|&quot;&bslash;nPCI2242I: ID %d, LUN %d opcode %X &quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 op_star
 id|cdb
@@ -8701,7 +8701,7 @@ c_cond
 op_logical_neg
 id|pdev-&gt;byte6
 op_logical_or
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 (brace
 id|OpDone
@@ -8976,12 +8976,12 @@ r_if
 c_cond
 (paren
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_ge
 id|padapter-&gt;numberOfDrives
 )paren
 op_logical_or
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )paren
 (brace
 id|OpDone
@@ -12495,7 +12495,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information
@@ -12574,7 +12574,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information

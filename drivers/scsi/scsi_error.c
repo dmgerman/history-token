@@ -600,7 +600,7 @@ id|scmd
 comma
 id|scmd-&gt;state
 comma
-id|scmd-&gt;target
+id|scmd-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -1150,7 +1150,7 @@ l_int|0x1f
 )paren
 op_or
 (paren
-id|scmd-&gt;lun
+id|scmd-&gt;device-&gt;lun
 op_lshift
 l_int|5
 op_amp
@@ -1858,7 +1858,7 @@ l_string|&quot; for tgt: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|scmd-&gt;target
+id|scmd-&gt;device-&gt;id
 )paren
 )paren
 suffix:semicolon
@@ -2735,7 +2735,7 @@ id|siblings
 r_if
 c_cond
 (paren
-id|scmd-&gt;channel
+id|scmd-&gt;device-&gt;channel
 op_eq
 id|sdev-&gt;channel
 )paren
@@ -2863,7 +2863,7 @@ id|siblings
 r_if
 c_cond
 (paren
-id|scmd-&gt;channel
+id|scmd-&gt;device-&gt;channel
 op_eq
 id|sdev-&gt;channel
 )paren
@@ -2978,7 +2978,7 @@ c_cond
 (paren
 id|channel
 op_eq
-id|scmd-&gt;channel
+id|scmd-&gt;device-&gt;channel
 )paren
 (brace
 id|chan_scmd
@@ -3058,7 +3058,7 @@ id|SCSI_EH_CMD_ERR
 op_logical_or
 id|channel
 op_ne
-id|scmd-&gt;channel
+id|scmd-&gt;device-&gt;channel
 )paren
 r_continue
 suffix:semicolon
@@ -3612,7 +3612,7 @@ l_string|&quot;scsi%d (%d,%d,%d) : reservation conflict&bslash;n&quot;
 comma
 id|scmd-&gt;host-&gt;host_no
 comma
-id|scmd-&gt;channel
+id|scmd-&gt;device-&gt;channel
 comma
 id|scmd-&gt;device-&gt;id
 comma
@@ -4511,18 +4511,6 @@ suffix:semicolon
 id|SCpnt-&gt;device
 op_assign
 id|dev
-suffix:semicolon
-id|SCpnt-&gt;target
-op_assign
-id|dev-&gt;id
-suffix:semicolon
-id|SCpnt-&gt;lun
-op_assign
-id|dev-&gt;lun
-suffix:semicolon
-id|SCpnt-&gt;channel
-op_assign
-id|dev-&gt;channel
 suffix:semicolon
 id|SCpnt-&gt;request-&gt;rq_status
 op_assign

@@ -2700,11 +2700,11 @@ l_int|12
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_assign
 id|piowr-&gt;iu.scsi.target
 suffix:semicolon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 op_assign
 id|virt_ctr
 ques
@@ -2823,7 +2823,7 @@ id|gdth_iord_str
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 op_assign
 id|virt_ctr
 ques
@@ -8183,7 +8183,7 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -8195,7 +8195,7 @@ c_func
 id|scp
 )paren
 op_logical_and
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar
@@ -8352,12 +8352,12 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar
@@ -8483,12 +8483,12 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 op_eq
 (paren
 id|unchar

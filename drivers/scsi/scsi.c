@@ -877,7 +877,7 @@ c_func
 (paren
 l_string|&quot;Activating command for device %d (%d)&bslash;n&quot;
 comma
-id|scmnd-&gt;target
+id|scmnd-&gt;device-&gt;id
 comma
 id|atomic_read
 c_func
@@ -979,7 +979,7 @@ c_func
 (paren
 l_string|&quot;Deactivating command for device %d (active=%d, failed=%d)&bslash;n&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|atomic_read
 c_func
@@ -1166,18 +1166,6 @@ suffix:semicolon
 id|newSCpnt-&gt;device
 op_assign
 id|SDpnt
-suffix:semicolon
-id|newSCpnt-&gt;target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-id|newSCpnt-&gt;lun
-op_assign
-id|SDpnt-&gt;lun
-suffix:semicolon
-id|newSCpnt-&gt;channel
-op_assign
-id|SDpnt-&gt;channel
 suffix:semicolon
 id|newSCpnt-&gt;request
 op_assign
@@ -1542,7 +1530,7 @@ l_int|0x1f
 )paren
 op_or
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_lshift
 l_int|5
 op_amp
@@ -1625,9 +1613,9 @@ l_string|&quot;command = %p, buffer = %p, &bslash;nbufflen = %d, done = %p)&bsla
 comma
 id|SCpnt-&gt;host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|SCpnt-&gt;cmnd
 comma
@@ -2099,11 +2087,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|COMMAND_SIZE
@@ -2135,7 +2118,7 @@ id|host-&gt;host_no
 comma
 id|SDpnt-&gt;channel
 comma
-id|target
+id|SDpnt-&gt;id
 comma
 id|buffer
 comma
@@ -2627,11 +2610,6 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|target
-op_assign
-id|SCpnt-&gt;target
-suffix:semicolon
-r_int
 id|size
 op_assign
 id|COMMAND_SIZE
@@ -2661,9 +2639,9 @@ l_string|&quot;command : &quot;
 comma
 id|host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|buffer
 comma
@@ -3732,18 +3710,6 @@ suffix:semicolon
 id|SCpnt-&gt;device
 op_assign
 id|SDpnt
-suffix:semicolon
-id|SCpnt-&gt;target
-op_assign
-id|SDpnt-&gt;id
-suffix:semicolon
-id|SCpnt-&gt;lun
-op_assign
-id|SDpnt-&gt;lun
-suffix:semicolon
-id|SCpnt-&gt;channel
-op_assign
-id|SDpnt-&gt;channel
 suffix:semicolon
 id|SCpnt-&gt;request
 op_assign
@@ -5283,6 +5249,13 @@ r_struct
 id|Scsi_Host
 op_star
 id|shpnt
+suffix:semicolon
+r_struct
+id|list_head
+id|spnt
+comma
+op_star
+id|prev_spnt
 suffix:semicolon
 multiline_comment|/*&n;&t; * Next, detach the devices from the driver.&n;&t; */
 r_for

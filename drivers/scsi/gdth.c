@@ -12311,11 +12311,11 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 id|t
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x010300
 r_if
@@ -12680,11 +12680,11 @@ id|nscp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|nscp-&gt;channel
+id|nscp-&gt;device-&gt;channel
 suffix:semicolon
 id|t
 op_assign
-id|nscp-&gt;target
+id|nscp-&gt;device-&gt;id
 suffix:semicolon
 r_if
 c_cond
@@ -12882,7 +12882,7 @@ id|t
 op_eq
 l_int|0
 op_logical_and
-id|nscp-&gt;lun
+id|nscp-&gt;device-&gt;lun
 op_eq
 l_int|0
 )paren
@@ -12929,7 +12929,7 @@ id|t
 op_eq
 l_int|0
 op_logical_and
-id|nscp-&gt;lun
+id|nscp-&gt;device-&gt;lun
 op_eq
 l_int|1
 )paren
@@ -12939,7 +12939,7 @@ id|t
 op_eq
 l_int|1
 op_logical_and
-id|nscp-&gt;lun
+id|nscp-&gt;device-&gt;lun
 op_eq
 l_int|0
 )paren
@@ -13408,7 +13408,7 @@ id|t
 dot
 id|present
 op_logical_or
-id|nscp-&gt;lun
+id|nscp-&gt;device-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -14536,7 +14536,7 @@ id|hanum
 suffix:semicolon
 id|t
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 id|TRACE
 c_func
@@ -15824,11 +15824,11 @@ id|hanum
 suffix:semicolon
 id|t
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 id|l
 op_assign
-id|scp-&gt;lun
+id|scp-&gt;device-&gt;lun
 suffix:semicolon
 id|cmdp
 op_assign
@@ -19019,7 +19019,7 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 r_if
 c_cond
@@ -19047,7 +19047,7 @@ id|b
 dot
 id|io_cnt
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 op_decrement
 suffix:semicolon
@@ -19099,7 +19099,7 @@ id|GDT_CLUST_INFO
 (brace
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19116,7 +19116,7 @@ op_logical_neg
 (paren
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19135,7 +19135,7 @@ c_cond
 (paren
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19173,7 +19173,7 @@ id|GDT_MOUNT
 (brace
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19182,7 +19182,7 @@ id|CLUSTER_MOUNTED
 suffix:semicolon
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|media_changed
@@ -19201,7 +19201,7 @@ id|GDT_UNMOUNT
 (brace
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19211,7 +19211,7 @@ id|CLUSTER_MOUNTED
 suffix:semicolon
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|media_changed
@@ -19250,7 +19250,7 @@ id|RESERVE
 (brace
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19272,7 +19272,7 @@ id|RELEASE
 (brace
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19456,7 +19456,7 @@ op_logical_and
 (paren
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19470,7 +19470,7 @@ id|CLUSTER_RESERVE_STATE
 multiline_comment|/* bus reset -&gt; force GDT_CLUST_INFO */
 id|ha-&gt;hdr
 (braket
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 )braket
 dot
 id|cluster_type
@@ -19556,7 +19556,7 @@ id|ha-&gt;info
 suffix:semicolon
 id|ha-&gt;dvr.eu.sync.hostdrive
 op_assign
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 suffix:semicolon
 r_if
 c_cond
@@ -23888,7 +23888,7 @@ id|scp-&gt;host
 op_member_access_from_pointer
 id|busnum
 suffix:colon
-id|scp-&gt;channel
+id|scp-&gt;device-&gt;channel
 suffix:semicolon
 id|ha
 op_assign
@@ -23944,7 +23944,7 @@ c_func
 id|cmnd
 )paren
 op_logical_and
-id|cmnd-&gt;channel
+id|cmnd-&gt;device-&gt;channel
 op_eq
 id|b
 )paren
@@ -24444,7 +24444,7 @@ id|scp-&gt;cmnd
 l_int|0
 )braket
 comma
-id|scp-&gt;target
+id|scp-&gt;device-&gt;id
 comma
 id|scp-&gt;lun
 )paren

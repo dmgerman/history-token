@@ -1712,11 +1712,11 @@ op_increment
 comma
 id|SCpnt-&gt;host-&gt;host_no
 comma
-id|SCpnt-&gt;channel
+id|SCpnt-&gt;device-&gt;channel
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|SCpnt-&gt;request-&gt;rq_disk
 ques

@@ -1305,9 +1305,9 @@ id|cmd
 )paren
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 )brace
@@ -1847,9 +1847,9 @@ c_func
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 (paren
 id|u_char
@@ -1885,7 +1885,7 @@ comma
 op_amp
 id|np-&gt;target
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 )paren
 suffix:semicolon
@@ -2207,15 +2207,15 @@ multiline_comment|/*&n;&t; *  Minimal checkings, so that we will not &n;&t; *  g
 r_if
 c_cond
 (paren
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 op_eq
 id|np-&gt;myaddr
 op_logical_or
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 op_ge
 id|SYM_CONF_MAX_TARGET
 op_logical_or
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 op_ge
 id|SYM_CONF_MAX_LUN
 )paren
@@ -2240,7 +2240,7 @@ op_assign
 op_amp
 id|np-&gt;target
 (braket
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Complete the 1st INQUIRY command with error &n;&t; *  condition if the device is flagged NOSCAN &n;&t; *  at BOOT in the NVRAM. This may speed up &n;&t; *  the boot and maintain coherency with BIOS &n;&t; *  device numbering. Clearing the flag allows &n;&t; *  user to rescan skipped devices later.&n;&t; *  We also return error for devices not flagged &n;&t; *  for SCAN LUNS in the NVRAM since some mono-lun &n;&t; *  devices behave badly when asked for some non &n;&t; *  zero LUN. Btw, this is an absolute hack.:-)&n;&t; */
@@ -2278,7 +2278,7 @@ op_amp
 id|SYM_SCAN_LUNS_DISABLED
 )paren
 op_logical_and
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 op_ne
 l_int|0
 )paren
@@ -2314,7 +2314,7 @@ id|np
 comma
 id|tp
 comma
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|order
@@ -2338,9 +2338,9 @@ c_func
 (paren
 id|np
 comma
-id|ccb-&gt;target
+id|ccb-&gt;device-&gt;id
 comma
-id|ccb-&gt;lun
+id|ccb-&gt;device-&gt;lun
 comma
 id|order
 )paren
@@ -3697,9 +3697,9 @@ c_func
 id|np
 )paren
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|printf_warning
@@ -3895,7 +3895,7 @@ c_func
 (paren
 id|np
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )paren
 suffix:semicolon
 r_break

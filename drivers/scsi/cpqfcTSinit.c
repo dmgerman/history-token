@@ -2343,18 +2343,13 @@ r_case
 id|CPQFC_IOCTL_FC_TARGET_ADDRESS
 suffix:colon
 singleline_comment|// can we find an FC device mapping to this SCSI target?
-id|DumCmnd.channel
-op_assign
-id|ScsiDev-&gt;channel
-suffix:semicolon
+multiline_comment|/* &t;DumCmnd.channel = ScsiDev-&gt;channel; */
 singleline_comment|// For searching
-id|DumCmnd.target
+multiline_comment|/* &t;DumCmnd.target  = ScsiDev-&gt;id; */
+multiline_comment|/* &t;DumCmnd.lun     = ScsiDev-&gt;lun; */
+id|DumCmnd.device
 op_assign
-id|ScsiDev-&gt;id
-suffix:semicolon
-id|DumCmnd.lun
-op_assign
-id|ScsiDev-&gt;lun
+id|ScsiDev
 suffix:semicolon
 id|pLoggedInPort
 op_assign
@@ -4447,7 +4442,7 @@ r_else
 r_if
 c_cond
 (paren
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 op_ge
 id|CPQFCTS_MAX_LUN
 )paren
@@ -4458,7 +4453,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;cpqfc: Invalid LUN: %d&bslash;n&quot;
 comma
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|QueBadTargetCmnd
