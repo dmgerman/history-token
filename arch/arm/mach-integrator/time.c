@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 DECL|macro|RTC_DR
 mdefine_line|#define RTC_DR&t;&t;(0)
 DECL|macro|RTC_MR
