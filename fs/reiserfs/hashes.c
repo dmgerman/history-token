@@ -5,6 +5,7 @@ singleline_comment|// yura_hash
 singleline_comment|// r5_hash
 singleline_comment|//
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|DELTA
 mdefine_line|#define DELTA 0x9E3779B9
 DECL|macro|FULLROUNDS
@@ -296,14 +297,10 @@ id|len
 op_ge
 l_int|16
 )paren
-op_star
+id|BUG
+c_func
 (paren
-r_int
-op_star
 )paren
-l_int|0
-op_assign
-l_int|0
 suffix:semicolon
 id|a
 op_assign
@@ -474,14 +471,10 @@ id|len
 op_ge
 l_int|12
 )paren
-op_star
+id|BUG
+c_func
 (paren
-r_int
-op_star
 )paren
-l_int|0
-op_assign
-l_int|0
 suffix:semicolon
 id|a
 op_assign
@@ -614,14 +607,10 @@ id|len
 op_ge
 l_int|8
 )paren
-op_star
+id|BUG
+c_func
 (paren
-r_int
-op_star
 )paren
-l_int|0
-op_assign
-l_int|0
 suffix:semicolon
 id|a
 op_assign
@@ -709,14 +698,10 @@ id|len
 op_ge
 l_int|4
 )paren
-op_star
+id|BUG
+c_func
 (paren
-r_int
-op_star
 )paren
-l_int|0
-op_assign
-l_int|0
 suffix:semicolon
 id|a
 op_assign
