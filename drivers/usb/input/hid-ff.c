@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: hid-ff.c,v 1.3 2002/06/09 11:06:38 jdeneux Exp $&n; *&n; *  Force feedback support for hid devices.&n; *  Not all hid devices use the same protocol. For example, some use PID,&n; *  other use their own proprietary procotol.&n; *&n; *  Copyright (c) 2002 Johann Deneux&n; */
+multiline_comment|/*&n; * $Id: hid-ff.c,v 1.2 2002/04/18 22:02:47 jdeneux Exp $&n; *&n; *  Force feedback support for hid devices.&n; *  Not all hid devices use the same protocol. For example, some use PID,&n; *  other use their own proprietary procotol.&n; *&n; *  Copyright (c) 2002 Johann Deneux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;deneux@ifrance.com&gt;&n; */
 macro_line|#include &lt;linux/input.h&gt;
 DECL|macro|DEBUG
@@ -45,11 +45,11 @@ r_struct
 id|hid_ff_initializer
 (brace
 DECL|member|idVendor
-id|__u16
+id|u16
 id|idVendor
 suffix:semicolon
 DECL|member|idProduct
-id|__u16
+id|u16
 id|idProduct
 suffix:semicolon
 DECL|member|init
@@ -75,7 +75,7 @@ id|inits
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_LOGITECH_RUMBLE
+macro_line|#ifdef CONFIG_LOGITECH_FF
 (brace
 l_int|0x46d
 comma
@@ -84,14 +84,12 @@ comma
 id|hid_lgff_init
 )brace
 comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_LOGITECH_3D
 (brace
 l_int|0x46d
 comma
 l_int|0xc283
 comma
-id|hid_lg3d_init
+id|hid_lgff_init
 )brace
 comma
 macro_line|#endif
