@@ -27,7 +27,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020545
-macro_line|#include &lt;asm/cacheflush.h&gt;&t;/* for flush_cache_all() */
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -6776,11 +6775,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|flush_cache_all
-c_func
-(paren
-)paren
-suffix:semicolon
 id|mb
 (braket
 l_int|0
