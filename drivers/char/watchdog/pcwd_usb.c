@@ -751,7 +751,7 @@ r_sizeof
 id|buf
 )paren
 comma
-id|HZ
+l_int|1000
 )paren
 op_ne
 r_sizeof
