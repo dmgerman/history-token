@@ -786,6 +786,44 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* !defined(CONFIG_PPC_ISERIES) &amp;&amp; defined(CONFIG_SMP) */
+macro_line|#ifdef CONFIG_XMON
+DECL|function|early_xmon
+r_static
+r_int
+id|__init
+id|early_xmon
+c_func
+(paren
+r_char
+op_star
+id|p
+)paren
+(brace
+multiline_comment|/* ensure xmon is enabled */
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|debugger
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|early_param
+c_func
+(paren
+l_string|&quot;xmon&quot;
+comma
+id|early_xmon
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Do some initial setup of the system.  The parameters are those which &n; * were passed in from the bootloader.&n; */
 DECL|function|setup_system
 r_void
@@ -818,13 +856,6 @@ r_int
 id|ret
 comma
 id|i
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_XMON_DEFAULT
-id|xmon_init
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -902,6 +933,13 @@ c_func
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
+macro_line|#ifdef CONFIG_XMON_DEFAULT
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* If we were passed an initrd, set the ROOT_DEV properly if the values&n;&t; * look sensible. If not, clear initrd reference.&n;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 r_if
@@ -1040,6 +1078,22 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
+id|strlcpy
+c_func
+(paren
+id|saved_command_line
+comma
+id|cmd_line
+comma
+id|COMMAND_LINE_SIZE
+)paren
+suffix:semicolon
+id|parse_early_param
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_PPC_ISERIES
 multiline_comment|/*&n;&t; * iSeries has already initialized the cpu maps at this point.&n;&t; */
@@ -1121,6 +1175,19 @@ id|i
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+id|vpa_init
+c_func
+(paren
+id|boot_cpuid
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_PSERIES */
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#if defined(CONFIG_HOTPLUG_CPU) &amp;&amp;  !defined(CONFIG_PPC_PMAC)
@@ -1248,29 +1315,6 @@ l_string|&quot;-----------------------------------------------------&bslash;n&qu
 )paren
 suffix:semicolon
 id|mm_init_ppc64
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PPC_PSERIES)
-r_if
-c_cond
-(paren
-id|cur_cpu_spec-&gt;firmware_features
-op_amp
-id|FW_FEATURE_SPLPAR
-)paren
-(brace
-id|vpa_init
-c_func
-(paren
-id|boot_cpuid
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* Select the correct idle loop for the platform. */
-id|idle_setup
 c_func
 (paren
 )paren
@@ -1808,150 +1852,57 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Look for mem= option on command line */
-r_if
-c_cond
-(paren
-id|strstr
+macro_line|#if 0 /* XXX not currently used */
+r_int
+r_int
+id|memory_limit
+suffix:semicolon
+r_static
+r_int
+id|__init
+id|early_parsemem
 c_func
 (paren
-id|cmd_line
-comma
-l_string|&quot;mem=&quot;
-)paren
-)paren
-(brace
 r_char
 op_star
 id|p
-comma
-op_star
-id|q
-suffix:semicolon
-r_int
-r_int
-id|maxmem
-op_assign
-l_int|0
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__max_memory
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|q
-op_assign
-id|cmd_line
-suffix:semicolon
-(paren
-id|p
-op_assign
-id|strstr
-c_func
-(paren
-id|q
-comma
-l_string|&quot;mem=&quot;
-)paren
-)paren
-op_ne
-l_int|0
-suffix:semicolon
 )paren
 (brace
-id|q
-op_assign
-id|p
-op_plus
-l_int|4
-suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|p
-OG
-id|cmd_line
-op_logical_and
-id|p
-(braket
-op_minus
-l_int|1
-)braket
-op_ne
-l_char|&squot; &squot;
 )paren
-r_continue
+r_return
+l_int|0
 suffix:semicolon
-id|maxmem
+id|memory_limit
 op_assign
-id|simple_strtoul
+id|memparse
 c_func
 (paren
-id|q
+id|p
 comma
 op_amp
-id|q
-comma
+id|p
+)paren
+suffix:semicolon
+r_return
 l_int|0
-)paren
 suffix:semicolon
-r_if
-c_cond
+)brace
+id|early_param
+c_func
 (paren
-op_star
-id|q
-op_eq
-l_char|&squot;k&squot;
-op_logical_or
-op_star
-id|q
-op_eq
-l_char|&squot;K&squot;
+l_string|&quot;mem&quot;
+comma
+id|early_parsemem
 )paren
-(brace
-id|maxmem
-op_lshift_assign
-l_int|10
 suffix:semicolon
-op_increment
-id|q
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-op_star
-id|q
-op_eq
-l_char|&squot;m&squot;
-op_logical_or
-op_star
-id|q
-op_eq
-l_char|&squot;M&squot;
-)paren
-(brace
-id|maxmem
-op_lshift_assign
-l_int|20
-suffix:semicolon
-op_increment
-id|q
-suffix:semicolon
-)brace
-)brace
-id|__max_memory
-op_assign
-id|maxmem
-suffix:semicolon
-)brace
-)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_PSERIES
+DECL|function|set_preferred_console
 r_static
 r_int
 id|__init
@@ -2322,6 +2273,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|set_preferred_console
 id|console_initcall
 c_func
 (paren
@@ -2329,6 +2281,7 @@ id|set_preferred_console
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|function|ppc_init
 r_int
 id|__init
 id|ppc_init
@@ -2368,6 +2321,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ppc_init
 id|arch_initcall
 c_func
 (paren
@@ -2375,6 +2329,7 @@ id|ppc_init
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRQSTACKS
+DECL|function|irqstack_early_init
 r_static
 r_void
 id|__init
@@ -2446,9 +2401,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else
+DECL|macro|irqstack_early_init
 mdefine_line|#define irqstack_early_init()
 macro_line|#endif
 multiline_comment|/*&n; * Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
+DECL|function|emergency_stack_init
 r_static
 r_void
 id|__init
@@ -2507,6 +2464,7 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called into from start_kernel, after lock_kernel has been called.&n; * Initializes bootmem, which is unsed to manage page allocation until&n; * mem_init is called.&n; */
+DECL|function|setup_arch
 r_void
 id|__init
 id|setup_arch
@@ -2538,33 +2496,11 @@ comma
 l_string|&quot;Setup Arch&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_if
-c_cond
-(paren
-id|strstr
-c_func
-(paren
+op_star
+id|cmdline_p
+op_assign
 id|cmd_line
-comma
-l_string|&quot;xmon&quot;
-)paren
-)paren
-(brace
-multiline_comment|/* ensure xmon is enabled */
-id|xmon_init
-c_func
-(paren
-)paren
 suffix:semicolon
-id|debugger
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_XMON */
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize
 op_assign
@@ -2618,22 +2554,6 @@ id|init_mm.brk
 op_assign
 id|klimit
 suffix:semicolon
-multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
-id|strlcpy
-c_func
-(paren
-id|saved_command_line
-comma
-id|cmd_line
-comma
-id|COMMAND_LINE_SIZE
-)paren
-suffix:semicolon
-op_star
-id|cmdline_p
-op_assign
-id|cmd_line
-suffix:semicolon
 id|irqstack_early_init
 c_func
 (paren
@@ -2646,6 +2566,12 @@ c_func
 suffix:semicolon
 multiline_comment|/* set up the bootmem stuff with available memory */
 id|do_init_bootmem
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Select the correct idle loop for the platform. */
+id|idle_setup
 c_func
 (paren
 )paren
@@ -2672,11 +2598,17 @@ l_string|&quot;Setup Done&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* ToDo: do something useful if ppc_md is not yet setup. */
+DECL|macro|PPC64_LINUX_FUNCTION
 mdefine_line|#define PPC64_LINUX_FUNCTION 0x0f000000
+DECL|macro|PPC64_IPL_MESSAGE
 mdefine_line|#define PPC64_IPL_MESSAGE 0xc0000000
+DECL|macro|PPC64_TERM_MESSAGE
 mdefine_line|#define PPC64_TERM_MESSAGE 0xb0000000
+DECL|macro|PPC64_ATTN_MESSAGE
 mdefine_line|#define PPC64_ATTN_MESSAGE 0xa0000000
+DECL|macro|PPC64_DUMP_MESSAGE
 mdefine_line|#define PPC64_DUMP_MESSAGE 0xd0000000
+DECL|function|ppc64_do_msg
 r_static
 r_void
 id|ppc64_do_msg
@@ -2747,6 +2679,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Print a boot progress message. */
+DECL|function|ppc64_boot_msg
 r_void
 id|ppc64_boot_msg
 c_func
@@ -2785,6 +2718,7 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print a termination message (print only -- does not stop the kernel) */
+DECL|function|ppc64_terminate_msg
 r_void
 id|ppc64_terminate_msg
 c_func
@@ -2823,6 +2757,7 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print something that needs attention (device error, etc) */
+DECL|function|ppc64_attention_msg
 r_void
 id|ppc64_attention_msg
 c_func
@@ -2861,6 +2796,7 @@ id|msg
 suffix:semicolon
 )brace
 multiline_comment|/* Print a dump progress message. */
+DECL|function|ppc64_dump_msg
 r_void
 id|ppc64_dump_msg
 c_func
@@ -2898,6 +2834,7 @@ id|msg
 )paren
 suffix:semicolon
 )brace
+DECL|function|set_spread_lpevents
 r_int
 id|set_spread_lpevents
 c_func
@@ -2993,6 +2930,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* This should only be called on processor 0 during calibrate decr */
+DECL|function|setup_default_decr
 r_void
 id|setup_default_decr
 c_func
@@ -3038,6 +2976,7 @@ op_plus
 id|tb_ticks_per_jiffy
 suffix:semicolon
 )brace
+DECL|function|set_decr_overclock_proc0
 r_int
 id|set_decr_overclock_proc0
 c_func
@@ -3107,6 +3046,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|set_decr_overclock
 r_int
 id|set_decr_overclock
 c_func
