@@ -57,7 +57,8 @@ id|cycxhw_t
 op_star
 id|hw
 comma
-id|cfm_t
+r_struct
+id|cycx_firmware
 op_star
 id|cfm
 comma
@@ -1490,7 +1491,8 @@ id|cycxhw_t
 op_star
 id|hw
 comma
-id|cfm_t
+r_struct
+id|cycx_firmware
 op_star
 id|cfm
 comma
@@ -1503,7 +1505,8 @@ id|i
 comma
 id|j
 suffix:semicolon
-id|cycx_header_t
+r_struct
+id|cycx_fw_header
 op_star
 id|img_hdr
 suffix:semicolon
@@ -1622,13 +1625,14 @@ id|cfm-&gt;info
 comma
 r_sizeof
 (paren
-id|cfm_info_t
+r_struct
+id|cycx_fw_info
 )paren
 op_plus
 id|cfm-&gt;info.codesize
 )paren
 suffix:semicolon
-multiline_comment|/*&n;        FIXME cfm-&gt;info.codesize is off by 2&n;&t;if (((len - sizeof(cfm_t) - 1) != cfm-&gt;info.codesize) ||&n;*/
+multiline_comment|/*&n;        FIXME cfm-&gt;info.codesize is off by 2&n;&t;if (((len - sizeof(struct cycx_firmware) - 1) != cfm-&gt;info.codesize) ||&n;*/
 r_if
 c_cond
 (paren
@@ -1658,7 +1662,8 @@ id|len
 op_minus
 r_sizeof
 (paren
-id|cfm_t
+r_struct
+id|cycx_firmware
 )paren
 op_minus
 l_int|1
@@ -1686,7 +1691,8 @@ multiline_comment|/* If everything is ok, set reset, data and code pointers */
 id|img_hdr
 op_assign
 (paren
-id|cycx_header_t
+r_struct
+id|cycx_fw_header
 op_star
 )paren
 (paren
@@ -1700,7 +1706,8 @@ id|cfm
 op_plus
 r_sizeof
 (paren
-id|cfm_t
+r_struct
+id|cycx_firmware
 )paren
 op_minus
 l_int|1
@@ -1758,7 +1765,8 @@ id|img_hdr
 op_plus
 r_sizeof
 (paren
-id|cycx_header_t
+r_struct
+id|cycx_fw_header
 )paren
 suffix:semicolon
 id|data_image
