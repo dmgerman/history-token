@@ -808,6 +808,12 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Unless it returns an error, this function always sets *pprev to&n;&t; * the first vma for which vma-&gt;vm_end &gt;= end.&n;&t; */
+op_star
+id|pprev
+op_assign
+id|vma
+suffix:semicolon
 r_if
 c_cond
 (paren

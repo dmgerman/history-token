@@ -107,6 +107,37 @@ DECL|typedef|drm_radeon_depth_clear_t
 )brace
 id|drm_radeon_depth_clear_t
 suffix:semicolon
+DECL|struct|mem_block
+r_struct
+id|mem_block
+(brace
+DECL|member|next
+r_struct
+id|mem_block
+op_star
+id|next
+suffix:semicolon
+DECL|member|prev
+r_struct
+id|mem_block
+op_star
+id|prev
+suffix:semicolon
+DECL|member|start
+r_int
+id|start
+suffix:semicolon
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+DECL|member|pid
+r_int
+id|pid
+suffix:semicolon
+multiline_comment|/* 0: free, -1: heap, other: real pids */
+)brace
+suffix:semicolon
 DECL|struct|drm_radeon_private
 r_typedef
 r_struct
@@ -333,6 +364,30 @@ DECL|member|agp_textures
 id|drm_map_t
 op_star
 id|agp_textures
+suffix:semicolon
+DECL|member|agp_heap
+r_struct
+id|mem_block
+op_star
+id|agp_heap
+suffix:semicolon
+DECL|member|fb_heap
+r_struct
+id|mem_block
+op_star
+id|fb_heap
+suffix:semicolon
+DECL|member|irq_queue
+id|wait_queue_head_t
+id|irq_queue
+suffix:semicolon
+DECL|member|irq_received
+id|atomic_t
+id|irq_received
+suffix:semicolon
+DECL|member|irq_emitted
+id|atomic_t
+id|irq_emitted
 suffix:semicolon
 DECL|typedef|drm_radeon_private_t
 )brace
@@ -569,6 +624,102 @@ c_func
 id|DRM_IOCTL_ARGS
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|radeon_mem_alloc
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_mem_free
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_mem_init_heap
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|radeon_mem_takedown
+c_func
+(paren
+r_struct
+id|mem_block
+op_star
+op_star
+id|heap
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|radeon_mem_release
+c_func
+(paren
+r_struct
+id|mem_block
+op_star
+id|heap
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_irq_emit
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_irq_wait
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_emit_and_wait_irq
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_wait_irq
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+comma
+r_int
+id|irq_nr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|radeon_emit_irq
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Flags for stats.boxes&n; */
 DECL|macro|RADEON_BOX_DMA_IDLE
 mdefine_line|#define RADEON_BOX_DMA_IDLE      0x1
@@ -683,6 +834,20 @@ DECL|macro|RADEON_SCRATCH_ADDR
 mdefine_line|#define RADEON_SCRATCH_ADDR&t;&t;0x0774
 DECL|macro|GET_SCRATCH
 mdefine_line|#define GET_SCRATCH( x )&t;(dev_priv-&gt;writeback_works&t;&t;&t;&bslash;&n;&t;&t;&t;&t;? DRM_READ32( &amp;dev_priv-&gt;scratch[(x)] )&t;&t;&bslash;&n;&t;&t;&t;&t;: RADEON_READ( RADEON_SCRATCH_REG0 + 4*(x) ) )
+DECL|macro|RADEON_GEN_INT_CNTL
+mdefine_line|#define RADEON_GEN_INT_CNTL&t;&t;0x0040
+DECL|macro|RADEON_GUI_IDLE_INT_ENABLE
+macro_line|#&t;define RADEON_GUI_IDLE_INT_ENABLE&t;(1 &lt;&lt; 19)
+DECL|macro|RADEON_SW_INT_ENABLE
+macro_line|#&t;define RADEON_SW_INT_ENABLE&t;&t;(1 &lt;&lt; 25)
+DECL|macro|RADEON_GEN_INT_STATUS
+mdefine_line|#define RADEON_GEN_INT_STATUS&t;&t;0x0044
+DECL|macro|RADEON_GUI_IDLE_INT_TEST_ACK
+macro_line|#&t;define RADEON_GUI_IDLE_INT_TEST_ACK     (1 &lt;&lt; 19)
+DECL|macro|RADEON_SW_INT_TEST_ACK
+macro_line|#&t;define RADEON_SW_INT_TEST_ACK   &t;(1 &lt;&lt; 25)
+DECL|macro|RADEON_SW_INT_FIRE
+macro_line|#&t;define RADEON_SW_INT_FIRE&t;&t;(1 &lt;&lt; 26)
 DECL|macro|RADEON_HOST_PATH_CNTL
 mdefine_line|#define RADEON_HOST_PATH_CNTL&t;&t;0x0130
 DECL|macro|RADEON_HDP_SOFT_RESET
@@ -1215,6 +1380,10 @@ DECL|macro|RADEON_TXFORMAT_ARGB8888
 mdefine_line|#define RADEON_TXFORMAT_ARGB8888&t;6
 DECL|macro|RADEON_TXFORMAT_RGBA8888
 mdefine_line|#define RADEON_TXFORMAT_RGBA8888&t;7
+DECL|macro|RADEON_TXFORMAT_VYUY422
+mdefine_line|#define RADEON_TXFORMAT_VYUY422         10
+DECL|macro|RADEON_TXFORMAT_YVYU422
+mdefine_line|#define RADEON_TXFORMAT_YVYU422         11
 DECL|macro|R200_PP_TXCBLEND_0
 mdefine_line|#define R200_PP_TXCBLEND_0                0x2f00
 DECL|macro|R200_PP_TXCBLEND_1
