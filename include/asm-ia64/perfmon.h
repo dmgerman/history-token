@@ -566,6 +566,10 @@ DECL|macro|PFM_CPUINFO_DCR_PP
 mdefine_line|#define PFM_CPUINFO_DCR_PP&t;0x2&t;/* if set the system wide session has started */
 DECL|macro|PFM_CPUINFO_EXCL_IDLE
 mdefine_line|#define PFM_CPUINFO_EXCL_IDLE&t;0x4&t;/* the system wide session excludes the idle task */
+DECL|macro|PFM_CPUINFO_CLEAR
+mdefine_line|#define PFM_CPUINFO_CLEAR(v)&t;__get_cpu_var(pfm_syst_info) &amp;= ~(v)
+DECL|macro|PFM_CPUINFO_SET
+mdefine_line|#define PFM_CPUINFO_SET(v)&t;__get_cpu_var(pfm_syst_info) |= (v)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_PERFMON_H */
 eof

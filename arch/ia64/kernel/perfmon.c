@@ -125,10 +125,6 @@ DECL|macro|UNLOCK_PFS
 mdefine_line|#define UNLOCK_PFS()&t;    spin_unlock(&amp;pfm_sessions.pfs_lock)
 DECL|macro|PFM_REG_RETFLAG_SET
 mdefine_line|#define PFM_REG_RETFLAG_SET(flags, val)&t;do { flags &amp;= ~PFM_REG_RETFL_MASK; flags |= (val); } while(0)
-DECL|macro|PFM_CPUINFO_CLEAR
-mdefine_line|#define PFM_CPUINFO_CLEAR(v)&t;__get_cpu_var(pfm_syst_info) &amp;= ~(v)
-DECL|macro|PFM_CPUINFO_SET
-mdefine_line|#define PFM_CPUINFO_SET(v)&t;__get_cpu_var(pfm_syst_info) |= (v)
 multiline_comment|/*&n; * debugging&n; */
 DECL|macro|DBprintk
 mdefine_line|#define DBprintk(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (pfm_sysctl.debug &gt;0) { printk(&quot;%s.%d: CPU%d &quot;, __FUNCTION__, __LINE__, smp_processor_id()); printk a; } &bslash;&n;&t;} while (0)
