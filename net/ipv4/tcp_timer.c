@@ -74,16 +74,18 @@ r_int
 id|data
 )paren
 suffix:semicolon
-DECL|variable|timer_bug_msg
+macro_line|#ifdef TCP_DEBUG
+DECL|variable|tcp_timer_bug_msg
 r_const
 r_char
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 (braket
 )braket
 op_assign
 id|KERN_DEBUG
 l_string|&quot;tcpbug: unknown timer value&bslash;n&quot;
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Using different timers for retransmit, delayed acks and probes&n; * We may wish use just one timer maintaining a list of expire jiffies &n; * to optimize.&n; */
 DECL|function|tcp_init_xmit_timers
 r_void
@@ -2536,4 +2538,13 @@ c_func
 id|tcp_reset_keepalive_timer
 )paren
 suffix:semicolon
+macro_line|#ifdef TCP_DEBUG
+DECL|variable|tcp_timer_bug_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_timer_bug_msg
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

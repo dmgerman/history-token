@@ -3166,13 +3166,15 @@ r_int
 id|large
 )paren
 suffix:semicolon
+macro_line|#ifdef TCP_DEBUG
 r_extern
 r_const
 r_char
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 (braket
 )braket
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* tcp_diag.c */
 r_extern
 r_void
@@ -3310,12 +3312,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+macro_line|#ifdef TCP_DEBUG
 id|printk
 c_func
 (paren
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 suffix:semicolon
 )brace
@@ -3449,12 +3453,14 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+macro_line|#ifdef TCP_DEBUG
 id|printk
 c_func
 (paren
-id|timer_bug_msg
+id|tcp_timer_bug_msg
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 )brace
