@@ -432,7 +432,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;ex_create_region&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Get the Node from the object stack  */
+multiline_comment|/* Get the Namespace Node */
 id|node
 op_assign
 id|walk_state-&gt;op-&gt;common.node

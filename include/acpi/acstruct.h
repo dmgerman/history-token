@@ -134,6 +134,13 @@ op_star
 id|control_state
 suffix:semicolon
 multiline_comment|/* List of control states (nested IFs) */
+DECL|member|deferred_node
+r_struct
+id|acpi_namespace_node
+op_star
+id|deferred_node
+suffix:semicolon
+multiline_comment|/* Used when executing deferred opcodes */
 DECL|member|local_variables
 r_struct
 id|acpi_namespace_node
@@ -170,7 +177,7 @@ id|acpi_namespace_node
 op_star
 id|method_node
 suffix:semicolon
-multiline_comment|/* Method Node if running a method */
+multiline_comment|/* Method node if running a method. */
 DECL|member|op
 r_union
 id|acpi_parse_object

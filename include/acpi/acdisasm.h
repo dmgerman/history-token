@@ -372,15 +372,6 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
-r_void
-id|acpi_dm_decode_node
-(paren
-r_struct
-id|acpi_namespace_node
-op_star
-id|node
-)paren
-suffix:semicolon
 id|u32
 id|acpi_dm_block_type
 (paren

@@ -824,7 +824,7 @@ id|port
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u16
 id|value
 op_assign
 l_int|0
@@ -1030,7 +1030,7 @@ c_func
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Writing 0x%02x to port 0x%04x&bslash;n&quot;
+l_string|&quot;Writing 0x%04x to port 0x%04x&bslash;n&quot;
 comma
 id|value
 comma
@@ -1038,7 +1038,7 @@ id|port
 )paren
 )paren
 suffix:semicolon
-id|outb
+id|outw
 c_func
 (paren
 id|value
@@ -1057,10 +1057,10 @@ c_func
 (paren
 id|ACPI_DB_INFO
 comma
-l_string|&quot;Looking for 0x%02x from port 0x%04x&bslash;n&quot;
+l_string|&quot;Looking for 0x%04x from port 0x%04x&bslash;n&quot;
 comma
 (paren
-id|u8
+id|u16
 )paren
 id|perf-&gt;states
 (braket
@@ -1090,7 +1090,7 @@ op_increment
 (brace
 id|value
 op_assign
-id|inb
+id|inw
 c_func
 (paren
 id|port
@@ -1102,7 +1102,7 @@ c_cond
 id|value
 op_eq
 (paren
-id|u8
+id|u16
 )paren
 id|perf-&gt;states
 (braket
@@ -1135,6 +1135,9 @@ c_cond
 (paren
 id|value
 op_ne
+(paren
+id|u16
+)paren
 id|perf-&gt;states
 (braket
 id|state

@@ -764,6 +764,7 @@ id|region_setup
 suffix:semicolon
 r_void
 op_star
+op_star
 id|region_context
 suffix:semicolon
 r_union
@@ -798,6 +799,7 @@ suffix:semicolon
 )brace
 id|region_context
 op_assign
+op_amp
 id|region_obj2-&gt;extra.region_context
 suffix:semicolon
 multiline_comment|/* Get the address handler from the region object */
@@ -971,7 +973,6 @@ id|ACPI_REGION_DEACTIVATE
 comma
 id|handler_obj-&gt;address_space.context
 comma
-op_amp
 id|region_context
 )paren
 suffix:semicolon
