@@ -2748,7 +2748,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|avm_pcipnp_interrupt
 id|avm_pcipnp_interrupt
 c_func
@@ -2779,23 +2779,6 @@ suffix:semicolon
 id|u8
 id|sval
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cs
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;AVM PCI: Spurious interrupt!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|sval
 op_assign
 id|inb
@@ -2819,6 +2802,7 @@ id|AVM_STATUS0_IRQ_MASK
 )paren
 multiline_comment|/* possible a shared  IRQ reqest */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -2887,6 +2871,9 @@ id|ISAC_MASK
 comma
 l_int|0x0
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
