@@ -5372,7 +5372,7 @@ id|pktsze
 suffix:semicolon
 id|len
 op_sub_assign
-id|pktsze
+id|maxsze
 suffix:semicolon
 id|usb_dotoggle
 c_func
@@ -5401,6 +5401,7 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * USB_ZERO_PACKET means adding a 0-length packet, if&n;&t; * direction is OUT and the transfer_length was an&n;&t; * exact multiple of maxsze, hence&n;&t; * (len = transfer_length - N * maxsze) == 0&n;&t; * however, if transfer_length == 0, the zero packet&n;&t; * was already prepared above.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5415,6 +5416,9 @@ id|urb-&gt;transfer_flags
 op_amp
 id|USB_ZERO_PACKET
 )paren
+op_logical_and
+op_logical_neg
+id|len
 op_logical_and
 id|urb-&gt;transfer_buffer_length
 )paren
@@ -5456,7 +5460,11 @@ id|status
 comma
 id|destination
 op_or
+(paren
 id|UHCI_NULL_DATA_SIZE
+op_lshift
+l_int|21
+)paren
 op_or
 (paren
 id|usb_gettoggle
