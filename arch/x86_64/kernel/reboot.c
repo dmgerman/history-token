@@ -350,7 +350,12 @@ multiline_comment|/* Wait for all other CPUs to have run smp_stop_cpu */
 r_while
 c_loop
 (paren
+op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|cpu_online_map
+)paren
 )paren
 id|rep_nop
 c_func

@@ -31,7 +31,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-r_extern
 id|asmlinkage
 r_void
 id|reschedule_interrupt
@@ -40,7 +39,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|invalidate_interrupt
@@ -49,7 +47,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|call_function_interrupt
@@ -60,7 +57,6 @@ r_void
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-r_extern
 id|asmlinkage
 r_void
 id|apic_timer_interrupt
@@ -69,7 +65,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|error_interrupt
@@ -78,7 +73,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|spurious_interrupt
@@ -87,7 +81,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 id|asmlinkage
 r_void
 id|thermal_interrupt
@@ -98,7 +91,6 @@ id|pt_regs
 )paren
 suffix:semicolon
 macro_line|#endif
-r_extern
 r_void
 id|mask_irq
 c_func
@@ -108,7 +100,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|unmask_irq
 c_func
@@ -118,7 +109,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|disable_8259A_irq
 c_func
@@ -128,7 +118,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|enable_8259A_irq
 c_func
@@ -138,7 +127,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|i8259A_irq_pending
 c_func
@@ -148,7 +136,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|make_8259A_irq
 c_func
@@ -158,7 +145,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|init_8259A
 c_func
@@ -167,7 +153,6 @@ r_int
 id|aeoi
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|FASTCALL
 c_func
@@ -180,7 +165,6 @@ id|vector
 )paren
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|init_VISWS_APIC_irqs
 c_func
@@ -188,7 +172,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|setup_IO_APIC
 c_func
@@ -196,7 +179,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|disable_IO_APIC
 c_func
@@ -204,7 +186,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|print_IO_APIC
 c_func
@@ -212,7 +193,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|IO_APIC_get_PCI_irq_vector
 c_func
@@ -227,7 +207,6 @@ r_int
 id|fn
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|send_IPI
 c_func
@@ -239,13 +218,11 @@ r_int
 id|vector
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|setup_ioapic_dest
 c_func
 (paren
-r_int
-r_int
+id|cpumask_t
 id|mask
 )paren
 suffix:semicolon

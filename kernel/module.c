@@ -2240,13 +2240,17 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 (paren
 r_int
+)paren
+(paren
 r_int
 )paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Ack: we are alive */
@@ -2456,8 +2460,7 @@ id|i
 comma
 id|cpu
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|old_allowed
 suffix:semicolon
 r_int
@@ -2483,13 +2486,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
 (paren
-r_int
-r_int
-)paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|atomic_set

@@ -155,6 +155,9 @@ id|cnt
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -167,6 +170,10 @@ id|buf
 op_plus
 id|cnt
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 id|file-&gt;f_pos

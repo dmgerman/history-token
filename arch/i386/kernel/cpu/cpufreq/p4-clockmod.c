@@ -77,9 +77,10 @@ id|l
 comma
 id|h
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpus_allowed
+comma
+id|affected_cpu_map
 suffix:semicolon
 r_struct
 id|cpufreq_freqs
@@ -87,11 +88,6 @@ id|freqs
 suffix:semicolon
 r_int
 id|hyperthreading
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|affected_cpu_map
 op_assign
 l_int|0
 suffix:semicolon
@@ -134,9 +130,11 @@ suffix:semicolon
 multiline_comment|/* only run on CPU to be set, or on its sibling */
 id|affected_cpu_map
 op_assign
-l_int|1
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|cpu
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_X86_HT
 id|hyperthreading
@@ -166,12 +164,12 @@ id|cpu_sibling_map
 id|cpu
 )braket
 suffix:semicolon
-id|affected_cpu_map
-op_or_assign
+id|cpu_set
+c_func
 (paren
-l_int|1
-op_lshift
 id|sibling
+comma
+id|affected_cpu_map
 )paren
 suffix:semicolon
 )brace
@@ -188,17 +186,15 @@ id|BUG_ON
 c_func
 (paren
 op_logical_neg
+id|cpu_isset
+c_func
 (paren
-id|affected_cpu_map
-op_amp
-(paren
-l_int|1
-op_lshift
 id|smp_processor_id
 c_func
 (paren
 )paren
-)paren
+comma
+id|affected_cpu_map
 )paren
 )paren
 suffix:semicolon

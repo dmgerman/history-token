@@ -1947,9 +1947,10 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|agp_device_ids
-id|ali_agp_device_ids
+id|ati_agp_device_ids
 (braket
 )braket
 id|__initdata
@@ -2076,7 +2077,7 @@ id|agp_device_ids
 op_star
 id|devs
 op_assign
-id|ali_agp_device_ids
+id|ati_agp_device_ids
 suffix:semicolon
 r_struct
 id|agp_bridge_data

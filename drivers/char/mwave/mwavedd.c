@@ -2256,16 +2256,6 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|mwave_device.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;mwave&quot;
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
 id|mwave_device.bus_id
 comma
 id|BUS_ID_SIZE

@@ -52,19 +52,20 @@ mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|function|target_cpus
 r_static
 r_inline
-r_int
-r_int
+id|cpumask_t
 id|target_cpus
 c_func
 (paren
 r_void
 )paren
 (brace
+id|cpumask_t
+id|tmp
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
 r_return
-(paren
-op_complement
-l_int|0UL
-)paren
+id|tmp
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
@@ -74,7 +75,7 @@ mdefine_line|#define INT_DELIVERY_MODE (dest_Fixed)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
 DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID     (0x0F)
+mdefine_line|#define APIC_BROADCAST_ID     (0xFF)
 DECL|function|check_apicid_used
 r_static
 r_inline
@@ -83,8 +84,7 @@ r_int
 id|check_apicid_used
 c_func
 (paren
-r_int
-r_int
+id|physid_mask_t
 id|bitmap
 comma
 r_int
@@ -246,17 +246,14 @@ id|logical_apicid
 )paren
 (brace
 r_return
-(paren
 id|logical_apicid
 op_rshift
 l_int|5
-)paren
 suffix:semicolon
 multiline_comment|/* 2 clusterids per CEC */
 )brace
 multiline_comment|/* Mapping from cpu number to logical apicid */
 r_extern
-r_volatile
 id|u8
 id|cpu_2_logical_apicid
 (braket
@@ -307,24 +304,27 @@ suffix:semicolon
 DECL|function|ioapic_phys_id_map
 r_static
 r_inline
-id|ulong
+id|physid_mask_t
 id|ioapic_phys_id_map
 c_func
 (paren
-id|ulong
-id|phys_map
+id|physid_mask_t
+id|phys_id_map
 )paren
 (brace
 multiline_comment|/* For clustered we don&squot;t have a good way to do this yet - hack */
 r_return
+id|physids_promote
+c_func
+(paren
 l_int|0x0F
+)paren
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present
 r_static
 r_inline
-r_int
-r_int
+id|physid_mask_t
 id|apicid_to_cpu_present
 c_func
 (paren
@@ -333,7 +333,11 @@ id|apicid
 )paren
 (brace
 r_return
-l_int|1
+id|physid_mask_of_physid
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|mpc_apic_id
@@ -429,9 +433,9 @@ r_inline
 r_int
 r_int
 id|cpu_mask_to_apicid
+c_func
 (paren
-r_int
-r_int
+id|cpumask_const_t
 id|cpumask
 )paren
 (brace
@@ -451,7 +455,7 @@ id|apicid
 suffix:semicolon
 id|num_bits_set
 op_assign
-id|hweight32
+id|cpus_weight_const
 c_func
 (paren
 id|cpumask
@@ -463,7 +467,7 @@ c_cond
 (paren
 id|num_bits_set
 op_eq
-l_int|32
+id|NR_CPUS
 )paren
 r_return
 (paren
@@ -474,13 +478,11 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * The cpus in the mask must all be on the apic cluster.  If are not &n;&t; * on the same apicid cluster return default value of TARGET_CPUS. &n;&t; */
 id|cpu
 op_assign
-id|ffs
+id|first_cpu_const
 c_func
 (paren
 id|cpumask
 )paren
-op_minus
-l_int|1
 suffix:semicolon
 id|apicid
 op_assign
@@ -501,12 +503,12 @@ id|num_bits_set
 r_if
 c_cond
 (paren
-id|cpumask
-op_amp
+id|cpu_isset_const
+c_func
 (paren
-l_int|1
-op_lshift
 id|cpu
+comma
+id|cpumask
 )paren
 )paren
 (brace

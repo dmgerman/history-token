@@ -7,8 +7,7 @@ mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 DECL|function|target_cpus
 r_static
 r_inline
-r_int
-r_int
+id|cpumask_t
 id|target_cpus
 c_func
 (paren
@@ -21,7 +20,11 @@ id|cpu_online_map
 suffix:semicolon
 macro_line|#else
 r_return
-l_int|1
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -35,6 +38,7 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
+multiline_comment|/*&n; * this isn&squot;t really broadcast, just a (potentially inaccurate) upper&n; * bound for valid physical APIC id&squot;s&n; */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|function|check_apicid_used
@@ -45,8 +49,7 @@ r_int
 id|check_apicid_used
 c_func
 (paren
-r_int
-r_int
+id|physid_mask_t
 id|bitmap
 comma
 r_int
@@ -54,14 +57,12 @@ id|apicid
 )paren
 (brace
 r_return
+id|physid_isset
+c_func
 (paren
-id|bitmap
-op_amp
-(paren
-l_int|1UL
-op_lshift
 id|apicid
-)paren
+comma
+id|bitmap
 )paren
 suffix:semicolon
 )brace
@@ -78,14 +79,12 @@ id|bit
 )paren
 (brace
 r_return
+id|physid_isset
+c_func
 (paren
-id|phys_cpu_present_map
-op_amp
-(paren
-l_int|1UL
-op_lshift
 id|bit
-)paren
+comma
+id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
@@ -148,13 +147,11 @@ suffix:semicolon
 DECL|function|ioapic_phys_id_map
 r_static
 r_inline
-r_int
-r_int
+id|physid_mask_t
 id|ioapic_phys_id_map
 c_func
 (paren
-r_int
-r_int
+id|physid_mask_t
 id|phys_map
 )paren
 (brace
@@ -252,8 +249,7 @@ suffix:semicolon
 DECL|function|apicid_to_cpu_present
 r_static
 r_inline
-r_int
-r_int
+id|physid_mask_t
 id|apicid_to_cpu_present
 c_func
 (paren
@@ -262,9 +258,9 @@ id|phys_apicid
 )paren
 (brace
 r_return
+id|physid_mask_of_physid
+c_func
 (paren
-l_int|1ul
-op_lshift
 id|phys_apicid
 )paren
 suffix:semicolon
@@ -342,12 +338,11 @@ id|boot_cpu_physical_apicid
 )paren
 (brace
 r_return
-id|test_bit
+id|physid_isset
 c_func
 (paren
 id|boot_cpu_physical_apicid
 comma
-op_amp
 id|phys_cpu_present_map
 )paren
 suffix:semicolon
@@ -363,8 +358,7 @@ r_void
 )paren
 (brace
 r_return
-(paren
-id|test_bit
+id|physid_isset
 c_func
 (paren
 id|GET_APIC_ID
@@ -377,9 +371,7 @@ id|APIC_ID
 )paren
 )paren
 comma
-op_amp
 id|phys_cpu_present_map
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -389,14 +381,18 @@ r_inline
 r_int
 r_int
 id|cpu_mask_to_apicid
+c_func
 (paren
-r_int
-r_int
+id|cpumask_const_t
 id|cpumask
 )paren
 (brace
 r_return
+id|cpus_coerce_const
+c_func
+(paren
 id|cpumask
+)paren
 suffix:semicolon
 )brace
 DECL|function|enable_apic_mode

@@ -1140,17 +1140,19 @@ id|d
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_extern
 r_int
-id|dont_enable_local_apic
+id|enable_local_apic
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dont_enable_local_apic
+id|enable_local_apic
+op_eq
+l_int|0
 )paren
 (brace
-id|dont_enable_local_apic
+id|enable_local_apic
 op_assign
+op_minus
 l_int|1
 suffix:semicolon
 id|printk

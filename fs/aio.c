@@ -1026,6 +1026,12 @@ id|EAGAIN
 suffix:semicolon
 id|out_freectx
 suffix:colon
+id|mmdrop
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren

@@ -488,9 +488,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
-comma
-id|pci-&gt;dev.name
+l_string|&quot;gameport: at pci%s speed %d kHz&bslash;n&quot;
 comma
 id|pci_name
 c_func

@@ -1946,12 +1946,12 @@ id|num_cpus
 op_assign
 id|cpu
 suffix:semicolon
-id|CPUMASK_SETB
+id|cpu_set
 c_func
 (paren
-id|cpu_online_map
-comma
 id|cpu
+comma
+id|cpu_online_map
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Wait this cpu to start up and initialize its hub,&n;&t; * and discover the io devices it will control.&n;&t; *&n;&t; * XXX: We really want to fire up launch all the CPUs&n;&t; * at once.  We have to preserve the order of the&n;&t; * devices on the bridges first though.&n;&t; */

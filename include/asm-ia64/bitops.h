@@ -1382,7 +1382,9 @@ r_inline
 r_int
 DECL|function|find_next_bit
 id|find_next_bit
+c_func
 (paren
+r_const
 r_void
 op_star
 id|addr

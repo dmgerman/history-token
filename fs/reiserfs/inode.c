@@ -8986,11 +8986,10 @@ id|last_offset
 (brace
 id|error
 op_assign
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
 r_goto
-id|fail
+id|done
 suffix:semicolon
 )brace
 id|kaddr

@@ -579,7 +579,7 @@ id|lost
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* sanity check to ensure we&squot;re not always loosing ticks */
+multiline_comment|/* sanity check to ensure we&squot;re not always losing ticks */
 r_if
 c_cond
 (paren
@@ -593,7 +593,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Loosing too many ticks!&bslash;n&quot;
+l_string|&quot;Losing too many ticks!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk

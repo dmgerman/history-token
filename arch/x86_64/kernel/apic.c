@@ -987,7 +987,7 @@ op_logical_neg
 id|clustered_apic_mode
 op_logical_and
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|GET_APIC_ID
@@ -1000,7 +1000,6 @@ id|APIC_ID
 )paren
 )paren
 comma
-op_amp
 id|phys_cpu_present_map
 )paren
 )paren
@@ -3316,7 +3315,11 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-l_int|1
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 id|apic_write_around
 c_func

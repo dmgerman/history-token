@@ -978,6 +978,17 @@ l_string|&quot;Belkin F5D6060u&quot;
 )brace
 comma
 multiline_comment|/*    &quot;        &quot;  &quot;    &quot;      &quot;     */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;BT/Voyager 1020 Laptop Adapter&quot;
+comma
+l_string|&quot;atmel_at76c502.bin&quot;
+comma
+l_string|&quot;BT Voyager 1020&quot;
+)brace
 )brace
 suffix:semicolon
 multiline_comment|/* This is strictly temporary, until PCMCIA devices get integrated into the device model. */

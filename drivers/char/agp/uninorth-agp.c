@@ -1311,6 +1311,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|agp_device_ids
 id|uninorth_agp_device_ids

@@ -1121,14 +1121,6 @@ id|port-&gt;name
 comma
 l_string|&quot;%s&quot;
 comma
-id|dev-&gt;dev.name
-(braket
-l_int|0
-)braket
-ques
-c_cond
-id|dev-&gt;dev.name
-suffix:colon
 l_string|&quot;NS558 PnP Gameport&quot;
 )paren
 suffix:semicolon

@@ -139,12 +139,12 @@ id|close_wait
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 DECL|member|tqueue_hangup
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_hangup
 suffix:semicolon
 DECL|member|wakeup_chars

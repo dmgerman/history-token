@@ -189,17 +189,6 @@ DECL|macro|UNLOCK_PFS
 mdefine_line|#define UNLOCK_PFS()&t;    &t;spin_unlock(&amp;pfm_sessions.pfs_lock)
 DECL|macro|PFM_REG_RETFLAG_SET
 mdefine_line|#define PFM_REG_RETFLAG_SET(flags, val)&t;do { flags &amp;= ~PFM_REG_RETFL_MASK; flags |= (val); } while(0)
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|PFM_CPU_ONLINE_MAP
-mdefine_line|#define PFM_CPU_ONLINE_MAP&t;cpu_online_map
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i)&t;(PFM_CPU_ONLINE_MAP &amp; (1UL &lt;&lt; i))
-macro_line|#else
-DECL|macro|PFM_CPU_ONLINE_MAP
-mdefine_line|#define PFM_CPU_ONLINE_MAP&t; 1UL
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i)&t;(i==0)
-macro_line|#endif
 multiline_comment|/*&n; * cmp0 must be the value of pmc0&n; */
 DECL|macro|PMC0_HAS_OVFL
 mdefine_line|#define PMC0_HAS_OVFL(cmp0)  (cmp0 &amp; ~0x1UL)
@@ -18635,7 +18624,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|cpu_is_online
+id|cpu_online
 c_func
 (paren
 id|i
@@ -18975,10 +18964,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hweight64
+id|num_online_cpus
 c_func
 (paren
-id|PFM_CPU_ONLINE_MAP
 )paren
 op_eq
 l_int|1

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SYSCTL_H
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 r_struct
 id|file
 suffix:semicolon

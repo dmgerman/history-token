@@ -6,7 +6,62 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/gfp.h&gt;
+multiline_comment|/*&n; * Bits in mapping-&gt;flags.  The lower __GFP_BITS_SHIFT bits are the page&n; * allocation mode flags.&n; */
+DECL|macro|AS_EIO
+mdefine_line|#define&t;AS_EIO&t;&t;(__GFP_BITS_SHIFT + 0)&t;/* IO error on async write */
+DECL|macro|AS_ENOSPC
+mdefine_line|#define AS_ENOSPC&t;(__GFP_BITS_SHIFT + 1)&t;/* ENOSPC on async write */
+DECL|function|mapping_gfp_mask
+r_static
+r_inline
+r_int
+id|mapping_gfp_mask
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|mapping
+)paren
+(brace
+r_return
+id|mapping-&gt;flags
+op_amp
+id|__GFP_BITS_MASK
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is non-atomic.  Only to be used before the mapping is activated.&n; * Probably needs a barrier...&n; */
+DECL|function|mapping_set_gfp_mask
+r_static
+r_inline
+r_void
+id|mapping_set_gfp_mask
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+id|m
+comma
+r_int
+id|mask
+)paren
+(brace
+id|m-&gt;flags
+op_assign
+(paren
+id|m-&gt;flags
+op_amp
+op_complement
+id|__GFP_BITS_MASK
+)paren
+op_or
+id|mask
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The page cache can done in larger chunks than&n; * one page, because it allows for more efficient&n; * throughput (it can then be mapped into user&n; * space in smaller chunks for same flexibility).&n; *&n; * Or rather, it _will_ be done in larger chunks.&n; */
 DECL|macro|PAGE_CACHE_SHIFT
 mdefine_line|#define PAGE_CACHE_SHIFT&t;PAGE_SHIFT
@@ -56,7 +111,11 @@ r_return
 id|alloc_pages
 c_func
 (paren
-id|x-&gt;gfp_mask
+id|mapping_gfp_mask
+c_func
+(paren
+id|x
+)paren
 comma
 l_int|0
 )paren
@@ -81,7 +140,11 @@ r_return
 id|alloc_pages
 c_func
 (paren
-id|x-&gt;gfp_mask
+id|mapping_gfp_mask
+c_func
+(paren
+id|x
+)paren
 op_or
 id|__GFP_COLD
 comma
@@ -228,7 +291,11 @@ id|mapping
 comma
 id|index
 comma
-id|mapping-&gt;gfp_mask
+id|mapping_gfp_mask
+c_func
+(paren
+id|mapping
+)paren
 )paren
 suffix:semicolon
 )brace

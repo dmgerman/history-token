@@ -70,6 +70,8 @@ DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_fatal
 mdefine_line|#define sig_fatal(t, signr) &bslash;&n;&t;(!T(signr, SIG_KERNEL_IGNORE_MASK|SIG_KERNEL_STOP_MASK) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_DFL)
+DECL|macro|sig_avoid_stop_race
+mdefine_line|#define sig_avoid_stop_race() &bslash;&n;&t;(sigtestsetmask(&amp;current-&gt;pending.signal, M(SIGCONT) | M(SIGKILL)) || &bslash;&n;&t; sigtestsetmask(&amp;current-&gt;signal-&gt;shared_pending.signal, &bslash;&n;&t;&t;&t;&t;&t;&t;  M(SIGCONT) | M(SIGKILL)))
 DECL|function|sig_ignored
 r_static
 r_inline
@@ -5550,6 +5552,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* spin_lock_irq(&amp;sighand-&gt;siglock) is now done in caller */
 r_if
 c_cond
 (paren
@@ -5559,42 +5562,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * There is a group stop in progress.  We don&squot;t need to&n;&t;&t; * start another one.&n;&t;&t; */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|sighand-&gt;siglock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|sig-&gt;group_stop_count
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|sig-&gt;group_exit
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|sighand-&gt;siglock
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|signr
 op_assign
 id|sig-&gt;group_exit_code
@@ -5633,7 +5600,7 @@ id|current
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * No locks needed in this case.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Lock must be held through transition to stopped state.&n;&t;&t; */
 id|current-&gt;exit_code
 op_assign
 id|signr
@@ -5644,15 +5611,30 @@ c_func
 id|TASK_STOPPED
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sighand-&gt;siglock
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * There is no group stop already in progress.&n;&t;&t; * We must initiate one now.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * There is no group stop already in progress.&n;&t;&t; * We must initiate one now, but that requires&n;&t;&t; * dropping siglock to get both the tasklist lock&n;&t;&t; * and siglock again in the proper order.  Note that&n;&t;&t; * this allows an intervening SIGCONT to be posted.&n;&t;&t; * We need to check for that and bail out if necessary.&n;&t;&t; */
 r_struct
 id|task_struct
 op_star
 id|t
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sighand-&gt;siglock
+)paren
+suffix:semicolon
+multiline_comment|/* signals can be posted during this window */
 id|read_lock
 c_func
 (paren
@@ -5678,6 +5660,37 @@ id|sig-&gt;group_exit
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * There is a group exit in progress now.&n;&t;&t;&t; * We&squot;ll just ignore the stop and process the&n;&t;&t;&t; * associated fatal signal.&n;&t;&t;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|sig_avoid_stop_race
+c_func
+(paren
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Either a SIGCONT or a SIGKILL signal was&n;&t;&t;&t; * posted in the siglock-not-held window.&n;&t;&t;&t; */
 id|spin_unlock_irq
 c_func
 (paren
@@ -5904,6 +5917,20 @@ op_assign
 op_amp
 id|current-&gt;blocked
 suffix:semicolon
+r_int
+id|signr
+op_assign
+l_int|0
+suffix:semicolon
+id|relock
+suffix:colon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5911,23 +5938,10 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_int
-r_int
-id|signr
-op_assign
-l_int|0
-suffix:semicolon
 r_struct
 id|k_sigaction
 op_star
 id|ka
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5945,7 +5959,8 @@ c_func
 (paren
 )paren
 )paren
-r_continue
+r_goto
+id|relock
 suffix:semicolon
 id|signr
 op_assign
@@ -5959,13 +5974,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5974,6 +5982,7 @@ id|signr
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* will return 0 */
 r_if
 c_cond
 (paren
@@ -6004,25 +6013,9 @@ id|current-&gt;signal-&gt;group_stop_count
 OG
 l_int|0
 )paren
-(brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
 op_decrement
 id|current-&gt;signal-&gt;group_stop_count
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Let the debugger run.  */
 id|current-&gt;exit_code
 op_assign
@@ -6036,6 +6029,13 @@ id|set_current_state
 c_func
 (paren
 id|TASK_STOPPED
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 id|notify_parent
@@ -6056,6 +6056,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re back.  Did the debugger cancel the sig?  */
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 id|signr
 op_assign
 id|current-&gt;exit_code
@@ -6117,13 +6124,6 @@ id|signr
 )paren
 )paren
 (brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
-)paren
-suffix:semicolon
 id|specific_send_sig_info
 c_func
 (paren
@@ -6132,13 +6132,6 @@ comma
 id|info
 comma
 id|current
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 r_continue
@@ -6173,9 +6166,9 @@ op_ne
 id|SIG_DFL
 )paren
 multiline_comment|/* Run the handler.  */
-r_return
-id|signr
+r_break
 suffix:semicolon
+multiline_comment|/* will return non-zero &quot;signr&quot; value */
 multiline_comment|/*&n;&t;&t; * Now we are doing the default action for this signal.&n;&t;&t; */
 r_if
 c_cond
@@ -6209,30 +6202,88 @@ id|signr
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The default action is to stop all threads in&n;&t;&t;&t; * the thread group.  The job control signals&n;&t;&t;&t; * do nothing in an orphaned pgrp, but SIGSTOP&n;&t;&t;&t; * always works.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The default action is to stop all threads in&n;&t;&t;&t; * the thread group.  The job control signals&n;&t;&t;&t; * do nothing in an orphaned pgrp, but SIGSTOP&n;&t;&t;&t; * always works.  Note that siglock needs to be&n;&t;&t;&t; * dropped during the call to is_orphaned_pgrp()&n;&t;&t;&t; * because of lock ordering with tasklist_lock.&n;&t;&t;&t; * This allows an intervening SIGCONT to be posted.&n;&t;&t;&t; * We need to check for that and bail out if necessary.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|signr
 op_eq
 id|SIGSTOP
-op_logical_or
-op_logical_neg
-id|is_orphaned_pgrp
-c_func
-(paren
-id|current-&gt;pgrp
 )paren
-)paren
+(brace
 id|do_signal_stop
 c_func
 (paren
 id|signr
 )paren
 suffix:semicolon
+multiline_comment|/* releases siglock */
+r_goto
+id|relock
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+multiline_comment|/* signals can be posted during this window */
+r_if
+c_cond
+(paren
+id|is_orphaned_pgrp
+c_func
+(paren
+id|current-&gt;pgrp
+)paren
+)paren
+r_goto
+id|relock
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|sig_avoid_stop_race
+c_func
+(paren
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Either a SIGCONT or a SIGKILL signal was&n;&t;&t;&t;&t; * posted in the siglock-not-held window.&n;&t;&t;&t;&t; */
 r_continue
 suffix:semicolon
 )brace
+id|do_signal_stop
+c_func
+(paren
+id|signr
+)paren
+suffix:semicolon
+multiline_comment|/* releases siglock */
+r_goto
+id|relock
+suffix:semicolon
+)brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Anything else is fatal, maybe with a core dump.&n;&t;&t; */
 id|current-&gt;flags
 op_or_assign
@@ -6250,6 +6301,9 @@ op_logical_and
 id|do_coredump
 c_func
 (paren
+(paren
+r_int
+)paren
 id|signr
 comma
 id|signr
@@ -6299,8 +6353,15 @@ id|signr
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|signr
 suffix:semicolon
 )brace
 macro_line|#endif

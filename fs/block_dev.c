@@ -1404,9 +1404,14 @@ op_assign
 op_amp
 id|def_blk_aops
 suffix:semicolon
-id|inode-&gt;i_data.gfp_mask
-op_assign
+id|mapping_set_gfp_mask
+c_func
+(paren
+op_amp
+id|inode-&gt;i_data
+comma
 id|GFP_USER
+)paren
 suffix:semicolon
 id|inode-&gt;i_data.backing_dev_info
 op_assign

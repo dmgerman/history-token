@@ -22,8 +22,10 @@ op_star
 id|bitmap
 comma
 r_int
+r_int
 id|base
 comma
+r_int
 r_int
 id|extent
 comma
@@ -31,6 +33,7 @@ r_int
 id|new_value
 )paren
 (brace
+r_int
 r_int
 id|mask
 suffix:semicolon
@@ -43,8 +46,8 @@ id|bitmap
 op_plus
 (paren
 id|base
-op_rshift
-l_int|5
+op_div
+id|BITS_PER_LONG
 )paren
 suffix:semicolon
 r_int
@@ -53,7 +56,11 @@ id|low_index
 op_assign
 id|base
 op_amp
-l_int|0x1f
+(paren
+id|BITS_PER_LONG
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_int
 id|length
@@ -74,7 +81,7 @@ id|mask
 op_assign
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|low_index
 )paren
@@ -84,14 +91,14 @@ c_cond
 (paren
 id|length
 OL
-l_int|32
+id|BITS_PER_LONG
 )paren
 id|mask
 op_and_assign
 op_complement
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|length
 )paren
@@ -117,7 +124,7 @@ id|mask
 suffix:semicolon
 id|length
 op_sub_assign
-l_int|32
+id|BITS_PER_LONG
 suffix:semicolon
 )brace
 id|mask
@@ -127,9 +134,9 @@ id|new_value
 ques
 c_cond
 op_complement
-l_int|0
+l_int|0UL
 suffix:colon
-l_int|0
+l_int|0UL
 )paren
 suffix:semicolon
 r_while
@@ -137,7 +144,7 @@ c_loop
 (paren
 id|length
 op_ge
-l_int|32
+id|BITS_PER_LONG
 )paren
 (brace
 op_star
@@ -148,7 +155,7 @@ id|mask
 suffix:semicolon
 id|length
 op_sub_assign
-l_int|32
+id|BITS_PER_LONG
 suffix:semicolon
 )brace
 r_if
@@ -164,7 +171,7 @@ op_assign
 op_complement
 (paren
 op_complement
-l_int|0
+l_int|0UL
 op_lshift
 id|length
 )paren
@@ -484,7 +491,8 @@ op_assign
 (paren
 id|regs-&gt;eflags
 op_amp
-l_int|0xffffcfff
+op_complement
+l_int|0x3000UL
 )paren
 op_or
 (paren

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -495,8 +496,7 @@ r_int
 id|def_flags
 suffix:semicolon
 DECL|member|cpu_vm_mask
-r_int
-r_int
+id|cpumask_t
 id|cpu_vm_mask
 suffix:semicolon
 DECL|member|swap_address
@@ -857,8 +857,7 @@ r_int
 id|policy
 suffix:semicolon
 DECL|member|cpus_allowed
-r_int
-r_int
+id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
 DECL|member|time_slice
@@ -1422,8 +1421,7 @@ id|task_t
 op_star
 id|p
 comma
-r_int
-r_int
+id|cpumask_t
 id|new_mask
 )paren
 suffix:semicolon
@@ -1439,8 +1437,7 @@ id|task_t
 op_star
 id|p
 comma
-r_int
-r_int
+id|cpumask_t
 id|new_mask
 )paren
 (brace

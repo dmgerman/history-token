@@ -14554,13 +14554,13 @@ r_char
 op_star
 id|busname
 op_assign
-id|bus-&gt;dev.name
+id|bus-&gt;name
 (braket
 l_int|0
 )braket
 ques
 c_cond
-id|bus-&gt;dev.name
+id|bus-&gt;name
 suffix:colon
 id|ad1848_isapnp_list
 (braket

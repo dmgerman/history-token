@@ -433,7 +433,11 @@ id|vortex_open
 suffix:semicolon
 id|vortex-&gt;gameport.name
 op_assign
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|vortex-&gt;gameport.phys
 op_assign
@@ -526,9 +530,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
-comma
-id|dev-&gt;dev.name
+l_string|&quot;gameport at pci%s speed %d kHz&bslash;n&quot;
 comma
 id|pci_name
 c_func

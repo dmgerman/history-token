@@ -188,6 +188,9 @@ DECL|macro|put_ino_in_irqaction
 mdefine_line|#define put_ino_in_irqaction(action, irq) &bslash;&n;&t;action-&gt;flags &amp;= 0xffffffffffffUL; &bslash;&n;&t;if (__bucket(irq) == &amp;pil0_dummy_bucket) &bslash;&n;&t;&t;action-&gt;flags |= 0xdeadUL &lt;&lt; 48;  &bslash;&n;&t;else &bslash;&n;&t;&t;action-&gt;flags |= __irq_ino(irq) &lt;&lt; 48;
 DECL|macro|get_ino_in_irqaction
 mdefine_line|#define get_ino_in_irqaction(action)&t;(action-&gt;flags &gt;&gt; 48)
+macro_line|#if NR_CPUS &gt; 64
+macro_line|#error irqaction embedded smp affinity does not work with &gt; 64 cpus, FIXME
+macro_line|#endif
 DECL|macro|put_smpaff_in_irqaction
 mdefine_line|#define put_smpaff_in_irqaction(action, smpaff)&t;(action)-&gt;mask = (smpaff)
 DECL|macro|get_smpaff_in_irqaction
@@ -2651,8 +2654,7 @@ id|ap
 op_assign
 id|bp-&gt;irq_info
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpu_mask
 op_assign
 id|get_smpaff_in_irqaction
@@ -2667,16 +2669,24 @@ id|buddy
 comma
 id|ticks
 suffix:semicolon
+id|cpus_and
+c_func
+(paren
 id|cpu_mask
-op_and_assign
+comma
+id|cpu_mask
+comma
 id|cpu_online_map
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|cpus_empty
+c_func
+(paren
 id|cpu_mask
-op_eq
-l_int|0
+)paren
 )paren
 id|cpu_mask
 op_assign
@@ -2725,17 +2735,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
+id|cpu_isset
+c_func
 (paren
-id|cpu_mask
-op_amp
-(paren
-l_int|1UL
-op_lshift
 id|buddy
+comma
+id|cpu_mask
 )paren
-)paren
-op_eq
-l_int|0
 )paren
 (brace
 r_if

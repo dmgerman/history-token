@@ -4,17 +4,15 @@ DECL|macro|_ASM_I386_TOPOLOGY_H
 mdefine_line|#define _ASM_I386_TOPOLOGY_H
 macro_line|#ifdef CONFIG_NUMA
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 multiline_comment|/* Mappings between logical cpu number and node number */
 r_extern
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|node_2_cpu_mask
 (braket
 )braket
 suffix:semicolon
 r_extern
-r_volatile
 r_int
 id|cpu_2_node
 (braket
@@ -49,8 +47,7 @@ multiline_comment|/* Returns a bitmask of CPUs on Node &squot;node&squot;. */
 DECL|function|node_to_cpumask
 r_static
 r_inline
-r_int
-r_int
+id|cpumask_t
 id|node_to_cpumask
 c_func
 (paren
@@ -77,15 +74,20 @@ r_int
 id|node
 )paren
 (brace
-r_return
-id|__ffs
-c_func
-(paren
+id|cpumask_t
+id|mask
+op_assign
 id|node_to_cpumask
 c_func
 (paren
 id|node
 )paren
+suffix:semicolon
+r_return
+id|first_cpu
+c_func
+(paren
+id|mask
 )paren
 suffix:semicolon
 )brace
@@ -96,8 +98,7 @@ multiline_comment|/* Returns the number of the node containing PCI bus &squot;bu
 DECL|function|pcibus_to_cpumask
 r_static
 r_inline
-r_int
-r_int
+id|cpumask_t
 id|pcibus_to_cpumask
 c_func
 (paren

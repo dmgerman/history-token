@@ -1,9 +1,13 @@
 multiline_comment|/* Copyright 2003 Andi Kleen, SuSE Labs. &n; * Subject to the GNU Public License, v.2 &n; * &n; * Generic x86 APIC driver probe layer.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/apicdef.h&gt;
 macro_line|#include &lt;asm/genapic.h&gt;
 r_extern

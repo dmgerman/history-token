@@ -10,8 +10,7 @@ r_int
 id|fake_node
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|macro|cpu_to_node
@@ -23,14 +22,13 @@ mdefine_line|#define parent_node(node)&t;&t;(node)
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) &t;(fake_node ? 0 : (node))
 DECL|macro|node_to_cpu_mask
-mdefine_line|#define node_to_cpu_mask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
+mdefine_line|#define node_to_cpu_mask(node)&t;(fake_node ? cpu_online_map : cpumask_of_cpu(node))
 DECL|macro|node_to_memblk
 mdefine_line|#define node_to_memblk(node)&t;&t;(node)
 DECL|function|pcibus_to_cpumask
 r_static
 r_inline
-r_int
-r_int
+id|cpumask_t
 id|pcibus_to_cpumask
 c_func
 (paren
@@ -38,13 +36,24 @@ r_int
 id|bus
 )paren
 (brace
-r_return
+id|cpumask_t
+id|ret
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|ret
+comma
 id|mp_bus_to_cpumask
 (braket
 id|bus
 )braket
-op_amp
+comma
 id|cpu_online_map
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|macro|NODE_BALANCE_RATE

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp.,
 multiline_comment|/*&n; *&t;jfs_imap.c: inode allocation map manager&n; *&n; * Serialization:&n; *   Each AG has a simple lock which is used to control the serialization of&n; *&t;the AG level lists.  This lock should be taken first whenever an AG&n; *&t;level list will be modified or accessed.&n; *&n; *   Each IAG is locked by obtaining the buffer for the IAG page.&n; *&n; *   There is also a inode lock for the inode map inode.  A read lock needs to&n; *&t;be taken whenever an IAG is read from the map or the global level&n; *&t;information is read.  A write lock needs to be taken whenever the global&n; *&t;level information is modified or an atomic operation needs to be used.&n; *&n; *&t;If more than one IAG is read at one time, the read lock may not&n; *&t;be given up until all of the IAG&squot;s are read.  Otherwise, a deadlock&n; *&t;may occur when trying to obtain the read lock while another thread&n; *&t;holding the read lock is waiting on the IAG already being held.&n; *&n; *   The control page of the inode map is read into memory by diMount().&n; *&t;Thereafter it should only be modified in memory and then it will be&n; *&t;written out when the filesystem is unmounted by diUnmount().&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_dinode.h&quot;
@@ -1699,9 +1700,13 @@ op_assign
 op_amp
 id|jfs_aops
 suffix:semicolon
-id|ip-&gt;i_mapping-&gt;gfp_mask
-op_assign
+id|mapping_set_gfp_mask
+c_func
+(paren
+id|ip-&gt;i_mapping
+comma
 id|GFP_NOFS
+)paren
 suffix:semicolon
 r_if
 c_cond

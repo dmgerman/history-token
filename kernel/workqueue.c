@@ -650,9 +650,11 @@ c_func
 (paren
 id|current
 comma
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|cpu
+)paren
 )paren
 suffix:semicolon
 id|complete

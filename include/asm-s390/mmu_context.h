@@ -133,7 +133,7 @@ id|pgd
 suffix:semicolon
 macro_line|#endif /* __s390x__ */
 )brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -141,7 +141,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|next-&gt;cpu_vm_mask
 )paren
 suffix:semicolon

@@ -5,15 +5,11 @@ DECL|macro|_PPC64_SMP_H
 mdefine_line|#define _PPC64_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/paca.h&gt;
-r_extern
-r_int
-r_int
-id|cpu_online_map
-suffix:semicolon
 r_extern
 r_void
 id|smp_message_pass
@@ -65,62 +61,8 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;test_bit((cpu), &amp;cpu_online_map)
 DECL|macro|cpu_possible
 mdefine_line|#define cpu_possible(cpu)&t;paca[cpu].active
-DECL|function|num_online_cpus
-r_static
-r_inline
-r_int
-r_int
-id|num_online_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|hweight64
-c_func
-(paren
-id|cpu_online_map
-)paren
-suffix:semicolon
-)brace
-DECL|function|any_online_cpu
-r_static
-r_inline
-r_int
-r_int
-id|any_online_cpu
-c_func
-(paren
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-r_return
-id|__ffs
-c_func
-(paren
-id|mask
-op_amp
-id|cpu_online_map
-)paren
-suffix:semicolon
-r_return
-id|NR_CPUS
-suffix:semicolon
-)brace
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (get_paca()-&gt;xPacaIndex)
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */

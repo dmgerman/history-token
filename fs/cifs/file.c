@@ -2233,12 +2233,6 @@ id|from
 OG
 id|to
 )paren
-op_logical_or
-(paren
-id|offset
-OG
-id|mapping-&gt;host-&gt;i_size
-)paren
 )paren
 (brace
 id|kunmap
@@ -2257,6 +2251,32 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
+multiline_comment|/* racing with truncate? */
+r_if
+c_cond
+(paren
+id|offset
+OG
+id|mapping-&gt;host-&gt;i_size
+)paren
+(brace
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|FreeXid
+c_func
+(paren
+id|xid
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* don&squot;t care */
 )brace
 multiline_comment|/* check to make sure that we are not extending the file */
 r_if

@@ -908,9 +908,9 @@ suffix:semicolon
 multiline_comment|/* OK, are we completely out? */
 id|err
 op_assign
-op_minus
-id|EIO
+l_int|0
 suffix:semicolon
+multiline_comment|/* potential race with truncate - ignore */
 r_if
 c_cond
 (paren

@@ -5,8 +5,27 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
+DECL|function|target_cpus
+r_static
+r_inline
+id|cpumask_t
+id|target_cpus
+c_func
+(paren
+r_void
+)paren
+(brace
+id|cpumask_t
+id|tmp
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
+r_return
+id|tmp
+suffix:semicolon
+)brace
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS (~0UL)
+mdefine_line|#define TARGET_CPUS (target_cpus())
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (1)
 DECL|macro|esr_disable
@@ -18,9 +37,9 @@ mdefine_line|#define INT_DEST_MODE 0     /* physical delivery on LOCAL quad */
 DECL|macro|APIC_BROADCAST_ID
 mdefine_line|#define APIC_BROADCAST_ID      0x0F
 DECL|macro|check_apicid_used
-mdefine_line|#define check_apicid_used(bitmap, apicid) ((bitmap) &amp; (1 &lt;&lt; (apicid)))
+mdefine_line|#define check_apicid_used(bitmap, apicid) physid_isset(apicid, bitmap)
 DECL|macro|check_apicid_present
-mdefine_line|#define check_apicid_present(bit) (phys_cpu_present_map &amp; (1 &lt;&lt; bit))
+mdefine_line|#define check_apicid_present(bit) physid_isset(bit, phys_cpu_present_map)
 DECL|macro|apicid_cluster
 mdefine_line|#define apicid_cluster(apicid) (apicid &amp; 0xF0)
 DECL|function|apic_id_registered
@@ -34,9 +53,7 @@ r_void
 )paren
 (brace
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 DECL|function|init_apic_ldr
@@ -88,7 +105,6 @@ id|irq
 )paren
 (brace
 r_return
-(paren
 id|apic
 op_ne
 l_int|0
@@ -96,28 +112,30 @@ op_logical_and
 id|irq
 op_eq
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|ioapic_phys_id_map
 r_static
 r_inline
-id|ulong
+id|physid_mask_t
 id|ioapic_phys_id_map
 c_func
 (paren
-id|ulong
+id|physid_mask_t
 id|phys_map
 )paren
 (brace
 multiline_comment|/* We don&squot;t have a good way to do this yet - hack */
 r_return
-l_int|0xf
+id|physids_promote
+c_func
+(paren
+l_int|0xFUL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Mapping from cpu number to logical apicid */
 r_extern
-r_volatile
 id|u8
 id|cpu_2_logical_apicid
 (braket
@@ -158,23 +176,21 @@ id|mps_cpu
 r_return
 (paren
 (paren
-(paren
 id|mps_cpu
-op_div
+op_rshift
+l_int|2
+)paren
+op_lshift
 l_int|4
 )paren
-op_star
-l_int|16
-)paren
-op_plus
+op_or
 (paren
 l_int|1
 op_lshift
 (paren
 id|mps_cpu
-op_mod
-l_int|4
-)paren
+op_amp
+l_int|0x3
 )paren
 )paren
 suffix:semicolon
@@ -195,7 +211,6 @@ id|phys_apicid
 (brace
 r_return
 (paren
-(paren
 id|quad
 op_lshift
 l_int|4
@@ -211,7 +226,6 @@ l_int|1
 suffix:colon
 l_int|1
 )paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|apicid_to_node
@@ -226,18 +240,15 @@ id|logical_apicid
 )paren
 (brace
 r_return
-(paren
 id|logical_apicid
 op_rshift
 l_int|4
-)paren
 suffix:semicolon
 )brace
 DECL|function|apicid_to_cpu_present
 r_static
 r_inline
-r_int
-r_int
+id|physid_mask_t
 id|apicid_to_cpu_present
 c_func
 (paren
@@ -245,23 +256,35 @@ r_int
 id|logical_apicid
 )paren
 (brace
-r_return
-(paren
-(paren
-id|logical_apicid
-op_amp
-l_int|0xf
-)paren
-op_lshift
-(paren
-l_int|4
-op_star
+r_int
+id|node
+op_assign
 id|apicid_to_node
 c_func
 (paren
 id|logical_apicid
 )paren
+suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|__ffs
+c_func
+(paren
+id|logical_apicid
+op_amp
+l_int|0xf
 )paren
+suffix:semicolon
+r_return
+id|physid_mask_of_physid
+c_func
+(paren
+id|cpu
+op_plus
+l_int|4
+op_star
+id|node
 )paren
 suffix:semicolon
 )brace
@@ -425,9 +448,9 @@ r_inline
 r_int
 r_int
 id|cpu_mask_to_apicid
+c_func
 (paren
-r_int
-r_int
+id|cpumask_const_t
 id|cpumask
 )paren
 (brace

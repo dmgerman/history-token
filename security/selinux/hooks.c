@@ -1101,6 +1101,32 @@ id|sbsec-&gt;initialized
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbsec-&gt;behavior
+OG
+id|ARRAY_SIZE
+c_func
+(paren
+id|labeling_behaviors
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;SELinux: initialized (dev %s, type %s), unknown behavior&bslash;n&quot;
+comma
+id|sb-&gt;s_id
+comma
+id|sb-&gt;s_type-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|printk
 c_func
 (paren
@@ -1119,6 +1145,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Initialize the root inode. */
 id|rc
 op_assign

@@ -1013,7 +1013,11 @@ op_assign
 id|shmem_dir_alloc
 c_func
 (paren
-id|inode-&gt;i_mapping-&gt;gfp_mask
+id|mapping_gfp_mask
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
 )paren
 suffix:semicolon
 r_if
