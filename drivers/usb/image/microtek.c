@@ -29,19 +29,14 @@ multiline_comment|/* Should we do debugging? */
 singleline_comment|//#define MTS_DO_DEBUG
 multiline_comment|/* USB layer driver interface */
 r_static
-r_void
-op_star
+r_int
 id|mts_usb_probe
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|interface
+id|intf
 comma
 r_const
 r_struct
@@ -56,13 +51,9 @@ id|mts_usb_disconnect
 c_func
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 suffix:semicolon
 DECL|variable|mts_usb_ids
@@ -2665,13 +2656,9 @@ r_void
 id|mts_usb_disconnect
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_void
-op_star
-id|ptr
+id|intf
 )paren
 (brace
 r_struct
@@ -2679,18 +2666,33 @@ id|mts_desc
 op_star
 id|to_remove
 op_assign
+id|dev_get_drvdata
+c_func
 (paren
-r_struct
-id|mts_desc
-op_star
+op_amp
+id|intf-&gt;dev
 )paren
-id|ptr
 suffix:semicolon
 id|MTS_DEBUG_GOT_HERE
 c_func
 (paren
 )paren
 suffix:semicolon
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|to_remove
+)paren
+(brace
 multiline_comment|/* leave the list - lock it */
 id|down
 c_func
@@ -2712,6 +2714,7 @@ op_amp
 id|mts_list_semaphore
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|struct|vendor_product
 r_struct
@@ -2921,18 +2924,13 @@ id|mts_usb_ids
 suffix:semicolon
 DECL|function|mts_usb_probe
 r_static
-r_void
-op_star
+r_int
 id|mts_usb_probe
 (paren
 r_struct
-id|usb_device
+id|usb_interface
 op_star
-id|dev
-comma
-r_int
-r_int
-id|interface
+id|intf
 comma
 r_const
 r_struct
@@ -2976,6 +2974,16 @@ id|vendor_product
 r_const
 op_star
 id|p
+suffix:semicolon
+r_struct
+id|usb_device
+op_star
+id|dev
+op_assign
+id|interface_to_usbdev
+(paren
+id|intf
+)paren
 suffix:semicolon
 multiline_comment|/* the altsettting 0 on the interface we&squot;re probing */
 r_struct
@@ -3063,12 +3071,7 @@ id|altsetting
 op_assign
 op_amp
 (paren
-id|dev-&gt;actconfig-&gt;interface
-(braket
-id|interface
-)braket
-dot
-id|altsetting
+id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
@@ -3100,7 +3103,8 @@ id|altsetting-&gt;bNumEndpoints
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 r_for
@@ -3197,7 +3201,8 @@ l_string|&quot;can only deal with one output endpoints. Bailing out.&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|ep_out
@@ -3230,7 +3235,8 @@ l_string|&quot;couldn&squot;t find an output bulk endpoint. Bailing out.&bslash;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* I don&squot;t understand the following fully (it&squot;s from usb-storage) -- John */
@@ -3307,7 +3313,8 @@ id|result
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* allocating a new descriptor */
@@ -3345,7 +3352,8 @@ l_string|&quot;couldn&squot;t allocate scanner desc, bailing out!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -3386,17 +3394,14 @@ id|new_desc
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* initialising that descriptor */
 id|new_desc-&gt;usb_dev
 op_assign
 id|dev
-suffix:semicolon
-id|new_desc-&gt;interface
-op_assign
-id|interface
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -3572,7 +3577,8 @@ id|new_desc
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|MTS_DEBUG_GOT_HERE
@@ -3608,12 +3614,17 @@ c_func
 l_string|&quot;completed probe and exiting happily&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|dev_set_drvdata
+c_func
 (paren
-r_void
-op_star
-)paren
+op_amp
+id|intf-&gt;dev
+comma
 id|new_desc
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* get us noticed by the rest of the kernel */
