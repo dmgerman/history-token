@@ -1858,14 +1858,14 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|platform_add_device
+id|platform_device_register
 c_func
 (paren
 op_amp
 id|versatile_flash_device
 )paren
 suffix:semicolon
-id|platform_add_device
+id|platform_device_register
 c_func
 (paren
 op_amp

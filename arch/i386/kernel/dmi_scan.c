@@ -1152,6 +1152,52 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Work around broken Acer TravelMate 360 Notebooks which assign Cardbus to&n; * IRQ 11 even though it is actually wired to IRQ 10&n; */
+DECL|function|fix_acer_tm360_irqrouting
+r_static
+id|__init
+r_int
+id|fix_acer_tm360_irqrouting
+c_func
+(paren
+r_struct
+id|dmi_blacklist
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_PCI
+r_extern
+r_int
+id|acer_tm360_irqrouting
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|acer_tm360_irqrouting
+op_eq
+l_int|0
+)paren
+(brace
+id|acer_tm360_irqrouting
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s detected - fixing broken IRQ routing&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *  Check for clue free BIOS implementations who use&n; *  the following QA technique&n; *&n; *      [ Write BIOS Code ]&lt;------&n; *               |                ^&n; *      &lt; Does it Compile &gt;----N--&n; *               |Y               ^&n; *&t;&lt; Does it Boot Win98 &gt;-N--&n; *               |Y&n; *           [Ship It]&n; *&n; *&t;Phoenix A04  08/24/2000 is known bad (Dell Inspiron 5000e)&n; *&t;Phoenix A07  09/29/2000 is known good (Dell Inspiron 5000)&n; */
 DECL|function|broken_apm_power
 r_static

@@ -4,6 +4,10 @@ DECL|macro|_PPC64PHP_H
 mdefine_line|#define _PPC64PHP_H
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
+DECL|macro|HOTPLUG
+mdefine_line|#define&t;HOTPLUG&t;1
+DECL|macro|EMBEDDED
+mdefine_line|#define&t;EMBEDDED 0
 DECL|macro|DR_INDICATOR
 mdefine_line|#define DR_INDICATOR 9002
 DECL|macro|DR_ENTITY_SENSE
@@ -60,6 +64,23 @@ DECL|macro|CONFIGURED
 mdefine_line|#define&t;CONFIGURED&t;1
 DECL|macro|EMPTY
 mdefine_line|#define&t;EMPTY&t;&t;0
+DECL|struct|rpaphp_pci_func
+r_struct
+id|rpaphp_pci_func
+(brace
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
+suffix:semicolon
+DECL|member|sibling
+r_struct
+id|list_head
+id|sibling
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * struct slot - slot information for each *physical* slot&n; */
 DECL|struct|slot
 r_struct
@@ -91,6 +112,10 @@ r_char
 op_star
 id|location
 suffix:semicolon
+DECL|member|removable
+id|u8
+id|removable
+suffix:semicolon
 DECL|member|dn
 r_struct
 id|device_node
@@ -108,22 +133,19 @@ suffix:semicolon
 multiline_comment|/* slot&squot;s pci_dev in pci_devices */
 r_union
 (brace
-DECL|member|pci_dev
+DECL|member|pci_funcs
 r_struct
-id|pci_dev
-op_star
-id|pci_dev
+id|list_head
+id|pci_funcs
 suffix:semicolon
-multiline_comment|/* pci_dev of device in this slot */
-multiline_comment|/* it will be used for unconfig */
-multiline_comment|/* NULL if slot is empty */
+multiline_comment|/* pci_devs in PCI slot */
 DECL|member|vio_dev
 r_struct
 id|vio_dev
 op_star
 id|vio_dev
 suffix:semicolon
-multiline_comment|/* vio_dev of the device in this slot */
+multiline_comment|/* vio_dev in VIO slot */
 DECL|member|dev
 )brace
 id|dev
@@ -160,6 +182,45 @@ r_extern
 r_int
 id|num_slots
 suffix:semicolon
+DECL|function|is_hotplug_capable
+r_static
+r_inline
+r_int
+id|is_hotplug_capable
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
+)paren
+(brace
+r_int
+r_char
+op_star
+id|ptr
+op_assign
+id|get_property
+c_func
+(paren
+id|dn
+comma
+l_string|&quot;ibm,fw-pci-hot-plug-ctrl&quot;
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_return
+(paren
+r_int
+)paren
+(paren
+id|ptr
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* function prototypes */
 multiline_comment|/* rpaphp_pci.c */
 r_extern
@@ -240,6 +301,19 @@ op_star
 id|value
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|hotplug_slot
+op_star
+id|rpaphp_find_hotplug_slot
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* rpaphp_core.c */
 r_extern
 r_int
@@ -261,6 +335,18 @@ r_struct
 id|slot
 op_star
 id|slot
+)paren
+suffix:semicolon
+r_extern
+r_char
+op_star
+id|rpaphp_get_drc_name
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|dn
 )paren
 suffix:semicolon
 multiline_comment|/* rpaphp_vio.c */
@@ -363,6 +449,17 @@ id|slot
 suffix:semicolon
 r_extern
 r_int
+id|deregister_slot
+c_func
+(paren
+r_struct
+id|slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|rpaphp_get_power_status
 c_func
 (paren
@@ -388,17 +485,6 @@ id|slot
 comma
 id|u8
 id|status
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|rpaphp_sysfs_remove_attr_location
-c_func
-(paren
-r_struct
-id|hotplug_slot
-op_star
-id|slot
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _PPC64PHP_H */

@@ -1713,6 +1713,8 @@ id|iomem_resource
 suffix:semicolon
 )brace
 )brace
+DECL|macro|TIMER_CTRL_IE
+mdefine_line|#define TIMER_CTRL_IE&t;(1 &lt;&lt; 5)&t;&t;&t;/* Interrupt Enable */
 DECL|function|intcp_init_time
 r_static
 r_void
