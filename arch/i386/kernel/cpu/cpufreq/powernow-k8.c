@@ -2976,6 +2976,21 @@ r_struct
 id|cpufreq_freqs
 id|freqs
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;cpu %d transition to index %u&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|index
+)paren
+suffix:semicolon
 multiline_comment|/* fid are the lower 8 bits of the index we stored into&n;&t; * the cpufreq frequency table in find_psb_table, vid are &n;&t; * the upper 8 bits.&n;&t; */
 id|fid
 op_assign
