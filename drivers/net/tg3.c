@@ -33,6 +33,14 @@ macro_line|#else
 DECL|macro|TG3_VLAN_TAG_USED
 mdefine_line|#define TG3_VLAN_TAG_USED 0
 macro_line|#endif
+macro_line|#ifdef NETIF_F_TSO
+multiline_comment|/* XXX some bug in tso firmware hangs tx cpu, disabled until fixed */
+DECL|macro|TG3_DO_TSO
+mdefine_line|#define TG3_DO_TSO&t;0
+macro_line|#else
+DECL|macro|TG3_DO_TSO
+mdefine_line|#define TG3_DO_TSO&t;0
+macro_line|#endif
 macro_line|#include &quot;tg3.h&quot;
 DECL|macro|DRV_MODULE_NAME
 mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
@@ -9805,7 +9813,7 @@ id|base_flags
 op_or_assign
 id|TXD_FLAG_TCPUDP_CSUM
 suffix:semicolon
-macro_line|#ifdef NETIF_F_TSO
+macro_line|#if TG3_DO_TSO != 0
 r_if
 c_cond
 (paren
@@ -10574,7 +10582,7 @@ id|base_flags
 op_or_assign
 id|TXD_FLAG_TCPUDP_CSUM
 suffix:semicolon
-macro_line|#ifdef NETIF_F_TSO
+macro_line|#if TG3_DO_TSO != 0
 r_if
 c_cond
 (paren
@@ -15629,7 +15637,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef NETIF_F_TSO
+macro_line|#if TG3_DO_TSO != 0
 DECL|macro|TG3_TSO_FW_RELEASE_MAJOR
 mdefine_line|#define TG3_TSO_FW_RELEASE_MAJOR&t;0x1
 DECL|macro|TG3_TSO_FW_RELASE_MINOR
@@ -18850,7 +18858,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* NETIF_F_TSO */
+macro_line|#endif /* TG3_DO_TSO != 0 */
 multiline_comment|/* tp-&gt;lock is held. */
 DECL|function|__tg3_set_mac_addr
 r_static
@@ -20995,7 +21003,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef NETIF_F_TSO
+macro_line|#if TG3_DO_TSO != 0
 id|err
 op_assign
 id|tg3_load_tso_firmware
@@ -31968,7 +31976,7 @@ op_assign
 id|tg3_vlan_rx_kill_vid
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef NETIF_F_TSO
+macro_line|#if TG3_DO_TSO != 0
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_TSO
