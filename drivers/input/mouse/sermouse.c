@@ -735,13 +735,13 @@ comma
 (paren
 id|data
 op_amp
-l_int|7
+l_int|8
 )paren
 op_minus
 (paren
 id|data
 op_amp
-l_int|8
+l_int|7
 )paren
 )paren
 suffix:semicolon
@@ -935,7 +935,7 @@ id|sermouse-&gt;last
 op_plus
 id|HZ
 op_div
-l_int|20
+l_int|10
 )paren
 )paren
 id|sermouse-&gt;count
