@@ -246,7 +246,7 @@ op_star
 id|next
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 suffix:semicolon
@@ -437,7 +437,7 @@ op_assign
 id|v
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -492,7 +492,7 @@ op_star
 id|sk
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 suffix:semicolon
@@ -735,7 +735,7 @@ op_star
 id|sk
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 suffix:semicolon

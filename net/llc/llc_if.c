@@ -49,7 +49,7 @@ op_minus
 id|ECONNABORTED
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -188,7 +188,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign

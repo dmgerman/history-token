@@ -9,11 +9,18 @@ macro_line|#include &lt;net/irda/irias_object.h&gt;&t;/* struct ias_value */
 macro_line|#include &lt;net/irda/irlmp.h&gt;&t;&t;/* struct lsap_cb */
 macro_line|#include &lt;net/irda/irttp.h&gt;&t;&t;/* struct tsap_cb */
 macro_line|#include &lt;net/irda/discovery.h&gt;&t;&t;/* struct discovery_t */
+macro_line|#include &lt;net/sock.h&gt;
 multiline_comment|/* IrDA Socket */
 DECL|struct|irda_sock
 r_struct
 id|irda_sock
 (brace
+multiline_comment|/* struct sock has to be the first member of irda_sock */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
 DECL|member|saddr
 id|__u32
 id|saddr
@@ -138,12 +145,6 @@ r_int
 id|errno
 suffix:semicolon
 multiline_comment|/* status of the IAS query */
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
 DECL|member|query_wait
 id|wait_queue_head_t
 id|query_wait
@@ -165,7 +166,29 @@ id|rx_flow
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|irda_sk
-mdefine_line|#define irda_sk(__sk) ((struct irda_sock *)(__sk)-&gt;sk_protinfo)
+DECL|function|irda_sk
+r_static
+r_inline
+r_struct
+id|irda_sock
+op_star
+id|irda_sk
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|irda_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
 macro_line|#endif /* AF_IRDA_H */
 eof

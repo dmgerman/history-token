@@ -18,7 +18,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -86,7 +86,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -248,7 +248,7 @@ id|nr
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -330,7 +330,7 @@ id|frametype
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -950,7 +950,7 @@ id|m
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -1392,7 +1392,7 @@ id|diagnostic
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
@@ -1486,7 +1486,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|x25_opt
+id|x25_sock
 op_star
 id|x25
 op_assign
