@@ -797,7 +797,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;i2c-%d ioctl, cmd: 0x%x, arg: %lx.&bslash;n&quot;
 comma
@@ -1482,7 +1482,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;size out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
@@ -1515,7 +1515,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;read_write out of range (%x) in ioctl I2C_SMBUS.&bslash;n&quot;
 comma
@@ -1583,7 +1583,7 @@ id|dev_dbg
 c_func
 (paren
 op_amp
-id|client-&gt;dev
+id|client-&gt;adapter-&gt;dev
 comma
 l_string|&quot;data is NULL pointer in ioctl I2C_SMBUS.&bslash;n&quot;
 )paren
