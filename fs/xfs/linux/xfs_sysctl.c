@@ -134,7 +134,7 @@ id|xfs_params.restrict_chown.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -142,7 +142,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -166,7 +166,7 @@ id|xfs_params.sgid_inherit.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -174,7 +174,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -198,7 +198,7 @@ id|xfs_params.symlink_mode.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -206,7 +206,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -230,7 +230,7 @@ id|xfs_params.panic_mask.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -238,7 +238,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -262,7 +262,7 @@ id|xfs_params.error_level.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -270,7 +270,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -294,7 +294,7 @@ id|xfs_params.sync_interval.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -302,7 +302,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -326,7 +326,7 @@ id|xfs_params.inherit_sync.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -334,7 +334,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -358,7 +358,7 @@ id|xfs_params.inherit_nodump.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -366,7 +366,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -390,7 +390,7 @@ id|xfs_params.inherit_noatim.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -398,7 +398,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -424,7 +424,7 @@ id|xfs_params.stats_clear.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
