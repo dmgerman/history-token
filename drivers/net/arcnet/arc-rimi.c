@@ -375,7 +375,6 @@ r_int
 id|mirror_size
 suffix:semicolon
 multiline_comment|/* reserve the irq */
-(brace
 r_if
 c_cond
 (paren
@@ -394,6 +393,7 @@ comma
 id|dev
 )paren
 )paren
+(brace
 id|BUGMSG
 c_func
 (paren

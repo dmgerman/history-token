@@ -3861,6 +3861,11 @@ op_star
 id|skb
 )paren
 (brace
+macro_line|#ifndef CONFIG_XFRM
+r_return
+l_int|1
+suffix:semicolon
+macro_line|#else
 r_struct
 id|udp_opt
 op_star
@@ -4075,6 +4080,16 @@ l_int|1
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -4088,6 +4103,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 multiline_comment|/* returns:&n; *  -1: error&n; *   0: success&n; *  &gt;0: &quot;udp encap&quot; protocol resubmission&n; *&n; * Note that in the success and error cases, the skb is assumed to&n; * have either been requeued or freed.&n; */
 DECL|function|udp_queue_rcv_skb

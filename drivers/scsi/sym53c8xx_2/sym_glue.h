@@ -5,20 +5,10 @@ mdefine_line|#define SYM_GLUE_H
 macro_line|#if 0
 mdefine_line|#define SYM_CONF_DMA_ADDRESSING_MODE 2
 macro_line|#endif
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if&t;LINUX_VERSION_CODE &lt; LinuxVersionCode(2, 2, 0)
-macro_line|#error&t;&quot;This driver requires a kernel version not lower than 2.2.0&quot;
-macro_line|#endif
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,17)
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#else
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -36,27 +26,9 @@ macro_line|#ifdef __sparc__
 macro_line|#  include &lt;asm/irq.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifndef&t;__init
-DECL|macro|__init
-mdefine_line|#define&t;__init
-macro_line|#endif
-macro_line|#ifndef&t;__initdata
-DECL|macro|__initdata
-mdefine_line|#define&t;__initdata
-macro_line|#endif
 macro_line|#include &quot;../scsi.h&quot;
 macro_line|#include &quot;../hosts.h&quot;
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n; *  Define BITS_PER_LONG for earlier linux versions.&n; */
-macro_line|#ifndef&t;BITS_PER_LONG
-macro_line|#if (~0UL) == 0xffffffffUL
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;32
-macro_line|#else
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define&t;BITS_PER_LONG&t;64
-macro_line|#endif
-macro_line|#endif
 DECL|typedef|vm_offset_t
 r_typedef
 id|u_long
@@ -80,10 +52,8 @@ macro_line|#include &quot;sym_misc.h&quot;
 macro_line|#include &quot;sym_conf.h&quot;
 macro_line|#include &quot;sym_defs.h&quot;
 multiline_comment|/*&n; * Configuration addendum for Linux.&n; */
-macro_line|#if&t;LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,47)
 DECL|macro|SYM_LINUX_DYNAMIC_DMA_MAPPING
 mdefine_line|#define&t;SYM_LINUX_DYNAMIC_DMA_MAPPING
-macro_line|#endif
 DECL|macro|SYM_CONF_TIMER_INTERVAL
 mdefine_line|#define&t;SYM_CONF_TIMER_INTERVAL&t;&t;((HZ+1)/2)
 DECL|macro|SYM_OPT_HANDLE_DIR_UNKNOWN
@@ -547,13 +517,6 @@ DECL|member|settle_time_valid
 id|u_char
 id|settle_time_valid
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2, 4, 0)
-DECL|member|release_stage
-id|u_char
-id|release_stage
-suffix:semicolon
-multiline_comment|/* Synchronisation on release&t;*/
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Return the name of the controller.&n; */
@@ -1012,12 +975,10 @@ id|cmd
 op_assign
 id|cp-&gt;cam_ccb
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,3,99)
 id|cmd-&gt;resid
 op_assign
 id|resid
 suffix:semicolon
-macro_line|#endif
 id|cmd-&gt;result
 op_assign
 (paren

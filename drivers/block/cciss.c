@@ -12217,10 +12217,7 @@ c_func
 (paren
 id|pdev
 comma
-(paren
-id|u64
-)paren
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 )paren
 id|printk

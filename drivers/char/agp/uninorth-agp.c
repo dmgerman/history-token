@@ -7,14 +7,6 @@ macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/uninorth.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &quot;agp.h&quot;
-DECL|variable|__initdata
-r_static
-r_int
-id|agp_try_unsupported
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|uninorth_fetch_size
 r_static
 r_int
@@ -1493,48 +1485,19 @@ id|found
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|agp_try_unsupported
-)paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;Unsupported Apple chipset&quot;
-l_string|&quot; (device id: %04x).&bslash;n&quot;
+l_string|&quot;Unsupported Apple chipset (device id: %04x).&bslash;n&quot;
 comma
 id|pdev-&gt;device
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;You might want to try&quot;
-l_string|&quot; agp_try_unsupported=1&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 op_minus
 id|ENODEV
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|PFX
-l_string|&quot;Trying generic Uninorth routines&quot;
-l_string|&quot; for device id %04x&bslash;n&quot;
-comma
-id|pdev-&gt;device
-)paren
 suffix:semicolon
 id|found
 suffix:colon
@@ -1773,14 +1736,6 @@ id|module_exit
 c_func
 (paren
 id|agp_uninorth_cleanup
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|agp_try_unsupported
-comma
-l_string|&quot;1i&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR

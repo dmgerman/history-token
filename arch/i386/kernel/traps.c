@@ -2458,17 +2458,18 @@ l_int|0x001
 suffix:colon
 multiline_comment|/* Invalid Op */
 r_case
-l_int|0x040
+l_int|0x041
 suffix:colon
 multiline_comment|/* Stack Fault */
 r_case
-l_int|0x240
+l_int|0x241
 suffix:colon
 multiline_comment|/* Stack Fault | Direction */
 id|info.si_code
 op_assign
 id|FPE_FLTINV
 suffix:semicolon
+multiline_comment|/* Should we clear the SF or let user space do it ???? */
 r_break
 suffix:semicolon
 r_case

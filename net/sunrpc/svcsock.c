@@ -2137,6 +2137,13 @@ id|svsk
 )paren
 )paren
 )paren
+(brace
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
 r_return
 id|svc_deferred_recv
 c_func
@@ -2144,6 +2151,7 @@ c_func
 id|rqstp
 )paren
 suffix:semicolon
+)brace
 id|clear_bit
 c_func
 (paren
@@ -2176,12 +2184,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|svc_sock_received
-c_func
-(paren
-id|svsk
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2190,9 +2192,17 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
+(brace
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon
+)brace
 multiline_comment|/* possibly an icmp error */
 id|dprintk
 c_func
@@ -3444,6 +3454,13 @@ id|svsk
 )paren
 )paren
 )paren
+(brace
+id|svc_sock_received
+c_func
+(paren
+id|svsk
+)paren
+suffix:semicolon
 r_return
 id|svc_deferred_recv
 c_func
@@ -3451,6 +3468,7 @@ c_func
 id|rqstp
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6475,12 +6493,6 @@ c_func
 (paren
 op_amp
 id|serv-&gt;sv_lock
-)paren
-suffix:semicolon
-id|svc_sock_received
-c_func
-(paren
-id|svsk
 )paren
 suffix:semicolon
 r_return

@@ -31,6 +31,13 @@ id|debug
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Network device part of the driver */
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|tun_dev_list
+)paren
+suffix:semicolon
 multiline_comment|/* Net device open. */
 DECL|function|tun_net_open
 r_static
@@ -113,7 +120,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_net_xmit %d&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|skb-&gt;len
 )paren
@@ -309,7 +316,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_net_init&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_switch
@@ -459,7 +466,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_chr_poll&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|poll_wait
@@ -768,9 +775,9 @@ id|DBG
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: tun_chr_write %d&bslash;n&quot;
+l_string|&quot;%s: tun_chr_write %ld&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|count
 )paren
@@ -1131,7 +1138,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_chr_read&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_for
@@ -1424,10 +1431,6 @@ id|dev-&gt;init
 op_assign
 id|tun_net_init
 suffix:semicolon
-id|tun-&gt;name
-op_assign
-id|dev-&gt;name
-suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -1466,6 +1469,63 @@ op_star
 id|kfree
 suffix:semicolon
 )brace
+DECL|function|tun_get_by_name
+r_static
+r_struct
+id|tun_struct
+op_star
+id|tun_get_by_name
+c_func
+(paren
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_struct
+id|tun_struct
+op_star
+id|tun
+suffix:semicolon
+id|ASSERT_RTNL
+c_func
+(paren
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|tun
+comma
+op_amp
+id|tun_dev_list
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|tun-&gt;dev-&gt;name
+comma
+id|name
+comma
+id|IFNAMSIZ
+)paren
+)paren
+r_return
+id|tun
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 DECL|function|tun_set_iff
 r_static
 r_int
@@ -1488,17 +1548,12 @@ id|tun_struct
 op_star
 id|tun
 suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|dev
+id|tun
 op_assign
-id|__dev_get_by_name
+id|tun_get_by_name
 c_func
 (paren
 id|ifr-&gt;ifr_name
@@ -1507,21 +1562,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
+id|tun
 )paren
 (brace
-multiline_comment|/* Device exist */
-id|tun
-op_assign
-id|dev-&gt;priv
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;init
-op_ne
-id|tun_net_init
-op_logical_or
 id|tun-&gt;attached
 )paren
 r_return
@@ -1536,10 +1582,7 @@ id|tun-&gt;owner
 op_ne
 op_minus
 l_int|1
-)paren
-r_if
-c_cond
-(paren
+op_logical_and
 id|current-&gt;euid
 op_ne
 id|tun-&gt;owner
@@ -1557,6 +1600,20 @@ id|EPERM
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|__dev_get_by_name
+c_func
+(paren
+id|ifr-&gt;ifr_name
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_else
 (brace
 r_char
 op_star
@@ -1567,6 +1624,11 @@ r_int
 id|flags
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|net_device
+op_star
+id|dev
 suffix:semicolon
 id|err
 op_assign
@@ -1728,6 +1790,16 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
+id|list_add
+c_func
+(paren
+op_amp
+id|tun-&gt;list
+comma
+op_amp
+id|tun_dev_list
+)paren
+suffix:semicolon
 )brace
 id|DBG
 c_func
@@ -1735,7 +1807,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_set_iff&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -1773,7 +1845,7 @@ c_func
 (paren
 id|ifr-&gt;ifr_name
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1903,6 +1975,9 @@ id|err
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -1920,6 +1995,10 @@ r_sizeof
 id|ifr
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_return
 l_int|0
@@ -1941,7 +2020,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_chr_ioctl cmd %d&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|cmd
 )paren
@@ -1977,7 +2056,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: checksum %s&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|arg
 ques
@@ -2014,7 +2093,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: persist %s&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|arg
 ques
@@ -2042,6 +2121,8 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: owner set to %d&bslash;n&quot;
+comma
+id|tun-&gt;dev-&gt;name
 comma
 id|tun-&gt;owner
 )paren
@@ -2120,7 +2201,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_chr_fasync %d&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 comma
 id|on
 )paren
@@ -2267,7 +2348,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: tun_chr_close&bslash;n&quot;
 comma
-id|tun-&gt;name
+id|tun-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 id|tun_chr_fasync
@@ -2313,12 +2394,21 @@ op_amp
 id|TUN_PERSIST
 )paren
 )paren
+(brace
+id|list_del
+c_func
+(paren
+op_amp
+id|tun-&gt;list
+)paren
+suffix:semicolon
 id|unregister_netdevice
 c_func
 (paren
 id|tun-&gt;dev
 )paren
 suffix:semicolon
+)brace
 id|rtnl_unlock
 c_func
 (paren
@@ -2471,11 +2561,58 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|tun_struct
+op_star
+id|tun
+comma
+op_star
+id|nxt
+suffix:semicolon
 id|misc_deregister
 c_func
 (paren
 op_amp
 id|tun_miscdev
+)paren
+suffix:semicolon
+id|rtnl_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|list_for_each_entry_safe
+c_func
+(paren
+id|tun
+comma
+id|nxt
+comma
+op_amp
+id|tun_dev_list
+comma
+id|list
+)paren
+(brace
+id|DBG
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s cleaned up&bslash;n&quot;
+comma
+id|tun-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+id|unregister_netdevice
+c_func
+(paren
+id|tun-&gt;dev
+)paren
+suffix:semicolon
+)brace
+id|rtnl_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

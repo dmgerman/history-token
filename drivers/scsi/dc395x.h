@@ -31,8 +31,6 @@ mdefine_line|#define DC395x_MAX_CMD_QUEUE&t;&t;32
 multiline_comment|/* #define DC395x_MAX_QTAGS&t;&t;32 */
 DECL|macro|DC395x_MAX_QTAGS
 mdefine_line|#define DC395x_MAX_QTAGS&t;&t;16
-DECL|macro|DC395x_MAX_ADAPTER_NUM
-mdefine_line|#define DC395x_MAX_ADAPTER_NUM&t;&t;4
 DECL|macro|DC395x_MAX_SCSI_ID
 mdefine_line|#define DC395x_MAX_SCSI_ID&t;&t;16
 DECL|macro|DC395x_MAX_CMD_PER_LUN

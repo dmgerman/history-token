@@ -526,10 +526,6 @@ id|tpnt-&gt;use_blk_tcq
 op_assign
 l_int|1
 suffix:semicolon
-id|tpnt-&gt;highmem_io
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren

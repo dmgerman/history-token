@@ -44,7 +44,7 @@ r_const
 id|befs_off_t
 id|befs_bt_inval
 op_assign
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 suffix:semicolon
 multiline_comment|/* local functions */
 r_static

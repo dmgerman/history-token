@@ -1175,11 +1175,11 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|function|clear_bit_string
+DECL|function|__clear_bit_string
 r_static
 r_inline
 r_void
-id|clear_bit_string
+id|__clear_bit_string
 c_func
 (paren
 r_int
@@ -1211,7 +1211,7 @@ OL
 id|end
 )paren
 (brace
-id|clear_bit
+id|__clear_bit
 c_func
 (paren
 id|i

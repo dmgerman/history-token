@@ -14176,7 +14176,7 @@ id|gus_mem_size
 OG
 l_int|0
 )paren
-op_amp
+op_logical_and
 op_logical_neg
 id|gus_no_wave_dma
 )paren

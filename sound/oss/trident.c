@@ -13633,6 +13633,15 @@ id|address
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 (paren
 (paren
