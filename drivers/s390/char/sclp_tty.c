@@ -17,7 +17,7 @@ mdefine_line|#define SCLP_TTY_PRINT_HEADER &quot;sclp tty driver: &quot;
 multiline_comment|/*&n; * size of a buffer that collects single characters coming in&n; * via sclp_tty_put_char()&n; */
 DECL|macro|SCLP_TTY_BUF_SIZE
 mdefine_line|#define SCLP_TTY_BUF_SIZE 512
-multiline_comment|/*&n; * There is excatly one SCLP terminal, so we can keep things simple&n; * and allocate all variables statically.&n; */
+multiline_comment|/*&n; * There is exactly one SCLP terminal, so we can keep things simple&n; * and allocate all variables statically.&n; */
 multiline_comment|/* Lock to guard over changes to global variables. */
 DECL|variable|sclp_tty_lock
 r_static
@@ -981,7 +981,7 @@ r_void
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/* FIXME: what if rc != 0x0020 */
+multiline_comment|/* Ignore return code - because tty-writes aren&squot;t critical,&n;&t;   we do without a sophisticated error recovery mechanism.  */
 id|page
 op_assign
 id|sclp_unmake_buffer
@@ -999,6 +999,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Remove buffer from outqueue */
+id|list_del
+c_func
+(paren
+op_amp
+id|buffer-&gt;list
+)paren
+suffix:semicolon
+id|sclp_tty_buffer_count
+op_decrement
+suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -1011,17 +1022,6 @@ id|page
 comma
 op_amp
 id|sclp_tty_pages
-)paren
-suffix:semicolon
-id|sclp_tty_buffer_count
-op_decrement
-suffix:semicolon
-multiline_comment|/* Remove buffer from outqueue */
-id|list_del
-c_func
-(paren
-op_amp
-id|buffer-&gt;list
 )paren
 suffix:semicolon
 multiline_comment|/* Check if there is a pending buffer on the out queue. */
@@ -1880,6 +1880,11 @@ l_int|2
 op_logical_or
 id|strncmp
 (paren
+(paren
+r_const
+r_char
+op_star
+)paren
 id|buf
 op_plus
 id|count
@@ -1893,6 +1898,11 @@ l_int|2
 op_logical_or
 id|strncmp
 (paren
+(paren
+r_const
+r_char
+op_star
+)paren
 id|buf
 op_plus
 id|count
@@ -2124,10 +2134,12 @@ DECL|function|sclp_get_input
 id|sclp_get_input
 c_func
 (paren
+r_int
 r_char
 op_star
 id|start
 comma
+r_int
 r_char
 op_star
 id|end
@@ -2156,7 +2168,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * if set in ioctl find out characters in lower or upper case&n;&t; * (depends on current case) seperated by a special character,&n;&t; * works on EBCDIC&n;&t; */
+multiline_comment|/*&n;&t; * if set in ioctl find out characters in lower or upper case&n;&t; * (depends on current case) separated by a special character,&n;&t; * works on EBCDIC&n;&t; */
 r_if
 c_cond
 (paren
@@ -2394,7 +2406,8 @@ id|sclp_get_input
 c_func
 (paren
 (paren
-r_void
+r_int
+r_char
 op_star
 )paren
 (paren
@@ -2404,7 +2417,8 @@ l_int|1
 )paren
 comma
 (paren
-r_void
+r_int
+r_char
 op_star
 )paren
 id|subvec

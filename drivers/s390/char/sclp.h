@@ -54,12 +54,6 @@ DECL|macro|LnTpFlgs_EndText
 mdefine_line|#define LnTpFlgs_EndText&t;0x1000
 DECL|macro|LnTpFlgs_PromptText
 mdefine_line|#define LnTpFlgs_PromptText&t;0x0800
-DECL|macro|SCLP_COMMAND_INITIATED
-mdefine_line|#define SCLP_COMMAND_INITIATED&t;0
-DECL|macro|SCLP_BUSY
-mdefine_line|#define SCLP_BUSY&t;&t;2
-DECL|macro|SCLP_NOT_OPERATIONAL
-mdefine_line|#define SCLP_NOT_OPERATIONAL&t;3
 DECL|typedef|sclp_cmdw_t
 r_typedef
 r_int
@@ -352,6 +346,15 @@ r_struct
 id|sclp_register
 op_star
 id|reg
+)paren
+suffix:semicolon
+r_char
+op_star
+id|sclp_error_message
+c_func
+(paren
+id|u16
+id|response_code
 )paren
 suffix:semicolon
 multiline_comment|/* useful inlines */

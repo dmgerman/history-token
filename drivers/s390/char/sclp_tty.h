@@ -38,7 +38,7 @@ r_int
 r_int
 id|kmem_sccb
 suffix:semicolon
-multiline_comment|/* can&#xfffd;t be modified at run time */
+multiline_comment|/* can&squot;t be modified at run time */
 DECL|member|tolower
 r_int
 r_char
