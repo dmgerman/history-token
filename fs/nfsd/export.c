@@ -146,7 +146,7 @@ DECL|macro|CLIENT_HASH
 mdefine_line|#define CLIENT_HASH(a) &bslash;&n;&t;&t;((((a)&gt;&gt;24) ^ ((a)&gt;&gt;16) ^ ((a)&gt;&gt;8) ^(a)) &amp; CLIENT_HASHMASK)
 multiline_comment|/* XXX: is this adequate for 32bit kdev_t ? */
 DECL|macro|EXPORT_HASH
-mdefine_line|#define EXPORT_HASH(dev)&t;(minor(dev) &amp; (NFSCLNT_EXPMAX - 1))
+mdefine_line|#define EXPORT_HASH(dev)&t;(MINOR(dev) &amp; (NFSCLNT_EXPMAX - 1))
 DECL|macro|EXPORT_FSID_HASH
 mdefine_line|#define EXPORT_FSID_HASH(fsid)&t;((fsid) &amp; (NFSCLNT_EXPMAX - 1))
 DECL|struct|svc_clnthash
@@ -231,7 +231,11 @@ id|clp-&gt;cl_export
 id|EXPORT_HASH
 c_func
 (paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|dev
+)paren
 )paren
 )braket
 suffix:semicolon
@@ -1479,7 +1483,11 @@ op_plus
 id|EXPORT_HASH
 c_func
 (paren
+id|kdev_t_to_nr
+c_func
+(paren
 id|dev
+)paren
 )paren
 )paren
 suffix:semicolon

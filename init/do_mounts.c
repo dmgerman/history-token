@@ -1813,11 +1813,7 @@ l_string|&quot;/root&quot;
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|current-&gt;fs-&gt;pwdmnt-&gt;mnt_sb-&gt;s_dev
-)paren
 suffix:semicolon
 id|printk
 c_func
@@ -3735,11 +3731,7 @@ l_string|&quot;/root&quot;
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|current-&gt;fs-&gt;pwdmnt-&gt;mnt_sb-&gt;s_dev
-)paren
 suffix:semicolon
 id|printk
 c_func

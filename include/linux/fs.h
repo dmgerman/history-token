@@ -2024,9 +2024,10 @@ id|s_list
 suffix:semicolon
 multiline_comment|/* Keep this first */
 DECL|member|s_dev
-id|kdev_t
+id|dev_t
 id|s_dev
 suffix:semicolon
+multiline_comment|/* search index; _not_ kdev_t */
 DECL|member|s_blocksize
 r_int
 r_int

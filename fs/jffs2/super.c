@@ -326,7 +326,7 @@ id|sb
 suffix:semicolon
 id|sb-&gt;s_dev
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|MTD_BLOCK_MAJOR

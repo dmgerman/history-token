@@ -1238,11 +1238,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|s-&gt;s_dev
-)paren
 op_eq
 id|dev
 )paren
@@ -1693,7 +1689,7 @@ id|unnamed_dev_lock
 suffix:semicolon
 id|s-&gt;s_dev
 op_assign
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 l_int|0
@@ -1719,7 +1715,7 @@ id|sb
 r_int
 id|slot
 op_assign
-id|minor
+id|MINOR
 c_func
 (paren
 id|sb-&gt;s_dev
@@ -1805,11 +1801,7 @@ id|data
 suffix:semicolon
 id|s-&gt;s_dev
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|s-&gt;s_bdev-&gt;bd_dev
-)paren
 suffix:semicolon
 r_return
 l_int|0

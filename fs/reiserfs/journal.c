@@ -9855,11 +9855,7 @@ c_func
 id|super
 )paren
 suffix:colon
-id|kdev_t_to_nr
-c_func
-(paren
 id|super-&gt;s_dev
-)paren
 suffix:semicolon
 multiline_comment|/* there is no &quot;jdev&quot; option and journal is on separate device */
 r_if
