@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach_apic.h&gt;
+macro_line|#include &lt;asm/numa.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -3009,7 +3010,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|c-&gt;cpuid_level
+id|cpuid_eax
+c_func
+(paren
+l_int|0x80000000
+)paren
 op_ge
 l_int|0x80000008
 )paren
@@ -3979,6 +3984,16 @@ id|mcheck_init
 c_func
 (paren
 id|c
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+id|numa_add_cpu
+c_func
+(paren
+id|c
+op_minus
+id|cpu_data
 )paren
 suffix:semicolon
 macro_line|#endif

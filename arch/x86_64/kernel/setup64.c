@@ -1101,13 +1101,5 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-id|numa_add_cpu
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof
