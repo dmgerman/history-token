@@ -238,7 +238,7 @@ suffix:semicolon
 multiline_comment|/* No name was found */
 id|sprintf
 (paren
-id|edev-&gt;dev.name
+id|edev-&gt;pretty_name
 comma
 l_string|&quot;EISA device %.7s&quot;
 comma
