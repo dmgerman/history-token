@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -3198,6 +3199,19 @@ id|count
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|input_devclass
+r_struct
+id|device_class
+id|input_devclass
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;input&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|input_init
 r_static
 r_int
@@ -3212,6 +3226,13 @@ r_struct
 id|proc_dir_entry
 op_star
 id|entry
+suffix:semicolon
+id|devclass_register
+c_func
+(paren
+op_amp
+id|input_devclass
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|proc_bus_input_dir
@@ -3378,6 +3399,13 @@ id|KERN_ERR
 l_string|&quot;input: can&squot;t unregister char major %d&quot;
 comma
 id|INPUT_MAJOR
+)paren
+suffix:semicolon
+id|devclass_unregister
+c_func
+(paren
+op_amp
+id|input_devclass
 )paren
 suffix:semicolon
 )brace

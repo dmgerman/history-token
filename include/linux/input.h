@@ -2163,6 +2163,11 @@ DECL|macro|input_report_ff
 mdefine_line|#define input_report_ff(a,b,c)&t;input_event(a, EV_FF, b, c)
 DECL|macro|input_report_ff_status
 mdefine_line|#define input_report_ff_status(a,b,c)&t;input_event(a, EV_FF_STATUS, b, c)
+r_extern
+r_struct
+id|device_class
+id|input_devclass
+suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 eof
