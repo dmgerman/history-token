@@ -223,5 +223,22 @@ op_star
 id|ctx
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ntfs_attr_record_resize
+c_func
+(paren
+id|MFT_RECORD
+op_star
+id|m
+comma
+id|ATTR_RECORD
+op_star
+id|a
+comma
+id|u32
+id|new_size
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_NTFS_ATTRIB_H */
 eof
