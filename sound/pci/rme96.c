@@ -6171,6 +6171,12 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|pci_disable_device
+c_func
+(paren
+id|rme96-&gt;pci
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void

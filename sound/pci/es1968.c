@@ -10499,6 +10499,12 @@ comma
 id|ACPI_D3
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -10543,6 +10549,12 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* restore all our config */
 id|pci_enable_device
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
+id|pci_set_master
 c_func
 (paren
 id|chip-&gt;pci
@@ -10723,6 +10735,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|pci_release_regions
+c_func
+(paren
+id|chip-&gt;pci
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|chip-&gt;pci
@@ -10956,6 +10974,12 @@ c_func
 l_string|&quot;architecture does not support 28bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -10983,10 +11007,18 @@ c_cond
 op_logical_neg
 id|chip
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 multiline_comment|/* Set Vars */
 id|chip-&gt;type
 op_assign
@@ -11097,6 +11129,12 @@ id|kfree
 c_func
 (paren
 id|chip
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return
