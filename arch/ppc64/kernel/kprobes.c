@@ -211,12 +211,6 @@ op_star
 )paren
 id|regs-&gt;nip
 suffix:semicolon
-multiline_comment|/* We&squot;re in an interrupt, but this is clear and BUG()-safe. */
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Check we&squot;re not actually recursing */
 r_if
 c_cond
@@ -414,16 +408,17 @@ id|kprobe_status
 op_assign
 id|KPROBE_HIT_SS
 suffix:semicolon
+multiline_comment|/*&n;&t; * This preempt_disable() matches the preempt_enable_no_resched()&n;&t; * in post_kprobe_handler().&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 id|no_kprobe
 suffix:colon
-id|preempt_enable_no_resched
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -676,6 +671,17 @@ op_star
 )paren
 id|data
 suffix:semicolon
+r_int
+id|ret
+op_assign
+id|NOTIFY_DONE
+suffix:semicolon
+multiline_comment|/*&n;&t; * Interrupts are not disabled here.  We need to disable&n;&t; * preemption, because kprobe_running() uses smp_processor_id().&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -700,7 +706,8 @@ c_func
 id|args-&gt;regs
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|NOTIFY_STOP
 suffix:semicolon
 r_break
@@ -717,7 +724,8 @@ c_func
 id|args-&gt;regs
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|NOTIFY_STOP
 suffix:semicolon
 r_break
@@ -744,7 +752,8 @@ comma
 id|args-&gt;trapnr
 )paren
 )paren
-r_return
+id|ret
+op_assign
 id|NOTIFY_STOP
 suffix:semicolon
 r_break
@@ -754,8 +763,13 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-id|NOTIFY_DONE
+id|ret
 suffix:semicolon
 )brace
 DECL|function|setjmp_pre_handler
@@ -857,11 +871,6 @@ c_func
 r_void
 )paren
 (brace
-id|preempt_enable_no_resched
-c_func
-(paren
-)paren
-suffix:semicolon
 id|asm
 r_volatile
 (paren
