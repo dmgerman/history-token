@@ -850,13 +850,6 @@ id|u32
 id|flags_len
 suffix:semicolon
 )brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 DECL|struct|ata_taskfile
 r_struct
