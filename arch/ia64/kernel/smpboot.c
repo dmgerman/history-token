@@ -952,12 +952,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Setup vector on AP &amp; enable */
-id|ia64_mca_check_errors
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* For post-failure MCA error logging */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 id|pfm_init_percpu
