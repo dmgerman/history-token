@@ -6436,9 +6436,14 @@ id|tp-&gt;probes_out
 op_assign
 l_int|0
 suffix:semicolon
+id|tcp_set_pcount
+c_func
+(paren
+op_amp
 id|tp-&gt;packets_out
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|tp-&gt;snd_ssthresh
 op_assign
