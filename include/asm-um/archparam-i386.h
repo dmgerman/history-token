@@ -101,13 +101,6 @@ DECL|macro|R_386_GOTPC
 mdefine_line|#define R_386_GOTPC&t;10
 DECL|macro|R_386_NUM
 mdefine_line|#define R_386_NUM&t;11
-multiline_comment|/********* Bits for asm-um/delay.h **********/
-DECL|typedef|um_udelay_t
-r_typedef
-r_int
-r_int
-id|um_udelay_t
-suffix:semicolon
 multiline_comment|/********* Nothing for asm-um/hardirq.h **********/
 multiline_comment|/********* Nothing for asm-um/hw_irq.h **********/
 multiline_comment|/********* Nothing for asm-um/string.h **********/
