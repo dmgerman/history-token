@@ -88,7 +88,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -173,7 +173,7 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -312,7 +312,7 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb
@@ -395,7 +395,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|skb
@@ -531,7 +531,7 @@ id|skb
 suffix:semicolon
 id|rc
 op_assign
-id|lan_hdrs_init
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb

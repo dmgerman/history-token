@@ -5,6 +5,7 @@ macro_line|#include &lt;net/llc_main.h&gt;
 macro_line|#include &lt;net/llc_evnt.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;
 macro_line|#include &lt;net/llc_mac.h&gt;
+macro_line|#include &quot;llc_output.h&quot;
 DECL|function|llc_station_ac_start_ack_timer
 r_int
 id|llc_station_ac_start_ack_timer
@@ -172,10 +173,6 @@ id|nskb
 r_goto
 id|out
 suffix:semicolon
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
 id|llc_pdu_header_init
 c_func
 (paren
@@ -200,7 +197,9 @@ comma
 l_int|127
 )paren
 suffix:semicolon
-id|lan_hdrs_init
+id|rc
+op_assign
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb
@@ -209,6 +208,14 @@ id|station-&gt;mac_sa
 comma
 id|station-&gt;mac_sa
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|free
 suffix:semicolon
 id|llc_station_send_pdu
 c_func
@@ -222,6 +229,17 @@ id|out
 suffix:colon
 r_return
 id|rc
+suffix:semicolon
+id|free
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|llc_station_ac_send_xid_r
@@ -321,7 +339,9 @@ comma
 l_int|127
 )paren
 suffix:semicolon
-id|lan_hdrs_init
+id|rc
+op_assign
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb
@@ -330,6 +350,14 @@ id|station-&gt;mac_sa
 comma
 id|mac_da
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|free
 suffix:semicolon
 id|llc_station_send_pdu
 c_func
@@ -343,6 +371,17 @@ id|out
 suffix:colon
 r_return
 id|rc
+suffix:semicolon
+id|free
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|llc_station_ac_send_test_r
@@ -440,7 +479,9 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|lan_hdrs_init
+id|rc
+op_assign
+id|llc_mac_hdr_init
 c_func
 (paren
 id|nskb
@@ -449,6 +490,14 @@ id|station-&gt;mac_sa
 comma
 id|mac_da
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_goto
+id|free
 suffix:semicolon
 id|llc_station_send_pdu
 c_func
@@ -462,6 +511,17 @@ id|out
 suffix:colon
 r_return
 id|rc
+suffix:semicolon
+id|free
+suffix:colon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|llc_station_ac_report_status
