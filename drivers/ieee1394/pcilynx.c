@@ -5365,7 +5365,7 @@ macro_line|#endif /* CONFIG_IEEE1394_PCILYNX_PORTS */
 multiline_comment|/********************************************************&n; * Global stuff (interrupt handler, init/shutdown code) *&n; ********************************************************/
 DECL|function|lynx_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|lynx_irq_handler
 c_func
 (paren
@@ -5438,6 +5438,7 @@ id|PCI_INT_INT_PEND
 )paren
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|PRINTD
 c_func
@@ -6598,6 +6599,9 @@ id|CHANNEL_ASYNC_RCV
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|iso_rcv_bh
 r_static
@@ -9137,11 +9141,7 @@ comma
 dot
 id|remove
 op_assign
-id|__devexit_p
-c_func
-(paren
 id|remove_card
-)paren
 comma
 )brace
 suffix:semicolon

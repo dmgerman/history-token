@@ -5632,13 +5632,6 @@ c_func
 id|hpsb_nodeid_get_entry
 )paren
 suffix:semicolon
-DECL|variable|hpsb_check_nodeid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hpsb_check_nodeid
-)paren
-suffix:semicolon
 DECL|variable|hpsb_node_fill_packet
 id|EXPORT_SYMBOL
 c_func

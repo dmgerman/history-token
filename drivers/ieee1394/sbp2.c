@@ -49,7 +49,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 884 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
+l_string|&quot;$Rev: 896 $ James Goodwin &lt;jamesg@filanet.com&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; *&n; * Valid values:&n; * max_speed = 2 (default: max speed 400mb)&n; * max_speed = 1 (max speed 200mb)&n; * max_speed = 0 (max speed 100mb)&n; */
@@ -9743,7 +9743,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;  max_speed       : %s&bslash;n&quot;
+l_string|&quot;  max_speed            : %s&bslash;n&quot;
 comma
 id|hpsb_speedto_str
 (braket
@@ -9754,7 +9754,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;  max_sectors     : %d&bslash;n&quot;
+l_string|&quot;  max_sectors          : %d&bslash;n&quot;
 comma
 id|max_sectors
 )paren
@@ -9762,7 +9762,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;  serialize_io    : %s&bslash;n&quot;
+l_string|&quot;  serialize_io         : %s&bslash;n&quot;
 comma
 id|serialize_io
 ques
@@ -9775,7 +9775,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;  exclusive_login : %s&bslash;n&quot;
+l_string|&quot;  exclusive_login      : %s&bslash;n&quot;
 comma
 id|exclusive_login
 ques

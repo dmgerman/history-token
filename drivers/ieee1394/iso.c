@@ -178,6 +178,15 @@ op_logical_neg
 id|host-&gt;driver-&gt;isoctl
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ieee1394: host driver &squot;%s&squot; does not support the rawiso API&bslash;n&quot;
+comma
+id|host-&gt;driver-&gt;name
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
