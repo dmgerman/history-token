@@ -2414,7 +2414,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|p-&gt;family
+id|p-&gt;sel.family
 )paren
 (brace
 r_case
@@ -2732,7 +2732,7 @@ id|p-&gt;flags
 suffix:semicolon
 id|xp-&gt;family
 op_assign
-id|p-&gt;family
+id|p-&gt;sel.family
 suffix:semicolon
 multiline_comment|/* XXX xp-&gt;share = p-&gt;share; */
 )brace
@@ -2809,7 +2809,7 @@ id|p-&gt;index
 op_assign
 id|xp-&gt;index
 suffix:semicolon
-id|p-&gt;family
+id|p-&gt;sel.family
 op_assign
 id|xp-&gt;family
 suffix:semicolon
