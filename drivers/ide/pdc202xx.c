@@ -968,10 +968,6 @@ id|DP
 )paren
 suffix:semicolon
 macro_line|#endif
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 macro_line|#if PDC202XX_DEBUG_DRIVE_INFO
 id|printk
 c_func
@@ -1595,10 +1591,6 @@ r_default
 suffix:colon
 suffix:semicolon
 )brace
-id|drive-&gt;current_speed
-op_assign
-id|speed
-suffix:semicolon
 r_return
 id|ide_config_drive_speed
 c_func
@@ -2533,7 +2525,7 @@ suffix:semicolon
 )brace
 DECL|function|pdc202xx_udma_start
 r_static
-r_int
+r_void
 id|pdc202xx_udma_start
 c_func
 (paren

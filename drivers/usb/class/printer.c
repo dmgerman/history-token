@@ -1526,9 +1526,12 @@ id|i
 suffix:semicolon
 r_int
 r_char
-id|status
+id|lpstatus
 comma
 id|newChannel
+suffix:semicolon
+r_int
+id|status
 suffix:semicolon
 r_int
 id|twoints
@@ -2218,7 +2221,7 @@ c_func
 id|usblp
 comma
 op_amp
-id|status
+id|lpstatus
 )paren
 )paren
 (brace
@@ -2239,6 +2242,10 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|lpstatus
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2246,7 +2253,6 @@ id|copy_to_user
 (paren
 (paren
 r_int
-r_char
 op_star
 )paren
 id|arg
@@ -2254,7 +2260,10 @@ comma
 op_amp
 id|status
 comma
-l_int|1
+r_sizeof
+(paren
+r_int
+)paren
 )paren
 )paren
 id|retval

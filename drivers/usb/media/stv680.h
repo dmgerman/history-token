@@ -28,7 +28,6 @@ DECL|macro|STV_VIDEO_PALETTE
 mdefine_line|#define STV_VIDEO_PALETTE       VIDEO_PALETTE_RGB24
 DECL|variable|device_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|device_table

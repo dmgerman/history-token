@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irqueue.h&gt;
 DECL|macro|DISCOVERY_EXPIRE_TIMEOUT
-mdefine_line|#define DISCOVERY_EXPIRE_TIMEOUT 6*HZ
+mdefine_line|#define DISCOVERY_EXPIRE_TIMEOUT (2*sysctl_discovery_timeout*HZ)
 DECL|macro|DISCOVERY_DEFAULT_SLOTS
 mdefine_line|#define DISCOVERY_DEFAULT_SLOTS  0
 multiline_comment|/* Types of discovery */

@@ -201,7 +201,6 @@ id|port
 suffix:semicolon
 DECL|variable|ipaq_id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|ipaq_id_table
@@ -304,7 +303,7 @@ id|close
 suffix:colon
 id|ipaq_close
 comma
-id|startup
+id|attach
 suffix:colon
 id|ipaq_startup
 comma

@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;53c700.h&quot;
 macro_line|#include &quot;NCR_D700.h&quot;
 macro_line|#ifndef CONFIG_MCA

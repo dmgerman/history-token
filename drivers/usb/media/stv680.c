@@ -7933,7 +7933,6 @@ DECL|function|stv680_probe
 r_static
 r_void
 op_star
-id|__devinit
 id|stv680_probe
 (paren
 r_struct

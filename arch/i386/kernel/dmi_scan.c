@@ -759,53 +759,6 @@ DECL|macro|NO_MATCH
 mdefine_line|#define NO_MATCH&t;{ NONE, NULL}
 DECL|macro|MATCH
 mdefine_line|#define MATCH(a,b)&t;{ a, b }
-multiline_comment|/*&n; *&t;We have problems with IDE DMA on some platforms. In paticular the&n; *&t;KT7 series. On these it seems the newer BIOS has fixed them. The&n; *&t;rule needs to be improved to match specific BIOS revisions with&n; *&t;corruption problems&n; */
-macro_line|#if 0
-r_static
-id|__init
-r_int
-id|disable_ide_dma
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-r_extern
-r_int
-id|noautodma
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|noautodma
-op_eq
-l_int|0
-)paren
-(brace
-id|noautodma
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s series board detected. Disabling IDE DMA.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Computer Corporation so their systems &quot;just work&quot;. :-)&n; */
 multiline_comment|/* &n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
 DECL|function|set_bios_reboot

@@ -1655,6 +1655,9 @@ l_int|0xffe00000
 )paren
 (brace
 multiline_comment|/* PAMs card and Riebl on ST use level 5 autovector */
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -1668,7 +1671,20 @@ l_string|&quot;PAM/Riebl-ST Ethernet&quot;
 comma
 id|dev
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Lance: request for irq %d failed&bslash;n&quot;
+comma
+id|IRQ_AUTO_5
+)paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|dev-&gt;irq
 op_assign
 (paren
@@ -1707,6 +1723,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|request_irq
 c_func
 (paren
@@ -1720,7 +1739,20 @@ l_string|&quot;Riebl-VME Ethernet&quot;
 comma
 id|dev
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Lance: request for irq %d failed&bslash;n&quot;
+comma
+id|irq
+)paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|dev-&gt;irq
 op_assign
 id|irq

@@ -1,6 +1,4 @@
-multiline_comment|/*&n; * Suspend support specific for i386.&n; *&n; * Distribute under GPLv2&n; *&n; * Copyright (c) 2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; */
-DECL|macro|ACPI_C
-mdefine_line|#define ACPI_C
+multiline_comment|/*&n; * Suspend support specific for i386.&n; *&n; * Distribute under GPLv2&n; *&n; * Copyright (c) 2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; * Copyright (c) 2001 Patrick Mochel &lt;mochel@osdl.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -749,6 +747,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 multiline_comment|/* Local variables for do_magic */
 DECL|variable|__nosavedata
 r_static
@@ -918,4 +917,5 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 eof

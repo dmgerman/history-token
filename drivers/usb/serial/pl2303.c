@@ -36,7 +36,6 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Prolific PL2303 USB to serial adaptor driver&quot;
 DECL|variable|id_table
 r_static
-id|__devinitdata
 r_struct
 id|usb_device_id
 id|id_table
@@ -365,7 +364,7 @@ id|write_bulk_callback
 suffix:colon
 id|pl2303_write_bulk_callback
 comma
-id|startup
+id|attach
 suffix:colon
 id|pl2303_startup
 comma

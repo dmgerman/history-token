@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;AM53C974.h&quot;
-macro_line|#include &quot;constants.h&quot;
 macro_line|#include &quot;sd.h&quot;
 multiline_comment|/* AM53/79C974 (PCscsi) driver release 0.5&n;&n; * The architecture and much of the code of this device&n; * driver was originally developed by Drew Eckhardt for&n; * the NCR5380. The following copyrights apply:&n; *  For the architecture and all pieces of code which can also be found &n; *    in the NCR5380 device driver:&n; *   Copyright 1993, Drew Eckhardt&n; *      Visionary Computing &n; *      (Unix and Linux consulting and custom programming)&n; *      drew@colorado.edu&n; *      +1 (303) 666-5836&n; *&n; *  The AM53C974_nobios_detect code was originally developed by&n; *   Robin Cutshaw (robin@xfree86.org) and is used here in a &n; *   slightly modified form.&n; *&n; *  PCI detection rewritten by Martin Mares &lt;mj@atrey.karlin.mff.cuni.cz&gt;&n; *&n; *  For the remaining code:&n; *    Copyright 1994, D. Frieauff&n; *    EMail: fri@rsx42sun0.dofn.de&n; *    Phone: x49-7545-8-2256 , x49-7541-42305&n; */
 multiline_comment|/*&n; * $Log: AM53C974.c,v $&n; */
