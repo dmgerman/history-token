@@ -1054,6 +1054,9 @@ r_struct
 id|file
 op_star
 id|file
+comma
+r_int
+id|can_flush
 )paren
 (brace
 r_int
@@ -1445,6 +1448,12 @@ c_cond
 id|pCifsInode
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|can_flush
+)paren
+(brace
 id|filemap_fdatawrite
 c_func
 (paren
@@ -1502,6 +1511,8 @@ comma
 id|inode-&gt;i_sb
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* else we are writing out data to server already&n;&t;&t;&t;and could deadlock if we tried to flush data, and &n;&t;&t;&t;since we do not know if we have data that would&n;&t;&t;&t;invalidate the current end of file on the server&n;&t;&t;&t;we can not go to the server to get the new&n;&t;&t;&t;inod info */
 r_if
 c_cond
 (paren
@@ -2772,6 +2783,7 @@ r_return
 id|total_written
 suffix:semicolon
 )brace
+multiline_comment|/* we could deadlock if we called&n;&t;&t;&t;&t; filemap_fdatawait from here so tell&n;&t;&t;&t;&t;reopen_file not to flush data to server now */
 id|rc
 op_assign
 id|cifs_reopen_file
@@ -2780,6 +2792,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode
 comma
 id|file
+comma
+id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -4168,6 +4182,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode
 comma
 id|file
+comma
+id|TRUE
 )paren
 suffix:semicolon
 r_if
@@ -4934,6 +4950,8 @@ c_func
 id|file-&gt;f_dentry-&gt;d_inode
 comma
 id|file
+comma
+id|TRUE
 )paren
 suffix:semicolon
 r_if

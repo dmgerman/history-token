@@ -544,7 +544,7 @@ id|up
 c_func
 (paren
 op_amp
-id|ses-&gt;server-&gt;tcpSem
+id|server-&gt;tcpSem
 )paren
 suffix:semicolon
 r_while
