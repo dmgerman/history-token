@@ -2124,7 +2124,6 @@ suffix:semicolon
 DECL|macro|SAL_CONSOLE
 mdefine_line|#define SAL_CONSOLE&t;&amp;sal_console
 DECL|variable|sal_console_uart
-r_static
 r_struct
 id|uart_driver
 id|sal_console_uart

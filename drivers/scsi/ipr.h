@@ -10,9 +10,9 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 multiline_comment|/*&n; * Literals&n; */
 DECL|macro|IPR_DRIVER_VERSION
-mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.12&quot;
+mdefine_line|#define IPR_DRIVER_VERSION &quot;2.0.13&quot;
 DECL|macro|IPR_DRIVER_DATE
-mdefine_line|#define IPR_DRIVER_DATE &quot;(December 14, 2004)&quot;
+mdefine_line|#define IPR_DRIVER_DATE &quot;(February 21, 2005)&quot;
 multiline_comment|/*&n; * IPR_DBG_TRACE: Setting this to 1 will turn on some general function tracing&n; *&t;&t;&t;resulting in a bunch of extra debugging printks to the console&n; *&n; * IPR_DEBUG:&t;Setting this to 1 will turn on some error path tracing.&n; *&t;&t;&t;Enables the ipr_trace macro.&n; */
 macro_line|#ifdef IPR_DEBUG_ALL
 DECL|macro|IPR_DEBUG
@@ -38,13 +38,17 @@ mdefine_line|#define IPR_SUBS_DEV_ID_5702&t;0x0266
 DECL|macro|IPR_SUBS_DEV_ID_5703
 mdefine_line|#define IPR_SUBS_DEV_ID_5703&t;0x0278
 DECL|macro|IPR_SUBS_DEV_ID_572E
-mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x02D3
+mdefine_line|#define IPR_SUBS_DEV_ID_572E  0x028D
+DECL|macro|IPR_SUBS_DEV_ID_573E
+mdefine_line|#define IPR_SUBS_DEV_ID_573E  0x02D3
 DECL|macro|IPR_SUBS_DEV_ID_573D
 mdefine_line|#define IPR_SUBS_DEV_ID_573D  0x02D4
-DECL|macro|IPR_SUBS_DEV_ID_570F
-mdefine_line|#define IPR_SUBS_DEV_ID_570F&t;0x02BD
+DECL|macro|IPR_SUBS_DEV_ID_571A
+mdefine_line|#define IPR_SUBS_DEV_ID_571A&t;0x02C0
 DECL|macro|IPR_SUBS_DEV_ID_571B
 mdefine_line|#define IPR_SUBS_DEV_ID_571B&t;0x02BE
+DECL|macro|IPR_SUBS_DEV_ID_571E
+mdefine_line|#define IPR_SUBS_DEV_ID_571E  0x02BF
 DECL|macro|IPR_NAME
 mdefine_line|#define IPR_NAME&t;&t;&t;&t;&quot;ipr&quot;
 multiline_comment|/*&n; * Return codes&n; */
@@ -118,8 +122,10 @@ DECL|macro|IPR_MAX_PHYSICAL_DEVS
 mdefine_line|#define IPR_MAX_PHYSICAL_DEVS&t;&t;&t;&t;192
 DECL|macro|IPR_MAX_SGLIST
 mdefine_line|#define IPR_MAX_SGLIST&t;&t;&t;&t;&t;64
-DECL|macro|IPR_MAX_SECTORS
-mdefine_line|#define IPR_MAX_SECTORS&t;&t;&t;&t;&t;512
+DECL|macro|IPR_IOA_MAX_SECTORS
+mdefine_line|#define IPR_IOA_MAX_SECTORS&t;&t;&t;&t;32767
+DECL|macro|IPR_VSET_MAX_SECTORS
+mdefine_line|#define IPR_VSET_MAX_SECTORS&t;&t;&t;&t;512
 DECL|macro|IPR_MAX_CDB_LEN
 mdefine_line|#define IPR_MAX_CDB_LEN&t;&t;&t;&t;&t;16
 DECL|macro|IPR_DEFAULT_BUS_WIDTH
@@ -169,19 +175,19 @@ DECL|macro|IPR_WR_BUF_DOWNLOAD_AND_SAVE
 mdefine_line|#define&t;IPR_WR_BUF_DOWNLOAD_AND_SAVE&t;&t;&t;0x05
 multiline_comment|/*&n; * Timeouts&n; */
 DECL|macro|IPR_SHUTDOWN_TIMEOUT
-mdefine_line|#define IPR_SHUTDOWN_TIMEOUT&t;&t;&t;(10 * 60 * HZ)
+mdefine_line|#define IPR_SHUTDOWN_TIMEOUT&t;&t;&t;(ipr_fastfail ? 60 * HZ : 10 * 60 * HZ)
 DECL|macro|IPR_VSET_RW_TIMEOUT
-mdefine_line|#define IPR_VSET_RW_TIMEOUT&t;&t;&t;(2 * 60 * HZ)
+mdefine_line|#define IPR_VSET_RW_TIMEOUT&t;&t;&t;(ipr_fastfail ? 30 * HZ : 2 * 60 * HZ)
 DECL|macro|IPR_ABBREV_SHUTDOWN_TIMEOUT
 mdefine_line|#define IPR_ABBREV_SHUTDOWN_TIMEOUT&t;&t;(10 * HZ)
 DECL|macro|IPR_DEVICE_RESET_TIMEOUT
-mdefine_line|#define IPR_DEVICE_RESET_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_DEVICE_RESET_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_CANCEL_ALL_TIMEOUT
-mdefine_line|#define IPR_CANCEL_ALL_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_CANCEL_ALL_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_ABORT_TASK_TIMEOUT
-mdefine_line|#define IPR_ABORT_TASK_TIMEOUT&t;&t;(30 * HZ)
+mdefine_line|#define IPR_ABORT_TASK_TIMEOUT&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_INTERNAL_TIMEOUT
-mdefine_line|#define IPR_INTERNAL_TIMEOUT&t;&t;&t;(30 * HZ)
+mdefine_line|#define IPR_INTERNAL_TIMEOUT&t;&t;&t;(ipr_fastfail ? 10 * HZ : 30 * HZ)
 DECL|macro|IPR_WRITE_BUFFER_TIMEOUT
 mdefine_line|#define IPR_WRITE_BUFFER_TIMEOUT&t;&t;(10 * 60 * HZ)
 DECL|macro|IPR_SET_SUP_DEVICE_TIMEOUT
@@ -189,7 +195,7 @@ mdefine_line|#define IPR_SET_SUP_DEVICE_TIMEOUT&t;&t;(2 * 60 * HZ)
 DECL|macro|IPR_REQUEST_SENSE_TIMEOUT
 mdefine_line|#define IPR_REQUEST_SENSE_TIMEOUT&t;&t;(10 * HZ)
 DECL|macro|IPR_OPERATIONAL_TIMEOUT
-mdefine_line|#define IPR_OPERATIONAL_TIMEOUT&t;&t;(5 * 60 * HZ)
+mdefine_line|#define IPR_OPERATIONAL_TIMEOUT&t;&t;(5 * 60)
 DECL|macro|IPR_WAIT_FOR_RESET_TIMEOUT
 mdefine_line|#define IPR_WAIT_FOR_RESET_TIMEOUT&t;&t;(2 * HZ)
 DECL|macro|IPR_CHECK_FOR_RESET_TIMEOUT
@@ -453,11 +459,11 @@ id|ipr_res_addr
 id|res_addr
 suffix:semicolon
 DECL|member|res_handle
-id|u32
+id|__be32
 id|res_handle
 suffix:semicolon
 DECL|member|reserved4
-id|u32
+id|__be32
 id|reserved4
 (braket
 l_int|2
@@ -496,7 +502,7 @@ suffix:semicolon
 DECL|macro|IPR_UCODE_DOWNLOAD_REQ
 mdefine_line|#define IPR_UCODE_DOWNLOAD_REQ&t;0x10
 DECL|member|reserved
-id|u16
+id|__be16
 id|reserved
 suffix:semicolon
 )brace
@@ -579,7 +585,7 @@ r_struct
 id|ipr_supported_device
 (brace
 DECL|member|data_length
-id|u16
+id|__be16
 id|data_length
 suffix:semicolon
 DECL|member|reserved
@@ -622,7 +628,7 @@ r_struct
 id|ipr_cmd_pkt
 (brace
 DECL|member|reserved
-id|u16
+id|__be16
 id|reserved
 suffix:semicolon
 multiline_comment|/* Reserved by IOA */
@@ -680,7 +686,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|timeout
-id|u16
+id|__be16
 id|timeout
 suffix:semicolon
 )brace
@@ -703,67 +709,67 @@ r_struct
 id|ipr_ioarcb
 (brace
 DECL|member|ioarcb_host_pci_addr
-id|u32
+id|__be32
 id|ioarcb_host_pci_addr
 suffix:semicolon
 DECL|member|reserved
-id|u32
+id|__be32
 id|reserved
 suffix:semicolon
 DECL|member|res_handle
-id|u32
+id|__be32
 id|res_handle
 suffix:semicolon
 DECL|member|host_response_handle
-id|u32
+id|__be32
 id|host_response_handle
 suffix:semicolon
 DECL|member|reserved1
-id|u32
+id|__be32
 id|reserved1
 suffix:semicolon
 DECL|member|reserved2
-id|u32
+id|__be32
 id|reserved2
 suffix:semicolon
 DECL|member|reserved3
-id|u32
+id|__be32
 id|reserved3
 suffix:semicolon
 DECL|member|write_data_transfer_length
-id|u32
+id|__be32
 id|write_data_transfer_length
 suffix:semicolon
 DECL|member|read_data_transfer_length
-id|u32
+id|__be32
 id|read_data_transfer_length
 suffix:semicolon
 DECL|member|write_ioadl_addr
-id|u32
+id|__be32
 id|write_ioadl_addr
 suffix:semicolon
 DECL|member|write_ioadl_len
-id|u32
+id|__be32
 id|write_ioadl_len
 suffix:semicolon
 DECL|member|read_ioadl_addr
-id|u32
+id|__be32
 id|read_ioadl_addr
 suffix:semicolon
 DECL|member|read_ioadl_len
-id|u32
+id|__be32
 id|read_ioadl_len
 suffix:semicolon
 DECL|member|ioasa_host_pci_addr
-id|u32
+id|__be32
 id|ioasa_host_pci_addr
 suffix:semicolon
 DECL|member|ioasa_len
-id|u16
+id|__be16
 id|ioasa_len
 suffix:semicolon
 DECL|member|reserved4
-id|u16
+id|__be16
 id|reserved4
 suffix:semicolon
 DECL|member|cmd_pkt
@@ -772,11 +778,11 @@ id|ipr_cmd_pkt
 id|cmd_pkt
 suffix:semicolon
 DECL|member|add_cmd_parms_len
-id|u32
+id|__be32
 id|add_cmd_parms_len
 suffix:semicolon
 DECL|member|add_cmd_parms
-id|u32
+id|__be32
 id|add_cmd_parms
 (braket
 l_int|10
@@ -801,7 +807,7 @@ r_struct
 id|ipr_ioadl_desc
 (brace
 DECL|member|flags_and_data_len
-id|u32
+id|__be32
 id|flags_and_data_len
 suffix:semicolon
 DECL|macro|IPR_IOADL_FLAGS_MASK
@@ -823,7 +829,7 @@ mdefine_line|#define IPR_IOADL_FLAGS_WRITE_LAST&t;0x69000000
 DECL|macro|IPR_IOADL_FLAGS_LAST
 mdefine_line|#define IPR_IOADL_FLAGS_LAST&t;&t;0x01000000
 DECL|member|address
-id|u32
+id|__be32
 id|address
 suffix:semicolon
 )brace
@@ -845,15 +851,15 @@ r_struct
 id|ipr_ioasa_vset
 (brace
 DECL|member|failing_lba_hi
-id|u32
+id|__be32
 id|failing_lba_hi
 suffix:semicolon
 DECL|member|failing_lba_lo
-id|u32
+id|__be32
 id|failing_lba_lo
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|22
@@ -878,7 +884,7 @@ r_struct
 id|ipr_ioasa_af_dasd
 (brace
 DECL|member|failing_lba
-id|u32
+id|__be32
 id|failing_lba
 suffix:semicolon
 )brace
@@ -908,11 +914,11 @@ id|u8
 id|bus_phase
 suffix:semicolon
 DECL|member|reserved
-id|u16
+id|__be16
 id|reserved
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|23
@@ -937,7 +943,7 @@ r_struct
 id|ipr_ioasa_raw
 (brace
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|24
@@ -962,7 +968,7 @@ r_struct
 id|ipr_ioasa
 (brace
 DECL|member|ioasc
-id|u32
+id|__be32
 id|ioasc
 suffix:semicolon
 DECL|macro|IPR_IOASC_SENSE_KEY
@@ -974,23 +980,23 @@ mdefine_line|#define IPR_IOASC_SENSE_QUAL(ioasc) (((ioasc) &amp; 0x0000ff00) &gt
 DECL|macro|IPR_IOASC_SENSE_STATUS
 mdefine_line|#define IPR_IOASC_SENSE_STATUS(ioasc) ((ioasc) &amp; 0x000000ff)
 DECL|member|ret_stat_len
-id|u16
+id|__be16
 id|ret_stat_len
 suffix:semicolon
 multiline_comment|/* Length of the returned IOASA */
 DECL|member|avail_stat_len
-id|u16
+id|__be16
 id|avail_stat_len
 suffix:semicolon
 multiline_comment|/* Total Length of status available. */
 DECL|member|residual_data_len
-id|u32
+id|__be32
 id|residual_data_len
 suffix:semicolon
 multiline_comment|/* number of bytes in the host data */
 multiline_comment|/* buffers that were not used by the IOARCB command. */
 DECL|member|ilid
-id|u32
+id|__be32
 id|ilid
 suffix:semicolon
 DECL|macro|IPR_NO_ILID
@@ -998,19 +1004,19 @@ mdefine_line|#define IPR_NO_ILID&t;&t;&t;0
 DECL|macro|IPR_DRIVER_ILID
 mdefine_line|#define IPR_DRIVER_ILID&t;&t;0xffffffff
 DECL|member|fd_ioasc
-id|u32
+id|__be32
 id|fd_ioasc
 suffix:semicolon
 DECL|member|fd_phys_locator
-id|u32
+id|__be32
 id|fd_phys_locator
 suffix:semicolon
 DECL|member|fd_res_handle
-id|u32
+id|__be32
 id|fd_res_handle
 suffix:semicolon
 DECL|member|ioasc_specific
-id|u32
+id|__be32
 id|ioasc_specific
 suffix:semicolon
 multiline_comment|/* status code specific field */
@@ -1186,7 +1192,7 @@ suffix:semicolon
 DECL|macro|IPR_EXTENDED_RESET_DELAY
 mdefine_line|#define IPR_EXTENDED_RESET_DELAY&t;7
 DECL|member|max_xfer_rate
-id|u32
+id|__be32
 id|max_xfer_rate
 suffix:semicolon
 DECL|member|spinup_delay
@@ -1198,7 +1204,7 @@ id|u8
 id|reserved3
 suffix:semicolon
 DECL|member|reserved4
-id|u16
+id|__be16
 id|reserved4
 suffix:semicolon
 )brace
@@ -1422,7 +1428,7 @@ id|IPR_SERIAL_NUM_LEN
 )braket
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|5
@@ -1487,7 +1493,7 @@ r_struct
 id|ipr_hostrcb_type_ff_error
 (brace
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|246
@@ -1512,11 +1518,11 @@ r_struct
 id|ipr_hostrcb_type_01_error
 (brace
 DECL|member|seek_counter
-id|u32
+id|__be32
 id|seek_counter
 suffix:semicolon
 DECL|member|read_counter
-id|u32
+id|__be32
 id|read_counter
 suffix:semicolon
 DECL|member|sense_data
@@ -1527,7 +1533,7 @@ l_int|32
 )braket
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|236
@@ -1600,7 +1606,7 @@ id|IPR_SERIAL_NUM_LEN
 )braket
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 id|ioa_data
 (braket
 l_int|3
@@ -1656,11 +1662,11 @@ id|IPR_SERIAL_NUM_LEN
 )braket
 suffix:semicolon
 DECL|member|errors_detected
-id|u32
+id|__be32
 id|errors_detected
 suffix:semicolon
 DECL|member|errors_logged
-id|u32
+id|__be32
 id|errors_logged
 suffix:semicolon
 DECL|member|ioa_data
@@ -1743,11 +1749,11 @@ l_int|10
 )braket
 suffix:semicolon
 DECL|member|exposed_mode_adn
-id|u32
+id|__be32
 id|exposed_mode_adn
 suffix:semicolon
 DECL|member|array_id
-id|u32
+id|__be32
 id|array_id
 suffix:semicolon
 DECL|member|incomp_dev_vpids
@@ -1763,7 +1769,7 @@ id|IPR_SERIAL_NUM_LEN
 )braket
 suffix:semicolon
 DECL|member|ioa_data2
-id|u32
+id|__be32
 id|ioa_data2
 suffix:semicolon
 DECL|member|array_member2
@@ -1819,7 +1825,7 @@ r_struct
 id|ipr_hostrcb_error
 (brace
 DECL|member|failing_dev_ioasc
-id|u32
+id|__be32
 id|failing_dev_ioasc
 suffix:semicolon
 DECL|member|failing_dev_res_addr
@@ -1828,11 +1834,11 @@ id|ipr_res_addr
 id|failing_dev_res_addr
 suffix:semicolon
 DECL|member|failing_dev_res_handle
-id|u32
+id|__be32
 id|failing_dev_res_handle
 suffix:semicolon
 DECL|member|prc
-id|u32
+id|__be32
 id|prc
 suffix:semicolon
 r_union
@@ -1885,7 +1891,7 @@ r_struct
 id|ipr_hostrcb_raw
 (brace
 DECL|member|data
-id|u32
+id|__be32
 id|data
 (braket
 r_sizeof
@@ -1896,7 +1902,7 @@ id|ipr_hostrcb_error
 op_div
 r_sizeof
 (paren
-id|u32
+id|__be32
 )paren
 )braket
 suffix:semicolon
@@ -1980,19 +1986,19 @@ l_int|3
 )braket
 suffix:semicolon
 DECL|member|ilid
-id|u32
+id|__be32
 id|ilid
 suffix:semicolon
 DECL|member|time_since_last_ioa_reset
-id|u32
+id|__be32
 id|time_since_last_ioa_reset
 suffix:semicolon
 DECL|member|reserved2
-id|u32
+id|__be32
 id|reserved2
 suffix:semicolon
 DECL|member|length
-id|u32
+id|__be32
 id|length
 suffix:semicolon
 r_union
@@ -2056,11 +2062,11 @@ r_struct
 id|ipr_sdt_entry
 (brace
 DECL|member|bar_str_offset
-id|u32
+id|__be32
 id|bar_str_offset
 suffix:semicolon
 DECL|member|end_offset
-id|u32
+id|__be32
 id|end_offset
 suffix:semicolon
 DECL|member|entry_byte
@@ -2087,7 +2093,7 @@ id|u8
 id|resv
 suffix:semicolon
 DECL|member|priority
-id|u16
+id|__be16
 id|priority
 suffix:semicolon
 )brace
@@ -2109,19 +2115,19 @@ r_struct
 id|ipr_sdt_header
 (brace
 DECL|member|state
-id|u32
+id|__be32
 id|state
 suffix:semicolon
 DECL|member|num_entries
-id|u32
+id|__be32
 id|num_entries
 suffix:semicolon
 DECL|member|num_entries_used
-id|u32
+id|__be32
 id|num_entries_used
 suffix:semicolon
 DECL|member|dump_size
-id|u32
+id|__be32
 id|dump_size
 suffix:semicolon
 )brace
@@ -2265,16 +2271,6 @@ id|u8
 id|resetting_device
 suffix:colon
 l_int|1
-suffix:semicolon
-DECL|member|tcq_active
-id|u8
-id|tcq_active
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|qdepth
-r_int
-id|qdepth
 suffix:semicolon
 DECL|member|sdev
 r_struct
@@ -2478,6 +2474,27 @@ id|regs
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|ipr_chip_t
+r_struct
+id|ipr_chip_t
+(brace
+DECL|member|vendor
+id|u16
+id|vendor
+suffix:semicolon
+DECL|member|device
+id|u16
+id|device
+suffix:semicolon
+DECL|member|cfg
+r_const
+r_struct
+id|ipr_chip_cfg_t
+op_star
+id|cfg
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|enum|ipr_shutdown_type
 r_enum
 id|ipr_shutdown_type
@@ -2528,7 +2545,7 @@ id|u16
 id|cmd_index
 suffix:semicolon
 DECL|member|res_handle
-id|u32
+id|__be32
 id|res_handle
 suffix:semicolon
 r_union
@@ -2814,7 +2831,7 @@ id|list_head
 id|hostrcb_pending_q
 suffix:semicolon
 DECL|member|host_rrq
-id|u32
+id|__be32
 op_star
 id|host_rrq
 suffix:semicolon
@@ -2832,19 +2849,19 @@ DECL|macro|IPR_HRRQ_REQ_RESP_HANDLE_SHIFT
 mdefine_line|#define IPR_HRRQ_REQ_RESP_HANDLE_SHIFT&t;2
 DECL|member|hrrq_start
 r_volatile
-id|u32
+id|__be32
 op_star
 id|hrrq_start
 suffix:semicolon
 DECL|member|hrrq_end
 r_volatile
-id|u32
+id|__be32
 op_star
 id|hrrq_end
 suffix:semicolon
 DECL|member|hrrq_curr
 r_volatile
-id|u32
+id|__be32
 op_star
 id|hrrq_curr
 suffix:semicolon
@@ -3447,7 +3464,7 @@ id|ipr_sdt
 id|sdt
 suffix:semicolon
 DECL|member|ioa_data
-id|u32
+id|__be32
 op_star
 id|ioa_data
 (braket
@@ -3543,11 +3560,11 @@ r_struct
 id|ipr_software_inq_lid_info
 (brace
 DECL|member|load_id
-id|u32
+id|__be32
 id|load_id
 suffix:semicolon
 DECL|member|timestamp
-id|u32
+id|__be32
 id|timestamp
 (braket
 l_int|3
@@ -3572,11 +3589,11 @@ r_struct
 id|ipr_ucode_image_header
 (brace
 DECL|member|header_length
-id|u32
+id|__be32
 id|header_length
 suffix:semicolon
 DECL|member|lid_table_offset
-id|u32
+id|__be32
 id|lid_table_offset
 suffix:semicolon
 DECL|member|major_release
@@ -3609,7 +3626,7 @@ l_int|16
 )braket
 suffix:semicolon
 DECL|member|num_lids
-id|u32
+id|__be32
 id|num_lids
 suffix:semicolon
 DECL|member|lid

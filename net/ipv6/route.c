@@ -2416,7 +2416,7 @@ c_cond
 (paren
 id|mtu
 OL
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -2717,7 +2717,7 @@ op_assign
 id|ipv6_advmss
 c_func
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -3973,7 +3973,7 @@ op_assign
 id|ipv6_advmss
 c_func
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -4634,7 +4634,7 @@ op_assign
 id|ipv6_advmss
 c_func
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -4757,7 +4757,7 @@ c_cond
 (paren
 id|pmtu
 op_ge
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -5778,7 +5778,7 @@ op_assign
 id|ipv6_advmss
 c_func
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -6065,7 +6065,7 @@ id|RTAX_MTU
 )paren
 op_logical_and
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -6075,7 +6075,7 @@ OG
 id|arg-&gt;mtu
 op_logical_or
 (paren
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -6084,7 +6084,7 @@ id|rt-&gt;u.dst
 OL
 id|arg-&gt;mtu
 op_logical_and
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp

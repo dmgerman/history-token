@@ -46,5 +46,7 @@ DECL|macro|BLIST_NO_ULD_ATTACH
 mdefine_line|#define BLIST_NO_ULD_ATTACH&t;0x100000 /* device is actually for RAID config */
 DECL|macro|BLIST_SELECT_NO_ATN
 mdefine_line|#define BLIST_SELECT_NO_ATN&t;0x200000 /* select without ATN */
+DECL|macro|BLIST_RETRY_HWERROR
+mdefine_line|#define BLIST_RETRY_HWERROR&t;0x400000 /* retry HARDWARE_ERROR */
 macro_line|#endif
 eof

@@ -478,7 +478,7 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|skb-&gt;dst
@@ -1031,7 +1031,7 @@ id|first_hop
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -1614,6 +1614,10 @@ r_goto
 id|drop
 suffix:semicolon
 )brace
+id|dst
+op_assign
+id|skb-&gt;dst
+suffix:semicolon
 multiline_comment|/* IPv6 specs say nothing about it, but it is clear that we cannot&n;&t;   send redirects to source routed frames.&n;&t; */
 r_if
 c_cond
@@ -1738,7 +1742,7 @@ c_cond
 (paren
 id|skb-&gt;len
 OG
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -1759,7 +1763,7 @@ id|ICMPV6_PKT_TOOBIG
 comma
 l_int|0
 comma
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 id|dst
@@ -2233,7 +2237,7 @@ id|prevhdr
 suffix:semicolon
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -3649,7 +3653,7 @@ id|inet-&gt;cork.fragsize
 op_assign
 id|mtu
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
@@ -3684,16 +3688,12 @@ l_int|0
 suffix:semicolon
 id|exthdrlen
 op_assign
-id|rt-&gt;u.dst.header_len
-op_plus
-(paren
 id|opt
 ques
 c_cond
 id|opt-&gt;opt_flen
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 id|length
 op_add_assign

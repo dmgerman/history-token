@@ -684,7 +684,7 @@ c_cond
 op_logical_neg
 id|shost-&gt;transportt
 op_logical_or
-id|shost-&gt;transportt-&gt;host_attrs
+id|shost-&gt;transportt-&gt;host_attrs.ac
 dot
 r_class
 op_ne
@@ -706,7 +706,7 @@ id|shost-&gt;transportt
 suffix:semicolon
 r_return
 op_amp
-id|i-&gt;t.host_attrs
+id|i-&gt;t.host_attrs.ac
 op_eq
 id|cont
 suffix:semicolon
@@ -765,7 +765,7 @@ c_cond
 op_logical_neg
 id|shost-&gt;transportt
 op_logical_or
-id|shost-&gt;transportt-&gt;host_attrs
+id|shost-&gt;transportt-&gt;host_attrs.ac
 dot
 r_class
 op_ne
@@ -787,7 +787,7 @@ id|shost-&gt;transportt
 suffix:semicolon
 r_return
 op_amp
-id|i-&gt;t.target_attrs
+id|i-&gt;t.target_attrs.ac
 op_eq
 id|cont
 suffix:semicolon
@@ -858,7 +858,7 @@ id|i-&gt;fnt
 op_assign
 id|fnt
 suffix:semicolon
-id|i-&gt;t.target_attrs.attrs
+id|i-&gt;t.target_attrs.ac.attrs
 op_assign
 op_amp
 id|i-&gt;session_attrs
@@ -866,7 +866,7 @@ id|i-&gt;session_attrs
 l_int|0
 )braket
 suffix:semicolon
-id|i-&gt;t.target_attrs
+id|i-&gt;t.target_attrs.ac
 dot
 r_class
 op_assign
@@ -875,11 +875,11 @@ id|iscsi_transport_class
 dot
 r_class
 suffix:semicolon
-id|i-&gt;t.target_attrs.match
+id|i-&gt;t.target_attrs.ac.match
 op_assign
 id|iscsi_target_match
 suffix:semicolon
-id|attribute_container_register
+id|transport_container_register
 c_func
 (paren
 op_amp
@@ -1029,7 +1029,7 @@ id|count
 op_assign
 l_int|NULL
 suffix:semicolon
-id|i-&gt;t.host_attrs.attrs
+id|i-&gt;t.host_attrs.ac.attrs
 op_assign
 op_amp
 id|i-&gt;host_attrs
@@ -1037,7 +1037,7 @@ id|i-&gt;host_attrs
 l_int|0
 )braket
 suffix:semicolon
-id|i-&gt;t.host_attrs
+id|i-&gt;t.host_attrs.ac
 dot
 r_class
 op_assign
@@ -1046,11 +1046,11 @@ id|iscsi_host_class
 dot
 r_class
 suffix:semicolon
-id|i-&gt;t.host_attrs.match
+id|i-&gt;t.host_attrs.ac.match
 op_assign
 id|iscsi_host_match
 suffix:semicolon
-id|attribute_container_register
+id|transport_container_register
 c_func
 (paren
 op_amp
@@ -1126,14 +1126,14 @@ c_func
 id|t
 )paren
 suffix:semicolon
-id|attribute_container_unregister
+id|transport_container_unregister
 c_func
 (paren
 op_amp
 id|i-&gt;t.target_attrs
 )paren
 suffix:semicolon
-id|attribute_container_unregister
+id|transport_container_unregister
 c_func
 (paren
 op_amp

@@ -3517,6 +3517,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3639,6 +3640,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3790,12 +3792,14 @@ id|file_operations
 id|proc_oom_adjust_operations
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|oom_adjust_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|oom_adjust_write
 comma
 )brace

@@ -61,7 +61,7 @@ DECL|member|entries
 )brace
 id|entries
 (braket
-l_int|0
+l_int|9
 )braket
 suffix:semicolon
 )brace

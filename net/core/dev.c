@@ -11152,6 +11152,13 @@ c_func
 id|net_disable_timestamp
 )paren
 suffix:semicolon
+DECL|variable|dev_get_flags
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dev_get_flags
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
 DECL|variable|br_handle_frame_hook
 id|EXPORT_SYMBOL

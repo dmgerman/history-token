@@ -1648,7 +1648,7 @@ suffix:semicolon
 multiline_comment|/* RFC says return as much as we can without exceeding 576 bytes. */
 id|room
 op_assign
-id|dst_pmtu
+id|dst_mtu
 c_func
 (paren
 op_amp
