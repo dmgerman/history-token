@@ -3488,10 +3488,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|cmc_polling_enabled
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * The cmc interrupt handler enabled irqs, so&n;&t;&t;&t; * this can&squot;t deadlock.&n;&t;&t;&t; */
 id|smp_call_function
 c_func
@@ -3505,11 +3501,21 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Turn off interrupts before re-enabling the&n;&t;&t;&t; * cmc vector locally.  Make sure we get out.&n;&t;&t;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ia64_mca_cmc_vector_enable
 c_func
 (paren
 l_int|NULL
 )paren
+suffix:semicolon
+id|cmc_polling_enabled
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
