@@ -508,10 +508,9 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_inline
 id|u8
-DECL|function|ReadHSCX
-id|ReadHSCX
+DECL|function|hscx_read
+id|hscx_read
 c_func
 (paren
 r_struct
@@ -543,10 +542,9 @@ id|adr
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
-DECL|function|WriteHSCX
-id|WriteHSCX
+DECL|function|hscx_write
+id|hscx_write
 c_func
 (paren
 r_struct
@@ -582,10 +580,9 @@ id|value
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
-DECL|function|ReadHSCXfifo
-id|ReadHSCXfifo
+DECL|function|hscx_read_fifo
+id|hscx_read_fifo
 c_func
 (paren
 r_struct
@@ -623,10 +620,9 @@ id|size
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_void
-DECL|function|WriteHSCXfifo
-id|WriteHSCXfifo
+DECL|function|hscx_write_fifo
+id|hscx_write_fifo
 c_func
 (paren
 r_struct
@@ -672,24 +668,34 @@ op_assign
 dot
 id|read_reg
 op_assign
-id|ReadHSCX
+id|hscx_read
 comma
 dot
 id|write_reg
 op_assign
-id|WriteHSCX
+id|hscx_write
+comma
+dot
+id|read_fifo
+op_assign
+id|hscx_read_fifo
+comma
+dot
+id|write_fifo
+op_assign
+id|hscx_write_fifo
 comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * fast interrupt HSCX stuff goes here&n; */
 DECL|macro|READHSCX
-mdefine_line|#define READHSCX(cs, nr, reg) ReadHSCX(cs, nr, reg)
+mdefine_line|#define READHSCX(cs, nr, reg) hscx_read(cs, nr, reg)
 DECL|macro|WRITEHSCX
-mdefine_line|#define WRITEHSCX(cs, nr, reg, data) WriteHSCX(cs, nr, reg, data)
+mdefine_line|#define WRITEHSCX(cs, nr, reg, data) hscx_write(cs, nr, reg, data)
 DECL|macro|READHSCXFIFO
-mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) ReadHSCXfifo(cs, nr, ptr, cnt) 
+mdefine_line|#define READHSCXFIFO(cs, nr, ptr, cnt) hscx_read_fifo(cs, nr, ptr, cnt) 
 DECL|macro|WRITEHSCXFIFO
-mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) WriteHSCXfifo(cs, nr, ptr, cnt)
+mdefine_line|#define WRITEHSCXFIFO(cs, nr, ptr, cnt) hscx_write_fifo(cs, nr, ptr, cnt)
 macro_line|#include &quot;hscx_irq.c&quot;
 r_static
 r_void
@@ -777,7 +783,7 @@ id|ASL0_R_HSCX
 (brace
 id|val
 op_assign
-id|ReadHSCX
+id|hscx_read
 c_func
 (paren
 id|cs
@@ -834,7 +840,7 @@ id|val
 suffix:semicolon
 )brace
 )brace
-id|WriteHSCX
+id|hscx_write
 c_func
 (paren
 id|cs
@@ -843,10 +849,10 @@ l_int|0
 comma
 id|HSCX_MASK
 comma
-l_int|0xff
+l_int|0xFF
 )paren
 suffix:semicolon
-id|WriteHSCX
+id|hscx_write
 c_func
 (paren
 id|cs
@@ -855,7 +861,7 @@ l_int|1
 comma
 id|HSCX_MASK
 comma
-l_int|0xff
+l_int|0xFF
 )paren
 suffix:semicolon
 id|isac_write
@@ -865,7 +871,7 @@ id|cs
 comma
 id|ISAC_MASK
 comma
-l_int|0xff
+l_int|0xFF
 )paren
 suffix:semicolon
 id|isac_write
@@ -875,10 +881,10 @@ id|cs
 comma
 id|ISAC_MASK
 comma
-l_int|0x00
+l_int|0x0
 )paren
 suffix:semicolon
-id|WriteHSCX
+id|hscx_write
 c_func
 (paren
 id|cs
@@ -887,10 +893,10 @@ l_int|0
 comma
 id|HSCX_MASK
 comma
-l_int|0x00
+l_int|0x0
 )paren
 suffix:semicolon
-id|WriteHSCX
+id|hscx_write
 c_func
 (paren
 id|cs
@@ -899,7 +905,7 @@ l_int|1
 comma
 id|HSCX_MASK
 comma
-l_int|0x00
+l_int|0x0
 )paren
 suffix:semicolon
 id|spin_unlock

@@ -137,8 +137,8 @@ suffix:semicolon
 r_static
 r_inline
 r_void
-DECL|function|WriteHSCXCMDR
-id|WriteHSCXCMDR
+DECL|function|hscx_writeCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 r_struct
@@ -249,7 +249,7 @@ comma
 l_string|&quot;hscx_empty_fifo: incoming packet too large&quot;
 )paren
 suffix:semicolon
-id|WriteHSCXCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 id|cs
@@ -288,7 +288,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|WriteHSCXCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 id|cs
@@ -513,7 +513,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|WriteHSCXCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 id|cs
@@ -784,7 +784,7 @@ op_increment
 suffix:semicolon
 macro_line|#endif
 )brace
-id|WriteHSCXCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 id|cs
@@ -1056,7 +1056,7 @@ op_star
 id|bcs
 )paren
 (brace
-id|WriteHSCXCMDR
+id|hscx_writeCMDR
 c_func
 (paren
 id|bcs-&gt;cs
