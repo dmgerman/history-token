@@ -1,7 +1,7 @@
-multiline_comment|/*&n;    i2c-proc.h - Part of the i2c package&n;    was originally sensors.h - Part of lm_sensors, Linux kernel modules&n;                               for hardware monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-macro_line|#ifndef _LINUX_I2C_PROC_H
-DECL|macro|_LINUX_I2C_PROC_H
-mdefine_line|#define _LINUX_I2C_PROC_H
+multiline_comment|/*&n;    i2c-sensor.h - Part of the i2c package&n;    was originally sensors.h - Part of lm_sensors, Linux kernel modules&n;                               for hardware monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+macro_line|#ifndef _LINUX_I2C_SENSOR_H
+DECL|macro|_LINUX_I2C_SENSOR_H
+mdefine_line|#define _LINUX_I2C_SENSOR_H
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/* The type of callback functions used in sensors_{proc,sysctl}_real */
 DECL|typedef|i2c_real_callback
@@ -39,100 +39,6 @@ DECL|macro|SENSORS_PROC_REAL_READ
 mdefine_line|#define SENSORS_PROC_REAL_READ 2
 DECL|macro|SENSORS_PROC_REAL_WRITE
 mdefine_line|#define SENSORS_PROC_REAL_WRITE 3
-multiline_comment|/* These funcion reads or writes a &squot;real&squot; value (encoded by the combination&n;   of an integer and a magnitude, the last is the power of ten the value&n;   should be divided with) to a /proc/sys directory. To use these functions,&n;   you must (before registering the ctl_table) set the extra2 field to the&n;   client, and the extra1 field to a function of the form:&n;      void func(struct i2c_client *client, int operation, int ctl_name,&n;                int *nrels_mag, long *results)&n;   This last function can be called for three values of operation. If&n;   operation equals SENSORS_PROC_REAL_INFO, the magnitude should be returned&n;   in nrels_mag. If operation equals SENSORS_PROC_REAL_READ, values should&n;   be read into results. nrels_mag should return the number of elements&n;   read; the maximum number is put in it on entry. Finally, if operation&n;   equals SENSORS_PROC_REAL_WRITE, the values in results should be&n;   written to the chip. nrels_mag contains on entry the number of elements&n;   found.&n;   In all cases, client points to the client we wish to interact with,&n;   and ctl_name is the SYSCTL id of the file we are accessing. */
-r_extern
-r_int
-id|i2c_sysctl_real
-c_func
-(paren
-id|ctl_table
-op_star
-id|table
-comma
-r_int
-op_star
-id|name
-comma
-r_int
-id|nlen
-comma
-r_void
-op_star
-id|oldval
-comma
-r_int
-op_star
-id|oldlenp
-comma
-r_void
-op_star
-id|newval
-comma
-r_int
-id|newlen
-comma
-r_void
-op_star
-op_star
-id|context
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|i2c_proc_real
-c_func
-(paren
-id|ctl_table
-op_star
-id|ctl
-comma
-r_int
-id|write
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|lenp
-)paren
-suffix:semicolon
-multiline_comment|/* These rather complex functions must be called when you want to add or&n;   delete an entry in /proc/sys/dev/sensors/chips (not yet implemented). It&n;   also creates a new directory within /proc/sys/dev/sensors/.&n;   ctl_template should be a template of the newly created directory. It is&n;   copied in memory. The extra2 field of each file is set to point to client.&n;   If any driver wants subdirectories within the newly created directory,&n;   these functions must be updated! */
-r_extern
-r_int
-id|i2c_register_entry
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_const
-r_char
-op_star
-id|prefix
-comma
-id|ctl_table
-op_star
-id|ctl_template
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|i2c_deregister_entry
-c_func
-(paren
-r_int
-id|id
-)paren
-suffix:semicolon
 multiline_comment|/* A structure containing detect information.&n;   Force variables overrule all other variables; they force a detection on&n;   that place. If a specific chip is given, the module blindly assumes this&n;   chip type is present; if a general force (kind == 0) is given, the module&n;   will still try to figure out what type of chip is present. This is useful&n;   if for some reasons the detect for SMBus or ISA address space filled&n;   fails.&n;   probe: insmod parameter. Initialize this list with SENSORS_I2C_END values.&n;     A list of pairs. The first value is a bus number (SENSORS_ISA_BUS for&n;     the ISA bus, -1 for any I2C bus), the second is the address. &n;   kind: The kind of chip. 0 equals any chip.&n;*/
 DECL|struct|i2c_force_data
 r_struct
@@ -278,10 +184,6 @@ r_int
 id|addr
 comma
 r_int
-r_int
-id|flags
-comma
-r_int
 id|kind
 )paren
 suffix:semicolon
@@ -382,5 +284,5 @@ l_int|13
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* def _LINUX_I2C_PROC_H */
+macro_line|#endif&t;&t;&t;&t;/* def _LINUX_I2C_SENSOR_H */
 eof
