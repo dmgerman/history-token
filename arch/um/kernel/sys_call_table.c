@@ -2188,6 +2188,16 @@ op_star
 id|sys_mq_getsetattr
 comma
 (braket
+id|__NR_sys_kexec_load
+)braket
+op_assign
+(paren
+id|syscall_handler_t
+op_star
+)paren
+id|sys_ni_syscall
+comma
+(braket
 id|__NR_waitid
 )braket
 op_assign
@@ -2197,18 +2207,16 @@ op_star
 )paren
 id|sys_waitid
 comma
-macro_line|#if 0
 (braket
-id|__NR_sys_setaltroot
+l_int|285
 )braket
 op_assign
 (paren
 id|syscall_handler_t
 op_star
 )paren
-id|sys_sys_setaltroot
+id|sys_ni_syscall
 comma
-macro_line|#endif
 (braket
 id|__NR_add_key
 )braket
@@ -2257,5 +2265,4 @@ op_star
 id|sys_ni_syscall
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

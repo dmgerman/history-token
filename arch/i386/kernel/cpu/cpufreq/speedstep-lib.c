@@ -600,6 +600,20 @@ l_string|&quot;speedstep-lib: couldn&squot;t detect FSB speed. Please send an e-
 )paren
 suffix:semicolon
 multiline_comment|/* Multiplier. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+OL
+l_int|2
+)paren
+id|mult
+op_assign
+id|msr_lo
+op_rshift
+l_int|27
+suffix:semicolon
+r_else
 id|mult
 op_assign
 id|msr_lo

@@ -2,6 +2,7 @@ multiline_comment|/* $Id: atomic.h,v 1.22 2001/07/11 23:56:07 davem Exp $&n; * a
 macro_line|#ifndef __ARCH_SPARC64_ATOMIC__
 DECL|macro|__ARCH_SPARC64_ATOMIC__
 mdefine_line|#define __ARCH_SPARC64_ATOMIC__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|member|counter
 DECL|typedef|atomic_t
@@ -40,8 +41,52 @@ mdefine_line|#define atomic_set(v, i)&t;(((v)-&gt;counter) = i)
 DECL|macro|atomic64_set
 mdefine_line|#define atomic64_set(v, i)&t;(((v)-&gt;counter) = i)
 r_extern
+r_void
+id|atomic_add
+c_func
+(paren
 r_int
-id|__atomic_add
+comma
+id|atomic_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|atomic64_add
+c_func
+(paren
+r_int
+comma
+id|atomic64_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|atomic_sub
+c_func
+(paren
+r_int
+comma
+id|atomic_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|atomic64_sub
+c_func
+(paren
+r_int
+comma
+id|atomic64_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|atomic_add_ret
 c_func
 (paren
 r_int
@@ -52,10 +97,10 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__atomic64_add
+id|atomic64_add_ret
 c_func
 (paren
-id|__s64
+r_int
 comma
 id|atomic64_t
 op_star
@@ -63,7 +108,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__atomic_sub
+id|atomic_sub_ret
 c_func
 (paren
 r_int
@@ -74,63 +119,65 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|__atomic64_sub
+id|atomic64_sub_ret
 c_func
 (paren
-id|__s64
+r_int
 comma
 id|atomic64_t
 op_star
 )paren
 suffix:semicolon
-DECL|macro|atomic_add
-mdefine_line|#define atomic_add(i, v) ((void)__atomic_add(i, v))
-DECL|macro|atomic64_add
-mdefine_line|#define atomic64_add(i, v) ((void)__atomic64_add(i, v))
-DECL|macro|atomic_sub
-mdefine_line|#define atomic_sub(i, v) ((void)__atomic_sub(i, v))
-DECL|macro|atomic64_sub
-mdefine_line|#define atomic64_sub(i, v) ((void)__atomic64_sub(i, v))
 DECL|macro|atomic_dec_return
-mdefine_line|#define atomic_dec_return(v) __atomic_sub(1, v)
+mdefine_line|#define atomic_dec_return(v) atomic_sub_ret(1, v)
 DECL|macro|atomic64_dec_return
-mdefine_line|#define atomic64_dec_return(v) __atomic64_sub(1, v)
+mdefine_line|#define atomic64_dec_return(v) atomic64_sub_ret(1, v)
 DECL|macro|atomic_inc_return
-mdefine_line|#define atomic_inc_return(v) __atomic_add(1, v)
+mdefine_line|#define atomic_inc_return(v) atomic_add_ret(1, v)
 DECL|macro|atomic64_inc_return
-mdefine_line|#define atomic64_inc_return(v) __atomic64_add(1, v)
+mdefine_line|#define atomic64_inc_return(v) atomic64_add_ret(1, v)
 DECL|macro|atomic_sub_return
-mdefine_line|#define atomic_sub_return(i, v) __atomic_sub(i, v)
+mdefine_line|#define atomic_sub_return(i, v) atomic_sub_ret(i, v)
 DECL|macro|atomic64_sub_return
-mdefine_line|#define atomic64_sub_return(i, v) __atomic64_sub(i, v)
+mdefine_line|#define atomic64_sub_return(i, v) atomic64_sub_ret(i, v)
 DECL|macro|atomic_add_return
-mdefine_line|#define atomic_add_return(i, v) __atomic_add(i, v)
+mdefine_line|#define atomic_add_return(i, v) atomic_add_ret(i, v)
 DECL|macro|atomic64_add_return
-mdefine_line|#define atomic64_add_return(i, v) __atomic64_add(i, v)
+mdefine_line|#define atomic64_add_return(i, v) atomic64_add_ret(i, v)
 multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.&n; */
 DECL|macro|atomic_inc_and_test
 mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 DECL|macro|atomic_sub_and_test
-mdefine_line|#define atomic_sub_and_test(i, v) (__atomic_sub(i, v) == 0)
+mdefine_line|#define atomic_sub_and_test(i, v) (atomic_sub_ret(i, v) == 0)
 DECL|macro|atomic64_sub_and_test
-mdefine_line|#define atomic64_sub_and_test(i, v) (__atomic64_sub(i, v) == 0)
+mdefine_line|#define atomic64_sub_and_test(i, v) (atomic64_sub_ret(i, v) == 0)
 DECL|macro|atomic_dec_and_test
-mdefine_line|#define atomic_dec_and_test(v) (__atomic_sub(1, v) == 0)
+mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_ret(1, v) == 0)
 DECL|macro|atomic64_dec_and_test
-mdefine_line|#define atomic64_dec_and_test(v) (__atomic64_sub(1, v) == 0)
+mdefine_line|#define atomic64_dec_and_test(v) (atomic64_sub_ret(1, v) == 0)
 DECL|macro|atomic_inc
-mdefine_line|#define atomic_inc(v) ((void)__atomic_add(1, v))
+mdefine_line|#define atomic_inc(v) atomic_add(1, v)
 DECL|macro|atomic64_inc
-mdefine_line|#define atomic64_inc(v) ((void)__atomic64_add(1, v))
+mdefine_line|#define atomic64_inc(v) atomic64_add(1, v)
 DECL|macro|atomic_dec
-mdefine_line|#define atomic_dec(v) ((void)__atomic_sub(1, v))
+mdefine_line|#define atomic_dec(v) atomic_sub(1, v)
 DECL|macro|atomic64_dec
-mdefine_line|#define atomic64_dec(v) ((void)__atomic64_sub(1, v))
+mdefine_line|#define atomic64_dec(v) atomic64_sub(1, v)
 DECL|macro|atomic_add_negative
-mdefine_line|#define atomic_add_negative(i, v) (__atomic_add(i, v) &lt; 0)
+mdefine_line|#define atomic_add_negative(i, v) (atomic_add_ret(i, v) &lt; 0)
 DECL|macro|atomic64_add_negative
-mdefine_line|#define atomic64_add_negative(i, v) (__atomic64_add(i, v) &lt; 0)
+mdefine_line|#define atomic64_add_negative(i, v) (atomic64_add_ret(i, v) &lt; 0)
 multiline_comment|/* Atomic operations are already serializing */
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;membar(&quot;#StoreLoad | #LoadLoad&quot;)
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;membar(&quot;#StoreLoad | #StoreStore&quot;)
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;membar(&quot;#StoreLoad | #LoadLoad&quot;)
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;membar(&quot;#StoreLoad | #StoreStore&quot;)
+macro_line|#else
 DECL|macro|smp_mb__before_atomic_dec
 mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
 DECL|macro|smp_mb__after_atomic_dec
@@ -139,5 +186,6 @@ DECL|macro|smp_mb__before_atomic_inc
 mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
 DECL|macro|smp_mb__after_atomic_inc
 mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
+macro_line|#endif
 macro_line|#endif /* !(__ARCH_SPARC64_ATOMIC__) */
 eof

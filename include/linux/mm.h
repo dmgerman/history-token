@@ -58,7 +58,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifndef MM_VM_SIZE
 DECL|macro|MM_VM_SIZE
-mdefine_line|#define MM_VM_SIZE(mm)&t;TASK_SIZE
+mdefine_line|#define MM_VM_SIZE(mm)&t;((TASK_SIZE + PGDIR_SIZE - 1) &amp; PGDIR_MASK)
 macro_line|#endif
 DECL|macro|nth_page
 mdefine_line|#define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))

@@ -1069,7 +1069,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PREEMPT
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1093,11 +1093,9 @@ op_amp
 id|PSR_S
 )paren
 op_logical_or
-(paren
 id|current-&gt;need_resched
 op_eq
 l_int|0
-)paren
 op_logical_or
 id|in_interrupt
 c_func
@@ -1109,7 +1107,7 @@ suffix:semicolon
 id|current-&gt;preempt_count
 op_increment
 suffix:semicolon
-id|sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1119,7 +1117,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren

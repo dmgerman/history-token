@@ -1260,7 +1260,10 @@ r_void
 id|do_syscall_trace_leave
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -1277,10 +1280,9 @@ c_func
 (paren
 id|current
 comma
-l_int|0
+id|regs-&gt;result
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: pass pt_regs */
 r_if
 c_cond
 (paren
