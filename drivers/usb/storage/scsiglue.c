@@ -344,7 +344,11 @@ id|us-&gt;sm_state
 )paren
 op_ne
 id|US_STATE_IDLE
-op_logical_or
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
 id|us-&gt;srb
 op_ne
 l_int|NULL
