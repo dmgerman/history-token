@@ -42,7 +42,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt; /* do_div */
 macro_line|#include &lt;asm/timex.h&gt;
 DECL|macro|VERSION
-mdefine_line|#define VERSION  &quot;pktgen v2.59: Packet Generator for packet performance testing.&bslash;n&quot;
+mdefine_line|#define VERSION  &quot;pktgen v2.60: Packet Generator for packet performance testing.&bslash;n&quot;
 multiline_comment|/* #define PG_DEBUG(a) a */
 DECL|macro|PG_DEBUG
 mdefine_line|#define PG_DEBUG(a) 
@@ -7060,11 +7060,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|thread_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|t
 op_assign
 (paren
@@ -7199,12 +7194,22 @@ id|i
 op_add_assign
 id|len
 suffix:semicolon
+id|thread_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|pktgen_add_device
 c_func
 (paren
 id|t
 comma
 id|f
+)paren
+suffix:semicolon
+id|thread_unlock
+c_func
+(paren
 )paren
 suffix:semicolon
 id|ret
@@ -7238,9 +7243,19 @@ l_string|&quot;rem_device_all&quot;
 )paren
 )paren
 (brace
+id|thread_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|t-&gt;control
 op_or_assign
 id|T_REMDEV
+suffix:semicolon
+id|thread_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 id|current-&gt;state
 op_assign
@@ -7301,9 +7316,19 @@ op_amp
 id|value
 )paren
 suffix:semicolon
+id|thread_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|t-&gt;max_before_softirq
 op_assign
 id|value
+suffix:semicolon
+id|thread_unlock
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -7330,11 +7355,6 @@ id|EINVAL
 suffix:semicolon
 id|out
 suffix:colon
-id|thread_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
