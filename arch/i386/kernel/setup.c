@@ -3165,7 +3165,6 @@ suffix:semicolon
 multiline_comment|/* Replace instructions with better alternatives for this CPU type.&n;&n;   This runs before SMP is initialized to avoid SMP problems with&n;   self modifying code. This implies that assymetric systems where&n;   APs have less capabilities than the boot processor are not handled. &n;    &n;   In this case boot with &quot;noreplacement&quot;. */
 DECL|function|apply_alternatives
 r_void
-id|__init
 id|apply_alternatives
 c_func
 (paren
