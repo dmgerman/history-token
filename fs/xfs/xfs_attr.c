@@ -262,7 +262,7 @@ multiline_comment|/* match IRIX behaviour */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_attr_get
+id|xs_attr_get
 )paren
 suffix:semicolon
 r_if
@@ -627,7 +627,7 @@ multiline_comment|/* match irix behaviour */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_attr_set
+id|xs_attr_set
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do we answer them, or ignore them?&n;&t; */
@@ -1552,7 +1552,7 @@ multiline_comment|/* match irix behaviour */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_attr_remove
+id|xs_attr_remove
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do we answer them, or ignore them?&n;&t; */
@@ -2114,7 +2114,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_attr_list
+id|xs_attr_list
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Validate the cursor.&n;&t; */

@@ -3105,7 +3105,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_attrchg
+id|xs_ig_attrchg
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If this is a synchronous mount, make sure that the&n;&t; * transaction goes to disk before returning to the user.&n;&t; * This is slightly sub-optimal in that truncates require&n;&t; * two sync transactions instead of one for wsync filesytems.&n;&t; * One for the truncate and one for the timestamps since we&n;&t; * don&squot;t want to change the timestamps unless we&squot;re sure the&n;&t; * truncate worked.  Truncates are less than 1% of the laddis&n;&t; * mix so this probably isn&squot;t worth the trouble to optimize.&n;&t; */

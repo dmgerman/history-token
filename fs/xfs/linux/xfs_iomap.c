@@ -2255,7 +2255,7 @@ suffix:semicolon
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_xstrat_bytes
+id|xs_xstrat_bytes
 comma
 id|XFS_FSB_TO_B
 c_func
@@ -2650,7 +2650,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_xstrat_quick
+id|xs_xstrat_quick
 )paren
 suffix:semicolon
 r_return

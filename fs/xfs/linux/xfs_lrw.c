@@ -438,7 +438,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_read_calls
+id|xs_read_calls
 )paren
 suffix:semicolon
 multiline_comment|/* START copy &amp; waste from filemap.c */
@@ -733,7 +733,7 @@ l_int|0
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_read_bytes
+id|xs_read_bytes
 comma
 id|ret
 )paren
@@ -853,7 +853,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_read_calls
+id|xs_read_calls
 )paren
 suffix:semicolon
 id|n
@@ -1015,7 +1015,7 @@ suffix:semicolon
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_read_bytes
+id|xs_read_bytes
 comma
 id|ret
 )paren
@@ -1943,7 +1943,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_write_calls
+id|xs_write_calls
 )paren
 suffix:semicolon
 id|vp
@@ -2749,7 +2749,7 @@ suffix:semicolon
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_write_bytes
+id|xs_write_bytes
 comma
 id|ret
 )paren

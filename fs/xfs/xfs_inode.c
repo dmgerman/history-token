@@ -10541,7 +10541,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_iflush_count
+id|xs_iflush_count
 )paren
 suffix:semicolon
 id|ASSERT
@@ -11111,13 +11111,13 @@ id|clcount
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_icluster_flushcnt
+id|xs_icluster_flushcnt
 )paren
 suffix:semicolon
 id|XFS_STATS_ADD
 c_func
 (paren
-id|xfsstats.xs_icluster_flushinode
+id|xs_icluster_flushinode
 comma
 id|clcount
 )paren

@@ -757,7 +757,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_create
+id|xs_dir_create
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -986,7 +986,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_lookup
+id|xs_dir_lookup
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1251,7 +1251,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_remove
+id|xs_dir_remove
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the arg structure for this request.&n;&t; */
@@ -1483,7 +1483,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_dir_getdents
+id|xs_dir_getdents
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If our caller has given us a single contiguous aligned memory buffer,&n;&t; * just work directly within that buffer.  If it&squot;s in user memory,&n;&t; * lock it down first.&n;&t; */

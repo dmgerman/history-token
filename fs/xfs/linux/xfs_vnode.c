@@ -161,7 +161,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_reclaim
+id|vn_reclaim
 )paren
 suffix:semicolon
 id|vn_trace_entry
@@ -405,13 +405,13 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_active
+id|vn_active
 )paren
 suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_alloc
+id|vn_alloc
 )paren
 suffix:semicolon
 id|vp-&gt;v_flag
@@ -536,7 +536,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_get
+id|vn_get
 )paren
 suffix:semicolon
 id|inode
@@ -935,7 +935,7 @@ suffix:semicolon
 id|XFS_STATS_DEC
 c_func
 (paren
-id|xfsstats.vn_active
+id|vn_active
 )paren
 suffix:semicolon
 id|vp-&gt;v_flag
@@ -998,7 +998,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_hold
+id|vn_hold
 )paren
 suffix:semicolon
 id|VN_LOCK
@@ -1058,7 +1058,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_rele
+id|vn_rele
 )paren
 suffix:semicolon
 id|VN_LOCK
@@ -1215,7 +1215,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.vn_remove
+id|vn_remove
 )paren
 suffix:semicolon
 id|vn_trace_exit

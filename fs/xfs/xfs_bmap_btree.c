@@ -1624,7 +1624,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_bmbt_delrec
+id|xs_bmbt_delrec
 )paren
 suffix:semicolon
 r_if
@@ -4234,7 +4234,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_bmbt_insrec
+id|xs_bmbt_insrec
 )paren
 suffix:semicolon
 id|block
@@ -6301,7 +6301,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_bmbt_lookup
+id|xs_bmbt_lookup
 )paren
 suffix:semicolon
 id|XFS_BMBT_TRACE_CURSOR
@@ -6635,7 +6635,7 @@ id|high
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_bmbt_compare
+id|xs_bmbt_compare
 )paren
 suffix:semicolon
 id|keyno
