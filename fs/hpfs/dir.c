@@ -1,9 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/dir.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  directory VFS functions&n; */
 macro_line|#include &quot;hpfs_fn.h&quot;
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|function|hpfs_dir_release
+r_static
 r_int
 id|hpfs_dir_release
 c_func
@@ -45,6 +43,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This is slow, but it&squot;s not used often */
 DECL|function|hpfs_dir_lseek
+r_static
 id|loff_t
 id|hpfs_dir_lseek
 c_func
@@ -252,6 +251,7 @@ id|ESPIPE
 suffix:semicolon
 )brace
 DECL|function|hpfs_readdir
+r_static
 r_int
 id|hpfs_readdir
 c_func
@@ -773,7 +773,6 @@ op_assign
 id|inode-&gt;i_version
 suffix:semicolon
 )brace
-multiline_comment|/*if (filp-&gt;f_version != inode-&gt;i_version) {&n;&t;&t;&t;&t;ret = -ENOENT;&n;&t;&t;&t;&t;goto out;&n;&t;&t;&t;}*/
 id|old_pos
 op_assign
 id|filp-&gt;f_pos
@@ -1536,4 +1535,37 @@ id|ENOENT
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hpfs_dir_ops
+r_struct
+id|file_operations
+id|hpfs_dir_ops
+op_assign
+(brace
+dot
+id|llseek
+op_assign
+id|hpfs_dir_lseek
+comma
+dot
+id|read
+op_assign
+id|generic_read_dir
+comma
+dot
+id|readdir
+op_assign
+id|hpfs_readdir
+comma
+dot
+id|release
+op_assign
+id|hpfs_dir_release
+comma
+dot
+id|fsync
+op_assign
+id|hpfs_file_fsync
+comma
+)brace
+suffix:semicolon
 eof

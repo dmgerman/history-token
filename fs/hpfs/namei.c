@@ -1,9 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/hpfs/namei.c&n; *&n; *  Mikulas Patocka (mikulas@artax.karlin.mff.cuni.cz), 1998-1999&n; *&n; *  adding &amp; removing files &amp; directories&n; */
-macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;hpfs_fn.h&quot;
 DECL|function|hpfs_mkdir
+r_static
 r_int
 id|hpfs_mkdir
 c_func
@@ -720,6 +718,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hpfs_create
+r_static
 r_int
 id|hpfs_create
 c_func
@@ -1287,6 +1286,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hpfs_mknod
+r_static
 r_int
 id|hpfs_mknod
 c_func
@@ -1807,12 +1807,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|address_space_operations
-id|hpfs_symlink_aops
-suffix:semicolon
 DECL|function|hpfs_symlink
+r_static
 r_int
 id|hpfs_symlink
 c_func
@@ -2342,6 +2338,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hpfs_unlink
+r_static
 r_int
 id|hpfs_unlink
 c_func
@@ -2789,6 +2786,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hpfs_rmdir
+r_static
 r_int
 id|hpfs_rmdir
 c_func
@@ -3117,6 +3115,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|hpfs_symlink_readpage
+r_static
 r_int
 id|hpfs_symlink_readpage
 c_func
@@ -3279,7 +3278,20 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hpfs_symlink_aops
+r_struct
+id|address_space_operations
+id|hpfs_symlink_aops
+op_assign
+(brace
+dot
+id|readpage
+op_assign
+id|hpfs_symlink_readpage
+)brace
+suffix:semicolon
 DECL|function|hpfs_rename
+r_static
 r_int
 id|hpfs_rename
 c_func
@@ -4178,4 +4190,57 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hpfs_dir_iops
+r_struct
+id|inode_operations
+id|hpfs_dir_iops
+op_assign
+(brace
+dot
+id|create
+op_assign
+id|hpfs_create
+comma
+dot
+id|lookup
+op_assign
+id|hpfs_lookup
+comma
+dot
+id|unlink
+op_assign
+id|hpfs_unlink
+comma
+dot
+id|symlink
+op_assign
+id|hpfs_symlink
+comma
+dot
+id|mkdir
+op_assign
+id|hpfs_mkdir
+comma
+dot
+id|rmdir
+op_assign
+id|hpfs_rmdir
+comma
+dot
+id|mknod
+op_assign
+id|hpfs_mknod
+comma
+dot
+id|rename
+op_assign
+id|hpfs_rename
+comma
+dot
+id|setattr
+op_assign
+id|hpfs_notify_change
+comma
+)brace
+suffix:semicolon
 eof
