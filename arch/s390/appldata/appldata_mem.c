@@ -98,11 +98,19 @@ id|freeswap
 suffix:semicolon
 multiline_comment|/* free swap space */
 singleline_comment|// New in 2.6 --&gt;
-DECL|member|pgalloc
+DECL|member|pgalloc_high
 id|u64
-id|pgalloc
+id|pgalloc_high
 suffix:semicolon
 multiline_comment|/* page allocations */
+DECL|member|pgalloc_normal
+id|u64
+id|pgalloc_normal
+suffix:semicolon
+DECL|member|pgalloc_dma
+id|u64
+id|pgalloc_dma
+suffix:semicolon
 DECL|member|pgfault
 id|u64
 id|pgfault
@@ -172,9 +180,25 @@ suffix:semicolon
 id|P_DEBUG
 c_func
 (paren
-l_string|&quot;pgalloc    = %8lu &bslash;n&quot;
+l_string|&quot;pgalloc_high   = %8lu &bslash;n&quot;
 comma
-id|mem_data-&gt;pgalloc
+id|mem_data-&gt;pgalloc_high
+)paren
+suffix:semicolon
+id|P_DEBUG
+c_func
+(paren
+l_string|&quot;pgalloc_normal = %8lu &bslash;n&quot;
+comma
+id|mem_data-&gt;pgalloc_normal
+)paren
+suffix:semicolon
+id|P_DEBUG
+c_func
+(paren
+l_string|&quot;pgalloc_dma    = %8lu &bslash;n&quot;
+comma
+id|mem_data-&gt;pgalloc_dma
 )paren
 suffix:semicolon
 id|P_DEBUG
@@ -349,9 +373,17 @@ id|mem_data-&gt;pswpout
 op_assign
 id|ps.pswpout
 suffix:semicolon
-id|mem_data-&gt;pgalloc
+id|mem_data-&gt;pgalloc_high
 op_assign
-id|ps.pgalloc
+id|ps.pgalloc_high
+suffix:semicolon
+id|mem_data-&gt;pgalloc_normal
+op_assign
+id|ps.pgalloc_normal
+suffix:semicolon
+id|mem_data-&gt;pgalloc_dma
+op_assign
+id|ps.pgalloc_dma
 suffix:semicolon
 id|mem_data-&gt;pgfault
 op_assign
@@ -364,9 +396,13 @@ suffix:semicolon
 id|P_DEBUG
 c_func
 (paren
-l_string|&quot;pgalloc = %lu, pgfree = %lu&bslash;n&quot;
+l_string|&quot;pgalloc_high = %lu, pgalloc_normal = %lu, pgalloc_dma = %lu, pgfree = %lu&bslash;n&quot;
 comma
-id|ps.pgalloc
+id|ps.pgalloc_high
+comma
+id|ps.pgalloc_normal
+comma
+id|ps.pgalloc_dma
 comma
 id|ps.pgfree
 )paren
