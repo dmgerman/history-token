@@ -3688,7 +3688,12 @@ l_int|0xFF
 r_goto
 id|fail
 suffix:semicolon
-multiline_comment|/*&n;&t; * Next create a situation where write combining&n;&t; * or read prefetching could be initiated by the&n;&t; * CPU or host bridge.  Our device does not support&n;&t; * either, so look for data corruption and/or flagged&n;&t; * PCI errors.&n;&t; */
+multiline_comment|/*&n;&t; * Next create a situation where write combining&n;&t; * or read prefetching could be initiated by the&n;&t; * CPU or host bridge.  Our device does not support&n;&t; * either, so look for data corruption and/or flagged&n;&t; * PCI errors.  First pause without causing another&n;&t; * chip reset.&n;&t; */
+id|hcntrl
+op_and_assign
+op_complement
+id|CHIPRST
+suffix:semicolon
 id|ahc_outb
 c_func
 (paren
