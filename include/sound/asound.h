@@ -1429,6 +1429,10 @@ multiline_comment|/* RW: min available frames for wakeup */
 suffix:semicolon
 DECL|macro|SNDRV_PCM_SYNC_PTR_HWSYNC
 mdefine_line|#define SNDRV_PCM_SYNC_PTR_HWSYNC&t;(1&lt;&lt;0)&t;/* execute hwsync */
+DECL|macro|SNDRV_PCM_SYNC_PTR_APPL
+mdefine_line|#define SNDRV_PCM_SYNC_PTR_APPL&t;&t;(1&lt;&lt;1)&t;/* get appl_ptr from driver (r/w op) */
+DECL|macro|SNDRV_PCM_SYNC_PTR_AVAIL_MIN
+mdefine_line|#define SNDRV_PCM_SYNC_PTR_AVAIL_MIN&t;(1&lt;&lt;2)&t;/* get avail_min from driver */
 DECL|struct|sndrv_pcm_sync_ptr
 r_struct
 id|sndrv_pcm_sync_ptr
