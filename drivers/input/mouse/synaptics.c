@@ -1221,14 +1221,23 @@ r_if
 c_cond
 (paren
 id|child
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|child-&gt;type
 op_ge
 id|PSMOUSE_GENPS
 )paren
-(brace
 id|priv-&gt;mode
 op_or_assign
+id|SYN_BIT_FOUR_BYTE_CLIENT
+suffix:semicolon
+r_else
+id|priv-&gt;mode
+op_and_assign
+op_complement
 id|SYN_BIT_FOUR_BYTE_CLIENT
 suffix:semicolon
 r_if
@@ -1246,7 +1255,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;synaptics: failed to enable 4-byte guest protocol&bslash;n&quot;
+l_string|&quot;synaptics: failed to switch guest protocol&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
