@@ -403,10 +403,10 @@ id|flags
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 id|slot
 op_increment
 suffix:semicolon
-)brace
 )brace
 id|printk
 c_func

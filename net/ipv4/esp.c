@@ -2501,6 +2501,10 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
+id|skb-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 id|esph
 op_assign
 (paren

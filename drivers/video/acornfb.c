@@ -3474,6 +3474,11 @@ id|fb_mmap
 op_assign
 id|acornfb_mmap
 comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Everything after here is initialisation!!!&n; */

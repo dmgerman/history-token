@@ -1260,6 +1260,7 @@ id|snd_hwdep_f_ops
 comma
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * snd_hwdep_new - create a new hwdep instance&n; * @card: the card instance&n; * @id: the id string&n; * @device: the device index (zero-based)&n; * @rhwdep: the pointer to store the new hwdep instance&n; *&n; * Creates a new hwdep instance with the given index on the card.&n; * The callbacks (hwdep-&gt;ops) must be set on the returned instance&n; * after this call manually by the caller.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_hwdep_new
 r_int
 id|snd_hwdep_new

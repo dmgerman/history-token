@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/char/uart00.c&n; *&n; *  Driver for UART00 serial ports&n; *&n; *  Based on drivers/char/serial_amba.c, by ARM Limited &amp; &n; *                                          Deep Blue Solutions Ltd.&n; *  Copyright 2001 Altera Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: uart00.c,v 1.35 2002/07/28 10:03:28 rmk Exp $&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/serial/uart00.c&n; *&n; *  Driver for UART00 serial ports&n; *&n; *  Based on drivers/char/serial_amba.c, by ARM Limited &amp; &n; *                                          Deep Blue Solutions Ltd.&n; *  Copyright 2001 Altera Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: uart00.c,v 1.35 2002/07/28 10:03:28 rmk Exp $&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -361,7 +361,7 @@ c_cond
 (paren
 id|rds
 op_amp
-id|UART_RDS_PE_MSK
+id|UART_RDS_FE_MSK
 )paren
 id|port-&gt;icount.frame
 op_increment
@@ -441,7 +441,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|status
+id|rds
 op_amp
 id|UART_RDS_OE_MSK
 )paren

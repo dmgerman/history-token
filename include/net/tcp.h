@@ -937,6 +937,10 @@ r_int
 id|sysctl_tcp_frto
 suffix:semicolon
 r_extern
+r_int
+id|sysctl_tcp_low_latency
+suffix:semicolon
+r_extern
 id|atomic_t
 id|tcp_memory_allocated
 suffix:semicolon
@@ -1262,6 +1266,9 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_int
+id|ipfragok
 )paren
 suffix:semicolon
 DECL|member|send_check
@@ -4639,6 +4646,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|sysctl_tcp_low_latency
+op_logical_and
 id|tp-&gt;ucopy.task
 )paren
 (brace

@@ -2190,20 +2190,6 @@ c_func
 id|gus
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_DEBUG
-id|snd_gus_irq_profile_done
-c_func
-(paren
-id|gus
-)paren
-suffix:semicolon
-macro_line|#endif
-id|snd_gf1_mem_proc_done
-c_func
-(paren
-id|gus
-)paren
-suffix:semicolon
 id|snd_gf1_mem_done
 c_func
 (paren

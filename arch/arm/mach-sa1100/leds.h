@@ -63,6 +63,15 @@ id|evt
 suffix:semicolon
 r_extern
 r_void
+id|hackkit_leds_event
+c_func
+(paren
+id|led_event_t
+id|evt
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|lart_leds_event
 c_func
 (paren

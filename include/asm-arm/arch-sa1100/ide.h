@@ -136,6 +136,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SA1100_TRIZEPS
+macro_line|#include &lt;asm/arch/trizeps.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
 r_static
 id|__inline__
@@ -380,6 +383,81 @@ c_func
 (paren
 op_amp
 id|hw
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_trizeps
+c_func
+(paren
+)paren
+)paren
+(brace
+macro_line|#ifdef CONFIG_SA1100_TRIZEPS
+id|hw_regs_t
+id|hw
+suffix:semicolon
+multiline_comment|/* Enable appropriate GPIOs as interrupt lines */
+id|GPDR
+op_and_assign
+op_complement
+id|GPIO_GPIO
+c_func
+(paren
+id|TRIZEPS_IRQ_IDE
+)paren
+suffix:semicolon
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_IDE
+comma
+id|IRQT_RISING
+)paren
+suffix:semicolon
+multiline_comment|/* set the pcmcia interface timing */
+singleline_comment|//MECR = 0x00060006; // Done on trizeps init
+multiline_comment|/* Take hard drives out of reset */
+id|GPSR
+op_assign
+id|GPIO_GPIO
+c_func
+(paren
+id|TRIZEPS_IRQ_IDE
+)paren
+suffix:semicolon
+id|ide_init_hwif_ports
+c_func
+(paren
+op_amp
+id|hw
+comma
+id|TRIZEPS_IDE_CS0
+op_plus
+l_int|0
+comma
+id|TRIZEPS_IDE_CS1
+op_plus
+l_int|6
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|hw.irq
+op_assign
+id|TRIZEPS_IRQ_IDE
+suffix:semicolon
+id|ide_register_hw
+c_func
+(paren
+op_amp
+id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

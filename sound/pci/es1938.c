@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -13,9 +14,6 @@ macro_line|#include &lt;sound/mpu401.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
-macro_line|#ifndef LINUX_2_2
-macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|chip_t
 mdefine_line|#define chip_t es1938_t
@@ -367,16 +365,6 @@ DECL|struct|_snd_es1938
 r_struct
 id|_snd_es1938
 (brace
-DECL|member|dma1size
-r_int
-r_int
-id|dma1size
-suffix:semicolon
-DECL|member|dma2size
-r_int
-r_int
-id|dma2size
-suffix:semicolon
 DECL|member|irq
 r_int
 id|irq
@@ -555,7 +543,7 @@ id|snd_info_entry_t
 op_star
 id|proc_entry
 suffix:semicolon
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|member|gameport
 r_struct
 id|gameport
@@ -3683,6 +3671,72 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * buffer management&n; */
+DECL|function|snd_es1938_pcm_hw_params
+r_static
+r_int
+id|snd_es1938_pcm_hw_params
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+comma
+id|snd_pcm_hw_params_t
+op_star
+id|hw_params
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_pcm_lib_malloc_pages
+c_func
+(paren
+id|substream
+comma
+id|params_buffer_bytes
+c_func
+(paren
+id|hw_params
+)paren
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_es1938_pcm_hw_free
+r_static
+r_int
+id|snd_es1938_pcm_hw_free
+c_func
+(paren
+id|snd_pcm_substream_t
+op_star
+id|substream
+)paren
+(brace
+r_return
+id|snd_pcm_lib_free_pages
+c_func
+(paren
+id|substream
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* ----------------------------------------------------------------------&n; * Audio1 Capture (ADC)&n; * ----------------------------------------------------------------------*/
 DECL|variable|snd_es1938_capture
 r_static
@@ -3895,33 +3949,6 @@ r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|runtime-&gt;dma_area
-op_assign
-id|snd_malloc_pci_pages_fallback
-c_func
-(paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;dma2size
-comma
-op_amp
-id|runtime-&gt;dma_addr
-comma
-op_amp
-id|runtime-&gt;dma_bytes
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
 id|chip-&gt;capture_substream
 op_assign
 id|substream
@@ -3995,33 +4022,6 @@ id|substream-&gt;number
 r_case
 l_int|0
 suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|runtime-&gt;dma_area
-op_assign
-id|snd_malloc_pci_pages_fallback
-c_func
-(paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;dma1size
-comma
-op_amp
-id|runtime-&gt;dma_addr
-comma
-op_amp
-id|runtime-&gt;dma_bytes
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
 id|chip-&gt;playback1_substream
 op_assign
 id|substream
@@ -4039,33 +4039,6 @@ id|chip-&gt;capture_substream
 r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|runtime-&gt;dma_area
-op_assign
-id|snd_malloc_pci_pages_fallback
-c_func
-(paren
-id|chip-&gt;pci
-comma
-id|chip-&gt;dma1size
-comma
-op_amp
-id|runtime-&gt;dma_addr
-comma
-op_amp
-id|runtime-&gt;dma_bytes
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
 id|chip-&gt;playback2_substream
 op_assign
@@ -4266,6 +4239,16 @@ op_assign
 id|snd_pcm_lib_ioctl
 comma
 dot
+id|hw_params
+op_assign
+id|snd_es1938_pcm_hw_params
+comma
+dot
+id|hw_free
+op_assign
+id|snd_es1938_pcm_hw_free
+comma
+dot
 id|prepare
 op_assign
 id|snd_es1938_playback_prepare
@@ -4302,6 +4285,16 @@ dot
 id|ioctl
 op_assign
 id|snd_pcm_lib_ioctl
+comma
+dot
+id|hw_params
+op_assign
+id|snd_es1938_pcm_hw_params
+comma
+dot
+id|hw_free
+op_assign
+id|snd_es1938_pcm_hw_free
 comma
 dot
 id|prepare
@@ -6571,7 +6564,7 @@ op_star
 id|chip
 )paren
 (brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_if
 c_cond
 (paren
@@ -6760,14 +6753,6 @@ id|pci_dev
 op_star
 id|pci
 comma
-r_int
-r_int
-id|dma1size
-comma
-r_int
-r_int
-id|dma2size
-comma
 id|es1938_t
 op_star
 op_star
@@ -6894,14 +6879,6 @@ suffix:semicolon
 id|chip-&gt;pci
 op_assign
 id|pci
-suffix:semicolon
-id|chip-&gt;dma1size
-op_assign
-id|dma1size
-suffix:semicolon
-id|chip-&gt;dma2size
-op_assign
-id|dma2size
 suffix:semicolon
 id|chip-&gt;io_port
 op_assign
@@ -8130,14 +8107,6 @@ id|card
 comma
 id|pci
 comma
-l_int|64
-op_star
-l_int|1024
-comma
-l_int|64
-op_star
-l_int|1024
-comma
 op_amp
 id|chip
 )paren
@@ -8364,7 +8333,7 @@ l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_2
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 id|chip-&gt;gameport.io
 op_assign
 id|chip-&gt;game_port

@@ -504,7 +504,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqoff_sem
+id|dqptr_sem
 )paren
 suffix:semicolon
 r_if
@@ -530,7 +530,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqoff_sem
+id|dqptr_sem
 )paren
 suffix:semicolon
 r_return
@@ -563,7 +563,7 @@ c_func
 id|sb
 )paren
 op_member_access_from_pointer
-id|dqoff_sem
+id|dqptr_sem
 )paren
 suffix:semicolon
 r_if
