@@ -1558,6 +1558,8 @@ id|sreq-&gt;sr_device
 suffix:semicolon
 r_int
 id|period
+op_assign
+l_int|0
 comma
 id|prevperiod
 op_assign
