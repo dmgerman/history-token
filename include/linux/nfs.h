@@ -3,6 +3,7 @@ macro_line|#ifndef _LINUX_NFS_H
 DECL|macro|_LINUX_NFS_H
 mdefine_line|#define _LINUX_NFS_H
 macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|macro|NFS_PROGRAM
 mdefine_line|#define NFS_PROGRAM&t;100003
 DECL|macro|NFS_PORT
@@ -559,6 +560,45 @@ id|NFS_MAXFHSIZE
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Returns a zero iff the size and data fields match.&n; * Checks only &quot;size&quot; bytes in the data field.&n; */
+DECL|function|nfs_compare_fh
+r_static
+r_inline
+r_int
+id|nfs_compare_fh
+c_func
+(paren
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|a
+comma
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|b
+)paren
+(brace
+r_return
+id|a-&gt;size
+op_ne
+id|b-&gt;size
+op_logical_or
+id|memcmp
+c_func
+(paren
+id|a-&gt;data
+comma
+id|b-&gt;data
+comma
+id|a-&gt;size
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * This is really a general kernel constant, but since nothing like&n; * this is defined in the kernel headers, I have to do it here.&n; */
 DECL|macro|NFS_OFFSET_MAX
 mdefine_line|#define NFS_OFFSET_MAX&t;&t;((__s64)((~(__u64)0) &gt;&gt; 1))

@@ -2664,7 +2664,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|memcmp
+id|nfs_compare_fh
 c_func
 (paren
 id|NFS_FH
@@ -2674,15 +2674,7 @@ id|inode
 )paren
 comma
 id|fh
-comma
-r_sizeof
-(paren
-r_struct
-id|nfs_fh
 )paren
-)paren
-op_ne
-l_int|0
 )paren
 r_return
 l_int|0
@@ -5691,7 +5683,7 @@ l_int|0
 suffix:semicolon
 r_return
 op_logical_neg
-id|memcmp
+id|nfs_compare_fh
 c_func
 (paren
 op_amp
@@ -5699,12 +5691,6 @@ id|old-&gt;fh
 comma
 op_amp
 id|server-&gt;fh
-comma
-r_sizeof
-(paren
-r_struct
-id|nfs_fh
-)paren
 )paren
 suffix:semicolon
 )brace
