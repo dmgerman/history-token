@@ -2225,6 +2225,7 @@ id|IPSEC_PROTO_ANY
 suffix:semicolon
 )brace
 DECL|function|pfkey_sadb_addr2xfrm_addr
+r_static
 r_int
 id|pfkey_sadb_addr2xfrm_addr
 c_func
