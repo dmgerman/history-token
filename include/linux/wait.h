@@ -634,8 +634,6 @@ DECL|macro|wake_up_nr
 mdefine_line|#define wake_up_nr(x, nr)&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, nr, NULL)
 DECL|macro|wake_up_all
 mdefine_line|#define wake_up_all(x)&t;&t;&t;__wake_up(x, TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0, NULL)
-DECL|macro|wake_up_all_sync
-mdefine_line|#define wake_up_all_sync(x)&t;&t;&t;__wake_up_sync((x),TASK_UNINTERRUPTIBLE | TASK_INTERRUPTIBLE, 0)
 DECL|macro|wake_up_interruptible
 mdefine_line|#define wake_up_interruptible(x)&t;__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
 DECL|macro|wake_up_interruptible_nr
