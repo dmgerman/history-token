@@ -3625,7 +3625,7 @@ suffix:semicolon
 r_int
 id|ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 r_int
 id|i

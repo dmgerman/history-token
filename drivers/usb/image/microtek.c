@@ -3245,7 +3245,7 @@ c_func
 (paren
 id|dev
 comma
-id|altsetting-&gt;bInterfaceNumber
+id|altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
