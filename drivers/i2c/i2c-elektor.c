@@ -599,16 +599,9 @@ multiline_comment|/* check to see we have memory mapped PCF8584 connected to the
 r_if
 c_cond
 (paren
-(paren
 id|base
 op_eq
 l_int|0
-)paren
-op_logical_and
-id|pci_present
-c_func
-(paren
-)paren
 )paren
 (brace
 r_struct
