@@ -4,6 +4,7 @@ mdefine_line|#define __ASM_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 r_typedef
 r_struct
 (brace
