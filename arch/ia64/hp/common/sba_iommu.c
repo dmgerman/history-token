@@ -123,6 +123,10 @@ DECL|macro|IOC_TCNFG
 mdefine_line|#define IOC_TCNFG&t;0x318
 DECL|macro|IOC_PDIR_BASE
 mdefine_line|#define IOC_PDIR_BASE&t;0x320
+DECL|macro|IOC_ROPE0_CFG
+mdefine_line|#define IOC_ROPE0_CFG&t;0x500
+DECL|macro|IOC_ROPE_AO
+mdefine_line|#define   IOC_ROPE_AO&t;  0x10&t;/* Allow &quot;Relaxed Ordering&quot; */
 multiline_comment|/* AGP GART driver looks for this */
 DECL|macro|ZX1_SBA_IOMMU_COOKIE
 mdefine_line|#define ZX1_SBA_IOMMU_COOKIE&t;0x0000badbadc0ffeeUL
@@ -4063,6 +4067,10 @@ r_int
 id|index
 suffix:semicolon
 macro_line|#endif
+r_int
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n;&t;** Firmware programs the base and size of a &quot;safe IOVA space&quot;&n;&t;** (one that doesn&squot;t overlap memory or LMMIO space) in the&n;&t;** IBASE and IMASK registers.&n;&t;*/
 id|ioc-&gt;ibase
 op_assign
@@ -4572,6 +4580,61 @@ op_plus
 id|IOC_IBASE
 )paren
 suffix:semicolon
+multiline_comment|/* Clear ROPE(N)_CONFIG AO bit.&n;&t;** Disables &quot;NT Ordering&quot; (~= !&quot;Relaxed Ordering&quot;)&n;&t;** Overrides bit 1 in DMA Hint Sets.&n;&t;** Improves netperf UDP_STREAM by ~10% for tg3 on bcm5701.&n;&t;*/
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+(paren
+l_int|8
+op_star
+l_int|8
+)paren
+suffix:semicolon
+id|i
+op_add_assign
+l_int|8
+)paren
+(brace
+r_int
+r_int
+id|rope_config
+suffix:semicolon
+id|rope_config
+op_assign
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_ROPE0_CFG
+op_plus
+id|i
+)paren
+suffix:semicolon
+id|rope_config
+op_and_assign
+op_complement
+id|IOC_ROPE_AO
+suffix:semicolon
+id|WRITE_REG
+c_func
+(paren
+id|rope_config
+comma
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_ROPE0_CFG
+op_plus
+id|i
+)paren
+suffix:semicolon
+)brace
 )brace
 r_static
 r_void
