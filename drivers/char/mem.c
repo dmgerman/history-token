@@ -1756,7 +1756,11 @@ c_cond
 (paren
 id|vma-&gt;vm_flags
 op_amp
+(paren
 id|VM_SHARED
+op_or
+id|VM_HUGETLB
+)paren
 )paren
 r_break
 suffix:semicolon
