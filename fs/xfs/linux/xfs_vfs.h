@@ -210,6 +210,25 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|vfs_mntupdate_t
+r_typedef
+r_int
+(paren
+op_star
+id|vfs_mntupdate_t
+)paren
+(paren
+id|bhv_desc_t
+op_star
+comma
+r_int
+op_star
+comma
+r_struct
+id|xfs_mount_args
+op_star
+)paren
+suffix:semicolon
 DECL|typedef|vfs_root_t
 r_typedef
 r_int
@@ -388,6 +407,11 @@ id|vfs_unmount_t
 id|vfs_unmount
 suffix:semicolon
 multiline_comment|/* unmount file system */
+DECL|member|vfs_mntupdate
+id|vfs_mntupdate_t
+id|vfs_mntupdate
+suffix:semicolon
+multiline_comment|/* update file system options */
 DECL|member|vfs_root
 id|vfs_root_t
 id|vfs_root
@@ -442,7 +466,9 @@ mdefine_line|#define VFS_PARSEARGS(v, o,ma,f, rv)&t;((rv) = vfs_parseargs(VHEAD(
 DECL|macro|VFS_SHOWARGS
 mdefine_line|#define VFS_SHOWARGS(v, m, rv)&t;&t;((rv) = vfs_showargs(VHEAD(v), m))
 DECL|macro|VFS_UNMOUNT
-mdefine_line|#define VFS_UNMOUNT(v, f,cr, rv)&t;((rv) = vfs_unmount(VHEAD(v), f,cr))
+mdefine_line|#define VFS_UNMOUNT(v, f, cr, rv)&t;((rv) = vfs_unmount(VHEAD(v), f,cr))
+DECL|macro|VFS_MNTUPDATE
+mdefine_line|#define VFS_MNTUPDATE(v, fl, args, rv)&t;((rv) = vfs_mntupdate(VHEAD(v), fl, args))
 DECL|macro|VFS_ROOT
 mdefine_line|#define VFS_ROOT(v, vpp, rv)&t;&t;((rv) = vfs_root(VHEAD(v), vpp))
 DECL|macro|VFS_STATVFS
@@ -468,6 +494,8 @@ DECL|macro|PVFS_SHOWARGS
 mdefine_line|#define PVFS_SHOWARGS(b, m, rv)&t;&t;((rv) = vfs_showargs(b, m))
 DECL|macro|PVFS_UNMOUNT
 mdefine_line|#define PVFS_UNMOUNT(b, f,cr, rv)&t;((rv) = vfs_unmount(b, f,cr))
+DECL|macro|PVFS_MNTUPDATE
+mdefine_line|#define PVFS_MNTUPDATE(b, fl, args, rv)&t;((rv) = vfs_mntupdate(b, fl, args))
 DECL|macro|PVFS_ROOT
 mdefine_line|#define PVFS_ROOT(b, vpp, rv)&t;&t;((rv) = vfs_root(b, vpp))
 DECL|macro|PVFS_STATVFS
@@ -544,6 +572,22 @@ r_int
 comma
 r_struct
 id|cred
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|vfs_mntupdate
+c_func
+(paren
+id|bhv_desc_t
+op_star
+comma
+r_int
+op_star
+comma
+r_struct
+id|xfs_mount_args
 op_star
 )paren
 suffix:semicolon

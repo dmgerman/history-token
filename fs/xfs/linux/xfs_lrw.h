@@ -299,16 +299,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|XFS_log_write_unmount_ro
-c_func
-(paren
-r_struct
-id|bhv_desc
-op_star
-)paren
-suffix:semicolon
 DECL|macro|XFS_FSB_TO_DB_IO
 mdefine_line|#define XFS_FSB_TO_DB_IO(io,fsb) &bslash;&n;&t;&t;(((io)-&gt;io_flags &amp; XFS_IOCORE_RT) ? &bslash;&n;&t;&t; XFS_FSB_TO_BB((io)-&gt;io_mount, (fsb)) : &bslash;&n;&t;&t; XFS_FSB_TO_DADDR((io)-&gt;io_mount, (fsb)))
 macro_line|#endif&t;/* __XFS_LRW_H__ */
