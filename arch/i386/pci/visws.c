@@ -484,6 +484,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|pcibios_init
 id|subsys_initcall
