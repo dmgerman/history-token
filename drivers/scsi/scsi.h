@@ -1449,21 +1449,21 @@ id|tagged_queue
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* SCSI-II tagged queuing enabled */
+multiline_comment|/* This is going away!!!!  Look at simple_tags&n;&t;&t;&t;&t;   instead!!!  Please fix your driver now!! */
 DECL|member|simple_tags
 r_int
 id|simple_tags
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Device supports simple queue tag messages */
+multiline_comment|/* simple queue tag messages are enabled */
 DECL|member|ordered_tags
 r_int
 id|ordered_tags
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Device supports ordered queue tag messages */
+multiline_comment|/* ordered queue tag messages are enabled */
 DECL|member|single_lun
 r_int
 id|single_lun
