@@ -1182,18 +1182,6 @@ op_star
 id|rpqueue
 suffix:semicolon
 multiline_comment|/* Pointers to start of Rcv-Queue   */
-DECL|member|rcv_waitq
-id|wait_queue_head_t
-op_star
-id|rcv_waitq
-suffix:semicolon
-multiline_comment|/* Wait-Queues for B-Channel-Reads  */
-DECL|member|snd_waitq
-id|wait_queue_head_t
-op_star
-id|snd_waitq
-suffix:semicolon
-multiline_comment|/* Wait-Queue for B-Channel-Send&squot;s  */
 DECL|member|msn2eaz
 r_char
 id|msn2eaz
