@@ -6554,7 +6554,7 @@ id|kfree
 id|dev
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|udev
 )paren
@@ -6740,7 +6740,7 @@ op_amp
 id|dev-&gt;mutex
 )paren
 suffix:semicolon
-id|usb_inc_dev_use
+id|usb_get_dev
 (paren
 id|udev
 )paren

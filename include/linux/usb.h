@@ -1210,7 +1210,6 @@ id|USB_MAXCHILDREN
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* usb_free_dev can be called anywhere from usb_dec_dev_use */
 r_extern
 r_struct
 id|usb_device
@@ -1229,6 +1228,19 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_get_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|usb_free_dev
 c_func
@@ -1238,6 +1250,8 @@ id|usb_device
 op_star
 )paren
 suffix:semicolon
+DECL|macro|usb_put_dev
+mdefine_line|#define usb_put_dev usb_free_dev
 multiline_comment|/* for when layers above USB add new non-USB drivers */
 r_extern
 r_void
@@ -1270,56 +1284,6 @@ op_star
 id|usb_dev
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them usb_dec_dev_use(), in their disconnect() methods.&n; */
-DECL|function|usb_inc_dev_use
-r_static
-r_inline
-r_void
-id|usb_inc_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-id|atomic_inc
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; */
-DECL|function|usb_dec_dev_use
-r_static
-r_inline
-r_void
-id|usb_dec_dev_use
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
-c_func
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-)paren
-id|usb_free_dev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* used these for multi-interface device registration */
 r_extern
 r_int

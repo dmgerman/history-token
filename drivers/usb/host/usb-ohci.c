@@ -434,7 +434,7 @@ comma
 id|urb_priv
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2276,7 +2276,7 @@ id|usb_get_urb
 id|urb
 )paren
 suffix:semicolon
-id|usb_inc_dev_use
+id|usb_get_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2327,7 +2327,7 @@ c_cond
 id|ohci-&gt;disabled
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2365,7 +2365,7 @@ id|mem_flags
 )paren
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2458,7 +2458,7 @@ op_le
 l_int|0
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2576,7 +2576,7 @@ op_logical_neg
 id|urb_priv
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2685,7 +2685,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2730,7 +2730,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -2840,7 +2840,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren
@@ -3302,7 +3302,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* usb_dec_dev_use done in dl_del_list() */
+multiline_comment|/* usb_put_dev done in dl_del_list() */
 id|urb-&gt;status
 op_assign
 op_minus
@@ -9330,7 +9330,7 @@ id|urb-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 (paren
 id|usb_dev
 )paren
@@ -9402,8 +9402,7 @@ id|urb-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|usb_dec_dev_use
-c_func
+id|usb_put_dev
 (paren
 id|urb-&gt;dev
 )paren

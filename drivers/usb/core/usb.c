@@ -2885,7 +2885,40 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_free_dev - free a usb device structure (usbcore-internal)&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
+multiline_comment|/**&n; * usb_get_dev - increments the reference count of the device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them by calling usb_put_dev(), in their disconnect() methods.&n; *&n; * A pointer to the device with the incremented reference counter is returned.&n; */
+DECL|function|usb_get_dev
+r_struct
+id|usb_device
+op_star
+id|usb_get_dev
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|atomic_inc
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+r_return
+id|dev
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_free_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
 DECL|function|usb_free_dev
 r_void
 id|usb_free_dev
@@ -2895,6 +2928,17 @@ r_struct
 id|usb_device
 op_star
 id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
 )paren
 (brace
 r_if
@@ -2925,6 +2969,7 @@ id|kfree
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * usb_alloc_urb - creates a new urb for a USB driver to use&n; * @iso_packets: number of iso packets for this urb&n; * @mem_flags: the type of memory to allocate, see kmalloc() for a list of&n; *&t;valid options for this.&n; *&n; * Creates an urb for the USB driver to use, initializes a few internal&n; * structures, incrementes the usage counter, and returns a pointer to it.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * If the driver want to use this urb for interrupt, control, or bulk&n; * endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; * The driver must call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
@@ -3060,7 +3105,7 @@ id|urb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_get_urb - incrementes the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
+multiline_comment|/**&n; * usb_get_urb - increments the reference count of the urb&n; * @urb: pointer to the urb to modify&n; *&n; * This must be  called whenever a urb is transfered from a device driver to a&n; * host controller driver.  This allows proper reference counting to happen&n; * for urbs.&n; *&n; * A pointer to the urb with the incremented reference counter is returned.&n; */
 DECL|function|usb_get_urb
 r_struct
 id|urb
@@ -6091,7 +6136,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
 multiline_comment|/* it hits 0 which could very well be now */
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -8978,6 +9023,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_free_dev
+)paren
+suffix:semicolon
+DECL|variable|usb_get_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_get_dev
 )paren
 suffix:semicolon
 DECL|variable|usb_hub_tt_clear_buffer

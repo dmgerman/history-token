@@ -2491,7 +2491,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* At this point, we&squot;re committed to using the device */
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|dev
@@ -2741,7 +2741,7 @@ id|ss
 )paren
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -2769,7 +2769,7 @@ op_logical_neg
 id|ss-&gt;current_urb
 )paren
 (brace
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -2857,7 +2857,7 @@ id|USB_STORAGE
 l_string|&quot;Out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -2905,7 +2905,7 @@ c_func
 id|ss
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3418,7 +3418,7 @@ c_func
 id|ss
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3579,7 +3579,7 @@ c_func
 id|ss
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3628,7 +3628,7 @@ c_func
 id|ss
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3739,7 +3739,7 @@ c_func
 id|ss
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3972,7 +3972,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* mark the device as gone */
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|ss-&gt;pusb_dev

@@ -440,7 +440,7 @@ op_amp
 id|td-&gt;fl_list
 )paren
 suffix:semicolon
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|dev
@@ -1102,7 +1102,7 @@ c_cond
 (paren
 id|td-&gt;dev
 )paren
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|td-&gt;dev
@@ -1204,7 +1204,7 @@ op_amp
 id|qh-&gt;remove_list
 )paren
 suffix:semicolon
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|dev
@@ -1270,7 +1270,7 @@ c_cond
 (paren
 id|qh-&gt;dev
 )paren
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|qh-&gt;dev
@@ -6322,7 +6322,7 @@ op_amp
 id|urb-&gt;urb_list
 )paren
 suffix:semicolon
-id|usb_inc_dev_use
+id|usb_get_dev
 c_func
 (paren
 id|urb-&gt;dev
@@ -6388,7 +6388,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|urb-&gt;dev
@@ -10233,7 +10233,7 @@ r_else
 (brace
 multiline_comment|/* We decrement the usage count after we&squot;re done */
 multiline_comment|/*  with everything */
-id|usb_dec_dev_use
+id|usb_put_dev
 c_func
 (paren
 id|dev
