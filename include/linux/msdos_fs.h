@@ -1674,10 +1674,6 @@ id|de
 comma
 id|loff_t
 id|i_pos
-comma
-r_int
-op_star
-id|res
 )paren
 suffix:semicolon
 r_extern
