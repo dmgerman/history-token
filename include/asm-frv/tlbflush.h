@@ -77,7 +77,7 @@ mdefine_line|#define flush_tlb()&t;&t;&t;&t;flush_tlb_all()
 DECL|macro|flush_tlb_kernel_range
 mdefine_line|#define flush_tlb_kernel_range(start, end)&t;flush_tlb_all()
 DECL|macro|flush_tlb_pgtables
-mdefine_line|#define flush_tlb_pgtables(mm,start,end)&t;asm volatile(&quot;movgs gr0,scr0 ! movgs gr0,scr1&quot;);
+mdefine_line|#define flush_tlb_pgtables(mm,start,end) &bslash;&n;&t;asm volatile(&quot;movgs %0,scr0 ! movgs %0,scr1&quot; :: &quot;r&quot;(ULONG_MAX) : &quot;memory&quot;);
 macro_line|#else
 DECL|macro|flush_tlb
 mdefine_line|#define flush_tlb()&t;&t;&t;&t;BUG()
