@@ -2501,6 +2501,12 @@ id|sha384_final
 )brace
 )brace
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;sha384&quot;
+)paren
+suffix:semicolon
 DECL|function|init
 r_static
 r_int
