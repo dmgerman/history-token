@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/parport_pc.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;

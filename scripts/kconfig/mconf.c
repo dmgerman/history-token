@@ -4,6 +4,7 @@ macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
+macro_line|#include &lt;limits.h&gt;
 macro_line|#include &lt;signal.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;stdlib.h&gt;
@@ -156,6 +157,18 @@ id|input_buf
 (braket
 l_int|4096
 )braket
+suffix:semicolon
+DECL|variable|filename
+r_static
+r_char
+id|filename
+(braket
+id|PATH_MAX
+op_plus
+l_int|1
+)braket
+op_assign
+l_string|&quot;.config&quot;
 suffix:semicolon
 DECL|variable|args
 DECL|variable|argptr
@@ -3322,7 +3335,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|conf_filename
+id|filename
 )paren
 suffix:semicolon
 id|stat
@@ -3451,7 +3464,7 @@ c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|conf_filename
+id|filename
 )paren
 suffix:semicolon
 id|stat
