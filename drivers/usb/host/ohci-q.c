@@ -262,6 +262,32 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_NO_DMA_MAP
+)paren
+op_logical_and
+id|usb_pipein
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+id|pci_dma_sync_single
+(paren
+id|hc-&gt;hcd.pdev
+comma
+id|urb-&gt;transfer_dma
+comma
+id|urb-&gt;transfer_buffer_length
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
+suffix:semicolon
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|urb_print
 (paren
@@ -312,6 +338,7 @@ op_amp
 id|urb-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* syncing with PCI_DMA_TODEVICE is evidently trouble... */
 id|spin_lock
 (paren
 op_amp
