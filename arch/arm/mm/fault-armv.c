@@ -323,6 +323,12 @@ op_minus
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -392,6 +398,12 @@ id|offset
 )paren
 suffix:semicolon
 )brace
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -481,6 +493,12 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we have any shared mappings that are in the same mm&n;&t; * space, then we need to handle them specially to maintain&n;&t; * cache coherency.&n;&t; */
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -556,6 +574,12 @@ id|offset
 )paren
 suffix:semicolon
 )brace
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

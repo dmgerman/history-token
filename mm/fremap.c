@@ -780,6 +780,12 @@ op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_NONLINEAR
@@ -807,6 +813,12 @@ id|vma-&gt;shared.vm_set.list
 comma
 op_amp
 id|mapping-&gt;i_mmap_nonlinear
+)paren
+suffix:semicolon
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 id|spin_unlock

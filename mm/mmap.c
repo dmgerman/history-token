@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 multiline_comment|/*&n; * WARNING: the debugging will use recursive algorithms so never enable this&n; * unless you know what you are doing.&n; */
 DECL|macro|DEBUG_MM_RB
@@ -169,6 +170,12 @@ id|VM_SHARED
 id|mapping-&gt;i_mmap_writable
 op_decrement
 suffix:semicolon
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -195,6 +202,12 @@ id|vma
 comma
 op_amp
 id|mapping-&gt;i_mmap
+)paren
+suffix:semicolon
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 )brace
@@ -1110,6 +1123,12 @@ id|VM_SHARED
 id|mapping-&gt;i_mmap_writable
 op_increment
 suffix:semicolon
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1139,6 +1158,12 @@ id|vma
 comma
 op_amp
 id|mapping-&gt;i_mmap
+)paren
+suffix:semicolon
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 )brace
@@ -1533,6 +1558,13 @@ c_cond
 (paren
 id|root
 )paren
+(brace
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 id|vma_prio_tree_remove
 c_func
 (paren
@@ -1541,6 +1573,7 @@ comma
 id|root
 )paren
 suffix:semicolon
+)brace
 id|vma-&gt;vm_start
 op_assign
 id|start
@@ -1571,6 +1604,12 @@ c_func
 id|vma
 comma
 id|root
+)paren
+suffix:semicolon
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
 )paren
 suffix:semicolon
 )brace

@@ -755,6 +755,12 @@ id|PAGE_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* We have carefully arranged in arch_get_unmapped_area() that&n;&t; * *any* mappings of a file are always congruently mapped (whether&n;&t; * declared as MAP_PRIVATE or MAP_SHARED), so we only need&n;&t; * to flush one address here for them all to become coherent */
+id|flush_dcache_mmap_lock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -820,9 +826,15 @@ comma
 id|addr
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
+id|flush_dcache_mmap_unlock
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
 )brace
 DECL|variable|__flush_dcache_page
 id|EXPORT_SYMBOL
