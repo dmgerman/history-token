@@ -130,7 +130,7 @@ r_int
 r_int
 id|phys_cpu_present_map
 suffix:semicolon
-multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesnt have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
+multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesn&squot;t have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
 DECL|function|find_smp_config
 r_void
 id|__init
