@@ -4163,16 +4163,7 @@ id|inode_needs_sync
 suffix:semicolon
 multiline_comment|/*&n; *&t;Quota functions that want to walk the inode lists..&n; */
 macro_line|#ifdef CONFIG_QUOTA
-multiline_comment|/* Functions back in dquot.c */
-r_void
-id|put_dquot_list
-c_func
-(paren
-r_struct
-id|list_head
-op_star
-)paren
-suffix:semicolon
+multiline_comment|/* Function back in dquot.c */
 r_int
 id|remove_inode_dquot_ref
 c_func
@@ -4200,6 +4191,11 @@ id|sb
 comma
 r_int
 id|type
+comma
+r_struct
+id|list_head
+op_star
+id|tofree_head
 )paren
 (brace
 r_struct
@@ -4211,12 +4207,6 @@ r_struct
 id|list_head
 op_star
 id|act_head
-suffix:semicolon
-id|LIST_HEAD
-c_func
-(paren
-id|tofree_head
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4278,7 +4268,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4325,7 +4314,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4368,7 +4356,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4411,7 +4398,6 @@ id|inode
 comma
 id|type
 comma
-op_amp
 id|tofree_head
 )paren
 suffix:semicolon
@@ -4421,13 +4407,6 @@ c_func
 (paren
 op_amp
 id|inode_lock
-)paren
-suffix:semicolon
-id|put_dquot_list
-c_func
-(paren
-op_amp
-id|tofree_head
 )paren
 suffix:semicolon
 )brace
