@@ -493,15 +493,15 @@ id|new_console
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * vc_screen.c shares this temporary buffer with the console write code so that&n; * we can easily avoid touching user space while holding the console spinlock.&n; */
+DECL|macro|CON_BUF_SIZE
+mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
 r_extern
 r_char
 id|con_buf
 (braket
-id|PAGE_SIZE
+id|CON_BUF_SIZE
 )braket
 suffix:semicolon
-DECL|macro|CON_BUF_SIZE
-mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
 r_extern
 r_struct
 id|semaphore

@@ -9204,7 +9204,7 @@ DECL|variable|con_buf
 r_char
 id|con_buf
 (braket
-id|PAGE_SIZE
+id|CON_BUF_SIZE
 )braket
 suffix:semicolon
 DECL|variable|con_buf_sem
