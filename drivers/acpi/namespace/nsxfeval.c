@@ -250,20 +250,9 @@ suffix:semicolon
 id|acpi_status
 id|status2
 suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|internal_params
-op_assign
-l_int|NULL
-suffix:semicolon
-r_union
-id|acpi_operand_object
-op_star
-id|internal_return_obj
-op_assign
-l_int|NULL
+r_struct
+id|acpi_parameter_info
+id|info
 suffix:semicolon
 id|acpi_size
 id|buffer_space_needed
@@ -276,6 +265,22 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;acpi_evaluate_object&quot;
 )paren
 suffix:semicolon
+id|info.node
+op_assign
+id|handle
+suffix:semicolon
+id|info.parameters
+op_assign
+l_int|NULL
+suffix:semicolon
+id|info.return_object
+op_assign
+l_int|NULL
+suffix:semicolon
+id|info.parameter_type
+op_assign
+id|ACPI_PARAM_ARGS
+suffix:semicolon
 multiline_comment|/*&n;&t; * If there are parameters to be passed to the object&n;&t; * (which must be a control method), the external objects&n;&t; * must be converted to internal objects&n;&t; */
 r_if
 c_cond
@@ -286,7 +291,7 @@ id|external_params-&gt;count
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Allocate a new parameter block for the internal objects&n;&t;&t; * Add 1 to count to allow for null terminated internal list&n;&t;&t; */
-id|internal_params
+id|info.parameters
 op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
@@ -310,7 +315,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|internal_params
+id|info.parameters
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -346,7 +351,7 @@ id|i
 )braket
 comma
 op_amp
-id|internal_params
+id|info.parameters
 (braket
 id|i
 )braket
@@ -363,7 +368,7 @@ id|status
 (brace
 id|acpi_ut_delete_internal_object_list
 (paren
-id|internal_params
+id|info.parameters
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -373,7 +378,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-id|internal_params
+id|info.parameters
 (braket
 id|external_params-&gt;count
 )braket
@@ -407,10 +412,8 @@ id|acpi_ns_evaluate_by_name
 (paren
 id|pathname
 comma
-id|internal_params
-comma
 op_amp
-id|internal_return_obj
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -472,12 +475,8 @@ id|status
 op_assign
 id|acpi_ns_evaluate_by_handle
 (paren
-id|handle
-comma
-id|internal_params
-comma
 op_amp
-id|internal_return_obj
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -488,14 +487,10 @@ id|status
 op_assign
 id|acpi_ns_evaluate_relative
 (paren
-id|handle
-comma
 id|pathname
 comma
-id|internal_params
-comma
 op_amp
-id|internal_return_obj
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -511,7 +506,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|internal_return_obj
+id|info.return_object
 )paren
 (brace
 id|return_buffer-&gt;length
@@ -526,7 +521,7 @@ c_cond
 (paren
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
-id|internal_return_obj
+id|info.return_object
 )paren
 op_eq
 id|ACPI_DESC_TYPE_NAMED
@@ -537,7 +532,7 @@ id|status
 op_assign
 id|AE_TYPE
 suffix:semicolon
-id|internal_return_obj
+id|info.return_object
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -561,7 +556,7 @@ id|status
 op_assign
 id|acpi_ut_get_object_size
 (paren
-id|internal_return_obj
+id|info.return_object
 comma
 op_amp
 id|buffer_space_needed
@@ -623,7 +618,7 @@ id|status
 op_assign
 id|acpi_ut_copy_iobject_to_eobject
 (paren
-id|internal_return_obj
+id|info.return_object
 comma
 id|return_buffer
 )paren
@@ -636,7 +631,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|internal_return_obj
+id|info.return_object
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Delete the internal return object.  NOTE: Interpreter&n;&t;&t; * must be locked to avoid race condition.&n;&t;&t; */
@@ -658,7 +653,7 @@ id|status2
 multiline_comment|/*&n;&t;&t;&t; * Delete the internal return object. (Or at least&n;&t;&t;&t; * decrement the reference count by one)&n;&t;&t;&t; */
 id|acpi_ut_remove_reference
 (paren
-id|internal_return_obj
+id|info.return_object
 )paren
 suffix:semicolon
 id|acpi_ex_exit_interpreter
@@ -671,13 +666,13 @@ multiline_comment|/*&n;&t; * Free the input parameter list (if we created one),&
 r_if
 c_cond
 (paren
-id|internal_params
+id|info.parameters
 )paren
 (brace
 multiline_comment|/* Free the allocated parameter block */
 id|acpi_ut_delete_internal_object_list
 (paren
-id|internal_params
+id|info.parameters
 )paren
 suffix:semicolon
 )brace
