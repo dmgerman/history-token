@@ -942,7 +942,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function iriap_disconnect_indication (handle, reason)&n; *&n; *    Got disconnect, so clean up everything assosiated with this connection&n; *&n; */
+multiline_comment|/*&n; * Function iriap_disconnect_indication (handle, reason)&n; *&n; *    Got disconnect, so clean up everything associated with this connection&n; *&n; */
 DECL|function|iriap_disconnect_indication
 r_static
 r_void

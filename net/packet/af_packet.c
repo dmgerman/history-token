@@ -329,8 +329,6 @@ id|packet_socks_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 r_extern
 r_struct
@@ -3208,8 +3206,6 @@ id|sock-&gt;state
 op_assign
 id|SS_UNCONNECTED
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -3430,8 +3426,6 @@ id|sk
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -7026,6 +7020,11 @@ dot
 id|create
 op_assign
 id|packet_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

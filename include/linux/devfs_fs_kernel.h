@@ -347,8 +347,10 @@ r_inline
 r_int
 id|devfs_register_tape
 (paren
-id|devfs_handle_t
-id|de
+r_const
+r_char
+op_star
+id|name
 )paren
 (brace
 r_return

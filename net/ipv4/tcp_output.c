@@ -126,7 +126,7 @@ op_plus
 id|tp-&gt;snd_wnd
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate mss to advertise in SYN segment.&n; * RFC1122, RFC1063, draft-ietf-tcpimpl-pmtud-01 state that:&n; *&n; * 1. It is independent of path mtu.&n; * 2. Ideally, it is maximal possible segment size i.e. 65535-40.&n; * 3. For IPv4 it is reasonable to calculate it from maximal MTU of&n; *    attached devices, because some buggy hosts are confused by&n; *    large MSS.&n; * 4. We do not make 3, we advertise MSS, calculated from first&n; *    hop device mtu, but allow to raise it to ip_rt_min_advmss.&n; *    This may be overriden via information stored in routing table.&n; * 5. Value 65535 for MSS is valid in IPv6 and means &quot;as large as possible,&n; *    probably even Jumbo&quot;.&n; */
+multiline_comment|/* Calculate mss to advertise in SYN segment.&n; * RFC1122, RFC1063, draft-ietf-tcpimpl-pmtud-01 state that:&n; *&n; * 1. It is independent of path mtu.&n; * 2. Ideally, it is maximal possible segment size i.e. 65535-40.&n; * 3. For IPv4 it is reasonable to calculate it from maximal MTU of&n; *    attached devices, because some buggy hosts are confused by&n; *    large MSS.&n; * 4. We do not make 3, we advertise MSS, calculated from first&n; *    hop device mtu, but allow to raise it to ip_rt_min_advmss.&n; *    This may be overridden via information stored in routing table.&n; * 5. Value 65535 for MSS is valid in IPv6 and means &quot;as large as possible,&n; *    probably even Jumbo&quot;.&n; */
 DECL|function|tcp_advertise_mss
 r_static
 id|__u16

@@ -3236,7 +3236,7 @@ op_amp
 id|sctpv6_stream_protosw
 )paren
 suffix:semicolon
-multiline_comment|/* Register the SCTP specfic PF_INET6 functions. */
+multiline_comment|/* Register the SCTP specific PF_INET6 functions. */
 id|sctp_register_pf
 c_func
 (paren
@@ -3246,7 +3246,7 @@ comma
 id|PF_INET6
 )paren
 suffix:semicolon
-multiline_comment|/* Register the SCTP specfic AF_INET6 functions. */
+multiline_comment|/* Register the SCTP specific AF_INET6 functions. */
 id|sctp_register_af
 c_func
 (paren

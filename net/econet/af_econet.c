@@ -1829,8 +1829,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1983,8 +1981,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2033,8 +2029,6 @@ suffix:semicolon
 id|sock-&gt;state
 op_assign
 id|SS_UNCONNECTED
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|err
 op_assign
@@ -2159,8 +2153,6 @@ id|sk
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -2616,6 +2608,11 @@ dot
 id|create
 op_assign
 id|econet_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

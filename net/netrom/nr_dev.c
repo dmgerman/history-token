@@ -598,8 +598,6 @@ op_star
 id|dev
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -651,8 +649,6 @@ id|dev-&gt;dev_addr
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -734,6 +730,12 @@ op_star
 id|dev
 )paren
 (brace
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;mtu
 op_assign
 id|NR_MAX_PACKET_SIZE

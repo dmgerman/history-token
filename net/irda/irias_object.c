@@ -386,7 +386,7 @@ id|obj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irias_delete_object (obj)&n; *&n; *    Remove object from hashbin and deallocate all attributes assosiated with&n; *    with this object and the object itself&n; *&n; */
+multiline_comment|/*&n; * Function irias_delete_object (obj)&n; *&n; *    Remove object from hashbin and deallocate all attributes associated with&n; *    with this object and the object itself&n; *&n; */
 DECL|function|irias_delete_object
 r_int
 id|irias_delete_object

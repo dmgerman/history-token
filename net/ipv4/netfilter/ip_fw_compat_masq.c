@@ -1,4 +1,4 @@
-multiline_comment|/* Masquerading compatibility layer.&n;&n;   Note that there are no restrictions on other programs binding to&n;   ports 61000:65095 (in 2.0 and 2.2 they get EADDRINUSE).  Just DONT&n;   DO IT.&n; */
+multiline_comment|/* Masquerading compatibility layer.&n;&n;   Note that there are no restrictions on other programs binding to&n;   ports 61000:65095 (in 2.0 and 2.2 they get EADDRINUSE).  Just DON&squot;T&n;   DO IT.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;

@@ -2357,7 +2357,7 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-multiline_comment|/* This is rx header therefor addresses are swaped.&n;&t; * ie eh.h_dest is our local address. */
+multiline_comment|/* This is rx header therefore addresses are swapped.&n;&t; * ie eh.h_dest is our local address. */
 id|memcpy
 c_func
 (paren

@@ -47,7 +47,7 @@ id|driver_data
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. */
+multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address. dma_mask is set by&n; * default to 32 bits.*/
 DECL|struct|eisa_device
 r_struct
 id|eisa_device
@@ -70,6 +70,10 @@ DECL|member|res
 r_struct
 id|resource
 id|res
+suffix:semicolon
+DECL|member|dma_mask
+id|u64
+id|dma_mask
 suffix:semicolon
 DECL|member|dev
 r_struct
@@ -168,11 +172,6 @@ DECL|struct|eisa_root_device
 r_struct
 id|eisa_root_device
 (brace
-DECL|member|node
-r_struct
-id|list_head
-id|node
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|device
@@ -201,6 +200,12 @@ r_int
 id|bus_nr
 suffix:semicolon
 multiline_comment|/* Set by eisa_root_register */
+DECL|member|eisa_root_res
+r_struct
+id|resource
+id|eisa_root_res
+suffix:semicolon
+multiline_comment|/* ditto */
 )brace
 suffix:semicolon
 r_int

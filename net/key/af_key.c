@@ -164,8 +164,6 @@ op_amp
 id|pfkey_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|pfkey_table_grab
 r_static
@@ -547,8 +545,6 @@ r_return
 op_minus
 id|EPROTONOSUPPORT
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -673,8 +669,6 @@ l_int|0
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|err
 suffix:semicolon
@@ -14598,6 +14592,11 @@ dot
 id|create
 op_assign
 id|pfkey_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

@@ -243,7 +243,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_set_media_busy (self, status)&n; *&n; *    Called when we have detected that another station is transmiting&n; *    in contention mode.&n; */
+multiline_comment|/*&n; * Function irda_device_set_media_busy (self, status)&n; *&n; *    Called when we have detected that another station is transmitting&n; *    in contention mode.&n; */
 DECL|function|irda_device_set_media_busy
 r_void
 id|irda_device_set_media_busy
@@ -1493,7 +1493,7 @@ op_star
 r_new
 )paren
 (brace
-multiline_comment|/* Check if this dongle has been registred before */
+multiline_comment|/* Check if this dongle has been registered before */
 r_if
 c_cond
 (paren
@@ -1545,7 +1545,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_device_unregister_dongle (dongle)&n; *&n; *    Unregister dongle, and remove dongle from list of registred dongles&n; *&n; */
+multiline_comment|/*&n; * Function irda_device_unregister_dongle (dongle)&n; *&n; *    Unregister dongle, and remove dongle from list of registered dongles&n; *&n; */
 DECL|function|irda_device_unregister_dongle
 r_void
 id|irda_device_unregister_dongle

@@ -1,4 +1,4 @@
-multiline_comment|/* net/atm/resources.c - Staticly allocated resources */
+multiline_comment|/* net/atm/resources.c - Statically allocated resources */
 multiline_comment|/* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
 multiline_comment|/* Fixes&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * 2002/01 - don&squot;t free the whole struct sock on sk-&gt;destruct time,&n; * &t;     use the default destruct function initialized by sock_init_data */
 macro_line|#include &lt;linux/config.h&gt;
