@@ -122,6 +122,9 @@ comma
 r_int
 r_char
 id|byte
+comma
+r_int
+id|timeout
 )paren
 (brace
 id|serio_pause_rx
@@ -172,7 +175,7 @@ comma
 id|msecs_to_jiffies
 c_func
 (paren
-l_int|200
+id|timeout
 )paren
 )paren
 suffix:semicolon
@@ -259,21 +262,6 @@ op_amp
 id|ps2dev-&gt;cmd_sem
 )paren
 suffix:semicolon
-id|timeout
-op_assign
-id|msecs_to_jiffies
-c_func
-(paren
-id|command
-op_eq
-id|PS2_CMD_RESET_BAT
-ques
-c_cond
-l_int|4000
-suffix:colon
-l_int|500
-)paren
-suffix:semicolon
 id|serio_pause_rx
 c_func
 (paren
@@ -338,6 +326,7 @@ c_func
 id|ps2dev-&gt;serio
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some devices (Synaptics) peform the reset before&n;&t; * ACKing the reset command, and so it can take a long&n;&t; * time before the ACK arrrives.&n;&t; */
 r_if
 c_cond
 (paren
@@ -356,6 +345,15 @@ comma
 id|command
 op_amp
 l_int|0xff
+comma
+id|command
+op_eq
+id|PS2_CMD_RESET_BAT
+ques
+c_cond
+l_int|1000
+suffix:colon
+l_int|200
 )paren
 )paren
 r_goto
@@ -387,13 +385,29 @@ id|param
 (braket
 id|i
 )braket
+comma
+l_int|200
 )paren
 )paren
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/*&n;&t; * The reset command takes a long time to execute.&n;&t; */
 id|timeout
 op_assign
+id|msecs_to_jiffies
+c_func
+(paren
+id|command
+op_eq
+id|PS2_CMD_RESET_BAT
+ques
+c_cond
+l_int|4000
+suffix:colon
+l_int|500
+)paren
+suffix:semicolon
 id|wait_event_interruptible_timeout
 c_func
 (paren
@@ -426,14 +440,16 @@ id|command
 op_eq
 id|PS2_CMD_RESET_BAT
 op_logical_and
-id|jiffies_to_msecs
+id|timeout
+OG
+id|msecs_to_jiffies
 c_func
 (paren
-id|timeout
-)paren
-OG
 l_int|100
 )paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * Device has sent the first response byte&n;&t;&t;&t; * after a reset command, reset is thus done,&n;&t;&t;&t; * shorten the timeout. The next byte will come&n;&t;&t;&t; * soon (keyboard) or not at all (mouse).&n;&t;&t;&t; */
 id|timeout
 op_assign
 id|msecs_to_jiffies
@@ -442,6 +458,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -458,6 +475,7 @@ l_int|1
 op_ne
 l_int|0xab
 op_logical_and
+multiline_comment|/* Regular keyboards */
 id|ps2dev-&gt;cmdbuf
 (braket
 id|receive
@@ -466,8 +484,49 @@ l_int|1
 )braket
 op_ne
 l_int|0xac
+op_logical_and
+multiline_comment|/* NCD Sun keyboard */
+id|ps2dev-&gt;cmdbuf
+(braket
+id|receive
+op_minus
+l_int|1
+)braket
+op_ne
+l_int|0x2b
+op_logical_and
+multiline_comment|/* Trust keyboard, translated */
+id|ps2dev-&gt;cmdbuf
+(braket
+id|receive
+op_minus
+l_int|1
+)braket
+op_ne
+l_int|0x5d
+op_logical_and
+multiline_comment|/* Trust keyboard */
+id|ps2dev-&gt;cmdbuf
+(braket
+id|receive
+op_minus
+l_int|1
+)braket
+op_ne
+l_int|0x60
+op_logical_and
+multiline_comment|/* NMB SGI keyboard, translated */
+id|ps2dev-&gt;cmdbuf
+(braket
+id|receive
+op_minus
+l_int|1
+)braket
+op_ne
+l_int|0x47
 )paren
 (brace
+multiline_comment|/* NMB SGI keyboard */
 multiline_comment|/*&n;&t;&t;&t; * Device behind the port is not a keyboard&n;&t;&t;&t; * so we don&squot;t need to wait for the 2nd byte&n;&t;&t;&t; * of ID response.&n;&t;&t;&t; */
 id|serio_pause_rx
 c_func

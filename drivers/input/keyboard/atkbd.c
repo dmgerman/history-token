@@ -3201,7 +3201,38 @@ l_int|0
 )braket
 op_ne
 l_int|0xac
+op_logical_and
+multiline_comment|/* Regular and NCD Sun keyboards */
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0x2b
+op_logical_and
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0x5d
+op_logical_and
+multiline_comment|/* Trust keyboard, raw and translated */
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0x60
+op_logical_and
+id|param
+(braket
+l_int|0
+)braket
+op_ne
+l_int|0x47
 )paren
+multiline_comment|/* NMB SGI keyboard, raw and translated */
 r_return
 op_minus
 l_int|1

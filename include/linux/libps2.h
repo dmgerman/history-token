@@ -95,6 +95,9 @@ comma
 r_int
 r_char
 id|byte
+comma
+r_int
+id|timeout
 )paren
 suffix:semicolon
 r_int
