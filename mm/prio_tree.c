@@ -2328,11 +2328,4 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|variable|vma_prio_tree_next
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|vma_prio_tree_next
-)paren
-suffix:semicolon
 eof
