@@ -4736,10 +4736,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|as-&gt;urb-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
 id|as-&gt;urb-&gt;dev
 op_assign
 id|ps-&gt;dev
