@@ -917,20 +917,10 @@ op_or
 id|_PAGE_PRESENT
 suffix:semicolon
 multiline_comment|/*&n;&t; * Use `swapper_pg_dir&squot; as our page directory.&n;&t; */
-id|asm
-r_volatile
-(paren
-l_string|&quot;movl %0,%%cr3&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|__pa
+id|load_cr3
 c_func
 (paren
 id|swapper_pg_dir
-)paren
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Write 0x1234 to absolute memory location 0x472.  The BIOS reads&n;&t;   this on booting to tell it to &quot;Bypass memory test (also warm&n;&t;   boot)&quot;.  This seems like a fairly standard thing that gets set by&n;&t;   REBOOT.COM programs, and the previous reset routine did this&n;&t;   too. */
