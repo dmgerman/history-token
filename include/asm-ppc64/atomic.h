@@ -322,6 +322,9 @@ r_return
 id|t
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.&n; */
+DECL|macro|atomic_inc_and_test
+mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 DECL|function|atomic_dec
 r_static
 id|__inline__
