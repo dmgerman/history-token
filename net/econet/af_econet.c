@@ -2023,6 +2023,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 id|eo
 op_assign
 id|ec_sk

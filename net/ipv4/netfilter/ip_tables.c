@@ -14,6 +14,24 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IPv4 packet filter&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*#define DEBUG_IP_FIREWALL*/
 multiline_comment|/*#define DEBUG_ALLOW_ALL*/
 multiline_comment|/* Useful for remote debugging */
@@ -8353,12 +8371,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

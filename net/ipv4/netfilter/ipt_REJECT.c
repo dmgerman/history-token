@@ -11,6 +11,24 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_REJECT.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables REJECT target module&quot;
+)paren
+suffix:semicolon
 macro_line|#if 0
 mdefine_line|#define DEBUGP printk
 macro_line|#else
@@ -543,6 +561,18 @@ id|nskb-&gt;nfmark
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+id|nf_bridge_put
+c_func
+(paren
+id|nskb-&gt;nf_bridge
+)paren
+suffix:semicolon
+id|nskb-&gt;nf_bridge
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|tcph
 op_assign
 (paren
@@ -2053,12 +2083,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -793,6 +793,14 @@ comma
 id|sk
 )paren
 suffix:semicolon
+id|sk_set_owner
+c_func
+(paren
+id|sk
+comma
+id|THIS_MODULE
+)paren
+suffix:semicolon
 macro_line|#ifdef LLC_REFCNT_DEBUG
 id|atomic_inc
 c_func

@@ -10,6 +10,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Yon Uriarte &lt;yon@astaro.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables ESP SPI match module&quot;
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG_CONNTRACK
 DECL|macro|duprintf
 mdefine_line|#define duprintf(format, args...) printk(format , ## args)

@@ -40,7 +40,7 @@ c_cond
 (paren
 id|creds-&gt;pid
 op_eq
-id|current-&gt;pid
+id|current-&gt;tgid
 op_logical_or
 id|capable
 c_func

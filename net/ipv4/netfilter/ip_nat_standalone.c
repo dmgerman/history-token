@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_nat_lock)
 DECL|macro|ASSERT_WRITE_LOCK

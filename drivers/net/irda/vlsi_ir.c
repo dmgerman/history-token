@@ -1,15 +1,26 @@
 multiline_comment|/*********************************************************************&n; *&n; *&t;vlsi_ir.c:&t;VLSI82C147 PCI IrDA controller driver for Linux&n; *&n; *&t;Copyright (c) 2001-2003 Martin Diehl&n; *&n; *&t;This program is free software; you can redistribute it and/or &n; *&t;modify it under the terms of the GNU General Public License as &n; *&t;published by the Free Software Foundation; either version 2 of &n; *&t;the License, or (at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License &n; *&t;along with this program; if not, write to the Free Software &n; *&t;Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *&t;MA 02111-1307 USA&n; *&n; ********************************************************************/
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &t;&t;&quot;vlsi_ir&quot;
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;v0.5&quot;
+DECL|macro|DRIVER_DESCRIPTION
+mdefine_line|#define DRIVER_DESCRIPTION&t;&quot;IrDA SIR/MIR/FIR driver for VLSI 82C147&quot;
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Martin Diehl &lt;info@mdiehl.de&gt;&quot;
+DECL|variable|DRIVER_DESCRIPTION
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IrDA SIR/MIR/FIR driver for VLSI 82C147&quot;
+id|DRIVER_DESCRIPTION
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_AUTHOR
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Martin Diehl &lt;info@mdiehl.de&gt;&quot;
+id|DRIVER_AUTHOR
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -18,12 +29,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;vlsi_ir&quot;
-DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.4a&quot;
 multiline_comment|/********************************************************/
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -35,9 +41,11 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
+macro_line|#include &lt;net/irda/crc.h&gt;
 macro_line|#include &lt;net/irda/vlsi_ir.h&gt;
 multiline_comment|/********************************************************/
 DECL|variable|drivername
@@ -50,8 +58,6 @@ id|drivername
 op_assign
 id|DRIVER_NAME
 suffix:semicolon
-DECL|macro|PCI_CLASS_WIRELESS_IRDA
-mdefine_line|#define PCI_CLASS_WIRELESS_IRDA 0x0d00
 DECL|variable|vlsi_irda_table
 r_static
 r_struct
@@ -70,6 +76,13 @@ op_lshift
 l_int|8
 comma
 dot
+id|class_mask
+op_assign
+id|PCI_CLASS_SUBCLASS_MASK
+op_lshift
+l_int|8
+comma
+dot
 id|vendor
 op_assign
 id|PCI_VENDOR_ID_VLSI
@@ -78,6 +91,16 @@ dot
 id|device
 op_assign
 id|PCI_DEVICE_ID_VLSI_82C147
+comma
+dot
+id|subvendor
+op_assign
+id|PCI_ANY_ID
+comma
+dot
+id|subdevice
+op_assign
+id|PCI_ANY_ID
 comma
 )brace
 comma
@@ -198,9 +221,9 @@ r_static
 r_int
 id|qos_mtt_bits
 op_assign
-l_int|0x04
+l_int|0x07
 suffix:semicolon
-multiline_comment|/* default is 1 ms */
+multiline_comment|/* default is 1 ms or more */
 multiline_comment|/********************************************************/
 DECL|function|vlsi_reg_debug
 r_static
@@ -496,7 +519,7 @@ id|out
 comma
 l_string|&quot;&bslash;n%s (vid/did: %04x/%04x)&bslash;n&quot;
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -779,7 +802,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;IRMISC:%s%s%s UART%s&quot;
+l_string|&quot;IRMISC:%s%s%s uart%s&quot;
 comma
 (paren
 id|byte
@@ -821,7 +844,7 @@ id|IRMISC_UARTEN
 )paren
 ques
 c_cond
-l_string|&quot;&quot;
+l_string|&quot;@&quot;
 suffix:colon
 l_string|&quot; disabled&bslash;n&quot;
 )paren
@@ -841,7 +864,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;@0x%s&bslash;n&quot;
+l_string|&quot;0x%s&bslash;n&quot;
 comma
 (paren
 id|byte
@@ -1383,11 +1406,11 @@ comma
 (paren
 id|word
 op_amp
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 )paren
 ques
 c_cond
-l_string|&quot; IRENABLE&quot;
+l_string|&quot; PHYANDCLOCK&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -2213,10 +2236,9 @@ op_logical_neg
 id|ndev-&gt;priv
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: invalid ptr!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3207,8 +3229,52 @@ c_cond
 id|rd-&gt;buf
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+(paren
+id|busaddr
+op_assign
+id|pci_map_single
+c_func
+(paren
+id|pdev
+comma
+id|rd-&gt;buf
+comma
+id|len
+comma
+id|dir
+)paren
+)paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rd-&gt;buf
+)paren
+(brace
+id|ERROR
+c_func
+(paren
+l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
+comma
+id|__FUNCTION__
+comma
+id|rd-&gt;buf
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|rd-&gt;buf
+)paren
+suffix:semicolon
+id|rd-&gt;buf
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -3284,44 +3350,6 @@ id|r
 suffix:semicolon
 r_return
 l_int|NULL
-suffix:semicolon
-)brace
-id|busaddr
-op_assign
-id|pci_map_single
-c_func
-(paren
-id|pdev
-comma
-id|rd-&gt;buf
-comma
-id|len
-comma
-id|dir
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|busaddr
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed to create PCI-MAP for %p&quot;
-comma
-id|__FUNCTION__
-comma
-id|rd-&gt;buf
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 id|rd_set_addr_status
@@ -3516,10 +3544,9 @@ op_logical_neg
 id|ringarea
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: insufficient memory for descriptor rings&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3851,9 +3878,10 @@ id|ret
 op_or_assign
 id|VLSI_RX_CRC
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
-(brace
 id|len
 op_assign
 id|rd_get_count
@@ -3894,10 +3922,11 @@ op_le
 l_int|0
 )paren
 (brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_ERR
+l_int|0
+comma
 l_string|&quot;%s: strange frame (len=%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -3909,8 +3938,65 @@ id|ret
 op_or_assign
 id|VLSI_RX_DROP
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
+r_if
+c_cond
+(paren
+id|idev-&gt;mode
+op_eq
+id|IFF_SIR
+)paren
+(brace
+multiline_comment|/* hw checks CRC in MIR, FIR mode */
+multiline_comment|/* rd-&gt;buf is a streaming PCI_DMA_FROMDEVICE map. Doing the&n;&t;&t; * endian-adjustment there just in place will dirty a cache line&n;&t;&t; * which belongs to the map and thus we must be sure it will&n;&t;&t; * get flushed before giving the buffer back to hardware.&n;&t;&t; * vlsi_fill_rx() will do this anyway - but here we rely on.&n;&t;&t; */
+id|le16_to_cpus
+c_func
+(paren
+id|rd-&gt;buf
+op_plus
+id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irda_calc_crc16
+c_func
+(paren
+id|INIT_FCS
+comma
+id|rd-&gt;buf
+comma
+id|len
+op_plus
+id|crclen
+)paren
+op_ne
+id|GOOD_FCS
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s: crc error&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|ret
+op_or_assign
+id|VLSI_RX_CRC
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -3918,11 +4004,10 @@ op_logical_neg
 id|rd-&gt;skb
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s: rx packet dropped&bslash;n&quot;
+l_string|&quot;%s: rx packet lost&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3931,9 +4016,10 @@ id|ret
 op_or_assign
 id|VLSI_RX_DROP
 suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
 )brace
-r_else
-(brace
 id|skb
 op_assign
 id|rd-&gt;skb
@@ -3991,8 +4077,8 @@ id|ndev-&gt;last_rx
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
-)brace
+id|done
+suffix:colon
 id|rd_set_status
 c_func
 (paren
@@ -4073,9 +4159,18 @@ id|rd
 )paren
 )paren
 (brace
-id|BUG
+id|WARNING
 c_func
 (paren
+l_string|&quot;%s: driver bug: rx descr race with hw&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|vlsi_ring_debug
+c_func
+(paren
+id|r
 )paren
 suffix:semicolon
 r_break
@@ -4339,10 +4434,9 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/* we are in big trouble, if this should ever happen */
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: rx ring exhausted!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4450,10 +4544,11 @@ id|rd
 )paren
 )paren
 (brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s - dropping rx packet&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4739,39 +4834,22 @@ r_int
 id|vlsi_set_baud
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|ndev
-comma
-r_int
-id|dolock
-)paren
-(brace
 id|vlsi_irda_dev_t
 op_star
 id|idev
-op_assign
-id|ndev-&gt;priv
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|u16
-id|nphyctl
-suffix:semicolon
+comma
 r_int
 id|iobase
+)paren
+(brace
+id|u16
+id|nphyctl
 suffix:semicolon
 id|u16
 id|config
 suffix:semicolon
 r_int
 id|mode
-suffix:semicolon
-r_int
-id|idle_retry
 suffix:semicolon
 r_int
 id|ret
@@ -4781,23 +4859,16 @@ id|baudrate
 suffix:semicolon
 r_int
 id|fifocnt
-op_assign
-l_int|0
 suffix:semicolon
-multiline_comment|/* Keep compiler happy */
 id|baudrate
 op_assign
 id|idev-&gt;new_baud
 suffix:semicolon
-id|iobase
-op_assign
-id|ndev-&gt;base_addr
-suffix:semicolon
-macro_line|#if 0
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|2
+comma
 l_string|&quot;%s: %d -&gt; %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4807,7 +4878,6 @@ comma
 id|idev-&gt;new_baud
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4881,10 +4951,9 @@ id|baudrate
 (brace
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: undefined baudrate %d - fallback to 9600!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -4933,47 +5002,18 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|dolock
-)paren
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
+id|config
+op_or_assign
+id|IRCFG_MSTR
+op_or
+id|IRCFG_ENRX
 suffix:semicolon
-r_else
-id|flags
-op_assign
-l_int|0xdead
-suffix:semicolon
-multiline_comment|/* prevent bogus warning about possible uninitialized use */
-r_for
-c_loop
-(paren
-id|idle_retry
-op_assign
-l_int|0
-suffix:semicolon
-id|idle_retry
-OL
-l_int|100
-suffix:semicolon
-id|idle_retry
-op_increment
-)paren
-(brace
 id|fifocnt
 op_assign
 id|inw
 c_func
 (paren
-id|ndev-&gt;base_addr
+id|iobase
 op_plus
 id|VLSI_PIO_RCVBCNT
 )paren
@@ -4984,78 +5024,15 @@ r_if
 c_cond
 (paren
 id|fifocnt
-op_eq
-l_int|0
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|idle_retry
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: waiting for rx fifo to become empty(%d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|fifocnt
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dolock
-)paren
-(brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_else
-id|udelay
-c_func
-(paren
-l_int|100
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_ERR
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5063,6 +5040,7 @@ comma
 id|fifocnt
 )paren
 suffix:semicolon
+)brace
 id|outw
 c_func
 (paren
@@ -5072,17 +5050,6 @@ id|iobase
 op_plus
 id|VLSI_PIO_IRENABLE
 )paren
-suffix:semicolon
-id|wmb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|config
-op_or_assign
-id|IRCFG_MSTR
-op_or
-id|IRCFG_ENRX
 suffix:semicolon
 id|outw
 c_func
@@ -5112,7 +5079,7 @@ suffix:semicolon
 id|outw
 c_func
 (paren
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 comma
 id|iobase
 op_plus
@@ -5182,16 +5149,15 @@ c_cond
 id|config
 op_ne
 (paren
-id|IRENABLE_IREN
+id|IRENABLE_PHYANDCLOCK
 op_or
 id|IRENABLE_ENRXST
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to set %s mode!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5241,10 +5207,9 @@ op_ne
 id|nphyctl
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to apply baudrate %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5281,20 +5246,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dolock
-)paren
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|ret
 )paren
 id|vlsi_reg_debug
@@ -5307,52 +5258,6 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 id|ret
-suffix:semicolon
-)brace
-DECL|function|vlsi_set_baud_lock
-r_static
-r_inline
-r_int
-id|vlsi_set_baud_lock
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-)paren
-(brace
-r_return
-id|vlsi_set_baud
-c_func
-(paren
-id|ndev
-comma
-l_int|1
-)paren
-suffix:semicolon
-)brace
-DECL|function|vlsi_set_baud_nolock
-r_static
-r_inline
-r_int
-id|vlsi_set_baud_nolock
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|ndev
-)paren
-(brace
-r_return
-id|vlsi_set_baud
-c_func
-(paren
-id|ndev
-comma
-l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|vlsi_hard_start_xmit
@@ -5419,12 +5324,27 @@ id|now
 comma
 id|ready
 suffix:semicolon
+r_char
+op_star
+id|msg
+op_assign
+l_int|NULL
+suffix:semicolon
 id|speed
 op_assign
 id|irda_get_next_speed
 c_func
 (paren
 id|skb
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5450,71 +5370,6 @@ id|idev-&gt;new_baud
 op_assign
 id|speed
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|skb-&gt;len
-)paren
-(brace
-id|dev_kfree_skb_any
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-multiline_comment|/* due to the completely asynch tx operation we might have&n;&t;&t;&t; * IrLAP racing with the hardware here, f.e. if the controller&n;&t;&t;&t; * is just sending the last packet with current speed while&n;&t;&t;&t; * the LAP is already switching the speed using synchronous&n;&t;&t;&t; * len=0 packet. Immediate execution would lead to hw lockup&n;&t;&t;&t; * requiring a powercycle to reset. Good candidate to trigger&n;&t;&t;&t; * this is the final UA:RSP packet after receiving a DISC:CMD&n;&t;&t;&t; * when getting the LAP down.&n;&t;&t;&t; * Note that we are not protected by the queue_stop approach&n;&t;&t;&t; * because the final UA:RSP arrives _without_ request to apply&n;&t;&t;&t; * new-speed-after-this-packet - hence the driver doesn&squot;t know&n;&t;&t;&t; * this was the last packet and doesn&squot;t stop the queue. So the&n;&t;&t;&t; * forced switch to default speed from LAP gets through as fast&n;&t;&t;&t; * as only some 10 usec later while the UA:RSP is still processed&n;&t;&t;&t; * by the hardware and we would get screwed.&n;&t;&t;&t; * Note: no locking required since we (netdev-&gt;xmit) are the only&n;&t;&t;&t; * supplier for tx and the network layer provides serialization&n;&t;&t;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ring_first
-c_func
-(paren
-id|idev-&gt;tx_ring
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* no race - tx-ring already empty */
-id|vlsi_set_baud_nolock
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-)brace
-r_else
-suffix:semicolon
-multiline_comment|/* keep the speed change pending like it would&n;&t;&t;&t;&t;   * for any len&gt;0 packet. tx completion interrupt&n;&t;&t;&t;&t;   * will apply it when the tx ring becomes empty.&n;&t;&t;&t;&t;   */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|status
 op_assign
 id|RD_TX_CLRENTX
@@ -5534,20 +5389,75 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
-c_func
+multiline_comment|/* handle zero packets - should be speed change */
+r_if
+c_cond
 (paren
-id|KERN_ERR
-l_string|&quot;%s: dropping len=0 packet&bslash;n&quot;
-comma
-id|__FUNCTION__
+id|status
+op_eq
+l_int|0
 )paren
+(brace
+id|msg
+op_assign
+l_string|&quot;bogus zero-length packet&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
-multiline_comment|/* sanity checks - should never happen!&n;&t; * simply BUGging the violation and dropping the packet&n;&t; */
+multiline_comment|/* due to the completely asynch tx operation we might have&n;&t;&t; * IrLAP racing with the hardware here, f.e. if the controller&n;&t;&t; * is just sending the last packet with current speed while&n;&t;&t; * the LAP is already switching the speed using synchronous&n;&t;&t; * len=0 packet. Immediate execution would lead to hw lockup&n;&t;&t; * requiring a powercycle to reset. Good candidate to trigger&n;&t;&t; * this is the final UA:RSP packet after receiving a DISC:CMD&n;&t;&t; * when getting the LAP down.&n;&t;&t; * Note that we are not protected by the queue_stop approach&n;&t;&t; * because the final UA:RSP arrives _without_ request to apply&n;&t;&t; * new-speed-after-this-packet - hence the driver doesn&squot;t know&n;&t;&t; * this was the last packet and doesn&squot;t stop the queue. So the&n;&t;&t; * forced switch to default speed from LAP gets through as fast&n;&t;&t; * as only some 10 usec later while the UA:RSP is still processed&n;&t;&t; * by the hardware and we would get screwed.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ring_first
+c_func
+(paren
+id|idev-&gt;tx_ring
+)paren
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* no race - tx-ring already empty */
+id|vlsi_set_baud
+c_func
+(paren
+id|idev
+comma
+id|iobase
+)paren
+suffix:semicolon
+id|netif_wake_queue
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
+)brace
+r_else
+suffix:semicolon
+multiline_comment|/* keep the speed change pending like it would&n;&t;&t;&t; * for any len&gt;0 packet. tx completion interrupt&n;&t;&t;&t; * will apply it when the tx ring becomes empty.&n;&t;&t;&t; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* sanity checks - simply drop the packet */
 id|rd
 op_assign
 id|ring_last
@@ -5563,14 +5473,12 @@ op_logical_neg
 id|rd
 )paren
 (brace
-multiline_comment|/* ring full - queue should have been stopped! */
-id|BUG
-c_func
-(paren
-)paren
+id|msg
+op_assign
+l_string|&quot;ring full, but queue wasn&squot;t stopped&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5583,14 +5491,12 @@ id|rd
 )paren
 )paren
 (brace
-multiline_comment|/* entry still owned by hw! */
-id|BUG
-c_func
-(paren
-)paren
+id|msg
+op_assign
+l_string|&quot;entry still owned by hw&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5600,14 +5506,12 @@ op_logical_neg
 id|rd-&gt;buf
 )paren
 (brace
-multiline_comment|/* no memory for this tx entry - weird! */
-id|BUG
-c_func
-(paren
-)paren
+id|msg
+op_assign
+l_string|&quot;tx ring entry without pci buffer&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
 r_if
@@ -5616,110 +5520,24 @@ c_cond
 id|rd-&gt;skb
 )paren
 (brace
-multiline_comment|/* hm, associated old skb still there */
-id|BUG
-c_func
-(paren
-)paren
+id|msg
+op_assign
+l_string|&quot;ring entry with old skb still attached&quot;
 suffix:semicolon
 r_goto
-id|drop
+id|drop_unlock
 suffix:semicolon
 )brace
-multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single() either&n;&t; * after initial pci_map_single or after subsequent tx-completion&n;&t; */
-r_if
-c_cond
-(paren
-id|idev-&gt;mode
-op_eq
-id|IFF_SIR
-)paren
-(brace
-id|status
-op_or_assign
-id|RD_TX_DISCRC
-suffix:semicolon
-multiline_comment|/* no hw-crc creation */
-id|len
-op_assign
-id|async_wrap_skb
+multiline_comment|/* no need for serialization or interrupt disable during mtt */
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|skb
+op_amp
+id|idev-&gt;lock
 comma
-id|rd-&gt;buf
-comma
-id|r-&gt;len
+id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Some rare worst case situation in SIR mode might lead to&n;&t;&t; * potential buffer overflow. The wrapper detects this, returns&n;&t;&t; * with a shortened frame (without FCS/EOF) but doesn&squot;t provide&n;&t;&t; * any error indication about the invalid packet which we are&n;&t;&t; * going to transmit.&n;&t;&t; * Therefore we log if the buffer got filled to the point, where the&n;&t;&t; * wrapper would abort, i.e. when there are less than 5 bytes left to&n;&t;&t; * allow appending the FCS/EOF.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|len
-op_ge
-id|r-&gt;len
-op_minus
-l_int|5
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* hw deals with MIR/FIR mode wrapping */
-id|status
-op_or_assign
-id|RD_TX_PULSE
-suffix:semicolon
-multiline_comment|/* send 2 us highspeed indication pulse */
-id|len
-op_assign
-id|skb-&gt;len
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|r-&gt;len
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: no space - skb too big (%d)&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-r_goto
-id|drop
-suffix:semicolon
-)brace
-r_else
-id|memcpy
-c_func
-(paren
-id|rd-&gt;buf
-comma
-id|skb-&gt;data
-comma
-id|len
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* do mtt delay before we need to disable interrupts! */
 r_if
 c_cond
 (paren
@@ -5805,6 +5623,91 @@ suffix:semicolon
 multiline_comment|/* must not sleep here - we are called under xmit_lock! */
 )brace
 )brace
+multiline_comment|/* tx buffer already owned by CPU due to pci_dma_sync_single() either&n;&t; * after initial pci_map_single or after subsequent tx-completion&n;&t; */
+r_if
+c_cond
+(paren
+id|idev-&gt;mode
+op_eq
+id|IFF_SIR
+)paren
+(brace
+id|status
+op_or_assign
+id|RD_TX_DISCRC
+suffix:semicolon
+multiline_comment|/* no hw-crc creation */
+id|len
+op_assign
+id|async_wrap_skb
+c_func
+(paren
+id|skb
+comma
+id|rd-&gt;buf
+comma
+id|r-&gt;len
+)paren
+suffix:semicolon
+multiline_comment|/* Some rare worst case situation in SIR mode might lead to&n;&t;&t; * potential buffer overflow. The wrapper detects this, returns&n;&t;&t; * with a shortened frame (without FCS/EOF) but doesn&squot;t provide&n;&t;&t; * any error indication about the invalid packet which we are&n;&t;&t; * going to transmit.&n;&t;&t; * Therefore we log if the buffer got filled to the point, where the&n;&t;&t; * wrapper would abort, i.e. when there are less than 5 bytes left to&n;&t;&t; * allow appending the FCS/EOF.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|len
+op_ge
+id|r-&gt;len
+op_minus
+l_int|5
+)paren
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s: possible buffer overflow with SIR wrapping!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* hw deals with MIR/FIR mode wrapping */
+id|status
+op_or_assign
+id|RD_TX_PULSE
+suffix:semicolon
+multiline_comment|/* send 2 us highspeed indication pulse */
+id|len
+op_assign
+id|skb-&gt;len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OG
+id|r-&gt;len
+)paren
+(brace
+id|msg
+op_assign
+l_string|&quot;frame exceeds tx buffer length&quot;
+suffix:semicolon
+r_goto
+id|drop
+suffix:semicolon
+)brace
+r_else
+id|memcpy
+c_func
+(paren
+id|rd-&gt;buf
+comma
+id|skb-&gt;data
+comma
+id|len
+)paren
+suffix:semicolon
+)brace
 id|rd-&gt;skb
 op_assign
 id|skb
@@ -5844,7 +5747,7 @@ comma
 id|r-&gt;dir
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;We need to disable IR output in order to switch to TX mode.&n; *&t;Better not do this blindly anytime we want to transmit something&n; *&t;because TX may already run. However we are racing with the controller&n; *&t;which may stop TX at any time when fetching an inactive descriptor&n; *&t;or one with CLR_ENTX set. So we switch on TX only, if TX was not running&n; *&t;_after_ the new descriptor was activated on the ring. This ensures&n; *&t;we will either find TX already stopped or we can be sure, there&n; *&t;will be a TX-complete interrupt even if the chip stopped doing&n; *&t;TX just after we found it still running. The ISR will then find&n; *&t;the non-empty ring and restart TX processing. The enclosing&n; *&t;spinlock provides the correct serialization to prevent race with isr.&n; */
+multiline_comment|/*&t;Switching to TX mode here races with the controller&n; *&t;which may stop TX at any time when fetching an inactive descriptor&n; *&t;or one with CLR_ENTX set. So we switch on TX only, if TX was not running&n; *&t;_after_ the new descriptor was activated on the ring. This ensures&n; *&t;we will either find TX already stopped or we can be sure, there&n; *&t;will be a TX-complete interrupt even if the chip stopped doing&n; *&t;TX just after we found it still running. The ISR will then find&n; *&t;the non-empty ring and restart TX processing. The enclosing&n; *&t;spinlock provides the correct serialization to prevent race with isr.&n; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5899,10 +5802,12 @@ id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_WARNING
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5910,6 +5815,7 @@ comma
 id|fifocnt
 )paren
 suffix:semicolon
+)brace
 id|config
 op_assign
 id|inw
@@ -5920,7 +5826,7 @@ op_plus
 id|VLSI_PIO_IRCFG
 )paren
 suffix:semicolon
-id|rmb
+id|mb
 c_func
 (paren
 )paren
@@ -5937,7 +5843,7 @@ op_plus
 id|VLSI_PIO_IRCFG
 )paren
 suffix:semicolon
-id|mb
+id|wmb
 c_func
 (paren
 )paren
@@ -5975,10 +5881,11 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|3
+comma
 l_string|&quot;%s: tx ring full - queue stopped&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -5997,8 +5904,29 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|drop_unlock
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|drop
 suffix:colon
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s: dropping packet - %s&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|msg
+)paren
+suffix:semicolon
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -6011,8 +5939,9 @@ suffix:semicolon
 id|idev-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon
+multiline_comment|/* Don&squot;t even think about returning NET_XMIT_DROP (=1) here!&n;&t; * In fact any retval!=0 causes the packet scheduler to requeue the&n;&t; * packet for later retry of transmission - which isn&squot;t exactly&n;&t; * what we want after we&squot;ve just called dev_kfree_skb_any ;-)&n;&t; */
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|vlsi_tx_interrupt
@@ -6154,6 +6083,10 @@ id|ret
 suffix:semicolon
 )brace
 )brace
+id|iobase
+op_assign
+id|ndev-&gt;base_addr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6164,15 +6097,13 @@ op_eq
 l_int|NULL
 )paren
 multiline_comment|/* tx ring empty and speed change pending */
-id|vlsi_set_baud_lock
+id|vlsi_set_baud
 c_func
 (paren
-id|ndev
-)paren
-suffix:semicolon
+id|idev
+comma
 id|iobase
-op_assign
-id|ndev-&gt;base_addr
+)paren
 suffix:semicolon
 id|config
 op_assign
@@ -6249,10 +6180,12 @@ id|fifocnt
 op_ne
 l_int|0
 )paren
-id|printk
+(brace
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_WARNING
+l_int|0
+comma
 l_string|&quot;%s: rx fifo not empty(%d)&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6260,6 +6193,7 @@ comma
 id|fifocnt
 )paren
 suffix:semicolon
+)brace
 id|outw
 c_func
 (paren
@@ -6302,10 +6236,11 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_DEBUG
+l_int|3
+comma
 l_string|&quot;%s: queue awoken&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6427,10 +6362,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s - dropping tx packet&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6639,10 +6575,9 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* explicitly asked for PLL hence bail out */
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: no PLL or failed to lock!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6674,10 +6609,11 @@ op_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* fallback to 40MHz XCLK (OB800) */
-id|printk
+id|IRDA_DEBUG
 c_func
 (paren
-id|KERN_INFO
+l_int|0
+comma
 l_string|&quot;%s: PLL not locked, fallback to clksrc=%d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6922,19 +6858,12 @@ id|pdev
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: no valid clock source&bslash;n&quot;
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|pci_disable_device
-c_func
-(paren
-id|pdev
 )paren
 suffix:semicolon
 r_return
@@ -7093,10 +7022,12 @@ id|ptr
 )paren
 )paren
 suffix:semicolon
-id|vlsi_set_baud_lock
+id|vlsi_set_baud
 c_func
 (paren
-id|ndev
+id|idev
+comma
+id|iobase
 )paren
 suffix:semicolon
 multiline_comment|/* idev-&gt;new_baud used as provided by caller */
@@ -7218,12 +7149,29 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|vlsi_init_chip
 c_func
 (paren
 id|pdev
 )paren
+OL
+l_int|0
+)paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|vlsi_fill_rx
 c_func
 (paren
@@ -7321,6 +7269,17 @@ id|VLSI_PIO_IRCFG
 )paren
 suffix:semicolon
 multiline_comment|/* disable everything */
+multiline_comment|/* disable and w/c irqs */
+id|outb
+c_func
+(paren
+l_int|0
+comma
+id|iobase
+op_plus
+id|VLSI_PIO_IRINTR
+)paren
+suffix:semicolon
 id|wmb
 c_func
 (paren
@@ -7334,12 +7293,6 @@ comma
 id|iobase
 op_plus
 id|VLSI_PIO_IRINTR
-)paren
-suffix:semicolon
-multiline_comment|/* w/c pending + disable further IRQ */
-id|mb
-c_func
-(paren
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7485,15 +7438,14 @@ c_func
 id|idev
 )paren
 )paren
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;%s: failed to restart hw - %s(%s) unusable!&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|idev-&gt;pdev
@@ -7602,10 +7554,12 @@ op_assign
 id|irq-&gt;ifr_baudrate
 suffix:semicolon
 multiline_comment|/* when called from userland there might be a minor race window here&n;&t;&t;&t; * if the stack tries to change speed concurrently - which would be&n;&t;&t;&t; * pretty strange anyway with the userland having full control...&n;&t;&t;&t; */
-id|vlsi_set_baud_nolock
+id|vlsi_set_baud
 c_func
 (paren
-id|ndev
+id|idev
+comma
+id|ndev-&gt;base_addr
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -7684,10 +7638,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: notsupp - cmd=%04x&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -7747,10 +7700,7 @@ suffix:semicolon
 r_int
 id|boguscount
 op_assign
-l_int|32
-suffix:semicolon
-r_int
-id|got_act
+l_int|5
 suffix:semicolon
 r_int
 r_int
@@ -7761,16 +7711,10 @@ id|handled
 op_assign
 l_int|0
 suffix:semicolon
-id|got_act
-op_assign
-l_int|0
-suffix:semicolon
 id|iobase
 op_assign
 id|ndev-&gt;base_addr
 suffix:semicolon
-r_do
-(brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7780,6 +7724,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_do
+(brace
 id|irintr
 op_assign
 id|inb
@@ -7790,7 +7736,7 @@ op_plus
 id|VLSI_PIO_IRINTR
 )paren
 suffix:semicolon
-id|rmb
+id|mb
 c_func
 (paren
 )paren
@@ -7806,15 +7752,6 @@ id|VLSI_PIO_IRINTR
 )paren
 suffix:semicolon
 multiline_comment|/* acknowledge asap */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|idev-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7832,6 +7769,24 @@ id|handled
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+(paren
+id|irintr
+op_amp
+op_complement
+id|IRINTR_ACTIVITY
+)paren
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* nothing todo if only activity */
 r_if
 c_cond
 (paren
@@ -7858,58 +7813,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|irintr
-op_amp
-op_complement
-id|IRINTR_ACTIVITY
-)paren
-)paren
-r_break
-suffix:semicolon
-multiline_comment|/* done if only activity remaining */
-r_if
-c_cond
-(paren
-id|irintr
-op_amp
-op_complement
-(paren
-id|IRINTR_RPKTINT
-op_or
-id|IRINTR_TPKTINT
-op_or
-id|IRINTR_ACTIVITY
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: IRINTR = %02x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-(paren
-r_int
-)paren
-id|irintr
-)paren
-suffix:semicolon
-id|vlsi_reg_debug
-c_func
-(paren
-id|iobase
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-)brace
 )brace
 r_while
 c_loop
@@ -7920,6 +7823,15 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7927,10 +7839,9 @@ id|boguscount
 op_le
 l_int|0
 )paren
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;%s: too much work in interrupt!&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -7987,10 +7898,9 @@ id|drivername
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: io resource busy&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8043,10 +7953,9 @@ id|ndev
 )paren
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: couldn&squot;t get IRQ: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8148,10 +8057,9 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: device %s operational&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8267,10 +8175,9 @@ c_func
 id|idev-&gt;pdev
 )paren
 suffix:semicolon
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: device %s stopped&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8348,10 +8255,9 @@ id|DMA_MASK_MSTRPAGE
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: aborting due to PCI BM-DMA address limitations&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8507,15 +8413,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* hw must be running now */
-id|printk
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: IrDA PCI controller %s detected&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -8548,10 +8453,9 @@ id|IORESOURCE_IO
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: bar 0 invalid&quot;
 comma
 id|__FUNCTION__
@@ -8597,10 +8501,9 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: Unable to allocate device memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8687,10 +8590,9 @@ id|ndev
 )paren
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: register_netdev failed&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -8700,6 +8602,10 @@ r_goto
 id|out_freedev
 suffix:semicolon
 )brace
+id|idev-&gt;proc_entry
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8734,19 +8640,21 @@ op_logical_neg
 id|ent
 )paren
 (brace
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: failed to create proc entry&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-r_goto
-id|out_unregister
+id|idev-&gt;proc_entry
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
+r_else
+(brace
 id|ent-&gt;data
 op_assign
 id|ndev
@@ -8764,15 +8672,10 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
-r_else
-id|idev-&gt;proc_entry
-op_assign
-l_int|NULL
-suffix:semicolon
-id|printk
+)brace
+id|MESSAGE
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%s: registered device %s&bslash;n&quot;
 comma
 id|drivername
@@ -8797,24 +8700,6 @@ id|idev-&gt;sem
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|out_unregister
-suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|idev-&gt;sem
-)paren
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|ndev
-)paren
-suffix:semicolon
-r_goto
-id|out_disable
 suffix:semicolon
 id|out_freedev
 suffix:colon
@@ -8889,10 +8774,9 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot;%s: lost netdevice?&bslash;n&quot;
 comma
 id|drivername
@@ -8910,20 +8794,6 @@ c_func
 (paren
 op_amp
 id|idev-&gt;sem
-)paren
-suffix:semicolon
-id|pci_set_drvdata
-c_func
-(paren
-id|pdev
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|pci_disable_device
-c_func
-(paren
-id|pdev
 )paren
 suffix:semicolon
 r_if
@@ -8959,15 +8829,22 @@ id|ndev
 )paren
 suffix:semicolon
 multiline_comment|/* do not free - async completed by unregister_netdev()&n;&t; * ndev-&gt;destructor called (if present) when going to free&n;&t; */
-id|printk
+id|pci_set_drvdata
 c_func
 (paren
-id|KERN_INFO
+id|pdev
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|MESSAGE
+c_func
+(paren
 l_string|&quot;%s: %s removed&bslash;n&quot;
 comma
 id|drivername
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9000,15 +8877,14 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9064,15 +8940,14 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid pm state request: %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9092,15 +8967,14 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9154,15 +9028,14 @@ id|state
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: invalid suspend request %u -&gt; %u&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9287,15 +9160,14 @@ op_logical_neg
 id|ndev
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: no netdevice &bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9332,15 +9204,14 @@ op_amp
 id|idev-&gt;sem
 )paren
 suffix:semicolon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - %s: already resumed&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|pci_name
+id|PCIDEV_NAME
 c_func
 (paren
 id|pdev
@@ -9371,10 +9242,9 @@ id|idev-&gt;resume_ok
 )paren
 (brace
 multiline_comment|/* should be obsolete now - but used to happen due to:&n;&t;&t; * - pci layer initially setting pdev-&gt;current_state = 4 (unknown)&n;&t;&t; * - pci layer did not walk the save_state-tree (might be APM problem)&n;&t;&t; *   so we could not refuse to suspend from undefined state&n;&t;&t; * - vlsi_irda_suspend detected invalid state and refused to save&n;&t;&t; *   configuration for resume - but was too late to stop suspending&n;&t;&t; * - vlsi_irda_resume got screwed when trying to resume from garbage&n;&t;&t; *&n;&t;&t; * now we explicitly set pdev-&gt;current_state = 0 after enabling the&n;&t;&t; * device and independently resume_ok should catch any garbage config.&n;&t;&t; */
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s - hm, nothing to resume?&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -9514,10 +9384,9 @@ template_param
 l_int|3
 )paren
 (brace
-id|printk
+id|ERROR
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;%s: invalid clksrc=%d&bslash;n&quot;
 comma
 id|drivername
@@ -9573,11 +9442,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|WARNING
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: invalid %s ringsize %d&quot;
+l_string|&quot;%s: invalid %s ringsize %d, using default=8&quot;
 comma
 id|drivername
 comma
@@ -9594,12 +9462,6 @@ id|ringsize
 (braket
 id|i
 )braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;, using default=8&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ringsize
