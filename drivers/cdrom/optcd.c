@@ -3479,7 +3479,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;optcd: Multisession support experimental, &quot;
-l_string|&quot;see linux/Documentation/cdrom/optcd&bslash;n&quot;
+l_string|&quot;see Documentation/cdrom/optcd&bslash;n&quot;
 )paren
 suffix:semicolon
 id|DEBUG

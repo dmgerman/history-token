@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 multiline_comment|/*&n; * Intel IO-APIC support for SMP and UP systems.&n; *&n; * Copyright (C) 1997, 1998, 1999, 2000 Ingo Molnar&n; */
 macro_line|#ifdef CONFIG_X86_IO_APIC
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|function|use_pci_vector
 r_static
 r_inline

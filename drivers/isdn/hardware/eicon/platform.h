@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: platform.h,v 1.37 2004/03/20 17:44:29 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: platform.h,v 1.37.4.1 2004/07/28 14:47:21 armin Exp $&n; *&n; * platform.h&n; * &n; *&n; * Copyright 2000-2003  by Armin Schindler (mac@melware.de)&n; * Copyright 2000  Eicon Networks &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef&t;__PLATFORM_H__
 DECL|macro|__PLATFORM_H__
 mdefine_line|#define&t;__PLATFORM_H__
@@ -410,28 +410,10 @@ id|dword
 id|mSec
 )paren
 (brace
-r_int
-r_int
-id|timeout
-op_assign
-id|HZ
-op_star
+id|msleep
+c_func
+(paren
 id|mSec
-op_div
-l_int|1000
-op_plus
-l_int|1
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|timeout
 )paren
 suffix:semicolon
 )brace

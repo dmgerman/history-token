@@ -10,7 +10,7 @@ DECL|macro|NR_VECTORS
 mdefine_line|#define NR_VECTORS 256
 DECL|macro|FIRST_SYSTEM_VECTOR
 mdefine_line|#define FIRST_SYSTEM_VECTOR&t;0xef   /* duplicated in hw_irq.h */
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS FIRST_SYSTEM_VECTOR
 DECL|macro|NR_IRQ_VECTORS

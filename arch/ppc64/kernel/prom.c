@@ -7290,15 +7290,6 @@ r_void
 op_star
 id|ret
 suffix:semicolon
-r_int
-r_int
-id|offset
-op_assign
-id|reloc_offset
-c_func
-(paren
-)paren
-suffix:semicolon
 op_star
 id|mem_start
 op_assign
@@ -7324,6 +7315,15 @@ id|mem_end
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_int
+r_int
+id|offset
+op_assign
+id|reloc_offset
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* FIXME: Apple OF doesn&squot;t map unclaimed mem.  If this&n;&t;&t; * ever happened on G5, we&squot;d need to fix. */
 r_int
 r_int

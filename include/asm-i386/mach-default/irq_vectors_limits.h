@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IRQ_VECTORS_LIMITS_H
 DECL|macro|_ASM_IRQ_VECTORS_LIMITS_H
 mdefine_line|#define _ASM_IRQ_VECTORS_LIMITS_H
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
+macro_line|#ifdef CONFIG_PCI_MSI
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS FIRST_SYSTEM_VECTOR
 DECL|macro|NR_IRQ_VECTORS

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Intel &amp; MS High Precision Event Timer Implementation.&n; * Contributors:&n; *&t;Venki Pallipadi&n; * &t;Bob Picco&n; */
+multiline_comment|/*&n; * Intel &amp; MS High Precision Event Timer Implementation.&n; *&n; * Copyright (C) 2003 Intel Corporation&n; *&t;Venki Pallipadi&n; * (c) Copyright 2004 Hewlett-Packard Development Company, L.P.&n; *&t;Bob Picco &lt;robert.picco@hp.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -938,12 +938,7 @@ op_star
 id|vma
 )paren
 (brace
-macro_line|#ifdef&t;CONFIG_HPET_NOMMAP
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-macro_line|#else
+macro_line|#ifdef&t;CONFIG_HPET_MMAP
 r_struct
 id|hpet_dev
 op_star
@@ -1050,6 +1045,11 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+macro_line|#else
+r_return
+op_minus
+id|ENOSYS
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -3871,7 +3871,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-macro_line|#ifdef&t;CONFIG_IA64
 id|hdp-&gt;hd_irq
 (braket
 id|i
@@ -3890,18 +3889,6 @@ comma
 id|irqp-&gt;active_high_low
 )paren
 suffix:semicolon
-macro_line|#else
-id|hdp-&gt;hd_irq
-(braket
-id|i
-)braket
-op_assign
-id|irqp-&gt;interrupts
-(braket
-id|i
-)braket
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_return

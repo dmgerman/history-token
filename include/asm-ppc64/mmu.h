@@ -39,7 +39,6 @@ mdefine_line|#define KERNEL_LOW_HPAGES
 macro_line|#endif
 DECL|macro|KERNEL_CONTEXT
 mdefine_line|#define KERNEL_CONTEXT(ea) ({ &bslash;&n;&t;&t;mm_context_t ctx = { .id = REGION_ID(ea), KERNEL_LOW_HPAGES}; &bslash;&n;&t;&t;ctx; })
-multiline_comment|/*&n; * Hardware Segment Lookaside Buffer Entry&n; * This structure has been padded out to two 64b doublewords (actual SLBE&squot;s are&n; * 94 bits).  This padding facilites use by the segment management&n; * instructions.&n; */
 r_typedef
 r_struct
 (brace
@@ -172,145 +171,6 @@ suffix:semicolon
 DECL|typedef|STE
 )brace
 id|STE
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|esid
-r_int
-r_int
-id|esid
-suffix:colon
-l_int|36
-suffix:semicolon
-multiline_comment|/* Effective segment ID */
-DECL|member|v
-r_int
-r_int
-id|v
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Entry valid (v=1) or invalid */
-DECL|member|null1
-r_int
-r_int
-id|null1
-suffix:colon
-l_int|15
-suffix:semicolon
-multiline_comment|/* padding to a 64b boundary */
-DECL|member|index
-r_int
-r_int
-id|index
-suffix:colon
-l_int|12
-suffix:semicolon
-multiline_comment|/* Index to select SLB entry. Used by slbmte */
-DECL|typedef|slb_dword0
-)brace
-id|slb_dword0
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|vsid
-r_int
-r_int
-id|vsid
-suffix:colon
-l_int|52
-suffix:semicolon
-multiline_comment|/* Virtual segment ID */
-DECL|member|ks
-r_int
-r_int
-id|ks
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Supervisor (privileged) state storage key */
-DECL|member|kp
-r_int
-r_int
-id|kp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Problem state storage key */
-DECL|member|n
-r_int
-r_int
-id|n
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* No-execute if n=1 */
-DECL|member|l
-r_int
-r_int
-id|l
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Virt pages are large (l=1) or 4KB (l=0) */
-DECL|member|c
-r_int
-r_int
-id|c
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Class */
-DECL|member|resv0
-r_int
-r_int
-id|resv0
-suffix:colon
-l_int|7
-suffix:semicolon
-multiline_comment|/* Padding to a 64b boundary */
-DECL|typedef|slb_dword1
-)brace
-id|slb_dword1
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-r_union
-(brace
-DECL|member|dword0
-r_int
-r_int
-id|dword0
-suffix:semicolon
-DECL|member|dw0
-id|slb_dword0
-id|dw0
-suffix:semicolon
-DECL|member|dw0
-)brace
-id|dw0
-suffix:semicolon
-r_union
-(brace
-DECL|member|dword1
-r_int
-r_int
-id|dword1
-suffix:semicolon
-DECL|member|dw1
-id|slb_dword1
-id|dw1
-suffix:semicolon
-DECL|member|dw1
-)brace
-id|dw1
-suffix:semicolon
-DECL|typedef|SLBE
-)brace
-id|SLBE
 suffix:semicolon
 multiline_comment|/* Hardware Page Table Entry */
 DECL|macro|HPTES_PER_GROUP
@@ -971,6 +831,37 @@ DECL|macro|STAB0_PHYS_ADDR
 mdefine_line|#define STAB0_PHYS_ADDR&t;(STAB0_PAGE&lt;&lt;PAGE_SHIFT)
 DECL|macro|STAB0_VIRT_ADDR
 mdefine_line|#define STAB0_VIRT_ADDR&t;(KERNELBASE+STAB0_PHYS_ADDR)
+DECL|macro|SLB_NUM_BOLTED
+mdefine_line|#define SLB_NUM_BOLTED&t;&t;2
+DECL|macro|SLB_CACHE_ENTRIES
+mdefine_line|#define SLB_CACHE_ENTRIES&t;8
+multiline_comment|/* Bits in the SLB ESID word */
+DECL|macro|SLB_ESID_V
+mdefine_line|#define SLB_ESID_V&t;&t;0x0000000008000000&t;/* entry is valid */
+multiline_comment|/* Bits in the SLB VSID word */
+DECL|macro|SLB_VSID_SHIFT
+mdefine_line|#define SLB_VSID_SHIFT&t;&t;12
+DECL|macro|SLB_VSID_KS
+mdefine_line|#define SLB_VSID_KS&t;&t;0x0000000000000800
+DECL|macro|SLB_VSID_KP
+mdefine_line|#define SLB_VSID_KP&t;&t;0x0000000000000400
+DECL|macro|SLB_VSID_N
+mdefine_line|#define SLB_VSID_N&t;&t;0x0000000000000200&t;/* no-execute */
+DECL|macro|SLB_VSID_L
+mdefine_line|#define SLB_VSID_L&t;&t;0x0000000000000100&t;/* largepage (4M) */
+DECL|macro|SLB_VSID_C
+mdefine_line|#define SLB_VSID_C&t;&t;0x0000000000000080&t;/* class */
+DECL|macro|SLB_VSID_KERNEL
+mdefine_line|#define SLB_VSID_KERNEL&t;&t;(SLB_VSID_KP|SLB_VSID_C)
+DECL|macro|SLB_VSID_USER
+mdefine_line|#define SLB_VSID_USER&t;&t;(SLB_VSID_KP|SLB_VSID_KS)
+DECL|macro|VSID_RANDOMIZER
+mdefine_line|#define VSID_RANDOMIZER ASM_CONST(42470972311)
+DECL|macro|VSID_MASK
+mdefine_line|#define VSID_MASK&t;0xfffffffffUL
+multiline_comment|/* Because we never access addresses below KERNELBASE as kernel&n; * addresses, this VSID is never used for anything real, and will&n; * never have pages hashed into it */
+DECL|macro|BAD_VSID
+mdefine_line|#define BAD_VSID&t;ASM_CONST(0)
 multiline_comment|/* Block size masks */
 DECL|macro|BL_128K
 mdefine_line|#define BL_128K&t;0x000

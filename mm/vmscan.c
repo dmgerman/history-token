@@ -3350,6 +3350,7 @@ id|__GFP_NORETRY
 id|out_of_memory
 c_func
 (paren
+id|gfp_mask
 )paren
 suffix:semicolon
 id|out

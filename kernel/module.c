@@ -33,8 +33,6 @@ macro_line|#endif
 multiline_comment|/* If this is set, the section belongs in the init part of the module */
 DECL|macro|INIT_OFFSET_MASK
 mdefine_line|#define INIT_OFFSET_MASK (1UL &lt;&lt; (BITS_PER_LONG-1))
-DECL|macro|symbol_is
-mdefine_line|#define symbol_is(literal, string)&t;&t;&t;&t;&bslash;&n;&t;(strcmp(MODULE_SYMBOL_PREFIX literal, (string)) == 0)
 multiline_comment|/* Protects module list */
 DECL|variable|modlist_lock
 r_static

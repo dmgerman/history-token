@@ -2285,7 +2285,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%u %u Ready to die...&bslash;n&quot;
+l_string|&quot;cpu %u (hwid %u) Ready to die...&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func

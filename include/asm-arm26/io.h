@@ -575,7 +575,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * linux/Documentation/IO-mapping.txt.&n; */
+multiline_comment|/*&n; * ioremap and friends.&n; *&n; * ioremap takes a PCI memory address, as specified in&n; * Documentation/IO-mapping.txt.&n; */
 r_extern
 r_void
 op_star

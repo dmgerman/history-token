@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm/setup.h&n; *&n; *  Copyright (C) 1997-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Structure passed to kernel to tell it about the&n; *  hardware it&squot;s running on.  See linux/Documentation/arm/Setup&n; *  for more info.&n; */
+multiline_comment|/*&n; *  linux/include/asm/setup.h&n; *&n; *  Copyright (C) 1997-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Structure passed to kernel to tell it about the&n; *  hardware it&squot;s running on.  See Documentation/arm/Setup&n; *  for more info.&n; */
 macro_line|#ifndef __ASMARM_SETUP_H
 DECL|macro|__ASMARM_SETUP_H
 mdefine_line|#define __ASMARM_SETUP_H

@@ -1143,6 +1143,8 @@ suffix:semicolon
 id|ac.ac_version
 op_assign
 id|ACCT_VERSION
+op_or
+id|ACCT_BYTEORDER
 suffix:semicolon
 id|strlcpy
 c_func
@@ -1343,10 +1345,9 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
-multiline_comment|/* ABYTESEX is always set to allow byte order detection */
 id|ac.ac_flag
 op_assign
-id|ABYTESEX
+l_int|0
 suffix:semicolon
 r_if
 c_cond

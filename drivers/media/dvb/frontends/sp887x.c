@@ -1,7 +1,5 @@
 multiline_comment|/*&n;   Driver for the Microtune 7202D Frontend&n;*/
 multiline_comment|/*&n;   This driver needs a copy of the Avermedia firmware. The version tested&n;   is part of the Avermedia DVB-T 1.3.26.3 Application. If the software is&n;   installed in Windows the file will be in the /Program Files/AVerTV DVB-T/&n;   directory and is called sc_main.mc. Alternatively it can &quot;extracted&quot; from&n;   the install cab files. Copy this file to &squot;/usr/lib/hotplug/firmware/sc_main.mc&squot;.&n;   With this version of the file the first 10 bytes are discarded and the&n;   next 0x4000 loaded. This may change in future versions.&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -931,7 +929,7 @@ c_func
 suffix:semicolon
 id|fd
 op_assign
-id|open
+id|sys_open
 c_func
 (paren
 id|sp887x_firmware
@@ -967,7 +965,7 @@ suffix:semicolon
 )brace
 id|filesize
 op_assign
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -1051,7 +1049,7 @@ suffix:semicolon
 singleline_comment|// read it!
 singleline_comment|// read the first 16384 bytes from the file
 singleline_comment|// ignore the first 10 bytes
-id|lseek
+id|sys_lseek
 c_func
 (paren
 id|fd
@@ -1064,7 +1062,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|read
+id|sys_read
 c_func
 (paren
 id|fd

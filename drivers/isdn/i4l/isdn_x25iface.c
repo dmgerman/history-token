@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_x25iface.c,v 1.1.2.2 2004/01/12 22:37:19 keil Exp $&n; *&n; * Linux ISDN subsystem, X.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * stuff needed to support the Linux X.25 PLP code on top of devices that&n; * can provide a lab_b service using the concap_proto mechanism.&n; * This module supports a network interface wich provides lapb_sematics&n; * -- as defined in ../../Documentation/networking/x25-iface.txt -- to&n; * the upper layer and assumes that the lower layer provides a reliable&n; * data link service by means of the concap_device_ops callbacks.&n; *&n; * Only protocol specific stuff goes here. Device specific stuff&n; * goes to another -- device related -- concap_proto support source file.&n; *&n; */
+multiline_comment|/* $Id: isdn_x25iface.c,v 1.1.2.2 2004/01/12 22:37:19 keil Exp $&n; *&n; * Linux ISDN subsystem, X.25 related functions&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * stuff needed to support the Linux X.25 PLP code on top of devices that&n; * can provide a lab_b service using the concap_proto mechanism.&n; * This module supports a network interface wich provides lapb_sematics&n; * -- as defined in Documentation/networking/x25-iface.txt -- to&n; * the upper layer and assumes that the lower layer provides a reliable&n; * data link service by means of the concap_device_ops callbacks.&n; *&n; * Only protocol specific stuff goes here. Device specific stuff&n; * goes to another -- device related -- concap_proto support source file.&n; *&n; */
 multiline_comment|/* #include &lt;linux/isdn.h&gt; */
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/concap.h&gt;
@@ -1175,7 +1175,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* process a frame handed over to us from linux network layer. First byte&n;   semantics as defined in ../../Documentation/networking/x25-iface.txt &n;   */
+multiline_comment|/* process a frame handed over to us from linux network layer. First byte&n;   semantics as defined in Documentation/networking/x25-iface.txt&n;   */
 DECL|function|isdn_x25iface_xmit
 r_int
 id|isdn_x25iface_xmit

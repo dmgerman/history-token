@@ -560,7 +560,7 @@ id|pci-&gt;piwar3
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Setup 512M Phys:PCI 1:1 outbound mem window @ 0x80000000 */
+multiline_comment|/* Setup Phys:PCI 1:1 outbound mem window @ MPC85XX_PCI1_LOWER_MEM */
 id|pci-&gt;potar1
 op_assign
 (paren
@@ -585,12 +585,26 @@ l_int|12
 op_amp
 l_int|0x000fffff
 suffix:semicolon
+multiline_comment|/* Enable, Mem R/W */
 id|pci-&gt;powar1
 op_assign
-l_int|0x8004401c
+l_int|0x80044000
+op_or
+(paren
+id|__ilog2
+c_func
+(paren
+id|MPC85XX_PCI1_UPPER_MEM
+op_minus
+id|MPC85XX_PCI1_LOWER_MEM
+op_plus
+l_int|1
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* Enable, Mem R/W, 512M */
-multiline_comment|/* Setup 16M outboud IO windows @ 0xe2000000 */
+multiline_comment|/* Setup outboud IO windows @ MPC85XX_PCI1_IO_BASE */
 id|pci-&gt;potar2
 op_assign
 l_int|0x00000000
@@ -609,11 +623,21 @@ l_int|12
 op_amp
 l_int|0x000fffff
 suffix:semicolon
+multiline_comment|/* Enable, IO R/W */
 id|pci-&gt;powar2
 op_assign
-l_int|0x80088017
+l_int|0x80088000
+op_or
+(paren
+id|__ilog2
+c_func
+(paren
+id|MPC85XX_PCI1_IO_SIZE
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* Enable, IO R/W, 16M */
 multiline_comment|/* Setup 2G inbound Memory Window @ 0 */
 id|pci-&gt;pitar1
 op_assign
@@ -660,7 +684,7 @@ id|u_char
 id|devfn
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_85xx_PCI2
+macro_line|#ifdef CONFIG_85xx_PCI2
 r_static
 r_void
 id|__init
@@ -711,7 +735,7 @@ c_func
 (paren
 id|hose
 comma
-l_int|0
+id|hose-&gt;bus_offset
 comma
 l_int|0
 comma
@@ -734,7 +758,7 @@ c_func
 (paren
 id|hose
 comma
-l_int|0
+id|hose-&gt;bus_offset
 comma
 l_int|0
 comma
@@ -748,7 +772,7 @@ c_func
 (paren
 id|hose
 comma
-l_int|0
+id|hose-&gt;bus_offset
 comma
 l_int|0
 comma
@@ -786,7 +810,7 @@ id|pci-&gt;piwar3
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Setup 512M Phys:PCI 1:1 outbound mem window @ 0xa0000000 */
+multiline_comment|/* Setup Phys:PCI 1:1 outbound mem window @ MPC85XX_PCI2_LOWER_MEM */
 id|pci-&gt;potar1
 op_assign
 (paren
@@ -811,12 +835,26 @@ l_int|12
 op_amp
 l_int|0x000fffff
 suffix:semicolon
+multiline_comment|/* Enable, Mem R/W */
 id|pci-&gt;powar1
 op_assign
-l_int|0x8004401c
+l_int|0x80044000
+op_or
+(paren
+id|__ilog2
+c_func
+(paren
+id|MPC85XX_PCI1_UPPER_MEM
+op_minus
+id|MPC85XX_PCI1_LOWER_MEM
+op_plus
+l_int|1
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* Enable, Mem R/W, 512M */
-multiline_comment|/* Setup 16M outboud IO windows @ 0xe3000000 */
+multiline_comment|/* Setup outboud IO windows @ MPC85XX_PCI2_IO_BASE */
 id|pci-&gt;potar2
 op_assign
 l_int|0x00000000
@@ -835,11 +873,21 @@ l_int|12
 op_amp
 l_int|0x000fffff
 suffix:semicolon
+multiline_comment|/* Enable, IO R/W */
 id|pci-&gt;powar2
 op_assign
-l_int|0x80088017
+l_int|0x80088000
+op_or
+(paren
+id|__ilog2
+c_func
+(paren
+id|MPC85XX_PCI1_IO_SIZE
+)paren
+op_minus
+l_int|1
+)paren
 suffix:semicolon
-multiline_comment|/* Enable, IO R/W, 16M */
 multiline_comment|/* Setup 2G inbound Memory Window @ 0 */
 id|pci-&gt;pitar1
 op_assign

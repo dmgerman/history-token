@@ -5802,6 +5802,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;On node %d totalpages: %lu&bslash;n&quot;
 comma
 id|pgdat-&gt;node_id
@@ -6289,6 +6290,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;  %s zone: %lu pages, LIFO batch:%lu&bslash;n&quot;
 comma
 id|zone_names

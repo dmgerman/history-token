@@ -4991,7 +4991,7 @@ id|pstat
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;DC390: In case of driver trouble read linux/Documentation/scsi/tmscsim.txt&bslash;n&quot;
+l_string|&quot;DC390: In case of driver trouble read Documentation/scsi/tmscsim.txt&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -4,6 +4,7 @@ DECL|macro|_LINUX_ACCT_H
 mdefine_line|#define _LINUX_ACCT_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/* &n; *  comp_t is a 16-bit &quot;floating&quot; point number with a 3-bit base 8&n; *  exponent and a 13-bit fraction.&n; *  comp2_t is 24-bit with 5-bit base 2 exponent and 20 bit fraction&n; *  (leading 1 not stored).&n; *  See linux/kernel/acct.c for the specific encoding systems used.&n; */
 DECL|typedef|comp_t
 r_typedef
@@ -267,8 +268,13 @@ DECL|macro|ACORE
 mdefine_line|#define ACORE&t;&t;0x08&t;/* ... dumped core */
 DECL|macro|AXSIG
 mdefine_line|#define AXSIG&t;&t;0x10&t;/* ... was killed by a signal */
-DECL|macro|ABYTESEX
-mdefine_line|#define ABYTESEX&t;0x80&t;/* always set, allows to detect byteorder */
+macro_line|#ifdef __BIG_ENDIAN
+DECL|macro|ACCT_BYTEORDER
+mdefine_line|#define ACCT_BYTEORDER&t;0x80&t;/* accounting file is big endian */
+macro_line|#else
+DECL|macro|ACCT_BYTEORDER
+mdefine_line|#define ACCT_BYTEORDER&t;0x00&t;/* accounting file is little endian */
+macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT

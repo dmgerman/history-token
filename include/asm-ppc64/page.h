@@ -25,6 +25,8 @@ DECL|macro|SID_SHIFT
 mdefine_line|#define SID_SHIFT       28
 DECL|macro|SID_MASK
 mdefine_line|#define SID_MASK        0xfffffffffUL
+DECL|macro|ESID_MASK
+mdefine_line|#define ESID_MASK&t;0xfffffffff0000000UL
 DECL|macro|GET_ESID
 mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
@@ -38,9 +40,9 @@ DECL|macro|HUGETLB_PAGE_ORDER
 mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 multiline_comment|/* For 64-bit processes the hugepage range is 1T-1.5T */
 DECL|macro|TASK_HPAGE_BASE
-mdefine_line|#define TASK_HPAGE_BASE &t;(0x0000010000000000UL)
+mdefine_line|#define TASK_HPAGE_BASE ASM_CONST(0x0000010000000000)
 DECL|macro|TASK_HPAGE_END
-mdefine_line|#define TASK_HPAGE_END &t;(0x0000018000000000UL)
+mdefine_line|#define TASK_HPAGE_END &t;ASM_CONST(0x0000018000000000)
 DECL|macro|LOW_ESID_MASK
 mdefine_line|#define LOW_ESID_MASK(addr, len)&t;(((1U &lt;&lt; (GET_ESID(addr+len-1)+1)) &bslash;&n;&t;   &t;                &t;- (1U &lt;&lt; GET_ESID(addr))) &amp; 0xffff)
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE

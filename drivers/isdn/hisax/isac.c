@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isac.c,v 1.31.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * ISAC specific routines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
+multiline_comment|/* $Id: isac.c,v 1.31.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * ISAC specific routines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * Documentation/isdn/HiSax.cert&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isac.h&quot;
 macro_line|#include &quot;arcofi.h&quot;
