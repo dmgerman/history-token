@@ -2332,12 +2332,6 @@ op_logical_neg
 id|mapping-&gt;host
 )paren
 (brace
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|FreeXid
 c_func
 (paren
