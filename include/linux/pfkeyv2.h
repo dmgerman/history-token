@@ -773,6 +773,19 @@ DECL|macro|SADB_X_EALG_AESCBC
 mdefine_line|#define SADB_X_EALG_AESCBC&t;&t;12
 DECL|macro|SADB_EALG_MAX
 mdefine_line|#define SADB_EALG_MAX&t;&t;&t;12
+multiline_comment|/* Compression algorithms */
+DECL|macro|SADB_X_CALG_NONE
+mdefine_line|#define SADB_X_CALG_NONE&t;&t;0
+DECL|macro|SADB_X_CALG_OUI
+mdefine_line|#define SADB_X_CALG_OUI&t;&t;&t;1
+DECL|macro|SADB_X_CALG_DEFLATE
+mdefine_line|#define SADB_X_CALG_DEFLATE&t;&t;2
+DECL|macro|SADB_X_CALG_LZS
+mdefine_line|#define SADB_X_CALG_LZS&t;&t;&t;3
+DECL|macro|SADB_X_CALG_LZJH
+mdefine_line|#define SADB_X_CALG_LZJH&t;&t;4
+DECL|macro|SADB_X_CALG_MAX
+mdefine_line|#define SADB_X_CALG_MAX&t;&t;&t;4
 multiline_comment|/* Extension Header values */
 DECL|macro|SADB_EXT_RESERVED
 mdefine_line|#define SADB_EXT_RESERVED&t;&t;0

@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Cryptographic API.&n; *&n; * DES &amp; Triple DES EDE
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 DECL|macro|DES_KEY_SIZE

@@ -113,6 +113,8 @@ mdefine_line|#define _PAGE_W&t;&t;0x0000000000000002&t;/* Writable              
 DECL|macro|_PAGE_G
 mdefine_line|#define _PAGE_G&t;&t;0x0000000000000001&t;/* Global                             */
 multiline_comment|/* Here are the SpitFire software bits we use in the TTE&squot;s. */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x0000000000001000&t;/* Pagecache page                     */
 DECL|macro|_PAGE_MODIFIED
 mdefine_line|#define _PAGE_MODIFIED&t;0x0000000000000800&t;/* Modified Page (ie. dirty)          */
 DECL|macro|_PAGE_ACCESSED
@@ -469,6 +471,15 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;&t;((pte_t) { (x).val })
+multiline_comment|/* File offset in PTE support. */
+DECL|macro|pte_file
+mdefine_line|#define pte_file(pte)&t;&t;(pte_val(pte) &amp; _PAGE_FILE)
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(pte)&t;(pte_val(pte) &gt;&gt; PAGE_SHIFT)
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(off)&t;(__pte(((off) &lt;&lt; PAGE_SHIFT) | _PAGE_FILE))
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;(64UL - PAGE_SHIFT - 1UL)
 r_extern
 r_int
 r_int

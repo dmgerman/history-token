@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;

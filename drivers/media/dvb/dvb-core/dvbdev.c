@@ -312,7 +312,6 @@ id|dvb_device_open
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_DVB_DEVFS_ONLY */
 DECL|function|dvb_generic_open
 r_int
 id|dvb_generic_open
@@ -983,12 +982,6 @@ op_star
 id|name
 )paren
 (brace
-r_char
-id|dirname
-(braket
-l_int|16
-)braket
-suffix:semicolon
 r_struct
 id|dvb_adapter
 op_star
@@ -1099,26 +1092,14 @@ comma
 id|name
 )paren
 suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|dirname
-comma
-l_string|&quot;dvb/adapter%d&quot;
-comma
-id|num
-)paren
-suffix:semicolon
 id|adap-&gt;devfs_handle
 op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
+l_string|&quot;dvb/adapter%d&quot;
 comma
-id|dirname
-comma
-l_int|NULL
+id|num
 )paren
 suffix:semicolon
 id|adap-&gt;num
@@ -1210,11 +1191,7 @@ id|dvb_devfs_handle
 op_assign
 id|devfs_mk_dir
 (paren
-l_int|NULL
-comma
 l_string|&quot;dvb&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifndef CONFIG_DVB_DEVFS_ONLY

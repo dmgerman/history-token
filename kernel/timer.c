@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;

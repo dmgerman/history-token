@@ -375,7 +375,7 @@ op_logical_neg
 id|ipprot-&gt;no_policy
 op_logical_and
 op_logical_neg
-id|xfrm_policy_check
+id|xfrm4_policy_check
 c_func
 (paren
 l_int|NULL
@@ -442,7 +442,7 @@ id|raw_sk
 r_if
 c_cond
 (paren
-id|xfrm_policy_check
+id|xfrm4_policy_check
 c_func
 (paren
 l_int|NULL

@@ -2317,11 +2317,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 id|DEVICE_NAME
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif

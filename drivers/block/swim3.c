@@ -4896,11 +4896,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;floppy&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|swim
@@ -5524,14 +5520,7 @@ c_func
 (paren
 id|floppy_name
 comma
-l_string|&quot;%s%d&quot;
-comma
-id|floppy_devfs_handle
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot;floppy&quot;
+l_string|&quot;floppy/%d&quot;
 comma
 id|floppy_count
 )paren
@@ -5541,7 +5530,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|floppy_devfs_handle
+l_int|NULL
 comma
 id|floppy_name
 comma

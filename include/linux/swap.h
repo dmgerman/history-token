@@ -334,6 +334,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* linux/mm/memory.c */
+r_extern
+r_void
+id|swapin_readahead
+c_func
+(paren
+id|swp_entry_t
+)paren
+suffix:semicolon
 multiline_comment|/* linux/mm/page_alloc.c */
 r_extern
 r_int

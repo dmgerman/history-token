@@ -1751,12 +1751,9 @@ suffix:semicolon
 multiline_comment|/* Unix98 devices */
 macro_line|#ifdef CONFIG_UNIX98_PTYS
 id|devfs_mk_dir
+c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;pts&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|printk

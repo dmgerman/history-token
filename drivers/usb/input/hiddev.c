@@ -3179,7 +3179,7 @@ suffix:semicolon
 r_char
 id|devfs_name
 (braket
-l_int|16
+l_int|24
 )braket
 suffix:semicolon
 r_for
@@ -3354,7 +3354,7 @@ c_func
 (paren
 id|devfs_name
 comma
-l_string|&quot;hiddev%d&quot;
+l_string|&quot;usb/hid/hiddev%d&quot;
 comma
 id|minor
 )paren
@@ -3364,7 +3364,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|hiddev_devfs_handle
+l_int|NULL
 comma
 id|devfs_name
 comma
@@ -3512,11 +3512,7 @@ op_assign
 id|devfs_mk_dir
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;usb/hid&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|usb_register

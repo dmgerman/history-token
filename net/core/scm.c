@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
+macro_line|#include &lt;net/compat.h&gt;
 macro_line|#include &lt;net/scm.h&gt;
 multiline_comment|/*&n; *&t;Only allow a user to send credentials, that they could set with &n; *&t;setu(g)id.&n; */
 DECL|function|scm_check_creds

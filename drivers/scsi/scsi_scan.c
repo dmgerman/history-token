@@ -4367,12 +4367,6 @@ op_star
 id|bflags
 )paren
 (brace
-r_char
-id|devname
-(braket
-l_int|64
-)braket
-suffix:semicolon
 multiline_comment|/*&n;&t; * XXX do not save the inquiry, since it can change underneath us,&n;&t; * save just vendor/model/rev.&n;&t; *&n;&t; * Rather than save it and have an ioctl that retrieves the saved&n;&t; * value, have an ioctl that executes the same INQUIRY code used&n;&t; * in scsi_probe_lun, let user level programs doing INQUIRY&n;&t; * scanning run at their own risk, or supply a user level program&n;&t; * that can correctly scan.&n;&t; */
 id|sdev-&gt;inquiry
 op_assign
@@ -4706,11 +4700,11 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
-id|sprintf
+id|sdev-&gt;de
+op_assign
+id|devfs_mk_dir
 c_func
 (paren
-id|devname
-comma
 l_string|&quot;scsi/host%d/bus%d/target%d/lun%d&quot;
 comma
 id|sdev-&gt;host-&gt;host_no
@@ -4720,33 +4714,6 @@ comma
 id|sdev-&gt;id
 comma
 id|sdev-&gt;lun
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sdev-&gt;de
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;scsi devfs dir: &bslash;&quot;%s&bslash;&quot; already exists&bslash;n&quot;
-comma
-id|devname
-)paren
-suffix:semicolon
-r_else
-id|sdev-&gt;de
-op_assign
-id|devfs_mk_dir
-c_func
-(paren
-l_int|NULL
-comma
-id|devname
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End driverfs/devfs code.&n;&t; */

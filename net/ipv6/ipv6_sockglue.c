@@ -24,6 +24,7 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 id|DEFINE_SNMP_STAT
 c_func
@@ -1612,6 +1613,28 @@ id|ipv6_flowlabel_opt
 c_func
 (paren
 id|sk
+comma
+id|optval
+comma
+id|optlen
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IPV6_IPSEC_POLICY
+suffix:colon
+r_case
+id|IPV6_XFRM_POLICY
+suffix:colon
+id|retv
+op_assign
+id|xfrm_user_policy
+c_func
+(paren
+id|sk
+comma
+id|optname
 comma
 id|optval
 comma

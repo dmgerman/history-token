@@ -322,6 +322,7 @@ l_int|0x20
 (brace
 multiline_comment|/* This mode resets the FIFO, so we may&n;&t;&t; * have to wait for it to drain first. */
 r_int
+r_int
 id|expire
 op_assign
 id|jiffies
@@ -2468,6 +2469,7 @@ op_assign
 id|length
 suffix:semicolon
 r_int
+r_int
 id|expire
 op_assign
 id|jiffies
@@ -3075,6 +3077,7 @@ c_loop
 id|left
 )paren
 (brace
+r_int
 r_int
 id|expire
 op_assign

@@ -3413,6 +3413,32 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Init v6 extention headers. */
+id|ipv6_hopopts_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ipv6_rthdr_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ipv6_frag_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ipv6_nodata_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ipv6_destopt_init
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Init v6 transport protocols. */
 id|udpv6_init
 c_func

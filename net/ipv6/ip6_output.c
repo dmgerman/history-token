@@ -2632,6 +2632,12 @@ c_func
 id|sk
 comma
 id|mtu
+op_plus
+id|LL_RESERVED_SPACE
+c_func
+(paren
+id|dev
+)paren
 comma
 id|flags
 op_amp

@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;&t;/* for max_pfn/max_low_pfn */
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 r_static
 r_void
 id|blk_unplug_work
@@ -398,6 +399,10 @@ op_div
 id|PAGE_CACHE_SIZE
 suffix:semicolon
 id|q-&gt;backing_dev_info.state
+op_assign
+l_int|0
+suffix:semicolon
+id|q-&gt;backing_dev_info.memory_backed
 op_assign
 l_int|0
 suffix:semicolon

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Twofish for CryptoAPI&n; *&n; * Originaly Twofish for 
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 multiline_comment|/* The large precomputed tables for the Twofish cipher (twofish.c)&n; * Taken from the same source as twofish.c&n; * Marc Mutz &lt;Marc@Mutz.com&gt;&n; */
 multiline_comment|/* These two tables are the q0 and q1 permutations, exactly as described in&n; * the Twofish paper. */

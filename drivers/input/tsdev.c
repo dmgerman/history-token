@@ -1364,7 +1364,7 @@ op_assign
 id|input_register_minor
 c_func
 (paren
-l_string|&quot;ts%d&quot;
+l_string|&quot;input/ts%d&quot;
 comma
 id|minor
 comma

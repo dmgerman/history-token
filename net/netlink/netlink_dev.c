@@ -821,12 +821,9 @@ id|EIO
 suffix:semicolon
 )brace
 id|devfs_mk_dir
+c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;netlink&quot;
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*  Someone tell me the official names for the uppercase ones  */

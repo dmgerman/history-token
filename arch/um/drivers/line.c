@@ -2327,17 +2327,9 @@ op_assign
 id|devfs_mk_symlink
 c_func
 (paren
-l_int|NULL
-comma
 id|from
 comma
-l_int|0
-comma
 id|to
-comma
-l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if

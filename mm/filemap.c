@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/aio.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
