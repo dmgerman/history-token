@@ -9,14 +9,16 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR OPTICS_CDROM_MAJOR
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;opt_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/cdrom.h&gt;
 macro_line|#include &quot;optcd.h&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR OPTICS_CDROM_MAJOR
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;opt_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;opt_queue)
 "&f;"
 multiline_comment|/* Debug support */
 multiline_comment|/* Don&squot;t forget to add new debug flags here. */

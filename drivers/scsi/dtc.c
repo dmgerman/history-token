@@ -5,7 +5,7 @@ mdefine_line|#define PSEUDO_DMA
 DECL|macro|DONT_USE_INTR
 mdefine_line|#define DONT_USE_INTR
 DECL|macro|UNSAFE
-mdefine_line|#define UNSAFE&t;&t;/* Leave interrupts enabled during pseudo-dma I/O */
+mdefine_line|#define UNSAFE&t;&t;&t;/* Leave interrupts enabled during pseudo-dma I/O */
 DECL|macro|xNDEBUG
 mdefine_line|#define xNDEBUG (NDEBUG_INTR+NDEBUG_RESELECTION+&bslash;&n;&t;&t; NDEBUG_SELECTION+NDEBUG_ARBITRATION)
 DECL|macro|DMA_WORKS_RIGHT
@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -33,7 +34,6 @@ macro_line|#include &quot;dtc.h&quot;
 DECL|macro|AUTOPROBE_IRQ
 mdefine_line|#define AUTOPROBE_IRQ
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -54,38 +54,38 @@ mdefine_line|#define D_CR_ACCESS&t;&t;0x80&t;/* ro set=can access 3280 registers
 DECL|macro|CSR_DIR_READ
 mdefine_line|#define CSR_DIR_READ&t;&t;0x40&t;/* rw direction, 1 = read 0 = write */
 DECL|macro|CSR_RESET
-mdefine_line|#define CSR_RESET              0x80    /* wo  Resets 53c400 */
+mdefine_line|#define CSR_RESET              0x80&t;/* wo  Resets 53c400 */
 DECL|macro|CSR_5380_REG
-mdefine_line|#define CSR_5380_REG           0x80    /* ro  5380 registers can be accessed */
+mdefine_line|#define CSR_5380_REG           0x80&t;/* ro  5380 registers can be accessed */
 DECL|macro|CSR_TRANS_DIR
-mdefine_line|#define CSR_TRANS_DIR          0x40    /* rw  Data transfer direction */
+mdefine_line|#define CSR_TRANS_DIR          0x40&t;/* rw  Data transfer direction */
 DECL|macro|CSR_SCSI_BUFF_INTR
-mdefine_line|#define CSR_SCSI_BUFF_INTR     0x20    /* rw  Enable int on transfer ready */
+mdefine_line|#define CSR_SCSI_BUFF_INTR     0x20&t;/* rw  Enable int on transfer ready */
 DECL|macro|CSR_5380_INTR
-mdefine_line|#define CSR_5380_INTR          0x10    /* rw  Enable 5380 interrupts */
+mdefine_line|#define CSR_5380_INTR          0x10&t;/* rw  Enable 5380 interrupts */
 DECL|macro|CSR_SHARED_INTR
-mdefine_line|#define CSR_SHARED_INTR        0x08    /* rw  Interrupt sharing */
+mdefine_line|#define CSR_SHARED_INTR        0x08&t;/* rw  Interrupt sharing */
 DECL|macro|CSR_HOST_BUF_NOT_RDY
-mdefine_line|#define CSR_HOST_BUF_NOT_RDY   0x04    /* ro  Host buffer not ready */
+mdefine_line|#define CSR_HOST_BUF_NOT_RDY   0x04&t;/* ro  Host buffer not ready */
 DECL|macro|CSR_SCSI_BUF_RDY
-mdefine_line|#define CSR_SCSI_BUF_RDY       0x02    /* ro  SCSI buffer ready */
+mdefine_line|#define CSR_SCSI_BUF_RDY       0x02&t;/* ro  SCSI buffer ready */
 DECL|macro|CSR_GATED_5380_IRQ
-mdefine_line|#define CSR_GATED_5380_IRQ     0x01    /* ro  Last block xferred */
+mdefine_line|#define CSR_GATED_5380_IRQ     0x01&t;/* ro  Last block xferred */
 DECL|macro|CSR_INT_BASE
 mdefine_line|#define CSR_INT_BASE (CSR_SCSI_BUFF_INTR | CSR_5380_INTR)
 DECL|macro|DTC_BLK_CNT
-mdefine_line|#define DTC_BLK_CNT&t;&t;0x101   /* rw &n;&t;&t;&t;&t;&t; * # of 128-byte blocks to transfer */
+mdefine_line|#define DTC_BLK_CNT&t;&t;0x101&t;/* rw &n;&t;&t;&t;&t;&t; * # of 128-byte blocks to transfer */
 DECL|macro|D_CR_ACCESS
-mdefine_line|#define D_CR_ACCESS             0x80    /* ro set=can access 3280 registers */
+mdefine_line|#define D_CR_ACCESS             0x80&t;/* ro set=can access 3280 registers */
 DECL|macro|DTC_SWITCH_REG
 mdefine_line|#define DTC_SWITCH_REG&t;&t;0x3982&t;/* ro - DIP switches */
 DECL|macro|DTC_RESUME_XFER
-mdefine_line|#define DTC_RESUME_XFER&t;&t;0x3982&t;/* wo - resume data xfer &n;&t;&t;&t;&t;&t;   * after disconnect/reconnect*/
+mdefine_line|#define DTC_RESUME_XFER&t;&t;0x3982&t;/* wo - resume data xfer &n;&t;&t;&t;&t;&t; * after disconnect/reconnect*/
 DECL|macro|DTC_5380_OFFSET
 mdefine_line|#define DTC_5380_OFFSET&t;&t;0x3880&t;/* 8 registers here, see NCR5380.h */
 multiline_comment|/*!!!! for dtc, it&squot;s a 128 byte buffer at 3900 !!! */
 DECL|macro|DTC_DATA_BUF
-mdefine_line|#define DTC_DATA_BUF&t;&t;0x3900  /* rw 128 bytes long */
+mdefine_line|#define DTC_DATA_BUF&t;&t;0x3900&t;/* rw 128 bytes long */
 DECL|struct|override
 r_static
 r_struct
@@ -227,11 +227,12 @@ comma
 suffix:semicolon
 DECL|macro|NO_SIGNATURES
 mdefine_line|#define NO_SIGNATURES (sizeof (signatures) /  sizeof (struct signature))
+macro_line|#ifndef MODULE
 multiline_comment|/*&n; * Function : dtc_setup(char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : str - unused, ints - array of integer parameters with ints[0]&n; *&t;equal to the number of ints.&n; *&n;*/
 DECL|function|dtc_setup
+r_static
 r_void
 id|__init
-(def_block
 id|dtc_setup
 c_func
 (paren
@@ -349,12 +350,12 @@ id|commandline_current
 suffix:semicolon
 )brace
 )brace
-)def_block
+macro_line|#endif
 multiline_comment|/* &n; * Function : int dtc_detect(Scsi_Host_Template * tpnt)&n; *&n; * Purpose : detects and initializes DTC 3180/3280 controllers&n; *&t;that were autoprobed, overridden on the LILO command line, &n; *&t;or specified at compile time.&n; *&n; * Inputs : tpnt - template for this SCSI adapter.&n; * &n; * Returns : 1 if a host adapter was found, 0 if not.&n; *&n;*/
 DECL|function|dtc_detect
+r_static
 r_int
 id|__init
-(def_block
 id|dtc_detect
 c_func
 (paren
@@ -571,6 +572,7 @@ suffix:semicolon
 id|instance
 op_assign
 id|scsi_register
+c_func
 (paren
 id|tpnt
 comma
@@ -588,10 +590,8 @@ id|instance
 op_eq
 l_int|NULL
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|instance-&gt;base
 op_assign
 id|base
@@ -646,7 +646,7 @@ id|DTC_IRQS
 )paren
 suffix:semicolon
 macro_line|#ifndef DONT_USE_INTR
-multiline_comment|/* With interrupts enabled, it will sometimes hang when doing heavy&n; * reads. So better not enable them until I finger it out. */
+multiline_comment|/* With interrupts enabled, it will sometimes hang when doing heavy&n;&t;&t; * reads. So better not enable them until I finger it out. */
 r_if
 c_cond
 (paren
@@ -662,7 +662,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_dtc_intr
+id|dtc_intr
 comma
 id|SA_INTERRUPT
 comma
@@ -675,6 +675,7 @@ id|instance
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi%d : IRQ%d not free, interrupts disabled&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -698,6 +699,7 @@ id|IRQ_NONE
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d : interrupts not enabled. for better interactive performance,&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -706,6 +708,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d : please jumper the board for a free IRQ.&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -723,6 +726,7 @@ id|IRQ_NONE
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d : interrupts not used. Might as well not jumper it.&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -748,6 +752,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d : at 0x%05X&quot;
 comma
 id|instance-&gt;host_no
@@ -766,12 +771,14 @@ op_eq
 id|IRQ_NONE
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; interrupts disabled&quot;
 )paren
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 l_string|&quot; irq %d&quot;
 comma
@@ -813,22 +820,26 @@ r_return
 id|count
 suffix:semicolon
 )brace
-)def_block
 multiline_comment|/*&n; * Function : int dtc_biosparam(Disk * disk, struct block_device *dev, int *ip)&n; *&n; * Purpose : Generates a BIOS / DOS compatible H-C-S mapping for &n; *&t;the specified device / size.&n; * &n; * Inputs : size = size of device in sectors (512 bytes), dev = block device&n; *&t;major / minor, ip[] = {heads, sectors, cylinders}  &n; *&n; * Returns : always 0 (success), initializes ip&n; *&t;&n;*/
 multiline_comment|/* &n; * XXX Most SCSI boards use this mapping, I could be incorrect.  Some one&n; * using hard disks on a trantor should verify that this mapping corresponds&n; * to that used by the BIOS / ASPI driver by running the linux fdisk program&n; * and matching the H_C_S coordinates to what DOS uses.&n;*/
 DECL|function|dtc_biosparam
+r_static
 r_int
 id|dtc_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -838,7 +849,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket
@@ -887,6 +898,7 @@ r_static
 r_inline
 r_int
 id|NCR5380_pread
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -1105,7 +1117,9 @@ op_assign
 id|i
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************&n; * Function : int NCR5380_pwrite (struct Scsi_Host *instance, &n; *&t;unsigned char *src, int len)&n; *&n; * Purpose : Fast 5380 pseudo-dma write function, transfers len bytes from&n; *&t;src&n; * &n; * Inputs : src = source, len = length in bytes&n; *&n; * Returns : 0 on success, non zero on a failure such as a watchdog &n; * &t;timeout.&n;*/
@@ -1114,6 +1128,7 @@ r_static
 r_inline
 r_int
 id|NCR5380_pwrite
+c_func
 (paren
 r_struct
 id|Scsi_Host

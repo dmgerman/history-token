@@ -20,7 +20,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;inia100.h&quot;
@@ -2249,14 +2248,18 @@ r_int
 id|inia100_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -2278,14 +2281,14 @@ op_assign
 id|ORC_HCS
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 id|pTcb
 op_assign
 op_amp
 id|pHcb-&gt;HCS_Tcs
 (braket
-id|disk-&gt;device-&gt;id
+id|sdev-&gt;id
 )braket
 suffix:semicolon
 r_if
@@ -2317,7 +2320,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 id|pTcb-&gt;TCS_DrvHead
 op_div
@@ -2357,7 +2360,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 l_int|255
 op_div
@@ -2385,7 +2388,7 @@ id|info_array
 l_int|2
 )braket
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_rshift
 l_int|11
 suffix:semicolon

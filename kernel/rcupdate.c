@@ -677,7 +677,11 @@ c_func
 (paren
 )paren
 op_le
+(paren
 l_int|1
+op_lshift
+id|HARDIRQ_SHIFT
+)paren
 )paren
 )paren
 id|RCU_qsctr

@@ -14,7 +14,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;sd.h&quot;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 DECL|macro|pci64_dma_hi32
 mdefine_line|#define pci64_dma_hi32(a) ((u32) (0xffffffff &amp; (((u64)(a))&gt;&gt;32)))
@@ -8042,14 +8042,18 @@ r_int
 id|isp2x00_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|n
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -8060,7 +8064,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ENTER
 c_func

@@ -202,6 +202,47 @@ id|exponent
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|_fpxreg_ia32
+r_struct
+id|_fpxreg_ia32
+(brace
+DECL|member|significand
+r_int
+r_int
+id|significand
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|exponent
+r_int
+r_int
+id|exponent
+suffix:semicolon
+DECL|member|padding
+r_int
+r_int
+id|padding
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|_xmmreg_ia32
+r_struct
+id|_xmmreg_ia32
+(brace
+DECL|member|element
+r_int
+r_int
+id|element
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|_fpstate_ia32
 r_struct
 id|_fpstate_ia32
@@ -241,6 +282,57 @@ DECL|member|status
 r_int
 r_int
 id|status
+suffix:semicolon
+DECL|member|magic
+r_int
+r_int
+id|magic
+suffix:semicolon
+multiline_comment|/* 0xffff = regular FPU data only */
+multiline_comment|/* FXSR FPU environment */
+DECL|member|_fxsr_env
+r_int
+r_int
+id|_fxsr_env
+(braket
+l_int|6
+)braket
+suffix:semicolon
+multiline_comment|/* FXSR FPU env is ignored */
+DECL|member|mxcsr
+r_int
+r_int
+id|mxcsr
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_int
+id|reserved
+suffix:semicolon
+DECL|member|_fxsr_st
+r_struct
+id|_fpxreg_ia32
+id|_fxsr_st
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* FXSR FPU reg data is ignored */
+DECL|member|_xmm
+r_struct
+id|_xmmreg_ia32
+id|_xmm
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|padding
+r_int
+r_int
+id|padding
+(braket
+l_int|56
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1405,6 +1497,10 @@ op_star
 id|task
 )paren
 suffix:semicolon
+DECL|macro|ia32f2ia64f
+mdefine_line|#define ia32f2ia64f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;register double f6 asm (&quot;f6&quot;); &bslash;&n;&t;asm volatile (&quot;ldfe f6=[%2];; stf.spill [%1]=f6&quot; : &quot;=f&quot;(f6): &quot;r&quot;(dst), &quot;r&quot;(src) : &quot;memory&quot;); &bslash;&n;&t;} while(0)
+DECL|macro|ia64f2ia32f
+mdefine_line|#define ia64f2ia32f(dst,src) &bslash;&n;&t;do { &bslash;&n;&t;register double f6 asm (&quot;f6&quot;); &bslash;&n;&t;asm volatile (&quot;ldf.fill f6=[%2];; stfe [%1]=f6&quot; : &quot;=f&quot;(f6): &quot;r&quot;(dst),  &quot;r&quot;(src) : &quot;memory&quot;); &bslash;&n;&t;} while(0)
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif /* _ASM_IA64_IA32_H */
 eof

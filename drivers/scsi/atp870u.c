@@ -16513,21 +16513,24 @@ id|len
 )paren
 suffix:semicolon
 )brace
-macro_line|#include &quot;sd.h&quot;
 DECL|function|atp870u_biosparam
 r_static
 r_int
 id|atp870u_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -16555,7 +16558,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -16585,7 +16588,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;hpusbscsi.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x...) &bslash;&n;&t;printk( KERN_DEBUG x )
@@ -380,24 +379,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* no error */
-r_break
-suffix:semicolon
-r_case
-op_minus
-id|EPIPE
-suffix:colon
-id|usb_clear_halt
-(paren
-id|dev
-comma
-id|usb_sndctrlpipe
-(paren
-id|dev
-comma
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default

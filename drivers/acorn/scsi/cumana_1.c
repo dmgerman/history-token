@@ -1861,11 +1861,6 @@ op_assign
 id|NCR5380_host_reset
 comma
 dot
-id|bios_param
-op_assign
-id|scsicam_bios_param
-comma
-dot
 id|can_queue
 op_assign
 l_int|16

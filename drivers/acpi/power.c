@@ -724,8 +724,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|acpi_power_off
-id|acpi_power_off
+DECL|function|acpi_power_off_device
+id|acpi_power_off_device
 (paren
 id|acpi_handle
 id|handle
@@ -758,7 +758,7 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;acpi_power_off&quot;
+l_string|&quot;acpi_power_off_device&quot;
 )paren
 suffix:semicolon
 id|result
@@ -1268,7 +1268,7 @@ op_increment
 (brace
 id|result
 op_assign
-id|acpi_power_off
+id|acpi_power_off_device
 c_func
 (paren
 id|cl-&gt;handles

@@ -1,12 +1,5 @@
 multiline_comment|/*&n; * Driver for the SWIM (Super Woz Integrated Machine) IOP&n; * floppy controller on the Macintosh IIfx and Quadra 900/950&n; *&n; * Written by Joshua M. Thompson (funaho@jurai.org)&n; * based on the SWIM3 driver (c) 1996 by Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * 1999-06-12 (jmt) - Initial implementation.&n; */
 multiline_comment|/*&n; * -------------------&n; * Theory of Operation&n; * -------------------&n; *&n; * Since the SWIM IOP is message-driven we implement a simple request queue&n; * system.  One outstanding request may be queued at any given time (this is&n; * an IOP limitation); only when that request has completed can a new request&n; * be sent.&n; */
-multiline_comment|/* This has to be defined before some of the #includes below */
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR  FLOPPY_MAJOR
-DECL|macro|DEVICE_NAME
-mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;swim_queue)
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -171,6 +164,14 @@ id|swim_iop_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR  FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;swim_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;swim_queue)
 DECL|variable|drive_names
 r_static
 r_char
@@ -2347,24 +2348,6 @@ id|idle
 r_if
 c_cond
 (paren
-id|MAJOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|CURRENT-&gt;bh
 op_logical_and
 op_logical_neg
@@ -2385,13 +2368,9 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;do_fd_req: dev=%x cmd=%d sec=%ld nr_sec=%ld buf=%p&bslash;n&quot;
+l_string|&quot;do_fd_req: dev=%s cmd=%d sec=%ld nr_sec=%ld buf=%p&bslash;n&quot;
 comma
-id|kdev_t_to_nr
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
+id|CURRENT-&gt;rq_disk-&gt;disk_name
 comma
 id|CURRENT-&gt;cmd
 comma

@@ -46,7 +46,6 @@ macro_line|#include &lt;linux/bios32.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/*&n;**&t;Define BITS_PER_LONG for earlier linux versions.&n;*/
 macro_line|#ifndef&t;BITS_PER_LONG
@@ -28656,32 +28655,27 @@ id|func
 )paren
 suffix:semicolon
 macro_line|#endif
-r_for
-c_loop
-(paren
-id|host
-op_assign
-id|first_host
-suffix:semicolon
-id|host
-suffix:semicolon
-id|host
-op_assign
-id|host-&gt;next
-)paren
-(brace
 r_if
 c_cond
 (paren
-id|host-&gt;hostt
-op_eq
-id|the_template
-op_logical_and
-id|host-&gt;host_no
-op_eq
+(paren
+id|host
+op_assign
+id|scsi_host_hn_get
+c_func
+(paren
 id|hostno
 )paren
+)paren
+op_eq
+l_int|NULL
+)paren
 (brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|host_data
 op_assign
 (paren
@@ -28694,20 +28688,6 @@ suffix:semicolon
 id|ncb
 op_assign
 id|host_data-&gt;ncb
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ncb
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 r_if
 c_cond

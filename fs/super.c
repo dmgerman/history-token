@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  linux/fs/super.c&n; *&n; *  Copyright (C) 1991, 1992 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
@@ -1914,14 +1913,6 @@ op_star
 id|bdev
 suffix:semicolon
 r_struct
-id|block_device_operations
-op_star
-id|bdops
-suffix:semicolon
-id|devfs_handle_t
-id|de
-suffix:semicolon
-r_struct
 id|super_block
 op_star
 id|s
@@ -1929,9 +1920,6 @@ suffix:semicolon
 r_struct
 id|nameidata
 id|nd
-suffix:semicolon
-id|kdev_t
-id|dev
 suffix:semicolon
 r_int
 id|error
@@ -2045,39 +2033,7 @@ id|bdev
 op_assign
 id|inode-&gt;i_bdev
 suffix:semicolon
-id|de
-op_assign
-id|devfs_get_handle_from_inode
-(paren
-id|inode
-)paren
-suffix:semicolon
-id|bdops
-op_assign
-id|devfs_get_ops
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/*  Increments module use count  */
-r_if
-c_cond
-(paren
-id|bdops
-)paren
-id|bdev-&gt;bd_op
-op_assign
-id|bdops
-suffix:semicolon
 multiline_comment|/* Done with lookups, semaphore down */
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2106,12 +2062,6 @@ comma
 id|BDEV_FS
 )paren
 suffix:semicolon
-id|devfs_put_ops
-(paren
-id|de
-)paren
-suffix:semicolon
-multiline_comment|/*  Decrement module use count now we&squot;re safe  */
 r_if
 c_cond
 (paren

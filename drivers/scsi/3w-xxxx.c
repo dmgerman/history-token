@@ -43,7 +43,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__3W_C
 mdefine_line|#define __3W_C&t;&t;&t;/* let 3w-xxxx.h know it is use */
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;3w-xxxx.h&quot;
@@ -9693,14 +9692,18 @@ r_int
 id|tw_scsi_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -9732,7 +9735,7 @@ op_assign
 id|TW_Device_Extension
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 id|heads
 op_assign
@@ -9748,7 +9751,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -9759,7 +9762,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 op_ge
 l_int|0x200000
 )paren
@@ -9778,7 +9781,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

@@ -861,18 +861,6 @@ DECL|member|bd_openers
 r_int
 id|bd_openers
 suffix:semicolon
-DECL|member|bd_op
-r_struct
-id|block_device_operations
-op_star
-id|bd_op
-suffix:semicolon
-DECL|member|bd_queue
-r_struct
-id|request_queue
-op_star
-id|bd_queue
-suffix:semicolon
 DECL|member|bd_sem
 r_struct
 id|semaphore
@@ -4880,17 +4868,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* fs/devices.c */
-r_extern
-r_struct
-id|block_device_operations
-op_star
-id|get_blkfops
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|register_chrdev

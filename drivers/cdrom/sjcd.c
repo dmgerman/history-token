@@ -19,10 +19,6 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|MAJOR_NR
-mdefine_line|#define MAJOR_NR SANYO_CDROM_MAJOR
-DECL|macro|QUEUE
-mdefine_line|#define QUEUE (&amp;sjcd_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;sjcd.h&quot;
 DECL|variable|sjcd_present
@@ -38,6 +34,12 @@ r_struct
 id|request_queue
 id|sjcd_queue
 suffix:semicolon
+DECL|macro|MAJOR_NR
+mdefine_line|#define MAJOR_NR SANYO_CDROM_MAJOR
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;sjcd_queue)
+DECL|macro|CURRENT
+mdefine_line|#define CURRENT elv_next_request(&amp;sjcd_queue)
 DECL|macro|SJCD_BUF_SIZ
 mdefine_line|#define SJCD_BUF_SIZ 32&t;&t;/* cdr-h94a has internal 64K buffer */
 multiline_comment|/*&n; * buffer for block size conversion&n; */

@@ -410,6 +410,8 @@ id|read
 suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_KCORE_AOUT */
+DECL|macro|KCORE_BASE
+mdefine_line|#define&t;KCORE_BASE&t;PAGE_OFFSET
 DECL|macro|roundup
 mdefine_line|#define roundup(x, y)  ((((x)+((y)-1))/(y))*(y))
 multiline_comment|/* An ELF note in memory */
@@ -483,7 +485,7 @@ r_int
 )paren
 id|high_memory
 op_minus
-id|PAGE_OFFSET
+id|KCORE_BASE
 op_plus
 id|PAGE_SIZE
 )paren
@@ -534,11 +536,15 @@ c_cond
 (paren
 r_try
 OG
+id|KCORE_BASE
+op_plus
 id|size
 )paren
 id|size
 op_assign
 r_try
+op_minus
+id|KCORE_BASE
 suffix:semicolon
 op_star
 id|num_vma
@@ -590,14 +596,10 @@ id|elf_buflen
 )paren
 suffix:semicolon
 r_return
-(paren
 id|size
-op_minus
-id|PAGE_OFFSET
 op_plus
 op_star
 id|elf_buflen
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
@@ -1060,6 +1062,10 @@ id|PF_X
 suffix:semicolon
 id|phdr-&gt;p_offset
 op_assign
+id|PAGE_OFFSET
+op_minus
+id|KCORE_BASE
+op_plus
 id|dataoff
 suffix:semicolon
 id|phdr-&gt;p_vaddr
@@ -1161,7 +1167,7 @@ r_int
 )paren
 id|m-&gt;addr
 op_minus
-id|PAGE_OFFSET
+id|KCORE_BASE
 op_plus
 id|dataoff
 suffix:semicolon
@@ -1808,10 +1814,10 @@ id|tsz
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Fill the remainder of the buffer from kernel VM space.&n;&t; * We said in the ELF header that the data which starts&n;&t; * at &squot;elf_buflen&squot; is virtual address PAGE_OFFSET. --rmk&n;&t; */
+multiline_comment|/*&n;&t; * Fill the remainder of the buffer from kernel VM space.&n;&t; * We said in the ELF header that the data which starts&n;&t; * at &squot;elf_buflen&squot; is virtual address KCORE_BASE. --rmk&n;&t; */
 id|start
 op_assign
-id|PAGE_OFFSET
+id|KCORE_BASE
 op_plus
 (paren
 op_star

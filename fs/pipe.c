@@ -431,7 +431,7 @@ c_cond
 id|do_wakeup
 )paren
 (brace
-id|wake_up_interruptible
+id|wake_up_interruptible_sync
 c_func
 (paren
 id|PIPE_WAIT
@@ -483,7 +483,7 @@ c_cond
 id|do_wakeup
 )paren
 (brace
-id|wake_up_interruptible_sync
+id|wake_up_interruptible
 c_func
 (paren
 id|PIPE_WAIT

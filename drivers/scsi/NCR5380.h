@@ -279,6 +279,20 @@ DECL|member|NCR5380_implementation_fields
 id|NCR5380_implementation_fields
 suffix:semicolon
 multiline_comment|/* implementation specific */
+DECL|member|host
+r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+multiline_comment|/* Host backpointer */
+DECL|member|next
+r_struct
+id|NCR5380_hostdata
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Next in our hot chain */
 DECL|member|id_mask
 DECL|member|id_higher_mask
 r_int
@@ -381,6 +395,12 @@ id|Scsi_Cmnd
 op_star
 id|selecting
 suffix:semicolon
+DECL|member|coroutine
+r_struct
+id|work_struct
+id|coroutine
+suffix:semicolon
+multiline_comment|/* our co-routine */
 macro_line|#ifdef NCR5380_STATS
 DECL|member|timebase
 r_int
@@ -433,14 +453,6 @@ macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-DECL|variable|first_instance
-r_static
-r_struct
-id|Scsi_Host
-op_star
-id|first_instance
-suffix:semicolon
-multiline_comment|/* linked list of 5380&squot;s */
 DECL|macro|dprintk
 mdefine_line|#define dprintk(a,b)&t;&t;&t;do {} while(0)
 DECL|macro|NCR5380_dprint
@@ -464,7 +476,7 @@ id|possible
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+r_int
 id|NCR5380_init
 c_func
 (paren
@@ -507,24 +519,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_static
-r_void
-id|do_NCR5380_intr
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 macro_line|#endif
 r_static
 r_void
@@ -532,6 +526,8 @@ id|NCR5380_main
 c_func
 (paren
 r_void
+op_star
+id|ptr
 )paren
 suffix:semicolon
 r_static
@@ -545,6 +541,7 @@ op_star
 id|instance
 )paren
 suffix:semicolon
+macro_line|#ifdef NDEBUG
 r_static
 r_void
 id|NCR5380_print_phase
@@ -567,9 +564,8 @@ op_star
 id|instance
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_abort
-r_static
 macro_line|#endif
+r_static
 r_int
 id|NCR5380_abort
 c_func
@@ -579,9 +575,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_bus_reset
 r_static
-macro_line|#endif
 r_int
 id|NCR5380_bus_reset
 c_func
@@ -591,9 +585,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_host_reset
 r_static
-macro_line|#endif
 r_int
 id|NCR5380_host_reset
 c_func
@@ -603,9 +595,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_device_reset
 r_static
-macro_line|#endif
 r_int
 id|NCR5380_device_reset
 c_func
@@ -615,9 +605,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_queue_command
 r_static
-macro_line|#endif
 r_int
 id|NCR5380_queue_command
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconfig - Namespace reconfiguration (Load/Unload opcodes)&n; *              $Revision: 69 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -51,7 +51,7 @@ id|obj_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 suffix:semicolon
 r_if
@@ -82,10 +82,6 @@ suffix:semicolon
 id|table_info.allocation
 op_assign
 id|ACPI_MEM_ALLOCATED
-suffix:semicolon
-id|table_info.base_pointer
-op_assign
-id|table
 suffix:semicolon
 id|status
 op_assign
@@ -834,13 +830,13 @@ r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -1114,7 +1110,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|ddb_handle
 )paren
 op_ne
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 )paren
 (brace

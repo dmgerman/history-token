@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 116 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 117 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -217,7 +217,7 @@ id|stack_desc
 )paren
 (brace
 r_case
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
 id|opcode
 op_assign
@@ -469,13 +469,13 @@ r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|ACPI_DEBUG_PRINT
 (paren
@@ -569,7 +569,7 @@ id|type
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_get_object_type&quot;
+l_string|&quot;Acpi_ex_resolve_multiple&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For reference objects created via the Ref_of or Index operators,&n;&t; * we need to get to the base object (as per the ACPI specification&n;&t; * of the Object_type and Size_of operators). This means traversing&n;&t; * the list of possibly many nested references.&n;&t; */
@@ -581,7 +581,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 )paren
 (brace
 r_switch
@@ -807,17 +807,27 @@ id|type
 )paren
 (brace
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|type
 op_assign
 id|ACPI_TYPE_FIELD_UNIT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_LOCAL_SCOPE
+suffix:colon
+multiline_comment|/* Per ACPI Specification, Scope is untyped */
+id|type
+op_assign
+id|ACPI_TYPE_ANY
 suffix:semicolon
 r_break
 suffix:semicolon

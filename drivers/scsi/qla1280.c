@@ -30,7 +30,6 @@ macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,18)
 macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#endif
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 DECL|macro|UNIQUE_FW_NAME
@@ -5499,14 +5498,18 @@ DECL|function|qla1280_biosparam
 id|qla1280_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -5535,7 +5538,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -5565,7 +5568,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

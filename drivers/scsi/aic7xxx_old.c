@@ -25,7 +25,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aic7xxx_old/aic7xxx.h&quot;
@@ -42095,14 +42094,18 @@ DECL|function|aic7xxx_biosparam
 id|aic7xxx_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -42136,7 +42139,7 @@ r_struct
 id|aic7xxx_host
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 id|buf
 op_assign
@@ -42159,7 +42162,7 @@ c_func
 (paren
 id|buf
 comma
-id|disk-&gt;capacity
+id|capacity
 comma
 op_amp
 id|geom
@@ -42212,7 +42215,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -42250,7 +42253,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

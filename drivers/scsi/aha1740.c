@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;aha1740.h&quot;
 macro_line|#include&lt;linux/stat.h&gt;
 multiline_comment|/* IF YOU ARE HAVING PROBLEMS WITH THIS DRIVER, AND WANT TO WATCH&n;   IT WORK, THEN:&n;#define DEBUG&n;*/
@@ -55,6 +54,13 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|HOSTDATA
 mdefine_line|#define HOSTDATA(host) ((struct aha1740_hostdata *) &amp;host-&gt;hostdata)
+DECL|variable|aha1740_lock
+r_static
+id|spinlock_t
+id|aha1740_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* One for each IRQ level (9-15) */
 DECL|variable|aha_host
 r_static
@@ -1043,12 +1049,10 @@ c_cond
 (paren
 id|SCtmp-&gt;host_scribble
 )paren
-id|scsi_free
+id|kfree
 c_func
 (paren
 id|SCtmp-&gt;host_scribble
-comma
-l_int|512
 )paren
 suffix:semicolon
 multiline_comment|/* Fetch the sense data, and tuck it away, in the required slot.&n;&t;       The Adaptec automatically fetches it, and there is no&n;&t;       guarantee that we will still have it in the cdb when we come&n;&t;       back */
@@ -1482,15 +1486,13 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* locate an available ecb */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|aha1740_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ecbno
@@ -1579,9 +1581,12 @@ id|host-&gt;last_ecb_used
 op_assign
 id|ecbno
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|aha1740_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1706,12 +1711,33 @@ r_int
 r_char
 op_star
 )paren
-id|scsi_malloc
+id|kmalloc
 c_func
 (paren
 l_int|512
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;host_scribble
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;aha1740: out of memory in queuecommand!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|sgpnt
 op_assign
 (paren
@@ -1729,19 +1755,6 @@ id|aha1740_chain
 op_star
 )paren
 id|SCpnt-&gt;host_scribble
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cptr
-op_eq
-l_int|NULL
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;aha1740.c: unable to allocate DMA memory&bslash;n&quot;
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1782,12 +1795,23 @@ op_assign
 id|isa_virt_to_bus
 c_func
 (paren
+id|page_address
+c_func
+(paren
 id|sgpnt
 (braket
 id|i
 )braket
 dot
-id|address
+id|page
+)paren
+op_plus
+id|sgpnt
+(braket
+id|i
+)braket
+dot
+id|offset
 )paren
 suffix:semicolon
 )brace
@@ -2090,15 +2114,13 @@ id|ecbno
 )paren
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|aha1740_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_for
@@ -2146,12 +2168,6 @@ comma
 id|ecbno
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* printk may have done a sti()! */
 )brace
 r_if
 c_cond
@@ -2233,11 +2249,6 @@ comma
 id|ecbno
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2272,9 +2283,12 @@ id|base
 )paren
 suffix:semicolon
 multiline_comment|/* Start it up */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|aha1740_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2346,11 +2360,18 @@ c_loop
 op_logical_neg
 id|SCpnt-&gt;SCp.Status
 )paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 id|SCpnt-&gt;result
 suffix:semicolon
@@ -2841,14 +2862,18 @@ r_int
 id|aha1740_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -2858,7 +2883,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 id|extended
@@ -2866,7 +2891,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|translation

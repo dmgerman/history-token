@@ -143,8 +143,6 @@ DECL|macro|IDE4_MAJOR
 mdefine_line|#define IDE4_MAJOR&t;56
 DECL|macro|IDE5_MAJOR
 mdefine_line|#define IDE5_MAJOR&t;57
-DECL|macro|LVM_BLK_MAJOR
-mdefine_line|#define LVM_BLK_MAJOR&t;58&t;/* Logical Volume Manager */
 DECL|macro|SCSI_DISK1_MAJOR
 mdefine_line|#define SCSI_DISK1_MAJOR&t;65
 DECL|macro|SCSI_DISK2_MAJOR
@@ -219,8 +217,6 @@ DECL|macro|JSFD_MAJOR
 mdefine_line|#define JSFD_MAJOR&t;99
 DECL|macro|PHONE_MAJOR
 mdefine_line|#define PHONE_MAJOR&t;100
-DECL|macro|LVM_CHAR_MAJOR
-mdefine_line|#define LVM_CHAR_MAJOR&t;109&t;/* Logical Volume Manager */
 DECL|macro|RTF_MAJOR
 mdefine_line|#define RTF_MAJOR&t;150
 DECL|macro|RAW_MAJOR

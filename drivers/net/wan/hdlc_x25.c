@@ -656,13 +656,13 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ifr-&gt;ifr_settings-&gt;type
+id|ifr-&gt;ifr_settings.type
 )paren
 (brace
 r_case
 id|IF_GET_PROTO
 suffix:colon
-id|ifr-&gt;ifr_settings-&gt;type
+id|ifr-&gt;ifr_settings.type
 op_assign
 id|IF_PROTO_X25
 suffix:semicolon

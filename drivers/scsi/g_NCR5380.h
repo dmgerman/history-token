@@ -16,6 +16,7 @@ DECL|macro|NCR5380_BIOSPARAM
 mdefine_line|#define NCR5380_BIOSPARAM NULL
 macro_line|#endif
 macro_line|#ifndef ASM
+r_static
 r_int
 id|generic_NCR5380_abort
 c_func
@@ -24,6 +25,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_detect
 c_func
@@ -32,6 +34,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_release_resources
 c_func
@@ -41,6 +44,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_queue_command
 c_func
@@ -59,6 +63,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_bus_reset
 c_func
@@ -67,6 +72,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_host_reset
 c_func
@@ -75,6 +81,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|generic_NCR5380_device_reset
 c_func
@@ -83,6 +90,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|notyet_generic_proc_info
 (paren
@@ -108,6 +116,7 @@ r_int
 id|inout
 )paren
 suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -119,7 +128,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef BIOSPARAM
+r_static
 r_int
 id|generic_NCR5380_biosparam
 c_func
@@ -131,11 +140,13 @@ r_struct
 id|block_device
 op_star
 comma
+id|sector_t
+comma
 r_int
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
+r_static
 r_int
 id|generic_NCR5380_proc_info
 c_func
@@ -162,10 +173,6 @@ r_int
 id|inout
 )paren
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 macro_line|#ifndef CMD_PER_LUN
 DECL|macro|CMD_PER_LUN
 mdefine_line|#define CMD_PER_LUN 2
@@ -181,7 +188,7 @@ DECL|macro|__STRVAL
 mdefine_line|#define __STRVAL(x) #x
 DECL|macro|STRVAL
 mdefine_line|#define STRVAL(x) __STRVAL(x)
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+macro_line|#ifndef CONFIG_SCSI_G_NCR5380_MEM
 DECL|macro|NCR5380_map_config
 mdefine_line|#define NCR5380_map_config port
 DECL|macro|NCR5380_map_type
@@ -238,8 +245,6 @@ DECL|macro|NCR5380_setup
 mdefine_line|#define NCR5380_setup(instance) &bslash;&n;    NCR5380_map_name = (NCR5380_map_type)((instance)-&gt;NCR5380_instance_name)
 DECL|macro|NCR5380_intr
 mdefine_line|#define NCR5380_intr generic_NCR5380_intr
-DECL|macro|do_NCR5380_intr
-mdefine_line|#define do_NCR5380_intr do_generic_NCR5380_intr
 DECL|macro|NCR5380_queue_command
 mdefine_line|#define NCR5380_queue_command generic_NCR5380_queue_command
 DECL|macro|NCR5380_abort

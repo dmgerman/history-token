@@ -362,11 +362,7 @@ op_assign
 id|presto_cache_find
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb
 )paren
 suffix:semicolon
 r_if
