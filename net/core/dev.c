@@ -8856,13 +8856,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|kobject_unregister
-c_func
-(paren
-op_amp
-id|dev-&gt;kobj
-)paren
-suffix:semicolon
 multiline_comment|/* Last reference is our one */
 r_if
 c_cond
@@ -9019,6 +9012,13 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|kobject_unregister
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+)paren
+suffix:semicolon
 id|dev_put
 c_func
 (paren
