@@ -1840,6 +1840,8 @@ DECL|macro|PCI_DEVICE_ID_AL_M1531
 mdefine_line|#define PCI_DEVICE_ID_AL_M1531&t;&t;0x1531
 DECL|macro|PCI_DEVICE_ID_AL_M1533
 mdefine_line|#define PCI_DEVICE_ID_AL_M1533&t;&t;0x1533
+DECL|macro|PCI_DEVICE_ID_AL_M1535
+mdefine_line|#define PCI_DEVICE_ID_AL_M1535 &t;&t;0x1535
 DECL|macro|PCI_DEVICE_ID_AL_M1541
 mdefine_line|#define PCI_DEVICE_ID_AL_M1541&t;&t;0x1541
 DECL|macro|PCI_DEVICE_ID_AL_M1543
