@@ -21,6 +21,20 @@ DECL|macro|ISDN_DEBUG_NET_DIAL
 macro_line|#undef  ISDN_DEBUG_NET_DIAL
 DECL|macro|ISDN_DEBUG_NET_ICALL
 macro_line|#undef  ISDN_DEBUG_NET_ICALL
+macro_line|#ifdef ISDN_DEBUG_NET_DIAL
+DECL|macro|dbg_net_dial
+mdefine_line|#define dbg_net_dial(arg...) printk(KERN_DEBUG arg)
+macro_line|#else
+DECL|macro|dbg_net_dial
+mdefine_line|#define dbg_net_dial(arg...) do {} while (0)
+macro_line|#endif
+macro_line|#ifdef ISDN_DEBUG_NET_ICALL
+DECL|macro|dbg_net_icall
+mdefine_line|#define dbg_net_icall(arg...) printk(KERN_DEBUG arg)
+macro_line|#else
+DECL|macro|dbg_net_icall
+mdefine_line|#define dbg_net_icall(arg...) do {} while (0)
+macro_line|#endif
 DECL|macro|isdn_BUG
 mdefine_line|#define isdn_BUG() &bslash;&n;do { printk(KERN_WARNING &quot;ISDN Bug at %s:%d&quot;, __FILE__, __LINE__); &bslash;&n;} while(0)
 multiline_comment|/* Prototypes */
@@ -185,6 +199,30 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|isdn_dumppkt
+r_static
+r_inline
+r_void
+id|isdn_dumppkt
+c_func
+(paren
+r_char
+op_star
+id|s
+comma
+id|u_char
+op_star
+id|d
+comma
+r_int
+id|l
+comma
+r_int
+id|m
+)paren
+(brace
+)brace
 macro_line|#endif
 DECL|struct|dial_info
 r_struct

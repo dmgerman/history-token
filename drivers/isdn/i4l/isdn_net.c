@@ -2730,11 +2730,9 @@ suffix:semicolon
 id|isdn_ctrl
 id|cmd
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_DIAL
-id|printk
+id|dbg_net_dial
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%s: dialstate=%d&bslash;n&quot;
 comma
 id|lp-&gt;name
@@ -2742,7 +2740,6 @@ comma
 id|lp-&gt;dialstate
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -2924,17 +2921,14 @@ r_case
 id|EV_NET_DIAL
 suffix:colon
 multiline_comment|/* Wait for B- or D-Channel-connect. If timeout,&n;&t;&t;&t; * switch back to state 3.&n;&t;&t;&t; */
-macro_line|#ifdef ISDN_DEBUG_NET_DIAL
-id|printk
+id|dbg_net_dial
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;dialtimer2: %d&bslash;n&quot;
 comma
 id|lp-&gt;dtimer
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2966,17 +2960,14 @@ r_case
 id|EV_NET_DIAL
 suffix:colon
 multiline_comment|/* Got incoming Call, setup L2 and L3 protocols,&n;&t;&t;&t; * then wait for D-Channel-connect&n;&t;&t;&t; */
-macro_line|#ifdef ISDN_DEBUG_NET_DIAL
-id|printk
+id|dbg_net_dial
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;dialtimer4: %d&bslash;n&quot;
 comma
 id|lp-&gt;dtimer
 )paren
 suffix:semicolon
-macro_line|#endif
 id|cmd.arg
 op_assign
 id|lp-&gt;l2_proto
@@ -3097,17 +3088,14 @@ r_case
 id|EV_NET_DIAL
 suffix:colon
 multiline_comment|/*  Wait for B- or D-channel-connect */
-macro_line|#ifdef ISDN_DEBUG_NET_DIAL
-id|printk
+id|dbg_net_dial
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;dialtimer4: %d&bslash;n&quot;
 comma
 id|lp-&gt;dtimer
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4849,12 +4837,6 @@ r_else
 macro_line|#endif
 multiline_comment|/* auto-dialing xmit function */
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_DUMP
-id|u_char
-op_star
-id|buf
-suffix:semicolon
-macro_line|#endif
 id|isdn_net_adjust_hdr
 c_func
 (paren
@@ -4863,24 +4845,18 @@ comma
 id|ndev
 )paren
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_DUMP
-id|buf
-op_assign
-id|skb-&gt;data
-suffix:semicolon
 id|isdn_dumppkt
 c_func
 (paren
 l_string|&quot;S:&quot;
 comma
-id|buf
+id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
 l_int|40
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7524,7 +7500,6 @@ id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_DUMP
 id|isdn_dumppkt
 c_func
 (paren
@@ -7537,7 +7512,6 @@ comma
 l_int|40
 )paren
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -8607,17 +8581,14 @@ id|isdn_net_dev
 op_star
 id|p
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: swapping ch of %d&bslash;n&quot;
 comma
 id|drvidx
 )paren
 suffix:semicolon
-macro_line|#endif
 id|p
 op_assign
 id|dev-&gt;netdev
@@ -8701,11 +8672,9 @@ c_func
 id|i2
 )paren
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: usage of %d and %d&bslash;n&quot;
 comma
 id|i1
@@ -8713,7 +8682,6 @@ comma
 id|i2
 )paren
 suffix:semicolon
-macro_line|#endif
 id|isdn_slot_set_usage
 c_func
 (paren
@@ -9006,11 +8974,9 @@ id|swapped
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: di=%d ch=%d idx=%d usg=%d&bslash;n&quot;
 comma
 id|di
@@ -9025,7 +8991,6 @@ id|idx
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -9193,11 +9158,9 @@ id|wret
 op_assign
 id|matchret
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: if=&squot;%s&squot;, l.msn=%s, l.flags=%d, l.dstate=%d&bslash;n&quot;
 comma
 id|lp-&gt;name
@@ -9209,7 +9172,6 @@ comma
 id|lp-&gt;dialstate
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9276,11 +9238,9 @@ multiline_comment|/* but no callback   */
 )paren
 )paren
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: match1, pdev=%d pch=%d&bslash;n&quot;
 comma
 id|lp-&gt;pre_device
@@ -9288,7 +9248,6 @@ comma
 id|lp-&gt;pre_channel
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9336,15 +9295,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: ch is 0&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9372,15 +9328,12 @@ op_amp
 id|ISDN_USAGE_EXCLUSIVE
 )paren
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: 2nd channel is down and bound&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Yes, swap bindings only, if the original&n;&t;&t;&t;&t;&t;&t;&t;&t; * binding is bound to channel 1 of this driver */
 r_if
 c_cond
@@ -9426,15 +9379,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: 2nd channel is down and unbound&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* No, swap always and swap excl-usage also */
 id|isdn_net_swap_usage
 c_func
@@ -9456,15 +9406,12 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* Now check for exclusive binding again */
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: final check&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -9493,15 +9440,12 @@ id|di
 )paren
 )paren
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: final check failed&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|p
 op_assign
 (paren
@@ -9518,27 +9462,21 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* We are already on the second channel, so nothing to do */
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: already on 2nd channel&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 )brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;n_fi: match2&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|n
 op_assign
 id|lp-&gt;phone
@@ -9599,15 +9537,13 @@ id|ISDN_NET_SECURE
 )paren
 )paren
 (brace
-macro_line|#ifdef ISDN_DEBUG_NET_ICALL
-id|printk
+id|dbg_net_icall
 c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;n_fi: match3&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* matching interface found */
 multiline_comment|/*&n;&t;&t;&t;&t; * Is the state STOPPED?&n;&t;&t;&t;&t; * If so, no dialin is allowed,&n;&t;&t;&t;&t; * so reject actively.&n;&t;&t;&t;&t; * */
 r_if
