@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 multiline_comment|/* -------------------- TUNABLE PARAMATERS: */
 multiline_comment|/*&n; * Maximum number of VCIs per card.  Setting it lower could theoretically&n; * save some memory, but since we allocate our vcc list with get_free_pages,&n; * it&squot;s not really likely for most architectures&n; */
 DECL|macro|NUM_VCI
