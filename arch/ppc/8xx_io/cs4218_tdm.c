@@ -7730,14 +7730,18 @@ r_struct
 id|timer_list
 id|beep_timer
 op_assign
-(brace
-dot
-id|function
-op_assign
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|cs_nosound
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|cs_mksound
 r_static
 r_void
 id|cs_mksound
@@ -8203,7 +8207,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|CS_open
 r_static
 r_void
 id|CS_open
@@ -8215,7 +8218,6 @@ r_void
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 )brace
-DECL|function|CS_release
 r_static
 r_void
 id|CS_release
@@ -8227,7 +8229,6 @@ r_void
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-DECL|variable|mach_cs4218
 r_static
 id|MACHINE
 id|mach_cs4218
@@ -8302,7 +8303,6 @@ id|CS_Play
 )brace
 suffix:semicolon
 multiline_comment|/*** Mid level stuff *********************************************************/
-DECL|function|sound_silence
 r_static
 r_void
 id|sound_silence
@@ -8327,7 +8327,6 @@ id|sound.mach.silence
 )paren
 suffix:semicolon
 )brace
-DECL|function|sound_init
 r_static
 r_void
 id|sound_init
@@ -8344,7 +8343,6 @@ id|sound.mach.init
 )paren
 suffix:semicolon
 )brace
-DECL|function|sound_set_format
 r_static
 r_int
 id|sound_set_format
@@ -8364,7 +8362,6 @@ id|format
 )paren
 suffix:semicolon
 )brace
-DECL|function|sound_set_speed
 r_static
 r_int
 id|sound_set_speed
@@ -8410,7 +8407,6 @@ r_return
 id|sound.soft.speed
 suffix:semicolon
 )brace
-DECL|function|sound_set_stereo
 r_static
 r_int
 id|sound_set_stereo
@@ -8463,7 +8459,6 @@ r_return
 id|stereo
 suffix:semicolon
 )brace
-DECL|function|sound_set_volume
 r_static
 r_int
 id|sound_set_volume
@@ -8483,7 +8478,6 @@ id|volume
 )paren
 suffix:semicolon
 )brace
-DECL|function|sound_copy_translate
 r_static
 id|ssize_t
 id|sound_copy_translate
@@ -8637,7 +8631,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sound_copy_translate_read
 r_static
 id|ssize_t
 id|sound_copy_translate_read
@@ -8792,7 +8785,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * /dev/mixer abstraction&n; */
-DECL|function|mixer_open
 r_static
 r_int
 id|mixer_open
@@ -8819,7 +8811,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mixer_release
 r_static
 r_int
 id|mixer_release
@@ -8846,7 +8837,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|mixer_ioctl
 r_static
 r_int
 id|mixer_ioctl
@@ -9307,7 +9297,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|variable|mixer_fops
 r_static
 r_struct
 id|file_operations
@@ -9341,7 +9330,6 @@ id|mixer_release
 comma
 )brace
 suffix:semicolon
-DECL|function|mixer_init
 r_static
 r_void
 id|__init
@@ -9429,7 +9417,6 @@ id|cs4218_control
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sound queue stuff, the heart of the driver&n; */
-DECL|function|sq_allocate_buffers
 r_static
 r_int
 id|sq_allocate_buffers
@@ -9550,7 +9537,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sq_release_buffers
 r_static
 r_void
 id|sq_release_buffers
@@ -9605,7 +9591,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-DECL|function|sq_allocate_read_buffers
 r_static
 r_int
 id|sq_allocate_read_buffers
@@ -9727,7 +9712,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sq_release_read_buffers
 r_static
 r_void
 id|sq_release_read_buffers
@@ -9792,7 +9776,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-DECL|function|sq_setup
 r_static
 r_void
 id|sq_setup
@@ -9937,7 +9920,6 @@ id|CPM_CR_FLG
 )paren
 suffix:semicolon
 )brace
-DECL|function|read_sq_setup
 r_static
 r_void
 id|read_sq_setup
@@ -10089,7 +10071,6 @@ id|CPM_CR_FLG
 )paren
 suffix:semicolon
 )brace
-DECL|function|sq_play
 r_static
 r_void
 id|sq_play
@@ -10107,7 +10088,6 @@ id|sound.mach.play
 suffix:semicolon
 )brace
 multiline_comment|/* ++TeSche: radically changed this one too */
-DECL|function|sq_write
 r_static
 id|ssize_t
 id|sq_write
@@ -10402,7 +10382,6 @@ suffix:semicolon
 )brace
 multiline_comment|/***********/
 multiline_comment|/* Here is how the values are used for reading.&n; * The value &squot;active&squot; simply indicates the DMA is running.  This is&n; * done so the driver semantics are DMA starts when the first read is&n; * posted.  The value &squot;front&squot; indicates the buffer we should next&n; * send to the user.  The value &squot;rear&squot; indicates the buffer the DMA is&n; * currently filling.  When &squot;front&squot; == &squot;rear&squot; the buffer &quot;ring&quot; is&n; * empty (we always have an empty available).  The &squot;rear_size&squot; is used&n; * to track partial offsets into the current buffer.  Right now, I just keep&n; * The DMA running.  If the reader can&squot;t keep up, the interrupt tosses&n; * the oldest buffer.  We could also shut down the DMA in this case.&n; */
-DECL|function|sq_read
 r_static
 id|ssize_t
 id|sq_read
@@ -10612,7 +10591,6 @@ r_return
 id|uRead
 suffix:semicolon
 )brace
-DECL|function|sq_open
 r_static
 r_int
 id|sq_open
@@ -10986,7 +10964,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|sq_reset
 r_static
 r_void
 id|sq_reset
@@ -11026,7 +11003,6 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|sq_fsync
 r_static
 r_int
 id|sq_fsync
@@ -11099,7 +11075,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|sq_release
 r_static
 r_int
 id|sq_release
@@ -11250,7 +11225,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|sq_ioctl
 r_static
 r_int
 id|sq_ioctl
@@ -11737,7 +11711,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-DECL|variable|sq_fops
 r_static
 r_struct
 id|file_operations
@@ -11782,7 +11755,6 @@ id|sq_release
 comma
 )brace
 suffix:semicolon
-DECL|function|sq_init
 r_static
 r_void
 id|__init
@@ -11898,7 +11870,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * /dev/sndstat&n; */
 multiline_comment|/* state.buf should not overflow! */
-DECL|function|state_open
 r_static
 r_int
 id|state_open
@@ -12246,7 +12217,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|state_release
 r_static
 r_int
 id|state_release
@@ -12273,7 +12243,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|state_read
 r_static
 id|ssize_t
 id|state_read
@@ -12353,7 +12322,6 @@ r_return
 id|n
 suffix:semicolon
 )brace
-DECL|variable|state_fops
 r_static
 r_struct
 id|file_operations
@@ -12387,7 +12355,6 @@ id|state_release
 comma
 )brace
 suffix:semicolon
-DECL|function|state_init
 r_static
 r_void
 id|__init
@@ -12423,7 +12390,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*** Common stuff ********************************************************/
-DECL|function|sound_lseek
 r_static
 r_int
 r_int
@@ -12449,7 +12415,6 @@ id|ESPIPE
 suffix:semicolon
 )brace
 multiline_comment|/*** Config &amp; Setup **********************************************************/
-DECL|function|tdm8xx_sound_init
 r_int
 id|__init
 id|tdm8xx_sound_init
@@ -12988,7 +12953,6 @@ suffix:semicolon
 multiline_comment|/* Due to FIFOs and bit delays, the transmit interrupt occurs a few&n; * microseconds ahead of the receive interrupt.&n; * When we get an interrupt, we service the transmit first, then&n; * check for a receive to prevent the overhead of returning through&n; * the interrupt handler only to get back here right away during&n; * full duplex operation.&n; */
 r_static
 r_void
-DECL|function|cs4218_intr
 id|cs4218_intr
 c_func
 (paren
@@ -13106,9 +13070,7 @@ id|CPM_CR_FLG
 suffix:semicolon
 )brace
 )brace
-DECL|macro|MAXARGS
 mdefine_line|#define MAXARGS&t;&t;8&t;/* Should be sufficient for now */
-DECL|function|dmasound_setup
 r_void
 id|__init
 id|dmasound_setup
@@ -13247,14 +13209,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Software SPI functions.&n; * These are on Port B.&n; */
-DECL|macro|PB_SPICLK
 mdefine_line|#define PB_SPICLK&t;((uint)0x00000002)
-DECL|macro|PB_SPIMOSI
 mdefine_line|#define PB_SPIMOSI&t;((uint)0x00000004)
-DECL|macro|PB_SPIMISO
 mdefine_line|#define PB_SPIMISO&t;((uint)0x00000008)
 r_static
-DECL|function|sw_spi_init
 r_void
 id|sw_spi_init
 c_func
@@ -13328,7 +13286,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write the CS4218 control word out the SPI port.  While the&n; * the control word is going out, the status word is arriving.&n; */
 r_static
-DECL|function|cs4218_ctl_write
 id|uint
 id|cs4218_ctl_write
 c_func
@@ -13370,7 +13327,6 @@ id|status
 suffix:semicolon
 )brace
 r_static
-DECL|function|sw_spi_io
 r_void
 id|sw_spi_io
 c_func
@@ -13565,7 +13521,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
 r_void
 id|cleanup_module
 c_func
@@ -13644,14 +13599,12 @@ id|sq_unit
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tdm8xx_sound_init
 id|module_init
 c_func
 (paren
 id|tdm8xx_sound_init
 )paren
 suffix:semicolon
-DECL|variable|cleanup_module
 id|module_exit
 c_func
 (paren

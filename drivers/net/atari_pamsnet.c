@@ -403,11 +403,15 @@ r_struct
 id|timer_list
 id|pamsnet_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|amsnet_tick
-)brace
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|macro|STRAM_ADDR
 mdefine_line|#define STRAM_ADDR(a)&t;(((a) &amp; 0xff000000) == 0)

@@ -2319,14 +2319,6 @@ id|proc_dir_entry
 op_star
 id|proc_parent
 suffix:semicolon
-DECL|member|isolate_lock
-id|rwlock_t
-id|isolate_lock
-suffix:semicolon
-DECL|member|driver_isolated
-r_int
-id|driver_isolated
-suffix:semicolon
 DECL|member|id_string
 r_char
 op_star
@@ -2568,9 +2560,6 @@ r_struct
 id|e100_private
 op_star
 id|bdp
-comma
-id|u8
-id|recover
 comma
 id|u8
 id|full_reset

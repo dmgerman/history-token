@@ -2613,6 +2613,13 @@ op_amp
 id|ncrd-&gt;spinlock
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|ncrd-&gt;timer
+)paren
+suffix:semicolon
 id|ncrd-&gt;card
 op_assign
 l_int|NULL

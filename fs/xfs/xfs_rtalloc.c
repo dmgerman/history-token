@@ -8410,15 +8410,16 @@ r_if
 c_cond
 (paren
 id|mp-&gt;m_rtdev_targp
-op_ne
+op_eq
 l_int|NULL
 )paren
 (brace
-id|printk
+id|cmn_err
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;XFS: This FS has an RT subvol - specify -o rtdev on mount&bslash;n&quot;
+id|CE_WARN
+comma
+l_string|&quot;XFS: This filesystem has a realtime volume, use rtdev=device option&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8493,11 +8494,12 @@ op_ne
 id|mp-&gt;m_sb.sb_rblocks
 )paren
 (brace
-id|printk
+id|cmn_err
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;XFS: RT mount - %llu != %llu&bslash;n&quot;
+id|CE_WARN
+comma
+l_string|&quot;XFS: realtime mount -- %llu != %llu&quot;
 comma
 (paren
 r_int
@@ -8555,11 +8557,12 @@ c_cond
 id|error
 )paren
 (brace
-id|printk
+id|cmn_err
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;XFS: RT mount - xfs_read_buf returned %d&bslash;n&quot;
+id|CE_WARN
+comma
+l_string|&quot;XFS: realtime mount -- xfs_read_buf failed, returned %d&quot;
 comma
 id|error
 )paren

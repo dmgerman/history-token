@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/time.h&gt; /* For struct timeval */
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;linux/ipsec.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* Forward declarations for internal helpers. */
@@ -586,10 +586,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ipsec_sk_policy
+id|xfrm_policy_check
 c_func
 (paren
 id|sk
+comma
+id|XFRM_POLICY_IN
 comma
 id|skb
 )paren

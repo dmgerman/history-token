@@ -1110,6 +1110,13 @@ id|cd-&gt;timed_out
 op_assign
 l_int|0
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|cd-&gt;timer
+)paren
+suffix:semicolon
 id|cd-&gt;timer.data
 op_assign
 (paren

@@ -852,6 +852,13 @@ id|fr-&gt;remote_cnt
 op_assign
 l_int|0
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|fr-&gt;keepa_timer
+)paren
+suffix:semicolon
 id|fr-&gt;keepa_timer.expires
 op_assign
 id|jiffies

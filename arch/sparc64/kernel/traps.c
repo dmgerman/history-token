@@ -7643,6 +7643,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|regs-&gt;tstate
+op_amp
+id|TSTATE_PRIV
+)paren
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;TL0: Kernel divide by zero.&quot;
+comma
+id|regs
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|test_thread_flag
 c_func
 (paren

@@ -160,6 +160,8 @@ DECL|macro|IP_MTU
 mdefine_line|#define IP_MTU&t;&t;14
 DECL|macro|IP_FREEBIND
 mdefine_line|#define IP_FREEBIND&t;15
+DECL|macro|IP_IPSEC_POLICY
+mdefine_line|#define IP_IPSEC_POLICY&t;16
 multiline_comment|/* BSD compatibility */
 DECL|macro|IP_RECVRETOPTS
 mdefine_line|#define IP_RECVRETOPTS&t;IP_RETOPTS

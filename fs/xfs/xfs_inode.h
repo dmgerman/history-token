@@ -580,21 +580,6 @@ id|wait_queue_head_t
 id|i_ipin_wait
 suffix:semicolon
 multiline_comment|/* inode pinning wait queue */
-DECL|member|i_refcache
-r_struct
-id|xfs_inode
-op_star
-op_star
-id|i_refcache
-suffix:semicolon
-multiline_comment|/* ptr to entry in ref cache */
-DECL|member|i_release
-r_struct
-id|xfs_inode
-op_star
-id|i_release
-suffix:semicolon
-multiline_comment|/* inode to unref */
 multiline_comment|/* I/O state */
 DECL|member|i_iocore
 id|xfs_iocore_t
@@ -1623,22 +1608,6 @@ id|uint
 suffix:semicolon
 DECL|macro|xfs_ipincount
 mdefine_line|#define xfs_ipincount(ip)&t;((unsigned int) atomic_read(&amp;ip-&gt;i_pincount))
-r_void
-id|xfs_revalidate_inode
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-comma
-id|vnode_t
-op_star
-id|vp
-comma
-id|xfs_inode_t
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef DEBUG
 r_void
 id|xfs_isize_check

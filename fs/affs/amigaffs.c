@@ -300,9 +300,7 @@ op_assign
 id|CURRENT_TIME
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func
@@ -607,9 +605,7 @@ op_assign
 id|CURRENT_TIME
 suffix:semicolon
 id|dir-&gt;i_version
-op_assign
 op_increment
-id|event
 suffix:semicolon
 id|mark_inode_dirty
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    PCMCIA Card Information Structure parser&n;&n;    cistpl.c 1.97 2001/10/04 03:33:49&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    PCMCIA Card Information Structure parser&n;&n;    cistpl.c 1.99 2002/10/24 06:11:48&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -192,7 +192,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|read_cis_mem
-r_void
+r_int
 id|read_cis_mem
 c_func
 (paren
@@ -267,6 +267,8 @@ id|len
 )paren
 suffix:semicolon
 r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|mem-&gt;flags
@@ -626,6 +628,9 @@ op_plus
 l_int|3
 )paren
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|write_cis_mem
@@ -1428,7 +1433,8 @@ l_string|&quot;cs: unable to map card memory!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|CS_OUT_OF_RESOURCE
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 id|s-&gt;cis_mem.sys_stop
@@ -1553,6 +1559,8 @@ id|ptr
 (brace
 r_int
 id|i
+comma
+id|ret
 suffix:semicolon
 r_char
 op_star
@@ -1695,6 +1703,8 @@ id|s-&gt;state
 op_amp
 id|SOCKET_CARDBUS
 )paren
+id|ret
+op_assign
 id|read_cb_mem
 c_func
 (paren
@@ -1713,6 +1723,8 @@ id|ptr
 suffix:semicolon
 r_else
 macro_line|#endif
+id|ret
+op_assign
 id|read_cis_mem
 c_func
 (paren
@@ -1731,6 +1743,12 @@ multiline_comment|/* Copy data into the cache, if there is room */
 r_if
 c_cond
 (paren
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+op_logical_and
 (paren
 id|i
 OL

@@ -3805,6 +3805,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|init_timer
+c_func
+(paren
+id|tlist
+)paren
+suffix:semicolon
 id|tlist-&gt;function
 op_assign
 id|snd_timer_s_function

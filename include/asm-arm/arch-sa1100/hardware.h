@@ -61,75 +61,8 @@ DECL|macro|__PREG
 macro_line|# define __PREG(x)&t;io_v2p(x)
 macro_line|#endif
 macro_line|#include &quot;SA-1100.h&quot;
-multiline_comment|/*&n; * Implementation specifics.&n; *&n; * *** NOTE ***&n; * Any definitions in these files should be prefixed by an identifier -&n; * eg, ASSABET_UCB1300_IRQ  This will allow us to eleminate these&n; * ifdefs, and lots of other preprocessor gunk elsewhere.&n; */
-macro_line|#include &quot;badge4.h&quot;
-macro_line|#ifdef CONFIG_SA1100_PANGOLIN
-macro_line|#include &quot;pangolin.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_HUW_WEBPANEL
-macro_line|#include &quot;huw_webpanel.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_PFS168
-macro_line|#include &quot;pfs168.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_YOPY
-macro_line|#include &quot;yopy.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_FREEBIRD
-macro_line|#include &quot;freebird.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_CERF
-macro_line|#include &quot;cerf.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_EMPEG
-macro_line|#include &quot;empeg.h&quot;
-macro_line|#endif
-macro_line|#include &quot;h3600.h&quot;
-macro_line|#ifdef CONFIG_SA1100_ITSY
-macro_line|#include &quot;itsy.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
-macro_line|#include &quot;graphicsclient.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_OMNIMETER)
-macro_line|#include &quot;omnimeter.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_JORNADA720)
-macro_line|#include &quot;jornada720.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_PLEB)
-macro_line|#include &quot;pleb.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_LART)
-macro_line|#include &quot;lart.h&quot;
-macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_SIMPAD
-macro_line|#include &quot;simpad.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_GRAPHICSMASTER)
-macro_line|#include &quot;graphicsmaster.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_ADSBITSY)
-macro_line|#include &quot;adsbitsy.h&quot;
-macro_line|#endif
-macro_line|#include &quot;stork.h&quot;
-macro_line|#include &quot;system3.h&quot;
 macro_line|#ifdef CONFIG_SA1101
-multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */
-DECL|macro|SA1101_p2v
-mdefine_line|#define SA1101_p2v( x )         ((x) - SA1101_BASE + 0xf4000000)
-DECL|macro|SA1101_v2p
-mdefine_line|#define SA1101_v2p( x )         ((x) - 0xf4000000  + SA1101_BASE)
 macro_line|#include &quot;SA-1101.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_OMNIMETER)
-macro_line|#include &quot;omnimeter.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_JORNADA720)
-macro_line|#include &quot;jornada720.h&quot;
-macro_line|#endif
-macro_line|#if defined(CONFIG_SA1100_FLEXANET)
-macro_line|#include &quot;flexanet.h&quot;
 macro_line|#endif
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof

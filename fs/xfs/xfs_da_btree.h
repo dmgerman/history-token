@@ -133,25 +133,6 @@ r_struct
 id|xfs_da_node_entry
 id|xfs_da_node_entry_t
 suffix:semicolon
-DECL|macro|XFS_DA_NODE_ENTSIZE_BYNAME
-mdefine_line|#define XFS_DA_NODE_ENTSIZE_BYNAME&t;/* space a name uses */ &bslash;&n;&t;(sizeof(xfs_da_node_entry_t))
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DA_NODE_ENTRIES)
-r_int
-id|xfs_da_node_entries
-c_func
-(paren
-r_struct
-id|xfs_mount
-op_star
-id|mp
-)paren
-suffix:semicolon
-DECL|macro|XFS_DA_NODE_ENTRIES
-mdefine_line|#define XFS_DA_NODE_ENTRIES(mp)&t;&t;xfs_da_node_entries(mp)
-macro_line|#else
-DECL|macro|XFS_DA_NODE_ENTRIES
-mdefine_line|#define XFS_DA_NODE_ENTRIES(mp)&t;&t;((mp)-&gt;m_da_node_ents)
-macro_line|#endif
 DECL|macro|XFS_DA_MAXHASH
 mdefine_line|#define XFS_DA_MAXHASH&t;((xfs_dahash_t)-1) /* largest valid hash value */
 multiline_comment|/*&n; * Macros used by directory code to interface to the filesystem.&n; */
@@ -609,14 +590,16 @@ suffix:semicolon
 multiline_comment|/* filesystem mount point */
 DECL|member|blocksize
 r_int
+r_int
 id|blocksize
 suffix:semicolon
 multiline_comment|/* logical block size */
-DECL|member|inleaf
+DECL|member|node_ents
 r_int
-id|inleaf
+r_int
+id|node_ents
 suffix:semicolon
-multiline_comment|/* insert into 1-&gt;lf, 0-&gt;splf */
+multiline_comment|/* how many entries in danode */
 DECL|member|path
 id|xfs_da_state_path_t
 id|path
@@ -627,14 +610,28 @@ id|xfs_da_state_path_t
 id|altpath
 suffix:semicolon
 multiline_comment|/* alternate path for join */
+DECL|member|inleaf
+r_int
+r_int
+id|inleaf
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* insert into 1-&gt;lf, 0-&gt;splf */
 DECL|member|extravalid
 r_int
+r_int
 id|extravalid
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: extrablk is in use */
 DECL|member|extraafter
 r_int
+r_int
 id|extraafter
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* T/F: extrablk is after new */
 DECL|member|extrablk

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/amba_kmi.h&gt;
-macro_line|#include &lt;asm/mach/amba_kmi.h&gt;
 r_extern
 r_struct
 id|pt_regs

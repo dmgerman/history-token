@@ -359,10 +359,7 @@ id|locktype
 )paren
 (brace
 r_return
-id|nopkg
-c_func
-(paren
-)paren
+id|ENOSYS
 suffix:semicolon
 )brace
 r_static
@@ -403,10 +400,7 @@ id|vp_right
 )paren
 (brace
 r_return
-id|nopkg
-c_func
-(paren
-)paren
+id|ENOSYS
 suffix:semicolon
 )brace
 r_static
@@ -452,10 +446,7 @@ id|flags
 )paren
 (brace
 r_return
-id|nopkg
-c_func
-(paren
-)paren
+id|ENOSYS
 suffix:semicolon
 )brace
 r_static

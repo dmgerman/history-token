@@ -223,6 +223,13 @@ id|err
 r_goto
 id|out3
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|sync_timer
+)paren
+suffix:semicolon
 id|sync_timer.function
 op_assign
 id|timer_ping

@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
 macro_line|# include &lt;linux/ext_attr.h&gt;
-macro_line|# ifdef CONFIG_FS_POSIX_ACL
+macro_line|# if 0 /* was a broken check for Posix ACLs */
 macro_line|#  include &lt;linux/posix_acl.h&gt;
 macro_line|# endif
 macro_line|#endif
@@ -1814,7 +1814,7 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
-macro_line|#ifdef  CONFIG_FS_POSIX_ACL
+macro_line|#if 0 /* was a broken check for Posix ACLs */
 r_int
 (paren
 op_star
@@ -1994,7 +1994,7 @@ comma
 id|iattr-&gt;ia_mode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#if 0 /* was a broken check for Posix ACLs */
 multiline_comment|/* ACl code interacts badly with setattr &n;                 * since it tries to modify the ACL using &n;                 * set_ext_attr which recurses back into presto.  &n;                 * This only happens if ATTR_MODE is set.&n;                 * Here we are doing a &quot;forced&quot; mode set &n;                 * (initiated by lento), so we disable the &n;                 * set_posix_acl operation which &n;                 * prevents such recursion.  -SHP&n;                 *&n;                 * This will probably still be required when native&n;                 * acl journalling is in place.&n;                 */
 id|set_posix_acl
 op_assign
@@ -2055,7 +2055,7 @@ id|info-&gt;remote_generation
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#if 0 /* was a broken check for Posix ACLs */
 multiline_comment|/* restore the inode_operations if we changed them*/
 r_if
 c_cond
@@ -10097,9 +10097,8 @@ m_exit
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#if 0 /* was a broken check for Posix ACLs */
 multiline_comment|/* Posix ACL code changes i_mode without using a notify_change (or&n; * a mark_inode_dirty!). We need to duplicate this at the reintegrator&n; * which is done by this function. This function also takes care of &n; * resetting the cached posix acls in this inode. If we don&squot;t reset these&n; * VFS continues using the old acl information, which by now may be out of&n; * date.&n; */
-DECL|function|presto_setmode
 r_int
 id|presto_setmode
 c_func
@@ -10572,7 +10571,7 @@ r_goto
 m_exit
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#if 0 /* was a broken check for Posix ACLs */
 multiline_comment|/* Reset mode if specified*/
 multiline_comment|/* XXX: when we do native acl support, move this code out! */
 r_if

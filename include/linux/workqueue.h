@@ -50,7 +50,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|__WORK_INITIALIZER
-mdefine_line|#define __WORK_INITIALIZER(n, f, d) {&t;&t;&t;&t;&bslash;&n;        .entry&t;= { &amp;(n).entry, &amp;(n).entry },&t;&t;&t;&bslash;&n;&t;.func = (f),&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.data = (d) }
+mdefine_line|#define __WORK_INITIALIZER(n, f, d) {&t;&t;&t;&t;&bslash;&n;        .entry&t;= { &amp;(n).entry, &amp;(n).entry },&t;&t;&t;&bslash;&n;&t;.func = (f),&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.data = (d),&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.timer = TIMER_INITIALIZER(NULL, 0, 0),&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|DECLARE_WORK
 mdefine_line|#define DECLARE_WORK(n, f, d)&t;&t;&t;&t;&t;&bslash;&n;&t;struct work_struct n = __WORK_INITIALIZER(n, f, d)
 multiline_comment|/*&n; * initialize a work-struct&squot;s func and data pointers:&n; */

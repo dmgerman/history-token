@@ -1257,7 +1257,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
-id|__init
+id|__devinit
 DECL|function|pcibios_fixup_pbus_ranges
 id|pcibios_fixup_pbus_ranges
 c_func

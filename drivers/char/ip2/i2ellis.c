@@ -319,6 +319,12 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+id|pDelayTimer
+)paren
+suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren

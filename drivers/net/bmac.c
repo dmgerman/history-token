@@ -7616,7 +7616,13 @@ id|dbdma_cmd
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*     init_timer(&amp;bp-&gt;tx_timeout); */
+id|init_timer
+c_func
+(paren
+op_amp
+id|bp-&gt;tx_timeout
+)paren
+suffix:semicolon
 multiline_comment|/*     bp-&gt;timeout_active = 0; */
 id|ret
 op_assign
