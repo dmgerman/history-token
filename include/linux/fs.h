@@ -5381,7 +5381,9 @@ r_int
 id|sync_buffers
 c_func
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 )paren

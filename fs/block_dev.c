@@ -405,7 +405,7 @@ suffix:semicolon
 id|sync_buffers
 c_func
 (paren
-id|dev
+id|bdev
 comma
 l_int|2
 )paren
@@ -925,7 +925,7 @@ op_assign
 id|sync_buffers
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 comma
 l_int|1
 )paren
