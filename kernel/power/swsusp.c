@@ -2959,6 +2959,12 @@ suffix:semicolon
 r_else
 macro_line|#endif
 (brace
+id|device_suspend
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
 id|device_shutdown
 c_func
 (paren
@@ -3023,7 +3029,7 @@ multiline_comment|/* Done to disable interrupts */
 id|device_power_down
 c_func
 (paren
-l_int|4
+l_int|3
 )paren
 suffix:semicolon
 id|PRINTK
@@ -3225,7 +3231,7 @@ suffix:semicolon
 id|device_power_down
 c_func
 (paren
-l_int|4
+l_int|3
 )paren
 suffix:semicolon
 id|is_problem
@@ -3315,12 +3321,6 @@ id|suspend_pagedir_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Done to disable interrupts */
-id|mdelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 id|free_pages
 c_func
 (paren
@@ -3458,7 +3458,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|disable_nonboot_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Save state of all device drivers, and stop them. */
+id|printk
+c_func
+(paren
+l_string|&quot;Suspending devices... &quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3468,12 +3479,13 @@ op_assign
 id|device_suspend
 c_func
 (paren
-l_int|4
+l_int|3
 )paren
 )paren
 op_eq
 l_int|0
 )paren
+(brace
 multiline_comment|/* If stopping device drivers worked, we proceed basically into&n;&t;&t;&t; * suspend_save_image.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic(0) returns after system is resumed.&n;&t;&t;&t; *&n;&t;&t;&t; * do_magic() copies all &quot;used&quot; memory to &quot;free&quot; memory, then&n;&t;&t;&t; * unsuspends all device drivers, and writes memory to disk&n;&t;&t;&t; * using normal kernel mechanism.&n;&t;&t;&t; */
 id|do_magic
 c_func
@@ -3481,7 +3493,13 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|thaw_processes
+c_func
+(paren
+)paren
+suffix:semicolon
+id|enable_nonboot_cpus
 c_func
 (paren
 )paren
@@ -5184,10 +5202,16 @@ l_int|0
 r_goto
 id|read_failure
 suffix:semicolon
+multiline_comment|/* FIXME: Should we stop processes here, just to be safer? */
+id|disable_nonboot_cpus
+c_func
+(paren
+)paren
+suffix:semicolon
 id|device_suspend
 c_func
 (paren
-l_int|4
+l_int|3
 )paren
 suffix:semicolon
 id|do_magic

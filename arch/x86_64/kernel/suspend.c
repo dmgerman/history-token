@@ -84,11 +84,15 @@ r_int
 r_int
 id|saved_context_eflags
 suffix:semicolon
-DECL|function|save_processor_state
+DECL|function|__save_processor_state
 r_void
-id|save_processor_state
+id|__save_processor_state
+c_func
 (paren
-r_void
+r_struct
+id|saved_context
+op_star
+id|ctxt
 )paren
 (brace
 id|kernel_fpu_begin
@@ -104,7 +108,7 @@ l_string|&quot;sgdt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.gdt_limit
+id|ctxt-&gt;gdt_limit
 )paren
 )paren
 suffix:semicolon
@@ -115,7 +119,7 @@ l_string|&quot;sidt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.idt_limit
+id|ctxt-&gt;idt_limit
 )paren
 )paren
 suffix:semicolon
@@ -126,7 +130,7 @@ l_string|&quot;sldt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.ldt
+id|ctxt-&gt;ldt
 )paren
 )paren
 suffix:semicolon
@@ -137,7 +141,7 @@ l_string|&quot;str %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.tr
+id|ctxt-&gt;tr
 )paren
 )paren
 suffix:semicolon
@@ -151,7 +155,7 @@ l_string|&quot;movw %%ds, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.ds
+id|ctxt-&gt;ds
 )paren
 )paren
 suffix:semicolon
@@ -162,7 +166,7 @@ l_string|&quot;movw %%es, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.es
+id|ctxt-&gt;es
 )paren
 )paren
 suffix:semicolon
@@ -173,7 +177,7 @@ l_string|&quot;movw %%fs, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.fs
+id|ctxt-&gt;fs
 )paren
 )paren
 suffix:semicolon
@@ -184,7 +188,7 @@ l_string|&quot;movw %%gs, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.gs
+id|ctxt-&gt;gs
 )paren
 )paren
 suffix:semicolon
@@ -195,7 +199,7 @@ l_string|&quot;movw %%ss, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
-id|saved_context.ss
+id|ctxt-&gt;ss
 )paren
 )paren
 suffix:semicolon
@@ -204,7 +208,7 @@ c_func
 (paren
 id|MSR_FS_BASE
 comma
-id|saved_context.fs_base
+id|ctxt-&gt;fs_base
 )paren
 suffix:semicolon
 id|rdmsrl
@@ -212,7 +216,7 @@ c_func
 (paren
 id|MSR_GS_BASE
 comma
-id|saved_context.gs_base
+id|ctxt-&gt;gs_base
 )paren
 suffix:semicolon
 id|rdmsrl
@@ -220,7 +224,7 @@ c_func
 (paren
 id|MSR_KERNEL_GS_BASE
 comma
-id|saved_context.gs_kernel_base
+id|ctxt-&gt;gs_kernel_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * control registers &n;&t; */
@@ -231,7 +235,7 @@ l_string|&quot;movq %%cr0, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|saved_context.cr0
+id|ctxt-&gt;cr0
 )paren
 )paren
 suffix:semicolon
@@ -242,7 +246,7 @@ l_string|&quot;movq %%cr2, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|saved_context.cr2
+id|ctxt-&gt;cr2
 )paren
 )paren
 suffix:semicolon
@@ -253,7 +257,7 @@ l_string|&quot;movq %%cr3, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|saved_context.cr3
+id|ctxt-&gt;cr3
 )paren
 )paren
 suffix:semicolon
@@ -264,8 +268,24 @@ l_string|&quot;movq %%cr4, %0&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
-id|saved_context.cr4
+id|ctxt-&gt;cr4
 )paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|save_processor_state
+r_void
+id|save_processor_state
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__save_processor_state
+c_func
+(paren
+op_amp
+id|saved_context
 )paren
 suffix:semicolon
 )brace
@@ -291,12 +311,15 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|restore_processor_state
+DECL|function|__restore_processor_state
 r_void
-id|restore_processor_state
+id|__restore_processor_state
 c_func
 (paren
-r_void
+r_struct
+id|saved_context
+op_star
+id|ctxt
 )paren
 (brace
 multiline_comment|/*&n;&t; * control registers&n;&t; */
@@ -307,7 +330,7 @@ l_string|&quot;movq %0, %%cr4&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.cr4
+id|ctxt-&gt;cr4
 )paren
 )paren
 suffix:semicolon
@@ -318,7 +341,7 @@ l_string|&quot;movq %0, %%cr3&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.cr3
+id|ctxt-&gt;cr3
 )paren
 )paren
 suffix:semicolon
@@ -329,7 +352,7 @@ l_string|&quot;movq %0, %%cr2&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.cr2
+id|ctxt-&gt;cr2
 )paren
 )paren
 suffix:semicolon
@@ -340,7 +363,7 @@ l_string|&quot;movq %0, %%cr0&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.cr0
+id|ctxt-&gt;cr0
 )paren
 )paren
 suffix:semicolon
@@ -352,7 +375,7 @@ l_string|&quot;movw %0, %%ds&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.ds
+id|ctxt-&gt;ds
 )paren
 )paren
 suffix:semicolon
@@ -363,7 +386,7 @@ l_string|&quot;movw %0, %%es&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.es
+id|ctxt-&gt;es
 )paren
 )paren
 suffix:semicolon
@@ -374,14 +397,14 @@ l_string|&quot;movw %0, %%fs&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.fs
+id|ctxt-&gt;fs
 )paren
 )paren
 suffix:semicolon
 id|load_gs_index
 c_func
 (paren
-id|saved_context.gs
+id|ctxt-&gt;gs
 )paren
 suffix:semicolon
 id|asm
@@ -391,7 +414,7 @@ l_string|&quot;movw %0, %%ss&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-id|saved_context.ss
+id|ctxt-&gt;ss
 )paren
 )paren
 suffix:semicolon
@@ -400,7 +423,7 @@ c_func
 (paren
 id|MSR_FS_BASE
 comma
-id|saved_context.fs_base
+id|ctxt-&gt;fs_base
 )paren
 suffix:semicolon
 id|wrmsrl
@@ -408,7 +431,7 @@ c_func
 (paren
 id|MSR_GS_BASE
 comma
-id|saved_context.gs_base
+id|ctxt-&gt;gs_base
 )paren
 suffix:semicolon
 id|wrmsrl
@@ -416,7 +439,7 @@ c_func
 (paren
 id|MSR_KERNEL_GS_BASE
 comma
-id|saved_context.gs_kernel_base
+id|ctxt-&gt;gs_kernel_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * now restore the descriptor tables to their proper values&n;&t; * ltr is done i fix_processor_context().&n;&t; */
@@ -427,7 +450,7 @@ l_string|&quot;lgdt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
-id|saved_context.gdt_limit
+id|ctxt-&gt;gdt_limit
 )paren
 )paren
 suffix:semicolon
@@ -438,7 +461,7 @@ l_string|&quot;lidt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
-id|saved_context.idt_limit
+id|ctxt-&gt;idt_limit
 )paren
 )paren
 suffix:semicolon
@@ -449,7 +472,7 @@ l_string|&quot;lldt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
-id|saved_context.ldt
+id|ctxt-&gt;ldt
 )paren
 )paren
 suffix:semicolon
@@ -461,6 +484,22 @@ suffix:semicolon
 id|do_fpu_end
 c_func
 (paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|restore_processor_state
+r_void
+id|restore_processor_state
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__restore_processor_state
+c_func
+(paren
+op_amp
+id|saved_context
 )paren
 suffix:semicolon
 )brace
