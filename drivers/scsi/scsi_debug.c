@@ -8476,6 +8476,7 @@ id|sdebug_ptype_show
 comma
 id|sdebug_ptype_store
 )paren
+suffix:semicolon
 DECL|function|sdebug_num_tgts_show
 r_static
 id|ssize_t
