@@ -901,6 +901,18 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|scsi_mlqueue_insert
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Newer request-based interfaces.&n; */
 r_extern
 id|Scsi_Request

@@ -1581,7 +1581,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_mlqueue_insert()&n; *&n; * Purpose:     Insert a command in the midlevel queue.&n; *&n; * Arguments:   cmd    - command that we are adding to queue.&n; *              reason - why we are inserting command to queue.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing.&n; *&n; * Notes:       We do this for one of two cases.  Either the host is busy&n; *              and it cannot accept any more commands for the time being,&n; *              or the device returned QUEUE_FULL and can accept no more&n; *              commands.&n; * Notes:       This could be called either from an interrupt context or a&n; *              normal process context.&n; */
 DECL|function|scsi_mlqueue_insert
-r_static
 r_int
 id|scsi_mlqueue_insert
 c_func
