@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
@@ -45,6 +46,11 @@ id|ia64_mark_idle
 (paren
 r_int
 )paren
+suffix:semicolon
+DECL|variable|cpu_idle_map
+r_static
+id|cpumask_t
+id|cpu_idle_map
 suffix:semicolon
 DECL|variable|boot_option_idle_override
 r_int
@@ -999,6 +1005,76 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_HOTPLUG_CPU */
+DECL|function|cpu_idle_wait
+r_void
+id|cpu_idle_wait
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
+suffix:semicolon
+id|cpumask_t
+id|map
+suffix:semicolon
+id|for_each_online_cpu
+c_func
+(paren
+id|cpu
+)paren
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_idle_map
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+r_do
+(brace
+id|ssleep
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|cpus_and
+c_func
+(paren
+id|map
+comma
+id|cpu_idle_map
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpus_empty
+c_func
+(paren
+id|map
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|cpu_idle_wait
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cpu_idle_wait
+)paren
+suffix:semicolon
 r_void
 id|__attribute__
 c_func
@@ -1025,6 +1101,14 @@ r_int
 )paren
 op_assign
 id|ia64_mark_idle
+suffix:semicolon
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* endless idle loop with no priority at all */
 r_while
@@ -1081,8 +1165,26 @@ id|mark_idle
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Mark this as an RCU critical section so that&n;&t;&t;&t; * synchronize_kernel() in the unload path waits&n;&t;&t;&t; * for our completion.&n;&t;&t;&t; */
-id|rcu_read_lock
+r_if
+c_cond
+(paren
+id|cpu_isset
+c_func
+(paren
+id|cpu
+comma
+id|cpu_idle_map
+)paren
+)paren
+id|cpu_clear
+c_func
+(paren
+id|cpu
+comma
+id|cpu_idle_map
+)paren
+suffix:semicolon
+id|rmb
 c_func
 (paren
 )paren
@@ -1105,11 +1207,6 @@ suffix:semicolon
 op_star
 id|idle
 )paren
-(paren
-)paren
-suffix:semicolon
-id|rcu_read_unlock
-c_func
 (paren
 )paren
 suffix:semicolon
