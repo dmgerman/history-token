@@ -4298,7 +4298,7 @@ suffix:semicolon
 id|DBG_INIT
 c_func
 (paren
-l_string|&quot;%s() hpa %p IOV %dMB (%d bits) PDIR size 0x%0x&bslash;n&quot;
+l_string|&quot;%s() hpa %p IOV %dMB (%d bits) PDIR size 0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -5403,7 +5403,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Found %s IOC %d.%d HPA 0x%lx IOVA space %dMb at 0x%lx&bslash;n&quot;
+l_string|&quot;%s %d.%d HPA 0x%lx IOVA space %dMb at 0x%lx&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
@@ -6263,7 +6263,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;No IOC for PCI Bus %d in ACPI&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;No IOC for PCI Bus %02x:%02x in ACPI&bslash;n&quot;
+comma
+id|PCI_SEGMENT
+c_func
+(paren
+id|bus
+)paren
 comma
 id|bus-&gt;number
 )paren
@@ -6299,7 +6306,6 @@ r_struct
 id|acpi_device_info
 id|dev_info
 suffix:semicolon
-multiline_comment|/*&n;&t; * Only SBA appears in ACPI namespace.  It encloses the PCI&n;&t; * root bridges, and its CSR space includes the IOC function.&n;&t; */
 id|status
 op_assign
 id|hp_acpi_csr_space
@@ -6349,6 +6355,7 @@ id|status
 r_return
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * For HWP0001, only SBA appears in ACPI namespace.  It encloses the PCI&n;&t; * root bridges, and its CSR space includes the IOC function.&n;&t; */
 r_if
 c_cond
 (paren
