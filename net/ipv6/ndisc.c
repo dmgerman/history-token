@@ -1773,7 +1773,12 @@ id|rt-&gt;rt6i_metric
 op_assign
 l_int|0
 suffix:semicolon
-id|rt-&gt;rt6i_hoplimit
+id|rt-&gt;u.dst.metrics
+(braket
+id|RTAX_HOPLIMIT
+op_minus
+l_int|1
+)braket
 op_assign
 l_int|255
 suffix:semicolon

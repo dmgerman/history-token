@@ -2,18 +2,6 @@ multiline_comment|/*&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; 
 macro_line|#ifndef _LINUX_IPV6_ROUTE_H
 DECL|macro|_LINUX_IPV6_ROUTE_H
 mdefine_line|#define _LINUX_IPV6_ROUTE_H
-r_enum
-(brace
-DECL|enumerator|RTA_IPV6_UNSPEC
-id|RTA_IPV6_UNSPEC
-comma
-DECL|enumerator|RTA_IPV6_HOPLIMIT
-id|RTA_IPV6_HOPLIMIT
-comma
-)brace
-suffix:semicolon
-DECL|macro|RTA_IPV6_MAX
-mdefine_line|#define&t;RTA_IPV6_MAX RTA_IPV6_HOPLIMIT
 DECL|macro|RTF_DEFAULT
 mdefine_line|#define RTF_DEFAULT&t;0x00010000&t;/* default - learned via ND&t;*/
 DECL|macro|RTF_ALLONLINK

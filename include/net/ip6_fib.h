@@ -121,10 +121,6 @@ DECL|member|rt6i_metric
 id|u32
 id|rt6i_metric
 suffix:semicolon
-DECL|member|rt6i_hoplimit
-id|u8
-id|rt6i_hoplimit
-suffix:semicolon
 DECL|member|rt6i_ref
 id|atomic_t
 id|rt6i_ref

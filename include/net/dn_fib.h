@@ -76,11 +76,6 @@ id|rta_session
 op_star
 id|rta_sess
 suffix:semicolon
-DECL|member|rta_hoplimit
-id|u8
-op_star
-id|rta_hoplimit
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|dn_fib_res

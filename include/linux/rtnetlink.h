@@ -342,13 +342,10 @@ comma
 DECL|enumerator|RTA_SESSION
 id|RTA_SESSION
 comma
-DECL|enumerator|RTA_HOPLIMIT
-id|RTA_HOPLIMIT
-comma
 )brace
 suffix:semicolon
 DECL|macro|RTA_MAX
-mdefine_line|#define RTA_MAX RTA_HOPLIMIT
+mdefine_line|#define RTA_MAX RTA_SESSION
 DECL|macro|RTM_RTA
 mdefine_line|#define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
 DECL|macro|RTM_PAYLOAD
@@ -495,10 +492,15 @@ id|RTAX_REORDERING
 comma
 DECL|macro|RTAX_REORDERING
 mdefine_line|#define RTAX_REORDERING RTAX_REORDERING
+DECL|enumerator|RTAX_HOPLIMIT
+id|RTAX_HOPLIMIT
+comma
+DECL|macro|RTAX_HOPLIMIT
+mdefine_line|#define RTAX_HOPLIMIT RTAX_HOPLIMIT
 )brace
 suffix:semicolon
 DECL|macro|RTAX_MAX
-mdefine_line|#define RTAX_MAX RTAX_REORDERING
+mdefine_line|#define RTAX_MAX RTAX_HOPLIMIT
 DECL|struct|rta_session
 r_struct
 id|rta_session
