@@ -986,8 +986,6 @@ id|priority
 r_if
 c_cond
 (paren
-id|size
-op_logical_or
 id|atomic_read
 c_func
 (paren

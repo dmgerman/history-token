@@ -2261,16 +2261,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_int
-id|hci_send_raw
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-suffix:semicolon
 r_void
 op_star
 id|hci_sent_cmd_data
@@ -2350,7 +2340,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* HCI security filter */
 DECL|macro|HCI_SFLT_MAX_OGF
-mdefine_line|#define HCI_SFLT_MAX_OGF 4
+mdefine_line|#define HCI_SFLT_MAX_OGF  5
 DECL|struct|hci_sec_filter
 r_struct
 id|hci_sec_filter
