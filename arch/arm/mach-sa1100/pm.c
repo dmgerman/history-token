@@ -457,6 +457,7 @@ r_void
 r_int
 id|retval
 suffix:semicolon
+multiline_comment|/*&n;&t; * Suspend &quot;legacy&quot; devices.&n;&t; */
 id|retval
 op_assign
 id|pm_send_all
@@ -479,6 +480,31 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Suspend LDM devices.&n;&t;&t; */
+id|device_suspend
+c_func
+(paren
+l_int|4
+comma
+id|SUSPEND_NOTIFY
+)paren
+suffix:semicolon
+id|device_suspend
+c_func
+(paren
+l_int|4
+comma
+id|SUSPEND_SAVE_STATE
+)paren
+suffix:semicolon
+id|device_suspend
+c_func
+(paren
+l_int|4
+comma
+id|SUSPEND_DISABLE
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|pm_do_suspend
@@ -486,6 +512,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Resume LDM devices.&n;&t;&t; */
+id|device_resume
+c_func
+(paren
+id|RESUME_RESTORE_STATE
+)paren
+suffix:semicolon
+id|device_resume
+c_func
+(paren
+id|RESUME_ENABLE
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Resume &quot;legacy&quot; devices.&n;&t;&t; */
 id|pm_send_all
 c_func
 (paren
