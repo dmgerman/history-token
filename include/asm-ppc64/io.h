@@ -929,7 +929,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;stw%U0%X0 %1,%0; eieio&quot;
+l_string|&quot;stw%U0%X0 %1,%0; sync&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -1125,6 +1125,7 @@ op_star
 id|addr
 comma
 r_int
+r_int
 id|val
 )paren
 (brace
@@ -1132,7 +1133,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;std %1,0(%0); sync&quot;
+l_string|&quot;std%U0%X0 %1,%0; sync&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren

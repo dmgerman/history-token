@@ -808,13 +808,27 @@ suffix:semicolon
 r_case
 l_int|9
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * D-stepping [M-P4-M or M-P4/533]&n;&t;&t;&t; *&n;&t;&t;&t; * this is totally strange: CPUID 0x0F29 is&n;&t;&t;&t; * used by M-P4-M, M-P4/533 and(!) Celeron CPUs.&n;&t;&t;&t; * The latter need to be sorted out as they don&squot;t&n;&t;&t;&t; * support speedstep.&n;&t;&t;&t; * Celerons with CPUID 0x0F29 may have either&n;&t;&t;&t; * ebx=0x8 or 0xf -- 25130917.pdf doesn&squot;t say anything&n;&t;&t;&t; * specific.&n;&t;&t;&t; * M-P4-Ms may have either ebx=0xe or 0xf [see above]&n;&t;&t;&t; * M-P4/533 have either ebx=0xe or 0xf. [25317607.pdf]&n;&t;&t;&t; * So, how to distinguish all those processors with&n;&t;&t;&t; * ebx=0xf? I don&squot;t know. Sort them out, and wait&n;&t;&t;&t; * for someone to complain.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * D-stepping [M-P4-M or M-P4/533]&n;&t;&t;&t; *&n;&t;&t;&t; * this is totally strange: CPUID 0x0F29 is&n;&t;&t;&t; * used by M-P4-M, M-P4/533 and(!) Celeron CPUs.&n;&t;&t;&t; * The latter need to be sorted out as they don&squot;t&n;&t;&t;&t; * support speedstep.&n;&t;&t;&t; * Celerons with CPUID 0x0F29 may have either&n;&t;&t;&t; * ebx=0x8 or 0xf -- 25130917.pdf doesn&squot;t say anything&n;&t;&t;&t; * specific.&n;&t;&t;&t; * M-P4-Ms may have either ebx=0xe or 0xf [see above]&n;&t;&t;&t; * M-P4/533 have either ebx=0xe or 0xf. [25317607.pdf]&n;&t;&t;&t; * also, M-P4M HTs have ebx=0x8, too&n;&t;&t;&t; * For now, they are distinguished by the model_id string&n;&t;&t;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|ebx
 op_eq
 l_int|0x0e
+)paren
+op_logical_or
+(paren
+id|strstr
+c_func
+(paren
+id|c-&gt;x86_model_id
+comma
+l_string|&quot;Mobile Intel(R) Pentium(R) 4&quot;
+)paren
+op_ne
+l_int|NULL
+)paren
 )paren
 r_return
 id|SPEEDSTEP_PROCESSOR_P4M
@@ -1019,10 +1033,6 @@ id|set_state
 r_int
 r_int
 id|state
-comma
-r_int
-r_int
-id|notify
 )paren
 )paren
 (brace
@@ -1097,8 +1107,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
-comma
-l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -1132,8 +1140,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_HIGH
-comma
-l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -1194,8 +1200,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|out

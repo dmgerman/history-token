@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
@@ -6527,21 +6528,7 @@ multiline_comment|/* Sit and wait for a signal to probe the nodes on the bus. Th
 r_while
 c_loop
 (paren
-op_logical_neg
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|hi-&gt;reset_sem
-)paren
-op_logical_and
-op_logical_neg
-id|down_interruptible
-c_func
-(paren
-op_amp
-id|nodemgr_serialize
-)paren
+l_int|1
 )paren
 (brace
 r_int
@@ -6553,6 +6540,50 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_interruptible
+c_func
+(paren
+op_amp
+id|hi-&gt;reset_sem
+)paren
+op_logical_or
+id|down_interruptible
+c_func
+(paren
+op_amp
+id|nodemgr_serialize
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+(brace
+id|refrigerator
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;NodeMgr: received unexpected signal?!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

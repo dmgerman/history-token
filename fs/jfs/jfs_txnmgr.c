@@ -5387,13 +5387,24 @@ id|next
 r_goto
 id|out
 suffix:semicolon
-m_assert
+r_if
+c_cond
 (paren
 id|lwm
-OL
+OG
 id|next
 )paren
+(brace
+id|jfs_err
+c_func
+(paren
+l_string|&quot;xtLog: lwm &gt; next&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|tlck-&gt;flag
 op_or_assign
 id|tlckUPDATEMAP
@@ -5883,16 +5894,7 @@ op_assign
 id|xtlck-&gt;twm.offset
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *      write log records&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * allocate entries XAD[lwm:next]:&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|lwm
-OL
-id|next
-)paren
-(brace
-multiline_comment|/* log after-image for logredo():&n;&t;&t;&t; * logredo() will update bmap for alloc of new/extended&n;&t;&t;&t; * extents (XAD_NEW|XAD_EXTEND) of XAD[lwm:next) from&n;&t;&t;&t; * after-image of XADlist;&n;&t;&t;&t; * logredo() resets (XAD_NEW|XAD_EXTEND) flag when&n;&t;&t;&t; * applying the after-image to the meta-data page.&n;&t;&t;&t; */
+multiline_comment|/* log after-image for logredo():&n;&t;&t; *&n;&t;&t; * logredo() will update bmap for alloc of new/extended&n;&t;&t; * extents (XAD_NEW|XAD_EXTEND) of XAD[lwm:next) from&n;&t;&t; * after-image of XADlist;&n;&t;&t; * logredo() resets (XAD_NEW|XAD_EXTEND) flag when&n;&t;&t; * applying the after-image to the meta-data page.&n;&t;&t; */
 id|lrd-&gt;type
 op_assign
 id|cpu_to_le16
@@ -5916,9 +5918,7 @@ id|pxd
 comma
 id|mp-&gt;logical_size
 op_rshift
-id|tblk-&gt;sb
-op_member_access_from_pointer
-id|s_blocksize_bits
+id|tblk-&gt;sb-&gt;s_blocksize_bits
 )paren
 suffix:semicolon
 id|lrd-&gt;backchain
@@ -5939,7 +5939,6 @@ id|tlck
 )paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * truncate entry XAD[twm == next - 1]:&n;&t;&t; */
 r_if
 c_cond
@@ -8480,6 +8479,11 @@ c_func
 id|tid
 )paren
 suffix:semicolon
+r_struct
+id|tlock
+op_star
+id|tlck
+suffix:semicolon
 id|jfs_warn
 c_func
 (paren
@@ -8505,25 +8509,31 @@ op_assign
 id|next
 )paren
 (brace
-id|next
+id|tlck
 op_assign
 id|lid_to_tlock
 c_func
 (paren
 id|lid
 )paren
-op_member_access_from_pointer
+suffix:semicolon
 id|next
+op_assign
+id|tlck-&gt;next
 suffix:semicolon
 id|mp
 op_assign
-id|lid_to_tlock
+id|tlck-&gt;mp
+suffix:semicolon
+id|JFS_IP
 c_func
 (paren
-id|lid
+id|tlck-&gt;ip
 )paren
 op_member_access_from_pointer
-id|mp
+id|xtlid
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

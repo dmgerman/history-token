@@ -969,6 +969,12 @@ c_func
 id|mp
 )paren
 suffix:semicolon
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Let other waiters release it, too */
 r_goto
 id|again
 suffix:semicolon
