@@ -116,23 +116,23 @@ DECL|macro|IT87_REG_FAN_DIV
 mdefine_line|#define IT87_REG_FAN_DIV       0x0b
 multiline_comment|/* Monitors: 9 voltage (0 to 7, battery), 3 temp (1 to 3), 3 fan (1 to 3) */
 DECL|macro|IT87_REG_FAN
-mdefine_line|#define IT87_REG_FAN(nr)       (0x0c + (nr))
+mdefine_line|#define IT87_REG_FAN(nr)       (0x0d + (nr))
 DECL|macro|IT87_REG_FAN_MIN
-mdefine_line|#define IT87_REG_FAN_MIN(nr)   (0x0f + (nr))
+mdefine_line|#define IT87_REG_FAN_MIN(nr)   (0x10 + (nr))
 DECL|macro|IT87_REG_FAN_CTRL
 mdefine_line|#define IT87_REG_FAN_CTRL      0x13
 DECL|macro|IT87_REG_VIN
 mdefine_line|#define IT87_REG_VIN(nr)       (0x20 + (nr))
 DECL|macro|IT87_REG_TEMP
-mdefine_line|#define IT87_REG_TEMP(nr)      (0x28 + (nr))
+mdefine_line|#define IT87_REG_TEMP(nr)      (0x29 + (nr))
 DECL|macro|IT87_REG_VIN_MAX
 mdefine_line|#define IT87_REG_VIN_MAX(nr)   (0x30 + (nr) * 2)
 DECL|macro|IT87_REG_VIN_MIN
 mdefine_line|#define IT87_REG_VIN_MIN(nr)   (0x31 + (nr) * 2)
 DECL|macro|IT87_REG_TEMP_HIGH
-mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x3e + (nr) * 2)
+mdefine_line|#define IT87_REG_TEMP_HIGH(nr) (0x40 + ((nr) * 2))
 DECL|macro|IT87_REG_TEMP_LOW
-mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x3f + (nr) * 2)
+mdefine_line|#define IT87_REG_TEMP_LOW(nr)  (0x41 + ((nr) * 2))
 DECL|macro|IT87_REG_I2C_ADDR
 mdefine_line|#define IT87_REG_I2C_ADDR      0x48
 DECL|macro|IT87_REG_VIN_ENABLE
@@ -975,8 +975,16 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|show_in_offset
-mdefine_line|#define show_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in(dev, buf, 0x##offset);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_min(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_max(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_min(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_max (struct device *dev,&t;&bslash;&n;&t;&t;&t;const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_max(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in_input##offset, S_IRUGO, show_in##offset, NULL) &t;&bslash;&n;static DEVICE_ATTR(in_min##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min)&t;&bslash;&n;static DEVICE_ATTR(in_max##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max)
+mdefine_line|#define show_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in(dev, buf, 0x##offset);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in_input##offset, S_IRUGO, show_in##offset, NULL)
+DECL|macro|limit_in_offset
+mdefine_line|#define limit_in_offset(offset)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_min(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;show_in##offset##_max (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_in_max(dev, buf, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_min (struct device *dev, &t;&bslash;&n;&t;&t;const char *buf, size_t count) &t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_min(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_in##offset##_max (struct device *dev,&t;&bslash;&n;&t;&t;&t;const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_in_max(dev, buf, count, 0x##offset);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(in_min##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_in##offset##_min, set_in##offset##_min)&t;&bslash;&n;static DEVICE_ATTR(in_max##offset, S_IRUGO | S_IWUSR, &t;&t;&bslash;&n;&t;&t;show_in##offset##_max, set_in##offset##_max)
 id|show_in_offset
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|limit_in_offset
 c_func
 (paren
 l_int|0
@@ -988,7 +996,19 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+id|limit_in_offset
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|show_in_offset
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+id|limit_in_offset
 c_func
 (paren
 l_int|2
@@ -1000,7 +1020,19 @@ c_func
 l_int|3
 )paren
 suffix:semicolon
+id|limit_in_offset
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
 id|show_in_offset
+c_func
+(paren
+l_int|4
+)paren
+suffix:semicolon
+id|limit_in_offset
 c_func
 (paren
 l_int|4
@@ -1012,13 +1044,31 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
+id|limit_in_offset
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
 id|show_in_offset
 c_func
 (paren
 l_int|6
 )paren
 suffix:semicolon
+id|limit_in_offset
+c_func
+(paren
+l_int|6
+)paren
+suffix:semicolon
 id|show_in_offset
+c_func
+(paren
+l_int|7
+)paren
+suffix:semicolon
+id|limit_in_offset
 c_func
 (paren
 l_int|7
@@ -1095,7 +1145,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1164,7 +1214,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1233,7 +1283,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -1295,7 +1345,7 @@ comma
 l_int|10
 )paren
 op_div
-l_int|10
+l_int|100
 suffix:semicolon
 id|data-&gt;temp_high
 (braket
@@ -1387,7 +1437,7 @@ comma
 l_int|10
 )paren
 op_div
-l_int|10
+l_int|100
 suffix:semicolon
 id|data-&gt;temp_low
 (braket
@@ -1980,8 +2030,6 @@ id|IT87_REG_FAN_MIN
 c_func
 (paren
 id|nr
-op_plus
-l_int|1
 )paren
 comma
 id|data-&gt;fan_min
@@ -2052,6 +2100,14 @@ comma
 l_int|10
 )paren
 suffix:semicolon
+r_int
+id|i
+comma
+id|min
+(braket
+l_int|3
+)braket
+suffix:semicolon
 id|u8
 id|old
 op_assign
@@ -2061,6 +2117,43 @@ c_func
 id|client
 comma
 id|IT87_REG_FAN_DIV
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|min
+(braket
+id|i
+)braket
+op_assign
+id|FAN_FROM_REG
+c_func
+(paren
+id|data-&gt;fan_min
+(braket
+id|i
+)braket
+comma
+id|DIV_FROM_REG
+c_func
+(paren
+id|data-&gt;fan_div
+(braket
+id|i
+)braket
+)paren
 )paren
 suffix:semicolon
 r_switch
@@ -2170,6 +2263,62 @@ comma
 id|val
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|data-&gt;fan_min
+(braket
+id|i
+)braket
+op_assign
+id|FAN_TO_REG
+c_func
+(paren
+id|min
+(braket
+id|i
+)braket
+comma
+id|DIV_FROM_REG
+c_func
+(paren
+id|data-&gt;fan_div
+(braket
+id|i
+)braket
+)paren
+)paren
+suffix:semicolon
+id|it87_write_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_FAN_MIN
+c_func
+(paren
+id|i
+)paren
+comma
+id|data-&gt;fan_min
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -3052,16 +3201,6 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min8
-)paren
-suffix:semicolon
-id|device_create_file
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-op_amp
 id|dev_attr_in_max0
 )paren
 suffix:semicolon
@@ -3133,16 +3272,6 @@ id|new_client-&gt;dev
 comma
 op_amp
 id|dev_attr_in_max7
-)paren
-suffix:semicolon
-id|device_create_file
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-op_amp
-id|dev_attr_in_max8
 )paren
 suffix:semicolon
 id|device_create_file
@@ -3981,7 +4110,7 @@ comma
 id|IT87_REG_FAN_MIN
 c_func
 (paren
-l_int|1
+l_int|0
 )paren
 comma
 id|FAN_TO_REG
@@ -4001,7 +4130,7 @@ comma
 id|IT87_REG_FAN_MIN
 c_func
 (paren
-l_int|2
+l_int|1
 )paren
 comma
 id|FAN_TO_REG
@@ -4021,7 +4150,7 @@ comma
 id|IT87_REG_FAN_MIN
 c_func
 (paren
-l_int|3
+l_int|2
 )paren
 comma
 id|FAN_TO_REG
@@ -4041,7 +4170,7 @@ comma
 id|IT87_REG_TEMP_HIGH
 c_func
 (paren
-l_int|1
+l_int|0
 )paren
 comma
 id|TEMP_TO_REG
@@ -4059,7 +4188,7 @@ comma
 id|IT87_REG_TEMP_LOW
 c_func
 (paren
-l_int|1
+l_int|0
 )paren
 comma
 id|TEMP_TO_REG
@@ -4077,7 +4206,7 @@ comma
 id|IT87_REG_TEMP_HIGH
 c_func
 (paren
-l_int|2
+l_int|1
 )paren
 comma
 id|TEMP_TO_REG
@@ -4095,7 +4224,7 @@ comma
 id|IT87_REG_TEMP_LOW
 c_func
 (paren
-l_int|2
+l_int|1
 )paren
 comma
 id|TEMP_TO_REG
@@ -4113,7 +4242,7 @@ comma
 id|IT87_REG_TEMP_HIGH
 c_func
 (paren
-l_int|3
+l_int|2
 )paren
 comma
 id|TEMP_TO_REG
@@ -4131,7 +4260,7 @@ comma
 id|IT87_REG_TEMP_LOW
 c_func
 (paren
-l_int|3
+l_int|2
 )paren
 comma
 id|TEMP_TO_REG
@@ -4425,10 +4554,10 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
-op_le
+OL
 l_int|3
 suffix:semicolon
 id|i
@@ -4438,8 +4567,6 @@ op_increment
 id|data-&gt;fan
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 op_assign
 id|it87_read_value
@@ -4457,8 +4584,6 @@ suffix:semicolon
 id|data-&gt;fan_min
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 op_assign
 id|it87_read_value
@@ -4479,10 +4604,10 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
-op_le
+OL
 l_int|3
 suffix:semicolon
 id|i
@@ -4492,8 +4617,6 @@ op_increment
 id|data-&gt;temp
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 op_assign
 id|it87_read_value
@@ -4511,8 +4634,6 @@ suffix:semicolon
 id|data-&gt;temp_high
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 op_assign
 id|it87_read_value
@@ -4530,8 +4651,6 @@ suffix:semicolon
 id|data-&gt;temp_low
 (braket
 id|i
-op_minus
-l_int|1
 )braket
 op_assign
 id|it87_read_value
