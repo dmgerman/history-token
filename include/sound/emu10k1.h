@@ -935,10 +935,17 @@ DECL|macro|SOLEH
 mdefine_line|#define SOLEH&t;&t;&t;0x5d&t;&t;/* Stop on loop enable high register&t;&t;*/
 DECL|macro|SPBYPASS
 mdefine_line|#define SPBYPASS&t;&t;0x5e&t;&t;/* SPDIF BYPASS mode register&t;&t;&t;*/
-DECL|macro|SPBYPASS_ENABLE
-mdefine_line|#define SPBYPASS_ENABLE&t;&t;0x00000001&t;/* Enable SPDIF bypass mode&t;&t;&t;*/
+DECL|macro|SPBYPASS_SPDIF0_MASK
+mdefine_line|#define SPBYPASS_SPDIF0_MASK&t;0x00000003&t;/* SPDIF 0 bypass mode&t;&t;&t;&t;*/
+DECL|macro|SPBYPASS_SPDIF1_MASK
+mdefine_line|#define SPBYPASS_SPDIF1_MASK&t;0x0000000c&t;/* SPDIF 1 bypass mode&t;&t;&t;&t;*/
+multiline_comment|/* bypass mode: 0 - DSP; 1 - SPDIF A, 2 - SPDIF B, 3 - SPDIF C&t;&t;&t;&t;&t;*/
+DECL|macro|SPBYPASS_FORMAT
+mdefine_line|#define SPBYPASS_FORMAT&t;&t;0x00000f00      /* If 1, SPDIF XX uses 24 bit, if 0 - 20 bit&t;*/
 DECL|macro|AC97SLOT
 mdefine_line|#define AC97SLOT&t;&t;0x5f            /* additional AC97 slots enable bits&t;&t;*/
+DECL|macro|AC97SLOT_10K2
+mdefine_line|#define AC97SLOT_10K2&t;&t;0x03
 DECL|macro|AC97SLOT_CNTR
 mdefine_line|#define AC97SLOT_CNTR&t;&t;0x10            /* Center enable */
 DECL|macro|AC97SLOT_LFE
@@ -1691,22 +1698,12 @@ r_int
 id|itram_size
 suffix:semicolon
 multiline_comment|/* internal TRAM size in samples */
-DECL|member|etram_size
-r_int
-r_int
-id|etram_size
-suffix:semicolon
-multiline_comment|/* external TRAM size in samples */
 DECL|member|etram_pages
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|etram_pages
 suffix:semicolon
-multiline_comment|/* allocated pages for external TRAM */
-DECL|member|etram_pages_dmaaddr
-id|dma_addr_t
-id|etram_pages_dmaaddr
-suffix:semicolon
+multiline_comment|/* external TRAM pages and size */
 DECL|member|dbg
 r_int
 r_int
@@ -1924,32 +1921,29 @@ r_int
 id|dma_mask
 suffix:semicolon
 multiline_comment|/* PCI DMA mask */
+DECL|member|dma_dev
+r_struct
+id|snd_dma_device
+id|dma_dev
+suffix:semicolon
+multiline_comment|/* DMA device description */
 DECL|member|max_cache_pages
 r_int
 id|max_cache_pages
 suffix:semicolon
 multiline_comment|/* max memory size / PAGE_SIZE */
 DECL|member|silent_page
-r_void
-op_star
+r_struct
+id|snd_dma_buffer
 id|silent_page
 suffix:semicolon
 multiline_comment|/* silent page */
-DECL|member|silent_page_dmaaddr
-id|dma_addr_t
-id|silent_page_dmaaddr
-suffix:semicolon
 DECL|member|ptb_pages
-r_volatile
-id|u32
-op_star
+r_struct
+id|snd_dma_buffer
 id|ptb_pages
 suffix:semicolon
 multiline_comment|/* page table pages */
-DECL|member|ptb_pages_dmaaddr
-id|dma_addr_t
-id|ptb_pages_dmaaddr
-suffix:semicolon
 DECL|member|memhdr
 id|snd_util_memhdr_t
 op_star

@@ -1552,6 +1552,15 @@ comma
 id|info-&gt;midi_mapped
 )paren
 suffix:semicolon
+multiline_comment|/* reopen the device */
+id|snd_seq_oss_midi_close
+c_func
+(paren
+id|dp
+comma
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
