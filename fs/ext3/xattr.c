@@ -3770,7 +3770,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|cleanup
+id|cleanup_dquot
 suffix:semicolon
 id|lock_buffer
 c_func
@@ -3846,7 +3846,7 @@ c_cond
 id|error
 )paren
 r_goto
-id|cleanup
+id|cleanup_dquot
 suffix:semicolon
 )brace
 id|mb_cache_entry_release
@@ -4156,6 +4156,19 @@ id|s-&gt;base
 suffix:semicolon
 r_return
 id|error
+suffix:semicolon
+id|cleanup_dquot
+suffix:colon
+id|DQUOT_FREE_BLOCK
+c_func
+(paren
+id|inode
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_goto
+id|cleanup
 suffix:semicolon
 id|bad_block
 suffix:colon
