@@ -1546,6 +1546,10 @@ id|as-&gt;op
 op_assign
 id|ops
 suffix:semicolon
+id|as-&gt;host
+op_assign
+id|host
+suffix:semicolon
 id|write_lock_irqsave
 c_func
 (paren
