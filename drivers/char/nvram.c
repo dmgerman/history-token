@@ -163,14 +163,12 @@ id|i
 )paren
 (brace
 r_return
-(paren
 id|CMOS_READ
 c_func
 (paren
 id|RTC_FIRST_BYTE
 op_plus
 id|i
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -211,11 +209,9 @@ r_void
 )paren
 (brace
 r_return
-(paren
 id|mach_check_checksum
 c_func
 (paren
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -282,9 +278,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|c
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This races nicely with trying to read with checksum checking (nvram_read) */
@@ -373,9 +367,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-(paren
 id|rv
-)paren
 suffix:semicolon
 )brace
 r_void
@@ -478,7 +470,6 @@ c_func
 suffix:semicolon
 r_return
 (paren
-(paren
 id|offset
 op_ge
 l_int|0
@@ -493,7 +484,6 @@ id|offset
 suffix:colon
 op_minus
 id|EINVAL
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -617,11 +607,9 @@ op_assign
 id|i
 suffix:semicolon
 r_return
-(paren
 id|tmp
 op_minus
 id|contents
-)paren
 suffix:semicolon
 id|checksum_err
 suffix:colon
@@ -777,11 +765,9 @@ op_assign
 id|i
 suffix:semicolon
 r_return
-(paren
 id|tmp
 op_minus
 id|contents
-)paren
 suffix:semicolon
 id|checksum_err
 suffix:colon
@@ -846,10 +832,8 @@ id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
-(paren
 op_minus
 id|EACCES
-)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -893,9 +877,7 @@ id|rtc_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_case
 id|NVRAM_SETCKS
@@ -912,10 +894,8 @@ id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
-(paren
 op_minus
 id|EACCES
-)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -937,17 +917,13 @@ id|rtc_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 r_default
 suffix:colon
 r_return
-(paren
 op_minus
 id|ENOTTY
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -1017,10 +993,8 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 id|EBUSY
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1056,9 +1030,7 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 r_static
@@ -1120,9 +1092,7 @@ id|nvram_open_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_PROC_FS
@@ -1280,9 +1250,7 @@ op_plus
 id|len
 )paren
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 op_star
 id|start
@@ -1304,6 +1272,7 @@ op_plus
 id|len
 op_minus
 id|offset
+)paren
 ques
 c_cond
 id|size
@@ -1313,12 +1282,11 @@ op_plus
 id|len
 op_minus
 id|offset
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This macro frees the machine specific function from bounds checking and&n; * this like that... */
 DECL|macro|PRINT_PROC
-mdefine_line|#define&t;PRINT_PROC(fmt,args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*len += sprintf( buffer+*len, fmt, ##args );&t;&bslash;&n;&t;&t;if (*begin + *len &gt; offset + size)&t;&t;&bslash;&n;&t;&t;&t;return( 0 );&t;&t;&t;&t;&bslash;&n;&t;&t;if (*begin + *len &lt; offset) {&t;&t;&t;&bslash;&n;&t;&t;&t;*begin += *len;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*len = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;PRINT_PROC(fmt,args...)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;*len += sprintf(buffer+*len, fmt, ##args);&t;&bslash;&n;&t;&t;if (*begin + *len &gt; offset + size)&t;&t;&bslash;&n;&t;&t;&t;return 0;&t;&t;&t;&t;&bslash;&n;&t;&t;if (*begin + *len &lt; offset) {&t;&t;&t;&bslash;&n;&t;&t;&t;*begin += *len;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;*len = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
 macro_line|#endif /* CONFIG_PROC_FS */
 DECL|variable|nvram_fops
 r_static
@@ -1396,10 +1364,8 @@ c_func
 )paren
 )paren
 r_return
-(paren
 op_minus
 id|ENXIO
-)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -1480,9 +1446,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
-(paren
 id|ret
-)paren
 suffix:semicolon
 id|outmisc
 suffix:colon
@@ -2218,9 +2182,7 @@ l_string|&quot;not &quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -2998,9 +2960,7 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|1
-)paren
 suffix:semicolon
 )brace
 macro_line|#endif
