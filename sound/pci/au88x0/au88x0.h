@@ -1085,8 +1085,7 @@ id|card
 )paren
 suffix:semicolon
 r_static
-r_int
-id|__devexit
+r_void
 id|vortex_gameport_unregister
 c_func
 (paren

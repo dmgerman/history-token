@@ -203,6 +203,11 @@ r_int
 r_char
 id|ext_buttons
 suffix:semicolon
+DECL|member|scroll
+r_int
+r_char
+id|scroll
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|synaptics_data
@@ -250,6 +255,10 @@ r_char
 id|mode
 suffix:semicolon
 multiline_comment|/* current mode byte */
+DECL|member|scroll
+r_int
+id|scroll
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* _SYNAPTICS_H */

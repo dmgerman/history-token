@@ -607,7 +607,7 @@ id|serio
 )paren
 )paren
 suffix:semicolon
-id|serio-&gt;type
+id|serio-&gt;id.type
 op_assign
 id|SERIO_8042
 suffix:semicolon
@@ -921,7 +921,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp

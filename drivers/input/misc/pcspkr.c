@@ -48,7 +48,7 @@ r_struct
 id|input_dev
 id|pcspkr_dev
 suffix:semicolon
-DECL|variable|i8253_beep_lock
+r_static
 id|DEFINE_SPINLOCK
 c_func
 (paren
@@ -343,6 +343,19 @@ c_func
 (paren
 op_amp
 id|pcspkr_dev
+)paren
+suffix:semicolon
+multiline_comment|/* turn off the speaker */
+id|pcspkr_event
+c_func
+(paren
+l_int|NULL
+comma
+id|EV_SND
+comma
+id|SND_BELL
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
