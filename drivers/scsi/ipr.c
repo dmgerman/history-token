@@ -581,6 +581,16 @@ l_string|&quot;No ready, IOA shutdown&quot;
 )brace
 comma
 (brace
+l_int|0x025A0000
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;Not ready, IOA has been shutdown&quot;
+)brace
+comma
+(brace
 l_int|0x02670100
 comma
 l_int|0
