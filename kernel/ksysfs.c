@@ -34,6 +34,11 @@ id|page
 comma
 l_string|&quot;%llu&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|hotplug_seqnum
 )paren
 suffix:semicolon
