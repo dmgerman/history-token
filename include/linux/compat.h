@@ -4,6 +4,7 @@ mdefine_line|#define _LINUX_COMPAT_H
 multiline_comment|/*&n; * These are the type definitions for the architecture specific&n; * syscall compatibility layer.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_COMPAT
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/compat.h&gt;
 DECL|macro|compat_jiffies_to_clock_t
 mdefine_line|#define compat_jiffies_to_clock_t(x)&t;((x) / (HZ / COMPAT_USER_HZ))
@@ -58,6 +59,20 @@ id|compat_clock_t
 id|tms_cstime
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_int
+id|cp_compat_stat
+c_func
+(paren
+r_struct
+id|kstat
+op_star
+comma
+r_struct
+id|compat_stat
+op_star
+)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
