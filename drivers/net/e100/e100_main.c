@@ -529,6 +529,18 @@ op_star
 id|pcid
 )paren
 suffix:semicolon
+r_static
+r_int
+r_char
+id|e100_asf_enabled
+c_func
+(paren
+r_struct
+id|e100_private
+op_star
+id|bdp
+)paren
+suffix:semicolon
 DECL|variable|e100_notifier_reboot
 r_struct
 id|notifier_block
@@ -1064,18 +1076,6 @@ comma
 id|u32
 comma
 id|u8
-)paren
-suffix:semicolon
-r_static
-r_int
-r_char
-id|e100_asf_enabled
-c_func
-(paren
-r_struct
-id|e100_private
-op_star
-id|bdp
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * e100_get_rx_struct - retrieve cell to hold skb buff from the pool&n; * @bdp: atapter&squot;s private data struct&n; *&n; * Returns the new cell to hold sk_buff or %NULL.&n; */
@@ -16482,7 +16482,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PM */
 multiline_comment|/**&n; * e100_asf_enabled - checks if ASF is configured on the current adaper&n; *                    by reading registers 0xD and 0x90 in the EEPROM &n; * @bdp: atapter&squot;s private data struct&n; *&n; * Returns: true if ASF is enabled&n; */
 r_static
 r_int
@@ -16576,6 +16575,7 @@ r_return
 l_bool|false
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_PM */
 macro_line|#ifdef E100_CU_DEBUG
 r_int
 r_char
