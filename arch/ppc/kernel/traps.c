@@ -1371,6 +1371,24 @@ id|BUG_WARNING_TRAP
 )paren
 (brace
 multiline_comment|/* this is a WARN_ON rather than BUG/BUG_ON */
+macro_line|#ifdef CONFIG_XMON
+id|xmon_printf
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Badness in %s at %s:%d&bslash;n&quot;
+comma
+id|bug-&gt;function
+comma
+id|bug-&gt;file
+comma
+id|bug-&gt;line
+op_amp
+op_complement
+id|BUG_WARNING_TRAP
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_XMON */&t;&t;
 id|printk
 c_func
 (paren
@@ -1396,6 +1414,27 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_XMON
+id|xmon_printf
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;kernel BUG in %s at %s:%d!&bslash;n&quot;
+comma
+id|bug-&gt;function
+comma
+id|bug-&gt;file
+comma
+id|bug-&gt;line
+)paren
+suffix:semicolon
+id|xmon
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_XMON */
 id|printk
 c_func
 (paren
@@ -1493,6 +1532,12 @@ suffix:semicolon
 id|u32
 id|fpscr
 suffix:semicolon
+multiline_comment|/* We must make sure the FP state is consistent with&n;&t;&t; * our MSR_FP in regs&n;&t;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1504,6 +1549,11 @@ id|giveup_fpu
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|fpscr
@@ -2276,6 +2326,11 @@ op_star
 id|regs
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2287,6 +2342,11 @@ id|giveup_altivec
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* XXX quick hack for now: set the non-Java bit in the VSCR */

@@ -569,6 +569,11 @@ c_func
 r_void
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -603,6 +608,11 @@ id|last_task_used_altivec
 )paren
 suffix:semicolon
 macro_line|#endif /* __SMP __ */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
 r_void
@@ -613,6 +623,11 @@ c_func
 r_void
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
@@ -647,6 +662,11 @@ id|last_task_used_math
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_int
 DECL|function|dump_task_fpu
@@ -663,19 +683,31 @@ op_star
 id|fpregs
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|tsk-&gt;thread.regs
 op_logical_and
+(paren
 id|tsk-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP
+)paren
 )paren
 id|giveup_fpu
 c_func
 (paren
 id|tsk
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|memcpy
@@ -1269,6 +1301,11 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1297,6 +1334,11 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Copy a thread..&n; */
 r_int
@@ -2069,6 +2111,11 @@ id|filename
 r_goto
 id|out
 suffix:semicolon
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2097,6 +2144,11 @@ id|current
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+id|preempt_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|do_execve
