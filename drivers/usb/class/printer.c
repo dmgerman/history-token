@@ -3464,6 +3464,14 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* add a table entry so the device works when advertised */
+id|usblp_table
+(braket
+id|usblp-&gt;minor
+)braket
+op_assign
+id|usblp
+suffix:semicolon
 multiline_comment|/* If we have devfs, create with perms=660. */
 id|sprintf
 c_func
@@ -3542,11 +3550,6 @@ id|usblp-&gt;dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
 r_return
-id|usblp_table
-(braket
-id|usblp-&gt;minor
-)braket
-op_assign
 id|usblp
 suffix:semicolon
 m_abort
