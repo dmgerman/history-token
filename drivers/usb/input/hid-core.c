@@ -6461,6 +6461,8 @@ comma
 id|USB_DEVICE_ID_UGCI_DRIVING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -6469,6 +6471,8 @@ comma
 id|USB_DEVICE_ID_UGCI_FLYING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -6477,6 +6481,8 @@ comma
 id|USB_DEVICE_ID_UGCI_FIGHTING
 comma
 id|HID_QUIRK_BADPAD
+op_or
+id|HID_QUIRK_MULTI_INPUT
 )brace
 comma
 (brace
@@ -7921,12 +7927,6 @@ id|hid
 )paren
 suffix:semicolon
 id|hid_dump_device
-c_func
-(paren
-id|hid
-)paren
-suffix:semicolon
-id|hid_ff_init
 c_func
 (paren
 id|hid
