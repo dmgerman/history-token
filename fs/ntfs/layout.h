@@ -1673,7 +1673,7 @@ multiline_comment|/* 30*/
 id|s64
 id|data_size
 suffix:semicolon
-multiline_comment|/* Byte size of actual data in data&n;&t;&t;&t;&t;&t;   attribute. NOTE: Only present when&n;&t;&t;&t;&t;&t;   lowest_vcn is 0. */
+multiline_comment|/* Byte size of actual data in data&n;&t;&t;&t;&t;&t;   attribute. */
 DECL|member|file_attributes
 multiline_comment|/* 38*/
 id|FILE_ATTR_FLAGS

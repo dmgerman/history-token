@@ -3767,7 +3767,7 @@ DECL|typedef|INDEX_TYPE
 )brace
 id|INDEX_TYPE
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @filp:&t;open file descriptor for the current directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode name to the loaded NLS and pass it to&n; * the filldir callback.&n; */
+multiline_comment|/**&n; * ntfs_filldir - ntfs specific filldir method&n; * @vol:&t;current ntfs volume&n; * @filp:&t;open file descriptor for the current directory&n; * @ndir:&t;ntfs inode of current directory&n; * @index_type:&t;specifies whether @iu is an index root or an index allocation&n; * @iu:&t;&t;index root or index allocation attribute to which @ie belongs&n; * @ie:&t;&t;current index entry&n; * @name:&t;buffer to use for the converted name&n; * @dirent:&t;vfs filldir callback context&n; * @filldir:&t;vfs filldir callback&n; *&n; * Convert the Unicode @name to the loaded NLS and pass it to the @filldir&n; * callback.&n; */
 DECL|function|ntfs_filldir
 r_static
 r_inline
@@ -3982,7 +3982,7 @@ id|name
 comma
 id|NTFS_MAX_NAME_LEN
 op_star
-l_int|3
+id|NLS_MAX_CHARSET_SIZE
 op_plus
 l_int|1
 )paren
@@ -4418,7 +4418,7 @@ c_func
 (paren
 id|NTFS_MAX_NAME_LEN
 op_star
-l_int|3
+id|NLS_MAX_CHARSET_SIZE
 op_plus
 l_int|1
 comma

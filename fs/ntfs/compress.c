@@ -50,7 +50,7 @@ DECL|typedef|ntfs_compression_constants
 )brace
 id|ntfs_compression_constants
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_compression_buffer - one buffer for the decompression engine.&n; */
+multiline_comment|/**&n; * ntfs_compression_buffer - one buffer for the decompression engine&n; */
 DECL|variable|ntfs_compression_buffer
 r_static
 id|u8
@@ -59,7 +59,7 @@ id|ntfs_compression_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* This spinlock which protects it */
+multiline_comment|/**&n; * ntfs_cb_lock - spinlock which protects ntfs_compression_buffer&n; */
 DECL|variable|ntfs_cb_lock
 r_static
 id|spinlock_t
@@ -76,11 +76,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-comma
-id|j
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -118,9 +113,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -1920,7 +1912,7 @@ r_goto
 id|read_err
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Get the compression buffer. We must not sleep any more&n;&t; * until we are finished with it.  */
+multiline_comment|/*&n;&t; * Get the compression buffer. We must not sleep any more&n;&t; * until we are finished with it.&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -2263,12 +2255,7 @@ op_minus
 id|cur_ofs
 )paren
 suffix:semicolon
-id|cb_pos
-op_add_assign
-id|cb_max_ofs
-op_minus
-id|cur_ofs
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * No need to update cb_pos at this stage:&n;&t;&t;&t; *&t;cb_pos += cb_max_ofs - cur_ofs;&n;&t;&t;&t; */
 id|cur_ofs
 op_assign
 id|cb_max_ofs
@@ -2587,7 +2574,7 @@ id|cb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We can sleep from now on, lock already dropped by&n;&t;&t; * ntfs_decompress.  */
+multiline_comment|/*&n;&t;&t; * We can sleep from now on, lock already dropped by&n;&t;&t; * ntfs_decompress().&n;&t;&t; */
 r_if
 c_cond
 (paren

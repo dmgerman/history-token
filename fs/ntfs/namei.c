@@ -807,8 +807,7 @@ comma
 id|nls_name.len
 )paren
 suffix:semicolon
-singleline_comment|// FIXME: Do we need dcache_lock or dparent_lock here or is the
-singleline_comment|// fact that i_sem is held on the parent inode sufficient? (AIA)
+multiline_comment|/*&n;&t; * Note: No need for dparent_lock as i_sem is held on the parent inode.&n;&t; */
 multiline_comment|/* Does a dentry matching the nls_name exist already? */
 id|real_dent
 op_assign
