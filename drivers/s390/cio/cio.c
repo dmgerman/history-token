@@ -3529,11 +3529,11 @@ c_func
 r_int
 r_int
 id|irq
-comma
-r_int
-id|ending_status
 )paren
 (brace
+r_int
+id|ending_status
+suffix:semicolon
 r_int
 r_int
 id|fctl
@@ -4206,9 +4206,6 @@ c_func
 r_int
 r_int
 id|irq
-comma
-r_int
-id|ending_status
 )paren
 (brace
 id|devstat_t
@@ -4446,9 +4443,7 @@ op_member_access_from_pointer
 id|ui.flags.ready
 )paren
 r_return
-(paren
-id|ending_status
-)paren
+l_int|0
 suffix:semicolon
 id|memcpy
 (paren
@@ -4540,11 +4535,6 @@ suffix:semicolon
 multiline_comment|/* cond code from irb */
 r_int
 id|issense
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|ending_status
 op_assign
 l_int|0
 suffix:semicolon
@@ -5126,40 +5116,24 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* normal i/o interruption */
-id|ending_status
-op_assign
+r_return
 id|s390_process_IRQ_normal
 c_func
 (paren
 id|irq
-comma
-id|ending_status
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
+r_default
 suffix:colon
 multiline_comment|/* device/path not operational */
-id|ending_status
-op_assign
+r_return
 id|s390_process_IRQ_notoper
 c_func
 (paren
 id|irq
-comma
-id|ending_status
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 )brace
-r_return
-(paren
-id|ending_status
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the special i/o-interruption subclass 7 for the&n; *  device specified by parameter irq. There can only&n; *  be a single device been operated on this special&n; *  isc. This function is aimed being able to check&n; *  on special device interrupts in disabled state,&n; *  without having to delay I/O processing (by queueing)&n; *  for non-console devices.&n; *&n; * Setting of this isc is done by set_cons_dev(), while&n; *  wait_cons_dev() allows to actively wait on an interrupt&n; *  for this device in disabed state. When the interrupt &n; *  condition is encountered, wait_cons_dev() calls do_IRQ()&n; *  to have the console device driver processing the&n; *  interrupt.&n; */
 r_int
