@@ -9431,6 +9431,12 @@ id|nd
 suffix:semicolon
 r_int
 id|res
+suffix:semicolon
+id|nd.depth
+op_assign
+l_int|0
+suffix:semicolon
+id|res
 op_assign
 id|dentry-&gt;d_inode-&gt;i_op
 op_member_access_from_pointer
