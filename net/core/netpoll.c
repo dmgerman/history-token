@@ -55,6 +55,14 @@ id|trapped
 suffix:semicolon
 DECL|macro|MAX_SKB_SIZE
 mdefine_line|#define MAX_SKB_SIZE &bslash;&n;&t;&t;(MAX_UDP_CHUNK + sizeof(struct udphdr) + &bslash;&n;&t;&t;&t;&t;sizeof(struct iphdr) + sizeof(struct ethhdr))
+r_static
+r_void
+id|zap_completion_queue
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|checksum_udp
 r_static
 r_int
@@ -223,6 +231,11 @@ id|budget
 )paren
 suffix:semicolon
 )brace
+id|zap_completion_queue
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|refill_skbs
 r_static
@@ -429,13 +442,13 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|repeat
-suffix:colon
 id|zap_completion_queue
 c_func
 (paren
 )paren
 suffix:semicolon
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
@@ -655,11 +668,6 @@ id|netpoll_poll
 c_func
 (paren
 id|np
-)paren
-suffix:semicolon
-id|zap_completion_queue
-c_func
-(paren
 )paren
 suffix:semicolon
 r_goto
