@@ -472,6 +472,7 @@ mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
 r_struct
 id|usb_tt
 suffix:semicolon
+multiline_comment|/*&n; * struct usb_device - kernel&squot;s representation of a USB device&n; *&n; * FIXME: Write the kerneldoc!&n; *&n; * Usbcore drivers should not set usbdev-&gt;state directly.  Instead use&n; * usb_set_device_state().&n; */
 DECL|struct|usb_device
 r_struct
 id|usb_device
@@ -659,6 +660,39 @@ r_struct
 id|usb_device
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_lock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_trylock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_unlock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
 )paren
 suffix:semicolon
 multiline_comment|/* mostly for devices emulating SCSI over USB */

@@ -437,7 +437,7 @@ r_return
 id|ed
 suffix:semicolon
 )brace
-multiline_comment|/* caller owns root-&gt;serialize */
+multiline_comment|/* caller has locked the root hub */
 DECL|function|ohci_hub_resume
 r_static
 r_int
@@ -1141,10 +1141,9 @@ id|hcd
 op_assign
 id|_hcd
 suffix:semicolon
-id|down
+id|usb_lock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 (paren
@@ -1155,10 +1154,9 @@ id|ohci_hub_resume
 id|hcd
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 )brace
@@ -1483,13 +1481,10 @@ id|ohci-&gt;hc_control
 op_eq
 id|OHCI_USB_OPER
 op_logical_and
-id|down_trylock
+id|usb_trylock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|ohci_vdbg
@@ -1512,10 +1507,9 @@ id|ohci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
-id|up
+id|usb_unlock_device
 (paren
-op_amp
-id|hcd-&gt;self.root_hub-&gt;serialize
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 )brace

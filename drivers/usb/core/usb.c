@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -86,6 +87,13 @@ id|nousb
 suffix:semicolon
 multiline_comment|/* Disable USB when built into kernel image */
 multiline_comment|/* Not honored on modular build */
+r_static
+id|DECLARE_RWSEM
+c_func
+(paren
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
 DECL|function|generic_probe
 r_static
 r_int
@@ -412,6 +420,11 @@ id|new_driver-&gt;driver.remove
 op_assign
 id|usb_unbind_interface
 suffix:semicolon
+id|usb_lock_all_devices
+c_func
+(paren
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|driver_register
@@ -419,6 +432,11 @@ c_func
 (paren
 op_amp
 id|new_driver-&gt;driver
+)paren
+suffix:semicolon
+id|usb_unlock_all_devices
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -486,10 +504,20 @@ comma
 id|driver-&gt;name
 )paren
 suffix:semicolon
+id|usb_lock_all_devices
+c_func
+(paren
+)paren
+suffix:semicolon
 id|driver_unregister
 (paren
 op_amp
 id|driver-&gt;driver
+)paren
+suffix:semicolon
+id|usb_unlock_all_devices
+c_func
+(paren
 )paren
 suffix:semicolon
 id|usbfs_update_special
@@ -498,7 +526,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; *&n; * Don&squot;t call this function unless you are bound to one of the interfaces&n; * on this device or you own the dev-&gt;serialize semaphore!&n; */
+multiline_comment|/**&n; * usb_ifnum_to_if - get the interface object with a given interface number&n; * @dev: the device whose current configuration is considered&n; * @ifnum: the desired interface&n; *&n; * This walks the device descriptor for the currently active configuration&n; * and returns a pointer to the interface with that particular interface&n; * number, or null.&n; *&n; * Note that configuration descriptors are not required to assign interface&n; * numbers sequentially, so that it would be incorrect to assume that&n; * the first interface in that descriptor corresponds to interface zero.&n; * This routine helps device drivers avoid such mistakes.&n; * However, you should make sure that you do the right thing with any&n; * alternate settings available for this interfaces.&n; *&n; * Don&squot;t call this function unless you are bound to one of the interfaces&n; * on this device or you have locked the device!&n; */
 DECL|function|usb_ifnum_to_if
 r_struct
 id|usb_interface
@@ -575,7 +603,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_altnum_to_altsetting - get the altsetting structure with a given&n; *&t;alternate setting number.&n; * @intf: the interface containing the altsetting in question&n; * @altnum: the desired alternate setting number&n; *&n; * This searches the altsetting array of the specified interface for&n; * an entry with the correct bAlternateSetting value and returns a pointer&n; * to that entry, or null.&n; *&n; * Note that altsettings need not be stored sequentially by number, so&n; * it would be incorrect to assume that the first altsetting entry in&n; * the array corresponds to altsetting zero.  This routine helps device&n; * drivers avoid such mistakes.&n; *&n; * Don&squot;t call this function unless you are bound to the intf interface&n; * or you own the device&squot;s -&gt;serialize semaphore!&n; */
+multiline_comment|/**&n; * usb_altnum_to_altsetting - get the altsetting structure with a given&n; *&t;alternate setting number.&n; * @intf: the interface containing the altsetting in question&n; * @altnum: the desired alternate setting number&n; *&n; * This searches the altsetting array of the specified interface for&n; * an entry with the correct bAlternateSetting value and returns a pointer&n; * to that entry, or null.&n; *&n; * Note that altsettings need not be stored sequentially by number, so&n; * it would be incorrect to assume that the first altsetting entry in&n; * the array corresponds to altsetting zero.  This routine helps device&n; * drivers avoid such mistakes.&n; *&n; * Don&squot;t call this function unless you are bound to the intf interface&n; * or you have locked the device!&n; */
 DECL|function|usb_altnum_to_altsetting
 r_struct
 id|usb_host_interface
@@ -750,7 +778,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_driver_claim_interface - bind a driver to an interface&n; * @driver: the driver to be bound&n; * @iface: the interface to which it will be bound; must be in the&n; *&t;usb device&squot;s active configuration&n; * @priv: driver data associated with that interface&n; *&n; * This is used by usb device drivers that need to claim more than one&n; * interface on a device when probing (audio and acm are current examples).&n; * No device driver should directly modify internal usb_interface or&n; * usb_device structure members.&n; *&n; * Few drivers should need to use this routine, since the most natural&n; * way to bind to an interface is to return the private data from&n; * the driver&squot;s probe() method.&n; *&n; * Callers must own the driver model&squot;s usb bus writelock.  So driver&n; * probe() entries don&squot;t need extra locking, but other call contexts&n; * may need to explicitly claim that lock.&n; */
+multiline_comment|/**&n; * usb_driver_claim_interface - bind a driver to an interface&n; * @driver: the driver to be bound&n; * @iface: the interface to which it will be bound; must be in the&n; *&t;usb device&squot;s active configuration&n; * @priv: driver data associated with that interface&n; *&n; * This is used by usb device drivers that need to claim more than one&n; * interface on a device when probing (audio and acm are current examples).&n; * No device driver should directly modify internal usb_interface or&n; * usb_device structure members.&n; *&n; * Few drivers should need to use this routine, since the most natural&n; * way to bind to an interface is to return the private data from&n; * the driver&squot;s probe() method.&n; *&n; * Callers must own the device lock and the driver model&squot;s usb_bus_type.subsys&n; * writelock.  So driver probe() entries don&squot;t need extra locking,&n; * but other call contexts may need to explicitly claim those locks.&n; */
 DECL|function|usb_driver_claim_interface
 r_int
 id|usb_driver_claim_interface
@@ -822,7 +850,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_driver_release_interface - unbind a driver from an interface&n; * @driver: the driver to be unbound&n; * @iface: the interface from which it will be unbound&n; *&n; * This can be used by drivers to release an interface without waiting&n; * for their disconnect() methods to be called.  In typical cases this&n; * also causes the driver disconnect() method to be called.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; * Callers must own the usb_device serialize semaphore and the driver model&squot;s&n; * usb bus writelock.  So driver disconnect() entries don&squot;t need extra locking,&n; * but other call contexts may need to explicitly claim those locks.&n; */
+multiline_comment|/**&n; * usb_driver_release_interface - unbind a driver from an interface&n; * @driver: the driver to be unbound&n; * @iface: the interface from which it will be unbound&n; *&n; * This can be used by drivers to release an interface without waiting&n; * for their disconnect() methods to be called.  In typical cases this&n; * also causes the driver disconnect() method to be called.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; * Callers must own the device lock and the driver model&squot;s usb_bus_type.subsys&n; * writelock.  So driver disconnect() entries don&squot;t need extra locking,&n; * but other call contexts may need to explicitly claim those locks.&n; */
 DECL|function|usb_driver_release_interface
 r_void
 id|usb_driver_release_interface
@@ -2197,6 +2225,147 @@ id|intf-&gt;dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&t;&t;&t;USB device locking&n; *&n; * Although locking USB devices should be straightforward, it is&n; * complicated by the way the driver-model core works.  When a new USB&n; * driver is registered or unregistered, the core will automatically&n; * probe or disconnect all matching interfaces on all USB devices while&n; * holding the USB subsystem writelock.  There&squot;s no good way for us to&n; * tell which devices will be used or to lock them beforehand; our only&n; * option is to effectively lock all the USB devices.&n; *&n; * We do that by using a private rw-semaphore, usb_all_devices_rwsem.&n; * When locking an individual device you must first acquire the rwsem&squot;s&n; * readlock.  When a driver is registered or unregistered the writelock&n; * must be held.  These actions are encapsulated in the subroutines&n; * below, so all a driver needs to do is call usb_lock_device() and&n; * usb_unlock_device().&n; *&n; * Complications arise when several devices are to be locked at the same&n; * time.  Only hub-aware drivers that are part of usbcore ever have to&n; * do this; nobody else needs to worry about it.  The problem is that&n; * usb_lock_device() must not be called to lock a second device since it&n; * would acquire the rwsem&squot;s readlock reentrantly, leading to deadlock if&n; * another thread was waiting for the writelock.  The solution is simple:&n; *&n; *&t;When locking more than one device, call usb_lock_device()&n; *&t;to lock the first one.  Lock the others by calling&n; *&t;down(&amp;udev-&gt;serialize) directly.&n; *&n; *&t;When unlocking multiple devices, use up(&amp;udev-&gt;serialize)&n; *&t;to unlock all but the last one.  Unlock the last one by&n; *&t;calling usb_unlock_device().&n; *&n; *&t;When locking both a device and its parent, always lock the&n; *&t;the parent first.&n; */
+multiline_comment|/**&n; * usb_lock_device - acquire the lock for a usb device structure&n; * @udev: device that&squot;s being locked&n; *&n; * Use this routine when you don&squot;t hold any other device locks;&n; * to acquire nested inner locks call down(&amp;udev-&gt;serialize) directly.&n; * This is necessary for proper interaction with usb_lock_all_devices().&n; */
+DECL|function|usb_lock_device
+r_void
+id|usb_lock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+(brace
+id|down_read
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_trylock_device - attempt to acquire the lock for a usb device structure&n; * @udev: device that&squot;s being locked&n; *&n; * Don&squot;t use this routine if you already hold a device lock;&n; * use down_trylock(&amp;udev-&gt;serialize) instead.&n; * This is necessary for proper interaction with usb_lock_all_devices().&n; *&n; * Returns 1 if successful, 0 if contention.&n; */
+DECL|function|usb_trylock_device
+r_int
+id|usb_trylock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+)paren
+(brace
+id|up_read
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_unlock_device - release the lock for a usb device structure&n; * @udev: device that&squot;s being unlocked&n; *&n; * Use this routine when releasing the only device lock you hold;&n; * to release inner nested locks call up(&amp;udev-&gt;serialize) directly.&n; * This is necessary for proper interaction with usb_lock_all_devices().&n; */
+DECL|function|usb_unlock_device
+r_void
+id|usb_unlock_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|udev
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_lock_all_devices - acquire the lock for all usb device structures&n; *&n; * This is necessary when registering a new driver or probing a bus,&n; * since the driver-model core may try to use any usb_device.&n; */
+DECL|function|usb_lock_all_devices
+r_void
+id|usb_lock_all_devices
+c_func
+(paren
+r_void
+)paren
+(brace
+id|down_write
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_unlock_all_devices - release the lock for all usb device structures&n; */
+DECL|function|usb_unlock_all_devices
+r_void
+id|usb_unlock_all_devices
+c_func
+(paren
+r_void
+)paren
+(brace
+id|up_write
+c_func
+(paren
+op_amp
+id|usb_all_devices_rwsem
+)paren
+suffix:semicolon
+)brace
 DECL|function|match_device
 r_static
 r_struct
@@ -2302,6 +2471,18 @@ id|child
 )braket
 )paren
 (brace
+id|down
+c_func
+(paren
+op_amp
+id|dev-&gt;children
+(braket
+id|child
+)braket
+op_member_access_from_pointer
+id|serialize
+)paren
+suffix:semicolon
 id|ret_dev
 op_assign
 id|match_device
@@ -2315,6 +2496,18 @@ comma
 id|vendor_id
 comma
 id|product_id
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;children
+(braket
+id|child
+)braket
+op_member_access_from_pointer
+id|serialize
 )paren
 suffix:semicolon
 r_if
@@ -2410,6 +2603,12 @@ id|bus-&gt;root_hub
 )paren
 r_continue
 suffix:semicolon
+id|usb_lock_device
+c_func
+(paren
+id|bus-&gt;root_hub
+)paren
+suffix:semicolon
 id|dev
 op_assign
 id|match_device
@@ -2420,6 +2619,12 @@ comma
 id|vendor_id
 comma
 id|product_id
+)paren
+suffix:semicolon
+id|usb_unlock_device
+c_func
+(paren
+id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 r_if
@@ -3815,6 +4020,27 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_hub_tt_clear_buffer
+)paren
+suffix:semicolon
+DECL|variable|usb_lock_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_lock_device
+)paren
+suffix:semicolon
+DECL|variable|usb_trylock_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_trylock_device
+)paren
+suffix:semicolon
+DECL|variable|usb_unlock_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_unlock_device
 )paren
 suffix:semicolon
 DECL|variable|usb_driver_claim_interface

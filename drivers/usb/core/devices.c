@@ -1719,7 +1719,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* PROC_EXTRA */
 multiline_comment|/*****************************************************************/
-multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; * The caller must own the usbdev-&gt;serialize semaphore.&n; */
+multiline_comment|/* This is a recursive function. Parameters:&n; * buffer - the user-space buffer to write data into&n; * nbytes - the maximum number of bytes to write&n; * skip_bytes - the number of bytes to skip before writing anything&n; * file_offset - the offset into the devices file on completion&n; * The caller must own the device lock.&n; */
 DECL|function|usb_device_dump
 r_static
 id|ssize_t
@@ -2366,11 +2366,10 @@ id|bus-&gt;root_hub
 )paren
 r_continue
 suffix:semicolon
-id|down
+id|usb_lock_device
 c_func
 (paren
-op_amp
-id|bus-&gt;root_hub-&gt;serialize
+id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 id|ret
@@ -2400,11 +2399,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 c_func
 (paren
-op_amp
-id|bus-&gt;root_hub-&gt;serialize
+id|bus-&gt;root_hub
 )paren
 suffix:semicolon
 r_if

@@ -171,6 +171,22 @@ r_int
 id|configuration
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|usb_lock_all_devices
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_unlock_all_devices
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* for labeling diagnostics */
 r_extern
 r_const

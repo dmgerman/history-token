@@ -2364,10 +2364,9 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-id|down
+id|usb_lock_device
 (paren
-op_amp
-id|usb_dev-&gt;serialize
+id|usb_dev
 )paren
 suffix:semicolon
 id|retval
@@ -2377,10 +2376,9 @@ id|usb_new_device
 id|usb_dev
 )paren
 suffix:semicolon
-id|up
+id|usb_unlock_device
 (paren
-op_amp
-id|usb_dev-&gt;serialize
+id|usb_dev
 )paren
 suffix:semicolon
 r_if
