@@ -26,6 +26,8 @@ op_star
 )paren
 suffix:semicolon
 DECL|function|de_get
+r_static
+r_inline
 r_struct
 id|proc_dir_entry
 op_star
@@ -56,6 +58,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Decrements the use count and checks for deferred deletion.&n; */
 DECL|function|de_put
+r_static
 r_void
 id|de_put
 c_func
