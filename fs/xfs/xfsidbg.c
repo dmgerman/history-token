@@ -21566,11 +21566,23 @@ suffix:semicolon
 id|kdb_printf
 c_func
 (paren
-l_string|&quot;l_iclog_hsize %d l_iclog_heads %d&bslash;n&quot;
+l_string|&quot;l_stripemask %d l_iclog_hsize %d l_iclog_heads %d&bslash;n&quot;
+comma
+id|log-&gt;l_stripemask
 comma
 id|log-&gt;l_iclog_hsize
 comma
 id|log-&gt;l_iclog_heads
+)paren
+suffix:semicolon
+id|kdb_printf
+c_func
+(paren
+l_string|&quot;l_sectbb_log %u l_sectbb_mask %u&bslash;n&quot;
+comma
+id|log-&gt;l_sectbb_log
+comma
+id|log-&gt;l_sectbb_mask
 )paren
 suffix:semicolon
 id|kdb_printf
@@ -23725,14 +23737,6 @@ comma
 id|mp-&gt;m_chsize
 comma
 id|mp-&gt;m_chash
-)paren
-suffix:semicolon
-id|kdb_printf
-c_func
-(paren
-l_string|&quot;m_lstripemask %d&bslash;n&quot;
-comma
-id|mp-&gt;m_lstripemask
 )paren
 suffix:semicolon
 id|kdb_printf

@@ -13,9 +13,6 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/icmpv6.h&gt;
-multiline_comment|/* XXX no ipv6 ipcomp specific */
-DECL|macro|NIP6
-mdefine_line|#define NIP6(addr) &bslash;&n;&t;ntohs((addr).s6_addr16[0]),&bslash;&n;&t;ntohs((addr).s6_addr16[1]),&bslash;&n;&t;ntohs((addr).s6_addr16[2]),&bslash;&n;&t;ntohs((addr).s6_addr16[3]),&bslash;&n;&t;ntohs((addr).s6_addr16[4]),&bslash;&n;&t;ntohs((addr).s6_addr16[5]),&bslash;&n;&t;ntohs((addr).s6_addr16[6]),&bslash;&n;&t;ntohs((addr).s6_addr16[7])
 DECL|function|ipcomp6_input
 r_static
 r_int

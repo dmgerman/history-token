@@ -90,7 +90,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;buffer_activate [%p]&bslash;n&quot;
+l_string|&quot;buffer_activate [%p]&quot;
 comma
 id|buf
 )paren
@@ -98,6 +98,10 @@ suffix:semicolon
 id|buf-&gt;vb.state
 op_assign
 id|STATE_ACTIVE
+suffix:semicolon
+id|buf-&gt;top_seen
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* dma: setup channel 5 (= TS) */
 id|control
@@ -134,7 +138,7 @@ id|buf-&gt;vb.field
 id|dprintk
 c_func
 (paren
-l_string|&quot;[top]     buf=%p next=%p&quot;
+l_string|&quot;- [top]     buf=%p next=%p&bslash;n&quot;
 comma
 id|buf
 comma
@@ -179,7 +183,7 @@ r_else
 id|dprintk
 c_func
 (paren
-l_string|&quot;[bottom]  buf=%p next=%p&quot;
+l_string|&quot;- [bottom]  buf=%p next=%p&bslash;n&quot;
 comma
 id|buf
 comma
@@ -306,13 +310,28 @@ op_star
 id|vb
 suffix:semicolon
 r_int
+r_int
 id|lines
 comma
 id|llength
 comma
 id|size
-comma
+suffix:semicolon
+r_int
 id|err
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;buffer_prepare [%p,%s]&bslash;n&quot;
+comma
+id|buf
+comma
+id|v4l2_field_names
+(braket
+id|field
+)braket
+)paren
 suffix:semicolon
 id|llength
 op_assign
@@ -436,10 +455,6 @@ suffix:semicolon
 id|buf-&gt;vb.state
 op_assign
 id|STATE_PREPARED
-suffix:semicolon
-id|buf-&gt;top_seen
-op_assign
-l_int|0
 suffix:semicolon
 id|buf-&gt;activate
 op_assign
@@ -665,7 +680,6 @@ op_star
 id|file
 )paren
 (brace
-r_int
 r_int
 id|minor
 op_assign
@@ -1662,6 +1676,10 @@ id|dev-&gt;ts_q.dev
 op_assign
 id|dev
 suffix:semicolon
+id|dev-&gt;ts_q.need_two
+op_assign
+l_int|1
+suffix:semicolon
 id|videobuf_queue_init
 c_func
 (paren
@@ -1851,7 +1869,7 @@ id|dev-&gt;ts_q.curr
 (brace
 id|field
 op_assign
-id|dev-&gt;video_q.curr-&gt;vb.field
+id|dev-&gt;ts_q.curr-&gt;vb.field
 suffix:semicolon
 r_if
 c_cond

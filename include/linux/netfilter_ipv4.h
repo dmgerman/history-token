@@ -167,6 +167,23 @@ op_star
 id|pskb
 )paren
 suffix:semicolon
+multiline_comment|/* Call this before modifying an existing IP packet: ensures it is&n;   modifiable and linear to the point you care about (writable_len).&n;   Returns true or false. */
+r_extern
+r_int
+id|skb_ip_make_writable
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+op_star
+id|pskb
+comma
+r_int
+r_int
+id|writable_len
+)paren
+suffix:semicolon
 macro_line|#endif /*__KERNEL__*/
 macro_line|#endif /*__LINUX_IP_NETFILTER_H*/
 eof

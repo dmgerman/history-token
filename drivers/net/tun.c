@@ -1569,9 +1569,12 @@ id|tun-&gt;dev.priv
 op_assign
 id|tun
 suffix:semicolon
-id|tun-&gt;dev.owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+op_amp
+id|tun-&gt;dev
+)paren
 suffix:semicolon
 id|err
 op_assign

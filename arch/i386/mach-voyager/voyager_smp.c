@@ -898,6 +898,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|cpu_callout_map
+r_volatile
 r_int
 r_int
 id|cpu_callout_map
@@ -1883,7 +1884,7 @@ id|regs
 suffix:semicolon
 multiline_comment|/* don&squot;t care about the eip and regs settings since we&squot;ll&n;&t; * never reschedule the forked task. */
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM

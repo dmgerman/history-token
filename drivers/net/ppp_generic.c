@@ -3287,7 +3287,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|err
 )paren
 id|printk
@@ -9943,12 +9942,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dev_close
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
+multiline_comment|/* This will call dev_close() for us. */
 id|unregister_netdevice
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sungem.h,v 1.12 2002/01/23 15:40:45 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: sungem.h,v 1.10.2.4 2002/03/11 08:54:48 davem Exp $&n; * sungem.h: Definitions for Sun GEM ethernet driver.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef _SUNGEM_H
 DECL|macro|_SUNGEM_H
 mdefine_line|#define _SUNGEM_H
@@ -957,33 +957,6 @@ id|phy_serdes
 comma
 )brace
 suffix:semicolon
-DECL|enum|gem_phy_model
-r_enum
-id|gem_phy_model
-(brace
-DECL|enumerator|phymod_generic
-id|phymod_generic
-comma
-DECL|enumerator|phymod_bcm5201
-id|phymod_bcm5201
-comma
-DECL|enumerator|phymod_bcm5221
-id|phymod_bcm5221
-comma
-DECL|enumerator|phymod_bcm5400
-id|phymod_bcm5400
-comma
-DECL|enumerator|phymod_bcm5401
-id|phymod_bcm5401
-comma
-DECL|enumerator|phymod_bcm5411
-id|phymod_bcm5411
-comma
-DECL|enumerator|phymod_m1011
-id|phymod_m1011
-comma
-)brace
-suffix:semicolon
 DECL|enum|link_state
 r_enum
 id|link_state
@@ -1104,10 +1077,10 @@ r_enum
 id|gem_phy_type
 id|phy_type
 suffix:semicolon
-DECL|member|phy_mod
-r_enum
-id|gem_phy_model
-id|phy_mod
+DECL|member|phy_mii
+r_struct
+id|mii_phy
+id|phy_mii
 suffix:semicolon
 DECL|member|tx_fifo_sz
 r_int
@@ -1129,10 +1102,6 @@ DECL|member|mii_phy_addr
 r_int
 id|mii_phy_addr
 suffix:semicolon
-DECL|member|gigabit_capable
-r_int
-id|gigabit_capable
-suffix:semicolon
 DECL|member|mac_rx_cfg
 id|u32
 id|mac_rx_cfg
@@ -1142,17 +1111,13 @@ id|u32
 id|swrst_base
 suffix:semicolon
 multiline_comment|/* Autoneg &amp; PHY control */
-DECL|member|link_cntl
+DECL|member|want_autoneg
 r_int
-id|link_cntl
+id|want_autoneg
 suffix:semicolon
-DECL|member|link_advertise
+DECL|member|last_forced_speed
 r_int
-id|link_advertise
-suffix:semicolon
-DECL|member|link_fcntl
-r_int
-id|link_fcntl
+id|last_forced_speed
 suffix:semicolon
 DECL|member|lstate
 r_enum
@@ -1217,6 +1182,8 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
+DECL|macro|found_mii_phy
+mdefine_line|#define found_mii_phy(gp) ((gp-&gt;phy_type == phy_mii_mdio0 || gp-&gt;phy_type == phy_mii_mdio1) &bslash;&n;&t;&t;&t;&t;&amp;&amp; gp-&gt;phy_mii.def &amp;&amp; gp-&gt;phy_mii.def-&gt;ops)
 DECL|macro|ALIGNED_RX_SKB_ADDR
 mdefine_line|#define ALIGNED_RX_SKB_ADDR(addr) &bslash;&n;        ((((unsigned long)(addr) + (64UL - 1UL)) &amp; ~(64UL - 1UL)) - (unsigned long)(addr))
 DECL|function|gem_alloc_skb

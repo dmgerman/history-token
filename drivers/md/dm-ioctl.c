@@ -4550,8 +4550,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|failed
-suffix:colon
 r_if
 c_cond
 (paren

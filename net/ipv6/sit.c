@@ -1802,7 +1802,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Returns the embedded IPv4 address if the IPv6 address&n;   comes from 6to4 (draft-ietf-ngtrans-6to4-04) addr space */
+multiline_comment|/* Returns the embedded IPv4 address if the IPv6 address&n;   comes from 6to4 (RFC 3056) addr space */
 DECL|function|try_6to4
 r_static
 r_inline

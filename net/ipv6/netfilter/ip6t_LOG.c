@@ -37,8 +37,6 @@ macro_line|#else
 DECL|macro|DEBUGP
 mdefine_line|#define DEBUGP(format, args...)
 macro_line|#endif
-DECL|macro|NIP6
-mdefine_line|#define NIP6(addr) &bslash;&n;&t;ntohs((addr).s6_addr16[0]), &bslash;&n;&t;ntohs((addr).s6_addr16[1]), &bslash;&n;&t;ntohs((addr).s6_addr16[2]), &bslash;&n;&t;ntohs((addr).s6_addr16[3]), &bslash;&n;&t;ntohs((addr).s6_addr16[4]), &bslash;&n;&t;ntohs((addr).s6_addr16[5]), &bslash;&n;&t;ntohs((addr).s6_addr16[6]), &bslash;&n;&t;ntohs((addr).s6_addr16[7])
 DECL|struct|esphdr
 r_struct
 id|esphdr

@@ -2636,10 +2636,6 @@ multiline_comment|/* restart after signal. */
 r_if
 c_cond
 (paren
-(paren
-r_int
-r_int
-)paren
 id|data
 OG
 id|_NSIG
@@ -2750,7 +2746,7 @@ macro_line|#ifdef DEBUG_PTRACE
 id|printk
 c_func
 (paren
-l_string|&quot;CONT: %s [%d]: set exit_code = %x %x %x&bslash;n&quot;
+l_string|&quot;CONT: %s [%d]: set exit_code = %x %lx %lx&bslash;n&quot;
 comma
 id|child-&gt;comm
 comma

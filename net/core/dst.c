@@ -848,10 +848,6 @@ id|event
 op_ne
 id|NETDEV_DOWN
 op_logical_and
-id|dev-&gt;destructor
-op_eq
-l_int|NULL
-op_logical_and
 id|dst-&gt;output
 op_eq
 id|dst_blackhole

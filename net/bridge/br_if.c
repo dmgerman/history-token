@@ -1183,15 +1183,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|dev-&gt;priv_flags
 op_amp
 id|IFF_EBRIDGE
-)paren
-op_logical_and
-id|dev-&gt;owner
-op_eq
-id|THIS_MODULE
 )paren
 (brace
 id|pr_debug

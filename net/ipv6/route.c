@@ -301,6 +301,8 @@ id|ENETUNREACH
 comma
 dot
 id|metrics
+op_assign
+(brace
 (braket
 id|RTAX_HOPLIMIT
 op_minus
@@ -308,6 +310,8 @@ l_int|1
 )braket
 op_assign
 l_int|255
+comma
+)brace
 comma
 dot
 id|input
@@ -374,26 +378,21 @@ id|fib6_node
 id|ip6_routing_table
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-comma
+dot
+id|leaf
+op_assign
 op_amp
 id|ip6_null_entry
 comma
-l_int|0
-comma
+dot
+id|fn_flags
+op_assign
 id|RTN_ROOT
 op_or
 id|RTN_TL_ROOT
 op_or
 id|RTN_RTINFO
 comma
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* Protects all the ip6 fib */
@@ -554,8 +553,6 @@ r_struct
 id|rt6_info
 op_star
 id|rt6_dflt_pointer
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|rt6_dflt_lock
 r_static
@@ -2056,6 +2053,7 @@ r_int
 id|ip6_dst_gc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_static
@@ -3585,7 +3583,7 @@ id|RTF_GATEWAY
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;RFC 1970 specifies that redirects should only be&n;&t; *&t;accepted if they come from the nexthop to the target.&n;&t; *&t;Due to the way default routers are chosen, this notion&n;&t; *&t;is a bit fuzzy and one might need to check all default&n;&t; *&t;routers.&n;&t; */
+multiline_comment|/*&n;&t; *&t;RFC 2461 specifies that redirects should only be&n;&t; *&t;accepted if they come from the nexthop to the target.&n;&t; *&t;Due to the way default routers are chosen, this notion&n;&t; *&t;is a bit fuzzy and one might need to check all default&n;&t; *&t;routers.&n;&t; */
 r_if
 c_cond
 (paren

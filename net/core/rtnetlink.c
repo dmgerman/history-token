@@ -42,7 +42,6 @@ r_void
 id|rtnl_lock
 c_func
 (paren
-r_void
 )paren
 (brace
 id|rtnl_shlock
@@ -70,6 +69,11 @@ c_func
 )paren
 suffix:semicolon
 id|rtnl_shunlock
+c_func
+(paren
+)paren
+suffix:semicolon
+id|netdev_run_todo
 c_func
 (paren
 )paren
@@ -2427,6 +2431,11 @@ c_func
 (paren
 op_amp
 id|rtnl_sem
+)paren
+suffix:semicolon
+id|netdev_run_todo
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

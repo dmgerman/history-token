@@ -2545,6 +2545,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|comx_proto_lapb_init
+r_static
 r_int
 id|__init
 id|comx_proto_lapb_init
@@ -2609,7 +2610,6 @@ id|comx25_protocol.name
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|comx_proto_lapb_init
 id|module_init
 c_func
@@ -2617,7 +2617,6 @@ c_func
 id|comx_proto_lapb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|comx_proto_lapb_exit
 id|module_exit
 c_func

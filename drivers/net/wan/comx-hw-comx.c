@@ -7406,11 +7406,8 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|macro|comx_hw_comx_init
-mdefine_line|#define comx_hw_comx_init init_module
-macro_line|#endif
 DECL|function|comx_hw_comx_init
+r_static
 r_int
 id|__init
 id|comx_hw_comx_init
@@ -7440,27 +7437,15 @@ op_amp
 id|hicomx_hw
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|memory_used
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|memory_used
-)paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|comx_hw_comx_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|comx_hw_comx_exit
 c_func
 (paren
 r_void
@@ -7485,5 +7470,18 @@ l_string|&quot;hicomx&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|comx_hw_comx_init
+id|module_init
+c_func
+(paren
+id|comx_hw_comx_init
+)paren
+suffix:semicolon
+DECL|variable|comx_hw_comx_exit
+id|module_exit
+c_func
+(paren
+id|comx_hw_comx_exit
+)paren
+suffix:semicolon
 eof

@@ -1532,13 +1532,6 @@ c_func
 id|ip_nat_used_tuple
 )paren
 suffix:semicolon
-DECL|variable|skb_ip_make_writable
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|skb_ip_make_writable
-)paren
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

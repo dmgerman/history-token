@@ -22,7 +22,7 @@ DECL|macro|BN_ALIGN_MASK
 mdefine_line|#define BN_ALIGN_MASK&t;((1 &lt;&lt; (PAGE_CACHE_SHIFT - BBSHIFT)) - 1)
 macro_line|#ifndef GFP_READAHEAD
 DECL|macro|GFP_READAHEAD
-mdefine_line|#define GFP_READAHEAD&t;__GFP_NOWARN
+mdefine_line|#define GFP_READAHEAD&t;(__GFP_NOWARN|__GFP_NORETRY)
 macro_line|#endif
 multiline_comment|/*&n; * Debug code&n; */
 macro_line|#ifdef PAGEBUF_TRACE
@@ -53,7 +53,7 @@ id|pb_trace_func
 )paren
 suffix:semicolon
 DECL|macro|CIRC_INC
-mdefine_line|#define CIRC_INC(i)     (((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
+mdefine_line|#define CIRC_INC(i)&t;(((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
 r_void
 DECL|function|pb_trace_func
 id|pb_trace_func
@@ -427,8 +427,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|base
-op_ne
-l_int|0
 op_logical_and
 id|bit
 OL
@@ -466,7 +464,7 @@ r_return
 id|hval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Mapping of multi-page buffers into contingous virtual space&n; */
+multiline_comment|/*&n; * Mapping of multi-page buffers into contiguous virtual space&n; */
 id|STATIC
 r_void
 op_star
@@ -476,13 +474,6 @@ c_func
 id|page_buf_t
 op_star
 )paren
-suffix:semicolon
-DECL|variable|as_lock
-id|STATIC
-id|spinlock_t
-id|as_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|struct|a_list
 r_typedef
@@ -514,6 +505,13 @@ DECL|variable|as_list_len
 id|STATIC
 r_int
 id|as_list_len
+suffix:semicolon
+DECL|variable|as_lock
+id|STATIC
+id|spinlock_t
+id|as_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Try to batch vunmaps because they are costly.&n; */
 id|STATIC
@@ -7076,22 +7074,6 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_PROC_FS */
-id|STATIC
-r_void
-DECL|function|pagebuf_shaker
-id|pagebuf_shaker
-c_func
-(paren
-r_void
-)paren
-(brace
-id|pagebuf_daemon_wakeup
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Initialization and Termination&n; */
 r_int
 id|__init
@@ -7278,12 +7260,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_shake_register
-c_func
-(paren
-id|pagebuf_shaker
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7306,12 +7282,6 @@ id|kmem_cache_destroy
 c_func
 (paren
 id|pagebuf_cache
-)paren
-suffix:semicolon
-id|kmem_shake_deregister
-c_func
-(paren
-id|pagebuf_shaker
 )paren
 suffix:semicolon
 id|unregister_sysctl_table

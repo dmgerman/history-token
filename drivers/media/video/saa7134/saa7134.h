@@ -8,7 +8,7 @@ macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/id.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
-mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,2)
+mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,8)
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)
@@ -17,6 +17,8 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 macro_line|# define FALSE (1==0)
 macro_line|#endif
+DECL|macro|UNSET
+mdefine_line|#define UNSET (-1U)
 multiline_comment|/* 2.4 / 2.5 driver compatibility stuff */
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* enums                                                       */
@@ -105,57 +107,80 @@ id|id
 suffix:semicolon
 DECL|member|width
 r_int
+r_int
 id|width
 suffix:semicolon
 DECL|member|height
+r_int
 r_int
 id|height
 suffix:semicolon
 multiline_comment|/* video decoder */
 DECL|member|sync_control
 r_int
+r_int
 id|sync_control
 suffix:semicolon
 DECL|member|luma_control
+r_int
 r_int
 id|luma_control
 suffix:semicolon
 DECL|member|chroma_ctrl1
 r_int
+r_int
 id|chroma_ctrl1
 suffix:semicolon
 DECL|member|chroma_gain
+r_int
 r_int
 id|chroma_gain
 suffix:semicolon
 DECL|member|chroma_ctrl2
 r_int
+r_int
 id|chroma_ctrl2
+suffix:semicolon
+DECL|member|vgate_misc
+r_int
+r_int
+id|vgate_misc
 suffix:semicolon
 multiline_comment|/* video scaler */
 DECL|member|h_start
+r_int
 r_int
 id|h_start
 suffix:semicolon
 DECL|member|h_stop
 r_int
+r_int
 id|h_stop
 suffix:semicolon
 DECL|member|video_v_start
+r_int
 r_int
 id|video_v_start
 suffix:semicolon
 DECL|member|video_v_stop
 r_int
+r_int
 id|video_v_stop
 suffix:semicolon
 DECL|member|vbi_v_start
+r_int
 r_int
 id|vbi_v_start
 suffix:semicolon
 DECL|member|vbi_v_stop
 r_int
+r_int
 id|vbi_v_stop
+suffix:semicolon
+DECL|member|src_timing
+r_int
+r_int
+id|src_timing
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -169,7 +194,7 @@ op_star
 id|name
 suffix:semicolon
 DECL|member|std
-r_int
+id|v4l2_std_id
 id|std
 suffix:semicolon
 DECL|member|mode
@@ -198,27 +223,33 @@ id|name
 suffix:semicolon
 DECL|member|fourcc
 r_int
+r_int
 id|fourcc
 suffix:semicolon
 DECL|member|depth
+r_int
 r_int
 id|depth
 suffix:semicolon
 DECL|member|pm
 r_int
+r_int
 id|pm
 suffix:semicolon
 DECL|member|vshift
+r_int
 r_int
 id|vshift
 suffix:semicolon
 multiline_comment|/* vertical downsampling (for planar yuv) */
 DECL|member|hshift
 r_int
+r_int
 id|hshift
 suffix:semicolon
 multiline_comment|/* horizontal downsampling (for planar yuv) */
 DECL|member|bswap
+r_int
 r_int
 id|bswap
 suffix:colon
@@ -226,17 +257,20 @@ l_int|1
 suffix:semicolon
 DECL|member|wswap
 r_int
+r_int
 id|wswap
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|yuv
 r_int
+r_int
 id|yuv
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|planar
+r_int
 r_int
 id|planar
 suffix:colon
@@ -247,7 +281,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* card configuration                                          */
 DECL|macro|SAA7134_BOARD_NOAUTO
-mdefine_line|#define SAA7134_BOARD_NOAUTO           -1
+mdefine_line|#define SAA7134_BOARD_NOAUTO        UNSET
 DECL|macro|SAA7134_BOARD_UNKNOWN
 mdefine_line|#define SAA7134_BOARD_UNKNOWN           0
 DECL|macro|SAA7134_BOARD_PROTEUS_PRO
@@ -274,6 +308,12 @@ DECL|macro|SAA7134_BOARD_CINERGY600
 mdefine_line|#define SAA7134_BOARD_CINERGY600       11
 DECL|macro|SAA7134_BOARD_MD7134
 mdefine_line|#define SAA7134_BOARD_MD7134           12
+DECL|macro|SAA7134_BOARD_TYPHOON_90031
+mdefine_line|#define SAA7134_BOARD_TYPHOON_90031    13
+DECL|macro|SAA7134_BOARD_ELSA
+mdefine_line|#define SAA7134_BOARD_ELSA             14
+DECL|macro|SAA7134_BOARD_ELSA_500TV
+mdefine_line|#define SAA7134_BOARD_ELSA_500TV       15
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -287,6 +327,7 @@ id|name
 suffix:semicolon
 DECL|member|vmux
 r_int
+r_int
 id|vmux
 suffix:semicolon
 DECL|member|amux
@@ -296,9 +337,11 @@ id|amux
 suffix:semicolon
 DECL|member|gpio
 r_int
+r_int
 id|gpio
 suffix:semicolon
 DECL|member|tv
+r_int
 r_int
 id|tv
 suffix:colon
@@ -317,10 +360,12 @@ id|name
 suffix:semicolon
 DECL|member|audio_clock
 r_int
+r_int
 id|audio_clock
 suffix:semicolon
 multiline_comment|/* input switching */
 DECL|member|gpiomask
+r_int
 r_int
 id|gpiomask
 suffix:semicolon
@@ -345,9 +390,11 @@ suffix:semicolon
 multiline_comment|/* peripheral I/O */
 DECL|member|i2s_rate
 r_int
+r_int
 id|i2s_rate
 suffix:semicolon
 DECL|member|has_ts
+r_int
 r_int
 id|has_ts
 suffix:semicolon
@@ -359,9 +406,11 @@ suffix:semicolon
 multiline_comment|/* i2c chip info */
 DECL|member|tuner_type
 r_int
+r_int
 id|tuner_type
 suffix:semicolon
 DECL|member|need_tda9887
+r_int
 r_int
 id|need_tda9887
 suffix:colon
@@ -369,8 +418,6 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|card_has_audio
-mdefine_line|#define card_has_audio(dev)   (dev-&gt;pci-&gt;device == PCI_DEVICE_ID_PHILIPS_SAA7134)
 DECL|macro|card_has_radio
 mdefine_line|#define card_has_radio(dev)   (NULL != saa7134_boards[dev-&gt;board].radio.name)
 DECL|macro|card_has_ts
@@ -445,13 +492,16 @@ id|notify
 suffix:semicolon
 DECL|member|exit
 r_int
+r_int
 m_exit
 suffix:semicolon
 DECL|member|scan1
 r_int
+r_int
 id|scan1
 suffix:semicolon
 DECL|member|scan2
+r_int
 r_int
 id|scan2
 suffix:semicolon
@@ -476,6 +526,7 @@ op_star
 id|fmt
 suffix:semicolon
 DECL|member|top_seen
+r_int
 r_int
 id|top_seen
 suffix:semicolon
@@ -537,6 +588,11 @@ r_struct
 id|timer_list
 id|timeout
 suffix:semicolon
+DECL|member|need_two
+r_int
+r_int
+id|need_two
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* video filehandle status */
@@ -551,6 +607,7 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|radio
+r_int
 r_int
 id|radio
 suffix:semicolon
@@ -574,9 +631,11 @@ l_int|8
 suffix:semicolon
 DECL|member|nclips
 r_int
+r_int
 id|nclips
 suffix:semicolon
 DECL|member|resources
+r_int
 r_int
 id|resources
 suffix:semicolon
@@ -589,6 +648,7 @@ id|fmt
 suffix:semicolon
 DECL|member|width
 DECL|member|height
+r_int
 r_int
 id|width
 comma
@@ -623,6 +683,7 @@ r_struct
 id|saa7134_ts
 (brace
 DECL|member|users
+r_int
 r_int
 id|users
 suffix:semicolon
@@ -659,6 +720,7 @@ id|minor_dsp
 suffix:semicolon
 DECL|member|users_dsp
 r_int
+r_int
 id|users_dsp
 suffix:semicolon
 multiline_comment|/* mixer */
@@ -669,42 +731,52 @@ id|input
 suffix:semicolon
 DECL|member|count
 r_int
+r_int
 id|count
 suffix:semicolon
 DECL|member|line1
 r_int
+r_int
 id|line1
 suffix:semicolon
 DECL|member|line2
+r_int
 r_int
 id|line2
 suffix:semicolon
 multiline_comment|/* dsp */
 DECL|member|afmt
 r_int
+r_int
 id|afmt
 suffix:semicolon
 DECL|member|rate
+r_int
 r_int
 id|rate
 suffix:semicolon
 DECL|member|channels
 r_int
+r_int
 id|channels
 suffix:semicolon
 DECL|member|recording
+r_int
 r_int
 id|recording
 suffix:semicolon
 DECL|member|blocks
 r_int
+r_int
 id|blocks
 suffix:semicolon
 DECL|member|blksize
 r_int
+r_int
 id|blksize
 suffix:semicolon
 DECL|member|bufsize
+r_int
 r_int
 id|bufsize
 suffix:semicolon
@@ -724,13 +796,16 @@ id|wq
 suffix:semicolon
 DECL|member|dma_blk
 r_int
+r_int
 id|dma_blk
 suffix:semicolon
 DECL|member|read_offset
 r_int
+r_int
 id|read_offset
 suffix:semicolon
 DECL|member|read_count
+r_int
 r_int
 id|read_count
 suffix:semicolon
@@ -757,6 +832,7 @@ id|slock
 suffix:semicolon
 multiline_comment|/* various device info */
 DECL|member|resources
+r_int
 r_int
 id|resources
 suffix:semicolon
@@ -825,9 +901,11 @@ suffix:semicolon
 multiline_comment|/* config info */
 DECL|member|board
 r_int
+r_int
 id|board
 suffix:semicolon
 DECL|member|tuner_type
+r_int
 r_int
 id|tuner_type
 suffix:semicolon
@@ -864,6 +942,7 @@ id|ovfmt
 suffix:semicolon
 DECL|member|ovenable
 r_int
+r_int
 id|ovenable
 suffix:semicolon
 DECL|member|ovfield
@@ -889,6 +968,7 @@ id|vbi_q
 suffix:semicolon
 DECL|member|vbi_fieldcount
 r_int
+r_int
 id|vbi_fieldcount
 suffix:semicolon
 multiline_comment|/* various v4l controls */
@@ -906,6 +986,7 @@ op_star
 id|tvaudio
 suffix:semicolon
 DECL|member|ctl_input
+r_int
 r_int
 id|ctl_input
 suffix:semicolon
@@ -958,6 +1039,7 @@ suffix:semicolon
 multiline_comment|/* other global state info */
 DECL|member|automute
 r_int
+r_int
 id|automute
 suffix:semicolon
 DECL|member|thread
@@ -979,7 +1061,12 @@ id|hw_input
 suffix:semicolon
 DECL|member|hw_mute
 r_int
+r_int
 id|hw_mute
+suffix:semicolon
+DECL|member|last_carrier
+r_int
+id|last_carrier
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1004,6 +1091,8 @@ DECL|macro|saa_setb
 mdefine_line|#define saa_setb(reg,bit)          saa_andorb((reg),(bit),(bit))
 DECL|macro|saa_clearb
 mdefine_line|#define saa_clearb(reg,bit)        saa_andorb((reg),(bit),0)
+DECL|macro|saa_wait
+mdefine_line|#define saa_wait(d) { if (need_resched()) schedule(); else udelay(d);}
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-core.c                                              */
 r_extern
@@ -1012,6 +1101,7 @@ id|list_head
 id|saa7134_devlist
 suffix:semicolon
 r_extern
+r_int
 r_int
 id|saa7134_devcount
 suffix:semicolon
@@ -1079,8 +1169,10 @@ op_star
 id|list
 comma
 r_int
+r_int
 id|length
 comma
+r_int
 r_int
 id|startpage
 )paren
@@ -1105,8 +1197,10 @@ id|saa7134_buffer_count
 c_func
 (paren
 r_int
+r_int
 id|size
 comma
+r_int
 r_int
 id|count
 )paren
@@ -1166,6 +1260,7 @@ id|saa7134_dmaqueue
 op_star
 id|q
 comma
+r_int
 r_int
 id|state
 )paren
@@ -1231,6 +1326,7 @@ suffix:semicolon
 r_extern
 r_const
 r_int
+r_int
 id|saa7134_bcount
 suffix:semicolon
 r_extern
@@ -1240,6 +1336,17 @@ id|__devinitdata
 id|saa7134_pci_tbl
 (braket
 )braket
+suffix:semicolon
+r_extern
+r_int
+id|saa7134_board_init
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-i2c.c                                               */
@@ -1444,6 +1551,14 @@ id|status
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-tvaudio.c                                           */
+r_int
+id|saa7134_tvaudio_rx2mode
+c_func
+(paren
+id|u32
+id|rx
+)paren
+suffix:semicolon
 r_void
 id|saa7134_tvaudio_setmute
 c_func
@@ -1490,11 +1605,6 @@ r_struct
 id|saa7134_dev
 op_star
 id|dev
-comma
-r_struct
-id|saa7134_tvaudio
-op_star
-id|audio
 )paren
 suffix:semicolon
 r_int
@@ -1525,6 +1635,22 @@ r_struct
 id|saa7134_dev
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_int
+id|saa_dsp_writel
+c_func
+(paren
+r_struct
+id|saa7134_dev
+op_star
+id|dev
+comma
+r_int
+id|reg
+comma
+id|u32
+id|value
 )paren
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */

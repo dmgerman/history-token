@@ -1063,6 +1063,7 @@ id|i
 dot
 id|name
 )paren
+(brace
 id|rtnl_lock
 c_func
 (paren
@@ -1083,6 +1084,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Reset board */
 r_if

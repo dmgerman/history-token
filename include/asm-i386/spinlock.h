@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/rwlock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 r_extern
 r_int
 id|printk
@@ -90,20 +91,16 @@ id|lock
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|lock-&gt;magic
 op_ne
 id|SPINLOCK_MAGIC
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|spin_is_locked
@@ -111,10 +108,6 @@ c_func
 (paren
 id|lock
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -147,20 +140,16 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|lock-&gt;magic
 op_ne
 id|SPINLOCK_MAGIC
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|spin_is_locked
@@ -168,10 +157,6 @@ c_func
 (paren
 id|lock
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -250,9 +235,13 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|lock-&gt;magic
 op_ne
 id|SPINLOCK_MAGIC
+)paren
 )paren
 (brace
 id|printk
@@ -337,16 +326,12 @@ id|rw
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|rw-&gt;magic
 op_ne
 id|RWLOCK_MAGIC
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -372,16 +357,12 @@ id|rw
 )paren
 (brace
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|rw-&gt;magic
 op_ne
 id|RWLOCK_MAGIC
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif

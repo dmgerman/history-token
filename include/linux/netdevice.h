@@ -1229,13 +1229,6 @@ id|dst_entry
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* open/release and usage marking */
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
 multiline_comment|/* bridge stuff */
 DECL|member|br_port
 r_struct
@@ -1280,6 +1273,8 @@ id|kobj
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SET_MODULE_OWNER
+mdefine_line|#define SET_MODULE_OWNER(dev) do { } while (0)
 DECL|struct|packet_type
 r_struct
 id|packet_type
@@ -2259,15 +2254,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/* Called by rtnetlink.c:rtnl_unlock() */
 r_extern
-r_int
-id|netdev_finish_unregister
+r_void
+id|netdev_run_todo
 c_func
 (paren
-r_struct
-id|net_device
-op_star
-id|dev
+r_void
 )paren
 suffix:semicolon
 DECL|function|dev_put
@@ -2283,20 +2276,11 @@ op_star
 id|dev
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|atomic_dec_and_test
+id|atomic_dec
 c_func
 (paren
 op_amp
 id|dev-&gt;refcnt
-)paren
-)paren
-id|netdev_finish_unregister
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace

@@ -4757,12 +4757,8 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/* Module management */
-macro_line|#ifdef MODULE
-DECL|macro|comx_hw_mixcom_init
-mdefine_line|#define comx_hw_mixcom_init init_module
-macro_line|#endif
 DECL|function|comx_hw_mixcom_init
+r_static
 r_int
 id|__init
 id|comx_hw_mixcom_init
@@ -4780,10 +4776,11 @@ id|mixcomhw
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
+DECL|function|comx_hw_mixcom_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|comx_hw_mixcom_exit
 c_func
 (paren
 r_void
@@ -4796,5 +4793,18 @@ l_string|&quot;mixcom&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|comx_hw_mixcom_init
+id|module_init
+c_func
+(paren
+id|comx_hw_mixcom_init
+)paren
+suffix:semicolon
+DECL|variable|comx_hw_mixcom_exit
+id|module_exit
+c_func
+(paren
+id|comx_hw_mixcom_exit
+)paren
+suffix:semicolon
 eof

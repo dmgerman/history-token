@@ -2705,25 +2705,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|memset
-(paren
-id|new_client
-comma
-l_int|0x00
-comma
-r_sizeof
-(paren
-r_struct
-id|i2c_client
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
-id|it87_data
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* OK. For now, we presume we have a valid client. We now create the&n;&t;   client structure, even though we cannot fill it completely yet.&n;&t;   But it allows us to access it87_{read,write}_value. */
 r_if
 c_cond

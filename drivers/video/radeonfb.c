@@ -13026,7 +13026,8 @@ multiline_comment|/* map the regions */
 id|rinfo-&gt;mmio_base
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|ioremap
 (paren
@@ -13521,7 +13522,8 @@ suffix:semicolon
 id|rinfo-&gt;fb_base
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|ioremap
 (paren

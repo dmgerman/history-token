@@ -264,10 +264,6 @@ DECL|enumerator|PHASE_MESSAGESENT
 id|PHASE_MESSAGESENT
 comma
 multiline_comment|/* selected, and we&squot;re sending cmd&t;*/
-DECL|enumerator|PHASE_RECONNECTED
-id|PHASE_RECONNECTED
-comma
-multiline_comment|/* reconnected&t;&t;&t;&t;*/
 DECL|enumerator|PHASE_DATAOUT
 id|PHASE_DATAOUT
 comma
@@ -502,30 +498,6 @@ r_int
 id|irq
 suffix:semicolon
 multiline_comment|/* interrupt&t;&t;&t;&t;*/
-r_struct
-(brace
-DECL|member|target
-r_int
-r_char
-id|target
-suffix:semicolon
-multiline_comment|/* reconnected target&t;&t;&t;*/
-DECL|member|lun
-r_int
-r_char
-id|lun
-suffix:semicolon
-multiline_comment|/* reconnected lun&t;&t;&t;*/
-DECL|member|tag
-r_int
-r_char
-id|tag
-suffix:semicolon
-multiline_comment|/* reconnected tag&t;&t;&t;*/
-DECL|member|reconnected
-)brace
-id|reconnected
-suffix:semicolon
 DECL|member|SCp
 id|Scsi_Pointer
 id|SCp
@@ -999,16 +971,12 @@ id|buffer
 suffix:semicolon
 r_extern
 r_int
-id|fas216_print_device
+id|fas216_print_devices
 c_func
 (paren
 id|FAS216_Info
 op_star
 id|info
-comma
-id|Scsi_Device
-op_star
-id|scd
 comma
 r_char
 op_star

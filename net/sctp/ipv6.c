@@ -30,9 +30,6 @@ r_struct
 id|notifier_block
 id|sctp_inetaddr_notifier
 suffix:semicolon
-multiline_comment|/* FIXME: This macro needs to be moved to a common header file. */
-DECL|macro|NIP6
-mdefine_line|#define NIP6(addr) &bslash;&n;        ntohs((addr)-&gt;s6_addr16[0]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[1]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[2]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[3]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[4]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[5]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[6]), &bslash;&n;        ntohs((addr)-&gt;s6_addr16[7])
 multiline_comment|/* ICMP error handler. */
 DECL|function|sctp_v6_err
 r_void
@@ -472,12 +469,14 @@ comma
 id|NIP6
 c_func
 (paren
+op_star
 id|fl.fl6_src
 )paren
 comma
 id|NIP6
 c_func
 (paren
+op_star
 id|fl.fl6_dst
 )paren
 )paren
@@ -565,6 +564,7 @@ comma
 id|NIP6
 c_func
 (paren
+op_star
 id|fl.fl6_dst
 )paren
 )paren
@@ -588,6 +588,7 @@ comma
 id|NIP6
 c_func
 (paren
+op_star
 id|fl.fl6_src
 )paren
 )paren
@@ -633,14 +634,12 @@ comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|rt-&gt;rt6i_dst.addr
 )paren
 comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|rt-&gt;rt6i_src.addr
 )paren
 )paren
@@ -845,7 +844,6 @@ comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|daddr-&gt;v6.sin6_addr
 )paren
 )paren
@@ -878,7 +876,6 @@ comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|saddr-&gt;v6.sin6_addr
 )paren
 )paren
@@ -1019,7 +1016,6 @@ comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|saddr-&gt;v6.sin6_addr
 )paren
 )paren
@@ -1042,7 +1038,6 @@ comma
 id|NIP6
 c_func
 (paren
-op_amp
 id|daddr-&gt;v6.sin6_addr
 )paren
 )paren

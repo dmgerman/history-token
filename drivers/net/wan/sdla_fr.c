@@ -4014,6 +4014,12 @@ id|wandev-&gt;msize
 op_minus
 l_int|1
 suffix:semicolon
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

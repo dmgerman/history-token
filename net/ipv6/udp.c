@@ -3270,7 +3270,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* IPv6 draft-v2 section 8.1 says that we SHOULD log&n;&t;&t;   this error. Well, it is reasonable.&n;&t;&t; */
+multiline_comment|/* RFC 2460 section 8.1 says that we SHOULD log&n;&t;&t;   this error. Well, it is reasonable.&n;&t;&t; */
 r_if
 c_cond
 (paren

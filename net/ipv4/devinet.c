@@ -2405,11 +2405,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|dev_probe_lock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
@@ -3064,11 +3059,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dev_probe_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -3077,11 +3067,6 @@ suffix:semicolon
 id|rarok
 suffix:colon
 id|rtnl_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
-id|dev_probe_unlock
 c_func
 (paren
 )paren
@@ -5004,7 +4989,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|ipv4_doint_and_flush
-r_static
 r_int
 id|ipv4_doint_and_flush
 c_func
@@ -5080,7 +5064,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|ipv4_doint_and_flush_strategy
-r_static
 r_int
 id|ipv4_doint_and_flush_strategy
 c_func

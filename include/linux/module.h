@@ -1032,8 +1032,6 @@ macro_line|#endif /* KBUILD_MODNAME */
 macro_line|#endif /* MODULE */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
-DECL|macro|SET_MODULE_OWNER
-mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
 DECL|struct|obsolete_modparm
 r_struct

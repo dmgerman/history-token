@@ -435,6 +435,7 @@ id|ax25_digi
 comma
 r_sizeof
 (paren
+op_star
 id|ax25_digi
 )paren
 )paren
@@ -1790,6 +1791,7 @@ id|ax25_digi
 comma
 r_sizeof
 (paren
+op_star
 id|ax25_digi
 )paren
 )paren

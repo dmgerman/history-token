@@ -1767,11 +1767,6 @@ id|child_tid_ptr
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
 id|clone_flags
 op_and_assign
 op_complement
@@ -1804,8 +1799,7 @@ id|UREG_G3
 )braket
 suffix:semicolon
 )brace
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -1829,22 +1823,6 @@ op_star
 )paren
 id|child_tid_ptr
 )paren
-suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
 suffix:semicolon
 )brace
 multiline_comment|/* Copy a Sparc thread.  The fork() return value conventions&n; * under SunOS are nothing short of bletcherous:&n; * Parent --&gt;  %o0 == childs  pid, %o1 == 0&n; * Child  --&gt;  %o0 == parents pid, %o1 == 1&n; *&n; * NOTE: We have a separate fork kpsr/kwim because&n; *       the parent could change these values between&n; *       sys_fork invocation and when we reach here&n; *       if the parent should sleep while trying to&n; *       allocate the task_struct and kernel stack in&n; *       do_fork().&n; * XXX See comment above sys_vfork in sparc64. todo.&n; */

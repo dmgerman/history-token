@@ -89,17 +89,6 @@ id|udp_port_rover
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-r_extern
-r_int
-id|netdev_finish_unregister
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#ifdef CONFIG_IPX_MODULE
 r_extern
@@ -2774,13 +2763,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|dev_getbyhwaddr
-)paren
-suffix:semicolon
-DECL|variable|netdev_finish_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|netdev_finish_unregister
 )paren
 suffix:semicolon
 DECL|variable|netdev_set_master

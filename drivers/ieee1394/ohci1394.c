@@ -85,7 +85,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 921 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 931 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -10351,7 +10351,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;PhyReqFilter=%08x%08x&bslash;n&quot;
+l_string|&quot;PhyReqFilter=%08x%08x&quot;
 comma
 id|reg_read
 c_func
@@ -14407,6 +14407,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+op_star
 id|ohci-&gt;csr_config_rom_cpu
 )paren
 )paren

@@ -340,8 +340,8 @@ DECL|macro|I2C_HW_SMBUS_ALI1535
 mdefine_line|#define I2C_HW_SMBUS_ALI1535&t;0x07
 DECL|macro|I2C_HW_SMBUS_SIS630
 mdefine_line|#define I2C_HW_SMBUS_SIS630&t;0x08
-DECL|macro|I2C_HW_SMBUS_SIS645
-mdefine_line|#define I2C_HW_SMBUS_SIS645&t;0x09
+DECL|macro|I2C_HW_SMBUS_SIS96X
+mdefine_line|#define I2C_HW_SMBUS_SIS96X&t;0x09
 DECL|macro|I2C_HW_SMBUS_AMD8111
 mdefine_line|#define I2C_HW_SMBUS_AMD8111&t;0x0a
 DECL|macro|I2C_HW_SMBUS_SCX200

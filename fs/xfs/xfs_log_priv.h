@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef&t;__XFS_LOG_PRIV_H__
 DECL|macro|__XFS_LOG_PRIV_H__
 mdefine_line|#define __XFS_LOG_PRIV_H__
@@ -71,6 +71,8 @@ mdefine_line|#define XLOG_BTOLRBB(b)&t;&t;(((b)+XLOG_RECORD_BSIZE-1) &gt;&gt; XL
 macro_line|#endif
 DECL|macro|XLOG_HEADER_SIZE
 mdefine_line|#define XLOG_HEADER_SIZE&t;512
+DECL|macro|XLOG_REC_SHIFT
+mdefine_line|#define XLOG_REC_SHIFT(log) &bslash;&n;&t;BTOBB(1 &lt;&lt; (XFS_SB_VERSION_HASLOGV2(&amp;log-&gt;l_mp-&gt;m_sb) ? &bslash;&n;&t; XLOG_MAX_RECORD_BSHIFT : XLOG_BIG_RECORD_BSHIFT))
 DECL|macro|XLOG_TOTAL_REC_SHIFT
 mdefine_line|#define XLOG_TOTAL_REC_SHIFT(log) &bslash;&n;&t;BTOBB(XLOG_MAX_ICLOGS &lt;&lt; (XFS_SB_VERSION_HASLOGV2(&amp;log-&gt;l_mp-&gt;m_sb) ? &bslash;&n;&t; XLOG_MAX_RECORD_BSHIFT : XLOG_BIG_RECORD_BSHIFT))
 multiline_comment|/*&n; *  set lsns&n; */
@@ -156,11 +158,11 @@ mdefine_line|#define LOG_LOCK(log)&t;&t;mutex_spinlock(&amp;(log)-&gt;l_iclogloc
 DECL|macro|LOG_UNLOCK
 mdefine_line|#define LOG_UNLOCK(log, s)&t;mutex_spinunlock(&amp;(log)-&gt;l_icloglock, s)
 DECL|macro|xlog_panic
-mdefine_line|#define xlog_panic(s)&t;&t;{cmn_err(CE_PANIC, s); }
+mdefine_line|#define xlog_panic(args...)&t;cmn_err(CE_PANIC, ## args)
 DECL|macro|xlog_exit
-mdefine_line|#define xlog_exit(s)&t;&t;{cmn_err(CE_PANIC, s); }
+mdefine_line|#define xlog_exit(args...)&t;cmn_err(CE_PANIC, ## args)
 DECL|macro|xlog_warn
-mdefine_line|#define xlog_warn(s)&t;&t;{cmn_err(CE_WARN, s); }
+mdefine_line|#define xlog_warn(args...)&t;cmn_err(CE_WARN, ## args)
 multiline_comment|/*&n; * In core log state&n; */
 DECL|macro|XLOG_STATE_ACTIVE
 mdefine_line|#define XLOG_STATE_ACTIVE    0x0001 /* Current IC log being written to */
@@ -551,12 +553,10 @@ DECL|typedef|xlog_iclog_fields_t
 )brace
 id|xlog_iclog_fields_t
 suffix:semicolon
-DECL|struct|xlog_in_core2
+DECL|union|xlog_in_core2
 r_typedef
-r_struct
-id|xlog_in_core2
-(brace
 r_union
+id|xlog_in_core2
 (brace
 DECL|member|hic_header
 id|xlog_rec_header_t
@@ -572,10 +572,6 @@ id|hic_sector
 (braket
 id|XLOG_HEADER_SIZE
 )braket
-suffix:semicolon
-DECL|member|ic_h
-)brace
-id|ic_h
 suffix:semicolon
 DECL|typedef|xlog_in_core_2_t
 )brace
@@ -633,7 +629,7 @@ mdefine_line|#define&t;ic_state&t;hic_fields.ic_state
 DECL|macro|ic_datap
 mdefine_line|#define ic_datap&t;hic_fields.ic_datap
 DECL|macro|ic_header
-mdefine_line|#define ic_header&t;hic_data-&gt;ic_h.hic_header
+mdefine_line|#define ic_header&t;hic_data-&gt;hic_header
 multiline_comment|/*&n; * The reservation head lsn is not made up of a cycle number and block number.&n; * Instead, it uses a cycle number and byte number.  Logs don&squot;t expect to&n; * overflow 31 bits worth of byte offset, so using a byte number will mean&n; * that round off problems won&squot;t occur when releasing partial reservations.&n; */
 DECL|struct|log
 r_typedef
@@ -857,6 +853,11 @@ op_star
 op_star
 id|l_buf_cancel_table
 suffix:semicolon
+DECL|member|l_stripemask
+r_int
+id|l_stripemask
+suffix:semicolon
+multiline_comment|/* log stripe mask */
 DECL|member|l_iclog_hsize
 r_int
 id|l_iclog_hsize
@@ -867,6 +868,16 @@ r_int
 id|l_iclog_heads
 suffix:semicolon
 multiline_comment|/* number of iclog header sectors */
+DECL|member|l_sectbb_log
+id|uint
+id|l_sectbb_log
+suffix:semicolon
+multiline_comment|/* log2 of sector size in bbs */
+DECL|member|l_sectbb_mask
+id|uint
+id|l_sectbb_mask
+suffix:semicolon
+multiline_comment|/* sector size in bbs alignment mask */
 DECL|typedef|xlog_t
 )brace
 id|xlog_t
@@ -973,16 +984,26 @@ id|iclog
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|xlog_recover_process_iunlinks
+c_func
+(paren
+id|xlog_t
+op_star
+id|log
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|xfs_buf
 op_star
 id|xlog_get_bp
 c_func
 (paren
-r_int
-comma
-id|xfs_mount_t
+id|xlog_t
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1004,25 +1025,29 @@ id|xlog_t
 op_star
 comma
 id|xfs_daddr_t
-id|blkno
 comma
 r_int
-id|bblks
 comma
 r_struct
 id|xfs_buf
 op_star
-id|bp
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|xlog_recover_process_iunlinks
+id|xfs_caddr_t
+id|xlog_align
 c_func
 (paren
 id|xlog_t
 op_star
-id|log
+comma
+id|xfs_daddr_t
+comma
+r_int
+comma
+r_struct
+id|xfs_buf
+op_star
 )paren
 suffix:semicolon
 DECL|macro|XLOG_TRACE_GRAB_FLUSH

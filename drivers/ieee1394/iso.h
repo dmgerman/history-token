@@ -123,13 +123,6 @@ r_int
 r_int
 id|buf_size
 suffix:semicolon
-multiline_comment|/* ringbuffer of packet descriptors in regular kernel memory */
-DECL|member|infos
-r_struct
-id|hpsb_iso_packet_info
-op_star
-id|infos
-suffix:semicolon
 multiline_comment|/* # of packets in the ringbuffer */
 DECL|member|buf_packets
 r_int
@@ -185,6 +178,13 @@ multiline_comment|/* cycle at which next packet will be transmitted,&n;&t;   -1 
 DECL|member|xmit_cycle
 r_int
 id|xmit_cycle
+suffix:semicolon
+multiline_comment|/* ringbuffer of packet descriptors in regular kernel memory&n;&t; * XXX Keep this last, since we use over-allocated memory from&n;&t; * this entry to fill this field. */
+DECL|member|infos
+r_struct
+id|hpsb_iso_packet_info
+op_star
+id|infos
 suffix:semicolon
 )brace
 suffix:semicolon

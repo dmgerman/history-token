@@ -466,9 +466,11 @@ id|dev-&gt;destructor
 op_assign
 id|br_dev_destruct
 suffix:semicolon
-id|dev-&gt;owner
-op_assign
-id|THIS_MODULE
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;stop
 op_assign

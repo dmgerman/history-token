@@ -1643,20 +1643,6 @@ comma
 id|TIF_SIGPENDING
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the task is running on a different CPU&n;&t; * force a reschedule on the other CPU to make&n;&t; * it notice the new signal quickly.&n;&t; *&n;&t; * The code below is a tad loose and might occasionally&n;&t; * kick the wrong CPU if we catch the process in the&n;&t; * process of changing - but no harm is done by that&n;&t; * other than doing an extra (lightweight) IPI interrupt.&n;&t; */
-r_if
-c_cond
-(paren
-id|t-&gt;state
-op_eq
-id|TASK_RUNNING
-)paren
-id|kick_if_running
-c_func
-(paren
-id|t
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * If resume is set, we want to wake it up in the TASK_STOPPED case.&n;&t; * We don&squot;t check for TASK_STOPPED because there is a race with it&n;&t; * executing another processor and just now entering stopped state.&n;&t; * By calling wake_up_process any time resume is set, we ensure&n;&t; * the process will wake up and handle its stop or death signal.&n;&t; */
 id|mask
 op_assign
@@ -1679,7 +1665,7 @@ op_amp
 id|mask
 )paren
 (brace
-id|wake_up_process
+id|wake_up_process_kick
 c_func
 (paren
 id|t

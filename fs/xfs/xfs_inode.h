@@ -481,6 +481,12 @@ op_star
 id|i_mount
 suffix:semicolon
 multiline_comment|/* fs mount struct ptr */
+DECL|member|i_reclaim
+r_struct
+id|list_head
+id|i_reclaim
+suffix:semicolon
+multiline_comment|/* reclaim list */
 DECL|member|i_bhv_desc
 r_struct
 id|bhv_desc
@@ -1196,6 +1202,8 @@ c_func
 r_struct
 id|xfs_mount
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * xfs_inode.c prototypes.&n; */

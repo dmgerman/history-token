@@ -1,64 +1,25 @@
-multiline_comment|/*****************************************************************************&n;* wanproc.c&t;WAN Router Module. /proc filesystem interface.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;access to the router using Linux /proc filesystem.&n;*&n;* Author: &t;Gideon Hack&t;&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.2.X kernels.&n;* Jun 29, 1997&t;Alan Cox&t;Merged with 1.0.3 vendor code&n;* Jan 29, 1997&t;Gene Kozin&t;v1.0.1. Implemented /proc read routines&n;* Jan 30, 1997&t;Alan Cox&t;Hacked around for 2.1&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;*****************************************************************************/
-macro_line|#include &lt;linux/version.h&gt;
+multiline_comment|/*****************************************************************************&n;* wanproc.c&t;WAN Router Module. /proc filesystem interface.&n;*&n;*&t;&t;This module is completely hardware-independent and provides&n;*&t;&t;access to the router using Linux /proc filesystem.&n;*&n;* Author: &t;Gideon Hack&n;*&n;* Copyright:&t;(c) 1995-1999 Sangoma Technologies Inc.&n;*&n;*&t;&t;This program is free software; you can redistribute it and/or&n;*&t;&t;modify it under the terms of the GNU General Public License&n;*&t;&t;as published by the Free Software Foundation; either version&n;*&t;&t;2 of the License, or (at your option) any later version.&n;* ============================================================================&n;* Jun 02, 1999  Gideon Hack&t;Updates for Linux 2.2.X kernels.&n;* Jun 29, 1997&t;Alan Cox&t;Merged with 1.0.3 vendor code&n;* Jan 29, 1997&t;Gene Kozin&t;v1.0.1. Implemented /proc read routines&n;* Jan 30, 1997&t;Alan Cox&t;Hacked around for 2.1&n;* Dec 13, 1996&t;Gene Kozin&t;Initial version (based on Sangoma&squot;s WANPIPE)&n;*****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __initfunc et al. */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
-macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
-macro_line|#include &lt;linux/string.h&gt;&t;/* inline mem*, str* functions */
-macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router API definitions */
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/init.h&gt;&t;/* __initfunc et al. */
-macro_line|#include &lt;asm/uaccess.h&gt;       /* copy_to_user */
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|PROC_STATS_FORMAT
 mdefine_line|#define PROC_STATS_FORMAT &quot;%30s: %12lu&bslash;n&quot;
 multiline_comment|/****** Defines and Macros **************************************************/
 DECL|macro|PROT_DECODE
 mdefine_line|#define PROT_DECODE(prot) ((prot == WANCONFIG_FR) ? &quot; FR&quot; :&bslash;&n;&t;&t;&t;      (prot == WANCONFIG_X25) ? &quot; X25&quot; : &bslash;&n;&t;&t;&t;         (prot == WANCONFIG_PPP) ? &quot; PPP&quot; : &bslash;&n;&t;&t;&t;&t;    (prot == WANCONFIG_CHDLC) ? &quot; CHDLC&quot;: &bslash;&n;&t;&t;&t;&t;       (prot == WANCONFIG_MPPP) ? &quot; MPPP&quot; : &bslash;&n;&t;&t;&t;&t;           &quot; Unknown&quot; )
-multiline_comment|/****** Data Types **********************************************************/
-DECL|struct|wan_stat_entry
-r_typedef
-r_struct
-id|wan_stat_entry
-(brace
-DECL|member|next
-r_struct
-id|wan_stat_entry
-op_star
-id|next
-suffix:semicolon
-DECL|member|description
-r_char
-op_star
-id|description
-suffix:semicolon
-multiline_comment|/* description string */
-DECL|member|data
-r_void
-op_star
-id|data
-suffix:semicolon
-multiline_comment|/* -&gt; data */
-DECL|member|data_type
-r_int
-id|data_type
-suffix:semicolon
-multiline_comment|/* data type */
-DECL|typedef|wan_stat_entry_t
-)brace
-id|wan_stat_entry_t
-suffix:semicolon
 multiline_comment|/****** Function Prototypes *************************************************/
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Miscellaneous */
 multiline_comment|/*&n; *&t;Structures for interfacing with the /proc filesystem.&n; *&t;Router creates its own directory /proc/net/router with the folowing&n; *&t;entries:&n; *&t;config&t;&t;device configuration&n; *&t;status&t;&t;global device statistics&n; *&t;&lt;device&gt;&t;entry for each WAN device&n; */
-multiline_comment|/*&n; *&t;Generic /proc/net/router/&lt;file&gt; file and inode operations &n; */
-multiline_comment|/*&n; *&t;/proc/net/router &n; */
+multiline_comment|/*&n; *&t;Generic /proc/net/router/&lt;file&gt; file and inode operations&n; */
+multiline_comment|/*&n; *&t;/proc/net/router&n; */
 DECL|variable|proc_router
 r_static
 r_struct
@@ -252,13 +213,6 @@ c_func
 id|m
 comma
 l_string|&quot;Device name    | port |IRQ|DMA|  mem.addr  |&quot;
-)paren
-suffix:semicolon
-id|seq_puts
-c_func
-(paren
-id|m
-comma
 l_string|&quot;mem.size|option1|option2|option3|option4&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -360,13 +314,6 @@ c_func
 id|m
 comma
 l_string|&quot;Device name    |protocol|station|interface|&quot;
-)paren
-suffix:semicolon
-id|seq_puts
-c_func
-(paren
-id|m
-comma
 l_string|&quot;clocking|baud rate| MTU |ndev|link state&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -388,7 +335,7 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;%-15s|%-8s|%-7s|%-9s|%-8s|%9u|%5u|%3u |&quot;
+l_string|&quot;%-15s|%-8s| %-7s| %-9s|%-8s|%9u|%5u|%3u |&quot;
 comma
 id|p-&gt;name
 comma
@@ -407,9 +354,9 @@ c_cond
 id|p-&gt;station
 ques
 c_cond
-l_string|&quot; Node&quot;
+l_string|&quot;Node&quot;
 suffix:colon
-l_string|&quot; CPE&quot;
+l_string|&quot;CPE&quot;
 )paren
 suffix:colon
 (paren
@@ -422,22 +369,22 @@ c_cond
 id|p-&gt;station
 ques
 c_cond
-l_string|&quot; DCE&quot;
+l_string|&quot;DCE&quot;
 suffix:colon
-l_string|&quot; DTE&quot;
+l_string|&quot;DTE&quot;
 )paren
 suffix:colon
 (paren
-l_string|&quot; N/A&quot;
+l_string|&quot;N/A&quot;
 )paren
 )paren
 comma
 id|p-&gt;interface
 ques
 c_cond
-l_string|&quot; V.35&quot;
+l_string|&quot;V.35&quot;
 suffix:colon
-l_string|&quot; RS-232&quot;
+l_string|&quot;RS-232&quot;
 comma
 id|p-&gt;clocking
 ques
@@ -564,6 +511,7 @@ dot
 id|show
 op_assign
 id|config_show
+comma
 )brace
 suffix:semicolon
 DECL|variable|status_op
@@ -592,6 +540,7 @@ dot
 id|show
 op_assign
 id|status_show
+comma
 )brace
 suffix:semicolon
 DECL|function|config_open
@@ -797,7 +746,7 @@ op_minus
 id|EAGAIN
 )paren
 (brace
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|m
@@ -815,7 +764,7 @@ c_cond
 id|err
 )paren
 (brace
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|m
@@ -1115,6 +1064,7 @@ DECL|function|wanrouter_proc_init
 r_int
 id|__init
 id|wanrouter_proc_init
+c_func
 (paren
 r_void
 )paren
@@ -1229,6 +1179,7 @@ multiline_comment|/*&n; *&t;Clean up router proc interface.&n; */
 DECL|function|wanrouter_proc_cleanup
 r_void
 id|wanrouter_proc_cleanup
+c_func
 (paren
 r_void
 )paren

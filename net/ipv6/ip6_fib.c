@@ -143,8 +143,6 @@ DECL|variable|rt_sernum
 r_static
 id|__u32
 id|rt_sernum
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ip6_fib_timer
 r_static
@@ -169,9 +167,15 @@ id|fib6_walker_t
 id|fib6_walker_list
 op_assign
 (brace
+dot
+id|prev
+op_assign
 op_amp
 id|fib6_walker_list
 comma
+dot
+id|next
+op_assign
 op_amp
 id|fib6_walker_list
 comma
