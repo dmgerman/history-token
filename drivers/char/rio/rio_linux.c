@@ -1184,6 +1184,7 @@ op_ne
 id|RC_RUNNING
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 r_if
 c_cond

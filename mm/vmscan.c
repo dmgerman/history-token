@@ -792,6 +792,9 @@ suffix:semicolon
 r_int
 id|may_enter_fs
 suffix:semicolon
+r_int
+id|referenced
+suffix:semicolon
 id|page
 op_assign
 id|list_entry
@@ -896,14 +899,18 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|referenced
+op_assign
 id|page_referenced
 c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|referenced
 op_logical_and
 id|page_mapping_inuse
 c_func
@@ -1051,6 +1058,14 @@ id|page
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|referenced
+)paren
+r_goto
+id|keep_locked
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3887,7 +3902,7 @@ id|zone-&gt;zone_pgdat-&gt;kswapd_wait
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n; * Try to free `nr_pages&squot; of memory, system-wide.  Returns the number of freed&n; * pages.&n; */
 DECL|function|shrink_all_memory
 r_int

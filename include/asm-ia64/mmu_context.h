@@ -475,22 +475,12 @@ comma
 id|rr4
 )paren
 suffix:semicolon
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ia64_srlz_i
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_static
 r_inline

@@ -674,6 +674,8 @@ c_func
 id|ax25_rt
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Uh...  Route is still in use; we can&squot;t yet destroy it.  Retry later.&n;&t; */
 id|init_timer
@@ -1940,10 +1942,24 @@ id|ax25-&gt;sk
 op_ne
 l_int|NULL
 )paren
+(brace
+id|bh_lock_sock
+c_func
+(paren
+id|ax25-&gt;sk
+)paren
+suffix:semicolon
 id|ax25-&gt;sk-&gt;sk_zapped
 op_assign
 l_int|0
 suffix:semicolon
+id|bh_unlock_sock
+c_func
+(paren
+id|ax25-&gt;sk
+)paren
+suffix:semicolon
+)brace
 id|put
 suffix:colon
 id|ax25_put_route

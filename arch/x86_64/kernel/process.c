@@ -709,7 +709,7 @@ c_func
 )paren
 )paren
 op_member_access_from_pointer
-id|io_map_base
+id|io_bitmap_base
 op_assign
 id|INVALID_IO_BITMAP_OFFSET
 suffix:semicolon
@@ -1189,13 +1189,7 @@ op_assign
 id|kmalloc
 c_func
 (paren
-(paren
-id|IO_BITMAP_SIZE
-op_plus
-l_int|1
-)paren
-op_star
-l_int|4
+id|IO_BITMAP_BYTES
 comma
 id|GFP_KERNEL
 )paren
@@ -1217,13 +1211,7 @@ id|p-&gt;thread.io_bitmap_ptr
 comma
 id|me-&gt;thread.io_bitmap_ptr
 comma
-(paren
-id|IO_BITMAP_SIZE
-op_plus
-l_int|1
-)paren
-op_star
-l_int|4
+id|IO_BITMAP_BYTES
 )paren
 suffix:semicolon
 )brace
@@ -1696,15 +1684,10 @@ id|tss-&gt;io_bitmap
 comma
 id|next-&gt;io_bitmap_ptr
 comma
-id|IO_BITMAP_SIZE
-op_star
-r_sizeof
-(paren
-id|u32
-)paren
+id|IO_BITMAP_BYTES
 )paren
 suffix:semicolon
-id|tss-&gt;io_map_base
+id|tss-&gt;io_bitmap_base
 op_assign
 id|IO_BITMAP_OFFSET
 suffix:semicolon
@@ -1712,7 +1695,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t;&t; * a bitmap offset pointing outside of the TSS limit&n;&t;&t;&t; * causes a nicely controllable SIGSEGV if a process&n;&t;&t;&t; * tries to use a port IO instruction. The first&n;&t;&t;&t; * sys_ioperm() call sets up the bitmap properly.&n;&t;&t;&t; */
-id|tss-&gt;io_map_base
+id|tss-&gt;io_bitmap_base
 op_assign
 id|INVALID_IO_BITMAP_OFFSET
 suffix:semicolon

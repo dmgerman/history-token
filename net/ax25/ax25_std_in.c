@@ -187,6 +187,12 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|bh_lock_sock
+c_func
+(paren
+id|ax25-&gt;sk
+)paren
+suffix:semicolon
 id|ax25-&gt;sk-&gt;sk_state
 op_assign
 id|TCP_ESTABLISHED
@@ -207,6 +213,12 @@ id|SOCK_DEAD
 id|ax25-&gt;sk
 op_member_access_from_pointer
 id|sk_state_change
+c_func
+(paren
+id|ax25-&gt;sk
+)paren
+suffix:semicolon
+id|bh_unlock_sock
 c_func
 (paren
 id|ax25-&gt;sk

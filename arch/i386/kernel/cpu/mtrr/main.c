@@ -1877,7 +1877,7 @@ c_func
 (paren
 id|size
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2038,12 +2038,12 @@ id|mtrr_sysdev_driver
 op_assign
 (brace
 dot
-id|save
+id|suspend
 op_assign
 id|mtrr_save
 comma
 dot
-id|restore
+id|resume
 op_assign
 id|mtrr_restore
 comma

@@ -1165,9 +1165,10 @@ id|cpuphyid
 op_assign
 (paren
 (paren
-id|ia64_get_lid
+id|ia64_getreg
 c_func
 (paren
+id|_IA64_REG_CR_LID
 )paren
 op_rshift
 l_int|16

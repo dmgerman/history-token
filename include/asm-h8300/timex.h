@@ -2,10 +2,11 @@ multiline_comment|/*&n; * linux/include/asm-h8300/timex.h&n; *&n; * H8/300 archi
 macro_line|#ifndef _ASM_H8300_TIMEX_H
 DECL|macro|_ASM_H8300_TIMEX_H
 mdefine_line|#define _ASM_H8300_TIMEX_H
-multiline_comment|/* Such a description is OK ? */
-DECL|macro|TIMEX_DEPEND_HEADER
-mdefine_line|#define TIMEX_DEPEND_HEADER(target) &lt;asm/target/timer_rate.h&gt; 
-macro_line|#include TIMEX_DEPEND_HEADER(TARGET)
+DECL|macro|H8300_TIMER_DEFINE
+mdefine_line|#define H8300_TIMER_DEFINE
+macro_line|#include &lt;asm/machine-depend.h&gt;
+DECL|macro|H8300_TIMER_DEFINE
+macro_line|#undef  H8300_TIMER_DEFINE
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE H8300_TIMER_FREQ
 DECL|macro|CLOCK_TICK_FACTOR

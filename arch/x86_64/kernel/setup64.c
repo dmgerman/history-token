@@ -1231,9 +1231,18 @@ op_add_assign
 id|EXCEPTION_STKSZ
 suffix:semicolon
 )brace
-id|t-&gt;io_map_base
+id|t-&gt;io_bitmap_base
 op_assign
 id|INVALID_IO_BITMAP_OFFSET
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is required because the CPU will access up to&n;&t; * 8 bits beyond the end of the IO permission bitmap.&n;&t; */
+id|t-&gt;io_bitmap
+(braket
+id|IO_BITMAP_LONGS
+)braket
+op_assign
+op_complement
+l_int|0UL
 suffix:semicolon
 id|atomic_inc
 c_func

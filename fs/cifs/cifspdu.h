@@ -82,6 +82,10 @@ DECL|macro|NT_TRANSACT_RENAME
 mdefine_line|#define NT_TRANSACT_RENAME            0x05
 DECL|macro|NT_TRANSACT_QUERY_SECURITY_DESC
 mdefine_line|#define NT_TRANSACT_QUERY_SECURITY_DESC 0x06
+DECL|macro|NT_TRANSACT_GET_USER_QUOTA
+mdefine_line|#define NT_TRANSACT_GET_USER_QUOTA    0x07
+DECL|macro|NT_TRANSACT_SET_USER_QUOTA
+mdefine_line|#define NT_TRANSACT_SET_USER_QUOTA    0x08
 DECL|macro|MAX_CIFS_HDR_SIZE
 mdefine_line|#define MAX_CIFS_HDR_SIZE 256&t;/* chained NTCreateXReadX will probably be biggest */
 multiline_comment|/* internal cifs vfs structures */
@@ -2328,6 +2332,157 @@ DECL|typedef|TRANSACT_IOCTL_RSP
 )brace
 id|TRANSACT_IOCTL_RSP
 suffix:semicolon
+DECL|struct|smb_com_transaction_change_notify_req
+r_typedef
+r_struct
+id|smb_com_transaction_change_notify_req
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 23 */
+DECL|member|MaxSetupCount
+id|__u8
+id|MaxSetupCount
+suffix:semicolon
+DECL|member|Reserved
+id|__u16
+id|Reserved
+suffix:semicolon
+DECL|member|TotalParameterCount
+id|__u32
+id|TotalParameterCount
+suffix:semicolon
+DECL|member|TotalDataCount
+id|__u32
+id|TotalDataCount
+suffix:semicolon
+DECL|member|MaxParameterCount
+id|__u32
+id|MaxParameterCount
+suffix:semicolon
+DECL|member|MaxDataCount
+id|__u32
+id|MaxDataCount
+suffix:semicolon
+DECL|member|ParameterCount
+id|__u32
+id|ParameterCount
+suffix:semicolon
+DECL|member|ParameterOffset
+id|__u32
+id|ParameterOffset
+suffix:semicolon
+DECL|member|DataCount
+id|__u32
+id|DataCount
+suffix:semicolon
+DECL|member|DataOffset
+id|__u32
+id|DataOffset
+suffix:semicolon
+DECL|member|SetupCount
+id|__u8
+id|SetupCount
+suffix:semicolon
+multiline_comment|/* four setup words follow subcommand */
+multiline_comment|/* SNIA spec incorrectly included spurious pad here */
+DECL|member|SubCommand
+id|__u16
+id|SubCommand
+suffix:semicolon
+multiline_comment|/* 4 = Change Notify */
+DECL|member|CompletionFilter
+id|__u32
+id|CompletionFilter
+suffix:semicolon
+multiline_comment|/* operation to monitor */
+DECL|member|Fid
+id|__u16
+id|Fid
+suffix:semicolon
+DECL|member|WatchTree
+id|__u8
+id|WatchTree
+suffix:semicolon
+multiline_comment|/* 1 = Monitor subdirectories */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+DECL|member|Pad
+id|__u8
+id|Pad
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|Data
+id|__u8
+id|Data
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|typedef|TRANSACT_CHANGE_NOTIFY_REQ
+)brace
+id|TRANSACT_CHANGE_NOTIFY_REQ
+suffix:semicolon
+multiline_comment|/* Completion Filter flags */
+DECL|macro|FILE_NOTIFY_CHANGE_FILE_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_FILE_NAME    0x00000001
+DECL|macro|FILE_NOTIFY_CHANGE_DIR_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_DIR_NAME     0x00000002
+DECL|macro|FILE_NOTIFY_CHANGE_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_NAME         0x00000003
+DECL|macro|FILE_NOTIFY_CHANGE_ATTRIBUTES
+mdefine_line|#define FILE_NOTIFY_CHANGE_ATTRIBUTES   0x00000004
+DECL|macro|FILE_NOTIFY_CHANGE_SIZE
+mdefine_line|#define FILE_NOTIFY_CHANGE_SIZE         0x00000008
+DECL|macro|FILE_NOTIFY_CHANGE_LAST_WRITE
+mdefine_line|#define FILE_NOTIFY_CHANGE_LAST_WRITE   0x00000010
+DECL|macro|FILE_NOTIFY_CHANGE_LAST_ACCESS
+mdefine_line|#define FILE_NOTIFY_CHANGE_LAST_ACCESS  0x00000020
+DECL|macro|FILE_NOTIFY_CHANGE_CREATION
+mdefine_line|#define FILE_NOTIFY_CHANGE_CREATION     0x00000040
+DECL|macro|FILE_NOTIFY_CHANGE_EA
+mdefine_line|#define FILE_NOTIFY_CHANGE_EA           0x00000080
+DECL|macro|FILE_NOTIFY_CHANGE_SECURITY
+mdefine_line|#define FILE_NOTIFY_CHANGE_SECURITY     0x00000100
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_NAME  0x00000200
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_SIZE
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_SIZE  0x00000400
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_WRITE
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_WRITE 0x00000800
+multiline_comment|/* response contains array of the following structures */
+DECL|struct|file_notify_information
+r_struct
+id|file_notify_information
+(brace
+DECL|member|NextEntryOffset
+id|__u32
+id|NextEntryOffset
+suffix:semicolon
+DECL|member|Action
+id|__u32
+id|Action
+suffix:semicolon
+DECL|member|FileNameLength
+id|__u32
+id|FileNameLength
+suffix:semicolon
+DECL|member|FileName
+id|__u8
+id|FileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|reparse_data
 r_struct
 id|reparse_data
@@ -2369,6 +2524,53 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|cifs_quota_data
+r_struct
+id|cifs_quota_data
+(brace
+DECL|member|rsrvd1
+id|__u32
+id|rsrvd1
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|sid_size
+id|__u32
+id|sid_size
+suffix:semicolon
+DECL|member|rsrvd2
+id|__u64
+id|rsrvd2
+suffix:semicolon
+multiline_comment|/* 0 */
+DECL|member|space_used
+id|__u64
+id|space_used
+suffix:semicolon
+DECL|member|soft_limit
+id|__u64
+id|soft_limit
+suffix:semicolon
+DECL|member|hard_limit
+id|__u64
+id|hard_limit
+suffix:semicolon
+DECL|member|sid
+r_char
+id|sid
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* variable size? */
+)brace
+suffix:semicolon
+multiline_comment|/* quota sub commands */
+DECL|macro|QUOTA_LIST_CONTINUE
+mdefine_line|#define QUOTA_LIST_CONTINUE&t;    0
+DECL|macro|QUOTA_LIST_START
+mdefine_line|#define QUOTA_LIST_START&t;0x100
+DECL|macro|QUOTA_FOR_SID
+mdefine_line|#define QUOTA_FOR_SID&t;&t;0x101
 DECL|union|smb_com_transaction2
 r_typedef
 r_union
@@ -2529,39 +2731,39 @@ id|TRANSACTION2
 suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
-mdefine_line|#define SMB_INFO_STANDARD                1
+mdefine_line|#define SMB_INFO_STANDARD                   1
 DECL|macro|SMB_INFO_IS_NAME_VALID
-mdefine_line|#define SMB_INFO_IS_NAME_VALID           6
+mdefine_line|#define SMB_INFO_IS_NAME_VALID              6
 DECL|macro|SMB_QUERY_FILE_BASIC_INFO
-mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO    0x101
+mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO       0x101
 DECL|macro|SMB_QUERY_FILE_STANDARD_INFO
-mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO 0x102
+mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO    0x102
 DECL|macro|SMB_QUERY_FILE_NAME_INFO
-mdefine_line|#define SMB_QUERY_FILE_NAME_INFO     0x104
+mdefine_line|#define SMB_QUERY_FILE_NAME_INFO        0x104
 DECL|macro|SMB_QUERY_FILE_ALLOCATION_INFO
-mdefine_line|#define SMB_QUERY_FILE_ALLOCATION_INFO&t;0x105
+mdefine_line|#define SMB_QUERY_FILE_ALLOCATION_INFO  0x105
 DECL|macro|SMB_QUERY_FILE_END_OF_FILEINFO
-mdefine_line|#define SMB_QUERY_FILE_END_OF_FILEINFO&t;0x106
+mdefine_line|#define SMB_QUERY_FILE_END_OF_FILEINFO  0x106
 DECL|macro|SMB_QUERY_FILE_ALL_INFO
-mdefine_line|#define SMB_QUERY_FILE_ALL_INFO      0x107
+mdefine_line|#define SMB_QUERY_FILE_ALL_INFO         0x107
 DECL|macro|SMB_QUERY_ALT_NAME_INFO
-mdefine_line|#define SMB_QUERY_ALT_NAME_INFO      0x108
+mdefine_line|#define SMB_QUERY_ALT_NAME_INFO         0x108
 DECL|macro|SMB_QUERY_FILE_STREAM_INFO
-mdefine_line|#define SMB_QUERY_FILE_STREAM_INFO   0x109
+mdefine_line|#define SMB_QUERY_FILE_STREAM_INFO      0x109
 DECL|macro|SMB_QUERY_FILE_COMPRESSION_INFO
 mdefine_line|#define SMB_QUERY_FILE_COMPRESSION_INFO 0x10B
 DECL|macro|SMB_QUERY_FILE_UNIX_BASIC
-mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC    0x200
+mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC       0x200
 DECL|macro|SMB_QUERY_FILE_UNIX_LINK
-mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK     0x201
+mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK        0x201
 DECL|macro|SMB_SET_FILE_BASIC_INFO
-mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;&t;&t;0x101
+mdefine_line|#define SMB_SET_FILE_BASIC_INFO&t;        0x101
 DECL|macro|SMB_SET_FILE_DISPOSITION_INFO
-mdefine_line|#define SMB_SET_FILE_DISPOSITION_INFO&t;0x102
+mdefine_line|#define SMB_SET_FILE_DISPOSITION_INFO   0x102
 DECL|macro|SMB_SET_FILE_ALLOCATION_INFO
-mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO&t;0x103
+mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO    0x103
 DECL|macro|SMB_SET_FILE_END_OF_FILE_INFO
-mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO&t;0x104
+mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO   0x104
 DECL|macro|SMB_SET_FILE_UNIX_BASIC
 mdefine_line|#define SMB_SET_FILE_UNIX_BASIC         0x200
 DECL|macro|SMB_SET_FILE_UNIX_LINK
@@ -2570,17 +2772,19 @@ DECL|macro|SMB_SET_FILE_UNIX_HLINK
 mdefine_line|#define SMB_SET_FILE_UNIX_HLINK         0x203
 DECL|macro|SMB_SET_FILE_BASIC_INFO2
 mdefine_line|#define SMB_SET_FILE_BASIC_INFO2        0x3ec
+DECL|macro|SMB_SET_FILE_RENAME_INFORMATION
+mdefine_line|#define SMB_SET_FILE_RENAME_INFORMATION 0x3f2
 DECL|macro|SMB_SET_FILE_ALLOCATION_INFO2
-mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO2&t;0x3fb
+mdefine_line|#define SMB_SET_FILE_ALLOCATION_INFO2   0x3fb
 DECL|macro|SMB_SET_FILE_END_OF_FILE_INFO2
-mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO2&t;0x3fc
+mdefine_line|#define SMB_SET_FILE_END_OF_FILE_INFO2  0x3fc
 multiline_comment|/* Find File infolevels */
 DECL|macro|SMB_FIND_FILE_DIRECTORY_INFO
-mdefine_line|#define SMB_FIND_FILE_DIRECTORY_INFO&t;  0x101
+mdefine_line|#define SMB_FIND_FILE_DIRECTORY_INFO      0x101
 DECL|macro|SMB_FIND_FILE_FULL_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_FULL_DIRECTORY_INFO 0x102
 DECL|macro|SMB_FIND_FILE_NAMES_INFO
-mdefine_line|#define SMB_FIND_FILE_NAMES_INFO&t;&t;0x103
+mdefine_line|#define SMB_FIND_FILE_NAMES_INFO          0x103
 DECL|macro|SMB_FIND_FILE_BOTH_DIRECTORY_INFO
 mdefine_line|#define SMB_FIND_FILE_BOTH_DIRECTORY_INFO 0x104
 DECL|macro|SMB_FIND_FILE_UNIX
@@ -2932,6 +3136,34 @@ multiline_comment|/* parameter word reserved - present for infolevels &gt; 100 *
 DECL|typedef|TRANSACTION2_SPI_RSP
 )brace
 id|TRANSACTION2_SPI_RSP
+suffix:semicolon
+DECL|struct|set_file_rename
+r_struct
+id|set_file_rename
+(brace
+DECL|member|overwrite
+id|__u32
+id|overwrite
+suffix:semicolon
+multiline_comment|/* 1 = overwrite dest */
+DECL|member|root_fid
+id|__u32
+id|root_fid
+suffix:semicolon
+multiline_comment|/* zero */
+DECL|member|target_name_len
+id|__u32
+id|target_name_len
+suffix:semicolon
+DECL|member|target_name
+r_char
+id|target_name
+(braket
+l_int|0
+)braket
+suffix:semicolon
+multiline_comment|/* Must be unicode */
+)brace
 suffix:semicolon
 DECL|struct|smb_com_transaction2_sfi_req
 r_struct
@@ -4159,6 +4391,11 @@ DECL|typedef|FILE_SYSTEM_UNIX_INFO
 id|FILE_SYSTEM_UNIX_INFO
 suffix:semicolon
 multiline_comment|/* Unix extensions info, level 0x200 */
+multiline_comment|/* Linux/Unix extensions capability flags */
+DECL|macro|CIFS_UNIX_FCNTL_CAP
+mdefine_line|#define CIFS_UNIX_FCNTL_CAP             0x00000001 /* support for fcntl locks */
+DECL|macro|CIFS_UNIX_POSIX_ACL_CAP
+mdefine_line|#define CIFS_UNIX_POSIX_ACL_CAP         0x00000002
 multiline_comment|/* DeviceType Flags */
 DECL|macro|FILE_DEVICE_CD_ROM
 mdefine_line|#define FILE_DEVICE_CD_ROM              0x00000002

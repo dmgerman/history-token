@@ -2,6 +2,7 @@ multiline_comment|/*&n; * IA-32 exception handlers&n; *&n; * Copyright (C) 2000 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;ia32priv.h&quot;
+macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 r_int
 DECL|function|ia32_intercept
@@ -282,20 +283,20 @@ id|fsr
 comma
 id|fcr
 suffix:semicolon
-id|asm
-(paren
-l_string|&quot;mov %0=ar.fsr;&quot;
-l_string|&quot;mov %1=ar.fcr;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|fsr
-)paren
-comma
-l_string|&quot;=r&quot;
+op_assign
+id|ia64_getreg
+c_func
 (paren
-id|fcr
+id|_IA64_REG_AR_FSR
 )paren
+suffix:semicolon
+id|fcr
+op_assign
+id|ia64_getreg
+c_func
+(paren
+id|_IA64_REG_AR_FCR
 )paren
 suffix:semicolon
 id|siginfo.si_signo

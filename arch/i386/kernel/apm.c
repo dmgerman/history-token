@@ -2870,8 +2870,6 @@ id|device_suspend
 c_func
 (paren
 l_int|3
-comma
-id|SUSPEND_POWER_DOWN
 )paren
 suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
@@ -3013,7 +3011,6 @@ suffix:semicolon
 id|device_resume
 c_func
 (paren
-id|RESUME_POWER_ON
 )paren
 suffix:semicolon
 id|pm_send_all
@@ -3496,7 +3493,6 @@ suffix:semicolon
 id|device_resume
 c_func
 (paren
-id|RESUME_POWER_ON
 )paren
 suffix:semicolon
 id|pm_send_all

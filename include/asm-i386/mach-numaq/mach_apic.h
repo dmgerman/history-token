@@ -152,6 +152,16 @@ r_int
 id|cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu
+op_ge
+id|NR_CPUS
+)paren
+r_return
+id|BAD_APICID
+suffix:semicolon
 r_return
 (paren
 r_int
@@ -162,6 +172,7 @@ id|cpu
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Supporting over 60 cpus on NUMA-Q requires a locality-dependent&n; * cpu to APIC ID relation to properly interact with the intelligent&n; * mode of the cluster controller.&n; */
 DECL|function|cpu_present_to_apicid
 r_static
 r_inline
@@ -173,6 +184,13 @@ r_int
 id|mps_cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|mps_cpu
+OL
+l_int|60
+)paren
 r_return
 (paren
 (paren
@@ -193,6 +211,10 @@ op_amp
 l_int|0x3
 )paren
 )paren
+suffix:semicolon
+r_else
+r_return
+id|BAD_APICID
 suffix:semicolon
 )brace
 DECL|function|generate_logical_apicid

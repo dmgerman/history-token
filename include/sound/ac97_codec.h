@@ -993,16 +993,24 @@ id|ac97
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|enumerator|AC97_TUNE_HP_ONLY
-DECL|enumerator|AC97_TUNE_SWAP_HP
-DECL|enumerator|AC97_TUNE_SWAP_SURROUND
+multiline_comment|/* quirk types */
 r_enum
 (brace
+DECL|enumerator|AC97_TUNE_HP_ONLY
 id|AC97_TUNE_HP_ONLY
 comma
+multiline_comment|/* headphone (true line-out) control as master only */
+DECL|enumerator|AC97_TUNE_SWAP_HP
 id|AC97_TUNE_SWAP_HP
 comma
+multiline_comment|/* swap headphone and master controls */
+DECL|enumerator|AC97_TUNE_SWAP_SURROUND
 id|AC97_TUNE_SWAP_SURROUND
+comma
+multiline_comment|/* swap master and surround controls */
+DECL|enumerator|AC97_TUNE_AD_SHARING
+id|AC97_TUNE_AD_SHARING
+multiline_comment|/* for AD1985, turn on OMS bit and use headphone */
 )brace
 suffix:semicolon
 DECL|struct|ac97_quirk
@@ -1014,21 +1022,31 @@ r_int
 r_int
 id|vendor
 suffix:semicolon
+multiline_comment|/* PCI vendor id */
 DECL|member|device
 r_int
 r_int
 id|device
 suffix:semicolon
+multiline_comment|/* PCI device id */
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+multiline_comment|/* device id bit mask, 0 = accept all */
 DECL|member|name
 r_const
 r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/* name shown as info */
 DECL|member|type
 r_int
 id|type
 suffix:semicolon
+multiline_comment|/* quirk type above */
 )brace
 suffix:semicolon
 r_int

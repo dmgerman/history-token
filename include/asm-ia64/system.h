@@ -126,28 +126,9 @@ suffix:semicolon
 op_star
 id|ia64_boot_param
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|ia64_insn_group_barrier
-id|ia64_insn_group_barrier
-(paren
-r_void
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;;;&quot;
-op_scope_resolution
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Macros to force memory ordering.  In these descriptions, &quot;previous&quot;&n; * and &quot;subsequent&quot; refer to program order; &quot;visible&quot; means that all&n; * architecturally visible effects of a memory access have occurred&n; * (at a minimum, this means the memory has been read or written).&n; *&n; *   wmb():&t;Guarantees that all preceding stores to memory-&n; *&t;&t;like regions are visible before any subsequent&n; *&t;&t;stores and that all following stores will be&n; *&t;&t;visible only after all previous stores.&n; *   rmb():&t;Like wmb(), but for reads.&n; *   mb():&t;wmb()/rmb() combo, i.e., all previous memory&n; *&t;&t;accesses are visible before all subsequent&n; *&t;&t;accesses and vice versa.  This is also known as&n; *&t;&t;a &quot;fence.&quot;&n; *&n; * Note: &quot;mb()&quot; and its variants cannot be used as a fence to order&n; * accesses to memory mapped I/O registers.  For that, mf.a needs to&n; * be used.  However, we don&squot;t want to always use mf.a because (a)&n; * it&squot;s (presumably) much slower than mf and (b) mf.a is supported for&n; * sequential memory pages only.&n; */
 DECL|macro|mb
-mdefine_line|#define mb()&t;__asm__ __volatile__ (&quot;mf&quot; ::: &quot;memory&quot;)
+mdefine_line|#define mb()&t;ia64_mf()
 DECL|macro|rmb
 mdefine_line|#define rmb()&t;mb()
 DECL|macro|wmb
@@ -185,11 +166,11 @@ multiline_comment|/* For spinlocks etc */
 multiline_comment|/* clearing psr.i is implicitly serialized (visible by next insn) */
 multiline_comment|/* setting psr.i requires data serialization */
 DECL|macro|__local_irq_save
-mdefine_line|#define __local_irq_save(x)&t;__asm__ __volatile__ (&quot;mov %0=psr;;&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;rsm psr.i;;&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      : &quot;=r&quot; (x) :: &quot;memory&quot;)
+mdefine_line|#define __local_irq_save(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = ia64_getreg(_IA64_REG_PSR);&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_rsm(IA64_PSR_I);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__local_irq_disable
-mdefine_line|#define __local_irq_disable()&t;__asm__ __volatile__ (&quot;;; rsm psr.i;;&quot; ::: &quot;memory&quot;)
+mdefine_line|#define __local_irq_disable()&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_stop();&t;&t;&t;&t;&bslash;&n;&t;ia64_rsm(IA64_PSR_I);&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__local_irq_restore
-mdefine_line|#define __local_irq_restore(x)&t;__asm__ __volatile__ (&quot;cmp.ne p6,p7=%0,r0;;&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;(p6) ssm psr.i;&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;(p7) rsm psr.i;;&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      &quot;(p6) srlz.d&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      :: &quot;r&quot; ((x) &amp; IA64_PSR_I)&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;      : &quot;p6&quot;, &quot;p7&quot;, &quot;memory&quot;)
+mdefine_line|#define __local_irq_restore(x)&t;ia64_intrin_local_irq_restore((x) &amp; IA64_PSR_I)
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
 r_extern
 r_int
@@ -197,7 +178,7 @@ r_int
 id|last_cli_ip
 suffix:semicolon
 DECL|macro|__save_ip
-macro_line|# define __save_ip()&t;&t;__asm__ (&quot;mov %0=ip&quot; : &quot;=r&quot; (last_cli_ip))
+macro_line|# define __save_ip()&t;&t;last_cli_ip = ia64_getreg(_IA64_REG_IP)
 DECL|macro|local_irq_save
 macro_line|# define local_irq_save(x)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long psr;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__local_irq_save(psr);&t;&t;&t;&t;&t;&bslash;&n;&t;if (psr &amp; IA64_PSR_I)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__save_ip();&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = psr;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|local_irq_disable
@@ -213,11 +194,11 @@ DECL|macro|local_irq_restore
 macro_line|# define local_irq_restore(x)&t;__local_irq_restore(x)
 macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__ (&quot;;; ssm psr.i;; srlz.d&quot; ::: &quot;memory&quot;)
+mdefine_line|#define local_irq_enable()&t;({ ia64_ssm(IA64_PSR_I); ia64_srlz_d(); })
 DECL|macro|local_save_flags
-mdefine_line|#define local_save_flags(flags)&t;__asm__ __volatile__ (&quot;mov %0=psr&quot; : &quot;=r&quot; (flags) :: &quot;memory&quot;)
+mdefine_line|#define local_save_flags(flags)&t;((flags) = ia64_getreg(_IA64_REG_PSR))
 DECL|macro|irqs_disabled
-mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;(flags &amp; IA64_PSR_I) == 0;&t;&t;&bslash;&n;})
+mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ia64_id_flags;&t;&t;&bslash;&n;&t;local_save_flags(__ia64_id_flags);&t;&bslash;&n;&t;(__ia64_id_flags &amp; IA64_PSR_I) == 0;&t;&bslash;&n;})
 macro_line|#ifdef __KERNEL__
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()    do { } while(0)

@@ -2825,8 +2825,11 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize default control register to defer all speculative faults.  The&n;&t; * kernel MUST NOT depend on a particular setting of these bits (in other words,&n;&t; * the kernel must have recovery code for all speculative accesses).  Turn on&n;&t; * dcr.lc as per recommendation by the architecture team.  Most IA-32 apps&n;&t; * shouldn&squot;t be affected by this (moral: keep your ia32 locks aligned and you&squot;ll&n;&t; * be fine).&n;&t; */
-id|ia64_set_dcr
+id|ia64_setreg
 c_func
+(paren
+id|_IA64_REG_CR_DCR
+comma
 (paren
 id|IA64_DCR_DP
 op_or
@@ -2841,6 +2844,7 @@ op_or
 id|IA64_DCR_DD
 op_or
 id|IA64_DCR_LC
+)paren
 )paren
 suffix:semicolon
 id|atomic_inc
@@ -2907,26 +2911,32 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|ia64_set_pmv
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_PMV
+comma
 l_int|1
 op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|ia64_set_cmcv
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_CMCV
+comma
 l_int|1
 op_lshift
 l_int|16
 )paren
 suffix:semicolon
 multiline_comment|/* clear TPR &amp; XTP to enable all interrupt classes: */
-id|ia64_set_tpr
+id|ia64_setreg
 c_func
 (paren
+id|_IA64_REG_CR_TPR
+comma
 l_int|0
 )paren
 suffix:semicolon
