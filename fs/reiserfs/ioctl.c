@@ -257,7 +257,7 @@ suffix:semicolon
 multiline_comment|/* mapped by prepare_write */
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/smb_fs.h&gt;
 macro_line|#include &lt;linux/smbno.h&gt;
 macro_line|#include &lt;linux/smb_mount.h&gt;
@@ -8291,6 +8292,11 @@ id|dir
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|smb_lock_server
 c_func
 (paren
@@ -8827,6 +8833,11 @@ id|smb_unlock_server
 c_func
 (paren
 id|server
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -9507,6 +9518,11 @@ suffix:colon
 l_int|1
 comma
 )brace
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * use info level 1 for older servers that don&squot;t do 260&n;&t; */
 r_if
@@ -10324,6 +10340,11 @@ id|smb_unlock_server
 c_func
 (paren
 id|server
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

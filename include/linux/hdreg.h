@@ -44,6 +44,8 @@ DECL|macro|DRQ_STAT
 mdefine_line|#define DRQ_STAT&t;&t;0x08
 DECL|macro|SEEK_STAT
 mdefine_line|#define SEEK_STAT&t;&t;0x10
+DECL|macro|SERVICE_STAT
+mdefine_line|#define SERVICE_STAT&t;&t;SEEK_STAT
 DECL|macro|WRERR_STAT
 mdefine_line|#define WRERR_STAT&t;&t;0x20
 DECL|macro|READY_STAT
@@ -69,6 +71,13 @@ DECL|macro|BBD_ERR
 mdefine_line|#define BBD_ERR&t;&t;&t;0x80&t;/* pre-EIDE meaning:  block marked bad */
 DECL|macro|ICRC_ERR
 mdefine_line|#define ICRC_ERR&t;&t;0x80&t;/* new meaning:  CRC error during transfer */
+multiline_comment|/*&n; * sector count bits&n; */
+DECL|macro|NSEC_CD
+mdefine_line|#define NSEC_CD&t;&t;&t;0x01
+DECL|macro|NSEC_IO
+mdefine_line|#define NSEC_IO&t;&t;&t;0x02
+DECL|macro|NSEC_REL
+mdefine_line|#define NSEC_REL&t;&t;0x04
 multiline_comment|/*&n; * Command Header sizes for IOCTL commands&n; */
 DECL|macro|HDIO_DRIVE_CMD_HDR_SIZE
 mdefine_line|#define HDIO_DRIVE_CMD_HDR_SIZE&t;&t;(4 * sizeof(u8))

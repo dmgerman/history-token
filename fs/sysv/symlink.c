@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/sysv/symlink.c&n; *&n; *  Handling of System V filesystem fast symlinks extensions.&n; *  Aug 2001, Christoph Hellwig (hch@infradead.org)&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 DECL|function|sysv_readlink
 r_static
 r_int

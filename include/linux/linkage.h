@@ -19,17 +19,6 @@ macro_line|#else
 DECL|macro|asmlinkage
 mdefine_line|#define asmlinkage CPP_ASMLINKAGE
 macro_line|#endif
-DECL|macro|SYMBOL_NAME_STR
-mdefine_line|#define SYMBOL_NAME_STR(X) #X
-DECL|macro|SYMBOL_NAME
-mdefine_line|#define SYMBOL_NAME(X) X
-macro_line|#ifdef __STDC__
-DECL|macro|SYMBOL_NAME_LABEL
-mdefine_line|#define SYMBOL_NAME_LABEL(X) X##:
-macro_line|#else
-DECL|macro|SYMBOL_NAME_LABEL
-mdefine_line|#define SYMBOL_NAME_LABEL(X) X/**/:
-macro_line|#endif
 macro_line|#ifdef __arm__
 DECL|macro|__ALIGN
 mdefine_line|#define __ALIGN .align 0
@@ -68,7 +57,7 @@ mdefine_line|#define ALIGN __ALIGN
 DECL|macro|ALIGN_STR
 mdefine_line|#define ALIGN_STR __ALIGN_STR
 DECL|macro|ENTRY
-mdefine_line|#define ENTRY(name) &bslash;&n;  .globl SYMBOL_NAME(name); &bslash;&n;  ALIGN; &bslash;&n;  SYMBOL_NAME_LABEL(name)
+mdefine_line|#define ENTRY(name) &bslash;&n;  .globl name; &bslash;&n;  ALIGN; &bslash;&n;  name:
 macro_line|#endif
 DECL|macro|NORET_TYPE
 macro_line|# define NORET_TYPE    /**/

@@ -61,7 +61,7 @@ id|page
 (brace
 id|present
 op_assign
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page

@@ -2540,6 +2540,8 @@ c_func
 id|ide_dma_bad_drive
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2658,6 +2660,8 @@ c_func
 id|ide_dma_good_drive
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2735,12 +2739,14 @@ suffix:semicolon
 r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|dma_func
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2753,9 +2759,15 @@ c_func
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_switch
@@ -2805,7 +2817,7 @@ op_amp
 l_int|1
 )paren
 (brace
-macro_line|#if 0&t;&t;
+macro_line|#if 0
 r_int
 id|i
 suffix:semicolon
@@ -2865,7 +2877,7 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2887,7 +2899,7 @@ id|KERN_CRIT
 l_string|&quot;on this controller. Please report this event to osb4-bug@ide.cabal.tm&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0&t;&t;
+macro_line|#if 0
 multiline_comment|/* Panic might sys_sync -&gt; death by corrupt disk */
 id|panic
 c_func
@@ -2915,7 +2927,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;
+macro_line|#endif
 )brace
 multiline_comment|/* and drop through */
 )brace
@@ -2932,6 +2944,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -3371,9 +3385,8 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|svwks_dmaproc
 suffix:semicolon
 id|hwif-&gt;highmem

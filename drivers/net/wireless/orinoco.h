@@ -3,48 +3,24 @@ macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
 multiline_comment|/* To enable debug messages */
-multiline_comment|/*  #define ORINOCO_DEBUG&t;&t;3 */
+singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
 macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
-macro_line|#error &quot;orinoco_cs requires Wireless extensions v10 or later.&quot;
+macro_line|#error &quot;orinoco driver requires Wireless extensions v10 or later.&quot;
 macro_line|#endif /* (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10) */
 DECL|macro|WIRELESS_SPY
 mdefine_line|#define WIRELESS_SPY&t;&t;
 singleline_comment|// enable iwspy support
-DECL|macro|DLDWD_MIN_MTU
-mdefine_line|#define DLDWD_MIN_MTU&t;&t;256
-DECL|macro|DLDWD_MAX_MTU
-mdefine_line|#define DLDWD_MAX_MTU&t;&t;(HERMES_FRAME_LEN_MAX - ENCAPS_OVERHEAD)
-DECL|macro|LTV_BUF_SIZE
-mdefine_line|#define LTV_BUF_SIZE&t;&t;128
-DECL|macro|USER_BAP
-mdefine_line|#define USER_BAP&t;&t;0
-DECL|macro|IRQ_BAP
-mdefine_line|#define IRQ_BAP&t;&t;&t;1
-DECL|macro|DLDWD_MACPORT
-mdefine_line|#define DLDWD_MACPORT&t;&t;0
-DECL|macro|IRQ_LOOP_MAX
-mdefine_line|#define IRQ_LOOP_MAX&t;&t;10
-DECL|macro|TX_NICBUF_SIZE
-mdefine_line|#define TX_NICBUF_SIZE&t;&t;2048
-DECL|macro|TX_NICBUF_SIZE_BUG
-mdefine_line|#define TX_NICBUF_SIZE_BUG&t;1585&t;&t;/* Bug in Symbol firmware */
-DECL|macro|MAX_KEYS
-mdefine_line|#define MAX_KEYS&t;&t;4
-DECL|macro|MAX_KEY_SIZE
-mdefine_line|#define MAX_KEY_SIZE&t;&t;14
-DECL|macro|LARGE_KEY_SIZE
-mdefine_line|#define LARGE_KEY_SIZE&t;&t;13
-DECL|macro|SMALL_KEY_SIZE
-mdefine_line|#define SMALL_KEY_SIZE&t;&t;5
-DECL|macro|MAX_FRAME_SIZE
-mdefine_line|#define MAX_FRAME_SIZE&t;&t;2304
-DECL|struct|dldwd_key
+DECL|macro|ORINOCO_MAX_KEY_SIZE
+mdefine_line|#define ORINOCO_MAX_KEY_SIZE&t;14
+DECL|macro|ORINOCO_MAX_KEYS
+mdefine_line|#define ORINOCO_MAX_KEYS&t;4
+DECL|struct|orinoco_key
 r_typedef
 r_struct
-id|dldwd_key
+id|orinoco_key
 (brace
 DECL|member|len
-r_uint16
+id|u16
 id|len
 suffix:semicolon
 multiline_comment|/* always store little-endian */
@@ -52,10 +28,10 @@ DECL|member|data
 r_char
 id|data
 (braket
-id|MAX_KEY_SIZE
+id|ORINOCO_MAX_KEY_SIZE
 )braket
 suffix:semicolon
-DECL|typedef|dldwd_key_t
+DECL|typedef|orinoco_key_t
 )brace
 id|__attribute__
 (paren
@@ -63,21 +39,20 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|dldwd_key_t
+id|orinoco_key_t
 suffix:semicolon
-DECL|typedef|dldwd_keys_t
+DECL|typedef|orinoco_keys_t
 r_typedef
-id|dldwd_key_t
-id|dldwd_keys_t
+id|orinoco_key_t
+id|orinoco_keys_t
 (braket
-id|MAX_KEYS
+id|ORINOCO_MAX_KEYS
 )braket
 suffix:semicolon
 multiline_comment|/*====================================================================*/
-DECL|struct|dldwd_priv
-r_typedef
+DECL|struct|orinoco_private
 r_struct
-id|dldwd_priv
+id|orinoco_private
 (brace
 DECL|member|card
 r_void
@@ -86,15 +61,15 @@ id|card
 suffix:semicolon
 multiline_comment|/* Pointer to card dependant structure */
 multiline_comment|/* card dependant extra reset code (i.e. bus/interface specific */
-DECL|member|card_reset_handler
+DECL|member|hard_reset
 r_int
 (paren
 op_star
-id|card_reset_handler
+id|hard_reset
 )paren
 (paren
 r_struct
-id|dldwd_priv
+id|orinoco_private
 op_star
 )paren
 suffix:semicolon
@@ -106,19 +81,15 @@ DECL|member|state
 r_int
 id|state
 suffix:semicolon
-DECL|macro|DLDWD_STATE_INIRQ
-mdefine_line|#define DLDWD_STATE_INIRQ 0
-DECL|macro|DLDWD_STATE_DOIRQ
-mdefine_line|#define DLDWD_STATE_DOIRQ 1
-DECL|member|hw_ready
-r_int
-id|hw_ready
-suffix:semicolon
-multiline_comment|/* HW may be suspended by platform */
+DECL|macro|ORINOCO_STATE_INIRQ
+mdefine_line|#define ORINOCO_STATE_INIRQ 0
+DECL|macro|ORINOCO_STATE_DOIRQ
+mdefine_line|#define ORINOCO_STATE_DOIRQ 1
 multiline_comment|/* Net device stuff */
 DECL|member|ndev
 r_struct
 id|net_device
+op_star
 id|ndev
 suffix:semicolon
 DECL|member|stats
@@ -137,7 +108,7 @@ id|hermes_t
 id|hw
 suffix:semicolon
 DECL|member|txfid
-r_uint16
+id|u16
 id|txfid
 suffix:semicolon
 multiline_comment|/* Capabilities of the hardware/firmware */
@@ -145,23 +116,20 @@ DECL|member|firmware_type
 r_int
 id|firmware_type
 suffix:semicolon
-DECL|macro|FIRMWARE_TYPE_LUCENT
-mdefine_line|#define FIRMWARE_TYPE_LUCENT 1
+DECL|macro|FIRMWARE_TYPE_AGERE
+mdefine_line|#define FIRMWARE_TYPE_AGERE 1
 DECL|macro|FIRMWARE_TYPE_INTERSIL
 mdefine_line|#define FIRMWARE_TYPE_INTERSIL 2
 DECL|macro|FIRMWARE_TYPE_SYMBOL
 mdefine_line|#define FIRMWARE_TYPE_SYMBOL 3
 DECL|member|has_ibss
 DECL|member|has_port3
-DECL|member|prefer_port3
 DECL|member|has_ibss_any
 DECL|member|ibss_port
 r_int
 id|has_ibss
 comma
 id|has_port3
-comma
-id|prefer_port3
 comma
 id|has_ibss_any
 comma
@@ -186,36 +154,35 @@ DECL|member|has_preamble
 r_int
 id|has_preamble
 suffix:semicolon
-DECL|member|need_card_reset
-DECL|member|broken_reset
-DECL|member|broken_allocate
+DECL|member|has_sensitivity
 r_int
-id|need_card_reset
-comma
-id|broken_reset
-comma
-id|broken_allocate
+id|has_sensitivity
+suffix:semicolon
+DECL|member|nicbuf_size
+r_int
+id|nicbuf_size
+suffix:semicolon
+DECL|member|broken_cor_reset
+r_int
+id|broken_cor_reset
 suffix:semicolon
 DECL|member|channel_mask
-r_uint16
+id|u16
 id|channel_mask
 suffix:semicolon
-multiline_comment|/* Current configuration */
+multiline_comment|/* Configuration paramaters */
 DECL|member|iw_mode
-r_uint32
+id|u32
 id|iw_mode
 suffix:semicolon
-DECL|member|port_type
-DECL|member|allow_ibss
+DECL|member|prefer_port3
 r_int
-id|port_type
-comma
-id|allow_ibss
+id|prefer_port3
 suffix:semicolon
 DECL|member|wep_on
 DECL|member|wep_restrict
 DECL|member|tx_key
-r_uint16
+id|u16
 id|wep_on
 comma
 id|wep_restrict
@@ -223,8 +190,12 @@ comma
 id|tx_key
 suffix:semicolon
 DECL|member|keys
-id|dldwd_keys_t
+id|orinoco_keys_t
 id|keys
+suffix:semicolon
+DECL|member|bitratemode
+r_int
+id|bitratemode
 suffix:semicolon
 DECL|member|nick
 r_char
@@ -246,31 +217,27 @@ l_int|1
 suffix:semicolon
 DECL|member|frag_thresh
 DECL|member|mwo_robust
-r_uint16
+id|u16
 id|frag_thresh
 comma
 id|mwo_robust
 suffix:semicolon
 DECL|member|channel
-r_uint16
+id|u16
 id|channel
 suffix:semicolon
 DECL|member|ap_density
 DECL|member|rts_thresh
-r_uint16
+id|u16
 id|ap_density
 comma
 id|rts_thresh
-suffix:semicolon
-DECL|member|tx_rate_ctrl
-r_uint16
-id|tx_rate_ctrl
 suffix:semicolon
 DECL|member|pm_on
 DECL|member|pm_mcast
 DECL|member|pm_period
 DECL|member|pm_timeout
-r_uint16
+id|u16
 id|pm_on
 comma
 id|pm_mcast
@@ -280,18 +247,8 @@ comma
 id|pm_timeout
 suffix:semicolon
 DECL|member|preamble
-r_uint16
+id|u16
 id|preamble
-suffix:semicolon
-DECL|member|promiscuous
-DECL|member|allmulti
-DECL|member|mc_count
-r_int
-id|promiscuous
-comma
-id|allmulti
-comma
-id|mc_count
 suffix:semicolon
 macro_line|#ifdef WIRELESS_SPY
 DECL|member|spy_number
@@ -317,6 +274,21 @@ id|IW_MAX_SPY
 )braket
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Configuration dependent variables */
+DECL|member|port_type
+DECL|member|allow_ibss
+r_int
+id|port_type
+comma
+id|allow_ibss
+suffix:semicolon
+DECL|member|promiscuous
+DECL|member|mc_count
+r_int
+id|promiscuous
+comma
+id|mc_count
+suffix:semicolon
 multiline_comment|/* /proc based debugging stuff */
 DECL|member|dir_dev
 r_struct
@@ -324,37 +296,23 @@ id|proc_dir_entry
 op_star
 id|dir_dev
 suffix:semicolon
-DECL|member|dir_regs
-r_struct
-id|proc_dir_entry
-op_star
-id|dir_regs
-suffix:semicolon
-DECL|member|dir_recs
-r_struct
-id|proc_dir_entry
-op_star
-id|dir_recs
-suffix:semicolon
-DECL|typedef|dldwd_priv_t
 )brace
-id|dldwd_priv_t
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 r_extern
 r_struct
 id|list_head
-id|dldwd_instances
+id|orinoco_instances
 suffix:semicolon
 macro_line|#ifdef ORINOCO_DEBUG
 r_extern
 r_int
-id|dldwd_debug
+id|orinoco_debug
 suffix:semicolon
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) do { if (dldwd_debug&gt;(n)) printk(KERN_DEBUG args); } while(0)
+mdefine_line|#define DEBUG(n, args...) do { if (orinoco_debug&gt;(n)) printk(KERN_DEBUG args); } while(0)
 DECL|macro|DEBUGMORE
-mdefine_line|#define DEBUGMORE(n, args...) do { if (dldwd_debug&gt;(n)) printk(args); } while (0)
+mdefine_line|#define DEBUGMORE(n, args...) do { if (orinoco_debug&gt;(n)) printk(args); } while (0)
 macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { } while (0)
@@ -367,143 +325,64 @@ DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
 DECL|macro|RUP_EVEN
 mdefine_line|#define RUP_EVEN(a) ( (a) % 2 ? (a) + 1 : (a) )
-multiline_comment|/* struct net_device methods */
-r_extern
-r_int
-id|dldwd_init
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dldwd_xmit
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dldwd_tx_timeout
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dldwd_ioctl
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
-id|ifreq
-op_star
-id|rq
-comma
-r_int
-id|cmd
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|dldwd_change_mtu
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|new_mtu
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dldwd_set_multicast_list
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* utility routines */
+r_struct
+id|net_device
+op_star
+id|alloc_orinocodev
+c_func
+(paren
+r_int
+id|sizeof_card
+)paren
+suffix:semicolon
 r_extern
 r_void
-id|dldwd_shutdown
+id|orinoco_shutdown
 c_func
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|dev
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|dldwd_reset
+id|orinoco_reset
 c_func
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|dev
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|dldwd_setup
+id|orinoco_proc_dev_init
 c_func
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|orinoco_proc_dev_cleanup
+c_func
+(paren
+r_struct
+id|orinoco_private
 op_star
 id|priv
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|dldwd_proc_dev_init
-c_func
-(paren
-id|dldwd_priv_t
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
 r_void
-id|dldwd_proc_dev_cleanup
-c_func
-(paren
-id|dldwd_priv_t
-op_star
-id|priv
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|dldwd_interrupt
+id|orinoco_interrupt
 c_func
 (paren
 r_int
@@ -519,5 +398,5 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* _ORINOCO_H */
 eof

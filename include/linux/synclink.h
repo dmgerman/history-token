@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.5 2001/03/26 17:04:36 ez Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; * &n; * Redistribution of this file is permitted under &n; * the terms of the GNU Public License (GPL)&n; */
+multiline_comment|/*&n; * SyncLink Multiprotocol Serial Adapter Driver&n; *&n; * $Id: synclink.h,v 3.6 2002/02/20 21:58:20 paulkf Exp $&n; *&n; * Copyright (C) 1998-2000 by Microgate Corporation&n; *&n; * Redistribution of this file is permitted under&n; * the terms of the GNU Public License (GPL)&n; */
 macro_line|#ifndef _SYNCLINK_H_
 DECL|macro|_SYNCLINK_H_
 mdefine_line|#define _SYNCLINK_H_
 DECL|macro|SYNCLINK_H_VERSION
-mdefine_line|#define SYNCLINK_H_VERSION 3.5
+mdefine_line|#define SYNCLINK_H_VERSION 3.6
 DECL|macro|BOOLEAN
 mdefine_line|#define BOOLEAN int
 DECL|macro|TRUE
@@ -206,6 +206,14 @@ DECL|macro|MGSL_BUS_TYPE_EISA
 mdefine_line|#define MGSL_BUS_TYPE_EISA&t;2
 DECL|macro|MGSL_BUS_TYPE_PCI
 mdefine_line|#define MGSL_BUS_TYPE_PCI&t;5
+DECL|macro|MGSL_INTERFACE_DISABLE
+mdefine_line|#define MGSL_INTERFACE_DISABLE  0
+DECL|macro|MGSL_INTERFACE_RS232
+mdefine_line|#define MGSL_INTERFACE_RS232    1
+DECL|macro|MGSL_INTERFACE_V35
+mdefine_line|#define MGSL_INTERFACE_V35      2
+DECL|macro|MGSL_INTERFACE_RS422
+mdefine_line|#define MGSL_INTERFACE_RS422    3
 DECL|struct|_MGSL_PARAMS
 r_typedef
 r_struct
@@ -480,7 +488,7 @@ DECL|macro|MgslEvent_ExitHuntMode
 mdefine_line|#define MgslEvent_ExitHuntMode&t;0x0100
 DECL|macro|MgslEvent_IdleReceived
 mdefine_line|#define MgslEvent_IdleReceived&t;0x0200
-multiline_comment|/* Private IOCTL codes:&n; *&n; * MGSL_IOCSPARAMS&t;set MGSL_PARAMS structure values&n; * MGSL_IOCGPARAMS&t;get current MGSL_PARAMS structure values&n; * MGSL_IOCSTXIDLE&t;set current transmit idle mode&n; * MGSL_IOCGTXIDLE&t;get current transmit idle mode&n; * MGSL_IOCTXENABLE&t;enable or disable transmitter&n; * MGSL_IOCRXENABLE&t;enable or disable receiver&n; * MGSL_IOCTXABORT&t;abort transmitting frame (HDLC)&n; * MGSL_IOCGSTATS&t;return current statistics&n; * MGSL_IOCWAITEVENT&t;wait for specified event to occur&n; * MGSL_LOOPTXDONE&t;transmit in HDLC LoopMode done&n; */
+multiline_comment|/* Private IOCTL codes:&n; *&n; * MGSL_IOCSPARAMS&t;set MGSL_PARAMS structure values&n; * MGSL_IOCGPARAMS&t;get current MGSL_PARAMS structure values&n; * MGSL_IOCSTXIDLE&t;set current transmit idle mode&n; * MGSL_IOCGTXIDLE&t;get current transmit idle mode&n; * MGSL_IOCTXENABLE&t;enable or disable transmitter&n; * MGSL_IOCRXENABLE&t;enable or disable receiver&n; * MGSL_IOCTXABORT&t;abort transmitting frame (HDLC)&n; * MGSL_IOCGSTATS&t;return current statistics&n; * MGSL_IOCWAITEVENT&t;wait for specified event to occur&n; * MGSL_LOOPTXDONE&t;transmit in HDLC LoopMode done&n; * MGSL_IOCSIF          set the serial interface type&n; * MGSL_IOCGIF          get the serial interface type&n; */
 DECL|macro|MGSL_MAGIC_IOC
 mdefine_line|#define MGSL_MAGIC_IOC&t;&squot;m&squot;
 DECL|macro|MGSL_IOCSPARAMS
@@ -505,5 +513,9 @@ DECL|macro|MGSL_IOCCLRMODCOUNT
 mdefine_line|#define MGSL_IOCCLRMODCOUNT&t;_IO(MGSL_MAGIC_IOC,15)
 DECL|macro|MGSL_IOCLOOPTXDONE
 mdefine_line|#define MGSL_IOCLOOPTXDONE&t;_IO(MGSL_MAGIC_IOC,9)
+DECL|macro|MGSL_IOCSIF
+mdefine_line|#define MGSL_IOCSIF&t;&t;_IO(MGSL_MAGIC_IOC,10)
+DECL|macro|MGSL_IOCGIF
+mdefine_line|#define MGSL_IOCGIF&t;&t;_IO(MGSL_MAGIC_IOC,11)
 macro_line|#endif /* _SYNCLINK_H_ */
 eof

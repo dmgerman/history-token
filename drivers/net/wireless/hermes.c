@@ -19,7 +19,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;hermes.c: 3 Oct 2001 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+l_string|&quot;hermes.c: 5 Apr 2002 David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -33,12 +33,14 @@ c_func
 l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
 DECL|macro|CMD_BUSY_TIMEOUT
 mdefine_line|#define CMD_BUSY_TIMEOUT (100) /* In iterations of ~1us */
@@ -48,21 +50,21 @@ DECL|macro|CMD_COMPL_TIMEOUT
 mdefine_line|#define CMD_COMPL_TIMEOUT (20000) /* in iterations of ~10us */
 DECL|macro|ALLOC_COMPL_TIMEOUT
 mdefine_line|#define ALLOC_COMPL_TIMEOUT (1000) /* in iterations of ~10us */
-DECL|macro|BAP_BUSY_TIMEOUT
-mdefine_line|#define BAP_BUSY_TIMEOUT (500) /* In iterations of ~1us */
 multiline_comment|/*&n; * Debugging helpers&n; */
 DECL|macro|HERMES_DEBUG
 macro_line|#undef HERMES_DEBUG
 macro_line|#ifdef HERMES_DEBUG
 macro_line|#include &lt;stdarg.h&gt;
 DECL|macro|DMSG
-mdefine_line|#define DMSG(stuff...) do {printk(KERN_DEBUG &quot;hermes @ 0x%x: &quot; , hw-&gt;iobase); &bslash;&n;&t;&t;&t;printk(#stuff);} while (0)
+mdefine_line|#define DMSG(stuff...) do {printk(KERN_DEBUG &quot;hermes @ 0x%x: &quot; , hw-&gt;iobase); &bslash;&n;&t;&t;&t;printk(stuff);} while (0)
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(lvl, stuff...) if ( (lvl) &lt;= HERMES_DEBUG) DMSG(#stuff)
+mdefine_line|#define DEBUG(lvl, stuff...) if ( (lvl) &lt;= HERMES_DEBUG) DMSG(stuff)
 macro_line|#else /* ! HERMES_DEBUG */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(lvl, stuff...) do { } while (0)
 macro_line|#endif /* ! HERMES_DEBUG */
+DECL|macro|IO_TYPE
+mdefine_line|#define IO_TYPE(hw)&t;((hw)-&gt;io_space ? &quot;IO &quot; : &quot;MEM &quot;)
 multiline_comment|/*&n; * Internal functions&n; */
 multiline_comment|/* Issue a command to the chip. Waiting for it to complete is the caller&squot;s&n;   problem.&n;&n;   Returns -EBUSY if the command register is busy, 0 on success.&n;&n;   Callable from any context.&n;*/
 DECL|function|hermes_issue_cmd
@@ -82,10 +84,15 @@ id|u16
 id|param0
 )paren
 (brace
+r_int
+id|k
+op_assign
+id|CMD_BUSY_TIMEOUT
+suffix:semicolon
 id|u16
 id|reg
 suffix:semicolon
-multiline_comment|/* First check that the command register is not busy */
+multiline_comment|/* First wait for the command register to unbusy */
 id|reg
 op_assign
 id|hermes_read_regn
@@ -94,6 +101,50 @@ c_func
 id|hw
 comma
 id|CMD
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|reg
+op_amp
+id|HERMES_CMD_BUSY
+)paren
+op_logical_and
+id|k
+)paren
+(brace
+id|k
+op_decrement
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|reg
+op_assign
+id|hermes_read_regn
+c_func
+(paren
+id|hw
+comma
+id|CMD
+)paren
+suffix:semicolon
+)brace
+id|DEBUG
+c_func
+(paren
+l_int|3
+comma
+l_string|&quot;hermes_issue_cmd: did %d retries.&bslash;n&quot;
+comma
+id|CMD_BUSY_TIMEOUT
+op_minus
+id|k
 )paren
 suffix:semicolon
 r_if
@@ -163,18 +214,66 @@ id|hermes_t
 op_star
 id|hw
 comma
-id|uint
-id|io
+id|ulong
+id|address
+comma
+r_int
+id|io_space
+comma
+r_int
+id|reg_spacing
 )paren
 (brace
 id|hw-&gt;iobase
 op_assign
-id|io
+id|address
+suffix:semicolon
+id|hw-&gt;io_space
+op_assign
+id|io_space
+suffix:semicolon
+id|hw-&gt;reg_spacing
+op_assign
+id|reg_spacing
 suffix:semicolon
 id|hw-&gt;inten
 op_assign
 l_int|0x0
 suffix:semicolon
+macro_line|#ifdef HERMES_DEBUG_BUFFER
+id|hw-&gt;dbufp
+op_assign
+l_int|0
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|hw-&gt;dbuf
+comma
+l_int|0xff
+comma
+r_sizeof
+(paren
+id|hw-&gt;dbuf
+)paren
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|hw-&gt;profile
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|hw-&gt;profile
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|hermes_reset
 r_int
@@ -442,7 +541,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ 0x%x: Timeout waiting for card to reset (reg=0x%04x)!&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Timeout waiting for card to reset (reg=0x%04x)!&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 comma
@@ -478,11 +584,17 @@ comma
 id|HERMES_EV_CMD
 )paren
 suffix:semicolon
-id|err
-op_assign
+r_if
+c_cond
+(paren
 id|status
 op_amp
 id|HERMES_STATUS_RESULT
+)paren
+id|err
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 id|out
 suffix:colon
@@ -520,6 +632,9 @@ suffix:semicolon
 id|u16
 id|reg
 suffix:semicolon
+id|u16
+id|status
+suffix:semicolon
 id|err
 op_assign
 id|hermes_issue_cmd
@@ -553,7 +668,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ 0x%x: Card removed while issuing command.&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Card removed while issuing command.&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 )paren
@@ -569,9 +691,17 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ 0x%x: CMD register busy in hermes_issue_command().&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: Error %d issuing command.&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
+comma
+id|err
 )paren
 suffix:semicolon
 r_goto
@@ -642,7 +772,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ 0x%x: Card removed while waiting for command completion.&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Card removed while waiting for command completion.&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 )paren
@@ -671,7 +808,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ 0x%x: Timeout waiting for command completion.&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Timeout waiting for command completion.&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 )paren
@@ -685,7 +829,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|resp-&gt;status
+id|status
 op_assign
 id|hermes_read_regn
 c_func
@@ -694,6 +838,16 @@ id|hw
 comma
 id|STATUS
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|resp
+)paren
+(brace
+id|resp-&gt;status
+op_assign
+id|status
 suffix:semicolon
 id|resp-&gt;resp0
 op_assign
@@ -725,6 +879,7 @@ comma
 id|RESP2
 )paren
 suffix:semicolon
+)brace
 id|hermes_write_regn
 c_func
 (paren
@@ -735,11 +890,17 @@ comma
 id|HERMES_EV_CMD
 )paren
 suffix:semicolon
-id|err
-op_assign
-id|resp-&gt;status
+r_if
+c_cond
+(paren
+id|status
 op_amp
 id|HERMES_STATUS_RESULT
+)paren
+id|err
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 id|out
 suffix:colon
@@ -768,9 +929,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-id|hermes_response_t
-id|resp
 suffix:semicolon
 r_int
 id|k
@@ -808,8 +966,7 @@ id|HERMES_CMD_ALLOC
 comma
 id|size
 comma
-op_amp
-id|resp
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -822,7 +979,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ 0x%x: Frame allocation command failed (0x%X).&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Frame allocation command failed (0x%X).&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 comma
@@ -897,7 +1061,14 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ 0x%x: Card removed waiting for frame allocation.&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Card removed waiting for frame allocation.&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 )paren
@@ -922,7 +1093,14 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;hermes @ 0x%x: Timeout waiting for frame allocation&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Timeout waiting for frame allocation&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 )paren
@@ -959,6 +1137,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Set up a BAP to read a particular chunk of data from card&squot;s internal buffer.&n; *&n; * Returns: &lt; 0 on internal failure (errno), 0 on success, &gt;0 on error&n; * from firmware&n; *&n; * Callable from any context */
 DECL|function|hermes_bap_seek
+r_static
 r_int
 id|hermes_bap_seek
 c_func
@@ -1025,7 +1204,7 @@ id|EINVAL
 suffix:semicolon
 id|k
 op_assign
-id|BAP_BUSY_TIMEOUT
+id|HERMES_BAP_BUSY_TIMEOUT
 suffix:semicolon
 id|reg
 op_assign
@@ -1045,7 +1224,7 @@ id|reg
 op_amp
 id|HERMES_OFFSET_BUSY
 )paren
-op_amp
+op_logical_and
 id|k
 )paren
 (brace
@@ -1069,6 +1248,59 @@ id|oreg
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef HERMES_DEBUG_BUFFER
+id|hw-&gt;profile
+(braket
+id|HERMES_BAP_BUSY_TIMEOUT
+op_minus
+id|k
+)braket
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|k
+OL
+id|HERMES_BAP_BUSY_TIMEOUT
+)paren
+(brace
+r_struct
+id|hermes_debug_entry
+op_star
+id|e
+op_assign
+op_amp
+id|hw-&gt;dbuf
+(braket
+(paren
+id|hw-&gt;dbufp
+op_increment
+)paren
+op_mod
+id|HERMES_DEBUG_BUFSIZE
+)braket
+suffix:semicolon
+id|e-&gt;bap
+op_assign
+id|bap
+suffix:semicolon
+id|e-&gt;id
+op_assign
+id|id
+suffix:semicolon
+id|e-&gt;offset
+op_assign
+id|offset
+suffix:semicolon
+id|e-&gt;cycles
+op_assign
+id|HERMES_BAP_BUSY_TIMEOUT
+op_minus
+id|k
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1104,7 +1336,7 @@ suffix:semicolon
 multiline_comment|/* Wait for the BAP to be ready */
 id|k
 op_assign
-id|BAP_BUSY_TIMEOUT
+id|HERMES_BAP_BUSY_TIMEOUT
 suffix:semicolon
 id|reg
 op_assign
@@ -1243,9 +1475,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|len
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
 id|len
 op_mod
 l_int|2
+)paren
 )paren
 r_return
 op_minus
@@ -1340,9 +1580,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|len
+OL
+l_int|0
+)paren
+op_logical_or
+(paren
 id|len
 op_mod
 l_int|2
+)paren
 )paren
 r_return
 op_minus
@@ -1439,15 +1687,20 @@ id|rlength
 comma
 id|rtype
 suffix:semicolon
-id|hermes_response_t
-id|resp
-suffix:semicolon
 r_if
 c_cond
+(paren
+(paren
+id|bufsize
+OL
+l_int|0
+)paren
+op_logical_or
 (paren
 id|bufsize
 op_mod
 l_int|2
+)paren
 )paren
 r_return
 op_minus
@@ -1464,8 +1717,7 @@ id|HERMES_CMD_ACCESS
 comma
 id|rid
 comma
-op_amp
-id|resp
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1539,8 +1791,16 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes_read_ltv(): rid  (0x%04x) does &quot;
-l_string|&quot;not match type (0x%04x)&bslash;n&quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;hermes_read_ltv(): rid  (0x%04x) does not match type (0x%04x)&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
+comma
+id|hw-&gt;iobase
 comma
 id|rid
 comma
@@ -1562,8 +1822,15 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;hermes @ 0x%x: Truncating LTV record from %d to %d bytes. &quot;
+l_string|&quot;hermes @ %s0x%lx: &quot;
+l_string|&quot;Truncating LTV record from %d to %d bytes. &quot;
 l_string|&quot;(rid=0x%04x, len=0x%04x)&bslash;n&quot;
+comma
+id|IO_TYPE
+c_func
+(paren
+id|hw
+)paren
 comma
 id|hw-&gt;iobase
 comma
@@ -1639,9 +1906,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-id|hermes_response_t
-id|resp
 suffix:semicolon
 r_int
 id|count
@@ -1742,8 +2006,7 @@ id|HERMES_CMD_WRITE
 comma
 id|rid
 comma
-op_amp
-id|resp
+l_int|NULL
 )paren
 suffix:semicolon
 id|out

@@ -1708,7 +1708,7 @@ id|sb-&gt;s_bdev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invalidate the journal device&squot;s buffers.  We don&squot;t want them&n;&t;&t; * floating about in memory - the physical journal device may&n;&t;&t; * hotswapped, and it breaks the `ro-after&squot; testing code.&n;&t;&t; */
-id|fsync_no_super
+id|sync_blockdev
 c_func
 (paren
 id|sbi-&gt;journal_bdev

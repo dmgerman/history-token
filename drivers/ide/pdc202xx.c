@@ -6160,6 +6160,8 @@ c_func
 id|ide_dma_bad_drive
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -6282,6 +6284,8 @@ c_func
 id|ide_dma_good_drive
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 )paren
 (brace
@@ -6366,12 +6370,14 @@ suffix:semicolon
 r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
-id|dmaproc
+id|udma
 c_func
 (paren
 id|dma_func
 comma
 id|drive
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -6403,13 +6409,20 @@ multiline_comment|/*&n; * pdc202xx_dmaproc() initiates/aborts (U)DMA read/write 
 DECL|function|pdc202xx_dmaproc
 r_int
 id|pdc202xx_dmaproc
+c_func
 (paren
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 id|byte
@@ -6869,6 +6882,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* use standard DMA stuff */
@@ -7912,9 +7927,8 @@ c_cond
 id|hwif-&gt;dma_base
 )paren
 (brace
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|pdc202xx_dmaproc
 suffix:semicolon
 id|hwif-&gt;highmem

@@ -1730,7 +1730,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -1880,7 +1880,7 @@ id|page
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -1984,7 +1984,7 @@ id|ENOMEM
 )paren
 suffix:semicolon
 )brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -1994,7 +1994,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -2035,7 +2035,7 @@ multiline_comment|/* We have to do this with page locked to prevent races */
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -2064,7 +2064,7 @@ OL
 l_int|0
 )paren
 (brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2249,7 +2249,7 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -2357,7 +2357,7 @@ id|ptr
 r_goto
 id|failed
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 op_star
@@ -3480,7 +3480,7 @@ suffix:semicolon
 id|unlock
 suffix:colon
 multiline_comment|/* Mark it unlocked again and drop the page.. */
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -4735,7 +4735,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

@@ -67,7 +67,7 @@ r_int
 id|size
 suffix:semicolon
 DECL|member|dmabuf
-id|__u8
+id|u8
 op_star
 id|dmabuf
 suffix:semicolon
@@ -85,7 +85,7 @@ r_struct
 id|avmcard_dmainfo
 (brace
 DECL|member|recvlen
-id|__u32
+id|u32
 id|recvlen
 suffix:semicolon
 DECL|member|recvbuf
@@ -184,7 +184,7 @@ id|mbase
 suffix:semicolon
 DECL|member|csr
 r_volatile
-id|__u32
+id|u32
 id|csr
 suffix:semicolon
 DECL|member|dma
@@ -2041,7 +2041,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 comma
 id|capi_register_params
@@ -2058,7 +2058,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 )paren
 suffix:semicolon
@@ -2240,7 +2240,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 comma
 id|capi_register_params
@@ -2257,7 +2257,7 @@ id|capi_ctr
 op_star
 id|ctrl
 comma
-id|__u16
+id|u16
 id|appl
 )paren
 suffix:semicolon

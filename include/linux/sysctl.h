@@ -426,12 +426,12 @@ op_assign
 l_int|3
 comma
 multiline_comment|/* struct: Set free page thresholds */
-DECL|enumerator|VM_BDFLUSH
-id|VM_BDFLUSH
+DECL|enumerator|VM_BDFLUSH_UNUSED
+id|VM_BDFLUSH_UNUSED
 op_assign
 l_int|4
 comma
-multiline_comment|/* struct: Control buffer cache flushing */
+multiline_comment|/* Spare */
 DECL|enumerator|VM_OVERCOMMIT_MEMORY
 id|VM_OVERCOMMIT_MEMORY
 op_assign

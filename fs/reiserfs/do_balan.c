@@ -20,6 +20,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* detects whether more than one&n;                                        copy of tb exists as a means&n;                                        of checking whether schedule&n;                                        is interrupting do_balance */
 macro_line|#endif
+multiline_comment|/*&n; * AKPM: The __mark_buffer_dirty() call here will not&n; * put the buffer on the dirty buffer LRU because we&squot;ve just&n; * set BH_Dirty.  That&squot;s a thinko in reiserfs.&n; *&n; * I&squot;m reluctant to &quot;fix&quot; this bug because that would change&n; * behaviour.  Using mark_buffer_dirty() here would make the&n; * buffer eligible for VM and periodic writeback, which may&n; * violate ordering constraints.  I&squot;ll just leave the code&n; * as-is by removing the __mark_buffer_dirty call altogether.&n; *&n; * Chris says this code has &quot;probably never been run&quot; anyway.&n; * It is due to go away.&n; */
 DECL|function|do_balance_mark_leaf_dirty
 r_inline
 r_void
@@ -53,22 +54,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_and_set_bit
-c_func
-(paren
-id|BH_Dirty
-comma
-op_amp
-id|bh-&gt;b_state
-)paren
-)paren
-(brace
-id|__mark_buffer_dirty
+id|test_set_buffer_dirty
 c_func
 (paren
 id|bh
 )paren
-suffix:semicolon
+)paren
+(brace
+singleline_comment|//&t;    __mark_buffer_dirty(bh) ;
 id|tb-&gt;need_balance_dirty
 op_assign
 l_int|1
@@ -6367,13 +6360,10 @@ op_amp
 id|bi
 )paren
 suffix:semicolon
-id|set_bit
+id|set_buffer_uptodate
 c_func
 (paren
-id|BH_Uptodate
-comma
-op_amp
-id|first_b-&gt;b_state
+id|first_b
 )paren
 suffix:semicolon
 id|tb-&gt;FEB
@@ -6630,7 +6620,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mark_buffer_clean
+id|clear_buffer_dirty
+c_func
 (paren
 id|bh
 )paren
