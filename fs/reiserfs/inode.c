@@ -39,10 +39,6 @@ r_int
 id|create
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
-singleline_comment|// evolved as the prototype did
-singleline_comment|//
 DECL|function|reiserfs_delete_inode
 r_void
 id|reiserfs_delete_inode
@@ -67,9 +63,10 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* The = 0 happens when we abort creating a new inode for some reason like lack of space.. */
@@ -182,9 +179,10 @@ id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -451,8 +449,7 @@ id|j-&gt;j_dirty_buffers
 suffix:semicolon
 )brace
 singleline_comment|//
-singleline_comment|// FIXME: we might cache recently accessed indirect item (or at least
-singleline_comment|// first 15 pointers just like ext2 does
+singleline_comment|// FIXME: we might cache recently accessed indirect item
 singleline_comment|// Ugh.  Not too eager for that....
 singleline_comment|//  I cut the code until such time as I see a convincing argument (benchmark).
 singleline_comment|// I don&squot;t want a bloated inode struct..., and I don&squot;t like code complexity....
@@ -1606,9 +1603,10 @@ r_return
 op_minus
 id|EFBIG
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* do not read the direct item */
@@ -1623,9 +1621,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -1957,12 +1956,6 @@ id|tag
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// initially this function was derived from ext2&squot;s analog and evolved
-singleline_comment|// as the prototype did.  You&squot;ll need to look at the ext2 version to
-singleline_comment|// determine which parts are derivative, if any, understanding that
-singleline_comment|// there are only so many ways to code to a given interface.
-singleline_comment|//
 DECL|function|reiserfs_get_block
 r_int
 id|reiserfs_get_block
@@ -2081,9 +2074,10 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* bad.... */
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|th.t_trans_id
@@ -2105,9 +2099,10 @@ OL
 l_int|0
 )paren
 (brace
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2127,9 +2122,10 @@ id|block
 )paren
 )paren
 (brace
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2168,9 +2164,10 @@ op_or
 id|GET_BLOCK_READ_DIRECT
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2656,9 +2653,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* the item was found, so new blocks were not added to the file&n;&t;** there is no need to make sure the inode is updated with this &n;&t;** transaction&n;&t;*/
@@ -3427,13 +3425,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|reiserfs_check_path
-c_func
-(paren
-op_amp
-id|path
-)paren
-suffix:semicolon
 id|failure
 suffix:colon
 r_if
@@ -3469,9 +3460,10 @@ c_func
 id|windex
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_check_path
@@ -5780,10 +5772,6 @@ op_star
 id|lenp
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
-singleline_comment|// evolved as the prototype did
-singleline_comment|//
 multiline_comment|/* looks for stat data, then copies fields to it, marks the buffer&n;   containing stat data as dirty */
 multiline_comment|/* reiserfs inodes are never really dirty, since the dirty inode call&n;** always logs them.  This call allows the VFS inode marking routines&n;** to properly mark inodes for datasync and such, but only actually&n;** does something when called for a synchronous update.&n;*/
 DECL|function|reiserfs_write_inode
@@ -5841,9 +5829,10 @@ id|PF_MEMALLOC
 )paren
 )paren
 (brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -5876,9 +5865,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -7359,7 +7349,10 @@ l_string|&quot;clm-6000: error reading block %lu on dev %s&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
-id|p_s_inode-&gt;i_sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|p_s_inode-&gt;i_sb
+)paren
 )paren
 suffix:semicolon
 id|error
@@ -7463,6 +7456,12 @@ op_star
 id|bh
 op_assign
 l_int|NULL
+suffix:semicolon
+id|reiserfs_write_lock
+c_func
+(paren
+id|p_s_inode-&gt;i_sb
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7710,7 +7709,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_return
+id|reiserfs_write_unlock
+c_func
+(paren
+id|p_s_inode-&gt;i_sb
+)paren
 suffix:semicolon
 )brace
 DECL|function|map_block_for_writepage
@@ -7812,9 +7815,10 @@ id|bh_result-&gt;b_page
 suffix:semicolon
 id|start_over
 suffix:colon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -8191,7 +8195,10 @@ l_string|&quot;clm-6003: bad item inode %lu, device %s&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
-id|inode-&gt;i_sb-&gt;s_id
+id|reiserfs_bdevname
+(paren
+id|inode-&gt;i_sb
+)paren
 )paren
 suffix:semicolon
 id|retval
@@ -8227,9 +8234,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* this is where we fill in holes in the file. */
@@ -8819,9 +8827,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// this is exactly what 2.3.99-pre9&squot;s ext2_readpage is
-singleline_comment|//
 DECL|function|reiserfs_readpage
 r_static
 r_int
@@ -8847,9 +8852,6 @@ id|reiserfs_get_block
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// modified from ext2_writepage is
-singleline_comment|//
 DECL|function|reiserfs_writepage
 r_static
 r_int
@@ -8882,9 +8884,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// from ext2_prepare_write, but modified
-singleline_comment|//
 DECL|function|reiserfs_prepare_write
 r_int
 id|reiserfs_prepare_write
@@ -8940,9 +8939,6 @@ id|reiserfs_get_block
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// this is exactly what 2.3.99-pre9&squot;s ext2_bmap is
-singleline_comment|//
 DECL|function|reiserfs_aop_bmap
 r_static
 r_int
@@ -9036,9 +9032,10 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -9082,9 +9079,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -9115,9 +9113,10 @@ id|O_SYNC
 )paren
 )paren
 (brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_commit_for_inode
@@ -9126,9 +9125,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
