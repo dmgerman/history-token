@@ -232,6 +232,8 @@ DECL|macro|WL3501_FREQ_DOMAIN_FRANCE
 mdefine_line|#define WL3501_FREQ_DOMAIN_FRANCE 0x32&t;/* Channel 10 to 13 */
 DECL|macro|WL3501_FREQ_DOMAIN_MKK
 mdefine_line|#define WL3501_FREQ_DOMAIN_MKK    0x40&t;/* Channel 14 */
+DECL|macro|WL3501_ESSID_MAX_LEN
+mdefine_line|#define WL3501_ESSID_MAX_LEN (IW_ESSID_MAX_SIZE + 2)
 DECL|struct|wl3501_tx_hdr
 r_struct
 id|wl3501_tx_hdr
@@ -459,7 +461,7 @@ r_int
 r_char
 id|ssid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|bss_basic_rate_set
@@ -783,7 +785,7 @@ r_int
 r_char
 id|ssid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|phy_pset
@@ -895,7 +897,7 @@ r_int
 r_char
 id|ssid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|scan_type
@@ -973,7 +975,7 @@ r_int
 r_char
 id|ssid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|phy_pset
@@ -1475,7 +1477,7 @@ DECL|member|essid
 id|u8
 id|essid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|bssid
@@ -1495,7 +1497,7 @@ DECL|member|keep_essid
 id|u8
 id|keep_essid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|nick
@@ -1626,14 +1628,14 @@ DECL|member|essid
 id|u8
 id|essid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|keep_essid
 id|u8
 id|keep_essid
 (braket
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )braket
 suffix:semicolon
 DECL|member|version

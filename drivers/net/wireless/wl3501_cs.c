@@ -3160,7 +3160,7 @@ op_star
 )paren
 id|this-&gt;essid
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|memcpy
@@ -3178,7 +3178,7 @@ op_star
 )paren
 id|this-&gt;essid
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|signal.bss_type
@@ -5170,7 +5170,7 @@ id|i
 dot
 id|ssid
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|wl3501_mgmt_auth
@@ -5248,7 +5248,7 @@ id|i
 dot
 id|ssid
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|wl3501_online
@@ -8217,7 +8217,7 @@ l_int|0
 )braket
 )paren
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|memcpy
@@ -8247,7 +8247,7 @@ l_int|0
 )braket
 )paren
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -8381,7 +8381,7 @@ l_int|0
 )braket
 )paren
 comma
-l_int|34
+id|WL3501_ESSID_MAX_LEN
 )paren
 suffix:semicolon
 id|rc
