@@ -946,15 +946,6 @@ op_star
 id|addr
 )paren
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* spinlock                      */
-DECL|member|count
-id|atomic_t
-id|count
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;     *  Frame buffer operations&n;     */
