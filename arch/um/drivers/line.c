@@ -2366,8 +2366,6 @@ c_func
 (paren
 id|driver
 comma
-id|driver-&gt;minor_start
-op_plus
 id|i
 )paren
 suffix:semicolon

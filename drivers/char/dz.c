@@ -4402,7 +4402,7 @@ suffix:semicolon
 macro_line|#else
 id|serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#endif
 id|serial_driver.major
@@ -4537,7 +4537,7 @@ suffix:semicolon
 macro_line|#else
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#endif
 id|callout_driver.major
@@ -4753,8 +4753,6 @@ c_func
 op_amp
 id|serial_driver
 comma
-id|serial_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon
@@ -4764,8 +4762,6 @@ c_func
 op_amp
 id|callout_driver
 comma
-id|callout_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon

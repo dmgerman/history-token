@@ -3375,7 +3375,7 @@ comma
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttySA%d&quot;
+l_string|&quot;ttySA&quot;
 comma
 dot
 id|major

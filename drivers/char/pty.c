@@ -1450,7 +1450,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|pty_driver.name
 op_assign
-l_string|&quot;pty/m%d&quot;
+l_string|&quot;pty/m&quot;
 suffix:semicolon
 macro_line|#else
 id|pty_driver.name
@@ -1581,7 +1581,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|pty_slave_driver.name
 op_assign
-l_string|&quot;pty/s%d&quot;
+l_string|&quot;pty/s&quot;
 suffix:semicolon
 macro_line|#else
 id|pty_slave_driver.name
@@ -1951,6 +1951,15 @@ id|pts_driver
 id|i
 )braket
 dot
+id|flags
+op_or_assign
+id|TTY_DRIVER_NO_DEVFS
+suffix:semicolon
+id|pts_driver
+(braket
+id|i
+)braket
+dot
 id|other
 op_assign
 op_amp
@@ -1958,15 +1967,6 @@ id|ptm_driver
 (braket
 id|i
 )braket
-suffix:semicolon
-id|pts_driver
-(braket
-id|i
-)braket
-dot
-id|flags
-op_or_assign
-id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 id|pts_driver
 (braket

@@ -7674,7 +7674,7 @@ suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
 id|serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|serial_driver.name
@@ -7813,7 +7813,7 @@ suffix:semicolon
 macro_line|#if (LINUX_VERSION_CODE &gt; 0x2032D &amp;&amp; defined(CONFIG_DEVFS_FS))
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|callout_driver.name
@@ -8119,8 +8119,6 @@ c_func
 op_amp
 id|serial_driver
 comma
-id|serial_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon
@@ -8130,8 +8128,6 @@ c_func
 op_amp
 id|callout_driver
 comma
-id|callout_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon

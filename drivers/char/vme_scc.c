@@ -471,7 +471,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|scc_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|scc_driver.name
@@ -607,7 +607,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|scc_callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|scc_callout_driver.name

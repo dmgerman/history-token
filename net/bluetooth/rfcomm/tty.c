@@ -3912,7 +3912,7 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|name
 op_assign
-l_string|&quot;bluetooth/rfcomm/%d&quot;
+l_string|&quot;bluetooth/rfcomm/&quot;
 comma
 macro_line|#else
 dot

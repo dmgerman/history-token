@@ -7382,6 +7382,8 @@ id|port
 id|printk
 c_func
 (paren
+l_string|&quot;%s%d&quot;
+comma
 id|drv-&gt;dev_name
 comma
 id|port-&gt;line
@@ -8334,8 +8336,6 @@ c_func
 (paren
 id|drv-&gt;tty_driver
 comma
-id|drv-&gt;minor
-op_plus
 id|port-&gt;line
 )paren
 suffix:semicolon
@@ -8418,8 +8418,6 @@ c_func
 (paren
 id|drv-&gt;tty_driver
 comma
-id|drv-&gt;minor
-op_plus
 id|port-&gt;line
 )paren
 suffix:semicolon
@@ -8879,6 +8877,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s%d&quot;
+comma
 id|drv-&gt;dev_name
 comma
 id|line

@@ -1053,7 +1053,7 @@ l_string|&quot;hvc&quot;
 suffix:semicolon
 id|hvc_driver.name
 op_assign
-l_string|&quot;hvc/%d&quot;
+l_string|&quot;hvc/&quot;
 suffix:semicolon
 id|hvc_driver.major
 op_assign
@@ -1175,8 +1175,6 @@ c_func
 op_amp
 id|hvc_driver
 comma
-id|hvc_driver.minor_start
-op_plus
 id|i
 )paren
 suffix:semicolon

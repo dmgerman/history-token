@@ -9029,7 +9029,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|serial_driver.name
@@ -9170,7 +9170,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|callout_driver.name

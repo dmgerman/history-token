@@ -9997,7 +9997,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|cy_serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|cy_serial_driver.name
@@ -10130,7 +10130,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|cy_callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|cy_callout_driver.name

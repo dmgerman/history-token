@@ -9099,7 +9099,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|rocket_driver.name
 op_assign
-l_string|&quot;tts/R%d&quot;
+l_string|&quot;tts/R&quot;
 suffix:semicolon
 macro_line|#else
 id|rocket_driver.name
@@ -9240,7 +9240,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/R%d&quot;
+l_string|&quot;cua/R&quot;
 suffix:semicolon
 macro_line|#else
 id|callout_driver.name

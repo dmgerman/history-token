@@ -1167,7 +1167,7 @@ op_star
 id|driver
 comma
 r_int
-id|minor
+id|index
 )paren
 suffix:semicolon
 r_extern
@@ -1181,7 +1181,7 @@ op_star
 id|driver
 comma
 r_int
-id|minor
+id|index
 )paren
 suffix:semicolon
 r_extern

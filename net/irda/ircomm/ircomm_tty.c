@@ -381,17 +381,10 @@ id|driver.driver_name
 op_assign
 l_string|&quot;ircomm&quot;
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEVFS_FS
-id|driver.name
-op_assign
-l_string|&quot;ircomm%d&quot;
-suffix:semicolon
-macro_line|#else
 id|driver.name
 op_assign
 l_string|&quot;ircomm&quot;
 suffix:semicolon
-macro_line|#endif
 id|driver.major
 op_assign
 id|IRCOMM_TTY_MAJOR

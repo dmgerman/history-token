@@ -11949,7 +11949,7 @@ id|THIS_MODULE
 suffix:semicolon
 id|console_driver.name
 op_assign
-l_string|&quot;vc/%d&quot;
+l_string|&quot;vc/&quot;
 suffix:semicolon
 id|console_driver.name_base
 op_assign
@@ -12595,8 +12595,6 @@ id|tty_register_device
 op_amp
 id|console_driver
 comma
-id|console_driver.minor_start
-op_plus
 id|i
 )paren
 suffix:semicolon
