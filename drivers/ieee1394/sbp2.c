@@ -3081,6 +3081,12 @@ id|current
 )paren
 )paren
 (brace
+id|SBP2_WARN
+c_func
+(paren
+l_string|&quot;aborting sbp2_start_device due to event&quot;
+)paren
+suffix:semicolon
 id|sbp2_remove_device
 c_func
 (paren
