@@ -450,6 +450,12 @@ op_assign
 op_amp
 id|stnic_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Snarf the interrupt now.  There&squot;s no point in waiting since we cannot&n;     share and the board will usually be enabled. */
 id|i
 op_assign

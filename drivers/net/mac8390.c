@@ -1636,6 +1636,12 @@ op_assign
 op_amp
 id|mac8390_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* GAR, ei_status is actually a macro even though it looks global */
 id|ei_status.name
 op_assign

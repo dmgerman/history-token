@@ -57,6 +57,19 @@ macro_line|#else
 DECL|macro|ei_debug
 mdefine_line|#define ei_debug 1
 macro_line|#endif
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+r_extern
+r_void
+id|ei_poll
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 r_extern
 r_int
 id|ethdev_init

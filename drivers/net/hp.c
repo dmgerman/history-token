@@ -849,6 +849,12 @@ op_assign
 op_amp
 id|hp_close
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|ei_poll
+suffix:semicolon
+macro_line|#endif
 id|ei_status.name
 op_assign
 id|name
