@@ -275,7 +275,6 @@ id|pci_device_id
 op_star
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SCSI_QLOGIC_1280_MODULE) || (LINUX_VERSION_CODE &lt; 0x020600)
 r_static
 r_void
 id|qla1280_remove_one
@@ -286,7 +285,6 @@ id|pci_dev
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; *  QLogic Driver Support Function Prototypes.&n; */
 r_static
 r_void
@@ -18689,7 +18687,6 @@ r_return
 id|error
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SCSI_QLOGIC_1280_MODULE) || (LINUX_VERSION_CODE &lt; 0x020600)
 r_static
 r_void
 id|__devexit
@@ -18832,7 +18829,6 @@ id|host
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020600
 DECL|variable|qla1280_pci_driver
 r_static
