@@ -1010,7 +1010,11 @@ op_assign
 id|current-&gt;tty
 ques
 c_cond
-id|current-&gt;tty-&gt;device
+id|tty_devnum
+c_func
+(paren
+id|current-&gt;tty
+)paren
 suffix:colon
 l_int|0
 suffix:semicolon
