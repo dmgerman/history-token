@@ -929,10 +929,10 @@ id|sys_call_table
 op_assign
 (brace
 (braket
-l_int|0
+id|__NR_restart_syscall
 )braket
 op_assign
-id|sys_ni_syscall
+id|sys_restart_syscall
 comma
 (braket
 id|__NR_exit
