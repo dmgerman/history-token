@@ -2332,6 +2332,157 @@ DECL|typedef|TRANSACT_IOCTL_RSP
 )brace
 id|TRANSACT_IOCTL_RSP
 suffix:semicolon
+DECL|struct|smb_com_transaction_change_notify_req
+r_typedef
+r_struct
+id|smb_com_transaction_change_notify_req
+(brace
+DECL|member|hdr
+r_struct
+id|smb_hdr
+id|hdr
+suffix:semicolon
+multiline_comment|/* wct = 23 */
+DECL|member|MaxSetupCount
+id|__u8
+id|MaxSetupCount
+suffix:semicolon
+DECL|member|Reserved
+id|__u16
+id|Reserved
+suffix:semicolon
+DECL|member|TotalParameterCount
+id|__u32
+id|TotalParameterCount
+suffix:semicolon
+DECL|member|TotalDataCount
+id|__u32
+id|TotalDataCount
+suffix:semicolon
+DECL|member|MaxParameterCount
+id|__u32
+id|MaxParameterCount
+suffix:semicolon
+DECL|member|MaxDataCount
+id|__u32
+id|MaxDataCount
+suffix:semicolon
+DECL|member|ParameterCount
+id|__u32
+id|ParameterCount
+suffix:semicolon
+DECL|member|ParameterOffset
+id|__u32
+id|ParameterOffset
+suffix:semicolon
+DECL|member|DataCount
+id|__u32
+id|DataCount
+suffix:semicolon
+DECL|member|DataOffset
+id|__u32
+id|DataOffset
+suffix:semicolon
+DECL|member|SetupCount
+id|__u8
+id|SetupCount
+suffix:semicolon
+multiline_comment|/* four setup words follow subcommand */
+multiline_comment|/* SNIA spec incorrectly included spurious pad here */
+DECL|member|SubCommand
+id|__u16
+id|SubCommand
+suffix:semicolon
+multiline_comment|/* 4 = Change Notify */
+DECL|member|CompletionFilter
+id|__u32
+id|CompletionFilter
+suffix:semicolon
+multiline_comment|/* operation to monitor */
+DECL|member|Fid
+id|__u16
+id|Fid
+suffix:semicolon
+DECL|member|WatchTree
+id|__u8
+id|WatchTree
+suffix:semicolon
+multiline_comment|/* 1 = Monitor subdirectories */
+DECL|member|ByteCount
+id|__u16
+id|ByteCount
+suffix:semicolon
+DECL|member|Pad
+id|__u8
+id|Pad
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|Data
+id|__u8
+id|Data
+(braket
+l_int|1
+)braket
+suffix:semicolon
+DECL|typedef|TRANSACT_CHANGE_NOTIFY_REQ
+)brace
+id|TRANSACT_CHANGE_NOTIFY_REQ
+suffix:semicolon
+multiline_comment|/* Completion Filter flags */
+DECL|macro|FILE_NOTIFY_CHANGE_FILE_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_FILE_NAME    0x00000001
+DECL|macro|FILE_NOTIFY_CHANGE_DIR_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_DIR_NAME     0x00000002
+DECL|macro|FILE_NOTIFY_CHANGE_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_NAME         0x00000003
+DECL|macro|FILE_NOTIFY_CHANGE_ATTRIBUTES
+mdefine_line|#define FILE_NOTIFY_CHANGE_ATTRIBUTES   0x00000004
+DECL|macro|FILE_NOTIFY_CHANGE_SIZE
+mdefine_line|#define FILE_NOTIFY_CHANGE_SIZE         0x00000008
+DECL|macro|FILE_NOTIFY_CHANGE_LAST_WRITE
+mdefine_line|#define FILE_NOTIFY_CHANGE_LAST_WRITE   0x00000010
+DECL|macro|FILE_NOTIFY_CHANGE_LAST_ACCESS
+mdefine_line|#define FILE_NOTIFY_CHANGE_LAST_ACCESS  0x00000020
+DECL|macro|FILE_NOTIFY_CHANGE_CREATION
+mdefine_line|#define FILE_NOTIFY_CHANGE_CREATION     0x00000040
+DECL|macro|FILE_NOTIFY_CHANGE_EA
+mdefine_line|#define FILE_NOTIFY_CHANGE_EA           0x00000080
+DECL|macro|FILE_NOTIFY_CHANGE_SECURITY
+mdefine_line|#define FILE_NOTIFY_CHANGE_SECURITY     0x00000100
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_NAME
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_NAME  0x00000200
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_SIZE
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_SIZE  0x00000400
+DECL|macro|FILE_NOTIFY_CHANGE_STREAM_WRITE
+mdefine_line|#define FILE_NOTIFY_CHANGE_STREAM_WRITE 0x00000800
+multiline_comment|/* response contains array of the following structures */
+DECL|struct|file_notify_information
+r_struct
+id|file_notify_information
+(brace
+DECL|member|NextEntryOffset
+id|__u32
+id|NextEntryOffset
+suffix:semicolon
+DECL|member|Action
+id|__u32
+id|Action
+suffix:semicolon
+DECL|member|FileNameLength
+id|__u32
+id|FileNameLength
+suffix:semicolon
+DECL|member|FileName
+id|__u8
+id|FileName
+(braket
+l_int|1
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|reparse_data
 r_struct
 id|reparse_data
@@ -4240,6 +4391,11 @@ DECL|typedef|FILE_SYSTEM_UNIX_INFO
 id|FILE_SYSTEM_UNIX_INFO
 suffix:semicolon
 multiline_comment|/* Unix extensions info, level 0x200 */
+multiline_comment|/* Linux/Unix extensions capability flags */
+DECL|macro|CIFS_UNIX_FCNTL_CAP
+mdefine_line|#define CIFS_UNIX_FCNTL_CAP             0x00000001 /* support for fcntl locks */
+DECL|macro|CIFS_UNIX_POSIX_ACL_CAP
+mdefine_line|#define CIFS_UNIX_POSIX_ACL_CAP         0x00000002
 multiline_comment|/* DeviceType Flags */
 DECL|macro|FILE_DEVICE_CD_ROM
 mdefine_line|#define FILE_DEVICE_CD_ROM              0x00000002
