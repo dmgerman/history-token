@@ -631,16 +631,15 @@ id|dev
 suffix:semicolon
 r_extern
 r_void
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 r_struct
 id|usb_device
 op_star
+id|dev
 )paren
 suffix:semicolon
-DECL|macro|usb_put_dev
-mdefine_line|#define usb_put_dev usb_free_dev
 multiline_comment|/* mostly for devices emulating SCSI over USB */
 r_extern
 r_int

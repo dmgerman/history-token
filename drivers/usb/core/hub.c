@@ -3609,7 +3609,7 @@ id|delay
 )paren
 )paren
 (brace
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 id|dev
@@ -3775,7 +3775,7 @@ r_goto
 id|done
 suffix:semicolon
 multiline_comment|/* Free the configuration if there was an error */
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 id|dev

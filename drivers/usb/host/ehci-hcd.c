@@ -1407,7 +1407,7 @@ id|bus-&gt;root_hub
 op_assign
 l_int|0
 suffix:semicolon
-id|usb_free_dev
+id|usb_put_dev
 (paren
 id|udev
 )paren

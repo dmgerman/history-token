@@ -1929,10 +1929,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_free_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
-DECL|function|usb_free_dev
+multiline_comment|/**&n; * usb_put_dev - free a usb device structure when all users of it are finished.&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Must be called when a user of a device is finished with it.  When the last&n; * user of the device calls this function, the memory of the device is freed.&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
+DECL|function|usb_put_dev
 r_void
-id|usb_free_dev
+id|usb_put_dev
 c_func
 (paren
 r_struct
@@ -4181,11 +4181,11 @@ c_func
 id|usb_alloc_dev
 )paren
 suffix:semicolon
-DECL|variable|usb_free_dev
+DECL|variable|usb_put_dev
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|usb_free_dev
+id|usb_put_dev
 )paren
 suffix:semicolon
 DECL|variable|usb_get_dev
