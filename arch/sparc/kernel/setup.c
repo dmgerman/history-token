@@ -1345,8 +1345,7 @@ c_func
 id|prom_sync_me
 )paren
 suffix:semicolon
-(brace
-macro_line|#if !CONFIG_SUN_SERIAL
+macro_line|#ifndef CONFIG_SERIAL_CONSOLE&t;/* Not CONFIG_SERIAL_SUNCORE: to be gone. */
 id|serial_console
 op_assign
 l_int|0
@@ -1535,7 +1534,6 @@ suffix:semicolon
 multiline_comment|/* Force ttyb as console */
 )brace
 macro_line|#endif
-)brace
 r_if
 c_cond
 (paren
@@ -1594,15 +1592,6 @@ id|init_task.thread.kregs
 op_assign
 op_amp
 id|fake_swapper_regs
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serial_console
-)paren
-id|conswitchp
-op_assign
-l_int|NULL
 suffix:semicolon
 id|paging_init
 c_func

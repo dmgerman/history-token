@@ -878,8 +878,7 @@ op_amp
 op_complement
 l_int|3
 comma
-op_amp
-id|v
+id|val
 )paren
 suffix:semicolon
 r_return
@@ -1824,11 +1823,11 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Main entry point from the PCI subsystem.&n; */
-DECL|function|pcibios_init
+DECL|function|pcic_init
 r_static
 r_int
 id|__init
-id|pcibios_init
+id|pcic_init
 c_func
 (paren
 r_void
@@ -4526,11 +4525,11 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|variable|pcibios_init
+DECL|variable|pcic_init
 id|subsys_initcall
 c_func
 (paren
-id|pcibios_init
+id|pcic_init
 )paren
 suffix:semicolon
 eof
