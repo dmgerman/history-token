@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * driver.c - centralized device driver management&n; *&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG 0
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -495,6 +495,12 @@ c_func
 id|drv
 )paren
 suffix:semicolon
+id|devclass_add_driver
+c_func
+(paren
+id|drv
+)paren
+suffix:semicolon
 id|put_driver
 c_func
 (paren
@@ -542,6 +548,25 @@ comma
 id|drv-&gt;bus-&gt;name
 comma
 id|drv-&gt;name
+)paren
+suffix:semicolon
+id|bus_remove_driver
+c_func
+(paren
+id|drv
+)paren
+suffix:semicolon
+id|devclass_remove_driver
+c_func
+(paren
+id|drv
+)paren
+suffix:semicolon
+id|kobject_unregister
+c_func
+(paren
+op_amp
+id|drv-&gt;kobj
 )paren
 suffix:semicolon
 id|put_driver
