@@ -20,7 +20,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_ALL_PPC
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#include &quot;macmodes.h&quot;
+macro_line|#include &quot;../macmodes.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_ADB_PMU
 macro_line|#include &lt;linux/adb.h&gt;
@@ -8708,6 +8708,12 @@ l_int|16
 r_int
 id|i
 suffix:semicolon
+id|u32
+op_star
+id|pal
+op_assign
+id|info-&gt;pseudo_palette
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -8717,15 +8723,7 @@ id|par-&gt;crtc.depth
 r_case
 l_int|15
 suffix:colon
-(paren
-(paren
-id|u16
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
+id|pal
 (braket
 id|regno
 )braket
@@ -8749,15 +8747,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
-(paren
-(paren
-id|u16
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
+id|pal
 (braket
 id|regno
 )braket
@@ -8781,15 +8771,7 @@ suffix:semicolon
 r_case
 l_int|24
 suffix:colon
-(paren
-(paren
-id|u32
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
+id|pal
 (braket
 id|regno
 )braket
@@ -8823,15 +8805,7 @@ l_int|8
 op_or
 id|regno
 suffix:semicolon
-(paren
-(paren
-id|u32
-op_star
-)paren
-(paren
-id|info-&gt;pseudo_palette
-)paren
-)paren
+id|pal
 (braket
 id|regno
 )braket
