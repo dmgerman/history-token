@@ -1,12 +1,12 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *&t;m5282sim.h -- ColdFire 5282 System Integration Module support.&n; *&n; *&t;(C) Copyright 2003, Greg Ungerer (gerg@snapgear.com)&n; */
+multiline_comment|/*&n; *&t;m528xsim.h -- ColdFire 5280/5282 System Integration Module support.&n; *&n; *&t;(C) Copyright 2003, Greg Ungerer (gerg@snapgear.com)&n; */
 multiline_comment|/****************************************************************************/
-macro_line|#ifndef&t;m5282sim_h
-DECL|macro|m5282sim_h
-mdefine_line|#define&t;m5282sim_h
+macro_line|#ifndef&t;m528xsim_h
+DECL|macro|m528xsim_h
+mdefine_line|#define&t;m528xsim_h
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *&t;Define the 5282 SIM register set addresses.&n; */
+multiline_comment|/*&n; *&t;Define the 5280/5282 SIM register set addresses.&n; */
 DECL|macro|MCFICM_INTC0
 mdefine_line|#define&t;MCFICM_INTC0&t;&t;0x0c00&t;&t;/* Base for Interrupt Ctrl 0 */
 DECL|macro|MCFICM_INTC1
@@ -29,10 +29,12 @@ DECL|macro|MCFINTC_IACKL
 mdefine_line|#define&t;MCFINTC_IACKL&t;&t;0x19&t;&t;/* */
 DECL|macro|MCFINTC_ICR0
 mdefine_line|#define&t;MCFINTC_ICR0&t;&t;0x40&t;&t;/* Base ICR register */
+DECL|macro|MCFINT_VECBASE
+mdefine_line|#define&t;MCFINT_VECBASE&t;&t;64&t;&t;/* Vector base number */
 DECL|macro|MCFINT_UART0
 mdefine_line|#define&t;MCFINT_UART0&t;&t;13&t;&t;/* Interrupt number for UART0 */
 DECL|macro|MCFINT_PIT1
 mdefine_line|#define&t;MCFINT_PIT1&t;&t;55&t;&t;/* Interrupt number for PIT1 */
 multiline_comment|/****************************************************************************/
-macro_line|#endif&t;/* m5282sim_h */
+macro_line|#endif&t;/* m528xsim_h */
 eof

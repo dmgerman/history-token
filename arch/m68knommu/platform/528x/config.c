@@ -1,5 +1,5 @@
 multiline_comment|/***************************************************************************/
-multiline_comment|/*&n; *&t;linux/arch/m68knommu/platform/5282/config.c&n; *&n; *&t;Sub-architcture dependant initialization code for the Motorola&n; *&t;5282 CPU.&n; *&n; *&t;Copyright (C) 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;Copyright (C) 2001-2003, SnapGear Inc. (www.snapgear.com)&n; */
+multiline_comment|/*&n; *&t;linux/arch/m68knommu/platform/528x/config.c&n; *&n; *&t;Sub-architcture dependant initialization code for the Motorola&n; *&t;5280 and 5282 CPUs.&n; *&n; *&t;Copyright (C) 1999-2003, Greg Ungerer (gerg@snapgear.com)&n; *&t;Copyright (C) 2001-2003, SnapGear Inc. (www.snapgear.com)&n; */
 multiline_comment|/***************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
