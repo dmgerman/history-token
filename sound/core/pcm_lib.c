@@ -8341,7 +8341,7 @@ r_return
 id|v
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * snd_pcm_hw_param_choose&n; *&n; * Choose one configuration from configuration space defined by PARAMS&n; * The configuration choosen is that obtained fixing in this order:&n; * first access, first format, first subformat, min channels,&n; * min rate, min period time, max buffer size, min tick time&n; */
+multiline_comment|/**&n; * snd_pcm_hw_param_choose&n; *&n; * Choose one configuration from configuration space defined by PARAMS&n; * The configuration chosen is that obtained fixing in this order:&n; * first access, first format, first subformat, min channels,&n; * min rate, min period time, max buffer size, min tick time&n; */
 DECL|function|snd_pcm_hw_params_choose
 r_int
 id|snd_pcm_hw_params_choose
@@ -10080,6 +10080,9 @@ id|runtime-&gt;status-&gt;state
 r_case
 id|SNDRV_PCM_STATE_XRUN
 suffix:colon
+r_case
+id|SNDRV_PCM_STATE_DRAINING
+suffix:colon
 id|state
 op_assign
 id|ERROR
@@ -11464,6 +11467,8 @@ c_func
 id|substream
 )paren
 suffix:semicolon
+id|__draining
+suffix:colon
 id|avail
 op_assign
 id|snd_pcm_capture_avail
@@ -11686,6 +11691,12 @@ id|SUSPENDED
 suffix:semicolon
 r_goto
 id|_end_loop
+suffix:semicolon
+r_case
+id|SNDRV_PCM_STATE_DRAINING
+suffix:colon
+r_goto
+id|__draining
 suffix:semicolon
 r_default
 suffix:colon

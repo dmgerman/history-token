@@ -30,10 +30,6 @@ id|ia64_mv_pci_unmap_sg
 id|sba_unmap_sg
 suffix:semicolon
 r_extern
-id|ia64_mv_pci_dma_address
-id|sba_dma_address
-suffix:semicolon
-r_extern
 id|ia64_mv_pci_dma_supported
 id|sba_dma_supported
 suffix:semicolon
@@ -60,8 +56,6 @@ DECL|macro|platform_pci_dma_sync_single
 mdefine_line|#define platform_pci_dma_sync_single&t;((ia64_mv_pci_dma_sync_single *) machvec_noop)
 DECL|macro|platform_pci_dma_sync_sg
 mdefine_line|#define platform_pci_dma_sync_sg&t;((ia64_mv_pci_dma_sync_sg *) machvec_noop)
-DECL|macro|platform_pci_dma_address
-mdefine_line|#define platform_pci_dma_address&t;sba_dma_address
 DECL|macro|platform_pci_dma_supported
 mdefine_line|#define platform_pci_dma_supported&t;sba_dma_supported
 macro_line|#endif /* _ASM_IA64_MACHVEC_HPZX1_h */

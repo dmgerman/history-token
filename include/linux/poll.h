@@ -204,6 +204,7 @@ r_int
 id|nr
 comma
 r_void
+id|__user
 op_star
 id|ufdset
 comma
@@ -293,6 +294,7 @@ r_int
 id|nr
 comma
 r_void
+id|__user
 op_star
 id|ufdset
 comma

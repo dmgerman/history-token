@@ -924,21 +924,6 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-r_struct
-id|acpi_gpe_block_info
-op_star
-id|gpe_block
-suffix:semicolon
-r_struct
-id|acpi_gpe_block_info
-op_star
-id|next_gpe_block
-suffix:semicolon
-r_struct
-id|acpi_gpe_event_info
-op_star
-id|gpe_event_info
-suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ev_terminate&quot;
@@ -951,7 +936,7 @@ id|acpi_gbl_events_initialized
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Disable all event-related functionality.&n;&t;&t; * In all cases, on error, print a message but obviously we don&squot;t abort.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * Disable all fixed events&n;&t;&t; */
+multiline_comment|/* Disable all fixed events */
 r_for
 c_loop
 (paren
@@ -975,8 +960,6 @@ id|acpi_disable_event
 id|u32
 )paren
 id|i
-comma
-id|ACPI_EVENT_FIXED
 comma
 l_int|0
 )paren
@@ -1006,81 +989,15 @@ id|i
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Disable all GPEs&n;&t;&t; */
-id|gpe_block
-op_assign
-id|acpi_gbl_gpe_block_list_head
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|gpe_block
-)paren
-(brace
-id|gpe_event_info
-op_assign
-id|gpe_block-&gt;event_info
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-(paren
-id|gpe_block-&gt;register_count
-op_star
-l_int|8
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
+multiline_comment|/* Disable all GPEs in all GPE blocks */
 id|status
 op_assign
-id|acpi_hw_disable_gpe
+id|acpi_ev_walk_gpe_list
 (paren
-id|gpe_event_info
+id|acpi_hw_disable_gpe_block
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-(paren
-id|status
-)paren
-)paren
-(brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_ERROR
-comma
-l_string|&quot;Could not disable GPE %d&bslash;n&quot;
-comma
-(paren
-id|u32
-)paren
-id|i
-)paren
-)paren
-suffix:semicolon
-)brace
-id|gpe_event_info
-op_increment
-suffix:semicolon
-)brace
-id|gpe_block
-op_assign
-id|gpe_block-&gt;next
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Remove SCI handler&n;&t;&t; */
+multiline_comment|/* Remove SCI handler */
 id|status
 op_assign
 id|acpi_ev_remove_sci_handler
@@ -1108,7 +1025,7 @@ l_string|&quot;Could not remove SCI handler&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Return to original mode if necessary&n;&t; */
+multiline_comment|/* Return to original mode if necessary */
 r_if
 c_cond
 (paren
@@ -1142,41 +1059,6 @@ l_string|&quot;acpi_disable failed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;&t; * Free global GPE blocks and related info structures&n;&t; */
-id|gpe_block
-op_assign
-id|acpi_gbl_gpe_block_list_head
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|gpe_block
-)paren
-(brace
-id|next_gpe_block
-op_assign
-id|gpe_block-&gt;next
-suffix:semicolon
-id|ACPI_MEM_FREE
-(paren
-id|gpe_block-&gt;event_info
-)paren
-suffix:semicolon
-id|ACPI_MEM_FREE
-(paren
-id|gpe_block-&gt;register_info
-)paren
-suffix:semicolon
-id|ACPI_MEM_FREE
-(paren
-id|gpe_block
-)paren
-suffix:semicolon
-id|gpe_block
-op_assign
-id|next_gpe_block
-suffix:semicolon
 )brace
 id|return_VOID
 suffix:semicolon

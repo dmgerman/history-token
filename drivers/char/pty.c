@@ -1515,6 +1515,10 @@ id|pty_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|pty_driver.owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|pty_driver.driver_name
 op_assign
 l_string|&quot;pty_master&quot;

@@ -3714,11 +3714,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3971,11 +3966,6 @@ id|off_t
 id|begin
 op_assign
 l_int|0
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -4404,11 +4394,6 @@ id|length
 r_break
 suffix:semicolon
 )brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 op_star
 id|start
 op_assign

@@ -25,7 +25,6 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
@@ -1336,7 +1335,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1452,7 +1451,7 @@ op_star
 op_star
 l_int|4
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -3736,7 +3735,7 @@ r_struct
 id|irqaction
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

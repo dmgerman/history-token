@@ -20,7 +20,7 @@ DECL|macro|set_fs
 mdefine_line|#define set_fs(x) (current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
-multiline_comment|/*&n; * Is a address valid? This does a straighforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */
+multiline_comment|/*&n; * Is a address valid? This does a straightforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */
 DECL|macro|__access_ok
 mdefine_line|#define __access_ok(addr,size,segment) &bslash;&n;&t;(((segment).seg &amp; (addr | size | (addr+size))) == 0)
 DECL|macro|access_ok

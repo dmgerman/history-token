@@ -3,6 +3,7 @@ multiline_comment|/*&n; * Copyright (C) 2000 - 2003, R. Byron Moore&n; * All rig
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
+macro_line|#include &lt;acpi/acevents.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_UTILITIES
 id|ACPI_MODULE_NAME
@@ -155,6 +156,26 @@ id|obj_pointer
 op_assign
 id|object-&gt;package.elements
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_DEVICE
+suffix:colon
+r_if
+c_cond
+(paren
+id|object-&gt;device.gpe_block
+)paren
+(brace
+(paren
+r_void
+)paren
+id|acpi_ev_delete_gpe_block
+(paren
+id|object-&gt;device.gpe_block
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

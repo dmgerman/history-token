@@ -470,6 +470,10 @@ id|td-&gt;magic
 op_assign
 id|TTY_DRIVER_MAGIC
 suffix:semicolon
+id|td-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|td-&gt;driver_name
 op_assign
 l_string|&quot;tty3270&quot;
@@ -888,11 +892,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|tub_inc_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1139,11 +1138,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|tub_dec_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1233,11 +1227,6 @@ id|tubp
 suffix:semicolon
 id|do_return
 suffix:colon
-id|tub_dec_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
 id|TUBUNLOCK
 c_func
 (paren

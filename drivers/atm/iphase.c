@@ -15934,7 +15934,9 @@ l_string|&quot;ia packet len:%d padding:%d&bslash;n&quot;
 comma
 id|total_len
 comma
-id|pad
+id|total_len
+op_minus
+id|skb-&gt;len
 )paren
 suffix:semicolon
 )paren
@@ -17560,7 +17562,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|ia_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

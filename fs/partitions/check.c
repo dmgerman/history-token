@@ -1087,7 +1087,6 @@ id|subsystem
 id|block_subsys
 suffix:semicolon
 DECL|variable|ktype_part
-r_static
 r_struct
 id|kobj_type
 id|ktype_part
@@ -1162,6 +1161,10 @@ c_func
 (paren
 id|p-&gt;de
 )paren
+suffix:semicolon
+id|p-&gt;de
+op_assign
+l_int|NULL
 suffix:semicolon
 id|kobject_unregister
 c_func

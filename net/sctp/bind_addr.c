@@ -24,7 +24,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -59,7 +59,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -120,7 +120,7 @@ id|addr-&gt;a
 comma
 id|scope
 comma
-id|priority
+id|gfp
 comma
 id|flags
 )paren
@@ -161,7 +161,7 @@ id|sctp_bind_addr_new
 c_func
 (paren
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_bind_addr_t
@@ -175,7 +175,7 @@ c_func
 (paren
 id|sctp_bind_addr_t
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -365,7 +365,7 @@ op_star
 r_new
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_struct
@@ -382,7 +382,7 @@ c_func
 r_struct
 id|sockaddr_storage_list
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -550,7 +550,7 @@ op_star
 id|addrs_len
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 r_union
@@ -613,7 +613,7 @@ c_func
 (paren
 id|len
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -715,7 +715,7 @@ id|__u16
 id|port
 comma
 r_int
-id|priority
+id|gfp
 )paren
 (brace
 id|sctp_addr_param_t
@@ -782,6 +782,8 @@ comma
 id|rawaddr
 comma
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|retval
@@ -794,7 +796,7 @@ comma
 op_amp
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 r_if
@@ -960,7 +962,7 @@ id|sctp_scope_t
 id|scope
 comma
 r_int
-id|priority
+id|gfp
 comma
 r_int
 id|flags
@@ -1002,7 +1004,7 @@ id|dest
 comma
 id|scope
 comma
-id|priority
+id|gfp
 comma
 id|flags
 )paren
@@ -1072,7 +1074,7 @@ id|dest
 comma
 id|addr
 comma
-id|priority
+id|gfp
 )paren
 suffix:semicolon
 )brace

@@ -2102,18 +2102,6 @@ op_star
 id|req
 suffix:semicolon
 multiline_comment|/* since, this routine is called with interrupts cleared - they &n;&t;   must be before it finishes  */
-multiline_comment|/* standard procedure to ensure that requests are really on the&n;&t;   list + sanity checks.                     */
-r_if
-c_cond
-(paren
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-)paren
-r_return
-suffix:semicolon
 id|req
 op_assign
 id|elv_next_request
@@ -2121,6 +2109,14 @@ c_func
 (paren
 id|q
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|req
+)paren
+r_return
 suffix:semicolon
 macro_line|#if 0
 id|printk

@@ -2,7 +2,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * This code is derived from ite8172.c, which is written by Steve Longerbeam.&n; *&n; * Features:&n; *   Currently we only support the following capabilities:&n; *&t;. mono output to PCM L/R (line out).&n; *&t;. stereo output to PCM L/R (line out).&n; *&t;. mono input from PCM L (line in).&n; *&t;. stereo output from PCM (line in).&n; *&t;. sampling rate at 48k or variable sampling rate &n; *&t;. support /dev/dsp, /dev/mixer devices, standard OSS devices.&n; *&t;. only support 16-bit PCM format (hardware limit, no software&n; *&t;  translation) &n; *&t;. support duplex, but no trigger or realtime.&n; *&t;&n; *   Specifically the following are not supported:&n; *&t;. app-set frag size.&n; *&t;. mmap&squot;ed buffer access&n; */
 multiline_comment|/* &n; * Original comments from ite8172.c file.&n; */
 multiline_comment|/*&n; *&n; * Notes:&n; *&n; *  1. Much of the OSS buffer allocation, ioctl&squot;s, and mmap&squot;ing are&n; *     taken, slightly modified or not at all, from the ES1371 driver,&n; *     so refer to the credits in es1371.c for those. The rest of the&n; *     code (probe, open, read, write, the ISR, etc.) is new.&n; *  2. The following support is untested:&n; *      * Memory mapping the audio buffers, and the ioctl controls that go&n; *        with it.&n; *      * S/PDIF output.&n; *  3. The following is not supported:&n; *      * I2S input.&n; *      * legacy audio mode.&n; *  4. Support for volume button interrupts is implemented but doesn&squot;t&n; *     work yet.&n; *&n; *  Revision history&n; *    02.08.2001  0.1   Initial release&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -3403,24 +3402,29 @@ id|file_operations
 id|vrc5477_ac97_mixer_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|vrc5477_ac97_ioctl_mixdev
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|vrc5477_ac97_open_mixdev
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|vrc5477_ac97_release_mixdev
 comma
 )brace
@@ -7327,37 +7331,45 @@ id|file_operations
 id|vrc5477_ac97_audio_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|vrc5477_ac97_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|vrc5477_ac97_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|vrc5477_ac97_poll
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|vrc5477_ac97_ioctl
 comma
-singleline_comment|// mmap:&t;vrc5477_ac97_mmap,
+singleline_comment|// .mmap&t;= vrc5477_ac97_mmap,
+dot
 id|open
-suffix:colon
+op_assign
 id|vrc5477_ac97_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|vrc5477_ac97_release
 comma
 )brace

@@ -608,7 +608,6 @@ c_func
 id|sockfd_lookup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FILTER
 DECL|variable|sk_run_filter
 id|EXPORT_SYMBOL
 c_func
@@ -623,7 +622,6 @@ c_func
 id|sk_chk_filter
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|neigh_table_init
 id|EXPORT_SYMBOL
 c_func
@@ -904,14 +902,14 @@ c_func
 id|br_handle_frame_hook
 )paren
 suffix:semicolon
-macro_line|#endif
-DECL|variable|br_ioctl_hook
+DECL|variable|brioctl_set
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|br_ioctl_hook
+id|brioctl_set
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|variable|alloc_divert_blk
 id|EXPORT_SYMBOL
@@ -1219,6 +1217,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|km_waitq
+)paren
+suffix:semicolon
+DECL|variable|km_new_mapping
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|km_new_mapping
 )paren
 suffix:semicolon
 DECL|variable|xfrm_cfg_sem
@@ -2682,6 +2687,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_netdevice
+)paren
+suffix:semicolon
+DECL|variable|synchronize_net
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|synchronize_net
 )paren
 suffix:semicolon
 DECL|variable|netdev_state_change

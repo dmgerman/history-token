@@ -4,9 +4,9 @@ DECL|macro|_CRYPTO_INTERNAL_H
 mdefine_line|#define _CRYPTO_INTERNAL_H
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 r_extern
 r_enum
@@ -130,27 +130,6 @@ c_func
 id|cond_resched
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|crypto_cipher_flags
-r_static
-r_inline
-id|u32
-id|crypto_cipher_flags
-c_func
-(paren
-id|u32
-id|flags
-)paren
-(brace
-r_return
-id|flags
-op_amp
-(paren
-id|CRYPTO_TFM_MODE_MASK
-op_or
-id|CRYPTO_TFM_REQ_WEAK_KEY
 )paren
 suffix:semicolon
 )brace

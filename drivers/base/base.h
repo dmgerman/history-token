@@ -1,5 +1,3 @@
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 r_extern
 r_struct
 id|semaphore
@@ -115,22 +113,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
 r_extern
 r_int
-id|dev_hotplug
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_const
-r_char
-op_star
-id|action
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|class_hotplug
 c_func
 (paren
@@ -146,28 +128,6 @@ id|action
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|function|dev_hotplug
-r_static
-r_inline
-r_int
-id|dev_hotplug
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_const
-r_char
-op_star
-id|action
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|class_hotplug
 r_static
 r_inline

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/nb85e_intc.h -- NB85E cpu core interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/nb85e_intc.h -- NB85E cpu core interrupt controller (INTC)&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_NB85E_INTC_H__
 DECL|macro|__V850_NB85E_INTC_H__
 mdefine_line|#define __V850_NB85E_INTC_H__
@@ -15,7 +15,7 @@ mdefine_line|#define NB85E_INTC_IC_BASE_ADDR&t;  0xFFFFF110
 DECL|macro|NB85E_INTC_IC_ADDR
 mdefine_line|#define NB85E_INTC_IC_ADDR(irq)&t;  (NB85E_INTC_IC_BASE_ADDR + ((irq) &lt;&lt; 1))
 DECL|macro|NB85E_INTC_IC
-mdefine_line|#define NB85E_INTC_IC(irq)&t;  (*(char *)NB85E_INTC_IC_ADDR(irq))
+mdefine_line|#define NB85E_INTC_IC(irq)&t;  (*(volatile u8 *)NB85E_INTC_IC_ADDR(irq))
 multiline_comment|/* Encode priority PR for storing in an interrupt control register.  */
 DECL|macro|NB85E_INTC_IC_PR
 mdefine_line|#define NB85E_INTC_IC_PR(pr)&t;  (pr)
@@ -29,6 +29,11 @@ DECL|macro|NB85E_INTC_IC_IF_BIT
 mdefine_line|#define NB85E_INTC_IC_IF_BIT&t;  7
 DECL|macro|NB85E_INTC_IC_IF
 mdefine_line|#define NB85E_INTC_IC_IF&t;  (1 &lt;&lt; NB85E_INTC_IC_IF_BIT)
+multiline_comment|/* The ISPR (In-service priority register) contains one bit for each interrupt&n;   priority level, which is set to one when that level is currently being&n;   serviced (and thus blocking any interrupts of equal or lesser level).  */
+DECL|macro|NB85E_INTC_ISPR_ADDR
+mdefine_line|#define NB85E_INTC_ISPR_ADDR&t;  0xFFFFF1FA
+DECL|macro|NB85E_INTC_ISPR
+mdefine_line|#define NB85E_INTC_ISPR&t;&t;  (*(volatile u8 *)NB85E_INTC_ISPR_ADDR)
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Enable interrupt handling for interrupt IRQ.  */
 DECL|function|nb85e_intc_enable_irq

@@ -3,7 +3,6 @@ multiline_comment|/* First, include the parts which the kernel is good enough to
 macro_line|#ifndef __LINUX_MTD_COMPATMAC_H__
 DECL|macro|__LINUX_MTD_COMPATMAC_H__
 mdefine_line|#define __LINUX_MTD_COMPATMAC_H__
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/types.h&gt; /* used later in this header */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
@@ -231,7 +230,6 @@ DECL|macro|spin_unlock_bh
 mdefine_line|#define spin_unlock_bh(lock) do {spin_unlock(lock);end_bh_atomic();} while(0)
 macro_line|#else
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#endif
 macro_line|#endif /* __LINUX_MTD_COMPATMAC_H__ */

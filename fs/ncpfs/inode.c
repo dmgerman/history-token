@@ -975,6 +975,7 @@ id|nwinfo
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined(CONFIG_NCPFS_EXTRAS) || defined(CONFIG_NCPFS_NFS_NS)
 DECL|variable|ncp_symlink_inode_operations
 r_static
 r_struct
@@ -999,6 +1000,7 @@ id|ncp_notify_change
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Get a new inode.&n; */
 r_struct
 id|inode

@@ -73,7 +73,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_DISCONTIGMEM
-multiline_comment|/*&n; * Following are macros that each numa implmentation must define.&n; */
+multiline_comment|/*&n; * Following are macros that each numa implementation must define.&n; */
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|kvaddr_to_nid
 mdefine_line|#define kvaddr_to_nid(kaddr)&t;pa_to_nid(__pa(kaddr))

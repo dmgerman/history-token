@@ -3,6 +3,7 @@ macro_line|#if 0
 mdefine_line|#define PLUGIN_DEBUG
 macro_line|#endif
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -4969,11 +4970,11 @@ c_cond
 (paren
 id|rate
 OG
-l_int|48000
+l_int|192000
 )paren
 id|rate
 op_assign
-l_int|48000
+l_int|192000
 suffix:semicolon
 r_if
 c_cond

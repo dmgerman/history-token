@@ -2,6 +2,7 @@ multiline_comment|/*&n; * file.c - operations for regular (text) files.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sysfs.h&quot;
 DECL|variable|sysfs_file_operations
 r_static

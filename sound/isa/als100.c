@@ -494,7 +494,7 @@ suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 id|snd_als100_pnpids
 (braket
 )braket
@@ -523,7 +523,6 @@ comma
 (brace
 l_string|&quot;@H@0001&quot;
 )brace
-comma
 )brace
 )brace
 comma
@@ -549,7 +548,6 @@ comma
 (brace
 l_string|&quot;@H@1001&quot;
 )brace
-comma
 )brace
 )brace
 comma
@@ -575,7 +573,6 @@ comma
 (brace
 l_string|&quot;@H@2001&quot;
 )brace
-comma
 )brace
 )brace
 comma
@@ -601,7 +598,6 @@ comma
 (brace
 l_string|&quot;@H@0001&quot;
 )brace
-comma
 )brace
 )brace
 comma
@@ -627,7 +623,6 @@ comma
 (brace
 l_string|&quot;@H@2001&quot;
 )brace
-comma
 )brace
 )brace
 comma
@@ -651,11 +646,11 @@ id|snd_als100_pnpids
 suffix:semicolon
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&quot;snd-card-als100&quot;
-DECL|function|snd_card_als100_isapnp
+DECL|function|snd_card_als100_pnp
 r_static
 r_int
 id|__devinit
-id|snd_card_als100_isapnp
+id|snd_card_als100_pnp
 c_func
 (paren
 r_int
@@ -673,7 +668,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren
@@ -691,13 +686,13 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|GFP_ATOMIC
-comma
 r_sizeof
 (paren
-r_struct
-id|pnp_resource_table
+op_star
+id|cfg
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_int
@@ -905,7 +900,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|pnp_manual_config_dev
 c_func
 (paren
@@ -915,11 +909,10 @@ id|cfg
 comma
 l_int|0
 )paren
-)paren
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -943,12 +936,18 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
 id|PFX
 l_string|&quot;AUDIO pnp configure failure&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|cfg
 )paren
 suffix:semicolon
 r_return
@@ -1096,7 +1095,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1165,7 +1164,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1249,7 +1248,7 @@ l_int|0
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1305,7 +1304,7 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1354,7 +1353,7 @@ id|pcard
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|pid
 )paren
@@ -1429,7 +1428,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|snd_card_als100_isapnp
+id|snd_card_als100_pnp
 c_func
 (paren
 id|dev
@@ -1604,7 +1603,7 @@ l_int|NULL
 OL
 l_int|0
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1660,7 +1659,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1844,7 +1843,7 @@ id|card
 comma
 r_const
 r_struct
-id|pnp_card_id
+id|pnp_card_device_id
 op_star
 id|id
 )paren
@@ -2022,7 +2021,7 @@ c_cond
 op_logical_neg
 id|cards
 )paren
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR

@@ -360,7 +360,7 @@ op_assign
 id|mbfn
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * blk_queue_make_request - define an alternate make_request function for a device&n; * @q:  the request queue for the device to be affected&n; * @mfn: the alternate make_request function&n; *&n; * Description:&n; *    The normal way for &amp;struct bios to be passed to a device&n; *    driver is for them to be collected into requests on a request&n; *    queue, and then to allow the device driver to select requests&n; *    off that queue when it is ready.  This works well for many block&n; *    devices. However some block devices (typically virtual devices&n; *    such as md or lvm) do not benefit from the processing on the&n; *    request queue, and are served best by having the requests passed&n; *    directly to them.  This can be achieved by providing a function&n; *    to blk_queue_make_request().&n; *&n; * Caveat:&n; *    The driver that does this *must* be able to deal appropriately&n; *    with buffers in &quot;highmemory&quot;. This can be accomplished by either calling&n; *    bio_kmap() to get a temporary kernel mapping, or by calling&n; *    blk_queue_bounce() to create a buffer in normal memory.&n; **/
+multiline_comment|/**&n; * blk_queue_make_request - define an alternate make_request function for a device&n; * @q:  the request queue for the device to be affected&n; * @mfn: the alternate make_request function&n; *&n; * Description:&n; *    The normal way for &amp;struct bios to be passed to a device&n; *    driver is for them to be collected into requests on a request&n; *    queue, and then to allow the device driver to select requests&n; *    off that queue when it is ready.  This works well for many block&n; *    devices. However some block devices (typically virtual devices&n; *    such as md or lvm) do not benefit from the processing on the&n; *    request queue, and are served best by having the requests passed&n; *    directly to them.  This can be achieved by providing a function&n; *    to blk_queue_make_request().&n; *&n; * Caveat:&n; *    The driver that does this *must* be able to deal appropriately&n; *    with buffers in &quot;highmemory&quot;. This can be accomplished by either calling&n; *    __bio_kmap_atomic() to get a temporary kernel mapping, or by calling&n; *    blk_queue_bounce() to create a buffer in normal memory.&n; **/
 DECL|function|blk_queue_make_request
 r_void
 id|blk_queue_make_request
@@ -5634,7 +5634,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
+id|elv_queue_empty
 c_func
 (paren
 id|q

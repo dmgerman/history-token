@@ -5,6 +5,11 @@ multiline_comment|/*&n; * This file contains some defines for the floppy disk co
 macro_line|#ifdef FDPATCHES
 DECL|macro|FD_IOPORT
 mdefine_line|#define FD_IOPORT fdc_state[fdc].address
+macro_line|#else
+multiline_comment|/* It would be a lot saner just to force fdc_state[fdc].address to always&n;   be set ! FIXME */
+DECL|macro|FD_IOPORT
+mdefine_line|#define FD_IOPORT 0x3f0
+macro_line|#endif
 multiline_comment|/* Fd controller regs. S&amp;C, about page 340 */
 DECL|macro|FD_STATUS
 mdefine_line|#define FD_STATUS&t;(4 + FD_IOPORT )
@@ -19,18 +24,6 @@ mdefine_line|#define FD_DIR&t;&t;(7 + FD_IOPORT )
 multiline_comment|/* Diskette Control Register (write)*/
 DECL|macro|FD_DCR
 mdefine_line|#define FD_DCR&t;&t;(7 + FD_IOPORT )
-macro_line|#else
-DECL|macro|FD_STATUS
-mdefine_line|#define FD_STATUS&t;0x3f4
-DECL|macro|FD_DATA
-mdefine_line|#define FD_DATA&t;&t;0x3f5
-DECL|macro|FD_DOR
-mdefine_line|#define FD_DOR&t;&t;0x3f2&t;&t;/* Digital Output Register */
-DECL|macro|FD_DIR
-mdefine_line|#define FD_DIR&t;&t;0x3f7&t;&t;/* Digital Input Register (read) */
-DECL|macro|FD_DCR
-mdefine_line|#define FD_DCR&t;&t;0x3f7&t;&t;/* Diskette Control Register (write)*/
-macro_line|#endif
 multiline_comment|/* Bits of main status register */
 DECL|macro|STATUS_BUSYMASK
 mdefine_line|#define STATUS_BUSYMASK&t;0x0F&t;&t;/* drive busy mask */

@@ -4201,6 +4201,7 @@ dot
 id|create
 op_assign
 id|sco_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|sco_hci_proto

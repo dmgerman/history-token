@@ -34,7 +34,6 @@ macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -413,6 +412,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sparc_valid_addr_bitmap
+)paren
+suffix:semicolon
+DECL|variable|phys_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_base
 )paren
 suffix:semicolon
 multiline_comment|/* Atomic operations. */

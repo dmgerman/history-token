@@ -10636,9 +10636,11 @@ suffix:semicolon
 multiline_comment|/* We must give this initial chunk to the device last.&n;&t;&t; * Otherwise we could race with the device.&n;&t;&t; */
 id|first_len
 op_assign
-id|skb-&gt;len
-op_minus
-id|skb-&gt;data_len
+id|skb_headlen
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
 id|first_mapping
 op_assign

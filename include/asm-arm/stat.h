@@ -68,6 +68,7 @@ DECL|struct|stat
 r_struct
 id|stat
 (brace
+macro_line|#if defined(__ARMEB__)
 DECL|member|st_dev
 r_int
 r_int
@@ -78,6 +79,12 @@ r_int
 r_int
 id|__pad1
 suffix:semicolon
+macro_line|#else
+r_int
+r_int
+id|st_dev
+suffix:semicolon
+macro_line|#endif
 DECL|member|st_ino
 r_int
 r_int
@@ -103,6 +110,7 @@ r_int
 r_int
 id|st_gid
 suffix:semicolon
+macro_line|#if defined(__ARMEB__)
 DECL|member|st_rdev
 r_int
 r_int
@@ -113,6 +121,13 @@ r_int
 r_int
 id|__pad2
 suffix:semicolon
+macro_line|#else
+DECL|member|st_rdev
+r_int
+r_int
+id|st_rdev
+suffix:semicolon
+macro_line|#endif
 DECL|member|st_size
 r_int
 r_int
@@ -175,33 +190,12 @@ DECL|struct|stat64
 r_struct
 id|stat64
 (brace
-macro_line|#if defined(__ARMEB__)
-DECL|member|__pad0b
-r_int
-r_char
-id|__pad0b
-(braket
-l_int|6
-)braket
-suffix:semicolon
 DECL|member|st_dev
 r_int
 r_int
-id|st_dev
-suffix:semicolon
-macro_line|#else
-r_int
 r_int
 id|st_dev
 suffix:semicolon
-r_int
-r_char
-id|__pad0b
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|__pad0
 r_int
 r_char
@@ -237,35 +231,12 @@ r_int
 r_int
 id|st_gid
 suffix:semicolon
-macro_line|#if defined(__ARMEB__)
-DECL|member|__pad3b
-r_int
-r_char
-id|__pad3b
-(braket
-l_int|6
-)braket
-suffix:semicolon
 DECL|member|st_rdev
+r_int
 r_int
 r_int
 id|st_rdev
 suffix:semicolon
-macro_line|#else /* Must be little */
-DECL|member|st_rdev
-r_int
-r_int
-id|st_rdev
-suffix:semicolon
-DECL|member|__pad3b
-r_int
-r_char
-id|__pad3b
-(braket
-l_int|6
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|member|__pad3
 r_int
 r_char

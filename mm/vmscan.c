@@ -827,6 +827,7 @@ op_assign
 id|page-&gt;mapping
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_SWAP */
 multiline_comment|/*&n;&t;&t; * The page is mapped into the page tables of one or more&n;&t;&t; * processes. Try to unmap it here.&n;&t;&t; */
 r_if
 c_cond
@@ -850,9 +851,6 @@ id|page
 )paren
 )paren
 (brace
-r_case
-id|SWAP_ERROR
-suffix:colon
 r_case
 id|SWAP_FAIL
 suffix:colon
@@ -884,7 +882,6 @@ suffix:semicolon
 multiline_comment|/* try to free the page below */
 )brace
 )brace
-macro_line|#endif /* CONFIG_SWAP */
 id|pte_chain_unlock
 c_func
 (paren
@@ -956,7 +953,7 @@ id|mapping-&gt;backing_dev_info
 r_goto
 id|keep_locked
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1013,7 +1010,7 @@ op_amp
 id|mapping-&gt;locked_pages
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1080,7 +1077,7 @@ r_goto
 id|keep
 suffix:semicolon
 )brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1142,7 +1139,7 @@ r_goto
 id|keep_locked
 suffix:semicolon
 multiline_comment|/* truncate got there first */
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -1168,7 +1165,7 @@ id|page
 )paren
 )paren
 (brace
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1206,7 +1203,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -1237,7 +1234,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp

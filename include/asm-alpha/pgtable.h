@@ -74,7 +74,7 @@ mdefine_line|#define _PAGE_DIRTY&t;0x20000
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;0x40000
 DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x80000&t;/* pagecache or swap? */
+mdefine_line|#define _PAGE_FILE&t;0x80000&t;/* set:pagecache, unset:swap */
 multiline_comment|/*&n; * NOTE! The &quot;accessed&quot; bit isn&squot;t necessarily exact:  it can be kept exactly&n; * by software (use the KRE/URE/KWE/UWE bits appropriately), but I&squot;ll fake it.&n; * Under Linux/AXP, the &quot;accessed&quot; bit just means &quot;read&quot;, and I&squot;ll just use&n; * the KRE/URE bits to watch for it. That way we don&squot;t need to overload the&n; * KWE/UWE bits with both handling dirty and accessed.&n; *&n; * Note that the kernel uses the accessed bit just to check whether to page&n; * out a page or not, so it doesn&squot;t have to be exact anyway.&n; */
 DECL|macro|__DIRTY_BITS
 mdefine_line|#define __DIRTY_BITS&t;(_PAGE_DIRTY | _PAGE_KWE | _PAGE_UWE)

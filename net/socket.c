@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * NET&t;&t;An implementation of the SOCKET network access protocol.&n; *&n; * Version:&t;@(#)socket.c&t;1.1.93&t;18/02/95&n; *&n; * Authors:&t;Orest Zborowski, &lt;obz@Kodak.COM&gt;&n; *&t;&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Anonymous&t;:&t;NOTSOCK/BADF cleanup. Error fix in&n; *&t;&t;&t;&t;&t;shutdown()&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixes&n; *&t;&t;Alan Cox&t;:&t;Removed DDI&n; *&t;&t;Jonathan Kamens&t;:&t;SOCK_DGRAM reconnect bug&n; *&t;&t;Alan Cox&t;:&t;Moved a load of checks to the very&n; *&t;&t;&t;&t;&t;top level.&n; *&t;&t;Alan Cox&t;:&t;Move address structures to/from user&n; *&t;&t;&t;&t;&t;mode above the protocol layers.&n; *&t;&t;Rob Janssen&t;:&t;Allow 0 length sends.&n; *&t;&t;Alan Cox&t;:&t;Asynchronous I/O support (cribbed from the&n; *&t;&t;&t;&t;&t;tty drivers).&n; *&t;&t;Niibe Yutaka&t;:&t;Asynchronous I/O for writes (4.4BSD style)&n; *&t;&t;Jeff Uphoff&t;:&t;Made max number of sockets command-line&n; *&t;&t;&t;&t;&t;configurable.&n; *&t;&t;Matti Aarnio&t;:&t;Made the number of sockets dynamic,&n; *&t;&t;&t;&t;&t;to be allocated when needed, and mr.&n; *&t;&t;&t;&t;&t;Uphoff&squot;s max is used as max to be&n; *&t;&t;&t;&t;&t;allowed to allocate.&n; *&t;&t;Linus&t;&t;:&t;Argh. removed all the socket allocation&n; *&t;&t;&t;&t;&t;altogether: it&squot;s in the inode now.&n; *&t;&t;Alan Cox&t;:&t;Made sock_alloc()/sock_release() public&n; *&t;&t;&t;&t;&t;for NetROM and future kernel nfsd type&n; *&t;&t;&t;&t;&t;stuff.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg basics.&n; *&t;&t;Tom Dyas&t;:&t;Export net symbols.&n; *&t;&t;Marcin Dalecki&t;:&t;Fixed problems with CONFIG_NET=&quot;n&quot;.&n; *&t;&t;Alan Cox&t;:&t;Added thread locking to sys_* calls&n; *&t;&t;&t;&t;&t;for sockets. May have errors at the&n; *&t;&t;&t;&t;&t;moment.&n; *&t;&t;Kevin Buhr&t;:&t;Fixed the dumb errors in the above.&n; *&t;&t;Andi Kleen&t;:&t;Some small cleanups, optimizations,&n; *&t;&t;&t;&t;&t;and fixed a copy_from_user() bug.&n; *&t;&t;Tigran Aivazian&t;:&t;sys_send(args) calls sys_sendto(args, NULL, 0)&n; *&t;&t;Tigran Aivazian&t;:&t;Made listen(2) backlog sanity checks &n; *&t;&t;&t;&t;&t;protocol-independent&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;This module is effectively the top level interface to the BSD socket&n; *&t;paradigm. &n; *&n; */
+multiline_comment|/*&n; * NET&t;&t;An implementation of the SOCKET network access protocol.&n; *&n; * Version:&t;@(#)socket.c&t;1.1.93&t;18/02/95&n; *&n; * Authors:&t;Orest Zborowski, &lt;obz@Kodak.COM&gt;&n; *&t;&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&n; * Fixes:&n; *&t;&t;Anonymous&t;:&t;NOTSOCK/BADF cleanup. Error fix in&n; *&t;&t;&t;&t;&t;shutdown()&n; *&t;&t;Alan Cox&t;:&t;verify_area() fixes&n; *&t;&t;Alan Cox&t;:&t;Removed DDI&n; *&t;&t;Jonathan Kamens&t;:&t;SOCK_DGRAM reconnect bug&n; *&t;&t;Alan Cox&t;:&t;Moved a load of checks to the very&n; *&t;&t;&t;&t;&t;top level.&n; *&t;&t;Alan Cox&t;:&t;Move address structures to/from user&n; *&t;&t;&t;&t;&t;mode above the protocol layers.&n; *&t;&t;Rob Janssen&t;:&t;Allow 0 length sends.&n; *&t;&t;Alan Cox&t;:&t;Asynchronous I/O support (cribbed from the&n; *&t;&t;&t;&t;&t;tty drivers).&n; *&t;&t;Niibe Yutaka&t;:&t;Asynchronous I/O for writes (4.4BSD style)&n; *&t;&t;Jeff Uphoff&t;:&t;Made max number of sockets command-line&n; *&t;&t;&t;&t;&t;configurable.&n; *&t;&t;Matti Aarnio&t;:&t;Made the number of sockets dynamic,&n; *&t;&t;&t;&t;&t;to be allocated when needed, and mr.&n; *&t;&t;&t;&t;&t;Uphoff&squot;s max is used as max to be&n; *&t;&t;&t;&t;&t;allowed to allocate.&n; *&t;&t;Linus&t;&t;:&t;Argh. removed all the socket allocation&n; *&t;&t;&t;&t;&t;altogether: it&squot;s in the inode now.&n; *&t;&t;Alan Cox&t;:&t;Made sock_alloc()/sock_release() public&n; *&t;&t;&t;&t;&t;for NetROM and future kernel nfsd type&n; *&t;&t;&t;&t;&t;stuff.&n; *&t;&t;Alan Cox&t;:&t;sendmsg/recvmsg basics.&n; *&t;&t;Tom Dyas&t;:&t;Export net symbols.&n; *&t;&t;Marcin Dalecki&t;:&t;Fixed problems with CONFIG_NET=&quot;n&quot;.&n; *&t;&t;Alan Cox&t;:&t;Added thread locking to sys_* calls&n; *&t;&t;&t;&t;&t;for sockets. May have errors at the&n; *&t;&t;&t;&t;&t;moment.&n; *&t;&t;Kevin Buhr&t;:&t;Fixed the dumb errors in the above.&n; *&t;&t;Andi Kleen&t;:&t;Some small cleanups, optimizations,&n; *&t;&t;&t;&t;&t;and fixed a copy_from_user() bug.&n; *&t;&t;Tigran Aivazian&t;:&t;sys_send(args) calls sys_sendto(args, NULL, 0)&n; *&t;&t;Tigran Aivazian&t;:&t;Made listen(2) backlog sanity checks &n; *&t;&t;&t;&t;&t;protocol-independent&n; *&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *&n; *&t;This module is effectively the top level interface to the BSD socket&n; *&t;paradigm. &n; *&n; *&t;Based upon Swansea University Computer Society NET3.039&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -2557,7 +2558,15 @@ id|tot_len
 )paren
 suffix:semicolon
 )brace
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
 DECL|variable|br_ioctl_hook
+r_static
 r_int
 (paren
 op_star
@@ -2568,7 +2577,44 @@ r_int
 r_int
 id|arg
 )paren
+op_assign
+l_int|NULL
 suffix:semicolon
+DECL|function|brioctl_set
+r_void
+id|brioctl_set
+c_func
+(paren
+r_int
+(paren
+op_star
+id|hook
+)paren
+(paren
+r_int
+r_int
+)paren
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
+id|br_ioctl_hook
+op_assign
+id|hook
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
+)brace
 DECL|variable|vlan_ioctl_hook
 r_int
 (paren
@@ -2818,6 +2864,13 @@ l_string|&quot;bridge&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|down
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2829,6 +2882,13 @@ id|br_ioctl_hook
 c_func
 (paren
 id|arg
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
 )paren
 suffix:semicolon
 r_break
@@ -6683,6 +6743,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|MSG_CMSG_COMPAT
+op_amp
+id|flags
+)paren
+id|msg_sys.msg_flags
+op_assign
+id|MSG_CMSG_COMPAT
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sock-&gt;file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
@@ -6784,15 +6855,19 @@ id|flags
 )paren
 id|err
 op_assign
-id|put_compat_msg_controllen
+id|__put_user
 c_func
 (paren
-op_amp
-id|msg_sys
-comma
-id|msg_compat
-comma
+(paren
+r_int
+r_int
+)paren
+id|msg_sys.msg_control
+op_minus
 id|cmsg_ptr
+comma
+op_amp
+id|msg_compat-&gt;msg_controllen
 )paren
 suffix:semicolon
 r_else
@@ -7617,20 +7692,6 @@ r_void
 (brace
 r_int
 id|i
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Linux NET4.0 for Linux 2.4&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Based upon Swansea University Computer Society NET3.039&bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Initialize all address (protocol) families. &n;&t; */
 r_for

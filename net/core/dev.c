@@ -4150,7 +4150,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#if defined(CONFIG_BRIDGE) || defined (CONFIG_BRIDGE_MODULE)
 DECL|variable|br_handle_frame_hook
 r_int
 (paren
@@ -4166,7 +4166,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 DECL|function|handle_bridge
 r_static
 id|__inline__
@@ -4243,6 +4242,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|function|handle_diverter
 r_static
@@ -4479,8 +4479,6 @@ r_if
 c_cond
 (paren
 id|skb-&gt;dev-&gt;br_port
-op_logical_and
-id|br_handle_frame_hook
 )paren
 (brace
 r_int
@@ -8747,6 +8745,28 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Synchronize with packet receive processing. */
+DECL|function|synchronize_net
+r_void
+id|synchronize_net
+c_func
+(paren
+r_void
+)paren
+(brace
+id|br_write_lock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+id|br_write_unlock_bh
+c_func
+(paren
+id|BR_NETPROTO_LOCK
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;unregister_netdevice - remove device from the kernel&n; *&t;@dev: device&n; *&n; *&t;This function shuts down a device interface and removes it&n; *&t;from the kernel tables. On success 0 is returned, on a failure&n; *&t;a negative errno code is returned.&n; *&n; *&t;Callers must hold the rtnl semaphore.  See the comment at the&n; *&t;end of Space.c for details about the locking.  You may want&n; *&t;unregister_netdev() instead of this.&n; */
 DECL|function|unregister_netdevice
 r_int
@@ -8884,17 +8904,9 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Synchronize to net_rx_action. */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE
@@ -9218,6 +9230,8 @@ id|decl_subsys
 c_func
 (paren
 id|net
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren

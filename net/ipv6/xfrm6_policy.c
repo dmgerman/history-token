@@ -981,6 +981,9 @@ suffix:colon
 r_case
 id|IPPROTO_ESP
 suffix:colon
+r_case
+id|IPPROTO_COMP
+suffix:colon
 r_default
 suffix:colon
 id|fl-&gt;uli_u.spi

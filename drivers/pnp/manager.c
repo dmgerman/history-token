@@ -3589,18 +3589,10 @@ c_cond
 id|dev-&gt;active
 )paren
 (brace
-id|pnp_info
-c_func
-(paren
-l_string|&quot;res: The PnP device &squot;%s&squot; is already active.&quot;
-comma
-id|dev-&gt;dev.bus_id
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|EBUSY
+l_int|0
 suffix:semicolon
+multiline_comment|/* the device is already active */
 )brace
 multiline_comment|/* If this condition is true, advanced configuration failed, we need to get this device up and running&n;&t; * so we use the simple config engine which ignores cold conflicts, this of course may lead to new failures */
 r_if
@@ -3906,18 +3898,10 @@ op_logical_neg
 id|dev-&gt;active
 )paren
 (brace
-id|pnp_info
-c_func
-(paren
-l_string|&quot;res: The PnP device &squot;%s&squot; is already disabled.&quot;
-comma
-id|dev-&gt;dev.bus_id
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|EINVAL
+l_int|0
 suffix:semicolon
+multiline_comment|/* the device is already disabled */
 )brace
 r_if
 c_cond

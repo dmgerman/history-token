@@ -2067,7 +2067,21 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* GPE support */
-id|acpi_gbl_gpe_block_list_head
+id|acpi_gbl_gpe_xrupt_list_head
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_gpe_fadt_blocks
+(braket
+l_int|0
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|acpi_gbl_gpe_fadt_blocks
+(braket
+l_int|1
+)braket
 op_assign
 l_int|NULL
 suffix:semicolon

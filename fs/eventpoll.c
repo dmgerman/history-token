@@ -4602,6 +4602,13 @@ c_func
 id|epi
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * We need to increase the usage count of the &quot;struct file&quot; because&n;&t;&t;&t; * another thread might call close() on this target and make the file&n;&t;&t;&t; * to vanish before we will be able to call f_op-&gt;poll().&n;&t;&t;&t; */
+id|get_file
+c_func
+(paren
+id|epi-&gt;file
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * This is initialized in this way so that the default&n;&t;&t;&t; * behaviour of the reinjecting code will be to push back&n;&t;&t;&t; * the item inside the ready list.&n;&t;&t;&t; */
 id|epi-&gt;revents
 op_assign
@@ -4730,6 +4737,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Release the file usage before checking the event mask.&n;&t;&t; * In case this call will lead to the file removal, its&n;&t;&t; * -&gt;event.events member has been already set to zero and&n;&t;&t; * this will make the event to be dropped.&n;&t;&t; */
+id|fput
+c_func
+(paren
+id|epi-&gt;file
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Set the return event set for the current file descriptor.&n;&t;&t; * Note that only the task task was successfully able to link&n;&t;&t; * the item to its &quot;txlist&quot; will write this field.&n;&t;&t; */
 id|epi-&gt;revents
 op_assign
@@ -4793,10 +4807,49 @@ id|epoll_event
 )paren
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We need to complete the loop to decrement the file&n;&t;&t;&t;&t;&t; * usage before returning from this function.&n;&t;&t;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|lnk
+op_assign
+id|lnk-&gt;next
+suffix:semicolon
+id|lnk
+op_ne
+id|txlist
+suffix:semicolon
+id|lnk
+op_assign
+id|lnk-&gt;next
+)paren
+(brace
+id|epi
+op_assign
+id|list_entry
+c_func
+(paren
+id|lnk
+comma
+r_struct
+id|epitem
+comma
+id|txlink
+)paren
+suffix:semicolon
+id|fput
+c_func
+(paren
+id|epi-&gt;file
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 id|eventcnt
 op_add_assign
 id|eventbuf

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_AUTHOR
 mdefine_line|#define MODULE_AUTHOR(name)
@@ -85,6 +84,9 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Archs provide a method of finding the correct exception table. */
+r_struct
+id|exception_table_entry
+suffix:semicolon
 r_const
 r_struct
 id|exception_table_entry
@@ -136,49 +138,6 @@ mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
-DECL|struct|kernel_symbol_group
-r_struct
-id|kernel_symbol_group
-(brace
-multiline_comment|/* Links us into the global symbol list */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* Module which owns it (if any) */
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
-multiline_comment|/* Are we internal use only? */
-DECL|member|gplonly
-r_int
-id|gplonly
-suffix:semicolon
-DECL|member|num_syms
-r_int
-r_int
-id|num_syms
-suffix:semicolon
-DECL|member|syms
-r_const
-r_struct
-id|kernel_symbol
-op_star
-id|syms
-suffix:semicolon
-DECL|member|crcs
-r_const
-r_int
-r_int
-op_star
-id|crcs
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Given an address, look for it in the exception tables */
 r_const
 r_struct
@@ -192,28 +151,8 @@ r_int
 id|add
 )paren
 suffix:semicolon
-DECL|struct|exception_table
 r_struct
-id|exception_table
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|num_entries
-r_int
-r_int
-id|num_entries
-suffix:semicolon
-DECL|member|entry
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|entry
-suffix:semicolon
-)brace
+id|notifier_block
 suffix:semicolon
 macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
@@ -312,21 +251,56 @@ id|MODULE_NAME_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* Exported symbols */
-DECL|member|symbols
+DECL|member|syms
+r_const
 r_struct
-id|kernel_symbol_group
-id|symbols
+id|kernel_symbol
+op_star
+id|syms
+suffix:semicolon
+DECL|member|num_syms
+r_int
+r_int
+id|num_syms
+suffix:semicolon
+DECL|member|crcs
+r_const
+r_int
+r_int
+op_star
+id|crcs
 suffix:semicolon
 multiline_comment|/* GPL-only exported symbols. */
-DECL|member|gpl_symbols
+DECL|member|gpl_syms
+r_const
 r_struct
-id|kernel_symbol_group
-id|gpl_symbols
+id|kernel_symbol
+op_star
+id|gpl_syms
 suffix:semicolon
-multiline_comment|/* Exception tables */
+DECL|member|num_gpl_syms
+r_int
+r_int
+id|num_gpl_syms
+suffix:semicolon
+DECL|member|gpl_crcs
+r_const
+r_int
+r_int
+op_star
+id|gpl_crcs
+suffix:semicolon
+multiline_comment|/* Exception table */
+DECL|member|num_exentries
+r_int
+r_int
+id|num_exentries
+suffix:semicolon
 DECL|member|extable
+r_const
 r_struct
-id|exception_table
+id|exception_table_entry
+op_star
 id|extable
 suffix:semicolon
 multiline_comment|/* Startup function. */
@@ -419,10 +393,10 @@ id|Elf_Sym
 op_star
 id|symtab
 suffix:semicolon
-DECL|member|num_syms
+DECL|member|num_symtab
 r_int
 r_int
-id|num_syms
+id|num_symtab
 suffix:semicolon
 DECL|member|strtab
 r_char
@@ -459,7 +433,9 @@ id|MODULE_STATE_GOING
 suffix:semicolon
 )brace
 multiline_comment|/* Is this address in a module? */
-r_int
+r_struct
+id|module
+op_star
 id|module_text_address
 c_func
 (paren
@@ -727,6 +703,26 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+r_int
+id|register_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -758,7 +754,9 @@ multiline_comment|/* Is this address in a module? */
 DECL|function|module_text_address
 r_static
 r_inline
-r_int
+r_struct
+id|module
+op_star
 id|module_text_address
 c_func
 (paren
@@ -768,7 +766,7 @@ id|addr
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Get/put a kernel symbol (calls should be symmetric) */
@@ -847,6 +845,41 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|register_module_notifier
+r_static
+r_inline
+r_int
+id|register_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+multiline_comment|/* no events will happen anyway, so this can always succeed */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|unregister_module_notifier
+r_static
+r_inline
+r_int
+id|unregister_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_MODULES */
 macro_line|#ifdef MODULE
 r_extern
@@ -883,33 +916,6 @@ id|KBUILD_MODNAME
 )paren
 comma
 dot
-id|symbols
-op_assign
-(brace
-dot
-id|owner
-op_assign
-op_amp
-id|__this_module
-)brace
-comma
-dot
-id|gpl_symbols
-op_assign
-(brace
-dot
-id|owner
-op_assign
-op_amp
-id|__this_module
-comma
-dot
-id|gplonly
-op_assign
-l_int|1
-)brace
-comma
-dot
 id|init
 op_assign
 id|init_module
@@ -927,9 +933,9 @@ macro_line|#endif /* KBUILD_MODNAME */
 macro_line|#endif /* MODULE */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
-multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
+multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
 DECL|struct|obsolete_modparm
 r_struct
 id|obsolete_modparm
@@ -1053,21 +1059,6 @@ mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
 macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
-multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
-r_extern
-id|spinlock_t
-id|modlist_lock
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|extables
-suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|symbols
-suffix:semicolon
 multiline_comment|/* Use symbol_get and symbol_put instead.  You&squot;ll thank me. */
 DECL|macro|HAVE_INTER_MODULE
 mdefine_line|#define HAVE_INTER_MODULE

@@ -32,10 +32,12 @@ op_increment
 id|xfrm_state_put
 c_func
 (paren
-id|sp-&gt;xvec
+id|sp-&gt;x
 (braket
 id|i
 )braket
+dot
+id|xvec
 )paren
 suffix:semicolon
 id|kmem_cache_free

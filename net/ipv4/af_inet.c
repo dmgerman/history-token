@@ -4169,6 +4169,14 @@ id|udp_mib
 suffix:semicolon
 )brace
 )brace
+(paren
+r_void
+)paren
+id|tcp_mib_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4231,7 +4239,9 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
-l_string|&quot;inet_proto_init: panic&bslash;n&quot;
+l_string|&quot;%s: panic&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

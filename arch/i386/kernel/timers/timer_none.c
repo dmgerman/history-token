@@ -1,11 +1,15 @@
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 DECL|function|init_none
 r_static
 r_int
+id|__init
 id|init_none
 c_func
 (paren
-r_void
+r_char
+op_star
+id|override
 )paren
 (brace
 r_return
@@ -28,6 +32,21 @@ r_static
 r_int
 r_int
 id|get_offset_none
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|monotonic_clock_none
+r_static
+r_int
+r_int
+r_int
+id|monotonic_clock_none
 c_func
 (paren
 r_void
@@ -94,6 +113,11 @@ dot
 id|get_offset
 op_assign
 id|get_offset_none
+comma
+dot
+id|monotonic_clock
+op_assign
+id|monotonic_clock_none
 comma
 dot
 id|delay

@@ -4834,17 +4834,6 @@ suffix:semicolon
 r_do
 (brace
 singleline_comment|//&t;    sti();
-r_if
-c_cond
-(paren
-id|blk_queue_empty
-c_func
-(paren
-id|q
-)paren
-)paren
-r_return
-suffix:semicolon
 id|req
 op_assign
 id|elv_next_request
@@ -4852,6 +4841,14 @@ c_func
 (paren
 id|q
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|req
+)paren
+r_return
 suffix:semicolon
 id|part
 op_assign

@@ -337,32 +337,32 @@ DECL|member|wavefront
 id|snd_wavefront_t
 id|wavefront
 suffix:semicolon
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 DECL|member|wss
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|wss
 suffix:semicolon
 DECL|member|ctrl
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|ctrl
 suffix:semicolon
 DECL|member|mpu
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|mpu
 suffix:semicolon
 DECL|member|synth
 r_struct
-id|isapnp_dev
+id|pnp_dev
 op_star
 id|synth
 suffix:semicolon
-macro_line|#endif /* CONFIG_ISAPNP */
+macro_line|#endif /* CONFIG_PNP */
 )brace
 suffix:semicolon
 r_extern

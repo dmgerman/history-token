@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/nfs_idmap.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -486,6 +487,31 @@ c_func
 id|cred
 )paren
 suffix:semicolon
+multiline_comment|/* Clean up the V4 state */
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;wo_owner
+)paren
+suffix:semicolon
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;ro_owner
+)paren
+suffix:semicolon
+id|nfs4_put_shareowner
+c_func
+(paren
+id|inode
+comma
+id|nfsi-&gt;rw_owner
+)paren
+suffix:semicolon
 )brace
 r_void
 DECL|function|nfs_put_super
@@ -514,6 +540,21 @@ id|rpc_clnt
 op_star
 id|rpc
 suffix:semicolon
+macro_line|#ifdef CONFIG_NFS_V4
+r_if
+c_cond
+(paren
+id|server-&gt;idmap
+op_ne
+l_int|NULL
+)paren
+id|nfs_idmap_delete
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_NFS_V4 */
 r_if
 c_cond
 (paren
@@ -3785,54 +3826,6 @@ id|rpc_cred
 op_star
 id|cred
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Ensure that we revalidate the data cache */
-r_if
-c_cond
-(paren
-id|NFS_SERVER
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|flags
-op_amp
-id|NFS_MOUNT_NOCTO
-)paren
-(brace
-id|err
-op_assign
-id|__nfs_revalidate_inode
-c_func
-(paren
-id|NFS_SERVER
-c_func
-(paren
-id|inode
-)paren
-comma
-id|inode
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-)paren
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|auth
 op_assign
 id|NFS_CLIENT
@@ -3872,15 +3865,8 @@ comma
 id|cred
 )paren
 suffix:semicolon
-id|out
-suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|nfs_release
@@ -6064,6 +6050,28 @@ id|data
 r_goto
 id|out_shutdown
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|server-&gt;idmap
+op_assign
+id|nfs_idmap_new
+c_func
+(paren
+id|server
+)paren
+)paren
+op_eq
+l_int|NULL
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;NFS: couldn&squot;t start IDmap&bslash;n&quot;
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|nfs_sb_init
@@ -6088,6 +6096,19 @@ c_func
 )paren
 suffix:semicolon
 id|destroy_nfsv4_state
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|server-&gt;idmap
+op_ne
+l_int|NULL
+)paren
+id|nfs_idmap_delete
 c_func
 (paren
 id|server
@@ -6789,11 +6810,15 @@ id|FS_ODD_RENAME
 comma
 )brace
 suffix:semicolon
+DECL|macro|nfs4_zero_state
+mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;(nfsi)-&gt;wo_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;ro_owner = NULL; &bslash;&n;&t;&t;(nfsi)-&gt;rw_owner = NULL; &bslash;&n;&t;} while(0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() register_filesystem(&amp;nfs4_fs_type)
 DECL|macro|unregister_nfs4fs
 mdefine_line|#define unregister_nfs4fs() unregister_filesystem(&amp;nfs4_fs_type)
 macro_line|#else
+DECL|macro|nfs4_zero_state
+mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { } while (0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() (0)
 DECL|macro|unregister_nfs4fs
@@ -6903,6 +6928,12 @@ suffix:semicolon
 id|nfsi-&gt;mm_cred
 op_assign
 l_int|NULL
+suffix:semicolon
+id|nfs4_zero_state
+c_func
+(paren
+id|nfsi
+)paren
 suffix:semicolon
 r_return
 op_amp

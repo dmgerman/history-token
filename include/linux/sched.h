@@ -1815,6 +1815,22 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|send_group_sig_info
+c_func
+(paren
+r_int
+comma
+r_struct
+id|siginfo
+op_star
+comma
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|force_sig_info
 c_func
 (paren
@@ -2030,6 +2046,13 @@ r_int
 r_int
 )paren
 suffix:semicolon
+multiline_comment|/* These can be the second arg to send_sig_info/send_group_sig_info.  */
+DECL|macro|SEND_SIG_NOINFO
+mdefine_line|#define SEND_SIG_NOINFO ((struct siginfo *) 0)
+DECL|macro|SEND_SIG_PRIV
+mdefine_line|#define SEND_SIG_PRIV&t;((struct siginfo *) 1)
+DECL|macro|SEND_SIG_FORCED
+mdefine_line|#define SEND_SIG_FORCED&t;((struct siginfo *) 2)
 multiline_comment|/* True if we are on the alternate signal stack.  */
 DECL|function|on_sig_stack
 r_static
@@ -2526,7 +2549,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().  Nests inside tasklist_lock */
+multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline

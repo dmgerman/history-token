@@ -17,14 +17,12 @@ DECL|macro|I810_BUF_UNMAPPED
 mdefine_line|#define I810_BUF_UNMAPPED 0
 DECL|macro|I810_BUF_MAPPED
 mdefine_line|#define I810_BUF_MAPPED   1
-DECL|macro|RING_LOCALS
-mdefine_line|#define RING_LOCALS&t;unsigned int outring, ringmask; volatile char *virt;
-DECL|macro|BEGIN_LP_RING
-mdefine_line|#define BEGIN_LP_RING(n) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (0) DRM_DEBUG(&quot;BEGIN_LP_RING(%d) in %s&bslash;n&quot;, n, __FUNCTION__);&t;&bslash;&n;&t;if (dev_priv-&gt;ring.space &lt; n*4)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;i810_wait_ring(dev, n*4);&t;&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.space -= n*4;&t;&t;&t;&t;&t;&bslash;&n;&t;outring = dev_priv-&gt;ring.tail;&t;&t;&t;&t;&t;&bslash;&n;&t;ringmask = dev_priv-&gt;ring.tail_mask;&t;&t;&t;&t;&bslash;&n;&t;virt = dev_priv-&gt;ring.virtual_start;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|ADVANCE_LP_RING
-mdefine_line|#define ADVANCE_LP_RING() do {&t;&t;&t;&t;&bslash;&n;&t;if (0) DRM_DEBUG(&quot;ADVANCE_LP_RING&bslash;n&quot;);&t;&t;&t;&bslash;&n;&t;dev_priv-&gt;ring.tail = outring;&t;&t;&t;&bslash;&n;&t;I810_WRITE(LP_RING + RING_TAIL, outring);&t;&bslash;&n;} while(0)
-DECL|macro|OUT_RING
-mdefine_line|#define OUT_RING(n) do {&t;&t;&t;&t;&bslash;&n;&t;if (0) DRM_DEBUG(&quot;   OUT_RING %x&bslash;n&quot;, (int)(n));&t;&bslash;&n;&t;*(volatile unsigned int *)(virt + outring) = n;&t;&bslash;&n;&t;outring += 4;&t;&t;&t;&t;&t;&bslash;&n;&t;outring &amp;= ringmask;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,4,2)
+DECL|macro|down_write
+mdefine_line|#define down_write down
+DECL|macro|up_write
+mdefine_line|#define up_write up
+macro_line|#endif
 DECL|function|i810_print_status_page
 r_static
 r_inline
@@ -564,15 +562,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020402
-id|down
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-macro_line|#else
 id|down_write
 c_func
 (paren
@@ -580,7 +569,6 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-macro_line|#endif
 id|old_fops
 op_assign
 id|filp-&gt;f_op
@@ -644,7 +632,7 @@ l_int|1024UL
 )paren
 (brace
 multiline_comment|/* Real error */
-id|DRM_DEBUG
+id|DRM_ERROR
 c_func
 (paren
 l_string|&quot;mmap error&bslash;n&quot;
@@ -667,15 +655,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020402
-id|up
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-macro_line|#else
 id|up_write
 c_func
 (paren
@@ -683,7 +662,6 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|retcode
 suffix:semicolon
@@ -723,15 +701,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020402
-id|down
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-macro_line|#else
 id|down_write
 c_func
 (paren
@@ -739,7 +708,6 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-macro_line|#endif
 id|retcode
 op_assign
 id|do_munmap
@@ -761,15 +729,6 @@ r_int
 id|buf-&gt;total
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt;= 0x020402
-id|up
-c_func
-(paren
-op_amp
-id|current-&gt;mm-&gt;mmap_sem
-)paren
-suffix:semicolon
-macro_line|#else
 id|up_write
 c_func
 (paren
@@ -777,7 +736,6 @@ op_amp
 id|current-&gt;mm-&gt;mmap_sem
 )paren
 suffix:semicolon
-macro_line|#endif
 id|buf_priv-&gt;currently_mapped
 op_assign
 id|I810_BUF_UNMAPPED
@@ -812,12 +770,6 @@ op_star
 id|filp
 )paren
 (brace
-id|drm_file_t
-op_star
-id|priv
-op_assign
-id|filp-&gt;private_data
-suffix:semicolon
 id|drm_buf_t
 op_star
 id|buf
@@ -887,7 +839,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-id|DRM_DEBUG
+id|DRM_ERROR
 c_func
 (paren
 l_string|&quot;mapbuf failed, retcode %d&bslash;n&quot;
@@ -899,9 +851,9 @@ r_return
 id|retcode
 suffix:semicolon
 )brace
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_assign
-id|priv-&gt;pid
+id|filp
 suffix:semicolon
 id|buf_priv
 op_assign
@@ -1216,16 +1168,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-r_int
-)paren
+id|time_before
+c_func
 (paren
 id|end
-op_minus
+comma
 id|jiffies
 )paren
-op_le
-l_int|0
 )paren
 (brace
 id|DRM_ERROR
@@ -1504,11 +1453,15 @@ id|drm_map_list_t
 op_star
 id|r_list
 op_assign
+id|list_entry
+c_func
 (paren
-id|drm_map_list_t
-op_star
-)paren
 id|list
+comma
+id|drm_map_list_t
+comma
+id|head
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3941,14 +3894,24 @@ r_void
 id|i810_reclaim_buffers
 c_func
 (paren
+r_struct
+id|file
+op_star
+id|filp
+)paren
+(brace
+id|drm_file_t
+op_star
+id|priv
+op_assign
+id|filp-&gt;private_data
+suffix:semicolon
 id|drm_device_t
 op_star
 id|dev
-comma
-id|pid_t
-id|pid
-)paren
-(brace
+op_assign
+id|priv-&gt;dev
+suffix:semicolon
 id|drm_device_dma_t
 op_star
 id|dma
@@ -4021,9 +3984,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf-&gt;pid
+id|buf-&gt;filp
 op_eq
-id|pid
+id|filp
 op_logical_and
 id|buf_priv
 )paren

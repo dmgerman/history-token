@@ -13,9 +13,9 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
-macro_line|#include &quot;smpboot_hooks.h&quot;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &lt;mach_wakecpu.h&gt;
+macro_line|#include &lt;smpboot_hooks.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -1287,6 +1287,8 @@ r_if
 c_cond
 (paren
 id|cpu_has_tsc
+op_logical_and
+id|cpu_khz
 )paren
 id|synchronize_tsc_ap
 c_func
@@ -2810,65 +2812,10 @@ op_amp
 id|nmi_low
 )paren
 suffix:semicolon
-id|CMOS_WRITE
+id|smpboot_setup_warm_reset_vector
 c_func
 (paren
-l_int|0xa
-comma
-l_int|0xf
-)paren
-suffix:semicolon
-id|local_flush_tlb
-c_func
-(paren
-)paren
-suffix:semicolon
-id|Dprintk
-c_func
-(paren
-l_string|&quot;1.&bslash;n&quot;
-)paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_HIGH
-)paren
-op_assign
 id|start_eip
-op_rshift
-l_int|4
-suffix:semicolon
-id|Dprintk
-c_func
-(paren
-l_string|&quot;2.&bslash;n&quot;
-)paren
-suffix:semicolon
-op_star
-(paren
-(paren
-r_volatile
-r_int
-r_int
-op_star
-)paren
-id|TRAMPOLINE_LOW
-)paren
-op_assign
-id|start_eip
-op_amp
-l_int|0xf
-suffix:semicolon
-id|Dprintk
-c_func
-(paren
-l_string|&quot;3.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Starting actual IPI sequence...&n;&t; */
@@ -3628,7 +3575,7 @@ id|apicid
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */
-id|smpboot_setup_warm_reset_vector
+id|smpboot_restore_warm_reset_vector
 c_func
 (paren
 )paren
@@ -3961,6 +3908,8 @@ c_cond
 id|cpu_has_tsc
 op_logical_and
 id|cpucount
+op_logical_and
+id|cpu_khz
 )paren
 id|synchronize_tsc_bp
 c_func

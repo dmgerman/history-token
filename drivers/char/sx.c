@@ -37,7 +37,6 @@ DECL|macro|_u16
 mdefine_line|#define _u16 u16
 macro_line|#include &quot;sxboards.h&quot;
 macro_line|#include &quot;sxwindow.h&quot;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &quot;sx.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 256 ports on&n;   one machine. You&squot;ll have to increase the number of boards in sx.h&n;   if you want more than 4 boards.  */
@@ -6110,7 +6109,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|Get_user
+id|get_user
 (paren
 id|nbytes
 comma
@@ -6118,7 +6117,7 @@ id|descr
 op_increment
 )paren
 suffix:semicolon
-id|Get_user
+id|get_user
 (paren
 id|offset
 comma
@@ -6126,7 +6125,7 @@ id|descr
 op_increment
 )paren
 suffix:semicolon
-id|Get_user
+id|get_user
 (paren
 id|data
 comma
@@ -6227,7 +6226,7 @@ id|SX_CHUNK_SIZE
 )paren
 suffix:semicolon
 )brace
-id|Get_user
+id|get_user
 (paren
 id|nbytes
 comma
@@ -6235,7 +6234,7 @@ id|descr
 op_increment
 )paren
 suffix:semicolon
-id|Get_user
+id|get_user
 (paren
 id|offset
 comma
@@ -6243,7 +6242,7 @@ id|descr
 op_increment
 )paren
 suffix:semicolon
-id|Get_user
+id|get_user
 (paren
 id|data
 comma
@@ -6603,7 +6602,7 @@ id|TIOCGSOFTCAR
 suffix:colon
 id|rc
 op_assign
-id|Put_user
+id|put_user
 c_func
 (paren
 (paren
@@ -6659,7 +6658,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -6875,7 +6874,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -6962,7 +6961,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -7049,7 +7048,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|Get_user
+id|get_user
 c_func
 (paren
 id|ival
@@ -9606,10 +9605,12 @@ id|CNTRL_REG_OFFSET
 )paren
 suffix:semicolon
 )brace
-id|my_iounmap
+id|iounmap
 (paren
-id|hwbase
-comma
+(paren
+r_char
+op_star
+)paren
 id|rebase
 )paren
 suffix:semicolon
@@ -9986,10 +9987,7 @@ l_int|0x18000
 suffix:semicolon
 id|board-&gt;irq
 op_assign
-id|get_irq
-(paren
-id|pdev
-)paren
+id|pdev-&gt;irq
 suffix:semicolon
 id|sx_dprintk
 (paren
@@ -10032,11 +10030,15 @@ id|board
 suffix:semicolon
 )brace
 r_else
-id|my_iounmap
+id|iounmap
 (paren
-id|board-&gt;hw_base
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|board-&gt;base
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10120,11 +10122,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|my_iounmap
+id|iounmap
 (paren
-id|board-&gt;hw_base
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|board-&gt;base
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10207,11 +10213,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|my_iounmap
+id|iounmap
 (paren
-id|board-&gt;hw_base
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|board-&gt;base
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10294,11 +10304,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|my_iounmap
+id|iounmap
 (paren
-id|board-&gt;hw_base
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|board-&gt;base
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -10639,11 +10653,15 @@ op_amp
 id|board-&gt;timer
 )paren
 suffix:semicolon
-id|my_iounmap
+id|iounmap
 (paren
-id|board-&gt;hw_base
-comma
+(paren
+r_char
+op_star
+)paren
+(paren
 id|board-&gt;base
+)paren
 )paren
 suffix:semicolon
 )brace

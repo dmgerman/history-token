@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
+macro_line|#include &lt;asm/head.h&gt;
 multiline_comment|/* #define VERBOSE_SHOWREGS */
 multiline_comment|/*&n; * Nothing special yet...&n; */
 DECL|function|default_idle
@@ -1692,9 +1693,7 @@ id|regs-&gt;u_regs
 l_int|14
 )braket
 op_plus
-id|STACK_BIAS
-op_plus
-id|REGWIN_SZ
+id|PTREGS_OFF
 )paren
 )paren
 suffix:semicolon
@@ -1713,9 +1712,7 @@ id|regs-&gt;u_regs
 l_int|14
 )braket
 op_plus
-id|STACK_BIAS
-op_plus
-id|REGWIN_SZ
+id|PTREGS_OFF
 )paren
 )paren
 op_member_access_from_pointer
@@ -2424,8 +2421,18 @@ c_cond
 id|copy_in_user
 c_func
 (paren
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|rval
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|psp
 comma
 id|distance
@@ -2654,7 +2661,11 @@ l_int|0
 r_int
 id|winsize
 op_assign
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window
+)paren
 suffix:semicolon
 r_int
 id|bias
@@ -2672,7 +2683,11 @@ id|TIF_32BIT
 )paren
 id|winsize
 op_assign
-id|REGWIN32_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window32
+)paren
 suffix:semicolon
 r_else
 id|bias
@@ -2790,7 +2805,11 @@ suffix:semicolon
 r_int
 id|winsize
 op_assign
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window
+)paren
 suffix:semicolon
 r_int
 id|bias
@@ -2808,7 +2827,11 @@ id|TIF_32BIT
 )paren
 id|winsize
 op_assign
-id|REGWIN32_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window32
+)paren
 suffix:semicolon
 r_else
 id|bias
@@ -3130,7 +3153,7 @@ op_minus
 (paren
 id|TRACEREG_SZ
 op_plus
-id|REGWIN_SZ
+id|STACKFRAME_SZ
 )paren
 )paren
 suffix:semicolon
@@ -3143,7 +3166,7 @@ comma
 (paren
 (paren
 r_struct
-id|reg_window
+id|sparc_stackf
 op_star
 )paren
 id|regs
@@ -3155,7 +3178,7 @@ comma
 (paren
 id|TRACEREG_SZ
 op_plus
-id|REGWIN_SZ
+id|STACKFRAME_SZ
 )paren
 )paren
 suffix:semicolon
@@ -3221,7 +3244,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|reg_window
+id|sparc_stackf
 )paren
 )paren
 suffix:semicolon
@@ -3317,7 +3340,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|reg_window
+id|sparc_stackf
 )paren
 )paren
 suffix:semicolon

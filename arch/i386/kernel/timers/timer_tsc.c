@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* processor.h for distable_tsc flag */
@@ -37,6 +38,84 @@ r_int
 id|last_tsc_low
 suffix:semicolon
 multiline_comment|/* lsb 32 bits of Time Stamp Counter */
+DECL|variable|last_tsc_high
+r_static
+r_int
+r_int
+id|last_tsc_high
+suffix:semicolon
+multiline_comment|/* msb 32 bits of Time Stamp Counter */
+DECL|variable|monotonic_base
+r_static
+r_int
+r_int
+r_int
+id|monotonic_base
+suffix:semicolon
+DECL|variable|monotonic_lock
+r_static
+id|rwlock_t
+id|monotonic_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* convert from cycles(64bits) =&gt; nanoseconds (64bits)&n; *  basic equation:&n; *&t;&t;ns = cycles / (freq / ns_per_sec)&n; *&t;&t;ns = cycles * (ns_per_sec / freq)&n; *&t;&t;ns = cycles * (10^9 / (cpu_mhz * 10^6))&n; *&t;&t;ns = cycles * (10^3 / cpu_mhz)&n; *&n; *&t;Then we use scaling math (suggested by george@mvista.com) to get:&n; *&t;&t;ns = cycles * (10^3 * SC / cpu_mhz) / SC&n; *&t;&t;ns = cycles * cyc2ns_scale / SC&n; *&n; *&t;And since SC is a constant power of two, we can convert the div&n; *  into a shift.   &n; *&t;&t;&t;-johnstul@us.ibm.com &quot;math is hard, lets go shopping!&quot;&n; */
+DECL|variable|cyc2ns_scale
+r_static
+r_int
+r_int
+id|cyc2ns_scale
+suffix:semicolon
+DECL|macro|CYC2NS_SCALE_FACTOR
+mdefine_line|#define CYC2NS_SCALE_FACTOR 10 /* 2^10, carefully chosen */
+DECL|function|set_cyc2ns_scale
+r_static
+r_inline
+r_void
+id|set_cyc2ns_scale
+c_func
+(paren
+r_int
+r_int
+id|cpu_mhz
+)paren
+(brace
+id|cyc2ns_scale
+op_assign
+(paren
+l_int|1000
+op_lshift
+id|CYC2NS_SCALE_FACTOR
+)paren
+op_div
+id|cpu_mhz
+suffix:semicolon
+)brace
+DECL|function|cycles_2_ns
+r_static
+r_inline
+r_int
+r_int
+r_int
+id|cycles_2_ns
+c_func
+(paren
+r_int
+r_int
+r_int
+id|cyc
+)paren
+(brace
+r_return
+(paren
+id|cyc
+op_star
+id|cyc2ns_scale
+)paren
+op_rshift
+id|CYC2NS_SCALE_FACTOR
+suffix:semicolon
+)brace
 multiline_comment|/* Cached *multiplier* to convert TSC counts to microseconds.&n; * (see the equation below).&n; * Equal to 2^32 * (1 / (clocks per usec) ).&n; * Initialized in time_init.&n; */
 DECL|variable|fast_gettimeoffset_quotient
 r_static
@@ -110,6 +189,80 @@ op_plus
 id|edx
 suffix:semicolon
 )brace
+DECL|function|monotonic_clock_tsc
+r_static
+r_int
+r_int
+r_int
+id|monotonic_clock_tsc
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+r_int
+id|last_offset
+comma
+id|this_offset
+comma
+id|base
+suffix:semicolon
+multiline_comment|/* atomically read monotonic base &amp; last_offset */
+id|read_lock_irq
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+id|last_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_tsc_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_tsc_low
+suffix:semicolon
+id|base
+op_assign
+id|monotonic_base
+suffix:semicolon
+id|read_unlock_irq
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Read the Time Stamp Counter */
+id|rdtscll
+c_func
+(paren
+id|this_offset
+)paren
+suffix:semicolon
+multiline_comment|/* return the value in ns */
+r_return
+id|base
+op_plus
+id|cycles_2_ns
+c_func
+(paren
+id|this_offset
+op_minus
+id|last_offset
+)paren
+suffix:semicolon
+)brace
 DECL|function|mark_offset_tsc
 r_static
 r_void
@@ -135,13 +288,44 @@ id|count2
 op_assign
 id|LATCH
 suffix:semicolon
+r_int
+r_int
+r_int
+id|this_offset
+comma
+id|last_offset
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+id|last_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_tsc_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_tsc_low
+suffix:semicolon
 multiline_comment|/*&n;&t; * It is important that these two operations happen almost at&n;&t; * the same time. We do the RDTSC stuff first, since it&squot;s&n;&t; * faster. To avoid any inconsistencies, we need interrupts&n;&t; * disabled locally.&n;&t; */
 multiline_comment|/*&n;&t; * Interrupts are just disabled locally since the timer irq&n;&t; * has the SA_INTERRUPT flag set. -arca&n;&t; */
 multiline_comment|/* read Pentium cycle counter */
-id|rdtscl
+id|rdtsc
 c_func
 (paren
 id|last_tsc_low
+comma
+id|last_tsc_high
 )paren
 suffix:semicolon
 id|spin_lock
@@ -284,6 +468,40 @@ id|count1
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* update the monotonic base value */
+id|this_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_tsc_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_tsc_low
+suffix:semicolon
+id|monotonic_base
+op_add_assign
+id|cycles_2_ns
+c_func
+(paren
+id|this_offset
+op_minus
+id|last_offset
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+multiline_comment|/* calculate delay_at_last_interrupt */
 id|count
 op_assign
 (paren
@@ -815,12 +1033,38 @@ macro_line|#endif
 DECL|function|init_tsc
 r_static
 r_int
+id|__init
 id|init_tsc
 c_func
 (paren
-r_void
+r_char
+op_star
+id|override
 )paren
 (brace
+multiline_comment|/* check clock override */
+r_if
+c_cond
+(paren
+id|override
+(braket
+l_int|0
+)braket
+op_logical_and
+id|strncmp
+c_func
+(paren
+id|override
+comma
+l_string|&quot;tsc&quot;
+comma
+l_int|3
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we have APM enabled or the CPU clock speed is variable&n;&t; * (CPU stops clock on HLT or slows clock to save power)&n;&t; * then the TSC timestamps may diverge by up to 1 jiffy from&n;&t; * &squot;real time&squot; but nothing will break.&n;&t; * The most frequent case is that the CPU is &quot;woken&quot; from a halt&n;&t; * state by the timer interrupt itself, so we get 0 error. In the&n;&t; * rare cases where a driver would &quot;wake&quot; the CPU and request a&n;&t; * timestamp, the maximum error is &lt; 1 jiffy. But timestamps are&n;&t; * still perfectly ordered.&n;&t; * Note that the TSC counter will be reset if APM suspends&n;&t; * to disk; this won&squot;t break the kernel, though, &squot;cuz we&squot;re&n;&t; * smart.  See arch/i386/kernel/apm.c.&n;&t; */
 multiline_comment|/*&n; &t; *&t;Firstly we have to do a CPU check for chips with&n; &t; * &t;a potentially buggy TSC. At this point we haven&squot;t run&n; &t; *&t;the ident/bugs checks so we must run this hook as it&n; &t; *&t;may turn off the TSC flag.&n; &t; *&n; &t; *&t;NOTE: this doesn&squot;t yet handle SMP 486 machines where only&n; &t; *&t;some CPU&squot;s have a TSC. Thats never worked and nobody has&n; &t; *&t;moaned if you have the only one in the world - you fix it!&n; &t; */
 macro_line|#ifdef CONFIG_CPU_FREQ
@@ -922,6 +1166,14 @@ l_int|1000
 )paren
 suffix:semicolon
 )brace
+id|set_cyc2ns_scale
+c_func
+(paren
+id|cpu_khz
+op_div
+l_int|1000
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1010,6 +1262,11 @@ dot
 id|get_offset
 op_assign
 id|get_offset_tsc
+comma
+dot
+id|monotonic_clock
+op_assign
+id|monotonic_clock_tsc
 comma
 dot
 id|delay

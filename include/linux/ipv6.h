@@ -150,7 +150,7 @@ DECL|member|auth_data
 id|__u8
 id|auth_data
 (braket
-l_int|4
+l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* Length variable but &gt;=4. Mind the 64 bit alignment! */
@@ -173,7 +173,7 @@ DECL|member|enc_data
 id|__u8
 id|enc_data
 (braket
-l_int|8
+l_int|0
 )braket
 suffix:semicolon
 multiline_comment|/* Length variable but &gt;=8. Mind the 64 bit alignment! */

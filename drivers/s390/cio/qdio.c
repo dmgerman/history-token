@@ -47,8 +47,9 @@ DECL|variable|version
 r_static
 r_const
 r_char
-op_star
 id|version
+(braket
+)braket
 op_assign
 l_string|&quot;QDIO base support version 2 (&quot;
 id|VERSION_QDIO_C

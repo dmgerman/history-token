@@ -1,4 +1,4 @@
-multiline_comment|/* &n; *  linux/kernel/scsi_debug.c&n; * vvvvvvvvvvvvvvvvvvvvvvv Original vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv&n; *  Copyright (C) 1992  Eric Youngdale&n; *  Simulate a host adapter with 2 disks attached.  Do a lot of checking&n; *  to make sure that we are not getting blocks mixed up, and PANIC if&n; *  anything out of the ordinary is seen.&n; * ^^^^^^^^^^^^^^^^^^^^^^^ Original ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; *  This version is more generic, simulating a variable number of disk &n; *  (or disk like devices) sharing a common amount of RAM &n; *  &n; *&n; *  For documentation see http://www.torque.net/sg/sdebug25.html&n; *&n; *   D. Gilbert (dpg) work for Magneto-Optical device test [20010421]&n; *   dpg: work for devfs large number of disks [20010809]&n; *        forked for lk 2.5 series [20011216, 20020101]&n; *        use vmalloc() more inquiry+mode_sense [20020302]&n; *        add timers for delayed responses [20020721]&n; *   Patrick Mansfield &lt;patmans@us.ibm.com&gt; max_luns+scsi_level [20021031]&n; *   Mike Anderson &lt;andmike@us.ibm.com&gt; sysfs work [20021118]&n; *   dpg: change style of boot options to &quot;scsi_debug.num_devs=2&quot; and&n; *        module options to &quot;modprobe scsi_debug num_devs=2&quot; [20021221]&n; */
+multiline_comment|/* &n; *  linux/kernel/scsi_debug.c&n; * vvvvvvvvvvvvvvvvvvvvvvv Original vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv&n; *  Copyright (C) 1992  Eric Youngdale&n; *  Simulate a host adapter with 2 disks attached.  Do a lot of checking&n; *  to make sure that we are not getting blocks mixed up, and PANIC if&n; *  anything out of the ordinary is seen.&n; * ^^^^^^^^^^^^^^^^^^^^^^^ Original ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&n; *&n; *  This version is more generic, simulating a variable number of disk &n; *  (or disk like devices) sharing a common amount of RAM &n; *  &n; *&n; *  For documentation see http://www.torque.net/sg/sdebug25.html&n; *&n; *   D. Gilbert (dpg) work for Magneto-Optical device test [20010421]&n; *   dpg: work for devfs large number of disks [20010809]&n; *        forked for lk 2.5 series [20011216, 20020101]&n; *        use vmalloc() more inquiry+mode_sense [20020302]&n; *        add timers for delayed responses [20020721]&n; *   Patrick Mansfield &lt;patmans@us.ibm.com&gt; max_luns+scsi_level [20021031]&n; *   Mike Anderson &lt;andmike@us.ibm.com&gt; sysfs work [20021118]&n; *   dpg: change style of boot options to &quot;scsi_debug.num_tgts=2&quot; and&n; *        module options to &quot;modprobe scsi_debug num_tgts=2&quot; [20021221]&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -30,25 +30,43 @@ r_char
 op_star
 id|scsi_debug_version_str
 op_assign
-l_string|&quot;Version: 1.68 (20030314)&quot;
+l_string|&quot;Version: 1.69 (20030329)&quot;
 suffix:semicolon
+multiline_comment|/* Additional Sense Code (ASC) used */
+DECL|macro|NO_ADDED_SENSE
+mdefine_line|#define NO_ADDED_SENSE 0x0
+DECL|macro|UNRECOVERED_READ_ERR
+mdefine_line|#define UNRECOVERED_READ_ERR 0x11
+DECL|macro|INVALID_OPCODE
+mdefine_line|#define INVALID_OPCODE 0x20
+DECL|macro|ADDR_OUT_OF_RANGE
+mdefine_line|#define ADDR_OUT_OF_RANGE 0x21
+DECL|macro|INVALID_FIELD_IN_CDB
+mdefine_line|#define INVALID_FIELD_IN_CDB 0x24
+DECL|macro|POWERON_RESET
+mdefine_line|#define POWERON_RESET 0x29
+DECL|macro|SAVING_PARAMS_UNSUP
+mdefine_line|#define SAVING_PARAMS_UNSUP 0x39
+DECL|macro|THRESHHOLD_EXCEEDED
+mdefine_line|#define THRESHHOLD_EXCEEDED 0x5d
 DECL|macro|SDEBUG_TAGGED_QUEUING
 mdefine_line|#define SDEBUG_TAGGED_QUEUING 0 /* 0 | MSG_SIMPLE_TAG | MSG_ORDERED_TAG */
 multiline_comment|/* Default values for driver parameters */
-DECL|macro|DEF_NUM_DEVS
-mdefine_line|#define DEF_NUM_DEVS   1
+DECL|macro|DEF_NUM_HOST
+mdefine_line|#define DEF_NUM_HOST   1
+DECL|macro|DEF_NUM_TGTS
+mdefine_line|#define DEF_NUM_TGTS   1
+DECL|macro|DEF_MAX_LUNS
+mdefine_line|#define DEF_MAX_LUNS   1
+multiline_comment|/* With these defaults, this driver will make 1 host with 1 target&n; * (id 0) containing 1 logical unit (lun 0). That is 1 device.&n; */
 DECL|macro|DEF_DEV_SIZE_MB
 mdefine_line|#define DEF_DEV_SIZE_MB   8
 DECL|macro|DEF_EVERY_NTH
 mdefine_line|#define DEF_EVERY_NTH   0
 DECL|macro|DEF_DELAY
 mdefine_line|#define DEF_DELAY   1
-DECL|macro|DEF_MAX_LUNS
-mdefine_line|#define DEF_MAX_LUNS   2
 DECL|macro|DEF_SCSI_LEVEL
 mdefine_line|#define DEF_SCSI_LEVEL   3
-DECL|macro|DEF_NUM_HOST
-mdefine_line|#define DEF_NUM_HOST   1
 DECL|macro|DEF_OPTS
 mdefine_line|#define DEF_OPTS   0
 multiline_comment|/* bit mask values for scsi_debug_opts */
@@ -64,6 +82,9 @@ multiline_comment|/* When &quot;every_nth&quot; &gt; 0 then modulo &quot;every_n
 multiline_comment|/* when 1==SCSI_DEBUG_OPT_MEDIUM_ERR, a medium error is simulated at this&n; * sector on read commands: */
 DECL|macro|OPT_MEDIUM_ERR_ADDR
 mdefine_line|#define OPT_MEDIUM_ERR_ADDR   0x1234 /* that&squot;s sector 4660 in decimal */
+multiline_comment|/* If REPORT LUNS has luns &gt;= 256 it can choose &quot;flat space&quot; (value 1)&n; * or &quot;peripheral device&quot; addressing (value 0) */
+DECL|macro|SAM2_LUN_ADDRESS_METHOD
+mdefine_line|#define SAM2_LUN_ADDRESS_METHOD 0
 DECL|variable|scsi_debug_dev_size_mb
 r_static
 r_int
@@ -71,14 +92,14 @@ id|scsi_debug_dev_size_mb
 op_assign
 id|DEF_DEV_SIZE_MB
 suffix:semicolon
-DECL|variable|scsi_debug_num_devs
+DECL|variable|scsi_debug_num_tgts
 r_static
 r_int
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 op_assign
-id|DEF_NUM_DEVS
+id|DEF_NUM_TGTS
 suffix:semicolon
-multiline_comment|/* max devs per host */
+multiline_comment|/* targets per host */
 DECL|variable|scsi_debug_opts
 r_static
 r_int
@@ -1255,7 +1276,7 @@ id|devip
 comma
 l_int|0
 comma
-l_int|0x0
+id|NO_ADDED_SENSE
 comma
 l_int|0
 comma
@@ -1962,11 +1983,11 @@ id|devip
 comma
 id|RECOVERED_ERROR
 comma
-l_int|0x5d
+id|THRESHHOLD_EXCEEDED
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 id|errsts
@@ -2360,11 +2381,11 @@ id|devip
 comma
 id|RECOVERED_ERROR
 comma
-l_int|0x5d
+id|THRESHHOLD_EXCEEDED
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 id|errsts
@@ -2441,11 +2462,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x20
+id|INVALID_OPCODE
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 id|errsts
@@ -2548,11 +2569,11 @@ id|devip
 comma
 id|UNIT_ATTENTION
 comma
-l_int|0x29
+id|POWERON_RESET
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -2971,11 +2992,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x24
+id|INVALID_FIELD_IN_CDB
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -3191,11 +3212,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x24
+id|INVALID_FIELD_IN_CDB
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -4115,11 +4136,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x39
+id|SAVING_PARAMS_UNSUP
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -4380,11 +4401,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x24
+id|INVALID_FIELD_IN_CDB
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -4528,11 +4549,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x21
+id|ADDR_OUT_OF_RANGE
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -4572,11 +4593,11 @@ id|devip
 comma
 id|MEDIUM_ERROR
 comma
-l_int|0x11
+id|UNRECOVERED_READ_ERR
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 multiline_comment|/* claim unrecoverable read error */
@@ -4827,11 +4848,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x21
+id|ADDR_OUT_OF_RANGE
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -5028,10 +5049,13 @@ id|devip
 r_int
 r_int
 id|alloc_len
-comma
+suffix:semicolon
+r_int
 id|lun_cnt
 comma
 id|i
+comma
+id|upper
 suffix:semicolon
 r_int
 id|select_report
@@ -5105,11 +5129,11 @@ id|devip
 comma
 id|ILLEGAL_REQUEST
 comma
-l_int|0x24
+id|INVALID_FIELD_IN_CDB
 comma
 l_int|0
 comma
-l_int|14
+l_int|18
 )paren
 suffix:semicolon
 r_return
@@ -5121,32 +5145,10 @@ c_cond
 (paren
 id|bufflen
 OG
-l_int|3
+l_int|8
 )paren
 (brace
-id|lun_cnt
-op_assign
-id|min
-c_func
-(paren
-(paren
-r_int
-)paren
-(paren
-id|bufflen
-op_div
-r_sizeof
-(paren
-id|ScsiLun
-)paren
-)paren
-comma
-(paren
-r_int
-)paren
-id|scsi_debug_max_luns
-)paren
-suffix:semicolon
+multiline_comment|/* can produce response with up to 16k luns &n;&t;&t;&t;      (lun 0 to lun 16383) */
 id|memset
 c_func
 (paren
@@ -5157,14 +5159,69 @@ comma
 id|bufflen
 )paren
 suffix:semicolon
+id|lun_cnt
+op_assign
+id|scsi_debug_max_luns
+suffix:semicolon
+id|buff
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+(paren
+r_sizeof
+(paren
+id|ScsiLun
+)paren
+op_star
+id|lun_cnt
+)paren
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
 id|buff
 (braket
 l_int|3
 )braket
 op_assign
-l_int|8
+(paren
+r_sizeof
+(paren
+id|ScsiLun
+)paren
 op_star
 id|lun_cnt
+)paren
+op_amp
+l_int|0xff
+suffix:semicolon
+id|lun_cnt
+op_assign
+id|min
+c_func
+(paren
+(paren
+r_int
+)paren
+(paren
+(paren
+id|bufflen
+op_minus
+l_int|8
+)paren
+op_div
+r_sizeof
+(paren
+id|ScsiLun
+)paren
+)paren
+comma
+id|lun_cnt
+)paren
 suffix:semicolon
 id|one_lun
 op_assign
@@ -5175,7 +5232,7 @@ op_star
 op_amp
 id|buff
 (braket
-l_int|0
+l_int|8
 )braket
 suffix:semicolon
 r_for
@@ -5192,6 +5249,42 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+id|upper
+op_assign
+(paren
+id|i
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0x3f
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|upper
+)paren
+id|one_lun
+(braket
+id|i
+)braket
+dot
+id|scsi_lun
+(braket
+l_int|0
+)braket
+op_assign
+(paren
+id|upper
+op_or
+(paren
+id|SAM2_LUN_ADDRESS_METHOD
+op_lshift
+l_int|6
+)paren
+)paren
+suffix:semicolon
 id|one_lun
 (braket
 id|i
@@ -5203,7 +5296,10 @@ l_int|1
 )braket
 op_assign
 id|i
+op_amp
+l_int|0xff
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -6851,9 +6947,9 @@ multiline_comment|/* Set &squot;perm&squot; (4th argument) to 0 to disable modul
 id|module_param_named
 c_func
 (paren
-id|num_devs
+id|num_tgts
 comma
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 comma
 r_int
 comma
@@ -6968,9 +7064,9 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|num_devs
+id|num_tgts
 comma
-l_string|&quot;number of SCSI devices per host to simulate&quot;
+l_string|&quot;number of SCSI targets per host to simulate&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -7056,12 +7152,12 @@ c_func
 (paren
 id|sdebug_info
 comma
-l_string|&quot;scsi_debug, %s, num_devs=%d, &quot;
+l_string|&quot;scsi_debug, %s, num_tgts=%d, &quot;
 l_string|&quot;dev_size_mb=%d, opts=0x%x&quot;
 comma
 id|scsi_debug_version_str
 comma
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 comma
 id|scsi_debug_dev_size_mb
 comma
@@ -7232,7 +7328,7 @@ c_func
 id|buffer
 comma
 l_string|&quot;scsi_debug adapter driver, %s&bslash;n&quot;
-l_string|&quot;num_devs=%d, shared (ram) size=%d MB, opts=0x%x, &quot;
+l_string|&quot;num_tgts=%d, shared (ram) size=%d MB, opts=0x%x, &quot;
 l_string|&quot;every_nth=%d(curr:%d)&bslash;n&quot;
 l_string|&quot;delay=%d, max_luns=%d, scsi_level=%d&bslash;n&quot;
 l_string|&quot;sector_size=%d bytes, cylinders=%d, heads=%d, sectors=%d&bslash;n&quot;
@@ -7241,7 +7337,7 @@ l_string|&quot;host_resets=%d&bslash;n&quot;
 comma
 id|scsi_debug_version_str
 comma
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 comma
 id|scsi_debug_dev_size_mb
 comma
@@ -7622,10 +7718,10 @@ id|sdebug_opts_show
 comma
 id|sdebug_opts_store
 )paren
-DECL|function|sdebug_num_devs_show
+DECL|function|sdebug_num_tgts_show
 r_static
 id|ssize_t
-id|sdebug_num_devs_show
+id|sdebug_num_tgts_show
 c_func
 (paren
 r_struct
@@ -7648,14 +7744,14 @@ id|PAGE_SIZE
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 )paren
 suffix:semicolon
 )brace
-DECL|function|sdebug_num_devs_store
+DECL|function|sdebug_num_tgts_store
 r_static
 id|ssize_t
-id|sdebug_num_devs_store
+id|sdebug_num_tgts_store
 c_func
 (paren
 r_struct
@@ -7706,7 +7802,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|scsi_debug_num_devs
+id|scsi_debug_num_tgts
 op_assign
 id|n
 suffix:semicolon
@@ -7722,15 +7818,15 @@ suffix:semicolon
 id|DRIVER_ATTR
 c_func
 (paren
-id|num_devs
+id|num_tgts
 comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|sdebug_num_devs_show
+id|sdebug_num_tgts_show
 comma
-id|sdebug_num_devs_store
+id|sdebug_num_tgts_store
 )paren
 DECL|function|sdebug_dev_size_mb_show
 r_static
@@ -7917,16 +8013,85 @@ id|scsi_debug_max_luns
 )paren
 suffix:semicolon
 )brace
+DECL|function|sdebug_max_luns_store
+r_static
+id|ssize_t
+id|sdebug_max_luns_store
+c_func
+(paren
+r_struct
+id|device_driver
+op_star
+id|ddp
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+(brace
+r_int
+id|n
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|count
+OG
+l_int|0
+)paren
+op_logical_and
+(paren
+l_int|1
+op_eq
+id|sscanf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%d&quot;
+comma
+op_amp
+id|n
+)paren
+)paren
+op_logical_and
+(paren
+id|n
+op_ge
+l_int|0
+)paren
+)paren
+(brace
+id|scsi_debug_max_luns
+op_assign
+id|n
+suffix:semicolon
+r_return
+id|count
+suffix:semicolon
+)brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|DRIVER_ATTR
 c_func
 (paren
 id|max_luns
 comma
 id|S_IRUGO
+op_or
+id|S_IWUSR
 comma
 id|sdebug_max_luns_show
 comma
-l_int|NULL
+id|sdebug_max_luns_store
 )paren
 DECL|function|sdebug_scsi_level_show
 r_static
@@ -8200,7 +8365,7 @@ op_amp
 id|sdebug_driverfs_driver
 comma
 op_amp
-id|driver_attr_num_devs
+id|driver_attr_num_tgts
 )paren
 suffix:semicolon
 id|driver_create_file
@@ -8319,7 +8484,7 @@ op_amp
 id|sdebug_driverfs_driver
 comma
 op_amp
-id|driver_attr_num_devs
+id|driver_attr_num_tgts
 )paren
 suffix:semicolon
 id|driver_remove_file
@@ -9001,6 +9166,8 @@ id|dev
 (brace
 r_int
 id|k
+comma
+id|devs_per_host
 suffix:semicolon
 r_int
 id|error
@@ -9089,6 +9256,12 @@ op_amp
 id|sdbg_host-&gt;dev_info_list
 )paren
 suffix:semicolon
+id|devs_per_host
+op_assign
+id|scsi_debug_num_tgts
+op_star
+id|scsi_debug_max_luns
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -9098,7 +9271,7 @@ l_int|0
 suffix:semicolon
 id|k
 OL
-id|scsi_debug_num_devs
+id|devs_per_host
 suffix:semicolon
 id|k
 op_increment
@@ -9226,6 +9399,32 @@ suffix:semicolon
 id|sdbg_host-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|hpnt-&gt;this_id
+op_ge
+l_int|0
+)paren
+op_logical_and
+(paren
+id|scsi_debug_num_tgts
+OG
+id|hpnt-&gt;this_id
+)paren
+)paren
+id|hpnt-&gt;max_id
+op_assign
+id|scsi_debug_num_tgts
+op_plus
+l_int|1
+suffix:semicolon
+r_else
+id|hpnt-&gt;max_id
+op_assign
+id|scsi_debug_num_tgts
 suffix:semicolon
 id|hpnt-&gt;max_lun
 op_assign

@@ -36,8 +36,7 @@ macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef MODULE
-DECL|variable|unloadable
+macro_line|#if 0 /*def MODULE*/
 r_static
 r_int
 id|unloadable
@@ -45,6 +44,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* XX: Turn to one when all is ok within the&n;&t;&t;&t;      module for allowing unload */
+id|MODULE_PARM
+c_func
+(paren
+id|unloadable
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
 id|MODULE_AUTHOR
 c_func
@@ -58,12 +65,10 @@ c_func
 l_string|&quot;IPv6 protocol stack for Linux&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_LICENSE
 c_func
 (paren
-id|unloadable
-comma
-l_string|&quot;i&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* IPv6 procfs goodies... */
@@ -251,7 +256,11 @@ id|inet6_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 DECL|function|inet6_sk_slab
@@ -820,8 +829,28 @@ id|inet_sock_nr
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+(brace
+id|inet_sock_release
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -871,7 +900,11 @@ op_ne
 l_int|0
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|inet_sock_release
 c_func
@@ -2976,6 +3009,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_int
+id|ipv6_misc_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|inet6_init
 r_static
 r_int
@@ -3334,36 +3375,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|proc_net_create
+id|ipv6_misc_proc_init
 c_func
 (paren
-l_string|&quot;sockstat6&quot;
-comma
-l_int|0
-comma
-id|afinet6_get_info
 )paren
 )paren
 r_goto
-id|proc_sockstat6_fail
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|proc_net_create
-c_func
-(paren
-l_string|&quot;snmp6&quot;
-comma
-l_int|0
-comma
-id|afinet6_get_snmp
-)paren
-)paren
-r_goto
-id|proc_snmp6_fail
+id|proc_misc6_fail
 suffix:semicolon
 r_if
 c_cond
@@ -3413,7 +3431,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Init v6 extention headers. */
+multiline_comment|/* Init v6 extension headers. */
 id|ipv6_hopopts_init
 c_func
 (paren
@@ -3459,18 +3477,16 @@ suffix:colon
 id|proc_net_remove
 c_func
 (paren
-l_string|&quot;anycast6&quot;
+l_string|&quot;snmp6&quot;
 )paren
 suffix:semicolon
-id|proc_snmp6_fail
-suffix:colon
 id|proc_net_remove
 c_func
 (paren
 l_string|&quot;sockstat6&quot;
 )paren
 suffix:semicolon
-id|proc_sockstat6_fail
+id|proc_misc6_fail
 suffix:colon
 id|proc_net_remove
 c_func
@@ -3665,10 +3681,4 @@ id|inet6_exit
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/base/hotplug.c - hotplug call code&n; * &n; * Copyright (c) 2000-2001 David Brownell&n; * Copyright (c) 2002 Greg Kroah-Hartman&n; * Copyright (c) 2002 IBM Corp.&n; *&n; * Based off of drivers/usb/core/usb.c:call_agent(), which was &n; * written by David Brownell.&n; *&n; */
+multiline_comment|/*&n; * drivers/base/hotplug.c - hotplug call code&n; * &n; * Copyright (c) 2000-2001 David Brownell&n; * Copyright (c) 2002-2003 Greg Kroah-Hartman&n; * Copyright (c) 2002-2003 IBM Corp.&n; *&n; * Based off of drivers/usb/core/usb.c:call_agent(), which was &n; * written by David Brownell.&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
@@ -119,48 +119,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-(paren
-)paren
-)paren
-(brace
-id|pr_debug
-(paren
-l_string|&quot;%s - in_interrupt, not allowed!&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|current-&gt;fs-&gt;root
-)paren
-(brace
-multiline_comment|/* don&squot;t try to do anything unless we have a root partition */
-id|pr_debug
-(paren
-l_string|&quot;%s - %s -- no FS yet&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|action
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|envp
 op_assign
 (paren
@@ -527,62 +485,6 @@ id|envp
 suffix:semicolon
 r_return
 id|retval
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * dev_hotplug - called when any device is added or removed from a bus&n; */
-DECL|function|dev_hotplug
-r_int
-id|dev_hotplug
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_const
-r_char
-op_star
-id|action
-)paren
-(brace
-id|pr_debug
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;bus
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_return
-id|do_hotplug
-(paren
-id|dev
-comma
-id|dev-&gt;bus-&gt;name
-comma
-id|action
-comma
-id|dev-&gt;bus-&gt;hotplug
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * class_hotplug - called when a class is added or removed from a device&n; */

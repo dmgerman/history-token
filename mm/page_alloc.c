@@ -343,6 +343,7 @@ op_star
 id|page
 comma
 r_int
+r_int
 id|order
 )paren
 (brace
@@ -424,6 +425,7 @@ id|page
 op_star
 id|page
 comma
+r_int
 r_int
 id|order
 )paren
@@ -6214,8 +6216,6 @@ comma
 l_string|&quot;nr_writeback&quot;
 comma
 l_string|&quot;nr_page_table_pages&quot;
-comma
-l_string|&quot;nr_reverse_maps&quot;
 comma
 l_string|&quot;nr_mapped&quot;
 comma

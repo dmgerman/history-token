@@ -2247,7 +2247,12 @@ comma
 l_int|24
 )paren
 suffix:semicolon
-id|chip-&gt;playback.pcm_ctl-&gt;access
+id|chip-&gt;playback.pcm_ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_and_assign
 op_complement
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE

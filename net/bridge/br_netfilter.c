@@ -1510,6 +1510,7 @@ id|pskb
 op_member_access_from_pointer
 id|nf_bridge
 suffix:semicolon
+multiline_comment|/* FIXME: skb as not been linearized.  Is this still true? --RR */
 multiline_comment|/* Be very paranoid.  */
 r_if
 c_cond

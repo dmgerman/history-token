@@ -127,7 +127,7 @@ mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 4 MB (or 2MB) page, Pentium+, if pre
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry PPro+ */
 DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x040&t;/* pagecache or swap? */
+mdefine_line|#define _PAGE_FILE&t;0x040&t;/* set:pagecache unset:swap */
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;0x080&t;/* If not present */
 DECL|macro|_PAGE_TABLE
@@ -330,6 +330,7 @@ op_amp
 id|_PAGE_RW
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * The following only works if pte_present() is not true.&n; */
 DECL|function|pte_file
 r_static
 r_inline

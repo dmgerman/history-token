@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -36,6 +37,8 @@ DECL|macro|CYCLONE_MPCS_OFFSET
 mdefine_line|#define CYCLONE_MPCS_OFFSET 0x51A8
 DECL|macro|CYCLONE_TIMER_FREQ
 mdefine_line|#define CYCLONE_TIMER_FREQ 100000000
+DECL|macro|CYCLONE_TIMER_MASK
+mdefine_line|#define CYCLONE_TIMER_MASK (((u64)1&lt;&lt;40)-1) /* 40 bit mask */
 DECL|variable|use_cyclone
 r_int
 id|use_cyclone
@@ -50,11 +53,33 @@ r_volatile
 id|cyclone_timer
 suffix:semicolon
 multiline_comment|/* Cyclone MPMC0 register */
-DECL|variable|last_cyclone_timer
+DECL|variable|last_cyclone_low
 r_static
 id|u32
-id|last_cyclone_timer
+id|last_cyclone_low
 suffix:semicolon
+DECL|variable|last_cyclone_high
+r_static
+id|u32
+id|last_cyclone_high
+suffix:semicolon
+DECL|variable|monotonic_base
+r_static
+r_int
+r_int
+r_int
+id|monotonic_base
+suffix:semicolon
+DECL|variable|monotonic_lock
+r_static
+id|rwlock_t
+id|monotonic_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
+multiline_comment|/* helper macro to atomically read both cyclone counter registers */
+DECL|macro|read_cyclone_counter
+mdefine_line|#define read_cyclone_counter(low,high) &bslash;&n;&t;do{ &bslash;&n;&t;&t;high = cyclone_timer[1]; low = cyclone_timer[0]; &bslash;&n;&t;} while (high != cyclone_timer[1]);
 DECL|function|mark_offset_cyclone
 r_static
 r_void
@@ -67,6 +92,35 @@ r_void
 r_int
 id|count
 suffix:semicolon
+r_int
+r_int
+r_int
+id|this_offset
+comma
+id|last_offset
+suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+id|last_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_cyclone_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_cyclone_low
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -74,22 +128,15 @@ op_amp
 id|i8253_lock
 )paren
 suffix:semicolon
-multiline_comment|/* quickly read the cyclone timer */
-r_if
-c_cond
+id|read_cyclone_counter
+c_func
 (paren
-id|cyclone_timer
+id|last_cyclone_low
+comma
+id|last_cyclone_high
 )paren
-(brace
-id|last_cyclone_timer
-op_assign
-id|cyclone_timer
-(braket
-l_int|0
-)braket
 suffix:semicolon
-)brace
-multiline_comment|/* calculate delay_at_last_interrupt */
+multiline_comment|/* read values for delay_at_last_interrupt */
 id|outb_p
 c_func
 (paren
@@ -125,6 +172,40 @@ op_amp
 id|i8253_lock
 )paren
 suffix:semicolon
+multiline_comment|/* update the monotonic base value */
+id|this_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_cyclone_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_cyclone_low
+suffix:semicolon
+id|monotonic_base
+op_add_assign
+(paren
+id|this_offset
+op_minus
+id|last_offset
+)paren
+op_amp
+id|CYCLONE_TIMER_MASK
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+multiline_comment|/* calculate delay_at_last_interrupt */
 id|count
 op_assign
 (paren
@@ -189,7 +270,7 @@ id|offset
 op_assign
 id|offset
 op_minus
-id|last_cyclone_timer
+id|last_cyclone_low
 suffix:semicolon
 multiline_comment|/* convert cyclone ticks to microseconds */
 multiline_comment|/* XXX slow, can we speed this up? */
@@ -210,13 +291,129 @@ op_plus
 id|offset
 suffix:semicolon
 )brace
-DECL|function|init_cyclone
+DECL|function|monotonic_clock_cyclone
 r_static
 r_int
-id|init_cyclone
+r_int
+r_int
+id|monotonic_clock_cyclone
 c_func
 (paren
 r_void
+)paren
+(brace
+id|u32
+id|now_low
+comma
+id|now_high
+suffix:semicolon
+r_int
+r_int
+r_int
+id|last_offset
+comma
+id|this_offset
+comma
+id|base
+suffix:semicolon
+r_int
+r_int
+r_int
+id|ret
+suffix:semicolon
+multiline_comment|/* atomically read monotonic base &amp; last_offset */
+id|read_lock_irq
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+id|last_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|last_cyclone_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|last_cyclone_low
+suffix:semicolon
+id|base
+op_assign
+id|monotonic_base
+suffix:semicolon
+id|read_unlock_irq
+c_func
+(paren
+op_amp
+id|monotonic_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Read the cyclone counter */
+id|read_cyclone_counter
+c_func
+(paren
+id|now_low
+comma
+id|now_high
+)paren
+suffix:semicolon
+id|this_offset
+op_assign
+(paren
+(paren
+r_int
+r_int
+r_int
+)paren
+id|now_high
+op_lshift
+l_int|32
+)paren
+op_or
+id|now_low
+suffix:semicolon
+multiline_comment|/* convert to nanoseconds */
+id|ret
+op_assign
+id|base
+op_plus
+(paren
+(paren
+id|this_offset
+op_minus
+id|last_offset
+)paren
+op_amp
+id|CYCLONE_TIMER_MASK
+)paren
+suffix:semicolon
+r_return
+id|ret
+op_star
+(paren
+l_int|1000000000
+op_div
+id|CYCLONE_TIMER_FREQ
+)paren
+suffix:semicolon
+)brace
+DECL|function|init_cyclone
+r_static
+r_int
+id|__init
+id|init_cyclone
+c_func
+(paren
+r_char
+op_star
+id|override
 )paren
 (brace
 id|u32
@@ -238,8 +435,30 @@ multiline_comment|/* offset from pageaddr to cyclone_timer register */
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* check clock override */
+r_if
+c_cond
+(paren
+id|override
+(braket
+l_int|0
+)braket
+op_logical_and
+id|strncmp
+c_func
+(paren
+id|override
+comma
+l_string|&quot;cyclone&quot;
+comma
+l_int|7
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 multiline_comment|/*make sure we&squot;re on a summit box*/
-multiline_comment|/*XXX need to use proper summit hooks! such as xapic -john*/
 r_if
 c_cond
 (paren
@@ -802,6 +1021,11 @@ dot
 id|get_offset
 op_assign
 id|get_offset_cyclone
+comma
+dot
+id|monotonic_clock
+op_assign
+id|monotonic_clock_cyclone
 comma
 dot
 id|delay

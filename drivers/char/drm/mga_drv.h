@@ -210,42 +210,42 @@ r_int
 id|texture_size
 suffix:semicolon
 DECL|member|sarea
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|sarea
 suffix:semicolon
 DECL|member|fb
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|fb
 suffix:semicolon
 DECL|member|mmio
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|mmio
 suffix:semicolon
 DECL|member|status
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|status
 suffix:semicolon
 DECL|member|warp
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|warp
 suffix:semicolon
 DECL|member|primary
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|primary
 suffix:semicolon
 DECL|member|buffers
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|buffers
 suffix:semicolon
 DECL|member|agp_textures
-id|drm_map_t
+id|drm_local_map_t
 op_star
 id|agp_textures
 suffix:semicolon
@@ -459,7 +459,8 @@ id|dev_priv
 )paren
 suffix:semicolon
 DECL|macro|mga_flush_write_combine
-mdefine_line|#define mga_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
+mdefine_line|#define mga_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER(dev_priv-&gt;primary)
+macro_line|#if defined(__linux__) &amp;&amp; defined(__alpha__)
 DECL|macro|MGA_BASE
 mdefine_line|#define MGA_BASE( reg )&t;&t;((unsigned long)(dev_priv-&gt;mmio-&gt;handle))
 DECL|macro|MGA_ADDR
@@ -468,15 +469,14 @@ DECL|macro|MGA_DEREF
 mdefine_line|#define MGA_DEREF( reg )&t;*(volatile u32 *)MGA_ADDR( reg )
 DECL|macro|MGA_DEREF8
 mdefine_line|#define MGA_DEREF8( reg )&t;*(volatile u8 *)MGA_ADDR( reg )
-macro_line|#ifdef __alpha__
 DECL|macro|MGA_READ
 mdefine_line|#define MGA_READ( reg )&t;&t;(_MGA_READ((u32 *)MGA_ADDR(reg)))
 DECL|macro|MGA_READ8
 mdefine_line|#define MGA_READ8( reg )&t;(_MGA_READ((u8 *)MGA_ADDR(reg)))
 DECL|macro|MGA_WRITE
-mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE( reg, val )&t;do { DRM_WRITEMEMORYBARRIER(dev_priv-&gt;mmio); MGA_DEREF( reg ) = val; } while (0)
 DECL|macro|MGA_WRITE8
-mdefine_line|#define MGA_WRITE8( reg, val )  do { DRM_WRITEMEMORYBARRIER(); MGA_DEREF8( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE8( reg, val )  do { DRM_WRITEMEMORYBARRIER(dev_priv-&gt;mmio); MGA_DEREF8( reg ) = val; } while (0)
 DECL|function|_MGA_READ
 r_static
 r_inline
@@ -492,6 +492,7 @@ id|addr
 id|DRM_READMEMORYBARRIER
 c_func
 (paren
+id|dev_priv-&gt;mmio
 )paren
 suffix:semicolon
 r_return
@@ -505,14 +506,14 @@ id|addr
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|macro|MGA_READ
-mdefine_line|#define MGA_READ( reg )&t;&t;MGA_DEREF( reg )
 DECL|macro|MGA_READ8
-mdefine_line|#define MGA_READ8( reg )&t;MGA_DEREF8( reg )
-DECL|macro|MGA_WRITE
-mdefine_line|#define MGA_WRITE( reg, val )&t;do { MGA_DEREF( reg ) = val; } while (0)
+mdefine_line|#define MGA_READ8( reg )&t;DRM_READ8(dev_priv-&gt;mmio, (reg))
+DECL|macro|MGA_READ
+mdefine_line|#define MGA_READ( reg )&t;&t;DRM_READ32(dev_priv-&gt;mmio, (reg))
 DECL|macro|MGA_WRITE8
-mdefine_line|#define MGA_WRITE8( reg, val )  do { MGA_DEREF8( reg ) = val; } while (0)
+mdefine_line|#define MGA_WRITE8( reg, val )  DRM_WRITE8(dev_priv-&gt;mmio, (reg), (val))
+DECL|macro|MGA_WRITE
+mdefine_line|#define MGA_WRITE( reg, val )&t;DRM_WRITE32(dev_priv-&gt;mmio, (reg), (val))
 macro_line|#endif
 DECL|macro|DWGREG0
 mdefine_line|#define DWGREG0 &t;0x1c00
@@ -533,8 +534,6 @@ mdefine_line|#define DMAREG(r)&t;(ISREG0(r) ? DMAREG0(r) : DMAREG1(r))
 multiline_comment|/* ================================================================&n; * Helper macross...&n; */
 DECL|macro|MGA_EMIT_STATE
 mdefine_line|#define MGA_EMIT_STATE( dev_priv, dirty )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( (dirty) &amp; ~MGA_UPLOAD_CLIPRECTS ) {&t;&t;&t;&bslash;&n;&t;&t;if ( dev_priv-&gt;chipset == MGA_CARD_TYPE_G400 ) {&t;&bslash;&n;&t;&t;&t;mga_g400_emit_state( dev_priv );&t;&t;&bslash;&n;&t;&t;} else {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;mga_g200_emit_state( dev_priv );&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|LOCK_TEST_WITH_RETURN
-mdefine_line|#define LOCK_TEST_WITH_RETURN( dev )&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( !_DRM_LOCK_IS_HELD( dev-&gt;lock.hw_lock-&gt;lock ) ||&t;&t;&bslash;&n;&t;     dev-&gt;lock.pid != DRM_CURRENTPID ) {&t;&t;&t;&t;&bslash;&n;&t;&t;DRM_ERROR( &quot;%s called without lock held&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;&t;   __FUNCTION__ );&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return DRM_ERR(EINVAL);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRAP_TEST_WITH_RETURN
 mdefine_line|#define WRAP_TEST_WITH_RETURN( dev_priv )&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ( test_bit( 0, &amp;dev_priv-&gt;prim.wrapped ) ) {&t;&t;&t;&bslash;&n;&t;&t;if ( mga_is_idle( dev_priv ) ) {&t;&t;&t;&bslash;&n;&t;&t;&t;mga_do_dma_wrap_end( dev_priv );&t;&t;&bslash;&n;&t;&t;} else if ( dev_priv-&gt;prim.space &lt;&t;&t;&t;&bslash;&n;&t;&t;&t;    dev_priv-&gt;prim.high_mark ) {&t;&t;&bslash;&n;&t;&t;&t;if ( MGA_DMA_DEBUG )&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;DRM_INFO( &quot;%s: wrap...&bslash;n&quot;, __FUNCTION__ );&t;&bslash;&n;&t;&t;&t;return DRM_ERR(EBUSY);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|WRAP_WAIT_WITH_RETURN

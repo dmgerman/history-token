@@ -102,6 +102,14 @@ op_star
 id|ops
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * One-time exit/cleanup for the arch.&n; */
+r_void
+id|oprofile_arch_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * Add a sample. This may be called from any context. Pass&n; * smp_processor_id() as cpu.&n; */
 r_extern
 r_void

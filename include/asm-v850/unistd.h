@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-v850/unistd.h -- System call numbers and invocation mechanism&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/unistd.h -- System call numbers and invocation mechanism&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_UNISTD_H__
 DECL|macro|__V850_UNISTD_H__
 mdefine_line|#define __V850_UNISTD_H__
@@ -381,8 +381,6 @@ DECL|macro|__NR_gettid
 mdefine_line|#define __NR_gettid&t;&t;201
 DECL|macro|__NR_tkill
 mdefine_line|#define __NR_tkill&t;&t;202
-multiline_comment|/* #define __NR_mincore&t;&t;203 */
-multiline_comment|/* #define __NR_madvise&t;&t;204 */
 multiline_comment|/* Syscall protocol:&n;   Syscall number in r12, args in r6-r9, r13-r14&n;   Return value in r10&n;   Trap 0 for `short&squot; syscalls, where all the args can fit in function&n;   call argument registers, and trap 1 when there are additional args in&n;   r13-r14.  */
 DECL|macro|SYSCALL_NUM
 mdefine_line|#define SYSCALL_NUM&t;&quot;r12&quot;

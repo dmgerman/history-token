@@ -1,7 +1,7 @@
 macro_line|#ifndef _I830_DRM_H_
 DECL|macro|_I830_DRM_H_
 mdefine_line|#define _I830_DRM_H_
-multiline_comment|/* WARNING: These defines must be the same as what the Xserver uses.&n; * if you change them, you must change the defines in the Xserver.&n; */
+multiline_comment|/* WARNING: These defines must be the same as what the Xserver uses.&n; * if you change them, you must change the defines in the Xserver.&n; *&n; * KW: Actually, you can&squot;t ever change them because doing so would&n; * break backwards compatibility.&n; */
 macro_line|#ifndef _I830_DEFINES_
 DECL|macro|_I830_DEFINES_
 mdefine_line|#define _I830_DEFINES_
@@ -18,18 +18,11 @@ DECL|macro|I830_NR_TEX_REGIONS
 mdefine_line|#define I830_NR_TEX_REGIONS 64
 DECL|macro|I830_LOG_MIN_TEX_REGION_SIZE
 mdefine_line|#define I830_LOG_MIN_TEX_REGION_SIZE 16
-multiline_comment|/* if defining I830_ENABLE_4_TEXTURES, do it in i830_3d_reg.h, too */
-macro_line|#if !defined(I830_ENABLE_4_TEXTURES)
+multiline_comment|/* KW: These aren&squot;t correct but someone set them to two and then&n; * released the module.  Now we can&squot;t change them as doing so would&n; * break backwards compatibility.&n; */
 DECL|macro|I830_TEXTURE_COUNT
 mdefine_line|#define I830_TEXTURE_COUNT&t;2
 DECL|macro|I830_TEXBLEND_COUNT
-mdefine_line|#define I830_TEXBLEND_COUNT&t;2&t;/* always same as TEXTURE_COUNT? */
-macro_line|#else /* defined(I830_ENABLE_4_TEXTURES) */
-DECL|macro|I830_TEXTURE_COUNT
-mdefine_line|#define I830_TEXTURE_COUNT&t;4
-DECL|macro|I830_TEXBLEND_COUNT
-mdefine_line|#define I830_TEXBLEND_COUNT&t;4&t;/* always same as TEXTURE_COUNT? */
-macro_line|#endif /* I830_ENABLE_4_TEXTURES */
+mdefine_line|#define I830_TEXBLEND_COUNT&t;I830_TEXTURE_COUNT
 DECL|macro|I830_TEXBLEND_SIZE
 mdefine_line|#define I830_TEXBLEND_SIZE&t;12&t;/* (4 args + op) * 2 + COLOR_FACTOR */
 DECL|macro|I830_UPLOAD_CTX
@@ -88,11 +81,12 @@ DECL|macro|I830_UPLOAD_TEX_PALETTE_N
 mdefine_line|#define I830_UPLOAD_TEX_PALETTE_N(n)    (0x1000000 &lt;&lt; (n))
 DECL|macro|I830_UPLOAD_TEX_PALETTE_SHARED
 mdefine_line|#define I830_UPLOAD_TEX_PALETTE_SHARED&t;0x4000000
+DECL|macro|I830_UPLOAD_STIPPLE
+mdefine_line|#define I830_UPLOAD_STIPPLE         &t;0x8000000
 multiline_comment|/* Indices into buf.Setup where various bits of state are mirrored per&n; * context and per buffer.  These can be fired at the card as a unit,&n; * or in a piecewise fashion as required.&n; */
 multiline_comment|/* Destbuffer state &n; *    - backbuffer linear offset and pitch -- invarient in the current dri&n; *    - zbuffer linear offset and pitch -- also invarient&n; *    - drawing origin in back and depth buffers.&n; *&n; * Keep the depth/back buffer state here to accommodate private buffers&n; * in the future.&n; */
 DECL|macro|I830_DESTREG_CBUFADDR
 mdefine_line|#define I830_DESTREG_CBUFADDR 0
-multiline_comment|/* Invarient */
 DECL|macro|I830_DESTREG_DBUFADDR
 mdefine_line|#define I830_DESTREG_DBUFADDR 1
 DECL|macro|I830_DESTREG_DV0
@@ -156,6 +150,13 @@ DECL|macro|I830_CTXREG_MCSB1
 mdefine_line|#define I830_CTXREG_MCSB1&t;&t;16
 DECL|macro|I830_CTX_SETUP_SIZE
 mdefine_line|#define I830_CTX_SETUP_SIZE&t;&t;17
+multiline_comment|/* 1.3: Stipple state&n; */
+DECL|macro|I830_STPREG_ST0
+mdefine_line|#define I830_STPREG_ST0 0
+DECL|macro|I830_STPREG_ST1
+mdefine_line|#define I830_STPREG_ST1 1
+DECL|macro|I830_STP_SETUP_SIZE
+mdefine_line|#define I830_STP_SETUP_SIZE 2
 multiline_comment|/* Texture state (per tex unit)&n; */
 DECL|macro|I830_TEXREG_MI0
 mdefine_line|#define I830_TEXREG_MI0&t;0&t;/* GFX_OP_MAP_INFO (6 dwords) */
@@ -179,6 +180,28 @@ DECL|macro|I830_TEXREG_MCS
 mdefine_line|#define I830_TEXREG_MCS&t;9&t;/* GFX_OP_MAP_COORD_SETS */
 DECL|macro|I830_TEX_SETUP_SIZE
 mdefine_line|#define I830_TEX_SETUP_SIZE 10
+DECL|macro|I830_TEXREG_TM0LI
+mdefine_line|#define I830_TEXREG_TM0LI      0 /* load immediate 2 texture map n */
+DECL|macro|I830_TEXREG_TM0S0
+mdefine_line|#define I830_TEXREG_TM0S0      1
+DECL|macro|I830_TEXREG_TM0S1
+mdefine_line|#define I830_TEXREG_TM0S1      2
+DECL|macro|I830_TEXREG_TM0S2
+mdefine_line|#define I830_TEXREG_TM0S2      3
+DECL|macro|I830_TEXREG_TM0S3
+mdefine_line|#define I830_TEXREG_TM0S3      4
+DECL|macro|I830_TEXREG_TM0S4
+mdefine_line|#define I830_TEXREG_TM0S4      5
+DECL|macro|I830_TEXREG_NOP0
+mdefine_line|#define I830_TEXREG_NOP0       6       /* noop */
+DECL|macro|I830_TEXREG_NOP1
+mdefine_line|#define I830_TEXREG_NOP1       7       /* noop */
+DECL|macro|I830_TEXREG_NOP2
+mdefine_line|#define I830_TEXREG_NOP2       8       /* noop */
+DECL|macro|__I830_TEXREG_MCS
+mdefine_line|#define __I830_TEXREG_MCS      9       /* GFX_OP_MAP_COORD_SETS -- shared */
+DECL|macro|__I830_TEX_SETUP_SIZE
+mdefine_line|#define __I830_TEX_SETUP_SIZE   10
 DECL|macro|I830_FRONT
 mdefine_line|#define I830_FRONT   0x1
 DECL|macro|I830_BACK
@@ -438,10 +461,91 @@ DECL|member|vertex_prim
 r_int
 id|vertex_prim
 suffix:semicolon
+DECL|member|pf_enabled
+r_int
+id|pf_enabled
+suffix:semicolon
+multiline_comment|/* is pageflipping allowed? */
+DECL|member|pf_active
+r_int
+id|pf_active
+suffix:semicolon
+DECL|member|pf_current_page
+r_int
+id|pf_current_page
+suffix:semicolon
+multiline_comment|/* which buffer is being displayed? */
+DECL|member|perf_boxes
+r_int
+id|perf_boxes
+suffix:semicolon
+multiline_comment|/* performance boxes to be displayed */
+multiline_comment|/* Here&squot;s the state for texunits 2,3:&n;&t; */
+DECL|member|TexState2
+r_int
+r_int
+id|TexState2
+(braket
+id|I830_TEX_SETUP_SIZE
+)braket
+suffix:semicolon
+DECL|member|TexBlendState2
+r_int
+r_int
+id|TexBlendState2
+(braket
+id|I830_TEXBLEND_SIZE
+)braket
+suffix:semicolon
+DECL|member|TexBlendStateWordsUsed2
+r_int
+r_int
+id|TexBlendStateWordsUsed2
+suffix:semicolon
+DECL|member|TexState3
+r_int
+r_int
+id|TexState3
+(braket
+id|I830_TEX_SETUP_SIZE
+)braket
+suffix:semicolon
+DECL|member|TexBlendState3
+r_int
+r_int
+id|TexBlendState3
+(braket
+id|I830_TEXBLEND_SIZE
+)braket
+suffix:semicolon
+DECL|member|TexBlendStateWordsUsed3
+r_int
+r_int
+id|TexBlendStateWordsUsed3
+suffix:semicolon
+DECL|member|StippleState
+r_int
+r_int
+id|StippleState
+(braket
+id|I830_STP_SETUP_SIZE
+)braket
+suffix:semicolon
 DECL|typedef|drm_i830_sarea_t
 )brace
 id|drm_i830_sarea_t
 suffix:semicolon
+multiline_comment|/* Flags for perf_boxes&n; */
+DECL|macro|I830_BOX_RING_EMPTY
+mdefine_line|#define I830_BOX_RING_EMPTY    0x1 /* populated by kernel */
+DECL|macro|I830_BOX_FLIP
+mdefine_line|#define I830_BOX_FLIP          0x2 /* populated by kernel */
+DECL|macro|I830_BOX_WAIT
+mdefine_line|#define I830_BOX_WAIT          0x4 /* populated by kernel &amp; client */
+DECL|macro|I830_BOX_TEXTURE_LOAD
+mdefine_line|#define I830_BOX_TEXTURE_LOAD  0x8 /* populated by kernel */
+DECL|macro|I830_BOX_LOST_CONTEXT
+mdefine_line|#define I830_BOX_LOST_CONTEXT  0x10 /* populated by client */
 multiline_comment|/* I830 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
 DECL|macro|DRM_IOCTL_I830_INIT
 mdefine_line|#define DRM_IOCTL_I830_INIT&t;&t;DRM_IOW( 0x40, drm_i830_init_t)
@@ -461,6 +565,16 @@ DECL|macro|DRM_IOCTL_I830_COPY
 mdefine_line|#define DRM_IOCTL_I830_COPY&t;&t;DRM_IOW( 0x47, drm_i830_copy_t)
 DECL|macro|DRM_IOCTL_I830_DOCOPY
 mdefine_line|#define DRM_IOCTL_I830_DOCOPY&t;&t;DRM_IO ( 0x48)
+DECL|macro|DRM_IOCTL_I830_FLIP
+mdefine_line|#define DRM_IOCTL_I830_FLIP&t;&t;DRM_IO ( 0x49)
+DECL|macro|DRM_IOCTL_I830_IRQ_EMIT
+mdefine_line|#define DRM_IOCTL_I830_IRQ_EMIT         DRM_IOWR(0x4a, drm_i830_irq_emit_t)
+DECL|macro|DRM_IOCTL_I830_IRQ_WAIT
+mdefine_line|#define DRM_IOCTL_I830_IRQ_WAIT         DRM_IOW( 0x4b, drm_i830_irq_wait_t)
+DECL|macro|DRM_IOCTL_I830_GETPARAM
+mdefine_line|#define DRM_IOCTL_I830_GETPARAM         DRM_IOWR(0x4c, drm_i830_getparam_t)
+DECL|macro|DRM_IOCTL_I830_SETPARAM
+mdefine_line|#define DRM_IOCTL_I830_SETPARAM         DRM_IOWR(0x4d, drm_i830_setparam_t)
 DECL|struct|_drm_i830_clear
 r_typedef
 r_struct
@@ -567,6 +681,75 @@ suffix:semicolon
 DECL|typedef|drm_i830_dma_t
 )brace
 id|drm_i830_dma_t
+suffix:semicolon
+multiline_comment|/* 1.3: Userspace can request &amp; wait on irq&squot;s:&n; */
+DECL|struct|drm_i830_irq_emit
+r_typedef
+r_struct
+id|drm_i830_irq_emit
+(brace
+DECL|member|irq_seq
+r_int
+op_star
+id|irq_seq
+suffix:semicolon
+DECL|typedef|drm_i830_irq_emit_t
+)brace
+id|drm_i830_irq_emit_t
+suffix:semicolon
+DECL|struct|drm_i830_irq_wait
+r_typedef
+r_struct
+id|drm_i830_irq_wait
+(brace
+DECL|member|irq_seq
+r_int
+id|irq_seq
+suffix:semicolon
+DECL|typedef|drm_i830_irq_wait_t
+)brace
+id|drm_i830_irq_wait_t
+suffix:semicolon
+multiline_comment|/* 1.3: New ioctl to query kernel params:&n; */
+DECL|macro|I830_PARAM_IRQ_ACTIVE
+mdefine_line|#define I830_PARAM_IRQ_ACTIVE            1
+DECL|struct|drm_i830_getparam
+r_typedef
+r_struct
+id|drm_i830_getparam
+(brace
+DECL|member|param
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int
+op_star
+id|value
+suffix:semicolon
+DECL|typedef|drm_i830_getparam_t
+)brace
+id|drm_i830_getparam_t
+suffix:semicolon
+multiline_comment|/* 1.3: New ioctl to set kernel params:&n; */
+DECL|macro|I830_SETPARAM_USE_MI_BATCHBUFFER_START
+mdefine_line|#define I830_SETPARAM_USE_MI_BATCHBUFFER_START            1
+DECL|struct|drm_i830_setparam
+r_typedef
+r_struct
+id|drm_i830_setparam
+(brace
+DECL|member|param
+r_int
+id|param
+suffix:semicolon
+DECL|member|value
+r_int
+id|value
+suffix:semicolon
+DECL|typedef|drm_i830_setparam_t
+)brace
+id|drm_i830_setparam_t
 suffix:semicolon
 macro_line|#endif /* _I830_DRM_H_ */
 eof

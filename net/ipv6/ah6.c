@@ -10,8 +10,6 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
-DECL|macro|AH_HLEN_NOICV
-mdefine_line|#define AH_HLEN_NOICV&t;12
 multiline_comment|/* XXX no ipv6 ah specific */
 DECL|macro|NIP6
 mdefine_line|#define NIP6(addr) &bslash;&n;&t;ntohs((addr).s6_addr16[0]),&bslash;&n;&t;ntohs((addr).s6_addr16[1]),&bslash;&n;&t;ntohs((addr).s6_addr16[2]),&bslash;&n;&t;ntohs((addr).s6_addr16[3]),&bslash;&n;&t;ntohs((addr).s6_addr16[4]),&bslash;&n;&t;ntohs((addr).s6_addr16[5]),&bslash;&n;&t;ntohs((addr).s6_addr16[6]),&bslash;&n;&t;ntohs((addr).s6_addr16[7])
@@ -423,9 +421,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 op_rshift
 l_int|2
@@ -624,6 +626,11 @@ op_star
 id|x
 comma
 r_struct
+id|xfrm_decap_state
+op_star
+id|decap
+comma
+r_struct
 id|sk_buff
 op_star
 id|skb
@@ -716,9 +723,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_full_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_full_len
 )paren
 op_logical_and
 id|ah_hlen
@@ -726,9 +737,13 @@ op_ne
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 )paren
 r_goto
@@ -892,6 +907,17 @@ id|free_out
 suffix:semicolon
 )brace
 )brace
+id|nexthdr
+op_assign
+(paren
+(paren
+r_struct
+id|ipv6hdr
+op_star
+)paren
+id|tmp_hdr
+)paren
+op_member_access_from_pointer
 id|nexthdr
 op_assign
 id|ah-&gt;nexthdr
@@ -1304,9 +1330,13 @@ op_assign
 id|XFRM_ALIGN8
 c_func
 (paren
-id|ahp-&gt;icv_trunc_len
+r_sizeof
+(paren
+r_struct
+id|ipv6_auth_hdr
+)paren
 op_plus
-id|AH_HLEN_NOICV
+id|ahp-&gt;icv_trunc_len
 )paren
 suffix:semicolon
 r_if
@@ -1316,7 +1346,11 @@ id|x-&gt;props.mode
 )paren
 id|x-&gt;props.header_len
 op_add_assign
-l_int|20
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
 suffix:semicolon
 id|x-&gt;data
 op_assign
@@ -1420,6 +1454,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|ahp
+)paren
+suffix:semicolon
 )brace
 DECL|variable|ah6_type
 r_static
@@ -1432,6 +1472,11 @@ dot
 id|description
 op_assign
 l_string|&quot;AH6&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|proto
@@ -1476,6 +1521,11 @@ id|err_handler
 op_assign
 id|ah6_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|function|ah6_init
@@ -1487,13 +1537,6 @@ c_func
 r_void
 )paren
 (brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|ah6_type
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

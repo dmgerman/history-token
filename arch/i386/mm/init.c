@@ -48,6 +48,14 @@ id|highstart_pfn
 comma
 id|highend_pfn
 suffix:semicolon
+r_static
+r_int
+id|do_test_wp_bit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Creates a middle page table and puts a pointer to it in the&n; * given global directory entry. This only returns the gd entry&n; * in non-PAE compilation mode, since the middle layer is folded.&n; */
 DECL|function|one_md_table_init
 r_static
@@ -1384,16 +1392,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Test if the WP bit works in supervisor mode. It isn&squot;t supported on 386&squot;s&n; * and also on some strange 486&squot;s (NexGen etc.). All 586+&squot;s are OK. The jumps&n; * before and after the test are here to work-around some nasty CPU bugs.&n; */
-multiline_comment|/*&n; * This function cannot be __init, since exceptions don&squot;t work in that&n; * section.&n; */
-r_static
-r_int
-id|do_test_wp_bit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * Test if the WP bit works in supervisor mode. It isn&squot;t supported on 386&squot;s&n; * and also on some strange 486&squot;s (NexGen etc.). All 586+&squot;s are OK. This&n; * used to involve black magic jumps to work around some nasty CPU bugs,&n; * but fortunately the switch to using exceptions got rid of all that.&n; */
 DECL|function|test_wp_bit
 r_void
 id|__init
@@ -2012,7 +2011,7 @@ l_string|&quot;pgtable_cache_init(): Cannot create pgd cache&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Put this after the callers, so that it cannot be inlined */
+multiline_comment|/*&n; * This function cannot be __init, since exceptions don&squot;t work in that&n; * section.  Put this after the callers, so that it cannot be inlined.&n; */
 DECL|function|do_test_wp_bit
 r_static
 r_int

@@ -725,7 +725,7 @@ id|page_tree
 suffix:semicolon
 multiline_comment|/* radix tree of all pages */
 DECL|member|page_lock
-id|rwlock_t
+id|spinlock_t
 id|page_lock
 suffix:semicolon
 multiline_comment|/* and rwlock protecting it */
@@ -777,13 +777,13 @@ r_struct
 id|list_head
 id|i_mmap_shared
 suffix:semicolon
-multiline_comment|/* list of private mappings */
+multiline_comment|/* list of shared mappings */
 DECL|member|i_shared_sem
 r_struct
 id|semaphore
 id|i_shared_sem
 suffix:semicolon
-multiline_comment|/* and sem protecting it */
+multiline_comment|/* protect both above lists */
 DECL|member|dirtied_when
 r_int
 r_int
@@ -2480,6 +2480,7 @@ id|file
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2500,6 +2501,7 @@ id|kiocb
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2520,6 +2522,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -2541,6 +2544,7 @@ op_star
 comma
 r_const
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -3038,6 +3042,7 @@ id|dentry
 op_star
 comma
 r_char
+id|__user
 op_star
 comma
 r_int
@@ -4502,6 +4507,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 suffix:semicolon
@@ -4803,6 +4809,24 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|unregister_chrdev_region
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+comma
+r_const
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|chrdev_open
 c_func
 (paren
@@ -4909,16 +4933,6 @@ r_const
 r_char
 op_star
 id|cdevname
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|kdevname
 c_func
 (paren
 id|kdev_t
@@ -5107,6 +5121,16 @@ suffix:semicolon
 r_extern
 r_int
 id|filemap_fdatawrite
+c_func
+(paren
+r_struct
+id|address_space
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|filemap_flush
 c_func
 (paren
 r_struct
@@ -7010,22 +7034,22 @@ id|dentry
 id|ino_t
 id|res
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 id|res
 op_assign
 id|dentry-&gt;d_parent-&gt;d_inode-&gt;i_ino
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 r_return

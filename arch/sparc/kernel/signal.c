@@ -105,6 +105,7 @@ suffix:semicolon
 DECL|member|sig_scptr
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sig_scptr
 suffix:semicolon
@@ -145,6 +146,7 @@ id|info
 suffix:semicolon
 DECL|member|fpu_save
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -211,6 +213,7 @@ id|mask
 suffix:semicolon
 DECL|member|fpu_save
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -411,6 +414,7 @@ id|do_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|uset
 comma
@@ -592,6 +596,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -652,6 +657,7 @@ r_if
 c_cond
 (paren
 id|verify_area
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -782,6 +788,7 @@ id|regs
 (brace
 r_struct
 id|new_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -797,6 +804,7 @@ id|sigset_t
 id|set
 suffix:semicolon
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -808,6 +816,7 @@ op_assign
 (paren
 r_struct
 id|new_signal_frame
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -820,6 +829,7 @@ r_if
 c_cond
 (paren
 id|verify_area
+c_func
 (paren
 id|VERIFY_READ
 comma
@@ -1066,6 +1076,7 @@ id|regs
 (brace
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|scptr
 suffix:semicolon
@@ -1095,6 +1106,7 @@ id|current-&gt;thread.new_signal
 )paren
 r_return
 id|do_new_sigreturn
+c_func
 (paren
 id|regs
 )paren
@@ -1104,6 +1116,7 @@ op_assign
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -1141,11 +1154,9 @@ op_amp
 l_int|3
 )paren
 )paren
-(brace
 r_goto
 id|segv_and_exit
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|__get_user
@@ -1179,11 +1190,9 @@ id|npc
 op_amp
 l_int|3
 )paren
-(brace
 r_goto
 id|segv_and_exit
 suffix:semicolon
-)brace
 multiline_comment|/* This is pretty much atomic, no amount locking would prevent&n;&t; * the races which exist anyways.&n;&t; */
 id|err
 op_or_assign
@@ -1383,6 +1392,7 @@ id|regs
 (brace
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -1395,6 +1405,7 @@ comma
 id|npc
 suffix:semicolon
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu_save
 suffix:semicolon
@@ -1417,6 +1428,7 @@ op_assign
 (paren
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -1453,11 +1465,9 @@ op_amp
 l_int|0x03
 )paren
 )paren
-(brace
 r_goto
 id|segv
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|__get_user
@@ -1570,7 +1580,6 @@ c_cond
 (paren
 id|fpu_save
 )paren
-(brace
 id|err
 op_or_assign
 id|restore_fpu_state
@@ -1581,7 +1590,6 @@ comma
 id|fpu_save
 )paren
 suffix:semicolon
-)brace
 id|err
 op_or_assign
 id|__copy_from_user
@@ -1632,7 +1640,7 @@ id|regs-&gt;npc
 op_assign
 id|npc
 suffix:semicolon
-multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
+multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t; * call it and ignore errors.&n;&t; */
 id|do_sigaltstack
 c_func
 (paren
@@ -1702,8 +1710,10 @@ r_static
 r_inline
 r_int
 id|invalid_frame_pointer
+c_func
 (paren
 r_void
+id|__user
 op_star
 id|fp
 comma
@@ -1780,6 +1790,7 @@ DECL|function|get_sigframe
 r_static
 r_inline
 r_void
+id|__user
 op_star
 id|get_sigframe
 c_func
@@ -1850,6 +1861,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1890,11 +1902,13 @@ id|info
 (brace
 r_struct
 id|signal_sframe
+id|__user
 op_star
 id|sframep
 suffix:semicolon
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 suffix:semicolon
@@ -1934,6 +1948,7 @@ op_assign
 (paren
 r_struct
 id|signal_sframe
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -1950,6 +1965,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sframep
 comma
@@ -2140,11 +2156,9 @@ id|window
 op_increment
 )paren
 (brace
-id|sc-&gt;sigc_spbuf
-(braket
-id|window
-)braket
-op_assign
+id|put_user
+c_func
+(paren
 (paren
 r_char
 op_star
@@ -2153,6 +2167,13 @@ id|current-&gt;thread.rwbuf_stkptrs
 (braket
 id|window
 )braket
+comma
+op_amp
+id|sc-&gt;sigc_spbuf
+(braket
+id|window
+)braket
+)paren
 suffix:semicolon
 id|err
 op_or_assign
@@ -2316,6 +2337,7 @@ suffix:colon
 id|sig_code
 op_assign
 id|SUBSIG_BADTRAP
+c_func
 (paren
 id|info-&gt;si_trapno
 )paren
@@ -2609,6 +2631,7 @@ op_star
 id|regs
 comma
 id|__siginfo_fpu_t
+id|__user
 op_star
 id|fpu
 )paren
@@ -2866,6 +2889,7 @@ id|oldset
 (brace
 r_struct
 id|new_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -2902,6 +2926,7 @@ op_assign
 (paren
 r_struct
 id|new_signal_frame
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -2919,6 +2944,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sf
 comma
@@ -3278,6 +3304,7 @@ id|info
 (brace
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 id|sf
 suffix:semicolon
@@ -3306,7 +3333,6 @@ c_cond
 op_logical_neg
 id|current-&gt;used_math
 )paren
-(brace
 id|sigframe_size
 op_sub_assign
 r_sizeof
@@ -3314,12 +3340,12 @@ r_sizeof
 id|__siginfo_fpu_t
 )paren
 suffix:semicolon
-)brace
 id|sf
 op_assign
 (paren
 r_struct
 id|rt_signal_frame
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -3344,11 +3370,9 @@ comma
 id|sigframe_size
 )paren
 )paren
-(brace
 r_goto
 id|sigill
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3356,11 +3380,9 @@ id|current-&gt;thread.w_saved
 op_ne
 l_int|0
 )paren
-(brace
 r_goto
 id|sigill
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|__put_user
@@ -3403,12 +3425,10 @@ c_cond
 (paren
 id|current-&gt;used_math
 )paren
-(brace
 id|psr
 op_or_assign
 id|PSR_EF
 suffix:semicolon
-)brace
 id|err
 op_or_assign
 id|__put_user
@@ -3647,7 +3667,6 @@ c_cond
 (paren
 id|ka-&gt;ka_restorer
 )paren
-(brace
 id|regs-&gt;u_regs
 (braket
 id|UREG_I7
@@ -3659,7 +3678,6 @@ r_int
 )paren
 id|ka-&gt;ka_restorer
 suffix:semicolon
-)brace
 r_else
 (brace
 id|regs-&gt;u_regs
@@ -3795,26 +3813,32 @@ id|oldset
 )paren
 (brace
 id|svr4_signal_frame_t
+id|__user
 op_star
 id|sfp
 suffix:semicolon
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
 id|svr4_siginfo_t
+id|__user
 op_star
 id|si
 suffix:semicolon
 id|svr4_mcontext_t
+id|__user
 op_star
 id|mc
 suffix:semicolon
 id|svr4_gwindows_t
+id|__user
 op_star
 id|gw
 suffix:semicolon
 id|svr4_ucontext_t
+id|__user
 op_star
 id|uc
 suffix:semicolon
@@ -3837,6 +3861,7 @@ id|sfp
 op_assign
 (paren
 id|svr4_signal_frame_t
+id|__user
 op_star
 )paren
 id|get_sigframe
@@ -3855,6 +3880,7 @@ r_if
 c_cond
 (paren
 id|invalid_frame_pointer
+c_func
 (paren
 id|sfp
 comma
@@ -4074,7 +4100,7 @@ id|SVR4_Y
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Copy g [1..7] and o [0..7] registers */
+multiline_comment|/* Copy g[1..7] and o[0..7] registers */
 id|err
 op_or_assign
 id|__copy_to_user
@@ -4185,7 +4211,7 @@ op_amp
 id|mc-&gt;gwin
 )paren
 suffix:semicolon
-multiline_comment|/* 2. Number of windows to restore at setcontext (): */
+multiline_comment|/* 2. Number of windows to restore at setcontext(): */
 id|err
 op_or_assign
 id|__put_user
@@ -4356,6 +4382,7 @@ op_assign
 (paren
 r_struct
 id|reg_window
+id|__user
 op_star
 )paren
 id|regs-&gt;u_regs
@@ -4479,8 +4506,10 @@ DECL|function|svr4_getcontext
 id|asmlinkage
 r_int
 id|svr4_getcontext
+c_func
 (paren
 id|svr4_ucontext_t
+id|__user
 op_star
 id|uc
 comma
@@ -4491,10 +4520,12 @@ id|regs
 )paren
 (brace
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
 id|svr4_mcontext_t
+id|__user
 op_star
 id|mc
 suffix:semicolon
@@ -4697,7 +4728,7 @@ id|SVR4_Y
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/* Copy g [1..7] and o [0..7] registers */
+multiline_comment|/* Copy g[1..7] and o[0..7] registers */
 id|err
 op_or_assign
 id|__copy_to_user
@@ -4821,8 +4852,10 @@ DECL|function|svr4_setcontext
 id|asmlinkage
 r_int
 id|svr4_setcontext
+c_func
 (paren
 id|svr4_ucontext_t
+id|__user
 op_star
 id|c
 comma
@@ -4841,6 +4874,7 @@ op_amp
 id|current-&gt;thread
 suffix:semicolon
 id|svr4_gregset_t
+id|__user
 op_star
 id|gr
 suffix:semicolon
@@ -4913,11 +4947,9 @@ id|c
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|sigsegv_and_return
 suffix:semicolon
-)brace
 multiline_comment|/* Check for valid PC and nPC */
 id|gr
 op_assign
@@ -4973,11 +5005,9 @@ id|npc
 op_amp
 l_int|3
 )paren
-(brace
 r_goto
 id|sigsegv_and_return
 suffix:semicolon
-)brace
 multiline_comment|/* Retrieve information from passed ucontext */
 multiline_comment|/* note that nPC is ored a 1, this is used to inform entry.S */
 multiline_comment|/* that we don&squot;t want it to mess with our PC and nPC */
@@ -5362,6 +5392,7 @@ c_cond
 id|current-&gt;thread.new_signal
 )paren
 id|new_setup_frame
+c_func
 (paren
 id|ka
 comma
@@ -5396,12 +5427,10 @@ id|ka-&gt;sa.sa_flags
 op_amp
 id|SA_ONESHOT
 )paren
-(brace
 id|ka-&gt;sa.sa_handler
 op_assign
 id|SIG_DFL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5531,11 +5560,9 @@ op_amp
 id|SA_RESTART
 )paren
 )paren
-(brace
 r_goto
 id|no_system_call_restart
 suffix:semicolon
-)brace
 multiline_comment|/* fallthrough */
 r_case
 id|ERESTARTNOINTR
@@ -5789,11 +5816,13 @@ c_func
 (paren
 r_struct
 id|sigstack
+id|__user
 op_star
 id|ssptr
 comma
 r_struct
 id|sigstack
+id|__user
 op_star
 id|ossptr
 comma

@@ -39,6 +39,11 @@ id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+id|acpi_string
+id|val
+op_assign
+l_int|NULL
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ns_root_initialize&quot;
@@ -169,13 +174,9 @@ c_cond
 id|init_val-&gt;val
 )paren
 (brace
-id|acpi_string
-id|val
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_predefined_override
-c_func
 (paren
 id|init_val
 comma

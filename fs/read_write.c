@@ -545,6 +545,7 @@ r_int
 id|offset_low
 comma
 id|loff_t
+id|__user
 op_star
 id|result
 comma
@@ -691,6 +692,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -777,6 +779,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -939,6 +942,7 @@ id|filp
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1026,6 +1030,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1187,6 +1192,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1257,6 +1263,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1326,6 +1333,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1410,6 +1418,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1572,8 +1581,9 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
-id|vector
+id|uvector
 comma
 r_int
 r_int
@@ -1643,6 +1653,9 @@ op_star
 id|iov
 op_assign
 id|iovstack
+comma
+op_star
+id|vector
 suffix:semicolon
 id|ssize_t
 id|ret
@@ -1761,14 +1774,14 @@ c_func
 (paren
 id|iov
 comma
-id|vector
+id|uvector
 comma
 id|nr_segs
 op_star
 r_sizeof
 (paren
 op_star
-id|vector
+id|uvector
 )paren
 )paren
 )paren
@@ -2113,6 +2126,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 id|vec
 comma
@@ -2186,6 +2200,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 id|vec
 comma
@@ -2259,6 +2274,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 id|vec
 comma
@@ -2331,6 +2347,7 @@ comma
 r_const
 r_struct
 id|iovec
+id|__user
 op_star
 id|vec
 comma
@@ -2793,6 +2810,7 @@ r_int
 id|in_fd
 comma
 id|off_t
+id|__user
 op_star
 id|offset
 comma
@@ -2907,6 +2925,7 @@ r_int
 id|in_fd
 comma
 id|loff_t
+id|__user
 op_star
 id|offset
 comma

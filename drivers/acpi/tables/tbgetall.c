@@ -386,7 +386,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Get the table addresss from the common internal XSDT */
+multiline_comment|/* Get the table address from the common internal XSDT */
 id|address.pointer.value
 op_assign
 id|acpi_gbl_XSDT-&gt;table_offset_entry

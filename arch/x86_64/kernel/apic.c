@@ -1131,7 +1131,7 @@ comma
 id|value
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up LVT0, LVT1:&n;&t; *&n;&t; * set up through-local-APIC on the BP&squot;s LINT0. This is not&n;&t; * strictly necessery in pure symmetric-IO mode, but sometimes&n;&t; * we delegate interrupts to the 8259A.&n;&t; */
+multiline_comment|/*&n;&t; * Set up LVT0, LVT1:&n;&t; *&n;&t; * set up through-local-APIC on the BP&squot;s LINT0. This is not&n;&t; * strictly necessary in pure symmetric-IO mode, but sometimes&n;&t; * we delegate interrupts to the 8259A.&n;&t; */
 multiline_comment|/*&n;&t; * TODO: set up through-local-APIC from through-I/O-APIC? --macro&n;&t; */
 id|value
 op_assign
@@ -3278,7 +3278,7 @@ id|regs
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n;&t; * We take the &squot;long&squot; return path, and there every subsystem&n;&t; * grabs the apropriate locks (kernel lock/ irq lock).&n;&t; *&n;&t; * we might want to decouple profiling from the &squot;long path&squot;,&n;&t; * and do the profiling totally in assembly.&n;&t; *&n;&t; * Currently this isn&squot;t too much of an issue (performance wise),&n;&t; * we can take more than 100K local irqs per second on a 100 MHz P5.&n;&t; */
+multiline_comment|/*&n;&t; * We take the &squot;long&squot; return path, and there every subsystem&n;&t; * grabs the appropriate locks (kernel lock/ irq lock).&n;&t; *&n;&t; * we might want to decouple profiling from the &squot;long path&squot;,&n;&t; * and do the profiling totally in assembly.&n;&t; *&n;&t; * Currently this isn&squot;t too much of an issue (performance wise),&n;&t; * we can take more than 100K local irqs per second on a 100 MHz P5.&n;&t; */
 )brace
 multiline_comment|/*&n; * Local APIC timer interrupt. This is the most natural way for doing&n; * local interrupts, but local timer interrupts can be emulated by&n; * broadcast interrupts too. [in case the hw doesn&squot;t support APIC timers]&n; *&n; * [ if a single-CPU system runs an SMP kernel then we call the local&n; *   interrupt as well. Thus we cannot inline the local irq ... ]&n; */
 DECL|function|smp_apic_timer_interrupt

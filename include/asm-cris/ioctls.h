@@ -80,8 +80,6 @@ DECL|macro|TIOCGETD
 mdefine_line|#define TIOCGETD&t;0x5424
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;0x5425&t;/* Needed for POSIX tcsendbreak() */
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;0x5426  /* For debugging only */
 DECL|macro|TIOCSBRK
 mdefine_line|#define TIOCSBRK&t;0x5427  /* BSD compatibility */
 DECL|macro|TIOCCBRK

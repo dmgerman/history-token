@@ -12,14 +12,16 @@ DECL|member|msg_name
 id|compat_uptr_t
 id|msg_name
 suffix:semicolon
+multiline_comment|/* void * */
 DECL|member|msg_namelen
-id|s32
+id|compat_int_t
 id|msg_namelen
 suffix:semicolon
 DECL|member|msg_iov
 id|compat_uptr_t
 id|msg_iov
 suffix:semicolon
+multiline_comment|/* struct compat_iovec * */
 DECL|member|msg_iovlen
 id|compat_size_t
 id|msg_iovlen
@@ -28,12 +30,13 @@ DECL|member|msg_control
 id|compat_uptr_t
 id|msg_control
 suffix:semicolon
+multiline_comment|/* void * */
 DECL|member|msg_controllen
 id|compat_size_t
 id|msg_controllen
 suffix:semicolon
 DECL|member|msg_flags
-id|u32
+id|compat_uint_t
 id|msg_flags
 suffix:semicolon
 )brace
@@ -47,11 +50,11 @@ id|compat_size_t
 id|cmsg_len
 suffix:semicolon
 DECL|member|cmsg_level
-id|s32
+id|compat_int_t
 id|cmsg_level
 suffix:semicolon
 DECL|member|cmsg_type
-id|s32
+id|compat_int_t
 id|cmsg_type
 suffix:semicolon
 )brace
@@ -159,23 +162,6 @@ r_int
 comma
 r_void
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|put_compat_msg_controllen
-c_func
-(paren
-r_struct
-id|msghdr
-op_star
-comma
-r_struct
-id|compat_msghdr
-op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern

@@ -1,142 +1,199 @@
-multiline_comment|/*&n; * include/asm-v850/nb85e_cache_cache.h -- Cache control for NB85E_CACHE212 and&n; * &t;NB85E_CACHE213 cache memories&n; *&n; *  Copyright (C) 2001  NEC Corporation&n; *  Copyright (C) 2001  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/nb85e_cache_cache.h -- Cache control for NB85E_CACHE212 and&n; * &t;NB85E_CACHE213 cache memories&n; *&n; *  Copyright (C) 2001,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_NB85E_CACHE_H__
 DECL|macro|__V850_NB85E_CACHE_H__
 mdefine_line|#define __V850_NB85E_CACHE_H__
+macro_line|#include &lt;asm/types.h&gt;
 multiline_comment|/* Cache control registers.  */
+DECL|macro|NB85E_CACHE_BHC_ADDR
+mdefine_line|#define NB85E_CACHE_BHC_ADDR&t;0xFFFFF06A
+DECL|macro|NB85E_CACHE_BHC
+mdefine_line|#define NB85E_CACHE_BHC&t;&t;(*(volatile u16 *)NB85E_CACHE_BHC_ADDR)
 DECL|macro|NB85E_CACHE_ICC_ADDR
-mdefine_line|#define NB85E_CACHE_ICC_ADDR&t;&t;0xFFFFF070
+mdefine_line|#define NB85E_CACHE_ICC_ADDR&t;0xFFFFF070
+DECL|macro|NB85E_CACHE_ICC
+mdefine_line|#define NB85E_CACHE_ICC&t;&t;(*(volatile u16 *)NB85E_CACHE_ICC_ADDR)
+DECL|macro|NB85E_CACHE_ISI_ADDR
+mdefine_line|#define NB85E_CACHE_ISI_ADDR&t;0xFFFFF072
+DECL|macro|NB85E_CACHE_ISI
+mdefine_line|#define NB85E_CACHE_ISI&t;&t;(*(volatile u16 *)NB85E_CACHE_ISI_ADDR)
 DECL|macro|NB85E_CACHE_DCC_ADDR
-mdefine_line|#define NB85E_CACHE_DCC_ADDR&t;&t;0xFFFFF078
+mdefine_line|#define NB85E_CACHE_DCC_ADDR&t;0xFFFFF078
+DECL|macro|NB85E_CACHE_DCC
+mdefine_line|#define NB85E_CACHE_DCC&t;&t;(*(volatile u16 *)NB85E_CACHE_DCC_ADDR)
 multiline_comment|/* Size of a cache line in bytes.  */
 DECL|macro|NB85E_CACHE_LINE_SIZE
-mdefine_line|#define NB85E_CACHE_LINE_SIZE&t;&t;16
-macro_line|#ifndef __ASSEMBLY__
-DECL|function|nb85e_cache_flush_cache
-r_extern
-r_inline
-r_void
-id|nb85e_cache_flush_cache
-(paren
-r_int
-r_int
-id|cache_control_addr
-)paren
-(brace
-multiline_comment|/*&n;&t;   From the NB85E Instruction/Data Cache manual, how to flush&n;&t;   the instruction cache (ICC is the `Instruction Cache Control&n;&t;   Register&squot;):&n;&n;&t;&t;mov&t;0x3, r2&n;&t;  LOP0:&n;&t;&t;ld.h&t;ICC[r0], r1&n;&t;&t;cmp&t;r0, r1&n;&t;&t;bnz&t;LOP0&n;&t;&t;st.h&t;r2, ICC[r0]&n;&t;  LOP1:&t;&t;&t;&t;- First TAG clear&n;&t;&t;ld.h&t;ICC[r0], r1&n;&t;&t;cmp&t;r0, r1&n;&t;&t;bnz&t;LOP1&n;&t;&t;st.h&t;r2, ICC[r0]&n;&t;  LOP2:&t;&t;&t;&t;- Second TAG clear&n;&t;&t;ld.h&t;ICC[r0], r1&n;&t;&t;cmp&t;r0, r1&n;&t;&t;bnz&t;LOP2&n;&t;*/
-r_int
-id|cache_flush_bits
-comma
-id|ccr_contents
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;&t;mov&t;0x3, %1;&quot;
-l_string|&quot;1:&t;ld.h&t;0[%2], %0;&quot;
-l_string|&quot;&t;cmp&t;r0, %0;&quot;
-l_string|&quot;&t;bnz&t;1b;&quot;
-l_string|&quot;&t;st.h&t;%1, 0[%2];&quot;
-l_string|&quot;2:&t;ld.h&t;0[%2], %0;&quot;
-l_string|&quot;&t;cmp&t;r0, %0;&quot;
-l_string|&quot;&t;bnz&t;2b;&quot;
-l_string|&quot;&t;st.h&t;%1, 0[%2];&quot;
-l_string|&quot;3:&t;ld.h&t;0[%2], %0;&quot;
-l_string|&quot;&t;cmp&t;r0, %0;&quot;
-l_string|&quot;&t;bnz&t;3b&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|ccr_contents
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|cache_flush_bits
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|cache_control_addr
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|nb85e_cache_flush_icache
-r_extern
-r_inline
-r_void
-id|nb85e_cache_flush_icache
-(paren
-r_void
-)paren
-(brace
-id|nb85e_cache_flush_cache
-(paren
-id|NB85E_CACHE_ICC_ADDR
-)paren
-suffix:semicolon
-)brace
-DECL|function|nb85e_cache_flush_dcache
-r_extern
-r_inline
-r_void
-id|nb85e_cache_flush_dcache
-(paren
-r_void
-)paren
-(brace
-id|nb85e_cache_flush_cache
-(paren
-id|NB85E_CACHE_DCC_ADDR
-)paren
-suffix:semicolon
-)brace
-DECL|function|nb85e_cache_flush
-r_extern
-r_inline
-r_void
-id|nb85e_cache_flush
-(paren
-r_void
-)paren
-(brace
-id|nb85e_cache_flush_icache
-(paren
-)paren
-suffix:semicolon
-id|nb85e_cache_flush_dcache
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* !__ASSEMBLY__ */
-"&f;"
-multiline_comment|/* Define standard definitions in terms of processor-specific ones.  */
+mdefine_line|#define NB85E_CACHE_LINE_SIZE&t;16
 multiline_comment|/* For &lt;asm/cache.h&gt; */
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;&t;&t;NB85E_CACHE_LINE_SIZE
-multiline_comment|/* For &lt;asm/pgalloc.h&gt; */
-DECL|macro|flush_cache_all
-mdefine_line|#define flush_cache_all()&t;&t;&t;nb85e_cache_flush ()
-DECL|macro|flush_cache_mm
-mdefine_line|#define flush_cache_mm(mm)&t;&t;&t;nb85e_cache_flush ()
-DECL|macro|flush_cache_range
-mdefine_line|#define flush_cache_range(mm, start, end)&t;nb85e_cache_flush ()
-DECL|macro|flush_cache_page
-mdefine_line|#define flush_cache_page(vma, vmaddr)&t;&t;nb85e_cache_flush ()
+macro_line|#ifndef __ASSEMBLY__
+multiline_comment|/* Set caching params via the BHC and DCC registers.  */
+r_void
+id|nb85e_cache_enable
+(paren
+id|u16
+id|bhc
+comma
+id|u16
+id|dcc
+)paren
+suffix:semicolon
+r_struct
+id|page
+suffix:semicolon
+r_struct
+id|mm_struct
+suffix:semicolon
+r_struct
+id|vm_area_struct
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_all
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_mm
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_range
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_page
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|page_addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_dcache_page
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_icache
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_icache_range
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_icache_page
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_icache_user_range
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+r_int
+id|adr
+comma
+r_int
+id|len
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|nb85e_cache_flush_sigtramp
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page)&t;&t;&t;nb85e_cache_flush ()
+mdefine_line|#define flush_page_to_ram(x)&t;((void)0)
+DECL|macro|flush_cache_all
+mdefine_line|#define flush_cache_all&t;&t;nb85e_cache_flush_all
+DECL|macro|flush_cache_mm
+mdefine_line|#define flush_cache_mm&t;&t;nb85e_cache_flush_mm
+DECL|macro|flush_cache_range
+mdefine_line|#define flush_cache_range&t;nb85e_cache_flush_range
+DECL|macro|flush_cache_page
+mdefine_line|#define flush_cache_page&t;nb85e_cache_flush_page
 DECL|macro|flush_dcache_page
-mdefine_line|#define flush_dcache_page(page)&t;&t;&t;nb85e_cache_flush_dcache ()
-DECL|macro|flush_icache_range
-mdefine_line|#define flush_icache_range(start, end)&t;&t;nb85e_cache_flush_icache ()
-DECL|macro|flush_icache_page
-mdefine_line|#define flush_icache_page(vma,pg)&t;&t;nb85e_cache_flush_icache ()
+mdefine_line|#define flush_dcache_page&t;nb85e_cache_flush_dcache_page
 DECL|macro|flush_icache
-mdefine_line|#define flush_icache()&t;&t;&t;&t;nb85e_cache_flush_icache ()
+mdefine_line|#define flush_icache&t;&t;nb85e_cache_flush_icache
+DECL|macro|flush_icache_range
+mdefine_line|#define flush_icache_range&t;nb85e_cache_flush_icache_range
+DECL|macro|flush_icache_page
+mdefine_line|#define flush_icache_page&t;nb85e_cache_flush_icache_page
+DECL|macro|flush_icache_user_range
+mdefine_line|#define flush_icache_user_range&t;nb85e_cache_flush_icache_user_range
 DECL|macro|flush_cache_sigtramp
-mdefine_line|#define flush_cache_sigtramp(vaddr)&t;&t;nb85e_cache_flush_icache ()
+mdefine_line|#define flush_cache_sigtramp&t;nb85e_cache_flush_sigtramp
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __V850_NB85E_CACHE_H__ */
 eof

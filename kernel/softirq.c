@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;linux/kernel/softirq.c&n; *&n; *&t;Copyright (C) 1992 Linus Torvalds&n; *&n; * Rewritten. Old one was good in 2.2, but in 2.3 it was immoral. --ANK (990903)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
@@ -70,6 +71,7 @@ r_void
 id|do_softirq
 c_func
 (paren
+r_void
 )paren
 (brace
 id|__u32
@@ -81,9 +83,6 @@ id|flags
 suffix:semicolon
 id|__u32
 id|mask
-suffix:semicolon
-r_int
-id|cpu
 suffix:semicolon
 r_if
 c_cond
@@ -101,19 +100,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|pending
 op_assign
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -140,10 +131,9 @@ suffix:semicolon
 id|restart
 suffix:colon
 multiline_comment|/* Reset the pending bitmask before enabling irqs */
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 op_assign
 l_int|0
@@ -195,10 +185,9 @@ c_func
 suffix:semicolon
 id|pending
 op_assign
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 r_if
@@ -226,7 +215,10 @@ id|pending
 id|wakeup_softirqd
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|__local_bh_enable
@@ -242,6 +234,64 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|local_bh_enable
+r_void
+id|local_bh_enable
+c_func
+(paren
+r_void
+)paren
+(brace
+id|__local_bh_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+op_logical_and
+id|local_softirq_pending
+c_func
+(paren
+)paren
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_check_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|local_bh_enable
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|local_bh_enable
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function must run with irqs disabled!&n; */
 DECL|function|cpu_raise_softirq
 r_inline
@@ -1105,6 +1155,7 @@ id|__init
 id|softirq_init
 c_func
 (paren
+r_void
 )paren
 (brace
 id|open_softirq
@@ -1258,10 +1309,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 )paren
 id|schedule
@@ -1278,10 +1328,9 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|cpu
 )paren
 )paren
 (brace

@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_queue.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
@@ -2730,16 +2729,9 @@ c_func
 id|PF_INET
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 id|ipq_flush

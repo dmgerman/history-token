@@ -2214,6 +2214,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * A new process must start with interrupts closed in 2.5,&n;&t; * because this is how Mingo&squot;s scheduler works (see schedule_tail&n;&t; * and finish_arch_switch). If we do not do it, a timer interrupt hits&n;&t; * before we unlock, attempts to re-take the rq-&gt;lock, and then we die.&n;&t; * Thus, kpsr|=PSR_PIL.&n;&t; */
 id|ti-&gt;ksp
 op_assign
 (paren
@@ -2239,6 +2240,8 @@ suffix:semicolon
 id|ti-&gt;kpsr
 op_assign
 id|current-&gt;thread.fork_kpsr
+op_or
+id|PSR_PIL
 suffix:semicolon
 id|ti-&gt;kwim
 op_assign

@@ -21,7 +21,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/* A table of GINTn interrupts we actually use.  */
+multiline_comment|/* A table of GINTn interrupts we actually use.&n;   Note that we don&squot;t use GINT0 because all the boards we support treat it&n;   specially.  */
 DECL|struct|used_gint
 r_struct
 id|used_gint

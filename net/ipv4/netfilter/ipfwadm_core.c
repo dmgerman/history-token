@@ -48,6 +48,12 @@ macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Implement IP packet firewall&n; */
 macro_line|#ifdef DEBUG_IP_FIREWALL
 DECL|macro|dprintf1

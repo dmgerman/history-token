@@ -4,7 +4,6 @@ mdefine_line|#define __ASM_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-multiline_comment|/* assembly code in softirq.h is sensitive to the offsets of these fields */
 r_typedef
 r_struct
 (brace

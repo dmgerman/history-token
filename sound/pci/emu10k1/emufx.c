@@ -7419,6 +7419,13 @@ l_string|&quot;Wave Playback Volume&quot;
 comma
 id|gpr
 comma
+id|emu-&gt;revision
+op_eq
+l_int|4
+ques
+c_cond
+l_int|50
+suffix:colon
 l_int|100
 )paren
 suffix:semicolon
@@ -9927,7 +9934,32 @@ id|SND_EMU10K1_PLAYBACK_CHANNELS
 )paren
 suffix:semicolon
 multiline_comment|/* analog speakers */
-singleline_comment|//A_PUT_STEREO_OUTPUT(A_EXTOUT_AFRONT_L, A_EXTOUT_AFRONT_R, playback + SND_EMU10K1_PLAYBACK_CHANNELS);
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+id|emu-&gt;revision
+op_eq
+l_int|4
+)paren
+(brace
+multiline_comment|/* audigy2 */
+id|A_PUT_STEREO_OUTPUT
+c_func
+(paren
+id|A_EXTOUT_AFRONT_L
+comma
+id|A_EXTOUT_AFRONT_R
+comma
+id|playback
+op_plus
+id|SND_EMU10K1_PLAYBACK_CHANNELS
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|A_PUT_STEREO_OUTPUT
 c_func
 (paren
@@ -9940,6 +9972,7 @@ op_plus
 id|SND_EMU10K1_PLAYBACK_CHANNELS
 )paren
 suffix:semicolon
+)brace
 id|A_PUT_STEREO_OUTPUT
 c_func
 (paren

@@ -98,6 +98,10 @@ id|__u32
 id|info
 )paren
 suffix:semicolon
+DECL|member|no_policy
+r_int
+id|no_policy
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -16,14 +16,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|iso-&gt;flags
 op_amp
 id|HPSB_ISO_DRIVER_STARTED
 )paren
-(brace
+)paren
 r_return
 suffix:semicolon
-)brace
 id|iso-&gt;host-&gt;driver
 op_member_access_from_pointer
 id|isoctl

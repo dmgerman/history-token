@@ -320,8 +320,6 @@ DECL|macro|TIOCGETD
 mdefine_line|#define TIOCGETD&t;0x5424
 DECL|macro|TCSBRKP
 mdefine_line|#define TCSBRKP&t;&t;0x5425&t;/* Needed for POSIX tcsendbreak() */
-DECL|macro|TIOCTTYGSTRUCT
-mdefine_line|#define TIOCTTYGSTRUCT&t;0x5426  /* For debugging only */
 DECL|macro|TIOCSERCONFIG
 mdefine_line|#define TIOCSERCONFIG&t;0x5453
 DECL|macro|TIOCSERGWILD

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
@@ -6036,16 +6035,9 @@ op_amp
 id|snmp_trap
 )paren
 suffix:semicolon
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace

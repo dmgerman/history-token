@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * pnpbios -- PnP BIOS driver&n; *&n; * This driver provides access to Plug-&squot;n&squot;-Play services provided by&n; * the PnP BIOS firmware, described in the following documents:&n; *   Plug and Play BIOS Specification, Version 1.0A, 5 May 1994&n; *   Plug and Play BIOS Clarification Paper, 6 October 1994&n; *     Compaq Computer Corporation, Phoenix Technologies Ltd., Intel Corp.&n; * &n; * Originally (C) 1998 Christian Schmidt &lt;schmidt@digadd.de&gt;&n; * Modifications (C) 1998 Tom Lees &lt;tom@lpsg.demon.co.uk&gt;&n; * Minor reorganizations by David Hinds &lt;dahinds@users.sourceforge.net&gt;&n; * Further modifications (C) 2001, 2002 by:&n; *   Alan Cox &lt;alan@redhat.com&gt;&n; *   Thomas Hood &lt;jdthood@mail.com&gt;&n; *   Brian Gerst &lt;bgerst@didntduck.org&gt;&n; *&n; * Ported to the PnP Layer and several additional improvements (C) 2002&n; * by Adam Belay &lt;ambx1@neo.rr.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* Change Log&n; *&n; * Adam Belay - &lt;ambx1@neo.rr.com&gt; - March 16, 2003&n; * rev 1.01&t;Only call pnp_bios_dev_node_info once&n; *&t;&t;Added pnpbios_print_status&n; *&t;&t;Added several new error messages and info messages&n; *&t;&t;Added pnpbios_interface_attach_device&n; *&t;&t;integrated core and proc init system&n; *&t;&t;Introduced PNPMODE flags&n; *&t;&t;Removed some useless includes&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,9 +13,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -132,6 +131,11 @@ op_star
 id|pnp_bios_hdr
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|node_info
+r_struct
+id|pnp_dev_node_info
+id|node_info
 suffix:semicolon
 multiline_comment|/* The PnP BIOS entries in the GDT */
 DECL|macro|PNP_GDT
@@ -535,10 +539,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&n; * UTILITY FUNCTIONS&n; *&n; */
-DECL|function|pnpbios_warn_unexpected_status
+DECL|function|pnpbios_print_status
 r_static
 r_void
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 r_const
@@ -550,17 +554,230 @@ id|u16
 id|status
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|status
+)paren
+(brace
+r_case
+id|PNP_SUCCESS
+suffix:colon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PnPBIOS: %s: Unexpected status 0x%x&bslash;n&quot;
+l_string|&quot;PnPBIOS: %s: function successful&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_NOT_SET_STATICALLY
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: unable to set static resources&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_UNKNOWN_FUNCTION
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: invalid function number passed&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_FUNCTION_NOT_SUPPORTED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: function not supported on this system&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_INVALID_HANDLE
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: invalid handle&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_BAD_PARAMETER
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: invalid parameters were passed&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_SET_FAILED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: unable to set resources&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_EVENTS_NOT_PENDING
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: no events are pending&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_SYSTEM_NOT_DOCKED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: the system is not docked&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_NO_ISA_PNP_CARDS
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: no isapnp cards are installed on this system&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_UNABLE_TO_DETERMINE_DOCK_CAPABILITIES
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: cannot determine the capabilities of the docking station&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_CONFIG_CHANGE_FAILED_NO_BATTERY
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: unable to undock, the system does not have a battery&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_CONFIG_CHANGE_FAILED_RESOURCE_CONFLICT
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: could not dock due to resource conflicts&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_BUFFER_TOO_SMALL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: the buffer passed is too small&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_USE_ESCD_SUPPORT
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: use ESCD instead&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_MESSAGE_NOT_SUPPORTED
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: the message is unsupported&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_case
+id|PNP_HARDWARE_ERROR
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: a hardware failure has occured&bslash;n&quot;
+comma
+id|module
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: %s: unexpected status 0x%x&bslash;n&quot;
 comma
 id|module
 comma
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|pnpbios_kmalloc
 r_void
@@ -756,7 +973,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;dev_node_info&quot;
@@ -895,7 +1112,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;get_dev_node&quot;
@@ -1029,7 +1246,7 @@ c_cond
 id|status
 )paren
 (brace
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;set_dev_node&quot;
@@ -1428,7 +1645,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;get_stat_res&quot;
@@ -1604,7 +1821,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;isapnp_config&quot;
@@ -1709,7 +1926,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;escd_info&quot;
@@ -1820,7 +2037,7 @@ c_cond
 (paren
 id|status
 )paren
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;read_escd&quot;
@@ -2311,7 +2528,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|pnpbios_warn_unexpected_status
+id|pnpbios_print_status
 c_func
 (paren
 l_string|&quot;pnp_dock_thread&quot;
@@ -2845,10 +3062,6 @@ op_star
 id|res
 )paren
 (brace
-r_struct
-id|pnp_dev_node_info
-id|node_info
-suffix:semicolon
 id|u8
 id|nodenum
 op_assign
@@ -2876,22 +3089,6 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pnp_bios_dev_node_info
-c_func
-(paren
-op_amp
-id|node_info
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|node
 op_assign
 id|pnpbios_kmalloc
@@ -2924,7 +3121,7 @@ comma
 (paren
 r_char
 )paren
-l_int|0
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren
@@ -2996,10 +3193,6 @@ op_star
 id|res
 )paren
 (brace
-r_struct
-id|pnp_dev_node_info
-id|node_info
-suffix:semicolon
 id|u8
 id|nodenum
 op_assign
@@ -3027,22 +3220,6 @@ id|dev
 r_return
 op_minus
 id|EPERM
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pnp_bios_dev_node_info
-c_func
-(paren
-op_amp
-id|node_info
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|node
 op_assign
@@ -3076,7 +3253,7 @@ comma
 (paren
 r_char
 )paren
-l_int|1
+id|PNPMODE_STATIC
 comma
 id|node
 )paren
@@ -3131,7 +3308,7 @@ comma
 (paren
 r_char
 )paren
-l_int|0
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren
@@ -3171,10 +3348,6 @@ id|dev
 )paren
 (brace
 r_struct
-id|pnp_dev_node_info
-id|node_info
-suffix:semicolon
-r_struct
 id|pnp_bios_node
 op_star
 id|node
@@ -3203,35 +3376,6 @@ op_minus
 id|EPERM
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-op_logical_or
-op_logical_neg
-id|dev-&gt;active
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pnp_bios_dev_node_info
-c_func
-(paren
-op_amp
-id|node_info
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/* the value of this will be zero */
 id|node
 op_assign
@@ -3263,14 +3407,10 @@ comma
 (paren
 r_char
 )paren
-l_int|0
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren
-suffix:semicolon
-id|dev-&gt;active
-op_assign
-l_int|0
 suffix:semicolon
 id|kfree
 c_func
@@ -3296,7 +3436,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* PnP Layer support */
 DECL|variable|pnpbios_protocol
-r_static
 r_struct
 id|pnp_protocol
 id|pnpbios_protocol
@@ -3590,6 +3729,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|pnpbios_interface_attach_device
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3694,6 +3839,14 @@ id|thisnodenum
 op_assign
 id|nodenum
 suffix:semicolon
+multiline_comment|/* eventually we will want to use PNPMODE_STATIC here but for now&n;&t;&t; * dynamic will help us catch buggy bioses to add to the blacklist.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pnpbios_dont_use_current_config
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -3706,13 +3859,36 @@ comma
 (paren
 r_char
 )paren
-l_int|0
+id|PNPMODE_DYNAMIC
 comma
 id|node
 )paren
 )paren
 r_break
 suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|pnp_bios_get_dev_node
+c_func
+(paren
+op_amp
+id|nodenum
+comma
+(paren
+r_char
+)paren
+id|PNPMODE_STATIC
+comma
+id|node
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
 id|nodes_got
 op_increment
 suffix:semicolon
@@ -4051,6 +4227,14 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+r_else
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PnPBIOS: Scanning system for PnP BIOS support...&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; &t; * Search the defined area (0xf0000-0xffff0) for a valid PnP BIOS&n;&t; * structure and, if one is found, sets up the selectors and&n;&t; * entry points&n;&t; */
 r_for
 c_loop
@@ -4323,10 +4507,45 @@ c_func
 (paren
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;PnPBIOS: A PnP BIOS was not detected.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * we found a pnpbios, now let&squot;s load the rest of the driver&n;&t; */
+multiline_comment|/* read the node info */
+r_if
+c_cond
+(paren
+id|pnp_bios_dev_node_info
+c_func
+(paren
+op_amp
+id|node_info
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PnPBIOS: Unable to get node info.  Aborting.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+multiline_comment|/* register with the pnp layer */
 id|pnp_register_protocol
 c_func
 (paren
@@ -4334,14 +4553,8 @@ op_amp
 id|pnpbios_protocol
 )paren
 suffix:semicolon
-id|build_devlist
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*if ( ! dont_reserve_resources )*/
-multiline_comment|/*reserve_resources();*/
 macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/* start the proc interface */
 id|r
 op_assign
 id|pnpbios_proc_init
@@ -4358,6 +4571,12 @@ r_return
 id|r
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* scan for pnpbios devices */
+id|build_devlist
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

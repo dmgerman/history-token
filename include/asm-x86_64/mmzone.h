@@ -1,6 +1,6 @@
 multiline_comment|/* K8 NUMA support */
 multiline_comment|/* Copyright 2002,2003 by Andi Kleen, SuSE Labs */
-multiline_comment|/* 2.5 Version losely based on the NUMAQ Code by Pat Gaughen. */
+multiline_comment|/* 2.5 Version loosely based on the NUMAQ Code by Pat Gaughen. */
 macro_line|#ifndef _ASM_X86_64_MMZONE_H
 DECL|macro|_ASM_X86_64_MMZONE_H
 mdefine_line|#define _ASM_X86_64_MMZONE_H 1

@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/svr4.h&gt;
@@ -1935,6 +1934,13 @@ id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|sys_call_table
+)paren
+suffix:semicolon
+DECL|variable|tick_ops
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tick_ops
 )paren
 suffix:semicolon
 eof

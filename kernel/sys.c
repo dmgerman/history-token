@@ -1208,6 +1208,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -1437,10 +1438,6 @@ id|buffer
 l_int|0
 )braket
 comma
-(paren
-r_char
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -3381,6 +3378,7 @@ c_func
 (paren
 r_struct
 id|tms
+id|__user
 op_star
 id|tbuf
 )paren
@@ -4057,6 +4055,7 @@ r_int
 id|gidsetsize
 comma
 id|gid_t
+id|__user
 op_star
 id|grouplist
 )paren
@@ -4135,6 +4134,7 @@ r_int
 id|gidsetsize
 comma
 id|gid_t
+id|__user
 op_star
 id|grouplist
 )paren
@@ -4194,12 +4194,10 @@ id|gid_t
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|security_task_setgroups
@@ -4381,6 +4379,7 @@ c_func
 (paren
 r_struct
 id|new_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -4436,6 +4435,7 @@ id|sys_sethostname
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -4528,6 +4528,7 @@ id|sys_gethostname
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -4620,6 +4621,7 @@ id|sys_setdomainname
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -4717,6 +4719,7 @@ id|resource
 comma
 r_struct
 id|rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -4771,6 +4774,7 @@ id|resource
 comma
 r_struct
 id|rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -4867,6 +4871,7 @@ id|resource
 comma
 r_struct
 id|rlimit
+id|__user
 op_star
 id|rlim
 )paren
@@ -5029,6 +5034,7 @@ id|who
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -5209,6 +5215,7 @@ id|who
 comma
 r_struct
 id|rusage
+id|__user
 op_star
 id|ru
 )paren
@@ -5370,6 +5377,7 @@ id|current-&gt;pdeath_signal
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg2

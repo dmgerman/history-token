@@ -139,6 +139,10 @@ r_struct
 id|rt6key
 id|rt6i_src
 suffix:semicolon
+DECL|member|rt6i_protocol
+id|u8
+id|rt6i_protocol
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|fib6_walker_t
@@ -489,6 +493,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 suffix:semicolon
 r_extern
@@ -500,6 +509,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 suffix:semicolon
 r_extern
@@ -514,6 +528,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 suffix:semicolon
 r_extern

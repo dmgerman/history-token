@@ -36,7 +36,6 @@ macro_line|#include &lt;asm/vaddrs.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/mbus.h&gt;
 macro_line|#include &lt;asm/idprom.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/machines.h&gt;
 DECL|variable|screen_info

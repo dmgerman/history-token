@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -952,6 +951,11 @@ comma
 id|ct
 )paren
 suffix:semicolon
+multiline_comment|/* Indicate that this expectations parent is dead */
+id|exp-&gt;expectant
+op_assign
+l_int|NULL
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -1200,6 +1204,14 @@ c_func
 (paren
 op_amp
 id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Delete us from our own list to prevent corruption later */
+id|list_del
+c_func
+(paren
+op_amp
+id|ct-&gt;sibling_list
 )paren
 suffix:semicolon
 multiline_comment|/* Delete our master expectation */
@@ -3506,6 +3518,31 @@ id|nfct
 r_return
 id|NF_ACCEPT
 suffix:semicolon
+multiline_comment|/* FIXME: Push down to extensions --RR */
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_logical_and
+id|skb_linearize
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|GFP_ATOMIC
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|NF_DROP
+suffix:semicolon
 multiline_comment|/* Gather fragments. */
 r_if
 c_cond
@@ -5192,16 +5229,9 @@ id|ip_conntrack_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Someone could be still looking at the helper in a bh. */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 )brace
@@ -6255,16 +6285,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* This makes sure all current packets have passed through&n;           netfilter framework.  Roll on, two-stage module&n;           delete... */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 id|i_see_dead_people

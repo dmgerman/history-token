@@ -6,12 +6,12 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
@@ -1783,7 +1783,7 @@ r_if
 c_cond
 (paren
 id|acpi_fadt.plvl2_lat
-op_ge
+OG
 id|ACPI_PROCESSOR_MAX_C2_LATENCY
 )paren
 id|ACPI_DEBUG_PRINT
@@ -1868,7 +1868,7 @@ r_if
 c_cond
 (paren
 id|acpi_fadt.plvl3_lat
-op_ge
+OG
 id|ACPI_PROCESSOR_MAX_C3_LATENCY
 )paren
 id|ACPI_DEBUG_PRINT

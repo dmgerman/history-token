@@ -2,7 +2,6 @@ multiline_comment|/*&n; *  fs/nfs/nfs4xdr.c&n; *&n; *  Server-side XDR for NFSv4
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;

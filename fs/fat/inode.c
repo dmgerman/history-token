@@ -3267,11 +3267,11 @@ id|inode
 op_member_access_from_pointer
 id|i_logstart
 suffix:semicolon
-id|read_lock
+id|spin_lock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|de-&gt;d_lock
 )paren
 suffix:semicolon
 id|fh
@@ -3287,11 +3287,11 @@ id|de-&gt;d_parent-&gt;d_inode
 op_member_access_from_pointer
 id|i_logstart
 suffix:semicolon
-id|read_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|dparent_lock
+id|de-&gt;d_lock
 )paren
 suffix:semicolon
 r_return

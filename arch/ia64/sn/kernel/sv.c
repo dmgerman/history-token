@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;asm/softirq.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/sn/sv.h&gt;
 multiline_comment|/* Define this to have sv_test() run some simple tests.&n;   kernel_thread() must behave as expected when this is called.  */

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/rte_ma1_cb.c -- Midas labs RTE-V850E/MA1-CB board&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * arch/v850/kernel/rte_ma1_cb.c -- Midas labs RTE-V850E/MA1-CB board&n; *&n; *  Copyright (C) 2001,02,03  NEC Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -14,6 +14,19 @@ DECL|macro|RAM_START
 mdefine_line|#define RAM_START &t;SRAM_ADDR
 DECL|macro|RAM_END
 mdefine_line|#define RAM_END&t;&t;(SDRAM_ADDR + SDRAM_SIZE)
+DECL|function|mach_early_init
+r_void
+id|__init
+id|mach_early_init
+(paren
+r_void
+)paren
+(brace
+id|rte_cb_early_init
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|mach_get_physical_ram
 r_void
 id|__init
@@ -126,7 +139,7 @@ op_and_assign
 op_complement
 l_int|0xC
 suffix:semicolon
-multiline_comment|/* Make P42 and output, and P43 an input.  */
+multiline_comment|/* Make P42 an output, and P43 an input.  */
 id|MA_PORT4_PM
 op_assign
 (paren

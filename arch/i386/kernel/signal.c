@@ -132,6 +132,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -280,11 +281,13 @@ comma
 r_const
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -617,6 +620,7 @@ id|regs
 comma
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -764,6 +768,7 @@ multiline_comment|/* disable syscall checks */
 (brace
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|buf
 suffix:semicolon
@@ -861,12 +866,14 @@ id|__unused
 suffix:semicolon
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 r_struct
 id|sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -1037,12 +1044,14 @@ id|__unused
 suffix:semicolon
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -1211,11 +1220,13 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
 r_struct
 id|_fpstate
+id|__user
 op_star
 id|fpstate
 comma
@@ -1578,6 +1589,7 @@ multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -1668,6 +1680,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 (paren
@@ -1712,6 +1725,7 @@ id|restorer
 suffix:semicolon
 r_struct
 id|sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -1847,6 +1861,7 @@ op_or_assign
 id|__copy_to_user
 c_func
 (paren
+op_amp
 id|frame-&gt;extramask
 comma
 op_amp
@@ -2092,6 +2107,7 @@ id|restorer
 suffix:semicolon
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon

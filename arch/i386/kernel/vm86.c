@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/kernel/vm86.c&n; *&n; *  Copyright (C) 1994  Linus Torvalds&n; *&n; *  29 dec 2001 - Fixed oopses caused by unchecked access to the vm86&n; *                stack - Manfred Spraul &lt;manfreds@colorfullife.com&gt;&n; *&n; *  22 mar 2002 - Manfred detected the stackfaults, but didn&squot;t handle&n; *                them correctly. Now the emulation will be in a&n; *                consistent state after stackfaults - Kasper Dupont&n; *                &lt;kasperd@daimi.au.dk&gt;&n; *&n; *  22 mar 2002 - Added missing clear_IF in set_vflags_* Kasper Dupont&n; *                &lt;kasperd@daimi.au.dk&gt;&n; *&n; *  ?? ??? 2002 - Fixed premature returns from handle_vm86_fault&n; *                caused by Kasper Dupont&squot;s changes - Stas Sergeev&n; *&n; *   4 apr 2002 - Fixed CHECK_IF_IN_TRAP broken by Stas&squot; changes.&n; *                Kasper Dupont &lt;kasperd@daimi.au.dk&gt;&n; *&n; *   9 apr 2002 - Changed syntax of macros in handle_vm86_fault.&n; *                Kasper Dupont &lt;kasperd@daimi.au.dk&gt;&n; *&n; *   9 apr 2002 - Changed stack access macros to jump to a label&n; *                instead of returning to userspace. This simplifies&n; *                do_int, and is needed by handle_vm6_fault. Kasper&n; *                Dupont &lt;kasperd@daimi.au.dk&gt;&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -182,7 +183,7 @@ id|tss
 op_assign
 id|init_tss
 op_plus
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -202,6 +203,11 @@ suffix:semicolon
 id|current-&gt;thread.saved_esp0
 op_assign
 l_int|0
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
 suffix:semicolon
 id|loadsegment
 c_func
@@ -955,7 +961,7 @@ id|tss
 op_assign
 id|init_tss
 op_plus
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
@@ -975,6 +981,11 @@ id|disable_sysenter
 c_func
 (paren
 id|tss
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 id|tsk-&gt;thread.screen_bitmap
@@ -2664,11 +2675,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|3
+id|FIRST_VM86_IRQ
 suffix:semicolon
 id|i
-OL
-l_int|16
+op_le
+id|LAST_VM86_IRQ
 suffix:semicolon
 id|i
 op_increment
@@ -2713,16 +2724,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|invalid_vm86_irq
+c_func
 (paren
 id|irqnumber
-OL
-l_int|3
-)paren
-op_logical_or
-(paren
-id|irqnumber
-OG
-l_int|15
 )paren
 )paren
 r_return
@@ -2875,16 +2880,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|invalid_vm86_irq
+c_func
 (paren
 id|irq
-OL
-l_int|3
-)paren
-op_logical_or
-(paren
-id|irq
-OG
-l_int|15
 )paren
 )paren
 r_return
@@ -2959,16 +2958,10 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|invalid_vm86_irq
+c_func
 (paren
 id|irqnumber
-OL
-l_int|3
-)paren
-op_logical_or
-(paren
-id|irqnumber
-OG
-l_int|15
 )paren
 )paren
 r_return

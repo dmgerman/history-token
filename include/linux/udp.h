@@ -30,6 +30,11 @@ suffix:semicolon
 multiline_comment|/* UDP socket options */
 DECL|macro|UDP_CORK
 mdefine_line|#define UDP_CORK&t;1&t;/* Never send partially complete segments */
+DECL|macro|UDP_ENCAP
+mdefine_line|#define UDP_ENCAP&t;100&t;/* Set the socket to accept encapsulated packets */
+multiline_comment|/* UDP encapsulation types */
+DECL|macro|UDP_ENCAP_ESPINUDP
+mdefine_line|#define UDP_ENCAP_ESPINUDP&t;2 /* draft-ietf-ipsec-udp-encaps-06 */
 DECL|struct|udp_opt
 r_struct
 id|udp_opt
@@ -45,6 +50,11 @@ r_int
 id|corkflag
 suffix:semicolon
 multiline_comment|/* Cork is required */
+DECL|member|encap_type
+id|__u16
+id|encap_type
+suffix:semicolon
+multiline_comment|/* Is this an Encapsulation socket? */
 multiline_comment|/*&n;&t; * Following members retains the infomation to create a UDP header&n;&t; * when the socket is uncorked.&n;&t; */
 DECL|member|saddr
 id|u32

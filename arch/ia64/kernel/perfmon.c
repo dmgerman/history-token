@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -129,13 +130,6 @@ DECL|macro|PFM_CPUINFO_CLEAR
 mdefine_line|#define PFM_CPUINFO_CLEAR(v)&t;__get_cpu_var(pfm_syst_info) &amp;= ~(v)
 DECL|macro|PFM_CPUINFO_SET
 mdefine_line|#define PFM_CPUINFO_SET(v)&t;__get_cpu_var(pfm_syst_info) |= (v)
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
-macro_line|#else
-DECL|macro|cpu_is_online
-mdefine_line|#define cpu_is_online(i)        (i==0)
-macro_line|#endif
 multiline_comment|/*&n; * debugging&n; */
 DECL|macro|DBprintk
 mdefine_line|#define DBprintk(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (pfm_sysctl.debug &gt;0) { printk(&quot;%s.%d: CPU%d &quot;, __FUNCTION__, __LINE__, smp_processor_id()); printk a; } &bslash;&n;&t;} while (0)
@@ -3472,7 +3466,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cpu_is_online
+id|cpu_online
 c_func
 (paren
 id|cpu
@@ -10996,7 +10990,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|cpu_is_online
+id|cpu_online
 c_func
 (paren
 id|i

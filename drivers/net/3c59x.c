@@ -674,6 +674,12 @@ comma
 DECL|enumerator|CH_3C920
 id|CH_3C920
 comma
+DECL|enumerator|CH_3C982A
+id|CH_3C982A
+comma
+DECL|enumerator|CH_3C982B
+id|CH_3C982B
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* note: this array directly indexed by above enums, and MUST&n; * be kept in sync with both the enums above, and the PCI device&n; * table below&n; */
@@ -708,8 +714,6 @@ id|vortex_info_tbl
 id|__devinitdata
 op_assign
 (brace
-DECL|macro|EISA_TBL_OFFSET
-mdefine_line|#define EISA_TBL_OFFSET&t;0&t;&t;/* Offset of this entry for vortex_eisa_init */
 (brace
 l_string|&quot;3c590 Vortex 10Mbps&quot;
 comma
@@ -723,6 +727,8 @@ l_int|32
 comma
 )brace
 comma
+DECL|macro|EISA_3C592_OFFSET
+mdefine_line|#define EISA_3C592_OFFSET 1&t;&t;/* Offset of this entry for vortex_eisa_init */
 (brace
 l_string|&quot;3c592 EISA 10Mbps Demon/Vortex&quot;
 comma
@@ -737,6 +743,8 @@ l_int|32
 comma
 )brace
 comma
+DECL|macro|EISA_3C597_OFFSET
+mdefine_line|#define EISA_3C597_OFFSET 2&t;&t;/* Offset of this entry for vortex_eisa_init */
 (brace
 l_string|&quot;3c597 EISA Fast Demon/Vortex&quot;
 comma
@@ -1278,6 +1286,40 @@ op_or
 id|HAS_NWAY
 op_or
 id|HAS_HWCKSM
+comma
+l_int|128
+comma
+)brace
+comma
+(brace
+l_string|&quot;3c982 Hydra Dual Port A&quot;
+comma
+id|PCI_USES_IO
+op_or
+id|PCI_USES_MASTER
+comma
+id|IS_TORNADO
+op_or
+id|HAS_HWCKSM
+op_or
+id|HAS_NWAY
+comma
+l_int|128
+comma
+)brace
+comma
+(brace
+l_string|&quot;3c982 Hydra Dual Port B&quot;
+comma
+id|PCI_USES_IO
+op_or
+id|PCI_USES_MASTER
+comma
+id|IS_TORNADO
+op_or
+id|HAS_HWCKSM
+op_or
+id|HAS_NWAY
 comma
 l_int|128
 comma
@@ -1827,6 +1869,38 @@ comma
 l_int|0
 comma
 id|CH_3C920
+)brace
+comma
+(brace
+l_int|0x10B7
+comma
+l_int|0x1201
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_3C982A
+)brace
+comma
+(brace
+l_int|0x10B7
+comma
+l_int|0x1202
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|CH_3C982B
 )brace
 comma
 (brace
@@ -3958,10 +4032,14 @@ op_assign
 (brace
 (brace
 l_string|&quot;TCM5920&quot;
+comma
+id|EISA_3C592_OFFSET
 )brace
 comma
 (brace
 l_string|&quot;TCM5970&quot;
+comma
+id|EISA_3C597_OFFSET
 )brace
 comma
 (brace
@@ -4090,7 +4168,7 @@ l_int|0xC88
 op_rshift
 l_int|12
 comma
-id|EISA_TBL_OFFSET
+id|edev-&gt;id.driver_data
 comma
 id|vortex_cards_found
 )paren
@@ -4237,16 +4315,6 @@ r_int
 id|orig_cards_found
 op_assign
 id|vortex_cards_found
-suffix:semicolon
-multiline_comment|/* Now check all slots of the EISA bus. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|EISA_bus
-)paren
-r_return
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_EISA
 r_if

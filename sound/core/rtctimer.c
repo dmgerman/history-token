@@ -8,11 +8,7 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#if defined(CONFIG_RTC) || defined(CONFIG_RTC_MODULE)
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 2, 12)&t;/* FIXME: which 2.2.x kernel? */
-macro_line|#include &lt;linux/rtc.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-macro_line|#endif
 DECL|macro|RTC_FREQ
 mdefine_line|#define RTC_FREQ&t;1024&t;&t;/* default frequency */
 DECL|macro|NANO_SEC
