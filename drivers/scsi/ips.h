@@ -108,15 +108,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ips_slave_configure
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_const
 r_char
 op_star
@@ -128,25 +119,19 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|do_ips
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n;    * Some handy macros&n;    */
 macro_line|#ifndef LinuxVersionCode
 DECL|macro|LinuxVersionCode
 mdefine_line|#define LinuxVersionCode(x,y,z)  (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,20) || defined CONFIG_HIGHIO
+DECL|macro|IPS_HIGHIO
+mdefine_line|#define IPS_HIGHIO
+DECL|macro|IPS_HIGHMEM_IO
+mdefine_line|#define IPS_HIGHMEM_IO     .highmem_io = 1,
+macro_line|#else
+DECL|macro|IPS_HIGHMEM_IO
+mdefine_line|#define IPS_HIGHMEM_IO
 macro_line|#endif
 DECL|macro|IPS_HA
 mdefine_line|#define IPS_HA(x)                   ((ips_ha_t *) x-&gt;hostdata)
@@ -164,6 +149,12 @@ DECL|macro|IPS_USE_I2O_DELIVER
 mdefine_line|#define IPS_USE_I2O_DELIVER(ha)     ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         (IPS_IS_TROMBONE(ha) &amp;&amp; &bslash;&n;                                          (ips_force_i2o))) ? 1 : 0)
 DECL|macro|IPS_USE_MEMIO
 mdefine_line|#define IPS_USE_MEMIO(ha)           ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         ((IPS_IS_TROMBONE(ha) || IPS_IS_CLARINET(ha)) &amp;&amp; &bslash;&n;                                          (ips_force_memio))) ? 1 : 0)
+DECL|macro|IPS_HAS_ENH_SGLIST
+mdefine_line|#define IPS_HAS_ENH_SGLIST(ha)    (IPS_IS_MORPHEUS(ha) || IPS_IS_MARCO(ha))
+DECL|macro|IPS_USE_ENH_SGLIST
+mdefine_line|#define IPS_USE_ENH_SGLIST(ha)    ((ha)-&gt;flags &amp; IPS_HA_ENH_SG)
+DECL|macro|IPS_SGLIST_SIZE
+mdefine_line|#define IPS_SGLIST_SIZE(ha)       (IPS_USE_ENH_SGLIST(ha) ? &bslash;&n;                                         sizeof(IPS_ENH_SG_LIST) : sizeof(IPS_STD_SG_LIST))
 macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
 DECL|macro|pci_set_dma_mask
 mdefine_line|#define pci_set_dma_mask(dev,mask) (1)
@@ -183,6 +174,30 @@ macro_line|#endif
 macro_line|#ifndef min
 DECL|macro|min
 mdefine_line|#define min(x,y) ((x) &lt; (y) ? x : y)
+macro_line|#endif
+DECL|macro|pci_dma_lo32
+mdefine_line|#define pci_dma_lo32(a)         (a &amp; 0xffffffff)
+macro_line|#if (BITS_PER_LONG &gt; 32) || (defined CONFIG_HIGHMEM64G &amp;&amp; defined IPS_HIGHIO)
+DECL|macro|IPS_ENABLE_DMA64
+mdefine_line|#define IPS_ENABLE_DMA64        (1)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         (a &gt;&gt; 32)
+macro_line|#else
+DECL|macro|IPS_ENABLE_DMA64
+mdefine_line|#define IPS_ENABLE_DMA64        (0)
+DECL|macro|pci_dma_hi32
+mdefine_line|#define pci_dma_hi32(a)         (0)
+macro_line|#endif
+macro_line|#if defined(__ia64__)
+DECL|macro|IPS_ATOMIC_GFP
+mdefine_line|#define IPS_ATOMIC_GFP&t;(GFP_DMA | GFP_ATOMIC)
+DECL|macro|IPS_INIT_GFP
+mdefine_line|#define IPS_INIT_GFP&t;GFP_DMA
+macro_line|#else
+DECL|macro|IPS_ATOMIC_GFP
+mdefine_line|#define IPS_ATOMIC_GFP    GFP_ATOMIC
+DECL|macro|IPS_INIT_GFP
+mdefine_line|#define IPS_INIT_GFP&t;GFP_KERNEL
 macro_line|#endif
 multiline_comment|/*&n;    * Adapter address map equates&n;    */
 DECL|macro|IPS_REG_HISR
@@ -719,7 +734,7 @@ suffix:semicolon
 DECL|macro|IPS
 mdefine_line|#define IPS {&t;&bslash;&n;&t;.detect&t;&t;&t;= ips_detect,&t;&t;&bslash;&n;&t;.release&t;&t;= ips_release,&t;&t;&bslash;&n;&t;.info&t;&t;&t;= ips_info,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;= ips_queue,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;= ips_eh_abort,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= ips_eh_reset,&t;&t;&bslash;&n;&t;.slave_configure&t;= ips_slave_configure,&t;&bslash;&n;&t;.bios_param&t;&t;= ips_biosparam,&t;&bslash;&n;&t;.can_queue&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.this_id&t;&t;= -1,&t;&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;= IPS_MAX_SG,&t;&t;&bslash;&n;&t;.cmd_per_lun&t;&t;= 3,&t;&t;&t;&bslash;&n;&t;.present&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;= 0,&t;&t;&t;&bslash;&n;&t;.use_clustering&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.highmem_io&t;&t;= 1 &bslash;&n;}
 macro_line|#endif
-multiline_comment|/*&n; * IBM PCI Raid Command Formats&n; */
+multiline_comment|/*&n; * Raid Command Formats&n; */
 r_typedef
 r_struct
 (brace
@@ -751,9 +766,13 @@ DECL|member|sector_count
 r_uint16
 id|sector_count
 suffix:semicolon
-DECL|member|reserved
-r_uint16
-id|reserved
+DECL|member|segment_4G
+r_uint8
+id|segment_4G
+suffix:semicolon
+DECL|member|enhanced_sg
+r_uint8
+id|enhanced_sg
 suffix:semicolon
 DECL|member|ccsar
 r_uint32
@@ -952,8 +971,16 @@ r_uint32
 id|dcdb_address
 suffix:semicolon
 DECL|member|reserved3
-r_uint32
+r_uint16
 id|reserved3
+suffix:semicolon
+DECL|member|segment_4G
+r_uint8
+id|segment_4G
+suffix:semicolon
+DECL|member|enhanced_sg
+r_uint8
+id|enhanced_sg
 suffix:semicolon
 DECL|member|ccsar
 r_uint32
@@ -2691,13 +2718,56 @@ DECL|member|length
 r_uint32
 id|length
 suffix:semicolon
+DECL|typedef|IPS_STD_SG_LIST
+)brace
+id|IPS_STD_SG_LIST
+suffix:semicolon
+DECL|struct|ips_enh_sglist
+r_typedef
+r_struct
+id|ips_enh_sglist
+(brace
+DECL|member|address_lo
+r_uint32
+id|address_lo
+suffix:semicolon
+DECL|member|address_hi
+r_uint32
+id|address_hi
+suffix:semicolon
+DECL|member|length
+r_uint32
+id|length
+suffix:semicolon
+DECL|member|reserved
+r_uint32
+id|reserved
+suffix:semicolon
+DECL|typedef|IPS_ENH_SG_LIST
+)brace
+id|IPS_ENH_SG_LIST
+suffix:semicolon
+r_typedef
+r_union
+(brace
+DECL|member|list
+r_void
+op_star
+id|list
+suffix:semicolon
+DECL|member|std_list
+id|IPS_STD_SG_LIST
+op_star
+id|std_list
+suffix:semicolon
+DECL|member|enh_list
+id|IPS_ENH_SG_LIST
+op_star
+id|enh_list
+suffix:semicolon
 DECL|typedef|IPS_SG_LIST
-DECL|typedef|PIPS_SG_LIST
 )brace
 id|IPS_SG_LIST
-comma
-op_star
-id|PIPS_SG_LIST
 suffix:semicolon
 DECL|struct|_IPS_INFOSTR
 r_typedef
@@ -3207,6 +3277,11 @@ r_uint32
 id|cmd_in_progress
 suffix:semicolon
 multiline_comment|/* Current command in progress*/
+DECL|member|flags
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*                            */
 DECL|member|waitflag
 r_uint8
 id|waitflag
@@ -3423,7 +3498,6 @@ id|op_code
 suffix:semicolon
 DECL|member|sg_list
 id|IPS_SG_LIST
-op_star
 id|sg_list
 suffix:semicolon
 DECL|member|scsi_cmd
