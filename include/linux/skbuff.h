@@ -355,6 +355,12 @@ id|dst_entry
 op_star
 id|dst
 suffix:semicolon
+DECL|member|sp
+r_struct
+id|sec_path
+op_star
+id|sp
+suffix:semicolon
 multiline_comment|/*&n;&t; * This is the control buffer. It is free to use for every&n;&t; * layer. Please put your private variables there. If you&n;&t; * want to keep them across layers you have to do a skb_clone()&n;&t; * first. This is owned by whoever has the skb queued ATM.&n;&t; */
 DECL|member|cb
 r_char

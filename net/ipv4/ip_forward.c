@@ -18,9 +18,7 @@ macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;net/route.h&gt;
-macro_line|#if 0
 macro_line|#include &lt;net/xfrm.h&gt;
-macro_line|#endif
 DECL|function|ip_forward_finish
 r_static
 r_inline
@@ -118,7 +116,6 @@ op_member_access_from_pointer
 id|opt
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -134,7 +131,6 @@ id|skb
 r_goto
 id|drop
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -184,7 +180,6 @@ l_int|1
 r_goto
 id|too_many_hops
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -198,7 +193,6 @@ id|skb
 r_goto
 id|drop
 suffix:semicolon
-macro_line|#endif
 id|iph
 op_assign
 id|skb-&gt;nh.iph

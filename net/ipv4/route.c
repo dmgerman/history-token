@@ -8925,7 +8925,6 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#if 0
 r_return
 id|flp-&gt;proto
 ques
@@ -8950,11 +8949,6 @@ l_int|0
 suffix:colon
 l_int|0
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|rt_fill_info
 r_static
@@ -11765,5 +11759,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
+id|xfrm_init
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 eof

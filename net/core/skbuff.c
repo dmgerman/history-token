@@ -20,6 +20,7 @@ macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|sysctl_hot_list_len
@@ -639,6 +640,10 @@ id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -991,6 +996,12 @@ c_func
 id|skb-&gt;dst
 )paren
 suffix:semicolon
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1172,6 +1183,18 @@ id|dst_clone
 c_func
 (paren
 id|n-&gt;dst
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
+id|sp
+)paren
+suffix:semicolon
+id|secpath_get
+c_func
+(paren
+id|n-&gt;sp
 )paren
 suffix:semicolon
 id|memcpy
@@ -1440,6 +1463,16 @@ id|dst_clone
 c_func
 (paren
 id|old-&gt;dst
+)paren
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|sp
+op_assign
+id|secpath_get
+c_func
+(paren
+id|old-&gt;sp
 )paren
 suffix:semicolon
 r_new
