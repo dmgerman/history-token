@@ -3758,7 +3758,7 @@ r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * check_mft_mirror - compare contents of the mft mirror with the mft&n; * @vol:&t;ntfs super block describing device whose mft mirror to check&n; *&n; * Return TRUE on success or FALSE on error.&n; */
+multiline_comment|/**&n; * check_mft_mirror - compare contents of the mft mirror with the mft&n; * @vol:&t;ntfs super block describing device whose mft mirror to check&n; *&n; * Return TRUE on success or FALSE on error.&n; *&n; * Note, this function also results in the mft mirror runlist being completely&n; * mapped into memory.  The mft mirror write code requires this and will BUG()&n; * should it find an unmapped runlist element.&n; */
 DECL|function|check_mft_mirror
 r_static
 id|BOOL
