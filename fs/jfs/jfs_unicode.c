@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &quot;jfs_types.h&quot;
+macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_unicode.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
@@ -258,13 +258,21 @@ r_struct
 id|dentry
 op_star
 id|dentry
-comma
+)paren
+(brace
 r_struct
 id|nls_table
 op_star
 id|nls_tab
+op_assign
+id|JFS_SBI
+c_func
+(paren
+id|dentry-&gt;d_sb
 )paren
-(brace
+op_member_access_from_pointer
+id|nls_tab
+suffix:semicolon
 r_int
 id|length
 op_assign
