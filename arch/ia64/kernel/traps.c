@@ -700,6 +700,24 @@ id|__SEGV_PSTKOVF
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x3f000
+dot
+dot
+dot
+l_int|0x3ffff
+suffix:colon
+multiline_comment|/* bundle-update in progress */
+id|sig
+op_assign
+id|SIGILL
+suffix:semicolon
+id|code
+op_assign
+id|__ILL_BNDMOD
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 (brace
