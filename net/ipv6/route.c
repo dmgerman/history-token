@@ -5229,7 +5229,7 @@ id|skb
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 id|icmpv6_send

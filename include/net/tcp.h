@@ -5244,7 +5244,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPPrequeueDropped
+id|LINUX_MIB_TCPPREQUEUEDROPPED
 )paren
 suffix:semicolon
 )brace
@@ -5362,7 +5362,7 @@ id|TCP_ESTABLISHED
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpCurrEstab
+id|TCP_MIB_CURRESTAB
 )paren
 suffix:semicolon
 r_break
@@ -5384,7 +5384,7 @@ id|TCP_ESTABLISHED
 id|TCP_INC_STATS
 c_func
 (paren
-id|TcpEstabResets
+id|TCP_MIB_ESTABRESETS
 )paren
 suffix:semicolon
 id|sk-&gt;sk_prot
@@ -5434,7 +5434,7 @@ id|TCP_ESTABLISHED
 id|TCP_DEC_STATS
 c_func
 (paren
-id|TcpCurrEstab
+id|TCP_MIB_CURRESTAB
 )paren
 suffix:semicolon
 )brace
@@ -7153,7 +7153,7 @@ multiline_comment|/* See RFC 2012 */
 id|TCP_ADD_STATS_USER
 c_func
 (paren
-id|TcpRtoAlgorithm
+id|TCP_MIB_RTOALGORITHM
 comma
 l_int|1
 )paren
@@ -7161,7 +7161,7 @@ suffix:semicolon
 id|TCP_ADD_STATS_USER
 c_func
 (paren
-id|TcpRtoMin
+id|TCP_MIB_RTOMIN
 comma
 id|TCP_RTO_MIN
 op_star
@@ -7173,7 +7173,7 @@ suffix:semicolon
 id|TCP_ADD_STATS_USER
 c_func
 (paren
-id|TcpRtoMax
+id|TCP_MIB_RTOMAX
 comma
 id|TCP_RTO_MAX
 op_star
@@ -7185,7 +7185,7 @@ suffix:semicolon
 id|TCP_ADD_STATS_USER
 c_func
 (paren
-id|TcpMaxConn
+id|TCP_MIB_MAXCONN
 comma
 op_minus
 l_int|1

@@ -1401,7 +1401,7 @@ id|dev
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|ArpFilter
+id|LINUX_MIB_ARPFILTER
 )paren
 suffix:semicolon
 id|flag

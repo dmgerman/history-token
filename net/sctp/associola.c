@@ -2494,7 +2494,7 @@ r_else
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpInCtrlChunks
+id|SCTP_MIB_INCTRLCHUNKS
 )paren
 suffix:semicolon
 r_if
