@@ -1938,7 +1938,7 @@ id|first_len
 )paren
 suffix:semicolon
 id|iph-&gt;frag_off
-op_or_assign
+op_assign
 id|htons
 c_func
 (paren
