@@ -6211,6 +6211,16 @@ comma
 (brace
 id|USB_VENDOR_ID_WACOM
 comma
+id|USB_DEVICE_ID_WACOM_GRAPHIRE
+op_plus
+l_int|3
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_WACOM
+comma
 id|USB_DEVICE_ID_WACOM_INTUOS
 comma
 id|HID_QUIRK_IGNORE
