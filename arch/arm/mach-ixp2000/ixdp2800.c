@@ -47,11 +47,11 @@ id|IXDP2400_NR_IRQS
 suffix:semicolon
 )brace
 multiline_comment|/*************************************************************************&n; * IXDP2800 timer tick&n; *************************************************************************/
-DECL|function|ixdp2800_init_time
+DECL|function|ixdp2800_timer_init
 r_static
 r_void
 id|__init
-id|ixdp2800_init_time
+id|ixdp2800_timer_init
 c_func
 (paren
 r_void
@@ -64,6 +64,25 @@ l_int|50000000
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ixdp2800_timer
+r_static
+r_struct
+id|sys_timer
+id|ixdp2800_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|ixdp2800_timer_init
+comma
+dot
+id|offset
+op_assign
+id|ixp2000_gettimeoffset
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*************************************************************************&n; * IXDP2800 PCI&n; *************************************************************************/
 DECL|function|ixdp2800_pci_preinit
 r_void
@@ -462,11 +481,12 @@ c_func
 (paren
 id|ixdp2800_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|ixdp2800_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ixdp2800_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

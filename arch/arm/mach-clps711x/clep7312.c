@@ -5,30 +5,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
-r_extern
-r_void
-id|clps711x_init_irq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_map_io
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|clps711x_init_time
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &quot;common.h&quot;
 r_static
 r_void
 id|__init
@@ -130,10 +107,11 @@ c_func
 (paren
 id|clps711x_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|clps711x_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|clps711x_timer
+comma
 id|MACHINE_END
 eof

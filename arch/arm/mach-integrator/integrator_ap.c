@@ -19,6 +19,8 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
+macro_line|#include &quot;common.h&quot;
 multiline_comment|/* &n; * All IO addresses are mapped onto VA 0xFFFx.xxxx, where x.xxxx&n; * is the (PA &gt;&gt; 12).&n; *&n; * Setup a VA for the Integrator interrupt controller (for header #0,&n; * just for now).&n; */
 DECL|macro|VA_IC_BASE
 mdefine_line|#define VA_IC_BASE&t;IO_ADDRESS(INTEGRATOR_IC_BASE) 
@@ -1071,10 +1073,11 @@ id|lmdev
 suffix:semicolon
 )brace
 )brace
-DECL|function|ap_time_init
+DECL|function|ap_init_timer
 r_static
 r_void
-id|ap_time_init
+id|__init
+id|ap_init_timer
 c_func
 (paren
 r_void
@@ -1093,6 +1096,25 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ap_timer
+r_static
+r_struct
+id|sys_timer
+id|ap_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|ap_init_timer
+comma
+dot
+id|offset
+op_assign
+id|integrator_gettimeoffset
+comma
+)brace
+suffix:semicolon
 id|MACHINE_START
 c_func
 (paren
@@ -1129,11 +1151,12 @@ c_func
 (paren
 id|ap_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|ap_time_init
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ap_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

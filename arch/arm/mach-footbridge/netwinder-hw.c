@@ -5,9 +5,13 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/mach/arch.h&gt;
+macro_line|#include &quot;common.h&quot;
 DECL|macro|IRDA_IO_BASE
 mdefine_line|#define IRDA_IO_BASE&t;&t;0x180
 DECL|macro|GP1_IO_BASE
@@ -2337,4 +2341,110 @@ c_func
 id|nw_hw_init
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Older NeTTroms either do not provide a parameters&n; * page, or they don&squot;t supply correct information in&n; * the parameter page.&n; */
+r_static
+r_void
+id|__init
+DECL|function|fixup_netwinder
+id|fixup_netwinder
+c_func
+(paren
+r_struct
+id|machine_desc
+op_star
+id|desc
+comma
+r_struct
+id|tag
+op_star
+id|tags
+comma
+r_char
+op_star
+op_star
+id|cmdline
+comma
+r_struct
+id|meminfo
+op_star
+id|mi
+)paren
+(brace
+macro_line|#ifdef CONFIG_ISAPNP
+r_extern
+r_int
+id|isapnp_disable
+suffix:semicolon
+multiline_comment|/*&n;&t; * We must not use the kernels ISAPnP code&n;&t; * on the NetWinder - it will reset the settings&n;&t; * for the WaveArtist chip and render it inoperable.&n;&t; */
+id|isapnp_disable
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
+)brace
+id|MACHINE_START
+c_func
+(paren
+id|NETWINDER
+comma
+l_string|&quot;Rebel-NetWinder&quot;
+)paren
+id|MAINTAINER
+c_func
+(paren
+l_string|&quot;Russell King/Rebel.com&quot;
+)paren
+id|BOOT_MEM
+c_func
+(paren
+l_int|0x00000000
+comma
+id|DC21285_ARMCSR_BASE
+comma
+l_int|0xfe000000
+)paren
+id|BOOT_PARAMS
+c_func
+(paren
+l_int|0x00000100
+)paren
+id|VIDEO
+c_func
+(paren
+l_int|0x000a0000
+comma
+l_int|0x000bffff
+)paren
+id|DISABLE_PARPORT
+c_func
+(paren
+l_int|0
+)paren
+id|DISABLE_PARPORT
+c_func
+(paren
+l_int|2
+)paren
+id|FIXUP
+c_func
+(paren
+id|fixup_netwinder
+)paren
+id|MAPIO
+c_func
+(paren
+id|footbridge_map_io
+)paren
+id|INITIRQ
+c_func
+(paren
+id|footbridge_init_irq
+)paren
+dot
+id|timer
+op_assign
+op_amp
+id|isa_timer
+comma
+id|MACHINE_END
 eof

@@ -28,11 +28,11 @@ macro_line|#include &lt;asm/mach/time.h&gt;
 macro_line|#include &lt;asm/mach/flash.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 multiline_comment|/*************************************************************************&n; * IXDP2400 timer tick&n; *************************************************************************/
-DECL|function|ixdp2400_init_time
+DECL|function|ixdp2400_timer_init
 r_static
 r_void
 id|__init
-id|ixdp2400_init_time
+id|ixdp2400_timer_init
 c_func
 (paren
 r_void
@@ -112,6 +112,25 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ixdp2400_timer
+r_static
+r_struct
+id|timer
+id|ixdp2400_timer
+op_assign
+(brace
+dot
+id|init
+op_assign
+id|ixdp2400_timer_init
+comma
+dot
+id|offset
+op_assign
+id|ixp2000_gettimeoffset
+comma
+)brace
+suffix:semicolon
 multiline_comment|/*************************************************************************&n; * IXDP2400 PCI&n; *************************************************************************/
 DECL|function|ixdp2400_pci_preinit
 r_void
@@ -486,11 +505,12 @@ c_func
 (paren
 id|ixdp2400_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|ixdp2400_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ixdp2400_timer
+comma
 id|INIT_MACHINE
 c_func
 (paren

@@ -189,10 +189,11 @@ c_func
 (paren
 id|sa1100_init_irq
 )paren
-id|INITTIME
-c_func
-(paren
-id|sa1100_init_time
-)paren
+dot
+id|timer
+op_assign
+op_amp
+id|sa1100_timer
+comma
 id|MACHINE_END
 eof

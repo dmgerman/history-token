@@ -576,7 +576,6 @@ r_int
 id|ticks_per_usec
 suffix:semicolon
 DECL|function|ixp2000_gettimeoffset
-r_static
 r_int
 r_int
 id|ixp2000_gettimeoffset
@@ -674,10 +673,6 @@ r_int
 id|tick_rate
 )paren
 (brace
-id|gettimeoffset
-op_assign
-id|ixp2000_gettimeoffset
-suffix:semicolon
 id|ixp2000_reg_write
 c_func
 (paren
