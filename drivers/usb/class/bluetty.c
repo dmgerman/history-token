@@ -4736,6 +4736,9 @@ op_amp
 id|bluetooth_tty_driver
 comma
 id|minor
+comma
+op_amp
+id|intf-&gt;dev
 )paren
 suffix:semicolon
 id|info

@@ -3174,6 +3174,8 @@ id|i
 op_star
 id|ABS_MAX_BOXES
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|tty_register_device
@@ -3193,6 +3195,8 @@ id|i
 op_star
 id|ABS_MAX_BOXES
 )paren
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -1190,6 +1190,8 @@ op_amp
 id|hvc_driver
 comma
 id|i
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

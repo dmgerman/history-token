@@ -4758,6 +4758,8 @@ op_amp
 id|serial_driver
 comma
 id|info-&gt;line
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|tty_register_device
@@ -4767,6 +4769,8 @@ op_amp
 id|callout_driver
 comma
 id|info-&gt;line
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
