@@ -745,5 +745,19 @@ DECL|macro|ELEVATOR_INSERT_BACK
 mdefine_line|#define ELEVATOR_INSERT_BACK&t;2
 DECL|macro|ELEVATOR_INSERT_SORT
 mdefine_line|#define ELEVATOR_INSERT_SORT&t;3
+multiline_comment|/*&n; * return values from elevator_may_queue_fn&n; */
+r_enum
+(brace
+DECL|enumerator|ELV_MQUEUE_MAY
+id|ELV_MQUEUE_MAY
+comma
+DECL|enumerator|ELV_MQUEUE_NO
+id|ELV_MQUEUE_NO
+comma
+DECL|enumerator|ELV_MQUEUE_MUST
+id|ELV_MQUEUE_MUST
+comma
+)brace
+suffix:semicolon
 macro_line|#endif
 eof

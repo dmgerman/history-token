@@ -1630,7 +1630,7 @@ id|rw
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ELV_MQUEUE_MAY
 suffix:semicolon
 )brace
 DECL|function|elv_completed_request

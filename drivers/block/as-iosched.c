@@ -6797,7 +6797,7 @@ id|rw
 r_int
 id|ret
 op_assign
-l_int|0
+id|ELV_MQUEUE_MAY
 suffix:semicolon
 r_struct
 id|as_data
@@ -6839,7 +6839,7 @@ id|ioc
 )paren
 id|ret
 op_assign
-l_int|1
+id|ELV_MQUEUE_MUST
 suffix:semicolon
 id|put_io_context
 c_func
