@@ -8,6 +8,15 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
+multiline_comment|/* Should we use MMIO or Port IO?&n; * 0: Port IO&n; * 1: MMIO&n; * 2: Try MMIO, fallback to Port IO&n; */
+DECL|variable|use_mmio
+r_static
+r_int
+r_int
+id|use_mmio
+op_assign
+l_int|2
+suffix:semicolon
 multiline_comment|/* end user-configurable values */
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n; */
 DECL|variable|multicast_filter_limit
@@ -48,9 +57,9 @@ mdefine_line|#define PKT_BUF_SZ&t;&t;1536
 DECL|macro|DRV_MODULE_NAME
 mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;typhoon&quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.4&quot;
+mdefine_line|#define DRV_MODULE_VERSION &t;&quot;1.5.7&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;04/09/09&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;05/01/07&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_MODULE_NAME &quot;: &quot;
 DECL|macro|ERR_PFX
@@ -102,6 +111,13 @@ c_func
 l_string|&quot;David Dillow &lt;dave@thedillows.org&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_MODULE_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_MODULE_VERSION
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
@@ -114,12 +130,43 @@ c_func
 l_string|&quot;3Com Typhoon Family (3C990, 3CR990, and variants)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_PARM_DESC
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+l_string|&quot;Packets smaller than this are copied and &quot;
+l_string|&quot;the buffer given back to the NIC. Default &quot;
+l_string|&quot;is 200.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|use_mmio
+comma
+l_string|&quot;Use MMIO (1) or PIO(0) to access the NIC. &quot;
+l_string|&quot;Default is to try MMIO and fallback to PIO.&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|rx_copybreak
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|use_mmio
+comma
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#if defined(NETIF_F_TSO) &amp;&amp; MAX_SKB_FRAGS &gt; 32
@@ -855,7 +902,7 @@ comma
 suffix:semicolon
 multiline_comment|/* PCI writes are not guaranteed to be posted in order, but outstanding writes&n; * cannot pass a read, so this forces current writes to post.&n; */
 DECL|macro|typhoon_post_pci_writes
-mdefine_line|#define typhoon_post_pci_writes(x) &bslash;&n;&t;do { readl(x + TYPHOON_REG_HEARTBEAT); } while(0)
+mdefine_line|#define typhoon_post_pci_writes(x) &bslash;&n;&t;do { if(likely(use_mmio)) ioread32(x+TYPHOON_REG_HEARTBEAT); } while(0)
 multiline_comment|/* We&squot;ll wait up to six seconds for a reset, and half a second normally.&n; */
 DECL|macro|TYPHOON_UDELAY
 mdefine_line|#define TYPHOON_UDELAY&t;&t;&t;50
@@ -1125,7 +1172,7 @@ id|timeout
 op_assign
 id|TYPHOON_RESET_TIMEOUT_SLEEP
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ALL
@@ -1135,7 +1182,7 @@ op_plus
 id|TYPHOON_REG_INTR_MASK
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ALL
@@ -1145,7 +1192,7 @@ op_plus
 id|TYPHOON_REG_INTR_STATUS
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_RESET_ALL
@@ -1167,7 +1214,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_RESET_NONE
@@ -1203,7 +1250,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1255,7 +1302,7 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ALL
@@ -1265,7 +1312,7 @@ op_plus
 id|TYPHOON_REG_INTR_MASK
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ALL
@@ -1342,7 +1389,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -1489,7 +1536,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|ring-&gt;lastWrite
@@ -2247,7 +2294,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|ring-&gt;lastWrite
@@ -2387,7 +2434,7 @@ op_ne
 id|indexes-&gt;respReady
 )paren
 (brace
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|1
@@ -3268,7 +3315,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|txRing-&gt;lastWrite
@@ -4114,30 +4161,41 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|strncpy
+id|u32
+id|sleep_ver
+op_assign
+id|xp_resp
+(braket
+l_int|0
+)braket
+dot
+id|parm2
+suffix:semicolon
+id|snprintf
 c_func
 (paren
 id|info-&gt;fw_version
 comma
+l_int|32
+comma
+l_string|&quot;%02x.%03x.%03x&quot;
+comma
+id|sleep_ver
+op_rshift
+l_int|24
+comma
 (paren
-r_char
-op_star
+id|sleep_ver
+op_rshift
+l_int|12
 )paren
 op_amp
-id|xp_resp
-(braket
-l_int|1
-)braket
+l_int|0xfff
 comma
-l_int|32
+id|sleep_ver
+op_amp
+l_int|0xfff
 )paren
-suffix:semicolon
-id|info-&gt;fw_version
-(braket
-l_int|31
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -4935,7 +4993,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -4964,7 +5022,7 @@ id|ETIMEDOUT
 suffix:semicolon
 id|out
 suffix:colon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_BOOTCMD
@@ -5606,7 +5664,7 @@ suffix:semicolon
 )brace
 id|irqEnabled
 op_assign
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -5614,7 +5672,7 @@ op_plus
 id|TYPHOON_REG_INTR_ENABLE
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|irqEnabled
@@ -5628,7 +5686,7 @@ id|TYPHOON_REG_INTR_ENABLE
 suffix:semicolon
 id|irqMasked
 op_assign
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -5636,7 +5694,7 @@ op_plus
 id|TYPHOON_REG_INTR_MASK
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|irqMasked
@@ -5696,7 +5754,7 @@ c_func
 id|fHdr-&gt;startAddr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_BOOTCMD
@@ -5706,7 +5764,7 @@ op_plus
 id|TYPHOON_REG_INTR_STATUS
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|load_addr
@@ -5727,7 +5785,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|hmac
@@ -5748,7 +5806,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|hmac
@@ -5769,7 +5827,7 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|hmac
@@ -5790,7 +5848,7 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|hmac
@@ -5811,7 +5869,7 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|hmac
@@ -5827,7 +5885,7 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_RUNTIME_IMAGE
@@ -5845,7 +5903,7 @@ r_struct
 id|typhoon_file_header
 )paren
 suffix:semicolon
-multiline_comment|/* The readl() in typhoon_wait_interrupt() will force the&n;&t; * last write to the command register to post, so&n;&t; * we don&squot;t need a typhoon_post_pci_writes() after it.&n;&t; */
+multiline_comment|/* The ioread32() in typhoon_wait_interrupt() will force the&n;&t; * last write to the command register to post, so&n;&t; * we don&squot;t need a typhoon_post_pci_writes() after it.&n;&t; */
 r_for
 c_loop
 (paren
@@ -5923,7 +5981,7 @@ id|ioaddr
 OL
 l_int|0
 op_logical_or
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -5978,7 +6036,7 @@ c_func
 id|csum
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|len
@@ -5988,7 +6046,7 @@ op_plus
 id|TYPHOON_REG_BOOT_LENGTH
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|csum
@@ -5998,7 +6056,7 @@ op_plus
 id|TYPHOON_REG_BOOT_CHECKSUM
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|load_addr
@@ -6008,7 +6066,7 @@ op_plus
 id|TYPHOON_REG_BOOT_DEST_ADDR
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6018,7 +6076,7 @@ op_plus
 id|TYPHOON_REG_BOOT_DATA_HI
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|dpage_dma
@@ -6034,7 +6092,7 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_SEG_AVAILABLE
@@ -6069,7 +6127,7 @@ id|ioaddr
 OL
 l_int|0
 op_logical_or
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -6093,7 +6151,7 @@ r_goto
 id|err_out_irq
 suffix:semicolon
 )brace
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_DNLD_COMPLETE
@@ -6125,7 +6183,7 @@ l_string|&quot;%s: boot ready timeout, status 0x%0x&bslash;n&quot;
 comma
 id|tp-&gt;name
 comma
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -6144,7 +6202,7 @@ l_int|0
 suffix:semicolon
 id|err_out_irq
 suffix:colon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|irqMasked
@@ -6154,7 +6212,7 @@ op_plus
 id|TYPHOON_REG_INTR_MASK
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|irqEnabled
@@ -6231,7 +6289,7 @@ r_goto
 id|out_timeout
 suffix:semicolon
 )brace
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6241,7 +6299,7 @@ op_plus
 id|TYPHOON_REG_BOOT_RECORD_ADDR_HI
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|tp-&gt;shared_dma
@@ -6257,7 +6315,7 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_REG_BOOT_RECORD
@@ -6289,7 +6347,7 @@ l_string|&quot;%s: boot finish timeout (status 0x%x)&bslash;n&quot;
 comma
 id|tp-&gt;name
 comma
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -6303,7 +6361,7 @@ id|out_timeout
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the Transmit and Command ready registers&n;&t; */
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6313,7 +6371,7 @@ op_plus
 id|TYPHOON_REG_TX_HI_READY
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6323,7 +6381,7 @@ op_plus
 id|TYPHOON_REG_CMD_READY
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 l_int|0
@@ -6339,7 +6397,7 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_BOOT
@@ -7691,7 +7749,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_NONE
@@ -7769,7 +7827,7 @@ id|intr_status
 suffix:semicolon
 id|intr_status
 op_assign
-id|readl
+id|ioread32
 c_func
 (paren
 id|ioaddr
@@ -7792,7 +7850,7 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-id|writel
+id|iowrite32
 c_func
 (paren
 id|intr_status
@@ -7812,7 +7870,7 @@ id|dev
 )paren
 )paren
 (brace
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ALL
@@ -8166,7 +8224,7 @@ id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Post 2.x.x versions of the Sleep Image require a reset before&n;&t; * we can download the Runtime Image. But let&squot;s not make users of&n;&t; * the old firmware pay for the reset.&n;&t; */
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_BOOTCMD_WAKEUP
@@ -8722,7 +8780,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_ENABLE_ALL
@@ -8732,7 +8790,7 @@ op_plus
 id|TYPHOON_REG_INTR_ENABLE
 )paren
 suffix:semicolon
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_NONE
@@ -8822,7 +8880,7 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Disable interrupts early, since we can&squot;t schedule a poll&n;&t; * when called with !netif_running(). This will be posted&n;&t; * when we force the posting of the command.&n;&t; */
-id|writel
+id|iowrite32
 c_func
 (paren
 id|TYPHOON_INTR_NONE
@@ -10051,6 +10109,242 @@ macro_line|#endif
 r_static
 r_int
 id|__devinit
+DECL|function|typhoon_test_mmio
+id|typhoon_test_mmio
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_void
+id|__iomem
+op_star
+id|ioaddr
+op_assign
+id|pci_iomap
+c_func
+(paren
+id|pdev
+comma
+l_int|1
+comma
+l_int|128
+)paren
+suffix:semicolon
+r_int
+id|mode
+op_assign
+l_int|0
+suffix:semicolon
+id|u32
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioaddr
+)paren
+(brace
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ioread32
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TYPHOON_REG_STATUS
+)paren
+op_ne
+id|TYPHOON_STATUS_WAITING_FOR_HOST
+)paren
+(brace
+r_goto
+id|out_unmap
+suffix:semicolon
+)brace
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_ALL
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_MASK
+)paren
+suffix:semicolon
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_ALL
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_ALL
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_ENABLE
+)paren
+suffix:semicolon
+multiline_comment|/* Ok, see if we can change our interrupt status register by&n;&t; * sending ourselves an interrupt. If so, then MMIO works.&n;&t; * The 50usec delay is arbitrary -- it could probably be smaller.&n;&t; */
+id|val
+op_assign
+id|ioread32
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|val
+op_amp
+id|TYPHOON_INTR_SELF
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|iowrite32
+c_func
+(paren
+l_int|1
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_SELF_INTERRUPT
+)paren
+suffix:semicolon
+id|ioread32
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|val
+op_assign
+id|ioread32
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|TYPHOON_INTR_SELF
+)paren
+(brace
+id|mode
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_ALL
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_MASK
+)paren
+suffix:semicolon
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_ALL
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+id|iowrite32
+c_func
+(paren
+id|TYPHOON_INTR_NONE
+comma
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_ENABLE
+)paren
+suffix:semicolon
+id|ioread32
+c_func
+(paren
+id|ioaddr
+op_plus
+id|TYPHOON_REG_INTR_STATUS
+)paren
+suffix:semicolon
+id|out_unmap
+suffix:colon
+id|pci_iounmap
+c_func
+(paren
+id|pdev
+comma
+id|ioaddr
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mode
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;falling back to port IO&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+id|mode
+suffix:semicolon
+)brace
+r_static
+r_int
+id|__devinit
 DECL|function|typhoon_init_one
 id|typhoon_init_one
 c_func
@@ -10091,14 +10385,10 @@ r_int
 )paren
 id|ent-&gt;driver_data
 suffix:semicolon
-r_int
-r_int
-id|ioaddr
-suffix:semicolon
 r_void
 id|__iomem
 op_star
-id|ioaddr_mapped
+id|ioaddr
 suffix:semicolon
 r_void
 op_star
@@ -10302,7 +10592,82 @@ r_goto
 id|error_out_mwi
 suffix:semicolon
 )brace
-multiline_comment|/* sanity checks, resource #1 is our mmio area&n;&t; */
+multiline_comment|/* sanity checks on IO and MMIO BARs&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pci_resource_flags
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+op_amp
+id|IORESOURCE_IO
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|ERR_PFX
+l_string|&quot;%s: region #1 not a PCI IO resource, aborting&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|error_out_mwi
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pci_resource_len
+c_func
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+OL
+l_int|128
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|ERR_PFX
+l_string|&quot;%s: Invalid PCI IO region size, aborting&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|error_out_mwi
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10413,23 +10778,36 @@ r_goto
 id|error_out_mwi
 suffix:semicolon
 )brace
-multiline_comment|/* map our MMIO region&n;&t; */
+multiline_comment|/* map our registers&n;&t; */
+r_if
+c_cond
+(paren
+id|use_mmio
+op_ne
+l_int|0
+op_logical_and
+id|use_mmio
+op_ne
+l_int|1
+)paren
+(brace
+id|use_mmio
+op_assign
+id|typhoon_test_mmio
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+)brace
 id|ioaddr
 op_assign
-id|pci_resource_start
+id|pci_iomap
 c_func
 (paren
 id|pdev
 comma
-l_int|1
-)paren
-suffix:semicolon
-id|ioaddr_mapped
-op_assign
-id|ioremap
-c_func
-(paren
-id|ioaddr
+id|use_mmio
 comma
 l_int|128
 )paren
@@ -10438,14 +10816,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ioaddr_mapped
+id|ioaddr
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|ERR_PFX
-l_string|&quot;%s: cannot remap MMIO, aborting&bslash;n&quot;
+l_string|&quot;%s: cannot remap registers, aborting&bslash;n&quot;
 comma
 id|pci_name
 c_func
@@ -10545,22 +10923,15 @@ id|pdev
 suffix:semicolon
 id|tp-&gt;ioaddr
 op_assign
-id|ioaddr_mapped
+id|ioaddr
 suffix:semicolon
 id|tp-&gt;tx_ioaddr
 op_assign
-id|ioaddr_mapped
+id|ioaddr
 suffix:semicolon
 id|tp-&gt;dev
 op_assign
 id|dev
-suffix:semicolon
-multiline_comment|/* need to be able to restore PCI state after a suspend */
-id|pci_save_state
-c_func
-(paren
-id|pdev
-)paren
 suffix:semicolon
 multiline_comment|/* Init sequence:&n;&t; * 1) Reset the adapter to clear any bad juju&n;&t; * 2) Reload the sleep image&n;&t; * 3) Boot the sleep image&n;&t; * 4) Get the hardware address.&n;&t; * 5) Put the card to sleep.&n;&t; */
 r_if
@@ -10569,7 +10940,7 @@ c_cond
 id|typhoon_reset
 c_func
 (paren
-id|ioaddr_mapped
+id|ioaddr
 comma
 id|WaitSleep
 )paren
@@ -10599,8 +10970,14 @@ r_goto
 id|error_out_dma
 suffix:semicolon
 )brace
-multiline_comment|/* Now that we&squot;ve reset the 3XP and are sure it&squot;s not going to&n;&t; * write all over memory, enable bus mastering.&n;&t; */
+multiline_comment|/* Now that we&squot;ve reset the 3XP and are sure it&squot;s not going to&n;&t; * write all over memory, enable bus mastering, and save our&n;&t; * state for resuming after a suspend.&n;&t; */
 id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+id|pci_save_state
 c_func
 (paren
 id|pdev
@@ -11018,7 +11395,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: %s at 0x%lx, &quot;
+l_string|&quot;%s: %s at %s 0x%lx, &quot;
 comma
 id|dev-&gt;name
 comma
@@ -11029,7 +11406,20 @@ id|card_id
 dot
 id|name
 comma
-id|ioaddr
+id|use_mmio
+ques
+c_cond
+l_string|&quot;MMIO&quot;
+suffix:colon
+l_string|&quot;IO&quot;
+comma
+id|pci_resource_start
+c_func
+(paren
+id|pdev
+comma
+id|use_mmio
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -11175,15 +11565,25 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: Typhoon 1.1+ Sleep Image version &quot;
-l_string|&quot;%u.%u.%u.%u %s&bslash;n&quot;
+l_string|&quot;%02x.%03x.%03x %s&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|HIPQUAD
-c_func
+id|sleep_ver
+op_rshift
+l_int|24
+comma
 (paren
 id|sleep_ver
+op_rshift
+l_int|12
 )paren
+op_amp
+l_int|0xfff
+comma
+id|sleep_ver
+op_amp
+l_int|0xfff
 comma
 id|ver_string
 )paren
@@ -11228,7 +11628,7 @@ suffix:colon
 id|typhoon_reset
 c_func
 (paren
-id|ioaddr_mapped
+id|ioaddr
 comma
 id|NoWait
 )paren
@@ -11253,10 +11653,12 @@ id|shared_dma
 suffix:semicolon
 id|error_out_remap
 suffix:colon
-id|iounmap
+id|pci_iounmap
 c_func
 (paren
-id|ioaddr_mapped
+id|pdev
+comma
+id|ioaddr
 )paren
 suffix:semicolon
 id|error_out_regions
@@ -11360,9 +11762,11 @@ comma
 id|NoWait
 )paren
 suffix:semicolon
-id|iounmap
+id|pci_iounmap
 c_func
 (paren
+id|pdev
+comma
 id|tp-&gt;ioaddr
 )paren
 suffix:semicolon
