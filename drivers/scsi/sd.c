@@ -2254,7 +2254,7 @@ id|SCpnt-&gt;sense_buffer
 (braket
 l_int|0
 )braket
-op_ne
+op_eq
 l_int|0xF0
 )paren
 (brace
