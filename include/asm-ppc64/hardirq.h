@@ -116,5 +116,7 @@ macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|show_stack
 mdefine_line|#define show_stack(SP)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (SP)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(SP);&t;&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&bslash;&n;&t;&t;print_backtrace(_get_SP());&t;&bslash;&n;} while (0)
+DECL|macro|dump_stack
+mdefine_line|#define dump_stack()&t;show_stack()
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;open_pic_defs.h&quot;
 macro_line|#include &quot;i8259.h&quot;

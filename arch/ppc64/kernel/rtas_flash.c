@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  c 2001 PPC 64 Team, IBM Corp&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; * /proc/ppc64/rtas/firmware_flash interface&n; *&n; * This file implements a firmware_flash interface to pump a firmware&n; * image into the kernel.  At reboot time rtas_restart() will see the&n; * firmware image and flash it as it reboots (see rtas.c).&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -39,7 +39,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;xics.h&quot;
@@ -50,13 +49,6 @@ r_int
 r_char
 op_star
 id|chrp_int_ack_special
-suffix:semicolon
-r_void
-id|chrp_setup_pci_ptrs
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_void
 id|chrp_progress
@@ -759,10 +751,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 macro_line|#endif
-id|ppc_md.ppc_machine
-op_assign
-id|naca-&gt;platform
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|chrp_setup_arch
@@ -834,10 +822,6 @@ suffix:semicolon
 id|ppc_md.halt
 op_assign
 id|rtas_halt
-suffix:semicolon
-id|ppc_md.time_init
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ppc_md.get_boot_time
 op_assign
