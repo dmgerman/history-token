@@ -1,29 +1,36 @@
-multiline_comment|/* &n; * Copyright (C) 2001, 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
-macro_line|#ifndef __UM_TUNTAP_H
-DECL|macro|__UM_TUNTAP_H
-mdefine_line|#define __UM_TUNTAP_H
+multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;net_user.h&quot;
-DECL|struct|tuntap_data
+DECL|struct|pcap_data
 r_struct
-id|tuntap_data
+id|pcap_data
 (brace
-DECL|member|dev_name
+DECL|member|host_if
 r_char
 op_star
-id|dev_name
+id|host_if
 suffix:semicolon
-DECL|member|fixed_config
+DECL|member|promisc
 r_int
-id|fixed_config
+id|promisc
 suffix:semicolon
-DECL|member|gate_addr
+DECL|member|optimize
+r_int
+id|optimize
+suffix:semicolon
+DECL|member|filter
 r_char
 op_star
-id|gate_addr
+id|filter
 suffix:semicolon
-DECL|member|fd
-r_int
-id|fd
+DECL|member|compiled
+r_void
+op_star
+id|compiled
+suffix:semicolon
+DECL|member|pcap
+r_void
+op_star
+id|pcap
 suffix:semicolon
 DECL|member|dev
 r_void
@@ -35,8 +42,28 @@ suffix:semicolon
 r_extern
 r_struct
 id|net_user_info
-id|tuntap_user_info
+id|pcap_user_info
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_int
+id|pcap_user_read
+c_func
+(paren
+r_int
+id|fd
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|len
+comma
+r_struct
+id|pcap_data
+op_star
+id|pri
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof
