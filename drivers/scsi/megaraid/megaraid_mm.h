@@ -10,19 +10,18 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|LSI_COMMON_MOD_VERSION
-mdefine_line|#define LSI_COMMON_MOD_VERSION&t;&quot;2.20.0.0&quot;
+mdefine_line|#define LSI_COMMON_MOD_VERSION&t;&quot;2.20.2.0&quot;
 DECL|macro|LSI_COMMON_MOD_EXT_VERSION
-mdefine_line|#define LSI_COMMON_MOD_EXT_VERSION&t;&bslash;&n;&t;&t;&quot;(Release Date: Wed Jun 23 11:38:38 EDT 2004)&quot;
+mdefine_line|#define LSI_COMMON_MOD_EXT_VERSION&t;&bslash;&n;&t;&t;&quot;(Release Date: Thu Aug 19 09:58:33 EDT 2004)&quot;
 DECL|macro|LSI_DBGLVL
 mdefine_line|#define LSI_DBGLVL&t;&t;&t;dbglevel
 singleline_comment|// The smallest dma pool
 DECL|macro|MRAID_MM_INIT_BUFF_SIZE
 mdefine_line|#define MRAID_MM_INIT_BUFF_SIZE&t;&t;4096
-multiline_comment|/*&n; * Localizing ioctl32 differences&n; */
-macro_line|#include &lt;linux/ioctl32.h&gt;
 multiline_comment|/**&n; * mimd_t&t;: Old style ioctl packet structure (deprecated)&n; *&n; * @inlen&t;:&n; * @outlen&t;:&n; * @fca&t;&t;:&n; * @opcode&t;:&n; * @subopcode&t;:&n; * @adapno&t;:&n; * @buffer&t;:&n; * @pad&t;&t;:&n; * @length&t;:&n; * @mbox&t;:&n; * @pthru&t;:&n; * @data&t;:&n; * @pad&t;&t;:&n; *&n; * Note&t;&t;: This structure is DEPRECATED. New applications must use&n; *&t;&t;: uioc_t structure instead. All new hba drivers use the new&n; *&t;&t;: format. If we get this mimd packet, we will convert it into&n; *&t;&t;: new uioc_t format and send it to the hba drivers.&n; */
 DECL|struct|mimd
 r_typedef
@@ -149,221 +148,6 @@ id|packed
 )paren
 id|mimd_t
 suffix:semicolon
-singleline_comment|// Entry points for char node driver
-r_static
-r_int
-id|mraid_mm_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|mraid_mm_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-id|uint
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-singleline_comment|// routines to convert to and from the old the format
-r_static
-r_int
-id|mimd_to_kioc
-c_func
-(paren
-id|mimd_t
-op_star
-comma
-id|mraid_mmadp_t
-op_star
-comma
-id|uioc_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|kioc_to_mimd
-c_func
-(paren
-id|uioc_t
-op_star
-comma
-id|mimd_t
-op_star
-)paren
-suffix:semicolon
-singleline_comment|// Helper functions
-r_static
-r_int
-id|handle_drvrcmd
-c_func
-(paren
-r_int
-r_int
-comma
-r_uint8
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|lld_ioctl
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-comma
-id|uioc_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ioctl_done
-c_func
-(paren
-id|uioc_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|lld_timedout
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_static
-r_void
-id|hinfo_to_cinfo
-c_func
-(paren
-id|mraid_hba_info_t
-op_star
-comma
-id|mcontroller_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|mraid_mm_get_adpindex
-c_func
-(paren
-id|mimd_t
-op_star
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
-r_static
-id|uioc_t
-op_star
-id|mraid_mm_alloc_kioc
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|mraid_mm_dealloc_kioc
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-comma
-id|uioc_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|mraid_mm_attach_buf
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-comma
-id|uioc_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_static
-r_int
-id|mraid_mm_setup_dma_pools
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|mraid_mm_free_adp_resources
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|mraid_mm_teardown_dma_pools
-c_func
-(paren
-id|mraid_mmadp_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_COMPAT
-r_static
-r_int
-id|mraid_mm_compat_ioctl
-c_func
-(paren
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif 
 singleline_comment|// MEGARAID_MM_H
 singleline_comment|// vi: set ts=8 sw=8 tw=78:
