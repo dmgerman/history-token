@@ -1354,7 +1354,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ata%u: DMA timeout&bslash;n&quot;
+l_string|&quot;ata%u: command timeout&bslash;n&quot;
 comma
 id|ap-&gt;id
 )paren
