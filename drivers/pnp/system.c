@@ -325,7 +325,7 @@ comma
 dot
 id|flags
 op_assign
-id|PNP_DRIVER_DO_NOT_ACTIVATE
+id|PNP_DRIVER_RES_DO_NOT_CHANGE
 comma
 dot
 id|id_table
