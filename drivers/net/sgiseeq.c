@@ -1,5 +1,6 @@
-multiline_comment|/* $Id: sgiseeq.c,v 1.17 2000/03/27 23:02:57 ralf Exp $&n; *&n; * sgiseeq.c: Seeq8003 ethernet driver for SGI machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
+multiline_comment|/*&n; * sgiseeq.c: Seeq8003 ethernet driver for SGI machines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1968,16 +1969,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|save_flags
+id|__save_and_cli
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
+id|err
+op_assign
+op_minus
+id|EAGAIN
 suffix:semicolon
 r_if
 c_cond
@@ -1993,10 +1994,6 @@ l_int|0
 comma
 id|sgiseeqstr
 comma
-(paren
-r_void
-op_star
-)paren
 id|dev
 )paren
 )paren
@@ -2009,15 +2006,8 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|err
@@ -2037,8 +2027,8 @@ c_cond
 (paren
 id|err
 )paren
-r_return
-id|err
+r_goto
+id|out
 suffix:semicolon
 id|netif_start_queue
 c_func
@@ -2046,14 +2036,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|restore_flags
+id|out
+suffix:colon
+id|__restore_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|err
 suffix:semicolon
 )brace
 DECL|function|sgiseeq_close
