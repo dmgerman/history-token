@@ -29,13 +29,13 @@ DECL|macro|ESID_MASK
 mdefine_line|#define ESID_MASK&t;0xfffffffff0000000UL
 DECL|macro|GET_ESID
 mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|HPAGE_SHIFT
 mdefine_line|#define HPAGE_SHIFT&t;24
 DECL|macro|HPAGE_SIZE
 mdefine_line|#define HPAGE_SIZE&t;((1UL) &lt;&lt; HPAGE_SHIFT)
 DECL|macro|HPAGE_MASK
 mdefine_line|#define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|HUGETLB_PAGE_ORDER
 mdefine_line|#define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 multiline_comment|/* For 64-bit processes the hugepage range is 1T-1.5T */
