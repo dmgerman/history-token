@@ -8891,7 +8891,6 @@ id|CurrentStatusBuffer
 suffix:semicolon
 DECL|member|RequestQueue
 id|RequestQueue_T
-op_star
 id|RequestQueue
 suffix:semicolon
 DECL|member|queue_lock
@@ -9460,7 +9459,7 @@ id|ProcessorFlags
 id|spin_lock_irqsave
 c_func
 (paren
-id|Controller-&gt;RequestQueue-&gt;queue_lock
+id|Controller-&gt;RequestQueue.queue_lock
 comma
 op_star
 id|ProcessorFlags
@@ -9487,7 +9486,7 @@ id|ProcessorFlags
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|Controller-&gt;RequestQueue-&gt;queue_lock
+id|Controller-&gt;RequestQueue.queue_lock
 comma
 op_star
 id|ProcessorFlags
@@ -9550,7 +9549,7 @@ id|ProcessorFlags
 id|spin_lock_irqsave
 c_func
 (paren
-id|Controller-&gt;RequestQueue-&gt;queue_lock
+id|Controller-&gt;RequestQueue.queue_lock
 comma
 op_star
 id|ProcessorFlags
@@ -9577,7 +9576,7 @@ id|ProcessorFlags
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|Controller-&gt;RequestQueue-&gt;queue_lock
+id|Controller-&gt;RequestQueue.queue_lock
 comma
 op_star
 id|ProcessorFlags

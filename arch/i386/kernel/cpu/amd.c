@@ -80,6 +80,48 @@ id|c-&gt;x86
 )paren
 (brace
 r_case
+l_int|4
+suffix:colon
+multiline_comment|/*&n;&t;&t; * General Systems BIOSen alias the cpu frequency registers&n;&t;&t; * of the Elan at 0x000df000. Unfortuantly, one of the Linux&n;&t;&t; * drivers subsequently pokes it, and changes the CPU speed.&n;&t;&t; * Workaround : Remove the unneeded alias.&n;&t;&t; */
+DECL|macro|CBAR
+mdefine_line|#define CBAR&t;&t;(0xfffc) /* Configuration Base Address  (32-bit) */
+DECL|macro|CBAR_ENB
+mdefine_line|#define CBAR_ENB&t;(0x80000000)
+DECL|macro|CBAR_KEY
+mdefine_line|#define CBAR_KEY&t;(0X000000CB)
+r_if
+c_cond
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|9
+op_logical_or
+id|c-&gt;x86_model
+op_eq
+l_int|10
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|inl
+(paren
+id|CBAR
+)paren
+op_amp
+id|CBAR_ENB
+)paren
+id|outl
+(paren
+l_int|0
+op_or
+id|CBAR_KEY
+comma
+id|CBAR
+)paren
+suffix:semicolon
+)brace
+r_case
 l_int|5
 suffix:colon
 r_if

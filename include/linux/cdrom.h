@@ -1511,11 +1511,6 @@ id|handle
 suffix:semicolon
 multiline_comment|/* driver-dependent data */
 multiline_comment|/* specifications */
-DECL|member|dev
-id|kdev_t
-id|dev
-suffix:semicolon
-multiline_comment|/* device number */
 DECL|member|mask
 r_int
 id|mask
@@ -1817,6 +1812,10 @@ id|cdrom_open
 c_func
 (paren
 r_struct
+id|cdrom_device_info
+op_star
+comma
+r_struct
 id|inode
 op_star
 comma
@@ -1831,7 +1830,7 @@ id|cdrom_release
 c_func
 (paren
 r_struct
-id|inode
+id|cdrom_device_info
 op_star
 comma
 r_struct
@@ -1845,11 +1844,11 @@ id|cdrom_ioctl
 c_func
 (paren
 r_struct
-id|inode
+id|cdrom_device_info
 op_star
 comma
 r_struct
-id|file
+id|inode
 op_star
 comma
 r_int
@@ -1863,7 +1862,9 @@ r_int
 id|cdrom_media_changed
 c_func
 (paren
-id|kdev_t
+r_struct
+id|cdrom_device_info
+op_star
 )paren
 suffix:semicolon
 r_extern

@@ -20626,6 +20626,16 @@ op_star
 )paren
 id|raw_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|s32-&gt;version
+op_ne
+id|SMB_MOUNT_OLDVERSION
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|s-&gt;version
 op_assign
 id|s32-&gt;version
@@ -20650,6 +20660,8 @@ id|s-&gt;dir_mode
 op_assign
 id|s32-&gt;dir_mode
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|raw_data
 suffix:semicolon

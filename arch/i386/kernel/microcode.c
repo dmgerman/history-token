@@ -1078,7 +1078,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_INFO
 l_string|&quot;microcode: CPU%d not &squot;upgrading&squot; to earlier revision&quot;
 l_string|&quot; %d (current=%d)&bslash;n&quot;
 comma
@@ -1128,7 +1128,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_INFO
 l_string|&quot;microcode: CPU%d already at revision&quot;
 l_string|&quot; %d (current=%d)&bslash;n&quot;
 comma

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * 35 has been officially registered as the RAMDISK major number, but&n; * so is the original MAJOR number of 1.  We&squot;re using 1 in&n; * include/linux/major.h for now&n; */
 DECL|macro|MAJOR_NR
@@ -90,7 +91,7 @@ op_assign
 id|CONFIG_BLK_DEV_RAM_SIZE
 suffix:semicolon
 multiline_comment|/* Size of the RAM disks */
-multiline_comment|/*&n; * It would be very desiderable to have a soft-blocksize (that in the case&n; * of the ramdisk driver is also the hardblocksize ;) of PAGE_SIZE because&n; * doing that we&squot;ll achieve a far better MM footprint. Using a rd_blocksize of&n; * BLOCK_SIZE in the worst case we&squot;ll make PAGE_SIZE/BLOCK_SIZE buffer-pages&n; * unfreeable. With a rd_blocksize of PAGE_SIZE instead we are sure that only&n; * 1 page will be protected. Depending on the size of the ramdisk you&n; * may want to change the ramdisk blocksize to achieve a better or worse MM&n; * behaviour. The default is still BLOCK_SIZE (needed by rd_load_image that&n; * supposes the filesystem in the image uses a BLOCK_SIZE blocksize).&n; */
+multiline_comment|/*&n; * It would be very desirable to have a soft-blocksize (that in the case&n; * of the ramdisk driver is also the hardblocksize ;) of PAGE_SIZE because&n; * doing that we&squot;ll achieve a far better MM footprint. Using a rd_blocksize of&n; * BLOCK_SIZE in the worst case we&squot;ll make PAGE_SIZE/BLOCK_SIZE buffer-pages&n; * unfreeable. With a rd_blocksize of PAGE_SIZE instead we are sure that only&n; * 1 page will be protected. Depending on the size of the ramdisk you&n; * may want to change the ramdisk blocksize to achieve a better or worse MM&n; * behaviour. The default is still BLOCK_SIZE (needed by rd_load_image that&n; * supposes the filesystem in the image uses a BLOCK_SIZE blocksize).&n; */
 DECL|variable|rd_blocksize
 r_int
 id|rd_blocksize
@@ -1231,6 +1232,27 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
+DECL|variable|rd_backing_dev_info
+r_static
+r_struct
+id|backing_dev_info
+id|rd_backing_dev_info
+op_assign
+(brace
+dot
+id|ra_pages
+op_assign
+l_int|0
+comma
+multiline_comment|/* No readahead */
+dot
+id|memory_backed
+op_assign
+l_int|1
+comma
+multiline_comment|/* Does not contribute to dirty memory */
+)brace
+suffix:semicolon
 DECL|function|rd_open
 r_static
 r_int
@@ -1367,6 +1389,16 @@ id|bd_inode-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|ramdisk_aops
+suffix:semicolon
+id|rd_bdev
+(braket
+id|unit
+)braket
+op_member_access_from_pointer
+id|bd_inode-&gt;i_mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|rd_backing_dev_info
 suffix:semicolon
 id|rd_bdev
 (braket

@@ -30,6 +30,9 @@ mdefine_line|#define NCR_700_LUN_MASK&t;&t;(NCR_700_MAX_LUNS - 1)
 multiline_comment|/* Alter this with care: too many tags won&squot;t give the elevator a chance to&n; * work; too few will cause the device to operate less efficiently */
 DECL|macro|NCR_700_MAX_TAGS
 mdefine_line|#define NCR_700_MAX_TAGS&t;&t;16
+multiline_comment|/* This is the default number of commands per LUN in the untagged case.&n; * two is a good value because it means we can have one command active and&n; * one command fully prepared and waiting&n; */
+DECL|macro|NCR_700_CMD_PER_LUN
+mdefine_line|#define NCR_700_CMD_PER_LUN&t;&t;2
 multiline_comment|/* magic byte identifying an internally generated REQUEST_SENSE command */
 DECL|macro|NCR_700_INTERNAL_SENSE_MAGIC
 mdefine_line|#define NCR_700_INTERNAL_SENSE_MAGIC&t;0x42
