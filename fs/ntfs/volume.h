@@ -163,6 +163,13 @@ op_star
 id|mft_ino
 suffix:semicolon
 multiline_comment|/* The VFS inode of $MFT. */
+DECL|member|mftbmp_ino
+r_struct
+id|inode
+op_star
+id|mftbmp_ino
+suffix:semicolon
+multiline_comment|/* Attribute inode for $MFT/$BITMAP. */
 DECL|member|mftbmp_lock
 r_struct
 id|rw_semaphore
@@ -175,32 +182,6 @@ r_int
 id|nr_mft_records
 suffix:semicolon
 multiline_comment|/* Number of mft records == number of&n;&t;&t;&t;&t;&t;   bits in mft bitmap. */
-DECL|member|mftbmp_mapping
-r_struct
-id|address_space
-id|mftbmp_mapping
-suffix:semicolon
-multiline_comment|/* Page cache for $MFT/$BITMAP. */
-DECL|member|mftbmp_rl
-id|run_list
-id|mftbmp_rl
-suffix:semicolon
-multiline_comment|/* Run list for $MFT/$BITMAP. */
-DECL|member|mftbmp_size
-id|s64
-id|mftbmp_size
-suffix:semicolon
-multiline_comment|/* Data size of $MFT/$BITMAP. */
-DECL|member|mftbmp_initialized_size
-id|s64
-id|mftbmp_initialized_size
-suffix:semicolon
-multiline_comment|/* Initialized size of $MFT/$BITMAP. */
-DECL|member|mftbmp_allocated_size
-id|s64
-id|mftbmp_allocated_size
-suffix:semicolon
-multiline_comment|/* Allocated size of $MFT/$BITMAP. */
 DECL|member|mftmirr_ino
 r_struct
 id|inode

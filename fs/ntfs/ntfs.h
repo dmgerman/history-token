@@ -94,11 +94,6 @@ id|ntfs_mft_aops
 suffix:semicolon
 r_extern
 r_struct
-id|address_space_operations
-id|ntfs_mftbmp_aops
-suffix:semicolon
-r_extern
-r_struct
 id|file_operations
 id|ntfs_file_ops
 suffix:semicolon

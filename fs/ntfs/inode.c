@@ -4882,7 +4882,7 @@ c_func
 (paren
 id|READ
 comma
-id|ni
+id|base_ni
 )paren
 suffix:semicolon
 id|ntfs_debug
