@@ -36,6 +36,22 @@ DECL|macro|PSMOUSE_ACTIVATED
 mdefine_line|#define PSMOUSE_ACTIVATED&t;1
 DECL|macro|PSMOUSE_IGNORE
 mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
+multiline_comment|/* psmouse protocol handler return codes */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|PSMOUSE_BAD_DATA
+id|PSMOUSE_BAD_DATA
+comma
+DECL|enumerator|PSMOUSE_GOOD_DATA
+id|PSMOUSE_GOOD_DATA
+comma
+DECL|enumerator|PSMOUSE_FULL_PACKET
+id|PSMOUSE_FULL_PACKET
+DECL|typedef|psmouse_ret_t
+)brace
+id|psmouse_ret_t
+suffix:semicolon
 r_struct
 id|psmouse
 suffix:semicolon
@@ -153,6 +169,11 @@ r_int
 r_int
 id|last
 suffix:semicolon
+DECL|member|out_of_sync
+r_int
+r_int
+id|out_of_sync
+suffix:semicolon
 DECL|member|state
 r_int
 r_char
@@ -263,11 +284,6 @@ r_extern
 r_int
 r_int
 id|psmouse_rate
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|psmouse_resetafter
 suffix:semicolon
 macro_line|#endif /* _PSMOUSE_H */
 eof

@@ -3,7 +3,7 @@ macro_line|#ifndef _SYNAPTICS_H
 DECL|macro|_SYNAPTICS_H
 mdefine_line|#define _SYNAPTICS_H
 r_extern
-r_void
+id|psmouse_ret_t
 id|synaptics_process_byte
 c_func
 (paren
@@ -252,12 +252,6 @@ id|identity
 suffix:semicolon
 multiline_comment|/* Identification */
 multiline_comment|/* Data for normal processing */
-DECL|member|out_of_sync
-r_int
-r_int
-id|out_of_sync
-suffix:semicolon
-multiline_comment|/* # of packets out of sync */
 DECL|member|old_w
 r_int
 id|old_w
