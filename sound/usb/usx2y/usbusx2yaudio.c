@@ -382,9 +382,9 @@ op_star
 id|subs
 comma
 r_struct
-id|usb_iso_packet_descriptor
+id|urb
 op_star
-id|packet
+id|cap_urb
 comma
 r_struct
 id|urb
@@ -431,12 +431,9 @@ op_increment
 )paren
 (brace
 multiline_comment|/* calculate the size of a packet */
-id|count
-op_add_assign
-(paren
 id|counts
 op_assign
-id|packet
+id|cap_urb-&gt;iso_frame_desc
 (braket
 id|pack
 )braket
@@ -444,7 +441,10 @@ dot
 id|actual_length
 op_div
 id|usX2Y-&gt;stride
-)paren
+suffix:semicolon
+id|count
+op_add_assign
+id|counts
 suffix:semicolon
 r_if
 c_cond
@@ -1040,7 +1040,7 @@ c_func
 (paren
 id|playbacksubs
 comma
-id|capsubs-&gt;completed_urb-&gt;iso_frame_desc
+id|capsubs-&gt;completed_urb
 comma
 id|urb
 )paren
