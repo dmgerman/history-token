@@ -292,7 +292,7 @@ macro_line|#endif /* CONFIG_XMON || CONFIG_KGDB */
 r_if
 c_cond
 (paren
-id|in_interrupt
+id|in_atomic
 c_func
 (paren
 )paren
