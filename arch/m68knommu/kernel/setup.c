@@ -885,18 +885,6 @@ id|_ramend
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_BLKMEM
-id|ROOT_DEV
-op_assign
-id|MKDEV
-c_func
-(paren
-id|BLKMEM_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Keep a copy of command line */
 op_star
 id|cmdline_p
