@@ -9793,6 +9793,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|np
 op_assign
 id|dev-&gt;priv
@@ -9812,12 +9818,6 @@ comma
 id|np-&gt;queue_mem
 comma
 id|np-&gt;queue_mem_dma
-)paren
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* XXX: add wakeup code -- requires firmware for MagicPacket */
