@@ -1013,11 +1013,9 @@ id|tlb_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_MCA
 r_int
 id|cpu
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_DISABLE_VHPT
 DECL|macro|VHPT_ENABLE_BIT
 macro_line|#&t;define VHPT_ENABLE_BIT&t;0
@@ -1188,7 +1186,6 @@ l_int|2
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef&t;CONFIG_IA64_MCA
 id|cpu
 op_assign
 id|smp_processor_id
@@ -1304,7 +1301,6 @@ id|local_cpu_data-&gt;ptce_stride
 l_int|1
 )braket
 suffix:semicolon
-macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
 r_int
