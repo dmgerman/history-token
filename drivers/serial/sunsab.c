@@ -4185,6 +4185,17 @@ comma
 id|baud
 )paren
 suffix:semicolon
+id|sunsab_set_mctrl
+c_func
+(paren
+op_amp
+id|up-&gt;port
+comma
+id|TIOCM_DTR
+op_or
+id|TIOCM_RTS
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
