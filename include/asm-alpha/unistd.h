@@ -626,29 +626,31 @@ mdefine_line|#define __NR_lremovexattr&t;&t;392
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;393
 DECL|macro|__NR_futex
-mdefine_line|#define __NR_futex&t;&t;394
+mdefine_line|#define __NR_futex&t;&t;&t;394
 DECL|macro|__NR_sched_setaffinity
-mdefine_line|#define __NR_sched_setaffinity&t;395     
+mdefine_line|#define __NR_sched_setaffinity&t;&t;395     
 DECL|macro|__NR_sched_getaffinity
-mdefine_line|#define __NR_sched_getaffinity&t;396
+mdefine_line|#define __NR_sched_getaffinity&t;&t;396
 DECL|macro|__NR_tuxcall
-mdefine_line|#define __NR_tuxcall&t;&t;397
+mdefine_line|#define __NR_tuxcall&t;&t;&t;397
 DECL|macro|__NR_io_setup
-mdefine_line|#define __NR_io_setup&t;&t;398
+mdefine_line|#define __NR_io_setup&t;&t;&t;398
 DECL|macro|__NR_io_destroy
-mdefine_line|#define __NR_io_destroy&t;&t;399
+mdefine_line|#define __NR_io_destroy&t;&t;&t;399
 DECL|macro|__NR_io_getevents
-mdefine_line|#define __NR_io_getevents&t;400
+mdefine_line|#define __NR_io_getevents&t;&t;400
 DECL|macro|__NR_io_submit
-mdefine_line|#define __NR_io_submit&t;&t;401
+mdefine_line|#define __NR_io_submit&t;&t;&t;401
 DECL|macro|__NR_io_cancel
-mdefine_line|#define __NR_io_cancel&t;&t;402
+mdefine_line|#define __NR_io_cancel&t;&t;&t;402
 DECL|macro|__NR_alloc_hugepages
-mdefine_line|#define __NR_alloc_hugepages&t;403
+mdefine_line|#define __NR_alloc_hugepages&t;&t;403
 DECL|macro|__NR_free_hugepages
-mdefine_line|#define __NR_free_hugepages&t;404
+mdefine_line|#define __NR_free_hugepages&t;&t;404
 DECL|macro|__NR_exit_group
-mdefine_line|#define __NR_exit_group&t;&t;405
+mdefine_line|#define __NR_exit_group&t;&t;&t;405
+DECL|macro|NR_SYSCALLS
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;406
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
@@ -1086,7 +1088,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* __KERNEL_SYSCALLS__ */
 multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand&n; */
 DECL|macro|cond_syscall
 mdefine_line|#define cond_syscall(x) asmlinkage long x(void) __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));

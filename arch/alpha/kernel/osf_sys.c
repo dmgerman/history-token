@@ -51,11 +51,35 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Brk needs to return an error.  Still support Linux&squot;s brk(0) query idiom,&n; * which OSF programs just shouldn&squot;t be doing.  We&squot;re still not quite&n; * identical to OSF as we don&squot;t return 0 on success, but doing otherwise&n; * would require changes to libc.  Hopefully this is good enough.&n; */
-DECL|function|osf_brk
+r_extern
+r_int
+id|sys_getpriority
+c_func
+(paren
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
 id|asmlinkage
 r_int
 r_int
+id|sys_create_module
+c_func
+(paren
+r_char
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Brk needs to return an error.  Still support Linux&squot;s brk(0) query idiom,&n; * which OSF programs just shouldn&squot;t be doing.  We&squot;re still not quite&n; * identical to OSF as we don&squot;t return 0 on success, but doing otherwise&n; * would require changes to libc.  Hopefully this is good enough.&n; */
+id|asmlinkage
+r_int
+r_int
+DECL|function|osf_brk
 id|osf_brk
 c_func
 (paren
@@ -93,9 +117,9 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is pure guess-work..&n; */
-DECL|function|osf_set_program_attributes
 id|asmlinkage
 r_int
+DECL|function|osf_set_program_attributes
 id|osf_set_program_attributes
 c_func
 (paren
@@ -225,9 +249,9 @@ id|error
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|osf_filldir
 r_static
 r_int
+DECL|function|osf_filldir
 id|osf_filldir
 c_func
 (paren
@@ -411,9 +435,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|osf_getdirentries
 id|asmlinkage
 r_int
+DECL|function|osf_getdirentries
 id|osf_getdirentries
 c_func
 (paren
@@ -544,9 +568,9 @@ macro_line|#undef ROUND_UP
 DECL|macro|NAME_OFFSET
 macro_line|#undef NAME_OFFSET
 multiline_comment|/*&n; * Alpha syscall convention has no problem returning negative&n; * values:&n; */
-DECL|function|osf_getpriority
 id|asmlinkage
 r_int
+DECL|function|osf_getpriority
 id|osf_getpriority
 c_func
 (paren
@@ -622,10 +646,10 @@ id|prio
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * No need to acquire the kernel lock, we&squot;re local..&n; */
-DECL|function|sys_getxuid
 id|asmlinkage
 r_int
 r_int
+DECL|function|sys_getxuid
 id|sys_getxuid
 c_func
 (paren
@@ -672,10 +696,10 @@ r_return
 id|tsk-&gt;uid
 suffix:semicolon
 )brace
-DECL|function|sys_getxgid
 id|asmlinkage
 r_int
 r_int
+DECL|function|sys_getxgid
 id|sys_getxgid
 c_func
 (paren
@@ -722,10 +746,10 @@ r_return
 id|tsk-&gt;gid
 suffix:semicolon
 )brace
-DECL|function|sys_getxpid
 id|asmlinkage
 r_int
 r_int
+DECL|function|sys_getxpid
 id|sys_getxpid
 c_func
 (paren
@@ -773,10 +797,10 @@ r_return
 id|tsk-&gt;tgid
 suffix:semicolon
 )brace
-DECL|function|osf_mmap
 id|asmlinkage
 r_int
 r_int
+DECL|function|osf_mmap
 id|osf_mmap
 c_func
 (paren
@@ -981,9 +1005,9 @@ DECL|variable|osf_stat
 op_star
 id|osf_stat
 suffix:semicolon
-DECL|function|linux_to_osf_statfs
 r_static
 r_int
+DECL|function|linux_to_osf_statfs
 id|linux_to_osf_statfs
 c_func
 (paren
@@ -1084,9 +1108,9 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|do_osf_statfs
 r_static
 r_int
+DECL|function|do_osf_statfs
 id|do_osf_statfs
 c_func
 (paren
@@ -1144,9 +1168,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|osf_statfs
 id|asmlinkage
 r_int
+DECL|function|osf_statfs
 id|osf_statfs
 c_func
 (paren
@@ -1213,9 +1237,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osf_fstatfs
 id|asmlinkage
 r_int
+DECL|function|osf_fstatfs
 id|osf_fstatfs
 c_func
 (paren
@@ -1320,7 +1344,7 @@ DECL|member|exroot
 id|uid_t
 id|exroot
 suffix:semicolon
-multiline_comment|/*&n; * This has lots more here, which Linux handles with the option block&n; * but I&squot;m too lazy to do the translation into ASCII.&n; */
+multiline_comment|/* This has lots more here, which Linux handles with the option block&n;&t;   but I&squot;m too lazy to do the translation into ASCII.  */
 )brace
 suffix:semicolon
 DECL|struct|procfs_args
@@ -1343,9 +1367,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * We can&squot;t actually handle ufs yet, so we translate UFS mounts to&n; * ext2fs mounts. I wouldn&squot;t mind a UFS filesystem, but the UFS&n; * layout is so braindead it&squot;s a major headache doing it.&n; *&n; * Just how long ago was it written? OTOH our UFS driver may be still&n; * unhappy with OSF UFS. [CHECKME]&n; */
-DECL|function|osf_ufs_mount
 r_static
 r_int
+DECL|function|osf_ufs_mount
 id|osf_ufs_mount
 c_func
 (paren
@@ -1454,9 +1478,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osf_cdfs_mount
 r_static
 r_int
+DECL|function|osf_cdfs_mount
 id|osf_cdfs_mount
 c_func
 (paren
@@ -1565,9 +1589,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osf_procfs_mount
 r_static
 r_int
+DECL|function|osf_procfs_mount
 id|osf_procfs_mount
 c_func
 (paren
@@ -1625,9 +1649,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|osf_mount
 id|asmlinkage
 r_int
+DECL|function|osf_mount
 id|osf_mount
 c_func
 (paren
@@ -1792,9 +1816,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osf_utsname
 id|asmlinkage
 r_int
+DECL|function|osf_utsname
 id|osf_utsname
 c_func
 (paren
@@ -1925,9 +1949,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|osf_swapon
 id|asmlinkage
 r_int
+DECL|function|osf_swapon
 id|osf_swapon
 c_func
 (paren
@@ -1974,10 +1998,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|sys_getpagesize
 id|asmlinkage
 r_int
 r_int
+DECL|function|sys_getpagesize
 id|sys_getpagesize
 c_func
 (paren
@@ -1988,10 +2012,10 @@ r_return
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-DECL|function|sys_getdtablesize
 id|asmlinkage
 r_int
 r_int
+DECL|function|sys_getdtablesize
 id|sys_getdtablesize
 c_func
 (paren
@@ -2002,9 +2026,9 @@ r_return
 id|NR_OPEN
 suffix:semicolon
 )brace
-DECL|function|sys_pipe
 id|asmlinkage
 r_int
+DECL|function|sys_pipe
 id|sys_pipe
 c_func
 (paren
@@ -2036,8 +2060,7 @@ id|fd
 (braket
 l_int|2
 )braket
-suffix:semicolon
-r_int
+comma
 id|error
 suffix:semicolon
 id|error
@@ -2051,17 +2074,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|error
 )paren
-r_goto
-id|out
-suffix:semicolon
-(paren
-op_amp
-id|regs
-)paren
-op_member_access_from_pointer
-id|r20
+(brace
+id|regs.r20
 op_assign
 id|fd
 (braket
@@ -2075,16 +2092,15 @@ id|fd
 l_int|0
 )braket
 suffix:semicolon
-id|out
-suffix:colon
+)brace
 r_return
 id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * For compatibility with OSF/1 only.  Use utsname(2) instead.&n; */
-DECL|function|osf_getdomainname
 id|asmlinkage
 r_int
+DECL|function|osf_getdomainname
 id|osf_getdomainname
 c_func
 (paren
@@ -2200,9 +2216,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|osf_shmat
 id|asmlinkage
 r_int
+DECL|function|osf_shmat
 id|osf_shmat
 c_func
 (paren
@@ -2496,9 +2512,9 @@ op_assign
 l_int|6
 )brace
 suffix:semicolon
-DECL|function|osf_proplist_syscall
 id|asmlinkage
 r_int
+DECL|function|osf_proplist_syscall
 id|osf_proplist_syscall
 c_func
 (paren
@@ -2690,9 +2706,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|osf_sigstack
 id|asmlinkage
 r_int
+DECL|function|osf_sigstack
 id|osf_sigstack
 c_func
 (paren
@@ -2865,10 +2881,10 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The Linux kernel isn&squot;t good at returning values that look&n; * like negative longs (they are mistaken as error values).&n; * Until that is fixed, we need this little workaround for&n; * create_module() because it&squot;s one of the few system calls&n; * that return kernel addresses (which are negative).&n; */
-DECL|function|alpha_create_module
 id|asmlinkage
 r_int
 r_int
+DECL|function|alpha_create_module
 id|alpha_create_module
 c_func
 (paren
@@ -2897,19 +2913,6 @@ id|pt_regs
 id|regs
 )paren
 (brace
-id|asmlinkage
-r_int
-r_int
-id|sys_create_module
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
@@ -2928,26 +2931,20 @@ comma
 id|size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * we get either a module address or an error number,&n;&t; * and we know the error number is a small negative&n;&t; * number, while the address is always negative but&n;&t; * much larger.&n;&t; */
+multiline_comment|/* We get either a module address or an error number, and we know&n;&t;   the error number is a small negative number, while the address&n;&t;   is always negative but much larger.  */
 r_if
 c_cond
 (paren
 id|retval
 op_plus
 l_int|1000
-OG
+OL
 l_int|0
 )paren
-r_goto
-id|out
-suffix:semicolon
-multiline_comment|/* tell entry.S:syscall_error that this is NOT an error: */
 id|regs.r0
 op_assign
 l_int|0
 suffix:semicolon
-id|out
-suffix:colon
 id|unlock_kernel
 c_func
 (paren
@@ -2957,9 +2954,9 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|function|osf_sysinfo
 id|asmlinkage
 r_int
+DECL|function|osf_sysinfo
 id|osf_sysinfo
 c_func
 (paren
@@ -3129,10 +3126,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|osf_getsysinfo
 id|asmlinkage
 r_int
 r_int
+DECL|function|osf_getsysinfo
 id|osf_getsysinfo
 c_func
 (paren
@@ -3398,10 +3395,10 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-DECL|function|osf_setsysinfo
 id|asmlinkage
 r_int
 r_int
+DECL|function|osf_setsysinfo
 id|osf_setsysinfo
 c_func
 (paren
@@ -3837,10 +3834,10 @@ id|it_value
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|get_tv32
 r_static
 r_inline
 r_int
+DECL|function|get_tv32
 id|get_tv32
 c_func
 (paren
@@ -3894,10 +3891,10 @@ id|i-&gt;tv_usec
 )paren
 suffix:semicolon
 )brace
-DECL|function|put_tv32
 r_static
 r_inline
 r_int
+DECL|function|put_tv32
 id|put_tv32
 c_func
 (paren
@@ -3951,10 +3948,10 @@ id|o-&gt;tv_usec
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_it32
 r_static
 r_inline
 r_int
+DECL|function|get_it32
 id|get_it32
 c_func
 (paren
@@ -4026,10 +4023,10 @@ id|i-&gt;it_value.tv_usec
 )paren
 suffix:semicolon
 )brace
-DECL|function|put_it32
 r_static
 r_inline
 r_int
+DECL|function|put_it32
 id|put_it32
 c_func
 (paren
@@ -4139,9 +4136,9 @@ op_div
 id|HZ
 suffix:semicolon
 )brace
-DECL|function|osf_gettimeofday
 id|asmlinkage
 r_int
+DECL|function|osf_gettimeofday
 id|osf_gettimeofday
 c_func
 (paren
@@ -4222,9 +4219,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|osf_settimeofday
 id|asmlinkage
 r_int
+DECL|function|osf_settimeofday
 id|osf_settimeofday
 c_func
 (paren
@@ -4321,9 +4318,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|osf_getitimer
 id|asmlinkage
 r_int
+DECL|function|osf_getitimer
 id|osf_getitimer
 c_func
 (paren
@@ -4378,9 +4375,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|osf_setitimer
 id|asmlinkage
 r_int
+DECL|function|osf_setitimer
 id|osf_setitimer
 c_func
 (paren
@@ -4495,9 +4492,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|osf_utimes
 id|asmlinkage
 r_int
+DECL|function|osf_utimes
 id|osf_utimes
 c_func
 (paren
@@ -5205,9 +5202,9 @@ suffix:semicolon
 multiline_comment|/* involuntary &quot; */
 )brace
 suffix:semicolon
-DECL|function|osf_getrusage
 id|asmlinkage
 r_int
+DECL|function|osf_getrusage
 id|osf_getrusage
 c_func
 (paren
@@ -5396,9 +5393,9 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|osf_wait4
 id|asmlinkage
 r_int
+DECL|function|osf_wait4
 id|osf_wait4
 c_func
 (paren
@@ -5698,9 +5695,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * I don&squot;t know what the parameters are: the first one&n; * seems to be a timeval pointer, and I suspect the second&n; * one is the time remaining.. Ho humm.. No documentation.&n; */
-DECL|function|osf_usleep_thread
 id|asmlinkage
 r_int
+DECL|function|osf_usleep_thread
 id|osf_usleep_thread
 c_func
 (paren
@@ -5975,9 +5972,9 @@ l_int|32
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|sys_old_adjtimex
 id|asmlinkage
 r_int
+DECL|function|sys_old_adjtimex
 id|sys_old_adjtimex
 c_func
 (paren

@@ -219,7 +219,7 @@ mdefine_line|#define __SI_CHLD&t;(4 &lt;&lt; 16)
 DECL|macro|__SI_RT
 mdefine_line|#define __SI_RT&t;&t;(5 &lt;&lt; 16)
 DECL|macro|__SI_CODE
-mdefine_line|#define __SI_CODE(T,N)&t;((T) &lt;&lt; 16 | ((N) &amp; 0xffff))
+mdefine_line|#define __SI_CODE(T,N)&t;((T) | ((N) &amp; 0xffff))
 macro_line|#else
 DECL|macro|__SI_KILL
 mdefine_line|#define __SI_KILL&t;0

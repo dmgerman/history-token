@@ -26,6 +26,10 @@ macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/notifier.h&gt;
 r_extern
 r_struct
@@ -2090,6 +2094,35 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MAGIC_SYSRQ
+multiline_comment|/* If we&squot;re using SRM, make sysrq-b halt back to the prom,&n;&t;   not auto-reboot.  */
+r_if
+c_cond
+(paren
+id|alpha_using_srm
+)paren
+(brace
+r_struct
+id|sysrq_key_op
+op_star
+id|op
+op_assign
+id|__sysrq_get_key_op
+c_func
+(paren
+l_char|&squot;b&squot;
+)paren
+suffix:semicolon
+id|op-&gt;handler
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|machine_halt
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t; * Indentify and reconfigure for the current system.&n;&t; */
 id|cpu
 op_assign
