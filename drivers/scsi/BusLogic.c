@@ -10486,12 +10486,11 @@ r_int
 id|ProcessorFlags
 suffix:semicolon
 multiline_comment|/*&n;&t;   Acquire exclusive access to Host Adapter.&n;&t; */
-id|BusLogic_AcquireHostAdapterLockIH
+id|spin_lock_irqsave
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 comma
-op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
@@ -10711,12 +10710,11 @@ l_bool|false
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;   Release exclusive access to Host Adapter.&n;&t; */
-id|BusLogic_ReleaseHostAdapterLockIH
+id|spin_unlock_irqrestore
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 comma
-op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
@@ -11043,10 +11041,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|BusLogic_ReleaseHostAdapterLock
+id|spin_unlock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 id|BusLogic_Delay
@@ -11055,10 +11053,10 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|BusLogic_AcquireHostAdapterLock
+id|spin_lock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 id|CCB
@@ -11635,10 +11633,10 @@ id|CCB
 )paren
 )paren
 (brace
-id|BusLogic_ReleaseHostAdapterLock
+id|spin_unlock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 id|BusLogic_Warning
@@ -11656,10 +11654,10 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|BusLogic_AcquireHostAdapterLock
+id|spin_lock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 r_if
@@ -12188,10 +12186,10 @@ c_cond
 id|HardReset
 )paren
 (brace
-id|BusLogic_ReleaseHostAdapterLock
+id|spin_unlock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 id|BusLogic_Delay
@@ -12200,10 +12198,10 @@ c_func
 id|HostAdapter-&gt;BusSettleTime
 )paren
 suffix:semicolon
-id|BusLogic_AcquireHostAdapterLock
+id|spin_lock_irq
 c_func
 (paren
-id|HostAdapter
+id|HostAdapter-&gt;SCSI_Host-&gt;host_lock
 )paren
 suffix:semicolon
 )brace
