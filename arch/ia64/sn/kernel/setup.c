@@ -397,19 +397,6 @@ c_func
 r_void
 )paren
 (brace
-r_void
-id|ia64_sal_handler_init
-c_func
-(paren
-r_void
-op_star
-id|entry_point
-comma
-r_void
-op_star
-id|gpval
-)paren
-suffix:semicolon
 id|efi_system_table_t
 op_star
 id|efi_systab
@@ -434,6 +421,8 @@ id|p
 suffix:semicolon
 r_int
 id|i
+comma
+id|j
 suffix:semicolon
 multiline_comment|/*&n;&t; * Parse enough of the SAL tables to locate the SAL entry point. Since, console&n;&t; * IO on SN2 is done via SAL calls, early_printk won&squot;t work without this.&n;&t; *&n;&t; * This code duplicates some of the ACPI table parsing that is in efi.c &amp; sal.c.&n;&t; * Any changes to those file may have to be made hereas well.&n;&t; */
 id|efi_systab
@@ -518,15 +507,15 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|j
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|j
 OL
 id|sal_systab-&gt;entry_count
 suffix:semicolon
-id|i
+id|j
 op_increment
 )paren
 (brace
@@ -563,7 +552,7 @@ id|ep-&gt;gp
 )paren
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
 id|p
@@ -578,6 +567,14 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Uh-oh, SAL not available?? */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;failed to find SAL entry point&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_extern
 r_int
