@@ -8533,6 +8533,7 @@ r_return
 id|CARRY_ON
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 DECL|function|reiserfs_kmalloc
 r_void
 op_star
@@ -8647,6 +8648,7 @@ id|s-&gt;u.reiserfs_sb.s_kmallocs
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|get_virtual_node_size
 r_static
 r_int

@@ -5476,6 +5476,7 @@ id|n_block
 )paren
 suffix:semicolon
 multiline_comment|/* fix_nodes.c */
+macro_line|#ifdef CONFIG_REISERFS_CHECK
 r_void
 op_star
 id|reiserfs_kmalloc
@@ -5509,6 +5510,12 @@ op_star
 id|s
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|reiserfs_kmalloc
+mdefine_line|#define reiserfs_kmalloc(x, y, z) kmalloc(x, y)
+DECL|macro|reiserfs_kfree
+mdefine_line|#define reiserfs_kfree(x, y, z) kfree(x)
+macro_line|#endif
 r_int
 id|fix_nodes
 (paren
