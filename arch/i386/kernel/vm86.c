@@ -939,7 +939,7 @@ id|info-&gt;regs
 comma
 l_string|&quot;b&quot;
 (paren
-id|tsk
+id|tsk-&gt;thread_info
 )paren
 suffix:colon
 l_string|&quot;ax&quot;
@@ -995,7 +995,10 @@ id|regs32
 comma
 l_string|&quot;b&quot;
 (paren
-id|current
+id|current_thread_info
+c_func
+(paren
+)paren
 )paren
 )paren
 suffix:semicolon
