@@ -1530,56 +1530,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NET_FC
-DECL|function|fcif_probe
-r_static
-r_int
-id|fcif_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev-&gt;base_addr
-op_eq
-op_minus
-l_int|1
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|1
-macro_line|#ifdef CONFIG_IPHASE5526
-op_logical_and
-id|iph5526_probe
-c_func
-(paren
-id|dev
-)paren
-macro_line|#endif
-op_logical_and
-l_int|1
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* -ENODEV or -EAGAIN would be more accurate. */
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif  /* CONFIG_NET_FC */
 macro_line|#ifdef CONFIG_ETHERTAP
 DECL|variable|tap0_dev
 r_static
@@ -2294,59 +2244,6 @@ macro_line|#undef       NEXT_DEV
 DECL|macro|NEXT_DEV
 mdefine_line|#define      NEXT_DEV        (&amp;tr0_dev)
 macro_line|#endif 
-macro_line|#ifdef CONFIG_NET_FC
-DECL|variable|fc1_dev
-r_static
-r_struct
-id|net_device
-id|fc1_dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;fc1&quot;
-comma
-dot
-id|next
-op_assign
-id|NEXT_DEV
-comma
-dot
-id|init
-op_assign
-id|fcif_probe
-)brace
-suffix:semicolon
-DECL|variable|fc0_dev
-r_static
-r_struct
-id|net_device
-id|fc0_dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;fc0&quot;
-comma
-dot
-id|next
-op_assign
-op_amp
-id|fc1_dev
-comma
-dot
-id|init
-op_assign
-id|fcif_probe
-)brace
-suffix:semicolon
-DECL|macro|NEXT_DEV
-macro_line|#undef       NEXT_DEV
-DECL|macro|NEXT_DEV
-mdefine_line|#define      NEXT_DEV        (&amp;fc0_dev)
-macro_line|#endif
 macro_line|#ifdef CONFIG_SBNI
 DECL|variable|sbni7_dev
 r_static
