@@ -171,22 +171,6 @@ id|tp-&gt;ack.rcv_mss
 op_assign
 id|len
 suffix:semicolon
-multiline_comment|/* Dubious? Rather, it is final cut. 8) */
-r_if
-c_cond
-(paren
-id|tcp_flag_word
-c_func
-(paren
-id|skb-&gt;h.th
-)paren
-op_amp
-id|TCP_REMNANT
-)paren
-id|tp-&gt;ack.pending
-op_or_assign
-id|TCP_ACK_PUSHED
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1395,7 +1379,7 @@ l_int|2
 suffix:semicolon
 id|tp-&gt;rtt_seq
 op_assign
-id|tp-&gt;snd_una
+id|tp-&gt;snd_nxt
 suffix:semicolon
 id|tp-&gt;mdev_max
 op_assign
@@ -6321,6 +6305,10 @@ r_else
 id|acked
 op_or_assign
 id|FLAG_SYN_ACKED
+suffix:semicolon
+id|tp-&gt;retrans_stamp
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -15308,6 +15296,9 @@ id|TCP_CLOSE_WAIT
 suffix:colon
 r_case
 id|TCP_CLOSING
+suffix:colon
+r_case
+id|TCP_LAST_ACK
 suffix:colon
 r_if
 c_cond
