@@ -862,6 +862,7 @@ r_struct
 id|termios
 op_star
 id|termios
+comma
 r_struct
 id|termios
 op_star
