@@ -48,7 +48,7 @@ comma
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 )paren
 (brace
 id|writel
@@ -61,7 +61,7 @@ op_plus
 id|MMCICOMMAND
 )paren
 suffix:semicolon
-id|host-&gt;req
+id|host-&gt;mrq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -80,9 +80,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;data
+id|mrq-&gt;data
 )paren
-id|req-&gt;data-&gt;bytes_xfered
+id|mrq-&gt;data-&gt;bytes_xfered
 op_assign
 id|host-&gt;data_xfered
 suffix:semicolon
@@ -99,7 +99,7 @@ c_func
 (paren
 id|host-&gt;mmc
 comma
-id|req
+id|mrq
 )paren
 suffix:semicolon
 id|spin_lock
@@ -174,7 +174,7 @@ id|data
 suffix:semicolon
 id|host-&gt;buffer
 op_assign
-id|data-&gt;rq-&gt;buffer
+id|data-&gt;req-&gt;buffer
 suffix:semicolon
 id|host-&gt;size
 op_assign
@@ -492,7 +492,7 @@ c_func
 (paren
 id|host
 comma
-id|data-&gt;req
+id|data-&gt;mrq
 )paren
 suffix:semicolon
 )brace
@@ -636,7 +636,7 @@ c_func
 (paren
 id|host
 comma
-id|cmd-&gt;req
+id|cmd-&gt;mrq
 )paren
 suffix:semicolon
 )brace
@@ -1172,7 +1172,7 @@ comma
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 )paren
 (brace
 r_struct
@@ -1189,7 +1189,7 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|host-&gt;req
+id|host-&gt;mrq
 op_ne
 l_int|NULL
 )paren
@@ -1201,16 +1201,16 @@ op_amp
 id|host-&gt;lock
 )paren
 suffix:semicolon
-id|host-&gt;req
+id|host-&gt;mrq
 op_assign
-id|req
+id|mrq
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;data
+id|mrq-&gt;data
 op_logical_and
-id|req-&gt;data-&gt;flags
+id|mrq-&gt;data-&gt;flags
 op_amp
 id|MMC_DATA_READ
 )paren
@@ -1219,7 +1219,7 @@ c_func
 (paren
 id|host
 comma
-id|req-&gt;data
+id|mrq-&gt;data
 )paren
 suffix:semicolon
 id|mmci_start_command
@@ -1227,7 +1227,7 @@ c_func
 (paren
 id|host
 comma
-id|req-&gt;cmd
+id|mrq-&gt;cmd
 comma
 l_int|0
 )paren

@@ -82,11 +82,11 @@ op_star
 id|data
 suffix:semicolon
 multiline_comment|/* data segment associated with cmd */
-DECL|member|req
+DECL|member|mrq
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 suffix:semicolon
 multiline_comment|/* assoicated request */
 )brace
@@ -119,11 +119,11 @@ r_int
 id|blocks
 suffix:semicolon
 multiline_comment|/* number of blocks */
-DECL|member|rq
+DECL|member|req
 r_struct
 id|request
 op_star
-id|rq
+id|req
 suffix:semicolon
 multiline_comment|/* request structure */
 DECL|member|error
@@ -155,11 +155,11 @@ op_star
 id|stop
 suffix:semicolon
 multiline_comment|/* stop command */
-DECL|member|req
+DECL|member|mrq
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 suffix:semicolon
 multiline_comment|/* assoicated request */
 )brace

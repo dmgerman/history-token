@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
@@ -74,11 +75,11 @@ r_int
 r_int
 id|power_mode
 suffix:semicolon
-DECL|member|req
+DECL|member|mrq
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 suffix:semicolon
 DECL|member|cmd
 r_struct
@@ -538,7 +539,7 @@ c_func
 id|host-&gt;mmc
 )paren
 comma
-id|data-&gt;rq-&gt;buffer
+id|data-&gt;req-&gt;buffer
 comma
 id|host-&gt;dma_size
 comma
@@ -895,7 +896,7 @@ comma
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 )paren
 (brace
 id|DBG
@@ -904,7 +905,7 @@ c_func
 l_string|&quot;PXAMCI: request done&bslash;n&quot;
 )paren
 suffix:semicolon
-id|host-&gt;req
+id|host-&gt;mrq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -921,7 +922,7 @@ c_func
 (paren
 id|host-&gt;mmc
 comma
-id|req
+id|mrq
 )paren
 suffix:semicolon
 )brace
@@ -1108,7 +1109,7 @@ c_func
 (paren
 id|host
 comma
-id|host-&gt;req
+id|host-&gt;mrq
 )paren
 suffix:semicolon
 )brace
@@ -1221,7 +1222,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|host-&gt;req-&gt;stop
+id|host-&gt;mrq-&gt;stop
 op_logical_and
 id|data-&gt;error
 op_eq
@@ -1239,7 +1240,7 @@ c_func
 (paren
 id|host
 comma
-id|host-&gt;req-&gt;stop
+id|host-&gt;mrq-&gt;stop
 comma
 l_int|0
 )paren
@@ -1252,7 +1253,7 @@ c_func
 (paren
 id|host
 comma
-id|host-&gt;req
+id|host-&gt;mrq
 )paren
 suffix:semicolon
 )brace
@@ -1395,7 +1396,7 @@ comma
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 )paren
 (brace
 r_struct
@@ -1416,14 +1417,14 @@ suffix:semicolon
 id|WARN_ON
 c_func
 (paren
-id|host-&gt;req
+id|host-&gt;mrq
 op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-id|host-&gt;req
+id|host-&gt;mrq
 op_assign
-id|req
+id|mrq
 suffix:semicolon
 id|pxamci_stop_clock
 c_func
@@ -1443,7 +1444,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;data
+id|mrq-&gt;data
 )paren
 (brace
 id|pxamci_setup_data
@@ -1451,7 +1452,7 @@ c_func
 (paren
 id|host
 comma
-id|req-&gt;data
+id|mrq-&gt;data
 )paren
 suffix:semicolon
 id|cmdat
@@ -1468,7 +1469,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;data-&gt;flags
+id|mrq-&gt;data-&gt;flags
 op_amp
 id|MMC_DATA_WRITE
 )paren
@@ -1479,7 +1480,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;data-&gt;flags
+id|mrq-&gt;data-&gt;flags
 op_amp
 id|MMC_DATA_STREAM
 )paren
@@ -1493,7 +1494,7 @@ c_func
 (paren
 id|host
 comma
-id|req-&gt;cmd
+id|mrq-&gt;cmd
 comma
 id|cmdat
 )paren

@@ -195,11 +195,11 @@ r_void
 op_star
 id|base
 suffix:semicolon
-DECL|member|req
+DECL|member|mrq
 r_struct
 id|mmc_request
 op_star
-id|req
+id|mrq
 suffix:semicolon
 DECL|member|cmd
 r_struct
