@@ -6,9 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_BRIDGE_NETFILTER)
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 macro_line|#include &lt;linux/if_ether.h&gt;
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Bridge Hooks */
 multiline_comment|/* After promisc drops, checksum checks. */
