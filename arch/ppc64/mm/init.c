@@ -38,9 +38,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_PPC_ISERIES
-macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/iommu.h&gt;
 DECL|variable|mmu_context_queue
 r_struct
 id|mmu_context_queue_t
@@ -3849,7 +3847,7 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
-id|create_virtual_bus_tce_table
+id|iommu_vio_init
 c_func
 (paren
 )paren

@@ -30,7 +30,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
@@ -15904,7 +15904,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-multiline_comment|/* fixing up tce_table */
+multiline_comment|/* fixing up iommu_table */
 r_if
 c_cond
 (paren
@@ -15933,21 +15933,17 @@ id|node-&gt;bussubno
 op_assign
 id|node-&gt;busno
 suffix:semicolon
-id|create_pci_bus_tce_table
+id|iommu_devnode_init
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|node
 )paren
 suffix:semicolon
 )brace
 r_else
-id|node-&gt;tce_table
+id|node-&gt;iommu_table
 op_assign
-id|parent-&gt;tce_table
+id|parent-&gt;iommu_table
 suffix:semicolon
 id|out
 suffix:colon
