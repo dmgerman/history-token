@@ -40,15 +40,13 @@ DECL|macro|IPV6_DEFAULT_HOPLIMIT
 mdefine_line|#define IPV6_DEFAULT_HOPLIMIT   64
 DECL|macro|IPV6_DEFAULT_MCASTHOPS
 mdefine_line|#define IPV6_DEFAULT_MCASTHOPS&t;1
-multiline_comment|/*&n; *&t;Addr type&n; *&t;&n; *&t;type&t;-&t;unicast | multicast | anycast&n; *&t;scope&t;-&t;local&t;| site&t;    | global&n; *&t;v4&t;-&t;compat&n; *&t;v4mapped&n; *&t;any&n; *&t;loopback&n; */
+multiline_comment|/*&n; *&t;Addr type&n; *&t;&n; *&t;type&t;-&t;unicast | multicast&n; *&t;scope&t;-&t;local&t;| site&t;    | global&n; *&t;v4&t;-&t;compat&n; *&t;v4mapped&n; *&t;any&n; *&t;loopback&n; */
 DECL|macro|IPV6_ADDR_ANY
 mdefine_line|#define IPV6_ADDR_ANY&t;&t;0x0000U
 DECL|macro|IPV6_ADDR_UNICAST
 mdefine_line|#define IPV6_ADDR_UNICAST      &t;0x0001U&t;
 DECL|macro|IPV6_ADDR_MULTICAST
 mdefine_line|#define IPV6_ADDR_MULTICAST    &t;0x0002U&t;
-DECL|macro|IPV6_ADDR_ANYCAST
-mdefine_line|#define IPV6_ADDR_ANYCAST&t;0x0004U
 DECL|macro|IPV6_ADDR_LOOPBACK
 mdefine_line|#define IPV6_ADDR_LOOPBACK&t;0x0010U
 DECL|macro|IPV6_ADDR_LINKLOCAL
