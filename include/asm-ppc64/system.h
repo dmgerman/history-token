@@ -8,13 +8,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
-multiline_comment|/*&n; * System defines.&n; */
-DECL|macro|KERNEL_START_PHYS
-mdefine_line|#define KERNEL_START_PHYS&t;0x800000 
-DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;        (PAGE_OFFSET+KERNEL_START_PHYS)
-DECL|macro|START_ADDR
-mdefine_line|#define START_ADDR&t;        (PAGE_OFFSET+KERNEL_START_PHYS+0x00000)
 multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
 DECL|macro|mb
 mdefine_line|#define mb()   __asm__ __volatile__ (&quot;sync&quot; : : : &quot;memory&quot;)
@@ -267,47 +260,6 @@ suffix:semicolon
 r_extern
 r_int
 id|_get_PVR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|_get_L2CR
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|_set_L2CR
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|via_cuda_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pmac_nvram_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pmac_find_display
 c_func
 (paren
 r_void

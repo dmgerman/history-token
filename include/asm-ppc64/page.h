@@ -27,60 +27,15 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/naca.h&gt;
 DECL|macro|STRICT_MM_TYPECHECKS
-mdefine_line|#define STRICT_MM_TYPECHECKS
+macro_line|#undef STRICT_MM_TYPECHECKS
 DECL|macro|REGION_SIZE
 mdefine_line|#define REGION_SIZE   4UL
-DECL|macro|OFFSET_SIZE
-mdefine_line|#define OFFSET_SIZE   60UL
 DECL|macro|REGION_SHIFT
 mdefine_line|#define REGION_SHIFT  60UL
-DECL|macro|OFFSET_SHIFT
-mdefine_line|#define OFFSET_SHIFT  0UL
 DECL|macro|REGION_MASK
 mdefine_line|#define REGION_MASK   (((1UL&lt;&lt;REGION_SIZE)-1UL)&lt;&lt;REGION_SHIFT)
 DECL|macro|REGION_STRIDE
 mdefine_line|#define REGION_STRIDE (1UL &lt;&lt; REGION_SHIFT)
-DECL|union|ppc64_va
-r_typedef
-r_union
-id|ppc64_va
-(brace
-r_struct
-(brace
-DECL|member|off
-r_int
-r_int
-id|off
-suffix:colon
-id|OFFSET_SIZE
-suffix:semicolon
-multiline_comment|/* intra-region offset */
-DECL|member|reg
-r_int
-r_int
-id|reg
-suffix:colon
-id|REGION_SIZE
-suffix:semicolon
-multiline_comment|/* region number */
-DECL|member|f
-)brace
-id|f
-suffix:semicolon
-DECL|member|l
-r_int
-r_int
-id|l
-suffix:semicolon
-DECL|member|p
-r_void
-op_star
-id|p
-suffix:semicolon
-DECL|typedef|ppc64_va
-)brace
-id|ppc64_va
-suffix:semicolon
 DECL|function|clear_page
 r_static
 id|__inline__
