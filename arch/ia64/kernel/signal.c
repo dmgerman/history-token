@@ -2175,13 +2175,13 @@ op_or_assign
 id|__put_user
 c_func
 (paren
+id|scr-&gt;pt.r14
+comma
+op_amp
 id|sc-&gt;sc_gr
 (braket
 l_int|14
 )braket
-comma
-op_amp
-id|scr-&gt;pt.r14
 )paren
 suffix:semicolon
 multiline_comment|/* r14 */
