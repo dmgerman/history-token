@@ -241,6 +241,17 @@ c_func
 (paren
 l_int|0x0565
 comma
+l_int|0x0003
+)paren
+)brace
+comma
+multiline_comment|/* Optus@Home UEP1045A */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0565
+comma
 l_int|0x0005
 )paren
 )brace
