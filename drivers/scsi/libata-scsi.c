@@ -39,7 +39,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator&n; *&t;    used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS) &n; *&t;    mapping. Some situations may arise where the disk is not &n; *&t;    bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_std_bios_param - generic bios head/sector/cylinder calculator used by sd.&n; *&t;@sdev: SCSI device for which BIOS geometry is to be determined&n; *&t;@bdev: block device associated with @sdev&n; *&t;@capacity: capacity of SCSI device&n; *&t;@geom: location to which geometry will be output&n; *&n; *&t;Generic bios head/sector/cylinder calculator&n; *&t;used by sd. Most BIOSes nowadays expect a XXX/255/16  (CHS) &n; *&t;mapping. Some situations may arise where the disk is not &n; *&t;bootable if this is not used.&n; *&n; *&t;LOCKING:&n; *&t;Defined by the SCSI layer.  We don&squot;t really care.&n; *&n; *&t;RETURNS:&n; *&t;Zero.&n; */
 DECL|function|ata_std_bios_param
 r_int
 id|ata_std_bios_param
@@ -99,6 +99,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_scsi_qc_new - acquire new ata_queued_cmd reference&n; *&t;@ap: ATA port to which the new command is attached&n; *&t;@dev: ATA device to which the new command is attached&n; *&t;@cmd: SCSI command that originated this ATA command&n; *&t;@done: SCSI command completion function&n; *&n; *&t;Obtain a reference to an unused ata_queued_cmd structure,&n; *&t;which is the basic libata structure representing a single&n; *&t;ATA command sent to the hardware.&n; *&n; *&t;If a command was available, fill in the SCSI-specific&n; *&t;portions of the structure with information on the&n; *&t;current command.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Command allocated, or %NULL if none available.&n; */
 DECL|function|ata_scsi_qc_new
 r_struct
 id|ata_queued_cmd
@@ -222,7 +223,7 @@ r_return
 id|qc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_to_sense_error -&n; *&t;@qc:&n; *&t;@cmd:&n; *&n; *&t;LOCKING:&n; */
+multiline_comment|/**&n; *&t;ata_to_sense_error - convert ATA error to SCSI error&n; *&t;@qc: Command that we are erroring out&n; *&n; *&t;Converts an ATA error into a SCSI error.&n; *&n; *&t;Right now, this routine is laughably primitive.  We&n; *&t;don&squot;t even examine what ATA told us, we just look at&n; *&t;the command data direction, and return a fatal SCSI&n; *&t;sense error based on that.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_to_sense_error
 r_void
 id|ata_to_sense_error
@@ -314,7 +315,7 @@ suffix:semicolon
 multiline_comment|/*  auto-reallocation failed&quot; */
 )brace
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_slave_config -&n; *&t;@sdev:&n; *&n; *&t;LOCKING:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_scsi_slave_config - Set SCSI device attributes&n; *&t;@sdev: SCSI device to examine&n; *&n; *&t;This is called before we actually start reading&n; *&t;and writing to the device, to configure certain&n; *&t;SCSI mid-layer behaviors.&n; *&n; *&t;LOCKING:&n; *&t;Defined by SCSI layer.  We don&squot;t really care.&n; */
 DECL|function|ata_scsi_slave_config
 r_int
 id|ata_scsi_slave_config
@@ -401,7 +402,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_rw_xlat -&n; *&t;@qc:&n; *&t;@scsicmd:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&n; */
+multiline_comment|/**&n; *&t;ata_scsi_rw_xlat - Translate SCSI r/w command into an ATA one&n; *&t;@qc: Storage for translated ATA taskfile&n; *&t;@scsicmd: SCSI command to translate&n; *&n; *&t;Converts any of six SCSI read/write commands into the&n; *&t;ATA counterpart, including starting sector (LBA),&n; *&t;sector count, and taking into account the device&squot;s LBA48&n; *&t;support.&n; *&n; *&t;Commands %READ_6, %READ_10, %READ_16, %WRITE_6, %WRITE_10, and&n; *&t;%WRITE_16 are currently supported.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Zero on success, non-zero on error.&n; */
 DECL|function|ata_scsi_rw_xlat
 r_static
 r_int
@@ -924,7 +925,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_translate -&n; *&t;@ap:&n; *&t;@dev:&n; *&t;@cmd:&n; *&t;@done:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_translate - Translate then issue SCSI command to ATA device&n; *&t;@ap: ATA port to which the command is addressed&n; *&t;@dev: ATA device to which the command is addressed&n; *&t;@cmd: SCSI command to execute&n; *&t;@done: SCSI command completion function&n; *&n; *&t;Our -&gt;queuecommand() function has decided that the SCSI&n; *&t;command issued can be directly translated into an ATA&n; *&t;command, rather than handled internally.&n; *&n; *&t;This function sets up an ata_queued_cmd structure for the&n; *&t;SCSI command, and sends that ata_queued_cmd to the hardware.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_translate
 r_static
 r_void
@@ -1901,7 +1902,7 @@ op_assign
 id|ptr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_msense_caching - Simulate MODE SENSE caching info page&n; *&t;@dev:&n; *&t;@ptr_io:&n; *&t;@last:&n; *&n; *&t;Generate a caching info page, which conditionally indicates&n; *&t;write caching to the SCSI layer, depending on device&n; *&t;capabilities.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
+multiline_comment|/**&n; *&t;ata_msense_caching - Simulate MODE SENSE caching info page&n; *&t;@dev: Device associated with this MODE SENSE command&n; *&t;@ptr_io: (input/output) Location to store more output data&n; *&t;@last: End of output data buffer&n; *&n; *&t;Generate a caching info page, which conditionally indicates&n; *&t;write caching to the SCSI layer, depending on device&n; *&t;capabilities.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
 DECL|function|ata_msense_caching
 r_static
 r_int
@@ -1983,7 +1984,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_msense_ctl_mode - Simulate MODE SENSE control mode page&n; *&t;@dev:&n; *&t;@ptr_io:&n; *&t;@last:&n; *&n; *&t;Generate a generic MODE SENSE control mode page.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
+multiline_comment|/**&n; *&t;ata_msense_ctl_mode - Simulate MODE SENSE control mode page&n; *&t;@dev: Device associated with this MODE SENSE command&n; *&t;@ptr_io: (input/output) Location to store more output data&n; *&t;@last: End of output data buffer&n; *&n; *&t;Generate a generic MODE SENSE control mode page.&n; *&n; *&t;LOCKING:&n; *&t;None.&n; */
 DECL|function|ata_msense_ctl_mode
 r_static
 r_int
@@ -2593,7 +2594,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;ata_scsi_badcmd -&n; *&t;@cmd:&n; *&t;@done:&n; *&t;@asc:&n; *&t;@ascq:&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
+multiline_comment|/**&n; *&t;ata_scsi_badcmd - End a SCSI request with an error&n; *&t;@cmd: SCSI request to be handled&n; *&t;@done: SCSI command completion function&n; *&t;@asc: SCSI-defined additional sense code&n; *&t;@ascq: SCSI-defined additional sense code qualifier&n; *&n; *&t;Helper function that completes a SCSI command with&n; *&t;%SAM_STAT_CHECK_CONDITION, with a sense key %ILLEGAL_REQUEST&n; *&t;and the specified additional sense codes.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; */
 DECL|function|ata_scsi_badcmd
 r_void
 id|ata_scsi_badcmd
@@ -3086,6 +3087,7 @@ l_string|&quot;EXIT - badcmd&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_scsi_find_dev - lookup ata_device from scsi_cmnd&n; *&t;@ap: ATA port to which the device is attached&n; *&t;@cmd: SCSI command to be sent to the device&n; *&n; *&t;Given various information provided in struct scsi_cmnd,&n; *&t;map that onto an ATA bus, and using that mapping&n; *&t;determine which ata_device is associated with the&n; *&t;SCSI command to be sent.&n; *&n; *&t;LOCKING:&n; *&t;spin_lock_irqsave(host_set lock)&n; *&n; *&t;RETURNS:&n; *&t;Associated ATA device, or %NULL if not found.&n; */
 r_static
 r_inline
 r_struct
@@ -3196,6 +3198,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_scsi_xlat_possible - check if SCSI to ATA translation is possible&n; *&t;@cmd: SCSI command opcode to consider&n; *&n; *&t;Look up the SCSI command given, and determine whether the&n; *&t;SCSI command is to be translated or simulated.&n; *&n; *&t;RETURNS:&n; *&t;Non-zero if possible, zero if not.&n; */
 DECL|function|ata_scsi_xlat_possible
 r_static
 r_inline
@@ -3239,6 +3242,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_scsi_dump_cdb - dump SCSI command contents to dmesg&n; *&t;@ap: ATA port to which the command was being sent&n; *&t;@cmd: SCSI command to dump&n; *&n; *&t;Prints the contents of a SCSI command via printk().&n; */
 DECL|function|ata_scsi_dump_cdb
 r_static
 r_inline
