@@ -128,6 +128,30 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
+multiline_comment|/* &n;&t; * Compat handler. Handle 32bit ABI.&n;&t; * When unknown ioctl is passed return -ENOIOCTLCMD.&n;&t; *&n;&t; * Status: OPTIONAL&n;&t; */
+DECL|member|compat_ioctl
+r_int
+(paren
+op_star
+id|compat_ioctl
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+id|dev
+comma
+r_int
+id|cmd
+comma
+r_void
+id|__user
+op_star
+id|arg
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * The queuecommand function is used to queue up a scsi&n;&t; * command block to the LLDD.  When the driver finished&n;&t; * processing the command the done callback is invoked.&n;&t; *&n;&t; * If queuecommand returns 0, then the HBA has accepted the&n;&t; * command.  The done() function must be called on the command&n;&t; * when the driver has finished with it. (you may call done on the&n;&t; * command before queuecommand returns, but in this case you&n;&t; * *must* return 0 from queuecommand).&n;&t; *&n;&t; * Queuecommand may also reject the command, in which case it may&n;&t; * not touch the command and must not call done() for it.&n;&t; *&n;&t; * There are two possible rejection returns:&n;&t; *&n;&t; *   SCSI_MLQUEUE_DEVICE_BUSY: Block this device temporarily, but&n;&t; *   allow commands to other devices serviced by this host.&n;&t; *&n;&t; *   SCSI_MLQUEUE_HOST_BUSY: Block all devices served by this&n;&t; *   host temporarily.&n;&t; *&n;         * For compatibility, any other non-zero return is treated the&n;         * same as SCSI_MLQUEUE_HOST_BUSY.&n;&t; *&n;&t; * NOTE: &quot;temporarily&quot; means either until the next command for#&n;&t; * this device/host completes, or a period of time determined by&n;&t; * I/O pressure in the system if there are no other outstanding&n;&t; * commands.&n;&t; *&n;&t; * STATUS: REQUIRED&n;&t; */
 DECL|member|queuecommand
 r_int
@@ -774,11 +798,6 @@ r_void
 op_star
 id|shost_data
 suffix:semicolon
-DECL|member|transport_classdev
-r_struct
-id|class_device
-id|transport_classdev
-suffix:semicolon
 multiline_comment|/*&n;&t; * We should ensure that this is aligned, both for better performance&n;&t; * and also because some compilers (m68k) don&squot;t automatically force&n;&t; * alignment to a long boundary.&n;&t; */
 DECL|member|hostdata
 r_int
@@ -808,8 +827,6 @@ DECL|macro|dev_to_shost
 mdefine_line|#define&t;&t;dev_to_shost(d)&t;&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_gendev)
 DECL|macro|class_to_shost
 mdefine_line|#define&t;&t;class_to_shost(d)&t;&bslash;&n;&t;container_of(d, struct Scsi_Host, shost_classdev)
-DECL|macro|transport_class_to_shost
-mdefine_line|#define&t;&t;transport_class_to_shost(class_dev) &bslash;&n;&t;container_of(class_dev, struct Scsi_Host, transport_classdev)
 r_extern
 r_struct
 id|Scsi_Host
@@ -1013,6 +1030,9 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_struct
+id|class_container
+suffix:semicolon
 multiline_comment|/*&n; * These two functions are used to allocate and free a pseudo device&n; * which will connect to the host adapter itself rather than any&n; * physical device.  You must deallocate when you are done with the&n; * thing.  This physical pseudo-device isn&squot;t real and won&squot;t be available&n; * from any high-level drivers.&n; */
 r_extern
 r_void
@@ -1033,6 +1053,16 @@ c_func
 (paren
 r_struct
 id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_int
+id|scsi_is_host_device
+c_func
+(paren
+r_const
+r_struct
+id|device
 op_star
 )paren
 suffix:semicolon

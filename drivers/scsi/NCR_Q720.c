@@ -121,6 +121,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|NCR_Q720_tpnt
+r_static
 r_struct
 id|scsi_host_template
 id|NCR_Q720_tpnt
@@ -1607,6 +1608,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|NCR_Q720_driver
+r_static
 r_struct
 id|mca_driver
 id|NCR_Q720_driver
