@@ -77,6 +77,7 @@ DECL|enumerator|E_EQUAL
 DECL|enumerator|E_UNEQUAL
 DECL|enumerator|E_CHOICE
 DECL|enumerator|E_SYMBOL
+DECL|enumerator|E_RANGE
 id|E_NONE
 comma
 id|E_OR
@@ -92,6 +93,8 @@ comma
 id|E_CHOICE
 comma
 id|E_SYMBOL
+comma
+id|E_RANGE
 )brace
 suffix:semicolon
 DECL|union|expr_data
@@ -305,6 +308,7 @@ DECL|enumerator|P_MENU
 DECL|enumerator|P_DEFAULT
 DECL|enumerator|P_CHOICE
 DECL|enumerator|P_SELECT
+DECL|enumerator|P_RANGE
 id|P_UNKNOWN
 comma
 id|P_PROMPT
@@ -318,6 +322,8 @@ comma
 id|P_CHOICE
 comma
 id|P_SELECT
+comma
+id|P_RANGE
 )brace
 suffix:semicolon
 DECL|struct|property
