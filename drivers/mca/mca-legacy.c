@@ -158,6 +158,8 @@ c_func
 op_amp
 id|mca_bus_type
 comma
+l_int|NULL
+comma
 op_amp
 id|info
 comma
@@ -268,6 +270,8 @@ c_func
 (paren
 op_amp
 id|mca_bus_type
+comma
+l_int|NULL
 comma
 op_amp
 id|info
@@ -420,6 +424,8 @@ c_func
 (paren
 op_amp
 id|mca_bus_type
+comma
+l_int|NULL
 comma
 op_amp
 id|info

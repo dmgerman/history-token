@@ -1558,6 +1558,8 @@ id|mca_bus_type
 comma
 l_int|NULL
 comma
+l_int|NULL
+comma
 id|mca_handle_nmi_callback
 )paren
 suffix:semicolon
