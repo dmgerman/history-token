@@ -42,6 +42,13 @@ DECL|macro|PRINTD
 mdefine_line|#define PRINTD(level, card, fmt, args...) do {} while (0)
 macro_line|#endif
 multiline_comment|/* Module Parameters */
+DECL|variable|skip_eeprom
+r_static
+r_int
+id|skip_eeprom
+op_assign
+l_int|0
+suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -59,13 +66,6 @@ id|skip_eeprom
 comma
 l_string|&quot;Use generic bus info block instead of serial eeprom (default = 0).&quot;
 )paren
-suffix:semicolon
-DECL|variable|skip_eeprom
-r_static
-r_int
-id|skip_eeprom
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|lynx_driver
 r_static
