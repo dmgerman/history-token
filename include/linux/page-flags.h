@@ -422,6 +422,10 @@ DECL|macro|ClearPagePrivate
 mdefine_line|#define ClearPagePrivate(page)&t;clear_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|PagePrivate
 mdefine_line|#define PagePrivate(page)&t;test_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|__SetPagePrivate
+mdefine_line|#define __SetPagePrivate(page)  __set_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|__ClearPagePrivate
+mdefine_line|#define __ClearPagePrivate(page) __clear_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|PageWriteback
 mdefine_line|#define PageWriteback(page)&t;test_bit(PG_writeback, &amp;(page)-&gt;flags)
 DECL|macro|SetPageWriteback

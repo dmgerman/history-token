@@ -501,7 +501,7 @@ r_int
 r_int
 r_private
 suffix:semicolon
-multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Mapping-private opaque data:&n;&t;&t;&t;&t;&t; * usually used for buffer_heads&n;&t;&t;&t;&t;&t; * if PagePrivate set; used for&n;&t;&t;&t;&t;&t; * swp_entry_t if PageSwapCache&n;&t;&t;&t;&t;&t; * When page is free, this indicates&n;&t;&t;&t;&t;&t; * order in the buddy system.&n;&t;&t;&t;&t;&t; */
 DECL|member|mapping
 r_struct
 id|address_space

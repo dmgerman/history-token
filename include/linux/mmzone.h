@@ -28,12 +28,6 @@ r_struct
 id|list_head
 id|free_list
 suffix:semicolon
-DECL|member|map
-r_int
-r_int
-op_star
-id|map
-suffix:semicolon
 DECL|member|nr_free
 r_int
 r_int
