@@ -2677,7 +2677,7 @@ op_logical_and
 (paren
 id|ehci-&gt;async-&gt;qh_next.ptr
 op_ne
-l_int|0
+l_int|NULL
 op_logical_or
 id|ehci-&gt;periodic_sched
 op_ne

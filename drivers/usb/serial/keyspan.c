@@ -1075,7 +1075,7 @@ id|flip
 )braket
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* no bulk out, so return 0 bytes written */
@@ -4173,7 +4173,7 @@ id|flip
 )braket
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_if
@@ -4211,7 +4211,7 @@ id|flip
 )braket
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 r_if
 c_cond

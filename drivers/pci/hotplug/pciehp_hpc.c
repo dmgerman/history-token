@@ -4777,9 +4777,9 @@ op_star
 id|ctrl
 comma
 r_struct
-id|pci_dev
+id|pcie_device
 op_star
-id|pdev
+id|dev
 comma
 id|php_intr_callback_t
 id|attention_button_callback
@@ -4841,6 +4841,11 @@ id|slot_status
 comma
 id|slot_ctrl
 suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 id|DBG_ENTER_ROUTINE
 id|spin_lock_init
 c_func
@@ -4901,6 +4906,10 @@ r_struct
 id|php_ctlr_state_s
 )paren
 )paren
+suffix:semicolon
+id|pdev
+op_assign
+id|dev-&gt;port
 suffix:semicolon
 id|php_ctlr-&gt;pci_dev
 op_assign
@@ -5234,7 +5243,7 @@ c_func
 id|pdev-&gt;devfn
 )paren
 comma
-id|pdev-&gt;irq
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_for
@@ -5332,7 +5341,7 @@ suffix:semicolon
 multiline_comment|/* find the IRQ */
 id|php_ctlr-&gt;irq
 op_assign
-id|pdev-&gt;irq
+id|dev-&gt;irq
 suffix:semicolon
 id|dbg
 c_func
@@ -5586,66 +5595,6 @@ multiline_comment|/* start with 10 second delay */
 r_else
 (brace
 multiline_comment|/* Installs the interrupt handler */
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: pcie_mch_quirk = %x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|pcie_mch_quirk
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pcie_mch_quirk
-)paren
-(brace
-id|rc
-op_assign
-id|pci_enable_msi
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|info
-c_func
-(paren
-l_string|&quot;Can&squot;t get msi for the hotplug controller&bslash;n&quot;
-)paren
-suffix:semicolon
-id|info
-c_func
-(paren
-l_string|&quot;Use INTx for the hotplug controller&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: rc = %x&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|rc
-)paren
-suffix:semicolon
-)brace
-r_else
-id|php_ctlr-&gt;irq
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
-)brace
 id|rc
 op_assign
 id|request_irq

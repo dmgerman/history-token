@@ -402,7 +402,7 @@ id|skb
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * (1) i have no idea if this is redundant, but i can&squot;t figure why&n; * the ifp is passed in if it is.&n; *&n; * (2) len doesn&squot;t include the header by default.  I want this. &n; */
+multiline_comment|/* &n; * (1) len doesn&squot;t include the header by default.  I want this. &n; */
 r_static
 r_int
 DECL|function|aoenet_rcv
@@ -450,11 +450,6 @@ id|skb
 r_return
 l_int|0
 suffix:semicolon
-id|skb-&gt;dev
-op_assign
-id|ifp
-suffix:semicolon
-multiline_comment|/* (1) */
 r_if
 c_cond
 (paren
@@ -468,11 +463,16 @@ id|ifp
 r_goto
 m_exit
 suffix:semicolon
-id|skb-&gt;len
-op_add_assign
+singleline_comment|//skb-&gt;len += ETH_HLEN;&t;/* (1) */
+id|skb_push
+c_func
+(paren
+id|skb
+comma
 id|ETH_HLEN
+)paren
 suffix:semicolon
-multiline_comment|/* (2) */
+multiline_comment|/* (1) */
 id|h
 op_assign
 (paren
@@ -542,10 +542,18 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
-id|KERN_CRIT
+id|KERN_ERR
 l_string|&quot;aoe: aoenet_rcv: error packet from %d.%d; &quot;
 l_string|&quot;ecode=%d &squot;%s&squot;&bslash;n&quot;
 comma
@@ -672,7 +680,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-id|__exit
 DECL|function|aoenet_exit
 id|aoenet_exit
 c_func
