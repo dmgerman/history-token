@@ -47,8 +47,6 @@ DECL|macro|GET_STATS
 mdefine_line|#define GET_STATS&t;&t;0x50000
 DECL|macro|GET_IOCTL_VERSION
 mdefine_line|#define GET_IOCTL_VERSION&t;0x01
-DECL|macro|MAX_LSI_CMN_ADAPS
-mdefine_line|#define MAX_LSI_CMN_ADAPS&t;16
 DECL|macro|EXT_IOCTL_SIGN_SZ
 mdefine_line|#define EXT_IOCTL_SIGN_SZ&t;16
 DECL|macro|EXT_IOCTL_SIGN
@@ -362,7 +360,7 @@ DECL|typedef|mm_dmapool_t
 )brace
 id|mm_dmapool_t
 suffix:semicolon
-multiline_comment|/**&n; * mraid_mmadp_t: Structure that drivers pass during (un)registration&n; *&n; * @unique_id&t;&t;: Any unique id (usually PCI bus+dev+fn)&n; * @drvr_type&t;&t;: megaraid or hpe (DRVRTYPE_MBOX or DRVRTYPE_HPE)&n; * @drv_data&t;&t;: Driver specific; not touched by the common module&n; * @timeout&t;&t;: timeout for issued kiocs&n; * @max_kioc&t;&t;: Maximum ioctl packets acceptable by the lld&n; * @pdev&t;&t;: pci dev; used for allocating dma&squot;ble memory&n; * @issue_uioc&t;&t;: Driver supplied routine to issue uioc_t commands&n; *&t;&t;&t;: issue_uioc(drvr_data, kioc, ISSUE/ABORT, uioc_done)&n; * @kioc_list&t;&t;: block of mem for @max_kioc number of kiocs&n; * @kioc_pool&t;&t;: pool of free kiocs&n; * @kioc_pool_lock&t;: protection for free pool&n; * @kioc_semaphore&t;: so as not to exceed @max_kioc parallel ioctls&n; * @mbox_list&t;&t;: block of mem for @max_kioc number of mboxes&n; * @pthru_dma_pool&t;: DMA pool to allocate passthru packets&n; * @dma_pool_list&t;: array of dma pools&n; */
+multiline_comment|/**&n; * mraid_mmadp_t: Structure that drivers pass during (un)registration&n; *&n; * @unique_id&t;&t;: Any unique id (usually PCI bus+dev+fn)&n; * @drvr_type&t;&t;: megaraid or hpe (DRVRTYPE_MBOX or DRVRTYPE_HPE)&n; * @drv_data&t;&t;: Driver specific; not touched by the common module&n; * @timeout&t;&t;: timeout for issued kiocs&n; * @max_kioc&t;&t;: Maximum ioctl packets acceptable by the lld&n; * @pdev&t;&t;: pci dev; used for allocating dma&squot;ble memory&n; * @issue_uioc&t;&t;: Driver supplied routine to issue uioc_t commands&n; *&t;&t;&t;: issue_uioc(drvr_data, kioc, ISSUE/ABORT, uioc_done)&n; * @list&t;&t;: attach with the global list of adapters&n; * @kioc_list&t;&t;: block of mem for @max_kioc number of kiocs&n; * @kioc_pool&t;&t;: pool of free kiocs&n; * @kioc_pool_lock&t;: protection for free pool&n; * @kioc_semaphore&t;: so as not to exceed @max_kioc parallel ioctls&n; * @mbox_list&t;&t;: block of mem for @max_kioc number of mboxes&n; * @pthru_dma_pool&t;: DMA pool to allocate passthru packets&n; * @dma_pool_list&t;: array of dma pools&n; */
 DECL|struct|mraid_mmadp
 r_typedef
 r_struct
@@ -413,6 +411,11 @@ r_uint32
 )paren
 suffix:semicolon
 multiline_comment|/* Maintained by common module */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
 DECL|member|kioc_list
 id|uioc_t
 op_star

@@ -98,7 +98,7 @@ DECL|macro|MRAID_DMA_WSG
 mdefine_line|#define MRAID_DMA_WSG&t;0x0001&t;/* data transfer using a sg list */
 DECL|macro|MRAID_DMA_WBUF
 mdefine_line|#define MRAID_DMA_WBUF&t;0x0002&t;/* data transfer using a contiguous buffer */
-multiline_comment|/**&n; * struct adapter_t - driver&squot;s initialization structure&n; * @param dpc_h&t;&t;&t;: tasklet handle&n; * @param pdev&t;&t;&t;: pci configuration pointer for kernel&n; * @param host&t;&t;&t;: pointer to host structure of mid-layer&n; * @param host_lock&t;&t;: pointer to appropriate lock&n; * @param lock&t;&t;&t;: synchronization lock for mid-layer and driver&n; * @param quiescent&t;&t;: driver is quiescent for now.&n; * @param outstanding_cmds&t;: number of commands pending in the driver&n; * @param kscb_list&t;&t;: pointer to the bulk of SCBs pointers for IO&n; * @param kscb_pool&t;&t;: pool of free scbs for IO&n; * @param kscb_pool_lock&t;: lock for pool of free scbs&n; * @param pend_list&t;&t;: pending commands list&n; * @param pend_list_lock&t;: exlusion lock for pending commands list&n; * @param completed_list&t;: list of completed commands&n; * @param completed_list_lock&t;: exclusion lock for list of completed commands&n; * @param sglen&t;&t;&t;: max sg elements supported&n; * @param device_ids&t;&t;: to convert kernel device addr to our devices.&n; * @param raid_device&t;&t;: raid adapter specific pointer&n; * @param max_channel&t;&t;: maximum channel number supported - inclusive&n; * @param max_target&t;&t;: max target supported - inclusive&n; * @param max_lun&t;&t;: max lun supported - inclusive&n; * @param list&t;&t;&t;: list of megaraid host structures&n; * @param unique_id&t;&t;: unique identifier for each adapter&n; * @param irq&t;&t;&t;: IRQ for this adapter&n; * @param ito&t;&t;&t;: internal timeout value, (-1) means no timeout&n; * @param ibuf&t;&t;&t;: buffer to issue internal commands&n; * @param ibuf_dma_h&t;&t;: dma handle for the above buffer&n; * @param uscb_list&t;&t;: SCB pointers for user cmds, common mgmt module&n; * @param uscb_pool&t;&t;: pool of SCBs for user commands&n; * @param uscb_pool_lock&t;: exclusion lock for these SCBs&n; * @param max_cmds&t;&t;: max outstanding commands&n; * @param fw_version&t;&t;: firmware version&n; * @param bios_version&t;&t;: bios version&n; * @param max_cdb_sz&t;&t;: biggest CDB size supported.&n; * @param ha&t;&t;&t;: is high availability present - clustering&n; * @param init_id&t;&t;: initiator ID, the default value should be 7&n; * @param max_sectors&t;&t;: max sectors per request&n; * @param cmd_per_lun&t;&t;: max outstanding commands per LUN&n; * @param being_detached&t;: set when unloading, no more mgmt calls&n; *&n; *&n; * mraid_setup_device_map() can be called anytime after the device map is&n; * available and MRAID_GET_DEVICE_MAP() can be called whenever the mapping is&n; * required, usually from LLD&squot;s queue entry point. The formar API sets up the&n; * MRAID_IS_LOGICAL(adapter_t *, struct scsi_cmnd *) to find out if the&n; * device in question is a logical drive.&n; *&n; * quiescent flag should be set by the driver if it is not accepting more&n; * commands&n; *&n; * NOTE: The fields of this structures are placed to minimize cache misses&n; */
+multiline_comment|/**&n; * struct adapter_t - driver&squot;s initialization structure&n; * @param dpc_h&t;&t;&t;: tasklet handle&n; * @param pdev&t;&t;&t;: pci configuration pointer for kernel&n; * @param host&t;&t;&t;: pointer to host structure of mid-layer&n; * @param host_lock&t;&t;: pointer to appropriate lock&n; * @param lock&t;&t;&t;: synchronization lock for mid-layer and driver&n; * @param quiescent&t;&t;: driver is quiescent for now.&n; * @param outstanding_cmds&t;: number of commands pending in the driver&n; * @param kscb_list&t;&t;: pointer to the bulk of SCBs pointers for IO&n; * @param kscb_pool&t;&t;: pool of free scbs for IO&n; * @param kscb_pool_lock&t;: lock for pool of free scbs&n; * @param pend_list&t;&t;: pending commands list&n; * @param pend_list_lock&t;: exlusion lock for pending commands list&n; * @param completed_list&t;: list of completed commands&n; * @param completed_list_lock&t;: exclusion lock for list of completed commands&n; * @param sglen&t;&t;&t;: max sg elements supported&n; * @param device_ids&t;&t;: to convert kernel device addr to our devices.&n; * @param raid_device&t;&t;: raid adapter specific pointer&n; * @param max_channel&t;&t;: maximum channel number supported - inclusive&n; * @param max_target&t;&t;: max target supported - inclusive&n; * @param max_lun&t;&t;: max lun supported - inclusive&n; * @param unique_id&t;&t;: unique identifier for each adapter&n; * @param irq&t;&t;&t;: IRQ for this adapter&n; * @param ito&t;&t;&t;: internal timeout value, (-1) means no timeout&n; * @param ibuf&t;&t;&t;: buffer to issue internal commands&n; * @param ibuf_dma_h&t;&t;: dma handle for the above buffer&n; * @param uscb_list&t;&t;: SCB pointers for user cmds, common mgmt module&n; * @param uscb_pool&t;&t;: pool of SCBs for user commands&n; * @param uscb_pool_lock&t;: exclusion lock for these SCBs&n; * @param max_cmds&t;&t;: max outstanding commands&n; * @param fw_version&t;&t;: firmware version&n; * @param bios_version&t;&t;: bios version&n; * @param max_cdb_sz&t;&t;: biggest CDB size supported.&n; * @param ha&t;&t;&t;: is high availability present - clustering&n; * @param init_id&t;&t;: initiator ID, the default value should be 7&n; * @param max_sectors&t;&t;: max sectors per request&n; * @param cmd_per_lun&t;&t;: max outstanding commands per LUN&n; * @param being_detached&t;: set when unloading, no more mgmt calls&n; *&n; *&n; * mraid_setup_device_map() can be called anytime after the device map is&n; * available and MRAID_GET_DEVICE_MAP() can be called whenever the mapping is&n; * required, usually from LLD&squot;s queue entry point. The formar API sets up the&n; * MRAID_IS_LOGICAL(adapter_t *, struct scsi_cmnd *) to find out if the&n; * device in question is a logical drive.&n; *&n; * quiescent flag should be set by the driver if it is not accepting more&n; * commands&n; *&n; * NOTE: The fields of this structures are placed to minimize cache misses&n; */
 singleline_comment|// amount of space required to store the bios and firmware version strings
 DECL|macro|VERSION_SIZE
 mdefine_line|#define VERSION_SIZE&t;16
@@ -200,11 +200,6 @@ suffix:semicolon
 DECL|member|max_lun
 r_uint8
 id|max_lun
-suffix:semicolon
-DECL|member|list
-r_struct
-id|list_head
-id|list
 suffix:semicolon
 DECL|member|unique_id
 r_uint32
@@ -320,26 +315,6 @@ DECL|macro|MRAID_IS_LOGICAL
 mdefine_line|#define MRAID_IS_LOGICAL(adp, scp)&t;&bslash;&n;&t;(SCP2CHANNEL(scp) == (adp)-&gt;max_channel) ? 1 : 0
 DECL|macro|MRAID_GET_DEVICE_MAP
 mdefine_line|#define MRAID_GET_DEVICE_MAP(adp, scp, p_chan, target, islogical)&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Is the request coming for the virtual channel&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;islogical = MRAID_IS_LOGICAL(adp, scp);&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Get an index into our table of drive ids mapping&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (islogical) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;p_chan = 0xFF;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;target =&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(adp)-&gt;device_ids[(adp)-&gt;max_channel][SCP2TARGET(scp)];&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;p_chan = ((adp)-&gt;device_ids[SCP2CHANNEL(scp)]&t;&t;&bslash;&n;&t;&t;&t;&t;&t;[SCP2TARGET(scp)] &gt;&gt; 8) &amp; 0xFF;&t;&bslash;&n;&t;&t;target = ((adp)-&gt;device_ids[SCP2CHANNEL(scp)]&t;&t;&bslash;&n;&t;&t;&t;&t;&t;[SCP2TARGET(scp)] &amp; 0xFF);&t;&bslash;&n;&t;}
-multiline_comment|/**&n; * struct mraid_driver_t - global driver data&n; * @param driver_version&t;: driver version&n; * @param device_list&t;&t;: list of adapter_t structures&n; *&n; * mraid_driver_t contains information which is global to the driver.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|driver_version
-r_uint8
-id|driver_version
-(braket
-l_int|8
-)braket
-suffix:semicolon
-DECL|member|device_list
-r_struct
-id|list_head
-id|device_list
-suffix:semicolon
-DECL|typedef|mraid_driver_t
-)brace
-id|mraid_driver_t
-suffix:semicolon
 multiline_comment|/*&n; * ### Helper routines ###&n; */
 DECL|macro|LSI_DBGLVL
 mdefine_line|#define LSI_DBGLVL mraid_debug_level&t;

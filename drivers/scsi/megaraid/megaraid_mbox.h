@@ -6,9 +6,9 @@ macro_line|#include &quot;mega_common.h&quot;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.0.0&quot;
+mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.3.0&quot;
 DECL|macro|MEGARAID_EXT_VERSION
-mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Wed Jun 23 11:38:38 EDT 2004)&quot;
+mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Thu Aug 19 09:58:33 EDT 2004)&quot;
 multiline_comment|/*&n; * Define some PCI values here until they are put in the kernel&n; */
 DECL|macro|PCI_DEVICE_ID_PERC4_DI_DISCOVERY
 mdefine_line|#define PCI_DEVICE_ID_PERC4_DI_DISCOVERY&t;&t;0x000E
@@ -90,6 +90,10 @@ DECL|macro|PCI_DEVICE_ID_MEGARAID_SCSI_320_2E
 mdefine_line|#define PCI_DEVICE_ID_MEGARAID_SCSI_320_2E&t;&t;0x0408
 DECL|macro|PCI_SUBSYS_ID_MEGARAID_SCSI_320_2E
 mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_SCSI_320_2E&t;&t;0x0002
+DECL|macro|PCI_DEVICE_ID_MEGARAID_I4_133_RAID
+mdefine_line|#define PCI_DEVICE_ID_MEGARAID_I4_133_RAID&t;&t;0x1960
+DECL|macro|PCI_SUBSYS_ID_MEGARAID_I4_133_RAID
+mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_I4_133_RAID&t;&t;0x0522
 DECL|macro|PCI_DEVICE_ID_MEGARAID_SATA_150_4
 mdefine_line|#define PCI_DEVICE_ID_MEGARAID_SATA_150_4&t;&t;0x1960
 DECL|macro|PCI_SUBSYS_ID_MEGARAID_SATA_150_4
@@ -101,7 +105,7 @@ mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_SATA_150_6&t;&t;0x0523
 DECL|macro|PCI_DEVICE_ID_MEGARAID_SATA_300_4x
 mdefine_line|#define PCI_DEVICE_ID_MEGARAID_SATA_300_4x&t;&t;0x0409
 DECL|macro|PCI_SUBSYS_ID_MEGARAID_SATA_300_4x
-mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_SATA_300_4x&t;&t;0x3008
+mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_SATA_300_4x&t;&t;0x3004
 DECL|macro|PCI_DEVICE_ID_MEGARAID_SATA_300_8x
 mdefine_line|#define PCI_DEVICE_ID_MEGARAID_SATA_300_8x&t;&t;0x0409
 DECL|macro|PCI_SUBSYS_ID_MEGARAID_SATA_300_8x
@@ -142,6 +146,10 @@ DECL|macro|PCI_DEVICE_ID_FSC_MEGARAID_PCI_EXPRESS_ROMB
 mdefine_line|#define PCI_DEVICE_ID_FSC_MEGARAID_PCI_EXPRESS_ROMB&t;0x0408
 DECL|macro|PCI_SUBSYS_ID_FSC_MEGARAID_PCI_EXPRESS_ROMB
 mdefine_line|#define PCI_SUBSYS_ID_FSC_MEGARAID_PCI_EXPRESS_ROMB&t;0x1065
+DECL|macro|PCI_DEVICE_ID_MEGARAID_ACER_ROMB_2E
+mdefine_line|#define PCI_DEVICE_ID_MEGARAID_ACER_ROMB_2E&t;&t;0x0408
+DECL|macro|PCI_SUBSYS_ID_MEGARAID_ACER_ROMB_2E
+mdefine_line|#define PCI_SUBSYS_ID_MEGARAID_ACER_ROMB_2E&t;&t;0x004D
 DECL|macro|PCI_SUBSYS_ID_PERC3_QC
 mdefine_line|#define PCI_SUBSYS_ID_PERC3_QC&t;&t;&t;&t;0x0471
 DECL|macro|PCI_SUBSYS_ID_PERC3_DC
