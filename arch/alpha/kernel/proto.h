@@ -893,6 +893,25 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* ../mm/remap.c */
+r_extern
+r_int
+id|__alpha_remap_area_pages
+c_func
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/* irq.c */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|mcheck_expected
