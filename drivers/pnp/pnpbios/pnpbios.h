@@ -1,4 +1,97 @@
-multiline_comment|/*&n; * pnpbios.h - contains definitions for functions used only locally.&n; */
+multiline_comment|/*&n; * pnpbios.h - contains local definitions&n; */
+macro_line|#pragma pack(1)
+DECL|union|pnp_bios_install_struct
+r_union
+id|pnp_bios_install_struct
+(brace
+r_struct
+(brace
+DECL|member|signature
+id|u32
+id|signature
+suffix:semicolon
+multiline_comment|/* &quot;$PnP&quot; */
+DECL|member|version
+id|u8
+id|version
+suffix:semicolon
+multiline_comment|/* in BCD */
+DECL|member|length
+id|u8
+id|length
+suffix:semicolon
+multiline_comment|/* length in bytes, currently 21h */
+DECL|member|control
+id|u16
+id|control
+suffix:semicolon
+multiline_comment|/* system capabilities */
+DECL|member|checksum
+id|u8
+id|checksum
+suffix:semicolon
+multiline_comment|/* all bytes must add up to 0 */
+DECL|member|eventflag
+id|u32
+id|eventflag
+suffix:semicolon
+multiline_comment|/* phys. address of the event flag */
+DECL|member|rmoffset
+id|u16
+id|rmoffset
+suffix:semicolon
+multiline_comment|/* real mode entry point */
+DECL|member|rmcseg
+id|u16
+id|rmcseg
+suffix:semicolon
+DECL|member|pm16offset
+id|u16
+id|pm16offset
+suffix:semicolon
+multiline_comment|/* 16 bit protected mode entry */
+DECL|member|pm16cseg
+id|u32
+id|pm16cseg
+suffix:semicolon
+DECL|member|deviceID
+id|u32
+id|deviceID
+suffix:semicolon
+multiline_comment|/* EISA encoded system ID or 0 */
+DECL|member|rmdseg
+id|u16
+id|rmdseg
+suffix:semicolon
+multiline_comment|/* real mode data segment */
+DECL|member|pm16dseg
+id|u32
+id|pm16dseg
+suffix:semicolon
+multiline_comment|/* 16 bit pm data segment base */
+DECL|member|fields
+)brace
+id|fields
+suffix:semicolon
+DECL|member|chars
+r_char
+id|chars
+(braket
+l_int|0x21
+)braket
+suffix:semicolon
+multiline_comment|/* To calculate the checksum */
+)brace
+suffix:semicolon
+macro_line|#pragma pack()
+r_extern
+r_int
+id|pnp_bios_present
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|pnpbios_parse_data_stream
@@ -75,11 +168,14 @@ id|status
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|pnpbios_probe_installation
+r_void
+id|pnpbios_calls_init
 c_func
 (paren
-r_void
+r_union
+id|pnp_bios_install_struct
+op_star
+id|header
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
