@@ -221,6 +221,17 @@ DECL|macro|FTDI_GUDEADS_E88E_PID
 mdefine_line|#define FTDI_GUDEADS_E88E_PID    0xE88E
 DECL|macro|FTDI_GUDEADS_E88F_PID
 mdefine_line|#define FTDI_GUDEADS_E88F_PID    0xE88F
+multiline_comment|/*&n; * Linx Technologies product ids&n; */
+DECL|macro|LINX_SDMUSBQSS_PID
+mdefine_line|#define LINX_SDMUSBQSS_PID&t;0xF448&t;/* Linx SDM-USB-QS-S */
+DECL|macro|LINX_MASTERDEVEL2_PID
+mdefine_line|#define LINX_MASTERDEVEL2_PID   0xF449   /* Linx Master Development 2.0 */
+DECL|macro|LINX_FUTURE_0_PID
+mdefine_line|#define LINX_FUTURE_0_PID   0xF44A   /* Linx future device */
+DECL|macro|LINX_FUTURE_1_PID
+mdefine_line|#define LINX_FUTURE_1_PID   0xF44B   /* Linx future device */
+DECL|macro|LINX_FUTURE_2_PID
+mdefine_line|#define LINX_FUTURE_2_PID   0xF44C   /* Linx future device */
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
