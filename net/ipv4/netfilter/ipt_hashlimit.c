@@ -784,9 +784,12 @@ id|hinfo-&gt;rnd
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hinfo-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|hinfo-&gt;pde
 op_assign

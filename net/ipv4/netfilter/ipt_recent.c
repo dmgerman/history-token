@@ -4322,9 +4322,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|curr_table-&gt;list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|curr_table-&gt;next
 op_assign

@@ -1194,9 +1194,12 @@ id|inet6_dev
 )paren
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|ndev-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|ndev-&gt;dev
 op_assign

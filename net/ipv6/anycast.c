@@ -1428,9 +1428,12 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|aca-&gt;aca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|aca-&gt;aca_next
 op_assign

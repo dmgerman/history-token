@@ -3364,9 +3364,12 @@ op_amp
 id|im-&gt;mca_lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|pmc-&gt;mca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|pmc-&gt;idev
 op_assign
@@ -4027,9 +4030,12 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|mc-&gt;mca_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* initial mode is (EX, empty) */
 id|mc-&gt;mca_sfmode
@@ -10383,9 +10389,12 @@ op_amp
 id|idev-&gt;lock
 )paren
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|idev-&gt;mc_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|idev-&gt;mc_gq_running
 op_assign
