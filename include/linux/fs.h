@@ -136,8 +136,6 @@ DECL|macro|FS_NO_DCACHE
 mdefine_line|#define FS_NO_DCACHE&t;2 /* Only dcache the necessary things. */
 DECL|macro|FS_NO_PRELIM
 mdefine_line|#define FS_NO_PRELIM&t;4 /* prevent preloading of dentries, even if&n;&t;&t;&t;   * FS_NO_DCACHE is not set.&n;&t;&t;&t;   */
-DECL|macro|FS_SINGLE
-mdefine_line|#define FS_SINGLE&t;8 /* Filesystem that can have only one superblock */
 DECL|macro|FS_NOMOUNT
 mdefine_line|#define FS_NOMOUNT&t;16 /* Never mount from userland */
 DECL|macro|FS_LITTER
