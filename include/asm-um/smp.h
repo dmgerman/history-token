@@ -34,8 +34,6 @@ r_extern
 r_int
 id|ncpus
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) (cpu &lt; ncpus)
 DECL|function|smp_cpus_done
 r_extern
 r_inline
