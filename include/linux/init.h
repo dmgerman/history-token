@@ -37,14 +37,14 @@ suffix:semicolon
 multiline_comment|/* initcalls are now grouped by functionality into separate &n; * subsections. Ordering inside the subsections is determined&n; * by link order. &n; * For backwards compatability, initcall() puts the call in &n; * the device init subsection.&n; */
 DECL|macro|__define_initcall
 mdefine_line|#define __define_initcall(level,fn) &bslash;&n;&t;static initcall_t __initcall_##fn __attribute__ ((unused,__section__ (&quot;.initcall&quot; level &quot;.init&quot;))) = fn
-DECL|macro|early_arch_initcall
-mdefine_line|#define early_arch_initcall(fn)&t;&t;__define_initcall(&quot;1&quot;,fn)
-DECL|macro|mem_initcall
-mdefine_line|#define mem_initcall(fn)&t;&t;__define_initcall(&quot;2&quot;,fn)
-DECL|macro|subsys_initcall
-mdefine_line|#define subsys_initcall(fn)&t;&t;__define_initcall(&quot;3&quot;,fn)
+DECL|macro|core_initcall
+mdefine_line|#define core_initcall(fn)&t;&t;__define_initcall(&quot;1&quot;,fn)
+DECL|macro|unused_initcall
+mdefine_line|#define unused_initcall(fn)&t;&t;__define_initcall(&quot;2&quot;,fn)
 DECL|macro|arch_initcall
-mdefine_line|#define arch_initcall(fn)&t;&t;__define_initcall(&quot;4&quot;,fn)
+mdefine_line|#define arch_initcall(fn)&t;&t;__define_initcall(&quot;3&quot;,fn)
+DECL|macro|subsys_initcall
+mdefine_line|#define subsys_initcall(fn)&t;&t;__define_initcall(&quot;4&quot;,fn)
 DECL|macro|fs_initcall
 mdefine_line|#define fs_initcall(fn)&t;&t;&t;__define_initcall(&quot;5&quot;,fn)
 DECL|macro|device_initcall
@@ -164,14 +164,14 @@ DECL|macro|module_exit
 mdefine_line|#define module_exit(x) &bslash;&n;&t;void cleanup_module(void) __attribute__((alias(#x))); &bslash;&n;&t;static inline __cleanup_module_func_t __cleanup_module_inline(void) &bslash;&n;&t;{ return x; }
 DECL|macro|__setup
 mdefine_line|#define __setup(str,func) /* nothing */
-DECL|macro|early_arch_initcall
-mdefine_line|#define early_arch_initcall(fn)&t;&t;module_init(fn)
-DECL|macro|mem_initcall
-mdefine_line|#define mem_initcall(fn)&t;&t;module_init(fn)
-DECL|macro|subsys_initcall
-mdefine_line|#define subsys_initcall(fn)&t;&t;module_init(fn)
+DECL|macro|core_initcall
+mdefine_line|#define core_initcall(fn)&t;&t;module_init(fn)
+DECL|macro|unused_initcall
+mdefine_line|#define unused_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|arch_initcall
 mdefine_line|#define arch_initcall(fn)&t;&t;module_init(fn)
+DECL|macro|subsys_initcall
+mdefine_line|#define subsys_initcall(fn)&t;&t;module_init(fn)
 DECL|macro|fs_initcall
 mdefine_line|#define fs_initcall(fn)&t;&t;&t;module_init(fn)
 DECL|macro|device_initcall
