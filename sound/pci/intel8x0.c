@@ -4821,6 +4821,14 @@ id|DEVICE_NFORCE
 )paren
 (brace
 multiline_comment|/* reset to 2ch once to keep the 6 channel data in alignment,&n;&t;&t;&t; * to start from Front Left always&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|cnt
+op_amp
+id|ICH_PCM_246_MASK
+)paren
+(brace
 id|iputdword
 c_func
 (paren
@@ -4832,20 +4840,20 @@ c_func
 id|GLOB_CNT
 )paren
 comma
-(paren
 id|cnt
 op_amp
-l_int|0xcfffff
-)paren
+op_complement
+id|ICH_PCM_246_MASK
 )paren
 suffix:semicolon
-id|mdelay
+id|msleep
 c_func
 (paren
 l_int|50
 )paren
 suffix:semicolon
 multiline_comment|/* grrr... */
+)brace
 )brace
 r_else
 r_if
