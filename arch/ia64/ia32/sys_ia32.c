@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2004&t;&t;Gordon Jin &lt;gordon.jin@intel.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2003, 2005 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2004&t;&t;Gordon Jin &lt;gordon.jin@intel.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
@@ -6851,11 +6851,6 @@ DECL|function|ia32_peek
 id|ia32_peek
 (paren
 r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_struct
 id|task_struct
 op_star
 id|child
@@ -6920,11 +6915,6 @@ r_int
 DECL|function|ia32_poke
 id|ia32_poke
 (paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
 r_struct
 id|task_struct
 op_star
@@ -8996,7 +8986,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Note that the IA32 version of `ptrace&squot; calls the IA64 routine for&n; *    many of the requests.  This will only work for requests that do&n; *    not need access to the calling processes `pt_regs&squot; which is located&n; *    at the address of `stack&squot;.  Once we call the IA64 `sys_ptrace&squot; then&n; *    the address of `stack&squot; will not be the address of the `pt_regs&squot;.&n; */
 id|asmlinkage
 r_int
 DECL|function|sys32_ptrace
@@ -9015,36 +9004,8 @@ comma
 r_int
 r_int
 id|data
-comma
-r_int
-id|arg4
-comma
-r_int
-id|arg5
-comma
-r_int
-id|arg6
-comma
-r_int
-id|arg7
-comma
-r_int
-id|stack
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|regs
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -9086,16 +9047,6 @@ comma
 id|addr
 comma
 id|data
-comma
-id|arg4
-comma
-id|arg5
-comma
-id|arg6
-comma
-id|arg7
-comma
-id|stack
 )paren
 suffix:semicolon
 r_goto
@@ -9185,16 +9136,6 @@ comma
 id|addr
 comma
 id|data
-comma
-id|arg4
-comma
-id|arg5
-comma
-id|arg6
-comma
-id|arg7
-comma
-id|stack
 )paren
 suffix:semicolon
 r_goto
@@ -9241,8 +9182,6 @@ op_assign
 id|ia32_peek
 c_func
 (paren
-id|regs
-comma
 id|child
 comma
 id|addr
@@ -9299,8 +9238,6 @@ op_assign
 id|ia32_poke
 c_func
 (paren
-id|regs
-comma
 id|child
 comma
 id|addr
@@ -9787,16 +9724,6 @@ comma
 id|addr
 comma
 id|data
-comma
-id|arg4
-comma
-id|arg5
-comma
-id|arg6
-comma
-id|arg7
-comma
-id|stack
 )paren
 suffix:semicolon
 r_break
@@ -9894,23 +9821,11 @@ comma
 r_int
 id|arg7
 comma
-r_int
-id|stack
+r_struct
+id|pt_regs
+id|pt
 )paren
 (brace
-r_struct
-id|pt_regs
-op_star
-id|pt
-op_assign
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-op_amp
-id|stack
-suffix:semicolon
 id|stack_t
 id|uss
 comma
@@ -10036,7 +9951,7 @@ op_star
 op_amp
 id|uoss
 comma
-id|pt-&gt;r12
+id|pt.r12
 )paren
 suffix:semicolon
 id|current-&gt;sas_ss_size
