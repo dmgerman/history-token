@@ -94,8 +94,15 @@ DECL|macro|PT_TRACE_EXIT
 mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 DECL|macro|PT_TRACE_MASK
 mdefine_line|#define PT_TRACE_MASK&t;0x000003f4
+multiline_comment|/* single stepping state bits (used on ARM and PA-RISC) */
+DECL|macro|PT_SINGLESTEP_BIT
+mdefine_line|#define PT_SINGLESTEP_BIT&t;31
 DECL|macro|PT_SINGLESTEP
-mdefine_line|#define PT_SINGLESTEP&t;0x80000000&t;/* single stepping (used on ARM) */
+mdefine_line|#define PT_SINGLESTEP&t;&t;(1&lt;&lt;PT_SINGLESTEP_BIT)
+DECL|macro|PT_BLOCKSTEP_BIT
+mdefine_line|#define PT_BLOCKSTEP_BIT&t;30
+DECL|macro|PT_BLOCKSTEP
+mdefine_line|#define PT_BLOCKSTEP&t;&t;(1&lt;&lt;PT_BLOCKSTEP_BIT)
 macro_line|#include &lt;linux/compiler.h&gt;&t;&t;/* For unlikely.  */
 macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* For struct task_struct.  */
 r_extern
