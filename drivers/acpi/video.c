@@ -6579,7 +6579,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
+(paren
+l_int|1
+op_plus
 id|dod-&gt;package.count
+)paren
 op_star
 r_sizeof
 (paren
