@@ -44,8 +44,6 @@ DECL|macro|MACHINE_HAS_MVPG
 mdefine_line|#define MACHINE_HAS_MVPG&t;(machine_flags &amp; 16)
 DECL|macro|MACHINE_HAS_DIAG44
 mdefine_line|#define MACHINE_HAS_DIAG44&t;(machine_flags &amp; 32)
-DECL|macro|MACHINE_NEW_STIDP
-mdefine_line|#define MACHINE_NEW_STIDP&t;(machine_flags &amp; 64)
 DECL|macro|MACHINE_HAS_IDTE
 mdefine_line|#define MACHINE_HAS_IDTE&t;(machine_flags &amp; 128)
 macro_line|#ifndef __s390x__
@@ -70,7 +68,7 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|console_device
+id|console_devno
 suffix:semicolon
 r_extern
 r_int

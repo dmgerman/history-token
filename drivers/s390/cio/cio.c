@@ -2357,7 +2357,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|console_device
+id|console_devno
 op_assign
 id|console_subchannel.schib.pmcw.dev
 suffix:semicolon
@@ -2366,7 +2366,7 @@ r_else
 r_if
 c_cond
 (paren
-id|console_device
+id|console_devno
 op_ne
 op_minus
 l_int|1
@@ -2411,7 +2411,7 @@ id|console_subchannel.schib.pmcw.dnv
 op_logical_and
 id|console_subchannel.schib.pmcw.dev
 op_eq
-id|console_device
+id|console_devno
 )paren
 (brace
 id|console_irq

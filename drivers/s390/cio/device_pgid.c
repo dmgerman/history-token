@@ -561,7 +561,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Retry sense pgid.&n;&t; */
+multiline_comment|/* Retry sense pgid for cc=1. */
 r_if
 c_cond
 (paren
@@ -572,6 +572,14 @@ id|SCSW_STCTL_STATUS_PEND
 op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
 )paren
 (brace
 id|ret
@@ -600,6 +608,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
@@ -1426,7 +1435,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unsolicited interrupts may pertain to an earlier status pending or&n;&t; * busy condition on the subchannel. Restart path verification.&n;&t; */
+multiline_comment|/* Retry set pgid for cc=1. */
 r_if
 c_cond
 (paren
@@ -1439,6 +1448,13 @@ id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
+)paren
 id|__ccw_device_verify_start
 c_func
 (paren
@@ -1821,7 +1837,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/* Ignore unsolicited interrupts. */
+multiline_comment|/* Retry set pgid for cc=1. */
 r_if
 c_cond
 (paren
@@ -1833,8 +1849,23 @@ op_or
 id|SCSW_STCTL_ALERT_STATUS
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|irb-&gt;scsw.cc
+op_eq
+l_int|1
+)paren
+id|__ccw_device_disband_start
+c_func
+(paren
+id|cdev
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

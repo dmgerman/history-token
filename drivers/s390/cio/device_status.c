@@ -52,7 +52,7 @@ c_func
 l_int|0
 comma
 l_string|&quot;Channel-Check or Interface-Control-Check &quot;
-l_string|&quot;received&bslash;n&quot;
+l_string|&quot;received&quot;
 l_string|&quot; ... device %04X on subchannel %04X, dev_stat &quot;
 l_string|&quot;: %02X sch_stat : %02X&bslash;n&quot;
 comma
@@ -665,12 +665,19 @@ multiline_comment|/*&n;&t; * Don&squot;t accumulate unsolicited interrupts.&n;&t
 r_if
 c_cond
 (paren
+(paren
 id|irb-&gt;scsw.stctl
 op_eq
 (paren
 id|SCSW_STCTL_STATUS_PEND
 op_or
 id|SCSW_STCTL_ALERT_STATUS
+)paren
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|irb-&gt;scsw.cc
 )paren
 )paren
 r_return
