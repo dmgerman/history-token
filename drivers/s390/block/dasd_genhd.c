@@ -294,7 +294,7 @@ suffix:semicolon
 multiline_comment|/* Register block device. */
 id|new_major
 op_assign
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|major
@@ -638,7 +638,7 @@ id|major
 suffix:semicolon
 id|rc
 op_assign
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|major

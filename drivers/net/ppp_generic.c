@@ -3205,7 +3205,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 id|err
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|PPP_MAJOR
@@ -10562,7 +10562,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|PPP_MAJOR

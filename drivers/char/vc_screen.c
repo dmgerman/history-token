@@ -2024,7 +2024,7 @@ id|error
 suffix:semicolon
 id|error
 op_assign
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|VCS_MAJOR

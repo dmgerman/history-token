@@ -2934,7 +2934,7 @@ c_cond
 (paren
 id|i
 op_assign
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|STL_SIOMEMMAJOR
@@ -23073,7 +23073,7 @@ multiline_comment|/*&n; *&t;Set up a character driver for the shared memory regi
 r_if
 c_cond
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|STL_SIOMEMMAJOR

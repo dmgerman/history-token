@@ -1316,7 +1316,7 @@ suffix:semicolon
 id|TRACE_CATCH
 c_func
 (paren
-id|devfs_register_chrdev
+id|register_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR
@@ -1687,7 +1687,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_unregister_chrdev
+id|unregister_chrdev
 c_func
 (paren
 id|QIC117_TAPE_MAJOR

@@ -18451,7 +18451,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -18644,7 +18644,7 @@ op_minus
 l_int|1
 )paren
 (brace
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -18716,7 +18716,7 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -19035,7 +19035,7 @@ id|MAJOR_NR
 )paren
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -20030,7 +20030,7 @@ id|devfs_unregister
 id|devfs_handle
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

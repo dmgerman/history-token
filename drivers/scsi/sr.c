@@ -2866,7 +2866,7 @@ id|sr_registered
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -2930,7 +2930,7 @@ op_logical_neg
 id|scsi_CDs
 )paren
 r_goto
-id|cleanup_devfs
+id|cleanup_dev
 suffix:semicolon
 id|memset
 c_func
@@ -2997,9 +2997,9 @@ c_func
 id|scsi_CDs
 )paren
 suffix:semicolon
-id|cleanup_devfs
+id|cleanup_dev
 suffix:colon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3613,7 +3613,7 @@ op_amp
 id|sr_template
 )paren
 suffix:semicolon
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MAJOR_NR

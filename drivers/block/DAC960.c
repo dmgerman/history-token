@@ -7460,7 +7460,7 @@ multiline_comment|/*&n;    Register the Block Device Major Number for this DAC96
 r_if
 c_cond
 (paren
-id|devfs_register_blkdev
+id|register_blkdev
 c_func
 (paren
 id|MajorNumber
@@ -7627,7 +7627,7 @@ op_plus
 id|Controller-&gt;ControllerNumber
 suffix:semicolon
 multiline_comment|/*&n;    Unregister the Block Device Major Number for this DAC960 Controller.&n;  */
-id|devfs_unregister_blkdev
+id|unregister_blkdev
 c_func
 (paren
 id|MajorNumber
