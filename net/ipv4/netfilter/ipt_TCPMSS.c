@@ -996,9 +996,9 @@ id|newmss
 suffix:semicolon
 id|retmodified
 suffix:colon
-multiline_comment|/* If we had a hardware checksum before, it&squot;s now invalid */
-r_if
-c_cond
+multiline_comment|/* We never hw checksum SYN packets.  */
+id|BUG_ON
+c_func
 (paren
 (paren
 op_star
@@ -1009,19 +1009,6 @@ id|ip_summed
 op_eq
 id|CHECKSUM_HW
 )paren
-r_if
-c_cond
-(paren
-id|skb_checksum_help
-c_func
-(paren
-id|pskb
-comma
-l_int|0
-)paren
-)paren
-r_return
-id|NF_DROP
 suffix:semicolon
 (paren
 op_star
