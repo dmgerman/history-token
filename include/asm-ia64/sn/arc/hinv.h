@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-multiline_comment|/* $Id$&n; *&n; * ARCS hardware/memory inventory/configuration and system ID definitions.&n; */
+multiline_comment|/*&n; * ARCS hardware/memory inventory/configuration and system ID definitions.&n; */
 macro_line|#ifndef _ASM_SN_ARC_HINV_H
 DECL|macro|_ASM_SN_ARC_HINV_H
 mdefine_line|#define _ASM_SN_ARC_HINV_H
