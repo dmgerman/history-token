@@ -21,6 +21,7 @@ r_int
 id|print
 )paren
 (brace
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_char
 op_star
 id|src
@@ -30,6 +31,7 @@ id|nxs
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 r_int
 id|status
 op_assign
@@ -870,6 +872,12 @@ id|print
 )paren
 (brace
 r_int
+id|status
+op_assign
+id|MCHK_DISPOSITION_REPORT
+suffix:semicolon
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
+r_int
 id|cmd
 comma
 id|len
@@ -878,12 +886,6 @@ r_int
 r_int
 id|addr
 suffix:semicolon
-r_int
-id|status
-op_assign
-id|MCHK_DISPOSITION_REPORT
-suffix:semicolon
-macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_char
 op_star
 id|agperror_cmd
@@ -2033,6 +2035,12 @@ r_int
 id|print
 )paren
 (brace
+r_int
+id|status
+op_assign
+id|MCHK_DISPOSITION_UNKNOWN_ERROR
+suffix:semicolon
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_struct
 id|el_PRIVATEER_envdata_mcheck
 op_star
@@ -2053,13 +2061,7 @@ op_plus
 id|mchk_header-&gt;sys_offset
 )paren
 suffix:semicolon
-r_int
-id|status
-op_assign
-id|MCHK_DISPOSITION_UNKNOWN_ERROR
-suffix:semicolon
 multiline_comment|/* TODO - catagorize errors, for now, no error */
-macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_if
 c_cond
 (paren

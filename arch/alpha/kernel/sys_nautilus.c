@@ -110,6 +110,12 @@ id|bus
 op_assign
 id|pci_isa_hose-&gt;bus
 suffix:semicolon
+id|u32
+id|pmuport
+suffix:semicolon
+r_int
+id|off
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -179,10 +185,12 @@ suffix:semicolon
 r_case
 id|LINUX_REBOOT_CMD_POWER_OFF
 suffix:colon
-(brace
-id|u32
-id|pmuport
+multiline_comment|/* Assume M1543C */
+id|off
+op_assign
+l_int|0x2000
 suffix:semicolon
+multiline_comment|/* SLP_TYPE = 0, SLP_EN = 1 */
 id|pci_bus_read_config_dword
 c_func
 (paren
@@ -196,11 +204,38 @@ op_amp
 id|pmuport
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pmuport
+)paren
+(brace
+multiline_comment|/* M1535D/D+ */
+id|off
+op_assign
+l_int|0x3400
+suffix:semicolon
+multiline_comment|/* SLP_TYPE = 5, SLP_EN = 1 */
+id|pci_bus_read_config_dword
+c_func
+(paren
+id|bus
+comma
+l_int|0x88
+comma
+l_int|0xe0
+comma
+op_amp
+id|pmuport
+)paren
+suffix:semicolon
+)brace
 id|pmuport
 op_and_assign
 l_int|0xfffe
 suffix:semicolon
-id|outl
+id|outw
 c_func
 (paren
 l_int|0xffff
@@ -208,20 +243,18 @@ comma
 id|pmuport
 )paren
 suffix:semicolon
-multiline_comment|/* clear pending events */
+multiline_comment|/* Clear pending events. */
 id|outw
 c_func
 (paren
-l_int|0x2000
+id|off
 comma
 id|pmuport
 op_plus
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/* power off */
 multiline_comment|/* NOTREACHED */
-)brace
 r_break
 suffix:semicolon
 )brace
