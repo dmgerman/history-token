@@ -314,36 +314,56 @@ id|ipv6_devconf
 id|ipv6_devconf
 op_assign
 (brace
+dot
+id|forwarding
+op_assign
 l_int|0
 comma
-multiline_comment|/* forwarding&t;&t;*/
+dot
+id|hop_limit
+op_assign
 id|IPV6_DEFAULT_HOPLIMIT
 comma
-multiline_comment|/* hop limit&t;&t;*/
+dot
+id|mtu6
+op_assign
 id|IPV6_MIN_MTU
 comma
-multiline_comment|/* mtu&t;&t;&t;*/
+dot
+id|accept_ra
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept RAs&t;&t;*/
+dot
+id|accept_redirects
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept redirects&t;*/
+dot
+id|autoconf
+op_assign
 l_int|1
 comma
-multiline_comment|/* autoconfiguration&t;*/
+dot
+id|dad_transmits
+op_assign
 l_int|1
 comma
-multiline_comment|/* dad transmits&t;*/
+dot
+id|rtr_solicits
+op_assign
 id|MAX_RTR_SOLICITATIONS
 comma
-multiline_comment|/* router solicits&t;*/
+dot
+id|rtr_solicit_interval
+op_assign
 id|RTR_SOLICITATION_INTERVAL
 comma
-multiline_comment|/* rtr solicit interval&t;*/
+dot
+id|rtr_solicit_delay
+op_assign
 id|MAX_RTR_SOLICITATION_DELAY
 comma
-multiline_comment|/* rtr solicit delay&t;*/
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 dot
 id|use_tempaddr
@@ -380,36 +400,56 @@ id|ipv6_devconf
 id|ipv6_devconf_dflt
 op_assign
 (brace
+dot
+id|forwarding
+op_assign
 l_int|0
 comma
-multiline_comment|/* forwarding&t;&t;*/
+dot
+id|hop_limit
+op_assign
 id|IPV6_DEFAULT_HOPLIMIT
 comma
-multiline_comment|/* hop limit&t;&t;*/
+dot
+id|mtu6
+op_assign
 id|IPV6_MIN_MTU
 comma
-multiline_comment|/* mtu&t;&t;&t;*/
+dot
+id|accept_ra
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept RAs&t;&t;*/
+dot
+id|accept_redirects
+op_assign
 l_int|1
 comma
-multiline_comment|/* accept redirects&t;*/
+dot
+id|autoconf
+op_assign
 l_int|1
 comma
-multiline_comment|/* autoconfiguration&t;*/
+dot
+id|dad_transmits
+op_assign
 l_int|1
 comma
-multiline_comment|/* dad transmits&t;*/
+dot
+id|rtr_solicits
+op_assign
 id|MAX_RTR_SOLICITATIONS
 comma
-multiline_comment|/* router solicits&t;*/
+dot
+id|rtr_solicit_interval
+op_assign
 id|RTR_SOLICITATION_INTERVAL
 comma
-multiline_comment|/* rtr solicit interval&t;*/
+dot
+id|rtr_solicit_delay
+op_assign
 id|MAX_RTR_SOLICITATION_DELAY
 comma
-multiline_comment|/* rtr solicit delay&t;*/
 macro_line|#ifdef CONFIG_IPV6_PRIVACY
 dot
 id|use_tempaddr
