@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * raid5.c : Multiple Devices driver for Linux&n; *&t;   Copyright (C) 1996, 1997 Ingo Molnar, Miguel de Icaza, Gadi Oxman&n; *&t;   Copyright (C) 1999, 2000 Ingo Molnar&n; *&n; * RAID-5 management functions.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * You should have received a copy of the GNU General Public License&n; * (for example /usr/src/linux/COPYING); if not, write to the Free&n; * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/raid/raid5.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;

@@ -4,7 +4,6 @@ DECL|macro|CPQARRAY_H
 mdefine_line|#define CPQARRAY_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/ext2/ialloc.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  BSD ufs-inspired inode and directory allocation by &n; *  Stephen Tweedie (sct@dcs.ed.ac.uk), 1993&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;ext2.h&quot;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 multiline_comment|/*&n; * ialloc.c contains the inodes allocation and deallocation routines&n; */
 multiline_comment|/*&n; * The free inodes are managed by bitmaps.  A file system contains several&n; * blocks groups.  Each group contains 1 bitmap block for blocks, 1 bitmap&n; * block for inodes, N blocks for the inode table and data blocks.&n; *&n; * The file system contains group descriptors which are located after the&n; * super block.  Each descriptor contains the number of the bitmap block and&n; * the free blocks count in the block.  The descriptors are loaded in memory&n; * when a file system is mounted (see ext2_read_super).&n; */

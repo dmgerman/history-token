@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Maintain information about the progress of the recovery job, so that&n; * the different passes can carry information between them. &n; */
 DECL|struct|recovery_info

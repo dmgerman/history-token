@@ -1,13 +1,14 @@
 multiline_comment|/*&n; *  linux/fs/ext3/inode.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/inode.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Goal-directed block allocation by Stephen Tweedie&n; * &t;(sct@redhat.com), 1993, 1998&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; *  64-bit file support on 64-bit platforms by Jakub Jelinek&n; * &t;(jj@sunsite.ms.mff.cuni.cz)&n; *&n; *  Assorted race fixes, rewrite of ext3_get_block() by Al Viro, 2000&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/ext3_jbd.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 multiline_comment|/*&n; * SEARCH_FROM_ZERO forces each block allocation to search from the start&n; * of the filesystem.  This is to force rapid reallocation of recently-freed&n; * blocks.  The file fragmentation is horrendous.&n; */
 DECL|macro|SEARCH_FROM_ZERO
 macro_line|#undef SEARCH_FROM_ZERO

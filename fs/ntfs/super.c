@@ -2,7 +2,6 @@ multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of th
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;&t;/* For bdev_hardsect_size(). */
 macro_line|#include &lt;linux/backing-dev.h&gt;
