@@ -17,6 +17,18 @@ macro_line|#ifndef NFS_SUPER_MAGIC
 DECL|macro|NFS_SUPER_MAGIC
 macro_line|# define NFS_SUPER_MAGIC&t;0x6969
 macro_line|#endif
+DECL|macro|NFSD_BUFSIZE
+mdefine_line|#define NFSD_BUFSIZE&t;&t;(1024 + NFSSVC_MAXBLKSIZE)
+macro_line|#ifdef CONFIG_NFSD_V4
+DECL|macro|NFSSVC_XDRSIZE
+macro_line|# define NFSSVC_XDRSIZE&t;&t;NFS4_SVC_XDRSIZE
+macro_line|#elif defined(CONFIG_NFSD_V3)
+DECL|macro|NFSSVC_XDRSIZE
+macro_line|# define NFSSVC_XDRSIZE&t;&t;NFS3_SVC_XDRSIZE
+macro_line|#else
+DECL|macro|NFSSVC_XDRSIZE
+macro_line|# define NFSSVC_XDRSIZE&t;&t;NFS2_SVC_XDRSIZE
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_NFSD_CONST_H */
 eof

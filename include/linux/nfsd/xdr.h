@@ -363,8 +363,8 @@ id|readdir
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|NFSSVC_XDRSIZE
-mdefine_line|#define NFSSVC_XDRSIZE&t;&t;sizeof(union nfsd_xdrstore)
+DECL|macro|NFS2_SVC_XDRSIZE
+mdefine_line|#define NFS2_SVC_XDRSIZE&t;sizeof(union nfsd_xdrstore)
 r_int
 id|nfssvc_decode_void
 c_func

@@ -21,11 +21,11 @@ macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/stats.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
 macro_line|#include &lt;linux/nfsd/xdr.h&gt;
+macro_line|#include &lt;linux/nfsd/xdr3.h&gt;
+macro_line|#include &lt;linux/nfsd/xdr4.h&gt;
 macro_line|#include &lt;linux/lockd/bind.h&gt;
 DECL|macro|NFSDDBG_FACILITY
 mdefine_line|#define NFSDDBG_FACILITY&t;NFSDDBG_SVC
-DECL|macro|NFSD_BUFSIZE
-mdefine_line|#define NFSD_BUFSIZE&t;&t;(1024 + NFSSVC_MAXBLKSIZE)
 multiline_comment|/* these signals will be delivered to an nfsd thread &n; * when handling a request&n; */
 DECL|macro|ALLOWED_SIGS
 mdefine_line|#define ALLOWED_SIGS&t;(sigmask(SIGKILL))
