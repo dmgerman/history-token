@@ -1227,6 +1227,7 @@ op_assign
 id|command_line
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__init
 DECL|function|setup_ramdisk
@@ -1283,6 +1284,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * initial ram disk&n; */
 DECL|function|setup_initrd
+r_static
 r_void
 id|__init
 id|setup_initrd

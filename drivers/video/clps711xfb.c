@@ -511,21 +511,10 @@ id|PDDR
 )paren
 suffix:semicolon
 multiline_comment|/* Delay for a little while (half a second). */
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|65536
-op_star
-l_int|4
-suffix:semicolon
-id|i
-op_increment
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* Power off the LCD panel. */
@@ -607,21 +596,10 @@ id|PDDR
 )paren
 suffix:semicolon
 multiline_comment|/* Delay for a little while. */
-r_for
-c_loop
+id|udelay
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|65536
-op_star
-l_int|4
-suffix:semicolon
-id|i
-op_increment
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* Power up the LCD DC-DC converter. */
