@@ -3764,8 +3764,6 @@ suffix:semicolon
 id|i
 OL
 id|OID_NUM_LAST
-op_minus
-l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -3795,7 +3793,7 @@ id|oid
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|OID_NUM_LAST
 suffix:semicolon
 )brace
 r_int

@@ -8498,6 +8498,13 @@ c_func
 id|frame-&gt;header-&gt;oid
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+op_ne
+id|OID_NUM_LAST
+)paren
 id|prism54_process_trap_helper
 c_func
 (paren
