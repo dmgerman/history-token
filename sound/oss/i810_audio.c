@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801
@@ -3576,6 +3577,16 @@ id|dmabuf-&gt;fragsize
 op_rshift
 l_int|1
 suffix:semicolon
+id|dmabuf-&gt;fragshift
+op_assign
+id|ffs
+c_func
+(paren
+id|dmabuf-&gt;fragsize
+)paren
+op_minus
+l_int|1
+suffix:semicolon
 id|dmabuf-&gt;userfragsize
 op_assign
 id|dmabuf-&gt;ossfragsize
@@ -3608,10 +3619,6 @@ id|fragint
 op_assign
 l_int|8
 suffix:semicolon
-id|dmabuf-&gt;fragshift
-op_assign
-l_int|2
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3625,10 +3632,6 @@ l_int|8
 id|fragint
 op_assign
 l_int|4
-suffix:semicolon
-id|dmabuf-&gt;fragshift
-op_assign
-l_int|3
 suffix:semicolon
 )brace
 r_else
@@ -3644,20 +3647,12 @@ id|fragint
 op_assign
 l_int|2
 suffix:semicolon
-id|dmabuf-&gt;fragshift
-op_assign
-l_int|4
-suffix:semicolon
 )brace
 r_else
 (brace
 id|fragint
 op_assign
 l_int|1
-suffix:semicolon
-id|dmabuf-&gt;fragshift
-op_assign
-l_int|5
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; *&t;Now set up the ring &n;&t; */
@@ -4084,8 +4079,8 @@ id|dmabuf-&gt;dmasize
 )paren
 suffix:semicolon
 id|x
-op_div_assign
-id|fragsize
+op_rshift_assign
+id|dmabuf-&gt;fragshift
 suffix:semicolon
 id|outb
 c_func
@@ -6645,13 +6640,15 @@ suffix:semicolon
 )brace
 id|swptr
 op_assign
+id|MODULOP2
+c_func
 (paren
 id|swptr
 op_plus
 id|cnt
-)paren
-op_mod
+comma
 id|dmabuf-&gt;dmasize
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
