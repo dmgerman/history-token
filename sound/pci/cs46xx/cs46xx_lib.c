@@ -16159,12 +16159,6 @@ op_complement
 l_int|0
 )paren
 (brace
-id|snd_cs46xx_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -16173,6 +16167,12 @@ comma
 id|chip-&gt;ba0_addr
 comma
 id|chip-&gt;ba1_addr
+)paren
+suffix:semicolon
+id|snd_cs46xx_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return

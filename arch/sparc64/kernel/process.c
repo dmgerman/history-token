@@ -30,6 +30,7 @@ macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 multiline_comment|/* #define VERBOSE_SHOWREGS */
 multiline_comment|/*&n; * Nothing special yet...&n; */
 DECL|function|default_idle
@@ -103,9 +104,9 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * the idle loop on a UltraMultiPenguin...&n; */
 DECL|macro|idle_me_harder
-mdefine_line|#define idle_me_harder()&t;(cpu_data[smp_processor_id()].idle_volume += 1)
+mdefine_line|#define idle_me_harder()&t;(cpu_data(smp_processor_id()).idle_volume += 1)
 DECL|macro|unidle_me
-mdefine_line|#define unidle_me()&t;&t;(cpu_data[smp_processor_id()].idle_volume = 0)
+mdefine_line|#define unidle_me()&t;&t;(cpu_data(smp_processor_id()).idle_volume = 0)
 DECL|function|cpu_idle
 r_int
 id|cpu_idle

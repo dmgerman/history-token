@@ -215,6 +215,7 @@ id|close_delay
 suffix:semicolon
 DECL|member|event
 r_int
+r_int
 id|event
 suffix:semicolon
 DECL|member|open_wait
@@ -227,7 +228,7 @@ id|close_wait
 suffix:semicolon
 DECL|member|tqueue
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue
 suffix:semicolon
 multiline_comment|/* ------------ Async control data ------------- */

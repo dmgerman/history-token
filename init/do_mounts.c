@@ -1360,12 +1360,6 @@ c_func
 l_string|&quot;Please append a correct &bslash;&quot;root=&bslash;&quot; boot option&bslash;n&quot;
 )paren
 suffix:semicolon
-id|mount_root_failed_msg
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* architecture dependent */
 id|panic
 c_func
 (paren

@@ -233,13 +233,6 @@ r_int
 r_int
 op_star
 id|bitmap
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -257,9 +250,7 @@ id|from
 op_plus
 id|num
 OG
-id|IO_BITMAP_SIZE
-op_star
-l_int|32
+id|IO_BITMAP_BITS
 )paren
 )paren
 r_return
@@ -287,7 +278,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;ts_io_bitmap
+id|t-&gt;io_bitmap_ptr
 )paren
 (brace
 id|bitmap
@@ -306,17 +297,10 @@ c_cond
 op_logical_neg
 id|bitmap
 )paren
-(brace
-id|ret
-op_assign
+r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * just in case ...&n;&t;&t; */
 id|memset
 c_func
 (paren
@@ -327,7 +311,7 @@ comma
 id|IO_BITMAP_BYTES
 )paren
 suffix:semicolon
-id|t-&gt;ts_io_bitmap
+id|t-&gt;io_bitmap_ptr
 op_assign
 id|bitmap
 suffix:semicolon
@@ -336,7 +320,7 @@ multiline_comment|/*&n;&t; * do it in the per-thread copy and in the TSS ...&n;&
 id|set_bitmap
 c_func
 (paren
-id|t-&gt;ts_io_bitmap
+id|t-&gt;io_bitmap_ptr
 comma
 id|from
 comma
@@ -358,7 +342,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tss-&gt;bitmap
+id|tss-&gt;io_bitmap_base
 op_eq
 id|IO_BITMAP_OFFSET
 )paren
@@ -385,12 +369,12 @@ c_func
 (paren
 id|tss-&gt;io_bitmap
 comma
-id|t-&gt;ts_io_bitmap
+id|t-&gt;io_bitmap_ptr
 comma
 id|IO_BITMAP_BYTES
 )paren
 suffix:semicolon
-id|tss-&gt;bitmap
+id|tss-&gt;io_bitmap_base
 op_assign
 id|IO_BITMAP_OFFSET
 suffix:semicolon
@@ -401,10 +385,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sys_iopl has to be used when you want to access the IO ports&n; * beyond the 0x3ff range: to get the full 65536 ports bitmapped&n; * you&squot;d need 8kB of bitmaps/process, which is a bit excessive.&n; *&n; * Here we just change the eflags value on the stack: we allow&n; * only the super-user to do it. This depends on the stack-layout&n; * on system-call entry - see also fork() and the signal handling&n; * code.&n; */

@@ -5602,21 +5602,11 @@ op_or_assign
 id|EARLY_TOKEN_REL
 suffix:semicolon
 )brace
-multiline_comment|/* see if the chip is corrupted&n;                if(smctr_read_584_chksum(ioaddr))&n;                {&n;                        printk(KERN_ERR &quot;%s: EEPROM Checksum Failure&bslash;n&quot;, dev-&gt;name);&n;                        goto out3;&n;                }&n;&t;&t;*/
+multiline_comment|/* see if the chip is corrupted&n;                if(smctr_read_584_chksum(ioaddr))&n;                {&n;                        printk(KERN_ERR &quot;%s: EEPROM Checksum Failure&bslash;n&quot;, dev-&gt;name);&n;&t;&t;&t;free_irq(dev-&gt;irq, dev);&n;                        goto out2;&n;                }&n;&t;&t;*/
 )brace
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-id|out3
-suffix:colon
-id|free_irq
-c_func
-(paren
-id|dev-&gt;irq
-comma
-id|dev
 )paren
 suffix:semicolon
 id|out2
@@ -26065,7 +26055,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

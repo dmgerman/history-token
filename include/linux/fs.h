@@ -149,6 +149,8 @@ mdefine_line|#define SEL_EX&t;&t;4
 multiline_comment|/* public flags for file_system_type */
 DECL|macro|FS_REQUIRES_DEV
 mdefine_line|#define FS_REQUIRES_DEV 1 
+DECL|macro|FS_REVAL_DOT
+mdefine_line|#define FS_REVAL_DOT&t;16384&t;/* Check the paths &quot;.&quot;, &quot;..&quot; for staleness */
 DECL|macro|FS_ODD_RENAME
 mdefine_line|#define FS_ODD_RENAME&t;32768&t;/* Temporary stuff; will go away as soon&n;&t;&t;&t;&t;  * as nfs_rename() will be cleaned up&n;&t;&t;&t;&t;  */
 multiline_comment|/*&n; * These are the fs-independent mount-flags: up to 32 flags are supported&n; */

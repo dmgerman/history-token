@@ -358,7 +358,7 @@ id|kfree
 id|pDpa-&gt;pPab
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 (paren
 id|dev
 )paren

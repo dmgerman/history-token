@@ -1448,6 +1448,7 @@ op_star
 id|psf_prev
 comma
 op_star
+op_star
 id|psf_list
 suffix:semicolon
 r_int
@@ -1494,14 +1495,17 @@ op_assign
 id|sdeleted
 ques
 c_cond
+op_amp
 id|pmc-&gt;tomb
 suffix:colon
+op_amp
 id|pmc-&gt;sources
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+op_star
 id|psf_list
 )paren
 (brace
@@ -1670,6 +1674,7 @@ c_loop
 (paren
 id|psf
 op_assign
+op_star
 id|psf_list
 suffix:semicolon
 id|psf
@@ -1894,7 +1899,8 @@ op_assign
 id|psf-&gt;sf_next
 suffix:semicolon
 r_else
-id|pmc-&gt;tomb
+op_star
+id|psf_list
 op_assign
 id|psf-&gt;sf_next
 suffix:semicolon

@@ -2273,14 +2273,6 @@ op_assign
 id|info-&gt;var.bits_per_pixel
 suffix:semicolon
 r_int
-id|dx
-comma
-id|dy
-comma
-id|w
-comma
-id|h
-comma
 id|col
 suffix:semicolon
 r_switch
@@ -2289,6 +2281,8 @@ c_cond
 id|bpp
 )paren
 (brace
+r_default
+suffix:colon
 r_case
 l_int|8
 suffix:colon
@@ -5942,7 +5936,11 @@ c_func
 (paren
 l_string|&quot;%s board found&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 macro_line|#if 0&t;

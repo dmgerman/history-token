@@ -1194,7 +1194,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pci_request_region
+id|request_region
 c_func
 (paren
 id|pci_ioaddr
@@ -6662,7 +6662,7 @@ c_func
 id|dev-&gt;priv
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
