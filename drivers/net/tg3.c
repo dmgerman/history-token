@@ -12207,7 +12207,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_tx
@@ -12220,7 +12220,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|netdev-&gt;xmit_lock
 )paren
 suffix:semicolon
 )brace
@@ -12691,7 +12691,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|tp-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|restart_timer
@@ -12727,7 +12727,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|tp-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -13265,6 +13265,7 @@ id|base
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* dev-&gt;xmit_lock is held and IRQs are disabled.  */
 DECL|function|tg3_start_xmit
 r_static
 r_int
@@ -13312,10 +13313,6 @@ suffix:semicolon
 r_int
 id|would_hit_hwbug
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|len
 op_assign
 id|skb_headlen
@@ -13324,35 +13321,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|spin_trylock
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
-)paren
-)paren
-(brace
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|NETDEV_TX_LOCKED
-suffix:semicolon
-)brace
 multiline_comment|/* This is a hard error, log it. */
 r_if
 c_cond
@@ -13384,15 +13352,6 @@ id|netif_stop_queue
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|printk
@@ -14103,7 +14062,7 @@ id|mss
 )paren
 )paren
 r_goto
-id|out_unlock
+id|out
 suffix:semicolon
 id|entry
 op_assign
@@ -14148,20 +14107,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|out_unlock
+id|out
 suffix:colon
 id|mmiowb
 c_func
 (paren
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|dev-&gt;trans_start
@@ -14299,7 +14249,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_halt
@@ -14334,7 +14284,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -29124,7 +29074,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|tp-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 multiline_comment|/* All of this garbage is because when using non-tagged&n;&t; * IRQ status the mailbox/status_block protocol the chip&n;&t; * uses with the cpu is race prone.&n;&t; */
@@ -29187,7 +29137,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|tp-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -29523,7 +29473,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|tp-&gt;dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -29586,7 +29536,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_disable_ints
@@ -29604,7 +29554,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -29674,7 +29624,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|err
@@ -29769,7 +29719,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -29814,7 +29764,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_enable_ints
@@ -29827,7 +29777,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -31319,7 +31269,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -31367,7 +31317,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -32818,6 +32768,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Called with dev-&gt;xmit_lock held and IRQs disabled.  */
 DECL|function|tg3_set_rx_mode
 r_static
 r_void
@@ -32830,49 +32781,10 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|tg3
-op_star
-id|tp
-op_assign
-id|netdev_priv
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|tp-&gt;lock
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
-)paren
-suffix:semicolon
 id|__tg3_set_rx_mode
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|tp-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -32966,7 +32878,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 DECL|macro|__GET_REG32
@@ -33230,7 +33142,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -33838,7 +33750,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tp-&gt;link_config.autoneg
@@ -33893,7 +33805,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -34481,7 +34393,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tp-&gt;rx_pending
@@ -34535,7 +34447,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -34653,7 +34565,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 r_if
@@ -34723,7 +34635,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -35262,7 +35174,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tp-&gt;vlgrp
@@ -35280,7 +35192,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -35329,7 +35241,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 r_if
@@ -35348,7 +35260,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -41623,10 +41535,6 @@ id|dev-&gt;features
 op_or_assign
 id|NETIF_F_HIGHDMA
 suffix:semicolon
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_LLTX
-suffix:semicolon
 macro_line|#if TG3_VLAN_TAG_USED
 id|dev-&gt;features
 op_or_assign
@@ -41728,13 +41636,6 @@ c_func
 (paren
 op_amp
 id|tp-&gt;lock
-)paren
-suffix:semicolon
-id|spin_lock_init
-c_func
-(paren
-op_amp
-id|tp-&gt;tx_lock
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -42644,7 +42545,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_disable_ints
@@ -42657,7 +42558,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -42684,7 +42585,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_halt
@@ -42697,7 +42598,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -42734,7 +42635,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_init_hw
@@ -42772,7 +42673,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -42878,7 +42779,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|tg3_init_hw
@@ -42916,7 +42817,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|tp-&gt;tx_lock
+id|dev-&gt;xmit_lock
 )paren
 suffix:semicolon
 id|spin_unlock_irq

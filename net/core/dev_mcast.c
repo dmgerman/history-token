@@ -90,7 +90,7 @@ op_star
 id|dev
 )paren
 (brace
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -103,7 +103,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -147,7 +147,7 @@ op_star
 op_star
 id|dmip
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -254,7 +254,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -273,7 +273,7 @@ id|ENOENT
 suffix:semicolon
 id|done
 suffix:colon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -338,7 +338,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -425,7 +425,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -481,7 +481,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -493,7 +493,7 @@ l_int|0
 suffix:semicolon
 id|done
 suffix:colon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -527,7 +527,7 @@ op_star
 id|dev
 )paren
 (brace
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -579,7 +579,7 @@ id|dev-&gt;mc_count
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -741,7 +741,7 @@ id|dev
 op_assign
 id|v
 suffix:semicolon
-id|spin_lock_bh
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -817,7 +817,7 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
