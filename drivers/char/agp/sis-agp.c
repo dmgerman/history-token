@@ -438,7 +438,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;sis 648 agp fix - giving bridge time to recover&bslash;n&quot;
+l_string|&quot;SiS chipset with AGP problems detected. Giving bridge time to recover.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_current_state
