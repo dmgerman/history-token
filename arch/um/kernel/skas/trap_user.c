@@ -43,6 +43,9 @@ id|save_errno
 op_assign
 id|errno
 suffix:semicolon
+r_int
+id|save_user
+suffix:semicolon
 id|r
 op_assign
 op_amp
@@ -56,6 +59,10 @@ c_func
 )paren
 op_member_access_from_pointer
 id|skas
+suffix:semicolon
+id|save_user
+op_assign
+id|r-&gt;is_user
 suffix:semicolon
 id|r-&gt;is_user
 op_assign
@@ -132,6 +139,10 @@ suffix:semicolon
 id|errno
 op_assign
 id|save_errno
+suffix:semicolon
+id|r-&gt;is_user
+op_assign
+id|save_user
 suffix:semicolon
 )brace
 DECL|function|user_signal
