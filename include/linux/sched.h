@@ -1274,6 +1274,10 @@ DECL|macro|PT_TRACE_CLONE
 mdefine_line|#define PT_TRACE_CLONE&t;0x00000040
 DECL|macro|PT_TRACE_EXEC
 mdefine_line|#define PT_TRACE_EXEC&t;0x00000080
+DECL|macro|PT_TRACE_VFORK_DONE
+mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
+DECL|macro|PT_TRACE_EXIT
+mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
 macro_line|#if CONFIG_SMP
 r_extern
 r_void
