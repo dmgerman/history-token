@@ -743,6 +743,16 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Part of multi-function device */
+macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|member|pretty_name
+r_char
+id|pretty_name
+(braket
+id|DEVICE_NAME_SIZE
+)braket
+suffix:semicolon
+multiline_comment|/* pretty name for users to see */
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|pci_dev_g

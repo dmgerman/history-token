@@ -4717,7 +4717,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|tuners
 (braket
@@ -4968,7 +4968,7 @@ suffix:semicolon
 id|strlcpy
 c_func
 (paren
-id|client-&gt;dev.name
+id|client-&gt;name
 comma
 id|tuners
 (braket
@@ -5322,15 +5322,9 @@ op_amp
 id|driver
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;(tuner unset)&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

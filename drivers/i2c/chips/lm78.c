@@ -2952,7 +2952,7 @@ multiline_comment|/* Fill in the remaining client fields and put into the global
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 id|client_name
 comma

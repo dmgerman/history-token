@@ -517,6 +517,18 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|DEVICE_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|released
+r_struct
+id|completion
+id|released
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|to_i2c_client
@@ -568,7 +580,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|macro|I2C_DEVNAME
-mdefine_line|#define I2C_DEVNAME(str)   .dev = { .name = str }
+mdefine_line|#define I2C_DEVNAME(str)&t;.name = str
 DECL|function|i2c_clientname
 r_static
 r_inline
@@ -584,7 +596,11 @@ id|c
 )paren
 (brace
 r_return
-id|c-&gt;dev.name
+op_amp
+id|c-&gt;name
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The following structs are for those who like to implement new bus drivers:&n; * i2c_algorithm is the interface to a class of hardware solutions which can&n; * be addressed using the same bus algorithms - i.e. bit-banging or the PCF8584&n; * to name two of the most common.&n; */
@@ -849,10 +865,29 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+id|DEVICE_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|dev_released
+r_struct
+id|completion
+id|dev_released
+suffix:semicolon
+DECL|member|class_dev_released
+r_struct
+id|completion
+id|class_dev_released
+suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|to_i2c_adapter
-mdefine_line|#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|macro|dev_to_i2c_adapter
+mdefine_line|#define dev_to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+DECL|macro|class_dev_to_i2c_adapter
+mdefine_line|#define class_dev_to_i2c_adapter(d) container_of(d, struct i2c_adapter, class_dev)
 DECL|function|i2c_get_adapdata
 r_static
 r_inline

@@ -439,15 +439,9 @@ op_amp
 id|bit_elv_data
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
 id|name
 op_assign
 l_string|&quot;ELV Parallel port adaptor&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

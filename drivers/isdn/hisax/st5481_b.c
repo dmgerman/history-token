@@ -1125,7 +1125,6 @@ suffix:semicolon
 DECL|function|st5481_setup_b_out
 r_static
 r_int
-id|__devinit
 id|st5481_setup_b_out
 c_func
 (paren
@@ -1280,7 +1279,6 @@ suffix:semicolon
 )brace
 DECL|function|st5481_setup_b
 r_int
-id|__devinit
 id|st5481_setup_b
 c_func
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*****************************************************************&n; *&n; * Filename:&t;&t;donauboe.c&n; * Version: &t;&t;2.17&n; * Description:   Driver for the Toshiba OBOE (or type-O or 701)&n; *                FIR Chipset, also supports the DONAUOBOE (type-DO&n; *                or d01) FIR chipset which as far as I know is&n; *                register compatible.&n; * Status:        Experimental.&n; * Author:        James McKenzie &lt;james@fishsoup.dhs.org&gt;&n; * Created at:    Sat May 8  12:35:27 1999&n; * Modified:      Paul Bristow &lt;paul.bristow@technologist.com&gt;&n; * Modified:      Mon Nov 11 19:10:05 1999&n; * Modified:      James McKenzie &lt;james@fishsoup.dhs.org&gt;&n; * Modified:      Thu Mar 16 12:49:00 2000 (Substantial rewrite)&n; * Modified:      Sat Apr 29 00:23:03 2000 (Added DONAUOBOE support)&n; * Modified:      Wed May 24 23:45:02 2000 (Fixed chipio_t structure)&n; * Modified: 2.13 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.13 dim jan 07 21:57:39 2001 (tested with kernel 2.4 &amp; irnet/ppp)&n; * Modified: 2.14 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.14 lun fev 05 17:55:59 2001 (adapted to patch-2.4.1-pre8-irda1)&n; * Modified: 2.15 Martin Lucina &lt;mato@kotelna.sk&gt;&n; * Modified: 2.15 Fri Jun 21 20:40:59 2002 (sync with 2.4.18, substantial fixes)&n; * Modified: 2.16 Martin Lucina &lt;mato@kotelna.sk&gt;&n; * Modified: 2.16 Sat Jun 22 18:54:29 2002 (fix freeregion, default to verbose)&n; * Modified: 2.17 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.17 jeu sep 12 08:50:20 2002 (save_flags();cli(); replaced by spinlocks)&n; *&n; *     Copyright (c) 1999 James McKenzie, All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither James McKenzie nor Cambridge University admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; *     Applicable Models : Libretto 100/110CT and many more.&n; *     Toshiba refers to this chip as the type-O IR port,&n; *     or the type-DO IR port.&n; *&n; ********************************************************************/
+multiline_comment|/*****************************************************************&n; *&n; * Filename:&t;&t;donauboe.c&n; * Version: &t;&t;2.17&n; * Description:   Driver for the Toshiba OBOE (or type-O or 701)&n; *                FIR Chipset, also supports the DONAUOBOE (type-DO&n; *                or d01) FIR chipset which as far as I know is&n; *                register compatible.&n; * Documentation: http://libxg.free.fr/irda/lib-irda.html&n; * Status:        Experimental.&n; * Author:        James McKenzie &lt;james@fishsoup.dhs.org&gt;&n; * Created at:    Sat May 8  12:35:27 1999&n; * Modified:      Paul Bristow &lt;paul.bristow@technologist.com&gt;&n; * Modified:      Mon Nov 11 19:10:05 1999&n; * Modified:      James McKenzie &lt;james@fishsoup.dhs.org&gt;&n; * Modified:      Thu Mar 16 12:49:00 2000 (Substantial rewrite)&n; * Modified:      Sat Apr 29 00:23:03 2000 (Added DONAUOBOE support)&n; * Modified:      Wed May 24 23:45:02 2000 (Fixed chipio_t structure)&n; * Modified: 2.13 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.13 dim jan 07 21:57:39 2001 (tested with kernel 2.4 &amp; irnet/ppp)&n; * Modified: 2.14 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.14 lun fev 05 17:55:59 2001 (adapted to patch-2.4.1-pre8-irda1)&n; * Modified: 2.15 Martin Lucina &lt;mato@kotelna.sk&gt;&n; * Modified: 2.15 Fri Jun 21 20:40:59 2002 (sync with 2.4.18, substantial fixes)&n; * Modified: 2.16 Martin Lucina &lt;mato@kotelna.sk&gt;&n; * Modified: 2.16 Sat Jun 22 18:54:29 2002 (fix freeregion, default to verbose)&n; * Modified: 2.17 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.17 jeu sep 12 08:50:20 2002 (save_flags();cli(); replaced by spinlocks)&n; * Modified: 2.18 Christian Gennerat &lt;christian.gennerat@polytechnique.org&gt;&n; * Modified: 2.18 ven jan 10 03:14:16 2003 Change probe default options&n; *&n; *     Copyright (c) 1999 James McKenzie, All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither James McKenzie nor Cambridge University admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; *     Applicable Models : Libretto 100/110CT and many more.&n; *     Toshiba refers to this chip as the type-O IR port,&n; *     or the type-DO IR port.&n; *&n; ********************************************************************/
 multiline_comment|/* Look at toshoboe.h (currently in include/net/irda) for details of */
 multiline_comment|/* Where to get documentation on the chip         */
 DECL|variable|rcsid
@@ -7,7 +7,7 @@ r_char
 op_star
 id|rcsid
 op_assign
-l_string|&quot;$Id: donauboe.c V2.17 jeu sep 12 08:50:20 2002 $&quot;
+l_string|&quot;$Id: donauboe.c V2.18 ven jan 10 03:14:16 2003$&quot;
 suffix:semicolon
 multiline_comment|/* See below for a description of the logic in this driver */
 multiline_comment|/* Is irda_crc16_table[] exported? not yet */
@@ -15,13 +15,16 @@ multiline_comment|/* define this if you get errors about multiple defns of irda_
 DECL|macro|CRC_EXPORTED
 macro_line|#undef CRC_EXPORTED
 multiline_comment|/* User servicable parts */
-multiline_comment|/* Enable the code which probes the chip and does a few tests */
+multiline_comment|/* USE_PROBE Create the code which probes the chip and does a few tests */
+multiline_comment|/* do_probe module parameter Enable this code */
 multiline_comment|/* Probe code is very useful for understanding how the hardware works */
 multiline_comment|/* Use it with various combinations of TT_LEN, RX_LEN */
 multiline_comment|/* Strongly recomended, disable if the probe fails on your machine */
 multiline_comment|/* and send me &lt;james@fishsoup.dhs.org&gt; the output of dmesg */
-DECL|macro|DO_PROBE
-mdefine_line|#define DO_PROBE 1
+DECL|macro|USE_PROBE
+mdefine_line|#define USE_PROBE 1
+DECL|macro|USE_PROBE
+macro_line|#undef  USE_PROBE
 multiline_comment|/* Trace Transmit ring, interrupts, Receive ring or not ? */
 DECL|macro|PROBE_VERBOSE
 mdefine_line|#define PROBE_VERBOSE 1
@@ -97,8 +100,6 @@ multiline_comment|/* TODO: */
 multiline_comment|/* check the mtt works ok      */
 multiline_comment|/* finish the watchdog         */
 multiline_comment|/* No user servicable parts below here */
-DECL|macro|STATIC
-mdefine_line|#define STATIC static
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -202,13 +203,15 @@ id|max_baud
 op_assign
 l_int|4000000
 suffix:semicolon
+macro_line|#ifdef USE_PROBE
 DECL|variable|do_probe
 r_static
 r_int
 id|do_probe
 op_assign
-id|DO_PROBE
+l_int|0
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/**********************************************************************/
 multiline_comment|/* Fcs code */
 macro_line|#ifdef CRC_EXPORTED
@@ -744,7 +747,7 @@ l_int|0x0f78
 )brace
 suffix:semicolon
 macro_line|#endif
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_checkfcs
 id|toshoboe_checkfcs
@@ -826,7 +829,7 @@ id|dump
 l_int|50
 )braket
 suffix:semicolon
-id|STATIC
+r_static
 r_void
 DECL|function|_dumpbufs
 id|_dumpbufs
@@ -939,8 +942,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+macro_line|#ifdef USE_PROBE
 multiline_comment|/* Dump the registers */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_dumpregs
 id|toshoboe_dumpregs
@@ -1260,8 +1264,9 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*Don&squot;t let the chip look at memory */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_disablebm
 id|toshoboe_disablebm
@@ -1310,7 +1315,7 @@ id|command
 suffix:semicolon
 )brace
 multiline_comment|/* Shutdown the chip and point the taskfile reg somewhere else */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_stopchip
 id|toshoboe_stopchip
@@ -1425,7 +1430,7 @@ id|self
 suffix:semicolon
 )brace
 multiline_comment|/* Transmitter initialization */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_start_DMA
 id|toshoboe_start_DMA
@@ -1466,7 +1471,7 @@ id|PROMPT
 suffix:semicolon
 )brace
 multiline_comment|/*Set the baud rate */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_setbaud
 id|toshoboe_setbaud
@@ -1907,7 +1912,7 @@ id|self-&gt;speed
 suffix:semicolon
 )brace
 multiline_comment|/*Let the chip look at memory */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_enablebm
 id|toshoboe_enablebm
@@ -1934,7 +1939,7 @@ id|self-&gt;pdev
 suffix:semicolon
 )brace
 multiline_comment|/*setup the ring */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_initring
 id|toshoboe_initring
@@ -2065,7 +2070,7 @@ id|OBOE_CTL_RX_HW_OWNS
 suffix:semicolon
 )brace
 )brace
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_resetptrs
 id|toshoboe_resetptrs
@@ -2118,7 +2123,7 @@ id|OBOE_SLOT_MASK
 suffix:semicolon
 )brace
 multiline_comment|/* Called in locked state */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_initptrs
 id|toshoboe_initptrs
@@ -2167,7 +2172,7 @@ multiline_comment|/* restore_flags (flags); */
 )brace
 multiline_comment|/* Wake the chip up and get it looking at the rings */
 multiline_comment|/* Called in locked state */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_startchip
 id|toshoboe_startchip
@@ -2389,7 +2394,7 @@ id|self
 )paren
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_isntstuck
 id|toshoboe_isntstuck
@@ -2401,7 +2406,7 @@ id|self
 )paren
 (brace
 )brace
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_checkstuck
 id|toshoboe_checkstuck
@@ -2461,7 +2466,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*Generate packet of about mtt us long */
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_makemttpacket
 id|toshoboe_makemttpacket
@@ -2564,9 +2569,33 @@ r_return
 id|xbofs
 suffix:semicolon
 )brace
+DECL|function|toshoboe_invalid_dev
+r_static
+r_int
+id|toshoboe_invalid_dev
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+id|DRIVER_NAME
+l_string|&quot;: irq %d for unknown device.&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#ifdef USE_PROBE
 multiline_comment|/***********************************************************************/
 multiline_comment|/* Probe code */
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_dumptx
 id|toshoboe_dumptx
@@ -2630,7 +2659,7 @@ id|self-&gt;speed
 )paren
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_void
 DECL|function|toshoboe_dumprx
 id|toshoboe_dumprx
@@ -2766,30 +2795,7 @@ suffix:semicolon
 multiline_comment|/* break; */
 )brace
 )brace
-DECL|function|toshoboe_invalid_dev
-id|STATIC
-r_int
-id|toshoboe_invalid_dev
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-id|printk
-(paren
-id|KERN_WARNING
-id|DRIVER_NAME
-l_string|&quot;: irq %d for unknown device.&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|STATIC
+r_static
 id|irqreturn_t
 DECL|function|toshoboe_probeinterrupt
 id|toshoboe_probeinterrupt
@@ -3007,7 +3013,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_maketestpacket
 id|toshoboe_maketestpacket
@@ -3175,7 +3181,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_probefail
 id|toshoboe_probefail
@@ -3228,7 +3234,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_numvalidrcvs
 id|toshoboe_numvalidrcvs
@@ -3283,7 +3289,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_numrcvs
 id|toshoboe_numrcvs
@@ -3337,7 +3343,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_probe
 id|toshoboe_probe
@@ -4131,10 +4137,11 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/******************************************************************/
 multiline_comment|/* Netdev style code */
 multiline_comment|/* Transmit something */
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_hard_xmit
 id|toshoboe_hard_xmit
@@ -4819,7 +4826,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*interrupt handler */
-id|STATIC
+r_static
 id|irqreturn_t
 DECL|function|toshoboe_interrupt
 id|toshoboe_interrupt
@@ -5576,7 +5583,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_net_init
 id|toshoboe_net_init
@@ -5614,7 +5621,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_net_open
 id|toshoboe_net_open
@@ -5771,7 +5778,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_net_close
 id|toshoboe_net_close
@@ -5872,7 +5879,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function toshoboe_net_ioctl (dev, rq, cmd)&n; *&n; *    Process IOCTL commands for this device&n; *&n; */
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_net_ioctl
 id|toshoboe_net_ioctl
@@ -6178,6 +6185,7 @@ comma
 l_string|&quot;Maximum baud rate&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef USE_PROBE
 id|MODULE_PARM
 (paren
 id|do_probe
@@ -6193,7 +6201,8 @@ comma
 l_string|&quot;Enable/disable chip probing and self-test&quot;
 )paren
 suffix:semicolon
-id|STATIC
+macro_line|#endif
+r_static
 r_void
 DECL|function|toshoboe_close
 id|toshoboe_close
@@ -6351,7 +6360,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_open
 id|toshoboe_open
@@ -6859,6 +6868,7 @@ r_goto
 id|freebufs
 suffix:semicolon
 )brace
+macro_line|#ifdef USE_PROBE
 r_if
 c_cond
 (paren
@@ -6883,6 +6893,7 @@ r_goto
 id|freebufs
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7101,7 +7112,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_gotosleep
 id|toshoboe_gotosleep
@@ -7229,7 +7240,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|STATIC
+r_static
 r_int
 DECL|function|toshoboe_wakeup
 id|toshoboe_wakeup

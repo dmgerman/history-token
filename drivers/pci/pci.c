@@ -1149,7 +1149,13 @@ c_func
 (paren
 id|dev
 comma
-l_int|0x3F
+(paren
+l_int|1
+op_lshift
+id|PCI_NUM_RESOURCES
+)paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace

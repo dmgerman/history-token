@@ -1704,7 +1704,7 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|adapter-&gt;dev.name
+id|adapter-&gt;name
 comma
 id|DEVICE_NAME_SIZE
 comma
@@ -1745,7 +1745,7 @@ id|description
 comma
 l_string|&quot;NatSemi SCx200 ACCESS.bus [%s]&quot;
 comma
-id|adapter-&gt;dev.name
+id|adapter-&gt;name
 )paren
 suffix:semicolon
 r_if

@@ -1635,10 +1635,6 @@ id|dev-&gt;interface
 op_assign
 id|interface
 suffix:semicolon
-id|dev-&gt;minor
-op_assign
-id|interface-&gt;minor
-suffix:semicolon
 multiline_comment|/* set up the endpoint information */
 multiline_comment|/* check out the endpoints */
 multiline_comment|/* use only the first bulk-in and bulk-out endpoints */
@@ -1936,6 +1932,10 @@ r_goto
 id|error
 suffix:semicolon
 )brace
+id|dev-&gt;minor
+op_assign
+id|interface-&gt;minor
+suffix:semicolon
 multiline_comment|/* let the user know what node this device is now attached to */
 id|info
 (paren
@@ -2005,12 +2005,6 @@ id|down
 op_amp
 id|dev-&gt;sem
 )paren
-suffix:semicolon
-multiline_comment|/* disable open() */
-id|interface-&gt;minor
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 id|minor
 op_assign

@@ -1872,7 +1872,7 @@ suffix:semicolon
 id|strcpy
 c_func
 (paren
-id|dev-&gt;i2c_adap.dev.name
+id|dev-&gt;i2c_adap.name
 comma
 id|dev-&gt;name
 )paren

@@ -737,7 +737,7 @@ multiline_comment|/* Fill in the remaining client fields and put it into the glo
 id|strlcpy
 c_func
 (paren
-id|new_client-&gt;dev.name
+id|new_client-&gt;name
 comma
 id|name
 comma
