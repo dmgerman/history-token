@@ -346,7 +346,6 @@ r_void
 suffix:semicolon
 r_void
 id|dasd_fba_cleanup
-c_func
 (paren
 r_void
 )paren

@@ -1,856 +1,14 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * History of changes (starts July 2000)&n; * 02/01/01 added dynamic registration of ioctls&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * History of changes (starts July 2000)&n; * 05/04/01 created by moving the kernel interface to drivers/s390/block/dasd_int.h&n; */
 macro_line|#ifndef DASD_H
 DECL|macro|DASD_H
 mdefine_line|#define DASD_H
-DECL|macro|ERP_DEBUG
-macro_line|#undef ERP_DEBUG               /* enable debug messages */
-DECL|macro|ERP_FULL_ERP
-macro_line|#undef ERP_FULL_ERP            /* enable full ERP - experimental code !!!! */
-DECL|macro|CONFIG_DASD_DYNAMIC
-mdefine_line|#define CONFIG_DASD_DYNAMIC
 macro_line|#include &lt;linux/ioctl.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-DECL|macro|IOCTL_LETTER
-mdefine_line|#define IOCTL_LETTER &squot;D&squot;
-multiline_comment|/* Disable the volume (for Linux) */
-DECL|macro|BIODASDDISABLE
-mdefine_line|#define BIODASDDISABLE _IO(IOCTL_LETTER,0) 
-multiline_comment|/* Enable the volume (for Linux) */
-DECL|macro|BIODASDENABLE
-mdefine_line|#define BIODASDENABLE  _IO(IOCTL_LETTER,1) 
-multiline_comment|/* Issue a reserve/release command, rsp. */
-DECL|macro|BIODASDRSRV
-mdefine_line|#define BIODASDRSRV    _IO(IOCTL_LETTER,2) /* reserve */
-DECL|macro|BIODASDRLSE
-mdefine_line|#define BIODASDRLSE    _IO(IOCTL_LETTER,3) /* release */
-DECL|macro|BIODASDSLCK
-mdefine_line|#define BIODASDSLCK    _IO(IOCTL_LETTER,4) /* steal lock */
-multiline_comment|/* Read sense ID infpormation */
-DECL|macro|BIODASDRSID
-mdefine_line|#define BIODASDRSID    _IOR(IOCTL_LETTER,0,senseid_t)
-multiline_comment|/* Format the volume or an extent */
-DECL|macro|BIODASDFORMAT
-mdefine_line|#define BIODASDFORMAT  _IOW(IOCTL_LETTER,0,format_data_t) 
-multiline_comment|/* translate blocknumber of partition to absolute */
-DECL|macro|BIODASDRWTB
-mdefine_line|#define BIODASDRWTB    _IOWR(IOCTL_LETTER,0,int)
-DECL|typedef|dasd_ioctl_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_ioctl_fn_t
-)paren
-(paren
-r_struct
-id|inode
-op_star
-id|inp
-comma
-r_int
-id|no
-comma
-r_int
-id|args
-)paren
-suffix:semicolon
-r_int
-id|dasd_ioctl_no_register
-c_func
-(paren
-r_int
-id|no
-comma
-id|dasd_ioctl_fn_t
-id|handler
-)paren
-suffix:semicolon
-r_int
-id|dasd_ioctl_no_unregister
-c_func
-(paren
-r_int
-id|no
-comma
-id|dasd_ioctl_fn_t
-id|handler
-)paren
-suffix:semicolon
-DECL|macro|DASD_NAME
-mdefine_line|#define DASD_NAME &quot;dasd&quot;
+DECL|macro|DASD_IOCTL_LETTER
+mdefine_line|#define DASD_IOCTL_LETTER &squot;D&squot;
+macro_line|#if (DASD_API_VERSION == 0)
 DECL|macro|DASD_PARTN_BITS
 mdefine_line|#define DASD_PARTN_BITS 2
-DECL|macro|DASD_PER_MAJOR
-mdefine_line|#define DASD_PER_MAJOR ( 1U&lt;&lt;(MINORBITS-DASD_PARTN_BITS))
-multiline_comment|/* &n; * struct format_data_t&n; * represents all data necessary to format a dasd&n; */
-DECL|struct|format_data_t
-r_typedef
-r_struct
-id|format_data_t
-(brace
-DECL|member|start_unit
-r_int
-id|start_unit
-suffix:semicolon
-multiline_comment|/* from track */
-DECL|member|stop_unit
-r_int
-id|stop_unit
-suffix:semicolon
-multiline_comment|/* to track */
-DECL|member|blksize
-r_int
-id|blksize
-suffix:semicolon
-multiline_comment|/* sectorsize */
-DECL|member|intensity
-r_int
-id|intensity
-suffix:semicolon
-multiline_comment|/* 0: normal, 1:record zero, 3:home address, 4 invalidate tracks */
-DECL|typedef|format_data_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|format_data_t
-suffix:semicolon
-DECL|macro|DASD_FORMAT_DEFAULT_START_UNIT
-mdefine_line|#define DASD_FORMAT_DEFAULT_START_UNIT 0
-DECL|macro|DASD_FORMAT_DEFAULT_STOP_UNIT
-mdefine_line|#define DASD_FORMAT_DEFAULT_STOP_UNIT -1
-DECL|macro|DASD_FORMAT_DEFAULT_BLOCKSIZE
-mdefine_line|#define DASD_FORMAT_DEFAULT_BLOCKSIZE -1
-DECL|macro|DASD_FORMAT_DEFAULT_INTENSITY
-mdefine_line|#define DASD_FORMAT_DEFAULT_INTENSITY -1
-DECL|macro|DASD_FORMAT_INTENS_WRITE_RECZERO
-mdefine_line|#define DASD_FORMAT_INTENS_WRITE_RECZERO 0x01
-DECL|macro|DASD_FORMAT_INTENS_WRITE_HOMEADR
-mdefine_line|#define DASD_FORMAT_INTENS_WRITE_HOMEADR 0x02
-DECL|macro|DASD_FORMAT_INTENS_INVALIDATE
-mdefine_line|#define DASD_FORMAT_INTENS_INVALIDATE    0x04
-DECL|macro|DASD_FORMAT_INTENS_CDL
-mdefine_line|#define DASD_FORMAT_INTENS_CDL 0x08
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/wait.h&gt;
-macro_line|#include &lt;asm/ccwcache.h&gt;
-macro_line|#include &lt;linux/blk.h&gt; 
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
-macro_line|#include &lt;linux/blkdev.h&gt; 
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#endif
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/compatmac.h&gt;
-macro_line|#include &lt;asm/s390dyn.h&gt;
-macro_line|#include &lt;asm/todclk.h&gt;
-macro_line|#include &lt;asm/debug.h&gt;
-multiline_comment|/* Kernel Version Compatibility section */
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,98))
-DECL|typedef|request_queue_t
-r_typedef
-r_struct
-id|request
-op_star
-id|request_queue_t
-suffix:semicolon
-DECL|macro|block_device_operations
-mdefine_line|#define block_device_operations file_operations
-DECL|macro|__setup
-mdefine_line|#define __setup(x,y) struct dasd_device_t
-DECL|macro|devfs_register_blkdev
-mdefine_line|#define devfs_register_blkdev(major,name,ops) register_blkdev(major,name,ops)
-DECL|macro|register_disk
-mdefine_line|#define register_disk(dd,dev,partn,ops,size) &bslash;&n;do { &bslash;&n;&t;dd-&gt;sizes[MINOR(dev)] = size &gt;&gt; 1; &bslash;&n;&t;resetup_one_dev(dd,MINOR(dev)&gt;&gt;DASD_PARTN_BITS); &bslash;&n;} while(0)
-DECL|macro|init_waitqueue_head
-mdefine_line|#define init_waitqueue_head(x) do { *x = NULL; } while(0)
-DECL|macro|blk_cleanup_queue
-mdefine_line|#define blk_cleanup_queue(x) do {} while(0)
-DECL|macro|blk_init_queue
-mdefine_line|#define blk_init_queue(x...) do {} while(0)
-DECL|macro|blk_queue_headactive
-mdefine_line|#define blk_queue_headactive(x...) do {} while(0)
-DECL|macro|blk_queue_make_request
-mdefine_line|#define blk_queue_make_request(x) do {} while(0)
-DECL|macro|list_empty
-mdefine_line|#define list_empty(x) (0)
-DECL|macro|INIT_BLK_DEV
-mdefine_line|#define INIT_BLK_DEV(d_major,d_request_fn,d_queue_fn,d_current) &bslash;&n;do { &bslash;&n;        blk_dev[d_major].request_fn = d_request_fn; &bslash;&n;        blk_dev[d_major].queue = d_queue_fn; &bslash;&n;        blk_dev[d_major].current_request = d_current; &bslash;&n;} while(0)
-DECL|macro|INIT_GENDISK
-mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;max_p:1 &lt;&lt; D_PARTN_BITS, &bslash;&n;&t;max_nr:D_PER_MAJOR, &bslash;&n;&t;nr_real:D_PER_MAJOR,
-r_static
-r_inline
-r_struct
-id|request
-op_star
-DECL|function|dasd_next_request
-id|dasd_next_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|queue
-)paren
-(brace
-r_return
-op_star
-id|queue
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|dasd_dequeue_request
-id|dasd_dequeue_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-r_struct
-id|request
-op_star
-id|req
-)paren
-(brace
-op_star
-id|q
-op_assign
-id|req-&gt;next
-suffix:semicolon
-id|req-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|INIT_BLK_DEV
-mdefine_line|#define INIT_BLK_DEV(d_major,d_request_fn,d_queue_fn,d_current) &bslash;&n;do { &bslash;&n;        blk_dev[d_major].queue = d_queue_fn; &bslash;&n;} while(0)
-DECL|macro|INIT_GENDISK
-mdefine_line|#define INIT_GENDISK(D_MAJOR,D_NAME,D_PARTN_BITS,D_PER_MAJOR) &bslash;&n;&t;major:D_MAJOR, &bslash;&n;&t;major_name:D_NAME, &bslash;&n;&t;minor_shift:D_PARTN_BITS, &bslash;&n;&t;max_p:1 &lt;&lt; D_PARTN_BITS, &bslash;&n;&t;nr_real:D_PER_MAJOR,
-r_static
-r_inline
-r_struct
-id|request
-op_star
-DECL|function|dasd_next_request
-id|dasd_next_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|queue
-)paren
-(brace
-r_return
-id|blkdev_entry_next_request
-c_func
-(paren
-op_amp
-id|queue-&gt;queue_head
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|dasd_dequeue_request
-id|dasd_dequeue_request
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-r_struct
-id|request
-op_star
-id|req
-)paren
-(brace
-id|blkdev_dequeue_request
-(paren
-id|req
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* dasd_range_t are used for dynamic device att-/detachment */
-DECL|struct|dasd_devreg_t
-r_typedef
-r_struct
-id|dasd_devreg_t
-(brace
-DECL|member|devreg
-id|devreg_t
-id|devreg
-suffix:semicolon
-multiline_comment|/* the devreg itself */
-multiline_comment|/* build a linked list of devregs, needed for cleanup */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|typedef|dasd_devreg_t
-)brace
-id|dasd_devreg_t
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|no
-r_int
-id|no
-suffix:semicolon
-DECL|member|handler
-id|dasd_ioctl_fn_t
-id|handler
-suffix:semicolon
-DECL|typedef|dasd_ioctl_list_t
-)brace
-id|dasd_ioctl_list_t
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-DECL|enumerator|dasd_era_fatal
-id|dasd_era_fatal
-op_assign
-op_minus
-l_int|1
-comma
-multiline_comment|/* no chance to recover              */
-DECL|enumerator|dasd_era_none
-id|dasd_era_none
-op_assign
-l_int|0
-comma
-multiline_comment|/* don&squot;t recover, everything alright */
-DECL|enumerator|dasd_era_msg
-id|dasd_era_msg
-op_assign
-l_int|1
-comma
-multiline_comment|/* don&squot;t recover, just report...     */
-DECL|enumerator|dasd_era_recover
-id|dasd_era_recover
-op_assign
-l_int|2
-multiline_comment|/* recovery action recommended       */
-DECL|typedef|dasd_era_t
-)brace
-id|dasd_era_t
-suffix:semicolon
-multiline_comment|/* BIT DEFINITIONS FOR SENSE DATA */
-DECL|macro|DASD_SENSE_BIT_0
-mdefine_line|#define DASD_SENSE_BIT_0 0x80
-DECL|macro|DASD_SENSE_BIT_1
-mdefine_line|#define DASD_SENSE_BIT_1 0x40
-DECL|macro|DASD_SENSE_BIT_2
-mdefine_line|#define DASD_SENSE_BIT_2 0x20
-DECL|macro|DASD_SENSE_BIT_3
-mdefine_line|#define DASD_SENSE_BIT_3 0x10
-DECL|macro|check_then_set
-mdefine_line|#define check_then_set(where,from,to) &bslash;&n;do { &bslash;&n;        if ((*(where)) != (from) ) { &bslash;&n;                printk (KERN_ERR PRINTK_HEADER &quot;was %d&bslash;n&quot;, *(where)); &bslash;&n;                BUG(); &bslash;&n;        } &bslash;&n;        (*(where)) = (to); &bslash;&n;} while (0)
-DECL|macro|DASD_MESSAGE
-mdefine_line|#define DASD_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;        int d_devno = d_device-&gt;devinfo.devno; &bslash;&n;        int d_irq = d_device-&gt;devinfo.irq; &bslash;&n;        char *d_name = d_device-&gt;name; &bslash;&n;        int d_major = MAJOR(d_device-&gt;kdev); &bslash;&n;        int d_minor = MINOR(d_device-&gt;kdev); &bslash;&n;        printk(d_loglevel PRINTK_HEADER &bslash;&n;               &quot;/dev/%s(%d:%d),%04X IRQ0x%x:&quot; &bslash;&n;               d_string &quot;&bslash;n&quot;,d_name,d_major,d_minor,d_devno,d_irq,d_args ); &bslash;&n;} while(0)
-multiline_comment|/* &n; * struct dasd_sizes_t&n; * represents all data needed to access dasd with properly set up sectors&n; */
-r_typedef
-DECL|struct|dasd_sizes_t
-r_struct
-id|dasd_sizes_t
-(brace
-DECL|member|blocks
-r_int
-r_int
-id|blocks
-suffix:semicolon
-multiline_comment|/* size of volume in blocks */
-DECL|member|bp_block
-r_int
-r_int
-id|bp_block
-suffix:semicolon
-multiline_comment|/* bytes per block */
-DECL|member|s2b_shift
-r_int
-r_int
-id|s2b_shift
-suffix:semicolon
-multiline_comment|/* log2 (bp_block/512) */
-DECL|member|pt_block
-r_int
-r_int
-id|pt_block
-suffix:semicolon
-multiline_comment|/* from which block to read the partn table */
-DECL|typedef|dasd_sizes_t
-)brace
-id|dasd_sizes_t
-suffix:semicolon
-multiline_comment|/* &n; * struct dasd_chanq_t &n; * represents a queue of channel programs related to a single device&n; */
-r_typedef
-DECL|struct|dasd_chanq_t
-r_struct
-id|dasd_chanq_t
-(brace
-DECL|member|head
-id|ccw_req_t
-op_star
-id|head
-suffix:semicolon
-DECL|member|tail
-id|ccw_req_t
-op_star
-id|tail
-suffix:semicolon
-DECL|typedef|dasd_chanq_t
-)brace
-id|dasd_chanq_t
-suffix:semicolon
-DECL|macro|DASD_DEVICE_FORMAT_STRING
-mdefine_line|#define DASD_DEVICE_FORMAT_STRING &quot;Device: %p&quot;
-DECL|macro|DASD_DEVICE_DEBUG_EVENT
-mdefine_line|#define DASD_DEVICE_DEBUG_EVENT(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_event(d_device-&gt;debug_area,d_level,&bslash;&n;                    DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_device, d_data);&bslash;&n;} while(0);
-DECL|macro|DASD_DEVICE_DEBUG_EXCEPTION
-mdefine_line|#define DASD_DEVICE_DEBUG_EXCEPTION(d_level, d_device, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( d_device-&gt;debug_area != NULL )&bslash;&n;        debug_sprintf_exception(d_device-&gt;debug_area,d_level,&bslash;&n;                        DASD_DEVICE_FORMAT_STRING d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_device, d_data);&bslash;&n;} while(0);
-DECL|macro|DASD_DRIVER_FORMAT_STRING
-mdefine_line|#define DASD_DRIVER_FORMAT_STRING &quot;Driver: &lt;[%p]&gt;&quot;
-DECL|macro|DASD_DRIVER_DEBUG_EVENT
-mdefine_line|#define DASD_DRIVER_DEBUG_EVENT(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_event(dasd_debug_area, d_level,&bslash;&n;                    DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                    d_fn, d_data);&bslash;&n;} while(0);
-DECL|macro|DASD_DRIVER_DEBUG_EXCEPTION
-mdefine_line|#define DASD_DRIVER_DEBUG_EXCEPTION(d_level, d_fn, d_str, d_data...)&bslash;&n;do {&bslash;&n;        if ( dasd_debug_area != NULL )&bslash;&n;        debug_sprintf_exception(dasd_debug_area, d_level,&bslash;&n;                        DASD_DRIVER_FORMAT_STRING #d_fn &quot;:&quot; d_str &quot;&bslash;n&quot;,&bslash;&n;                        d_fn, d_data);&bslash;&n;} while(0);
-r_struct
-id|dasd_device_t
-suffix:semicolon
-r_struct
-id|request
-suffix:semicolon
-multiline_comment|/* &n; * signatures for the functions of dasd_discipline_t &n; * make typecasts much easier&n; */
-DECL|typedef|dasd_erp_action_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_erp_action_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-id|cqr
-)paren
-suffix:semicolon
-DECL|typedef|dasd_erp_postaction_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_erp_postaction_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-id|cqr
-)paren
-suffix:semicolon
-DECL|typedef|dasd_ck_id_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_ck_id_fn_t
-)paren
-(paren
-id|s390_dev_info_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_ck_characteristics_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_ck_characteristics_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_fill_geometry_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_fill_geometry_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-comma
-r_struct
-id|hd_geometry
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_format_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_format_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-comma
-r_struct
-id|format_data_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_init_analysis_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_init_analysis_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_do_analysis_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_do_analysis_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_io_starter_fn_t
-r_typedef
-r_int
-(paren
-op_star
-id|dasd_io_starter_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_int_handler_fn_t
-r_typedef
-r_void
-(paren
-op_star
-id|dasd_int_handler_fn_t
-)paren
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_error_examine_fn_t
-r_typedef
-id|dasd_era_t
-(paren
-op_star
-id|dasd_error_examine_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-comma
-id|devstat_t
-op_star
-id|stat
-)paren
-suffix:semicolon
-DECL|typedef|dasd_error_analyse_fn_t
-r_typedef
-id|dasd_erp_action_fn_t
-(paren
-op_star
-id|dasd_error_analyse_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_erp_analyse_fn_t
-r_typedef
-id|dasd_erp_postaction_fn_t
-(paren
-op_star
-id|dasd_erp_analyse_fn_t
-)paren
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_cp_builder_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_cp_builder_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_dump_sense_fn_t
-r_typedef
-r_char
-op_star
-(paren
-op_star
-id|dasd_dump_sense_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-comma
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_reserve_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_reserve_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_release_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_release_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|dasd_merge_cp_fn_t
-r_typedef
-id|ccw_req_t
-op_star
-(paren
-op_star
-id|dasd_merge_cp_fn_t
-)paren
-(paren
-r_struct
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * the dasd_discipline_t is&n; * sth like a table of virtual functions, if you think of dasd_eckd&n; * inheriting dasd...&n; * no, currently we are not planning to reimplement the driver in C++&n; */
-DECL|struct|dasd_discipline_t
-r_typedef
-r_struct
-id|dasd_discipline_t
-(brace
-DECL|member|ebcname
-r_char
-id|ebcname
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* a name used for tagging and printks */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* a name used for tagging and printks */
-DECL|member|max_blocks
-r_int
-id|max_blocks
-suffix:semicolon
-multiline_comment|/* maximum number of blocks to be chained */
-DECL|member|id_check
-id|dasd_ck_id_fn_t
-id|id_check
-suffix:semicolon
-multiline_comment|/* to check sense data */
-DECL|member|check_characteristics
-id|dasd_ck_characteristics_fn_t
-id|check_characteristics
-suffix:semicolon
-multiline_comment|/* to check the characteristics */
-DECL|member|init_analysis
-id|dasd_init_analysis_fn_t
-id|init_analysis
-suffix:semicolon
-multiline_comment|/* to start the analysis of the volume */
-DECL|member|do_analysis
-id|dasd_do_analysis_fn_t
-id|do_analysis
-suffix:semicolon
-multiline_comment|/* to complete the analysis of the volume */
-DECL|member|fill_geometry
-id|dasd_fill_geometry_fn_t
-id|fill_geometry
-suffix:semicolon
-multiline_comment|/* to set up hd_geometry */
-DECL|member|start_IO
-id|dasd_io_starter_fn_t
-id|start_IO
-suffix:semicolon
-DECL|member|format_device
-id|dasd_format_fn_t
-id|format_device
-suffix:semicolon
-multiline_comment|/* to format the device */
-DECL|member|examine_error
-id|dasd_error_examine_fn_t
-id|examine_error
-suffix:semicolon
-DECL|member|erp_action
-id|dasd_error_analyse_fn_t
-id|erp_action
-suffix:semicolon
-DECL|member|erp_postaction
-id|dasd_erp_analyse_fn_t
-id|erp_postaction
-suffix:semicolon
-DECL|member|build_cp_from_req
-id|dasd_cp_builder_fn_t
-id|build_cp_from_req
-suffix:semicolon
-DECL|member|dump_sense
-id|dasd_dump_sense_fn_t
-id|dump_sense
-suffix:semicolon
-DECL|member|int_handler
-id|dasd_int_handler_fn_t
-id|int_handler
-suffix:semicolon
-DECL|member|reserve
-id|dasd_reserve_fn_t
-id|reserve
-suffix:semicolon
-DECL|member|release
-id|dasd_release_fn_t
-id|release
-suffix:semicolon
-DECL|member|merge_cp
-id|dasd_merge_cp_fn_t
-id|merge_cp
-suffix:semicolon
-DECL|member|next
-r_struct
-id|dasd_discipline_t
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* used for list of disciplines */
-DECL|typedef|dasd_discipline_t
-)brace
-id|dasd_discipline_t
-suffix:semicolon
-DECL|macro|DASD_MAJOR_INFO_REGISTERED
-mdefine_line|#define DASD_MAJOR_INFO_REGISTERED 1
-DECL|macro|DASD_MAJOR_INFO_IS_STATIC
-mdefine_line|#define DASD_MAJOR_INFO_IS_STATIC 2
-DECL|struct|major_info_t
-r_typedef
-r_struct
-id|major_info_t
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|dasd_device
-r_struct
-id|dasd_device_t
-op_star
-op_star
-id|dasd_device
-suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
-DECL|member|gendisk
-r_struct
-id|gendisk
-id|gendisk
-suffix:semicolon
-multiline_comment|/* actually contains the major number */
-DECL|typedef|major_info_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|major_info_t
-suffix:semicolon
+multiline_comment|/* &n; * struct profile_info_t&n; * holds the profinling information &n; */
 DECL|struct|dasd_profile_info_t
 r_typedef
 r_struct
@@ -862,6 +20,12 @@ r_int
 id|dasd_io_reqs
 suffix:semicolon
 multiline_comment|/* number of requests processed at all */
+DECL|member|dasd_io_sects
+r_int
+r_int
+id|dasd_io_sects
+suffix:semicolon
+multiline_comment|/* number of sectors processed at all */
 DECL|member|dasd_io_secs
 r_int
 r_int
@@ -929,278 +93,200 @@ DECL|typedef|dasd_profile_info_t
 )brace
 id|dasd_profile_info_t
 suffix:semicolon
-DECL|struct|dasd_device_t
+multiline_comment|/* &n; * struct format_data_t&n; * represents all data necessary to format a dasd&n; */
+DECL|struct|format_data_t
 r_typedef
 r_struct
-id|dasd_device_t
+id|format_data_t
 (brace
-DECL|member|devinfo
-id|s390_dev_info_t
-id|devinfo
-suffix:semicolon
-DECL|member|discipline
-id|dasd_discipline_t
-op_star
-id|discipline
-suffix:semicolon
-DECL|member|level
+DECL|member|start_unit
 r_int
-id|level
+id|start_unit
 suffix:semicolon
+multiline_comment|/* from track */
+DECL|member|stop_unit
+r_int
+id|stop_unit
+suffix:semicolon
+multiline_comment|/* to track */
+DECL|member|blksize
+r_int
+id|blksize
+suffix:semicolon
+multiline_comment|/* sectorsize */
+DECL|member|intensity
+r_int
+id|intensity
+suffix:semicolon
+DECL|typedef|format_data_t
+)brace
+id|format_data_t
+suffix:semicolon
+multiline_comment|/*&n; * values to be used for format_data_t.intensity&n; * 0/8: normal format&n; * 1/9: also write record zero&n; * 3/11: also write home address&n; * 4/12: invalidate track&n; */
+DECL|macro|DASD_FMT_INT_FMT_R0
+mdefine_line|#define DASD_FMT_INT_FMT_R0 1 /* write record zero */
+DECL|macro|DASD_FMT_INT_FMT_HA
+mdefine_line|#define DASD_FMT_INT_FMT_HA 2 /* write home address, also set FMT_R0 ! */
+DECL|macro|DASD_FMT_INT_INVAL
+mdefine_line|#define DASD_FMT_INT_INVAL  4 /* invalidate tracks */
+DECL|macro|DASD_FMT_INT_COMPAT
+mdefine_line|#define DASD_FMT_INT_COMPAT 8 /* use OS/390 compatible disk layout */
+multiline_comment|/* &n; * struct dasd_information_t&n; * represents any data about the data, which is visible to userspace&n; */
+DECL|struct|dasd_information_t
+r_typedef
+r_struct
+id|dasd_information_t
+(brace
+DECL|member|devno
+r_int
+r_int
+id|devno
+suffix:semicolon
+multiline_comment|/* S/390 devno */
+DECL|member|real_devno
+r_int
+r_int
+id|real_devno
+suffix:semicolon
+multiline_comment|/* for aliases */
+DECL|member|schid
+r_int
+r_int
+id|schid
+suffix:semicolon
+multiline_comment|/* S/390 subchannel identifier */
+DECL|member|cu_type
+r_int
+r_int
+id|cu_type
+suffix:colon
+l_int|16
+suffix:semicolon
+multiline_comment|/* from SenseID */
+DECL|member|cu_model
+r_int
+r_int
+id|cu_model
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* from SenseID */
+DECL|member|dev_type
+r_int
+r_int
+id|dev_type
+suffix:colon
+l_int|16
+suffix:semicolon
+multiline_comment|/* from SenseID */
+DECL|member|dev_model
+r_int
+r_int
+id|dev_model
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* from SenseID */
 DECL|member|open_count
+r_int
 r_int
 id|open_count
 suffix:semicolon
-DECL|member|kdev
-id|kdev_t
-id|kdev
+DECL|member|req_queue_len
+r_int
+r_int
+id|req_queue_len
 suffix:semicolon
-DECL|member|major_info
-id|major_info_t
-op_star
-id|major_info
+DECL|member|chanq_len
+r_int
+r_int
+id|chanq_len
 suffix:semicolon
-DECL|member|queue
-r_struct
-id|dasd_chanq_t
-id|queue
-suffix:semicolon
-DECL|member|wait_q
-id|wait_queue_head_t
-id|wait_q
-suffix:semicolon
-DECL|member|request_queue
-id|request_queue_t
-id|request_queue
-suffix:semicolon
-DECL|member|timer
-r_struct
-id|timer_list
-id|timer
-suffix:semicolon
-DECL|member|dev_status
-id|devstat_t
-id|dev_status
-suffix:semicolon
-multiline_comment|/* needed ONLY!! for request_irq */
-DECL|member|sizes
-id|dasd_sizes_t
-id|sizes
-suffix:semicolon
-DECL|member|name
+DECL|member|type
 r_char
-id|name
+id|type
 (braket
-l_int|16
+l_int|4
 )braket
 suffix:semicolon
-multiline_comment|/* The name of the device in /dev */
-DECL|member|private
+multiline_comment|/* from discipline.name, &squot;none&squot; for unknown */
+DECL|member|status
+r_int
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* current device level */
+DECL|member|label_block
+r_int
+r_int
+id|label_block
+suffix:semicolon
+multiline_comment|/* where to find the VOLSER */
+DECL|member|FBA_layout
+r_int
+r_int
+id|FBA_layout
+suffix:semicolon
+multiline_comment|/* fixed block size (like AIXVOL) */
+DECL|member|characteristics_size
+r_int
+r_int
+id|characteristics_size
+suffix:semicolon
+DECL|member|confdata_size
+r_int
+r_int
+id|confdata_size
+suffix:semicolon
+DECL|member|characteristics
 r_char
-op_star
-r_private
+id|characteristics
+(braket
+l_int|64
+)braket
 suffix:semicolon
-multiline_comment|/* to be used by the discipline internally */
-macro_line|#if (LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,98))
-DECL|member|devfs_entry
-id|devfs_handle_t
-id|devfs_entry
+multiline_comment|/* from read_device_characteristics */
+DECL|member|configuration_data
+r_char
+id|configuration_data
+(braket
+l_int|256
+)braket
 suffix:semicolon
-macro_line|#endif /* LINUX_IS_24 */
-DECL|member|bh_tq
-r_struct
-id|tq_struct
-id|bh_tq
-suffix:semicolon
-DECL|member|bh_scheduled
-id|atomic_t
-id|bh_scheduled
-suffix:semicolon
-DECL|member|debug_area
-id|debug_info_t
-op_star
-id|debug_area
-suffix:semicolon
-DECL|member|profile
-id|dasd_profile_info_t
-id|profile
-suffix:semicolon
-DECL|member|proc_dir
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_dir
-suffix:semicolon
-multiline_comment|/* directory node */
-DECL|member|proc_info
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_info
-suffix:semicolon
-multiline_comment|/* information from dasd_device_t */
-DECL|member|proc_stats
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_stats
-suffix:semicolon
-multiline_comment|/* statictics information */
-DECL|typedef|dasd_device_t
+multiline_comment|/* from read_configuration_data */
+DECL|typedef|dasd_information_t
 )brace
-id|dasd_device_t
+id|dasd_information_t
 suffix:semicolon
-multiline_comment|/* dasd_device_t.level can be: */
-DECL|macro|DASD_DEVICE_LEVEL_UNKNOWN
-mdefine_line|#define DASD_DEVICE_LEVEL_UNKNOWN 0x00
-DECL|macro|DASD_DEVICE_LEVEL_RECOGNIZED
-mdefine_line|#define DASD_DEVICE_LEVEL_RECOGNIZED 0x01
-DECL|macro|DASD_DEVICE_LEVEL_ANALYSIS_PENDING
-mdefine_line|#define DASD_DEVICE_LEVEL_ANALYSIS_PENDING 0x02
-DECL|macro|DASD_DEVICE_LEVEL_ANALYSIS_PREPARED
-mdefine_line|#define DASD_DEVICE_LEVEL_ANALYSIS_PREPARED 0x04
-DECL|macro|DASD_DEVICE_LEVEL_ANALYSED
-mdefine_line|#define DASD_DEVICE_LEVEL_ANALYSED 0x08
-DECL|macro|DASD_DEVICE_LEVEL_ONLINE
-mdefine_line|#define DASD_DEVICE_LEVEL_ONLINE 0x10
-r_int
-id|dasd_init
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|dasd_discipline_enq
-(paren
-id|dasd_discipline_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_discipline_deq
-c_func
-(paren
-id|dasd_discipline_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_start_IO
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|dasd_int_handler
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-id|ccw_req_t
-op_star
-id|default_erp_action
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-id|ccw_req_t
-op_star
-id|default_erp_postaction
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_chanq_deq
-(paren
-id|dasd_chanq_t
-op_star
-comma
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-id|ccw_req_t
-op_star
-id|dasd_alloc_request
-(paren
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_void
-id|dasd_free_request
-(paren
-id|ccw_req_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|genhd_dasd_name
-)paren
-(paren
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-comma
-r_struct
-id|gendisk
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-(paren
-op_star
-id|genhd_dasd_fillgeo
-)paren
-(paren
-r_int
-comma
-r_struct
-id|hd_geometry
-op_star
-)paren
-suffix:semicolon
-r_int
-id|dasd_oper_handler
-(paren
-r_int
-id|irq
-comma
-id|devreg_t
-op_star
-id|devreg
-)paren
-suffix:semicolon
-r_void
-id|dasd_schedule_bh
-(paren
-id|dasd_device_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
+multiline_comment|/* Disable the volume (for Linux) */
+DECL|macro|BIODASDDISABLE
+mdefine_line|#define BIODASDDISABLE _IO(DASD_IOCTL_LETTER,0) 
+multiline_comment|/* Enable the volume (for Linux) */
+DECL|macro|BIODASDENABLE
+mdefine_line|#define BIODASDENABLE  _IO(DASD_IOCTL_LETTER,1)  
+multiline_comment|/* Issue a reserve/release command, rsp. */
+DECL|macro|BIODASDRSRV
+mdefine_line|#define BIODASDRSRV    _IO(DASD_IOCTL_LETTER,2) /* reserve */
+DECL|macro|BIODASDRLSE
+mdefine_line|#define BIODASDRLSE    _IO(DASD_IOCTL_LETTER,3) /* release */
+DECL|macro|BIODASDSLCK
+mdefine_line|#define BIODASDSLCK    _IO(DASD_IOCTL_LETTER,4) /* steal lock */
+multiline_comment|/* reset profiling information of a device */
+DECL|macro|BIODASDPRRST
+mdefine_line|#define BIODASDPRRST   _IO(DASD_IOCTL_LETTER,5)
+multiline_comment|/* retrieve API version number */
+DECL|macro|DASDAPIVER
+mdefine_line|#define DASDAPIVER     _IOR(DASD_IOCTL_LETTER,0,int)
+multiline_comment|/* Get information on a dasd device */
+DECL|macro|BIODASDINFO
+mdefine_line|#define BIODASDINFO    _IOR(DASD_IOCTL_LETTER,1,dasd_information_t)
+multiline_comment|/* retrieve profiling information of a device */
+DECL|macro|BIODASDPRRD
+mdefine_line|#define BIODASDPRRD    _IOR(DASD_IOCTL_LETTER,2,dasd_profile_info_t)
+multiline_comment|/* #define BIODASDFORMAT  _IOW(IOCTL_LETTER,0,format_data_t) , deprecated */
+DECL|macro|BIODASDFMT
+mdefine_line|#define BIODASDFMT     _IOW(DASD_IOCTL_LETTER,1,format_data_t) 
+macro_line|#endif /* DASD_API_VERSION */
 macro_line|#endif&t;&t;&t;&t;/* DASD_H */
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4 &n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
 eof

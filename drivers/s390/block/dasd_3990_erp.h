@@ -68,5 +68,5 @@ id|packed
 )paren
 id|DCTL_data_t
 suffix:semicolon
-macro_line|#endif /* DASD_3990_ERP_H */
+macro_line|#endif&t;&t;&t;&t;/* DASD_3990_ERP_H */
 eof

@@ -2169,7 +2169,6 @@ multiline_comment|/* Kflushd takes care of the rest. */
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_goto

@@ -1358,7 +1358,7 @@ id|shpnt
 suffix:semicolon
 r_static
 r_void
-id|complete
+id|is_complete
 c_func
 (paren
 r_struct
@@ -8025,7 +8025,7 @@ id|service
 op_assign
 l_int|0
 suffix:semicolon
-id|complete
+id|is_complete
 c_func
 (paren
 id|shpnt
@@ -13274,10 +13274,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * bottom-half handler&n; *&n; */
-DECL|function|complete
+DECL|function|is_complete
 r_static
 r_void
-id|complete
+id|is_complete
 c_func
 (paren
 r_struct

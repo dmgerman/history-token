@@ -15,6 +15,8 @@ DECL|macro|DASD_ECKD_CCW_WRITE_KD
 mdefine_line|#define DASD_ECKD_CCW_WRITE_KD 0x0d
 DECL|macro|DASD_ECKD_CCW_READ_KD
 mdefine_line|#define DASD_ECKD_CCW_READ_KD 0x0e
+DECL|macro|DASD_ECKD_CCW_ERASE
+mdefine_line|#define DASD_ECKD_CCW_ERASE 0x11
 DECL|macro|DASD_ECKD_CCW_READ_COUNT
 mdefine_line|#define DASD_ECKD_CCW_READ_COUNT 0x12
 DECL|macro|DASD_ECKD_CCW_WRITE_RECORD_ZERO
@@ -1627,7 +1629,6 @@ r_void
 suffix:semicolon
 r_void
 id|dasd_eckd_cleanup
-c_func
 (paren
 r_void
 )paren

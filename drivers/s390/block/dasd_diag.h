@@ -247,7 +247,6 @@ r_void
 suffix:semicolon
 r_void
 id|dasd_diag_cleanup
-c_func
 (paren
 r_void
 )paren

@@ -24199,6 +24199,22 @@ l_int|8
 )paren
 r_continue
 suffix:semicolon
+macro_line|#ifdef CONFIG_MCA&t;&t;&t;
+r_if
+c_cond
+(paren
+(paren
+id|state-&gt;flags
+op_amp
+id|ASYNC_BOOT_ONLYMCA
+)paren
+op_logical_and
+op_logical_neg
+id|MCA_bus
+)paren
+r_continue
+suffix:semicolon
+macro_line|#endif&t;&t;&t;
 r_if
 c_cond
 (paren

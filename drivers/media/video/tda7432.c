@@ -1,5 +1,6 @@
-multiline_comment|/*&n; * For the STS-Thompson TDA7432 audio processor chip&n; * &n; * Handles audio functions: volume, balance, tone, loudness&n; * This driver will not complain if used with any &n; * other i2c device with the same address.&n; *&n; * Copyright (c) 2000 Eric Sandeen &lt;eric_sandeen@bigfoot.com&gt;&n; * This code is placed under the terms of the GNU General Public License&n; * Based on tda9855.c by Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; * Which was based on tda8425.c by Greg Alexander (c) 1998&n; *&n; * OPTIONS:&n; * debug    - set to 1 if you&squot;d like to see debug messages&n; *            set to 2 if you&squot;d like to be inundated with debug messages&n; *&n; * loudness - set between 0 and 15 for varying degrees of loudness effect&n; *&n; * TODO:&n; *  Implement tone controls&n; *&n; *  Revision: 0.3 - Fixed silly reversed volume controls.  :)&n; *  Revision: 0.2 - Cleaned up #defines&n; *&t;&t;&t;fixed volume control&n; *                  Added I2C_DRIVERID_TDA7432&n; *&t;&t;&t;added loudness insmod control&n; *  Revision: 0.1 - initial version&n; */
+multiline_comment|/*&n; * For the STS-Thompson TDA7432 audio processor chip&n; * &n; * Handles audio functions: volume, balance, tone, loudness&n; * This driver will not complain if used with any &n; * other i2c device with the same address.&n; *&n; * Muting and tone control by Jonathan Isom &lt;jisom@ematic.com&gt;&n; *&n; * Copyright (c) 2000 Eric Sandeen &lt;eric_sandeen@bigfoot.com&gt;&n; * This code is placed under the terms of the GNU General Public License&n; * Based on tda9855.c by Steve VanDeBogart (vandebo@uclink.berkeley.edu)&n; * Which was based on tda8425.c by Greg Alexander (c) 1998&n; *&n; * OPTIONS:&n; * debug    - set to 1 if you&squot;d like to see debug messages&n; *            set to 2 if you&squot;d like to be inundated with debug messages&n; *&n; * loudness - set between 0 and 15 for varying degrees of loudness effect&n; *&n; *&n; *&n; *  Revision: 0.6 - added tone controls&n; *  Revision: 0.5 - Fixed odd balance problem&n; *  Revision: 0.4 - added muting&n; *  Revision: 0.3 - Fixed silly reversed volume controls.  :)&n; *  Revision: 0.2 - Cleaned up #defines&n; *&t;&t;&t;fixed volume control&n; *          Added I2C_DRIVERID_TDA7432&n; *&t;&t;&t;added loudness insmod control&n; *  Revision: 0.1 - initial version&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -200,9 +201,12 @@ DECL|member|volume
 r_int
 id|volume
 suffix:semicolon
-DECL|member|tone
+DECL|member|bass
+DECL|member|treble
 r_int
-id|tone
+id|bass
+comma
+id|treble
 suffix:semicolon
 DECL|member|lf
 DECL|member|lr
@@ -265,13 +269,11 @@ mdefine_line|#define TDA7432_LD&t;0x07 /* Loudness                     */
 multiline_comment|/* Masks for bits in TDA7432 subaddresses */
 multiline_comment|/* Many of these not used - just for documentation */
 multiline_comment|/* Subaddress 0x00 - Input selection and bass control */
-multiline_comment|/* Bits 0,1,2 control input:&n; * 0x00 - Stereo input&n; * 0x02 - Mono input&n; * 0x03 - Mute&n; * Mono probably isn&squot;t used - I&squot;m guessing only the stereo&n; * input is connected on most cards, so we&squot;ll set it to stereo.&n; * &n; * Bit 3 controls bass cut: 0/1 is non-symmetric/symmetric bass cut&n; * Bit 4 controls bass range: 0/1 is extended/standard bass range&n; * &n; * Highest 3 bits not used&n; */
+multiline_comment|/* Bits 0,1,2 control input:&n; * 0x00 - Stereo input&n; * 0x02 - Mono input&n; * 0x03 - Mute  (Using Attenuators Plays better with modules)&n; * Mono probably isn&squot;t used - I&squot;m guessing only the stereo&n; * input is connected on most cards, so we&squot;ll set it to stereo.&n; * &n; * Bit 3 controls bass cut: 0/1 is non-symmetric/symmetric bass cut&n; * Bit 4 controls bass range: 0/1 is extended/standard bass range&n; * &n; * Highest 3 bits not used&n; */
 DECL|macro|TDA7432_STEREO_IN
 mdefine_line|#define TDA7432_STEREO_IN&t;0
 DECL|macro|TDA7432_MONO_IN
 mdefine_line|#define TDA7432_MONO_IN&t;&t;2&t;/* Probably won&squot;t be used */
-DECL|macro|TDA7432_MUTE
-mdefine_line|#define TDA7432_MUTE&t;&t;3&t;/* Probably won&squot;t be used */
 DECL|macro|TDA7432_BASS_SYM
 mdefine_line|#define TDA7432_BASS_SYM&t;1 &lt;&lt; 3
 DECL|macro|TDA7432_BASS_NORM
@@ -291,7 +293,7 @@ mdefine_line|#define TDA7432_TREBLE&t;&t;&t;7
 DECL|macro|TDA7432_TREBLE_GAIN
 mdefine_line|#define TDA7432_TREBLE_GAIN&t;&t;1 &lt;&lt; 3
 DECL|macro|TDA7432_BASS_0DB
-mdefine_line|#define TDA7432_BASS_0DB&t;&t;0xf &lt;&lt; 4
+mdefine_line|#define TDA7432_BASS_0DB&t;&t;0xf
 DECL|macro|TDA7432_BASS
 mdefine_line|#define TDA7432_BASS&t;&t;&t;7 &lt;&lt; 4
 DECL|macro|TDA7432_BASS_GAIN
@@ -303,6 +305,8 @@ multiline_comment|/* Subaddress 0x06 - Right Rear  attenuation */
 multiline_comment|/* Bits 0,1,2,3,4 control attenuation from 0dB to -37.5dB&n; * in 1.5dB steps.&n; *&n; * 0x00 is     0dB&n; * 0x1f is -37.5dB&n; *&n; * Bit 5 mutes that channel when set (1 = mute, 0 = unmute)&n; * We&squot;ll use the mute on the input, though (above) &n; * Bits 6,7 unused&n; */
 DECL|macro|TDA7432_ATTEN_0DB
 mdefine_line|#define TDA7432_ATTEN_0DB&t;0x00
+DECL|macro|TDA7432_MUTE
+mdefine_line|#define TDA7432_MUTE        0x1 &lt;&lt; 5
 multiline_comment|/* Subaddress 0x07 - Loudness Control */
 multiline_comment|/* Bits 0,1,2,3 control loudness from 0dB to -15dB in 1dB steps&n; * when bit 4 is NOT set&n; *&n; * 0x0 is   0dB&n; * 0xf is -15dB&n; *&n; * If bit 4 is set, then there is a flat attenuation according to&n; * the lower 4 bits, as above.&n; *&n; * Bits 5,6,7 unused&n; */
 multiline_comment|/* Begin code */
@@ -498,13 +502,15 @@ id|dprintk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;tda7432: 7432_set(0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x)&bslash;n&quot;
+l_string|&quot;tda7432: 7432_set(0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x,0x%02x)&bslash;n&quot;
 comma
 id|t-&gt;input
 comma
 id|t-&gt;volume
 comma
-id|t-&gt;tone
+id|t-&gt;bass
+comma
+id|t-&gt;treble
 comma
 id|t-&gt;lf
 comma
@@ -543,39 +549,46 @@ id|buf
 l_int|3
 )braket
 op_assign
-id|t-&gt;tone
+id|t-&gt;bass
 suffix:semicolon
 id|buf
 (braket
 l_int|4
 )braket
 op_assign
-id|t-&gt;lf
+id|t-&gt;treble
 suffix:semicolon
 id|buf
 (braket
 l_int|5
 )braket
 op_assign
-id|t-&gt;lr
+id|t-&gt;lf
 suffix:semicolon
 id|buf
 (braket
 l_int|6
 )braket
 op_assign
-id|t-&gt;rf
+id|t-&gt;lr
 suffix:semicolon
 id|buf
 (braket
 l_int|7
 )braket
 op_assign
-id|t-&gt;rr
+id|t-&gt;rf
 suffix:semicolon
 id|buf
 (braket
 l_int|8
+)braket
+op_assign
+id|t-&gt;rr
+suffix:semicolon
+id|buf
+(braket
+l_int|9
 )braket
 op_assign
 id|t-&gt;loud
@@ -583,7 +596,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|9
+l_int|10
 op_ne
 id|i2c_master_send
 c_func
@@ -592,7 +605,7 @@ id|client
 comma
 id|buf
 comma
-l_int|9
+l_int|10
 )paren
 )paren
 (brace
@@ -663,11 +676,13 @@ id|t-&gt;volume
 op_or_assign
 id|TDA7432_LD_ON
 suffix:semicolon
-id|t-&gt;tone
+id|t-&gt;treble
 op_assign
 id|TDA7432_TREBLE_0DB
-op_or
+suffix:semicolon
 multiline_comment|/* 0dB Treble            */
+id|t-&gt;bass
+op_assign
 id|TDA7432_BASS_0DB
 suffix:semicolon
 multiline_comment|/* 0dB Bass              */
@@ -956,14 +971,6 @@ c_func
 l_string|&quot;tda7432: In tda7432_command&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|__u16
-op_star
-id|sarg
-op_assign
-id|arg
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -997,6 +1004,10 @@ op_or
 id|VIDEO_AUDIO_BASS
 op_or
 id|VIDEO_AUDIO_TREBLE
+suffix:semicolon
+id|va-&gt;mode
+op_or_assign
+id|VIDEO_SOUND_STEREO
 suffix:semicolon
 multiline_comment|/* Master volume control&n;&t;&t; * V4L volume is min 0, max 65535&n;&t;&t; * TDA7432 Volume: &n;&t;&t; * Min (-79dB) is 0x6f&n;&t;&t; * Max (+20dB) is 0x07&n;&t;&t; * (Mask out bit 7 of vol - it&squot;s for the loudness setting)&n;&t;&t; */
 id|va-&gt;volume
@@ -1055,14 +1066,64 @@ suffix:semicolon
 multiline_comment|/* Bass/treble */
 id|va-&gt;bass
 op_assign
-l_int|32768
+id|t-&gt;bass
 suffix:semicolon
-multiline_comment|/* brain hurts... set to middle for now */
+r_if
+c_cond
+(paren
+id|va-&gt;bass
+op_ge
+l_int|0x8
+)paren
+(brace
+id|va-&gt;bass
+op_assign
+op_complement
+(paren
+id|va-&gt;bass
+op_minus
+l_int|0x8
+)paren
+op_amp
+l_int|0xf
+suffix:semicolon
+)brace
+id|va-&gt;bass
+op_assign
+id|va-&gt;bass
+op_lshift
+l_int|12
+suffix:semicolon
 id|va-&gt;treble
 op_assign
-l_int|32768
+id|t-&gt;treble
 suffix:semicolon
-multiline_comment|/* brain hurts... set to middle for now */
+r_if
+c_cond
+(paren
+id|va-&gt;treble
+op_ge
+l_int|0x8
+)paren
+(brace
+id|va-&gt;treble
+op_assign
+op_complement
+(paren
+id|va-&gt;treble
+op_minus
+l_int|0x8
+)paren
+op_amp
+l_int|0xf
+suffix:semicolon
+)brace
+id|va-&gt;treble
+op_assign
+id|va-&gt;treble
+op_lshift
+l_int|12
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* VIDIOCGAUDIO case */
@@ -1110,6 +1171,82 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|va-&gt;flags
+op_amp
+id|VIDEO_AUDIO_BASS
+)paren
+(brace
+id|t-&gt;bass
+op_assign
+id|va-&gt;bass
+op_rshift
+l_int|12
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;bass
+op_ge
+l_int|0x8
+)paren
+(brace
+id|t-&gt;bass
+op_assign
+(paren
+op_complement
+id|t-&gt;bass
+op_amp
+l_int|0xf
+)paren
+op_plus
+l_int|0x8
+suffix:semicolon
+)brace
+id|t-&gt;bass
+op_assign
+id|t-&gt;bass
+op_or
+l_int|0x10
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|va-&gt;flags
+op_amp
+id|VIDEO_AUDIO_TREBLE
+)paren
+(brace
+id|t-&gt;treble
+op_assign
+id|va-&gt;treble
+op_rshift
+l_int|12
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;treble
+op_ge
+l_int|0x8
+)paren
+(brace
+id|t-&gt;treble
+op_assign
+(paren
+op_complement
+id|t-&gt;treble
+op_amp
+l_int|0xf
+)paren
+op_plus
+l_int|0x8
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
 id|va-&gt;balance
 OL
 l_int|32768
@@ -1130,8 +1267,23 @@ id|t-&gt;rf
 op_assign
 id|t-&gt;rr
 suffix:semicolon
+id|t-&gt;lr
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+id|t-&gt;lf
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|va-&gt;balance
+OG
+l_int|32769
+)paren
 (brace
 multiline_comment|/* shifted to right, attenuate left */
 id|t-&gt;lf
@@ -1148,9 +1300,51 @@ id|t-&gt;lr
 op_assign
 id|t-&gt;lf
 suffix:semicolon
+id|t-&gt;rr
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+id|t-&gt;rf
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
 )brace
-multiline_comment|/* t-&gt;tone = 0xff; */
-multiline_comment|/* Brain hurts - no tone control for now... */
+r_else
+(brace
+multiline_comment|/* centered */
+id|t-&gt;rr
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+id|t-&gt;rf
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+id|t-&gt;lf
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+id|t-&gt;lr
+op_assign
+id|TDA7432_ATTEN_0DB
+suffix:semicolon
+)brace
+id|tda7432_write
+c_func
+(paren
+id|client
+comma
+id|TDA7432_TN
+comma
+(paren
+id|t-&gt;bass
+op_lshift
+l_int|4
+)paren
+op_or
+id|t-&gt;treble
+)paren
+suffix:semicolon
 id|tda7432_write
 c_func
 (paren
@@ -1161,7 +1355,66 @@ comma
 id|t-&gt;volume
 )paren
 suffix:semicolon
-multiline_comment|/* tda7432_write(client,TDA7432_TN, t-&gt;tone); */
+r_if
+c_cond
+(paren
+id|va-&gt;flags
+op_amp
+id|VIDEO_AUDIO_MUTE
+)paren
+(brace
+multiline_comment|/* Mute &amp; update balance*/
+id|tda7432_write
+c_func
+(paren
+id|client
+comma
+id|TDA7432_LF
+comma
+id|t-&gt;lf
+op_or
+id|TDA7432_MUTE
+)paren
+suffix:semicolon
+id|tda7432_write
+c_func
+(paren
+id|client
+comma
+id|TDA7432_LR
+comma
+id|t-&gt;lr
+op_or
+id|TDA7432_MUTE
+)paren
+suffix:semicolon
+id|tda7432_write
+c_func
+(paren
+id|client
+comma
+id|TDA7432_RF
+comma
+id|t-&gt;rf
+op_or
+id|TDA7432_MUTE
+)paren
+suffix:semicolon
+id|tda7432_write
+c_func
+(paren
+id|client
+comma
+id|TDA7432_RR
+comma
+id|t-&gt;rr
+op_or
+id|TDA7432_MUTE
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|tda7432_write
 c_func
 (paren
@@ -1202,6 +1455,7 @@ comma
 id|t-&gt;rr
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -1266,22 +1520,13 @@ op_amp
 id|driver
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|tda7432_init
 r_int
 id|tda7432_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_if
 c_cond
@@ -1322,10 +1567,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|tda7432_fini
 r_void
-id|cleanup_module
+id|tda7432_fini
 c_func
 (paren
 r_void
@@ -1339,6 +1583,19 @@ id|driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|tda7432_init
+id|module_init
+c_func
+(paren
+id|tda7432_init
+)paren
+suffix:semicolon
+DECL|variable|tda7432_fini
+id|module_exit
+c_func
+(paren
+id|tda7432_fini
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

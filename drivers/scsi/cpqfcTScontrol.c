@@ -17,11 +17,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;  
 singleline_comment|// struct pt_regs for IRQ handler &amp; Port I/O
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,18)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;   
 singleline_comment|// Scsi_Host definition for INT handler

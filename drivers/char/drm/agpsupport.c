@@ -1548,12 +1548,16 @@ id|head-&gt;chipset
 op_assign
 l_string|&quot;Serverworks HE&quot;
 suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|SVWRKS_LE
 suffix:colon
 id|head-&gt;chipset
 op_assign
 l_string|&quot;Serverworks LE&quot;
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon

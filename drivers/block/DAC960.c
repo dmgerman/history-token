@@ -2,12 +2,13 @@ multiline_comment|/*&n;&n;  Linux Driver for Mylex DAC960/AcceleRAID/eXtremeRAID
 DECL|macro|DAC960_DriverVersion
 mdefine_line|#define DAC960_DriverVersion&t;&t;&t;&quot;2.4.10&quot;
 DECL|macro|DAC960_DriverDate
-mdefine_line|#define DAC960_DriverDate&t;&t;&t;&quot;1 February 2001&quot;
+mdefine_line|#define DAC960_DriverDate&t;&t;&t;&quot;23 July 2001&quot;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -20,7 +21,6 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1491,17 +1491,17 @@ suffix:semicolon
 id|DECLARE_COMPLETION
 c_func
 (paren
-id|Wait
+id|Completion
 )paren
 suffix:semicolon
 r_int
 r_int
 id|ProcessorFlags
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 op_amp
-id|Wait
+id|Completion
 suffix:semicolon
 id|DAC960_AcquireControllerLock
 c_func
@@ -1541,7 +1541,7 @@ id|wait_for_completion
 c_func
 (paren
 op_amp
-id|Wait
+id|Completion
 )paren
 suffix:semicolon
 )brace
@@ -4771,13 +4771,13 @@ op_star
 id|DCDB
 suffix:semicolon
 id|Completion_T
-id|Wait
+id|Completions
 (braket
 id|DAC960_V1_MaxChannels
 )braket
 comma
 op_star
-id|wait
+id|Completion
 suffix:semicolon
 r_int
 r_int
@@ -4844,10 +4844,10 @@ id|InquiryStandardData-&gt;PeripheralDeviceType
 op_assign
 l_int|0x1F
 suffix:semicolon
-id|wait
+id|Completion
 op_assign
 op_amp
-id|Wait
+id|Completions
 (braket
 id|Channel
 )braket
@@ -4855,7 +4855,7 @@ suffix:semicolon
 id|init_completion
 c_func
 (paren
-id|wait
+id|Completion
 )paren
 suffix:semicolon
 id|DCDB
@@ -4876,9 +4876,9 @@ id|Command-&gt;CommandType
 op_assign
 id|DAC960_ImmediateCommand
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
-id|wait
+id|Completion
 suffix:semicolon
 id|Command-&gt;V1.CommandMailbox.Type3.CommandOpcode
 op_assign
@@ -5066,10 +5066,10 @@ id|InquiryUnitSerialNumber-&gt;PeripheralDeviceType
 op_assign
 l_int|0x1F
 suffix:semicolon
-id|wait
+id|Completion
 op_assign
 op_amp
-id|Wait
+id|Completions
 (braket
 id|Channel
 )braket
@@ -5077,7 +5077,7 @@ suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
-id|wait
+id|Completion
 )paren
 suffix:semicolon
 r_if
@@ -5089,9 +5089,9 @@ id|DAC960_V1_NormalCompletion
 )paren
 r_continue
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
-id|wait
+id|Completion
 suffix:semicolon
 id|DCDB
 op_assign
@@ -5200,7 +5200,7 @@ suffix:semicolon
 id|wait_for_completion
 c_func
 (paren
-id|wait
+id|Completion
 )paren
 suffix:semicolon
 )brace
@@ -10746,7 +10746,7 @@ id|Command-&gt;CommandType
 op_assign
 id|DAC960_WriteCommand
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 id|Request-&gt;waiting
 suffix:semicolon
@@ -11233,20 +11233,21 @@ op_assign
 id|NextBufferHeader
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    Wake up requestor for swap file paging requests.&n;&t;  */
 r_if
 c_cond
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
+op_ne
+l_int|NULL
 )paren
 (brace
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -11395,16 +11396,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
+op_ne
+l_int|NULL
 )paren
 (brace
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -13692,10 +13695,10 @@ id|DAC960_ImmediateCommand
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -15189,16 +15192,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
+op_ne
+l_int|NULL
 )paren
 (brace
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -15364,16 +15369,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
+op_ne
+l_int|NULL
 )paren
 (brace
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -17340,10 +17347,10 @@ id|DAC960_ImmediateCommand
 id|complete
 c_func
 (paren
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 )paren
 suffix:semicolon
-id|Command-&gt;Waiting
+id|Command-&gt;Completion
 op_assign
 l_int|NULL
 suffix:semicolon

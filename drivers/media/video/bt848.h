@@ -538,5 +538,7 @@ DECL|macro|BT878_DEVCTRL
 mdefine_line|#define BT878_DEVCTRL 0x40
 DECL|macro|BT878_EN_TBFX
 mdefine_line|#define BT878_EN_TBFX 0x02
+DECL|macro|BT878_EN_VSFX
+mdefine_line|#define BT878_EN_VSFX 0x04
 macro_line|#endif
 eof

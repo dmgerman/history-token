@@ -257,6 +257,10 @@ DECL|member|inputmute
 r_int
 id|inputmute
 suffix:semicolon
+DECL|member|inputmask
+r_int
+id|inputmask
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|chiplist
@@ -304,6 +308,10 @@ id|bass
 comma
 id|mode
 suffix:semicolon
+DECL|member|prevmode
+r_int
+id|prevmode
+suffix:semicolon
 multiline_comment|/* thread */
 DECL|member|thread
 r_struct
@@ -333,7 +341,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------- */
-multiline_comment|/* i2c addresses                                                           */
+multiline_comment|/* i2c addresses                                                          */
 DECL|variable|normal_i2c
 r_static
 r_int
@@ -667,6 +675,99 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|chip_write_masked
+r_static
+r_int
+id|chip_write_masked
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+comma
+r_int
+id|subaddr
+comma
+r_int
+id|val
+comma
+r_int
+id|mask
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|mask
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_eq
+id|subaddr
+)paren
+(brace
+id|val
+op_assign
+(paren
+id|chip-&gt;shadow.bytes
+(braket
+l_int|1
+)braket
+op_amp
+op_complement
+id|mask
+)paren
+op_or
+(paren
+id|val
+op_amp
+id|mask
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|val
+op_assign
+(paren
+id|chip-&gt;shadow.bytes
+(braket
+id|subaddr
+op_plus
+l_int|1
+)braket
+op_amp
+op_complement
+id|mask
+)paren
+op_or
+(paren
+id|val
+op_amp
+id|mask
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+id|chip_write
+c_func
+(paren
+id|chip
+comma
+id|subaddr
+comma
+id|val
+)paren
 suffix:semicolon
 )brace
 DECL|function|chip_read
@@ -1150,14 +1251,6 @@ multiline_comment|/* don&squot;t do anything if mode != auto */
 r_continue
 suffix:semicolon
 multiline_comment|/* have a look what&squot;s going on */
-id|dprintk
-c_func
-(paren
-l_string|&quot;%s: thread checkmode&bslash;n&quot;
-comma
-id|chip-&gt;c.name
-)paren
-suffix:semicolon
 id|desc
 op_member_access_from_pointer
 id|checkmode
@@ -1247,20 +1340,23 @@ r_if
 c_cond
 (paren
 id|mode
-op_amp
-id|VIDEO_SOUND_STEREO
+op_eq
+id|chip-&gt;prevmode
 )paren
-id|desc
-op_member_access_from_pointer
-id|setmode
+r_return
+suffix:semicolon
+id|dprintk
 c_func
 (paren
-id|chip
+l_string|&quot;%s: thread checkmode&bslash;n&quot;
 comma
-id|VIDEO_SOUND_STEREO
+id|chip-&gt;c.name
 )paren
 suffix:semicolon
-r_else
+id|chip-&gt;prevmode
+op_assign
+id|mode
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1276,6 +1372,24 @@ c_func
 id|chip
 comma
 id|VIDEO_SOUND_LANG1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|mode
+op_amp
+id|VIDEO_SOUND_STEREO
+)paren
+id|desc
+op_member_access_from_pointer
+id|setmode
+c_func
+(paren
+id|chip
+comma
+id|VIDEO_SOUND_STEREO
 )paren
 suffix:semicolon
 r_else
@@ -1320,6 +1434,10 @@ DECL|macro|TDA9840_ST_STEREO
 mdefine_line|#define TDA9840_ST_STEREO  0x40 /* Stereo sound identified        */
 DECL|macro|TDA9840_PONRES
 mdefine_line|#define TDA9840_PONRES     0x80 /* Power-on reset detected if = 1 */
+DECL|macro|TDA9840_TEST_INT1SN
+mdefine_line|#define TDA9840_TEST_INT1SN 0x1 /* Integration time 0.5s when set */
+DECL|macro|TDA9840_TEST_INTFU
+mdefine_line|#define TDA9840_TEST_INTFU 0x02 /* Disables integrator function */
 DECL|function|tda9840_getmode
 r_int
 id|tda9840_getmode
@@ -1776,6 +1894,8 @@ mdefine_line|#define TDA9873_AD&t;0x01 /* Adjust                       */
 DECL|macro|TDA9873_PT
 mdefine_line|#define TDA9873_PT&t;0x02 /* Port                         */
 multiline_comment|/* Subaddress 0x00: Switching Data &n; * B7..B0:&n; *&n; * B1, B0: Input source selection&n; *  0,  0  internal&n; *  1,  0  external stereo&n; *  0,  1  external mono&n; */
+DECL|macro|TDA9873_INP_MASK
+mdefine_line|#define TDA9873_INP_MASK    3
 DECL|macro|TDA9873_INTERNAL
 mdefine_line|#define TDA9873_INTERNAL    0
 DECL|macro|TDA9873_EXT_STEREO
@@ -1783,6 +1903,8 @@ mdefine_line|#define TDA9873_EXT_STEREO  2
 DECL|macro|TDA9873_EXT_MONO
 mdefine_line|#define TDA9873_EXT_MONO    1
 multiline_comment|/*    B3, B2: output signal select&n; * B4    : transmission mode &n; *  0, 0, 1   Mono&n; *  1, 0, 0   Stereo&n; *  1, 1, 1   Stereo (reversed channel)    &n; *  0, 0, 0   Dual AB&n; *  0, 0, 1   Dual AA&n; *  0, 1, 0   Dual BB&n; *  0, 1, 1   Dual BA&n; */
+DECL|macro|TDA9873_TR_MASK
+mdefine_line|#define TDA9873_TR_MASK     (7 &lt;&lt; 2)
 DECL|macro|TDA9873_TR_MONO
 mdefine_line|#define TDA9873_TR_MONO     4
 DECL|macro|TDA9873_TR_STEREO
@@ -1946,15 +2068,20 @@ op_plus
 l_int|1
 )braket
 op_amp
-l_int|0xe3
+op_complement
+id|TDA9873_TR_MASK
 suffix:semicolon
 multiline_comment|/*&t;int adj_data = chip-&gt;shadow.bytes[TDA9873_AD+1] ; */
 r_if
 c_cond
 (paren
+(paren
 id|sw_data
 op_amp
-l_int|3
+id|TDA9873_INP_MASK
+)paren
+op_ne
+id|TDA9873_INTERNAL
 )paren
 (brace
 id|dprintk
@@ -2033,6 +2160,14 @@ id|TDA9873_TR_DUALB
 suffix:semicolon
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+id|chip-&gt;mode
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
 id|dprintk
 c_func
@@ -2040,16 +2175,6 @@ c_func
 l_string|&quot;tda9873_setmode(): req. mode %d; chip_write: %d&bslash;n&quot;
 comma
 id|mode
-comma
-id|sw_data
-)paren
-suffix:semicolon
-id|chip_write
-c_func
-(paren
-id|chip
-comma
-id|TDA9873_SW
 comma
 id|sw_data
 )paren
@@ -2414,9 +2539,10 @@ suffix:colon
 l_int|2
 comma
 (brace
-id|TDA9840_SW
+id|TDA9840_TEST
 comma
-l_int|0x2a
+id|TDA9840_TEST_INT1SN
+multiline_comment|/* ,TDA9840_SW, TDA9840_MONO */
 )brace
 )brace
 )brace
@@ -2493,21 +2619,31 @@ id|TDA9873_SW
 comma
 id|inputmute
 suffix:colon
-l_int|0xc0
+id|TDA9873_MUTE
+op_or
+id|TDA9873_AUTOMUTE
 comma
 id|inputmap
 suffix:colon
 (brace
-l_int|0xa4
+l_int|0xa0
 comma
 l_int|0xa2
 comma
-l_int|0xa4
+l_int|0xa0
 comma
-l_int|0xa4
+l_int|0xa0
 comma
 l_int|0xc0
 )brace
+comma
+id|inputmask
+suffix:colon
+id|TDA9873_INP_MASK
+op_or
+id|TDA9873_MUTE
+op_or
+id|TDA9873_AUTOMUTE
 )brace
 comma
 (brace
@@ -3242,6 +3378,11 @@ id|desc-&gt;registers
 op_plus
 l_int|1
 suffix:semicolon
+id|chip-&gt;prevmode
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 multiline_comment|/* register */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
@@ -3514,6 +3655,13 @@ id|chip
 op_assign
 id|client-&gt;data
 suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|chip-&gt;wt
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3655,7 +3803,7 @@ id|sarg
 op_amp
 l_int|0x80
 )paren
-id|chip_write
+id|chip_write_masked
 c_func
 (paren
 id|chip
@@ -3663,10 +3811,12 @@ comma
 id|desc-&gt;inputreg
 comma
 id|desc-&gt;inputmute
+comma
+id|desc-&gt;inputmask
 )paren
 suffix:semicolon
 r_else
-id|chip_write
+id|chip_write_masked
 c_func
 (paren
 id|chip
@@ -3678,6 +3828,8 @@ id|desc-&gt;inputmap
 op_star
 id|sarg
 )braket
+comma
+id|desc-&gt;inputmask
 )paren
 suffix:semicolon
 )brace
@@ -3974,6 +4126,19 @@ comma
 id|VIDEO_SOUND_MONO
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;prevmode
+op_ne
+id|VIDEO_SOUND_MONO
+)paren
+id|chip-&gt;prevmode
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* reset previous mode */
 id|mod_timer
 c_func
 (paren

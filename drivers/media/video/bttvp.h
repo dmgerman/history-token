@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,57)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,7,72)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -582,67 +582,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(__powerpc__) /* big-endian */
-DECL|function|io_st_le32
-r_extern
-id|__inline__
-r_void
-id|io_st_le32
-c_func
-(paren
-r_volatile
-r_int
-op_star
-id|addr
-comma
-r_int
-id|val
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;stwbrx %1,0,%2&quot;
-suffix:colon
-"&bslash;"
-l_string|&quot;=m&quot;
-(paren
-op_star
-id|addr
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|val
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|addr
-)paren
-)paren
-suffix:semicolon
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;eieio&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|macro|btwrite
-mdefine_line|#define btwrite(dat,adr)  io_st_le32((unsigned *)(btv-&gt;bt848_mem+(adr)),(dat))
-DECL|macro|btread
-mdefine_line|#define btread(adr)       ld_le32((unsigned *)(btv-&gt;bt848_mem+(adr)))
-macro_line|#else
 DECL|macro|btwrite
 mdefine_line|#define btwrite(dat,adr)    writel((dat), (char *) (btv-&gt;bt848_mem+(adr)))
 DECL|macro|btread
 mdefine_line|#define btread(adr)         readl(btv-&gt;bt848_mem+(adr))
-macro_line|#endif
 DECL|macro|btand
 mdefine_line|#define btand(dat,adr)      btwrite((dat) &amp; btread(adr), adr)
 DECL|macro|btor

@@ -204,7 +204,8 @@ r_char
 id|irq
 suffix:semicolon
 DECL|member|mmio
-id|__u32
+r_void
+op_star
 id|mmio
 suffix:semicolon
 DECL|member|hw_address

@@ -1251,7 +1251,7 @@ l_int|3
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1278,7 +1278,7 @@ l_string|&quot;SMP mptable: checksum error!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -1296,13 +1296,32 @@ l_int|0x04
 id|printk
 c_func
 (paren
-l_string|&quot;Bad Config Table version (%d)!!&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;SMP mptable: bad table version (%d)!!&bslash;n&quot;
 comma
 id|mpc-&gt;mpc_spec
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mpc-&gt;mpc_lapic
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SMP mptable: null local APIC address!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|memcpy
@@ -1591,6 +1610,19 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|num_processors
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SMP mptable: no processors registered!&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 id|num_processors
 suffix:semicolon
@@ -2183,6 +2215,10 @@ id|mpf-&gt;mpf_physptr
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Read the physical hardware table.  Anything here will&n;&t;&t; * override the defaults.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|smp_read_mpc
 c_func
 (paren
@@ -2192,7 +2228,29 @@ op_star
 )paren
 id|mpf-&gt;mpf_physptr
 )paren
+)paren
+(brace
+id|smp_found_config
+op_assign
+l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;BIOS bug, MP table errors detected!...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;... disabling SMP support. (tell your hw vendor)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If there are no explicit MP IRQ entries, then we are&n;&t;&t; * broken.  We set up most of the low 16 IO-APIC pins to&n;&t;&t; * ISA defaults and hope it will work.&n;&t;&t; */
 r_if
 c_cond

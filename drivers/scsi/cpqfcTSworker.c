@@ -2520,6 +2520,10 @@ op_assign
 id|TRUE
 suffix:semicolon
 singleline_comment|// block Scsi Requests
+id|pFcPort-&gt;ScsiNexus.VolumeSetAddressing
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 singleline_comment|// On FC-AL, there is a chance that a previously known device can
 singleline_comment|// be quietly removed (e.g. with non-managed hub), 
@@ -17347,13 +17351,52 @@ op_assign
 l_int|0
 suffix:semicolon
 singleline_comment|// byte 1: task codes
+singleline_comment|// byte 2: task management flags
+singleline_comment|// another &quot;use&quot; of the spare field to accomplish TDR
+singleline_comment|// note combination needed
+r_if
+c_cond
+(paren
+(paren
+id|Cmnd-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|RELEASE
+)paren
+op_logical_and
+(paren
+id|Cmnd-&gt;SCp.buffers_residual
+op_eq
+id|FCP_TARGET_RESET
+)paren
+)paren
+(brace
+id|Cmnd-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// issue &quot;Test Unit Ready&quot; for TDR
+op_star
+id|payload
+op_increment
+op_assign
+l_int|0x20
+suffix:semicolon
+singleline_comment|// target device reset bit
+)brace
+r_else
 op_star
 id|payload
 op_increment
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// byte 2: task management flags
+singleline_comment|// no TDR
 singleline_comment|// byte 3: (LSB) execution management codes
 singleline_comment|// bit 0 write, bit 1 read (don&squot;t set together)
 r_if

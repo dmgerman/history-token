@@ -4168,10 +4168,10 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* waits for a delay (spinup or select) to pass */
-DECL|function|wait_for_completion
+DECL|function|fd_wait_for_completion
 r_static
 r_int
-id|wait_for_completion
+id|fd_wait_for_completion
 c_func
 (paren
 r_int
@@ -5653,7 +5653,7 @@ op_amp
 l_int|3
 suffix:semicolon
 r_return
-id|wait_for_completion
+id|fd_wait_for_completion
 c_func
 (paren
 id|jiffies
@@ -6193,7 +6193,7 @@ multiline_comment|/* wait until the floppy is spinning fast enough */
 r_if
 c_cond
 (paren
-id|wait_for_completion
+id|fd_wait_for_completion
 c_func
 (paren
 id|ready_date
@@ -8057,7 +8057,7 @@ id|data
 suffix:semicolon
 multiline_comment|/* wait_for_completion also schedules reset if needed. */
 r_return
-id|wait_for_completion
+id|fd_wait_for_completion
 c_func
 (paren
 id|DRS-&gt;select_date

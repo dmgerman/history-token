@@ -20,5 +20,5 @@ id|ccw_req_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* DASD_9343_ERP_H */
+macro_line|#endif&t;&t;&t;&t;/* DASD_9343_ERP_H */
 eof

@@ -224,7 +224,7 @@ id|PCIPCI_TRITON
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; *      Also see http://home.tiscalinet.de/au-ja/review-kt133a-1-en.html for&n; *      the info on which Mr Breese based his work.&n; */
+multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; *      Also see http://home.tiscalinet.de/au-ja/review-kt133a-1-en.html for&n; *      the info on which Mr Breese based his work.&n; *&n; *&t;Updated based on further information from the site and also on&n; *&t;information provided by VIA &n; */
 DECL|function|quirk_vialatency
 r_static
 r_void
@@ -238,19 +238,19 @@ op_star
 id|dev
 )paren
 (brace
-id|u8
-id|r70
+r_struct
+id|pci_dev
+op_star
+id|p
 suffix:semicolon
 id|u8
 id|rev
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|vt82c686
+id|u8
+id|busarb
 suffix:semicolon
-multiline_comment|/* we want to look for a VT82C686 south bridge, and then apply the via latency&n;&t; * patch if we find that it&squot;s a 686B (by revision) &lt;cpbotha@ieee.org&gt;&n;&t; */
-id|vt82c686
+multiline_comment|/* Ok we have a potential problem chipset here. Now see if we have&n;&t;   a buggy southbridge */
+id|p
 op_assign
 id|pci_find_device
 c_func
@@ -265,13 +265,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vt82c686
+id|p
+op_ne
+l_int|NULL
 )paren
 (brace
 id|pci_read_config_byte
 c_func
 (paren
-id|vt82c686
+id|p
 comma
 id|PCI_CLASS_REVISION
 comma
@@ -280,75 +282,112 @@ id|rev
 )paren
 suffix:semicolon
 multiline_comment|/* 0x40 - 0x4f == 686B, 0x10 - 0x2f == 686A; thanks Dan Hollis */
+multiline_comment|/* Check for buggy part revisions */
 r_if
 c_cond
 (paren
 id|rev
-op_ge
-l_int|0x40
-op_logical_and
-id|rev
-op_le
-l_int|0x4f
+template_param
+l_int|0x42
 )paren
+r_return
+suffix:semicolon
+)brace
+r_else
 (brace
-id|printk
+id|p
+op_assign
+id|pci_find_device
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;Applying VIA PCI latency patch (found VT82C686B).&bslash;n&quot;
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8231
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; &t;&t; *    In register 0x70, mask off bit 2 (PCI Master read caching)&n;&t; &t;&t; *    and 1 (Delay Transaction)&n;&t; &t;&t; */
+r_if
+c_cond
+(paren
+id|p
+op_eq
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* No problem parts */
+r_return
+suffix:semicolon
+)brace
+id|pci_read_config_byte
+c_func
+(paren
+id|p
+comma
+id|PCI_CLASS_REVISION
+comma
+op_amp
+id|rev
+)paren
+suffix:semicolon
+multiline_comment|/* Check for buggy part revisions */
+r_if
+c_cond
+(paren
+id|rev
+template_param
+l_int|0x12
+)paren
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; *&t;Ok we have the problem. Now set the PCI master grant to &n;&t; *&t;occur every master grant. The apparent bug is that under high&n;&t; *&t;PCI load (quite common in Linux of course) you can get data&n;&t; *&t;loss when the CPU is held off the bus for 3 bus master requests&n;&t; *&t;This happens to include the IDE controllers....&n;&t; *&n;&t; *&t;VIA only apply this fix when an SB Live! is present but under&n;&t; *&t;both Linux and Windows this isnt enough, and we have seen&n;&t; *&t;corruption without SB Live! but with things like 3 UDMA IDE&n;&t; *&t;controllers. So we ignore that bit of the VIA recommendation..&n;&t; */
 id|pci_read_config_byte
 c_func
 (paren
 id|dev
 comma
-l_int|0x70
+l_int|0x76
 comma
 op_amp
-id|r70
+id|busarb
 )paren
 suffix:semicolon
-id|r70
+multiline_comment|/* Set bit 4 and bi 5 of byte 76 to 0x01 &n;&t;   &quot;Master priority rotation on every PCI master grant */
+id|busarb
 op_and_assign
-l_int|0xf9
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|5
+)paren
+suffix:semicolon
+id|busarb
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|4
+)paren
 suffix:semicolon
 id|pci_write_config_byte
 c_func
 (paren
 id|dev
 comma
-l_int|0x70
+l_int|0x76
 comma
-id|r70
+id|busarb
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; &t; &t; *    Turn off PCI Latency timeout (set to 0 clocks)&n;&t; &t; &t; */
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-l_int|0x75
-comma
-l_int|0x80
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Found VT82C686A, not applying VIA latency patch.&bslash;n&quot;
+l_string|&quot;Applying VIA southbridge workaround.&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/* if (vt82c686) ... */
 )brace
 multiline_comment|/*&n; *&t;VIA Apollo VP3 needs ETBF on BT848/878&n; */
 DECL|function|quirk_viaetbf
@@ -1357,6 +1396,27 @@ comma
 id|PCI_VENDOR_ID_VIA
 comma
 id|PCI_DEVICE_ID_VIA_8363_0
+comma
+id|quirk_vialatency
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_8371_1
+comma
+id|quirk_vialatency
+)brace
+comma
+(brace
+id|PCI_FIXUP_FINAL
+comma
+id|PCI_VENDOR_ID_VIA
+comma
+l_int|0x3112
+multiline_comment|/* Not out yet ? */
 comma
 id|quirk_vialatency
 )brace

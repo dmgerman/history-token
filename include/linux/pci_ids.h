@@ -764,8 +764,24 @@ DECL|macro|PCI_DEVICE_ID_SI_620
 mdefine_line|#define PCI_DEVICE_ID_SI_620&t;&t;0x0620
 DECL|macro|PCI_DEVICE_ID_SI_630
 mdefine_line|#define PCI_DEVICE_ID_SI_630&t;&t;0x0630
+DECL|macro|PCI_DEVICE_ID_SI_635
+mdefine_line|#define PCI_DEVICE_ID_SI_635&t;&t;0x0635
+DECL|macro|PCI_DEVICE_ID_SI_640
+mdefine_line|#define PCI_DEVICE_ID_SI_640&t;&t;0x0640
+DECL|macro|PCI_DEVICE_ID_SI_645
+mdefine_line|#define PCI_DEVICE_ID_SI_645&t;&t;0x0645
+DECL|macro|PCI_DEVICE_ID_SI_650
+mdefine_line|#define PCI_DEVICE_ID_SI_650&t;&t;0x0650
 DECL|macro|PCI_DEVICE_ID_SI_730
 mdefine_line|#define PCI_DEVICE_ID_SI_730&t;&t;0x0730
+DECL|macro|PCI_DEVICE_ID_SI_735
+mdefine_line|#define PCI_DEVICE_ID_SI_735&t;&t;0x0735
+DECL|macro|PCI_DEVICE_ID_SI_740
+mdefine_line|#define PCI_DEVICE_ID_SI_740&t;&t;0x0740
+DECL|macro|PCI_DEVICE_ID_SI_745
+mdefine_line|#define PCI_DEVICE_ID_SI_745&t;&t;0x0745
+DECL|macro|PCI_DEVICE_ID_SI_750
+mdefine_line|#define PCI_DEVICE_ID_SI_750&t;&t;0x0750
 DECL|macro|PCI_DEVICE_ID_SI_630_VGA
 mdefine_line|#define PCI_DEVICE_ID_SI_630_VGA&t;0x6300
 DECL|macro|PCI_DEVICE_ID_SI_730_VGA

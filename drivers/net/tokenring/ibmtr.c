@@ -642,7 +642,8 @@ id|__devinit
 id|HWPrtChanID
 c_func
 (paren
-id|__u32
+r_void
+op_star
 id|pcid
 comma
 r_int
@@ -1298,19 +1299,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-id|ioaddr
-comma
-id|IBMTR_IO_EXTENT
-)paren
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
 op_logical_neg
 id|ibmtr_probe1
 c_func
@@ -1370,7 +1358,8 @@ id|temp
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|t_mmio
 op_assign
 l_int|0
@@ -1382,7 +1371,8 @@ id|ti
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+r_void
+op_star
 id|cd_chanid
 suffix:semicolon
 r_int
@@ -1419,6 +1409,16 @@ id|dev
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
@@ -1461,9 +1461,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *    Compute the linear base address of the MMIO area&n;&t; *    as LINUX doesn&squot;t care about segments&n;&t; */
 id|t_mmio
 op_assign
-(paren
-id|u32
-)paren
 id|ioremap
 c_func
 (paren
@@ -1520,7 +1517,7 @@ id|TRC_INIT
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;PIOaddr: %4hx seg/intr: %2x mmio base: %08X intr: %d&bslash;n&quot;
+l_string|&quot;PIOaddr: %4hx seg/intr: %2x mmio base: %p intr: %d&bslash;n&quot;
 comma
 id|PIOaddr
 comma
@@ -1539,6 +1536,12 @@ id|intr
 suffix:semicolon
 multiline_comment|/*&n;&t; *    Now we will compare expected &squot;channelid&squot; strings with&n;&t; *    what we is there to learn of ISA/MCA or not TR card&n;&t; */
 macro_line|#ifdef PCMCIA
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 id|ti
 op_assign
 id|dev-&gt;priv
@@ -1546,6 +1549,10 @@ suffix:semicolon
 multiline_comment|/*BMS moved up here */
 id|t_mmio
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|ti-&gt;mmio
 suffix:semicolon
 multiline_comment|/*BMS to get virtual address */
@@ -1726,10 +1733,20 @@ op_amp
 id|TRC_INIT
 )paren
 )paren
+(brace
+macro_line|#ifndef PCMCIA
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|DPRINTK
 c_func
 (paren
@@ -1811,10 +1828,18 @@ id|ti
 op_eq
 l_int|NULL
 )paren
+(brace
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -1887,7 +1912,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* !PCMCIA */
 id|ti-&gt;readlog_pending
 op_assign
 l_int|0
@@ -2142,6 +2167,12 @@ c_func
 l_string|&quot;Hardware timeout during initialization.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2222,7 +2253,7 @@ multiline_comment|/* full chat in verbose only */
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;, ti-&gt;mmio=%08X&quot;
+l_string|&quot;, ti-&gt;mmio=%p&quot;
 comma
 id|ti-&gt;mmio
 )paren
@@ -2658,6 +2689,12 @@ comma
 id|ti-&gt;shared_ram_paging
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2810,6 +2847,12 @@ op_plus
 id|IBMTR_SHARED_RAM_SIZE
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2875,6 +2918,12 @@ comma
 id|irq
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -2888,6 +2937,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*?? Now, allocate some of the PIO PORTs for this driver.. */
 multiline_comment|/* record PIOaddr range as busy */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2897,7 +2950,39 @@ id|IBMTR_IO_EXTENT
 comma
 l_string|&quot;ibmtr&quot;
 )paren
+)paren
+(brace
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Could not grab PIO range. Halting driver.&bslash;n&quot;
+)paren
 suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|t_mmio
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ti
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2913,7 +2998,7 @@ id|version
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* !PCMCIA */
 id|DPRINTK
 c_func
 (paren

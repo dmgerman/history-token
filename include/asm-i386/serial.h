@@ -30,6 +30,8 @@ macro_line|#else
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE
 macro_line|#endif
+DECL|macro|MCA_COM_FLAGS
+mdefine_line|#define MCA_COM_FLAGS&t;(STD_COM_FLAGS|ASYNC_BOOT_ONLYMCA)
 multiline_comment|/*&n; * The following define the access methods for the HUB6 card. All&n; * access is through two ports for all 24 possible chips. The card is&n; * selected through the high 2 bits, the port on that card with the&n; * &quot;middle&quot; 3 bits, and the register on that port with the bottom&n; * 3 bits.&n; *&n; * While the access port and interrupt is configurable, the default&n; * port locations are 0x302 for the port control register, and 0x303&n; * for the data read/write register. Normally, the interrupt is at irq3&n; * but can be anything from 3 to 7 inclusive. Note that using 3 will&n; * require disabling com2.&n; */
 DECL|macro|C_P
 mdefine_line|#define C_P(card,port) (((card)&lt;&lt;6|(port)&lt;&lt;3) + 1)
@@ -52,7 +54,7 @@ mdefine_line|#define HUB6_SERIAL_PORT_DFNS
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
 DECL|macro|MCA_SERIAL_PORT_DFNS
-mdefine_line|#define MCA_SERIAL_PORT_DFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5228, 3, STD_COM_FLAGS },
+mdefine_line|#define MCA_SERIAL_PORT_DFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3220, 3, MCA_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3228, 3, MCA_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4220, 3, MCA_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4228, 3, MCA_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5220, 3, MCA_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5228, 3, MCA_COM_FLAGS },
 macro_line|#else
 DECL|macro|MCA_SERIAL_PORT_DFNS
 mdefine_line|#define MCA_SERIAL_PORT_DFNS

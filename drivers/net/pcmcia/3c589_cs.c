@@ -2271,10 +2271,10 @@ suffix:semicolon
 multiline_comment|/* tc589_event */
 multiline_comment|/*====================================================================*/
 multiline_comment|/*&n;  Use this for commands that may take time to finish&n;*/
-DECL|function|wait_for_completion
+DECL|function|tc589_wait_for_completion
 r_static
 r_void
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 r_struct
@@ -3227,7 +3227,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 multiline_comment|/* Issue TX_RESET and TX_START commands. */
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 id|dev
@@ -3331,7 +3331,7 @@ id|tx_status
 op_amp
 l_int|0x30
 )paren
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 id|dev
@@ -3849,7 +3849,7 @@ l_int|0x0400
 )paren
 (brace
 multiline_comment|/* Tx overrun */
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 id|dev
@@ -3877,7 +3877,7 @@ l_int|0x2000
 )paren
 (brace
 multiline_comment|/* Rx underrun */
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 id|dev
@@ -5001,7 +5001,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Pop the top of the Rx FIFO */
-id|wait_for_completion
+id|tc589_wait_for_completion
 c_func
 (paren
 id|dev

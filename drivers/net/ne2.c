@@ -105,7 +105,7 @@ l_int|9
 )brace
 suffix:semicolon
 multiline_comment|/* From the D-Link ADF file: */
-DECL|variable|dlink_addresses
+DECL|variable|__initdata
 r_static
 r_int
 r_int
@@ -113,6 +113,7 @@ id|dlink_addresses
 (braket
 l_int|4
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x300
@@ -124,13 +125,14 @@ comma
 l_int|0x360
 )brace
 suffix:semicolon
-DECL|variable|dlink_irqs
+DECL|variable|__initdata
 r_static
 r_int
 id|dlink_irqs
 (braket
 l_int|8
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|3
@@ -335,6 +337,7 @@ multiline_comment|/*&n; * special code to read the DE-320&squot;s MAC address EE
 DECL|function|dlink_put_eeprom
 r_static
 r_void
+id|__init
 id|dlink_put_eeprom
 c_func
 (paren
@@ -426,6 +429,7 @@ suffix:semicolon
 DECL|function|dlink_send_eeprom_bit
 r_static
 r_void
+id|__init
 id|dlink_send_eeprom_bit
 c_func
 (paren
@@ -490,6 +494,7 @@ suffix:semicolon
 DECL|function|dlink_send_eeprom_word
 r_static
 r_void
+id|__init
 id|dlink_send_eeprom_word
 c_func
 (paren
@@ -562,6 +567,7 @@ DECL|function|dlink_get_eeprom
 r_static
 r_int
 r_int
+id|__init
 id|dlink_get_eeprom
 c_func
 (paren

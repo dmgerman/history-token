@@ -6582,6 +6582,9 @@ r_if
 c_cond
 (paren
 id|hwcfg.vector_latch
+op_logical_and
+op_logical_neg
+id|Vector_Latch
 )paren
 (brace
 r_if
@@ -6591,7 +6594,7 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-id|Vector_Latch
+id|hwcfg.vector_latch
 comma
 l_int|1
 comma

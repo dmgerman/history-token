@@ -1,5 +1,5 @@
-multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;&n;=========================================================*/
-multiline_comment|/* $Id: nsp_cs.h,v 1.18 2001/02/09 04:42:19 elca Exp $ */
+multiline_comment|/*=======================================================/&n;  Header file for nsp_cs.c&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    Ver.1.0 : Cut unused lines.&n;    Ver 0.1 : Initial version.&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License.&n;&n;=========================================================*/
+multiline_comment|/* $Id: nsp_cs.h,v 1.21 2001/07/04 14:45:31 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
@@ -16,6 +16,8 @@ mdefine_line|#define MIN(a,b)    ((a) &gt; (b) ? (b) : (a))
 multiline_comment|/* SCSI initiator must be 7 */
 DECL|macro|SCSI_INITIATOR_ID
 mdefine_line|#define SCSI_INITIATOR_ID  7
+DECL|macro|NSP_SELTIMEOUT
+mdefine_line|#define NSP_SELTIMEOUT 200
 multiline_comment|/* base register */
 DECL|macro|IRQCONTROL
 mdefine_line|#define&t;IRQCONTROL&t;0x00
@@ -383,13 +385,13 @@ DECL|member|FifoCount
 r_int
 id|FifoCount
 suffix:semicolon
-macro_line|#if (KERNEL_VERSION(2,4,0) &gt; LINUX_VERSION_CODE)
+macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0))
 DECL|member|Residual
 r_int
 id|Residual
 suffix:semicolon
 DECL|macro|RESID
-mdefine_line|#define RESID nsp_data.Residual
+mdefine_line|#define RESID data-&gt;Residual
 macro_line|#else
 DECL|macro|RESID
 mdefine_line|#define RESID SCpnt-&gt;resid
@@ -435,6 +437,10 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCpnt
+comma
+id|nsp_hw_data
+op_star
+id|data
 )paren
 suffix:semicolon
 r_static
@@ -446,13 +452,47 @@ id|Scsi_Cmnd
 op_star
 id|SCpnt
 comma
+id|nsp_hw_data
+op_star
+id|data
+comma
 r_int
 id|time
 )paren
 suffix:semicolon
 r_static
 r_int
+id|nsp_eh_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_eh_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
 id|nsp_eh_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_static
+r_int
+id|nsp_eh_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
@@ -478,6 +518,10 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCpnt
+comma
+id|nsp_hw_data
+op_star
+id|data
 )paren
 suffix:semicolon
 r_static
@@ -488,6 +532,10 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCpnt
+comma
+id|nsp_hw_data
+op_star
+id|data
 )paren
 suffix:semicolon
 macro_line|#ifdef PCMCIA_DEBUG
@@ -522,7 +570,26 @@ r_char
 id|stat
 )paren
 suffix:semicolon
+r_static
+r_void
+id|show_message
+c_func
+(paren
+id|nsp_hw_data
+op_star
+id|data
+)paren
+suffix:semicolon
 macro_line|# endif /* DBG_SHOWCOMMAND */
+macro_line|#else
+DECL|macro|show_command
+macro_line|# define show_command(ptr)   /* */
+DECL|macro|show_phase
+macro_line|# define show_phase(SCpnt)   /* */
+DECL|macro|show_busphase
+macro_line|# define show_busphase(stat) /* */
+DECL|macro|show_message
+macro_line|# define show_message(data)  /* */
 macro_line|#endif
 multiline_comment|/*&n; * SCSI phase&n; */
 DECL|enum|_scsi_phase
@@ -577,7 +644,14 @@ DECL|enumerator|IO_OUT
 id|IO_OUT
 )brace
 suffix:semicolon
-DECL|macro|NSP_SELTIMEOUT
-mdefine_line|#define NSP_SELTIMEOUT 200
+multiline_comment|/* SCSI messaage */
+DECL|macro|MSG_COMMAND_COMPLETE
+mdefine_line|#define MSG_COMMAND_COMPLETE 0x00
+DECL|macro|MSG_EXTENDED
+mdefine_line|#define MSG_EXTENDED         0x01
+DECL|macro|MSG_NO_OPERATION
+mdefine_line|#define MSG_NO_OPERATION     0x08
+DECL|macro|MSG_EXT_SDTR
+mdefine_line|#define MSG_EXT_SDTR         0x01
 macro_line|#endif  /*__nsp_cs__*/
 eof

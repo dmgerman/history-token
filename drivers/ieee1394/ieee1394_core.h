@@ -47,13 +47,13 @@ id|packed
 )paren
 id|type
 suffix:semicolon
-multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * complete = processing completed, successful or not&n;         * incoming = incoming packet&n;         */
+multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * completed = processing completed, successful or not&n;         * incoming = incoming packet&n;         */
 r_enum
 (brace
 DECL|enumerator|unused
 DECL|enumerator|queued
 DECL|enumerator|pending
-DECL|enumerator|complete
+DECL|enumerator|completed
 DECL|enumerator|incoming
 id|unused
 comma
@@ -61,7 +61,7 @@ id|queued
 comma
 id|pending
 comma
-id|complete
+id|completed
 comma
 id|incoming
 DECL|member|state

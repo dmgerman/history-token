@@ -17,14 +17,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 r_extern
 r_void
-id|wakeup_bdflush
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|reset_vc
 c_func
 (paren
@@ -295,7 +287,6 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -317,7 +308,6 @@ suffix:semicolon
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_break

@@ -1354,7 +1354,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Process one rtnetlink message. */
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|rtnetlink_rcv_msg

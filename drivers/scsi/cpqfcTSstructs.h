@@ -13,11 +13,11 @@ mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds
 DECL|macro|CPQFCTS_DRIVER_VER
 mdefine_line|#define CPQFCTS_DRIVER_VER(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|VER_MAJOR
-mdefine_line|#define VER_MAJOR 1
+mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
-mdefine_line|#define VER_MINOR 3
+mdefine_line|#define VER_MINOR 0
 DECL|macro|VER_SUBMINOR
-mdefine_line|#define VER_SUBMINOR 4
+mdefine_line|#define VER_SUBMINOR 2
 singleline_comment|// Macros for kernel (esp. SMP) tracing using a PCI analyzer
 singleline_comment|// (e.g. x86).
 singleline_comment|//#define PCI_KERNEL_TRACE
@@ -367,6 +367,8 @@ mdefine_line|#define SCSI_REPORT_LUNS 0x0A0
 DECL|macro|REPORT_LUNS
 mdefine_line|#define REPORT_LUNS 0xA0 
 singleline_comment|// SCSI-3 command op-code
+DECL|macro|FCP_TARGET_RESET
+mdefine_line|#define FCP_TARGET_RESET 0x200
 DECL|macro|ELS_LILP_FRAME
 mdefine_line|#define ELS_LILP_FRAME 0x00000711 
 singleline_comment|// 1st payload word of LILP frame

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
@@ -1470,13 +1470,13 @@ l_int|NULL
 id|kfree
 c_func
 (paren
-id|self
+id|self-&gt;rx_buff.head
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|self-&gt;rx_buff.head
+id|self
 )paren
 suffix:semicolon
 r_return

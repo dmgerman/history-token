@@ -285,10 +285,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|buf
-(braket
-id|ofs
-)braket
+id|c
 op_eq
 l_char|&squot;V&squot;
 )paren

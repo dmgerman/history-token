@@ -9313,7 +9313,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -9326,7 +9325,6 @@ l_string|&quot;1994-1996.&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|no_boards_msg
 (braket

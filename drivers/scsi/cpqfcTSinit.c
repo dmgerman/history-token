@@ -23,18 +23,16 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;   
 singleline_comment|// ioctl related
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,3,18)
-macro_line|#include &lt;asm/spinlock.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#endif
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
 macro_line|#include &quot;cpqfcTS.h&quot;
+macro_line|#include &lt;linux/config.h&gt;  
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/version.h&gt; 
 multiline_comment|/* Embedded module documentation macros - see module.h */
 id|MODULE_AUTHOR
 c_func
@@ -46,6 +44,19 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Driver for Compaq 64-bit/66Mhz PCI Fibre Channel HBA&quot;
+)paren
+suffix:semicolon
+r_int
+id|cpqfcTS_TargetDeviceReset
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|ScsiDev
+comma
+r_int
+r_int
+id|reset_flags
 )paren
 suffix:semicolon
 singleline_comment|// This struct was originally defined in 
@@ -108,29 +119,35 @@ singleline_comment|// copy PCI info ptr
 singleline_comment|// since x86 port space is 64k, we only need the lower 16 bits
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseL
 op_assign
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|1
 )braket
+dot
+id|start
 op_amp
 id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
 id|cpqfcHBAdata-&gt;fcChip.Registers.IOBaseU
 op_assign
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|2
 )braket
+dot
+id|start
 op_amp
 id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
 singleline_comment|// 32-bit memory addresses
 id|cpqfcHBAdata-&gt;fcChip.Registers.MemBase
 op_assign
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|3
 )braket
+dot
+id|start
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 suffix:semicolon
@@ -139,10 +156,12 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|3
 )braket
+dot
+id|start
 op_amp
 id|PCI_BASE_ADDRESS_MEM_MASK
 comma
@@ -151,18 +170,22 @@ l_int|0x200
 suffix:semicolon
 id|cpqfcHBAdata-&gt;fcChip.Registers.RAMBase
 op_assign
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|4
 )braket
+dot
+id|start
 suffix:semicolon
 id|cpqfcHBAdata-&gt;fcChip.Registers.SROMBase
 op_assign
 singleline_comment|// NULL for HP TS adapter
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|5
 )braket
+dot
+id|start
 suffix:semicolon
 singleline_comment|// now the Tachlite chip registers
 singleline_comment|// the REGISTER struct holds both the physical address &amp; last
@@ -775,12 +798,14 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;  PciDev-&gt;baseaddress[]= %lx&bslash;n&quot;
+l_string|&quot;  PciDev-&gt;baseaddress[0]= %lx&bslash;n&quot;
 comma
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|0
 )braket
+dot
+id|start
 )paren
 )paren
 suffix:semicolon
@@ -790,12 +815,14 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;  PciDev-&gt;baseaddress[]= %lx&bslash;n&quot;
+l_string|&quot;  PciDev-&gt;baseaddress[1]= %lx&bslash;n&quot;
 comma
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|1
 )braket
+dot
+id|start
 )paren
 )paren
 suffix:semicolon
@@ -805,12 +832,14 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;  PciDev-&gt;baseaddress[]= %lx&bslash;n&quot;
+l_string|&quot;  PciDev-&gt;baseaddress[2]= %lx&bslash;n&quot;
 comma
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|2
 )braket
+dot
+id|start
 )paren
 )paren
 suffix:semicolon
@@ -820,12 +849,14 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;  PciDev-&gt;baseaddress[]= %lx&bslash;n&quot;
+l_string|&quot;  PciDev-&gt;baseaddress[3]= %lx&bslash;n&quot;
 comma
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|3
 )braket
+dot
+id|start
 )paren
 )paren
 suffix:semicolon
@@ -851,10 +882,12 @@ op_assign
 r_int
 r_int
 )paren
-id|PciDev-&gt;base_address
+id|PciDev-&gt;resource
 (braket
 l_int|1
 )braket
+dot
+id|start
 op_amp
 id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
@@ -879,11 +912,6 @@ op_assign
 id|CPQFCTS_MAX_CHANNEL
 suffix:semicolon
 singleline_comment|// multiple busses?
-id|HostAdapter-&gt;hostt-&gt;use_new_eh_code
-op_assign
-l_int|1
-suffix:semicolon
-singleline_comment|// new error handling
 singleline_comment|// get the pointer to our HBA specific data... (one for
 singleline_comment|// each HBA on the PCI bus(ses)).
 id|cpqfcHBAdata
@@ -930,6 +958,10 @@ singleline_comment|// fill MOST fields
 id|cpqfcHBAdata-&gt;HBAnum
 op_assign
 id|NumberOfAdapters
+suffix:semicolon
+id|cpqfcHBAdata-&gt;hba_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 singleline_comment|// request necessary resources and check for conflicts
 r_if
@@ -1172,6 +1204,21 @@ singleline_comment|// slowest(worst) case, measured on 1Gb Finisar GT analyzer
 r_int
 id|wait_time
 suffix:semicolon
+r_int
+r_int
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1196,6 +1243,15 @@ c_func
 suffix:semicolon
 )brace
 singleline_comment|// (our worker task needs to run)
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 id|NumberOfAdapters
 op_increment
@@ -1332,7 +1388,7 @@ suffix:semicolon
 id|ENTER
 c_func
 (paren
-l_string|&quot;cpqfcTS_ioctl&quot;
+l_string|&quot;cpqfcTS_ioctl &quot;
 )paren
 suffix:semicolon
 singleline_comment|// can we find an FC device mapping to this SCSI target?
@@ -1384,6 +1440,7 @@ suffix:semicolon
 r_else
 singleline_comment|// we know what FC device to operate on...
 (brace
+singleline_comment|// printk(&quot;ioctl CMND %d&quot;, Cmnd);
 r_switch
 c_cond
 (paren
@@ -1436,7 +1493,10 @@ id|EPERM
 suffix:semicolon
 )brace
 singleline_comment|// copy the caller&squot;s struct to our space.
-id|copy_from_user_ret
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -1448,11 +1508,14 @@ r_sizeof
 (paren
 id|VENDOR_IOCTL_REQ
 )paren
-comma
+)paren
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
+)brace
 id|vendor_cmd
 op_assign
 id|ioc.argp
@@ -1496,9 +1559,9 @@ op_assign
 id|scsi_allocate_device
 c_func
 (paren
-l_int|NULL
-comma
 id|ScsiDev
+comma
+l_int|1
 comma
 l_int|1
 )paren
@@ -1516,8 +1579,10 @@ id|VENDOR_WRITE_OPCODE
 op_logical_and
 id|vendor_cmd-&gt;len
 )paren
-(brace
-id|copy_from_user_ret
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 id|buf
@@ -1525,10 +1590,12 @@ comma
 id|vendor_cmd-&gt;bufp
 comma
 id|vendor_cmd-&gt;len
-comma
+)paren
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
 )brace
 singleline_comment|// copy the CDB (if/when MAX_COMMAND_SIZE is 16, remove copy below)
@@ -1730,26 +1797,13 @@ id|ScsiPassThruCmnd
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|SDpnt-&gt;was_reset
-op_logical_and
-id|SDpnt-&gt;scsi_request_fn
-)paren
-(paren
-op_star
-id|SDpnt-&gt;scsi_request_fn
-)paren
-(paren
-)paren
-suffix:semicolon
+singleline_comment|// if (!SDpnt-&gt;was_reset &amp;&amp; SDpnt-&gt;scsi_request_fn)
+singleline_comment|//  (*SDpnt-&gt;scsi_request_fn)();
 id|wake_up
 c_func
 (paren
 op_amp
-id|SDpnt-&gt;device_wait
+id|SDpnt-&gt;scpnt_wait
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1773,8 +1827,10 @@ id|VENDOR_READ_OPCODE
 op_logical_and
 id|vendor_cmd-&gt;len
 )paren
-(brace
-id|copy_to_user_ret
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|vendor_cmd-&gt;bufp
@@ -1782,10 +1838,12 @@ comma
 id|buf
 comma
 id|vendor_cmd-&gt;len
-comma
+)paren
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -1842,7 +1900,10 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
-id|copy_to_user_ret
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|arg
@@ -1854,11 +1915,14 @@ r_sizeof
 (paren
 id|cpqfc_pci_info_struct
 )paren
-comma
+)paren
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1892,7 +1956,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|copy_to_user_ret
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 id|arg
@@ -1904,11 +1971,14 @@ r_sizeof
 (paren
 id|DriverVer
 )paren
-comma
+)paren
+)paren
+(brace
+r_return
 op_minus
 id|EFAULT
-)paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2041,6 +2111,21 @@ op_increment
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|SCSI_IOCTL_FC_TDR
+suffix:colon
+id|result
+op_assign
+id|cpqfcTS_TargetDeviceReset
+c_func
+(paren
+id|ScsiDev
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -4243,6 +4328,21 @@ op_star
 id|Cmnd
 )paren
 (brace
+singleline_comment|//&t;printk(&quot; cpqfcTS_abort called?? &bslash;n&quot;);
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cpqfcTS_eh_abort
+r_int
+id|cpqfcTS_eh_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|Cmnd
+)paren
+(brace
 r_struct
 id|Scsi_Host
 op_star
@@ -4279,7 +4379,7 @@ suffix:semicolon
 id|ENTER
 c_func
 (paren
-l_string|&quot;cpqfcTS_abort&quot;
+l_string|&quot;cpqfcTS_eh_abort&quot;
 )paren
 suffix:semicolon
 id|Cmnd-&gt;result
@@ -4559,7 +4659,7 @@ singleline_comment|//    panic(&quot;_abort&quot;);
 id|LEAVE
 c_func
 (paren
-l_string|&quot;cpqfcTS_abort&quot;
+l_string|&quot;cpqfcTS_eh_abort&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4567,7 +4667,240 @@ l_int|0
 suffix:semicolon
 singleline_comment|// (see scsi.h)
 )brace
-singleline_comment|// To be done...&t;
+singleline_comment|// FCP-SCSI Target Device Reset
+singleline_comment|// See dpANS Fibre Channel Protocol for SCSI
+singleline_comment|// X3.269-199X revision 12, pg 25
+DECL|function|cpqfcTS_TargetDeviceReset
+r_int
+id|cpqfcTS_TargetDeviceReset
+c_func
+(paren
+id|Scsi_Device
+op_star
+id|ScsiDev
+comma
+r_int
+r_int
+id|reset_flags
+)paren
+(brace
+r_int
+id|timeout
+op_assign
+l_int|10
+op_star
+id|HZ
+suffix:semicolon
+r_int
+id|retries
+op_assign
+l_int|1
+suffix:semicolon
+r_char
+id|scsi_cdb
+(braket
+l_int|12
+)braket
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+suffix:semicolon
+id|Scsi_Device
+op_star
+id|SDpnt
+suffix:semicolon
+singleline_comment|// printk(&quot;   ENTERING cpqfcTS_TargetDeviceReset() - flag=%d &bslash;n&quot;,reset_flags);
+r_if
+c_cond
+(paren
+id|ScsiDev-&gt;host-&gt;eh_active
+)paren
+r_return
+id|FAILED
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|scsi_cdb
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|scsi_cdb
+)paren
+)paren
+suffix:semicolon
+id|scsi_cdb
+(braket
+l_int|0
+)braket
+op_assign
+id|RELEASE
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+singleline_comment|// allocate with wait = true, interruptible = false 
+id|SCpnt
+op_assign
+id|scsi_allocate_device
+c_func
+(paren
+id|ScsiDev
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+(brace
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
+id|SCpnt-&gt;SCp.buffers_residual
+op_assign
+id|FCP_TARGET_RESET
+suffix:semicolon
+id|SCpnt-&gt;request.waiting
+op_assign
+op_amp
+id|wait
+suffix:semicolon
+id|scsi_do_cmd
+c_func
+(paren
+id|SCpnt
+comma
+id|scsi_cdb
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|my_ioctl_done
+comma
+id|timeout
+comma
+id|retries
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|SCpnt-&gt;request.waiting
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/*&n;      if(driver_byte(SCpnt-&gt;result) != 0)&n;&t;  switch(SCpnt-&gt;sense_buffer[2] &amp; 0xf) {&n;&t;case ILLEGAL_REQUEST:&n;&t;    if(cmd[0] == ALLOW_MEDIUM_REMOVAL) dev-&gt;lockable = 0;&n;&t;    else printk(&quot;SCSI device (ioctl) reports ILLEGAL REQUEST.&bslash;n&quot;);&n;&t;    break;&n;&t;case NOT_READY: // This happens if there is no disc in drive &n;&t;    if(dev-&gt;removable &amp;&amp; (cmd[0] != TEST_UNIT_READY)){&n;&t;&t;printk(KERN_INFO &quot;Device not ready.  Make sure there is a disc in the drive.&bslash;n&quot;);&n;&t;&t;break;&n;&t;    }&n;&t;case UNIT_ATTENTION:&n;&t;    if (dev-&gt;removable){&n;&t;&t;dev-&gt;changed = 1;&n;&t;&t;SCpnt-&gt;result = 0; // This is no longer considered an error&n;&t;&t;// gag this error, VFS will log it anyway /axboe &n;&t;&t;// printk(KERN_INFO &quot;Disc change detected.&bslash;n&quot;); &n;&t;&t;break;&n;&t;    };&n;&t;default: // Fall through for non-removable media&n;&t;    printk(&quot;SCSI error: host %d id %d lun %d return code = %x&bslash;n&quot;,&n;&t;&t;   dev-&gt;host-&gt;host_no,&n;&t;&t;   dev-&gt;id,&n;&t;&t;   dev-&gt;lun,&n;&t;&t;   SCpnt-&gt;result);&n;&t;    printk(&quot;&bslash;tSense class %x, sense error %x, extended sense %x&bslash;n&quot;,&n;&t;&t;   sense_class(SCpnt-&gt;sense_buffer[0]),&n;&t;&t;   sense_error(SCpnt-&gt;sense_buffer[0]),&n;&t;&t;   SCpnt-&gt;sense_buffer[2] &amp; 0xf);&n;&t;    &n;      };&n;*/
+id|result
+op_assign
+id|SCpnt-&gt;result
+suffix:semicolon
+id|SDpnt
+op_assign
+id|SCpnt-&gt;device
+suffix:semicolon
+id|scsi_release_command
+c_func
+(paren
+id|SCpnt
+)paren
+suffix:semicolon
+id|SCpnt
+op_assign
+l_int|NULL
+suffix:semicolon
+singleline_comment|// if (!SDpnt-&gt;was_reset &amp;&amp; SDpnt-&gt;scsi_request_fn)
+singleline_comment|// &t;(*SDpnt-&gt;scsi_request_fn)();
+id|wake_up
+c_func
+(paren
+op_amp
+id|SDpnt-&gt;scpnt_wait
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|io_request_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+singleline_comment|// printk(&quot;   LEAVING cpqfcTS_TargetDeviceReset() - return SUCCESS &bslash;n&quot;);
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
+DECL|function|cpqfcTS_eh_device_reset
+r_int
+id|cpqfcTS_eh_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|Cmnd
+)paren
+(brace
+id|Scsi_Device
+op_star
+id|SDpnt
+op_assign
+id|Cmnd-&gt;device
+suffix:semicolon
+singleline_comment|// printk(&quot;   ENTERING cpqfcTS_eh_device_reset() &bslash;n&quot;);
+r_return
+id|cpqfcTS_TargetDeviceReset
+c_func
+(paren
+id|SDpnt
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 DECL|function|cpqfcTS_reset
 r_int
 id|cpqfcTS_reset
@@ -4582,11 +4915,6 @@ r_int
 id|reset_flags
 )paren
 (brace
-r_int
-id|return_status
-op_assign
-id|SUCCESS
-suffix:semicolon
 id|ENTER
 c_func
 (paren
@@ -4600,8 +4928,9 @@ l_string|&quot;cpqfcTS_reset&quot;
 )paren
 suffix:semicolon
 r_return
-id|return_status
+id|SCSI_RESET_ERROR
 suffix:semicolon
+multiline_comment|/* Bus Reset Not supported */
 )brace
 multiline_comment|/* This function determines the bios parameters for a given&n;   harddisk. These tend to be numbers that are made up by the&n;   host adapter.  Parameters:&n;   size, device number, list (heads, sectors,cylinders).&n;   (from hosts.h)&n;*/
 DECL|function|cpqfcTS_biosparam
@@ -5893,7 +6222,6 @@ id|alloc_address
 suffix:semicolon
 singleline_comment|// good (or NULL) address
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -5902,5 +6230,4 @@ op_assign
 id|CPQFCTS
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#endif
 eof

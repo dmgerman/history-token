@@ -1,5 +1,5 @@
-multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;=========================================================================*/
-multiline_comment|/* $Id: nsp_debug.c,v 1.5 2001/02/08 08:08:58 elca Exp $ */
+multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License.&n;=========================================================================*/
+multiline_comment|/* $Id: nsp_debug.c,v 1.6 2001/07/04 14:43:53 elca Exp $ */
 multiline_comment|/*&n; * Show the command data of a command&n; */
 DECL|variable|unknown
 r_static
@@ -1036,4 +1036,60 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|function|show_message
+r_static
+r_void
+id|show_message
+c_func
+(paren
+id|nsp_hw_data
+op_star
+id|data
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;msg:&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|data-&gt;MsgLen
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot; %02x&quot;
+comma
+id|data-&gt;MsgBuffer
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* end */
 eof

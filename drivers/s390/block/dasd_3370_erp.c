@@ -1,6 +1,7 @@
 multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3370_erp.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000&n; */
 macro_line|#include &lt;asm/ccwcache.h&gt;
-macro_line|#include &lt;asm/dasd.h&gt;
+macro_line|#include &quot;dasd_int.h&quot;
+macro_line|#include &quot;dasd_3370_erp.h&quot;
 macro_line|#ifdef PRINTK_HEADER
 DECL|macro|PRINTK_HEADER
 macro_line|#undef PRINTK_HEADER

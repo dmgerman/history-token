@@ -791,7 +791,7 @@ id|index
 suffix:semicolon
 r_static
 r_void
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 r_struct
@@ -2301,7 +2301,7 @@ op_plus
 id|Wn3_Options
 )paren
 suffix:semicolon
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -2309,7 +2309,7 @@ comma
 id|TxReset
 )paren
 suffix:semicolon
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -2975,10 +2975,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;  Use this for commands that may take time to finish&n;*/
-DECL|function|wait_for_completion
+DECL|function|tc574_wait_for_completion
 r_static
 r_void
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 r_struct
@@ -3558,7 +3558,7 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -3717,7 +3717,7 @@ op_plus
 id|Wn3_Options
 )paren
 suffix:semicolon
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -3725,7 +3725,7 @@ comma
 id|TxReset
 )paren
 suffix:semicolon
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -4123,7 +4123,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 multiline_comment|/* Issue TX_RESET and TX_START commands. */
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -4227,7 +4227,7 @@ id|tx_status
 op_amp
 l_int|0x30
 )paren
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -4742,7 +4742,7 @@ l_int|0x0400
 )paren
 (brace
 multiline_comment|/* Tx overrun */
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -4770,7 +4770,7 @@ l_int|0x2000
 )paren
 (brace
 multiline_comment|/* Rx underrun */
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev
@@ -5916,7 +5916,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|wait_for_completion
+id|tc574_wait_for_completion
 c_func
 (paren
 id|dev

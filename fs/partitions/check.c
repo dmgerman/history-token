@@ -114,6 +114,37 @@ macro_line|#endif
 l_int|NULL
 )brace
 suffix:semicolon
+multiline_comment|/*&n; *&t;This is ucking fugly but its probably the best thing for 2.4.x&n; *&t;Take it as a clear reminder than we should put the device name&n; *&t;generation in the object kdev_t points to in 2.5.&n; */
+macro_line|#ifdef CONFIG_ARCH_S390
+DECL|variable|genhd_dasd_name
+r_int
+(paren
+op_star
+id|genhd_dasd_name
+)paren
+(paren
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_struct
+id|gendisk
+op_star
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
+DECL|variable|genhd_dasd_name
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|genhd_dasd_name
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * disk_name() is used by partition check code and the md driver.&n; * It formats the devicename of the indicated disk into&n; * the supplied buffer (of size at least 32), and returns&n; * a pointer to that same buffer (for convenience).&n; */
 DECL|function|disk_name
 r_char
@@ -212,6 +243,31 @@ op_plus
 id|pos
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ARCH_S390
+r_if
+c_cond
+(paren
+id|genhd_dasd_name
+op_logical_and
+id|genhd_dasd_name
+(paren
+id|buf
+comma
+id|unit
+op_minus
+l_char|&squot;a&squot;
+comma
+id|part
+comma
+id|hd
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+id|buf
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * IDE devices use multiple major numbers, but the drives&n;&t; * are named as:  {hda,hdb}, {hdc,hdd}, {hde,hdf}, {hdg,hdh}..&n;&t; * This requires special handling here.&n;&t; */
 r_switch
 c_cond

@@ -276,8 +276,10 @@ DECL|macro|ASYNC_SHARE_IRQ
 mdefine_line|#define ASYNC_SHARE_IRQ&t;&t;0x01000000 /* for multifunction cards&n;&t;&t;&t;&t;&t;     --- no longer used */
 DECL|macro|ASYNC_CONS_FLOW
 mdefine_line|#define ASYNC_CONS_FLOW&t;&t;0x00800000 /* flow control for console  */
+DECL|macro|ASYNC_BOOT_ONLYMCA
+mdefine_line|#define ASYNC_BOOT_ONLYMCA&t;0x00400000 /* Probe only if MCA bus */
 DECL|macro|ASYNC_INTERNAL_FLAGS
-mdefine_line|#define ASYNC_INTERNAL_FLAGS&t;0xFF800000 /* Internal flags */
+mdefine_line|#define ASYNC_INTERNAL_FLAGS&t;0xFFC00000 /* Internal flags */
 multiline_comment|/*&n; * Multiport serial configuration structure --- external structure&n; */
 DECL|struct|serial_multiport_struct
 r_struct

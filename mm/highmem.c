@@ -1145,7 +1145,6 @@ multiline_comment|/*&n;&t; * No luck. First, kick the VM so it doesnt idle aroun
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Try to allocate from the emergency pool.&n;&t; */
@@ -1280,7 +1279,6 @@ multiline_comment|/*&n;&t; * No luck. First, kick the VM so it doesnt idle aroun
 id|wakeup_bdflush
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Try to allocate from the emergency pool.&n;&t; */

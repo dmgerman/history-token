@@ -113,12 +113,24 @@ DECL|macro|BTTV_PINNACLEPRO
 mdefine_line|#define BTTV_PINNACLEPRO   0x34
 DECL|macro|BTTV_TVIEW_RDS_FM
 mdefine_line|#define BTTV_TVIEW_RDS_FM  0x35
-DECL|macro|BTTV_LIVETEC_9415
-mdefine_line|#define BTTV_LIVETEC_9415  0x36
+DECL|macro|BTTV_LIFETEC_9415
+mdefine_line|#define BTTV_LIFETEC_9415  0x36
 DECL|macro|BTTV_BESTBUY_EASYTV
 mdefine_line|#define BTTV_BESTBUY_EASYTV 0x37
 DECL|macro|BTTV_FLYVIDEO_98FM
 mdefine_line|#define BTTV_FLYVIDEO_98FM 0x38
+DECL|macro|BTTV_GMV1
+mdefine_line|#define BTTV_GMV1          0x3d
+DECL|macro|BTTV_BESTBUY_EASYTV2
+mdefine_line|#define BTTV_BESTBUY_EASYTV2 0x3e
+DECL|macro|BTTV_ATI_TVWONDER
+mdefine_line|#define BTTV_ATI_TVWONDER  0x3f
+DECL|macro|BTTV_ATI_TVWONDERVE
+mdefine_line|#define BTTV_ATI_TVWONDERVE 0x40
+DECL|macro|BTTV_FLYVIDEO2000
+mdefine_line|#define BTTV_FLYVIDEO2000   0x41
+DECL|macro|BTTV_TERRATVALUER
+mdefine_line|#define BTTV_TERRATVALUER   0x42
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
@@ -464,21 +476,6 @@ suffix:semicolon
 multiline_comment|/* i2c */
 DECL|macro|I2C_CLIENTS_MAX
 mdefine_line|#define I2C_CLIENTS_MAX 8
-r_extern
-r_struct
-id|i2c_algo_bit_data
-id|bttv_i2c_algo_template
-suffix:semicolon
-r_extern
-r_struct
-id|i2c_adapter
-id|bttv_i2c_adap_template
-suffix:semicolon
-r_extern
-r_struct
-id|i2c_client
-id|bttv_i2c_client_template
-suffix:semicolon
 r_extern
 r_void
 id|bttv_bit_setscl

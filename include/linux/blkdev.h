@@ -620,7 +620,7 @@ DECL|macro|PageAlignSize
 mdefine_line|#define PageAlignSize(size) (((size) + PAGE_SIZE -1) &amp; PAGE_MASK)
 multiline_comment|/* read-ahead in pages.. */
 DECL|macro|MAX_READAHEAD
-mdefine_line|#define MAX_READAHEAD&t;127
+mdefine_line|#define MAX_READAHEAD&t;31
 DECL|macro|MIN_READAHEAD
 mdefine_line|#define MIN_READAHEAD&t;3
 DECL|macro|blkdev_entry_to_request

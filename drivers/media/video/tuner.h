@@ -52,10 +52,22 @@ DECL|macro|TUNER_PHILIPS_PAL_DK
 mdefine_line|#define TUNER_PHILIPS_PAL_DK&t;&t;23
 DECL|macro|TUNER_PHILIPS_FQ1216ME
 mdefine_line|#define TUNER_PHILIPS_FQ1216ME&t;&t;24  /* you must actively select B/G/D/K, I, L, L` */
+DECL|macro|TUNER_LG_PAL_I_FM
+mdefine_line|#define TUNER_LG_PAL_I_FM&t;25
+DECL|macro|TUNER_LG_PAL_I
+mdefine_line|#define TUNER_LG_PAL_I&t;&t;26
+DECL|macro|TUNER_LG_NTSC_FM
+mdefine_line|#define TUNER_LG_NTSC_FM&t;27
+DECL|macro|TUNER_LG_PAL_FM
+mdefine_line|#define TUNER_LG_PAL_FM&t;&t;28
+DECL|macro|TUNER_LG_PAL
+mdefine_line|#define TUNER_LG_PAL&t;&t;29
+DECL|macro|TUNER_TEMIC_4009FN5_MULTI_PAL_FM
+mdefine_line|#define TUNER_TEMIC_4009FN5_MULTI_PAL_FM&t;30  /* B/G, I and D/K autodetected */
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
-mdefine_line|#define PAL     1
+mdefine_line|#define PAL     1&t;/* PAL_BG */
 DECL|macro|PAL_I
 mdefine_line|#define PAL_I   2
 DECL|macro|NTSC
@@ -72,6 +84,8 @@ DECL|macro|Sony
 mdefine_line|#define Sony    3
 DECL|macro|Alps
 mdefine_line|#define Alps    4
+DECL|macro|LGINNOTEK
+mdefine_line|#define LGINNOTEK 5
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ

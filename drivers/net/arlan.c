@@ -7188,7 +7188,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|RetryOrFail
-r_extern
+r_static
 r_inline
 r_void
 id|RetryOrFail
