@@ -531,14 +531,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|mac8390_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|mac8390_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1320,14 +1320,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_MAC8390           /* NuBus NS8390-based cards */
-(brace
-id|mac8390_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1346,6 +1338,14 @@ id|m68k_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_MAC8390           /* NuBus NS8390-based cards */
+(brace
+id|mac8390_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_MAC89x0
 (brace
 id|mac89x0_probe
