@@ -5326,6 +5326,15 @@ l_string|&quot;Yamaha OPL3-SA soundcard not found or device busy&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PNP
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|opl3sa2_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 op_minus
 id|ENODEV
