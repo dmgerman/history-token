@@ -3,7 +3,7 @@ DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
 macro_line|#include &lt;asm/genapic.h&gt;
 DECL|macro|esr_disable
-mdefine_line|#define esr_disable (genapic-&gt;esr_disable)
+mdefine_line|#define esr_disable (genapic-&gt;ESR_DISABLE)
 DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (genapic-&gt;no_balance_irq)
 DECL|macro|NO_IOAPIC_CHECK
@@ -14,10 +14,12 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE (genapic-&gt;int_delivery_mode)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE (genapic-&gt;int_dest_mode)
+DECL|macro|APIC_DEST_LOGICAL
+macro_line|#undef APIC_DEST_LOGICAL
+DECL|macro|APIC_DEST_LOGICAL
+mdefine_line|#define APIC_DEST_LOGICAL (genapic-&gt;apic_destination_logical)
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS&t;  (genapic-&gt;target_cpus())
-DECL|macro|apic_id_registered
-mdefine_line|#define apic_id_registered (genapic-&gt;apic_id_registered)
 DECL|macro|apic_id_registered
 mdefine_line|#define apic_id_registered (genapic-&gt;apic_id_registered)
 DECL|macro|init_apic_ldr

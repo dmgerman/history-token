@@ -305,7 +305,7 @@ mdefine_line|#define&t;MIP_SW_APIC&t;&t;0x1020b
 DECL|macro|MIP_FUNC
 mdefine_line|#define&t;MIP_FUNC(VALUE) &t;(VALUE &amp; 0xff)
 r_extern
-r_void
+r_int
 id|parse_unisys_oem
 (paren
 r_char

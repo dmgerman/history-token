@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Written by: Garry Forsgren, Unisys Corporation&n; *             Natalie Protasevich, Unisys Corporation&n; * This file contains the code to configure and interface &n; * with Unisys ES7000 series hardware system manager.&n; *&n; * Copyright (c) 2003 Unisys Corporation.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Unisys Corporation, Township Line &amp; Union Meeting &n; * Roads-A, Unisys Way, Blue Bell, Pennsylvania, 19424, or:&n; *&n; * http://www.unisys.com&n; */
+multiline_comment|/*&n; * Written by: Garry Forsgren, Unisys Corporation&n; *             Natalie Protasevich, Unisys Corporation&n; * This file contains the code to configure and interface&n; * with Unisys ES7000 series hardware system manager.&n; *&n; * Copyright (c) 2003 Unisys Corporation.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Unisys Corporation, Township Line &amp; Union Meeting&n; * Roads-A, Unisys Way, Blue Bell, Pennsylvania, 19424, or:&n; *&n; * http://www.unisys.com&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -50,7 +50,7 @@ comma
 id|host_addr
 suffix:semicolon
 multiline_comment|/*&n; * Parse the OEM Table&n; */
-r_void
+r_int
 id|__init
 DECL|function|parse_unisys_oem
 id|parse_unisys_oem
@@ -355,6 +355,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
+id|es7000_plat
 suffix:semicolon
 )brace
 r_int
