@@ -25,7 +25,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;Compaq CISS Driver (v 2.6.2)&quot;
+mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.2)&quot;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,2)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
@@ -45,7 +45,7 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
-l_string|&quot; SA6i&quot;
+l_string|&quot; SA6i V100&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -228,9 +228,9 @@ l_int|0
 )brace
 comma
 (brace
-id|PCI_VENDOR_ID_COMPAQ
+id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_COMPAQ_CISSC
+id|PCI_DEVICE_ID_HP_CISS
 comma
 l_int|0x103C
 comma
