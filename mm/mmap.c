@@ -2220,7 +2220,7 @@ id|sysctl_overcommit_memory
 OG
 l_int|1
 )paren
-id|vm_flags
+id|flags
 op_and_assign
 op_complement
 id|MAP_NORESERVE
