@@ -8942,6 +8942,12 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_READ
+)paren
+op_logical_and
 op_logical_neg
 (paren
 id|val
@@ -8964,6 +8970,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+op_logical_and
 op_logical_neg
 (paren
 id|val
@@ -8990,9 +9002,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_WRITE
+)paren
+op_logical_and
+(paren
 id|val
 op_amp
 id|PCM_ENABLE_OUTPUT
+)paren
 op_logical_and
 op_logical_neg
 (paren
@@ -9131,9 +9151,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_READ
+)paren
+op_logical_and
+(paren
 id|val
 op_amp
 id|PCM_ENABLE_INPUT
+)paren
 op_logical_and
 op_logical_neg
 (paren
@@ -13961,6 +13989,13 @@ id|__TIME__
 l_string|&quot; &quot;
 id|__DATE__
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;This driver is deprecated, please use the ALSA drivers.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
