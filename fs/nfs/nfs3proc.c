@@ -178,6 +178,51 @@ DECL|macro|rpc_call
 mdefine_line|#define rpc_call(clnt, proc, argp, resp, flags) &bslash;&n;&t;&t;nfs3_rpc_call_wrapper(clnt, proc, argp, resp, flags)
 DECL|macro|rpc_call_sync
 mdefine_line|#define rpc_call_sync(clnt, msg, flags) &bslash;&n;&t;&t;nfs3_rpc_wrapper(clnt, msg, flags)
+r_static
+r_int
+DECL|function|nfs3_async_handle_jukebox
+id|nfs3_async_handle_jukebox
+c_func
+(paren
+r_struct
+id|rpc_task
+op_star
+id|task
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|task-&gt;tk_status
+op_ne
+op_minus
+id|EJUKEBOX
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|task-&gt;tk_status
+op_assign
+l_int|0
+suffix:semicolon
+id|rpc_restart_call
+c_func
+(paren
+id|task
+)paren
+suffix:semicolon
+id|rpc_delay
+c_func
+(paren
+id|task
+comma
+id|NFS_JUKEBOX_RETRY_TIME
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Bare-bones access to getattr: this is for nfs_read_super.&n; */
 r_static
 r_int
@@ -1901,7 +1946,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nfs_async_handle_jukebox
+id|nfs3_async_handle_jukebox
 c_func
 (paren
 id|task
@@ -3282,7 +3327,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nfs_async_handle_jukebox
+id|nfs3_async_handle_jukebox
 c_func
 (paren
 id|task
@@ -3497,7 +3542,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|nfs_async_handle_jukebox
+id|nfs3_async_handle_jukebox
 c_func
 (paren
 id|task
@@ -3744,7 +3789,7 @@ id|task
 r_if
 c_cond
 (paren
-id|nfs_async_handle_jukebox
+id|nfs3_async_handle_jukebox
 c_func
 (paren
 id|task
