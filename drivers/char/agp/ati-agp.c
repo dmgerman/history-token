@@ -712,6 +712,9 @@ r_if
 c_cond
 (paren
 id|is_r200
+c_func
+(paren
+)paren
 )paren
 id|pci_read_config_dword
 c_func
@@ -865,6 +868,9 @@ r_if
 c_cond
 (paren
 id|is_r200
+c_func
+(paren
+)paren
 )paren
 (brace
 id|pci_read_config_dword
@@ -1005,6 +1011,9 @@ r_if
 c_cond
 (paren
 id|is_r200
+c_func
+(paren
+)paren
 )paren
 id|pci_write_config_dword
 c_func
@@ -1562,6 +1571,9 @@ r_if
 c_cond
 (paren
 id|is_r200
+c_func
+(paren
+)paren
 )paren
 (brace
 id|pci_read_config_dword
