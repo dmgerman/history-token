@@ -1,5 +1,5 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n;&t;(Roger Lahti)&n;&t;- cosmetic cleanups, remove 3 unused members of struct netdev_private&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
@@ -750,6 +750,32 @@ l_int|0xAC
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Bits in ConfigD (select backoff algorithm (Ethernet capture effect)) */
+DECL|enum|backoff_bits
+r_enum
+id|backoff_bits
+(brace
+DECL|enumerator|BackOpt
+DECL|enumerator|BackAMD
+DECL|enumerator|BackDEC
+DECL|enumerator|BackRandom
+id|BackOpt
+op_assign
+l_int|0x01
+comma
+id|BackAMD
+op_assign
+l_int|0x02
+comma
+id|BackDEC
+op_assign
+l_int|0x04
+comma
+id|BackRandom
+op_assign
+l_int|0x08
+)brace
+suffix:semicolon
 macro_line|#ifdef USE_MEM
 multiline_comment|/* Registers we check that mmio and reg are the same. */
 DECL|variable|mmio_verify_registers
@@ -970,7 +996,6 @@ id|next_desc
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Bits in *_desc.status */
 DECL|enum|rx_status_bits
 r_enum
 id|rx_status_bits
@@ -991,6 +1016,7 @@ op_assign
 l_int|0x008F
 )brace
 suffix:semicolon
+multiline_comment|/* Bits in *_desc.status */
 DECL|enum|desc_status_bits
 r_enum
 id|desc_status_bits
@@ -1224,21 +1250,6 @@ id|chip_cmd
 suffix:semicolon
 multiline_comment|/* Current setting for ChipCmd */
 multiline_comment|/* These values are keep track of the transceiver/media in use. */
-DECL|member|full_duplex
-r_int
-r_int
-id|full_duplex
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Full-duplex operation requested. */
-DECL|member|duplex_lock
-r_int
-r_int
-id|duplex_lock
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|default_port
 r_int
 r_int
@@ -1255,11 +1266,6 @@ comma
 id|rx_thresh
 suffix:semicolon
 multiline_comment|/* MII transceiver section. */
-DECL|member|advertising
-id|u16
-id|advertising
-suffix:semicolon
-multiline_comment|/* NWay media advertisement */
 DECL|member|phys
 r_int
 r_char
@@ -2830,7 +2836,7 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|0
+id|MII_BMCR
 comma
 (paren
 (paren
@@ -3833,8 +3839,8 @@ op_plus
 id|PCIBusConfig
 )paren
 suffix:semicolon
-multiline_comment|/* Tune configuration??? */
-multiline_comment|/* Configure the FIFO thresholds. */
+multiline_comment|/* Store &amp; forward */
+multiline_comment|/* Configure initial FIFO thresholds. */
 id|writeb
 c_func
 (paren
@@ -3845,7 +3851,6 @@ op_plus
 id|TxConfig
 )paren
 suffix:semicolon
-multiline_comment|/* Initial threshold 32 bytes */
 id|np-&gt;tx_thresh
 op_assign
 l_int|0x20
@@ -4184,7 +4189,7 @@ id|regnum
 )paren
 (brace
 r_case
-l_int|0
+id|MII_BMCR
 suffix:colon
 multiline_comment|/* Is user forcing speed/duplex? */
 r_if
@@ -4216,7 +4221,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|MII_ADVERTISE
 suffix:colon
 id|np-&gt;mii_if.advertising
 op_assign
