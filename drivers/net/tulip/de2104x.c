@@ -23,13 +23,12 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/* These identify the driver base version and may not be removed. */
-DECL|variable|__initdata
+DECL|variable|version
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
 op_assign
 id|KERN_INFO
 id|DRV_NAME
@@ -9411,7 +9410,7 @@ suffix:semicolon
 DECL|function|de_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|de_init_one
 (paren
 r_struct

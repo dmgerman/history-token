@@ -901,7 +901,7 @@ suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */
 r_static
 r_int
-id|__init
+id|__devinit
 id|tc35815_probe1
 c_func
 (paren
@@ -1347,7 +1347,7 @@ suffix:semicolon
 DECL|function|tc35815_probe1
 r_static
 r_int
-id|__init
+id|__devinit
 id|tc35815_probe1
 c_func
 (paren

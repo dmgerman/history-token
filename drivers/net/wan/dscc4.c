@@ -2676,7 +2676,7 @@ suffix:semicolon
 DECL|function|dscc4_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|dscc4_init_one
 c_func
 (paren
