@@ -2103,7 +2103,6 @@ DECL|macro|MNT_FORCE
 mdefine_line|#define MNT_FORCE&t;0x00000001&t;/* Attempt to forcibily umount */
 DECL|macro|MNT_DETACH
 mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
-macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2282,11 +2281,6 @@ suffix:semicolon
 multiline_comment|/* Informational name */
 r_union
 (brace
-DECL|member|ext3_sb
-r_struct
-id|ext3_sb_info
-id|ext3_sb
-suffix:semicolon
 DECL|member|generic_sbp
 r_void
 op_star
