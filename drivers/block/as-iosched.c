@@ -19,16 +19,16 @@ mdefine_line|#define REQ_ASYNC&t;0
 multiline_comment|/*&n; * See Documentation/as-iosched.txt&n; */
 multiline_comment|/*&n; * max time before a read is submitted.&n; */
 DECL|macro|default_read_expire
-mdefine_line|#define default_read_expire (HZ / 20)
+mdefine_line|#define default_read_expire (HZ / 8)
 multiline_comment|/*&n; * ditto for writes, these limits are not hard, even&n; * if the disk is capable of satisfying them.&n; */
 DECL|macro|default_write_expire
-mdefine_line|#define default_write_expire (HZ / 5)
+mdefine_line|#define default_write_expire (HZ / 4)
 multiline_comment|/*&n; * read_batch_expire describes how long we will allow a stream of reads to&n; * persist before looking to see whether it is time to switch over to writes.&n; */
 DECL|macro|default_read_batch_expire
-mdefine_line|#define default_read_batch_expire (HZ / 5)
+mdefine_line|#define default_read_batch_expire (HZ / 4)
 multiline_comment|/*&n; * write_batch_expire describes how long we want a stream of writes to run for.&n; * This is not a hard limit, but a target we set for the auto-tuning thingy.&n; * See, the problem is: we can send a lot of writes to disk cache / TCQ in&n; * a short amount of time...&n; */
 DECL|macro|default_write_batch_expire
-mdefine_line|#define default_write_batch_expire (HZ / 20)
+mdefine_line|#define default_write_batch_expire (HZ / 16)
 multiline_comment|/*&n; * max time we may wait to anticipate a read (default around 6ms)&n; */
 DECL|macro|default_antic_expire
 mdefine_line|#define default_antic_expire ((HZ / 150) ? HZ / 150 : 1)
@@ -1364,6 +1364,8 @@ suffix:semicolon
 multiline_comment|/*&n; * IO Scheduler proper&n; */
 DECL|macro|MAXBACK
 mdefine_line|#define MAXBACK (1024 * 1024)&t;/*&n;&t;&t;&t;&t; * Maximum distance the disk will go backward&n;&t;&t;&t;&t; * for a request.&n;&t;&t;&t;&t; */
+DECL|macro|BACK_PENALTY
+mdefine_line|#define BACK_PENALTY&t;2
 multiline_comment|/*&n; * as_choose_req selects the preferred one of two requests of the same data_dir&n; * ignoring time - eg. timeouts, which is the job of as_dispatch_request&n; */
 r_static
 r_struct
@@ -1502,7 +1504,7 @@ op_minus
 id|s1
 )paren
 op_star
-l_int|2
+id|BACK_PENALTY
 suffix:semicolon
 r_else
 (brace
@@ -1547,7 +1549,7 @@ op_minus
 id|s2
 )paren
 op_star
-l_int|2
+id|BACK_PENALTY
 suffix:semicolon
 r_else
 (brace
@@ -2238,26 +2240,6 @@ id|delta
 )paren
 suffix:semicolon
 )brace
-r_static
-r_void
-id|as_update_thinktime
-c_func
-(paren
-r_struct
-id|as_data
-op_star
-id|ad
-comma
-r_struct
-id|as_io_context
-op_star
-id|aic
-comma
-r_int
-r_int
-id|ttime
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * as_can_break_anticipation returns true if we have been anticipating this&n; * request.&n; *&n; * It also returns true if the process against which we are anticipating&n; * submits a write - that&squot;s presumably an fsync, O_SYNC write, etc. We want to&n; * dispatch it ASAP, because we know that application will not be submitting&n; * any new reads.&n; *&n; * If the task which has submitted the request has exitted, break anticipation.&n; *&n; * If this task has queued some other IO, do not enter enticipation.&n; */
 DECL|function|as_can_break_anticipation
 r_static
@@ -2311,81 +2293,6 @@ id|arq-&gt;io_context
 )paren
 (brace
 multiline_comment|/* request from same process */
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|arq
-op_logical_and
-id|arq-&gt;is_sync
-op_eq
-id|REQ_SYNC
-op_logical_and
-id|as_close_req
-c_func
-(paren
-id|ad
-comma
-id|arq
-)paren
-)paren
-(brace
-multiline_comment|/* close request */
-r_struct
-id|as_io_context
-op_star
-id|aic
-op_assign
-id|ioc-&gt;aic
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|aic
-)paren
-(brace
-r_int
-r_int
-id|thinktime
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|aic-&gt;lock
-)paren
-suffix:semicolon
-id|thinktime
-op_assign
-id|jiffies
-op_minus
-id|aic-&gt;last_end_request
-suffix:semicolon
-id|aic-&gt;last_end_request
-op_assign
-id|jiffies
-suffix:semicolon
-id|as_update_thinktime
-c_func
-(paren
-id|ad
-comma
-id|aic
-comma
-id|thinktime
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|aic-&gt;lock
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -2497,6 +2404,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|arq
+op_logical_and
+id|arq-&gt;is_sync
+op_eq
+id|REQ_SYNC
+op_logical_and
+id|as_close_req
+c_func
+(paren
+id|ad
+comma
+id|arq
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Found a close request that is not one of ours.&n;&t;&t; *&n;&t;&t; * This makes close requests from another process reset&n;&t;&t; * our thinktime delay. Is generally useful when there are&n;&t;&t; * two or more cooperating processes working in the same&n;&t;&t; * area.&n;&t;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|aic-&gt;lock
+)paren
+suffix:semicolon
+id|aic-&gt;last_end_request
+op_assign
+id|jiffies
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|aic-&gt;lock
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|aic-&gt;ttime_samples
 op_eq
 l_int|0
@@ -2588,8 +2536,6 @@ r_if
 c_cond
 (paren
 id|ad-&gt;new_seek_mean
-op_div
-l_int|2
 OG
 id|s
 )paren
@@ -2606,8 +2552,6 @@ r_if
 c_cond
 (paren
 id|aic-&gt;seek_mean
-op_div
-l_int|2
 OG
 id|s
 )paren
