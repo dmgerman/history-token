@@ -542,8 +542,10 @@ op_logical_neg
 id|rc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * FIXME: ev needs reason field,&n;&t;&t; * perhaps the ev-&gt;status is enough,&n;&t;&t; * have to check,&n;&t;&t; * better way to signal its a disc&n;&t;&t; */
-multiline_comment|/* prim_data-&gt;disc.reason = reason; */
+id|ev-&gt;reason
+op_assign
+id|reason
+suffix:semicolon
 id|ev-&gt;flag
 op_assign
 id|LLC_DISC_PRIM
@@ -590,8 +592,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* here we use the ev-&gt;status, humm */
-multiline_comment|/* prim_data-&gt;disc.reason = ev-&gt;status; */
+id|ev-&gt;reason
+op_assign
+id|ev-&gt;status
+suffix:semicolon
 id|ev-&gt;flag
 op_assign
 id|LLC_DISC_PRIM
@@ -832,10 +836,6 @@ id|prim_data-&gt;res.sk
 op_assign
 id|sk
 suffix:semicolon
-id|prim_data-&gt;res.reason
-op_assign
-id|reason
-suffix:semicolon
 id|prim_data-&gt;res.link
 op_assign
 id|llc-&gt;link
@@ -851,6 +851,10 @@ suffix:semicolon
 id|prim-&gt;sap
 op_assign
 id|sap
+suffix:semicolon
+id|ev-&gt;reason
+op_assign
+id|reason
 suffix:semicolon
 id|ev-&gt;flag
 op_assign

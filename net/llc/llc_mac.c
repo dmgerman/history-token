@@ -796,7 +796,7 @@ id|ev-&gt;type
 op_assign
 id|LLC_STATION_EV_TYPE_PDU
 suffix:semicolon
-id|ev-&gt;data.pdu.reason
+id|ev-&gt;reason
 op_assign
 l_int|0
 suffix:semicolon
@@ -862,7 +862,7 @@ id|ev-&gt;type
 op_assign
 id|LLC_CONN_EV_TYPE_PDU
 suffix:semicolon
-id|ev-&gt;data.pdu.reason
+id|ev-&gt;reason
 op_assign
 l_int|0
 suffix:semicolon
@@ -909,7 +909,7 @@ id|ev-&gt;type
 op_assign
 id|LLC_SAP_EV_TYPE_PDU
 suffix:semicolon
-id|ev-&gt;data.pdu.reason
+id|ev-&gt;reason
 op_assign
 l_int|0
 suffix:semicolon
