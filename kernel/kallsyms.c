@@ -532,6 +532,13 @@ id|name
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kallsyms_lookup_name
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|kallsyms_lookup_name
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Lookup an address&n; * - modname is set to NULL if it&squot;s in the kernel&n; * - we guarantee that the returned name is valid until we reschedule even if&n; *   it resides in a module&n; * - we also guarantee that modname will be valid until rescheduled&n; */
 DECL|function|kallsyms_lookup
 r_const
