@@ -3403,7 +3403,7 @@ id|instance-&gt;usb_dev
 comma
 l_int|1
 comma
-l_int|2
+l_int|1
 )paren
 suffix:semicolon
 id|instance-&gt;firmware_loaded
