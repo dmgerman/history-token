@@ -1170,7 +1170,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;name

@@ -7216,7 +7216,7 @@ op_assign
 id|dev-&gt;host_id
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Edit its name.&n;&t; */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;s.chip_name
@@ -7227,8 +7227,6 @@ r_sizeof
 (paren
 id|np-&gt;s.chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|sprintf

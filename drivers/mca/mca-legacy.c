@@ -641,7 +641,7 @@ id|mca_dev
 r_return
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|mca_dev-&gt;dev.name
@@ -653,18 +653,6 @@ r_sizeof
 id|mca_dev-&gt;dev.name
 )paren
 )paren
-suffix:semicolon
-id|mca_dev-&gt;dev.name
-(braket
-r_sizeof
-(paren
-id|mca_dev-&gt;dev.name
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 DECL|variable|mca_set_adapter_name

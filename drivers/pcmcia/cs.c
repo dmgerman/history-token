@@ -4446,7 +4446,7 @@ id|client-&gt;client_magic
 op_assign
 id|CLIENT_MAGIC
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|client-&gt;dev_info
@@ -4605,7 +4605,7 @@ l_int|NULL
 r_return
 id|CS_BAD_OFFSET
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|region-&gt;dev_info

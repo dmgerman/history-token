@@ -12297,7 +12297,7 @@ op_amp
 id|cgdev-&gt;dev
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|privptr-&gt;fsm-&gt;name

@@ -848,7 +848,7 @@ id|count
 op_assign
 l_int|1
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|Part
@@ -862,18 +862,6 @@ id|Part
 op_minus
 l_int|10
 )paren
-suffix:semicolon
-id|Part
-(braket
-r_sizeof
-(paren
-id|Part
-)paren
-op_minus
-l_int|11
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|strcat
 c_func
@@ -1256,8 +1244,7 @@ id|MTD
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// strncpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
-singleline_comment|// MTD-&gt;name[sizeof(MTD-&gt;name)-1] = 0;
+singleline_comment|// strlcpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
 id|MTD-&gt;name
 op_assign
 id|map-&gt;name

@@ -2463,7 +2463,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* register with global device tree */
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|hwif-&gt;gendev.bus_id

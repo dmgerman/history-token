@@ -6879,7 +6879,7 @@ op_amp
 id|fix-&gt;smem_len
 )paren
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|fix-&gt;id

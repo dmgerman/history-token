@@ -734,7 +734,7 @@ op_assign
 id|unknown_name
 suffix:semicolon
 )brace
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|client-&gt;dev.name

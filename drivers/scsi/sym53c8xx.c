@@ -15383,7 +15383,7 @@ op_assign
 id|np
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Store input informations in the host data structure.&n;&t;*/
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|np-&gt;chip_name
@@ -15394,8 +15394,6 @@ r_sizeof
 (paren
 id|np-&gt;chip_name
 )paren
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|np-&gt;unit

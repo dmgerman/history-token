@@ -6091,7 +6091,7 @@ comma
 op_star
 id|p2
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|setup_buffer
@@ -6100,15 +6100,6 @@ id|str
 comma
 id|SETUP_BUFFER_SIZE
 )paren
-suffix:semicolon
-id|setup_buffer
-(braket
-id|SETUP_BUFFER_SIZE
-op_minus
-l_int|1
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 id|p1
 op_assign
