@@ -749,7 +749,6 @@ id|nc_dstat
 op_amp
 id|ABRT
 )paren
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
