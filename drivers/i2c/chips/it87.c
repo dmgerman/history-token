@@ -2993,7 +2993,16 @@ id|new_client
 r_goto
 id|ERROR1
 suffix:semicolon
-multiline_comment|/* register sysfs hooks */
+multiline_comment|/* Initialize the IT87 chip */
+id|it87_init_client
+c_func
+(paren
+id|new_client
+comma
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* Register sysfs hooks */
 id|device_create_file
 c_func
 (paren
@@ -3462,15 +3471,6 @@ id|new_client-&gt;dev
 comma
 op_amp
 id|dev_attr_alarm
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize the IT87 chip */
-id|it87_init_client
-c_func
-(paren
-id|new_client
-comma
-id|data
 )paren
 suffix:semicolon
 r_return

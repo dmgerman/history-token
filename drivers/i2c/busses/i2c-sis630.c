@@ -1,5 +1,5 @@
 multiline_comment|/*&n;    i2c-sis630.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 2002,2003 Alexander Malysh &lt;amalysh@web.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;   Changes:&n;   24.08.2002&n;   &t;Fixed the typo in sis630_access (Thanks to Mark M. Hoffman)&n;&t;Changed sis630_transaction.(Thanks to Mark M. Hoffman)&n;   18.09.2002&n;&t;Added SIS730 as supported&n;   21.09.2002&n;&t;Added high_clock module option.If this option is set&n;&t;used Host Master Clock 56KHz (default 14KHz).For now we are save old Host&n;&t;Master Clock and after transaction completed restore (otherwise&n;&t;it&squot;s confuse BIOS and hung Machine).&n;   24.09.2002&n;&t;Fixed typo in sis630_access&n;&t;Fixed logical error by restoring of Host Master Clock&n;   31.07.2003&n;   &t;Added block data read/write support.&n;*/
+multiline_comment|/*&n;   Changes:&n;   24.08.2002&n;   &t;Fixed the typo in sis630_access (Thanks to Mark M. Hoffman)&n;&t;Changed sis630_transaction.(Thanks to Mark M. Hoffman)&n;   18.09.2002&n;&t;Added SIS730 as supported.&n;   21.09.2002&n;&t;Added high_clock module option.If this option is set&n;&t;used Host Master Clock 56KHz (default 14KHz).For now we save old Host&n;&t;Master Clock and after transaction completed restore (otherwise&n;&t;it&squot;s confuse BIOS and hung Machine).&n;   24.09.2002&n;&t;Fixed typo in sis630_access&n;&t;Fixed logical error by restoring of Host Master Clock&n;   31.07.2003&n;   &t;Added block data read/write support.&n;*/
 multiline_comment|/*&n;   Status: beta&n;&n;   Supports:&n;&t;SIS 630&n;&t;SIS 730&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -70,6 +70,13 @@ id|high_clock
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|force
+r_static
+r_int
+id|force
+op_assign
+l_int|0
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -86,6 +93,23 @@ comma
 l_string|&quot;Set Host Master Clock to 56KHz (default 14KHz).&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|force
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|force
+comma
+l_string|&quot;Forcibly enable the SIS630. DANGEROUS!&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* acpi base address */
 DECL|variable|acpi_base
 r_static
 r_int
@@ -93,6 +117,23 @@ r_int
 id|acpi_base
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* supported chips */
+DECL|variable|supported
+r_static
+r_int
+id|supported
+(braket
+)braket
+op_assign
+(brace
+id|PCI_DEVICE_ID_SI_630
+comma
+id|PCI_DEVICE_ID_SI_730
+comma
+l_int|0
+multiline_comment|/* terminates the list */
+)brace
 suffix:semicolon
 DECL|function|sis630_read
 r_static
@@ -1011,6 +1052,24 @@ c_func
 id|SMB_COUNT
 )paren
 suffix:semicolon
+multiline_comment|/* just to be sure */
+r_if
+c_cond
+(paren
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+OG
+l_int|32
+)paren
+id|data-&gt;block
+(braket
+l_int|0
+)braket
+op_assign
+l_int|32
+suffix:semicolon
 id|dev_dbg
 c_func
 (paren
@@ -1589,7 +1648,7 @@ c_func
 r_struct
 id|pci_dev
 op_star
-id|dummy
+id|sis630_dev
 )paren
 (brace
 r_int
@@ -1599,7 +1658,7 @@ suffix:semicolon
 r_struct
 id|pci_dev
 op_star
-id|sis630_dev
+id|dummy
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1608,36 +1667,87 @@ id|retval
 op_assign
 op_minus
 id|ENODEV
+comma
+id|i
 suffix:semicolon
-multiline_comment|/* We need ISA bridge and not pci device passed in.  */
-id|sis630_dev
+multiline_comment|/* check for supported SiS devices */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|supported
+(braket
+id|i
+)braket
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|dummy
 op_assign
 id|pci_get_device
 c_func
 (paren
 id|PCI_VENDOR_ID_SI
 comma
-id|PCI_DEVICE_ID_SI_503
+id|supported
+(braket
+id|i
+)braket
 comma
-id|sis630_dev
+id|dummy
 )paren
+)paren
+)paren
+r_break
 suffix:semicolon
+multiline_comment|/* found */
+)brace
 r_if
 c_cond
 (paren
-op_logical_neg
-id|sis630_dev
+id|dummy
+)paren
+(brace
+id|pci_dev_put
+c_func
+(paren
+id|dummy
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|force
+OG
+l_int|0
 )paren
 (brace
 id|dev_err
 c_func
 (paren
 op_amp
-id|dummy-&gt;dev
+id|sis630_dev-&gt;dev
 comma
-l_string|&quot;Error: Can&squot;t detect 85C503/5513 ISA bridge!&bslash;n&quot;
+l_string|&quot;WARNING: Can&squot;t detect SIS630 compatible device, but &quot;
+l_string|&quot;loading because of force option enabled&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
 r_return
 op_minus
 id|ENODEV
@@ -1647,7 +1757,6 @@ multiline_comment|/*&n;&t;   Enable ACPI first , so we can accsess reg 74-75&n;&
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_read_config_byte
 c_func
 (paren
@@ -1684,7 +1793,6 @@ op_amp
 l_int|0x80
 )paren
 op_logical_and
-op_logical_neg
 id|pci_write_config_byte
 c_func
 (paren
@@ -1715,7 +1823,6 @@ multiline_comment|/* Determine the ACPI base address */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pci_read_config_word
 c_func
 (paren
@@ -1798,11 +1905,14 @@ l_int|0
 suffix:semicolon
 m_exit
 suffix:colon
-id|pci_dev_put
-c_func
+r_if
+c_cond
 (paren
-id|sis630_dev
+id|retval
 )paren
+id|acpi_base
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|retval
@@ -1850,6 +1960,11 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+r_class
+op_assign
+id|I2C_ADAP_CLASS_SMBUS
+comma
+dot
 id|name
 op_assign
 l_string|&quot;unset&quot;
@@ -1878,17 +1993,7 @@ c_func
 (paren
 id|PCI_VENDOR_ID_SI
 comma
-id|PCI_DEVICE_ID_SI_630
-)paren
-)brace
-comma
-(brace
-id|PCI_DEVICE
-c_func
-(paren
-id|PCI_VENDOR_ID_SI
-comma
-id|PCI_DEVICE_ID_SI_730
+id|PCI_DEVICE_ID_SI_503
 )paren
 )brace
 comma
@@ -1981,6 +2086,12 @@ op_star
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|acpi_base
+)paren
+(brace
 id|i2c_del_adapter
 c_func
 (paren
@@ -1988,6 +2099,21 @@ op_amp
 id|sis630_adapter
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|acpi_base
+op_plus
+id|SMB_STS
+comma
+id|SIS630_SMB_IOREGION
+)paren
+suffix:semicolon
+id|acpi_base
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 DECL|variable|sis630_driver
 r_static
@@ -2056,16 +2182,6 @@ c_func
 (paren
 op_amp
 id|sis630_driver
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|acpi_base
-op_plus
-id|SMB_STS
-comma
-id|SIS630_SMB_IOREGION
 )paren
 suffix:semicolon
 )brace

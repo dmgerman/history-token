@@ -5,7 +5,6 @@ multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; * Copyright (C) 2
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;1
 singleline_comment|// #define&t;VERBOSE&t;&t;/* extra debug messages (success too) */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1521,6 +1520,9 @@ mdefine_line|#define USE_KMALLOC
 macro_line|#elif&t;defined(CONFIG_PPC) &amp;&amp; !defined(CONFIG_NOT_COHERENT_CACHE)
 DECL|macro|USE_KMALLOC
 mdefine_line|#define USE_KMALLOC
+macro_line|#elif&t;defined(CONFIG_MIPS) &amp;&amp; !defined(CONFIG_NONCOHERENT_IO)
+DECL|macro|USE_KMALLOC
+mdefine_line|#define USE_KMALLOC
 multiline_comment|/* FIXME there are other cases, including an x86-64 one ...  */
 macro_line|#endif
 multiline_comment|/* allocating buffers this way eliminates dma mapping overhead, which&n; * on some platforms will mean eliminating a per-io buffer copy.  with&n; * some kinds of system caches, further tweaks may still be needed.&n; */
@@ -1581,16 +1583,11 @@ id|dma
 op_assign
 id|DMA_ADDR_INVALID
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ep-&gt;dma
-)paren
-(brace
 macro_line|#if&t;defined(USE_KMALLOC)
 id|retval
 op_assign
 id|kmalloc
+c_func
 (paren
 id|bytes
 comma
@@ -1606,16 +1603,24 @@ op_star
 id|dma
 op_assign
 id|virt_to_phys
+c_func
 (paren
 id|retval
 )paren
 suffix:semicolon
-macro_line|#elif&t;LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,58)
-macro_line|#warning Using dma_alloc_consistent even with sub-page allocations
+macro_line|#else
+r_if
+c_cond
+(paren
+id|ep-&gt;dma
+)paren
+(brace
 multiline_comment|/* the main problem with this call is that it wastes memory&n;&t;&t; * on typical 1/N page allocations: it allocates 1-N pages.&n;&t;&t; */
+macro_line|#warning Using dma_alloc_coherent even with buffers smaller than a page.
 id|retval
 op_assign
 id|dma_alloc_coherent
+c_func
 (paren
 op_amp
 id|ep-&gt;dev-&gt;pdev-&gt;dev
@@ -1627,21 +1632,19 @@ comma
 id|gfp_flags
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#error No dma-coherent memory allocator is available
-multiline_comment|/* pci_alloc_consistent works, but pci_free_consistent()&n;&t;&t; * isn&squot;t safe in_interrupt().  plus, in addition to the&n;&t;&t; * 1/Nth page weakness, it doesn&squot;t understand gfp_flags.&n;&t;&t; */
-macro_line|#endif
 )brace
 r_else
 id|retval
 op_assign
 id|kmalloc
+c_func
 (paren
 id|bytes
 comma
 id|gfp_flags
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -1676,15 +1679,47 @@ id|dma
 op_ne
 id|DMA_ADDR_INVALID
 )paren
-id|dma_free_coherent
+(brace
+r_struct
+id|net2280_ep
+op_star
+id|ep
+suffix:semicolon
+id|ep
+op_assign
+id|container_of
+c_func
 (paren
-id|ep-&gt;dev-&gt;pdev
+id|_ep
+comma
+r_struct
+id|net2280_ep
+comma
+id|ep
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|_ep
+)paren
+r_return
+suffix:semicolon
+id|dma_free_coherent
+c_func
+(paren
+op_amp
+id|ep-&gt;dev-&gt;pdev-&gt;dev
 comma
 id|bytes
+comma
+id|buf
 comma
 id|dma
 )paren
 suffix:semicolon
+)brace
 r_else
 macro_line|#endif
 id|kfree
@@ -1737,16 +1772,21 @@ c_cond
 id|req
 )paren
 (brace
-id|total
-op_assign
-id|req-&gt;length
-op_minus
-id|req-&gt;actual
-suffix:semicolon
 id|buf
 op_assign
 id|req-&gt;buf
 op_plus
+id|req-&gt;actual
+suffix:semicolon
+id|prefetch
+(paren
+id|buf
+)paren
+suffix:semicolon
+id|total
+op_assign
+id|req-&gt;length
+op_minus
 id|req-&gt;actual
 suffix:semicolon
 )brace
@@ -2116,6 +2156,11 @@ suffix:semicolon
 multiline_comment|/* else: hope we don&squot;t see the problem */
 )brace
 multiline_comment|/* never overflow the rx buffer. the fifo reads packets until&n;&t; * it sees a short one; we might not be ready for them all.&n;&t; */
+id|prefetchw
+(paren
+id|buf
+)paren
+suffix:semicolon
 id|count
 op_assign
 id|readl

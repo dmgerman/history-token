@@ -50,7 +50,7 @@ id|hcd_name
 (braket
 )braket
 op_assign
-l_string|&quot;ohci-hcd&quot;
+l_string|&quot;ohci_hcd&quot;
 suffix:semicolon
 macro_line|#include &quot;ohci.h&quot;
 DECL|function|disable

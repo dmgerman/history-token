@@ -1094,7 +1094,7 @@ id|freq
 op_assign
 id|data
 suffix:semicolon
-id|write_seqlock
+id|write_seqlock_irq
 c_func
 (paren
 op_amp
@@ -1225,7 +1225,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|write_sequnlock
+id|write_sequnlock_irq
 c_func
 (paren
 op_amp

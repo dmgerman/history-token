@@ -1647,6 +1647,10 @@ id|to-&gt;nfmark
 op_assign
 id|from-&gt;nfmark
 suffix:semicolon
+id|to-&gt;nfcache
+op_assign
+id|from-&gt;nfcache
+suffix:semicolon
 multiline_comment|/* Connection association is same as pre-frag packet */
 id|to-&gt;nfct
 op_assign
