@@ -201,7 +201,12 @@ r_int
 id|grace_period_expire
 suffix:semicolon
 multiline_comment|/* Lock module and set up kernel thread */
-id|MOD_INC_USE_COUNT
+multiline_comment|/* lockd_up is waiting for us to startup, so will&n;&t; * be holding a reference to this module, so it&n;&t; * is safe to just claim another reference&n;&t; */
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -501,7 +506,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|module_put_and_exit
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Bring up the lockd process if it&squot;s not already up.&n; */

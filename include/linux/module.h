@@ -509,6 +509,29 @@ op_star
 id|mod
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__module_put_and_exit
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+comma
+r_int
+id|code
+)paren
+id|__attribute__
+c_func
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
+DECL|macro|module_put_and_exit
+mdefine_line|#define module_put_and_exit(code) __module_put_and_exit(THIS_MODULE, code);
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_int
 r_int
@@ -1087,6 +1110,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|module_put_and_exit
+mdefine_line|#define module_put_and_exit(code) do_exit(code)
 macro_line|#endif /* CONFIG_MODULES */
 macro_line|#ifdef MODULE
 r_extern
