@@ -590,6 +590,10 @@ r_typedef
 id|le64
 id|leMFT_REF
 suffix:semicolon
+DECL|macro|MK_MREF
+mdefine_line|#define MK_MREF(m, s)&t;((MFT_REF)(((MFT_REF)(s) &lt;&lt; 48) |&t;&t;&bslash;&n;&t;&t;&t;&t;&t;((MFT_REF)(m) &amp; MFT_REF_MASK_CPU)))
+DECL|macro|MK_LE_MREF
+mdefine_line|#define MK_LE_MREF(m, s) cpu_to_le64(MK_MREF(m, s))
 DECL|macro|MREF
 mdefine_line|#define MREF(x)&t;&t;((unsigned long)((x) &amp; MFT_REF_MASK_CPU))
 DECL|macro|MSEQNO
