@@ -1614,6 +1614,18 @@ dot
 dot
 l_int|15
 suffix:colon
+r_if
+c_cond
+(paren
+id|c-&gt;x86_mask
+OL
+l_int|8
+)paren
+id|cpuname
+op_assign
+l_string|&quot;C3 &squot;Samuel 2&squot; [C5B]&quot;
+suffix:semicolon
+r_else
 id|cpuname
 op_assign
 l_string|&quot;C3 &squot;Ezra&squot; [C5C]&quot;
