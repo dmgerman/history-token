@@ -439,13 +439,6 @@ id|sctp_status_tbl
 (braket
 )braket
 suffix:semicolon
-multiline_comment|/* SCTP reachability state for each address */
-DECL|macro|SCTP_ADDR_NOHB
-mdefine_line|#define SCTP_ADDR_NOHB&t;&t;&t;4
-DECL|macro|SCTP_ADDR_REACHABLE
-mdefine_line|#define SCTP_ADDR_REACHABLE&t;&t;2
-DECL|macro|SCTP_ADDR_NOT_REACHABLE
-mdefine_line|#define SCTP_ADDR_NOT_REACHABLE&t;&t;1
 multiline_comment|/* Maximum chunk length considering padding requirements. */
 DECL|enumerator|SCTP_MAX_CHUNK_LEN
 r_enum
