@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; */
+multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *          Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *          Added timeout module option to override default&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -24,11 +24,6 @@ DECL|variable|eurwdt_is_open
 r_static
 r_int
 id|eurwdt_is_open
-suffix:semicolon
-DECL|variable|eurwdt_timeout
-r_static
-r_int
-id|eurwdt_timeout
 suffix:semicolon
 DECL|variable|eurwdt_lock
 r_static
@@ -60,6 +55,62 @@ l_string|&quot;int&quot;
 suffix:semicolon
 DECL|macro|WDT_TIMEOUT
 mdefine_line|#define WDT_TIMEOUT&t;&t;60                /* 1 minute */
+DECL|variable|timeout
+r_static
+r_int
+id|timeout
+op_assign
+id|WDT_TIMEOUT
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|timeout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|timeout
+comma
+l_string|&quot;Eurotech WDT timeout in seconds (default=60)&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|MODULE_PARM
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Some symbolic names &n; */
 DECL|macro|WDT_CTRL_REG
 mdefine_line|#define WDT_CTRL_REG&t;&t;0x30
@@ -210,6 +261,39 @@ l_string|&quot;Eurotech WDT event type (default is `reboot&squot;)&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *      Programming support&n; */
+DECL|function|eurwdt_validate_timeout
+r_static
+r_void
+id|__init
+id|eurwdt_validate_timeout
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|timeout
+template_param
+l_int|255
+)paren
+(brace
+id|timeout
+op_assign
+id|WDT_TIMEOUT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;eurwdt: timeout must be 0 &lt; x &lt; 255, using %d&bslash;n&quot;
+comma
+id|timeout
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|eurwdt_write_reg
 r_static
 r_inline
@@ -508,7 +592,7 @@ multiline_comment|/* Write the watchdog default value */
 id|eurwdt_set_timeout
 c_func
 (paren
-id|eurwdt_timeout
+id|timeout
 )paren
 suffix:semicolon
 )brace
@@ -726,7 +810,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|eurwdt_timeout
+id|timeout
 op_assign
 id|time
 suffix:semicolon
@@ -797,15 +881,19 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|nowayout
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+)brace
 id|eurwdt_is_open
 op_assign
 l_int|1
 suffix:semicolon
-id|eurwdt_timeout
-op_assign
-id|WDT_TIMEOUT
-suffix:semicolon
-multiline_comment|/* initial timeout */
 multiline_comment|/* Activate the WDT */
 id|eurwdt_activate_timer
 c_func
@@ -868,13 +956,19 @@ op_eq
 id|WATCHDOG_MINOR
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 id|eurwdt_disable_timer
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
+)brace
 id|eurwdt_is_open
 op_assign
 l_int|0
@@ -1054,6 +1148,11 @@ r_void
 (brace
 r_int
 id|ret
+suffix:semicolon
+id|eurwdt_validate_timeout
+c_func
+(paren
+)paren
 suffix:semicolon
 id|ret
 op_assign
