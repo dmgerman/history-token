@@ -314,6 +314,17 @@ DECL|macro|PA1_DIRA0
 mdefine_line|#define PA1_DIRA0&t;(PA1_RXDAT | PA1_CRS | PA1_COL | PA1_RXER | PA1_RXDV)
 DECL|macro|PA1_DIRA1
 mdefine_line|#define PA1_DIRA1&t;(PA1_TXDAT | PA1_TXEN | PA1_TXER)
+macro_line|#ifdef CONFIG_SBC82xx
+multiline_comment|/* rx is clk9, tx is clk10&n; */
+DECL|macro|PC_F1RXCLK
+mdefine_line|#define PC_F1RXCLK     ((uint)0x00000100)
+DECL|macro|PC_F1TXCLK
+mdefine_line|#define PC_F1TXCLK     ((uint)0x00000200)
+DECL|macro|CMX1_CLK_ROUTE
+mdefine_line|#define CMX1_CLK_ROUTE ((uint)0x25000000)
+DECL|macro|CMX1_CLK_MASK
+mdefine_line|#define CMX1_CLK_MASK  ((uint)0xff000000)
+macro_line|#else
 multiline_comment|/* CLK12 is receive, CLK11 is transmit.  These are board specific.&n;*/
 DECL|macro|PC_F1RXCLK
 mdefine_line|#define PC_F1RXCLK&t;((uint)0x00000800)
@@ -323,6 +334,7 @@ DECL|macro|CMX1_CLK_ROUTE
 mdefine_line|#define CMX1_CLK_ROUTE&t;((uint)0x3e000000)
 DECL|macro|CMX1_CLK_MASK
 mdefine_line|#define CMX1_CLK_MASK&t;((uint)0xff000000)
+macro_line|#endif /* !CONFIG_SBC82xx */
 multiline_comment|/* I/O Pin assignment for FCC2.  I don&squot;t yet know the best way to do this,&n; * but there is little variation among the choices.&n; */
 DECL|macro|PB2_TXER
 mdefine_line|#define PB2_TXER&t;((uint)0x00000001)
@@ -601,6 +613,11 @@ DECL|member|skb_dirty
 id|ushort
 id|skb_dirty
 suffix:semicolon
+DECL|member|n_pkts
+id|atomic_t
+id|n_pkts
+suffix:semicolon
+multiline_comment|/* Number of packets in tx ring */
 multiline_comment|/* CPM dual port RAM relative addresses.&n;&t;*/
 DECL|member|rx_bd_base
 id|cbd_t
@@ -874,6 +891,9 @@ id|cbd_t
 op_star
 id|bdp
 suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -951,10 +971,64 @@ c_func
 id|skb-&gt;data
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|cep-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Save skb pointer. */
+id|idx
+op_assign
+id|cep-&gt;skb_cur
+op_amp
+id|TX_RING_MOD_MASK
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|cep-&gt;tx_skbuff
 (braket
-id|cep-&gt;skb_cur
+id|idx
+)braket
+)paren
+(brace
+multiline_comment|/* This should never happen (any more).&n;&t;&t;   Leave the sanity check in for now... */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;EEP. cep-&gt;tx_skbuff[%d] is %p not NULL in %s&bslash;n&quot;
+comma
+id|idx
+comma
+id|cep-&gt;tx_skbuff
+(braket
+id|idx
+)braket
+comma
+id|__func__
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Expect to lose %d bytes of sock space&quot;
+comma
+id|cep-&gt;tx_skbuff
+(braket
+id|idx
+)braket
+op_member_access_from_pointer
+id|truesize
+)paren
+suffix:semicolon
+)brace
+id|cep-&gt;tx_skbuff
+(braket
+id|idx
 )braket
 op_assign
 id|skb
@@ -964,20 +1038,13 @@ op_add_assign
 id|skb-&gt;len
 suffix:semicolon
 id|cep-&gt;skb_cur
-op_assign
-(paren
-id|cep-&gt;skb_cur
-op_plus
-l_int|1
-)paren
-op_amp
-id|TX_RING_MOD_MASK
+op_increment
 suffix:semicolon
-id|spin_lock_irq
+id|atomic_inc
 c_func
 (paren
 op_amp
-id|cep-&gt;lock
+id|cep-&gt;n_pkts
 )paren
 suffix:semicolon
 multiline_comment|/* Send it on its way.  Tell CPM its ready, interrupt when done,&n;&t; * its the last BD of the frame, and to put the CRC on the end.&n;&t; */
@@ -1020,12 +1087,33 @@ r_else
 id|bdp
 op_increment
 suffix:semicolon
+multiline_comment|/* If the tx_ring is full, stop the queue */
 r_if
 c_cond
 (paren
-id|bdp-&gt;cbd_sc
+id|atomic_read
+c_func
+(paren
 op_amp
-id|BD_ENET_TX_READY
+id|cep-&gt;n_pkts
+)paren
+op_ge
+(paren
+id|TX_RING_SIZE
+op_minus
+l_int|1
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|netif_queue_stopped
+c_func
+(paren
+id|dev
+)paren
 )paren
 (brace
 id|netif_stop_queue
@@ -1038,6 +1126,7 @@ id|cep-&gt;tx_full
 op_assign
 l_int|1
 suffix:semicolon
+)brace
 )brace
 id|cep-&gt;cur_tx
 op_assign
@@ -1260,6 +1349,9 @@ suffix:semicolon
 r_int
 id|must_restart
 suffix:semicolon
+r_int
+id|idx
+suffix:semicolon
 id|cep
 op_assign
 (paren
@@ -1443,24 +1535,37 @@ id|cep-&gt;stats.collisions
 op_increment
 suffix:semicolon
 multiline_comment|/* Free the sk buffer associated with this last transmit. */
+id|idx
+op_assign
+id|cep-&gt;skb_dirty
+op_amp
+id|TX_RING_MOD_MASK
+suffix:semicolon
 id|dev_kfree_skb_irq
 c_func
 (paren
 id|cep-&gt;tx_skbuff
 (braket
-id|cep-&gt;skb_dirty
+id|idx
 )braket
 )paren
 suffix:semicolon
-id|cep-&gt;skb_dirty
+id|cep-&gt;tx_skbuff
+(braket
+id|idx
+)braket
 op_assign
-(paren
+l_int|NULL
+suffix:semicolon
 id|cep-&gt;skb_dirty
-op_plus
-l_int|1
-)paren
+op_increment
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
 op_amp
-id|TX_RING_MOD_MASK
+id|cep-&gt;n_pkts
+)paren
 suffix:semicolon
 multiline_comment|/* Update pointer to next buffer descriptor to be transmitted. */
 r_if
@@ -5429,6 +5534,27 @@ id|i
 op_decrement
 )paren
 (brace
+macro_line|#ifdef CONFIG_SBC82xx
+op_star
+id|eap
+op_increment
+op_assign
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+op_assign
+id|bd-&gt;bi_enetaddrs
+(braket
+id|fip-&gt;fc_fccnum
+op_plus
+l_int|1
+)braket
+(braket
+id|i
+)braket
+suffix:semicolon
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -5489,6 +5615,7 @@ id|i
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 id|ep-&gt;fen_taddrh
 op_assign
@@ -5736,6 +5863,15 @@ op_assign
 id|cep-&gt;skb_dirty
 op_assign
 l_int|0
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|cep-&gt;n_pkts
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Let &squot;er rip.&n;*/
