@@ -491,10 +491,12 @@ DECL|macro|OPEN_STATE
 mdefine_line|#define OPEN_STATE              0x00000004
 DECL|macro|LOCK_STATE
 mdefine_line|#define LOCK_STATE              0x00000008
-DECL|macro|RDWR_STATE
-mdefine_line|#define RDWR_STATE              0x00000010
+DECL|macro|RD_STATE
+mdefine_line|#define RD_STATE&t;        0x00000010
+DECL|macro|WR_STATE
+mdefine_line|#define WR_STATE&t;        0x00000020
 DECL|macro|CLOSE_STATE
-mdefine_line|#define CLOSE_STATE             0x00000020
+mdefine_line|#define CLOSE_STATE             0x00000040
 DECL|macro|seqid_mutating_err
 mdefine_line|#define seqid_mutating_err(err)                       &bslash;&n;&t;(((err) != nfserr_stale_clientid) &amp;&amp;    &bslash;&n;&t;((err) != nfserr_bad_seqid) &amp;&amp;          &bslash;&n;&t;((err) != nfserr_stale_stateid) &amp;&amp;      &bslash;&n;&t;((err) != nfserr_bad_stateid))
 r_extern
@@ -531,12 +533,6 @@ id|stateid
 comma
 r_int
 id|flags
-comma
-r_struct
-id|nfs4_stateid
-op_star
-op_star
-id|stpp
 )paren
 suffix:semicolon
 r_extern
