@@ -1,24 +1,23 @@
 multiline_comment|/*&n; *&t;Eurotech CPU-1220/1410 on board WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Ascensit &lt;support@ascensit.com&gt;&n; *&t;(c) Copyright 2001 Rodolfo Giometti &lt;giometti@ascensit.com&gt;&n; *&n; *&t;Based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *      (c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *                              http://www.redhat.com&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *      Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *      warranty for any of this software. This material is provided&n; *      &quot;AS-IS&quot; and at no charge.&n; *&n; *      (c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;*&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *          Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *          Added timeout module option to override default&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|eurwdt_is_open
 r_static
 r_int
@@ -685,17 +684,21 @@ id|watchdog_info
 id|ident
 op_assign
 (brace
+dot
 id|options
-suffix:colon
+op_assign
 id|WDIOF_CARDRESET
 comma
+dot
 id|firmware_version
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|identity
-suffix:colon
+op_assign
 l_string|&quot;WDT Eurotech CPU-1220/1410&quot;
+comma
 )brace
 suffix:semicolon
 r_int
@@ -1070,10 +1073,19 @@ id|miscdevice
 id|eurwdt_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|eurwdt_fops
 )brace
@@ -1086,11 +1098,11 @@ id|notifier_block
 id|eurwdt_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|eurwdt_notify_sys
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/**&n; *      cleanup_module:&n; *&n; *      Unload the watchdog. You cannot do this with any file handles open.&n; *      If your watchdog is set to continue ticking on close and you unload&n; *      it, well it keeps ticking. We won&squot;t get the interrupt but the board&n; *      will not touch PC memory so all is fine. You just have to load a new&n; *      module in 60 seconds or reboot.&n; */

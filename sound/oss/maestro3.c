@@ -13,15 +13,16 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n;  * for crizappy mmap()&n;  */
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &quot;maestro3.h&quot;
@@ -474,7 +475,7 @@ DECL|macro|PCI_VENDOR_ESS
 mdefine_line|#define PCI_VENDOR_ESS      0x125D
 macro_line|#endif
 DECL|macro|M3_DEVICE
-mdefine_line|#define M3_DEVICE(DEV, TYPE)                &bslash;&n;{                                           &bslash;&n;vendor: PCI_VENDOR_ESS,                     &bslash;&n;device: DEV,                                &bslash;&n;subvendor: PCI_ANY_ID,                      &bslash;&n;subdevice: PCI_ANY_ID,                      &bslash;&n;class:  PCI_CLASS_MULTIMEDIA_AUDIO &lt;&lt; 8,    &bslash;&n;class_mask: 0xffff &lt;&lt; 8,                    &bslash;&n;driver_data: TYPE,                          &bslash;&n;}
+mdefine_line|#define M3_DEVICE(DEV, TYPE)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;.vendor&t;     = PCI_VENDOR_ESS,&t;&t;&t;&bslash;&n;.device&t;     = DEV,&t;&t;&t;&t;&bslash;&n;.subvendor   = PCI_ANY_ID,&t;&t;&t;&bslash;&n;.subdevice   = PCI_ANY_ID,&t;&t;&t;&bslash;&n;.class&t;     = PCI_CLASS_MULTIMEDIA_AUDIO &lt;&lt; 8,&t;&bslash;&n;.class_mask  = 0xffff &lt;&lt; 8,&t;&t;&t;&bslash;&n;.driver_data = TYPE,&t;&t;&t;&t;&bslash;&n;}
 DECL|variable|__initdata
 r_static
 r_struct
@@ -681,11 +682,11 @@ id|notifier_block
 id|m3_reboot_nb
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|m3_notifier
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|m3_outw
@@ -9818,24 +9819,29 @@ id|file_operations
 id|m3_mixer_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|no_llseek
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|m3_ioctl_mixdev
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|m3_open_mixdev
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|m3_release_mixdev
 comma
 )brace
@@ -11542,48 +11548,49 @@ id|file_operations
 id|m3_audio_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
-op_amp
+op_assign
 id|no_llseek
 comma
+dot
 id|read
-suffix:colon
-op_amp
+op_assign
 id|m3_read
 comma
+dot
 id|write
-suffix:colon
-op_amp
+op_assign
 id|m3_write
 comma
+dot
 id|poll
-suffix:colon
-op_amp
+op_assign
 id|m3_poll
 comma
+dot
 id|ioctl
-suffix:colon
-op_amp
+op_assign
 id|m3_ioctl
 comma
+dot
 id|mmap
-suffix:colon
-op_amp
+op_assign
 id|m3_mmap
 comma
+dot
 id|open
-suffix:colon
-op_amp
+op_assign
 id|m3_open
 comma
+dot
 id|release
-suffix:colon
-op_amp
+op_assign
 id|m3_release
 comma
 )brace
@@ -13313,28 +13320,34 @@ id|pci_driver
 id|m3_pci_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;ess_m3_audio&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|m3_id_table
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|m3_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|m3_remove
 comma
+dot
 id|suspend
-suffix:colon
+op_assign
 id|m3_suspend
 comma
+dot
 id|resume
-suffix:colon
+op_assign
 id|m3_resume
 comma
 )brace

@@ -27,9 +27,9 @@ id|s
 suffix:semicolon
 multiline_comment|/* &n;* for now (12/22/00) only enable the pm_register PM support.&n;* allow these table entries to be null.&n;#define CS4281_SUSPEND_TBL cs4281_suspend_tbl&n;#define CS4281_RESUME_TBL cs4281_resume_tbl&n;*/
 DECL|macro|CS4281_SUSPEND_TBL
-mdefine_line|#define CS4281_SUSPEND_TBL cs4281_null
+mdefine_line|#define CS4281_SUSPEND_TBL cs4281_suspend_null
 DECL|macro|CS4281_RESUME_TBL
-mdefine_line|#define CS4281_RESUME_TBL cs4281_null
+mdefine_line|#define CS4281_RESUME_TBL cs4281_resume_null
 DECL|function|cs4281_pm_callback
 r_int
 id|cs4281_pm_callback
@@ -210,8 +210,8 @@ suffix:semicolon
 )brace
 macro_line|#else /* CS4281_PM */
 DECL|macro|CS4281_SUSPEND_TBL
-mdefine_line|#define CS4281_SUSPEND_TBL cs4281_null
+mdefine_line|#define CS4281_SUSPEND_TBL cs4281_suspend_null
 DECL|macro|CS4281_RESUME_TBL
-mdefine_line|#define CS4281_RESUME_TBL cs4281_null
+mdefine_line|#define CS4281_RESUME_TBL cs4281_resume_null
 macro_line|#endif /* CS4281_PM */
 eof
