@@ -3410,14 +3410,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|xfrm4_fini
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|xfrm6_init
 c_func
 (paren

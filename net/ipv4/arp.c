@@ -2537,6 +2537,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Process an arp request.&n; */
 DECL|function|arp_process
+r_static
 r_int
 id|arp_process
 c_func
@@ -3554,6 +3555,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;User level interface (ioctl)&n; */
 multiline_comment|/*&n; *&t;Set (create) an ARP cache entry.&n; */
 DECL|function|arp_req_set
+r_static
 r_int
 id|arp_req_set
 c_func
@@ -4144,6 +4146,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|arp_req_delete
+r_static
 r_int
 id|arp_req_delete
 c_func
@@ -4824,6 +4827,7 @@ id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|variable|arp_netdev_notifier
+r_static
 r_struct
 id|notifier_block
 id|arp_netdev_notifier
