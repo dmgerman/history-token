@@ -7864,6 +7864,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Ok, it seems that the prom can allocate some more memory chunks&n; * as a side effect of some prom calls we perform during the&n; * boot sequence.  My most likely theory is that it is from the&n; * prom_set_traptable() call, and OBP is allocating a scratchpad&n; * for saving client program register state etc.&n; */
 DECL|function|sort_memlist
+r_static
 r_void
 id|__init
 id|sort_memlist
