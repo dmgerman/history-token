@@ -2613,8 +2613,8 @@ op_logical_neg
 id|cmd
 )paren
 )paren
-r_return
-id|BLKPREP_DEFER
+r_goto
+id|defer
 suffix:semicolon
 id|scsi_init_cmd_from_req
 c_func
@@ -2672,8 +2672,8 @@ op_logical_neg
 id|cmd
 )paren
 )paren
-r_return
-id|BLKPREP_DEFER
+r_goto
+id|defer
 suffix:semicolon
 )brace
 r_else
@@ -2802,6 +2802,25 @@ id|REQ_DONTPREP
 suffix:semicolon
 r_return
 id|BLKPREP_OK
+suffix:semicolon
+id|defer
+suffix:colon
+multiline_comment|/* If we defer, the elv_next_request() returns NULL, but the&n;&t; * queue must be restarted, so we plug here if no returning&n;&t; * command will automatically do that. */
+r_if
+c_cond
+(paren
+id|sdev-&gt;device_busy
+op_eq
+l_int|0
+)paren
+id|blk_plug_device
+c_func
+(paren
+id|q
+)paren
+suffix:semicolon
+r_return
+id|BLKPREP_DEFER
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * scsi_dev_queue_ready: if we can send requests to sdev, return 1 else&n; * return 0.&n; *&n; * Called with the queue_lock held.&n; */
@@ -3103,25 +3122,9 @@ c_cond
 op_logical_neg
 id|req
 )paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * If the device is busy, a returning I/O will&n;&t;&t;&t; * restart the queue. Otherwise, we have to plug&n;&t;&t;&t; * the queue&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|sdev-&gt;device_busy
-op_eq
-l_int|0
-)paren
-id|blk_plug_device
-c_func
-(paren
-id|q
-)paren
-suffix:semicolon
 r_goto
 id|completed
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
