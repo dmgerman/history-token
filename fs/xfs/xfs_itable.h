@@ -19,7 +19,7 @@ comma
 id|xfs_ino_t
 id|ino
 comma
-r_char
+r_void
 id|__user
 op_star
 id|buffer
@@ -144,7 +144,7 @@ comma
 id|xfs_ino_t
 id|ino
 comma
-r_char
+r_void
 id|__user
 op_star
 id|buffer

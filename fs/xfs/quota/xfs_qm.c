@@ -5873,7 +5873,7 @@ id|xfs_ino_t
 id|ino
 comma
 multiline_comment|/* inode number to get data for */
-r_char
+r_void
 id|__user
 op_star
 id|buffer
