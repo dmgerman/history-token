@@ -6105,6 +6105,8 @@ DECL|macro|USB_DEVICE_ID_ATEN_2PORTKVM
 mdefine_line|#define USB_DEVICE_ID_ATEN_2PORTKVM    0x2204
 DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVM
 mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVM    0x2205
+DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVMC
+mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVMC   0x2208
 DECL|macro|USB_VENDOR_ID_TOPMAX
 mdefine_line|#define USB_VENDOR_ID_TOPMAX           0x0663
 DECL|macro|USB_DEVICE_ID_TOPMAX_COBRAPAD
@@ -6412,6 +6414,14 @@ comma
 id|USB_VENDOR_ID_ATEN
 comma
 id|USB_DEVICE_ID_ATEN_4PORTKVM
+comma
+id|HID_QUIRK_NOGET
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ATEN
+comma
+id|USB_DEVICE_ID_ATEN_4PORTKVMC
 comma
 id|HID_QUIRK_NOGET
 )brace
@@ -8234,17 +8244,40 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
+id|retval
+op_assign
 id|hiddev_init
 c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|hiddev_init_fail
+suffix:semicolon
+id|retval
+op_assign
 id|usb_register
 c_func
 (paren
 op_amp
 id|hid_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|usb_register_fail
 suffix:semicolon
 id|info
 c_func
@@ -8256,6 +8289,18 @@ id|DRIVER_DESC
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|usb_register_fail
+suffix:colon
+id|hiddev_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+id|hiddev_init_fail
+suffix:colon
+r_return
+id|retval
 suffix:semicolon
 )brace
 DECL|function|hid_exit
