@@ -52,8 +52,8 @@ c_func
 id|ip_conntrack_expect_tuple_lock
 )paren
 suffix:semicolon
+multiline_comment|/* ip_conntrack_standalone needs this */
 DECL|variable|ip_conntrack_count
-r_static
 id|atomic_t
 id|ip_conntrack_count
 op_assign
@@ -61,6 +61,13 @@ id|ATOMIC_INIT
 c_func
 (paren
 l_int|0
+)paren
+suffix:semicolon
+DECL|variable|ip_conntrack_count
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_count
 )paren
 suffix:semicolon
 DECL|variable|ip_conntrack_destroyed
