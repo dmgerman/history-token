@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -69,6 +70,12 @@ DECL|member|buffer
 r_void
 op_star
 id|buffer
+suffix:semicolon
+DECL|member|complete
+r_struct
+id|completion
+op_star
+id|complete
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -634,7 +641,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#include &lt;linux/completion.h&gt;
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -654,13 +660,6 @@ id|DECLARE_MUTEX
 c_func
 (paren
 id|ecard_sem
-)paren
-suffix:semicolon
-r_static
-id|DECLARE_COMPLETION
-c_func
-(paren
-id|ecard_completion
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set up the expansion card daemon&squot;s page tables.&n; */
@@ -936,6 +935,7 @@ id|req
 op_ne
 l_int|NULL
 )paren
+(brace
 id|ecard_do_request
 c_func
 (paren
@@ -945,16 +945,16 @@ suffix:semicolon
 id|complete
 c_func
 (paren
-op_amp
-id|ecard_completion
+id|req-&gt;complete
 )paren
 suffix:semicolon
 )brace
 )brace
+)brace
 multiline_comment|/*&n; * Wake the expansion card daemon to action our request.&n; *&n; * FIXME: The test here is not sufficient to detect if the&n; * kcardd is running.&n; */
+DECL|function|ecard_call
 r_static
 r_void
-DECL|function|ecard_call
 id|ecard_call
 c_func
 (paren
@@ -964,6 +964,12 @@ op_star
 id|req
 )paren
 (brace
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|completion
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure we have a context that is able to sleep.&n;&t; */
 r_if
 c_cond
@@ -982,6 +988,11 @@ id|BUG
 c_func
 (paren
 )paren
+suffix:semicolon
+id|req-&gt;complete
+op_assign
+op_amp
+id|completion
 suffix:semicolon
 id|down
 c_func
@@ -1006,7 +1017,7 @@ id|wait_for_completion
 c_func
 (paren
 op_amp
-id|ecard_completion
+id|completion
 )paren
 suffix:semicolon
 id|up
