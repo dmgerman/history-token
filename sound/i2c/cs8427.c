@@ -95,6 +95,11 @@ r_int
 r_int
 id|rate
 suffix:semicolon
+DECL|member|reset_timeout
+r_int
+r_int
+id|reset_timeout
+suffix:semicolon
 DECL|member|playback
 id|cs8427_stream_t
 id|playback
@@ -809,6 +814,10 @@ r_int
 r_char
 id|addr
 comma
+r_int
+r_int
+id|reset_timeout
+comma
 id|snd_i2c_device_t
 op_star
 op_star
@@ -1328,6 +1337,10 @@ id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* turn on run bit and rock&squot;n&squot;roll */
+id|chip-&gt;reset_timeout
+op_assign
+id|reset_timeout
+suffix:semicolon
 id|snd_cs8427_reset
 c_func
 (paren
@@ -1560,9 +1573,7 @@ id|end_time
 op_assign
 id|jiffies
 op_plus
-id|HZ
-op_div
-l_int|2
+id|chip-&gt;reset_timeout
 suffix:semicolon
 r_while
 c_loop

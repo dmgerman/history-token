@@ -302,6 +302,10 @@ r_int
 r_char
 id|addr
 comma
+r_int
+r_int
+id|reset_timeout
+comma
 id|snd_i2c_device_t
 op_star
 op_star
