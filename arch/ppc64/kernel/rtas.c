@@ -889,7 +889,7 @@ c_loop
 (paren
 id|ms
 op_assign
-l_int|1000
+l_int|1
 suffix:semicolon
 id|order
 OG
@@ -899,21 +899,12 @@ id|order
 op_decrement
 )paren
 id|ms
-op_assign
-id|ms
-op_star
+op_mul_assign
 l_int|10
 suffix:semicolon
 r_return
 id|ms
-op_div
-(paren
-l_int|1000000
-op_div
-id|HZ
-)paren
 suffix:semicolon
-multiline_comment|/* round down is fine */
 )brace
 r_int
 DECL|function|rtas_get_power_level
