@@ -1551,7 +1551,16 @@ id|etuple
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;This is indicative of a broken BIOS. Email davej@redhat.com&bslash;n&quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;This is indicative of a broken BIOS.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;See http://www.codemonkey.org.uk/projects/cpufreq/powernow-k7.shtml&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
