@@ -109,9 +109,9 @@ mdefine_line|#define DBGDO(x)            x
 DECL|macro|DBGX
 mdefine_line|#define DBGX(fmt, args...)  (in_interrupt() ? 0 : printk(KERN_ERR fmt, ##args))
 DECL|macro|DBGP
-mdefine_line|#define DBGP(fmt, args...)  (DBGX(__FUNCTION__ &quot;: &quot; fmt, ##args))
+mdefine_line|#define DBGP(fmt, args...)  (DBGX(&quot;%s: &quot; fmt, __FUNCTION__ , ##args))
 DECL|macro|DBGE
-mdefine_line|#define DBGE(fmt, args...)  (DBGX(__FUNCTION__ fmt, ##args))
+mdefine_line|#define DBGE(fmt, args...)  (DBGX(&quot;%s&quot; fmt, __FUNCTION__ , ##args))
 DECL|macro|DBGC
 mdefine_line|#define DBGC(rtn)           (DBGP(&quot;calling %s&bslash;n&quot;, rtn))
 DECL|macro|DBGR
