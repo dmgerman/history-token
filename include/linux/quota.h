@@ -1018,6 +1018,16 @@ id|MAXQUOTAS
 )braket
 suffix:semicolon
 multiline_comment|/* inodes of quotafiles */
+DECL|member|mnt
+r_struct
+id|vfsmount
+op_star
+id|mnt
+(braket
+id|MAXQUOTAS
+)braket
+suffix:semicolon
+multiline_comment|/* mountpoint entries of filesystems with quota files */
 DECL|member|info
 r_struct
 id|mem_dqinfo
