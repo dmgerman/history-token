@@ -1340,7 +1340,7 @@ suffix:semicolon
 multiline_comment|/* Get a new skb... force flag on. */
 id|buff
 op_assign
-id|tcp_alloc_skb
+id|sk_stream_alloc_skb
 c_func
 (paren
 id|sk

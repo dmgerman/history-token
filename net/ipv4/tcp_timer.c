@@ -366,10 +366,10 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|tcp_prot.memory_allocated
+id|tcp_memory_allocated
 )paren
 OG
-id|tcp_prot.sysctl_mem
+id|sysctl_tcp_mem
 (braket
 l_int|2
 )braket
