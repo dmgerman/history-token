@@ -898,6 +898,8 @@ mdefine_line|#define VIA_APSIZE&t;0x84
 DECL|macro|VIA_ATTBASE
 mdefine_line|#define VIA_ATTBASE&t;0x88
 multiline_comment|/* VIA KT400 */
+DECL|macro|VIA_AGP3_APSIZE
+mdefine_line|#define VIA_AGP3_APSIZE&t;0x94
 DECL|macro|VIA_AGPSEL
 mdefine_line|#define VIA_AGPSEL&t;0xfd
 multiline_comment|/* SiS registers */
