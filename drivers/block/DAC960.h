@@ -8450,12 +8450,6 @@ id|request
 op_star
 id|Request
 suffix:semicolon
-DECL|member|PciDevice
-r_struct
-id|pci_dev
-op_star
-id|PciDevice
-suffix:semicolon
 r_union
 (brace
 r_struct
