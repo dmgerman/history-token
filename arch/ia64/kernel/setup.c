@@ -285,8 +285,7 @@ op_logical_neg
 id|num_memblks
 )paren
 (brace
-multiline_comment|/* this machine doesn&squot;t have SRAT, */
-multiline_comment|/* so call func with nid=0, bank=0 */
+multiline_comment|/*&n;&t;&t; * This machine doesn&squot;t have SRAT, so call func with&n;&t;&t; * nid=0, bank=0.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -401,7 +400,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
-multiline_comment|/*&n; * Filter incoming memory segments based on the primitive map created from&n; * the boot parameters. Segments contained in the map are removed from the &n; * memory ranges. A caller-specified function is called with the memory&n; * ranges that remain after filtering.&n; * This routine does not assume the incoming segments are sorted.&n; */
+multiline_comment|/*&n; * Filter incoming memory segments based on the primitive map created from the boot&n; * parameters. Segments contained in the map are removed from the memory ranges. A&n; * caller-specified function is called with the memory ranges that remain after filtering.&n; * This routine does not assume the incoming segments are sorted.&n; */
 r_int
 DECL|function|filter_rsvd_memory
 id|filter_rsvd_memory
@@ -769,7 +768,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_DISCONTIGMEM */
+macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 r_static
 r_void
 DECL|function|sort_regions
@@ -1117,7 +1116,6 @@ macro_line|#ifdef CONFIG_DISCONTIGMEM
 r_extern
 r_void
 id|discontig_mem_init
-c_func
 (paren
 r_void
 )paren
@@ -2257,12 +2255,6 @@ r_void
 (brace
 multiline_comment|/* start_kernel() requires this... */
 )brace
-DECL|variable|boot_cpu_data
-r_static
-r_int
-r_int
-id|boot_cpu_data
-suffix:semicolon
 multiline_comment|/*&n; * cpu_init() initializes state that is per-CPU.  This function acts&n; * as a &squot;CPU state barrier&squot;, nothing should get across.&n; */
 r_void
 DECL|function|cpu_init
@@ -2346,10 +2338,14 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* get_free_pages() cannot be used before cpu_init() done.&t;*/
-multiline_comment|/* BSP allocates &quot;NR_CPUS&quot; pages for all CPUs to avoid&t;&t;*/
-multiline_comment|/* that AP calls get_free_pages().&t;&t;&t;&t;*/
+macro_line|# ifdef CONFIG_NUMA
+(brace
+r_static
+r_int
+r_int
+id|boot_cpu_data
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * get_free_pages() cannot be used before cpu_init() done.  BSP allocates&n;&t;&t; * &quot;NR_CPUS&quot; pages for all CPUs to avoid that AP calls get_zeroed_page().&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2445,7 +2441,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else /* !CONFIG_NUMA */
+)brace
+macro_line|# else /* !CONFIG_NUMA */
 multiline_comment|/*&n;&t; * On the BSP, the page allocator isn&squot;t initialized by the time we get here.  On&n;&t; * the APs, the bootmem allocator is no longer available...&n;&t; */
 r_if
 c_cond
@@ -2521,7 +2518,7 @@ op_minus
 id|__per_cpu_start
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_NUMA */
+macro_line|# endif /* !CONFIG_NUMA */
 macro_line|#else /* !CONFIG_SMP */
 id|my_cpu_data
 op_assign
@@ -2557,7 +2554,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_MCKINLEY
 (brace
 DECL|macro|FEATURE_SET
-mdefine_line|#define FEATURE_SET 16
+macro_line|#&t;&t;define FEATURE_SET 16
 r_struct
 id|ia64_pal_retval
 id|iprv
