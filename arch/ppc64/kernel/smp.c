@@ -2046,9 +2046,6 @@ r_int
 id|max_cpus
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 multiline_comment|/* Fixup boot cpu */
 id|smp_store_cpu_info
 c_func
