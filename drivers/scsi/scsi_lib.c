@@ -2556,6 +2556,31 @@ id|REQ_BLOCK_PC
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Just check to see if the device is online.  If&n;&t;&t; * it isn&squot;t, we refuse to process ordinary commands&n;&t;&t; * (we will allow specials just in case someone needs&n;&t;&t; * to send a command to an offline device without bringing&n;&t;&t; * it back online)&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sdev-&gt;online
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;scsi%d (%d:%d): rejecting I/O to offline device&bslash;n&quot;
+comma
+id|sdev-&gt;host-&gt;host_no
+comma
+id|sdev-&gt;id
+comma
+id|sdev-&gt;lun
+)paren
+suffix:semicolon
+r_return
+id|BLKPREP_KILL
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Now try and find a command block that we can use.&n;&t;&t; */
 r_if
 c_cond
