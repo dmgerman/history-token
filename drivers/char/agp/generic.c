@@ -1412,6 +1412,7 @@ id|AGPSTAT2_4X
 suffix:semicolon
 multiline_comment|/* 1Xf */
 )brace
+multiline_comment|/*&n; * mode = requested mode.&n; * cmd = PCI_AGP_STATUS from agp bridge.&n; * tmp = PCI_AGP_STATUS from graphic card.&n; */
 DECL|function|agp_v3_parse_one
 r_static
 r_void
@@ -1616,10 +1617,11 @@ op_and_assign
 op_complement
 id|AGPSTAT3_8X
 suffix:semicolon
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * If we didn&squot;t specify AGPx8, we can only do x4.&n;&t;&t; * If the hardware can&squot;t do x4, we&squot;re up shit creek, and never&n;&t;&t; *  should have got this far.&n;&t;&t; */
 r_if
 c_cond
-(paren
-op_logical_neg
 (paren
 (paren
 op_star
@@ -1634,21 +1636,30 @@ id|tmp
 op_amp
 id|AGPSTAT3_4X
 )paren
-op_logical_and
-(paren
-op_star
-id|mode
-op_amp
-id|AGPSTAT3_4X
-)paren
-)paren
 )paren
 op_star
 id|cmd
-op_and_assign
+op_or_assign
 op_complement
 id|AGPSTAT3_4X
 suffix:semicolon
+r_else
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Badness. Don&squot;t know which AGP mode to set. [cmd:%x tmp:%x]&bslash;n&quot;
+comma
+id|cmd
+comma
+id|tmp
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/* Clear out unwanted bits. */
 r_if
 c_cond
@@ -1755,6 +1766,8 @@ id|cap_ptr
 )paren
 r_continue
 suffix:semicolon
+singleline_comment|//FIXME: We should probably skip anything here that
+singleline_comment|// isn&squot;t an AGP graphic card.
 multiline_comment|/*&n;&t;&t; * Ok, here we have a AGP device. Disable impossible&n;&t;&t; * settings, and adjust the readqueue to the minimum.&n;&t;&t; */
 id|pci_read_config_dword
 c_func
