@@ -700,7 +700,7 @@ id|err
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant allocate kiobuf&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t allocate kiobuf&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SetPageError
@@ -740,7 +740,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant allocate iobuf blocks&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t allocate iobuf blocks&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_kiovec
@@ -1164,7 +1164,7 @@ id|iobuf
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write_queue_task cant allocate kiobuf&bslash;n&quot;
+l_string|&quot;blkmtd: write_queue_task can&squot;t allocate kiobuf&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1198,7 +1198,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write_queue_task cant allocate iobuf blocks&bslash;n&quot;
+l_string|&quot;blkmtd: write_queue_task can&squot;t allocate iobuf blocks&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_kiovec
@@ -3585,7 +3585,7 @@ id|page
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: write: cant grab cache page %d&bslash;n&quot;
+l_string|&quot;blkmtd: write: can&squot;t grab cache page %d&bslash;n&quot;
 comma
 id|pagenr
 )paren
@@ -4920,7 +4920,7 @@ id|file
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: error, cant open device %s&bslash;n&quot;
+l_string|&quot;blkmtd: error, can&squot;t open device %s&bslash;n&quot;
 comma
 id|device
 )paren
@@ -5188,7 +5188,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;blkmtd: cant determine size&bslash;n&quot;
+l_string|&quot;blkmtd: can&squot;t determine size&bslash;n&quot;
 )paren
 suffix:semicolon
 id|blkdev_put

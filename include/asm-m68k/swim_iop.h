@@ -80,7 +80,7 @@ mdefine_line|#define&t;gcrOnMFMErr&t;-400&t;/* GCR (400/800K) on HD media */
 DECL|macro|verErr
 mdefine_line|#define&t;verErr&t;&t;-84&t;/* verify failed */
 DECL|macro|fmt2Err
-mdefine_line|#define&t;fmt2Err&t;&t;-83&t;/* cant get enough sync during format */
+mdefine_line|#define&t;fmt2Err&t;&t;-83&t;/* can&squot;t get enough sync during format */
 DECL|macro|fmt1Err
 mdefine_line|#define&t;fmt1Err&t;&t;-82&t;/* can&squot;t find sector 0 after track format */
 DECL|macro|sectNFErr

@@ -4287,7 +4287,7 @@ suffix:semicolon
 id|err
 c_func
 (paren
-l_string|&quot;cant allocate urbs&quot;
+l_string|&quot;can&squot;t allocate urbs&quot;
 )paren
 suffix:semicolon
 r_return

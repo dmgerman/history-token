@@ -657,7 +657,7 @@ r_return
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* cant remove a SCB with childs before &n;&t;   removing childs first  */
+multiline_comment|/* can&squot;t remove a SCB with childs before &n;&t;   removing childs first  */
 id|snd_assert
 (paren
 (paren

@@ -12272,7 +12272,7 @@ id|PCICTRL2
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for min. 300 ns */
-multiline_comment|/* we cant use jiffies here, because it may be */
+multiline_comment|/* we can&squot;t use jiffies here, because it may be */
 multiline_comment|/* that we have disabled the timer... */
 id|udelay
 c_func

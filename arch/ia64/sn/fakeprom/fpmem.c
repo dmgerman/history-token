@@ -637,7 +637,7 @@ op_sub_assign
 l_int|1000
 suffix:semicolon
 )brace
-multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks cant&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
+multiline_comment|/*&n;                                 * Check for the node 0 hole. Since banks can&squot;t&n;                                 * span the hole, we only need to check if the end of&n;                                 * the range is the end of the hole.&n;                                 */
 r_if
 c_cond
 (paren

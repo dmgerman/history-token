@@ -18696,7 +18696,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: cant alloc skb, dropping packet&bslash;n&quot;
+l_string|&quot;%s: can&squot;t alloc skb, dropping packet&bslash;n&quot;
 comma
 id|info-&gt;netname
 )paren

@@ -2438,7 +2438,7 @@ id|read
 r_return
 id|val
 suffix:semicolon
-multiline_comment|/* oss can have many inputs, maestro cant.  try&n;&t;&t;to pick the &squot;new&squot; one */
+multiline_comment|/* oss can have many inputs, maestro can&squot;t.  try&n;&t;&t;to pick the &squot;new&squot; one */
 r_if
 c_cond
 (paren
