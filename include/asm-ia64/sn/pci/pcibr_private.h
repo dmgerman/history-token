@@ -302,7 +302,7 @@ DECL|macro|PCIBR_DEBUG_ALWAYS
 mdefine_line|#define PCIBR_DEBUG_ALWAYS(args) pcibr_debug args ;
 multiline_comment|/* XXX: habeck: maybe make PCIBR_DEBUG() always available?  Even in non-&n; * debug kernels?  If tracing isn&squot;t enabled (i.e pcibr_debug_mask isn&squot;t&n; * set, then the overhead for this macro is just an extra &squot;if&squot; check.&n; */
 multiline_comment|/* For high frequency events (ie. map allocation, direct translation,...) */
-macro_line|#if 1 || DEBUG
+macro_line|#if DEBUG
 DECL|macro|PCIBR_DEBUG
 mdefine_line|#define PCIBR_DEBUG(args) PCIBR_DEBUG_ALWAYS(args)
 macro_line|#else&t;/* DEBUG */
@@ -493,9 +493,9 @@ mdefine_line|#define&t;bi_dev&t;&t;bi_pi.pi_dev&t;/* associated pci card */
 DECL|macro|bi_lines
 mdefine_line|#define&t;bi_lines&t;bi_pi.pi_lines&t;/* which PCI interrupt line(s) */
 DECL|macro|bi_func
-mdefine_line|#define bi_func&t;&t;bi_pi.pi_func&t;/* handler function (when connected) */
+mdefine_line|#define&t;bi_func&t;&t;bi_pi.pi_func&t;/* handler function (when connected) */
 DECL|macro|bi_arg
-mdefine_line|#define bi_arg&t;&t;bi_pi.pi_arg&t;/* handler parameter (when connected) */
+mdefine_line|#define&t;bi_arg&t;&t;bi_pi.pi_arg&t;/* handler parameter (when connected) */
 DECL|macro|bi_mustruncpu
 mdefine_line|#define bi_mustruncpu&t;bi_pi.pi_mustruncpu /* Where we must run. */
 DECL|macro|bi_irq
@@ -568,7 +568,7 @@ mdefine_line|#define&t;f_efunc&t;&t;f_c.c_efunc&t;/* error handling function */
 DECL|macro|f_einfo
 mdefine_line|#define&t;f_einfo&t;&t;f_c.c_einfo&t;/* first parameter for efunc */
 DECL|macro|f_window
-mdefine_line|#define f_window        f_c.c_window    /* state of BASE regs */
+mdefine_line|#define&t;f_window&t;f_c.c_window&t;/* state of BASE regs */
 DECL|macro|f_rwindow
 mdefine_line|#define&t;f_rwindow&t;f_c.c_rwindow&t;/* expansion ROM BASE regs */
 DECL|macro|f_rbase
@@ -576,7 +576,7 @@ mdefine_line|#define&t;f_rbase&t;&t;f_c.c_rbase&t;/* expansion ROM base */
 DECL|macro|f_rsize
 mdefine_line|#define&t;f_rsize&t;&t;f_c.c_rsize&t;/* expansion ROM size */
 DECL|macro|f_piospace
-mdefine_line|#define f_piospace      f_c.c_piospace  /* additional I/O spaces allocated */
+mdefine_line|#define&t;f_piospace&t;f_c.c_piospace&t;/* additional I/O spaces allocated */
 multiline_comment|/* pcibr-specific connection state */
 DECL|member|f_ibit
 r_int
@@ -712,7 +712,7 @@ mdefine_line|#define IS_PIC_BUSNUM_SOFT(ps, bus)&t;((ps)-&gt;bs_busnum == (bus))
 multiline_comment|/*&n; * Runtime checks for workarounds.&n; */
 DECL|macro|PCIBR_WAR_ENABLED
 mdefine_line|#define PCIBR_WAR_ENABLED(pv, pcibr_soft) &bslash;&n;&t;((1 &lt;&lt; XWIDGET_PART_REV_NUM_REV(pcibr_soft-&gt;bs_rev_num)) &amp; pv)
-multiline_comment|/*&n; * Defines for individual WARs. Each is a bitmask of applicable&n; * part revision numbers. (1 &lt;&lt; 1) == rev A, (1 &lt;&lt; 2) == rev B, etc.&n; */
+multiline_comment|/*&n; * Defines for individual WARs. Each is a bitmask of applicable&n; * part revision numbers. (1 &lt;&lt; 1) == rev A, (1 &lt;&lt; 2) == rev B,&n; * (3 &lt;&lt; 1) == (rev A or rev B), etc&n; */
 DECL|macro|PV854697
 mdefine_line|#define PV854697 (~0)     /* PIC: write 64bit regs as 64bits. permanent */
 DECL|macro|PV854827
@@ -902,6 +902,11 @@ r_int
 id|bs_dma_flags
 suffix:semicolon
 multiline_comment|/* forced DMA flags */
+DECL|member|bs_nasid
+id|nasid_t
+id|bs_nasid
+suffix:semicolon
+multiline_comment|/* nasid this bus is on */
 DECL|member|bs_moduleid
 id|moduleid_t
 id|bs_moduleid
@@ -1138,6 +1143,11 @@ r_struct
 id|pcibr_intr_wrap_s
 id|bsi_pcibr_intr_wrap
 suffix:semicolon
+multiline_comment|/* The bus and interrupt bit, used for pcibr_setpciint().&n;&t; * The pci busnum is bit3, int_bits bit2:0&n;&t; */
+DECL|member|bsi_int_bit
+r_uint32
+id|bsi_int_bit
+suffix:semicolon
 DECL|member|bs_intr
 )brace
 id|bs_intr
@@ -1158,13 +1168,6 @@ DECL|member|bserr_toutcnt
 r_int
 id|bserr_toutcnt
 suffix:semicolon
-macro_line|#ifdef LATER
-DECL|member|bserr_toutid
-id|toid_t
-id|bserr_toutid
-suffix:semicolon
-multiline_comment|/* Timeout started by errintr */
-macro_line|#endif&t;/* LATER */
 DECL|member|bserr_addr
 id|iopaddr_t
 id|bserr_addr
@@ -1340,18 +1343,38 @@ suffix:semicolon
 multiline_comment|/* size of PIO space */
 )brace
 suffix:semicolon
-multiline_comment|/* Use io spin locks. This ensures that all the PIO writes from a particular&n; * CPU to a particular IO device are synched before the start of the next&n; * set of PIO operations to the same device.&n; */
-macro_line|#ifdef PCI_LATER
-DECL|macro|pcibr_lock
-mdefine_line|#define pcibr_lock(pcibr_soft)&t;&t;io_splock(pcibr_soft-&gt;bs_lock)
+multiline_comment|/* &n; * pcibr_soft structure locking macros&n; */
+r_inline
+r_static
+r_int
+r_int
+DECL|function|pcibr_lock
+id|pcibr_lock
+c_func
+(paren
+id|pcibr_soft_t
+id|pcibr_soft
+)paren
+(brace
+r_int
+r_int
+id|flag
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|pcibr_soft-&gt;bs_lock
+comma
+id|flag
+)paren
+suffix:semicolon
+r_return
+id|flag
+suffix:semicolon
+)brace
 DECL|macro|pcibr_unlock
-mdefine_line|#define pcibr_unlock(pcibr_soft, s)&t;io_spunlock(pcibr_soft-&gt;bs_lock,s)
-macro_line|#else
-DECL|macro|pcibr_lock
-mdefine_line|#define pcibr_lock(pcibr_soft)&t;&t;1
-DECL|macro|pcibr_unlock
-mdefine_line|#define pcibr_unlock(pcibr_soft, s)&t;
-macro_line|#endif&t;/* PCI_LATER */
+mdefine_line|#define pcibr_unlock(pcibr_soft, flag)  spin_unlock_irqrestore(&amp;pcibr_soft-&gt;bs_lock, flag)
 DECL|macro|PCIBR_VALID_SLOT
 mdefine_line|#define PCIBR_VALID_SLOT(ps, s)     (s &lt; PCIBR_NUM_SLOTS(ps))
 DECL|macro|PCIBR_D64_BASE_UNSET
@@ -1389,7 +1412,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* PCIBR_SOFT_LIST */
-singleline_comment|// Devices per widget: 2 buses, 2 slots per bus, 8 functions per slot.
+multiline_comment|/* Devices per widget: 2 buses, 2 slots per bus, 8 functions per slot. */
 DECL|macro|DEV_PER_WIDGET
 mdefine_line|#define DEV_PER_WIDGET (2*2*8)
 DECL|struct|sn_flush_device_list
