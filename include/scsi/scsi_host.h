@@ -281,7 +281,22 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * This function determines the bios parameters for a given&n;&t; * harddisk.  These tend to be numbers that are made up by&n;&t; * the host adapter.  Parameters:&n;&t; * size, device, list (heads, sectors, cylinders)&n;&t; *&n;&t; * Status: OPTIONAL&n;&t; */
+multiline_comment|/*&n;&t; * fill in this function to allow the changing of tag types&n;&t; * (this also allows the enabling/disabling of tag command&n;&t; * queueing).  An error should only be returned if something&n;&t; * went wrong in the driver while trying to set the tag type.&n;&t; * If the driver doesn&squot;t support the requested tag type, then&n;&t; * it should set the closest type it does support without&n;&t; * returning an error.  Returns the actual tag type set.&n;&t; */
+DECL|member|change_queue_type
+r_int
+(paren
+op_star
+id|change_queue_type
+)paren
+(paren
+r_struct
+id|scsi_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This function determines the bios parameters for a given&n;&t; * harddisk.  These tend to be numbers that are made up by&n;&t; * the host adapter.  Parameters:&n;&t; * size, device, list (heads, sectors, cylinders)&n;&t; *&n;&t; * Status: OPTIONAL */
 DECL|member|bios_param
 r_int
 (paren
