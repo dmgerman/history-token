@@ -2369,6 +2369,13 @@ id|current-&gt;ptrace
 op_amp
 id|PT_TRACESYSGOOD
 )paren
+op_logical_and
+op_logical_neg
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SINGLESTEP
+)paren
 ques
 c_cond
 l_int|0x80
