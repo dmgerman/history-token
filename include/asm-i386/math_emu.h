@@ -39,10 +39,6 @@ DECL|member|___orig_eip
 r_int
 id|___orig_eip
 suffix:semicolon
-DECL|member|___ret_from_system_call
-r_int
-id|___ret_from_system_call
-suffix:semicolon
 DECL|member|___ebx
 r_int
 id|___ebx

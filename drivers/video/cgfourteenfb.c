@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: cgfourteenfb.c,v 1.9 2001/02/13 01:17:14 davem Exp $&n; * cgfourteenfb.c: CGfourteen frame buffer driver&n; *&n; * Copyright (C) 1996,1998 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; */
+multiline_comment|/* $Id: cgfourteenfb.c,v 1.10 2001/07/27 09:44:00 davem Exp $&n; * cgfourteenfb.c: CGfourteen frame buffer driver&n; *&n; * Copyright (C) 1996,1998 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1995 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1109,6 +1109,33 @@ id|cur-&gt;ccr
 suffix:semicolon
 id|tmp
 op_or_assign
+id|CG14_CCR_ENABLE
+suffix:semicolon
+id|sbus_writeb
+c_func
+(paren
+id|tmp
+comma
+op_amp
+id|cur-&gt;ccr
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|u8
+id|tmp
+op_assign
+id|sbus_readb
+c_func
+(paren
+op_amp
+id|cur-&gt;ccr
+)paren
+suffix:semicolon
+id|tmp
+op_and_assign
+op_complement
 id|CG14_CCR_ENABLE
 suffix:semicolon
 id|sbus_writeb

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.119 2001/03/24 09:36:10 davem Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.120 2001/07/18 13:40:05 anton Exp $&n; * fault.c:  Page fault handlers for the Sparc.&n; *&n; * Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -35,12 +35,6 @@ suffix:semicolon
 r_extern
 r_int
 id|prom_node_root
-suffix:semicolon
-DECL|variable|romvec
-r_struct
-id|linux_romvec
-op_star
-id|romvec
 suffix:semicolon
 multiline_comment|/* At boot time we determine these two values necessary for setting&n; * up the segment maps and page table entries (pte&squot;s).&n; */
 DECL|variable|num_segmaps

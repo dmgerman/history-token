@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sunhme.c,v 1.120 2001/06/14 17:37:23 jgarzik Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
+multiline_comment|/* $Id: sunhme.c,v 1.121 2001/07/27 10:22:57 davem Exp $&n; * sunhme.c: Sparc HME/BigMac 10/100baseT half/full duplex auto switching,&n; *           auto carrier detecting ethernet driver.  Also known as the&n; *           &quot;Happy Meal Ethernet&quot; found on SunSwift SBUS cards.&n; *&n; * Copyright (C) 1996, 1998, 1999 David S. Miller (davem@redhat.com)&n; *&n; * Changes :&n; * 2000/11/11 Willy Tarreau &lt;willy AT meta-x.org&gt;&n; *   - port to non-sparc architectures. Tested only on x86 and&n; *     only currently works with QFE PCI cards.&n; *   - ability to specify the MAC address at module load time by passing this&n; *     argument : macaddr=0x00,0x10,0x20,0x30,0x40,0x50&n; */
 DECL|variable|version
 r_static
 r_char
@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2102,7 +2103,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 multiline_comment|/* Downgrade from full to half duplex.  Only possible&n;&t; * via ethtool.&n;&t; */
@@ -2128,7 +2129,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -2160,7 +2161,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -2235,7 +2236,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_LPA
+id|MII_LPA
 )paren
 suffix:semicolon
 r_if
@@ -2355,7 +2356,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -2436,7 +2437,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_LPA
+id|MII_LPA
 )paren
 suffix:semicolon
 r_if
@@ -2513,7 +2514,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -2853,7 +2854,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 id|printk
@@ -2876,7 +2877,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -2950,7 +2951,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 r_if
@@ -3019,7 +3020,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 r_if
@@ -3100,7 +3101,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_csconfig
@@ -4339,7 +4340,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 (paren
 id|BMCR_LOOPBACK
@@ -4359,7 +4360,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -4463,7 +4464,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 (paren
 id|BMCR_LOOPBACK
@@ -4483,7 +4484,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -4559,7 +4560,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|BMCR_RESET
 )paren
@@ -4580,7 +4581,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -4655,7 +4656,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_physid1
@@ -4667,7 +4668,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_PHYSID1
+id|MII_PHYSID1
 )paren
 suffix:semicolon
 id|hp-&gt;sw_physid2
@@ -4679,7 +4680,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_PHYSID2
+id|MII_PHYSID2
 )paren
 suffix:semicolon
 id|hp-&gt;sw_advertise
@@ -4691,7 +4692,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_ADVERTISE
+id|MII_ADVERTISE
 )paren
 suffix:semicolon
 id|ASD
@@ -4716,7 +4717,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -4741,7 +4742,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -5776,7 +5777,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_bmcr
@@ -5788,7 +5789,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_physid1
@@ -5800,7 +5801,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_PHYSID1
+id|MII_PHYSID1
 )paren
 suffix:semicolon
 id|hp-&gt;sw_physid2
@@ -5812,7 +5813,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_PHYSID2
+id|MII_PHYSID2
 )paren
 suffix:semicolon
 multiline_comment|/* XXX Check BMSR_ANEGCAPABLE, should not be necessary though. */
@@ -5825,7 +5826,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_ADVERTISE
+id|MII_ADVERTISE
 )paren
 suffix:semicolon
 r_if
@@ -5932,7 +5933,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_ADVERTISE
+id|MII_ADVERTISE
 comma
 id|hp-&gt;sw_advertise
 )paren
@@ -6022,7 +6023,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -6039,7 +6040,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -6066,7 +6067,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 r_if
@@ -6189,7 +6190,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -8193,7 +8194,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMSR
+id|MII_BMSR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_advertise
@@ -8205,7 +8206,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_ADVERTISE
+id|MII_ADVERTISE
 )paren
 suffix:semicolon
 multiline_comment|/* Advertise everything we can support. */
@@ -8301,7 +8302,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_ADVERTISE
+id|MII_ADVERTISE
 comma
 id|hp-&gt;sw_advertise
 )paren
@@ -8793,7 +8794,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_lpa
@@ -8805,7 +8806,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_LPA
+id|MII_LPA
 )paren
 suffix:semicolon
 multiline_comment|/* Use the fastest transmission protocol possible. */
@@ -8900,7 +8901,7 @@ id|hp
 comma
 id|tregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 comma
 id|hp-&gt;sw_bmcr
 )paren
@@ -11577,7 +11578,7 @@ id|hp
 comma
 id|hp-&gt;tcvregs
 comma
-id|DP83840_BMCR
+id|MII_BMCR
 )paren
 suffix:semicolon
 id|hp-&gt;sw_lpa
@@ -11589,7 +11590,7 @@ id|hp
 comma
 id|hp-&gt;tcvregs
 comma
-id|DP83840_LPA
+id|MII_LPA
 )paren
 suffix:semicolon
 r_if

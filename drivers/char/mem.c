@@ -1001,8 +1001,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|len
-op_logical_and
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren

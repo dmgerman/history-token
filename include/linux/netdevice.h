@@ -652,12 +652,6 @@ id|MAX_ADDR_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* hw bcast add&t;*/
-DECL|member|pad
-r_int
-r_char
-id|pad
-suffix:semicolon
-multiline_comment|/* make dev_addr aligned to 8 bytes */
 DECL|member|dev_addr
 r_int
 r_char

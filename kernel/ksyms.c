@@ -2850,18 +2850,18 @@ c_func
 id|cpu_raise_softirq
 )paren
 suffix:semicolon
-DECL|variable|tasklet_schedule
+DECL|variable|__tasklet_schedule
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|tasklet_schedule
+id|__tasklet_schedule
 )paren
 suffix:semicolon
-DECL|variable|tasklet_hi_schedule
+DECL|variable|__tasklet_hi_schedule
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|tasklet_hi_schedule
+id|__tasklet_hi_schedule
 )paren
 suffix:semicolon
 multiline_comment|/* init task, for moving kthread roots - ought to export a function ?? */

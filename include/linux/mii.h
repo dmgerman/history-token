@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * linux/mii.h: definitions for MII-compatible transceivers&n; * Originally drivers/net/sunhme.h.&n; *&n; * Copyright (C) 1996, 1999 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/*&n; * linux/mii.h: definitions for MII-compatible transceivers&n; * Originally drivers/net/sunhme.h.&n; *&n; * Copyright (C) 1996, 1999, 2001 David S. Miller (davem@redhat.com)&n; */
 macro_line|#ifndef __LINUX_MII_H__
 DECL|macro|__LINUX_MII_H__
 mdefine_line|#define __LINUX_MII_H__
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/* Inside the Happy Meal transceiver is the physical layer, they use an&n; * implementations for National Semiconductor, part number DP83840VCE.&n; * You can retrieve the data sheets and programming docs for this beast&n; * from http://www.national.com/&n; *&n; * The DP83840 is capable of both 10 and 100Mbps ethernet, in both&n; * half and full duplex mode.  It also supports auto negotiation.&n; *&n; * But.... THIS THING IS A PAIN IN THE ASS TO PROGRAM!&n; * Debugging eeprom burnt code is more fun than programming this chip!&n; */
-multiline_comment|/* First, the MII register numbers (actually DP83840 register numbers). */
+multiline_comment|/* Generic MII registers. */
 DECL|macro|MII_BMCR
 mdefine_line|#define MII_BMCR            0x00        /* Basic mode control register */
 DECL|macro|MII_BMSR
@@ -29,14 +28,14 @@ DECL|macro|MII_RERRCOUNTER
 mdefine_line|#define MII_RERRCOUNTER     0x15        /* Receive error counter       */
 DECL|macro|MII_SREVISION
 mdefine_line|#define MII_SREVISION       0x16        /* Silicon revision            */
-DECL|macro|MII_CSCONFIG
-mdefine_line|#define MII_CSCONFIG        0x17        /* CS configuration            */
+DECL|macro|MII_RESV1
+mdefine_line|#define MII_RESV1           0x17        /* Reserved...                 */
 DECL|macro|MII_LBRERROR
 mdefine_line|#define MII_LBRERROR        0x18        /* Lpback, rx, bypass error    */
 DECL|macro|MII_PHYADDR
 mdefine_line|#define MII_PHYADDR         0x19        /* PHY address                 */
-DECL|macro|MII_RESERVED
-mdefine_line|#define MII_RESERVED        0x1a        /* Unused...                   */
+DECL|macro|MII_RESV2
+mdefine_line|#define MII_RESV2           0x1a        /* Reserved...                 */
 DECL|macro|MII_TPISTATUS
 mdefine_line|#define MII_TPISTATUS       0x1b        /* TPI status for 10mbps       */
 DECL|macro|MII_NCONFIG
@@ -157,35 +156,6 @@ DECL|macro|NWAYTEST_LOOPBACK
 mdefine_line|#define NWAYTEST_LOOPBACK       0x0100  /* Enable loopback for N-way   */
 DECL|macro|NWAYTEST_RESV2
 mdefine_line|#define NWAYTEST_RESV2          0xfe00  /* Unused...                   */
-multiline_comment|/* The Carrier Sense config register. */
-DECL|macro|CSCONFIG_RESV1
-mdefine_line|#define CSCONFIG_RESV1          0x0001  /* Unused...                   */
-DECL|macro|CSCONFIG_LED4
-mdefine_line|#define CSCONFIG_LED4           0x0002  /* Pin for full-dplx LED4      */
-DECL|macro|CSCONFIG_LED1
-mdefine_line|#define CSCONFIG_LED1           0x0004  /* Pin for conn-status LED1    */
-DECL|macro|CSCONFIG_RESV2
-mdefine_line|#define CSCONFIG_RESV2          0x0008  /* Unused...                   */
-DECL|macro|CSCONFIG_TCVDISAB
-mdefine_line|#define CSCONFIG_TCVDISAB       0x0010  /* Turns off the transceiver   */
-DECL|macro|CSCONFIG_DFBYPASS
-mdefine_line|#define CSCONFIG_DFBYPASS       0x0020  /* Bypass disconnect function  */
-DECL|macro|CSCONFIG_GLFORCE
-mdefine_line|#define CSCONFIG_GLFORCE        0x0040  /* Good link force for 100mbps */
-DECL|macro|CSCONFIG_CLKTRISTATE
-mdefine_line|#define CSCONFIG_CLKTRISTATE    0x0080  /* Tristate 25m clock          */
-DECL|macro|CSCONFIG_RESV3
-mdefine_line|#define CSCONFIG_RESV3          0x0700  /* Unused...                   */
-DECL|macro|CSCONFIG_ENCODE
-mdefine_line|#define CSCONFIG_ENCODE         0x0800  /* 1=MLT-3, 0=binary           */
-DECL|macro|CSCONFIG_RENABLE
-mdefine_line|#define CSCONFIG_RENABLE        0x1000  /* Repeater mode enable        */
-DECL|macro|CSCONFIG_TCDISABLE
-mdefine_line|#define CSCONFIG_TCDISABLE      0x2000  /* Disable timeout counter     */
-DECL|macro|CSCONFIG_RESV4
-mdefine_line|#define CSCONFIG_RESV4          0x4000  /* Unused...                   */
-DECL|macro|CSCONFIG_NDISABLE
-mdefine_line|#define CSCONFIG_NDISABLE       0x8000  /* Disable NRZI                */
 multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */
 DECL|struct|mii_ioctl_data
 r_struct

@@ -1351,10 +1351,6 @@ id|PTRACE_ATTACH
 )paren
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren

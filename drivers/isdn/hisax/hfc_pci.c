@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: hfc_pci.c,v 1.34.6.6 2001/06/09 15:14:17 kai Exp $&n;&n; * hfc_pci.c     low level driver for CCD&#xfffd;s hfc-pci based cards&n; *&n; * Author     Werner Cornelius (werner@isdn4linux.de)&n; *            based on existing driver for CCD hfc ISA cards&n; *&n; * Copyright 1999  by Werner Cornelius (werner@isdn4linux.de)&n; * Copyright 1999  by Karsten Keil (keil@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: hfc_pci.c,v 1.34.6.7 2001/07/27 09:08:27 kai Exp $&n;&n; * hfc_pci.c     low level driver for CCD&#xfffd;s hfc-pci based cards&n; *&n; * Author     Werner Cornelius (werner@isdn4linux.de)&n; *            based on existing driver for CCD hfc ISA cards&n; *            type approval valid for HFC-S PCI A based card &n; *&n; * Copyright 1999  by Werner Cornelius (werner@isdn-development.de)&n; * Copyright 1999  by Karsten Keil (keil@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
@@ -23,7 +23,7 @@ r_char
 op_star
 id|hfcpci_revision
 op_assign
-l_string|&quot;$Revision: 1.34.6.6 $&quot;
+l_string|&quot;$Revision: 1.34.6.7 $&quot;
 suffix:semicolon
 multiline_comment|/* table entry in the PCI devices list */
 r_typedef
@@ -6927,8 +6927,6 @@ id|cs
 comma
 id|HFCPCI_STATES
 comma
-id|HFCPCI_ACTIVATE
-op_or
 id|HFCPCI_DO_ACTION
 )paren
 suffix:semicolon

@@ -24,7 +24,7 @@ r_struct
 id|elevator_s
 id|elevator_t
 suffix:semicolon
-multiline_comment|/*&n; * Ok, this is an expanded form so that we can use the same&n; * request for paging requests when that is implemented. In&n; * paging, &squot;bh&squot; is NULL, and the completion is used to wait&n; * for the IO to be ready.&n; */
+multiline_comment|/*&n; * Ok, this is an expanded form so that we can use the same&n; * request for paging requests.&n; */
 DECL|struct|request
 r_struct
 id|request
@@ -624,7 +624,7 @@ DECL|macro|PageAlignSize
 mdefine_line|#define PageAlignSize(size) (((size) + PAGE_SIZE -1) &amp; PAGE_MASK)
 multiline_comment|/* read-ahead in pages.. */
 DECL|macro|MAX_READAHEAD
-mdefine_line|#define MAX_READAHEAD&t;31
+mdefine_line|#define MAX_READAHEAD&t;127
 DECL|macro|MIN_READAHEAD
 mdefine_line|#define MIN_READAHEAD&t;3
 DECL|macro|blkdev_entry_to_request
