@@ -7486,10 +7486,13 @@ op_star
 id|hostif
 op_assign
 op_amp
-id|chip-&gt;dev-&gt;actconfig-&gt;interface
-(braket
+id|get_iface
+c_func
+(paren
+id|chip-&gt;dev-&gt;actconfig
+comma
 id|ctrlif
-)braket
+)paren
 op_member_access_from_pointer
 id|altsetting
 (braket
