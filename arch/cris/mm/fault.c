@@ -1119,7 +1119,7 @@ id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Send a sigbus, regardless of whether we were in kernel&n;&t; * or user mode.&n;&t; */
-id|info.si_code
+id|info.si_signo
 op_assign
 id|SIGBUS
 suffix:semicolon
