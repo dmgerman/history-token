@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * ptrace a task: make the debugger its new parent and&n; * move it to the ptrace list.&n; *&n; * Must be called with the tasklist lock write-held.&n; */
