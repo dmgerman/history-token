@@ -199,27 +199,6 @@ id|qtd-&gt;length
 op_assign
 id|count
 suffix:semicolon
-macro_line|#if 0
-id|vdbg
-(paren
-l_string|&quot;  qtd_fill %p, token %8x bytes %d dma %x&quot;
-comma
-id|qtd
-comma
-id|le32_to_cpu
-(paren
-id|qtd-&gt;hw_token
-)paren
-comma
-id|count
-comma
-id|qtd-&gt;hw_buf
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|count
 suffix:semicolon
@@ -1197,45 +1176,6 @@ op_amp
 id|qtd-&gt;qtd_list
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|urb-&gt;status
-op_eq
-op_minus
-id|EINPROGRESS
-)paren
-id|vdbg
-(paren
-l_string|&quot;  qtd %p ok, urb %p, token %8x, len %d&quot;
-comma
-id|qtd
-comma
-id|urb
-comma
-id|token
-comma
-id|urb-&gt;actual_length
-)paren
-suffix:semicolon
-r_else
-id|vdbg
-(paren
-l_string|&quot;urb %p status %d, qtd %p, token %8x, len %d&quot;
-comma
-id|urb
-comma
-id|urb-&gt;status
-comma
-id|qtd
-comma
-id|token
-comma
-id|urb-&gt;actual_length
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* last urb&squot;s completion might still need calling */
 r_if
@@ -1455,10 +1395,6 @@ id|qtd
 r_return
 l_int|0
 suffix:semicolon
-id|qtd_prev
-op_assign
-l_int|0
-suffix:semicolon
 id|list_add_tail
 (paren
 op_amp
@@ -1484,6 +1420,17 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* for split transactions, SplitXState initialized to zero */
+id|len
+op_assign
+id|urb-&gt;transfer_buffer_length
+suffix:semicolon
+id|is_input
+op_assign
+id|usb_pipein
+(paren
+id|urb-&gt;pipe
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1568,6 +1515,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|len
+OG
+l_int|0
+op_logical_and
+id|is_input
+op_logical_and
 op_logical_neg
 (paren
 id|urb-&gt;transfer_flags
@@ -1581,17 +1534,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * data transfer stage:  buffer setup&n;&t; */
-id|len
-op_assign
-id|urb-&gt;transfer_buffer_length
-suffix:semicolon
-id|is_input
-op_assign
-id|usb_pipein
-(paren
-id|urb-&gt;pipe
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2216,10 +2158,6 @@ comma
 id|urb-&gt;interval
 )paren
 suffix:semicolon
-id|qh
-op_assign
-l_int|0
-suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
@@ -2496,6 +2434,15 @@ comma
 id|urb-&gt;dev-&gt;speed
 )paren
 suffix:semicolon
+id|done
+suffix:colon
+id|qh_put
+(paren
+id|ehci
+comma
+id|qh
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2610,8 +2557,6 @@ comma
 id|qh
 )paren
 suffix:semicolon
-id|done
-suffix:colon
 r_return
 id|qh
 suffix:semicolon
@@ -2732,6 +2677,14 @@ suffix:semicolon
 multiline_comment|/* posted write need not be known to HC yet ... */
 )brace
 )brace
+id|qh-&gt;hw_token
+op_and_assign
+op_complement
+id|__constant_cpu_to_le32
+(paren
+id|QTD_STS_HALT
+)paren
+suffix:semicolon
 multiline_comment|/* splice right after start */
 id|qh-&gt;qh_next
 op_assign
@@ -3004,11 +2957,14 @@ id|qtd-&gt;hw_token
 op_assign
 l_int|0
 suffix:semicolon
+id|wmb
+(paren
+)paren
+suffix:semicolon
 id|dummy
 op_assign
 id|qh-&gt;dummy
 suffix:semicolon
-singleline_comment|// dbg (&quot;swap td %p with dummy %p&quot;, qtd, dummy);
 id|dma
 op_assign
 id|dummy-&gt;qtd_dma
@@ -3053,6 +3009,10 @@ op_assign
 id|qtd
 suffix:semicolon
 multiline_comment|/* hc must see the new dummy at list end */
+id|dma
+op_assign
+id|qtd-&gt;qtd_dma
+suffix:semicolon
 id|qtd
 op_assign
 id|list_entry
@@ -3197,7 +3157,6 @@ comma
 id|SLAB_ATOMIC
 )paren
 suffix:semicolon
-singleline_comment|// if (qh) dbg_qh (&quot;new qh&quot;, ehci, qh);
 op_star
 id|ptr
 op_assign

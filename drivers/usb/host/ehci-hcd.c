@@ -2979,9 +2979,10 @@ id|QH_STATE_LINKED
 op_logical_and
 id|ehci-&gt;reclaim
 op_logical_and
+id|HCD_IS_RUNNING
+(paren
 id|ehci-&gt;hcd.state
-op_ne
-id|USB_STATE_HALT
+)paren
 )paren
 (brace
 id|spin_unlock_irqrestore
