@@ -141,10 +141,11 @@ op_assign
 id|userspace_cpufreq_notifier
 )brace
 suffix:semicolon
-multiline_comment|/** &n; * cpufreq_set - set the CPU frequency&n; * @freq: target frequency in kHz&n; * @cpu: CPU for which the frequency is to be set&n; *&n; * Sets the CPU frequency to freq.&n; */
-DECL|function|cpufreq_set
+multiline_comment|/** &n; * _cpufreq_set - set the CPU frequency&n; * @freq: target frequency in kHz&n; * @cpu: CPU for which the frequency is to be set&n; *&n; * Sets the CPU frequency to freq.&n; */
+DECL|function|_cpufreq_set
+r_static
 r_int
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 r_int
@@ -252,6 +253,41 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
+macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
+DECL|variable|warning_print
+r_static
+r_int
+r_int
+id|warning_print
+op_assign
+l_int|0
+suffix:semicolon
+DECL|function|cpufreq_set
+r_int
+id|__deprecated
+id|cpufreq_set
+c_func
+(paren
+r_int
+r_int
+id|freq
+comma
+r_int
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|_cpufreq_set
+c_func
+(paren
+id|freq
+comma
+id|cpu
+)paren
+suffix:semicolon
+)brace
 DECL|variable|cpufreq_set
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -262,6 +298,7 @@ suffix:semicolon
 multiline_comment|/** &n; * cpufreq_setmax - set the CPU to the maximum frequency&n; * @cpu - affected cpu;&n; *&n; * Sets the CPU frequency to the maximum frequency supported by&n; * this CPU.&n; */
 DECL|function|cpufreq_setmax
 r_int
+id|__deprecated
 id|cpufreq_setmax
 c_func
 (paren
@@ -291,7 +328,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_return
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|cpu_max_freq
@@ -309,16 +346,6 @@ c_func
 (paren
 id|cpufreq_setmax
 )paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
-macro_line|#warning The /proc/sys/cpu/ and sysctl interface to cpufreq will be removed from the 2.6. kernel series soon after 2005-01-01
-DECL|variable|warning_print
-r_static
-r_int
-r_int
-id|warning_print
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*********************** cpufreq_sysctl interface ********************/
 r_static
@@ -503,7 +530,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq
@@ -784,7 +811,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq
@@ -1508,7 +1535,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|cpufreq_set
+id|_cpufreq_set
 c_func
 (paren
 id|freq

@@ -801,6 +801,7 @@ suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 r_int
+id|__deprecated
 id|cpufreq_setmax
 c_func
 (paren
@@ -810,6 +811,7 @@ id|cpu
 )paren
 suffix:semicolon
 r_int
+id|__deprecated
 id|cpufreq_set
 c_func
 (paren
