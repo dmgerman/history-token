@@ -7714,6 +7714,12 @@ r_if
 c_cond
 (paren
 id|disk
+op_logical_and
+id|blk_fs_request
+c_func
+(paren
+id|req
+)paren
 )paren
 (brace
 r_int
