@@ -414,8 +414,6 @@ DECL|typedef|snd_card_harmony_t
 )brace
 id|snd_card_harmony_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_card_harmony_t
 DECL|variable|snd_harmony_cards
 r_static
 id|snd_card_t
@@ -3374,7 +3372,7 @@ id|snd_card_harmony_t
 op_star
 id|harmony
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -3525,7 +3523,7 @@ id|snd_card_harmony_t
 op_star
 id|harmony
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol

@@ -3,8 +3,6 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t vx_core_t
 DECL|macro|MIC_LEVEL_MIN
 mdefine_line|#define MIC_LEVEL_MIN&t;0
 DECL|macro|MIC_LEVEL_MAX

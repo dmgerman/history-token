@@ -4,8 +4,6 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/vx_core.h&gt;
 macro_line|#include &quot;vx_cmd.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t vx_core_t
 multiline_comment|/*&n; * write a codec data (24bit)&n; */
 DECL|function|vx_write_codec_reg
 r_static

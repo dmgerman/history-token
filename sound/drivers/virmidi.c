@@ -434,15 +434,7 @@ id|__nodev
 suffix:semicolon
 id|rdev
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_virmidi_dev_t
-comma
 id|rmidi-&gt;private_data
-comma
-r_continue
-)paren
 suffix:semicolon
 id|vmidi-&gt;midi
 (braket

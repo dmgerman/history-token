@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 macro_line|#ifdef CONFIG_ADB_CUDA
 DECL|macro|PMAC_AMP_AVAIL
 mdefine_line|#define PMAC_AMP_AVAIL

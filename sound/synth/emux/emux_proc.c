@@ -32,15 +32,7 @@ id|i
 suffix:semicolon
 id|emu
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_emux_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|down
 c_func
