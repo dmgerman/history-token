@@ -30,6 +30,7 @@ id|ETH_ALEN
 suffix:semicolon
 multiline_comment|/**&n; *&t;llc_sap_alloc - allocates and initializes sap.&n; *&n; *&t;Allocates and initializes sap.&n; */
 DECL|function|llc_sap_alloc
+r_static
 r_struct
 id|llc_sap
 op_star
@@ -104,6 +105,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_add_sap - add sap to station list&n; *&t;@sap: Address of the sap&n; *&n; *&t;Adds a sap to the LLC&squot;s station sap list.&n; */
 DECL|function|llc_add_sap
+r_static
 r_void
 id|llc_add_sap
 c_func
@@ -141,6 +143,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_del_sap - del sap from station list&n; *&t;@sap: Address of the sap&n; *&n; *&t;Removes a sap to the LLC&squot;s station sap list.&n; */
 DECL|function|llc_del_sap
+r_static
 r_void
 id|llc_del_sap
 c_func
@@ -520,13 +523,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|llc_sap_list
-)paren
-suffix:semicolon
-DECL|variable|llc_sap_list_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|llc_sap_list_lock
 )paren
 suffix:semicolon
 DECL|variable|llc_sap_find
