@@ -1524,15 +1524,31 @@ op_star
 id|rinfo
 )paren
 (brace
+multiline_comment|/* we use __INPLL and _OUTPLL and do the locking ourselves... */
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|rinfo-&gt;reg_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Set v2clk to 65MHz */
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllPIXCLKS_CNTL
 comma
-id|INPLL
+id|__INPLL
 c_func
 (paren
+id|rinfo
+comma
 id|pllPIXCLKS_CNTL
 )paren
 op_amp
@@ -1540,7 +1556,7 @@ op_complement
 id|PIXCLKS_CNTL__PIX2CLK_SRC_SEL_MASK
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllP2PLL_REF_DIV
@@ -1548,7 +1564,7 @@ comma
 l_int|0x0000000c
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllP2PLL_CNTL
@@ -1556,7 +1572,7 @@ comma
 l_int|0x0000bf00
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllP2PLL_DIV_0
@@ -1566,14 +1582,16 @@ op_or
 id|P2PLL_DIV_0__P2PLL_ATOMIC_UPDATE_W
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllP2PLL_CNTL
 comma
-id|INPLL
+id|__INPLL
 c_func
 (paren
+id|rinfo
+comma
 id|pllP2PLL_CNTL
 )paren
 op_amp
@@ -1587,14 +1605,16 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllP2PLL_CNTL
 comma
-id|INPLL
+id|__INPLL
 c_func
 (paren
+id|rinfo
+comma
 id|pllP2PLL_CNTL
 )paren
 op_amp
@@ -1608,15 +1628,17 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|OUTPLL
+id|__OUTPLL
 c_func
 (paren
 id|pllPIXCLKS_CNTL
 comma
 (paren
-id|INPLL
+id|__INPLL
 c_func
 (paren
+id|rinfo
+comma
 id|pllPIXCLKS_CNTL
 )paren
 op_amp
@@ -1635,6 +1657,15 @@ id|mdelay
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|rinfo-&gt;reg_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1895,6 +1926,9 @@ id|disp_mis_cntl
 suffix:semicolon
 id|u32
 id|disp_pwr_man
+suffix:semicolon
+id|u32
+id|tmp
 suffix:semicolon
 multiline_comment|/* Force Core Clocks */
 id|sclk_cntl
@@ -2178,11 +2212,9 @@ op_and_assign
 op_complement
 id|CLK_PIN_CNTL__ACCESS_REGS_IN_SUSPEND
 suffix:semicolon
-id|OUTPLL
-c_func
-(paren
-id|pllMCLK_MISC
-comma
+multiline_comment|/* because both INPLL and OUTPLL take the same lock, that&squot;s why. */
+id|tmp
+op_assign
 id|INPLL
 c_func
 (paren
@@ -2190,6 +2222,13 @@ id|pllMCLK_MISC
 )paren
 op_or
 id|MCLK_MISC__EN_MCLK_TRISTATE_IN_SUSPEND
+suffix:semicolon
+id|OUTPLL
+c_func
+(paren
+id|pllMCLK_MISC
+comma
+id|tmp
 )paren
 suffix:semicolon
 multiline_comment|/* AGP PLL control */
@@ -2292,11 +2331,9 @@ id|AGP_CNTL__MAX_IDLE_CLK__SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* ACPI mode */
-id|OUTPLL
-c_func
-(paren
-id|pllPLL_PWRMGT_CNTL
-comma
+multiline_comment|/* because both INPLL and OUTPLL take the same lock, that&squot;s why. */
+id|tmp
+op_assign
 id|INPLL
 c_func
 (paren
@@ -2305,6 +2342,13 @@ id|pllPLL_PWRMGT_CNTL
 op_amp
 op_complement
 id|PLL_PWRMGT_CNTL__PM_MODE_SEL
+suffix:semicolon
+id|OUTPLL
+c_func
+(paren
+id|pllPLL_PWRMGT_CNTL
+comma
+id|tmp
 )paren
 suffix:semicolon
 id|disp_mis_cntl
@@ -3438,6 +3482,9 @@ id|suspend
 id|u16
 id|pwr_cmd
 suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3514,11 +3561,9 @@ id|rinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Reset the MDLL */
-id|OUTPLL
-c_func
-(paren
-id|pllMDLL_CKO
-comma
+multiline_comment|/* because both INPLL and OUTPLL take the same lock, that&squot;s why. */
+id|tmp
+op_assign
 id|INPLL
 c_func
 (paren
@@ -3528,6 +3573,13 @@ op_or
 id|MDLL_CKO__MCKOA_RESET
 op_or
 id|MDLL_CKO__MCKOB_RESET
+suffix:semicolon
+id|OUTPLL
+c_func
+(paren
+id|pllMDLL_CKO
+comma
+id|tmp
 )paren
 suffix:semicolon
 )brace
