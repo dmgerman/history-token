@@ -265,7 +265,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -515,7 +515,7 @@ id|arg
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -756,7 +756,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -979,7 +979,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1235,7 +1235,7 @@ id|tcp_mark_push
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1268,7 +1268,7 @@ id|forced_push
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -1302,7 +1302,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1405,7 +1405,7 @@ id|tcp_mark_urg
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1459,7 +1459,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -1571,7 +1571,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2302,7 +2302,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -2387,7 +2387,7 @@ op_star
 id|iov
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3441,7 +3441,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3622,7 +3622,7 @@ id|copied
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3820,7 +3820,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3994,7 +3994,7 @@ op_star
 id|skb
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4248,7 +4248,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5950,7 +5950,7 @@ id|TCP_FIN_WAIT2
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6232,7 +6232,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6527,7 +6527,7 @@ id|timeo
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6684,7 +6684,7 @@ id|err
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6880,7 +6880,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -7467,7 +7467,7 @@ id|info
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -7761,7 +7761,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
