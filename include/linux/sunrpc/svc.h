@@ -854,6 +854,18 @@ id|u32
 op_star
 )paren
 suffix:semicolon
+DECL|member|pg_authenticate
+r_int
+(paren
+op_star
+id|pg_authenticate
+)paren
+(paren
+r_struct
+id|svc_rqst
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * RPC program version&n; */

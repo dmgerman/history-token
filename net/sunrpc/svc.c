@@ -1088,6 +1088,10 @@ suffix:semicolon
 r_int
 id|auth_res
 suffix:semicolon
+id|u32
+op_star
+id|accept_statp
+suffix:semicolon
 id|rpc_stat
 op_assign
 id|rpc_success
@@ -1242,6 +1246,13 @@ multiline_comment|/* RPC version number */
 r_goto
 id|err_bad_rpc
 suffix:semicolon
+multiline_comment|/* Save position in case we later decide to reject: */
+id|accept_statp
+op_assign
+id|resv-&gt;iov_base
+op_plus
+id|resv-&gt;iov_len
+suffix:semicolon
 id|svc_putu32
 c_func
 (paren
@@ -1333,6 +1344,30 @@ op_amp
 id|auth_stat
 )paren
 suffix:semicolon
+multiline_comment|/* Also give the program a chance to reject this call: */
+r_if
+c_cond
+(paren
+id|auth_res
+op_eq
+id|SVC_OK
+)paren
+(brace
+id|auth_stat
+op_assign
+id|rpc_autherr_badcred
+suffix:semicolon
+id|auth_res
+op_assign
+id|progp
+op_member_access_from_pointer
+id|pg_authenticate
+c_func
+(paren
+id|rqstp
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -1828,9 +1863,14 @@ suffix:semicolon
 id|serv-&gt;sv_stats-&gt;rpcbadauth
 op_increment
 suffix:semicolon
-id|resv-&gt;iov_len
-op_sub_assign
-l_int|4
+multiline_comment|/* Restore write pointer to location of accept status: */
+id|xdr_ressize_check
+c_func
+(paren
+id|rqstp
+comma
+id|accept_statp
+)paren
 suffix:semicolon
 id|svc_putu32
 c_func

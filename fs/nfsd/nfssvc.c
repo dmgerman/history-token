@@ -1408,6 +1408,13 @@ op_amp
 id|nfsd_svcstats
 comma
 multiline_comment|/* version table */
+dot
+id|pg_authenticate
+op_assign
+op_amp
+id|svc_set_client
+comma
+multiline_comment|/* export authentication */
 )brace
 suffix:semicolon
 eof
