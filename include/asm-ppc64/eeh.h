@@ -3,6 +3,7 @@ multiline_comment|/* Start Change Log&n; * 2001/10/27 : engebret : Created.&n; *
 macro_line|#ifndef _EEH_H
 DECL|macro|_EEH_H
 mdefine_line|#define _EEH_H
+macro_line|#include &lt;linux/string.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
@@ -107,38 +108,6 @@ c_func
 r_int
 r_int
 id|token
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|memcpy
-c_func
-(paren
-r_void
-op_star
-comma
-r_const
-r_void
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|memset
-c_func
-(paren
-r_void
-op_star
-comma
-r_int
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; *&n; * Order this macro for performance.&n; * If EEH is off for a device and it is a memory BAR, ioremap will&n; * map it to the IOREGION.  In this case addr == vaddr and since these&n; * should be in registers we compare them first.  Next we check for&n; * ff&squot;s which indicates a (very) possible failure.&n; *&n; * If this macro yields TRUE, the caller relays to eeh_check_failure()&n; * which does further tests out of line.&n; */
