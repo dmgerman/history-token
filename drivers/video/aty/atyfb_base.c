@@ -12373,6 +12373,12 @@ macro_line|#endif /* !CONFIG_PPC */
 r_if
 c_cond
 (paren
+macro_line|#if defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
+multiline_comment|/* On Sparc, unless the user gave a specific mode&n;&t;    * specification, use the PROM probed values in&n;&t;    * default_var.&n;&t;    */
+op_logical_neg
+id|mode
+op_logical_or
+macro_line|#endif
 op_logical_neg
 id|fb_find_mode
 c_func

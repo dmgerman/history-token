@@ -1758,6 +1758,9 @@ id|node
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|prom_getproperty
 c_func
 (paren
@@ -1776,6 +1779,10 @@ r_sizeof
 id|regs
 )paren
 )paren
+op_le
+l_int|0
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* hmm I think regs[0].which_io is zero here anyways */
 id|sun4c_memerr_reg

@@ -106,6 +106,7 @@ id|res_attr
 suffix:semicolon
 DECL|member|virt_io
 r_void
+id|__iomem
 op_star
 id|virt_io
 suffix:semicolon

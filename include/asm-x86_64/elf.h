@@ -105,10 +105,7 @@ DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality_64bit()
 multiline_comment|/*&n; * An executable for which elf_read_implies_exec() returns TRUE will&n; * have the READ_IMPLIES_EXEC personality flag set automatically.&n; */
 DECL|macro|elf_read_implies_exec
-mdefine_line|#define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;(!(have_pt_gnu_stack))
-multiline_comment|/*&n; * An executable for which elf_read_implies_exec() returns TRUE will&n; * have the READ_IMPLIES_EXEC personality flag set automatically.&n; */
-DECL|macro|elf_read_implies_exec_binary
-mdefine_line|#define elf_read_implies_exec_binary(ex, have_pt_gnu_stack)   &bslash;&n;&t; (!(have_pt_gnu_stack))
+mdefine_line|#define elf_read_implies_exec(ex, executable_stack)&t;(executable_stack != EXSTACK_DISABLE_X)
 r_extern
 r_int
 id|dump_task_regs

@@ -277,7 +277,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2)&t;set_personality(PER_LINUX)
 DECL|macro|elf_read_implies_exec
-mdefine_line|#define elf_read_implies_exec(ex, have_pt_gnu_stack)&t;&t;&t;&t;&t;&bslash;&n;&t;(!(have_pt_gnu_stack) &amp;&amp; ((ex).e_flags &amp; EF_IA_64_LINUX_EXECUTABLE_STACK) != 0)
+mdefine_line|#define elf_read_implies_exec(ex, executable_stack)&t;&t;&t;&t;&t;&bslash;&n;&t;((executable_stack!=EXSTACK_DISABLE_X) &amp;&amp; ((ex).e_flags &amp; EF_IA_64_LINUX_EXECUTABLE_STACK) != 0)
 r_struct
 id|task_struct
 suffix:semicolon
