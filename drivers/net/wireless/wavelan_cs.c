@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganisation and extension of the driver.&n; * Original copyright follow. See wavelan_cs.p.h for details.&n; *&n; * This code is derived from Anthony D. Joseph&squot;s code and all the changes here&n; * are also under the original copyright below.&n; *&n; * This code supports version 2.00 of WaveLAN/PCMCIA cards (2.4GHz), and&n; * can work on Linux 2.0.36 with support of David Hinds&squot; PCMCIA Card Services&n; *&n; * Joe Finney (joe@comp.lancs.ac.uk) at Lancaster University in UK added&n; * critical code in the routine to initialize the Modem Management Controller.&n; *&n; * Thanks to Alan Cox and Bruce Janson for their advice.&n; *&n; *&t;-- Yunzhou Li (scip4166@nus.sg)&n; *&n;#ifdef WAVELAN_ROAMING&t;&n; * Roaming support added 07/22/98 by Justin Seger (jseger@media.mit.edu)&n; * based on patch by Joe Finney from Lancaster University.&n;#endif&n; *&n; * Lucent (formerly AT&amp;T GIS, formerly NCR) WaveLAN PCMCIA card: An&n; * Ethernet-like radio transceiver controlled by an Intel 82593 coprocessor.&n; *&n; *   A non-shared memory PCMCIA ethernet driver for linux&n; *&n; * ISA version modified to support PCMCIA by Anthony Joseph (adj@lcs.mit.edu)&n; *&n; *&n; * Joseph O&squot;Sullivan &amp; John Langford (josullvn@cs.cmu.edu &amp; jcl@cs.cmu.edu)&n; *&n; * Apr 2 &squot;98  made changes to bring the i82593 control/int handling in line&n; *             with offical specs...&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; */
-macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/* Do *NOT* add other headers here, you are guaranteed to be wrong - Jean II */
 macro_line|#include &quot;wavelan_cs.p.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* MISC SUBROUTINES **************************/
 multiline_comment|/*&n; * Subroutines which won&squot;t fit in one of the following category&n; * (wavelan modem or i82593)&n; */
@@ -11077,7 +11076,7 @@ id|wavelan_private_args
 comma
 )brace
 suffix:semicolon
-macro_line|#else /* WIRELESS_EXT &gt; 12 */
+macro_line|#endif /* WIRELESS_EXT &gt; 12 */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Perform ioctl : config &amp; info stuff&n; * This is here that are treated the wireless extensions (iwconfig)&n; */
 r_static
@@ -11159,7 +11158,9 @@ id|rq-&gt;ifr_data
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &lt;= 12
 multiline_comment|/* --------------- WIRELESS EXTENSIONS --------------- */
+multiline_comment|/* Now done as iw_handler - Jean II */
 r_case
 id|SIOCGIWNAME
 suffix:colon
@@ -12313,6 +12314,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif&t;/* HISTOGRAM */
+macro_line|#endif /* WIRELESS_EXT &lt;= 12 */
 multiline_comment|/* ------------------- OTHER IOCTL ------------------- */
 r_default
 suffix:colon
@@ -12337,7 +12339,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* WIRELESS_EXT &gt; 12 */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Get wireless statistics&n; * Called by /proc/net/wireless...&n; */
 r_static
@@ -19616,13 +19617,12 @@ op_star
 op_amp
 id|wavelan_handler_def
 suffix:semicolon
-macro_line|#else /* WIRELESS_EXT &gt; 12 */
+macro_line|#endif /* WIRELESS_EXT &gt; 12 */
 id|dev-&gt;do_ioctl
 op_assign
 id|wavelan_ioctl
 suffix:semicolon
-multiline_comment|/* wireless extensions */
-macro_line|#endif /* WIRELESS_EXT &gt; 12 */
+multiline_comment|/* old wireless extensions */
 id|dev-&gt;get_wireless_stats
 op_assign
 id|wavelan_get_wireless_stats
