@@ -1017,7 +1017,11 @@ id|irr_reg
 suffix:semicolon
 id|regval
 op_assign
-id|intr-&gt;bi_soft-&gt;bs_base-&gt;p_int_status_64
+id|pcireg_intr_status_get
+c_func
+(paren
+id|intr-&gt;bi_soft-&gt;bs_base
+)paren
 suffix:semicolon
 id|irr_reg_num
 op_assign
