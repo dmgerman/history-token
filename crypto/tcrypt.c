@@ -192,7 +192,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_MD5
+l_string|&quot;md5&quot;
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -206,7 +208,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_MD5&bslash;n&quot;
+l_string|&quot;failed to load transform for md5&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -336,7 +338,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -360,7 +362,7 @@ id|i
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -546,7 +548,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -570,7 +572,7 @@ l_int|4
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -765,7 +767,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -789,7 +791,7 @@ id|i
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -992,7 +994,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1016,7 +1018,7 @@ l_int|1
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1135,7 +1137,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_MD4
+l_string|&quot;md4&quot;
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1149,7 +1153,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_MD4&bslash;n&quot;
+l_string|&quot;failed to load transform for md4&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1267,7 +1271,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1291,7 +1295,7 @@ id|i
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1416,7 +1420,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_SHA1
+l_string|&quot;sha1&quot;
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1430,7 +1436,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_SHA1&bslash;n&quot;
+l_string|&quot;failed to load transform for sha1&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1560,7 +1566,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1584,7 +1590,7 @@ id|i
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1770,7 +1776,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -1794,7 +1800,7 @@ l_int|1
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -2012,7 +2018,7 @@ id|i
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -2216,7 +2222,7 @@ c_func
 (paren
 id|result
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -2240,7 +2246,7 @@ l_int|1
 dot
 id|digest
 comma
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -2369,7 +2375,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_DES_ECB
+l_string|&quot;des&quot;
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2383,7 +2391,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_DES_ECB&bslash;n&quot;
+l_string|&quot;failed to load transform for des (default ecb)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2424,8 +2432,8 @@ dot
 id|key
 suffix:semicolon
 id|tfm-&gt;crt_flags
-op_assign
-id|CRYPTO_WEAK_KEY_CHECK
+op_or_assign
+id|CRYPTO_TFM_REQ_WEAK_KEY
 suffix:semicolon
 id|ret
 op_assign
@@ -4847,7 +4855,7 @@ id|key
 suffix:semicolon
 id|tfm-&gt;crt_flags
 op_assign
-id|CRYPTO_ATOMIC
+id|CRYPTO_TFM_REQ_ATOMIC
 suffix:semicolon
 id|ret
 op_assign
@@ -6607,7 +6615,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_DES_CBC
+l_string|&quot;des&quot;
+comma
+id|CRYPTO_TFM_MODE_CBC
 )paren
 suffix:semicolon
 r_if
@@ -6621,7 +6631,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_DES_CBC&bslash;n&quot;
+l_string|&quot;failed to load transform for des cbc&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -6705,8 +6715,8 @@ l_int|1
 )paren
 suffix:semicolon
 id|tfm-&gt;crt_flags
-op_assign
-id|CRYPTO_ATOMIC
+op_or_assign
+id|CRYPTO_TFM_REQ_ATOMIC
 suffix:semicolon
 id|key
 op_assign
@@ -6816,7 +6826,7 @@ id|i
 dot
 id|iv
 comma
-id|crypto_tfm_ivsize
+id|crypto_tfm_alg_ivsize
 c_func
 (paren
 id|tfm
@@ -6930,7 +6940,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_DES_CBC
+l_string|&quot;des&quot;
+comma
+id|CRYPTO_TFM_MODE_CBC
 )paren
 suffix:semicolon
 r_if
@@ -7153,7 +7165,7 @@ id|i
 dot
 id|iv
 comma
-id|crypto_tfm_ivsize
+id|crypto_tfm_alg_ivsize
 c_func
 (paren
 id|tfm
@@ -7501,7 +7513,7 @@ id|i
 dot
 id|iv
 comma
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -7815,7 +7827,7 @@ id|i
 dot
 id|iv
 comma
-id|crypto_tfm_ivsize
+id|crypto_tfm_alg_ivsize
 c_func
 (paren
 id|tfm
@@ -8089,7 +8101,9 @@ op_assign
 id|crypto_alloc_tfm
 c_func
 (paren
-id|CRYPTO_ALG_DES3_EDE_ECB
+l_string|&quot;des3_ede&quot;
+comma
+id|CRYPTO_TFM_MODE_ECB
 )paren
 suffix:semicolon
 r_if
@@ -8103,7 +8117,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;failed to load transform for CRYPTO_ALG_DES3_EDE_ECB&bslash;n&quot;
+l_string|&quot;failed to load transform for 3des ecb&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8142,10 +8156,6 @@ id|i
 )braket
 dot
 id|key
-suffix:semicolon
-id|tfm-&gt;crt_flags
-op_assign
-id|CRYPTO_WEAK_KEY_CHECK
 suffix:semicolon
 id|ret
 op_assign
@@ -8415,10 +8425,6 @@ id|i
 )braket
 dot
 id|key
-suffix:semicolon
-id|tfm-&gt;crt_flags
-op_assign
-id|CRYPTO_WEAK_KEY_CHECK
 suffix:semicolon
 id|ret
 op_assign

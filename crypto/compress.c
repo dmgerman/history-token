@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Compression operations.&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
@@ -34,6 +36,34 @@ id|tfm
 )paren
 (brace
 r_return
+suffix:semicolon
+)brace
+DECL|function|crypto_init_compress_flags
+r_int
+id|crypto_init_compress_flags
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+comma
+id|u32
+id|flags
+)paren
+(brace
+r_return
+id|crypto_cipher_flags
+c_func
+(paren
+id|flags
+)paren
+ques
+c_cond
+op_minus
+id|EINVAL
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|crypto_init_compress_ops

@@ -3,7 +3,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
@@ -209,7 +211,7 @@ suffix:semicolon
 r_int
 id|bsize
 op_assign
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -542,7 +544,7 @@ suffix:semicolon
 r_int
 id|bsize
 op_assign
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -570,7 +572,7 @@ id|bsize
 (brace
 id|tfm-&gt;crt_flags
 op_or_assign
-id|CRYPTO_BAD_BLOCK_LEN
+id|CRYPTO_TFM_RES_BAD_BLOCK_LEN
 suffix:semicolon
 r_return
 op_minus
@@ -874,7 +876,7 @@ id|tfm-&gt;crt_cipher.cit_iv
 comma
 id|block
 comma
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -915,7 +917,7 @@ id|tfm-&gt;crt_cipher.cit_iv
 comma
 id|block
 comma
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -929,7 +931,7 @@ id|block
 comma
 id|buf
 comma
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -1185,6 +1187,95 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
+DECL|function|crypto_init_cipher_flags
+r_int
+id|crypto_init_cipher_flags
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+comma
+id|u32
+id|flags
+)paren
+(brace
+r_struct
+id|crypto_alg
+op_star
+id|alg
+op_assign
+id|tfm-&gt;__crt_alg
+suffix:semicolon
+id|u32
+id|mode
+op_assign
+id|flags
+op_amp
+id|CRYPTO_TFM_MODE_MASK
+suffix:semicolon
+id|tfm-&gt;crt_cipher.cit_mode
+op_assign
+id|mode
+ques
+c_cond
+id|mode
+suffix:colon
+id|CRYPTO_TFM_MODE_ECB
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|alg-&gt;cra_cipher.cia_ivsize
+op_logical_and
+id|mode
+op_ne
+id|CRYPTO_TFM_MODE_ECB
+)paren
+(brace
+id|tfm-&gt;crt_cipher.cit_iv
+op_assign
+id|kmalloc
+c_func
+(paren
+id|alg-&gt;cra_cipher.cia_ivsize
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tfm-&gt;crt_cipher.cit_iv
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_else
+id|tfm-&gt;crt_cipher.cit_iv
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|CRYPTO_TFM_REQ_WEAK_KEY
+)paren
+id|tfm-&gt;crt_flags
+op_assign
+id|CRYPTO_TFM_REQ_WEAK_KEY
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|crypto_init_cipher_ops
 r_void
 id|crypto_init_cipher_ops
@@ -1215,7 +1306,7 @@ id|tfm-&gt;crt_cipher.cit_mode
 )paren
 (brace
 r_case
-id|CRYPTO_MODE_ECB
+id|CRYPTO_TFM_MODE_ECB
 suffix:colon
 id|ops-&gt;cit_encrypt
 op_assign
@@ -1228,7 +1319,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CRYPTO_MODE_CBC
+id|CRYPTO_TFM_MODE_CBC
 suffix:colon
 id|ops-&gt;cit_encrypt
 op_assign
@@ -1241,7 +1332,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CRYPTO_MODE_CFB
+id|CRYPTO_TFM_MODE_CFB
 suffix:colon
 id|ops-&gt;cit_encrypt
 op_assign
@@ -1254,7 +1345,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|CRYPTO_MODE_CTR
+id|CRYPTO_TFM_MODE_CTR
 suffix:colon
 id|ops-&gt;cit_encrypt
 op_assign

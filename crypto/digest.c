@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Cryptographic API.&n; *&n; * Digest operations.&n; *&n; * Copyright (c) 2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * The HMAC implementation is derived from USAGI.&n; * Copyright (c) 2002 USAGI/WIDE Project&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option) &n; * any later version.&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
@@ -313,7 +314,7 @@ suffix:semicolon
 r_char
 id|ipad
 (braket
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -325,7 +326,7 @@ suffix:semicolon
 r_char
 id|opad
 (braket
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -339,7 +340,7 @@ c_cond
 (paren
 id|keylen
 OG
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -385,7 +386,7 @@ id|key
 suffix:semicolon
 id|keylen
 op_assign
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -447,7 +448,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -494,7 +495,7 @@ id|PAGE_MASK
 suffix:semicolon
 id|tmp.length
 op_assign
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -557,7 +558,7 @@ id|PAGE_MASK
 suffix:semicolon
 id|tmp.length
 op_assign
-id|crypto_tfm_blocksize
+id|crypto_tfm_alg_blocksize
 c_func
 (paren
 id|tfm
@@ -602,7 +603,7 @@ id|PAGE_MASK
 suffix:semicolon
 id|tmp.length
 op_assign
-id|crypto_tfm_digestsize
+id|crypto_tfm_alg_digestsize
 c_func
 (paren
 id|tfm
@@ -628,6 +629,34 @@ id|out
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+DECL|function|crypto_init_digest_flags
+r_int
+id|crypto_init_digest_flags
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+comma
+id|u32
+id|flags
+)paren
+(brace
+r_return
+id|crypto_cipher_flags
+c_func
+(paren
+id|flags
+)paren
+ques
+c_cond
+op_minus
+id|EINVAL
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|crypto_init_digest_ops

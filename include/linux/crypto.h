@@ -2,69 +2,55 @@ multiline_comment|/*&n; * Scatterlist Cryptographic API.&n; *&n; * Copyright (c)
 macro_line|#ifndef _LINUX_CRYPTO_H
 DECL|macro|_LINUX_CRYPTO_H
 mdefine_line|#define _LINUX_CRYPTO_H
-multiline_comment|/* &n; * Crypto context flags.&n; */
-DECL|macro|CRYPTO_WEAK_KEY_CHECK
-mdefine_line|#define CRYPTO_WEAK_KEY_CHECK&t;0x0001
-DECL|macro|CRYPTO_WEAK_KEY
-mdefine_line|#define CRYPTO_WEAK_KEY&t;&t;0x0008
-DECL|macro|CRYPTO_BAD_KEY_LEN
-mdefine_line|#define CRYPTO_BAD_KEY_LEN&t;0x0010
-DECL|macro|CRYPTO_BAD_KEY_SCHED
-mdefine_line|#define CRYPTO_BAD_KEY_SCHED&t;0x0020
-DECL|macro|CRYPTO_BAD_BLOCK_LEN
-mdefine_line|#define CRYPTO_BAD_BLOCK_LEN&t;0x0040
-DECL|macro|CRYPTO_ATOMIC
-mdefine_line|#define CRYPTO_ATOMIC&t;&t;0x1000
-multiline_comment|/*&n; * Algorithm identifiers.  These may be expanded later to 64 bits&n; * and include vendor id info, so we can have multiple versions&n; * (e.g. asm, various hardware versions etc).&n; *&n; * Todo: sadb translation.&n; */
-DECL|macro|CRYPTO_TYPE_MASK
-mdefine_line|#define CRYPTO_TYPE_MASK        0xf0000000
-DECL|macro|CRYPTO_MODE_MASK
-mdefine_line|#define CRYPTO_MODE_MASK        0x0ff00000
-DECL|macro|CRYPTO_ALG_MASK
-mdefine_line|#define CRYPTO_ALG_MASK&t;&t;0x000fffff
-DECL|macro|CRYPTO_TYPE_CIPHER
-mdefine_line|#define CRYPTO_TYPE_CIPHER&t;0x10000000
-DECL|macro|CRYPTO_TYPE_DIGEST
-mdefine_line|#define CRYPTO_TYPE_DIGEST&t;0x20000000
-DECL|macro|CRYPTO_TYPE_COMP
-mdefine_line|#define CRYPTO_TYPE_COMP&t;0x40000000
-DECL|macro|CRYPTO_MODE_ECB
-mdefine_line|#define CRYPTO_MODE_ECB&t;&t;0x00100000
-DECL|macro|CRYPTO_MODE_CBC
-mdefine_line|#define CRYPTO_MODE_CBC&t;&t;0x00200000
-DECL|macro|CRYPTO_MODE_CFB
-mdefine_line|#define CRYPTO_MODE_CFB&t;&t;0x00400000
-DECL|macro|CRYPTO_MODE_CTR
-mdefine_line|#define CRYPTO_MODE_CTR&t;&t;0x00800000
-DECL|macro|CRYPTO_ALG_NULL
-mdefine_line|#define CRYPTO_ALG_NULL&t;&t;0x00000001
-DECL|macro|CRYPTO_ALG_DES
-mdefine_line|#define CRYPTO_ALG_DES&t;&t;(0x00000002|CRYPTO_TYPE_CIPHER)
-DECL|macro|CRYPTO_ALG_DES_ECB
-mdefine_line|#define CRYPTO_ALG_DES_ECB&t;(CRYPTO_ALG_DES|CRYPTO_MODE_ECB)
-DECL|macro|CRYPTO_ALG_DES_CBC
-mdefine_line|#define CRYPTO_ALG_DES_CBC&t;(CRYPTO_ALG_DES|CRYPTO_MODE_CBC)
-DECL|macro|CRYPTO_ALG_DES3_EDE
-mdefine_line|#define CRYPTO_ALG_DES3_EDE&t;(0x00000003|CRYPTO_TYPE_CIPHER)
-DECL|macro|CRYPTO_ALG_DES3_EDE_ECB
-mdefine_line|#define CRYPTO_ALG_DES3_EDE_ECB&t;(CRYPTO_ALG_DES3_EDE|CRYPTO_MODE_ECB)
-DECL|macro|CRYPTO_ALG_DES3_EDE_CBC
-mdefine_line|#define CRYPTO_ALG_DES3_EDE_CBC&t;(CRYPTO_ALG_DES3_EDE|CRYPTO_MODE_CBC)
-DECL|macro|CRYPTO_ALG_MD4
-mdefine_line|#define CRYPTO_ALG_MD4&t;&t;(0x00000f00|CRYPTO_TYPE_DIGEST)
-DECL|macro|CRYPTO_ALG_MD5
-mdefine_line|#define CRYPTO_ALG_MD5&t;&t;(0x00000f01|CRYPTO_TYPE_DIGEST)
-DECL|macro|CRYPTO_ALG_SHA1
-mdefine_line|#define CRYPTO_ALG_SHA1&t;&t;(0x00000f02|CRYPTO_TYPE_DIGEST)
+multiline_comment|/*&n; * Algorithm masks and types.&n; */
+DECL|macro|CRYPTO_ALG_TYPE_MASK
+mdefine_line|#define CRYPTO_ALG_TYPE_MASK&t;&t;0x000000ff
+DECL|macro|CRYPTO_ALG_TYPE_CIPHER
+mdefine_line|#define CRYPTO_ALG_TYPE_CIPHER&t;&t;0x00000001
+DECL|macro|CRYPTO_ALG_TYPE_DIGEST
+mdefine_line|#define CRYPTO_ALG_TYPE_DIGEST&t;&t;0x00000002
+DECL|macro|CRYPTO_ALG_TYPE_COMP
+mdefine_line|#define CRYPTO_ALG_TYPE_COMP&t;&t;0x00000004
+multiline_comment|/*&n; * Transform masks and values (for crt_flags).&n; */
+DECL|macro|CRYPTO_TFM_MODE_MASK
+mdefine_line|#define CRYPTO_TFM_MODE_MASK&t;&t;0x000000ff
+DECL|macro|CRYPTO_TFM_REQ_MASK
+mdefine_line|#define CRYPTO_TFM_REQ_MASK&t;&t;0x000fff00
+DECL|macro|CRYPTO_TFM_RES_MASK
+mdefine_line|#define CRYPTO_TFM_RES_MASK&t;&t;0xfff00000
+DECL|macro|CRYPTO_TFM_MODE_ECB
+mdefine_line|#define CRYPTO_TFM_MODE_ECB&t;&t;0x00000001
+DECL|macro|CRYPTO_TFM_MODE_CBC
+mdefine_line|#define CRYPTO_TFM_MODE_CBC&t;&t;0x00000002
+DECL|macro|CRYPTO_TFM_MODE_CFB
+mdefine_line|#define CRYPTO_TFM_MODE_CFB&t;&t;0x00000004
+DECL|macro|CRYPTO_TFM_MODE_CTR
+mdefine_line|#define CRYPTO_TFM_MODE_CTR&t;&t;0x00000008
+DECL|macro|CRYPTO_TFM_REQ_ATOMIC
+mdefine_line|#define CRYPTO_TFM_REQ_ATOMIC&t;&t;0x00000100
+DECL|macro|CRYPTO_TFM_REQ_WEAK_KEY
+mdefine_line|#define CRYPTO_TFM_REQ_WEAK_KEY&t;&t;0x00000200
+DECL|macro|CRYPTO_TFM_RES_WEAK_KEY
+mdefine_line|#define CRYPTO_TFM_RES_WEAK_KEY&t;&t;0x00100000
+DECL|macro|CRYPTO_TFM_RES_BAD_KEY_LEN
+mdefine_line|#define CRYPTO_TFM_RES_BAD_KEY_LEN   &t;0x00200000
+DECL|macro|CRYPTO_TFM_RES_BAD_KEY_SCHED
+mdefine_line|#define CRYPTO_TFM_RES_BAD_KEY_SCHED &t;0x00400000
+DECL|macro|CRYPTO_TFM_RES_BAD_BLOCK_LEN
+mdefine_line|#define CRYPTO_TFM_RES_BAD_BLOCK_LEN &t;0x00800000
+DECL|macro|CRYPTO_TFM_RES_BAD_FLAGS
+mdefine_line|#define CRYPTO_TFM_RES_BAD_FLAGS &t;0x01000000
+multiline_comment|/*&n; * Miscellaneous stuff.&n; */
 DECL|macro|CRYPTO_UNSPEC
-mdefine_line|#define CRYPTO_UNSPEC&t;&t;0
+mdefine_line|#define CRYPTO_UNSPEC&t;&t;&t;0
 DECL|macro|CRYPTO_MAX_ALG_NAME
-mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;64
+mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;&t;64
 DECL|macro|CRYPTO_MAX_BLOCK_SIZE
-mdefine_line|#define CRYPTO_MAX_BLOCK_SIZE&t;16
+mdefine_line|#define CRYPTO_MAX_BLOCK_SIZE&t;&t;16
 r_struct
 id|scatterlist
 suffix:semicolon
+multiline_comment|/*&n; * Algorithms: modular crypto algorithm implementations, managed&n; * via crypto_register_alg() and crypto_unregister_alg().&n; */
 DECL|struct|cipher_alg
 r_struct
 id|cipher_alg
@@ -242,9 +228,9 @@ r_struct
 id|list_head
 id|cra_list
 suffix:semicolon
-DECL|member|cra_id
-id|u32
-id|cra_id
+DECL|member|cra_flags
+r_int
+id|cra_flags
 suffix:semicolon
 DECL|member|cra_blocksize
 r_int
@@ -311,10 +297,10 @@ op_star
 id|alg
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Transforms: user-instantiated objects which encapsulate algorithms&n; * and core processing logic.  Managed via crypto_alloc_tfm() and&n; * crypto_free_tfm(), as well as the various helpers below.&n; */
 r_struct
 id|crypto_tfm
 suffix:semicolon
-multiline_comment|/*&n; * Transformations: user-instantiated algorithms.&n; */
 DECL|struct|cipher_tfm
 r_struct
 id|cipher_tfm
@@ -587,18 +573,22 @@ id|__crt_alg
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Finds specified algorithm, allocates and returns a transform for it.&n; * Will try an load a module based on the name if not present&n; * in the kernel.  Increments its algorithm refcount.&n; */
+multiline_comment|/* &n; * Transform user interface.&n; */
+multiline_comment|/*&n; * crypto_alloc_tfm() will first attempt to locate an already loaded algorithm.&n; * If that fails and the kernel supports dynamically loadable modules, it&n; * will then attempt to load a module of the same name or alias.  A refcount&n; * is grabbed on the algorithm which is then associated with the new transform.&n; */
 r_struct
 id|crypto_tfm
 op_star
 id|crypto_alloc_tfm
 c_func
 (paren
+r_char
+op_star
+id|alg_name
+comma
 id|u32
-id|id
+id|tfm_flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Frees the transform and decrements its algorithm&squot;s recount.&n; */
 r_void
 id|crypto_free_tfm
 c_func
@@ -609,6 +599,147 @@ op_star
 id|tfm
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Transform helpers which query the underlying algorithm.&n; */
+DECL|function|crypto_tfm_alg_name
+r_static
+r_inline
+r_char
+op_star
+id|crypto_tfm_alg_name
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_name
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_modname
+r_static
+r_inline
+r_const
+r_char
+op_star
+id|crypto_tfm_alg_modname
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_struct
+id|crypto_alg
+op_star
+id|alg
+op_assign
+id|tfm-&gt;__crt_alg
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|alg-&gt;cra_module
+)paren
+r_return
+id|alg-&gt;cra_module-&gt;name
+suffix:semicolon
+r_else
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_type
+r_static
+r_inline
+id|u32
+id|crypto_tfm_alg_type
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_flags
+op_amp
+id|CRYPTO_ALG_TYPE_MASK
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_keysize
+r_static
+r_inline
+r_int
+id|crypto_tfm_alg_keysize
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_keysize
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_ivsize
+r_static
+r_inline
+r_int
+id|crypto_tfm_alg_ivsize
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_ivsize
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_blocksize
+r_static
+r_inline
+r_int
+id|crypto_tfm_alg_blocksize
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_blocksize
+suffix:semicolon
+)brace
+DECL|function|crypto_tfm_alg_digestsize
+r_static
+r_inline
+r_int
+id|crypto_tfm_alg_digestsize
+c_func
+(paren
+r_struct
+id|crypto_tfm
+op_star
+id|tfm
+)paren
+(brace
+r_return
+id|tfm-&gt;__crt_alg-&gt;cra_digest.dia_digestsize
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * API wrappers.&n; */
 DECL|function|crypto_digest_init
 r_static
@@ -963,148 +1094,6 @@ c_func
 (paren
 id|tfm
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Transform helpers which allow the underlying algorithm to be queried.&n; */
-DECL|function|crypto_tfm_id
-r_static
-r_inline
-r_int
-id|crypto_tfm_id
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_id
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_alg
-r_static
-r_inline
-r_int
-id|crypto_tfm_alg
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_id
-op_amp
-id|CRYPTO_ALG_MASK
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_name
-r_static
-r_inline
-r_char
-op_star
-id|crypto_tfm_name
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_name
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_type
-r_static
-r_inline
-id|u32
-id|crypto_tfm_type
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_id
-op_amp
-id|CRYPTO_TYPE_MASK
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_keysize
-r_static
-r_inline
-r_int
-id|crypto_tfm_keysize
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_keysize
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_ivsize
-r_static
-r_inline
-r_int
-id|crypto_tfm_ivsize
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_cipher.cia_ivsize
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_blocksize
-r_static
-r_inline
-r_int
-id|crypto_tfm_blocksize
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_blocksize
-suffix:semicolon
-)brace
-DECL|function|crypto_tfm_digestsize
-r_static
-r_inline
-r_int
-id|crypto_tfm_digestsize
-c_func
-(paren
-r_struct
-id|crypto_tfm
-op_star
-id|tfm
-)paren
-(brace
-r_return
-id|tfm-&gt;__crt_alg-&gt;cra_digest.dia_digestsize
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* _LINUX_CRYPTO_H */
