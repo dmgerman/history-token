@@ -2156,6 +2156,13 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tty_vhangup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_vhangup
+)paren
+suffix:semicolon
 DECL|function|tty_hung_up_p
 r_int
 id|tty_hung_up_p
