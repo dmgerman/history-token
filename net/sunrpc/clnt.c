@@ -376,11 +376,12 @@ id|clnt-&gt;cl_stats
 op_assign
 id|program-&gt;stats
 suffix:semicolon
-id|clnt-&gt;cl_bindwait
-op_assign
-id|RPC_INIT_WAITQ
+id|INIT_RPC_WAITQ
 c_func
 (paren
+op_amp
+id|clnt-&gt;cl_bindwait
+comma
 l_string|&quot;bindwait&quot;
 )paren
 suffix:semicolon

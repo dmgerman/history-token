@@ -14,15 +14,13 @@ id|svc_serv
 (brace
 DECL|member|sv_threads
 r_struct
-id|svc_rqst
-op_star
+id|list_head
 id|sv_threads
 suffix:semicolon
 multiline_comment|/* idle server threads */
 DECL|member|sv_sockets
 r_struct
-id|svc_sock
-op_star
+id|list_head
 id|sv_sockets
 suffix:semicolon
 multiline_comment|/* pending sockets */
@@ -64,8 +62,7 @@ suffix:semicolon
 multiline_comment|/* XDR buffer size */
 DECL|member|sv_allsocks
 r_struct
-id|svc_sock
-op_star
+id|list_head
 id|sv_allsocks
 suffix:semicolon
 multiline_comment|/* all sockets */
@@ -139,19 +136,12 @@ DECL|struct|svc_rqst
 r_struct
 id|svc_rqst
 (brace
-DECL|member|rq_prev
+DECL|member|rq_list
 r_struct
-id|svc_rqst
-op_star
-id|rq_prev
+id|list_head
+id|rq_list
 suffix:semicolon
 multiline_comment|/* idle list */
-DECL|member|rq_next
-r_struct
-id|svc_rqst
-op_star
-id|rq_next
-suffix:semicolon
 DECL|member|rq_sock
 r_struct
 id|svc_sock

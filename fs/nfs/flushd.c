@@ -18,15 +18,12 @@ multiline_comment|/*&n; * Various constants&n; */
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY         NFSDBG_PAGECACHE
 multiline_comment|/*&n; * This is the wait queue all cluster daemons sleep on&n; */
-DECL|variable|flushd_queue
 r_static
-r_struct
-id|rpc_wait_queue
-id|flushd_queue
-op_assign
-id|RPC_INIT_WAITQ
+id|RPC_WAITQ
 c_func
 (paren
+id|flushd_queue
+comma
 l_string|&quot;nfs_flushd&quot;
 )paren
 suffix:semicolon

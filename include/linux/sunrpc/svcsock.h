@@ -3,28 +3,20 @@ macro_line|#ifndef SUNRPC_SVCSOCK_H
 DECL|macro|SUNRPC_SVCSOCK_H
 mdefine_line|#define SUNRPC_SVCSOCK_H
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
-multiline_comment|/*&n; * RPC server socket.&n; * NOTE: First two items must be prev/next.&n; */
+multiline_comment|/*&n; * RPC server socket.&n; */
 DECL|struct|svc_sock
 r_struct
 id|svc_sock
 (brace
-DECL|member|sk_prev
+DECL|member|sk_ready
 r_struct
-id|svc_sock
-op_star
-id|sk_prev
+id|list_head
+id|sk_ready
 suffix:semicolon
 multiline_comment|/* list of ready sockets */
-DECL|member|sk_next
-r_struct
-id|svc_sock
-op_star
-id|sk_next
-suffix:semicolon
 DECL|member|sk_list
 r_struct
-id|svc_sock
-op_star
+id|list_head
 id|sk_list
 suffix:semicolon
 multiline_comment|/* list of all sockets */

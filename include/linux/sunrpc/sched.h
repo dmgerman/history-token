@@ -45,19 +45,12 @@ DECL|struct|rpc_task
 r_struct
 id|rpc_task
 (brace
-DECL|member|tk_prev
+DECL|member|tk_list
 r_struct
-id|rpc_task
-op_star
-id|tk_prev
+id|list_head
+id|tk_list
 suffix:semicolon
 multiline_comment|/* wait queue links */
-DECL|member|tk_next
-r_struct
-id|rpc_task
-op_star
-id|tk_next
-suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 DECL|member|tk_magic
 r_int
@@ -66,18 +59,10 @@ id|tk_magic
 suffix:semicolon
 multiline_comment|/* 0xf00baa */
 macro_line|#endif
-DECL|member|tk_next_task
+DECL|member|tk_task
 r_struct
-id|rpc_task
-op_star
-id|tk_next_task
-suffix:semicolon
-multiline_comment|/* global list of tasks */
-DECL|member|tk_prev_task
-r_struct
-id|rpc_task
-op_star
-id|tk_prev_task
+id|list_head
+id|tk_task
 suffix:semicolon
 multiline_comment|/* global list of tasks */
 DECL|member|tk_client
@@ -259,6 +244,14 @@ DECL|macro|tk_auth
 mdefine_line|#define tk_auth&t;&t;&t;tk_client-&gt;cl_auth
 DECL|macro|tk_xprt
 mdefine_line|#define tk_xprt&t;&t;&t;tk_client-&gt;cl_xprt
+multiline_comment|/* support walking a list of tasks on a wait queue */
+DECL|macro|task_for_each
+mdefine_line|#define&t;task_for_each(task, pos, head) &bslash;&n;&t;list_for_each(pos, head) &bslash;&n;&t;&t;if ((task=list_entry(pos, struct rpc_task, tk_list)),1)
+DECL|macro|task_for_first
+mdefine_line|#define&t;task_for_first(task, head) &bslash;&n;&t;if (!list_empty(head) &amp;&amp;  &bslash;&n;&t;    ((task=list_entry((head)-&gt;next, struct rpc_task, tk_list)),1))
+multiline_comment|/* .. and walking list of all tasks */
+DECL|macro|alltask_for_each
+mdefine_line|#define&t;alltask_for_each(task, pos, head) &bslash;&n;&t;list_for_each(pos, head) &bslash;&n;&t;&t;if ((task=list_entry(pos, struct rpc_task, tk_task)),1)
 DECL|typedef|rpc_action
 r_typedef
 r_void
@@ -328,11 +321,10 @@ DECL|struct|rpc_wait_queue
 r_struct
 id|rpc_wait_queue
 (brace
-DECL|member|task
+DECL|member|tasks
 r_struct
-id|rpc_task
-op_star
-id|task
+id|list_head
+id|tasks
 suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 DECL|member|name
@@ -344,11 +336,19 @@ macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#ifndef RPC_DEBUG
-DECL|macro|RPC_INIT_WAITQ
-macro_line|# define RPC_INIT_WAITQ(name)&t;((struct rpc_wait_queue) { NULL })
+DECL|macro|RPC_WAITQ_INIT
+macro_line|# define RPC_WAITQ_INIT(var,qname) ((struct rpc_wait_queue) {LIST_HEAD_INIT(var)})
+DECL|macro|RPC_WAITQ
+macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var.tasks,qname)
+DECL|macro|INIT_RPC_WAITQ
+macro_line|# define INIT_RPC_WAITQ(ptr,qname) do { &bslash;&n;&t;INIT_LIST_HEAD(&amp;(ptr)-&gt;tasks); &bslash;&n;&t;} while(0)
 macro_line|#else
-DECL|macro|RPC_INIT_WAITQ
-macro_line|# define RPC_INIT_WAITQ(name)&t;((struct rpc_wait_queue) { NULL, name })
+DECL|macro|RPC_WAITQ_INIT
+macro_line|# define RPC_WAITQ_INIT(var,qname) ((struct rpc_wait_queue) {LIST_HEAD_INIT(var.tasks), qname})
+DECL|macro|RPC_WAITQ
+macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var,qname)
+DECL|macro|INIT_RPC_WAITQ
+macro_line|# define INIT_RPC_WAITQ(ptr,qname) do { &bslash;&n;&t;INIT_LIST_HEAD(&amp;(ptr)-&gt;tasks); (ptr)-&gt;name = qname; &bslash;&n;&t;} while(0)
 macro_line|#endif
 multiline_comment|/*&n; * Function prototypes&n; */
 r_struct
