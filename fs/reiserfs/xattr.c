@@ -2373,6 +2373,19 @@ id|buffer
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* We can&squot;t mark the inode dirty if it&squot;s not hashed. This is the case&n;     * when we&squot;re inheriting the default ACL. If we dirty it, the inode&n;     * gets marked dirty, but won&squot;t (ever) make it onto the dirty list until&n;     * it&squot;s synced explicitly to clear I_DIRTY. This is bad. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hlist_unhashed
+c_func
+(paren
+op_amp
+id|inode-&gt;i_hash
+)paren
+)paren
+(brace
 id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
@@ -2382,6 +2395,7 @@ id|mark_inode_dirty
 id|inode
 )paren
 suffix:semicolon
+)brace
 id|out_filp
 suffix:colon
 id|up
