@@ -1938,6 +1938,33 @@ id|US_FL_MODE_XLATE
 )paren
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_USB_STORAGE_SDDR55
+multiline_comment|/* SM part - aeb &lt;Andries.Brouwer@cwi.nl&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa109
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab Systems, Inc.&quot;
+comma
+l_string|&quot;USB to CF + SM Combo (LC1)&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_SDDR55
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
+macro_line|#endif
 multiline_comment|/* Datafab KECF-USB / Sagatek DCS-CF / Simpletech Flashlink UCF-100&n; * Only revision 1.13 tested (same for all of the above devices,&n; * based on the Datafab DF-UG-07 chip).  Needed for US_FL_FIX_INQUIRY.&n; * Submitted by Marek Michalkiewicz &lt;marekm@amelek.gda.pl&gt;.&n; * See also http://martin.wilck.bei.t-online.de/#kecf .&n; */
 id|UNUSUAL_DEV
 c_func
@@ -2212,31 +2239,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0ed1
-comma
-l_int|0x6660
-comma
-l_int|0x0100
-comma
-l_int|0x0300
-comma
-l_string|&quot;USB&quot;
-comma
-l_string|&quot;Solid state disk&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Submitted by Joris Struyve &lt;joris@struyve.be&gt; */
 id|UNUSUAL_DEV
 c_func
@@ -2277,6 +2279,31 @@ comma
 l_string|&quot;Jenoptik&quot;
 comma
 l_string|&quot;JD 5200 z3&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0ed1
+comma
+l_int|0x6660
+comma
+l_int|0x0100
+comma
+l_int|0x0300
+comma
+l_string|&quot;USB&quot;
+comma
+l_string|&quot;Solid state disk&quot;
 comma
 id|US_SC_DEVICE
 comma
