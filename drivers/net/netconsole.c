@@ -104,6 +104,13 @@ l_int|0xff
 comma
 )brace
 suffix:semicolon
+DECL|variable|configured
+r_static
+r_int
+id|configured
+op_assign
+l_int|0
+suffix:semicolon
 DECL|macro|MAX_PRINT_CHUNK
 mdefine_line|#define MAX_PRINT_CHUNK 1000
 DECL|function|write_msg
@@ -220,7 +227,7 @@ id|write_msg
 suffix:semicolon
 DECL|function|option_setup
 r_static
-r_int
+r_void
 id|option_setup
 c_func
 (paren
@@ -229,7 +236,9 @@ op_star
 id|opt
 )paren
 (brace
-r_return
+id|configured
+op_assign
+op_logical_neg
 id|netpoll_parse_options
 c_func
 (paren
@@ -265,14 +274,28 @@ c_func
 (paren
 id|config
 )paren
-op_logical_and
+)paren
+(brace
 id|option_setup
 c_func
 (paren
 id|config
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|configured
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;netconsole: not configured, aborting&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -280,9 +303,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|np.remote_ip
-op_logical_or
 id|netpoll_setup
 c_func
 (paren
