@@ -1436,6 +1436,9 @@ id|bio
 op_star
 id|bio
 suffix:semicolon
+r_int
+id|ret2
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1462,7 +1465,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|ret
+id|ret2
 op_assign
 id|dio_bio_complete
 c_func
@@ -1471,6 +1474,17 @@ id|dio
 comma
 id|bio
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|ret
+op_assign
+id|ret2
 suffix:semicolon
 )brace
 id|dio-&gt;reap_counter
