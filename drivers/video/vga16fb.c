@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &quot;vga.h&quot;
+macro_line|#include &lt;video/vga.h&gt;
 DECL|macro|GRAPHICS_ADDR_REG
 mdefine_line|#define GRAPHICS_ADDR_REG VGA_GFX_I&t;/* Graphics address register. */
 DECL|macro|GRAPHICS_DATA_REG
@@ -136,7 +136,7 @@ id|vga_state
 suffix:semicolon
 DECL|member|state
 r_struct
-id|fb_vgastate
+id|vgastate
 id|state
 suffix:semicolon
 DECL|member|ref_count
@@ -1191,7 +1191,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|fb_vgastate
+id|vgastate
 )paren
 )paren
 suffix:semicolon
@@ -1199,7 +1199,7 @@ id|par-&gt;state.flags
 op_assign
 l_int|8
 suffix:semicolon
-id|fb_save_vga
+id|save_vga
 c_func
 (paren
 op_amp
@@ -1272,7 +1272,7 @@ id|cnt
 op_eq
 l_int|1
 )paren
-id|fb_restore_vga
+id|restore_vga
 c_func
 (paren
 op_amp

@@ -259,6 +259,97 @@ macro_line|#ifdef __LITTLE_ENDIAN
 DECL|macro|VGA_OUTW_WRITE
 mdefine_line|#define VGA_OUTW_WRITE
 macro_line|#endif
+multiline_comment|/* VGA State Save and Restore */
+DECL|macro|VGA_SAVE_FONT0
+mdefine_line|#define VGA_SAVE_FONT0 1  /* save/restore plane 2 fonts&t;  */
+DECL|macro|VGA_SAVE_FONT1
+mdefine_line|#define VGA_SAVE_FONT1 2  /* save/restore plane 3 fonts   */
+DECL|macro|VGA_SAVE_TEXT
+mdefine_line|#define VGA_SAVE_TEXT  4  /* save/restore plane 0/1 fonts */
+DECL|macro|VGA_SAVE_FONTS
+mdefine_line|#define VGA_SAVE_FONTS 7  /* save/restore all fonts&t;  */
+DECL|macro|VGA_SAVE_MODE
+mdefine_line|#define VGA_SAVE_MODE  8  /* save/restore video mode &t;  */
+DECL|macro|VGA_SAVE_CMAP
+mdefine_line|#define VGA_SAVE_CMAP  16 /* save/restore color map/DAC   */
+DECL|struct|vgastate
+r_struct
+id|vgastate
+(brace
+DECL|member|vgabase
+id|caddr_t
+id|vgabase
+suffix:semicolon
+multiline_comment|/* mmio base, if supported &t;&t;   */
+DECL|member|flags
+id|__u32
+id|flags
+suffix:semicolon
+multiline_comment|/* what state[s] to save (see VGA_SAVE_*)  */
+DECL|member|membase
+id|__u32
+id|membase
+suffix:semicolon
+multiline_comment|/* VGA window base, 0 for default - 0xA000 */
+DECL|member|memsize
+id|__u32
+id|memsize
+suffix:semicolon
+multiline_comment|/* VGA window size, 0 for default 64K&t;   */
+DECL|member|depth
+id|__u32
+id|depth
+suffix:semicolon
+multiline_comment|/* current fb depth, not important&t;   */
+DECL|member|num_attr
+id|__u32
+id|num_attr
+suffix:semicolon
+multiline_comment|/* number of att registers, 0 for default  */
+DECL|member|num_crtc
+id|__u32
+id|num_crtc
+suffix:semicolon
+multiline_comment|/* number of crt registers, 0 for default  */
+DECL|member|num_gfx
+id|__u32
+id|num_gfx
+suffix:semicolon
+multiline_comment|/* number of gfx registers, 0 for default  */
+DECL|member|num_seq
+id|__u32
+id|num_seq
+suffix:semicolon
+multiline_comment|/* number of seq registers, 0 for default  */
+DECL|member|vidstate
+r_void
+op_star
+id|vidstate
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|save_vga
+c_func
+(paren
+r_struct
+id|vgastate
+op_star
+id|state
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|restore_vga
+c_func
+(paren
+r_struct
+id|vgastate
+op_star
+id|state
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * generic VGA port read/write&n; */
 DECL|function|vga_io_r
 r_static

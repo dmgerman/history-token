@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
@@ -5611,7 +5610,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|fb_vgastate
+id|vgastate
 )paren
 )paren
 suffix:semicolon
@@ -5633,7 +5632,7 @@ id|par-&gt;state.flags
 op_or_assign
 id|VGA_SAVE_CMAP
 suffix:semicolon
-id|fb_save_vga
+id|save_vga
 c_func
 (paren
 op_amp
@@ -5746,7 +5745,7 @@ op_amp
 id|par-&gt;initial_state.ext
 )paren
 suffix:semicolon
-id|fb_restore_vga
+id|restore_vga
 c_func
 (paren
 op_amp

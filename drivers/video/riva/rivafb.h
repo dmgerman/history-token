@@ -3,6 +3,7 @@ DECL|macro|__RIVAFB_H
 mdefine_line|#define __RIVAFB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
+macro_line|#include &lt;video/vga.h&gt;
 macro_line|#include &quot;riva_hw.h&quot;
 multiline_comment|/* GGI compatibility macros */
 DECL|macro|NUM_SEQ_REGS
@@ -109,7 +110,7 @@ id|current_state
 suffix:semicolon
 DECL|member|state
 r_struct
-id|fb_vgastate
+id|vgastate
 id|state
 suffix:semicolon
 DECL|member|ref_count
