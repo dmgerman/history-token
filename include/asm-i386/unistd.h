@@ -500,6 +500,12 @@ DECL|macro|__NR_io_submit
 mdefine_line|#define __NR_io_submit&t;&t;248
 DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;249
+DECL|macro|__NR_alloc_hugepages
+mdefine_line|#define __NR_alloc_hugepages&t;250
+DECL|macro|__NR_free_hugepages
+mdefine_line|#define __NR_free_hugepages&t;251
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;252
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
