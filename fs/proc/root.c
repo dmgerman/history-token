@@ -575,13 +575,6 @@ c_func
 id|proc_symlink
 )paren
 suffix:semicolon
-DECL|variable|proc_mknod
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_mknod
-)paren
-suffix:semicolon
 DECL|variable|proc_mkdir
 id|EXPORT_SYMBOL
 c_func
