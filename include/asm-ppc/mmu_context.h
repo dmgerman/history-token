@@ -315,6 +315,8 @@ id|next-&gt;pgd
 )paren
 suffix:semicolon
 )brace
+DECL|macro|deactivate_mm
+mdefine_line|#define deactivate_mm(tsk,mm)&t;do { } while (0)
 multiline_comment|/*&n; * After we have set current-&gt;mm to a new value, this activates&n; * the context for the new mm so we see the new mappings.&n; */
 DECL|function|activate_mm
 r_static
