@@ -7449,6 +7449,10 @@ id|hid-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|hid-&gt;intf
+op_assign
+id|intf
+suffix:semicolon
 id|hid-&gt;ifnum
 op_assign
 id|interface-&gt;desc.bInterfaceNumber

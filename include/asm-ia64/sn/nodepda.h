@@ -5,7 +5,6 @@ mdefine_line|#define _ASM_IA64_SN_NODEPDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/topology.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
@@ -98,6 +97,10 @@ id|nodepda_router_info_t
 op_star
 op_star
 id|npda_rip_last
+suffix:semicolon
+DECL|member|bist_lock
+id|spinlock_t
+id|bist_lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * The BTEs on this node are shared by the local cpus&n;&t; */
 DECL|member|bte_if

@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2003&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * (C) Copyright IBM Corp. 2001, 2004&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -1986,7 +1986,7 @@ id|sk
 op_assign
 id|asoc-&gt;base.sk
 suffix:semicolon
-multiline_comment|/* If it is a non-temporary association belonging to a TCP-style&n;&t; * listening socket, do not free it so that accept() can pick it&n;&t; * up later.&n;&t; */
+multiline_comment|/* If it is a non-temporary association belonging to a TCP-style&n;&t; * listening socket that is not closed, do not free it so that accept() &n;&t; * can pick it up later.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2010,6 +2010,12 @@ op_logical_and
 op_logical_neg
 id|asoc-&gt;temp
 )paren
+op_logical_and
+(paren
+id|sk-&gt;sk_shutdown
+op_ne
+id|SHUTDOWN_MASK
+)paren
 )paren
 r_return
 suffix:semicolon
@@ -2026,7 +2032,7 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ADDIP Section 4.1 ASCONF Chunk Procedures&n; * A4) Start a T-4 RTO timer, using the RTO value of the selected&n; * destination address (normally the primary path; see RFC2960&n; * section 6.4 for details).&n; */
+multiline_comment|/*&n; * ADDIP Section 4.1 ASCONF Chunk Procedures&n; * A4) Start a T-4 RTO timer, using the RTO value of the selected&n; * destination address (we use active path instead of primary path just&n; * because primary path may be inactive. &n; */
 DECL|function|sctp_cmd_setup_t4
 r_static
 r_void
@@ -2055,7 +2061,7 @@ id|t
 suffix:semicolon
 id|t
 op_assign
-id|asoc-&gt;peer.primary_path
+id|asoc-&gt;peer.active_path
 suffix:semicolon
 id|asoc-&gt;timeouts
 (braket

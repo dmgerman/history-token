@@ -28,7 +28,7 @@ macro_line|#undef  BT_DMP
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP( A... )
 macro_line|#endif
-macro_line|#ifndef CONFIG_BT_USB_ZERO_PACKET
+macro_line|#ifndef CONFIG_BT_HCIUSB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
 macro_line|#undef  URB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
@@ -49,6 +49,36 @@ id|bluetooth_ids
 )braket
 op_assign
 (brace
+multiline_comment|/* Broadcom BCM2033 without firmware */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0a5c
+comma
+l_int|0x2033
+)paren
+comma
+id|driver_info
+suffix:colon
+id|HCI_IGNORE
+)brace
+comma
+multiline_comment|/* Digianswer device */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x08fd
+comma
+l_int|0x0001
+)paren
+comma
+id|driver_info
+suffix:colon
+id|HCI_DIGIANSWER
+)brace
+comma
 multiline_comment|/* Generic Bluetooth USB device */
 (brace
 id|USB_DEVICE_INFO
@@ -70,6 +100,17 @@ c_func
 l_int|0x0bdb
 comma
 l_int|0x1002
+)paren
+)brace
+comma
+multiline_comment|/* ALPS Module with non-standard id */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x044e
+comma
+l_int|0x3002
 )paren
 )brace
 comma
@@ -95,31 +136,6 @@ id|usb
 comma
 id|bluetooth_ids
 )paren
-suffix:semicolon
-DECL|variable|ignore_ids
-r_static
-r_struct
-id|usb_device_id
-id|ignore_ids
-(braket
-)braket
-op_assign
-(brace
-multiline_comment|/* Broadcom BCM2033 without firmware */
-(brace
-id|USB_DEVICE
-c_func
-(paren
-l_int|0x0a5c
-comma
-l_int|0x2033
-)paren
-)brace
-comma
-(brace
-)brace
-multiline_comment|/* Terminating entry */
-)brace
 suffix:semicolon
 DECL|function|_urb_alloc
 r_struct
@@ -372,7 +388,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|__fill_isoc_desc
 r_static
 r_void
@@ -918,7 +934,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|hci_usb_isoc_rx_submit
 r_static
 r_int
@@ -1240,11 +1256,25 @@ c_func
 id|husb
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
 id|husb-&gt;isoc_iface
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|HCI_MAX_ISOC_RX
+suffix:semicolon
+id|i
+op_increment
 )paren
 id|hci_usb_isoc_rx_submit
 c_func
@@ -1872,7 +1902,7 @@ id|_urb-&gt;urb.setup_packet
 suffix:semicolon
 id|dr-&gt;bRequestType
 op_assign
-id|HCI_CTRL_REQ
+id|husb-&gt;ctrl_req
 suffix:semicolon
 id|dr-&gt;bRequest
 op_assign
@@ -2089,7 +2119,7 @@ id|_urb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|function|hci_usb_send_isoc
 r_static
 r_inline
@@ -2335,7 +2365,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 multiline_comment|/* Process SCO queue */
 id|q
 op_assign
@@ -2350,7 +2380,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|atomic_read
 c_func
 (paren
@@ -2362,6 +2391,8 @@ comma
 id|HCI_SCODATA_PKT
 )paren
 )paren
+OL
+id|HCI_MAX_ISOC_TX
 op_logical_and
 (paren
 id|skb
@@ -2642,7 +2673,7 @@ op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|HCI_SCODATA_PKT
 suffix:colon
@@ -2858,7 +2889,7 @@ id|EILSEQ
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|HCI_SCODATA_PKT
 suffix:colon
@@ -3169,7 +3200,7 @@ op_eq
 id|HCI_SCODATA_PKT
 )paren
 (brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_int
 id|i
 suffix:semicolon
@@ -3666,21 +3697,27 @@ id|udev-&gt;actconfig-&gt;interface
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* Check our black list */
 r_if
 c_cond
 (paren
-id|usb_match_id
-c_func
-(paren
-id|intf
-comma
-id|ignore_ids
-)paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_IGNORE
 )paren
 r_return
 op_minus
-id|EIO
+id|ENODEV
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+OG
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 multiline_comment|/* Check number of endpoints */
 r_if
@@ -3914,7 +3951,7 @@ id|ep
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_case
 id|USB_ENDPOINT_XFER_ISOC
 suffix:colon
@@ -3922,8 +3959,8 @@ r_if
 c_cond
 (paren
 id|ep-&gt;desc.wMaxPacketSize
-OL
-id|size
+template_param
+l_int|2
 )paren
 r_break
 suffix:semicolon
@@ -4004,7 +4041,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BT_USB_SCO
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren
@@ -4103,7 +4140,23 @@ id|intr_in_ep
 l_int|0
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_BT_USB_SCO
+r_if
+c_cond
+(paren
+id|id-&gt;driver_info
+op_amp
+id|HCI_DIGIANSWER
+)paren
+id|husb-&gt;ctrl_req
+op_assign
+id|HCI_DIGI_REQ
+suffix:semicolon
+r_else
+id|husb-&gt;ctrl_req
+op_assign
+id|HCI_CTRL_REQ
+suffix:semicolon
+macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 r_if
 c_cond
 (paren

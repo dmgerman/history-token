@@ -325,9 +325,13 @@ id|copy_one_pte
 c_func
 (paren
 r_struct
-id|mm_struct
+id|vm_area_struct
 op_star
-id|mm
+id|vma
+comma
+r_int
+r_int
+id|old_addr
 comma
 id|pte_t
 op_star
@@ -405,9 +409,13 @@ id|src
 suffix:semicolon
 id|pte
 op_assign
-id|ptep_get_and_clear
+id|ptep_clear_flush
 c_func
 (paren
+id|vma
+comma
+id|old_addr
+comma
 id|src
 )paren
 suffix:semicolon
@@ -607,7 +615,9 @@ op_assign
 id|copy_one_pte
 c_func
 (paren
-id|mm
+id|vma
+comma
+id|old_addr
 comma
 id|src
 comma
@@ -630,6 +640,8 @@ id|dst
 )paren
 suffix:semicolon
 )brace
+r_else
+multiline_comment|/*&n;&t;&t; * Why do we need this flush ? If there is no pte for&n;&t;&t; * old_addr, then there must not be a pte for it as well.&n;&t;&t; */
 id|flush_tlb_page
 c_func
 (paren

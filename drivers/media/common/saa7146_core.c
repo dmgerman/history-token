@@ -509,13 +509,6 @@ op_star
 id|pt
 )paren
 (brace
-r_struct
-id|scatterlist
-op_star
-id|slist
-op_assign
-l_int|NULL
-suffix:semicolon
 r_int
 id|pages
 op_assign
@@ -561,7 +554,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|slist
+id|pt-&gt;slist
 op_assign
 id|vmalloc_to_sg
 c_func
@@ -598,8 +591,12 @@ id|pt
 id|kfree
 c_func
 (paren
-id|slist
+id|pt-&gt;slist
 )paren
+suffix:semicolon
+id|pt-&gt;slist
+op_assign
+l_int|NULL
 suffix:semicolon
 id|vfree
 c_func
@@ -618,7 +615,7 @@ c_func
 (paren
 id|pci
 comma
-id|slist
+id|pt-&gt;slist
 comma
 id|pages
 comma
@@ -637,7 +634,7 @@ id|pci
 comma
 id|pt
 comma
-id|slist
+id|pt-&gt;slist
 comma
 id|slen
 )paren
@@ -647,7 +644,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* fixme: here&squot;s a memory leak: slist never gets freed by any other&n;&t;   function ...*/
 r_return
 id|mem
 suffix:semicolon
@@ -668,7 +664,6 @@ op_star
 id|pt
 )paren
 (brace
-singleline_comment|//fm&t;DEB_EE((&quot;pci:%p, pt:%p&bslash;n&quot;,pci,pt));
 r_if
 c_cond
 (paren
@@ -694,6 +689,25 @@ id|pt-&gt;cpu
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|pt-&gt;slist
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|pt-&gt;slist
+)paren
+suffix:semicolon
+id|pt-&gt;slist
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 DECL|function|saa7146_pgtable_alloc
 r_int
@@ -718,7 +732,6 @@ suffix:semicolon
 id|dma_addr_t
 id|dma_addr
 suffix:semicolon
-singleline_comment|//fm&t;DEB_EE((&quot;pci:%p, pt:%p&bslash;n&quot;,pci,pt));
 id|cpu
 op_assign
 id|pci_alloc_consistent
@@ -740,7 +753,6 @@ op_eq
 id|cpu
 )paren
 (brace
-singleline_comment|//fm&t;&t;ERR((&quot;pci_alloc_consistent() failed.&quot;));
 r_return
 op_minus
 id|ENOMEM

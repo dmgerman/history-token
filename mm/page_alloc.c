@@ -86,9 +86,13 @@ id|zone
 op_star
 id|zone_table
 (braket
-id|MAX_NR_ZONES
-op_star
-id|MAX_NUMNODES
+l_int|1
+op_lshift
+(paren
+id|ZONES_SHIFT
+op_plus
+id|NODES_SHIFT
+)paren
 )braket
 suffix:semicolon
 DECL|variable|zone_table
@@ -2289,9 +2293,6 @@ id|zone
 op_star
 op_star
 id|zones
-comma
-op_star
-id|classzone
 suffix:semicolon
 r_struct
 id|page
@@ -2344,17 +2345,13 @@ op_assign
 id|zonelist-&gt;zones
 suffix:semicolon
 multiline_comment|/* the list of zones suitable for gfp_mask */
-id|classzone
-op_assign
+r_if
+c_cond
+(paren
 id|zones
 (braket
 l_int|0
 )braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|classzone
 op_eq
 l_int|NULL
 )paren
@@ -2714,7 +2711,7 @@ suffix:semicolon
 id|try_to_free_pages
 c_func
 (paren
-id|classzone
+id|zones
 comma
 id|gfp_mask
 comma
@@ -2892,11 +2889,17 @@ id|gfp_mask
 op_amp
 id|__GFP_NOWARN
 )paren
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: page allocation failure.&quot;
 l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
 comma
@@ -2905,6 +2908,11 @@ comma
 id|order
 comma
 id|gfp_mask
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -3659,7 +3667,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu
@@ -3698,7 +3706,7 @@ id|cpu
 OL
 id|NR_CPUS
 op_logical_and
-id|cpu_online
+id|cpu_possible
 c_func
 (paren
 id|cpu
@@ -5146,11 +5154,13 @@ c_func
 (paren
 id|page
 comma
+id|NODEZONE
+c_func
+(paren
 id|nid
-op_star
-id|MAX_NR_ZONES
-op_plus
+comma
 id|zone
+)paren
 )paren
 suffix:semicolon
 id|set_page_count
@@ -5317,11 +5327,13 @@ id|batch
 suffix:semicolon
 id|zone_table
 (braket
+id|NODEZONE
+c_func
+(paren
 id|nid
-op_star
-id|MAX_NR_ZONES
-op_plus
+comma
 id|j
+)paren
 )braket
 op_assign
 id|zone
@@ -5383,6 +5395,12 @@ suffix:semicolon
 id|zone-&gt;free_pages
 op_assign
 l_int|0
+suffix:semicolon
+id|zone-&gt;temp_priority
+op_assign
+id|zone-&gt;prev_priority
+op_assign
+id|DEF_PRIORITY
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The per-cpu-pages pools are set to around 1000th of the&n;&t;&t; * size of the zone.  But no more than 1/4 of a meg - there&squot;s&n;&t;&t; * no point in going beyond the size of L2 cache.&n;&t;&t; *&n;&t;&t; * OK, so we don&squot;t know how big the cache is.  So guess.&n;&t;&t; */
 id|batch

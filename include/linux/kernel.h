@@ -481,6 +481,14 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|printk_ratelimit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|console_silent
 r_static
 r_inline

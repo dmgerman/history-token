@@ -60,6 +60,9 @@ DECL|macro|SGI_USEMACLONE
 mdefine_line|#define SGI_USEMACLONE&t;     151
 DECL|macro|TUN_MINOR
 mdefine_line|#define TUN_MINOR&t;     200
+r_struct
+id|device
+suffix:semicolon
 DECL|struct|miscdevice
 r_struct
 id|miscdevice
@@ -84,6 +87,12 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
 suffix:semicolon
 DECL|member|devfs_name
 r_char

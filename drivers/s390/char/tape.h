@@ -2,18 +2,29 @@ multiline_comment|/*&n; *  drivers/s390/char/tape.h&n; *    tape device driver f
 macro_line|#ifndef _TAPE_H
 DECL|macro|_TAPE_H
 mdefine_line|#define _TAPE_H
+macro_line|#include &lt;asm/ccwdev.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
+macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mtio.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;asm/ccwdev.h&gt;
-macro_line|#include &lt;asm/debug.h&gt;
-macro_line|#include &lt;asm/idals.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 r_struct
 id|gendisk
 suffix:semicolon
+multiline_comment|/*&n; * Define DBF_LIKE_HELL for lots of messages in the debug feature.&n; */
+DECL|macro|DBF_LIKE_HELL
+mdefine_line|#define DBF_LIKE_HELL
+macro_line|#ifdef  DBF_LIKE_HELL
+DECL|macro|DBF_LH
+mdefine_line|#define DBF_LH(level, str, ...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(tape_dbf_area, level, str, ## __VA_ARGS__); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|DBF_LH
+mdefine_line|#define DBF_LH(level, str, ...) do {} while(0)
+macro_line|#endif
 multiline_comment|/*&n; * macros s390 debug feature (dbf)&n; */
 DECL|macro|DBF_EVENT
 mdefine_line|#define DBF_EVENT(d_level, d_str...) &bslash;&n;do { &bslash;&n;&t;debug_sprintf_event(tape_dbf_area, d_level, d_str); &bslash;&n;} while (0)
@@ -33,8 +44,15 @@ DECL|macro|TAPEBLOCK_HSEC_S2B
 mdefine_line|#define TAPEBLOCK_HSEC_S2B&t;2
 DECL|macro|TAPEBLOCK_RETRIES
 mdefine_line|#define TAPEBLOCK_RETRIES&t;5
-DECL|macro|TAPE_BUSY
-mdefine_line|#define TAPE_BUSY(td) (td-&gt;treq != NULL)
+multiline_comment|/* Event types for hotplug */
+DECL|macro|TAPE_HOTPLUG_CHAR_ADD
+mdefine_line|#define TAPE_HOTPLUG_CHAR_ADD     1
+DECL|macro|TAPE_HOTPLUG_BLOCK_ADD
+mdefine_line|#define TAPE_HOTPLUG_BLOCK_ADD    2
+DECL|macro|TAPE_HOTPLUG_CHAR_REMOVE
+mdefine_line|#define TAPE_HOTPLUG_CHAR_REMOVE  3
+DECL|macro|TAPE_HOTPLUG_BLOCK_REMOVE
+mdefine_line|#define TAPE_HOTPLUG_BLOCK_REMOVE 4
 DECL|enum|tape_medium_state
 r_enum
 id|tape_medium_state
@@ -63,6 +81,9 @@ l_int|0
 comma
 DECL|enumerator|TS_IN_USE
 id|TS_IN_USE
+comma
+DECL|enumerator|TS_BLKUSE
+id|TS_BLKUSE
 comma
 DECL|enumerator|TS_INIT
 id|TS_INIT
@@ -336,30 +357,6 @@ id|tape_device
 op_star
 )paren
 suffix:semicolon
-DECL|member|assign
-r_int
-(paren
-op_star
-id|assign
-)paren
-(paren
-r_struct
-id|tape_device
-op_star
-)paren
-suffix:semicolon
-DECL|member|unassign
-r_int
-(paren
-op_star
-id|unassign
-)paren
-(paren
-r_struct
-id|tape_device
-op_star
-)paren
-suffix:semicolon
 DECL|member|irq
 r_int
 (paren
@@ -544,16 +541,24 @@ DECL|member|request_queue_lock
 id|spinlock_t
 id|request_queue_lock
 suffix:semicolon
-multiline_comment|/* Block frontend tasklet */
-DECL|member|tasklet
+multiline_comment|/* Task to move entries from block request to CCS request queue. */
+DECL|member|requeue_task
 r_struct
-id|tasklet_struct
-id|tasklet
+id|work_struct
+id|requeue_task
+suffix:semicolon
+DECL|member|requeue_scheduled
+id|atomic_t
+id|requeue_scheduled
 suffix:semicolon
 multiline_comment|/* Current position on the tape. */
 DECL|member|block_position
 r_int
 id|block_position
+suffix:semicolon
+DECL|member|medium_changed
+r_int
+id|medium_changed
 suffix:semicolon
 DECL|member|disk
 r_struct
@@ -630,11 +635,22 @@ r_struct
 id|list_head
 id|req_queue
 suffix:semicolon
+multiline_comment|/* Each tape device has (currently) two minor numbers. */
 DECL|member|first_minor
 r_int
 id|first_minor
 suffix:semicolon
-multiline_comment|/* each tape device has two minors */
+multiline_comment|/* Number of tapemarks required for correct termination. */
+DECL|member|required_tapemarks
+r_int
+id|required_tapemarks
+suffix:semicolon
+multiline_comment|/* Block ID of the BOF */
+DECL|member|bof
+r_int
+r_int
+id|bof
+suffix:semicolon
 multiline_comment|/* Character device frontend data */
 DECL|member|char_data
 r_struct
@@ -716,6 +732,21 @@ comma
 r_struct
 id|tape_request
 op_star
+)paren
+suffix:semicolon
+r_void
+id|tape_hotplug_event
+c_func
+(paren
+r_struct
+id|tape_device
+op_star
+comma
+r_int
+id|major
+comma
+r_int
+id|action
 )paren
 suffix:semicolon
 r_static
@@ -805,26 +836,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|tape_assign
-c_func
-(paren
-r_struct
-id|tape_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|tape_unassign
-c_func
-(paren
-r_struct
-id|tape_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|tape_mtop
 c_func
 (paren
@@ -835,6 +846,19 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tape_state_set
+c_func
+(paren
+r_struct
+id|tape_device
+op_star
+comma
+r_enum
+id|tape_state
 )paren
 suffix:semicolon
 r_extern
@@ -874,7 +898,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|tape_generic_remove
 c_func
 (paren
@@ -895,7 +919,21 @@ id|devindex
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_struct
+id|tape_device
+op_star
+id|tape_get_device_reference
+c_func
+(paren
+r_struct
+id|tape_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|tape_device
+op_star
 id|tape_put_device
 c_func
 (paren

@@ -5274,8 +5274,6 @@ op_assign
 id|generic_write_checks
 c_func
 (paren
-id|inode
-comma
 id|file
 comma
 op_amp
@@ -9117,6 +9115,10 @@ suffix:semicolon
 id|file-&gt;f_dentry
 op_assign
 id|dentry
+suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
 suffix:semicolon
 id|file-&gt;f_op
 op_assign

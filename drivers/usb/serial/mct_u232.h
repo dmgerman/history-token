@@ -52,9 +52,21 @@ DECL|macro|MCT_U232_SET_UNKNOWN2_REQUEST
 mdefine_line|#define MCT_U232_SET_UNKNOWN2_REQUEST   12  /* Unknown functionality */
 DECL|macro|MCT_U232_SET_UNKNOWN2_SIZE
 mdefine_line|#define MCT_U232_SET_UNKNOWN2_SIZE       1
-multiline_comment|/*&n; * Baud rate (divisor)&n; */
-DECL|macro|MCT_U232_BAUD_RATE
-mdefine_line|#define MCT_U232_BAUD_RATE(b)&t;&t;(115200/b)
+multiline_comment|/*&n; * Baud rate (divisor)&n; * Actually, there are two of them, MCT website calls them &quot;Philips solution&quot;&n; * and &quot;Intel solution&quot;. They are the regular MCT and &quot;Sitecom&quot; for us.&n; * This is pointless to document in the header, see the code for the bits.&n; */
+r_static
+r_int
+id|mct_u232_calculate_baud_rate
+c_func
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+comma
+r_int
+id|value
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Line Control Register (LCR)&n; */
 DECL|macro|MCT_U232_SET_BREAK
 mdefine_line|#define MCT_U232_SET_BREAK              0x40

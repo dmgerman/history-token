@@ -40,6 +40,16 @@ comma
 DECL|enumerator|DEV_STATE_TIMEOUT_KILL
 id|DEV_STATE_TIMEOUT_KILL
 comma
+DECL|enumerator|DEV_STATE_WAIT4IO
+id|DEV_STATE_WAIT4IO
+comma
+multiline_comment|/* special states for devices gone not operational */
+DECL|enumerator|DEV_STATE_DISCONNECTED
+id|DEV_STATE_DISCONNECTED
+comma
+DECL|enumerator|DEV_STATE_DISCONNECTED_SENSE_ID
+id|DEV_STATE_DISCONNECTED_SENSE_ID
+comma
 multiline_comment|/* last element! */
 DECL|enumerator|NR_DEV_STATES
 id|NR_DEV_STATES
@@ -198,8 +208,17 @@ op_star
 id|cdev
 )paren
 suffix:semicolon
+r_int
+id|ccw_device_register
+c_func
+(paren
+r_struct
+id|ccw_device
+op_star
+)paren
+suffix:semicolon
 r_void
-id|ccw_device_unregister
+id|ccw_device_do_unreg_rereg
 c_func
 (paren
 r_void

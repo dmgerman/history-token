@@ -58,7 +58,7 @@ suffix:semicolon
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;0
 DECL|function|pcibios_set_master
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_set_master
@@ -73,7 +73,7 @@ id|dev
 multiline_comment|/* No special bus mastering setup handling */
 )brace
 DECL|function|pcibios_penalize_isa_irq
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_penalize_isa_irq

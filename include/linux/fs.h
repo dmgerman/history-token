@@ -928,6 +928,12 @@ r_struct
 id|list_head
 id|bd_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * Private data.  You must have bd_claim&squot;ed the block_device&n;&t; * to use this.  NOTE:  bd_claim allows an owner to claim&n;&t; * the same device multiple times, the owner must take special&n;&t; * care to not mess up bd_private for that case.&n;&t; */
+DECL|member|bd_private
+r_int
+r_int
+id|bd_private
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Use sequence counter to get consistent i_size on 32-bit processors.&n; */
@@ -1357,6 +1363,19 @@ id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|block_device
+op_star
+id|I_BDEV
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 DECL|struct|fown_struct
 r_struct
 id|fown_struct
@@ -1532,6 +1551,7 @@ r_void
 op_star
 id|private_data
 suffix:semicolon
+macro_line|#ifdef CONFIG_EPOLL
 multiline_comment|/* Used by fs/eventpoll.c to link all the hooks to this file */
 DECL|member|f_ep_links
 r_struct
@@ -1541,6 +1561,13 @@ suffix:semicolon
 DECL|member|f_ep_lock
 id|spinlock_t
 id|f_ep_lock
+suffix:semicolon
+macro_line|#endif /* #ifdef CONFIG_EPOLL */
+DECL|member|f_mapping
+r_struct
+id|address_space
+op_star
+id|f_mapping
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4905,17 +4932,6 @@ id|dev_t
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|bd_acquire
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|bd_forget
 c_func
@@ -4939,20 +4955,6 @@ suffix:semicolon
 r_extern
 r_int
 id|blkdev_open
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|blkdev_close
 c_func
 (paren
 r_struct
@@ -6355,11 +6357,6 @@ id|generic_write_checks
 c_func
 (paren
 r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
 id|file
 op_star
 id|file
@@ -6824,7 +6821,7 @@ id|actor
 id|do_generic_mapping_read
 c_func
 (paren
-id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 comma
 op_amp
 id|filp-&gt;f_ra

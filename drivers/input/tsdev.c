@@ -9,6 +9,7 @@ mdefine_line|#define TSDEV_BUFFER_SIZE&t;64
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -26,6 +27,74 @@ macro_line|#ifndef CONFIG_INPUT_TSDEV_SCREEN_Y
 DECL|macro|CONFIG_INPUT_TSDEV_SCREEN_Y
 mdefine_line|#define CONFIG_INPUT_TSDEV_SCREEN_Y&t;320
 macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;James Simmons &lt;jsimmons@transvirtual.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Input driver to touchscreen converter&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|xres
+r_static
+r_int
+id|xres
+op_assign
+id|CONFIG_INPUT_TSDEV_SCREEN_X
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|xres
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|xres
+comma
+l_string|&quot;Horizontal screen resolution&quot;
+)paren
+suffix:semicolon
+DECL|variable|yres
+r_static
+r_int
+id|yres
+op_assign
+id|CONFIG_INPUT_TSDEV_SCREEN_Y
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|yres
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|yres
+comma
+l_string|&quot;Vertical screen resolution&quot;
+)paren
+suffix:semicolon
 DECL|struct|tsdev
 r_struct
 id|tsdev
@@ -151,20 +220,6 @@ id|tsdev_table
 (braket
 id|TSDEV_MINORS
 )braket
-suffix:semicolon
-DECL|variable|xres
-r_static
-r_int
-id|xres
-op_assign
-id|CONFIG_INPUT_TSDEV_SCREEN_X
-suffix:semicolon
-DECL|variable|yres
-r_static
-r_int
-id|yres
-op_assign
-id|CONFIG_INPUT_TSDEV_SCREEN_Y
 suffix:semicolon
 DECL|function|tsdev_fasync
 r_static
@@ -375,6 +430,20 @@ c_func
 l_string|&quot;input/ts%d&quot;
 comma
 id|tsdev-&gt;minor
+)paren
+suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|INPUT_MAJOR
+comma
+id|TSDEV_MINOR_BASE
+op_plus
+id|tsdev-&gt;minor
+)paren
 )paren
 suffix:semicolon
 id|tsdev_table
@@ -1398,6 +1467,28 @@ comma
 id|minor
 )paren
 suffix:semicolon
+id|class_simple_device_add
+c_func
+(paren
+id|input_class
+comma
+id|MKDEV
+c_func
+(paren
+id|INPUT_MAJOR
+comma
+id|TSDEV_MINOR_BASE
+op_plus
+id|minor
+)paren
+comma
+id|dev-&gt;dev
+comma
+l_string|&quot;ts%d&quot;
+comma
+id|minor
+)paren
+suffix:semicolon
 r_return
 op_amp
 id|tsdev-&gt;handle
@@ -1714,50 +1805,6 @@ id|module_exit
 c_func
 (paren
 id|tsdev_exit
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;James Simmons &lt;jsimmons@transvirtual.com&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Input driver to touchscreen converter&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|xres
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|xres
-comma
-l_string|&quot;Horizontal screen resolution&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|yres
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|yres
-comma
-l_string|&quot;Vertical screen resolution&quot;
 )paren
 suffix:semicolon
 eof

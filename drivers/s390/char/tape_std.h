@@ -2,6 +2,10 @@ multiline_comment|/*&n; *  drivers/s390/char/tape_34xx.h&n; *    standard tape d
 macro_line|#ifndef _TAPE_STD_H
 DECL|macro|_TAPE_STD_H
 mdefine_line|#define _TAPE_STD_H
+macro_line|#include &lt;asm/tape390.h&gt;
+multiline_comment|/*&n; * Biggest block size to handle. Currently 64K because we only build&n; * channel programs without data chaining.&n; */
+DECL|macro|MAX_BLOCKSIZE
+mdefine_line|#define MAX_BLOCKSIZE   65535
 multiline_comment|/*&n; * The CCW commands for the Tape type of command.&n; */
 DECL|macro|INVALID_00
 mdefine_line|#define INVALID_00&t;&t;0x00&t;/* Invalid cmd */
@@ -278,10 +282,19 @@ r_struct
 id|tape_device
 op_star
 comma
+r_struct
+id|display_struct
+op_star
+id|disp
+)paren
+suffix:semicolon
 r_int
-comma
-r_int
-r_int
+id|tape_std_terminate_write
+c_func
+(paren
+r_struct
+id|tape_device
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Standard magnetic tape commands. */

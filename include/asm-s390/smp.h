@@ -49,8 +49,6 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (S390_lowcore.cpu_data.cpu_nr)
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) cpu_isset(cpu, cpu_possible_map)
 DECL|function|hard_smp_processor_id
 r_extern
 id|__inline__

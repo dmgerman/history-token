@@ -24,6 +24,37 @@ DECL|macro|CMOS_READ
 mdefine_line|#define CMOS_READ(addr)&t;&t;__CMOS_READ(addr,b)
 DECL|macro|CMOS_WRITE
 mdefine_line|#define CMOS_WRITE(val,addr)&t;__CMOS_WRITE(val,addr,b)
+macro_line|#elif defined(CONFIG_SH_SECUREEDGE5410)
+macro_line|#include &lt;asm/snapgear/io.h&gt;
+DECL|macro|RTC_PORT
+mdefine_line|#define RTC_PORT(n)             SECUREEDGE_IOPORT_ADDR
+DECL|macro|CMOS_READ
+mdefine_line|#define CMOS_READ(addr)         secureedge5410_cmos_read(addr)
+DECL|macro|CMOS_WRITE
+mdefine_line|#define CMOS_WRITE(val,addr)    secureedge5410_cmos_write(val,addr)
+r_extern
+r_int
+r_char
+id|secureedge5410_cmos_read
+c_func
+(paren
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|secureedge5410_cmos_write
+c_func
+(paren
+r_int
+r_char
+id|val
+comma
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#elif defined(CONFIG_CPU_SH4)
 DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(n)&t;&t;(R64CNT+(n)*4)

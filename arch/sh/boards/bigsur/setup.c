@@ -11,23 +11,10 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/bigsur/io.h&gt;
 macro_line|#include &lt;asm/hd64465/hd64465.h&gt;
 macro_line|#include &lt;asm/bigsur/bigsur.h&gt;
-singleline_comment|//#define BIGSUR_DEBUG 3
-DECL|macro|BIGSUR_DEBUG
-macro_line|#undef BIGSUR_DEBUG
-macro_line|#ifdef BIGSUR_DEBUG
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(args...)&t;printk(args)
-DECL|macro|DIPRINTK
-mdefine_line|#define DIPRINTK(n, args...)&t;if (BIGSUR_DEBUG&gt;(n)) printk(args)
-macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(args...)
-DECL|macro|DIPRINTK
-mdefine_line|#define DIPRINTK(n, args...)
-macro_line|#endif /* BIGSUR_DEBUG */
 multiline_comment|/*===========================================================*/
 singleline_comment|//&t;&t;Big Sur Init Routines&t;
 multiline_comment|/*===========================================================*/
@@ -45,7 +32,66 @@ r_return
 l_string|&quot;Big Sur&quot;
 suffix:semicolon
 )brace
-DECL|function|platform_setup
+multiline_comment|/*&n; * The Machine Vector&n; */
+r_extern
+r_void
+id|heartbeat_bigsur
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|init_bigsur_IRQ
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|__initmv
+r_struct
+id|sh_machine_vector
+id|mv_bigsur
+id|__initmv
+op_assign
+(brace
+dot
+id|mv_nr_irqs
+op_assign
+id|NR_IRQS
+comma
+singleline_comment|// Defined in &lt;asm/irq.h&gt;
+dot
+id|mv_isa_port2addr
+op_assign
+id|bigsur_isa_port2addr
+comma
+dot
+id|mv_irq_demux
+op_assign
+id|bigsur_irq_demux
+comma
+dot
+id|mv_init_irq
+op_assign
+id|init_bigsur_IRQ
+comma
+macro_line|#ifdef CONFIG_HEARTBEAT
+dot
+id|mv_heartbeat
+op_assign
+id|heartbeat_bigsur
+comma
+macro_line|#endif
+)brace
+suffix:semicolon
+DECL|function|ALIAS_MV
+id|ALIAS_MV
+c_func
+(paren
+id|bigsur
+)paren
 r_int
 id|__init
 id|platform_setup
@@ -54,28 +100,6 @@ c_func
 r_void
 )paren
 (brace
-r_static
-r_int
-id|done
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* run this only once */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|MACH_BIGSUR
-op_logical_or
-id|done
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|done
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* Mask all 2nd level IRQ&squot;s */
 id|outb
 c_func
@@ -205,11 +229,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|setup_bigsur
-id|module_init
-c_func
-(paren
-id|setup_bigsur
-)paren
-suffix:semicolon
 eof

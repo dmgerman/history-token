@@ -10,14 +10,55 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;linux/libata.h&gt;
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_OF */
 DECL|macro|DRV_NAME
-mdefine_line|#define DRV_NAME&t;&quot;ata_k2&quot;
+mdefine_line|#define DRV_NAME&t;&quot;sata_svw&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.04&quot;
+multiline_comment|/* Taskfile registers offsets */
+DECL|macro|K2_SATA_TF_CMD_OFFSET
+mdefine_line|#define K2_SATA_TF_CMD_OFFSET&t;&t;0x00
+DECL|macro|K2_SATA_TF_DATA_OFFSET
+mdefine_line|#define K2_SATA_TF_DATA_OFFSET&t;&t;0x00
+DECL|macro|K2_SATA_TF_ERROR_OFFSET
+mdefine_line|#define K2_SATA_TF_ERROR_OFFSET&t;&t;0x04
+DECL|macro|K2_SATA_TF_NSECT_OFFSET
+mdefine_line|#define K2_SATA_TF_NSECT_OFFSET&t;&t;0x08
+DECL|macro|K2_SATA_TF_LBAL_OFFSET
+mdefine_line|#define K2_SATA_TF_LBAL_OFFSET&t;&t;0x0c
+DECL|macro|K2_SATA_TF_LBAM_OFFSET
+mdefine_line|#define K2_SATA_TF_LBAM_OFFSET&t;&t;0x10
+DECL|macro|K2_SATA_TF_LBAH_OFFSET
+mdefine_line|#define K2_SATA_TF_LBAH_OFFSET&t;&t;0x14
+DECL|macro|K2_SATA_TF_DEVICE_OFFSET
+mdefine_line|#define K2_SATA_TF_DEVICE_OFFSET&t;0x18
+DECL|macro|K2_SATA_TF_CMDSTAT_OFFSET
+mdefine_line|#define K2_SATA_TF_CMDSTAT_OFFSET      &t;0x1c
+DECL|macro|K2_SATA_TF_CTL_OFFSET
+mdefine_line|#define K2_SATA_TF_CTL_OFFSET&t;&t;0x20
+multiline_comment|/* DMA base */
+DECL|macro|K2_SATA_DMA_CMD_OFFSET
+mdefine_line|#define K2_SATA_DMA_CMD_OFFSET&t;&t;0x30
+multiline_comment|/* SCRs base */
+DECL|macro|K2_SATA_SCR_STATUS_OFFSET
+mdefine_line|#define K2_SATA_SCR_STATUS_OFFSET&t;0x40
+DECL|macro|K2_SATA_SCR_ERROR_OFFSET
+mdefine_line|#define K2_SATA_SCR_ERROR_OFFSET&t;0x44
+DECL|macro|K2_SATA_SCR_CONTROL_OFFSET
+mdefine_line|#define K2_SATA_SCR_CONTROL_OFFSET&t;0x48
+multiline_comment|/* Others */
+DECL|macro|K2_SATA_SICR1_OFFSET
+mdefine_line|#define K2_SATA_SICR1_OFFSET&t;&t;0x80
+DECL|macro|K2_SATA_SICR2_OFFSET
+mdefine_line|#define K2_SATA_SICR2_OFFSET&t;&t;0x84
+DECL|macro|K2_SATA_SIM_OFFSET
+mdefine_line|#define K2_SATA_SIM_OFFSET&t;&t;0x88
+multiline_comment|/* Port stride */
+DECL|macro|K2_SATA_PORT_OFFSET
+mdefine_line|#define K2_SATA_PORT_OFFSET&t;&t;0x100
 DECL|function|k2_sata_scr_read
 r_static
 id|u32
@@ -539,7 +580,7 @@ id|udma
 (brace
 multiline_comment|/* We need empty implementation, the core doesn&squot;t test for NULL&n;&t; * function pointer&n;&t; */
 )brace
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 multiline_comment|/*&n; * k2_sata_proc_info&n; * inout : decides on the direction of the dataflow and the meaning of the&n; *&t;   variables&n; * buffer: If inout==FALSE data is being written to it else read from it&n; * *start: If inout==FALSE start of the valid data in the buffer&n; * offset: If inout==FALSE offset from the beginning of the imaginary file&n; *&t;   from which we start writing into the buffer&n; * length: If inout==FALSE max number of bytes to be written into the buffer&n; *&t;   else number of bytes in the buffer&n; */
 DECL|function|k2_sata_proc_info
 r_static
@@ -547,6 +588,11 @@ r_int
 id|k2_sata_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|page
@@ -563,17 +609,9 @@ r_int
 id|count
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|hpnt
-suffix:semicolon
 r_struct
 id|ata_port
 op_star
@@ -589,40 +627,6 @@ id|len
 comma
 id|index
 suffix:semicolon
-multiline_comment|/* Find ourself. That&squot;s locking-broken, shitty etc... but thanks to&n;&t; * /proc/scsi interface and lack of state kept around in this driver,&n;&t; * its best I want to do for now...&n;&t; */
-id|hpnt
-op_assign
-id|scsi_hostlist
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|hpnt
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|hostno
-op_eq
-id|hpnt-&gt;host_no
-)paren
-r_break
-suffix:semicolon
-id|hpnt
-op_assign
-id|hpnt-&gt;next
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hpnt
-)paren
-r_return
-l_int|0
-suffix:semicolon
 multiline_comment|/* Find  the ata_port */
 id|ap
 op_assign
@@ -632,7 +636,7 @@ id|ata_port
 op_star
 )paren
 op_amp
-id|hpnt-&gt;hostdata
+id|shost-&gt;hostdata
 (braket
 l_int|0
 )braket
@@ -762,7 +766,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ALL_PPC */
+macro_line|#endif /* CONFIG_PPC_OF */
 DECL|variable|k2_sata_sht
 r_static
 id|Scsi_Host_Template
@@ -839,11 +843,12 @@ id|slave_configure
 op_assign
 id|ata_scsi_slave_config
 comma
-macro_line|#ifdef CONFIG_ALL_PPC
+macro_line|#ifdef CONFIG_PPC_OF
 dot
 id|proc_info
 op_assign
 id|k2_sata_proc_info
+comma
 macro_line|#endif
 dot
 id|bios_param
@@ -966,70 +971,74 @@ id|base
 id|port-&gt;cmd_addr
 op_assign
 id|base
+op_plus
+id|K2_SATA_TF_CMD_OFFSET
 suffix:semicolon
 id|port-&gt;data_addr
 op_assign
 id|base
+op_plus
+id|K2_SATA_TF_DATA_OFFSET
 suffix:semicolon
 id|port-&gt;error_addr
 op_assign
 id|base
 op_plus
-l_int|0x4
+id|K2_SATA_TF_ERROR_OFFSET
 suffix:semicolon
 id|port-&gt;nsect_addr
 op_assign
 id|base
 op_plus
-l_int|0x8
+id|K2_SATA_TF_NSECT_OFFSET
 suffix:semicolon
 id|port-&gt;lbal_addr
 op_assign
 id|base
 op_plus
-l_int|0xc
+id|K2_SATA_TF_LBAL_OFFSET
 suffix:semicolon
 id|port-&gt;lbam_addr
 op_assign
 id|base
 op_plus
-l_int|0x10
+id|K2_SATA_TF_LBAM_OFFSET
 suffix:semicolon
 id|port-&gt;lbah_addr
 op_assign
 id|base
 op_plus
-l_int|0x14
+id|K2_SATA_TF_LBAH_OFFSET
 suffix:semicolon
 id|port-&gt;device_addr
 op_assign
 id|base
 op_plus
-l_int|0x18
+id|K2_SATA_TF_DEVICE_OFFSET
 suffix:semicolon
 id|port-&gt;cmdstat_addr
 op_assign
 id|base
 op_plus
-l_int|0x1c
+id|K2_SATA_TF_CMDSTAT_OFFSET
 suffix:semicolon
 id|port-&gt;ctl_addr
 op_assign
 id|base
 op_plus
-l_int|0x20
+id|K2_SATA_TF_CTL_OFFSET
 suffix:semicolon
 id|port-&gt;bmdma_addr
 op_assign
 id|base
 op_plus
-l_int|0x30
+id|K2_SATA_DMA_CMD_OFFSET
 suffix:semicolon
 id|port-&gt;scr_addr
 op_assign
 id|base
 op_plus
-l_int|0x40
+id|K2_SATA_SCR_STATUS_OFFSET
 suffix:semicolon
 )brace
 DECL|function|k2_sata_init_one
@@ -1105,6 +1114,25 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+multiline_comment|/*&n;&t; * Check if we have resources mapped at all (second function may&n;&t; * have been disabled by firmware)&n;&t; */
+r_if
+c_cond
+(paren
+id|pci_resource_len
+c_func
+(paren
+id|pdev
+comma
+l_int|5
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Request PCI regions */
 id|rc
 op_assign
 id|pci_request_regions
@@ -1244,40 +1272,6 @@ r_int
 )paren
 id|mmio_base
 suffix:semicolon
-multiline_comment|/*&n;&t; * Check for the &quot;disabled&quot; second function to avoid registering&n;&t; * useless interfaces on K2&n;&t; */
-r_if
-c_cond
-(paren
-id|readl
-c_func
-(paren
-id|mmio_base
-op_plus
-l_int|0x40
-)paren
-op_eq
-l_int|0xffffffffUL
-op_logical_and
-id|readl
-c_func
-(paren
-id|mmio_base
-op_plus
-l_int|0x140
-)paren
-op_eq
-l_int|0xffffffffUL
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|err_out_unmap
-suffix:semicolon
-)brace
 multiline_comment|/* Clear a magic bit in SCR1 according to Darwin, those help&n;&t; * some funky seagate drives (though so far, those were already&n;&t; * set by the firmware on the machines I had access to&n;&t; */
 id|writel
 c_func
@@ -1287,7 +1281,7 @@ c_func
 (paren
 id|mmio_base
 op_plus
-l_int|0x80
+id|K2_SATA_SICR1_OFFSET
 )paren
 op_amp
 op_complement
@@ -1295,7 +1289,7 @@ l_int|0x00040000
 comma
 id|mmio_base
 op_plus
-l_int|0x80
+id|K2_SATA_SICR1_OFFSET
 )paren
 suffix:semicolon
 multiline_comment|/* Clear SATA error &amp; interrupts we don&squot;t use */
@@ -1306,7 +1300,7 @@ l_int|0xffffffff
 comma
 id|mmio_base
 op_plus
-l_int|0x44
+id|K2_SATA_SCR_ERROR_OFFSET
 )paren
 suffix:semicolon
 id|writel
@@ -1316,7 +1310,7 @@ l_int|0x0
 comma
 id|mmio_base
 op_plus
-l_int|0x88
+id|K2_SATA_SIM_OFFSET
 )paren
 suffix:semicolon
 id|probe_ent-&gt;sht
@@ -1341,7 +1335,7 @@ id|k2_sata_ops
 suffix:semicolon
 id|probe_ent-&gt;n_ports
 op_assign
-l_int|2
+l_int|4
 suffix:semicolon
 id|probe_ent-&gt;irq
 op_assign
@@ -1355,15 +1349,16 @@ id|probe_ent-&gt;mmio_base
 op_assign
 id|mmio_base
 suffix:semicolon
-multiline_comment|/*&n;&t; * We don&squot;t care much about the PIO/UDMA masks, but the core won&squot;t like us&n;&t; * if we don&squot;t fill these&n;&t; */
+multiline_comment|/* We don&squot;t care much about the PIO/UDMA masks, but the core won&squot;t like us&n;&t; * if we don&squot;t fill these&n;&t; */
 id|probe_ent-&gt;pio_mask
 op_assign
 l_int|0x1f
 suffix:semicolon
 id|probe_ent-&gt;udma_mask
 op_assign
-l_int|0x7f
+l_int|0x3f
 suffix:semicolon
+multiline_comment|/* We have 4 ports per PCI function */
 id|k2_sata_setup_port
 c_func
 (paren
@@ -1374,6 +1369,10 @@ l_int|0
 )braket
 comma
 id|base
+op_plus
+l_int|0
+op_star
+id|K2_SATA_PORT_OFFSET
 )paren
 suffix:semicolon
 id|k2_sata_setup_port
@@ -1387,7 +1386,41 @@ l_int|1
 comma
 id|base
 op_plus
-l_int|0x100
+l_int|1
+op_star
+id|K2_SATA_PORT_OFFSET
+)paren
+suffix:semicolon
+id|k2_sata_setup_port
+c_func
+(paren
+op_amp
+id|probe_ent-&gt;port
+(braket
+l_int|2
+)braket
+comma
+id|base
+op_plus
+l_int|2
+op_star
+id|K2_SATA_PORT_OFFSET
+)paren
+suffix:semicolon
+id|k2_sata_setup_port
+c_func
+(paren
+op_amp
+id|probe_ent-&gt;port
+(braket
+l_int|3
+)braket
+comma
+id|base
+op_plus
+l_int|3
+op_star
+id|K2_SATA_PORT_OFFSET
 )paren
 suffix:semicolon
 id|pci_set_master
@@ -1411,18 +1444,6 @@ id|probe_ent
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|err_out_unmap
-suffix:colon
-id|iounmap
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|base
-)paren
 suffix:semicolon
 id|err_out_free_ent
 suffix:colon

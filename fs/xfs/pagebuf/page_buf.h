@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Written by Steve Lord, Jim Mostek, Russell Cattelan at SGI&n; */
 macro_line|#ifndef __PAGE_BUF_H__
 DECL|macro|__PAGE_BUF_H__
@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-multiline_comment|/*&n; * Turn this on to get pagebuf lock ownership&n;#define PAGEBUF_LOCK_TRACKING&n;*/
 multiline_comment|/*&n; *&t;Base types&n; */
 multiline_comment|/* daddr must be signed since -1 is used for bmaps that are not yet allocated */
 DECL|typedef|page_buf_daddr_t
@@ -22,12 +21,6 @@ id|page_buf_daddr_t
 suffix:semicolon
 DECL|macro|PAGE_BUF_DADDR_NULL
 mdefine_line|#define PAGE_BUF_DADDR_NULL ((page_buf_daddr_t) (-1LL))
-DECL|typedef|page_buf_dsize_t
-r_typedef
-r_int
-id|page_buf_dsize_t
-suffix:semicolon
-multiline_comment|/* size of buffer in blocks */
 DECL|macro|page_buf_ctob
 mdefine_line|#define page_buf_ctob(pp)&t;((pp) * PAGE_CACHE_SIZE)
 DECL|macro|page_buf_btoc
@@ -61,153 +54,6 @@ multiline_comment|/* Zero target memory */
 DECL|typedef|page_buf_rw_t
 )brace
 id|page_buf_rw_t
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-multiline_comment|/* pbm_flags values */
-DECL|enumerator|PBMF_EOF
-id|PBMF_EOF
-op_assign
-l_int|0x01
-comma
-multiline_comment|/* mapping contains EOF&t;&t;*/
-DECL|enumerator|PBMF_HOLE
-id|PBMF_HOLE
-op_assign
-l_int|0x02
-comma
-multiline_comment|/* mapping covers a hole&t;*/
-DECL|enumerator|PBMF_DELAY
-id|PBMF_DELAY
-op_assign
-l_int|0x04
-comma
-multiline_comment|/* mapping covers delalloc region  */
-DECL|enumerator|PBMF_UNWRITTEN
-id|PBMF_UNWRITTEN
-op_assign
-l_int|0x20
-comma
-multiline_comment|/* mapping covers allocated&t;*/
-multiline_comment|/* but uninitialized file data&t;*/
-DECL|enumerator|PBMF_NEW
-id|PBMF_NEW
-op_assign
-l_int|0x40
-multiline_comment|/* just allocated&t;&t;*/
-DECL|typedef|bmap_flags_t
-)brace
-id|bmap_flags_t
-suffix:semicolon
-r_typedef
-r_enum
-(brace
-multiline_comment|/* base extent manipulation calls */
-DECL|enumerator|BMAP_READ
-id|BMAP_READ
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|0
-)paren
-comma
-multiline_comment|/* read extents */
-DECL|enumerator|BMAP_WRITE
-id|BMAP_WRITE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|1
-)paren
-comma
-multiline_comment|/* create extents */
-DECL|enumerator|BMAP_ALLOCATE
-id|BMAP_ALLOCATE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* delayed allocate to real extents */
-DECL|enumerator|BMAP_UNWRITTEN
-id|BMAP_UNWRITTEN
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|3
-)paren
-comma
-multiline_comment|/* unwritten extents to real extents */
-multiline_comment|/* modifiers */
-DECL|enumerator|BMAP_IGNSTATE
-id|BMAP_IGNSTATE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|4
-)paren
-comma
-multiline_comment|/* ignore unwritten state on read */
-DECL|enumerator|BMAP_DIRECT
-id|BMAP_DIRECT
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-comma
-multiline_comment|/* direct instead of buffered write */
-DECL|enumerator|BMAP_MMAP
-id|BMAP_MMAP
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|6
-)paren
-comma
-multiline_comment|/* allocate for mmap write */
-DECL|enumerator|BMAP_SYNC
-id|BMAP_SYNC
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
-comma
-multiline_comment|/* sync write */
-DECL|enumerator|BMAP_TRYLOCK
-id|BMAP_TRYLOCK
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|8
-)paren
-comma
-multiline_comment|/* non-blocking request */
-DECL|enumerator|BMAP_DEVICE
-id|BMAP_DEVICE
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|9
-)paren
-comma
-multiline_comment|/* we only want to know the device */
-DECL|typedef|bmapi_flags_t
-)brace
-id|bmapi_flags_t
 suffix:semicolon
 DECL|enum|page_buf_flags_e
 r_typedef
@@ -426,9 +272,9 @@ op_lshift
 l_int|20
 )paren
 comma
-multiline_comment|/* pb_mem+underlying pages alloc&squot;d */
-DECL|enumerator|PBF_FORCEIO
-id|PBF_FORCEIO
+multiline_comment|/* underlying pages are allocated  */
+DECL|enumerator|_PBF_MEM_SLAB
+id|_PBF_MEM_SLAB
 op_assign
 (paren
 l_int|1
@@ -436,13 +282,24 @@ op_lshift
 l_int|21
 )paren
 comma
+multiline_comment|/* underlying pages are slab allocated  */
+DECL|enumerator|PBF_FORCEIO
+id|PBF_FORCEIO
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|22
+)paren
+comma
+multiline_comment|/* ignore any cache state&t;&t;   */
 DECL|enumerator|PBF_FLUSH
 id|PBF_FLUSH
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|22
+l_int|23
 )paren
 comma
 multiline_comment|/* flush disk write cache&t;&t;   */
@@ -452,16 +309,17 @@ op_assign
 (paren
 l_int|1
 op_lshift
-l_int|23
+l_int|24
 )paren
 comma
+multiline_comment|/* asynchronous read-ahead&t;&t;   */
 DECL|enumerator|PBF_RUN_QUEUES
 id|PBF_RUN_QUEUES
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|24
+l_int|25
 )paren
 comma
 multiline_comment|/* run block device task queue&t;   */
@@ -513,52 +371,6 @@ suffix:semicolon
 DECL|typedef|pb_target_t
 )brace
 id|pb_target_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;page_buf_bmap_t:  File system I/O map&n; *&n; * The pbm_bn, pbm_offset and pbm_length fields are expressed in disk blocks.&n; * The pbm_length field specifies the size of the underlying backing store&n; * for the particular mapping.&n; *&n; * The pbm_bsize, pbm_size and pbm_delta fields are in bytes and indicate&n; * the size of the mapping, the number of bytes that are valid to access&n; * (read or write), and the offset into the mapping, given the offset&n; * supplied to the file I/O map routine.  pbm_delta is the offset of the&n; * desired data from the beginning of the mapping.&n; *&n; * When a request is made to read beyond the logical end of the object,&n; * pbm_size may be set to 0, but pbm_offset and pbm_length should be set to&n; * the actual amount of underlying storage that has been allocated, if any.&n; */
-DECL|struct|page_buf_bmap_s
-r_typedef
-r_struct
-id|page_buf_bmap_s
-(brace
-DECL|member|pbm_bn
-id|page_buf_daddr_t
-id|pbm_bn
-suffix:semicolon
-multiline_comment|/* block number in file system&t;    */
-DECL|member|pbm_target
-id|pb_target_t
-op_star
-id|pbm_target
-suffix:semicolon
-multiline_comment|/* device to do I/O to&t;&t;    */
-DECL|member|pbm_offset
-id|loff_t
-id|pbm_offset
-suffix:semicolon
-multiline_comment|/* byte offset of mapping in file   */
-DECL|member|pbm_delta
-r_int
-id|pbm_delta
-suffix:semicolon
-multiline_comment|/* offset of request into bmap&t;    */
-DECL|member|pbm_bsize
-r_int
-id|pbm_bsize
-suffix:semicolon
-multiline_comment|/* size of this mapping in bytes    */
-DECL|member|pbm_flags
-id|bmap_flags_t
-id|pbm_flags
-suffix:semicolon
-multiline_comment|/* options flags for mapping&t;    */
-DECL|typedef|page_buf_bmap_t
-)brace
-id|page_buf_bmap_t
-suffix:semicolon
-DECL|typedef|pb_bmap_t
-r_typedef
-id|page_buf_bmap_t
-id|pb_bmap_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
 r_struct
@@ -1247,5 +1059,39 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef PAGEBUF_TRACE
+r_extern
+id|ktrace_t
+op_star
+id|pagebuf_trace_buf
+suffix:semicolon
+r_extern
+r_void
+id|pagebuf_trace
+c_func
+(paren
+id|page_buf_t
+op_star
+comma
+multiline_comment|/* buffer being traced&t;&t;*/
+r_char
+op_star
+comma
+multiline_comment|/* description of operation&t;*/
+r_void
+op_star
+comma
+multiline_comment|/* arbitrary diagnostic value&t;*/
+r_void
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* return address&t;&t;*/
+macro_line|#else
+DECL|macro|pagebuf_trace
+macro_line|# define pagebuf_trace(pb, id, ptr, ra)&t;do { } while (0)
+macro_line|#endif
+DECL|macro|pagebuf_target_name
+mdefine_line|#define pagebuf_target_name(target)&t;&bslash;&n;&t;({ char __b[BDEVNAME_SIZE]; bdevname((target)-&gt;pbr_bdev, __b); __b; })
 macro_line|#endif /* __PAGE_BUF_H__ */
 eof

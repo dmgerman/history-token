@@ -519,4 +519,11 @@ id|direction
 )paren
 suffix:semicolon
 )brace
+DECL|variable|consistent_sync_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|consistent_sync_page
+)paren
+suffix:semicolon
 eof

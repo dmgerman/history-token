@@ -1274,17 +1274,6 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-DECL|function|pcibios_fixup
-r_void
-id|__init
-id|pcibios_fixup
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* Do nothing. */
-)brace
 DECL|function|pcibios_fixup_irqs
 r_void
 id|__init

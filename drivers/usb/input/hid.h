@@ -683,6 +683,13 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* USB device */
+DECL|member|intf
+r_struct
+id|usb_interface
+op_star
+id|intf
+suffix:semicolon
+multiline_comment|/* USB interface */
 DECL|member|ifnum
 r_int
 id|ifnum
@@ -1291,6 +1298,16 @@ id|report
 comma
 r_int
 id|type
+)paren
+suffix:semicolon
+r_int
+id|hid_wait_io
+c_func
+(paren
+r_struct
+id|hid_device
+op_star
+id|hid
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HID_FF

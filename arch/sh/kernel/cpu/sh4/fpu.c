@@ -1,8 +1,11 @@
-multiline_comment|/* $Id: fpu.c,v 1.2 2003/05/04 19:29:54 lethal Exp $&n; *&n; * linux/arch/sh/kernel/fpu.c&n; *&n; * Save/restore floating point context for signal handlers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; * FIXME! These routines can be optimized in big endian case.&n; */
+multiline_comment|/* $Id: fpu.c,v 1.3 2003/09/23 23:15:44 lethal Exp $&n; *&n; * linux/arch/sh/kernel/fpu.c&n; *&n; * Save/restore floating point context for signal handlers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999, 2000  Kaz Kojima &amp; Niibe Yutaka&n; *&n; * FIXME! These routines can be optimized in big endian case.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+multiline_comment|/* The PR (precision) bit in the FP Status Register must be clear when&n; * an frchg instruction is executed, otherwise the instruction is undefined.&n; * Executing frchg with PR set causes a trap on some SH4 implementations.&n; */
+DECL|macro|FPSCR_RCHG
+mdefine_line|#define FPSCR_RCHG 0x00000000
 multiline_comment|/*&n; * Save FPU registers onto task structure.&n; * Assume called with FPU enabled (SR.FD=0).&n; */
 r_void
 DECL|function|save_fpu
@@ -54,7 +57,8 @@ l_string|&quot;fmov.s&t;fr4, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;fr3, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;fr2, @-%0&bslash;n&bslash;t&quot;
 l_string|&quot;fmov.s&t;fr1, @-%0&bslash;n&bslash;t&quot;
-l_string|&quot;fmov.s&t;fr0, @-%0&quot;
+l_string|&quot;fmov.s&t;fr0, @-%0&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%2, fpscr&bslash;n&bslash;t&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
@@ -68,6 +72,11 @@ op_star
 op_amp
 id|tsk-&gt;thread.fpu.hard.status
 )paren
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|FPSCR_RCHG
 )paren
 comma
 l_string|&quot;r&quot;
@@ -155,7 +164,7 @@ id|tsk-&gt;thread.fpu
 comma
 l_string|&quot;r&quot;
 (paren
-id|FPSCR_INIT
+id|FPSCR_RCHG
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -210,13 +219,19 @@ l_string|&quot;fsts&t;fpul, fr12&bslash;n&bslash;t&quot;
 l_string|&quot;fsts&t;fpul, fr13&bslash;n&bslash;t&quot;
 l_string|&quot;fsts&t;fpul, fr14&bslash;n&bslash;t&quot;
 l_string|&quot;fsts&t;fpul, fr15&bslash;n&bslash;t&quot;
-l_string|&quot;frchg&quot;
+l_string|&quot;frchg&bslash;n&bslash;t&quot;
+l_string|&quot;lds&t;%2, fpscr&bslash;n&bslash;t&quot;
 suffix:colon
 multiline_comment|/* no output */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
 l_int|0
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|FPSCR_RCHG
 )paren
 comma
 l_string|&quot;r&quot;

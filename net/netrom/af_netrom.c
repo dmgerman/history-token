@@ -4542,6 +4542,9 @@ l_string|&quot;NET/ROM: Appending user data&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* User data follows immediately after the NET/ROM transport header */
+r_if
+c_cond
+(paren
 id|memcpy_fromiovec
 c_func
 (paren
@@ -4551,7 +4554,23 @@ id|msg-&gt;msg_iov
 comma
 id|len
 )paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|SOCK_DEBUG
 c_func
 (paren

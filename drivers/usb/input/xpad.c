@@ -1136,6 +1136,11 @@ id|xpad-&gt;dev.id.version
 op_assign
 id|udev-&gt;descriptor.bcdDevice
 suffix:semicolon
+id|xpad-&gt;dev.dev
+op_assign
+op_amp
+id|intf-&gt;dev
+suffix:semicolon
 id|xpad-&gt;dev
 dot
 r_private

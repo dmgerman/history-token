@@ -19,6 +19,8 @@ DECL|macro|MAX_DESYNC_FACTOR
 mdefine_line|#define MAX_DESYNC_FACTOR&t;&t;(600)
 DECL|macro|ADDR_CHECK_FREQUENCY
 mdefine_line|#define ADDR_CHECK_FREQUENCY&t;&t;(120*HZ)
+DECL|macro|IPV6_MAX_ADDRESSES
+mdefine_line|#define IPV6_MAX_ADDRESSES&t;&t;16
 DECL|struct|prefix_info
 r_struct
 id|prefix_info
@@ -111,25 +113,6 @@ id|addrconf_cleanup
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|addrconf_notify
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|this
-comma
-r_int
-r_int
-id|event
-comma
-r_void
-op_star
-id|data
 )paren
 suffix:semicolon
 r_extern

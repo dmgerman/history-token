@@ -115,7 +115,7 @@ id|psc_present
 suffix:semicolon
 multiline_comment|/*&n; *&t;Access functions&n; */
 DECL|function|psc_write_byte
-r_extern
+r_static
 r_inline
 r_void
 id|psc_write_byte
@@ -146,7 +146,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|psc_write_word
-r_extern
+r_static
 r_inline
 r_void
 id|psc_write_word
@@ -177,7 +177,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|psc_write_long
-r_extern
+r_static
 r_inline
 r_void
 id|psc_write_long
@@ -208,7 +208,7 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|psc_read_byte
-r_extern
+r_static
 r_inline
 id|u8
 id|psc_read_byte
@@ -235,7 +235,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|psc_read_word
-r_extern
+r_static
 r_inline
 id|u16
 id|psc_read_word
@@ -262,7 +262,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|psc_read_long
-r_extern
+r_static
 r_inline
 id|u32
 id|psc_read_long

@@ -1,7 +1,11 @@
 multiline_comment|/*&n;    i801.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1998 - 2002  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;, and Mark D. Studebaker&n;    &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    SUPPORTED DEVICES&t;PCI ID&n;    82801AA&t;&t;2413           &n;    82801AB&t;&t;2423           &n;    82801BA&t;&t;2443           &n;    82801CA/CAM&t;&t;2483           &n;    82801DB&t;&t;24C3   (HW PEC supported, 32 byte buffer not supported)&n;    82801EB&t;&t;24D3   (HW PEC supported, 32 byte buffer not supported)&n;&n;    This driver supports several versions of Intel&squot;s I/O Controller Hubs (ICH).&n;    For SMBus support, they are similar to the PIIX4 and are part&n;    of Intel&squot;s &squot;810&squot; and other chipsets.&n;    See the doc/busses/i2c-i801 file for details.&n;    I2C Block Read and Process Call are not supported.&n;*/
 multiline_comment|/* Note: we assume there can only be one I801, with one SMBus interface */
-multiline_comment|/* #define DEBUG 1 */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_IOERROR_H
 DECL|macro|_ASM_IA64_SN_IOERROR_H
 mdefine_line|#define _ASM_IA64_SN_IOERROR_H
@@ -321,30 +321,10 @@ r_void
 op_star
 id|error_handler_arg_t
 suffix:semicolon
-r_extern
-r_void
-id|ioerror_dump
-c_func
-(paren
-r_char
-op_star
-comma
-r_int
-comma
-r_int
-comma
-id|ioerror_t
-op_star
-)paren
-suffix:semicolon
 macro_line|#ifdef&t;ERROR_DEBUG
-DECL|macro|IOERROR_DUMP
-mdefine_line|#define&t;IOERROR_DUMP(x, y, z, t)&t;ioerror_dump((x), (y), (z), (t))
 DECL|macro|IOERR_PRINTF
 mdefine_line|#define&t;IOERR_PRINTF(x)&t;(x)
 macro_line|#else
-DECL|macro|IOERROR_DUMP
-mdefine_line|#define&t;IOERROR_DUMP(x, y, z, t)
 DECL|macro|IOERR_PRINTF
 mdefine_line|#define&t;IOERR_PRINTF(x)
 macro_line|#endif&t;&t;&t;&t;/* ERROR_DEBUG */

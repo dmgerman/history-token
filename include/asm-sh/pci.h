@@ -8,33 +8,51 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 DECL|macro|pcibios_assign_all_busses
 mdefine_line|#define pcibios_assign_all_busses()&t;1
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_ST40STB1)
-multiline_comment|/* These are currently the correct values for the STM overdrive board. &n; * We need some way of setting this on a board specific way, it will &n; * not be the same on other boards I think&n; */
+multiline_comment|/*&n; * A board can define one or more PCI channels that represent built-in (or&n; * external) PCI controllers.&n; */
+DECL|struct|pci_channel
+r_struct
+id|pci_channel
+(brace
+DECL|member|pci_ops
+r_struct
+id|pci_ops
+op_star
+id|pci_ops
+suffix:semicolon
+DECL|member|io_resource
+r_struct
+id|resource
+op_star
+id|io_resource
+suffix:semicolon
+DECL|member|mem_resource
+r_struct
+id|resource
+op_star
+id|mem_resource
+suffix:semicolon
+DECL|member|first_devfn
+r_int
+id|first_devfn
+suffix:semicolon
+DECL|member|last_devfn
+r_int
+id|last_devfn
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Each board initializes this array and terminates it with a NULL entry.&n; */
+r_extern
+r_struct
+id|pci_channel
+id|board_pci_channels
+(braket
+)braket
+suffix:semicolon
 DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
+mdefine_line|#define PCIBIOS_MIN_IO&t;&t;board_pci_channels-&gt;io_resource-&gt;start
 DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
-macro_line|#elif defined(CONFIG_SH_DREAMCAST)
-DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
-DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
-macro_line|#elif defined(CONFIG_SH_BIGSUR) &amp;&amp; defined(CONFIG_CPU_SUBTYPE_SH7751)
-DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x2000
-DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0xFD000000
-macro_line|#elif defined(CONFIG_SH_7751_SOLUTION_ENGINE)
-DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO          0x4000
-DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM         0xFD000000
-macro_line|#elif defined(CONFIG_SH_MPC1211)
-DECL|macro|PCIBIOS_MIN_IO
-mdefine_line|#define PCIBIOS_MIN_IO          0x2000
-DECL|macro|PCIBIOS_MIN_MEM
-mdefine_line|#define PCIBIOS_MIN_MEM         0xb0000000
-macro_line|#endif
+mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;board_pci_channels-&gt;mem_resource-&gt;start
 r_struct
 id|pci_dev
 suffix:semicolon
@@ -555,47 +573,6 @@ DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;dma_address))
 DECL|macro|sg_dma_len
 mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
-multiline_comment|/*&n; * A board can define one or more PCI channels that represent built-in (or&n; * external) PCI controllers.&n; */
-DECL|struct|pci_channel
-r_struct
-id|pci_channel
-(brace
-DECL|member|pci_ops
-r_struct
-id|pci_ops
-op_star
-id|pci_ops
-suffix:semicolon
-DECL|member|io_resource
-r_struct
-id|resource
-op_star
-id|io_resource
-suffix:semicolon
-DECL|member|mem_resource
-r_struct
-id|resource
-op_star
-id|mem_resource
-suffix:semicolon
-DECL|member|first_devfn
-r_int
-id|first_devfn
-suffix:semicolon
-DECL|member|last_devfn
-r_int
-id|last_devfn
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * Each board initializes this array and terminates it with a NULL entry.&n; */
-r_extern
-r_struct
-id|pci_channel
-id|board_pci_channels
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/* Board-specific fixup routines. */
 r_extern
 r_void

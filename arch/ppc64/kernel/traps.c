@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/ppc64/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,7 +11,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -44,11 +44,13 @@ comma
 r_int
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* This is true if we are using the firmware NMI handler (typically LPAR) */
 r_extern
 r_int
 id|fwnmi_active
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
 DECL|variable|debugger
 r_void
@@ -330,6 +332,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* Get the error information for errors coming through the&n; * FWNMI vectors.  The pt_regs&squot; r3 will be updated to reflect&n; * the actual r3 if possible, and a ptr to the error log entry&n; * will be returned if found.&n; */
 DECL|function|FWNMI_get_errinfo
 r_static
@@ -486,6 +489,7 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_void
 DECL|function|SystemResetException
 id|SystemResetException
@@ -497,6 +501,7 @@ op_star
 id|regs
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -528,6 +533,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
@@ -567,6 +573,7 @@ l_string|&quot;Unrecoverable System Reset&quot;
 suffix:semicolon
 multiline_comment|/* What should we do here? We could issue a shutdown or hard reset. */
 )brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* &n; * See if we can recover from a machine check exception.&n; * This is only called on power4 (or above) and only via&n; * the Firmware Non-Maskable Interrupts (fwnmi) handler&n; * which provides the error analysis for us.&n; *&n; * Return 1 if corrected (or delivered a signal).&n; * Return 0 if there is nothing we can do.&n; */
 DECL|function|recover_mce
 r_static
@@ -694,6 +701,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Handle a machine check.&n; *&n; * Note that on Power 4 and beyond Firmware Non-Maskable Interrupts (fwnmi)&n; * should be present.  If so the handler which called us tells us if the&n; * error was recovered (never true if RI=0).&n; *&n; * On hardware prior to Power 4 these exceptions were asynchronous which&n; * means we can&squot;t tell exactly where it occurred and so we can&squot;t recover.&n; *&n; * Note that the debugger should test RI=0 and warn the user that system&n; * state has been corrupted.&n; */
 r_void
 DECL|function|MachineCheckException
@@ -706,6 +714,7 @@ op_star
 id|regs
 )paren
 (brace
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_struct
 id|rtas_error_log
 id|err
@@ -759,6 +768,7 @@ id|err
 r_return
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
@@ -1292,9 +1302,19 @@ op_complement
 id|BUG_WARNING_TRAP
 )paren
 suffix:semicolon
-id|dump_stack
+id|show_stack
 c_func
 (paren
+id|current
+comma
+(paren
+r_void
+op_star
+)paren
+id|regs-&gt;gpr
+(braket
+l_int|1
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -1532,6 +1552,37 @@ id|panic
 c_func
 (paren
 l_string|&quot;Unrecoverable FP Unavailable Exception in Kernel&quot;
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|KernelAltivecUnavailableException
+id|KernelAltivecUnavailableException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Illegal VMX/Altivec used in kernel (task=0x%p, &quot;
+l_string|&quot;pc=0x%016lx, trap=0x%lx)&bslash;n&quot;
+comma
+id|current
+comma
+id|regs-&gt;nip
+comma
+id|regs-&gt;trap
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;Unrecoverable VMX/Altivec Unavailable Exception in Kernel&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1806,6 +1857,41 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ALTIVEC
+r_void
+DECL|function|AltivecAssistException
+id|AltivecAssistException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+multiline_comment|/* XXX quick hack for now: set the non-Java bit in the VSCR */
+id|current-&gt;thread.vscr.u
+(braket
+l_int|3
+)braket
+op_or_assign
+l_int|0x10000
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ALTIVEC */
 DECL|function|trap_init
 r_void
 id|__init

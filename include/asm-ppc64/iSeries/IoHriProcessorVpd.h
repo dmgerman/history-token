@@ -1,14 +1,12 @@
 multiline_comment|/*&n; * IoHriProcessorVpd.h&n; * Copyright (C) 2001  Mike Corrigan IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+macro_line|#ifndef _IOHRIPROCESSORVPD_H
+DECL|macro|_IOHRIPROCESSORVPD_H
+mdefine_line|#define _IOHRIPROCESSORVPD_H
 singleline_comment|//===================================================================
 singleline_comment|//
 singleline_comment|//&t;This struct maps Processor Vpd that is DMAd to SLIC by CSP 
 singleline_comment|//
-macro_line|#ifndef&t;_TYPES_H
 macro_line|#include &lt;asm/types.h&gt;
-macro_line|#endif
-macro_line|#ifndef _IOHRIPROCESSORVPD_H
-DECL|macro|_IOHRIPROCESSORVPD_H
-mdefine_line|#define _IOHRIPROCESSORVPD_H
 DECL|struct|IoHriProcessorVpd
 r_struct
 id|IoHriProcessorVpd
@@ -260,6 +258,5 @@ suffix:semicolon
 singleline_comment|// CSP format SRC&t;&t;xB8-xFF
 )brace
 suffix:semicolon
-macro_line|#endif 
-singleline_comment|// _IOHRIPROCESSORVPD_H
+macro_line|#endif /* _IOHRIPROCESSORVPD_H */
 eof

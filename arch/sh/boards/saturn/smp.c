@@ -42,11 +42,11 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We&squot;re only allowed to do byte-access to SMPC registers. In&n; * addition to which, we treat them as write-only, since&n; * reading from them will return undefined data.&n; */
-DECL|function|smpc_slave_off
+DECL|function|smpc_slave_stop
 r_static
 r_inline
 r_void
-id|smpc_slave_off
+id|smpc_slave_stop
 c_func
 (paren
 r_int
@@ -81,11 +81,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|smpc_slave_on
+DECL|function|smpc_slave_start
 r_static
 r_inline
 r_void
-id|smpc_slave_on
+id|smpc_slave_start
 c_func
 (paren
 r_int

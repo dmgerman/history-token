@@ -794,7 +794,7 @@ op_logical_and
 id|local
 )paren
 (brace
-id|_tlbiel
+id|tlbiel
 c_func
 (paren
 id|va
@@ -812,7 +812,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|_tlbie
+id|tlbie
 c_func
 (paren
 id|va
@@ -941,7 +941,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|_tlbie
+id|tlbie
 c_func
 (paren
 id|va
@@ -1068,7 +1068,7 @@ op_logical_and
 id|local
 )paren
 (brace
-id|_tlbiel
+id|tlbiel
 c_func
 (paren
 id|va
@@ -1086,7 +1086,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|_tlbie
+id|tlbie
 c_func
 (paren
 id|va
@@ -1448,25 +1448,15 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;&bslash;n&bslash;&n;&t;&t;&t;clrldi  %0,%0,16&bslash;n&bslash;&n;&t;&t;&t;tlbiel   %0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+id|__tlbiel
+c_func
 (paren
 id|batch-&gt;vaddr
 (braket
 id|i
 )braket
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
 suffix:semicolon
-)brace
 id|asm
 r_volatile
 (paren
@@ -1512,25 +1502,17 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;&bslash;n&bslash;&n;&t;&t;&t;clrldi  %0,%0,16&bslash;n&bslash;&n;&t;&t;&t;tlbie   %0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
+id|__tlbie
+c_func
 (paren
 id|batch-&gt;vaddr
 (braket
 id|i
 )braket
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|0
 )paren
 suffix:semicolon
-)brace
 id|asm
 r_volatile
 (paren
@@ -1592,7 +1574,7 @@ suffix:semicolon
 multiline_comment|/* Disable TLB batching on nighthawk */
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -1630,6 +1612,12 @@ l_string|&quot;CHRP IBM,9076-N81&quot;
 id|ppc_md.flush_hash_range
 op_assign
 id|pSeries_flush_hash_range
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
 suffix:semicolon
 )brace
 )brace

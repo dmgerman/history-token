@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#ifndef CONFIG_SMP
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
@@ -39,6 +40,15 @@ id|last_task_used_math
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|last_task_used_altivec
+r_struct
+id|task_struct
+op_star
+id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 DECL|variable|ioremap_mm
 r_struct
 id|mm_struct
@@ -68,8 +78,8 @@ id|sysmap_size
 op_assign
 l_int|0
 suffix:semicolon
-r_void
 DECL|function|enable_kernel_fp
+r_void
 id|enable_kernel_fp
 c_func
 (paren
@@ -111,6 +121,13 @@ id|last_task_used_math
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 )brace
+DECL|variable|enable_kernel_fp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_kernel_fp
+)paren
+suffix:semicolon
 DECL|function|dump_task_fpu
 r_int
 id|dump_task_fpu
@@ -183,6 +200,108 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ALTIVEC
+DECL|function|enable_kernel_altivec
+r_void
+id|enable_kernel_altivec
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|current-&gt;thread.regs
+op_logical_and
+(paren
+id|current-&gt;thread.regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+r_else
+id|giveup_altivec
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* just enables FP for kernel */
+macro_line|#else
+id|giveup_altivec
+c_func
+(paren
+id|last_task_used_altivec
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
+)brace
+DECL|variable|enable_kernel_altivec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_kernel_altivec
+)paren
+suffix:semicolon
+DECL|function|dump_task_altivec
+r_int
+id|dump_task_altivec
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+id|elf_vrregset_t
+op_star
+id|vrregs
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|vrregs
+comma
+op_amp
+id|current-&gt;thread.vr
+(braket
+l_int|0
+)braket
+comma
+r_sizeof
+(paren
+op_star
+id|vrregs
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ALTIVEC */
 DECL|function|__switch_to
 r_struct
 id|task_struct
@@ -237,7 +356,46 @@ c_func
 id|prev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|prev-&gt;thread.regs
+op_logical_and
+(paren
+id|prev-&gt;thread.regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|prev
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 macro_line|#endif /* CONFIG_SMP */
+macro_line|#if defined(CONFIG_ALTIVEC) &amp;&amp; !defined(CONFIG_SMP)
+multiline_comment|/* Avoid the trap.  On smp this this never happens since&n;&t; * we don&squot;t set last_task_used_altivec -- Cort&n;&t; */
+r_if
+c_cond
+(paren
+r_new
+op_member_access_from_pointer
+id|thread.regs
+op_logical_and
+id|last_task_used_altivec
+op_eq
+r_new
+)paren
+r_new
+op_member_access_from_pointer
+id|thread.regs-&gt;msr
+op_or_assign
+id|MSR_VEC
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|new_thread
 op_assign
 op_amp
@@ -546,6 +704,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -557,6 +716,20 @@ id|last_task_used_math
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|last_task_used_altivec
+op_eq
+id|current
+)paren
+id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#endif /* CONFIG_SMP */
 )brace
 DECL|function|flush_thread
 r_void
@@ -591,6 +764,7 @@ op_or
 id|_TIF_32BIT
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -602,6 +776,20 @@ id|last_task_used_math
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|last_task_used_altivec
+op_eq
+id|current
+)paren
+id|last_task_used_altivec
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
+macro_line|#endif /* CONFIG_SMP */
 )brace
 r_void
 DECL|function|release_thread
@@ -614,6 +802,63 @@ op_star
 id|t
 )paren
 (brace
+)brace
+multiline_comment|/*&n; * This gets called before we allocate a new thread and copy&n; * the current task into it.&n; */
+DECL|function|prepare_to_copy
+r_void
+id|prepare_to_copy
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+id|tsk-&gt;thread.regs
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_FP
+)paren
+id|giveup_fpu
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 multiline_comment|/*&n; * Copy a thread..&n; */
 r_int
@@ -971,6 +1216,7 @@ id|regs-&gt;msr
 op_assign
 id|MSR_USER64
 suffix:semicolon
+macro_line|#ifndef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -982,10 +1228,89 @@ id|last_task_used_math
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
+id|memset
+c_func
+(paren
+id|current-&gt;thread.fpr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|current-&gt;thread.fpr
+)paren
+)paren
+suffix:semicolon
 id|current-&gt;thread.fpscr
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+macro_line|#ifndef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|last_task_used_altivec
+op_eq
+id|current
+)paren
+id|last_task_used_altivec
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_SMP */
+id|memset
+c_func
+(paren
+id|current-&gt;thread.vr
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|current-&gt;thread.vr
+)paren
+)paren
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.vscr.u
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x00010000
+suffix:semicolon
+multiline_comment|/* Java mode disabled */
+id|current-&gt;thread.vrsave
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;thread.used_vr
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 )brace
 DECL|function|set_fpexc_mode
 r_int
@@ -1208,19 +1533,6 @@ l_int|0xffffffff
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 r_return
 id|do_fork
 c_func
@@ -1285,19 +1597,6 @@ op_star
 id|regs
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 r_return
 id|do_fork
 c_func
@@ -1354,19 +1653,6 @@ op_star
 id|regs
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
-c_func
-(paren
-id|current
-)paren
-suffix:semicolon
 r_return
 id|do_fork
 c_func
@@ -1479,6 +1765,21 @@ c_func
 id|current
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALTIVEC
+r_if
+c_cond
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_VEC
+)paren
+id|giveup_altivec
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALTIVEC */
 id|error
 op_assign
 id|do_execve

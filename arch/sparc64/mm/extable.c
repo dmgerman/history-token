@@ -18,6 +18,23 @@ id|__stop___ex_table
 (braket
 )braket
 suffix:semicolon
+DECL|function|sort_extable
+r_void
+id|sort_extable
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+(brace
+)brace
 multiline_comment|/* Caller knows they are in a range if ret-&gt;fixup == 0 */
 r_const
 r_struct

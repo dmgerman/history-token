@@ -5,21 +5,17 @@ singleline_comment|//&t;This file contains the &quot;hypervisor call&quot; inter
 singleline_comment|//&t;drive the hypervisor from the OS.
 singleline_comment|//
 singleline_comment|//=====================================================================================
-singleline_comment|//-------------------------------------------------------------------
-singleline_comment|// Standard Includes
-singleline_comment|//-------------------------------------------------------------------
-macro_line|#ifndef  _HVCALLSC_H
-macro_line|#include &quot;HvCallSc.h&quot;
-macro_line|#endif
-macro_line|#ifndef  _HVTYPES_H
-macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
-macro_line|#endif
-singleline_comment|//-------------------------------------------------------------------------------------
-singleline_comment|// Constants
-singleline_comment|//-------------------------------------------------------------------------------------
 macro_line|#ifndef _HVCALLCFG_H
 DECL|macro|_HVCALLCFG_H
 mdefine_line|#define _HVCALLCFG_H
+singleline_comment|//-------------------------------------------------------------------
+singleline_comment|// Standard Includes
+singleline_comment|//-------------------------------------------------------------------
+macro_line|#include &lt;asm/iSeries/HvCallSc.h&gt;
+macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
+singleline_comment|//-------------------------------------------------------------------------------------
+singleline_comment|// Constants
+singleline_comment|//-------------------------------------------------------------------------------------
 DECL|enum|HvCallCfg_ReqQual
 r_enum
 id|HvCallCfg_ReqQual
@@ -615,6 +611,5 @@ r_return
 id|retVal
 suffix:semicolon
 )brace
-macro_line|#endif 
-singleline_comment|// _HVCALLCFG_H
+macro_line|#endif /* _HVCALLCFG_H */
 eof

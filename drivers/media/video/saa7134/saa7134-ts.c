@@ -62,7 +62,7 @@ mdefine_line|#define TS_PACKET_SIZE 188 /* TS packets 188 bytes */
 DECL|macro|TS_NR_PACKETS
 mdefine_line|#define TS_NR_PACKETS 312
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (ts_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/ts: &quot; fmt, dev-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (ts_debug) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s/ts: &quot; fmt, dev-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|buffer_activate
 r_static
@@ -701,9 +701,11 @@ comma
 l_int|0x01
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func
@@ -820,6 +822,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|h-&gt;ts_dev
+op_logical_and
 id|h-&gt;ts_dev-&gt;minor
 op_eq
 id|minor

@@ -116,8 +116,8 @@ r_extern
 id|cpumask_t
 id|cpu_callout_map
 suffix:semicolon
-DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) cpu_isset(cpu, cpu_callout_map)
+DECL|macro|cpu_possible_map
+mdefine_line|#define cpu_possible_map cpu_callout_map
 multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
 DECL|function|num_booting_cpus
 r_static

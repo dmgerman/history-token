@@ -4189,6 +4189,11 @@ comma
 id|sctp_port_hashsize
 )paren
 suffix:semicolon
+multiline_comment|/* Disable ADDIP by default. */
+id|sctp_addip_enable
+op_assign
+l_int|0
+suffix:semicolon
 id|sctp_sysctl_register
 c_func
 (paren

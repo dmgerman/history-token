@@ -1,5 +1,10 @@
 multiline_comment|/*&n;    w83781d.c - Part of lm_sensors, Linux kernel modules for hardware&n;                monitoring&n;    Copyright (c) 1998 - 2001  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;,&n;    and Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    Supports following chips:&n;&n;    Chip&t;#vin&t;#fanin&t;#pwm&t;#temp&t;wchipid&t;vendid&t;i2c&t;ISA&n;    as99127f&t;7&t;3&t;1?&t;3&t;0x31&t;0x12c3&t;yes&t;no&n;    as99127f rev.2 (type_name = 1299127f)&t;0x31&t;0x5ca3&t;yes&t;no&n;    asb100 &quot;bach&quot; (type_name = as99127f)&t;0x31&t;0x0694&t;yes&t;no&n;    w83781d&t;7&t;3&t;0&t;3&t;0x10-1&t;0x5ca3&t;yes&t;yes&n;    w83627hf&t;9&t;3&t;2&t;3&t;0x21&t;0x5ca3&t;yes&t;yes(LPC)&n;    w83627thf&t;9&t;3&t;2&t;3&t;0x90&t;0x5ca3&t;no&t;yes(LPC)&n;    w83782d&t;9&t;3&t;2-4&t;3&t;0x30&t;0x5ca3&t;yes&t;yes&n;    w83783s&t;5-6&t;3&t;2&t;1-2&t;0x40&t;0x5ca3&t;yes&t;no&n;    w83697hf&t;8&t;2&t;2&t;2&t;0x60&t;0x5ca3&t;no&t;yes(LPC)&n;&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -7,6 +12,7 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 macro_line|#include &lt;linux/i2c-vid.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;lm75.h&quot;
 multiline_comment|/* RT Table support #defined so we can take it out if it gets bothersome */
 DECL|macro|W83781D_RT
 mdefine_line|#define W83781D_RT&t;&t;&t;1
@@ -332,17 +338,13 @@ suffix:semicolon
 DECL|macro|FAN_FROM_REG
 mdefine_line|#define FAN_FROM_REG(val,div)&t;&t;((val) == 0   ? -1 : &bslash;&n;&t;&t;&t;&t;&t;((val) == 255 ? 0 : &bslash;&n;&t;&t;&t;&t;&t;&t;&t;1350000 / ((val) * (div))))
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val / 10) &lt; 0 ? (((val / 10) - 5) / 10) : &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t; ((val / 10) + 5) / 10), 0, 255))
+mdefine_line|#define TEMP_TO_REG(val)&t;&t;(SENSORS_LIMIT(((val) &lt; 0 ? (val)+0x100*1000 &bslash;&n;&t;&t;&t;&t;&t;&t;: (val)) / 1000, 0, 0xff))
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;&t;((((val ) &gt; 0x80 ? (val) - 0x100 : (val)) * 10) * 10)
-DECL|macro|TEMP_ADD_TO_REG
-mdefine_line|#define TEMP_ADD_TO_REG(val)&t;&t;(SENSORS_LIMIT(((((val / 10) + 2) / 5) &lt;&lt; 7),&bslash;&n;                                              0, 0xffff))
-DECL|macro|TEMP_ADD_FROM_REG
-mdefine_line|#define TEMP_ADD_FROM_REG(val)&t;&t;((((val) &gt;&gt; 7) * 5) * 10)
+mdefine_line|#define TEMP_FROM_REG(val)&t;&t;(((val) &amp; 0x80 ? (val)-0x100 : (val)) * 1000)
 DECL|macro|AS99127_TEMP_ADD_TO_REG
-mdefine_line|#define AS99127_TEMP_ADD_TO_REG(val)&t;(SENSORS_LIMIT((((((val / 10) + 2)*4)/10) &bslash;&n;                                               &lt;&lt; 7), 0, 0xffff))
+mdefine_line|#define AS99127_TEMP_ADD_TO_REG(val)&t;(SENSORS_LIMIT((((val) &lt; 0 ? (val)+0x10000*250 &bslash;&n;&t;&t;&t;&t;&t;&t;: (val)) / 250) &lt;&lt; 7, 0, 0xffff))
 DECL|macro|AS99127_TEMP_ADD_FROM_REG
-mdefine_line|#define AS99127_TEMP_ADD_FROM_REG(val)&t;(((((val) &gt;&gt; 7) * 10) / 4) * 10)
+mdefine_line|#define AS99127_TEMP_ADD_FROM_REG(val)&t;((((val) &amp; 0x8000 ? (val)-0x10000 : (val)) &bslash;&n;&t;&t;&t;&t;&t;&t;&gt;&gt; 7) * 250)
 DECL|macro|ALARMS_FROM_REG
 mdefine_line|#define ALARMS_FROM_REG(val)&t;&t;(val)
 DECL|macro|PWM_FROM_REG
@@ -1063,7 +1065,7 @@ suffix:semicolon
 DECL|macro|device_create_file_fan
 mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_input##offset); &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan_min##offset); &bslash;&n;} while (0)
 DECL|macro|show_temp_reg
-mdefine_line|#define show_temp_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)AS99127_TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, (long)TEMP_FROM_REG(data-&gt;reg)); &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define show_temp_reg(reg) &bslash;&n;static ssize_t show_##reg (struct device *dev, char *buf, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t; &bslash;&n;&t;w83781d_update_client(client); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(long)AS99127_TEMP_ADD_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;return sprintf(buf,&quot;%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;LM75_TEMP_FROM_REG(data-&gt;reg##_add[nr-2])); &bslash;&n;&t;&t;} &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;return sprintf(buf,&quot;%ld&bslash;n&quot;, (long)TEMP_FROM_REG(data-&gt;reg)); &bslash;&n;&t;} &bslash;&n;}
 DECL|variable|temp
 id|show_temp_reg
 c_func
@@ -1086,7 +1088,7 @@ id|temp_hyst
 )paren
 suffix:semicolon
 DECL|macro|store_temp_reg
-mdefine_line|#define store_temp_reg(REG, reg) &bslash;&n;static ssize_t store_temp_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;u32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) &bslash;&n;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2] = AS99127_TEMP_ADD_TO_REG(val); &bslash;&n;&t;&t;else &bslash;&n;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2] = TEMP_ADD_TO_REG(val); &bslash;&n;&t;&t; &bslash;&n;&t;&t;w83781d_write_value(client, W83781D_REG_TEMP_##REG(nr), &bslash;&n;&t;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2]); &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;data-&gt;temp_##reg = TEMP_TO_REG(val); &bslash;&n;&t;&t;w83781d_write_value(client, W83781D_REG_TEMP_##REG(nr), &bslash;&n;&t;&t;&t;data-&gt;temp_##reg); &bslash;&n;&t;} &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define store_temp_reg(REG, reg) &bslash;&n;static ssize_t store_temp_##reg (struct device *dev, const char *buf, size_t count, int nr) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct w83781d_data *data = i2c_get_clientdata(client); &bslash;&n;&t;s32 val; &bslash;&n;&t; &bslash;&n;&t;val = simple_strtol(buf, NULL, 10); &bslash;&n;&t; &bslash;&n;&t;if (nr &gt;= 2) {&t;/* TEMP2 and TEMP3 */ &bslash;&n;&t;&t;if (data-&gt;type == as99127f) &bslash;&n;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2] = AS99127_TEMP_ADD_TO_REG(val); &bslash;&n;&t;&t;else &bslash;&n;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2] = LM75_TEMP_TO_REG(val); &bslash;&n;&t;&t; &bslash;&n;&t;&t;w83781d_write_value(client, W83781D_REG_TEMP_##REG(nr), &bslash;&n;&t;&t;&t;&t;data-&gt;temp_##reg##_add[nr-2]); &bslash;&n;&t;} else {&t;/* TEMP1 */ &bslash;&n;&t;&t;data-&gt;temp_##reg = TEMP_TO_REG(val); &bslash;&n;&t;&t;w83781d_write_value(client, W83781D_REG_TEMP_##REG(nr), &bslash;&n;&t;&t;&t;data-&gt;temp_##reg); &bslash;&n;&t;} &bslash;&n;&t; &bslash;&n;&t;return count; &bslash;&n;}
 id|store_temp_reg
 c_func
 (paren
@@ -6862,7 +6864,6 @@ id|data-&gt;valid
 id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Starting device update&bslash;n&quot;
 )paren
 suffix:semicolon

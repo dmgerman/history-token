@@ -32,6 +32,13 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_ALIAS
+c_func
+(paren
+l_string|&quot;vxfs&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* makes mount -t vxfs autoload the module */
 r_static
 r_void
 id|vxfs_put_super

@@ -3,6 +3,7 @@ multiline_comment|/*&n; * NEC PC-9801 Bus Mouse Driver for Linux&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -60,20 +61,32 @@ DECL|macro|PC98BM_DEFAULT_TIMER_VAL
 mdefine_line|#define PC98BM_DEFAULT_TIMER_VAL&t;0x00
 DECL|macro|PC98BM_IRQ
 mdefine_line|#define PC98BM_IRQ&t;&t;13
-id|MODULE_PARM
-c_func
-(paren
-id|pc98bm_irq
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|pc98bm_irq
 r_static
 r_int
 id|pc98bm_irq
 op_assign
 id|PC98BM_IRQ
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|irq
+comma
+id|pc98bm_irq
+comma
+id|uint
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|irq
+comma
+l_string|&quot;IRQ number (13=default)&quot;
+)paren
 suffix:semicolon
 DECL|variable|pc98bm_used
 r_static
@@ -83,7 +96,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pc98bm_interrupt
 c_func
 (paren
@@ -327,7 +340,7 @@ comma
 suffix:semicolon
 DECL|function|pc98bm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pc98bm_interrupt
 c_func
 (paren
@@ -524,72 +537,10 @@ comma
 id|PC98BM_CONTROL_PORT
 )paren
 suffix:semicolon
-)brace
-macro_line|#ifndef MODULE
-DECL|function|pc98bm_setup
-r_static
-r_int
-id|__init
-id|pc98bm_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|4
-)braket
-suffix:semicolon
-id|str
-op_assign
-id|get_options
-c_func
-(paren
-id|str
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|ints
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ints
-(braket
-l_int|0
-)braket
-OG
-l_int|0
-)paren
-id|pc98bm_irq
-op_assign
-id|ints
-(braket
-l_int|1
-)braket
-suffix:semicolon
 r_return
-l_int|1
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;pc98bm_irq=&quot;
-comma
-id|pc98bm_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|pc98bm_init
 r_static
 r_int

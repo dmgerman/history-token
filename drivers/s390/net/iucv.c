@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.15 2003/10/01 09:25:15 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.15 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.19 2003/12/18 15:28:49 braunu Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.19 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -10,12 +10,15 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;iucv.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
+macro_line|#include &lt;asm/ccwdev.h&gt; 
+singleline_comment|//for root device stuff
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 multiline_comment|/* FLAGS:&n; * All flags are defined in the field IPFLAGS1 of each function&n; * and can be found in CP Programming Services.&n; * IPSRCCLS - Indicates you have specified a source class&n; * IPFGMCL  - Indicates you have specified a target class&n; * IPFGPID  - Indicates you have specified a pathid&n; * IPFGMID  - Indicates you have specified a message ID&n; * IPANSLST - Indicates that you are using an address list for&n; *            reply data&n; * IPBUFLST - Indicates that you are using an address list for&n; *            message data&n; */
@@ -51,18 +54,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_void
-DECL|function|iucv_root_release
-id|iucv_root_release
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-(brace
-)brace
 DECL|variable|iucv_bus
 r_struct
 id|bus_type
@@ -84,20 +75,8 @@ suffix:semicolon
 DECL|variable|iucv_root
 r_struct
 id|device
+op_star
 id|iucv_root
-op_assign
-(brace
-dot
-id|bus_id
-op_assign
-l_string|&quot;iucv&quot;
-comma
-dot
-id|release
-op_assign
-id|iucv_root_release
-comma
-)brace
 suffix:semicolon
 multiline_comment|/* General IUCV interrupt structure */
 r_typedef
@@ -834,7 +813,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.15 $&quot;
+l_string|&quot;$Revision: 1.19 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -914,6 +893,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|MACHINE_IS_VM
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IUCV: IUCV connection needs VM as base&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPROTONOSUPPORT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|iucv_external_int_buffer
 )paren
 r_return
@@ -947,21 +945,22 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|ret
+id|iucv_root
 op_assign
-id|device_register
+id|s390_root_dev_register
 c_func
 (paren
-op_amp
-id|iucv_root
+l_string|&quot;iucv&quot;
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
-op_ne
-l_int|0
+id|IS_ERR
+c_func
+(paren
+id|iucv_root
+)paren
 )paren
 (brace
 id|printk
@@ -979,7 +978,11 @@ id|iucv_bus
 )paren
 suffix:semicolon
 r_return
-id|ret
+id|PTR_ERR
+c_func
+(paren
+id|iucv_root
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Note: GFP_DMA used used to get memory below 2G */
@@ -1012,6 +1015,12 @@ id|KERN_WARNING
 l_string|&quot;%s: Could not allocate external interrupt buffer&bslash;n&quot;
 comma
 id|__FUNCTION__
+)paren
+suffix:semicolon
+id|s390_root_dev_unregister
+c_func
+(paren
+id|iucv_root
 )paren
 suffix:semicolon
 r_return
@@ -1075,6 +1084,12 @@ suffix:semicolon
 id|iucv_external_int_buffer
 op_assign
 l_int|NULL
+suffix:semicolon
+id|s390_root_dev_unregister
+c_func
+(paren
+id|iucv_root
+)paren
 suffix:semicolon
 r_return
 op_minus
@@ -1153,10 +1168,9 @@ c_func
 id|iucv_param_pool
 )paren
 suffix:semicolon
-id|device_unregister
+id|s390_root_dev_unregister
 c_func
 (paren
-op_amp
 id|iucv_root
 )paren
 suffix:semicolon
@@ -2268,7 +2282,7 @@ r_sizeof
 id|handler
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2339,7 +2353,7 @@ id|handler
 op_star
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

@@ -526,6 +526,8 @@ op_assign
 id|UPF_SKIP_TEST
 op_or
 id|UPF_BOOT_AUTOCONF
+op_or
+id|UPF_RESOURCES
 suffix:semicolon
 r_if
 c_cond

@@ -856,6 +856,8 @@ macro_line|#else
 DECL|macro|XFS_BMAP_SANITY_CHECK
 mdefine_line|#define XFS_BMAP_SANITY_CHECK(mp,bb,level)&t;&bslash;&n;&t;(INT_GET((bb)-&gt;bb_magic, ARCH_CONVERT) == XFS_BMAP_MAGIC &amp;&amp; &bslash;&n;&t; INT_GET((bb)-&gt;bb_level, ARCH_CONVERT) == level &amp;&amp; &bslash;&n;&t; INT_GET((bb)-&gt;bb_numrecs, ARCH_CONVERT) &gt; 0 &amp;&amp; &bslash;&n;&t; INT_GET((bb)-&gt;bb_numrecs, ARCH_CONVERT) &lt;= (mp)-&gt;m_bmap_dmxr[(level) != 0])
 macro_line|#endif
+macro_line|#ifdef __KERNEL__
+macro_line|#if defined(XFS_BMBT_TRACE)
 multiline_comment|/*&n; * Trace buffer entry types.&n; */
 DECL|macro|XFS_BMBT_KTRACE_ARGBI
 mdefine_line|#define XFS_BMBT_KTRACE_ARGBI&t;1
@@ -877,15 +879,12 @@ DECL|macro|XFS_BMBT_TRACE_SIZE
 mdefine_line|#define XFS_BMBT_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
 DECL|macro|XFS_BMBT_KTRACE_SIZE
 mdefine_line|#define XFS_BMBT_KTRACE_SIZE&t;32&t;/* size of per-inode trace buffer */
-macro_line|#if defined(XFS_ALL_TRACE)
-DECL|macro|XFS_BMBT_TRACE
-mdefine_line|#define XFS_BMBT_TRACE
+r_extern
+id|ktrace_t
+op_star
+id|xfs_bmbt_trace_buf
+suffix:semicolon
 macro_line|#endif
-macro_line|#if !defined(DEBUG)
-DECL|macro|XFS_BMBT_TRACE
-macro_line|#undef XFS_BMBT_TRACE
-macro_line|#endif
-macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Prototypes for xfs_bmap.c to call.&n; */
 r_void
 id|xfs_bmdr_to_bmbt

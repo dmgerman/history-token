@@ -1,24 +1,13 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;asm/sn/sgi.h&gt;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001-2003 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/addrs.h&gt;
-macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
-macro_line|#include &lt;asm/sn/hcl.h&gt;
-macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
-macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
+macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/pci/pic.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 DECL|macro|PCI_BUS_NO_1
 mdefine_line|#define PCI_BUS_NO_1 1
@@ -68,115 +57,8 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * copy inventory_t from conn_v to peer_conn_v&n; */
-r_int
-DECL|function|pic_bus1_inventory_dup
-id|pic_bus1_inventory_dup
-c_func
-(paren
-id|vertex_hdl_t
-id|conn_v
-comma
-id|vertex_hdl_t
-id|peer_conn_v
-)paren
-(brace
-id|inventory_t
-op_star
-id|pinv
-comma
-op_star
-id|peer_pinv
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwgraph_info_get_LBL
-c_func
-(paren
-id|conn_v
-comma
-id|INFO_LBL_INVENT
-comma
-(paren
-id|arbitrary_info_t
-op_star
-)paren
-op_amp
-id|pinv
-)paren
-op_eq
-id|GRAPH_SUCCESS
-)paren
-(brace
-id|NEW
-c_func
-(paren
-id|peer_pinv
-)paren
-suffix:semicolon
-id|memcpy
-c_func
-(paren
-id|peer_pinv
-comma
-id|pinv
-comma
-r_sizeof
-(paren
-id|inventory_t
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwgraph_info_add_LBL
-c_func
-(paren
-id|peer_conn_v
-comma
-id|INFO_LBL_INVENT
-comma
-(paren
-id|arbitrary_info_t
-)paren
-id|peer_pinv
-)paren
-op_ne
-id|GRAPH_SUCCESS
-)paren
-(brace
-id|DEL
-c_func
-(paren
-id|peer_pinv
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;pic_bus1_inventory_dup: cannot get INFO_LBL_INVENT from 0x%lx&bslash;n &quot;
-comma
-(paren
-r_uint64
-)paren
-id|conn_v
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * copy xwidget_info_t from conn_v to peer_conn_v&n; */
+r_static
 r_int
 DECL|function|pic_bus1_widget_info_dup
 id|pic_bus1_widget_info_dup
@@ -264,11 +146,52 @@ op_eq
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|NEW
+id|peer_widget_info
+op_assign
+id|kmalloc
 c_func
+(paren
+r_sizeof
+(paren
+op_star
 (paren
 id|peer_widget_info
 )paren
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|peer_widget_info
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|peer_widget_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+(paren
+id|peer_widget_info
+)paren
+)paren
+)paren
+suffix:semicolon
+id|peer_widget_info-&gt;w_fingerprint
+op_assign
+id|widget_info_fingerprint
 suffix:semicolon
 id|peer_widget_info-&gt;w_vertex
 op_assign
@@ -342,7 +265,7 @@ op_ne
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|DEL
+id|kfree
 c_func
 (paren
 id|peer_widget_info
@@ -381,6 +304,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If this PIC is attached to two Cbricks (&quot;dual-ported&quot;) then&n; * attach each bus to opposite Cbricks.&n; *&n; * If successful, return a new vertex suitable for attaching the PIC bus.&n; * If not successful, return zero and both buses will attach to the&n; * vertex passed into pic_attach().&n; */
+r_static
 id|vertex_hdl_t
 DECL|function|pic_bus1_redist
 id|pic_bus1_redist
@@ -671,31 +595,6 @@ id|peer_conn_v
 )paren
 suffix:semicolon
 multiline_comment|/* Now hang appropiate stuff off of the new&n;&t;&t;&t;     * vertex.&t;We bail out if we cannot add something.&n;&t;&t;&t;     * In that case, we don&squot;t remove the newly added&n;&t;&t;&t;     * vertex but that should be safe and we don&squot;t&n;&t;&t;&t;     * really expect the additions to fail anyway.&n;&t;&t;&t;     */
-macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pic_bus1_inventory_dup
-c_func
-(paren
-id|conn_v
-comma
-id|peer_conn_v
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-id|pic_bus1_device_desc_dup
-c_func
-(paren
-id|conn_v
-comma
-id|peer_conn_v
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -775,6 +674,17 @@ id|conn_v1
 comma
 id|peer_conn_v
 suffix:semicolon
+r_int
+id|bricktype
+suffix:semicolon
+r_int
+id|iobrick_type_get_nasid
+c_func
+(paren
+id|nasid_t
+id|nasid
+)paren
+suffix:semicolon
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -834,7 +744,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: bridge0=0x%x, bridge1=0x%x&bslash;n&quot;
+l_string|&quot;pic_attach: bridge0=0x%lx, bridge1=0x%lx&bslash;n&quot;
 comma
 id|bridge0
 comma
@@ -849,13 +759,8 @@ op_assign
 id|conn_v
 suffix:semicolon
 multiline_comment|/* If dual-ported then split the two PIC buses across both Cbricks */
-r_if
-c_cond
-(paren
-(paren
 id|peer_conn_v
 op_assign
-(paren
 id|pic_bus1_redist
 c_func
 (paren
@@ -867,15 +772,82 @@ id|bridge0
 comma
 id|conn_v
 )paren
-)paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|peer_conn_v
 )paren
 id|conn_v1
 op_assign
 id|peer_conn_v
 suffix:semicolon
 multiline_comment|/*&n;&t; * Create the vertex for the PCI buses, which we&n;&t; * will also use to hold the pcibr_soft and&n;&t; * which will be the &quot;master&quot; vertex for all the&n;&t; * pciio connection points we will hang off it.&n;&t; * This needs to happen before we call nic_bridge_vertex_info&n;&t; * as we are some of the *_vmc functions need access to the edges.&n;&t; *&n;&t; * Opening this vertex will provide access to&n;&t; * the Bridge registers themselves.&n;&t; */
-multiline_comment|/* FIXME: what should the hwgraph path look like ? */
+id|bricktype
+op_assign
+id|iobrick_type_get_nasid
+c_func
+(paren
+id|NASID_GET
+c_func
+(paren
+id|bridge0
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bricktype
+op_eq
+id|MODULE_CGBRICK
+)paren
+(brace
+id|rc
+op_assign
+id|hwgraph_path_add
+c_func
+(paren
+id|conn_v0
+comma
+id|EDGE_LBL_AGP_0
+comma
+op_amp
+id|pcibr_vhdl0
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|rc
+op_eq
+id|GRAPH_SUCCESS
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|hwgraph_path_add
+c_func
+(paren
+id|conn_v1
+comma
+id|EDGE_LBL_AGP_1
+comma
+op_amp
+id|pcibr_vhdl1
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|rc
+op_eq
+id|GRAPH_SUCCESS
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|rc
 op_assign
 id|hwgraph_path_add
@@ -918,6 +890,7 @@ op_eq
 id|GRAPH_SUCCESS
 )paren
 suffix:semicolon
+)brace
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -926,7 +899,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: pcibr_vhdl0=%v, pcibr_vhdl1=%v&bslash;n&quot;
+l_string|&quot;pic_attach: pcibr_vhdl0=0x%lx, pcibr_vhdl1=0x%lx&bslash;n&quot;
 comma
 id|pcibr_vhdl0
 comma
@@ -1012,7 +985,7 @@ id|PCIBR_DEBUG_ATTACH
 comma
 id|conn_v
 comma
-l_string|&quot;pic_attach: bus0_soft=0x%x, bus1_soft=0x%x&bslash;n&quot;
+l_string|&quot;pic_attach: bus0_soft=0x%lx, bus1_soft=0x%lx&bslash;n&quot;
 comma
 id|bus0_soft
 comma
@@ -1199,12 +1172,6 @@ op_star
 id|pcibr_config_set
 comma
 (paren
-id|pciio_error_devenable_f
-op_star
-)paren
-l_int|0
-comma
-(paren
 id|pciio_error_extract_f
 op_star
 )paren
@@ -1227,12 +1194,6 @@ id|pciio_device_unregister_f
 op_star
 )paren
 id|pcibr_device_unregister
-comma
-(paren
-id|pciio_dma_enabled_f
-op_star
-)paren
-id|pcibr_dma_enabled
 comma
 )brace
 suffix:semicolon

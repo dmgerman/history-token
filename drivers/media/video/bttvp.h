@@ -18,12 +18,10 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;media/ir-common.h&gt;
 macro_line|#include &quot;bt848.h&quot;
 macro_line|#include &quot;bttv.h&quot;
 macro_line|#include &quot;btcx-risc.h&quot;
-macro_line|#ifdef CONFIG_VIDEO_IR
-macro_line|#include &quot;ir-common.h&quot;
-macro_line|#endif
 macro_line|#ifdef __KERNEL__
 DECL|macro|FORMAT_FLAGS_DITHER
 mdefine_line|#define FORMAT_FLAGS_DITHER       0x01
@@ -782,35 +780,44 @@ id|videobuf_queue_ops
 id|bttv_vbi_qops
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
-multiline_comment|/* bttv-input.c                                               */
+multiline_comment|/* bttv-gpio.c */
+r_extern
+r_struct
+id|bus_type
+id|bttv_sub_bus_type
+suffix:semicolon
 r_int
-id|bttv_input_init
+id|bttv_sub_add_device
 c_func
 (paren
 r_struct
-id|bttv
+id|bttv_core
 op_star
-id|btv
+id|core
+comma
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_int
+id|bttv_sub_del_devices
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
 )paren
 suffix:semicolon
 r_void
-id|bttv_input_fini
+id|bttv_gpio_irq
 c_func
 (paren
 r_struct
-id|bttv
+id|bttv_core
 op_star
-id|btv
-)paren
-suffix:semicolon
-r_void
-id|bttv_input_irq
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
+id|core
 )paren
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
@@ -980,7 +987,6 @@ suffix:semicolon
 multiline_comment|/* Currently programmed ofreq */
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 multiline_comment|/* for gpio-connected remote control */
 DECL|struct|bttv_input
 r_struct
@@ -1020,18 +1026,51 @@ id|mask_keydown
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
+DECL|struct|bttv_suspend_state
+r_struct
+id|bttv_suspend_state
+(brace
+DECL|member|pci_cfg
+id|u32
+id|pci_cfg
+(braket
+l_int|64
+op_div
+r_sizeof
+(paren
+id|u32
+)paren
+)braket
+suffix:semicolon
+DECL|member|gpio_enable
+id|u32
+id|gpio_enable
+suffix:semicolon
+DECL|member|gpio_data
+id|u32
+id|gpio_data
+suffix:semicolon
+DECL|member|disabled
+r_int
+id|disabled
+suffix:semicolon
+DECL|member|set
+r_struct
+id|bttv_buffer_set
+id|set
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|bttv
 r_struct
 id|bttv
 (brace
-multiline_comment|/* pci device config */
-DECL|member|dev
+DECL|member|c
 r_struct
-id|pci_dev
-op_star
-id|dev
+id|bttv_core
+id|c
 suffix:semicolon
+multiline_comment|/* pci device config */
 DECL|member|id
 r_int
 r_int
@@ -1050,32 +1089,12 @@ id|bt848_mmio
 suffix:semicolon
 multiline_comment|/* pointer to mmio */
 multiline_comment|/* card configuration info */
-DECL|member|nr
-r_int
-r_int
-id|nr
-suffix:semicolon
-multiline_comment|/* dev nr (for printk(&quot;bttv%d: ...&quot;);  */
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* dev name */
 DECL|member|cardid
 r_int
 r_int
 id|cardid
 suffix:semicolon
 multiline_comment|/* pci subsystem id (bt878 based ones) */
-DECL|member|type
-r_int
-r_int
-id|type
-suffix:semicolon
-multiline_comment|/* card type (pointer into tvcards[])  */
 DECL|member|tuner_type
 r_int
 r_int
@@ -1101,7 +1120,11 @@ DECL|member|triton1
 r_int
 id|triton1
 suffix:semicolon
-multiline_comment|/* gpio interface */
+DECL|member|gpioirq
+r_int
+id|gpioirq
+suffix:semicolon
+multiline_comment|/* old gpio interface */
 DECL|member|gpioq
 id|wait_queue_head_t
 id|gpioq
@@ -1131,12 +1154,12 @@ r_int
 id|set
 )paren
 suffix:semicolon
-multiline_comment|/* i2c layer */
-DECL|member|i2c_adap
-r_struct
-id|i2c_adapter
-id|i2c_adap
+multiline_comment|/* new gpio interface */
+DECL|member|gpio_lock
+id|spinlock_t
+id|gpio_lock
 suffix:semicolon
+multiline_comment|/* i2c layer */
 DECL|member|i2c_algo
 r_struct
 id|i2c_algo_bit_data
@@ -1153,6 +1176,14 @@ r_int
 id|i2c_state
 comma
 id|i2c_rc
+suffix:semicolon
+DECL|member|i2c_done
+r_int
+id|i2c_done
+suffix:semicolon
+DECL|member|i2c_queue
+id|wait_queue_head_t
+id|i2c_queue
 suffix:semicolon
 multiline_comment|/* video4linux (1) */
 DECL|member|video_dev
@@ -1178,14 +1209,12 @@ DECL|member|has_remote
 r_int
 id|has_remote
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 DECL|member|remote
 r_struct
 id|bttv_input
 op_star
 id|remote
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* locking */
 DECL|member|s_lock
 id|spinlock_t
@@ -1278,6 +1307,14 @@ suffix:semicolon
 DECL|member|opt_vcr_hack
 r_int
 id|opt_vcr_hack
+suffix:semicolon
+DECL|member|opt_whitecrush_upper
+r_int
+id|opt_whitecrush_upper
+suffix:semicolon
+DECL|member|opt_whitecrush_lower
+r_int
+id|opt_whitecrush_lower
 suffix:semicolon
 multiline_comment|/* radio data/state */
 DECL|member|has_radio
@@ -1375,6 +1412,22 @@ DECL|member|timeout
 r_struct
 id|timer_list
 id|timeout
+suffix:semicolon
+DECL|member|state
+r_struct
+id|bttv_suspend_state
+id|state
+suffix:semicolon
+multiline_comment|/* stats */
+DECL|member|irq_total
+r_int
+r_int
+id|irq_total
+suffix:semicolon
+DECL|member|irq_me
+r_int
+r_int
+id|irq_me
 suffix:semicolon
 DECL|member|errors
 r_int

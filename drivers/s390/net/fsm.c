@@ -1,8 +1,26 @@
-multiline_comment|/**&n; * $Id: fsm.c,v 1.4 2003/03/28 08:54:40 mschwide Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; */
+multiline_comment|/**&n; * $Id: fsm.c,v 1.6 2003/10/15 11:37:29 mschwide Exp $&n; *&n; * A generic FSM based on fsm used in isdn4linux&n; *&n; */
 macro_line|#include &quot;fsm.h&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;(C) 2000 IBM Corp. by Fritz Elfert (felfert@millenux.com)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Finite state machine helper functions&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|fsm_instance
 op_star
 DECL|function|init_fsm

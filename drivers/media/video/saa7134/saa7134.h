@@ -8,13 +8,11 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_VIDEO_IR
-macro_line|#include &quot;ir-common.h&quot;
-macro_line|#endif
 macro_line|#include &lt;media/video-buf.h&gt;
 macro_line|#include &lt;media/tuner.h&gt;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/id.h&gt;
+macro_line|#include &lt;media/ir-common.h&gt;
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 macro_line|# define TRUE (1==1)
@@ -282,6 +280,13 @@ id|planar
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|uvswap
+r_int
+r_int
+id|uvswap
+suffix:colon
+l_int|1
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------- */
@@ -330,6 +335,26 @@ DECL|macro|SAA7134_BOARD_VIDEOMATE_TV
 mdefine_line|#define SAA7134_BOARD_VIDEOMATE_TV     19
 DECL|macro|SAA7134_BOARD_CRONOS_PLUS
 mdefine_line|#define SAA7134_BOARD_CRONOS_PLUS      20
+DECL|macro|SAA7134_BOARD_10MOONSTVMASTER
+mdefine_line|#define SAA7134_BOARD_10MOONSTVMASTER  21
+DECL|macro|SAA7134_BOARD_MD2819
+mdefine_line|#define SAA7134_BOARD_MD2819           22
+DECL|macro|SAA7134_BOARD_BMK_MPEX_TUNER
+mdefine_line|#define SAA7134_BOARD_BMK_MPEX_TUNER   23
+DECL|macro|SAA7134_BOARD_TVSTATION_DVR
+mdefine_line|#define SAA7134_BOARD_TVSTATION_DVR    24
+DECL|macro|SAA7134_BOARD_ASUSTEK_TVFM7133
+mdefine_line|#define SAA7134_BOARD_ASUSTEK_TVFM7133&t;25
+DECL|macro|SAA7134_BOARD_PINNACLE_PCTV_STEREO
+mdefine_line|#define SAA7134_BOARD_PINNACLE_PCTV_STEREO 26
+DECL|macro|SAA7134_BOARD_MANLI_MTV002
+mdefine_line|#define SAA7134_BOARD_MANLI_MTV002     27
+DECL|macro|SAA7134_BOARD_MANLI_MTV001
+mdefine_line|#define SAA7134_BOARD_MANLI_MTV001     28
+DECL|macro|SAA7134_BOARD_TG3000TV
+mdefine_line|#define SAA7134_BOARD_TG3000TV         29
+DECL|macro|SAA7134_BOARD_ECS_TVP3XP
+mdefine_line|#define SAA7134_BOARD_ECS_TVP3XP       30
 DECL|macro|SAA7134_INPUT_MAX
 mdefine_line|#define SAA7134_INPUT_MAX 8
 DECL|struct|saa7134_input
@@ -637,6 +662,19 @@ r_enum
 id|v4l2_buf_type
 id|type
 suffix:semicolon
+DECL|member|resources
+r_int
+r_int
+id|resources
+suffix:semicolon
+macro_line|#ifdef VIDIOC_G_PRIORITY 
+DECL|member|prio
+r_enum
+id|v4l2_priority
+id|prio
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* video overlay */
 DECL|member|win
 r_struct
 id|v4l2_window
@@ -654,11 +692,6 @@ DECL|member|nclips
 r_int
 r_int
 id|nclips
-suffix:semicolon
-DECL|member|resources
-r_int
-r_int
-id|resources
 suffix:semicolon
 multiline_comment|/* video capture */
 DECL|member|fmt
@@ -836,7 +869,6 @@ id|read_count
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 multiline_comment|/* IR input */
 DECL|struct|saa7134_ir
 r_struct
@@ -874,9 +906,12 @@ DECL|member|mask_keydown
 id|u32
 id|mask_keydown
 suffix:semicolon
+DECL|member|mask_keyup
+id|u32
+id|mask_keyup
+suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* global device status */
 DECL|struct|saa7134_dev
 r_struct
@@ -896,6 +931,13 @@ DECL|member|slock
 id|spinlock_t
 id|slock
 suffix:semicolon
+macro_line|#ifdef VIDIOC_G_PRIORITY 
+DECL|member|prio
+r_struct
+id|v4l2_prio_state
+id|prio
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* various device info */
 DECL|member|resources
 r_int
@@ -941,14 +983,12 @@ DECL|member|has_remote
 r_int
 id|has_remote
 suffix:semicolon
-macro_line|#ifdef CONFIG_VIDEO_IR
 DECL|member|remote
 r_struct
 id|saa7134_ir
 op_star
 id|remote
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* pci i/o */
 DECL|member|name
 r_char
@@ -1053,6 +1093,11 @@ DECL|member|vbi_q
 r_struct
 id|saa7134_dmaqueue
 id|vbi_q
+suffix:semicolon
+DECL|member|video_fieldcount
+r_int
+r_int
+id|video_fieldcount
 suffix:semicolon
 DECL|member|vbi_fieldcount
 r_int
@@ -1179,10 +1224,8 @@ DECL|macro|saa_setb
 mdefine_line|#define saa_setb(reg,bit)          saa_andorb((reg),(bit),(bit))
 DECL|macro|saa_clearb
 mdefine_line|#define saa_clearb(reg,bit)        saa_andorb((reg),(bit),0)
-singleline_comment|//#define saa_wait(d) { if (need_resched()) schedule(); else udelay(d);}
 DECL|macro|saa_wait
 mdefine_line|#define saa_wait(d) { udelay(d); }
-singleline_comment|//#define saa_wait(d) { schedule_timeout(HZ*d/1000 ?:1); }
 multiline_comment|/* ----------------------------------------------------------- */
 multiline_comment|/* saa7134-core.c                                              */
 r_extern

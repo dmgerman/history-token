@@ -4,6 +4,6 @@ macro_line|#ifndef __XFS_VERSION_H__
 DECL|macro|__XFS_VERSION_H__
 mdefine_line|#define __XFS_VERSION_H__
 DECL|macro|XFS_VERSION_STRING
-mdefine_line|#define XFS_VERSION_STRING &quot;for Linux&quot;
+mdefine_line|#define XFS_VERSION_STRING &quot;SGI XFS&quot;
 macro_line|#endif /* __XFS_VERSION_H__ */
 eof

@@ -883,8 +883,8 @@ c_cond
 id|dentry
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|atomic_read
@@ -893,10 +893,6 @@ c_func
 op_amp
 id|dentry-&gt;d_count
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|atomic_inc

@@ -287,7 +287,7 @@ DECL|macro|touch_buffer
 mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 multiline_comment|/* If we *know* page-&gt;private refers to buffer_heads */
 DECL|macro|page_buffers
-mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PagePrivate(page))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
+mdefine_line|#define page_buffers(page)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BUG_ON(!PagePrivate(page));&t;&t;&bslash;&n;&t;&t;((struct buffer_head *)(page)-&gt;private);&t;&bslash;&n;&t;})
 DECL|macro|page_has_buffers
 mdefine_line|#define page_has_buffers(page)&t;PagePrivate(page)
 multiline_comment|/*&n; * Declarations&n; */
@@ -1018,6 +1018,10 @@ c_func
 (paren
 r_struct
 id|inode
+op_star
+comma
+r_struct
+id|address_space
 op_star
 comma
 r_int

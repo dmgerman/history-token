@@ -571,18 +571,14 @@ op_star
 id|file-&gt;private_data
 suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|cred
 op_logical_and
 id|cred-&gt;cr_magic
 op_ne
 id|RPCAUTH_CRED_MAGIC
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#endif

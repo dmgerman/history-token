@@ -62,11 +62,11 @@ id|u16
 id|xPacaIndex
 suffix:semicolon
 multiline_comment|/* Logical processor number&t;&t;0x18 */
-DECL|member|active
+DECL|member|xHwProcNum
 id|u16
-id|active
+id|xHwProcNum
 suffix:semicolon
-multiline_comment|/* Is this cpu active?&t;&t;&t;0x1a */
+multiline_comment|/* Physical processor number            0x1A */
 DECL|member|default_decr
 id|u32
 id|default_decr
@@ -206,16 +206,22 @@ id|u32
 id|prof_len
 suffix:semicolon
 multiline_comment|/* iSeries length of profile buffer -1&t;0x48 */
+DECL|member|yielded
+id|u8
+id|yielded
+suffix:semicolon
+multiline_comment|/* 0 = this processor is running        0x4c */
+multiline_comment|/* 1 = this processor is yielded             */
 DECL|member|rsvd2
 id|u8
 id|rsvd2
 (braket
 l_int|128
 op_minus
-l_int|76
+l_int|77
 )braket
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;0x4C */
+multiline_comment|/*&t;&t;&t;&t;&t;0x49 */
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_3 0x0100 - 0x017F&n; *=====================================================================================&n; */
 DECL|member|xProcStart
 id|u8
@@ -244,7 +250,7 @@ id|ItLpRegSave
 id|xRegSav
 suffix:semicolon
 multiline_comment|/* Register save for proc */
-multiline_comment|/*=====================================================================================&n; * CACHE_LINE_17-18 0x0800 - 0x0EFF Reserved&n; *=====================================================================================&n; */
+multiline_comment|/*=====================================================================================&n; * CACHE_LINE_17-18 0x0800 - 0x08FF Reserved&n; *=====================================================================================&n; */
 DECL|member|xRtas
 r_struct
 id|rtas_args
@@ -276,12 +282,25 @@ id|rtas_args
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/*=====================================================================================&n; * CACHE_LINE_19-30 0x0800 - 0x0EFF Reserved&n; *=====================================================================================&n; */
+multiline_comment|/*=====================================================================================&n; * CACHE_LINE_19-30 0x0900 - 0x0EFF Reserved&n; *=====================================================================================&n; */
+DECL|member|slb_shadow
+id|u64
+id|slb_shadow
+(braket
+l_int|0x20
+)braket
+suffix:semicolon
+DECL|member|dispatch_log
+id|u64
+id|dispatch_log
+suffix:semicolon
 DECL|member|rsvd6
 id|u8
 id|rsvd6
 (braket
-l_int|0x600
+l_int|0x500
+op_minus
+l_int|0x8
 )braket
 suffix:semicolon
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_31 0x0F00 - 0x0F7F Exception stack&n; *=====================================================================================&n; */

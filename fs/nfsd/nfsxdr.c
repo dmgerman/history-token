@@ -608,6 +608,23 @@ id|tmp1
 op_star
 l_int|1000
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Passing the invalid value useconds=1000000 for mtime&n;&t;&t; * is a Sun convention for &quot;set both mtime and atime to&n;&t;&t; * current server time&quot;.  It&squot;s needed to make permissions&n;&t;&t; * checks for the &quot;touch&quot; program across v2 mounts to&n;&t;&t; * Solaris and Irix boxes work correctly. See description of&n;&t;&t; * sattr in section 6.1 of &quot;NFS Illustrated&quot; by&n;&t;&t; * Brent Callaghan, Addison-Wesley, ISBN 0-201-32750-5&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|tmp1
+op_eq
+l_int|1000000
+)paren
+id|iap-&gt;ia_valid
+op_and_assign
+op_complement
+(paren
+id|ATTR_ATIME_SET
+op_or
+id|ATTR_MTIME_SET
+)paren
+suffix:semicolon
 )brace
 r_return
 id|p

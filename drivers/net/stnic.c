@@ -1237,8 +1237,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Hardware interrupt handler.  */
-r_extern
-r_void
+id|irqreturn_t
 id|ei_interrupt
 (paren
 r_int
@@ -1254,7 +1253,7 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 DECL|function|do_stnic_intr
 id|do_stnic_intr
 (paren
@@ -1271,6 +1270,7 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 id|ei_interrupt
 (paren
 l_int|0

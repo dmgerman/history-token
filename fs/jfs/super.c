@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -798,9 +798,12 @@ id|Opt_iocharset
 comma
 id|Opt_resize
 comma
+DECL|enumerator|Opt_resize_nosize
 DECL|enumerator|Opt_errors
 DECL|enumerator|Opt_ignore
 DECL|enumerator|Opt_err
+id|Opt_resize_nosize
+comma
 id|Opt_errors
 comma
 id|Opt_ignore
@@ -837,6 +840,12 @@ comma
 id|Opt_resize
 comma
 l_string|&quot;resize=%u&quot;
+)brace
+comma
+(brace
+id|Opt_resize_nosize
+comma
+l_string|&quot;resize&quot;
 )brace
 comma
 (brace
@@ -1081,16 +1090,26 @@ l_int|0
 dot
 id|from
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|resize
-op_logical_or
-op_logical_neg
 op_star
+id|newLVSize
+op_assign
+id|simple_strtoull
+c_func
+(paren
 id|resize
+comma
+op_amp
+id|resize
+comma
+l_int|0
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
+id|Opt_resize_nosize
+suffix:colon
 (brace
 op_star
 id|newLVSize
@@ -1112,22 +1131,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;JFS: Cannot determine volume size&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-op_star
-id|newLVSize
-op_assign
-id|simple_strtoull
-c_func
-(paren
-id|resize
-comma
-op_amp
-id|resize
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_break

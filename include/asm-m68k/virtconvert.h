@@ -47,7 +47,7 @@ r_const
 suffix:semicolon
 macro_line|#else
 DECL|function|mm_vtop
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -68,7 +68,7 @@ id|vaddr
 suffix:semicolon
 )brace
 DECL|function|mm_ptov
-r_extern
+r_static
 r_inline
 r_int
 r_int

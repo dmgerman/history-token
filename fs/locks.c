@@ -5126,7 +5126,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 suffix:semicolon
 r_if
 c_cond
@@ -5751,7 +5751,7 @@ id|address_space
 op_star
 id|mapping
 op_assign
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 suffix:semicolon
 r_if
 c_cond

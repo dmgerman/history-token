@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
+macro_line|#include &quot;speedstep-lib.h&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&quot;cpufreq: &quot;
 multiline_comment|/*&n; * Duty Cycle (3bits), note DC_DISABLE is not specified in&n; * intel docs i just use it to mean disable&n; */
@@ -665,7 +666,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* copied from speedstep_lib, made SMP-compatible */
 DECL|function|cpufreq_p4_get_frequency
 r_static
 r_int
@@ -679,19 +679,55 @@ op_star
 id|c
 )paren
 (brace
-id|u32
-id|msr_lo
-comma
-id|msr_hi
-comma
-id|mult
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86
+op_eq
+l_int|0x06
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|0x09
+)paren
+)paren
+(brace
+multiline_comment|/* Pentium M */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;Warning: Pentium M detected. The speedstep_centrino module&bslash;n&quot;
+)paren
 suffix:semicolon
-r_int
-r_int
-id|fsb
-op_assign
-l_int|0
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;offers voltage scaling in addition of frequency scaling. You&bslash;n&quot;
+)paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;should use that instead of p4-clockmod, if possible.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|speedstep_get_processor_frequency
+c_func
+(paren
+id|SPEEDSTEP_PROCESSOR_PM
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -705,97 +741,22 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;Unknown P4. Please send an e-mail to &lt;linux@brodo.de&gt;&bslash;n&quot;
+l_string|&quot;Unknown p4-clockmod-capable CPU. Please send an e-mail to &lt;linux@brodo.de&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-id|rdmsr
+r_if
+c_cond
+(paren
+id|speedstep_detect_processor
 c_func
 (paren
-l_int|0x2c
-comma
-id|msr_lo
-comma
-id|msr_hi
 )paren
-suffix:semicolon
-multiline_comment|/* printk(KERN_DEBUG PFX &quot;P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x&bslash;n&quot;, msr_lo, msr_hi); */
-multiline_comment|/* decode the FSB: see IA-32 Intel (C) Architecture Software &n;&t; * Developer&squot;s Manual, Volume 3: System Prgramming Guide,&n;&t; * revision #12 in Table B-1: MSRs in the Pentium 4 and&n;&t; * Intel Xeon Processors, on page B-4 and B-5.&n;&t; */
-r_if
-c_cond
-(paren
-id|c-&gt;x86_model
-OL
-l_int|2
-)paren
-id|fsb
-op_assign
-l_int|100
-op_star
-l_int|1000
-suffix:semicolon
-r_else
-(brace
-id|u8
-id|fsb_code
-op_assign
-(paren
-id|msr_lo
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0x7
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|fsb_code
-)paren
-(brace
-r_case
-l_int|0
-suffix:colon
-id|fsb
-op_assign
-l_int|100
-op_star
-l_int|1000
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
-id|fsb
-op_assign
-l_int|13333
-op_star
-l_int|10
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|fsb
-op_assign
-l_int|200
-op_star
-l_int|1000
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fsb
+op_eq
+id|SPEEDSTEP_PROCESSOR_P4M
 )paren
 (brace
 id|printk
@@ -803,7 +764,7 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;couldn&squot;t detect FSB speed. Please send an e-mail to &lt;linux@brodo.de&gt;&bslash;n&quot;
+l_string|&quot;Warning: Pentium 4-M detected. The speedstep-ich or acpi cpufreq &bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -811,26 +772,30 @@ c_func
 (paren
 id|KERN_DEBUG
 id|PFX
-l_string|&quot;P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x&bslash;n&quot;
-comma
-id|msr_lo
-comma
-id|msr_hi
+l_string|&quot;modules offers voltage scaling in addition of frequency scaling. You&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+id|PFX
+l_string|&quot;should use either one instead of p4-clockmod, if possible.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|speedstep_get_processor_frequency
+c_func
+(paren
+id|SPEEDSTEP_PROCESSOR_P4M
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Multiplier. */
-id|mult
-op_assign
-id|msr_lo
-op_rshift
-l_int|24
-suffix:semicolon
 r_return
+id|speedstep_get_processor_frequency
+c_func
 (paren
-id|fsb
-op_star
-id|mult
+id|SPEEDSTEP_PROCESSOR_P4D
 )paren
 suffix:semicolon
 )brace
@@ -1223,7 +1188,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|cpufreq_p4_init
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|cpufreq_p4_init

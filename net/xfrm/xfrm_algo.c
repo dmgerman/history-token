@@ -197,7 +197,7 @@ op_assign
 dot
 id|icv_truncbits
 op_assign
-l_int|128
+l_int|96
 comma
 dot
 id|icv_fullbits

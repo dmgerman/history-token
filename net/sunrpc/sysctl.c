@@ -280,6 +280,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -289,6 +292,10 @@ id|p
 comma
 id|left
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|tmpbuf
 (braket
@@ -448,6 +455,9 @@ id|len
 op_assign
 id|left
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|__copy_to_user
 c_func
 (paren
@@ -457,6 +467,10 @@ id|tmpbuf
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -470,6 +484,9 @@ OG
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|put_user
 c_func
 (paren
@@ -483,6 +500,10 @@ id|buffer
 op_plus
 id|len
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|left
 op_decrement

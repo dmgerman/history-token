@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
@@ -570,7 +571,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s PSW : %p %p&bslash;n&quot;
+l_string|&quot;%s PSW : %p %p&quot;
 comma
 id|mode
 comma
@@ -585,6 +586,16 @@ r_void
 op_star
 )paren
 id|regs-&gt;psw.addr
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; (%s)&bslash;n&quot;
+comma
+id|regs-&gt;psw.addr
+op_amp
+id|PSW_ADDR_INSN
 )paren
 suffix:semicolon
 id|printk
@@ -1306,6 +1317,31 @@ c_func
 (paren
 op_amp
 id|die_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Fatal exception in interrupt&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|panic_on_oops
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Fatal exception: panic_on_oops&quot;
 )paren
 suffix:semicolon
 id|do_exit

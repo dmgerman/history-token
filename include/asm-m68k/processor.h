@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|function|rdusp
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -41,7 +41,7 @@ id|usp
 suffix:semicolon
 )brace
 DECL|function|wrusp
-r_extern
+r_static
 r_inline
 r_void
 id|wrusp
@@ -225,7 +225,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ksp: sizeof(init_stack) + (unsigned long) init_stack,&t;&bslash;&n;&t;sr: PS_S, &t;&t;&t;&t;&t;&t;&bslash;&n;&t;fs: __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ksp:&t;sizeof(init_stack) + (unsigned long) init_stack,&t;&bslash;&n;&t;sr:&t;PS_S,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;fs:&t;__KERNEL_DS,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;info:&t;INIT_THREAD_INFO(init_task)&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|function|start_thread
 r_static

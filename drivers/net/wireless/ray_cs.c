@@ -1836,7 +1836,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;ray_cs ray_attach calling CardServices(RegisterClient...)&bslash;n&quot;
+l_string|&quot;ray_cs ray_attach calling pcmcia_register_client(...)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|init_timer
@@ -2098,7 +2098,7 @@ suffix:semicolon
 multiline_comment|/* ray_detach */
 multiline_comment|/*=============================================================================&n;    ray_config() is run after a CARD_INSERTION event&n;    is received, to configure the PCMCIA socket, and to make the&n;    ethernet device available to the system.&n;=============================================================================*/
 DECL|macro|CS_CHECK
-mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=fn(args))!=0) goto cs_failed
+mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
 DECL|macro|MAX_TUPLE_SIZE
 mdefine_line|#define MAX_TUPLE_SIZE 128
 DECL|function|ray_config
@@ -2187,12 +2187,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_get_first_tuple
+id|GetFirstTuple
 comma
+id|pcmcia_get_first_tuple
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
+)paren
 )paren
 suffix:semicolon
 id|tuple.TupleData
@@ -2210,19 +2214,26 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_get_tuple_data
+id|GetTupleData
 comma
+id|pcmcia_get_tuple_data
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
 )paren
+)paren
 suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_parse_tuple
+id|ParseTuple
 comma
+id|pcmcia_parse_tuple
+c_func
+(paren
 id|handle
 comma
 op_amp
@@ -2230,6 +2241,7 @@ id|tuple
 comma
 op_amp
 id|parse
+)paren
 )paren
 suffix:semicolon
 id|link-&gt;conf.ConfigBase
@@ -2265,12 +2277,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_get_first_tuple
+id|GetFirstTuple
 comma
+id|pcmcia_get_first_tuple
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
+)paren
 )paren
 suffix:semicolon
 id|tuple.TupleData
@@ -2288,12 +2304,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_get_tuple_data
+id|GetTupleData
 comma
+id|pcmcia_get_tuple_data
+c_func
+(paren
 id|handle
 comma
 op_amp
 id|tuple
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -2347,12 +2367,16 @@ multiline_comment|/* Now allocate an interrupt line.  Note that this does not&n;
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_request_irq
+id|RequestIRQ
 comma
+id|pcmcia_request_irq
+c_func
+(paren
 id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;irq
+)paren
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -2363,12 +2387,16 @@ multiline_comment|/* This actually configures the PCMCIA socket -- setting up&n;
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_request_configuration
+id|RequestConfiguration
 comma
+id|pcmcia_request_configuration
+c_func
+(paren
 id|link-&gt;handle
 comma
 op_amp
 id|link-&gt;conf
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*** Set up 32k window for shared memory (transmit and control) ************/
@@ -2397,8 +2425,11 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_request_window
+id|RequestWindow
 comma
+id|pcmcia_request_window
+c_func
+(paren
 op_amp
 id|link-&gt;handle
 comma
@@ -2407,6 +2438,7 @@ id|req
 comma
 op_amp
 id|link-&gt;win
+)paren
 )paren
 suffix:semicolon
 id|mem.CardOffset
@@ -2420,12 +2452,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_map_mem_page
+id|MapMemPage
 comma
+id|pcmcia_map_mem_page
+c_func
+(paren
 id|link-&gt;win
 comma
 op_amp
 id|mem
+)paren
 )paren
 suffix:semicolon
 id|local-&gt;sram
@@ -2470,8 +2506,11 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_request_window
+id|RequestWindow
 comma
+id|pcmcia_request_window
+c_func
+(paren
 op_amp
 id|link-&gt;handle
 comma
@@ -2480,6 +2519,7 @@ id|req
 comma
 op_amp
 id|local-&gt;rmem_handle
+)paren
 )paren
 suffix:semicolon
 id|mem.CardOffset
@@ -2493,12 +2533,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_map_mem_page
+id|MapMemPage
 comma
+id|pcmcia_map_mem_page
+c_func
+(paren
 id|local-&gt;rmem_handle
 comma
 op_amp
 id|mem
+)paren
 )paren
 suffix:semicolon
 id|local-&gt;rmem
@@ -2543,8 +2587,11 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_request_window
+id|RequestWindow
 comma
+id|pcmcia_request_window
+c_func
+(paren
 op_amp
 id|link-&gt;handle
 comma
@@ -2553,6 +2600,7 @@ id|req
 comma
 op_amp
 id|local-&gt;amem_handle
+)paren
 )paren
 suffix:semicolon
 id|mem.CardOffset
@@ -2566,12 +2614,16 @@ suffix:semicolon
 id|CS_CHECK
 c_func
 (paren
-id|pcmcia_map_mem_page
+id|MapMemPage
 comma
+id|pcmcia_map_mem_page
+c_func
+(paren
 id|local-&gt;amem_handle
 comma
 op_amp
 id|mem
+)paren
 )paren
 suffix:semicolon
 id|local-&gt;amem

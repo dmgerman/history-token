@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &quot;xattr.h&quot;
-DECL|macro|XATTR_SECURITY_PREFIX
-mdefine_line|#define XATTR_SECURITY_PREFIX &quot;security.&quot;
 r_static
 r_int
 DECL|function|ext2_xattr_security_list

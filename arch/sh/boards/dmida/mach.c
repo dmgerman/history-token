@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/sh/kernel/mach_dmida.c&n; *&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * Derived from mach_hp600.c, which bore the message:&n; * Copyright (C) 2000 Stuart Menefy (stuart.menefy@st.com)&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.&n; *&n; * Machine vector for the DataMyte Industrial Digital Assistant(tm).&n; * See http://www.dmida.com&n; *&n; */
+multiline_comment|/*&n; * linux/arch/sh/boards/dmida/mach.c&n; *&n; * by Greg Banks &lt;gbanks@pocketpenguins.com&gt;&n; * (c) 2000 PocketPenguins Inc&n; *&n; * Derived from mach_hp600.c, which bore the message:&n; * Copyright (C) 2000 Stuart Menefy (stuart.menefy@st.com)&n; *&n; * May be copied or modified under the terms of the GNU General Public&n; * License.  See linux/COPYING for more information.&n; *&n; * Machine vector for the DataMyte Industrial Digital Assistant(tm).&n; * See http://www.dmida.com&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
@@ -14,11 +14,6 @@ id|mv_dmida
 id|__initmv
 op_assign
 (brace
-dot
-id|mv_name
-op_assign
-l_string|&quot;DMIDA&quot;
-comma
 dot
 id|mv_nr_irqs
 op_assign
@@ -117,49 +112,9 @@ op_assign
 id|hd64465_outsl
 comma
 dot
-id|mv_readb
-op_assign
-id|generic_readb
-comma
-dot
-id|mv_readw
-op_assign
-id|generic_readw
-comma
-dot
-id|mv_readl
-op_assign
-id|generic_readl
-comma
-dot
-id|mv_writeb
-op_assign
-id|generic_writeb
-comma
-dot
-id|mv_writew
-op_assign
-id|generic_writew
-comma
-dot
-id|mv_writel
-op_assign
-id|generic_writel
-comma
-dot
 id|mv_irq_demux
 op_assign
 id|hd64465_irq_demux
-comma
-dot
-id|mv_rtc_gettimeofday
-op_assign
-id|sh_rtc_gettimeofday
-comma
-dot
-id|mv_rtc_settimeofday
-op_assign
-id|sh_rtc_settimeofday
 comma
 )brace
 suffix:semicolon

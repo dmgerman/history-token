@@ -1,15 +1,16 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
-macro_line|#ident  &quot;$Revision: 1.167 $&quot;
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
@@ -21,91 +22,12 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr_t.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;asm/sn/sndrv.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
-macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
-multiline_comment|/*&n; * Shub WAR for Xbridge Little Endian problem:&n; *&t;Xbridge has to run in BIG ENDIAN even with Shub.&n; */
-multiline_comment|/*&n; * io_sh_swapper: Turn on Shub byte swapping.&n; *&t;All data destined to and from Shub to XIO are byte-swapped.&n; */
-r_void
-DECL|function|io_sh_swapper
-id|io_sh_swapper
-c_func
-(paren
-id|nasid_t
-id|nasid
-comma
-r_int
-id|onoff
-)paren
-(brace
-id|ii_iwc_u_t
-id|ii_iwc
-suffix:semicolon
-id|ii_iwc.ii_iwc_regval
-op_assign
-id|REMOTE_HUB_L
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IWC
-)paren
-suffix:semicolon
-id|ii_iwc.ii_iwc_fld_s.i_dma_byte_swap
-op_assign
-id|onoff
-suffix:semicolon
-id|REMOTE_HUB_S
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IWC
-comma
-id|ii_iwc.ii_iwc_regval
-)paren
-suffix:semicolon
-id|ii_iwc.ii_iwc_regval
-op_assign
-id|REMOTE_HUB_L
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IWC
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * io_get_sh_swapper: Return current Swap mode.&n; *&t;1 = Swap on, 0 = Swap off.&n; */
-r_int
-DECL|function|io_get_sh_swapper
-id|io_get_sh_swapper
-c_func
-(paren
-id|nasid_t
-id|nasid
-)paren
-(brace
-id|ii_iwc_u_t
-id|ii_iwc
-suffix:semicolon
-id|ii_iwc.ii_iwc_regval
-op_assign
-id|REMOTE_HUB_L
-c_func
-(paren
-id|nasid
-comma
-id|IIO_IWC
-)paren
-suffix:semicolon
-r_return
-id|ii_iwc.ii_iwc_fld_s.i_dma_byte_swap
-suffix:semicolon
-)brace
 DECL|macro|SHUB_NUM_ECF_REGISTERS
 mdefine_line|#define SHUB_NUM_ECF_REGISTERS 8
 DECL|variable|shub_perf_counts
@@ -738,6 +660,21 @@ op_assign
 id|cnodeid_t
 )paren
 id|file-&gt;f_dentry-&gt;d_fsdata
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cnode
+OL
+l_int|0
+op_logical_or
+id|cnode
+op_ge
+id|numnodes
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 r_switch
 c_cond

@@ -3586,6 +3586,11 @@ id|hidinput-&gt;input.id.version
 op_assign
 id|dev-&gt;descriptor.bcdDevice
 suffix:semicolon
+id|hidinput-&gt;input.dev
+op_assign
+op_amp
+id|hid-&gt;intf-&gt;dev
+suffix:semicolon
 )brace
 r_for
 c_loop
