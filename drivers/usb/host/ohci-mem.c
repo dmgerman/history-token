@@ -70,6 +70,17 @@ op_amp
 id|ohci-&gt;pending
 )paren
 suffix:semicolon
+id|INIT_WORK
+(paren
+op_amp
+id|ohci-&gt;rh_resume
+comma
+id|ohci_rh_resume
+comma
+op_amp
+id|ohci-&gt;hcd
+)paren
+suffix:semicolon
 r_return
 op_amp
 id|ohci-&gt;hcd

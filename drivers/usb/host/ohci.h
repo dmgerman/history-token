@@ -810,11 +810,22 @@ id|u32
 id|hc_control
 suffix:semicolon
 multiline_comment|/* copy of hc control reg */
+DECL|member|next_statechange
+r_int
+r_int
+id|next_statechange
+suffix:semicolon
+multiline_comment|/* suspend/resume */
 DECL|member|fminterval
 id|u32
 id|fminterval
 suffix:semicolon
 multiline_comment|/* saved register */
+DECL|member|rh_resume
+r_struct
+id|work_struct
+id|rh_resume
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -889,7 +900,7 @@ mdefine_line|#define&t;FI&t;&t;&t;0x2edf&t;&t;/* 12000 bits per frame (-1) */
 DECL|macro|DEFAULT_FMINTERVAL
 mdefine_line|#define&t;DEFAULT_FMINTERVAL &t;((((6 * (FI - 210)) / 7) &lt;&lt; 16) | FI)
 DECL|macro|LSTHRESH
-mdefine_line|#define&t;LSTHRESH&t;&t;0x628&t;&t;/* lowspeed bit threshold */
+mdefine_line|#define LSTHRESH&t;&t;0x628&t;&t;/* lowspeed bit threshold */
 DECL|function|periodic_reinit
 r_static
 r_inline

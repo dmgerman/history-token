@@ -41,6 +41,8 @@ singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
 multiline_comment|/* For initializing controller (mask in an HCFS mode too) */
 DECL|macro|OHCI_CONTROL_INIT
 mdefine_line|#define&t;OHCI_CONTROL_INIT &t;OHCI_CTRL_CBSR
+DECL|macro|OHCI_INTR_INIT
+mdefine_line|#define&t;OHCI_INTR_INIT &bslash;&n;&t;(OHCI_INTR_MIE | OHCI_INTR_UE | OHCI_INTR_RD | OHCI_INTR_WDH)
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|variable|hcd_name
 r_static
@@ -1479,14 +1481,19 @@ id|ohci-&gt;hcd.state
 op_assign
 id|USB_STATE_RUNNING
 suffix:semicolon
+multiline_comment|/* wake on ConnectStatusChange, matching external hubs */
+id|writel
+(paren
+id|RH_HS_DRWE
+comma
+op_amp
+id|ohci-&gt;regs-&gt;roothub.status
+)paren
+suffix:semicolon
 multiline_comment|/* Choose the interrupts we care about now, others later on demand */
 id|mask
 op_assign
-id|OHCI_INTR_MIE
-op_or
-id|OHCI_INTR_UE
-op_or
-id|OHCI_INTR_WDH
+id|OHCI_INTR_INIT
 suffix:semicolon
 id|writel
 (paren
@@ -1916,6 +1923,29 @@ c_cond
 (paren
 id|ints
 op_amp
+id|OHCI_INTR_RD
+)paren
+(brace
+id|ohci_vdbg
+(paren
+id|ohci
+comma
+l_string|&quot;resume detect&bslash;n&quot;
+)paren
+suffix:semicolon
+id|schedule_work
+c_func
+(paren
+op_amp
+id|ohci-&gt;rh_resume
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ints
+op_amp
 id|OHCI_INTR_WDH
 )paren
 (brace
@@ -2117,6 +2147,11 @@ id|ohci_dump
 id|ohci
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|flush_scheduled_work
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
