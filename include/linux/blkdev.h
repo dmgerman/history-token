@@ -187,7 +187,8 @@ op_star
 id|get_io_context
 c_func
 (paren
-r_void
+r_int
+id|gfp_flags
 )paren
 suffix:semicolon
 r_void

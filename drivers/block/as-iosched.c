@@ -537,6 +537,7 @@ op_assign
 id|get_io_context
 c_func
 (paren
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -547,6 +548,7 @@ op_logical_and
 op_logical_neg
 id|ioc-&gt;aic
 )paren
+(brace
 id|ioc-&gt;aic
 op_assign
 id|alloc_as_io_context
@@ -554,6 +556,25 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioc-&gt;aic
+)paren
+(brace
+id|put_io_context
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
+id|ioc
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_return
 id|ioc
 suffix:semicolon
@@ -3319,19 +3340,6 @@ c_func
 id|rq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|arq
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_else
-(brace
 r_const
 r_int
 id|data_dir
@@ -3381,7 +3389,7 @@ id|arq-&gt;io_context-&gt;aic-&gt;nr_queued
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Update the &quot;next_arq&quot; cache if we are about to remove its&n;&t;&t; * entry&n;&t;&t; */
+multiline_comment|/*&n;&t; * Update the &quot;next_arq&quot; cache if we are about to remove its&n;&t; * entry&n;&t; */
 r_if
 c_cond
 (paren
@@ -3428,7 +3436,6 @@ comma
 id|arq
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * as_remove_dispatched_request is called to remove a request which has gone&n; * to the dispatch list.&n; */
 DECL|function|as_remove_dispatched_request
@@ -4515,8 +4522,6 @@ r_if
 c_cond
 (paren
 id|arq-&gt;io_context
-op_logical_and
-id|arq-&gt;io_context-&gt;aic
 )paren
 (brace
 id|atomic_inc
