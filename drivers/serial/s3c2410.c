@@ -25,7 +25,7 @@ mdefine_line|#define SERIAL_S3C2410_NAME&t;&quot;ttySAC&quot;
 DECL|macro|SERIAL_S3C2410_MAJOR
 mdefine_line|#define SERIAL_S3C2410_MAJOR&t;204
 DECL|macro|SERIAL_S3C2410_MINOR
-mdefine_line|#define SERIAL_S3C2410_MINOR&t;4
+mdefine_line|#define SERIAL_S3C2410_MINOR&t;64
 multiline_comment|/* we can support 3 uarts, but not always use them */
 DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS (3)
