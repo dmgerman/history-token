@@ -1786,6 +1786,7 @@ id|t_requ
 suffix:semicolon
 )brace
 DECL|function|set_int
+r_static
 r_void
 id|set_int
 c_func
