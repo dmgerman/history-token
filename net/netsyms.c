@@ -1373,6 +1373,13 @@ c_func
 id|xfrm_check_selectors
 )paren
 suffix:semicolon
+DECL|variable|xfrm_check_output
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm_check_output
+)paren
+suffix:semicolon
 DECL|variable|__secpath_destroy
 id|EXPORT_SYMBOL
 c_func
