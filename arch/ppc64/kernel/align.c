@@ -1453,6 +1453,11 @@ op_amp
 id|current-&gt;thread.fpscr
 )paren
 suffix:semicolon
+id|disable_kernel_fp
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_else
 id|data.dd
@@ -1614,6 +1619,11 @@ id|reg
 comma
 op_amp
 id|current-&gt;thread.fpscr
+)paren
+suffix:semicolon
+id|disable_kernel_fp
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
