@@ -4307,7 +4307,7 @@ macro_line|#else
 id|printk
 c_func
 (paren
-l_string|&quot;%s at %x on irq 0x%08x&quot;
+l_string|&quot;%s at 0x%08lx on irq %d&quot;
 comma
 id|hwif-&gt;name
 comma
