@@ -32,6 +32,9 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(a,b...)
 macro_line|#endif
+multiline_comment|/*&n; * The 2.4 driver calls reset_card() at init time, where it also sets the&n; * initial mode. I don&squot;t think the driver should touch the chip until&n; * the console sets a video mode. So I was calling this at the start&n; * of setting a mode. However, certainly on 1280x1024 depth 16 on my&n; * PCI Graphics Blaster Exxtreme this causes the display to smear&n; * slightly.  I don&squot;t know why. Guesses to jim.hague@acm.org.&n; */
+DECL|macro|RESET_CARD_ON_MODE_SET
+macro_line|#undef RESET_CARD_ON_MODE_SET
 multiline_comment|/*&n; * Driver data &n; */
 DECL|variable|__initdata
 r_static
@@ -1746,8 +1749,8 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
-multiline_comment|/*&n; * FIXME:&n; * The 2.4 driver calls this at init time, where it also sets the&n; * initial mode. I don&squot;t think the driver should touch the chip&n; * until the console sets a video mode. So I was calling this&n; * at the start of setting a mode. However, certainly on 1280x1024&n; * depth 16 this causes the display to smear slightly.&n; * I don&squot;t know why. Guesses to jim.hague@acm.org.&n; */
+macro_line|#ifdef RESET_CARD_ON_MODE_SET
+DECL|function|reset_card
 r_static
 r_void
 id|reset_card
@@ -2829,6 +2832,14 @@ id|vsync
 op_assign
 id|video
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;video = 0x%x&bslash;n&quot;
+comma
+id|video
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The hardware cursor needs +vsync to recognise vert retrace.&n;&t; * We may not be using the hardware cursor, but the X Glint&n;&t; * driver may well. So always set +hsync/+vsync and then set&n;&t; * the RAMDAC to invert the sync if necessary.&n;&t; */
 id|vsync
 op_and_assign
@@ -3455,6 +3466,14 @@ suffix:semicolon
 r_int
 id|data64
 suffix:semicolon
+macro_line|#ifdef RESET_CARD_ON_MODE_SET
+id|reset_card
+c_func
+(paren
+id|par
+)paren
+suffix:semicolon
+macro_line|#endif
 id|reset_config
 c_func
 (paren
@@ -3829,15 +3848,9 @@ id|info-&gt;fix.line_length
 op_assign
 id|info-&gt;var.xres
 op_star
-(paren
-(paren
-id|info-&gt;var.bits_per_pixel
-op_plus
-l_int|7
-)paren
-op_rshift
-l_int|3
-)paren
+id|depth
+op_div
+l_int|8
 suffix:semicolon
 id|info-&gt;cmap.len
 op_assign
@@ -4333,6 +4346,18 @@ comma
 id|pixclock
 )paren
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Setting graphics mode at %dx%d depth %d&bslash;n&quot;
+comma
+id|info-&gt;var.xres
+comma
+id|info-&gt;var.yres
+comma
+id|info-&gt;var.bits_per_pixel
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4420,7 +4445,7 @@ op_rshift
 l_int|8
 suffix:semicolon
 )brace
-multiline_comment|/* Directcolor:&n;&t; *   var-&gt;{color}.offset contains start of bitfield&n;&t; *   var-&gt;{color}.length contains length of bitfield&n;&t; *   {hardwarespecific} contains width of DAC&n;&t; *   cmap[X] is programmed to (X &lt;&lt; red.offset) | (X &lt;&lt; green.offset) | (X &lt;&lt; blue.offset)&n;&t; *   RAMDAC[X] is programmed to (red, green, blue)&n;&t; *&n;&t; * Pseudocolor:&n;&t; *    uses offset = 0 &amp;&amp; length = DAC register width.&n;&t; *    var-&gt;{color}.offset is 0&n;&t; *    var-&gt;{color}.length contains widht of DAC&n;&t; *    cmap is not used&n;&t; *    DAC[X] is programmed to (red, green, blue)&n;&t; * Truecolor:&n;&t; *    does not use RAMDAC (usually has 3 of them).&n;&t; *    var-&gt;{color}.offset contains start of bitfield&n;&t; *    var-&gt;{color}.length contains length of bitfield&n;&t; *    cmap is programmed to (red &lt;&lt; red.offset) | (green &lt;&lt; green.offset) |&n;&t; *                      (blue &lt;&lt; blue.offset) | (transp &lt;&lt; transp.offset)&n;&t; *    RAMDAC does not exist&n;&t; */
+multiline_comment|/* Directcolor:&n;&t; *   var-&gt;{color}.offset contains start of bitfield&n;&t; *   var-&gt;{color}.length contains length of bitfield&n;&t; *   {hardwarespecific} contains width of DAC&n;&t; *   cmap[X] is programmed to&n;&t; *   (X &lt;&lt; red.offset) | (X &lt;&lt; green.offset) | (X &lt;&lt; blue.offset)&n;&t; *   RAMDAC[X] is programmed to (red, green, blue)&n;&t; *&n;&t; * Pseudocolor:&n;&t; *    uses offset = 0 &amp;&amp; length = DAC register width.&n;&t; *    var-&gt;{color}.offset is 0&n;&t; *    var-&gt;{color}.length contains widht of DAC&n;&t; *    cmap is not used&n;&t; *    DAC[X] is programmed to (red, green, blue)&n;&t; * Truecolor:&n;&t; *    does not use RAMDAC (usually has 3 of them).&n;&t; *    var-&gt;{color}.offset contains start of bitfield&n;&t; *    var-&gt;{color}.length contains length of bitfield&n;&t; *    cmap is programmed to&n;&t; *    (red &lt;&lt; red.offset) | (green &lt;&lt; green.offset) |&n;&t; *    (blue &lt;&lt; blue.offset) | (transp &lt;&lt; transp.offset)&n;&t; *    RAMDAC does not exist&n;&t; */
 DECL|macro|CNVT_TOHW
 mdefine_line|#define CNVT_TOHW(val,width) ((((val)&lt;&lt;(width))+0x7FFF-(val))&gt;&gt;16)
 r_switch
@@ -4814,6 +4839,25 @@ id|video
 op_assign
 id|par-&gt;video
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;blank_mode %d&bslash;n&quot;
+comma
+id|blank_mode
+)paren
+suffix:semicolon
+multiline_comment|/* Turn everything on, then disable as requested. */
+id|video
+op_or_assign
+(paren
+id|PM2F_VIDEO_ENABLE
+op_or
+id|PM2F_HSYNC_MASK
+op_or
+id|PM2F_VSYNC_MASK
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -5041,12 +5085,6 @@ op_assign
 r_sizeof
 (paren
 r_struct
-id|fb_info
-)paren
-op_plus
-r_sizeof
-(paren
-r_struct
 id|pm2fb_par
 )paren
 op_plus
@@ -5078,18 +5116,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|info
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
 id|default_par
 op_assign
+(paren
+r_struct
+id|pm2fb_par
+op_star
+)paren
 id|info-&gt;par
 suffix:semicolon
 r_switch
@@ -5382,10 +5415,6 @@ suffix:semicolon
 id|info-&gt;fix
 op_assign
 id|pm2fb_fix
-suffix:semicolon
-id|info-&gt;par
-op_assign
-id|default_par
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
