@@ -940,7 +940,7 @@ id|e1000_netpoll
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1943,7 +1943,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* we need to set the name early since the DPRINTK macro needs it set */
+multiline_comment|/* we need to set the name early for the DPRINTK macro */
 r_if
 c_cond
 (paren
@@ -1957,9 +1957,11 @@ id|netdev-&gt;name
 OL
 l_int|0
 )paren
+(brace
 r_goto
 id|err_free_unlock
 suffix:semicolon
+)brace
 id|mmio_start
 op_assign
 id|pci_resource_start
@@ -2596,7 +2598,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/* since we are holding the rtnl lock already, call the no-lock version */
+multiline_comment|/* We&squot;re already holding the rtnl lock; call the no-lock version */
 r_if
 c_cond
 (paren
@@ -3851,11 +3853,20 @@ op_and_assign
 op_complement
 id|E1000_RCTL_SBP
 suffix:semicolon
+multiline_comment|/* Setup buffer sizes */
 id|rctl
 op_and_assign
 op_complement
 (paren
 id|E1000_RCTL_SZ_4096
+)paren
+suffix:semicolon
+id|rctl
+op_or_assign
+(paren
+id|E1000_RCTL_BSEX
+op_or
+id|E1000_RCTL_LPE
 )paren
 suffix:semicolon
 r_switch
@@ -3890,10 +3901,6 @@ suffix:colon
 id|rctl
 op_or_assign
 id|E1000_RCTL_SZ_4096
-op_or
-id|E1000_RCTL_BSEX
-op_or
-id|E1000_RCTL_LPE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3903,10 +3910,6 @@ suffix:colon
 id|rctl
 op_or_assign
 id|E1000_RCTL_SZ_8192
-op_or
-id|E1000_RCTL_BSEX
-op_or
-id|E1000_RCTL_LPE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3916,10 +3919,6 @@ suffix:colon
 id|rctl
 op_or_assign
 id|E1000_RCTL_SZ_16384
-op_or
-id|E1000_RCTL_BSEX
-op_or
-id|E1000_RCTL_LPE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3971,7 +3970,7 @@ suffix:semicolon
 r_uint32
 id|rxcsum
 suffix:semicolon
-multiline_comment|/* make sure receives are disabled while setting up the descriptors */
+multiline_comment|/* disable receives while setting up the descriptors */
 id|rctl
 op_assign
 id|E1000_READ_REG
@@ -5185,7 +5184,7 @@ id|adapter
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* need to wait a few seconds after link up to get diagnostic information from the phy */
+multiline_comment|/* Need to wait a few seconds after link up to get diagnostic information from&n; * the phy */
 r_static
 r_void
 DECL|function|e1000_update_phy_info
@@ -7178,7 +7177,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|macro|TXD_USE_COUNT
-mdefine_line|#define TXD_USE_COUNT(S, X) (((S) &gt;&gt; (X)) + 1 ) 
+mdefine_line|#define TXD_USE_COUNT(S, X) (((S) &gt;&gt; (X)) + 1 )
 r_static
 r_int
 DECL|function|e1000_xmit_frame
@@ -7225,16 +7224,17 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
-id|flags
-suffix:semicolon
-r_int
-r_int
 id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
 r_int
-id|count
+r_int
+id|flags
+suffix:semicolon
+r_int
+r_int
+id|nr_frags
 op_assign
 l_int|0
 suffix:semicolon
@@ -7245,8 +7245,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-r_int
-id|nr_frags
+id|count
 op_assign
 l_int|0
 suffix:semicolon
@@ -7301,7 +7300,7 @@ id|skb
 op_member_access_from_pointer
 id|tso_size
 suffix:semicolon
-multiline_comment|/* The controller does a simple calculation to &n;&t; * make sure there is enough room in the FIFO before&n;&t; * initiating the DMA for each buffer.  The calc is:&n;&t; * 4 = ceil(buffer len/mss).  To make sure we don&squot;t&n;&t; * overrun the FIFO, adjust the max buffer len if mss&n;&t; * drops. */
+multiline_comment|/* The controller does a simple calculation to&n;&t; * make sure there is enough room in the FIFO before&n;&t; * initiating the DMA for each buffer.  The calc is:&n;&t; * 4 = ceil(buffer len/mss).  To make sure we don&squot;t&n;&t; * overrun the FIFO, adjust the max buffer len if mss&n;&t; * drops. */
 r_if
 c_cond
 (paren
@@ -7352,7 +7351,7 @@ suffix:semicolon
 id|count
 op_increment
 suffix:semicolon
-multiline_comment|/*for sentinel desc*/
+multiline_comment|/* for sentinel desc */
 macro_line|#else
 r_if
 c_cond
@@ -7454,7 +7453,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* need: count +  2 desc gap to keep tail from touching &n;&t; * head, otherwise try next time */
+multiline_comment|/* need: count + 2 desc gap to keep tail from touching&n;&t; * head, otherwise try next time */
 r_if
 c_cond
 (paren
@@ -8100,7 +8099,6 @@ comma
 id|PRC1522
 )paren
 suffix:semicolon
-multiline_comment|/* the rest of the counters are only modified here */
 id|adapter-&gt;stats.symerrs
 op_add_assign
 id|E1000_READ_REG
@@ -9398,7 +9396,7 @@ r_return
 id|cleaned
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_clean_rx_irq - Send received data up the network stack,&n; * @adapter: board private structure&n; **/
+multiline_comment|/**&n; * e1000_clean_rx_irq - Send received data up the network stack&n; * @adapter: board private structure&n; **/
 r_static
 id|boolean_t
 macro_line|#ifdef CONFIG_E1000_NAPI
@@ -9583,7 +9581,8 @@ multiline_comment|/* All receives must fit into a single buffer */
 id|E1000_DBG
 c_func
 (paren
-l_string|&quot;%s: Receive packet consumed multiple buffers&bslash;n&quot;
+l_string|&quot;%s: Receive packet consumed multiple&quot;
+l_string|&quot; buffers&bslash;n&quot;
 comma
 id|netdev-&gt;name
 )paren
@@ -10596,7 +10595,7 @@ id|adapter-&gt;hw
 comma
 id|data-&gt;reg_num
 comma
-id|data-&gt;val_in
+id|mii_reg
 )paren
 )paren
 r_return
@@ -10623,14 +10622,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|data-&gt;val_in
-op_amp
-id|MII_CR_AUTO_NEG_EN
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|mii_reg
 op_amp
 id|MII_CR_POWER_DOWN
@@ -10639,6 +10630,14 @@ id|MII_CR_POWER_DOWN
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|mii_reg
+op_amp
+id|MII_CR_AUTO_NEG_EN
+)paren
+(brace
 id|adapter-&gt;hw.autoneg
 op_assign
 l_int|1
@@ -10653,7 +10652,7 @@ r_else
 r_if
 c_cond
 (paren
-id|data-&gt;val_in
+id|mii_reg
 op_amp
 l_int|0x40
 )paren
@@ -10665,7 +10664,7 @@ r_else
 r_if
 c_cond
 (paren
-id|data-&gt;val_in
+id|mii_reg
 op_amp
 l_int|0x2000
 )paren
@@ -10681,7 +10680,7 @@ suffix:semicolon
 id|spddplx
 op_add_assign
 (paren
-id|data-&gt;val_in
+id|mii_reg
 op_amp
 l_int|0x100
 )paren
@@ -11408,7 +11407,7 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-multiline_comment|/* remove VID from filter table*/
+multiline_comment|/* remove VID from filter table */
 id|index
 op_assign
 (paren
@@ -12322,15 +12321,15 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
 multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
-DECL|function|e1000_netpoll
 r_static
 r_void
+DECL|function|e1000_netpoll
 id|e1000_netpoll
 (paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|netdev
 )paren
 (brace
 r_struct
@@ -12338,7 +12337,7 @@ id|e1000_adapter
 op_star
 id|adapter
 op_assign
-id|dev-&gt;priv
+id|netdev-&gt;priv
 suffix:semicolon
 id|disable_irq
 c_func
@@ -12347,10 +12346,11 @@ id|adapter-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 id|e1000_intr
+c_func
 (paren
 id|adapter-&gt;pdev-&gt;irq
 comma
-id|dev
+id|netdev
 comma
 l_int|NULL
 )paren

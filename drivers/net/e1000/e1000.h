@@ -72,7 +72,7 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(nlevel, klevel, fmt, args...) &bslash;&n;&t;(void)((NETIF_MSG_##nlevel &amp; adapter-&gt;msg_enable) &amp;&amp; &bslash;&n;&t;printk(KERN_##klevel PFX &quot;%s: %s: &quot; fmt, adapter-&gt;netdev-&gt;name, &bslash;&n;&t;&t;__FUNCTION__ , ## args))
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
-multiline_comment|/* How many descriptors for TX and RX ? */
+multiline_comment|/* TX/RX descriptor defines */
 DECL|macro|E1000_DEFAULT_TXD
 mdefine_line|#define E1000_DEFAULT_TXD                  256
 DECL|macro|E1000_MAX_TXD
@@ -110,15 +110,13 @@ DECL|macro|E1000_TX_HEAD_ADDR_SHIFT
 mdefine_line|#define E1000_TX_HEAD_ADDR_SHIFT 7
 DECL|macro|E1000_PBA_TX_MASK
 mdefine_line|#define E1000_PBA_TX_MASK 0xFFFF0000
-multiline_comment|/* Flow Control High-Watermark: 5688 bytes below Rx FIFO size */
+multiline_comment|/* Flow Control Watermarks */
 DECL|macro|E1000_FC_HIGH_DIFF
-mdefine_line|#define E1000_FC_HIGH_DIFF 0x1638
-multiline_comment|/* Flow Control Low-Watermark: 5696 bytes below Rx FIFO size */
+mdefine_line|#define E1000_FC_HIGH_DIFF 0x1638  /* High: 5688 bytes below Rx FIFO size */
 DECL|macro|E1000_FC_LOW_DIFF
-mdefine_line|#define E1000_FC_LOW_DIFF 0x1640
-multiline_comment|/* Flow Control Pause Time: 858 usec */
+mdefine_line|#define E1000_FC_LOW_DIFF 0x1640   /* Low:  5696 bytes below Rx FIFO size */
 DECL|macro|E1000_FC_PAUSE_TIME
-mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680
+mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680 /* 858 usec */
 multiline_comment|/* How many Tx Descriptors do we need to call netif_wake_queue ? */
 DECL|macro|E1000_TX_QUEUE_WAKE
 mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16
