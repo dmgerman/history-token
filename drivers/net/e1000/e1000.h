@@ -40,6 +40,10 @@ macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#endif
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0&t;&t;0
+DECL|macro|BAR_1
+mdefine_line|#define BAR_1&t;&t;1
+DECL|macro|BAR_5
+mdefine_line|#define BAR_5&t;&t;5
 DECL|macro|PCI_DMA_64BIT
 mdefine_line|#define PCI_DMA_64BIT&t;0xffffffffffffffffULL
 DECL|macro|PCI_DMA_32BIT
@@ -83,6 +87,8 @@ DECL|macro|E1000_JUMBO_PBA
 mdefine_line|#define E1000_JUMBO_PBA      0x00000028
 DECL|macro|E1000_DEFAULT_PBA
 mdefine_line|#define E1000_DEFAULT_PBA    0x00000030
+DECL|macro|AUTO_ALL_MODES
+mdefine_line|#define AUTO_ALL_MODES       0
 multiline_comment|/* only works for sizes that are powers of 2 */
 DECL|macro|E1000_ROUNDUP
 mdefine_line|#define E1000_ROUNDUP(i, size) ((i) = (((i) + (size) - 1) &amp; ~((size) - 1)))
