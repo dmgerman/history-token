@@ -2384,6 +2384,13 @@ id|tty
 )paren
 suffix:semicolon
 )brace
+DECL|variable|stop_tty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|stop_tty
+)paren
+suffix:semicolon
 DECL|function|start_tty
 r_void
 id|start_tty
@@ -2477,6 +2484,13 @@ id|tty-&gt;write_wait
 )paren
 suffix:semicolon
 )brace
+DECL|variable|start_tty
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|start_tty
+)paren
+suffix:semicolon
 DECL|function|tty_read
 r_static
 id|ssize_t
