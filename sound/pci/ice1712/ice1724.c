@@ -2701,7 +2701,7 @@ r_int
 r_int
 id|size
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -2840,7 +2840,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -3088,7 +3088,7 @@ id|reg
 op_assign
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -3145,7 +3145,7 @@ op_plus
 id|reg-&gt;count
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -5424,7 +5424,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -5468,7 +5468,7 @@ id|BURST
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -6980,10 +6980,6 @@ id|val
 comma
 id|old
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|val
 op_assign
 id|encode_spdif_bits
@@ -6993,13 +6989,11 @@ op_amp
 id|ucontrol-&gt;value.iec958
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ice-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|old
@@ -7031,13 +7025,11 @@ comma
 id|val
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ice-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7372,17 +7364,11 @@ id|old
 comma
 id|val
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ice-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|old
@@ -7439,13 +7425,11 @@ id|SPDIF_CFG
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ice-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7775,7 +7759,7 @@ id|uinfo
 r_static
 r_char
 op_star
-id|texts
+id|texts_1724
 (braket
 )braket
 op_assign
@@ -7830,6 +7814,68 @@ comma
 multiline_comment|/* 15: -- */
 )brace
 suffix:semicolon
+r_static
+r_char
+op_star
+id|texts_1720
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;8000&quot;
+comma
+multiline_comment|/* 0: 6 */
+l_string|&quot;9600&quot;
+comma
+multiline_comment|/* 1: 3 */
+l_string|&quot;11025&quot;
+comma
+multiline_comment|/* 2: 10 */
+l_string|&quot;12000&quot;
+comma
+multiline_comment|/* 3: 2 */
+l_string|&quot;16000&quot;
+comma
+multiline_comment|/* 4: 5 */
+l_string|&quot;22050&quot;
+comma
+multiline_comment|/* 5: 9 */
+l_string|&quot;24000&quot;
+comma
+multiline_comment|/* 6: 1 */
+l_string|&quot;32000&quot;
+comma
+multiline_comment|/* 7: 4 */
+l_string|&quot;44100&quot;
+comma
+multiline_comment|/* 8: 8 */
+l_string|&quot;48000&quot;
+comma
+multiline_comment|/* 9: 0 */
+l_string|&quot;64000&quot;
+comma
+multiline_comment|/* 10: 15 */
+l_string|&quot;88200&quot;
+comma
+multiline_comment|/* 11: 11 */
+l_string|&quot;96000&quot;
+comma
+multiline_comment|/* 12: 7 */
+l_string|&quot;IEC958 Input&quot;
+comma
+multiline_comment|/* 13: -- */
+)brace
+suffix:semicolon
+id|ice1712_t
+op_star
+id|ice
+op_assign
+id|snd_kcontrol_chip
+c_func
+(paren
+id|kcontrol
+)paren
+suffix:semicolon
 id|uinfo-&gt;type
 op_assign
 id|SNDRV_CTL_ELEM_TYPE_ENUMERATED
@@ -7840,6 +7886,11 @@ l_int|1
 suffix:semicolon
 id|uinfo-&gt;value.enumerated.items
 op_assign
+id|ice-&gt;vt1720
+ques
+c_cond
+l_int|14
+suffix:colon
 l_int|16
 suffix:semicolon
 r_if
@@ -7860,7 +7911,15 @@ c_func
 (paren
 id|uinfo-&gt;value.enumerated.name
 comma
-id|texts
+id|ice-&gt;vt1720
+ques
+c_cond
+id|texts_1720
+(braket
+id|uinfo-&gt;value.enumerated.item
+)braket
+suffix:colon
+id|texts_1724
 (braket
 id|uinfo-&gt;value.enumerated.item
 )braket
@@ -7963,6 +8022,11 @@ id|ucontrol-&gt;value.enumerated.item
 l_int|0
 )braket
 op_assign
+id|ice-&gt;vt1720
+ques
+c_cond
+l_int|13
+suffix:colon
 l_int|15
 suffix:semicolon
 )brace
@@ -8061,6 +8125,16 @@ id|change
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|spdif
+op_assign
+id|ice-&gt;vt1720
+ques
+c_cond
+l_int|13
+suffix:colon
+l_int|15
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -8090,7 +8164,7 @@ id|ucontrol-&gt;value.enumerated.item
 l_int|0
 )braket
 op_eq
-l_int|15
+id|spdif
 )paren
 (brace
 id|outb

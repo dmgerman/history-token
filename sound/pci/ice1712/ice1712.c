@@ -2985,7 +2985,7 @@ id|rate
 op_assign
 l_int|0x000fffff
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -3132,7 +3132,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -3273,7 +3273,7 @@ id|substream-&gt;number
 op_star
 l_int|2
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -3414,7 +3414,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -3516,7 +3516,7 @@ op_and_assign
 op_complement
 l_int|0x02
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -3587,7 +3587,7 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -5715,7 +5715,7 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -5780,7 +5780,7 @@ id|PLAYBACK_COUNT
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -5873,7 +5873,7 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -5938,7 +5938,7 @@ id|CAPTURE_COUNT
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

@@ -10359,7 +10359,7 @@ id|snd_usb_audio_pcm_free
 suffix:semicolon
 id|pcm-&gt;info_flags
 op_assign
-id|SNDRV_PCM_INFO_NONATOMIC_OPS
+l_int|0
 suffix:semicolon
 r_if
 c_cond

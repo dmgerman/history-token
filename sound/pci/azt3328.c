@@ -3719,10 +3719,6 @@ r_int
 id|cmd
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|azf3328_t
 op_star
 id|chip
@@ -3802,13 +3798,11 @@ comma
 id|runtime-&gt;channels
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* stop playback */
@@ -3848,13 +3842,11 @@ op_plus
 id|IDX_IO_PLAY_IRQMASK
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|snd_azf3328_setdmaa
@@ -3879,13 +3871,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 macro_line|#if WIN9X
@@ -3974,13 +3964,11 @@ id|IDX_IO_PLAY_FLAGS
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* now unmute WaveOut */
@@ -4022,13 +4010,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* stop playback */
@@ -4086,13 +4072,11 @@ op_plus
 id|IDX_IO_PLAY_FLAGS
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* now unmute WaveOut */
@@ -4165,10 +4149,6 @@ r_int
 id|cmd
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|azf3328_t
 op_star
 id|chip
@@ -4237,13 +4217,11 @@ comma
 id|runtime-&gt;channels
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* stop recording */
@@ -4283,13 +4261,11 @@ op_plus
 id|IDX_IO_REC_IRQMASK
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|snd_azf3328_setdmaa
@@ -4314,13 +4290,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 macro_line|#if WIN9X
@@ -4409,13 +4383,11 @@ id|IDX_IO_REC_FLAGS
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|snd_azf3328_dbgio
@@ -4435,13 +4407,11 @@ suffix:semicolon
 r_case
 id|SNDRV_PCM_TRIGGER_STOP
 suffix:colon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* stop recording */
@@ -4499,13 +4469,11 @@ op_plus
 id|IDX_IO_REC_FLAGS
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|chip-&gt;is_playing
@@ -4586,19 +4554,6 @@ suffix:semicolon
 id|snd_pcm_uframes_t
 id|frmres
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if QUERY_HARDWARE
 id|bufptr
 op_assign
@@ -4624,15 +4579,6 @@ c_func
 id|chip-&gt;codec_port
 op_plus
 id|IDX_IO_PLAY_DMA_CURRPOS
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|result
@@ -4703,19 +4649,6 @@ suffix:semicolon
 id|snd_pcm_uframes_t
 id|frmres
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#if QUERY_HARDWARE
 id|bufptr
 op_assign
@@ -4741,15 +4674,6 @@ c_func
 id|chip-&gt;codec_port
 op_plus
 id|IDX_IO_REC_DMA_CURRPOS
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|result
@@ -6293,10 +6217,6 @@ op_star
 id|rchip
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|azf3328_t
 op_star
 id|chip
@@ -6964,13 +6884,11 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* standard chip init stuff */
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|outb
@@ -7025,13 +6943,11 @@ op_plus
 id|IDX_IO_IRQ63H
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|snd_card_set_dev

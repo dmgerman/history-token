@@ -5842,9 +5842,12 @@ id|mgr-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* ISR spinlock  */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|mgr-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* init mailbox  */
 id|mgr-&gt;msg_fifo_readptr
@@ -5855,9 +5858,12 @@ id|mgr-&gt;msg_fifo_writeptr
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|mgr-&gt;msg_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_MUTEX
 c_func

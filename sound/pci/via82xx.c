@@ -2197,13 +2197,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* FIXME: does it work on via823x? */
 r_if
@@ -2242,13 +2235,6 @@ id|chip-&gt;intr_mask
 )paren
 )paren
 (brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|chip-&gt;reg_lock
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2272,6 +2258,13 @@ suffix:semicolon
 )brace
 singleline_comment|// _skip_sgd:
 multiline_comment|/* check status for each stream */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|chip-&gt;reg_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3540,7 +3533,7 @@ id|changed
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -3582,7 +3575,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -4538,10 +4531,6 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|via_rate_lock
 op_star
@@ -4560,13 +4549,11 @@ id|chip-&gt;rates
 id|viadev-&gt;direction
 )braket
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ratep-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|ratep-&gt;used
@@ -4666,13 +4653,11 @@ op_assign
 id|ratep-&gt;rate
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ratep-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* we may remove following constaint when we modify table entries&n;&t;   in interrupt */
@@ -4978,10 +4963,6 @@ op_star
 )paren
 id|substream-&gt;runtime-&gt;private_data
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|via_rate_lock
 op_star
@@ -4996,13 +4977,11 @@ id|chip-&gt;rates
 id|viadev-&gt;direction
 )braket
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|ratep-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|ratep-&gt;used
@@ -5018,13 +4997,11 @@ id|ratep-&gt;rate
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|ratep-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|viadev-&gt;substream
@@ -6333,22 +6310,16 @@ suffix:colon
 id|VIA_REG_CAPTURE_CHANNEL
 )paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|u8
 id|val
 comma
 id|oval
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|oval
@@ -6393,13 +6364,11 @@ comma
 id|port
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|chip-&gt;reg_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
