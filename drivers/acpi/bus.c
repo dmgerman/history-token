@@ -2132,15 +2132,9 @@ c_cond
 (paren
 id|acpi_ioapic
 )paren
-id|mp_override_legacy_irq
+id|mp_config_ioapic_for_sci
 c_func
 (paren
-id|acpi_fadt.sci_int
-comma
-l_int|3
-comma
-l_int|3
-comma
 id|acpi_fadt.sci_int
 )paren
 suffix:semicolon

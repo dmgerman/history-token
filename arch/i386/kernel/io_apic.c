@@ -7707,7 +7707,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|entry.vector
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_BOOT*/

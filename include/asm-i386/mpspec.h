@@ -733,6 +733,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+id|mp_config_ioapic_for_sci
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|mp_parse_prt
 (paren
 r_void

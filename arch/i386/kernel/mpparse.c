@@ -4265,7 +4265,52 @@ l_string|&quot;Max # of irq sources exceeded!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_return
+)brace
+multiline_comment|/* Ensure the ACPI SCI interrupt level is active low, edge-triggered */
+DECL|function|mp_config_ioapic_for_sci
+r_void
+id|__init
+id|mp_config_ioapic_for_sci
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+r_int
+id|ioapic
+suffix:semicolon
+r_int
+id|ioapic_pin
+suffix:semicolon
+id|ioapic
+op_assign
+id|mp_find_ioapic
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+id|ioapic_pin
+op_assign
+id|irq
+op_minus
+id|mp_ioapic_routing
+(braket
+id|ioapic
+)braket
+dot
+id|irq_start
+suffix:semicolon
+id|io_apic_set_pci_routing
+c_func
+(paren
+id|ioapic
+comma
+id|ioapic_pin
+comma
+id|irq
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_ACPI_PCI
@@ -4290,11 +4335,6 @@ op_star
 id|entry
 op_assign
 l_int|NULL
-suffix:semicolon
-r_int
-id|vector
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 id|ioapic
@@ -4493,8 +4533,10 @@ op_lshift
 id|bit
 )paren
 suffix:semicolon
-id|vector
-op_assign
+r_if
+c_cond
+(paren
+op_logical_neg
 id|io_apic_set_pci_routing
 c_func
 (paren
@@ -4504,11 +4546,6 @@ id|ioapic_pin
 comma
 id|irq
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vector
 )paren
 id|entry-&gt;irq
 op_assign
@@ -4518,8 +4555,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; vector 0x%02x&quot;
-l_string|&quot; -&gt; IRQ %d&bslash;n&quot;
+l_string|&quot;%02x:%02x:%02x[%c] -&gt; %d-%d -&gt; IRQ %d&bslash;n&quot;
 comma
 id|entry-&gt;id.segment
 comma
@@ -4541,8 +4577,6 @@ dot
 id|apic_id
 comma
 id|ioapic_pin
-comma
-id|vector
 comma
 id|entry-&gt;irq
 )paren
