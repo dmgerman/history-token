@@ -3944,7 +3944,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|local_restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
