@@ -12425,15 +12425,6 @@ macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|isa_boards_found
 OL
 id|NUM_BOARDS
@@ -12446,17 +12437,6 @@ c_func
 id|isa_boards_found
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;No PCI BIOS found&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 macro_line|#endif
 id|max_board
 op_assign
