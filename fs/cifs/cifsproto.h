@@ -69,7 +69,7 @@ suffix:semicolon
 DECL|macro|GetXid
 mdefine_line|#define GetXid() (int)_GetXid(); cFYI(1,(&quot;CIFS VFS: in %s as Xid: %d with uid: %d&quot;,__FUNCTION__, xid,current-&gt;fsuid));
 DECL|macro|FreeXid
-mdefine_line|#define FreeXid(curr_xid) {_FreeXid(curr_xid); cFYI(1,(&quot;CIFS VFS: leaving %s (xid = %d) rc = %d&quot;,__FUNCTION__,curr_xid,rc));}
+mdefine_line|#define FreeXid(curr_xid) {_FreeXid(curr_xid); cFYI(1,(&quot;CIFS VFS: leaving %s (xid = %d) rc = %d&quot;,__FUNCTION__,curr_xid,(int)rc));}
 r_extern
 r_char
 op_star
