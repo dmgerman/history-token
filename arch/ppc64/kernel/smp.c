@@ -879,7 +879,7 @@ l_int|0
 suffix:semicolon
 id|tries
 OL
-l_int|5
+l_int|25
 suffix:semicolon
 id|tries
 op_increment
@@ -912,6 +912,8 @@ id|schedule_timeout
 c_func
 (paren
 id|HZ
+op_div
+l_int|5
 )paren
 suffix:semicolon
 )brace
