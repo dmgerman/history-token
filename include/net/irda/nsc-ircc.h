@@ -12,25 +12,44 @@ mdefine_line|#define DMA_TX_MODE     0x08    /* Mem to I/O, ++, demand. */
 DECL|macro|DMA_RX_MODE
 mdefine_line|#define DMA_RX_MODE     0x04    /* I/O to mem, ++, demand. */
 multiline_comment|/* Config registers for the &squot;108 */
-DECL|macro|CFG_BAIC
-mdefine_line|#define CFG_BAIC 0x00
-DECL|macro|CFG_CSRT
-mdefine_line|#define CFG_CSRT 0x01
-DECL|macro|CFG_MCTL
-mdefine_line|#define CFG_MCTL 0x02
+DECL|macro|CFG_108_BAIC
+mdefine_line|#define CFG_108_BAIC 0x00
+DECL|macro|CFG_108_CSRT
+mdefine_line|#define CFG_108_CSRT 0x01
+DECL|macro|CFG_108_MCTL
+mdefine_line|#define CFG_108_MCTL 0x02
 multiline_comment|/* Config registers for the &squot;338 */
-DECL|macro|CFG_FER
-mdefine_line|#define CFG_FER  0x00
-DECL|macro|CFG_FAR
-mdefine_line|#define CFG_FAR  0x01
-DECL|macro|CFG_PTR
-mdefine_line|#define CFG_PTR  0x02
-DECL|macro|CFG_PNP0
-mdefine_line|#define CFG_PNP0 0x1b
-DECL|macro|CFG_PNP1
-mdefine_line|#define CFG_PNP1 0x1c
-DECL|macro|CFG_PNP3
-mdefine_line|#define CFG_PNP3 0x4f
+DECL|macro|CFG_338_FER
+mdefine_line|#define CFG_338_FER  0x00
+DECL|macro|CFG_338_FAR
+mdefine_line|#define CFG_338_FAR  0x01
+DECL|macro|CFG_338_PTR
+mdefine_line|#define CFG_338_PTR  0x02
+DECL|macro|CFG_338_PNP0
+mdefine_line|#define CFG_338_PNP0 0x1b
+DECL|macro|CFG_338_PNP1
+mdefine_line|#define CFG_338_PNP1 0x1c
+DECL|macro|CFG_338_PNP3
+mdefine_line|#define CFG_338_PNP3 0x4f
+multiline_comment|/* Config registers for the &squot;39x (in the logical device bank) */
+DECL|macro|CFG_39X_LDN
+mdefine_line|#define CFG_39X_LDN&t;0x07&t;/* Logical device number (Super I/O bank) */
+DECL|macro|CFG_39X_ACT
+mdefine_line|#define CFG_39X_ACT&t;0x30&t;/* Device activation */
+DECL|macro|CFG_39X_BASEH
+mdefine_line|#define CFG_39X_BASEH&t;0x60&t;/* Device base address (high bits) */
+DECL|macro|CFG_39X_BASEL
+mdefine_line|#define CFG_39X_BASEL&t;0x61&t;/* Device base address (low bits) */
+DECL|macro|CFG_39X_IRQNUM
+mdefine_line|#define CFG_39X_IRQNUM&t;0x70&t;/* Interrupt number &amp; wake up enable */
+DECL|macro|CFG_39X_IRQSEL
+mdefine_line|#define CFG_39X_IRQSEL&t;0x71&t;/* Interrupt select (edge/level + polarity) */
+DECL|macro|CFG_39X_DMA0
+mdefine_line|#define CFG_39X_DMA0&t;0x74&t;/* DMA 0 configuration */
+DECL|macro|CFG_39X_DMA1
+mdefine_line|#define CFG_39X_DMA1&t;0x75&t;/* DMA 1 configuration */
+DECL|macro|CFG_39X_SPC
+mdefine_line|#define CFG_39X_SPC&t;0xF0&t;/* Serial port configuration register */
 multiline_comment|/* Flags for configuration register CRF0 */
 DECL|macro|APEDCRC
 mdefine_line|#define APEDCRC&t;&t;0x02
