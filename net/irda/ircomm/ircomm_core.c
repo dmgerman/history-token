@@ -110,6 +110,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|function|ircomm_init
+r_static
 r_int
 id|__init
 id|ircomm_init
@@ -189,6 +190,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ircomm_cleanup
+r_static
 r_void
 id|__exit
 id|ircomm_cleanup

@@ -549,15 +549,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Initialise IrNET module */
-r_extern
-r_void
-id|irnet_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Teardown IrNET module */
 multiline_comment|/**************************** VARIABLES ****************************/
 multiline_comment|/* Control channel stuff - allocated in irnet_irda.h */
 r_extern

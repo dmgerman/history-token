@@ -159,6 +159,19 @@ r_int
 id|get
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_IRDA_DYNAMIC_WINDOW
+r_static
+id|__u32
+id|irlap_requested_line_capacity
+c_func
+(paren
+r_struct
+id|qos_info
+op_star
+id|qos
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|min_turn_times
 r_static
 id|__u32
@@ -1141,6 +1154,7 @@ id|irda_init_max_qos_capabilies
 suffix:semicolon
 multiline_comment|/*&n; * Function irlap_adjust_qos_settings (qos)&n; *&n; *     Adjust QoS settings in case some values are not possible to use because&n; *     of other settings&n; */
 DECL|function|irlap_adjust_qos_settings
+r_static
 r_void
 id|irlap_adjust_qos_settings
 c_func
@@ -2635,7 +2649,9 @@ r_return
 id|line_capacity
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_IRDA_DYNAMIC_WINDOW
 DECL|function|irlap_requested_line_capacity
+r_static
 id|__u32
 id|irlap_requested_line_capacity
 c_func
@@ -2685,6 +2701,7 @@ r_return
 id|line_capacity
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|irda_qos_bits_to_value
 r_void
 id|irda_qos_bits_to_value

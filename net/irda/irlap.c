@@ -70,6 +70,22 @@ op_star
 id|self
 )paren
 suffix:semicolon
+r_static
+r_void
+id|irlap_init_qos_capabilities
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
+comma
+r_struct
+id|qos_info
+op_star
+id|qos_user
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|lap_reasons
 r_static
@@ -2855,6 +2871,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_setspeed (self, speed)&n; *&n; *    Change the speed of the IrDA port&n; *&n; */
 DECL|function|irlap_change_speed
+r_static
 r_void
 id|irlap_change_speed
 c_func
@@ -2942,6 +2959,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_init_qos_capabilities (self, qos)&n; *&n; *    Initialize QoS for this IrLAP session, What we do is to compute the&n; *    intersection of the QoS capabilities for the user, driver and for&n; *    IrLAP itself. Normally, IrLAP will not specify any values, but it can&n; *    be used to restrict certain values.&n; */
 DECL|function|irlap_init_qos_capabilities
+r_static
 r_void
 id|irlap_init_qos_capabilities
 c_func

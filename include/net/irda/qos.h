@@ -145,16 +145,6 @@ id|__u32
 id|max_turn_time
 )paren
 suffix:semicolon
-id|__u32
-id|irlap_requested_line_capacity
-c_func
-(paren
-r_struct
-id|qos_info
-op_star
-id|qos
-)paren
-suffix:semicolon
 r_void
 id|irda_qos_bits_to_value
 c_func
