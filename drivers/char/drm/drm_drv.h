@@ -48,6 +48,7 @@ macro_line|#ifndef __HAVE_SG
 DECL|macro|__HAVE_SG
 mdefine_line|#define __HAVE_SG&t;&t;&t;0
 macro_line|#endif
+multiline_comment|/* __HAVE_KERNEL_CTX_SWITCH isn&squot;t used by any of the drm modules in&n; * the DRI cvs tree, but it is required by the kernel tree&squot;s sparc&n; * driver.&n; */
 macro_line|#ifndef __HAVE_KERNEL_CTX_SWITCH
 DECL|macro|__HAVE_KERNEL_CTX_SWITCH
 mdefine_line|#define __HAVE_KERNEL_CTX_SWITCH&t;0
@@ -4727,6 +4728,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* __HAVE_KERNEL_CTX_SWITCH isn&squot;t used by any of the&n;&t;&t; * drm modules in the DRI cvs tree, but it is required&n;&t;&t; * by the Sparc driver.&n;&t;&t; */
 macro_line|#if __HAVE_KERNEL_CTX_SWITCH
 r_if
 c_cond
@@ -4872,6 +4874,7 @@ id|_DRM_STAT_UNLOCKS
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* __HAVE_KERNEL_CTX_SWITCH isn&squot;t used by any of the drm&n;&t; * modules in the DRI cvs tree, but it is required by the&n;&t; * Sparc driver.&n;&t; */
 macro_line|#if __HAVE_KERNEL_CTX_SWITCH
 multiline_comment|/* We no longer really hold it, but if we are the next&n;&t; * agent to request it then we should just be able to&n;&t; * take it immediately and not eat the ioctl.&n;&t; */
 id|dev-&gt;lock.filp
@@ -4970,14 +4973,6 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* FIXME: Do we ever really need to check this???&n;&t; */
-r_if
-c_cond
-(paren
-l_int|1
-multiline_comment|/* !dev-&gt;context_flag */
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -5002,7 +4997,6 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif /* !__HAVE_KERNEL_CTX_SWITCH */
 id|unblock_all_signals
