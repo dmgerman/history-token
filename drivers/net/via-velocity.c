@@ -94,7 +94,7 @@ l_string|&quot;VIA Networking Velocity Family Gigabit Ethernet Adapter Driver&qu
 )paren
 suffix:semicolon
 DECL|macro|VELOCITY_PARAM
-mdefine_line|#define VELOCITY_PARAM(N,D) &bslash;&n;        static const int N[MAX_UNITS]=OPTION_DEFAULT;&bslash;&n;        MODULE_PARM(N, &quot;1-&quot; __MODULE_STRING(MAX_UNITS) &quot;i&quot;);&bslash;&n;        MODULE_PARM_DESC(N, D);
+mdefine_line|#define VELOCITY_PARAM(N,D) &bslash;&n;        static int N[MAX_UNITS]=OPTION_DEFAULT;&bslash;&n;&t;module_param_array(N, int, NULL, 0); &bslash;&n;        MODULE_PARM_DESC(N, D);
 DECL|macro|RX_DESC_MIN
 mdefine_line|#define RX_DESC_MIN     64
 DECL|macro|RX_DESC_MAX
@@ -278,12 +278,14 @@ id|rx_copybreak
 op_assign
 l_int|200
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rx_copybreak
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2969,7 +2971,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
@@ -6462,7 +6464,7 @@ c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|velocity_init_registers
@@ -6504,7 +6506,7 @@ c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 r_goto
@@ -6911,7 +6913,7 @@ c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 multiline_comment|/* Free the resources */
@@ -8362,16 +8364,14 @@ c_func
 id|dev
 )paren
 )paren
-(brace
 id|pci_set_power_state
 c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -8422,16 +8422,14 @@ c_func
 id|dev
 )paren
 )paren
-(brace
 id|pci_set_power_state
 c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ret
 suffix:semicolon
@@ -10464,16 +10462,14 @@ c_func
 id|dev
 )paren
 )paren
-(brace
 id|pci_set_power_state
 c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -10508,16 +10504,14 @@ c_func
 id|dev
 )paren
 )paren
-(brace
 id|pci_set_power_state
 c_func
 (paren
 id|vptr-&gt;pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|velocity_get_settings
 r_static
@@ -12471,7 +12465,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 )brace
@@ -12503,7 +12497,13 @@ c_func
 (paren
 id|pdev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pdev
+comma
 id|state
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -12513,7 +12513,13 @@ c_func
 (paren
 id|pdev
 comma
+id|pci_choose_state
+c_func
+(paren
+id|pdev
+comma
 id|state
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -12580,7 +12586,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_enable_wake

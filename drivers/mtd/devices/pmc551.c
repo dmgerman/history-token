@@ -2663,38 +2663,6 @@ c_func
 id|PMC551_VERSION
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|msize
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|msize
-comma
-l_string|&quot;memory size in Megabytes [1 - 1024]&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|asize
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|asize
-comma
-l_string|&quot;aperture size, must be &lt;= memsize [1-1024]&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Stuff these outside the ifdef so as to not bust compiled in driver support&n; */
 DECL|variable|msize
 r_static
@@ -2718,7 +2686,44 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|module_param
+c_func
+(paren
+id|msize
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|msize
+comma
+l_string|&quot;memory size in Megabytes [1 - 1024]&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|asize
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|asize
+comma
+l_string|&quot;aperture size, must be &lt;= memsize [1-1024]&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * PMC551 Card Initialization&n; */
+DECL|function|init_pmc551
 r_static
 r_int
 id|__init
@@ -3478,6 +3483,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * PMC551 Card Cleanup&n; */
+DECL|function|cleanup_pmc551
 r_static
 r_void
 id|__exit
@@ -3573,6 +3579,7 @@ id|found
 )paren
 suffix:semicolon
 )brace
+DECL|variable|init_pmc551
 id|module_init
 c_func
 (paren

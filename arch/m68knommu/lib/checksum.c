@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;IP/TCP/UDP checksumming routines&n; *&n; * Authors:&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Tom May, &lt;ftom@netcom.com&gt;&n; *&t;&t;Andreas Schwab, &lt;schwab@issan.informatik.uni-dortmund.de&gt;&n; *&t;&t;Lots of code moved from tcp.c and ip.c; see those files&n; *&t;&t;for more names.&n; *&n; * 03/02/96&t;Jes Sorensen, Andreas Schwab, Roman Hodek:&n; *&t;&t;Fixed some nasty bugs, causing some horrible crashes.&n; *&t;&t;A: At some points, the sum (%0) was used as&n; *&t;&t;length-counter instead of the length counter&n; *&t;&t;(%1). Thanks to Roman Hodek for pointing this out.&n; *&t;&t;B: GCC seems to mess up if one uses too many&n; *&t;&t;data-registers to hold input values and one tries to&n; *&t;&t;specify d0 and d1 as scratch registers. Letting gcc choose these&n; *      registers itself solves the problem.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/* Revised by Kenneth Albanowski for m68knommu. Basic problem: unaligned access kills, so most&n;   of the assembly has to go. */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 DECL|function|from32to16
 r_static
@@ -448,10 +449,12 @@ id|csum_partial_copy_from_user
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst
@@ -507,10 +510,12 @@ id|csum_partial_copy
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
+r_int
 r_char
 op_star
 id|dst

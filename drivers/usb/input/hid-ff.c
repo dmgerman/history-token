@@ -219,9 +219,17 @@ op_assign
 id|hid_get_ff_init
 c_func
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|hid-&gt;dev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|hid-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -39,14 +39,12 @@ comma
 op_star
 id|io_tlb_end
 suffix:semicolon
-multiline_comment|/*&n; * The number of IO TLB blocks (in groups of 64) betweeen io_tlb_start and&n; * io_tlb_end.  This is command line adjustable via setup_io_tlb_npages.&n; * Default to 64MB.&n; */
+multiline_comment|/*&n; * The number of IO TLB blocks (in groups of 64) betweeen io_tlb_start and&n; * io_tlb_end.  This is command line adjustable via setup_io_tlb_npages.&n; */
 DECL|variable|io_tlb_nslabs
 r_static
 r_int
 r_int
 id|io_tlb_nslabs
-op_assign
-l_int|32768
 suffix:semicolon
 multiline_comment|/*&n; * When the IOMMU overflows we return a fallback buffer. This sets the size.&n; */
 DECL|variable|io_tlb_overflow
@@ -191,17 +189,43 @@ suffix:semicolon
 multiline_comment|/* make io_tlb_overflow tunable too? */
 multiline_comment|/*&n; * Statically reserve bounce buffer space and initialize bounce buffer data&n; * structures for the software IO TLB used to implement the PCI DMA API.&n; */
 r_void
-DECL|function|swiotlb_init
-id|swiotlb_init
-c_func
+DECL|function|swiotlb_init_with_default_size
+id|swiotlb_init_with_default_size
 (paren
-r_void
+r_int
+id|default_size
 )paren
 (brace
 r_int
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|io_tlb_nslabs
+)paren
+(brace
+id|io_tlb_nslabs
+op_assign
+(paren
+id|default_size
+op_rshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|io_tlb_nslabs
+op_assign
+id|ALIGN
+c_func
+(paren
+id|io_tlb_nslabs
+comma
+id|IO_TLB_SEGSIZE
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Get IO TLB memory from the low pages&n;&t; */
 id|io_tlb_start
 op_assign
@@ -330,6 +354,27 @@ id|io_tlb_end
 )paren
 )paren
 suffix:semicolon
+)brace
+r_void
+DECL|function|swiotlb_init
+id|swiotlb_init
+(paren
+r_void
+)paren
+(brace
+id|swiotlb_init_with_default_size
+c_func
+(paren
+l_int|64
+op_star
+(paren
+l_int|1
+op_lshift
+l_int|20
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* default to 64MB */
 )brace
 r_static
 r_inline
@@ -1185,8 +1230,13 @@ id|dev_addr
 id|printk
 c_func
 (paren
-l_string|&quot;hwdev DMA mask = 0x%016lx, dev_addr = 0x%016lx&bslash;n&quot;
+l_string|&quot;hwdev DMA mask = 0x%016Lx, dev_addr = 0x%016lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 id|hwdev-&gt;dma_mask
 comma

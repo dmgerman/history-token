@@ -21,6 +21,17 @@ id|kmem_cache_t
 op_star
 id|req_cachep
 suffix:semicolon
+r_static
+r_int
+id|smb_request_send_req
+c_func
+(paren
+r_struct
+id|smb_request
+op_star
+id|req
+)paren
+suffix:semicolon
 multiline_comment|/*&n;  /proc/slabinfo:&n;  name, active, num, objsize, active_slabs, num_slaps, #pages&n;*/
 DECL|function|smb_init_request_cache
 r_int
@@ -427,6 +438,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * What prevents a rget to race with a rput? The count must never drop to zero&n; * while it is in use. Only rput if it is ok that it is free&squot;d.&n; */
 DECL|function|smb_rget
+r_static
 r_void
 id|smb_rget
 c_func
@@ -1551,6 +1563,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send a request and place it on the recvq if successfully sent.&n; * Must be called with the server lock held.&n; */
 DECL|function|smb_request_send_req
+r_static
 r_int
 id|smb_request_send_req
 c_func
@@ -2448,14 +2461,62 @@ id|smb_drcnt
 )paren
 suffix:semicolon
 multiline_comment|/* Modify offset for the split header/buffer we use */
+r_if
+c_cond
+(paren
+id|data_count
+op_logical_or
+id|data_offset
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|data_offset
+OL
+id|hdrlen
+)paren
+)paren
+r_goto
+id|out_bad_data
+suffix:semicolon
+r_else
 id|data_offset
 op_sub_assign
 id|hdrlen
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|parm_count
+op_logical_or
+id|parm_offset
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|parm_offset
+OL
+id|hdrlen
+)paren
+)paren
+r_goto
+id|out_bad_parm
+suffix:semicolon
+r_else
 id|parm_offset
 op_sub_assign
 id|hdrlen
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2473,7 +2534,7 @@ id|VERBOSE
 c_func
 (paren
 l_string|&quot;single trans2 response  &quot;
-l_string|&quot;dcnt=%d, pcnt=%d, doff=%d, poff=%d&bslash;n&quot;
+l_string|&quot;dcnt=%u, pcnt=%u, doff=%u, poff=%u&bslash;n&quot;
 comma
 id|data_count
 comma
@@ -2504,6 +2565,38 @@ id|req-&gt;rq_buffer
 op_plus
 id|parm_offset
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|parm_offset
+op_plus
+id|parm_count
+OG
+id|req-&gt;rq_rlen
+)paren
+)paren
+r_goto
+id|out_bad_parm
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|data_offset
+op_plus
+id|data_count
+OG
+id|req-&gt;rq_rlen
+)paren
+)paren
+r_goto
+id|out_bad_data
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2512,7 +2605,7 @@ id|VERBOSE
 c_func
 (paren
 l_string|&quot;multi trans2 response  &quot;
-l_string|&quot;frag=%d, dcnt=%d, pcnt=%d, doff=%d, poff=%d&bslash;n&quot;
+l_string|&quot;frag=%d, dcnt=%u, pcnt=%u, doff=%u, poff=%u&bslash;n&quot;
 comma
 id|req-&gt;rq_fragment
 comma
@@ -2620,6 +2713,9 @@ r_else
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|req-&gt;rq_total_data
 OL
 id|data_tot
@@ -2628,17 +2724,28 @@ id|req-&gt;rq_total_parm
 OL
 id|parm_tot
 )paren
+)paren
 r_goto
 id|out_data_grew
 suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|parm_disp
 op_plus
 id|parm_count
 OG
 id|req-&gt;rq_total_parm
+op_logical_or
+id|parm_offset
+op_plus
+id|parm_count
+OG
+id|req-&gt;rq_rlen
+)paren
 )paren
 r_goto
 id|out_bad_parm
@@ -2646,11 +2753,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|data_disp
 op_plus
 id|data_count
 OG
 id|req-&gt;rq_total_data
+op_logical_or
+id|data_offset
+op_plus
+id|data_count
+OG
+id|req-&gt;rq_rlen
+)paren
 )paren
 r_goto
 id|out_bad_data
@@ -2729,20 +2846,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;smb_trans2: data/param too long, data=%d, parm=%d&bslash;n&quot;
+l_string|&quot;smb_trans2: data/param too long, data=%u, parm=%u&bslash;n&quot;
 comma
 id|data_tot
 comma
 id|parm_tot
 )paren
 suffix:semicolon
-id|req-&gt;rq_errno
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_goto
-id|out
+id|out_EIO
 suffix:semicolon
 id|out_no_mem
 suffix:colon
@@ -2772,13 +2884,8 @@ id|KERN_ERR
 l_string|&quot;smb_trans2: data/params grew!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|req-&gt;rq_errno
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_goto
-id|out
+id|out_EIO
 suffix:semicolon
 id|out_bad_parm
 suffix:colon
@@ -2786,22 +2893,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;smb_trans2: invalid parms, disp=%d, cnt=%d, tot=%d&bslash;n&quot;
+l_string|&quot;smb_trans2: invalid parms, disp=%u, cnt=%u, tot=%u, ofs=%u&bslash;n&quot;
 comma
 id|parm_disp
 comma
 id|parm_count
 comma
 id|parm_tot
+comma
+id|parm_offset
 )paren
 suffix:semicolon
-id|req-&gt;rq_errno
-op_assign
-op_minus
-id|EIO
-suffix:semicolon
 r_goto
-id|out
+id|out_EIO
 suffix:semicolon
 id|out_bad_data
 suffix:colon
@@ -2809,15 +2913,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;smb_trans2: invalid data, disp=%d, cnt=%d, tot=%d&bslash;n&quot;
+l_string|&quot;smb_trans2: invalid data, disp=%u, cnt=%u, tot=%u, ofs=%u&bslash;n&quot;
 comma
 id|data_disp
 comma
 id|data_count
 comma
 id|data_tot
+comma
+id|data_offset
 )paren
 suffix:semicolon
+id|out_EIO
+suffix:colon
 id|req-&gt;rq_errno
 op_assign
 op_minus

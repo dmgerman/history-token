@@ -255,12 +255,12 @@ c_func
 id|profile_rwsem
 )paren
 suffix:semicolon
-DECL|variable|handoff_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|handoff_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|task_exit_notifier
 r_static

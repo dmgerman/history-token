@@ -3115,9 +3115,17 @@ c_func
 (paren
 l_string|&quot;dabusb: probe: vendor id 0x%x, device id 0x%x ifnum:%d&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idProduct
+)paren
 comma
 id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
@@ -3141,7 +3149,11 @@ id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 op_ne
 id|_DABUSB_IF
 op_logical_and
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idProduct
+)paren
 op_eq
 l_int|0x9999
 )paren
@@ -3199,7 +3211,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|usbdev-&gt;descriptor.idProduct
+)paren
 op_eq
 l_int|0x2131
 )paren

@@ -195,8 +195,8 @@ id|ctrl_reg
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Reset the transmit and receive units; mask and clear all interrupts.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_adapter_stop
 id|boolean_t
+DECL|function|ixgb_adapter_stop
 id|ixgb_adapter_stop
 c_func
 (paren
@@ -354,9 +354,9 @@ id|IXGB_CTRL0_RST
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Identifies the vendor of the optics module on the adapter.  The SR adapters&n; * support two different types of XPAK optics, so it is necessary to determine&n; * which optics are present before applying any optics-specific workarounds.&n; *&n; * hw - Struct containing variables accessed by shared code.&n; *&n; * Returns: the vendor of the XPAK optics module.&n; *****************************************************************************/
-DECL|function|ixgb_identify_xpak_vendor
 r_static
 id|ixgb_xpak_vendor
+DECL|function|ixgb_identify_xpak_vendor
 id|ixgb_identify_xpak_vendor
 c_func
 (paren
@@ -479,9 +479,9 @@ id|xpak_vendor
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Determine the physical layer module on the adapter.&n; *&n; * hw - Struct containing variables accessed by shared code.  The device_id&n; *      field must be (correctly) populated before calling this routine.&n; *&n; * Returns: the phy type of the adapter.&n; *****************************************************************************/
-DECL|function|ixgb_identify_phy
 r_static
 id|ixgb_phy_type
+DECL|function|ixgb_identify_phy
 id|ixgb_identify_phy
 c_func
 (paren
@@ -571,6 +571,21 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_case
+id|IXGB_DEVICE_ID_82597EX_LR
+suffix:colon
+id|DEBUGOUT
+c_func
+(paren
+l_string|&quot;Identified G6104 optics&bslash;n&quot;
+)paren
+suffix:semicolon
+id|phy_type
+op_assign
+id|ixgb_phy_type_g6104
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DEBUGOUT
@@ -593,8 +608,8 @@ id|phy_type
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Performs basic configuration of the adapter.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Resets the controller.&n; * Reads and validates the EEPROM.&n; * Initializes the receive address registers.&n; * Initializes the multicast table.&n; * Clears all on-chip counters.&n; * Calls routine to setup flow control settings.&n; * Leaves the transmit and receive units disabled and uninitialized.&n; *&n; * Returns:&n; *      TRUE if successful,&n; *      FALSE if unrecoverable problems were encountered.&n; *****************************************************************************/
-DECL|function|ixgb_init_hw
 id|boolean_t
+DECL|function|ixgb_init_hw
 id|ixgb_init_hw
 c_func
 (paren
@@ -684,9 +699,7 @@ id|FALSE
 )paren
 (brace
 r_return
-(paren
 id|FALSE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Use the device id to determine the type of phy/transceiver. */
@@ -732,9 +745,7 @@ l_string|&quot;MAC address invalid after ixgb_init_rx_addrs&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 id|FALSE
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* tell the routines in this file they can access hardware again */
@@ -770,6 +781,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 id|IXGB_WRITE_REG_ARRAY
 c_func
 (paren
@@ -782,6 +794,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Zero out the VLAN Filter Table Array */
 id|ixgb_clear_vfta
 c_func
@@ -819,8 +832,8 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Initializes receive address filters.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Places the MAC address in receive address register 0 and clears the rest&n; * of the receive addresss registers. Clears the multicast table. Assumes&n; * the receiver is in reset when the routine is called.&n; *****************************************************************************/
-DECL|function|ixgb_init_rx_addrs
 r_void
+DECL|function|ixgb_init_rx_addrs
 id|ixgb_init_rx_addrs
 c_func
 (paren
@@ -1363,9 +1376,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Hashes an address to determine its location in the multicast table&n; *&n; * hw - Struct containing variables accessed by shared code&n; * mc_addr - the multicast address to hash&n; *&n; * Returns:&n; *      The hash value&n; *****************************************************************************/
-DECL|function|ixgb_hash_mc_addr
 r_static
 r_uint32
+DECL|function|ixgb_hash_mc_addr
 id|ixgb_hash_mc_addr
 c_func
 (paren
@@ -1557,9 +1570,9 @@ id|hash_value
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Sets the bit in the multicast table corresponding to the hash value.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * hash_value - Multicast address hash value&n; *****************************************************************************/
-DECL|function|ixgb_mta_set
 r_static
 r_void
+DECL|function|ixgb_mta_set
 id|ixgb_mta_set
 c_func
 (paren
@@ -1633,8 +1646,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Puts an ethernet address into a receive address register.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * addr - Address to put into receive address register&n; * index - Receive address register to write&n; *****************************************************************************/
-DECL|function|ixgb_rar_set
 r_void
+DECL|function|ixgb_rar_set
 id|ixgb_rar_set
 c_func
 (paren
@@ -1777,8 +1790,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Writes a value to the specified offset in the VLAN filter table.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * offset - Offset in VLAN filer table to write&n; * value - Value to write into VLAN filter table&n; *****************************************************************************/
-DECL|function|ixgb_write_vfta
 r_void
+DECL|function|ixgb_write_vfta
 id|ixgb_write_vfta
 c_func
 (paren
@@ -1810,8 +1823,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Clears the VLAN filer table&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_clear_vfta
 r_void
+DECL|function|ixgb_clear_vfta
 id|ixgb_clear_vfta
 c_func
 (paren
@@ -1838,6 +1851,7 @@ suffix:semicolon
 id|offset
 op_increment
 )paren
+(brace
 id|IXGB_WRITE_REG_ARRAY
 c_func
 (paren
@@ -1850,12 +1864,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Configures the flow control settings based on SW configuration.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_setup_fc
 id|boolean_t
+DECL|function|ixgb_setup_fc
 id|ixgb_setup_fc
 c_func
 (paren
@@ -2058,7 +2073,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We need to set up the Receive Threshold high and low water&n;&t;&t; * marks as well as (optionally) enabling the transmission of XON frames.&n;&t;&t; */
+multiline_comment|/* We need to set up the Receive Threshold high and low water&n;&t;    * marks as well as (optionally) enabling the transmission of XON&n;&t;    * frames. */
 r_if
 c_cond
 (paren
@@ -2377,11 +2392,9 @@ id|IXGB_MSRWD_READ_DATA_SHIFT
 suffix:semicolon
 r_return
 (paren
-(paren
 r_uint16
 )paren
 id|data
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Writes a word to a device over the Management Data Interface (MDI) bus.&n; * This interface is used to manage Physical layer devices.&n; *&n; * hw          - Struct containing variables accessed by hw code&n; * reg_address - Offset of device register being read.&n; * phy_address - Address of device on MDI.&n; * device_type - Also known as the Device ID or DID.&n; * data        - 16-bit value to be written&n; *&n; * Returns:  void.&n; *&n; * The 82597EX has support for several MDI access methods.  This routine&n; * uses the new protocol MDI Single Command and Address Operation.&n; * This requires that first an address cycle command is sent, followed by a&n; * write command.&n; *****************************************************************************/
@@ -2493,7 +2506,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/**************************************************************&n;    ** Check every 10 usec to see if the address cycle completed&n;    ** The COMMAND bit will clear when the operation is complete.&n;    ** This may take as long as 64 usecs (we&squot;ll wait 100 usecs max)&n;    ** from the CPU Write to the Ready bit assertion.&n;    **************************************************************/
+multiline_comment|/**************************************************************&n;&t;** Check every 10 usec to see if the address cycle completed&n;&t;** The COMMAND bit will clear when the operation is complete.&n;&t;** This may take as long as 64 usecs (we&squot;ll wait 100 usecs max)&n;&t;** from the CPU Write to the Ready bit assertion.&n;&t;**************************************************************/
 r_for
 c_loop
 (paren
@@ -2590,7 +2603,7 @@ comma
 id|command
 )paren
 suffix:semicolon
-multiline_comment|/**************************************************************&n;    ** Check every 10 usec to see if the read command completed&n;    ** The COMMAND bit will clear when the operation is complete.&n;    ** The write may take as long as 64 usecs (we&squot;ll wait 100 usecs max)&n;    ** from the CPU Write to the Ready bit assertion.&n;    **************************************************************/
+multiline_comment|/**************************************************************&n;&t;** Check every 10 usec to see if the read command completed&n;&t;** The COMMAND bit will clear when the operation is complete.&n;&t;** The write may take as long as 64 usecs (we&squot;ll wait 100 usecs max)&n;&t;** from the CPU Write to the Ready bit assertion.&n;&t;**************************************************************/
 r_for
 c_loop
 (paren
@@ -2651,8 +2664,8 @@ suffix:semicolon
 multiline_comment|/* Operation is complete, return. */
 )brace
 multiline_comment|/******************************************************************************&n; * Checks to see if the link status of the hardware has changed.&n; *&n; * hw - Struct containing variables accessed by hw code&n; *&n; * Called by any function that needs to check the link status of the adapter.&n; *****************************************************************************/
-DECL|function|ixgb_check_for_link
 r_void
+DECL|function|ixgb_check_for_link
 id|ixgb_check_for_link
 c_func
 (paren
@@ -2856,8 +2869,8 @@ id|bad_link_returncode
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Clears all hardware statistics counters.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_clear_hw_cntrs
 r_void
+DECL|function|ixgb_clear_hw_cntrs
 id|ixgb_clear_hw_cntrs
 c_func
 (paren
@@ -3497,8 +3510,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Turns on the software controllable LED&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_led_on
 r_void
+DECL|function|ixgb_led_on
 id|ixgb_led_on
 c_func
 (paren
@@ -3539,8 +3552,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Turns off the software controllable LED&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_led_off
 r_void
+DECL|function|ixgb_led_off
 id|ixgb_led_off
 c_func
 (paren
@@ -3580,9 +3593,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Gets the current PCI bus type, speed, and width of the hardware&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_get_bus_info
 r_static
 r_void
+DECL|function|ixgb_get_bus_info
 id|ixgb_get_bus_info
 c_func
 (paren
@@ -3704,8 +3717,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Tests a MAC address to ensure it is a valid Individual Address&n; *&n; * mac_addr - pointer to MAC address.&n; *&n; *****************************************************************************/
-DECL|function|mac_addr_valid
 id|boolean_t
+DECL|function|mac_addr_valid
 id|mac_addr_valid
 c_func
 (paren
@@ -3836,8 +3849,8 @@ id|is_valid
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Resets the 10GbE link.  Waits the settle time and returns the state of&n; * the link.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_link_reset
 id|boolean_t
+DECL|function|ixgb_link_reset
 id|ixgb_link_reset
 c_func
 (paren
@@ -3952,8 +3965,8 @@ id|link_status
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Resets the 10GbE optics module.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
-DECL|function|ixgb_optics_reset
 r_void
+DECL|function|ixgb_optics_reset
 id|ixgb_optics_reset
 c_func
 (paren

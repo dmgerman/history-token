@@ -1075,7 +1075,7 @@ id|flip
 )braket
 )paren
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* no bulk out, so return 0 bytes written */
@@ -4173,7 +4173,7 @@ id|flip
 )braket
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_if
@@ -4211,7 +4211,7 @@ id|flip
 )braket
 )paren
 op_ne
-l_int|0
+l_int|NULL
 )paren
 r_if
 c_cond
@@ -4793,16 +4793,28 @@ c_func
 (paren
 l_string|&quot;Keyspan startup version %04x product %04x&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.bcdDevice
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.bcdDevice
+)paren
 op_amp
 l_int|0x8000
 )paren
@@ -4824,7 +4836,11 @@ multiline_comment|/* Select firmware image on the basis of idProduct */
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 (brace
 r_case
@@ -9273,7 +9289,11 @@ c_cond
 (paren
 id|d_details-&gt;product_id
 op_eq
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -9295,7 +9315,11 @@ l_string|&quot;%s - unknown product id %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|serial-&gt;dev-&gt;descriptor.idProduct
+)paren
 )paren
 suffix:semicolon
 r_return

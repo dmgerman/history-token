@@ -24,6 +24,7 @@ id|type
 comma
 r_const
 r_void
+id|__user
 op_star
 id|addr
 comma
@@ -33,6 +34,7 @@ id|size
 )paren
 (brace
 r_return
+(paren
 id|CHOOSE_MODE_PROC
 c_func
 (paren
@@ -45,6 +47,7 @@ comma
 id|addr
 comma
 id|size
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -61,6 +64,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -92,6 +96,7 @@ id|copy_to_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -134,6 +139,7 @@ id|dst
 comma
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -196,6 +202,7 @@ id|clear_user
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|mem
 comma
@@ -227,6 +234,7 @@ c_func
 (paren
 r_const
 r_void
+id|__user
 op_star
 id|str
 comma

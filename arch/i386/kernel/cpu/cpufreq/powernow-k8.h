@@ -46,11 +46,10 @@ suffix:semicolon
 multiline_comment|/* pll lock time, units 1 us */
 multiline_comment|/* keep track of the current fid / vid */
 DECL|member|currvid
-id|u32
-id|currvid
-suffix:semicolon
 DECL|member|currfid
 id|u32
+id|currvid
+comma
 id|currfid
 suffix:semicolon
 multiline_comment|/* the powernow_table includes all frequency and vid/fid pairings:&n;&t; * fid are the lower 8 bits of the index, vid are the upper 8 bits.&n;&t; * frequency is in kHz */
@@ -214,17 +213,17 @@ DECL|member|flags1
 id|u8
 id|flags1
 suffix:semicolon
-DECL|member|voltagestabilizationtime
+DECL|member|vstable
 id|u16
-id|voltagestabilizationtime
+id|vstable
 suffix:semicolon
 DECL|member|flags2
 id|u8
 id|flags2
 suffix:semicolon
-DECL|member|numpst
+DECL|member|num_tables
 id|u8
-id|numpst
+id|num_tables
 suffix:semicolon
 DECL|member|cpuid
 id|u32
@@ -242,9 +241,9 @@ DECL|member|maxvid
 id|u8
 id|maxvid
 suffix:semicolon
-DECL|member|numpstates
+DECL|member|numps
 id|u8
-id|numpstates
+id|numps
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -108,12 +108,12 @@ id|rif_table
 id|RIF_TABLE_SIZE
 )braket
 suffix:semicolon
-DECL|variable|rif_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rif_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Garbage disposal timer.&n; */
 DECL|variable|rif_timer

@@ -2199,7 +2199,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SNDRV_PCM_FMTBIT_FLOAT_LE
+id|SNDRV_PCM_FORMAT_FLOAT_LE
 suffix:colon
 id|stream_param.sample_type
 op_assign
@@ -2212,7 +2212,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SNDRV_PCM_FMTBIT_FLOAT_BE
+id|SNDRV_PCM_FORMAT_FLOAT_BE
 suffix:colon
 id|stream_param.sample_type
 op_assign

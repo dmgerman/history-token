@@ -100,6 +100,7 @@ DECL|macro|INTR_DBG
 mdefine_line|#define&t;INTR_DBG&t;4
 multiline_comment|/* Global variable that defines the present debug level of the driver. */
 DECL|variable|debug_level
+r_static
 r_int
 id|debug_level
 op_assign
@@ -1473,6 +1474,7 @@ multiline_comment|/* tx side stuff */
 multiline_comment|/* logical pointer of start of each Tx FIFO */
 DECL|member|tx_FIFO_start
 id|TxFIFO_element_t
+id|__iomem
 op_star
 id|tx_FIFO_start
 (braket
@@ -1598,11 +1600,15 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 DECL|member|bar0
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|bar0
 suffix:semicolon
 DECL|member|bar1
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|bar1
 suffix:semicolon
 DECL|member|config
@@ -1916,15 +1922,12 @@ id|readq
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
 (brace
 id|u64
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
 id|ret
 op_assign
 id|readl
@@ -1935,16 +1938,10 @@ op_plus
 l_int|4
 )paren
 suffix:semicolon
-(paren
-id|u64
-)paren
 id|ret
 op_lshift_assign
 l_int|32
 suffix:semicolon
-(paren
-id|u64
-)paren
 id|ret
 op_or_assign
 id|readl
@@ -1970,6 +1967,7 @@ id|u64
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -2023,6 +2021,7 @@ id|u64
 id|val
 comma
 r_void
+id|__iomem
 op_star
 id|addr
 comma

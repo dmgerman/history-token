@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
@@ -200,25 +201,18 @@ suffix:semicolon
 r_int
 id|nasids
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 comma
 id|nix
 suffix:semicolon
-id|DECLARE_BITMAP
-c_func
-(paren
+id|nodemask_t
 id|nodes_flushed
-comma
-id|NR_NODES
-)paren
 suffix:semicolon
-id|bitmap_zero
+id|nodes_clear
 c_func
 (paren
 id|nodes_flushed
-comma
-id|NR_NODES
 )paren
 suffix:semicolon
 id|i
@@ -241,7 +235,7 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|__set_bit
+id|node_set
 c_func
 (paren
 id|cnode
@@ -354,37 +348,12 @@ id|nix
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnode
-op_assign
-id|find_first_bit
+id|for_each_node_mask
 c_func
 (paren
-op_amp
+id|cnode
+comma
 id|nodes_flushed
-comma
-id|NR_NODES
-)paren
-suffix:semicolon
-id|cnode
-OL
-id|NR_NODES
-suffix:semicolon
-id|cnode
-op_assign
-id|find_next_bit
-c_func
-(paren
-op_amp
-id|nodes_flushed
-comma
-id|NR_NODES
-comma
-op_increment
-id|cnode
-)paren
 )paren
 id|nasids
 (braket
@@ -731,19 +700,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
 (brace
 r_if

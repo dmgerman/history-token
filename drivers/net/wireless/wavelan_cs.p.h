@@ -1223,28 +1223,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* Linked list of devices */
 multiline_comment|/*&n; * Parameters that can be set with &squot;insmod&squot;&n; * The exact syntax is &squot;insmod wavelan_cs.o &lt;var&gt;=&lt;value&gt;&squot;&n; */
-multiline_comment|/* Bit map of interrupts to choose from */
-multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4 and 3 */
-DECL|variable|irq_mask
-r_static
-r_int
-id|irq_mask
-op_assign
-l_int|0xdeb8
-suffix:semicolon
-DECL|variable|irq_list
-r_static
-r_int
-id|irq_list
-(braket
-l_int|4
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-)brace
-suffix:semicolon
 multiline_comment|/* Shared memory speed, in ns */
 DECL|variable|mem_speed
 r_static
@@ -1254,28 +1232,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* New module interface */
-id|MODULE_PARM
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq_list
-comma
-l_string|&quot;1-4i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mem_speed
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef WAVELAN_ROAMING&t;&t;/* Conditional compile, see above in options */
@@ -1287,12 +1251,14 @@ id|do_roaming
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|do_roaming
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */

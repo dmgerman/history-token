@@ -71,8 +71,8 @@ id|offset
 )paren
 suffix:semicolon
 DECL|macro|ARCH_SYSCALLS
-mdefine_line|#define ARCH_SYSCALLS &bslash;&n;&t;[ __NR_modify_ldt ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_read ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_write ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_iobase ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pivot_root ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_multiplexer ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_mmap ] = old_mmap, &bslash;&n;&t;[ __NR_madvise ] = sys_madvise, &bslash;&n;&t;[ __NR_mincore ] = sys_mincore, 
+mdefine_line|#define ARCH_SYSCALLS &bslash;&n;&t;[ __NR_modify_ldt ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_read ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_write ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pciconfig_iobase ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_pivot_root ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_multiplexer ] = sys_ni_syscall, &bslash;&n;&t;[ __NR_mmap ] = old_mmap, &bslash;&n;&t;[ __NR_madvise ] = sys_madvise, &bslash;&n;&t;[ __NR_mincore ] = sys_mincore, &bslash;&n;&t;[ __NR_iopl ] = (syscall_handler_t *) sys_ni_syscall, &bslash;&n;&t;[ __NR_utimes ] = (syscall_handler_t *) sys_utimes, &bslash;&n;&t;[ __NR_fadvise64 ] = (syscall_handler_t *) sys_fadvise64,
 DECL|macro|LAST_ARCH_SYSCALL
-mdefine_line|#define LAST_ARCH_SYSCALL __NR_mincore
+mdefine_line|#define LAST_ARCH_SYSCALL __NR_fadvise64
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

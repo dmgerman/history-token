@@ -54,6 +54,9 @@ mdefine_line|#define&t;HPET_MINOR&t;     228
 r_struct
 id|device
 suffix:semicolon
+r_struct
+id|class_device
+suffix:semicolon
 DECL|struct|miscdevice
 r_struct
 id|miscdevice
@@ -84,6 +87,12 @@ r_struct
 id|device
 op_star
 id|dev
+suffix:semicolon
+DECL|member|class
+r_struct
+id|class_device
+op_star
+r_class
 suffix:semicolon
 DECL|member|devfs_name
 r_char

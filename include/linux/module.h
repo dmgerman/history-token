@@ -81,6 +81,10 @@ id|show
 )paren
 (paren
 r_struct
+id|module_attribute
+op_star
+comma
+r_struct
 id|module
 op_star
 comma
@@ -95,6 +99,10 @@ op_star
 id|store
 )paren
 (paren
+r_struct
+id|module_attribute
+op_star
+comma
 r_struct
 id|module
 op_star
@@ -304,9 +312,6 @@ mdefine_line|#define EXPORT_SYMBOL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYM
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)&t;&t;&t;&t;&t;&bslash;&n;&t;__EXPORT_SYMBOL(sym, &quot;_gpl&quot;)
 macro_line|#endif
-multiline_comment|/* We don&squot;t mangle the actual symbol anymore, so no need for&n; * special casing EXPORT_SYMBOL_NOVERS.  FIXME: Deprecated */
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym) EXPORT_SYMBOL(sym)
 DECL|struct|module_ref
 r_struct
 id|module_ref
@@ -341,10 +346,10 @@ DECL|struct|module_sect_attr
 r_struct
 id|module_sect_attr
 (brace
-DECL|member|attr
+DECL|member|mattr
 r_struct
-id|attribute
-id|attr
+id|module_attribute
+id|mattr
 suffix:semicolon
 DECL|member|name
 r_char
@@ -360,14 +365,14 @@ id|address
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|module_sections
+DECL|struct|module_sect_attrs
 r_struct
-id|module_sections
+id|module_sect_attrs
 (brace
-DECL|member|kobj
+DECL|member|grp
 r_struct
-id|kobject
-id|kobj
+id|attribute_group
+id|grp
 suffix:semicolon
 DECL|member|attrs
 r_struct
@@ -380,7 +385,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
-id|param_kobject
+id|module_param_attrs
 suffix:semicolon
 DECL|struct|module
 r_struct
@@ -409,14 +414,13 @@ multiline_comment|/* Sysfs stuff. */
 DECL|member|mkobj
 r_struct
 id|module_kobject
-op_star
 id|mkobj
 suffix:semicolon
-DECL|member|params_kobject
+DECL|member|param_attrs
 r_struct
-id|param_kobject
+id|module_param_attrs
 op_star
-id|params_kobject
+id|param_attrs
 suffix:semicolon
 multiline_comment|/* Exported symbols */
 DECL|member|syms
@@ -583,7 +587,7 @@ suffix:semicolon
 multiline_comment|/* Section attributes */
 DECL|member|sect_attrs
 r_struct
-id|module_sections
+id|module_sect_attrs
 op_star
 id|sect_attrs
 suffix:semicolon
@@ -1112,8 +1116,6 @@ DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
 DECL|macro|EXPORT_SYMBOL_GPL
 mdefine_line|#define EXPORT_SYMBOL_GPL(sym)
-DECL|macro|EXPORT_SYMBOL_NOVERS
-mdefine_line|#define EXPORT_SYMBOL_NOVERS(sym)
 multiline_comment|/* Given an address, look for it in the exception tables. */
 r_static
 r_inline

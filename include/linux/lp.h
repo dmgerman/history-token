@@ -262,15 +262,6 @@ mdefine_line|#define LP_DUMMY&t;0x00
 multiline_comment|/*&n; * This is the port delay time, in microseconds.&n; * It is used only in the lp_init() and lp_reset() routine.&n; */
 DECL|macro|LP_DELAY
 mdefine_line|#define LP_DELAY &t;50
-multiline_comment|/*&n; * function prototypes&n; */
-r_extern
-r_int
-id|lp_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 eof

@@ -397,6 +397,10 @@ id|qp-&gt;qp_context
 op_assign
 id|qp_init_attr-&gt;qp_context
 suffix:semicolon
+id|qp-&gt;qp_type
+op_assign
+id|qp_init_attr-&gt;qp_type
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren

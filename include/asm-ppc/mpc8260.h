@@ -23,7 +23,7 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_TQM8260
 macro_line|#include &lt;platforms/tqm8260.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_PQ2ADS
+macro_line|#if defined(CONFIG_PQ2ADS) || defined (CONFIG_PQ2FADS)
 macro_line|#include &lt;platforms/pq2ads.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI_8260

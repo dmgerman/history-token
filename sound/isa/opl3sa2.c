@@ -4305,7 +4305,7 @@ id|snd_opl3sa2_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;OPL3-SA2/3&quot;
+l_string|&quot;OPL3-SA2&quot;
 comma
 (paren
 r_void

@@ -124,47 +124,6 @@ r_return
 l_string|&quot;unknown chunk&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* These are printable form of variable-length parameters. */
-DECL|variable|sctp_param_tbl
-r_const
-r_char
-op_star
-id|sctp_param_tbl
-(braket
-id|SCTP_PARAM_ECN_CAPABLE
-op_plus
-l_int|1
-)braket
-op_assign
-(brace
-l_string|&quot;&quot;
-comma
-l_string|&quot;PARAM_HEARTBEAT_INFO&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;PARAM_IPV4_ADDRESS&quot;
-comma
-l_string|&quot;PARAM_IPV6_ADDRESS&quot;
-comma
-l_string|&quot;PARAM_STATE_COOKIE&quot;
-comma
-l_string|&quot;PARAM_UNRECOGNIZED_PARAMETERS&quot;
-comma
-l_string|&quot;PARAM_COOKIE_PRESERVATIVE&quot;
-comma
-l_string|&quot;&quot;
-comma
-l_string|&quot;PARAM_HOST_NAME_ADDRESS&quot;
-comma
-l_string|&quot;PARAM_SUPPORTED_ADDRESS_TYPES&quot;
-comma
-)brace
-suffix:semicolon
 multiline_comment|/* These are printable forms of the states.  */
 DECL|variable|sctp_state_tbl
 r_const
@@ -322,6 +281,8 @@ op_assign
 (brace
 l_string|&quot;NO_PENDING_TSN&quot;
 comma
+l_string|&quot;ICMP_PROTO_UNREACH&quot;
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup &quot;other&quot; debug name. */
@@ -351,7 +312,7 @@ r_if
 c_cond
 (paren
 id|id.other
-OL
+op_le
 id|SCTP_EVENT_OTHER_MAX
 )paren
 r_return

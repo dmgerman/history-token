@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;gsc.h&quot;
 DECL|macro|WAX_GSC_IRQ
 mdefine_line|#define WAX_GSC_IRQ&t;7&t;/* Hardcoded Interrupt for GSC */
@@ -16,7 +15,7 @@ DECL|macro|WAX_GSC_NMI_IRQ
 mdefine_line|#define WAX_GSC_NMI_IRQ&t;29
 DECL|function|wax_choose_irq
 r_static
-r_int
+r_void
 id|wax_choose_irq
 c_func
 (paren
@@ -24,13 +23,14 @@ r_struct
 id|parisc_device
 op_star
 id|dev
+comma
+r_void
+op_star
+id|ctrl
 )paren
 (brace
 r_int
 id|irq
-op_assign
-op_minus
-l_int|1
 suffix:semicolon
 r_switch
 c_cond
@@ -43,7 +43,7 @@ l_int|0x73
 suffix:colon
 id|irq
 op_assign
-l_int|30
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -53,7 +53,7 @@ l_int|0x8c
 suffix:colon
 id|irq
 op_assign
-l_int|25
+l_int|6
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -63,14 +63,27 @@ l_int|0x90
 suffix:colon
 id|irq
 op_assign
-l_int|21
+l_int|10
 suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* WAX EISA BA */
-)brace
+r_default
+suffix:colon
 r_return
+suffix:semicolon
+multiline_comment|/* Unknown */
+)brace
+id|gsc_asic_assign_irq
+c_func
+(paren
+id|ctrl
+comma
 id|irq
+comma
+op_amp
+id|dev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -81,7 +94,7 @@ id|wax_init_irq
 c_func
 (paren
 r_struct
-id|busdevice
+id|gsc_asic
 op_star
 id|wax
 )paren
@@ -104,10 +117,6 @@ id|OFFSET_IMR
 )paren
 suffix:semicolon
 multiline_comment|/* clear pending interrupts */
-(paren
-r_volatile
-id|u32
-)paren
 id|gsc_readl
 c_func
 (paren
@@ -135,17 +144,20 @@ id|dev
 )paren
 (brace
 r_struct
-id|busdevice
+id|gsc_asic
 op_star
 id|wax
+suffix:semicolon
+r_struct
+id|parisc_device
+op_star
+id|parent
 suffix:semicolon
 r_struct
 id|gsc_irq
 id|gsc_irq
 suffix:semicolon
 r_int
-id|irq
-comma
 id|ret
 suffix:semicolon
 id|wax
@@ -155,8 +167,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|busdevice
+op_star
+id|wax
 )paren
 comma
 id|GFP_KERNEL
@@ -204,7 +216,7 @@ id|wax
 )paren
 suffix:semicolon
 multiline_comment|/* the IRQ wax should use */
-id|irq
+id|dev-&gt;irq
 op_assign
 id|gsc_claim_irq
 c_func
@@ -218,7 +230,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq
+id|dev-&gt;irq
 OL
 l_int|0
 )paren
@@ -243,6 +255,17 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|wax-&gt;eim
+op_assign
+(paren
+(paren
+id|u32
+)paren
+id|gsc_irq.txn_addr
+)paren
+op_or
+id|gsc_irq.txn_data
+suffix:semicolon
 id|ret
 op_assign
 id|request_irq
@@ -250,7 +273,7 @@ c_func
 (paren
 id|gsc_irq.irq
 comma
-id|busdev_barked
+id|gsc_asic_intr
 comma
 l_int|0
 comma
@@ -277,22 +300,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Save this for debugging later */
-id|wax-&gt;parent_irq
-op_assign
-id|gsc_irq.irq
-suffix:semicolon
-id|wax-&gt;eim
-op_assign
-(paren
-(paren
-id|u32
-)paren
-id|gsc_irq.txn_addr
-)paren
-op_or
-id|gsc_irq.txn_data
-suffix:semicolon
 multiline_comment|/* enable IRQ&squot;s for devices below WAX */
 id|gsc_writel
 c_func
@@ -307,7 +314,7 @@ suffix:semicolon
 multiline_comment|/* Done init&squot;ing, register this driver */
 id|ret
 op_assign
-id|gsc_common_irqsetup
+id|gsc_common_setup
 c_func
 (paren
 id|dev
@@ -331,31 +338,39 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
 id|dev
 comma
-id|wax-&gt;busdev_region-&gt;data.irqbase
+id|wax
 comma
 id|wax_choose_irq
 )paren
 suffix:semicolon
 multiline_comment|/* On 715-class machines, Wax EISA is a sibling of Wax, not a child. */
+id|parent
+op_assign
+id|parisc_parent
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;parent-&gt;id.hw_type
+id|parent-&gt;id.hw_type
 op_ne
 id|HPHW_IOA
 )paren
 (brace
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
-id|dev-&gt;parent
+id|parent
 comma
-id|wax-&gt;busdev_region-&gt;data.irqbase
+id|wax
 comma
 id|wax_choose_irq
 )paren

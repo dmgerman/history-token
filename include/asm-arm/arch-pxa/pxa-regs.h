@@ -444,13 +444,6 @@ DECL|macro|DCMD_WIDTH4
 mdefine_line|#define DCMD_WIDTH4&t;(3 &lt;&lt; 14)&t;/* 4 byte width (Word) */
 DECL|macro|DCMD_LENGTH
 mdefine_line|#define DCMD_LENGTH&t;0x01fff&t;&t;/* length mask (max = 8K - 1) */
-multiline_comment|/* default combinations */
-DECL|macro|DCMD_RXPCDR
-mdefine_line|#define DCMD_RXPCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_RXMCDR
-mdefine_line|#define DCMD_RXMCDR&t;(DCMD_INCTRGADDR|DCMD_FLOWSRC|DCMD_BURST32|DCMD_WIDTH4)
-DECL|macro|DCMD_TXPCDR
-mdefine_line|#define DCMD_TXPCDR&t;(DCMD_INCSRCADDR|DCMD_FLOWTRG|DCMD_BURST32|DCMD_WIDTH4)
 multiline_comment|/*&n; * UARTs&n; */
 multiline_comment|/* Full Function UART (FFUART) */
 DECL|macro|FFUART
@@ -1935,6 +1928,8 @@ DECL|macro|GPIO31_SYNC
 mdefine_line|#define GPIO31_SYNC&t;&t;31&t;/* AC97/I2S sync */
 DECL|macro|GPIO32_SDATA_IN1
 mdefine_line|#define GPIO32_SDATA_IN1&t;32&t;/* AC97 Sdata_in1 */
+DECL|macro|GPIO32_SYSCLK
+mdefine_line|#define GPIO32_SYSCLK&t;&t;32&t;/* I2S System Clock */
 DECL|macro|GPIO32_MMCCLK
 mdefine_line|#define GPIO32_MMCCLK&t;&t;32&t;/* MMC Clock (PXA270) */
 DECL|macro|GPIO33_nCS_5
@@ -2162,8 +2157,10 @@ DECL|macro|GPIO27_SEXTCLK_MD
 mdefine_line|#define GPIO27_SEXTCLK_MD&t;(27 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO28_BITCLK_AC97_MD
 mdefine_line|#define GPIO28_BITCLK_AC97_MD&t;(28 | GPIO_ALT_FN_1_IN)
-DECL|macro|GPIO28_BITCLK_I2S_MD
-mdefine_line|#define GPIO28_BITCLK_I2S_MD&t;(28 | GPIO_ALT_FN_2_IN)
+DECL|macro|GPIO28_BITCLK_IN_I2S_MD
+mdefine_line|#define GPIO28_BITCLK_IN_I2S_MD&t;(28 | GPIO_ALT_FN_2_IN)
+DECL|macro|GPIO28_BITCLK_OUT_I2S_MD
+mdefine_line|#define GPIO28_BITCLK_OUT_I2S_MD&t;(28 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO29_SDATA_IN_AC97_MD
 mdefine_line|#define GPIO29_SDATA_IN_AC97_MD&t;(29 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO29_SDATA_IN_I2S_MD
@@ -2172,12 +2169,14 @@ DECL|macro|GPIO30_SDATA_OUT_AC97_MD
 mdefine_line|#define GPIO30_SDATA_OUT_AC97_MD&t;(30 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO30_SDATA_OUT_I2S_MD
 mdefine_line|#define GPIO30_SDATA_OUT_I2S_MD&t;(30 | GPIO_ALT_FN_1_OUT)
-DECL|macro|GPIO31_SYNC_AC97_MD
-mdefine_line|#define GPIO31_SYNC_AC97_MD&t;(31 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO31_SYNC_I2S_MD
 mdefine_line|#define GPIO31_SYNC_I2S_MD&t;(31 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO31_SYNC_AC97_MD
+mdefine_line|#define GPIO31_SYNC_AC97_MD&t;(31 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO32_SDATA_IN1_AC97_MD
 mdefine_line|#define GPIO32_SDATA_IN1_AC97_MD&t;(32 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO32_SYSCLK_I2S_MD
+mdefine_line|#define GPIO32_SYSCLK_I2S_MD&t;(32 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO32_MMCCLK_MD
 mdefine_line|#define GPIO32_MMCCLK_MD&t;&t;( 32 | GPIO_ALT_FN_2_OUT)
 DECL|macro|GPIO33_nCS_5_MD

@@ -204,7 +204,7 @@ r_struct
 id|device
 op_star
 comma
-id|u32
+id|pm_message_t
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * runtime.c&n; */
@@ -217,7 +217,7 @@ r_struct
 id|device
 op_star
 comma
-id|u32
+id|pm_message_t
 )paren
 suffix:semicolon
 r_extern
@@ -274,7 +274,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

@@ -48,14 +48,6 @@ id|packed
 )paren
 id|afs_voltype_t
 suffix:semicolon
-r_extern
-r_const
-r_char
-op_star
-id|afs_voltypes
-(braket
-)braket
-suffix:semicolon
 r_typedef
 r_enum
 (brace

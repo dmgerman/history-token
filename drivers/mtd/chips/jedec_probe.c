@@ -27,6 +27,8 @@ DECL|macro|MANUFACTURER_INTEL
 mdefine_line|#define MANUFACTURER_INTEL&t;0x0089
 DECL|macro|MANUFACTURER_MACRONIX
 mdefine_line|#define MANUFACTURER_MACRONIX&t;0x00C2
+DECL|macro|MANUFACTURER_NEC
+mdefine_line|#define MANUFACTURER_NEC&t;0x0010
 DECL|macro|MANUFACTURER_PMC
 mdefine_line|#define MANUFACTURER_PMC&t;0x009D
 DECL|macro|MANUFACTURER_SST
@@ -169,6 +171,9 @@ DECL|macro|MX29F004T
 mdefine_line|#define MX29F004T&t;0x0045
 DECL|macro|MX29F004B
 mdefine_line|#define MX29F004B&t;0x0046
+multiline_comment|/* NEC */
+DECL|macro|UPD29F064115
+mdefine_line|#define UPD29F064115&t;0x221C
 multiline_comment|/* PMC */
 DECL|macro|PM49FL002
 mdefine_line|#define PM49FL002&t;0x006D
@@ -4726,6 +4731,88 @@ l_int|0x04000
 comma
 l_int|1
 )paren
+)brace
+)brace
+comma
+(brace
+dot
+id|mfr_id
+op_assign
+id|MANUFACTURER_NEC
+comma
+dot
+id|dev_id
+op_assign
+id|UPD29F064115
+comma
+dot
+id|name
+op_assign
+l_string|&quot;NEC uPD29F064115&quot;
+comma
+dot
+id|uaddr
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|MTD_UADDR_0x0555_0x02AA
+comma
+multiline_comment|/* x8 */
+(braket
+l_int|1
+)braket
+op_assign
+id|MTD_UADDR_0x0555_0x02AA
+comma
+multiline_comment|/* x16 */
+)brace
+comma
+dot
+id|DevSize
+op_assign
+id|SIZE_8MiB
+comma
+dot
+id|CmdSet
+op_assign
+id|P_ID_AMD_STD
+comma
+dot
+id|NumEraseRegions
+op_assign
+l_int|3
+comma
+dot
+id|regions
+op_assign
+(brace
+id|ERASEINFO
+c_func
+(paren
+l_int|0x2000
+comma
+l_int|8
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x10000
+comma
+l_int|126
+)paren
+comma
+id|ERASEINFO
+c_func
+(paren
+l_int|0x2000
+comma
+l_int|8
+)paren
+comma
 )brace
 )brace
 comma

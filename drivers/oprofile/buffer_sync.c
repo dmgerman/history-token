@@ -125,7 +125,7 @@ multiline_comment|/* To avoid latency problems, we only process the current CPU,
 id|sync_buffer
 c_func
 (paren
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren
@@ -220,7 +220,7 @@ multiline_comment|/* To avoid latency problems, we only process the current CPU,
 id|sync_buffer
 c_func
 (paren
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

@@ -1523,6 +1523,11 @@ comma
 id|fl
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rpc_clnt_sigunmask
 c_func
 (paren
@@ -1567,8 +1572,24 @@ id|inode
 op_assign
 id|filp-&gt;f_mapping-&gt;host
 suffix:semicolon
+id|sigset_t
+id|oldset
+suffix:semicolon
 r_int
 id|status
+suffix:semicolon
+id|rpc_clnt_sigmask
+c_func
+(paren
+id|NFS_CLIENT
+c_func
+(paren
+id|inode
+)paren
+comma
+op_amp
+id|oldset
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Flush all pending writes before doing anything&n;&t; * with locks..&n;&t; */
 id|status
@@ -1632,8 +1653,8 @@ id|status
 OL
 l_int|0
 )paren
-r_return
-id|status
+r_goto
+id|out
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1690,7 +1711,7 @@ op_eq
 op_minus
 id|ERESTARTSYS
 )paren
-id|posix_lock_file
+id|posix_lock_file_wait
 c_func
 (paren
 id|filp
@@ -1722,8 +1743,8 @@ id|status
 OL
 l_int|0
 )paren
-r_return
-id|status
+r_goto
+id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure we clear the cache whenever we try to get the lock.&n;&t; * This makes locking act as a cache coherency point.&n;&t; */
 id|filemap_fdatawrite
@@ -1765,8 +1786,23 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|rpc_clnt_sigunmask
+c_func
+(paren
+id|NFS_CLIENT
+c_func
+(paren
+id|inode
+)paren
+comma
+op_amp
+id|oldset
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|status
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Lock a (portion of) a file&n; */

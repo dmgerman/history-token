@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -3019,19 +3020,10 @@ id|mi
 r_int
 id|node
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
 )paren
 id|free_unused_memmap_node
 c_func

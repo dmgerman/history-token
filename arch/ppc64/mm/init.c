@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/idr.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
@@ -2837,19 +2838,10 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|nid
-op_assign
-l_int|0
-suffix:semicolon
-id|nid
-OL
-id|numnodes
-suffix:semicolon
-id|nid
-op_increment
 )paren
 (brace
 r_if

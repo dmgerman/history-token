@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: block2mtd.c,v 1.23 2005/01/05 17:05:46 dwmw2 Exp $&n; *&n; * blockmtd.c - use a block device as a fake MTD&n; *&n; * Author: Simon Evans &lt;spse@secret.org.uk&gt;&n; *&n; * Copyright (C) 2001,2002&t;Simon Evans&n; * Copyright (C) 2004&t;&t;&n; * Copyright (C) 2004&t;&t;J&ouml;rn Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * Licence: GPL&n; *&n; * How it works:&n; *&t;The driver uses raw/io to read/write the device and the page&n; *&t;cache to cache access. Writes update the page cache with the&n; *&t;new data and mark it dirty and add the page into a BIO which&n; *&t;is then written out.&n; *&n; *&t;It can be loaded Read-Only to prevent erases and writes to the&n; *&t;medium.&n; *&n; */
+multiline_comment|/*&n; * $Id: block2mtd.c,v 1.23 2005/01/05 17:05:46 dwmw2 Exp $&n; *&n; * block2mtd.c - create an mtd from a block device&n; *&n; * Copyright (C) 2001,2002&t;Simon Evans &lt;spse@secret.org.uk&gt;&n; * Copyright (C) 2004&t;&t;Gareth Bult &lt;Gareth@Encryptec.net&gt;&n; * Copyright (C) 2004,2005&t;J&#xfffd;rn Engel &lt;joern@wh.fh-wedel.de&gt;&n; *&n; * Licence: GPL&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -9,17 +9,16 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-DECL|macro|ERROR
-mdefine_line|#define ERROR(fmt, args...) printk(KERN_ERR &quot;blockmtd: &quot; fmt &quot;&bslash;n&quot; , ## args)
-DECL|macro|INFO
-mdefine_line|#define INFO(fmt, args...) printk(KERN_INFO &quot;blockmtd: &quot; fmt &quot;&bslash;n&quot; , ## args)
-multiline_comment|/* Default erase size in K, always make it a multiple of PAGE_SIZE */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;$Revision: 1.23 $&quot;
+DECL|macro|ERROR
+mdefine_line|#define ERROR(fmt, args...) printk(KERN_ERR &quot;block2mtd: &quot; fmt &quot;&bslash;n&quot; , ## args)
+DECL|macro|INFO
+mdefine_line|#define INFO(fmt, args...) printk(KERN_INFO &quot;block2mtd: &quot; fmt &quot;&bslash;n&quot; , ## args)
 multiline_comment|/* Info for the block device */
-DECL|struct|blockmtd_dev
+DECL|struct|block2mtd_dev
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 (brace
 DECL|member|list
 r_struct
@@ -126,10 +125,9 @@ op_logical_neg
 id|isize
 )paren
 (brace
-id|printk
+id|INFO
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;iSize=0 in cache_readahead&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -184,10 +182,9 @@ OG
 id|end_index
 )paren
 (brace
-id|printk
+id|INFO
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;Overrun end of disk in cache readahead&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -325,6 +322,7 @@ op_star
 )paren
 id|mapping-&gt;a_ops-&gt;readpage
 suffix:semicolon
+singleline_comment|//do_page_cache_readahead(mapping, index, XXX, 64);
 id|cache_readahead
 c_func
 (paren
@@ -348,14 +346,14 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* erase a specified part of the device */
-DECL|function|_blockmtd_erase
+DECL|function|_block2mtd_erase
 r_static
 r_int
-id|_blockmtd_erase
+id|_block2mtd_erase
 c_func
 (paren
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 comma
@@ -541,10 +539,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|blockmtd_erase
+DECL|function|block2mtd_erase
 r_static
 r_int
-id|blockmtd_erase
+id|block2mtd_erase
 c_func
 (paren
 r_struct
@@ -559,7 +557,7 @@ id|instr
 )paren
 (brace
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 op_assign
@@ -591,7 +589,7 @@ id|dev-&gt;write_mutex
 suffix:semicolon
 id|err
 op_assign
-id|_blockmtd_erase
+id|_block2mtd_erase
 c_func
 (paren
 id|dev
@@ -646,10 +644,10 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|blockmtd_read
+DECL|function|block2mtd_read
 r_static
 r_int
-id|blockmtd_read
+id|block2mtd_read
 c_func
 (paren
 r_struct
@@ -673,7 +671,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 op_assign
@@ -863,14 +861,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* write data to the underlying device */
-DECL|function|_blockmtd_write
+DECL|function|_block2mtd_write
 r_static
 r_int
-id|_blockmtd_write
+id|_block2mtd_write
 c_func
 (paren
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 comma
@@ -1092,10 +1090,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|blockmtd_write
+DECL|function|block2mtd_write
 r_static
 r_int
-id|blockmtd_write
+id|block2mtd_write
 c_func
 (paren
 r_struct
@@ -1120,7 +1118,7 @@ id|buf
 )paren
 (brace
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 op_assign
@@ -1173,7 +1171,7 @@ id|dev-&gt;write_mutex
 suffix:semicolon
 id|err
 op_assign
-id|_blockmtd_write
+id|_block2mtd_write
 c_func
 (paren
 id|dev
@@ -1210,10 +1208,10 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* sync the device - wait until the write queue is empty */
-DECL|function|blockmtd_sync
+DECL|function|block2mtd_sync
 r_static
 r_void
-id|blockmtd_sync
+id|block2mtd_sync
 c_func
 (paren
 r_struct
@@ -1223,7 +1221,7 @@ id|mtd
 )paren
 (brace
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 op_assign
@@ -1238,14 +1236,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|blockmtd_free_device
+DECL|function|block2mtd_free_device
 r_static
 r_void
-id|blockmtd_free_device
+id|block2mtd_free_device
 c_func
 (paren
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 )paren
@@ -1294,7 +1292,7 @@ multiline_comment|/* FIXME: ensure that mtd-&gt;size % erase_size == 0 */
 DECL|function|add_device
 r_static
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|add_device
 c_func
@@ -1313,7 +1311,7 @@ op_star
 id|bdev
 suffix:semicolon
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 suffix:semicolon
@@ -1334,7 +1332,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 )paren
 comma
 id|GFP_KERNEL
@@ -1424,15 +1422,6 @@ r_goto
 id|devinit_err
 suffix:semicolon
 )brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|bdev-&gt;bd_inode-&gt;i_mapping-&gt;truncate_count
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -1449,7 +1438,7 @@ c_func
 (paren
 r_sizeof
 (paren
-l_string|&quot;blockmtd: &quot;
+l_string|&quot;block2mtd: &quot;
 )paren
 op_plus
 id|strlen
@@ -1475,7 +1464,7 @@ c_func
 (paren
 id|dev-&gt;mtd.name
 comma
-l_string|&quot;blockmtd: %s&quot;
+l_string|&quot;block2mtd: %s&quot;
 comma
 id|devname
 )paren
@@ -1500,11 +1489,11 @@ id|MTD_CAP_RAM
 suffix:semicolon
 id|dev-&gt;mtd.erase
 op_assign
-id|blockmtd_erase
+id|block2mtd_erase
 suffix:semicolon
 id|dev-&gt;mtd.write
 op_assign
-id|blockmtd_write
+id|block2mtd_write
 suffix:semicolon
 id|dev-&gt;mtd.writev
 op_assign
@@ -1512,11 +1501,11 @@ id|default_mtd_writev
 suffix:semicolon
 id|dev-&gt;mtd.sync
 op_assign
-id|blockmtd_sync
+id|block2mtd_sync
 suffix:semicolon
 id|dev-&gt;mtd.read
 op_assign
-id|blockmtd_read
+id|block2mtd_read
 suffix:semicolon
 id|dev-&gt;mtd.readv
 op_assign
@@ -1559,7 +1548,7 @@ suffix:semicolon
 id|INFO
 c_func
 (paren
-l_string|&quot;mtd%d: [%s] erase_size = %dKiB [%ld]&quot;
+l_string|&quot;mtd%d: [%s] erase_size = %dKiB [%d]&quot;
 comma
 id|dev-&gt;mtd.index
 comma
@@ -1575,7 +1564,7 @@ id|dev-&gt;mtd.erasesize
 op_rshift
 l_int|10
 comma
-id|PAGE_SIZE
+id|dev-&gt;mtd.erasesize
 )paren
 suffix:semicolon
 r_return
@@ -1583,7 +1572,7 @@ id|dev
 suffix:semicolon
 id|devinit_err
 suffix:colon
-id|blockmtd_free_device
+id|block2mtd_free_device
 c_func
 (paren
 id|dev
@@ -1824,12 +1813,53 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|kill_final_newline
+r_static
+r_inline
+r_void
+id|kill_final_newline
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_char
+op_star
+id|newline
+op_assign
+id|strrchr
+c_func
+(paren
+id|str
+comma
+l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newline
+op_logical_and
+op_logical_neg
+id|newline
+(braket
+l_int|1
+)braket
+)paren
+op_star
+id|newline
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|parse_err
-mdefine_line|#define parse_err(fmt, args...) do {&t;&t;&bslash;&n;&t;ERROR(&quot;blockmtd: &quot; fmt &quot;&bslash;n&quot;, ## args);&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|function|blockmtd_setup
+mdefine_line|#define parse_err(fmt, args...) do {&t;&t;&bslash;&n;&t;ERROR(&quot;block2mtd: &quot; fmt &quot;&bslash;n&quot;, ## args);&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|function|block2mtd_setup
 r_static
 r_int
-id|blockmtd_setup
+id|block2mtd_setup
 c_func
 (paren
 r_const
@@ -1911,6 +1941,12 @@ comma
 id|val
 )paren
 suffix:semicolon
+id|kill_final_newline
+c_func
+(paren
+id|str
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1939,40 +1975,6 @@ comma
 l_string|&quot;,&quot;
 )paren
 suffix:semicolon
-(brace
-multiline_comment|/* people dislike typing &quot;echo -n&quot;.  and it&squot;s simple enough */
-r_char
-op_star
-id|newline
-op_assign
-id|strrchr
-c_func
-(paren
-id|token
-(braket
-l_int|1
-)braket
-comma
-l_char|&squot;&bslash;n&squot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|newline
-op_logical_and
-op_logical_neg
-id|newline
-(braket
-l_int|1
-)braket
-)paren
-op_star
-id|newline
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2101,9 +2103,9 @@ suffix:semicolon
 id|module_param_call
 c_func
 (paren
-id|blockmtd
+id|block2mtd
 comma
-id|blockmtd_setup
+id|block2mtd_setup
 comma
 l_int|NULL
 comma
@@ -2115,16 +2117,16 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|blockmtd
+id|block2mtd
 comma
-l_string|&quot;Device to use. &bslash;&quot;blockmtd=&lt;dev&gt;[,&lt;erasesize&gt;]&bslash;&quot;&quot;
+l_string|&quot;Device to use. &bslash;&quot;block2mtd=&lt;dev&gt;[,&lt;erasesize&gt;]&bslash;&quot;&quot;
 )paren
 suffix:semicolon
-DECL|function|blockmtd_init
+DECL|function|block2mtd_init
 r_static
 r_int
 id|__init
-id|blockmtd_init
+id|block2mtd_init
 c_func
 (paren
 r_void
@@ -2141,11 +2143,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|blockmtd_exit
+DECL|function|block2mtd_exit
 r_static
 r_void
 id|__devexit
-id|blockmtd_exit
+id|block2mtd_exit
 c_func
 (paren
 r_void
@@ -2172,7 +2174,7 @@ id|blkmtd_device_list
 )paren
 (brace
 r_struct
-id|blockmtd_dev
+id|block2mtd_dev
 op_star
 id|dev
 op_assign
@@ -2191,7 +2193,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|blockmtd_sync
+id|block2mtd_sync
 c_func
 (paren
 op_amp
@@ -2228,7 +2230,7 @@ op_amp
 id|dev-&gt;list
 )paren
 suffix:semicolon
-id|blockmtd_free_device
+id|block2mtd_free_device
 c_func
 (paren
 id|dev
@@ -2236,18 +2238,18 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-DECL|variable|blockmtd_init
+DECL|variable|block2mtd_init
 id|module_init
 c_func
 (paren
-id|blockmtd_init
+id|block2mtd_init
 )paren
 suffix:semicolon
-DECL|variable|blockmtd_exit
+DECL|variable|block2mtd_exit
 id|module_exit
 c_func
 (paren
-id|blockmtd_exit
+id|block2mtd_exit
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

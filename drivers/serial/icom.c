@@ -7501,13 +7501,6 @@ op_amp
 id|icom_lock
 )paren
 suffix:semicolon
-id|icom_lock
-op_assign
-(paren
-id|spinlock_t
-)paren
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 id|ret
 op_assign
 id|uart_register_driver

@@ -65,10 +65,11 @@ op_star
 id|ip6_ra_chain
 suffix:semicolon
 DECL|variable|ip6_ra_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6_ra_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ip6_ra_control
 r_int
@@ -626,7 +627,7 @@ id|IPPROTO_TCP
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1117,7 +1118,7 @@ id|opt
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

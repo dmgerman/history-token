@@ -10658,9 +10658,12 @@ op_amp
 id|Controller-&gt;HealthStatusWaitQueue
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|Controller-&gt;queue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|DAC960_AnnounceDriver
 c_func

@@ -1009,7 +1009,6 @@ macro_line|#endif /* CONFIG_PPC_OF */
 DECL|function|radeon_unmap_ROM
 r_static
 r_void
-id|__devexit
 id|radeon_unmap_ROM
 c_func
 (paren

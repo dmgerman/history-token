@@ -172,6 +172,7 @@ DECL|macro|NR_IOP331_IRQS
 mdefine_line|#define NR_IOP331_IRQS&t;&t;(IOP331_IRQ(63) + 1)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;NR_IOP331_IRQS
+macro_line|#if defined(CONFIG_ARCH_IQ80331)
 multiline_comment|/*&n; * Interrupts available on the IQ80331 board&n; */
 multiline_comment|/*&n; * On board devices&n; */
 DECL|macro|IRQ_IQ80331_I82544
@@ -189,6 +190,25 @@ DECL|macro|IRQ_IQ80331_INTC
 mdefine_line|#define&t;IRQ_IQ80331_INTC&t;IRQ_IOP331_XINT2
 DECL|macro|IRQ_IQ80331_INTD
 mdefine_line|#define&t;IRQ_IQ80331_INTD&t;IRQ_IOP331_XINT3
+macro_line|#elif defined(CONFIG_MACH_IQ80332)
+multiline_comment|/*&n; * Interrupts available on the IQ80332 board&n; */
+multiline_comment|/*&n; * On board devices&n; */
+DECL|macro|IRQ_IQ80332_I82544
+mdefine_line|#define&t;IRQ_IQ80332_I82544&t;IRQ_IOP331_XINT0
+DECL|macro|IRQ_IQ80332_UART0
+mdefine_line|#define IRQ_IQ80332_UART0&t;IRQ_IOP331_UART0
+DECL|macro|IRQ_IQ80332_UART1
+mdefine_line|#define IRQ_IQ80332_UART1&t;IRQ_IOP331_UART1
+multiline_comment|/*&n; * PCI interrupts&n; */
+DECL|macro|IRQ_IQ80332_INTA
+mdefine_line|#define&t;IRQ_IQ80332_INTA&t;IRQ_IOP331_XINT0
+DECL|macro|IRQ_IQ80332_INTB
+mdefine_line|#define&t;IRQ_IQ80332_INTB&t;IRQ_IOP331_XINT1
+DECL|macro|IRQ_IQ80332_INTC
+mdefine_line|#define&t;IRQ_IQ80332_INTC&t;IRQ_IOP331_XINT2
+DECL|macro|IRQ_IQ80332_INTD
+mdefine_line|#define&t;IRQ_IQ80332_INTD&t;IRQ_IOP331_XINT3
+macro_line|#endif
 macro_line|#endif 
 singleline_comment|// _IOP331_IRQ_H_
 eof

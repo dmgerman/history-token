@@ -9,8 +9,6 @@ multiline_comment|/* Maximum number of references to one attribute block */
 DECL|macro|EXT2_XATTR_REFCOUNT_MAX
 mdefine_line|#define EXT2_XATTR_REFCOUNT_MAX&t;&t;1024
 multiline_comment|/* Name indexes */
-DECL|macro|EXT2_XATTR_INDEX_MAX
-mdefine_line|#define EXT2_XATTR_INDEX_MAX&t;&t;&t;10
 DECL|macro|EXT2_XATTR_INDEX_USER
 mdefine_line|#define EXT2_XATTR_INDEX_USER&t;&t;&t;1
 DECL|macro|EXT2_XATTR_INDEX_POSIX_ACL_ACCESS
@@ -177,21 +175,6 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|ext2_xattr_list
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_char
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|ext2_xattr_set
 c_func
 (paren
@@ -280,31 +263,6 @@ op_star
 id|name
 comma
 r_void
-op_star
-id|buffer
-comma
-r_int
-id|size
-)paren
-(brace
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_int
-DECL|function|ext2_xattr_list
-id|ext2_xattr_list
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_char
 op_star
 id|buffer
 comma

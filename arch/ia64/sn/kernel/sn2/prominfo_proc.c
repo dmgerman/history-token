@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
@@ -952,7 +953,10 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 op_star
 r_sizeof
 (paren
@@ -974,26 +978,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnodeid
-op_assign
-l_int|0
-comma
 id|entp
 op_assign
 id|proc_entries
 suffix:semicolon
+id|for_each_online_node
+c_func
+(paren
 id|cnodeid
-OL
-id|numnodes
-suffix:semicolon
-id|cnodeid
-op_increment
-comma
-id|entp
-op_increment
 )paren
 (brace
 id|sprintf
@@ -1085,6 +1077,9 @@ id|p-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+id|entp
+op_increment
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -1114,26 +1109,14 @@ id|name
 id|NODE_NAME_LEN
 )braket
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnodeid
-op_assign
-l_int|0
-comma
 id|entp
 op_assign
 id|proc_entries
 suffix:semicolon
+id|for_each_online_node
+c_func
+(paren
 id|cnodeid
-OL
-id|numnodes
-suffix:semicolon
-id|cnodeid
-op_increment
-comma
-id|entp
-op_increment
 )paren
 (brace
 id|remove_proc_entry
@@ -1171,6 +1154,9 @@ id|name
 comma
 id|sgi_prominfo_entry
 )paren
+suffix:semicolon
+id|entp
+op_increment
 suffix:semicolon
 )brace
 id|remove_proc_entry

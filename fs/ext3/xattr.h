@@ -8,8 +8,6 @@ multiline_comment|/* Maximum number of references to one attribute block */
 DECL|macro|EXT3_XATTR_REFCOUNT_MAX
 mdefine_line|#define EXT3_XATTR_REFCOUNT_MAX&t;&t;1024
 multiline_comment|/* Name indexes */
-DECL|macro|EXT3_XATTR_INDEX_MAX
-mdefine_line|#define EXT3_XATTR_INDEX_MAX&t;&t;&t;10
 DECL|macro|EXT3_XATTR_INDEX_USER
 mdefine_line|#define EXT3_XATTR_INDEX_USER&t;&t;&t;1
 DECL|macro|EXT3_XATTR_INDEX_POSIX_ACL_ACCESS
@@ -54,6 +52,17 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* zero right now */
+)brace
+suffix:semicolon
+DECL|struct|ext3_xattr_ibody_header
+r_struct
+id|ext3_xattr_ibody_header
+(brace
+DECL|member|h_magic
+id|__le32
+id|h_magic
+suffix:semicolon
+multiline_comment|/* magic number for identification */
 )brace
 suffix:semicolon
 DECL|struct|ext3_xattr_entry
@@ -216,33 +225,6 @@ suffix:semicolon
 r_extern
 r_int
 id|ext3_xattr_set_handle
-c_func
-(paren
-id|handle_t
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_const
-r_void
-op_star
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ext3_xattr_block_set
 c_func
 (paren
 id|handle_t

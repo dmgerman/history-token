@@ -3518,7 +3518,7 @@ DECL|macro|IPMI_MEM_ADDR_SPACE
 mdefine_line|#define IPMI_MEM_ADDR_SPACE 1
 DECL|macro|IPMI_IO_ADDR_SPACE
 mdefine_line|#define IPMI_IO_ADDR_SPACE  2
-macro_line|#if defined(CONFIG_ACPI_INTERPETER) || defined(CONFIG_X86) || defined(CONFIG_PCI)
+macro_line|#if defined(CONFIG_ACPI_INTERPRETER) || defined(CONFIG_X86) || defined(CONFIG_PCI)
 DECL|function|is_new_interface
 r_static
 r_int

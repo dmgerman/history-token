@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &quot;gsc.h&quot;
 DECL|macro|DINO_DEBUG
@@ -152,23 +151,19 @@ id|u32
 id|txn_data
 suffix:semicolon
 multiline_comment|/* EIR data assign to each dino */
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
-multiline_comment|/* Virtual IRQ dino uses */
-DECL|member|dino_region
-r_struct
-id|irq_region
-op_star
-id|dino_region
-suffix:semicolon
-multiline_comment|/* region for this Dino */
 DECL|member|imr
 id|u32
 id|imr
 suffix:semicolon
 multiline_comment|/* IRQ&squot;s which are enabled */
+DECL|member|global_irq
+r_int
+id|global_irq
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* map IMR bit to global irq */
 macro_line|#ifdef DINO_DEBUG
 DECL|member|dino_irr0
 r_int
@@ -264,8 +259,9 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 op_assign
 id|d-&gt;hba.base_addr
@@ -284,7 +280,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* tell HW which CFG address */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -306,7 +302,7 @@ l_int|1
 op_star
 id|val
 op_assign
-id|gsc_readb
+id|readb
 c_func
 (paren
 id|base_addr
@@ -333,10 +329,7 @@ l_int|2
 op_star
 id|val
 op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|gsc_readw
+id|readw
 c_func
 (paren
 id|base_addr
@@ -347,7 +340,6 @@ op_plus
 id|where
 op_amp
 l_int|2
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -364,16 +356,12 @@ l_int|4
 op_star
 id|val
 op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|gsc_readl
+id|readl
 c_func
 (paren
 id|base_addr
 op_plus
 id|DINO_CONFIG_DATA
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -461,8 +449,9 @@ op_complement
 l_int|3
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 op_assign
 id|d-&gt;hba.base_addr
@@ -481,7 +470,7 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* avoid address stepping feature */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -493,7 +482,7 @@ op_plus
 id|DINO_PCI_ADDR
 )paren
 suffix:semicolon
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|base_addr
@@ -502,7 +491,7 @@ id|DINO_CONFIG_DATA
 )paren
 suffix:semicolon
 multiline_comment|/* tell HW which CFG address */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|v
@@ -521,7 +510,7 @@ op_eq
 l_int|1
 )paren
 (brace
-id|gsc_writeb
+id|writeb
 c_func
 (paren
 id|val
@@ -547,14 +536,10 @@ op_eq
 l_int|2
 )paren
 (brace
-id|gsc_writew
-c_func
-(paren
-id|cpu_to_le16
+id|writew
 c_func
 (paren
 id|val
-)paren
 comma
 id|base_addr
 op_plus
@@ -577,14 +562,10 @@ op_eq
 l_int|4
 )paren
 (brace
-id|gsc_writel
-c_func
-(paren
-id|cpu_to_le32
+id|writel
 c_func
 (paren
 id|val
-)paren
 comma
 id|base_addr
 op_plus
@@ -625,12 +606,8 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Dino &quot;I/O Port&quot; Space Accessor Functions&n; *&n; * Many PCI devices don&squot;t require use of I/O port space (eg Tulip,&n; * NCR720) since they export the same registers to both MMIO and&n; * I/O port space.  Performance is going to stink if drivers use&n; * I/O port instead of MMIO.&n; */
-DECL|macro|cpu_to_le8
-mdefine_line|#define cpu_to_le8(x) (x)
-DECL|macro|le8_to_cpu
-mdefine_line|#define le8_to_cpu(x) (x)
 DECL|macro|DINO_PORT_IN
-mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = gsc_read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return le##size##_to_cpu(v); &bslash;&n;}
+mdefine_line|#define DINO_PORT_IN(type, size, mask) &bslash;&n;static u##size dino_in##size (struct pci_hba_data *d, u16 addr) &bslash;&n;{ &bslash;&n;&t;u##size v; &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO Port address */ &bslash;&n;&t;__raw_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate I/O PORT read cycle */ &bslash;&n;&t;v = read##type(d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;return v; &bslash;&n;}
 id|DINO_PORT_IN
 c_func
 (paren
@@ -659,7 +636,7 @@ comma
 l_int|0
 )paren
 DECL|macro|DINO_PORT_OUT
-mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO port address */ &bslash;&n;&t;gsc_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;gsc_write##type(cpu_to_le##size(val), d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
+mdefine_line|#define DINO_PORT_OUT(type, size, mask) &bslash;&n;static void dino_out##size (struct pci_hba_data *d, u16 addr, u##size val) &bslash;&n;{ &bslash;&n;&t;unsigned long flags; &bslash;&n;&t;spin_lock_irqsave(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;&t;/* tell HW which IO port address */ &bslash;&n;&t;__raw_writel((u32) addr, d-&gt;base_addr + DINO_PCI_ADDR); &bslash;&n;&t;/* generate cfg write cycle */ &bslash;&n;&t;write##type(val, d-&gt;base_addr+DINO_IO_DATA+(addr&amp;mask)); &bslash;&n;&t;spin_unlock_irqrestore(&amp;(DINO_DEV(d)-&gt;dinosaur_pen), flags); &bslash;&n;}
 id|DINO_PORT_OUT
 c_func
 (paren
@@ -724,16 +701,13 @@ op_assign
 id|dino_out32
 )brace
 suffix:semicolon
+DECL|function|dino_disable_irq
 r_static
 r_void
-DECL|function|dino_mask_irq
-id|dino_mask_irq
+id|dino_disable_irq
 c_func
 (paren
-r_void
-op_star
-id|irq_dev
-comma
+r_int
 r_int
 id|irq
 )paren
@@ -743,10 +717,24 @@ id|dino_device
 op_star
 id|dino_dev
 op_assign
-id|DINO_DEV
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|handler_data
+suffix:semicolon
+r_int
+id|local_irq
+op_assign
+id|gsc_find_local_irq
 c_func
 (paren
-id|irq_dev
+id|irq
+comma
+id|dino_dev-&gt;global_irq
+comma
+id|irq
 )paren
 suffix:semicolon
 id|DBG
@@ -762,47 +750,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|irq_dev
-op_logical_or
-id|irq
-OG
-id|DINO_IRQS
-op_logical_or
-id|irq
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s(0x%lx, %d) - not a dino irq?&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-(paren
-r_int
-)paren
-id|irq_dev
-comma
-id|irq
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;** Clear the matching bit in the IMR register&n;&t;&t;*/
+multiline_comment|/* Clear the matching bit in the IMR register */
 id|dino_dev-&gt;imr
 op_and_assign
 op_complement
@@ -810,11 +758,11 @@ op_complement
 id|DINO_MASK_IRQ
 c_func
 (paren
-id|irq
+id|local_irq
 )paren
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|dino_dev-&gt;imr
@@ -825,17 +773,13 @@ id|DINO_IMR
 )paren
 suffix:semicolon
 )brace
-)brace
+DECL|function|dino_enable_irq
 r_static
 r_void
-DECL|function|dino_unmask_irq
-id|dino_unmask_irq
+id|dino_enable_irq
 c_func
 (paren
-r_void
-op_star
-id|irq_dev
-comma
+r_int
 r_int
 id|irq
 )paren
@@ -845,10 +789,24 @@ id|dino_device
 op_star
 id|dino_dev
 op_assign
-id|DINO_DEV
+id|irq_desc
+(braket
+id|irq
+)braket
+dot
+id|handler_data
+suffix:semicolon
+r_int
+id|local_irq
+op_assign
+id|gsc_find_local_irq
 c_func
 (paren
-id|irq_dev
+id|irq
+comma
+id|dino_dev-&gt;global_irq
+comma
+id|irq
 )paren
 suffix:semicolon
 id|u32
@@ -867,48 +825,26 @@ comma
 id|irq
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|irq_dev
-op_logical_or
-id|irq
-OG
-id|DINO_IRQS
-)paren
-(brace
-id|printk
+multiline_comment|/*&n;&t;** clear pending IRQ bits&n;&t;**&n;&t;** This does NOT change ILR state!&n;&t;** See comment below for ILR usage.&n;&t;*/
+id|__raw_readl
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s(): %d not a dino irq?&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|irq
+id|dino_dev-&gt;hba.base_addr
+op_plus
+id|DINO_IPR
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* set the matching bit in the IMR register */
 id|dino_dev-&gt;imr
 op_or_assign
 id|DINO_MASK_IRQ
 c_func
 (paren
-id|irq
+id|local_irq
 )paren
 suffix:semicolon
 multiline_comment|/* used in dino_isr() */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|dino_dev-&gt;imr
@@ -921,7 +857,7 @@ suffix:semicolon
 multiline_comment|/* Emulate &quot;Level Triggered&quot; Interrupt&n;&t;** Basically, a driver is blowing it if the IRQ line is asserted&n;&t;** while the IRQ is disabled.  But tulip.c seems to do that....&n;&t;** Give &squot;em a kluge award and a nice round of applause!&n;&t;**&n;&t;** The gsc_write will generate an interrupt which invokes dino_isr().&n;&t;** dino_isr() will read IPR and find nothing. But then catch this&n;&t;** when it also checks ILR.&n;&t;*/
 id|tmp
 op_assign
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -937,7 +873,7 @@ op_amp
 id|DINO_MASK_IRQ
 c_func
 (paren
-id|irq
+id|local_irq
 )paren
 )paren
 (brace
@@ -962,76 +898,70 @@ id|dino_dev-&gt;txn_addr
 suffix:semicolon
 )brace
 )brace
+DECL|function|dino_startup_irq
 r_static
-r_void
-DECL|function|dino_enable_irq
-id|dino_enable_irq
+r_int
+r_int
+id|dino_startup_irq
 c_func
 (paren
-r_void
-op_star
-id|irq_dev
-comma
+r_int
 r_int
 id|irq
 )paren
 (brace
-r_struct
-id|dino_device
-op_star
-id|dino_dev
-op_assign
-id|DINO_DEV
+id|dino_enable_irq
 c_func
 (paren
-id|irq_dev
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;** clear pending IRQ bits&n;&t;**&n;&t;** This does NOT change ILR state!&n;&t;** See comments in dino_unmask_irq() for ILR usage.&n;&t;*/
-id|gsc_readl
-c_func
-(paren
-id|dino_dev-&gt;hba.base_addr
-op_plus
-id|DINO_IPR
-)paren
-suffix:semicolon
-id|dino_unmask_irq
-c_func
-(paren
-id|irq_dev
-comma
 id|irq
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-DECL|variable|dino_irq_ops
+DECL|variable|dino_interrupt_type
 r_static
 r_struct
-id|irq_region_ops
-id|dino_irq_ops
+id|hw_interrupt_type
+id|dino_interrupt_type
 op_assign
 (brace
 dot
-id|disable_irq
+r_typename
 op_assign
-id|dino_mask_irq
+l_string|&quot;GSC-PCI&quot;
 comma
-multiline_comment|/* ??? */
 dot
-id|enable_irq
+id|startup
+op_assign
+id|dino_startup_irq
+comma
+dot
+id|shutdown
+op_assign
+id|dino_disable_irq
+comma
+dot
+id|enable
 op_assign
 id|dino_enable_irq
 comma
 dot
-id|mask_irq
+id|disable
 op_assign
-id|dino_mask_irq
+id|dino_disable_irq
 comma
 dot
-id|unmask_irq
+id|ack
 op_assign
-id|dino_unmask_irq
+id|no_ack_irq
+comma
+dot
+id|end
+op_assign
+id|no_end_irq
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Handle a Processor interrupt generated by Dino.&n; *&n; * ilr_loop counter is a kluge to prevent a &quot;stuck&quot; IRQ line from&n; * wedging the CPU. Could be removed or made optional at some point.&n; */
@@ -1059,11 +989,7 @@ id|dino_device
 op_star
 id|dino_dev
 op_assign
-id|DINO_DEV
-c_func
-(paren
 id|intr_dev
-)paren
 suffix:semicolon
 id|u32
 id|mask
@@ -1073,25 +999,6 @@ id|ilr_loop
 op_assign
 l_int|100
 suffix:semicolon
-r_extern
-r_void
-id|do_irq
-c_func
-(paren
-r_struct
-id|irqaction
-op_star
-id|a
-comma
-r_int
-id|i
-comma
-r_struct
-id|pt_regs
-op_star
-id|p
-)paren
-suffix:semicolon
 multiline_comment|/* read and acknowledge pending interrupts */
 macro_line|#ifdef DINO_DEBUG
 id|dino_dev-&gt;dino_irr0
@@ -1099,7 +1006,7 @@ op_assign
 macro_line|#endif
 id|mask
 op_assign
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -1109,18 +1016,22 @@ id|DINO_IRR0
 op_amp
 id|DINO_IRR_MASK
 suffix:semicolon
-id|ilr_again
-suffix:colon
-r_while
-c_loop
+r_if
+c_cond
 (paren
 id|mask
+op_eq
+l_int|0
 )paren
+r_return
+id|IRQ_NONE
+suffix:semicolon
+id|ilr_again
+suffix:colon
+r_do
 (brace
 r_int
-id|irq
-suffix:semicolon
-id|irq
+id|local_irq
 op_assign
 id|__ffs
 c_func
@@ -1128,20 +1039,19 @@ c_func
 id|mask
 )paren
 suffix:semicolon
-id|mask
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
+r_int
 id|irq
-)paren
+op_assign
+id|dino_dev-&gt;global_irq
+(braket
+id|local_irq
+)braket
 suffix:semicolon
 id|DBG
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;%s(%x, %p) mask %0x&bslash;n&quot;
+id|KERN_DEBUG
+l_string|&quot;%s(%d, %p) mask 0x%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1152,27 +1062,34 @@ comma
 id|mask
 )paren
 suffix:semicolon
-id|do_irq
+id|__do_IRQ
 c_func
 (paren
-op_amp
-id|dino_dev-&gt;dino_region-&gt;action
-(braket
-id|irq
-)braket
-comma
-id|dino_dev-&gt;dino_region-&gt;data.irqbase
-op_plus
 id|irq
 comma
 id|regs
 )paren
 suffix:semicolon
+id|mask
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+id|local_irq
+)paren
+suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+id|mask
+)paren
+suffix:semicolon
 multiline_comment|/* Support for level triggered IRQ lines.&n;&t;** &n;&t;** Dropping this support would make this routine *much* faster.&n;&t;** But since PCI requires level triggered IRQ line to share lines...&n;&t;** device drivers may assume lines are level triggered (and not&n;&t;** edge triggered like EISA/ISA can be).&n;&t;*/
 id|mask
 op_assign
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -1203,7 +1120,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;Dino %lx: stuck interrupt %d&bslash;n&quot;
+l_string|&quot;Dino 0x%p: stuck interrupt %d&bslash;n&quot;
 comma
 id|dino_dev-&gt;hba.base_addr
 comma
@@ -1218,9 +1135,62 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+DECL|function|dino_assign_irq
+r_static
+r_void
+id|dino_assign_irq
+c_func
+(paren
+r_struct
+id|dino_device
+op_star
+id|dino
+comma
+r_int
+id|local_irq
+comma
+r_int
+op_star
+id|irqp
+)paren
+(brace
+r_int
+id|irq
+op_assign
+id|gsc_assign_irq
+c_func
+(paren
+op_amp
+id|dino_interrupt_type
+comma
+id|dino
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
+op_eq
+id|NO_IRQ
+)paren
+r_return
+suffix:semicolon
+op_star
+id|irqp
+op_assign
+id|irq
+suffix:semicolon
+id|dino-&gt;global_irq
+(braket
+id|local_irq
+)braket
+op_assign
+id|irq
+suffix:semicolon
+)brace
 DECL|function|dino_choose_irq
 r_static
-r_int
+r_void
 id|dino_choose_irq
 c_func
 (paren
@@ -1228,13 +1198,21 @@ r_struct
 id|parisc_device
 op_star
 id|dev
+comma
+r_void
+op_star
+id|ctrl
 )paren
 (brace
 r_int
 id|irq
+suffix:semicolon
+r_struct
+id|dino_device
+op_star
+id|dino
 op_assign
-op_minus
-l_int|1
+id|ctrl
 suffix:semicolon
 r_switch
 c_cond
@@ -1272,9 +1250,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* PS/2 */
-)brace
+r_default
+suffix:colon
 r_return
+suffix:semicolon
+multiline_comment|/* Unknown */
+)brace
+id|dino_assign_irq
+c_func
+(paren
+id|dino
+comma
 id|irq
+comma
+op_amp
+id|dev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -1309,8 +1300,9 @@ id|pci_bus
 op_star
 id|bus
 comma
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base_addr
 )paren
 (brace
@@ -1568,7 +1560,7 @@ op_plus
 id|DINO_IO_ADDR_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|1
@@ -1740,7 +1732,7 @@ id|DBG
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s(0x%p) bus %d sysdata 0x%p&bslash;n&quot;
+l_string|&quot;%s(0x%p) bus %d platform_data 0x%p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2175,7 +2167,7 @@ op_amp
 id|irq_pin
 )paren
 suffix:semicolon
-id|dev-&gt;irq
+id|irq_pin
 op_assign
 (paren
 id|irq_pin
@@ -2191,6 +2183,18 @@ l_int|1
 op_mod
 l_int|4
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Device %s has undefined IRQ, &quot;
+l_string|&quot;setting to %d&bslash;n&quot;
+comma
+id|dev-&gt;slot_name
+comma
+id|irq_pin
+)paren
+suffix:semicolon
 id|dino_cfg_write
 c_func
 (paren
@@ -2202,22 +2206,18 @@ id|PCI_INTERRUPT_LINE
 comma
 l_int|1
 comma
-id|dev-&gt;irq
+id|irq_pin
 )paren
 suffix:semicolon
-id|dev-&gt;irq
-op_add_assign
-id|dino_dev-&gt;dino_region-&gt;data.irqbase
-suffix:semicolon
-id|printk
+id|dino_assign_irq
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;Device %s has undefined IRQ, setting to %d&bslash;n&quot;
-comma
-id|dev-&gt;slot_name
+id|dino_dev
 comma
 id|irq_pin
+comma
+op_amp
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2239,9 +2239,16 @@ macro_line|#endif
 r_else
 (brace
 multiline_comment|/* Adjust INT_LINE for that busses region */
+id|dino_assign_irq
+c_func
+(paren
+id|dino_dev
+comma
 id|dev-&gt;irq
-op_add_assign
-id|dino_dev-&gt;dino_region-&gt;data.irqbase
+comma
+op_amp
+id|dev-&gt;irq
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2282,7 +2289,7 @@ id|brdg_feat
 op_assign
 l_int|0x00784e05
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2292,7 +2299,7 @@ op_plus
 id|DINO_GMASK
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000001
@@ -2302,7 +2309,7 @@ op_plus
 id|DINO_IO_FBB_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2322,7 +2329,7 @@ l_int|0x4
 suffix:semicolon
 multiline_comment|/* UXQL */
 macro_line|#endif
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|brdg_feat
@@ -2333,7 +2340,7 @@ id|DINO_BRDG_FEAT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Don&squot;t enable address decoding until we know which I/O range&n;&t;** currently is available from the host. Only affects MMIO&n;&t;** and not I/O port space.&n;&t;*/
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2343,7 +2350,7 @@ op_plus
 id|DINO_IO_ADDR_EN
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2353,7 +2360,7 @@ op_plus
 id|DINO_DAMODE
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00222222
@@ -2363,7 +2370,7 @@ op_plus
 id|DINO_PCIROR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00222222
@@ -2373,7 +2380,7 @@ op_plus
 id|DINO_PCIWOR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000040
@@ -2383,7 +2390,7 @@ op_plus
 id|DINO_MLTIM
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000080
@@ -2393,7 +2400,7 @@ op_plus
 id|DINO_IO_CONTROL
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000008c
@@ -2404,7 +2411,7 @@ id|DINO_TLTIM
 )paren
 suffix:semicolon
 multiline_comment|/* Disable PAMR before writing PAPR */
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000007e
@@ -2414,7 +2421,7 @@ op_plus
 id|DINO_PAMR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000007f
@@ -2424,7 +2431,7 @@ op_plus
 id|DINO_PAPR
 )paren
 suffix:semicolon
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x00000000
@@ -2435,7 +2442,7 @@ id|DINO_PAMR
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Dino ERS encourages enabling FBB (0x6f).&n;&t;** We can&squot;t until we know *all* devices below us can support it.&n;&t;** (Something in device configuration header tells us).&n;&t;*/
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 l_int|0x0000004f
@@ -2497,7 +2504,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Decoding IO_ADDR_EN only works for Built-in Dino&n;&t; * since PDC has already initialized this.&n;&t; */
 id|io_addr
 op_assign
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -2869,7 +2876,7 @@ op_amp
 id|dino_port_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;** Note: SMP systems can make use of IRR1/IAR1 registers&n;&t;**   But it won&squot;t buy much performance except in very&n;&t;**   specific applications/configurations. Note Dino&n;&t;**   still only has 11 IRQ input lines - just map some of them&n;&t;**   to a different processor.&n;&t;*/
-id|dino_dev-&gt;irq
+id|dev-&gt;irq
 op_assign
 id|gsc_alloc_irq
 c_func
@@ -2901,7 +2908,7 @@ multiline_comment|/* &n;&t;** Dino needs a PA &quot;IRQ&quot; to get a processor
 r_if
 c_cond
 (paren
-id|dino_dev-&gt;irq
+id|dev-&gt;irq
 OL
 l_int|0
 )paren
@@ -2924,7 +2931,7 @@ op_assign
 id|request_irq
 c_func
 (paren
-id|dino_dev-&gt;irq
+id|dev-&gt;irq
 comma
 id|dino_isr
 comma
@@ -2956,56 +2963,19 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;** Tell generic interrupt support we have 11 bits which need&n;&t;** be checked in the interrupt handler.&n;&t;*/
-id|dino_dev-&gt;dino_region
-op_assign
-id|alloc_irq_region
-c_func
-(paren
-id|DINO_IRQS
-comma
-op_amp
-id|dino_irq_ops
-comma
-id|name
-comma
-id|dino_dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|dino_dev-&gt;dino_region
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: alloc_irq_region() failed&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Support the serial port which is sometimes attached on built-in&n;&t; * Dino / Cujo chips.&n;&t; */
-id|fixup_child_irqs
+id|gsc_fixup_irqs
 c_func
 (paren
 id|dev
 comma
-id|dino_dev-&gt;dino_region-&gt;data.irqbase
+id|dino_dev
 comma
 id|dino_choose_irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** This enables DINO to generate interrupts when it sees&n;&t;** any of its inputs *change*. Just asserting an IRQ&n;&t;** before it&squot;s enabled (ie unmasked) isn&squot;t good enough.&n;&t;*/
-id|gsc_writel
+id|__raw_writel
 c_func
 (paren
 id|eim
@@ -3016,7 +2986,7 @@ id|DINO_IAR0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Some platforms don&squot;t clear Dino&squot;s IRR0 register at boot time.&n;&t;** Reading will clear it now.&n;&t;*/
-id|gsc_readl
+id|__raw_readl
 c_func
 (paren
 id|dino_dev-&gt;hba.base_addr
@@ -3099,7 +3069,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: request I/O Port region failed 0x%lx/%lx (hpa 0x%lx)&bslash;n&quot;
+l_string|&quot;%s: request I/O Port region failed &quot;
+l_string|&quot;0x%lx/%lx (hpa 0x%p)&bslash;n&quot;
 comma
 id|name
 comma
@@ -3200,18 +3171,6 @@ id|version
 op_assign
 l_string|&quot;unknown&quot;
 suffix:semicolon
-r_const
-r_int
-id|name_len
-op_assign
-l_int|32
-suffix:semicolon
-r_char
-id|hw_path
-(braket
-l_int|64
-)braket
-suffix:semicolon
 r_char
 op_star
 id|name
@@ -3226,44 +3185,6 @@ id|pci_bus
 op_star
 id|bus
 suffix:semicolon
-id|name
-op_assign
-id|kmalloc
-c_func
-(paren
-id|name_len
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|name
-)paren
-(brace
-id|print_pa_hwpath
-c_func
-(paren
-id|dev
-comma
-id|hw_path
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|name
-comma
-id|name_len
-comma
-l_string|&quot;Dino [%s]&quot;
-comma
-id|hw_path
-)paren
-suffix:semicolon
-)brace
-r_else
 id|name
 op_assign
 l_string|&quot;Dino&quot;
@@ -3413,7 +3334,7 @@ id|CUJO_RAVEN_ADDR
 id|ccio_cujo20_fixup
 c_func
 (paren
-id|dev-&gt;parent
+id|dev
 comma
 id|CUJO_RAVEN_BADPAGE
 )paren
@@ -3435,7 +3356,7 @@ id|CUJO_FIREHAWK_ADDR
 id|ccio_cujo20_fixup
 c_func
 (paren
-id|dev-&gt;parent
+id|dev
 comma
 id|CUJO_FIREHAWK_BADPAGE
 )paren
@@ -3539,7 +3460,13 @@ id|dev
 suffix:semicolon
 id|dino_dev-&gt;hba.base_addr
 op_assign
+id|ioremap
+c_func
+(paren
 id|dev-&gt;hpa
+comma
+l_int|4096
+)paren
 suffix:semicolon
 multiline_comment|/* faster access */
 id|dino_dev-&gt;hba.lmmio_space_offset
@@ -3547,9 +3474,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* CPU addrs == bus addrs */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|dino_dev-&gt;dinosaur_pen
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|dino_dev-&gt;hba.iommu
 op_assign

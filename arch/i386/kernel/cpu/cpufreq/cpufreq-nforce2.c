@@ -109,15 +109,8 @@ comma
 l_string|&quot;Minimum FSB to use, if not defined: current FSB - 50&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
-singleline_comment|//#define NFORCE2_DEBUG
-macro_line|#ifdef NFORCE2_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;cpufreq-nforce2&quot;, msg)
 multiline_comment|/*&n; * nforce2_calc_fsb - calculate FSB&n; * @pll: PLL value&n; * &n; *   Calculates FSB from PLL value&n; */
 DECL|function|nforce2_calc_fsb
 r_static

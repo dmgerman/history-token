@@ -569,7 +569,7 @@ c_func
 l_int|0xfffff
 )paren
 suffix:semicolon
-id|ib_cached_gid_get
+id|ib_get_cached_gid
 c_func
 (paren
 op_amp

@@ -145,12 +145,6 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
-l_string|&quot;CRD-8480C&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
 l_string|&quot;CRD-8482B&quot;
 comma
 l_string|&quot;ALL&quot;
@@ -343,7 +337,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;ide_dma_intr&t;-&t;IDE DMA interrupt handler&n; *&t;@drive: the drive the interrupt is for&n; *&n; *&t;Handle an interrupt completing a read/write DMA transfer on an &n; *&t;IDE device&n; */
 DECL|function|ide_dma_intr
 id|ide_startstop_t
@@ -461,13 +454,7 @@ id|dma_stat
 suffix:semicolon
 )brace
 r_return
-id|DRIVER
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|error
+id|ide_error
 c_func
 (paren
 id|drive
@@ -485,6 +472,7 @@ c_func
 id|ide_dma_intr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;ide_build_sglist&t;-&t;map IDE scatter gather for DMA I/O&n; *&t;@drive: the drive to build the DMA table for&n; *&t;@rq: the request holding the sg list&n; *&n; *&t;Perform the PCI mapping magic necessary to access the source or&n; *&t;target buffers of a request via PCI DMA. The lower layers of the&n; *&t;kernel provide the necessary cache management so that we can&n; *&t;operate in a portable fashion&n; */
 DECL|function|ide_build_sglist
 r_int

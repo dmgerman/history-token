@@ -46,12 +46,12 @@ mdefine_line|#define CA_RUN_AS_MACHINE  0x00000200
 multiline_comment|/* dump the buffer in `emacs-hexl&squot; style */
 DECL|macro|isprint
 mdefine_line|#define isprint(c)      ((c &gt; 0x1f) &amp;&amp; (c &lt; 0x7f))
-DECL|variable|gss_ctx_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|gss_ctx_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|struct|gss_auth
 r_struct
@@ -2811,10 +2811,18 @@ id|gss_auth-&gt;dentry
 )paren
 )paren
 r_goto
-id|err_free
+id|err_put_mech
 suffix:semicolon
 r_return
 id|auth
+suffix:semicolon
+id|err_put_mech
+suffix:colon
+id|gss_mech_put
+c_func
+(paren
+id|gss_auth-&gt;mech
+)paren
 suffix:semicolon
 id|err_free
 suffix:colon
@@ -2874,6 +2882,12 @@ id|rpc_unlink
 c_func
 (paren
 id|gss_auth-&gt;path
+)paren
+suffix:semicolon
+id|gss_mech_put
+c_func
+(paren
+id|gss_auth-&gt;mech
 )paren
 suffix:semicolon
 id|rpcauth_free_credcache

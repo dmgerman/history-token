@@ -9,10 +9,11 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|vmlist_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|vmlist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|vmlist
 r_struct

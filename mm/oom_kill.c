@@ -61,9 +61,17 @@ multiline_comment|/*&n;&t; * CPU time is in tens of seconds and run time is in t
 id|cpu_time
 op_assign
 (paren
+id|cputime_to_jiffies
+c_func
+(paren
 id|p-&gt;utime
+)paren
 op_plus
+id|cputime_to_jiffies
+c_func
+(paren
 id|p-&gt;stime
+)paren
 )paren
 op_rshift
 (paren
@@ -649,10 +657,11 @@ id|gfp_mask
 (brace
 multiline_comment|/*&n;&t; * oom_lock protects out_of_memory()&squot;s static variables.&n;&t; * It&squot;s a global lock; this is not performance-critical.&n;&t; */
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|oom_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

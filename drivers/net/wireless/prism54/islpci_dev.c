@@ -1320,7 +1320,7 @@ id|priv-&gt;device_base
 suffix:semicolon
 multiline_comment|/* For safety reasons, we may want to ensure that no DMA transfer is&n;&t; * currently in progress by emptying the TX and RX queues. */
 multiline_comment|/* wait until interrupts have finished executing on other CPUs */
-id|prism54_synchronize_irq
+id|synchronize_irq
 c_func
 (paren
 id|priv-&gt;pdev-&gt;irq

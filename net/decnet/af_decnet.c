@@ -82,12 +82,12 @@ r_struct
 id|proto_ops
 id|dn_proto_ops
 suffix:semicolon
-DECL|variable|dn_hash_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|dn_hash_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dn_sk_hash
 r_static
@@ -546,6 +546,7 @@ id|dn_hash_lock
 suffix:semicolon
 )brace
 DECL|function|listen_hash
+r_static
 r_struct
 id|hlist_head
 op_star
@@ -1472,6 +1473,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|dn_alloc_sock
+r_static
 r_struct
 id|sock
 op_star
@@ -1981,13 +1983,6 @@ id|sk-&gt;sk_socket
 r_return
 l_int|0
 suffix:semicolon
-id|dn_stop_fast_timer
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-multiline_comment|/* unlikely, but possible that this is runninng */
 r_if
 c_cond
 (paren
@@ -2196,12 +2191,6 @@ suffix:semicolon
 r_case
 id|DN_O
 suffix:colon
-id|dn_stop_fast_timer
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 id|dn_stop_slow_timer
 c_func
 (paren

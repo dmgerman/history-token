@@ -170,12 +170,12 @@ c_func
 id|ip_vs_sync_queue
 )paren
 suffix:semicolon
-DECL|variable|ip_vs_sync_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ip_vs_sync_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* current sync_buff for accepting new conn entries */
 DECL|variable|curr_sb
@@ -187,12 +187,12 @@ id|curr_sb
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|curr_sb_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|curr_sb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* ipvs sync daemon state */
 DECL|variable|ip_vs_sync_state

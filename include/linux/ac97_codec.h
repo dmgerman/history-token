@@ -875,5 +875,101 @@ op_star
 id|driver
 )paren
 suffix:semicolon
+multiline_comment|/* quirk types */
+r_enum
+(brace
+DECL|enumerator|AC97_TUNE_DEFAULT
+id|AC97_TUNE_DEFAULT
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* use default from quirk list (not valid in list) */
+DECL|enumerator|AC97_TUNE_NONE
+id|AC97_TUNE_NONE
+op_assign
+l_int|0
+comma
+multiline_comment|/* nothing extra to do */
+DECL|enumerator|AC97_TUNE_HP_ONLY
+id|AC97_TUNE_HP_ONLY
+comma
+multiline_comment|/* headphone (true line-out) control as master only */
+DECL|enumerator|AC97_TUNE_SWAP_HP
+id|AC97_TUNE_SWAP_HP
+comma
+multiline_comment|/* swap headphone and master controls */
+DECL|enumerator|AC97_TUNE_SWAP_SURROUND
+id|AC97_TUNE_SWAP_SURROUND
+comma
+multiline_comment|/* swap master and surround controls */
+DECL|enumerator|AC97_TUNE_AD_SHARING
+id|AC97_TUNE_AD_SHARING
+comma
+multiline_comment|/* for AD1985, turn on OMS bit and use headphone */
+DECL|enumerator|AC97_TUNE_ALC_JACK
+id|AC97_TUNE_ALC_JACK
+comma
+multiline_comment|/* for Realtek, enable JACK detection */
+)brace
+suffix:semicolon
+DECL|struct|ac97_quirk
+r_struct
+id|ac97_quirk
+(brace
+DECL|member|vendor
+r_int
+r_int
+id|vendor
+suffix:semicolon
+multiline_comment|/* PCI vendor id */
+DECL|member|device
+r_int
+r_int
+id|device
+suffix:semicolon
+multiline_comment|/* PCI device id */
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+multiline_comment|/* device id bit mask, 0 = accept all */
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+multiline_comment|/* name shown as info */
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* quirk type above */
+)brace
+suffix:semicolon
+r_struct
+id|pci_dev
+suffix:semicolon
+r_extern
+r_int
+id|ac97_tune_hardware
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|ac97_quirk
+op_star
+id|quirk
+comma
+r_int
+id|override
+)paren
+suffix:semicolon
 macro_line|#endif /* _AC97_CODEC_H_ */
 eof

@@ -2533,8 +2533,8 @@ id|ei-&gt;i_state
 op_assign
 id|EXT3_STATE_NEW
 suffix:semicolon
-r_if
-c_cond
+id|ei-&gt;i_extra_isize
+op_assign
 (paren
 id|EXT3_INODE_SIZE
 c_func
@@ -2544,25 +2544,16 @@ id|inode-&gt;i_sb
 OG
 id|EXT3_GOOD_OLD_INODE_SIZE
 )paren
-(brace
-id|ei-&gt;i_extra_isize
-op_assign
+ques
+c_cond
 r_sizeof
 (paren
-id|__u16
+r_struct
+id|ext3_inode
 )paren
-multiline_comment|/* i_extra_isize */
-op_plus
-r_sizeof
-(paren
-id|__u16
-)paren
-suffix:semicolon
-multiline_comment|/* i_pad1 */
-)brace
-r_else
-id|ei-&gt;i_extra_isize
-op_assign
+op_minus
+id|EXT3_GOOD_OLD_INODE_SIZE
+suffix:colon
 l_int|0
 suffix:semicolon
 id|ret
@@ -3300,6 +3291,11 @@ id|le16_to_cpu
 c_func
 (paren
 id|gdp-&gt;bg_free_inodes_count
+)paren
+suffix:semicolon
+id|cond_resched
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

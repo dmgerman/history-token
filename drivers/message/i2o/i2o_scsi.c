@@ -21,8 +21,12 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
-DECL|macro|VERSION_STRING
-mdefine_line|#define VERSION_STRING        &quot;Version 0.1.2&quot;
+DECL|macro|OSM_NAME
+mdefine_line|#define OSM_NAME&t;&quot;scsi-osm&quot;
+DECL|macro|OSM_VERSION
+mdefine_line|#define OSM_VERSION&t;&quot;$Rev$&quot;
+DECL|macro|OSM_DESCRIPTION
+mdefine_line|#define OSM_DESCRIPTION&t;&quot;I2O SCSI Peripheral OSM&quot;
 DECL|variable|i2o_scsi_driver
 r_static
 r_struct
@@ -201,11 +205,10 @@ op_logical_neg
 id|max_channel
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: no channels found on %s&bslash;n&quot;
+l_string|&quot;no channels found on %s&bslash;n&quot;
 comma
 id|c-&gt;name
 )paren
@@ -254,11 +257,10 @@ op_logical_neg
 id|scsi_host
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: Could not allocate SCSI host&bslash;n&quot;
+l_string|&quot;Could not allocate SCSI host&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -624,12 +626,10 @@ op_ge
 id|scsi_host-&gt;max_id
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: SCSI device id (%d) &gt;= max_id &quot;
-l_string|&quot;of I2O host (%d)&quot;
+l_string|&quot;SCSI device id (%d) &gt;= max_id of I2O host (%d)&quot;
 comma
 id|id
 comma
@@ -673,12 +673,10 @@ op_ge
 id|scsi_host-&gt;max_lun
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: SCSI device id (%d) &gt;= max_lun &quot;
-l_string|&quot;of I2O host (%d)&quot;
+l_string|&quot;SCSI device id (%d) &gt;= max_lun of I2O host (%d)&quot;
 comma
 (paren
 r_int
@@ -711,12 +709,10 @@ op_logical_neg
 id|parent
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: can not find parent of device &quot;
-l_string|&quot;%03x&bslash;n&quot;
+l_string|&quot;can not find parent of device %03x&bslash;n&quot;
 comma
 id|i2o_dev-&gt;lct_data.tid
 )paren
@@ -763,12 +759,10 @@ op_minus
 l_int|1
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: can not find channel of device &quot;
-l_string|&quot;%03x&bslash;n&quot;
+l_string|&quot;can not find channel of device %03x&bslash;n&quot;
 comma
 id|i2o_dev-&gt;lct_data.tid
 )paren
@@ -801,12 +795,10 @@ op_logical_neg
 id|scsi_dev
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: can not add SCSI device &quot;
-l_string|&quot;%03x&bslash;n&quot;
+l_string|&quot;can not add SCSI device %03x&bslash;n&quot;
 comma
 id|i2o_dev-&gt;lct_data.tid
 )paren
@@ -816,10 +808,10 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
-l_string|&quot;Added new SCSI device %03x (cannel: %d, id: %d, lun: %d)&bslash;n&quot;
+l_string|&quot;added new SCSI device %03x (cannel: %d, id: %d, lun: %d)&bslash;n&quot;
 comma
 id|i2o_dev-&gt;lct_data.tid
 comma
@@ -974,17 +966,15 @@ comma
 id|pm
 )paren
 suffix:semicolon
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;IOP fail.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;From %d To %d Cmd %d.&bslash;n&quot;
 comma
 (paren
@@ -1013,10 +1003,9 @@ op_rshift
 l_int|24
 )paren
 suffix:semicolon
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Failure Code %d.&bslash;n&quot;
 comma
 id|msg-&gt;body
@@ -1041,10 +1030,9 @@ op_lshift
 l_int|16
 )paren
 )paren
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Format error.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1062,10 +1050,9 @@ op_lshift
 l_int|17
 )paren
 )paren
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Path error.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1083,10 +1070,9 @@ op_lshift
 l_int|18
 )paren
 )paren
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Path State.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1105,10 +1091,9 @@ l_int|18
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
 l_string|&quot;Congestion.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1117,10 +1102,9 @@ op_assign
 id|DID_BUS_BUSY
 suffix:semicolon
 )brace
-id|printk
+id|osm_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Failing message is %p.&bslash;n&quot;
 comma
 id|pmsg
@@ -1241,10 +1225,9 @@ c_cond
 (paren
 id|st
 )paren
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
 l_string|&quot;SCSI abort: %08X&quot;
 comma
 id|le32_to_cpu
@@ -1257,10 +1240,9 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;SCSI abort completed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1269,7 +1251,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Completed %ld&bslash;n&quot;
@@ -1320,22 +1302,19 @@ id|cmd-&gt;underflow
 r_int
 id|i
 suffix:semicolon
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;SCSI: underflow 0x%08X 0x%08X&quot;
-l_string|&quot;&bslash;n&quot;
+l_string|&quot;SCSI underflow 0x%08X 0x%08X&bslash;n&quot;
 comma
 id|count
 comma
 id|cmd-&gt;underflow
 )paren
 suffix:semicolon
-id|printk
+id|osm_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;Cmd: &quot;
 )paren
 suffix:semicolon
@@ -1353,10 +1332,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;%02X &quot;
 comma
 id|cmd-&gt;cmnd
@@ -1365,10 +1343,9 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1396,11 +1373,10 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;scsi-osm: SCSI error %08x&bslash;n&quot;
+l_string|&quot;SCSI error %08x&bslash;n&quot;
 comma
 id|error
 )paren
@@ -1475,10 +1451,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|printk
+id|osm_info
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;%02x&bslash;n&quot;
 comma
 id|cmd-&gt;sense_buffer
@@ -1739,12 +1714,10 @@ id|i2o_shost
 )paren
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;scsi-osm: Could not initialize&quot;
-l_string|&quot; SCSI host&bslash;n&quot;
+l_string|&quot;Could not initialize SCSI host&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1767,12 +1740,10 @@ c_cond
 id|rc
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;scsi-osm: Could not add SCSI &quot;
-l_string|&quot;host&bslash;n&quot;
+l_string|&quot;Could not add SCSI host&bslash;n&quot;
 )paren
 suffix:semicolon
 id|scsi_host_put
@@ -1791,7 +1762,7 @@ id|i2o_scsi_driver.context
 op_assign
 id|i2o_shost
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;new I2O SCSI host added&bslash;n&quot;
@@ -1852,7 +1823,7 @@ c_func
 id|i2o_shost-&gt;scsi_host
 )paren
 suffix:semicolon
-id|pr_debug
+id|pr_info
 c_func
 (paren
 l_string|&quot;I2O SCSI host removed&bslash;n&quot;
@@ -1871,7 +1842,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;scsi-osm&quot;
+id|OSM_NAME
 comma
 dot
 id|reply
@@ -2023,11 +1994,10 @@ id|i2o_dev
 )paren
 )paren
 (brace
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;scsi-osm: no I2O device in request&bslash;n&quot;
+l_string|&quot;no I2O device in request&bslash;n&quot;
 )paren
 suffix:semicolon
 id|SCpnt-&gt;result
@@ -2050,7 +2020,7 @@ id|tid
 op_assign
 id|i2o_dev-&gt;lct_data.tid
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;qcmd: Tid = %03x&bslash;n&quot;
@@ -2058,7 +2028,7 @@ comma
 id|tid
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Real scsi messages.&bslash;n&quot;
@@ -2514,7 +2484,7 @@ comma
 id|m
 )paren
 suffix:semicolon
-id|pr_debug
+id|osm_debug
 c_func
 (paren
 l_string|&quot;Issued %ld&bslash;n&quot;
@@ -2567,11 +2537,10 @@ id|status
 op_assign
 id|FAILED
 suffix:semicolon
-id|printk
+id|osm_warn
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2o_scsi: Aborting command block.&bslash;n&quot;
+l_string|&quot;Aborting command block.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|i2o_dev
@@ -2793,12 +2762,12 @@ op_assign
 dot
 id|proc_name
 op_assign
-l_string|&quot;SCSI-OSM&quot;
+id|OSM_NAME
 comma
 dot
 id|name
 op_assign
-l_string|&quot;I2O SCSI Peripheral OSM&quot;
+id|OSM_DESCRIPTION
 comma
 dot
 id|info
@@ -2842,7 +2811,6 @@ id|ENABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n;int&n;i2o_scsi_queuecommand(struct scsi_cmnd * cmd, void (*done) (struct scsi_cmnd *))&n;{&n;&t;printk(KERN_INFO &quot;queuecommand&bslash;n&quot;);&n;&t;return SCSI_MLQUEUE_HOST_BUSY;&n;};&n;*/
 multiline_comment|/**&n; *&t;i2o_scsi_init - SCSI OSM initialization function&n; *&n; *&t;Register SCSI OSM into I2O core.&n; *&n; *&t;Returns 0 on success or negative error code on failure.&n; */
 DECL|function|i2o_scsi_init
 r_static
@@ -2861,7 +2829,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;I2O SCSI Peripheral OSM&bslash;n&quot;
+id|OSM_DESCRIPTION
+l_string|&quot; v&quot;
+id|OSM_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register SCSI OSM into I2O core */
@@ -2880,11 +2851,10 @@ c_cond
 id|rc
 )paren
 (brace
-id|printk
+id|osm_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;scsi-osm: Could not register SCSI driver&bslash;n&quot;
+l_string|&quot;Could not register SCSI driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2927,6 +2897,20 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|OSM_DESCRIPTION
+id|MODULE_DESCRIPTION
+c_func
+(paren
+id|OSM_DESCRIPTION
+)paren
+suffix:semicolon
+DECL|variable|OSM_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|OSM_VERSION
 )paren
 suffix:semicolon
 DECL|variable|i2o_scsi_init

@@ -260,12 +260,12 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This lock should be held for writing any time the list of devices or&n; * their attached vcc&squot;s could be altered.  It should be held for reading&n; * any time these are being queried.  Note that we sometimes need to&n; * do read-locking under interrupt context, so write locking must block&n; * the current CPU&squot;s interrupts&n; */
-DECL|variable|devs_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|devs_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

@@ -44,12 +44,12 @@ c_func
 id|packet_sklist
 )paren
 suffix:semicolon
-DECL|variable|packet_sklist_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|packet_sklist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|packet_socks_nr
 r_static

@@ -28,9 +28,9 @@ id|sco_bdaddr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* set/get sockopt defines */
+multiline_comment|/* SCO socket options */
 DECL|macro|SCO_OPTIONS
-mdefine_line|#define SCO_OPTIONS  0x01
+mdefine_line|#define SCO_OPTIONS&t;0x01
 DECL|struct|sco_options
 r_struct
 id|sco_options
@@ -42,7 +42,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SCO_CONNINFO
-mdefine_line|#define SCO_CONNINFO  0x02
+mdefine_line|#define SCO_CONNINFO&t;0x02
 DECL|struct|sco_conninfo
 r_struct
 id|sco_conninfo
@@ -50,6 +50,13 @@ id|sco_conninfo
 DECL|member|hci_handle
 id|__u16
 id|hci_handle
+suffix:semicolon
+DECL|member|dev_class
+id|__u8
+id|dev_class
+(braket
+l_int|3
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon

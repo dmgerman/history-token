@@ -375,7 +375,7 @@ mdefine_line|#define sysfs_ro_n(kind, sub, offset, reg) &bslash;&n;sysfs_r(kind,
 DECL|macro|sysfs_ro
 mdefine_line|#define sysfs_ro(kind, sub, reg) &bslash;&n;sysfs_r(kind, sub, 0, reg) &bslash;&n;static DEVICE_ATTR(kind, S_IRUGO, show_##kind##0##sub, NULL);
 DECL|macro|sysfs_fan
-mdefine_line|#define sysfs_fan(offset, reg_status, reg_min, reg_ripple, reg_act) &bslash;&n;sysfs_rw_n(fan, _pwm   , offset, reg_min) &bslash;&n;sysfs_rw_n(fan, _status, offset, reg_status) &bslash;&n;sysfs_rw_n(fan, _div   , offset, reg_ripple) &bslash;&n;sysfs_ro_n(fan, _input , offset, reg_act)
+mdefine_line|#define sysfs_fan(offset, reg_status, reg_min, reg_ripple, reg_act) &bslash;&n;sysfs_rw_n(pwm,        , offset, reg_min) &bslash;&n;sysfs_rw_n(fan, _status, offset, reg_status) &bslash;&n;sysfs_rw_n(fan, _div   , offset, reg_ripple) &bslash;&n;sysfs_ro_n(fan, _input , offset, reg_act)
 DECL|macro|sysfs_temp
 mdefine_line|#define sysfs_temp(offset, reg_status, reg_act) &bslash;&n;sysfs_rw_n(temp, _status, offset, reg_status) &bslash;&n;sysfs_ro_n(temp, _input , offset, reg_act)
 DECL|macro|sysfs_in
@@ -500,7 +500,7 @@ comma
 id|FSCHER_REG_WDOG_PRESET
 )paren
 DECL|macro|device_create_file_fan
-mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_status); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_div); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_input); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_fan(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_status); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_div); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_input); &bslash;&n;} while (0)
 DECL|macro|device_create_file_temp
 mdefine_line|#define device_create_file_temp(client, offset) &bslash;&n;do { &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_status); &bslash;&n;&t;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_temp##offset##_input); &bslash;&n;} while (0)
 DECL|macro|device_create_file_in
@@ -1603,10 +1603,10 @@ l_int|0x04
 )paren
 suffix:semicolon
 )brace
-DECL|function|set_fan_pwm
+DECL|function|set_pwm
 r_static
 id|ssize_t
-id|set_fan_pwm
+id|set_pwm
 c_func
 (paren
 r_struct
@@ -1634,14 +1634,9 @@ r_int
 id|reg
 )paren
 (brace
-id|data-&gt;fan_min
-(braket
-id|FAN_INDEX_FROM_NUM
-c_func
-(paren
-id|nr
-)paren
-)braket
+r_int
+r_int
+id|v
 op_assign
 id|simple_strtoul
 c_func
@@ -1652,8 +1647,24 @@ l_int|NULL
 comma
 l_int|10
 )paren
-op_amp
+suffix:semicolon
+id|data-&gt;fan_min
+(braket
+id|FAN_INDEX_FROM_NUM
+c_func
+(paren
+id|nr
+)paren
+)braket
+op_assign
+id|v
+OG
 l_int|0xff
+ques
+c_cond
+l_int|0xff
+suffix:colon
+id|v
 suffix:semicolon
 id|fscher_write_value
 c_func
@@ -1676,10 +1687,11 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|function|show_fan_pwm
+DECL|function|show_pwm
 r_static
 id|ssize_t
-id|show_fan_pwm
+id|show_pwm
+c_func
 (paren
 r_struct
 id|fscher_data

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* for try_to_release_page(),&n;&t;&t;&t;&t;&t;buffer_heads_over_limit */
 macro_line|#include &lt;linux/mm_inline.h&gt;
@@ -1003,6 +1002,11 @@ suffix:semicolon
 r_int
 id|referenced
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|lru_to_page
@@ -1040,18 +1044,6 @@ id|page
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-)paren
-r_goto
-id|keep_locked
-suffix:semicolon
 id|sc-&gt;nr_scanned
 op_increment
 suffix:semicolon
@@ -1073,6 +1065,18 @@ id|page
 )paren
 id|sc-&gt;nr_scanned
 op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+r_goto
+id|keep_locked
 suffix:semicolon
 id|referenced
 op_assign
@@ -2311,6 +2315,11 @@ id|l_hold
 )paren
 )paren
 (brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|page
 op_assign
 id|lru_to_page

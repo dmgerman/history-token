@@ -64,6 +64,32 @@ id|fasync_struct
 op_star
 id|fasync
 suffix:semicolon
+DECL|member|if_flags
+r_int
+r_int
+id|if_flags
+suffix:semicolon
+DECL|member|dev_addr
+id|u8
+id|dev_addr
+(braket
+id|ETH_ALEN
+)braket
+suffix:semicolon
+DECL|member|chr_filter
+id|u32
+id|chr_filter
+(braket
+l_int|2
+)braket
+suffix:semicolon
+DECL|member|net_filter
+id|u32
+id|net_filter
+(braket
+l_int|2
+)braket
+suffix:semicolon
 macro_line|#ifdef TUN_DEBUG&t;
 DECL|member|debug
 r_int
@@ -75,7 +101,7 @@ suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* Read queue size */
 DECL|macro|TUN_READQ_SIZE
-mdefine_line|#define TUN_READQ_SIZE&t;10
+mdefine_line|#define TUN_READQ_SIZE&t;500
 multiline_comment|/* TUN device flags */
 DECL|macro|TUN_TUN_DEV
 mdefine_line|#define TUN_TUN_DEV &t;0x0001&t;

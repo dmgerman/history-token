@@ -29,7 +29,7 @@ id|l2_bdaddr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Socket options */
+multiline_comment|/* L2CAP socket options */
 DECL|macro|L2CAP_OPTIONS
 mdefine_line|#define L2CAP_OPTIONS&t;0x01
 DECL|struct|l2cap_options
@@ -48,10 +48,14 @@ DECL|member|flush_to
 id|__u16
 id|flush_to
 suffix:semicolon
+DECL|member|mode
+id|__u8
+id|mode
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|L2CAP_CONNINFO
-mdefine_line|#define L2CAP_CONNINFO  0x02
+mdefine_line|#define L2CAP_CONNINFO&t;0x02
 DECL|struct|l2cap_conninfo
 r_struct
 id|l2cap_conninfo
@@ -59,6 +63,13 @@ id|l2cap_conninfo
 DECL|member|hci_handle
 id|__u16
 id|hci_handle
+suffix:semicolon
+DECL|member|dev_class
+id|__u8
+id|dev_class
+(braket
+l_int|3
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -76,44 +87,6 @@ DECL|macro|L2CAP_LM_RELIABLE
 mdefine_line|#define L2CAP_LM_RELIABLE&t;0x0010
 DECL|macro|L2CAP_LM_SECURE
 mdefine_line|#define L2CAP_LM_SECURE&t;&t;0x0020
-DECL|macro|L2CAP_QOS
-mdefine_line|#define L2CAP_QOS&t;0x04
-DECL|struct|l2cap_qos
-r_struct
-id|l2cap_qos
-(brace
-DECL|member|service_type
-id|__u16
-id|service_type
-suffix:semicolon
-DECL|member|token_rate
-id|__u32
-id|token_rate
-suffix:semicolon
-DECL|member|token_bucket_size
-id|__u32
-id|token_bucket_size
-suffix:semicolon
-DECL|member|peak_bandwidth
-id|__u32
-id|peak_bandwidth
-suffix:semicolon
-DECL|member|latency
-id|__u32
-id|latency
-suffix:semicolon
-DECL|member|delay_variation
-id|__u32
-id|delay_variation
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|L2CAP_SERV_NO_TRAFFIC
-mdefine_line|#define L2CAP_SERV_NO_TRAFFIC&t;0x00
-DECL|macro|L2CAP_SERV_BEST_EFFORT
-mdefine_line|#define L2CAP_SERV_BEST_EFFORT&t;0x01
-DECL|macro|L2CAP_SERV_GUARANTEED
-mdefine_line|#define L2CAP_SERV_GUARANTEED&t;0x02
 multiline_comment|/* L2CAP command codes */
 DECL|macro|L2CAP_COMMAND_REJ
 mdefine_line|#define L2CAP_COMMAND_REJ 0x01
@@ -365,6 +338,8 @@ DECL|macro|L2CAP_CONF_FLUSH_TO
 mdefine_line|#define L2CAP_CONF_FLUSH_TO&t;0x02
 DECL|macro|L2CAP_CONF_QOS
 mdefine_line|#define L2CAP_CONF_QOS&t;&t;0x03
+DECL|macro|L2CAP_CONF_RFC
+mdefine_line|#define L2CAP_CONF_RFC&t;&t;0x04
 DECL|macro|L2CAP_CONF_MAX_SIZE
 mdefine_line|#define L2CAP_CONF_MAX_SIZE&t;22
 DECL|struct|l2cap_disconn_req

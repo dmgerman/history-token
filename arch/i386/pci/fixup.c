@@ -922,35 +922,8 @@ id|dev
 (brace
 id|u32
 id|val
-comma
-id|fixed_val
-suffix:semicolon
-id|u8
-id|rev
-suffix:semicolon
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_REVISION_ID
-comma
-op_amp
-id|rev
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Chip  Old value   New value&n;&t; * C17   0x1F0FFF01  0x1F01FF01&n;&t; * C18D  0x9F0FFF01  0x9F01FF01&n;&t; *&n;&t; * Northbridge chip version may be determined by&n;&t; * reading the PCI revision ID (0xC1 or greater is C18D).&n;&t; */
-id|fixed_val
-op_assign
-id|rev
-OL
-l_int|0xC1
-ques
-c_cond
-l_int|0x1F01FF01
-suffix:colon
-l_int|0x9F01FF01
-suffix:semicolon
 id|pci_read_config_dword
 c_func
 (paren
@@ -962,23 +935,17 @@ op_amp
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Apply fixup only if C1 Halt Disconnect is enabled&n;&t; * (bit28) because it is not supported on some boards.&n;&t; */
+multiline_comment|/*&n;&t; * Apply fixup if needed, but don&squot;t touch disconnect state&n;&t; */
 r_if
 c_cond
 (paren
 (paren
 id|val
 op_amp
-(paren
-l_int|1
-op_lshift
-l_int|28
+l_int|0x00FF0000
 )paren
-)paren
-op_logical_and
-id|val
 op_ne
-id|fixed_val
+l_int|0x00010000
 )paren
 (brace
 id|printk
@@ -995,7 +962,13 @@ id|dev
 comma
 l_int|0x6c
 comma
-id|fixed_val
+(paren
+id|val
+op_amp
+l_int|0xFF00FFFF
+)paren
+op_or
+l_int|0x00010000
 )paren
 suffix:semicolon
 )brace
@@ -1153,6 +1126,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|variable|quirk_pcie_aspm_ops
+r_static
 r_struct
 id|pci_ops
 id|quirk_pcie_aspm_ops
@@ -1172,6 +1146,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * Prevents PCI Express ASPM (Active State Power Management) being enabled.&n; *&n; * Save the register offset, where the ASPM control bits are located,&n; * for each PCI Express device that is in the device list of&n; * the root port in an array for fast indexing. Replace the bus ops&n; * with the modified one.&n; */
 DECL|function|pcie_rootport_aspm_quirk
+r_static
 r_void
 id|pcie_rootport_aspm_quirk
 c_func

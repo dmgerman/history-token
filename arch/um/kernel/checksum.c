@@ -1,13 +1,13 @@
 macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;linux/errno.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
-r_extern
 r_int
 r_int
 id|arch_csum_partial
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|buff
@@ -20,12 +20,12 @@ id|sum
 )paren
 suffix:semicolon
 DECL|function|csum_partial
-r_extern
 r_int
 r_int
 id|csum_partial
 c_func
 (paren
+r_int
 r_char
 op_star
 id|buff
@@ -63,11 +63,13 @@ id|csum_partial_copy_to
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|src
 comma
 r_char
+id|__user
 op_star
 id|dst
 comma
@@ -126,7 +128,9 @@ id|csum_partial_copy_from
 c_func
 (paren
 r_const
+r_int
 r_char
+id|__user
 op_star
 id|src
 comma

@@ -1104,12 +1104,24 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Accumulate here the counters for all threads but the&n;&t;&t; * group leader as they die, so they can be added into&n;&t;&t; * the process-wide totals when those are taken.&n;&t;&t; * The group leader stays around as a zombie as long&n;&t;&t; * as there are other threads.  When it gets reaped,&n;&t;&t; * the exit.c code will add its counts into these totals.&n;&t;&t; * We won&squot;t ever get here for the group leader, since it&n;&t;&t; * will have been the last reference on the signal_struct.&n;&t;&t; */
 id|sig-&gt;utime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|sig-&gt;utime
+comma
 id|tsk-&gt;utime
+)paren
 suffix:semicolon
 id|sig-&gt;stime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|sig-&gt;stime
+comma
 id|tsk-&gt;stime
+)paren
 suffix:semicolon
 id|sig-&gt;min_flt
 op_add_assign
@@ -1806,7 +1818,7 @@ comma
 id|TIF_SIGPENDING
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If resume is set, we want to wake it up in the TASK_STOPPED case.&n;&t; * We don&squot;t check for TASK_STOPPED because there is a race with it&n;&t; * executing another processor and just now entering stopped state.&n;&t; * By calling wake_up_process any time resume is set, we ensure&n;&t; * the process will wake up and handle its stop or death signal.&n;&t; */
+multiline_comment|/*&n;&t; * For SIGKILL, we want to wake it up in the stopped/traced case.&n;&t; * We don&squot;t check t-&gt;state here because there is a race with it&n;&t; * executing another processor and just now entering stopped state.&n;&t; * By using wake_up_state, we ensure the process will wake up and&n;&t; * handle its death signal.&n;&t; */
 id|mask
 op_assign
 id|TASK_INTERRUPTIBLE
@@ -1819,6 +1831,8 @@ id|resume
 id|mask
 op_or_assign
 id|TASK_STOPPED
+op_or
+id|TASK_TRACED
 suffix:semicolon
 r_if
 c_cond
@@ -3052,21 +3066,23 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-multiline_comment|/*&n;&t; * Don&squot;t bother traced and stopped tasks (but&n;&t; * SIGKILL will punch through stopped state)&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t bother traced and stopped tasks (but&n;&t; * SIGKILL will punch through that).&n;&t; */
 id|mask
 op_assign
+id|TASK_STOPPED
+op_or
 id|TASK_TRACED
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|sig
-op_ne
+op_eq
 id|SIGKILL
 )paren
 id|mask
-op_or_assign
-id|TASK_STOPPED
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now find a thread we can wake up to take the signal off the queue.&n;&t; *&n;&t; * If the main thread wants the signal, it gets first crack.&n;&t; * Probably the least surprising to the average bear.&n;&t; */
 r_if
@@ -5013,17 +5029,13 @@ id|sighand_struct
 op_star
 id|psig
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|sig
 op_eq
 op_minus
 l_int|1
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* do_notify_parent_cldstop should have been called instead.  */
@@ -5078,15 +5090,31 @@ suffix:semicolon
 multiline_comment|/* FIXME: find out whether or not this is supposed to be c*time. */
 id|info.si_utime
 op_assign
+id|cputime_to_jiffies
+c_func
+(paren
+id|cputime_add
+c_func
+(paren
 id|tsk-&gt;utime
-op_plus
+comma
 id|tsk-&gt;signal-&gt;utime
+)paren
+)paren
 suffix:semicolon
 id|info.si_stime
 op_assign
+id|cputime_to_jiffies
+c_func
+(paren
+id|cputime_add
+c_func
+(paren
 id|tsk-&gt;stime
-op_plus
+comma
 id|tsk-&gt;signal-&gt;stime
+)paren
+)paren
 suffix:semicolon
 id|info.si_status
 op_assign
@@ -5294,11 +5322,19 @@ suffix:semicolon
 multiline_comment|/* FIXME: find out whether or not this is supposed to be c*time. */
 id|info.si_utime
 op_assign
+id|cputime_to_jiffies
+c_func
+(paren
 id|tsk-&gt;utime
+)paren
 suffix:semicolon
 id|info.si_stime
 op_assign
+id|cputime_to_jiffies
+c_func
+(paren
 id|tsk-&gt;stime
+)paren
 suffix:semicolon
 id|info.si_code
 op_assign
@@ -5501,6 +5537,25 @@ op_logical_neg
 id|current-&gt;ptrace
 op_amp
 id|PT_ATTACHED
+)paren
+)paren
+op_logical_and
+(paren
+id|likely
+c_func
+(paren
+id|current-&gt;parent-&gt;signal
+op_ne
+id|current-&gt;signal
+)paren
+op_logical_or
+op_logical_neg
+id|unlikely
+c_func
+(paren
+id|current-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_GROUP_EXIT
 )paren
 )paren
 )paren

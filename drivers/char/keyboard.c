@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
@@ -1200,6 +1199,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Many other routines do put_queue, but I think either&n; * they produce ASCII, or they produce some user-assigned&n; * string, and in both cases we might assume that it is&n; * in utf-8 already. UTF-8 is defined for words of up to 31 bits,&n; * but we need only 16 bits here&n; */
 DECL|function|to_utf8
+r_static
 r_void
 id|to_utf8
 c_func
@@ -1505,6 +1505,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have a combining character DIACR here, followed by the character CH.&n; * If the combination occurs in the table, return the corresponding value.&n; * Otherwise, if CH is a space or equals DIACR, return DIACR.&n; * Otherwise, conclude that DIACR was not combining after all,&n; * queue it and return CH.&n; */
 DECL|function|handle_diacr
+r_static
 r_int
 r_char
 id|handle_diacr
@@ -3833,76 +3834,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|register_leds
-r_void
-id|register_leds
-c_func
-(paren
-r_struct
-id|kbd_struct
-op_star
-id|kbd
-comma
-r_int
-r_int
-id|led
-comma
-r_int
-r_int
-op_star
-id|addr
-comma
-r_int
-r_int
-id|mask
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|led
-OL
-l_int|3
-)paren
-(brace
-id|ledptrs
-(braket
-id|led
-)braket
-dot
-id|addr
-op_assign
-id|addr
-suffix:semicolon
-id|ledptrs
-(braket
-id|led
-)braket
-dot
-id|mask
-op_assign
-id|mask
-suffix:semicolon
-id|ledptrs
-(braket
-id|led
-)braket
-dot
-id|valid
-op_assign
-l_int|1
-suffix:semicolon
-id|kbd-&gt;ledmode
-op_assign
-id|LED_SHOW_MEM
-suffix:semicolon
-)brace
-r_else
-id|kbd-&gt;ledmode
-op_assign
-id|LED_SHOW_FLAGS
-suffix:semicolon
-)brace
 DECL|function|getleds
 r_static
 r_inline
@@ -4152,6 +4083,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * This allows a newly plugged keyboard to pick the LED state.&n; */
 DECL|function|kbd_refresh_leds
+r_static
 r_void
 id|kbd_refresh_leds
 c_func
@@ -5036,6 +4968,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|kbd_rawcode
+r_static
 r_void
 id|kbd_rawcode
 c_func
@@ -5132,25 +5065,6 @@ id|tty
 suffix:semicolon
 r_int
 id|shift_final
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|down
-op_ne
-l_int|2
-)paren
-id|add_keyboard_randomness
-c_func
-(paren
-(paren
-id|keycode
-op_lshift
-l_int|1
-)paren
-op_xor
-id|down
-)paren
 suffix:semicolon
 id|tty
 op_assign

@@ -10,6 +10,7 @@ macro_line|#include &lt;net/sctp/sm.h&gt;
 multiline_comment|/* This file is mostly in anticipation of future work, but initially&n; * populate with fragment tracking for an outbound message.&n; */
 multiline_comment|/* Initialize datamsg from memory. */
 DECL|function|sctp_datamsg_init
+r_static
 r_void
 id|sctp_datamsg_init
 c_func
@@ -55,6 +56,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Allocate and initialize datamsg. */
 DECL|function|sctp_datamsg_new
+id|SCTP_STATIC
 r_struct
 id|sctp_datamsg
 op_star
@@ -323,6 +325,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Hold a reference. */
 DECL|function|sctp_datamsg_hold
+r_static
 r_void
 id|sctp_datamsg_hold
 c_func
@@ -410,6 +413,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Assign a chunk to this datamsg. */
 DECL|function|sctp_datamsg_assign
+r_static
 r_void
 id|sctp_datamsg_assign
 c_func

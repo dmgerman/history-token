@@ -2,44 +2,6 @@ multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-200
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
-multiline_comment|/* Create a new sctp_command_sequence.  */
-DECL|function|sctp_new_cmd_seq
-id|sctp_cmd_seq_t
-op_star
-id|sctp_new_cmd_seq
-c_func
-(paren
-r_int
-id|gfp
-)paren
-(brace
-id|sctp_cmd_seq_t
-op_star
-id|retval
-op_assign
-id|t_new
-c_func
-(paren
-id|sctp_cmd_seq_t
-comma
-id|gfp
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-id|sctp_init_cmd_seq
-c_func
-(paren
-id|retval
-)paren
-suffix:semicolon
-r_return
-id|retval
-suffix:semicolon
-)brace
 multiline_comment|/* Initialize a block of memory as a command sequence. */
 DECL|function|sctp_init_cmd_seq
 r_int
@@ -124,26 +86,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Rewind an sctp_cmd_seq_t to iterate from the start.  */
-DECL|function|sctp_rewind_sequence
-r_int
-id|sctp_rewind_sequence
-c_func
-(paren
-id|sctp_cmd_seq_t
-op_star
-id|seq
-)paren
-(brace
-id|seq-&gt;next_cmd
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* We always succeed. */
-)brace
 multiline_comment|/* Return the next command structure in a sctp_cmd_seq.&n; * Returns NULL at the end of the sequence.&n; */
 DECL|function|sctp_next_cmd
 id|sctp_cmd_t
@@ -180,24 +122,6 @@ op_increment
 suffix:semicolon
 r_return
 id|retval
-suffix:semicolon
-)brace
-multiline_comment|/* Dispose of a command sequence.  */
-DECL|function|sctp_free_cmd_seq
-r_void
-id|sctp_free_cmd_seq
-c_func
-(paren
-id|sctp_cmd_seq_t
-op_star
-id|seq
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|seq
-)paren
 suffix:semicolon
 )brace
 eof

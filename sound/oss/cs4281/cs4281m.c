@@ -101,12 +101,14 @@ id|defaultorder
 op_assign
 l_int|3
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|defaultorder
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 singleline_comment|//
@@ -212,20 +214,24 @@ op_or
 id|CS_ERROR
 suffix:semicolon
 singleline_comment|// use CS_DBGOUT with various mask values
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debuglevel
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debugmask
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -276,6 +282,7 @@ DECL|macro|VALIDATE_STATE
 mdefine_line|#define VALIDATE_STATE(s)                         &bslash;&n;({                                                &bslash;&n;        if (!(s) || (s)-&gt;magic != CS4281_MAGIC) { &bslash;&n;                printk(invalid_magic);            &bslash;&n;                return -ENXIO;                    &bslash;&n;        }                                         &bslash;&n;})
 singleline_comment|//LIST_HEAD(cs4281_devs);
 DECL|variable|cs4281_devs
+r_static
 r_struct
 id|list_head
 id|cs4281_devs
@@ -4005,6 +4012,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Suspend - save the ac97 regs, mute the outputs and power down the part.  &n;*&n;****************************************************************************/
 DECL|function|cs4281_ac97_suspend
+r_static
 r_void
 id|cs4281_ac97_suspend
 c_func
@@ -4259,6 +4267,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Resume - power up the part and restore its registers..  &n;*&n;****************************************************************************/
 DECL|function|cs4281_ac97_resume
+r_static
 r_void
 id|cs4281_ac97_resume
 c_func
@@ -4388,6 +4397,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* do not save the power state registers at this time&n;****************************************************************************&n;*&n;*  SavePowerState - Save the power registers away. &n;*&n;****************************************************************************&n;void &n;HWAC97codec::SavePowerState(void)&n;{&n;    ENTRY(TM_OBJECTCALLS, &quot;HWAC97codec::SavePowerState()&bslash;r&bslash;n&quot;);&n;&n;    ulSaveReg0x26 = PeekShadow(0x26);&n;&n;    //&n;    // Note that we have saved registers that need to be restored during a&n;    // resume instead of ulAC97Regs[].&n;    //&n;    bPowerStateSaved = TRUE;&n;&n;} // SavePowerState&n;*/
 DECL|function|cs4281_SuspendFIFO
+r_static
 r_void
 id|cs4281_SuspendFIFO
 c_func
@@ -4426,6 +4436,7 @@ id|pl-&gt;u32FSICnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_ResumeFIFO
+r_static
 r_void
 id|cs4281_ResumeFIFO
 c_func
@@ -4464,6 +4475,7 @@ id|pl-&gt;u32FSICnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_SuspendDMAengine
+r_static
 r_void
 id|cs4281_SuspendDMAengine
 c_func
@@ -4544,6 +4556,7 @@ id|pl-&gt;u32DCAnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_ResumeDMAengine
+r_static
 r_void
 id|cs4281_ResumeDMAengine
 c_func
@@ -4624,6 +4637,7 @@ id|pl-&gt;u32DCAnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_suspend
+r_static
 r_int
 id|cs4281_suspend
 c_func
@@ -5156,6 +5170,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cs4281_resume
+r_static
 r_int
 id|cs4281_resume
 c_func
@@ -6643,6 +6658,7 @@ DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1&t;
 singleline_comment|// ==&gt; min buffer size = 8K.
 DECL|function|dealloc_dmabuf
+r_static
 r_void
 id|dealloc_dmabuf
 c_func
@@ -19366,6 +19382,7 @@ l_int|0x0000
 suffix:semicolon
 macro_line|#ifndef NOT_CS4281_PM
 DECL|function|cs4281_BuildFIFO
+r_static
 r_void
 id|__devinit
 id|cs4281_BuildFIFO
@@ -19506,6 +19523,7 @@ id|p-&gt;u32FPDRnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_BuildDMAengine
+r_static
 r_void
 id|__devinit
 id|cs4281_BuildDMAengine
@@ -19721,6 +19739,7 @@ id|p-&gt;u32DCRnAddress
 suffix:semicolon
 )brace
 DECL|function|cs4281_InitPM
+r_static
 r_void
 id|__devinit
 id|cs4281_InitPM
@@ -21018,6 +21037,7 @@ id|cs4281_pci_tbl
 )paren
 suffix:semicolon
 DECL|variable|cs4281_pci_driver
+r_static
 r_struct
 id|pci_driver
 id|cs4281_pci_driver
@@ -21060,6 +21080,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cs4281_init_module
+r_static
 r_int
 id|__init
 id|cs4281_init_module
@@ -21140,6 +21161,7 @@ id|rtn
 suffix:semicolon
 )brace
 DECL|function|cs4281_cleanup_module
+r_static
 r_void
 id|__exit
 id|cs4281_cleanup_module
@@ -21215,22 +21237,4 @@ c_func
 id|cs4281_cleanup_module
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
-DECL|function|init_cs4281
-r_int
-id|__init
-id|init_cs4281
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|cs4281_init_module
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 eof

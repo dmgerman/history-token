@@ -141,12 +141,12 @@ id|tnls_r_l
 )brace
 suffix:semicolon
 multiline_comment|/* lock for the tunnel lists */
-DECL|variable|ip6ip6_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6ip6_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ip6_tnl_dst_check
 r_static

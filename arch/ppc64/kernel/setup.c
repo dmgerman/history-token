@@ -4979,6 +4979,11 @@ c_func
 r_void
 )paren
 (brace
+id|idle_task_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

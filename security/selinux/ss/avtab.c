@@ -1852,9 +1852,16 @@ op_amp
 id|avkey
 )paren
 )paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_goto
 id|bad
 suffix:semicolon
+)brace
 id|rc
 op_assign
 id|avtab_insert

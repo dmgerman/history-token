@@ -33,6 +33,20 @@ macro_line|#undef  URB_ZERO_PACKET
 DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
+DECL|variable|ignore
+r_static
+r_int
+id|ignore
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|reset
+r_static
+r_int
+id|reset
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef CONFIG_BT_HCIUSB_SCO
 DECL|variable|isoc
 r_static
@@ -715,7 +729,11 @@ id|husb-&gt;hdev-&gt;name
 suffix:semicolon
 id|size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|husb-&gt;intr_in_ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|buf
 op_assign
@@ -1108,7 +1126,11 @@ id|buf
 suffix:semicolon
 id|mtu
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|husb-&gt;isoc_in_ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|size
 op_assign
@@ -2392,7 +2414,11 @@ id|urb
 comma
 id|skb-&gt;len
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|husb-&gt;isoc_out_ep-&gt;desc.wMaxPacketSize
+)paren
 )paren
 suffix:semicolon
 id|_urb-&gt;priv
@@ -3874,6 +3900,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ignore
+op_logical_or
 id|id-&gt;driver_info
 op_amp
 id|HCI_IGNORE
@@ -4191,7 +4219,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 OL
 id|size
 op_logical_or
@@ -4203,7 +4235,11 @@ r_break
 suffix:semicolon
 id|size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|isoc_alts
 op_assign
@@ -4466,6 +4502,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|reset
+op_logical_or
 id|id-&gt;driver_info
 op_amp
 id|HCI_RESET
@@ -4764,6 +4802,42 @@ id|module_exit
 c_func
 (paren
 id|hci_usb_exit
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ignore
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ignore
+comma
+l_string|&quot;Ignore devices from the matching table&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|reset
+comma
+r_bool
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|reset
+comma
+l_string|&quot;Send HCI reset command on initialization&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BT_HCIUSB_SCO

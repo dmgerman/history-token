@@ -155,6 +155,18 @@ suffix:semicolon
 id|u32
 id|reg
 suffix:semicolon
+r_int
+id|numnodes
+suffix:semicolon
+id|nodemask_t
+id|nodes_parsed
+suffix:semicolon
+id|nodes_clear
+c_func
+(paren
+id|nodes_parsed
+)paren
+suffix:semicolon
 id|nb
 op_assign
 id|find_northbridge
@@ -213,11 +225,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Number of nodes %d (%x)&bslash;n&quot;
+l_string|&quot;Number of nodes %d&bslash;n&quot;
 comma
 id|numnodes
-comma
-id|reg
 )paren
 suffix:semicolon
 id|memset
@@ -428,10 +438,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|node_online
+id|node_isset
 c_func
 (paren
 id|nodeid
+comma
+id|nodes_parsed
 )paren
 )paren
 (brace
@@ -626,6 +638,14 @@ id|prevbase
 op_assign
 id|base
 suffix:semicolon
+id|node_set
+c_func
+(paren
+id|nodeid
+comma
+id|nodes_parsed
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -643,6 +663,8 @@ id|compute_hash_shift
 c_func
 (paren
 id|nodes
+comma
+id|numnodes
 )paren
 suffix:semicolon
 r_if

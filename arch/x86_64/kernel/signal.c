@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -505,6 +504,33 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|me-&gt;used_math
+)paren
+(brace
+id|clear_fpu
+c_func
+(paren
+id|me
+)paren
+suffix:semicolon
+id|me-&gt;used_math
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
 )brace
 id|err
 op_or_assign
@@ -548,6 +574,7 @@ suffix:semicolon
 id|sigset_t
 id|set
 suffix:semicolon
+r_int
 r_int
 id|eax
 suffix:semicolon
@@ -1992,21 +2019,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;flags
-op_amp
-id|PF_FREEZE
-)paren
-(brace
-id|refrigerator
+id|try_to_freeze
 c_func
 (paren
 l_int|0
 )paren
-suffix:semicolon
+)paren
 r_goto
 id|no_signal
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

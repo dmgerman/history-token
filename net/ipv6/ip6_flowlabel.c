@@ -83,20 +83,20 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* FL hash table lock: it protects only of GC */
-DECL|variable|ip6_fl_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6_fl_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Big socket sock */
-DECL|variable|ip6_sk_fl_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ip6_sk_fl_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__fl_lookup
 r_static

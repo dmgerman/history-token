@@ -2211,7 +2211,7 @@ id|address
 comma
 id|LM78_EXTENT
 comma
-l_string|&quot;lm78&quot;
+id|lm78_driver.name
 )paren
 )paren
 (brace

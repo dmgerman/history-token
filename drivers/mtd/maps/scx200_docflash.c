@@ -30,73 +30,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Set this to one if you want to partition the flash */
-DECL|macro|PARTITION
-mdefine_line|#define PARTITION 1
-id|MODULE_PARM
-c_func
-(paren
-id|probe
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|probe
-comma
-l_string|&quot;Probe for a BIOS mapping&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|size
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|size
-comma
-l_string|&quot;Size of the flash mapping&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|width
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|width
-comma
-l_string|&quot;Data width of the flash mapping (8/16)&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|flashtype
-comma
-l_string|&quot;s&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|flashtype
-comma
-l_string|&quot;Type of MTD probe to do&quot;
-)paren
-suffix:semicolon
 DECL|variable|probe
 r_static
 r_int
@@ -129,6 +62,78 @@ id|flashtype
 op_assign
 l_string|&quot;cfi_probe&quot;
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|probe
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|probe
+comma
+l_string|&quot;Probe for a BIOS mapping&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|size
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|size
+comma
+l_string|&quot;Size of the flash mapping&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|width
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|width
+comma
+l_string|&quot;Data width of the flash mapping (8/16)&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|flashtype
+comma
+id|charp
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|flashtype
+comma
+l_string|&quot;Type of MTD probe to do&quot;
+)paren
+suffix:semicolon
 DECL|variable|docmem
 r_static
 r_struct
@@ -155,7 +160,7 @@ id|mtd_info
 op_star
 id|mymtd
 suffix:semicolon
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 DECL|variable|partition_info
 r_static
 r_struct
@@ -856,7 +861,7 @@ id|mymtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|partition_info
 (braket
 l_int|3
@@ -932,7 +937,7 @@ c_cond
 id|mymtd
 )paren
 (brace
-macro_line|#if PARTITION
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
 id|del_mtd_partitions
 c_func
 (paren

@@ -1598,7 +1598,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * do_system_map_inventory - Retrieve firmware devices via SYSTEM_MAP.&n; *&n; * This function attempts to retrieve and register all the devices firmware&n; * knows about via the SYSTEM_MAP PDC call.&n; */
+multiline_comment|/**&n; * system_map_inventory - Retrieve firmware devices via SYSTEM_MAP.&n; *&n; * This function attempts to retrieve and register all the devices firmware&n; * knows about via the SYSTEM_MAP PDC call.&n; */
 DECL|function|system_map_inventory
 r_static
 r_void
@@ -1624,13 +1624,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|status
-op_ne
-id|PDC_BAD_PROC
-op_logical_and
-id|status
-op_ne
-id|PDC_NE_MOD
+id|i
+OL
+l_int|256
 suffix:semicolon
 id|i
 op_increment
@@ -1662,6 +1658,23 @@ id|module_path
 comma
 id|i
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|status
+op_eq
+id|PDC_BAD_PROC
+)paren
+op_logical_or
+(paren
+id|status
+op_eq
+id|PDC_NE_MOD
+)paren
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -1826,19 +1839,16 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|parisc_generic_device_register
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Searching for devices...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|init_parisc_bus
+c_func
+(paren
 )paren
 suffix:semicolon
 r_switch
@@ -1886,11 +1896,6 @@ l_string|&quot;Unknown PDC type!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-id|parisc_generic_device_register
-c_func
-(paren
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren

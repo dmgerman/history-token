@@ -2364,6 +2364,52 @@ suffix:semicolon
 r_int
 id|data_interface_num
 suffix:semicolon
+r_int
+r_int
+id|quirks
+suffix:semicolon
+multiline_comment|/* handle quirks deadly to normal probing*/
+id|quirks
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|id-&gt;driver_info
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|quirks
+op_eq
+id|NO_UNION_NORMAL
+)paren
+(brace
+id|data_interface
+op_assign
+id|usb_ifnum_to_if
+c_func
+(paren
+id|usb_dev
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|control_interface
+op_assign
+id|usb_ifnum_to_if
+c_func
+(paren
+id|usb_dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|skip_normal_probe
+suffix:semicolon
+)brace
+multiline_comment|/* normal probing*/
 r_if
 c_cond
 (paren
@@ -2374,7 +2420,7 @@ id|buffer
 id|err
 c_func
 (paren
-l_string|&quot;Wierd descriptor references&quot;
+l_string|&quot;Wierd descriptor references&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2403,7 +2449,7 @@ c_func
 op_amp
 id|intf-&gt;dev
 comma
-l_string|&quot;Seeking extra descriptors on endpoint&quot;
+l_string|&quot;Seeking extra descriptors on endpoint&bslash;n&quot;
 )paren
 suffix:semicolon
 id|buflen
@@ -2420,7 +2466,7 @@ r_else
 id|err
 c_func
 (paren
-l_string|&quot;Zero length descriptor references&quot;
+l_string|&quot;Zero length descriptor references&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2451,7 +2497,7 @@ id|USB_DT_CS_INTERFACE
 id|err
 c_func
 (paren
-l_string|&quot;skipping garbage&quot;
+l_string|&quot;skipping garbage&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2722,34 +2768,11 @@ c_func
 op_amp
 id|intf-&gt;dev
 comma
-l_string|&quot;Seperate call control interface. That is not fully supported.&quot;
+l_string|&quot;Seperate call control interface. That is not fully supported.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|usb_interface_claimed
-c_func
-(paren
-id|data_interface
-)paren
-)paren
-(brace
-multiline_comment|/* valid in this context */
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|intf-&gt;dev
-comma
-l_string|&quot;The data interface isn&squot;t available&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
+id|skip_normal_probe
+suffix:colon
 multiline_comment|/*workaround for switched interfaces */
 r_if
 c_cond
@@ -2801,6 +2824,31 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|usb_interface_claimed
+c_func
+(paren
+id|data_interface
+)paren
+)paren
+(brace
+multiline_comment|/* valid in this context */
+id|dev_dbg
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;The data interface isn&squot;t available&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -2979,15 +3027,27 @@ id|acm
 suffix:semicolon
 id|ctrlsize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|epctrl-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|readsize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|epread-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|acm-&gt;writesize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|epwrite-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|acm-&gt;control
 op_assign
@@ -3736,6 +3796,25 @@ id|acm_ids
 )braket
 op_assign
 (brace
+multiline_comment|/* quirky and broken devices */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0870
+comma
+l_int|0x0001
+)paren
+comma
+multiline_comment|/* Metricom GS Modem */
+dot
+id|driver_info
+op_assign
+id|NO_UNION_NORMAL
+comma
+multiline_comment|/* has no union descriptor */
+)brace
+comma
 multiline_comment|/* control interfaces with various AT-command sets */
 (brace
 id|USB_INTERFACE_INFO

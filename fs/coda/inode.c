@@ -316,6 +316,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* exported operations */
 DECL|variable|coda_super_operations
+r_static
 r_struct
 id|super_operations
 id|coda_super_operations

@@ -115,10 +115,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
-DECL|macro|NR_RESERVED_FILES
-mdefine_line|#define NR_RESERVED_FILES 10 /* reserved for root */
-DECL|macro|NR_SUPER
-mdefine_line|#define NR_SUPER 256
 DECL|macro|MAY_EXEC
 mdefine_line|#define MAY_EXEC 1
 DECL|macro|MAY_WRITE
@@ -812,7 +808,8 @@ id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
-id|atomic_t
+r_int
+r_int
 id|truncate_count
 suffix:semicolon
 multiline_comment|/* Cover race condition with truncate */
@@ -3163,7 +3160,12 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev can be called&n; *   without the big kernel lock held in all filesystems.&n; */
+multiline_comment|/* These macros are for out of kernel modules to test that&n; * the kernel supports the unlocked_ioctl and compat_ioctl&n; * fields in struct file_operations. */
+DECL|macro|HAVE_COMPAT_IOCTL
+mdefine_line|#define HAVE_COMPAT_IOCTL 1
+DECL|macro|HAVE_UNLOCKED_IOCTL
+mdefine_line|#define HAVE_UNLOCKED_IOCTL 1
+multiline_comment|/*&n; * NOTE:&n; * read, write, poll, fsync, readv, writev, unlocked_ioctl and compat_ioctl&n; * can be called without the big kernel lock held in all filesystems.&n; */
 DECL|struct|file_operations
 r_struct
 id|file_operations
@@ -3319,6 +3321,42 @@ r_struct
 id|inode
 op_star
 comma
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|unlocked_ioctl
+r_int
+(paren
+op_star
+id|unlocked_ioctl
+)paren
+(paren
+r_struct
+id|file
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|compat_ioctl
+r_int
+(paren
+op_star
+id|compat_ioctl
+)paren
+(paren
 r_struct
 id|file
 op_star
@@ -6008,7 +6046,7 @@ id|inode-&gt;i_mapping
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|invalidate_inode_pages2
 c_func
 (paren
@@ -6019,7 +6057,7 @@ id|mapping
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|write_inode_now
 c_func
 (paren

@@ -3580,7 +3580,7 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_CONFIG_ERROR
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
 id|printk
 c_func
 (paren
@@ -13218,7 +13218,7 @@ op_le
 l_int|0
 )paren
 (brace
-macro_line|#ifdef DEBUG_CONFIG_ERROR
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
 id|printk
 c_func
 (paren
@@ -15616,6 +15616,19 @@ id|dev-&gt;base_addr
 )paren
 suffix:semicolon
 macro_line|#endif
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|register_netdev
@@ -17242,8 +17255,6 @@ id|lp
 suffix:semicolon
 multiline_comment|/* Interface specific data */
 r_int
-id|i
-comma
 id|ret
 suffix:semicolon
 macro_line|#ifdef DEBUG_CALLBACK_TRACE
@@ -17315,48 +17326,7 @@ id|IRQ_HANDLE_PRESENT
 suffix:semicolon
 id|link-&gt;irq.IRQInfo1
 op_assign
-id|IRQ_INFO2_VALID
-op_or
 id|IRQ_LEVEL_ID
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq_list
-(braket
-l_int|0
-)braket
-op_eq
-op_minus
-l_int|1
-)paren
-id|link-&gt;irq.IRQInfo2
-op_assign
-id|irq_mask
-suffix:semicolon
-r_else
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|4
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|link-&gt;irq.IRQInfo2
-op_or_assign
-l_int|1
-op_lshift
-id|irq_list
-(braket
-id|i
-)braket
 suffix:semicolon
 id|link-&gt;irq.Handler
 op_assign
@@ -17555,12 +17525,6 @@ id|client_reg.dev_info
 op_assign
 op_amp
 id|dev_info
-suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
 suffix:semicolon
 id|client_reg.EventMask
 op_assign

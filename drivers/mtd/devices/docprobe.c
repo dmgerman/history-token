@@ -33,12 +33,14 @@ id|doc_config_location
 op_assign
 id|CONFIG_MTD_DOCPROBE_ADDRESS
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|doc_config_location
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

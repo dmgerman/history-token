@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -125,10 +126,11 @@ op_star
 id|reboot_notifier_list
 suffix:semicolon
 DECL|variable|notifier_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|notifier_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;notifier_chain_register&t;- Add notifier to a notifier chain&n; *&t;@list: Pointer to root list pointer&n; *&t;@n: New entry in notifier chain&n; *&n; *&t;Adds a notifier to a notifier chain.&n; *&n; *&t;Currently always returns zero.&n; */
 DECL|function|notifier_chain_register
@@ -3439,8 +3441,7 @@ id|task_struct
 op_star
 id|t
 suffix:semicolon
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
@@ -3471,12 +3472,24 @@ suffix:semicolon
 r_do
 (brace
 id|utime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|utime
+comma
 id|t-&gt;utime
+)paren
 suffix:semicolon
 id|stime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|stime
+comma
 id|t-&gt;stime
+)paren
 suffix:semicolon
 id|t
 op_assign
@@ -3527,7 +3540,7 @@ id|tasklist_lock
 suffix:semicolon
 id|tmp.tms_utime
 op_assign
-id|jiffies_to_clock_t
+id|cputime_to_clock_t
 c_func
 (paren
 id|utime
@@ -3535,7 +3548,7 @@ id|utime
 suffix:semicolon
 id|tmp.tms_stime
 op_assign
-id|jiffies_to_clock_t
+id|cputime_to_clock_t
 c_func
 (paren
 id|stime
@@ -3543,7 +3556,7 @@ id|stime
 suffix:semicolon
 id|tmp.tms_cutime
 op_assign
-id|jiffies_to_clock_t
+id|cputime_to_clock_t
 c_func
 (paren
 id|cutime
@@ -3551,7 +3564,7 @@ id|cutime
 suffix:semicolon
 id|tmp.tms_cstime
 op_assign
-id|jiffies_to_clock_t
+id|cputime_to_clock_t
 c_func
 (paren
 id|cstime
@@ -6120,8 +6133,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+id|cputime_t
 id|utime
 comma
 id|stime
@@ -6205,7 +6217,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|jiffies_to_timeval
+id|cputime_to_timeval
 c_func
 (paren
 id|utime
@@ -6214,7 +6226,7 @@ op_amp
 id|r-&gt;ru_utime
 )paren
 suffix:semicolon
-id|jiffies_to_timeval
+id|cputime_to_timeval
 c_func
 (paren
 id|stime
@@ -6241,7 +6253,7 @@ id|utime
 op_assign
 id|stime
 op_assign
-l_int|0
+id|cputime_zero
 suffix:semicolon
 r_goto
 id|sum_group
@@ -6285,12 +6297,24 @@ suffix:semicolon
 id|sum_group
 suffix:colon
 id|utime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|utime
+comma
 id|p-&gt;signal-&gt;utime
+)paren
 suffix:semicolon
 id|stime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|stime
+comma
 id|p-&gt;signal-&gt;stime
+)paren
 suffix:semicolon
 id|r-&gt;ru_nvcsw
 op_add_assign
@@ -6315,12 +6339,24 @@ suffix:semicolon
 r_do
 (brace
 id|utime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|utime
+comma
 id|t-&gt;utime
+)paren
 suffix:semicolon
 id|stime
-op_add_assign
+op_assign
+id|cputime_add
+c_func
+(paren
+id|stime
+comma
 id|t-&gt;stime
+)paren
 suffix:semicolon
 id|r-&gt;ru_nvcsw
 op_add_assign
@@ -6364,7 +6400,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|jiffies_to_timeval
+id|cputime_to_timeval
 c_func
 (paren
 id|utime
@@ -6373,7 +6409,7 @@ op_amp
 id|r-&gt;ru_utime
 )paren
 suffix:semicolon
-id|jiffies_to_timeval
+id|cputime_to_timeval
 c_func
 (paren
 id|stime

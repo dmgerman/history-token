@@ -2987,7 +2987,7 @@ id|wakeen1
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 DECL|function|sa1111_suspend
 r_static
 r_int
@@ -3618,12 +3618,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else&t;/* !CONFIG_PM */
-DECL|macro|sa1111_resume
-mdefine_line|#define sa1111_resume&t;NULL
+macro_line|#else
 DECL|macro|sa1111_suspend
-mdefine_line|#define sa1111_suspend&t;NULL
-macro_line|#endif&t;/* !CONFIG_PM */
+mdefine_line|#define sa1111_suspend NULL
+DECL|macro|sa1111_resume
+mdefine_line|#define sa1111_resume  NULL
+macro_line|#endif
 DECL|function|sa1111_probe
 r_static
 r_int
@@ -4837,7 +4837,7 @@ id|device
 op_star
 id|dev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

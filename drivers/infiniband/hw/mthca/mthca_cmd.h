@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2004 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_cmd.h 1349 2004-12-16 21:09:43Z roland $&n; */
+multiline_comment|/*&n; * Copyright (c) 2004, 2005 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: mthca_cmd.h 1349 2004-12-16 21:09:43Z roland $&n; */
 macro_line|#ifndef MTHCA_CMD_H
 DECL|macro|MTHCA_CMD_H
 mdefine_line|#define MTHCA_CMD_H
@@ -370,6 +370,14 @@ DECL|member|uar_scratch_entry_sz
 r_int
 id|uar_scratch_entry_sz
 suffix:semicolon
+DECL|member|mtt_seg_sz
+r_int
+id|mtt_seg_sz
+suffix:semicolon
+DECL|member|mpt_entry_sz
+r_int
+id|mpt_entry_sz
+suffix:semicolon
 r_union
 (brace
 r_struct
@@ -387,14 +395,6 @@ r_struct
 DECL|member|resize_srq
 r_int
 id|resize_srq
-suffix:semicolon
-DECL|member|mtt_entry_sz
-r_int
-id|mtt_entry_sz
-suffix:semicolon
-DECL|member|mpt_entry_sz
-r_int
-id|mpt_entry_sz
 suffix:semicolon
 DECL|member|max_pbl_sz
 r_int
@@ -672,13 +672,10 @@ id|mthca_dev
 op_star
 id|dev
 comma
-r_int
-id|count
-comma
 r_struct
-id|scatterlist
+id|mthca_icm
 op_star
-id|sglist
+id|icm
 comma
 id|u8
 op_star

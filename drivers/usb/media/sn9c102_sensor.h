@@ -1,4 +1,4 @@
-multiline_comment|/***************************************************************************&n; * API for image sensors connected to the SN9C10x PC Camera Controllers    *&n; *                                                                         *&n; * Copyright (C) 2004 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;       *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
+multiline_comment|/***************************************************************************&n; * API for image sensors connected to the SN9C10x PC Camera Controllers    *&n; *                                                                         *&n; * Copyright (C) 2004-2005 by Luca Risolia &lt;luca.risolia@studio.unibo.it&gt;  *&n; *                                                                         *&n; * This program is free software; you can redistribute it and/or modify    *&n; * it under the terms of the GNU General Public License as published by    *&n; * the Free Software Foundation; either version 2 of the License, or       *&n; * (at your option) any later version.                                     *&n; *                                                                         *&n; * This program is distributed in the hope that it will be useful,         *&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of          *&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *&n; * GNU General Public License for more details.                            *&n; *                                                                         *&n; * You should have received a copy of the GNU General Public License       *&n; * along with this program; if not, write to the Free Software             *&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.               *&n; ***************************************************************************/
 macro_line|#ifndef _SN9C102_SENSOR_H_
 DECL|macro|_SN9C102_SENSOR_H_
 mdefine_line|#define _SN9C102_SENSOR_H_
@@ -18,6 +18,28 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n;   OVERVIEW.&n;   This is a small interface that allows you to add support for any CCD/CMOS&n;   image sensors connected to the SN9C10X bridges. The entire API is documented&n;   below. In the most general case, to support a sensor there are three steps&n;   you have to follow:&n;   1) define the main &quot;sn9c102_sensor&quot; structure by setting the basic fields;&n;   2) write a probing function to be called by the core module when the USB&n;      camera is recognized, then add both the USB ids and the name of that&n;      function to the two corresponding tables SENSOR_TABLE and ID_TABLE (see&n;      below);&n;   3) implement the methods that you want/need (and fill the rest of the main&n;      structure accordingly).&n;   &quot;sn9c102_pas106b.c&quot; is an example of all this stuff. Remember that you do&n;   NOT need to touch the source code of the core module for the things to work&n;   properly, unless you find bugs or flaws in it. Finally, do not forget to&n;   read the V4L2 API for completeness.&n;*/
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n;   Probing functions: on success, you must attach the sensor to the camera&n;   by calling sn9c102_attach_sensor() provided below.&n;   To enable the I2C communication, you might need to perform a really basic&n;   initialization of the SN9C10X chip by using the write function declared &n;   ahead.&n;   Functions must return 0 on success, the appropriate error otherwise.&n;*/
+r_extern
+r_int
+id|sn9c102_probe_hv7131d
+c_func
+(paren
+r_struct
+id|sn9c102_device
+op_star
+id|cam
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sn9c102_probe_mi0343
+c_func
+(paren
+r_struct
+id|sn9c102_device
+op_star
+id|cam
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|sn9c102_probe_pas106b
@@ -64,7 +86,7 @@ id|cam
 suffix:semicolon
 multiline_comment|/*&n;   Add the above entries to this table. Be sure to add the entry in the right&n;   place, since, on failure, the next probing routine is called according to &n;   the order of the list below, from top to bottom.&n;*/
 DECL|macro|SN9C102_SENSOR_TABLE
-mdefine_line|#define SN9C102_SENSOR_TABLE                                                  &bslash;&n;static int (*sn9c102_sensor_table[])(struct sn9c102_device*) = {              &bslash;&n;&t;&amp;sn9c102_probe_pas106b, /* strong detection based on SENSOR ids */    &bslash;&n;&t;&amp;sn9c102_probe_pas202bcb, /* strong detection based on SENSOR ids */  &bslash;&n;&t;&amp;sn9c102_probe_tas5110c1b, /* detection based on USB pid/vid */       &bslash;&n;&t;&amp;sn9c102_probe_tas5130d1b, /* detection based on USB pid/vid */       &bslash;&n;&t;NULL,                                                                 &bslash;&n;};
+mdefine_line|#define SN9C102_SENSOR_TABLE                                                  &bslash;&n;static int (*sn9c102_sensor_table[])(struct sn9c102_device*) = {              &bslash;&n;&t;&amp;sn9c102_probe_mi0343, /* strong detection based on SENSOR ids */     &bslash;&n;&t;&amp;sn9c102_probe_pas106b, /* strong detection based on SENSOR ids */    &bslash;&n;&t;&amp;sn9c102_probe_pas202bcb, /* strong detection based on SENSOR ids */  &bslash;&n;&t;&amp;sn9c102_probe_hv7131d, /* strong detection based on SENSOR ids */    &bslash;&n;&t;&amp;sn9c102_probe_tas5110c1b, /* detection based on USB pid/vid */       &bslash;&n;&t;&amp;sn9c102_probe_tas5130d1b, /* detection based on USB pid/vid */       &bslash;&n;&t;NULL,                                                                 &bslash;&n;};
 multiline_comment|/* Attach a probed sensor to the camera. */
 r_extern
 r_void
@@ -84,7 +106,7 @@ id|sensor
 suffix:semicolon
 multiline_comment|/* Each SN9C10X camera has proper PID/VID identifiers. Add them here in case.*/
 DECL|macro|SN9C102_ID_TABLE
-mdefine_line|#define SN9C102_ID_TABLE                                                      &bslash;&n;static const struct usb_device_id sn9c102_id_table[] = {                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6001), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6005), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6009), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x600d), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6024), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6025), }, /* TAS5130D1B and TAS5110C1B */      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6028), }, /* PAS202BCB */                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6029), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602a), }, /* HV7131[D|E1] */                   &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602b), }, /* MI-0343 */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602c), }, /* OV7620 */                         &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6030), }, /* MI03x */                          &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6080), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6082), }, /* MI0343 and MI0360 */              &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6083), }, /* HV7131[D|E1] */                   &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6088), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608a), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608b), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608c), }, /* HV7131x */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608e), }, /* CIS-VF10 */                       &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608f), }, /* OV7630 */                         &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a0), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a2), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a3), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a8), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60aa), }, /* TAS5130D1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ab), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ac), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ae), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60af), }, /* PAS202BCB */                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b0), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b2), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b3), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b8), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ba), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60bb), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60bc), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60be), },                                      &bslash;&n;&t;{ }                                                                   &bslash;&n;};
+mdefine_line|#define SN9C102_ID_TABLE                                                      &bslash;&n;static const struct usb_device_id sn9c102_id_table[] = {                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6001), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6005), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6009), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x600d), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6024), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6025), }, /* TAS5130D1B and TAS5110C1B */      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6028), }, /* PAS202BCB */                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6029), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602a), }, /* HV7131D */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602b), }, /* MI-0343 */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x602c), }, /* OV7620 */                         &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6030), }, /* MI03x */                          &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6080), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6082), }, /* MI0343 and MI0360 */              &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6083), }, /* HV7131[D|E1] */                   &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x6088), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608a), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608b), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608c), }, /* HV7131x */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608e), }, /* CIS-VF10 */                       &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x608f), }, /* OV7630 */                         &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a0), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a2), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a3), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60a8), }, /* PAS106B */                        &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60aa), }, /* TAS5130D1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ab), }, /* TAS5110C1B */                     &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ac), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ae), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60af), }, /* PAS202BCB */                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b0), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b2), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b3), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60b8), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60ba), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60bb), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60bc), },                                      &bslash;&n;&t;{ USB_DEVICE(0x0c45, 0x60be), },                                      &bslash;&n;&t;{ }                                                                   &bslash;&n;};
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n;   Read/write routines: they always return -1 on error, 0 or the read value&n;   otherwise. NOTE that a real read operation is not supported by the SN9C10X&n;   chip for some of its registers. To work around this problem, a pseudo-read&n;   call is provided instead: it returns the last successfully written value &n;   on the register (0 if it has never been written), the usual -1 on error.&n;*/
 multiline_comment|/* The &quot;try&quot; I2C I/O versions are used when probing the sensor */
@@ -125,7 +147,7 @@ id|u8
 id|address
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   This must be used if and only if the sensor doesn&squot;t implement the standard&n;   I2C protocol. There a number of good reasons why you must use the &n;   single-byte versions of this function: do not abuse. It writes n bytes, &n;   from data0 to datan, (registers 0x09 - 0x09+n of SN9C10X chip).&n;*/
+multiline_comment|/*&n;   These must be used if and only if the sensor doesn&squot;t implement the standard&n;   I2C protocol. There are a number of good reasons why you must use the &n;   single-byte versions of these functions: do not abuse. The first function&n;   writes n bytes, from data0 to datan, to registers 0x09 - 0x09+n of SN9C10X&n;   chip. The second one programs the registers 0x09 and 0x10 with data0 and&n;   data1, and places the n bytes read from the sensor register table in the&n;   buffer pointed by &squot;buffer&squot;. Both the functions return -1 on error; the write&n;   version returns 0 on success, while the read version returns the first read&n;   byte.&n;*/
 r_extern
 r_int
 id|sn9c102_i2c_try_raw_write
@@ -161,6 +183,36 @@ id|data4
 comma
 id|u8
 id|data5
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sn9c102_i2c_try_raw_read
+c_func
+(paren
+r_struct
+id|sn9c102_device
+op_star
+id|cam
+comma
+r_struct
+id|sn9c102_sensor
+op_star
+id|sensor
+comma
+id|u8
+id|data0
+comma
+id|u8
+id|data1
+comma
+id|u8
+id|n
+comma
+id|u8
+id|buffer
+(braket
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/* To be used after the sensor struct has been attached to the camera struct */
@@ -223,8 +275,24 @@ id|u16
 id|index
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   NOTE: there are no debugging functions here. To uniform the output you must&n;   use the dev_info()/dev_warn()/dev_err() macros defined in device.h, already&n;   included here, the argument being the struct device &squot;dev&squot; of the sensor&n;   structure. Do NOT use these macros before the sensor is attached or the&n;   kernel will crash! However you should not need to notify the user about&n;   common errors or other messages, since this is done by the master module.&n;*/
+multiline_comment|/*&n;   NOTE: there are no exported debugging functions. To uniform the output you&n;   must use the dev_info()/dev_warn()/dev_err() macros defined in device.h,&n;   already included here, the argument being the struct device &squot;dev&squot; of the&n;   sensor structure. Do NOT use these macros before the sensor is attached or&n;   the kernel will crash! However, you should not need to notify the user about&n;   common errors or other messages, since this is done by the master module.&n;*/
 multiline_comment|/*****************************************************************************/
+DECL|enum|sn9c102_i2c_sysfs_ops
+r_enum
+id|sn9c102_i2c_sysfs_ops
+(brace
+DECL|enumerator|SN9C102_I2C_READ
+id|SN9C102_I2C_READ
+op_assign
+l_int|0x01
+comma
+DECL|enumerator|SN9C102_I2C_WRITE
+id|SN9C102_I2C_WRITE
+op_assign
+l_int|0x02
+comma
+)brace
+suffix:semicolon
 DECL|enum|sn9c102_i2c_frequency
 r_enum
 id|sn9c102_i2c_frequency
@@ -254,10 +322,6 @@ id|SN9C102_I2C_3WIRES
 comma
 )brace
 suffix:semicolon
-DECL|macro|SN9C102_I2C_SLAVEID_FICTITIOUS
-mdefine_line|#define SN9C102_I2C_SLAVEID_FICTITIOUS 0xff
-DECL|macro|SN9C102_I2C_SLAVEID_UNAVAILABLE
-mdefine_line|#define SN9C102_I2C_SLAVEID_UNAVAILABLE 0x00
 DECL|struct|sn9c102_sensor
 r_struct
 id|sn9c102_sensor
@@ -277,6 +341,12 @@ l_int|64
 )braket
 suffix:semicolon
 multiline_comment|/* name of the mantainer &lt;email&gt; */
+multiline_comment|/* Supported operations through the &squot;sysfs&squot; interface */
+DECL|member|sysfs_ops
+r_enum
+id|sn9c102_i2c_sysfs_ops
+id|sysfs_ops
+suffix:semicolon
 multiline_comment|/*&n;&t;   These sensor capabilities must be provided if the SN9C10X controller&n;&t;   needs to communicate through the sensor serial interface by using&n;&t;   at least one of the i2c functions available.&n;&t;*/
 DECL|member|frequency
 r_enum
@@ -288,13 +358,10 @@ r_enum
 id|sn9c102_i2c_interface
 id|interface
 suffix:semicolon
-multiline_comment|/*&n;&t;   These identifiers must be provided if the image sensor implements&n;&t;   the standard I2C protocol.&n;&t;*/
-DECL|member|slave_read_id
-DECL|member|slave_write_id
+multiline_comment|/*&n;&t;   This identifier must be provided if the image sensor implements&n;&t;   the standard I2C protocol.&n;&t;*/
+DECL|member|i2c_slave_id
 id|u8
-id|slave_read_id
-comma
-id|slave_write_id
+id|i2c_slave_id
 suffix:semicolon
 multiline_comment|/* reg. 0x09 */
 multiline_comment|/*&n;&t;   NOTE: Where not noted,most of the functions below are not mandatory.&n;&t;         Set to null if you do not implement them. If implemented,&n;&t;         they must return 0 on success, the proper error otherwise.&n;&t;*/
@@ -311,7 +378,7 @@ op_star
 id|cam
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   This function is called after the sensor has been attached. &n;&t;   It should be used to initialize the sensor only, but may also&n;&t;   configure part of the SN9C10X chip if necessary. You don&squot;t need to&n;&t;   setup picture settings like brightness, contrast, etc.. here, if&n;&t;   the corrisponding controls are implemented (see below), since &n;&t;   they are adjusted in the core driver by calling the set_ctrl()&n;&t;   method after init(), where the arguments are the default values&n;&t;   specified in the v4l2_queryctrl list of supported controls;&n;&t;   Same suggestions apply for other settings, _if_ the corresponding&n;&t;   methods are present; if not, the initialization must configure the&n;&t;   sensor according to the default configuration structures below.&n;&t;*/
+multiline_comment|/*&n;&t;   This function will be called after the sensor has been attached. &n;&t;   It should be used to initialize the sensor only, but may also&n;&t;   configure part of the SN9C10X chip if necessary. You don&squot;t need to&n;&t;   setup picture settings like brightness, contrast, etc.. here, if&n;&t;   the corrisponding controls are implemented (see below), since &n;&t;   they are adjusted in the core driver by calling the set_ctrl()&n;&t;   method after init(), where the arguments are the default values&n;&t;   specified in the v4l2_queryctrl list of supported controls;&n;&t;   Same suggestions apply for other settings, _if_ the corresponding&n;&t;   methods are present; if not, the initialization must configure the&n;&t;   sensor according to the default configuration structures below.&n;&t;*/
 DECL|member|qctrl
 r_struct
 id|v4l2_queryctrl
@@ -393,6 +460,26 @@ id|v4l2_pix_format
 id|pix_format
 suffix:semicolon
 multiline_comment|/*&n;&t;   What you have to define here are: 1) initial &squot;width&squot; and &squot;height&squot; of&n;&t;   the target rectangle 2) the initial &squot;pixelformat&squot;, which can be&n;&t;   either V4L2_PIX_FMT_SN9C10X (for compressed video) or&n;&t;   V4L2_PIX_FMT_SBGGR8 3) &squot;priv&squot;, which we&squot;ll be used to indicate the&n;&t;   number of bits per pixel for uncompressed video, 8 or 9 (despite the&n;&t;   current value of &squot;pixelformat&squot;).&n;&t;   NOTE 1: both &squot;width&squot; and &squot;height&squot; _must_ be either 1/1 or 1/2 or 1/4&n;&t;           of cropcap.defrect.width and cropcap.defrect.height. I&n;&t;           suggest 1/1.&n;&t;   NOTE 2: The initial compression quality is defined by the first bit&n;&t;           of reg 0x17 during the initialization of the image sensor.&n;&t;   NOTE 3: as said above, you have to program the SN9C10X chip to get&n;&t;           rid of any blank pixels, so that the output of the sensor&n;&t;           matches the RGB bayer sequence (i.e. BGBGBG...GRGRGR).&n;&t;*/
+DECL|member|set_pix_format
+r_int
+(paren
+op_star
+id|set_pix_format
+)paren
+(paren
+r_struct
+id|sn9c102_device
+op_star
+id|cam
+comma
+r_const
+r_struct
+id|v4l2_pix_format
+op_star
+id|pix
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;   To be called on VIDIOC_S_FMT, when switching from the SBGGR8 to&n;&t;   SN9C10X pixel format or viceversa. On error return the corresponding&n;&t;   error code without rolling back.&n;&t;*/
 DECL|member|dev
 r_const
 r_struct
@@ -431,9 +518,11 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Private ioctl&squot;s for control settings supported by some image sensors */
 DECL|macro|SN9C102_V4L2_CID_DAC_MAGNITUDE
 mdefine_line|#define SN9C102_V4L2_CID_DAC_MAGNITUDE V4L2_CID_PRIVATE_BASE
-DECL|macro|SN9C102_V4L2_CID_DAC_SIGN
-mdefine_line|#define SN9C102_V4L2_CID_DAC_SIGN V4L2_CID_PRIVATE_BASE + 1
 DECL|macro|SN9C102_V4L2_CID_GREEN_BALANCE
-mdefine_line|#define SN9C102_V4L2_CID_GREEN_BALANCE V4L2_CID_PRIVATE_BASE + 2
+mdefine_line|#define SN9C102_V4L2_CID_GREEN_BALANCE V4L2_CID_PRIVATE_BASE + 1
+DECL|macro|SN9C102_V4L2_CID_RESET_LEVEL
+mdefine_line|#define SN9C102_V4L2_CID_RESET_LEVEL V4L2_CID_PRIVATE_BASE + 2
+DECL|macro|SN9C102_V4L2_CID_PIXEL_BIAS_VOLTAGE
+mdefine_line|#define SN9C102_V4L2_CID_PIXEL_BIAS_VOLTAGE V4L2_CID_PRIVATE_BASE + 3
 macro_line|#endif /* _SN9C102_SENSOR_H_ */
 eof

@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_ARCH_REGS_IIS_H
 DECL|macro|__ASM_ARCH_REGS_IIS_H
 mdefine_line|#define __ASM_ARCH_REGS_IIS_H
 DECL|macro|S3C2410_IISCON
-mdefine_line|#define S3C2410_IISCON&t; (S3C2410_VA_IIS + 0x00)
+mdefine_line|#define S3C2410_IISCON&t; (0x00)
 DECL|macro|S3C2410_IISCON_LRINDEX
 mdefine_line|#define S3C2410_IISCON_LRINDEX&t;  (1&lt;&lt;8)
 DECL|macro|S3C2410_IISCON_TXFIFORDY
@@ -21,7 +21,7 @@ mdefine_line|#define S3C2410_IISCON_RXIDLE&t;  (1&lt;&lt;2)
 DECL|macro|S3C2410_IISCON_IISEN
 mdefine_line|#define S3C2410_IISCON_IISEN&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_IISMOD
-mdefine_line|#define S3C2410_IISMOD&t; (S3C2410_VA_IIS + 0x04)
+mdefine_line|#define S3C2410_IISMOD&t; (0x04)
 DECL|macro|S3C2410_IISMOD_SLAVE
 mdefine_line|#define S3C2410_IISMOD_SLAVE&t;  (1&lt;&lt;8)
 DECL|macro|S3C2410_IISMOD_NOXFER
@@ -55,9 +55,17 @@ mdefine_line|#define S3C2410_IISMOD_32FS&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_IISMOD_48FS
 mdefine_line|#define S3C2410_IISMOD_48FS&t;  (2&lt;&lt;0)
 DECL|macro|S3C2410_IISPSR
-mdefine_line|#define S3C2410_IISPSR&t; (S3C2410_VA_IIS + 0x08)
+mdefine_line|#define S3C2410_IISPSR&t;&t;(0x08)
+DECL|macro|S3C2410_IISPSR_INTMASK
+mdefine_line|#define S3C2410_IISPSR_INTMASK&t;(31&lt;&lt;5)
+DECL|macro|S3C2410_IISPSR_INTSHFIT
+mdefine_line|#define S3C2410_IISPSR_INTSHFIT&t;(5)
+DECL|macro|S3C2410_IISPSR_EXTMASK
+mdefine_line|#define S3C2410_IISPSR_EXTMASK&t;(31&lt;&lt;0)
+DECL|macro|S3C2410_IISPSR_EXTSHFIT
+mdefine_line|#define S3C2410_IISPSR_EXTSHFIT&t;(0)
 DECL|macro|S3C2410_IISFCON
-mdefine_line|#define S3C2410_IISFCON  (S3C2410_VA_IIS + 0x0c)
+mdefine_line|#define S3C2410_IISFCON  (0x0c)
 DECL|macro|S3C2410_IISFCON_TXDMA
 mdefine_line|#define S3C2410_IISFCON_TXDMA&t;  (1&lt;&lt;15)
 DECL|macro|S3C2410_IISFCON_RXDMA
@@ -67,6 +75,6 @@ mdefine_line|#define S3C2410_IISFCON_TXENABLE  (1&lt;&lt;13)
 DECL|macro|S3C2410_IISFCON_RXENABLE
 mdefine_line|#define S3C2410_IISFCON_RXENABLE  (1&lt;&lt;12)
 DECL|macro|S3C2410_IISFIFO
-mdefine_line|#define S3C2410_IISFIFO  (S3C2410_VA_IIS + 0x10)
+mdefine_line|#define S3C2410_IISFIFO  (0x10)
 macro_line|#endif /* __ASM_ARCH_REGS_IIS_H */
 eof

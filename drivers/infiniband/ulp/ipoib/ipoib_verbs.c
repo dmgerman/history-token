@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2004 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: ipoib_verbs.c 1349 2004-12-16 21:09:43Z roland $&n; */
+multiline_comment|/*&n; * Copyright (c) 2004, 2005 Topspin Communications.  All rights reserved.&n; *&n; * This software is available to you under a choice of one of two&n; * licenses.  You may choose to be licensed under the terms of the GNU&n; * General Public License (GPL) Version 2, available from the file&n; * COPYING in the main directory of this source tree, or the&n; * OpenIB.org BSD license below:&n; *&n; *     Redistribution and use in source and binary forms, with or&n; *     without modification, are permitted provided that the following&n; *     conditions are met:&n; *&n; *      - Redistributions of source code must retain the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer.&n; *&n; *      - Redistributions in binary form must reproduce the above&n; *        copyright notice, this list of conditions and the following&n; *        disclaimer in the documentation and/or other materials&n; *        provided with the distribution.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,&n; * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF&n; * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND&n; * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS&n; * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN&n; * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN&n; * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE&n; * SOFTWARE.&n; *&n; * $Id: ipoib_verbs.c 1349 2004-12-16 21:09:43Z roland $&n; */
 macro_line|#include &lt;ib_cache.h&gt;
 macro_line|#include &quot;ipoib.h&quot;
 DECL|function|ipoib_mcast_attach
@@ -74,7 +74,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ib_cached_pkey_find
+id|ib_find_cached_pkey
 c_func
 (paren
 id|priv-&gt;ca
@@ -326,7 +326,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Search through the port P_Key table for the requested pkey value.&n;&t; * The port has to be assigned to the respective IB partition in&n;&t; * advance.&n;&t; */
 id|ret
 op_assign
-id|ib_cached_pkey_find
+id|ib_find_cached_pkey
 c_func
 (paren
 id|priv-&gt;ca
@@ -725,7 +725,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ib_reg_phys_mr failed&bslash;n&quot;
+l_string|&quot;%s: ib_get_dma_mr failed&bslash;n&quot;
 comma
 id|ca-&gt;name
 )paren
@@ -812,6 +812,27 @@ id|priv-&gt;qp-&gt;qp_num
 )paren
 op_amp
 l_int|0xff
+suffix:semicolon
+id|priv-&gt;tx_sge.lkey
+op_assign
+id|priv-&gt;mr-&gt;lkey
+suffix:semicolon
+id|priv-&gt;tx_wr.opcode
+op_assign
+id|IB_WR_SEND
+suffix:semicolon
+id|priv-&gt;tx_wr.sg_list
+op_assign
+op_amp
+id|priv-&gt;tx_sge
+suffix:semicolon
+id|priv-&gt;tx_wr.num_sge
+op_assign
+l_int|1
+suffix:semicolon
+id|priv-&gt;tx_wr.send_flags
+op_assign
+id|IB_SEND_SIGNALED
 suffix:semicolon
 r_return
 l_int|0

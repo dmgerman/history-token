@@ -212,7 +212,7 @@ suffix:semicolon
 multiline_comment|/* max frame size for memory allocations */
 DECL|variable|maxframe
 r_static
-id|ssize_t
+r_int
 id|maxframe
 op_assign
 l_int|4096
@@ -2056,7 +2056,7 @@ id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;n_hdlc_tty_write: truncating user packet &quot;
-l_string|&quot;from %lu to %Zd&bslash;n&quot;
+l_string|&quot;from %lu to %d&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3261,20 +3261,24 @@ c_func
 l_string|&quot;Paul Fulghum paulkf@microgate.com&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debuglevel
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|maxframe
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|N_HDLC

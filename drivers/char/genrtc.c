@@ -81,6 +81,7 @@ id|irq_active
 suffix:semicolon
 macro_line|#ifdef CONFIG_GEN_RTC_X
 DECL|variable|genrtc_task
+r_static
 r_struct
 id|work_struct
 id|genrtc_task
@@ -138,12 +139,12 @@ r_int
 id|stop_rtc_timers
 suffix:semicolon
 multiline_comment|/* don&squot;t requeue tasks */
-DECL|variable|gen_rtc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|gen_rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

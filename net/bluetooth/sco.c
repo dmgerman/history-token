@@ -30,7 +30,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.3&quot;
+mdefine_line|#define VERSION &quot;0.4&quot;
 DECL|variable|sco_sock_ops
 r_static
 r_struct
@@ -2998,6 +2998,22 @@ id|sk
 op_member_access_from_pointer
 id|conn-&gt;hcon-&gt;handle
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|cinfo.dev_class
+comma
+id|sco_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|conn-&gt;hcon-&gt;dev_class
+comma
+l_int|3
+)paren
+suffix:semicolon
 id|len
 op_assign
 id|min_t
@@ -4504,7 +4520,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;, Marcel Holtmann &lt;marcel@holtmann.org&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

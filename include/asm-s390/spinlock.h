@@ -27,6 +27,13 @@ r_int
 r_int
 id|lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|__attribute__
@@ -304,6 +311,13 @@ r_int
 r_int
 id|owner_pc
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
@@ -342,6 +356,8 @@ macro_line|#else /* __s390x__ */
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#endif /* __s390x__ */
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 DECL|function|_raw_write_trylock
 r_extern
 r_inline

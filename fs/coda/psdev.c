@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/lp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -1178,14 +1177,9 @@ r_struct
 id|upc_req
 op_star
 id|req
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|lh
 comma
 op_star
-id|next
+id|tmp
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -1232,30 +1226,19 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Wakeup clients so they can return. */
-id|list_for_each_safe
+id|list_for_each_entry_safe
 c_func
 (paren
-id|lh
+id|req
 comma
-id|next
+id|tmp
 comma
 op_amp
 id|vcp-&gt;vc_pending
-)paren
-(brace
-id|req
-op_assign
-id|list_entry
-c_func
-(paren
-id|lh
-comma
-r_struct
-id|upc_req
 comma
 id|uc_chain
 )paren
-suffix:semicolon
+(brace
 multiline_comment|/* Async requests need to be freed here */
 r_if
 c_cond
@@ -1398,7 +1381,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 comma
 op_amp
 id|coda_psdev_fops
@@ -1426,7 +1409,7 @@ c_func
 (paren
 id|THIS_MODULE
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1573,7 +1556,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|out
@@ -1762,7 +1745,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|coda_sysctl_clean
@@ -1875,7 +1858,7 @@ c_func
 (paren
 id|CODA_PSDEV_MAJOR
 comma
-l_string|&quot;coda_psdev&quot;
+l_string|&quot;coda&quot;
 )paren
 suffix:semicolon
 id|coda_sysctl_clean

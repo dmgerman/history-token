@@ -29,7 +29,7 @@ id|pglist_data
 op_star
 id|pg_data_ptrs
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 )brace

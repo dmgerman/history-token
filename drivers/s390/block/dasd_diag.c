@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.40 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.42 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -473,10 +473,12 @@ OG
 l_int|8
 )paren
 (brace
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|device
 comma
 l_string|&quot;dia250 returned CC %d&quot;
 comma
@@ -771,14 +773,17 @@ op_assign
 id|next-&gt;expires
 suffix:semicolon
 r_else
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_WARNING
 comma
+id|device
+comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;Interrupt fastpath failed!&quot;
+l_string|&quot;Interrupt fastpath &quot;
+l_string|&quot;failed!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -909,10 +914,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|device
 comma
 l_string|&quot;%s&quot;
 comma
@@ -1025,10 +1032,12 @@ op_minus
 id|ENOTSUPP
 suffix:semicolon
 )brace
-id|DBF_EVENT
+id|DBF_DEV_EVENT
 c_func
 (paren
 id|DBF_INFO
+comma
+id|device
 comma
 l_string|&quot;%04X: %04X on real %04X/%02X&quot;
 comma
@@ -1069,10 +1078,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_WARNING
+comma
+id|device
 comma
 l_string|&quot;%s&quot;
 comma
@@ -2023,73 +2034,16 @@ op_star
 id|stat
 )paren
 (brace
-r_char
-op_star
-id|page
-suffix:semicolon
-id|page
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|get_zeroed_page
-c_func
-(paren
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page
-op_eq
-l_int|NULL
-)paren
-(brace
-id|MESSAGE
+id|DEV_MESSAGE
 c_func
 (paren
 id|KERN_ERR
+comma
+id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;No memory to dump sense data&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|sprintf
-c_func
-(paren
-id|page
-comma
-id|KERN_WARNING
-id|PRINTK_HEADER
-l_string|&quot;device %s: I/O status report:&bslash;n&quot;
-comma
-id|device-&gt;cdev-&gt;dev.bus_id
-)paren
-suffix:semicolon
-id|MESSAGE
-c_func
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;Sense data:&bslash;n%s&quot;
-comma
-id|page
-)paren
-suffix:semicolon
-id|free_page
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|page
+l_string|&quot;dump sense not available for DIAG data&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2189,12 +2143,13 @@ op_logical_neg
 id|MACHINE_IS_VM
 )paren
 (brace
-id|MESSAGE
+id|MESSAGE_LOG
 c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Machine is not VM: %s discipline not initializing&quot;
+l_string|&quot;Machine is not VM: %s &quot;
+l_string|&quot;discipline not initializing&quot;
 comma
 id|dasd_diag_discipline.name
 )paren
@@ -2254,12 +2209,13 @@ op_logical_neg
 id|MACHINE_IS_VM
 )paren
 (brace
-id|MESSAGE
+id|MESSAGE_LOG
 c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;Machine is not VM: %s discipline not initializing&quot;
+l_string|&quot;Machine is not VM: %s &quot;
+l_string|&quot;discipline not cleaned&quot;
 comma
 id|dasd_diag_discipline.name
 )paren

@@ -1660,10 +1660,10 @@ id|ahc-&gt;description
 op_assign
 id|entry-&gt;name
 suffix:semicolon
-id|ahc_power_state_change
+id|pci_set_power_state
 c_func
 (paren
-id|ahc
+id|ahc-&gt;dev_softc
 comma
 id|AHC_POWER_STATE_D0
 )paren
@@ -7283,10 +7283,10 @@ op_star
 id|ahc
 )paren
 (brace
-id|ahc_power_state_change
+id|pci_set_power_state
 c_func
 (paren
-id|ahc
+id|ahc-&gt;dev_softc
 comma
 id|AHC_POWER_STATE_D0
 )paren

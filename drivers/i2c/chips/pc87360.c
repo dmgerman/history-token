@@ -2164,7 +2164,7 @@ id|i
 comma
 id|PC87360_EXTENT
 comma
-l_string|&quot;pc87360&quot;
+id|pc87360_driver.name
 )paren
 )paren
 (brace

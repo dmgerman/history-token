@@ -101,12 +101,12 @@ DECL|macro|tunnels_l
 mdefine_line|#define tunnels_l&t;(tunnels[1])
 DECL|macro|tunnels_wc
 mdefine_line|#define tunnels_wc&t;(tunnels[0])
-DECL|variable|ipgre_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|ipgre_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Given src, dst and key, find appropriate for input tunnel. */
 DECL|function|ipgre_tunnel_lookup

@@ -206,9 +206,35 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * We need a special accessor for the element pointer because it is&n; * subject to asynchronous updates by the controller&n; */
+DECL|function|qh_element
+r_static
+id|__le32
+r_inline
+id|qh_element
+c_func
+(paren
+r_struct
+id|uhci_qh
+op_star
+id|qh
+)paren
+(brace
+id|__le32
+id|element
+op_assign
+id|qh-&gt;element
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|element
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * for TD &lt;status&gt;:&n; */
-DECL|macro|td_status
-mdefine_line|#define td_status(td)&t;&t;le32_to_cpu((td)-&gt;status)
 DECL|macro|TD_CTRL_SPD
 mdefine_line|#define TD_CTRL_SPD&t;&t;(1 &lt;&lt; 29)&t;/* Short Packet Detect */
 DECL|macro|TD_CTRL_C_ERR_MASK
@@ -353,6 +379,38 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * We need a special accessor for the control/status word because it is&n; * subject to asynchronous updates by the controller&n; */
+DECL|function|td_status
+r_static
+id|u32
+r_inline
+id|td_status
+c_func
+(paren
+r_struct
+id|uhci_td
+op_star
+id|td
+)paren
+(brace
+id|__le32
+id|status
+op_assign
+id|td-&gt;status
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|le32_to_cpu
+c_func
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The UHCI driver places Interrupt, Control and Bulk into QH&squot;s both&n; * to group together TD&squot;s for one transfer, and also to faciliate queuing&n; * of URB&squot;s. To make it easy to insert entries into the schedule, we have&n; * a skeleton of QH&squot;s for each predefined Interrupt latency, low-speed&n; * control, full-speed control and terminating QH (see explanation for&n; * the terminating QH below).&n; *&n; * When we want to add a new QH, we add it to the end of the list for the&n; * skeleton QH.&n; *&n; * For instance, the queue can look like this:&n; *&n; * skel int128 QH&n; * dev 1 interrupt QH&n; * dev 5 interrupt QH&n; * skel int64 QH&n; * skel int32 QH&n; * ...&n; * skel int1 QH&n; * skel low-speed control QH&n; * dev 5 control QH&n; * skel full-speed control QH&n; * skel bulk QH&n; * dev 1 bulk QH&n; * dev 2 bulk QH&n; * skel terminating QH&n; *&n; * The terminating QH is used for 2 reasons:&n; * - To place a terminating TD which is used to workaround a PIIX bug&n; *   (see Intel errata for explanation)&n; * - To loop back to the full-speed control queue for full-speed bandwidth&n; *   reclamation&n; *&n; * Isochronous transfers are stored before the start of the skeleton&n; * schedule and don&squot;t use QH&squot;s. While the UHCI spec doesn&squot;t forbid the&n; * use of QH&squot;s for Isochronous, it doesn&squot;t use them either. Since we don&squot;t&n; * need to use them either, we follow the spec diagrams in hope that it&squot;ll&n; * be more compatible with future UHCI implementations.&n; */
 DECL|macro|UHCI_NUM_SKELQH
 mdefine_line|#define UHCI_NUM_SKELQH&t;&t;12
@@ -514,30 +572,18 @@ DECL|enumerator|UHCI_RESUMING_2
 id|UHCI_RESUMING_2
 )brace
 suffix:semicolon
-DECL|macro|hcd_to_uhci
-mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
-DECL|macro|uhci_dev
-mdefine_line|#define uhci_dev(u)&t;((u)-&gt;hcd.self.controller)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
 DECL|struct|uhci_hcd
 r_struct
 id|uhci_hcd
 (brace
-DECL|member|hcd
+multiline_comment|/* debugfs */
+DECL|member|dentry
 r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
-multiline_comment|/* must come first! */
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* procfs */
-DECL|member|proc_entry
-r_struct
-id|proc_dir_entry
+id|dentry
 op_star
-id|proc_entry
+id|dentry
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Grabbed from PCI */
 DECL|member|io_addr
 r_int
@@ -716,6 +762,67 @@ suffix:semicolon
 multiline_comment|/* endpoint_disable waiters */
 )brace
 suffix:semicolon
+multiline_comment|/* Convert between a usb_hcd pointer and the corresponding uhci_hcd */
+DECL|function|hcd_to_uhci
+r_static
+r_inline
+r_struct
+id|uhci_hcd
+op_star
+id|hcd_to_uhci
+c_func
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|uhci_hcd
+op_star
+)paren
+(paren
+id|hcd-&gt;hcd_priv
+)paren
+suffix:semicolon
+)brace
+DECL|function|uhci_to_hcd
+r_static
+r_inline
+r_struct
+id|usb_hcd
+op_star
+id|uhci_to_hcd
+c_func
+(paren
+r_struct
+id|uhci_hcd
+op_star
+id|uhci
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|uhci
+comma
+r_struct
+id|usb_hcd
+comma
+id|hcd_priv
+)paren
+suffix:semicolon
+)brace
+DECL|macro|uhci_dev
+mdefine_line|#define uhci_dev(u)&t;(uhci_to_hcd(u)-&gt;self.controller)
 DECL|struct|urb_priv
 r_struct
 id|urb_priv

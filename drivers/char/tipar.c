@@ -1,9 +1,10 @@
 multiline_comment|/* Hey EMACS -*- linux-c -*-&n; *&n; * tipar - low level driver for handling a parallel link cable designed&n; * for Texas Instruments graphing calculators (http://lpg.ticalc.org).&n; * A part of the TiLP project.&n; *&n; * Copyright (C) 2000-2002, Romain Lievin &lt;roms@lpg.ticalc.org&gt;&n; * under the terms of the GNU General Public License.&n; *&n; * Various fixes &amp; clean-up from the Linux Kernel Mailing List&n; * (Alan Cox, Richard B. Johnson, Christoph Hellwig).&n; */
 multiline_comment|/* This driver should, in theory, work with any parallel port that has an&n; * appropriate low-level driver; all I/O is done through the parport&n; * abstraction layer.&n; *&n; * If this driver is built into the kernel, you can configure it using the&n; * kernel command-line.  For example:&n; *&n; *      tipar=timeout,delay       (set timeout and delay)&n; *&n; * If the driver is loaded as a module, similar functionality is available&n; * using module parameters.  The equivalent of the above commands would be:&n; *&n; *      # insmod tipar timeout=15 delay=10&n; */
 multiline_comment|/* COMPATIBILITY WITH OLD KERNELS&n; *&n; * Usually, parallel cables were bound to ports at&n; * particular I/O addresses, as follows:&n; *&n; *      tipar0             0x378&n; *      tipar1             0x278&n; *      tipar2             0x3bc&n; *&n; *&n; * This driver, by default, binds tipar devices according to parport and&n; * the minor number.&n; *&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG&t;&t;&t;&t;/* change to #define to get debugging&n;&t;&t;&t;&t;&t; * output - for pr_debug() */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,7 +18,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;&t;/* DevFs support */
-macro_line|#include &lt;linux/parport.h&gt;&t;/* Our code depend on parport */
+macro_line|#include &lt;linux/parport.h&gt;&t;&t;/* Our code depend on parport */
 macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * TI definitions&n; */
 macro_line|#include &lt;linux/ticable.h&gt;
@@ -32,10 +33,6 @@ DECL|macro|DRIVER_LICENSE
 mdefine_line|#define DRIVER_LICENSE &quot;GPL&quot;
 DECL|macro|VERSION
 mdefine_line|#define VERSION(ver,rel,seq) (((ver)&lt;&lt;16) | ((rel)&lt;&lt;8) | (seq))
-macro_line|#if LINUX_VERSION_CODE &lt; VERSION(2,5,0)
-DECL|macro|need_resched
-macro_line|# define need_resched() (current-&gt;need_resched)
-macro_line|#endif
 multiline_comment|/* ----- global variables --------------------------------------------- */
 DECL|struct|tipar_struct
 r_struct
@@ -194,6 +191,7 @@ r_char
 id|data
 )paren
 (brace
+r_int
 r_int
 id|bit
 suffix:semicolon
@@ -413,6 +411,7 @@ r_int
 id|minor
 )paren
 (brace
+r_int
 r_int
 id|bit
 suffix:semicolon
@@ -689,7 +688,23 @@ c_func
 id|delay
 )paren
 suffix:semicolon
-multiline_comment|/*printk(KERN_DEBUG &quot;Probing -&gt; %i: 0x%02x 0x%02x&bslash;n&quot;, i, data &amp; 0x30, seq[i]); */
+id|pr_debug
+c_func
+(paren
+l_string|&quot;tipar: Probing -&gt; %i: 0x%02x 0x%02x&bslash;n&quot;
+comma
+id|i
+comma
+id|data
+op_amp
+l_int|0x30
+comma
+id|seq
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -891,7 +906,6 @@ r_static
 id|ssize_t
 DECL|function|tipar_write
 id|tipar_write
-c_func
 (paren
 r_struct
 id|file
@@ -1442,7 +1456,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;tipar: wrong timeout value (0), using default value instead.&quot;
+id|KERN_WARNING
+l_string|&quot;tipar: bad timeout value (0), &quot;
+l_string|&quot;using default value instead&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1604,11 +1620,10 @@ r_goto
 id|out_class
 suffix:semicolon
 multiline_comment|/* Display informations */
-id|printk
+id|pr_info
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;tipar%d: using %s (%s).&bslash;n&quot;
+l_string|&quot;tipar%d: using %s (%s)&bslash;n&quot;
 comma
 id|nr
 comma
@@ -1638,19 +1653,19 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;tipar%d: link cable found !&bslash;n&quot;
+l_string|&quot;tipar%d: link cable found&bslash;n&quot;
 comma
 id|nr
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;tipar%d: link cable not found.&bslash;n&quot;
+l_string|&quot;tipar%d: link cable not found&bslash;n&quot;
 comma
 id|nr
 )paren
@@ -1710,7 +1725,7 @@ op_eq
 id|PP_NO
 )paren
 (brace
-id|printk
+id|pr_info
 c_func
 (paren
 l_string|&quot;tipar: ignoring parallel port (max. %d)&bslash;n&quot;
@@ -1775,6 +1790,7 @@ id|tipar_detach
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|tipar_init_module
@@ -1789,7 +1805,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
 l_string|&quot;tipar: parallel link cable driver, version %s&bslash;n&quot;
@@ -1815,6 +1831,7 @@ id|tipar_fops
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;tipar: unable to get major %d&bslash;n&quot;
 comma
 id|TIPAR_MAJOR
@@ -1882,6 +1899,7 @@ id|tipar_driver
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;tipar: unable to register with parport&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1917,6 +1935,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|tipar_cleanup_module
@@ -2019,10 +2038,10 @@ c_func
 l_string|&quot;ticables/par&quot;
 )paren
 suffix:semicolon
-id|printk
+id|pr_info
 c_func
 (paren
-l_string|&quot;tipar: module unloaded !&bslash;n&quot;
+l_string|&quot;tipar: module unloaded&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2070,12 +2089,14 @@ c_func
 id|DRIVER_LICENSE
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2086,12 +2107,14 @@ comma
 l_string|&quot;Timeout (default=1.5 seconds)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|delay
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

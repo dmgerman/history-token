@@ -35,6 +35,17 @@ id|irq_routing_table
 op_star
 id|pirq_table
 suffix:semicolon
+r_static
+r_int
+id|pirq_enable_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Never use: 0, 1, 2 (timer, keyboard, and cascade)&n; * Avoid using: 13, 14 and 15 (FP error and IDE).&n; * Penalize: 3, 4, 6, 7, 12 (known ISA uses: serial, floppy, parallel and mouse)&n; */
 DECL|variable|pcibios_irq_mask
 r_int
@@ -3127,7 +3138,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;IRQ for %s:%d&quot;
+l_string|&quot;IRQ for %s[%c]&quot;
 comma
 id|pci_name
 c_func
@@ -3135,6 +3146,8 @@ c_func
 id|dev
 )paren
 comma
+l_char|&squot;A&squot;
+op_plus
 id|pin
 )paren
 suffix:semicolon
@@ -4046,16 +4059,16 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PCI: using PPB(B%d,I%d,P%d) to get irq %d&bslash;n&quot;
+l_string|&quot;PCI: using PPB %s[%c] to get irq %d&bslash;n&quot;
 comma
-id|bridge-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|bridge-&gt;devfn
+id|bridge
 )paren
 comma
+l_char|&squot;A&squot;
+op_plus
 id|pin
 comma
 id|irq
@@ -4097,16 +4110,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI-&gt;APIC IRQ transform: (B%d,I%d,P%d) -&gt; %d&bslash;n&quot;
+l_string|&quot;PCI-&gt;APIC IRQ transform: %s[%c] -&gt; IRQ %d&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
+id|dev
 )paren
 comma
+l_char|&squot;A&squot;
+op_plus
 id|pin
 comma
 id|irq
@@ -4531,6 +4544,7 @@ id|irq
 suffix:semicolon
 )brace
 DECL|function|pirq_enable_irq
+r_static
 r_int
 id|pirq_enable_irq
 c_func
@@ -4689,16 +4703,16 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PCI: using PPB(B%d,I%d,P%d) to get irq %d&bslash;n&quot;
+l_string|&quot;PCI: using PPB %s[%c] to get irq %d&bslash;n&quot;
 comma
-id|bridge-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|bridge-&gt;devfn
+id|bridge
 )paren
 comma
+l_char|&squot;A&squot;
+op_plus
 id|pin
 comma
 id|irq
@@ -4745,16 +4759,16 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;PCI-&gt;APIC IRQ transform: (B%d,I%d,P%d) -&gt; %d&bslash;n&quot;
+l_string|&quot;PCI-&gt;APIC IRQ transform: %s[%c] -&gt; IRQ %d&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
+id|dev
 )paren
 comma
+l_char|&squot;A&squot;
+op_plus
 id|pin
 comma
 id|irq

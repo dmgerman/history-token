@@ -127,12 +127,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* levels range from 1-9 */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debuglevel
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0644
 )paren
 suffix:semicolon
 DECL|variable|cs_debugmask
@@ -146,12 +148,14 @@ op_or
 id|CS_ERROR
 suffix:semicolon
 multiline_comment|/* use CS_DBGOUT with various mask values */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cs_debugmask
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0644
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -162,12 +166,14 @@ r_int
 id|hercules_egpio_disable
 suffix:semicolon
 multiline_comment|/* if non-zero set all EGPIO to 0 */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hercules_egpio_disable
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|initdelay
@@ -179,12 +185,14 @@ op_assign
 l_int|700
 suffix:semicolon
 multiline_comment|/* PM delay in millisecs */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|initdelay
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|powerdown
@@ -197,12 +205,14 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* turn on/off powerdown processing in driver */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|powerdown
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|DMABUF_DEFAULTORDER
@@ -215,12 +225,14 @@ id|defaultorder
 op_assign
 id|DMABUF_DEFAULTORDER
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|defaultorder
 comma
-l_string|&quot;i&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|external_amp
@@ -228,12 +240,14 @@ r_static
 r_int
 id|external_amp
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|external_amp
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|thinkpad
@@ -241,12 +255,14 @@ r_static
 r_int
 id|thinkpad
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|thinkpad
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;* set the powerdown module parm to 0 to disable all &n;* powerdown. also set thinkpad to 1 to disable powerdown, &n;* but also to enable the clkrun functionality.&n;*/
@@ -298,6 +314,7 @@ mdefine_line|#define CS46XX_ARCH&t;     &t;&quot;32&quot;&t;
 singleline_comment|//architecture key
 macro_line|#endif
 DECL|variable|cs46xx_devs
+r_static
 r_struct
 id|list_head
 id|cs46xx_devs
@@ -1052,105 +1069,26 @@ op_star
 id|pcidev
 )paren
 suffix:semicolon
-DECL|function|ld2
+macro_line|#ifndef CS46XX_ACPI_SUPPORT
 r_static
-r_inline
 r_int
-id|ld2
+id|cs46xx_pm_callback
 c_func
 (paren
-r_int
-r_int
-id|x
+r_struct
+id|pm_dev
+op_star
+id|dev
+comma
+id|pm_request_t
+id|rqst
+comma
+r_void
+op_star
+id|data
 )paren
-(brace
-r_int
-id|r
-op_assign
-l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|x
-op_ge
-l_int|0x10000
-)paren
-(brace
-id|x
-op_rshift_assign
-l_int|16
-suffix:semicolon
-id|r
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|x
-op_ge
-l_int|0x100
-)paren
-(brace
-id|x
-op_rshift_assign
-l_int|8
-suffix:semicolon
-id|r
-op_add_assign
-l_int|8
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|x
-op_ge
-l_int|0x10
-)paren
-(brace
-id|x
-op_rshift_assign
-l_int|4
-suffix:semicolon
-id|r
-op_add_assign
-l_int|4
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|x
-op_ge
-l_int|4
-)paren
-(brace
-id|x
-op_rshift_assign
-l_int|2
-suffix:semicolon
-id|r
-op_add_assign
-l_int|2
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|x
-op_ge
-l_int|2
-)paren
-id|r
-op_increment
-suffix:semicolon
-r_return
-id|r
-suffix:semicolon
-)brace
+macro_line|#endif
 macro_line|#if CSDEBUG
 multiline_comment|/* DEBUG ROUTINES */
 DECL|macro|SOUND_MIXER_CS_GETDBGLEVEL
@@ -1164,6 +1102,7 @@ mdefine_line|#define SOUND_MIXER_CS_SETDBGMASK &t;_SIOWR(&squot;M&squot;,123, in
 DECL|macro|SOUND_MIXER_CS_APM
 mdefine_line|#define SOUND_MIXER_CS_APM&t; &t;_SIOWR(&squot;M&squot;,124, int)
 DECL|function|printioctl
+r_static
 r_void
 id|printioctl
 c_func
@@ -3988,6 +3927,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * &quot;SetCaptureSPValues()&quot; -- Initialize record task values before each&n; * &t;capture startup.  &n; */
 DECL|function|SetCaptureSPValues
+r_static
 r_void
 id|SetCaptureSPValues
 c_func
@@ -16700,6 +16640,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Suspend - save the ac97 regs, mute the outputs and power down the part.  &n;*&n;****************************************************************************/
 DECL|function|cs46xx_ac97_suspend
+r_static
 r_void
 id|cs46xx_ac97_suspend
 c_func
@@ -16993,6 +16934,7 @@ suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n;*&n;*  Resume - power up the part and restore its registers..  &n;*&n;****************************************************************************/
 DECL|function|cs46xx_ac97_resume
+r_static
 r_void
 id|cs46xx_ac97_resume
 c_func
@@ -19512,14 +19454,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
-id|__exit
-id|cs46xx_cleanup_module
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|cs_ioctl_mixdev
 r_static
 r_int
@@ -25876,6 +25810,7 @@ id|cs46xx_pci_tbl
 )paren
 suffix:semicolon
 DECL|variable|cs46xx_pci_driver
+r_static
 r_struct
 id|pci_driver
 id|cs46xx_pci_driver
@@ -25918,6 +25853,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cs46xx_init_module
+r_static
 r_int
 id|__init
 id|cs46xx_init_module
@@ -26007,6 +25943,7 @@ id|rtn
 suffix:semicolon
 )brace
 DECL|function|cs46xx_cleanup_module
+r_static
 r_void
 id|__exit
 id|cs46xx_cleanup_module
@@ -26060,7 +25997,9 @@ c_func
 id|cs46xx_cleanup_module
 )paren
 suffix:semicolon
+macro_line|#ifndef CS46XX_ACPI_SUPPORT
 DECL|function|cs46xx_pm_callback
+r_static
 r_int
 id|cs46xx_pm_callback
 c_func
@@ -26234,6 +26173,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#if CS46XX_ACPI_SUPPORT
 DECL|function|cs46xx_suspend_tbl
 r_static

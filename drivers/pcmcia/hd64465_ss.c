@@ -3417,6 +3417,16 @@ id|hs_sockets
 id|i
 )braket
 dot
+id|socket.resource_ops
+op_assign
+op_amp
+id|pccard_static_ops
+suffix:semicolon
+id|hs_sockets
+(braket
+id|i
+)braket
+dot
 id|socket.irq_mask
 op_assign
 l_int|0xffde

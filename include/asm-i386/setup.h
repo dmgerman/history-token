@@ -16,7 +16,7 @@ mdefine_line|#define MAX_NONPAE_PFN&t;(1 &lt;&lt; 20)
 DECL|macro|PARAM_SIZE
 mdefine_line|#define PARAM_SIZE 2048
 DECL|macro|COMMAND_LINE_SIZE
-mdefine_line|#define COMMAND_LINE_SIZE 256
+mdefine_line|#define COMMAND_LINE_SIZE 2048
 DECL|macro|OLD_CL_MAGIC_ADDR
 mdefine_line|#define OLD_CL_MAGIC_ADDR&t;0x90020
 DECL|macro|OLD_CL_MAGIC

@@ -515,6 +515,7 @@ r_else
 r_if
 c_cond
 (paren
+(paren
 id|strncmp
 c_func
 (paren
@@ -526,6 +527,23 @@ l_int|4
 )paren
 op_eq
 l_int|0
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|info-&gt;FBA_layout
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|info-&gt;type
+comma
+l_string|&quot;ECKD&quot;
+)paren
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * New style VOL1 labeled disk&n;&t;&t; */

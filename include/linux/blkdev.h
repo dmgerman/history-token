@@ -300,6 +300,13 @@ id|count
 l_int|2
 )braket
 suffix:semicolon
+DECL|member|starved
+r_int
+id|starved
+(braket
+l_int|2
+)braket
+suffix:semicolon
 DECL|member|rq_pool
 id|mempool_t
 op_star

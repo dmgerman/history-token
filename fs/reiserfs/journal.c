@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
@@ -1844,76 +1843,6 @@ op_star
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* returns a cnode with same size, block number and dev as bh in the current transaction hash.  NULL if not found */
-DECL|function|get_journal_hash
-r_static
-r_inline
-r_struct
-id|reiserfs_journal_cnode
-op_star
-id|get_journal_hash
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|p_s_sb
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-(brace
-r_struct
-id|reiserfs_journal
-op_star
-id|journal
-op_assign
-id|SB_JOURNAL
-(paren
-id|p_s_sb
-)paren
-suffix:semicolon
-r_struct
-id|reiserfs_journal_cnode
-op_star
-id|cn
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bh
-)paren
-(brace
-id|cn
-op_assign
-id|get_journal_hash_dev
-c_func
-(paren
-id|p_s_sb
-comma
-id|journal-&gt;j_hash_table
-comma
-id|bh-&gt;b_blocknr
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-r_return
-(paren
-r_struct
-id|reiserfs_journal_cnode
-op_star
-)paren
-l_int|0
-suffix:semicolon
-)brace
-r_return
-id|cn
-suffix:semicolon
-)brace
 multiline_comment|/*&n;** this actually means &squot;can this block be reallocated yet?&squot;.  If you set search_all, a block can only be allocated&n;** if it is not in the current transaction, was not freed by the current transaction, and has no chance of ever&n;** being overwritten by a replay after crashing.&n;**&n;** If you don&squot;t set search_all, a block can only be allocated if it is not in the current transaction.  Since deleting&n;** a block removes it from the current transaction, this case should never happen.  If you don&squot;t set search_all, make&n;** sure you never write the block without logging it.&n;**&n;** next_zero_bit is a suggestion about the next block to try for find_forward.&n;** when bl is rejected because it is set in a journal list bitmap, we search&n;** for the next zero bit in the bitmap that rejected bl.  Then, we return that&n;** through next_zero_bit for find_forward to try.&n;**&n;** Just because we return something in next_zero_bit does not mean we won&squot;t&n;** reject it on the next call to reiserfs_in_journal&n;**&n;*/
 DECL|function|reiserfs_in_journal
 r_int
@@ -2160,6 +2089,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* insert cn into table&n;*/
 DECL|function|insert_journal_hash
+r_static
 r_inline
 r_void
 id|insert_journal_hash
@@ -3067,6 +2997,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|variable|nr_reiserfs_jh
+r_static
 id|atomic_t
 id|nr_reiserfs_jh
 op_assign
@@ -4943,6 +4874,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+r_static
 r_void
 id|remove_journal_hash
 c_func
@@ -9722,6 +9654,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function reads blocks starting from block and to max_block of bufsize&n;   size (but no more than BUFNR blocks at a time). This proved to improve&n;   mounting speed on self-rebuilding raid5 arrays at least.&n;   Right now it is only used from journal code. But later we might use it&n;   from other places.&n;   Note: Do not use journal_getblk/sb_getblk functions here! */
 DECL|function|reiserfs_breada
+r_static
 r_struct
 id|buffer_head
 op_star
@@ -17990,6 +17923,7 @@ r_return
 id|journal-&gt;j_errno
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|__reiserfs_journal_abort_hard
 id|__reiserfs_journal_abort_hard
@@ -18054,6 +17988,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+r_static
 r_void
 DECL|function|__reiserfs_journal_abort_soft
 id|__reiserfs_journal_abort_soft

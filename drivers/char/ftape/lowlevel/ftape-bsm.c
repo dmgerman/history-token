@@ -32,6 +32,20 @@ DECL|typedef|mode_type
 id|mode_type
 suffix:semicolon
 macro_line|#if 0
+r_static
+r_void
+id|ftape_put_bad_sector_entry
+c_func
+(paren
+r_int
+id|segment_id
+comma
+id|SectorMap
+id|new_map
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
 multiline_comment|/*  fix_tape converts a normal QIC-80 tape into a &squot;wide&squot; tape.&n; *  For testing purposes only !&n; */
 r_void
 id|fix_tape
@@ -1658,7 +1672,8 @@ id|count
 suffix:semicolon
 )brace
 )brace
-DECL|function|ftape_put_bad_sector_entry
+macro_line|#if 0
+r_static
 r_void
 id|ftape_put_bad_sector_entry
 c_func
@@ -1948,6 +1963,7 @@ suffix:semicolon
 id|TRACE_EXIT
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 DECL|function|ftape_get_bad_sector_entry
 id|SectorMap
 id|ftape_get_bad_sector_entry
