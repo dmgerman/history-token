@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright 2001,2002 SuSE Labs&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD K8 northbridge and the AMD 8151 &n; * AGP bridge. The main work is done in the northbridge. The configuration&n; * is only mirrored in the 8151 for compatibility (could be likely&n; * removed now).&n; */
+multiline_comment|/* &n; * Copyright 2001-2003 SuSE Labs&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD K8 northbridge and the AMD 8151 &n; * AGP bridge. The main work is done in the northbridge. The configuration&n; * is only mirrored in the 8151 for compatibility (could be likely&n; * removed now).&n; */
 multiline_comment|/*&n; * On x86-64 the AGP driver needs to be initialized early by the IOMMU &n; * code.  When you use this driver as a template for a new K8 AGP bridge&n; * driver don&squot;t forget to change arch/x86_64/kernel/pci-gart.c too -AK.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1136,7 +1136,7 @@ id|v3_devs
 )paren
 suffix:semicolon
 r_return
-id|agp_generic_agp_enable
+id|agp_generic_enable
 c_func
 (paren
 id|mode

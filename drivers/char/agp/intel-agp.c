@@ -4580,7 +4580,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -4696,7 +4696,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -4812,7 +4812,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -4928,7 +4928,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -5044,7 +5044,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -5160,7 +5160,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -5276,7 +5276,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -5392,7 +5392,7 @@ id|intel_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
