@@ -196,6 +196,17 @@ id|bus
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|bus_rescan_devices
+c_func
+(paren
+r_struct
+id|bus_type
+op_star
+id|bus
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|bus_type
 op_star
