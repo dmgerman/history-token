@@ -219,6 +219,12 @@ comma
 id|vend_id
 )paren
 suffix:semicolon
+id|csr1212_release_keyval
+c_func
+(paren
+id|vend_id
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -227,12 +233,6 @@ op_ne
 id|CSR1212_SUCCESS
 )paren
 (brace
-id|csr1212_release_keyval
-c_func
-(paren
-id|vend_id
-)paren
-suffix:semicolon
 id|csr1212_destroy_csr
 c_func
 (paren
