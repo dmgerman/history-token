@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *              $Revision: 1 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evgpe - General Purpose Event handling and dispatch&n; *              $Revision: 3 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -110,10 +110,7 @@ c_cond
 (paren
 id|acpi_gbl_FADT-&gt;Xgpe0_blk.register_bit_width
 op_logical_and
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xgpe0_blk.address
-)paren
 )paren
 (brace
 multiline_comment|/* GPE block 0 exists (has both length and address &gt; 0) */
@@ -158,10 +155,7 @@ c_cond
 (paren
 id|acpi_gbl_FADT-&gt;Xgpe1_blk.register_bit_width
 op_logical_and
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_FADT-&gt;Xgpe1_blk.address
-)paren
 )paren
 (brace
 multiline_comment|/* GPE block 1 exists (has both length and address &gt; 0) */
@@ -551,15 +545,12 @@ id|ACPI_STORE_ADDRESS
 id|gpe_register_info-&gt;status_address.address
 comma
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_gpe_block_info
 (braket
 id|gpe_block
 )braket
 dot
 id|block_address-&gt;address
-)paren
 op_plus
 id|i
 )paren
@@ -570,15 +561,12 @@ id|ACPI_STORE_ADDRESS
 id|gpe_register_info-&gt;enable_address.address
 comma
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_gpe_block_info
 (braket
 id|gpe_block
 )braket
 dot
 id|block_address-&gt;address
-)paren
 op_plus
 id|i
 op_plus
@@ -766,28 +754,22 @@ id|register_count
 comma
 id|ACPI_HIDWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_gpe_block_info
 (braket
 id|gpe_block
 )braket
 dot
 id|block_address-&gt;address
-)paren
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|acpi_gbl_gpe_block_info
 (braket
 id|gpe_block
 )braket
 dot
 id|block_address-&gt;address
-)paren
 )paren
 )paren
 )paren
@@ -897,7 +879,7 @@ suffix:semicolon
 id|u32
 id|gpe_number_index
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 id|name
 (braket
 id|ACPI_NAME_SIZE
@@ -1333,18 +1315,12 @@ l_string|&quot;GPE block at %8.8X%8.8X - Values: Enable %02X Status %02X&bslash;
 comma
 id|ACPI_HIDWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|gpe_register_info-&gt;enable_address.address
-)paren
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|ACPI_GET_ADDRESS
-(paren
 id|gpe_register_info-&gt;enable_address.address
-)paren
 )paren
 comma
 id|gpe_register_info-&gt;enable

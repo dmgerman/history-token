@@ -1458,7 +1458,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;scsi HBA driver %s didn&squot;t set max_sectors, &quot;
-l_string|&quot;please fix the template&quot;
+l_string|&quot;please fix the template&bslash;n&quot;
 comma
 id|shost_tp-&gt;name
 )paren
@@ -1480,7 +1480,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;scsi HBA driver %s didn&squot;t set a release method, &quot;
-l_string|&quot;please fix the template&quot;
+l_string|&quot;please fix the template&bslash;n&quot;
 comma
 id|shost_tp-&gt;name
 )paren

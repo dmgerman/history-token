@@ -16,13 +16,7 @@ mdefine_line|#define SCSI_UNREGISTER_HOST(tmpl)&t;scsi_unregister_host(tmpl)
 macro_line|#endif
 DECL|macro|SBP2_DEVICE_NAME
 mdefine_line|#define SBP2_DEVICE_NAME&t;&t;&quot;sbp2&quot;
-DECL|macro|SBP2_DEVICE_NAME_SIZE
-mdefine_line|#define SBP2_DEVICE_NAME_SIZE&t;&t;4
 multiline_comment|/*&n; * SBP2 specific structures and defines&n; */
-DECL|macro|ORB_FMT_CMD
-mdefine_line|#define ORB_FMT_CMD&t;&t;&t;0x0
-DECL|macro|ORB_FMT_DUMMY
-mdefine_line|#define ORB_FMT_DUMMY&t;&t;&t;0x3
 DECL|macro|ORB_DIRECTION_WRITE_TO_MEDIA
 mdefine_line|#define ORB_DIRECTION_WRITE_TO_MEDIA    0x0
 DECL|macro|ORB_DIRECTION_READ_FROM_MEDIA
@@ -34,44 +28,9 @@ mdefine_line|#define ORB_SET_NULL_PTR(value)&t;&t;&t;((value &amp; 0x1) &lt;&lt;
 DECL|macro|ORB_SET_NOTIFY
 mdefine_line|#define ORB_SET_NOTIFY(value)                   ((value &amp; 0x1) &lt;&lt; 31)
 DECL|macro|ORB_SET_RQ_FMT
-mdefine_line|#define ORB_SET_RQ_FMT(value)                   ((value &amp; 0x3) &lt;&lt; 29)
+mdefine_line|#define ORB_SET_RQ_FMT(value)                   ((value &amp; 0x3) &lt;&lt; 29)&t;/* unused ? */
 DECL|macro|ORB_SET_NODE_ID
 mdefine_line|#define ORB_SET_NODE_ID(value)&t;&t;&t;((value &amp; 0xffff) &lt;&lt; 16)
-DECL|struct|sbp2_dummy_orb
-r_struct
-id|sbp2_dummy_orb
-(brace
-DECL|member|next_ORB_hi
-r_volatile
-id|u32
-id|next_ORB_hi
-suffix:semicolon
-DECL|member|next_ORB_lo
-r_volatile
-id|u32
-id|next_ORB_lo
-suffix:semicolon
-DECL|member|reserved1
-id|u32
-id|reserved1
-suffix:semicolon
-DECL|member|reserved2
-id|u32
-id|reserved2
-suffix:semicolon
-DECL|member|notify_rq_fmt
-id|u32
-id|notify_rq_fmt
-suffix:semicolon
-DECL|member|command_block
-id|u8
-id|command_block
-(braket
-l_int|12
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|macro|ORB_SET_DATA_SIZE
 mdefine_line|#define ORB_SET_DATA_SIZE(value)                (value &amp; 0xffff)
 DECL|macro|ORB_SET_PAGE_SIZE
@@ -458,26 +417,13 @@ mdefine_line|#define SBP2_SW_VERSION_ENTRY&t;&t;&t;&t;&t;0x00010483
 multiline_comment|/*&n; * Other misc defines&n; */
 DECL|macro|SBP2_128KB_BROKEN_FIRMWARE
 mdefine_line|#define SBP2_128KB_BROKEN_FIRMWARE&t;&t;&t;&t;0xa0b800
-DECL|macro|SBP2_BROKEN_FIRMWARE_MAX_TRANSFER
-mdefine_line|#define SBP2_BROKEN_FIRMWARE_MAX_TRANSFER&t;&t;&t;0x20000
 DECL|macro|SBP2_DEVICE_TYPE_LUN_UNINITIALIZED
 mdefine_line|#define SBP2_DEVICE_TYPE_LUN_UNINITIALIZED&t;&t;&t;0xffffffff
-multiline_comment|/*&n; * Flags for SBP-2 functions&n; */
-DECL|macro|SBP2_SEND_NO_WAIT
-mdefine_line|#define SBP2_SEND_NO_WAIT&t;&t;&t;&t;&t;0x00000001
 multiline_comment|/*&n; * SCSI specific stuff&n; */
-DECL|macro|SBP2_MAX_SG_ELEMENTS
-mdefine_line|#define SBP2_MAX_SG_ELEMENTS&t;&t;SG_ALL
-DECL|macro|SBP2_CLUSTERING
-mdefine_line|#define SBP2_CLUSTERING&t;&t;&t;ENABLE_CLUSTERING
 DECL|macro|SBP2_MAX_SG_ELEMENT_LENGTH
 mdefine_line|#define SBP2_MAX_SG_ELEMENT_LENGTH&t;0xf000
 DECL|macro|SBP2SCSI_MAX_SCSI_IDS
 mdefine_line|#define SBP2SCSI_MAX_SCSI_IDS&t;&t;16&t;/* Max sbp2 device instances supported */
-DECL|macro|SBP2SCSI_MAX_OUTSTANDING_CMDS
-mdefine_line|#define SBP2SCSI_MAX_OUTSTANDING_CMDS&t;8&t;/* Max total outstanding sbp2 commands allowed at a time! */
-DECL|macro|SBP2SCSI_MAX_CMDS_PER_LUN
-mdefine_line|#define SBP2SCSI_MAX_CMDS_PER_LUN&t;1 &t;/* Max outstanding sbp2 commands per device - tune as needed */
 DECL|macro|SBP2_MAX_SECTORS
 mdefine_line|#define SBP2_MAX_SECTORS&t;&t;255&t;/* Max sectors supported */
 macro_line|#ifndef TYPE_SDAD
@@ -1015,45 +961,28 @@ comma
 id|DUN
 )brace
 suffix:semicolon
-DECL|macro|SBP2_MAX_REQUEST_PACKETS
-mdefine_line|#define SBP2_MAX_REQUEST_PACKETS&t;(sbp2_max_outstanding_cmds * 2)
+multiline_comment|/* This should be safe. If there&squot;s more than one LUN per node, we could&n; * saturate the tlabel&squot;s though.  */
+DECL|macro|SBP2_MAX_CMDS_PER_LUN
+mdefine_line|#define SBP2_MAX_CMDS_PER_LUN   8
+DECL|macro|SBP2_MAX_SCSI_QUEUE
+mdefine_line|#define SBP2_MAX_SCSI_QUEUE&t;(SBP2_MAX_CMDS_PER_LUN * SBP2SCSI_MAX_SCSI_IDS)
 DECL|macro|SBP2_MAX_COMMAND_ORBS
-mdefine_line|#define SBP2_MAX_COMMAND_ORBS&t;&t;(sbp2_max_cmds_per_lun * 2)
-multiline_comment|/*&n; * Request packets structure (used for sending command and agent reset packets)&n; */
-DECL|struct|sbp2_request_packet
-r_struct
-id|sbp2_request_packet
+mdefine_line|#define SBP2_MAX_COMMAND_ORBS&t;SBP2_MAX_SCSI_QUEUE
+multiline_comment|/* This is the two dma types we use for cmd_dma below */
+DECL|enum|cmd_dma_types
+r_enum
+id|cmd_dma_types
 (brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-DECL|member|packet
-r_struct
-id|hpsb_packet
-op_star
-id|packet
-suffix:semicolon
-DECL|member|tq
-r_struct
-id|hpsb_queue_struct
-id|tq
-suffix:semicolon
-DECL|member|hi_context
-r_void
-op_star
-id|hi_context
-suffix:semicolon
+DECL|enumerator|CMD_DMA_NONE
+id|CMD_DMA_NONE
+comma
+DECL|enumerator|CMD_DMA_PAGE
+id|CMD_DMA_PAGE
+comma
+DECL|enumerator|CMD_DMA_SINGLE
+id|CMD_DMA_SINGLE
 )brace
 suffix:semicolon
-multiline_comment|/* This is the two dma types we use for cmd_dma below */
-DECL|macro|CMD_DMA_NONE
-mdefine_line|#define CMD_DMA_NONE   0x0
-DECL|macro|CMD_DMA_PAGE
-mdefine_line|#define CMD_DMA_PAGE   0x1
-DECL|macro|CMD_DMA_SINGLE
-mdefine_line|#define CMD_DMA_SINGLE 0x2
 multiline_comment|/* &n; * Encapsulates all the info necessary for an outstanding command. &n; */
 DECL|struct|sbp2_command_info
 r_struct
@@ -1097,7 +1026,7 @@ r_struct
 id|sbp2_unrestricted_page_table
 id|scatter_gather_element
 (braket
-id|SBP2_MAX_SG_ELEMENTS
+id|SG_ALL
 )braket
 id|____cacheline_aligned
 suffix:semicolon
@@ -1116,7 +1045,8 @@ id|dma_addr_t
 id|cmd_dma
 suffix:semicolon
 DECL|member|dma_type
-r_int
+r_enum
+id|cmd_dma_types
 id|dma_type
 suffix:semicolon
 DECL|member|dma_size
@@ -1265,10 +1195,6 @@ r_struct
 id|list_head
 id|sbp2_command_orb_completed
 suffix:semicolon
-DECL|member|sbp2_total_command_orbs
-id|u32
-id|sbp2_total_command_orbs
-suffix:semicolon
 multiline_comment|/* Node entry, as retrieved from NodeMgr entries */
 DECL|member|ne
 r_struct
@@ -1300,14 +1226,10 @@ id|hpsb_host
 op_star
 id|host
 suffix:semicolon
-multiline_comment|/*&n;&t; * Spin locks for command processing and packet pool management&n;&t; */
+multiline_comment|/*&n;&t; * Spin locks for command processing&n;&t; */
 DECL|member|sbp2_command_lock
 id|spinlock_t
 id|sbp2_command_lock
-suffix:semicolon
-DECL|member|sbp2_request_packet_lock
-id|spinlock_t
-id|sbp2_request_packet_lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is the scsi host we register with the scsi mid level.&n;&t; * We keep a reference to it here, so we can unregister it&n;&t; * when the hpsb_host is removed.&n;&t; */
 DECL|member|scsi_host
@@ -1315,24 +1237,6 @@ r_struct
 id|Scsi_Host
 op_star
 id|scsi_host
-suffix:semicolon
-multiline_comment|/*&n;&t; * Lists keeping track of inuse/free sbp2_request_packets. These structures are&n;&t; * used for sending out sbp2 command and agent reset packets. We initially create&n;&t; * a pool of request packets so that we don&squot;t have to do any kmallocs while in critical&n;&t; * I/O paths.&n;&t; */
-DECL|member|sbp2_req_inuse
-r_struct
-id|list_head
-id|sbp2_req_inuse
-suffix:semicolon
-DECL|member|sbp2_req_free
-r_struct
-id|list_head
-id|sbp2_req_free
-suffix:semicolon
-multiline_comment|/*&n;&t; * Here is the pool of request packets. All the hpsb packets (for 1394 bus transactions)&n;&t; * are allocated at init and simply re-initialized when needed.&n;&t; */
-DECL|member|request_packet
-r_struct
-id|sbp2_request_packet
-op_star
-id|request_packet
 suffix:semicolon
 multiline_comment|/*&n;&t; * SCSI ID instance data (one for each sbp2 device instance possible)&n;&t; */
 DECL|member|scsi_id
@@ -1348,66 +1252,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/*&n; * Various utility prototypes&n; */
-r_static
-r_int
-id|sbp2util_create_request_packet_pool
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-)paren
-suffix:semicolon
-r_static
-r_void
-id|sbp2util_remove_request_packet_pool
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-)paren
-suffix:semicolon
-r_static
-r_struct
-id|sbp2_request_packet
-op_star
-id|sbp2util_allocate_write_request_packet
-c_func
-(paren
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|hi
-comma
-r_struct
-id|node_entry
-op_star
-id|ne
-comma
-id|u64
-id|addr
-comma
-r_int
-id|data_size
-comma
-id|quadlet_t
-id|data
-)paren
-suffix:semicolon
-r_static
-r_void
-id|sbp2util_free_request_packet
-c_func
-(paren
-r_struct
-id|sbp2_request_packet
-op_star
-id|request_packet
-)paren
-suffix:semicolon
 r_static
 r_int
 id|sbp2util_create_command_orb_pool
@@ -1792,8 +1636,8 @@ id|scsi_id_instance_data
 op_star
 id|scsi_id
 comma
-id|u32
-id|flags
+r_int
+id|wait
 )paren
 suffix:semicolon
 r_static
@@ -2040,18 +1884,12 @@ r_static
 r_int
 id|sbp2scsi_biosparam
 (paren
-r_struct
-id|scsi_device
+id|Scsi_Disk
 op_star
-id|sdev
+id|disk
 comma
-r_struct
-id|block_device
-op_star
+id|kdev_t
 id|dev
-comma
-id|sector_t
-id|capacy
 comma
 r_int
 id|geom

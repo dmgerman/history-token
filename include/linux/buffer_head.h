@@ -719,9 +719,16 @@ c_func
 r_struct
 id|page
 op_star
+id|page
 comma
 id|get_block_t
 op_star
+id|get_block
+comma
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 suffix:semicolon
 r_int

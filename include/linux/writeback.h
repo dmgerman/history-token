@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/linux/writeback.h.&n; *&n; * These declarations are private to fs/ and mm/.&n; * Declarations which are exported to filesystems do not&n; * get placed here.&n; */
+multiline_comment|/*&n; * include/linux/writeback.h.&n; */
 macro_line|#ifndef WRITEBACK_H
 DECL|macro|WRITEBACK_H
 mdefine_line|#define WRITEBACK_H
@@ -94,8 +94,22 @@ r_int
 id|encountered_congestion
 suffix:semicolon
 multiline_comment|/* An output: a queue is full */
+DECL|member|for_kupdate
+r_int
+id|for_kupdate
+suffix:semicolon
+multiline_comment|/* A kupdate writeback */
+DECL|member|for_reclaim
+r_int
+id|for_reclaim
+suffix:semicolon
+multiline_comment|/* Invoked from the page allocator */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * -&gt;writepage() return values (make these much larger than a pagesize, in&n; * case some fs is returning number-of-bytes-written from writepage)&n; */
+DECL|macro|WRITEPAGE_ACTIVATE
+mdefine_line|#define WRITEPAGE_ACTIVATE&t;0x80000&t;/* IO was not started: activate page */
+multiline_comment|/*&n; * fs/fs-writeback.c&n; */
 r_void
 id|writeback_inodes
 c_func
@@ -260,22 +274,5 @@ r_int
 id|nr_pdflush_threads
 suffix:semicolon
 multiline_comment|/* Global so it can be exported to sysctl&n;&t;&t;&t;&t;   read-only. */
-multiline_comment|/*&n; * Tell the writeback paths that they are being called for a &quot;data integrity&quot;&n; * operation such as fsync().&n; */
-DECL|function|called_for_sync
-r_static
-r_inline
-r_int
-id|called_for_sync
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|current-&gt;flags
-op_amp
-id|PF_SYNC
-suffix:semicolon
-)brace
 macro_line|#endif&t;&t;/* WRITEBACK_H */
 eof

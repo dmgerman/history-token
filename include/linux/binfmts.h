@@ -305,6 +305,9 @@ c_func
 r_int
 id|signr
 comma
+r_int
+id|exit_code
+comma
 r_struct
 id|pt_regs
 op_star

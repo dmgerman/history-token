@@ -14,11 +14,6 @@ macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt; /* For struct exception_table_entry */
-multiline_comment|/* Indirect stringification */
-DECL|macro|__MODULE_STRING_1
-mdefine_line|#define __MODULE_STRING_1(x)&t;#x
-DECL|macro|__MODULE_STRING
-mdefine_line|#define __MODULE_STRING(x)&t;__MODULE_STRING_1(x)
 multiline_comment|/* Not Yet Implemented */
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(name)
@@ -205,14 +200,29 @@ DECL|variable|____cacheline_aligned
 )brace
 id|____cacheline_aligned
 suffix:semicolon
+DECL|enum|module_state
+r_enum
+id|module_state
+(brace
+DECL|enumerator|MODULE_STATE_LIVE
+id|MODULE_STATE_LIVE
+comma
+DECL|enumerator|MODULE_STATE_COMING
+id|MODULE_STATE_COMING
+comma
+DECL|enumerator|MODULE_STATE_GOING
+id|MODULE_STATE_GOING
+comma
+)brace
+suffix:semicolon
 DECL|struct|module
 r_struct
 id|module
 (brace
-multiline_comment|/* Am I live (yet)? */
-DECL|member|live
-r_int
-id|live
+DECL|member|state
+r_enum
+id|module_state
+id|state
 suffix:semicolon
 multiline_comment|/* Member of list of modules */
 DECL|member|list
@@ -346,6 +356,26 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* FIXME: It&squot;d be nice to isolate modules during init, too, so they&n;   aren&squot;t used before they (may) fail.  But presently too much code&n;   (IDE &amp; SCSI) require entry into the module during init.*/
+DECL|function|module_is_live
+r_static
+r_inline
+r_int
+id|module_is_live
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|mod
+)paren
+(brace
+r_return
+id|mod-&gt;state
+op_ne
+id|MODULE_STATE_GOING
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_MODULE_UNLOAD
 r_void
 id|__symbol_put
@@ -414,7 +444,11 @@ c_cond
 id|likely
 c_func
 (paren
-id|module-&gt;live
+id|module_is_live
+c_func
+(paren
+id|module
+)paren
 )paren
 )paren
 id|local_inc
@@ -492,7 +526,11 @@ id|unlikely
 c_func
 (paren
 op_logical_neg
-id|module-&gt;live
+id|module_is_live
+c_func
+(paren
+id|module
+)paren
 )paren
 )paren
 id|wake_up_process
@@ -526,7 +564,11 @@ r_return
 op_logical_neg
 id|module
 op_logical_or
-id|module-&gt;live
+id|module_is_live
+c_func
+(paren
+id|module
+)paren
 suffix:semicolon
 )brace
 DECL|function|module_put
@@ -656,6 +698,45 @@ DECL|macro|__MOD_DEC_USE_COUNT
 mdefine_line|#define __MOD_DEC_USE_COUNT(mod) module_put(mod)
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
+DECL|struct|obsolete_modparm
+r_struct
+id|obsolete_modparm
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|type
+r_char
+id|type
+(braket
+l_int|64
+op_minus
+r_sizeof
+(paren
+r_void
+op_star
+)paren
+)braket
+suffix:semicolon
+DECL|member|addr
+r_void
+op_star
+id|addr
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef MODULE
+multiline_comment|/* DEPRECATED: Do not use. */
+DECL|macro|MODULE_PARM
+mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type };
+macro_line|#else
+DECL|macro|MODULE_PARM
+mdefine_line|#define MODULE_PARM(var,type)
+macro_line|#endif
 multiline_comment|/* People do this inside their init routines, when the module isn&squot;t&n;   &quot;live&quot; yet.  They should no longer be doing that, but&n;   meanwhile... */
 macro_line|#if defined(CONFIG_MODULE_UNLOAD) &amp;&amp; defined(MODULE)
 DECL|macro|MOD_INC_USE_COUNT
@@ -668,8 +749,6 @@ DECL|macro|MOD_DEC_USE_COUNT
 mdefine_line|#define MOD_DEC_USE_COUNT module_put(THIS_MODULE)
 DECL|macro|try_inc_mod_count
 mdefine_line|#define try_inc_mod_count(mod) try_module_get(mod)
-DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(parm,string)
 DECL|macro|EXPORT_NO_SYMBOLS
 mdefine_line|#define EXPORT_NO_SYMBOLS
 r_extern
@@ -680,6 +759,8 @@ DECL|macro|GET_USE_COUNT
 mdefine_line|#define GET_USE_COUNT(module) (module_dummy_usage)
 DECL|macro|MOD_IN_USE
 mdefine_line|#define MOD_IN_USE 0
+DECL|macro|__MODULE_STRING
+mdefine_line|#define __MODULE_STRING(x) __stringify(x)
 DECL|macro|__mod_between
 mdefine_line|#define __mod_between(a_start, a_len, b_start, b_len)&t;&t;&bslash;&n;(((a_start) &gt;= (b_start) &amp;&amp; (a_start) &lt;= (b_start)+(b_len))&t;&bslash;&n; || ((a_start)+(a_len) &gt;= (b_start)&t;&t;&t;&t;&bslash;&n;     &amp;&amp; (a_start)+(a_len) &lt;= (b_start)+(b_len)))
 DECL|macro|mod_bound

@@ -20,8 +20,8 @@ macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 DECL|function|presto_relock_sem
 r_static
 r_inline
@@ -1306,7 +1306,9 @@ op_assign
 (brace
 l_int|0
 comma
+(brace
 l_int|0
+)brace
 comma
 l_int|0
 )brace
@@ -1371,11 +1373,11 @@ id|iattr-&gt;ia_gid
 comma
 id|iattr-&gt;ia_size
 comma
-id|iattr-&gt;ia_atime
+id|iattr-&gt;ia_atime.tv_sec
 comma
-id|iattr-&gt;ia_mtime
+id|iattr-&gt;ia_mtime.tv_sec
 comma
-id|iattr-&gt;ia_ctime
+id|iattr-&gt;ia_ctime.tv_sec
 comma
 id|iattr-&gt;ia_attr_flags
 )paren

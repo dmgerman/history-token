@@ -532,6 +532,23 @@ DECL|macro|NFS4_MINOR_VERSION
 mdefine_line|#define NFS4_MINOR_VERSION 0
 DECL|macro|NFS4_DEBUG
 mdefine_line|#define NFS4_DEBUG 1
+macro_line|#ifdef __KERNEL__
+multiline_comment|/* Index of predefined Linux client operations */
+r_enum
+(brace
+DECL|enumerator|NFSPROC4_CLNT_NULL
+id|NFSPROC4_CLNT_NULL
+op_assign
+l_int|0
+comma
+multiline_comment|/* Unused */
+DECL|enumerator|NFSPROC4_CLNT_COMPOUND
+id|NFSPROC4_CLNT_COMPOUND
+comma
+multiline_comment|/* Soon to be unused */
+)brace
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Local variables:&n; *  c-basic-offset: 8&n; * End:&n; */
 eof

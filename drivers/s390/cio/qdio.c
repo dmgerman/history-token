@@ -18,8 +18,9 @@ macro_line|#include &quot;css.h&quot;
 macro_line|#include &quot;device.h&quot;
 macro_line|#include &quot;airq.h&quot;
 macro_line|#include &quot;qdio.h&quot;
+macro_line|#include &quot;ioasm.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.16 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.18 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -6574,9 +6575,6 @@ op_star
 id|q
 suffix:semicolon
 r_int
-id|irq
-suffix:semicolon
-r_int
 id|cstat
 comma
 id|dstat
@@ -6586,18 +6584,7 @@ id|dbf_text
 (braket
 l_int|15
 )braket
-op_assign
-l_string|&quot;qintXXXX&quot;
 suffix:semicolon
-id|irq
-op_assign
-id|cdev
-op_member_access_from_pointer
-r_private
-op_member_access_from_pointer
-id|irq
-suffix:semicolon
-multiline_comment|/* FIXME: use different dbg */
 id|cstat
 op_assign
 id|irb-&gt;scsw.cstat
@@ -6606,24 +6593,27 @@ id|dstat
 op_assign
 id|irb-&gt;scsw.dstat
 suffix:semicolon
-op_star
+id|QDIO_DBF_TEXT4
+c_func
 (paren
-(paren
-r_int
-op_star
+l_int|0
+comma
+id|trace
+comma
+l_string|&quot;qint&quot;
 )paren
-(paren
-op_amp
-id|dbf_text
-(braket
-l_int|4
-)braket
-)paren
-)paren
-op_assign
-id|irq
 suffix:semicolon
-id|QDIO_DBF_HEX4
+id|sprintf
+c_func
+(paren
+id|dbf_text
+comma
+l_string|&quot;%s&quot;
+comma
+id|cdev-&gt;dev.bus_id
+)paren
+suffix:semicolon
+id|QDIO_DBF_TEXT4
 c_func
 (paren
 l_int|0
@@ -6631,8 +6621,6 @@ comma
 id|trace
 comma
 id|dbf_text
-comma
-id|QDIO_DBF_TRACE_LEN
 )paren
 suffix:semicolon
 r_if
@@ -6650,9 +6638,9 @@ c_func
 (paren
 l_string|&quot;got unsolicited interrupt in qdio &quot;
 "&bslash;"
-l_string|&quot;handler, irq 0x%x&bslash;n&quot;
+l_string|&quot;handler, device %s&bslash;n&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -6673,14 +6661,24 @@ op_logical_neg
 id|irq_ptr
 )paren
 (brace
+id|QDIO_DBF_TEXT2
+c_func
+(paren
+l_int|1
+comma
+id|trace
+comma
+l_string|&quot;uint&quot;
+)paren
+suffix:semicolon
 id|sprintf
 c_func
 (paren
 id|dbf_text
 comma
-l_string|&quot;uint%4x&quot;
+l_string|&quot;%s&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 id|QDIO_DBF_TEXT2
@@ -6696,9 +6694,9 @@ suffix:semicolon
 id|QDIO_PRINT_ERR
 c_func
 (paren
-l_string|&quot;received interrupt on unused irq 0x%04x!&bslash;n&quot;
+l_string|&quot;received interrupt on unused device %s!&bslash;n&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_return
@@ -6707,7 +6705,7 @@ suffix:semicolon
 id|qdio_irq_check_sense
 c_func
 (paren
-id|irq
+id|irq_ptr-&gt;irq
 comma
 id|irb
 )paren
@@ -6742,14 +6740,24 @@ op_logical_or
 id|dstat
 )paren
 (brace
+id|QDIO_DBF_TEXT2
+c_func
+(paren
+l_int|1
+comma
+id|trace
+comma
+l_string|&quot;ick2&quot;
+)paren
+suffix:semicolon
 id|sprintf
 c_func
 (paren
 id|dbf_text
 comma
-l_string|&quot;ick2%4x&quot;
+l_string|&quot;%s&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 id|QDIO_DBF_TEXT2
@@ -6815,9 +6823,9 @@ c_func
 (paren
 l_string|&quot;received check condition on activate &quot;
 "&bslash;"
-l_string|&quot;queues on irq 0x%x (cs=x%x, ds=x%x).&bslash;n&quot;
+l_string|&quot;queues on device %s (cs=x%x, ds=x%x).&bslash;n&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 comma
 id|cstat
 comma
@@ -6858,11 +6866,11 @@ r_else
 id|QDIO_PRINT_ERR
 c_func
 (paren
-l_string|&quot;oops... no queue registered on irq &quot;
+l_string|&quot;oops... no queue registered for &quot;
 "&bslash;"
-l_string|&quot;0x%x!?&bslash;n&quot;
+l_string|&quot;device %s!?&bslash;n&quot;
 comma
-id|irq
+id|cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
 r_goto

@@ -18,9 +18,9 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
 macro_line|#include &lt;linux/fsfilter.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 multiline_comment|/*&n; * these are initialized in super.c&n; */
 r_extern
 r_int
@@ -53,6 +53,8 @@ id|de
 (brace
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 op_star

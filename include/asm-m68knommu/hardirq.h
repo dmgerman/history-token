@@ -2,6 +2,7 @@ macro_line|#ifndef __M68K_HARDIRQ_H
 DECL|macro|__M68K_HARDIRQ_H
 mdefine_line|#define __M68K_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 r_typedef
 r_struct

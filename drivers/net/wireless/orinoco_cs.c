@@ -1031,8 +1031,9 @@ id|cistpl_cftable_entry_t
 id|dflt
 op_assign
 (brace
+dot
 id|index
-suffix:colon
+op_assign
 l_int|0
 )brace
 suffix:semicolon
