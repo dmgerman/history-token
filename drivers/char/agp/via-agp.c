@@ -1196,6 +1196,20 @@ l_string|&quot;PM800/PN800/PM880/PN880&quot;
 comma
 )brace
 comma
+multiline_comment|/* KT880 */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_3269_0
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KT880&quot;
+comma
+)brace
+comma
 (brace
 )brace
 comma
@@ -1634,6 +1648,12 @@ id|ID
 c_func
 (paren
 id|PCI_DEVICE_ID_VIA_PX8X0_0
+)paren
+comma
+id|ID
+c_func
+(paren
+id|PCI_DEVICE_ID_VIA_3269_0
 )paren
 comma
 (brace
