@@ -3206,7 +3206,7 @@ id|dev-&gt;config
 id|i
 )braket
 dot
-id|interface
+id|intf_cache
 (braket
 l_int|0
 )braket
