@@ -1,4 +1,4 @@
-singleline_comment|// $Id: vmax301.c,v 1.24 2001/10/02 15:05:14 dwmw2 Exp $
+singleline_comment|// $Id: vmax301.c,v 1.28 2003/05/21 15:15:08 dwmw2 Exp $
 multiline_comment|/* ######################################################################&n;&n;   Tempustech VMAX SBC301 MTD Driver.&n;  &n;   The VMAx 301 is a SBC based on . It&n;   comes with three builtin AMD 29F016B flash chips and a socket for SRAM or&n;   more flash. Each unit has it&squot;s own 8k mapping into a settable region &n;   (0xD8000). There are two 8k mappings for each MTD, the first is always set&n;   to the lower 8k of the device the second is paged. Writing a 16 bit page&n;   value to anywhere in the first 8k will cause the second 8k to page around.&n;&n;   To boot the device a bios extension must be installed into the first 8k &n;   of flash that is smart enough to copy itself down, page in the rest of &n;   itself and begin executing.&n;   &n;   ##################################################################### */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 DECL|macro|WINDOW_START
 mdefine_line|#define WINDOW_START 0xd8000
 DECL|macro|WINDOW_LENGTH
@@ -676,6 +677,11 @@ op_assign
 l_string|&quot;VMAX301 Internal Flash&quot;
 comma
 dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
 id|size
 op_assign
 l_int|3
@@ -749,6 +755,16 @@ dot
 id|name
 op_assign
 l_string|&quot;VMAX301 Socket&quot;
+comma
+dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
+id|size
+op_assign
+l_int|0
 comma
 dot
 id|buswidth
@@ -975,7 +991,7 @@ id|vmax_map
 l_int|0
 )braket
 dot
-id|map_priv_1
+id|map_priv_2
 op_assign
 id|iomapadr
 op_plus
@@ -986,7 +1002,7 @@ id|vmax_map
 l_int|1
 )braket
 dot
-id|map_priv_1
+id|map_priv_2
 op_assign
 id|iomapadr
 op_plus
@@ -1120,7 +1136,7 @@ id|vmax_mtd
 id|i
 )braket
 op_member_access_from_pointer
-id|module
+id|owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon

@@ -1,10 +1,10 @@
 multiline_comment|/* Linux driver for Disk-On-Chip devices&t;&t;&t;*/
 multiline_comment|/* Probe routines common to all DoC devices&t;&t;&t;*/
-multiline_comment|/* (c) 1999 Machine Vision Holdings, Inc.&t;&t;&t;*/
-multiline_comment|/* Author: David Woodhouse &lt;dwmw2@infradead.org&gt;&t;&t;*/
-multiline_comment|/* $Id: docprobe.c,v 1.30 2001/10/02 15:05:13 dwmw2 Exp $&t;*/
+multiline_comment|/* (C) 1999 Machine Vision Holdings, Inc.&t;&t;&t;*/
+multiline_comment|/* (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&t;&t;*/
+multiline_comment|/* $Id: docprobe.c,v 1.36 2003/05/23 11:29:34 dwmw2 Exp $&t;*/
 multiline_comment|/* DOC_PASSIVE_PROBE:&n;   In order to ensure that the BIOS checksum is correct at boot time, and &n;   hence that the onboard BIOS extension gets executed, the DiskOnChip &n;   goes into reset mode when it is read sequentially: all registers &n;   return 0xff until the chip is woken up again by writing to the &n;   DOCControl register. &n;&n;   Unfortunately, this means that the probe for the DiskOnChip is unsafe, &n;   because one of the first things it does is write to where it thinks &n;   the DOCControl register should be - which may well be shared memory &n;   for another device. I&squot;ve had machines which lock up when this is &n;   attempted. Hence the possibility to do a passive probe, which will fail &n;   to detect a chip in reset mode, but is at least guaranteed not to lock&n;   the machine.&n;&n;   If you have this problem, uncomment the following line:&n;#define DOC_PASSIVE_PROBE&n;*/
-multiline_comment|/* DOC_SINGLE_DRIVER:&n;   Millennium driver has been merged into DOC2000 driver.&n;&n;   The newly-merged driver doesn&squot;t appear to work for writing. It&squot;s the&n;   same with the DiskOnChip 2000 and the Millennium. If you have a &n;   Millennium and you want write support to work, remove the definition&n;   of DOC_SINGLE_DRIVER below to use the old doc2001-specific driver.&n;&n;   Otherwise, it&squot;s left on in the hope that it&squot;ll annoy someone with&n;   a Millennium enough that they go through and work out what the &n;   difference is :)&n;*/
+multiline_comment|/* DOC_SINGLE_DRIVER:&n;   Millennium driver has been merged into DOC2000 driver.&n;&n;   The old Millennium-only driver has been retained just in case there&n;   are problems with the new code. If the combined driver doesn&squot;t work&n;   for you, you can try the old one by undefining DOC_SINGLE_DRIVER &n;   below and also enabling it in your configuration. If this fixes the&n;   problems, please send a report to the MTD mailing list at &n;   &lt;linux-mtd@lists.infradead.org&gt;.&n;*/
 DECL|macro|DOC_SINGLE_DRIVER
 mdefine_line|#define DOC_SINGLE_DRIVER
 macro_line|#include &lt;linux/config.h&gt;
@@ -12,17 +12,14 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/doc2000.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 multiline_comment|/* Where to look for the devices? */
 macro_line|#ifndef CONFIG_MTD_DOCPROBE_ADDRESS
 DECL|macro|CONFIG_MTD_DOCPROBE_ADDRESS
@@ -42,6 +39,14 @@ c_func
 id|doc_config_location
 comma
 l_string|&quot;l&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|doc_config_location
+comma
+l_string|&quot;Physical memory address at which to probe for DiskOnChip&quot;
 )paren
 suffix:semicolon
 DECL|variable|doc_locations
@@ -138,16 +143,21 @@ comma
 l_int|0xee000
 comma
 macro_line|#endif /*  CONFIG_MTD_DOCPROBE_HIGH */
-macro_line|#elif defined(__ppc__)
+macro_line|#elif defined(__PPC__)
 l_int|0xe4000000
 comma
 macro_line|#elif defined(CONFIG_MOMENCO_OCELOT)
 l_int|0x2f000000
 comma
-macro_line|#else
+l_int|0xff000000
+comma
+macro_line|#elif defined(CONFIG_MOMENCO_OCELOT_G) || defined (CONFIG_MOMENCO_OCELOT_C)
+l_int|0xff000000
+comma
+macro_line|##else
 macro_line|#warning Unknown architecture for DiskOnChip. No default probe locations defined
 macro_line|#endif
-l_int|0
+l_int|0xffffffff
 )brace
 suffix:semicolon
 multiline_comment|/* doccheck: Probe a given memory window to see if there&squot;s a DiskOnChip present */
@@ -177,6 +187,10 @@ suffix:semicolon
 r_int
 r_char
 id|tmp
+comma
+id|tmpb
+comma
+id|tmpc
 comma
 id|ChipID
 suffix:semicolon
@@ -320,10 +334,8 @@ id|k_ECCStatus
 op_amp
 id|DOC_TOGGLE_BIT
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+id|tmpb
+op_assign
 id|ReadDOC
 c_func
 (paren
@@ -334,9 +346,30 @@ id|k_ECCStatus
 )paren
 op_amp
 id|DOC_TOGGLE_BIT
+suffix:semicolon
+id|tmpc
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+l_int|2
+id|k_ECCStatus
 )paren
-op_ne
+op_amp
+id|DOC_TOGGLE_BIT
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tmp
+op_ne
+id|tmpb
+op_logical_and
+id|tmp
+op_eq
+id|tmpc
 )paren
 r_return
 id|ChipID
@@ -359,10 +392,8 @@ id|ECCConf
 op_amp
 id|DOC_TOGGLE_BIT
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
+id|tmpb
+op_assign
 id|ReadDOC
 c_func
 (paren
@@ -372,15 +403,229 @@ id|ECCConf
 )paren
 op_amp
 id|DOC_TOGGLE_BIT
+suffix:semicolon
+id|tmpc
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|ECCConf
 )paren
-op_ne
+op_amp
+id|DOC_TOGGLE_BIT
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|tmp
+op_ne
+id|tmpb
+op_logical_and
+id|tmp
+op_eq
+id|tmpc
 )paren
 r_return
 id|ChipID
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|DOC_ChipID_DocMilPlus16
+suffix:colon
+r_case
+id|DOC_ChipID_DocMilPlus32
+suffix:colon
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* Possible Millennium+, need to do more checks */
+macro_line|#ifndef DOC_PASSIVE_PROBE
+multiline_comment|/* Possibly release from power down mode */
+r_for
+c_loop
+(paren
+id|tmp
+op_assign
+l_int|0
+suffix:semicolon
+(paren
+id|tmp
+OL
+l_int|4
+)paren
+suffix:semicolon
+id|tmp
+op_increment
+)paren
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|Mplus_Power
+)paren
+suffix:semicolon
+multiline_comment|/* Reset the DiskOnChip ASIC */
+id|tmp
+op_assign
+id|DOC_MODE_RESET
+op_or
+id|DOC_MODE_MDWREN
+op_or
+id|DOC_MODE_RST_LAT
+op_or
+id|DOC_MODE_BDECT
+suffix:semicolon
+id|WriteDOC
+c_func
+(paren
+id|tmp
+comma
+id|window
+comma
+id|Mplus_DOCControl
+)paren
+suffix:semicolon
+id|WriteDOC
+c_func
+(paren
+op_complement
+id|tmp
+comma
+id|window
+comma
+id|Mplus_CtrlConfirm
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Enable the DiskOnChip ASIC */
+id|tmp
+op_assign
+id|DOC_MODE_NORMAL
+op_or
+id|DOC_MODE_MDWREN
+op_or
+id|DOC_MODE_RST_LAT
+op_or
+id|DOC_MODE_BDECT
+suffix:semicolon
+id|WriteDOC
+c_func
+(paren
+id|tmp
+comma
+id|window
+comma
+id|Mplus_DOCControl
+)paren
+suffix:semicolon
+id|WriteDOC
+c_func
+(paren
+op_complement
+id|tmp
+comma
+id|window
+comma
+id|Mplus_CtrlConfirm
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif /* !DOC_PASSIVE_PROBE */&t;
+id|ChipID
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|ChipID
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ChipID
+)paren
+(brace
+r_case
+id|DOC_ChipID_DocMilPlus16
+suffix:colon
+r_case
+id|DOC_ChipID_DocMilPlus32
+suffix:colon
+multiline_comment|/* Check the TOGGLE bit in the toggle register */
+id|tmp
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|Mplus_Toggle
+)paren
+op_amp
+id|DOC_TOGGLE_BIT
+suffix:semicolon
+id|tmpb
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|Mplus_Toggle
+)paren
+op_amp
+id|DOC_TOGGLE_BIT
+suffix:semicolon
+id|tmpc
+op_assign
+id|ReadDOC
+c_func
+(paren
+id|window
+comma
+id|Mplus_Toggle
+)paren
+op_amp
+id|DOC_TOGGLE_BIT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_ne
+id|tmpb
+op_logical_and
+id|tmp
+op_eq
+id|tmpc
+)paren
+r_return
+id|ChipID
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* FALL TRHU */
 r_default
 suffix:colon
 macro_line|#ifndef CONFIG_MTD_DOCPROBE_55AA
@@ -725,6 +970,26 @@ suffix:semicolon
 macro_line|#endif /* DOC_SINGLE_DRIVER */
 r_break
 suffix:semicolon
+r_case
+id|DOC_ChipID_DocMilPlus16
+suffix:colon
+r_case
+id|DOC_ChipID_DocMilPlus32
+suffix:colon
+id|name
+op_assign
+l_string|&quot;MillenniumPlus&quot;
+suffix:semicolon
+id|im_funcname
+op_assign
+l_string|&quot;DoCMilPlus_init&quot;
+suffix:semicolon
+id|im_modname
+op_assign
+l_string|&quot;doc2001plus&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -773,6 +1038,12 @@ comma
 id|name
 comma
 id|physadr
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|mtd
 )paren
 suffix:semicolon
 )brace
@@ -831,10 +1102,14 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+(paren
 id|doc_locations
 (braket
 id|i
 )braket
+op_ne
+l_int|0xffffffff
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -865,13 +1140,9 @@ id|KERN_INFO
 l_string|&quot;No recognised DiskOnChip devices found&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* So it looks like we&squot;ve been used and we get unloaded */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EAGAIN
 suffix:semicolon
 )brace
 DECL|variable|init_doc

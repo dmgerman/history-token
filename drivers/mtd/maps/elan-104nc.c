@@ -1,10 +1,11 @@
-multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.12 2001/10/02 15:05:14 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as separate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
+multiline_comment|/* elan-104nc.c -- MTD map driver for Arcom Control Systems ELAN-104NC&n; &n;   Copyright (C) 2000 Arcom Control System Ltd&n; &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n; &n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n; &n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n;&n;   $Id: elan-104nc.c,v 1.17 2003/05/21 15:15:07 dwmw2 Exp $&n;&n;The ELAN-104NC has up to 8 Mibyte of Intel StrataFlash (28F320/28F640) in x16&n;mode.  This drivers uses the CFI probe and Intel Extended Command Set drivers.&n;&n;The flash is accessed as follows:&n;&n;   32 kbyte memory window at 0xb0000-0xb7fff&n;   &n;   16 bit I/O port (0x22) for some sort of paging.&n;&n;The single flash device is divided into 3 partition which appear as seperate&n;MTD devices.&n;&n;Linux thinks that the I/O port is used by the PIC and hence check_region() will&n;always fail.  So we don&squot;t do it.  I just hope it doesn&squot;t break anything.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
+macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/mtd/partitions.h&gt;
 DECL|macro|WINDOW_START
 mdefine_line|#define WINDOW_START 0xb0000
@@ -52,61 +53,7 @@ id|partition_info
 (braket
 )braket
 op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;ELAN-104NC flash boot partition&quot;
-comma
-dot
-id|size
-op_assign
-l_int|640
-op_star
-l_int|1024
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;ELAN-104NC flash partition 1&quot;
-comma
-dot
-id|offset
-op_assign
-l_int|640
-op_star
-l_int|1024
-comma
-dot
-id|size
-op_assign
-l_int|896
-op_star
-l_int|1024
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;ELAN-104NC flash partition 2&quot;
-comma
-dot
-id|offset
-op_assign
-(paren
-l_int|640
-op_plus
-l_int|896
-)paren
-op_star
-l_int|1024
-comma
-)brace
-)brace
+initialization_block
 suffix:semicolon
 DECL|macro|NUM_PARTITIONS
 mdefine_line|#define NUM_PARTITIONS (sizeof(partition_info)/sizeof(partition_info[0]))
@@ -857,6 +804,11 @@ op_assign
 l_string|&quot;ELAN-104NC flash&quot;
 comma
 dot
+id|phys
+op_assign
+id|NO_XIP
+comma
+dot
 id|size
 op_assign
 l_int|8
@@ -865,7 +817,7 @@ l_int|1024
 op_star
 l_int|1024
 comma
-multiline_comment|/* this must be set to a maximum&n;&t;&t;&t;&t;&t;  possible amount of flash so the&n;&t;&t;&t;&t;&t;  cfi probe routines find all&n;&t;&t;&t;&t;&t;  the chips */
+multiline_comment|/* this must be set to a maximum possible amount&n;&t;&t;&t;of flash so the cfi probe routines find all&n;&t;&t;&t;the chips */
 dot
 id|buswidth
 op_assign
@@ -1073,7 +1025,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-id|all_mtd-&gt;module
+id|all_mtd-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cmdline.c,v 1.5 2002/11/06 22:40:04 rmk Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique id used in mapping driver/device&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
+multiline_comment|/*&n; * $Id: cmdlinepart.c,v 1.9 2003/05/16 17:08:24 dwmw2 Exp $&n; *&n; * Read flash partition table from command line&n; *&n; * Copyright 2002 SYSGO Real-Time Solutions GmbH&n; *&n; * The format for the command line is as follows:&n; * &n; * mtdparts=&lt;mtddef&gt;[;&lt;mtddef]&n; * &lt;mtddef&gt;  := &lt;mtd-id&gt;:&lt;partdef&gt;[,&lt;partdef&gt;]&n; * &lt;partdef&gt; := &lt;size&gt;[@offset][&lt;name&gt;][ro]&n; * &lt;mtd-id&gt;  := unique id used in mapping driver/device&n; * &lt;size&gt;    := standard linux memsize OR &quot;-&quot; to denote all remaining space&n; * &lt;name&gt;    := &squot;(&squot; NAME &squot;)&squot;&n; * &n; * Examples:&n; * &n; * 1 NOR Flash, with 1 single writable partition:&n; * edb7312-nor:-&n; * &n; * 1 NOR Flash with 2 partitions, 1 NAND with one&n; * edb7312-nor:256k(ARMboot)ro,-(root);edb7312-nand:-(home)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -171,25 +171,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|size
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|ERRP
-l_string|&quot;couldn&squot;t parse number from input string&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|size
 OL
 id|PAGE_SIZE
@@ -244,25 +225,6 @@ op_amp
 id|s
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|offset
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|ERRP
-l_string|&quot;couldn&squot;t parse number from input string&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* now look for name */
 r_if
@@ -919,8 +881,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Main function to be called from the MTD mapping driver/device to&n; * obtain the partitioning information. At this point the command line&n; * arguments will actually be parsed and turned to struct mtd_partition&n; * information.&n; */
+multiline_comment|/*&n; * Main function to be called from the MTD mapping driver/device to&n; * obtain the partitioning information. At this point the command line&n; * arguments will actually be parsed and turned to struct mtd_partition&n; * information. It returns partitions for the requested mtd device, or&n; * the first one in the chain if a NULL mtd_id is passed in.&n; */
 DECL|function|parse_cmdline_partitions
+r_static
 r_int
 id|parse_cmdline_partitions
 c_func
@@ -936,10 +899,9 @@ op_star
 op_star
 id|pparts
 comma
-r_const
-r_char
-op_star
-id|mtd_id
+r_int
+r_int
+id|origin
 )paren
 (brace
 r_int
@@ -954,16 +916,24 @@ id|cmdline_mtd_partition
 op_star
 id|part
 suffix:semicolon
+r_char
+op_star
+id|mtd_id
+op_assign
+id|master-&gt;name
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|cmdline
 )paren
+(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 multiline_comment|/* parse command line */
 r_if
 c_cond
@@ -994,6 +964,12 @@ id|part-&gt;next
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|mtd_id
+)paren
+op_logical_or
+(paren
 op_logical_neg
 id|strcmp
 c_func
@@ -1001,6 +977,7 @@ c_func
 id|part-&gt;mtd_id
 comma
 id|mtd_id
+)paren
 )paren
 )paren
 (brace
@@ -1098,7 +1075,7 @@ id|KERN_WARNING
 id|ERRP
 l_string|&quot;%s: partitioning exceeds flash size, truncating&bslash;n&quot;
 comma
-id|mtd_id
+id|part-&gt;mtd_id
 )paren
 suffix:semicolon
 id|part-&gt;parts
@@ -1171,11 +1148,79 @@ comma
 id|mtdpart_setup
 )paren
 suffix:semicolon
-DECL|variable|parse_cmdline_partitions
-id|EXPORT_SYMBOL
+DECL|variable|cmdline_parser
+r_static
+r_struct
+id|mtd_part_parser
+id|cmdline_parser
+op_assign
+(brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
+id|parse_fn
+op_assign
+id|parse_cmdline_partitions
+comma
+dot
+id|name
+op_assign
+l_string|&quot;cmdlinepart&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|cmdline_parser_init
+r_static
+r_int
+id|__init
+id|cmdline_parser_init
 c_func
 (paren
-id|parse_cmdline_partitions
+r_void
+)paren
+(brace
+r_return
+id|register_mtd_parser
+c_func
+(paren
+op_amp
+id|cmdline_parser
+)paren
+suffix:semicolon
+)brace
+DECL|function|cmdline_parser_exit
+r_static
+r_void
+id|__exit
+id|cmdline_parser_exit
+c_func
+(paren
+r_void
+)paren
+(brace
+id|deregister_mtd_parser
+c_func
+(paren
+op_amp
+id|cmdline_parser
+)paren
+suffix:semicolon
+)brace
+DECL|variable|cmdline_parser_init
+id|module_init
+c_func
+(paren
+id|cmdline_parser_init
+)paren
+suffix:semicolon
+DECL|variable|cmdline_parser_exit
+id|module_exit
+c_func
+(paren
+id|cmdline_parser_exit
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

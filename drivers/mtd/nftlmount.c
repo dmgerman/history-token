@@ -1,18 +1,11 @@
-multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.25 2001/11/30 16:46:27 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.34 2003/05/21 10:54:10 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
+macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &lt;linux/mtd/nftl.h&gt;
-macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 DECL|macro|SECTORSIZE
 mdefine_line|#define SECTORSIZE 512
 DECL|variable|nftlmountrev
@@ -21,7 +14,7 @@ id|nftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.25 $&quot;
+l_string|&quot;$Revision: 1.34 $&quot;
 suffix:semicolon
 multiline_comment|/* find_boot_record: Find the NFTL Media Header and its Spare copy which contains the&n; *&t;various device information of the NFTL partition and Bad Unit Table. Update&n; *&t;the ReplUnitTable[] table accroding to the Bad Unit Table. ReplUnitTable[]&n; *&t;is used for management of Erase Unit in other routines in nftl.c and nftlmount.c&n; */
 DECL|function|find_boot_record
@@ -73,6 +66,17 @@ r_int
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* Assume logical EraseSize == physical erasesize for starting the scan. &n;&t;   We&squot;ll sort it out later if we find a MediaHeader which says otherwise */
+id|nftl-&gt;EraseSize
+op_assign
+id|nftl-&gt;mbd.mtd-&gt;erasesize
+suffix:semicolon
+id|nftl-&gt;nb_blocks
+op_assign
+id|nftl-&gt;mbd.mtd-&gt;size
+op_div
+id|nftl-&gt;EraseSize
+suffix:semicolon
 id|nftl-&gt;MediaUnit
 op_assign
 id|BLOCK_NIL
@@ -110,7 +114,7 @@ op_assign
 id|MTD_READ
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -148,7 +152,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 comma
 id|ret
 )paren
@@ -201,7 +205,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;&t;
@@ -218,7 +222,7 @@ op_assign
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -255,7 +259,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 comma
 id|ret
 )paren
@@ -288,7 +292,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 comma
 id|le16_to_cpu
 c_func
@@ -316,7 +320,7 @@ op_assign
 id|MTD_READECC
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -335,6 +339,8 @@ op_star
 )paren
 op_amp
 id|oob
+comma
+id|NAND_ECC_DISKONCHIP
 )paren
 OL
 l_int|0
@@ -351,7 +357,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 comma
 id|ret
 )paren
@@ -384,7 +390,7 @@ id|block
 op_star
 id|nftl-&gt;EraseSize
 comma
-id|nftl-&gt;mtd-&gt;index
+id|nftl-&gt;mbd.mtd-&gt;index
 )paren
 suffix:semicolon
 id|printk
@@ -470,9 +476,21 @@ id|nftl-&gt;EraseSize
 )paren
 suffix:semicolon
 multiline_comment|/* if (debug) Print both side by side */
+r_if
+c_cond
+(paren
+id|boot_record_count
+OL
+l_int|2
+)paren
+(brace
+multiline_comment|/* We haven&squot;t yet seen two real ones */
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+)brace
+r_continue
 suffix:semicolon
 )brace
 r_if
@@ -485,6 +503,14 @@ l_int|1
 id|nftl-&gt;SpareMediaUnit
 op_assign
 id|block
+suffix:semicolon
+multiline_comment|/* Mark this boot record (NFTL MediaHeader) block as reserved */
+id|nftl-&gt;ReplUnitTable
+(braket
+id|block
+)braket
+op_assign
+id|BLOCK_RESERVED
 suffix:semicolon
 id|boot_record_count
 op_increment
@@ -512,6 +538,46 @@ r_if
 c_cond
 (paren
 id|mh-&gt;UnitSizeFactor
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;NFTL: UnitSizeFactor 0x00 detected. This violates the spec but we think we know what it means...&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|mh-&gt;UnitSizeFactor
+OL
+l_int|0xfc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Sorry, we don&squot;t support UnitSizeFactor 0x%02x&bslash;n&quot;
+comma
+id|mh-&gt;UnitSizeFactor
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|mh-&gt;UnitSizeFactor
 op_ne
 l_int|0xff
 )paren
@@ -520,13 +586,26 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Sorry, we don&squot;t support UnitSizeFactor &quot;
-l_string|&quot;of != 1 yet.&bslash;n&quot;
+l_string|&quot;WARNING: Support for NFTL with UnitSizeFactor 0x%02x is experimental&bslash;n&quot;
+comma
+id|mh-&gt;UnitSizeFactor
 )paren
 suffix:semicolon
-r_return
+id|nftl-&gt;EraseSize
+op_assign
+id|nftl-&gt;mbd.mtd-&gt;erasesize
+op_lshift
+(paren
+l_int|0xff
 op_minus
-l_int|1
+id|mh-&gt;UnitSizeFactor
+)paren
+suffix:semicolon
+id|nftl-&gt;nb_blocks
+op_assign
+id|nftl-&gt;mbd.mtd-&gt;size
+op_div
+id|nftl-&gt;EraseSize
 suffix:semicolon
 )brace
 id|nftl-&gt;nb_boot_blocks
@@ -621,7 +700,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|nftl-&gt;nr_sects
+id|nftl-&gt;mbd.size
 op_assign
 id|nftl-&gt;numvunits
 op_star
@@ -645,6 +724,139 @@ c_func
 (paren
 id|mh-&gt;FirstPhysicalEUN
 )paren
+suffix:semicolon
+multiline_comment|/* XXX: will be suppressed */
+id|nftl-&gt;lastEUN
+op_assign
+id|nftl-&gt;nb_blocks
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* memory alloc */
+id|nftl-&gt;EUNtable
+op_assign
+id|kmalloc
+c_func
+(paren
+id|nftl-&gt;nb_blocks
+op_star
+r_sizeof
+(paren
+id|u16
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nftl-&gt;EUNtable
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;NFTL: allocation of EUNtable failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+id|nftl-&gt;ReplUnitTable
+op_assign
+id|kmalloc
+c_func
+(paren
+id|nftl-&gt;nb_blocks
+op_star
+r_sizeof
+(paren
+id|u16
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nftl-&gt;ReplUnitTable
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|nftl-&gt;EUNtable
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;NFTL: allocation of ReplUnitTable failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+multiline_comment|/* mark the bios blocks (blocks before NFTL MediaHeader) as reserved */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nftl-&gt;nb_boot_blocks
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|nftl-&gt;ReplUnitTable
+(braket
+id|i
+)braket
+op_assign
+id|BLOCK_RESERVED
+suffix:semicolon
+multiline_comment|/* mark all remaining blocks as potentially containing data */
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|i
+OL
+id|nftl-&gt;nb_blocks
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|nftl-&gt;ReplUnitTable
+(braket
+id|i
+)braket
+op_assign
+id|BLOCK_NOTEXPLORED
+suffix:semicolon
+)brace
+multiline_comment|/* Mark this boot record (NFTL MediaHeader) block as reserved */
+id|nftl-&gt;ReplUnitTable
+(braket
+id|block
+)braket
+op_assign
+id|BLOCK_RESERVED
 suffix:semicolon
 multiline_comment|/* read the Bad Erase Unit Table and modify ReplUnitTable[] accordingly */
 r_for
@@ -688,7 +900,7 @@ op_assign
 id|MTD_READECC
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -711,6 +923,8 @@ op_star
 )paren
 op_amp
 id|oob
+comma
+id|NAND_ECC_DISKONCHIP
 )paren
 )paren
 OL
@@ -724,6 +938,18 @@ id|KERN_NOTICE
 l_string|&quot;Read of bad sector table failed (err %d)&bslash;n&quot;
 comma
 id|ret
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|nftl-&gt;ReplUnitTable
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|nftl-&gt;EUNtable
 )paren
 suffix:semicolon
 r_return
@@ -893,7 +1119,7 @@ c_cond
 id|MTD_READ
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|address
 comma
@@ -942,11 +1168,11 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|address
 comma
-id|nftl-&gt;mtd-&gt;oobsize
+id|nftl-&gt;mbd.mtd-&gt;oobsize
 comma
 op_amp
 id|retlen
@@ -970,7 +1196,7 @@ id|buf
 comma
 l_int|0xff
 comma
-id|nftl-&gt;mtd-&gt;oobsize
+id|nftl-&gt;mbd.mtd-&gt;oobsize
 )paren
 op_ne
 l_int|0
@@ -1032,7 +1258,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1134,7 +1360,7 @@ suffix:semicolon
 id|MTD_ERASE
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|instr
 )paren
@@ -1223,7 +1449,7 @@ c_cond
 id|MTD_WRITEOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1329,7 +1555,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1435,7 +1661,7 @@ suffix:semicolon
 id|MTD_WRITEOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1780,7 +2006,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1882,7 +2108,7 @@ c_cond
 id|MTD_WRITEOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -1963,7 +2189,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -2069,7 +2295,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|nftl-&gt;mtd
+id|nftl-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -2161,107 +2387,6 @@ suffix:semicolon
 r_int
 id|retlen
 suffix:semicolon
-multiline_comment|/* XXX: will be suppressed */
-id|s-&gt;lastEUN
-op_assign
-id|s-&gt;nb_blocks
-op_minus
-l_int|1
-suffix:semicolon
-multiline_comment|/* memory alloc */
-id|s-&gt;EUNtable
-op_assign
-id|kmalloc
-c_func
-(paren
-id|s-&gt;nb_blocks
-op_star
-r_sizeof
-(paren
-id|u16
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|s-&gt;ReplUnitTable
-op_assign
-id|kmalloc
-c_func
-(paren
-id|s-&gt;nb_blocks
-op_star
-r_sizeof
-(paren
-id|u16
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|s-&gt;EUNtable
-op_logical_or
-op_logical_neg
-id|s-&gt;ReplUnitTable
-)paren
-(brace
-id|fail
-suffix:colon
-r_if
-c_cond
-(paren
-id|s-&gt;EUNtable
-)paren
-id|kfree
-c_func
-(paren
-id|s-&gt;EUNtable
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;ReplUnitTable
-)paren
-id|kfree
-c_func
-(paren
-id|s-&gt;ReplUnitTable
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* mark all blocks as potentially containing data */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|s-&gt;nb_blocks
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|s-&gt;ReplUnitTable
-(braket
-id|i
-)braket
-op_assign
-id|BLOCK_NOTEXPLORED
-suffix:semicolon
-)brace
 multiline_comment|/* search for NFTL MediaHeader and Spare NFTL Media Header */
 r_if
 c_cond
@@ -2281,61 +2406,11 @@ c_func
 l_string|&quot;Could not find valid boot record&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|fail
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* mark the bios blocks (blocks before NFTL MediaHeader) as reserved */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|s-&gt;nb_boot_blocks
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|s-&gt;ReplUnitTable
-(braket
-id|i
-)braket
-op_assign
-id|BLOCK_RESERVED
-suffix:semicolon
-multiline_comment|/* also mark the boot records (NFTL MediaHeader) blocks as reserved */
-r_if
-c_cond
-(paren
-id|s-&gt;MediaUnit
-op_ne
-id|BLOCK_NIL
-)paren
-id|s-&gt;ReplUnitTable
-(braket
-id|s-&gt;MediaUnit
-)braket
-op_assign
-id|BLOCK_RESERVED
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;SpareMediaUnit
-op_ne
-id|BLOCK_NIL
-)paren
-id|s-&gt;ReplUnitTable
-(braket
-id|s-&gt;SpareMediaUnit
-)braket
-op_assign
-id|BLOCK_RESERVED
-suffix:semicolon
 multiline_comment|/* init the logical to physical table */
 r_for
 c_loop
@@ -2418,7 +2493,7 @@ c_cond
 id|MTD_READOOB
 c_func
 (paren
-id|s-&gt;mtd
+id|s-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -2444,7 +2519,7 @@ op_logical_or
 id|MTD_READOOB
 c_func
 (paren
-id|s-&gt;mtd
+id|s-&gt;mbd.mtd
 comma
 id|block
 op_star
@@ -3115,7 +3190,11 @@ l_int|0
 suffix:semicolon
 id|s-&gt;LastFreeEUN
 op_assign
-id|BLOCK_NIL
+id|le16_to_cpu
+c_func
+(paren
+id|s-&gt;MediaHdr.FirstPhysicalEUN
+)paren
 suffix:semicolon
 r_for
 c_loop

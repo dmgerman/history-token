@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: malloc.c,v 1.22 2002/05/20 14:56:38 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: malloc.c,v 1.24 2003/03/11 17:30:29 gleixner Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,6 +10,9 @@ macro_line|#else
 DECL|macro|JFFS2_SLAB_POISON
 mdefine_line|#define JFFS2_SLAB_POISON 0
 macro_line|#endif
+singleline_comment|// replace this by #define D3 (x) x for cache debugging
+DECL|macro|D3
+mdefine_line|#define D3(x)
 multiline_comment|/* These are initialised to NULL in the kernel startup code.&n;   If you&squot;re porting to other operating systems, beware */
 DECL|variable|full_dnode_slab
 r_static
@@ -264,8 +267,6 @@ comma
 l_int|0
 comma
 id|JFFS2_SLAB_POISON
-op_or
-id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL
 comma
@@ -447,7 +448,8 @@ c_func
 r_void
 )paren
 (brace
-r_void
+r_struct
+id|jffs2_full_dnode
 op_star
 id|ret
 op_assign
@@ -457,6 +459,17 @@ c_func
 id|full_dnode_slab
 comma
 id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_full_dnode at %p&bslash;n&quot;
+comma
+id|ret
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -474,6 +487,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free full_dnode at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -493,7 +517,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|jffs2_raw_dirent
+op_star
+id|ret
+op_assign
 id|kmem_cache_alloc
 c_func
 (paren
@@ -501,6 +529,20 @@ id|raw_dirent_slab
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_raw_dirent&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_free_raw_dirent
@@ -514,6 +556,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free_raw_dirent at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -533,7 +586,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|jffs2_raw_inode
+op_star
+id|ret
+op_assign
 id|kmem_cache_alloc
 c_func
 (paren
@@ -541,6 +598,20 @@ id|raw_inode_slab
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_raw_inode at %p&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_free_raw_inode
@@ -554,6 +625,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free_raw_inode at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -573,7 +655,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|jffs2_tmp_dnode_info
+op_star
+id|ret
+op_assign
 id|kmem_cache_alloc
 c_func
 (paren
@@ -581,6 +667,20 @@ id|tmp_dnode_info_slab
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_tmp_dnode_info at %p&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_free_tmp_dnode_info
@@ -594,6 +694,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free_tmp_dnode_info at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -613,7 +724,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|ret
+op_assign
 id|kmem_cache_alloc
 c_func
 (paren
@@ -621,6 +736,20 @@ id|raw_node_ref_slab
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_raw_node_ref at %p&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_free_raw_node_ref
@@ -634,6 +763,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free_raw_node_ref at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -653,7 +793,11 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|jffs2_node_frag
+op_star
+id|ret
+op_assign
 id|kmem_cache_alloc
 c_func
 (paren
@@ -661,6 +805,20 @@ id|node_frag_slab
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;alloc_node_frag at %p&bslash;n&quot;
+comma
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_free_node_frag
@@ -674,6 +832,17 @@ op_star
 id|x
 )paren
 (brace
+id|D3
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;free_node_frag at %p&bslash;n&quot;
+comma
+id|x
+)paren
+)paren
+suffix:semicolon
 id|kmem_cache_free
 c_func
 (paren
@@ -706,8 +875,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|D1
-c_func
+id|D3
 (paren
 id|printk
 c_func
@@ -734,8 +902,7 @@ op_star
 id|x
 )paren
 (brace
-id|D1
-c_func
+id|D3
 (paren
 id|printk
 c_func
