@@ -17,7 +17,7 @@ DECL|macro|ic_lsize
 mdefine_line|#define ic_lsize&t;64
 DECL|macro|dc_lsize
 mdefine_line|#define dc_lsize&t;32
-multiline_comment|/* These are configuration dependant.  */
+multiline_comment|/* These are configuration dependent.  */
 DECL|macro|scache_size
 mdefine_line|#define scache_size()&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __res;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res = (read_32bit_cp0_register(CP0_CONFIG) &gt;&gt; 16) &amp; 3;&t;&bslash;&n;&t;__res = 1 &lt;&lt; (__res + 19);&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|sc_lsize

@@ -10,7 +10,7 @@ singleline_comment|// Done:
 singleline_comment|//
 singleline_comment|// 1.2.14&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/
 singleline_comment|// Added bounds checking to ip2_ipl_ioctl to avoid potential terroristic acts.
-singleline_comment|// Changed the definition of ip2trace to be more consistant with kernel style
+singleline_comment|// Changed the definition of ip2trace to be more consistent with kernel style
 singleline_comment|//&t;Thanks to Andreas Dilger &lt;adilger@turbolabs.com&gt; for these updates
 singleline_comment|//
 singleline_comment|// 1.2.13&t;/&bslash;/&bslash;|=mhw=|&bslash;/&bslash;/

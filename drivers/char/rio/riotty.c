@@ -4565,7 +4565,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;ttyseth -- set hardware dependant tty settings&n;*/
+multiline_comment|/*&n;&t;ttyseth -- set hardware dependent tty settings&n;*/
 r_void
 id|ttyseth
 c_func
@@ -4764,7 +4764,7 @@ id|sg-&gt;sg_ispeed
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;ttyseth_pv -- set hardware dependant tty settings using either the&n;&t;&t;&t;POSIX termios structure or the System V termio structure.&n;&t;&t;&t;&t;sysv = 0 =&gt; (POSIX):&t; struct termios *sg&n;&t;&t;&t;&t;sysv != 0 =&gt; (System V): struct termio *sg&n;*/
+multiline_comment|/*&n;&t;ttyseth_pv -- set hardware dependent tty settings using either the&n;&t;&t;&t;POSIX termios structure or the System V termio structure.&n;&t;&t;&t;&t;sysv = 0 =&gt; (POSIX):&t; struct termios *sg&n;&t;&t;&t;&t;sysv != 0 =&gt; (System V): struct termio *sg&n;*/
 r_static
 r_void
 id|ttyseth_pv

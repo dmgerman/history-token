@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Various ISA level dependant constants.&n; * Most of the following constants reflect the different layout&n; * of Coprocessor 0 registers.&n; *&n; * Copyright (c) 1998 Harald Koerfgen&n; */
+multiline_comment|/*&n; * Various ISA level dependent constants.&n; * Most of the following constants reflect the different layout&n; * of Coprocessor 0 registers.&n; *&n; * Copyright (c) 1998 Harald Koerfgen&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASM_ISADEP_H
 DECL|macro|__ASM_ISADEP_H

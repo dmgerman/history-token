@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/sh/kernel/io.c&n; *&n; * Copyright (C) 2000  Stuart Menefy&n; *&n; * Provide real functions which expand to whatever the header file defined.&n; * Also definitions of machine independant IO functions.&n; */
+multiline_comment|/*&n; * linux/arch/sh/kernel/io.c&n; *&n; * Copyright (C) 2000  Stuart Menefy&n; *&n; * Provide real functions which expand to whatever the header file defined.&n; * Also definitions of machine independent IO functions.&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|function|_inb

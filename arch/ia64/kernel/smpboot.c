@@ -1862,7 +1862,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Assume that CPU&squot;s have been discovered by some platform-dependant interface.  For&n; * SoftSDV/Lion, that would be ACPI.&n; *&n; * Setup of the IPI irq handler is done in irq.c:init_IRQ_SMP().&n; */
+multiline_comment|/*&n; * Assume that CPU&squot;s have been discovered by some platform-dependent interface.  For&n; * SoftSDV/Lion, that would be ACPI.&n; *&n; * Setup of the IPI irq handler is done in irq.c:init_IRQ_SMP().&n; */
 r_void
 id|__init
 DECL|function|init_smp_config

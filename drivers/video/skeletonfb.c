@@ -665,7 +665,7 @@ id|wait
 )paren
 (brace
 )brace
-multiline_comment|/**&n; *&t;xxxfb_sync - NOT a required function. Normally the accel engine &n; *&t;&t;     for a graphics card take a specific amount of time.&n; *&t;&t;     Often we have to wait for the accelerator to finish&n; *&t;&t;     its operation before we can write to the framebuffer&n; *&t;&t;     so we can have consistant display output. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; */
+multiline_comment|/**&n; *&t;xxxfb_sync - NOT a required function. Normally the accel engine &n; *&t;&t;     for a graphics card take a specific amount of time.&n; *&t;&t;     Often we have to wait for the accelerator to finish&n; *&t;&t;     its operation before we can write to the framebuffer&n; *&t;&t;     so we can have consistent display output. &n; *&n; *      @info: frame buffer structure that represents a single frame buffer&n; */
 DECL|function|xxxfb_sync
 r_void
 id|xxxfb_sync

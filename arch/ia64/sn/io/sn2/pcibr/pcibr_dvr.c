@@ -11403,7 +11403,7 @@ suffix:semicolon
 r_int
 id|min_rrbs
 suffix:semicolon
-multiline_comment|/* Device is capable of A64 operations,&n;&t;     * and the attributes of the DMA are&n;&t;     * consistant with any previous DMA&n;&t;     * mappings using shared resources.&n;&t;     */
+multiline_comment|/* Device is capable of A64 operations,&n;&t;     * and the attributes of the DMA are&n;&t;     * consistent with any previous DMA&n;&t;     * mappings using shared resources.&n;&t;     */
 id|pci_addr
 op_assign
 id|pcibr_flags_to_d64
@@ -11603,7 +11603,7 @@ id|BRIDGE_DEV_D32_BITS
 )paren
 )paren
 (brace
-multiline_comment|/* User desires DIRECT A32 operations,&n;&t;     * and the attributes of the DMA are&n;&t;     * consistant with any previous DMA&n;&t;     * mappings using shared resources.&n;&t;     * Mapping calls may fail if target&n;&t;     * is outside the direct32 range.&n;&t;     */
+multiline_comment|/* User desires DIRECT A32 operations,&n;&t;     * and the attributes of the DMA are&n;&t;     * consistent with any previous DMA&n;&t;     * mappings using shared resources.&n;&t;     * Mapping calls may fail if target&n;&t;     * is outside the direct32 range.&n;&t;     */
 id|PCIBR_DEBUG
 c_func
 (paren

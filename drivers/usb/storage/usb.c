@@ -2643,7 +2643,7 @@ comma
 id|USB_STOR_STRING_LEN
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&t; * Again, this data is persistant across reattachments&n;&t; */
+multiline_comment|/* &n;&t; * Set the handler pointers based on the protocol&n;&t; * Again, this data is persistent across reattachments&n;&t; */
 r_switch
 c_cond
 (paren
