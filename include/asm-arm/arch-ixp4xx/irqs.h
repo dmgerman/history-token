@@ -2,8 +2,6 @@ multiline_comment|/*&n; * include/asm-arm/arch-ixp4xx/irqs.h &n; *&n; * IRQ defi
 macro_line|#ifndef _ARCH_IXP4XX_IRQS_H_
 DECL|macro|_ARCH_IXP4XX_IRQS_H_
 mdefine_line|#define _ARCH_IXP4XX_IRQS_H_
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;&t;32
 DECL|macro|IRQ_IXP4XX_NPEA
 mdefine_line|#define IRQ_IXP4XX_NPEA&t;&t;0
 DECL|macro|IRQ_IXP4XX_NPEB
@@ -68,6 +66,34 @@ DECL|macro|IRQ_IXP4XX_SW_INT1
 mdefine_line|#define IRQ_IXP4XX_SW_INT1&t;30
 DECL|macro|IRQ_IXP4XX_SW_INT2
 mdefine_line|#define IRQ_IXP4XX_SW_INT2&t;31
+macro_line|#ifndef&t;CONFIG_CPU_IXP46X
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;32
+macro_line|#else
+multiline_comment|/*&n; * IXP465 adds new sources&n; */
+DECL|macro|IRQ_IXP4XX_USB_HOST
+mdefine_line|#define IRQ_IXP4XX_USB_HOST&t;32
+DECL|macro|IRQ_IXP4XX_I2C
+mdefine_line|#define IRQ_IXP4XX_I2C&t;&t;33
+DECL|macro|IRQ_IXP4XX_SSP
+mdefine_line|#define IRQ_IXP4XX_SSP&t;&t;34
+DECL|macro|IRQ_IXP4XX_TSYNC
+mdefine_line|#define IRQ_IXP4XX_TSYNC&t;35
+DECL|macro|IRQ_IXP4XX_EAU_DONE
+mdefine_line|#define IRQ_IXP4XX_EAU_DONE&t;36
+DECL|macro|IRQ_IXP4XX_SHA_DONE
+mdefine_line|#define IRQ_IXP4XX_SHA_DONE&t;37
+DECL|macro|IRQ_IXP4XX_SWCP_PE
+mdefine_line|#define IRQ_IXP4XX_SWCP_PE&t;58
+DECL|macro|IRQ_IXP4XX_QM_PE
+mdefine_line|#define IRQ_IXP4XX_QM_PE&t;60
+DECL|macro|IRQ_IXP4XX_MCU_ECC
+mdefine_line|#define IRQ_IXP4XX_MCU_ECC&t;61
+DECL|macro|IRQ_IXP4XX_EXP_PE
+mdefine_line|#define IRQ_IXP4XX_EXP_PE&t;62
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;64
+macro_line|#endif
 DECL|macro|XSCALE_PMU_IRQ
 mdefine_line|#define&t;XSCALE_PMU_IRQ&t;&t;(IRQ_IXP4XX_XSCALE_PMU)
 multiline_comment|/*&n; * IXDP425 board IRQs&n; */
