@@ -1211,6 +1211,10 @@ r_int
 r_int
 id|pitch_target
 suffix:semicolon
+r_int
+r_int
+id|ccis
+suffix:semicolon
 id|voice
 op_assign
 id|evoice-&gt;number
@@ -1424,8 +1428,6 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-r_int
-r_int
 id|ccis
 op_assign
 id|stereo
@@ -2682,6 +2684,13 @@ id|start_addr
 comma
 id|end_addr
 suffix:semicolon
+r_int
+r_int
+id|channel_size
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|start_addr
 op_assign
 id|epcm-&gt;start_addr
@@ -2697,13 +2706,6 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * the kX driver leaves some space between voices&n;&t; */
-r_int
-r_int
-id|channel_size
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|channel_size
 op_assign
 (paren
